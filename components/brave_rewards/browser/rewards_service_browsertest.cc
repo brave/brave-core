@@ -142,28 +142,28 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     ui_test_utils::NavigateToURL(browser(), rewards_url());
     WaitForLoadStop(contents());
     //opt in and create wallet to enable rewards
-    bool result = false;
-    ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-        "document.querySelector(\"[data-test-id='optInAction']\").click()",
-        &result));
-    ASSERT_TRUE(result);
-
-    result = false;
-    ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
+    ASSERT_TRUE(ExecJs(contents(),
+      "document.querySelector(\"[data-test-id='optInAction']\").click();",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END));
+    content::EvalJsResult jsResult = EvalJs(contents(),
+      "new Promise((resolve) => {"
       "var count = 10;"
       "var interval = setInterval(function() {"
       "  if (count == 0) {"
       "    clearInterval(interval);"
-      "    domAutomationController.send(false);"
+      "    resolve(false);"
       "  } else {"
       "    count -= 1;"
       "  }"
       "  if (document.querySelector(\"[data-test-id2='enableMain']\")) {"
       "    clearInterval(interval);"
-      "    domAutomationController.send(true);"
+      "    resolve(true);"
       "  }"
-      "}, 500);", &result));
-    ASSERT_TRUE(result);
+      "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
+    ASSERT_TRUE(jsResult.ExtractBool());
   }
 
   MockURLFetcherFactory<brave_net::BraveURLFetcher> factory;
@@ -181,18 +181,48 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
   EnableRewards();
 
   // Toggle rewards off
-  bool result = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-      "document.querySelector(\"[data-test-id2='enableMain']\").click()",
-      &result));
-  EXPECT_TRUE(result);
+  content::EvalJsResult toggleOffResult = EvalJs(contents(),
+      "document.querySelector(\"[data-test-id2='enableMain']\").click();"
+      "new Promise((resolve) => {"
+      "var count = 10;"
+      "var interval = setInterval(function() {"
+      "  if (count == 0) {"
+      "    clearInterval(interval);"
+      "    resolve(false);"
+      "  } else {"
+      "    count -= 1;"
+      "  }"
+      "  if (document.querySelector(\"[data-test-id2='enableMain']\")) {"
+      "    clearInterval(interval);"
+      "    resolve(document.querySelector(\"[data-test-id2='enableMain']\")"
+      "      .getAttribute(\"data-toggled\") === 'false');"
+      "  }"
+      "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
+  ASSERT_TRUE(toggleOffResult.ExtractBool());
 
   // Toggle rewards back on
-  bool enableResult = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-      "document.querySelector(\"[data-test-id2='enableMain']\").click()",
-      &enableResult));
-  EXPECT_TRUE(enableResult);
+  content::EvalJsResult toggleOnResult = EvalJs(contents(),
+      "document.querySelector(\"[data-test-id2='enableMain']\").click();"
+      "new Promise((resolve) => {"
+      "var count = 10;"
+      "var interval = setInterval(function() {"
+      "  if (count == 0) {"
+      "    clearInterval(interval);"
+      "    resolve(false);"
+      "  } else {"
+      "    count -= 1;"
+      "  }"
+      "  if (document.querySelector(\"[data-test-id2='enableMain']\")) {"
+      "    clearInterval(interval);"
+      "    resolve(document.querySelector(\"[data-test-id2='enableMain']\")"
+      "      .getAttribute(\"data-toggled\") === 'true');"
+      "  }"
+      "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
+  ASSERT_TRUE(toggleOnResult.ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
@@ -203,54 +233,70 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
   EXPECT_TRUE(WaitForLoadStop(contents()));
 
   // toggle auto contribute off
-  bool result = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
+  content::EvalJsResult toggleOffResult = EvalJs(contents(),
+    "document.querySelector(\"[data-test-id2='autoContribution']\").click();"
+    "new Promise((resolve) => {"
     "var count = 10;"
     "var interval = setInterval(function() {"
     "  if (count == 0) {"
     "    clearInterval(interval);"
-    "    domAutomationController.send(false);"
+    "    resolve(false);"
     "  } else {"
     "    count -= 1;"
     "  }"
     "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
-    "    document.querySelector(\"[data-test-id2='autoContribution']\").click();"
     "    clearInterval(interval);"
-    "    domAutomationController.send(true);"
+    "    resolve(document.querySelector(\"[data-test-id2='autoContribution']\")"
+    "      .getAttribute(\"data-toggled\") === 'false');"
     "  }"
-    "}, 500);", &result));
-  EXPECT_TRUE(result);
+    "}, 500);});",
+    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+    content::ISOLATED_WORLD_ID_CONTENT_END);
+  ASSERT_TRUE(toggleOffResult.ExtractBool());
 
   // toggle auto contribute back on
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-      "document.querySelector(\"[data-test-id2='autoContribution']\").click()",
-      &result));
-  EXPECT_TRUE(result);
+  content::EvalJsResult toggleOnResult = EvalJs(contents(),
+    "document.querySelector(\"[data-test-id2='autoContribution']\").click();"
+    "new Promise((resolve) => {"
+    "var count = 10;"
+    "var interval = setInterval(function() {"
+    "  if (count == 0) {"
+    "    clearInterval(interval);"
+    "    resolve(false);"
+    "  } else {"
+    "    count -= 1;"
+    "  }"
+    "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
+    "    clearInterval(interval);"
+    "    resolve(document.querySelector(\"[data-test-id2='autoContribution']\")"
+    "      .getAttribute(\"data-toggled\") === 'true');"
+    "  }"
+    "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
+  ASSERT_TRUE(toggleOnResult.ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
   EnableRewards();
 
-  bool result = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
-      "document.querySelector(\"[data-test-id='settingsButton']\").click()",
-      &result));
-  EXPECT_TRUE(result);
-
-  bool modalResult = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
+  content::EvalJsResult modalResult = EvalJs(contents(),
+    "document.querySelector(\"[data-test-id='settingsButton']\").click();"
+    "new Promise((resolve) => {"
     "var count = 10;"
     "var interval = setInterval(function() {"
     "  if (count == 0) {"
     "    clearInterval(interval);"
-    "    domAutomationController.send(false);"
+    "    resolve(false);"
     "  } else {"
     "    count -= 1;"
     "  }"
     "  if (document.getElementById('modal')) {"
     "    clearInterval(interval);"
-    "    domAutomationController.send(true);"
+    "    resolve(document.getElementById('modal') != null);"
     "  }"
-    "}, 500);", &modalResult));
-  EXPECT_TRUE(modalResult);
+    "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
+  ASSERT_TRUE(modalResult.ExtractBool());
 }
