@@ -8,9 +8,7 @@ private let log = Logger.browserLogger
 
 // Unit tests for DAU are located in brave/tests_src/unit/DauTest.swift.
 public class DAU {
-    public static let preferencesKey = "dau_stat"
-    public static let weekOfInstallationKeyPrefKey = "week_of_installation"
-    
+
     /// Default installation date for legacy woi version.
     public static let defaultWoiDate = "2016-01-04"
     
@@ -62,7 +60,7 @@ public class DAU {
     
     /** Return params query or nil if no ping should be send to server. */
     func paramsAndPrefsSetup() -> String? {
-        let dauStats = prefs.arrayForKey(DAU.preferencesKey)
+        let dauStats = Preferences.DAU.lastLaunchInfo.value
         
         /// This is not the same as `firstLaunch` concept, due to DAU delay, this may var be `true` on a subsequent launch
         let firstPing = dauStats == nil
@@ -75,7 +73,7 @@ public class DAU {
         
         // This could lead to an upgraded device having no `woi`, and that's fine
         if firstPing {
-            prefs.setString(todayComponents.weeksMonday, forKey: DAU.weekOfInstallationKeyPrefKey)
+            Preferences.DAU.weekOfInstallation.value = todayComponents.weeksMonday
         }
         
         guard let dauStatParams = dauStatParams(dauStats, firstPing: firstPing) else {
@@ -92,7 +90,7 @@ public class DAU {
         // TODO: #190 goes here
         
         let secsMonthYear = [Int(today.timeIntervalSince1970), todayComponents.month, todayComponents.year]
-        prefs.setObject(secsMonthYear, forKey: DAU.preferencesKey)
+        Preferences.DAU.lastLaunchInfo.value = secsMonthYear
         
         return params
     }
@@ -135,7 +133,7 @@ public class DAU {
         let base = "&woi="
         
         // This _should_ be set all the time
-        guard let woi = prefs.stringForKey(DAU.weekOfInstallationKeyPrefKey) else {
+        guard let woi = Preferences.DAU.weekOfInstallation.value else {
             log.error("woi, is nil, using default")
             return base + DAU.defaultWoiDate
         }
@@ -143,7 +141,7 @@ public class DAU {
     }
     
     /// Returns nil if no dau changes detected.
-    func dauStatParams(_ dauStat: [Any]?, firstPing: Bool) -> String? {
+    func dauStatParams(_ dauStat: [Int?]?, firstPing: Bool) -> String? {
         func dauParams(_ daily: Bool, _ weekly: Bool, _ monthly: Bool) -> String {
             return "&daily=\(daily)&weekly=\(weekly)&monthly=\(monthly)"
         }
@@ -155,7 +153,7 @@ public class DAU {
         let month = todayComponents.month
         let year = todayComponents.year
         
-        guard let stat = dauStat as? [Int] else {
+        guard let stat = dauStat?.compactMap({ $0 }) else {
             log.error("Cannot cast dauStat to [Int]")
             return nil
         }

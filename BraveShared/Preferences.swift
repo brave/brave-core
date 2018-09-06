@@ -26,6 +26,13 @@ public class Preferences {
 }
 
 extension Preferences {
+    struct DAU {
+        static let lastLaunchInfo = Preferences.Option<[Int?]?>(key: "dau_stat", default: nil)
+        static let weekOfInstallation = Preferences.Option<String?>(key: "week_of_installation", default: nil)
+    }
+}
+
+extension Preferences {
     
     /// An entry in the `Preferences`
     ///
