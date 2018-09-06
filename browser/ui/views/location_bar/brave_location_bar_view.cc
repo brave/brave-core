@@ -88,6 +88,17 @@ OmniboxTint BraveLocationBarView::GetTint() {
   }
 }
 
+
+void BraveLocationBarView::OnThemeChanged() {
+  LocationBarView::OnThemeChanged();
+
+  if (!IsInitialized())
+    return;
+
+  Update(nullptr);
+  RefreshBackground();
+}
+
 // Provide base class implementation for Update override that has been added to
 // header via a patch. This should never be called as the only instantiated
 // implementation should be our |BraveLocationBarView|.
