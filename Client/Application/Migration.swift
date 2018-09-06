@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 import SwiftKeychainWrapper
 
 private let log = Logger.browserLogger

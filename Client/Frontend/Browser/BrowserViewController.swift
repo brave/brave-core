@@ -16,6 +16,7 @@ import SDWebImage
 import SwiftyJSON
 import Deferred
 import Data
+import BraveShared
 
 private let log = Logger.browserLogger
 
