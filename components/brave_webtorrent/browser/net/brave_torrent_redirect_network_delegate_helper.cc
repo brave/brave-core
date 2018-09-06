@@ -55,6 +55,13 @@ bool IsTorrentFile(net::URLRequest* request,
   return false;
 }
 
+bool IsWebtorrentInitiated(net::URLRequest* request) {
+  return request->initiator().has_value() &&
+    request->initiator()->GetURL().spec() ==
+      base::StrCat({extensions::kExtensionScheme, "://",
+      brave_webtorrent_extension_id, "/"});
+}
+
 } // namespace
 
 namespace webtorrent {
@@ -68,6 +75,7 @@ int OnHeadersReceived_TorrentRedirectWork(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
 
   if (!request || !original_response_headers ||
+      IsWebtorrentInitiated(request) || // download .torrent, do not redirect
       !IsTorrentFile(request, original_response_headers)) {
     return net::OK;
   }
