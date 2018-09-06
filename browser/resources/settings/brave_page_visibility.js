@@ -15,7 +15,7 @@ cr.define('settings', function() {
 
   const appearanceHandler = {
     get: function(obj, prop) {
-      return prop === 'setTheme' ? false : true;
+      return true;
     }
   };
 
