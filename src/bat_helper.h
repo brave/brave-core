@@ -416,6 +416,9 @@ namespace braveledger_bat_helper {
   std::string buildURL(const std::string& path, const std::string& prefix = "", const SERVER_TYPES& server = SERVER_TYPES::LEDGER);
 
   std::vector<std::string> split(const std::string& s, char delim);
+
+  bool ignore_for_testing();
+  void set_ignore_for_testing(bool ignore);
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_

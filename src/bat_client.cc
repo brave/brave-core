@@ -154,13 +154,13 @@ void BatClient::registerPersonaCallback(bool result,
   if (nullptr != masterUserToken) {
     state_->masterUserToken_ = masterUserToken;
     free((void*)masterUserToken);
-  } else {
+  } else if (!braveledger_bat_helper::ignore_for_testing()) {
     ledger_->OnWalletInitialized(ledger::Result::REGISTRATION_VERIFICATION_FAILED);
     return;
   }
 
   if (!braveledger_bat_helper::getJSONWalletInfo(response, state_->walletInfo_, state_->fee_currency_, state_->fee_amount_, state_->days_)) {
-    ledger_->OnWalletInitialized(ledger::Result::REGISTRATION_VERIFICATION_FAILED);
+    ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
   state_->bootStamp_ = braveledger_bat_helper::currentTime() * 1000;
