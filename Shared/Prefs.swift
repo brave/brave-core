@@ -34,7 +34,8 @@ public struct PrefsKeys {
     public static let AppExtensionTelemetryOpenUrl = "AppExtensionTelemetryOpenUrl"
     public static let AppExtensionTelemetryEventArray = "AppExtensionTelemetryEvents"
     
-    public static let IsFirstLaunch = "IsFirstLaunch"
+    /// Value should be `nil` if not first launch, value should _never_ be set to `false`
+    public static let IsNotFirstLaunch = "IsNotFirstLaunch"
 }
 
 public struct PrefsDefaults {
