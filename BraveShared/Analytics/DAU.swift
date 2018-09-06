@@ -4,11 +4,10 @@ import Foundation
 import Shared
 import XCGLogger
 
-// TODO: Separate logger for this kind of work?
 private let log = Logger.browserLogger
 
 // Unit tests for DAU are located in brave/tests_src/unit/DauTest.swift.
-struct DAU {
+public class DAU {
     public static let preferencesKey = "dau_stat"
     public static let weekOfInstallationKeyPrefKey = "week_of_installation"
     
@@ -24,7 +23,7 @@ struct DAU {
         return (Calendar.current as NSCalendar).components([.day, .month , .year, .weekday], from: today)
     }
     
-    init(prefs: Prefs, date: Date? = nil) {
+    public init(prefs: Prefs, date: Date? = nil) {
         self.prefs = prefs
         today = date ?? Date()
     }
@@ -40,14 +39,14 @@ struct DAU {
         log.debug("send ping to server, url: \(fullUrl)")
         
         guard let url = URL(string: fullUrl) else {
-            if !AppConstants.BuildChannel.isRelease {
-//                BraveApp.showErrorAlert(title: "Debug", error: "failed stats update")
-            }
+            log.error("Stats failed to update, via invalud URL: \(fullUrl)")
             return
         }
+        
         let task = URLSession.shared.dataTask(with: url) { _, _, error in
             if let e = error { log.error("status update error: \(e)") }
         }
+        
         task.resume()
     }
     
@@ -56,35 +55,28 @@ struct DAU {
     func paramsAndPrefsSetup() -> String? {
         let dauStats = prefs.arrayForKey(DAU.preferencesKey)
         
-        // Todo
-        // May want to pass this param in... feels fragile
-        let isFirstLaunch = dauStats == nil
+        /// This is not the same as `firstLaunch` concept, due to DAU delay, this may var be `true` on a subsequent launch
+        let firstPing = dauStats == nil
+        var params = channelParam + versionParam
         
-        var params
-            = channelParam
-            + versionParam
+        // All installs prior to this key existing (e.g. intallWeek == unknown) were set to `defaultWoiDate`
+        // Enough time has passed where accounting for installs prior to this DAU improvement is unnecessary
         
-        func setInstallWeek(installWeek: String) {
-            prefs.setString(installWeek, forKey: DAU.weekOfInstallationKeyPrefKey)
+        // See `woi` logic elsewhere to see fallback is handled
+        
+        // This could lead to an upgraded device having no `woi`, and that's fine
+        if firstPing {
+            prefs.setString(todayComponents.weeksMonday, forKey: DAU.weekOfInstallationKeyPrefKey)
         }
         
-        // Setting preferences
-        if isFirstLaunch {
-            setInstallWeek(installWeek: todayComponents.weeksMonday)
-        } else if prefs.stringForKey(DAU.weekOfInstallationKeyPrefKey) == nil {
-            // User is upgrading (app already installed), but we have never set a weekInstallKey
-            setInstallWeek(installWeek: DAU.defaultWoiDate)
-        }
-        
-        // If not first launch, ping to the server is only sent after enough time passed
-        guard let dauStatParams = dauStatParams(dauStats, firstLaunch: isFirstLaunch) else {
+        guard let dauStatParams = dauStatParams(dauStats, firstPing: firstPing) else {
             log.debug("dau, no changes detected, no server ping")
             return nil
         }
         
         params
             += dauStatParams
-            + firstLaunchParam(isFirstLaunch)
+            + firstLaunchParam(firstPing)
             // Must be after setting up the preferences
             + weekOfInstallationParam
 
@@ -131,20 +123,23 @@ struct DAU {
     /** All first app installs are normalized to first day of the week.
      Eg. user installs app on wednesday 2017-22-11, his install date is recorded as of 2017-20-11(Monday) */
     var weekOfInstallationParam: String {
+        let base = "&woi="
+        
+        // This _should_ be set all the time
         guard let woi = prefs.stringForKey(DAU.weekOfInstallationKeyPrefKey) else {
-            log.error("woi, is nil")
-            return ""
+            log.error("woi, is nil, using default")
+            return base + DAU.defaultWoiDate
         }
-        return "&woi=\(woi)"
+        return base + woi
     }
     
     /// Returns nil if no dau changes detected.
-    func dauStatParams(_ dauStat: [Any]?, firstLaunch isFirstLaunch: Bool) -> String? {
+    func dauStatParams(_ dauStat: [Any]?, firstPing: Bool) -> String? {
         func dauParams(_ daily: Bool, _ weekly: Bool, _ monthly: Bool) -> String {
             return "&daily=\(daily)&weekly=\(weekly)&monthly=\(monthly)"
         }
         
-        if isFirstLaunch || AppConstants.BuildChannel == .developer {
+        if firstPing || AppConstants.BuildChannel == .developer {
             return dauParams(true, true, true)
         }
         
@@ -167,7 +162,7 @@ struct DAU {
         let SECONDS_IN_A_DAY = 86400
         let SECONDS_IN_A_WEEK = 7 * 86400
         
-        // On first launch, the user is all three of these
+        // On first ping, the user is all three of these
         let daily = dSecs >= SECONDS_IN_A_DAY
         let weekly = dSecs >= SECONDS_IN_A_WEEK
         let monthly = month != _month || year != _year
