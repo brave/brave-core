@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc b/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
+index c1ea98b4aa05ca0d6670d6a40b146cf001ad3188..f7c78ed1ec3685594395cdfca5130c71ff0e79a0 100644
+--- a/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
++++ b/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
+@@ -47,10 +47,12 @@ namespace {
+ const int kMaxMenuWidth = 400;
+ 
+ SkColor TextColorForMenu(MenuItemView* menu, views::Widget* widget) {
++#if defined(BRAVE_CHROMIUM_BUILD) && !defined(OS_MACOSX)
+   if (widget && widget->GetThemeProvider()) {
+     return widget->GetThemeProvider()->GetColor(
+         ThemeProperties::COLOR_BOOKMARK_TEXT);
+   }
++#endif
+   return menu->GetNativeTheme()->GetSystemColor(
+       ui::NativeTheme::kColorId_EnabledMenuItemForegroundColor);
+ }
