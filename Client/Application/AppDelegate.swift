@@ -207,10 +207,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         if let prefs = profile?.prefs {
             DAU(prefs: prefs).sendPingToServer()
             
-            let firstLaunch = prefs.boolForKey(PrefsKeys.IsNotFirstLaunch) == nil
-            if firstLaunch {
+            if Preferences.General.isFirstLaunch.value {
                 FavoritesHelper.addDefaultFavorites()
-                prefs.setBool(true, forKey: PrefsKeys.IsNotFirstLaunch)
+                Preferences.General.isFirstLaunch.value = false
             }
         }
 

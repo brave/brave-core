@@ -44,6 +44,8 @@ extension Preferences {
 // MARK: - User Preferences
 extension Preferences {
     final class General {
+        /// Whether this is the first time user has ever launched Brave after intalling. *Should never be set to `true` manually!*
+        static let isFirstLaunch = Option<Bool>(key: "general.first-launch", default: true)
         /// Whether or not to save logins in Brave
         static let saveLogins = Option<Bool>(key: "general.save-logins", default: true)
         /// Whether or not to block popups from websites automaticaly
