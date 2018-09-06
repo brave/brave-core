@@ -19,7 +19,7 @@ if (is_linux) {
 }
 
 group("child_dependencies") {
-  public_deps = [
+  deps = [
     "//brave/renderer",
     "//brave/utility",
     "common"
@@ -27,7 +27,7 @@ group("child_dependencies") {
 }
 
 group("browser_dependencies") {
-  public_deps = [
+  deps = [
     "//brave/browser",
     "//brave/components/content_settings/core/browser",
     "common",
@@ -37,12 +37,10 @@ group("browser_dependencies") {
 }
 
 group("brave") {
-  public_deps = [
-    "//chrome",
-  ]
   deps = [
     ":generate_version",
     "build/$target_os:brave",
+    "//chrome",
   ]
 }
 

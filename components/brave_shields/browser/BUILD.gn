@@ -24,12 +24,11 @@ source_set("brave_shields") {
     "tracking_protection_service.cc",
     "tracking_protection_service.h",
   ]
+
   deps = [
+    "//brave/content:common",
     "//brave/vendor/ad-block/brave:ad-block",
     "//brave/vendor/tracking-protection/brave:tracking-protection",
-  ]
-  public_deps = [
-    "//brave/content:common",
     "//chrome/common",
     "//third_party/leveldatabase",
   ]
