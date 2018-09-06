@@ -14,8 +14,12 @@ public class DAU {
     /// Default installation date for legacy woi version.
     public static let defaultWoiDate = "2016-01-04"
     
+    /// Number of seconds that determins when a user is "active"
+    private let activeUserDuration = 10.0
+    
     let prefs: Prefs
     
+    private var launchTimer: Timer?
     private let baseUrl = "https://laptop-updates.brave.com/1/usage/ios?platform=ios"
     
     private let today: Date
@@ -29,6 +33,11 @@ public class DAU {
     }
     
     public func sendPingToServer() {
+        if launchTimer != nil { return }
+        launchTimer = Timer.scheduledTimer(timeInterval: activeUserDuration, target: self, selector: #selector(sendPingToServerInternal), userInfo: nil, repeats: false)
+    }
+    
+    @objc public func sendPingToServerInternal() {
         guard let params = paramsAndPrefsSetup() else {
             log.debug("dau, no changes detected, no server ping")
             return
