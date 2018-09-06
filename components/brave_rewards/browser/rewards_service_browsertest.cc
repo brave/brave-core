@@ -18,6 +18,7 @@ namespace brave_test_resp {
   std::string verification_;
   std::string wallet_;
   std::string grant_;
+  std::string publishers_;
 }
 
 namespace brave_net {
@@ -67,14 +68,18 @@ void BraveURLFetcher::DetermineURLResponsePath(std::string url) {
   } else if (url.find(braveledger_bat_helper::buildURL(GET_SET_PROMOTION,
     PREFIX_V1, braveledger_bat_helper::SERVER_TYPES::LEDGER)) == 0) {
     SetResponseString(brave_test_resp::grant_);
+  } else if (url.find(braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1,
+    "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER)) == 0) {
+    SetResponseString(brave_test_resp::publishers_);
   }
+
 }
 
 BraveURLFetcher::BraveURLFetcher(bool success,
   const GURL& url,
   const std::string& results,
   net::URLFetcher::RequestType request_type,
-  net::URLFetcherDelegate* d) 
+  net::URLFetcherDelegate* d)
   : net::TestURLFetcher(0, url, d) {
   set_url(url);
   set_status(net::URLRequestStatus(net::URLRequestStatus::SUCCESS, 0));
@@ -87,7 +92,7 @@ BraveURLFetcher::~BraveURLFetcher() = default;
 void BraveURLFetcher::Start() {
   base::ThreadTaskRunnerHandle::Get()->PostTask(
       FROM_HERE,
-      base::BindOnce(&BraveURLFetcher::RunDelegate, 
+      base::BindOnce(&BraveURLFetcher::RunDelegate,
       weak_factory_.GetWeakPtr()));
 }
 
@@ -141,7 +146,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     MockURLFetcherFactory<brave_net::BraveURLFetcher> factory;
     //opt in and create wallet to enable rewards
     bool result;
-    return ExecuteScriptAndExtractBool(contents(), 
+    return ExecuteScriptAndExtractBool(contents(),
       "document.querySelector(\"[data-test-id='optInAction']\").click();"
       "var interval = setInterval(function() {"
       "if (document.querySelector(\"[data-test-id2='enableMain']\") != null) {"
@@ -155,14 +160,14 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
   // Enable Rewards
   EnableRewards();
-  EXPECT_STREQ(contents()->GetLastCommittedURL().spec().c_str(), 
+  EXPECT_STREQ(contents()->GetLastCommittedURL().spec().c_str(),
     rewards_url().spec().c_str());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
   // Enable Rewards
   EnableRewards();
-  
+
   // Toggle rewards off
   bool result;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
@@ -191,7 +196,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
     "var interval = setInterval(function() {"
       "if (document.querySelector(\"[data-test-id2='autoContribution']\")"
         " != null) {"
-        "document.querySelector(\"[data-test-id2='autoContribution']\").click();"
+        "document.querySelector(\"[data-test-id2='autoContribution']\")"
+        ".click();"
         "clearInterval(interval);"
         "domAutomationController.send(true);"
       "}"
@@ -208,7 +214,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
   EnableRewards();
 
-  bool result;  
+  bool result;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents(),
     "document.querySelector(\"[data-test-id='settingsButton']\").click();"
     "domAutomationController.send(true);", &result));
