@@ -1,4 +1,4 @@
-
+import argparse
 import os
 import sys
 import shutil
@@ -10,20 +10,26 @@ if sys.platform in ['win32', 'cygwin']:
 
 
 def main():
-  brave_extension_dir = os.path.realpath(os.path.dirname(
-      os.path.dirname(os.path.realpath(__file__))))
-  brave_core_dir = os.path.dirname(os.path.dirname(brave_extension_dir))
-  brave_core_src_dir = sys.argv[1]
-  brave_extension_browser_resources_dir = os.path.join(brave_core_src_dir, 'browser', 'resources', 'brave_extension')
+  parser = argparse.ArgumentParser(description='Build Brave extension')
+  parser.add_argument('--output_dir')
+  parser.add_argument('--brave_extension_dir')
+  parser.add_argument('--build_dir')
+  args = parser.parse_args()
+
+  brave_extension_dir = os.path.abspath(args.brave_extension_dir)
+  build_dir = os.path.abspath(args.build_dir)
+  output_dir = os.path.abspath(args.output_dir)
 
   os.chdir(brave_extension_dir)
-  build_extension('.')
-  build_dir_path  = os.path.join(brave_extension_dir, 'build')
-  copy_output(build_dir_path, brave_extension_browser_resources_dir)
+  build_extension('.', build_dir)
+  copy_output(build_dir, output_dir)
 
-def build_extension(dirname, env=None):
+
+def build_extension(dirname, build_dir, env=None):
   if env is None:
     env = os.environ.copy()
+
+  env["TARGET_GEN_DIR"] = os.path.abspath(build_dir)
 
   args = [NPM, 'run', 'build']
   with scoped_cwd(dirname):
@@ -36,12 +42,7 @@ def copy_output(build_dir, output_dir):
     os.rmdir(output_dir)
   except:
     pass
-  try:
-    os.mkdir(DIST_DIR)
-    copy_app_to_dist()
-  except:
-    pass
-  shutil.copytree('build', output_dir)
+  shutil.copytree(build_dir, output_dir)
 
 if __name__ == '__main__':
   sys.exit(main())

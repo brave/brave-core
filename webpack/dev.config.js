@@ -28,7 +28,7 @@ const baseDevConfig = () => ({
     path: '/js/__webpack_hmr'
   },
   output: {
-    path: path.join(__dirname, '../dev/js'),
+    path: path.join(process.env.TARGET_GEN_DIR, 'js'),
     filename: '[name].bundle.js',
     chunkFilename: '[id].chunk.js'
   },

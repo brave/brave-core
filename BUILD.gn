@@ -9,23 +9,30 @@ action("brave-extension") {
     "app/braveShieldsPanel.tsx",
   ]
   script = "py-scripts/build-brave-extension.py"
-  args = [ rebase_path("../.."), rebase_path(root_build_dir) ]
+
+  build_dir = "${root_gen_dir}/brave_extension"
+
+  args = [ "--output_dir", rebase_path("//brave/browser/resources/brave_extension"),
+           "--brave_extension_dir", rebase_path("."),
+           "--build_dir", rebase_path(build_dir) ]
+
   outputs = [
-    "$target_gen_dir/brave_extension/build/background.html",
-    "$target_gen_dir/brave_extension/build/js/background.bundle.js",
-    "$target_gen_dir/brave_extension/build/js/content.bundle.js",
-    "$target_gen_dir/brave_extension/build/js/braveShieldsPanel.bundle.js",
-    "$target_gen_dir/brave_extension/build/braveShieldsPanel.html",
-    "$target_gen_dir/brave_extension/build/bravelizer.css",
-    "$target_gen_dir/brave_extension/build/img/icon-16.png",
-    "$target_gen_dir/brave_extension/build/img/icon-32.png",
-    "$target_gen_dir/brave_extension/build/img/icon-48.png",
-    "$target_gen_dir/brave_extension/build/img/icon-64.png",
-    "$target_gen_dir/brave_extension/build/img/icon-128.png",
-    "$target_gen_dir/brave_extension/build/img/icon-256.png",
-    "$target_gen_dir/brave_extension/build/img/icon.svg",
-    "$target_gen_dir/brave_extension/build/img/icon-off.svg",
-    "$target_gen_dir/brave_extension/build/_locales/en_US/messages.json",
+    "$build_dir/background.html",
+    "$build_dir/manifest.json",
+    "$build_dir/js/background.bundle.js",
+    "$build_dir/js/content.bundle.js",
+    "$build_dir/js/braveShieldsPanel.bundle.js",
+    "$build_dir/braveShieldsPanel.html",
+    "$build_dir/bravelizer.css",
+    "$build_dir/img/icon-16.png",
+    "$build_dir/img/icon-32.png",
+    "$build_dir/img/icon-48.png",
+    "$build_dir/img/icon-64.png",
+    "$build_dir/img/icon-128.png",
+    "$build_dir/img/icon-256.png",
+    "$build_dir/img/icon.svg",
+    "$build_dir/img/icon-off.svg",
+    "$build_dir/_locales/en_US/messages.json",
   ]
 
   # For macOS deps is bounded in //chrome:chrome_framework

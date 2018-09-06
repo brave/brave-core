@@ -17,12 +17,12 @@ exports.replaceWebpack = () => {
   replaceTasks.forEach(task => cp(task.from, task.to))
 }
 
-exports.copyAssets = (type) => {
+exports.copyAssets = (type, outputDir) => {
   const env = type === 'build' ? 'prod' : type
-  rm('-rf', type)
-  mkdir(type)
-  cp(`app/manifest.${env}.json`, `${type}/manifest.json`)
-  cp('-R', 'app/_locales/', type)
-  cp('-R', 'app/assets/*', type)
-  exec(`pug -O "{ env: '${env}' }" -o ${type} app/views/`)
+  rm('-rf', outputDir)
+  mkdir(outputDir)
+  cp(`app/manifest.${env}.json`, `${outputDir}/manifest.json`)
+  cp('-R', 'app/_locales/', outputDir)
+  cp('-R', 'app/assets/*', outputDir)
+  exec(`pug -O "{ env: '${env}' }" -o ${outputDir} app/views/`)
 }
