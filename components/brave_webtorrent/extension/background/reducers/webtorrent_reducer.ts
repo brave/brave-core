@@ -4,6 +4,7 @@
 
 import * as ParseTorrent from 'parse-torrent'
 import { Torrent } from 'webtorrent'
+import { parse } from 'query-string'
 
 // Constants
 import * as tabTypes from '../../constants/tab_types'
@@ -14,6 +15,7 @@ import { File, TorrentState, TorrentsState } from '../../constants/webtorrentSta
 // Utils
 import { addTorrent, delTorrent, findTorrent } from '../webtorrent'
 import { getTabData } from '../api/tabs_api'
+import { parseTorrentRemote } from '../api/torrent_api'
 
 const focusedWindowChanged = (windowId: number, state: TorrentsState) => {
   return { ...state, currentWindowId: windowId }
@@ -55,16 +57,13 @@ const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
   const { torrentStateMap, torrentObjMap } = state
   const origTorrentState: TorrentState = torrentStateMap[tabId]
   const origInfoHash = origTorrentState ? origTorrentState.infoHash : undefined
-  let newTorrentState
-  let newInfoHash
-
-  // delete old torrent state
-  delete torrentStateMap[tabId] // delete old torrent state
+  let newTorrentState: TorrentState | undefined
+  let newInfoHash: string | undefined
 
   // create new torrent state
   const parsedURL = new window.URL(url)
+  const torrentId = parsedURL.href
   if (parsedURL.protocol === 'magnet:') { // parse torrent
-    const torrentId = parsedURL.href
     try {
       const { name, infoHash, ix } = ParseTorrent(torrentId)
       newInfoHash = infoHash
@@ -72,7 +71,25 @@ const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
     } catch (error) {
       newTorrentState = { tabId, torrentId, errorMsg: error.message }
     }
+  } else if (parsedURL.protocol === 'https:' || parsedURL.protocol === 'http:') {
+    const name = parsedURL.pathname.substr(parsedURL.pathname.lastIndexOf('/') + 1)
+    let ix: number | undefined = Number(parse(parsedURL.hash).ix)
+    ix = Number.isNaN(ix) ? undefined : ix
+
+    // Use an existing infoHash if it's the same torrentId
+    const torrentUrl = parsedURL.origin + parsedURL.pathname
+    const key = Object.keys(torrentStateMap).find(
+      key => torrentStateMap[key].infoHash &&
+        torrentStateMap[key].torrentId === torrentUrl)
+    newInfoHash = key
+      ? torrentStateMap[key].infoHash
+      : undefined
+
+    newTorrentState = { tabId, torrentId, name, ix, infoHash: newInfoHash }
   }
+
+  // delete old torrent state
+  delete torrentStateMap[tabId]
 
   // unsubscribe old torrent if not the same
   const isSameTorrent = newInfoHash && origInfoHash === newInfoHash
@@ -117,9 +134,17 @@ const startTorrent = (torrentId: string, tabId: number, state: TorrentsState) =>
   const { torrentStateMap, torrentObjMap } = state
   const torrentState = torrentStateMap[tabId]
 
+  // infoHash might not be available yet for .torrent case
+  if (torrentState && !torrentState.errorMsg && !torrentState.infoHash) {
+    parseTorrentRemote(torrentId, tabId)
+  }
+
   if (torrentState && torrentState.infoHash &&
     !findTorrent(torrentState.infoHash)) {
     addTorrent(torrentId) // objectMap will be updated when info event is emitted
+  } else if (torrentState && torrentState.infoHash &&
+    torrentObjMap[torrentState.infoHash]) {
+    torrentObjMap[torrentState.infoHash].tabClients.add(tabId)
   }
 
   return { ...state, torrentObjMap }
@@ -184,6 +209,19 @@ const updateServer = (state: TorrentsState, torrent: Torrent, serverURL: string)
   return { ...state, torrentObjMap }
 }
 
+const torrentParsed = (torrentId: string, tabId: number, infoHash: string | undefined, errorMsg: string | undefined, parsedTorrent: ParseTorrent.Instance | undefined, state: TorrentsState) => {
+  const { torrentObjMap, torrentStateMap } = state
+  torrentStateMap[tabId] = { ...torrentStateMap[tabId], infoHash, errorMsg }
+
+  if (infoHash && !findTorrent(infoHash) && parsedTorrent) {
+    addTorrent(parsedTorrent) // objectMap will be updated when info event is emitted
+  } else if (infoHash && torrentObjMap[infoHash]) {
+    torrentObjMap[infoHash].tabClients.add(tabId)
+  }
+
+  return { ...state, torrentObjMap, torrentStateMap }
+}
+
 const defaultState: TorrentsState = { currentWindowId: -1, activeTabIds: {}, torrentStateMap: {}, torrentObjMap: {} }
 export const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => { // TODO: modify any to be actual action type
   const payload = action.payload
@@ -244,6 +282,10 @@ export const webtorrentReducer = (state: TorrentsState = defaultState, action: a
       break
     case torrentTypes.types.WEBTORRENT_STOP_DOWNLOAD:
       state = stopDownload(payload.tabId, state)
+      break
+    case torrentTypes.types.WEBTORRENT_TORRENT_PARSED:
+      state = torrentParsed(payload.torrentId, payload.tabId, payload.infoHash,
+        payload.errorMsg, payload.parsedTorrent, state)
       break
   }
 
