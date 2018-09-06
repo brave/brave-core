@@ -10,4 +10,13 @@
 #define ChromeBrowserMainPartsMac BraveBrowserMainPartsMac
 #endif
 
+#if defined(OS_LINUX)
+#include "brave/browser/ui/views/brave_browser_main_extra_parts_views_linux.h"
+#define ChromeBrowserMainExtraPartsViewsLinux BraveBrowserMainExtraPartsViewsLinux
+#endif
+
 #include "../../../../chrome/browser/chrome_content_browser_client.cc"
+
+#if defined(OS_LINUX)
+#undef ChromeBrowserMainExtraPartsViewsLinux
+#endif
