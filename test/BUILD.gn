@@ -184,8 +184,7 @@ test("brave_browser_tests") {
 
   if (brave_rewards_enabled) {
     sources += [
-      # temporarily disable browser tests because they all fail now
-      # "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
+      "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
     ]
   }
 

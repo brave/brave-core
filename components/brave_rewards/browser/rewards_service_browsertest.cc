@@ -69,7 +69,7 @@ void BraveURLFetcher::DetermineURLResponsePath(std::string url) {
     SetResponseString(brave_test_resp::grant_);
   } else if (url.find(braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1,
     "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER)) == 0) {
-    SetResponseString("[]");
+    SetResponseString("[[\"duckduckgo.com\",true,false]]");
   }
 }
 
@@ -106,6 +106,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     brave::RegisterPathProvider();
     ReadTestData();
+    braveledger_bat_helper::set_ignore_for_testing(true);
   }
 
   void TearDown() override {
