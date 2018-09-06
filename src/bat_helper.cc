@@ -27,6 +27,10 @@
 
 namespace braveledger_bat_helper {
 
+namespace {
+static bool ignore_ = false;
+}  // namespace
+
   REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
 
   REQUEST_CREDENTIALS_ST::~REQUEST_CREDENTIALS_ST() {}
@@ -1902,4 +1906,13 @@ namespace braveledger_bat_helper {
 
       return result;
   }
+
+  void set_ignore_for_testing(bool ignore) {
+    ignore_ = ignore;
+  }
+
+  bool ignore_for_testing() {
+    return ignore_;
+  }
+
 }  // namespace braveledger_bat_helper
