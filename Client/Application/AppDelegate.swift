@@ -204,9 +204,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
         
-        if let profile = profile,  profile.prefs.boolForKey(PrefsKeys.IsFirstLaunch) != true {
-            FavoritesHelper.addDefaultFavorites()
-            profile.prefs.setBool(true, forKey: PrefsKeys.IsFirstLaunch)
+        if let prefs = profile?.prefs {
+            let firstLaunch = prefs.boolForKey(PrefsKeys.IsNotFirstLaunch) == nil
+            if firstLaunch {
+                FavoritesHelper.addDefaultFavorites()
+                DAU(prefs: prefs).sendPingToServer()
+                prefs.setBool(true, forKey: PrefsKeys.IsNotFirstLaunch)
+            }
         }
 
         UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
