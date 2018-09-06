@@ -16,7 +16,7 @@ protocol TopSitesDelegate: class {
     func didSelectUrl(url: URL)
 }
 
-class TopSitesViewController: UIViewController {
+class FavoritesViewController: UIViewController {
     private struct UI {
         static let statsHeight: CGFloat = 110.0
         static let statsBottomMargin: CGFloat = 5
@@ -379,7 +379,7 @@ class TopSitesViewController: UIViewController {
 }
 
 // MARK: - Delegates
-extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
+extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let fav = dataSource.favoriteBookmark(at: indexPath)
         
@@ -436,7 +436,7 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension TopSitesViewController: FavoriteCellDelegate {
+extension FavoritesViewController: FavoriteCellDelegate {
     func editFavorite(_ favoriteCell: FavoriteCell) {
         guard let indexPath = collection.indexPath(for: favoriteCell),
             let fav = dataSource.frc?.fetchedObjects?[indexPath.item] as? Bookmark else { return }
