@@ -708,13 +708,15 @@ static bool ignore_ = false;
 
   /////////////////////////////////////////////////////////////////////////////
   REPORT_BALANCE_ST::REPORT_BALANCE_ST():
-    opening_balance_(.0),
-    closing_balance_(.0),
-    grants_(.0),
-    earning_from_ads_(.0),
-    auto_contribute_(.0),
-    recurring_donation_(.0),
-    one_time_donation_(.0) {}
+    opening_balance_(0),
+    closing_balance_(0),
+    deposits_(0),
+    grants_(0),
+    earning_from_ads_(0),
+    auto_contribute_(0),
+    recurring_donation_(0),
+    one_time_donation_(0),
+    total_(0) {}
 
   REPORT_BALANCE_ST::~REPORT_BALANCE_ST() {}
 
@@ -724,23 +726,27 @@ static bool ignore_ = false;
 
     bool error = d.HasParseError();
     if (false == error) {
-      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsDouble() &&
-        d.HasMember("closing_balance") && d["closing_balance"].IsDouble() &&
-        d.HasMember("grants") && d["grants"].IsDouble() &&
-        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsDouble() &&
-        d.HasMember("auto_contribute") && d["auto_contribute"].IsDouble() &&
-        d.HasMember("recurring_donation") && d["recurring_donation"].IsDouble() &&
-        d.HasMember("one_time_donation") && d["one_time_donation"].IsDouble());
+      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsUint64() &&
+        d.HasMember("closing_balance") && d["closing_balance"].IsUint64() &&
+        d.HasMember("deposits") && d["deposits"].IsUint64() &&
+        d.HasMember("grants") && d["grants"].IsUint64() &&
+        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsUint64() &&
+        d.HasMember("auto_contribute") && d["auto_contribute"].IsUint64() &&
+        d.HasMember("recurring_donation") && d["recurring_donation"].IsUint64() &&
+        d.HasMember("one_time_donation") && d["one_time_donation"].IsUint64() &&
+        d.HasMember("total") && d["total"].IsUint64());
     }
 
     if (false == error) {
-      opening_balance_ = d["opening_balance"].GetDouble();
-      closing_balance_ = d["closing_balance"].GetDouble();
-      grants_ = d["grants"].GetDouble();
-      earning_from_ads_ = d["earning_from_ads"].GetDouble();
-      auto_contribute_ = d["auto_contribute"].GetDouble();
-      recurring_donation_ = d["recurring_donation"].GetDouble();
-      one_time_donation_ = d["one_time_donation"].GetDouble();
+      opening_balance_ = d["opening_balance"].GetUint64();
+      closing_balance_ = d["closing_balance"].GetUint64();
+      deposits_ = d["deposits"].GetUint64();
+      grants_ = d["grants"].GetUint64();
+      earning_from_ads_ = d["earning_from_ads"].GetUint64();
+      auto_contribute_ = d["auto_contribute"].GetUint64();
+      recurring_donation_ = d["recurring_donation"].GetUint64();
+      one_time_donation_ = d["one_time_donation"].GetUint64();
+      total_ = d["total"].GetUint64();
     }
 
     return !error;
@@ -750,25 +756,31 @@ static bool ignore_ = false;
     writer.StartObject();
 
     writer.String("opening_balance");
-    writer.Double(data.opening_balance_);
+    writer.Uint64(data.opening_balance_);
 
     writer.String("closing_balance");
-    writer.Double(data.closing_balance_);
+    writer.Uint64(data.closing_balance_);
+
+    writer.String("deposits");
+    writer.Uint64(data.deposits_);
 
     writer.String("grants");
-    writer.Double(data.grants_);
+    writer.Uint64(data.grants_);
 
     writer.String("earning_from_ads");
-    writer.Double(data.earning_from_ads_);
+    writer.Uint64(data.earning_from_ads_);
 
     writer.String("auto_contribute");
-    writer.Double(data.auto_contribute_);
+    writer.Uint64(data.auto_contribute_);
 
     writer.String("recurring_donation");
-    writer.Double(data.recurring_donation_);
+    writer.Uint64(data.recurring_donation_);
 
     writer.String("one_time_donation");
-    writer.Double(data.one_time_donation_);
+    writer.Uint64(data.one_time_donation_);
+
+    writer.String("total");
+    writer.Uint64(data.total_);
 
     writer.EndObject();
   }
@@ -1970,5 +1982,9 @@ static bool ignore_ = false;
     bytes_out = buffer;
     *written = NICEWARE_BYTES_WRITTEN;
     return 0;
+  }
+
+  uint64_t doubleToProbi(const double amount) {
+    return amount * 1000000000000000000;
   }
 }  // namespace braveledger_bat_helper

@@ -196,13 +196,14 @@ Grant::Grant (const ledger::Grant &properties) {
 }
 
 BalanceReportInfo::BalanceReportInfo():
-  opening_balance_(.0),
-  closing_balance_(.0),
-  grants_(.0),
-  earning_from_ads_(.0),
-  auto_contribute_(.0),
-  recurring_donation_(.0),
-  one_time_donation_(.0) {}
+  opening_balance_(0),
+  closing_balance_(0),
+  grants_(0),
+  earning_from_ads_(0),
+  auto_contribute_(0),
+  recurring_donation_(0),
+  one_time_donation_(0),
+  total_(0) {}
 
 bool Ledger::IsMediaLink(const std::string& url, const std::string& first_party_url, const std::string& referrer) {
   return braveledger_bat_get_media::BatGetMedia::GetLinkType(url, first_party_url, referrer) == TWITCH_MEDIA_TYPE;

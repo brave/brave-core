@@ -14,13 +14,15 @@ namespace ledger {
 LEDGER_EXPORT struct BalanceReportInfo {
   BalanceReportInfo();
 
-  double opening_balance_ = .0;
-  double closing_balance_ = .0;
-  double grants_ = .0;
-  double earning_from_ads_ = .0;
-  double auto_contribute_ = .0;
-  double recurring_donation_ = .0;
-  double one_time_donation_ = .0;
+  uint64_t opening_balance_ = 0;
+  uint64_t closing_balance_ = 0;
+  uint64_t deposits_ = 0;
+  uint64_t grants_ = 0;
+  uint64_t earning_from_ads_ = 0;
+  uint64_t auto_contribute_ = 0;
+  uint64_t recurring_donation_ = 0;
+  uint64_t one_time_donation_ = 0;
+  uint64_t total_ = 0;
 };
 
 }  // namespace ledger
