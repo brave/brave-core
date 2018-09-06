@@ -1,15 +1,10 @@
-#include "chrome/browser/profiles/profile_window.h"
-#define IsLockAvailable IsLockAvailable_ChromiumImpl
-#define HasProfileSwitchTargets HasProfileSwitchTargets_ChromiumImpl
 #include "../../../../../../chrome/browser/profiles/profile_window.cc"
-#undef HasProfileSwitchTargets
-#undef IsLockAvailable
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 
 namespace profiles {
-#if !defined(OS_ANDROID)
 
+#if !defined(OS_ANDROID)
 void SwitchToTorProfile(ProfileManager::CreateCallback callback) {
   const base::FilePath& path = BraveProfileManager::GetTorProfilePath();
   // TODO: profile metrics for tor
@@ -23,22 +18,18 @@ void SwitchToTorProfile(ProfileManager::CreateCallback callback) {
                        false),
       base::string16(), std::string(), std::string());
 }
-
 #endif
 
-bool IsLockAvailable(Profile* profile) {
-  DCHECK(profile);
-  if (profile->IsTorProfile())
-    return false;
-  return IsLockAvailable_ChromiumImpl(profile);
+void CloseTorProfileWindows() {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  Profile* profile = profile_manager->GetProfileByPath(
+      BraveProfileManager::GetTorProfilePath());
+
+  if (profile) {
+    BrowserList::CloseAllBrowsersWithProfile(
+        profile, base::Bind(&ProfileBrowserCloseSuccess),
+        BrowserList::CloseCallback(), false);
+  }
 }
 
-bool HasProfileSwitchTargets(Profile* profile) {
-  if (profile->IsTorProfile()) {
-  size_t number_of_profiles =
-      g_browser_process->profile_manager()->GetNumberOfProfiles();
-  return number_of_profiles >= 1;
-  }
-  return HasProfileSwitchTargets_ChromiumImpl(profile);
-}
 }  // namespace profiles

@@ -10,18 +10,12 @@
 class BraveAppMenuModel : public AppMenuModel {
  public:
   using AppMenuModel::AppMenuModel;
-  BraveAppMenuModel(ui::AcceleratorProvider* provider, Browser* browser);
-  ~BraveAppMenuModel() override;
 
  private:
   // AppMenuModel overrides:
   void Build() override;
 
   void InsertBraveMenuItems();
-
-  void RemoveChromiumItems();
-
-  Browser* const browser_;  // weak
 
   DISALLOW_COPY_AND_ASSIGN(BraveAppMenuModel);
 };

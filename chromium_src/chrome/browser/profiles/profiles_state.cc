@@ -1,15 +1,22 @@
+#include "brave/browser/profiles/brave_profile_manager.h"
 #include "chrome/browser/profiles/profiles_state.h"
-#define IsRegularOrGuestSession IsRegularOrGuestSession_ChromiumImpl
+#define SetActiveProfileToGuestIfLocked SetActiveProfileToGuestIfLocked_ChromiumImpl
 #include "../../../../../../chrome/browser/profiles/profiles_state.cc"
-#undef IsRegularOrGuestSession
+#undef SetActiveProfileToGuestIfLocked
 
 namespace profiles {
+#if !defined(OS_CHROMEOS)
+bool SetActiveProfileToGuestIfLocked() {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
 
-bool IsRegularOrGuestSession(Browser* browser) {
-  Profile* profile = browser->profile();
-  if (profile->IsTorProfile())
+  const base::FilePath& active_profile_path =
+      profile_manager->GetLastUsedProfileDir(profile_manager->user_data_dir());
+  const base::FilePath& tor_path = BraveProfileManager::GetTorProfilePath();
+  if (active_profile_path == tor_path)
     return true;
-  return IsRegularOrGuestSession_ChromiumImpl(browser);
+
+  return SetActiveProfileToGuestIfLocked_ChromiumImpl();
 }
+#endif  // !defined(OS_CHROMEOS)
 
 }  // namespace profiles

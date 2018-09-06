@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index c1341d0b3470261863c97a81a7dd4869ad3d9c21..6f1869ec95c713af1c0684215b6906679cec0a4b 100644
+index c1341d0b3470261863c97a81a7dd4869ad3d9c21..dc8246594448cd446cd8d0946a7f0a9d13e68ca3 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 @@ -408,6 +408,7 @@ void ProfileChooserView::ResetView() {
@@ -10,7 +10,7 @@ index c1341d0b3470261863c97a81a7dd4869ad3d9c21..6f1869ec95c713af1c0684215b690667
    users_button_ = nullptr;
    go_incognito_button_ = nullptr;
    lock_button_ = nullptr;
-@@ -640,6 +641,9 @@ void ProfileChooserView::ButtonPressed(views::Button* sender,
+@@ -640,10 +641,15 @@ void ProfileChooserView::ButtonPressed(views::Button* sender,
      DCHECK(service->GetBoolean(prefs::kBrowserGuestModeEnabled));
      profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
      base::RecordAction(base::UserMetricsAction("ProfileChooser_GuestClicked"));
@@ -19,36 +19,15 @@ index c1341d0b3470261863c97a81a7dd4869ad3d9c21..6f1869ec95c713af1c0684215b690667
 +    base::RecordAction(base::UserMetricsAction("ProfileChooser_TorClicked"));
    } else if (sender == users_button_) {
      // If this is a guest session, close all the guest browser windows.
-     if (browser_->profile()->IsGuestSession()) {
-@@ -1048,7 +1052,8 @@ views::View* ProfileChooserView::CreateCurrentProfileView(
-     bool is_guest) {
-   Profile* profile = browser_->profile();
-   const bool sync_disabled = !profile->IsSyncAllowed();
--  if (!is_guest && sync_disabled)
-+  const bool is_tor = profile->IsTorProfile();
-+  if (!is_guest && sync_disabled && !is_tor)
-     return CreateDiceSyncErrorView(avatar_item, sync_ui_util::NO_SYNC_ERROR, 0);
- 
-   if (!avatar_item.signed_in && dice_enabled_ &&
-@@ -1076,7 +1081,7 @@ views::View* ProfileChooserView::CreateCurrentProfileView(
- 
-   // Show the profile name by itself if not signed in or account consistency is
-   // disabled. Otherwise, show the email attached to the profile.
--  bool show_email = !is_guest && avatar_item.signed_in && !mirror_enabled;
-+  bool show_email = !is_tor && !is_guest && avatar_item.signed_in && !mirror_enabled;
-   const base::string16 hover_button_title =
-       dice_enabled_ && profile->IsSyncAllowed()
-           ? l10n_util::GetStringUTF16(IDS_PROFILES_SYNC_COMPLETE_TITLE)
-@@ -1093,7 +1098,7 @@ views::View* ProfileChooserView::CreateCurrentProfileView(
-   current_profile_card_ = profile_card;
-   view->AddChildView(current_profile_card_);
- 
--  if (is_guest) {
-+  if (is_guest || !is_tor) {
-     current_profile_card_->SetEnabled(false);
-     return view;
-   }
-@@ -1310,6 +1315,7 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
+-    if (browser_->profile()->IsGuestSession()) {
++    if (browser_->profile()->IsGuestSession() && !browser_->profile()->IsTorProfile()) {
+       profiles::CloseGuestProfileWindows();
++    } else if (browser_->profile()->IsTorProfile()) {
++      profiles::CloseTorProfileWindows();
+     } else {
+       UserManager::Show(base::FilePath(),
+                         profiles::USER_MANAGER_SELECT_PROFILE_NO_ACTION);
+@@ -1310,9 +1316,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
        layout->AddView(guest_profile_button_);
      }
    }
@@ -56,21 +35,8 @@ index c1341d0b3470261863c97a81a7dd4869ad3d9c21..6f1869ec95c713af1c0684215b690667
  
    base::string16 text = l10n_util::GetStringUTF16(
        is_guest ? IDS_PROFILES_EXIT_GUEST : IDS_PROFILES_MANAGE_USERS_BUTTON);
-@@ -1372,7 +1378,7 @@ views::View* ProfileChooserView::CreateSupervisedUserDisclaimerView() {
- views::View* ProfileChooserView::CreateAutofillHomeView() {
-   if (!base::FeatureList::IsEnabled(
-           password_manager::features::kAutofillHome) ||
--      browser_->profile()->IsGuestSession()) {
-+      browser_->profile()->IsGuestSession() || browser_->profile()->IsTorProfile()) {
-     return nullptr;
-   }
- 
-@@ -1590,7 +1596,7 @@ bool ProfileChooserView::ShouldShowGoIncognito() const {
-   bool incognito_available =
-       IncognitoModePrefs::GetAvailability(browser_->profile()->GetPrefs()) !=
-           IncognitoModePrefs::DISABLED;
--  return incognito_available && !browser_->profile()->IsGuestSession();
-+  return incognito_available && !browser_->profile()->IsGuestSession() && !browser_->profile()->IsTorProfile();
- }
- 
- int ProfileChooserView::GetMaxHeight() const {
++  if (browser_->profile()->IsTorProfile())
++    text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
+   const gfx::VectorIcon& settings_icon =
+       is_guest ? kCloseAllIcon : kSettingsIcon;
+   users_button_ = new HoverButton(
