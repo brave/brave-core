@@ -20,6 +20,8 @@ class BraveLocationBarView : public LocationBarView {
     void Update(const content::WebContents* contents) override;
     void OnChanged() override;
     gfx::Size CalculatePreferredSize() const override;
+    void OnThemeChanged() override;
+
   private:
     void UpdateBookmarkStarVisibility() override;
     OmniboxTint GetTint() override;
