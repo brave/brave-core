@@ -66,8 +66,17 @@ source_set("ui") {
     "webui/settings/brave_appearance_handler.h",
   ]
 
+  if (is_mac || is_win || is_chromeos) {
+    sources += [
+      "views/frame/brave_browser_frame.cc",
+      "views/frame/brave_browser_frame.h",
+    ]
+  }
+
   if (is_linux) {
     sources += [
+      "views/brave_browser_main_extra_parts_views_linux.cc",
+      "views/brave_browser_main_extra_parts_views_linux.h",
       "views/brave_views_delegate_linux.cc",
       "views/brave_views_delegate_linux.h",
     ]
