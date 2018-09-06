@@ -51,7 +51,13 @@ public class DAU {
         }
         
         let task = URLSession.shared.dataTask(with: url) { _, _, error in
-            if let e = error { log.error("status update error: \(e)") }
+            if let e = error {
+                log.error("status update error: \(e)")
+                return
+            }
+            
+            // Successful, we have certainly validated first ping
+            Preferences.DAU.firstPingSuccess.value = true
         }
         
         task.resume()
@@ -62,8 +68,8 @@ public class DAU {
     func paramsAndPrefsSetup() -> String? {
         let dauStats = Preferences.DAU.lastLaunchInfo.value
         
-        /// This is not the same as `firstLaunch` concept, due to DAU delay, this may var be `true` on a subsequent launch
-        let firstPing = dauStats == nil
+        /// This is not the same as `firstLaunch` concept, due to DAU delay, this may var be `true` on a subsequent launch, if server ping failed
+        let firstPing = Preferences.DAU.firstPingSuccess.value
         var params = channelParam + versionParam
         
         // All installs prior to this key existing (e.g. intallWeek == unknown) were set to `defaultWoiDate`
