@@ -1,4 +1,9 @@
+#include "chrome/browser/profiles/profile_window.h"
+#define IsLockAvailable IsLockAvailable_ChromiumImpl
+#define HasProfileSwitchTargets HasProfileSwitchTargets_ChromiumImpl
 #include "../../../../../../chrome/browser/profiles/profile_window.cc"
+#undef HasProfileSwitchTargets
+#undef IsLockAvailable
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 
@@ -20,4 +25,20 @@ void SwitchToTorProfile(ProfileManager::CreateCallback callback) {
 }
 
 #endif
+
+bool IsLockAvailable(Profile* profile) {
+  DCHECK(profile);
+  if (profile->IsTorProfile())
+    return false;
+  return IsLockAvailable_ChromiumImpl(profile);
+}
+
+bool HasProfileSwitchTargets(Profile* profile) {
+  if (profile->IsTorProfile()) {
+  size_t number_of_profiles =
+      g_browser_process->profile_manager()->GetNumberOfProfiles();
+  return number_of_profiles >= 1;
+  }
+  return HasProfileSwitchTargets_ChromiumImpl(profile);
+}
 }  // namespace profiles

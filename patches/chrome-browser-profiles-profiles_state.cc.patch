@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/profiles/profiles_state.cc b/chrome/browser/profiles/profiles_state.cc
+index 31daf61686bd00a0266ba3cc0a0a0ee410a59cd4..dff58f71e3ffb2077ea004ccba46034fc95111e2 100644
+--- a/chrome/browser/profiles/profiles_state.cc
++++ b/chrome/browser/profiles/profiles_state.cc
+@@ -248,7 +248,7 @@ void RemoveBrowsingDataForProfile(const base::FilePath& profile_path) {
+     return;
+ 
+   // For guest profiles the browsing data is in the OTR profile.
+-  if (profile->IsGuestSession())
++  if (profile->IsGuestSession() || profile->IsTorProfile())
+     profile = profile->GetOffTheRecordProfile();
+ 
+   content::BrowserContext::GetBrowsingDataRemover(profile)->Remove(

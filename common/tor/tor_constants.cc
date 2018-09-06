@@ -9,6 +9,5 @@
 namespace tor {
 
 const base::FilePath::CharType kTorProfileDir[] = FPL("Tor Profile");
-const char kTorProfileName[] = "Tor";
 
 }  // namespace tor

@@ -11,8 +11,10 @@
 #include "brave/common/tor/tor_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
+#include "ui/base/l10n/l10n_util.h"
 
 using content::BrowserThread;
 
@@ -29,15 +31,25 @@ base::FilePath BraveProfileManager::GetTorProfilePath() {
   return tor_path.Append(tor::kTorProfileDir);
 }
 
+void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
+  if (profile->GetPath() == GetTorProfilePath()) {
+    PrefService* pref_service = profile->GetPrefs();
+    pref_service->SetInteger(prefs::kProfileAvatarIndex, 0);
+    pref_service->SetBoolean(prefs::kProfileUsingDefaultName, false);
+    pref_service
+      ->SetString(prefs::kProfileName,
+                  l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
+    pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
+  } else {
+    ProfileManager::InitProfileUserPrefs(profile);
+  }
+}
+
 Profile* BraveProfileManager::CreateProfileHelper(const base::FilePath& path) {
   TRACE_EVENT0("browser", "ProfileManager::CreateProfileHelper");
   SCOPED_UMA_HISTOGRAM_TIMER("Profile.CreateProfileHelperTime");
   Profile* profile = ProfileManager::CreateProfileHelper(path);
   if (path == GetTorProfilePath()) {
-     PrefService* pref_service = profile->GetPrefs();
-     pref_service->SetBoolean(prefs::kProfileUsingDefaultName, false);
-     pref_service->SetString(prefs::kProfileName, tor::kTorProfileName);
-     pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
      LaunchTorProcess(profile);
   }
   return profile;
@@ -48,10 +60,6 @@ BraveProfileManager::CreateProfileAsyncHelper(const base::FilePath& path,
                                               Delegate* delegate) {
   Profile* profile = ProfileManager::CreateProfileAsyncHelper(path, delegate);
   if (path == GetTorProfilePath()) {
-     PrefService* pref_service = profile->GetPrefs();
-     pref_service->SetBoolean(prefs::kProfileUsingDefaultName, false);
-     pref_service->SetString(prefs::kProfileName, tor::kTorProfileName);
-     pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
      LaunchTorProcess(profile);
   }
   return profile;

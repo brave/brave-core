@@ -1,0 +1,57 @@
+diff --git a/chrome/browser/profiles/profile_manager.cc b/chrome/browser/profiles/profile_manager.cc
+index acd7501aef4a6f125fdf213b43619fe86bf246a3..367c12c69b46681e0080d796b2f978adbeb0e15f 100644
+--- a/chrome/browser/profiles/profile_manager.cc
++++ b/chrome/browser/profiles/profile_manager.cc
+@@ -431,6 +431,7 @@ Profile* ProfileManager::GetLastUsedProfileAllowedByPolicy() {
+ // static
+ bool ProfileManager::IncognitoModeForced(Profile* profile) {
+   return profile->IsGuestSession() ||
++         profile->IsTorProfile() ||
+          profile->IsSystemProfile() ||
+          IncognitoModePrefs::GetAvailability(profile->GetPrefs()) ==
+              IncognitoModePrefs::FORCED;
+@@ -596,7 +597,7 @@ void ProfileManager::CreateProfileAsync(const base::FilePath& profile_path,
+       // If this was the guest profile, apply settings and go OffTheRecord.
+       // The system profile also needs characteristics of being off the record,
+       // such as having no extensions, not writing to disk, etc.
+-      if (profile->IsGuestSession() || profile->IsSystemProfile()) {
++      if (profile->IsGuestSession() || profile->IsSystemProfile() || profile->IsTorProfile()) {
+         SetNonPersonalProfilePrefs(profile);
+         profile = profile->GetOffTheRecordProfile();
+       }
+@@ -660,7 +661,7 @@ Profile* ProfileManager::GetLastUsedProfile(
+     LOG_IF(FATAL, !profile) << "Calling GetLastUsedProfile() before profile "
+                             << "initialization is completed.";
+ 
+-    return profile->IsGuestSession() ? profile->GetOffTheRecordProfile() :
++    return profile->IsGuestSession() || profile->IsTorProfile() ? profile->GetOffTheRecordProfile() :
+                                        profile;
+   }
+ #else
+@@ -1253,7 +1254,7 @@ void ProfileManager::OnProfileCreated(Profile* profile,
+   if (profile) {
+     // If this was the guest or system profile, finish setting its special
+     // status.
+-    if (profile->IsGuestSession() || profile->IsSystemProfile())
++    if (profile->IsGuestSession() || profile->IsSystemProfile() || profile->IsTorProfile())
+       SetNonPersonalProfilePrefs(profile);
+ 
+     // Invoke CREATED callback for incognito profiles.
+@@ -1637,7 +1638,7 @@ ProfileManager::ProfileInfo* ProfileManager::GetProfileInfoByPath(
+ 
+ void ProfileManager::AddProfileToStorage(Profile* profile) {
+   TRACE_EVENT0("browser", "ProfileManager::AddProfileToCache");
+-  if (profile->IsGuestSession() || profile->IsSystemProfile())
++  if (profile->IsGuestSession() || profile->IsSystemProfile() || profile->IsTorProfile())
+     return;
+   if (profile->GetPath().DirName() != user_data_dir()) {
+     UMA_HISTOGRAM_BOOLEAN("Profile.GetProfileInfoPath.OutsideUserDir", true);
+@@ -1727,7 +1728,7 @@ bool ProfileManager::ShouldGoOffTheRecord(Profile* profile) {
+     return true;
+   }
+ #endif
+-  return profile->IsGuestSession() || profile->IsSystemProfile();
++  return profile->IsGuestSession() || profile->IsSystemProfile() || profile->IsTorProfile();
+ }
+ 
+ void ProfileManager::RunCallbacks(const std::vector<CreateCallback>& callbacks,

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_command_controller.h b/chrome/browser/ui/browser_command_controller.h
+index 275df3247f5a1ca5f5a04f8af5c7733ee706cec4..bb3ffaa7fbaf84bab39c5887097295c14c782295 100644
+--- a/chrome/browser/ui/browser_command_controller.h
++++ b/chrome/browser/ui/browser_command_controller.h
+@@ -153,6 +153,8 @@ class BrowserCommandController : public CommandUpdater,
+   // app windows.
+   void UpdateCommandsForHostedAppAvailability();
+ 
++  void UpdateCommandsForTor();
++
+ #if defined(OS_CHROMEOS)
+   // Update commands whose state depends on whether the window is in locked
+   // fullscreen mode or not.

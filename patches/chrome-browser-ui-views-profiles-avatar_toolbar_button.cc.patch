@@ -1,0 +1,39 @@
+diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
+index a053f001493dc3815ee9bb0a6d4526bfe65718dd..348a783485741370796073076cbbf78666911665 100644
+--- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
++++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
+@@ -47,7 +47,7 @@ AvatarToolbarButton::AvatarToolbarButton(Browser* browser)
+   profile_observer_.Add(
+       &g_browser_process->profile_manager()->GetProfileAttributesStorage());
+ 
+-  if (!IsIncognito() && !profile_->IsGuestSession()) {
++  if (!IsIncognito() && !profile_->IsGuestSession() && !profile_->IsTorProfile()) {
+     cookie_manager_service_observer_.Add(
+         GaiaCookieManagerServiceFactory::GetForProfile(profile_));
+     account_tracker_service_observer_.Add(
+@@ -181,7 +181,7 @@ void AvatarToolbarButton::OnAccountRemoved(const AccountInfo& info) {
+ }
+ 
+ bool AvatarToolbarButton::IsIncognito() const {
+-  return profile_->IsOffTheRecord() && !profile_->IsGuestSession();
++  return profile_->IsOffTheRecord() && !profile_->IsGuestSession() && !profile_->IsTorProfile();
+ }
+ 
+ bool AvatarToolbarButton::ShouldShowGenericIcon() const {
+@@ -203,6 +203,7 @@ base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
+   if (IsIncognito())
+     return l10n_util::GetStringUTF16(IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP);
+ 
++  if (profile_->IsTorProfile()) return l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME);
+   if (profile_->IsGuestSession())
+     return l10n_util::GetStringUTF16(IDS_GUEST_PROFILE_NAME);
+ 
+@@ -236,7 +237,7 @@ gfx::ImageSkia AvatarToolbarButton::GetAvatarIcon() const {
+   if (IsIncognito())
+     return gfx::CreateVectorIcon(kIncognitoIcon, icon_size, icon_color);
+ 
+-  if (profile_->IsGuestSession())
++  if (profile_->IsGuestSession() || profile_->IsTorProfile())
+     return gfx::CreateVectorIcon(kUserMenuGuestIcon, icon_size, icon_color);
+ 
+   gfx::Image avatar_icon;

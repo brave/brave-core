@@ -185,6 +185,9 @@
   <message name="IDS_PROFILES_GUEST_PROFILE_NAME" desc="Name of the guest profile.">
     Guest
   </message>
+  <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the tor profile.">
+    Tor
+  </message>
   <message name="IDS_DEFAULT_PROFILE_NAME" desc="The default name given to a profile. Displayed in wrench menu and settings UI.">
     First user
   </message>
@@ -202,6 +205,9 @@
   </message>
   <message name="IDS_GUEST_PROFILE_NAME" desc="The name given to the guest   browsing profile. Displayed in the avatar menu bubble and button UI.">
     Guest
+  </message>
+  <message name="IDS_TOR_PROFILE_NAME" desc="The name given to the tor browsing profile. Displayed in the avatar menu bubble and button UI.">
+    Tor
   </message>
 
   <message name="IDS_DEFAULT_AVATAR_NAME_8" desc="The default name given to a newly created profile with the female spy avatar.">

@@ -12,7 +12,6 @@
 namespace tor {
 
 extern const base::FilePath::CharType kTorProfileDir[];
-extern const char kTorProfileName[];
 
 }  // namespace tor
 
