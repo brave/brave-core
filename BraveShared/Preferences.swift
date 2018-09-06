@@ -27,8 +27,9 @@ public class Preferences {
 
 extension Preferences {
     struct DAU {
-        static let lastLaunchInfo = Preferences.Option<[Int?]?>(key: "dau_stat", default: nil)
-        static let weekOfInstallation = Preferences.Option<String?>(key: "week_of_installation", default: nil)
+        static let lastLaunchInfo = Option<[Int?]?>(key: "dau_stat", default: nil)
+        static let weekOfInstallation = Option<String?>(key: "week_of_installation", default: nil)
+        static let firstPingSuccess = Option<Bool>(key: "dau.first-ping", default: false)
     }
 }
 
