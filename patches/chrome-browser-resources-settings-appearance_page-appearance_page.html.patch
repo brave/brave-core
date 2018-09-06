@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-index 720d25d126a118315a08cef90d77d1fc78775254..b000205ff1ca4d4d62c53abffa93df237fc05756 100644
+index 720d25d126a118315a08cef90d77d1fc78775254..d78a87d0f592d74e7f69cc2b003fe94b8b0f0075 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
 @@ -19,6 +19,10 @@
@@ -13,13 +13,13 @@ index 720d25d126a118315a08cef90d77d1fc78775254..b000205ff1ca4d4d62c53abffa93df23
  <dom-module id="settings-appearance-page">
    <template>
      <style include="settings-shared md-select iron-flex">
-@@ -102,6 +106,9 @@
-           </div>
- </if>
-         </div>
-+ <if expr="not _google_chrome">
-+        <settings-brave-appearance-page></settings-brave-appearance-page>
+@@ -63,6 +67,9 @@
+           </template>
+         </cr-link-row>
+         <div class="hr"></div>
 +</if>
-         <settings-toggle-button elide-label
-             hidden="[[!pageVisibility.homeButton]]"
-             pref="{{prefs.browser.show_home_button}}"
++<if expr="not _google_chrome">
++        <settings-brave-appearance-page></settings-brave-appearance-page>
+ </if>
+         <div class="settings-row continuation" id="themeRow"
+             hidden="[[!pageVisibility.setTheme]]">
