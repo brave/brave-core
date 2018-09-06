@@ -17,7 +17,7 @@ import {
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 import { getLocale } from '../../../common/locale'
-import BigNumber from 'bignumber.js'
+import { convertProbiToDouble } from '../utils'
 
 interface State {
   grantShow: boolean
@@ -67,7 +67,7 @@ class Grant extends React.Component<Props, State> {
 
     let tokens = 0
     if (grant.probi) {
-      tokens = new BigNumber(grant.probi.toString()).dividedBy('1e18').toNumber()
+      tokens = convertProbiToDouble(grant.probi.toString())
     }
 
     return (

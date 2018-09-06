@@ -490,7 +490,7 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
   ledger::BalanceReportInfo report_info;
   auto now = base::Time::Now();
   ledger_->GetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now), &report_info);
-  report_info.grants_ += 10.0; // TODO NZ convert probi to
+  report_info.grants_ += std::stoull(grant.probi);
   ledger_->SetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now), report_info);
   TriggerOnGrantFinish(result, grant);
 }
@@ -971,7 +971,7 @@ void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
 }
 
 void RewardsServiceImpl::SetContributionAmount(double amount) const {
-  return ledger_->SetContributionAmount(amount);
+  ledger_->SetContributionAmount(amount);
 }
 
 void RewardsServiceImpl::SetUserChangedContribution() const {

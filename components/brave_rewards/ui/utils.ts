@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const qr = require('qr-image')
+import BigNumber from 'bignumber.js'
 import { Address } from 'brave-ui/features/rewards/modalAddFunds'
 
 export let actions: any = null
@@ -107,4 +108,8 @@ export const getAddresses = (addresses?: Record<Rewards.AddressesType, Rewards.A
   })
 
   return result
+}
+
+export const convertProbiToDouble = (probi: string) => {
+  return new BigNumber(probi.toString()).dividedBy('1e18').toNumber()
 }

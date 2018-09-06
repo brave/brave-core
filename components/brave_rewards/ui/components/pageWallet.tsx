@@ -16,6 +16,7 @@ import {
   WalletSummary
 } from 'brave-ui/features/rewards'
 import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
+import { Props as WalletSummaryProps } from 'brave-ui/features/rewards/walletSummary'
 import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
 
 // Utils
@@ -177,53 +178,29 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { contributionMonthly, walletInfo, reports } = this.props.rewardsData
+    const { walletInfo, reports } = this.props.rewardsData
     const { rates } = walletInfo
-    const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
 
-    let props = {
-      contribute: {
-        tokens: contributionMonthly,
-        converted: convertedMonthly
-      }
-    }
+    let props = {} as WalletSummaryProps
 
     const currentTime = new Date()
     const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
     const report: Rewards.Report = reports[reportKey]
     if (report) {
-      if (report.ads) {
-        props['ads'] = {
-          tokens: report.ads,
-          converted: utils.convertBalance(report.ads, rates)
-        }
-      }
+      for (let key in report) {
+        const item = report[key]
 
-      if (report.donations) {
-        props['donation'] = {
-          tokens: report.donations,
-          converted: utils.convertBalance(report.donations, rates)
-        }
-      }
-
-      if (report.grants) {
-        props['grant'] = {
-          tokens: report.grants,
-          converted: utils.convertBalance(report.grants, rates)
-        }
-      }
-
-      if (report.oneTime) {
-        props['tips'] = {
-          tokens: report.oneTime,
-          converted: utils.convertBalance(report.oneTime, rates)
+        if (item.length > 1 || key === 'total') {
+          const tokens = utils.convertProbiToDouble(item)
+          props[key] = {
+            tokens,
+            converted: utils.convertBalance(tokens, rates)
+          }
         }
       }
     }
 
-    return {
-      report: props
-    }
+    return props
   }
 
   render () {
