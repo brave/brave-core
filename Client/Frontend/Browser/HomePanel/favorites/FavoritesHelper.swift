@@ -33,9 +33,12 @@ struct FavoritesHelper {
 
     // MARK: - Favorites initialization
     static func addDefaultFavorites() {
+        var bookmark: Bookmark?
         PreloadedFavorites.getList().forEach { fav in
-            Bookmark.add(url: fav.url, title: fav.title, isFavorite: true)
+            bookmark = Bookmark.add(url: fav.url, title: fav.title, isFavorite: true)
         }
+        // Save immediately to prevent against data lose on fast launch crash
+        DataController.saveContext(context: bookmark?.managedObjectContext)
     }
 
     static func convertToBookmarks(_ sites: [Site]) {
