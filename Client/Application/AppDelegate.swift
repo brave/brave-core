@@ -205,7 +205,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
         
         if let prefs = profile?.prefs {
-            DAU(prefs: prefs).sendPingToServer()
+            DAU().sendPingToServer()
             
             if Preferences.General.isFirstLaunch.value {
                 FavoritesHelper.addDefaultFavorites()
