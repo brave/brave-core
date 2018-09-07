@@ -24,8 +24,8 @@ public class DAU {
         return (Calendar.current as NSCalendar).components([.day, .month , .year, .weekday], from: today)
     }
     
-    public init(date: Date? = nil) {
-        today = date ?? Date()
+    public init(date: Date = Date()) {
+        today = date
     }
     
     public func sendPingToServer() {
@@ -66,11 +66,10 @@ public class DAU {
     
     /** Return params query or nil if no ping should be send to server. */
     func paramsAndPrefsSetup() -> [URLQueryItem]? {
-        let dauStats = Preferences.DAU.lastLaunchInfo.value
+        var params = [channelParam(), versionParam()]
         
         /// This is not the same as `firstLaunch` concept, due to DAU delay, this may var be `true` on a subsequent launch, if server ping failed
         let firstPing = Preferences.DAU.firstPingSuccess.value
-        var params = [channelParam(for: AppConstants.BuildChannel), versionParam(for: AppInfo.appVersion)]
         
         // All installs prior to this key existing (e.g. intallWeek == unknown) were set to `defaultWoiDate`
         // Enough time has passed where accounting for installs prior to this DAU improvement is unnecessary
@@ -82,7 +81,7 @@ public class DAU {
             Preferences.DAU.weekOfInstallation.value = todayComponents.weeksMonday
         }
         
-        guard let dauStatParams = dauStatParams(dauStats, firstPing: firstPing) else {
+        guard let dauStatParams = dauStatParams(firstPing: firstPing) else {
             log.debug("dau, no changes detected, no server ping")
             return nil
         }
@@ -91,7 +90,7 @@ public class DAU {
         params += [
             firstLaunchParam(for: firstPing),
             // Must be after setting up the preferences
-            weekOfInstallationParam(for: Preferences.DAU.weekOfInstallation.value)
+            weekOfInstallationParam()
         ]
 
         // TODO: #190 goes here
@@ -102,11 +101,11 @@ public class DAU {
         return params
     }
     
-    func channelParam(for channel: AppBuildChannel) -> URLQueryItem {
+    func channelParam(for channel: AppBuildChannel = AppConstants.BuildChannel) -> URLQueryItem {
         return URLQueryItem(name: "channel", value: channel.isRelease ? "stable" : "beta")
     }
     
-    func versionParam(for version: String) -> URLQueryItem {
+    func versionParam(for version: String = AppInfo.appVersion) -> URLQueryItem {
         var version = version
         if DAU.shouldAppend0(toVersion: version) {
             version += ".0"
@@ -134,7 +133,7 @@ public class DAU {
     
     /** All first app installs are normalized to first day of the week.
      Eg. user installs app on wednesday 2017-22-11, his install date is recorded as of 2017-20-11(Monday) */
-    func weekOfInstallationParam(for woi: String?) -> URLQueryItem {
+    func weekOfInstallationParam(for woi: String? = Preferences.DAU.weekOfInstallation.value) -> URLQueryItem {
         var woi = woi
         // This _should_ be set all the time
         if woi == nil {
