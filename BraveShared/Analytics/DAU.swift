@@ -18,17 +18,13 @@ public class DAU {
     /// Number of seconds that determins when a user is "active"
     private let activeUserDuration = 10.0
     
-    private let prefs: Prefs
-    
     private var launchTimer: Timer?
-    
     private let today: Date
     private var todayComponents: DateComponents {
         return (Calendar.current as NSCalendar).components([.day, .month , .year, .weekday], from: today)
     }
     
-    public init(prefs: Prefs, date: Date? = nil) {
-        self.prefs = prefs
+    public init(date: Date? = nil) {
         today = date ?? Date()
     }
     
