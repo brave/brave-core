@@ -1,12 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
-.c6 {
+.c7 {
   box-sizing: border-box;
   font-family: Poppins,sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   margin: 0;
+}
+
+.c6 {
   font-size: 24px;
 }
 
@@ -55,7 +58,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   display: inline-block;
 }
 
-.c8 {
+.c9 {
   color: #FFFFFF;
   font-size: 16px;
   font-weight: normal;
@@ -71,12 +74,12 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   font-family: Muli,sans-serif;
 }
 
-.c9 {
+.c10 {
   margin: 0 auto 25px;
   display: inline-block;
 }
 
-.c12 {
+.c14 {
   color: #73CBFF;
   font-size: 14px;
   font-weight: 500;
@@ -88,7 +91,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   margin: 0 auto;
 }
 
-.c7 {
+.c8 {
   display: inline-block;
   vertical-align: text-top;
   margin-top: -13px;
@@ -104,7 +107,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c10 {
+.c12 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #A0A1B2;
   --button-main-color-active: #E9E9F4;
@@ -142,19 +145,22 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   width: 100%;
   min-width: 235px;
   padding: 19px 15px;
-  border: 1px solid;
-  color: var(--button-state-color);
 }
 
-.c10:hover:enabled {
+.c12:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c10:active:enabled {
+.c12:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
 .c11 {
+  border: 1px solid;
+  color: var(--button-state-color);
+}
+
+.c13 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -219,30 +225,30 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
       </svg>
     </span>
     <h4
-      className="c5 c6"
+      className="c5 c6 c7"
     >
       MISSING: braveRewards
     </h4>
     <span
-      className="c7"
+      className="c8"
     >
       TM
     </span>
     <p
-      className="c8"
+      className="c9"
     >
       MISSING: welcomeDescOne
     </p>
     <div
-      className="c9"
+      className="c10"
     >
       <button
-        className="c10"
+        className="c11 c12"
         size="call-to-action"
         type="subtle"
       >
         <div
-          className="c11"
+          className="c13"
           size="call-to-action"
           type="subtle"
         >
@@ -251,7 +257,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
       </button>
     </div>
     <p
-      className="c12"
+      className="c14"
     >
       MISSING: welcomeFooterTextOne
     </p>

@@ -60,7 +60,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   margin-top: 10px;
 }
 
-.c13 {
+.c14 {
   padding: 0px;
   position: relative;
   background: #f9fbfc;
@@ -69,7 +69,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   flex: 1;
 }
 
-.c11 {
+.c12 {
   text-align: center;
   font-size: 12px;
   color: #fff;
@@ -94,7 +94,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   color: #fff;
 }
 
-.c12 {
+.c13 {
   padding: 10px 0;
   position: relative;
   overflow: hidden;
@@ -102,7 +102,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   z-index: 5;
 }
 
-.c12:before {
+.c13:before {
   content: "";
   position: absolute;
   bottom: -16px;
@@ -113,13 +113,13 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   border: 20px solid #f9fbfc;
 }
 
-.c10 {
+.c11 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c7 {
+.c8 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #C5C5D3;
   --button-main-color-active: #C5C5D3;
@@ -157,19 +157,22 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   width: auto;
   min-width: 88px;
   padding: 7px 10px;
+}
+
+.c8:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c8:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c7 {
   border: 1px solid;
   color: var(--button-state-color);
 }
 
-.c7:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c7:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c8 {
+.c9 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -189,7 +192,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
   line-height: 1;
 }
 
-.c9 {
+.c10 {
   display: block;
   line-height: 0;
   height: var(--icon-size);
@@ -227,7 +230,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
         className="c6"
       >
         <button
-          className="c7"
+          className="c7 c8"
           disabled={true}
           icon={
             Object {
@@ -239,7 +242,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
           type="subtle"
         >
           <div
-            className="c8"
+            className="c9"
             disabled={true}
             icon={
               Object {
@@ -253,7 +256,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
             MISSING: grants
           </div>
           <div
-            className="c9"
+            className="c10"
             disabled={true}
             icon={
               Object {
@@ -266,7 +269,7 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              className="c10"
+              className="c11"
               focusable="false"
               viewBox="0 0 32 32"
             >
@@ -279,14 +282,14 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
       </div>
     </div>
     <div
-      className="c11"
+      className="c12"
     />
     <div
-      className="c12"
+      className="c13"
     />
   </div>
   <div
-    className="c13"
+    className="c14"
   />
 </div>
 `;

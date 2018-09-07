@@ -91,7 +91,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   flex: 1 0 0;
 }
 
-.c26 {
+.c27 {
   --button-main-color: #4C54D2;
   --button-main-color-hover: #392DD1;
   --button-main-color-active: #AAAFEF;
@@ -129,19 +129,22 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   width: 100%;
   min-width: 235px;
   padding: 19px 15px;
+}
+
+.c27:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c27:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c26 {
   border: 1px solid;
   color: var(--button-state-color);
 }
 
-.c26:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c26:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c27 {
+.c28 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -470,12 +473,12 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       className="c25"
     >
       <button
-        className="c26"
+        className="c26 c27"
         size="call-to-action"
         type="accent"
       >
         <div
-          className="c27"
+          className="c28"
           size="call-to-action"
           type="accent"
         >

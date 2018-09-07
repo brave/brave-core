@@ -1,57 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
-.c20 {
-  --button-main-color: #FB542B;
-  --button-main-color-hover: #F43405;
-  --button-main-color-active: #FDBBAA;
-  --button-state-color: var(--button-main-color);
-  --icon-size: 16px;
-  --icon-spacing: 6px;
-  --webkit-appearance: none;
-  box-sizing: border-box;
-  background: none;
-  border: none;
-  outline: none;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row-reverse;
-  -ms-flex-direction: row-reverse;
-  flex-direction: row-reverse;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Poppins,sans-serif;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-size: 13px;
-  border-radius: 20px;
-  width: auto;
-  min-width: 104px;
-  padding: 11px 10px;
-  color: #fff;
-  background: var(--button-state-color);
-}
-
-.c20:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c20:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c17 {
+.c18 {
   --button-main-color: #C5C5D3;
   --button-main-color-hover: #A0A1B2;
   --button-main-color-active: #E9E9F4;
@@ -89,19 +39,75 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   width: auto;
   min-width: 88px;
   padding: 7px 10px;
+}
+
+.c18:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c18:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c22 {
+  --button-main-color: #FB542B;
+  --button-main-color-hover: #F43405;
+  --button-main-color-active: #FDBBAA;
+  --button-state-color: var(--button-main-color);
+  --icon-size: 16px;
+  --icon-spacing: 6px;
+  --webkit-appearance: none;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  outline: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Poppins,sans-serif;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 13px;
+  border-radius: 20px;
+  width: auto;
+  min-width: 104px;
+  padding: 11px 10px;
+}
+
+.c22:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c22:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c21 {
+  color: #fff;
+  background: var(--button-state-color);
+}
+
+.c17 {
   border: 1px solid;
   color: var(--button-state-color);
 }
 
-.c17:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c17:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c18 {
+.c19 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -149,7 +155,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   margin: 0 4px;
 }
 
-.c19 {
+.c20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -379,13 +385,13 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               className="c15"
             >
               <button
-                className="c16 c17"
+                className="c16 c17 c18"
                 onClick={[Function]}
                 size="small"
                 type="subtle"
               >
                 <div
-                  className="c18"
+                  className="c19"
                   onClick={[Function]}
                   size="small"
                   type="subtle"
@@ -394,13 +400,13 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 </div>
               </button>
               <button
-                className="c16 c17"
+                className="c16 c17 c18"
                 onClick={[Function]}
                 size="small"
                 type="subtle"
               >
                 <div
-                  className="c18"
+                  className="c19"
                   onClick={[Function]}
                   size="small"
                   type="subtle"
@@ -409,13 +415,13 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 </div>
               </button>
               <button
-                className="c16 c17"
+                className="c16 c17 c18"
                 onClick={[Function]}
                 size="small"
                 type="subtle"
               >
                 <div
-                  className="c18"
+                  className="c19"
                   onClick={[Function]}
                   size="small"
                   type="subtle"
@@ -425,16 +431,16 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               </button>
             </div>
             <div
-              className="c19"
+              className="c20"
             >
               <button
-                className="c20"
+                className="c21 c22"
                 onClick={[Function]}
                 size="medium"
                 type="accent"
               >
                 <div
-                  className="c18"
+                  className="c19"
                   onClick={[Function]}
                   size="medium"
                   type="accent"

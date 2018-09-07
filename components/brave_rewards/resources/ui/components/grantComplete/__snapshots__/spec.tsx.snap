@@ -37,7 +37,7 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   margin: 44px 0 32px;
 }
 
-.c5 {
+.c6 {
   --button-main-color: #FB542B;
   --button-main-color-hover: #F43405;
   --button-main-color-active: #FDBBAA;
@@ -75,19 +75,22 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   width: 100%;
   min-width: 235px;
   padding: 19px 15px;
+}
+
+.c6:hover:enabled {
+  --button-state-color: var(--button-main-color-hover);
+}
+
+.c6:active:enabled {
+  --button-state-color: var(--button-main-color-active);
+}
+
+.c5 {
   color: #fff;
   background: var(--button-state-color);
 }
 
-.c5:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c5:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c6 {
+.c7 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -139,12 +142,12 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
     MISSING: grantDisclaimer
   </div>
   <button
-    className="c5"
+    className="c5 c6"
     size="call-to-action"
     type="accent"
   >
     <div
-      className="c6"
+      className="c7"
       size="call-to-action"
       type="accent"
     >
