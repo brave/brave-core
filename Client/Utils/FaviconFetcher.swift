@@ -173,37 +173,34 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     func getFavicon(_ siteUrl: URL, icon: Favicon, profile: Profile) -> Deferred<Maybe<Favicon>> {
         let deferred = Deferred<Maybe<Favicon>>()
         let url = icon.url
-        let manager = SDWebImageManager.shared()
         let site = Site(url: siteUrl.absoluteString, title: "")
 
-        var fav = Favicon(url: url)
+        var favicon = Favicon(url: url)
         if let url = url.asURL {
-            var fetch: SDWebImageOperation?
-            fetch = manager.loadImage(with: url,
-                options: .lowPriority,
-                progress: { (receivedSize, expectedSize, _) in
-                    if receivedSize > FaviconHandler.MaximumFaviconSize || expectedSize > FaviconHandler.MaximumFaviconSize {
-                        fetch?.cancel()
-                    }
-                },
-                completed: { (img, _, _, _, _, url) in
-                    guard let url = url else {
-                        deferred.fill(Maybe(failure: FaviconError()))
-                        return
-                    }
-                    fav = Favicon(url: url.absoluteString)
+            var imageOperation: SDWebImageOperation?
 
-                    if let img = img {
-                        fav.width = Int(img.size.width)
-                        fav.height = Int(img.size.height)
-                        FaviconMO.add(fav, forSiteUrl: siteUrl)
-                    } else {
-                        fav.width = 0
-                        fav.height = 0
-                    }
+            let onProgress: ImageCacheProgress = { receivedSize, expectedSize, _ in
+                if receivedSize > FaviconHandler.MaximumFaviconSize || expectedSize > FaviconHandler.MaximumFaviconSize {
+                    imageOperation?.cancel()
+                }
+            }
+            
+            let onCompletion: ImageCacheCompletion = { image, _, _, _, url in
+                favicon = Favicon(url: url.absoluteString)
 
-                    deferred.fill(Maybe(success: fav))
-            })
+                if let image = image {
+                    favicon.width = Int(image.size.width)
+                    favicon.height = Int(image.size.height)
+                    FaviconMO.add(favicon, forSiteUrl: siteUrl)
+                } else {
+                    favicon.width = 0
+                    favicon.height = 0
+                }
+
+                deferred.fill(Maybe(success: favicon))
+            }
+
+            imageOperation = WebImageCacheWithNoPrivacyProtectionManager.shared.load(from: url, options: [.lowPriority], progress: onProgress, completion: onCompletion)
         } else {
             return deferMaybe(FaviconFetcherErrorType(description: "Invalid URL \(url)"))
         }
@@ -215,18 +212,17 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     class func fetchFavImageForURL(forURL url: URL, profile: Profile) -> Deferred<Maybe<UIImage>> {
         let deferred = Deferred<Maybe<UIImage>>()
         FaviconFetcher.getForURL(url.domainURL, profile: profile).uponQueue(.main) { result in
-            var iconURL: URL?
-            if let favicons = result.successValue, favicons.count > 0, let faviconImageURL = favicons.first?.url.asURL {
-                iconURL = faviconImageURL
-            } else {
+            guard let favicons = result.successValue, let favicon = favicons.first, let faviconURL = favicon.url.asURL else {
                 return deferred.fill(Maybe(failure: FaviconError()))
             }
-            SDWebImageManager.shared().loadImage(with: iconURL, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                if let image = image {
-                    deferred.fill(Maybe(success: image))
-                } else {
+
+            WebImageCacheWithNoPrivacyProtectionManager.shared.load(from: faviconURL) { (image, _, _, _, _) in
+                guard let image = image else {
                     deferred.fill(Maybe(failure: FaviconError()))
+                    return
                 }
+                
+                deferred.fill(Maybe(success: image))
             }
         }
         return deferred

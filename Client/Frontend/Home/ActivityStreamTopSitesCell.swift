@@ -4,7 +4,6 @@
 
 import Foundation
 import Shared
-import SDWebImage
 import Storage
 
 private struct TopSiteCellUX {

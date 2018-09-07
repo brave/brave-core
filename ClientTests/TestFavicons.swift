@@ -5,7 +5,6 @@
 import Foundation
 import XCTest
 import Storage
-import SDWebImage
 @testable import Client
 import Shared
 
@@ -34,15 +33,15 @@ class TestFavicons: ProfileTest {
                 return expectation.fulfill()
             }
             XCTAssertEqual(favicons.count, 1, "Instagram should have a Favicon.")
-            SDWebImageManager.shared().loadImage(with: url, options: .retryFailed, progress: nil, completed: { (img, _, _, _, _, _) in
-                guard let image = img else {
+
+            WebImageCacheWithNoPrivacyProtection.shared.load(from: url) { (image, _, _, _, _, _) in
+                guard let image = image else {
                     XCTFail("Not a valid URL provided for a favicon.")
                     return expectation.fulfill()
                 }
                 XCTAssertNotEqual(image.size, .zero)
                 expectation.fulfill()
-            })
-
+            }
         }
         self.waitForExpectations(timeout: 3000, handler: nil)
     }

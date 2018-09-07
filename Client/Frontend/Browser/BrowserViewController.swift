@@ -12,7 +12,6 @@ import SnapKit
 import XCGLogger
 import Alamofire
 import MobileCoreServices
-import SDWebImage
 import SwiftyJSON
 import Deferred
 import Data
@@ -123,7 +122,7 @@ class BrowserViewController: UIViewController {
     init(profile: Profile, tabManager: TabManager) {
         self.profile = profile
         self.tabManager = tabManager
-        self.readerModeCache = DiskReaderModeCache.sharedInstance
+        self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
         super.init(nibName: nil, bundle: nil)
         didInit()
     }
@@ -173,8 +172,12 @@ class BrowserViewController: UIViewController {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        let isPrivate = tabManager.selectedTab?.isPrivate ?? false
-        return isPrivate ? UIStatusBarStyle.lightContent : UIStatusBarStyle.default
+        switch Theme.of(tabManager.selectedTab) {
+        case .regular:
+            return .default
+        case .private:
+            return .lightContent
+        }
     }
 
     func shouldShowFooterForTraitCollection(_ previousTraitCollection: UITraitCollection) -> Bool {
@@ -201,8 +204,10 @@ class BrowserViewController: UIViewController {
             toolbar = TabToolbar()
             footer.addSubview(toolbar!)
             toolbar?.tabToolbarDelegate = self
-            let theme = (tabManager.selectedTab?.isPrivate ?? false) ? Theme.Private : Theme.Normal
+
+            let theme = Theme.of(tabManager.selectedTab)
             toolbar?.applyTheme(theme)
+
             updateTabCountUsingTabManager(self.tabManager)
         }
 
@@ -264,17 +269,15 @@ class BrowserViewController: UIViewController {
             self.displayedPopoverController = nil
         }
 
-        // If we are displying a private tab, hide any elements in the tab that we wouldn't want shown
+        // If we are displaying a private tab, hide any elements in the tab that we wouldn't want shown
         // when the app is in the home switcher
-        guard let privateTab = tabManager.selectedTab, privateTab.isPrivate else {
-            return
+        if let tab = tabManager.selectedTab, tab.isPrivate {
+            webViewContainerBackdrop.alpha = 1
+            webViewContainer.alpha = 0
+            urlBar.locationContainer.alpha = 0
+            presentedViewController?.popoverPresentationController?.containerView?.alpha = 0
+            presentedViewController?.view.alpha = 0
         }
-
-        webViewContainerBackdrop.alpha = 1
-        webViewContainer.alpha = 0
-        urlBar.locationContainer.alpha = 0
-        presentedViewController?.popoverPresentationController?.containerView?.alpha = 0
-        presentedViewController?.view.alpha = 0
     }
 
     @objc func appDidBecomeActiveNotification() {
@@ -731,8 +734,8 @@ class BrowserViewController: UIViewController {
             return
         }
 
-        let isPrivate = tabManager.selectedTab?.isPrivate ?? false
-        searchController = SearchViewController(isPrivate: isPrivate)
+        let tabType = TabType.of(tabManager.selectedTab)
+        searchController = SearchViewController(forTabType: tabType)
         searchController!.searchEngines = profile.searchEngines
         searchController!.searchDelegate = self
         searchController!.profile = self.profile
@@ -943,8 +946,6 @@ class BrowserViewController: UIViewController {
     // MARK: Opening New Tabs
 
     func switchToPrivacyMode(isPrivate: Bool ) {
-//        applyTheme(isPrivate ? Theme.PrivateMode : Theme.NormalMode)
-
         let tabTrayController = self.tabTrayController ?? TabTrayController(tabManager: tabManager, profile: profile, tabTrayDelegate: self)
         if tabTrayController.privateMode != isPrivate {
             tabTrayController.changePrivacyMode(isPrivate)
@@ -1092,7 +1093,7 @@ class BrowserViewController: UIViewController {
         if let visitType = self.getVisitTypeForTab(tab, navigation: navigation)?.rawValue {
             info["visitType"] = visitType
         }
-        info["isPrivate"] = tab.isPrivate
+        info["tabType"] = tab.type
         notificationCenter.post(name: .OnLocationChange, object: self, userInfo: info)
     }
 
@@ -1509,13 +1510,13 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
     
     func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        self.openBlankNewTab(focusLocationField: true, isPrivate: UIApplication.isInPrivateMode)
+        self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
 
     func tabToolbarDidLongPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil))
-        if !UIApplication.isInPrivateMode {
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             let newPrivateTabAction = UIAlertAction(title: Strings.NewPrivateTabTitle, style: .default, handler: { [unowned self] _ in
                 // BRAVE TODO: Add check for DuckDuckGo popup (and based on 1.6, whether the browser lock is enabled?)
                 // before focusing on the url bar
@@ -1524,7 +1525,7 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
             alertController.addAction(newPrivateTabAction)
         }
         alertController.addAction(UIAlertAction(title: Strings.NewTabTitle, style: .default, handler: { [unowned self] _ in
-            self.openBlankNewTab(focusLocationField: true, isPrivate: UIApplication.isInPrivateMode)
+            self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
         }))
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
@@ -1738,10 +1739,13 @@ extension BrowserViewController: TabManagerDelegate {
 
         if let tab = selected, let webView = tab.webView {
             updateURLBarDisplayURL(tab)
-            if tab.isPrivate != previous?.isPrivate {
-                applyTheme(tab.isPrivate ? .Private : .Normal)
+
+            if tab.type != previous?.type {
+                let theme = Theme.of(tab)
+                applyTheme(theme)
             }
-            readerModeCache = tab.isPrivate ? MemoryReaderModeCache.sharedInstance : DiskReaderModeCache.sharedInstance
+
+            readerModeCache = ReaderMode.cache(for: tab)
             ReaderModeHandlers.readerModeCache = readerModeCache
 
             scrollController.tab = selected
@@ -1760,7 +1764,7 @@ extension BrowserViewController: TabManagerDelegate {
             }
         }
 
-        if let selected = selected, let previous = previous, selected.isPrivate != previous.isPrivate {
+        if selected?.type != previous?.type {
             updateTabCountUsingTabManager(tabManager)
         }
 
@@ -2046,11 +2050,8 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
 extension BrowserViewController {
     func updateReaderModeBar() {
         if let readerModeBar = readerModeBar {
-            if let tab = self.tabManager.selectedTab, tab.isPrivate {
-                readerModeBar.applyTheme(.Private)
-            } else {
-                readerModeBar.applyTheme(.Normal)
-            }
+            let theme = Theme.of(tabManager.selectedTab)
+            readerModeBar.applyTheme(theme)
         }
     }
 
@@ -2204,7 +2205,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
 
         if let url = elements.link, let currentTab = tabManager.selectedTab {
             dialogTitle = url.absoluteString
-            let isPrivate = currentTab.isPrivate
+            let tabType = currentTab.type
 
             let addTab = { (rURL: URL, isPrivate: Bool) in
                     let tab = self.tabManager.addTab(URLRequest(url: rURL as URL), afterTab: currentTab, isPrivate: isPrivate)
@@ -2218,7 +2219,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
                     self.show(toast: toast)
             }
 
-            if !isPrivate {
+            if !tabType.isPrivate {
                 let newTabTitle = NSLocalizedString("Open in New Tab", comment: "Context menu item for opening a link in a new tab")
                 let openNewTabAction =  UIAlertAction(title: newTabTitle, style: .default) { _ in
                     addTab(url, false)
@@ -2441,7 +2442,8 @@ extension BrowserViewController {
         let alert = ThirdPartySearchAlerts.addThirdPartySearchEngine { alert in
             self.customSearchEngineButton.tintColor = UIColor.Photon.Grey50
             self.customSearchEngineButton.isUserInteractionEnabled = false
-            SDWebImageManager.shared().loadImage(with: iconURL, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+
+            WebImageCacheManager.shared.load(from: iconURL) { (image, _, _, _, _) in
                 guard let image = image else {
                     let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
                     self.present(alert, animated: true, completion: nil)
@@ -2638,7 +2640,8 @@ extension BrowserViewController: HomeMenuControllerDelegate {
     }
     
     func menuDidBatchOpenURLs(_ menu: HomeMenuController, urls: [URL]) {
-        self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabManager.selectedTab?.tabState.isPrivate ?? false)
+        let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
+        self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
     }
 }
 

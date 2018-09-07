@@ -216,9 +216,10 @@ open class BrowserProfile: Profile {
            let visitType = VisitType(rawValue: v),
            let url = notification.userInfo!["url"] as? URL, !isIgnoredURL(url),
            let title = notification.userInfo!["title"] as? NSString {
+
             // Only record local vists if the change notification originated from a non-private tab
-            if !(notification.userInfo!["isPrivate"] as? Bool ?? false) {
-                // We don't record a visit if no type was specified -- that means "ignore me".
+            let tabType: TabType = notification.userInfo!["tabType"] as? TabType ?? .regular
+            if !tabType.isPrivate {
                 let site = Site(url: url.absoluteString, title: title as String)
                 let visit = SiteVisit(site: site, date: Date.nowMicroseconds(), type: visitType)
                 history.addLocalVisit(visit)
@@ -232,8 +233,8 @@ open class BrowserProfile: Profile {
 
     @objc
     func onPageMetadataFetched(notification: NSNotification) {
-        let isPrivate = notification.userInfo?["isPrivate"] as? Bool ?? true
-        guard !isPrivate else {
+        let tabType = notification.userInfo?["tabType"] as? TabType ?? .regular
+        guard !tabType.isPrivate else {
             log.debug("Private mode - Ignoring page metadata.")
             return
         }

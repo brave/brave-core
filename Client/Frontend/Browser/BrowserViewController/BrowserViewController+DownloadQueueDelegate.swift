@@ -51,7 +51,8 @@ extension BrowserViewController: DownloadQueueDelegate {
             if error == nil {
                 let downloadCompleteToast = ButtonToast(labelText: download.filename, imageName: "check", buttonText: Strings.DownloadsButtonTitle, completion: { buttonPressed in
                     if buttonPressed {
-                        self.openURLInNewTab(HomePanelType.downloads.localhostURL, isPrivate: self.tabManager.selectedTab?.isPrivate ?? false, isPrivileged: true)
+                        let tabIsPrivate = TabType.of(self.tabManager.selectedTab).isPrivate
+                        self.openURLInNewTab(HomePanelType.downloads.localhostURL, isPrivate: tabIsPrivate, isPrivileged: true)
                     }
                 })
 
