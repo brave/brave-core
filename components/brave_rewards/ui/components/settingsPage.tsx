@@ -22,6 +22,8 @@ interface Props extends Rewards.ComponentProps {
 }
 
 class SettingsPage extends React.Component<Props, {}> {
+  private balanceTimerId: number
+
   onToggle = () => {
     this.actions.onSettingSave('enabledMain', !this.props.rewardsData.enabledMain)
   }
@@ -41,7 +43,15 @@ class SettingsPage extends React.Component<Props, {}> {
     }
 
     this.actions.getWalletProperties()
+    this.balanceTimerId = setInterval(() => {
+      this.actions.getWalletProperties()
+    }, 60000)
+
     this.actions.getGrant()
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.balanceTimerId)
   }
 
   render () {
