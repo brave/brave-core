@@ -314,6 +314,10 @@ void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
   ledger_client_->LoadPublisherInfoList(start, limit, filter, callback);
 }
 
+void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
+  bat_client_->setRewardsMainEnabled(enabled);
+}
+
 void LedgerImpl::SetPublisherMinVisitTime(uint64_t duration) { // In seconds
   bat_publishers_->setPublisherMinVisitTime(duration);
 }
@@ -336,6 +340,10 @@ void LedgerImpl::SetContributionAmount(double amount) {
 
 void LedgerImpl::SetAutoContribute(bool enabled) {
   bat_client_->setAutoContribute(enabled);
+}
+
+bool LedgerImpl::GetRewardsMainEnabled() const {
+  return bat_client_->getRewardsMainEnabled();
 }
 
 uint64_t LedgerImpl::GetPublisherMinVisitTime() const {
