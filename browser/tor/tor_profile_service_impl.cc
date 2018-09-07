@@ -22,8 +22,6 @@ namespace tor {
 
 TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile) :
     profile_(profile) {
-  //TODO: remove it
-  LOG(ERROR) << profile_;
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
 }

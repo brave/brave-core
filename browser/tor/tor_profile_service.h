@@ -19,6 +19,7 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
+class PrefRegistrySimple;
 
 namespace tor {
 
@@ -30,6 +31,7 @@ class TorProfileService : public KeyedService {
   ~TorProfileService() override;
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
   virtual void LaunchTor(const TorConfig&) = 0;
   virtual void ReLaunchTor(const TorConfig&) = 0;

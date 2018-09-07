@@ -59,6 +59,7 @@ source_set("browser_process") {
     ":version_info",
     "//base",
     "//brave/components/brave_rewards/browser",
+    "//brave/browser/tor",
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/content_settings/core/browser",
     "//brave/common",

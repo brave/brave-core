@@ -6,6 +6,7 @@
 
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 
@@ -17,10 +18,15 @@ TorProfileService::TorProfileService() {
 TorProfileService::~TorProfileService() {
 }
 
-//static
+// static
 void TorProfileService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(tor::prefs::kProfileUsingTor, false);
+}
+// static
+void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   registry->RegisterStringPref(tor::prefs::kTorProxyString,
+                                "socks5://127.0.0.1:9050");
 }
 
 void TorProfileService::AddObserver(TorLauncherServiceObserver* observer) {

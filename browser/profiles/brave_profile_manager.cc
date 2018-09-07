@@ -5,6 +5,8 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/tor/pref_names.h"
@@ -69,9 +71,10 @@ void BraveProfileManager::LaunchTorProcess(Profile* profile) {
   tor::TorProfileService* tor_profile_service =
     TorProfileServiceFactory::GetForProfile(profile);
   if (tor_profile_service->GetTorPid() < 0) {
-    // TODO: read config from prefs
-    base::FilePath path("/usr/local/bin/tor");
-    std::string proxy("socks5://127.0.0.1:9050");
+    base::FilePath path =
+      g_brave_browser_process->tor_client_updater()->GetExecutablePath();
+    std::string proxy =
+      g_browser_process->local_state()->GetString(tor::prefs::kTorProxyString);
     tor::TorConfig config(path, proxy);
     tor_profile_service->LaunchTor(config);
   }
