@@ -61,6 +61,7 @@ class LedgerImpl : public ledger::Ledger,
                             const ledger::PublisherInfoFilter& filter,
                             ledger::GetPublisherInfoListCallback callback) override;
 
+  void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
   void SetPublisherMinVisits(unsigned int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
@@ -76,6 +77,7 @@ class LedgerImpl : public ledger::Ledger,
   const std::string& GetETHAddress() const override;
   const std::string& GetLTCAddress() const override;
   uint64_t GetReconcileStamp() const override;
+  bool GetRewardsMainEnabled() const override;
   uint64_t GetPublisherMinVisitTime() const override; // In milliseconds
   unsigned int GetPublisherMinVisits() const override;
   bool GetPublisherAllowNonVerified() const override;

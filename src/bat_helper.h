@@ -207,6 +207,7 @@ namespace braveledger_bat_helper {
     std::vector<BATCH_VOTES_ST> batch_;
     GRANT grant_;
     bool auto_contribute_ = true;
+    bool rewards_enabled_ = true;
   };
 
   struct REPORT_BALANCE_ST {

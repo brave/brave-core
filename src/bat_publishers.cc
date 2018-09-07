@@ -91,17 +91,19 @@ void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
 void BatPublishers::saveVisit(const std::string& publisher_id,
                               const ledger::VisitData& visit_data,
                               const uint64_t& duration) {
-  if (publisher_id.empty() || (!ignoreMinTime(publisher_id) &&
-      duration < state_->min_pubslisher_duration_))
-    return;
+  if (ledger_->GetRewardsMainEnabled() && ledger_->GetAutoContribute()) {
+    if (publisher_id.empty() || (!ignoreMinTime(publisher_id) &&
+        duration < state_->min_pubslisher_duration_))
+      return;
 
-  auto filter = CreatePublisherFilter(publisher_id,
-      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-      visit_data.local_month,
-      visit_data.local_year);
-  ledger_->GetPublisherInfo(filter,
-      std::bind(&BatPublishers::saveVisitInternal, this,
-          publisher_id, visit_data, duration, _1, _2));
+    auto filter = CreatePublisherFilter(publisher_id,
+        ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+        visit_data.local_month,
+        visit_data.local_year);
+    ledger_->GetPublisherInfo(filter,
+        std::bind(&BatPublishers::saveVisitInternal, this,
+            publisher_id, visit_data, duration, _1, _2));
+  }
 }
 
 ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(

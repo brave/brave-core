@@ -179,6 +179,15 @@ double BatClient::getContributionAmount() const {
   return state_->fee_amount_;
 }
 
+void BatClient::setRewardsMainEnabled(const bool& enabled) {
+  state_->rewards_enabled_ = enabled;
+  saveState();
+}
+
+bool BatClient::getRewardsMainEnabled() const {
+  return state_->rewards_enabled_;
+}
+
 void BatClient::setAutoContribute(const bool& enabled) {
   state_->auto_contribute_ = enabled;
   saveState();
