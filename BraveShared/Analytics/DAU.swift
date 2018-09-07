@@ -145,14 +145,14 @@ public class DAU {
     }
     
     /// Returns nil if no dau changes detected.
-    func dauStatParams(_ dauStat: [Int?]?, firstPing: Bool) -> [URLQueryItem]? {
+    func dauStatParams(_ dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value, firstPing: Bool, channel: AppBuildChannel = AppConstants.BuildChannel) -> [URLQueryItem]? {
         func dauParams(_ daily: Bool, _ weekly: Bool, _ monthly: Bool) -> [URLQueryItem] {
             return ["daily": daily, "weekly": weekly, "monthly": monthly].map {
                 URLQueryItem(name: $0.key, value: $0.value.description)
             }
         }
         
-        if firstPing || AppConstants.BuildChannel == .developer {
+        if firstPing || channel == .developer {
             return dauParams(true, true, true)
         }
         
