@@ -86,6 +86,7 @@ declare namespace Rewards {
     publisherKey: string
     percentage: number
     verified: boolean
+    excluded: number
     url: string
     name: string
     provider: string

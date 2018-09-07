@@ -44,7 +44,9 @@ class ContributeBox extends React.Component<Props, State> {
       return []
     }
 
-    return list.map((item: Rewards.Publisher) => {
+    const includedPublishers = list.filter((item: Rewards.Publisher) => !item.excluded)
+
+    return includedPublishers.map((item: Rewards.Publisher) => {
       let name = item.name
       if (item.provider) {
         name = `${name} ${getLocale('on')} ${item.provider}`
@@ -59,7 +61,7 @@ class ContributeBox extends React.Component<Props, State> {
         },
         url: item.url,
         attention: item.percentage,
-        onRemove: () => { console.log('remove publisher') }
+        onRemove: () => { this.actions.excludePublisher(item.publisherKey) }
       }
     })
   }

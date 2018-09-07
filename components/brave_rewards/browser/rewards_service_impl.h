@@ -92,6 +92,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;
   void SaveMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id) override;
+  void ExcludePublisher(const std::string publisherKey) const override;
   std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() override;
 
  private:
