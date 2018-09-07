@@ -30,9 +30,12 @@ static GURL TranslateMagnetURL(const GURL& url) {
 }
 
 static GURL TranslateTorrentUIURLReversed(const GURL& url) {
-  return GURL(net::UnescapeURLComponent(
+  GURL translatedURL(net::UnescapeURLComponent(
         url.query(), net::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS |
         net::UnescapeRule::PATH_SEPARATORS));
+  GURL::Replacements replacements;
+  replacements.SetRefStr(url.ref_piece());
+  return translatedURL.ReplaceComponents(replacements);
 }
 
 static bool HandleTorrentURLReverseRewrite(GURL* url,
