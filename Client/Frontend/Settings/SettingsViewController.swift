@@ -139,7 +139,7 @@ class SettingsViewController: TableViewController {
                 Row(text: Strings.DefaultSearchEngine, selection: {
                     // Show default engines
                 }, accessory: .disclosureIndicator),
-                BoolRow(title: Strings.SaveLogin, option: Preferences.General.saveLogins),
+                BoolRow(title: Strings.Save_Logins, option: Preferences.General.saveLogins),
                 BoolRow(title: Strings.Block_Popups, option: Preferences.General.blockPopups),
             ]
         )
