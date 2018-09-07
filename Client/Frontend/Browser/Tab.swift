@@ -33,7 +33,7 @@ protocol URLChangeDelegate {
 }
 
 struct TabState {
-    var isPrivate: Bool = false
+    var type: TabType = .regular
     var desktopSite: Bool = false
     var url: URL?
     var title: String?
@@ -43,20 +43,14 @@ struct TabState {
 class Tab: NSObject {
     var id: String?
     
-    fileprivate var _isPrivate: Bool = false
-    internal fileprivate(set) var isPrivate: Bool {
-        get {
-            return _isPrivate
-        }
-        set {
-            if _isPrivate != newValue {
-                _isPrivate = newValue
-            }
-        }
+    private(set) var type: TabType = .regular
+    
+    var isPrivate: Bool {
+        return type.isPrivate
     }
 
     var tabState: TabState {
-        return TabState(isPrivate: _isPrivate, desktopSite: desktopSite, url: url, title: displayTitle, favicon: displayFavicon)
+        return TabState(type: type, desktopSite: desktopSite, url: url, title: displayTitle, favicon: displayFavicon)
     }
 
     // PageMetadata is derived from the page content itself, and as such lags behind the
@@ -73,7 +67,7 @@ class Tab: NSObject {
 
     var userActivity: NSUserActivity?
 
-    var webView: WKWebView?
+    var webView: BraveWebView?
     var tabDelegate: TabDelegate?
     weak var urlDidChangeDelegate: URLChangeDelegate?     // TODO: generalize this.
     var bars = [SnackBar]()
@@ -149,10 +143,10 @@ class Tab: NSObject {
     /// tab instance, queue it for later until we become foregrounded.
     fileprivate var alertQueue = [JSAlertInfo]()
 
-    init(configuration: WKWebViewConfiguration, isPrivate: Bool = false) {
+    init(configuration: WKWebViewConfiguration, type: TabType = .regular) {
         self.configuration = configuration
         super.init()
-        self.isPrivate = isPrivate
+        self.type = type
 
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let profile = appDelegate.profile {
             contentBlocker = ContentBlockerHelper(tab: self, profile: profile)
@@ -198,7 +192,7 @@ class Tab: NSObject {
             configuration!.preferences = WKPreferences()
             configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
             configuration!.allowsInlineMediaPlayback = true
-            let webView = BraveWebView(frame: .zero, configuration: configuration!)
+            let webView = TabWebView(frame: .zero, configuration: configuration!)
             webView.delegate = self
             configuration = nil
 
@@ -471,7 +465,7 @@ class Tab: NSObject {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let webView = object as? WKWebView, webView == self.webView,
+        guard let webView = object as? BraveWebView, webView == self.webView,
             let path = keyPath, path == KVOConstants.URL.rawValue else {
             return assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
         }
@@ -558,7 +552,7 @@ private protocol TabWebViewDelegate: class {
     func tabWebView(_ tabWebView: TabWebView, didSelectFindInPageForSelection selection: String)
 }
 
-class TabWebView: WKWebView, MenuHelperInterface {
+class TabWebView: BraveWebView, MenuHelperInterface {
     fileprivate weak var delegate: TabWebViewDelegate?
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {

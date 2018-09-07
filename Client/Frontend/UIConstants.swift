@@ -25,7 +25,7 @@ struct BrowserColor {
     }
 
     func colorFor(_ theme: Theme) -> UIColor {
-        return color(isPBM: theme == .Private)
+        return color(isPBM: theme.isPrivate)
     }
 }
 

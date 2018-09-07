@@ -358,7 +358,13 @@ extension TabLocationView: AccessibilityActionsSource {
 
 extension TabLocationView: Themeable {
     func applyTheme(_ theme: Theme) {
-        backgroundColor = theme == .Normal ? BraveUX.LocationBarBackgroundColor : BraveUX.LocationBarBackgroundColor_PrivateMode
+        switch theme {
+        case .regular:
+            backgroundColor = BraveUX.LocationBarBackgroundColor
+        case .private:
+            backgroundColor = BraveUX.LocationBarBackgroundColor_PrivateMode
+        }
+
         urlTextField.textColor = UIColor.Browser.Tint.colorFor(theme)
         readerModeButton.selectedTintColor = UIColor.TextField.ReaderModeButtonSelected.colorFor(theme)
         readerModeButton.unselectedTintColor = UIColor.TextField.ReaderModeButtonUnselected.colorFor(theme)

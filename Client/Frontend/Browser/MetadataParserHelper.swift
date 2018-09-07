@@ -3,7 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-import SDWebImage
 import Shared
 import Storage
 import XCGLogger
@@ -48,7 +47,7 @@ class MetadataParserHelper: TabEventHandler {
             TabEvent.post(.didLoadPageMetadata(pageMetadata), for: tab)
 
             let userInfo: [String: Any] = [
-                "isPrivate": tab.isPrivate,
+                "tabType": tab.type,
                 "pageMetadata": pageMetadata,
                 "tabURL": pageURL
             ]
@@ -73,32 +72,18 @@ class MediaImageLoader: TabEventHandler {
     }
 
     func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata) {
-        let cacheImages = !NoImageModeHelper.isActivated
-        if let urlString = metadata.mediaURL,
-            let mediaURL = URL(string: urlString), cacheImages {
-            prepareCache(mediaURL)
+        if let mediaURL = metadata.mediaURL, let url = URL(string: mediaURL) {
+            loadImage(from: url)
         }
     }
 
-    fileprivate func prepareCache(_ url: URL) {
-        let manager = SDWebImageManager.shared()
-        manager.cachedImageExists(for: url) { exists in
-            if !exists {
-                self.downloadAndCache(fromURL: url)
-            }
+    fileprivate func loadImage(from url: URL) {
+        let shouldCacheImages = !NoImageModeHelper.isActivated
+        if !shouldCacheImages {
+            return
         }
+
+        WebImageCacheManager.shared.load(from: url)
     }
 
-    fileprivate func downloadAndCache(fromURL webUrl: URL) {
-        let manager = SDWebImageManager.shared()
-        manager.loadImage(with: webUrl, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-            if let image = image {
-                self.cache(image: image, forURL: webUrl)
-            }
-        }
-    }
-
-    fileprivate func cache(image: UIImage, forURL url: URL) {
-        SDWebImageManager.shared().saveImage(toCache: image, for: url)
-    }
 }

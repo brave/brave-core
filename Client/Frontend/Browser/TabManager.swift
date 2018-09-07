@@ -81,7 +81,6 @@ class TabManager: NSObject {
         let configuration = WKWebViewConfiguration()
         configuration.processPool = WKProcessPool()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = !(self.prefs.boolForKey("blockPopups") ?? true)
-        configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
         return configuration
     }()
 
@@ -90,17 +89,6 @@ class TabManager: NSObject {
     fileprivate let prefs: Prefs
     var selectedIndex: Int { return _selectedIndex }
     var tempTabs: [Tab]?
-
-    var normalTabs: [Tab] {
-        assert(Thread.isMainThread)
-
-        return tabs.filter { !$0.isPrivate }
-    }
-
-    var privateTabs: [Tab] {
-        assert(Thread.isMainThread)
-        return tabs.filter { $0.isPrivate }
-    }
 
     init(prefs: Prefs, imageStore: DiskImageStore?) {
         assert(Thread.isMainThread)
@@ -170,7 +158,13 @@ class TabManager: NSObject {
     
     // What the users sees displayed based on current private browsing mode
     var displayedTabsForCurrentPrivateMode: [Tab] {
-        return UIApplication.isInPrivateMode ? privateTabs : normalTabs
+        let tabType: TabType = PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular
+        return tabs(withType: tabType)
+    }
+
+    func tabs(withType type: TabType) -> [Tab] {
+        assert(Thread.isMainThread)
+        return tabs.filter { $0.type == type }
     }
 
     func getTabFor(_ url: URL) -> Tab? {
@@ -201,7 +195,7 @@ class TabManager: NSObject {
         }
 
         // Make sure to wipe the private tabs if the user has the pref turned on
-        if shouldClearPrivateTabs(), !(tab?.isPrivate ?? false) {
+        if shouldClearPrivateTabs() && !TabType.of(tab).isPrivate {
             removeAllPrivateTabs()
         }
 
@@ -228,7 +222,13 @@ class TabManager: NSObject {
         }
         if let tab = selectedTab {
             TabEvent.post(.didGainFocus, for: tab)
-            UITextField.appearance().keyboardAppearance = tab.isPrivate ? .dark : .light
+            
+            switch tab.type {
+            case .regular:
+                UITextField.appearance().keyboardAppearance = .light
+            case .private:
+                UITextField.appearance().keyboardAppearance = .dark
+            }
         }
     }
 
@@ -254,7 +254,7 @@ class TabManager: NSObject {
     }
 
     func addPopupForParentTab(_ parentTab: Tab, configuration: WKWebViewConfiguration) -> Tab {
-        let popup = Tab(configuration: configuration, isPrivate: parentTab.isPrivate)
+        let popup = Tab(configuration: configuration, type: parentTab.type)
         configureTab(popup, request: nil, afterTab: parentTab, flushToDisk: true, zombie: false, isPopup: true)
 
         // Wait momentarily before selecting the new tab, otherwise the parent tab
@@ -313,7 +313,8 @@ class TabManager: NSObject {
         // Take the given configuration. Or if it was nil, take our default configuration for the current browsing mode.
         let configuration: WKWebViewConfiguration = configuration ?? (isPrivate ? privateConfiguration : self.configuration)
 
-        let tab = Tab(configuration: configuration, isPrivate: isPrivate)
+        let type: TabType = isPrivate ? .private : .regular
+        let tab = Tab(configuration: configuration, type: type)
         if !isPrivate {
             tab.id = id ?? TabMO.create().syncUUID
         }
@@ -331,20 +332,22 @@ class TabManager: NSObject {
         return tab
     }
     
-    func moveTab(isPrivate privateMode: Bool, fromIndex visibleFromIndex: Int, toIndex visibleToIndex: Int) {
+    func moveTab(fromIndex visibleFromIndex: Int, toIndex visibleToIndex: Int) {
         assert(Thread.isMainThread)
+        
+        let tabType: TabType = PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular
+        let currentTabs = tabs(withType: tabType)
 
-        let currentTabs = privateMode ? privateTabs : normalTabs
+        let fromTab = currentTabs[visibleFromIndex]
+        let toTab = currentTabs[visibleToIndex]
 
-        guard visibleFromIndex < currentTabs.count, visibleToIndex < currentTabs.count else {
+        guard let fromIndex = tabs.index(of: fromTab), let toIndex = tabs.index(of: toTab) else {
             return
         }
 
-        let previouslySelectedTab = selectedTab
+        tabs.swapAt(fromIndex, toIndex)
 
-        tabs.insert(tabs.remove(at: visibleFromIndex), at: visibleToIndex)
-
-        if let previouslySelectedTab = previouslySelectedTab, let previousSelectedIndex = tabs.index(of: previouslySelectedTab) {
+        if let previouslySelectedTab = selectedTab, let previousSelectedIndex = tabs.index(of: previouslySelectedTab) {
             _selectedIndex = previousSelectedIndex
         }
 
@@ -371,7 +374,7 @@ class TabManager: NSObject {
 
         delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
 
-        if parent == nil || parent?.isPrivate != tab.isPrivate {
+        if parent == nil || parent?.type != tab.type {
             tabs.append(tab)
         } else if let parent = parent, var insertIndex = tabs.index(of: parent) {
             insertIndex += 1
@@ -505,9 +508,11 @@ class TabManager: NSObject {
         delegates.forEach { $0.get()?.tabManager(self, willRemoveTab: tab) }
 
         // The index of the tab in its respective tab grouping. Used to figure out which tab is next
+        let viableTabs = tabs(withType: tab.type)
+
         var tabIndex: Int = -1
         if let oldTab = oldSelectedTab {
-            tabIndex = (tab.isPrivate ? privateTabs.index(of: oldTab) : normalTabs.index(of: oldTab)) ?? -1
+            tabIndex = viableTabs.index(of: oldTab) ?? -1
         }
 
         let prevCount = count
@@ -517,8 +522,6 @@ class TabManager: NSObject {
         if let tab = TabMO.get(fromId: tab.id, context: context) {
             DataController.remove(object: tab, context: context)
         }
-
-        let viableTabs: [Tab] = tab.isPrivate ? privateTabs : normalTabs
 
         // Let's select the tab to be selected next.
         if let oldTab = oldSelectedTab, tab !== oldTab {
@@ -560,7 +563,7 @@ class TabManager: NSObject {
         delegates.forEach { $0.get()?.tabManager(self, didRemoveTab: tab) }
         TabEvent.post(.didClose, for: tab)
 
-        if !tab.isPrivate && viableTabs.isEmpty {
+        if tab.isPrivate && viableTabs.isEmpty {
             addTab()
         }
 
@@ -575,9 +578,10 @@ class TabManager: NSObject {
     /// Removes all private tabs from the manager without notifying delegates.
     private func removeAllPrivateTabs() {
         // reset the selectedTabIndex if we are on a private tab because we will be removing it.
-        if selectedTab?.isPrivate ?? false {
+        if TabType.of(selectedTab).isPrivate {
             _selectedIndex = -1
         }
+
         tabs.forEach { tab in
             if tab.isPrivate {
                 tab.webView?.removeFromSuperview()
@@ -585,7 +589,7 @@ class TabManager: NSObject {
             }
         }
 
-        tabs = tabs.filter { !$0.isPrivate }
+        tabs = tabs(withType: .regular)
     }
 
     func removeAllBrowsingDataForTab(_ tab: Tab, completionHandler: @escaping () -> Void = {}) {
@@ -636,16 +640,22 @@ class TabManager: NSObject {
         guard let tempTabs = self.tempTabs, tempTabs.count > 0 else {
             return
         }
-        let tabsCopy = normalTabs
+
+        let tabsCopy = tabs(withType: .regular)
+
         restoreTabs(tempTabs)
         self.isRestoring = true
+
         for tab in tempTabs {
             tab.showContent(true)
         }
-        if !tempTabs[0].isPrivate {
+
+        let tab = tempTabs.first
+        if !TabType.of(tab).isPrivate {
             removeTabs(tabsCopy)
         }
-        selectTab(tempTabs.first)
+        selectTab(tab)
+
         self.isRestoring = false
         delegates.forEach { $0.get()?.tabManagerDidRestoreTabs(self) }
         self.tempTabs?.removeAll()
@@ -857,7 +867,8 @@ extension TabManager {
         isRestoring = false
 
         // Always make sure there is a single normal tab.
-        if normalTabs.isEmpty {
+        let tabs = self.tabs(withType: .regular)
+        if tabs.isEmpty {
             let tab = addTab()
             if selectedTab == nil {
                 selectTab(tab)

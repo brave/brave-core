@@ -4,7 +4,6 @@
 
 import UIKit
 import Storage
-import SDWebImage
 import Shared
 
 public extension UIImageView {
@@ -67,16 +66,3 @@ public extension UIImageView {
         }
     }
 }
-
-open class ImageOperation: NSObject, SDWebImageOperation {
-    open var cacheOperation: Operation?
-
-    var cancelled: Bool {
-        return cacheOperation?.isCancelled ?? false
-    }
-
-    @objc open func cancel() {
-        cacheOperation?.cancel()
-    }
-}
-

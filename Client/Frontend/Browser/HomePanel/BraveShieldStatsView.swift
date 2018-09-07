@@ -36,7 +36,7 @@ class BraveShieldStatsView: UIView, Themeable {
     lazy var timeStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
         statView.title = Strings.ShieldsTimeStats
-        statView.color = UIApplication.isInPrivateMode ? UX.GreyA : UX.GreyJ
+        statView.color = PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.GreyA : UX.GreyJ
         return statView
     }()
     

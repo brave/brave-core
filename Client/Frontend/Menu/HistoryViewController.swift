@@ -278,7 +278,7 @@ extension HistoryViewController {
     let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     
     alert.title = history.url?.replacingOccurrences(of: "mailto:", with: "").ellipsize(maxLength: ActionSheetTitleMaxLength)
-    actionsForHistory(history, currentTabIsPrivate: tabState.isPrivate).forEach { alert.addAction($0) }
+    actionsForHistory(history, currentTabIsPrivate: tabState.type.isPrivate).forEach { alert.addAction($0) }
     
     let cancelAction = UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil)
     alert.addAction(cancelAction)
