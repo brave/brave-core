@@ -70,7 +70,7 @@ public class DAU {
         
         /// This is not the same as `firstLaunch` concept, due to DAU delay, this may var be `true` on a subsequent launch, if server ping failed
         let firstPing = Preferences.DAU.firstPingSuccess.value
-        var params = channelParam + versionParam
+        var params = channelParam(for: AppConstants.BuildChannel) + versionParam(for: AppInfo.appVersion)
         
         // All installs prior to this key existing (e.g. intallWeek == unknown) were set to `defaultWoiDate`
         // Enough time has passed where accounting for installs prior to this DAU improvement is unnecessary
@@ -89,9 +89,9 @@ public class DAU {
         
         params
             += dauStatParams
-            + firstLaunchParam(firstPing)
+            + firstLaunchParam(for: firstPing)
             // Must be after setting up the preferences
-            + weekOfInstallationParam
+            + weekOfInstallationParam(for: Preferences.DAU.weekOfInstallation.value)
 
         // TODO: #190 goes here
         
@@ -101,22 +101,20 @@ public class DAU {
         return params
     }
     
-    var channelParam: String {
-        return "&channel=\(AppConstants.BuildChannel.isRelease ? "stable" : "beta")"
+    func channelParam(for channel: AppBuildChannel) -> String {
+        return "&channel=\(channel.isRelease ? "stable" : "beta")"
     }
     
-    var versionParam: String {
-        var version = AppInfo.appVersion
-        
-        if DAU.shouldAppend0ToAppVersion(version) {
-            version += ".0"
+    func versionParam(for version: String) -> String {
+        var nativeVersion = "&version=\(version)"
+        if DAU.shouldAppend0(toVersion: version) {
+            nativeVersion += ".0"
         }
-        
-        return "&version=\(version)"
+        return nativeVersion
     }
 
     /// All app versions for dau pings must be saved in x.x.x format where x are digits.
-    static func shouldAppend0ToAppVersion(_ version: String) -> Bool {
+    static func shouldAppend0(toVersion version: String) -> Bool {
         let correctAppVersionPattern = "^\\d+.\\d+$"
         do {
             let regex = try NSRegularExpression(pattern: correctAppVersionPattern, options: [])
@@ -129,17 +127,17 @@ public class DAU {
         }
     }
     
-    func firstLaunchParam(_ isFirst: Bool) -> String {
+    func firstLaunchParam(for isFirst: Bool) -> String {
         return "&first=\(isFirst)"
     }
     
     /** All first app installs are normalized to first day of the week.
      Eg. user installs app on wednesday 2017-22-11, his install date is recorded as of 2017-20-11(Monday) */
-    var weekOfInstallationParam: String {
+    func weekOfInstallationParam(for woi: String?) -> String {
         let base = "&woi="
         
         // This _should_ be set all the time
-        guard let woi = Preferences.DAU.weekOfInstallation.value else {
+        guard let woi = woi else {
             log.error("woi, is nil, using default")
             return base + DAU.defaultWoiDate
         }
