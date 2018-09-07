@@ -1,0 +1,26 @@
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+
+source_set("browser") {
+  public_deps = [
+    "buildflags",
+  ]
+
+  sources = [
+      "usermodel.cc",
+      "usermodel.h"
+    ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/sessions",
+    # for profile.h
+    "//components/domain_reliability",
+    "//content/public/browser",
+    "//content/public/common",
+    "//services/network/public/mojom",
+    "//third_party/leveldatabase",
+    "//brave/vendor/bat-native-usermodel",
+  ]
+}
