@@ -12,13 +12,15 @@ public class DAU {
     /// Default installation date for legacy woi version.
     public static let defaultWoiDate = "2016-01-04"
     
+    private static let apiVersion = 1
+    private static let baseUrl = "https://laptop-updates.brave.com/\(apiVersion)/usage/ios?platform=ios"
+    
     /// Number of seconds that determins when a user is "active"
     private let activeUserDuration = 10.0
     
-    let prefs: Prefs
+    private let prefs: Prefs
     
     private var launchTimer: Timer?
-    private let baseUrl = "https://laptop-updates.brave.com/1/usage/ios?platform=ios"
     
     private let today: Date
     private var todayComponents: DateComponents {
@@ -42,15 +44,17 @@ public class DAU {
         }
         
         // Sending ping to server
-        let fullUrl = baseUrl + params
-        log.debug("send ping to server, url: \(fullUrl)")
+        var pingRequest = URLComponents(string: DAU.baseUrl)
+        pingRequest?.queryItems = params
         
-        guard let url = URL(string: fullUrl) else {
-            log.error("Stats failed to update, via invalud URL: \(fullUrl)")
+        guard let pingRequestUrl = pingRequest?.url else {
+            log.error("Stats failed to update, via invalud URL: \(pingRequest?.description ?? "😡")")
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { _, _, error in
+        log.debug("send ping to server, url: \(pingRequestUrl)")
+        
+        let task = URLSession.shared.dataTask(with: pingRequestUrl) { _, _, error in
             if let e = error {
                 log.error("status update error: \(e)")
                 return
@@ -65,12 +69,12 @@ public class DAU {
     
     
     /** Return params query or nil if no ping should be send to server. */
-    func paramsAndPrefsSetup() -> String? {
+    func paramsAndPrefsSetup() -> [URLQueryItem]? {
         let dauStats = Preferences.DAU.lastLaunchInfo.value
         
         /// This is not the same as `firstLaunch` concept, due to DAU delay, this may var be `true` on a subsequent launch, if server ping failed
         let firstPing = Preferences.DAU.firstPingSuccess.value
-        var params = channelParam(for: AppConstants.BuildChannel) + versionParam(for: AppInfo.appVersion)
+        var params = [channelParam(for: AppConstants.BuildChannel), versionParam(for: AppInfo.appVersion)]
         
         // All installs prior to this key existing (e.g. intallWeek == unknown) were set to `defaultWoiDate`
         // Enough time has passed where accounting for installs prior to this DAU improvement is unnecessary
@@ -87,11 +91,12 @@ public class DAU {
             return nil
         }
         
-        params
-            += dauStatParams
-            + firstLaunchParam(for: firstPing)
+        params += dauStatParams
+        params += [
+            firstLaunchParam(for: firstPing),
             // Must be after setting up the preferences
-            + weekOfInstallationParam(for: Preferences.DAU.weekOfInstallation.value)
+            weekOfInstallationParam(for: Preferences.DAU.weekOfInstallation.value)
+        ]
 
         // TODO: #190 goes here
         
@@ -101,16 +106,16 @@ public class DAU {
         return params
     }
     
-    func channelParam(for channel: AppBuildChannel) -> String {
-        return "&channel=\(channel.isRelease ? "stable" : "beta")"
+    func channelParam(for channel: AppBuildChannel) -> URLQueryItem {
+        return URLQueryItem(name: "channel", value: channel.isRelease ? "stable" : "beta")
     }
     
-    func versionParam(for version: String) -> String {
-        var nativeVersion = "&version=\(version)"
+    func versionParam(for version: String) -> URLQueryItem {
+        var version = version
         if DAU.shouldAppend0(toVersion: version) {
-            nativeVersion += ".0"
+            version += ".0"
         }
-        return nativeVersion
+        return URLQueryItem(name: "version", value: version)
     }
 
     /// All app versions for dau pings must be saved in x.x.x format where x are digits.
@@ -127,27 +132,28 @@ public class DAU {
         }
     }
     
-    func firstLaunchParam(for isFirst: Bool) -> String {
-        return "&first=\(isFirst)"
+    func firstLaunchParam(for isFirst: Bool) -> URLQueryItem {
+        return URLQueryItem(name: "first", value: isFirst.description)
     }
     
     /** All first app installs are normalized to first day of the week.
      Eg. user installs app on wednesday 2017-22-11, his install date is recorded as of 2017-20-11(Monday) */
-    func weekOfInstallationParam(for woi: String?) -> String {
-        let base = "&woi="
-        
+    func weekOfInstallationParam(for woi: String?) -> URLQueryItem {
+        var woi = woi
         // This _should_ be set all the time
-        guard let woi = woi else {
-            log.error("woi, is nil, using default")
-            return base + DAU.defaultWoiDate
+        if woi == nil {
+            woi = DAU.defaultWoiDate
+            log.error("woi, is nil, using default: \(woi ?? "")")
         }
-        return base + woi
+        return URLQueryItem(name: "woi", value: woi)
     }
     
     /// Returns nil if no dau changes detected.
-    func dauStatParams(_ dauStat: [Int?]?, firstPing: Bool) -> String? {
-        func dauParams(_ daily: Bool, _ weekly: Bool, _ monthly: Bool) -> String {
-            return "&daily=\(daily)&weekly=\(weekly)&monthly=\(monthly)"
+    func dauStatParams(_ dauStat: [Int?]?, firstPing: Bool) -> [URLQueryItem]? {
+        func dauParams(_ daily: Bool, _ weekly: Bool, _ monthly: Bool) -> [URLQueryItem] {
+            return ["daily": daily, "weekly": weekly, "monthly": monthly].map {
+                URLQueryItem(name: $0.key, value: $0.value.description)
+            }
         }
         
         if firstPing || AppConstants.BuildChannel == .developer {
