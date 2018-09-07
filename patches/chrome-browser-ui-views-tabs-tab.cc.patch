@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
+index ed257b73ca005b0f90d64927c3edc7862efb00f6..b1714709756a1e7e15b1a053bf2335ec017b8ae8 100644
+--- a/chrome/browser/ui/views/tabs/tab.cc
++++ b/chrome/browser/ui/views/tabs/tab.cc
+@@ -230,7 +230,7 @@ gfx::Path GetRefreshInteriorPath(float scale,
+   bottom_offset *= scale;
+ 
+   const float radius = GetTopCornerRadiusForWidth(bounds.width()) * scale;
+-  const float bottom_radius = radius - bottom_offset;
++  const float bottom_radius = 0; // was: radius - bottom_offset;
+   const float top_radius = std::max(radius - stroke_thickness, 0.f);
+ 
+   // Compute |extension| as the width outside the separators.  This is a fixed
+@@ -362,8 +362,8 @@ gfx::Path GetRefreshBorderPath(const gfx::Rect& bounds,
+   bottom_offset *= scale;
+ 
+   const float top_radius = GetTopCornerRadiusForWidth(bounds.width()) * scale;
+-  const float bottom_radius =
+-      std::max(top_radius - stroke_thickness, 0.f) - bottom_offset;
++  const float bottom_radius = 0;
++      // was: std::max(top_radius - stroke_thickness, 0.f) - bottom_offset;
+ 
+   // See comments in GetRefreshInteriorPath().
+   const float extension = Tab::GetCornerRadius() * scale;
