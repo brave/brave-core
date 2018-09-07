@@ -33,11 +33,12 @@ class TorProfileService : public KeyedService {
 
   virtual void LaunchTor(const TorConfig&) = 0;
   virtual void ReLaunchTor(const TorConfig&) = 0;
-  virtual void SetNewTorCircuit(const GURL& request_url) = 0;
+  virtual void SetNewTorCircuit(const GURL& request_url,
+                                const base::Closure&) = 0;
   virtual const TorConfig& GetTorConfig() = 0;
   virtual int64_t GetTorPid() = 0;
 
-  virtual void SetProxy(net::ProxyResolutionService*, const GURL&  request_url,
+  virtual void SetProxy(net::ProxyResolutionService*, const GURL& request_url,
                         bool new_circuit) = 0;
 
   void AddObserver(TorLauncherServiceObserver* observer);

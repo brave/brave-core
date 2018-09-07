@@ -7,10 +7,15 @@
 
 #include "brave/browser/tor/tor_profile_service.h"
 
+#include "base/memory/scoped_refptr.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/tor/tor_proxy_config_service.h"
 
 class Profile;
+
+namespace net {
+class URLRequestContextGetter;
+}
 
 namespace tor {
 
@@ -25,7 +30,7 @@ class TorProfileServiceImpl : public TorProfileService {
   // TorProfileService:
   void LaunchTor(const TorConfig&) override;
   void ReLaunchTor(const TorConfig&) override;
-  void SetNewTorCircuit(const GURL& request_url) override;
+  void SetNewTorCircuit(const GURL& request_url, const base::Closure&) override;
   const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
 
@@ -39,6 +44,10 @@ class TorProfileServiceImpl : public TorProfileService {
   void NotifyTorCrashed(int64_t pid);
   void NotifyTorLaunched(bool result, int64_t pid);
  private:
+
+  void SetNewTorCircuitOnIOThread(
+      const scoped_refptr<net::URLRequestContextGetter>&, const std::string&);
+
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_; // Singleton
   TorProxyConfigService::TorProxyMap tor_proxy_map_;
