@@ -4,12 +4,9 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-// @ts-ignore
-import centered from '@storybook/addon-centered/dist'
 
 // Components
 import NewPrivateTab from './private/index'
 
 storiesOf('Feature Components/New Tab', module)
-  .addDecorator(centered)
   .add('Private', () => <NewPrivateTab />)

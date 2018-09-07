@@ -5,80 +5,118 @@
 import * as React from 'react'
 
 // Components
-import Page from '../../../../src/old/page/index'
-import { Grid, Column } from '../../../../src/components/layout/gridList/index'
-import { DataBlock, DataItem } from '../../../../src/old/dataBlock/index'
-import Clock from '../../../../src/old/clock/index'
-import MediaContent from '../../../../src/old/mediaContent/index'
-import BoxedContent from '../../../../src/old/boxedContent/index'
-import { Heading } from '../../../../src/old/headings/index'
-import Paragraph from '../../../../src/old/paragraph/index'
-import SwitchButton from '../../../../src/old/switchButton/index'
-
-import customStyle from './theme'
+import { Page, PageWrapper } from '../components/page'
+import PageHeader from '../components/pageHeader'
+import { StatsContainer, StatsItem } from '../components/stats'
+import { FeatureBlock } from '../components/featureBlock'
+import {
+  NewTabHeading,
+  SmallText,
+  EmphasizedText,
+  LabelledText,
+  Paragraph,
+  LinkText
+} from '../components/text'
+import Clock from '../components/clock'
+import Toggle from '../../../../src/components/formControls/toggle'
 
 // Assets
-import locale from './fakeLocale'
-import data from './fakeData'
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
+import locale from './fakeLocale'
+import data from './fakeData'
 
 // Images
-const privateTabIcon = require('../../../assets/img/private_tab_pagearea_icon.svg')
+const ddgIcon = require('../../../assets/img/private_tab_pagearea_ddgicon.svg')
+const torIcon = require('../../../assets/img/toricon.svg')
+const torFAQ = 'https://github.com/brave/browser-laptop/wiki/Using-Tor-in-Brave#faq'
 
-class NewPrivateTab extends React.PureComponent {
+export default class NewPrivateTab extends React.PureComponent<{}, {}> {
   render () {
+    const isTor = false
     return (
-      <Page customStyle={customStyle.page}>
-        <Grid columns={3}>
-          <Column size={2}>
-            <DataBlock>
-              <DataItem
-                customStyle={customStyle.trackersBlocked}
-                description={locale.trackersBlocked}
+      <Page>
+        <PageWrapper>
+          <PageHeader>
+            <StatsContainer testId='stats'>
+              <StatsItem
                 counter={data.trackersBlockedCount}
+                description={locale.trackersBlocked}
               />
-              <DataItem
-                customStyle={customStyle.adsBlocked}
-                description={locale.adsBlocked}
+              <StatsItem
                 counter={data.adsBlockedCount}
+                description={locale.adsBlocked}
               />
-              <DataItem
-                customStyle={customStyle.httpsUpgrades}
-                description={locale.httpsUpgrades}
+              <StatsItem
                 counter={data.httpsUpgradesCount}
+                description={locale.httpsUpgrades}
               />
-              <DataItem
-                customStyle={customStyle.estimatedTime}
-                description={locale.estimatedTime}
-                text={locale.minutes}
+              <StatsItem
                 counter={data.estimatedTimeCount}
+                text={locale.minutes}
+                description={locale.estimatedTime}
               />
-            </DataBlock>
-          </Column>
-          <Column size={1} customStyle={customStyle.clockContainer}>
-            <Clock customStyle={customStyle.clock} />
-          </Column>
-        </Grid>
-        <BoxedContent customStyle={customStyle.textualContainer}>
-          <MediaContent media={privateTabIcon} customStyle={customStyle.media}>
-            <Heading level={1} customStyle={customStyle.title} text={locale.title} />
-              <Paragraph customStyle={customStyle.text} text={locale.paragraph1} />
-              <Paragraph customStyle={customStyle.italicText} text={locale.paragraph2} />
-              <BoxedContent customStyle={customStyle.switchContainer}>
-                <SwitchButton
-                  id='togglePrivateSearchEngine'
-                  size='large'
-                  checked={false}
-                  rightText={locale.switchLabel}
-                />
-              </BoxedContent>
-              <Paragraph customStyle={customStyle.text} text={locale.paragraph3} />
-          </MediaContent>
-        </BoxedContent>
+            </StatsContainer>
+            <Clock />
+          </PageHeader>
+          <div>
+            <NewTabHeading>{locale.thisIsAPrivateTab}</NewTabHeading>
+            <FeatureBlock grid={true} testId='tor'>
+              <aside>
+                <img src={torIcon} />
+              </aside>
+              <article>
+                <NewTabHeading level={2}>
+                  {locale.makeThisTabMuchMorePrivateWith}&nbsp;
+                  <EmphasizedText>{locale.tor}</EmphasizedText>
+                  <LabelledText>{locale.beta}</LabelledText>
+                </NewTabHeading>
+                <Paragraph>{locale.torDisclaimer}</Paragraph>
+                <LinkText href={torFAQ} target='_blank' rel='noreferrer noopener'>
+                {locale.learnMore}
+                </LinkText>
+              </article>
+              <aside>
+                <Toggle checked={isTor} />
+              </aside>
+            </FeatureBlock>
+            {
+              isTor
+              ? (
+                <FeatureBlock testId='duckduckgoWithTor'>
+                  <Paragraph>
+                    {locale.defaultSearchEngineDisclaimer}&nbsp;&nbsp;
+                    <a href='#' target='blank' rel='noreferrer noopener'>
+                      {locale.searchPreferences}
+                    </a>
+                  </Paragraph>
+                </FeatureBlock>
+              )
+              : (
+                <FeatureBlock grid={true} testId='duckduckgoNoTor'>
+                  <aside>
+                    <img src={ddgIcon} />
+                  </aside>
+                  <article>
+                    <NewTabHeading level={2}>
+                      {locale.privateSearchWith}&nbsp;
+                      <EmphasizedText>{locale.duckduckgo}</EmphasizedText>
+                    </NewTabHeading>
+                      <Paragraph>{locale.duckduckgoDisclaimer}</Paragraph>
+                  </article>
+                  <aside>
+                    <Toggle checked={true} />
+                  </aside>
+                </FeatureBlock>
+              )
+            }
+            <FeatureBlock testId='footer'>
+              <NewTabHeading level={3}>{locale.moreAboutPrivateTabs}</NewTabHeading>
+              <SmallText>{locale.privateTabsDisclaimer}</SmallText>
+            </FeatureBlock>
+          </div>
+        </PageWrapper>
       </Page>
     )
   }
 }
-
-export default NewPrivateTab
