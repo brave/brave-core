@@ -68,6 +68,7 @@ class RewardsService : public KeyedService {
 
   virtual uint64_t GetReconcileStamp() const = 0;
   virtual std::map<std::string, std::string> GetAddresses() const = 0;
+  virtual void SetRewardsMainEnabled(bool enabled) const = 0;
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;
   virtual void SetPublisherMinVisits(unsigned int visits) const = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
