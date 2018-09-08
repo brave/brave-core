@@ -7,9 +7,6 @@ source_set("browser") {
   ]
 
   deps = [
-  ]
-
-  public_deps = [
     "//components/content_settings/core/browser"
   ]
 }
