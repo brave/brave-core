@@ -87,9 +87,6 @@ source_set("ui") {
       "cocoa/importer/brave_import_lock_dialog_cocoa.mm",
     ]
   }
-  public_deps = [
-    "//content/public/browser",
-  ]
 
   deps = [
     "//base",
@@ -99,6 +96,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/browser",
     "//brave/components/resources:brave_components_resources_grit",
     "//chrome/app:command_ids",
+    "//content/public/browser",
     "//skia",
     "//ui/accessibility",
     "//ui/base",

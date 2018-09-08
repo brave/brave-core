@@ -20,12 +20,10 @@ source_set("net") {
     "url_context.cc",
     "url_context.h"
   ]
-  public_deps = [
+  deps = [
+    "//brave/browser/safebrowsing",
     "//chrome/browser",
     "//content/public/browser",
     "//net",
-  ]
-  deps = [
-    "//brave/browser/safebrowsing",
   ]
 }
