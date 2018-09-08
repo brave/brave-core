@@ -25,7 +25,7 @@ module.exports = {
     ]
   },
   output: {
-    path: path.join(__dirname, '../build/js'),
+    path: path.join(process.env.TARGET_GEN_DIR, 'js'),
     filename: '[name].bundle.js',
     chunkFilename: '[id].chunk.js'
   },
