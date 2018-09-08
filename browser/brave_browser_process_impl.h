@@ -37,7 +37,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
   extensions::BraveTorClientUpdater* tor_client_updater();
-  extensions::BraveTorClientUpdater* ipfs_client_updater();
+  extensions::BraveIpfsClientUpdater* ipfs_client_updater();
 
  private:
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
