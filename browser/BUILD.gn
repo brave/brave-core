@@ -3,6 +3,7 @@ import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
+import("//brave/browser/ipfs/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
@@ -194,6 +195,15 @@ source_set("browser_process") {
       "//third_party/re2",
     ]
   }
+
+  if (enable_tor) {
+    sources += [
+      # TODO(bridiver) - change the directory for these
+      "extensions/brave_ipfs_client_updater.cc",
+      "extensions/brave_ipfs_client_updater.h",
+    ]
+  }
+
 
   if (brave_wallet_enabled) {
     deps += [

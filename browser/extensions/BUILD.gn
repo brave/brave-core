@@ -1,3 +1,4 @@
+import("//brave/browser/ipfs/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
@@ -80,6 +81,7 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/ipfs:buildflags",
     "//brave/browser/tor:buildflags",
     "//brave/browser/webcompat_reporter",
     "//brave/common",

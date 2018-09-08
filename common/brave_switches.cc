@@ -31,6 +31,10 @@ const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
 const char kDisableBraveWaybackMachineExtension[] =
     "disable-brave-wayback-machine-extension";
 
+// Allows disabling the Ipfs client updater extension.
+const char kDisableIpfsClientUpdaterExtension[] =
+    "disable-ipfs-client-updater-extension";
+
 // Specifies overriding the built-in dark mode setting.
 // Valid values are: "dark" | "light".
 const char kDarkMode[] = "dark-mode";

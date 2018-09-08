@@ -671,6 +671,12 @@ test("brave_browser_tests") {
     ]
   }
 
+  if (enable_ipfs) {
+    sources += [
+      "//brave/browser/extensions/brave_ipfs_client_updater_browsertest.cc",
+    ]
+  }
+
   if (enable_brave_wayback_machine) {
     sources += [
       "//brave/components/brave_wayback_machine/brave_wayback_machine_browsertest.cc",
