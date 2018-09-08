@@ -195,6 +195,7 @@ copy("brave_dist_resources") {
     ":brave_license_dist_resources",
     ":packed_resources",
     "build/$target_os:brave",
+    "//chrome:packed_resources",
     "//third_party/icu:icudata",
   ]
 
