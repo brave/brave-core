@@ -158,6 +158,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_profile_prefs_browsertest.cc",
     "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
+    "//brave/browser/extensions/brave_ipfs_client_updater_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
     "//brave/browser/extensions/brave_webstore_inline_installer_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_autoplay_blocked_image_model_browsertest.cc",

@@ -10,6 +10,7 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/extensions/brave_ipfs_client_updater.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "extensions/common/extension_urls.h"
 
@@ -45,6 +46,8 @@ void BraveExtensionManagement::RegisterBraveExtensions() {
       *base::CommandLine::ForCurrentProcess();
   if (!command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension))
     g_brave_browser_process->tor_client_updater()->Register();
+  if (!command_line.HasSwitch(switches::kDisableIpfsClientUpdaterExtension))
+    g_brave_browser_process->ipfs_client_updater()->Register();
 }
 
 }  // namespace extensions

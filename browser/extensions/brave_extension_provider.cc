@@ -55,6 +55,12 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     "cldoidikboihgcjfkhdeidbpclkineef",
     // Brave Tor Client Updater (Linux)
     "biahpgbdmdkfgndcmfiipgcebobojjkp",
+    // Brave Ipfs Client Updater (Windows)
+    " - - - - - - - - - - - - - - - - - - ",
+    // Brave Ipfs Client Updater (Mac)
+    " - - - - - - - - - - - - - - - - - - ",
+    // Brave Ipfs Client Updater (Linux)
+    " - - - - - - - - - - - - - - - - - - ",
     // Dashlane
     "fdjamakpfbbddfjaooikfcpapjohcfmg",
     // Enpass
@@ -91,6 +97,8 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     "bhlmpjhncoojbkemjkeppfahkglffilp",
     // Test ID: Brave Tor Client Updater
     "ngicbhhaldfdgmjhilmnleppfpmkgbbk"
+    // Test ID: Brave Ipfs Client Updater
+    " - - - - - - - - - - - - - - - - - - "
   });
   return std::find(vetted_extensions.begin(), vetted_extensions.end(),
       extension->id()) != vetted_extensions.end();

@@ -10,6 +10,7 @@
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/extensions/brave_ipfs_client_updater.h"
 #include "brave/browser/profile_creation_monitor.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
@@ -116,4 +117,13 @@ BraveBrowserProcessImpl::tor_client_updater() {
 
   tor_client_updater_ = extensions::BraveTorClientUpdaterFactory();
   return tor_client_updater_.get();
+}
+
+extensions::BraveIpfsClientUpdater*
+BraveBrowserProcessImpl::ipfs_client_updater() {
+  if (ipfs_client_updater_)
+    return ipfs_client_updater_.get();
+
+  ipfs_client_updater_ = extensions::BraveIpfsClientUpdaterFactory();
+  return ipfs_client_updater_.get();
 }

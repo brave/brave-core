@@ -37,6 +37,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
   extensions::BraveTorClientUpdater* tor_client_updater();
+  extensions::BraveTorClientUpdater* ipfs_client_updater();
 
  private:
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
@@ -48,6 +49,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       https_everywhere_service_;
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
   std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
+  std::unique_ptr<extensions::BraveIpfsClientUpdater> ipfs_client_updater_;
   std::unique_ptr<ProfileCreationMonitor> profile_creation_monitor_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcessImpl);
