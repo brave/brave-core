@@ -15,6 +15,7 @@ class BraveProfileManager : public ProfileManager {
    static base::FilePath GetTorProfilePath();
 
    void InitProfileUserPrefs(Profile* profile) override;
+   std::string GetLastUsedProfileName() override;
  protected:
    // ProfileManager implementation.
    Profile* CreateProfileHelper(const base::FilePath& path) override;

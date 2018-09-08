@@ -12,6 +12,7 @@
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
@@ -45,6 +46,17 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   } else {
     ProfileManager::InitProfileUserPrefs(profile);
   }
+}
+
+std::string BraveProfileManager::GetLastUsedProfileName() {
+  PrefService* local_state = g_browser_process->local_state();
+  DCHECK(local_state);
+  const std::string last_used_profile_name =
+      local_state->GetString(prefs::kProfileLastUsed);
+  if (last_used_profile_name ==
+          base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
+    return chrome::kInitialProfile;
+  return ProfileManager::GetLastUsedProfileName();
 }
 
 Profile* BraveProfileManager::CreateProfileHelper(const base::FilePath& path) {
