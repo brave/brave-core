@@ -63,6 +63,7 @@ int BraveNetworkDelegateBase::OnHeadersReceived(net::URLRequest* request,
         std::move(callback), original_response_headers,
         override_response_headers, allowed_unsafe_redirect_url);
   }
+
   std::shared_ptr<brave::BraveRequestInfo> ctx(
       new brave::BraveRequestInfo());
   callbacks_[request->identifier()] = std::move(callback);
@@ -71,7 +72,14 @@ int BraveNetworkDelegateBase::OnHeadersReceived(net::URLRequest* request,
   ctx->original_response_headers = original_response_headers;
   ctx->override_response_headers = override_response_headers;
   ctx->allowed_unsafe_redirect_url = allowed_unsafe_redirect_url;
-  RunNextCallback(request, nullptr, ctx);
+
+  // Return ERR_IO_PENDING and run callbacks later by posting a task.
+  // URLRequestHttpJob::awaiting_callback_ will be set to true after we
+  // return net::ERR_IO_PENDING here, callbacks need to be run later then this
+  // to set awaiting_callback_ back to false.
+  BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
+      base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
+        base::Unretained(this), request, nullptr, ctx));
   return net::ERR_IO_PENDING;
 }
 
