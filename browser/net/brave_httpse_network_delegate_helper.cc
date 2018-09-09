@@ -5,6 +5,7 @@
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 
 #include "base/task/post_task.h"
+#include "base/threading/scoped_blocking_call.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -21,7 +22,8 @@ void OnBeforeURLRequest_HttpseFileWork(
     net::URLRequest* request,
     GURL* new_url,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  base::AssertBlockingAllowed();
+  base::ScopedBlockingCall scoped_blocking_call(
+      base::BlockingType::WILL_BLOCK);
   DCHECK(ctx->request_identifier != 0);
   g_brave_browser_process->https_everywhere_service()->
     GetHTTPSURL(&ctx->request_url, ctx->request_identifier, ctx->new_url_spec);

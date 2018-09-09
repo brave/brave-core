@@ -18,7 +18,6 @@
 <translation id="8992261409816268381">Brave రచయితలు</translation>
 <translation id="4651430425715739110">కాపీరైట్ <ph name="YEAR"/> Brave రచయితలు. సర్వ హక్కులు ప్రత్యేకించబడ్డాయి.</translation>
 <translation id="2310890394934209120">Brave OS సృష్టి అదనపు <ph name="BEGIN_LINK_CROS_OSS"/>ఓపెన్ సోర్స్ సాఫ్ట్‌వేర్<ph name="END_LINK_CROS_OSS"/> ద్వారా సాధ్యమయ్యింది.</translation>
-<translation id="858647341154864560">Linux (బీటా) లాగానే, Brave OS కూడా అదనపు <ph name="BEGIN_LINK_CROS_OSS"/>ఓపెన్ సోర్స్ సాఫ్ట్‌వేర్‌<ph name="END_LINK_CROS_OSS"/>పై ఎంతగానో ఆధారపడుతుంది.</translation>
 <translation id="5019879183386042809">Braveని డిఫాల్ట్ బ్రౌజర్‌గా చేయి</translation>
 <translation id="5063987220091207247">Brave OS ఈ పేజీని తెరవలేదు.</translation>
 <translation id="4065288863231444640">నేపథ్యంలో అమలయ్యేందుకు Braveని అనుమతించండి</translation>
@@ -32,6 +31,7 @@
 <translation id="5785919770853225148">Brave ఈ పాస్‌వర్డ్‌ను మీ Brave Software ఖాతాలో సేవ్ చేస్తుంది. మీరు దీనిని గుర్తుంచుకోవాల్సిన అవసరం లేదు.</translation>
 <translation id="3343095737966473035">Brave మీ డిఫాల్ట్ బ్రౌజర్ కాదు</translation>
 <translation id="6715663530666325392">వెబ్‌కు మీ వ్యక్తిగతీకరించిన బ్రౌజర్ లక్షణాలను సేవ్ చేయడానికి సమకాలీకణని సెటప్ చేయండి మరియు వాటిని ఏదైనా కంప్యూటర్‌లోని Brave నుండి ప్రాప్యత చేయండి.</translation>
+<translation id="5874882355102994015">అంతర్నిర్మిత PDF వ్యూయర్ లేనప్పుడు Brave ముద్రణ ప్రివ్యూని చూపించదు.</translation>
 <translation id="8880183781256147665">Braveకి జోడిస్తోంది...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> హానికరం కావచ్చు, కావున Brave దాన్ని బ్లాక్ చేసింది.</translation>
 <translation id="9067428552314418522">ఈ ఫైల్ అపాయకరమైనది, కాబట్టి Brave దీన్ని బ్లాక్ చేసింది.</translation>

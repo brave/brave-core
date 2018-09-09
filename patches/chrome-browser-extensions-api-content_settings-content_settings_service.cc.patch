@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/content_settings/content_settings_service.cc b/chrome/browser/extensions/api/content_settings/content_settings_service.cc
-index 83169fca6d7c243a0ea8289835c4e81038a395b4..7a2e6081363024ab67f4c39211514b9a7930459f 100644
+index 272f5ee9eb2abbeb11ae4d3f3d01550e73d6cc85..02e153a4e53ff260982c8d813122a772bc7d29bd 100644
 --- a/chrome/browser/extensions/api/content_settings/content_settings_service.cc
 +++ b/chrome/browser/extensions/api/content_settings/content_settings_service.cc
 @@ -5,6 +5,7 @@
@@ -7,10 +7,10 @@ index 83169fca6d7c243a0ea8289835c4e81038a395b4..7a2e6081363024ab67f4c39211514b9a
  
  #include "base/lazy_instance.h"
 +#include "brave/browser/extensions/api/content_settings/brave_content_settings_store.h"
- #include "chrome/browser/extensions/api/content_settings/content_settings_store.h"
  #include "extensions/browser/extension_prefs.h"
  #include "extensions/browser/extension_prefs_scope.h"
-@@ -13,7 +14,7 @@
+ #include "extensions/browser/pref_names.h"
+@@ -12,7 +13,7 @@
  namespace extensions {
  
  ContentSettingsService::ContentSettingsService(content::BrowserContext* context)

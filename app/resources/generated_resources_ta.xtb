@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">சாளரமாகத் திற</translation>
 <translation id="91568222606626347">குறுக்கு வழியை உருவாக்கு...</translation>
 <translation id="3627879631695760395"><ph name="APP"/>ஐ நிறுவு...</translation>
+<translation id="8288032458496410887"><ph name="APP"/>ஐ நிறுவல்நீக்கு...</translation>
 <translation id="4057896668975954729">அங்காடியில் காட்டு</translation>
 <translation id="4316850752623536204">டெவலப்பர் இணையதளம்</translation>
 <translation id="4289540628985791613">மேலோட்டம்</translation>
@@ -292,6 +293,7 @@
 <translation id="8559694214572302298">இமேஜ் டீகோடர்</translation>
 <translation id="8191453843330043793">V8 புராக்ஸி ரிசால்வர்</translation>
 <translation id="6185617499004995178">CUPS IPP வேலிடேட்டர்</translation>
+<translation id="3077708072777965506">Brave OS உள்ளீட்டு முறை</translation>
 <translation id="7171242884588191792">Brave கோப்புக் கருவிகள்</translation>
 <translation id="3061707000357573562">பேட்ச் சேவை</translation>
 <translation id="3580923162759633716">ப்ரொஃபைலிங் சேவை</translation>
@@ -500,8 +502,10 @@
 <translation id="8743864605301774756">புதுப்பித்தது: 1ம முன்பு</translation>
 <translation id="5638497698949808140">புதுப்பித்தது: <ph name="HOURS"/>ம முன்பு</translation>
 <translation id="1329584516321524826">சற்றுமுன் புதுப்பிக்கப்பட்டது</translation>
+<translation id="224940702122312781">இந்தப் பக்கம் அதிகமான டேட்டாவைப் பயன்படுத்தும்.</translation>
+<translation id="3861241522664181545">பக்கம் இடைநிறுத்தப்பட்டுள்ளது.</translation>
+<translation id="6921709132208495314">இந்தப் பக்கத்தில் டேட்டா உபயோகத்தை நிறுத்து</translation>
 <translation id="2724841811573117416">WebRTC பதிவுகள்</translation>
-<translation id="7518150891539970662">WebRTC பதிவுகள் (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC பதிவு எடுக்கப்பட்ட நேரம் <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">அகக் கோப்பு:</translation>
 <translation id="2071393345806050157">அகப் பதிவு கோப்பு எதுவுமில்லை.</translation>
@@ -509,7 +513,6 @@
 <translation id="5946591249682680882"><ph name="WEBRTC_LOG_REPORT_ID"/> ஐடியைப் புகாரளி</translation>
 <translation id="1737968601308870607">பிழையைப் பதிவுசெய்</translation>
 <translation id="1188807932851744811">பதிவு பதிவேற்றப்படவில்லை.</translation>
-<translation id="3925247638945319984">சமீபத்தில் எடுக்கப்பட்ட WebRTC பதிவுகள் உங்களிடம் இல்லை.</translation>
 <translation id="2076269580855484719">செருகுநிரலை மறை</translation>
 <translation id="2129825002735785149">செருகுநிரலைப் புதுப்பி</translation>
 <translation id="9088234649737575428">நிறுவனக் கொள்கையால் <ph name="PLUGIN_NAME"/> முடக்கப்பட்டுள்ளது</translation>
@@ -548,6 +551,7 @@
 <translation id="6363797201514053536">Brave Software இல் தேடவும் அல்லது URLஐ உள்ளிடவும்</translation>
 <translation id="6078323886959318429">குறுக்குவழியைச் சேர்</translation>
 <translation id="6324916366299863871">ஷார்ட்கட்டைத் திருத்து</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">முடிந்தது</translation>
 <translation id="4416582610654027550">சரியான URLஐ உள்ளிடவும்</translation>
@@ -1046,6 +1050,7 @@
 <translation id="5562781907504170924">இந்தத் தாவல் புளூடூத் சாதனத்துடன் இணைக்கப்பட்டுள்ளது.</translation>
 <translation id="5884474295213649357">இந்தத் தாவல் USB சாதனத்துடன் இணைக்கப்பட்டுள்ளது.</translation>
 <translation id="8466417995783206254">இந்தத் தாவல், பிக்ச்சர்-இன்-பிக்ச்சர் பயன்முறையில் வீடியோவை இயக்குகிறது.</translation>
+<translation id="2585724835339714757">இந்தத் தாவல் உங்கள் திரையைப் பகிர்கிறது.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - கேமரா அல்லது மைக்ரோஃபோன் ரெக்கார்டு செய்கிறது</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - தாவல் உள்ளடக்கம் பகிரப்பட்டது</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - பிக்ச்சர்-இன்-பிக்ச்சர் பயன்முறையில் வீடியோவை இயக்குகிறது</translation>
@@ -1521,7 +1526,6 @@
 <translation id="8647834505253004544">சரியான இணைய முகவரி அல்ல</translation>
 <translation id="2149850907588596975">கடவுச்சொற்களும் படிவங்களும்</translation>
 <translation id="8639963783467694461">தானியங்குநிரப்பி அமைப்புகள்</translation>
-<translation id="2512222046227390255">படிவங்களைத் தானாக நிரப்பு</translation>
 <translation id="7764225426217299476">முகவரியைச் சேர்</translation>
 <translation id="5595485650161345191">முகவரியைத் திருத்து</translation>
 <translation id="6207937957461833379">நாடு/பிராந்தியம்</translation>
@@ -1603,6 +1607,7 @@
 <translation id="577322787686508614">படித்தல் செயல்பாடு இந்தச் சாதனத்தில் அனுமதிக்கப்படவில்லை: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">குறிப்பிட்ட கோரிக்கை ஆதரிக்கப்படாத சாதனம்: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">எழுதுதல் செயல்பாடு இந்தச் சாதனத்தில் அனுமதிக்கப்படவில்லை: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">புளூடூத் உள்ளமைவைக் கட்டுப்படுத்துபவர்: <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">நேர வரம்பு</translation>
 <translation id="2496180316473517155">உலாவல் வரலாறு</translation>
 <translation id="8662811608048051533">பெரும்பாலான தளங்களிலிருந்து உங்களை வெளியேற்றும்.</translation>
@@ -1614,6 +1619,7 @@
 <translation id="4699172675775169585">தற்காலிகமாகச் சேமிக்கப்பட்ட படங்கள் மற்றும் கோப்புகள்</translation>
 <translation id="1274997165432133392">குக்கீகள் மற்றும் பிற தளத்தின் தரவு</translation>
 <translation id="3838543471119263078">குக்கீகள், பிற தளம் மற்றும் செருகுநிரல் தரவு</translation>
+<translation id="369489984217678710">கடவுச்சொற்களும் பிற உள்நுழைவுத் தரவும்</translation>
 <translation id="6865313869410766144">தன்னிரப்பி படிவத் தரவு</translation>
 <translation id="177336675152937177">ஹோஸ்ட் செய்யப்பட்ட பயன்பாட்டின் தரவு</translation>
 <translation id="1718835860248848330">கடந்த ஒரு மணிநேரம்</translation>
@@ -1971,6 +1977,8 @@
 <translation id="5282733140964383898">"கண்காணிக்க வேண்டாம்" என்பதை இயக்குவதால், உங்கள் உலாவல் ட்ராஃபிக்குடன் ஒரு கோரிக்கை இணைக்கப்படும். கோரிக்கைக்கு இணையதளம் பதிலளிக்கிறதா என்பதையும், கோரிக்கை எப்படிப் புரிந்துகொள்ளப்பட்டது என்பதையும் பொறுத்து விளைவுகள் இருக்கும். எடுத்துக்காட்டாக, நீங்கள் பார்வையிட்ட பிற இணையதளங்களைச் சார்ந்திராத விளம்பரங்களை உங்களுக்குக் காட்டுவதன் மூலம் இந்தக் கோரிக்கைக்குச் சில இணையதளங்கள் பதிலளிக்கலாம். பாதுகாப்பை மேம்படுத்துவது, தங்களின் இணையதளங்களில் உள்ளடக்கம், சேவைகள், விளம்பரங்கள் மற்றும் பரிந்துரைகளை வழங்குவது, புள்ளிவிவர அறிக்கைகளை உருவாக்குவது போன்ற காரணங்களுக்காக, பல இணையதளங்கள் தொடர்ந்து உங்கள் உலாவல் தரவைச் சேகரித்துப் பயன்படுத்தும். <ph name="BEGIN_LINK"/>மேலும் அறிக<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">சரிபார்க்கப்பட்ட அணுகலை இயக்கு</translation>
 <translation id="5557991081552967863">தூக்கப் பயன்முறையின் போதும், வைஃபையை இயக்கத்தில் வைத்திரு</translation>
+<translation id="8562084399541316921">தொடர்ந்து படிக்கவும்</translation>
+<translation id="6201926614538916789">மொபைலில் பார்த்துக் கொண்டிருந்த தளங்களை உங்கள் Bravebookகில் தொடர்ந்து பார்க்கலாம்</translation>
 <translation id="1521442365706402292">சான்றிதழ்களை நிர்வகி</translation>
 <translation id="7075625805486468288">HTTPS/SSL சான்றிதழ்களையும் அமைப்புகளையும் நிர்வகிக்கவும்</translation>
 <translation id="8871974300055371298">உள்ளடக்க அமைப்புகள்</translation>
@@ -2006,6 +2014,8 @@
 <translation id="7136694880210472378">இயல்புநிலையாக மாற்று</translation>
 <translation id="102272308210570439">திரையில் உள்ளதைப் பயன்படுத்திக்கொள்ள அசிஸ்டண்ட்டை அனுமதிக்கவும்</translation>
 <translation id="8624205858755890468">தொடர்புடைய தகவல், பயன்பாடுகள் மற்றும் செயல்களைக் காட்டுவதற்கு, அசிஸ்டண்ட்டை அனுமதிக்கும்.</translation>
+<translation id="4737453247496280552">"Ok Brave Software"ளைக் கண்டறிதல்</translation>
+<translation id="6409553560184414680">திரை இயக்கத்தில் இருக்கும்போது, எந்த நேரத்திலும் "Ok Brave Software" என்று சொல்லி அசிஸ்டண்ட்டை அணுகலாம்.</translation>
 <translation id="8669919703154928649">அறிவிப்புகளைக் காண்பிக்க அசிஸ்டண்ட்டை அனுமதிக்கவும்</translation>
 <translation id="3430342160185525240">அறிவிப்புகளைக் காண்பிக்க அசிஸ்டண்ட்டுக்கு அனுமதியளிக்கும்.</translation>
 <translation id="3908743412684152579">Brave Software அசிஸ்டண்ட் அமைப்புகள்</translation>
@@ -2095,7 +2105,9 @@
 <translation id="8708000541097332489">வெளியேறும் போது அழி</translation>
 <translation id="8037357227543935929">கேள் (இயல்பு)</translation>
 <translation id="3427092606871434483">அனுமதி (இயல்பு)</translation>
+<translation id="4879491255372875719">தானியங்கு (இயல்பு)</translation>
 <translation id="4312866146174492540">தடு (இயல்பு)</translation>
+<translation id="6979440798594660689">முடக்கு (இயல்பு)</translation>
 <translation id="2356070529366658676">கேள்</translation>
 <translation id="5063480226653192405">பயன்பாடு</translation>
 <translation id="3006881078666935414">பயன்பாட்டுத் தரவு இல்லை</translation>
@@ -2127,6 +2139,7 @@
 <translation id="2318923050469484167">தற்போதைய மறைநிலை அமர்வு (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">எந்தத் தளங்களும் பெரிதாக்கப்படவோ சிறிதாக்கப்படவோ இல்லை</translation>
 <translation id="3566721612727112615">தளங்கள் எதுவும் சேர்க்கப்படவில்லை</translation>
+<translation id="8098574385249290065">தளங்கள் எப்போது ஒலியை இயக்கலாம் என்பதை Brave தேர்வு செய்ய அனுமதிக்கவும் (பரிந்துரைக்கப்படுவது)</translation>
 <translation id="5763751966069581670">USB சாதனங்கள் இல்லை</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">தளத்தைச் சேர்</translation>
@@ -2170,25 +2183,20 @@
 <translation id="4562155214028662640">கைரேகையைச் சேர்</translation>
 <translation id="1719312230114180055">குறிப்பு: கைரேகையானது வலிமையான கடவுச்சொல் அல்லது பின்னை விடப் பாதுகாப்புக் குறைவாக இருக்கக்கூடும்.</translation>
 <translation id="1927632033341042996">விரல் <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">கைரேகை மூலம் திறப்பதை இயக்கு</translation>
 <translation id="7665369617277396874">கணக்கைச் சேர்</translation>
 <translation id="3422989461909154470">ஆப்ஸிலும் இணையதளங்களிலும் உள்நுழைந்துள்ள உங்கள் அனைத்து Brave Software கணக்குகளையும் இங்கே நிர்வகிக்கலாம்.</translation>
 <translation id="1987317783729300807">கணக்குகள்</translation>
 <translation id="8418661265246754237">Brave Software கணக்குகள்</translation>
-<translation id="2107494551712864447">கைரேகையைச் சேர்க்கவும்</translation>
-<translation id="6388771388956873507">உங்கள் சாதனத்தில் கைரேகை உணர்வியைக் கண்டறிந்து, விரலால் தொடவும்</translation>
-<translation id="9170397650136757332">இப்போது, உங்கள் கைரேகையின் வெவ்வேறு பகுதிகளைப் பதிவு செய்ய, விரலைச் சற்று நகர்த்தவும்</translation>
-<translation id="161707228174452095">கைரேகை சேர்க்கப்பட்டது!</translation>
-<translation id="4576537685267142337">விரலை எடுத்துவிட்டு, மீண்டும் உணர்வியைத் தொடவும்</translation>
-<translation id="494660967831069720">பகுதியளவுத் தரவு</translation>
-<translation id="3064410671692449875">போதுமான தரவு இல்லை</translation>
-<translation id="2532026602297547439">உணர்வி அழுக்காக உள்ளது</translation>
-<translation id="8642267168767642381">விரலை மிகவும் மெதுவாக நகர்த்திவிட்டீர்கள்</translation>
-<translation id="2039623879703305659">விரலை மிகவும் வேகமாக நகர்த்திவிட்டீர்கள்</translation>
-<translation id="7311891583377621132">கைரேகையின் வேறுபட்ட பகுதியைப் பதிவுசெய்ய, லேசாக நகர்த்தவும்</translation>
+<translation id="1059855432287631118">கைரேகையைப் பதிவுசெய்தல்</translation>
+<translation id="878068003854005405">தொடங்குவோம். உங்கள் விரலை சென்சார் மீது வைக்கவும்.</translation>
+<translation id="7189965711416741966">கைரேகை சேர்க்கப்பட்டது.</translation>
+<translation id="9220820413868316583">விரலை எடுத்துவிட்டு, மீண்டும் தொடவும்.</translation>
+<translation id="4534661889221639075">மீண்டும் முயலவும்.</translation>
+<translation id="3645372836428131288">கைரேகையின் வேறொரு பகுதியைப் பதிவுசெய்ய, விரலைக் கொஞ்சம் நகர்த்தவும்.</translation>
 <translation id="7345706641791090287">கடவுச்சொல்லை உறுதிப்படுத்தவும்</translation>
 <translation id="381202950560906753">மற்றொன்றைச் சேர்</translation>
-<translation id="6658023813581644008">உள்நுழைவதற்கு Smart Lockகை அமைக்க, கடவுச்சொல்லை உள்ளிடவும்</translation>
+<translation id="6968288415730398122">திரைப் பூட்டை உள்ளமைக்க, கடவுச்சொல்லை உள்ளிடவும்</translation>
+<translation id="4103091233824664032">திரைப் பூட்டை உள்ளமைத்து உள்நுழைய, கடவுச்சொல்லை உள்ளிடவும்</translation>
 <translation id="5449551289610225147">தவறான கடவுச்சொல்</translation>
 <translation id="5374359983950678924">படத்தை மாற்றுக</translation>
 <translation id="6984299437918708277">உள்நுழைவுத் திரையில் உங்கள் கணக்கிற்குக் காட்ட வேண்டிய படத்தைத் தேர்வு செய்யவும்</translation>
@@ -2217,7 +2225,7 @@
 <translation id="1136155683023653803">கடவுச்சொற்கள், புக்மார்க்குகள், வரலாறு மற்றும் பல உங்கள் கணக்கில் ஒத்திசைக்கப்பட்டன</translation>
 <translation id="3267417306184901318">உங்கள் Brave Software கணக்குடன் ஒத்திசைக்கப்பட்ட உலாவிய தரவு மற்றும் செயல்பாடு</translation>
 <translation id="1123187597739372905">ஒத்திசைவு அமைப்புகளைக் காட்டு</translation>
-<translation id="8420510748452002155">தனிப்பயனாக்கப்படாத சேவைகள்</translation>
+<translation id="5428209950370661546">பிற Brave Software சேவைகள்</translation>
 <translation id="2055016640093734678">Brave Software சேவைகள் அமைப்புகளைக் காட்டு</translation>
 <translation id="7956662517480676674">ஒத்திசைவு &amp; Brave Software சேவைகள்</translation>
 <translation id="2453021845418314664">மேம்பட்ட ஒத்திசைவு அமைப்புகள்</translation>
@@ -2400,9 +2408,14 @@
 <translation id="2315821125498993513">ஃபோனுடன் இணைக்க முடியவில்லை. <ph name="LINK_BEGIN"/>மேலும் அறிக.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together இயக்கப்பட்டுள்ளது</translation>
 <translation id="3088402208262982892">Better Together முடக்கப்பட்டுள்ளது</translation>
+<translation id="7179187931092694802">உங்கள் ஃபோன் மூலம் Bravebookகைத் திறக்கலாம். <ph name="LINK_BEGIN"/>மேலும் அறிக<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">உடனடி இணைப்பு முறை</translation>
+<translation id="4746351372139058112">செய்திகள்</translation>
+<translation id="2248072377758660530">உங்கள் Bravebookகில் இருந்து மெசேஜ்களை அனுப்பலாம், பெறலாம். <ph name="LINK_BEGIN"/>மேலும் அறிக<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">இந்தச் சாதனத்தை அகற்று</translation>
 <translation id="3606712892509067288">Better Togetherரிலிருந்து அகற்றும்</translation>
+<translation id="5078490485380754244">சாதனத்தை அகற்று</translation>
+<translation id="8072033737676488034">உங்கள் ஃபோனை அகற்றி, Better Togetherரை முடக்கவும்</translation>
 <translation id="7878562273885520351">உங்கள் கடவுச்சொல் திருடப்பட்டிருக்கலாம்</translation>
 <translation id="6582421931165117398">உங்கள் தனிப்பட்ட தகவலைப் பாதுகாக்க, இப்போதே கடவுச்சொல்லை மாற்றவும். கடவுச்சொல்லை மாற்றும் முன், உள்நுழையும்படி கேட்கப்படுவீர்கள்.</translation>
 <translation id="1089439967362294234">கடவுச்சொல்லை மாற்று</translation>
@@ -2503,6 +2516,7 @@
 <translation id="2202898655984161076">பிரிண்டர்களைப் பட்டியலிடுவதில் சிக்கல் ஏற்பட்டது. உங்களின் அச்சுப் பொறிகளில் சிலவற்றை <ph name="CLOUD_PRINT_NAME"/> உடன் வெற்றிகரமாக பதிவுசெய்ய முடியவில்லை.</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> இணைப்பான் செயல்முறை செயலிழந்தது. மறுதொடக்கம் செய்யவா?</translation>
 <translation id="6904655473976120856">வெளியேற, பயன்பாட்டுப் பொத்தானை அழுத்தவும்</translation>
+<translation id="79766959863778284">XR தனிமைப்படுத்தப்பட்ட சாதனச் சேவை</translation>
 <translation id="8909833622202089127">தளமானது உங்கள் இருப்பிடத்தைக் கண்காணிக்கிறது</translation>
 <translation id="375636864092143889">தளமானது உங்கள் மைக்ரோஃபோனைப் பயன்படுத்துகிறது</translation>
 <translation id="310671807099593501">தளமானது புளூடூத்தைப் பயன்படுத்துகிறது</translation>

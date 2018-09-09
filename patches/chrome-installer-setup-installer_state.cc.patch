@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/setup/installer_state.cc b/chrome/installer/setup/installer_state.cc
-index 6dd4a1486ce1534f21919e2e2008dc8bc913c83e..a409db791ada75d70c893231d5f9582a9fdf209e 100644
+index 2b04463d8efa22d19075f356e6ab3753467930c1..cbcf328db0d554141658f23cde886d045208d713 100644
 --- a/chrome/installer/setup/installer_state.cc
 +++ b/chrome/installer/setup/installer_state.cc
-@@ -306,7 +306,7 @@ void InstallerState::WriteInstallerResult(
+@@ -307,7 +307,7 @@ void InstallerState::WriteInstallerResult(
        system_install, product_->distribution()->GetStateKey(), status,
        string_resource_id, launch_cmd, install_list.get());
    if (is_migrating_to_single() && InstallUtil::GetInstallReturnCode(status)) {

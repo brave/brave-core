@@ -18,7 +18,6 @@
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> – The Brave Authors. Med enerett.</translation>
 <translation id="2310890394934209120">Brave OS er gjort mulig av ytterligere <ph name="BEGIN_LINK_CROS_OSS"/>åpen kilde-programvare<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="858647341154864560">Brave OS er basert på <ph name="BEGIN_LINK_CROS_OSS"/>tilleggsprogramvare med åpen kildekode<ph name="END_LINK_CROS_OSS"/>, i likhet med Linux (beta).</translation>
 <translation id="5019879183386042809">Gjør Brave til standard nettleser</translation>
 <translation id="5063987220091207247">Brave OS kan ikke åpne denne siden.</translation>
 <translation id="4065288863231444640">La Brave kjøre i bakgrunnen</translation>
@@ -36,6 +35,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="5785919770853225148">Brave lagrer dette passordet i Brave Software-kontoen din, så du trenger ikke å huske det.</translation>
 <translation id="3343095737966473035">Brave er ikke standardnettleseren din</translation>
 <translation id="6715663530666325392">Konfigurer Synkronisering til å lagre de personlig tilpassede nettleserfunksjonene dine på nettet slik at du kan bruke dem fra Brave på enhver datamaskin.</translation>
+<translation id="5874882355102994015">Brave kan ikke vise forhåndsvisningen av utskrift når det innebygde PDF-visningsprogrammet mangler.</translation>
 <translation id="8880183781256147665">Legger til i Brave …</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> kan være farlig, så Brave har blokkert den.</translation>
 <translation id="9067428552314418522">Denne filen er farlig, så Brave har blokkert den.</translation>

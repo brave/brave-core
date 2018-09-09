@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/shell_integration_linux.cc b/chrome/browser/shell_integration_linux.cc
-index c5a8c3e5d9a8696f46d758ea7b327ba846e7abdb..8be1f06fb1d3dc3ff8e6e51a220d9ab40b7f9386 100644
+index d7bc172f2933eb29af0269a37d36a143f00b59c2..0bb8d3ab8fe67e5ac052162b3d38f6548a60fed7 100644
 --- a/chrome/browser/shell_integration_linux.cc
 +++ b/chrome/browser/shell_integration_linux.cc
-@@ -432,7 +432,7 @@ std::string GetDesktopName(base::Environment* env) {
+@@ -433,7 +433,7 @@ std::string GetDesktopName(base::Environment* env) {
    std::string name;
    if (env->GetVar("CHROME_DESKTOP", &name) && !name.empty())
      return name;
@@ -11,7 +11,7 @@ index c5a8c3e5d9a8696f46d758ea7b327ba846e7abdb..8be1f06fb1d3dc3ff8e6e51a220d9ab4
  #endif
  }
  
-@@ -440,7 +440,7 @@ std::string GetIconName() {
+@@ -441,7 +441,7 @@ std::string GetIconName() {
  #if defined(GOOGLE_CHROME_BUILD)
    return "google-chrome";
  #else  // CHROMIUM_BUILD

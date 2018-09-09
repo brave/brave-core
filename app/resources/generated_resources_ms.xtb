@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Buka sebagai tetingkap</translation>
 <translation id="91568222606626347">Buat Pintasan...</translation>
 <translation id="3627879631695760395">Pasang <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">Nyahpasang <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">Lihat di Gedung</translation>
 <translation id="4316850752623536204">Tapak Web Pembangun</translation>
 <translation id="4289540628985791613">Gambaran keseluruhan</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Penyahkod Imej</translation>
 <translation id="8191453843330043793">Pelerai Proksi V8</translation>
 <translation id="6185617499004995178">Pengesah IPP CUPS</translation>
+<translation id="3077708072777965506">Kaedah Input OS Brave</translation>
 <translation id="7171242884588191792">Utiliti Fail Brave</translation>
 <translation id="3061707000357573562">Perkhidmatan Tampung</translation>
 <translation id="3580923162759633716">Perkhidmatan Pemprofilan</translation>
@@ -500,8 +502,10 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8743864605301774756">Dikemas kini 1 jam yang lalu</translation>
 <translation id="5638497698949808140">Dikemas kini <ph name="HOURS"/> jam yang lalu</translation>
 <translation id="1329584516321524826">Dikemas kini sebentar tadi</translation>
+<translation id="224940702122312781">Halaman ini akan menggunakan banyak data.</translation>
+<translation id="3861241522664181545">Halaman dijeda.</translation>
+<translation id="6921709132208495314">Berhenti menggunakan data pada halaman ini</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
-<translation id="7518150891539970662">Log WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Log WebRTC dirakam <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Fail setempat:</translation>
 <translation id="2071393345806050157">Tiada fail log setempat.</translation>
@@ -509,7 +513,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="5946591249682680882">ID Laporan <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Failkan pepijat</translation>
 <translation id="1188807932851744811">Log belum dimuat naik.</translation>
-<translation id="3925247638945319984">Anda tiada log WebRTC yang dirakam baru-baru ini.</translation>
 <translation id="2076269580855484719">Sembunyikan pemalam ini</translation>
 <translation id="2129825002735785149">Kemas kini pemalam</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> disekat oleh dasar perusahaan</translation>
@@ -548,6 +551,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6363797201514053536">Cari di Brave Software atau taip URL</translation>
 <translation id="6078323886959318429">Tambahkan pintasan</translation>
 <translation id="6324916366299863871">Edit pintasan</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="4416582610654027550">Taip URL yang sah</translation>
@@ -1046,6 +1050,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="5562781907504170924">Tab ini disambungkan ke Peranti Bluetooth.</translation>
 <translation id="5884474295213649357">Tab ini disambungkan ke peranti USB.</translation>
 <translation id="8466417995783206254">Tab ini memainkan video dalam mod gambar dalam gambar.</translation>
+<translation id="2585724835339714757">Tab ini berkongsi skrin anda.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Kamera atau mikrofon sedang merakam</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Kandungan tab dikongsi</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Video dimainkan dalam mod gambar dalam gambar</translation>
@@ -1521,7 +1526,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8647834505253004544">Bukan alamat web yang sah</translation>
 <translation id="2149850907588596975">Kata laluan dan borang</translation>
 <translation id="8639963783467694461">Tetapan auto isi</translation>
-<translation id="2512222046227390255">Auto isi borang</translation>
 <translation id="7764225426217299476">Tambahkan alamat</translation>
 <translation id="5595485650161345191">Edit alamat</translation>
 <translation id="6207937957461833379">Negara/Rantau</translation>
@@ -1603,6 +1607,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="577322787686508614">Pengendalian baca tidak dibenarkan pada: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">Permintaan yang dinyatakan tidak disokong pada: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">Pengendalian tulis tidak dibenarkan pada: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">Konfigurasi Blueooth dikawal oleh <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Julat masa</translation>
 <translation id="2496180316473517155">Sejarah penyemakan imbas</translation>
 <translation id="8662811608048051533">Mengelog anda keluar daripada kebanyakan tapak.</translation>
@@ -1614,6 +1619,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4699172675775169585">Imej dan fail dicache</translation>
 <translation id="1274997165432133392">Kuki dan data tapak yang lain</translation>
 <translation id="3838543471119263078">Kuki, data tapak lain dan data pemalam</translation>
+<translation id="369489984217678710">Kata laluan dan data log masuk yang lain</translation>
 <translation id="6865313869410766144">Autolengkap data borang</translation>
 <translation id="177336675152937177">Data apl yang dihoskan</translation>
 <translation id="1718835860248848330">Jam terakhir</translation>
@@ -1971,6 +1977,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="5282733140964383898">Apabila anda mendayakan ‘Jangan Kesan’, permintaan akan disertakan dengan trafik penyemakan imbas anda. Sebarang kesan bergantung pada sama ada tapak web menyambut permintaan tersebut dan cara permintaan tersebut ditafsirkan. Contohnya, sesetengah tapak web mungkin menyambut permintaan ini dengan memaparkan kepada anda iklan yang tidak berdasarkan tapak web lain yang pernah anda lawati. Sebahagian besar tapak web tetap akan mengumpul dan menggunakan data penyemakan imbas anda - contohnya, untuk meningkatkan keselamatan, untuk menyediakan kandungan, perkhidmatan, iklan dan cadangan pada tapak web mereka dan untuk menghasilkan perangkaan pelaporan. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Dayakan Akses Disahkan</translation>
 <translation id="5557991081552967863">Pastikan Wi-Fi hidup semasa tidur</translation>
+<translation id="8562084399541316921">Teruskan Membaca</translation>
+<translation id="6201926614538916789">Sambung semula melihat tapak daripada mudah alih pada Bravebook anda</translation>
 <translation id="1521442365706402292">Uruskan sijil</translation>
 <translation id="7075625805486468288">Urus sijil dan tetapan HTTPS/SSL</translation>
 <translation id="8871974300055371298">Tetapan kandungan</translation>
@@ -2006,6 +2014,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7136694880210472378">Jadikan lalai</translation>
 <translation id="102272308210570439">Biarkan Pembantu menggunakan apa yang ada pada skrin anda</translation>
 <translation id="8624205858755890468">Mendayakan Pembantu untuk menunjukkan maklumat, apl dan tindakan yang berkaitan kepada anda.</translation>
+<translation id="4737453247496280552">Pengesanan "Ok Brave Software"</translation>
+<translation id="6409553560184414680">Akses Assistant pada bila-bila masa anda menyebut "Ok Brave Software" semasa skrin anda dihidupkan.</translation>
 <translation id="8669919703154928649">Benarkan Assistant menunjukkan pemberitahuan kepada anda</translation>
 <translation id="3430342160185525240">Mendayakan Assistant untuk menunjukkan pemberitahuan kepada anda.</translation>
 <translation id="3908743412684152579">Tetapan Brave Software Assistant</translation>
@@ -2095,7 +2105,9 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8708000541097332489">Kosongkan apabila keluar</translation>
 <translation id="8037357227543935929">Tanya (lalai)</translation>
 <translation id="3427092606871434483">Benarkan (lalai)</translation>
+<translation id="4879491255372875719">Automatik (lalai)</translation>
 <translation id="4312866146174492540">Sekat (lalai)</translation>
+<translation id="6979440798594660689">Redam (lalai)</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="5063480226653192405">Penggunaan</translation>
 <translation id="3006881078666935414">Tiada data penggunaan</translation>
@@ -2127,6 +2139,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2318923050469484167">Sesi inkognito semasa (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Tiada tapak yang telah dizum masuk atau keluar</translation>
 <translation id="3566721612727112615">Tiada tapak ditambahkan</translation>
+<translation id="8098574385249290065">Benarkan Brave memilih masa tapak boleh memainkan bunyi (disyorkan)</translation>
 <translation id="5763751966069581670">Tiada peranti USB ditemui</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Tambahkan tapak</translation>
@@ -2170,25 +2183,20 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4562155214028662640">Tambahkan Cap Jari</translation>
 <translation id="1719312230114180055">Nota: Cap jari anda mungkin kurang selamat berbanding kata laluan atau PIN yang kukuh.</translation>
 <translation id="1927632033341042996">Jari <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Dayakan buka kunci menggunakan cap jari</translation>
 <translation id="7665369617277396874">Tambah akaun</translation>
 <translation id="3422989461909154470">Semua akaun Brave Software anda yang dilog masuk daripada apl dan tapak web boleh diurus di sini.</translation>
 <translation id="1987317783729300807">Akaun</translation>
 <translation id="8418661265246754237">Akaun Brave Software</translation>
-<translation id="2107494551712864447">Tambahkan cap jari</translation>
-<translation id="6388771388956873507">Cari penderia cap jari pada peranti anda dan sentuh penderia itu menggunakan jari anda</translation>
-<translation id="9170397650136757332">Sekarang, gerakkan jari anda sedikit untuk menangkap semua bahagian lain cap jari anda</translation>
-<translation id="161707228174452095">Cap jari ditambahkan!</translation>
-<translation id="4576537685267142337">Angkat jari, kemudian sentuh penderia sekali lagi</translation>
-<translation id="494660967831069720">Data sebahagian</translation>
-<translation id="3064410671692449875">Data tidak mencukupi</translation>
-<translation id="2532026602297547439">Penderia kotor</translation>
-<translation id="8642267168767642381">Jari digerakkan terlalu perlahan</translation>
-<translation id="2039623879703305659">Jari digerakkan terlalu cepat</translation>
-<translation id="7311891583377621132">Bergerak sedikit untuk menangkap bahagian lain cap jari anda</translation>
+<translation id="1059855432287631118">Mendaftarkan cap jari</translation>
+<translation id="878068003854005405">Mari kita mulakan. Letakkan jari anda pada penderia.</translation>
+<translation id="7189965711416741966">Cap jari ditambahkan.</translation>
+<translation id="9220820413868316583">Angkat kemudian cuba lagi.</translation>
+<translation id="4534661889221639075">Cuba lagi.</translation>
+<translation id="3645372836428131288">Bergerak sedikit untuk menangkap bahagian lain cap jari.</translation>
 <translation id="7345706641791090287">Sahkan kata laluan anda</translation>
 <translation id="381202950560906753">Tambahkan yang lain</translation>
-<translation id="6658023813581644008">Untuk menyediakan Smart Lock untuk log masuk, masukkan kata laluan anda</translation>
+<translation id="6968288415730398122">Masukkan kata laluan anda untuk mengkonfigurasi kunci skrin</translation>
+<translation id="4103091233824664032">Masukkan kata laluan anda untuk mengkonfigurasi kunci skrin dan log masuk</translation>
 <translation id="5449551289610225147">Kata laluan tidak sah</translation>
 <translation id="5374359983950678924">Tukar gambar</translation>
 <translation id="6984299437918708277">Pilih gambar yang hendak dipaparkan untuk akaun anda pada skrin log masuk</translation>
@@ -2217,7 +2225,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="1136155683023653803">Kata laluan, penanda halaman, sejarah dan pelbagai lagi disegerakkan ke akaun anda</translation>
 <translation id="3267417306184901318">Data dan aktiviti semakan imbas anda, disegerakkan ke Akaun Brave Software anda</translation>
 <translation id="1123187597739372905">Tunjukkan tetapan penyegerakan</translation>
-<translation id="8420510748452002155">Perkhidmatan tidak diperibadikan</translation>
+<translation id="5428209950370661546">Perkhidmatan Brave Software yang lain</translation>
 <translation id="2055016640093734678">Tunjukkan tetapan perkhidmatan Brave Software</translation>
 <translation id="7956662517480676674">Segerak dan perkhidmatan Brave Software</translation>
 <translation id="2453021845418314664">Tetapan penyegerakan terperinci</translation>
@@ -2400,9 +2408,14 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2315821125498993513">Tidak dapat menyambung ke telefon. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Lebih Baik Bersama dihidupkan</translation>
 <translation id="3088402208262982892">Lebih Baik Bersama dimatikan</translation>
+<translation id="7179187931092694802">Buka kunci Bravebook dengan telefon anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Penambatan Segera</translation>
+<translation id="4746351372139058112">Mesej</translation>
+<translation id="2248072377758660530">Hantar dan terima mesej teks daripada Bravebook anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Lupakan peranti ini</translation>
 <translation id="3606712892509067288">Alih keluar daripada Lebih Baik Bersama</translation>
+<translation id="5078490485380754244">Lupakan peranti</translation>
+<translation id="8072033737676488034">Alih keluar telefon anda dan lumpuhkan Lebih Baik Bersama</translation>
 <translation id="7878562273885520351">Kata laluan anda mungkin terjejas</translation>
 <translation id="6582421931165117398">Untuk melindungi maklumat peribadi anda, tukar kata laluan anda sekarang. Sebelum anda boleh menukar kata laluan, anda akan diminta untuk log masuk.</translation>
 <translation id="1089439967362294234">Tukar Kata Laluan</translation>
@@ -2503,6 +2516,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2202898655984161076">Terdapat masalah menyenaraikan pencetak. Beberapa pencetak anda mungkin tidak berjaya didaftarkan dengan <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Proses penyambung <ph name="CLOUD_PRINT_NAME"/> telah mengalami nahas. Mulakan semula?</translation>
 <translation id="6904655473976120856">Tekan butang Apl untuk keluar</translation>
+<translation id="79766959863778284">Perkhidmatan Peranti Terpencil XR</translation>
 <translation id="8909833622202089127">Tapak sedang menjejak lokasi anda</translation>
 <translation id="375636864092143889">Tapak sedang menggunakan mikrofon anda</translation>
 <translation id="310671807099593501">Tapak sedang menggunakan bluetooth</translation>

@@ -12,7 +12,8 @@ class BraveHostContentSettingsMap : public HostContentSettingsMap {
    BraveHostContentSettingsMap(PrefService* prefs,
                                bool is_incognito_profile,
                                bool is_guest_profile,
-                               bool store_last_modified);
+                               bool store_last_modified,
+                               bool migrate_requesting_and_top_level_origin_settings);
  private:
    void InitializeFingerprintingContentSetting();
    void InitializeReferrerContentSetting();

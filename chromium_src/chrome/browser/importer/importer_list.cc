@@ -5,6 +5,7 @@
 #include "../../../../../chrome/browser/importer/importer_list.cc"
 
 #include "base/strings/utf_string_conversions.h"
+#include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
 #include "brave/common/importer/brave_importer_utils.h"
 #include "brave/common/importer/chrome_importer_utils.h"
@@ -41,8 +42,8 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
 }
 
 void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
-  base::AssertBlockingAllowed();
-
+  base::ScopedBlockingCall scoped_blocking_call(
+      base::BlockingType::WILL_BLOCK);
   base::FilePath chrome_user_data_folder = GetChromeUserDataFolder();
   base::ListValue* chrome_profiles = GetChromeSourceProfiles(chrome_user_data_folder);
   std::string brand_chrome("Chrome ");
@@ -66,7 +67,8 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
 }
 
 void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
-  base::AssertBlockingAllowed();
+  base::ScopedBlockingCall scoped_blocking_call(
+      base::BlockingType::WILL_BLOCK);
 
   base::FilePath brave_user_data_folder = GetBraveUserDataFolder();
 

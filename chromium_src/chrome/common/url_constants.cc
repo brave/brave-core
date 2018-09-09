@@ -7,8 +7,8 @@
 /**
  * For rebasing Chromium, see this PR for vim commands:
  * https://github.com/brave/brave-core/pull/155
- * After rebasing with vim replacing command, please change
- * kUpgradeHelpCenterBaseURL manually.
+ * AFTER rebasing with vim replacing command, please change
+ * kUpgradeHelpCenterBaseURL manually to "https://community.brave.com?p=update_error&error=";
  * IMPORTANMT: SCAN MANUALLY TO MAKE SURE NOTHING ELSE NEW IS MISSING!
  */
 
@@ -24,13 +24,9 @@ const char kBluetoothAdapterOffHelpURL[] =
     "https://community.brave.com";
 #endif
 
-// TODO(https://crbug.com/852139): Replace this numbered link with a P-link once
-// we have one.
 const char kCastCloudServicesHelpURL[] =
     "https://community.brave.com";
 
-// TODO(https://crbug.com/852139): Replace this numbered link with a P-link once
-// we have one.
 const char kCastNoDestinationFoundURL[] =
     "https://community.brave.com";
 
@@ -49,7 +45,7 @@ const char kChromeHelpViaKeyboardURL[] =
     "chrome-extension://honijodknafkokifofgiaalefdiedpko/main.html";
 #else
     "https://community.brave.com";
-#endif  // defined(GOOGLE_CHROME_BUILD
+#endif  // defined(GOOGLE_CHROME_BUILD)
 #else
     "https://community.brave.com";
 #endif  // defined(OS_CHROMEOS)
@@ -60,7 +56,7 @@ const char kChromeHelpViaMenuURL[] =
     "chrome-extension://honijodknafkokifofgiaalefdiedpko/main.html";
 #else
     "https://community.brave.com";
-#endif  // defined(GOOGLE_CHROME_BUILD
+#endif  // defined(GOOGLE_CHROME_BUILD)
 #else
     "https://community.brave.com";
 #endif  // defined(OS_CHROMEOS)
@@ -71,7 +67,7 @@ const char kChromeHelpViaWebUIURL[] =
     "chrome-extension://honijodknafkokifofgiaalefdiedpko/main.html";
 #else
     "https://community.brave.com";
-#endif  // defined(GOOGLE_CHROME_BUILD
+#endif  // defined(GOOGLE_CHROME_BUILD)
 #else
     "https://community.brave.com";
 #endif  // defined(OS_CHROMEOS)
@@ -159,10 +155,8 @@ const char kLearnMoreReportingURL[] =
 
 const char kLegacySupervisedUserManagementDisplayURL[] =
     "https://community.brave.com";
-
 const char kLegacySupervisedUserManagementURL[] =
     "https://community.brave.com";
-
 
 const char kMyActivityUrlInClearBrowsingData[] =
     "https://community.brave.com";
@@ -209,6 +203,9 @@ const char kSettingsSearchHelpURL[] =
 #endif
 
 const char kSmartLockHelpPage[] =
+    "https://community.brave.com";
+
+const char kSyncAndGoogleServicesLearnMoreURL[] =
     "https://community.brave.com";
 
 const char kSyncEncryptionHelpURL[] =
@@ -281,6 +278,9 @@ const char kInstantTetheringLearnMoreURL[] =
 const char kMultiDeviceLearnMoreURL[] =
     "https://community.brave.com";
 
+const char kAndroidMessagesLearnMoreURL[] =
+    "https://community.brave.com";
+
 const char kLanguageSettingsLearnMoreUrl[] =
     "https://community.brave.com";
 
@@ -289,6 +289,9 @@ const char kLearnMoreEnterpriseURL[] =
 
 const char kLinuxAppsLearnMoreURL[] =
     "https://community.brave.com";
+
+const char kLinuxCreditsPath[] =
+    "/opt/google/chrome/resources/linux_credits.html";
 
 const char kNaturalScrollHelpURL[] =
     "https://community.brave.com";
@@ -319,7 +322,6 @@ const char kChromeCleanerLearnMoreURL[] =
 
 const char kWindowsXPVistaDeprecationURL[] =
     "https://community.brave.com";
-
 #endif
 
 #if BUILDFLAG(ENABLE_ONE_CLICK_SIGNIN)

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/browser_distribution.cc b/chrome/installer/util/browser_distribution.cc
-index 33c105c968dc46b62ab39ee766f1ecce4449c358..7504f12b590cdaa063e5a31e55dda24adfc142c6 100644
+index cf9adadf0299806164b1d67eb7dab2cbdf1f46af..bdc2357b3c34f0cf50e7d2b37d5b3f43ab550e5f 100644
 --- a/chrome/installer/util/browser_distribution.cc
 +++ b/chrome/installer/util/browser_distribution.cc
 @@ -54,7 +54,7 @@ BrowserDistribution* BrowserDistribution::GetOrCreateBrowserDistribution(
@@ -19,4 +19,4 @@ index 33c105c968dc46b62ab39ee766f1ecce4449c358..7504f12b590cdaa063e5a31e55dda24a
 +  return L"Brave";
  }
  
- base::string16 BrowserDistribution::GetAppDescription() {
+ base::string16 BrowserDistribution::GetLongAppDescription() {

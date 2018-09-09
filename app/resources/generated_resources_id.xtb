@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Buka sebagai jendela</translation>
 <translation id="91568222606626347">Membuat Pintasan...</translation>
 <translation id="3627879631695760395">Menginstal <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">Uninstal <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">Lihat di Toko</translation>
 <translation id="4316850752623536204">Situs Web Pengembang</translation>
 <translation id="4289540628985791613">Ikhtisar</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Pendekode Gambar</translation>
 <translation id="8191453843330043793">Pemecah Proxy V8</translation>
 <translation id="6185617499004995178">Validator IPP CUPS</translation>
+<translation id="3077708072777965506">Metode Masukan Brave OS</translation>
 <translation id="7171242884588191792">Utilitas File Brave</translation>
 <translation id="3061707000357573562">Layanan Patch</translation>
 <translation id="3580923162759633716">Layanan Profiling</translation>
@@ -499,16 +501,18 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8743864605301774756">Diupdate 1 jam yang lalu</translation>
 <translation id="5638497698949808140">Diupdate <ph name="HOURS"/> jam yang lalu</translation>
 <translation id="1329584516321524826">Baru saja diupdate</translation>
+<translation id="224940702122312781">Halaman ini akan menggunakan banyak data.</translation>
+<translation id="3861241522664181545">Halaman dijeda.</translation>
+<translation id="6921709132208495314">Berhenti menggunakan data di halaman ini</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
-<translation id="7518150891539970662">Log WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Log WebRTC direkam pada <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">File lokal:</translation>
 <translation id="2071393345806050157">Tidak ada file log lokal.</translation>
 <translation id="6628328486509726751"><ph name="WEBRTC_LOG_UPLOAD_TIME"/> yang diupload</translation>
 <translation id="5946591249682680882">ID Laporan <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Bug file</translation>
+<translation id="3650845953328929506">Unggahan log tertunda.</translation>
 <translation id="1188807932851744811">Log tidak diupload.</translation>
-<translation id="3925247638945319984">Anda tidak memiliki log WebRTC yang direkam baru-baru ini.</translation>
 <translation id="2076269580855484719">Sembunyikan plugin ini</translation>
 <translation id="2129825002735785149">Perbarui plugin</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> diblokir oleh kebijakan perusahaan</translation>
@@ -547,6 +551,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6363797201514053536">Telusuri Brave Software atau ketik URL</translation>
 <translation id="6078323886959318429">Tambahkan pintasan</translation>
 <translation id="6324916366299863871">Edit pintasan</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="4416582610654027550">Ketik URL yang valid</translation>
@@ -1045,6 +1050,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5562781907504170924">Tab ini terhubung ke Perangkat Bluetooth.</translation>
 <translation id="5884474295213649357">Tab ini terhubung dengan perangkat USB.</translation>
 <translation id="8466417995783206254">Tab ini diputar dalam mode picture-in-picture.</translation>
+<translation id="2585724835339714757">Tab ini membagikan layar Anda.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Perekaman kamera atau mikrofon</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Konten tab dibagikan</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Video diputar dalam mode picture-in-picture</translation>
@@ -1520,7 +1526,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8647834505253004544">Bukan alamat web yang valid</translation>
 <translation id="2149850907588596975">Sandi dan formulir</translation>
 <translation id="8639963783467694461">Setelan Isi-otomatis</translation>
-<translation id="2512222046227390255">Formulir isi otomatis</translation>
 <translation id="7764225426217299476">Tambahkan alamat</translation>
 <translation id="5595485650161345191">Edit alamat</translation>
 <translation id="6207937957461833379">Negara/Wilayah</translation>
@@ -1533,6 +1538,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5029568752722684782">Hapus salinan</translation>
 <translation id="2154484045852737596">Edit kartu</translation>
 <translation id="5087580092889165836">Tambahkan kartu</translation>
+<translation id="7284555534810614828">Simpan kartu untuk menggunakan Brave Pay</translation>
+<translation id="6281511959351052816">Simpan kartu untuk menggunakan Brave Pay</translation>
 <translation id="4807098396393229769">Nama di kartu</translation>
 <translation id="2612676031748830579">Nomor kartu kredit</translation>
 <translation id="869891660844655955">Masa berlaku</translation>
@@ -1602,6 +1609,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="577322787686508614">Operasi membaca tidak diizinkan di: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">Permintaan yang diberikan tidak didukung di: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">Operasi menulis tidak diizinkan di: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">Konfigurasi Bluetooth dikontrol oleh <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Rentang waktu</translation>
 <translation id="2496180316473517155">Histori jelajah</translation>
 <translation id="8662811608048051533">Membuat Anda logout dari sebagian besar situs.</translation>
@@ -1613,6 +1621,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4699172675775169585">File dan gambar yang disimpan dalam cache</translation>
 <translation id="1274997165432133392">Cookie dan data situs lain</translation>
 <translation id="3838543471119263078">Cookie serta data plugin dan situs lainnya</translation>
+<translation id="369489984217678710">Sandi dan data login lainnya</translation>
 <translation id="6865313869410766144">Data formulir isi-otomatis</translation>
 <translation id="177336675152937177">Data aplikasi yang dihosting</translation>
 <translation id="1718835860248848330">Jam terakhir</translation>
@@ -1668,6 +1677,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5317780077021120954">Simpan</translation>
 <translation id="5696679855467848181">File PPD saat ini yang digunakan: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">Lokasi</translation>
 <translation id="7754704193130578113">Tanyakan lokasi penyimpanan setiap file sebelum mendownload</translation>
 <translation id="5713072761819014678">Memutuskan hubungan akun Brave Software Drive</translation>
 <translation id="486635084936119914">Buka jenis file tertentu secara otomatis setelah didownload</translation>
@@ -1970,6 +1980,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5282733140964383898">Dengan mengaktifkan ''Jangan Lacak'', permintaan akan disertakan dalam traffic penjelajahan Anda. Pengaruh apa pun bergantung pada apakah situs menanggapi permintaan atau tidak, dan cara permintaan diinterpretasikan. Misalnya, beberapa situs mungkin menanggapi permintaan ini dengan menayangkan iklan yang tidak didasarkan pada situs lain yang telah Anda kunjungi. Banyak situs yang masih akan mengumpulkan dan menggunakan data browsing Anda - misalnya untuk meningkatkan keamanan, menyediakan konten, layanan, iklan, dan saran pada situs mereka, serta membuat statistik pelaporan. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Mengaktifkan Akses Terverifikasi</translation>
 <translation id="5557991081552967863">Tetap aktifkan Wi-Fi saat dalam mode tidur</translation>
+<translation id="8562084399541316921">Lanjutkan Membaca</translation>
+<translation id="6201926614538916789">Lanjutkan melihat situs dari seluler di Bravebook Anda</translation>
 <translation id="1521442365706402292">Kelola sertifikat</translation>
 <translation id="7075625805486468288">Mengelola sertifikat dan setelan HTTPS/SSL</translation>
 <translation id="8871974300055371298">Setelan konten</translation>
@@ -1980,6 +1992,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Untuk setelan lainnya yang berkaitan dengan privasi, setelan, dan pengumpulan data, lihat <ph name="BEGIN_LINK"/>Sinkronisasi dan personalisasi<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Untuk setelan lainnya yang berkaitan dengan privasi, keamanan, dan pengumpulan data, lihat <ph name="BEGIN_LINK"/>Sinkronisasi dan layanan Brave Software<ph name="END_LINK"/></translation>
+<translation id="6438234780621650381">Setel ulang setelan</translation>
 <translation id="5293170712604732402">Memulihkan setelan ke default aslinya</translation>
 <translation id="892706138619340876">Beberapa setelan telah disetel ulang</translation>
 <translation id="2334029754052191847">Brave mendeteksi bahwa beberapa setelan Anda dirusak oleh program lain dan menyetelnya ulang ke setelan default aslinya.</translation>
@@ -2005,6 +2018,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7136694880210472378">Jadikan default</translation>
 <translation id="102272308210570439">Izinkan Asisten menggunakan item yang ada di layar</translation>
 <translation id="8624205858755890468">Mengaktifkan Asisten agar dapat menampilkan aplikasi, tindakan, dan info terkait.</translation>
+<translation id="4737453247496280552">Deteksi "Ok Brave Software"</translation>
+<translation id="6409553560184414680">Akses Asisten setiap kali Anda mengatakan "Ok Brave Software" saat layar aktif.</translation>
 <translation id="8669919703154928649">Izinkan Asisten menampilkan notifikasi</translation>
 <translation id="3430342160185525240">Mengaktifkan Asisten untuk menampilkan notifikasi.</translation>
 <translation id="3908743412684152579">Setelan Asisten Brave Software</translation>
@@ -2094,7 +2109,9 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8708000541097332489">Hapus saat keluar</translation>
 <translation id="8037357227543935929">Tanyakan (default)</translation>
 <translation id="3427092606871434483">Izinkan (default)</translation>
+<translation id="4879491255372875719">Otomatis (default)</translation>
 <translation id="4312866146174492540">Blokir (default)</translation>
+<translation id="6979440798594660689">Matikan (default)</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="5063480226653192405">Penggunaan</translation>
 <translation id="3006881078666935414">Tidak ada data penggunaan</translation>
@@ -2126,6 +2143,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2318923050469484167">(<ph name="EMBEDDING"/>) sesi penyamaran saat ini</translation>
 <translation id="383891835335927981">Tidak ada situs yang telah diperbesar atau diperkecil</translation>
 <translation id="3566721612727112615">Tidak ada situs yang ditambahkan</translation>
+<translation id="8098574385249290065">Izinkan Brave memilih kapan situs dapat memutar suara (direkomendasikan)</translation>
 <translation id="5763751966069581670">Tidak ada perangkat USB yang ditemukan</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Tambahkan situs</translation>
@@ -2169,25 +2187,21 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4562155214028662640">Tambahkan Sidik Jari</translation>
 <translation id="1719312230114180055">Catatan: Sidik jari mungkin kurang aman dibandingkan dengan PIN atau sandi yang kuat.</translation>
 <translation id="1927632033341042996">Jari <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Aktifkan buka kunci sidik jari</translation>
 <translation id="7665369617277396874">Tambahkan akun</translation>
 <translation id="3422989461909154470">Semua login akun Brave Software dari aplikasi dan situs dapat dikelola di sini.</translation>
 <translation id="1987317783729300807">Akun</translation>
 <translation id="8418661265246754237">Akun Brave Software</translation>
-<translation id="2107494551712864447">Tambahkan sidik jari</translation>
-<translation id="6388771388956873507">Temukan sensor sidik jari di perangkat dan sentuh sensor tersebut dengan jari Anda</translation>
-<translation id="9170397650136757332">Sekarang gerakkan jari sedikit untuk menangkap seluruh bagian sidik jari Anda</translation>
-<translation id="161707228174452095">Sidik jari ditambahkan!</translation>
-<translation id="4576537685267142337">Angkat jari, lalu sentuh sensor lagi</translation>
-<translation id="494660967831069720">Data sebagian</translation>
-<translation id="3064410671692449875">Data tidak cukup</translation>
-<translation id="2532026602297547439">Sensor kotor</translation>
-<translation id="8642267168767642381">Jari bergerak terlalu lambat</translation>
-<translation id="2039623879703305659">Jari bergerak terlalu cepat</translation>
-<translation id="7311891583377621132">Gerakkan jari sedikit untuk menangkap bagian sidik jari yang lain</translation>
+<translation id="3297951628821704004">Hapus akun dari perangkat ini</translation>
+<translation id="1059855432287631118">Mendaftarkan sidik jari</translation>
+<translation id="878068003854005405">Ayo kita mulai. Letakkan jari Anda pada sensor.</translation>
+<translation id="7189965711416741966">Sidik jari ditambahkan.</translation>
+<translation id="9220820413868316583">Angkat, lalu coba lagi.</translation>
+<translation id="4534661889221639075">Coba lagi.</translation>
+<translation id="3645372836428131288">Gerakkan jari sedikit untuk menangkap bagian sidik jari yang lain.</translation>
 <translation id="7345706641791090287">Konfirmasi sandi Anda</translation>
 <translation id="381202950560906753">Tambahkan yang lain</translation>
-<translation id="6658023813581644008">Agar dapat menyiapkan Smart Lock untuk login, masukkan sandi</translation>
+<translation id="6968288415730398122">Masukkan sandi Anda untuk mengonfigurasi kunci layar</translation>
+<translation id="4103091233824664032">Masukkan sandi Anda untuk mengonfigurasi kunci layar dan login</translation>
 <translation id="5449551289610225147">Sandi tidak valid</translation>
 <translation id="5374359983950678924">Ubah gambar</translation>
 <translation id="6984299437918708277">Pilih gambar yang akan ditampilkan untuk akun Anda di layar login</translation>
@@ -2216,7 +2230,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1136155683023653803">Sandi, bookmark, histori, dan lainnya disinkronkan ke akun Anda</translation>
 <translation id="3267417306184901318">Data dan aktivitas browsing internet Anda disinkronkan ke Akun Brave Software</translation>
 <translation id="1123187597739372905">Tampilkan setelan sinkronisasi</translation>
-<translation id="8420510748452002155">Layanan yang tidak dipersonalisasi</translation>
+<translation id="5428209950370661546">Layanan Brave Software lainnya</translation>
 <translation id="2055016640093734678">Tampilkan setelan layanan Brave Software</translation>
 <translation id="7956662517480676674">Sinkronisasi dan layanan Brave Software</translation>
 <translation id="2453021845418314664">Setelan sinkronisasi lanjutan</translation>
@@ -2399,9 +2413,14 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2315821125498993513">Tidak dapat terhubung ke ponsel. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together aktif</translation>
 <translation id="3088402208262982892">Better Together nonaktif</translation>
+<translation id="7179187931092694802">Membuka kunci Bravebook dengan ponsel. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Tethering Instan</translation>
+<translation id="4746351372139058112">Pesan</translation>
+<translation id="2248072377758660530">Mengirim dan menerima pesan teks dari Bravebook. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Lupakan perangkat ini</translation>
 <translation id="3606712892509067288">Hapus dari Better Together</translation>
+<translation id="5078490485380754244">Lupakan perangkat</translation>
+<translation id="8072033737676488034">Hapus ponsel dan nonaktifkan Better Together</translation>
 <translation id="7878562273885520351">Sandi Anda mungkin disusupi</translation>
 <translation id="6582421931165117398">Untuk melindungi informasi pribadi, ubah sandi Anda sekarang. Sebelum dapat mengubah sandi, Anda akan diminta untuk login.</translation>
 <translation id="1089439967362294234">Ubah Sandi</translation>
@@ -2502,6 +2521,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2202898655984161076">Ada masalah dengan pencantuman printer. Beberapa printer Anda mungkin tidak berhasil didaftarkan ke <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Proses penyambung <ph name="CLOUD_PRINT_NAME"/> ngadat. Mulai ulang?</translation>
 <translation id="6904655473976120856">Tekan tombol Aplikasi untuk keluar</translation>
+<translation id="79766959863778284">Layanan Perangkat Terisolasi XR</translation>
 <translation id="8909833622202089127">Situs sedang melacak lokasi Anda</translation>
 <translation id="375636864092143889">Situs sedang menggunakan mikrofon</translation>
 <translation id="310671807099593501">Situs sedang menggunakan bluetooth</translation>

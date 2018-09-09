@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">เปิดเป็นหน้าต่าง</translation>
 <translation id="91568222606626347">สร้างทางลัด...</translation>
 <translation id="3627879631695760395">ติดตั้ง <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">ถอนการติดตั้ง <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">ดูในสโตร์</translation>
 <translation id="4316850752623536204">เว็บไซต์นักพัฒนาซอฟต์แวร์</translation>
 <translation id="4289540628985791613">ภาพรวม</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">ตัวถอดรหัสรูปภาพ</translation>
 <translation id="8191453843330043793">ตัวแก้ไขพร็อกซี V8</translation>
 <translation id="6185617499004995178">โปรแกรมตรวจสอบ CUPS IPP</translation>
+<translation id="3077708072777965506">วิธีการป้อนข้อมูลของ Brave OS</translation>
 <translation id="7171242884588191792">ยูทิลิตีไฟล์ของ Brave</translation>
 <translation id="3061707000357573562">แพตช์บริการ</translation>
 <translation id="3580923162759633716">กำลังสร้างโปรไฟล์บริการ</translation>
@@ -499,8 +501,10 @@
 <translation id="8743864605301774756">อัปเดตเมื่อ 1 ชั่วโมงที่ผ่านมา</translation>
 <translation id="5638497698949808140">อัปเดตเมื่อ <ph name="HOURS"/> ชั่วโมงที่ผ่านมา</translation>
 <translation id="1329584516321524826">เพิ่งอัปเดตเมื่อครู่นี้</translation>
+<translation id="224940702122312781">หน้านี้จะใช้อินเทอร์เน็ตปริมาณมาก</translation>
+<translation id="3861241522664181545">หยุดการโหลดหน้านี้ชั่วคราวแล้ว</translation>
+<translation id="6921709132208495314">หยุดใช้อินเทอร์เน็ตในหน้านี้</translation>
 <translation id="2724841811573117416">บันทึก WebRTC</translation>
-<translation id="7518150891539970662">บันทึก WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">บันทึก WebRTC ที่จับภาพ <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">ไฟล์ในเครื่อง:</translation>
 <translation id="2071393345806050157">ไม่มีไฟล์บันทึกในเครื่อง</translation>
@@ -508,7 +512,6 @@
 <translation id="5946591249682680882">รหัสรายงาน <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">ข้อบกพร่องของไฟล์</translation>
 <translation id="1188807932851744811">ยังไม่อัปโหลดบันทึก</translation>
-<translation id="3925247638945319984">คุณไม่มีบันทึก WebRTC ที่จับภาพเมื่อเร็วๆ นี้</translation>
 <translation id="2076269580855484719">ซ่อนปลั๊กอินนี้</translation>
 <translation id="2129825002735785149">อัปเดตปลั๊กอิน</translation>
 <translation id="9088234649737575428">นโยบายองค์กรบล็อก <ph name="PLUGIN_NAME"/> ไว้</translation>
@@ -547,6 +550,7 @@
 <translation id="6363797201514053536">ค้นหาด้วย Brave Software หรือพิมพ์ URL</translation>
 <translation id="6078323886959318429">เพิ่มทางลัด</translation>
 <translation id="6324916366299863871">แก้ไขทางลัด</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">เสร็จสิ้น</translation>
 <translation id="4416582610654027550">พิมพ์ URL ที่ถูกต้อง</translation>
@@ -1045,6 +1049,7 @@
 <translation id="5562781907504170924">แท็บนี้เชื่อมต่อกับอุปกรณ์บลูทูธอยู่</translation>
 <translation id="5884474295213649357">แท็บนี้เชื่อมต่อกับอุปกรณ์ USB อยู่</translation>
 <translation id="8466417995783206254">แท็บนี้กำลังเล่นวิดีโอในโหมดการแสดงภาพซ้อนภาพ</translation>
+<translation id="2585724835339714757">แท็บนี้กำลังแชร์หน้าจอของคุณ</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - กำลังบันทึกด้วยกล้องหรือไมโครโฟน</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - แชร์เนื้อหาในแท็บอยู่</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - วิดีโอกำลังเล่นในโหมดการแสดงภาพซ้อนภาพ</translation>
@@ -1520,7 +1525,6 @@
 <translation id="8647834505253004544">ไม่ใช่ที่อยู่เว็บที่ถูกต้อง</translation>
 <translation id="2149850907588596975">รหัสผ่านและฟอร์ม</translation>
 <translation id="8639963783467694461">การตั้งค่าป้อนอัตโนมัติ</translation>
-<translation id="2512222046227390255">ป้อนฟอร์มอัตโนมัติ</translation>
 <translation id="7764225426217299476">เพิ่มที่อยู่</translation>
 <translation id="5595485650161345191">แก้ไขที่อยู่</translation>
 <translation id="6207937957461833379">ประเทศ/เขตการปกครอง</translation>
@@ -1602,6 +1606,7 @@
 <translation id="577322787686508614">ไม่อนุญาตให้อ่านใน "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="3141917231319778873">คำขอที่ระบุไม่สามารถใช้ได้ใน "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="6122875415561139701">ไม่อนุญาตให้เขียนใน "<ph name="DEVICE_NAME"/>"</translation>
+<translation id="439266289085815679">การกำหนดค่าบลูทูธควบคุมโดย <ph name="USER_EMAIL"/></translation>
 <translation id="784934925303690534">ช่วงเวลา</translation>
 <translation id="2496180316473517155">ประวัติการเข้าชมที่เรียกดู</translation>
 <translation id="8662811608048051533">นำคุณออกจากระบบของเว็บไซต์ส่วนใหญ่</translation>
@@ -1613,6 +1618,7 @@
 <translation id="4699172675775169585">รูปภาพและไฟล์ในแคช</translation>
 <translation id="1274997165432133392">คุกกี้และข้อมูลอื่นของไซต์</translation>
 <translation id="3838543471119263078">คุกกี้และข้อมูลอื่นๆ ของเว็บไซต์ ตลอดจนข้อมูลปลั๊กอิน</translation>
+<translation id="369489984217678710">รหัสผ่านและข้อมูลอื่นๆ ในการลงชื่อเข้าใช้</translation>
 <translation id="6865313869410766144">ข้อมูลฟอร์มที่ป้อนอัตโนมัติ</translation>
 <translation id="177336675152937177">ข้อมูลแอปที่โฮสต์</translation>
 <translation id="1718835860248848330">ชั่วโมงล่าสุด</translation>
@@ -1970,6 +1976,8 @@
 <translation id="5282733140964383898">การเปิดใช้ "ไม่ติดตาม" จะทำให้คำขอหนึ่งๆ ไปรวมอยู่กับการรับส่งข้อมูลในการท่องเว็บของคุณ ผลที่จะเกิดขึ้นขึ้นอยู่กับว่าเว็บไซต์ตอบสนองต่อคำขอหรือไม่และมีการตีความคำขอนั้นอย่างไร ตัวอย่างเช่น บางเว็บไซต์อาจตอบสนองต่อคำขอนี้ด้วยการแสดงโฆษณาที่ไม่ได้อยู่ในเว็บไซต์อื่นๆ ที่คุณเคยเข้าชมให้คุณเห็น เว็บไซต์จำนวนมากจะยังคงเก็บรวบรวมข้อมูลการท่องเว็บของคุณไว้เพื่อใช้ปรับปรุงความปลอดภัย จัดเตรียมเนื้อหา บริการ โฆษณา และคำแนะนำในเว็บไซต์ รวมทั้งเพื่อสร้างสถิติการรายงาน เป็นต้น <ph name="BEGIN_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">เปิดใช้การเข้าถึงที่ได้รับการยืนยัน</translation>
 <translation id="5557991081552967863">ให้ Wi-Fi เปิดอยู่ตลอดระหว่างนอนหลับ</translation>
+<translation id="8562084399541316921">อ่านต่อ</translation>
+<translation id="6201926614538916789">ดูเว็บไซต์จากอุปกรณ์เคลื่อนที่ใน Bravebook ต่อ</translation>
 <translation id="1521442365706402292">จัดการใบรับรอง</translation>
 <translation id="7075625805486468288">จัดการใบรับรอง HTTPS/SSL และการตั้งค่า</translation>
 <translation id="8871974300055371298">การตั้งค่าเนื้อหา</translation>
@@ -2005,6 +2013,8 @@
 <translation id="7136694880210472378">ทำให้เป็นค่าเริ่มต้น</translation>
 <translation id="102272308210570439">ให้ Assistant ใช้สิ่งที่อยู่ในหน้าจอ</translation>
 <translation id="8624205858755890468">เปิดใช้ Assistant เพื่อแสดงข้อมูล แอป และการดำเนินการต่างๆ ที่เกี่ยวข้อง</translation>
+<translation id="4737453247496280552">การตรวจพบ Ok Brave Software</translation>
+<translation id="6409553560184414680">เข้าถึง Assistant ได้ทุกเพียงแค่พูดว่า Ok Brave Software เมื่อหน้าจอเปิดอยู่</translation>
 <translation id="8669919703154928649">อนุญาตให้ Assistant แสดงการแจ้งเตือน</translation>
 <translation id="3430342160185525240">เปิดให้ Assistant แสดงการแจ้งเตือน</translation>
 <translation id="3908743412684152579">การตั้งค่า Brave Software Assistant</translation>
@@ -2094,7 +2104,9 @@
 <translation id="8708000541097332489">ล้างเมื่อออก</translation>
 <translation id="8037357227543935929">ขอ (ค่าเริ่มต้น)</translation>
 <translation id="3427092606871434483">อนุญาต (ค่าเริ่มต้น)</translation>
+<translation id="4879491255372875719">อัตโนมัติ (ค่าเริ่มต้น)</translation>
 <translation id="4312866146174492540">บล็อก (ค่าเริ่มต้น)</translation>
+<translation id="6979440798594660689">ปิดเสียง (ค่าเริ่มต้น)</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="5063480226653192405">การใช้</translation>
 <translation id="3006881078666935414">ไม่มีข้อมูลการใช้งาน</translation>
@@ -2126,6 +2138,7 @@
 <translation id="2318923050469484167">เซสชันไม่ระบุตัวตนปัจจุบัน (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">ไม่มีการซูมเข้าหรือซูมออกเว็บไซต์ใดๆ</translation>
 <translation id="3566721612727112615">ยังไม่ได้เพิ่มเว็บไซต์</translation>
+<translation id="8098574385249290065">ให้ Brave เลือกว่าเว็บไซต์จะเล่นเสียงได้เมื่อใด (แนะนำ)</translation>
 <translation id="5763751966069581670">ไม่พบอุปกรณ์ USB</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">เพิ่มเว็บไซต์</translation>
@@ -2169,25 +2182,20 @@
 <translation id="4562155214028662640">เพิ่มลายนิ้วมือ</translation>
 <translation id="1719312230114180055">หมายเหตุ: ลายนิ้วมืออาจมีความปลอดภัยน้อยกว่ารหัสผ่านหรือ PIN ที่เดายาก</translation>
 <translation id="1927632033341042996">นิ้วที่ <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">เปิดใช้การปลดล็อกด้วยลายนิ้วมือ</translation>
 <translation id="7665369617277396874">เพิ่มบัญชี</translation>
 <translation id="3422989461909154470">คุณจะจัดการบัญชี Brave Software ทั้งหมดที่ลงชื่อเข้าใช้ไว้จากแอปและเว็บไซต์ต่างๆ ได้ที่นี่</translation>
 <translation id="1987317783729300807">บัญชี</translation>
 <translation id="8418661265246754237">บัญชี Brave Software</translation>
-<translation id="2107494551712864447">เพิ่มลายนิ้วมือ</translation>
-<translation id="6388771388956873507">ค้นหาเซ็นเซอร์ลายนิ้วมือในอุปกรณ์แล้วใช้นิ้วแตะเซ็นเซอร์</translation>
-<translation id="9170397650136757332">เลื่อนนิ้วเล็กน้อยเพื่อจับภาพส่วนต่างๆ ทั้งหมดของลายนิ้วมือ</translation>
-<translation id="161707228174452095">เพิ่มลายนิ้วมือแล้ว!</translation>
-<translation id="4576537685267142337">ยกนิ้วขึ้น แล้วแตะเซ็นเซอร์อีกครั้ง</translation>
-<translation id="494660967831069720">ข้อมูลบางส่วน</translation>
-<translation id="3064410671692449875">ข้อมูลไม่เพียงพอ</translation>
-<translation id="2532026602297547439">เซ็นเซอร์สกปรก</translation>
-<translation id="8642267168767642381">เลื่อนนิ้วช้าเกินไป</translation>
-<translation id="2039623879703305659">เลื่อนนิ้วเร็วเกินไป</translation>
-<translation id="7311891583377621132">เลื่อนนิ้วเล็กน้อยเพื่อจับภาพส่วนต่างๆ ของลายนิ้วมือ</translation>
+<translation id="1059855432287631118">การลงทะเบียนลายนิ้วมือ</translation>
+<translation id="878068003854005405">มาเริ่มกันเลย วางนิ้วบนเซ็นเซอร์</translation>
+<translation id="7189965711416741966">เพิ่มลายนิ้วมือแล้ว</translation>
+<translation id="9220820413868316583">ยกนิ้วขึ้นแล้วลองอีกครั้ง</translation>
+<translation id="4534661889221639075">ลองอีกครั้ง</translation>
+<translation id="3645372836428131288">เลื่อนนิ้วเล็กน้อยเพื่อจับภาพส่วนต่างๆ ของลายนิ้วมือ</translation>
 <translation id="7345706641791090287">ยืนยันรหัสผ่าน</translation>
 <translation id="381202950560906753">เพิ่มลายนิ้วมืออีก</translation>
-<translation id="6658023813581644008">ป้อนรหัสผ่านเพื่อตั้งค่า Smart Lock สำหรับการลงชื่อเข้าใช้</translation>
+<translation id="6968288415730398122">ป้อนรหัสผ่านเพื่อกำหนดค่าการล็อกหน้าจอ</translation>
+<translation id="4103091233824664032">ป้อนรหัสผ่านเพื่อกำหนดค่าการล็อกหน้าจอและการลงชื่อเข้าใช้</translation>
 <translation id="5449551289610225147">รหัสผ่านไม่ถูกต้อง</translation>
 <translation id="5374359983950678924">เปลี่ยนรูปภาพ</translation>
 <translation id="6984299437918708277">เลือกรูปภาพสำหรับบัญชีของคุณเพื่อแสดงในหน้าลงชื่อเข้าใช้</translation>
@@ -2216,7 +2224,7 @@
 <translation id="1136155683023653803">ระบบจะซิงค์รหัสผ่าน บุ๊กมาร์ก ประวัติการเข้าชม และอื่นๆ ไปยังบัญชีของคุณ</translation>
 <translation id="3267417306184901318">ข้อมูลและกิจกรรมการท่องเว็บซึ่งซิงค์กับบัญชี Brave Software</translation>
 <translation id="1123187597739372905">แสดงการตั้งค่าการซิงค์</translation>
-<translation id="8420510748452002155">บริการที่ไม่ได้ปรับให้เหมาะกับแต่ละบุคคล</translation>
+<translation id="5428209950370661546">บริการอื่นๆ ของ Brave Software</translation>
 <translation id="2055016640093734678">แสดงการตั้งค่าบริการของ Brave Software</translation>
 <translation id="7956662517480676674">การซิงค์และบริการของ Brave Software</translation>
 <translation id="2453021845418314664">การตั้งค่าการซิงค์ขั้นสูง</translation>
@@ -2399,9 +2407,14 @@
 <translation id="2315821125498993513">เชื่อมต่อกับโทรศัพท์ไม่ได้ <ph name="LINK_BEGIN"/>ดูข้อมูลเพิ่มเติม<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together เปิดอยู่</translation>
 <translation id="3088402208262982892">Better Together ปิดอยู่</translation>
+<translation id="7179187931092694802">ปลดล็อก Bravebook ด้วยโทรศัพท์ <ph name="LINK_BEGIN"/>ดูข้อมูลเพิ่มเติม<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">การเชื่อมต่ออินเทอร์เน็ตผ่านมือถือแบบด่วน</translation>
+<translation id="4746351372139058112">ข้อความ</translation>
+<translation id="2248072377758660530">ส่งและรับข้อความจาก Bravebook <ph name="LINK_BEGIN"/>ดูข้อมูลเพิ่มเติม<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">ไม่จำอุปกรณ์นี้</translation>
 <translation id="3606712892509067288">นำออกจาก Better Together</translation>
+<translation id="5078490485380754244">ไม่จำอุปกรณ์</translation>
+<translation id="8072033737676488034">นำโทรศัพท์ออกและปิดใช้ Better Together</translation>
 <translation id="7878562273885520351">รหัสผ่านของคุณอาจถูกขโมยได้</translation>
 <translation id="6582421931165117398">เปลี่ยนรหัสผ่านตอนนี้เลยเพื่อปกป้องข้อมูลส่วนบุคคล ระบบจะขอให้คุณลงชื่อเข้าใช้ก่อนเปลี่ยนรหัสผ่าน</translation>
 <translation id="1089439967362294234">เปลี่ยนรหัสผ่าน</translation>
@@ -2502,6 +2515,7 @@
 <translation id="2202898655984161076">เกิดปัญหาในการแสดงรายการเครื่องพิมพ์ คุณอาจยังลงทะเบียนเครื่องพิมพ์บางเครื่องกับ <ph name="CLOUD_PRINT_NAME"/> ไม่เรียบร้อย</translation>
 <translation id="3220586366024592812">การทำงานของตัวเชื่อมต่อ <ph name="CLOUD_PRINT_NAME"/> ขัดข้อง จะรีสตาร์ทหรือไม่</translation>
 <translation id="6904655473976120856">กดปุ่มแอปเพื่อออก</translation>
+<translation id="79766959863778284">บริการอุปกรณ์ที่แยก XR</translation>
 <translation id="8909833622202089127">เว็บไซต์กำลังติดตามตำแหน่งของคุณ</translation>
 <translation id="375636864092143889">เว็บไซต์กำลังใช้ไมโครโฟนของคุณ</translation>
 <translation id="310671807099593501">เว็บไซต์กำลังใช้บลูทูธ</translation>
