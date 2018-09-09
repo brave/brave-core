@@ -10,6 +10,7 @@
 #include "brave/components/brave_sync/controller.h"
 #include "brave/components/brave_sync/cansendbookmarks.h"
 #include "brave/components/brave_sync/client/client.h"
+#include "brave/components/brave_sync/can_send_history.h"
 
 class Browser;
 class SyncUI;
@@ -27,6 +28,10 @@ namespace bookmarks {
   class BookmarkNode;
 }
 
+namespace history {
+  class URLResult;
+}
+
 namespace brave_sync {
 
 namespace storage {
@@ -41,10 +46,12 @@ class SyncDevices;
 class Controller;
 class Settings;
 class Bookmarks;
+class History;
 
 class ControllerImpl : public Controller,
                        public SyncLibToBrowserHandler,
-                       public CanSendSyncBookmarks {
+                       public CanSendSyncBookmarks,
+                       public CanSendSyncHistory {
 public:
   ControllerImpl(Profile *profile);
   ~ControllerImpl() override;
@@ -117,11 +124,22 @@ private:
   void SendAllLocalBookmarks();
   void SendAllLocalHistorySites();
 
+  // CanSendBookMarks overrides
   void CreateUpdateDeleteBookmarks(
     const int &action,
     const std::vector<const bookmarks::BookmarkNode*> &list,
     const bool &addIdsToNotSynced,
     const bool &isInitialSync) override;
+
+  void CreateUpdateDeleteHistorySites(
+    const int &action,
+    //history::QueryResults::URLResultVector list,
+    const std::vector<history::URLResult> &list,
+    const bool &addIdsToNotSynced,
+    const bool &isInitialSync);
+
+  // CanSendHistory overrides
+  void HaveInitialHistory(history::QueryResults* results) override;
 
   void SendDeviceSyncRecord(const int &action,
     const std::string &device_name,
@@ -179,6 +197,7 @@ private:
   std::unique_ptr<brave_sync::Settings> settings_;
   std::unique_ptr<brave_sync::storage::ObjectMap> sync_obj_map_;
   std::unique_ptr<brave_sync::Bookmarks> bookmarks_;
+  std::unique_ptr<brave_sync::History> history_;
 
   Profile *profile_;
 

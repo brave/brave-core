@@ -4,8 +4,11 @@
 #ifndef H_BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_BOOKMARKS_H_
 #define H_BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_BOOKMARKS_H_
 
+#include <string>
+#include <vector>
+
 #include "base/macros.h"
-#include "base/values.h"
+//#include "base/values.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 
 class Profile;
