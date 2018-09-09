@@ -21,6 +21,8 @@ source_set("common") {
     "brave_switches.h",
     "common_message_generator.cc",
     "common_message_generator.h",
+    "extensions/brave_extensions_api_provider.cc",
+    "extensions/brave_extensions_api_provider.h",
     "extensions/extension_constants.cc",
     "extensions/extension_constants.h",
     "extensions/manifest_handlers/pdfjs_manifest_override.cc",
@@ -45,8 +47,11 @@ source_set("common") {
   ]
 
   deps = [
-    "extensions/api",
     "//brave/chromium_src:common",
+  ]
+
+  public_deps = [
+    "extensions/api",
   ]
 
   if (is_mac) {

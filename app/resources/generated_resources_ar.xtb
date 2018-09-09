@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">فتح كنافذة</translation>
 <translation id="91568222606626347">جارٍ إنشاء اختصار...</translation>
 <translation id="3627879631695760395">تثبيت تطبيق <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">إلغاء تثبيت <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">عرض في المتجر</translation>
 <translation id="4316850752623536204">موقع الويب لمطوّر البرامج</translation>
 <translation id="4289540628985791613">نظرة عامة</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">أداة فك تشفير الصور</translation>
 <translation id="8191453843330043793">‏محلل وكيل V8</translation>
 <translation id="6185617499004995178">‏مدقق CUPS IPP</translation>
+<translation id="3077708072777965506">‏أسلوب الإدخال لنظام التشغيل Brave</translation>
 <translation id="7171242884588191792">‏أدوات المساعدة لملف Brave</translation>
 <translation id="3061707000357573562">خدمة رمز التصحيح</translation>
 <translation id="3580923162759633716">خدمة تحديد المواصفات الشخصية لصاحب البيانات</translation>
@@ -499,8 +501,10 @@
 <translation id="8743864605301774756">تم التحديث قبل ساعة واحدة</translation>
 <translation id="5638497698949808140">تم التحديث قبل <ph name="HOURS"/>من الساعات</translation>
 <translation id="1329584516321524826">تم التحديث الآن</translation>
+<translation id="224940702122312781">ستستخدم هذه الصفحة الكثير من البيانات.</translation>
+<translation id="3861241522664181545">تم إيقاف تحميل الصفحة مؤقتًا.</translation>
+<translation id="6921709132208495314">إيقاف استخدام البيانات في هذه الصفحة</translation>
 <translation id="2724841811573117416">‏سجلات WebRTC</translation>
-<translation id="7518150891539970662">‏سجلات WebRTC‏ (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">‏تم التقاط سجلات WebRTC في <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">الملف المحلي:</translation>
 <translation id="2071393345806050157">ليس هناك ملف سجل محلي.</translation>
@@ -508,7 +512,6 @@
 <translation id="5946591249682680882">معرف التقرير: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">الإبلاغ عن خطأ</translation>
 <translation id="1188807932851744811">لم يتم تحميل السجل.</translation>
-<translation id="3925247638945319984">‏ليست لديك أي سجلات WebRTC تم التقاطها مؤخرًا.</translation>
 <translation id="2076269580855484719">إخفاء هذا المكون الإضافي</translation>
 <translation id="2129825002735785149">تحديث المكوِّن الإضافي</translation>
 <translation id="9088234649737575428">تم حظر <ph name="PLUGIN_NAME"/> بموجب سياسة المؤسسة</translation>
@@ -547,6 +550,7 @@
 <translation id="6363797201514053536">‏البحث في Brave Software أو كتابة عنوان URL</translation>
 <translation id="6078323886959318429">إضافة اختصار</translation>
 <translation id="6324916366299863871">تعديل الاختصار</translation>
+<translation id="4405117686468554883">‏jpeg.* وjpg.* وpng.*</translation>
 <translation id="7400418766976504921">‏عنوان URL</translation>
 <translation id="8730621377337864115">تم</translation>
 <translation id="4416582610654027550">‏يُرجى كتابة عنوان URL صالح</translation>
@@ -1045,6 +1049,7 @@
 <translation id="5562781907504170924">علامة التبويب هذه متصلة بجهاز بلوتوث.</translation>
 <translation id="5884474295213649357">‏علامة التبويب هذه متصلة بجهاز USB.</translation>
 <translation id="8466417995783206254">تشغِّل علامة التبويب هذه فيديو في وضع "نافذة ضمن نافذة".</translation>
+<translation id="2585724835339714757">تشارك علامة التبويب هذه شاشتك.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - تسجيل الكاميرا أو الميكروفون</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - تمت مشاركة محتوى علامة التبويب</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - جارٍ تشغيل الفيديو في وضع "نافذة ضمن نافذة"</translation>
@@ -1520,7 +1525,6 @@
 <translation id="8647834505253004544">ليس عنوان ويب صالحًا</translation>
 <translation id="2149850907588596975">كلمات المرور والنماذج</translation>
 <translation id="8639963783467694461">إعدادات الملء التلقائي</translation>
-<translation id="2512222046227390255">املأ النماذج تلقائيًا</translation>
 <translation id="7764225426217299476">إضافة عنوان</translation>
 <translation id="5595485650161345191">تعديل العنوان</translation>
 <translation id="6207937957461833379">البلد/المنطقة</translation>
@@ -1602,6 +1606,7 @@
 <translation id="577322787686508614">لا يُسمح بعملية القراءة على: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">الطلب المحدد غير مدعوم على "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">لا يُسمح بعملية الكتابة على: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">يتم التحكّم في تهيئة البلوتوث من قِبل <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">النطاق الزمني</translation>
 <translation id="2496180316473517155">سجل التصفح</translation>
 <translation id="8662811608048051533">يخرجك من معظم مواقع الويب.</translation>
@@ -1613,6 +1618,7 @@
 <translation id="4699172675775169585">الصور والملفات المخزنة مؤقتًا</translation>
 <translation id="1274997165432133392">ملفات تعريف الارتباط وبيانات الموقع الأخرى</translation>
 <translation id="3838543471119263078">ملفات تعريف الارتباط وبيانات المواقع والمكونات الإضافية الأخرى</translation>
+<translation id="369489984217678710">كلمات المرور وبيانات تسجيل الدخول الأخرى</translation>
 <translation id="6865313869410766144">الملء التلقائي من البيانات</translation>
 <translation id="177336675152937177">بيانات التطبيق المستضافة</translation>
 <translation id="1718835860248848330">آخر ساعة</translation>
@@ -1970,6 +1976,8 @@
 <translation id="5282733140964383898">إن تفعيل "عدم التعقب" يعني أنه سيتم تضمين طلب في حركة بيانات التصفح. ويعتمد أي تأثير يحدث على ما إذا كان موقع الويب سيستجيب للطلب، وعلى كيفية تفسير الطلب. على سبيل المثال، قد تستجيب بعض مواقع الويب لهذا الطلب عبر عرض إعلانات لا تستند إلى مواقع الويب الأخرى التي زرتها. بينما ستظل العديد من مواقع الويب تجمع بيانات تصفحك وتستخدمها - على سبيل المثال، لتحسين الأمان وتقديم محتوى وخدمات وإعلانات واقتراحات على مواقع الويب ولإعداد إحصائيات التقارير. <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">تفعيل الدخول الذي تم التحقق منه</translation>
 <translation id="5557991081552967863">‏إبقاء Wi-Fi في وضع التشغيل أثناء السكون</translation>
+<translation id="8562084399541316921">قراءة المزيد</translation>
+<translation id="6201926614538916789">‏استئناف عرض مواقع الويب من الجوّال على جهاز Bravebook</translation>
 <translation id="1521442365706402292">تنظيم الشهادات</translation>
 <translation id="7075625805486468288">‏إدارة إعدادات وشهادات HTTPS/طبقة المقابس الآمنة</translation>
 <translation id="8871974300055371298">إعدادات المحتوى</translation>
@@ -2005,6 +2013,8 @@
 <translation id="7136694880210472378">تعيين كافتراضي</translation>
 <translation id="102272308210570439">السماح للمساعد باستخدام العناصر المتوفرة على الشاشة</translation>
 <translation id="8624205858755890468">يعمل على تفعيل "المساعد" لعرض الإجراءات والتطبيقات والمعلومات ذات الصلة.</translation>
+<translation id="4737453247496280552">‏رصد عبارة "Ok Brave Software"</translation>
+<translation id="6409553560184414680">‏يمكنك الوصول إلى "مساعد Brave Software" في أي وقت تقول فيه "OK Brave Software" عندما تكون شاشتك في وضع التشغيل.</translation>
 <translation id="8669919703154928649">‏السماح لـ "مساعد Brave Software" بعرض الإشعارات</translation>
 <translation id="3430342160185525240">‏يعمل على تفعيل "مساعد Brave Software" لعرض الإشعارات.</translation>
 <translation id="3908743412684152579">‏إعدادات مساعد Brave Software</translation>
@@ -2094,7 +2104,9 @@
 <translation id="8708000541097332489">محو عند الخروج</translation>
 <translation id="8037357227543935929">الطلب (تلقائي)</translation>
 <translation id="3427092606871434483">السماح (تلقائي)</translation>
+<translation id="4879491255372875719">الإعداد التلقائي (تلقائي)</translation>
 <translation id="4312866146174492540">حظر (تلقائي)</translation>
+<translation id="6979440798594660689">كتم الصوت (تلقائي)</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="5063480226653192405">الاستخدام</translation>
 <translation id="3006881078666935414">لا تتوفر بيانات استخدام</translation>
@@ -2126,6 +2138,7 @@
 <translation id="2318923050469484167">جلسة التصفح المتخفي الحالية (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">لم يتم تكبير أو تصغير أي مواقع ويب</translation>
 <translation id="3566721612727112615">لم تتم إضافة أي مواقع</translation>
+<translation id="8098574385249290065">‏السماح لمتصفِّح Brave باختيار الوقت الذي يمكن للمواقع الإلكترونية تشغيل الصوت فيه (مُوصى به)</translation>
 <translation id="5763751966069581670">‏لم يتم العثور على أي أجهزة USB</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">إضافة موقع ويب</translation>
@@ -2169,25 +2182,20 @@
 <translation id="4562155214028662640">إضافة بصمة إصبع</translation>
 <translation id="1719312230114180055">ملاحظة: قد يكون استخدام ميزة بصمة الإصبع أقل أمانًا من استخدام كلمة مرور أو رقم تعريف شخصي قوي.</translation>
 <translation id="1927632033341042996">إصبع <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">تفعيل إلغاء قفل بصمة الإصبع</translation>
 <translation id="7665369617277396874">إضافة حساب</translation>
 <translation id="3422989461909154470">‏يمكن إدارة جميع حساباتك على Brave Software التي تمّ تسجيل الدخول إليها من التطبيقات والمواقع الإلكترونية هنا.</translation>
 <translation id="1987317783729300807">الحسابات</translation>
 <translation id="8418661265246754237">‏حسابات Brave Software</translation>
-<translation id="2107494551712864447">إضافة بصمة إصبع</translation>
-<translation id="6388771388956873507">ابحث عن جهاز استشعار بصمات الإصبع على جهازك والمسه بإصبعك</translation>
-<translation id="9170397650136757332">حرِّك الآن إصبعك قليلاً لالتقاط جميع الأجزاء المختلفة لبصمة إصبعك</translation>
-<translation id="161707228174452095">تمت إضافة بصمة إصبع!</translation>
-<translation id="4576537685267142337">ارفع الإصبع، ثم المس جهاز الاستشعار مرة أخرى</translation>
-<translation id="494660967831069720">بيانات جزئية</translation>
-<translation id="3064410671692449875">بيانات غير كافية</translation>
-<translation id="2532026602297547439">جهاز الاستشعار متسخ</translation>
-<translation id="8642267168767642381">تم تحريك الإصبع ببطء شديد</translation>
-<translation id="2039623879703305659">تم تحريك الإصبع بسرعة كبيرة</translation>
-<translation id="7311891583377621132">التحرك قليلاً لالتقاط جزء مختلف من بصمة الإصبع</translation>
+<translation id="1059855432287631118">تسجيل بصمة الإصبع</translation>
+<translation id="878068003854005405">لنبدأ الآن. ضع إصبعك على جهاز الاستشعار.</translation>
+<translation id="7189965711416741966">تمت إضافة بصمة إصبع.</translation>
+<translation id="9220820413868316583">ارفع إصبعك ثم أعد المحاولة.</translation>
+<translation id="4534661889221639075">يُرجى إعادة المحاولة.</translation>
+<translation id="3645372836428131288">تحرّك قليلاً لالتقاط جزء مختلف من بصمة الإصبع.</translation>
 <translation id="7345706641791090287">تأكيد كلمة المرور</translation>
 <translation id="381202950560906753">إضافة بصمة إصبع أخرى</translation>
-<translation id="6658023813581644008">‏لإعداد Smart Lock لتسجيل الدخول، يُرجى إدخال كلمة المرور.</translation>
+<translation id="6968288415730398122">أدخل كلمة المرور لتهيئة قفل الشاشة</translation>
+<translation id="4103091233824664032">يُرجى إدخال كلمة مرورك لتهيئة قفل الشاشة وتسجيل الدخول</translation>
 <translation id="5449551289610225147">كلمة المرور غير صالحة</translation>
 <translation id="5374359983950678924">تغيير صورة</translation>
 <translation id="6984299437918708277">اختر صورة لعرضها لحسابك في شاشة تسجيل الدخول</translation>
@@ -2216,7 +2224,7 @@
 <translation id="1136155683023653803">تتم مزامنة كلمات المرور والإشارات المرجعية والسجل والمزيد من الخيارات مع حسابك.</translation>
 <translation id="3267417306184901318">‏بيانات التصفُّح والنشاط المتزامنة في حسابك على Brave Software</translation>
 <translation id="1123187597739372905">عرض إعدادات المزامنة</translation>
-<translation id="8420510748452002155">الخدمات غير المُخصّصة</translation>
+<translation id="5428209950370661546">‏خدمات Brave Software الأخرى</translation>
 <translation id="2055016640093734678">‏عرض إعدادات خدمات Brave Software</translation>
 <translation id="7956662517480676674">‏خدمات Brave Software والمزامنة</translation>
 <translation id="2453021845418314664">إعدادات المزامنة المتقدمة</translation>
@@ -2399,9 +2407,14 @@
 <translation id="2315821125498993513">تعذَّر الربط مع هاتفك. <ph name="LINK_BEGIN"/>مزيد من المعلومات<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">‏خدمة Better Together مفعّلة</translation>
 <translation id="3088402208262982892">‏خدمة Better Together غير مفعّلة</translation>
+<translation id="7179187931092694802">‏إلغاء قفل جهاز Bravebook باستخدام هاتفك.<ph name="LINK_BEGIN"/>مزيد من المعلومات<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">التوصيل الفوري</translation>
+<translation id="4746351372139058112">الرسائل</translation>
+<translation id="2248072377758660530">‏إرسال رسائل نصيّة واستلامها من جهاز Bravebook. <ph name="LINK_BEGIN"/>مزيد من المعلومات<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">عدم تذكُّر هذا الجهاز</translation>
 <translation id="3606712892509067288">‏إزالة من Better Together</translation>
+<translation id="5078490485380754244">حذف الجهاز</translation>
+<translation id="8072033737676488034">‏إزالة هاتفك وإيقاف خدمة Better Together</translation>
 <translation id="7878562273885520351">من المحتمل أنه تم اختراق كلمة مرورك</translation>
 <translation id="6582421931165117398">لحماية معلوماتك الشخصية، غيِّر كلمة مرورك الآن. قبل أن تتمكن من تغيير كلمة مرورك، سيُطلب منك تسجيل الدخول.</translation>
 <translation id="1089439967362294234">تغيير كلمة المرور</translation>
@@ -2502,6 +2515,7 @@
 <translation id="2202898655984161076">حدثت مشكلة أثناء إدراج الطابعات. ربما لا يتم تسجيل بعض الطابعات بنجاح في <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">تعطلت عملية موصل <ph name="CLOUD_PRINT_NAME"/> . هل تريد إعادة التشغيل؟</translation>
 <translation id="6904655473976120856">اضغط زر التطبيق للخروج</translation>
+<translation id="79766959863778284">‏خدمة جهاز معزولة بواسطة XR</translation>
 <translation id="8909833622202089127">تتبّع موقع الويب موقعك الجغرافي.</translation>
 <translation id="375636864092143889">يستخدم موقع الويب الميكروفون.</translation>
 <translation id="310671807099593501">يستخدم موقع الويب البلوتوث.</translation>

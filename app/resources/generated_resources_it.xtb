@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Apri come finestra</translation>
 <translation id="91568222606626347">Crea scorciatoia...</translation>
 <translation id="3627879631695760395">Installa <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">Disinstallare <ph name="APP"/>…</translation>
 <translation id="4057896668975954729">Visualizza nello Store</translation>
 <translation id="4316850752623536204">Sito web dello sviluppatore</translation>
 <translation id="4289540628985791613">Panoramica</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Image Decoder</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
 <translation id="6185617499004995178">Validatore IPP CUPS</translation>
+<translation id="3077708072777965506">Metodo di immissione di Brave OS</translation>
 <translation id="7171242884588191792">Utilità dei file Brave</translation>
 <translation id="3061707000357573562">Servizio di applicazione patch</translation>
 <translation id="3580923162759633716">Servizio di profilazione</translation>
@@ -499,8 +501,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8743864605301774756">Aggiornata 1 ora fa</translation>
 <translation id="5638497698949808140">Aggiornata <ph name="HOURS"/> ore fa</translation>
 <translation id="1329584516321524826">Aggiornata adesso</translation>
+<translation id="224940702122312781">Questa pagina utilizzerà una grande quantità di dati.</translation>
+<translation id="3861241522664181545">Pagina in pausa.</translation>
+<translation id="6921709132208495314">Interrompi l'utilizzo dei dati su questa pagina</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
-<translation id="7518150891539970662">Log WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Data/ora acquisizione log WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">File locale:</translation>
 <translation id="2071393345806050157">Nessun file di log locale.</translation>
@@ -508,7 +512,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5946591249682680882">ID rapporto <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Segnala bug</translation>
 <translation id="1188807932851744811">Log non caricato.</translation>
-<translation id="3925247638945319984">Non hai log WebRTC acquisiti di recente.</translation>
 <translation id="2076269580855484719">Nascondi questo plug-in</translation>
 <translation id="2129825002735785149">Aggiorna il plug-in</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> è bloccato dalle norme aziendali</translation>
@@ -547,6 +550,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6363797201514053536">Cerca con Brave Software o digita un URL</translation>
 <translation id="6078323886959318429">Aggiungi scorciatoia</translation>
 <translation id="6324916366299863871">Modifica scorciatoia</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Fine</translation>
 <translation id="4416582610654027550">Digita un URL valido</translation>
@@ -1045,6 +1049,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5562781907504170924">Questa scheda è connessa a un dispositivo Bluetooth.</translation>
 <translation id="5884474295213649357">La scheda è connessa a un dispositivo USB.</translation>
 <translation id="8466417995783206254">In questa scheda è in corso la riproduzione di un video in modalità Picture in picture.</translation>
+<translation id="2585724835339714757">Questa scheda sta condividendo il tuo schermo.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Registrazione tramite fotocamera o microfono in corso</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Contenuti delle schede condivisi</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Video riprodotto in modalità Picture in picture</translation>
@@ -1520,7 +1525,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8647834505253004544">Indirizzo web non valido</translation>
 <translation id="2149850907588596975">Password e moduli</translation>
 <translation id="8639963783467694461">Impostazioni di Compilazione automatica</translation>
-<translation id="2512222046227390255">Compilare moduli automaticamente</translation>
 <translation id="7764225426217299476">Aggiungi indirizzo</translation>
 <translation id="5595485650161345191">Modifica indirizzo</translation>
 <translation id="6207937957461833379">Paese/Regione</translation>
@@ -1602,6 +1606,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="577322787686508614">Lettura non consentita su: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">La richiesta indicata non è supportata su: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">Scrittura non consentita su: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">Configurazione Bluetooth controllata da <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Intervallo di tempo</translation>
 <translation id="2496180316473517155">Cronologia di navigazione</translation>
 <translation id="8662811608048051533">Vieni scollegato dalla maggior parte dei siti.</translation>
@@ -1613,6 +1618,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4699172675775169585">Immagini e file memorizzati nella cache</translation>
 <translation id="1274997165432133392">Cookie e altri dati dei siti</translation>
 <translation id="3838543471119263078">Cookie e altri dati di siti e plug-in</translation>
+<translation id="369489984217678710">Password e altri dati di accesso</translation>
 <translation id="6865313869410766144">Dati della Compilazione automatica dei moduli</translation>
 <translation id="177336675152937177">Dati app in hosting</translation>
 <translation id="1718835860248848330">Ultima ora</translation>
@@ -1970,6 +1976,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5282733140964383898">Se attivi "Non tenere traccia", viene inclusa una richiesta con il tuo traffico di navigazione. Gli eventuali effetti dipendono dalla risposta o meno di un sito web alla richiesta e dalla modalità di interpretazione della richiesta. Ad esempio, alcuni siti web potrebbero rispondere alla richiesta visualizzando annunci non basati su altri siti web che hai visitato. Molti siti web raccoglieranno e utilizzeranno comunque i tuoi dati di navigazione per diversi scopi, ad esempio per aumentare la sicurezza, fornire contenuti, servizi, annunci e consigli sui loro siti web o generare statistiche sui rapporti. <ph name="BEGIN_LINK"/>Ulteriori informazioni<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Consente di attivare l'accesso verificato</translation>
 <translation id="5557991081552967863">Lascia attivo il Wi-Fi durante la sospensione</translation>
+<translation id="8562084399541316921">Continua a leggere</translation>
+<translation id="6201926614538916789">Riprendi la visualizzazione dei siti da dispositivi mobili sul tuo Bravebook</translation>
 <translation id="1521442365706402292">Gestisci certificati</translation>
 <translation id="7075625805486468288">Gestisci certificati e impostazioni HTTPS/SSL</translation>
 <translation id="8871974300055371298">Impostazioni contenuti</translation>
@@ -2005,6 +2013,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7136694880210472378">Imposta come predefinito</translation>
 <translation id="102272308210570439">Consenti all'assistente di usare i contenuti sullo schermo</translation>
 <translation id="8624205858755890468">Consente all'assistente di mostrarti azioni, app e informazioni correlate.</translation>
+<translation id="4737453247496280552">Rilevamento di "Ok Brave Software"</translation>
+<translation id="6409553560184414680">Accedi all'assistente ogni volta che dici "Ok Brave Software" quando lo schermo è attivo.</translation>
 <translation id="8669919703154928649">Consenti all'assistente di mostrarti notifiche</translation>
 <translation id="3430342160185525240">Consente all'assistente di mostrarti le notifiche.</translation>
 <translation id="3908743412684152579">Impostazioni dell'Assistente Brave Software</translation>
@@ -2094,7 +2104,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8708000541097332489">Cancella all'uscita</translation>
 <translation id="8037357227543935929">Chiedi (predefinita)</translation>
 <translation id="3427092606871434483">Consenti (predefinita)</translation>
+<translation id="4879491255372875719">Automatica (impostazione predefinita)</translation>
 <translation id="4312866146174492540">Blocca (predefinita)</translation>
+<translation id="6979440798594660689">Disattivazione audio (impostazione predefinita)</translation>
 <translation id="2356070529366658676">Chiedi</translation>
 <translation id="5063480226653192405">Utilizzo</translation>
 <translation id="3006881078666935414">Nessun dato sull'utilizzo</translation>
@@ -2126,6 +2138,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2318923050469484167">Sessione di navigazione in incognito corrente (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Non è stato aumentato o diminuito lo zoom di alcun sito</translation>
 <translation id="3566721612727112615">Nessun sito aggiunto</translation>
+<translation id="8098574385249290065">Consenti a Brave di scegliere quando i siti possono riprodurre audio (opzione consigliata)</translation>
 <translation id="5763751966069581670">Nessun dispositivo USB trovato</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Aggiunta di un sito</translation>
@@ -2169,25 +2182,20 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4562155214028662640">Aggiungi impronta digitale</translation>
 <translation id="1719312230114180055">Nota: la tua impronta digitale potrebbe essere meno sicura di una password o di un PIN efficaci.</translation>
 <translation id="1927632033341042996">Impronta <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Attiva sblocco basato su impronta digitale</translation>
 <translation id="7665369617277396874">Aggiungi account</translation>
 <translation id="3422989461909154470">Qui puoi gestire tutti i tuoi account Brave Software connessi dalle app e dai siti web.</translation>
 <translation id="1987317783729300807">Account</translation>
 <translation id="8418661265246754237">Account Brave Software</translation>
-<translation id="2107494551712864447">Aggiungi un'impronta digitale</translation>
-<translation id="6388771388956873507">Individua il sensore di impronte digitali sul dispositivo e toccalo con il dito</translation>
-<translation id="9170397650136757332">Ora muovi leggermente il dito per acquisire tutte le varie parti dell'impronta digitale</translation>
-<translation id="161707228174452095">Impronta digitale aggiunta</translation>
-<translation id="4576537685267142337">Solleva il dito, quindi tocca di nuovo il sensore</translation>
-<translation id="494660967831069720">Dati parziali</translation>
-<translation id="3064410671692449875">Dati insufficienti</translation>
-<translation id="2532026602297547439">Sensore sporco</translation>
-<translation id="8642267168767642381">Hai spostato il dito troppo lentamente</translation>
-<translation id="2039623879703305659">Hai spostato il dito troppo in fretta</translation>
-<translation id="7311891583377621132">Muovi leggermente il dito per acquisire una parte diversa dell'impronta digitale</translation>
+<translation id="1059855432287631118">Registrazione dell'impronta digitale</translation>
+<translation id="878068003854005405">Inizia. Posiziona il dito sul sensore.</translation>
+<translation id="7189965711416741966">Impronta digitale aggiunta.</translation>
+<translation id="9220820413868316583">Solleva, quindi riprova.</translation>
+<translation id="4534661889221639075">Riprova.</translation>
+<translation id="3645372836428131288">Muovi leggermente il dito per acquisire una parte diversa dell'impronta digitale.</translation>
 <translation id="7345706641791090287">Conferma la password</translation>
 <translation id="381202950560906753">Aggiungine un'altra</translation>
-<translation id="6658023813581644008">Inserisci la password per configurare Smart Lock per l'accesso</translation>
+<translation id="6968288415730398122">Inserisci la password per configurare il blocco schermo</translation>
+<translation id="4103091233824664032">Inserisci la password per configurare il blocco schermo e l'accesso</translation>
 <translation id="5449551289610225147">Password non valida</translation>
 <translation id="5374359983950678924">Cambia immagine</translation>
 <translation id="6984299437918708277">Scegli un'immagine da visualizzare per il tuo account nella schermata di accesso</translation>
@@ -2216,7 +2224,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1136155683023653803">Le password, i preferiti, la cronologia e altri dati vengono sincronizzati con il tuo account</translation>
 <translation id="3267417306184901318">L'attività e i dati di navigazione sincronizzati con il tuo account Brave Software</translation>
 <translation id="1123187597739372905">Mostra impostazioni di sincronizzazione</translation>
-<translation id="8420510748452002155">Servizi non personalizzati</translation>
+<translation id="5428209950370661546">Altri servizi Brave Software</translation>
 <translation id="2055016640093734678">Mostra le impostazioni dei servizi Brave Software</translation>
 <translation id="7956662517480676674">Sincronizzazione e servizi Brave Software</translation>
 <translation id="2453021845418314664">Impostazioni di sincronizzazione avanzate</translation>
@@ -2399,9 +2407,14 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2315821125498993513">Impossibile connettersi al telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Funzione Better Together attiva</translation>
 <translation id="3088402208262982892">Funzione Better Together non attiva</translation>
+<translation id="7179187931092694802">Sblocca il Bravebook con il telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Tethering istantaneo</translation>
+<translation id="4746351372139058112">Messaggi</translation>
+<translation id="2248072377758660530">Invia e ricevi SMS dal Bravebook. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Elimina questo dispositivo</translation>
 <translation id="3606712892509067288">Rimuovi da Better Together</translation>
+<translation id="5078490485380754244">Elimina dispositivo</translation>
+<translation id="8072033737676488034">Rimuovi il telefono e disattiva Better Together</translation>
 <translation id="7878562273885520351">La tua password potrebbe essere stata compromessa</translation>
 <translation id="6582421931165117398">Cambia subito la password per proteggere le tue informazioni personali. Ti verrà chiesto di accedere per cambiare la password.</translation>
 <translation id="1089439967362294234">Cambia password</translation>
@@ -2502,6 +2515,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2202898655984161076">Si è verificato un problema nella visualizzazione dell'elenco di stampanti. È possibile che alcune stampanti non siano state registrate correttamente con <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Il processo del connettore <ph name="CLOUD_PRINT_NAME"/> si è bloccato. Riavviarlo?</translation>
 <translation id="6904655473976120856">Premi il pulsante App per uscire</translation>
+<translation id="79766959863778284">Servizio per dispositivi XR isolati</translation>
 <translation id="8909833622202089127">Il sito sta monitorando la tua posizione</translation>
 <translation id="375636864092143889">Il sito sta usando il microfono</translation>
 <translation id="310671807099593501">Il sito sta usando il Bluetooth</translation>

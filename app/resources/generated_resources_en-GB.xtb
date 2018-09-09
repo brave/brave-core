@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Open as window</translation>
 <translation id="91568222606626347">Create Shortcut...</translation>
 <translation id="3627879631695760395">Install <ph name="APP"/>…</translation>
+<translation id="8288032458496410887">Uninstall <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">View in Store</translation>
 <translation id="4316850752623536204">Developer Website</translation>
 <translation id="4289540628985791613">Overview</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Image Decoder</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
 <translation id="6185617499004995178">CUPS IPP Validator</translation>
+<translation id="3077708072777965506">Brave OS input method</translation>
 <translation id="7171242884588191792">Brave File Utilities</translation>
 <translation id="3061707000357573562">Patch Service</translation>
 <translation id="3580923162759633716">Profiling Service</translation>
@@ -503,15 +505,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3861241522664181545">Page paused.</translation>
 <translation id="6921709132208495314">Stop using data on this page</translation>
 <translation id="2724841811573117416">WebRTC logs</translation>
-<translation id="7518150891539970662">WebRTC logs (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC log captured <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Local file:</translation>
 <translation id="2071393345806050157">No local log file.</translation>
 <translation id="6628328486509726751">Uploaded <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
 <translation id="5946591249682680882">Report ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">File bug</translation>
+<translation id="3650845953328929506">Log upload pending.</translation>
+<translation id="1818913467757368489">Log upload underway.</translation>
 <translation id="1188807932851744811">Log not uploaded.</translation>
-<translation id="3925247638945319984">You have no recently captured WebRTC logs.</translation>
+<translation id="7497981768003291373">You have no recently captured WebRTC text logs.</translation>
+<translation id="3954953195017194676">You have no recently captured WebRTC event logs.</translation>
 <translation id="2076269580855484719">Hide this plug-in</translation>
 <translation id="2129825002735785149">Update plug-in</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> is blocked by enterprise policy</translation>
@@ -556,6 +560,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4416582610654027550">Type a valid URL</translation>
 <translation id="2806891468525657116">Shortcut already exists</translation>
 <translation id="394183848452296464">Can’t create shortcut</translation>
+<translation id="329703603001918157">Can’t edit shortcut</translation>
+<translation id="6732900235521116609">Can’t remove shortcut</translation>
 <translation id="7109543803214225826">Shortcut removed</translation>
 <translation id="8017679124341497925">Shortcut edited</translation>
 <translation id="1174073918202301297">Shortcut added</translation>
@@ -1440,6 +1446,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1800308196794859773">Send your voice to Brave Software to allow dictation into any text field.</translation>
 <translation id="8758418656925882523">Enable dictation (speak to type)</translation>
 <translation id="7580671184200851182">Play the same audio through all speakers (mono audio)</translation>
+<translation id="8186639008852027301">Play an audio indicator on startup</translation>
 <translation id="1189418886587279221">Enable accessibility features to make your device easier to use.</translation>
 <translation id="48704129375571883">Add additional features</translation>
 <translation id="7230787553283372882">Customise your text size</translation>
@@ -1525,7 +1532,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8647834505253004544">Not a valid web address</translation>
 <translation id="2149850907588596975">Passwords and forms</translation>
 <translation id="8639963783467694461">Auto-fill settings</translation>
-<translation id="2512222046227390255">Auto-fill forms</translation>
 <translation id="7764225426217299476">Add address</translation>
 <translation id="5595485650161345191">Edit address</translation>
 <translation id="6207937957461833379">Country/Region</translation>
@@ -1538,6 +1544,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5029568752722684782">Clear copy</translation>
 <translation id="2154484045852737596">Edit card</translation>
 <translation id="5087580092889165836">Add card</translation>
+<translation id="7284555534810614828">Save card to use Brave Software Pay</translation>
+<translation id="6281511959351052816">Save cards to use Brave Software Pay</translation>
+<translation id="1904518222538904133">One of your cards can only be used on this device</translation>
+<translation id="8065485338434000013">Some of your cards can only be used on this device</translation>
 <translation id="4807098396393229769">Name on card</translation>
 <translation id="2612676031748830579">Card number</translation>
 <translation id="869891660844655955">Expiry date</translation>
@@ -1607,6 +1617,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="577322787686508614">Read operation is not permitted on: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">The given request is not supported to: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">Write operation is not permitted on: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">Bluetooth configuration is controlled by <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Time range</translation>
 <translation id="2496180316473517155">Browsing history</translation>
 <translation id="8662811608048051533">Signs you out of most sites.</translation>
@@ -1618,6 +1629,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4699172675775169585">Cached images and files</translation>
 <translation id="1274997165432133392">Cookies and other site data</translation>
 <translation id="3838543471119263078">Cookies and other site and plug-in data</translation>
+<translation id="369489984217678710">Passwords and other sign-in data</translation>
 <translation id="6865313869410766144">Autofill form data</translation>
 <translation id="177336675152937177">Hosted app data</translation>
 <translation id="1718835860248848330">Last hour</translation>
@@ -1975,6 +1987,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5282733140964383898">Enabling 'Do Not Track' means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data – for example, to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK"/>Find out more<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Enable Verified Access</translation>
 <translation id="5557991081552967863">Keep Wi-Fi on during sleep</translation>
+<translation id="8562084399541316921">Continue reading</translation>
+<translation id="6201926614538916789">Resume viewing sites from mobile on your Bravebook</translation>
 <translation id="1521442365706402292">Manage certificates</translation>
 <translation id="7075625805486468288">Manage HTTPS/SSL certificates and settings</translation>
 <translation id="8871974300055371298">Content Settings ...</translation>
@@ -2179,25 +2193,21 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4562155214028662640">Add Fingerprint</translation>
 <translation id="1719312230114180055">Note: Your fingerprint may be less secure than a strong password or PIN.</translation>
 <translation id="1927632033341042996">Finger <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Enable fingerprint unlock</translation>
 <translation id="7665369617277396874">Add account</translation>
 <translation id="3422989461909154470">All of your signed-in Brave Software accounts from apps and websites can be managed here.</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="8418661265246754237">Brave Software Accounts</translation>
-<translation id="2107494551712864447">Add a fingerprint</translation>
-<translation id="6388771388956873507">Find the fingerprint sensor on your device and touch it with your finger</translation>
-<translation id="9170397650136757332">Now move your finger slightly to capture all the different parts of your fingerprint</translation>
-<translation id="161707228174452095">Fingerprint added!</translation>
-<translation id="4576537685267142337">Lift finger, then touch sensor again</translation>
-<translation id="494660967831069720">Partial data</translation>
-<translation id="3064410671692449875">Insufficient data</translation>
-<translation id="2532026602297547439">Sensor dirty</translation>
-<translation id="8642267168767642381">Finger moved too slowly</translation>
-<translation id="2039623879703305659">Finger moved too quickly</translation>
-<translation id="7311891583377621132">Move slightly to capture a different part of the fingerprint</translation>
+<translation id="3297951628821704004">Remove account from this device</translation>
+<translation id="1059855432287631118">Registering fingerprint</translation>
+<translation id="878068003854005405">Let's get started. Place your finger on the sensor.</translation>
+<translation id="7189965711416741966">Fingerprint added.</translation>
+<translation id="9220820413868316583">Lift then try again.</translation>
+<translation id="4534661889221639075">Try again.</translation>
+<translation id="3645372836428131288">Move slightly to capture a different part of the fingerprint.</translation>
 <translation id="7345706641791090287">Confirm your password</translation>
 <translation id="381202950560906753">Add another</translation>
-<translation id="6658023813581644008">To set up Smart Lock for sign-in, enter your password</translation>
+<translation id="6968288415730398122">Enter your password to configure screen lock</translation>
+<translation id="4103091233824664032">Enter your password to configure screen lock and sign-in</translation>
 <translation id="5449551289610225147">Invalid password</translation>
 <translation id="5374359983950678924">Change picture</translation>
 <translation id="6984299437918708277">Choose a picture to display for your account on the sign-in screen</translation>
@@ -2226,7 +2236,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1136155683023653803">Passwords, bookmarks, history and more are synced to your account</translation>
 <translation id="3267417306184901318">Your browsing data and activity, synced to your Brave Software account</translation>
 <translation id="1123187597739372905">Show sync settings</translation>
-<translation id="8420510748452002155">Non-personalised services</translation>
+<translation id="5428209950370661546">Other Brave Software services</translation>
 <translation id="2055016640093734678">Show Brave Software services settings</translation>
 <translation id="7956662517480676674">Sync and Brave Software services</translation>
 <translation id="2453021845418314664">Advanced sync settings</translation>
@@ -2409,9 +2419,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2315821125498993513">Couldn't connect to phone. <ph name="LINK_BEGIN"/>Find out more.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together is on</translation>
 <translation id="3088402208262982892">Better Together is off</translation>
+<translation id="7179187931092694802">Unlock your Bravebook with your phone. <ph name="LINK_BEGIN"/>Find out more<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
+<translation id="4746351372139058112">Messages</translation>
+<translation id="2248072377758660530">Send and receive text messages from your Bravebook. <ph name="LINK_BEGIN"/>Find out more<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Forget this device</translation>
 <translation id="3606712892509067288">Remove from Better Together</translation>
+<translation id="5078490485380754244">Forget device</translation>
+<translation id="8072033737676488034">Remove your phone and disable Better Together</translation>
 <translation id="7878562273885520351">Your password may be compromised</translation>
 <translation id="6582421931165117398">To protect your personal information, change your password now. Before you can change your password, you’ll be asked to sign in.</translation>
 <translation id="1089439967362294234">Change Password</translation>

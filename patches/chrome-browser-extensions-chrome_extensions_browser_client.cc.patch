@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index ec40a5ab57c505d9a09874888910d40b52b20a2e..4113aee000744f9a622db44b7ba6e5d94eadf57c 100644
+index d4b100e3839f3b0d6d89d86b82f25cd3035b6d79..7e876f7f6c2a314622ae97ca00b73b8b1c52aa7c 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
 @@ -9,6 +9,8 @@
@@ -7,11 +7,16 @@ index ec40a5ab57c505d9a09874888910d40b52b20a2e..4113aee000744f9a622db44b7ba6e5d9
  #include "base/logging.h"
  #include "base/version.h"
 +#include "brave/browser/extensions/brave_component_extension_resource_manager.h"
-+#include "brave/common/extensions/api/generated_api_registration.h"
++#include "brave/browser/extensions/brave_extensions_browser_api_provider.h"
  #include "build/build_config.h"
  #include "chrome/browser/app_mode/app_mode_utils.h"
  #include "chrome/browser/browser_process.h"
-@@ -91,7 +93,7 @@ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
+@@ -90,11 +92,12 @@ bool ExtensionsDisabled(const base::CommandLine& command_line) {
+ ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
+   AddAPIProvider(std::make_unique<CoreExtensionsBrowserAPIProvider>());
+   AddAPIProvider(std::make_unique<ChromeExtensionsBrowserAPIProvider>());
++  AddAPIProvider(std::make_unique<BraveExtensionsBrowserAPIProvider>());
+ 
    process_manager_delegate_.reset(new ChromeProcessManagerDelegate);
    api_client_.reset(new ChromeExtensionsAPIClient);
    SetCurrentChannel(chrome::GetChannel());
@@ -20,13 +25,3 @@ index ec40a5ab57c505d9a09874888910d40b52b20a2e..4113aee000744f9a622db44b7ba6e5d9
  }
  
  ChromeExtensionsBrowserClient::~ChromeExtensionsBrowserClient() {}
-@@ -336,6 +338,9 @@ void ChromeExtensionsBrowserClient::RegisterExtensionFunctions(
- 
-   // Generated APIs from Chrome.
-   api::ChromeGeneratedFunctionRegistry::RegisterAll(registry);
-+
-+  // Generated APIs from Brave.
-+  api::BraveGeneratedFunctionRegistry::RegisterAll(registry);
- }
- 
- void ChromeExtensionsBrowserClient::RegisterExtensionInterfaces(

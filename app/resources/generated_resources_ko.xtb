@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">창으로 열기</translation>
 <translation id="91568222606626347">바로가기 만들기...</translation>
 <translation id="3627879631695760395"><ph name="APP"/> 설치...</translation>
+<translation id="8288032458496410887"><ph name="APP"/> 제거 중...</translation>
 <translation id="4057896668975954729">스토어에서 보기</translation>
 <translation id="4316850752623536204">개발자 웹사이트</translation>
 <translation id="4289540628985791613">개요</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">이미지 디코더</translation>
 <translation id="8191453843330043793">V8 프록시 리졸버</translation>
 <translation id="6185617499004995178">CUPS IPP 검사기</translation>
+<translation id="3077708072777965506">Brave OS 입력 방법</translation>
 <translation id="7171242884588191792">Brave 파일 유틸리티</translation>
 <translation id="3061707000357573562">서비스 패치</translation>
 <translation id="3580923162759633716">프로파일링 서비스</translation>
@@ -497,8 +499,10 @@
 <translation id="8743864605301774756">1시간 전에 업데이트되었습니다.</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/>시간 전에 업데이트됨</translation>
 <translation id="1329584516321524826">조금 전 업데이트됨</translation>
+<translation id="224940702122312781">이 페이지는 많은 양의 데이터를 사용합니다.</translation>
+<translation id="3861241522664181545">페이지가 일시중지되었습니다.</translation>
+<translation id="6921709132208495314">이 페이지에서 데이터 사용 중지</translation>
 <translation id="2724841811573117416">WebRTC 로그</translation>
-<translation id="7518150891539970662">WebRTC 로그(<ph name="WEBRTC_LOG_COUNT"/>개)</translation>
 <translation id="6592267180249644460">WebRTC 로그 캡처 시간: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">로컬 파일:</translation>
 <translation id="2071393345806050157">로컬 로그 파일이 없습니다.</translation>
@@ -506,7 +510,6 @@
 <translation id="5946591249682680882">보고서 ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">버그 신고</translation>
 <translation id="1188807932851744811">로그가 업로드되지 않았습니다.</translation>
-<translation id="3925247638945319984">최근 캡처한 WebRTC 로그가 없습니다.</translation>
 <translation id="2076269580855484719">이 플러그인 숨기기</translation>
 <translation id="2129825002735785149">플러그인 업데이트</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/>이(가) 기업 정책에 의해 차단되었습니다.</translation>
@@ -545,6 +548,7 @@
 <translation id="6363797201514053536">Brave Software 검색 또는 URL 입력</translation>
 <translation id="6078323886959318429">바로가기 추가</translation>
 <translation id="6324916366299863871">바로가기 수정</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">완료</translation>
 <translation id="4416582610654027550">유효한 URL을 입력하세요.</translation>
@@ -1043,6 +1047,7 @@
 <translation id="5562781907504170924">이 탭이 블루투스 기기에 연결되었습니다.</translation>
 <translation id="5884474295213649357">이 탭이 USB 기기에 연결되었습니다.</translation>
 <translation id="8466417995783206254">이 탭에서는 PIP 모드로 동영상이 재생되고 있습니다.</translation>
+<translation id="2585724835339714757">이 탭에서 화면을 공유하는 중입니다.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - 카메라 또는 마이크 녹음</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - 탭 콘텐츠 공유됨</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - PIP 모드로 동영상 재생 중</translation>
@@ -1518,7 +1523,6 @@
 <translation id="8647834505253004544">올바른 웹 주소가 아닙니다.</translation>
 <translation id="2149850907588596975">비밀번호 및 양식</translation>
 <translation id="8639963783467694461">자동 완성 설정</translation>
-<translation id="2512222046227390255">양식 자동 완성</translation>
 <translation id="7764225426217299476">주소 추가</translation>
 <translation id="5595485650161345191">주소 수정</translation>
 <translation id="6207937957461833379">국가/지역</translation>
@@ -1600,6 +1604,7 @@
 <translation id="577322787686508614">기기(<ph name="DEVICE_NAME"/>)에서 읽기 작업이 허용되지 않습니다.</translation>
 <translation id="3141917231319778873">기기(<ph name="DEVICE_NAME"/>)에서 지원하지 않는 요청입니다.</translation>
 <translation id="6122875415561139701">기기(<ph name="DEVICE_NAME"/>)에서 쓰기 작업이 허용되지 않습니다.</translation>
+<translation id="439266289085815679">블루투스 구성은 <ph name="USER_EMAIL"/>님이 관리합니다.</translation>
 <translation id="784934925303690534">기간</translation>
 <translation id="2496180316473517155">인터넷 사용 기록</translation>
 <translation id="8662811608048051533">대부분의 사이트에서 로그아웃됩니다.</translation>
@@ -1611,6 +1616,7 @@
 <translation id="4699172675775169585">캐시된 이미지 또는 파일</translation>
 <translation id="1274997165432133392">쿠키 및 기타 사이트 데이터</translation>
 <translation id="3838543471119263078">쿠키, 기타 사이트 및 플러그인 데이터</translation>
+<translation id="369489984217678710">비밀번호 및 기타 로그인 데이터</translation>
 <translation id="6865313869410766144">양식 데이터 자동 완성</translation>
 <translation id="177336675152937177">호스팅된 앱 데이터</translation>
 <translation id="1718835860248848330">지난 1시간</translation>
@@ -1968,6 +1974,8 @@
 <translation id="5282733140964383898">'추적 안함'을 사용 설정하면 요청이 탐색 트래픽에 포함됩니다. 웹사이트가 요청에 응답하는지와 요청이 어떻게 해석되는가에 따라 결과가 달라집니다. 예를 들어, 어떤 웹사이트는 사용자의 웹사이트 방문 기록과 관계없는 광고를 표시하는 방식으로 요청에 응답할 수 있습니다. 이 설정을 사용해도 대부분의 웹사이트에서는 보안을 강화하거나 웹사이트에서 콘텐츠, 서비스, 광고 및 추천 정보를 제공하거나 보고서 통계를 생성하는 등의 목적으로 사용자의 인터넷 사용 기록을 수집하고 사용됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">인증 액세스 서비스 사용</translation>
 <translation id="5557991081552967863">절전 모드 중에 Wi-Fi 계속 사용</translation>
+<translation id="8562084399541316921">계속 읽기</translation>
+<translation id="6201926614538916789">Bravebook에서 모바일 사이트 보기 재개</translation>
 <translation id="1521442365706402292">인증서 관리</translation>
 <translation id="7075625805486468288">HTTPS/SSL 인증서 및 설정 관리</translation>
 <translation id="8871974300055371298">콘텐츠 설정</translation>
@@ -2003,6 +2011,8 @@
 <translation id="7136694880210472378">기본으로 설정</translation>
 <translation id="102272308210570439">어시스턴트가 화면에 표시된 내용을 사용하도록 허용</translation>
 <translation id="8624205858755890468">어시스턴트를 사용 설정하여 관련된 정보, 앱, 작업을 표시합니다.</translation>
+<translation id="4737453247496280552">'Ok Brave Software' 감지</translation>
+<translation id="6409553560184414680">화면이 켜져 있을 때 "Ok Brave Software"이라고 말하면 어시스턴트를 이용할 수 있습니다.</translation>
 <translation id="8669919703154928649">어시스턴트가 알림을 표시하도록 허용</translation>
 <translation id="3430342160185525240">어시스턴트를 사용하여 알림을 표시합니다.</translation>
 <translation id="3908743412684152579">Brave Software 어시스턴트 설정</translation>
@@ -2092,7 +2102,9 @@
 <translation id="8708000541097332489">종료 시 삭제</translation>
 <translation id="8037357227543935929">요청(기본값)</translation>
 <translation id="3427092606871434483">허용(기본값)</translation>
+<translation id="4879491255372875719">자동(기본값)</translation>
 <translation id="4312866146174492540">차단(기본값)</translation>
+<translation id="6979440798594660689">음소거(기본값)</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="5063480226653192405">사용</translation>
 <translation id="3006881078666935414">사용 데이터 없음</translation>
@@ -2124,6 +2136,7 @@
 <translation id="2318923050469484167">현재 시크릿 세션(<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">확대 또는 축소된 사이트가 없음</translation>
 <translation id="3566721612727112615">추가된 사이트 없음</translation>
+<translation id="8098574385249290065">사이트의 소리 재생 여부를 Brave이 결정(권장)</translation>
 <translation id="5763751966069581670">USB 기기를 찾을 수 없습니다.</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">사이트 추가</translation>
@@ -2167,25 +2180,20 @@
 <translation id="4562155214028662640">지문 추가</translation>
 <translation id="1719312230114180055">참고: 지문은 안전한 비밀번호 또는 PIN보다 보안 수준이 낮을 수도 있습니다.</translation>
 <translation id="1927632033341042996">지문 <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">지문 잠금 해제 사용</translation>
 <translation id="7665369617277396874">계정 추가</translation>
 <translation id="3422989461909154470">앱 및 웹사이트에서 로그인한 모든 Brave Software 계정을 여기에서 관리할 수 있습니다.</translation>
 <translation id="1987317783729300807">계정</translation>
 <translation id="8418661265246754237">Brave Software 계정</translation>
-<translation id="2107494551712864447">지문 추가</translation>
-<translation id="6388771388956873507">기기에서 지문 센서를 찾아 손가락으로 터치합니다.</translation>
-<translation id="9170397650136757332">이제 지문의 다른 부분도 모두 인식되도록 손가락을 살짝 움직이세요.</translation>
-<translation id="161707228174452095">지문이 추가되었습니다.</translation>
-<translation id="4576537685267142337">손가락을 들어 올린 후 센서를 다시 터치하세요.</translation>
-<translation id="494660967831069720">일부 데이터</translation>
-<translation id="3064410671692449875">데이터 부족</translation>
-<translation id="2532026602297547439">센서가 오염되었습니다.</translation>
-<translation id="8642267168767642381">손가락을 너무 느리게 움직였습니다.</translation>
-<translation id="2039623879703305659">손가락을 너무 빨리 움직였습니다.</translation>
-<translation id="7311891583377621132">지문의 다른 부분이 인식되도록 손가락을 살짝 움직이세요.</translation>
+<translation id="1059855432287631118">지문 등록</translation>
+<translation id="878068003854005405">시작해 보겠습니다. 센서 위에 손가락을 올리세요.</translation>
+<translation id="7189965711416741966">지문이 추가되었습니다.</translation>
+<translation id="9220820413868316583">손가락을 뗀 뒤 다시 시도하세요.</translation>
+<translation id="4534661889221639075">다시 시도하세요.</translation>
+<translation id="3645372836428131288">지문의 다른 부분이 인식되도록 손가락을 살짝 움직이세요.</translation>
 <translation id="7345706641791090287">비밀번호 확인</translation>
 <translation id="381202950560906753">다른 지문 추가</translation>
-<translation id="6658023813581644008">로그인하기 위해 Smart Lock을 설정하려면 비밀번호를 입력하세요.</translation>
+<translation id="6968288415730398122">비밀번호를 입력하여 화면 잠금을 설정하세요.</translation>
+<translation id="4103091233824664032">비밀번호를 입력하여 화면 잠금을 설정하고 로그인하세요.</translation>
 <translation id="5449551289610225147">비밀번호가 잘못되었습니다.</translation>
 <translation id="5374359983950678924">사진 변경</translation>
 <translation id="6984299437918708277">로그인 화면에 표시할 내 계정 사진을 선택하세요.</translation>
@@ -2214,7 +2222,7 @@
 <translation id="1136155683023653803">비밀번호, 북마크, 방문 기록 등이 계정에 동기화됩니다.</translation>
 <translation id="3267417306184901318">Brave Software 계정에 동기화되는 인터넷 사용 기록 및 활동</translation>
 <translation id="1123187597739372905">동기화 설정 표시</translation>
-<translation id="8420510748452002155">맞춤설정되지 않은 서비스</translation>
+<translation id="5428209950370661546">다른 Brave Software 서비스</translation>
 <translation id="2055016640093734678">Brave Software 서비스 설정 표시</translation>
 <translation id="7956662517480676674">동기화 및 Brave Software 서비스</translation>
 <translation id="2453021845418314664">고급 동기화 설정</translation>
@@ -2397,9 +2405,14 @@
 <translation id="2315821125498993513">휴대전화에 연결할 수 없습니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together 사용</translation>
 <translation id="3088402208262982892">Better Together 사용 안함</translation>
+<translation id="7179187931092694802">휴대전화로 Bravebook을 잠금 해제하세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">인스턴트 테더링</translation>
+<translation id="4746351372139058112">메시지</translation>
+<translation id="2248072377758660530">Bravebook으로 SMS를 보내고 받으세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">이 기기 지우기</translation>
 <translation id="3606712892509067288">Better Together에서 삭제하기</translation>
+<translation id="5078490485380754244">기기 삭제</translation>
+<translation id="8072033737676488034">휴대전화를 삭제하고 Better Together를 사용 중지합니다.</translation>
 <translation id="7878562273885520351">비밀번호가 도용될 수도 있음</translation>
 <translation id="6582421931165117398">개인정보 보호를 위해 지금 비밀번호를 변경하세요. 비밀번호를 변경하려면 먼저 로그인해야 합니다.</translation>
 <translation id="1089439967362294234">비밀번호 변경</translation>
@@ -2500,6 +2513,7 @@
 <translation id="2202898655984161076">프린터를 나열하는 데 문제가 발생했습니다. <ph name="CLOUD_PRINT_NAME"/>에 성공적으로 등록되지 못한 프린터가 있을 수 있습니다.</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> 커넥터 프로세스가 중단되었습니다. 다시 시작하시겠습니까?</translation>
 <translation id="6904655473976120856">앱 버튼을 눌러 종료하세요.</translation>
+<translation id="79766959863778284">XR 격리된 기기 서비스</translation>
 <translation id="8909833622202089127">사이트에서 내 위치를 추적하고 있습니다.</translation>
 <translation id="375636864092143889">사이트에서 마이크를 사용하고 있습니다.</translation>
 <translation id="310671807099593501">사이트에서 블루투스를 사용하고 있습니다.</translation>

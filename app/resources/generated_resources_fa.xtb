@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">باز کردن به‌عنوان پنجره</translation>
 <translation id="91568222606626347">ایجاد میان‌بر...</translation>
 <translation id="3627879631695760395">نصب <ph name="APP"/>…</translation>
+<translation id="8288032458496410887">حذف نصب <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">مشاهده در فروشگاه</translation>
 <translation id="4316850752623536204">وب‌سایت برنامه‌نویس</translation>
 <translation id="4289540628985791613">مرور کلی</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">کدگشای تصویر</translation>
 <translation id="8191453843330043793">‏تحلیل‌گر پراکسی V8</translation>
 <translation id="6185617499004995178">‏تأییدکننده CUPS IPP</translation>
+<translation id="3077708072777965506">‏روش ورودی سیستم‌عامل Brave</translation>
 <translation id="7171242884588191792">‏امکانات فایل‌ها در Brave</translation>
 <translation id="3061707000357573562">سرویس وصله</translation>
 <translation id="3580923162759633716">سرویس نمایه‌سازی</translation>
@@ -498,8 +500,10 @@
 <translation id="8743864605301774756">۱ ساعت قبل به‌روز‌رسانی شد</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> ساعت قبل به‌روزرسانی شد</translation>
 <translation id="1329584516321524826">لحظاتی پیش به‌روزرسانی شد</translation>
+<translation id="224940702122312781">این صفحه داده زیادی مصرف می‌کند.</translation>
+<translation id="3861241522664181545">صفحه موقتاً متوقف شد.</translation>
+<translation id="6921709132208495314">توقف استفاده از داده در این صفحه</translation>
 <translation id="2724841811573117416">‏گزارش‌های WebRTC</translation>
-<translation id="7518150891539970662">‏گزارش‌های WebRTC ‏(<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">‏زمان ثبت گزارش WebRTC ‏<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">فایل محلی:</translation>
 <translation id="2071393345806050157">فایل گزارش محلی وجود ندارد.</translation>
@@ -507,7 +511,6 @@
 <translation id="5946591249682680882">شناسه گزارش <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">اشکال پرونده</translation>
 <translation id="1188807932851744811">گزارش بارگذاری نشد.</translation>
-<translation id="3925247638945319984">‏اخیراً هیچ گزارش WebRTC را ثبت نکردید.</translation>
 <translation id="2076269580855484719">پنهان کردن این افزایه</translation>
 <translation id="2129825002735785149">به‌روزرسانی افزایه</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> توسط خط‌مشی شرکت مسدود شده است</translation>
@@ -546,6 +549,7 @@
 <translation id="6363797201514053536">‏جستجوی Brave Software یا تایپ نشانی وب</translation>
 <translation id="6078323886959318429">افزودن میان‌بر</translation>
 <translation id="6324916366299863871">ویرایش میان‌بر</translation>
+<translation id="4405117686468554883">‏‎*.jpeg،‏ ‎*.jpg،‏ ‎*.png</translation>
 <translation id="7400418766976504921">نشانی وب</translation>
 <translation id="8730621377337864115">تمام</translation>
 <translation id="4416582610654027550">نشانی وب معتبری تایپ کنید</translation>
@@ -1044,6 +1048,7 @@
 <translation id="5562781907504170924">این برگه به دستگاه بلوتوث متصل است.</translation>
 <translation id="5884474295213649357">‏این برگه به دستگاه USB متصل است.</translation>
 <translation id="8466417995783206254">این برگه درحال پخش ویدیو در حالت تصویردرتصویر است.</translation>
+<translation id="2585724835339714757">این برگه درحال اشتراک‌گذاری صفحه‌نمایش شماست.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - دوربین یا میکروفون درحال ضبط کردن است</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - محتوای برگه به اشتراک گذاشته شده است</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - پخش ویدیو در حالت تصویردرتصویر</translation>
@@ -1519,7 +1524,6 @@
 <translation id="8647834505253004544">نشانی وب معتبر نیست</translation>
 <translation id="2149850907588596975">گذرواژه‌ها و فرم‌ها</translation>
 <translation id="8639963783467694461">تنظیمات تکمیل خودکار</translation>
-<translation id="2512222046227390255">تکمیل خودکار فرم‌ها</translation>
 <translation id="7764225426217299476">افزودن آدرس</translation>
 <translation id="5595485650161345191">ویرایش آدرس</translation>
 <translation id="6207937957461833379">کشور/منطقه</translation>
@@ -1601,6 +1605,7 @@
 <translation id="577322787686508614">عملیات خواندن در این دستگاه مجاز نیست: «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="3141917231319778873">درخواست موردنظر در این دستگاه پشتیبانی نمی‌شود: «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="6122875415561139701">عملیات نوشتن در این دستگاه مجاز نیست: «<ph name="DEVICE_NAME"/>».</translation>
+<translation id="439266289085815679">‏پیکربندی Bluetooth توسط <ph name="USER_EMAIL"/> کنترل می‌شود.</translation>
 <translation id="784934925303690534">محدوده زمانی</translation>
 <translation id="2496180316473517155">سابقه مرور</translation>
 <translation id="8662811608048051533">شما را از سیستم اکثر سایت‌ها خارج می‌کند.</translation>
@@ -1612,6 +1617,7 @@
 <translation id="4699172675775169585">تصاویر و فایل‌های قرار گرفته در حافظه پنهان</translation>
 <translation id="1274997165432133392">کوکی‌ها و دیگر داده‌های سایت</translation>
 <translation id="3838543471119263078">کوکی‌ها و داده‌های افزایه و سایت‌های دیگر</translation>
+<translation id="369489984217678710">گذرواژه‌ها و سایر داده‌های ورود به سیستم</translation>
 <translation id="6865313869410766144">تکمیل خودکار داده‌های فرم</translation>
 <translation id="177336675152937177">داده های برنامه میزبانی شده</translation>
 <translation id="1718835860248848330">ساعت قبل</translation>
@@ -1969,6 +1975,8 @@
 <translation id="5282733140964383898">فعال کردن «ردیابی نشود» بدین معناست که درخواستی در ترافیک مرور شما لحاظ خواهد شد. هر گونه تأثیر به این بستگی دارد که وب‌سایت به درخواست پاسخ می‌دهد یا خیر و درخواست چگونه تفسیر می‌شود. به‌عنوان مثال، ممکن است برخی از وب‌سایت‌ها با نشان دادن آگهی‌هایی که براساس وب‌سایت‌های دیگری که بازدید کرده‌اید، نیستند به این درخواست پاسخ دهند. بسیاری از وب‌سایت‌ها همچنان داده‌های مرور شما را جمع‌آوری و استفاده خواهند کرد، به‌عنوان مثال برای بهبود ایمنی، برای ارائه محتوا، سرویس‌ها، آگهی‌ها و توصیه‌های مربوط به وب‌سایت‌هایشان و برای تولید آمار گزارش. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">فعال کردن دسترسی تأییدشده</translation>
 <translation id="5557991081552967863">‏روشن نگه‌داشتن Wi-Fi در حالت خواب</translation>
+<translation id="8562084399541316921">ادامه مطلب</translation>
+<translation id="6201926614538916789">‏ازسرگیری مشاهده سایت‌ها از دستگاه همراه در Bravebook</translation>
 <translation id="1521442365706402292">مدیریت گواهی‌ها</translation>
 <translation id="7075625805486468288">‏مدیریت گواهی‌ها و تنظیمات HTTPS/SSL</translation>
 <translation id="8871974300055371298">تنظیمات محتوا</translation>
@@ -2004,6 +2012,8 @@
 <translation id="7136694880210472378">پیش‌فرض قرار دادن</translation>
 <translation id="102272308210570439">اجازه دادن به «دستیار» برای استفاده از محتوای روی صفحه‌‌نمایش</translation>
 <translation id="8624205858755890468">«دستیار» را برای نمایش اطلاعات، برنامه‌ها و کنش‌های مرتبط فعال می‌کند.</translation>
+<translation id="4737453247496280552">‏تشخیص «Ok Brave Software»</translation>
+<translation id="6409553560184414680">‏هرزمان که صفحه‌نمایش روشن است با گفتن «Ok Brave Software» به «دستیار» دسترسی داشته باشید.</translation>
 <translation id="8669919703154928649">به «دستیار» اجازه دهید اعلان نشان دهد</translation>
 <translation id="3430342160185525240">به «دستیار» امکان می‌دهد اعلان نشان دهد.</translation>
 <translation id="3908743412684152579">‏تنظیمات «دستیار Brave Software»</translation>
@@ -2093,7 +2103,9 @@
 <translation id="8708000541097332489">پاک کردن در هنگام خروج</translation>
 <translation id="8037357227543935929">درخواست (پیش‌فرض)</translation>
 <translation id="3427092606871434483">اجازه (پیش‌فرض)</translation>
+<translation id="4879491255372875719">خودکار (پیش‌فرض)</translation>
 <translation id="4312866146174492540">مسدود کردن (پیش‌فرض)</translation>
+<translation id="6979440798594660689">بی‌صدا (پیش‌فرض)</translation>
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="5063480226653192405">کاربر</translation>
 <translation id="3006881078666935414">هیچ داده مصرفی وجود ندارد</translation>
@@ -2125,6 +2137,7 @@
 <translation id="2318923050469484167">جلسه ناشناس کنونی (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">هیچ سایتی بزرگ‌نمایی یا کوچک‌نمایی نشده است</translation>
 <translation id="3566721612727112615">سایتی اضافه نشد</translation>
+<translation id="8098574385249290065">‏Brave انتخاب کند سایت‌ها چه موقع صدا پخش کنند (توصیه‌شده)</translation>
 <translation id="5763751966069581670">‏هیچ دستگاه USB پیدا نشد</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">افزودن سایت</translation>
@@ -2168,25 +2181,20 @@
 <translation id="4562155214028662640">افزودن اثر انگشت</translation>
 <translation id="1719312230114180055">توجه: ممکن است امنیت اثر انگشت شما از یک گذرواژه یا پین قوی کمتر باشد.</translation>
 <translation id="1927632033341042996">انگشت <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">فعال کردن باز کردن قفل با اثرانگشت</translation>
 <translation id="7665369617277396874">افزودن حساب</translation>
 <translation id="3422989461909154470">‏می‌توانید همه حساب‌های Brave Software خود را که از برنامه‌ها و وب‌سایت‌ها به سیستم وارد شده‌اند، از اینجا مدیریت کنید.</translation>
 <translation id="1987317783729300807">حساب‌ها</translation>
 <translation id="8418661265246754237">‏حساب‌های Brave Software</translation>
-<translation id="2107494551712864447">افزودن اثرانگشت</translation>
-<translation id="6388771388956873507">حسگر اثر انگشت را در دستگاهتان پیدا کنید و آن را با انگشتتان لمس کنید</translation>
-<translation id="9170397650136757332">حالا کمی انگشتتان را حرکت دهید تا قسمت‌های متفاوت اثرانگشتتان ثبت شود</translation>
-<translation id="161707228174452095">اثرانگشت اضافه شد.</translation>
-<translation id="4576537685267142337">انگشت را بلند کنید، سپس دوباره حسگر را لمس کنید</translation>
-<translation id="494660967831069720">داده‌های جزئی</translation>
-<translation id="3064410671692449875">داده ناکافی</translation>
-<translation id="2532026602297547439">حسگر کثیف است</translation>
-<translation id="8642267168767642381">حرکت انگشت خیلی کند بود</translation>
-<translation id="2039623879703305659">حرکت انگشت خیلی سریع بود</translation>
-<translation id="7311891583377621132">انگشتتان را کمی حرکت دهید تا بخش دیگری از اثرانگشت ثبت شود</translation>
+<translation id="1059855432287631118">درحال ثبت اثرانگشت</translation>
+<translation id="878068003854005405">بیایید شروع کنیم. انگشتتان را روی حسگر قرار دهید.</translation>
+<translation id="7189965711416741966">اثرانگشت اضافه شد.</translation>
+<translation id="9220820413868316583">انگشتتان را بردارید سپس دوباره امتحان کنید.</translation>
+<translation id="4534661889221639075">دوباره امتحان کنید.</translation>
+<translation id="3645372836428131288">انگشتتان را کمی حرکت دهید تا بخش دیگری از اثرانگشت ثبت شود.</translation>
 <translation id="7345706641791090287">گذرواژه‌تان را تأیید کنید</translation>
 <translation id="381202950560906753">افزودن دستگاه دیگر</translation>
-<translation id="6658023813581644008">‏برای راه‌اندازی Smart Lock جهت ورود به سیستم، گذرواژه‌تان را وارد کنید</translation>
+<translation id="6968288415730398122">برای پیکربندی قفل صفحه، گذرواژه‌تان را وارد کنید</translation>
+<translation id="4103091233824664032">برای پیکربندی قفل صفحه و ورود به سیستم، گذرواژه‌تان را وارد کنید</translation>
 <translation id="5449551289610225147">گذرواژه نامعتبر است</translation>
 <translation id="5374359983950678924">تغییر عکس</translation>
 <translation id="6984299437918708277">تصویری انتخاب کنید تا برای حساب شما در صفحه ورود به سیستم نشان داده شود</translation>
@@ -2215,7 +2223,7 @@
 <translation id="1136155683023653803">گذرواژه‌ها، نشانک‌ها، سابقه و سایر موارد با حسابتان همگام‌سازی شدند</translation>
 <translation id="3267417306184901318">‏داده‌های محصول مرور و فعالیتتان با حساب Brave Software شما همگام‌سازی شد</translation>
 <translation id="1123187597739372905">نمایش تنظیمات همگام‌سازی</translation>
-<translation id="8420510748452002155">سرویس‌های شخصی‌نشده</translation>
+<translation id="5428209950370661546">‏سایر سرویس‌های Brave Software</translation>
 <translation id="2055016640093734678">‏نمایش تنظیمات سرویس‌های Brave Software</translation>
 <translation id="7956662517480676674">‏همگام‌سازی و سرویس‌های Brave Software</translation>
 <translation id="2453021845418314664">تنظیمات همگام‌سازی پیشرفته</translation>
@@ -2398,9 +2406,14 @@
 <translation id="2315821125498993513">ارتباط با تلفن برقرار نشد. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">‏Better Together روشن است</translation>
 <translation id="3088402208262982892">‏Better Together خاموش است</translation>
+<translation id="7179187931092694802">‏باز کردن قفل Bravebook با تلفن. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">اتصال فوری به اینترنت با تلفن همراه</translation>
+<translation id="4746351372139058112">پیام‌ها</translation>
+<translation id="2248072377758660530">‏ارسال و دریافت پیامک از Bravebook. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">فراموش کردن این دستگاه</translation>
 <translation id="3606712892509067288">‏حذف از Better Together</translation>
+<translation id="5078490485380754244">فراموش کردن دستگاه</translation>
+<translation id="8072033737676488034">‏حذف تلفن و غیرفعال کردن Better Together</translation>
 <translation id="7878562273885520351">ممکن است گذرواژه‌تان درمعرض خطر باشد</translation>
 <translation id="6582421931165117398">برای محافظت از اطلاعات شخصی، هم‌اکنون گذرواژه را تغییر دهید. قبل از اینکه بتوانید گذرواژه را تغییر دهید، از شما درخواست می‌شود به سیستم وارد شوید.</translation>
 <translation id="1089439967362294234">تغییر گذرواژه</translation>
@@ -2501,6 +2514,7 @@
 <translation id="2202898655984161076">هنگام فهرست کردن چاپگرها مشکلی روی داد. برخی از چاپگرهای شما با <ph name="CLOUD_PRINT_NAME"/> با موفقیت ثبت نشده‌اند.</translation>
 <translation id="3220586366024592812">فرآیند رابط <ph name="CLOUD_PRINT_NAME"/> متوقف شد. مجدداً راه‌اندازی شود؟</translation>
 <translation id="6904655473976120856">برای خروج، دکمه «برنامه» را فشار دهید</translation>
+<translation id="79766959863778284">‏سرویس دستگاه جداشده با XR</translation>
 <translation id="8909833622202089127">سایت درحال ردیابی مکان شما است</translation>
 <translation id="375636864092143889">سایت درحال استفاده از میکروفون شما است</translation>
 <translation id="310671807099593501">سایت درحال استفاده از بلوتوث شما است</translation>

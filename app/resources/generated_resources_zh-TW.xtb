@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">在視窗中開啟</translation>
 <translation id="91568222606626347">建立捷徑...</translation>
 <translation id="3627879631695760395">安裝「<ph name="APP"/>」...</translation>
+<translation id="8288032458496410887">正在解除安裝「<ph name="APP"/>」...</translation>
 <translation id="4057896668975954729">前往商店查看</translation>
 <translation id="4316850752623536204">開發人員網站</translation>
 <translation id="4289540628985791613">總覽</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">影像解碼器</translation>
 <translation id="8191453843330043793">V8 Proxy 解析工具</translation>
 <translation id="6185617499004995178">CUPS IPP 驗證工具</translation>
+<translation id="3077708072777965506">Brave 作業系統輸入法</translation>
 <translation id="7171242884588191792">Brave 檔案公用程式</translation>
 <translation id="3061707000357573562">修補服務</translation>
 <translation id="3580923162759633716">剖析服務</translation>
@@ -499,8 +501,10 @@
 <translation id="8743864605301774756">1 小時前更新</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> 小時前更新</translation>
 <translation id="1329584516321524826">剛才更新</translation>
+<translation id="224940702122312781">這個網頁會耗用許多數據流量。</translation>
+<translation id="3861241522664181545">已暫停載入頁面。</translation>
+<translation id="6921709132208495314">停止這個網頁使用數據流量</translation>
 <translation id="2724841811573117416">WebRTC 記錄</translation>
-<translation id="7518150891539970662">WebRTC 記錄 (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC 記錄擷取時間：<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">本機檔案：</translation>
 <translation id="2071393345806050157">沒有本機記錄檔案。</translation>
@@ -508,7 +512,6 @@
 <translation id="5946591249682680882">報表 ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">回報錯誤</translation>
 <translation id="1188807932851744811">尚未上傳記錄。</translation>
-<translation id="3925247638945319984">你最近並未擷取 WebRTC 記錄。</translation>
 <translation id="2076269580855484719">隱藏這個外掛程式</translation>
 <translation id="2129825002735785149">更新外掛程式</translation>
 <translation id="9088234649737575428">「<ph name="PLUGIN_NAME"/>」遭到企業政策封鎖</translation>
@@ -547,6 +550,7 @@
 <translation id="6363797201514053536">搜尋 Brave Software 或輸入網址</translation>
 <translation id="6078323886959318429">新增捷徑</translation>
 <translation id="6324916366299863871">編輯捷徑</translation>
+<translation id="4405117686468554883">*.jpeg、*.jpg、*.png</translation>
 <translation id="7400418766976504921">網址</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="4416582610654027550">請輸入有效的網址</translation>
@@ -1045,6 +1049,7 @@
 <translation id="5562781907504170924">這個分頁已連線至藍牙裝置。</translation>
 <translation id="5884474295213649357">這個分頁已連上 USB 裝置。</translation>
 <translation id="8466417995783206254">這個分頁正在使用子母畫面模式播放影片。</translation>
+<translation id="2585724835339714757">這個分頁正在共用你的畫面。</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - 攝影機或麥克風錄影/錄音中</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - 已分享分頁內容</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - 正在使用子母畫面模式播放影片</translation>
@@ -1520,7 +1525,6 @@
 <translation id="8647834505253004544">網址無效</translation>
 <translation id="2149850907588596975">密碼和表單</translation>
 <translation id="8639963783467694461">自動填入設定</translation>
-<translation id="2512222046227390255">自動填入表單</translation>
 <translation id="7764225426217299476">新增地址</translation>
 <translation id="5595485650161345191">編輯地址</translation>
 <translation id="6207937957461833379">國家/地區</translation>
@@ -1602,6 +1606,7 @@
 <translation id="577322787686508614">無法在以下裝置上執行讀取作業：「<ph name="DEVICE_NAME"/>」。</translation>
 <translation id="3141917231319778873">無法對以下裝置提出指定的要求：「<ph name="DEVICE_NAME"/>」。</translation>
 <translation id="6122875415561139701">無法在以下裝置上執行寫入作業：「<ph name="DEVICE_NAME"/>」。</translation>
+<translation id="439266289085815679">藍牙設定由 <ph name="USER_EMAIL"/> 控制。</translation>
 <translation id="784934925303690534">時間範圍</translation>
 <translation id="2496180316473517155">瀏覽記錄</translation>
 <translation id="8662811608048051533">你會從大多數網站登出。</translation>
@@ -1613,6 +1618,7 @@
 <translation id="4699172675775169585">快取圖片和檔案</translation>
 <translation id="1274997165432133392">Cookie 和其他網站資料</translation>
 <translation id="3838543471119263078">Cookie、其他網站資料和外掛程式資料</translation>
+<translation id="369489984217678710">密碼和其他登入資料</translation>
 <translation id="6865313869410766144">自動填入表單資料</translation>
 <translation id="177336675152937177">代管應用程式資料</translation>
 <translation id="1718835860248848330">過去 1 小時</translation>
@@ -1970,6 +1976,8 @@
 <translation id="5282733140964383898">啟用「不追蹤」即表示要求將會包含在你的瀏覽流量中，所造成的影響取決於網站是否回應要求以及如何解讀要求。舉例來說，部分網站回應這類要求的方式，可能會是不根據你造訪其他網站的記錄來顯示廣告。不過，許多網站仍會收集並使用你的瀏覽資料，藉此提升安全性、提供網站上的內容、服務、廣告和推薦項目，以及產生報告統計資料等。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">啟用已驗證存取權</translation>
 <translation id="5557991081552967863">休眠期間保持開啟 Wi-Fi</translation>
+<translation id="8562084399541316921">繼續閱讀</translation>
+<translation id="6201926614538916789">透過 Bravebook 繼續瀏覽先前在行動裝置上造訪的網站</translation>
 <translation id="1521442365706402292">管理憑證</translation>
 <translation id="7075625805486468288">管理 HTTPS/SSL 憑證和設定</translation>
 <translation id="8871974300055371298">內容設定</translation>
@@ -2005,6 +2013,8 @@
 <translation id="7136694880210472378">設為預設</translation>
 <translation id="102272308210570439">允許 Brave Software 助理使用畫面上的內容</translation>
 <translation id="8624205858755890468">允許 Brave Software 助理向你顯示相關資訊、應用程式和操作。</translation>
+<translation id="4737453247496280552">「Ok Brave Software」啟動字詞偵測</translation>
+<translation id="6409553560184414680">只要在螢幕開啟狀態下說出「Ok Brave Software」，就能隨時存取 Brave Software 助理。</translation>
 <translation id="8669919703154928649">允許 Brave Software 助理顯示你的通知</translation>
 <translation id="3430342160185525240">允許 Brave Software 助理向你顯示通知。</translation>
 <translation id="3908743412684152579">Brave Software 助理設定</translation>
@@ -2094,7 +2104,9 @@
 <translation id="8708000541097332489">退出時清除</translation>
 <translation id="8037357227543935929">詢問 (預設)</translation>
 <translation id="3427092606871434483">允許 (預設)</translation>
+<translation id="4879491255372875719">自動 (預設)</translation>
 <translation id="4312866146174492540">封鎖 (預設)</translation>
+<translation id="6979440798594660689">靜音 (預設)</translation>
 <translation id="2356070529366658676">詢問</translation>
 <translation id="5063480226653192405">用量</translation>
 <translation id="3006881078666935414">沒有使用情況資料</translation>
@@ -2126,6 +2138,7 @@
 <translation id="2318923050469484167">目前的無痕模式工作階段 (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">未針對任何網站設定縮放等級</translation>
 <translation id="3566721612727112615">未新增任何網站</translation>
+<translation id="8098574385249290065">讓 Brave 自行判斷何時允許網站播放音訊 (建議使用)</translation>
 <translation id="5763751966069581670">找不到 USB 裝置</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">新增網站</translation>
@@ -2169,25 +2182,20 @@
 <translation id="4562155214028662640">新增指紋</translation>
 <translation id="1719312230114180055">注意：使用高強度的密碼或 PIN 碼會比感應指紋來得安全。</translation>
 <translation id="1927632033341042996">指紋 <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">啟用指紋解鎖功能</translation>
 <translation id="7665369617277396874">新增帳戶</translation>
 <translation id="3422989461909154470">你可以在這裡管理你從應用程式和網站登入的所有 Brave Software 帳戶。</translation>
 <translation id="1987317783729300807">帳戶</translation>
 <translation id="8418661265246754237">Brave Software 帳戶</translation>
-<translation id="2107494551712864447">新增指紋</translation>
-<translation id="6388771388956873507">找到裝置上的指紋感應器，並以手指輕觸</translation>
-<translation id="9170397650136757332">現在請稍微移動你的手指，讓系統擷取完整的指紋</translation>
-<translation id="161707228174452095">指紋新增成功！</translation>
-<translation id="4576537685267142337">移開手指，然後再次輕觸感應器</translation>
-<translation id="494660967831069720">資料不全</translation>
-<translation id="3064410671692449875">資料不足</translation>
-<translation id="2532026602297547439">感應器上有髒污</translation>
-<translation id="8642267168767642381">手指移動速度過慢</translation>
-<translation id="2039623879703305659">手指移動速度過快</translation>
-<translation id="7311891583377621132">請稍微移動手指，讓系統擷取完整指紋</translation>
+<translation id="1059855432287631118">註冊指紋</translation>
+<translation id="878068003854005405">歡迎開始設定，請將手指放在感應器上。</translation>
+<translation id="7189965711416741966">指紋新增成功。</translation>
+<translation id="9220820413868316583">請移開手指，然後再試一次。</translation>
+<translation id="4534661889221639075">請再試一次。</translation>
+<translation id="3645372836428131288">請稍微移動手指，讓系統擷取完整指紋</translation>
 <translation id="7345706641791090287">確認您的密碼</translation>
 <translation id="381202950560906753">新增其他指紋</translation>
-<translation id="6658023813581644008">如要設定使用 Smart Lock 登入，請輸入你的密碼</translation>
+<translation id="6968288415730398122">如要設定螢幕鎖定，請輸入你的密碼</translation>
+<translation id="4103091233824664032">如要設定螢幕鎖定和登入，請輸入你的密碼</translation>
 <translation id="5449551289610225147">密碼無效</translation>
 <translation id="5374359983950678924">變更圖片</translation>
 <translation id="6984299437918708277">請選擇登入畫面上的個人帳戶圖片</translation>
@@ -2216,7 +2224,7 @@
 <translation id="1136155683023653803">密碼、書籤、歷史記錄和其他設定會同步到你的帳戶</translation>
 <translation id="3267417306184901318">讓你的瀏覽資料和活動與你的 Brave Software 帳戶保持同步</translation>
 <translation id="1123187597739372905">顯示同步處理設定</translation>
-<translation id="8420510748452002155">非個人化服務</translation>
+<translation id="5428209950370661546">其他 Brave Software 服務</translation>
 <translation id="2055016640093734678">顯示 Brave Software 服務設定</translation>
 <translation id="7956662517480676674">同步處理和 Brave Software 服務</translation>
 <translation id="2453021845418314664">進階同步處理設定</translation>
@@ -2399,9 +2407,14 @@
 <translation id="2315821125498993513">無法與手機連結。<ph name="LINK_BEGIN"/>瞭解詳情。<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together 已啟用</translation>
 <translation id="3088402208262982892">Better Together 已停用</translation>
+<translation id="7179187931092694802">使用你的手機解鎖 Bravebook。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">即時網路共用</translation>
+<translation id="4746351372139058112">Messages</translation>
+<translation id="2248072377758660530">透過你的 Bravebook 收發簡訊。<ph name="LINK_BEGIN"/>瞭解詳情<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">移除這部裝置</translation>
 <translation id="3606712892509067288">從 Better Together 移除</translation>
+<translation id="5078490485380754244">移除裝置</translation>
+<translation id="8072033737676488034">移除你的手機並停用 Better Together</translation>
 <translation id="7878562273885520351">你的密碼可能已經外洩</translation>
 <translation id="6582421931165117398">為維護你的個人資訊安全，請立即變更密碼。系統會要求你先登入帳戶，才能變更密碼。</translation>
 <translation id="1089439967362294234">變更密碼</translation>
@@ -2502,6 +2515,7 @@
 <translation id="2202898655984161076">列出印表機清單時發生問題，你的部分印表機尚未使用 <ph name="CLOUD_PRINT_NAME"/> 完成註冊。</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> 連接器處理程序當掉了，你要重新啟動嗎？</translation>
 <translation id="6904655473976120856">按下 [應用程式] 按鈕即可結束</translation>
+<translation id="79766959863778284">XR 獨立裝置服務</translation>
 <translation id="8909833622202089127">網站正在追蹤你的位置</translation>
 <translation id="375636864092143889">網站正在使用你的麥克風</translation>
 <translation id="310671807099593501">網站正在使用藍牙</translation>

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index f8efec9531e72838074a5b9ee904a16d1f892863..0cd048c020c8be8bfe32e413ca9ea6916919dc85 100644
+index cafea93c58334f56a2fb66cc42e46a7b35cf7e32..1b4d44c661f5c5de4e07a46d730fa1c545b14ca9 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -196,6 +196,7 @@
+@@ -198,6 +198,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -10,7 +10,7 @@ index f8efec9531e72838074a5b9ee904a16d1f892863..0cd048c020c8be8bfe32e413ca9ea691
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}">
            <category-default-setting
-@@ -210,6 +211,7 @@
+@@ -212,6 +213,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -18,7 +18,7 @@ index f8efec9531e72838074a5b9ee904a16d1f892863..0cd048c020c8be8bfe32e413ca9ea691
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}">
            <media-picker label="$i18n{siteSettingsCameraLabel}" type="camera">
-@@ -385,6 +387,19 @@
+@@ -387,6 +389,19 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>

@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Avaa ikkunana</translation>
 <translation id="91568222606626347">Luo pikakuvake…</translation>
 <translation id="3627879631695760395">Asenna <ph name="APP"/>…</translation>
+<translation id="8288032458496410887">Poista <ph name="APP"/>…</translation>
 <translation id="4057896668975954729">Näytä Web Storessa</translation>
 <translation id="4316850752623536204">Kehittäjän verkkosivusto</translation>
 <translation id="4289540628985791613">Yleiskatsaus</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Kuvien dekoodaaja</translation>
 <translation id="8191453843330043793">V8-välityspalvelimen selvittäjä</translation>
 <translation id="6185617499004995178">CUPS IPP ‑vahvistus</translation>
+<translation id="3077708072777965506">Brave-käyttöjärjestelmän syöttötapa</translation>
 <translation id="7171242884588191792">Brave-tiedostoapuohjelma</translation>
 <translation id="3061707000357573562">Virheenkorjauspalvelu</translation>
 <translation id="3580923162759633716">Profilointipalvelu</translation>
@@ -498,8 +500,10 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8743864605301774756">Päivitetty 1 t sitten</translation>
 <translation id="5638497698949808140">Päivitetty <ph name="HOURS"/> t sitten</translation>
 <translation id="1329584516321524826">Päivitetty juuri nyt</translation>
+<translation id="224940702122312781">Tämä sivu käyttää paljon dataa.</translation>
+<translation id="3861241522664181545">Sivu pysäytetty.</translation>
+<translation id="6921709132208495314">Lopeta tämän sivun datan käyttö</translation>
 <translation id="2724841811573117416">WebRTC-lokit</translation>
-<translation id="7518150891539970662">WebRTC-lokit (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-loki kaapattiin <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Paikallinen tiedosto:</translation>
 <translation id="2071393345806050157">Paikallista lokitiedostoa ei ole.</translation>
@@ -507,7 +511,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5946591249682680882">Raporttitunnus: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Tiedostovirhe</translation>
 <translation id="1188807932851744811">Lokia ei ole lähetetty.</translation>
-<translation id="3925247638945319984">Sinulla ei ole äskettäin kaapattuja WebRTC-lokeja.</translation>
 <translation id="2076269580855484719">Piilota tämä laajennus</translation>
 <translation id="2129825002735785149">Päivitä laajennus</translation>
 <translation id="9088234649737575428">Yrityskäytäntö estää laajennuksen <ph name="PLUGIN_NAME"/>.</translation>
@@ -546,6 +549,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6363797201514053536">Hae Brave Softwaresta tai kirjoita URL-osoite</translation>
 <translation id="6078323886959318429">Lisää pikakuvake</translation>
 <translation id="6324916366299863871">Muokkaa pikanäppäintä</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL-osoite</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="4416582610654027550">Kirjoita kelvollinen URL-osoite</translation>
@@ -1044,6 +1048,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5562781907504170924">Tämä välilehti on yhdistetty Bluetooth-laitteeseen.</translation>
 <translation id="5884474295213649357">Tämä välilehti on yhdistetty USB-laitteeseen.</translation>
 <translation id="8466417995783206254">Tämä välilehti toistaa videota kuva kuvassa ‑tilassa.</translation>
+<translation id="2585724835339714757">Tämä välilehti jakaa näyttösi.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kamera tai mikrofoni tallentaa sisältöä</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – välilehden sisältö jaettu</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – Video toistetaan kuva kuvassa ‑tilassa</translation>
@@ -1519,7 +1524,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8647834505253004544">Ei kelvollinen verkko-osoite</translation>
 <translation id="2149850907588596975">Salasanat ja lomakkeet</translation>
 <translation id="8639963783467694461">Automaattisen täytön asetukset</translation>
-<translation id="2512222046227390255">Täytä lomakkeet automaattisesti</translation>
 <translation id="7764225426217299476">Lisää osoite</translation>
 <translation id="5595485650161345191">Osoitteen muokkaus</translation>
 <translation id="6207937957461833379">Maa/alue</translation>
@@ -1601,6 +1605,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="577322787686508614">Lukutoiminto ei ole sallittu laitteella <ph name="DEVICE_NAME"/>.</translation>
 <translation id="3141917231319778873">Annettua pyyntöä ei tueta laitteella <ph name="DEVICE_NAME"/>.</translation>
 <translation id="6122875415561139701">Kirjoitustoiminto ei ole sallittu laitteella <ph name="DEVICE_NAME"/>.</translation>
+<translation id="439266289085815679"><ph name="USER_EMAIL"/> ohjaa Bluetooth-määritystä.</translation>
 <translation id="784934925303690534">Aikaväli</translation>
 <translation id="2496180316473517155">Selaushistoria</translation>
 <translation id="8662811608048051533">Kirjaa sinut ulos useimmilta sivustoilta.</translation>
@@ -1612,6 +1617,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="4699172675775169585">Välimuistissa olevat kuvat ja tiedostot</translation>
 <translation id="1274997165432133392">Evästeet ja muut sivuston tiedot</translation>
 <translation id="3838543471119263078">Evästeet ja muut sivuston ja laajennuksien tiedot</translation>
+<translation id="369489984217678710">Salasanat ja muu kirjautumisdata</translation>
 <translation id="6865313869410766144">Automaattisesti täydennetyt lomaketiedot</translation>
 <translation id="177336675152937177">Isännöidyn sovelluksen tiedot</translation>
 <translation id="1718835860248848330">Viimeinen tunti</translation>
@@ -1969,6 +1975,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5282733140964383898">Do Not Track ‑valinta lisää pyynnön selaustietoliikenteeseesi. Sen vaikutus riippuu siitä, miten verkkosivustot vastaavat pyyntöön ja tulkitsevat sitä. Jotkin verkkosivustot esimerkiksi vastaavat pyyntöön näyttämällä sinulle mainoksia, jotka eivät perustu käyttämiisi verkkosivustoihin. Monet verkkosivustot keräävät silti selaustietojasi esimerkiksi parantaakseen tietoturvaa, tarjotakseen sisältöä, mainoksia ja suosituksia verkkosivustoilleen sekä luodakseen raportointitietoja. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Ota käyttöön vahvistettu käyttö</translation>
 <translation id="5557991081552967863">Pidä Wi-Fi päällä lepotilassa</translation>
+<translation id="8562084399541316921">Jatka lukemista</translation>
+<translation id="6201926614538916789">Jatka mobiililaitteella avattujen sivustojen katselua Bravebookilla</translation>
 <translation id="1521442365706402292">Hallinnoi varmenteita</translation>
 <translation id="7075625805486468288">Hallitse HTTPS/SSL-varmenteita ja ‑asetuksia.</translation>
 <translation id="8871974300055371298">Sisältöasetukset</translation>
@@ -2004,6 +2012,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7136694880210472378">Aseta oletukseksi</translation>
 <translation id="102272308210570439">Anna Assistantin käyttää näytöllä olevia kohteita</translation>
 <translation id="8624205858755890468">Sallii Assistantin näyttää kohteisiin liittyviä tietoja, sovelluksia ja toimintoja.</translation>
+<translation id="4737453247496280552">Ok Brave Software ‑tunnistus</translation>
+<translation id="6409553560184414680">Käytä Assistantia koska vain sanomalla Ok Brave Software, kun näyttö on päällä.</translation>
 <translation id="8669919703154928649">Anna Assistantin näyttää sinulle ilmoituksia</translation>
 <translation id="3430342160185525240">Tämä sallii Assistantin näyttää sinulle ilmoituksia.</translation>
 <translation id="3908743412684152579">Brave Software Assistantin asetukset</translation>
@@ -2093,7 +2103,9 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8708000541097332489">Tyhjennä poistuttaessa</translation>
 <translation id="8037357227543935929">Kysy (oletus)</translation>
 <translation id="3427092606871434483">Salli (oletus)</translation>
+<translation id="4879491255372875719">Automaattinen (oletus)</translation>
 <translation id="4312866146174492540">Estä (oletus)</translation>
+<translation id="6979440798594660689">Mykistä (oletus)</translation>
 <translation id="2356070529366658676">Kysy</translation>
 <translation id="5063480226653192405">Käyttö</translation>
 <translation id="3006881078666935414">Ei käyttötietoja</translation>
@@ -2125,6 +2137,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2318923050469484167">Nykyinen incognito-istunto (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Zoomausta ei ole käytetty sivustoilla.</translation>
 <translation id="3566721612727112615">Ei lisättyjä sivustoja</translation>
+<translation id="8098574385249290065">Anna Braven valita, milloin sivustot voivat toistaa ääniä (suositus)</translation>
 <translation id="5763751966069581670">USB-laitteita ei löytynyt.</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Lisää sivusto</translation>
@@ -2168,25 +2181,20 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="4562155214028662640">Lisää sormenjälki</translation>
 <translation id="1719312230114180055">Huom. Sormenjälki ei välttämättä ole yhtä turvallinen kuin vahva salasana tai PIN-koodi.</translation>
 <translation id="1927632033341042996">Sormi <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Salli lukituksen avaaminen sormenjäljellä</translation>
 <translation id="7665369617277396874">Lisää tili</translation>
 <translation id="3422989461909154470">Täällä voit ylläpitää kaikkia Brave Software-tilejä, joille olet kirjautunut sovelluksissa tai verkkosivustoilla.</translation>
 <translation id="1987317783729300807">Tilit</translation>
 <translation id="8418661265246754237">Brave Software-tilit</translation>
-<translation id="2107494551712864447">Lisää sormenjälki</translation>
-<translation id="6388771388956873507">Etsi laitteen sormenjälkitunnistin ja kosketa sitä sormellasi.</translation>
-<translation id="9170397650136757332">Tallenna sormenjälkesi kokonaisuudessaan liikuttamalla sormeasi varovasti.</translation>
-<translation id="161707228174452095">Sormenjälki lisättiin!</translation>
-<translation id="4576537685267142337">Nosta sormesi ja kosketa tunnistinta uudelleen.</translation>
-<translation id="494660967831069720">Osittaiset tiedot</translation>
-<translation id="3064410671692449875">Riittämättömät tiedot</translation>
-<translation id="2532026602297547439">Anturi likainen</translation>
-<translation id="8642267168767642381">Liikutit sormea liian hitaasti</translation>
-<translation id="2039623879703305659">Liikutit sormea liian nopeasti</translation>
-<translation id="7311891583377621132">Liikuta sormeasi hieman, niin sormenjäljen toinen osa tallennetaan.</translation>
+<translation id="1059855432287631118">Sormenjälkeä rekisteröidään</translation>
+<translation id="878068003854005405">Aloitetaan. Aseta sormesi tunnistimen päälle.</translation>
+<translation id="7189965711416741966">Sormenjälki lisätty</translation>
+<translation id="9220820413868316583">Nosta sormi ja yritä uudelleen.</translation>
+<translation id="4534661889221639075">Yritä uudelleen.</translation>
+<translation id="3645372836428131288">Liikuta sormeasi hieman, niin sormenjäljen toinen osa tallennetaan.</translation>
 <translation id="7345706641791090287">Vahvista salasanasi</translation>
 <translation id="381202950560906753">Lisää toinen</translation>
-<translation id="6658023813581644008">Syötä salasanasi ottaaksesi Smart Lock ‑kirjautumisen käyttöön</translation>
+<translation id="6968288415730398122">Määritä näytön lukitus antamalla salasanasi.</translation>
+<translation id="4103091233824664032">Syötä salasanasi määrittääksesi näytön lukituksen ja sisäänkirjautumisen.</translation>
 <translation id="5449551289610225147">Virheellinen salasana</translation>
 <translation id="5374359983950678924">Vaihda kuva</translation>
 <translation id="6984299437918708277">Valitse kirjautumisnäytöllä näytettävä tilisi kuvake.</translation>
@@ -2215,7 +2223,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1136155683023653803">Salasanat, kirjanmerkit, historia ja muita tietoja synkronoidaan tilillesi.</translation>
 <translation id="3267417306184901318">Brave Software-tilillesi synkronoitu selausdata ja ‑toiminta</translation>
 <translation id="1123187597739372905">Näytä synkronointiasetukset</translation>
-<translation id="8420510748452002155">Yleiset palvelut</translation>
+<translation id="5428209950370661546">Muut Brave Software-palvelut</translation>
 <translation id="2055016640093734678">Näytä Brave Software-palveluiden asetukset</translation>
 <translation id="7956662517480676674">Synkronointi ja Brave Software-palvelut</translation>
 <translation id="2453021845418314664">Synkronoinnin lisäasetukset</translation>
@@ -2398,9 +2406,14 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2315821125498993513">Yhteyden muodostaminen puhelimeen epäonnistui. <ph name="LINK_BEGIN"/>Lisätietoja<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together on käytössä</translation>
 <translation id="3088402208262982892">Better Together on pois käytöstä</translation>
+<translation id="7179187931092694802">Avaa Bravebookin lukitus puhelimella. <ph name="LINK_BEGIN"/>Lisätietoja<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Yhteyden pikajakaminen</translation>
+<translation id="4746351372139058112">Viestit</translation>
+<translation id="2248072377758660530">Lähetä ja vastaanota tekstiviestejä Bravebookilla. <ph name="LINK_BEGIN"/>Lisätietoja<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Unohda tämä laite</translation>
 <translation id="3606712892509067288">Poista Better Togetherista</translation>
+<translation id="5078490485380754244">Unohda laite</translation>
+<translation id="8072033737676488034">Irrota puhelin ja poista Better Together käytöstä</translation>
 <translation id="7878562273885520351">Salasanasi on saattanut vaarantua.</translation>
 <translation id="6582421931165117398">Vaihda salasanasi nyt, jotta henkilötietosi pysyvät turvassa. Sinun on kirjauduttava sisään ennen salasanan vaihtamista.</translation>
 <translation id="1089439967362294234">Vaihda salasana</translation>
@@ -2501,6 +2514,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2202898655984161076">Tulostimien luetteloinnissa tapahtui virhe. Kaikkia tulostimiasi ei ole välttämättä rekisteröity palveluun <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/>-yhteysohjelman prosessi keskeytyi. Käynnistetäänkö uudelleen?</translation>
 <translation id="6904655473976120856">Sulje painamalla Sovellukset-painiketta.</translation>
+<translation id="79766959863778284">XR-eristetty laitepalvelu</translation>
 <translation id="8909833622202089127">Sivusto seuraa sijaintiasi</translation>
 <translation id="375636864092143889">Sivusto käyttää mikrofoniasi</translation>
 <translation id="310671807099593501">Sivusto käyttää Bluetoothia</translation>

@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Åpne som vindu</translation>
 <translation id="91568222606626347">Opprett snarvei</translation>
 <translation id="3627879631695760395">Installer <ph name="APP"/>…</translation>
+<translation id="8288032458496410887">Avinstaller <ph name="APP"/></translation>
 <translation id="4057896668975954729">Se i Nettmarked</translation>
 <translation id="4316850752623536204">Utviklernettsted</translation>
 <translation id="4289540628985791613">Oversikt</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Image Decoder</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
 <translation id="6185617499004995178">CUPS IPP-validator</translation>
+<translation id="3077708072777965506">Brave OS-inndatametode</translation>
 <translation id="7171242884588191792">Brave Filverktøy</translation>
 <translation id="3061707000357573562">Feilrettingstjeneste</translation>
 <translation id="3580923162759633716">Profileringstjeneste</translation>
@@ -499,8 +501,10 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="8743864605301774756">Oppdatert for 1 t siden</translation>
 <translation id="5638497698949808140">Oppdatert for <ph name="HOURS"/> t siden</translation>
 <translation id="1329584516321524826">Nettopp oppdatert</translation>
+<translation id="224940702122312781">Denne siden bruker mye data.</translation>
+<translation id="3861241522664181545">Siden er satt på pause.</translation>
+<translation id="6921709132208495314">Ikke bruk data på denne siden</translation>
 <translation id="2724841811573117416">WebRTC-logger</translation>
-<translation id="7518150891539970662">WebRTC-logger (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-loggen ble lagret <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokal fil:</translation>
 <translation id="2071393345806050157">Ingen lokal loggfil.</translation>
@@ -508,7 +512,6 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="5946591249682680882">Rapport-ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Rapporter feil</translation>
 <translation id="1188807932851744811">Loggen er ikke lastet opp.</translation>
-<translation id="3925247638945319984">Du har ingen nylig lagrede WebRTC-logger.</translation>
 <translation id="2076269580855484719">Skjul dette programtillegget</translation>
 <translation id="2129825002735785149">Oppdater programtillegget</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> er blokkert av bedriftens retningslinjer</translation>
@@ -547,6 +550,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="6363797201514053536">Søk i Brave Software eller skriv inn en nettadresse</translation>
 <translation id="6078323886959318429">Legg til snarvei</translation>
 <translation id="6324916366299863871">Endre snarvei</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">Nettadresse</translation>
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="4416582610654027550">Skriv inn en gyldig nettadresse</translation>
@@ -1045,6 +1049,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="5562781907504170924">Denne fanen er koblet til en Bluetooth-enhet.</translation>
 <translation id="5884474295213649357">Denne fanen er koblet til en USB-enhet.</translation>
 <translation id="8466417995783206254">Denne fanen spiller av en video i bilde-i-bilde-modus.</translation>
+<translation id="2585724835339714757">Denne fanen deler skjermen din.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kamera- eller mikrofonopptak</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – faneinnholdet er delt</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – videoen spilles av i bilde-i-bilde-modus</translation>
@@ -1520,7 +1525,6 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="8647834505253004544">Ikke en gyldig nettadresse</translation>
 <translation id="2149850907588596975">Passord og skjemaer</translation>
 <translation id="8639963783467694461">Innstillinger for autofyll</translation>
-<translation id="2512222046227390255">Fyll ut skjemaer automatisk</translation>
 <translation id="7764225426217299476">Legg til adresse</translation>
 <translation id="5595485650161345191">Rediger adresse</translation>
 <translation id="6207937957461833379">Land / region</translation>
@@ -1602,6 +1606,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="577322787686508614">Leseoperasjonen er ikke tillatt på: «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="3141917231319778873">Den angitte forespørselen støttes ikke til: «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="6122875415561139701">Skriveoperasjonen er ikke tillatt på: «<ph name="DEVICE_NAME"/>».</translation>
+<translation id="439266289085815679">Bluetooth-konfigurasjonen kontrolleres av <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Tidsperiode</translation>
 <translation id="2496180316473517155">Nettlesingslogg</translation>
 <translation id="8662811608048051533">Logger deg av de fleste nettsteder.</translation>
@@ -1613,6 +1618,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4699172675775169585">Bufrede bilder og filer</translation>
 <translation id="1274997165432133392">Informasjonskapsler og andre nettstedsdata</translation>
 <translation id="3838543471119263078">Informasjonskapsler og andre nettsteds- og programtilleggsdata</translation>
+<translation id="369489984217678710">Passord og andre påloggingsdata</translation>
 <translation id="6865313869410766144">Skjemadata lagret med autofyll</translation>
 <translation id="177336675152937177">Appdata på vertstjener</translation>
 <translation id="1718835860248848330">Siste time</translation>
@@ -1970,6 +1976,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="5282733140964383898">Hvis du aktiverer «Ikke spor», blir en forespørsel sendt med nettlesertrafikken din. Eventuelle virkninger avhenger av om nettstedet svarer på forespørselen, og hvordan forespørselen tolkes. Noen nettsteder kan for eksempel svare på forespørselen ved å vise deg annonser som ikke er basert på nettsteder du har besøkt. Mange nettsteder samler inn og bruker nettleserdataene dine likevel, for å forbedre sikkerheten og levere innhold, tjenester, annonser og anbefalinger på nettstedet – i tillegg til å generere rapporteringsstatistikk. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Aktiver Bekreftet tilgang</translation>
 <translation id="5557991081552967863">Hold Wi-Fi på under hvilemodus</translation>
+<translation id="8562084399541316921">Les mer</translation>
+<translation id="6201926614538916789">Fortsett å se på nettsteder fra mobilen på Bravebooken</translation>
 <translation id="1521442365706402292">Administrer sertifikater</translation>
 <translation id="7075625805486468288">Administrer HTTPS/SSL-sertifikater og -innstillinger</translation>
 <translation id="8871974300055371298">Innholdsinnstillinger</translation>
@@ -2005,6 +2013,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="7136694880210472378">Bruk som standard</translation>
 <translation id="102272308210570439">La assistenten bruke det som vises på skjermen</translation>
 <translation id="8624205858755890468">Gjør at assistenten kan vise deg relatert informasjon og relaterte apper og handlinger.</translation>
+<translation id="4737453247496280552">«Ok Brave Software»-gjenkjenning</translation>
+<translation id="6409553560184414680">Du får tilgang til assistenten din ved å si «Ok Brave Software» når skjermen er på.</translation>
 <translation id="8669919703154928649">La assistenten vise deg varsler</translation>
 <translation id="3430342160185525240">Lar assistenten vise deg varsler.</translation>
 <translation id="3908743412684152579">Innstillinger for Brave Software-assistenten</translation>
@@ -2094,7 +2104,9 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="8708000541097332489">Fjern ved avslutning</translation>
 <translation id="8037357227543935929">Spør (standard)</translation>
 <translation id="3427092606871434483">Tillat (standard)</translation>
+<translation id="4879491255372875719">Automatisk (standard)</translation>
 <translation id="4312866146174492540">Blokkér (standard)</translation>
+<translation id="6979440798594660689">Kutt lyden (standard)</translation>
 <translation id="2356070529366658676">Spør</translation>
 <translation id="5063480226653192405">Bruk</translation>
 <translation id="3006881078666935414">Ingen bruksdata</translation>
@@ -2126,6 +2138,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2318923050469484167">Denne inkognitoøkten (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Det er ikke zoomet inn eller ut på noen nettsteder</translation>
 <translation id="3566721612727112615">Ingen nettsteder er lagt til</translation>
+<translation id="8098574385249290065">La Brave velge når nettsteder kan spille av lyd (anbefalt)</translation>
 <translation id="5763751966069581670">Fant ingen USB-enheter</translation>
 <translation id="8546541260734613940">[*.]eteksempel.no</translation>
 <translation id="7366415735885268578">Legg til et nettsted</translation>
@@ -2169,25 +2182,20 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4562155214028662640">Legg til fingeravtrykk</translation>
 <translation id="1719312230114180055">Merk: Det kan være mindre sikkert å bruke fingeravtrykk enn et sterkt passord eller en sterk PIN-kode.</translation>
 <translation id="1927632033341042996">Finger <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Slå på opplåsing med fingeravtrykk</translation>
 <translation id="7665369617277396874">Legg til konto</translation>
 <translation id="3422989461909154470">Du kan administrere alle de påloggede Brave Software-kontoene dine i apper og på nettsteder her.</translation>
 <translation id="1987317783729300807">Kontoer</translation>
 <translation id="8418661265246754237">Brave Software-kontoer</translation>
-<translation id="2107494551712864447">Legg til et fingeravtrykk</translation>
-<translation id="6388771388956873507">Finn frem til fingeravtrykkssensoren på enheten din, og legg en finger på den</translation>
-<translation id="9170397650136757332">Flytt litt på fingeren for å registrere alle deler av fingeravtrykket</translation>
-<translation id="161707228174452095">Fingeravtrykket er lagt til.</translation>
-<translation id="4576537685267142337">Løft fingeren, og trykk på sensoren på nytt</translation>
-<translation id="494660967831069720">Delvise data</translation>
-<translation id="3064410671692449875">Ikke nok data</translation>
-<translation id="2532026602297547439">Sensoren er skitten</translation>
-<translation id="8642267168767642381">Du flyttet fingeren for sakte</translation>
-<translation id="2039623879703305659">Du flyttet fingeren for raskt</translation>
-<translation id="7311891583377621132">Flytt litt på fingeren for å registrere en annen del av fingeravtrykket</translation>
+<translation id="1059855432287631118">Registrering av fingeravtrykk</translation>
+<translation id="878068003854005405">La oss komme i gang. Plassér fingeren på sensoren.</translation>
+<translation id="7189965711416741966">Fingeravtrykket er lagt til.</translation>
+<translation id="9220820413868316583">Løft fingeren, og prøv deretter på nytt.</translation>
+<translation id="4534661889221639075">Prøv på nytt.</translation>
+<translation id="3645372836428131288">Flytt litt på fingeren for å registrere en annen del av fingeravtrykket.</translation>
 <translation id="7345706641791090287">Bekreft passordet</translation>
 <translation id="381202950560906753">Legg til ett til</translation>
-<translation id="6658023813581644008">Skriv inn passordet ditt for å konfigurere Smart Lock</translation>
+<translation id="6968288415730398122">Skriv inn passordet ditt for å konfigurere skjermlåsen</translation>
+<translation id="4103091233824664032">Skriv inn passordet ditt for å konfigurere skjermlåsen og påloggingen</translation>
 <translation id="5449551289610225147">Ugyldig passord</translation>
 <translation id="5374359983950678924">Endre bilde</translation>
 <translation id="6984299437918708277">Velg et bilde som skal vises på påloggingsskjermen for kontoen din</translation>
@@ -2216,7 +2224,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1136155683023653803">Passord, bokmerker, loggoppføringer og så videre blir synkronisert med kontoen din</translation>
 <translation id="3267417306184901318">Nettleserdata og nettleseraktivitet blir synkronisert med Brave Software-kontoen din</translation>
 <translation id="1123187597739372905">Vis innstillingene for synkronisering</translation>
-<translation id="8420510748452002155">Tjenester uten personlig preg</translation>
+<translation id="5428209950370661546">Andre Brave Software-tjenester</translation>
 <translation id="2055016640093734678">Vis innstillingene for Brave Software-tjenester</translation>
 <translation id="7956662517480676674">Synkronisering/Brave Software-tjenester</translation>
 <translation id="2453021845418314664">Avanserte synkroniseringsinnstillinger</translation>
@@ -2399,9 +2407,14 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2315821125498993513">Kunne ikke koble til telefonen. <ph name="LINK_BEGIN"/>Finn ut mer.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Bedre sammen er på</translation>
 <translation id="3088402208262982892">Bedre sammen er av</translation>
+<translation id="7179187931092694802">Lås opp Bravebooken med telefonen. <ph name="LINK_BEGIN"/>Finn ut mer<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Umiddelbar internettdeling</translation>
+<translation id="4746351372139058112">Meldinger</translation>
+<translation id="2248072377758660530">Send og motta tekstmeldinger fra Bravebooken. <ph name="LINK_BEGIN"/>Finn ut mer<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Glem denne enheten</translation>
 <translation id="3606712892509067288">Fjern fra Bedre sammen</translation>
+<translation id="5078490485380754244">Glem enheten</translation>
+<translation id="8072033737676488034">Fjern telefonen din og slå av Bedre sammen</translation>
 <translation id="7878562273885520351">Passordet ditt kan være kompromittert</translation>
 <translation id="6582421931165117398">For å beskytte personopplysningene dine, endre passordet ditt nå. Du blir bedt om å logge på før du kan endre passordet.</translation>
 <translation id="1089439967362294234">Endre passord</translation>
@@ -2502,6 +2515,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2202898655984161076">Det oppstod et problem med oppføring av skrivere. Enkelte av skriverne dine er ikke registrert på <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Programstopp for kontaktprosessen for <ph name="CLOUD_PRINT_NAME"/>. Vil du starte på nytt?</translation>
 <translation id="6904655473976120856">Trykk på appknappen for å avslutte</translation>
+<translation id="79766959863778284">XR-isolert enhetstjeneste</translation>
 <translation id="8909833622202089127">Nettstedet sporer posisjonen din</translation>
 <translation id="375636864092143889">Nettstedet bruker mikrofonen din</translation>
 <translation id="310671807099593501">Nettstedet bruker Bluetooth</translation>

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-index 33a2d5a566f1237c1ca9af0a402cd7b8a71b7657..5b3c1e4fc12b908283aa6b8975a1052b78455590 100644
+index 77c0b7c2b880573c9d61f3cada7e96249895732f..f21aad8bdb4e8e428d26f608bb3f0f298a7cb78b 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 @@ -42,6 +42,9 @@

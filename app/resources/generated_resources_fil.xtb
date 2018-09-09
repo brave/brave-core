@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Buksan bilang window</translation>
 <translation id="91568222606626347">Gumawa ng Shortcut...</translation>
 <translation id="3627879631695760395">I-install ang <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">I-uninstall ang <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">Tingnan sa Store</translation>
 <translation id="4316850752623536204">Website ng Developer</translation>
 <translation id="4289540628985791613">Pangkalahatang-ideya</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Pang-decode ng Larawan</translation>
 <translation id="8191453843330043793">Panglutas ng Proxy ng V8</translation>
 <translation id="6185617499004995178">CUPS IPP Validator</translation>
+<translation id="3077708072777965506">Pamamaraan ng Pag-input ng Brave OS</translation>
 <translation id="7171242884588191792">Mga Utility ng File ng Brave</translation>
 <translation id="3061707000357573562">Serbisyo sa Pag-patch</translation>
 <translation id="3580923162759633716">Serbisyo sa Pag-profile</translation>
@@ -499,8 +501,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8743864605301774756">Na-update 1 oras ang nakalipas</translation>
 <translation id="5638497698949808140">Na-update <ph name="HOURS"/> (na) oras ang nakalipas</translation>
 <translation id="1329584516321524826">Na-update ngayon lang</translation>
+<translation id="224940702122312781">Gagamit ng maraming data ang page na ito.</translation>
+<translation id="3861241522664181545">Na-pause ang page.</translation>
+<translation id="6921709132208495314">Ihinto ang paggamit ng data sa page na ito</translation>
 <translation id="2724841811573117416">Mga log ng WebRTC</translation>
-<translation id="7518150891539970662">Mga log ng WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Na-capture ang log ng WebRTC noong <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokal na file:</translation>
 <translation id="2071393345806050157">Walang lokal na log file.</translation>
@@ -508,7 +512,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5946591249682680882">Report ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">I-file ang bug</translation>
 <translation id="1188807932851744811">Hindi na-upload ang log.</translation>
-<translation id="3925247638945319984">Wala kang mga kamakailang na-capture na log ng WebRTC.</translation>
 <translation id="2076269580855484719">Itago ang plugin na ito</translation>
 <translation id="2129825002735785149">I-update ang plugin</translation>
 <translation id="9088234649737575428">Na-block ang <ph name="PLUGIN_NAME"/> ng patakaran ng kumpanya</translation>
@@ -547,6 +550,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6363797201514053536">Maghanap sa Brave Software o mag-type ng URL</translation>
 <translation id="6078323886959318429">Magdagdag ng shortcut</translation>
 <translation id="6324916366299863871">I-edit ang shortcut</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, at *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Tapos na</translation>
 <translation id="4416582610654027550">Mag-type ng valid na URL</translation>
@@ -1045,6 +1049,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5562781907504170924">Nakakonekta ang tab na ito sa isang Bluetooth Device.</translation>
 <translation id="5884474295213649357">Nakakonekta ang tab na ito sa isang USB device.</translation>
 <translation id="8466417995783206254">Nagpe-play ang tab na ito ng video sa picture-in-picture mode.</translation>
+<translation id="2585724835339714757">Ibinabahagi ng tab na ito ang iyong screen.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - Nagre-record ang camera o mikropono</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - Nakabahagi ang content ng tab</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - Nagpe-play ang video sa picture-in-picture mode</translation>
@@ -1520,7 +1525,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8647834505253004544">Di-wastong email address</translation>
 <translation id="2149850907588596975">Mga password at form</translation>
 <translation id="8639963783467694461">Mga setting ng autofill</translation>
-<translation id="2512222046227390255">I-autofill ang mga form</translation>
 <translation id="7764225426217299476">Magdagdag ng address</translation>
 <translation id="5595485650161345191">Mag-edit ng address</translation>
 <translation id="6207937957461833379">Bansa/Rehiyon</translation>
@@ -1602,6 +1606,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="577322787686508614">Hindi pinapahintulutan ang read na operation sa: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">Ang ibinigay na kahilingan ay hindi sinusuportahan sa: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">Hindi pinapahintulutan ang write na operation sa: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">Ang configuration ng bluetooth ay kinokontrol ni <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Sakop na oras</translation>
 <translation id="2496180316473517155">History ng Pagba-browse</translation>
 <translation id="8662811608048051533">Nagsa-sign out sa iyo sa karamihan ng site.</translation>
@@ -1613,6 +1618,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4699172675775169585">Mga naka-cache na larawan at file</translation>
 <translation id="1274997165432133392">Cookies at iba pang data ng site</translation>
 <translation id="3838543471119263078">Cookies at iba pang data ng site at plugin</translation>
+<translation id="369489984217678710">Mga password at iba pang data sa pag-sign in</translation>
 <translation id="6865313869410766144">Data ng form ng autofill</translation>
 <translation id="177336675152937177">Naka-host na data ng app</translation>
 <translation id="1718835860248848330">Huling oras</translation>
@@ -1970,6 +1976,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5282733140964383898">Kung ie-enable ang "Huwag Subaybayan," may isasamang kahilingan sa iyong trapiko sa pag-browse. Nakadepende ang anumang epekto sa kung tutugon sa kahilingan ang isang website, at kung paano ipapahiwatig ang kahilingan. Halimbawa, maaaring tumugon ang ilang website sa kahilingang ito sa pamamagitan ng pagpapakita sa iyo ng mga ad na hindi nakabatay sa iba pang website na binisita mo. Maraming website ang mangongolekta at gagamit pa rin ng iyong data mula sa pag-browse - halimbawa, upang pahusayin ang seguridad, makapagbigay ng content, mga serbisyo, ad, at rekomendasyon sa kanilang mga website, at makagawa ng mga istatistika sa pag-uulat. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">I-enable ang Bine-verify na Access</translation>
 <translation id="5557991081552967863">Panatilihing naka-on ang Wi-Fi habang naka-sleep</translation>
+<translation id="8562084399541316921">Magpatuloy sa Pagbabasa</translation>
+<translation id="6201926614538916789">Ipagpatuloy sa iyong Bravebook ang pagtingin sa mga site mula sa mobile</translation>
 <translation id="1521442365706402292">Pamahalaan ang mga sertipiko</translation>
 <translation id="7075625805486468288">Pamahalaan ang mga certificate at setting ng HTTPS/SSL</translation>
 <translation id="8871974300055371298">Mga setting ng content</translation>
@@ -2005,6 +2013,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7136694880210472378">Gawing default</translation>
 <translation id="102272308210570439">Bigyang-daan ang Assistant na gamitin ang nasa screen mo</translation>
 <translation id="8624205858755890468">Binibigyang-daan ang Assistant na magpakita sa iyo ng mga kaugnay na impormasyon, app, at pagkilos.</translation>
+<translation id="4737453247496280552">Pag-detect ng "Ok Brave Software"</translation>
+<translation id="6409553560184414680">I-access ang iyong Assistant anumang oras na sasabihin mo ang "Ok Brave Software" kapag naka-on ang screen mo.</translation>
 <translation id="8669919703154928649">Payagan ang Assistant na magpakita sa iyo ng mga notification</translation>
 <translation id="3430342160185525240">Ine-enable ang Assistant na magpakita sa iyo ng mga notification.</translation>
 <translation id="3908743412684152579">Mga setting ng Brave Software Assistant</translation>
@@ -2094,7 +2104,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8708000541097332489">I-clear sa paglabas</translation>
 <translation id="8037357227543935929">Magtanong (default)</translation>
 <translation id="3427092606871434483">Payagan (default)</translation>
+<translation id="4879491255372875719">Awtomatiko (default)</translation>
 <translation id="4312866146174492540">I-block (default)</translation>
+<translation id="6979440798594660689">I-mute (default)</translation>
 <translation id="2356070529366658676">Magtanong</translation>
 <translation id="5063480226653192405">Paggamit</translation>
 <translation id="3006881078666935414">Walang data ng paggamit</translation>
@@ -2126,6 +2138,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2318923050469484167">Kasalukuyang incognito na session (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Walang site na na-zoom in o na-zoom out</translation>
 <translation id="3566721612727112615">Walang naidagdag na site</translation>
+<translation id="8098574385249290065">Hayaan ang Brave na pumili kung kailan makakapag-play ng tunog ang mga site (inirerekomenda)</translation>
 <translation id="5763751966069581670">Walang nahanap na USB device</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Magdagdag ng site</translation>
@@ -2169,25 +2182,20 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4562155214028662640">Magdagdag ng Fingerprint</translation>
 <translation id="1719312230114180055">Tandaan: Maaaring hindi gaanong ligtas ang iyong fingerprint kaysa sa isang mahirap hulaang password o PIN.</translation>
 <translation id="1927632033341042996">Daliri <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">I-enable ang pag-unlock gamit ang fingerprint</translation>
 <translation id="7665369617277396874">Magdagdag ng account</translation>
 <translation id="3422989461909154470">Maaaring pamahalaan dito ang lahat ng iyong naka-sign in na Brave Software account mula sa mga app at website.</translation>
 <translation id="1987317783729300807">Mga Account</translation>
 <translation id="8418661265246754237">Mga Brave Software Account</translation>
-<translation id="2107494551712864447">Magdagdag ng fingerprint</translation>
-<translation id="6388771388956873507">Hanapin ang sensor para sa fingerprint sa iyong device at pindutin ito gamit ang iyong daliri</translation>
-<translation id="9170397650136757332">Ngayon, bahagya mong igalaw ang iyong daliri upang makunan ang lahat ng iba't ibang bahagi ng fingerprint mo</translation>
-<translation id="161707228174452095">Naidagdag na ang fingerprint!</translation>
-<translation id="4576537685267142337">Iangat ang daliri, pagkatapos ay pinduting muli ang sensor</translation>
-<translation id="494660967831069720">Hindi kumpletong data</translation>
-<translation id="3064410671692449875">Hindi sapat ang data</translation>
-<translation id="2532026602297547439">Marumi ang sensor</translation>
-<translation id="8642267168767642381">Masyadong mabagal ang paggalaw ng daliri</translation>
-<translation id="2039623879703305659">Masyadong mabilis ang paggalaw ng daliri</translation>
-<translation id="7311891583377621132">Gumalaw nang bahagya upang makunan ang ibang bahagi ng fingerprint</translation>
+<translation id="1059855432287631118">Pagrehistro ng fingerprint</translation>
+<translation id="878068003854005405">Magsimula na tayo. Ilagay ang iyong daliri sa sensor.</translation>
+<translation id="7189965711416741966">Naidagdag ang fingerprint.</translation>
+<translation id="9220820413868316583">Iangat at pagkatapos ay subukang muli.</translation>
+<translation id="4534661889221639075">Subukang muli.</translation>
+<translation id="3645372836428131288">Gumalaw nang bahagya para mag-capture ng ibang bahagi ng fingerprint.</translation>
 <translation id="7345706641791090287">Kumpirmahin ang iyong password</translation>
 <translation id="381202950560906753">Magdagdag ng isa pa</translation>
-<translation id="6658023813581644008">Para i-set up ang Smart Lock para sa pag-sign in, ilagay ang iyong password</translation>
+<translation id="6968288415730398122">Ilagay ang iyong password upang i-configure ang lock ng screen</translation>
+<translation id="4103091233824664032">Ilagay ang iyong password para i-configure ang lock ng screen at pag-sign in</translation>
 <translation id="5449551289610225147">Di-wastong password</translation>
 <translation id="5374359983950678924">Palitan ang larawan</translation>
 <translation id="6984299437918708277">Pumili ng larawang ipapakita para sa iyong account sa screen ng pag-sign in</translation>
@@ -2216,7 +2224,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1136155683023653803">Masi-sync sa iyong account ang mga password, bookmark, history, at higit pa</translation>
 <translation id="3267417306184901318">Naka-sync sa iyong Brave Software Account ang data mula sa pag-browse at aktibidad.</translation>
 <translation id="1123187597739372905">Ipakita ang mga setting ng pag-sync</translation>
-<translation id="8420510748452002155">Mga hindi naka-personalize na serbisyo</translation>
+<translation id="5428209950370661546">Iba pang serbisyo ng Brave Software</translation>
 <translation id="2055016640093734678">Ipakita ang mga setting ng mga serbisyo ng Brave Software</translation>
 <translation id="7956662517480676674">Sync at mga serbisyo ng Brave Software</translation>
 <translation id="2453021845418314664">Advanced na mga setting ng pag-sync</translation>
@@ -2399,9 +2407,14 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2315821125498993513">Hindi makakonekta sa telepono. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Naka-on ang Better Together</translation>
 <translation id="3088402208262982892">Naka-off ang Better Together</translation>
+<translation id="7179187931092694802">I-unlock ang iyong Bravebook gamit ang telepono mo. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant na Pag-tether</translation>
+<translation id="4746351372139058112">Mga Mensahe</translation>
+<translation id="2248072377758660530">Magpadala at makatanggap ng mga text message mula sa iyong Bravebook. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Kalimutan ang device na ito</translation>
 <translation id="3606712892509067288">Alisin sa Better Together</translation>
+<translation id="5078490485380754244">Kalimutan ang device</translation>
+<translation id="8072033737676488034">Alisin ang iyong telepono at i-disable ang Better Together</translation>
 <translation id="7878562273885520351">Maaaring makompromismo ang iyong password</translation>
 <translation id="6582421931165117398">Upang maprotektahan ang iyong personal na impormasyon, palitan na ang password mo. Bago mo palitan ang iyong password, hihilingin sa iyong mag-sign in.</translation>
 <translation id="1089439967362294234">Palitan ang Password</translation>
@@ -2502,6 +2515,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2202898655984161076">Nagkaproblema sa paglilista ng mga printer. Maaaring hindi matagumpay na nairehistro ang ilan sa iyong mga printer <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Nag-crash ang proseso ng tagakonekta ng <ph name="CLOUD_PRINT_NAME"/>. I-restart?</translation>
 <translation id="6904655473976120856">Pindutin ang button ng App upang lumabas</translation>
+<translation id="79766959863778284">XR Isolated Device Service</translation>
 <translation id="8909833622202089127">Sinusubaybayan ng site ang iyong lokasyon</translation>
 <translation id="375636864092143889">Ginagamit ng site ang iyong mikropono</translation>
 <translation id="310671807099593501">Gumagamit ng bluetooth ang site</translation>

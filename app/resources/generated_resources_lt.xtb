@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Atidaryti kaip langą</translation>
 <translation id="91568222606626347">Kurti spartųjį klavišą...</translation>
 <translation id="3627879631695760395">Įdiegti „<ph name="APP"/>“...</translation>
+<translation id="8288032458496410887">Pašalinti „<ph name="APP"/>“...</translation>
 <translation id="4057896668975954729">Peržiūrėti parduotuvėje</translation>
 <translation id="4316850752623536204">Kūrėjo svetainė</translation>
 <translation id="4289540628985791613">Apžvalga</translation>
@@ -292,6 +293,7 @@
 <translation id="8559694214572302298">Vaizdų dekoderis</translation>
 <translation id="8191453843330043793">V8 tarpinio serverio vardų vertimo programa</translation>
 <translation id="6185617499004995178">CUPS IPP patvirtinimo priemonė</translation>
+<translation id="3077708072777965506">„Brave OS“ įvesties metodas</translation>
 <translation id="7171242884588191792">„Brave“ failų paslaugų programos</translation>
 <translation id="3061707000357573562">Pataisos paslauga</translation>
 <translation id="3580923162759633716">Profiliavimo paslauga</translation>
@@ -500,8 +502,10 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8743864605301774756">Atnaujinta prieš 1 val.</translation>
 <translation id="5638497698949808140">Atnaujinta prieš <ph name="HOURS"/> val.</translation>
 <translation id="1329584516321524826">Ką tik atnaujinta</translation>
+<translation id="224940702122312781">Šiame puslapyje bus sunaudojama daug duomenų.</translation>
+<translation id="3861241522664181545">Puslapis pristabdytas.</translation>
+<translation id="6921709132208495314">Nebenaudoti duomenų šiame puslapyje</translation>
 <translation id="2724841811573117416">„WebRTC“ žurnalai</translation>
-<translation id="7518150891539970662">„WebRTC“ žurnalai (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">„WebRTC“ žurnalas užfiksuotas <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Vietinis failas:</translation>
 <translation id="2071393345806050157">Nėra vietinio žurnalo failo.</translation>
@@ -509,7 +513,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5946591249682680882">Ataskaitos ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Failo riktas</translation>
 <translation id="1188807932851744811">Žurnalas neįkeltas.</translation>
-<translation id="3925247638945319984">Neturite neseniai užfiksuotų „WebRTC“ žurnalų.</translation>
 <translation id="2076269580855484719">Slėpti šį papildinį</translation>
 <translation id="2129825002735785149">Atnaujinti papildinį</translation>
 <translation id="9088234649737575428">„<ph name="PLUGIN_NAME"/>“ užblokuotas taikant įmonės politiką</translation>
@@ -548,6 +551,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6363797201514053536">Ieškoti sistemoje „Brave Software“ arba įvesti URL</translation>
 <translation id="6078323886959318429">Pridėti spartųjį klavišą</translation>
 <translation id="6324916366299863871">Redaguoti spartųjį klavišą</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL adresas</translation>
 <translation id="8730621377337864115">Atlikta</translation>
 <translation id="4416582610654027550">Įveskite tinkamą URL</translation>
@@ -1046,6 +1050,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5562781907504170924">Šis skirtukas susietas su „Bluetooth“ įrenginiu.</translation>
 <translation id="5884474295213649357">Šis skirtukas susietas su USB įrenginiu.</translation>
 <translation id="8466417995783206254">Šiame skirtuke vaizdo įrašas leidžiamas vaizdo vaizde režimu.</translation>
+<translation id="2585724835339714757">Šis skirtukas bendrina jūsų ekraną.</translation>
 <translation id="5835486486592033703">„<ph name="WINDOW_TITLE"/>“ – fotoaparato ar mikrofono įrašymas</translation>
 <translation id="4252996741873942488">„<ph name="WINDOW_TITLE"/>“ – bendrinamas skirtuko turinys</translation>
 <translation id="3334632933872291866">„<ph name="WINDOW_TITLE"/>“ – vaizdo įrašas leidžiamas vaizdo vaizde režimu</translation>
@@ -1521,7 +1526,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8647834505253004544">Netinkamas žiniatinklio adresas</translation>
 <translation id="2149850907588596975">Slaptažodžiai ir formos</translation>
 <translation id="8639963783467694461">Automatinio pildymo nustatymai</translation>
-<translation id="2512222046227390255">Automatiškai užpildyti formas</translation>
 <translation id="7764225426217299476">Pridėti adresą</translation>
 <translation id="5595485650161345191">Adreso redagavimas</translation>
 <translation id="6207937957461833379">Šalis / regionas</translation>
@@ -1603,6 +1607,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="577322787686508614">Skaitymo operacija neleidžiama įrenginyje „<ph name="DEVICE_NAME"/>“.</translation>
 <translation id="3141917231319778873">Nurodyta užklausa nepalaikoma įrenginyje „<ph name="DEVICE_NAME"/>“.</translation>
 <translation id="6122875415561139701">Rašymo operacija neleidžiama įrenginyje „<ph name="DEVICE_NAME"/>“.</translation>
+<translation id="439266289085815679">„Bluetooth“ konfigūravimą valdo <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Laikotarpis</translation>
 <translation id="2496180316473517155">Naršymo istorija</translation>
 <translation id="8662811608048051533">Būsite atjungti nuo daugelio svetainių.</translation>
@@ -1614,6 +1619,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4699172675775169585">Talpykloje esantys vaizdai ir failai</translation>
 <translation id="1274997165432133392">Slapukai ir kiti svetainių duomenys</translation>
 <translation id="3838543471119263078">Slapukai ir kiti svetainių bei papildinių duomenys</translation>
+<translation id="369489984217678710">Slaptažodžiai ir kiti prisijungimo duomenys</translation>
 <translation id="6865313869410766144">Automatinio pildymo formos duomenys</translation>
 <translation id="177336675152937177">Priglobti programų duomenys</translation>
 <translation id="1718835860248848330">Paskutinė valanda</translation>
@@ -1971,6 +1977,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5282733140964383898">Įgalinus parinktį „Nestebėti“ užklausa bus įtraukta į naršymo srautą. Poveikis priklauso nuo to, ar svetainė atsako į užklausą ir kaip ji interpretuojama. Pvz., kai kurios svetainės gali atsakyti į šią užklausą rodydamos skelbimus, nepagrįstus kitomis svetainėmis, kuriose lankėtės. Daugybė svetainių vis tiek rinks ir naudos jūsų naršymo duomenis, pvz., siekdamos pagerinti saugumą, teikti svetainėse turinį, paslaugas, skelbimus ir rekomendacijas bei generuoti ataskaitų statistiką. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Įgalinti patvirtintą prieigą</translation>
 <translation id="5557991081552967863">Neišjungti „Wi-Fi“ miego būsenoje</translation>
+<translation id="8562084399541316921">Skaityti toliau</translation>
+<translation id="6201926614538916789">Tęsti mobiliajame įrenginyje atidarytų svetainių peržiūrą „Bravebook“ įrenginyje</translation>
 <translation id="1521442365706402292">Valdyti sertifikatus</translation>
 <translation id="7075625805486468288">Tvarkykite HTTPS / SSL sertifikatus ir nustatymus</translation>
 <translation id="8871974300055371298">Turinio nustatymai</translation>
@@ -2006,6 +2014,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7136694880210472378">Padaryti numatytuoju</translation>
 <translation id="102272308210570439">Leisti Padėjėjui naudoti, kas rodoma ekrane</translation>
 <translation id="8624205858755890468">Padėjėjui leidžiama rodyti susijusią informaciją, programas ir veiksmus.</translation>
+<translation id="4737453247496280552">„Ok Brave Software“ aptikimas</translation>
+<translation id="6409553560184414680">Pasiekite Padėjėją bet kuriuo metu pasakę „Ok Brave Software“, kai ekranas įjungtas.</translation>
 <translation id="8669919703154928649">Leidimas Padėjėjui rodyti pranešimus</translation>
 <translation id="3430342160185525240">Padėjėjui leidžiama rodyti pranešimus.</translation>
 <translation id="3908743412684152579">„Brave Software“ padėjėjo nustatymai</translation>
@@ -2095,7 +2105,9 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8708000541097332489">Išvalyti išeinant</translation>
 <translation id="8037357227543935929">Klausti (numatytoji parinktis)</translation>
 <translation id="3427092606871434483">Leisti (numatytoji parinktis)</translation>
+<translation id="4879491255372875719">Automatinis (numatytasis)</translation>
 <translation id="4312866146174492540">Užblokuoti (numatytoji parinktis)</translation>
+<translation id="6979440798594660689">Nutildyti (numatytasis)</translation>
 <translation id="2356070529366658676">Paklausti</translation>
 <translation id="5063480226653192405">Naudojimas</translation>
 <translation id="3006881078666935414">Nėra naudojimo duomenų</translation>
@@ -2127,6 +2139,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2318923050469484167">Dabartinė inkognito režimo sesija (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nėra svetainių, kurių turinys priartintas arba atitolintas</translation>
 <translation id="3566721612727112615">Nepridėta jokių svetainių</translation>
+<translation id="8098574385249290065">Leisti „Brave“ pasirinkti, kada svetainės gali leisti garsą (rekomenduojama)</translation>
 <translation id="5763751966069581670">Nerasta jokių USB įrenginių</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Svetainės pridėjimas</translation>
@@ -2170,25 +2183,20 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4562155214028662640">Pridėti kontrolinį kodą</translation>
 <translation id="1719312230114180055">Pastaba: kontrolinis kodas gali būti ne toks saugus kaip sudėtingas slaptažodis ar PIN kodas.</translation>
 <translation id="1927632033341042996"><ph name="NEW_FINGER_NUMBER"/> kontrolinis kodas</translation>
-<translation id="2136573720723402846">Įgalinti atrakinimą naudojant kontrolinį kodą</translation>
 <translation id="7665369617277396874">Pridėti paskyrą</translation>
 <translation id="3422989461909154470">Visas „Brave Software“ paskyras, prie kurių prisijungta iš programų ir svetainių, galite tvarkyti čia.</translation>
 <translation id="1987317783729300807">Paskyros</translation>
 <translation id="8418661265246754237">„Brave Software“ paskyros</translation>
-<translation id="2107494551712864447">Kontrolinio kodo pridėjimas</translation>
-<translation id="6388771388956873507">Raskite įrenginio kontrolinio kodo jutiklį ir palieskite jį pirštu</translation>
-<translation id="9170397650136757332">Dabar truputį pajudinkite pirštą, kad būtų užfiksuotos visos skirtingos kontrolinio kodo dalys</translation>
-<translation id="161707228174452095">Kontrolinis kodas pridėtas!</translation>
-<translation id="4576537685267142337">Patraukite pirštą, tada vėl palieskite jutiklį</translation>
-<translation id="494660967831069720">Daliniai duomenys</translation>
-<translation id="3064410671692449875">Nepakanka duomenų</translation>
-<translation id="2532026602297547439">Jutiklis purvinas</translation>
-<translation id="8642267168767642381">Per lėtai judinate pirštą</translation>
-<translation id="2039623879703305659">Per greitai judinate pirštą</translation>
-<translation id="7311891583377621132">Truputį pajudinkite pirštą, kad būtų užfiksuota kita kontrolinio kodo dalis</translation>
+<translation id="1059855432287631118">Registruojamas kontrolinis kodas</translation>
+<translation id="878068003854005405">Pradėkime. Padėkite pirštą ant jutiklio.</translation>
+<translation id="7189965711416741966">Kontrolinis kodas pridėtas.</translation>
+<translation id="9220820413868316583">Pakelkite ir bandykite dar kartą.</translation>
+<translation id="4534661889221639075">Bandykite dar kartą.</translation>
+<translation id="3645372836428131288">Truputį pajudinkite pirštą, kad būtų užfiksuota kita kontrolinio kodo dalis.</translation>
 <translation id="7345706641791090287">Patvirtinkite slaptažodį</translation>
 <translation id="381202950560906753">Pridėti kitą</translation>
-<translation id="6658023813581644008">Kad nustatytumėte prisijungiant taikomą „Smart Lock“, įveskite slaptažodį</translation>
+<translation id="6968288415730398122">Įveskite slaptažodį ir konfigūruokite ekrano užraktą</translation>
+<translation id="4103091233824664032">Įveskite slaptažodį ir konfigūruokite ekrano užraktą bei prisijungimą</translation>
 <translation id="5449551289610225147">Netinkamas slaptažodis</translation>
 <translation id="5374359983950678924">Keisti paveikslėlį</translation>
 <translation id="6984299437918708277">Pasirinkite paskyros paveikslėlį, kurį norite pateikti prisijungimo ekrane</translation>
@@ -2217,7 +2225,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="1136155683023653803">Slaptažodžiai, žymės, istorija ir kiti duomenys sinchronizuojami su paskyra</translation>
 <translation id="3267417306184901318">Su „Brave Software“ paskyra sinchronizuojami jūsų naršymo duomenys ir veikla</translation>
 <translation id="1123187597739372905">Rodyti sinchronizavimo nustatymus</translation>
-<translation id="8420510748452002155">Nesuasmenintos paslaugos</translation>
+<translation id="5428209950370661546">Kitos „Brave Software“ paslaugos</translation>
 <translation id="2055016640093734678">Rodyti „Brave Software“ paslaugų nustatymus</translation>
 <translation id="7956662517480676674">Sinchron. ir „Brave Software“ paslaugos</translation>
 <translation id="2453021845418314664">Išplėstiniai sinchronizavimo nustatymai</translation>
@@ -2400,9 +2408,14 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2315821125498993513">Nepavyko prisijungti prie telefono. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">„Better Together“ įjungta</translation>
 <translation id="3088402208262982892">„Better Together“ išjungta</translation>
+<translation id="7179187931092694802">Atrakinkite „Bravebook“ įrenginį telefonu. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Momentinis įrenginio kaip modemo naudojimas</translation>
+<translation id="4746351372139058112">Pranešimai</translation>
+<translation id="2248072377758660530">Siųskite ir gaukite teksto pranešimus naudodami „Bravebook“ įrenginį. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Pamiršti šį įrenginį</translation>
 <translation id="3606712892509067288">Pašalinti iš „Better Together“</translation>
+<translation id="5078490485380754244">Pamiršti įrenginį</translation>
+<translation id="8072033737676488034">Pašalinkite telefoną ir išjunkite „Better Together“</translation>
 <translation id="7878562273885520351">Jūsų slaptažodis gali būti pažeistas</translation>
 <translation id="6582421931165117398">Kad apsaugotumėte savo asmens informaciją, pakeiskite slaptažodį dabar. Kad galėtumėte pakeisti slaptažodį, būsite paprašyti prisijungti.</translation>
 <translation id="1089439967362294234">Slaptažodžio keitimas</translation>
@@ -2503,6 +2516,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2202898655984161076">Sudarant spausdintuvų sąrašą iškilo problema. Kai kurie spausdintuvai galėjo nebūti sėkmingai užregistruoti „<ph name="CLOUD_PRINT_NAME"/>“.</translation>
 <translation id="3220586366024592812">Užstrigo „<ph name="CLOUD_PRINT_NAME"/>“ jungties procesas. Paleisti iš naujo?</translation>
 <translation id="6904655473976120856">Jei norite išeiti, paspauskite mygtuką „Programa“</translation>
+<translation id="79766959863778284">XR Isolated Device Service</translation>
 <translation id="8909833622202089127">Svetainė stebi jūsų vietą</translation>
 <translation id="375636864092143889">Svetainė naudoja jūsų mikrofoną</translation>
 <translation id="310671807099593501">Svetainė naudoja „Bluetooth“</translation>

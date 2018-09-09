@@ -12,7 +12,8 @@
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
-  BraveContentBrowserClient(std::unique_ptr<ui::DataPack> data_pack = nullptr);
+  BraveContentBrowserClient(std::unique_ptr<ui::DataPack> data_pack = nullptr,
+      ChromeFeatureListCreator* chrome_feature_list_creator = nullptr);
   ~BraveContentBrowserClient() override;
 
    // Overridden from ChromeContentBrowserClient:

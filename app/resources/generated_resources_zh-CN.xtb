@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">在窗口中打开</translation>
 <translation id="91568222606626347">创建快捷方式…</translation>
 <translation id="3627879631695760395">安装“<ph name="APP"/>”…</translation>
+<translation id="8288032458496410887">卸载<ph name="APP"/>…</translation>
 <translation id="4057896668975954729">在应用店中查看</translation>
 <translation id="4316850752623536204">开发者网站</translation>
 <translation id="4289540628985791613">概述</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">图片解码器</translation>
 <translation id="8191453843330043793">V8 代理解析工具</translation>
 <translation id="6185617499004995178">CUPS IPP 验证程序</translation>
+<translation id="3077708072777965506">Brave 操作系统输入法</translation>
 <translation id="7171242884588191792">Brave 文件实用程序</translation>
 <translation id="3061707000357573562">修补服务</translation>
 <translation id="3580923162759633716">剖析服务</translation>
@@ -499,8 +501,10 @@
 <translation id="8743864605301774756">上次更新时间：1 小时前</translation>
 <translation id="5638497698949808140">上次更新时间：<ph name="HOURS"/> 小时前</translation>
 <translation id="1329584516321524826">上次更新时间：刚才</translation>
+<translation id="224940702122312781">此网页会消耗很多网络数据流量。</translation>
+<translation id="3861241522664181545">已暂停加载网页资源。</translation>
+<translation id="6921709132208495314">停止在此网页上消耗数据流量</translation>
 <translation id="2724841811573117416">WebRTC日志</translation>
-<translation id="7518150891539970662">WebRTC日志（<ph name="WEBRTC_LOG_COUNT"/>个）</translation>
 <translation id="6592267180249644460">WebRTC日志记录时间：<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">本地文件：</translation>
 <translation id="2071393345806050157">没有本地日志文件。</translation>
@@ -508,7 +512,6 @@
 <translation id="5946591249682680882">报告ID：<ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">提交错误</translation>
 <translation id="1188807932851744811">未上传日志。</translation>
-<translation id="3925247638945319984">您最近没有记录WebRTC日志。</translation>
 <translation id="2076269580855484719">隐藏此插件</translation>
 <translation id="2129825002735785149">更新插件</translation>
 <translation id="9088234649737575428">系统已根据企业政策屏蔽 <ph name="PLUGIN_NAME"/></translation>
@@ -547,6 +550,7 @@
 <translation id="6363797201514053536">在 Brave Software 上搜索，或者输入一个网址</translation>
 <translation id="6078323886959318429">添加快捷方式</translation>
 <translation id="6324916366299863871">修改快捷方式</translation>
+<translation id="4405117686468554883">*.jpeg、*.jpg、*.png</translation>
 <translation id="7400418766976504921">网址</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="4416582610654027550">请输入一个有效网址</translation>
@@ -1045,6 +1049,7 @@
 <translation id="5562781907504170924">此标签页已连接到蓝牙设备。</translation>
 <translation id="5884474295213649357">此标签页已连接到 USB 设备。</translation>
 <translation id="8466417995783206254">此标签页正在“画中画”模式中播放视频。</translation>
+<translation id="2585724835339714757">此标签页正在共享您的屏幕。</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - 摄像头或麦克风正在录制/录音</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - 已分享标签页内容</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - 视频正在“画中画”模式中播放</translation>
@@ -1520,7 +1525,6 @@
 <translation id="8647834505253004544">网址无效</translation>
 <translation id="2149850907588596975">密码和表单</translation>
 <translation id="8639963783467694461">自动填充设置</translation>
-<translation id="2512222046227390255">自动填充表单</translation>
 <translation id="7764225426217299476">添加地址</translation>
 <translation id="5595485650161345191">修改地址</translation>
 <translation id="6207937957461833379">国家/地区</translation>
@@ -1602,6 +1606,7 @@
 <translation id="577322787686508614">禁止在“<ph name="DEVICE_NAME"/>”上执行读取操作。</translation>
 <translation id="3141917231319778873">“<ph name="DEVICE_NAME"/>”不支持指定的请求。</translation>
 <translation id="6122875415561139701">禁止在“<ph name="DEVICE_NAME"/>”上执行写入操作。</translation>
+<translation id="439266289085815679">蓝牙配置由 <ph name="USER_EMAIL"/> 控制。</translation>
 <translation id="784934925303690534">时间范围</translation>
 <translation id="2496180316473517155">浏览记录</translation>
 <translation id="8662811608048051533">您会从大多数网站退出。</translation>
@@ -1613,6 +1618,7 @@
 <translation id="4699172675775169585">缓存的图片和文件</translation>
 <translation id="1274997165432133392">Cookie 及其他网站数据</translation>
 <translation id="3838543471119263078">Cookie 及其他网站数据和插件数据</translation>
+<translation id="369489984217678710">密码和其他登录数据</translation>
 <translation id="6865313869410766144">自动填充表单数据</translation>
 <translation id="177336675152937177">托管应用数据</translation>
 <translation id="1718835860248848330">过去一小时</translation>
@@ -1970,6 +1976,8 @@
 <translation id="5282733140964383898">如果您启用了“不跟踪”，即意味着您的浏览流量中将会包含一个请求。所造成的任何影响均取决于网站是否回应该请求以及如何解读该请求。例如：某些网站在收到该请求后，可能会向您展示广告（这些广告并不是根据您访问过的其他网站展示的）。许多网站仍会出于一些目的收集并使用您的浏览数据，例如，为了提高安全性，为了提供相关内容、服务、广告和推荐内容，以及为了生成报告统计信息。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">允许已通过验证的访问凭证</translation>
 <translation id="5557991081552967863">休眠期间保持 Wi-Fi 连接</translation>
+<translation id="8562084399541316921">继续阅读</translation>
+<translation id="6201926614538916789">在您的 Bravebook 上继续浏览先前在手机上访问的网站</translation>
 <translation id="1521442365706402292">管理证书</translation>
 <translation id="7075625805486468288">管理 HTTPS/SSL 证书和设置</translation>
 <translation id="8871974300055371298">内容设置</translation>
@@ -2005,6 +2013,8 @@
 <translation id="7136694880210472378">设为默认搜索引擎</translation>
 <translation id="102272308210570439">允许智能助理使用您屏幕上的内容</translation>
 <translation id="8624205858755890468">允许智能助理向您显示相关的信息、应用和操作。</translation>
+<translation id="4737453247496280552">“Ok Brave Software”启动指令检测</translation>
+<translation id="6409553560184414680">当屏幕处于开启状态时，您可以随时访问自己的 Brave Software 助理，只需说“Ok Brave Software”即可。</translation>
 <translation id="8669919703154928649">允许 Brave Software 助理向您显示通知</translation>
 <translation id="3430342160185525240">允许 Brave Software 助理向您显示通知。</translation>
 <translation id="3908743412684152579">Brave Software 智能助理设置</translation>
@@ -2094,7 +2104,9 @@
 <translation id="8708000541097332489">退出时清除</translation>
 <translation id="8037357227543935929">询问（默认）</translation>
 <translation id="3427092606871434483">允许（默认）</translation>
+<translation id="4879491255372875719">自动（默认）</translation>
 <translation id="4312866146174492540">屏蔽（默认）</translation>
+<translation id="6979440798594660689">静音（默认）</translation>
 <translation id="2356070529366658676">询问</translation>
 <translation id="5063480226653192405">使用情况</translation>
 <translation id="3006881078666935414">无使用情况数据</translation>
@@ -2126,6 +2138,7 @@
 <translation id="2318923050469484167">当前的隐身会话（<ph name="EMBEDDING"/>）</translation>
 <translation id="383891835335927981">未对任何网站设置缩放级别</translation>
 <translation id="3566721612727112615">未添加任何网站</translation>
+<translation id="8098574385249290065">让 Brave 选择何时允许网站播放声音（推荐）</translation>
 <translation id="5763751966069581670">未找到任何 USB 设备</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">添加网站</translation>
@@ -2169,25 +2182,20 @@
 <translation id="4562155214028662640">添加指纹</translation>
 <translation id="1719312230114180055">请注意：指纹识别的安全性可能不及安全系数高的密码或 PIN 码。</translation>
 <translation id="1927632033341042996">指纹 <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">启用指纹解锁功能</translation>
 <translation id="7665369617277396874">添加帐号</translation>
 <translation id="3422989461909154470">您可在此处集中管理您的已通过应用和网站登录的所有 Brave Software 帐号。</translation>
 <translation id="1987317783729300807">帐号</translation>
 <translation id="8418661265246754237">Brave Software 帐号</translation>
-<translation id="2107494551712864447">添加指纹</translation>
-<translation id="6388771388956873507">找到您设备上的指纹传感器并用手指触摸它</translation>
-<translation id="9170397650136757332">现在请稍微移动一下您的手指，以便系统记录您指纹的各个部分</translation>
-<translation id="161707228174452095">已成功添加指纹！</translation>
-<translation id="4576537685267142337">移开手指，然后再次触摸传感器</translation>
-<translation id="494660967831069720">部分数据</translation>
-<translation id="3064410671692449875">数据不足</translation>
-<translation id="2532026602297547439">传感器有脏污</translation>
-<translation id="8642267168767642381">手指移动太慢</translation>
-<translation id="2039623879703305659">手指移动太快</translation>
-<translation id="7311891583377621132">请稍微移动一下手指，以便系统记录您指纹的不同部分</translation>
+<translation id="1059855432287631118">正在注册指纹</translation>
+<translation id="878068003854005405">让我们开始吧。请将您的手指放在传感器上。</translation>
+<translation id="7189965711416741966">已添加指纹。</translation>
+<translation id="9220820413868316583">请抬起手指，然后重试。</translation>
+<translation id="4534661889221639075">请重试。</translation>
+<translation id="3645372836428131288">请稍微移动一下手指，以便系统记录您指纹的不同部分。</translation>
 <translation id="7345706641791090287">确认您的密码</translation>
 <translation id="381202950560906753">添加其他指纹</translation>
-<translation id="6658023813581644008">要设置 Smart Lock 以用于登录，请输入您的密码</translation>
+<translation id="6968288415730398122">需输入您的密码，才能配置屏幕锁定</translation>
+<translation id="4103091233824664032">需输入您的密码，才能配置屏幕锁定和登录</translation>
 <translation id="5449551289610225147">密码无效</translation>
 <translation id="5374359983950678924">更改照片</translation>
 <translation id="6984299437918708277">选择您的帐号在登录屏幕上的显示图片</translation>
@@ -2216,7 +2224,7 @@
 <translation id="1136155683023653803">密码、书签、历史记录等内容会同步到您的帐号</translation>
 <translation id="3267417306184901318">您的浏览数据和活动，会同步到您的 Brave Software 帐号</translation>
 <translation id="1123187597739372905">显示同步设置</translation>
-<translation id="8420510748452002155">非个性化服务</translation>
+<translation id="5428209950370661546">其他 Brave Software 服务</translation>
 <translation id="2055016640093734678">显示 Brave Software 服务设置</translation>
 <translation id="7956662517480676674">同步功能和 Brave Software 服务</translation>
 <translation id="2453021845418314664">高级同步设置</translation>
@@ -2399,9 +2407,14 @@
 <translation id="2315821125498993513">无法连接到手机。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/>。</translation>
 <translation id="5598551463564921617">已开启 Better Together 功能</translation>
 <translation id="3088402208262982892">Better Together 功能已关闭</translation>
+<translation id="7179187931092694802">利用手机解锁您的 Bravebook。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">即时网络共享</translation>
+<translation id="4746351372139058112">信息</translation>
+<translation id="2248072377758660530">通过您的 Bravebook 收发短信。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">取消保存此设备</translation>
 <translation id="3606712892509067288">从 Better Together 中移除</translation>
+<translation id="5078490485380754244">取消保存设备</translation>
+<translation id="8072033737676488034">移除您的手机并停用 Better Together 功能</translation>
 <translation id="7878562273885520351">您的密码可能会被盗用</translation>
 <translation id="6582421931165117398">为了保护您的个人信息，请立即更改密码。不过，您必须先登录，然后才能更改密码。</translation>
 <translation id="1089439967362294234">更改密码</translation>
@@ -2502,6 +2515,7 @@
 <translation id="2202898655984161076">列出打印机时发生问题。您的某些打印机可能尚未成功使用“<ph name="CLOUD_PRINT_NAME"/>”进行注册。</translation>
 <translation id="3220586366024592812">该 <ph name="CLOUD_PRINT_NAME"/> 连接器进程已崩溃。是否重新启动？</translation>
 <translation id="6904655473976120856">按“应用”按钮即可退出</translation>
+<translation id="79766959863778284">XR 隔离设备服务</translation>
 <translation id="8909833622202089127">该网站正在跟踪您的位置</translation>
 <translation id="375636864092143889">该网站正在使用您的麦克风</translation>
 <translation id="310671807099593501">该网站正在使用蓝牙</translation>

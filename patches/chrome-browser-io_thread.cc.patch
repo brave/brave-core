@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/io_thread.cc b/chrome/browser/io_thread.cc
-index f29a64b7028b8ab1daa9ce4a7f2349cbf6b5017d..df1b63e5e8ec1d0b38e81126df3ab7f68e516763 100644
+index bafbc9a18efd6d6d9119a069f5152f6485907025..bd4692653fcdae151868e7b9632ec9effbc32663 100644
 --- a/chrome/browser/io_thread.cc
 +++ b/chrome/browser/io_thread.cc
 @@ -27,6 +27,7 @@
@@ -10,7 +10,7 @@ index f29a64b7028b8ab1daa9ce4a7f2349cbf6b5017d..df1b63e5e8ec1d0b38e81126df3ab7f6
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/data_use_measurement/chrome_data_use_ascriber.h"
-@@ -438,7 +439,7 @@ void IOThread::ConstructSystemRequestContext() {
+@@ -437,7 +438,7 @@ void IOThread::ConstructSystemRequestContext() {
      std::unique_ptr<network::URLRequestContextBuilderMojo> builder =
          std::make_unique<network::URLRequestContextBuilderMojo>();
  

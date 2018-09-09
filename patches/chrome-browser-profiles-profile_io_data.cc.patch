@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index 3bf4c0fd66c185e839f29c3b54543d6dd21a550b..e69b5f519729bbfa921c9e5ec86d9c6cf4e8bb99 100644
+index b6ba476cbf1fc38f21452f3d64980e6676d7b582..2b88aa54f9d901ae155c62a4cb7d82d6a2b6d6d8 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
-@@ -1088,7 +1088,7 @@ void ProfileIOData::Init(
+@@ -1087,7 +1087,7 @@ void ProfileIOData::Init(
          std::make_unique<network::URLRequestContextBuilderMojo>();
  
      std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(

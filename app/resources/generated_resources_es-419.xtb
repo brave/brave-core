@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Abrir como ventana</translation>
 <translation id="91568222606626347">Crear acceso directo…</translation>
 <translation id="3627879631695760395">Instalar <ph name="APP"/>…</translation>
+<translation id="8288032458496410887">Desinstalar <ph name="APP"/>…</translation>
 <translation id="4057896668975954729">Ver en Brave Web Store</translation>
 <translation id="4316850752623536204">Sitio web del programador</translation>
 <translation id="4289540628985791613">Descripción general</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Decodificador de imágenes</translation>
 <translation id="8191453843330043793">Herramienta de resolución de proxy V8</translation>
 <translation id="6185617499004995178">Validador del IPP mediante CUPS</translation>
+<translation id="3077708072777965506">Método de entrada del Sistema operativo Brave</translation>
 <translation id="7171242884588191792">Utilidades de archivos de Brave</translation>
 <translation id="3061707000357573562">Aplicar parche al servicio</translation>
 <translation id="3580923162759633716">Servicio de análisis de perfiles</translation>
@@ -499,16 +501,18 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="8743864605301774756">Se actualizó hace 1 h</translation>
 <translation id="5638497698949808140">Se actualizó hace <ph name="HOURS"/> h</translation>
 <translation id="1329584516321524826">Recién actualizada</translation>
+<translation id="224940702122312781">Esta página usará muchos datos.</translation>
+<translation id="3861241522664181545">Se pausó la página.</translation>
+<translation id="6921709132208495314">Dejar de usar datos en esta página</translation>
 <translation id="2724841811573117416">Registros de WebRTC</translation>
-<translation id="7518150891539970662">Registros de WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Fecha y hora de captura de registro de WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Archivo local:</translation>
 <translation id="2071393345806050157">No hay ningún archivo de registro local.</translation>
 <translation id="6628328486509726751">Fecha y hora de carga: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
 <translation id="5946591249682680882">ID de informe: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Incluir error</translation>
+<translation id="3650845953328929506">Subida de Bitácora (Log) pendiente.</translation>
 <translation id="1188807932851744811">No se cargó el registro.</translation>
-<translation id="3925247638945319984">No capturaste ningún registro de WebRTC recientemente.</translation>
 <translation id="2076269580855484719">Ocultar este complemento</translation>
 <translation id="2129825002735785149">Actualizar complemento</translation>
 <translation id="9088234649737575428">La política empresarial bloqueó <ph name="PLUGIN_NAME"/></translation>
@@ -547,11 +551,13 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6363797201514053536">Realizar una búsqueda en Brave Software o escribir una URL</translation>
 <translation id="6078323886959318429">Agregar un acceso directo</translation>
 <translation id="6324916366299863871">Editar acceso directo</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Listo</translation>
 <translation id="4416582610654027550">Escribe una URL válida</translation>
 <translation id="2806891468525657116">El acceso directo ya existe</translation>
 <translation id="394183848452296464">No se puede crear el acceso directo</translation>
+<translation id="329703603001918157">No se puede editar el atajo</translation>
 <translation id="7109543803214225826">Se quitó el acceso directo</translation>
 <translation id="8017679124341497925">Se editó el acceso directo</translation>
 <translation id="1174073918202301297">Acceso directo agregado</translation>
@@ -1045,6 +1051,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="5562781907504170924">Esta pestaña está conectada con un dispositivo Bluetooth.</translation>
 <translation id="5884474295213649357">Esta pestaña está conectada a un dispositivo USB.</translation>
 <translation id="8466417995783206254">Esta pestaña está reproduciendo un video en el modo de pantalla en pantalla.</translation>
+<translation id="2585724835339714757">Esta pestaña está compartiendo tu pantalla.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/>: La cámara o el micrófono están grabando</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/>: Se compartió el contenido de la pestaña</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/>: El video se reproduce en modo de pantalla en pantalla</translation>
@@ -1521,7 +1528,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8647834505253004544">No es una dirección web válida</translation>
 <translation id="2149850907588596975">Contraseñas y formularios</translation>
 <translation id="8639963783467694461">Configuración de Autocompletar</translation>
-<translation id="2512222046227390255">Autocompletar formularios</translation>
 <translation id="7764225426217299476">Agregar dirección</translation>
 <translation id="5595485650161345191">Editar dirección</translation>
 <translation id="6207937957461833379">País/Región</translation>
@@ -1534,6 +1540,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5029568752722684782">Borrar la copia</translation>
 <translation id="2154484045852737596">Editar tarjeta</translation>
 <translation id="5087580092889165836">Agregar tarjeta</translation>
+<translation id="7284555534810614828">Grabar la tarjeta para utilizar Brave Pay</translation>
 <translation id="4807098396393229769">Nombre en la tarjeta</translation>
 <translation id="2612676031748830579">Número de tarjeta</translation>
 <translation id="869891660844655955">Fecha de vencimiento</translation>
@@ -1603,6 +1610,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="577322787686508614">No se permite la operación de lectura en: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">La solicitud dada no es compatible con: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">No se permite la operación de escritura en: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679"><ph name="USER_EMAIL"/> controla la configuración de Bluetooth.</translation>
 <translation id="784934925303690534">Intervalo de tiempo</translation>
 <translation id="2496180316473517155">Historial de navegación</translation>
 <translation id="8662811608048051533">Esta acción te hace salir de la mayoría de los sitios.</translation>
@@ -1614,6 +1622,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4699172675775169585">Imágenes y archivos almacenados en caché</translation>
 <translation id="1274997165432133392">Cookies y otros datos de sitios</translation>
 <translation id="3838543471119263078">Cookies y otros datos de sitios y de complementos</translation>
+<translation id="369489984217678710">Contraseñas y otros datos de acceso</translation>
 <translation id="6865313869410766144">Datos del formulario de autocompletar</translation>
 <translation id="177336675152937177">Datos de aplicaciones alojadas</translation>
 <translation id="1718835860248848330">Última hora</translation>
@@ -1971,6 +1980,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5282733140964383898">Si habilitas la opción "No realizar seguimiento", se incluirá una solicitud con el tráfico de navegación. Los efectos dependerán de si algún sitio web responde a dicha solicitud y de cómo se interpreta. Por ejemplo, algunos sitios web pueden responder a la solicitud a través de la publicación de anuncios que no se basan en los sitios web que visitaste. Muchos sitios web continuarán recopilando y usando tus datos de navegación para, por ejemplo, mejorar la seguridad, generar estadísticas para informes y ofrecer contenido, servicios, anuncios y recomendaciones. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Habilita el acceso verificado.</translation>
 <translation id="5557991081552967863">Mantener el Wi-Fi encendido durante la suspensión</translation>
+<translation id="8562084399541316921">Seguir leyendo</translation>
+<translation id="6201926614538916789">Mira en la Bravebook los sitios web que tengas en dispositivos móviles</translation>
 <translation id="1521442365706402292">Gestionar certificados</translation>
 <translation id="7075625805486468288">Administrar la configuración y los certificados HTTPS/SSL</translation>
 <translation id="8871974300055371298">Configuración de contenido</translation>
@@ -2006,6 +2017,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7136694880210472378">Configurar como predeterminado</translation>
 <translation id="102272308210570439">Permitir que el Asistente use lo que se muestra en la pantalla</translation>
 <translation id="8624205858755890468">Permite que el Asistente te muestre información relacionada, apps y acciones.</translation>
+<translation id="4737453247496280552">Detección de "Ok Brave Software"</translation>
+<translation id="6409553560184414680">Di "Ok Brave Software" con la pantalla activada para acceder al Asistente en cualquier momento.</translation>
 <translation id="8669919703154928649">Permitir que el Asistente te muestre notificaciones</translation>
 <translation id="3430342160185525240">Permite que el Asistente te muestre notificaciones.</translation>
 <translation id="3908743412684152579">Configuración del Asistente de Brave Software</translation>
@@ -2095,7 +2108,9 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8708000541097332489">Borrar al salir</translation>
 <translation id="8037357227543935929">Preguntar (predeterminado)</translation>
 <translation id="3427092606871434483">Permitir (predeterminado)</translation>
+<translation id="4879491255372875719">Automático (predeterminado)</translation>
 <translation id="4312866146174492540">Bloquear (predeterminado)</translation>
+<translation id="6979440798594660689">Silenciar (predeterminado)</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="5063480226653192405">Uso</translation>
 <translation id="3006881078666935414">No hay datos de uso</translation>
@@ -2127,6 +2142,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2318923050469484167">Sesión en modo incógnito actual (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">No se configuró el zoom para ningún sitio</translation>
 <translation id="3566721612727112615">No se agregaron sitios</translation>
+<translation id="8098574385249290065">Permitir que Brave elija cuándo los sitios pueden reproducir sonido (recomendado)</translation>
 <translation id="5763751966069581670">No se encuentraron dispositivos USB</translation>
 <translation id="8546541260734613940">[*.]ejemplo.com</translation>
 <translation id="7366415735885268578">Agregar un sitio</translation>
@@ -2170,25 +2186,20 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4562155214028662640">Agregar huella digital</translation>
 <translation id="1719312230114180055">Nota: La huella digital puede ser menos segura que un PIN o una contraseña eficaz.</translation>
 <translation id="1927632033341042996">Dedo <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Habilitar desbloqueo mediante huella digital</translation>
 <translation id="7665369617277396874">Agregar cuenta</translation>
 <translation id="3422989461909154470">Aquí puedes administrar todas las cuentas de Brave Software con la que hayas accedido en apps y sitios web.</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="8418661265246754237">Cuentas de Brave Software</translation>
-<translation id="2107494551712864447">Agregar una huella digital</translation>
-<translation id="6388771388956873507">Busca el sensor de huellas digitales en tu dispositivo y tócalo con el dedo</translation>
-<translation id="9170397650136757332">Mueve el dedo ligeramente para capturar todas las partes de tu huella digital</translation>
-<translation id="161707228174452095">Se agregó una huella digital.</translation>
-<translation id="4576537685267142337">Levanta el dedo y vuelve a tocar el sensor</translation>
-<translation id="494660967831069720">Datos parciales</translation>
-<translation id="3064410671692449875">Datos insuficientes</translation>
-<translation id="2532026602297547439">El sensor está sucio</translation>
-<translation id="8642267168767642381">Moviste el dedo muy lento</translation>
-<translation id="2039623879703305659">Moviste el dedo demasiado rápido</translation>
-<translation id="7311891583377621132">Mueve el dedo ligeramente para capturar otra parte de la huella digital</translation>
+<translation id="1059855432287631118">Registro de huella digital</translation>
+<translation id="878068003854005405">Comencemos. Coloca tu dedo en el sensor.</translation>
+<translation id="7189965711416741966">Se agregó una huella digital.</translation>
+<translation id="9220820413868316583">Levanta el dedo y vuelve a intentarlo.</translation>
+<translation id="4534661889221639075">Vuelve a intentarlo.</translation>
+<translation id="3645372836428131288">Mueve el dedo ligeramente para capturar otra parte de la huella digital.</translation>
 <translation id="7345706641791090287">Confirma tu contraseña</translation>
 <translation id="381202950560906753">Agregar otra</translation>
-<translation id="6658023813581644008">A fin de configurar Smart Lock para acceder a tu cuenta, ingresa tu contraseña</translation>
+<translation id="6968288415730398122">Ingresa tu contraseña para configurar el bloqueo de pantalla</translation>
+<translation id="4103091233824664032">Ingresa tu contraseña para configurar el bloqueo de pantalla y acceder</translation>
 <translation id="5449551289610225147">Contraseña no válida</translation>
 <translation id="5374359983950678924">Cambiar imagen</translation>
 <translation id="6984299437918708277">Selecciona una imagen para mostrar en tu cuenta, en la pantalla de inicio</translation>
@@ -2217,7 +2228,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1136155683023653803">Las contraseñas, los favoritos, el historial y otros datos se sincronizan con tu cuenta</translation>
 <translation id="3267417306184901318">Tus datos de navegación y actividad, sincronizados con tu cuenta de Brave Software</translation>
 <translation id="1123187597739372905">Mostrar la configuración de sincronización</translation>
-<translation id="8420510748452002155">Servicios no personalizados</translation>
+<translation id="5428209950370661546">Otros servicios de Brave Software</translation>
 <translation id="2055016640093734678">Mostrar las opciones de configuración de los servicios de Brave Software</translation>
 <translation id="7956662517480676674">Sincronización y servicios</translation>
 <translation id="2453021845418314664">Configuración avanzada de sincronización</translation>
@@ -2400,9 +2411,14 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2315821125498993513">No se pudo establecer conexión con el teléfono. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Se activó "Mejor juntos"</translation>
 <translation id="3088402208262982892">Se desactivó "Mejor juntos"</translation>
+<translation id="7179187931092694802">Desbloquea tu Bravebook con el teléfono. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Conexión instantánea mediante dispositivo portátil</translation>
+<translation id="4746351372139058112">Mensajes</translation>
+<translation id="2248072377758660530">Envía y recibe mensajes de texto desde la Bravebook. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Olvidar este dispositivo</translation>
 <translation id="3606712892509067288">Quitar de "Mejor juntos"</translation>
+<translation id="5078490485380754244">Olvidar dispositivo</translation>
+<translation id="8072033737676488034">Quita tu teléfono e inhabilita "Mejor juntos"</translation>
 <translation id="7878562273885520351">Es posible que tu contraseña esté en peligro</translation>
 <translation id="6582421931165117398">Para proteger tu información personal, cambia la contraseña ahora. Antes de cambiar la contraseña, deberás acceder a tu cuenta.</translation>
 <translation id="1089439967362294234">Cambiar contraseña</translation>
@@ -2503,6 +2519,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2202898655984161076">Hubo un problema al enumerar las impresoras. Algunas de tus impresoras pueden no haberse registrado con éxito con <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Se ha producido un bloqueo en el proceso del conector de <ph name="CLOUD_PRINT_NAME"/>. ¿Deseas reiniciarlo?</translation>
 <translation id="6904655473976120856">Presionar el botón de la app para salir</translation>
+<translation id="79766959863778284">Servicio de dispositivos aislados XR</translation>
 <translation id="8909833622202089127">El sitio está haciendo un seguimiento de tu ubicación</translation>
 <translation id="375636864092143889">El sitio está usando el micrófono</translation>
 <translation id="310671807099593501">El sitio está usando la conexión Bluetooth</translation>

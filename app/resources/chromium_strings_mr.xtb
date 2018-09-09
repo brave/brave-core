@@ -18,7 +18,6 @@
 <translation id="8992261409816268381">Brave लेखक</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave लेखक. सर्व हक्क राखीव.</translation>
 <translation id="2310890394934209120">अतिरिक्त <ph name="BEGIN_LINK_CROS_OSS"/>खुले स्रोत सॉफ्‍टवेअर<ph name="END_LINK_CROS_OSS"/> द्वारे Brave OS बनवणे शक्‍य झाले.</translation>
-<translation id="858647341154864560">Linux (बीटा) सारखेच, अतिरिक्त <ph name="BEGIN_LINK_CROS_OSS"/>मुक्त स्त्रोत सॉफ्टवेअर<ph name="END_LINK_CROS_OSS"/> द्वारे Brave OS शक्य झाले आहे.</translation>
 <translation id="5019879183386042809">Brave ला डीफॉल्‍ट ब्राउझर बनवा</translation>
 <translation id="5063987220091207247">Brave OS हे पृष्ठ उघडू शकत नाही.</translation>
 <translation id="4065288863231444640">Brave बॅकग्राउंडमध्ये चालू द्या</translation>
@@ -37,6 +36,7 @@ Brave तुमची सेटिंग्ज पुनर्प्राप्
 <translation id="5785919770853225148">Brave हा पासवर्ड तुमच्या Brave Software खात्यामध्ये सेव्ह करेल. तुम्हाला पासवर्ड लक्षात ठेवावा लागणार नाही.</translation>
 <translation id="3343095737966473035">Brave तुमचा डीफॉल्ट ब्राउझर नाही</translation>
 <translation id="6715663530666325392">वेबवर तुमची वैयक्तीकृत केलेली ब्राउझर वैशिष्ट्ये सेव्ह करण्यासाठी समक्रमण सेट करा आणि कोणत्याही संगणकावरील Brave वरून त्यात प्रवेश करा.</translation>
+<translation id="5874882355102994015">बिल्ड इन PDF दर्शक उपस्थित नसतात तेव्हा Brave मुद्रण पूर्वावलोकन दाखवू शकत नाही.</translation>
 <translation id="8880183781256147665">Brave वर जोडत आहे...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> धोकादायक असू शकते, त्यामुळे Brave ने ते अवरोधित केले आहे.</translation>
 <translation id="9067428552314418522">ही फाईल धोकादायक आहे, त्यामुळे Brave ने अवरोधित केली आहे.</translation>

@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 6d355943715348a94af7df53337a96422a0f95c5..c8d06b7b4f785ede823d28eb256a9cc47c2aea53 100644
+index 2f405036e2a933002bc555849fdf3ffb595cdabd..fe83799492e5c4acc5564507b89f82c47ad1d335 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -78,6 +78,7 @@ source_set("channel_info") {
@@ -10,11 +10,11 @@ index 6d355943715348a94af7df53337a96422a0f95c5..c8d06b7b4f785ede823d28eb256a9cc4
  }
  
  source_set("ini_parser") {
-@@ -542,6 +543,7 @@ static_library("non_code_constants") {
+@@ -546,6 +547,7 @@ static_library("non_code_constants") {
      "//printing/buildflags",
      "//ui/base:ui_features",
    ]
 +  if (brave_chromium_build) { configs += [ "//brave/common:constants_configs" ] }
  }
  
- static_library("constants") {
+ component("chrome_features") {

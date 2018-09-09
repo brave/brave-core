@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Otvori kao prozor</translation>
 <translation id="91568222606626347">Napravi prečac...</translation>
 <translation id="3627879631695760395">Instaliranje aplikacije <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">Deinstaliranje aplikacije <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">Pogledaj u web-trgovini</translation>
 <translation id="4316850752623536204">Web-lokacija razvojnog programera</translation>
 <translation id="4289540628985791613">Pregled</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Dekodiranje slika</translation>
 <translation id="8191453843330043793">Razrješavanje V8 proxyja</translation>
 <translation id="6185617499004995178">CUPS IPP validator</translation>
+<translation id="3077708072777965506">Način unosa OS-a Brave</translation>
 <translation id="7171242884588191792">Uslužni programi za datoteke u Braveu</translation>
 <translation id="3061707000357573562">Usluga zakrpe</translation>
 <translation id="3580923162759633716">Usluga profiliranja</translation>
@@ -499,8 +501,10 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="8743864605301774756">Ažurirano prije 1 sat</translation>
 <translation id="5638497698949808140">Ažurirano prije <ph name="HOURS"/> h</translation>
 <translation id="1329584516321524826">Upravo je ažurirano</translation>
+<translation id="224940702122312781">Ova stranica troši veliku količinu podataka.</translation>
+<translation id="3861241522664181545">Stranica je pauzirana.</translation>
+<translation id="6921709132208495314">Zaustavite učitavanje podataka na ovu stranicu</translation>
 <translation id="2724841811573117416">WebRTC zapisnici</translation>
-<translation id="7518150891539970662">WebRTC zapisnici (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC zapisnik snimljen je u <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokalna datoteka:</translation>
 <translation id="2071393345806050157">Nema lokalne datoteke zapisnika.</translation>
@@ -508,7 +512,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="5946591249682680882">ID izvješća <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Bug datoteke</translation>
 <translation id="1188807932851744811">Zapisnik nije prenesen.</translation>
-<translation id="3925247638945319984">Nemate nedavno snimljenih WebRTC zapisnika.</translation>
 <translation id="2076269580855484719">Sakrij ovaj dodatak</translation>
 <translation id="2129825002735785149">Ažurirajte dodatak</translation>
 <translation id="9088234649737575428">Dodatak <ph name="PLUGIN_NAME"/> blokiran je prema pravilima organizacije</translation>
@@ -547,6 +550,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="6363797201514053536">Pretražite Brave Software ili unesite URL</translation>
 <translation id="6078323886959318429">Dodaj prečac</translation>
 <translation id="6324916366299863871">Uređivanje prečaca</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Gotovo</translation>
 <translation id="4416582610654027550">Unesite važeći URL</translation>
@@ -1045,6 +1049,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="5562781907504170924">Kartica je povezana s Bluetooth uređajem.</translation>
 <translation id="5884474295213649357">Kartica je povezana s USB uređajem.</translation>
 <translation id="8466417995783206254">Ova kartica prikazuje videozapis u načinu slike u slici.</translation>
+<translation id="2585724835339714757">Na ovoj se kartici dijeli vaš zaslon.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kamera ili mikrofon snimaju</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – dijeljenje sadržaja kartice</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – reprodukcija videozapisa u načinu slike u slici</translation>
@@ -1521,7 +1526,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8647834505253004544">Nije važeća web-adresa</translation>
 <translation id="2149850907588596975">Zaporke i obrasci</translation>
 <translation id="8639963783467694461">Postavke automatske ispune</translation>
-<translation id="2512222046227390255">Automatski popunite obrasce</translation>
 <translation id="7764225426217299476">Dodaj adresu</translation>
 <translation id="5595485650161345191">Uređivanje adrese</translation>
 <translation id="6207937957461833379">Zemlja/regija</translation>
@@ -1603,6 +1607,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="577322787686508614">Operacija čitanja nije dopuštena na uređaju: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">Navedeni zahtjev nije podržan za uređaj: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">Operacija zapisivanja nije dopuštena na uređaju: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">Konfiguracijom Bluetootha upravlja <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Vremenski raspon</translation>
 <translation id="2496180316473517155">Povijest pregledavanja</translation>
 <translation id="8662811608048051533">Odjavit ćete se s većine web-lokacija.</translation>
@@ -1614,6 +1619,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4699172675775169585">Predmemorirane slike i datoteke</translation>
 <translation id="1274997165432133392">Kolačići i ostali podaci o web-lokacijama</translation>
 <translation id="3838543471119263078">Kolačići i ostali podaci o web-lokacijama i dodacima</translation>
+<translation id="369489984217678710">Zaporke i drugi podaci za prijavu</translation>
 <translation id="6865313869410766144">Automatski ispuni podatke u obrascu</translation>
 <translation id="177336675152937177">Podaci hostiranih aplikacija</translation>
 <translation id="1718835860248848330">Zadnji sat</translation>
@@ -1971,6 +1977,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="5282733140964383898">Ako omogućite "Nemoj pratiti", taj će se zahtjev slati uz vaš promet pregledavanja. Učinak ovisi o tome hoće li web-lokacija reagirati na taj zahtjev i kako će se on tumačiti. Na primjer, neke web-lokacije mogu reagirati na taj zahtjev prikazivanjem oglasa koji se ne temelje na ostalim web-lokacijama koje ste posjetili. Mnoge web-lokacije i dalje će prikupljati i upotrebljavati vaše podatke o pregledavanju kako bi, primjerice, poboljšale sigurnost, pružale sadržaje, usluge, oglase i preporuke na svojim web-lokacijama te generirale statističke podatke za izvješća. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Omogući potvrđeni pristup</translation>
 <translation id="5557991081552967863">Zadrži Wi-Fi tijekom mirovanja</translation>
+<translation id="8562084399541316921">Nastavite čitati</translation>
+<translation id="6201926614538916789">Nastavite pregledavati web-lokacije s mobilnog uređaja na Bravebooku</translation>
 <translation id="1521442365706402292">Upravljanje potvrdama</translation>
 <translation id="7075625805486468288">Upravljanje HTTPS/SSL certifikatima i postavkama</translation>
 <translation id="8871974300055371298">Postavke sadržaja</translation>
@@ -2006,6 +2014,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="7136694880210472378">Postavi kao zadano</translation>
 <translation id="102272308210570439">Dopustite Asistentu da upotrebljava sadržaj zaslona</translation>
 <translation id="8624205858755890468">Omogućuje Asistentu da vam prikazuje povezane informacije, aplikacije i radnje.</translation>
+<translation id="4737453247496280552">Otkrivanje za "Ok Brave Software"</translation>
+<translation id="6409553560184414680">Pristupite svojem Asistentu svaki put kad izgovorite "Ok Brave Software", a zaslon je uključen.</translation>
 <translation id="8669919703154928649">Dopustite Asistentu da vam prikazuje obavijesti</translation>
 <translation id="3430342160185525240">Omogućuje Asistentu da vam prikazuje obavijesti.</translation>
 <translation id="3908743412684152579">Postavke Brave Software asistenta</translation>
@@ -2095,7 +2105,9 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8708000541097332489">Izbriši pri izlazu</translation>
 <translation id="8037357227543935929">Pitaj (zadano)</translation>
 <translation id="3427092606871434483">Dopusti (zadano)</translation>
+<translation id="4879491255372875719">Automatski (zadano)</translation>
 <translation id="4312866146174492540">Blokiraj (zadano)</translation>
+<translation id="6979440798594660689">Bez zvuka (zadano)</translation>
 <translation id="2356070529366658676">Upitaj</translation>
 <translation id="5063480226653192405">Upotreba</translation>
 <translation id="3006881078666935414">Nema podataka o potrošnji</translation>
@@ -2127,6 +2139,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="2318923050469484167">Trenutačna anonimna sesija (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nijedna web-lokacija nije povećana ili smanjena</translation>
 <translation id="3566721612727112615">Nema dodanih web-lokacija</translation>
+<translation id="8098574385249290065">Neka Brave odluči kada web-lokacije mogu reproducirati zvuk (preporučeno)</translation>
 <translation id="5763751966069581670">Nije pronađen nijedan USB uređaj</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Dodavanje web-lokacije</translation>
@@ -2170,25 +2183,20 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4562155214028662640">Dodaj otisak prsta</translation>
 <translation id="1719312230114180055">Napomena: otisak prsta može biti manje siguran od snažne zaporke ili PIN-a.</translation>
 <translation id="1927632033341042996">Prst <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Omogući otključavanje otiskom prsta</translation>
 <translation id="7665369617277396874">Dodaj račun</translation>
 <translation id="3422989461909154470">Ovdje možete upravljati svim Brave Software računima kojima ste prijavljeni na aplikacije i web-lokacije.</translation>
 <translation id="1987317783729300807">Računi</translation>
 <translation id="8418661265246754237">Brave Software računi</translation>
-<translation id="2107494551712864447">Dodajte otisak prsta</translation>
-<translation id="6388771388956873507">Pronađite senzor otiska prsta na uređaju i dodirnite ga prstom</translation>
-<translation id="9170397650136757332">Sada lagano pomaknite prst da biste snimili sve različite dijelove otiska prsta</translation>
-<translation id="161707228174452095">Otisak prsta je dodan!</translation>
-<translation id="4576537685267142337">Podignite prst, a zatim ponovo dodirnite senzor</translation>
-<translation id="494660967831069720">Djelomični podaci</translation>
-<translation id="3064410671692449875">Nema dovoljno podataka</translation>
-<translation id="2532026602297547439">Senzor je prljav</translation>
-<translation id="8642267168767642381">Presporo ste pomaknuli prst</translation>
-<translation id="2039623879703305659">Prebrzo ste pomaknuli prst</translation>
-<translation id="7311891583377621132">Lagano pomaknite prst da biste snimili različite dijelove otiska prsta</translation>
+<translation id="1059855432287631118">Registriranje otiska prsta</translation>
+<translation id="878068003854005405">Započnimo. Postavite prst na senzor.</translation>
+<translation id="7189965711416741966">Otisak prsta je dodan.</translation>
+<translation id="9220820413868316583">Podignite, a zatim pokušajte ponovo.</translation>
+<translation id="4534661889221639075">Pokušajte ponovo.</translation>
+<translation id="3645372836428131288">Lagano pomaknite prst da biste snimili različite dijelove otiska prsta.</translation>
 <translation id="7345706641791090287">Potvrdite zaporku</translation>
 <translation id="381202950560906753">Dodaj još jedan</translation>
-<translation id="6658023813581644008">Da biste postavili Smart Lock za prijavu, unesite zaporku</translation>
+<translation id="6968288415730398122">Unesite zaporku da biste konfigurirali zaključavanje zaslona</translation>
+<translation id="4103091233824664032">Unesite zaporku da biste konfigurirali zaključavanje zaslona i prijavljivanje</translation>
 <translation id="5449551289610225147">Nevažeća zaporka</translation>
 <translation id="5374359983950678924">Promijeni sliku</translation>
 <translation id="6984299437918708277">Odaberite sliku za prikaz za svoj račun na zaslonu za prijavu</translation>
@@ -2217,7 +2225,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="1136155683023653803">Zaporke, oznake, povijest i drugi podaci sinkroniziraju se s vašim računom</translation>
 <translation id="3267417306184901318">Vaši podaci o pregledavanju i aktivnost, sinkronizirani s vašim Brave Software računom</translation>
 <translation id="1123187597739372905">Prikaži postavke sinkronizacije</translation>
-<translation id="8420510748452002155">Usluge bez prilagodbe</translation>
+<translation id="5428209950370661546">Ostale Brave Softwareove usluge</translation>
 <translation id="2055016640093734678">Prikaži postavke Brave Softwareovih usluga</translation>
 <translation id="7956662517480676674">Sinkronizacija i Brave Softwareove usluge</translation>
 <translation id="2453021845418314664">Napredne postavke sinkronizacije</translation>
@@ -2400,9 +2408,14 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="2315821125498993513">Povezivanje s telefonom nije uspjelo. <ph name="LINK_BEGIN"/>Saznajte više.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Uključen je Better Together</translation>
 <translation id="3088402208262982892">Isključen je Better Together</translation>
+<translation id="7179187931092694802">Otključajte Bravebook telefonom. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Automatsko modemsko povezivanje</translation>
+<translation id="4746351372139058112">Poruke</translation>
+<translation id="2248072377758660530">Šaljite i primajte tekstne poruke na Bravebooku. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Zaboravi ovaj uređaj</translation>
 <translation id="3606712892509067288">Uklonite iz značajke Better Together</translation>
+<translation id="5078490485380754244">Zaboravi uređaj</translation>
+<translation id="8072033737676488034">Uklonite telefon i onemogućite Better Together</translation>
 <translation id="7878562273885520351">Vaša je zaporka možda ugrožena</translation>
 <translation id="6582421931165117398">Radi zaštite osobnih podataka odmah promijenite zaporku. Prije promjene zaporke morat ćete se prijaviti.</translation>
 <translation id="1089439967362294234">Promjena zaporke</translation>
@@ -2503,6 +2516,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="2202898655984161076">Postojao je problem s navođenjem pisača. Neki od pisača možda se nisu uspješno prijavili na <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Pao je proces konektora <ph name="CLOUD_PRINT_NAME"/>. Pokrenuti ponovo?</translation>
 <translation id="6904655473976120856">Pritisnite gumb aplikacije za izlazak</translation>
+<translation id="79766959863778284">XR Isolated Device Service</translation>
 <translation id="8909833622202089127">Web-lokacija prati vašu lokaciju</translation>
 <translation id="375636864092143889">Web-lokacija upotrebljava vaš mikrofon</translation>
 <translation id="310671807099593501">Web-lokacija upotrebljava Bluetooth</translation>

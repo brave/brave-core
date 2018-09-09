@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">विंडो के रूप में खोलें</translation>
 <translation id="91568222606626347">शॉर्टकट बनाएं...</translation>
 <translation id="3627879631695760395"><ph name="APP"/> इंस्टॉल करें...</translation>
+<translation id="8288032458496410887"><ph name="APP"/> ऐप्लिकेशन अनइंस्टॉल करें...</translation>
 <translation id="4057896668975954729">स्टोर में देखें</translation>
 <translation id="4316850752623536204">डेवलपर वेबसाइट</translation>
 <translation id="4289540628985791613">संक्षिप्त विवरण</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">चित्र डीकोडर</translation>
 <translation id="8191453843330043793">V8 प्राॅक्‍सी रिज़ॉल्‍वर</translation>
 <translation id="6185617499004995178">CUPS IPP वैलिडेटर</translation>
+<translation id="3077708072777965506">Brave OS इनपुट का तरीका</translation>
 <translation id="7171242884588191792">Brave की फ़ाइल सुविधाएं</translation>
 <translation id="3061707000357573562">पैच सेवा</translation>
 <translation id="3580923162759633716">किसी की प्रोफ़ाइल बनाने वाली सेवा</translation>
@@ -499,8 +501,10 @@
 <translation id="8743864605301774756">1 घंटे पहले अपडेट किया गया</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> घंटे पहले अपडेट किया गया</translation>
 <translation id="1329584516321524826">अभी-अभी अपडेट किया गया</translation>
+<translation id="224940702122312781">इस पेज में बहुत ज़्यादा डेटा का इस्तेमाल होगा.</translation>
+<translation id="3861241522664181545">पेज रोका गया.</translation>
+<translation id="6921709132208495314">इस पेज पर डेटा का इस्तेमाल बंद करें</translation>
 <translation id="2724841811573117416">WebRTC लॉग</translation>
-<translation id="7518150891539970662">WebRTC लॉग (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC लॉग कैप्चर किया गया <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">स्थानीय फ़ाइल:</translation>
 <translation id="2071393345806050157">कोई स्थानीय लॉग फ़ाइल नहीं है.</translation>
@@ -508,7 +512,6 @@
 <translation id="5946591249682680882">रिपोर्ट आईडी <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">बग की सूचना दें</translation>
 <translation id="1188807932851744811">लॉग अपलोड नहीं किया गया.</translation>
-<translation id="3925247638945319984">आपके पास हाल ही में कैप्चर किया गया कोई WebRTC लॉग नहीं है.</translation>
 <translation id="2076269580855484719">यह प्लग इन छुपाएं</translation>
 <translation id="2129825002735785149">प्‍लग इन अपडेट करें</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> एंटरप्राइज़ नीति द्वारा अवरोधित है</translation>
@@ -547,6 +550,7 @@
 <translation id="6363797201514053536">Brave Software पर खोजें या कोई यूआरएल टाइप करें</translation>
 <translation id="6078323886959318429">शॉर्टकट जोड़ें</translation>
 <translation id="6324916366299863871">शॉर्टकट में बदलाव करें</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">पूर्ण</translation>
 <translation id="4416582610654027550">एक मान्य यूआरएल टाइप करें</translation>
@@ -1045,6 +1049,7 @@
 <translation id="5562781907504170924">यह टैब किसी ब्लूटूथ डिवाइस से कनेक्ट है.</translation>
 <translation id="5884474295213649357">यह टैब किसी USB डिवाइस से कनेक्ट है.</translation>
 <translation id="8466417995783206254">यह टैब वीडियो को 'पिक्चर में पिक्चर' मोड में चला रहा है.</translation>
+<translation id="2585724835339714757">यह टैब आपकी स्क्रीन शेयर कर रहा है.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - कैमरा या माइक्रोफ़ोन रिकॉर्डिंग</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - टैब सामग्री शेयर की गई</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - वीडियो 'पिक्चर में पिक्चर' मोड में चल रहा है</translation>
@@ -1520,7 +1525,6 @@
 <translation id="8647834505253004544">मान्य वेब पता नहीं है</translation>
 <translation id="2149850907588596975">पासवर्ड और फ़ॉर्म</translation>
 <translation id="8639963783467694461">ऑटोमैटिक भरना की सेटिंग...</translation>
-<translation id="2512222046227390255">फ़ॉर्म अपने आप भरने दें</translation>
 <translation id="7764225426217299476">पता जोड़ें</translation>
 <translation id="5595485650161345191">पता संपादित करें</translation>
 <translation id="6207937957461833379">देश/क्षेत्र</translation>
@@ -1602,6 +1606,7 @@
 <translation id="577322787686508614">पढ़ें कार्रवाई की इस पर अनुमति नहीं है: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">दिया गया अनुरोध इसका समर्थन नहीं करता है: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">लिखें कार्रवाई की इस पर अनुमति नहीं है: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">ब्लूटूथ कॉन्फ़िगरेशन को <ph name="USER_EMAIL"/> से नियंत्रित किया जाता है.</translation>
 <translation id="784934925303690534">समय सीमा</translation>
 <translation id="2496180316473517155">ब्राउज़िंग इतिहास...</translation>
 <translation id="8662811608048051533">आपको ज़्यादातर साइट से साइन आउट कर देता है.</translation>
@@ -1613,6 +1618,7 @@
 <translation id="4699172675775169585">संचय चित्र और फ़ाइलें</translation>
 <translation id="1274997165432133392">कुकी और साइट का अन्य डेटा</translation>
 <translation id="3838543471119263078">कुकी और अन्‍य साइट तथा प्‍लग इन डेटा</translation>
+<translation id="369489984217678710">पासवर्ड और दूसरे साइन-इन डेटा</translation>
 <translation id="6865313869410766144">ऑटोमैटिक भरने वाला फ़ॉर्म डेटा</translation>
 <translation id="177336675152937177">होस्ट किया गया ऐप्स डेटा</translation>
 <translation id="1718835860248848330">अंतिम घंटा</translation>
@@ -1970,6 +1976,8 @@
 <translation id="5282733140964383898">‘नज़र न रखें’ सुविधा को चालू करने का मतलब है कि आपके ब्राउज़िंग ट्रैफ़िक के साथ कोई अनुरोध शामिल किया जाएगा. कोई भी प्रभाव इस बात पर निर्भर करता है कि वेबसाइट, अनुरोध का जवाब देती है या नहीं और अनुरोध को किस तरह समझा जाता है. उदाहरण के लिए, कुछ वेबसाइटें इस अनुरोध का जवाब आपको ऐसे विज्ञापन दिखाकर दे सकती हैं, जो उन दूसरी वेबसाइटों पर आधारित नहीं हैं जिन्हें आपने देखा है. कई वेबसाइटें अब भी आपके ब्राउज़िंग डेटा को जमा और उनका उपयोग करेंगी - उदाहरण के तौर पर, सुरक्षा को बेहतर बनाने के लिए, अपनी वेबसाइट पर सामग्री, सेवाएं, विज्ञापन और सुझाव देने के लिए और रिपोर्टिंग के आकंड़े जनरेट करने के लिए. <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">सत्यापित एक्सेस सक्षम करें</translation>
 <translation id="5557991081552967863">प्रयोग में नहीं रहने के दौरान वाई-फ़ाई चालू रखें</translation>
+<translation id="8562084399541316921">पढ़ना जारी रखें</translation>
+<translation id="6201926614538916789">अपने Bravebook पर मोबाइल से साइट देखना फिर से शुरू करें</translation>
 <translation id="1521442365706402292">प्रमाणपत्र प्रबंधित करें</translation>
 <translation id="7075625805486468288">HTTPS/SSL प्रमाणपत्र और सेटिंग प्रबंधित करें</translation>
 <translation id="8871974300055371298">सामग्री सेटिंग</translation>
@@ -2005,6 +2013,8 @@
 <translation id="7136694880210472378">डिफ़ॉल्ट बनाएं</translation>
 <translation id="102272308210570439">Assistant को अपनी स्क्रीन पर मौजूद सामग्री का उपयोग करने दें</translation>
 <translation id="8624205858755890468">आपको संबंधित जानकारी, ऐप और कार्रवाइयां दिखाने के लिए Assistant को चालू करता है.</translation>
+<translation id="4737453247496280552">"Ok Brave Software" की पहचान</translation>
+<translation id="6409553560184414680">स्क्रीन चालू होने पर कभी भी "OK Brave Software" बोलें और अपनी Assistant सेवा एक्सेस करें.</translation>
 <translation id="8669919703154928649">Assistant को आपको सूचनाएं दिखाने दें</translation>
 <translation id="3430342160185525240">Assistant को आपको सूचनाएं दिखाने देती है.</translation>
 <translation id="3908743412684152579">Brave Software Assistant सेटिंग</translation>
@@ -2094,7 +2104,9 @@
 <translation id="8708000541097332489">बाहर निकलने पर साफ़ करें</translation>
 <translation id="8037357227543935929">पूछें (डिफ़ॉल्ट)</translation>
 <translation id="3427092606871434483">अनुमति दें (डिफ़ॉल्ट)</translation>
+<translation id="4879491255372875719">अपने आप (डिफ़ॉल्ट)</translation>
 <translation id="4312866146174492540">अवरुद्ध करें (डिफ़ॉल्ट)</translation>
+<translation id="6979440798594660689">म्यूट करें (डिफ़ॉल्ट)</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="5063480226653192405">उपयोग</translation>
 <translation id="3006881078666935414">कोई उपयोग डेटा नहीं</translation>
@@ -2126,6 +2138,7 @@
 <translation id="2318923050469484167">वर्तमान गुप्त सत्र (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">कोई भी साइट ज़ूम इन या ज़ूम आउट नहीं की गई है</translation>
 <translation id="3566721612727112615">कोई साइट नहीं जोड़ी गई</translation>
+<translation id="8098574385249290065">Brave को चुनने दें कि साइटें कब आवाज़ चला सकती हैं (सुझाव)</translation>
 <translation id="5763751966069581670">कोई USB डिवाइस नहीं मि‍ला</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">साइट जोड़ें</translation>
@@ -2169,25 +2182,20 @@
 <translation id="4562155214028662640">फ़िंगरप्रिंट जोड़ें</translation>
 <translation id="1719312230114180055">ध्यान दें: आपका फ़िंगरप्रिंट किसी सशक्त पासवर्ड या पिन की तुलना में कम सुरक्षित हो सकता है.</translation>
 <translation id="1927632033341042996">उंगली <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">फ़िंगरप्रिंट अनलॉक सक्षम करें</translation>
 <translation id="7665369617277396874">खाता जोड़ें</translation>
 <translation id="3422989461909154470">ऐप्लिकेशन और वेबसाइटों पर आपके सभी साइन इन किए हुए खाते यहां प्रबंधित किए जा सकते हैं.</translation>
 <translation id="1987317783729300807">खाते</translation>
 <translation id="8418661265246754237">Brave Software खाते</translation>
-<translation id="2107494551712864447">फ़िंगरप्रिंट जोड़ें</translation>
-<translation id="6388771388956873507">अपने डिवाइस पर फ़िंगरप्रिंट सेंसर ढूंढें और उस पर अपनी उंगली से स्पर्श करें</translation>
-<translation id="9170397650136757332">अब अपने फ़िंगरप्रिंट के सभी अलग-अलग हिस्सों को कैप्चर करने के लिए अपनी उंगली को धीरे से हिलाएं</translation>
-<translation id="161707228174452095">फ़िंगरप्रिंट जोड़ा गया!</translation>
-<translation id="4576537685267142337">उंगली उठाएं, फिर सेंसर को दोबारा स्पर्श करें</translation>
-<translation id="494660967831069720">आंशिक डेटा</translation>
-<translation id="3064410671692449875">अपर्याप्त डेटा</translation>
-<translation id="2532026602297547439">सेंसर साफ़ नहीं है</translation>
-<translation id="8642267168767642381">उंगली बहुत धीरे चलाई गई.</translation>
-<translation id="2039623879703305659">उंगली बहुत जल्दी चलाई गई</translation>
-<translation id="7311891583377621132">फ़िंगरप्रिंट का दूसरा हिस्सा कैप्चर करने के लिए धीरे से हिलाएं</translation>
+<translation id="1059855432287631118">फ़िंगरप्रिंट रजिस्टर करना</translation>
+<translation id="878068003854005405">चलिए शुरू करें. सेंसर पर अपनी उंगली रखें.</translation>
+<translation id="7189965711416741966">फ़िंगरप्रिंट जोड़ा गया.</translation>
+<translation id="9220820413868316583">उंगली उठाएं और फिर से कोशिश करें.</translation>
+<translation id="4534661889221639075">फिर से कोशिश करें.</translation>
+<translation id="3645372836428131288">फ़िंगरप्रिंट के अलग हिस्से को कैप्चर करने के लिए धीरे से हिलाएं</translation>
 <translation id="7345706641791090287">अपने पासवर्ड की पुष्टि करें</translation>
 <translation id="381202950560906753">दूसरा जोड़ें</translation>
-<translation id="6658023813581644008">अपना पासवर्ड डालें, ताकि आप साइन-इन के लिए Smart Lock सेट अप कर सकें</translation>
+<translation id="6968288415730398122">स्क्रीन लॉक कॉन्फ़िगर करने के लिए अपना पासवर्ड डालें</translation>
+<translation id="4103091233824664032">स्क्रीन लॉक कॉन्फ़िगर करने के लिए अपना पासवर्ड डालें और साइन इन करें</translation>
 <translation id="5449551289610225147">गलत पासवर्ड</translation>
 <translation id="5374359983950678924">चित्र बदलें</translation>
 <translation id="6984299437918708277">साइन इन स्‍क्रीन पर अपने खाते के लिए प्रदर्शित किया जाने वाला चित्र चुनें</translation>
@@ -2216,7 +2224,7 @@
 <translation id="1136155683023653803">पासवर्ड, बुकमार्क, इतिहास और कई चीज़ें आपके खाते में सिंक की जाती हैं</translation>
 <translation id="3267417306184901318">आपके 'Brave Software खाते' में सिंक किए गया आपका ब्राउज़िंग डेटा और गतिविधि</translation>
 <translation id="1123187597739372905">सिंक सेटिंग दिखाएं</translation>
-<translation id="8420510748452002155">मनमुताबिक नहीं बनाई गई सेवाएं</translation>
+<translation id="5428209950370661546">Brave Software की दूसरी सेवाएंं</translation>
 <translation id="2055016640093734678">Brave Software सेवाओं की सेटिंग दिखाएं</translation>
 <translation id="7956662517480676674">सिंक और Brave Software सेवाएं</translation>
 <translation id="2453021845418314664">उन्‍नत समन्‍वयन सेटिंग</translation>
@@ -2399,9 +2407,14 @@
 <translation id="2315821125498993513">फ़ोन से कनेक्ट नहीं किया जा सका. <ph name="LINK_BEGIN"/>ज़्यादा जानें.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together सुविधा चालू है</translation>
 <translation id="3088402208262982892">Better Together सुविधा बंद है</translation>
+<translation id="7179187931092694802">अपने Bravebook को अपने फ़ोन से अनलॉक करें. <ph name="LINK_BEGIN"/>ज़्यादा जानें.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">इंस्टैंट टेदरिंग</translation>
+<translation id="4746351372139058112">संदेश</translation>
+<translation id="2248072377758660530">अपने Bravebook से मैसेज भेजें और पाएं. <ph name="LINK_BEGIN"/>ज़्यादा जानें<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">इस डिवाइस को भूल जाएं</translation>
 <translation id="3606712892509067288">Better Together से हटाएं</translation>
+<translation id="5078490485380754244">डिवाइस भूलें</translation>
+<translation id="8072033737676488034">अपना फ़ोन हटाएं और Better Together सुविधा बंद करें</translation>
 <translation id="7878562273885520351">आपके पासवर्ड से छेड़छाड़ की जा सकती है</translation>
 <translation id="6582421931165117398">अपनी व्‍यक्‍तिगत जानकारी की सुरक्षा करने के लिए, अभी अपना पासवर्ड बदलें. आपके पासवर्ड बदलने से पहले आपको साइन इन करने के लिए कहा जाएगा.</translation>
 <translation id="1089439967362294234">पासवर्ड बदलें</translation>
@@ -2502,6 +2515,7 @@
 <translation id="2202898655984161076">प्रिंटरों को सूचीबद्ध करने में कोई समस्या थी. आपके प्रिंटरों में से कुछ <ph name="CLOUD_PRINT_NAME"/> के साथ सफलतापूर्वक पंजीकृत नहीं हो सके हैं.</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> कनेक्‍टर प्रक्रिया क्रैश हो गई है. पुन: प्रारंभ करें?</translation>
 <translation id="6904655473976120856">बाहर निकलने के लिए ऐप्लिकेशन बटन दबाएं</translation>
+<translation id="79766959863778284">XR Isolated Device Service</translation>
 <translation id="8909833622202089127">साइट आपकी जगह को ट्रैक कर रही है</translation>
 <translation id="375636864092143889">साइट आपका माइक्रोफ़ोन इस्तेमाल कर रही है</translation>
 <translation id="310671807099593501">साइट ब्लूटूथ का इस्तेमाल कर रही है</translation>

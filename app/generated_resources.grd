@@ -1828,6 +1828,18 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
 
+      <!-- "Uninstall web app" menu item -->
+      <if expr="use_titlecase">
+        <message name="IDS_UNINSTALL_FROM_OS_LAUNCH_SURFACE" desc="In Title Case: Menu text for uninstalling a web app from the operating system.">
+          Uninstall <ph name="APP">$1<ex>Gmail</ex></ph>...
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_UNINSTALL_FROM_OS_LAUNCH_SURFACE" desc="Menu text for uninstalling a web app from the operating system.">
+          Uninstall <ph name="APP">$1<ex>Gmail</ex></ph>...
+        </message>
+      </if>
+
       <!-- "Application Information" dialog -->
       <if expr="not use_titlecase">
         <message name="IDS_APPLICATION_INFO_WEB_STORE_LINK" desc="Text for the link that opens the app or extension in the Web Store..">
@@ -3035,6 +3047,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_UTILITY_PROCESS_CUPS_IPP_VALIDATOR_SERVICE_NAME" desc="The name of the utility process used for validating IPP requests out-of-process.">
           CUPS IPP Validator
         </message>
+        <message name="IDS_UTILITY_PROCESS_IME_SERVICE_NAME" desc="The name of the utility process providing the input methods.">
+          Brave OS Input Method
+        </message>
       </if>
       <message name="IDS_UTILITY_PROCESS_FILE_UTILITY_NAME" desc="The name of the utility process used for various Brave specific file operations.">
           Brave File Utilities
@@ -3326,6 +3341,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_DOCUMENT_SCAN" desc="Permission string for access to document scanning.">
           Access document scanners attached via USB or on the local network
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_HARDWARE_PLATFORM" desc="Permission string for access to hardware platform information.">
+          Read the manufacturer and model of this computer
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_FAVICON" desc="Permission string for access to favicons.">
           Read the icons of the websites you visit
@@ -3702,12 +3720,18 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSIONS_LOAD_ERROR_MESSAGE" desc="The message which tells the user that an extension failed to load.">
           Failed to load extension from:
         </message>
+        <message name="IDS_EXTENSIONS_WANTS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension wants to run on a specific site.">
+          Wants access to this site
+        </message>
+        <message name="IDS_EXTENSIONS_HAS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension currently can run on a specific site.">
+          Has access to this site
+        </message>
         <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS" desc="The label in an extension's context menu for the submenu specifying whether or not the extension can run on the current page (sentence case).">
-            Allow access
+            This can read and change site data
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_CLICK" desc="The label in an extension's context menu to allow the extension access to the page only when the user clicks on the extension action (sentence case).">
-            On click
+            When you click the extension
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_SITE" desc="The label in an extension's context menu to always allow the extension access to the current origin (sentence case).">
             On <ph name="ORIGIN">$1<ex>google.com</ex></ph>
@@ -3742,10 +3766,10 @@ are declared in tools/grit/grit_rule.gni.
         </if>
         <if expr="use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS" desc="The label in an extension's context menu for the submenu specifying whether or not the extension can run on the current page (title case).">
-            Allow Access
+            This Can Read and Change Site Data
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_CLICK" desc="The label in an extension's context menu to allow the extension access to the page only when the user clicks on the extension action (title case).">
-            On Click
+            When You Click the Extension
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_SITE" desc="The label in an extension's context menu to always allow the extension access to the current origin (title case).">
             On <ph name="ORIGIN">$1<ex>google.com</ex></ph>
@@ -4252,8 +4276,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEBRTC_LOGS_TITLE" desc="Title for the chrome://webrtc-logs page.">
         WebRTC logs
       </message>
-      <message name="IDS_WEBRTC_LOGS_LOG_COUNT_BANNER_FORMAT" desc="Format for WebRTC log count banner on chrome://webrtc-logs">
-        WebRTC logs (<ph name="WEBRTC_LOG_COUNT">$1<ex>3</ex></ph>)
+      <message name="IDS_WEBRTC_TEXT_LOGS_LOG_COUNT_BANNER_FORMAT" desc="Format for WebRTC text log count banner on chrome://webrtc-logs">
+        WebRTC text logs (<ph name="WEBRTC_TEXT_LOG_COUNT">$1<ex>3</ex></ph>)
+      </message>
+      <message name="IDS_WEBRTC_EVENT_LOGS_LOG_COUNT_BANNER_FORMAT" desc="Format for WebRTC event log count banner on chrome://webrtc-logs">
+        WebRTC event logs (<ph name="WEBRTC_EVENT_LOG_COUNT">$1<ex>3</ex></ph>)
       </message>
       <message name="IDS_WEBRTC_LOGS_LOG_HEADER_FORMAT" desc="Format for uploaded log entry headings on chrome://webrtc-logs">
         WebRTC log captured <ph name="WEBRTC_LOG_CAPTURE_TIME">$1<ex>Tuesday, January 25, 2011 2:58:02 PM</ex></ph>
@@ -4267,17 +4294,32 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEBRTC_LOGS_LOG_UPLOAD_TIME_FORMAT" desc="Format for uploaded log entry upload time on chrome://webrtc-logs">
         Uploaded <ph name="WEBRTC_LOG_UPLOAD_TIME">$1<ex>Tuesday, January 25, 2011 2:58:02 PM</ex></ph>
       </message>
-      <message name="IDS_WEBRTC_LOGS_LOG_REPORT_ID_FORMAT" desc="Format for uploaded log entry report ID on chrome://webrtc-logs">
+      <message name="IDS_WEBRTC_LOGS_LOG_FAILED_UPLOAD_TIME_FORMAT" desc="Format for a log's failed upload attempt entry on chrome://webrtc-logs">
+        Upload failed (<ph name="WEBRTC_LOG_UPLOAD_TIME">$1<ex>Tuesday, January 25, 2011 2:58:02 PM</ex></ph>).
+      </message>
+      <message name="IDS_WEBRTC_LOGS_LOG_REPORT_ID_FORMAT" desc="Format for uploaded log entry report ID on chrome://webrtc-logs. This is the ID on the server to which the log was uploaded.">
         Report ID <ph name="WEBRTC_LOG_REPORT_ID">$1<ex>8fa95dbb6f2ec862</ex></ph>
       </message>
       <message name="IDS_WEBRTC_LOGS_BUG_LINK_LABEL" desc="Link text for filing a bug on chrome://webrtc-logs">
         File bug
       </message>
+      <message name="IDS_WEBRTC_LOGS_LOG_PENDING_MESSAGE" desc="The explanatory message for chrome://webrtc-logs when the log is still pending upload.">
+        Log upload pending.
+      </message>
+      <message name="IDS_WEBRTC_LOGS_LOG_ACTIVELY_UPLOADED_MESSAGE" desc="The explanatory message for chrome://webrtc-logs when the log is currently being uploaded.">
+        Log upload underway.
+      </message>
       <message name="IDS_WEBRTC_LOGS_LOG_NOT_UPLOADED_MESSAGE" desc="The explanatory message for chrome://webrtc-logs when the log has not been uploaded">
         Log not uploaded.
       </message>
-      <message name="IDS_WEBRTC_LOGS_NO_LOGS_MESSAGE" desc="The explanatory message for chrome://webrtc-logs when there are no captured logs">
-        You have no recently captured WebRTC logs.
+      <message name="IDS_WEBRTC_LOGS_EVENT_LOG_LOCAL_LOG_ID" desc="The ID of the log. This ID is assigned even if the log is not uploaded.">
+        Local log ID: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID">$1<ex>A83BC19927509874309F2EE002174235</ex></ph>.
+      </message>
+      <message name="IDS_WEBRTC_LOGS_NO_TEXT_LOGS_MESSAGE" desc="The explanatory message for chrome://webrtc-logs when there are no captured text logs">
+        You have no recently captured WebRTC text logs.
+      </message>
+      <message name="IDS_WEBRTC_LOGS_NO_EVENT_LOGS_MESSAGE" desc="The explanatory message for chrome://webrtc-logs when there are no captured event logs">
+        You have no recently captured WebRTC event logs.
       </message>
 
       <!-- Plugin placeholders -->
@@ -4572,6 +4614,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOM_LINKS_CANT_CREATE" desc="A catchall error message for when the shortcut cannot be created. (On the New Tab Page)">
        Can’t create shortcut
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_CANT_EDIT" desc="A catchall error message for when the shortcut cannot be edited. (On the New Tab Page)">
+       Can’t edit shortcut
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_CANT_REMOVE" desc="A catchall error message for when the shortcut cannot be removed. (On the New Tab Page)">
+       Can’t remove shortcut
       </message>
       <message name="IDS_NTP_CONFIRM_MSG_SHORTCUT_REMOVED" desc="The title of the shortcut removed confirmation message when removing a custom link. (On the New Tab Page)">
         Shortcut removed

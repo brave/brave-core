@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Megnyitás ablakként</translation>
 <translation id="91568222606626347">Parancsikon létrehozása</translation>
 <translation id="3627879631695760395">A(z) <ph name="APP"/> telepítése…</translation>
+<translation id="8288032458496410887"><ph name="APP"/> eltávolítása…</translation>
 <translation id="4057896668975954729">Megtekintés az áruházban</translation>
 <translation id="4316850752623536204">Fejlesztő webhelye</translation>
 <translation id="4289540628985791613">Áttekintés</translation>
@@ -292,6 +293,7 @@ Győződjön meg arról, hogy nem ad ki bizalmas adatokat.</translation>
 <translation id="8559694214572302298">Képdekóder</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
 <translation id="6185617499004995178">CUPS IPP-érvényesítő</translation>
+<translation id="3077708072777965506">Brave OS beviteli módszere</translation>
 <translation id="7171242884588191792">Brave-fájlokkal kapcsolatos segédprogramok</translation>
 <translation id="3061707000357573562">Javítókészlet szolgáltatás</translation>
 <translation id="3580923162759633716">Profilalkotási szolgáltatás</translation>
@@ -500,8 +502,10 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8743864605301774756">Frissítve: 1 órával ezelőtt</translation>
 <translation id="5638497698949808140">Frissítve: <ph name="HOURS"/> órával ezelőtt</translation>
 <translation id="1329584516321524826">Most frissítve</translation>
+<translation id="224940702122312781">Ez az oldal nagy adatforgalmat fog generálni.</translation>
+<translation id="3861241522664181545">Az oldal szüneteltetve.</translation>
+<translation id="6921709132208495314">Adathasználat leállítása ennél az oldalnál</translation>
 <translation id="2724841811573117416">WebRTC-naplók</translation>
-<translation id="7518150891539970662">WebRTC-naplók (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC napló rögzítésének ideje: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Helyi fájl:</translation>
 <translation id="2071393345806050157">Nincs helyi naplófájl.</translation>
@@ -509,7 +513,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5946591249682680882">Jelentésazonosító: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Programhiba bejegyzése</translation>
 <translation id="1188807932851744811">A napló nincs feltöltve.</translation>
-<translation id="3925247638945319984">Nincsenek mostanában rögzített WebRTC-naplói.</translation>
 <translation id="2076269580855484719">Plug-in elrejtése</translation>
 <translation id="2129825002735785149">Beépülő modul frissítése</translation>
 <translation id="9088234649737575428">A(z) <ph name="PLUGIN_NAME"/> beépülő modult letiltotta a vállalati házirend</translation>
@@ -548,6 +551,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6363797201514053536">Keressen a Brave Software-on, vagy írjon be egy URL-t</translation>
 <translation id="6078323886959318429">Parancsikon hozzáadása</translation>
 <translation id="6324916366299863871">Billentyűparancs szerkesztése</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Kész</translation>
 <translation id="4416582610654027550">Érvényes URL-t írjon be</translation>
@@ -1046,6 +1050,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5562781907504170924">Ez a lap Bluetooth-eszközhöz csatlakozik.</translation>
 <translation id="5884474295213649357">Ez a lap USB-eszközhöz csatlakozik.</translation>
 <translation id="8466417995783206254">A videó lejátszása a lapon kép a képben módban történik.</translation>
+<translation id="2585724835339714757">Ez a lap megosztja a képernyőt.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – A kamera vagy a mikrofon felvételt készít</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – Megosztott laptartalom</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – A videó lejátszása kép a képben módban történik</translation>
@@ -1521,7 +1526,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8647834505253004544">Érvénytelen internetcím</translation>
 <translation id="2149850907588596975">Jelszavak és űrlapok</translation>
 <translation id="8639963783467694461">Automatikus kitöltési beállítások</translation>
-<translation id="2512222046227390255">Űrlapok automatikus kitöltése</translation>
 <translation id="7764225426217299476">Cím hozzáadása</translation>
 <translation id="5595485650161345191">Cím szerkesztése</translation>
 <translation id="6207937957461833379">Ország/Régió</translation>
@@ -1603,6 +1607,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="577322787686508614">Az olvasási művelet nem engedélyezett a következőn: „<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="3141917231319778873">Az adott kérés nem támogatott a következőhöz: „<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="6122875415561139701">Az írási művelet nem engedélyezett a következőn: „<ph name="DEVICE_NAME"/>”.</translation>
+<translation id="439266289085815679">A Bluetooth-konfigurációt <ph name="USER_EMAIL"/> szabályozza.</translation>
 <translation id="784934925303690534">Időszak</translation>
 <translation id="2496180316473517155">Böngészés előzményei</translation>
 <translation id="8662811608048051533">A rendszer a legtöbb webhelyről kijelentkezteti Önt.</translation>
@@ -1614,6 +1619,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4699172675775169585">A gyorsítótárban szereplő képek és fájlok</translation>
 <translation id="1274997165432133392">Cookie-k és egyéb webhelyadatok</translation>
 <translation id="3838543471119263078">Cookie-k, illetve webhelyek és beépülő modulok egyéb adatai</translation>
+<translation id="369489984217678710">Jelszavak és más bejelentkezési adatok</translation>
 <translation id="6865313869410766144">Automatikus kitöltési űrlapadatok</translation>
 <translation id="177336675152937177">Tárolt alkalmazás adatai</translation>
 <translation id="1718835860248848330">Az elmúlt órából</translation>
@@ -1972,6 +1978,8 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jelenítenek meg, amelyek nem a már felkeresett egyéb webhelyeken alapulnak. Számos webhely ilyenkor is begyűjti és felhasználja a böngészési adatokat például a biztonság növelése, továbbá tartalom, szolgáltatások, hirdetések és ajánlások biztosítása, valamint jelentésekhez használt statisztika előállítása céljából. <ph name="BEGIN_LINK"/>További információ.<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Ellenőrzött hozzáférés engedélyezése</translation>
 <translation id="5557991081552967863">Maradjon bekapcsolva a Wi-Fi alvó üzemmódban is</translation>
+<translation id="8562084399541316921">Olvasás folytatása</translation>
+<translation id="6201926614538916789">Mobilon olvasott webhelyek megtekintésének folytatása a Bravebookon</translation>
 <translation id="1521442365706402292">Tanúsítványok beállítása</translation>
 <translation id="7075625805486468288">HTTPS/SSL-tanúsítványok és -beállítások kezelése</translation>
 <translation id="8871974300055371298">Tartalombeállítások</translation>
@@ -2007,6 +2015,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="7136694880210472378">Legyen alapértelmezett</translation>
 <translation id="102272308210570439">Engedélyezi a Segédnek a képernyőn lévő tartalmak használatát</translation>
 <translation id="8624205858755890468">Engedélyezi a Segédnek a kapcsolódó információk, alkalmazások és műveletek megjelenítését.</translation>
+<translation id="4737453247496280552">„Ok Brave Software” felismerése</translation>
+<translation id="6409553560184414680">Bármikor hozzáférhet Segédjéhez. Mondja bekapcsolt képernyő mellett azt, hogy „Ok Brave Software”.</translation>
 <translation id="8669919703154928649">Engedélyezheti az Asszisztensnek az értesítések megjelenítését</translation>
 <translation id="3430342160185525240">Engedélyezi a Segédnek, hogy értesítéseket jelenítsen meg Önnek.</translation>
 <translation id="3908743412684152579">Brave Software Segéd-beállítások</translation>
@@ -2096,7 +2106,9 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="8708000541097332489">Törlés kilépéskor</translation>
 <translation id="8037357227543935929">Kérdezzen rá (alapértelmezés szerint)</translation>
 <translation id="3427092606871434483">Engedélyezés (alapértelmezett)</translation>
+<translation id="4879491255372875719">Automatikus (alapértelmezett)</translation>
 <translation id="4312866146174492540">Letiltás (alapértelmezett)</translation>
+<translation id="6979440798594660689">Némítás (alapértelmezett)</translation>
 <translation id="2356070529366658676">Kérés</translation>
 <translation id="5063480226653192405">Használat</translation>
 <translation id="3006881078666935414">Nincsenek használati adatok</translation>
@@ -2128,6 +2140,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="2318923050469484167">Jelenlegi inkognitó munkamenet (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nincs nagyított vagy kicsinyített webhely</translation>
 <translation id="3566721612727112615">Nincsenek hozzáadva webhelyek</translation>
+<translation id="8098574385249290065">A Brave dönthet arról, hogy a webhelyek lejátszhatnak-e hangot (ajánlott)</translation>
 <translation id="5763751966069581670">Nem található USB-eszköz</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Webhely hozzáadása</translation>
@@ -2171,25 +2184,20 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="4562155214028662640">Ujjlenyomat hozzáadása</translation>
 <translation id="1719312230114180055">Megjegyzés: Az ujjlenyomat kevésbé biztonságos, mint az erős jelszó vagy PIN-kód.</translation>
 <translation id="1927632033341042996"><ph name="NEW_FINGER_NUMBER"/>. ujjlenyomat</translation>
-<translation id="2136573720723402846">Ujjlenyomatos feloldás engedélyezése</translation>
 <translation id="7665369617277396874">Fiók hozzáadása</translation>
 <translation id="3422989461909154470">Itt kezelheti az összes alkalmazásba és webhelyre bejelentkezett Brave Software-fiókokat.</translation>
 <translation id="1987317783729300807">Fiókok</translation>
 <translation id="8418661265246754237">Brave Software-fiók</translation>
-<translation id="2107494551712864447">Ujjlenyomat hozzáadása</translation>
-<translation id="6388771388956873507">Keresse meg az eszköz ujjlenyomat-érzékelőjét, és érintse meg ujjával</translation>
-<translation id="9170397650136757332">Óvatosan mozgassa ujját a teljes ujjlenyomat rögzítéséhez</translation>
-<translation id="161707228174452095">Ujjlenyomat hozzáadva!</translation>
-<translation id="4576537685267142337">Emelje fel ujját, majd érintse meg újra az érzékelőt</translation>
-<translation id="494660967831069720">Részleges adatok</translation>
-<translation id="3064410671692449875">Nincs elegendő adat</translation>
-<translation id="2532026602297547439">Szennyeződés van az érzékelőn</translation>
-<translation id="8642267168767642381">Túl lassan mozgatta az ujját</translation>
-<translation id="2039623879703305659">Túl gyorsan mozgatta az ujját</translation>
-<translation id="7311891583377621132">Óvatosan mozgassa ujját az ujjlenyomat újabb részének rögzítéséhez</translation>
+<translation id="1059855432287631118">Ujjlenyomat regisztrálása</translation>
+<translation id="878068003854005405">Vágjon bele. Helyezze ujját az érzékelőre.</translation>
+<translation id="7189965711416741966">Ujjlenyomat hozzáadva.</translation>
+<translation id="9220820413868316583">Emelje fel ujját, majd próbálja újra.</translation>
+<translation id="4534661889221639075">Próbálja újra.</translation>
+<translation id="3645372836428131288">Óvatosan mozgassa ujját az ujjlenyomat újabb részének rögzítéséhez.</translation>
 <translation id="7345706641791090287">Erősítse meg a jelszót</translation>
 <translation id="381202950560906753">Még egy hozzáadása</translation>
-<translation id="6658023813581644008">A Smart Lock bejelentkezéshez való beállításához adja meg jelszavát</translation>
+<translation id="6968288415730398122">Adja meg jelszavát a képernyőzár beállításához</translation>
+<translation id="4103091233824664032">Adja meg jelszavát a képernyőzár és bejelentkezés beállításához</translation>
 <translation id="5449551289610225147">Érvénytelen jelszó</translation>
 <translation id="5374359983950678924">Kép lecserélése</translation>
 <translation id="6984299437918708277">Válassza ki a bejelentkezési képernyőn a fiókja mellett megjeleníteni kívánt képet</translation>
@@ -2218,7 +2226,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="1136155683023653803">Jelszavak, könyvjelzők, előzmények és egyebek szinkronizálása a fiókjával.</translation>
 <translation id="3267417306184901318">Böngészési adatai és tevékenységei, Brave Software-fiókjával szinkronizálva.</translation>
 <translation id="1123187597739372905">Szinkronizálási beállítások megjelenítése</translation>
-<translation id="8420510748452002155">Nem személyre szabott szolgáltatások</translation>
+<translation id="5428209950370661546">Egyéb Brave Software-szolgáltatások</translation>
 <translation id="2055016640093734678">Brave Software-szolgáltatások beállításainak megjelenítése</translation>
 <translation id="7956662517480676674">Szinkronizálás és Brave Software</translation>
 <translation id="2453021845418314664">Speciális szinkronizálási beállítások</translation>
@@ -2401,9 +2409,14 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="2315821125498993513">Nem sikerült kapcsolódni a telefonhoz. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Better Together bekapcsolva</translation>
 <translation id="3088402208262982892">Better Together kikapcsolva</translation>
+<translation id="7179187931092694802">A Bravebook zárolását feloldhatja telefonnal. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
 <translation id="5430931332414098647">Azonnali internetmegosztás</translation>
+<translation id="4746351372139058112">Üzenetek</translation>
+<translation id="2248072377758660530">SMS-eket küldhet és fogadhat a Bravebookon. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
 <translation id="3936335337858561470">Felejtse el ezt az eszközt</translation>
 <translation id="3606712892509067288">Eltávolítás a Better Together szolgáltatásból</translation>
+<translation id="5078490485380754244">Eszköz elfelejtése</translation>
+<translation id="8072033737676488034">Telefon eltávolítása és a Better Together kikapcsolása</translation>
 <translation id="7878562273885520351">Előfordultat, hogy jelszava már nem biztonságos</translation>
 <translation id="6582421931165117398">Személyes adatainak védelme érdekében módosítsa jelszavát most. A jelszó módosításához a rendszer a bejelentkezését kéri.</translation>
 <translation id="1089439967362294234">Jelszó módosítása</translation>
@@ -2504,6 +2517,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="2202898655984161076">Hiba történt a nyomtatók felsorolása közben. Lehet, hogy néhány nyomtató nem regisztrálható itt: <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">A <ph name="CLOUD_PRINT_NAME"/> csatlakozó folyamat összeomlott. Újraindítja?</translation>
 <translation id="6904655473976120856">Kilépéshez nyomja meg az Alkalmazás gombot</translation>
+<translation id="79766959863778284">XR eszközizolációs szolgáltatás</translation>
 <translation id="8909833622202089127">A webhely nyomon követi a tartózkodási helyét</translation>
 <translation id="375636864092143889">A webhely használja a mikrofonját</translation>
 <translation id="310671807099593501">A webhely Bluetooth-t használ</translation>
