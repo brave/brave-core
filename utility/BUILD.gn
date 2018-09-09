@@ -15,6 +15,7 @@ source_set("utility") {
     "importer/firefox_importer.h",
   ]
 
+  defines = []
   deps = [
     "//chrome/common",
     "//chrome/utility",
