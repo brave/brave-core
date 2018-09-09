@@ -6,8 +6,10 @@ source_set("browser") {
   ]
 
   sources = [
-      "usermodel.cc",
-      "usermodel.h"
+      "usermodel_service.cc",
+      "usermodel_service.h",
+      "usermodel_helper.cc",
+      "usermodel_helper.h"
     ]
 
   deps = [
@@ -16,11 +18,8 @@ source_set("browser") {
     "//components/keyed_service/core",
     "//components/sessions",
     # for profile.h
-    "//components/domain_reliability",
     "//content/public/browser",
     "//content/public/common",
-    "//services/network/public/mojom",
-    "//third_party/leveldatabase",
     "//brave/vendor/bat-native-usermodel",
   ]
 }
