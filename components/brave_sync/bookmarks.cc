@@ -4,7 +4,7 @@
 #include "brave/components/brave_sync/bookmarks.h"
 #include <memory>
 #include <string>
-#include "base/values.h"
+//#include "base/values.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/cansendbookmarks.h"
@@ -16,12 +16,11 @@
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/profiles/profile.h"
+//#include "chrome/browser/ui/browser.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
-#include "chrome/browser/bookmarks/bookmark_model_factory.h"
-#include "chrome/browser/profiles/profile.h"
 #include "ui/base/models/tree_node_iterator.h"
 
 namespace brave_sync {
@@ -131,6 +130,8 @@ std::unique_ptr<jslib::SyncRecord> Bookmarks::GetResolvedBookmarkValue2(
   std::unique_ptr<jslib::Bookmark> bookmark = GetFromNode(node);
   record->SetBookmark(std::move(bookmark));
 
+//it appears it should not include SyncRecord, but only data, js/state/syncUtil.js
+ 
   return record;
 }
 

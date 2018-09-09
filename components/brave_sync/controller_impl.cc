@@ -9,19 +9,21 @@
 #include "base/debug/stack_trace.h"
 #include "base/task_runner.h"
 #include "base/task/post_task.h"
+
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
 #include "brave/components/brave_sync/bookmarks.h"
-#include "brave/components/brave_sync/devices.h"
-#include "brave/components/brave_sync/profile_prefs.h"
-#include "brave/components/brave_sync/settings.h"
-#include "brave/components/brave_sync/jslib_const.h"
-#include "brave/components/brave_sync/jslib_messages.h"
-#include "brave/components/brave_sync/object_map.h"
-#include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/client/client_ext_impl.h"
 #include "brave/components/brave_sync/client/client_factory.h"
 #include "brave/components/brave_sync/debug.h"
+#include "brave/components/brave_sync/devices.h"
+#include "brave/components/brave_sync/history.h"
+#include "brave/components/brave_sync/jslib_const.h"
+#include "brave/components/brave_sync/jslib_messages.h"
+#include "brave/components/brave_sync/object_map.h"
+#include "brave/components/brave_sync/profile_prefs.h"
+#include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/value_debug.h"
 
@@ -56,8 +58,6 @@ ControllerImpl::ControllerImpl(Profile *profile) :
 
 ControllerImpl::~ControllerImpl() {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::~ControllerImpl DTOR";
-
-  StopLoop();
 }
 
 // Usually initialized at BraveSyncExtensionLoadedFunction::Run
@@ -81,11 +81,18 @@ void ControllerImpl::SetProfile(Profile *profile) {
   sync_obj_map_ = std::make_unique<storage::ObjectMap>(profile);
 
   bookmarks_ = std::make_unique<brave_sync::Bookmarks>(this);
-
+  bookmarks_->SetProfile(profile);
   if (!sync_prefs_->GetThisDeviceId().empty()) {
     bookmarks_->SetThisDeviceId(sync_prefs_->GetThisDeviceId());
   }
   bookmarks_->SetObjectMap(sync_obj_map_.get());
+
+  history_ = std::make_unique<brave_sync::History>(/*this, */profile, this);
+  if (!sync_prefs_->GetThisDeviceId().empty()) {
+    history_->SetThisDeviceId(sync_prefs_->GetThisDeviceId());
+  }
+  history_->SetObjectMap(sync_obj_map_.get());
+
 
   if (!sync_prefs_->GetSeed().empty() && !sync_prefs_->GetThisDeviceName().empty()) {
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl sync is configured";
@@ -95,7 +102,7 @@ void ControllerImpl::SetProfile(Profile *profile) {
 
   profile_ = profile;
 
-  bookmarks_->SetProfile(profile);
+
 
   if (!sync_client_) {
     sync_client_ = BraveSyncClientFactory::GetForBrowserContext(profile);
@@ -114,6 +121,12 @@ void ControllerImpl::SetProfile(Profile *profile) {
 
 void ControllerImpl::Shutdown() {
   LOG(ERROR) << "TAGAB ControllerImpl::Shutdown";
+
+  StopLoop();
+
+  bookmarks_.reset();
+  history_.reset();
+  sync_obj_map_.reset();
 }
 
 void ControllerImpl::OnSetupSyncHaveCode(const std::string &sync_words,
@@ -369,8 +382,17 @@ void ControllerImpl::OnGetExistingObjects(const std::string &category_name,
   LOG(ERROR) << "TAGAB last_record_time_stamp=" << last_record_time_stamp;
   LOG(ERROR) << "TAGAB is_truncated=" << is_truncated;
 
-  SyncRecordAndExistingList records_and_existing_objects = PrepareResolvedResponse(category_name, records);
-  SendResolveSyncRecords(category_name, records_and_existing_objects);
+  if (category_name == jslib_const::kBookmarks || category_name == jslib_const::kPreferences) {
+    SyncRecordAndExistingList records_and_existing_objects = PrepareResolvedResponse(category_name, records);
+    SendResolveSyncRecords(category_name, records_and_existing_objects);
+  } else if (category_name == jslib_const::kHistorySites) {
+    // Queries to history are asynchronous, juggle the threads
+    // The same further for obj db 
+    ;
+  } else {
+    // Not reached
+    NOTREACHED();
+  }
 }
 
 SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
@@ -391,7 +413,7 @@ SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
       resolved_record->second = bookmarks_->GetResolvedBookmarkValue2(object_id);
     } else if (category_name == jslib_const::kHistorySites) {
       //"HISTORY_SITES";
-      NOTIMPLEMENTED();
+      resolved_record->second = history_->GetResolvedHistoryValue(object_id);
     } else if (category_name == jslib_const::kPreferences) {
       //"PREFERENCES"
       LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_: resolving device";
@@ -564,6 +586,8 @@ void ControllerImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
   }
 }
 
+bool once_done = false;
+
 // Here we query sync lib for the records after initialization (or again later)
 void ControllerImpl::RequestSyncData() {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData:";
@@ -607,6 +631,13 @@ void ControllerImpl::RequestSyncData() {
   FetchSyncRecords(bookmarks, history, preferences, start_at, max_records);
   sync_prefs_->SetLastFetchTime(base::Time::Now());
   // save last received record time in OnResolved
+
+//DBG Test
+  if (!once_done){
+    SendAllLocalHistorySites();
+    once_done = true;
+  }
+
 }
 
 void ControllerImpl::FetchSyncRecords(const bool &bookmarks,
@@ -736,7 +767,71 @@ void ControllerImpl::CreateUpdateDeleteBookmarks(
 
 void ControllerImpl::SendAllLocalHistorySites() {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendAllLocalHistorySites";
+  ;
+  ///static const int SEND_RECORDS_COUNT_LIMIT = 1000;
+  history_->GetAllHistory();
+
+  // for(size_t i = 0; i < localBookmarks.size(); i += SEND_RECORDS_COUNT_LIMIT) {
+  //   size_t sub_list_last = std::min(localBookmarks.size(), i + SEND_RECORDS_COUNT_LIMIT);
+  //   std::vector<const bookmarks::BookmarkNode*> sub_list(localBookmarks.begin()+i, localBookmarks.begin()+sub_list_last);
+  //   CreateUpdateDeleteBookmarks(jslib_const::kActionCreate, sub_list, true, true);
+  // }
 }
+
+void ControllerImpl::HaveInitialHistory(history::QueryResults* results) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::HaveInitialHistory";
+  static const int SEND_RECORDS_COUNT_LIMIT = 1000;
+
+  if (!results || results->empty() || !sync_initialized_ || !sync_prefs_->GetSyncHistoryEnabled() ) {
+    return;
+  }
+
+  if (results && !results->empty()) {
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::HaveInitialHistory results->size()=" << results->size();
+    for (const auto& item : *results){
+      //history_item_vec.push_back(GetHistoryItem(item));
+      //item.visit_time();
+      item.visit_time();
+      LOG(ERROR) << "brave_sync::ControllerImpl::HaveInitialHistory item=" << item.url().spec();
+    }
+
+    for(size_t i = 0; i < results->size(); i += SEND_RECORDS_COUNT_LIMIT) {
+      size_t sub_list_last = std::min(results->size(), i + SEND_RECORDS_COUNT_LIMIT);
+      //std::vector<const bookmarks::BookmarkNode*> sub_list(results.begin()+i, results.begin()+sub_list_last);
+      history::QueryResults::URLResultVector sub_list(results->begin()+i, results->begin()+sub_list_last);
+//#error 1
+
+      CreateUpdateDeleteHistorySites(jslib_const::kActionCreate, sub_list, true, true);
+    }
+  }
+
+  // Convert
+  // Send Actually created sync
+  ;
+
+}
+
+
+void ControllerImpl::CreateUpdateDeleteHistorySites(
+  const int &action,
+  //const std::vector<const bookmarks::BookmarkNode*> &list,
+  //const history::QueryResults::URLResultVector &list,
+  const std::vector<history::URLResult> &list,
+  const bool &addIdsToNotSynced,
+  const bool &isInitialSync) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteHistorySites";
+
+  if (list.empty() || !sync_initialized_ || !sync_prefs_->GetSyncHistoryEnabled() ) {
+    return;
+  }
+
+  DCHECK(sync_client_);
+  //std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(list, action);
+  std::unique_ptr<RecordsList> records = history_->NativeHistoryToSyncRecords(list, action);
+  sync_client_->SendSyncRecords(jslib_const::SyncRecordType_HISTORY, *records);
+}
+
+
 
 std::string ControllerImpl::GenerateObjectIdWithMapCheck(const std::string &local_id) {
   std::string res = sync_obj_map_->GetObjectIdByLocalId(local_id);
