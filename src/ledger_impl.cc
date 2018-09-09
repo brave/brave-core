@@ -177,13 +177,8 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
     if (!bat_client_->loadState(data)) {
       result = ledger::Result::INVALID_LEDGER_STATE;
     }
-  }
-
-  if (result == ledger::Result::OK) {
     OnWalletInitialized(result);
-    return;
   }
-
   LoadPublisherState(this);
 }
 
