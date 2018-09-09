@@ -21,6 +21,7 @@
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
 #include "ui/base/ui_base_features.h"
 
@@ -122,7 +123,13 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     << "," << features::kDesktopPWAWindowing.name
     << "," << password_manager::features::kFillOnAccountSelect.name
     << "," << extensions::features::kNewExtensionUpdaterService.name;
+
+  std::stringstream disabled_features;
+  disabled_features << features::kSharedArrayBuffer.name;
+
   command_line.AppendSwitchASCII(switches::kEnableFeatures,
       enabled_features.str());
+  command_line.AppendSwitchASCII(switches::kDisableFeatures,
+      disabled_features.str());
   return ChromeMainDelegate::BasicStartupComplete(exit_code);
 }
