@@ -4,7 +4,7 @@
 
 import * as ParseTorrent from 'parse-torrent'
 import { Torrent } from 'webtorrent'
-import { parse } from 'query-string'
+import { parse } from 'querystring'
 
 // Constants
 import * as tabTypes from '../../constants/tab_types'
@@ -73,7 +73,9 @@ const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
     }
   } else if (parsedURL.protocol === 'https:' || parsedURL.protocol === 'http:') {
     const name = parsedURL.pathname.substr(parsedURL.pathname.lastIndexOf('/') + 1)
-    let ix: number | undefined = Number(parse(parsedURL.hash).ix)
+    // for .torrent case, ix (index of file) for selecting a specific file in
+    // the file list is given in url like #ix=5
+    let ix: number | undefined = Number(parse(parsedURL.hash.slice(1)).ix)
     ix = Number.isNaN(ix) ? undefined : ix
 
     // Use an existing infoHash if it's the same torrentId

@@ -6,6 +6,7 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "brave/common/network_constants.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
@@ -16,7 +17,7 @@ namespace {
 
 bool FileNameMatched(const net::HttpResponseHeaders* headers) {
   std::string disposition;
-  if (!headers->GetNormalizedHeader("content-disposition", &disposition)) {
+  if (!headers->GetNormalizedHeader("Content-Disposition", &disposition)) {
     return false;
   }
 
@@ -43,11 +44,11 @@ bool IsTorrentFile(net::URLRequest* request,
     return false;
   }
 
-  if (mimeType == "application/x-bittorrent") {
+  if (mimeType == kBittorrentMimeType) {
     return true;
   }
 
-  if (mimeType == "application/octet-stream" &&
+  if (mimeType == kOctetStreamMimeType &&
       (URLMatched(request) || FileNameMatched(headers))) {
     return true;
   }
@@ -82,7 +83,7 @@ int OnHeadersReceived_TorrentRedirectWork(
 
   *override_response_headers =
     new net::HttpResponseHeaders(original_response_headers->raw_headers());
-  (*override_response_headers)->ReplaceStatusLine("HTTP/1.1 301 Moved Permanently");
+  (*override_response_headers)->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
   (*override_response_headers)->RemoveHeader("Location");
   GURL url(
       base::StrCat({extensions::kExtensionScheme, "://",

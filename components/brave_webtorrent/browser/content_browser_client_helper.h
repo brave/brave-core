@@ -57,7 +57,7 @@ static bool HandleTorrentURLRewrite(GURL* url,
   // Handle http and https here for making reverse_on_redirect to be true in
   // BrowserURLHandlerImpl::RewriteURLIfNecessary to trigger ReverseURLRewrite
   // for updating the virtual URL.
-  if (url->SchemeIs("http") || url->SchemeIs("https") ||
+  if (url->SchemeIsHTTPOrHTTPS() ||
       (url->SchemeIs(extensions::kExtensionScheme) &&
        url->host() == brave_webtorrent_extension_id &&
        url->ExtractFileName() == "brave_webtorrent.html")) {

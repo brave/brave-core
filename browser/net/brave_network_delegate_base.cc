@@ -75,7 +75,7 @@ int BraveNetworkDelegateBase::OnHeadersReceived(net::URLRequest* request,
 
   // Return ERR_IO_PENDING and run callbacks later by posting a task.
   // URLRequestHttpJob::awaiting_callback_ will be set to true after we
-  // return net::ERR_IO_PENDING here, callbacks need to be run later then this
+  // return net::ERR_IO_PENDING here, callbacks need to be run later than this
   // to set awaiting_callback_ back to false.
   BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
       base::Bind(&BraveNetworkDelegateBase::RunNextCallback,

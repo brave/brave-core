@@ -4,7 +4,9 @@
 
 #include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
 
+#include "base/strings/strcat.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/common/network_constants.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
@@ -90,10 +92,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, BittorrentMimeTypeRedirect
 
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
     new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader("Content-Type: application/x-bittorrent");
+  orig_response_headers->AddHeader(
+      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, "application/x-bittorrent");
+  ASSERT_EQ(mimeType, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
@@ -106,7 +109,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, BittorrentMimeTypeRedirect
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.1 301 Moved Permanently");
+  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.1 307 Temporary Redirect");
   std::string location;
   EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location", &location));
   EXPECT_EQ(location, extension_url().spec());
@@ -122,10 +125,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, OctetStreamMimeTypeRedirec
 
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
     new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader("Content-Type: application/octet-stream");
+  orig_response_headers->AddHeader(
+      base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, "application/octet-stream");
+  ASSERT_EQ(mimeType, kOctetStreamMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
@@ -138,7 +142,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, OctetStreamMimeTypeRedirec
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.1 301 Moved Permanently");
+  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.1 307 Temporary Redirect");
   std::string location;
   EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location", &location));
   EXPECT_EQ(location, extension_url().spec());
@@ -154,14 +158,15 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, OctetStreamMimeTypeRedirec
 
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
     new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader("Content-Type: application/octet-stream");
+  orig_response_headers->AddHeader(
+      base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, "application/octet-stream");
+  ASSERT_EQ(mimeType, kOctetStreamMimeType);
   orig_response_headers->AddHeader("Content-Disposition: filename=\"sintel.torrent\"");
   std::string disposition;
   ASSERT_TRUE(orig_response_headers->GetNormalizedHeader(
-        "content-disposition", &disposition));
+        "Content-Disposition", &disposition));
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
@@ -174,7 +179,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, OctetStreamMimeTypeRedirec
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
-  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.1 301 Moved Permanently");
+  EXPECT_EQ(overwrite_response_headers->GetStatusLine(), "HTTP/1.1 307 Temporary Redirect");
   std::string location;
   EXPECT_TRUE(overwrite_response_headers->EnumerateHeader(nullptr, "Location", &location));
   EXPECT_EQ(location, non_torrent_extension_url().spec());
@@ -190,10 +195,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, OctetStreamMimeTypeNoRedir
 
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
     new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader("Content-Type: application/octet-stream");
+  orig_response_headers->AddHeader(
+      base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, "application/octet-stream");
+  ASSERT_EQ(mimeType, kOctetStreamMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
@@ -253,10 +259,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, WebtorrentInitiatedNoRedir
   request->set_initiator(url::Origin::Create(extension_url().GetOrigin()));
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
     new net::HttpResponseHeaders(std::string());
-  orig_response_headers->AddHeader("Content-Type: application/x-bittorrent");
+  orig_response_headers->AddHeader(
+      base::StrCat({"Content-Type: ", kBittorrentMimeType}));
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
-  ASSERT_EQ(mimeType, "application/x-bittorrent");
+  ASSERT_EQ(mimeType, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
     new net::HttpResponseHeaders(std::string());
