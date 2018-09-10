@@ -204,6 +204,32 @@ std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
   return info;
 }
 
+void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) {
+  auto filter = CreatePublisherFilter(publisher_id,
+      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+      ledger::PUBLISHER_MONTH::ANY,
+      -1);
+  ledger_->GetPublisherInfo(filter, std::bind(&BatPublishers::onSetExcludeInternal,
+                            this, exclude, _1, _2));
+}
+
+void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
+                                         ledger::Result result,
+                                         std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+  if (result != ledger::Result::OK &&
+      result != ledger::Result::NOT_FOUND) {
+    return;
+  }
+
+
+  publisher_info->year = -1;
+  publisher_info->excluded = exclude;
+  publisher_info->month = ledger::PUBLISHER_MONTH::ANY;
+
+  ledger_->SetPublisherInfo(std::move(publisher_info),
+      std::bind(&onVisitSavedDummy, _1, _2));
+}
+
 void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In seconds
   state_->min_pubslisher_duration_ = duration;
   saveState();

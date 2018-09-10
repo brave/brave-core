@@ -286,6 +286,10 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id, const ledger::V
   bat_publishers_->saveVisit(publisher_id, visit_data, duration);
 }
 
+void LedgerImpl::SetPublisherExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) {
+  bat_publishers_->setExclude(publisher_id, exclude);
+}
+
 void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                                     ledger::Result result,
                                     std::unique_ptr<ledger::PublisherInfo> info) {
