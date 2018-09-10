@@ -5,10 +5,10 @@
 import * as React from 'react'
 
 // Components
-import { Page, PageWrapper } from '../components/page'
-import PageHeader from '../components/pageHeader'
-import { StatsContainer, StatsItem } from '../components/stats'
-import { FeatureBlock } from '../components/featureBlock'
+import { Page, PageWrapper } from '../../../../src/features/newTab/page'
+import PageHeader from '../../../../src/features/newTab/pageHeader'
+import { StatsContainer, StatsItem } from '../../../../src/features/newTab/stats'
+import FeatureBlock from '../../../../src/features/newTab/featureBlock'
 import {
   NewTabHeading,
   SmallText,
@@ -16,8 +16,8 @@ import {
   LabelledText,
   Paragraph,
   LinkText
-} from '../components/text'
-import Clock from '../components/clock'
+} from '../../../../src/features/newTab/text'
+import Clock from '../../../../src/features/newTab/clock'
 import Toggle from '../../../../src/components/formControls/toggle'
 
 // Assets

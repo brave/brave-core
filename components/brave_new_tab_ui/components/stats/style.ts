@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import theme from '../../../../../src/theme/brave-default'
 
 export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   display: block;
@@ -43,7 +42,7 @@ export const StyledStatsItem = styled<{}, 'li'>('li')`
 
 export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
   color: inherit;
-  font-family: ${theme.fontFamily.heading};
+  font-family: ${p => p.theme.fontFamily.heading};
   font-size: 44px;
   font-weight: 400;
   line-height: 53px;
@@ -57,7 +56,7 @@ export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
 export const StyledStatsItemText = styled<{}, 'span'>('span')`
   color: rgb(153, 153, 153);
   font-size: 20px;
-  font-family: ${theme.fontFamily.heading};
+  font-family: ${p => p.theme.fontFamily.heading};
   line-height: 24px;
   margin-left: 3px;
   display: inline;
@@ -70,5 +69,5 @@ export const StyledStatsItemDescription = styled<{}, 'div'>('div')`
   color: rgb(255, 255, 255);
   line-height: 24px;
   margin-left: 3px;
-  font-family: ${theme.fontFamily.heading};
+  font-family: ${p => p.theme.fontFamily.heading};
 `

@@ -4,8 +4,7 @@
 
 import styled from 'styled-components'
 
-const StyledClock = styled.div`
-  color: inherit;
+const StyledClock = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   line-height: 1;
   user-select: none;
@@ -14,9 +13,9 @@ const StyledClock = styled.div`
   -webkit-font-smoothing: antialiased;
   font-family: Poppins, -apple-system, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: rgb(255, 255, 255);
-` as any
+`
 
-const StyledTime = styled.span`
+const StyledTime = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   letter-spacing: 0;
   font-size: 75px;
@@ -24,9 +23,9 @@ const StyledTime = styled.span`
   color: inherit;
   font-family: inherit;
   display: inline-flex;
-` as any
+`
 
-const StyledPeriod = styled.span`
+const StyledPeriod = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   color: inherit;
   font-family: inherit;
@@ -37,9 +36,9 @@ const StyledPeriod = styled.span`
   margin-top: 8px;
   margin-left: 3px;
   vertical-align: top;
-` as any
+`
 
-const StyledTimeSeparator = styled.span`
+const StyledTimeSeparator = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   color: inherit;
   font-size: inherit;
@@ -47,7 +46,7 @@ const StyledTimeSeparator = styled.span`
   font-weight: 300;
   /* center colon vertically in the text-content line */
   margin-top: -0.1em;
-` as any
+`
 
 export {
   StyledClock,

@@ -3,27 +3,26 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled, { css } from 'styled-components'
-import theme from '../../../../../src/theme/brave-default'
 
-import Heading, { HeadingProps } from '../../../../../src/components/text/heading'
+import { Heading } from '../../../index'
 
 export const NewTabHeading = styled(Heading)`
-  ${(props: HeadingProps) => props.level === 2 && css`
+  ${p => p.level === 2 && css`
     display: flex;
     white-space: nowrap;
     margin: 6px 0 10px;
-    font-family: ${theme.fontFamily.heading};
+    font-family: ${p => p.theme.fontFamily.heading};
     font-size: 20px;
     font-weight: 400;
     color: rgba(255, 255, 255, 1);
     letter-spacing: -0.2px;
   `}
 
-  ${(props: HeadingProps) => props.level === 3 && css`
+  ${p => p.level === 3 && css`
     line-height: 1.75;
     font-size: 16px;
     color: rgba(255,255,255,0.8);
-    font-family: ${theme.fontFamily.heading};
+    font-family: ${p => p.theme.fontFamily.heading};
   `}
 `
 
@@ -36,7 +35,7 @@ export const Paragraph = styled<{}, 'p'>('p')`
   font-size: 16px;
   color: rgba(255,255,255,0.8);
   -webkit-font-smoothing: antialiased;
-  font-family: ${theme.fontFamily.body};
+  font-family: ${p => p.theme.fontFamily.body};
 `
 
 export const LinkText = styled<{}, 'a'>('a')`
@@ -50,7 +49,7 @@ export const LinkText = styled<{}, 'a'>('a')`
 `
 
 export const EmphasizedText = styled<{}, 'em'>('em')`
-  font-family: ${theme.fontFamily.heading};
+  font-family: ${p => p.theme.fontFamily.heading};
   font-size: 20px;
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
@@ -69,7 +68,7 @@ export const LabelledText = styled<{}, 'span'>('span')`
   align-self: center;
   font-weight: 600;
   font-size: 11px;
-  font-family: ${theme.fontFamily.heading};
+  font-family: ${p => p.theme.fontFamily.heading};
 `
 
 export const SmallText = styled<{}, 'small'>('small')`
@@ -77,5 +76,5 @@ export const SmallText = styled<{}, 'small'>('small')`
   line-height: 1.5;
   font-size: 13px;
   color: rgba(255, 255, 255, .5);
-  font-family: ${theme.fontFamily.body};
+  font-family: ${p => p.theme.fontFamily.body};
 `

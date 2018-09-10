@@ -5,11 +5,11 @@
 import styled from 'styled-components'
 import { FeatureBlockProps } from './index'
 
-export const StyledFeatureBlock = styled<{}, 'div'>('div')`
+export const StyledFeatureBlock = styled<FeatureBlockProps, 'div'>('div')`
   display: grid;
   height: 100%;
-  grid-gap: ${(p: FeatureBlockProps) => p.grid ? '30px' : '0'};
-  grid-template-columns: ${(p: FeatureBlockProps) => p.grid ? '1fr 5fr 1fr' : '1fr'};
+  grid-gap: ${p => p.grid ? '30px' : '0'};
+  grid-template-columns: ${p => p.grid ? '1fr 5fr 1fr' : '1fr'};
   grid-template-rows: 1fr;
   max-width: 800px;
   border-top: solid 1px rgba(255,255,255,.1);

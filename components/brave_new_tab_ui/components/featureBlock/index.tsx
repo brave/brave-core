@@ -18,7 +18,7 @@ export interface FeatureBlockProps {
  * @prop {boolean} grid - whether or not the styled block should behave like a grid
  * @prop {React.ReactNode} children - the child elements
  */
-export class FeatureBlock extends React.PureComponent<FeatureBlockProps, {}> {
+export default class FeatureBlock extends React.PureComponent<FeatureBlockProps, {}> {
   render () {
     const { testId, grid, children } = this.props
     return (
