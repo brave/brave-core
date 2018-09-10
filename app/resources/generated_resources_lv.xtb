@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Atvērt kā logu</translation>
 <translation id="91568222606626347">Saīsnes izveide...</translation>
 <translation id="3627879631695760395">Instalēt lietotni <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">Vai atinstalēt lietotni <ph name="APP"/>?</translation>
 <translation id="4057896668975954729">Skatīt veikalā</translation>
 <translation id="4316850752623536204">Izstrādātāja vietne</translation>
 <translation id="4289540628985791613">Kopsavilkums</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Attēlu dekodētājs</translation>
 <translation id="8191453843330043793">V8 starpniekservera atrisinātājs</translation>
 <translation id="6185617499004995178">CUPS IPP validators</translation>
+<translation id="3077708072777965506">Brave OS ievades metode</translation>
 <translation id="7171242884588191792">Brave failu utilītprogrammas</translation>
 <translation id="3061707000357573562">Ielāpu pakalpojums</translation>
 <translation id="3580923162759633716">Profilēšanas pakalpojums</translation>
@@ -498,8 +500,10 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="8743864605301774756">Atjaunināta pirms 1 h</translation>
 <translation id="5638497698949808140">Atjaunināta pirms <ph name="HOURS"/> h</translation>
 <translation id="1329584516321524826">Tikko atjaunināta</translation>
+<translation id="224940702122312781">Šī lapa patērēs daudz datu.</translation>
+<translation id="3861241522664181545">Lapas ielāde ir apturēta.</translation>
+<translation id="6921709132208495314">Pārtraukt resursu ielādi šajā lapā</translation>
 <translation id="2724841811573117416">WebRTC žurnāli</translation>
-<translation id="7518150891539970662">WebRTC žurnāli (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC žurnāls — ierakstīts šādā datumā: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokālais fails:</translation>
 <translation id="2071393345806050157">Nav lokālā žurnālfaila.</translation>
@@ -507,7 +511,6 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="5946591249682680882">Pārskata ID: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Faila blusa</translation>
 <translation id="1188807932851744811">Žurnāls nav augšupielādēts.</translation>
-<translation id="3925247638945319984">Jums nav nesen ierakstītu WebRTC žurnālu.</translation>
 <translation id="2076269580855484719">Slēpt šo spraudni</translation>
 <translation id="2129825002735785149">Atjaunināt spraudni</translation>
 <translation id="9088234649737575428">Spraudnis <ph name="PLUGIN_NAME"/> tika bloķēts saskaņā ar uzņēmuma politiku</translation>
@@ -546,6 +549,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="6363797201514053536">Meklēt Brave Software tīklā vai ievadīt URL</translation>
 <translation id="6078323886959318429">Pievienot saīsni</translation>
 <translation id="6324916366299863871">Saīsnes rediģēšana</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Gatavs</translation>
 <translation id="4416582610654027550">Ievadiet derīgu URL.</translation>
@@ -1044,6 +1048,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="5562781907504170924">Šī cilne ir piesaistīta Bluetooth ierīcei.</translation>
 <translation id="5884474295213649357">Šī cilne ir piesaistīta USB ierīcei.</translation>
 <translation id="8466417995783206254">Šajā cilnē videoklips tiek atskaņots režīmā “Attēls attēlā”.</translation>
+<translation id="2585724835339714757">Šī cilne kopīgo jūsu ekrānu.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> — ierakstīšana ar kameru vai mikrofonu</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> — kopīgots cilnes saturs</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> — videoklips tiek atskaņots režīmā “Attēls attēlā”</translation>
@@ -1520,7 +1525,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="8647834505253004544">Nederīga tīmekļa adrese</translation>
 <translation id="2149850907588596975">Paroles un veidlapas</translation>
 <translation id="8639963783467694461">Automātiskās aizpildes iestatījumi</translation>
-<translation id="2512222046227390255">Veidlapu automātiskā aizpilde</translation>
 <translation id="7764225426217299476">Pievienot adresi</translation>
 <translation id="5595485650161345191">Rediģēt adresi</translation>
 <translation id="6207937957461833379">Valsts/reģions</translation>
@@ -1602,6 +1606,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="577322787686508614">Lasīšanas darbība nav atļauta šajā ierīcē: “<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="3141917231319778873">Attiecīgais pieprasījums netiek atbalstīts šajā ierīcē: “<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="6122875415561139701">Rakstīšanas darbība nav atļauta šajā ierīcē: “<ph name="DEVICE_NAME"/>”.</translation>
+<translation id="439266289085815679">Bluetooth konfigurāciju kontrolē <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Laika periods</translation>
 <translation id="2496180316473517155">Pārlūkošanas vēsture</translation>
 <translation id="8662811608048051533">Jūs tiksiet izrakstīts no lielākās daļas vietņu.</translation>
@@ -1613,6 +1618,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4699172675775169585">Kešatmiņā ievietotie attēli un faili</translation>
 <translation id="1274997165432133392">Sīkfaili un citi vietņu dati</translation>
 <translation id="3838543471119263078">Sīkfaili un citi vietņu un spraudņu dati</translation>
+<translation id="369489984217678710">Paroles un citi pierakstīšanās dati</translation>
 <translation id="6865313869410766144">Automātiskās aizpildes veidlapas dati</translation>
 <translation id="177336675152937177">Mitinātas lietotnes dati</translation>
 <translation id="1718835860248848330">Pēdējā stunda</translation>
@@ -1970,6 +1976,8 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="5282733140964383898">Iespējojot opciju “Nesekot”, jūsu pārlūkošanas datplūsmā tiks iekļauts pieprasījums. Jebkāda veida ietekme ir atkarīga no tā, vai vietne atbild uz pieprasījumu un kā pieprasījums tiek interpretēts. Piemēram, dažas vietnes var atbildēt uz šo pieprasījumu un rādīt reklāmas, neņemot vērā informāciju par citām jūsu apmeklētajām vietnēm. Daudzās vietnēs joprojām tiks apkopoti un izmantoti jūsu pārlūkošanas dati, piemēram, lai vietnēs uzlabotu drošību, nodrošinātu saturu, pakalpojumus, reklāmas un ieteikumus, kā arī veidotu pārskatu statistiku. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="4090103403438682346">Iespējot verificētu piekļuvi</translation>
 <translation id="5557991081552967863">Neizslēgt Wi-Fi, kamēr ierīce darbojas miega režīmā</translation>
+<translation id="8562084399541316921">Turpināt lasīt</translation>
+<translation id="6201926614538916789">Atsāciet mobilajā ierīcē atvērtu vietņu skatīšanu savā Bravebook datorā</translation>
 <translation id="1521442365706402292">Pārvaldīt sertifikātus</translation>
 <translation id="7075625805486468288">Pārvaldīt HTTPS/SSL sertifikātus un iestatījumus</translation>
 <translation id="8871974300055371298">Satura iestatījumi</translation>
@@ -2005,6 +2013,8 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7136694880210472378">Iestatīt par noklusējumu</translation>
 <translation id="102272308210570439">Ļaujiet Asistentam piekļūt jūsu ekrānam</translation>
 <translation id="8624205858755890468">Ļauj Asistentam rādīt saistītu informāciju, lietotnes un darbības.</translation>
+<translation id="4737453247496280552">“OK Brave Software” atpazīšana</translation>
+<translation id="6409553560184414680">Ja ekrāns ir ieslēgts, jebkurā brīdī varat piekļūt Asistentam, pasakot frāzi “Ok Brave Software”.</translation>
 <translation id="8669919703154928649">Ļaut Asistentam parādīt paziņojumus</translation>
 <translation id="3430342160185525240">Ļauj Asistentam rādīt jums paziņojumus.</translation>
 <translation id="3908743412684152579">Brave Software asistenta iestatījumi</translation>
@@ -2094,7 +2104,9 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="8708000541097332489">Aizverot notīrīt</translation>
 <translation id="8037357227543935929">Vaicāt (pēc noklusējuma)</translation>
 <translation id="3427092606871434483">Atļaut (pēc noklusējuma)</translation>
+<translation id="4879491255372875719">Automātiski (noklusējums)</translation>
 <translation id="4312866146174492540">Bloķēt (pēc noklusējuma)</translation>
+<translation id="6979440798594660689">Izslēgt skaņu (noklusējums)</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
 <translation id="5063480226653192405">Lietojums</translation>
 <translation id="3006881078666935414">Nav lietojuma datu</translation>
@@ -2126,6 +2138,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2318923050469484167">Pašreizējā inkognito sesija (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nevienā vietnē nav veikta tālummaiņa.</translation>
 <translation id="3566721612727112615">Nav pievienota neviena vietne</translation>
+<translation id="8098574385249290065">Atļaut pārlūkam Brave izvēlēties, kad vietnēs var atskaņot skaņu (ieteicams)</translation>
 <translation id="5763751966069581670">Nav atrasta neviena USB ierīce</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Vietnes pievienošana</translation>
@@ -2169,25 +2182,20 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4562155214028662640">Pievienot pirksta nospiedumu</translation>
 <translation id="1719312230114180055">Piezīme. Jūsu pirksta nospiedums var būt mazāk drošs nekā sarežģīta parole vai PIN.</translation>
 <translation id="1927632033341042996"><ph name="NEW_FINGER_NUMBER"/>. pirksts</translation>
-<translation id="2136573720723402846">Iespējot atbloķēšanu, izmantojot pirksta nospiedumu</translation>
 <translation id="7665369617277396874">Pievienot kontu</translation>
 <translation id="3422989461909154470">Šeit varat pārvaldīt visus Brave Software kontus, kuros esat pierakstījies lietotnēs un vietnēs.</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="8418661265246754237">Brave Software konti</translation>
-<translation id="2107494551712864447">Pirksta nospieduma pievienošana</translation>
-<translation id="6388771388956873507">Ar pirkstu pieskarieties savas ierīces pirkstu nospiedumu sensoram.</translation>
-<translation id="9170397650136757332">Tagad nedaudz pakustiniet pirkstu, lai uzņemtu dažādas pirksta nospieduma daļas.</translation>
-<translation id="161707228174452095">Nospiedums pievienots!</translation>
-<translation id="4576537685267142337">Paceliet pirkstu un pēc tam vēlreiz pieskarieties sensoram</translation>
-<translation id="494660967831069720">Dati nav pilnīgi</translation>
-<translation id="3064410671692449875">Nepietiek datu</translation>
-<translation id="2532026602297547439">Sensors ir netīrs</translation>
-<translation id="8642267168767642381">Pārāk lēna pirksta kustība</translation>
-<translation id="2039623879703305659">Pārāk strauja pirksta kustība</translation>
-<translation id="7311891583377621132">Mazliet pakustiniet, lai uzņemtu citu pirksta nospieduma daļu</translation>
+<translation id="1059855432287631118">Pirksta nospieduma reģistrēšana</translation>
+<translation id="878068003854005405">Sāciet pievienošanu. Novietojiet pirkstu uz sensora.</translation>
+<translation id="7189965711416741966">Pirksta nospiedums tika pievienots.</translation>
+<translation id="9220820413868316583">Paceliet pirkstu un pēc tam mēģiniet vēlreiz.</translation>
+<translation id="4534661889221639075">Mēģiniet vēlreiz.</translation>
+<translation id="3645372836428131288">Mazliet pakustiniet, lai uzņemtu citu pirksta nospieduma daļu</translation>
 <translation id="7345706641791090287">Apstipriniet savu paroli</translation>
 <translation id="381202950560906753">Pievienot citu</translation>
-<translation id="6658023813581644008">Lai iestatītu pierakstīšanos ierīcēs, izmantojot Smart Lock, ievadiet paroli</translation>
+<translation id="6968288415730398122">Ievadiet savu paroli, lai konfigurētu ekrāna bloķēšanu.</translation>
+<translation id="4103091233824664032">Lai konfigurētu ekrāna bloķēšanu un pierakstīšanos, ievadiet savu paroli.</translation>
 <translation id="5449551289610225147">Parole nav derīga.</translation>
 <translation id="5374359983950678924">Mainīt attēlu</translation>
 <translation id="6984299437918708277">Izvēlieties attēlu, ko rādīt savā kontā pierakstīšanās ekrānā.</translation>
@@ -2216,7 +2224,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1136155683023653803">Paroles, grāmatzīmes, vēsture un citi dati tiek sinhronizēti ar jūsu kontu</translation>
 <translation id="3267417306184901318">Pārlūkošanas dati un darbības tiek sinhronizētas ar jūsu Brave Software kontu</translation>
 <translation id="1123187597739372905">Rādīt sinhronizācijas iestatījumus</translation>
-<translation id="8420510748452002155">Nepersonalizētie pakalpojumi</translation>
+<translation id="5428209950370661546">Citi Brave Software pakalpojumi</translation>
 <translation id="2055016640093734678">Rādīt Brave Software pakalpojumu iestatījumus</translation>
 <translation id="7956662517480676674">Sinhronizēšana un Brave Software pakalp.</translation>
 <translation id="2453021845418314664">Papildu sinhronizācijas iestatījumi</translation>
@@ -2399,9 +2407,14 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2315821125498993513">Nevarēja izveidot savienojumu ar tālruni. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Lietotne Better Together ir ieslēgta</translation>
 <translation id="3088402208262982892">Lietotne Better Together ir izslēgta.</translation>
+<translation id="7179187931092694802">Atbloķējiet savu Bravebook datoru, izmantojot tālruni. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="5430931332414098647">Tūlītēja piesaiste</translation>
+<translation id="4746351372139058112">Messages</translation>
+<translation id="2248072377758660530">Sūtiet īsziņas no sava Bravebook datora, kā arī saņemiet īsziņas tajā. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="3936335337858561470">Aizmirst šo ierīci</translation>
 <translation id="3606712892509067288">Noņemt no lietotnes Better Together</translation>
+<translation id="5078490485380754244">Ierīces aizmiršana</translation>
+<translation id="8072033737676488034">Tālruņa noņemšana un lietotnes Better Together atspējošana</translation>
 <translation id="7878562273885520351">Iespējams, jūsu parole ir apdraudēta</translation>
 <translation id="6582421931165117398">Lai aizsargātu savu personas informāciju, nekavējoties nomainiet paroli. Lai varētu nomainīt paroli, jums būs jāpierakstās.</translation>
 <translation id="1089439967362294234">Nomainīt paroli</translation>
@@ -2502,6 +2515,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2202898655984161076">Radās problēma saistībā ar printeru parādīšanu. Iespējams, daži no printeriem nav sekmīgi reģistrēti pakalpojumā <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> savienotāja process ir avarējis. Vai restartēt?</translation>
 <translation id="6904655473976120856">Lai izietu, nospiediet lietotņu pogu</translation>
+<translation id="79766959863778284">XR izolētas ierīces pakalpojums</translation>
 <translation id="8909833622202089127">Vietne izseko jūsu atrašanās vietu.</translation>
 <translation id="375636864092143889">Vietne izmanto jūsu mikrofonu.</translation>
 <translation id="310671807099593501">Vietne izmanto Bluetooth savienojumu.</translation>

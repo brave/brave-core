@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_frame_impl.h b/content/renderer/render_frame_impl.h
-index 67e8d7814ffefe3fa82d88542a6a3327eeb69e31..4df33d3f8160b59a25afbafdbd106e33da0fff75 100644
+index 31ba4a12d1f062ca0e42341dc7d13ff7c87286f5..8c09a4fa1ce5bd2ff2fff4bd1dd71cbdd39973ae 100644
 --- a/content/renderer/render_frame_impl.h
 +++ b/content/renderer/render_frame_impl.h
-@@ -892,6 +892,7 @@ class CONTENT_EXPORT RenderFrameImpl
+@@ -893,6 +893,7 @@ class CONTENT_EXPORT RenderFrameImpl
    explicit RenderFrameImpl(CreateParams params);
  
   private:

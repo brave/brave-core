@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Ava aknana</translation>
 <translation id="91568222606626347">Otsetee loomine ...</translation>
 <translation id="3627879631695760395">Rakenduse <ph name="APP"/> installimine …</translation>
+<translation id="8288032458496410887">Rakenduse <ph name="APP"/> desinstallimine …</translation>
 <translation id="4057896668975954729">Poes kuvamine</translation>
 <translation id="4316850752623536204">Arendaja veebisait</translation>
 <translation id="4289540628985791613">Ülevaade</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Pildi dekodeerija</translation>
 <translation id="8191453843330043793">V8 puhverserveri lahendaja</translation>
 <translation id="6185617499004995178">CUPS IPP validaator</translation>
+<translation id="3077708072777965506">Brave OS-i sisestusmeetod</translation>
 <translation id="7171242884588191792">Brave'i failide utiliidid</translation>
 <translation id="3061707000357573562">Teenuse paikamine</translation>
 <translation id="3580923162759633716">Profiilimisteenus</translation>
@@ -499,8 +501,10 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8743864605301774756">Värskendatud 1 tund tagasi</translation>
 <translation id="5638497698949808140">Värskendatud <ph name="HOURS"/> tundi tagasi</translation>
 <translation id="1329584516321524826">Just värskendatud</translation>
+<translation id="224940702122312781">See leht kasutab palju andmemahtu.</translation>
+<translation id="3861241522664181545">Leht on peatatud.</translation>
+<translation id="6921709132208495314">Katkesta sel lehel andmemahu kasutamine</translation>
 <translation id="2724841811573117416">WebRTC logid</translation>
-<translation id="7518150891539970662">WebRTC logid (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC logi on jäädvustatud: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Kohalik fail:</translation>
 <translation id="2071393345806050157">Kohalikku logifaili pole.</translation>
@@ -508,7 +512,6 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="5946591249682680882">Aruande ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Faili viga</translation>
 <translation id="1188807932851744811">Logi ei laaditud üles.</translation>
-<translation id="3925247638945319984">Teil pole ühtegi hiljuti jäädvustatud WebRTC logi.</translation>
 <translation id="2076269580855484719">Peida pistikprogramm</translation>
 <translation id="2129825002735785149">Pistikprogrammi värskendamine</translation>
 <translation id="9088234649737575428">Pistikprogramm <ph name="PLUGIN_NAME"/> on ettevõtte reegliga keelatud</translation>
@@ -547,6 +550,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="6363797201514053536">Otsige Brave Software'ist või sisestage URL</translation>
 <translation id="6078323886959318429">Otsetee lisamine</translation>
 <translation id="6324916366299863871">Otsetee muutmine</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="4416582610654027550">Sisestage kehtiv URL</translation>
@@ -1045,6 +1049,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="5562781907504170924">See vaheleht on ühendatud Bluetoothi seadmega.</translation>
 <translation id="5884474295213649357">See vaheleht on ühendatud USB-seadmega.</translation>
 <translation id="8466417995783206254">Vahelehel esitatakse videot režiimis Pilt pildis</translation>
+<translation id="2585724835339714757">See vaheleht jagab teie ekraani.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – kaamera või mikrofon salvestab</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – vahelehe sisu on jagatud</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – videot esitatakse režiimis Pilt pildis</translation>
@@ -1521,7 +1526,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="8647834505253004544">Pole sobiv veebiaadress</translation>
 <translation id="2149850907588596975">Paroolid ja vormid</translation>
 <translation id="8639963783467694461">Automaatse täitmise seaded</translation>
-<translation id="2512222046227390255">Täida vormid automaatselt</translation>
 <translation id="7764225426217299476">Lisage aadress</translation>
 <translation id="5595485650161345191">Muuda aadressi</translation>
 <translation id="6207937957461833379">Riik/regioon</translation>
@@ -1603,6 +1607,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="577322787686508614">Lugemistoiming pole seadmes „<ph name="DEVICE_NAME"/>” lubatud.</translation>
 <translation id="3141917231319778873">Antud taotlust ei toetata seadmes „<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="6122875415561139701">Kirjutamistoiming pole seadmes „<ph name="DEVICE_NAME"/>” lubatud.</translation>
+<translation id="439266289085815679">Bluetoothi seadistust juhib <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Ajavahemik</translation>
 <translation id="2496180316473517155">Sirvimise ajalugu</translation>
 <translation id="8662811608048051533">Logib teid enamikult saitidelt välja.</translation>
@@ -1614,6 +1619,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="4699172675775169585">Vahemällu salvestatud kujutised ja failid</translation>
 <translation id="1274997165432133392">Küpsised ja muud saidi andmed</translation>
 <translation id="3838543471119263078">Küpsised ja muud saidi ning pistikprogrammi andmed</translation>
+<translation id="369489984217678710">Paroolid ja muud sisselogimisandmed</translation>
 <translation id="6865313869410766144">Automaattäitmise vormiandmed</translation>
 <translation id="177336675152937177">Hostitud rakenduste andmed</translation>
 <translation id="1718835860248848330">Viimase tunni jooksul</translation>
@@ -1971,6 +1977,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="5282733140964383898">Valiku „Ära jälgi” lubamine tähendab, et päring lisatakse teie sirvimisliiklusse. Selle toimimine oleneb sellest, kas veebisait reageerib päringule ja kuidas päringut tõlgendatakse. Näiteks võivad mõned veebisaidid päringule reageerida nii, et näitavad teile reklaame, mis ei paikne teie külastatud muudel veebisaitidel. Paljud veebisaidid siiski koguvad ning kasutavad teie sirvimisandmeid, näiteks turvalisuse täiustamiseks, sisu, teenuste, reklaamide ja soovituste pakkumiseks oma veebisaitidel ning statistikaaruande loomiseks. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Luba kinnitatud juurdepääs</translation>
 <translation id="5557991081552967863">Hoia WiFi unerežiimis sisselülitatuna</translation>
+<translation id="8562084399541316921">Jätkake lugemist</translation>
+<translation id="6201926614538916789">Jätkake Bravebookis mobiilseadmes avatud saitide vaatamist</translation>
 <translation id="1521442365706402292">Halda serte</translation>
 <translation id="7075625805486468288">HTTPS-/SSL-sertifikaatide ja seadete haldamine</translation>
 <translation id="8871974300055371298">Sisu seaded</translation>
@@ -2006,6 +2014,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7136694880210472378">Muuda vaikevalikuks</translation>
 <translation id="102272308210570439">Luba assistendil kasutada ekraanil kuvatut</translation>
 <translation id="8624205858755890468">Lubab assistendil esitada teile seotud teavet, rakendusi ja toiminguid.</translation>
+<translation id="4737453247496280552">Otsetee sõna „Ok Brave Software” tuvastus</translation>
+<translation id="6409553560184414680">Pääsete assistendile alati juurde, kui ekraan on sisse lülitatud ja ütlete „Ok Brave Software”.</translation>
 <translation id="8669919703154928649">Luba assistendil märguandeid esitada</translation>
 <translation id="3430342160185525240">Võimaldab assistendil teile märguandeid esitada.</translation>
 <translation id="3908743412684152579">Brave Software'i assistendi seaded</translation>
@@ -2095,7 +2105,9 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="8708000541097332489">Tühjenda väljumisel</translation>
 <translation id="8037357227543935929">Küsi (vaikimisi)</translation>
 <translation id="3427092606871434483">Luba (vaikimisi)</translation>
+<translation id="4879491255372875719">Automaatne (vaikimisi)</translation>
 <translation id="4312866146174492540">Blokeeri (vaikimisi)</translation>
+<translation id="6979440798594660689">Vaigista (vaikeseade)</translation>
 <translation id="2356070529366658676">Küsi</translation>
 <translation id="5063480226653192405">Kasutus</translation>
 <translation id="3006881078666935414">Kasutusandmed puuduvad</translation>
@@ -2127,6 +2139,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2318923050469484167">Praegune inkognito seanss (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Ühtegi saiti pole sisse ega välja suumitud</translation>
 <translation id="3566721612727112615">Ühtegi saiti ei lisatud</translation>
+<translation id="8098574385249290065">Luba Brave'il valida, millal saidid võivad heli esitada (soovitatav)</translation>
 <translation id="5763751966069581670">USB-seadmeid ei leitud</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Saidi lisamine</translation>
@@ -2170,25 +2183,20 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="4562155214028662640">Lisa sõrmejälg</translation>
 <translation id="1719312230114180055">Märkus. Sõrmejälg võib olla vähem turvaline kui tugev parool või PIN-kood.</translation>
 <translation id="1927632033341042996"><ph name="NEW_FINGER_NUMBER"/>. sõrm</translation>
-<translation id="2136573720723402846">Luba sõrmejäljega avamine</translation>
 <translation id="7665369617277396874">Konto lisamine</translation>
 <translation id="3422989461909154470">Siin saab hallata kõiki teie Brave Software'i kontosid, kuhu olete rakendustes ja veebisaitidel sisse loginud.</translation>
 <translation id="1987317783729300807">Kontod</translation>
 <translation id="8418661265246754237">Brave Software'i kontod</translation>
-<translation id="2107494551712864447">Sõrmejälje lisamine</translation>
-<translation id="6388771388956873507">Leidke seadmel olev sõrmejäljeandur ja puudutage seda sõrmega</translation>
-<translation id="9170397650136757332">Nüüd liigutage veidi oma sõrme, et jäädvustada oma sõrmejälje kõik eri osad</translation>
-<translation id="161707228174452095">Sõrmejälg lisati.</translation>
-<translation id="4576537685267142337">Tõstke sõrm üles, seejärel puudutage andurit uuesti</translation>
-<translation id="494660967831069720">Osalised andmed</translation>
-<translation id="3064410671692449875">Andmeid pole piisavalt</translation>
-<translation id="2532026602297547439">Andur on must</translation>
-<translation id="8642267168767642381">Sõrm liikus liiga aeglaselt</translation>
-<translation id="2039623879703305659">Sõrm liikus liiga kiiresti</translation>
-<translation id="7311891583377621132">Liigutage veidi, et sõrmejälje teine osa jäädvustada</translation>
+<translation id="1059855432287631118">Sõrmejälje registreerimine</translation>
+<translation id="878068003854005405">Alustame. Asetage sõrm andurile.</translation>
+<translation id="7189965711416741966">Sõrmejälg lisati.</translation>
+<translation id="9220820413868316583">Tõstke sõrm andurilt ja proovige uuesti.</translation>
+<translation id="4534661889221639075">Proovige uuesti.</translation>
+<translation id="3645372836428131288">Liigutage veidi sõrme, et sõrmejälje teine osa jäädvustada</translation>
 <translation id="7345706641791090287">Kinnitage oma parool</translation>
 <translation id="381202950560906753">Lisa veel üks</translation>
-<translation id="6658023813581644008">Sisselogimiseks funktsiooni Smart Lock seadistamiseks sisestage oma parool</translation>
+<translation id="6968288415730398122">Ekraaniluku seadistamiseks sisestage parool</translation>
+<translation id="4103091233824664032">Ekraaniluku seadistamiseks ja sisselogimiseks sisestage parool</translation>
 <translation id="5449551289610225147">Vale parool</translation>
 <translation id="5374359983950678924">Muuda pilti</translation>
 <translation id="6984299437918708277">Valige pilt, mis konto sisselogimisekraanil kuvada</translation>
@@ -2217,7 +2225,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="1136155683023653803">Paroolid, järjehoidjad, ajalugu ja muu sisu sünkroonitakse teie kontoga</translation>
 <translation id="3267417306184901318">Teie sirvimisandmed ja -tegevused, mis on sünkroonitud teie Brave Software'i kontoga</translation>
 <translation id="1123187597739372905">Kuva sünkroonimisseaded</translation>
-<translation id="8420510748452002155">Isikupärastamata teenused</translation>
+<translation id="5428209950370661546">Muud Brave Software'i teenused</translation>
 <translation id="2055016640093734678">Kuva Brave Software'i teenuste seaded</translation>
 <translation id="7956662517480676674">Sünkroonimine ja Brave Software'i teen.</translation>
 <translation id="2453021845418314664">Täpsemad sünkroonimisseaded</translation>
@@ -2400,9 +2408,14 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2315821125498993513">Telefoniga ei õnnestunud ühendada. <ph name="LINK_BEGIN"/>Vaadake lisateavet.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together on sisse lülitatud</translation>
 <translation id="3088402208262982892">Better Together on välja lülitatud</translation>
+<translation id="7179187931092694802">Avage Bravebook oma telefoniga. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Automaatne jagamine</translation>
+<translation id="4746351372139058112">Sõnumid</translation>
+<translation id="2248072377758660530">Saatke ja võtke oma Bravebookis vastu tekstisõnumeid. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Unusta see seade</translation>
 <translation id="3606712892509067288">Eemalda teenusest Better Together</translation>
+<translation id="5078490485380754244">Unusta seade</translation>
+<translation id="8072033737676488034">Eemaldage oma telefon ja keelake Better Together</translation>
 <translation id="7878562273885520351">Teie parool võib olla ohus</translation>
 <translation id="6582421931165117398">Oma isiklike andmete kaitsmiseks muutke nüüd oma parooli. Enne parooli muutmist palutakse teil sisse logida.</translation>
 <translation id="1089439967362294234">Parooli muutmine</translation>
@@ -2503,6 +2516,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2202898655984161076">Printerite kirjendamisel oli viga. Mõne printeri registreerimine rakendusega <ph name="CLOUD_PRINT_NAME"/> ei õnnestunud.</translation>
 <translation id="3220586366024592812">Üksuse <ph name="CLOUD_PRINT_NAME"/> ühendusprotsess jooksis kokku. Kas soovite taaskäivitada?</translation>
 <translation id="6904655473976120856">Väljumiseks vajutage rakenduse nuppu</translation>
+<translation id="79766959863778284">XR-i isoleeritud seadmeteenus</translation>
 <translation id="8909833622202089127">Sait jälgib teie asukohta</translation>
 <translation id="375636864092143889">Sait kasutab teie mikrofoni</translation>
 <translation id="310671807099593501">Sait kasutab Bluetoothi</translation>

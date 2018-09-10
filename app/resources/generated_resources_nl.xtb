@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Openen als venster</translation>
 <translation id="91568222606626347">Snelle link maken…</translation>
 <translation id="3627879631695760395"><ph name="APP"/> installeren...</translation>
+<translation id="8288032458496410887"><ph name="APP"/> verwijderen...</translation>
 <translation id="4057896668975954729">Bekijken in de Web Store</translation>
 <translation id="4316850752623536204">Website van ontwikkelaar</translation>
 <translation id="4289540628985791613">Overzicht</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Image Decoder</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
 <translation id="6185617499004995178">CUPS IPP Validator</translation>
+<translation id="3077708072777965506">Invoermethode voor Brave OS</translation>
 <translation id="7171242884588191792">Brave-bestandshulpprogramma's</translation>
 <translation id="3061707000357573562">Patchservice</translation>
 <translation id="3580923162759633716">Profileringsservice</translation>
@@ -498,8 +500,10 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8743864605301774756">1 uur geleden geüpdatet</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> uur geleden geüpdatet</translation>
 <translation id="1329584516321524826">Zojuist geüpdatet</translation>
+<translation id="224940702122312781">Deze pagina gebruikt veel data.</translation>
+<translation id="3861241522664181545">Pagina is onderbroken.</translation>
+<translation id="6921709132208495314">Geen data meer gebruiken op deze pagina</translation>
 <translation id="2724841811573117416">WebRTC-logboeken</translation>
-<translation id="7518150891539970662">WebRTC-logboeken (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-logboek vastgelegd op <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokaal bestand:</translation>
 <translation id="2071393345806050157">Geen lokaal logbestand.</translation>
@@ -507,7 +511,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5946591249682680882">Rapport-ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Bug indienen</translation>
 <translation id="1188807932851744811">Logbestand niet geüpload.</translation>
-<translation id="3925247638945319984">Je hebt geen onlangs vastgelegde WebRTC-logboeken.</translation>
 <translation id="2076269580855484719">Deze plugin verbergen</translation>
 <translation id="2129825002735785149">Plug-in updaten</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> is geblokkeerd op basis van bedrijfsbeleid</translation>
@@ -546,6 +549,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6363797201514053536">Zoek op Brave Software of typ een URL</translation>
 <translation id="6078323886959318429">Snelle link toevoegen</translation>
 <translation id="6324916366299863871">Snelkoppeling bewerken</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">Gereed</translation>
 <translation id="4416582610654027550">Voer een geldige URL in</translation>
@@ -1044,6 +1048,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5562781907504170924">Dit tabblad is gekoppeld aan een Bluetooth-apparaat.</translation>
 <translation id="5884474295213649357">Dit tabblad is gekoppeld aan een USB-apparaat.</translation>
 <translation id="8466417995783206254">De video op dit tabblad wordt afgespeeld in de scherm-in-scherm-modus.</translation>
+<translation id="2585724835339714757">Dit tabblad deelt je scherm.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/>: camera of microfoon neemt op</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/>: content van tabblad gedeeld</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/>: video wordt afgespeeld in de scherm-in-scherm-modus</translation>
@@ -1519,7 +1524,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8647834505253004544">Geen geldig webadres</translation>
 <translation id="2149850907588596975">Wachtwoorden en formulieren</translation>
 <translation id="8639963783467694461">Instellingen voor Automatisch aanvullen</translation>
-<translation id="2512222046227390255">Formulieren automatisch invullen</translation>
 <translation id="7764225426217299476">Adres toevoegen</translation>
 <translation id="5595485650161345191">Adres bewerken</translation>
 <translation id="6207937957461833379">Land/regio</translation>
@@ -1601,6 +1605,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="577322787686508614">Leesbewerking is niet toegestaan op: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="3141917231319778873">Het opgegeven verzoek wordt niet ondersteund voor: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="6122875415561139701">Schrijfbewerking is niet toegestaan op: <ph name="DEVICE_NAME"/>.</translation>
+<translation id="439266289085815679">Bluetooth-configuratie wordt beheerd door <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Periode</translation>
 <translation id="2496180316473517155">Browsegeschiedenis</translation>
 <translation id="8662811608048051533">Hiermee word je uitgelogd van de meeste sites.</translation>
@@ -1612,6 +1617,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4699172675775169585">Gecachte afbeeldingen en bestanden</translation>
 <translation id="1274997165432133392">Cookies en andere sitegegevens</translation>
 <translation id="3838543471119263078">Cookies en andere site- en plug-ingegevens</translation>
+<translation id="369489984217678710">Wachtwoorden en andere inloggegevens</translation>
 <translation id="6865313869410766144">Formuliergegevens voor Automatisch aanvullen</translation>
 <translation id="177336675152937177">Gehoste app-gegevens</translation>
 <translation id="1718835860248848330">Afgelopen uur</translation>
@@ -1969,6 +1975,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5282733140964383898">Als je 'Niet bijhouden' inschakelt, wordt hiervoor een verzoek opgenomen in je browseverkeer. Het resultaat daarvan hangt af van of een website reageert op het verzoek en hoe het verzoek wordt geïnterpreteerd. Zo kunnen sommige websites op dit verzoek reageren door advertenties weer te geven die niet zijn gebaseerd op andere websites die je hebt bezocht. Toch blijven veel websites je browsegegevens nog verzamelen en gebruiken, bijvoorbeeld voor het verbeteren van de beveiliging, het leveren van content, services, advertenties en aanbevelingen op hun websites en voor het genereren van rapportagestatistieken. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Verified Access inschakelen</translation>
 <translation id="5557991081552967863">Wifi ingeschakeld houden tijdens slaapstand</translation>
+<translation id="8562084399541316921">Verder lezen</translation>
+<translation id="6201926614538916789">Doorgaan met sites bekijken via mobiel op je Bravebook</translation>
 <translation id="1521442365706402292">Certificaten beheren</translation>
 <translation id="7075625805486468288">HTTPS/SSL-certificaten en -instellingen beheren</translation>
 <translation id="8871974300055371298">Instellingen voor content</translation>
@@ -2004,6 +2012,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7136694880210472378">Instellen als standaard</translation>
 <translation id="102272308210570439">De Assistent gebruik laten maken van de content op je scherm</translation>
 <translation id="8624205858755890468">Hiermee kan de Assistent je gerelateerde informatie, apps en acties laten zien.</translation>
+<translation id="4737453247496280552">'Oké Brave Software'-detectie</translation>
+<translation id="6409553560184414680">Open de Assistent wanneer je scherm is ingeschakeld door 'Oké Brave Software' te zeggen.</translation>
 <translation id="8669919703154928649">Toestaan dat de Assistent je meldingen laat zien</translation>
 <translation id="3430342160185525240">Hiermee kan de Assistent je meldingen laten zien.</translation>
 <translation id="3908743412684152579">Instellingen van de Brave Software Assistent</translation>
@@ -2093,7 +2103,9 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8708000541097332489">Wissen bij het verlaten</translation>
 <translation id="8037357227543935929">Vragen (standaard)</translation>
 <translation id="3427092606871434483">Toestaan (standaard)</translation>
+<translation id="4879491255372875719">Automatisch (standaard)</translation>
 <translation id="4312866146174492540">Blokkeren (standaard)</translation>
+<translation id="6979440798594660689">Dempen (standaard)</translation>
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="5063480226653192405">Gebruik</translation>
 <translation id="3006881078666935414">Geen gebruiksgegevens</translation>
@@ -2125,6 +2137,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2318923050469484167">Huidige incognitosessie (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Er zijn geen sites in- of uitgezoomd</translation>
 <translation id="3566721612727112615">Geen sites toegevoegd</translation>
+<translation id="8098574385249290065">Brave laten kiezen wanneer sites geluid mogen afspelen (aanbevolen)</translation>
 <translation id="5763751966069581670">Geen USB-apparaten gevonden</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Een site toevoegen</translation>
@@ -2168,25 +2181,20 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4562155214028662640">Vingerafdruk toevoegen</translation>
 <translation id="1719312230114180055">Opmerking: Je vingerafdruk is mogelijk minder beveiligd dan een sterk wachtwoord of sterke pincode.</translation>
 <translation id="1927632033341042996">Vinger <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Ontgrendelen via vingerafdruk inschakelen</translation>
 <translation id="7665369617277396874">Account toevoegen</translation>
 <translation id="3422989461909154470">Hier kun je alle ingelogde Brave Software-accounts voor apps en websites beheren.</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="8418661265246754237">Brave Software-accounts</translation>
-<translation id="2107494551712864447">Een vingerafdruk toevoegen</translation>
-<translation id="6388771388956873507">Zoek de vingerafdruksensor op je apparaat en raak deze aan met je vinger</translation>
-<translation id="9170397650136757332">Beweeg je vinger nu een beetje zodat alle delen van je vingerafdruk kunnen worden vastgelegd</translation>
-<translation id="161707228174452095">Vingerafdruk is toegevoegd.</translation>
-<translation id="4576537685267142337">Til je vinger op en raak de sensor opnieuw aan</translation>
-<translation id="494660967831069720">Gedeeltelijke gegevens</translation>
-<translation id="3064410671692449875">Onvoldoende gegevens</translation>
-<translation id="2532026602297547439">Vuil op sensor</translation>
-<translation id="8642267168767642381">Vinger te langzaam bewogen</translation>
-<translation id="2039623879703305659">Vinger te snel bewogen</translation>
-<translation id="7311891583377621132">Beweeg je vinger enigszins om een ander deel van de vingerafdruk vast te leggen</translation>
+<translation id="1059855432287631118">Vingerafdruk registreren</translation>
+<translation id="878068003854005405">Ga aan de slag door je vinger op de sensor te plaatsen.</translation>
+<translation id="7189965711416741966">Vingerafdruk is toegevoegd.</translation>
+<translation id="9220820413868316583">Til je vinger op en probeer het opnieuw.</translation>
+<translation id="4534661889221639075">Probeer het opnieuw.</translation>
+<translation id="3645372836428131288">Beweeg je vinger enigszins om een ander deel van de vingerafdruk vast te leggen.</translation>
 <translation id="7345706641791090287">Je wachtwoord bevestigen</translation>
 <translation id="381202950560906753">Nog een toevoegen</translation>
-<translation id="6658023813581644008">Geef je wachtwoord op als je Smart Lock voor inloggen wilt instellen</translation>
+<translation id="6968288415730398122">Geef je wachtwoord op om de schermvergrendeling te configureren</translation>
+<translation id="4103091233824664032">Geef je wachtwoord op om de schermvergrendeling in te stellen en in te loggen</translation>
 <translation id="5449551289610225147">Ongeldig wachtwoord</translation>
 <translation id="5374359983950678924">Afbeelding wijzigen</translation>
 <translation id="6984299437918708277">Selecteer een foto als weergave van je account op het inlogscherm</translation>
@@ -2215,7 +2223,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1136155683023653803">Wachtwoorden, bladwijzers, geschiedenis en meer worden gesynchroniseerd met je account</translation>
 <translation id="3267417306184901318">Je browsergegevens en activiteit die zijn gesynchroniseerd met je Brave Software-account</translation>
 <translation id="1123187597739372905">Synchronisatie-instellingen weergeven</translation>
-<translation id="8420510748452002155">Niet-gepersonaliseerde services</translation>
+<translation id="5428209950370661546">Andere Brave Software-services</translation>
 <translation id="2055016640093734678">Instellingen van Brave Software-services weergeven</translation>
 <translation id="7956662517480676674">Synchronisatie &amp; Brave Software-services</translation>
 <translation id="2453021845418314664">Geavanceerde synchronisatie-instellingen</translation>
@@ -2398,9 +2406,14 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2315821125498993513">Kan geen verbinding maken met de telefoon. <ph name="LINK_BEGIN"/>Meer informatie.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together is ingeschakeld</translation>
 <translation id="3088402208262982892">Better Together is uitgeschakeld</translation>
+<translation id="7179187931092694802">Je Bravebook ontgrendelen met je telefoon. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant-tethering</translation>
+<translation id="4746351372139058112">Berichten</translation>
+<translation id="2248072377758660530">Sms'jes verzenden en ontvangen op je Bravebook. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Dit apparaat vergeten</translation>
 <translation id="3606712892509067288">Verwijderen uit Better Together</translation>
+<translation id="5078490485380754244">Apparaat vergeten</translation>
+<translation id="8072033737676488034">Je telefoon verwijderen en Better Together uitschakelen</translation>
 <translation id="7878562273885520351">Je wachtwoord is mogelijk gehackt</translation>
 <translation id="6582421931165117398">Wijzig je wachtwoord nu om je persoonlijke gegevens te beschermen. Voordat je je wachtwoord kunt wijzigen, wordt je gevraagd in te loggen.</translation>
 <translation id="1089439967362294234">Wachtwoord wijzigen</translation>
@@ -2501,6 +2514,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2202898655984161076">Er is een probleem opgetreden met het genereren van het printeroverzicht. Sommige van je printers zijn mogelijk niet geregistreerd voor <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">Het proces van de connector voor <ph name="CLOUD_PRINT_NAME"/> is vastgelopen. Wil je opnieuw starten?</translation>
 <translation id="6904655473976120856">Druk op de app-knop om af te sluiten</translation>
+<translation id="79766959863778284">Geïsoleerde XR-apparaatservice</translation>
 <translation id="8909833622202089127">Site houdt je locatie bij</translation>
 <translation id="375636864092143889">Site gebruikt je microfoon</translation>
 <translation id="310671807099593501">Site gebruikt Bluetooth</translation>

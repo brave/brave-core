@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index d32fe4bf3e5f95b1be19d90f0cb1bb85dd48b7e6..1792f9a36b9bbcc6928120123ce3d27752d55f0f 100644
+index 99a8916f7cd71d7a689b9baae087f64232dda7cc..f2ca8944c44009a0892614bd046f85607947a187 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -50,6 +50,7 @@ class Profile;
@@ -44,7 +44,7 @@ index d32fe4bf3e5f95b1be19d90f0cb1bb85dd48b7e6..1792f9a36b9bbcc6928120123ce3d277
    void OnThemeChanged() override;
    void OnNativeThemeChanged(const ui::NativeTheme* theme) override;
    void ChildPreferredSizeChanged(views::View* child) override;
-@@ -332,7 +335,7 @@ class LocationBarView : public LocationBar,
+@@ -333,7 +336,7 @@ class LocationBarView : public LocationBar,
    OmniboxPopupView* GetOmniboxPopupView();
  
    // Gets the theme color tint for the location bar and results.

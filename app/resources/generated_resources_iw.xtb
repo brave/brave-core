@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">פתח כחלון</translation>
 <translation id="91568222606626347">צור מקש קיצור...</translation>
 <translation id="3627879631695760395">התקנת <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">הסרת <ph name="APP"/>...</translation>
 <translation id="4057896668975954729">הצג בחנות</translation>
 <translation id="4316850752623536204">אתר המפתח</translation>
 <translation id="4289540628985791613">סקירה כללית</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">מפענח התמונות</translation>
 <translation id="8191453843330043793">V8 Proxy Resolver</translation>
 <translation id="6185617499004995178">‏מאמת CUPS IPP</translation>
+<translation id="3077708072777965506">‏שיטת הקלט של Brave OS</translation>
 <translation id="7171242884588191792">‏תוכניות שירות של Brave לקבצים</translation>
 <translation id="3061707000357573562">שירות תיקון</translation>
 <translation id="3580923162759633716">שירות יצירת פרופילים</translation>
@@ -498,8 +500,10 @@
 <translation id="8743864605301774756">עודכנה לפני שעה</translation>
 <translation id="5638497698949808140">עודכנה לפני <ph name="HOURS"/> שעות</translation>
 <translation id="1329584516321524826">עודכן עכשיו</translation>
+<translation id="224940702122312781">הדף הזה יצרוך הרבה נתונים.</translation>
+<translation id="3861241522664181545">הדף מושהה.</translation>
+<translation id="6921709132208495314">הפסקת השימוש בנתונים בדף הזה</translation>
 <translation id="2724841811573117416">‏יומני WebRTC</translation>
-<translation id="7518150891539970662">‏יומני WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">‏יומני WebRTC תועדו בתאריך <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">קובץ מקומי:</translation>
 <translation id="2071393345806050157">אין קובץ יומן מקומי.</translation>
@@ -507,7 +511,6 @@
 <translation id="5946591249682680882">מזהה דיווח <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">דיווח על באג</translation>
 <translation id="1188807932851744811">היומן לא הועלה.</translation>
-<translation id="3925247638945319984">‏אין לך יומני WebRTC שתועדו לאחרונה.</translation>
 <translation id="2076269580855484719">הסתר פלאגין זה</translation>
 <translation id="2129825002735785149">עדכן פלאגין</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> חסום לפי מדיניות הארגון</translation>
@@ -546,6 +549,7 @@
 <translation id="6363797201514053536">‏אפשר לחפש ב-Brave Software או להקליד כתובת אתר</translation>
 <translation id="6078323886959318429">הוספת קיצור דרך</translation>
 <translation id="6324916366299863871">עריכת קיצור דרך</translation>
+<translation id="4405117686468554883">‏‎*.jpeg‏, ‎‏‎*.jpg‏, ‎*.png</translation>
 <translation id="7400418766976504921">כתובת אתר</translation>
 <translation id="8730621377337864115">בוצע</translation>
 <translation id="4416582610654027550">יש להקליד כתובת אתר חוקית</translation>
@@ -1044,6 +1048,7 @@
 <translation id="5562781907504170924">‏הכרטיסייה הזו מחוברת להתקן Bluetooth.</translation>
 <translation id="5884474295213649357">‏הכרטיסייה הזו מחוברת להתקן USB.</translation>
 <translation id="8466417995783206254">בכרטיסייה הזו מופעל סרטון במצב 'תמונה בתוך תמונה'.</translation>
+<translation id="2585724835339714757">הכרטיסייה הזו משתפת את המסך שלך.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - הקלטה במצלמה או במיקרופון</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - תוכן הכרטיסייה שותף</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - הסרטון פועל במצב תמונה בתוך תמונה</translation>
@@ -1519,7 +1524,6 @@
 <translation id="8647834505253004544">כתובת האינטרנט לא חוקית</translation>
 <translation id="2149850907588596975">סיסמאות וטפסים</translation>
 <translation id="8639963783467694461">הגדרות מילוי אוטומטי</translation>
-<translation id="2512222046227390255">מילוי אוטומטי של טפסים</translation>
 <translation id="7764225426217299476">הוסף כתובת</translation>
 <translation id="5595485650161345191">ערוך כתובת</translation>
 <translation id="6207937957461833379">מדינה/אזור</translation>
@@ -1601,6 +1605,7 @@
 <translation id="577322787686508614">פעולת קריאה אסורה במכשיר: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3141917231319778873">הבקשה הנתונה אינה נתמכת במכשיר: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6122875415561139701">פעולת כתיבה אסורה במכשיר: "<ph name="DEVICE_NAME"/>".</translation>
+<translation id="439266289085815679">‏הגדרת ה-Bluetooth היא בשליטת <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">טווח זמן</translation>
 <translation id="2496180316473517155">היסטוריית גלישה</translation>
 <translation id="8662811608048051533">תבוצע יציאה שלך מרוב האתרים.</translation>
@@ -1612,6 +1617,7 @@
 <translation id="4699172675775169585">תמונות וקבצים במטמון</translation>
 <translation id="1274997165432133392">‏קובצי Cookie ונתוני אתר נוספים</translation>
 <translation id="3838543471119263078">‏קובצי cookie ונתוני אתר ופלאגין נוספים</translation>
+<translation id="369489984217678710">סיסמאות ונתוני כניסה אחרים</translation>
 <translation id="6865313869410766144">נתוני טפסים למילוי אוטומטי</translation>
 <translation id="177336675152937177">נתוני יישומים מתארחים</translation>
 <translation id="1718835860248848330">מהשעה האחרונה</translation>
@@ -1969,6 +1975,8 @@
 <translation id="5282733140964383898">המשמעות של הפעלת 'אל תעקוב' היא שבקשה תיכלל בתנועת הגלישה שלך. התוצאה בפועל תלויה בתגובה של האתר לבקשה ובפרשנות שהוא מייחס לה, אם בכלל. לדוגמה, אתרים מסוימים עשויים להגיב לבקשה זו על ידי הצגת מודעות שאינן מבוססות על אתרים אחרים שבהם ביקרת. אתרים רבים עדיין יאספו את נתוני הגלישה שלך וישתמשו בהם - לדוגמה, על מנת לשפר את האבטחה, לספק תוכן, שירותים, מודעות והמלצות באתרים שלהם, וכדי ליצור נתונים סטטיסטיים לדיווח. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">הפעל גישה מאומתת</translation>
 <translation id="5557991081552967863">‏ה-Wi-Fi ימשיך לפעול בזמן שינה</translation>
+<translation id="8562084399541316921">להמשך קריאה</translation>
+<translation id="6201926614538916789">‏חידוש הצפייה באתרים בנייד ב-Bravebook</translation>
 <translation id="1521442365706402292">נהל אישורים</translation>
 <translation id="7075625805486468288">‏נהל אישורים והגדרות של HTTPS/SSL</translation>
 <translation id="8871974300055371298">הגדרות תוכן</translation>
@@ -2004,6 +2012,8 @@
 <translation id="7136694880210472378">הפוך לברירת מחדל</translation>
 <translation id="102272308210570439">‏מתן הרשאה ל-Assistant להשתמש בתוכן שמופיע במסך</translation>
 <translation id="8624205858755890468">‏מאפשר ל-Assistant להציג לך פעולות, אפליקציות ופרטים קשורים.</translation>
+<translation id="4737453247496280552">‏זיהוי של "Ok Brave Software"</translation>
+<translation id="6409553560184414680">‏כדי לגשת ל-Assistant צריך לומר "OK Brave Software" כשהמסך מופעל.</translation>
 <translation id="8669919703154928649">‏Assistant יכול להציג הודעות</translation>
 <translation id="3430342160185525240">‏Assistant יכול להציג הודעות.</translation>
 <translation id="3908743412684152579">‏ההגדרות של Brave Software Assistant</translation>
@@ -2093,7 +2103,9 @@
 <translation id="8708000541097332489">מחק בעת היציאה</translation>
 <translation id="8037357227543935929">שאל (ברירת מחדל)</translation>
 <translation id="3427092606871434483">התר (ברירת מחדל)</translation>
+<translation id="4879491255372875719">אוטומטי (ברירת מחדל)</translation>
 <translation id="4312866146174492540">חסום (ברירת מחדל)</translation>
+<translation id="6979440798594660689">השתקה (ברירת מחדל)</translation>
 <translation id="2356070529366658676">שאל</translation>
 <translation id="5063480226653192405">שימוש</translation>
 <translation id="3006881078666935414">אין נתוני שימוש</translation>
@@ -2125,6 +2137,7 @@
 <translation id="2318923050469484167">הפעלה נוכחית במצב גלישה בסתר (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">באף אתר לא השתנה המרחק מהתצוגה</translation>
 <translation id="3566721612727112615">לא נוספו אתרים</translation>
+<translation id="8098574385249290065">‏Brave יקבע מתי אתרים יכולים להפעיל צלילים (מומלץ)</translation>
 <translation id="5763751966069581670">‏לא נמצאו התקני USB</translation>
 <translation id="8546541260734613940">‎[*.]example.com</translation>
 <translation id="7366415735885268578">הוספת אתר</translation>
@@ -2168,25 +2181,20 @@
 <translation id="4562155214028662640">הוסף טביעת אצבע</translation>
 <translation id="1719312230114180055">‏הערה: ייתכן ששימוש בטביעת אצבע יעניק פחות אבטחה מסיסמה או PIN חזקים.</translation>
 <translation id="1927632033341042996">אצבע <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">הפעל ביטול נעילה עם טביעת אצבע</translation>
 <translation id="7665369617277396874">הוסף חשבון</translation>
 <translation id="3422989461909154470">‏כאן ניתן לנהל את כל חשבונות Brave Software המחוברים מאפליקציות ומאתרים.</translation>
 <translation id="1987317783729300807">חשבונות</translation>
 <translation id="8418661265246754237">‏חשבונות Brave Software</translation>
-<translation id="2107494551712864447">הוספה של טביעת אצבע</translation>
-<translation id="6388771388956873507">מצא את חיישן טביעות האצבע במכשיר וגע בו עם האצבע</translation>
-<translation id="9170397650136757332">עכשיו הזז מעט את האצבע כדי שהחיישן יזהה את כל חלקי טביעת האצבע</translation>
-<translation id="161707228174452095">טביעת האצבע נוספה.</translation>
-<translation id="4576537685267142337">הרם את האצבע ואז גע שוב בחיישן</translation>
-<translation id="494660967831069720">נתונים חלקיים</translation>
-<translation id="3064410671692449875">אין מספיק נתונים</translation>
-<translation id="2532026602297547439">החיישן מלוכלך</translation>
-<translation id="8642267168767642381">הזזת את האצבע לאט מדי</translation>
-<translation id="2039623879703305659">הזזת את האצבע מהר מדי</translation>
-<translation id="7311891583377621132">הזז קצת את האצבע כדי לסרוק חלק אחר של טביעת האצבע</translation>
+<translation id="1059855432287631118">רישום טביעת אצבע</translation>
+<translation id="878068003854005405">שנתחיל? צריך להניח את האצבע על החיישן.</translation>
+<translation id="7189965711416741966">טביעת האצבע נוספה.</translation>
+<translation id="9220820413868316583">צריך להרים את האצבע ולנסות שוב.</translation>
+<translation id="4534661889221639075">יש לנסות שוב.</translation>
+<translation id="3645372836428131288">יש להזיז קצת את האצבע כדי לסרוק חלק אחר של טביעת האצבע.</translation>
 <translation id="7345706641791090287">אשר את הסיסמה שלך</translation>
 <translation id="381202950560906753">להמשך הוספה</translation>
-<translation id="6658023813581644008">‏כדי להגדיר את Smart Lock לכניסה לחשבון, צריך להזין את הסיסמה.</translation>
+<translation id="6968288415730398122">הזן את הסיסמה כדי להגדיר את נעילת המסך</translation>
+<translation id="4103091233824664032">צריך להזין את הסיסמה כדי להגדיר את נעילת המסך ואת הכניסה</translation>
 <translation id="5449551289610225147">סיסמה לא חוקית</translation>
 <translation id="5374359983950678924">שנה תמונה</translation>
 <translation id="6984299437918708277">בחר לחשבונך תמונה שתוצג במסך הכניסה</translation>
@@ -2215,7 +2223,7 @@
 <translation id="1136155683023653803">הסיסמאות, הסימניות, ההיסטוריה והגדרות נוספות מסתנכרנות עם החשבון שלך</translation>
 <translation id="3267417306184901318">‏סינכרון הנתונים ופעילות הגלישה עם חשבון Brave Software שלך</translation>
 <translation id="1123187597739372905">הצגת הגדרות סינכרון</translation>
-<translation id="8420510748452002155">שירותים ללא התאמה אישית</translation>
+<translation id="5428209950370661546">‏שירותי Brave Software אחרים</translation>
 <translation id="2055016640093734678">‏הצגת ההגדרות של שירותי Brave Software</translation>
 <translation id="7956662517480676674">‏סנכרון ושירותי Brave Software</translation>
 <translation id="2453021845418314664">הגדרות סנכרון מתקדמות</translation>
@@ -2398,9 +2406,14 @@
 <translation id="2315821125498993513">לא ניתן היה להתחבר אל הטלפון. <ph name="LINK_BEGIN"/>מידע נוסף.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">‏תכונת Better Together פועלת</translation>
 <translation id="3088402208262982892">‏התכונה Better Together כבויה</translation>
+<translation id="7179187931092694802">‏אפשר לבטל את נעילת ה-Bravebook באמצעות הטלפון. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">שיתוף אינטרנט מיידי בין ניידים</translation>
+<translation id="4746351372139058112">הודעות</translation>
+<translation id="2248072377758660530">‏אפשר לשלוח ולקבל הודעות טקסט דרך ה-Bravebook. <ph name="LINK_BEGIN"/>מידע נוסף<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">מחיקת המכשיר הזה</translation>
 <translation id="3606712892509067288">‏הסרה מ-Better Together</translation>
+<translation id="5078490485380754244">מחיקת מכשיר</translation>
+<translation id="8072033737676488034">‏הסרת הטלפון שלך והשבתת Better Together</translation>
 <translation id="7878562273885520351">ייתכן שאבטחת הסיסמה שלך נפגעה</translation>
 <translation id="6582421931165117398">כדאי לשנות את הסיסמה עכשיו כדי להגן על המידע האישי. תוצג לך בקשה להיכנס לחשבונך לפני שינוי הסיסמה.</translation>
 <translation id="1089439967362294234">שינוי סיסמה</translation>
@@ -2501,6 +2514,7 @@
 <translation id="2202898655984161076">היתה בעיה ברישום מדפסות. ייתכן שחלק מהמדפסות שלך לא נרשמו בהצלחה ב-<ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="3220586366024592812">תהליך המחבר <ph name="CLOUD_PRINT_NAME"/> קרס. להפעיל מחדש?</translation>
 <translation id="6904655473976120856">לחץ על לחצן האפליקציה כדי לצאת</translation>
+<translation id="79766959863778284">‏שירות XR למכשיר מבודד</translation>
 <translation id="8909833622202089127">האתר עוקב אחרי המיקום שלך</translation>
 <translation id="375636864092143889">האתר משתמש במיקרופון</translation>
 <translation id="310671807099593501">‏האתר משתמש ב-Bluetooth</translation>

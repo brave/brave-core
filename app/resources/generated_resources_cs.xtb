@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">Otevřít jako okno</translation>
 <translation id="91568222606626347">Vytvořit zástupce...</translation>
 <translation id="3627879631695760395">Nainstalovat aplikaci <ph name="APP"/>...</translation>
+<translation id="8288032458496410887">Odinstalovat aplikaci <ph name="APP"/>…</translation>
 <translation id="4057896668975954729">Zobrazit v obchodě</translation>
 <translation id="4316850752623536204">Webové stránky vývojáře</translation>
 <translation id="4289540628985791613">Přehled</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">Dekodér obrázků</translation>
 <translation id="8191453843330043793">Překladač proxy serverů V8</translation>
 <translation id="6185617499004995178">Validátor CUPS IPP</translation>
+<translation id="3077708072777965506">Metoda zadávání v systému Brave OS</translation>
 <translation id="7171242884588191792">Nástroje Brave pro práci se soubory</translation>
 <translation id="3061707000357573562">Služba oprav</translation>
 <translation id="3580923162759633716">Profilovací služba</translation>
@@ -498,8 +500,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8743864605301774756">Aktualizováno před 1 h</translation>
 <translation id="5638497698949808140">Aktualizováno před <ph name="HOURS"/> h</translation>
 <translation id="1329584516321524826">Aktualizováno právě teď</translation>
+<translation id="224940702122312781">Tato stránka využije velké množství dat</translation>
+<translation id="3861241522664181545">Stránka je pozastavená.</translation>
+<translation id="6921709132208495314">Přestat na této stránce využívat data</translation>
 <translation id="2724841811573117416">Protokoly WebRTC</translation>
-<translation id="7518150891539970662">Protokoly WebRTC (<ph name="WEBRTC_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Protokol WebRTC zaznamenaný <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Místní soubor:</translation>
 <translation id="2071393345806050157">Žádný místní soubor protokolu není k dispozici.</translation>
@@ -507,7 +511,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5946591249682680882">ID hlášení <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Oznámit chybu</translation>
 <translation id="1188807932851744811">Protokol nebyl nahrán.</translation>
-<translation id="3925247638945319984">Nemáte žádné nedávno zaznamenané protokoly WebRTC.</translation>
 <translation id="2076269580855484719">Skrýt tento plugin</translation>
 <translation id="2129825002735785149">Aktualizovat plugin</translation>
 <translation id="9088234649737575428">Plugin <ph name="PLUGIN_NAME"/> je blokován podnikovými zásadami</translation>
@@ -546,6 +549,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6363797201514053536">Hledejte na Googlu nebo zadejte adresu URL</translation>
 <translation id="6078323886959318429">Přidat zástupce</translation>
 <translation id="6324916366299863871">Upravit zkratku</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">Adresa URL</translation>
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="4416582610654027550">Zadejte platnou adresu URL</translation>
@@ -1044,6 +1048,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5562781907504170924">Tato karta je propojena se zařízením Bluetooth.</translation>
 <translation id="5884474295213649357">Tato karta je připojena k zařízení USB.</translation>
 <translation id="8466417995783206254">Na této kartě se přehrává video v režimu obrazu v obraze</translation>
+<translation id="2585724835339714757">Tato karta sdílí vaši obrazovku.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – probíhá záznam z fotoaparátu nebo mikrofonu</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – obsah karty se sdílí</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – video se přehrává v režimu obrazu v obraze</translation>
@@ -1519,7 +1524,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8647834505253004544">Toto není platná webová adresa</translation>
 <translation id="2149850907588596975">Hesla a formuláře</translation>
 <translation id="8639963783467694461">Nastavení automatického vyplňování</translation>
-<translation id="2512222046227390255">Automaticky vyplňovat formuláře</translation>
 <translation id="7764225426217299476">Přidat adresu</translation>
 <translation id="5595485650161345191">Upravit adresu</translation>
 <translation id="6207937957461833379">Země nebo oblast</translation>
@@ -1601,6 +1605,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="577322787686508614">Operace čtení v zařízení <ph name="DEVICE_NAME"/> není povolena.</translation>
 <translation id="3141917231319778873">Zadaný požadavek v zařízení <ph name="DEVICE_NAME"/> není podporován.</translation>
 <translation id="6122875415561139701">Operace zápisu v zařízení <ph name="DEVICE_NAME"/> není povolena.</translation>
+<translation id="439266289085815679">Konfiguraci rozhraní Bluetooth spravuje <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Časové období</translation>
 <translation id="2496180316473517155">Historie procházení</translation>
 <translation id="8662811608048051533">Odhlásí vás z většiny webů.</translation>
@@ -1612,6 +1617,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4699172675775169585">Obrázky a soubory v mezipaměti</translation>
 <translation id="1274997165432133392">Soubory cookie a jiná data webů</translation>
 <translation id="3838543471119263078">Soubory cookie a další data webů a pluginů</translation>
+<translation id="369489984217678710">Hesla a další přihlašovací údaje</translation>
 <translation id="6865313869410766144">Automatické vyplňování formulářů</translation>
 <translation id="177336675152937177">Údaje hostovaných aplikací</translation>
 <translation id="1718835860248848330">Poslední hodina</translation>
@@ -1969,6 +1975,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5282733140964383898">Nastavení „Do Not Track“ (Nesledovat) znamená, že k vašemu provozu při prohlížení bude přidán speciální požadavek. Efekt tohoto požadavku však závisí na tom, zda na něj web reaguje a jak jej interpretuje. Některé weby na tento požadavek mohou reagovat například tím, že při zobrazování reklam nebudou používat informace o tom, které jiné weby jste navštívili. Mnohé weby budou nadále sbírat a používat vaše údaje o prohlížení – např. za účelem zlepšení zabezpečení, poskytování obsahu, služeb, reklam a doporučení na svých webových stránkách a generování přehledových statistik. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Aktivuje ověřený přístup.</translation>
 <translation id="5557991081552967863">Při spánku ponechat zapnutou síť Wi-Fi</translation>
+<translation id="8562084399541316921">Pokračovat ve čtení</translation>
+<translation id="6201926614538916789">Pokračujte na Bravebooku ve čtení webů z mobilu</translation>
 <translation id="1521442365706402292">Správa certifikátů</translation>
 <translation id="7075625805486468288">Správa certifikátů a nastavení protokolů HTTPS/SSL</translation>
 <translation id="8871974300055371298">Nastavení obsahu</translation>
@@ -2004,6 +2012,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7136694880210472378">Nastavit jako výchozí</translation>
 <translation id="102272308210570439">Povolit Asistentovi využívat obsah obrazovky</translation>
 <translation id="8624205858755890468">Umožňuje Asistentovi zobrazovat vám související informace, aplikace a akce.</translation>
+<translation id="4737453247496280552">Detekce příkazu „Ok Brave Software“</translation>
+<translation id="6409553560184414680">Když je zapnutá obrazovka, můžete Asistenta kdykoliv aktivovat vyslovením fráze „Ok Brave Software“.</translation>
 <translation id="8669919703154928649">Umožnit Asistentovi zobrazovat vám oznámení</translation>
 <translation id="3430342160185525240">Umožňuje Asistentovi zobrazovat vám oznámení.</translation>
 <translation id="3908743412684152579">Nastavení Asistenta Brave Software</translation>
@@ -2093,7 +2103,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8708000541097332489">Smazat při ukončení</translation>
 <translation id="8037357227543935929">Zeptat se (výchozí)</translation>
 <translation id="3427092606871434483">Povolit (výchozí)</translation>
+<translation id="4879491255372875719">Automatické (výchozí)</translation>
 <translation id="4312866146174492540">Blokovat (výchozí)</translation>
+<translation id="6979440798594660689">Ztlumit (výchozí)</translation>
 <translation id="2356070529366658676">Zeptat se</translation>
 <translation id="5063480226653192405">Použití</translation>
 <translation id="3006881078666935414">Žádné údaje o využití</translation>
@@ -2125,6 +2137,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2318923050469484167">Aktuální anonymní relace (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Žádný web nemá nastaveno přiblížení či oddálení zobrazení</translation>
 <translation id="3566721612727112615">Nebyly přidány žádné weby</translation>
+<translation id="8098574385249290065">Nechat Brave zvolit, kdy weby mohou přehrávat zvuk (doporučeno)</translation>
 <translation id="5763751966069581670">Nebyla nalezena žádná zařízení USB</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Přidání webu</translation>
@@ -2168,25 +2181,20 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4562155214028662640">Přidat otisk prstu</translation>
 <translation id="1719312230114180055">Poznámka: Otisk prstu může být méně bezpečný než silné heslo nebo PIN.</translation>
 <translation id="1927632033341042996">Prst <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">Povolit odemknutí otiskem prstu</translation>
 <translation id="7665369617277396874">Přidat účet</translation>
 <translation id="3422989461909154470">Zde lze spravovat všechny vaše přihlášené účty z aplikací a webů.</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="8418661265246754237">Účty Brave Software</translation>
-<translation id="2107494551712864447">Přidejte otisk prstu</translation>
-<translation id="6388771388956873507">Vyhledejte senzor otisků prstů na zařízení a dotkněte se ho prstem</translation>
-<translation id="9170397650136757332">Nyní prst lehce natočte, aby se zaznamenaly všechny části otisku</translation>
-<translation id="161707228174452095">Otisk byl přidán!</translation>
-<translation id="4576537685267142337">Zvedněte prst a poté na senzor klepněte znovu.</translation>
-<translation id="494660967831069720">Částečná data</translation>
-<translation id="3064410671692449875">Nedostatek dat</translation>
-<translation id="2532026602297547439">Senzor je znečištěný</translation>
-<translation id="8642267168767642381">Pohyb prstem byl příliš pomalý</translation>
-<translation id="2039623879703305659">Pohyb prstem byl příliš rychlý</translation>
-<translation id="7311891583377621132">Lehce prst natočte, aby se zaznamenala jiná část otisku</translation>
+<translation id="1059855432287631118">Registrace otisku prstu</translation>
+<translation id="878068003854005405">Začněte tím, že umístíte prst na snímač.</translation>
+<translation id="7189965711416741966">Otisk byl přidán.</translation>
+<translation id="9220820413868316583">Zdvihněte prst a zkuste to znovu.</translation>
+<translation id="4534661889221639075">Zkuste to znovu.</translation>
+<translation id="3645372836428131288">Lehce prst natočte, aby se zaznamenala jiná část otisku.</translation>
 <translation id="7345706641791090287">Potvrďte heslo</translation>
 <translation id="381202950560906753">Přidat další</translation>
-<translation id="6658023813581644008">Chcete-li pro přihlášení nastavit funkci Smart Lock, zadejte heslo</translation>
+<translation id="6968288415730398122">Chcete-li nakonfigurovat zámek obrazovky, zadejte heslo</translation>
+<translation id="4103091233824664032">Chcete-li nakonfigurovat zámek obrazovky a přihlášení, zadejte heslo</translation>
 <translation id="5449551289610225147">Neplatné heslo</translation>
 <translation id="5374359983950678924">Změnit obrázek</translation>
 <translation id="6984299437918708277">Vyberte obrázek, který se pro váš účet bude zobrazovat na přihlašovací stránce</translation>
@@ -2215,7 +2223,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1136155683023653803">Hesla, záložky, historie a další údaje se synchronizují do vašeho účtu</translation>
 <translation id="3267417306184901318">Vaše údaje o prohlížení a aktivita synchronizované do účtu Brave Software</translation>
 <translation id="1123187597739372905">Zobrazit nastavení synchronizace</translation>
-<translation id="8420510748452002155">Nepersonalizované služby</translation>
+<translation id="5428209950370661546">Další služby Brave Software</translation>
 <translation id="2055016640093734678">Zobrazit nastavení služeb Brave Software</translation>
 <translation id="7956662517480676674">Synchronizace a služby Brave Software</translation>
 <translation id="2453021845418314664">Rozšířená nastavení synchronizace</translation>
@@ -2398,9 +2406,14 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2315821125498993513">K telefonu se nelze připojit. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Funkce Společně ještě lepší je zapnutá</translation>
 <translation id="3088402208262982892">Funkce Společně ještě lepší je vypnutá</translation>
+<translation id="7179187931092694802">Odemykejte Bravebook pomocí telefonu. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Dynamický tethering</translation>
+<translation id="4746351372139058112">Zprávy</translation>
+<translation id="2248072377758660530">Odesílejte a přijímejte na Bravebooku textové zprávy. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">Odebrat zařízení ze seznamu</translation>
 <translation id="3606712892509067288">Odstranit z funkce Společně ještě lepší</translation>
+<translation id="5078490485380754244">Odstranit zařízení</translation>
+<translation id="8072033737676488034">Odpojte telefon a vypněte funkci Společně ještě lepší</translation>
 <translation id="7878562273885520351">Heslo může být prolomeno</translation>
 <translation id="6582421931165117398">Chcete-li ochránit své osobní údaje, neprodleně změňte heslo. Před změnou hesla budete požádáni o přihlášení.</translation>
 <translation id="1089439967362294234">Změnit heslo</translation>
@@ -2501,6 +2514,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2202898655984161076">Při vytváření seznamu tiskáren se vyskytla chyba. Některé vaše tiskárny možná nebyly ve službě <ph name="CLOUD_PRINT_NAME"/> úspěšně zaregistrovány.</translation>
 <translation id="3220586366024592812">Proces konektoru služby <ph name="CLOUD_PRINT_NAME"/> selhal. Restartovat?</translation>
 <translation id="6904655473976120856">Ukončíte stisknutím tlačítka aplikace</translation>
+<translation id="79766959863778284">Služba izolovaného zařízení XR</translation>
 <translation id="8909833622202089127">Web sleduje vaši polohu</translation>
 <translation id="375636864092143889">Web používá mikrofon</translation>
 <translation id="310671807099593501">Web používá Bluetooth</translation>

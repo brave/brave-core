@@ -26,7 +26,7 @@ class BraveTorClientUpdater;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
-  BraveBrowserProcessImpl();
+  BraveBrowserProcessImpl(scoped_refptr<PersistentPrefStore> user_pref_store);
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.

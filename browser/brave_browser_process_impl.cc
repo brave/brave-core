@@ -28,8 +28,9 @@ using content::BrowserThread;
 BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
 }
 
-BraveBrowserProcessImpl::BraveBrowserProcessImpl()
-    : profile_creation_monitor_(new ProfileCreationMonitor) {
+BraveBrowserProcessImpl::BraveBrowserProcessImpl(scoped_refptr<PersistentPrefStore> user_pref_store)
+    : BrowserProcessImpl(user_pref_store),
+      profile_creation_monitor_(new ProfileCreationMonitor) {
   g_browser_process = this;
   g_brave_browser_process = this;
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());

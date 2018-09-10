@@ -12,6 +12,8 @@ source_set("extensions") {
     "brave_component_extension_resource_manager.h",
     "brave_component_loader.cc",
     "brave_component_loader.h",
+    "brave_extensions_browser_api_provider.cc",
+    "brave_extensions_browser_api_provider.h",
     "brave_extension_install_prompt.cc",
     "brave_extension_install_prompt.h",
     "brave_extension_management.cc",
@@ -28,6 +30,7 @@ source_set("extensions") {
 
   deps = [
     "//brave/browser/resources:brave_extension_grit",
+    "//brave/common/extensions/api",
     "//brave/components/brave_webtorrent:resources",
     "//chrome/browser",
     "//content/public/browser",

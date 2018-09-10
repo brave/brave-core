@@ -15,7 +15,7 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_restrictions.h"
+#include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "chrome/browser/browser_process.h"
@@ -146,7 +146,8 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     const GURL* url, const uint64_t& request_identifier,
     std::string& new_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::AssertBlockingAllowed();
+  base::ScopedBlockingCall scoped_blocking_call(
+      base::BlockingType::WILL_BLOCK);
   if (!IsInitialized() || !level_db_ || url->scheme() == url::kHttpsScheme) {
     return false;
   }

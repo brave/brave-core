@@ -18,7 +18,6 @@
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Авторське право <ph name="YEAR"/> Автори Brave. Усі права захищено.</translation>
 <translation id="2310890394934209120">ОС Brave стала можливою завдяки додатковому <ph name="BEGIN_LINK_CROS_OSS"/>програмному забезпеченню з відкритим кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="858647341154864560">ОС Brave стала можливою завдяки додатковому <ph name="BEGIN_LINK_CROS_OSS"/>програмному забезпеченню з відкритим кодом<ph name="END_LINK_CROS_OSS"/>, як і бета-версія Linux.</translation>
 <translation id="5019879183386042809">Зробити Brave переглядачем за умовчанням</translation>
 <translation id="5063987220091207247">Неможливо відкрити цю сторінку в ОС Brave.</translation>
 <translation id="4065288863231444640">Дозволити Brave працювати у фоновому режимі</translation>
@@ -36,6 +35,7 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="5785919770853225148">Brave збереже цей пароль в обліковому записі Brave Software. Не потрібно його запам’ятовувати.</translation>
 <translation id="3343095737966473035">Brave не є вашим веб-переглядачем за умовчанням</translation>
 <translation id="6715663530666325392">Налаштуйте синхронізацію, щоб зберегти свої персоналізовані функції веб-переглядача в Інтернеті й мати до них доступ із Brave на будь-якому комп’ютері.</translation>
+<translation id="5874882355102994015">Brave не може відобразити попередній перегляд версії для друку, якщо немає вбудованого засобу для перегляду файлів PDF.</translation>
 <translation id="8880183781256147665">Додавання в Brave...</translation>
 <translation id="3561569806301739367">Файл <ph name="FILE_NAME"/> може бути небезпечним, тому Brave заблокував його.</translation>
 <translation id="9067428552314418522">Цей файл небезпечний, тому Brave заблокував його.</translation>

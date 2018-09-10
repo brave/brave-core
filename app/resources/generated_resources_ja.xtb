@@ -185,6 +185,7 @@
 <translation id="3275778913554317645">ウィンドウとして開く</translation>
 <translation id="91568222606626347">ショートカットを作成...</translation>
 <translation id="3627879631695760395">「<ph name="APP"/>」をインストールしています...</translation>
+<translation id="8288032458496410887">「<ph name="APP"/>」をアンインストール...</translation>
 <translation id="4057896668975954729">ストアで見る</translation>
 <translation id="4316850752623536204">デベロッパーのウェブサイト</translation>
 <translation id="4289540628985791613">概要</translation>
@@ -291,6 +292,7 @@
 <translation id="8559694214572302298">イメージ デコーダー</translation>
 <translation id="8191453843330043793">V8 プロキシ リゾルバ</translation>
 <translation id="6185617499004995178">CUPS IPP 検証ツール</translation>
+<translation id="3077708072777965506">Brave OS の入力方法</translation>
 <translation id="7171242884588191792">Brave ファイル ユーティリティ</translation>
 <translation id="3061707000357573562">サービスへのパッチの適用</translation>
 <translation id="3580923162759633716">プロファイリング サービス</translation>
@@ -499,8 +501,10 @@
 <translation id="8743864605301774756">1 時間前に更新されました</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> 時間前に更新されました</translation>
 <translation id="1329584516321524826">たった今更新されました</translation>
+<translation id="224940702122312781">このページでは大量のデータが使用されます。</translation>
+<translation id="3861241522664181545">ページの読み込みが一時停止されました。</translation>
+<translation id="6921709132208495314">このページでデータの使用を停止する</translation>
 <translation id="2724841811573117416">WebRTC ログ</translation>
-<translation id="7518150891539970662">WebRTC ログ（<ph name="WEBRTC_LOG_COUNT"/> 件）</translation>
 <translation id="6592267180249644460">WebRTC ログの記録日時: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">ローカル ファイル:</translation>
 <translation id="2071393345806050157">ローカルのログ ファイルがありません。</translation>
@@ -508,7 +512,6 @@
 <translation id="5946591249682680882">レポート ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">バグを報告</translation>
 <translation id="1188807932851744811">ログがアップロードされていません。</translation>
-<translation id="3925247638945319984">最近記録された WebRTC ログはありません。</translation>
 <translation id="2076269580855484719">このプラグインを表示しない</translation>
 <translation id="2129825002735785149">プラグインを更新</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> は会社のポリシーによってブロックされています</translation>
@@ -547,6 +550,7 @@
 <translation id="6363797201514053536">Brave Software で検索または URL を入力</translation>
 <translation id="6078323886959318429">ショートカットを追加</translation>
 <translation id="6324916366299863871">ショートカットの編集</translation>
+<translation id="4405117686468554883">*.jpeg、*.jpg、*.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">完了</translation>
 <translation id="4416582610654027550">有効な URL を入力してください</translation>
@@ -1045,6 +1049,7 @@
 <translation id="5562781907504170924">このタブは Bluetooth デバイスに接続しています。</translation>
 <translation id="5884474295213649357">このタブは USB デバイスに接続されています。</translation>
 <translation id="8466417995783206254">このタブではピクチャー イン ピクチャー モードで動画を再生しています。</translation>
+<translation id="2585724835339714757">このタブではデスクトップ画面が共有されます。</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - カメラまたはマイクで記録中です</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - タブのコンテンツが共有されています</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - ピクチャー イン ピクチャー モードで再生中の動画</translation>
@@ -1520,7 +1525,6 @@
 <translation id="8647834505253004544">有効なウェブアドレスではありません</translation>
 <translation id="2149850907588596975">パスワードとフォーム</translation>
 <translation id="8639963783467694461">自動入力の設定</translation>
-<translation id="2512222046227390255">フォームへの自動入力</translation>
 <translation id="7764225426217299476">住所を追加</translation>
 <translation id="5595485650161345191">住所の編集</translation>
 <translation id="6207937957461833379">国/地域</translation>
@@ -1602,6 +1606,7 @@
 <translation id="577322787686508614">「<ph name="DEVICE_NAME"/>」での読み取り操作は許可されていません。</translation>
 <translation id="3141917231319778873">「<ph name="DEVICE_NAME"/>」で、指定されたリクエストはサポートされていません。</translation>
 <translation id="6122875415561139701">「<ph name="DEVICE_NAME"/>」での書き込み操作は許可されていません。</translation>
+<translation id="439266289085815679">Bluetooth 設定は <ph name="USER_EMAIL"/> によって管理されています。</translation>
 <translation id="784934925303690534">期間</translation>
 <translation id="2496180316473517155">閲覧履歴</translation>
 <translation id="8662811608048051533">ほとんどのサイトからログアウトします。</translation>
@@ -1613,6 +1618,7 @@
 <translation id="4699172675775169585">キャッシュされた画像とファイル</translation>
 <translation id="1274997165432133392">Cookie と他のサイト データ</translation>
 <translation id="3838543471119263078">Cookie などのサイトデータやプラグイン データ</translation>
+<translation id="369489984217678710">パスワードとその他のログインデータ</translation>
 <translation id="6865313869410766144">自動入力フォームのデータ</translation>
 <translation id="177336675152937177">ホストされているアプリ データ</translation>
 <translation id="1718835860248848330">1 時間以内</translation>
@@ -1970,6 +1976,8 @@
 <translation id="5282733140964383898">「トラッキング拒否」を有効にすると、閲覧トラフィックにリクエストが含まれるようになります。ウェブサイトがリクエストに応答するかどうか、またリクエストがどのように解釈されるかによって、この影響は異なります。たとえば、このリクエストに対応して、ユーザーが過去にアクセスしたウェブサイトに関係なく広告を表示するウェブサイトもあります。トラッキングを拒否しても、多くのウェブサイトではユーザーの閲覧データが収集され利用されるのが現状です。たとえば、セキュリティの強化、ウェブサイトでのコンテンツ、サービス、広告、おすすめ情報の表示、レポート統計情報の作成などにこれらのデータが利用されます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">確認済みのアクセスを有効にする</translation>
 <translation id="5557991081552967863">スリープ中に Wi-Fi 接続を維持する</translation>
+<translation id="8562084399541316921">読み続ける</translation>
+<translation id="6201926614538916789">Bravebook でモバイル接続を使ってサイトの閲覧を再開します</translation>
 <translation id="1521442365706402292">証明書の管理</translation>
 <translation id="7075625805486468288">HTTPS / SSL の証明書と設定を管理します</translation>
 <translation id="8871974300055371298">コンテンツの設定</translation>
@@ -2005,6 +2013,8 @@
 <translation id="7136694880210472378">デフォルトに設定</translation>
 <translation id="102272308210570439">アシスタントに画面上のアイテムの使用を許可する</translation>
 <translation id="8624205858755890468">アシスタントによる関連情報、アプリ、操作の案内を有効にします。</translation>
+<translation id="4737453247496280552">「OK Brave Software」の検出</translation>
+<translation id="6409553560184414680">画面がオンの状態で「OK Brave Software」と話すといつでもアシスタントにアクセスできます。</translation>
 <translation id="8669919703154928649">アシスタントの通知を許可する</translation>
 <translation id="3430342160185525240">アシスタントの通知を有効にします。</translation>
 <translation id="3908743412684152579">Brave Software アシスタントの設定</translation>
@@ -2094,7 +2104,9 @@
 <translation id="8708000541097332489">終了時に消去</translation>
 <translation id="8037357227543935929">確認（デフォルト）</translation>
 <translation id="3427092606871434483">許可（デフォルト）</translation>
+<translation id="4879491255372875719">自動（デフォルト）</translation>
 <translation id="4312866146174492540">ブロック（デフォルト）</translation>
+<translation id="6979440798594660689">ミュート（デフォルト）</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="5063480226653192405">使用状況</translation>
 <translation id="3006881078666935414">使用状況データはありません</translation>
@@ -2126,6 +2138,7 @@
 <translation id="2318923050469484167">現在のシークレット モード セッション（<ph name="EMBEDDING"/>）</translation>
 <translation id="383891835335927981">拡大縮小値を設定したサイトはありません</translation>
 <translation id="3566721612727112615">サイトが追加されていません</translation>
+<translation id="8098574385249290065">サイトで音声が再生される可能性がある場合、Brave で自動的に許可またはブロックする（推奨）</translation>
 <translation id="5763751966069581670">USB デバイスが見つかりませんでした</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">サイトの追加</translation>
@@ -2169,25 +2182,20 @@
 <translation id="4562155214028662640">指紋を追加</translation>
 <translation id="1719312230114180055">注: 指紋は複雑なパスワードや PIN より安全面で劣る場合があります。</translation>
 <translation id="1927632033341042996">指紋 <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="2136573720723402846">指紋によるロック解除を有効にする</translation>
 <translation id="7665369617277396874">アカウントを追加</translation>
 <translation id="3422989461909154470">アプリやウェブサイトからログインしているすべての Brave Software アカウントをここで管理できます。</translation>
 <translation id="1987317783729300807">アカウント</translation>
 <translation id="8418661265246754237">Brave Software アカウント</translation>
-<translation id="2107494551712864447">指紋の登録</translation>
-<translation id="6388771388956873507">端末の指紋認証センサーに指を置きます</translation>
-<translation id="9170397650136757332">指紋のすべての部分を登録するために、指を少しずつ動かします</translation>
-<translation id="161707228174452095">指紋の登録完了</translation>
-<translation id="4576537685267142337">いったん指を上げて、センサーに置き直してください</translation>
-<translation id="494660967831069720">部分的なデータ</translation>
-<translation id="3064410671692449875">データが不足しています</translation>
-<translation id="2532026602297547439">センサーが汚れています</translation>
-<translation id="8642267168767642381">指の動きが遅すぎました</translation>
-<translation id="2039623879703305659">指の動きが速すぎました</translation>
-<translation id="7311891583377621132">指紋の別の部分を登録するため、指を少し移動してください</translation>
+<translation id="1059855432287631118">指紋の登録</translation>
+<translation id="878068003854005405">まず指をセンサーに置きます。</translation>
+<translation id="7189965711416741966">指紋の登録が完了しました。</translation>
+<translation id="9220820413868316583">いったん指を放してもう一度お試しください。</translation>
+<translation id="4534661889221639075">もう一度お試しください。</translation>
+<translation id="3645372836428131288">指紋の別の部分を登録するため、指を少し移動してください。</translation>
 <translation id="7345706641791090287">パスワードを再入力</translation>
 <translation id="381202950560906753">別の指紋を登録</translation>
-<translation id="6658023813581644008">ログイン用に Smart Lock を設定するには、パスワードを入力してください</translation>
+<translation id="6968288415730398122">画面ロックを設定するにはパスワードを入力します</translation>
+<translation id="4103091233824664032">画面ロックとログインを設定するにはパスワードを入力します</translation>
 <translation id="5449551289610225147">パスワードが無効です</translation>
 <translation id="5374359983950678924">画像を変更</translation>
 <translation id="6984299437918708277">ログイン画面で自分のアカウントに表示する画像を選択します</translation>
@@ -2216,7 +2224,7 @@
 <translation id="1136155683023653803">パスワード、ブックマーク、履歴、その他の設定がアカウントに同期されます</translation>
 <translation id="3267417306184901318">閲覧データとアクティビティ（Brave Software アカウントに同期）</translation>
 <translation id="1123187597739372905">同期設定を表示</translation>
-<translation id="8420510748452002155">カスタマイズされないサービス</translation>
+<translation id="5428209950370661546">他の Brave Software サービス</translation>
 <translation id="2055016640093734678">Brave Software サービスの設定を表示</translation>
 <translation id="7956662517480676674">同期と Brave Software サービス</translation>
 <translation id="2453021845418314664">同期の詳細設定</translation>
@@ -2399,9 +2407,14 @@
 <translation id="2315821125498993513">スマートフォンに接続できませんでした。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together がオンになっています</translation>
 <translation id="3088402208262982892">Better Together がオフになっています</translation>
+<translation id="7179187931092694802">スマートフォンで Bravebook のロックを解除します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">インスタント テザリング</translation>
+<translation id="4746351372139058112">メッセージ</translation>
+<translation id="2248072377758660530">Bravebook でテキスト メッセージを送受信します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="3936335337858561470">この端末を削除</translation>
 <translation id="3606712892509067288">Better Together から削除</translation>
+<translation id="5078490485380754244">端末の削除</translation>
+<translation id="8072033737676488034">スマートフォンを削除して Better Together を無効にする</translation>
 <translation id="7878562273885520351">パスワードが不正使用される可能性があります</translation>
 <translation id="6582421931165117398">個人情報を保護するために、今すぐパスワードを変更してください。パスワードを変更する際は、まずログインが求められます。</translation>
 <translation id="1089439967362294234">パスワードを変更</translation>
@@ -2502,6 +2515,7 @@
 <translation id="2202898655984161076">プリンタのリスト作成中に問題が発生しました。一部のプリンタが <ph name="CLOUD_PRINT_NAME"/> に正常に登録されていない可能性があります。</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> コネクタのプロセスで問題が発生しました。再起動しますか？</translation>
 <translation id="6904655473976120856">終了するには [アプリ] ボタンを押します</translation>
+<translation id="79766959863778284">XR 分離端末サービス</translation>
 <translation id="8909833622202089127">サイトで現在地が追跡されています</translation>
 <translation id="375636864092143889">サイトでマイクが使用されています</translation>
 <translation id="310671807099593501">サイトで Bluetooth が使用されています</translation>

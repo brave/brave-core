@@ -287,6 +287,9 @@
     <message name="IDS_SETTINGS_MONO_AUDIO_LABEL" desc="Label for checkbox which enables mono audio output.">
       Play the same audio through all speakers (mono audio)
     </message>
+    <message name="IDS_SETTINGS_STARTUP_SOUND_LABEL" desc="Label for checkbox which enables startup sound.">
+      Play an audio indicator on startup
+    </message>
     <message name="IDS_SETTINGS_ACCESSIBILITY_EXPLANATION" desc="Informational message at the top of the accessibility section of the settings page about enabling additional accessibility-related features.">
       Enable accessibility features to make your device easier to use.
     </message>
@@ -622,15 +625,8 @@
   <message name="IDS_SETTINGS_AUTOFILL" desc="Name for the autofill section and toggle.">
     Autofill settings
   </message>
-  <!-- TODO(https://crbug.com/854562): Rename this to "IDS_SETTINGS_AUTOFILL" once Autofill Home is fully launched. -->
-  <message name="IDS_SETTINGS_AUTOFILL_AUTOFILL_HOME" desc="Name for the addresses section used for Autofill Home.">
-    Addresses
-  </message>
   <message name="IDS_SETTINGS_GOOGLE_PAYMENTS" desc="Label used to differentiate when an address or credit card entry comes from Brave Pay. This should follow the casing of the 'Brave Pay' brand. 'Brave Pay' should not be translated as it is the product name.">
     Brave Pay
-  </message>
-  <message name="IDS_SETTINGS_AUTOFILL_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether forms should be autofilled with data such as addresses and credit cards, but not passwords.">
-    Autofill forms
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_ADDRESSES_ADD_TITLE" desc="This is the title for the 'Add address' dialog. This dialog allows a user to create a new address.">
     Add address
@@ -675,6 +671,18 @@
   </message>
   <message name="IDS_SETTINGS_ADD_CREDIT_CARD_TITLE" desc="The title for the dialog that's shown when entering the information for a new card. This can be either credit, debit, or prepaid card.">
     Add card
+  </message>
+  <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_LABEL" desc="Label for the field to migrate the locally cached credit card to Brave Payments for single migratable card. Clicking this will upload migratable credit cards to Brave Payments.">
+    Save card to use Brave Pay
+  </message>
+  <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit cards to Brave Payments for multiple migratable cards. Clicking this will upload migratable credit cards to Brave Payments.">
+    Save cards to use Brave Pay
+  </message>
+  <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates one of local cards can only be used on this device.">
+    1 of your cards can only be used on this device
+  </message>
+  <message name="IDS_SETTINGS_MULTIPLE_MIGRATABLE_CARDS_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates user has multiple migratable cards on this device.">
+    Some of your cards can only be used on this device
   </message>
   <message name="IDS_SETTINGS_NAME_ON_CREDIT_CARD" desc="The title for the input that lets users modify the name on the credit card.">
     Name on card
@@ -937,6 +945,9 @@
     </message>
     <message name="IDS_SETTINGS_BLUETOOTH_CONNECT_WRITE_NOT_PERMITTED">
       Write operation is not permitted on: "<ph name="DEVICE_NAME">$1<ex>Nexus 4</ex></ph>".
+    </message>
+    <message name="IDS_SETTINGS_BLUETOOTH_PRIMARY_USER_CONTROLLED" desc="Settings &gt; Bluetooth &gt; Text to show when Bluetooth configuration is controlled by the primary user.">
+      Bluetooth configuration is controlled by <ph name="USER_EMAIL">$1<ex>joe@gmail.com</ex></ph>.
     </message>
   </if>
 
@@ -3328,9 +3339,6 @@
     <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NEW_FINGERPRINT_DEFAULT_NAME" desc="The default name (plus a number for a newly added fingerprint).">
       Finger <ph name="NEW_FINGER_NUMBER">$1<ex>1</ex></ph>
     </message>
-    <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_ENABLE_FINGERPRINT_CHECKBOX_LABEL" desc="The text on the label of the checkbox which allows users to enable or disable fingerprint usage.">
-      Enable fingerprint unlock
-    </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ADD_ACCOUNT_LABEL" desc="Label of the Add account button in Account Manager.">
       Add account
     </message>
@@ -3343,38 +3351,29 @@
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_PAGE_TITLE" desc="Title of Account Manager Settings page.">
       Brave Accounts
     </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SUBMENU_LABEL" desc="Label of Account Manager submenu in Settings page.">
+      Brave Accounts
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button in Account Manager.">
+      Remove account from this device
+    </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_TITLE" desc="Title of the add fingerprint dialog popup.">
-      Add a fingerprint
+      Registering fingerprint
     </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER" desc="Text in the add fingerprint dialog telling users what to do for step 1.">
-      Find the fingerprint sensor on your device and touch it with your finger
-    </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_MOVE_FINGER" desc="Text in the add fingerprint dialog telling users what to do for step 2.">
-      Now move your finger slightly to capture all the different parts of your fingerprint
+      Let's get started. Place your finger on the sensor.
     </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_READY" desc="Text in the add fingerprint dialog telling users what to do for step 3.">
-      Fingerprint added!
+      Fingerprint added.
     </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_LIFT_FINGER" desc="Warning text in the add fingerprint dialog to tell users to lift their finger and touch the sensor again.">
-      Lift finger, then touch sensor again
+      Lift then try again.
     </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_PARTIAL_DATA" desc="Warning text in the add fingerprint dialog to tell users partial data was captured.">
-      Partial data
-    </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSUFFICIENT_DATA" desc="Warning text in the add fingerprint dialog to tell users insufficient data was captured.">
-      Insufficient data
-    </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_SENSOR_DIRTY" desc="Warning text in the add fingerprint dialog to tell users the fingerprint sensor is dirty.">
-      Sensor dirty
-    </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_FINGER_TOO_SLOW" desc="Warning text in the add fingerprint dialog to tell users they have moved their finger too slow.">
-      Finger moved too slowly
-    </message>
-    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_FINGER_TOO_FAST" desc="Warning text in the add fingerprint dialog to tell users they have moved their finger too fast.">
-      Finger moved too quickly
+    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_TRY_AGAIN" desc="Warning text in the add fingerprint dialog to tell users to try again.">
+      Try again.
     </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_FINGER_IMMOBILE" desc="Warning text in the add fingerprint dialog to tell users they should move their finger slightly to capture different parts of the fingerprint.">
-      Move slightly to capture a different part of the fingerprint
+      Move slightly to capture a different part of the fingerprint.
     </message>
     <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_TITLE" desc="Title of the password prompt dialog popup.">
       Confirm your password
@@ -3383,10 +3382,10 @@
       Add another
     </message>
     <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_ENTER_PASSWORD_LOCK" desc="Text above a password input field that tells the user they need to submit their password to configure these settings.">
-      To set up screen lock, enter your password
+      Enter your password to configure screen lock
     </message>
     <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_ENTER_PASSWORD_LOGIN_LOCK" desc="Text above a password input field that tells the user they need to submit their password to configure these settings.">
-      To set up Smart Lock for sign-in, enter your password
+      Enter your password to configure screen lock and sign-in
     </message>
     <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_PASSWORD_LABEL" desc="An input box label that tells the user to enter their password in that input box.">
       Password
@@ -3533,7 +3532,7 @@
     Show sync settings
   </message>
   <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL" desc="Title for a section that shows options for various Brave services">
-    Non-personalized services
+    Other Brave services
   </message>
   <message name="IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the google services settings. Only visible by screen reader software.">
     Show Brave services settings
@@ -4273,6 +4272,12 @@
     </message>
     <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE_EXPLANATION" desc="Explanation on a clickable menu item that makes the Bravebook forget the user's phone. It tells the user that the menu item will cause their phone to stop acting as a partner for their Bravebook for multidevice features.">
       Remove from Better Together
+    </message>
+    <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_DEVICE_DIALOG_HEADING" desc="Heading for a dialog that lets the user choose if their Bravebook should forget their phone. This means they will no longer have access to multidevice features.">
+      Forget device
+    </message>
+    <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_DEVICE_DIALOG_MESSAGE" desc="Text of a dialog that lets the user choose if their Bravebook should forget their phone. This means they will no longer have access to multidevice features.">
+      Remove your phone and disable Better Together
     </message>
   </if>
 

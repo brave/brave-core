@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/settings_private/prefs_util.cc b/chrome/browser/extensions/api/settings_private/prefs_util.cc
-index 1e10836e035de498a200493f088ccd9c2ebfe80c..5e24a4169f3b82916a96b43decfe054b07f8b114 100644
+index 7b407b6c595ccd1daf4f2e1de66560c5e2282399..07e14296595917a9a0eedac800f6cf17a6d664a3 100644
 --- a/chrome/browser/extensions/api/settings_private/prefs_util.cc
 +++ b/chrome/browser/extensions/api/settings_private/prefs_util.cc
-@@ -515,6 +515,10 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetWhitelistedKeys() {
+@@ -507,6 +507,10 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetWhitelistedKeys() {
        settings_api::PrefType::PREF_TYPE_BOOLEAN;
    (*s_whitelist)[::prefs::kImportDialogSearchEngine] =
        settings_api::PrefType::PREF_TYPE_BOOLEAN;
