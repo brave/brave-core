@@ -21,7 +21,7 @@ cr.define('settings', function() {
 
   const privacyHandler = {
     get: function(obj, prop) {
-      return prop === 'searchPrediction' ? false : true;
+      return true;
     }
   }
 
