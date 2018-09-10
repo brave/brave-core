@@ -52,6 +52,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::unique_ptr<content::NavigationUIData> GetNavigationUIData(
       content::NavigationHandle* navigation_handle) override;
+  void AdjustUtilityServiceProcessCommandLine(
+      const service_manager::Identity& identity,
+      base::CommandLine* command_line) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);

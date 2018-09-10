@@ -5,14 +5,12 @@
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_rewards::RewardsServiceFactory::GetInstance();
-  TorLauncherFactory::GetInstance();
   TorProfileServiceFactory::GetInstance();
 }
 

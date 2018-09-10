@@ -6,10 +6,13 @@
 
 #include "base/bind.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/common/tor/tor_launcher.mojom.h"
+#include "brave/common/tor/switches.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
@@ -200,4 +203,19 @@ BraveContentBrowserClient::GetNavigationUIData(
                                                    navigation_ui_data.get());
   return std::move(navigation_ui_data);
 
+}
+
+void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
+    const service_manager::Identity& identity,
+    base::CommandLine* command_line) {
+  ChromeContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
+    identity, command_line);
+
+  if (identity.name() == tor::mojom::kTorLauncherServiceName) {
+    base::FilePath path =
+      g_brave_browser_process->tor_client_updater()->GetExecutablePath();
+    DCHECK(!path.empty());
+    command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
+                                   path.BaseName());
+  }
 }

@@ -4,6 +4,8 @@ source_set("tor") {
   sources = [
     "pref_names.cc",
     "pref_names.h",
+    "switches.cc",
+    "switches.h",
     "tor_common.cc",
     "tor_common.h",
     "tor_constants.cc",
