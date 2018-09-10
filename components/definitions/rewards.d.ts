@@ -82,11 +82,13 @@ declare namespace Rewards {
     expiryTime: number
   }
 
+  export type Excluded = 0 | 1 | 2
+
   export interface Publisher {
     publisherKey: string
     percentage: number
     verified: boolean
-    excluded: number
+    excluded: Excluded
     url: string
     name: string
     provider: string
