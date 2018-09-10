@@ -1,7 +1,25 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index ed257b73ca005b0f90d64927c3edc7862efb00f6..b1714709756a1e7e15b1a053bf2335ec017b8ae8 100644
+index 0dcdb4bebb1286e493d0b85eac586954353e10d1..5fe6861d927b1eb38336b073e8c8c50f8094c620 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
+@@ -76,7 +76,7 @@
+ using base::UserMetricsAction;
+ using MD = ui::MaterialDesignController;
+ 
+-namespace {
++namespace chrome_browser_ui_views_tabs_tab_cc {
+ 
+ constexpr int kExtraLeftPaddingToBalanceCloseButtonPadding = 2;
+ constexpr int kRefreshExtraLeftPaddingToBalanceCloseButtonPadding = 4;
+@@ -99,7 +99,7 @@ constexpr float kSelectedTabThrobScale = 0.95f - kSelectedTabOpacity;
+ 
+ // Height of the separator painted on the left edge of the tab for the material
+ // refresh mode.
+-constexpr int kTabSeparatorHeight = 20;
++constexpr int kTabSeparatorHeight = 24;
+ constexpr int kTabSeparatorTouchHeight = 24;
+ 
+ // Helper functions ------------------------------------------------------------
 @@ -230,7 +230,7 @@ gfx::Path GetRefreshInteriorPath(float scale,
    bottom_offset *= scale;
  
@@ -11,7 +29,7 @@ index ed257b73ca005b0f90d64927c3edc7862efb00f6..b1714709756a1e7e15b1a053bf2335ec
    const float top_radius = std::max(radius - stroke_thickness, 0.f);
  
    // Compute |extension| as the width outside the separators.  This is a fixed
-@@ -362,8 +362,8 @@ gfx::Path GetRefreshBorderPath(const gfx::Rect& bounds,
+@@ -366,8 +366,8 @@ gfx::Path GetRefreshBorderPath(const gfx::Rect& bounds,
    bottom_offset *= scale;
  
    const float top_radius = GetTopCornerRadiusForWidth(bounds.width()) * scale;
@@ -22,3 +40,11 @@ index ed257b73ca005b0f90d64927c3edc7862efb00f6..b1714709756a1e7e15b1a053bf2335ec
  
    // See comments in GetRefreshInteriorPath().
    const float extension = Tab::GetCornerRadius() * scale;
+@@ -491,6 +491,7 @@ gfx::Path GetBorderPath(float scale,
+ }
+ 
+ }  // namespace
++using namespace chrome_browser_ui_views_tabs_tab_cc;
+ 
+ // Tab -------------------------------------------------------------------------
+ 
