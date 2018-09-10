@@ -49,6 +49,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublishersLastRefreshTimestamp(uint64_t ts);
 
+  void setExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude);
+
   void setPublisherAllowNonVerified(const bool& allow);
   void setPublisherAllowVideos(const bool& allow);
   void setBalanceReport(ledger::PUBLISHER_MONTH month,
@@ -103,6 +105,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::PaymentData payment_data,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
+
+  void onSetExcludeInternal(
+    ledger::PUBLISHER_EXCLUDE exclude,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
   double concaveScore(const uint64_t& duration);
 
