@@ -69,7 +69,7 @@
       <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
 
       <!-- Browser resources -->
-      <include name="IDR_BRAVE_EXTENSON" file="../../vendor/brave-extension/build/manifest.json" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSON" file="${root_gen_dir}/brave_extension/manifest.json" type="BINDATA" use_base_dir="false"/>
 
       <!-- WebUI Brave Rewards resources -->
       <include name="IDR_BRAVE_REWARDS_HTML" file="../brave_rewards/ui/brave_rewards.html" type="BINDATA" />
