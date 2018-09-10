@@ -4,16 +4,23 @@
 
 import * as React from 'react'
 
-import Page from '../../../../src/old/page/index'
-import { Heading } from '../../../../src/old/headings/index'
-import Paragraph from '../../../../src/old/paragraph/index'
-import { Grid, Column } from '../../../../src/components/layout/gridList/index'
-import UnstyledButton from '../../../../src/old/unstyledButton/index'
-import { PushButton } from '../../../../src/old/v1/pushButton/index'
-import Image from '../../../../src/old/v1/image/index'
-import ArrowRight from '../../../../src/old/v1/icons/arrowRight'
+import Button from '../../../../src/components/buttonsIndicators/button'
 
-import customStyle from './theme'
+import { Title, Text } from '../../../../src/features/welcome/text'
+import * as Image from '../../../../src/features/welcome/image'
+import { SkipButton, Bullet } from '../../../../src/features/welcome/button'
+import { WelcomePanel, WaveBackground } from '../../../../src/features/welcome/page'
+
+import {
+  Content,
+  Footer,
+  FooterLeftColumn,
+  FooterMiddleColumn,
+  FooterRightColumn
+} from '../../../../src/features/welcome/wrappers'
+
+import { ArrowRightIcon } from '../../../../src/components/icons'
+
 import locale from './fakeLocale'
 
 // Images
@@ -35,9 +42,6 @@ export interface WelcomePageState {
 class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
   constructor (props: {}) {
     super(props)
-    this.onClickNext = this.onClickNext.bind(this)
-    this.onSkipWelcomeTour = this.onSkipWelcomeTour.bind(this)
-    this.onClickDone = this.onClickDone.bind(this)
     this.state = { currentScreen: 1 }
   }
 
@@ -47,56 +51,81 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get firstScreen () {
     return (
-      <section style={customStyle.content}>
-        <Image customStyle={customStyle.braveLogo} src={braveLogo} />
-        <Heading level={1} customStyle={customStyle.title} text={locale.welcome} />
-        <Paragraph customStyle={customStyle.text} text={locale.whatIsBrave} />
-        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.letsGo}</PushButton>
-      </section>
+      <Content>
+        <Image.Brave src={braveLogo} />
+        <Title>{locale.welcome}</Title>
+        <Text>{locale.whatIsBrave}</Text>
+        <Button
+          level='primary'
+          type='accent'
+          size='large'
+          text={locale.letsGo}
+        />
+      </Content>
     )
   }
 
   get secondScreen () {
     return (
-      <section style={customStyle.content}>
-        <Image customStyle={customStyle.paymentsImage} src={paymentsImage} />
-        <Heading level={1} customStyle={customStyle.title} text={locale.enableBraveRewards} />
-        <Paragraph customStyle={customStyle.text} text={locale.setupBraveRewards} />
-        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.enableRewards}</PushButton>
-      </section>
+      <Content>
+        <Image.Payments src={paymentsImage} />
+        <Title>{locale.enableBraveRewards}</Title>
+        <Text>{locale.setupBraveRewards}</Text>
+        <Button
+          level='primary'
+          type='accent'
+          size='large'
+          text={locale.enableRewards}
+        />
+      </Content>
     )
   }
 
   get thirdScreen () {
     return (
-      <section style={customStyle.content}>
-        <Image customStyle={customStyle.importImage} src={importImage} />
-        <Heading level={1} customStyle={customStyle.title} text={locale.importFromAnotherBrowser} />
-        <Paragraph customStyle={customStyle.text} text={locale.setupImport} />
-        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.importNow}</PushButton>
-      </section>
+      <Content>
+        <Image.Import src={importImage} />
+        <Title>{locale.importFromAnotherBrowser}</Title>
+        <Text>{locale.setupImport}</Text>
+        <Button
+          level='primary'
+          type='accent'
+          size='large'
+          text={locale.importNow}
+        />
+      </Content>
     )
   }
 
   get fourthScreen () {
     return (
-      <section style={customStyle.content}>
-        <Image customStyle={customStyle.shieldsImage} src={shieldsImage} />
-        <Heading level={1} customStyle={customStyle.title} text={locale.manageShields} />
-        <Paragraph customStyle={customStyle.text} text={locale.adjustProtectionLevel} />
-        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.shieldSettings}</PushButton>
-      </section>
+      <Content>
+        <Image.Shields src={shieldsImage} />
+        <Title>{locale.manageShields}</Title>
+        <Text>{locale.adjustProtectionLevel}</Text>
+        <Button
+          level='primary'
+          type='accent'
+          size='large'
+          text={locale.shieldSettings}
+        />
+      </Content>
     )
   }
 
   get fifthScreen () {
     return (
-      <section style={customStyle.content}>
-        <Image customStyle={customStyle.featuresImage} src={featuresImage} />
-        <Heading level={1} customStyle={customStyle.title} text={locale.customizePreferences} />
-        <Paragraph customStyle={customStyle.text} text={locale.configure} />
-        <PushButton color='primary' size='large' customStyle={customStyle.mainButton}>{locale.preferences}</PushButton>
-      </section>
+      <Content>
+        <Image.Features src={featuresImage} />
+        <Title>{locale.customizePreferences}</Title>
+        <Text>{locale.configure}</Text>
+        <Button
+          level='primary'
+          type='accent'
+          size='large'
+          text={locale.preferences}
+        />
+      </Content>
     )
   }
 
@@ -119,82 +148,66 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get footer () {
     return (
-      <footer>
-        <Grid columns={3} customStyle={customStyle.footer}>
-          <Column size={1} customStyle={customStyle.footerColumnLeft}>
-            <UnstyledButton
-              customStyle={customStyle.skip}
-              text={locale.skipWelcomeTour}
-              onClick={this.onSkipWelcomeTour}
-            />
-          </Column>
-          <Column size={1} customStyle={customStyle.footerColumnCenter}>
-            {
-              Array.from({ length: this.totalScreensSize }, (v: undefined, k: number) => {
-                return (
-                  <UnstyledButton
-                    customStyle={
-                      this.state.currentScreen === k + 1
-                      ? customStyle.bulletActive
-                      : customStyle.bullet
-                    }
-                    text='•'
-                    key={k}
-                    onClick={this.onClickSlideBullet.bind(this, k + 1)}
-                  />
-                )
-              })}
-          </Column>
-          <Column size={1} customStyle={customStyle.footerColumnRight}>
+      <Footer>
+        <FooterLeftColumn>
+          <SkipButton onClick={this.onSkipWelcomeTour}>
+            {locale.skipWelcomeTour}
+          </SkipButton>
+        </FooterLeftColumn>
+        <FooterMiddleColumn>
+          {
+            Array.from({ length: this.totalScreensSize }, (v: undefined, k: number) => {
+              return (
+                <Bullet
+                  active={this.state.currentScreen === k + 1}
+                  key={k}
+                  onClick={this.onClickSlideBullet.bind(this, k + 1)}
+                >
+                  &bull;
+                </Bullet>
+              )
+            })}
+        </FooterMiddleColumn>
+        <FooterRightColumn>
           {
             this.state.currentScreen !== this.totalScreensSize
-             ? (
-              <PushButton
-                customStyle={customStyle.sideButton}
-                color='secondary'
-                onClick={this.onClickNext}
-              >
-                <span
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly'
-                  }}
-                >
-                  {locale.next} <ArrowRight />
-                </span>
-              </PushButton>
-             )
-             : (
-              <PushButton
-                customStyle={customStyle.sideButton}
-                color='secondary'
-                onClick={this.onClickDone}
-              >
-                {locale.done}
-              </PushButton>
+              ? (
+                <Button
+                  level='secondary'
+                  type='default'
+                  onClick={this.onClickNext}
+                  text={locale.next}
+                  icon={{ position: 'after', image: <ArrowRightIcon /> }}
+                />
+              )
+              : (
+                <Button
+                  level='secondary'
+                  type='default'
+                  onClick={this.onClickDone}
+                  text={locale.done}
+                />
             )
           }
-          </Column>
-        </Grid>
-      </footer>
+        </FooterRightColumn>
+      </Footer>
     )
   }
 
-  onClickSlideBullet (nextScreen: number) {
+  onClickSlideBullet = (nextScreen: number) => {
     this.setState({ currentScreen: nextScreen })
   }
 
-  onClickNext () {
+  onClickNext = () => {
     this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  onClickDone () {
+  onClickDone = () => {
     // fades out
     // fades in to new tab page
   }
 
-  onSkipWelcomeTour () {
+  onSkipWelcomeTour = () => {
     // fades out
     // fades in to new tab page
   }
@@ -218,24 +231,17 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   render () {
     return (
-      <div
-        style={{
-          height: '-webkit-fill-available',
-          width: '-webkit-fill-available',
-          backgroundImage: `url('${background}')`,
-          backgroundRepeat: 'repeat-x',
-          backgroundSize: 'contain',
-          transition: 'background-position-x 1.5s ease-in-out',
-          backgroundPositionX: this.backgroundPosition
+      <WaveBackground
+        background={{
+          image: background,
+          position: this.backgroundPosition
         }}
       >
-        <Page customStyle={customStyle.welcomePage}>
-          <div style={customStyle.panel}>
+          <WelcomePanel>
             {this.currentScreen}
             {this.footer}
-          </div>
-        </Page>
-      </div>
+          </WelcomePanel>
+      </WaveBackground>
     )
   }
 }
