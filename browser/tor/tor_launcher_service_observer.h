@@ -7,9 +7,9 @@
 
 namespace tor {
 
-class TorLauncherServiceObserver {
+class TorLauncherServiceObserver : public base::CheckedObserver {
  public:
-  virtual ~TorLauncherServiceObserver() {}
+  ~TorLauncherServiceObserver() override {}
 
   virtual void OnTorLauncherCrashed() {};
   virtual void OnTorCrashed(int64_t pid) {};

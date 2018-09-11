@@ -16,7 +16,7 @@ void SwitchToTorProfile(ProfileManager::CreateCallback callback) {
                        callback,
                        false,
                        false),
-      base::string16(), std::string(), std::string());
+      base::string16(), std::string());
 }
 #endif
 

@@ -19,7 +19,8 @@ class URLRequestContextGetter;
 
 namespace tor {
 
-class TorProfileServiceImpl : public TorProfileService {
+class TorProfileServiceImpl : public TorProfileService,
+                              public base::CheckedObserver {
  public:
   TorProfileServiceImpl(Profile* profile);
   ~TorProfileServiceImpl() override;
