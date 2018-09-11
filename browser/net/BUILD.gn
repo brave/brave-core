@@ -18,10 +18,11 @@ source_set("net") {
     "brave_system_network_delegate.cc",
     "brave_system_network_delegate.h",
     "url_context.cc",
-    "url_context.h"
+    "url_context.h",
   ]
   deps = [
     "//brave/browser/safebrowsing",
+    "//brave/components/brave_webtorrent/browser/net",
     "//chrome/browser",
     "//content/public/browser",
     "//net",

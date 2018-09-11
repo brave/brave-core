@@ -6,6 +6,7 @@ import * as WebTorrent from 'webtorrent'
 import { addTorrentEvents } from './events/torrentEvents'
 import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
+import { Instance } from 'parse-torrent'
 
 let webTorrent: WebTorrent.Instance
 let servers: { [key: string]: any } = { }
@@ -38,7 +39,7 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
   }
 }
 
-export const addTorrent = (torrentId: string) => {
+export const addTorrent = (torrentId: string | Instance) => {
   const torrentObj = webTorrent.add(torrentId)
   addTorrentEvents(torrentObj)
 }

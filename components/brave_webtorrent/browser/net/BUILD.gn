@@ -1,0 +1,12 @@
+source_set("net") {
+  sources = [
+    "brave_torrent_redirect_network_delegate_helper.cc",
+    "brave_torrent_redirect_network_delegate_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//net",
+  ]
+}

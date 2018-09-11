@@ -20,3 +20,6 @@ const char kCookieHeader[] = "Cookie";
 // Intentional misspelling on referrer to match HTTP spec
 const char kRefererHeader[] = "Referer";
 const char kUserAgentHeader[] = "User-Agent";
+
+const char kBittorrentMimeType[] = "application/x-bittorrent";
+const char kOctetStreamMimeType[] = "application/octet-stream";
