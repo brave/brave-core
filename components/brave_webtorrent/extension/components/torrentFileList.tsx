@@ -52,7 +52,12 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
           return (<div />) // No download links until the server is ready
         }
       } else {
-        const href = torrentId + '&ix=' + ix
+        // use # for .torrent links, since query params might cause the remote
+        // server to return 404
+        const suffix = /^https?:/.test(torrentId)
+          ? '#ix=' + ix
+          : '&ix=' + ix
+        const href = torrentId + suffix
         return (<a href={href} target='_blank'> {file.name} </a>)
       }
     }

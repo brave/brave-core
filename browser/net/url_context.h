@@ -16,6 +16,7 @@ namespace brave {
 enum BraveNetworkDelegateEventType {
   kOnBeforeRequest,
   kOnBeforeStartTransaction,
+  kOnHeadersReceived,
   kUnknownEventType
 };
 
@@ -27,6 +28,9 @@ struct BraveRequestInfo {
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
   net::HttpRequestHeaders* headers = nullptr;
+  const net::HttpResponseHeaders* original_response_headers = nullptr;
+  scoped_refptr<net::HttpResponseHeaders>* override_response_headers = nullptr;
+  GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
@@ -44,6 +48,14 @@ using OnBeforeStartTransactionCallback =
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnHeadersReceivedCallback =
+    base::Callback<int(net::URLRequest* request,
+        const net::HttpResponseHeaders* original_response_headers,
+        scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+        GURL* allowed_unsafe_redirect_url,
+        const ResponseCallback& next_callback,
+        std::shared_ptr<BraveRequestInfo> ctx)>;
+
 }  // namespace brave
 
 

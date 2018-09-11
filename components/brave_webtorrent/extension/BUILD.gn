@@ -14,6 +14,7 @@ transpile_web_ui("brave_webtorrent") {
     "background/actions/webtorrentActions.ts",
     "background/actions/windowActions.ts",
     "background/api/tabs_api.ts",
+    "background/api/torrent_api.ts",
     "background/events/tabsEvents.ts",
     "background/events/torrentEvents.ts",
     "background/events/webtorrentEvents.ts",

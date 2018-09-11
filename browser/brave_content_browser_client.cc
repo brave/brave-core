@@ -84,6 +84,8 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   // before anything else can.
   handler->AddHandlerPair(&webtorrent::HandleMagnetURLRewrite,
                           content::BrowserURLHandler::null_handler());
+  handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
+                          &webtorrent::HandleTorrentURLReverseRewrite);
   handler->AddHandlerPair(&HandleURLRewrite,
                           &HandleURLReverseRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);

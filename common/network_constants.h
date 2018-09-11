@@ -19,5 +19,7 @@ extern const char kCookieHeader[];
 extern const char kRefererHeader[];
 extern const char kUserAgentHeader[];
 
+extern const char kBittorrentMimeType[];
+extern const char kOctetStreamMimeType[];
 #endif  // BRAVE_COMMON_NETWORK_CONSTANTS_H_
 
