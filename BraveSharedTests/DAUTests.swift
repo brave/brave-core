@@ -11,16 +11,6 @@ class DAUTests: XCTestCase {
     // 7-7-07 at 12noon GMT
     private let dau = DAU(date: Date(timeIntervalSince1970: 1183809600))
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     func testChannelParam() {
         let releaseExpected = URLQueryItem(name: "channel", value: "stable")
         XCTAssertEqual(dau.channelParam(for: .release), releaseExpected)

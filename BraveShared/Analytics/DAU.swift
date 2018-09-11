@@ -6,7 +6,6 @@ import XCGLogger
 
 private let log = Logger.browserLogger
 
-// Unit tests for DAU are located in brave/tests_src/unit/DauTest.swift.
 public class DAU {
 
     /// Default installation date for legacy woi version.
@@ -70,7 +69,7 @@ public class DAU {
     }
     
     
-    /** Return params query or nil if no ping should be send to server. */
+    /// Return params query or nil if no ping should be send to server.
     func paramsAndPrefsSetup() -> [URLQueryItem]? {
         var params = [channelParam(), versionParam()]
         
@@ -137,8 +136,8 @@ public class DAU {
         return URLQueryItem(name: "first", value: isFirst.description)
     }
     
-    /** All first app installs are normalized to first day of the week.
-     Eg. user installs app on wednesday 2017-22-11, his install date is recorded as of 2017-20-11(Monday) */
+    /// All first app installs are normalized to first day of the week.
+    /// e.g. user installs app on wednesday 2017-22-11, his install date is recorded as of 2017-20-11(Monday)
     func weekOfInstallationParam(for woi: String? = Preferences.DAU.weekOfInstallation.value) -> URLQueryItem {
         var woi = woi
         // This _should_ be set all the time
