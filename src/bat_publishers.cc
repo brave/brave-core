@@ -89,7 +89,7 @@ void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
 }
 
 bool BatPublishers::saveVisitAllowed() const {
-  return (ledger_->GetAutoContribute());
+  return (ledger_->GetRewardsMainEnabled() && ledger_->GetAutoContribute());
 }
 
 void BatPublishers::saveVisit(const std::string& publisher_id,
