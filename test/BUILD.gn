@@ -148,6 +148,7 @@ static_library("browser_tests_runner") {
 test("brave_browser_tests") {
   sources = [
     "//brave/app/brave_main_delegate_browsertest.cc",
+    "//brave/app/sharedarraybuffer_disabledtest.cc",
     "//brave/chromium_src/chrome/browser/google/chrome_google_url_tracker_client_browsertest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/battery/navigator_batterytest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc",
