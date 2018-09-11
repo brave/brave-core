@@ -1,0 +1,12 @@
+diff --git a/services/service_manager/sandbox/win/sandbox_win.cc b/services/service_manager/sandbox/win/sandbox_win.cc
+index d330dd221cb62822be845c742d32ac7fc164db96..8065f0ff7cd34a185199831fbbc19e9e36d01ea0 100644
+--- a/services/service_manager/sandbox/win/sandbox_win.cc
++++ b/services/service_manager/sandbox/win/sandbox_win.cc
+@@ -831,6 +831,7 @@ sandbox::ResultCode SandboxWin::StartSandboxedProcess(
+           service_manager::switches::kNoSandbox)) {
+     base::LaunchOptions options;
+     options.handles_to_inherit = handles_to_inherit;
++    options.start_hidden = true;
+     if (sandbox_type == SANDBOX_TYPE_NETWORK) {
+       // Launch the process in a job to ensure that the network process doesn't
+       // outlive the browser. This could happen if there is a lot of I/O on
