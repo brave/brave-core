@@ -21,7 +21,16 @@ export const getWebTorrent = () => webTorrent
 export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string) => void) => {
   if (!torrent.infoHash) return // torrent is not ready
 
-  const server = torrent.createServer()
+  const opts = {
+    // Only allow requests from this origin ('chrome-extension://...) so
+    // websites cannot violate same-origin policy by reading contents of
+    // active torrents.
+    origin: window.location.origin,
+    // Use hostname option to mitigate DNS rebinding
+    // Ref: https://github.com/brave/browser-laptop/issues/12616
+    hostname: 'localhost'
+  }
+  const server = torrent.createServer(opts)
   if (!server) return
 
   try {
