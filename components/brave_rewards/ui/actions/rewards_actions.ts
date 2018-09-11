@@ -91,3 +91,7 @@ export const onContributeList = (list: Rewards.Publisher[]) => action(types.ON_C
 export const onBalanceReports = (reports: Record<string, Rewards.Report>) => action(types.ON_BALANCE_REPORTS, {
   reports
 })
+
+export const excludePublisher = (publisherKey: string) => action(types.ON_EXCLUDE_PUBLISHER, {
+  publisherKey
+})

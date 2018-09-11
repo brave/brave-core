@@ -52,6 +52,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void SaveSetting(const base::ListValue* args);
   void OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList>, uint32_t record);
   void GetBalanceReports(const base::ListValue* args);
+  void ExcludePublisher(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -116,6 +117,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("getBalanceReports",
                                     base::BindRepeating(&RewardsDOMHandler::GetBalanceReports,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("excludePublisher",
+                                    base::BindRepeating(&RewardsDOMHandler::ExcludePublisher,
                                                         base::Unretained(this)));
 }
 
@@ -391,6 +395,14 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
   }
 }
 
+void RewardsDOMHandler::ExcludePublisher(const base::ListValue *args) {
+  if (rewards_service_) {
+    std::string publisherKey;
+    args->GetString(0, &publisherKey);
+    rewards_service_->ExcludePublisher(publisherKey);
+  }
+}
+
 void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList> list, uint32_t record) {
   if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
@@ -399,6 +411,7 @@ void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::Cont
       publisher->SetDouble("percentage", item.percentage);
       publisher->SetString("publisherKey", item.id);
       publisher->SetBoolean("verified", item.verified);
+      publisher->SetInteger("excluded", item.excluded);
       publisher->SetString("name", item.name);
       publisher->SetString("provider", item.provider);
       publisher->SetString("url", item.url);
