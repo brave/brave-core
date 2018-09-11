@@ -387,12 +387,41 @@ void ControllerImpl::OnGetExistingObjects(const std::string &category_name,
     SendResolveSyncRecords(category_name, records_and_existing_objects);
   } else if (category_name == jslib_const::kHistorySites) {
     // Queries to history are asynchronous, juggle the threads
-    // The same further for obj db 
-    ;
+    // The same further for obj db
+    GetExistingHistoryObjects(records, last_record_time_stamp, is_truncated);
   } else {
     // Not reached
     NOTREACHED();
   }
+}
+
+void ControllerImpl::GetExistingHistoryObjects(
+  const RecordsList &records,
+  const base::Time &last_record_time_stamp,
+  const bool &is_truncated ) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetExistingHistoryObjects:";
+
+  return;
+
+  // Get IDs we need
+  // Post HistoryDB query
+  // On query response fill resolved records
+
+  std::vector<int64_t> ids_to_get_history(records.size());
+
+  for (const SyncRecordPtr &record : records ) {
+    auto local_id = sync_obj_map_->GetLocalIdByObjectId(record->objectId);
+    int64_t i_local_id = 0;
+    if (base::StringToInt64(local_id, &i_local_id)) {
+      ids_to_get_history.push_back(i_local_id);
+    } else {
+      DCHECK(false) << "Could not convert <" << local_id << "> to int64_t";
+    }
+  }
+
+  DCHECK(!ids_to_get_history.empty());
+
+  // TODO, AB: use brave_sync::History and history::HistoryService::QueryHistoryByIds
 }
 
 SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
@@ -417,7 +446,7 @@ SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
     } else if (category_name == jslib_const::kPreferences) {
       //"PREFERENCES"
       LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_: resolving device";
-      resolved_record->second = PrepareResolvedDevice2(object_id);
+      resolved_record->second = PrepareResolvedDevice(object_id);
       LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_: -----------------";
     }
 
@@ -428,7 +457,7 @@ SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
   return resolvedResponse;
 }
 
-SyncRecordPtr ControllerImpl::PrepareResolvedDevice2(const std::string &object_id) {
+SyncRecordPtr ControllerImpl::PrepareResolvedDevice(const std::string &object_id) {
   // std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);
   // SyncDevices devices;
   // devices.FromJson(json);
@@ -633,10 +662,10 @@ void ControllerImpl::RequestSyncData() {
   // save last received record time in OnResolved
 
 //DBG Test
-  if (!once_done){
-    SendAllLocalHistorySites();
-    once_done = true;
-  }
+  // if (!once_done) {
+  //   SendAllLocalHistorySites();
+  //   once_done = true;
+  // }
 
 }
 
@@ -797,9 +826,7 @@ void ControllerImpl::HaveInitialHistory(history::QueryResults* results) {
 
     for(size_t i = 0; i < results->size(); i += SEND_RECORDS_COUNT_LIMIT) {
       size_t sub_list_last = std::min(results->size(), i + SEND_RECORDS_COUNT_LIMIT);
-      //std::vector<const bookmarks::BookmarkNode*> sub_list(results.begin()+i, results.begin()+sub_list_last);
       history::QueryResults::URLResultVector sub_list(results->begin()+i, results->begin()+sub_list_last);
-//#error 1
 
       CreateUpdateDeleteHistorySites(jslib_const::kActionCreate, sub_list, true, true);
     }

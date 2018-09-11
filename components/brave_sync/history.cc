@@ -23,9 +23,7 @@
 
 namespace brave_sync {
 
-History::History(Profile* profile/*,
-                 history::HistoryService* history_service*/
-                 ,
+History::History(Profile* profile,
                   CanSendSyncHistory *send_history) :
   profile_(profile), history_service_observer_(this), send_history_(send_history), sync_obj_map_(nullptr) {
   DCHECK(profile);
@@ -38,7 +36,6 @@ History::History(Profile* profile/*,
 
 
   history_service_observer_.Add(history_service);
-;
 }
 
 History::~History() {
@@ -57,11 +54,6 @@ void History::OnURLVisited(history::HistoryService* history_service,
                            const history::RedirectList& redirects,
                            base::Time visit_time) {
   LOG(ERROR) << "TAGAB brave_sync::History::OnURLVisited " << row.url().spec();
-
-  // std::unique_ptr<base::ListValue> args =
-  //     OnVisited::Create(GetHistoryItem(row));
-  // DispatchEvent(profile_, events::HISTORY_ON_VISITED,
-  //               api::history::OnVisited::kEventName, std::move(args));
 }
 
 void History::OnURLsDeleted(
@@ -72,19 +64,6 @@ void History::OnURLsDeleted(
   for (const auto& row : deletion_info.deleted_rows()) {
     LOG(ERROR) << "TAGAB row.url()=" << row.url().spec();
   }
-
-
-  // OnVisitRemoved::Removed removed;
-  // removed.all_history = deletion_info.IsAllHistory();
-  //
-  // std::vector<std::string>* urls = new std::vector<std::string>();
-  // for (const auto& row : deletion_info.deleted_rows())
-  //   urls->push_back(row.url().spec());
-  // removed.urls.reset(urls);
-  //
-  // std::unique_ptr<base::ListValue> args = OnVisitRemoved::Create(removed);
-  // DispatchEvent(profile_, events::HISTORY_ON_VISIT_REMOVED,
-  //               api::history::OnVisitRemoved::kEventName, std::move(args));
 }
 
 
@@ -244,7 +223,7 @@ std::unique_ptr<jslib::SyncRecord> History::GetResolvedHistoryValue(const std::s
   }
 
   ;;;;
-  // Get bookmark by ID
+  // Get histpry entry by ID
     // src/chrome/browser/extensions/api/history/history_api.h
 
     // Need to use bool HistoryBackend::GetURLByID(URLID url_id, URLRow* url_row) {
@@ -262,6 +241,8 @@ hs->QueryHistory(search_text,
 
 QueryRowsByIds(const std::vector<URLID>&vec_ids, std::vector<URLRow> &rows)
 */
+
+  //url_row = hs->QueryHistoryByIds();
 
 
   if (url_row) {
@@ -308,3 +289,65 @@ std::unique_ptr<jslib::Site> History::GetFromUrlRow(const history::URLRow* url_r
 
 
 } // namespace brave_sync
+
+/*
+patches should be in Chromium:
+
+src/components/history/core/browser/history_backend.h
+
+void QueryHistoryByIds(const std::vector<URLID>&ids,
+                  QueryResults* query_results);
+
+src/components/history/core/browser/history_backend.cc
+
+void HistoryBackend::QueryHistoryByIds(const std::vector<URLID>&ids,
+                                       QueryResults* query_results) {
+  DCHECK(query_results);
+  base::TimeTicks beginning_time = base::TimeTicks::Now();
+  if (db_) {
+    std::vector<URLResult> matching_results;
+
+    for(size_t i = 0; i < ids.size(); ++i) {
+      URLRow url_row;
+      bool row_got = this->GetURLByID(ids[i], &url_row);
+      if (row_got) {
+        LOG(ERROR) << "TAGAB HistoryBackend::QueryHistoryByIds found " << ids[i];
+      } else {
+        LOG(ERROR) << "TAGAB HistoryBackend::QueryHistoryByIds not found " << ids[i];
+      }
+      matching_results.push_back(std::move(url_row));
+    }
+
+    query_results->SetURLResults(std::move(matching_results));
+  }
+  UMA_HISTOGRAM_TIMES("History.QueryHistoryByIds",
+                      TimeTicks::Now() - beginning_time);
+}
+
+src/components/history/core/browser/history_service.h
+
+base::CancelableTaskTracker::TaskId QueryHistoryByIds(
+    const std::vector<URLID>&ids,
+    const QueryHistoryCallback& callback,
+    base::CancelableTaskTracker* tracker);
+
+src/components/history/core/browser/history_service.cc
+
+
+base::CancelableTaskTracker::TaskId HistoryService::QueryHistoryByIds(
+    const std::vector<URLID>&ids,
+    const QueryHistoryCallback& callback,
+    base::CancelableTaskTracker* tracker) {
+  DCHECK(backend_task_runner_) << "History service being called after cleanup";
+  DCHECK(thread_checker_.CalledOnValidThread());
+  QueryResults* query_results = new QueryResults();
+  return tracker->PostTaskAndReply(
+      backend_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&HistoryBackend::QueryHistoryByIds, history_backend_,
+                     ids, base::Unretained(query_results)),
+      base::BindOnce(callback, base::Owned(query_results)));
+}
+
+
+
+*/
