@@ -6,22 +6,36 @@
 
 #include <memory>
 
+#include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "brave/browser/ui/brave_actions/shields_action_view_controller.h"
 #include "chrome/browser/extensions/extension_action_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
-#include "extensions/browser/extension_system.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
+#include "extensions/browser/extension_system.h"
 #include "extensions/common/one_shot_event.h"
 #include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
+
+BraveActionsContainer::BraveActionInfo::BraveActionInfo()
+    : position_(ACTION_ANY_POSITION) {}
+
+BraveActionsContainer::BraveActionInfo::~BraveActionInfo() {
+  Reset();
+}
+
+void BraveActionsContainer::BraveActionInfo::Reset() {
+  // Destroy view before view_controller.
+  // Destructor for |ToolbarActionView| tries to access controller instance.
+  view_.reset();
+  view_controller_.reset();
+}
 
 BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
   : views::View(),
@@ -41,10 +55,7 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
 }
 
 BraveActionsContainer::~BraveActionsContainer() {
-  // Destroy |shields_button_view| before |shields_view_controller|.
-  // Destructor for |ToolbarActionView| tries to access controller instance.
-  shields_button_view_.reset();
-  shields_view_controller_.reset();
+  actions_.clear();
 }
 
 void BraveActionsContainer::Init() {
@@ -65,53 +76,79 @@ void BraveActionsContainer::Init() {
   // Just in case the extensions load before this function does (not likely!)
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
+  // Populate actions
+  actions_[brave_extension_id].position_ = 1;
+  actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
 }
 
-void BraveActionsContainer::AddShields(
-                                const extensions::Extension* brave_extension) {
-  DCHECK(brave_extension);
-  VLOG(1) << "AddShields, was already loaded: " << (bool)shields_button_view_;
-  if (!shields_button_view_) {
+bool BraveActionsContainer::IsContainerAction(const std::string& id) const {
+  return (actions_.find(id) != actions_.end());
+}
+
+void BraveActionsContainer::AddAction(const extensions::Extension* extension,
+                                      int pos) {
+  DCHECK(extension);
+  DCHECK(IsContainerAction(extension->id()));
+  VLOG(1) << "AddAction (" << extension->id() << "), was already loaded: "
+          << (bool)actions_[extension->id()].view_;
+  if (!actions_[extension->id()].view_) {
+    const auto& id = extension->id();
     // Create a ExtensionActionViewController for the extension
     // Passing |nullptr| instead of ToolbarActionsBar since we
     // do not require that logic.
     // If we do require notifications when popups are open or closed,
     // then we should inherit and pass |this| through.
-    shields_view_controller_ = std::make_unique<ShieldsActionViewController>(
-                                                    brave_extension, browser_,
-               extension_action_manager_->GetExtensionAction(*brave_extension),
-                                                                      nullptr);
+    actions_[id].view_controller_ = 
+        std::make_unique<BraveActionViewController>(
+        extension, browser_,
+        extension_action_manager_->GetExtensionAction(*extension), nullptr);
     // The button view
-    shields_button_view_ = std::make_unique<ToolbarActionView>(
-                                          shields_view_controller_.get(), this);
+    actions_[id].view_ = std::make_unique<ToolbarActionView>(
+        actions_[id].view_controller_.get(), this);
     // we control destruction
-    shields_button_view_->set_owned_by_client();
+    actions_[id].view_->set_owned_by_client();
     // Sets overall size of button but not image graphic. We set a large width
     // in order to give space for the bubble.
-    shields_button_view_->SetPreferredSize(gfx::Size(32, 24));
+    actions_[id].view_->SetPreferredSize(gfx::Size(32, 24));
     // Add extension view after separator view
-    AddChildView(shields_button_view_.get());
+    if (actions_[id].position_ != ACTION_ANY_POSITION) {
+      DCHECK(actions_[id].position_ > 0);
+      AddChildViewAt(actions_[id].view_.get(), actions_[id].position_);
+    } else {
+      AddChildView(actions_[id].view_.get());
+    }
     Update();
   }
 }
 
-void BraveActionsContainer::RemoveShields() {
-  VLOG(1) << "RemoveShields, was already loaded: " << (bool)shields_button_view_;
-  if (shields_button_view_) {
-    // Reset references for next extension install
-    // (will automatically remove the child from the parent (us)
-    shields_button_view_.reset();
-    shields_view_controller_.reset();
-    // layout
-    Update();
-  }
+void BraveActionsContainer::RemoveAction(const std::string& id) {
+  DCHECK(IsContainerAction(id));
+  VLOG(1) << "RemoveAction (" << id << "), was loaded: "
+          << (bool)actions_[id].view_;
+  // This will reset references and automatically remove the child from the
+  // parent (us)
+  actions_[id].Reset();
+  // layout
+  Update();
+}
+
+void BraveActionsContainer::UpdateActionState(const std::string& id) {
+  if (actions_[id].view_controller_)
+    actions_[id].view_controller_->UpdateState();
 }
 
 void BraveActionsContainer::Update() {
-  if (shields_view_controller_)
-    shields_view_controller_->UpdateState();
+  // Update state of each action and also determine if there are any buttons to
+  // show
+  bool can_show = false;
+  for (auto const& pair : actions_) {
+    if (pair.second.view_controller_)
+      pair.second.view_controller_->UpdateState();
+    if (!can_show && pair.second.view_)
+      can_show = true;
+  }
   // only show separator if we're showing any buttons
-  const bool visible = !should_hide_ && shields_button_view_;
+  const bool visible = !should_hide_ && can_show;
   SetVisible(visible);
   Layout();
 }
@@ -173,25 +210,28 @@ void BraveActionsContainer::OnExtensionSystemReady() {
   const extensions::Extension* extension =
           extension_registry_->enabled_extensions().GetByID(brave_extension_id);
   if (extension)
-    AddShields(extension);
+    AddAction(extension);
+  // Check if brave rewards extension already loaded
+  extension = extension_registry_->enabled_extensions().GetByID(
+      brave_rewards_extension_id);
+  if (extension)
+    AddAction(extension);
 };
 
 // ExtensionRegistry::Observer
 void BraveActionsContainer::OnExtensionLoaded(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
-  if (extension->id() == brave_extension_id) {
-    AddShields(extension);
-  }
+  if (IsContainerAction(extension->id()))
+    AddAction(extension);
 }
 
 void BraveActionsContainer::OnExtensionUnloaded(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     extensions::UnloadedExtensionReason reason) {
-  if (extension->id() == brave_extension_id) {
-    RemoveShields();
-  }
+  if (IsContainerAction(extension->id()))
+    RemoveAction(extension->id());
 }
 // end ExtensionRegistry::Observer
 
@@ -200,8 +240,7 @@ void BraveActionsContainer::OnExtensionActionUpdated(
     ExtensionAction* extension_action,
     content::WebContents* web_contents,
     content::BrowserContext* browser_context) {
-  if (extension_action->extension_id() == brave_extension_id && shields_view_controller_) {
-    shields_view_controller_->UpdateState();
-  }
+  if (IsContainerAction(extension_action->extension_id()))
+    UpdateActionState(extension_action->extension_id());
 }
 // end ExtensionActionAPI::Observer
