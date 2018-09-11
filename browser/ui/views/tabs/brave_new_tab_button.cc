@@ -44,3 +44,16 @@ void BraveNewTabButton::PaintPlusIcon(gfx::Canvas* canvas, int offset, int size)
   const int fixed_offset = (GetContentsBounds().width() / 2) - (size / 2);
   NewTabButton::PaintPlusIcon(canvas, fixed_offset, size);
 }
+
+SkPath BraveNewTabButton::GetNewerMaterialUiButtonPath(float button_y,
+                                                       float scale,
+                                                       bool extend_to_top,
+                                                       bool for_fill) const {
+  SkPath path;
+  const gfx::Rect contents_bounds = GetContentsBounds();
+  path.addRect(0, extend_to_top ? 0 : button_y,
+               contents_bounds.width() * scale,
+               button_y + contents_bounds.height() * scale);
+  path.close();
+  return path;
+}
