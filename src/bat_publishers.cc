@@ -88,10 +88,14 @@ void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
           payment_data, _1, _2));
 }
 
+bool BatPublishers::saveVisitAllowed() const {
+  return (ledger_->GetAutoContribute());
+}
+
 void BatPublishers::saveVisit(const std::string& publisher_id,
                               const ledger::VisitData& visit_data,
                               const uint64_t& duration) {
-  if (ledger_->GetRewardsMainEnabled() && ledger_->GetAutoContribute()) {
+  if (saveVisitAllowed()) {
     if (publisher_id.empty() || (!ignoreMinTime(publisher_id) &&
         duration < state_->min_pubslisher_duration_))
       return;

@@ -278,7 +278,9 @@ void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
 }
 
 void LedgerImpl::SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) {
-  bat_publishers_->saveVisit(publisher_id, visit_data, duration);
+  if (bat_publishers_->getPublisherAllowVideos()) {
+    bat_publishers_->saveVisit(publisher_id, visit_data, duration);
+  }
 }
 
 void LedgerImpl::SetPublisherExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) {

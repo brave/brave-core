@@ -38,6 +38,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void saveVisit(const std::string& publisher_id,
                  const ledger::VisitData& visit_data,
                  const uint64_t& duration);
+  bool saveVisitAllowed() const;
 
   void MakePayment(const ledger::PaymentData& payment_data);
 
