@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 import { FeatureBlockProps } from './index'
 
-export const StyledFeatureBlock = styled<FeatureBlockProps, 'div'>('div')`
+export const StyledFeatureBlock = styled<FeatureBlockProps & React.HTMLProps<HTMLDivElement>, 'div'>('div')`
   display: grid;
   height: 100%;
   grid-gap: ${p => p.grid ? '30px' : '0'};

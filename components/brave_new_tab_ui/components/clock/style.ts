@@ -2,9 +2,9 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 
-const StyledClock = styled<{}, 'div'>('div')`
+const StyledClock = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
   box-sizing: border-box;
   line-height: 1;
   user-select: none;
@@ -15,7 +15,7 @@ const StyledClock = styled<{}, 'div'>('div')`
   color: rgb(255, 255, 255);
 `
 
-const StyledTime = styled<{}, 'span'>('span')`
+const StyledTime = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   box-sizing: border-box;
   letter-spacing: 0;
   font-size: 75px;
@@ -25,7 +25,7 @@ const StyledTime = styled<{}, 'span'>('span')`
   display: inline-flex;
 `
 
-const StyledPeriod = styled<{}, 'span'>('span')`
+const StyledPeriod = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   box-sizing: border-box;
   color: inherit;
   font-family: inherit;
@@ -38,7 +38,7 @@ const StyledPeriod = styled<{}, 'span'>('span')`
   vertical-align: top;
 `
 
-const StyledTimeSeparator = styled<{}, 'span'>('span')`
+const StyledTimeSeparator = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   box-sizing: border-box;
   color: inherit;
   font-size: inherit;

@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 
-export const StyledPageHeader = styled<{}, 'header'>('header')`
+export const StyledPageHeader = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
   width: 100%;
   padding: 40px 0;
   display: flex;

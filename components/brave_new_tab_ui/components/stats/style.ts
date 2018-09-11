@@ -2,9 +2,9 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 
-export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
+export const StyledStatsItemContainer = styled<React.HTMLProps<HTMLUListElement>, 'ul'>('ul')`
   display: block;
   font-weight: 400;
   margin: 0;
@@ -20,7 +20,7 @@ export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   }
 `
 
-export const StyledStatsItem = styled<{}, 'li'>('li')`
+export const StyledStatsItem = styled<React.HTMLProps<HTMLLIElement>, 'li'>('li')`
   vertical-align: middle;
   list-style-type: none;
   font-size: inherit;
@@ -40,7 +40,7 @@ export const StyledStatsItem = styled<{}, 'li'>('li')`
   }
 `
 
-export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
+export const StyledStatsItemCounter = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   color: inherit;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 44px;
@@ -53,7 +53,7 @@ export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
   overflow: hidden;
 `
 
-export const StyledStatsItemText = styled<{}, 'span'>('span')`
+export const StyledStatsItemText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   color: rgb(153, 153, 153);
   font-size: 20px;
   font-family: ${p => p.theme.fontFamily.heading};
@@ -63,7 +63,7 @@ export const StyledStatsItemText = styled<{}, 'span'>('span')`
   letter-spacing: 0;
 `
 
-export const StyledStatsItemDescription = styled<{}, 'div'>('div')`
+export const StyledStatsItemDescription = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
   font-size: 13px;
   font-weight: 400;
   color: rgb(255, 255, 255);

@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from '../../../theme'
 import palette from '../../../theme/palette'
 
-export const StyledPage = styled<{}, 'div'>('div')`
+export const Page = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
   -webkit-font-smoothing: antialiased;
   background: linear-gradient(#4b3c6e, #000);
   min-height: 100%;
@@ -13,7 +13,7 @@ export const StyledPage = styled<{}, 'div'>('div')`
   padding: 40px 60px;
 `
 
-export const StyledPageWrapper = styled<{}, 'main'>('main')`
+export const PageWrapper = styled<React.HTMLProps<HTMLMainElement>, 'main'>('main')`
   display: flex;
   flex-direction: column;
   align-items: center;

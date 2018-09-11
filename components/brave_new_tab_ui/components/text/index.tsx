@@ -2,11 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'styled-components'
+import styled, { css } from '../../../theme'
+import Heading, { HeadingProps } from '../../../components/text/heading'
 
-import { Heading } from '../../../index'
-
-export const NewTabHeading = styled(Heading)`
+// TODO: consider exporting props to the main export file
+export const NewTabHeading = styled<HeadingProps & React.HTMLProps<HTMLHeadingElement>, any>(Heading)`
   ${p => p.level === 2 && css`
     display: flex;
     white-space: nowrap;
@@ -26,7 +26,7 @@ export const NewTabHeading = styled(Heading)`
   `}
 `
 
-export const Paragraph = styled<{}, 'p'>('p')`
+export const Paragraph = styled<React.HTMLProps<HTMLParagraphElement>, 'p'>('p')`
   display: flex;
   align-items: center;
   margin: 0 0 10px;
@@ -38,7 +38,7 @@ export const Paragraph = styled<{}, 'p'>('p')`
   font-family: ${p => p.theme.fontFamily.body};
 `
 
-export const LinkText = styled<{}, 'a'>('a')`
+export const LinkText = styled<React.HTMLProps<HTMLAnchorElement>, 'a'>('a')`
   line-height: 1.75;
   font-size: 16px;
   color: #FF6000;
@@ -48,7 +48,7 @@ export const LinkText = styled<{}, 'a'>('a')`
   text-decoration: underline;
 `
 
-export const EmphasizedText = styled<{}, 'em'>('em')`
+export const EmphasizedText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 20px;
   font-weight: 600;
@@ -57,7 +57,7 @@ export const EmphasizedText = styled<{}, 'em'>('em')`
   font-style: normal;
 `
 
-export const LabelledText = styled<{}, 'span'>('span')`
+export const LabelledText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   padding: 3px 8px;
   border-radius: 12px;
   text-transform: uppercase;
@@ -71,7 +71,7 @@ export const LabelledText = styled<{}, 'span'>('span')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const SmallText = styled<{}, 'small'>('small')`
+export const SmallText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   margin: 0;
   line-height: 1.5;
   font-size: 13px;
