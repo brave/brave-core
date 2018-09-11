@@ -107,6 +107,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
       <ModalContribute
         rows={rows}
         onClose={doNothing}
+        numExcludedSites={25}
+        onRestore={doNothing}
       />
     )
   })

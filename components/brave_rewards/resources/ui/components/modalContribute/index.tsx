@@ -3,7 +3,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledTitle, StyledContent, StyledNum } from './style'
+import {
+  StyledWrapper,
+  StyledTitle,
+  StyledContent,
+  StyledNum,
+  StyledRestore,
+  StyledExcludedText
+} from './style'
 import Modal from '../../../components/popupModals/modal/index'
 import TableContribute, { DetailRow } from '../tableContribute/index'
 import { getLocale } from '../../../helpers'
@@ -11,7 +18,9 @@ import { getLocale } from '../../../helpers'
 export interface Props {
   rows: DetailRow[]
   onClose: () => void
+  onRestore: () => void
   id?: string
+  numExcludedSites?: number
 }
 
 export default class ModalContribute extends React.PureComponent<Props, {}> {
@@ -22,8 +31,16 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
     ]
   }
 
+  getRestoreText () {
+    return `(${getLocale('restoreAll')})`
+  }
+
+  getExclusionText (numSites: number) {
+    return `${getLocale('excludedSitesText')} ${numSites}`
+  }
+
   render () {
-    const { id, onClose, rows } = this.props
+    const { id, onClose, onRestore, rows, numExcludedSites } = this.props
     const numSites = rows && rows.length || 0
 
     return (
@@ -33,6 +50,16 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
           <StyledContent>
             {getLocale('rewardsContributeText1')} <StyledNum>{numSites}</StyledNum> {getLocale('sites')}.
           </StyledContent>
+          {
+            numExcludedSites && numExcludedSites > 0
+            ? <StyledExcludedText>
+                {this.getExclusionText(numExcludedSites)}
+                <StyledRestore onClick={onRestore}>
+                  {this.getRestoreText()}
+                </StyledRestore>
+              </StyledExcludedText>
+            : null
+          }
           <TableContribute
             header={this.headers}
             rows={rows}

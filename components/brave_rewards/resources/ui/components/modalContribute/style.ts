@@ -21,7 +21,27 @@ export const StyledContent = styled<{}, 'div'>('div')`
   margin-bottom: 33px;
 `
 
+export const StyledExcludedText = styled<{}, 'div'>('div')`
+  color: #4B4C5C;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: left;
+  letter-spacing: 0;
+  margin-top: -20px;
+  margin-bottom: 33px;
+`
+
 export const StyledNum = styled<{}, 'span'>('span')`
   font-weight: 500;
   color: #0c0d21;
+`
+
+export const StyledRestore = styled<{}, 'a'>('a')`
+  color: #696fdc;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: normal;
+  letter-spacing: 0;
+  cursor: pointer;
+  margin-left: 8px;
 `
