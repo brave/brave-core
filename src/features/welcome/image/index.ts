@@ -33,4 +33,3 @@ export const PaymentsImage = styled(BaseImage)`
 export const ShieldsImage = styled(BaseImage)`
   width: 185px;
 `
-

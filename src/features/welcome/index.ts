@@ -19,6 +19,7 @@ import {
   FooterMiddleColumn,
   FooterRightColumn,
   Content,
+  Page,
   Panel,
   SelectGrid
 } from './wrapper'
@@ -40,6 +41,7 @@ export {
   FooterMiddleColumn,
   FooterRightColumn,
   Content,
+  Page,
   Panel,
   SelectGrid
 }

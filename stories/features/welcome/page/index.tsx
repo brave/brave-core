@@ -48,7 +48,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get firstScreen () {
     return (
-      <Welcome.Content>
+      <Welcome.Content zIndex={1} active={this.state.currentScreen === 1}>
         <Welcome.BraveImage src={braveLogo} />
         <Welcome.Title>{locale.welcome}</Welcome.Title>
         <Welcome.Paragraph>{locale.whatIsBrave}</Welcome.Paragraph>
@@ -57,6 +57,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
           type='accent'
           size='large'
           text={locale.letsGo}
+          onClick={this.onClickLetsGo}
         />
       </Welcome.Content>
     )
@@ -64,7 +65,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get secondScreen () {
     return (
-      <Welcome.Content>
+      <Welcome.Content zIndex={2} active={this.state.currentScreen === 2}>
         <Welcome.ImportImage src={importImage} />
         <Welcome.Title>{locale.importFromAnotherBrowser}</Welcome.Title>
         <Welcome.Paragraph>{locale.setupImport}</Welcome.Paragraph>
@@ -92,7 +93,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get thirdScreen () {
     return (
-      <Welcome.Content>
+      <Welcome.Content zIndex={3} active={this.state.currentScreen === 3}>
         <Welcome.SearchImage src={searchImage} />
         <Welcome.Title>{locale.setDefaultSearchEngine}</Welcome.Title>
         <Welcome.Paragraph>{locale.chooseSearchEngine}</Welcome.Paragraph>
@@ -120,7 +121,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get fourthScreen () {
     return (
-      <Welcome.Content>
+      <Welcome.Content zIndex={4} active={this.state.currentScreen === 4}>
         <Welcome.ThemeImage src={themeImage} />
         <Welcome.Title>{locale.chooseYourTheme}</Welcome.Title>
         <Welcome.Paragraph>{locale.findToolbarTheme}</Welcome.Paragraph>
@@ -144,7 +145,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get fifthScreen () {
     return (
-      <Welcome.Content>
+      <Welcome.Content zIndex={5} active={this.state.currentScreen === 5}>
         <Welcome.ShieldsImage src={shieldsImage} />
         <Welcome.Title>{locale.protectYourPrivacy}</Welcome.Title>
         <Welcome.Paragraph>{locale.adjustProtectionLevel}</Welcome.Paragraph>
@@ -160,7 +161,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get sixthScreen () {
     return (
-      <Welcome.Content>
+      <Welcome.Content zIndex={6} active={this.state.currentScreen === 6}>
         <Welcome.PaymentsImage src={paymentsImage} />
         <Welcome.Title>{locale.enableBraveRewards}</Welcome.Title>
         <Welcome.Paragraph>{locale.setupBraveRewards}</Welcome.Paragraph>
@@ -243,6 +244,10 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
     )
   }
 
+  onClickLetsGo = () => {
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
+  }
+
   onClickSlideBullet = (nextScreen: number) => {
     this.setState({ currentScreen: nextScreen })
   }
@@ -260,7 +265,6 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
     // fades out
     // fades in to new tab page
   }
-
 
   onClickImport = () => {
     this.setState({ fakeBookmarksImported: !this.state.fakeBookmarksImported })
@@ -280,35 +284,50 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
   get backgroundPosition () {
     switch (this.state.currentScreen) {
       case 1:
-        return '0%'
-      case 2:
-        return '50%'
-      case 3:
         return '100%'
-      case 4:
+      case 2:
         return '150%'
-      case 5:
+      case 3:
         return '200%'
-      case 6:
+      case 4:
         return '250%'
+      case 5:
+        return '300%'
+      case 6:
+        return '350%'
       default:
-        return '0%'
+        return '100%'
     }
   }
 
   render () {
     return (
-      <Welcome.Background
-        background={{
-          image: background,
-          position: this.backgroundPosition
-        }}
-      >
+      <>
+        <Welcome.Background
+          background={{
+            image: background,
+            position: this.backgroundPosition
+          }}
+        />
+        <Welcome.Page>
           <Welcome.Panel>
-            {this.currentScreen}
+            <div
+              style={{
+                maxWidth: 'inherit',
+                minHeight: '540px'
+              }}
+            >
+              {this.firstScreen}
+              {this.secondScreen}
+              {this.thirdScreen}
+              {this.fourthScreen}
+              {this.fifthScreen}
+              {this.sixthScreen}
+            </div>
             {this.footer}
           </Welcome.Panel>
-      </Welcome.Background>
+        </Welcome.Page>
+      </>
     )
   }
 }
