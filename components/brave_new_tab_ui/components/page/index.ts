@@ -5,7 +5,7 @@
 import styled from '../../../theme'
 import palette from '../../../theme/palette'
 
-export const Page = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
+export const Page = styled<{}, 'div'>('div')`
   -webkit-font-smoothing: antialiased;
   background: linear-gradient(#4b3c6e, #000);
   min-height: 100%;
@@ -13,7 +13,7 @@ export const Page = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
   padding: 40px 60px;
 `
 
-export const PageWrapper = styled<React.HTMLProps<HTMLMainElement>, 'main'>('main')`
+export const PageWrapper = styled<{}, 'main'>('main')`
   display: flex;
   flex-direction: column;
   align-items: center;

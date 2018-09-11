@@ -3,9 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from '../../../theme'
-import { FeatureBlockProps } from './index'
 
-export const StyledFeatureBlock = styled<FeatureBlockProps & React.HTMLProps<HTMLDivElement>, 'div'>('div')`
+export interface FeatureBlockProps {
+  grid?: boolean
+}
+
+export const FeatureBlock = styled<FeatureBlockProps, 'div'>('div')`
   display: grid;
   height: 100%;
   grid-gap: ${p => p.grid ? '30px' : '0'};

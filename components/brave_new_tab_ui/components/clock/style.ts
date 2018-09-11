@@ -4,7 +4,7 @@
 
 import styled from '../../../theme'
 
-const StyledClock = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
+const StyledClock = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   line-height: 1;
   user-select: none;
@@ -15,7 +15,7 @@ const StyledClock = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
   color: rgb(255, 255, 255);
 `
 
-const StyledTime = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
+const StyledTime = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   letter-spacing: 0;
   font-size: 75px;
@@ -25,7 +25,7 @@ const StyledTime = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   display: inline-flex;
 `
 
-const StyledPeriod = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
+const StyledPeriod = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   color: inherit;
   font-family: inherit;
@@ -38,7 +38,7 @@ const StyledPeriod = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
   vertical-align: top;
 `
 
-const StyledTimeSeparator = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
+const StyledTimeSeparator = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   color: inherit;
   font-size: inherit;

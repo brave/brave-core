@@ -6,7 +6,7 @@ import styled, { css } from '../../../theme'
 import Heading, { HeadingProps } from '../../../components/text/heading'
 
 // TODO: consider exporting props to the main export file
-export const NewTabHeading = styled<HeadingProps & React.HTMLProps<HTMLHeadingElement>, any>(Heading)`
+export const NewTabHeading = styled<HeadingProps, any>(Heading)`
   ${p => p.level === 2 && css`
     display: flex;
     white-space: nowrap;
@@ -26,7 +26,7 @@ export const NewTabHeading = styled<HeadingProps & React.HTMLProps<HTMLHeadingEl
   `}
 `
 
-export const Paragraph = styled<React.HTMLProps<HTMLParagraphElement>, 'p'>('p')`
+export const Paragraph = styled<{}, 'p'>('p')`
   display: flex;
   align-items: center;
   margin: 0 0 10px;
@@ -38,7 +38,7 @@ export const Paragraph = styled<React.HTMLProps<HTMLParagraphElement>, 'p'>('p')
   font-family: ${p => p.theme.fontFamily.body};
 `
 
-export const LinkText = styled<React.HTMLProps<HTMLAnchorElement>, 'a'>('a')`
+export const LinkText = styled<{}, 'a'>('a')`
   line-height: 1.75;
   font-size: 16px;
   color: #FF6000;
@@ -48,7 +48,7 @@ export const LinkText = styled<React.HTMLProps<HTMLAnchorElement>, 'a'>('a')`
   text-decoration: underline;
 `
 
-export const EmphasizedText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
+export const EmphasizedText = styled<{}, 'em'>('em')`
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 20px;
   font-weight: 600;
@@ -57,7 +57,7 @@ export const EmphasizedText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('
   font-style: normal;
 `
 
-export const LabelledText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
+export const LabelledText = styled<{}, 'span'>('span')`
   padding: 3px 8px;
   border-radius: 12px;
   text-transform: uppercase;
@@ -71,7 +71,7 @@ export const LabelledText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('sp
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const SmallText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
+export const SmallText = styled<{}, 'small'>('small')`
   margin: 0;
   line-height: 1.5;
   font-size: 13px;

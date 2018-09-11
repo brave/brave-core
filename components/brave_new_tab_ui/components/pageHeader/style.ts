@@ -4,7 +4,7 @@
 
 import styled from '../../../theme'
 
-export const StyledPageHeader = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
+export const StyledPageHeader = styled<{}, 'div'>('div')`
   width: 100%;
   padding: 40px 0;
   display: flex;

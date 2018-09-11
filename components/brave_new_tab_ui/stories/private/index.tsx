@@ -4,19 +4,23 @@
 
 import * as React from 'react'
 
-// Components
-import { Page, PageWrapper } from '../../../../src/features/newTab/page'
-import PageHeader from '../../../../src/features/newTab/pageHeader'
-import { StatsContainer, StatsItem } from '../../../../src/features/newTab/stats'
-import FeatureBlock from '../../../../src/features/newTab/featureBlock'
+// Feature-specific Components
 import {
+  Page,
+  PageWrapper,
+  PageHeader,
+  StatsContainer,
+  StatsItem,
+  FeatureBlock,
   NewTabHeading,
   SmallText,
   EmphasizedText,
   LabelledText,
   Paragraph,
   LinkText
-} from '../../../../src/features/newTab/text'
+} from '../../../../src/features/newTab'
+
+// Components
 import Clock from '../../../../src/features/newTab/clock'
 import Toggle from '../../../../src/components/formControls/toggle'
 
@@ -61,7 +65,7 @@ export default class NewPrivateTab extends React.PureComponent<{}, {}> {
           </PageHeader>
           <div>
             <NewTabHeading>{locale.thisIsAPrivateTab}</NewTabHeading>
-            <FeatureBlock grid={true} testId='tor'>
+            <FeatureBlock grid={true}>
               <aside>
                 <img src={torIcon} />
               </aside>
@@ -83,7 +87,7 @@ export default class NewPrivateTab extends React.PureComponent<{}, {}> {
             {
               isTor
               ? (
-                <FeatureBlock testId='duckduckgoWithTor'>
+                <FeatureBlock>
                   <Paragraph>
                     {locale.defaultSearchEngineDisclaimer}&nbsp;&nbsp;
                     <a href='#' target='blank' rel='noreferrer noopener'>
@@ -93,7 +97,7 @@ export default class NewPrivateTab extends React.PureComponent<{}, {}> {
                 </FeatureBlock>
               )
               : (
-                <FeatureBlock grid={true} testId='duckduckgoNoTor'>
+                <FeatureBlock grid={true}>
                   <aside>
                     <img src={ddgIcon} />
                   </aside>
@@ -110,7 +114,7 @@ export default class NewPrivateTab extends React.PureComponent<{}, {}> {
                 </FeatureBlock>
               )
             }
-            <FeatureBlock testId='footer'>
+            <FeatureBlock>
               <NewTabHeading level={3}>{locale.moreAboutPrivateTabs}</NewTabHeading>
               <SmallText>{locale.privateTabsDisclaimer}</SmallText>
             </FeatureBlock>

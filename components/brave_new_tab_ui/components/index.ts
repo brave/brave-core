@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Clock from './clock'
-import FeatureBlock from './featureBlock'
+import { FeatureBlock } from './featureBlock'
 import { Page, PageWrapper } from './page'
 import PageHeader from './pageHeader'
 import { StatsContainer, StatsItem } from './stats'

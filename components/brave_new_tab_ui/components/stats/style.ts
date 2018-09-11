@@ -4,7 +4,7 @@
 
 import styled from '../../../theme'
 
-export const StyledStatsItemContainer = styled<React.HTMLProps<HTMLUListElement>, 'ul'>('ul')`
+export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   display: block;
   font-weight: 400;
   margin: 0;
@@ -20,7 +20,7 @@ export const StyledStatsItemContainer = styled<React.HTMLProps<HTMLUListElement>
   }
 `
 
-export const StyledStatsItem = styled<React.HTMLProps<HTMLLIElement>, 'li'>('li')`
+export const StyledStatsItem = styled<{}, 'li'>('li')`
   vertical-align: middle;
   list-style-type: none;
   font-size: inherit;
@@ -40,7 +40,7 @@ export const StyledStatsItem = styled<React.HTMLProps<HTMLLIElement>, 'li'>('li'
   }
 `
 
-export const StyledStatsItemCounter = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
+export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
   color: inherit;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 44px;
@@ -53,7 +53,7 @@ export const StyledStatsItemCounter = styled<React.HTMLProps<HTMLSpanElement>, '
   overflow: hidden;
 `
 
-export const StyledStatsItemText = styled<React.HTMLProps<HTMLSpanElement>, 'span'>('span')`
+export const StyledStatsItemText = styled<{}, 'span'>('span')`
   color: rgb(153, 153, 153);
   font-size: 20px;
   font-family: ${p => p.theme.fontFamily.heading};
@@ -63,7 +63,7 @@ export const StyledStatsItemText = styled<React.HTMLProps<HTMLSpanElement>, 'spa
   letter-spacing: 0;
 `
 
-export const StyledStatsItemDescription = styled<React.HTMLProps<HTMLDivElement>, 'div'>('div')`
+export const StyledStatsItemDescription = styled<{}, 'div'>('div')`
   font-size: 13px;
   font-weight: 400;
   color: rgb(255, 255, 255);
