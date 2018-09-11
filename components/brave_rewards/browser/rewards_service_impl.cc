@@ -411,6 +411,10 @@ void RewardsServiceImpl::ExcludePublisher(const std::string publisherKey) const 
   ledger_->SetPublisherExclude(publisherKey, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
 }
 
+void RewardsServiceImpl::RestorePublishers() {
+  ledger_->RestorePublishers();
+}
+
 void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
   if (!success) {
     VLOG(1) << "Error in OnMediaPublisherInfoSaved";
