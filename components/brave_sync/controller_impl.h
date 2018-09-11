@@ -111,7 +111,7 @@ private:
   void FetchSyncRecords(const bool &bookmarks, const bool &history,
     const bool &preferences, int64_t start_at, int max_records);
 
-  SyncRecordPtr PrepareResolvedDevice2(const std::string &object_id);
+  SyncRecordPtr PrepareResolvedDevice(const std::string &object_id);
 
   SyncRecordAndExistingList PrepareResolvedResponse(
     const std::string &category_name,
@@ -169,6 +169,11 @@ private:
   void StopLoop();
   void LoopProc();
   void LoopProcThreadAligned();
+
+  void GetExistingHistoryObjects(
+    const RecordsList &records,
+    const base::Time &last_record_time_stamp,
+    const bool &is_truncated );
 
   // Messages Controller => SyncWebUi
   SyncUI *sync_ui_;
