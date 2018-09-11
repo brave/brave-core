@@ -4,28 +4,28 @@
 
 import styled from 'styled-components'
 
-const baseImage = styled<{}, 'img'>('img')`
+const BaseImage = styled<{}, 'img'>('img')`
   box-sizing: border-box;
   display: block;
   max-width: 100%;
 `
 
-export const Brave = styled(baseImage)`
+export const BraveImage = styled(BaseImage)`
   width: 90px;
 `
 
-export const Payments = styled(baseImage)`
+export const PaymentsImage = styled(BaseImage)`
   width: 230px;
 `
 
-export const Import = styled(baseImage)`
+export const ImportImage = styled(BaseImage)`
   width: 215px;
 `
 
-export const Shields = styled(baseImage)`
+export const ShieldsImage = styled(BaseImage)`
   width: 185px;
 `
 
-export const Features = styled(baseImage)`
+export const FeaturesImage = styled(BaseImage)`
   width: 300px;
 `

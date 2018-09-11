@@ -13,7 +13,7 @@ export const Title = styled(Heading)`
   line-height: 44px;
 `
 
-export const Text = styled<{}, 'p'>('p')`
+export const Paragraph = styled<{}, 'p'>('p')`
   display: block;
   -webkit-font-smoothing: antialiased;
   font-size: 18px;

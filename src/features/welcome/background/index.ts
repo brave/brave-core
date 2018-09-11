@@ -3,16 +3,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { Card } from '../../../index'
 
-interface WaveBackgroundProps {
+interface BackgroundProps {
   background: {
     image: string
     position: string
   }
 }
 
-export const WaveBackground = styled<WaveBackgroundProps, 'div'>('div')`
+export const Background = styled<BackgroundProps, 'div'>('div')`
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -24,16 +23,4 @@ export const WaveBackground = styled<WaveBackgroundProps, 'div'>('div')`
   background-image: url('${p => p.background.image}');
   background-position-x: ${p => p.background.position};
   transition: 1.5s ease-in-out;
-`
-
-export const WelcomePanel = styled(Card)`
-  background-color: rgba(255,255,255,0.95);
-  border-radius: 20px;
-  box-shadow: 0 6px 12px 0 rgba(39, 46, 64, 0.2);
-  max-width: 600px;
-  min-height: 580px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 50px 60px
 `

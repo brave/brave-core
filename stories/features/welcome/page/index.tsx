@@ -5,21 +5,8 @@
 import * as React from 'react'
 
 import Button from '../../../../src/components/buttonsIndicators/button'
-
-import { Title, Text } from '../../../../src/features/welcome/text'
-import * as Image from '../../../../src/features/welcome/image'
-import { SkipButton, Bullet } from '../../../../src/features/welcome/button'
-import { WelcomePanel, WaveBackground } from '../../../../src/features/welcome/page'
-
-import {
-  Content,
-  Footer,
-  FooterLeftColumn,
-  FooterMiddleColumn,
-  FooterRightColumn
-} from '../../../../src/features/welcome/wrappers'
-
 import { ArrowRightIcon } from '../../../../src/components/icons'
+import * as Welcome from '../../../../src/features/welcome/'
 
 import locale from './fakeLocale'
 
@@ -51,81 +38,81 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get firstScreen () {
     return (
-      <Content>
-        <Image.Brave src={braveLogo} />
-        <Title>{locale.welcome}</Title>
-        <Text>{locale.whatIsBrave}</Text>
+      <Welcome.Content>
+        <Welcome.BraveImage src={braveLogo} />
+        <Welcome.Title>{locale.welcome}</Welcome.Title>
+        <Welcome.Paragraph>{locale.whatIsBrave}</Welcome.Paragraph>
         <Button
           level='primary'
           type='accent'
           size='large'
           text={locale.letsGo}
         />
-      </Content>
+      </Welcome.Content>
     )
   }
 
   get secondScreen () {
     return (
-      <Content>
-        <Image.Payments src={paymentsImage} />
-        <Title>{locale.enableBraveRewards}</Title>
-        <Text>{locale.setupBraveRewards}</Text>
+      <Welcome.Content>
+        <Welcome.PaymentsImage src={paymentsImage} />
+        <Welcome.Title>{locale.enableBraveRewards}</Welcome.Title>
+        <Welcome.Paragraph>{locale.setupBraveRewards}</Welcome.Paragraph>
         <Button
           level='primary'
           type='accent'
           size='large'
           text={locale.enableRewards}
         />
-      </Content>
+      </Welcome.Content>
     )
   }
 
   get thirdScreen () {
     return (
-      <Content>
-        <Image.Import src={importImage} />
-        <Title>{locale.importFromAnotherBrowser}</Title>
-        <Text>{locale.setupImport}</Text>
+      <Welcome.Content>
+        <Welcome.ImportImage src={importImage} />
+        <Welcome.Title>{locale.importFromAnotherBrowser}</Welcome.Title>
+        <Welcome.Paragraph>{locale.setupImport}</Welcome.Paragraph>
         <Button
           level='primary'
           type='accent'
           size='large'
           text={locale.importNow}
         />
-      </Content>
+      </Welcome.Content>
     )
   }
 
   get fourthScreen () {
     return (
-      <Content>
-        <Image.Shields src={shieldsImage} />
-        <Title>{locale.manageShields}</Title>
-        <Text>{locale.adjustProtectionLevel}</Text>
+      <Welcome.Content>
+        <Welcome.ShieldsImage src={shieldsImage} />
+        <Welcome.Title>{locale.manageShields}</Welcome.Title>
+        <Welcome.Paragraph>{locale.adjustProtectionLevel}</Welcome.Paragraph>
         <Button
           level='primary'
           type='accent'
           size='large'
           text={locale.shieldSettings}
         />
-      </Content>
+      </Welcome.Content>
     )
   }
 
   get fifthScreen () {
     return (
-      <Content>
-        <Image.Features src={featuresImage} />
-        <Title>{locale.customizePreferences}</Title>
-        <Text>{locale.configure}</Text>
+      <Welcome.Content>
+        <Welcome.FeaturesImage src={featuresImage} />
+        <Welcome.Title>{locale.customizePreferences}</Welcome.Title>
+        <Welcome.Paragraph>{locale.configure}</Welcome.Paragraph>
         <Button
           level='primary'
           type='accent'
           size='large'
           text={locale.preferences}
         />
-      </Content>
+      </Welcome.Content>
     )
   }
 
@@ -148,27 +135,27 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get footer () {
     return (
-      <Footer>
-        <FooterLeftColumn>
-          <SkipButton onClick={this.onSkipWelcomeTour}>
+      <Welcome.Footer>
+        <Welcome.FooterLeftColumn>
+          <Welcome.SkipButton onClick={this.onSkipWelcomeTour}>
             {locale.skipWelcomeTour}
-          </SkipButton>
-        </FooterLeftColumn>
-        <FooterMiddleColumn>
+          </Welcome.SkipButton>
+        </Welcome.FooterLeftColumn>
+        <Welcome.FooterMiddleColumn>
           {
             Array.from({ length: this.totalScreensSize }, (v: undefined, k: number) => {
               return (
-                <Bullet
+                <Welcome.Bullet
                   active={this.state.currentScreen === k + 1}
                   key={k}
                   onClick={this.onClickSlideBullet.bind(this, k + 1)}
                 >
                   &bull;
-                </Bullet>
+                </Welcome.Bullet>
               )
             })}
-        </FooterMiddleColumn>
-        <FooterRightColumn>
+        </Welcome.FooterMiddleColumn>
+        <Welcome.FooterRightColumn>
           {
             this.state.currentScreen !== this.totalScreensSize
               ? (
@@ -189,8 +176,8 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
                 />
             )
           }
-        </FooterRightColumn>
-      </Footer>
+        </Welcome.FooterRightColumn>
+      </Welcome.Footer>
     )
   }
 
@@ -231,17 +218,17 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   render () {
     return (
-      <WaveBackground
+      <Welcome.Background
         background={{
           image: background,
           position: this.backgroundPosition
         }}
       >
-          <WelcomePanel>
+          <Welcome.Panel>
             {this.currentScreen}
             {this.footer}
-          </WelcomePanel>
-      </WaveBackground>
+          </Welcome.Panel>
+      </Welcome.Background>
     )
   }
 }

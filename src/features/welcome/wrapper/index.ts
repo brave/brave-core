@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import { Card } from '../../../index'
 
 const BaseGrid = styled<{}, 'div'>('div')`
   box-sizing: border-box;
@@ -43,4 +44,16 @@ export const Content = styled<{}, 'section'>('section')`
   align-items: center;
   flex: 1;
   margin-bottom: 50px;
+`
+
+export const Panel = styled(Card)`
+  background-color: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  box-shadow: 0 6px 12px 0 rgba(39, 46, 64, 0.2);
+  max-width: 600px;
+  min-height: 580px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 50px 60px
 `

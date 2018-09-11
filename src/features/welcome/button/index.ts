@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled, { css } from 'styled-components'
-import { Button } from '../../../index'
 
 interface BaseButtonProps {
   active?: boolean
@@ -47,15 +46,4 @@ export const Bullet = styled(BaseButton)`
       color: #FB542B;
     }
   `}
-`
-
-export const MainButton = styled<any, any>(Button)`
-  /* TODO: extended styles are being overriden by default styles */
-  text-transform: uppercase !important;
-`
-
-export const SideButton = styled<any, any>(Button)`
-  /* TODO: extended styles are being overriden by default styles */
-  text-transform: uppercase !important;
-  font-weight: 500 !important;
 `
