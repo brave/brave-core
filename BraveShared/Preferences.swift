@@ -26,7 +26,7 @@ public class Preferences {
 }
 
 extension Preferences {
-    struct DAU {
+    final class DAU {
         static let lastLaunchInfo = Option<[Int?]?>(key: "dau_stat", default: nil)
         static let weekOfInstallation = Option<String?>(key: "week_of_installation", default: nil)
         static let firstPingSuccess = Option<Bool>(key: "dau.first-ping", default: false)
@@ -89,7 +89,6 @@ extension Preferences {
     public class func migrate<T>(keyPrefix: String, key: String, to option: Preferences.Option<T>) {
         let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
 
-        
         let profileKey = "\(keyPrefix)\(key)"
         // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
         // as casting to T if T is Optional even if the key doesnt exist.
