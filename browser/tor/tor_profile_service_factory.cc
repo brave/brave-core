@@ -40,8 +40,7 @@ TorProfileServiceFactory::TorProfileServiceFactory()
 //static
 void TorProfileServiceFactory::SetTorNavigationUIData(
     Profile* profile, BraveNavigationUIData* data) {
-  bool use_tor = profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor);
-  if (!use_tor)
+  if (!profile->IsTorProfile())
     return;
   data->SetTorProfileService(GetForProfile(profile));
 }

@@ -36,9 +36,7 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   before_url_request_callbacks_.push_back(callback);
 #endif
 
-  callback =
-      base::Bind(
-          brave::OnBeforeURLRequest_TorPreFileWork);
+  callback = base::Bind(brave::OnBeforeURLRequest_TorWork);
   before_url_request_callbacks_.push_back(callback);
 
   brave::OnBeforeStartTransactionCallback start_transactions_callback =

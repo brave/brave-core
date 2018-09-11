@@ -15,7 +15,7 @@ using content::ResourceRequestInfo;
 
 namespace brave {
 
-int OnBeforeURLRequest_TorPreFileWork(
+int OnBeforeURLRequest_TorWork(
     net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
