@@ -234,6 +234,30 @@ void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
       std::bind(&onVisitSavedDummy, _1, _2));
 }
 
+void BatPublishers::restorePublishers() {
+  auto filter = CreatePublisherFilter("",
+      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+      ledger::PUBLISHER_MONTH::ANY,
+      -1);
+  ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::onRestorePublishersInternal,
+                                this, _1, _2));
+}
+
+void BatPublishers::onRestorePublishersInternal(const ledger::PublisherInfoList& publisherInfoList, uint32_t /* next_record */) {
+  if (publisherInfoList.size() == 0) {
+    return;
+  }
+
+  for (size_t i = 0; i < publisherInfoList.size(); i++) {
+    if (isExcluded(publisherInfoList[i].id,
+                   publisherInfoList[i].excluded)) {
+      // Set to PUBLISHER_EXCLUDE::DEFAULT (0)
+      setExclude(publisherInfoList[i].id,
+                 ledger::PUBLISHER_EXCLUDE::DEFAULT);
+    }
+  }
+}
+
 void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In seconds
   state_->min_pubslisher_duration_ = duration;
   saveState();
