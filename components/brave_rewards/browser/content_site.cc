@@ -10,7 +10,8 @@ namespace brave_rewards {
   ContentSite::ContentSite(const std::string& site_id) :
       id(site_id),
       percentage(0),
-      verified(false) {
+      verified(false),
+      excluded(0) {
   }
 
   ContentSite::~ContentSite() {}
@@ -18,6 +19,7 @@ namespace brave_rewards {
   ContentSite::ContentSite(const ContentSite &properties) {
     percentage = properties.percentage;
     verified = properties.verified;
+    excluded = properties.excluded;
     name = properties.name;
     favicon_url = properties.favicon_url;
     url = properties.url;

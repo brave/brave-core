@@ -14,6 +14,12 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       state.firstLoad = false
       state.autoContributeList = action.payload.list
       break
+    case types.ON_EXCLUDE_PUBLISHER:
+      if (!action.payload.publisherKey) {
+        break
+      }
+      chrome.send('excludePublisher', [action.payload.publisherKey])
+      break
   }
 
   return state

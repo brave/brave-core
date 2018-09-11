@@ -21,6 +21,7 @@ struct ContentSite {
   std::string id;
   double percentage;
   bool verified;
+  int excluded;
   std::string name;
   std::string favicon_url;
   std::string url;

@@ -79,6 +79,7 @@ ContentSite PublisherInfoToContentSite(
   ContentSite content_site(publisher_info.id);
   content_site.percentage = publisher_info.percent;
   content_site.verified = publisher_info.verified;
+  content_site.excluded = publisher_info.excluded;
   content_site.name = publisher_info.name;
   content_site.url = publisher_info.url;
   content_site.provider = publisher_info.provider;
@@ -404,6 +405,10 @@ base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnMediaPublisherInfoSaved,
                      AsWeakPtr()));
+}
+
+void RewardsServiceImpl::ExcludePublisher(const std::string publisherKey) const {
+  ledger_->SetPublisherExclude(publisherKey, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
 }
 
 void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
