@@ -5,28 +5,34 @@
 const locale = {
   // first screen
   welcome: 'Welcome to Brave',
-  whatIsBrave: 'Brave is so much more than a browser. Let\'s show you how to make the most of it.',
+  whatIsBrave: 'Let\'s get you ready to enjoy a faster and more secure browsing experience with a browser built to protect your privacy.',
   letsGo: 'LET\'S GO',
   // second screen
-  enableBraveRewards: 'Enable Brave Rewards',
-  setupBraveRewards: 'Setting up Brave Rewards is easy and you start earning blockchain-based tokens which can be used to reward your favorite content creators.',
-  enableRewards: 'ENABLE REWARDS',
-  // third screen
-  importFromAnotherBrowser: 'Import from another browser',
+  importFromAnotherBrowser: 'Import bookmarks & settings',
   setupImport: 'Brave makes it easy to setup your usual environment by importing bookmarks and settings from other browsers installed on your computer.',
-  importNow: 'IMPORT NOW',
+  import: 'IMPORT',
+  imported: 'IMPORTED',
+  // third screen
+  setDefaultSearchEngine: 'Set default search engine',
+  chooseSearchEngine: 'Choose the search engine you would like to use by default when searching the web from the URL bar.',
   // fourth screen
-  manageShields: 'Manage your shield settings',
-  adjustProtectionLevel: 'Adjust and monitor your level of protection by clicking the Brave logo in the toolbar. Manage your global shield settings in the preferences panel.',
-  shieldSettings: 'SHIELD SETTINGS',
+  chooseYourTheme: 'Choose your theme',
+  findToolbarTheme: 'Use the dropdown selection below to find your preferred toolbar theme. This can be changed later from the preferences panel.',
   // fifth screen
-  customizePreferences: 'Customize your preferences',
-  configure: 'Tabs, appearance, extensions and history setting can be configured in the preferences panel. You might even find a dark theme in there.',
-  preferences: 'PREFERENCES',
+  protectYourPrivacy: 'Protect your privacy',
+  adjustProtectionLevel: 'Shield yourself from unwanted ads and trackers by adjusting your protection level from the shields panel in the toolbar. Welcome to faster, safer browsing.',
+  showMeWhere: 'SHOW ME WHERE',
+  // sixth screen
+  enableBraveRewards: 'Enable Brave Rewards',
+  setupBraveRewards: 'Brave Rewards is a new way of thinking about how the web works. Earn blockchain-based tokens for viewing malware free ads while you browse. Experience the web in a new way.',
+  getStarted: 'GET STARTED',
   // footer
   skipWelcomeTour: 'Skip welcome tour',
   next: 'NEXT',
-  done: 'DONE'
+  done: 'DONE',
+  // shared
+  confirm: 'CONFIRM',
+  confirmed: 'CONFIRMED'
 }
 
 export default locale

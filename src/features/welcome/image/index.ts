@@ -14,18 +14,23 @@ export const BraveImage = styled(BaseImage)`
   width: 90px;
 `
 
-export const PaymentsImage = styled(BaseImage)`
-  width: 230px;
-`
-
 export const ImportImage = styled(BaseImage)`
   width: 215px;
+`
+
+export const SearchImage = styled(BaseImage)`
+  width: 394px;
+`
+
+export const ThemeImage = styled(BaseImage)`
+  width: 297px;
+`
+
+export const PaymentsImage = styled(BaseImage)`
+  width: 230px;
 `
 
 export const ShieldsImage = styled(BaseImage)`
   width: 185px;
 `
 
-export const FeaturesImage = styled(BaseImage)`
-  width: 300px;
-`

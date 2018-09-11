@@ -9,7 +9,8 @@ import {
   PaymentsImage,
   ImportImage,
   ShieldsImage,
-  FeaturesImage
+  SearchImage,
+  ThemeImage
 } from './image'
 import { Title, Paragraph } from './text'
 import {
@@ -18,7 +19,8 @@ import {
   FooterMiddleColumn,
   FooterRightColumn,
   Content,
-  Panel
+  Panel,
+  SelectGrid
 } from './wrapper'
 
 export {
@@ -29,7 +31,8 @@ export {
   PaymentsImage,
   ImportImage,
   ShieldsImage,
-  FeaturesImage,
+  SearchImage,
+  ThemeImage,
   Title,
   Paragraph,
   Footer,
@@ -37,5 +40,6 @@ export {
   FooterMiddleColumn,
   FooterRightColumn,
   Content,
-  Panel
+  Panel,
+  SelectGrid
 }
