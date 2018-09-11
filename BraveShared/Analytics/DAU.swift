@@ -197,7 +197,7 @@ public class DAU {
     }
 }
 
-extension DateComponents {
+private extension DateComponents {
     /// Returns date of current week's monday in YYYY-MM-DD format
     var weeksMonday: String {
         var isSunday: Bool {
