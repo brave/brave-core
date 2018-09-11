@@ -59,7 +59,7 @@ extension Preferences {
         migrate(key: "popupForDDG", to: Preferences.Popups.duckDuckGoPrivateSearch)
         
         // BraveShared
-        self.migrateBraveShared(keyPrefix: keyPrefix)
+        migrateBraveShared(keyPrefix: keyPrefix)
         
         Preferences.Migration.completed.value = true
     }
