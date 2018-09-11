@@ -30,7 +30,13 @@ public class DAU {
     
     public func sendPingToServer() {
         if launchTimer != nil { return }
-        launchTimer = Timer.scheduledTimer(timeInterval: activeUserDuration, target: self, selector: #selector(sendPingToServerInternal), userInfo: nil, repeats: false)
+        launchTimer =
+            Timer.scheduledTimer(
+                timeInterval: activeUserDuration,
+                target: self,
+                selector: #selector(sendPingToServerInternal),
+                userInfo: nil,
+                repeats: false)
     }
     
     @objc public func sendPingToServerInternal() {
@@ -144,7 +150,11 @@ public class DAU {
     }
     
     /// Returns nil if no dau changes detected.
-    func dauStatParams(_ dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value, firstPing: Bool, channel: AppBuildChannel = AppConstants.BuildChannel) -> [URLQueryItem]? {
+    func dauStatParams(
+        _ dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
+        firstPing: Bool,
+        channel: AppBuildChannel = AppConstants.BuildChannel) -> [URLQueryItem]? {
+        
         func dauParams(_ daily: Bool, _ weekly: Bool, _ monthly: Bool) -> [URLQueryItem] {
             return ["daily": daily, "weekly": weekly, "monthly": monthly].map {
                 URLQueryItem(name: $0.key, value: $0.value.description)
