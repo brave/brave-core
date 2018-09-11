@@ -65,14 +65,22 @@ class DAUTests: XCTestCase {
     }
     
     func testStatParamsValidInputs() {
-        var expected: [URLQueryItem]?
+        var expected: [URLQueryItem]!
         
         func daily(_ v: Bool) -> URLQueryItem { return .init(name: "daily", value: v.description) }
         func weekly(_ v: Bool) -> URLQueryItem { return .init(name: "weekly", value: v.description) }
         func monthly(_ v: Bool) -> URLQueryItem { return .init(name: "monthly", value: v.description) }
         
-        expected = [ monthly(true), daily(true), weekly(true) ]
-        XCTAssertEqual(dau.dauStatParams(firstPing: true), expected)
-        XCTAssertEqual(dau.dauStatParams(firstPing: false, channel: .developer), expected)
+        expected = [ daily(true), weekly(true), monthly(true) ]
+        
+        func functionallyEquivalent(_ first: [URLQueryItem], _ second: [URLQueryItem]) -> Bool {
+            if first.count != second.count { return false }
+            for item in first {
+                if !second.contains(item) { return false }
+            }
+            return true
+        }
+        XCTAssertTrue(functionallyEquivalent(dau.dauStatParams(firstPing: true)!, expected))
+        XCTAssertTrue(functionallyEquivalent(dau.dauStatParams(firstPing: false, channel: .developer)!, expected))
     }
 }
