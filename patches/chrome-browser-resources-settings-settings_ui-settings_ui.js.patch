@@ -1,0 +1,48 @@
+diff --git a/chrome/browser/resources/settings/settings_ui/settings_ui.js b/chrome/browser/resources/settings/settings_ui/settings_ui.js
+index 37ebe94a48728893daf84613aab94be6ddf89df7..2318718b653cad4db62664044611aeef3ed956e1 100644
+--- a/chrome/browser/resources/settings/settings_ui/settings_ui.js
++++ b/chrome/browser/resources/settings/settings_ui/settings_ui.js
+@@ -92,13 +92,13 @@ Polymer({
+    */
+   ready: function() {
+     // Lazy-create the drawer the first time it is opened or swiped into view.
+-    listenOnce(this.$.drawer, 'open-changed', () => {
+-      this.$.drawerTemplate.if = true;
+-    });
++    // listenOnce(this.$.drawer, 'open-changed', () => {
++    //   this.$.drawerTemplate.if = true;
++    // });
+ 
+-    window.addEventListener('popstate', e => {
+-      this.$.drawer.closeDrawer();
+-    });
++    // window.addEventListener('popstate', e => {
++    //   this.$.drawer.closeDrawer();
++    // });
+ 
+     CrPolicyStrings = {
+       controlledSettingExtension:
+@@ -273,16 +273,17 @@ Polymer({
+    * @private
+    */
+   onIronActivate_: function(event) {
+-    if (event.detail.item.id != 'advancedSubmenu')
+-      this.$.drawer.closeDrawer();
++    // if (event.detail.item.id != 'advancedSubmenu')
++    //   this.$.drawer.closeDrawer();
+   },
+ 
+   /** @private */
+-  onMenuButtonTap_: function() {
+-    this.$.drawer.toggle();
+-  },
++  // onMenuButtonTap_: function() {
++  //   console.log('BSC]] LOL TOGGLING')
++  //   this.$.drawer.toggle();
++  // },
+ 
+-  /** @private */
++  // /** @private */
+   onMenuClosed_: function() {
+     // Add tab index so that the container can be focused.
+     this.$.container.setAttribute('tabindex', '-1');

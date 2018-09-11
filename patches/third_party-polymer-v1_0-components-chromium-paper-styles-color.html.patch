@@ -1,0 +1,19 @@
+diff --git a/third_party/polymer/v1_0/components-chromium/paper-styles/color.html b/third_party/polymer/v1_0/components-chromium/paper-styles/color.html
+index 67eae3e27e81a5df894d497e40e94e6db1ff61bd..077a0ae2b733cb225a2c38726dd3d88e102071fe 100644
+--- a/third_party/polymer/v1_0/components-chromium/paper-styles/color.html
++++ b/third_party/polymer/v1_0/components-chromium/paper-styles/color.html
+@@ -21,10 +21,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
+       --google-red-500: #db4437;
+       --google-red-700: #c53929;
+ 
+-      --google-blue-100: #c6dafc;
+-      --google-blue-300: #7baaf7;
+-      --google-blue-500: #4285f4;
+-      --google-blue-700: #3367d6;
++      --google-blue-100: #FCD4CD;
++      --google-blue-300: #F88469;
++      --google-blue-500: #F43405;
++      --google-blue-700: #FB542B;
+ 
+       --google-green-100: #b7e1cd;
+       --google-green-300: #57bb8a;

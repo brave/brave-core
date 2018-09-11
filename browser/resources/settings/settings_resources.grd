@@ -32,6 +32,7 @@
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_BROWSER_PROXY_JS" file="brave_default_extensions_page/brave_default_extensions_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_PAGE_JS" file="brave_default_extensions_page/brave_default_extensions_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_PAGE_HTML" file="brave_default_extensions_page/brave_default_extensions_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_BRAVE_SETTINGS_MENU_ICONS_HTML" file="brave_settings_menu/icons.html" type="chrome_html" />
     </structures>
     <includes>
       <include name="IDR_SETTINGS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />

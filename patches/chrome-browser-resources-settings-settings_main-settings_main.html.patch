@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/resources/settings/settings_main/settings_main.html b/chrome/browser/resources/settings/settings_main/settings_main.html
+index 87bd32f2d53f3a7d5c0f1576e268a574d54aa1e9..6313f1eaf84b3767f423286587d489e80df63477 100644
+--- a/chrome/browser/resources/settings/settings_main/settings_main.html
++++ b/chrome/browser/resources/settings/settings_main/settings_main.html
+@@ -18,6 +18,10 @@
+ <dom-module id="settings-main">
+   <template>
+     <style include="cr-hidden-style">
++      :host {
++        display: inline-block;
++      }
++
+       #overscroll {
+         margin-top: 64px;
+       }

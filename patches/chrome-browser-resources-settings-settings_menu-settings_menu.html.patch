@@ -1,8 +1,135 @@
 diff --git a/chrome/browser/resources/settings/settings_menu/settings_menu.html b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..892f1693a46f0f7df9172ecd7be2dc65fe263b7f 100644
+index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a0c8136be 100644
 --- a/chrome/browser/resources/settings/settings_menu/settings_menu.html
 +++ b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-@@ -148,6 +148,10 @@
+@@ -10,23 +10,32 @@
+ <link rel="import" href="../route.html">
+ <link rel="import" href="../settings_shared_css.html">
+ 
++<if expr="not _google_chrome">
++<link rel="import" href="../brave_settings_menu/icons.html">
++</if>
++
+ <dom-module id="settings-menu">
+   <template>
+     <style include="settings-shared">
+       :host {
+-        display: block;
+-        margin-top: 8px;
++        display: inline-block;
++        vertical-align: top;
++        margin: 12px;
++        padding: 12px 60px 20px 0;
++        background-color: #fff;
++        border: 1px solid #e8e8ef;
++        border-radius: 7px;
++        font-family: Poppins, -apple-system, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+       }
+ 
+-      a[href],
+-      #advancedButton {
++      a[href] {
+         --cr-selectable-focus: {
+           outline: auto 5px -webkit-focus-ring-color;
+         };
+         align-items: center;
+-        color: var(--settings-nav-grey);
++        color: #A0A1B2; /* brave: subtleInteracting */
+         display: flex;
+-        font-weight: 500;
++        font-weight: normal;
+         margin-inline-end: 2px;  /* Margin so selected outline is visible. */
+         margin-inline-start: 1px;
+         min-height: 20px;
+@@ -35,10 +44,32 @@
+         padding-top: 10px;
+       }
+ 
+-      a[href].iron-selected {
++      a[href].iron-selected > iron-icon {
+         color: var(--google-blue-700);
+       }
+ 
++      a[href].iron-selected {
++        color: #000;
++        font-weight: bold;
++      }
++
++      #settingsHeader,
++      #advancedButton {
++        --cr-selectable-focus: {
++          outline: auto 5px -webkit-focus-ring-color;
++        };
++        align-items: center;
++        font-weight: normal;
++        margin-inline-end: 2px;  /* Margin so selected outline is visible. */
++        margin-inline-start: 1px;
++        min-height: 20px;
++        padding-bottom: 10px;
++        padding-inline-start: 23px;  /* 24px - 1px from margin for outline. */
++        padding-top: 10px;
++        font-size: larger;
++        color: #000;
++      }
++
+       iron-icon {
+         --iron-icon-fill-color: var(--settings-nav-grey);
+         margin-inline-end: 24px;
+@@ -48,6 +79,7 @@
+ 
+       .iron-selected > iron-icon {
+         fill: var(--google-blue-700);
++        font-weight: bold;
+       }
+ 
+       #advancedButton {
+@@ -77,7 +109,6 @@
+       #advancedButton > iron-icon,
+       #extensionsLink > iron-icon {
+         @apply --cr-icon-height-width;
+-        margin-inline-end: 14px;  /* 16px - 2px from margin for outline. */
+       }
+ 
+       #menuSeparator {
+@@ -86,10 +117,19 @@
+         margin-bottom: 8px;
+         margin-top: 8px;
+       }
++
++      #aboutMenuText {
++        display: flex;
++        flex-direction: column;
++        color: #C5C5D3; /* brave: subtle */
++      }
+     </style>
+     <iron-selector id="topMenu" selectable="a:not(#extensionsLink)"
+         attr-for-selected="href" on-iron-activate="onSelectorActivate_"
+         role="navigation" on-click="onLinkClick_">
++        <div id="settingsHeader">
++          <span>$i18n{settings}</span>
++        </div>
+ <if expr="chromeos">
+       <a href="/internet">
+         <iron-icon icon="settings:network-wifi"></iron-icon>
+@@ -114,11 +150,12 @@
+         <iron-icon icon="settings:assignment"></iron-icon>
+         $i18n{autofillPageTitle}
+       </a>
+-      <a id="appearance" href="/appearance"
+-        hidden="[[!pageVisibility.appearance]]">
+-        <iron-icon icon="settings:palette"></iron-icon>
+-        $i18n{appearancePageTitle}
+-      </a>
++      <a id="extensionsLink" href="chrome://extensions" target="_blank"
++          on-click="onExtensionsLinkClick_"
++          title="$i18n{extensionsLinkTooltip}">
++        <iron-icon icon="brave_settings:misc-extensions"></iron-icon>
++        $i18n{extensionsPageTitle}
++       </a>
+ <if expr="chromeos">
+       <a href="/device">
+         <iron-icon icon="settings:laptop-chromebook"></iron-icon>
+@@ -148,11 +185,20 @@
          $i18n{defaultBrowser}
        </a>
  </if>
@@ -13,7 +140,17 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..892f1693a46f0f7df9172ecd7be2dc65
        <a id="onStartup" href="/onStartup"
          hidden="[[!pageVisibility.onStartup]]">
          <iron-icon icon="settings:power-settings-new"></iron-icon>
-@@ -185,10 +189,12 @@
+         $i18n{onStartup}
+       </a>
++      <a id="appearance" href="/appearance"
++        hidden="[[!pageVisibility.appearance]]">
++        <iron-icon icon="brave_settings:square-tab-settings"></iron-icon>
++        $i18n{appearancePageTitle}
++      </a>
+       <paper-button toggles id="advancedButton"
+           aria-active-attribute="aria-expanded" active="{{advancedOpened}}"
+           hidden="[[!pageVisibility.advancedSettings]]">
+@@ -185,10 +231,12 @@
              <iron-icon icon="cr:print"></iron-icon>
              $i18n{printingPageTitle}
            </a>
@@ -26,3 +163,24 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..892f1693a46f0f7df9172ecd7be2dc65
  <if expr="not chromeos">
            <a href="/system">
              <iron-icon icon="settings:build"></iron-icon>
+@@ -202,13 +250,13 @@
+         </iron-selector>
+       </iron-collapse>
+       <div id="menuSeparator"></div>
+-      <a id="extensionsLink" href="chrome://extensions" target="_blank"
+-          on-click="onExtensionsLinkClick_"
+-          title="$i18n{extensionsLinkTooltip}">
+-        <span>$i18n{extensionsPageTitle}</span>
+-        <iron-icon class="cr-icon icon-external" actionable></iron-icon>
+-      </a>
+-      <a id="about-menu" href="/help">$i18n{aboutPageTitle}</a>
++      <a id="about-menu" href="/help">
++        <iron-icon icon="brave_settings:full-color-brave-lion"></iron-icon>
++        <div id="aboutMenuText">
++          <div>$i18n{aboutPageTitle}</div>
++          <div>$i18n{braveProductVersion}</div>
++        </div>
++       </a>
+     </iron-selector>
+   </template>
+   <script src="settings_menu.js"></script>

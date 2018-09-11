@@ -1,0 +1,15 @@
+diff --git a/components/security_interstitials/core/common/resources/interstitial_core.css b/components/security_interstitials/core/common/resources/interstitial_core.css
+index ef124ab28e29040114cb6a3c9fdba73555269d69..cfe4003ebbb87ccb10f05cb613015671794b7478 100644
+--- a/components/security_interstitials/core/common/resources/interstitial_core.css
++++ b/components/security_interstitials/core/common/resources/interstitial_core.css
+@@ -7,8 +7,8 @@ a {
+ }
+ 
+ body {
+-  --google-blue-600: #1A73E8;
+-  --google-blue-700: #1967D2;
++  --google-blue-600: #C72E03;
++  --google-blue-700: #992802;
+   background-color: #fff;
+   color: rgb(100, 100, 100);
+   word-wrap: break-word;
