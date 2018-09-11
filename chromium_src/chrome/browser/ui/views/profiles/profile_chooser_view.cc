@@ -1,7 +1,11 @@
 #include "../../../../../../../chrome/browser/ui/views/profiles/profile_chooser_view.cc"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 
 void ProfileChooserView::AddTorButton(views::GridLayout* layout) {
-    if (!browser_->profile()->IsTorProfile()) {
+    if (!browser_->profile()->IsTorProfile() &&
+        !g_brave_browser_process->tor_client_updater()
+          ->GetExecutablePath().empty()) {
       tor_profile_button_ = new HoverButton(
           this,
           gfx::CreateVectorIcon(kLaunchIcon, kIconSize,
