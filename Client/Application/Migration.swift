@@ -16,27 +16,17 @@ extension Preferences {
     }
     
     /// Migrate the users preferences from prior versions of the app (<2.0)
-    class func migrate(from profile: Profile) {
+    class func migratePreferences(keyPrefix: String) {
         if Preferences.Migration.completed.value {
             return
         }
         
         // Grab the user defaults that Prefs saves too and the key prefix all objects inside it are saved under
         let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
-        let keyPrefix = profile.prefs.getBranchPrefix()
         
-        /// Migrate a given key from `Prefs` into a specific option
+        /// Wrapper around BraveShared migrate, to automate prefix injection
         func migrate<T>(key: String, to option: Preferences.Option<T>) {
-            let profileKey = "\(keyPrefix)\(key)"
-            // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
-            // as casting to T if T is Optional even if the key doesnt exist.
-            let value = userDefaults?.object(forKey: profileKey)
-            if value != nil, let value = value as? T {
-                option.value = value
-                userDefaults?.removeObject(forKey: profileKey)
-            } else {
-                log.info("Could not migrate legacy pref with key: \"\(profileKey)\".")
-            }
+            self.migrate(keyPrefix: keyPrefix, key: key, to: option)
         }
         
         // General
@@ -67,6 +57,9 @@ extension Preferences {
         
         // Popups
         migrate(key: "popupForDDG", to: Preferences.Popups.duckDuckGoPrivateSearch)
+        
+        // BraveShared
+        self.migrateBraveShared(keyPrefix: keyPrefix)
         
         Preferences.Migration.completed.value = true
     }

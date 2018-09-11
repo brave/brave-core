@@ -83,3 +83,29 @@ extension URL: UserDefaultsEncodable {}
 extension Data: UserDefaultsEncodable {}
 extension Array: UserDefaultsEncodable where Element: UserDefaultsEncodable {}
 extension Dictionary: UserDefaultsEncodable where Key: StringProtocol, Value: UserDefaultsEncodable {}
+
+extension Preferences {
+    /// Migrate a given key from `Prefs` into a specific option
+    public class func migrate<T>(keyPrefix: String, key: String, to option: Preferences.Option<T>) {
+        let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
+
+        
+        let profileKey = "\(keyPrefix)\(key)"
+        // Have to do two checks because T may be an Optional, since object(forKey:) returns Any? it will succeed
+        // as casting to T if T is Optional even if the key doesnt exist.
+        let value = userDefaults?.object(forKey: profileKey)
+        if value != nil, let value = value as? T {
+            option.value = value
+            userDefaults?.removeObject(forKey: profileKey)
+        } else {
+            Logger.browserLogger.info("Could not migrate legacy pref with key: \"\(profileKey)\".")
+        }
+    }
+    
+    public class func migrateBraveShared(keyPrefix: String) {
+        // DAU
+        migrate(keyPrefix: keyPrefix, key: "dau_stat", to: Preferences.DAU.lastLaunchInfo)
+        migrate(keyPrefix: keyPrefix, key: "week_of_installation", to: Preferences.DAU.weekOfInstallation)
+    }
+}
+
