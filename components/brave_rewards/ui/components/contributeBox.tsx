@@ -84,6 +84,10 @@ class ContributeBox extends React.Component<Props, State> {
     )
   }
 
+  onRestore = () => {
+    // To do (this.actions.restore)
+  }
+
   onToggleContribution = () => {
     this.actions.onSettingSave('enabledContribute', !this.props.rewardsData.enabledContribute)
   }
@@ -205,6 +209,7 @@ class ContributeBox extends React.Component<Props, State> {
           this.state.modalContribute
           ? <ModalContribute
             rows={contributeRows}
+            onRestore={this.onRestore}
             onClose={this.onModalContributeToggle}
           />
           : null
