@@ -34,7 +34,7 @@ class TestFavicons: ProfileTest {
             }
             XCTAssertEqual(favicons.count, 1, "Instagram should have a Favicon.")
 
-            WebImageCacheWithNoPrivacyProtection.shared.load(from: url) { (image, _, _, _, _, _) in
+            WebImageCacheWithNoPrivacyProtectionManager.shared.load(from: url) { image, _, _, _, _ in
                 guard let image = image else {
                     XCTFail("Not a valid URL provided for a favicon.")
                     return expectation.fulfill()

@@ -508,11 +508,11 @@ class TabManager: NSObject {
         delegates.forEach { $0.get()?.tabManager(self, willRemoveTab: tab) }
 
         // The index of the tab in its respective tab grouping. Used to figure out which tab is next
-        let viableTabs = tabs(withType: tab.type)
+        var currentTabs = tabs(withType: tab.type)
 
         var tabIndex: Int = -1
         if let oldTab = oldSelectedTab {
-            tabIndex = viableTabs.index(of: oldTab) ?? -1
+            tabIndex = currentTabs.index(of: oldTab) ?? -1
         }
 
         let prevCount = count
@@ -523,13 +523,15 @@ class TabManager: NSObject {
             DataController.remove(object: tab, context: context)
         }
 
+        currentTabs = tabs(withType: tab.type)
+        
         // Let's select the tab to be selected next.
         if let oldTab = oldSelectedTab, tab !== oldTab {
             // If it wasn't the selected tab we removed, then keep it like that.
             // It might have changed index, so we look it up again.
             _selectedIndex = tabs.index(of: oldTab) ?? -1
         } else if let parentTab = tab.parent,
-            let newTab = viableTabs.reduce(viableTabs.first, { currentBestTab, tab2 in
+            let newTab = currentTabs.reduce(currentTabs.first, { currentBestTab, tab2 in
             if let tab1 = currentBestTab, let time1 = tab1.lastExecutedTime {
                 if let time2 = tab2.lastExecutedTime {
                     return time1 <= time2 ? tab2 : tab1
@@ -544,11 +546,11 @@ class TabManager: NSObject {
         } else {
             // By now, we've just removed the selected one, and no previously loaded
             // tabs. So let's load the final one in the tab tray.
-            if tabIndex == viableTabs.count {
+            if tabIndex == currentTabs.count {
                 tabIndex -= 1
             }
 
-            if let currentTab = viableTabs[safe: tabIndex] {
+            if let currentTab = currentTabs[safe: tabIndex] {
                 _selectedIndex = tabs.index(of: currentTab) ?? -1
             } else {
                 _selectedIndex = -1
@@ -563,7 +565,7 @@ class TabManager: NSObject {
         delegates.forEach { $0.get()?.tabManager(self, didRemoveTab: tab) }
         TabEvent.post(.didClose, for: tab)
 
-        if tab.isPrivate && viableTabs.isEmpty {
+        if !tab.isPrivate && currentTabs.isEmpty {
             addTab()
         }
 
