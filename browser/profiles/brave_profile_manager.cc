@@ -24,7 +24,7 @@ using content::BrowserThread;
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
   : ProfileManager(user_data_dir) {}
 
-//static
+// static
 base::FilePath BraveProfileManager::GetTorProfilePath() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
@@ -34,15 +34,20 @@ base::FilePath BraveProfileManager::GetTorProfilePath() {
   return tor_path.Append(tor::kTorProfileDir);
 }
 
+// static
+void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
+  PrefService* pref_service = profile->GetPrefs();
+  pref_service->SetInteger(prefs::kProfileAvatarIndex, 0);
+  pref_service->SetBoolean(prefs::kProfileUsingDefaultName, false);
+  pref_service
+    ->SetString(prefs::kProfileName,
+                l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
+  pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
+}
+
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   if (profile->GetPath() == GetTorProfilePath()) {
-    PrefService* pref_service = profile->GetPrefs();
-    pref_service->SetInteger(prefs::kProfileAvatarIndex, 0);
-    pref_service->SetBoolean(prefs::kProfileUsingDefaultName, false);
-    pref_service
-      ->SetString(prefs::kProfileName,
-                  l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
-    pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
+    InitTorProfileUserPrefs(profile);
   } else {
     ProfileManager::InitProfileUserPrefs(profile);
   }
