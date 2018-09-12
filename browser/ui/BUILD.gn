@@ -44,6 +44,8 @@ source_set("ui") {
     "views/importer/brave_import_lock_dialog_view.h",
     "views/location_bar/brave_location_bar_view.cc",
     "views/location_bar/brave_location_bar_view.h",
+    "views/profiles/brave_profile_chooser_view.cc",
+    "views/profiles/brave_profile_chooser_view.h",
     "views/tabs/brave_new_tab_button.cc",
     "views/tabs/brave_new_tab_button.h",
     "views/tabs/brave_tab.cc",

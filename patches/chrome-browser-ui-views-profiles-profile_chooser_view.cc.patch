@@ -1,36 +1,21 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index c1341d0b3470261863c97a81a7dd4869ad3d9c21..d4b56abdc9567c14c4825fc9ba046bf1a94c6157 100644
+index c1341d0b3470261863c97a81a7dd4869ad3d9c21..71a02a81c164154b9294a2c37b7a8e5d850e139d 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-@@ -408,6 +408,7 @@ void ProfileChooserView::ResetView() {
-   current_profile_card_ = nullptr;
-   first_profile_button_ = nullptr;
-   guest_profile_button_ = nullptr;
-+  tor_profile_button_ = nullptr;
-   users_button_ = nullptr;
-   go_incognito_button_ = nullptr;
-   lock_button_ = nullptr;
-@@ -640,10 +641,14 @@ void ProfileChooserView::ButtonPressed(views::Button* sender,
-     DCHECK(service->GetBoolean(prefs::kBrowserGuestModeEnabled));
-     profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
-     base::RecordAction(base::UserMetricsAction("ProfileChooser_GuestClicked"));
-+  } else if (sender == tor_profile_button_) {
-+    profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-   } else if (sender == users_button_) {
-     // If this is a guest session, close all the guest browser windows.
--    if (browser_->profile()->IsGuestSession()) {
-+    if (browser_->profile()->IsGuestSession() && !browser_->profile()->IsTorProfile()) {
-       profiles::CloseGuestProfileWindows();
-+    } else if (browser_->profile()->IsTorProfile()) {
-+      profiles::CloseTorProfileWindows();
-     } else {
-       UserManager::Show(base::FilePath(),
-                         profiles::USER_MANAGER_SELECT_PROFILE_NO_ACTION);
-@@ -1310,9 +1315,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
+@@ -331,7 +331,7 @@ void ProfileChooserView::ShowBubble(
+     return;
+ 
+   profile_bubble_ =
+-      new ProfileChooserView(anchor_button, browser, view_mode,
++      new BraveProfileChooserView(anchor_button, browser, view_mode,
+                              manage_accounts_params.service_type, access_point);
+   if (!anchor_button) {
+     DCHECK(parent_window);
+@@ -1310,9 +1310,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
        layout->AddView(guest_profile_button_);
      }
    }
-+  AddTorButton(layout);
++  static_cast<BraveProfileChooserView*>(this)->AddTorButton(layout);
  
    base::string16 text = l10n_util::GetStringUTF16(
        is_guest ? IDS_PROFILES_EXIT_GUEST : IDS_PROFILES_MANAGE_USERS_BUTTON);
