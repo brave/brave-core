@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, text } from '@storybook/addon-knobs'
+import { boolean, withKnobs, text } from '@storybook/addon-knobs'
 
 // Components
 import { TabsType } from '../../../src/features/rewards/modalBackupRestore'
@@ -109,6 +109,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
         onClose={doNothing}
         numExcludedSites={25}
         onRestore={doNothing}
+        sortByAttentionDesc={boolean('Sort DESC', true)}
       />
     )
   })

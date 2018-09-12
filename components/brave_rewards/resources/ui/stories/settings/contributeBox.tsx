@@ -167,6 +167,7 @@ class ContributeBox extends React.Component<{}, State> {
         {
           this.state.modalContribute
             ? <ModalContribute
+              onRestore={doNothing}
               rows={this.contributeRows}
               onClose={this.onContributeModalClose.bind(self)}
             />
