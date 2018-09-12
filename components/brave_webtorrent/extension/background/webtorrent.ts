@@ -11,12 +11,14 @@ import { Instance } from 'parse-torrent'
 let webTorrent: WebTorrent.Instance
 let servers: { [key: string]: any } = { }
 
-export const init = () => {
-  webTorrent = new WebTorrent({ tracker: { wrtc: false } })
-  addWebtorrentEvents(webTorrent)
-}
+export const getWebTorrent = () => {
+  if (!webTorrent) {
+    webTorrent = new WebTorrent({ tracker: { wrtc: false } })
+    addWebtorrentEvents(webTorrent)
+  }
 
-export const getWebTorrent = () => webTorrent
+  return webTorrent
+}
 
 export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string) => void) => {
   if (!torrent.infoHash) return // torrent is not ready
@@ -49,12 +51,12 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
 }
 
 export const addTorrent = (torrentId: string | Instance) => {
-  const torrentObj = webTorrent.add(torrentId)
+  const torrentObj = getWebTorrent().add(torrentId)
   addTorrentEvents(torrentObj)
 }
 
 export const findTorrent = (infoHash: string) => {
-  return webTorrent.torrents.find(torrent => torrent.infoHash === infoHash)
+  return getWebTorrent().torrents.find(torrent => torrent.infoHash === infoHash)
 }
 
 export const delTorrent = (infoHash: string) => {
