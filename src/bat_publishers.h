@@ -51,6 +51,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void setPublishersLastRefreshTimestamp(uint64_t ts);
 
   void setExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude);
+  void restorePublishers();
 
   void setPublisherAllowNonVerified(const bool& allow);
   void setPublisherAllowVideos(const bool& allow);
@@ -111,6 +112,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
     ledger::PUBLISHER_EXCLUDE exclude,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info);
+
+  void onRestorePublishersInternal(const ledger::PublisherInfoList& publisherInfoList, uint32_t /* next_record */);
 
   double concaveScore(const uint64_t& duration);
 

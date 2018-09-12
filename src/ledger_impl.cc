@@ -287,6 +287,10 @@ void LedgerImpl::SetPublisherExclude(const std::string& publisher_id, const ledg
   bat_publishers_->setExclude(publisher_id, exclude);
 }
 
+void LedgerImpl::RestorePublishers() {
+  bat_publishers_->restorePublishers();
+}
+
 void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                                     ledger::Result result,
                                     std::unique_ptr<ledger::PublisherInfo> info) {

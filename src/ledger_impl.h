@@ -134,6 +134,7 @@ class LedgerImpl : public ledger::Ledger,
   std::string URIEncode(const std::string& value) override;
   void SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) override;
   void SetPublisherExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) override;
+  void RestorePublishers() override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
