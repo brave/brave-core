@@ -433,6 +433,15 @@ void LedgerImpl::OnWalletProperties(ledger::Result result,
     info->balance_ = properties.balance_;
     info->rates_ = properties.rates_;
     info->parameters_choices_ = properties.parameters_choices_;
+    if (std::find(info->parameters_choices_.begin(), 
+      info->parameters_choices_.end(), 
+      bat_client_->getContributionAmount()) == 
+      info->parameters_choices_.end()) {
+        info->parameters_choices_.push_back
+          (bat_client_->getContributionAmount());
+        std::sort(info->parameters_choices_.begin(), 
+          info->parameters_choices_.end());
+    }
     info->parameters_range_ = properties.parameters_range_;
     info->parameters_days_ = properties.parameters_days_;
 
