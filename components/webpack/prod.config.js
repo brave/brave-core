@@ -35,9 +35,10 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
+      'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker'),
       'dgram': 'chrome-dgram',
-      'net': 'chrome-net',
-      'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker')
+      'dns': path.resolve(__dirname, '../common/dns.ts'),
+      'net': 'chrome-net'
     }
   },
   module: {
