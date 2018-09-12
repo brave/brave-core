@@ -216,7 +216,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
                 return deferred.fill(Maybe(failure: FaviconError()))
             }
 
-            WebImageCacheWithNoPrivacyProtectionManager.shared.load(from: faviconURL) { (image, _, _, _, _) in
+            WebImageCacheWithNoPrivacyProtectionManager.shared.load(from: faviconURL) { image, _, _, _, _ in
                 guard let image = image else {
                     deferred.fill(Maybe(failure: FaviconError()))
                     return
