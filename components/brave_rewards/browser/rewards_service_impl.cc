@@ -847,6 +847,10 @@ std::map<std::string, std::string> RewardsServiceImpl::GetAddresses() const {
   return addresses;
 }
 
+void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) const {
+  return ledger_->SetRewardsMainEnabled(enabled);
+}
+
 void RewardsServiceImpl::SetPublisherMinVisitTime(
     uint64_t duration_in_seconds) const {
   return ledger_->SetPublisherMinVisitTime(duration_in_seconds);

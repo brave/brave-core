@@ -369,6 +369,10 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     args->GetString(0, &key);
     args->GetString(1, &value);
 
+    if (key == "enabledMain") {
+      rewards_service_->SetRewardsMainEnabled(value == "true");
+    }
+
     if (key == "contributionMonthly") {
       rewards_service_->SetContributionAmount(std::stod(value));
     }

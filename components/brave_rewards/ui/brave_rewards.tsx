@@ -51,6 +51,7 @@ window.cr.define('brave_rewards', function () {
 
   function walletCreated () {
     getActions().onWalletCreated()
+    this.actions.onSettingSave('enabledMain', true)
   }
 
   function walletCreateFailed () {
