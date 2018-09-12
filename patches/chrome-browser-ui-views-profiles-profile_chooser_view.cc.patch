@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index c1341d0b3470261863c97a81a7dd4869ad3d9c21..dc8246594448cd446cd8d0946a7f0a9d13e68ca3 100644
+index c1341d0b3470261863c97a81a7dd4869ad3d9c21..d4b56abdc9567c14c4825fc9ba046bf1a94c6157 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 @@ -408,6 +408,7 @@ void ProfileChooserView::ResetView() {
@@ -10,13 +10,12 @@ index c1341d0b3470261863c97a81a7dd4869ad3d9c21..dc8246594448cd446cd8d0946a7f0a9d
    users_button_ = nullptr;
    go_incognito_button_ = nullptr;
    lock_button_ = nullptr;
-@@ -640,10 +641,15 @@ void ProfileChooserView::ButtonPressed(views::Button* sender,
+@@ -640,10 +641,14 @@ void ProfileChooserView::ButtonPressed(views::Button* sender,
      DCHECK(service->GetBoolean(prefs::kBrowserGuestModeEnabled));
      profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
      base::RecordAction(base::UserMetricsAction("ProfileChooser_GuestClicked"));
 +  } else if (sender == tor_profile_button_) {
 +    profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-+    base::RecordAction(base::UserMetricsAction("ProfileChooser_TorClicked"));
    } else if (sender == users_button_) {
      // If this is a guest session, close all the guest browser windows.
 -    if (browser_->profile()->IsGuestSession()) {
@@ -27,7 +26,7 @@ index c1341d0b3470261863c97a81a7dd4869ad3d9c21..dc8246594448cd446cd8d0946a7f0a9d
      } else {
        UserManager::Show(base::FilePath(),
                          profiles::USER_MANAGER_SELECT_PROFILE_NO_ACTION);
-@@ -1310,9 +1316,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
+@@ -1310,9 +1315,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
        layout->AddView(guest_profile_button_);
      }
    }

@@ -147,19 +147,19 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Brave colors
       </message>
       <!-- Tor -->
-      <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new tor identity">
+      <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
       </message>
-      <message name="IDS_PROFILES_EXIT_TOR" desc="Button in the avatar menu bubble view for exiting the active tor session.">
+      <message name="IDS_PROFILES_EXIT_TOR" desc="Button in the avatar menu bubble view for exiting the active Tor session.">
         Exit Tor
       </message>
-      <message name="IDS_TOR_PROFILE_NAME" desc="The name given to the tor browsing profile. Displayed in the avatar menu bubble and button UI.">
+      <message name="IDS_TOR_PROFILE_NAME" desc="The name given to the Tor browsing profile. Displayed in the avatar menu bubble and button UI.">
         Tor
       </message>
-      <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a tor window.">
+      <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a Tor window.">
         Open Tor Window
       </message>
-      <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the tor profile.">
+      <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
         Tor
       </message>
     </messages>

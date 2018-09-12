@@ -40,7 +40,7 @@ class TorProxyConfigService : public net::ProxyConfigService {
     std::string Get(const std::string&);
     void Erase(const std::string&);
    private:
-    // Generate a new 128 bit random tag
+    // Generate a new base 64-encoded 128 bit random tag
     static std::string GenerateNewPassword();
     // Clear expired entries in the queue from the map.
     void ClearExpiredEntries();
@@ -57,8 +57,8 @@ class TorProxyConfigService : public net::ProxyConfigService {
 
   static void TorSetProxy(
     net::ProxyResolutionService* service,
-    const std::string& tor_proxy,
-    const std::string& site_url,
+    std::string tor_proxy,
+    std::string site_url,
     TorProxyMap* tor_proxy_map,
     bool new_password);
 

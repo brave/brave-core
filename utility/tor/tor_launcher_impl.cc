@@ -36,24 +36,24 @@ static void SIGCHLDHandler(int signo) {
 
 static void SetupPipeHack() {
   if (pipe(pipehack) == -1)
-    LOG(ERROR) << "pipehack";
+    LOG(ERROR) << "pipehack errno:" << errno;
 
   int flags;
   for (size_t i = 0; i < 2; ++i) {
     if ((flags = fcntl(pipehack[i], F_GETFL)) == -1)
-      LOG(ERROR) << "get flags";
+      LOG(ERROR) << "get flags errno:" << errno;
     // Nonblock write end on SIGCHLD handler which will notify monitor thread
     // by sending one byte to pipe whose read end is blocked and wait for
     // SIGCHLD to arrives to avoid busy reading
     if (i == 1)
       flags |= O_NONBLOCK;
     if (fcntl(pipehack[i], F_SETFL, flags) == -1)
-      LOG(ERROR) << "set flags";
+      LOG(ERROR) << "set flags errno:" << errno;
     if ((flags = fcntl(pipehack[i], F_GETFD)) == -1)
-      LOG(ERROR) << "get fd flags";
+      LOG(ERROR) << "get fd flags errno:" << errno;
     flags |= FD_CLOEXEC;
     if (fcntl(pipehack[i], F_SETFD, flags) == -1)
-      LOG(ERROR) << "set fd flags";
+      LOG(ERROR) << "set fd flags errno:" << errno;
   }
 
   struct sigaction action;
@@ -167,12 +167,8 @@ void TorLauncherImpl::Launch(const TorConfig& config,
 #endif
   tor_process_ = base::LaunchProcess(args, launchopts);
 
-  bool result;
   // TODO(darkdh): return success when tor connected to tor network
-  if (tor_process_.IsValid())
-    result = true;
-  else
-    result = false;
+  bool result = tor_process_.IsValid();
 
   if (callback)
     std::move(callback).Run(result, tor_process_.Pid());

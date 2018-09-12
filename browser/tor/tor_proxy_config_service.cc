@@ -38,20 +38,16 @@ TorProxyConfigService::TorProxyConfigService(
                  static_cast<size_t>(std::numeric_limits<int>::max())),
         &url);
       if (url.scheme.is_valid()) {
-        scheme_ =
-          std::string(tor_proxy.begin() + url.scheme.begin,
-                      tor_proxy.begin() + url.scheme.begin + url.scheme.len);
+        scheme_ = tor_proxy.substr(url.scheme.begin, url.scheme.len);
       }
       if (url.host.is_valid()) {
-        host_ =
-          std::string(tor_proxy.begin() + url.host.begin,
-                      tor_proxy.begin() + url.host.begin + url.host.len);
+        host_ = tor_proxy.substr(url.host.begin, url.host.len);
       }
       if (url.port.is_valid()) {
-        port_ =
-          std::string(tor_proxy.begin() + url.port.begin,
-                      tor_proxy.begin() + url.port.begin + url.port.len);
+        port_ = tor_proxy.substr(url.port.begin, url.port.len);
       }
+      if (scheme_.empty() || host_.empty() || port_.empty())
+        return;
       std::string proxy_url;
       if (tor_proxy_map && !username.empty()) {
         std::string password = tor_proxy_map->Get(username);
@@ -69,8 +65,8 @@ TorProxyConfigService::~TorProxyConfigService() {}
 // static
 void TorProxyConfigService::TorSetProxy(
     net::ProxyResolutionService* service,
-    const std::string& tor_proxy,
-    const std::string& site_url,
+    std::string tor_proxy,
+    std::string site_url,
     TorProxyMap* tor_proxy_map,
     bool new_password) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);

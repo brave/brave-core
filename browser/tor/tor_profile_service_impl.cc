@@ -44,7 +44,7 @@ void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
 
 void TorProfileServiceImpl::SetNewTorCircuitOnIOThread(
     const scoped_refptr<net::URLRequestContextGetter>& getter,
-    const std::string& host) {
+    std::string host) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   const TorConfig tor_config = tor_launcher_factory_->GetTorConfig();
   if (tor_config.empty())
