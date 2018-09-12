@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/extensions/chrome_process_manager_delegate.cc b/chrome/browser/extensions/chrome_process_manager_delegate.cc
-index bdb3db7fe661fb25b1a9439303812afa1780c5e5..d395461d674e6656d912f3f16d7747cd9d7f1288 100644
+index bdb3db7fe661fb25b1a9439303812afa1780c5e5..c41bb6688292f9449eeb40a0b2f182f108459261 100644
 --- a/chrome/browser/extensions/chrome_process_manager_delegate.cc
 +++ b/chrome/browser/extensions/chrome_process_manager_delegate.cc
-@@ -56,7 +56,7 @@ bool ChromeProcessManagerDelegate::AreBackgroundPagesAllowedForContext(
-   // the current browser context is *not* off-the-record. Such context is
-   // artificial and background page shouldn't be created in it.
-   // http://crbug.com/329498
--  return is_normal_session || profile->IsOffTheRecord();
-+  return is_normal_session || profile->IsOffTheRecord() || profile->IsTorProfile();
- }
+@@ -49,7 +49,7 @@ bool ChromeProcessManagerDelegate::AreBackgroundPagesAllowedForContext(
+     content::BrowserContext* context) const {
+   Profile* profile = Profile::FromBrowserContext(context);
  
- bool ChromeProcessManagerDelegate::IsExtensionBackgroundPageAllowed(
+-  bool is_normal_session = !profile->IsGuestSession() &&
++  bool is_normal_session =
+                            !profile->IsSystemProfile();
+ 
+   // Disallow if the current session is a Guest mode session or login screen but
