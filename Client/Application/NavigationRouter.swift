@@ -5,27 +5,15 @@
 import Foundation
 import Shared
 
-// An enum to route to HomePanels
-enum HomePanelPath: String {
-    case bookmarks
-    case topsites
-    case history
-}
-
 // Used by the App to navigate to different views.
 // To open a URL use /open-url or to open a blank tab use /open-url with no params
-enum DeepLink {
-    case homePanel(HomePanelPath)
+enum DeepLink: Equatable {
     init?(urlString: String) {
         let paths = urlString.split(separator: "/")
         guard let component = paths[safe: 0], let componentPath = paths[safe: 1] else {
             return nil
         }
-        if component == "homepanel", let link = HomePanelPath(rawValue: String(componentPath)) {
-            self = .homePanel(link)
-        } else {
-            return nil
-        }
+        return nil
     }
 }
 
@@ -37,7 +25,7 @@ extension URLComponents {
 }
     
 // The root navigation for the Router. Look at the tests to see a complete URL
-enum NavigationPath {
+enum NavigationPath: Equatable {
     case url(webURL: URL?, isPrivate: Bool)
     case deepLink(DeepLink)
     case text(String)
@@ -81,18 +69,7 @@ enum NavigationPath {
     }
 
     private static func handleDeepLink(_ link: DeepLink, with bvc: BrowserViewController) {
-        switch link {
-        case .homePanel(let panelPath):
-            NavigationPath.handleHomePanel(panel: panelPath, with: bvc)
-        }
-    }
-    
-    private static func handleHomePanel(panel: HomePanelPath, with bvc: BrowserViewController) {
-        switch panel {
-        case .bookmarks: bvc.openURLInNewTab(HomePanelType.bookmarks.localhostURL, isPrivileged: true)
-        case .history: bvc.openURLInNewTab(HomePanelType.history.localhostURL, isPrivileged: true)
-        case .topsites: bvc.openURLInNewTab(HomePanelType.topSites.localhostURL, isPrivileged: true)
-        }
+        // Handle any deep links we add
     }
     
     private static func handleURL(url: URL?, isPrivate: Bool, with bvc: BrowserViewController) {
@@ -105,29 +82,5 @@ enum NavigationPath {
 
     private static func handleText(text: String, with bvc: BrowserViewController) {
         bvc.openBlankNewTab(focusLocationField: true, searchFor: text)
-    }
-}
-
-extension NavigationPath: Equatable {}
-
-func == (lhs: NavigationPath, rhs: NavigationPath) -> Bool {
-    switch (lhs, rhs) {
-    case let (.url(lhsURL, lhsPrivate), .url(rhsURL, rhsPrivate)):
-        return lhsURL == rhsURL && lhsPrivate == rhsPrivate
-    case let (.deepLink(lhs), .deepLink(rhs)):
-        return lhs == rhs
-    default:
-        return false
-    }
-}
-
-extension DeepLink: Equatable {}
-
-func == (lhs: DeepLink, rhs: DeepLink) -> Bool {
-    switch (lhs, rhs) {
-    case let (.homePanel(lhs), .homePanel(rhs)):
-        return lhs == rhs
-    default:
-        return false
     }
 }

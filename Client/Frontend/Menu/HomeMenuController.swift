@@ -30,6 +30,15 @@ protocol HomeMenuControllerDelegate: class {
   func menuDidBatchOpenURLs(_ menu: HomeMenuController, urls: [URL])
 }
 
+protocol LinkNavigationDelegate: class {
+    func linkNavigatorDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool)
+    func linkNavigatorDidRequestToCopyURL(_ url: URL)
+    func linkNavigatorDidRequestToShareURL(_ url: URL)
+    func linkNavigatorDidRequestToBatchOpenURLs(_ urls: [URL])
+    func linkNavigatorDidSelectURL(url: URL, visitType: VisitType)
+    func linkNavigatorDidSelectURLString(url: String, visitType: VisitType)
+}
+
 class HomeMenuController: UIViewController, PopoverContentComponent {
   
   weak var delegate: HomeMenuControllerDelegate?
@@ -81,12 +90,12 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     bookmarksController.profile = profile
     historyController.profile = profile
     
-    bookmarksController.homePanelDelegate = self
+    bookmarksController.linkNavigationDelegate = self
     bookmarksController.bookmarksDidChange = { [weak self] in
       self?.updateBookmarkStatus()
     }
     
-    historyController.homePanelDelegate = self
+    historyController.linkNavigationDelegate = self
   }
   
   @available(*, unavailable)
@@ -257,37 +266,29 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   }
 }
 
-extension HomeMenuController: HomePanelDelegate {
-  
-  func homePanelDidRequestToSignIn(_ homePanel: HomePanel) {
-    // New from FF, but has no use in Brave
-  }
-  
-  func homePanelDidRequestToCreateAccount(_ homePanel: HomePanel) {
-    // New from FF, but has no use in Brave
-  }
-  
-  func homePanelDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool) {
+extension HomeMenuController: LinkNavigationDelegate {
+    
+  func linkNavigatorDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool) {
     delegate?.menuDidSelectURL(self, url: url, visitType: .unknown, action: .openInNewTab(isPrivate: isPrivate))
   }
   
-  func homePanelDidRequestToCopyURL(_ url: URL) {
+  func linkNavigatorDidRequestToCopyURL(_ url: URL) {
     delegate?.menuDidSelectURL(self, url: url, visitType: .unknown, action: .copy)
   }
   
-  func homePanelDidRequestToShareURL(_ url: URL) {
+  func linkNavigatorDidRequestToShareURL(_ url: URL) {
     delegate?.menuDidSelectURL(self, url: url, visitType: .unknown, action: .share)
   }
   
-  func homePanelDidRequestToBatchOpenURLs(_ urls: [URL]) {
+  func linkNavigatorDidRequestToBatchOpenURLs(_ urls: [URL]) {
     delegate?.menuDidBatchOpenURLs(self, urls: urls)
   }
   
-  func homePanel(_ homePanel: HomePanel, didSelectURL url: URL, visitType: VisitType) {
+  func linkNavigatorDidSelectURL(url: URL, visitType: VisitType) {
     delegate?.menuDidSelectURL(self, url: url, visitType: visitType, action: .openInCurrentTab)
   }
   
-  func homePanel(_ homePanel: HomePanel, didSelectURLString url: String, visitType: VisitType) {
+  func linkNavigatorDidSelectURLString(url: String, visitType: VisitType) {
     guard let profile = profile else { return }
     
     // If we can't get a real URL out of what should be a URL, we let the user's
@@ -301,6 +302,6 @@ extension HomeMenuController: HomePanelDelegate {
       return
     }
     
-    return self.homePanel(homePanel, didSelectURL: url, visitType: visitType)
+    return self.linkNavigatorDidSelectURL(url: url, visitType: visitType)
   }
 }

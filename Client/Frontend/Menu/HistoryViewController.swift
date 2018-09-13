@@ -15,8 +15,8 @@ private struct HistoryViewControllerUX {
   static let WelcomeScreenItemWidth = 170
 }
 
-class HistoryViewController: SiteTableViewController, HomePanel {
-  weak var homePanelDelegate: HomePanelDelegate? = nil
+class HistoryViewController: SiteTableViewController {
+  weak var linkNavigationDelegate: LinkNavigationDelegate? = nil
   fileprivate lazy var emptyStateOverlayView: UIView = self.createEmptyStateOverview()
   var frc: NSFetchedResultsController<NSFetchRequestResult>?
   
@@ -183,7 +183,7 @@ class HistoryViewController: SiteTableViewController, HomePanel {
     let site = frc?.object(at: indexPath) as! History
     
     if let u = site.url, let url = URL(string: u) {
-      homePanelDelegate?.homePanel(self, didSelectURL: url, visitType: .typed)
+      linkNavigationDelegate?.linkNavigatorDidSelectURL(url: url, visitType: .typed)
     }
     tableView.deselectRow(at: indexPath, animated: true)
   }
@@ -300,24 +300,24 @@ extension HistoryViewController {
     // New Tab
     items.append(UIAlertAction(title: Strings.Open_In_Background_Tab, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
-      self.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(url, isPrivate: currentTabIsPrivate)
+      self.linkNavigationDelegate?.linkNavigatorDidRequestToOpenInNewTab(url, isPrivate: currentTabIsPrivate)
     }))
     if !currentTabIsPrivate {
       // New Private Tab
       items.append(UIAlertAction(title: Strings.Open_In_New_Private_Tab, style: .default, handler: { [weak self] _ in
         guard let `self` = self else { return }
-        self.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(url, isPrivate: true)
+        self.linkNavigationDelegate?.linkNavigatorDidRequestToOpenInNewTab(url, isPrivate: true)
       }))
     }
     // Copy
     items.append(UIAlertAction(title: Strings.Copy_Link, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
-      self.homePanelDelegate?.homePanelDidRequestToCopyURL(url)
+      self.linkNavigationDelegate?.linkNavigatorDidRequestToCopyURL(url)
     }))
     // Share
     items.append(UIAlertAction(title: Strings.Share_Link, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
-      self.homePanelDelegate?.homePanelDidRequestToShareURL(url)
+      self.linkNavigationDelegate?.linkNavigatorDidRequestToShareURL(url)
     }))
     
     return items
