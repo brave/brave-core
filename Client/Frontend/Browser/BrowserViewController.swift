@@ -1029,8 +1029,30 @@ class BrowserViewController: UIViewController {
 
     fileprivate func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
         let helper = ShareExtensionHelper(url: url, tab: tab)
-
-        let controller = helper.createActivityViewController({ [unowned self] completed, _ in
+        
+        let findInPageActivity = FindInPageActivity() { [unowned self] in
+            self.updateFindInPageVisibility(visible: true)
+        }
+        
+        let requestDesktopSiteActivity = RequestDesktopSiteActivity(tab: tab) { [weak tab] in
+            tab?.toggleDesktopSite()
+        }
+        
+        var activities: [UIActivity] = [findInPageActivity]
+        
+        // These actions don't apply if we're sharing a temporary document
+        if !url.isFileURL {
+            // We don't allow to have 2 same favorites.
+            if !FavoritesHelper.isAlreadyAdded(url) {
+                let addToFavoritesActivity = AddToFavoritesActivity() { [weak tab] in
+                    FavoritesHelper.add(url: url, title: tab?.displayTitle, color: nil)
+                }
+                activities.append(addToFavoritesActivity)
+            }
+            activities.append(requestDesktopSiteActivity)
+        }
+        
+        let controller = helper.createActivityViewController(activities: activities, { [unowned self] completed, _ in
             // After dismissing, check to see if there were any prompts we queued up
             self.showQueuedAlertIfAvailable()
 
@@ -1500,14 +1522,31 @@ extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
     }
     
     func tabToolbarDidPressShare(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
-        guard let url = tabManager.selectedTab?.url else { return }
-        let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            activityController.popoverPresentationController?.sourceView = self.view
-            activityController.popoverPresentationController?.sourceRect = self.view.convert(self.urlBar.shareButton.frame, from: self.urlBar.shareButton.superview)
-            activityController.popoverPresentationController?.permittedArrowDirections = [.up]
+        func share(url: URL) {
+            presentActivityViewController(
+                url,
+                tab: url.isFileURL ? nil : tabManager.selectedTab,
+                sourceView: view,
+                sourceRect: view.convert(urlBar.shareButton.frame, from: urlBar.shareButton.superview),
+                arrowDirection: [.up]
+            )
         }
-        self.present(activityController, animated: true)
+        
+        guard let tab = tabManager.selectedTab, let url = tab.url else { return }
+        
+        if let temporaryDocument = tab.temporaryDocument {
+            temporaryDocument.getURL().uponQueue(.main, block: { tempDocURL in
+                // If we successfully got a temp file URL, share it like a downloaded file,
+                // otherwise present the ordinary share menu for the web URL.
+                if tempDocURL.isFileURL {
+                    share(url: tempDocURL)
+                } else {
+                    share(url: url)
+                }
+            })
+        } else {
+            share(url: url)
+        }
     }
     
     func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
@@ -2629,13 +2668,14 @@ extension BrowserViewController: HomeMenuControllerDelegate {
             UIPasteboard.general.url = url
         case .share:
             menu.dismiss(animated: true) {
-                let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    activityController.popoverPresentationController?.sourceView = self.view
-                    activityController.popoverPresentationController?.sourceRect = self.view.convert(self.urlBar.shareButton.frame, from: self.urlBar.shareButton.superview)
-                    activityController.popoverPresentationController?.permittedArrowDirections = [.up]
-                }
-                self.present(activityController, animated: true)
+                guard let url = self.tabManager.selectedTab?.url else { return }
+                self.presentActivityViewController(
+                    url,
+                    tab: self.tabManager.selectedTab,
+                    sourceView: self.view,
+                    sourceRect: self.view.convert(self.urlBar.shareButton.frame, from: self.urlBar.shareButton.superview),
+                    arrowDirection: [.up]
+                )
             }
         }
     }

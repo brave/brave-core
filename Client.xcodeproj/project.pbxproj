@@ -63,6 +63,9 @@
 		27F4439F2135E11200296C58 /* BraveShareTo.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* BraveShareTo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
 		27F443F42138843400296C58 /* BraveShareToInfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27F443F22138843400296C58 /* BraveShareToInfoPlist.strings */; };
+		27FD2CAB2146C31C00A5A779 /* RequestDesktopSiteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */; };
+		27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */; };
+		27FD2CAD2146C31C00A5A779 /* AddToFavoritesActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */; };
 		28126F481C2F948E006466CC /* SQLiteBookmarksHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28126F471C2F948E006466CC /* SQLiteBookmarksHelpers.swift */; };
 		28126F6E1C2F94F9006466CC /* SQLiteBookmarksModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28126F6D1C2F94F9006466CC /* SQLiteBookmarksModel.swift */; };
 		28126F741C2F96F1006466CC /* SQLiteBookmarksResetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28126F731C2F96F1006466CC /* SQLiteBookmarksResetting.swift */; };
@@ -951,6 +954,9 @@
 		27F4439C2135E11200296C58 /* BraveShareToInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = BraveShareToInfo.plist; sourceTree = "<group>"; };
 		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
 		27F443F32138843400296C58 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizations/en.lproj/BraveShareToInfoPlist.strings; sourceTree = "<group>"; };
+		27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestDesktopSiteActivity.swift; sourceTree = "<group>"; };
+		27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindInPageActivity.swift; sourceTree = "<group>"; };
+		27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToFavoritesActivity.swift; sourceTree = "<group>"; };
 		28126F471C2F948E006466CC /* SQLiteBookmarksHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksHelpers.swift; sourceTree = "<group>"; };
 		28126F6D1C2F94F9006466CC /* SQLiteBookmarksModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksModel.swift; sourceTree = "<group>"; };
 		28126F731C2F96F1006466CC /* SQLiteBookmarksResetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteBookmarksResetting.swift; sourceTree = "<group>"; };
@@ -2422,6 +2428,9 @@
 		D3972BF01C22412B00035B87 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				27FD2CAA2146C31C00A5A779 /* AddToFavoritesActivity.swift */,
+				27FD2CA92146C31C00A5A779 /* FindInPageActivity.swift */,
+				27FD2CA12146C31C00A5A779 /* RequestDesktopSiteActivity.swift */,
 				D3972BF11C22412B00035B87 /* ShareExtensionHelper.swift */,
 				D3972BF21C22412B00035B87 /* TitleActivityItemProvider.swift */,
 			);
@@ -4297,6 +4306,7 @@
 				E4B423DD1ABA0318007E66C8 /* ReaderModeHandlers.swift in Sources */,
 				D308E4E41A5306F500842685 /* SearchEngines.swift in Sources */,
 				A13AC72520EC12360040D4BB /* Migration.swift in Sources */,
+				27FD2CAB2146C31C00A5A779 /* RequestDesktopSiteActivity.swift in Sources */,
 				3BCE6D3C1CEB9E4D0080928C /* ThirdPartySearchAlerts.swift in Sources */,
 				745DAB301CDAAFAA00D44181 /* RecentlyClosedTabsPanel.swift in Sources */,
 				0BF0DB941A8545800039F300 /* URLBarView.swift in Sources */,
@@ -4319,6 +4329,7 @@
 				C40046FA1CF8E0B200B08303 /* BackForwardListAnimator.swift in Sources */,
 				DD31E0FB1B382B520077078A /* TabPrintPageRenderer.swift in Sources */,
 				E4CD9E911A6897FB00318571 /* ReaderMode.swift in Sources */,
+				27FD2CAD2146C31C00A5A779 /* AddToFavoritesActivity.swift in Sources */,
 				A1FEEE0320BEE6BF00298DA2 /* HomeMenuController.swift in Sources */,
 				C615FAE5212AC5E000A8168C /* PrivacyProtectionProtocol.swift in Sources */,
 				E68E7ADE1CAC208A00FDCA76 /* RemovePasscodeViewController.swift in Sources */,
@@ -4475,6 +4486,7 @@
 				A1AD4BE320C0861D007A6EA1 /* UIBarButtonItemExtensions.swift in Sources */,
 				C6D267522136800100465DFA /* PrivateBrowsingManager.swift in Sources */,
 				0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */,
+				27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
