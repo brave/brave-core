@@ -29,7 +29,6 @@ class BraveCookieSettings : public CookieSettings {
   bool IsCookieAccessAllowed(const GURL& url,
                              const GURL& first_party_url,
                              const GURL& tab_url) const;
-  static bool IsInSubdomain(const GURL& url, const GURL& first_party_url);
  protected:
   ~BraveCookieSettings() override;
   DISALLOW_COPY_AND_ASSIGN(BraveCookieSettings);
