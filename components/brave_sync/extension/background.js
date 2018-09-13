@@ -90,6 +90,7 @@ chrome.runtime.onStartup.addListener(function() {
       console.log("in chrome.braveSync.onNeedBytesFromSyncWords bytes=", JSON.stringify(bytes));
       chrome.braveSync.bytesFromSyncWordsPrepared(bytes, '');
     } catch(err) {
+      console.log("in chrome.braveSync.onNeedBytesFromSyncWords failed err.message=", err.message);
       chrome.braveSync.bytesFromSyncWordsPrepared(new Uint8Array([]), err.message);
     }
   });
