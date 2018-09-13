@@ -90,7 +90,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         Logger.browserLogger.newLogWithDate(logDate)
 
         let profile = getProfile(application)
-        Preferences.migrate(from: profile)
+        let profilePrefix = profile.prefs.getBranchPrefix()
+        Preferences.migratePreferences(keyPrefix: profilePrefix)
 
         if !DebugSettingsBundleOptions.disableLocalWebServer {
             // Set up a web server that serves us static content. Do this early so that it is ready when the UI is presented.
@@ -204,9 +205,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
         
-        if let profile = profile,  profile.prefs.boolForKey(PrefsKeys.IsFirstLaunch) != true {
+        DAU().sendPingToServer()
+        
+        if Preferences.General.isFirstLaunch.value {
             FavoritesHelper.addDefaultFavorites()
-            profile.prefs.setBool(true, forKey: PrefsKeys.IsFirstLaunch)
+            Preferences.General.isFirstLaunch.value = false
         }
 
         UINavigationBar.appearance().tintColor = BraveUX.BraveOrange

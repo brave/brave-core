@@ -3,10 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-import Shared
-
-/// An empty protocol simply here to force the developer to use a user defaults encodable value via generic constraint
-protocol UserDefaultsEncodable {}
+import BraveShared
 
 enum TabBarVisibility: Int {
     case never
@@ -28,15 +25,6 @@ enum PasswordManagerShortcutBehavior: Int {
     static let allCases: [PasswordManagerShortcutBehavior] = [.showPicker, .onePassword, .lastPass, .bitwarden, .trueKey]
 }
 
-/// The applications preferences container
-///
-/// Properties in this object should be of the the type `Option` with the object which is being
-/// stored to automatically interact with `UserDefaults`
-final class Preferences {
-    /// The default `UserDefaults` that all `Option`s will use unless specified
-    static let defaultContainer = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)!
-}
-
 // MARK: - Other Preferences
 extension Preferences {
     final class Popups {
@@ -56,6 +44,8 @@ extension Preferences {
 // MARK: - User Preferences
 extension Preferences {
     final class General {
+        /// Whether this is the first time user has ever launched Brave after intalling. *Should never be set to `true` manually!*
+        static let isFirstLaunch = Option<Bool>(key: "general.first-launch", default: true)
         /// Whether or not to save logins in Brave
         static let saveLogins = Option<Bool>(key: "general.save-logins", default: true)
         /// Whether or not to block popups from websites automaticaly
@@ -99,61 +89,3 @@ extension Preferences {
     }
 }
 
-/// Defines an object which may watch a set of `Preference.Option`s
-/// - note: @objc was added here due to a Swift compiler bug which doesn't allow a class-bound protocol
-/// to act as `AnyObject` in a `AnyObject` generic constraint (i.e. `WeakList`)
-@objc protocol PreferencesObserver: class {
-    /// A preference value was changed for some given preference key
-    func preferencesDidChange(for key: String)
-}
-
-extension Preferences {
-    
-    /// An entry in the `Preferences`
-    ///
-    /// `ValueType` defines the type of value that will stored in the UserDefaults object
-    class Option<ValueType: UserDefaultsEncodable> {
-        /// The list of observers for this option
-        private let observers = WeakList<PreferencesObserver>()
-        /// The UserDefaults container that you wish to save to
-        private let container: UserDefaults
-        /// The current value of this preference
-        ///
-        /// Upon setting this value, UserDefaults will be updated and any observers will be called
-        var value: ValueType {
-            didSet {
-                container.set(value, forKey: self.key)
-                container.synchronize()
-                
-                let key = self.key
-                observers.forEach {
-                    $0.preferencesDidChange(for: key)
-                }
-            }
-        }
-        /// Adds `object` as an observer for this Option.
-        func observe(from object: PreferencesObserver) {
-            observers.insert(object)
-        }
-        /// The key used for getting/setting the value in `UserDefaults`
-        let key: String
-        /// Creates a preference
-        init(key: String, default: ValueType, container: UserDefaults = Preferences.defaultContainer) {
-            self.key = key
-            self.container = container
-            value = (container.value(forKey: key) as? ValueType) ?? `default`
-        }
-    }
-}
-
-extension Optional: UserDefaultsEncodable where Wrapped: UserDefaultsEncodable {}
-extension Bool: UserDefaultsEncodable {}
-extension Int: UserDefaultsEncodable {}
-extension UInt: UserDefaultsEncodable {}
-extension Float: UserDefaultsEncodable {}
-extension Double: UserDefaultsEncodable {}
-extension String: UserDefaultsEncodable {}
-extension URL: UserDefaultsEncodable {}
-extension Data: UserDefaultsEncodable {}
-extension Array: UserDefaultsEncodable where Element: UserDefaultsEncodable {}
-extension Dictionary: UserDefaultsEncodable where Key: StringProtocol, Value: UserDefaultsEncodable {}
