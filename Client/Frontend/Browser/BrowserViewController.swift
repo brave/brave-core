@@ -249,9 +249,6 @@ class BrowserViewController: UIViewController {
 
     func dismissVisibleMenus() {
         displayedPopoverController?.dismiss(animated: true)
-        if let _ = self.presentedViewController as? PhotonActionSheet {
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
-        }
     }
 
     @objc func appDidEnterBackgroundNotification() {
@@ -1262,35 +1259,6 @@ extension BrowserViewController: URLBarDelegate {
         let controller = QRCodeNavigationController(rootViewController: qrCodeViewController)
         self.present(controller, animated: true, completion: nil)
     }
-
-    func urlBarDidPressPageOptions(_ urlBar: URLBarView, from button: UIButton) {
-        let actionMenuPresenter: (URL, Tab, UIView, UIPopoverArrowDirection) -> Void  = { (url, tab, view, _) in
-            self.presentActivityViewController(url, tab: tab, sourceView: view, sourceRect: view.bounds, arrowDirection: .up)
-        }
-        
-        let findInPageAction = {
-            self.updateFindInPageVisibility(visible: true)
-        }
-        
-        let successCallback: (String) -> Void = { (successMessage) in
-            SimpleToast().showAlertWithText(successMessage, bottomContainer: self.webViewContainer)
-        }
-        
-        guard let tab = tabManager.selectedTab, let urlString = tab.url?.absoluteString else { return }
-
-        let deferredBookmarkStatus: Deferred<Maybe<Bool>> = fetchBookmarkStatus(for: urlString)
-        let deferredPinnedTopSiteStatus: Deferred<Maybe<Bool>> = fetchPinnedTopSiteStatus(for: urlString)
-
-        // Wait for both the bookmark status and the pinned status
-        deferredBookmarkStatus.both(deferredPinnedTopSiteStatus).uponQueue(.main) {
-            let isBookmarked = $0.successValue ?? false
-            let isPinned = $1.successValue ?? false
-            let pageActions = self.getTabActions(tab: tab, buttonView: button, presentShareMenu: actionMenuPresenter,
-                                                 findInPage: findInPageAction, presentableVC: self, isBookmarked: isBookmarked,
-                                                 isPinned: isPinned, success: successCallback)
-            self.presentSheetWith(title: Strings.PageActionMenuTitle, actions: pageActions, on: self, from: button)
-        }
-    }
     
     func urlBarDidPressStop(_ urlBar: URLBarView) {
         tabManager.selectedTab?.stop()
@@ -1506,7 +1474,7 @@ extension BrowserViewController: URLBarDelegate {
     }
 }
 
-extension BrowserViewController: TabToolbarDelegate, PhotonActionSheetProtocol {
+extension BrowserViewController: TabToolbarDelegate {
     func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
         tabManager.selectedTab?.goBack()
     }

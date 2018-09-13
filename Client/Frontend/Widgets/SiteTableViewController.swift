@@ -103,10 +103,6 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
 
         // Set an empty footer to prevent empty cells from appearing in the list.
         tableView.tableFooterView = UIView()
-
-        if let _ = self as? HomePanelContextMenu {
-            tableView.dragDelegate = self
-        }
     }
 
     deinit {
@@ -114,15 +110,6 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
         // explicitly nil out its references to us to avoid crashes. Bug 1218826.
         tableView.dataSource = nil
         tableView.delegate = nil
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animate(alongsideTransition: { context in
-            //The AS context menu does not behave correctly. Dismiss it when rotating.
-            if let _ = self.presentedViewController as? PhotonActionSheet {
-                self.presentedViewController?.dismiss(animated: true, completion: nil)
-            }
-        }, completion: nil)
     }
 
     func reloadData() {
@@ -159,22 +146,5 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
 
     func tableView(_ tableView: UITableView, hasFullWidthSeparatorForRowAtIndexPath indexPath: IndexPath) -> Bool {
         return false
-    }
-}
-
-@available(iOS 11.0, *)
-extension SiteTableViewController: UITableViewDragDelegate {
-    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        guard let homePanelVC = self as? HomePanelContextMenu, let site = homePanelVC.getSiteDetails(for: indexPath), let url = URL(string: site.url), let itemProvider = NSItemProvider(contentsOf: url) else {
-            return []
-        }
-
-        let dragItem = UIDragItem(itemProvider: itemProvider)
-        dragItem.localObject = site
-        return [dragItem]
-    }
-
-    func tableView(_ tableView: UITableView, dragSessionWillBegin session: UIDragSession) {
-        presentedViewController?.dismiss(animated: true)
     }
 }

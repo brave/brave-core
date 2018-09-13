@@ -239,7 +239,6 @@
 		5DE768AE20B443E500FF5533 /* JSONSerializationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */; };
 		5DE768B020B4601700FF5533 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */; };
 		5DE768B120B4713000FF5533 /* Storage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FCAE21A1ABB51F800877008 /* Storage.framework */; };
-		742A56391D80B54A00BDB803 /* PhotonActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742A56381D80B54A00BDB803 /* PhotonActionSheet.swift */; };
 		744B0FFE1B4F172E00100422 /* ToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744B0FFD1B4F172E00100422 /* ToolbarTests.swift */; };
 		744ED5611DBFEB8D00A2B5BE /* MailtoLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744ED5601DBFEB8D00A2B5BE /* MailtoLinkHandler.swift */; };
 		745DAB301CDAAFAA00D44181 /* RecentlyClosedTabsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745DAB2F1CDAAFAA00D44181 /* RecentlyClosedTabsPanel.swift */; };
@@ -418,8 +417,6 @@
 		D82ED2641FEB3C420059570B /* DefaultSearchPrefsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82ED2631FEB3C420059570B /* DefaultSearchPrefsTests.swift */; };
 		D83822001FC7961D00303C12 /* DispatchQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */; };
 		D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */; };
-		D88FDA9F1F4E2B9200FD9709 /* PhotonActionSheetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FDA9E1F4E2B9200FD9709 /* PhotonActionSheetProtocol.swift */; };
-		D88FDAAF1F4E2BA000FD9709 /* PhotonActionSheetAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88FDAAE1F4E2BA000FD9709 /* PhotonActionSheetAnimator.swift */; };
 		D8C75DF3207584C400BB8AD0 /* UIImageViewAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C75DF2207584C300BB8AD0 /* UIImageViewAligned.m */; };
 		D8D33A7D1FBD080300A20A28 /* SnapKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D33A7C1FBD080300A20A28 /* SnapKitExtensions.swift */; };
 		D8EFFA0C1FF5B1FA001D3A09 /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EFFA0B1FF5B1FA001D3A09 /* NavigationRouter.swift */; };
@@ -1139,7 +1136,6 @@
 		5DE768AA20B346B700FF5533 /* BraveShieldState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveShieldState.swift; sourceTree = "<group>"; };
 		5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializationExtensions.swift; sourceTree = "<group>"; };
 		5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
-		742A56381D80B54A00BDB803 /* PhotonActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotonActionSheet.swift; sourceTree = "<group>"; };
 		744B0FFD1B4F172E00100422 /* ToolbarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarTests.swift; sourceTree = "<group>"; };
 		744ED5601DBFEB8D00A2B5BE /* MailtoLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailtoLinkHandler.swift; sourceTree = "<group>"; };
 		745DAB2F1CDAAFAA00D44181 /* RecentlyClosedTabsPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentlyClosedTabsPanel.swift; sourceTree = "<group>"; };
@@ -1331,8 +1327,6 @@
 		D82ED2631FEB3C420059570B /* DefaultSearchPrefsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSearchPrefsTests.swift; sourceTree = "<group>"; };
 		D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtensions.swift; sourceTree = "<group>"; };
 		D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientProgressBar.swift; sourceTree = "<group>"; };
-		D88FDA9E1F4E2B9200FD9709 /* PhotonActionSheetProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotonActionSheetProtocol.swift; sourceTree = "<group>"; };
-		D88FDAAE1F4E2BA000FD9709 /* PhotonActionSheetAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotonActionSheetAnimator.swift; sourceTree = "<group>"; };
 		D8C75DE9207584C300BB8AD0 /* UIImageViewAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImageViewAligned.h; path = ThirdParty/UIImageViewAligned/UIImageViewAligned.h; sourceTree = SOURCE_ROOT; };
 		D8C75DF2207584C300BB8AD0 /* UIImageViewAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageViewAligned.m; path = ThirdParty/UIImageViewAligned/UIImageViewAligned.m; sourceTree = SOURCE_ROOT; };
 		D8D33A7C1FBD080300A20A28 /* SnapKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapKitExtensions.swift; path = Extensions/SnapKitExtensions.swift; sourceTree = "<group>"; };
@@ -2417,9 +2411,6 @@
 				7B3631E91C244FEE00D12AF9 /* Theme.swift */,
 				59A68B1F857A8638598A63A0 /* TwoLineCell.swift */,
 				745DAB3E1CDAB09E00D44181 /* HistoryBackButton.swift */,
-				742A56381D80B54A00BDB803 /* PhotonActionSheet.swift */,
-				D88FDA9E1F4E2B9200FD9709 /* PhotonActionSheetProtocol.swift */,
-				D88FDAAE1F4E2BA000FD9709 /* PhotonActionSheetAnimator.swift */,
 				D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */,
 			);
 			path = Widgets;
@@ -4368,7 +4359,6 @@
 				E4B423BE1AB9FE6A007E66C8 /* ReaderModeCache.swift in Sources */,
 				396CDB55203C5B870034A3A3 /* TabTrayController+KeyCommands.swift in Sources */,
 				74E36D781B71323500D69DA1 /* SettingsContentViewController.swift in Sources */,
-				742A56391D80B54A00BDB803 /* PhotonActionSheet.swift in Sources */,
 				C4EFEECF1CEBB6F2009762A4 /* BackForwardTableViewCell.swift in Sources */,
 				2C49854E206173C800893DAE /* photon-colors.swift in Sources */,
 				E689C7301E0C7617008BAADB /* NSAttributedStringExtensions.swift in Sources */,
@@ -4384,7 +4374,6 @@
 				D0625CA8208FC47A0081F3B2 /* BrowserViewController+DownloadQueueDelegate.swift in Sources */,
 				2F44FCC71A9E8CF500FD20CC /* SearchSettingsTableViewController.swift in Sources */,
 				39A359E41BFCCE94006B9E87 /* UserActivityHandler.swift in Sources */,
-				D88FDAAF1F4E2BA000FD9709 /* PhotonActionSheetAnimator.swift in Sources */,
 				E698FFDA1B4AADF40001F623 /* TabScrollController.swift in Sources */,
 				D34510881ACF415700EC27F0 /* SearchLoader.swift in Sources */,
 				E65075521E37F6D1006961AC /* UIViewExtensions.swift in Sources */,
@@ -4415,7 +4404,6 @@
 				0AADC4D520D2A6A200FDE368 /* PreloadedFavorites.swift in Sources */,
 				0AADC4D720D2B03900FDE368 /* BraveShieldStatsView.swift in Sources */,
 				E47616C71AB74CA600E7DD25 /* ReaderModeBarView.swift in Sources */,
-				D88FDA9F1F4E2B9200FD9709 /* PhotonActionSheetProtocol.swift in Sources */,
 				E65075511E37F6D1006961AC /* NSURLExtensionsMailTo.swift in Sources */,
 				D83822001FC7961D00303C12 /* DispatchQueueExtensions.swift in Sources */,
 				D03F8EB22004014E003C2224 /* FaviconHandler.swift in Sources */,

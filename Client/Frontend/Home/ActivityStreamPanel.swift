@@ -114,10 +114,6 @@ class ActivityStreamPanel: UICollectionViewController, HomePanel {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: {context in
-            //The AS context menu does not behave correctly. Dismiss it when rotating.
-            if let _ = self.presentedViewController as? PhotonActionSheet {
-                self.presentedViewController?.dismiss(animated: true, completion: nil)
-            }
             self.collectionViewLayout.invalidateLayout()
             self.collectionView?.reloadData()
         }, completion: nil)
@@ -579,22 +575,6 @@ extension ActivityStreamPanel: DataObserverDelegate {
     }
 
     @objc fileprivate func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
-        guard longPressGestureRecognizer.state == .began else { return }
-
-        let point = longPressGestureRecognizer.location(in: self.collectionView)
-        guard let indexPath = self.collectionView?.indexPathForItem(at: point) else { return }
-
-        switch Section(indexPath.section) {
-        case .highlights:
-            presentContextMenu(for: indexPath)
-        case .topSites:
-            let topSiteCell = self.collectionView?.cellForItem(at: indexPath) as! ASHorizontalScrollCell
-            let pointInTopSite = longPressGestureRecognizer.location(in: topSiteCell.collectionView)
-            guard let topSiteIndexPath = topSiteCell.collectionView.indexPathForItem(at: pointInTopSite) else { return }
-            presentContextMenu(for: topSiteIndexPath)
-        case .highlightIntro:
-            break
-        }
     }
 
     fileprivate func fetchBookmarkStatus(for site: Site, with indexPath: IndexPath, forSection section: Section, completionHandler: @escaping () -> Void) {
@@ -621,137 +601,6 @@ extension ActivityStreamPanel: DataObserverDelegate {
         if let site = site {
             showSiteWithURLHandler(URL(string: site.url)!)
         }
-    }
-}
-
-extension ActivityStreamPanel: HomePanelContextMenu {
-    func presentContextMenu(for site: Site, with indexPath: IndexPath, completionHandler: @escaping () -> PhotonActionSheet?) {
-
-        fetchBookmarkStatus(for: site, with: indexPath, forSection: Section(indexPath.section)) {
-            guard let contextMenu = completionHandler() else { return }
-            self.present(contextMenu, animated: true, completion: nil)
-        }
-    }
-
-    func getSiteDetails(for indexPath: IndexPath) -> Site? {
-        switch Section(indexPath.section) {
-        case .highlights:
-            return highlights[indexPath.row]
-        case .topSites:
-            return topSitesManager.content[indexPath.item]
-        case .highlightIntro:
-            return nil
-        }
-    }
-
-    func getContextMenuActions(for site: Site, with indexPath: IndexPath) -> [PhotonActionSheetItem]? {
-        guard let siteURL = URL(string: site.url) else { return nil }
-
-        let index: Int
-        var sourceView: UIView?
-        
-        switch Section(indexPath.section) {
-        case .topSites:
-            index = indexPath.item
-            if let topSiteCell = self.collectionView?.cellForItem(at: IndexPath(row: 0, section: 0)) as? ASHorizontalScrollCell {
-                sourceView = topSiteCell.collectionView.cellForItem(at: indexPath)
-            }
-        case .highlights:
-            index = indexPath.row
-            sourceView = self.collectionView?.cellForItem(at: indexPath)
-        case .highlightIntro:
-            return nil
-        }
-
-        let openInNewTabAction = PhotonActionSheetItem(title: Strings.OpenInNewTabContextMenuTitle, iconString: "quick_action_new_tab") { action in
-            self.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(siteURL, isPrivate: false)
-            let source = ["Source": "Activity Stream Long Press Context Menu"]
-        }
-
-        let openInNewPrivateTabAction = PhotonActionSheetItem(title: Strings.OpenInNewPrivateTabContextMenuTitle, iconString: "quick_action_new_private_tab") { action in
-            self.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(siteURL, isPrivate: true)
-        }
-        
-        let bookmarkAction: PhotonActionSheetItem
-        if site.bookmarked ?? false {
-            bookmarkAction = PhotonActionSheetItem(title: Strings.RemoveBookmarkContextMenuTitle, iconString: "action_bookmark_remove", handler: { action in
-                self.profile.bookmarks.modelFactory >>== {
-                    $0.removeByURL(siteURL.absoluteString).uponQueue(.main) {_ in
-                        self.profile.panelDataObservers.activityStream.refreshIfNeeded(forceHighlights: true, forceTopSites: false)
-                    }
-                    site.setBookmarked(false)
-                }
-            })
-        } else {
-            bookmarkAction = PhotonActionSheetItem(title: Strings.BookmarkContextMenuTitle, iconString: "action_bookmark", handler: { action in
-                let shareItem = ShareItem(url: site.url, title: site.title, favicon: site.icon)
-                _ = self.profile.bookmarks.shareItem(shareItem)
-                var userData = [QuickActions.TabURLKey: shareItem.url]
-                if let title = shareItem.title {
-                    userData[QuickActions.TabTitleKey] = title
-                }
-                QuickActions.sharedInstance.addDynamicApplicationShortcutItemOfType(.openLastBookmark,
-                                                                                    withUserData: userData,
-                                                                                    toApplication: .shared)
-                site.setBookmarked(true)
-                self.profile.panelDataObservers.activityStream.refreshIfNeeded(forceHighlights: true, forceTopSites: true)
-            })
-        }
-
-        let deleteFromHistoryAction = PhotonActionSheetItem(title: Strings.DeleteFromHistoryContextMenuTitle, iconString: "action_delete", handler: { action in
-            self.profile.history.removeHistoryForURL(site.url).uponQueue(.main) { result in
-                guard result.isSuccess else { return }
-                self.profile.panelDataObservers.activityStream.refreshIfNeeded(forceHighlights: true, forceTopSites: true)
-            }
-        })
-
-        let shareAction = PhotonActionSheetItem(title: Strings.ShareContextMenuTitle, iconString: "action_share", handler: { action in
-            let helper = ShareExtensionHelper(url: siteURL, tab: nil)
-            let controller = helper.createActivityViewController(activities: nil) { completed, activityType in
-            }
-            if UI_USER_INTERFACE_IDIOM() == .pad, let popoverController = controller.popoverPresentationController {
-                let cellRect = sourceView?.frame ?? .zero
-                let cellFrameInSuperview = self.collectionView?.convert(cellRect, to: self.collectionView) ?? .zero
-
-                popoverController.sourceView = sourceView
-                popoverController.sourceRect = CGRect(origin: CGPoint(x: cellFrameInSuperview.size.width/2, y: cellFrameInSuperview.height/2), size: .zero)
-                popoverController.permittedArrowDirections = [.up, .down, .left]
-                popoverController.delegate = self
-            }
-            self.present(controller, animated: true, completion: nil)
-        })
-
-        let removeTopSiteAction = PhotonActionSheetItem(title: Strings.RemoveContextMenuTitle, iconString: "action_remove", handler: { action in
-            self.hideURLFromTopSites(site)
-        })
-
-        let dismissHighlightAction = PhotonActionSheetItem(title: Strings.RemoveContextMenuTitle, iconString: "action_remove", handler: { action in
-            self.hideFromHighlights(site)
-        })
-
-        let pinTopSite = PhotonActionSheetItem(title: Strings.PinTopsiteActionTitle, iconString: "action_pin", handler: { action in
-            self.pinTopSite(site)
-        })
-
-        let removePinTopSite = PhotonActionSheetItem(title: Strings.RemovePinTopsiteActionTitle, iconString: "action_unpin", handler: { action in
-            self.removePinTopSite(site)
-        })
-
-        let topSiteActions: [PhotonActionSheetItem]
-        if let _ = site as? PinnedSite {
-            topSiteActions = [removePinTopSite]
-        } else {
-            topSiteActions = [pinTopSite, removeTopSiteAction]
-        }
-
-        var actions = [openInNewTabAction, openInNewPrivateTabAction, bookmarkAction, shareAction]
-
-        switch Section(indexPath.section) {
-            case .highlights: actions.append(contentsOf: [dismissHighlightAction, deleteFromHistoryAction])
-            case .topSites: actions.append(contentsOf: topSiteActions)
-            case .highlightIntro: break
-        }
-        return actions
     }
 }
 
