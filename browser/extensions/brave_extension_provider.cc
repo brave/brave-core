@@ -31,6 +31,7 @@ namespace extensions {
 bool BraveExtensionProvider::IsVetted(const Extension* extension) {
   static std::vector<std::string> vetted_extensions({
     brave_extension_id,
+    brave_rewards_extension_id,
     brave_webtorrent_extension_id,
     pdfjs_extension_id,
     // 1Password
@@ -133,6 +134,7 @@ bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
 bool BraveExtensionProvider::MustRemainInstalled(const Extension* extension,
                                                  base::string16* error) const {
   return extension->id() == brave_extension_id ||
+    extension->id() == brave_rewards_extension_id ||
     extension->id() == brave_webtorrent_extension_id;
 }
 

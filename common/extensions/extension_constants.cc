@@ -5,6 +5,7 @@
 #include "brave/common/extensions/extension_constants.h"
 
 const char brave_extension_id[] = "mnojpmjdmbbfmejpflffifhffcmidifd";
+const char brave_rewards_extension_id[] = "jidkidbbcafjabdphckchenhfomhnfma";
 const char brave_webtorrent_extension_id[] = "lgjmpdmojkpocjcopdikifhejkkjglho";
 const char pdfjs_extension_id[] = "oemmndcbldboiebfnladdacbdfmadadm";
 const char widevine_extension_id[] = "oimompecagnajdejgnnjijobebaeigek";
