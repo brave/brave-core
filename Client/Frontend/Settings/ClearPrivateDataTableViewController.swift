@@ -4,6 +4,7 @@
 
 import UIKit
 import Shared
+import BraveShared
 import Deferred
 
 private let SectionToggles = 0

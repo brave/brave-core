@@ -6,6 +6,7 @@ import Foundation
 import WebKit
 import Storage
 import Shared
+import BraveShared
 import XCGLogger
 import Data
 import CoreData
