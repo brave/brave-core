@@ -118,14 +118,13 @@ ExtensionFunction::ResponseAction BraveSyncGetExistingObjectsFunction::Run() {
   // to
   // const vector<brave_sync::SyncRecordPtr>
 
-  std::vector<::brave_sync::SyncRecordPtr> records;
-  ::brave_sync::ConvertSyncRecords(params->records, records);
+  auto records = std::make_unique<std::vector<::brave_sync::SyncRecordPtr>>();
+  ::brave_sync::ConvertSyncRecords(params->records, *records.get());
 
   ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
   sync_client->GetSyncToBrowserHandler()->OnGetExistingObjects(
     params->category_name,
-    //::brave_sync::RecordsList(),//params->records,
-    records,//params->records, // vector<extensions::api::brave_sync::SyncRecord>
+    std::move(records),
     base::Time::FromJsTime(params->last_record_timestamp),
     params->is_truncated);
 
@@ -141,13 +140,14 @@ ExtensionFunction::ResponseAction BraveSyncResolvedSyncRecordsFunction::Run() {
   LOG(ERROR) << "TAGAB BraveSyncResolvedSyncRecordsFunction::Run params->category_name=" << params->category_name;
   LOG(ERROR) << "TAGAB BraveSyncResolvedSyncRecordsFunction::Run params->records.size()=" << params->records.size();
 
-  std::vector<::brave_sync::SyncRecordPtr> records;
-  ::brave_sync::ConvertSyncRecords(params->records, records);
+
+  auto records = std::make_unique<std::vector<::brave_sync::SyncRecordPtr>>();
+  ::brave_sync::ConvertSyncRecords(params->records, *records.get());
 
   ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
   sync_client->GetSyncToBrowserHandler()->OnResolvedSyncRecords(
     params->category_name,
-    records);
+    std::move(records));
 
   return RespondNow(NoArguments());
 }

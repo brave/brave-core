@@ -6,6 +6,7 @@
 #include "brave/common/extensions/api/brave_sync.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_event_histogram_value.h"
+#include "content/public/browser/browser_thread.h"
 
 namespace extensions {
 
@@ -111,7 +112,11 @@ void BraveSyncEventRouter::ResolveSyncRecords(const std::string &category_name,
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnResolveSyncRecords::kEventName,
        std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
+
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::ResolveSyncRecords: will post to in BrowserThread::UI";
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
+    FROM_HERE, base::Bind(&EventRouter::BroadcastEvent,
+         base::Unretained(event_router), base::Passed(std::move(event))));
 }
 
 void BraveSyncEventRouter::SendSyncRecords(const std::string &category_name,
@@ -134,7 +139,12 @@ void BraveSyncEventRouter::SendSyncRecords(const std::string &category_name,
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnSendSyncRecords::kEventName,
        std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
+
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendSyncRecords: will post to in BrowserThread::UI";
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
+    FROM_HERE, base::Bind(&EventRouter::BroadcastEvent,
+         base::Unretained(event_router), base::Passed(std::move(event))));
+
 }
 
 void BraveSyncEventRouter::NeedSyncWords(const std::string &seed) {

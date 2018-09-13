@@ -1,16 +1,17 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- //#include "brave_sync_worker.h"
-#include "brave/components/brave_sync/object_map.h"
+ #include "brave/components/brave_sync/object_map.h"
 
 #include <string>
 
 #include "base/base_paths.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/task/post_task.h"
 #include "base/threading/thread.h"
-#include "base/threading/thread_restrictions.h" // TODO, AB: remove and use Task with sequence checker
+#include "base/threading/thread_checker.h"
+#include "brave/components/brave_sync/debug.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
@@ -24,9 +25,10 @@ ObjectMap::ObjectMap(Profile *profile) : profile_(nullptr) {
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR profile="<<profile;
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR profile->GetPath()="<<profile->GetPath();
 
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+
   DCHECK(profile);
   profile_ = profile;
-  level_db_init_mutex_.reset(new std::mutex());
 }
 
 ObjectMap::~ObjectMap() {
@@ -46,10 +48,8 @@ void ObjectMap::TraceAll() {
 }
 
 void ObjectMap::CreateOpenDatabase() {
-  if (!level_db_init_mutex_) {
-    return;
-  }
-  std::lock_guard<std::mutex> guard(*level_db_init_mutex_);
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::CreateOpenDatabase, DCHECK_CALLED_ON_VALID_SEQUENCE " << GetThreadInfoString();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (nullptr == level_db_) {
     DCHECK(profile_);
@@ -76,7 +76,6 @@ void ObjectMap::CreateOpenDatabase() {
 }
 
 std::string ObjectMap::GetLocalIdByObjectId(const std::string &objectId) {
-  base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return "";
@@ -92,7 +91,6 @@ std::string ObjectMap::GetLocalIdByObjectId(const std::string &objectId) {
 }
 
 std::string ObjectMap::GetObjectIdByLocalId(const std::string &localId) {
-  base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return "";
@@ -113,7 +111,7 @@ void ObjectMap::SaveObjectId(
   const std::string &objectIdJSON, //may be an order or empty
   const std::string &objectId) {
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectId - enter";
-  base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
+
   CreateOpenDatabase();
   if (nullptr == level_db_) {
     LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectId nullptr == level_db_ ???";
@@ -135,7 +133,6 @@ void ObjectMap::SaveObjectId(
 }
 
 void ObjectMap::DeleteByLocalId(const std::string &localId) {
-  base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return;
@@ -158,20 +155,21 @@ void ObjectMap::DeleteByLocalId(const std::string &localId) {
 }
 
 void ObjectMap::Close() {
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::Close, DCHECK_CALLED_ON_VALID_SEQUENCE " << GetThreadInfoString();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   level_db_.reset();
-  level_db_init_mutex_.reset();
 }
 
 void ObjectMap::CloseDBHandle() {
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::CloseDBHandle, DCHECK_CALLED_ON_VALID_SEQUENCE " << GetThreadInfoString();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   level_db_.reset();
 }
 
 void ObjectMap::DestroyDB() {
-  base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
-  if (!level_db_init_mutex_) {
-    return;
-  }
-  std::lock_guard<std::mutex> guard(*level_db_init_mutex_);
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::DestroyDB, DCHECK_CALLED_ON_VALID_SEQUENCE " << GetThreadInfoString();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ResetObjects";
   CloseDBHandle();
   base::FilePath app_data_path;
@@ -186,7 +184,6 @@ void ObjectMap::DestroyDB() {
 }
 
 void ObjectMap::ResetSync(const std::string& key) {
-  base::ScopedAllowBlockingForTesting sab;// TODO, AB: remove
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return;

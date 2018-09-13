@@ -21,7 +21,9 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
+#include "content/public/browser/browser_thread.h"
 #include "ui/base/models/tree_node_iterator.h"
+
 
 namespace brave_sync {
 
@@ -94,11 +96,11 @@ std::unique_ptr<jslib::Bookmark> Bookmarks::GetFromNode(const bookmarks::Bookmar
   return bookmark;
 }
 
-std::unique_ptr<jslib::SyncRecord> Bookmarks::GetResolvedBookmarkValue2(
+std::unique_ptr<jslib::SyncRecord> Bookmarks::GetResolvedBookmarkValue(
   const std::string &object_id) {
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue2 object_id=<"<<object_id<<">";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue object_id=<"<<object_id<<">";
   std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(object_id);
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue2 local_object_id=<"<<local_object_id<<">";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue local_object_id=<"<<local_object_id<<">";
   if(local_object_id.empty()) {
     return nullptr;
   }
@@ -113,7 +115,7 @@ std::unique_ptr<jslib::SyncRecord> Bookmarks::GetResolvedBookmarkValue2(
 
   const bookmarks::BookmarkNode* node = bookmarks::GetBookmarkNodeByID(model_, id);
   if (node == nullptr) {
-    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue2 node not found for local_object_id=<"<<local_object_id<<">";
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue node not found for local_object_id=<"<<local_object_id<<">";
     // Node was removed
     // NOTREACHED() << "means we had not removed (object_id => local_id) pair from objects map";
     // Something gone wrong previously, no obvious way to fix
@@ -131,7 +133,7 @@ std::unique_ptr<jslib::SyncRecord> Bookmarks::GetResolvedBookmarkValue2(
   record->SetBookmark(std::move(bookmark));
 
 //it appears it should not include SyncRecord, but only data, js/state/syncUtil.js
- 
+
   return record;
 }
 
@@ -327,6 +329,8 @@ void Bookmarks::BookmarkNodeMoved(bookmarks::BookmarkModel* model,
 void Bookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* parent,
     int index) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded " << GetThreadInfoString();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded model=" << model;
 
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded parent->is_folder()=" << parent->is_folder();

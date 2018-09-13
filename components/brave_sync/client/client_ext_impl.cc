@@ -9,6 +9,7 @@
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
 #include "brave/common/extensions/api/brave_sync.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_thread.h"
 #include "extensions/browser/extension_registry.h"
 
 namespace brave_sync {

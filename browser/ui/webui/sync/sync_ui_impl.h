@@ -11,6 +11,8 @@ namespace base {
 
 namespace brave_sync {
   class Controller;
+  class Settings;
+  class SyncDevices;
 } // namespace brave_sync
 
 // The WebUI for chrome://bravesync
@@ -48,6 +50,9 @@ class SyncUIImpl : public BasicUI, //AB: should bot be inherited from BasicUI,
 
   // this should grab actual data from controller and update the page
   void LoadSyncSettingsView();
+
+  void GetSettingsAndDevicesComplete(std::unique_ptr<brave_sync::Settings> settings,
+    std::unique_ptr<brave_sync::SyncDevices> devices);
 
   brave_sync::Controller *sync_controller_;
 

@@ -29,8 +29,8 @@ namespace brave_sync {
     virtual void OnDeleteDevice(const std::string &device_id) = 0;
     virtual void OnResetSync() = 0;
 
-    virtual void GetSettings(brave_sync::Settings &settings) = 0;
-    virtual void GetDevices(SyncDevices &devices) = 0;
+    typedef base::Callback<void(std::unique_ptr<brave_sync::Settings>, std::unique_ptr<brave_sync::SyncDevices>)> GetSettingsAndDevicesCallback;
+    virtual void GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) = 0;
 
     virtual void GetSyncWords() = 0;
     virtual std::string GetSeed() = 0;

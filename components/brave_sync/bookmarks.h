@@ -42,7 +42,7 @@ public:
   void SetThisDeviceId(const std::string &device_id);
   void SetObjectMap(storage::ObjectMap* sync_obj_map);
 
-  std::unique_ptr<jslib::SyncRecord> GetResolvedBookmarkValue2(
+  std::unique_ptr<jslib::SyncRecord> GetResolvedBookmarkValue(
     const std::string &object_id);
 
   void AddBookmark(const jslib::SyncRecord &sync_record);

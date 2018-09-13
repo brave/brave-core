@@ -65,11 +65,12 @@ public:
   void OnSetupSyncNewToSync(const std::string &device_name) override;
   void OnDeleteDevice(const std::string &device_id) override;
   void OnResetSync() override;
-  void GetSettings(brave_sync::Settings &settings) override;
-  void GetDevices(SyncDevices &devices) override;
   void GetSyncWords() override;
   std::string GetSeed() override;
   void SetupUi(SyncUI *sync_ui) override;
+
+  void GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) override;
+  void GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Settings> settings, const GetSettingsAndDevicesCallback &callback);
 
 private:
   DISALLOW_COPY_AND_ASSIGN(ControllerImpl);
@@ -89,11 +90,11 @@ private:
   void OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) override;
   void OnSyncReady() override;
   void OnGetExistingObjects(const std::string &category_name,
-    const RecordsList &records,
+    std::unique_ptr<RecordsList> records,
     const base::Time &last_record_time_stamp,
     const bool &is_truncated) override;
   void OnResolvedSyncRecords(const std::string &category_name,
-    const RecordsList &records) override;
+    std::unique_ptr<RecordsList> records) override;
   void OnDeletedSyncUser() override;
   void OnDeleteSyncSiteSettings() override;
   void OnSaveBookmarksBaseOrder(const std::string &order) override;
@@ -105,8 +106,25 @@ private:
   void OnResolvedPreferences(const RecordsList &records);
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
-  //^ these are used
 
+  // Runs in task runner to perform file work
+  void OnGetExistingObjectsFileWork(const std::string &category_name,
+     std::unique_ptr<RecordsList> records,
+     const base::Time &last_record_time_stamp,
+     const bool &is_truncated
+  );
+  void OnResolvedSyncRecordsFileWork(const std::string &category_name,
+    std::unique_ptr<RecordsList> records);
+
+  void CreateUpdateDeleteBookmarksFileWork(
+    const int &action,
+    const std::vector<const bookmarks::BookmarkNode*> &list,
+    const bool &addIdsToNotSynced,
+    const bool &isInitialSync);
+
+  void ShutdownFileWork();
+
+  // Other private methods
   void RequestSyncData();
   void FetchSyncRecords(const bool &bookmarks, const bool &history,
     const bool &preferences, int64_t start_at, int max_records);

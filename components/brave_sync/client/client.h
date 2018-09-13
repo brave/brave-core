@@ -61,10 +61,10 @@ public:
   virtual void OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) = 0;
   virtual void OnSyncReady() = 0;
   virtual void OnGetExistingObjects(const std::string &category_name,
-    const RecordsList &records,
+    std::unique_ptr<RecordsList> records,
     const base::Time &last_record_time_stamp, const bool &is_truncated) = 0;
   virtual void OnResolvedSyncRecords(const std::string &category_name,
-    const RecordsList &records) = 0;
+    std::unique_ptr<RecordsList> records) = 0;
   virtual void OnDeletedSyncUser() = 0;
   virtual void OnDeleteSyncSiteSettings() = 0;
   virtual void OnSaveBookmarksBaseOrder(const std::string &order) = 0;
