@@ -225,7 +225,6 @@ void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
     return;
   }
 
-
   publisher_info->year = -1;
   publisher_info->excluded = exclude;
   publisher_info->month = ledger::PUBLISHER_MONTH::ANY;
@@ -436,6 +435,11 @@ bool BatPublishers::isVerified(const std::string& publisher_id) {
 }
 
 bool BatPublishers::isExcluded(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded) {
+  // If exclude is set to 1, we should avoid further computation and return true
+  if (excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED) {
+    return true;
+  }
+
   if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED || server_list_.empty()) {
     return false;
   }
@@ -448,7 +452,7 @@ bool BatPublishers::isExcluded(const std::string& publisher_id, const ledger::PU
 
   const braveledger_bat_helper::SERVER_LIST values = result->second;
 
-  return excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED || values.excluded;
+  return values.excluded;
 }
 
 bool BatPublishers::isEligableForContribution(const ledger::PublisherInfo& info) {
