@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 1f7870f9ec645bd5eb15fc7b0e688bc9e60cb6eb..cbe8b005d8e11fbb00a2515127fcad34a128a3ab 100644
+index 1f7870f9ec645bd5eb15fc7b0e688bc9e60cb6eb..591ebbef63d609b18d997fc8d8bd95f9aaf074be 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -1632,7 +1632,7 @@ int TabStrip::TabToFollowingNewTabButtonSpacing() const {
-   // Pre-refresh, there are a variety of hardcoded values.
-   const int mode = MD::GetMode();
-   DCHECK_LE(mode, 2);
--  constexpr int kNewTabButtonSpacing[] = {-5, -6, 6};
-+  constexpr int kNewTabButtonSpacing[] = {6, 7, 7};
-   return kNewTabButtonSpacing[mode];
- }
+@@ -446,7 +446,7 @@ void TabStrip::StopAllHighlighting() {
+ void TabStrip::AddTabAt(int model_index, TabRendererData data, bool is_active) {
+   const bool was_single_tab_mode = SingleTabMode();
  
+-  Tab* tab = new Tab(this, animation_container_.get());
++  Tab* tab = new BraveTab(this, animation_container_.get());
+   AddChildView(tab);
+   const bool pinned = data.pinned;
+   tab->SetData(std::move(data));
