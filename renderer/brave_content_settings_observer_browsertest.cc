@@ -27,6 +27,13 @@ const char kPointInPathScript[] =
   "ctx.stroke();"
   "domAutomationController.send(ctx.isPointInPath(10, 10));";
 
+const char kGetImageDataScript[] =
+  "var canvas = document.createElement('canvas');"
+  "var ctx = canvas.getContext('2d');"
+  "ctx.rect(10, 10, 100, 100);"
+  "ctx.fill();"
+  "domAutomationController.send(ctx.getImageData(0, 0, 10, 10).data.length);";
+
 #define COOKIE_STR "test=hi"
 const char kCookieScript[] =
     "document.cookie = '"
@@ -392,6 +399,75 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPShieldsDo
   EXPECT_TRUE(ExecuteScriptAndExtractBool(
       child_frame(), kPointInPathScript, &isPointInPath));
   EXPECT_TRUE(isPointInPath);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, Block3PFPGetImageData) {
+  Block3PFingerprinting();
+
+  ContentSettingsForOneType fp_settings;
+  content_settings()->GetSettingsForOneType(
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
+      &fp_settings);
+  EXPECT_EQ(fp_settings.size(), 3u);
+
+  NavigateToPageWithIframe();
+
+  int bufLen = -1;
+  EXPECT_TRUE(ExecuteScriptAndExtractInt(contents(),
+      kGetImageDataScript, &bufLen));
+  EXPECT_EQ(400, bufLen);
+
+  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
+  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  EXPECT_TRUE(ExecuteScriptAndExtractInt(
+      child_frame(), kGetImageDataScript, &bufLen));
+  EXPECT_EQ(0, bufLen);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPGetImageData) {
+  BlockFingerprinting();
+
+  ContentSettingsForOneType fp_settings;
+  content_settings()->GetSettingsForOneType(
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
+      &fp_settings);
+  EXPECT_EQ(fp_settings.size(), 3u);
+
+  NavigateToPageWithIframe();
+
+  int bufLen = -1;
+  EXPECT_TRUE(ExecuteScriptAndExtractInt(contents(),
+      kGetImageDataScript, &bufLen));
+  EXPECT_EQ(0, bufLen);
+
+  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
+  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  EXPECT_TRUE(ExecuteScriptAndExtractInt(
+      child_frame(), kGetImageDataScript, &bufLen));
+  EXPECT_EQ(0, bufLen);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFPGetImageData) {
+  AllowFingerprinting();
+
+  ContentSettingsForOneType fp_settings;
+  content_settings()->GetSettingsForOneType(
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
+      &fp_settings);
+  EXPECT_EQ(fp_settings.size(), 3u);
+
+  NavigateToPageWithIframe();
+
+  int bufLen = -1;
+  EXPECT_TRUE(ExecuteScriptAndExtractInt(contents(),
+      kGetImageDataScript, &bufLen));
+  EXPECT_EQ(400, bufLen);
+
+  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
+  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  EXPECT_TRUE(ExecuteScriptAndExtractInt(
+      child_frame(), kGetImageDataScript, &bufLen));
+  EXPECT_EQ(400, bufLen);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
