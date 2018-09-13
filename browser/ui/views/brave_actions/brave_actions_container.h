@@ -71,12 +71,35 @@ class BraveActionsContainer : public views::View,
         content::BrowserContext* browser_context) override;
 
   private:
-    void AddShields(const extensions::Extension* brave_extension);
-    void RemoveShields();
+    // Special positions in the container designators
+    enum ActionPosition : int {
+      ACTION_ANY_POSITION = -1,
+    };
+
+    // Action info container
+    struct BraveActionInfo {
+      BraveActionInfo();
+      ~BraveActionInfo();
+      // Reset view and view controller
+      void Reset();
+
+      int position_;
+      std::unique_ptr<ToolbarActionView> view_;
+      std::unique_ptr<ToolbarActionViewController> view_controller_;
+    };
+
+    // Actions that belong to the container
+    std::map<std::string, BraveActionInfo> actions_;
+
+    // Actions operations
+    bool IsContainerAction(const std::string& id) const;
+    void AddAction(const extensions::Extension* extension,
+                  int pos = ACTION_ANY_POSITION);
+    void RemoveAction(const std::string& id);
+    void UpdateActionState(const std::string& id);
 
     bool should_hide_ = false;
 
-    std::unique_ptr<ToolbarActionView> shields_button_view_;
     // The Browser this LocationBarView is in.  Note that at least
     // chromeos::SimpleWebViewDialog uses a LocationBarView outside any browser
     // window, so this may be NULL.
@@ -87,7 +110,6 @@ class BraveActionsContainer : public views::View,
     extensions::ExtensionActionAPI* extension_action_api_;
     extensions::ExtensionRegistry* extension_registry_;
     extensions::ExtensionActionManager* extension_action_manager_;
-    std::unique_ptr<ToolbarActionViewController> shields_view_controller_;
 
     // Listen to extension load, unloaded notifications.
     ScopedObserver<extensions::ExtensionRegistry, ExtensionRegistryObserver>

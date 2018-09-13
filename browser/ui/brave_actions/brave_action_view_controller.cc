@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_actions/shields_action_view_controller.h"
+#include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 #include "chrome/browser/extensions/extension_action.h"
@@ -16,28 +16,30 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
 
-void ShieldsActionViewController::HideActivePopup() {
+void BraveActionViewController::HideActivePopup() {
   // Usually, for an extension this should call the main extensions
   // toolbar_actions_bar_->HideActivePopup(), but we don't have a reference
   // to that, and it doesn't seem neccessary, whether the extension is opened
   // via mouse or keyboard (if a `commands` extension property is present)
 }
 
-bool ShieldsActionViewController::DisabledClickOpensMenu() const {
+bool BraveActionViewController::DisabledClickOpensMenu() const {
   // disabled is a per-tab state
   return false;
 }
 
-ui::MenuModel* ShieldsActionViewController::GetContextMenu() {
-  // no context menu for shields button
+ui::MenuModel* BraveActionViewController::GetContextMenu() {
+  // no context menu for brave actions button
   return nullptr;
 }
 
-gfx::Image ShieldsActionViewController::GetIcon(content::WebContents* web_contents, const gfx::Size& size) {
+gfx::Image BraveActionViewController::GetIcon(
+    content::WebContents* web_contents,
+    const gfx::Size& size) {
   return gfx::Image(gfx::ImageSkia(GetIconImageSource(web_contents, size), size));
 }
 
-std::unique_ptr<BraveActionIconWithBadgeImageSource> ShieldsActionViewController::GetIconImageSource(
+std::unique_ptr<BraveActionIconWithBadgeImageSource> BraveActionViewController::GetIconImageSource(
   content::WebContents* web_contents, const gfx::Size& size) {
   int tab_id = SessionTabHelper::IdForTab(web_contents).id();
   // generate icon

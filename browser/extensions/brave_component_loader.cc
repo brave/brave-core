@@ -6,6 +6,8 @@
 
 #include "base/command_line.h"
 #include "brave/common/brave_switches.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/grit/brave_rewards_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "components/grit/brave_components_resources.h"
 
@@ -34,6 +36,17 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
     Add(IDR_BRAVE_EXTENSON, brave_extension_path);
   }
+
+// !defined(OFFICIAL_BUILD) should be removed once brave/brave-browser#920
+// (the proper extension UI) is implemented.
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OFFICIAL_BUILD)
+  if (!command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
+    base::FilePath brave_rewards_path(FILE_PATH_LITERAL(""));
+    brave_rewards_path =
+        brave_rewards_path.Append(FILE_PATH_LITERAL("brave_rewards"));
+    Add(IDR_BRAVE_REWARDS, brave_rewards_path);
+  }
+#endif
 
   base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
   brave_webtorrent_path =
