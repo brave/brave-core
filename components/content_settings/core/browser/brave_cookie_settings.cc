@@ -83,7 +83,9 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
   // Empty first-party URL indicates a first-party request, so use the
   // previously obtained cookie_setting in that case.
   if (!first_party_url.is_empty()) {
-    if (SameDomainOrHost(url, first_party_url, INCLUDE_PRIVATE_REGISTRIES)) {
+    // example.com should be able to read cookies from a.example.com,
+    // but b.example.com should not be able to read cookies from a.example.com
+    if (IsInSubdomain(url, first_party_url)) {
       *cookie_setting = brave_1p_setting;
     } else {
       *cookie_setting = brave_3p_setting == CONTENT_SETTING_DEFAULT ?
@@ -102,6 +104,10 @@ bool BraveCookieSettings::IsCookieAccessAllowed(const GURL& url,
          setting == CONTENT_SETTING_BLOCK);
   return setting == CONTENT_SETTING_ALLOW ||
          setting == CONTENT_SETTING_SESSION_ONLY;
+}
+
+bool BraveCookieSettings::IsInSubdomain(const GURL& url, const GURL& first_party_url) {
+    return url.DomainIs(first_party_url.host());
 }
 
 }  // namespace content_settings
