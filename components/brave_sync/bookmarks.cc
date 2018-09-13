@@ -27,9 +27,9 @@
 
 namespace brave_sync {
 
-Bookmarks::Bookmarks(CanSendSyncBookmarks *send_bookmarks) :
+Bookmarks::Bookmarks(ControllerForBookmarksExports *controller_exports) :
   profile_(nullptr), model_(nullptr), sync_obj_map_(nullptr),
-  observer_is_set_(false), send_bookmarks_(send_bookmarks) {
+  observer_is_set_(false), controller_exports_(controller_exports) {
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::Bookmarks CTOR";
 }
 
@@ -173,6 +173,22 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
     return;
   }
 
+  auto sync_record_ptr = jslib::SyncRecord::Clone(sync_record);
+
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
+    FROM_HERE, base::Bind(&Bookmarks::AddBookmarkUiWork,
+         base::Unretained(this), base::Passed(std::move(sync_record_ptr)) ));
+}
+
+void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record) {
+  DCHECK(controller_exports_);
+  DCHECK(controller_exports_->GetTaskRunner());
+
+  const jslib::Bookmark &sync_bookmark = sync_record->GetBookmark();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork location="<<sync_bookmark.site.location;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork title="<<sync_bookmark.site.title;
+
+
   PauseObserver();
 
   // std::unique_ptr<BookmarkNode> new_node =
@@ -193,8 +209,8 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
       sync_bookmark.site.creationTime, //const base::Time& creation_time,
       nullptr//const BookmarkNode::MetaInfoMap* meta_info
     );
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark added_node="<<added_node;
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark added_node->id()="<<added_node->id();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork added_node="<<added_node;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork added_node->id()="<<added_node->id();
   // TODO, AB: apply these:
   //          sync_bookmark.site.customTitle
   //          sync_bookmark.site.lastAccessedTime
@@ -226,16 +242,23 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
   // all these are private
   // No matter we want ChromiumSync and Brave backend.
 
-  // Save id:
-  // std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(object_id);
-  //
-  SaveIdMap(added_node->id(), sync_record.objectId);
-
   ResumeObserver();
+
+  controller_exports_->GetTaskRunner()->PostTask(
+    FROM_HERE,
+    base::Bind(&Bookmarks::AddBookmarkPostUiFileWork, base::Unretained(this), added_node->id(), sync_record->objectId)
+  );
+
+}
+
+void Bookmarks::AddBookmarkPostUiFileWork(const int64_t &added_node_id, const std::string &sync_record_object_id) {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkPostUiFileWork added_node_id="<<added_node_id<<" sync_record_object_id="<<sync_record_object_id;
+  SaveIdMap(added_node_id, sync_record_object_id);
 }
 
 void Bookmarks::PauseObserver() {
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::PauseObserver";
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(model_);
   DCHECK(observer_is_set_);
   model_->RemoveObserver(this);
@@ -244,6 +267,7 @@ void Bookmarks::PauseObserver() {
 
 void Bookmarks::ResumeObserver() {
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::ResumeObserver";
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(model_);
   DCHECK(observer_is_set_ == false);
   model_->AddObserver(this);
@@ -345,7 +369,7 @@ void Bookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded GetBookmarkNodeString(node->type())=" << GetBookmarkNodeString(node->type());
 
   // Send to sync cloud
-  send_bookmarks_->CreateUpdateDeleteBookmarks(jslib_const::kActionCreate,
+  controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionCreate,
     {node}, false, false);
 }
 
@@ -386,7 +410,7 @@ void Bookmarks::BookmarkNodeRemoved(
 
   sync_obj_map_->DeleteByLocalId(base::NumberToString(node->id()));
 
-  send_bookmarks_->CreateUpdateDeleteBookmarks(jslib_const::kActionDelete,
+  controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionDelete,
     {node}, false, false);
 }
 
@@ -397,7 +421,7 @@ void Bookmarks::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded node->GetTitledUrlNodeTitle()=" << node->GetTitledUrlNodeTitle();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded node->GetTitle()=" << node->GetTitle();
 
-  send_bookmarks_->CreateUpdateDeleteBookmarks(jslib_const::kActionUpdate,
+  controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionUpdate,
      {node}, false, false);
 }
 

@@ -32,11 +32,11 @@ namespace storage {
 }
 
 class Controller;
-class CanSendSyncBookmarks;
+class ControllerForBookmarksExports;
 
 class Bookmarks : public bookmarks::BookmarkModelObserver {
 public:
-  Bookmarks(CanSendSyncBookmarks *send_bookmarks);
+  Bookmarks(ControllerForBookmarksExports *controller_exports);
   ~Bookmarks() override;
   void SetProfile(Profile *profile);
   void SetThisDeviceId(const std::string &device_id);
@@ -87,6 +87,10 @@ public:
       const std::set<GURL>& removed_urls) override;
 
 private:
+
+  void AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record);
+  void AddBookmarkPostUiFileWork(const int64_t &added_node_id, const std::string &sync_record_object_id);
+
   std::string GetOrCreateObjectByLocalId(const int64_t &local_id);
   void SaveIdMap(const int64_t &local_id, const std::string &sync_object_id);
   std::unique_ptr<jslib::Bookmark> GetFromNode(const bookmarks::BookmarkNode* node);
@@ -102,7 +106,7 @@ private:
   storage::ObjectMap* sync_obj_map_;
   bool observer_is_set_;
 
-  CanSendSyncBookmarks *send_bookmarks_;
+  ControllerForBookmarksExports *controller_exports_;
 };
 
 } // namespace brave_sync

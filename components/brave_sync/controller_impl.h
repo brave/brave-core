@@ -50,7 +50,7 @@ class History;
 
 class ControllerImpl : public Controller,
                        public SyncLibToBrowserHandler,
-                       public CanSendSyncBookmarks,
+                       public ControllerForBookmarksExports,
                        public CanSendSyncHistory {
 public:
   ControllerImpl(Profile *profile);
@@ -192,6 +192,8 @@ private:
     const RecordsList &records,
     const base::Time &last_record_time_stamp,
     const bool &is_truncated );
+
+  base::SequencedTaskRunner *GetTaskRunner() override;
 
   // Messages Controller => SyncWebUi
   SyncUI *sync_ui_;

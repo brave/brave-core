@@ -36,8 +36,6 @@ namespace brave_sync {
     virtual std::string GetSeed() = 0;
 
     virtual void SetupUi(SyncUI *sync_ui) = 0;
-
-    //virtual void SetProfile(Profile *profile) = 0;
   };
 
 } // namespace brave_sync

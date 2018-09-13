@@ -980,5 +980,8 @@ void ControllerImpl::LoopProcThreadAligned() {
   RequestSyncData();
 }
 
+base::SequencedTaskRunner *ControllerImpl::GetTaskRunner() {
+  return task_runner_.get();
+}
 
 } // namespace brave_sync
