@@ -219,7 +219,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     return false;
   }
 
-  if (!info.month || !info.year) {
+  if (info.month == ledger::PUBLISHER_MONTH::ANY || info.year == -1) {
     return true;
   }
 

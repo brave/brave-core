@@ -422,6 +422,7 @@ void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::Cont
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : *list) {
       auto publisher = std::make_unique<base::DictionaryValue>();
+      publisher->SetString("id", item.id);
       publisher->SetDouble("percentage", item.percentage);
       publisher->SetString("publisherKey", item.id);
       publisher->SetBoolean("verified", item.verified);
