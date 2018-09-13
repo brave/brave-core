@@ -176,22 +176,7 @@ extension BrowserViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-
-        // Check if this response should be downloaded.
-        if let downloadHelper = DownloadHelper(request: request, response: response, canShowInWebView: canShowInWebView, forceDownload: forceDownload, browserViewController: self) {
-            // Clear the network activity indicator since our helper is handling the request.
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-
-            // Clear the pending download URL so that subsequent requests to the same URL
-            // don't invoke another download.
-            pendingDownloadURL = nil
-
-            // Open our helper and cancel this response from the webview.
-            downloadHelper.open()
-            decisionHandler(.cancel)
-            return
-        }
-
+        
         // If the content type is not HTML, create a temporary document so it can be downloaded and
         // shared to external applications later. Otherwise, clear the old temporary document.
         if let tab = tabManager[webView] {
