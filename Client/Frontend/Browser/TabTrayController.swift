@@ -711,7 +711,7 @@ extension TabTrayController: TabCellDelegate {
     }
 }
 
-extension TabTrayController: PhotonActionSheetProtocol {
+extension TabTrayController {
     @objc func didTapDelete(_ sender: UIButton) {
         let controller = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         controller.addAction(UIAlertAction(title: Strings.AppMenuCloseAllTabsTitleString, style: .default, handler: { _ in self.closeTabsForCurrentTray() }), accessibilityIdentifier: "TabTrayController.deleteButton.closeAll")
