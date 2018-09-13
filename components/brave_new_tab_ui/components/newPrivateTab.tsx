@@ -1,28 +1,18 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { getLocale } from '../../common/locale'
-import { Grid, Column } from 'brave-ui/components'
-import {
-  Page,
-  MediaContent,
-  BoxedContent,
-  Heading,
-  Paragraph,
-  SwitchButton,
-  Clock
-} from 'brave-ui/old'
 
-// Components
+// Feature-specific Components
+import { Page,PageWrapper, PageHeader, Clock, NewTabHeading } from 'brave-ui/features/newTab'
+import PrivateTabTorOption from './privateTabTorOption'
+import PrivateTabSearchEngineOption from './privateTabSearchEngineOption'
+import PrivateTabFooter from './privateTabFooter'
 import Stats from './stats'
 
-// Constant
-import { theme } from '../constants/theme'
-
 // Assets
-const privateTabIcon = require('../../img/newtab/private_tab_pagearea_icon.svg')
+import { getLocale } from '../../common/locale'
 require('emptykit.css')
 
 interface Props {
@@ -33,6 +23,7 @@ interface Props {
 
 export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   render () {
+    const isTor = false
     const {
       stats,
       useAlternativePrivateSearchEngine,
@@ -43,45 +34,26 @@ export default class NewPrivateTab extends React.PureComponent<Props, {}> {
     if (!stats) {
       return null
     }
-
     return (
-      <Page customStyle={theme.newPrivateTab}>
-        <Grid columns={3}>
-          <Column size={2}>
+      <Page>
+        <PageWrapper>
+          <PageHeader>
             <Stats stats={stats} />
-          </Column>
-          <Column size={1} customStyle={theme.clockContainer}>
-            <Clock customStyle={theme.clock} />
-          </Column>
-        </Grid>
-        <BoxedContent customStyle={theme.textualContainer}>
-          <MediaContent media={privateTabIcon} customStyle={theme.media}>
-            <Heading
-              level={1}
-              customStyle={theme.title}
-              text={getLocale('privateNewTabTitle')}
+            <Clock />
+          </PageHeader>
+          <main>
+            <NewTabHeading>
+              {getLocale('thisIsAPrivateTab')}
+            </NewTabHeading>
+            <PrivateTabTorOption />
+            <PrivateTabSearchEngineOption
+              onChangePrivateSearchEngine={onChangePrivateSearchEngine}
+              useAlternativePrivateSearchEngine={useAlternativePrivateSearchEngine}
+              isTor={isTor}
             />
-            <Paragraph
-              customStyle={theme.text}
-              text={getLocale('privateNewTabDisclaimer1')}
-            />
-            <Paragraph
-              customStyle={theme.italicText}
-              text={getLocale('privateNewTabDisclaimer2')}
-            />
-            <BoxedContent customStyle={theme.switchContainer}>
-              <SwitchButton
-                id='togglePrivateSearchEngine'
-                size='large'
-                customStyle={theme.switchButton}
-                checked={useAlternativePrivateSearchEngine}
-                onChange={onChangePrivateSearchEngine}
-                rightText={getLocale('privateNewTabSearchLabel')}
-              />
-            </BoxedContent>
-            <Paragraph customStyle={theme.text} text={getLocale('duckduckGoSearchInfo')} />
-          </MediaContent>
-        </BoxedContent>
+            <PrivateTabFooter />
+          </main>
+        </PageWrapper>
       </Page>
     )
   }

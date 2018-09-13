@@ -48,7 +48,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "314e7529efec41c8867019815f4d8dad.svg", IDR_BRAVE_NEW_TAB_IMG4 },
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         { "50cc52a4f1743ea74a21da996fe44272.jpg", IDR_BRAVE_NEW_TAB_IMG14 },
-        { "b6dd4b1292cfd4470e58486c56ad0832.svg", IDR_BRAVE_NEW_TAB_PRIVATE_ICON },
         // New tab Backgrounds
         { "dksfoto1.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
         { "dksfoto2.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
@@ -69,7 +68,10 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "Phoyoserge_Theroofparis.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND17 },
         { "Phoyoserge_TheSeantParis.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND18 },
         { "Phoyoserge_VeniseSunset.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND19 },
-        { "Phoyoserge_Yosemite.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND20 }
+        { "Phoyoserge_Yosemite.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND20 },
+        // private tab
+        { "4697127f5404662b027f8dd436642cf7.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },
+        { "8640d24b8340ae4127895e4372aa295b.svg", IDR_BRAVE_PRIVATE_TAB_DDG_IMG }
       }
     }, {
       std::string("welcome"), {
@@ -119,11 +121,17 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "hours", IDS_BRAVE_NEW_TAB_HOURS },
         { "day", IDS_BRAVE_NEW_TAB_DAY },
         { "days", IDS_BRAVE_NEW_TAB_DAYS },
-        { "privateNewTabTitle", IDS_BRAVE_PRIVATE_NEW_TAB_TITLE },
-        { "privateNewTabDisclaimer1", IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER_1 },
-        { "privateNewTabDisclaimer2", IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER_2 },
-        { "duckduckGoSearchInfo", IDS_BRAVE_PRIVATE_NEW_TAB_DUCKDUCKGO_SEARCH_INFO },
-        { "privateNewTabSearchLabel", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_TOGGLE_LABEL }
+        // private tab
+        { "thisIsAPrivateTab", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_TAB },
+        { "makeThisTabMuchMorePrivateWith", IDS_BRAVE_PRIVATE_NEW_TAB_MAKE_THIS_TAB_MUCH_MORE_PRIVATE },
+        { "torDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_DISCLAIMER },
+        { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
+        { "defaultSearchEngineDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DEFAULT_SEARCH_ENGINE_DISCLAIMER },
+        { "searchPreferences", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PREFERENCES },
+        { "privateSearchWith", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_WITH },
+        { "duckduckgoDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DDG_DISCLAIMER },
+        { "moreAboutPrivateTabs", IDS_BRAVE_PRIVATE_NEW_TAB_MORE_ABOUT_PRIVATE_TABS },
+        { "privateTabsDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER }
       }
     }, {
       std::string("welcome"), {

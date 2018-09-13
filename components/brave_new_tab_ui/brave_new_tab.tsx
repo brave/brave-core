@@ -7,6 +7,9 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import Theme from 'brave-ui/theme/brave-default'
+import { ThemeProvider } from 'brave-ui/theme'
+
 // Components
 import App from './components/app'
 
@@ -20,7 +23,9 @@ window.cr.define('brave_new_tab', function () {
   function initialize () {
     render(
       <Provider store={store}>
-        <App />
+        <ThemeProvider theme={Theme}>
+          <App />
+        </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
     window.i18nTemplate.process(window.document, window.loadTimeData)
