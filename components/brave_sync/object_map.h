@@ -6,7 +6,9 @@
 
 #include <string>
 #include <memory>
-#include <mutex> // TODO, AB: not good, remove and modify threading
+
+#include "base/sequence_checker.h"
+#include "base/macros.h"
 
 class Profile;
 
@@ -15,6 +17,8 @@ namespace leveldb {
 }
 
 namespace brave_sync {
+class Bookmarks;
+
 namespace storage {
 
 class ObjectMap {
@@ -40,9 +44,13 @@ private:
   void CreateOpenDatabase();
   void TraceAll();
 
+  void GetLocalIdByObjectIdImpl(const std::string &object_id, brave_sync::Bookmarks *bookmarks, std::string *local_id);
+
   Profile *profile_;
   std::unique_ptr<leveldb::DB> level_db_;
-  std::unique_ptr<std::mutex> level_db_init_mutex_;
+
+  DISALLOW_COPY_AND_ASSIGN(ObjectMap);
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 } // namespace storage

@@ -253,7 +253,7 @@ QueryRowsByIds(const std::vector<URLID>&vec_ids, std::vector<URLRow> &rows)
 
   // const bookmarks::BookmarkNode* node = bookmarks::GetBookmarkNodeByID(model_, id);
   // if (node == nullptr) {
-  //   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue2 node not found for local_object_id=<"<<local_object_id<<">";
+  //   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue node not found for local_object_id=<"<<local_object_id<<">";
   //   // Node was removed
   //   // NOTREACHED() << "means we had not removed (object_id => local_id) pair from objects map";
   //   // Something gone wrong previously, no obvious way to fix
