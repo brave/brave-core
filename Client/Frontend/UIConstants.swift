@@ -84,15 +84,6 @@ extension UIColor {
         static let PrivateModeTint = BrowserColor(normal: Photon.Grey10, pbm: Photon.Grey40)
         static let Background = Photon.Grey80
     }
-
-    struct HomePanel {
-        // These values are the same for both private/normal.
-        // The homepanel toolbar needed to be able to theme, not anymore.
-        // Keep this just in case someone decides they want it to theme again
-        static let ToolbarBackground = BrowserColor(normal: Photon.Grey10, pbm: Photon.Grey10)
-        static let ToolbarHighlight = BrowserColor(normal: Photon.Blue50, pbm: Photon.Blue50)
-        static let ToolbarTint = BrowserColor(normal: Photon.Grey50, pbm: Photon.Grey50)
-    }
 }
 
 public struct UIConstants {

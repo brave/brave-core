@@ -20,7 +20,7 @@ class FavoritesViewController: UIViewController {
         static let statsHeight: CGFloat = 110.0
         static let statsBottomMargin: CGFloat = 5
     }
-    weak var homePanelDelegate: HomePanelDelegate?
+    weak var linkNavigationDelegate: LinkNavigationDelegate?
     weak var delegate: TopSitesDelegate?
     
     // MARK: - Favorites collection view properties
