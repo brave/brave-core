@@ -707,7 +707,7 @@ extension ActivityStreamPanel: HomePanelContextMenu {
 
         let shareAction = PhotonActionSheetItem(title: Strings.ShareContextMenuTitle, iconString: "action_share", handler: { action in
             let helper = ShareExtensionHelper(url: siteURL, tab: nil)
-            let controller = helper.createActivityViewController { completed, activityType in
+            let controller = helper.createActivityViewController(activities: nil) { completed, activityType in
             }
             if UI_USER_INTERFACE_IDIOM() == .pad, let popoverController = controller.popoverPresentationController {
                 let cellRect = sourceView?.frame ?? .zero
