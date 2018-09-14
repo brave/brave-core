@@ -161,23 +161,32 @@ void ControllerImpl::OnSetupSyncNewToSync(const std::string &device_name) {
 void ControllerImpl::OnDeleteDevice(const std::string &device_id) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDevice";
   LOG(ERROR) << "TAGAB device_id="<<device_id;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   CHECK(sync_client_ != nullptr);
   CHECK(sync_initialized_);
 
+  task_runner_->PostTask(
+    FROM_HERE,
+    base::Bind(&ControllerImpl::OnDeleteDeviceFileWork, base::Unretained(this), device_id)
+  );
+}
+
+void ControllerImpl::OnDeleteDeviceFileWork(const std::string &device_id) {
+  LOG(ERROR) << "TAGAB  ControllerImpl::OnDeleteDeviceFileWork";
   std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);
   SyncDevices syncDevices;
   syncDevices.FromJson(json);
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDevice json="<<json;
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork json="<<json;
 
   const SyncDevice *device = syncDevices.GetByDeviceId(device_id);
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDevice device="<<device;
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork device="<<device;
   //DCHECK(device); // once I saw it nullptr
   if (device) {
     const std::string device_name = device->name_;
     const std::string object_id = device->object_id_;
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDevice device_name="<<device_name;
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDevice object_id="<<object_id;
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork device_name="<<device_name;
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork object_id="<<object_id;
 
     SendDeviceSyncRecord(jslib::SyncRecord::Action::DELETE,
       device_name,
@@ -188,16 +197,34 @@ void ControllerImpl::OnDeleteDevice(const std::string &device_id) {
 
 void ControllerImpl::OnResetSync() {
   LOG(ERROR) << "TAGAB  ControllerImpl::OnResetSync";
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
   CHECK(sync_client_ != nullptr);
   CHECK(sync_initialized_);
 
   const std::string device_id = sync_prefs_->GetThisDeviceId();
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResetSync device_id="<<device_id;
-  OnDeleteDevice(device_id);
 
-  sync_prefs_->Clear();
+  task_runner_->PostTask(
+    FROM_HERE,
+    base::Bind(&ControllerImpl::OnResetSyncFileWork, base::Unretained(this), device_id)
+  );
+}
 
+void ControllerImpl::OnResetSyncFileWork(const std::string &device_id) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResetSyncFileWork";
+  OnDeleteDeviceFileWork(device_id);
   sync_obj_map_->DestroyDB();
+
+  content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+    base::Bind(&ControllerImpl::OnResetSyncPostFileUiWork, base::Unretained(this))
+  );
+}
+
+void ControllerImpl::OnResetSyncPostFileUiWork() {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResetSyncPostFileUiWork";
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  sync_prefs_->Clear();
 
   if (sync_ui_) {
     sync_ui_->OnSyncStateChanged();
@@ -292,24 +319,34 @@ void ControllerImpl::OnGetInitData(const std::string &sync_version) {
 
   seen_get_init_data_ = true;
 
-  Uint8Array seed2;
-  if (!temp_storage_.seed_.empty()) {
-    seed2.assign(temp_storage_.seed_.begin(), temp_storage_.seed_.end());
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() << ">";
+
+  Uint8Array seed;
+  if (!temp_storage_.seed_str_.empty()) {
+    seed = Uint8ArrayFromString(temp_storage_.seed_str_);
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData take seed from temp store";
   } else if (!sync_prefs_->GetSeed().empty()) {
-    seed2 = Uint8ArrayFromString(sync_prefs_->GetSeed());
+    seed = Uint8ArrayFromString(sync_prefs_->GetSeed());
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData take seed from prefs store";
   } else {
     // We are starting a new chain, so we don't know neither seed nor device id
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData starting new chain, use no seeds";
   }
 
-  Uint8Array device_id2;
+  Uint8Array device_id;
   if (!sync_prefs_->GetThisDeviceId().empty()) {
-    device_id2 = Uint8ArrayFromString(sync_prefs_->GetThisDeviceId());
+    device_id = Uint8ArrayFromString(sync_prefs_->GetThisDeviceId());
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData use device id from prefs StrFromUint8Array(device_id)="<<StrFromUint8Array(device_id);
+  } else {
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData use empty device id";
   }
-  brave_sync::client_data::Config config2;
-  config2.api_version = "0";
-  config2.server_url = "https://sync-staging.brave.com";
-  config2.debug = true;
-  sync_client_->SendGotInitData(seed2, device_id2, config2);
+
+  brave_sync::client_data::Config config;
+  config.api_version = "0";
+  config.server_url = "https://sync-staging.brave.com";
+  config.debug = true;
+  sync_client_->SendGotInitData(seed, device_id, config);
 
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData called sync_client_->SendGotInitData---";
 }
@@ -646,8 +683,9 @@ void ControllerImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
   LOG(ERROR) << "TAGAB error_message=" << error_message;
 
   if (!bytes.empty()) {
-    DCHECK(temp_storage_.seed_str_.empty());
+    //DCHECK(temp_storage_.seed_str_.empty()); can be not epmty if try to do twice with error on first time
     temp_storage_.seed_str_ = StrFromUint8Array(bytes);
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnBytesFromSyncWordsPrepared temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnWordsToBytesDone: call InitJsLib";
     InitJsLib(true);//Init will cause load of the Script;
   } else {
@@ -658,7 +696,7 @@ void ControllerImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
   }
 }
 
-bool once_done = false;
+//bool once_done = false;
 
 // Here we query sync lib for the records after initialization (or again later)
 void ControllerImpl::RequestSyncData() {

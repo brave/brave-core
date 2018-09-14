@@ -169,17 +169,18 @@ void ObjectMap::CloseDBHandle() {
 void ObjectMap::DestroyDB() {
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::DestroyDB, DCHECK_CALLED_ON_VALID_SEQUENCE " << GetThreadInfoString();
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(profile_);
 
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ResetObjects";
   CloseDBHandle();
-  base::FilePath app_data_path;
-  bool success = base::PathService::Get(chrome::DIR_USER_DATA, &app_data_path);
-  CHECK(success);
-  base::FilePath dbFilePath = app_data_path.Append(DB_FILE_NAME);
+
+  base::FilePath dbFilePath = profile_->GetPath().Append(DB_FILE_NAME);
   LOG(ERROR) << "TAGAB ResetObjects dbFilePath=" << dbFilePath;
+
   leveldb::Status db_status = leveldb::DestroyDB(dbFilePath.value(), leveldb::Options());
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db destroy error " << db_status.ToString();
+    DCHECK(false);
   }
 }
 

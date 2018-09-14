@@ -44,8 +44,6 @@ private:
   void CreateOpenDatabase();
   void TraceAll();
 
-  void GetLocalIdByObjectIdImpl(const std::string &object_id, brave_sync::Bookmarks *bookmarks, std::string *local_id);
-
   Profile *profile_;
   std::unique_ptr<leveldb::DB> level_db_;
 
