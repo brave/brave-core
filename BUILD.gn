@@ -88,6 +88,12 @@ group("create_dist") {
   }
   if (is_mac) {
     deps += [ "build/mac:create_dist_mac" ]
+    if (brave_channel == "") {
+      deps += [
+        "build/mac:create_pkg",
+        "build/mac:sign_pkg",
+      ]
+    }
   }
   if (is_linux) {
     deps += [
