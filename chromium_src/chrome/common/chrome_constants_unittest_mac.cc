@@ -8,8 +8,8 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-// Only checks prefix (Brave-Browser) because test build don't update branding.
+// Only checks prefix (Brave Browser) because test build don't update branding.
 TEST(ChromeConstantsTest, ProductStringTest) {
   EXPECT_EQ(std::string(chrome::kFrameworkName).substr(0, 13),
-            "Brave-Browser");
+            "Brave Browser");
 }
