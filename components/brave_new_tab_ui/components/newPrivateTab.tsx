@@ -18,15 +18,16 @@ require('emptykit.css')
 interface Props {
   stats: NewTab.Stats,
   useAlternativePrivateSearchEngine: boolean,
+  isTor: boolean,
   onChangePrivateSearchEngine: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   render () {
-    const isTor = false
     const {
       stats,
       useAlternativePrivateSearchEngine,
+      isTor,
       onChangePrivateSearchEngine
     } = this.props
 

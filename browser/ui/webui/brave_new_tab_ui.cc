@@ -84,6 +84,8 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
         "useAlternativePrivateSearchEngine",
         prefs->GetBoolean(kUseAlternatePrivateSearchEngine) ? "true"
                                                             : "false");
+    render_view_host->SetWebUIProperty(
+        "isTor", profile->IsTorProfile() ? "true" : "false");
   }
 }
 
