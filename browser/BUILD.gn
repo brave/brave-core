@@ -59,9 +59,11 @@ source_set("browser_process") {
     ":version_info",
     "//base",
     "//brave/components/brave_rewards/browser",
+    "//brave/browser/tor",
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/content_settings/core/browser",
     "//brave/common",
+    "//chrome/common",
     "//components/component_updater",
     "//components/prefs",
     "//components/safe_browsing/common:safe_browsing_prefs",
@@ -105,13 +107,19 @@ source_set("browser") {
 
   deps = [
     "autoplay",
+    "//base",
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/resources:brave_components_resources_grit",
     "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
     "extensions",
+    "tor",
     "net",
     "permissions",
+    "profiles",
+    "renderer_host",
+    "ui",
+    "//ui/base",
   ]
 
   if (is_mac) {

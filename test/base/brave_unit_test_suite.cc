@@ -6,6 +6,7 @@
 
 #include "base/logging.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/resource_bundle_helper.h"
 #include "chrome/install_static/product_install_details.h"
 #include "chrome/test/base/chrome_unit_test_suite.h"
 
@@ -18,6 +19,8 @@ void BraveUnitTestSuite::Initialize() {
   install_static::InitializeProductDetailsForPrimaryModule();
 #endif
   ChromeUnitTestSuite::Initialize();
+
+  brave::InitializeResourceBundle();
 
   brave::RegisterPathProvider();
 }
