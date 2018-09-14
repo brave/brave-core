@@ -53,7 +53,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList>, uint32_t record);
   void GetBalanceReports(const base::ListValue* args);
   void ExcludePublisher(const base::ListValue* args);
-  void RestorePublishers(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -121,9 +120,6 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("excludePublisher",
                                     base::BindRepeating(&RewardsDOMHandler::ExcludePublisher,
-                                                        base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("restorePublishers",
-                                    base::BindRepeating(&RewardsDOMHandler::RestorePublishers,
                                                         base::Unretained(this)));
 }
 
@@ -411,18 +407,11 @@ void RewardsDOMHandler::ExcludePublisher(const base::ListValue *args) {
   }
 }
 
-void RewardsDOMHandler::RestorePublishers(const base::ListValue *args) {
-  if (rewards_service_) {
-    rewards_service_->RestorePublishers();
-  }
-}
-
 void RewardsDOMHandler::OnGetContentSiteList(std::unique_ptr<brave_rewards::ContentSiteList> list, uint32_t record) {
   if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : *list) {
       auto publisher = std::make_unique<base::DictionaryValue>();
-      publisher->SetString("id", item.id);
       publisher->SetDouble("percentage", item.percentage);
       publisher->SetString("publisherKey", item.id);
       publisher->SetBoolean("verified", item.verified);

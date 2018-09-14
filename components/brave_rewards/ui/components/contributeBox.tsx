@@ -63,7 +63,7 @@ class ContributeBox extends React.Component<Props, State> {
         },
         url: item.url,
         attention: item.percentage,
-        onRemove: () => { this.actions.excludePublisher(item.id) }
+        onRemove: () => { this.actions.excludePublisher(item.name) }
       }
     })
   }
@@ -85,7 +85,7 @@ class ContributeBox extends React.Component<Props, State> {
   }
 
   onRestore = () => {
-    this.actions.restorePublishers()
+    // To do (this.actions.restore)
   }
 
   onToggleContribution = () => {
@@ -192,7 +192,6 @@ class ContributeBox extends React.Component<Props, State> {
     const topRows = contributeRows.slice(0, 5)
     const numRows = includedPublishers && includedPublishers.length
     const allSites = !(numRows > 5)
-    const numExcludedSites = autoContributeList.length - includedPublishers.length
 
     return (
       <Box
