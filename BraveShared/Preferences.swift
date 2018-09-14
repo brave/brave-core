@@ -79,10 +79,18 @@ extension Preferences {
         }
         /// The key used for getting/setting the value in `UserDefaults`
         public let key: String
+        /// The default value of this preference
+        private let defaultValue: ValueType
+        /// Reset's the preference to its original default value
+        public func reset() {
+            value = defaultValue
+        }
+        
         /// Creates a preference
         public init(key: String, default: ValueType, container: UserDefaults = Preferences.defaultContainer) {
             self.key = key
             self.container = container
+            self.defaultValue = `default`
             value = (container.value(forKey: key) as? ValueType) ?? `default`
         }
     }
