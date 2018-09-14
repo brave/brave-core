@@ -90,7 +90,7 @@ void BatGetMedia::getPublisherFromMediaProps(const std::string& mediaId, const s
 void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const std::string& media_key, const std::string& providerName,
       const uint64_t& duration, const ledger::TwitchEventInfo& twitchEventInfo, const ledger::VisitData& visit_data,
       ledger::Result result, std::unique_ptr<ledger::PublisherInfo> publisher_info) {
-  if (result != ledger::Result::OK && result != ledger::Result::NOT_FOUND) {
+  if (result != ledger::Result::LEDGER_OK && result != ledger::Result::NOT_FOUND) {
     // TODO error handling
     return;
   }

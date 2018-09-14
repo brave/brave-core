@@ -139,7 +139,7 @@ void BatPublishers::makePaymentInternal(
       ledger::PaymentData payment_data,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info) {
-  if (result != ledger::Result::OK) {
+  if (result != ledger::Result::LEDGER_OK) {
     // TODO error handling
     return;
   }
@@ -163,7 +163,7 @@ void BatPublishers::saveVisitInternal(
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   DCHECK(result != ledger::Result::TOO_MANY_RESULTS);
-  if (result != ledger::Result::OK && result != ledger::Result::NOT_FOUND) {
+  if (result != ledger::Result::LEDGER_OK && result != ledger::Result::NOT_FOUND) {
     // TODO error handling
     return;
   }
@@ -194,7 +194,7 @@ void BatPublishers::saveVisitInternal(
 
 std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
     ledger::Result result, std::unique_ptr<ledger::PublisherInfo> info) {
-  if (result != ledger::Result::OK || !info.get()) {
+  if (result != ledger::Result::LEDGER_OK || !info.get()) {
     // TODO error handling
     return info;
   }
@@ -220,7 +220,7 @@ void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PU
 void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
                                          ledger::Result result,
                                          std::unique_ptr<ledger::PublisherInfo> publisher_info) {
-  if (result != ledger::Result::OK &&
+  if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     return;
   }
@@ -550,7 +550,7 @@ bool BatPublishers::loadState(const std::string& data) {
 }
 
 void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
-  if (result != ledger::Result::OK) {
+  if (result != ledger::Result::LEDGER_OK) {
     LOG(ERROR) << "Could not save publisher state";
     // TODO - error handling
     return;
@@ -579,7 +579,7 @@ void BatPublishers::RefreshPublishersList(const std::string& json) {
 }
 
 void BatPublishers::OnPublishersListSaved(ledger::Result result) {
-  uint64_t ts = (ledger::Result::OK == result) ? std::time(nullptr) : 0ull;
+  uint64_t ts = (ledger::Result::LEDGER_OK == result) ? std::time(nullptr) : 0ull;
   setPublishersLastRefreshTimestamp(ts);
 }
 
