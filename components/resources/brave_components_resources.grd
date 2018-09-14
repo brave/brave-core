@@ -272,6 +272,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Brave Ads</message>
       <message name="IDS_BRAVE_UI_ENABLE_TIPS" desc="">Enable Tips</message>
+      <message name="IDS_BRAVE_UI_EXCLUDED_SITES" desc="">Total number of sites you excluded from Auto-Contribute:</message>
       <message name="IDS_BRAVE_UI_EXPIRES_ON" desc="">expires on</message>
       <message name="IDS_BRAVE_UI_FOR" desc="">for</message>
       <message name="IDS_BRAVE_UI_GRANT_DISCLAIMER" desc="">Unused tokens by the expiration date will be automatically returned to the Brave User Growth Pool.</message>
@@ -322,6 +323,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Recurring Donations</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
+      <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1" desc="">Backup your Wallet</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Keep this anonymized recovery key for your Brave wallet in the safe place in case you lose access to this browser. Your funds are safe as long as you keep this recovery key either on a paper or in a device with preferably no internet connection.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">Thanks for stopping by. We joined Brave’s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.</message>
