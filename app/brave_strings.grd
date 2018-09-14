@@ -1266,6 +1266,9 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
           Close
         </message>
       </if>
+      <message name="IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME" desc="The utility process which launches Tor">
+        Tor Launcher
+      </message>
     </messages>
   </release>
 </grit>

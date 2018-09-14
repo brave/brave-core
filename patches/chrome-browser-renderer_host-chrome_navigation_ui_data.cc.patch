@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/renderer_host/chrome_navigation_ui_data.cc b/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
+index afea09419dd3ef27759b1e48a057dea685fa01b2..17e5d7f3bc312445c63549e248d446640773e57b 100644
+--- a/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
++++ b/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
+@@ -48,7 +48,7 @@ std::unique_ptr<ChromeNavigationUIData>
+ ChromeNavigationUIData::CreateForMainFrameNavigation(
+     content::WebContents* web_contents,
+     WindowOpenDisposition disposition) {
+-  auto navigation_ui_data = std::make_unique<ChromeNavigationUIData>();
++  auto navigation_ui_data = std::make_unique<BraveNavigationUIData>();
+   navigation_ui_data->disposition_ = disposition;
+ 
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+@@ -67,7 +67,7 @@ ChromeNavigationUIData::CreateForMainFrameNavigation(
+ 
+ std::unique_ptr<content::NavigationUIData> ChromeNavigationUIData::Clone()
+     const {
+-  auto copy = std::make_unique<ChromeNavigationUIData>();
++  auto copy = std::make_unique<BraveNavigationUIData>();
+ 
+   copy->disposition_ = disposition_;
+ 

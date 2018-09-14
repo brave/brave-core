@@ -12,6 +12,8 @@ class BraveContentUtilityClient : public ChromeContentUtilityClient {
   BraveContentUtilityClient();
   ~BraveContentUtilityClient() override;
 
+  void RegisterServices(StaticServiceMap* services) override;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentUtilityClient);
 };

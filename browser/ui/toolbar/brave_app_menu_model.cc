@@ -7,6 +7,15 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+
+BraveAppMenuModel::BraveAppMenuModel(
+    ui::AcceleratorProvider* provider, Browser* browser)
+    : AppMenuModel(provider, browser),
+      browser_(browser) {}
+
+BraveAppMenuModel::~BraveAppMenuModel() {}
 
 void BraveAppMenuModel::Build() {
   // Insert brave items after build chromium items.
@@ -23,4 +32,10 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
       GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
       IDC_SHOW_BRAVE_ADBLOCK,
       IDS_SHOW_BRAVE_ADBLOCK);
+  if (browser_->profile()->IsTorProfile()) {
+    InsertItemWithStringIdAt(
+        GetIndexOfCommandId(IDC_NEW_WINDOW),
+        IDC_NEW_TOR_IDENTITY,
+        IDS_NEW_TOR_IDENTITY);
+   }
 }

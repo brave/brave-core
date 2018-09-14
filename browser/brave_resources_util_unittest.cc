@@ -38,7 +38,10 @@ TEST(BraveResourcesWinTest, CheckStringsForInstaller) {
   // Test whether strings for installer are filled.
   // This test is added because these strings are initially empty and filled
   // with brave's one.
-  brave::InitializeResourceBundle();
+  // brave::InitializeResourceBundle can only be called once per unittest
+  // running, cannot be called for every test suites. Which will lead to
+  // duplicate resources
+  // brave::InitializeResourceBundle();
 
   EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SXS_SHORTCUT_NAME).empty());
   EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SHORTCUT_NAME_BETA).empty());

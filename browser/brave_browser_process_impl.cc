@@ -6,16 +6,19 @@
 
 #include "base/bind.h"
 #include "base/task/post_task.h"
+#include "base/path_service.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profile_creation_monitor.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/io_thread.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
@@ -72,6 +75,13 @@ BraveBrowserProcessImpl::component_updater() {
   return component_updater_.get();
 }
 
+ProfileManager* BraveBrowserProcessImpl::profile_manager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!created_profile_manager_)
+    CreateProfileManager();
+  return profile_manager_.get();
+}
+
 brave_shields::AdBlockService*
 BraveBrowserProcessImpl::ad_block_service() {
   if (ad_block_service_)
@@ -117,4 +127,13 @@ BraveBrowserProcessImpl::tor_client_updater() {
 
   tor_client_updater_ = extensions::BraveTorClientUpdaterFactory();
   return tor_client_updater_.get();
+}
+
+void BraveBrowserProcessImpl::CreateProfileManager() {
+  DCHECK(!created_profile_manager_ && !profile_manager_);
+  created_profile_manager_ = true;
+
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  profile_manager_ = std::make_unique<BraveProfileManager>(user_data_dir);
 }

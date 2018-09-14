@@ -6,6 +6,7 @@
 
 #include "base/values.h"
 #include "brave/browser/brave_stats_updater.h"
+#include "brave/browser/tor/tor_profile_service.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
@@ -18,6 +19,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
       base::Value(false));
 #endif
+  tor::TorProfileService::RegisterLocalStatePrefs(registry);
 }
 
 }  // namespace brave

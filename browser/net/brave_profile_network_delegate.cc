@@ -13,6 +13,7 @@
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #endif
+#include "brave/browser/net/brave_tor_network_delegate_helper.h"
 
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
     extensions::EventRouterForwarder* event_router) :
@@ -34,6 +35,9 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   callback = base::Bind(brave_rewards::OnBeforeURLRequest);
   before_url_request_callbacks_.push_back(callback);
 #endif
+
+  callback = base::Bind(brave::OnBeforeURLRequest_TorWork);
+  before_url_request_callbacks_.push_back(callback);
 
   brave::OnBeforeStartTransactionCallback start_transactions_callback =
       base::Bind(brave::OnBeforeStartTransaction_SiteHacksWork);

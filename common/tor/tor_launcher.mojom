@@ -1,0 +1,18 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+module tor.mojom;
+
+import "brave/common/tor/tor_config.mojom";
+
+const string kTorLauncherServiceName = "tor_launcher";
+
+interface TorLauncher {
+    Launch(tor.mojom.TorConfig config) => (bool result, int64 pid);
+
+    ReLaunch(tor.mojom.TorConfig config) => (bool result, int64 pid);
+
+    SetCrashHandler() => (int64 pid);
+};
+
