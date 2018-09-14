@@ -42,7 +42,7 @@ extension Preferences {
         /// The list of observers for this option
         private let observers = WeakList<PreferencesObserver>()
         /// The UserDefaults container that you wish to save to
-        private let container: UserDefaults
+        public let container: UserDefaults
         /// The current value of this preference
         ///
         /// Upon setting this value, UserDefaults will be updated and any observers will be called
