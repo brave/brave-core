@@ -366,11 +366,13 @@
         "parameters": [
           {
             "type": "binary",
-            "name": "seed"
+            "name": "seed",
+            "optional": true
           },
           {
             "type": "binary",
-            "name": "device_id"
+            "name": "device_id",
+            "optional": true
           }
         ]
       },

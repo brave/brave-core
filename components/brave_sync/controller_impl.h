@@ -124,6 +124,10 @@ private:
 
   void ShutdownFileWork();
 
+  void OnDeleteDeviceFileWork(const std::string &device_id);
+  void OnResetSyncFileWork(const std::string &device_id);
+  void OnResetSyncPostFileUiWork();
+
   // Other private methods
   void RequestSyncData();
   void FetchSyncRecords(const bool &bookmarks, const bool &history,
@@ -211,9 +215,7 @@ private:
     // This should be used only for passing
     // between OnSetupSyncHaveCode or OnSetupSyncNewToSync to OnSaveInitData
     std::string device_name_;
-    // Between OnWordsToBytesDone => InitJsLib|OnGotInitData
-    std::vector<char> seed_;
-    // Between OnWordsToBytesDone => OnSaveInitData
+    // Between OnWordsToBytesDone => InitJsLib|OnSaveInitData
     std::string seed_str_;
   };
   TempStorage temp_storage_;

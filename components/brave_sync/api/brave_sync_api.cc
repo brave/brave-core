@@ -81,12 +81,16 @@ ExtensionFunction::ResponseAction BraveSyncSaveInitDataFunction::Run() {
       brave_sync::SaveInitData::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  LOG(ERROR) << "TAGAB BraveSyncSaveInitDataFunction::Run params->seed=" << params->seed.size();
-  LOG(ERROR) << "TAGAB BraveSyncSaveInitDataFunction::Run params->device_id=" << params->device_id.size();
+  if (params->seed) {
+    LOG(ERROR) << "TAGAB BraveSyncSaveInitDataFunction::Run params->seed=" << params->seed->size();
+  }
+  if (params->device_id) {
+    LOG(ERROR) << "TAGAB BraveSyncSaveInitDataFunction::Run params->device_id=" << params->device_id->size();
+  }
   ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
   sync_client->GetSyncToBrowserHandler()->OnSaveInitData(
-    ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->seed),
-    ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->device_id)
+    ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->seed ? *params->seed : std::vector<uint8_t>()),
+    ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->device_id ? *params->device_id : std::vector<uint8_t>() )
   );
 
   return RespondNow(NoArguments());

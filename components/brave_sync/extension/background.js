@@ -235,7 +235,19 @@ class InjectedObject {
         chrome.braveSync.syncDebug(arg1/*message*/);
         break;
       case "save-init-data":
-        chrome.braveSync.saveInitData(arg1/*seed*/, arg2/*deviceId*/);
+        var deviceId = arg2;
+        if ( typeof deviceId == "number"  ) {
+          deviceId = new Uint8Array([deviceId]);
+        }
+        if (!arg1) {
+          arg1 = null;
+        }
+        console.log('background.js save-init-data arg1=',JSON.stringify(arg1));
+        console.log('background.js save-init-data deviceId=',JSON.stringify(deviceId));
+        console.log('background.js save-init-data typeof arg1=',typeof arg1);
+        console.log('background.js save-init-data typeof deviceId=',typeof deviceId);
+
+        chrome.braveSync.saveInitData(arg1/*seed*/, deviceId);
         break;
       case "sync-ready":
         chrome.braveSync.syncReady();
