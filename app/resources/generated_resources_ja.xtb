@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">ページの読み込みが一時停止されました。</translation>
 <translation id="6921709132208495314">このページでデータの使用を停止する</translation>
 <translation id="2724841811573117416">WebRTC ログ</translation>
+<translation id="1969654639948595766">WebRTC テキストログ（<ph name="WEBRTC_TEXT_LOG_COUNT"/>）</translation>
+<translation id="6865708901122695652">WebRTC イベントログ（<ph name="WEBRTC_EVENT_LOG_COUNT"/>）</translation>
 <translation id="6592267180249644460">WebRTC ログの記録日時: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">ローカル ファイル:</translation>
 <translation id="2071393345806050157">ローカルのログ ファイルがありません。</translation>
 <translation id="6628328486509726751">アップロード日時: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">アップロードできませんでした（<ph name="WEBRTC_LOG_UPLOAD_TIME"/>）。</translation>
 <translation id="5946591249682680882">レポート ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">バグを報告</translation>
+<translation id="3650845953328929506">ログのアップロードを保留しています。</translation>
+<translation id="1818913467757368489">ログをアップロードしています。</translation>
 <translation id="1188807932851744811">ログがアップロードされていません。</translation>
+<translation id="4688036121858134881">ローカルログ ID は <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/> です。</translation>
+<translation id="7497981768003291373">最近記録された WebRTC テキストログはありません。</translation>
+<translation id="3954953195017194676">最近記録された WebRTC イベントログはありません。</translation>
 <translation id="2076269580855484719">このプラグインを表示しない</translation>
 <translation id="2129825002735785149">プラグインを更新</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> は会社のポリシーによってブロックされています</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">有効な URL を入力してください</translation>
 <translation id="2806891468525657116">ショートカットがすでに存在します</translation>
 <translation id="394183848452296464">ショートカットを作成できません</translation>
+<translation id="329703603001918157">ショートカットの編集はできません</translation>
+<translation id="6732900235521116609">ショートカットの削除はできません</translation>
 <translation id="7109543803214225826">ショートカットを削除しました</translation>
 <translation id="8017679124341497925">ショートカットを編集しました</translation>
 <translation id="1174073918202301297">ショートカットを追加しました</translation>
@@ -1440,6 +1450,7 @@
 <translation id="1800308196794859773">テキスト欄で音声入力できるように Brave Software に音声を送信します。</translation>
 <translation id="8758418656925882523">音声入力を有効にする</translation>
 <translation id="7580671184200851182">すべてのスピーカーで同じオーディオを再生（モノラル オーディオ）</translation>
+<translation id="8186639008852027301">起動時にオーディオ インジケータを再生する</translation>
 <translation id="1189418886587279221">ユーザー補助機能を有効にするとデバイスが使いやすくなります。</translation>
 <translation id="48704129375571883">その他の機能を追加</translation>
 <translation id="7230787553283372882">テキストサイズをカスタマイズします</translation>
@@ -1537,6 +1548,10 @@
 <translation id="5029568752722684782">コピーを消去</translation>
 <translation id="2154484045852737596">カードを編集</translation>
 <translation id="5087580092889165836">カードを追加</translation>
+<translation id="7284555534810614828">Brave Software Pay にカードを保存して使用する</translation>
+<translation id="6281511959351052816">Brave Software Pay にカードを保存して使用する</translation>
+<translation id="1904518222538904133">この端末でのみ使用できるカードが 1 つあります</translation>
+<translation id="8065485338434000013">この端末でのみ使用できるカードがいくつかあります</translation>
 <translation id="4807098396393229769">カード名義人（半角英文字）</translation>
 <translation id="2612676031748830579">カード番号</translation>
 <translation id="869891660844655955">有効期限</translation>
@@ -1976,8 +1991,6 @@
 <translation id="5282733140964383898">「トラッキング拒否」を有効にすると、閲覧トラフィックにリクエストが含まれるようになります。ウェブサイトがリクエストに応答するかどうか、またリクエストがどのように解釈されるかによって、この影響は異なります。たとえば、このリクエストに対応して、ユーザーが過去にアクセスしたウェブサイトに関係なく広告を表示するウェブサイトもあります。トラッキングを拒否しても、多くのウェブサイトではユーザーの閲覧データが収集され利用されるのが現状です。たとえば、セキュリティの強化、ウェブサイトでのコンテンツ、サービス、広告、おすすめ情報の表示、レポート統計情報の作成などにこれらのデータが利用されます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">確認済みのアクセスを有効にする</translation>
 <translation id="5557991081552967863">スリープ中に Wi-Fi 接続を維持する</translation>
-<translation id="8562084399541316921">読み続ける</translation>
-<translation id="6201926614538916789">Bravebook でモバイル接続を使ってサイトの閲覧を再開します</translation>
 <translation id="1521442365706402292">証明書の管理</translation>
 <translation id="7075625805486468288">HTTPS / SSL の証明書と設定を管理します</translation>
 <translation id="8871974300055371298">コンテンツの設定</translation>
@@ -2186,6 +2199,7 @@
 <translation id="3422989461909154470">アプリやウェブサイトからログインしているすべての Brave Software アカウントをここで管理できます。</translation>
 <translation id="1987317783729300807">アカウント</translation>
 <translation id="8418661265246754237">Brave Software アカウント</translation>
+<translation id="3297951628821704004">この端末からアカウントを削除</translation>
 <translation id="1059855432287631118">指紋の登録</translation>
 <translation id="878068003854005405">まず指をセンサーに置きます。</translation>
 <translation id="7189965711416741966">指紋の登録が完了しました。</translation>

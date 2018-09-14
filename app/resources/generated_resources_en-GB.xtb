@@ -505,15 +505,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3861241522664181545">Page paused.</translation>
 <translation id="6921709132208495314">Stop using data on this page</translation>
 <translation id="2724841811573117416">WebRTC logs</translation>
+<translation id="1969654639948595766">WebRTC text logs (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC event logs (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC log captured <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Local file:</translation>
 <translation id="2071393345806050157">No local log file.</translation>
 <translation id="6628328486509726751">Uploaded <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Upload failed (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Report ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">File bug</translation>
 <translation id="3650845953328929506">Log upload pending.</translation>
 <translation id="1818913467757368489">Log upload underway.</translation>
 <translation id="1188807932851744811">Log not uploaded.</translation>
+<translation id="4688036121858134881">Local log ID: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
 <translation id="7497981768003291373">You have no recently captured WebRTC text logs.</translation>
 <translation id="3954953195017194676">You have no recently captured WebRTC event logs.</translation>
 <translation id="2076269580855484719">Hide this plug-in</translation>
@@ -1987,8 +1991,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5282733140964383898">Enabling 'Do Not Track' means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data – for example, to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK"/>Find out more<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Enable Verified Access</translation>
 <translation id="5557991081552967863">Keep Wi-Fi on during sleep</translation>
-<translation id="8562084399541316921">Continue reading</translation>
-<translation id="6201926614538916789">Resume viewing sites from mobile on your Bravebook</translation>
 <translation id="1521442365706402292">Manage certificates</translation>
 <translation id="7075625805486468288">Manage HTTPS/SSL certificates and settings</translation>
 <translation id="8871974300055371298">Content Settings ...</translation>

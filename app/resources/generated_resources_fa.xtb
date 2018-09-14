@@ -504,13 +504,21 @@
 <translation id="3861241522664181545">صفحه موقتاً متوقف شد.</translation>
 <translation id="6921709132208495314">توقف استفاده از داده در این صفحه</translation>
 <translation id="2724841811573117416">‏گزارش‌های WebRTC</translation>
+<translation id="1969654639948595766">‏گزارش‌های نوشتاری WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">‏گزارش وقایع WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">‏زمان ثبت گزارش WebRTC ‏<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">فایل محلی:</translation>
 <translation id="2071393345806050157">فایل گزارش محلی وجود ندارد.</translation>
 <translation id="6628328486509726751">زمان بارگذاری <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">بارگذاری انجام نشد (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">شناسه گزارش <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">اشکال پرونده</translation>
+<translation id="3650845953328929506">بارگذاری گزارش درانتظار انجام است.</translation>
+<translation id="1818913467757368489">بارگذاری گزارش درحال انجام است.</translation>
 <translation id="1188807932851744811">گزارش بارگذاری نشد.</translation>
+<translation id="4688036121858134881">شناسه گزارش محلی: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">‏هیچ گزارش نوشتاری WebRTC که اخیراً ثبت شده باشد ندارید.</translation>
+<translation id="3954953195017194676">‏هیچ گزارش وقایع WebRTC که اخیراً ثبت شده باشد ندارید.</translation>
 <translation id="2076269580855484719">پنهان کردن این افزایه</translation>
 <translation id="2129825002735785149">به‌روزرسانی افزایه</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> توسط خط‌مشی شرکت مسدود شده است</translation>
@@ -555,6 +563,8 @@
 <translation id="4416582610654027550">نشانی وب معتبری تایپ کنید</translation>
 <translation id="2806891468525657116">میان‌بر از قبل وجود دارد</translation>
 <translation id="394183848452296464">نمی‌توان میان‌بر ایجاد کرد</translation>
+<translation id="329703603001918157">ویرایش میان‌بر ممکن نیست</translation>
+<translation id="6732900235521116609">برداشتن میان‌بر ممکن نیست</translation>
 <translation id="7109543803214225826">میان‌بر حذف شد</translation>
 <translation id="8017679124341497925">میان‌بر ویرایش شد</translation>
 <translation id="1174073918202301297">میان‌بر اضافه شد</translation>
@@ -1439,6 +1449,7 @@
 <translation id="1800308196794859773">‏صدایتان را برای Brave Software ارسال کنید تا بتوانید هر فیلد نوشتاری را با دیکته کردن پر کنید.</translation>
 <translation id="8758418656925882523">فعال کردن املا (صحبت برای تایپ)</translation>
 <translation id="7580671184200851182">یک صدا را از طریق همه بلندگوها پخش کنید (تک صوتی)</translation>
+<translation id="8186639008852027301">پخش نشانگر صوتی هنگام شروع به کار</translation>
 <translation id="1189418886587279221">فعال‌سازی قابلیت‌های دسترس‌پذیری برای استفاده آسان‌تر از دستگاهتان.</translation>
 <translation id="48704129375571883">افزودن قابلیت‌های بیشتر</translation>
 <translation id="7230787553283372882">سفارشی کردن اندازه نوشتار</translation>
@@ -1536,6 +1547,10 @@
 <translation id="5029568752722684782">پاک کردن نسخه کپی</translation>
 <translation id="2154484045852737596">ویرایش کارت</translation>
 <translation id="5087580092889165836">افزودن کارت</translation>
+<translation id="7284555534810614828">‏ذخیره کارت برای استفاده از Brave Software Pay</translation>
+<translation id="6281511959351052816">‏ذخیره کارت‌ها برای استفاده از Brave Software Pay</translation>
+<translation id="1904518222538904133">فقط یکی از کارت‌ها را می‌توان در این دستگاه استفاده کرد</translation>
+<translation id="8065485338434000013">فقط برخی از کارت‌هایتان را می‌توان در این دستگاه استفاده کرد</translation>
 <translation id="4807098396393229769">نام روی کارت</translation>
 <translation id="2612676031748830579">شماره کارت</translation>
 <translation id="869891660844655955">تاریخ انقضا</translation>
@@ -1975,8 +1990,6 @@
 <translation id="5282733140964383898">فعال کردن «ردیابی نشود» بدین معناست که درخواستی در ترافیک مرور شما لحاظ خواهد شد. هر گونه تأثیر به این بستگی دارد که وب‌سایت به درخواست پاسخ می‌دهد یا خیر و درخواست چگونه تفسیر می‌شود. به‌عنوان مثال، ممکن است برخی از وب‌سایت‌ها با نشان دادن آگهی‌هایی که براساس وب‌سایت‌های دیگری که بازدید کرده‌اید، نیستند به این درخواست پاسخ دهند. بسیاری از وب‌سایت‌ها همچنان داده‌های مرور شما را جمع‌آوری و استفاده خواهند کرد، به‌عنوان مثال برای بهبود ایمنی، برای ارائه محتوا، سرویس‌ها، آگهی‌ها و توصیه‌های مربوط به وب‌سایت‌هایشان و برای تولید آمار گزارش. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">فعال کردن دسترسی تأییدشده</translation>
 <translation id="5557991081552967863">‏روشن نگه‌داشتن Wi-Fi در حالت خواب</translation>
-<translation id="8562084399541316921">ادامه مطلب</translation>
-<translation id="6201926614538916789">‏ازسرگیری مشاهده سایت‌ها از دستگاه همراه در Bravebook</translation>
 <translation id="1521442365706402292">مدیریت گواهی‌ها</translation>
 <translation id="7075625805486468288">‏مدیریت گواهی‌ها و تنظیمات HTTPS/SSL</translation>
 <translation id="8871974300055371298">تنظیمات محتوا</translation>
@@ -2185,6 +2198,7 @@
 <translation id="3422989461909154470">‏می‌توانید همه حساب‌های Brave Software خود را که از برنامه‌ها و وب‌سایت‌ها به سیستم وارد شده‌اند، از اینجا مدیریت کنید.</translation>
 <translation id="1987317783729300807">حساب‌ها</translation>
 <translation id="8418661265246754237">‏حساب‌های Brave Software</translation>
+<translation id="3297951628821704004">برداشتن حساب از این دستگاه</translation>
 <translation id="1059855432287631118">درحال ثبت اثرانگشت</translation>
 <translation id="878068003854005405">بیایید شروع کنیم. انگشتتان را روی حسگر قرار دهید.</translation>
 <translation id="7189965711416741966">اثرانگشت اضافه شد.</translation>

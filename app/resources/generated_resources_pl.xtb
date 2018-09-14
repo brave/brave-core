@@ -505,13 +505,21 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3861241522664181545">Strona została wstrzymana.</translation>
 <translation id="6921709132208495314">Zatrzymaj przesyłanie danych na tej stronie</translation>
 <translation id="2724841811573117416">Dzienniki WebRTC</translation>
+<translation id="1969654639948595766">Dzienniki tekstowe WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Dzienniki zdarzeń WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Zapisany dziennik WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Plik lokalny:</translation>
 <translation id="2071393345806050157">Nie ma lokalnego pliku dziennika.</translation>
 <translation id="6628328486509726751">Przesłano: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Nie udało się przesłać (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Identyfikator raportu: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Zgłoś błąd</translation>
+<translation id="3650845953328929506">Dziennik oczekuje na przesłanie.</translation>
+<translation id="1818913467757368489">Trwa przesyłanie dziennika.</translation>
 <translation id="1188807932851744811">Dziennik nie został przesłany.</translation>
+<translation id="4688036121858134881">Identyfikator dziennika lokalnego: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Nie ma zapisanych ostatnio dzienników tekstowych WebRTC.</translation>
+<translation id="3954953195017194676">Nie ma zapisanych ostatnio dzienników zdarzeń WebRTC.</translation>
 <translation id="2076269580855484719">Ukryj wtyczkę</translation>
 <translation id="2129825002735785149">Aktualizuj wtyczkę</translation>
 <translation id="9088234649737575428">Wtyczka <ph name="PLUGIN_NAME"/> została zablokowana przez zasady przedsiębiorstwa</translation>
@@ -556,6 +564,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4416582610654027550">Wpisz prawidłowy URL</translation>
 <translation id="2806891468525657116">Skrót już istnieje</translation>
 <translation id="394183848452296464">Nie można utworzyć skrótu</translation>
+<translation id="329703603001918157">Nie można edytować skrótu</translation>
+<translation id="6732900235521116609">Nie można usunąć skrótu</translation>
 <translation id="7109543803214225826">Skrót został usunięty</translation>
 <translation id="8017679124341497925">Skrót był edytowany</translation>
 <translation id="1174073918202301297">Skrót został dodany</translation>
@@ -1441,6 +1451,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1800308196794859773">Wysyła Twój głos do Brave Software, by umożliwić dyktowanie w dowolnym polu tekstowym.</translation>
 <translation id="8758418656925882523">Włącz dyktowanie (mów, by pisać)</translation>
 <translation id="7580671184200851182">Odtwarzaj ten sam dźwięk na wszystkich głośnikach (dźwięk mono)</translation>
+<translation id="8186639008852027301">Odtwórz sygnał dźwiękowy podczas uruchamiania</translation>
 <translation id="1189418886587279221">Włącz ułatwienia dostępu, aby uprościć obsługę urządzenia.</translation>
 <translation id="48704129375571883">Dodaj inne funkcje</translation>
 <translation id="7230787553283372882">Dostosuj rozmiar tekstu</translation>
@@ -1538,6 +1549,10 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="5029568752722684782">Usuń kopię</translation>
 <translation id="2154484045852737596">Edytowanie karty</translation>
 <translation id="5087580092889165836">Dodaj kartę</translation>
+<translation id="7284555534810614828">Zapisz kartę, by korzystać z Brave Software Pay</translation>
+<translation id="6281511959351052816">Zapisz karty, by korzystać z Brave Software Pay</translation>
+<translation id="1904518222538904133">Jednej z Twoich kart można używać tylko na tym urządzeniu</translation>
+<translation id="8065485338434000013">Niektórych Twoich kart można używać tylko na tym urządzeniu</translation>
 <translation id="4807098396393229769">Imię i nazwisko na karcie</translation>
 <translation id="2612676031748830579">Numer karty</translation>
 <translation id="869891660844655955">Data wygaśnięcia</translation>
@@ -1977,8 +1992,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="5282733140964383898">Włączenie opcji „Bez śledzenia” oznacza, że żądanie zostanie uwzględnione w ruchu związanym z używaniem przeglądarki. Efekt zawsze zależy od tego, czy witryna odpowiada na żądanie i jak je interpretuje. Na przykład niektóre witryny mogą odpowiadać na nie, wyświetlając reklamy bez uwzględniania innych odwiedzonych przez Ciebie stron. Wiele witryn będzie nadal gromadzić Twoje dane przeglądania i używać ich np. do zwiększania bezpieczeństwa, dostarczania treści i usług, wyświetlania reklam i rekomendacji oraz do generowania statystyk i raportów. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Włącz weryfikację dostępu</translation>
 <translation id="5557991081552967863">Nie wyłączaj Wi-Fi w trybie uśpienia</translation>
-<translation id="8562084399541316921">Czytaj dalej</translation>
-<translation id="6201926614538916789">Wznów przeglądanie stron z urządzenia mobilnego na Bravebooku</translation>
 <translation id="1521442365706402292">Zarządzaj certyfikatami</translation>
 <translation id="7075625805486468288">Zarządzanie certyfikatami i ustawieniami HTTPS/SSL</translation>
 <translation id="8871974300055371298">Ustawienia treści</translation>
@@ -2187,6 +2200,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="3422989461909154470">W tym miejscu możesz zarządzać wszystkimi kontami Brave Software, na które logujesz się na stronach i w aplikacjach.</translation>
 <translation id="1987317783729300807">Konta</translation>
 <translation id="8418661265246754237">Konta Brave Software</translation>
+<translation id="3297951628821704004">Usuń konto z tego urządzenia</translation>
 <translation id="1059855432287631118">Rejestrowanie odcisku palca</translation>
 <translation id="878068003854005405">Zaczynamy. Umieść palec na czujniku.</translation>
 <translation id="7189965711416741966">Odcisk palca dodany.</translation>

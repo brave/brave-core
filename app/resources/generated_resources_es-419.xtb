@@ -512,6 +512,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="5946591249682680882">ID de informe: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Incluir error</translation>
 <translation id="3650845953328929506">Subida de Bitácora (Log) pendiente.</translation>
+<translation id="1818913467757368489">Subida de registro en camino.</translation>
 <translation id="1188807932851744811">No se cargó el registro.</translation>
 <translation id="2076269580855484719">Ocultar este complemento</translation>
 <translation id="2129825002735785149">Actualizar complemento</translation>
@@ -558,6 +559,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="2806891468525657116">El acceso directo ya existe</translation>
 <translation id="394183848452296464">No se puede crear el acceso directo</translation>
 <translation id="329703603001918157">No se puede editar el atajo</translation>
+<translation id="6732900235521116609">No se puede quitar el acceso directo</translation>
 <translation id="7109543803214225826">Se quitó el acceso directo</translation>
 <translation id="8017679124341497925">Se editó el acceso directo</translation>
 <translation id="1174073918202301297">Acceso directo agregado</translation>
@@ -1443,6 +1445,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1800308196794859773">Envía tu voz a Brave Software para habilitar el dictado en cualquier campo de texto.</translation>
 <translation id="8758418656925882523">Habilitar el dictado (escritura por voz)</translation>
 <translation id="7580671184200851182">Reproducir el mismo audio en todos los altavoces (sonido mono)</translation>
+<translation id="8186639008852027301">Tocar un sonido como indicador cuando al iniciar</translation>
 <translation id="1189418886587279221">Permite habilitar las funciones de accesibilidad para que tu dispositivo sea más fácil de usar.</translation>
 <translation id="48704129375571883">Agregar funciones adicionales</translation>
 <translation id="7230787553283372882">Personaliza el tamaño del texto</translation>
@@ -1541,6 +1544,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2154484045852737596">Editar tarjeta</translation>
 <translation id="5087580092889165836">Agregar tarjeta</translation>
 <translation id="7284555534810614828">Grabar la tarjeta para utilizar Brave Pay</translation>
+<translation id="6281511959351052816">Guardar tarjetas para usar en Brave Pay</translation>
 <translation id="4807098396393229769">Nombre en la tarjeta</translation>
 <translation id="2612676031748830579">Número de tarjeta</translation>
 <translation id="869891660844655955">Fecha de vencimiento</translation>
@@ -1980,8 +1984,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5282733140964383898">Si habilitas la opción "No realizar seguimiento", se incluirá una solicitud con el tráfico de navegación. Los efectos dependerán de si algún sitio web responde a dicha solicitud y de cómo se interpreta. Por ejemplo, algunos sitios web pueden responder a la solicitud a través de la publicación de anuncios que no se basan en los sitios web que visitaste. Muchos sitios web continuarán recopilando y usando tus datos de navegación para, por ejemplo, mejorar la seguridad, generar estadísticas para informes y ofrecer contenido, servicios, anuncios y recomendaciones. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Habilita el acceso verificado.</translation>
 <translation id="5557991081552967863">Mantener el Wi-Fi encendido durante la suspensión</translation>
-<translation id="8562084399541316921">Seguir leyendo</translation>
-<translation id="6201926614538916789">Mira en la Bravebook los sitios web que tengas en dispositivos móviles</translation>
 <translation id="1521442365706402292">Gestionar certificados</translation>
 <translation id="7075625805486468288">Administrar la configuración y los certificados HTTPS/SSL</translation>
 <translation id="8871974300055371298">Configuración de contenido</translation>
@@ -1992,6 +1994,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
 <translation id="3407837288045706722">Para obtener más opciones de configuración relacionadas con la privacidad, la seguridad y la recopilación de datos, visita <ph name="BEGIN_LINK"/>Sincronización y personalización<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Para obtener más opciones de configuración relacionadas con la privacidad, la seguridad y la recopilación de datos, visita <ph name="BEGIN_LINK"/>Sincronización y servicios<ph name="END_LINK"/></translation>
+<translation id="6438234780621650381">Reestablecer parámetros</translation>
 <translation id="5293170712604732402">Permite restaurar la configuración a los valores predeterminados originales</translation>
 <translation id="892706138619340876">Algunas opciones de configuración se restablecieron</translation>
 <translation id="2334029754052191847">Brave detectó que otro programa dañó algunas opciones de configuración, por lo que la restableció a los valores predeterminados.</translation>
@@ -2040,6 +2043,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2089795179672254991">Preguntarme cuando un sitio desee ver el texto y las imágenes copiados en el portapapeles (recomendado)</translation>
 <translation id="16815041330799488">No permitir que los sitios vean el texto ni las imágenes copiados en el portapapeles</translation>
 <translation id="3668823961463113931">Controladores</translation>
+<translation id="5646376287012673985">Ubicación</translation>
 <translation id="3227137524299004712">Micrófono</translation>
 <translation id="2482878487686419369">Notificaciones</translation>
 <translation id="9219103736887031265">Imágenes</translation>

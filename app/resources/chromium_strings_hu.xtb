@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">A Brave szerzői</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> – A Brave szerzői. Minden jog fenntartva.</translation>
 <translation id="2310890394934209120">A Brave OS létrejöttéhez további <ph name="BEGIN_LINK_CROS_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_CROS_OSS"/> is hozzájárultak.</translation>
+<translation id="8160794320557846790">A Brave OS létrejöttéhez egyéb <ph name="BEGIN_LINK_CROS_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_CROS_OSS"/> is hozzájárultak, ahogyan a <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (béta)<ph name="END_LINK_LINUX_OSS"/> létrejöttéhez is.</translation>
 <translation id="5019879183386042809">Legyen a Brave az alapértelmezett böngészőm</translation>
 <translation id="5063987220091207247">A Brave OS nem tudja megnyitni ezt az oldalt.</translation>
 <translation id="4065288863231444640">A Brave futhat a háttérben</translation>
