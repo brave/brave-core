@@ -84,6 +84,7 @@ ContentSite PublisherInfoToContentSite(
   content_site.url = publisher_info.url;
   content_site.provider = publisher_info.provider;
   content_site.favicon_url = publisher_info.favicon_url;
+  content_site.id = publisher_info.id;
   return content_site;
 }
 
@@ -409,6 +410,10 @@ base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
 
 void RewardsServiceImpl::ExcludePublisher(const std::string publisherKey) const {
   ledger_->SetPublisherExclude(publisherKey, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
+}
+
+void RewardsServiceImpl::RestorePublishers() {
+  ledger_->RestorePublishers();
 }
 
 void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
