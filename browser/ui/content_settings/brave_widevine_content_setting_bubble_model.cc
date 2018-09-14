@@ -6,6 +6,7 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
@@ -13,6 +14,7 @@
 #include "chrome/browser/plugins/plugin_utils.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/subresource_filter/chrome_subresource_filter_client.h"
+#include "chrome/browser/ui/webui/components_ui.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
@@ -53,6 +55,7 @@ void BraveWidevineContentSettingPluginBubbleModel::RunPluginsOnPage() {
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   prefs->SetBoolean(kWidevineOptedIn, true);
   RegisterWidevineCdmComponent(g_brave_browser_process->component_updater());
+  ComponentsUI::OnDemandUpdate(widevine_extension_id);
   ChromeSubresourceFilterClient::FromWebContents(web_contents())
         ->OnReloadRequested();
 }

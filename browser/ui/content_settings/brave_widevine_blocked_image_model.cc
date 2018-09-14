@@ -32,10 +32,12 @@ void BraveWidevineBlockedImageModel::UpdateFromWebContents(
     return;
 
   // If the user alraedy opted in, don't show more UI
+  /*
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   if (prefs->GetBoolean(kWidevineOptedIn)) {
     return;
   }
+  */
 
   // If the URL isn't one that we whitelist as a site that gets UI for
   // Widevine to be installable, then don't show naything.

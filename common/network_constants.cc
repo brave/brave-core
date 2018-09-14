@@ -1,8 +1,6 @@
 #include "brave/common/network_constants.h"
 
-const char kBraveUpdatesExtensionsEndpoint[] = "https://go-updater.brave.com/extensions";
-// For debgugging:
-// const char kBraveUpdatesExtensionsEndpoint[] = "http://localhost:8192/extensions";
+const char kBraveUpdatesExtensionsEndpoint[] = "http://localhost:8192/extensions";
 
 const char kEmptyDataURI[] = "data:application/javascript;base64,MA==";
 const char kJSDataURLPrefix[] = "data:application/javascript;base64,";
