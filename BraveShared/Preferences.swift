@@ -38,7 +38,7 @@ extension Preferences {
     /// An entry in the `Preferences`
     ///
     /// `ValueType` defines the type of value that will stored in the UserDefaults object
-    public class Option<ValueType: UserDefaultsEncodable> {
+    public class Option<ValueType: UserDefaultsEncodable & Equatable> {
         /// The list of observers for this option
         private let observers = WeakList<PreferencesObserver>()
         /// The UserDefaults container that you wish to save to
@@ -48,7 +48,23 @@ extension Preferences {
         /// Upon setting this value, UserDefaults will be updated and any observers will be called
         public var value: ValueType {
             didSet {
-                container.set(value, forKey: self.key)
+                if value == oldValue { return }
+                
+                // Check if `ValueType` is something that can be nil
+                if value is ExpressibleByNilLiteral {
+                    // We have to use a weird workaround to determine if it can be placed in the UserDefaults.
+                    // `nil` (NSNull when its bridged to ObjC) can be placed in a dictionary, but not in UserDefaults.
+                    let dictionary = NSMutableDictionary(object: value, forKey: self.key as NSString)
+                    // If the value we pull out of the dictionary is NSNull, we know its nil and should remove it
+                    // from the UserDefaults rather than attempt to set it
+                    if let value = dictionary[self.key], value is NSNull {
+                        container.removeObject(forKey: self.key)
+                    } else {
+                        container.set(value, forKey: self.key)
+                    }
+                } else {
+                    container.set(value, forKey: self.key)
+                }
                 container.synchronize()
                 
                 let key = self.key
