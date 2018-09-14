@@ -29,6 +29,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profi
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK_RECOMMENDED},
     {"appearanceSettingsBraveTheme",
       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
+    {"appearanceSettingsLocationBarIsWide",
+      IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));

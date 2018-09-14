@@ -5,12 +5,8 @@
 (function() {
 'use strict';
 
-/**
- * 'settings-brave-appearance-page' is the settings page containing brave's
- * appearance settings.
- */
 Polymer({
-  is: 'settings-brave-appearance-page',
+  is: 'settings-brave-appearance-theme',
 
   properties: {
     braveThemeTypes_: {
@@ -53,5 +49,13 @@ Polymer({
   onBraveThemeTypeChange_: function() {
     this.browserProxy_.setBraveThemeType(this.$.braveThemeType.value);
   },
+});
+
+/**
+ * 'settings-brave-appearance-toolbar' is the settings page area containing
+ * brave's appearance settings related to the toolbar.
+ */
+Polymer({
+  is: 'settings-brave-appearance-toolbar',
 });
 })();
