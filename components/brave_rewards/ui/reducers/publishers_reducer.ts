@@ -20,6 +20,9 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       }
       chrome.send('excludePublisher', [action.payload.publisherKey])
       break
+    case types.ON_RESTORE_PUBLISHERS:
+      chrome.send('restorePublishers', [])
+      break
   }
 
   return state

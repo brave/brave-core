@@ -24,6 +24,7 @@ namespace brave_rewards {
     favicon_url = properties.favicon_url;
     url = properties.url;
     provider = properties.provider;
+    id = properties.id;
   }
 
 }  // namespace brave_rewards
