@@ -186,7 +186,7 @@ PrivateSearch with DuckDuckGo</message>
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Ads</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by seeing ads on Brave. Ads are matched from machine learning and the data temporarily present in your browser without tracking your information or sending it outside.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Brave Contribute</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Brave Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">A simple way to support content creators. Set monthly allowance and browse normally. Your favorite sites (content sites only) receive your contributions automatically. You can exclude sites from funding here.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly budget</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
@@ -244,7 +244,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">No action required. Just collect tokens. Your data is safe with our Shields.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Brave Ads</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Set budget and browse normally. Your favorite sites get paid automatically.</message>
-      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Brave Contribute</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Brave Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="">Earn tokens for viewing privacy-respecting ads, and pay it forward by supporting content creators you love!</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_OPT_IN_TEXT" desc="">Yes, I'm In!</message>
@@ -256,7 +256,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_CLAIM" desc="">Claim</message>
       <message name="IDS_BRAVE_UI_CLOSE_BALANCE" desc="">Closing Balance</message>
       <message name="IDS_BRAVE_UI_CONTRIBUTE" desc="">Contribute</message>
-      <message name="IDS_BRAVE_UI_CONTRIBUTE_ALLOCATION" desc="">Brave Contribute Allocation</message>
+      <message name="IDS_BRAVE_UI_CONTRIBUTE_ALLOCATION" desc="">Brave Auto-Contribute Allocation</message>
       <message name="IDS_BRAVE_UI_COPY" desc="">Copy</message>
       <message name="IDS_BRAVE_UI_CURRENT_DONATION" desc="">You’re currently donating {{currentDonation}} BAT to this site every month.</message>
       <message name="IDS_BRAVE_UI_DATE" desc="">Date</message>
@@ -309,7 +309,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
       <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Brave Contribute and the recurring donations, these payments are skipped for the period.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Brave Auto-Contribute and the recurring donations, these payments are skipped for the period.</message>
       <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
       <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART" desc="">Ready to take active part in the change?</message>
@@ -328,7 +328,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Keep this anonymized recovery key for your Brave wallet in the safe place in case you lose access to this browser. Your funds are safe as long as you keep this recovery key either on a paper or in a device with preferably no internet connection.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">Thanks for stopping by. We joined Brave’s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">Your donation is much appreciated and it encourages us to continue to improve our content.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Brave Contribute</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Brave Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Your Attention Scor</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1" desc="">You’re currently supporting</message>
@@ -367,7 +367,7 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both Brave Ads and Brave Contribute. You can always opt out of each at any time.</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both Brave Ads and Brave Auto-Contribute. You can always opt out of each at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Turn on Rewards</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
