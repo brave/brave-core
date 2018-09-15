@@ -6,6 +6,7 @@
 
 #include "brave/browser/net/url_context.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
+#include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/resource_request_info.h"
@@ -19,6 +20,8 @@ namespace {
 
 int kRenderProcessId = 1;
 int kRenderFrameId = 2;
+
+}  // namespace
 
 class BraveTorNetworkDelegateHelperTest: public testing::Test {
  public:
@@ -72,5 +75,3 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
 // TODO: TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {}
 // have to conquer kProfileUsingTor registration in TestingProfile
 // and prevent TorLauncherFactory launching with TorProfileServiceImpl
-
-}  // namespace

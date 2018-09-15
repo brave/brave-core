@@ -7,14 +7,11 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_task_runner_handle.h"
-#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
-#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -26,8 +23,6 @@
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/sync_preferences/pref_service_mock_factory.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "content/public/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -35,64 +30,6 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
-
-class UnittestProfileManager : public ProfileManagerWithoutInit {
- public:
-  explicit UnittestProfileManager(const base::FilePath& user_data_dir)
-      : ProfileManagerWithoutInit(user_data_dir) {}
-  ~UnittestProfileManager() override = default;
-
- protected:
-  Profile* CreateProfileHelper(const base::FilePath& path) override {
-    if (!base::PathExists(path)) {
-      if (!base::CreateDirectory(path))
-        return nullptr;
-    }
-    if (path == BraveProfileManager::GetTorProfilePath())
-      return CreateTorProfile(path, nullptr);
-    else
-      return new TestingProfile(path, nullptr);
-  }
-
-  Profile* CreateProfileAsyncHelper(const base::FilePath& path,
-                                    Delegate* delegate) override {
-    // ThreadTaskRunnerHandle::Get() is TestingProfile's "async" IOTaskRunner
-    // (ref. TestingProfile::GetIOTaskRunner()).
-    base::ThreadTaskRunnerHandle::Get()->PostTask(
-        FROM_HERE,
-        base::BindOnce(base::IgnoreResult(&base::CreateDirectory), path));
-
-    if (path == BraveProfileManager::GetTorProfilePath())
-      return CreateTorProfile(path, this);
-    else
-      return new TestingProfile(path, this);
-  }
-
-   void InitProfileUserPrefs(Profile* profile) override {
-     if (profile->GetPath() == BraveProfileManager::GetTorProfilePath()) {
-       BraveProfileManager::InitTorProfileUserPrefs(profile);
-     } else {
-       ProfileManager::InitProfileUserPrefs(profile);
-     }
-   };
-
- private:
-   Profile* CreateTorProfile(const base::FilePath& path,
-                             Delegate* delegate) {
-     TestingProfile::Builder profile_builder;
-     sync_preferences::PrefServiceMockFactory factory;
-     auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
-     std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs(
-        factory.CreateSyncable(registry.get()));
-     RegisterUserProfilePrefs(registry.get());
-     tor::TorProfileService::RegisterProfilePrefs(registry.get());
-     profile_builder.SetPrefService(std::move(prefs));
-     profile_builder.SetPath(path);
-     profile_builder.SetDelegate(delegate);
-     std::unique_ptr<TestingProfile> profile = profile_builder.Build();
-     return profile.release();
-   }
-};
 
 MATCHER(NotFail, "Profile creation failure status is not reported.") {
   return arg == Profile::CREATE_STATUS_CREATED ||
@@ -118,7 +55,7 @@ class BraveProfileManagerTest : public testing::Test {
     // Create a new temporary directory, and store the path
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     TestingBrowserProcess::GetGlobal()->SetProfileManager(
-        new UnittestProfileManager(temp_dir_.GetPath()));
+        new TorUnittestProfileManager(temp_dir_.GetPath()));
 
   }
 
