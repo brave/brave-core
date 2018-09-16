@@ -49,7 +49,7 @@ bool LedgerImpl::CreateWallet() {
 
   initializing_ = true;
   if (initialized_) {
-    OnWalletInitialized(ledger::Result::ERROR);
+    OnWalletInitialized(ledger::Result::LEDGER_ERROR);
     return false;
   }
   bat_client_->registerPersona();
@@ -173,7 +173,7 @@ void LedgerImpl::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
 
 void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
                                         const std::string& data) {
-  if (result == ledger::Result::OK) {
+  if (result == ledger::Result::LEDGER_OK) {
     if (!bat_client_->loadState(data)) {
       result = ledger::Result::INVALID_LEDGER_STATE;
     }
@@ -188,7 +188,7 @@ void LedgerImpl::LoadPublisherState(ledger::LedgerCallbackHandler* handler) {
 
 void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
                                         const std::string& data) {
-  if (result == ledger::Result::OK) {
+  if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publishers_->loadState(data)) {
       result = ledger::Result::INVALID_PUBLISHER_STATE;
     }
@@ -217,7 +217,7 @@ void LedgerImpl::LoadPublisherList(ledger::LedgerCallbackHandler* handler) {
 
 void LedgerImpl::OnPublisherListLoaded(ledger::Result result,
                                        const std::string& data) {
-  if (result == ledger::Result::OK) {
+  if (result == ledger::Result::LEDGER_OK) {
     bat_publishers_->loadPublisherList(data);
   }
 
@@ -232,7 +232,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   initializing_ = false;
   ledger_client_->OnWalletInitialized(result);
 
-  if (result == ledger::Result::OK) {
+  if (result == ledger::Result::LEDGER_OK) {
     initialized_ = true;
     RefreshPublishersList(false);
   }
@@ -405,7 +405,7 @@ void LedgerImpl::Reconcile() {
 void LedgerImpl::OnReconcileComplete(ledger::Result result,
                                     const std::string& viewing_id) {
   ledger_client_->OnReconcileComplete(result, viewing_id);
-  if (result != ledger::Result::OK) {
+  if (result != ledger::Result::LEDGER_OK) {
     // error handling
     return;
   }
@@ -426,7 +426,7 @@ void LedgerImpl::OnWalletProperties(ledger::Result result,
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
   std::unique_ptr<ledger::WalletInfo> info;
 
-  if (result == ledger::Result::OK) {
+  if (result == ledger::Result::LEDGER_OK) {
     info.reset(new ledger::WalletInfo);
     info->altcurrency_ = properties.altcurrency_;
     info->probi_ = properties.probi_;
@@ -505,8 +505,8 @@ void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance, const st
     ledgerGrants.push_back(tempGrant);
   }
 
-  ledger_client_->OnRecoverWallet(result ? ledger::Result::ERROR :
-                                          ledger::Result::OK,
+  ledger_client_->OnRecoverWallet(result ? ledger::Result::LEDGER_ERROR :
+                                          ledger::Result::LEDGER_OK,
                                   balance,
                                   ledgerGrants);
 }
@@ -607,7 +607,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
 }
 
 void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
-  bool retryAfterError = (ledger::Result::OK == result) ? false : true;
+  bool retryAfterError = (ledger::Result::LEDGER_OK == result) ? false : true;
   bat_publishers_->OnPublishersListSaved(result);
   RefreshPublishersList(retryAfterError);
 }

@@ -1823,8 +1823,9 @@ static bool ignore_ = false;
             iter = data.find("vod");
             if (iter != data.end()) {
               std::string idAddition(iter->second);
-              std::remove(idAddition.begin(), idAddition.end(), 'v');
+              auto new_end = std::remove(idAddition.begin(), idAddition.end(), 'v');
               id += "_vod_" + idAddition;
+              [&new_end] {}(); /*ignore [[nodiscard]]*/
             }
 
             return id;

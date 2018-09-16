@@ -98,7 +98,7 @@ class LedgerImpl : public ledger::Ledger,
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler);
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler);
 
-  void OnWalletInitialized(ledger::Result);
+  void OnWalletInitialized(ledger::Result result);
 
   void OnWalletProperties(ledger::Result result,
                           const braveledger_bat_helper::WALLET_PROPERTIES_ST&);

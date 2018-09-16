@@ -12,8 +12,8 @@
 namespace ledger {
 
 LEDGER_EXPORT enum Result {
-  OK = 0,
-  ERROR = 1,
+  LEDGER_OK = 0,
+  LEDGER_ERROR = 1,
   NO_PUBLISHER_STATE = 2,
   NO_LEDGER_STATE = 3,
   INVALID_PUBLISHER_STATE = 4,
