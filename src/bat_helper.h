@@ -172,6 +172,7 @@ namespace braveledger_bat_helper {
     std::string altcurrency_;
     std::string probi_;
     double balance_;
+    double fee_amount_;
     std::map<std::string, double> rates_;
     std::vector<double> parameters_choices_;
     std::vector<double> parameters_range_;
@@ -199,6 +200,7 @@ namespace braveledger_bat_helper {
     std::string fee_currency_;
     std::string settings_= AD_FREE_SETTINGS;
     double fee_amount_ = .0;
+    bool user_changed_fee_ = false;
     unsigned int days_ = 0u;
     std::vector<TRANSACTION_ST> transactions_;
     std::vector<BALLOT_ST> ballots_;

@@ -170,10 +170,19 @@ void BatClient::registerPersonaCallback(bool result,
   saveState();
 }
 
+bool BatClient::didUserChangeContributionAmount() const {
+  return state_->user_changed_fee_;
+}
+
 void BatClient::setContributionAmount(const double& amount) {
   state_->fee_amount_ = amount;
   saveState();
 }
+
+void BatClient::setUserChangedContribution() {
+    state_->user_changed_fee_ = true;
+    saveState();
+  }
 
 double BatClient::getContributionAmount() const {
   return state_->fee_amount_;

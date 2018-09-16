@@ -20,6 +20,7 @@ LEDGER_EXPORT struct WalletInfo {
   std::string altcurrency_;
   std::string probi_;
   double balance_;
+  double fee_amount_;
   std::map<std::string, double> rates_;
   std::vector<double> parameters_choices_;
   std::vector<double> parameters_range_;

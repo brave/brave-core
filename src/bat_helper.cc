@@ -507,6 +507,7 @@ static bool ignore_ = false;
     reconcileStamp_(0),
     settings_(AD_FREE_SETTINGS),
     fee_amount_(0),
+    user_changed_fee_(false),
     days_(0),
     auto_contribute_(true),
     rewards_enabled_(true) {}
@@ -523,6 +524,7 @@ static bool ignore_ = false;
     fee_currency_ = other.fee_currency_;
     settings_ = other.settings_;
     fee_amount_ = other.fee_amount_;
+    user_changed_fee_ = other.user_changed_fee_;
     days_ = other.days_;
     transactions_ = other.transactions_;
     ballots_ = other.ballots_;
@@ -553,6 +555,7 @@ static bool ignore_ = false;
         d.HasMember("fee_currency") && d["fee_currency"].IsString() &&
         d.HasMember("settings") && d["settings"].IsString() &&
         d.HasMember("fee_amount") && d["fee_amount"].IsDouble() &&
+        d.HasMember("user_changed_fee") && d["user_changed_fee"].IsBool() &&
         d.HasMember("days") && d["days"].IsUint() &&
         d.HasMember("transactions") && d["transactions"].IsArray() &&
         d.HasMember("ballots") && d["ballots"].IsArray() &&
@@ -583,6 +586,7 @@ static bool ignore_ = false;
       fee_currency_ = d["fee_currency"].GetString();
       settings_ = d["settings"].GetString();
       fee_amount_ = d["fee_amount"].GetDouble();
+      user_changed_fee_ = d["user_changed_fee"].GetBool();
       days_ = d["days"].GetUint();
       auto_contribute_ = d["auto_contribute"].GetBool();
       rewards_enabled_ = d["rewards_enabled"].GetBool();
@@ -659,6 +663,9 @@ static bool ignore_ = false;
 
     writer.String("fee_amount");
     writer.Double(data.fee_amount_);
+
+    writer.String("user_changed_fee");
+    writer.Bool(data.user_changed_fee_);
 
     writer.String("days");
     writer.Uint(data.days_);
@@ -916,6 +923,7 @@ static bool ignore_ = false;
     probi_ = properties.probi_;
     balance_ = properties.balance_;
     rates_ = properties.rates_;
+    fee_amount_ = properties.fee_amount_;
     parameters_choices_ = properties.parameters_choices_;
     parameters_range_ = properties.parameters_range_;
     parameters_days_ = properties.parameters_days_;
@@ -964,6 +972,7 @@ static bool ignore_ = false;
       }
 
       parameters_days_ = d["parameters"]["adFree"]["days"].GetUint();
+      fee_amount_ = d["parameters"]["adFree"]["fee"]["BAT"].GetDouble();
 
       if (d.HasMember("grants") && d["grants"].IsArray()) {
         for (auto &i : d["grants"].GetArray()) {

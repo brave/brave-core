@@ -67,6 +67,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetPublisherAllowNonVerified(bool allow) override;
   void SetPublisherAllowVideos(bool allow) override;
   void SetContributionAmount(double amount) override;
+  void SetUserChangedContribution() override;
   void SetAutoContribute(bool enabled) override;
   void SetBalanceReport(ledger::PUBLISHER_MONTH month,
                         int year,
