@@ -15,6 +15,12 @@ private let ShowSearchSuggestionsOptIn = "search.suggestions.showOptIn"
 private let ShowSearchSuggestions = "search.suggestions.show"
 private let customSearchEnginesFileName = "customEngines.plist"
 
+// BRAVE TODO: Move to newer Preferences class(#259)
+enum DefaultEngineType: String {
+    case standard = "search.default.name"
+    case privateMode = "search.defaultprivate.name"
+}
+
 /**
  * Manage a set of Open Search engines.
  *
@@ -24,6 +30,8 @@ private let customSearchEnginesFileName = "customEngines.plist"
  *
  * Two additional bits of information are maintained: whether the user should be shown "opt-in to
  * search suggestions" UI, and whether search suggestions are enabled.
+ *
+ * Users can set standard tab default search engine and private tab search engine.
  *
  * Consumers will almost always use `defaultEngine` if they want a single search engine, and
  * `quickSearchEngines()` if they want a list of enabled quick search engines (possibly empty,
@@ -45,24 +53,38 @@ class SearchEngines {
         self.disabledEngineNames = getDisabledEngineNames()
         self.orderedEngines = getOrderedEngines()
     }
-
-    var defaultEngine: OpenSearchEngine {
-        get {
+    
+    /// If no engine type is specified this method returns search engine for regular browsing.
+    func defaultEngine(forType type: DefaultEngineType? = nil) -> OpenSearchEngine {
+        let engineType = type ?? (PrivateBrowsingManager.shared.isPrivateBrowsing ? .privateMode : .standard)
+            
+        if let name = prefs.stringForKey(engineType.rawValue),
+            let defaultEngine = self.orderedEngines.first(where: { $0.shortName == name }) {
+            return defaultEngine
+        } else {
             return self.orderedEngines[0]
-        }
-
-        set(defaultEngine) {
-            // The default engine is always enabled.
-            self.enableEngine(defaultEngine)
-            // The default engine is always first in the list.
-            var orderedEngines = self.orderedEngines.filter { engine in engine.shortName != defaultEngine.shortName }
-            orderedEngines.insert(defaultEngine, at: 0)
-            self.orderedEngines = orderedEngines
         }
     }
 
-    func isEngineDefault(_ engine: OpenSearchEngine) -> Bool {
-        return defaultEngine.shortName == engine.shortName
+    func setDefaultEngine(_ engine: String, forType type: DefaultEngineType) {
+        prefs.setString(engine, forKey: type.rawValue)
+        
+        // The default engine is always enabled.
+        enableEngine(defaultEngine(forType: type))
+        
+        // When re-sorting engines only look at default search for standard browsing.
+        if type == .standard {
+            // The default engine is always first in the list.
+            var newlyOrderedEngines =
+                orderedEngines.filter { engine in engine.shortName != defaultEngine(forType: type).shortName }
+            newlyOrderedEngines.insert(defaultEngine(forType: type), at: 0)
+            orderedEngines = newlyOrderedEngines
+        }
+            
+    }
+
+    func isEngineDefault(_ engine: OpenSearchEngine, type: DefaultEngineType? = nil) -> Bool {
+        return defaultEngine(forType: type).shortName == engine.shortName
     }
 
     // The keys of this dictionary are used as a set.

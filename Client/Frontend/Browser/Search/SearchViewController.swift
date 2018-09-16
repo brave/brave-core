@@ -154,7 +154,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             // Show the default search engine first.
             if !tabType.isPrivate {
                 let ua = SearchViewController.userAgent ?? "FxSearch"
-                suggestClient = SearchSuggestClient(searchEngine: searchEngines.defaultEngine, userAgent: ua)
+                suggestClient = SearchSuggestClient(searchEngine: searchEngines.defaultEngine(), userAgent: ua)
             }
 
             // Reload the footer list of search engines.
@@ -168,7 +168,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         // If we're not showing search suggestions, the default search engine won't be visible
         // at the top of the table. Show it with the others in the bottom search bar.
         if tabType.isPrivate || !searchEngines.shouldShowSearchSuggestions {
-            engines?.insert(searchEngines.defaultEngine, at: 0)
+            engines?.insert(searchEngines.defaultEngine(), at: 0)
         }
 
         return engines!
@@ -203,7 +203,9 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         searchButton.imageView?.contentMode = .center
         searchButton.layer.backgroundColor = SearchViewControllerUX.EngineButtonBackgroundColor
         searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
-        searchButton.accessibilityLabel = String(format: NSLocalizedString("Search Settings", tableName: "Search", comment: "Label for search settings button."))
+        searchButton.accessibilityLabel =
+            String(format: NSLocalizedString("Search Settings", tableName: "Search",
+                                             comment: "Label for search settings button."))
 
         searchButton.imageView?.snp.makeConstraints { make in
             make.width.height.equalTo(SearchViewControllerUX.SearchImageWidth)
@@ -377,9 +379,9 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch SearchListSection(rawValue: indexPath.section)! {
         case .searchSuggestions:
-            suggestionCell.imageView?.image = searchEngines.defaultEngine.image
+            suggestionCell.imageView?.image = searchEngines.defaultEngine().image
             suggestionCell.imageView?.isAccessibilityElement = true
-            suggestionCell.imageView?.accessibilityLabel = String(format: NSLocalizedString("Search suggestions from %@", tableName: "Search", comment: "Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google"), searchEngines.defaultEngine.shortName)
+            suggestionCell.imageView?.accessibilityLabel = String(format: NSLocalizedString("Search suggestions from %@", tableName: "Search", comment: "Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google"), searchEngines.defaultEngine().shortName)
             return suggestionCell
 
         case .bookmarksAndHistory:
@@ -492,7 +494,7 @@ extension SearchViewController {
 extension SearchViewController: SuggestionCellDelegate {
     fileprivate func suggestionCell(_ suggestionCell: SuggestionCell, didSelectSuggestion suggestion: String) {
         // Assume that only the default search engine can provide search suggestions.
-        let engine = searchEngines.defaultEngine
+        let engine = searchEngines.defaultEngine()
 
         var url = URIFixup.getURL(suggestion)
         if url == nil {
