@@ -88,7 +88,11 @@ public extension Strings {
     public static let SyncUnableCreateGroup = NSLocalizedString("Unable to create new sync group.", comment: "Description on popup when setting up a sync group fails")
     
     public static let ShowTour = NSLocalizedString("Show Tour", comment: "Show the on-boarding screen again from the settings")
-    public static let DefaultSearchEngine = NSLocalizedString("Settings.Open.Default.Search", value: "Default Search Engine", comment: "Open search section of settings")
+    public static let CurrentlyUsedSearchEngines = NSLocalizedString("Settings.Open.Default.SearchEngineForMode", value: "Currently used search engines", comment: "Currently usedd search engines section name.")
+    public static let QuickSearchEngines = NSLocalizedString("Quick-Search Engines", comment: "Title for quick-search engines settings section.")
+    public static let StandardTabSearch = NSLocalizedString("Standard Tab", comment: "Open search section of settings")
+    public static let PrivateTabSearch = NSLocalizedString("Private Tab", comment: "Default engine for private search.")
+    public static let SearchEngines = NSLocalizedString("Settings.Open.Default.Search", value: "Search Engines", comment: "Search engines section of settings")
     public static let Logins = NSLocalizedString("Logins", comment: "Label used as an item in Settings. When touched, the user will be navigated to the Logins/Password manager.")
     public static let Settings = NSLocalizedString("Settings", comment: "")
     public static let OtherSettings = NSLocalizedString("Other Settings", comment: "Other settings sectiont title")

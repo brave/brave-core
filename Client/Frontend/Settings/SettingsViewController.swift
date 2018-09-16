@@ -136,8 +136,11 @@ class SettingsViewController: TableViewController {
         var general = Section(
             header: .title(Strings.SettingsGeneralSectionTitle),
             rows: [
-                Row(text: Strings.DefaultSearchEngine, selection: {
-                    // Show default engines
+                Row(text: Strings.SearchEngines, selection: {
+                    let viewController = SearchSettingsTableViewController()
+                    viewController.model = self.profile.searchEngines
+                    viewController.profile = self.profile
+                    self.navigationController?.pushViewController(viewController, animated: true)
                 }, accessory: .disclosureIndicator),
                 BoolRow(title: Strings.Save_Logins, option: Preferences.General.saveLogins),
                 BoolRow(title: Strings.Block_Popups, option: Preferences.General.blockPopups),
