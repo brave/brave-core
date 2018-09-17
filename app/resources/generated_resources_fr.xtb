@@ -1977,8 +1977,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="5282733140964383898">Si vous activez la fonctionnalité "Interdire le suivi", une demande sera incluse dans le trafic de navigation. Le résultat dépend de l'obtention d'une réponse de la part du site Web, ainsi que de la façon dont celle-ci est interprétée. Par exemple, certains sites Web peuvent répondre à cette demande en affichant des annonces qui ne sont pas déterminées en fonction des autres sites Web que vous avez consultés. Toutefois, nombre d'entre eux recueillent et utilisent vos données de navigation pour, par exemple, améliorer la sécurité, ou pour afficher du contenu, des services, des annonces et des recommandations, ou encore pour générer des rapports statistiques. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Activer l'accès validé</translation>
 <translation id="5557991081552967863">Wi-Fi actif en veille</translation>
-<translation id="8562084399541316921">Poursuivre la lecture</translation>
-<translation id="6201926614538916789">Poursuivre la visite des sites consultés sur mobile, sur votre Bravebook</translation>
 <translation id="1521442365706402292">Gérer les certificats</translation>
 <translation id="7075625805486468288">Gérer les certificats et paramètres HTTPS/SSL</translation>
 <translation id="8871974300055371298">Paramètres du contenu</translation>

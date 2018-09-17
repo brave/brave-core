@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">หยุดการโหลดหน้านี้ชั่วคราวแล้ว</translation>
 <translation id="6921709132208495314">หยุดใช้อินเทอร์เน็ตในหน้านี้</translation>
 <translation id="2724841811573117416">บันทึก WebRTC</translation>
+<translation id="1969654639948595766">บันทึกข้อความ WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">บันทึกเหตุการณ์ WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">บันทึก WebRTC ที่จับภาพ <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">ไฟล์ในเครื่อง:</translation>
 <translation id="2071393345806050157">ไม่มีไฟล์บันทึกในเครื่อง</translation>
 <translation id="6628328486509726751">อัปโหลด <ph name="WEBRTC_LOG_UPLOAD_TIME"/> แล้ว</translation>
+<translation id="6458701200018867744">อัปเดตไม่สำเร็จ (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>)</translation>
 <translation id="5946591249682680882">รหัสรายงาน <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">ข้อบกพร่องของไฟล์</translation>
+<translation id="3650845953328929506">กำลังรออัปโหลดบันทึก</translation>
+<translation id="1818913467757368489">กำลังอัปโหลดบันทึก</translation>
 <translation id="1188807932851744811">ยังไม่อัปโหลดบันทึก</translation>
+<translation id="4688036121858134881">รหัสบันทึกในเครื่อง: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/></translation>
+<translation id="7497981768003291373">คุณไม่มีบันทึกข้อความ WebRTC ที่จับภาพเมื่อเร็วๆ นี้</translation>
+<translation id="3954953195017194676">คุณไม่มีบันทึกเหตุการณ์ WebRTC ที่จับภาพเมื่อเร็วๆ นี้</translation>
 <translation id="2076269580855484719">ซ่อนปลั๊กอินนี้</translation>
 <translation id="2129825002735785149">อัปเดตปลั๊กอิน</translation>
 <translation id="9088234649737575428">นโยบายองค์กรบล็อก <ph name="PLUGIN_NAME"/> ไว้</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">พิมพ์ URL ที่ถูกต้อง</translation>
 <translation id="2806891468525657116">มีทางลัดนี้อยู่แล้ว</translation>
 <translation id="394183848452296464">สร้างทางลัดไม่ได้</translation>
+<translation id="329703603001918157">แก้ไขทางลัดไม่ได้</translation>
+<translation id="6732900235521116609">นำทางลัดออกไม่ได้</translation>
 <translation id="7109543803214225826">นำทางลัดออกแล้ว</translation>
 <translation id="8017679124341497925">แก้ไขทางลัดแล้ว</translation>
 <translation id="1174073918202301297">เพิ่มทางลัดแล้ว</translation>
@@ -1440,6 +1450,7 @@
 <translation id="1800308196794859773">ส่งเสียงของคุณไปยัง Brave Software เพื่อให้พิมพ์ตามคำบอกในช่องข้อความต่างๆ</translation>
 <translation id="8758418656925882523">เปิดใช้การพิมพ์ตามคำบอก (พูดเพื่อพิมพ์)</translation>
 <translation id="7580671184200851182">เล่นเสียงเหมือนกันผ่านลำโพงทุกตัว (เสียงโมโน)</translation>
+<translation id="8186639008852027301">เล่นตัวบ่งชี้เสียงขณะที่เริ่มใช้</translation>
 <translation id="1189418886587279221">เปิดใช้งานฟีเจอร์การเข้าถึงเพื่อให้อุปกรณ์ใช้งานง่ายยิ่งขึ้น</translation>
 <translation id="48704129375571883">เพิ่มฟีเจอร์</translation>
 <translation id="7230787553283372882">กำหนดขนาดข้อความของคุณ</translation>
@@ -1537,6 +1548,10 @@
 <translation id="5029568752722684782">ล้างสำเนา</translation>
 <translation id="2154484045852737596">แก้ไขบัตร</translation>
 <translation id="5087580092889165836">เพิ่มบัตร</translation>
+<translation id="7284555534810614828">บันทึกบัตรเพื่อใช้ Brave Software Pay</translation>
+<translation id="6281511959351052816">บันทึกบัตรเพื่อใช้ Brave Software Pay</translation>
+<translation id="1904518222538904133">มีบัตร 1 ใบที่ใช้ได้ในอุปกรณ์นี้เท่านั้น</translation>
+<translation id="8065485338434000013">บัตรบางใบจะใช้ได้ในอุปกรณ์นี้เท่านั้น</translation>
 <translation id="4807098396393229769">ชื่อบนบัตร</translation>
 <translation id="2612676031748830579">หมายเลขบัตร</translation>
 <translation id="869891660844655955">วันหมดอายุ</translation>
@@ -1976,8 +1991,6 @@
 <translation id="5282733140964383898">การเปิดใช้ "ไม่ติดตาม" จะทำให้คำขอหนึ่งๆ ไปรวมอยู่กับการรับส่งข้อมูลในการท่องเว็บของคุณ ผลที่จะเกิดขึ้นขึ้นอยู่กับว่าเว็บไซต์ตอบสนองต่อคำขอหรือไม่และมีการตีความคำขอนั้นอย่างไร ตัวอย่างเช่น บางเว็บไซต์อาจตอบสนองต่อคำขอนี้ด้วยการแสดงโฆษณาที่ไม่ได้อยู่ในเว็บไซต์อื่นๆ ที่คุณเคยเข้าชมให้คุณเห็น เว็บไซต์จำนวนมากจะยังคงเก็บรวบรวมข้อมูลการท่องเว็บของคุณไว้เพื่อใช้ปรับปรุงความปลอดภัย จัดเตรียมเนื้อหา บริการ โฆษณา และคำแนะนำในเว็บไซต์ รวมทั้งเพื่อสร้างสถิติการรายงาน เป็นต้น <ph name="BEGIN_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">เปิดใช้การเข้าถึงที่ได้รับการยืนยัน</translation>
 <translation id="5557991081552967863">ให้ Wi-Fi เปิดอยู่ตลอดระหว่างนอนหลับ</translation>
-<translation id="8562084399541316921">อ่านต่อ</translation>
-<translation id="6201926614538916789">ดูเว็บไซต์จากอุปกรณ์เคลื่อนที่ใน Bravebook ต่อ</translation>
 <translation id="1521442365706402292">จัดการใบรับรอง</translation>
 <translation id="7075625805486468288">จัดการใบรับรอง HTTPS/SSL และการตั้งค่า</translation>
 <translation id="8871974300055371298">การตั้งค่าเนื้อหา</translation>
@@ -2186,6 +2199,7 @@
 <translation id="3422989461909154470">คุณจะจัดการบัญชี Brave Software ทั้งหมดที่ลงชื่อเข้าใช้ไว้จากแอปและเว็บไซต์ต่างๆ ได้ที่นี่</translation>
 <translation id="1987317783729300807">บัญชี</translation>
 <translation id="8418661265246754237">บัญชี Brave Software</translation>
+<translation id="3297951628821704004">นำบัญชีออกจากอุปกรณ์นี้</translation>
 <translation id="1059855432287631118">การลงทะเบียนลายนิ้วมือ</translation>
 <translation id="878068003854005405">มาเริ่มกันเลย วางนิ้วบนเซ็นเซอร์</translation>
 <translation id="7189965711416741966">เพิ่มลายนิ้วมือแล้ว</translation>

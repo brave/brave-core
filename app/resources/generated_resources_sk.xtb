@@ -505,13 +505,21 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3861241522664181545">Stránka bola pozastavená.</translation>
 <translation id="6921709132208495314">Prestať používať dáta na tejto stránke</translation>
 <translation id="2724841811573117416">Denníky WebRTC</translation>
+<translation id="1969654639948595766">Textové denníky WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Denníky udalostí WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Denník WebRTC zaznamenaný <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Miestny súbor:</translation>
 <translation id="2071393345806050157">Žiadny miestny súbor denníka nie je k dispozícii.</translation>
 <translation id="6628328486509726751">Nahrané <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Nepodarilo sa nahrať (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID prehľadu <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Nahlásiť chybu</translation>
+<translation id="3650845953328929506">Čaká sa na nahranie do denníka.</translation>
+<translation id="1818913467757368489">Prebieha nahrávanie do denníka.</translation>
 <translation id="1188807932851744811">Denník nebol nahraný.</translation>
+<translation id="4688036121858134881">Identifikátor miestneho denníka: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Nemáte žiadne nedávno zaznamenané textové denníky WebRTC.</translation>
+<translation id="3954953195017194676">Nemáte žiadne nedávno zaznamenané denníky udalostí WebRTC.</translation>
 <translation id="2076269580855484719">Skryť tento doplnok</translation>
 <translation id="2129825002735785149">Aktualizovať doplnok</translation>
 <translation id="9088234649737575428">Doplnok <ph name="PLUGIN_NAME"/> je blokovaný podnikovými pravidlami</translation>
@@ -556,6 +564,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4416582610654027550">Zadajte platnú webovú adresu</translation>
 <translation id="2806891468525657116">Skratka už existuje</translation>
 <translation id="394183848452296464">Skratka sa nedá vytvoriť</translation>
+<translation id="329703603001918157">Skratka sa nedá upraviť</translation>
+<translation id="6732900235521116609">Skrátka sa nedá odstrániť</translation>
 <translation id="7109543803214225826">Skratka bola odstránená</translation>
 <translation id="8017679124341497925">Skratka bola upravená</translation>
 <translation id="1174073918202301297">Odkaz bol pridaný</translation>
@@ -1440,6 +1450,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1800308196794859773">Odošlite svoj hlas do Googlu a umožnite tak diktovanie do všetkých textových polí.</translation>
 <translation id="8758418656925882523">Povoliť diktovanie (písanie hlasom)</translation>
 <translation id="7580671184200851182">Prehrávajte rovnaký zvuk zo všetkých reproduktorov (monofónny zvuk)</translation>
+<translation id="8186639008852027301">Pri spustení prehrať indikátor zvuku</translation>
 <translation id="1189418886587279221">Povoliť funkcie zjednodušenia prístupu na jednoduchšie používanie zariadenia.</translation>
 <translation id="48704129375571883">Pridať ďalšie funkcie</translation>
 <translation id="7230787553283372882">Prispôsobiť veľkosť textu</translation>
@@ -1537,6 +1548,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5029568752722684782">Vymazať kópiu</translation>
 <translation id="2154484045852737596">Úprava karty</translation>
 <translation id="5087580092889165836">Pridať kartu</translation>
+<translation id="7284555534810614828">Uložiť kartu na používanie služby Brave Software Pay</translation>
+<translation id="6281511959351052816">Uložiť karty na používanie služby Brave Software Pay</translation>
+<translation id="1904518222538904133">1 zo svojich kariet môžete použiť iba v tomto zariadení</translation>
+<translation id="8065485338434000013">Niektoré karty sa dajú použiť iba v tomto zariadení</translation>
 <translation id="4807098396393229769">Meno na karte</translation>
 <translation id="2612676031748830579">Číslo karty</translation>
 <translation id="869891660844655955">Koniec platnosti</translation>
@@ -1976,8 +1991,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5282733140964383898">Ak povolíte možnosť Nesledovať, žiadosť sa zahrnie do údajov prehliadania. Záleží na tom, či webové stránky na túto žiadosť zareagujú a akým spôsobom ju interpretujú. Niektoré webové stránky môžu napríklad na túto žiadosť odpovedať zobrazením reklám, ktoré nie sú založené na iných navštívených webových stránkach. Veľa webových stránok bude aj naďalej zhromažďovať a používať vaše dáta prehliadania – napríklad na zlepšenie zabezpečenia, na poskytovanie obsahu, služieb, reklám a odporúčaní na webových stránkach a na generovanie štatistík. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Povolí overený prístup</translation>
 <translation id="5557991081552967863">Počas spánku ponechať zapnutú sieť Wi‑Fi</translation>
-<translation id="8562084399541316921">Pokračovať v čítaní</translation>
-<translation id="6201926614538916789">Pokračujte v prezeraní webov z mobilu v Bravebooku</translation>
 <translation id="1521442365706402292">Spravovať certifikáty</translation>
 <translation id="7075625805486468288">Správa certifikátov a nastavení HTTPS/SSL</translation>
 <translation id="8871974300055371298">Nastavenia obsahu</translation>
@@ -2186,6 +2199,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3422989461909154470">Tu môžete spravovať všetky účty Brave Software aplikácií a webov, do ktorých ste sa prihlásili.</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="8418661265246754237">Účty Brave Software</translation>
+<translation id="3297951628821704004">Odstrániť účet z tohto zariadenia</translation>
 <translation id="1059855432287631118">Registrácia odtlačku prsta</translation>
 <translation id="878068003854005405">Poďme na to. Položte prst na senzor.</translation>
 <translation id="7189965711416741966">Odtlačok prsta bol pridaný.</translation>

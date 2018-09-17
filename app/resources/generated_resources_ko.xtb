@@ -1974,8 +1974,6 @@
 <translation id="5282733140964383898">'추적 안함'을 사용 설정하면 요청이 탐색 트래픽에 포함됩니다. 웹사이트가 요청에 응답하는지와 요청이 어떻게 해석되는가에 따라 결과가 달라집니다. 예를 들어, 어떤 웹사이트는 사용자의 웹사이트 방문 기록과 관계없는 광고를 표시하는 방식으로 요청에 응답할 수 있습니다. 이 설정을 사용해도 대부분의 웹사이트에서는 보안을 강화하거나 웹사이트에서 콘텐츠, 서비스, 광고 및 추천 정보를 제공하거나 보고서 통계를 생성하는 등의 목적으로 사용자의 인터넷 사용 기록을 수집하고 사용됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">인증 액세스 서비스 사용</translation>
 <translation id="5557991081552967863">절전 모드 중에 Wi-Fi 계속 사용</translation>
-<translation id="8562084399541316921">계속 읽기</translation>
-<translation id="6201926614538916789">Bravebook에서 모바일 사이트 보기 재개</translation>
 <translation id="1521442365706402292">인증서 관리</translation>
 <translation id="7075625805486468288">HTTPS/SSL 인증서 및 설정 관리</translation>
 <translation id="8871974300055371298">콘텐츠 설정</translation>
