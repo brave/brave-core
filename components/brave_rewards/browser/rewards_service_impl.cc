@@ -201,16 +201,30 @@ bool IsMediaLink(const GURL& url,
                                      referrer.spec());
 }
 
+
+//read comment about file pathes at src\base\files\file_path.h
+#if defined(OS_WIN)
+const base::FilePath::StringType kLedger_state(L"ledger_state");
+const base::FilePath::StringType kPublisher_state(L"publisher_state");
+const base::FilePath::StringType kPublisher_info_db(L"publisher_info_db");
+const base::FilePath::StringType kPublishers_list(L"publishers_list");
+#else
+const base::FilePath::StringType kLedger_state("ledger_state");
+const base::FilePath::StringType kPublisher_state("publisher_state");
+const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
+const base::FilePath::StringType kPublishers_list("publishers_list");
+#endif
+
 RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
     profile_(profile),
     ledger_(ledger::Ledger::CreateInstance(this)),
     file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
         {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-    ledger_state_path_(profile_->GetPath().Append("ledger_state")),
-    publisher_state_path_(profile_->GetPath().Append("publisher_state")),
-    publisher_info_db_path_(profile->GetPath().Append("publisher_info_db")),
-    publisher_list_path_(profile->GetPath().Append("publishers_list")),
+    ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
+    publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
+    publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
+    publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
     publisher_info_backend_(new PublisherInfoDatabase(publisher_info_db_path_)),
     next_timer_id_(0) {
 // TODO(bridiver) - production/verbose should

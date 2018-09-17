@@ -28,7 +28,7 @@ struct ContentSite {
   std::string provider;
 };
 
-typedef std::vector<const ContentSite> ContentSiteList;
+typedef std::vector<ContentSite> ContentSiteList;
 
 }  // namespace brave_rewards
 

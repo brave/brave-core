@@ -13,8 +13,8 @@ deps = {
   "vendor/bat-native-ledger": "https://github.com/brave-intl/bat-native-ledger@bba76f13c7ea4d295bd93e7cfa384801d25311b2",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@86aafe2ef89835ae71c9ed7c2527e3bb3000930e",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@9b119931c702d55be994117eb505d56310720b1d",
-  "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@6f5817c5a4dcabb49e22b578ecae4993159e6481",
-  "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@05ed8f82faa03609fe5ae0a4c2d454afbe2ff267",
+  "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@fc5d0a1dca2c3e351425e37b4727f2f0af2d620a",
+  "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
 }
 
 hooks = [
