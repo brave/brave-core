@@ -15,6 +15,10 @@ grit("brave_theme_resources") {
 
   resource_ids = "//brave/browser/resources/resource_ids"
 
+  deps = [
+    "//chrome/app/theme:theme_resources",
+  ]
+
   output_dir = "$root_gen_dir/brave"
 }
 
