@@ -18,11 +18,10 @@ exports.replaceWebpack = () => {
 }
 
 exports.copyAssets = (type, outputDir) => {
-  const env = type === 'build' ? 'prod' : type
   rm('-rf', outputDir)
   mkdir(outputDir)
-  cp(`app/manifest.${env}.json`, `${outputDir}/manifest.json`)
+  cp(`app/manifest.${type}.json`, `${outputDir}/manifest.json`)
   cp('-R', 'app/_locales/', outputDir)
   cp('-R', 'app/assets/*', outputDir)
-  exec(`pug -O "{ env: '${env}' }" -o ${outputDir} app/views/`)
+  exec(`pug -O "{ env: '${type}' }" -o ${outputDir} app/views/`)
 }

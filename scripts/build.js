@@ -10,7 +10,7 @@ const buildDir = process.env.TARGET_GEN_DIR
 tasks.replaceWebpack()
 console.log('[Copy assets]')
 console.log('-'.repeat(80))
-tasks.copyAssets('build', buildDir)
+tasks.copyAssets('prod', buildDir)
 
 console.log('[Webpack Build]')
 console.log('-'.repeat(80))
@@ -18,3 +18,4 @@ if (exec('webpack --config webpack/prod.config.js --progress --profile --colors'
   echo('Erorr: webpack failed')
   exit(1)
 }
+  
