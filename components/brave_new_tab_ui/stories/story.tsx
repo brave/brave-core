@@ -4,9 +4,11 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
+import { withKnobs, boolean } from '@storybook/addon-knobs'
 
 // Components
 import NewPrivateTab from './private/index'
 
 storiesOf('Feature Components/New Tab', module)
-  .add('Private', () => <NewPrivateTab />)
+  .addDecorator(withKnobs)
+  .add('Private', () => <NewPrivateTab isTor={boolean('Enable Tor?', false)} />)

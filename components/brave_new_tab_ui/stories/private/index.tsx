@@ -35,9 +35,13 @@ const ddgIcon = require('../../../assets/img/private_tab_pagearea_ddgicon.svg')
 const torIcon = require('../../../assets/img/toricon.svg')
 const torFAQ = 'https://github.com/brave/browser-laptop/wiki/Using-Tor-in-Brave#faq'
 
-export default class NewPrivateTab extends React.PureComponent<{}, {}> {
+interface Props {
+  isTor: boolean
+}
+
+export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   render () {
-    const isTor = false
+    const isTor = this.props.isTor
     return (
       <Page>
         <PageWrapper>
@@ -64,26 +68,33 @@ export default class NewPrivateTab extends React.PureComponent<{}, {}> {
             <Clock />
           </PageHeader>
           <div>
-            <NewTabHeading>{locale.thisIsAPrivateTab}</NewTabHeading>
-            <FeatureBlock grid={true}>
-              <aside>
-                <img src={torIcon} />
-              </aside>
-              <article>
-                <NewTabHeading level={2}>
-                  {locale.makeThisTabMuchMorePrivateWith}&nbsp;
-                  <EmphasizedText>{locale.tor}</EmphasizedText>
-                  <LabelledText>{locale.beta}</LabelledText>
-                </NewTabHeading>
-                <Paragraph>{locale.torDisclaimer}</Paragraph>
-                <LinkText href={torFAQ} target='_blank' rel='noreferrer noopener'>
-                {locale.learnMore}
-                </LinkText>
-              </article>
-              <aside>
-                <Toggle checked={isTor} />
-              </aside>
-            </FeatureBlock>
+            <NewTabHeading>
+              {
+                isTor ? locale.thisIsAPrivateWindowWithTor : locale.thisIsAPrivateWindow
+              }
+            </NewTabHeading>
+            {
+              !isTor
+              ? (
+                <FeatureBlock grid={true}>
+                  <aside>
+                    <img src={torIcon} />
+                  </aside>
+                  <article>
+                    <NewTabHeading level={2}>
+                      {locale.makeThisTabMuchMorePrivateWith}&nbsp;
+                      <EmphasizedText>{locale.tor}</EmphasizedText>
+                      <LabelledText>{locale.beta}</LabelledText>
+                    </NewTabHeading>
+                    <Paragraph>{locale.torDisclaimer}</Paragraph>
+                    <LinkText href={torFAQ} target='_blank' rel='noreferrer noopener'>
+                    {locale.learnMore}
+                    </LinkText>
+                  </article>
+                </FeatureBlock>
+              )
+            : null
+            }
             {
               isTor
               ? (
