@@ -3,8 +3,14 @@
   "name": "Brave Rewards",
   "manifest_version": 2,
   "description": "Brave Rewards Extension",
+  "default_locale": "en",
+  "background" : {
+    "scripts": ["extension/out/brave_rewards_panel_background.bundle.js"],
+    "persistent": true
+  },
+  "permissions": ["tabs"],
   "browser_action": {
-    "default_popup": "extension/popup.html",
+    "default_popup": "extension/brave_rewards_panel.html",
     "default_icon": {
       "16": "extension/img/bat-16.png",
       "32": "extension/img/bat-32.png",

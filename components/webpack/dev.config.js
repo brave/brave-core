@@ -11,6 +11,8 @@ module.exports = {
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),
     brave_webtorrent: path.join(__dirname, '../brave_webtorrent/extension/brave_webtorrent'),
     brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background'),
+    brave_rewards_panel: path.join(__dirname, '../brave_rewards/extension/brave_rewards_panel'),
+    brave_rewards_panel_background: path.join(__dirname, '../brave_rewards/extension/background'),
   },
   output: {
     path: process.env.TARGET_GEN_DIR,

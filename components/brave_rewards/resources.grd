@@ -11,7 +11,11 @@
   <release seq="1">
     <includes first_id="38000">
       <include name="IDR_BRAVE_REWARDS" file="brave_rewards/extension/manifest.json" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_POPUP_HTML" file="brave_rewards/extension/popup.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_LOCALES_EN" file="brave_rewards/extension/_locales/en/messages.json" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_LOCALES_EN_GB" file="brave_rewards/extension/_locales/en_GB/messages.json" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_PANEL_HTML" file="brave_rewards/extension/brave_rewards_panel.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_PANEL_BUNDLE_JS" file="brave_rewards/extension/out/brave_rewards_panel.bundle.js" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_PANEL_BACKGROUND_JS" file="brave_rewards/extension/out/brave_rewards_panel_background.bundle.js" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_ICON_16" file="brave_rewards/extension/img/bat-16.png" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_ICON_32" file="brave_rewards/extension/img/bat-32.png" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_ICON_48" file="brave_rewards/extension/img/bat-48.png" type="BINDATA" />
