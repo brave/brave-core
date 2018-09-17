@@ -96,7 +96,6 @@ storiesOf('Feature Components/Rewards/Table', module)
           showRowAmount={boolean('Show row amount', false)}
           showRemove={boolean('Show remove action', true)}
           headerColor={boolean('Colored header', true)}
-          sortByAttentionDesc={boolean('Sort DESC', true)}
         >
           Please visit some sites
         </TableContribute>

@@ -20,14 +20,10 @@ export interface Props {
   onClose: () => void
   onRestore: () => void
   id?: string
-  sortByAttentionDesc?: boolean
   numExcludedSites?: number
 }
 
 export default class ModalContribute extends React.PureComponent<Props, {}> {
-  static defaultProps = {
-    sortByAttentionDesc: true
-  }
 
   get headers () {
     return [
@@ -45,7 +41,7 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, onClose, onRestore, sortByAttentionDesc, rows, numExcludedSites } = this.props
+    const { id, onClose, onRestore, rows, numExcludedSites } = this.props
     const numSites = rows && rows.length || 0
 
     return (
@@ -72,7 +68,6 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
             allSites={true}
             showRowAmount={true}
             showRemove={true}
-            sortByAttentionDesc={sortByAttentionDesc}
           />
         </StyledWrapper>
       </Modal>

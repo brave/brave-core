@@ -43,14 +43,10 @@ export interface Props {
   rows?: DetailRow[]
   numSites?: number
   allSites?: boolean
-  sortByAttentionDesc?: boolean
   onShowAll?: () => void
 }
 
 export default class TableContribute extends React.PureComponent<Props, {}> {
-  static defaultProps = {
-    sortByAttentionDesc: true
-  }
 
   getHeader = (header: string[]) => {
     if (!header) {
@@ -84,17 +80,12 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
     })
   }
 
-  getRows = (rows?: DetailRow[], sortByAttentionDesc?: boolean): Row[] | undefined => {
+  getRows = (rows?: DetailRow[]): Row[] | undefined => {
     if (!rows) {
       return
     }
 
-    return rows.sort((cur: DetailRow, prev: DetailRow) => {
-      return sortByAttentionDesc
-      ? prev.attention - cur.attention
-      : cur.attention - prev.attention
-    })
-    .map((row: DetailRow): Row => {
+    return rows.map((row: DetailRow): Row => {
       const cell: Row = {
         content: [
           {
@@ -177,7 +168,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, header, children, sortByAttentionDesc, rows, allSites, onShowAll } = this.props
+    const { id, header, children, rows, allSites, onShowAll } = this.props
     const numSites = this.props.numSites || 0
 
     return (
@@ -185,7 +176,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
         <Table
           header={this.getHeader(header)}
           children={children}
-          rows={this.getRows(rows, sortByAttentionDesc)}
+          rows={this.getRows(rows)}
         />
         {
           !allSites && numSites > 0
