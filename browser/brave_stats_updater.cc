@@ -103,7 +103,8 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
       simple_url_loader_->ResponseInfo()->headers)
     response_code =
         simple_url_loader_->ResponseInfo()->headers->response_code();
-  if (simple_url_loader_->NetError() != net::OK || response_code != 200) {
+  if (simple_url_loader_->NetError() != net::OK || response_code < 200 ||
+      response_code > 299) {
     LOG(ERROR) << "Failed to send usage stats to update server"
                << ", error: " << simple_url_loader_->NetError()
                << ", response code: " << response_code
