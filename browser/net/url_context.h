@@ -32,6 +32,7 @@ struct BraveRequestInfo {
   scoped_refptr<net::HttpResponseHeaders>* override_response_headers = nullptr;
   GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
+  const base::ListValue* referral_headers_list = nullptr;
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 

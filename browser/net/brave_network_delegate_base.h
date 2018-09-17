@@ -59,6 +59,8 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       headers_received_callbacks_;
 
  private:
+  void GetReferralHeaders();
+  const base::ListValue* referral_headers_list_;
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);

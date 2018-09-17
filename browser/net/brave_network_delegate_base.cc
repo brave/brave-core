@@ -7,6 +7,9 @@
 #include <algorithm>
 
 #include "brave/browser/net/url_context.h"
+#include "brave/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_request.h"
 
@@ -14,11 +17,21 @@
 using content::BrowserThread;
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
-    extensions::EventRouterForwarder* event_router) :
-    ChromeNetworkDelegate(event_router) {
+    extensions::EventRouterForwarder* event_router)
+    : ChromeNetworkDelegate(event_router), referral_headers_list_(nullptr) {
+  // Retrieve the current referral headers, if any.
+  BrowserThread::PostTask(
+      BrowserThread::UI, FROM_HERE,
+      base::Bind(&BraveNetworkDelegateBase::GetReferralHeaders,
+                 base::Unretained(this)));
 }
 
 BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {
+}
+
+void BraveNetworkDelegateBase::GetReferralHeaders() {
+  referral_headers_list_ =
+      g_browser_process->local_state()->GetList(kReferralHeaders);
 }
 
 int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
@@ -49,6 +62,7 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
   ctx->headers = headers;
   ctx->request_identifier = request->identifier();
   ctx->event_type = brave::kOnBeforeStartTransaction;
+  ctx->referral_headers_list = referral_headers_list_;
   RunNextCallback(request, nullptr, ctx);
   return net::ERR_IO_PENDING;
 }
