@@ -7,6 +7,7 @@
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -84,7 +85,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
   std::vector<GURL> urls {
     GURL("chrome://adblock/"),
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
     GURL("chrome://rewards/"),
+#endif
     GURL("chrome://welcome/")
   };
   std::for_each(urls.begin(), urls.end(), [this](const GURL& url) {
