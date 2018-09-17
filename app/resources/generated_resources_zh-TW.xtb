@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">已暫停載入頁面。</translation>
 <translation id="6921709132208495314">停止這個網頁使用數據流量</translation>
 <translation id="2724841811573117416">WebRTC 記錄</translation>
+<translation id="1969654639948595766">WebRTC 文字記錄 (<ph name="WEBRTC_TEXT_LOG_COUNT"/> 筆)</translation>
+<translation id="6865708901122695652">WebRTC 事件記錄 (<ph name="WEBRTC_EVENT_LOG_COUNT"/> 筆)</translation>
 <translation id="6592267180249644460">WebRTC 記錄擷取時間：<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">本機檔案：</translation>
 <translation id="2071393345806050157">沒有本機記錄檔案。</translation>
 <translation id="6628328486509726751">上傳時間：<ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">上傳失敗 (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>)。</translation>
 <translation id="5946591249682680882">報表 ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">回報錯誤</translation>
+<translation id="3650845953328929506">記錄上傳作業待處理。</translation>
+<translation id="1818913467757368489">正在上傳記錄。</translation>
 <translation id="1188807932851744811">尚未上傳記錄。</translation>
+<translation id="4688036121858134881">本機記錄 ID：<ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>。</translation>
+<translation id="7497981768003291373">你最近並未擷取 WebRTC 文字記錄。</translation>
+<translation id="3954953195017194676">你最近並未擷取 WebRTC 事件記錄。</translation>
 <translation id="2076269580855484719">隱藏這個外掛程式</translation>
 <translation id="2129825002735785149">更新外掛程式</translation>
 <translation id="9088234649737575428">「<ph name="PLUGIN_NAME"/>」遭到企業政策封鎖</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">請輸入有效的網址</translation>
 <translation id="2806891468525657116">捷徑已經存在</translation>
 <translation id="394183848452296464">無法建立捷徑</translation>
+<translation id="329703603001918157">無法編輯捷徑</translation>
+<translation id="6732900235521116609">無法移除捷徑</translation>
 <translation id="7109543803214225826">已移除捷徑</translation>
 <translation id="8017679124341497925">已編輯捷徑</translation>
 <translation id="1174073918202301297">已新增捷徑</translation>
@@ -1440,6 +1450,7 @@
 <translation id="1800308196794859773">將你的語音資料傳送給 Brave Software，讓你在任何文字欄位中使用語音輸入功能。</translation>
 <translation id="8758418656925882523">啟用語音輸入 (說話即可輸入)</translation>
 <translation id="7580671184200851182">透過所有喇叭播放相同的音效 (單聲道音訊)</translation>
+<translation id="8186639008852027301">啟動時播放指示音訊</translation>
 <translation id="1189418886587279221">啟用協助功能，讓你使用裝置更輕鬆。</translation>
 <translation id="48704129375571883">新增其他功能</translation>
 <translation id="7230787553283372882">自訂文字大小</translation>
@@ -1537,6 +1548,10 @@
 <translation id="5029568752722684782">清除複本</translation>
 <translation id="2154484045852737596">編輯卡片資訊</translation>
 <translation id="5087580092889165836">新增信用卡</translation>
+<translation id="7284555534810614828">將卡片資訊儲存至 Brave Software Pay 以供使用</translation>
+<translation id="6281511959351052816">將卡片資訊儲存至 Brave Software Pay 以供使用</translation>
+<translation id="1904518222538904133">你有 1 張卡片只能在這部裝置上使用</translation>
+<translation id="8065485338434000013">你有部分卡片只能在這部裝置上使用</translation>
 <translation id="4807098396393229769">持卡人姓名</translation>
 <translation id="2612676031748830579">卡號</translation>
 <translation id="869891660844655955">到期日</translation>
@@ -1976,8 +1991,6 @@
 <translation id="5282733140964383898">啟用「不追蹤」即表示要求將會包含在你的瀏覽流量中，所造成的影響取決於網站是否回應要求以及如何解讀要求。舉例來說，部分網站回應這類要求的方式，可能會是不根據你造訪其他網站的記錄來顯示廣告。不過，許多網站仍會收集並使用你的瀏覽資料，藉此提升安全性、提供網站上的內容、服務、廣告和推薦項目，以及產生報告統計資料等。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">啟用已驗證存取權</translation>
 <translation id="5557991081552967863">休眠期間保持開啟 Wi-Fi</translation>
-<translation id="8562084399541316921">繼續閱讀</translation>
-<translation id="6201926614538916789">透過 Bravebook 繼續瀏覽先前在行動裝置上造訪的網站</translation>
 <translation id="1521442365706402292">管理憑證</translation>
 <translation id="7075625805486468288">管理 HTTPS/SSL 憑證和設定</translation>
 <translation id="8871974300055371298">內容設定</translation>
@@ -2186,6 +2199,7 @@
 <translation id="3422989461909154470">你可以在這裡管理你從應用程式和網站登入的所有 Brave Software 帳戶。</translation>
 <translation id="1987317783729300807">帳戶</translation>
 <translation id="8418661265246754237">Brave Software 帳戶</translation>
+<translation id="3297951628821704004">從這個裝置移除帳戶</translation>
 <translation id="1059855432287631118">註冊指紋</translation>
 <translation id="878068003854005405">歡迎開始設定，請將手指放在感應器上。</translation>
 <translation id="7189965711416741966">指紋新增成功。</translation>

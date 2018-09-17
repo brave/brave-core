@@ -2483,12 +2483,6 @@
   <message name="IDS_SETTINGS_WAKE_ON_WIFI_DESCRIPTION" desc="In the settings tab, the text next to the checkbox for enabling quickly reconnecting to known Wi-Fi SSIDs.">
     Keep Wi-Fi on during sleep
   </message>
-  <message name="IDS_SETTINGS_APP_LIST_CONTINUE_READING" desc="In the settings tab, the text next to the checkbox for enabling Continue Reading in Launcher.">
-    Continue Reading
-  </message>
-  <message name="IDS_SETTINGS_APP_LIST_CONTINUE_READING_DESCRIPTION" desc="Secondary, continued explanation of what is Launcher continue reading.">
-    Resume viewing sites from mobile on your Bravebook
-  </message>
   <message name="IDS_SETTINGS_MANAGE_CERTIFICATES" desc="Text for manage certificates button in Privacy options">
     Manage certificates
   </message>

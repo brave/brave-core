@@ -506,13 +506,21 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3861241522664181545">Az oldal szüneteltetve.</translation>
 <translation id="6921709132208495314">Adathasználat leállítása ennél az oldalnál</translation>
 <translation id="2724841811573117416">WebRTC-naplók</translation>
+<translation id="1969654639948595766">Szöveges WebRTC-naplók (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC-eseménynaplók (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC napló rögzítésének ideje: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Helyi fájl:</translation>
 <translation id="2071393345806050157">Nincs helyi naplófájl.</translation>
 <translation id="6628328486509726751">Feltöltve ekkor: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">A feltöltés sikertelen (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Jelentésazonosító: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Programhiba bejegyzése</translation>
+<translation id="3650845953328929506">Függőben lévő naplófeltöltés.</translation>
+<translation id="1818913467757368489">A napló feltöltése folyamatban van.</translation>
 <translation id="1188807932851744811">A napló nincs feltöltve.</translation>
+<translation id="4688036121858134881">Napló helyi azonosítója: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Nincsenek mostanában rögzített szöveges WebRTC-naplói.</translation>
+<translation id="3954953195017194676">Nincsenek mostanában rögzített WebRTC-eseménynaplói.</translation>
 <translation id="2076269580855484719">Plug-in elrejtése</translation>
 <translation id="2129825002735785149">Beépülő modul frissítése</translation>
 <translation id="9088234649737575428">A(z) <ph name="PLUGIN_NAME"/> beépülő modult letiltotta a vállalati házirend</translation>
@@ -557,6 +565,8 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4416582610654027550">Érvényes URL-t írjon be</translation>
 <translation id="2806891468525657116">Ez a billentyűparancs már létezik</translation>
 <translation id="394183848452296464">Nem sikerült billentyűparancsot létrehozni</translation>
+<translation id="329703603001918157">Nem sikerül szerkeszteni a parancsikont</translation>
+<translation id="6732900235521116609">A parancsikon nem távolítható el</translation>
 <translation id="7109543803214225826">Billentyűparancs eltávolítva</translation>
 <translation id="8017679124341497925">Billentyűparancs szerkesztve</translation>
 <translation id="1174073918202301297">Parancsikon hozzáadva</translation>
@@ -1441,6 +1451,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="1800308196794859773">A hangjának elküldése a Brave Software számára, hogy bármely szövegmezőbe diktálhasson.</translation>
 <translation id="8758418656925882523">Diktálás (beszéddel írás) engedélyezése</translation>
 <translation id="7580671184200851182">Azonos hang lejátszása mindegyik hangszórón (monó hang)</translation>
+<translation id="8186639008852027301">Hangjelzés lejátszása indításkor</translation>
 <translation id="1189418886587279221">Kisegítő beállítások engedélyezése az eszköz használatának megkönnyítéséhez.</translation>
 <translation id="48704129375571883">További funkciók hozzáadása</translation>
 <translation id="7230787553283372882">Szövegméret személyre szabása</translation>
@@ -1538,6 +1549,10 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5029568752722684782">Példány törlése</translation>
 <translation id="2154484045852737596">Kártya szerkesztése</translation>
 <translation id="5087580092889165836">Kártya hozzáadása</translation>
+<translation id="7284555534810614828">Kártya mentése a Brave Software Pay használatához</translation>
+<translation id="6281511959351052816">Kártyák mentése a Brave Software Pay használatához</translation>
+<translation id="1904518222538904133">A kártyái közül egy csak ezen az eszközön használható</translation>
+<translation id="8065485338434000013">Néhány kártyát csak ezen az eszközön lehet használni</translation>
 <translation id="4807098396393229769">A kártyán feltüntetett név</translation>
 <translation id="2612676031748830579">Kártyaszám</translation>
 <translation id="869891660844655955">Lejárati dátum</translation>
@@ -1978,8 +1993,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jelenítenek meg, amelyek nem a már felkeresett egyéb webhelyeken alapulnak. Számos webhely ilyenkor is begyűjti és felhasználja a böngészési adatokat például a biztonság növelése, továbbá tartalom, szolgáltatások, hirdetések és ajánlások biztosítása, valamint jelentésekhez használt statisztika előállítása céljából. <ph name="BEGIN_LINK"/>További információ.<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Ellenőrzött hozzáférés engedélyezése</translation>
 <translation id="5557991081552967863">Maradjon bekapcsolva a Wi-Fi alvó üzemmódban is</translation>
-<translation id="8562084399541316921">Olvasás folytatása</translation>
-<translation id="6201926614538916789">Mobilon olvasott webhelyek megtekintésének folytatása a Bravebookon</translation>
 <translation id="1521442365706402292">Tanúsítványok beállítása</translation>
 <translation id="7075625805486468288">HTTPS/SSL-tanúsítványok és -beállítások kezelése</translation>
 <translation id="8871974300055371298">Tartalombeállítások</translation>
@@ -2188,6 +2201,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="3422989461909154470">Itt kezelheti az összes alkalmazásba és webhelyre bejelentkezett Brave Software-fiókokat.</translation>
 <translation id="1987317783729300807">Fiókok</translation>
 <translation id="8418661265246754237">Brave Software-fiók</translation>
+<translation id="3297951628821704004">Fiók eltávolítása az eszközről</translation>
 <translation id="1059855432287631118">Ujjlenyomat regisztrálása</translation>
 <translation id="878068003854005405">Vágjon bele. Helyezze ujját az érzékelőre.</translation>
 <translation id="7189965711416741966">Ujjlenyomat hozzáadva.</translation>

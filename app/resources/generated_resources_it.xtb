@@ -505,13 +505,21 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3861241522664181545">Pagina in pausa.</translation>
 <translation id="6921709132208495314">Interrompi l'utilizzo dei dati su questa pagina</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
+<translation id="1969654639948595766">Log di testo WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Log eventi WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Data/ora acquisizione log WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">File locale:</translation>
 <translation id="2071393345806050157">Nessun file di log locale.</translation>
 <translation id="6628328486509726751">Data/ora caricamento: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Caricamento non riuscito (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID rapporto <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Segnala bug</translation>
+<translation id="3650845953328929506">Caricamento del log in attesa.</translation>
+<translation id="1818913467757368489">Caricamento del log in corso.</translation>
 <translation id="1188807932851744811">Log non caricato.</translation>
+<translation id="4688036121858134881">ID log locale: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Nessun log di testo WebRTC acquisito di recente.</translation>
+<translation id="3954953195017194676">Nessun log eventi WebRTC acquisito di recente.</translation>
 <translation id="2076269580855484719">Nascondi questo plug-in</translation>
 <translation id="2129825002735785149">Aggiorna il plug-in</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> è bloccato dalle norme aziendali</translation>
@@ -556,6 +564,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4416582610654027550">Digita un URL valido</translation>
 <translation id="2806891468525657116">Scorciatoia già presente</translation>
 <translation id="394183848452296464">Impossibile creare scorciatoie</translation>
+<translation id="329703603001918157">Impossibile modificare la scorciatoia</translation>
+<translation id="6732900235521116609">Impossibile rimuovere la scorciatoia</translation>
 <translation id="7109543803214225826">Scorciatoia rimossa</translation>
 <translation id="8017679124341497925">Scorciatoia modificata</translation>
 <translation id="1174073918202301297">Scorciatoia aggiunta</translation>
@@ -1440,6 +1450,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1800308196794859773">Invia i tuoi dati audio a Brave Software per consentire la dettatura in tutti i campi di testo.</translation>
 <translation id="8758418656925882523">Attiva dettatura (parla per digitare)</translation>
 <translation id="7580671184200851182">Riproduci lo stesso audio su tutti gli altoparlanti (audio mono)</translation>
+<translation id="8186639008852027301">Riproduci un segnale audio all'avvio</translation>
 <translation id="1189418886587279221">Attiva funzioni di accessibilità per facilitare l'utilizzo del dispositivo.</translation>
 <translation id="48704129375571883">Aggiungi altre funzioni</translation>
 <translation id="7230787553283372882">Personalizza la dimensione del testo</translation>
@@ -1537,6 +1548,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5029568752722684782">Cancella copia</translation>
 <translation id="2154484045852737596">Modifica la carta</translation>
 <translation id="5087580092889165836">Aggiungi carta</translation>
+<translation id="7284555534810614828">Salva la carta per usare Brave Software Pay</translation>
+<translation id="6281511959351052816">Salva le carte per usare Brave Software Pay</translation>
+<translation id="1904518222538904133">Una delle tue carte può essere usata soltanto su questo dispositivo</translation>
+<translation id="8065485338434000013">Alcune delle tue carte possono essere usate soltanto su questo dispositivo</translation>
 <translation id="4807098396393229769">Nome sulla carta di credito</translation>
 <translation id="2612676031748830579">Numero carta</translation>
 <translation id="869891660844655955">Data di scadenza</translation>
@@ -1976,8 +1991,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5282733140964383898">Se attivi "Non tenere traccia", viene inclusa una richiesta con il tuo traffico di navigazione. Gli eventuali effetti dipendono dalla risposta o meno di un sito web alla richiesta e dalla modalità di interpretazione della richiesta. Ad esempio, alcuni siti web potrebbero rispondere alla richiesta visualizzando annunci non basati su altri siti web che hai visitato. Molti siti web raccoglieranno e utilizzeranno comunque i tuoi dati di navigazione per diversi scopi, ad esempio per aumentare la sicurezza, fornire contenuti, servizi, annunci e consigli sui loro siti web o generare statistiche sui rapporti. <ph name="BEGIN_LINK"/>Ulteriori informazioni<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Consente di attivare l'accesso verificato</translation>
 <translation id="5557991081552967863">Lascia attivo il Wi-Fi durante la sospensione</translation>
-<translation id="8562084399541316921">Continua a leggere</translation>
-<translation id="6201926614538916789">Riprendi la visualizzazione dei siti da dispositivi mobili sul tuo Bravebook</translation>
 <translation id="1521442365706402292">Gestisci certificati</translation>
 <translation id="7075625805486468288">Gestisci certificati e impostazioni HTTPS/SSL</translation>
 <translation id="8871974300055371298">Impostazioni contenuti</translation>
@@ -2186,6 +2199,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3422989461909154470">Qui puoi gestire tutti i tuoi account Brave Software connessi dalle app e dai siti web.</translation>
 <translation id="1987317783729300807">Account</translation>
 <translation id="8418661265246754237">Account Brave Software</translation>
+<translation id="3297951628821704004">Rimuovi account da questo dispositivo</translation>
 <translation id="1059855432287631118">Registrazione dell'impronta digitale</translation>
 <translation id="878068003854005405">Inizia. Posiziona il dito sul sensore.</translation>
 <translation id="7189965711416741966">Impronta digitale aggiunta.</translation>

@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">Сторінку призупинено.</translation>
 <translation id="6921709132208495314">Припинити використання даних на цій сторінці</translation>
 <translation id="2724841811573117416">Журнали WebRTC</translation>
+<translation id="1969654639948595766">Текстові журнали WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Журнали подій WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Журнал WebRTC створено: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Локальний файл:</translation>
 <translation id="2071393345806050157">Немає локального файлу журналу.</translation>
 <translation id="6628328486509726751">Завантажено: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Помилка завантаження (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Ідентифікатор звіту: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Помилка файлу</translation>
+<translation id="3650845953328929506">Очікується завантаження журналу.</translation>
+<translation id="1818913467757368489">Завантажується журнал.</translation>
 <translation id="1188807932851744811">Журнал не завантажено.</translation>
+<translation id="4688036121858134881">Ідентифікатор локального журналу: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Немає нещодавно створених текстових журналів WebRTC.</translation>
+<translation id="3954953195017194676">Немає нещодавно створених журналів подій WebRTC.</translation>
 <translation id="2076269580855484719">Сховати цей плагін</translation>
 <translation id="2129825002735785149">Оновити плагін</translation>
 <translation id="9088234649737575428">Плагін <ph name="PLUGIN_NAME"/> заблоковано політикою підприємства</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">Введіть дійсну URL-адресу</translation>
 <translation id="2806891468525657116">Ярлик уже є</translation>
 <translation id="394183848452296464">Не вдається створити ярлик</translation>
+<translation id="329703603001918157">Неможливо змінити ярлик</translation>
+<translation id="6732900235521116609">Неможливо видалити ярлик</translation>
 <translation id="7109543803214225826">Ярлик видалено</translation>
 <translation id="8017679124341497925">Ярлик змінено</translation>
 <translation id="1174073918202301297">Ярлик додано</translation>
@@ -1440,6 +1450,7 @@
 <translation id="1800308196794859773">Надішліть зразок свого голосу в Brave Software, щоб дозволити диктування в будь-якому текстовому полі.</translation>
 <translation id="8758418656925882523">Увімкнути диктування (голосовий набір тексту)</translation>
 <translation id="7580671184200851182">Відтворювати один аудіозапис на всіх динаміках (монофонічне аудіо)</translation>
+<translation id="8186639008852027301">Відтворювати звуковий сигнал під час запуску</translation>
 <translation id="1189418886587279221">Увімкніть функції доступності, щоб полегшити користування своїм пристроєм.</translation>
 <translation id="48704129375571883">Додати більше функцій</translation>
 <translation id="7230787553283372882">Налаштувати розмір тексту</translation>
@@ -1537,6 +1548,10 @@
 <translation id="5029568752722684782">Видалити копію</translation>
 <translation id="2154484045852737596">Редагувати картку</translation>
 <translation id="5087580092889165836">Додати картку</translation>
+<translation id="7284555534810614828">Збережіть картку, щоб оплачувати через Brave Software Pay</translation>
+<translation id="6281511959351052816">Зберегти картки, щоб оплачувати через Brave Software Pay</translation>
+<translation id="1904518222538904133">1 з ваших карток можна використовувати лише на цьому пристрої</translation>
+<translation id="8065485338434000013">Деякі картки можна використовувати лише на цьому пристрої</translation>
 <translation id="4807098396393229769">Ім'я на картці</translation>
 <translation id="2612676031748830579">Номер картки</translation>
 <translation id="869891660844655955">Діє до</translation>
@@ -1976,8 +1991,6 @@
 <translation id="5282733140964383898">Якщо ввімкнути параметр "Не відстежувати", запит додається в трафік веб-перегляду. Результат залежить від того, чи реагує веб-сайт на цей запит і як тлумачиться запит. Наприклад, деякі веб-сайти можуть реагувати на такий запит, показуючи вам рекламу, не пов’язану з іншими веб-сайтами, які ви відвідали. Багато веб-сайтів будуть і надалі збирати й використовувати ваші дані веб-перегляду, наприклад щоб покращувати систему безпеки, пропонувати вміст, служби, рекламу та рекомендації, а також генерувати статистику для звітів. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Увімкнути перевірений доступ</translation>
 <translation id="5557991081552967863">Не від’єднуватися від мережі Wi-Fi у режимі сну</translation>
-<translation id="8562084399541316921">Продовжити читати</translation>
-<translation id="6201926614538916789">Продовжуйте переглядати сайт із мобільного пристрою на Bravebook</translation>
 <translation id="1521442365706402292">Керування сертифікатами</translation>
 <translation id="7075625805486468288">Керування сертифікатами та налаштуваннями HTTPS або SSL</translation>
 <translation id="8871974300055371298">Веб-контент</translation>
@@ -2186,6 +2199,7 @@
 <translation id="3422989461909154470">Усіма обліковими записами Brave Software, у які ви ввійшли в додатках або на веб-сайтах, можна керувати тут.</translation>
 <translation id="1987317783729300807">Облікові записи</translation>
 <translation id="8418661265246754237">Облікові записи Brave Software</translation>
+<translation id="3297951628821704004">Видалити обліковий запис із цього пристрою</translation>
 <translation id="1059855432287631118">Реєстрація відбитка</translation>
 <translation id="878068003854005405">Розпочнімо. Покладіть палець на датчик.</translation>
 <translation id="7189965711416741966">Відбиток додано.</translation>

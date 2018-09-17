@@ -505,14 +505,21 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3861241522664181545">Halaman dijeda.</translation>
 <translation id="6921709132208495314">Berhenti menggunakan data di halaman ini</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
+<translation id="1969654639948595766">Log teks WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Log aktivitas WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Log WebRTC direkam pada <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">File lokal:</translation>
 <translation id="2071393345806050157">Tidak ada file log lokal.</translation>
 <translation id="6628328486509726751"><ph name="WEBRTC_LOG_UPLOAD_TIME"/> yang diupload</translation>
+<translation id="6458701200018867744">Upload gagal (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID Laporan <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Bug file</translation>
 <translation id="3650845953328929506">Unggahan log tertunda.</translation>
+<translation id="1818913467757368489">Upload log sedang berlangsung.</translation>
 <translation id="1188807932851744811">Log tidak diupload.</translation>
+<translation id="4688036121858134881">ID log lokal: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Anda tidak memiliki log teks WebRTC yang direkam baru-baru ini.</translation>
+<translation id="3954953195017194676">Anda tidak memiliki log aktivitas WebRTC yang direkam baru-baru ini.</translation>
 <translation id="2076269580855484719">Sembunyikan plugin ini</translation>
 <translation id="2129825002735785149">Perbarui plugin</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> diblokir oleh kebijakan perusahaan</translation>
@@ -557,6 +564,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4416582610654027550">Ketik URL yang valid</translation>
 <translation id="2806891468525657116">Pintasan sudah ada</translation>
 <translation id="394183848452296464">Tidak dapat membuat pintasan</translation>
+<translation id="329703603001918157">Tidak dapat mengedit pintasan</translation>
+<translation id="6732900235521116609">Tidak dapat menghapus pintasan</translation>
 <translation id="7109543803214225826">Pintasan dihapus</translation>
 <translation id="8017679124341497925">Pintasan diedit</translation>
 <translation id="1174073918202301297">Pintasan ditambahkan</translation>
@@ -1441,6 +1450,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1800308196794859773">Kirimkan suara Anda ke Brave Software untuk memungkinkan pengetikan dengan suara ke kolom teks.</translation>
 <translation id="8758418656925882523">Aktifkan dikte (ucapkan untuk mengetik)</translation>
 <translation id="7580671184200851182">Putar audio yang sama melalui semua speaker (audio mono)</translation>
+<translation id="8186639008852027301">Putar indikator audio saat dimulai</translation>
 <translation id="1189418886587279221">Aktifkan fitur aksesibilitas untuk membuat perangkat Anda lebih mudah digunakan.</translation>
 <translation id="48704129375571883">Tambahkan fitur tambahan</translation>
 <translation id="7230787553283372882">Menyesuaikan ukuran teks</translation>
@@ -1540,6 +1550,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5087580092889165836">Tambahkan kartu</translation>
 <translation id="7284555534810614828">Simpan kartu untuk menggunakan Brave Pay</translation>
 <translation id="6281511959351052816">Simpan kartu untuk menggunakan Brave Pay</translation>
+<translation id="1904518222538904133">1 kartu Anda hanya dapat digunakan di perangkat ini</translation>
+<translation id="8065485338434000013">Sebagian kartu Anda hanya dapat digunakan di perangkat ini</translation>
 <translation id="4807098396393229769">Nama di kartu</translation>
 <translation id="2612676031748830579">Nomor kartu kredit</translation>
 <translation id="869891660844655955">Masa berlaku</translation>
@@ -1980,8 +1992,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5282733140964383898">Dengan mengaktifkan ''Jangan Lacak'', permintaan akan disertakan dalam traffic penjelajahan Anda. Pengaruh apa pun bergantung pada apakah situs menanggapi permintaan atau tidak, dan cara permintaan diinterpretasikan. Misalnya, beberapa situs mungkin menanggapi permintaan ini dengan menayangkan iklan yang tidak didasarkan pada situs lain yang telah Anda kunjungi. Banyak situs yang masih akan mengumpulkan dan menggunakan data browsing Anda - misalnya untuk meningkatkan keamanan, menyediakan konten, layanan, iklan, dan saran pada situs mereka, serta membuat statistik pelaporan. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Mengaktifkan Akses Terverifikasi</translation>
 <translation id="5557991081552967863">Tetap aktifkan Wi-Fi saat dalam mode tidur</translation>
-<translation id="8562084399541316921">Lanjutkan Membaca</translation>
-<translation id="6201926614538916789">Lanjutkan melihat situs dari seluler di Bravebook Anda</translation>
 <translation id="1521442365706402292">Kelola sertifikat</translation>
 <translation id="7075625805486468288">Mengelola sertifikat dan setelan HTTPS/SSL</translation>
 <translation id="8871974300055371298">Setelan konten</translation>

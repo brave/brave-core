@@ -162,6 +162,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
         Tor
       </message>
+      <message name="IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME" desc="The utility process which launch Tor">
+        Tor Launcher
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />

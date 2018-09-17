@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">تم إيقاف تحميل الصفحة مؤقتًا.</translation>
 <translation id="6921709132208495314">إيقاف استخدام البيانات في هذه الصفحة</translation>
 <translation id="2724841811573117416">‏سجلات WebRTC</translation>
+<translation id="1969654639948595766">‏سجلّات WebRTC النصية (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">‏سجلّات أحداث WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">‏تم التقاط سجلات WebRTC في <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">الملف المحلي:</translation>
 <translation id="2071393345806050157">ليس هناك ملف سجل محلي.</translation>
 <translation id="6628328486509726751">تم التحميل في <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">تعذَّر التحميل (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">معرف التقرير: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">الإبلاغ عن خطأ</translation>
+<translation id="3650845953328929506">تحميل السجلّ مُعلّق.</translation>
+<translation id="1818913467757368489">جارٍ تحميل السِجلّ.</translation>
 <translation id="1188807932851744811">لم يتم تحميل السجل.</translation>
+<translation id="4688036121858134881">رقم تعريف السِجلّ المحلي: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">‏ليست لديك أي سجلَّات نصية WebRTC تم التقاطها مؤخرًا.</translation>
+<translation id="3954953195017194676">‏ليست لديك أي سجلات أحداث WebRTC تم التقاطها مؤخرًا.</translation>
 <translation id="2076269580855484719">إخفاء هذا المكون الإضافي</translation>
 <translation id="2129825002735785149">تحديث المكوِّن الإضافي</translation>
 <translation id="9088234649737575428">تم حظر <ph name="PLUGIN_NAME"/> بموجب سياسة المؤسسة</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">‏يُرجى كتابة عنوان URL صالح</translation>
 <translation id="2806891468525657116">الاختصار موجود من قَبل</translation>
 <translation id="394183848452296464">يتعذّر إنشاء الاختصار</translation>
+<translation id="329703603001918157">يتعذَّر تعديل الاختصار</translation>
+<translation id="6732900235521116609">تتعذَّر إزالة الاختصار</translation>
 <translation id="7109543803214225826">تمت إزالة الاختصار</translation>
 <translation id="8017679124341497925">تمّ تعديل الاختصار</translation>
 <translation id="1174073918202301297">تمت إضافة الاختصار</translation>
@@ -1440,6 +1450,7 @@
 <translation id="1800308196794859773">‏يمكنك إرسال صوتك إلى Brave Software للسماح بالإملاء في أي حقل نصي.</translation>
 <translation id="8758418656925882523">تفعيل الإملاء (التحدُّث للكتابة)</translation>
 <translation id="7580671184200851182">تشغيل نفس الصوت عبر جميع مكبرات الصوت (صوت أحادي)</translation>
+<translation id="8186639008852027301">تشغيل مؤشر الصوت عند بدء التشغيل</translation>
 <translation id="1189418886587279221">تفعيل ميزات إمكانية الدخول لتسهيل استخدام الجهاز.</translation>
 <translation id="48704129375571883">إضافة ميزات إضافية</translation>
 <translation id="7230787553283372882">تخصيص حجم النَّص</translation>
@@ -1537,6 +1548,10 @@
 <translation id="5029568752722684782">محو النسخة</translation>
 <translation id="2154484045852737596">تعديل البطاقة</translation>
 <translation id="5087580092889165836">إضافة بطاقة</translation>
+<translation id="7284555534810614828">‏حفظ البطاقة لاستخدام Brave Software Pay</translation>
+<translation id="6281511959351052816">‏حفظ البطاقات لاستخدام Brave Software Pay</translation>
+<translation id="1904518222538904133">لا يمكن استخدام إلا بطاقة واحدة من بطاقاتك على هذا الجهاز.</translation>
+<translation id="8065485338434000013">يمكن استخدام بعض بطاقاتك على هذا الجهاز فقط</translation>
 <translation id="4807098396393229769">الاسم كما على البطاقة</translation>
 <translation id="2612676031748830579">رقم البطاقة</translation>
 <translation id="869891660844655955">تاريخ انتهاء الصلاحية</translation>
@@ -1976,8 +1991,6 @@
 <translation id="5282733140964383898">إن تفعيل "عدم التعقب" يعني أنه سيتم تضمين طلب في حركة بيانات التصفح. ويعتمد أي تأثير يحدث على ما إذا كان موقع الويب سيستجيب للطلب، وعلى كيفية تفسير الطلب. على سبيل المثال، قد تستجيب بعض مواقع الويب لهذا الطلب عبر عرض إعلانات لا تستند إلى مواقع الويب الأخرى التي زرتها. بينما ستظل العديد من مواقع الويب تجمع بيانات تصفحك وتستخدمها - على سبيل المثال، لتحسين الأمان وتقديم محتوى وخدمات وإعلانات واقتراحات على مواقع الويب ولإعداد إحصائيات التقارير. <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">تفعيل الدخول الذي تم التحقق منه</translation>
 <translation id="5557991081552967863">‏إبقاء Wi-Fi في وضع التشغيل أثناء السكون</translation>
-<translation id="8562084399541316921">قراءة المزيد</translation>
-<translation id="6201926614538916789">‏استئناف عرض مواقع الويب من الجوّال على جهاز Bravebook</translation>
 <translation id="1521442365706402292">تنظيم الشهادات</translation>
 <translation id="7075625805486468288">‏إدارة إعدادات وشهادات HTTPS/طبقة المقابس الآمنة</translation>
 <translation id="8871974300055371298">إعدادات المحتوى</translation>
@@ -2186,6 +2199,7 @@
 <translation id="3422989461909154470">‏يمكن إدارة جميع حساباتك على Brave Software التي تمّ تسجيل الدخول إليها من التطبيقات والمواقع الإلكترونية هنا.</translation>
 <translation id="1987317783729300807">الحسابات</translation>
 <translation id="8418661265246754237">‏حسابات Brave Software</translation>
+<translation id="3297951628821704004">إزالة الحساب من هذا الجهاز</translation>
 <translation id="1059855432287631118">تسجيل بصمة الإصبع</translation>
 <translation id="878068003854005405">لنبدأ الآن. ضع إصبعك على جهاز الاستشعار.</translation>
 <translation id="7189965711416741966">تمت إضافة بصمة إصبع.</translation>
