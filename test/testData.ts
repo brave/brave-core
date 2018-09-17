@@ -110,9 +110,7 @@ export const getMockChrome = () => {
       onBlocked: new ChromeEvent(),
       allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
         setImmediate(cb)
-      }
-    },
-    contentSettings: {
+      },
       plugins: {
         setAsync: function () {
           return Promise.resolve()

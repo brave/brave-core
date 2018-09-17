@@ -187,13 +187,13 @@ describe('Shields API', () => {
 
   describe('setAllowAds', function () {
     before(function () {
-      this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
+      this.spy = sinon.spy(chrome.braveShields.plugins, 'setAsync')
       this.p = shieldsAPI.setAllowAds('https://www.brave.com', 'block')
     })
     after(function () {
       this.spy.restore()
     })
-    it('calls chrome.contentSettings.plugins with the correct args', function () {
+    it('calls chrome.braveShields.plugins with the correct args', function () {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
@@ -201,7 +201,7 @@ describe('Shields API', () => {
         setting: 'block'
       })
     })
-    it('passes only 1 arg to chrome.contentSettings.plugins', function () {
+    it('passes only 1 arg to chrome.braveShields.plugins', function () {
       assert.equal(this.spy.getCall(0).args.length, 1)
     })
     it('resolves the returned promise', function (cb) {
@@ -215,13 +215,13 @@ describe('Shields API', () => {
 
   describe('setAllowTrackers', function () {
     before(function () {
-      this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
+      this.spy = sinon.spy(chrome.braveShields.plugins, 'setAsync')
       this.p = shieldsAPI.setAllowTrackers('https://www.brave.com', 'block')
     })
     after(function () {
       this.spy.restore()
     })
-    it('calls chrome.contentSettings.plugins with the correct args', function () {
+    it('calls chrome.braveShields.plugins with the correct args', function () {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
@@ -229,7 +229,7 @@ describe('Shields API', () => {
         setting: 'block'
       })
     })
-    it('passes only 1 arg to chrome.contentSettings.plugins', function () {
+    it('passes only 1 arg to chrome.braveShields.plugins', function () {
       assert.equal(this.spy.getCall(0).args.length, 1)
     })
     it('resolves the returned promise', function (cb) {
@@ -243,13 +243,13 @@ describe('Shields API', () => {
 
   describe('setAllowHTTPUpgradableResource', function () {
     before(function () {
-      this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
+      this.spy = sinon.spy(chrome.braveShields.plugins, 'setAsync')
       this.p = shieldsAPI.setAllowHTTPUpgradableResources('https://www.brave.com', 'block')
     })
     after(function () {
       this.spy.restore()
     })
-    it('calls chrome.contentSettings.plugins with the correct args', function () {
+    it('calls chrome.braveShields.plugins with the correct args', function () {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: '*://www.brave.com/*',
@@ -257,7 +257,7 @@ describe('Shields API', () => {
         setting: 'block'
       })
     })
-    it('passes only 1 arg to chrome.contentSettings.plugins', function () {
+    it('passes only 1 arg to chrome.braveShields.plugins', function () {
       assert.equal(this.spy.getCall(0).args.length, 1)
     })
     it('resolves the returned promise', function (cb) {
@@ -271,7 +271,7 @@ describe('Shields API', () => {
 
   describe('setAllowJavaScript', function () {
     before(function () {
-      this.spy = sinon.spy(chrome.contentSettings.javascript, 'setAsync')
+      this.spy = sinon.spy(chrome.braveShields.javascript, 'setAsync')
       this.p = shieldsAPI.setAllowJavaScript('https://www.brave.com', 'block')
     })
 
@@ -279,7 +279,7 @@ describe('Shields API', () => {
       this.spy.restore()
     })
 
-    it('calls chrome.contentSettings.plugins with the correct args', function () {
+    it('calls chrome.braveShields.plugins with the correct args', function () {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
@@ -287,7 +287,7 @@ describe('Shields API', () => {
       })
     })
 
-    it('passes only 1 arg to chrome.contentSettings.plugins', function () {
+    it('passes only 1 arg to chrome.braveShields.plugins', function () {
       assert.equal(this.spy.getCall(0).args.length, 1)
     })
 
@@ -302,13 +302,13 @@ describe('Shields API', () => {
 
   describe('setAllowFingerprinting', function () {
     before(function () {
-      this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
+      this.spy = sinon.spy(chrome.braveShields.plugins, 'setAsync')
       this.p = shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
     })
     after(function () {
       this.spy.restore()
     })
-    it('calls chrome.contentSettings.plugins with the correct args', function () {
+    it('calls chrome.braveShields.plugins with the correct args', function () {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
@@ -323,7 +323,7 @@ describe('Shields API', () => {
         setting: 'block'
       })
     })
-    it('passes only 1 arg to chrome.contentSettings.plugins', function () {
+    it('passes only 1 arg to chrome.braveShields.plugins', function () {
       assert.equal(this.spy.getCall(0).args.length, 1)
       assert.equal(this.spy.getCall(1).args.length, 1)
     })
@@ -340,13 +340,13 @@ describe('Shields API', () => {
 
   describe('setAllowCookies', function () {
     before(function () {
-      this.spy = sinon.spy(chrome.contentSettings.plugins, 'setAsync')
+      this.spy = sinon.spy(chrome.braveShields.plugins, 'setAsync')
       this.p = shieldsAPI.setAllowCookies('https://www.brave.com', 'block')
     })
     after(function () {
       this.spy.restore()
     })
-    it('calls chrome.contentSettings.plugins with the correct args', function () {
+    it('calls chrome.braveShields.plugins with the correct args', function () {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
@@ -367,7 +367,7 @@ describe('Shields API', () => {
         setting: 'block'
       })
     })
-    it('passes only 1 arg to chrome.contentSettings.plugins', function () {
+    it('passes only 1 arg to chrome.braveShields.plugins', function () {
       assert.equal(this.spy.getCall(0).args.length, 1)
       assert.equal(this.spy.getCall(1).args.length, 1)
     })
