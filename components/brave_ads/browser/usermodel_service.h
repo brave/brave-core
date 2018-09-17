@@ -12,10 +12,13 @@
 #include "components/sessions/core/session_id.h"
 
 namespace brave_ads {
-class UserModelService : public KeyedService {
+class UsermodelService : public KeyedService {
  public:
-    UserModelService();
-    ~UserModelService() override;
+    UsermodelService();
+    ~UsermodelService() override;
+
+
+ private:
 };
 }  // namespace brave_ads
 

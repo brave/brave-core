@@ -9,7 +9,9 @@ source_set("browser") {
       "usermodel_service.cc",
       "usermodel_service.h",
       "usermodel_helper.cc",
-      "usermodel_helper.h"
+      "usermodel_helper.h",
+      "usermodel_service_factory.h",
+      "usermodel_service_factory.cc"
     ]
 
   deps = [
