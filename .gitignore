@@ -3,6 +3,7 @@
 /.idea/
 /browser/resources/brave_extension/
 /components/brave_webtorrent/extension/out/
+/components/brave_rewards/extension/out/
 /dist/
 /out/
 /vendor

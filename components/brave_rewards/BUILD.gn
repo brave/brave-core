@@ -10,7 +10,9 @@ grit("resources") {
     "brave_rewards_resources.pak",
   ]
 
-  deps = []
+  deps = [
+    "//brave/components/brave_rewards/extension:brave_rewards_panel"
+  ]
 
   resource_ids = ""
 }

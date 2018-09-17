@@ -37,9 +37,7 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     Add(IDR_BRAVE_EXTENSON, brave_extension_path);
   }
 
-// !defined(OFFICIAL_BUILD) should be removed once brave/brave-browser#920
-// (the proper extension UI) is implemented.
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED) && !defined(OFFICIAL_BUILD)
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   if (!command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
     base::FilePath brave_rewards_path(FILE_PATH_LITERAL(""));
     brave_rewards_path =
