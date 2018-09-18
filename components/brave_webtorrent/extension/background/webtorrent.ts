@@ -8,15 +8,17 @@ import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
 import { Instance } from 'parse-torrent'
 
-let webTorrent: WebTorrent.Instance
+let webTorrent: WebTorrent.Instance | undefined
 let servers: { [key: string]: any } = { }
 
-export const init = () => {
-  webTorrent = new WebTorrent({ tracker: { wrtc: false } })
-  addWebtorrentEvents(webTorrent)
-}
+export const getWebTorrent = () => {
+  if (!webTorrent) {
+    webTorrent = new WebTorrent({ tracker: { wrtc: false } })
+    addWebtorrentEvents(webTorrent)
+  }
 
-export const getWebTorrent = () => webTorrent
+  return webTorrent
+}
 
 export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string) => void) => {
   if (!torrent.infoHash) return // torrent is not ready
@@ -49,12 +51,18 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
 }
 
 export const addTorrent = (torrentId: string | Instance) => {
-  const torrentObj = webTorrent.add(torrentId)
+  const torrentObj = getWebTorrent().add(torrentId)
   addTorrentEvents(torrentObj)
 }
 
 export const findTorrent = (infoHash: string) => {
-  return webTorrent.torrents.find(torrent => torrent.infoHash === infoHash)
+  return getWebTorrent().torrents.find(torrent => torrent.infoHash === infoHash)
+}
+
+const maybeDestroyWebTorrent = () => {
+  if (!webTorrent || webTorrent.torrents.length !== 0) return
+  webTorrent.destroy()
+  webTorrent = undefined
 }
 
 export const delTorrent = (infoHash: string) => {
@@ -64,4 +72,6 @@ export const delTorrent = (infoHash: string) => {
     servers[infoHash].close()
     delete servers[infoHash]
   }
+
+  maybeDestroyWebTorrent()
 }
