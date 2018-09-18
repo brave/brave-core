@@ -17,6 +17,8 @@ bool IsBraveCommands(int id) {
 }
 }
 
+namespace chrome {
+
 BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
     : BrowserCommandController(browser),
       browser_(browser),
@@ -119,3 +121,5 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 
   return true;
 }
+
+}  // namespace chrome
