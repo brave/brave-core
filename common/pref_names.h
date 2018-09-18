@@ -19,5 +19,6 @@ extern const char kAdBlockCurrentRegion[];
 extern const char kWidevineOptedIn[];
 extern const char kUseAlternatePrivateSearchEngine[];
 extern const char kBraveThemeType[];
+extern const char kLocationBarIsWide[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

@@ -5,6 +5,7 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/browser/extensions/extension_util.h"
@@ -43,7 +44,11 @@ void BraveToolbarView::Init() {
       bookmarks::prefs::kEditBookmarksEnabled, browser()->profile()->GetPrefs(),
       base::Bind(&BraveToolbarView::OnEditBookmarksEnabledChanged,
                  base::Unretained(this)));
-
+  // track changes in wide locationbar setting
+  location_bar_is_wide_.Init(
+      kLocationBarIsWide, browser()->profile()->GetPrefs(),
+      base::Bind(&BraveToolbarView::OnLocationBarIsWideChanged,
+                 base::Unretained(this)));
   // Only location bar in non-normal mode
   if (!is_display_mode_normal()) {
     return;
@@ -57,6 +62,11 @@ void BraveToolbarView::Init() {
 
 void BraveToolbarView::OnEditBookmarksEnabledChanged() {
   Update(nullptr);
+}
+
+void BraveToolbarView::OnLocationBarIsWideChanged() {
+  Layout();
+  SchedulePaint();
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
@@ -87,6 +97,88 @@ void BraveToolbarView::ShowBookmarkBubble(
       browser()->profile(), url, already_bookmarked);
   if (bubble_widget && star_view)
     star_view->OnBubbleWidgetCreated(bubble_widget);
+}
+
+// Returns right-margin
+int BraveToolbarView::SetLocationBarBounds(const int available_width,
+                                          const int location_bar_min_width,
+                                          const int next_element_x,
+                                          const int element_padding) {
+  DCHECK(initialized_);
+  DCHECK(is_display_mode_normal());
+  // Allow the option of the LocationBar having horizontal margin.
+  // With this option, we support a dynamic percentage of margin, with
+  // a maximum width.
+  const bool restrict_location_bar_width = !location_bar_is_wide_.GetValue();
+  const int location_bar_max_width = restrict_location_bar_width
+                                      ? 1080
+                                      : available_width;
+  const auto toolbar_width = width();
+  int location_bar_width = available_width;
+  int location_bar_margin_h = 0;
+  int location_bar_center_offset = 0;
+  if (restrict_location_bar_width) {
+    double location_bar_margin_h_pc = 0.07;
+    if (toolbar_width < 700)
+      location_bar_margin_h_pc = 0;
+    else if (toolbar_width < 850)
+      location_bar_margin_h_pc = 0.03;
+    else if (toolbar_width < 1000)
+      location_bar_margin_h_pc = 0.05;
+    // Apply the target margin, adjusting for min and max width of LocationBar
+    // Make sure any margin doesn't shrink the LocationBar beyond minimum width
+    if (available_width > location_bar_min_width) {
+      int location_bar_max_margin_h = (
+                                        available_width -
+                                        location_bar_min_width
+                                      ) /
+                                      2;
+      location_bar_margin_h = std::min(
+                                      (int)(
+                                        toolbar_width * location_bar_margin_h_pc
+                                      ),
+                                      location_bar_max_margin_h
+                                    );
+      location_bar_width = available_width - (location_bar_margin_h * 2);
+      // Allow the margin to expand so LocationBar is restrained to max width
+      if (location_bar_width > location_bar_max_width) {
+        location_bar_margin_h += (location_bar_width - location_bar_max_width) /
+                                  2;
+        location_bar_width = location_bar_max_width;
+      }
+    }
+    // Center LocationBar as much as possible within Toolbar
+    const int location_bar_toolbar_center_point =
+                                        next_element_x +
+                                        location_bar_margin_h +
+                                        (location_bar_width / 2);
+    // Calculate offset - positive for move left and negative for move right
+    location_bar_center_offset = location_bar_toolbar_center_point -
+                                                            (toolbar_width / 2);
+    // Can't shim more than we have space for, so restrict to margin size
+    // or in the case of moving-right, 25% of the space since we want to avoid
+    // touching browser actions where possible
+    location_bar_center_offset = (location_bar_center_offset > 0)
+                                ? std::min(location_bar_margin_h,
+                                          location_bar_center_offset)
+                                : std::max((int)(-location_bar_margin_h * .25),
+                                          location_bar_center_offset);
+  }
+  // Apply offset to margin
+  const int location_bar_margin_l = location_bar_margin_h -
+                                    location_bar_center_offset;
+  const int location_bar_margin_r = location_bar_margin_h +
+                                    location_bar_center_offset;
+
+  const int location_x = next_element_x + location_bar_margin_l;
+  const int location_height = location_bar_->GetPreferredSize().height();
+  const int location_y = (height() - location_height) / 2;
+
+  location_bar_->SetBounds(location_x, location_y,
+                           location_bar_width,
+                           location_height);
+
+  return location_bar_margin_r;
 }
 
 void BraveToolbarView::Layout() {
@@ -144,15 +236,15 @@ void BraveToolbarView::Layout() {
   } else {
     home_->SetVisible(false);
   }
+  next_element_x += element_padding;
 
-  // position Brave's BookmarkButton
-  if (bookmark_ && bookmark_->visible()) {
-    next_element_x += element_padding;
-    bookmark_->SetBounds(next_element_x, toolbar_button_y, bookmark_->GetPreferredSize().width(), toolbar_button_height);
-    next_element_x = bookmark_->bounds().right();
-  }
-  next_element_x += GetLayoutConstant(TOOLBAR_STANDARD_SPACING);
-
+  // Position Brave's BookmarkButton
+  // Only reserve space since the positioning will happen after LocationBar
+  // position is calculated so we can anchor BookmarkButton inside LocationBar's
+  // margin.
+  const bool bookmark_show = (bookmark_ && bookmark_->visible());
+  if (bookmark_show)
+    next_element_x += bookmark_->GetPreferredSize().width() + element_padding;
   int app_menu_width = app_menu_button_->GetPreferredSize().width();
   const int right_padding = GetLayoutConstant(TOOLBAR_STANDARD_SPACING);
 
@@ -169,19 +261,31 @@ void BraveToolbarView::Layout() {
     available_width -= avatar_->GetPreferredSize().width();
     available_width -= element_padding;
   }
-  // Don't allow the omnibox to shrink to the point of non-existence, so
-  // subtract its minimum width from the available width to reserve it.
+
+  // Allow the extension actions to take up a share of the available width,
+  // but consider the minimum for the location bar
+  const int location_bar_min_width = location_bar_->GetMinimumSize().width();
   const int browser_actions_width = browser_actions_->GetWidthForMaxWidth(
-      available_width - location_bar_->GetMinimumSize().width());
+      available_width - location_bar_min_width);
   available_width -= browser_actions_width;
-  const int location_bar_width = available_width;
 
-  const int location_height = location_bar_->GetPreferredSize().height();
-  const int location_y = (height() - location_height) / 2;
-  location_bar_->SetBounds(next_element_x, location_y,
-                           location_bar_width, location_height);
-
-  next_element_x = location_bar_->bounds().right();
+  const int location_bar_margin_r = SetLocationBarBounds(available_width,
+                                                        location_bar_min_width,
+                                                        next_element_x,
+                                                        element_padding);
+  // Position the bookmark button so it is anchored to the LocationBar
+  auto location_bar_bounds = location_bar_->bounds();
+  if (bookmark_show) {
+    const int bookmark_width = bookmark_->GetPreferredSize().width();
+    const int bookmark_x = location_bar_bounds.x() -
+                            bookmark_width -
+                            element_padding;
+    bookmark_->SetBounds(bookmark_x,
+                        toolbar_button_y,
+                        bookmark_width,
+                        toolbar_button_height);
+  }
+  next_element_x = location_bar_bounds.right() + location_bar_margin_r;
 
   // Note height() may be zero in fullscreen.
   const int browser_actions_height =

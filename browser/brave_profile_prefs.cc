@@ -26,7 +26,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   RegisterAlternatePrivateSearchEngineProfilePrefs(registry);
 
+  // appearance
   BraveThemeService::RegisterProfilePrefs(registry);
+  registry->RegisterBooleanPref(kLocationBarIsWide, false);
 
   tor::TorProfileService::RegisterProfilePrefs(registry);
 
