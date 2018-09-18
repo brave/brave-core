@@ -96,4 +96,10 @@ export const excludePublisher = (publisherKey: string) => action(types.ON_EXCLUD
   publisherKey
 })
 
+export const checkWalletExistence = () => action(types.CHECK_WALLET_EXISTENCE)
+
+export const onWalletExists = (exists: boolean) => action(types.ON_WALLET_EXISTS, {
+  exists
+})
+
 export const restorePublishers = () => action(types.ON_RESTORE_PUBLISHERS)

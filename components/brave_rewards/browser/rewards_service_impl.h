@@ -95,6 +95,7 @@ class RewardsServiceImpl : public RewardsService,
   void ExcludePublisher(const std::string publisherKey) const override;
   void RestorePublishers() override;
   std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() override;
+  bool IsWalletCreated() override;
 
  private:
   typedef base::Callback<void(int, const std::string&)> FetchCallback;

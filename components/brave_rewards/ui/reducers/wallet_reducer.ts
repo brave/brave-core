@@ -8,6 +8,18 @@ import { Reducer } from 'redux'
 import { types } from '../constants/rewards_types'
 import { generateQR } from '../utils'
 
+const createWallet = (state: Rewards.State) => {
+  state.walletCreated = true
+  state.enabledMain = true
+  state.enabledAds = true
+  state.enabledContribute = true
+  state.createdTimestamp = new Date().getTime()
+  chrome.send('getReconcileStamp', [])
+  chrome.send('getAddresses', [])
+
+  return state
+}
+
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
     case types.CREATE_WALLET:
@@ -15,13 +27,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     case types.WALLET_CREATED:
       state = { ...state }
-      state.walletCreated = true
-      state.enabledMain = true
-      state.enabledAds = true
-      state.enabledContribute = true
-      state.createdTimestamp = new Date().getTime()
-      chrome.send('getReconcileStamp', [])
-      chrome.send('getAddresses', [])
+      state = createWallet(state)
       break
     case types.WALLET_CREATE_FAILED:
       state = { ...state }
@@ -156,6 +162,20 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       {
         state = { ...state }
         state.reports = action.payload.reports
+        break
+      }
+    case types.CHECK_WALLET_EXISTENCE:
+      {
+        chrome.send('checkWalletExistence')
+        break
+      }
+    case types.ON_WALLET_EXISTS:
+      {
+        if (!action.payload.exists || state.walletCreated) {
+          break
+        }
+        state = { ...state }
+        state = createWallet(state)
         break
       }
   }
