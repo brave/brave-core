@@ -393,7 +393,7 @@ void RewardsServiceImpl::OnMediaPublisherInfoLoaded(
     return;
   }
 
-  callback(ledger::Result::OK, std::move(info));
+  callback(ledger::Result::LEDGER_OK, std::move(info));
 }
 
 void RewardsServiceImpl::SaveMediaPublisherInfo(
@@ -490,8 +490,8 @@ void RewardsServiceImpl::LoadLedgerState(
 void RewardsServiceImpl::OnLedgerStateLoaded(
     ledger::LedgerCallbackHandler* handler,
     const std::string& data) {
-  handler->OnLedgerStateLoaded(data.empty() ? ledger::Result::ERROR
-                                            : ledger::Result::OK,
+  handler->OnLedgerStateLoaded(data.empty() ? ledger::Result::LEDGER_ERROR
+                                            : ledger::Result::LEDGER_OK,
                                data);
 }
 
@@ -509,7 +509,7 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
     const std::string& data) {
   handler->OnPublisherStateLoaded(
       data.empty() ? ledger::Result::NO_PUBLISHER_STATE
-                   : ledger::Result::OK,
+                   : ledger::Result::LEDGER_OK,
       data);
 }
 
@@ -532,7 +532,7 @@ void RewardsServiceImpl::SaveLedgerState(const std::string& ledger_state,
 void RewardsServiceImpl::OnLedgerStateSaved(
     ledger::LedgerCallbackHandler* handler,
     bool success) {
-  handler->OnLedgerStateSaved(success ? ledger::Result::OK
+  handler->OnLedgerStateSaved(success ? ledger::Result::LEDGER_OK
                                       : ledger::Result::NO_LEDGER_STATE);
 }
 
@@ -554,8 +554,8 @@ void RewardsServiceImpl::SavePublisherState(const std::string& publisher_state,
 void RewardsServiceImpl::OnPublisherStateSaved(
     ledger::LedgerCallbackHandler* handler,
     bool success) {
-  handler->OnPublisherStateSaved(success ? ledger::Result::OK
-                                         : ledger::Result::ERROR);
+  handler->OnPublisherStateSaved(success ? ledger::Result::LEDGER_OK
+                                         : ledger::Result::LEDGER_ERROR);
 }
 
 void RewardsServiceImpl::SavePublisherInfo(
@@ -576,8 +576,8 @@ void RewardsServiceImpl::OnPublisherInfoSaved(
     ledger::PublisherInfoCallback callback,
     std::unique_ptr<ledger::PublisherInfo> info,
     bool success) {
-  callback(success ? ledger::Result::OK
-                   : ledger::Result::ERROR, std::move(info));
+  callback(success ? ledger::Result::LEDGER_OK
+                   : ledger::Result::LEDGER_ERROR, std::move(info));
 
   TriggerOnContentSiteUpdated();
 }
@@ -608,7 +608,7 @@ void RewardsServiceImpl::OnPublisherInfoLoaded(
     return;
   }
 
-  callback(ledger::Result::OK,
+  callback(ledger::Result::LEDGER_OK,
       std::make_unique<ledger::PublisherInfo>(list[0]));
 }
 
@@ -905,8 +905,8 @@ void RewardsServiceImpl::SavePublishersList(const std::string& publishers_list,
 void RewardsServiceImpl::OnPublishersListSaved(
     ledger::LedgerCallbackHandler* handler,
     bool success) {
-  handler->OnPublishersListSaved(success ? ledger::Result::OK
-                                         : ledger::Result::ERROR);
+  handler->OnPublishersListSaved(success ? ledger::Result::LEDGER_OK
+                                         : ledger::Result::LEDGER_ERROR);
 }
 
 void RewardsServiceImpl::SetTimer(uint64_t time_offset,
@@ -944,7 +944,7 @@ void RewardsServiceImpl::OnPublisherListLoaded(
     const std::string& data) {
   handler->OnPublisherListLoaded(
       data.empty() ? ledger::Result::NO_PUBLISHER_LIST
-                   : ledger::Result::OK,
+                   : ledger::Result::LEDGER_OK,
       data);
 }
 
