@@ -138,6 +138,6 @@
     "react-chrome-redux": "^1.5.1",
     "throttleit": "^1.0.0",
     "torrent-discovery": "github:brave/torrent-discovery#b565f40278c1cb910722ceb027a739d9173d587a",
-    "webtorrent": "github:brave/webtorrent#8ae3aead004bb3f1220c8d5103f8b04193e410ad"
+    "webtorrent": "github:brave/webtorrent#7742597c9cee74100dcd1f241e1a55aff93adf5c"
   }
 }
