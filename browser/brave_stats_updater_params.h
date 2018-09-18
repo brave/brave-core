@@ -32,7 +32,9 @@ class BraveStatsUpdaterParams {
   std::string GetFirstCheckMadeParam() const;
   std::string GetWeekOfInstallationParam() const;
 
- private:
+  void SavePrefs();
+
+private:
   PrefService* pref_service_;
   std::string ymd_;
   int woy_;
@@ -44,7 +46,6 @@ class BraveStatsUpdaterParams {
   std::string week_of_installation_;
 
   void LoadPrefs();
-  void SavePrefs();
 
   std::string BooleanToString(bool bool_value) const;
 

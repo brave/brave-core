@@ -30,7 +30,6 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service,
 }
 
 BraveStatsUpdaterParams::~BraveStatsUpdaterParams() {
-  SavePrefs();
 }
 
 std::string BraveStatsUpdaterParams::GetDailyParam() const {

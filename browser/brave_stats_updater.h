@@ -19,6 +19,8 @@ class SimpleURLLoader;
 
 namespace brave {
 
+class BraveStatsUpdaterParams;
+
 class BraveStatsUpdater {
  public:
   BraveStatsUpdater(PrefService* pref_service);
@@ -29,7 +31,9 @@ class BraveStatsUpdater {
 
  private:
   // Invoked from SimpleURLLoader after download is complete.
-  void OnSimpleLoaderComplete(std::unique_ptr<std::string> response_body);
+  void OnSimpleLoaderComplete(
+      std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
+      std::unique_ptr<std::string> response_body);
 
   // Invoked from RepeatingTimer when server ping timer fires.
   void OnServerPingTimerFired();
