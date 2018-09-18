@@ -969,4 +969,8 @@ std::map<std::string, brave_rewards::BalanceReport> RewardsServiceImpl::GetAllBa
   return newReports;
 }
 
+bool RewardsServiceImpl::IsWalletCreated() {
+  return ledger_->IsWalletCreated();
+}
+
 }  // namespace brave_rewards
