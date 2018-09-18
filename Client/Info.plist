@@ -37,6 +37,8 @@
 			<string>com.brave.ios</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>http</string>
+				<string>https</string>
 				<string>brave</string>
 			</array>
 		</dict>
