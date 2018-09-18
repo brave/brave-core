@@ -572,6 +572,15 @@ class TabWebView: BraveWebView, MenuHelperInterface {
 
         return super.hitTest(point, with: event)
     }
+    
+    // rdar://33283179 Apple bug where `serverTrust` is not defined as KVO when it should be
+    override func value(forUndefinedKey key: String) -> Any? {
+        if key == #keyPath(WKWebView.serverTrust) {
+            return serverTrust
+        }
+
+        return super.value(forUndefinedKey: key)
+    }
 }
 
 ///

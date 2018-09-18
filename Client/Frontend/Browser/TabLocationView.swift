@@ -53,7 +53,7 @@ class TabLocationView: UIView {
         }
     }
 
-    var hasOnlySecureContent = false {
+    var isSecure = false {
         didSet {
             updateLockImageView()
         }
@@ -73,8 +73,8 @@ class TabLocationView: UIView {
     
     private func updateLockImageView() {
         let wasHidden = lockImageView.isHidden
-        let isFullySecure = (url?.scheme == "https" && hasOnlySecureContent)
-        lockImageView.isHidden = !isFullySecure
+        lockImageView.isHidden = !isSecure
+
         if wasHidden != lockImageView.isHidden {
             UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil)
         }
