@@ -129,7 +129,7 @@ void TorLauncherImpl::Launch(const TorConfig& config,
   base::FilePath tor_data_path = config.tor_data_path();
   if (!tor_data_path.empty()) {
     if (!base::DirectoryExists(tor_data_path))
-      DCHECK(base::CreateDirectory(tor_data_path));
+      base::CreateDirectory(tor_data_path);
     args.AppendArg("--DataDirectory");
     args.AppendArgPath(tor_data_path);
     args.AppendArg("--Log");
@@ -141,7 +141,7 @@ void TorLauncherImpl::Launch(const TorConfig& config,
   base::FilePath tor_watch_path = config.tor_watch_path();
   if (!tor_watch_path.empty()) {
     if (!base::DirectoryExists(tor_watch_path))
-      DCHECK(base::CreateDirectory(tor_watch_path));
+      base::CreateDirectory(tor_watch_path);
     args.AppendArg("--pidfile");
     args.AppendArgPath(tor_watch_path.AppendASCII("tor.pid"));
     args.AppendArg("--controlport");
