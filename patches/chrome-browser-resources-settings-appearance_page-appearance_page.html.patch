@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-index 720d25d126a118315a08cef90d77d1fc78775254..d78a87d0f592d74e7f69cc2b003fe94b8b0f0075 100644
+index 720d25d126a118315a08cef90d77d1fc78775254..24928e2e3e764dee4e2ebe1310ffc70ca9c032c5 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
 @@ -19,6 +19,10 @@
@@ -19,7 +19,17 @@ index 720d25d126a118315a08cef90d77d1fc78775254..d78a87d0f592d74e7f69cc2b003fe94b
          <div class="hr"></div>
 +</if>
 +<if expr="not _google_chrome">
-+        <settings-brave-appearance-page></settings-brave-appearance-page>
++        <settings-brave-appearance-theme prefs="{{prefs}}"></settings-brave-appearance-theme>
  </if>
          <div class="settings-row continuation" id="themeRow"
              hidden="[[!pageVisibility.setTheme]]">
+@@ -140,6 +147,9 @@
+             </settings-radio-group>
+           </div>
+         </template>
++<if expr="not _google_chrome">
++            <settings-brave-appearance-toolbar prefs="{{prefs}}"></settings-brave-appearance-toolbar>
++</if>
+         <settings-toggle-button hidden="[[!pageVisibility.bookmarksBar]]"
+             pref="{{prefs.bookmark_bar.show_on_all_tabs}}"
+             label="$i18n{showBookmarksBar}">
