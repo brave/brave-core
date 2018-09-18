@@ -11,3 +11,10 @@ declare namespace chrome {
 declare namespace chrome.dns {
   function resolve (hostname: string, callback: any): void
 }
+
+declare namespace chrome.braveRewards {
+  const onWalletCreated: {
+    addListener: (callback: () => void) => void
+  }
+  const createWallet: () => {}
+}

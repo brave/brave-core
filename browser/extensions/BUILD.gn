@@ -2,6 +2,8 @@ import("//build/config/features.gni")
 
 source_set("extensions") {
   sources = [
+    "api/brave_rewards_api.cc",
+    "api/brave_rewards_api.h",
     "api/brave_shields_api.cc",
     "api/brave_shields_api.h",
     "api/content_settings/brave_content_settings_store.cc",

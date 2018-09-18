@@ -34,6 +34,11 @@
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
 
+#include "extensions/browser/event_router.h"
+#include "extensions/browser/extension_api_frame_id_map.h"
+#include "brave/common/extensions/api/brave_rewards.h"
+using extensions::Event;
+using extensions::EventRouter;
 
 using namespace net::registry_controlled_domains;
 using namespace std::placeholders;
@@ -740,8 +745,20 @@ void RewardsServiceImpl::RunTask(
 }
 
 void RewardsServiceImpl::TriggerOnWalletInitialized(int error_code) {
+  // webui
   for (auto& observer : observers_)
     observer.OnWalletInitialized(this, error_code);
+
+  // extension
+  EventRouter* event_router = EventRouter::Get(profile_);
+  if (event_router) {
+    std::unique_ptr<base::ListValue> args(new base::ListValue());
+    std::unique_ptr<Event> event(
+        new Event(extensions::events::BRAVE_WALLET_CREATED,
+          extensions::api::brave_rewards::OnWalletCreated::kEventName,
+          std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+  }
 }
 
 void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
