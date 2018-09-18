@@ -13,8 +13,7 @@ export const rewardsPanelReducer = (state: RewardsPanelState = defaultState, act
   const payload = action.payload
   switch (action.type) {
     case types.CREATE_WALLET:
-      // TODO create wallet
-      // chrome.send('createWalletRequested', [])
+      chrome.braveRewards.createWallet()
       break
     case types.ON_WALLET_CREATED:
       state = { ...state }

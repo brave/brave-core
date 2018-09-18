@@ -1,0 +1,29 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "braveRewards",
+    "description": "Use the <code>chrome.braveRewards</code> API for rewards panel.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/brave_rewards_api.h"
+    },
+    "events": [
+      {
+        "name": "onWalletCreated",
+        "type": "function",
+        "description": "Fired when wallet is created",
+        "parameters": []
+      }
+    ],
+   "functions": [
+     {
+       "name": "createWallet",
+       "type": "function",
+       "description": "Creates new wallet",
+       "parameters": []
+     }
+   ]
+  }
+]

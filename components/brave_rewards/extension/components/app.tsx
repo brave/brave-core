@@ -16,15 +16,13 @@ import { ApplicationState, ComponentProps } from '../constants/rewardsPanelState
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
 
-import { getUIMessages } from '../background/api/locale_api'
-
 interface Props extends ComponentProps {
 }
 
 export class RewardsPanel extends React.Component<Props, {}> {
 
   render () {
-    const { rewardsPanelData } = this.props
+    const { rewardsPanelData, actions } = this.props
 
     return (
       <>
@@ -32,7 +30,7 @@ export class RewardsPanel extends React.Component<Props, {}> {
           !rewardsPanelData.walletCreated
           ? <PanelWelcome
             variant={'one'}
-            optInAction={getUIMessages}
+            optInAction={actions.createWallet}
           />
           : <WalletPanel />
         }
