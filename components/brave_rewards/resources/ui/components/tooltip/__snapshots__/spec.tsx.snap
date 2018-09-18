@@ -2,7 +2,7 @@
 
 exports[`Tooltip tests basic tests matches the snapshot 1`] = `
 .c0 {
-  z-index: 2;
+  display: inline-block;
   position: relative;
 }
 
@@ -17,6 +17,7 @@ exports[`Tooltip tests basic tests matches the snapshot 1`] = `
   background: #0C0D21;
   text-align: center;
   padding: 10px;
+  z-index: 2;
   border-radius: 3px;
   box-shadow: 1px 1px 5px 0 rgba(34,35,38,0.43);
   display: none;

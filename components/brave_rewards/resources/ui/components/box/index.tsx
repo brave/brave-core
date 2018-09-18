@@ -102,7 +102,7 @@ export default class Box extends React.PureComponent<Props, State> {
                 settingsChild && ((toggle && checked) || !toggle) ?
                 <Tooltip
                   id={'brave-ads-tip'}
-                  content={getLocale('adsTooltipTitle')}
+                  content={getLocale('contributeTooltip')}
                 >
                   <StyledSettingsIcon float={'right'} onClick={this.settingsClick}>
                     <SettingsIcon />

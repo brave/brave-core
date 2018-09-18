@@ -15,7 +15,7 @@ import {
 import Table, { Row } from '../../../components/dataTables/table'
 import Profile, { Provider } from '../profile'
 import { getLocale } from '../../../helpers'
-import { Tokens } from '../'
+import { Tokens, Tooltip } from '../'
 import { CloseStrokeIcon } from '../../../components/icons'
 
 interface ProfileCell {
@@ -129,9 +129,11 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
       if (this.props.showRemove) {
         cell.content.push({
           content: (
-            <StyledRemove onClick={row.onRemove}>
-              <CloseStrokeIcon />
-            </StyledRemove>
+            <Tooltip content={getLocale('excludeSite')}>
+              <StyledRemove onClick={row.onRemove}>
+                <CloseStrokeIcon />
+              </StyledRemove>
+            </Tooltip>
           ),
           customStyle: {
             textAlign: 'right'

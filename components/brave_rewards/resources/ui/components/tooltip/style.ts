@@ -10,7 +10,7 @@ interface StyleProps {
 }
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
-  z-index: 2;
+  display: inline-block;
   position: relative;
 `
 
@@ -23,6 +23,7 @@ export const StyledTooltip = styled<StyleProps, 'div'>('div')`
   background: #0C0D21;
   text-align: center;
   padding: 10px;
+  z-index: 2;
   border-radius: 3px;
   box-shadow: 1px 1px 5px 0 rgba(34, 35, 38, 0.43);
   display: ${p => p.displayed ? 'inline-block' : 'none'};
