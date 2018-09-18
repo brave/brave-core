@@ -8,7 +8,7 @@ import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
 import { Instance } from 'parse-torrent'
 
-let webTorrent: WebTorrent.Instance
+let webTorrent: WebTorrent.Instance | undefined
 let servers: { [key: string]: any } = { }
 
 export const getWebTorrent = () => {
@@ -59,6 +59,12 @@ export const findTorrent = (infoHash: string) => {
   return getWebTorrent().torrents.find(torrent => torrent.infoHash === infoHash)
 }
 
+const maybeDestroyWebTorrent = () => {
+  if (!webTorrent || webTorrent.torrents.length !== 0) return
+  webTorrent.destroy()
+  webTorrent = undefined
+}
+
 export const delTorrent = (infoHash: string) => {
   const torrent = findTorrent(infoHash)
   if (torrent) torrent.destroy()
@@ -66,4 +72,6 @@ export const delTorrent = (infoHash: string) => {
     servers[infoHash].close()
     delete servers[infoHash]
   }
+
+  maybeDestroyWebTorrent()
 }
