@@ -17,6 +17,12 @@ interface Props extends Rewards.ComponentProps {
 }
 
 export class App extends React.Component<Props, {}> {
+  componentDidMount () {
+    if (!this.props.rewardsData.walletCreated) {
+      this.actions.checkWalletExistence()
+    }
+  }
+
   onCreateWalletClicked = () => {
     this.actions.createWallet()
   }
@@ -27,6 +33,7 @@ export class App extends React.Component<Props, {}> {
 
   render () {
     const { rewardsData } = this.props
+
     return (
       <div id='rewardsPage'>
         {

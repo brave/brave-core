@@ -97,6 +97,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onBalanceReports(reports)
   }
 
+  function walletExists (exists: boolean) {
+    getActions().onWalletExists(exists)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -110,7 +114,8 @@ window.cr.define('brave_rewards', function () {
     reconcileStamp,
     addresses,
     contributeList,
-    balanceReports
+    balanceReports,
+    walletExists
   }
 })
 
