@@ -12,7 +12,8 @@ import {
   FeatureBlock,
   Paragraph,
   NewTabHeading,
-  EmphasizedText
+  EmphasizedText,
+  LinkText
 } from 'brave-ui/features/newTab'
 import { SwitchButton } from 'brave-ui/old'
 
@@ -38,9 +39,9 @@ export default class PrivateTabSearchEngineOption extends React.PureComponent<Pr
       <FeatureBlock>
         <Paragraph>
           {getLocale('defaultSearchEngineDisclaimer')}&nbsp;&nbsp;
-          <a href='chrome://settings/search' target='blank' rel='noreferrer noopener'>
+          <LinkText href='chrome://settings/search' target='blank' rel='noreferrer noopener'>
             {getLocale('searchPreferences')}
-          </a>
+          </LinkText>
       </Paragraph>
     </FeatureBlock>
     )

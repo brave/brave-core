@@ -36,7 +36,7 @@ export default class PrivateTabTorOption extends React.PureComponent<{}, {}> {
         </aside>
         <article>
           <NewTabHeading level={2}>
-            {getLocale('makeThisTabMuchMorePrivateWith')}&nbsp;
+            {getLocale('browseTheWebMorePrivatelyWith')}&nbsp;
             <EmphasizedText>tor</EmphasizedText>
             <LabelledText>beta</LabelledText>
           </NewTabHeading>

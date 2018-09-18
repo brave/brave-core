@@ -122,8 +122,9 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "day", IDS_BRAVE_NEW_TAB_DAY },
         { "days", IDS_BRAVE_NEW_TAB_DAYS },
         // private tab
-        { "thisIsAPrivateTab", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_TAB },
-        { "makeThisTabMuchMorePrivateWith", IDS_BRAVE_PRIVATE_NEW_TAB_MAKE_THIS_TAB_MUCH_MORE_PRIVATE },
+        { "thisIsAPrivateWindow", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW },
+        { "thisIsAPrivateWindowWithTor", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW_WITH_TOR },
+        { "browseTheWebMorePrivatelyWith", IDS_BRAVE_PRIVATE_NEW_TAB_BROWSE_THE_WEB_MORE_PRIVATELY_WITH },
         { "torDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_DISCLAIMER },
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
         { "defaultSearchEngineDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DEFAULT_SEARCH_ENGINE_DISCLAIMER },

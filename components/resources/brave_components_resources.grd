@@ -155,16 +155,17 @@
       <message name="IDS_BRAVE_NEW_TAB_DAYS" desc="Displays the number of days.">days</message>
 
       <!-- WebUI private tab resources -->
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_TAB" desc="Private Tab Title">This is a Private Tab</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_MAKE_THIS_TAB_MUCH_MORE_PRIVATE" desc="Description about Tor">Make this tab much more private with</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_DISCLAIMER" desc="Disclaimer about Tor">Tor hides your IP address from the sites you visit, and hides the sites you visit from your ISP or your employer. Tor can slow down browsing. Some sites treat anonymous users differently, or might not work at all. Some sites might even ask you to prove you’re human.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="Learn more link">Search Preferences...</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DEFAULT_SEARCH_ENGINE_DISCLAIMER" desc="Disclaimer about the default search engine for Tor">By default, DuckDuckGo is the search engine for Private Tabs with Tor.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PREFERENCES" desc="Link to Search Preferences">Learn more...</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW" desc="Private Window Title">This is a Private Window</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW_WITH_TOR" desc="Private Window with Tor Title">This is a Private Window with Tor</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BROWSE_THE_WEB_MORE_PRIVATELY_WITH" desc="Description about Tor">Browse the web more privately with</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_DISCLAIMER" desc="Disclaimer about Tor">To browse with even more privacy, enable Tor protection by opening a new window with Tor protection from the profile menu. This functionality is in early Beta and is very volatile. It’s only advised for advanced users.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="Learn more link">Search preferences</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DEFAULT_SEARCH_ENGINE_DISCLAIMER" desc="Disclaimer about the default search engine for Tor">By default, DuckDuckGo is the search engine for Private windows with Tor.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PREFERENCES" desc="Link to Search Preferences">Learn more</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_WITH" desc="Partial text for making your private navigation more private">Private search with</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DDG_DISCLAIMER" desc="Disclaimer about the DuckDuckGo search engine">With private search, Brave will use DuckDuckGo to answer your searches while you are in a private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_MORE_ABOUT_PRIVATE_TABS" desc="Link to know more about private tabs">More about private tabs</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER" desc="Disclaimer about private tabs">Whether or not you use Tor, private tabs are not logged in page history or counted in Brave Payments calculations. Private tabs and their cookies always vanish when the browser is closed. If you use private tabs without Tor, the sites you visit will be visible to your ISP or your employer. You won’t be anonymous, and sites will learn your public IP address. With Tor, Brave works hard to ensure that you’re extremely difficult to track online while providing a delightful browsing experience. But if your personal safety depends on remaining anonymous you may wish to use the Tor Browser from https://torproject.org/ instead.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DDG_DISCLAIMER" desc="Disclaimer about the DuckDuckGo search engine">DuckDuckGo is a search engine that does not track your search history, enabling you to search more privately.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_MORE_ABOUT_PRIVATE_TABS" desc="Link to know more about private tabs">More about private windows</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER" desc="Disclaimer about private tabs">Whether or not you use Tor, private windows are not logged in page history or counted in Brave Payments calculations. Private tabs and their cookies always vanish when the browser is closed. If you use private windows without Tor, the sites you visit will be visible to your ISP or your employer. You won’t be anonymous, and sites will learn your public IP address. With Tor, Brave works hard to ensure that you’re extremely difficult to track online while providing a delightful browsing experience. But if your personal safety depends on remaining anonymous you may wish to use the Tor Browser from https://torproject.org/ instead.</message>
 
       <!-- WebUI adblock resources -->
       <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total Ads Blocked:</message>

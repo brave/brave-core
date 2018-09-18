@@ -44,9 +44,13 @@ export default class NewPrivateTab extends React.PureComponent<Props, {}> {
           </PageHeader>
           <main>
             <NewTabHeading>
-              {getLocale('thisIsAPrivateTab')}
+              {getLocale(isTor ? 'thisIsAPrivateWindowWithTor' : 'thisIsAPrivateWindow')}
             </NewTabHeading>
-            <PrivateTabTorOption />
+            {
+              !isTor
+                ? <PrivateTabTorOption />
+                : null
+            }
             <PrivateTabSearchEngineOption
               onChangePrivateSearchEngine={onChangePrivateSearchEngine}
               useAlternativePrivateSearchEngine={useAlternativePrivateSearchEngine}
