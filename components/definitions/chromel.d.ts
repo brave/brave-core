@@ -7,3 +7,7 @@ declare namespace chrome {
   function setVariableValue (variable: string, value: any): void
   function send (stat: string, args?: any[]): void
 }
+
+declare namespace chrome.dns {
+  function resolve (hostname: string, callback: any): void
+}
