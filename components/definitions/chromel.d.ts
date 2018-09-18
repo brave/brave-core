@@ -8,13 +8,6 @@ declare namespace chrome {
   function send (stat: string, args?: any[]): void
 }
 
-declare namespace chrome.dns {
-  function resolve (hostname: string, callback: any): void
-}
-
 declare namespace chrome.braveRewards {
-  const onWalletCreated: {
-    addListener: (callback: () => void) => void
-  }
   const createWallet: () => {}
 }
