@@ -69,7 +69,7 @@ class AutoplayPermissionContextTests : public ChromeRenderViewHostTestHarness {
   DISALLOW_COPY_AND_ASSIGN(AutoplayPermissionContextTests);
 };
 
-// Autoplay permission status should still be default(ask) even for
+// Autoplay permission status should still be default(block) even for
 // insecure origin
 TEST_F(AutoplayPermissionContextTests, TestInsecureQueryingUrl) {
   AutoplayPermissionContextTest permission_context(profile());
@@ -77,29 +77,29 @@ TEST_F(AutoplayPermissionContextTests, TestInsecureQueryingUrl) {
   GURL secure_url("https://www.example.com");
 
   // Check that there is no saved content settings.
-  EXPECT_EQ(CONTENT_SETTING_ASK,
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
             HostContentSettingsMapFactory::GetForProfile(profile())
                 ->GetContentSetting(
                     insecure_url.GetOrigin(), insecure_url.GetOrigin(),
                     CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
   EXPECT_EQ(
-      CONTENT_SETTING_ASK,
+      CONTENT_SETTING_BLOCK,
       HostContentSettingsMapFactory::GetForProfile(profile())
           ->GetContentSetting(secure_url.GetOrigin(), insecure_url.GetOrigin(),
                               CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
   EXPECT_EQ(
-      CONTENT_SETTING_ASK,
+      CONTENT_SETTING_BLOCK,
       HostContentSettingsMapFactory::GetForProfile(profile())
           ->GetContentSetting(insecure_url.GetOrigin(), secure_url.GetOrigin(),
                               CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
 
-  EXPECT_EQ(CONTENT_SETTING_ASK,
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
             permission_context
                 .GetPermissionStatus(nullptr /* render_frame_host */,
                                      insecure_url, insecure_url)
                 .content_setting);
 
-  EXPECT_EQ(CONTENT_SETTING_ASK,
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
             permission_context
                 .GetPermissionStatus(nullptr /* render_frame_host */,
                                      insecure_url, secure_url)
