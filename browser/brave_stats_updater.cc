@@ -11,6 +11,7 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "content/public/browser/browser_thread.h"
 #include "brave/browser/version_info.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
@@ -97,7 +98,9 @@ void BraveStatsUpdater::Stop() {
 }
 
 void BraveStatsUpdater::OnSimpleLoaderComplete(
+    std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
     std::unique_ptr<std::string> response_body) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   int response_code = -1;
   if (simple_url_loader_->ResponseInfo() &&
       simple_url_loader_->ResponseInfo()->headers)
@@ -112,6 +115,10 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
                << ", url: " << simple_url_loader_->GetFinalURL().spec();
     return;
   }
+
+  // The request to the update server succeeded, so it's safe to save
+  // the usage preferences now.
+  stats_updater_params->SavePrefs();
 }
 
 void BraveStatsUpdater::OnServerPingTimerFired() {
@@ -135,9 +142,9 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
           policy_exception_justification:
             "Not implemented."
         })");
-  brave::BraveStatsUpdaterParams stats_updater_params(pref_service_);
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GetUpdateURL(stats_updater_params);
+  auto stats_updater_params = std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
+  resource_request->url = GetUpdateURL(*stats_updater_params);
   resource_request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -151,7 +158,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
   simple_url_loader_->DownloadToString(
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnSimpleLoaderComplete,
-                     base::Unretained(this)),
+                     base::Unretained(this), std::move(stats_updater_params)),
       kMaxUpdateServerPingResponseSizeBytes);
 }
 
