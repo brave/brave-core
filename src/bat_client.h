@@ -51,6 +51,7 @@ class BatClient {
   void setGrant(const std::string& captchaResponse, const std::string& promotionId);
   void getGrantCaptcha();
   void getWalletProperties();
+  bool isWalletCreated() const;
 
  private:
   void saveState();

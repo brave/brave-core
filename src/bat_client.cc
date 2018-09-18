@@ -1077,4 +1077,8 @@ void BatClient::getGrantCaptchaCallback(bool success, const std::string& respons
   ledger_->OnGrantCaptcha(response);
 }
 
+bool BatClient::isWalletCreated() const {
+  return state_->bootStamp_ != 0u;
+}
+
 }  // namespace braveledger_bat_client

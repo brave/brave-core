@@ -612,4 +612,8 @@ void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
   RefreshPublishersList(retryAfterError);
 }
 
+bool LedgerImpl::IsWalletCreated() const {
+  return bat_client_->isWalletCreated();
+}
+
 }  // namespace bat_ledger
