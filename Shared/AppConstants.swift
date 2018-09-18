@@ -23,6 +23,7 @@ public enum KVOConstants: String {
     case canGoForward = "canGoForward"
     case contentSize = "contentSize"
     case hasOnlySecureContent = "hasOnlySecureContent"
+    case serverTrust = "serverTrust"
 }
 
 public struct AppConstants {

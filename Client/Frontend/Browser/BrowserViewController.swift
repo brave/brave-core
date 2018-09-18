@@ -27,6 +27,7 @@ private let KVOs: [KVOConstants] = [
     .URL,
     .title,
     .hasOnlySecureContent,
+    .serverTrust
 ]
 
 private let ActionSheetTitleMaxLength = 120
@@ -219,7 +220,7 @@ class BrowserViewController: UIViewController {
 
         if let tab = tabManager.selectedTab,
                let webView = tab.webView {
-            updateURLBarDisplayURL(tab)
+            updateURLBar(forTab: tab)
             navigationToolbar.updateBackStatus(webView.canGoBack)
             navigationToolbar.updateForwardStatus(webView.canGoForward)
             urlBar.locationView.loading = tab.loading
@@ -844,7 +845,7 @@ class BrowserViewController: UIViewController {
             assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
             return
         }
-
+        
         switch path {
         case .estimatedProgress:
             guard webView == tabManager.selectedTab?.webView,
@@ -856,23 +857,23 @@ class BrowserViewController: UIViewController {
             }
         case .loading:
             guard let loading = change?[.newKey] as? Bool else { break }
-
+            
             if webView == tabManager.selectedTab?.webView {
                 urlBar.locationView.loading = loading
             }
-
+            
             if !loading {
                 runScriptsOnWebView(webView)
             }
         case .URL:
             guard let tab = tabManager[webView] else { break }
-
+            
             // To prevent spoofing, only change the URL immediately if the new URL is on
             // the same origin as the current URL. Otherwise, do nothing and wait for
             // didCommitNavigation to confirm the page load.
             if tab.url?.origin == webView.url?.origin {
                 tab.url = webView.url
-
+                
                 if tab === tabManager.selectedTab && !tab.restoring {
                     updateUIForReaderHomeStateForTab(tab)
                 }
@@ -894,11 +895,39 @@ class BrowserViewController: UIViewController {
         case .canGoForward:
             guard webView == tabManager.selectedTab?.webView,
                 let canGoForward = change?[.newKey] as? Bool else { break }
-
+            
             navigationToolbar.updateForwardStatus(canGoForward)
         case .hasOnlySecureContent:
             guard let tab = tabManager[webView], tab === tabManager.selectedTab else { break }
-            urlBar.hasOnlySecureContent = webView.hasOnlySecureContent
+            
+            // Force isSecure to false as .serverTrust is called to validate server trust
+            let braveWebView = webView as? BraveWebView
+            braveWebView?.isSecure = false
+            updateURLBar(forTab: tab)
+        case .serverTrust:
+            guard let tab = tabManager[webView], tab === tabManager.selectedTab else { break }
+            
+            let braveWebView = webView as? BraveWebView
+            braveWebView?.isSecure = false
+            updateURLBar(forTab: tab)
+
+            guard let serverTrust = braveWebView?.serverTrust else {
+                break
+            }
+            
+            SecTrustEvaluateAsync(serverTrust, DispatchQueue.global()) { _, secTrustResult in
+                switch secTrustResult {
+                case .proceed, .unspecified:
+                    // Secure
+                    DispatchQueue.main.async {
+                        braveWebView?.isSecure = webView.hasOnlySecureContent
+                        self.updateURLBar(forTab: tab)
+                    }
+                default:
+                    // Insecure
+                    break
+                }
+            }
         default:
             assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
         }
@@ -914,7 +943,7 @@ class BrowserViewController: UIViewController {
     }
 
     func updateUIForReaderHomeStateForTab(_ tab: Tab) {
-        updateURLBarDisplayURL(tab)
+        updateURLBar(forTab: tab)
         scrollController.showToolbars(animated: false)
 
         if let url = tab.url {
@@ -930,12 +959,12 @@ class BrowserViewController: UIViewController {
         }
     }
 
-    /// Updates the URL bar text and button states.
-    /// Call this whenever the page URL changes.
-    fileprivate func updateURLBarDisplayURL(_ tab: Tab) {
+    /// Updates the URL bar security, text and button states.
+    fileprivate func updateURLBar(forTab tab: Tab) {
         urlBar.currentURL = tab.url?.displayURL
-        urlBar.hasOnlySecureContent = tab.webView?.hasOnlySecureContent ?? false
-
+        
+        urlBar.isSecure = tab.webView?.isSecure ?? false
+        
         let isPage = tab.url?.displayURL?.isWebPage() ?? false
         toolbar?.updatePageStatus(isPage)
         urlBar.updatePageStatus(isPage)
@@ -1746,7 +1775,7 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         if let tab = selected, let webView = tab.webView {
-            updateURLBarDisplayURL(tab)
+            updateURLBar(forTab: tab)
 
             if tab.type != previous?.type {
                 let theme = Theme.of(tab)
