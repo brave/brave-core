@@ -163,6 +163,7 @@ class LEDGER_EXPORT Ledger {
   virtual void SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) = 0;
   virtual void SetPublisherExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) = 0;
   virtual void RestorePublishers() = 0;
+  virtual bool IsWalletCreated() const = 0;
 };
 
 }  // namespace ledger
