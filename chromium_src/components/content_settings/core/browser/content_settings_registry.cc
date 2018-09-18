@@ -6,7 +6,7 @@ void ContentSettingsRegistry::BraveInit() {
   // Add CONTENT_SETTING_ASK and make it default for autoplay
   content_settings_info_.erase(CONTENT_SETTINGS_TYPE_AUTOPLAY);
   website_settings_registry_->UnRegister(CONTENT_SETTINGS_TYPE_AUTOPLAY);
-  Register(CONTENT_SETTINGS_TYPE_AUTOPLAY, "autoplay", CONTENT_SETTING_ASK,
+  Register(CONTENT_SETTINGS_TYPE_AUTOPLAY, "autoplay", CONTENT_SETTING_BLOCK,
            WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(),
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK,
                          CONTENT_SETTING_ASK),

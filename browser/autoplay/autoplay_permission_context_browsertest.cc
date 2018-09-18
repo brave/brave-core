@@ -93,6 +93,15 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
           CONTENT_SETTING_ALLOW);
     }
 
+    void AskAutoplay() {
+      content_settings()->SetContentSettingCustomScope(
+          top_level_page_pattern_,
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_AUTOPLAY,
+          std::string(),
+          CONTENT_SETTING_ASK);
+    }
+
     void BlockAutoplay() {
       content_settings()->SetContentSettingCustomScope(
           top_level_page_pattern_,
@@ -100,15 +109,6 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
           CONTENT_SETTINGS_TYPE_AUTOPLAY,
           std::string(),
           CONTENT_SETTING_BLOCK);
-    }
-
-    void ResetAutoplayToDefault() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern_,
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_AUTOPLAY,
-          std::string(),
-          CONTENT_SETTING_DEFAULT);
     }
 
     content::WebContents* contents() {
@@ -139,9 +139,48 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
     std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
-// Autoplay is ask by default
-IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskByDefault) {
+// Autoplay blocks by default, no bubble is shown
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockByDefault) {
   std::string result;
+  PermissionRequestManager* manager =
+      PermissionRequestManager::FromWebContents(contents());
+
+  NavigateToURLUntilLoadStop(autoplay_method_url());
+  EXPECT_FALSE(manager->IsBubbleVisible());
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+
+  result.clear();
+
+  NavigateToURLUntilLoadStop(autoplay_attr_url());
+  EXPECT_FALSE(manager->IsBubbleVisible());
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+
+  // Muted version of above
+  result.clear();
+
+  NavigateToURLUntilLoadStop(autoplay_method_muted_url());
+  EXPECT_FALSE(manager->IsBubbleVisible());
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+
+  result.clear();
+
+  NavigateToURLUntilLoadStop(autoplay_attr_muted_url());
+  EXPECT_FALSE(manager->IsBubbleVisible());
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
+  EXPECT_NE(result, kVideoPlaying);
+}
+
+// Switch autoplay to ask
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskAutoplay) {
+  std::string result;
+  AskAutoplay();
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
       contents());
 
@@ -180,6 +219,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskByDefault) {
 // Click allow from promt
 IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
   std::string result;
+  AskAutoplay();
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
       contents());
   auto popup_prompt_factory =
@@ -197,7 +237,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
 
-  ResetAutoplayToDefault();
+  AskAutoplay();
   popup_prompt_factory->ResetCounts();
   result.clear();
 
@@ -213,7 +253,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
   EXPECT_EQ(result, kVideoPlaying);
 
   // Muted version of above
-  ResetAutoplayToDefault();
+  AskAutoplay();
   popup_prompt_factory->ResetCounts();
   result.clear();
 
@@ -228,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
       kVideoPlayingDetect, &result));
   EXPECT_EQ(result, kVideoPlaying);
 
-  ResetAutoplayToDefault();
+  AskAutoplay();
   popup_prompt_factory->ResetCounts();
   result.clear();
 
@@ -247,6 +287,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllow) {
 // Click block from promt
 IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickBlock) {
   std::string result;
+  AskAutoplay();
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
       contents());
   auto popup_prompt_factory =
@@ -263,7 +304,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickBlock) {
       kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
 
-  ResetAutoplayToDefault();
+  AskAutoplay();
   popup_prompt_factory->ResetCounts();
   result.clear();
 
@@ -278,7 +319,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickBlock) {
   EXPECT_NE(result, kVideoPlaying);
 
   // Muted version of above
-  ResetAutoplayToDefault();
+  AskAutoplay();
   popup_prompt_factory->ResetCounts();
   result.clear();
 
@@ -292,7 +333,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickBlock) {
       kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
 
-  ResetAutoplayToDefault();
+  AskAutoplay();
   popup_prompt_factory->ResetCounts();
   result.clear();
 
