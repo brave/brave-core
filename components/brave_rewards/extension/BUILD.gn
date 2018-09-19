@@ -1,28 +1,27 @@
-import("//brave/components/common/typescript.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
 
-transpile_web_ui("brave_rewards_panel") {
-  inputs = [
-    "actions/rewards_panel_actions.ts",
-    "background.ts",
-    "background/actions/rewardsPanelActions.ts",
-    "background/api/locale_api.ts",
-    "background/api/tabs_api.ts",
-    "background/events/rewardsEvents.ts",
-    "background/reducers/index.ts",
-    "background/reducers/rewards_panel_reducer.ts",
-    "background/store.ts",
-    "brave_rewards_panel.html",
-    "brave_rewards_panel.tsx",
-    "components/app.tsx",
-    "constants/rewards_panel_types.ts",
-    "constants/rewardsPanelState.ts",
+grit("resources") {
+  source = "resources.grd"
+  outputs = [
+    "grit/brave_rewards_resources_map.cc",
+    "grit/brave_rewards_resources_map.h",
+    "grit/brave_rewards_resources.h",
+    "brave_rewards_resources.pak",
   ]
 
-  bundle_names = [
-    "brave_rewards_panel.bundle.js",
-    "brave_rewards_panel_background.bundle.js"
+  deps = [
+    "//brave/components/brave_rewards/extension/brave_rewards"
   ]
 
-  output_dir =
-    "$root_gen_dir/../../../brave/components/brave_rewards/extension/out"
+  resource_ids = ""
+
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/extension"
+}
+
+if (is_mac) {
+  bundle_data("framework_bundle_data") {
+    sources = [ "brave_rewards/_locales" ]
+    outputs = [ "{{bundle_resources_dir}}/brave_rewards/{{source_file_part}}" ]
+  }
 }

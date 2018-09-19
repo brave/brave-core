@@ -5,7 +5,7 @@
 #include "brave/browser/extensions/brave_component_extension_resource_manager.h"
 
 #include "brave/browser/resources/grit/brave_extension_resources_map.h"
-#include "brave/components/brave_rewards/grit/brave_rewards_resources_map.h"
+#include "brave/components/brave_rewards/extension/grit/brave_rewards_resources_map.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
 
 namespace extensions {

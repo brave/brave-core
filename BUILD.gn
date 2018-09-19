@@ -44,6 +44,14 @@ group("brave") {
   ]
 }
 
+group("framework_bundle_data") {
+  if (is_mac) {
+    public_deps = [
+      "vendor/brave-extension:brave_extension_framework_bundle_data",
+      "components/brave_rewards/extension:framework_bundle_data",
+    ]
+  }
+}
 group("brave_tests") {
   testonly = true
 

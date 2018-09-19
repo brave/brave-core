@@ -1,0 +1,34 @@
+import("//brave/components/common/typescript.gni")
+
+group("brave_rewards") {
+  deps = [
+    ":brave_rewards_panel",
+  ]
+}
+
+transpile_web_ui("brave_rewards_panel") {
+  inputs = [
+    "actions/rewards_panel_actions.ts",
+    "background.ts",
+    "background/actions/rewardsPanelActions.ts",
+    "background/api/locale_api.ts",
+    "background/api/tabs_api.ts",
+    "background/events/rewardsEvents.ts",
+    "background/reducers/index.ts",
+    "background/reducers/rewards_panel_reducer.ts",
+    "background/store.ts",
+    "brave_rewards_panel.html",
+    "brave_rewards_panel.tsx",
+    "components/app.tsx",
+    "constants/rewards_panel_types.ts",
+    "constants/rewardsPanelState.ts",
+  ]
+
+  bundle_names = [
+    "brave_rewards_panel.bundle.js",
+    "brave_rewards_panel_background.bundle.js"
+  ]
+
+  output_dir =
+    "$root_gen_dir/../../../brave/components/brave_rewards/extension/brave_rewards/out"
+}

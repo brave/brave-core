@@ -5,28 +5,28 @@
   "description": "Brave Rewards Extension",
   "default_locale": "en",
   "background" : {
-    "scripts": ["extension/out/brave_rewards_panel_background.bundle.js"],
+    "scripts": ["out/brave_rewards_panel_background.bundle.js"],
     "persistent": true
   },
   "permissions": ["tabs"],
   "browser_action": {
-    "default_popup": "extension/brave_rewards_panel.html",
+    "default_popup": "brave_rewards_panel.html",
     "default_icon": {
-      "16": "extension/img/bat-16.png",
-      "32": "extension/img/bat-32.png",
-      "48": "extension/img/bat-48.png",
-      "64": "extension/img/bat-64.png",
-      "128": "extension/img/bat-128.png",
-      "256": "extension/img/bat-256.png"
+      "16": "img/bat-16.png",
+      "32": "img/bat-32.png",
+      "48": "img/bat-48.png",
+      "64": "img/bat-64.png",
+      "128": "img/bat-128.png",
+      "256": "img/bat-256.png"
     }
   },
   "icons": {
-    "16": "extension/img/bat-16.png",
-    "32": "extension/img/bat-32.png",
-    "48": "extension/img/bat-48.png",
-    "64": "extension/img/bat-64.png",
-    "128": "extension/img/bat-128.png",
-    "256": "extension/img/bat-256.png"
+    "16": "img/bat-16.png",
+    "32": "img/bat-32.png",
+    "48": "img/bat-48.png",
+    "64": "img/bat-64.png",
+    "128": "img/bat-128.png",
+    "256": "img/bat-256.png"
   },
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmqLJHCRq1BdVqkYZuPiH3UxlEnF6ZZGq2ba8IOIuuAjGd3xFjA1yxKhuJWt17mCUonB04jG+BmxDQNj29gHhBHKwV20Zw4HNQeyXsThx6op4lfL0ypiZX727Dvcd2zn48eP+0hT/2oP3szHvsPDHrZUPwXcL6ButcJYWsO18OlIMPK4L3B/l37nOeAs2OVlSrrKFu7uiAfGj70kJYvAQdHEtCsuTsWX3ApZ6MM49XTYD5TyKvXJXHagsiDmqeAZPAgPrk32ES43deqZYWorWOCFHuRzjJUwNRJBJn59IP4DK5X1Y+Uc7VjZDk9EUft+BI8UT6M+Ok8EDaDZZI57c5QIDAQAB"
 }
