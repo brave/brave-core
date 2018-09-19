@@ -187,6 +187,7 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
   void SetContributionAmount(double amount) const override;
+  void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
 
   // URLFetcherDelegate impl

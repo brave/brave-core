@@ -75,6 +75,7 @@ class RewardsService : public KeyedService {
   virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
   virtual void SetPublisherAllowVideos(bool allow) const = 0;
   virtual void SetContributionAmount(double amount) const = 0;
+  virtual void SetUserChangedContribution() const = 0;
   virtual void SetAutoContribute(bool enabled) const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t& timer_id) = 0;
   virtual std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() = 0;
