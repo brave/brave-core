@@ -2,7 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "usermodel_service.h"
 #include "components/sessions/core/session_id.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -14,7 +13,7 @@
 
 namespace brave_ads {
 
-class UserModelService;
+class UsermodelService;
 
 class UserModelHelper : public content::WebContentsObserver,
                         public BrowserListObserver,
@@ -28,8 +27,13 @@ class UserModelHelper : public content::WebContentsObserver,
     void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                        const GURL& validated_url) override;
 
+    void OnDataReceived(const base::Value* val);
+
  private:
   SessionID tab_id_;
+
+  UsermodelService* usermodel_service_;  // NOT OWNED
+  
   friend class content::WebContentsUserData<UserModelHelper>;
   DISALLOW_COPY_AND_ASSIGN(UserModelHelper);
 };
