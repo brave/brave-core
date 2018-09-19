@@ -1123,12 +1123,14 @@ void BatClient::getGrantCaptcha() {
 void BatClient::getGrantCaptchaCallback(bool success,
                                         const std::string& response,
                                         const std::map<std::string, std::string>& headers) {
-  if (!success) {
+
+  auto it = headers.find("captcha-hint");
+  if (!success || it == headers.end()) {
     // TODO NZ Add error handler
     return;
   }
 
-  ledger_->OnGrantCaptcha(response);
+  ledger_->OnGrantCaptcha(response, it->second);
 }
 
 bool BatClient::isWalletCreated() const {

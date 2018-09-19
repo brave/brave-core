@@ -488,8 +488,8 @@ void LedgerImpl::GetGrantCaptcha() const {
   bat_client_->getGrantCaptcha();
 }
 
-void LedgerImpl::OnGrantCaptcha(const std::string& image) {
-  ledger_client_->OnGrantCaptcha(image);
+void LedgerImpl::OnGrantCaptcha(const std::string& image, const std::string& hint) {
+  ledger_client_->OnGrantCaptcha(image, hint);
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {
