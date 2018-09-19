@@ -90,6 +90,8 @@ void BraveReferralsService::Start() {
       this, &BraveReferralsService::OnFetchReferralHeadersTimerFired);
   DCHECK(fetch_referral_headers_timer_->IsRunning());
 
+  // On first run, read the promo code from user-data-dir and
+  // initialize the referral.
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
   if (download_id.empty() && first_run::IsChromeFirstRun())
     task_runner_->PostTaskAndReply(
@@ -100,6 +102,9 @@ void BraveReferralsService::Start() {
                    weak_factory_.GetWeakPtr()));
   else
     FetchReferralHeaders();
+
+  // Delete the promo code preference, if appropriate.
+  MaybeDeletePromoCodePref();
 
   // Check for referral finalization, if appropriate.
   MaybeCheckForReferralFinalization();
@@ -304,6 +309,13 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
   pref_service_->SetInteger(kReferralAttemptCount, count + 1);
 
   CheckForReferralFinalization();
+}
+
+void BraveReferralsService::MaybeDeletePromoCodePref() const {
+  base::Time now = base::Time::Now();
+  base::Time firstrun_timestamp = first_run::GetFirstRunSentinelCreationTime();
+  if (now - firstrun_timestamp >= base::TimeDelta::FromDays(90))
+    pref_service_->ClearPref(kReferralPromoCode);
 }
 
 std::string BraveReferralsService::BuildReferralInitPayload() const {

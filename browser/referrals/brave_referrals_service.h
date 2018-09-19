@@ -36,6 +36,7 @@ class BraveReferralsService {
   bool ReadPromoCode();
   void DeletePromoCodeFile() const;
   void MaybeCheckForReferralFinalization();
+  void MaybeDeletePromoCodePref() const;
   void InitReferral();
   std::string BuildReferralInitPayload() const;
   std::string BuildReferralFinalizationCheckPayload() const;
