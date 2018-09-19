@@ -48,7 +48,9 @@ class Tab: NSObject {
     var isPrivate: Bool {
         return type.isPrivate
     }
-
+    
+    var contentIsSecure = false
+    
     var tabState: TabState {
         return TabState(type: type, desktopSite: desktopSite, url: url, title: displayTitle, favicon: displayFavicon)
     }

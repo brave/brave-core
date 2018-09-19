@@ -7,8 +7,6 @@ import WebKit
 
 class BraveWebView: WKWebView {
     
-    var isSecure = false
-    
     init(frame: CGRect, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), privacyProtection: PrivacyProtectionProtocol = PrivacyProtection()) {
         if privacyProtection.nonPersistent {
             configuration.processPool = WKProcessPool()

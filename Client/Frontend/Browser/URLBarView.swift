@@ -178,12 +178,12 @@ class URLBarView: UIView {
         }
     }
     
-    var isSecure: Bool {
+    var contentIsSecure: Bool {
         get {
-            return locationView.isSecure
+            return locationView.contentIsSecure
         }
         set {
-            locationView.isSecure = newValue
+            locationView.contentIsSecure = newValue
         }
     }
     
