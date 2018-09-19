@@ -118,7 +118,8 @@ class LedgerImpl : public ledger::Ledger,
   void RecoverWallet(const std::string& passPhrase) const override;
   void OnRecoverWallet(ledger::Result result, double balance, const std::vector<braveledger_bat_helper::GRANT>& grants);
 
-  void LoadPublishersListCallback(bool result, const std::string& response);
+  void LoadPublishersListCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
 
   void OnPublishersListSaved(ledger::Result result) override;
 

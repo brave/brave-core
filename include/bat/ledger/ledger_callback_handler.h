@@ -45,7 +45,8 @@ class LEDGER_EXPORT LedgerCallbackHandler {
   virtual void OnURLRequestResponse(uint64_t request_id,
                                     const std::string& url,
                                     int response_code,
-                                    const std::string& response) {};
+                                    const std::string& response,
+                                    const std::map<std::string, std::string>& headers) {};
 
   virtual void OnPublishersListSaved(Result result) {};
 

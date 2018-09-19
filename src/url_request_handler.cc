@@ -21,8 +21,9 @@ void URLRequestHandler::Clear() {
 void URLRequestHandler::OnURLRequestResponse(uint64_t request_id,
                                             const std::string& url,
                                             int response_code,
-                                            const std::string& response) {
-  if (!RunRequestHandler(request_id, response_code == 200, response)) {
+                                            const std::string& response,
+                                            const std::map<std::string, std::string>& headers) {
+  if (!RunRequestHandler(request_id, response_code == 200, response, headers)) {
     LOG(ERROR) << "no request handler found for " << request_id;
     return;
   }
@@ -31,6 +32,9 @@ void URLRequestHandler::OnURLRequestResponse(uint64_t request_id,
     LOG(ERROR) << "[ RESPONSE ]";
     LOG(ERROR) << "> url: " << url;
     LOG(ERROR) << "> response: " << response;
+    for(std::pair<std::string, std::string> const& value: headers) {
+      LOG(ERROR) << "> header: " << value.first << " | " << value.second;
+    }
     LOG(ERROR) << "[ END RESPONSE ]";
   }
 }
@@ -49,13 +53,14 @@ bool URLRequestHandler::AddRequestHandler(
 
 bool URLRequestHandler::RunRequestHandler(uint64_t request_id,
                                           bool success,
-                                          const std::string& response) {
+                                          const std::string& response,
+                                          const std::map<std::string, std::string>& headers) {
   if (request_handlers_.find(request_id) == request_handlers_.end())
     return false;
 
   auto callback = request_handlers_[request_id];
   request_handlers_.erase(request_id);
-  callback(success, response);
+  callback(success, response, headers);
   return true;
 }
 
