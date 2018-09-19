@@ -3,15 +3,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledDropArea, StyledDrag, StyledText, StyledImageWrap } from './style'
+import { StyledWrapper, StyledDropArea, StyledDrag, StyledText, StyledImageWrap, StyledImage } from './style'
 import { getLocale } from '../../../helpers'
-import { BatColorIcon } from '../../../components/icons'
+
+const bat = require('./assets/bat.png')
 
 export interface Props {
   id?: string
   isWindows?: boolean
   onSolution: (x: number, y: number) => void
   dropBgImage: string
+  hint: string
 }
 
 export default class GrantCaptcha extends React.PureComponent<Props, {}> {
@@ -75,7 +77,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, dropBgImage } = this.props
+    const { id, dropBgImage, hint } = this.props
 
     return (
       <StyledWrapper
@@ -83,10 +85,12 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
         innerRef={this.refSet}
       >
         <StyledDrag>
-          <StyledImageWrap onDragStart={this.onCaptchaDrag} draggable={true}>
-            <BatColorIcon />
+          <StyledImageWrap>
+            <StyledImage src={bat} onDragStart={this.onCaptchaDrag} draggable={true} />
           </StyledImageWrap>
-          <StyledText>{getLocale('dndCaptcha')}</StyledText>
+          <StyledText>
+            {getLocale('dndCaptchaText1')} <b>{hint}</b> {getLocale('dndCaptchaText2')}
+          </StyledText>
         </StyledDrag>
         <StyledDropArea src={dropBgImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
       </StyledWrapper>

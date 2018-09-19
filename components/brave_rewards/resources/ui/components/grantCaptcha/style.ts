@@ -25,7 +25,9 @@ export const StyledDrag = styled<{}, 'div'>('div')`
 export const StyledImageWrap = styled<{}, 'div'>('div')`
   flex-basis: 80px;
   flex-shrink: 0;
-  margin-top: -15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`
@@ -36,4 +38,9 @@ export const StyledText = styled<{}, 'div'>('div')`
   color: #686978;
   text-align: left;
   padding-left: 13px;
+`
+
+export const StyledImage = styled<{}, 'img'>('img')`
+  width: 60px;
+  height: 52px;
 `

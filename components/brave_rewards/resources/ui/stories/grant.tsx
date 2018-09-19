@@ -48,6 +48,7 @@ storiesOf('Feature Components/Rewards/Grant', module)
           <GrantCaptcha
             onSolution={dummyClick}
             dropBgImage={captchaDrop}
+            hint={'blue'}
           />
         </div>
       )
