@@ -452,8 +452,8 @@ void RewardsServiceImpl::OnGrant(ledger::Result result,
   TriggerOnGrant(result, grant);
 }
 
-void RewardsServiceImpl::OnGrantCaptcha(const std::string& image) {
-  TriggerOnGrantCaptcha(image);
+void RewardsServiceImpl::OnGrantCaptcha(const std::string& image, const std::string& hint) {
+  TriggerOnGrantCaptcha(image, hint);
 }
 
 void RewardsServiceImpl::OnRecoverWallet(ledger::Result result,
@@ -804,9 +804,9 @@ void RewardsServiceImpl::GetGrantCaptcha() {
   ledger_->GetGrantCaptcha();
 }
 
-void RewardsServiceImpl::TriggerOnGrantCaptcha(const std::string& image) {
+void RewardsServiceImpl::TriggerOnGrantCaptcha(const std::string& image, const std::string& hint) {
   for (auto& observer : observers_)
-    observer.OnGrantCaptcha(this, image);
+    observer.OnGrantCaptcha(this, image, hint);
 }
 
 std::string RewardsServiceImpl::GetWalletPassphrase() const {

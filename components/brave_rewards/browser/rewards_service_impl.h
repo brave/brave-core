@@ -113,7 +113,7 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnWalletProperties(int error_code,
                                  std::unique_ptr<ledger::WalletInfo> result);
   void TriggerOnGrant(ledger::Result result, const ledger::Grant& grant);
-  void TriggerOnGrantCaptcha(const std::string& image);
+  void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
   void TriggerOnRecoverWallet(ledger::Result result,
                               double balance,
                               const std::vector<ledger::Grant>& grants);
@@ -143,7 +143,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnGrant(ledger::Result result, const ledger::Grant& grant) override;
-  void OnGrantCaptcha(const std::string& image) override;
+  void OnGrantCaptcha(const std::string& image, const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,
                       double balance,
                       const std::vector<ledger::Grant>& grants) override;

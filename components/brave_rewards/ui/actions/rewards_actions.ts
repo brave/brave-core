@@ -32,8 +32,8 @@ export const onGrant = (properties: Rewards.Grant) => action(types.ON_GRANT, {
 
 export const getGrantCaptcha = () => action(types.GET_GRANT_CAPTCHA)
 
-export const onGrantCaptcha = (image: string) => action(types.ON_GRANT_CAPTCHA, {
-  image
+export const onGrantCaptcha = (captcha: Rewards.Captcha) => action(types.ON_GRANT_CAPTCHA, {
+  captcha
 })
 
 export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GRANT_CAPTCHA, {

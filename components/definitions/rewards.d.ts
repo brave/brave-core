@@ -58,6 +58,7 @@ declare namespace Rewards {
     probi: string
     expiryTime: number
     captcha?: string
+    hint?: string
     status?: 'wrongPosition' | 'serverError' | number | null
   }
 
@@ -105,5 +106,10 @@ declare namespace Rewards {
     oneTime: number
     opening: number
     total?: number
+  }
+
+  export interface Captcha {
+    image: string
+    hint: string
   }
 }

@@ -33,7 +33,9 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
       {
         if (state.grant) {
           let grant = state.grant
-          grant.captcha = `data:image/jpeg;base64,${action.payload.image}`
+          const props = action.payload.captcha
+          grant.captcha = `data:image/jpeg;base64,${props.image}`
+          grant.hint = props.hint
           state = {
             ...state,
             grant

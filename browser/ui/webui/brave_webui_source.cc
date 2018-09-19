@@ -87,12 +87,12 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "21bfb482964742768c5020312af36224.svg", IDR_BRAVE_REWARDS_IMG_DONATE_DISABLED },
         { "4fcfa7f92c5fc22c2b6f34701bfdcd0a.jpeg", IDR_BRAVE_REWARDS_IMG_BART_TEMP },
         { "6dd79d472f9c73429b26dae4ef14575e.svg", IDR_BRAVE_REWARDS_IMG_WALLET_BG },
-        { "a6f0c88adbc3c7a77cbb47e8c4e92f0d.png", IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT },
+        { "c9255cc2aa3d81ca6328e82d25a95766.png", IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT },
         { "1bb9aa85741c6d1c077f043324aae835.svg", IDR_BRAVE_REWARDS_IMG_WELCOME_BG },
         { "88eeadb981d67d5e096afb9b8fe26df7.svg", IDR_BRAVE_REWARDS_IMG_BAT },
         { "87186eec176189163ce037bcc7676f2a.svg", IDR_BRAVE_REWARDS_IMG_BTC },
         { "7d9f0ededf215a4702ae5c457f7779ae.svg", IDR_BRAVE_REWARDS_IMG_ETH },
-        { "2c6f798a519beabb327149c349912f5f.svg", IDR_BRAVE_REWARDS_IMG_LTC }
+        { "2c6f798a519beabb327149c349912f5f.svg", IDR_BRAVE_REWARDS_IMG_LTC },
       }
     }, {
       std::string("adblock"), {
@@ -229,7 +229,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "deposit", IDS_BRAVE_UI_DEPOSIT },
         { "deposits", IDS_BRAVE_UI_DEPOSITS },
         { "description", IDS_BRAVE_UI_DESCRIPTION },
-        { "dndCaptcha", IDS_BRAVE_UI_DND_CAPTCHA },
+        { "dndCaptchaText1", IDS_BRAVE_UI_DND_CAPTCHA_TEXT_1 },
+        { "dndCaptchaText2", IDS_BRAVE_UI_DND_CAPTCHA_TEXT_2 },
         { "donation", IDS_BRAVE_UI_DONATION },
         { "donationAmount", IDS_BRAVE_UI_DONATION_AMOUNT },
         { "donateMonthly", IDS_BRAVE_UI_DONATE_MONTHLY },

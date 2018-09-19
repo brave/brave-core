@@ -65,8 +65,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onGrant(properties)
   }
 
-  function grantCaptcha (image: string) {
-    getActions().onGrantCaptcha(image)
+  function grantCaptcha (captcha: Rewards.Captcha) {
+    getActions().onGrantCaptcha(captcha)
   }
 
   function walletPassphrase (pass: string) {
