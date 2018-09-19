@@ -877,6 +877,10 @@ void RewardsServiceImpl::SetContributionAmount(double amount) const {
   return ledger_->SetContributionAmount(amount);
 }
 
+void RewardsServiceImpl::SetUserChangedContribution() const {
+  ledger_->SetUserChangedContribution();
+}
+
 void RewardsServiceImpl::SetAutoContribute(bool enabled) const {
   return ledger_->SetAutoContribute(enabled);
 }

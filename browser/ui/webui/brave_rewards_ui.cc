@@ -382,6 +382,7 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     }
 
     if (key == "contributionMonthly") {
+      rewards_service_->SetUserChangedContribution();
       rewards_service_->SetContributionAmount(std::stod(value));
     }
 
