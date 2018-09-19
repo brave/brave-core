@@ -14,6 +14,7 @@ class BraveBrowserContentSettingBubbleModelDelegate
   ~BraveBrowserContentSettingBubbleModelDelegate() override;
 
   void ShowWidevineLearnMorePage();
+  void ShowLearnMorePage(ContentSettingsType type) override;
 
  private:
   Browser* const browser_;
