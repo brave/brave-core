@@ -82,7 +82,8 @@ void BatPublishers::MakePayment(const ledger::PaymentData& payment_data) {
   auto filter = CreatePublisherFilter(payment_data.publisher_id,
                                       payment_data.category,
                                       payment_data.local_month,
-                                      payment_data.local_year);
+                                      payment_data.local_year,
+                                      ledger::PUBLISHER_EXCLUDE::DEFAULT);
   ledger_->GetPublisherInfo(filter,
       std::bind(&BatPublishers::makePaymentInternal, this,
           payment_data, _1, _2));
@@ -103,7 +104,8 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
     auto filter = CreatePublisherFilter(publisher_id,
         ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
         visit_data.local_month,
-        visit_data.local_year);
+        visit_data.local_year,
+        ledger::PUBLISHER_EXCLUDE::DEFAULT);
     ledger_->GetPublisherInfo(filter,
         std::bind(&BatPublishers::saveVisitInternal, this,
             publisher_id, visit_data, duration, _1, _2));
@@ -114,12 +116,14 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
     const std::string& publisher_id,
     ledger::PUBLISHER_CATEGORY category,
     ledger::PUBLISHER_MONTH month,
-    int year) {
+    int year,
+    ledger::PUBLISHER_EXCLUDE excluded) {
   ledger::PublisherInfoFilter filter;
   filter.id = publisher_id;
   filter.category = category;
   filter.month = month;
   filter.year = year;
+  filter.excluded = excluded;
 
   return filter;
 }
@@ -212,7 +216,10 @@ void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PU
   auto filter = CreatePublisherFilter(publisher_id,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
-      -1);
+      -1,
+      (exclude == ledger::PUBLISHER_EXCLUDE::DEFAULT)
+      ? ledger::PUBLISHER_EXCLUDE::EXCLUDED
+      : ledger::PUBLISHER_EXCLUDE::DEFAULT);
   ledger_->GetPublisherInfo(filter, std::bind(&BatPublishers::onSetExcludeInternal,
                             this, exclude, _1, _2));
 }
@@ -237,7 +244,8 @@ void BatPublishers::restorePublishers() {
   auto filter = CreatePublisherFilter("",
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
-      -1);
+      -1,
+      ledger::PUBLISHER_EXCLUDE::EXCLUDED);
   ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::onRestorePublishersInternal,
                                 this, _1, _2));
 }
@@ -248,12 +256,9 @@ void BatPublishers::onRestorePublishersInternal(const ledger::PublisherInfoList&
   }
 
   for (size_t i = 0; i < publisherInfoList.size(); i++) {
-    if (isExcluded(publisherInfoList[i].id,
-                   publisherInfoList[i].excluded)) {
-      // Set to PUBLISHER_EXCLUDE::DEFAULT (0)
-      setExclude(publisherInfoList[i].id,
-                 ledger::PUBLISHER_EXCLUDE::DEFAULT);
-    }
+    // Set to PUBLISHER_EXCLUDE::DEFAULT (0)
+    setExclude(publisherInfoList[i].id,
+               ledger::PUBLISHER_EXCLUDE::DEFAULT);
   }
 }
 
@@ -371,7 +376,8 @@ void BatPublishers::synopsisNormalizer(const ledger::PublisherInfo& info) {
   auto filter = CreatePublisherFilter("",
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       info.month,
-      info.year);
+      info.year,
+      ledger::PUBLISHER_EXCLUDE::DEFAULT);
   // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
   // We need to limit it and iterate.
   ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::synopsisNormalizerInternal, this,
