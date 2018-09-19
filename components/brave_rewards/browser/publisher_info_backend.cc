@@ -5,6 +5,7 @@
 #include "brave/components/brave_rewards/browser/publisher_info_backend.h"
 
 #include "base/files/file_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "third_party/leveldatabase/env_chromium.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 #include "third_party/leveldatabase/src/include/leveldb/iterator.h"
@@ -127,10 +128,8 @@ bool PublisherInfoBackend::EnsureInitialized() {
 
   leveldb_env::Options options;
   options.create_if_missing = true;
-#if defined(OS_WIN) && (defined(UNICODE) || defined(_UNICODE))
-  //TODO: Windows build is UNICODE-aware: dow e handle it properly? Check all other UNICODE pathes, strings, etc.
-  std::wstring_convert < std::codecvt_utf8 <wchar_t> > myconv;
-  std::string path = myconv.to_bytes(path_.value());
+#if defined(OS_WIN)
+  std::string path = base::UTF16ToUTF8(path_.value());
 #else
   std::string path = path_.value();
 #endif
