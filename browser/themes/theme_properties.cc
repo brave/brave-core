@@ -9,37 +9,43 @@
 
 namespace {
 
+const SkColor kLightToolbar = SkColorSetRGB(0xf3, 0xf3, 0xf3);
+const SkColor kLightFrame = SkColorSetRGB(0xd5, 0xd9, 0xdc);
+const SkColor kLightToolbarIcon = SkColorSetRGB(0x42, 0x42, 0x42);
+
 base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
   switch (id) {
     // Applies when the window is active, tabs and also tab bar everywhere except active tab
     case ThemeProperties::COLOR_FRAME:
     case ThemeProperties::COLOR_BACKGROUND_TAB:
-      return SkColorSetRGB(0xD8, 0xDE, 0xE1);
+    case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
+      return kLightFrame;
     // Window when the window is innactive, tabs and also tab bar everywhere except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_BACKGROUND_TAB_INACTIVE:
-      return SkColorSetRGB(0xC8, 0xCE, 0xC8);
+      return color_utils::HSLShift(kLightFrame, { -1, -1, 0.6 });
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
+    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR:
+    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_INACTIVE:
     case ThemeProperties::COLOR_DETACHED_BOOKMARK_BAR_BACKGROUND:
     case ThemeProperties::COLOR_CONTROL_BACKGROUND:
-    case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
-      return SkColorSetRGB(0xF6, 0xF7, 0xF9);
+      return kLightToolbar;
     case ThemeProperties::COLOR_TAB_TEXT:
-      return SkColorSetRGB(0x22, 0x23, 0x26);
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
     case ThemeProperties::COLOR_BACKGROUND_TAB_TEXT:
-      return SkColorSetRGB(0x22, 0x23, 0x26);
-    case ThemeProperties::COLOR_LOCATION_BAR_BORDER:
-      return SkColorSetRGB(0xd5, 0xd9, 0xdc);
+    case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
+      return kLightToolbarIcon;
+    case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
+      return color_utils::AlphaBlend(kLightToolbarIcon, kLightToolbar, 77);
     default:
       return base::nullopt;
   }
 }
 
-const SkColor kDarkFrame = SkColorSetRGB(0x22, 0x22, 0x22);
 const SkColor kDarkToolbar = SkColorSetRGB(0x39, 0x39, 0x39);
+const SkColor kDarkFrame = SkColorSetRGB(0x22, 0x22, 0x22);
 const SkColor kDarkToolbarIcon = SkColorSetRGB(0xed, 0xed, 0xed);
 
 base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
@@ -66,11 +72,6 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
     case ThemeProperties::COLOR_BACKGROUND_TAB_TEXT:
       return SkColorSetRGB(0xFF, 0xFF, 0xFF);
-    case ThemeProperties::COLOR_LOCATION_BAR_BORDER:
-      // TODO: Should be location bar background, but location bar has hover
-      // color which we don't have access to here.
-      // Consider increasing height instead.
-      return kDarkToolbar;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
@@ -108,11 +109,6 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
     case ThemeProperties::COLOR_BACKGROUND_TAB_TEXT:
       return SkColorSetRGB(0xFF, 0xFF, 0xFF);
-    case ThemeProperties::COLOR_LOCATION_BAR_BORDER:
-      // TODO: Should be location bar background, but location bar has hover
-      // color which we don't have access to here.
-      // Consider increasing height instead.
-      return kPrivateToolbar;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON:
       return kDarkToolbarIcon;
     case ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON_INACTIVE:
