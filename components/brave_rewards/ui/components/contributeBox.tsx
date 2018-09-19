@@ -63,7 +63,7 @@ class ContributeBox extends React.Component<Props, State> {
         },
         url: item.url,
         attention: item.percentage,
-        onRemove: () => { this.actions.excludePublisher(item.id) }
+        onRemove: () => { this.actions.excludePublisher(item.publisherKey) }
       }
     })
   }

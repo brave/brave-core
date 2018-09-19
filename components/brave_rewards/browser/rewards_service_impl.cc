@@ -84,7 +84,6 @@ ContentSite PublisherInfoToContentSite(
   content_site.url = publisher_info.url;
   content_site.provider = publisher_info.provider;
   content_site.favicon_url = publisher_info.favicon_url;
-  content_site.id = publisher_info.id;
   return content_site;
 }
 
