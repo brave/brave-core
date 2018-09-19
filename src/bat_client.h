@@ -31,12 +31,14 @@ class BatClient {
   void requestCredentialsCallback(bool result, const std::string& response);
   void registerPersonaCallback(bool result, const std::string& response);
   void setContributionAmount(const double& amount);
+  void setUserChangedContribution();
   void setAutoContribute(const bool& enabled);
   const std::string& getBATAddress() const;
   const std::string& getBTCAddress() const;
   const std::string& getETHAddress() const;
   const std::string& getLTCAddress() const;
   uint64_t getReconcileStamp() const;
+  bool didUserChangeContributionAmount() const;
   double getContributionAmount() const;
   bool getAutoContribute() const;
   bool isReadyForReconcile();

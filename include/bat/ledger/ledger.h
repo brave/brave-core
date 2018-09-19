@@ -132,6 +132,7 @@ class LEDGER_EXPORT Ledger {
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
   virtual void SetPublisherAllowVideos(bool allow) = 0;
   virtual void SetContributionAmount(double amount) = 0;
+  virtual void SetUserChangedContribution() = 0;
   virtual void SetAutoContribute(bool enabled) = 0;
   virtual void SetBalanceReport(PUBLISHER_MONTH month,
                               int year,
