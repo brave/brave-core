@@ -962,7 +962,8 @@ fileprivate class EmptyPrivateTabsView: UIView {
         addSubview(learnMoreButton)
 
         titleLabel.snp.makeConstraints { make in
-            make.center.equalTo(self)
+            make.centerY.equalTo(self).offset(-40.0)
+            make.centerX.equalTo(self)
         }
 
         iconImageView.snp.makeConstraints { make in
