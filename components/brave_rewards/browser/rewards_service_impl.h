@@ -98,7 +98,7 @@ class RewardsServiceImpl : public RewardsService,
   bool IsWalletCreated() override;
 
  private:
-  typedef base::Callback<void(int, const std::string&)> FetchCallback;
+  typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
 
   const extensions::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,

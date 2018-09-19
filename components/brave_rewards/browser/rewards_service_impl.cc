@@ -703,15 +703,27 @@ void RewardsServiceImpl::OnURLFetchComplete(
 
   auto callback = fetchers_[source];
   fetchers_.erase(source);
-
   int response_code = source->GetResponseCode();
   std::string body;
+  std::map<std::string, std::string> headers;
+  scoped_refptr<net::HttpResponseHeaders> headersList = source->GetResponseHeaders();
+
+  if (headersList) {
+    size_t iter = 0;
+    std::string key;
+    std::string value;
+    while (headersList->EnumerateHeaderLines(&iter, &key, &value)) {
+      key = base::ToLowerASCII(key);
+      headers[key] = value;
+    }
+  }
+
   if (response_code != net::URLFetcher::ResponseCode::RESPONSE_CODE_INVALID &&
       source->GetStatus().is_success()) {
     source->GetResponseAsString(&body);
   }
 
-  callback.Run(response_code, body);
+  callback.Run(response_code, body, headers);
 }
 
 void RewardsServiceImpl::RunIOTask(
