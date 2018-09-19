@@ -1,0 +1,44 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/extensions/brave_extension_service.h"
+#include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
+#include "chrome/browser/profiles/profile.h"
+
+namespace extensions {
+
+BraveExtensionService::BraveExtensionService(Profile* profile,
+    const base::CommandLine* command_line,
+    const base::FilePath& install_directory,
+    ExtensionPrefs* extension_prefs,
+    Blacklist* blacklist,
+    bool autoupdate_enabled,
+    bool extensions_enabled,
+    OneShotEvent* ready) :
+    ExtensionService(profile, command_line, install_directory, extension_prefs,
+        blacklist, autoupdate_enabled, extensions_enabled, ready) {
+}
+
+BraveExtensionService::~BraveExtensionService() {
+}
+
+void BraveExtensionService::AddComponentExtension(const Extension* extension) {
+  ExtensionService::AddComponentExtension(extension);
+
+  // ContentSettingsStore::RegisterExtension is only called for default components
+  // on the first run with a fresh profile. All restarts of the browser after that do not call it.
+  // This causes ContentSettingsStore's `entries_` to never insert the component ID
+  // and then  ContentSettingsStore::GetValueMap always returns nullptr.
+  // I don't think Chromium is affected by this simply because they don't use content settings
+  // from default component extensions.
+  extension_prefs_->OnExtensionInstalled(extension, Extension::ENABLED,
+                                         syncer::StringOrdinal(),
+                                         extensions::kInstallFlagNone,
+                                         std::string(),
+                                         base::nullopt);
+  extensions::ContentSettingsService::Get(profile_)->OnExtensionPrefsLoaded(
+      extension->id(), extension_prefs_);
+}
+
+}  // namespace extensions
