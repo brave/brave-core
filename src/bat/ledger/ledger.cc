@@ -85,13 +85,15 @@ PaymentData::~PaymentData() {}
 PublisherInfoFilter::PublisherInfoFilter() :
     category(PUBLISHER_CATEGORY::ALL_CATEGORIES),
     month(PUBLISHER_MONTH::ANY),
-    year(-1) {}
+    year(-1),
+    excluded(PUBLISHER_EXCLUDE::DEFAULT) {}
 PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     id(filter.id),
     category(filter.category),
     month(filter.month),
     year(filter.year),
-    order_by(filter.order_by) {}
+    order_by(filter.order_by),
+    excluded(filter.excluded) {}
 PublisherInfoFilter::~PublisherInfoFilter() {}
 
 PublisherInfo::PublisherInfo() :
