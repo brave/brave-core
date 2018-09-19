@@ -72,7 +72,8 @@ private extension TrayToBrowserAnimator {
             // Scale up the cell and reset the transforms for the header/footers
             cell.frame = finalFrame
             container.layoutIfNeeded()
-            cell.title.transform = CGAffineTransform(translationX: 0, y: -cell.title.frame.height)
+            cell.titleBackgroundView.transform = CGAffineTransform(translationX: 0, y: -cell.titleBackgroundView.frame.height)
+            cell.layer.borderWidth = 0.0
 
             bvc.tabTrayDidDismiss(tabTray)
             UIApplication.shared.windows.first?.backgroundColor = UIConstants.AppBackgroundColor
@@ -146,7 +147,7 @@ private extension BrowserToTrayAnimator {
         
         container.addSubview(cell)
         cell.layoutIfNeeded()
-        cell.title.transform = CGAffineTransform(translationX: 0, y: -cell.title.frame.size.height)
+        cell.titleBackgroundView.transform = CGAffineTransform(translationX: 0, y: -cell.titleBackgroundView.frame.size.height)
 
         // Hide views we don't want to show during the animation in the BVC
         bvc.favoritesViewController?.view.isHidden = true
@@ -171,11 +172,12 @@ private extension BrowserToTrayAnimator {
                 options: [],
                 animations: {
                 cell.frame = finalFrame
-                cell.title.transform = .identity
+                cell.titleBackgroundView.transform = .identity
                 cell.layoutIfNeeded()
-                
-                UIApplication.shared.windows.first?.backgroundColor = TabTrayControllerUX.BackgroundColor
+                UIApplication.shared.windows.first?.backgroundColor = TabTrayControllerUX.BackgroundColor.colorFor(tabTray.privateMode ? .private : .regular)
                 tabTray.navigationController?.setNeedsStatusBarAppearanceUpdate()
+                    
+                cell.layer.borderWidth = TabTrayControllerUX.DefaultBorderWidth
                 
                 transformHeaderFooterForBVC(bvc, toFrame: finalFrame, container: container)
 
@@ -304,20 +306,12 @@ private func createTransitionCellFromTab(_ tab: Tab?, withFrame frame: CGRect) -
     cell.screenshotView.image = tab?.screenshot
     cell.titleText.text = tab?.displayTitle
 
-    let tabType = TabType.of(tab)
-    
-    switch tabType {
-    case .regular: break
-    case .private:
-        cell.style = .dark
-    }
-
     if let favIcon = tab?.displayFavicon {
         cell.favicon.sd_setImage(with: URL(string: favIcon.url)!)
     } else {
         cell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
 
-        switch tabType {
+        switch TabType.of(tab) {
         case .regular: break
         case .private:
             cell.favicon.tintColor = UIColor.Photon.White100
