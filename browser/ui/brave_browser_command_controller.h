@@ -7,6 +7,9 @@
 
 #include "chrome/browser/ui/browser_command_controller.h"
 
+// This namespace is needed for a chromium_src override
+namespace chrome {
+
 class BraveBrowserCommandController : public chrome::BrowserCommandController {
  public:
   explicit BraveBrowserCommandController(Browser* browser);
@@ -36,5 +39,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserCommandController);
 };
+
+}   // namespace chrome
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
