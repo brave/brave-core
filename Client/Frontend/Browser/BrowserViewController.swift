@@ -898,34 +898,37 @@ class BrowserViewController: UIViewController {
             
             navigationToolbar.updateForwardStatus(canGoForward)
         case .hasOnlySecureContent:
-            guard let tab = tabManager[webView], tab === tabManager.selectedTab else { break }
-            
-            // Force isSecure to false as .serverTrust is called to validate server trust
-            let braveWebView = webView as? BraveWebView
-            braveWebView?.isSecure = false
-            updateURLBar(forTab: tab)
-        case .serverTrust:
-            guard let tab = tabManager[webView], tab === tabManager.selectedTab else { break }
-            
-            let braveWebView = webView as? BraveWebView
-            braveWebView?.isSecure = false
-            updateURLBar(forTab: tab)
-
-            guard let serverTrust = braveWebView?.serverTrust else {
+            guard let tab = tabManager[webView], tab === tabManager.selectedTab else {
                 break
             }
             
+            if tab.contentIsSecure && !webView.hasOnlySecureContent {
+                tab.contentIsSecure = false
+            }
+            
+            updateURLBar(forTab: tab)
+        case .serverTrust:
+            guard let tab = tabManager[webView], tab === tabManager.selectedTab else {
+                break
+            }
+
+            tab.contentIsSecure = false
+            updateURLBar(forTab: tab)
+
+            guard let serverTrust = tab.webView?.serverTrust else {
+                break
+            }
+
             SecTrustEvaluateAsync(serverTrust, DispatchQueue.global()) { _, secTrustResult in
                 switch secTrustResult {
                 case .proceed, .unspecified:
-                    // Secure
-                    DispatchQueue.main.async {
-                        braveWebView?.isSecure = webView.hasOnlySecureContent
-                        self.updateURLBar(forTab: tab)
-                    }
+                    tab.contentIsSecure = true
                 default:
-                    // Insecure
-                    break
+                    tab.contentIsSecure = false
+                }
+
+                DispatchQueue.main.async {
+                    self.updateURLBar(forTab: tab)
                 }
             }
         default:
@@ -963,7 +966,7 @@ class BrowserViewController: UIViewController {
     fileprivate func updateURLBar(forTab tab: Tab) {
         urlBar.currentURL = tab.url?.displayURL
         
-        urlBar.isSecure = tab.webView?.isSecure ?? false
+        urlBar.contentIsSecure = tab.contentIsSecure
         
         let isPage = tab.url?.displayURL?.isWebPage() ?? false
         toolbar?.updatePageStatus(isPage)
