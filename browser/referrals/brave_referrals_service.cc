@@ -319,28 +319,36 @@ void BraveReferralsService::MaybeDeletePromoCodePref() const {
 }
 
 std::string BraveReferralsService::BuildReferralInitPayload() const {
+  std::string api_key = BRAVE_REFERRALS_API_KEY;
   std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string api_key;
-  env->GetVar("REFERRAL_API_KEY", &api_key);
+  if (env->HasVar("BRAVE_REFERRALS_API_KEY"))
+    env->GetVar("BRAVE_REFERRALS_API_KEY", &api_key);
+
   base::Value root(base::Value::Type::DICTIONARY);
   root.SetKey("api_key", base::Value(api_key));
   root.SetKey("referral_code", base::Value(promo_code_));
   root.SetKey("platform", base::Value(GetPlatformIdentifier()));
+
   std::string result;
   base::JSONWriter::Write(root, &result);
+
   return result;
 }
 
 std::string BraveReferralsService::BuildReferralFinalizationCheckPayload() const {
+  std::string api_key = BRAVE_REFERRALS_API_KEY;
   std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string api_key;
-  env->GetVar("REFERRAL_API_KEY", &api_key);
+  if (env->HasVar("BRAVE_REFERRALS_API_KEY"))
+    env->GetVar("BRAVE_REFERRALS_API_KEY", &api_key);
+
   base::Value root(base::Value::Type::DICTIONARY);
   root.SetKey("api_key", base::Value(api_key));
   root.SetKey("download_id",
               base::Value(pref_service_->GetString(kReferralDownloadID)));
+
   std::string result;
   base::JSONWriter::Write(root, &result);
+
   return result;
 }
 

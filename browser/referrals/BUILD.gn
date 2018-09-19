@@ -1,8 +1,14 @@
+declare_args() {
+  brave_referrals_api_key = ""
+}
+
 source_set("referrals") {
   sources = [
     "brave_referrals_service.cc",
     "brave_referrals_service.h",
   ]
+
+  defines = [ "BRAVE_REFERRALS_API_KEY=\"$brave_referrals_api_key\"" ]
 
   deps = [
     "//base",
