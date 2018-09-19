@@ -117,6 +117,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_NEW_TOR_IDENTITY:
       brave::NewTorIdentity(browser_);
+      break;
     case IDC_SHOW_BRAVE_SYNC:
       brave::ShowBraveSync(browser_);
       break;
