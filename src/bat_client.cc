@@ -982,7 +982,7 @@ void BatClient::getGrant(const std::string& lang, const std::string& forPaymentI
     }
   }
 
-  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_SET_PROMOTION + arguments, PREFIX_V1),
+  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_SET_PROMOTION + arguments, PREFIX_V2),
     std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::getGrantCallback,
@@ -1026,12 +1026,8 @@ void BatClient::setGrant(const std::string& captchaResponse, const std::string& 
   std::string values[2] = {promoId, captchaResponse};
   std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
 
-  // TODO NZ remove when captcha fro brave-core is added
-  std::vector<std::string> headers;
-  headers.push_back("bypass-captcha:8d8830c8-db5b-4652-9032-2fd65454bff0");
-
-  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_SET_PROMOTION + "/" + state_->walletInfo_.paymentId_, PREFIX_V1),
-      headers, payload, "application/json; charset=utf-8", ledger::URL_METHOD::PUT, &handler_);
+  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_SET_PROMOTION + "/" + state_->walletInfo_.paymentId_, PREFIX_V2),
+       std::vector<std::string>(), payload, "application/json; charset=utf-8", ledger::URL_METHOD::PUT, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::setGrantCallback,
                                        this,
@@ -1067,8 +1063,10 @@ void BatClient::setGrantCallback(bool success, const std::string& response) {
 }
 
 void BatClient::getGrantCaptcha() {
-  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_PROMOTION_CAPTCHA + state_->walletInfo_.paymentId_, PREFIX_V1),
-    std::vector<std::string>(), "", "",
+  std::vector<std::string> headers;
+  headers.push_back("brave-product:brave-core");
+  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)GET_PROMOTION_CAPTCHA + state_->walletInfo_.paymentId_, PREFIX_V2),
+   headers, "", "",
       ledger::URL_METHOD::GET, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::getGrantCaptchaCallback,

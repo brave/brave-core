@@ -15,9 +15,7 @@
 #define PUBLISHER_PRODUCTION_SERVER     "https://publishers.basicattentiontoken.org"
 
 
-#define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
-#define PREFIX_V3                       "/v3"
 #define REGISTER_PERSONA                "/registrar/persona"
 #define REGISTER_VIEWING                "/registrar/viewing"
 #define WALLET_PROPERTIES               "/wallet/"
