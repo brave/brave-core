@@ -34,6 +34,10 @@ group("browser_dependencies") {
     ":packed_resources",
     "chromium_src:browser",
   ]
+
+  data_deps = [
+    ":unpacked_resources",
+  ]
 }
 
 group("brave") {
@@ -44,14 +48,23 @@ group("brave") {
   ]
 }
 
-group("framework_bundle_data") {
-  if (is_mac) {
-    public_deps = [
+if (is_mac) {
+  group("framework_bundle_data") {
+    deps = [
       "vendor/brave-extension:brave_extension_framework_bundle_data",
       "components/brave_rewards/extension:framework_bundle_data",
     ]
   }
 }
+
+group("unpacked_resources") {
+  if (!is_mac) {
+    deps = [
+      "//brave/components/brave_rewards/extension:locales",
+    ]
+  }
+}
+
 group("brave_tests") {
   testonly = true
 
