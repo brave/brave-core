@@ -11,5 +11,6 @@
 
 std::string GetThreadInfoString();
 const char *GetBookmarkNodeString(bookmarks::BookmarkNode::Type type);
+bool ValidateBookmarksBaseOrder(const std::string &base_order);
 
 #endif // _BRAVE_COMPONENTS_BRAVE_SYNC_DEBUG_H_

@@ -49,6 +49,8 @@ public:
 
   void SendSyncRecords(const std::string &category_name, const std::vector<api::brave_sync::SyncRecord2>& records);
 
+  void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform);
+
   void NeedSyncWords(const std::string &seed);
 
   void NeedBytesFromSyncWords(const std::string &words);

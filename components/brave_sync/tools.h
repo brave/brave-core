@@ -12,6 +12,7 @@ namespace tools {
 
 std::string GenerateObjectId();
 std::string replaceUnsupportedCharacters(const std::string &in);
+std::string GetPlatformName();
 
 } // namespace tools
 

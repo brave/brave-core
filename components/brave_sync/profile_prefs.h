@@ -37,7 +37,9 @@ public:
   std::string GetThisDeviceId() const;
   void SetThisDeviceId(const std::string& device_id);
   std::string GetThisDeviceName() const;
-  void SetDeviceName(const std::string& device_name);
+  void SetThisDeviceName(const std::string& device_name);
+  std::string GetBookmarksBaseOrder();
+  void SetBookmarksBaseOrder(const std::string& order);
 
   bool GetSyncThisDevice() const;
   void SetSyncThisDevice(const bool &sync_this_device);

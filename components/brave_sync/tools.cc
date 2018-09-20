@@ -5,6 +5,7 @@
 #include <sstream>
 #include "crypto/random.h"
 #include "base/strings/string_util.h"
+#include "build/build_config.h"
 
 namespace brave_sync {
 
@@ -33,6 +34,21 @@ std::string replaceUnsupportedCharacters(const std::string &in) {
   base::ReplaceChars(result, "\"", "\\\"", &result);
 
   return result;
+}
+
+std::string GetPlatformName() {
+  #if defined(OS_ANDROID)
+      const std::string platform = "android";
+  #elif defined(OS_WIN)
+      const std::string platform = "windows";
+  #elif defined(OS_LINUX)
+      const std::string platform = "linux";
+  #elif defined(OS_MACOSX)
+      const std::string platform = "macosx";
+  #elif defined(OS_IOS)
+      const std::string platform = "ios";
+  #endif
+  return platform;
 }
 
 } // namespace tools

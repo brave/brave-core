@@ -58,6 +58,12 @@ class BraveSyncResolvedSyncRecordsFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveSyncSaveBookmarksBaseOrderFunction : public UIThreadExtensionFunction {
+  ~BraveSyncSaveBookmarksBaseOrderFunction() override {}
+  DECLARE_EXTENSION_FUNCTION("braveSync.saveBookmarksBaseOrder", UNKNOWN)
+  ResponseAction Run() override;
+};
+
 class BraveSyncSyncWordsPreparedFunction : public UIThreadExtensionFunction {
   ~BraveSyncSyncWordsPreparedFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.syncWordsPrepared", UNKNOWN)

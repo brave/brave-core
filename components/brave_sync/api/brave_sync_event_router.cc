@@ -147,6 +147,32 @@ void BraveSyncEventRouter::SendSyncRecords(const std::string &category_name,
 
 }
 
+void BraveSyncEventRouter::SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) {
+  if (!profile_) {
+    LOG(ERROR) << "profile is not set";
+    return;
+  }
+
+  EventRouter* event_router = EventRouter::Get(profile_);
+
+  if (!event_router) {
+    return;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+     extensions::api::brave_sync::OnSendGetBookmarksBaseOrder::Create(device_id, platform)
+       .release());
+  std::unique_ptr<Event> event(
+     new Event(extensions::events::FOR_TEST,
+       extensions::api::brave_sync::OnSendGetBookmarksBaseOrder::kEventName,
+       std::move(args)));
+
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendSyncRecords: will post to in BrowserThread::UI";
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
+    FROM_HERE, base::Bind(&EventRouter::BroadcastEvent,
+         base::Unretained(event_router), base::Passed(std::move(event))));
+}
+
 void BraveSyncEventRouter::NeedSyncWords(const std::string &seed) {
   if (!profile_) {
     LOG(ERROR) << "profile is not set";

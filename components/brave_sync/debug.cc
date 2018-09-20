@@ -47,3 +47,10 @@ const char *GetBookmarkNodeString(bookmarks::BookmarkNode::Type type) {
       return nullptr;
   }
 }
+
+bool ValidateBookmarksBaseOrder(const std::string &base_order) {
+  DCHECK(base_order.size() >= 3);
+  DCHECK(base_order.at(0) == '1' || base_order.at(0) == '2');
+  DCHECK(base_order.at(1) == '.');
+  return true;
+}
