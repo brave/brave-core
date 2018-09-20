@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { PanelWelcome } from 'brave-ui/features/rewards'
 
 // Components
-import WalletPanel from './walletPanel'
+import Panel from './panel'
 
 // Constants
 import { ApplicationState, ComponentProps } from '../constants/rewardsPanelState'
@@ -29,10 +29,10 @@ export class RewardsPanel extends React.Component<Props, {}> {
         {
           !rewardsPanelData.walletCreated
           ? <PanelWelcome
-            variant={'one'}
+            variant={'two'}
             optInAction={actions.createWallet}
           />
-          : <WalletPanel />
+          : <Panel />
         }
       </>
     )

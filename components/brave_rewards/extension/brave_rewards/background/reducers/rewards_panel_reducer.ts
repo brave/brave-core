@@ -6,7 +6,7 @@ import { getTabData } from '../api/tabs_api'
 const defaultState: RewardsPanelState = {
   walletCreated: false,
   walletCreateFailed: false,
-  publisher: {}
+  publisher: undefined
 }
 
 export const rewardsPanelReducer = (state: RewardsPanelState = defaultState, action: any) => {

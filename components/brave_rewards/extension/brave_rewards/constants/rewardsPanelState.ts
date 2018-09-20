@@ -5,10 +5,10 @@
 export interface RewardsPanelState {
   walletCreated: boolean
   walletCreateFailed: boolean
-  publisher: {
+  publisher?: {
     publisherKey: string
     url: string
-  } | {}
+  }
 }
 
 export interface ApplicationState {

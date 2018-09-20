@@ -20,6 +20,7 @@ transpile_web_ui("brave_rewards_panel") {
     "brave_rewards_panel.html",
     "brave_rewards_panel.tsx",
     "components/app.tsx",
+    "components/panel.tsx",
     "constants/rewards_panel_types.ts",
     "constants/rewardsPanelState.ts",
   ]

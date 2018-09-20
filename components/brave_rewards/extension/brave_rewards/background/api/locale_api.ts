@@ -23,6 +23,34 @@ export const getMessage = (message: string): string => {
 export const getUIMessages = (): Record<string, string> => {
   const strings = [
     'braveRewards',
+    'donateMonthly',
+    'donateNow',
+    'earningsAds',
+    'enableTips',
+    'expiresOn',
+    'for',
+    'grants',
+    'includeInAuto',
+    'monthApr',
+    'monthAug',
+    'monthDec',
+    'monthFeb',
+    'monthJan',
+    'monthJul',
+    'monthJun',
+    'monthMar',
+    'monthMay',
+    'monthNov',
+    'monthOct',
+    'monthSep',
+    'on',
+    'oneTimeDonation',
+    'rewardsContribute',
+    'rewardsContributeAttentionScore',
+    'rewardsSummary',
+    'tokenGrant',
+    'total',
+    'verifiedPublisher',
     'welcomeButtonTextOne',
     'welcomeButtonTextTwo',
     'welcomeDescOne',
@@ -30,7 +58,8 @@ export const getUIMessages = (): Record<string, string> => {
     'welcomeFooterTextOne',
     'welcomeFooterTextTwo',
     'welcomeHeaderOne',
-    'welcomeHeaderTwo'
+    'welcomeHeaderTwo',
+    'yourWallet'
   ]
 
   let translations = {}

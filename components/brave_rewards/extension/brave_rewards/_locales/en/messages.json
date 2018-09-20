@@ -1,38 +1,158 @@
 {
   "braveRewards": {
     "message": "Brave Rewards",
-    "description": "Description"
+    "description": ""
   },
   "welcomeButtonTextOne": {
     "message": "Start Earning Now!",
-    "description": "Description"
+    "description": ""
   },
   "welcomeButtonTextTwo": {
     "message": "Join Rewards",
-    "description": "Description"
+    "description": ""
   },
   "welcomeDescOne": {
     "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
-    "description": "Description"
+    "description": ""
   },
   "welcomeDescTwo": {
     "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
-    "description": "Description"
+    "description": ""
   },
   "welcomeFooterTextOne": {
     "message": "Check out what’s improved",
-    "description": "Description"
+    "description": ""
   },
   "welcomeFooterTextTwo": {
     "message": "Learn More",
-    "description": "Description"
+    "description": ""
   },
   "welcomeHeaderOne": {
     "message": "Brave Payments is now Brave Rewards with many upgrades.",
-    "description": "Description"
+    "description": ""
   },
   "welcomeHeaderTwo": {
     "message": "You are about to start a very Brave way to browse the web.",
-    "description": "Description"
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Your wallet",
+    "description": ""
+  },
+  "grants": {
+    "message": "Grants",
+    "description": ""
+  },
+  "on": {
+    "message": "on",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Brave Verified Publisher",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Your Attention Score",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Donate to this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Brave Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Donate Now…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Enable Tips",
+    "description": ""
+  },
+  "for": {
+    "message": "for",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Apr",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "August'",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "December'",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "February'",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "January'",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "July'",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "June'",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "March'",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "May'",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "November'",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "October'",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "September'",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "New Token Grant",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Brave Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Brave Auto-Contribute",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-time Donations/Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Total",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "expires on",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Recurring Donations",
+    "description": ""
   }
 }
