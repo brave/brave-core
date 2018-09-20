@@ -21,7 +21,20 @@ grit("resources") {
 
 if (is_mac) {
   bundle_data("framework_bundle_data") {
-    sources = [ "brave_rewards/_locales" ]
+    sources = [
+      "brave_rewards/_locales/en/messages.json",
+      "brave_rewards/_locales",
+    ]
     outputs = [ "{{bundle_resources_dir}}/brave_rewards/{{source_file_part}}" ]
+  }
+} else {
+  copy("locales") {
+    sources = [
+      "brave_rewards/_locales/en/messages.json",
+    ]
+
+    outputs = [
+      "$root_out_dir/resources/brave_rewards/_locales/en/{{source_file_part}}",
+    ]
   }
 }
