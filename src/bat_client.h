@@ -28,8 +28,10 @@ class BatClient {
   bool getRewardsMainEnabled() const;
   bool loadState(const std::string& data);
   void registerPersona();
-  void requestCredentialsCallback(bool result, const std::string& response);
-  void registerPersonaCallback(bool result, const std::string& response);
+  void requestCredentialsCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void registerPersonaCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   void setContributionAmount(const double& amount);
   void setUserChangedContribution();
   void setAutoContribute(const bool& enabled);
@@ -47,7 +49,8 @@ class BatClient {
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
   void prepareBallots();
   std::string getWalletPassphrase() const;
-  void walletPropertiesCallback(bool success, const std::string& response);
+  void walletPropertiesCallback(bool success, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   void recoverWallet(const std::string& passPhrase);
   void getGrant(const std::string& lang, const std::string& forPaymentId);
   void setGrant(const std::string& captchaResponse, const std::string& promotionId);
@@ -57,32 +60,45 @@ class BatClient {
 
  private:
   void saveState();
-  void getGrantCaptchaCallback(bool result, const std::string& response);
-  void getGrantCallback(bool result, const std::string& response);
-  void setGrantCallback(bool result, const std::string& response);
-  void recoverWalletPublicKeyCallback(bool result, const std::string& response);
-  void recoverWalletCallback(bool result, const std::string& response, const std::string& paymentId);
+  void getGrantCaptchaCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void getGrantCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void setGrantCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void recoverWalletPublicKeyCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void recoverWalletCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers, const std::string& paymentId);
   void prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
-  void prepareBatchCallback(bool result, const std::string& response);
+  void prepareBatchCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   void proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof);
   void prepareVoteBatch();
   void voteBatch();
-  void voteBatchCallback(const std::string& publisher, bool result, const std::string& response);
+  void voteBatchCallback(const std::string& publisher, bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   //void prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   //void commitBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   //void prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   //void commitBallotCallback(bool result, const std::string& response);
   void vote(const std::string& publisher, const std::string& viewingId);
-  void reconcileCallback(bool result, const std::string& response);
+  void reconcileCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   void currentReconcile();
-  void currentReconcileCallback(bool result, const std::string& response);
-  void reconcilePayloadCallback(bool result, const std::string& response);
+  void currentReconcileCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
+  void reconcilePayloadCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   void updateRulesCallback(bool reconcile, bool result, const std::string& response);
-  void updateRulesV2Callback(bool reconcile, bool result, const std::string& response);
+  void updateRulesV2Callback(bool reconcile, bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   void registerViewing();
-  void registerViewingCallback(bool result, const std::string& response);
+  void registerViewingCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   void viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId);
-  void viewingCredentialsCallback(bool result, const std::string& response);
+  void viewingCredentialsCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
   std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

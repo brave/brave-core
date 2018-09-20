@@ -488,8 +488,8 @@ void LedgerImpl::GetGrantCaptcha() const {
   bat_client_->getGrantCaptcha();
 }
 
-void LedgerImpl::OnGrantCaptcha(const std::string& image) {
-  ledger_client_->OnGrantCaptcha(image);
+void LedgerImpl::OnGrantCaptcha(const std::string& image, const std::string& hint) {
+  ledger_client_->OnGrantCaptcha(image, hint);
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {
@@ -557,13 +557,13 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
     std::string url = braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1, "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER);
     auto url_loader = LoadURL(url, std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
     handler_.AddRequestHandler(std::move(url_loader),
-      std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2));
+      std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2,_3));
   }
 }
 
 
 
-void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response) {
+void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response, const std::map<std::string, std::string>& headers) {
   if (result && !response.empty()) {
     //no error so far
     bat_publishers_->RefreshPublishersList(response);

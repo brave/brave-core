@@ -18,7 +18,7 @@ namespace bat_ledger {
 
 class URLRequestHandler : public ledger::LedgerCallbackHandler {
  public:
-  using URLRequestCallback = std::function<void (bool, const std::string&)>;
+  using URLRequestCallback = std::function<void (bool, const std::string&, const std::map<std::string, std::string>& headers)>;
 
   URLRequestHandler();
   ~URLRequestHandler() override;
@@ -28,14 +28,16 @@ class URLRequestHandler : public ledger::LedgerCallbackHandler {
                          URLRequestCallback callback);
   bool RunRequestHandler(uint64_t request_id,
                          bool success,
-                         const std::string& response);
+                         const std::string& response,
+                         const std::map<std::string, std::string>& headers);
 
  private:
   //  LedgerCallbackHandler impl
   void OnURLRequestResponse(uint64_t request_id,
                             const std::string& url,
                             int response_code,
-                            const std::string& response) override;
+                            const std::string& response,
+                            const std::map<std::string, std::string>& headers) override;
 
   std::map<uint64_t, URLRequestCallback> request_handlers_;
  };

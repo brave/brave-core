@@ -115,7 +115,8 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
           mediaURL,
           visit_data,
           _1,
-          _2));
+          _2,
+          _3));
     } else if (TWITCH_MEDIA_TYPE == providerName) {
       const std::string mediaUrl = getMediaURL(new_media_id, providerName);
       std::unique_ptr<ledger::PublisherInfo> new_publisher_info(new ledger::PublisherInfo());
@@ -267,7 +268,7 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
 
 void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, const std::string& media_key,
     const std::string& providerName, const std::string& mediaURL, const ledger::VisitData& visit_data, 
-    bool success, const std::string& response) {
+    bool success, const std::string& response, const std::map<std::string, std::string>& headers) {
   if (success && YOUTUBE_MEDIA_TYPE == providerName) {
     std::string publisherURL;
     braveledger_bat_helper::getJSONValue("author_url", response, publisherURL);
@@ -287,13 +288,15 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, c
                   publisherName,
                   visit_data,
                   _1,
-                  _2));
+                  _2,
+                  _3));
   }
 }
 
 void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::string& media_key,
     const std::string& providerName, const std::string& mediaURL, const std::string& publisherURL,
-    const std::string& publisherName, const ledger::VisitData& visit_data, bool success, const std::string& response) {
+    const std::string& publisherName, const ledger::VisitData& visit_data, bool success, const std::string& response,
+    const std::map<std::string, std::string>& headers) {
   if (success && YOUTUBE_MEDIA_TYPE == providerName) {
     std::string favIconURL;
 //    size_t pos = response.find("<div id=\"img-preload\"");

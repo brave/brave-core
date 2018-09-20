@@ -109,7 +109,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
 
   void GetGrantCaptcha() const override;
-  void OnGrantCaptcha(const std::string& image);
+  void OnGrantCaptcha(const std::string& image, const std::string& hint);
 
   void SolveGrantCaptcha(const std::string& solution) const override;
   void OnGrantFinish(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
@@ -118,7 +118,8 @@ class LedgerImpl : public ledger::Ledger,
   void RecoverWallet(const std::string& passPhrase) const override;
   void OnRecoverWallet(ledger::Result result, double balance, const std::vector<braveledger_bat_helper::GRANT>& grants);
 
-  void LoadPublishersListCallback(bool result, const std::string& response);
+  void LoadPublishersListCallback(bool result, const std::string& response,
+      const std::map<std::string, std::string>& headers);
 
   void OnPublishersListSaved(ledger::Result result) override;
 
