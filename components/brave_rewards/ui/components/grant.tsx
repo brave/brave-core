@@ -78,13 +78,13 @@ class Grant extends React.Component<Props, State> {
             : null
         }
         {
-          !grant.expiryTime && grant.captcha
+          !grant.expiryTime && grant.captcha && grant.hint
             ? <GrantWrapper
               onClose={this.onGrantHide}
               title={grant.status === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
               text={getLocale('proveHuman')}
             >
-              <GrantCaptcha onSolution={this.onSolution} dropBgImage={grant.captcha} />
+              <GrantCaptcha onSolution={this.onSolution} dropBgImage={grant.captcha} hint={grant.hint} />
             </GrantWrapper>
             : null
         }

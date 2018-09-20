@@ -66,7 +66,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                    unsigned int error_code,
                    brave_rewards::Grant result) override;
   void OnGrantCaptcha(brave_rewards::RewardsService* rewards_service,
-                          std::string image) override;
+                          std::string image, std::string hint) override;
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        double balance,
@@ -265,13 +265,17 @@ void RewardsDOMHandler::GetGrant(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnGrantCaptcha(
     brave_rewards::RewardsService* rewards_service,
-    std::string image) {
+    std::string image,
+    std::string hint) {
   if (web_ui()->CanCallJavascript()) {
     std::string encoded_string;
-    base::Value chunkValue;
     base::Base64Encode(image, &encoded_string);
-    chunkValue = base::Value(std::move(encoded_string));
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantCaptcha", chunkValue);
+
+    base::DictionaryValue captcha;
+    captcha.SetString("image", std::move(encoded_string));
+    captcha.SetString("hint", hint);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantCaptcha", captcha);
   }
 }
 

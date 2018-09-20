@@ -263,7 +263,8 @@ PrivateSearch with DuckDuckGo</message>
       <message name="IDS_BRAVE_UI_DEPOSIT" desc="">Deposit</message>
       <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
       <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
-      <message name="IDS_BRAVE_UI_DND_CAPTCHA" desc="">Drag and drop the token logo onto the target</message>
+      <message name="IDS_BRAVE_UI_DND_CAPTCHA_TEXT_1" desc="">Drag and drop the token logo onto the</message>
+      <message name="IDS_BRAVE_UI_DND_CAPTCHA_TEXT_2" desc="">target</message>
       <message name="IDS_BRAVE_UI_DONATION" desc="">Donation</message>
       <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="">Donation amount</message>
       <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Donate to this site Monthl</message>
