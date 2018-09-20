@@ -670,11 +670,6 @@ extension URLBarView: AutocompleteTextFieldDelegate {
 // MARK: UIAppearance
 extension URLBarView {
     
-    @objc dynamic var cancelTintColor: UIColor? {
-        get { return cancelButton.tintColor }
-        set { return cancelButton.tintColor = newValue }
-    }
-    
     @objc dynamic var showQRButtonTintColor: UIColor? {
         get { return showQRScannerButton.tintColor }
         set { return showQRScannerButton.tintColor = newValue }
@@ -692,7 +687,7 @@ extension URLBarView: Themeable {
         
         progressBar.setGradientColors(startColor: UIColor.LoadingBar.Start.colorFor(theme), endColor: UIColor.LoadingBar.End.colorFor(theme))
         currentTheme = theme
-        cancelTintColor = UIColor.Browser.Tint.colorFor(theme)
+        cancelButton.setTitleColor(UIColor.Browser.Tint.colorFor(theme), for: .normal)
         showQRButtonTintColor = UIColor.Browser.Tint.colorFor(theme)
         switch theme {
         case .regular:
