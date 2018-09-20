@@ -32,6 +32,7 @@ test("brave_unit_tests") {
     "//brave/browser/brave_resources_util_unittest.cc",
     "//brave/browser/brave_stats_updater_unittest.cc",
     "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_referrals_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_tor_network_delegate_helper_unittest.cc",
