@@ -20,10 +20,12 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
   private readonly offset: number
   private dndStartPosition: { x: number; y: number; width: number; height: number }
   private captchaBox: HTMLDivElement | null
+  private captchaDrag: HTMLDivElement | null
 
   constructor (props: Props) {
     super(props)
     this.captchaBox = null
+    this.captchaDrag = null
     this.offset = 5
     this.dndStartPosition = {
       x: 0,
@@ -35,14 +37,15 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
 
   onCaptchaDrop = (event: React.DragEvent) => {
     event.preventDefault()
-    if (!this.captchaBox) {
+    if (!this.captchaBox || !this.captchaDrag) {
       return
     }
 
     const target = this.captchaBox.getBoundingClientRect()
+    const captchaDrag = this.captchaDrag.getBoundingClientRect()
 
     let x = event.clientX - target.left - this.dndStartPosition.x + (this.dndStartPosition.width / 2)
-    let y = event.clientY - target.top - this.dndStartPosition.y + (this.dndStartPosition.height / 2)
+    let y = event.clientY - target.top - this.dndStartPosition.y + (this.dndStartPosition.height / 2) - captchaDrag.height
 
     if (this.props.isWindows) {
       const dpr = window.devicePixelRatio
@@ -72,8 +75,12 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
     event.preventDefault()
   }
 
-  refSet = (node: HTMLDivElement) => {
+  refWrapper = (node: HTMLDivElement) => {
     this.captchaBox = node
+  }
+
+  refDrag = (node: HTMLDivElement) => {
+    this.captchaDrag = node
   }
 
   render () {
@@ -82,9 +89,9 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
     return (
       <StyledWrapper
         id={id}
-        innerRef={this.refSet}
+        innerRef={this.refWrapper}
       >
-        <StyledDrag>
+        <StyledDrag innerRef={this.refDrag}>
           <StyledImageWrap>
             <StyledImage src={bat} onDragStart={this.onCaptchaDrag} draggable={true} />
           </StyledImageWrap>

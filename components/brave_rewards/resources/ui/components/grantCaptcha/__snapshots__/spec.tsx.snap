@@ -3,15 +3,13 @@
 exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
 .c0 {
   text-align: center;
-  width: 100%;
-  margin: 28px 0 0;
+  margin: 28px 0 0 -32px;
+  width: 333px;
 }
 
 .c5 {
   width: 333px;
   height: 296px;
-  margin-left: -32px;
-  margin-top: 20px;
 }
 
 .c1 {
@@ -23,6 +21,7 @@ exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  padding-bottom: 20px;
 }
 
 .c2 {
@@ -40,10 +39,6 @@ exports[`Grant captcha tests basic tests matches the snapshot 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 .c4 {
