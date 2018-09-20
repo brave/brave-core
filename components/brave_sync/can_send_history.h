@@ -1,3 +1,6 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 #ifndef H_BRAVE_COMPONENTS_BRAVE_SYNC_CAN_SEND_HISTORY_H
 #define H_BRAVE_COMPONENTS_BRAVE_SYNC_CAN_SEND_HISTORY_H
 

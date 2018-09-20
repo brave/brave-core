@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/macros.h"
-//#include "base/values.h"
+
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 
 class Profile;
@@ -85,6 +85,7 @@ public:
   void BookmarkAllUserNodesRemoved(
       bookmarks::BookmarkModel* model,
       const std::set<GURL>& removed_urls) override;
+  void SetBaseOrder(const std::string &base_order);
 
 private:
 
@@ -105,6 +106,7 @@ private:
 
   storage::ObjectMap* sync_obj_map_;
   bool observer_is_set_;
+  std::string base_order_;
 
   ControllerForBookmarksExports *controller_exports_;
 };

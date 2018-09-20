@@ -11,6 +11,7 @@ namespace prefs {
 extern const char kThisDeviceId[];
 extern const char kSeed[];
 extern const char kThisDeviceName[];
+extern const char kBookmarksBaseOrder[];
 
 extern const char kSyncThisDeviceEnabled[];
 extern const char kSyncBookmarksEnabled[];

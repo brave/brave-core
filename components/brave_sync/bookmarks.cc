@@ -445,6 +445,15 @@ void Bookmarks::BookmarkAllUserNodesRemoved(
     LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkAllUserNodesRemoved removed_url.spec()="<<removed_url.spec();
   }
 }
+void Bookmarks::SetBaseOrder(const std::string &base_order) {
+  DCHECK(base_order_.empty());
+  DCHECK(ValidateBookmarksBaseOrder(base_order));
+
+  base_order_ = base_order;
+  if (base_order_.length() >= 3 && base_order_.at(base_order_.length() - 1) == '.') {
+    base_order_.resize(base_order_.length() - 1);
+  }
+}
 
 
 } // namespace brave_sync

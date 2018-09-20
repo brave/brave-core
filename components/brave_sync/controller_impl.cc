@@ -384,7 +384,8 @@ void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &de
   if (!temp_storage_.seed_str_.empty()) {
     sync_prefs_->SetSeed(temp_storage_.seed_str_);
   }
-  sync_prefs_->SetDeviceName(temp_storage_.device_name_);//here I can have empty string, why ?
+  DCHECK(!temp_storage_.device_name_.empty());
+  sync_prefs_->SetThisDeviceName(temp_storage_.device_name_);
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: saved device_id="<<device_id_str;
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: saved seed="<<temp_storage_.seed_str_;
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: saved temp_storage_.device_name_="<<temp_storage_.device_name_;
@@ -398,6 +399,16 @@ void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &de
 
 void ControllerImpl::OnSyncReady() {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady:";
+  const std::string bookmarks_base_order = sync_prefs_->GetBookmarksBaseOrder();
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: bookmarks_base_order="<<bookmarks_base_order;
+  if (bookmarks_base_order.empty()) {
+    std::string platform = tools::GetPlatformName();
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: platform=" << platform;
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: sync_prefs_->GetThisDeviceId()=" << sync_prefs_->GetThisDeviceId();
+    sync_client_->SendGetBookmarksBaseOrder(sync_prefs_->GetThisDeviceId(), platform);
+    return;
+  }
+  bookmarks_->SetBaseOrder(bookmarks_base_order);
   DCHECK(false == sync_initialized_);
   sync_initialized_ = true;
 
@@ -662,7 +673,11 @@ void ControllerImpl::OnDeleteSyncSiteSettings()  {
 }
 
 void ControllerImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
-  NOTIMPLEMENTED();
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarksBaseOrder order=<" << order << ">";
+  DCHECK(!order.empty());
+  sync_prefs_->SetBookmarksBaseOrder(order);
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarksBaseOrder: forced call of OnSyncReady";
+  OnSyncReady();
 }
 
 void ControllerImpl::OnSaveBookmarkOrder(const std::string &order,

@@ -156,6 +156,20 @@ ExtensionFunction::ResponseAction BraveSyncResolvedSyncRecordsFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+ExtensionFunction::ResponseAction BraveSyncSaveBookmarksBaseOrderFunction::Run() {
+  LOG(ERROR) << "TAGAB BraveSyncSaveBookmarksBaseOrderFunction::Run";
+  std::unique_ptr<brave_sync::SaveBookmarksBaseOrder::Params> params(
+      brave_sync::SaveBookmarksBaseOrder::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  LOG(ERROR) << "TAGAB BraveSyncSaveBookmarksBaseOrderFunction::Run params->order=" << params->order;
+
+  ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
+  sync_client->GetSyncToBrowserHandler()->OnSaveBookmarksBaseOrder(params->order);
+
+  return RespondNow(NoArguments());
+}
+
 ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
   LOG(ERROR) << "TAGAB BraveSyncSyncWordsPreparedFunction::Run";
   std::unique_ptr<brave_sync::SyncWordsPrepared::Params> params(

@@ -4,6 +4,7 @@
 #include "brave/components/brave_sync/profile_prefs.h"
 
 #include "base/debug/stack_trace.h"
+#include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/pref_names.h"
 #include "brave/components/brave_sync/settings.h"
 
@@ -23,6 +24,7 @@ void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kThisDeviceId, std::string());
   registry->RegisterStringPref(kSeed, std::string());
   registry->RegisterStringPref(kThisDeviceName, std::string());
+  registry->RegisterStringPref(kBookmarksBaseOrder, std::string());
 
   registry->RegisterBooleanPref(kSyncThisDeviceEnabled, false);
   registry->RegisterBooleanPref(kSyncBookmarksEnabled, false);
@@ -73,11 +75,20 @@ std::string Prefs::GetThisDeviceName() const {
   return pref_service_->GetString(kThisDeviceName);
 }
 
-void Prefs::SetDeviceName(const std::string& device_name) {
+void Prefs::SetThisDeviceName(const std::string& device_name) {
   LOG(ERROR) << "TAGAB brave_sync::Prefs::SetDeviceName device_name=<"<<device_name<<">";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!device_name.empty());
   pref_service_->SetString(kThisDeviceName, device_name);
+}
+std::string Prefs::GetBookmarksBaseOrder() {
+  return pref_service_->GetString(kBookmarksBaseOrder);
+}
+void Prefs::SetBookmarksBaseOrder(const std::string& order) {
+  LOG(ERROR) << "TAGAB brave_sync::Prefs::SetBookmarksBaseOrder device_name=<"<<order<<">";
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(ValidateBookmarksBaseOrder(order));
+  pref_service_->SetString(kBookmarksBaseOrder, order);
 }
 
 bool Prefs::GetSyncThisDevice() const {

@@ -252,6 +252,21 @@
         ]
       },
       {
+        "name": "onSendGetBookmarksBaseOrder",
+        "type": "function",
+        "description": "Browser sends this to get base bookmarks order for the particular device.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "deviceId"
+          },
+          {
+            "type": "string",
+            "name": "platform"
+          }
+        ]
+      },
+      {
         "name": "onNeedSyncWords",
         "type": "function",
         "description": "Browser informs js sync library it wants to receive sync words from the seed.",
@@ -412,6 +427,17 @@
           {
             "type": "array", "items": {"$ref": "SyncRecord2"},
             "name": "records"
+          }
+        ]
+      },
+      {
+        "name": "saveBookmarksBaseOrder",
+        "type": "function",
+        "description": "Browser must save bookmarks base order",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "order"
           }
         ]
       },
