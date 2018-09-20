@@ -24,7 +24,7 @@ import * as shieldsPanelState from '../../state/shieldsPanelState'
 import { State, Tab } from '../../types/state/shieldsPannelState'
 import { Actions } from '../../types/actions/index'
 
-const updateBadgeText = (state: State) => {
+const updateShieldsIconBadgeText = (state: State) => {
   const tabId: number = shieldsPanelState.getActiveTabId(state)
   const tab: Tab = state.tabs[tabId]
   if (tab) {
@@ -34,7 +34,7 @@ const updateBadgeText = (state: State) => {
   }
 }
 
-const updateShieldsIcon = (state: State) => {
+const updateShieldsIconImage = (state: State) => {
   const tabId: number = shieldsPanelState.getActiveTabId(state)
   const tab: Tab = state.tabs[tabId]
   if (tab) {
@@ -44,12 +44,16 @@ const updateShieldsIcon = (state: State) => {
   }
 }
 
+const updateShieldsIcon = (state: State) => {
+  updateShieldsIconBadgeText(state)
+  updateShieldsIconImage(state)
+}
+
 const focusedWindowChanged = (state: State, windowId: number): State => {
   if (windowId !== -1) {
     state = shieldsPanelState.updateFocusedWindow(state, windowId)
     if (shieldsPanelState.getActiveTabId(state)) {
       requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-      updateBadgeText(state)
       updateShieldsIcon(state)
     } else {
       console.warn('no tab id so cannot request shield data from window focus change!')
@@ -96,7 +100,6 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         const windowId: number = action.windowId
         const tabId: number = action.tabId
         state = updateActiveTab(state, windowId, tabId)
-        updateBadgeText(state)
         updateShieldsIcon(state)
         break
       }
@@ -105,7 +108,6 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         const tab: chrome.tabs.Tab = action.tab
         if (tab.active && tab.id) {
           state = updateActiveTab(state, tab.windowId, tab.id)
-          updateBadgeText(state)
           updateShieldsIcon(state)
         }
         break
@@ -119,7 +121,6 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
 
         if (tab.active && tab.id) {
           state = updateActiveTab(state, tab.windowId, tab.id)
-          updateBadgeText(state)
           updateShieldsIcon(state)
         }
         break
@@ -127,7 +128,6 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED:
       {
         state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
-        updateBadgeText(state)
         updateShieldsIcon(state)
         break
       }
@@ -199,7 +199,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         state = shieldsPanelState.updateResourceBlocked(
           state, tabId, action.details.blockType, action.details.subresource)
         if (tabId === currentTabId) {
-          updateBadgeText(state)
+          updateShieldsIconBadgeText(state)
         }
         break
       }
