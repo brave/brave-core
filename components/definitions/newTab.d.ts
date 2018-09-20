@@ -53,6 +53,7 @@ declare namespace NewTab {
     showEmptyPage: boolean,
     isIncognito: boolean,
     useAlternativePrivateSearchEngine: boolean,
+    isTor: boolean,
     bookmarks: Record<string, Bookmark>,
     stats: Stats
     backgroundImage?: Image

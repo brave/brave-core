@@ -120,6 +120,7 @@ class NewTabPage extends React.Component<Props, {}> {
         <NewPrivateTab
           stats={newTabData.stats}
           useAlternativePrivateSearchEngine={this.useAlternativePrivateSearchEngine}
+          isTor={this.props.newTabData.isTor}
           onChangePrivateSearchEngine={this.onChangePrivateSearchEngine}
         />
       )
