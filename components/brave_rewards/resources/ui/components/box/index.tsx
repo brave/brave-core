@@ -75,6 +75,8 @@ export default class Box extends React.PureComponent<Props, State> {
       testId
     } = this.props
 
+    const isDisabled = (toggle && !checked) || (!toggle && disabledContent)
+
     return (
       <StyledCard testId={id}>
         <StyledFlip>
@@ -111,24 +113,29 @@ export default class Box extends React.PureComponent<Props, State> {
             </StyledRight>
             <StyledContent>
               {
-                (toggle && !checked) || (!toggle && disabledContent)
+                isDisabled
                 ? disabledContent
                 : children
               }
             </StyledContent>
           </StyledContentWrapper>
-          <StyledSettingsWrapper open={this.state.settingsOpened}>
-            <StyledSettingsClose onClick={this.settingsClick} open={this.state.settingsOpened}>
-              <CloseStrokeIcon />
-            </StyledSettingsClose>
-            <StyledSettingsTitle>
-              <StyledSettingsIcon>
-                <SettingsIcon />
-              </StyledSettingsIcon>
-              <StyledSettingsText>{title} {getLocale('settings')}</StyledSettingsText>
-            </StyledSettingsTitle>
-            {settingsChild}
-          </StyledSettingsWrapper>
+          {
+            !isDisabled
+            ? <StyledSettingsWrapper open={this.state.settingsOpened}>
+              <StyledSettingsClose onClick={this.settingsClick} open={this.state.settingsOpened}>
+                <CloseStrokeIcon />
+              </StyledSettingsClose>
+              <StyledSettingsTitle>
+                <StyledSettingsIcon>
+                  <SettingsIcon />
+                </StyledSettingsIcon>
+                <StyledSettingsText>{title} {getLocale('settings')}</StyledSettingsText>
+              </StyledSettingsTitle>
+              {settingsChild}
+            </StyledSettingsWrapper>
+            : null
+          }
+
         </StyledFlip>
       </StyledCard>
     )

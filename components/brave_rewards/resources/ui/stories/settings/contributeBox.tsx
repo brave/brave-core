@@ -13,12 +13,12 @@ import {
   TableContribute,
   Tokens
 } from '../../../../src/features/rewards'
-import { Column, Grid, Select, ControlWrapper } from '../../../../src/components'
+import { Column, Grid, Select, ControlWrapper, Checkbox } from '../../../../src/components'
 import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
+import NextContribution from '../../../../src/features/rewards/nextContribution'
 
 // Utils
 import locale from './fakeLocale'
-import NextContribution from '../../../../src/features/rewards/nextContribution'
 
 // Assets
 const bartBaker = require('../../../assets/img/bartBaker.jpeg')
@@ -59,12 +59,31 @@ class ContributeBox extends React.Component<{}, State> {
                   <div data-value='100'><Tokens value={100} converted={40}/></div>
                 </Select>
               </ControlWrapper>
-              <ControlWrapper text={locale.contributionSitesLimit}>
+              <ControlWrapper text={locale.contributionMinTime}>
                 <Select>
-                  <div data-value='0'>{locale.contributionSitesNoLimit}</div>
-                  <div data-value='10'>{locale.contributionSitesLimit10}</div>
-                  <div data-value='50'>{locale.contributionSitesLimit50}</div>
+                  <div data-value='5'>{locale.contributionTime5}</div>
+                  <div data-value='8'>{locale.contributionTime8}</div>
+                  <div data-value='60'>{locale.contributionTime60}</div>
                 </Select>
+              </ControlWrapper>
+              <ControlWrapper text={locale.contributionMinVisits}>
+                <Select>
+                  <div data-value='5'>{locale.contributionVisit1}</div>
+                  <div data-value='8'>{locale.contributionVisit5}</div>
+                  <div data-value='60'>{locale.contributionVisit10}</div>
+                </Select>
+              </ControlWrapper>
+              <ControlWrapper text={locale.contributionAllowed}>
+                <Checkbox
+                  value={{
+                    contributionNonVerified: true,
+                    contributionVideos: true
+                  }}
+                  multiple={true}
+                >
+                  <div data-key='contributionNonVerified'>{locale.contributionNonVerified}</div>
+                  <div data-key='contributionVideos'>{locale.contributionVideos}</div>
+                </Checkbox>
               </ControlWrapper>
             </Column>
           </Grid>
