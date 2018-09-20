@@ -224,7 +224,7 @@ class FavoritesViewController: UIViewController {
                 make.leftMargin.equalTo(collection).offset(8)
                 make.rightMargin.equalTo(collection).offset(-8)
             }
-            make.bottom.equalTo(collection)
+            make.bottom.equalTo(collection.frameLayoutGuide)
         }
         
         if UIDevice.current.userInterfaceIdiom == .pad {
