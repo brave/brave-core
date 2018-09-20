@@ -127,6 +127,8 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED:
       {
         state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
+        updateBadgeText(state)
+        updateShieldsIcon(state)
         break
       }
     case shieldsPanelTypes.SHIELDS_TOGGLED:
