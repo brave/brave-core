@@ -14,6 +14,8 @@
 #include "base/timer/timer.h"
 
 #include "user_model.h"
+#include "user_profile.h"
+#include "usermodel_state.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -28,11 +30,25 @@ class UsermodelService : public KeyedService,
     ~UsermodelService() override;
 
     void OnModelLoaded(const std::string& data);
+    void OnUserProfileLoaded(const std::string& data);
+
+    void SaveUsermodelState(const std::string& state);
+    void OnUsermodelStateSaved(bool success);
+
+    //void UpdateTabClassification();
+    //void OnTabFocus();
 
     usermodel::UserModel usermodel_;
+    std::unique_ptr<usermodel::UserProfile> user_profile_;
+    
+    UserModelState* usermodel_state_;
+
 
  private:
    const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+
+   const base::FilePath usermodel_state_path_;
+   const base::FilePath taxonomy_model_path_;  
 };
 }  // namespace brave_ads
 

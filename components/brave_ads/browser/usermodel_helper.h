@@ -2,11 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#ifndef BRAVE_BROWSER_BRAVE_USERMODEL_USERMODEL_HELPER_H_
+#define BRAVE_BROWSER_BRAVE_USERMODEL_USERMODEL_HELPER_H_
+
 #include "components/sessions/core/session_id.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "content/public/browser/navigation_entry.h"
+#include "base/task_runner_util.h"
+#include "base/task/post_task.h"
 
 // Have a look here for a list of callbacks
 // https://cs.chromium.org/chromium/src/content/public/browser/web_contents_observer.h?q=webcontentsobserver&l=62
@@ -17,7 +22,8 @@ class UsermodelService;
 
 class UserModelHelper : public content::WebContentsObserver,
                         public BrowserListObserver,
-                        public content::WebContentsUserData<UserModelHelper> {
+                        public content::WebContentsUserData<UserModelHelper>,
+                        public base::SupportsWeakPtr<UsermodelService> {
  public:
     UserModelHelper(content::WebContents*);
     ~UserModelHelper() override;
@@ -27,14 +33,18 @@ class UserModelHelper : public content::WebContentsObserver,
     void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                        const GURL& validated_url) override;
 
-    void OnDataReceived(const base::Value* val);
-
+    void OnDataReceived(const std::string& url, const base::Value* val);
+    void ClassifyPage(content::RenderFrameHost* render_frame_host, const std::string& url);
+    void Classify(const std::string& html, const std::string& url);
  private:
   SessionID tab_id_;
 
   UsermodelService* usermodel_service_;  // NOT OWNED
+  const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   
   friend class content::WebContentsUserData<UserModelHelper>;
   DISALLOW_COPY_AND_ASSIGN(UserModelHelper);
 };
 }
+
+#endif

@@ -11,7 +11,9 @@ source_set("browser") {
       "usermodel_helper.cc",
       "usermodel_helper.h",
       "usermodel_service_factory.h",
-      "usermodel_service_factory.cc"
+      "usermodel_service_factory.cc",
+      "usermodel_state.h",
+      "usermodel_state.cc"
     ]
 
   deps = [
@@ -23,5 +25,6 @@ source_set("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//brave/vendor/bat-native-usermodel",
+    "//third_party/leveldatabase",
   ]
 }
