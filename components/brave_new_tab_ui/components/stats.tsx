@@ -3,10 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { DataBlock, DataItem } from 'brave-ui/old'
-
-// Constants
-import { theme } from '../constants/theme'
+import { StatsContainer, StatsItem } from 'brave-ui/features/newTab'
 
 // Utils
 import { getLocale } from '../../common/locale'
@@ -71,29 +68,25 @@ export default class Stats extends React.Component<Props, {}> {
     const timeSaved = this.estimatedTimeSaved
 
     return (
-      <DataBlock>
-        <DataItem
-          customStyle={theme.trackersBlocked}
+      <StatsContainer>
+        <StatsItem
           description={getLocale('trackersBlocked')}
           counter={trackedBlockersCount}
         />
-        <DataItem
-          customStyle={theme.adsBlocked}
+        <StatsItem
           description={getLocale('adsBlocked')}
           counter={adblockCount}
         />
-        <DataItem
-          customStyle={theme.httpsUpgrades}
+        <StatsItem
           description={getLocale('httpsUpgraded')}
           counter={httpsUpgradedCount}
         />
-        <DataItem
-          customStyle={theme.estimatedTime}
+        <StatsItem
           counter={timeSaved.value}
           text={getLocale(timeSaved.id)}
           description={getLocale('estimatedTimeSaved')}
         />
-      </DataBlock>
+      </StatsContainer>
     )
   }
 }
