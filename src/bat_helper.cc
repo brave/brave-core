@@ -509,8 +509,8 @@ static bool ignore_ = false;
     fee_amount_(0),
     user_changed_fee_(false),
     days_(0),
-    auto_contribute_(true),
-    rewards_enabled_(true) {}
+    auto_contribute_(false),
+    rewards_enabled_(false) {}
 
   CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
     walletInfo_ = other.walletInfo_;
