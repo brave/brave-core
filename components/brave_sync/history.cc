@@ -124,16 +124,13 @@ void History::GetAllHistoryComplete(history::QueryResults* results) {
       //history_item_vec.push_back(GetHistoryItem(item));
       //item.visit_time();
       item.visit_time();
-      LOG(ERROR) << "History::GetAllHistoryComplete item=" << item.url().spec();
+      LOG(ERROR) << "History::GetAllHistoryComplete item= id()=" << item.id() <<  " url()=" << item.url().spec();
     }
     // inform controller have result
     send_history_->HaveInitialHistory(results);
   }
-  ;
 
   //AB: Release();
-
-
 }
 
 std::unique_ptr<RecordsList> History::NativeHistoryToSyncRecords(
@@ -195,7 +192,6 @@ std::string History::GetOrCreateObjectByLocalId(const int64_t &local_id) {
   object_id = tools::GenerateObjectId(); // TODO, AB: pack 8 bytes from s_local_id?
   sync_obj_map_->SaveObjectId(
         s_local_id,
-        "",// order or empty
         object_id);
 
   return object_id;

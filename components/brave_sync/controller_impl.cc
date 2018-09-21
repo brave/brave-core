@@ -174,7 +174,7 @@ void ControllerImpl::OnDeleteDevice(const std::string &device_id) {
 
 void ControllerImpl::OnDeleteDeviceFileWork(const std::string &device_id) {
   LOG(ERROR) << "TAGAB  ControllerImpl::OnDeleteDeviceFileWork";
-  std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);
+  std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   SyncDevices syncDevices;
   syncDevices.FromJson(json);
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork json="<<json;
@@ -199,8 +199,8 @@ void ControllerImpl::OnResetSync() {
   LOG(ERROR) << "TAGAB  ControllerImpl::OnResetSync";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  CHECK(sync_client_ != nullptr);
-  CHECK(sync_initialized_);
+  DCHECK(sync_client_ != nullptr);
+  //DCHECK(sync_initialized_);
 
   const std::string device_id = sync_prefs_->GetThisDeviceId();
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResetSync device_id="<<device_id;
@@ -249,7 +249,7 @@ void ControllerImpl::GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Setti
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetSettingsAndDevicesImpl " << GetThreadInfoString();
 
   std::unique_ptr<brave_sync::SyncDevices> devices = std::make_unique<brave_sync::SyncDevices>();
-  std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);
+  std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   devices->FromJson(json);
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetSettingsAndDevicesImpl json="<<json;
 
@@ -342,6 +342,10 @@ void ControllerImpl::OnGetInitData(const std::string &sync_version) {
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData use empty device id";
   }
 
+  DCHECK(!sync_version.empty());
+  sync_version_ = sync_version;
+  sync_obj_map_->SetApiVersion("0");
+
   brave_sync::client_data::Config config;
   config.api_version = "0";
   config.server_url = "https://sync-staging.brave.com";
@@ -408,10 +412,11 @@ void ControllerImpl::OnSyncReady() {
     sync_client_->SendGetBookmarksBaseOrder(sync_prefs_->GetThisDeviceId(), platform);
     return;
   }
+
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: about to call SetBaseOrder " << bookmarks_base_order;
   bookmarks_->SetBaseOrder(bookmarks_base_order);
   DCHECK(false == sync_initialized_);
   sync_initialized_ = true;
-
 
   if (sync_ui_) {
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: have sync ui, inform state changed";
@@ -515,7 +520,10 @@ SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
 
     if (category_name == jslib_const::kBookmarks) {
       //"BOOKMARKS"
-      resolved_record->second = bookmarks_->GetResolvedBookmarkValue(object_id);
+      LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ record->GetBookmark().site.title=" << record->GetBookmark().site.title;
+      LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ record->GetBookmark().site.location=" << record->GetBookmark().site.location;
+      LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ record->GetBookmark().order=<" << record->GetBookmark().order << ">";
+      resolved_record->second = bookmarks_->GetResolvedBookmarkValue(object_id/*, record->GetBookmark().order*/);
     } else if (category_name == jslib_const::kHistorySites) {
       //"HISTORY_SITES";
       resolved_record->second = history_->GetResolvedHistoryValue(object_id);
@@ -534,7 +542,7 @@ SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
 }
 
 SyncRecordPtr ControllerImpl::PrepareResolvedDevice(const std::string &object_id) {
-  // std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);
+  // std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   // SyncDevices devices;
   // devices.FromJson(json);
   //
@@ -594,7 +602,7 @@ void ControllerImpl::OnResolvedPreferences(const RecordsList &records) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedPreferences:";
 
   SyncDevices existing_sync_devices;
-  std::string json = sync_obj_map_->GetObjectIdByLocalId(jslib_const::DEVICES_NAMES);
+  std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedPreferences: existing json=<" << json << ">";
   existing_sync_devices.FromJson(json);
 
@@ -627,7 +635,7 @@ void ControllerImpl::OnResolvedPreferences(const RecordsList &records) {
   LOG(ERROR) << "TAGAB OnResolvedPreferences sync_devices_json="<<sync_devices_json;
 
   LOG(ERROR) << "TAGAB OnResolvedPreferences before SaveObjectId";
-  sync_obj_map_->SaveObjectId(jslib_const::DEVICES_NAMES, sync_devices_json, "");
+  sync_obj_map_->SaveSpecialJson(jslib_const::DEVICES_NAMES, sync_devices_json);
   LOG(ERROR) << "TAGAB OnResolvedPreferences SaveObjectId done";
 
   // Inform devices list chain has been changed
@@ -682,7 +690,74 @@ void ControllerImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
 
 void ControllerImpl::OnSaveBookmarkOrder(const std::string &order,
   const std::string &prev_order, const std::string &next_order) {
-  NOTIMPLEMENTED();
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarkOrder";
+  LOG(ERROR) << "TAGAB order=" << order;
+  LOG(ERROR) << "TAGAB prev_order=" << prev_order;
+  LOG(ERROR) << "TAGAB next_order=" << next_order;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  // As I have sent task in UI and receievd the responce in UI,
+  // then safe to use per-class storage <prev_order,next_order> => context
+
+  // I need to findout the node local_id somehow
+  // And then:
+  //            1. apply new order string in obj map
+  //            2. send updated bookmark
+
+  int64_t between_order_rr_context = PopRRContext(prev_order, next_order);
+  LOG(ERROR) << "TAGAB between_order_rr_context=" << between_order_rr_context;
+  DCHECK(between_order_rr_context != -1);
+
+  task_runner_->PostTask(
+    FROM_HERE,
+    base::Bind(&ControllerImpl::OnSaveBookmarkOrderFileWork, base::Unretained(this),
+    between_order_rr_context,
+    order)
+  );
+}
+
+void ControllerImpl::OnSaveBookmarkOrderFileWork(const int64_t &bookmark_local_id, const std::string &order) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarkOrderFileWork";
+  LOG(ERROR) << "TAGAB bookmark_local_id=" << bookmark_local_id;
+  LOG(ERROR) << "TAGAB order=" << order;
+
+  sync_obj_map_->UpdateOrderByLocalObjectId( std::to_string(bookmark_local_id), order);
+
+  const bookmarks::BookmarkNode* node = bookmarks_->GetNodeById(bookmark_local_id);
+  LOG(ERROR) << "TAGAB node=" << node;
+  DCHECK(node);
+  if (!node) {
+    return;
+  }
+
+  DCHECK(bookmarks_);
+  std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(
+    {node},
+    std::map<const bookmarks::BookmarkNode*, std::string>(),
+    jslib_const::kActionUpdate);
+
+  DCHECK(records);
+  LOG(ERROR) << "TAGAB records->size()=" << records->size();
+  DCHECK(records->size() == 1);
+
+  sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, *records);
+}
+
+void ControllerImpl::PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &context) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  std::tuple<std::string, std::string> key(prev_order, next_order);
+  DCHECK(rr_map_.find(key) == rr_map_.end());
+  rr_map_[key] = context;
+}
+
+int64_t ControllerImpl::PopRRContext(const std::string &prev_order, const std::string &next_order) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  std::tuple<std::string, std::string> key(prev_order, next_order);
+  auto it = rr_map_.find(key);
+  DCHECK(it != rr_map_.end());
+  int64_t ret = it->second;
+  rr_map_.erase(it);
+  return ret;
 }
 
 void ControllerImpl::OnSyncWordsPrepared(const std::string &words) {
@@ -750,7 +825,7 @@ void ControllerImpl::RequestSyncData() {
     //SetUpdateDeleteDeviceName(CREATE_RECORD, mDeviceName, mDeviceId, "");
     SendCreateDevice();
     SendAllLocalBookmarks();
-    SendAllLocalHistorySites();
+    //SendAllLocalHistorySites();
   }
 
   FetchSyncRecords(bookmarks, history, preferences, start_at, max_records);
@@ -865,21 +940,24 @@ void ControllerImpl::SendAllLocalBookmarks() {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendAllLocalBookmarks";
   static const int SEND_RECORDS_COUNT_LIMIT = 1000;
   std::vector<const bookmarks::BookmarkNode*> localBookmarks;
-  bookmarks_->GetAllBookmarks(localBookmarks);
+  std::map<const bookmarks::BookmarkNode*, std::string> order_map;
+  bookmarks_->GetInitialBookmarksWithOrders(localBookmarks, order_map);
 
   for(size_t i = 0; i < localBookmarks.size(); i += SEND_RECORDS_COUNT_LIMIT) {
     size_t sub_list_last = std::min(localBookmarks.size(), i + SEND_RECORDS_COUNT_LIMIT);
     std::vector<const bookmarks::BookmarkNode*> sub_list(localBookmarks.begin()+i, localBookmarks.begin()+sub_list_last);
-    CreateUpdateDeleteBookmarks(jslib_const::kActionCreate, sub_list, true, true);
+    CreateUpdateDeleteBookmarks(jslib_const::kActionCreate, sub_list, order_map, true, true);
   }
 }
 
 void ControllerImpl::CreateUpdateDeleteBookmarks(
   const int &action,
   const std::vector<const bookmarks::BookmarkNode*> &list,
+  const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
   const bool &addIdsToNotSynced,
   const bool &isInitialSync) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteBookmarks";
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (list.empty() || !sync_initialized_ || !sync_prefs_->GetSyncBookmarksEnabled() ) {
     return;
@@ -890,6 +968,7 @@ void ControllerImpl::CreateUpdateDeleteBookmarks(
     base::Bind(&ControllerImpl::CreateUpdateDeleteBookmarksFileWork, base::Unretained(this),
     action,
     list,
+    order_map,
     addIdsToNotSynced,
     isInitialSync)
   );
@@ -898,15 +977,56 @@ void ControllerImpl::CreateUpdateDeleteBookmarks(
 void ControllerImpl::CreateUpdateDeleteBookmarksFileWork(
   const int &action,
   const std::vector<const bookmarks::BookmarkNode*> &list,
+  const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
   const bool &addIdsToNotSynced,
   const bool &isInitialSync) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteBookmarksFileWork";
 
   DCHECK(sync_client_);
-  std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(list, action);
+  std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(list, order_map, action);
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, *records);
 }
 
+void ControllerImpl::BookmarkMoved(
+  const int64_t &node_id,
+  const int64_t &prev_item_id,
+  const int64_t &next_item_id) {
+  // Should be invoked on FILE-enabled thread
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkMoved";
+
+  std::string prev_item_order;
+  std::string next_item_order;
+
+  if (prev_item_id != -1) {
+    prev_item_order = sync_obj_map_->GetOrderByLocalObjectId(std::to_string(prev_item_id));
+  }
+  if (next_item_id != -1) {
+    next_item_order = sync_obj_map_->GetOrderByLocalObjectId(std::to_string(next_item_id));
+  }
+  LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
+  LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
+
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
+    FROM_HERE, base::Bind(&ControllerImpl::BookmarkMovedQueryNewOrderUiWork,
+         base::Unretained(this), node_id, prev_item_order, next_item_order));
+}
+
+void ControllerImpl::BookmarkMovedQueryNewOrderUiWork(
+  const int64_t &node_id,
+  const std::string &prev_item_order,
+  const std::string &next_item_order) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkMovedQueryNewOrderUiWork";
+  LOG(ERROR) << "TAGAB node_id="<<node_id;
+  LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
+  LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(sync_client_);
+
+  PushRRContext(prev_item_order, next_item_order, node_id);
+
+  sync_client_->SendGetBookmarkOrder(prev_item_order, next_item_order);
+  // See later in OnSaveBookmarkOrder
+}
 
 void ControllerImpl::SendAllLocalHistorySites() {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendAllLocalHistorySites";

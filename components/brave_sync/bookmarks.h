@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include "base/macros.h"
 
@@ -42,13 +43,25 @@ public:
   void SetThisDeviceId(const std::string &device_id);
   void SetObjectMap(storage::ObjectMap* sync_obj_map);
 
+  const bookmarks::BookmarkNode* GetNodeById(const int64_t &bookmark_local_id);
+
   std::unique_ptr<jslib::SyncRecord> GetResolvedBookmarkValue(
-    const std::string &object_id);
+    const std::string &object_id/*,
+    const std::string &parent_object_id*/);
 
   void AddBookmark(const jslib::SyncRecord &sync_record);
 
-  void GetAllBookmarks(std::vector<const bookmarks::BookmarkNode*> &nodes);
+  void GetAllBookmarks_DEPRECATED(std::vector<const bookmarks::BookmarkNode*> &nodes);
   std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
+  void GetInitialBookmarksWithOrders(
+    std::vector<const bookmarks::BookmarkNode*> &nodes,
+    std::map<const bookmarks::BookmarkNode*, std::string> &order_map);
+
+  std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(
+    const std::vector<const bookmarks::BookmarkNode*> &list,
+    const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
+    int action);
+
 
   // bookmarks::BookmarkModelObserver overrides
   void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
@@ -89,12 +102,22 @@ public:
 
 private:
 
-  void AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record);
-  void AddBookmarkPostUiFileWork(const int64_t &added_node_id, const std::string &sync_record_object_id);
+  void GetInitialBookmarksWithOrdersWork(
+    const bookmarks::BookmarkNode* this_parent_node,
+    const std::string &this_node_order,
+    std::vector<const bookmarks::BookmarkNode*> &nodes,
+    std::map<const bookmarks::BookmarkNode*, std::string> &order_map);
 
-  std::string GetOrCreateObjectByLocalId(const int64_t &local_id);
-  void SaveIdMap(const int64_t &local_id, const std::string &sync_object_id);
-  std::unique_ptr<jslib::Bookmark> GetFromNode(const bookmarks::BookmarkNode* node);
+  void AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record);
+  void AddBookmarkPostUiFileWork(const int64_t &added_node_id, const std::string &order, const std::string &sync_record_object_id);
+
+  std::string GetOrCreateObjectByLocalId(const int64_t &local_id, const std::string &order);
+  void SaveIdMap(const int64_t &local_id, const std::string &order, const std::string &sync_object_id);
+  std::unique_ptr<jslib::Bookmark> GetFromNode(const bookmarks::BookmarkNode* node,
+    const std::string &node_order,
+    const std::string &parent_order);
+
+  void BookmarkNodeRemovedFileWork(const bookmarks::BookmarkNode* node);
 
   void PauseObserver();
   void ResumeObserver();
@@ -104,7 +127,7 @@ private:
   bookmarks::BookmarkModel* model_;
   std::string device_id_;
 
-  storage::ObjectMap* sync_obj_map_;
+  storage::ObjectMap* sync_obj_map_;    // Ideally bookmarks should not know about object_map
   bool observer_is_set_;
   std::string base_order_;
 

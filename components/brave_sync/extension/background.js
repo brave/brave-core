@@ -72,6 +72,16 @@ chrome.runtime.onStartup.addListener(function() {
     callbackList["send-sync-records"](null, category_name, records);
   });
 
+  chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, platform) {
+    console.log("in chrome.braveSync.onSendGetBookmarksBaseOrder ", arguments);
+    callbackList["get-bookmarks-base-order"](null, deviceId, platform);
+  });
+
+  chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder) {
+    console.log("in chrome.braveSync.onSendGetBookmarkOrder", arguments);
+    callbackList["get-bookmark-order"](null, prevOrder, nextOrder);
+  });
+
   chrome.braveSync.onNeedSyncWords.addListener(function(seed) {
     console.log("in chrome.braveSync.onGetSyncWords seed=", seed);
     var arr_int = seed.split(',').map(Number);
@@ -263,6 +273,16 @@ class InjectedObject {
         console.log("in resolved-sync-records JSON.stringify(arg2)=", JSON.stringify(arg2));
         fixupSyncRecordsArrayExtensionToBrowser(arg2);
         chrome.braveSync.resolvedSyncRecords(arg1/*categoryName*/, arg2/*records*/);
+        break;
+      case "save-bookmarks-base-order":
+        console.log("in save-bookmarks-base-order JSON.stringify(arg1)=", JSON.stringify(arg1));
+        chrome.braveSync.saveBookmarksBaseOrder(arg1/*order*/);
+        break;
+      case "save-bookmark-order":
+        console.log("in save-bookmark-order JSON.stringify(arg1)=", JSON.stringify(arg1));
+        console.log("in save-bookmark-order JSON.stringify(arg2)=", JSON.stringify(arg2));
+        console.log("in save-bookmark-order JSON.stringify(arg3)=", JSON.stringify(arg3));
+        chrome.braveSync.saveBookmarkOrder(arg1/*order*/, arg2/*prevOrder*/, arg3/*nextOrder*/);
         break;
       default:
         console.log('background.js TAGAB will call default chrome.braveSync.backgroundPageToBrowser????');
