@@ -1,10 +1,12 @@
-import { RewardsPanelState } from '../../constants/rewardsPanelState'
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { types } from '../../constants/rewards_panel_types'
 import * as storage from '../storage'
 import { getTabData } from '../api/tabs_api'
 
-export const rewardsPanelReducer = (state: RewardsPanelState | undefined, action: any) => {
+export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, action: any) => {
   if (state === undefined) {
     state = storage.load()
   }
@@ -30,15 +32,25 @@ export const rewardsPanelReducer = (state: RewardsPanelState | undefined, action
       }
       break
     case types.ON_TAB_RETRIEVED:
-      // TODO add caching for url's, so that we know
-      // which url in connected to which publisher key
-      if (!payload.tab) {
+      const tab: chrome.tabs.Tab = payload.tab
+      if (!tab || !tab.url || tab.incognito || !state.walletCreated) {
         break
       }
+
       state = { ...state }
-      console.log(payload.tab)
-      // state.publisher = undefined
+      chrome.braveRewards.getPublisherData(tab.windowId, tab.url)
       break
+    case types.ON_PUBLISHER_DATA:
+      {
+
+        let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+        publishers[payload.windowId.toString()] = payload.publisher
+        state = {
+          ...state,
+          publishers
+        }
+        break
+      }
   }
 
   if (state !== startingState) {

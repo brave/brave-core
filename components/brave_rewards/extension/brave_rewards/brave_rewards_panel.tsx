@@ -14,13 +14,10 @@ import { initLocale } from 'brave-ui/helpers'
 // Components
 import App from './components/app'
 
-// Constants
-import { RewardsPanelState } from './constants/rewardsPanelState'
-
 // Utils
 import { getUIMessages } from './background/api/locale_api'
 
-const store: Store<RewardsPanelState> = new Store({
+const store: Store<RewardsExtension.State> = new Store({
   portName: 'REWARDSPANEL'
 })
 

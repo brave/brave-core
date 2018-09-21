@@ -15,6 +15,55 @@
         "type": "function",
         "description": "Fired when wallet is created",
         "parameters": []
+      },
+      {
+        "name": "onPublisherData",
+        "type": "function",
+        "description": "Fired when wallet is created",
+        "parameters": [
+           {
+             "name": "windowId",
+             "type": "integer"
+           },
+          {
+            "name": "publisher",
+            "type": "object",
+            "properties": {
+              "percentage": {
+                "type": "integer",
+                "description": "publisher attention score"
+              },
+              "excluded": {
+                "type": "boolean",
+                "description": "is site excluded from auto contribute"
+              },
+              "provider": {
+                "type": "string",
+                "description": "provider (if media publisher) for this publisher"
+              },
+              "favicon_url": {
+                "type": "string",
+                "description": "publisher image url"
+              },
+              "publisher_key": {
+                "type": "string",
+                "description": "publisher key, unique identifier"
+              },
+              "name": {
+                "type": "string",
+                "description": "publisher name"
+              },
+              "url": {
+                "type": "string",
+                "description": "url of the current tab"
+              },
+              "verified": {
+                "type": "boolean",
+                "description": "is publisher verified"
+              }
+            }
+          }
+        ]
       }
     ],
    "functions": [
@@ -23,6 +72,21 @@
        "type": "function",
        "description": "Creates new wallet",
        "parameters": []
+     },
+     {
+       "name": "getPublisherData",
+       "type": "function",
+       "description": "Get publisher data",
+       "parameters": [
+         {
+           "name": "windowId",
+           "type": "integer"
+         },
+         {
+           "name": "url",
+           "type": "string"
+         }
+       ]
      }
    ]
   }

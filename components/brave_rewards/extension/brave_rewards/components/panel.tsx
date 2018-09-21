@@ -7,14 +7,13 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
-
-// Constants
-import { ApplicationState, ComponentProps } from '../constants/rewardsPanelState'
+import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
 
-interface Props extends ComponentProps {
+interface Props extends RewardsExtension.ComponentProps {
+  windowId: number
 }
 
 interface State {
@@ -35,10 +34,22 @@ export class Panel extends React.Component<Props, State> {
   }
 
   doNothing () {
-    console.log('Action')
+    console.log('doNothing click')
+  }
+
+  getPublisher = () => {
+    const windowId = this.props.windowId
+
+    if (!windowId) {
+      return undefined
+    }
+
+    return this.props.rewardsPanelData.publishers[windowId]
   }
 
   render () {
+    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+
     return (
       <WalletWrapper
         compact={true}
@@ -80,23 +91,28 @@ export class Panel extends React.Component<Props, State> {
           id={'panel-slider'}
           onToggle={this.doNothing}
         >
-          <WalletPanel
-            id={'wallet-panel'}
-            platform={'youtube'}
-            publisherName={'Bart Baker'}
-            monthlyAmount={10}
-            isVerified={true}
-            tipsEnabled={true}
-            includeInAuto={true}
-            attentionScore={'17'}
-            donationAmounts={
-              [5, 10, 15, 20, 30, 50, 100]
-            }
-            onToggleTips={this.doNothing}
-            donationAction={this.doNothing}
-            onAmountChange={this.doNothing}
-            onIncludeInAuto={this.doNothing}
-          />
+          {
+            publisher && publisher.publisher_key
+            ? <WalletPanel
+              id={'wallet-panel'}
+              platform={publisher.provider as Provider}
+              publisherName={publisher.name}
+              publisherImg={publisher.favicon_url || `chrome://favicon/size/48@1x/${publisher.url}/`}
+              monthlyAmount={10}
+              isVerified={publisher.verified}
+              tipsEnabled={true}
+              includeInAuto={publisher.excluded}
+              attentionScore={(publisher.percentage || 0).toString()}
+              donationAmounts={
+                [5, 10, 15, 20, 30, 50, 100]
+              }
+              onToggleTips={this.doNothing}
+              donationAction={this.doNothing}
+              onAmountChange={this.doNothing}
+              onIncludeInAuto={this.doNothing}
+            />
+            : null
+          }
           <WalletSummary
             compact={true}
             grant={{ tokens: 10, converted: 0.25 }}
@@ -112,7 +128,7 @@ export class Panel extends React.Component<Props, State> {
   }
 }
 
-export const mapStateToProps = (state: ApplicationState) => ({
+export const mapStateToProps = (state: RewardsExtension.ApplicationState) => ({
   rewardsPanelData: state.rewardsPanelData
 })
 

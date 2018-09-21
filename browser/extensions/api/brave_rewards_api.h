@@ -20,6 +20,16 @@ class BraveRewardsCreateWalletFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherData", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublisherDataFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

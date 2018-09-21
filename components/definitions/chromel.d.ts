@@ -13,8 +13,12 @@ declare namespace chrome.dns {
 }
 
 declare namespace chrome.braveRewards {
+  const createWallet: () => {}
+  const getPublisherData: (windowId: number, url: string) => {}
   const onWalletCreated: {
     addListener: (callback: () => void) => void
   }
-  const createWallet: () => {}
+  const onPublisherData: {
+    addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
+  }
 }

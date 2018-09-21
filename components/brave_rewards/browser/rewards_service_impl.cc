@@ -1021,4 +1021,54 @@ bool RewardsServiceImpl::IsWalletCreated() {
   return ledger_->IsWalletCreated();
 }
 
+void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) {
+  GURL parsedUrl(url);
+
+  if (!parsedUrl.is_valid()) {
+    return;
+  }
+
+  auto now = base::Time::Now();
+  auto origin = parsedUrl.GetOrigin();
+  const std::string tld =
+      GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
+
+  ledger_->GetPublisherActivityFromUrl(windowId,
+      tld,
+      parsedUrl.path(),
+      GetPublisherMonth(now),
+      GetPublisherYear(now));
+}
+
+void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
+                                             std::unique_ptr<ledger::PublisherInfo> info,
+                                             uint64_t windowId) {
+  if (result != ledger::Result::LEDGER_OK) {
+    return;
+  }
+
+  // extension
+  EventRouter* event_router = EventRouter::Get(profile_);
+  if (event_router && info) {
+    extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
+    publisher.percentage = info->percent;
+    publisher.verified = info->verified;
+    publisher.excluded = info->excluded;
+    publisher.name = info->name;
+    publisher.url = info->url;
+    publisher.provider = info->provider;
+    publisher.favicon_url = info->favicon_url;
+    publisher.publisher_key = info->id;
+    std::unique_ptr<base::ListValue> args(
+        extensions::api::brave_rewards::OnPublisherData::Create(windowId, publisher)
+          .release());
+
+    std::unique_ptr<Event> event(
+        new Event(extensions::events::BRAVE_ON_PUBLISHER_DATA,
+          extensions::api::brave_rewards::OnPublisherData::kEventName,
+          std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+  }
+}
+
 }  // namespace brave_rewards

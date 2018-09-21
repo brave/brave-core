@@ -4,19 +4,22 @@
 
 // Utils
 import { debounce } from '../../../../common/debounce'
-import { RewardsPanelState } from '../constants/rewardsPanelState'
 
 const keyName = 'rewards-panel-data'
 
-const defaultState: RewardsPanelState = {
+const defaultState: RewardsExtension.State = {
   walletCreated: false,
   walletCreateFailed: false,
-  publisher: undefined
+  publishers: {}
 }
 
-export const load = (): RewardsPanelState => {
+// TODO check if windowId persist, because if not then we need to
+// clear publishers when you close browser
+const cleanData = (state: RewardsExtension.State) => state
+
+export const load = (): RewardsExtension.State => {
   const data = window.localStorage.getItem(keyName)
-  let state: RewardsPanelState = defaultState
+  let state: RewardsExtension.State = defaultState
   if (data) {
     try {
       state = JSON.parse(data)
@@ -24,11 +27,11 @@ export const load = (): RewardsPanelState => {
       console.error('Could not parse local storage data: ', e)
     }
   }
-  return state
+  return cleanData(state)
 }
 
-export const debouncedSave = debounce((data: RewardsPanelState) => {
+export const debouncedSave = debounce((data: RewardsExtension.State) => {
   if (data) {
-    window.localStorage.setItem(keyName, JSON.stringify(data))
+    window.localStorage.setItem(keyName, JSON.stringify(cleanData(data)))
   }
 }, 50)

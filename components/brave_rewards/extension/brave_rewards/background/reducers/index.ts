@@ -6,8 +6,7 @@ import { combineReducers } from 'redux'
 
 // Utils
 import { rewardsPanelReducer } from './rewards_panel_reducer'
-import { ApplicationState } from '../../constants/rewardsPanelState'
 
-export default combineReducers<ApplicationState>({
+export default combineReducers<RewardsExtension.ApplicationState>({
   rewardsPanelData: rewardsPanelReducer
 })

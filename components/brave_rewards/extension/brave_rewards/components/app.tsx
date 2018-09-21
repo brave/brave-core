@@ -10,16 +10,33 @@ import { PanelWelcome } from 'brave-ui/features/rewards'
 // Components
 import Panel from './panel'
 
-// Constants
-import { ApplicationState, ComponentProps } from '../constants/rewardsPanelState'
-
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
 
-interface Props extends ComponentProps {
+interface Props extends RewardsExtension.ComponentProps {
 }
 
-export class RewardsPanel extends React.Component<Props, {}> {
+interface State {
+  windowId: number
+}
+
+export class RewardsPanel extends React.Component<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      windowId: -1
+    }
+  }
+
+  componentDidMount () {
+    chrome.windows.getCurrent({}, this.onWindowCallback)
+  }
+
+  onWindowCallback = (window: chrome.windows.Window) => {
+    this.setState({
+      windowId: window.id
+    })
+  }
 
   render () {
     const { rewardsPanelData, actions } = this.props
@@ -32,14 +49,14 @@ export class RewardsPanel extends React.Component<Props, {}> {
             variant={'two'}
             optInAction={actions.createWallet}
           />
-          : <Panel />
+          : <Panel windowId={this.state.windowId} />
         }
       </>
     )
   }
 }
 
-export const mapStateToProps = (state: ApplicationState) => ({
+export const mapStateToProps = (state: RewardsExtension.ApplicationState) => ({
   rewardsPanelData: state.rewardsPanelData
 })
 

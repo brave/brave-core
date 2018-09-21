@@ -25,5 +25,17 @@ ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
+  std::unique_ptr<brave_rewards::GetPublisherData::Params> params(
+      brave_rewards::GetPublisherData::Params::Create(*args_));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
+  rewards_service_->GetPublisherActivityFromUrl(params->window_id, params->url);
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions

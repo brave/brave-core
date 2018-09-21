@@ -96,6 +96,7 @@ class RewardsServiceImpl : public RewardsService,
   void RestorePublishers() override;
   std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() override;
   bool IsWalletCreated() override;
+  void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) override;
 
  private:
   typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
@@ -189,6 +190,9 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAmount(double amount) const override;
   void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
+  void OnPublisherActivity(ledger::Result result,
+                          std::unique_ptr<ledger::PublisherInfo> info,
+                          uint64_t windowId) override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

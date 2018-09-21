@@ -14,6 +14,7 @@ transpile_web_ui("brave_rewards_panel") {
     "background/api/locale_api.ts",
     "background/api/tabs_api.ts",
     "background/events/rewardsEvents.ts",
+    "background/events/tabEvents.ts",
     "background/reducers/index.ts",
     "background/reducers/rewards_panel_reducer.ts",
     "background/storage.ts",
@@ -23,7 +24,6 @@ transpile_web_ui("brave_rewards_panel") {
     "components/app.tsx",
     "components/panel.tsx",
     "constants/rewards_panel_types.ts",
-    "constants/rewardsPanelState.ts",
   ]
 
   bundle_names = [
