@@ -148,6 +148,7 @@ void BraveSyncEventRouter::SendSyncRecords(const std::string &category_name,
 }
 
 void BraveSyncEventRouter::SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) {
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarksBaseOrder: device_id="<<device_id<<" platform="<<platform;
   if (!profile_) {
     LOG(ERROR) << "profile is not set";
     return;
@@ -167,7 +168,36 @@ void BraveSyncEventRouter::SendGetBookmarksBaseOrder(const std::string &device_i
        extensions::api::brave_sync::OnSendGetBookmarksBaseOrder::kEventName,
        std::move(args)));
 
-  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendSyncRecords: will post to in BrowserThread::UI";
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarksBaseOrder: will post to in BrowserThread::UI";
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
+    FROM_HERE, base::Bind(&EventRouter::BroadcastEvent,
+         base::Unretained(event_router), base::Passed(std::move(event))));
+}
+
+void BraveSyncEventRouter::SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) {
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarkOrder: prevOrder="<<prevOrder<<" nextOrder="<<nextOrder;
+  if (!profile_) {
+    LOG(ERROR) << "profile is not set";
+    return;
+  }
+
+  EventRouter* event_router = EventRouter::Get(profile_);
+
+  if (!event_router) {
+    return;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+     extensions::api::brave_sync::OnSendGetBookmarkOrder::Create(prevOrder, nextOrder)
+       .release());
+  std::unique_ptr<Event> event(
+     new Event(extensions::events::FOR_TEST,
+       extensions::api::brave_sync::OnSendGetBookmarkOrder::kEventName,
+       std::move(args)));
+
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarkOrder: extensions::api::brave_sync::OnSendGetBookmarkOrder::kEventName="<<extensions::api::brave_sync::OnSendGetBookmarkOrder::kEventName;
+
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarkOrder: will post to in BrowserThread::UI";
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
     FROM_HERE, base::Bind(&EventRouter::BroadcastEvent,
          base::Unretained(event_router), base::Passed(std::move(event))));

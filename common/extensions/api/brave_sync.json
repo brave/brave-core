@@ -267,6 +267,21 @@
         ]
       },
       {
+        "name": "onSendGetBookmarkOrder",
+        "type": "function",
+        "description": "Browser sends this to get a bookmark order based on prev and next bookmark orders.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "prevOrder"
+          },
+          {
+            "type": "string",
+            "name": "nextOrder"
+          }
+        ]
+      },
+      {
         "name": "onNeedSyncWords",
         "type": "function",
         "description": "Browser informs js sync library it wants to receive sync words from the seed.",
@@ -438,6 +453,25 @@
           {
             "type": "string",
             "name": "order"
+          }
+        ]
+      },
+      {
+        "name": "saveBookmarkOrder",
+        "type": "function",
+        "description": "Sync library sends this to set a bookmark order based on prev and next bookmark orders",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "order"
+          },
+          {
+            "type": "string",
+            "name": "prevOrder"
+          },
+          {
+            "type": "string",
+            "name": "nextOrder"
           }
         ]
       },

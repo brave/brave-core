@@ -5,6 +5,7 @@
 #ifndef BRAVE_COMPONENTS_SYNC_CONTROLLER_IMPL_H_
 #define BRAVE_COMPONENTS_SYNC_CONTROLLER_IMPL_H_
 
+#include <map>
 #include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "brave/components/brave_sync/controller.h"
@@ -119,6 +120,7 @@ private:
   void CreateUpdateDeleteBookmarksFileWork(
     const int &action,
     const std::vector<const bookmarks::BookmarkNode*> &list,
+    const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
     const bool &addIdsToNotSynced,
     const bool &isInitialSync);
 
@@ -127,6 +129,8 @@ private:
   void OnDeleteDeviceFileWork(const std::string &device_id);
   void OnResetSyncFileWork(const std::string &device_id);
   void OnResetSyncPostFileUiWork();
+
+  void OnSaveBookmarkOrderFileWork(const int64_t &bookmark_local_id, const std::string &order);
 
   // Other private methods
   void RequestSyncData();
@@ -150,8 +154,19 @@ private:
   void CreateUpdateDeleteBookmarks(
     const int &action,
     const std::vector<const bookmarks::BookmarkNode*> &list,
+    const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
     const bool &addIdsToNotSynced,
     const bool &isInitialSync) override;
+
+  void BookmarkMoved(
+    const int64_t &node_id,
+    const int64_t &prev_item_id,
+    const int64_t &next_item_id) override;
+
+  void BookmarkMovedQueryNewOrderUiWork(
+    const int64_t &node_id,
+    const std::string &prev_item_order,
+    const std::string &next_item_order);
 
   void CreateUpdateDeleteHistorySites(
     const int &action,
@@ -199,6 +214,9 @@ private:
 
   base::SequencedTaskRunner *GetTaskRunner() override;
 
+  void PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &context);
+  int64_t PopRRContext(const std::string &prev_order, const std::string &next_order);
+
   // Messages Controller => SyncWebUi
   SyncUI *sync_ui_;
 
@@ -206,6 +224,8 @@ private:
 
   // True if we have received SyncReady from JS lib
   bool sync_initialized_;
+  // Version received from "get-init-data" command
+  std::string sync_version_;
 
   // Mark members with an small life time
   class TempStorage {
@@ -229,6 +249,8 @@ private:
   Profile *profile_;
 
   bool seen_get_init_data_ = false;
+
+  std::map<std::tuple<std::string, std::string>, int64_t> rr_map_; // Map to keep tracking between request and response on query bookmarks order
 
   std::unique_ptr<base::RepeatingTimer> timer_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;

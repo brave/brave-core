@@ -129,11 +129,13 @@ void ClientExtImpl::SendDeleteSyncCategory(const std::string &category_name) {
 }
 
 void ClientExtImpl::SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) {
-  NOTIMPLEMENTED();
+  LOG(ERROR) << "TAGAB ClientExtImpl::SendGetBookmarksBaseOrder: device_id="<<device_id<<" platform="<<platform;
+  brave_sync_event_router_->SendGetBookmarksBaseOrder(device_id, platform);
 }
 
 void ClientExtImpl::SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) {
-  NOTIMPLEMENTED();
+  LOG(ERROR) << "TAGAB ClientExtImpl::SendGetBookmarkOrder: prevOrder="<<prevOrder<<" nextOrder="<<nextOrder;
+  brave_sync_event_router_->SendGetBookmarkOrder(prevOrder, nextOrder);
 }
 
 void ClientExtImpl::NeedSyncWords(const std::string &seed) {
