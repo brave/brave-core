@@ -2004,4 +2004,14 @@ static bool ignore_ = false;
     *written = NICEWARE_BYTES_WRITTEN;
     return 0;
   }
+
+  uint64_t getRandomValue(uint8_t min, uint8_t max) {
+    std::random_device seeder;
+    const auto seed = seeder.entropy() ? seeder() : time(nullptr);
+    std::mt19937 eng(static_cast<std::mt19937::result_type> (seed));
+    std::uniform_int_distribution <> dist(min, max);
+
+    return dist(eng);
+  }
+
 }  // namespace braveledger_bat_helper

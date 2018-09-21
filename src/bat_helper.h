@@ -429,6 +429,7 @@ namespace braveledger_bat_helper {
   uint8_t niceware_mnemonic_to_bytes(const std::string& w,
     std::vector<uint8_t>& bytes_out, size_t *written,
     std::vector<std::string> wordDictionary);
+  uint64_t getRandomValue(uint8_t min, uint8_t max);
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_

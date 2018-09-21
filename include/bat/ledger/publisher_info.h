@@ -55,6 +55,7 @@ LEDGER_EXPORT struct PublisherInfoFilter {
   PUBLISHER_EXCLUDE excluded;
   std::vector<std::pair<std::string, bool>> order_by;
   unsigned int min_duration;
+  uint64_t reconcile_stamp;
 };
 
 LEDGER_EXPORT struct ContributionInfo {
@@ -74,6 +75,7 @@ LEDGER_EXPORT struct PublisherInfo {
   PublisherInfo(const PublisherInfo& info);
   ~PublisherInfo();
 
+  bool operator<(const PublisherInfo& rhs) const;
   bool is_valid() const;
 
   std::string id;
@@ -86,6 +88,7 @@ LEDGER_EXPORT struct PublisherInfo {
   PUBLISHER_CATEGORY category;
   PUBLISHER_MONTH month;
   int year;
+  uint64_t reconcile_stamp;
   bool verified;
   std::string name;
   std::string url;

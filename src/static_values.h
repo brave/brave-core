@@ -89,7 +89,8 @@ static const unsigned int _twitch_events_array_size = 8;
 static const std::string _twitch_events[] = {"buffer-empty", "buffer-refill", "video_end",
   "minute-watched", "video_pause", "player_click_vod_seek", "video-play", "video_error"};
 
-static const uint64_t _publishers_list_load_interval = 48 * 60 * 60; //48 hours in seconds
+static const uint64_t _publishers_list_load_interval = 48 * 60 * 60; // 48 hours in seconds
+static const uint64_t _reconcile_default_interval = 30 * 24 * 60 * 60; // 30 days in seconds
 
 }  // namespace braveledger_ledger
 

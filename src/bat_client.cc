@@ -166,10 +166,19 @@ void BatClient::registerPersonaCallback(bool result,
     ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
-  state_->bootStamp_ = braveledger_bat_helper::currentTime() * 1000;
-  state_->reconcileStamp_ = state_->bootStamp_ + state_->days_ * 24 * 60 * 60 * 1000;
+  // In seconds
+  // Do we need bootStamp_ at all?
+  state_->bootStamp_ = braveledger_bat_helper::currentTime();
+  // Should we use _reconcile_default_interval or state_->days_?
+  // In seconds
+
+  resetReconcileStamp();
 
   ledger_->OnWalletInitialized(ledger::Result::LEDGER_OK);
+}
+
+void BatClient::resetReconcileStamp() {
+  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 24 * 60 * 60;
   saveState();
 }
 
@@ -263,7 +272,7 @@ void BatClient::getWalletProperties() {
    }
    state_->walletProperties_ = properties;
    ledger_->OnWalletProperties(ledger::Result::LEDGER_OK, properties);
- }
+}
 
 bool BatClient::isReadyForReconcile() {
   // TODO real check of reconcile timestamp
@@ -301,9 +310,9 @@ void BatClient::reconcileCallback(bool result,
 void BatClient::currentReconcile() {
   std::ostringstream amount;
   amount << state_->fee_amount_;
-  std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_ + "?amount=" + amount.str() + "&altcurrency=" + state_->fee_currency_;
+  std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_ + "?refresh=true" + "&amount=" + amount.str() + "&altcurrency=" + state_->fee_currency_;
 
-  LOG(ERROR) << "!!!currentReconcile path == " << path;
+  //LOG(ERROR) << "!!!currentReconcile path == " << path;
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL(path, PREFIX_V2),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET, &handler_);
@@ -319,28 +328,23 @@ void BatClient::currentReconcileCallback(bool result,
                                          const std::string& response,
                                          const std::map<std::string, std::string>& headers) {
   if (!result) {
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
     // TODO errors handling
     return;
   }
 
   braveledger_bat_helper::getJSONRates(response, currentReconcile_->rates_);
-  //LOG(ERROR) << "!!!rates == " << currentReconcile_->rates_.size();
   braveledger_bat_helper::UNSIGNED_TX unsignedTx;
   braveledger_bat_helper::getJSONUnsignedTx(response, unsignedTx);
   if (unsignedTx.amount_.empty() && unsignedTx.currency_.empty() && unsignedTx.destination_.empty()) {
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
     // We don't have any unsigned transactions
     return;
   }
   currentReconcile_->amount_ = unsignedTx.amount_;
   currentReconcile_->currency_ = unsignedTx.currency_;
 
-  //std::string keysDenomination[2] = {"amount", "currency"};
-  //std::string valuesDenomination[2] = {unsignedTx.amount_, unsignedTx.currency_};
-  //std::string denomination = stringify(keysDenomination, valuesDenomination, 2);
-  //std::string keys[2] = {"denomination", "destination"};
-  //std::string values[2] = {denomination, unsignedTx.destination_};
-  std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsignedTx);//stringify(keys, values, 2);
-  //LOG(ERROR) << "!!!octets == " << octets;
+  std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsignedTx);
   std::string headerDigest = "SHA-256=" + braveledger_bat_helper::getBase64(braveledger_bat_helper::getSHA256(octets));
   std::string headerKeys[1] = {"digest"};
   std::string headerValues[1] = {headerDigest};
@@ -369,7 +373,7 @@ void BatClient::currentReconcileCallback(bool result,
   walletHeader.push_back("Content-Type: application/json; charset=UTF-8");
   std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_;
 
-  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL(path),
+  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL(path, PREFIX_V2),
     walletHeader, payloadStringify, "application/json; charset=utf-8",
     ledger::URL_METHOD::PUT,
     &handler_);
@@ -385,6 +389,7 @@ void BatClient::reconcilePayloadCallback(bool result,
                                          const std::string& response,
                                          const std::map<std::string, std::string>& headers) {
   if (!result) {
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
     // TODO errors handling
     return;
   }
@@ -400,55 +405,7 @@ void BatClient::reconcilePayloadCallback(bool result,
   saveState();
   // TODO set a new timestamp for the next reconcile
   // TODO self.state.updateStamp var in old lib
-  // TODO do we need to call update rules v1 at all?
   registerViewing();
-  //
-  /*
-  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL(UPDATE_RULES_V1),
-    std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(&BatClient::updateRulesCallback,
-                                       this,
-                                       true,
-                                       _1,
-                                       _2,
-                                       stExtraData));*/
-}
-
-void BatClient::updateRulesCallback(bool reconcile, bool result, const std::string& response) {
-  if (!result) {
-    // TODO errors handling
-    return;
-  }
-  state_->ruleset_ = response;
-
-  auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL(UPDATE_RULES_V2),
-    std::vector<std::string>(), "", "",
-    ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(std::move(request_id),
-                             std::bind(&BatClient::updateRulesV2Callback,
-                                       this,
-                                       reconcile,
-                                       _1,
-                                       _2,
-                                       _3));
-}
-
-void BatClient::updateRulesV2Callback(bool reconcile,
-                                      bool result,
-                                      const std::string& response,
-                                      const std::map<std::string, std::string>& headers) {
-  if (!result) {
-    // TODO errors handling
-    return;
-  }
-  // TODO parse the return rulesetV2
-  state_->rulesetV2_ = response;
-  // We are doing a reconcile if it is true
-  if (reconcile) {
-    // Register viewingId
-    registerViewing();
-  }
 }
 
 void BatClient::registerViewing() {
@@ -467,6 +424,7 @@ void BatClient::registerViewingCallback(bool result,
                                         const std::string& response,
                                         const std::map<std::string, std::string>& headers) {
   if (!result) {
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
     // TODO errors handling
     return;
   }
@@ -595,23 +553,15 @@ void BatClient::prepareBallots() {
         // TODO check on ballot.prepareBallot and call commitBallot if it exist
         if (state_->ballots_[i].prepareBallot_.empty()) {
           prepareBatch(state_->ballots_[i], state_->transactions_[j]);
-          //prepareBallot(state_->ballots_[i], state_->transactions_[j]);
           breakTheLoop = true;
           break;
         }
-        //BATCH_PROOF batchProofEl;
-        //batchProofEl.transaction_ = state_->transactions_[j];
-        //batchProofEl.ballot_ = state_->ballots_[i];
-        //batchProof.push_back(batchProofEl);
       }
     }
     if (breakTheLoop) {
       break;
     }
   }
-
-  //proofBatch(batchProof);
-  //LOG(ERROR) << "!!! 1 batchProof.size() == " << batchProof.size();
 }
 
 void BatClient::prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction) {
@@ -657,8 +607,7 @@ void BatClient::prepareBatchCallback(bool result,
 
   saveState();
   proofBatch(batchProof);
-  prepareVoteBatch();
-  voteBatch();
+  ledger_->PrepareVoteBatchTimer();
 }
 
 void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof) {
@@ -695,8 +644,6 @@ void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF
       }
     }
   }
-  // TODO make wait and call prepareVoteBatch after that only
-  // const delayTime = random.randomInt({ min: 10 * msecs.second, max: 1 * msecs.minute })
 }
 
 void BatClient::prepareVoteBatch() {
@@ -749,8 +696,7 @@ void BatClient::prepareVoteBatch() {
   }
   saveState();
 
-  // TODO make wait and call voteBatch after that only
-  // const delayTime = random.randomInt({ min: 10 * msecs.second, max: 1 * msecs.minute })
+  ledger_->VoteBatchTimer();
 }
 
 void BatClient::voteBatch() {
@@ -778,8 +724,6 @@ void BatClient::voteBatch() {
                                        _1,
                                        _2,
                                        _3));
-  // TODO make wait and call voteBatch again after that only
-  // const delayTime = random.randomInt({ min: 10 * msecs.second, max: 1 * msecs.minute })
 }
 
 void BatClient::voteBatchCallback(const std::string& publisher,
@@ -812,6 +756,7 @@ void BatClient::voteBatchCallback(const std::string& publisher,
     }
   }
   saveState();
+  ledger_->VoteBatchTimer();
 }
 
 // void BatClient::prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction) {
