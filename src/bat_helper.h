@@ -208,8 +208,8 @@ namespace braveledger_bat_helper {
     std::string rulesetV2_;
     std::vector<BATCH_VOTES_ST> batch_;
     GRANT grant_;
-    bool auto_contribute_ = true;
-    bool rewards_enabled_ = true;
+    bool auto_contribute_ = false;
+    bool rewards_enabled_ = false;
   };
 
   struct REPORT_BALANCE_ST {
