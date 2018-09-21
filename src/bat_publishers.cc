@@ -600,4 +600,45 @@ bool BatPublishers::loadPublisherList(const std::string& data) {
   return success;
 }
 
+void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId,
+                                            const std::string& tld,
+                                            const std::string& path,
+                                            ledger::PUBLISHER_MONTH month,
+                                            int year) {
+  if ((tld == YOUTUBE_TLD || tld == TWITCH_TLD) && path != "" && path != "/") {
+    std::string type = YOUTUBE_MEDIA_TYPE;
+    if (tld == TWITCH_TLD) {
+      type = TWITCH_MEDIA_TYPE;
+    }
+
+    // ledger_->GetMediaActivityFromUrl(windowId, (std::string)tld + path, type, month, year);
+    return;
+  }
+
+  auto filter = CreatePublisherFilter(tld,
+        ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+        month,
+        year);
+    ledger_->GetPublisherInfo(filter,
+        std::bind(&BatPublishers::onPublisherActivity, this, _1, _2, windowId, tld));
+}
+
+void BatPublishers::onPublisherActivity(ledger::Result result,
+                                        std::unique_ptr<ledger::PublisherInfo> info,
+                                        uint64_t windowId,
+                                        const std::string& publisherKey) {
+
+  // We will re-try one time
+  if (result == ledger::Result::NOT_FOUND && !publisherKey.empty()) {
+    auto filter = CreatePublisherFilter(publisherKey,
+        ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+        ledger::PUBLISHER_MONTH::ANY,
+        -1);
+    ledger_->GetPublisherInfo(filter,
+        std::bind(&BatPublishers::onPublisherActivity, this, _1, _2, windowId, ""));
+  }
+
+  ledger_->OnPublisherActivity(result, std::move(info), windowId);
+}
+
 }  // namespace braveledger_bat_publisher

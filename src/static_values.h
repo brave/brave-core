@@ -51,6 +51,8 @@
 #define YOUTUBE_PROVIDER_NAME           "YouTube"
 #define TWITCH_PROVIDER_NAME           	"Twitch"
 #define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
+#define YOUTUBE_TLD                     "youtube.com"
+#define TWITCH_TLD                      "twitch.com"
 
 #define SEED_LENGTH                     32
 #define SALT_LENGTH                     64

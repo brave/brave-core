@@ -624,4 +624,25 @@ bool LedgerImpl::IsWalletCreated() const {
   return bat_client_->isWalletCreated();
 }
 
+void LedgerImpl::GetPublisherActivityFromUrl(uint64_t windowId,
+                                             const std::string& tld,
+                                             const std::string& path,
+                                             ledger::PUBLISHER_MONTH month,
+                                             int year) {
+  bat_publishers_->getPublisherActivityFromUrl(windowId, tld, path, month, year);
+}
+
+void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,
+                                             const std::string& providerType,
+                                             const std::string& url,
+                                             ledger::PUBLISHER_MONTH month,
+                                             int year) {
+  bat_get_media_->getMediaActivityFromUrl(windowId, url, providerType, month, year);
+}
+
+void LedgerImpl::OnPublisherActivity(ledger::Result result,
+                                        std::unique_ptr<ledger::PublisherInfo> info, uint64_t windowId) {
+  ledger_client_->OnPublisherActivity(result, std::move(info), windowId);
+}
+
 }  // namespace bat_ledger

@@ -355,4 +355,12 @@ std::string BatGetMedia::getMediaURL(const std::string& mediaId, const std::stri
   return res;
 }
 
+void BatGetMedia::getMediaActivityFromUrl(uint64_t windowId,
+                                              const std::string& url,
+                                              const std::string& providerType,
+                                              ledger::PUBLISHER_MONTH month,
+                                              int year) {
+
+}
+
 }  // namespace braveledger_bat_get_media
