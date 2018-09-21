@@ -422,15 +422,17 @@ std::string PublisherInfoDatabase::BuildClauses(int start,
   if (filter.year > 0)
     clauses += " AND ai.year = ?";
 
-  if (start > 1)
-    clauses += " OFFSET " + std::to_string(start);
-
-  if (limit > 0)
-    clauses += " LIMIT " + std::to_string(limit);
-
   for (const auto& it : filter.order_by) {
     clauses += " ORDER BY " + it.first;
-    clauses += (it.second ? "ASC" : "DESC");
+    clauses += (it.second ? " ASC" : " DESC");
+  }
+
+  if (limit > 0) {
+    clauses += " LIMIT " + std::to_string(limit);
+
+    if (start > 1) {
+      clauses += " OFFSET " + std::to_string(start);
+    }
   }
 
   return clauses;
