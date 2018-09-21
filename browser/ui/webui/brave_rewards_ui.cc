@@ -370,8 +370,7 @@ void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) {
-  // TODO NZ get the whole list sorted
-  rewards_service_->GetContentSiteList(0, 10, base::Bind(&RewardsDOMHandler::OnGetContentSiteList, base::Unretained(this)));
+  rewards_service_->GetContentSiteList(0, 0, base::Bind(&RewardsDOMHandler::OnGetContentSiteList, base::Unretained(this)));
 }
 
 void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
