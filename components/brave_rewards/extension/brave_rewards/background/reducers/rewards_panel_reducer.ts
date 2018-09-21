@@ -1,15 +1,16 @@
 import { RewardsPanelState } from '../../constants/rewardsPanelState'
 
 import { types } from '../../constants/rewards_panel_types'
+import * as storage from '../storage'
 import { getTabData } from '../api/tabs_api'
 
-const defaultState: RewardsPanelState = {
-  walletCreated: false,
-  walletCreateFailed: false,
-  publisher: undefined
-}
+export const rewardsPanelReducer = (state: RewardsPanelState | undefined, action: any) => {
+  if (state === undefined) {
+    state = storage.load()
+  }
 
-export const rewardsPanelReducer = (state: RewardsPanelState = defaultState, action: any) => {
+  const startingState = state
+
   const payload = action.payload
   switch (action.type) {
     case types.CREATE_WALLET:
@@ -34,8 +35,14 @@ export const rewardsPanelReducer = (state: RewardsPanelState = defaultState, act
       if (!payload.tab) {
         break
       }
-      // call get publisher info for specific url
+      state = { ...state }
+      console.log(payload.tab)
+      // state.publisher = undefined
       break
+  }
+
+  if (state !== startingState) {
+    storage.debouncedSave(state)
   }
 
   return state

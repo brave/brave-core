@@ -12,7 +12,7 @@ export interface RewardsPanelState {
 }
 
 export interface ApplicationState {
-  rewardsPanelData: RewardsPanelState
+  rewardsPanelData: RewardsPanelState | undefined
 }
 
 export interface ComponentProps {
