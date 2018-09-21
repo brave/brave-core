@@ -16,6 +16,8 @@ const createWallet = (state: Rewards.State) => {
   state.createdTimestamp = new Date().getTime()
   chrome.send('getReconcileStamp', [])
   chrome.send('getAddresses', [])
+  chrome.send('saveSetting', ['enabledMain', 'true'])
+  chrome.send('saveSetting', ['enabledContribute', 'true'])
 
   return state
 }
