@@ -346,7 +346,8 @@ class TabManager: NSObject {
             return
         }
 
-        tabs.swapAt(fromIndex, toIndex)
+        let tab = tabs.remove(at: fromIndex)
+        tabs.insert(tab, at: toIndex)
 
         if let previouslySelectedTab = selectedTab, let previousSelectedIndex = tabs.index(of: previouslySelectedTab) {
             _selectedIndex = previousSelectedIndex

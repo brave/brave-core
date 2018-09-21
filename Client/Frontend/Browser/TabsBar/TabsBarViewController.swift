@@ -290,8 +290,9 @@ extension TabsBarViewController: UICollectionViewDataSource {
             let toTab = tabList[destinationIndexPath.row] else { return }
         
         // Find original from/to index... we need to target the full list not partial.
-        guard let from = manager.tabs.index(where: {$0 === fromTab}),
-            let to = manager.tabs.index(where: {$0 === toTab}) else { return }
+        let tabs = manager.tabs(withType: fromTab.type)
+        guard let from = tabs.index(where: {$0 === fromTab}),
+            let to = tabs.index(where: {$0 === toTab}) else { return }
         
         manager.moveTab(fromIndex: from, toIndex: to)
         updateData()
