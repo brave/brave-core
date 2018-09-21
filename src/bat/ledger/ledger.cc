@@ -90,7 +90,8 @@ PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     id(filter.id),
     category(filter.category),
     month(filter.month),
-    year(filter.year) {}
+    year(filter.year),
+    order_by(filter.order_by) {}
 PublisherInfoFilter::~PublisherInfoFilter() {}
 
 PublisherInfo::PublisherInfo() :

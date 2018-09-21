@@ -372,6 +372,7 @@ void BatPublishers::synopsisNormalizer(const ledger::PublisherInfo& info) {
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       info.month,
       info.year);
+  filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
   // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
   // We need to limit it and iterate.
   ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::synopsisNormalizerInternal, this,
