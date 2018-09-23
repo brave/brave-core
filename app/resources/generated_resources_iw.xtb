@@ -2241,8 +2241,6 @@
 <translation id="2459230470861708651">‏הצפן סיסמאות מסונכרנות עם שם המשתמש והסיסמה שלך ב-Brave Software</translation>
 <translation id="6383051423892982287">הצפן נתונים מסונכרנים בעזרת <ph name="BEGIN_LINK"/>ביטוי סיסמה משלך לסנכרון<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">‏רק מי שיודע את ביטוי הסיסמה יכול לקרוא את הנתונים המוצפנים. ביטוי הסיסמה לא נשלח אל Brave Software והיא אינה מאחסנת אותו. אם תשכח את ביטוי הסיסמה או אם תרצה לשנות את ההגדרה הזו, יהיה עליך <ph name="BEGIN_LINK"/>לאפס את הסנכרון<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141"><ph name="BEGIN_LINK"/>אפס את הסנכרון<ph name="END_LINK"/> כדי לשנות את ההגדרה הזו.</translation>
-<translation id="3873315167136380065">כדי להפעיל את האפשרות הזאת, צריך <ph name="BEGIN_LINK"/>לאפס את הסנכרון<ph name="END_LINK"/> כדי להסיר את ביטוי הסיסמה של הסנכרון</translation>
 <translation id="988978206646512040">השדה של ביטוי הסיסמה לא יכול להישאר ריק</translation>
 <translation id="1651008383952180276">עליך להזין אותו ביטוי סיסמה פעמיים</translation>
 <translation id="2136476978468204130">הזנת ביטוי סיסמה שגוי</translation>

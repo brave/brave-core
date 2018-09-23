@@ -500,13 +500,21 @@
 <translation id="3861241522664181545">पेज थांबवले.</translation>
 <translation id="6921709132208495314">या पेजवर डेटा वापरणे थांबवा</translation>
 <translation id="2724841811573117416">WebRTC लॉग</translation>
+<translation id="1969654639948595766">WebRTC मजकूर लॉग (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">(<ph name="WEBRTC_EVENT_LOG_COUNT"/>) WebRTC कार्यक्रम नोंदी</translation>
 <translation id="6592267180249644460">WebRTC लॉग ने कॅप्चर केलेला <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">स्थानिक फाईल:</translation>
 <translation id="2071393345806050157">स्थानिक लॉग फाईल नाही.</translation>
 <translation id="6628328486509726751">अपलोड केलेली <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">अपलोड करता आले नाही (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">अहवाल आयडी <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">बग नोंदवा</translation>
+<translation id="3650845953328929506">लॉग अपलोड बाकी आहे.</translation>
+<translation id="1818913467757368489">लॉग अपलोड होत आहे.</translation>
 <translation id="1188807932851744811">लॉग अपलोड झाला नाही.</translation>
+<translation id="4688036121858134881">स्थानिक लॉग आयडी: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">तुमच्याकडे नुकतेच कॅप्चर केलेले कोणतेही WebRTC मजकूर लॉग नाहीत.</translation>
+<translation id="3954953195017194676">तुमच्याकडे नुकत्याच कॅप्चर केलेल्या कोणत्याही WebRTC कार्यक्रम नोंदी नाहीत.</translation>
 <translation id="2076269580855484719">हे प्लगिन लपवा</translation>
 <translation id="2129825002735785149">प्लगिन अपडेट करा</translation>
 <translation id="9088234649737575428">संस्‍थेच्या धोरणाद्वारे <ph name="PLUGIN_NAME"/> अवरोधित केले आहे</translation>
@@ -551,6 +559,8 @@
 <translation id="4416582610654027550">योग्य URL टाइप करा</translation>
 <translation id="2806891468525657116">शॉर्टकट आधीच अस्तित्वात आहे</translation>
 <translation id="394183848452296464">शॉर्टकट तयार करू शकत नाही</translation>
+<translation id="329703603001918157">शॉर्टकट संपादित करू शकत नाही</translation>
+<translation id="6732900235521116609">शॉर्टकट काढून टाकू शकत नाही</translation>
 <translation id="7109543803214225826">शॉर्टकट काढला</translation>
 <translation id="8017679124341497925">शॉर्टकट संपादित केला</translation>
 <translation id="1174073918202301297">शॉर्टकट जोडला</translation>
@@ -1435,6 +1445,7 @@
 <translation id="1800308196794859773">कोणत्याही मजकूर फील्डमध्ये डिक्टेशनला अनुमती देण्यासाठी Brave Software ला तुमचा व्हॉइस पाठवा.</translation>
 <translation id="8758418656925882523">डिक्टेशन सुरू करा (टाइप करण्यासाठी बोला)</translation>
 <translation id="7580671184200851182">सर्व स्पीकर मधून समान ऑडिओ प्ले करा (मोनो ऑडिओ)</translation>
+<translation id="8186639008852027301">स्टार्टअपवर ऑडिओ इंडिकेटर प्ले करा</translation>
 <translation id="1189418886587279221">आपले डिव्हाइस वापरण्यास सुलभ करण्यासाठी प्रवेशयोग्यता वैशिष्ट्ये सक्षम करा.</translation>
 <translation id="48704129375571883">अतिरिक्त वैशिष्ट्ये जोडा</translation>
 <translation id="7230787553283372882">आपला मजकूर आकार सानुकूलित करा</translation>
@@ -1532,6 +1543,10 @@
 <translation id="5029568752722684782">कॉपी साफ करा</translation>
 <translation id="2154484045852737596">कार्ड संपादित करा</translation>
 <translation id="5087580092889165836">कार्ड जोडा</translation>
+<translation id="7284555534810614828">Brave Software Pay वापरण्यासाठी कार्ड सेव्ह करा</translation>
+<translation id="6281511959351052816">Brave Software Pay वापरण्यासाठी कार्डे सेव्ह करा</translation>
+<translation id="1904518222538904133">तुमच्या कार्डांपैकी फक्त एक कार्ड या डिव्हाइसवर वापरले जाऊ शकते</translation>
+<translation id="8065485338434000013">तुमची काही कार्डे फक्त या डिव्हाइसवर वापरली जाऊ शकतात</translation>
 <translation id="4807098396393229769">कार्डवरील नाव</translation>
 <translation id="2612676031748830579">कार्ड नंबर</translation>
 <translation id="869891660844655955">कालावधी समाप्ती तारीख</translation>
@@ -2180,6 +2195,7 @@
 <translation id="3422989461909154470">अॅप्स आणि वेबसाइटवरील तुमची सर्व साइन इन केलेली Brave Software खाती येथे व्यवस्थापित करता येतात.</translation>
 <translation id="1987317783729300807">खाती</translation>
 <translation id="8418661265246754237">Brave Software खाती</translation>
+<translation id="3297951628821704004">या डिव्हाइसवरून खाते काढून टाका</translation>
 <translation id="1059855432287631118">फिंगरप्रिंट नोंदवत आहे</translation>
 <translation id="878068003854005405">चला सुरुवात करूया. तुमचे बोट सेन्सरवर ठेवा.</translation>
 <translation id="7189965711416741966">फिंगरप्रिंट जोडले.</translation>
@@ -2238,8 +2254,6 @@
 <translation id="2459230470861708651">आपल्या Brave Software वापरकर्तानाव आणि पासवर्डासह संंकालित केलेले पासवर्ड कूटबद्ध करा</translation>
 <translation id="6383051423892982287">स्वतःच्या <ph name="BEGIN_LINK"/>संकालन वाक्यांशासह<ph name="END_LINK"/> संकालित केलेला डेटा कूटबद्ध करा</translation>
 <translation id="4817583816512767754">फक्त आपला सांकेतिक वाक्यांश असलेली एखादी व्यक्ती आपला कूटबद्ध डेटा वाचू शकते. सांकेतिक वाक्यांश Brave Software कडे पाठविला किंवा त्याद्वारे संचयित केला जात नाही. आपण आपला सांकेतिक वाक्यांश विसरल्यास किंवा हे सेटिंग बदलू इच्छित असल्यास, आपल्याला <ph name="BEGIN_LINK"/>संकालन रीसेट करण्याची आवश्यकता असेल<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">ही सेटिंग बदलण्यासाठी, <ph name="BEGIN_LINK"/>संकालन रीसेट करा<ph name="END_LINK"/></translation>
-<translation id="3873315167136380065">हे सुरू करण्यासाठी, तुमची सिंक पासफ्रेझ काढून टाकण्यासाठी <ph name="BEGIN_LINK"/>सिंक रीसेट करा<ph name="END_LINK"/></translation>
 <translation id="988978206646512040">रिक्त सांकेतिक वाक्यांशाची परवानगी नाही</translation>
 <translation id="1651008383952180276">आपण समान सांकेतिक वाक्यांश दोनदा एंटर करणे आवश्यक आहे</translation>
 <translation id="2136476978468204130">आपण एंटर केलेला सांकेतिक वाक्यांश चुकीचा आहे</translation>
@@ -2397,6 +2411,7 @@
 <translation id="1940546824932169984">कनेक्‍ट केलेले डिव्हाइस</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">तुमचे Bravebook तुमच्या फोनसोबत आणखी चांगले काम करते. <ph name="LINK_BEGIN"/>अधिक जाणून घ्या.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">कोणतीही पात्र डिव्हाइस नाहीत. <ph name="LINK_BEGIN"/>अधिक जाणून घ्या.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">पडताळणीसाठी वाट पाहत आहे. <ph name="LINK_BEGIN"/>अधिक जाणून घ्या.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">फोनशी कनेक्ट करता आले नाही. <ph name="LINK_BEGIN"/>अधिक जाणून घ्या.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together सुरू आहे</translation>

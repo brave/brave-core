@@ -505,13 +505,21 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3861241522664181545">Pagină întreruptă.</translation>
 <translation id="6921709132208495314">Nu mai folosi datele din această pagină</translation>
 <translation id="2724841811573117416">Jurnale WebRTC</translation>
+<translation id="1969654639948595766">Jurnale text WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Jurnale de evenimente WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Jurnal WebRTC înregistrat la <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Fișier local:</translation>
 <translation id="2071393345806050157">Niciun fișier jurnal local.</translation>
 <translation id="6628328486509726751">Încărcat la <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Încărcarea nu a reușit (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID raport <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Trimite o eroare</translation>
+<translation id="3650845953328929506">Încărcarea jurnalului este în așteptare.</translation>
+<translation id="1818913467757368489">Se încarcă jurnalul.</translation>
 <translation id="1188807932851744811">Jurnalul nu a fost încărcat.</translation>
+<translation id="4688036121858134881">ID jurnal local: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Nu ai jurnale text WebRTC înregistrate recent.</translation>
+<translation id="3954953195017194676">Nu ai jurnale de evenimente WebRTC înregistrate recent.</translation>
 <translation id="2076269580855484719">Ascunde acest plugin</translation>
 <translation id="2129825002735785149">Actualizează pluginul</translation>
 <translation id="9088234649737575428">Pluginul <ph name="PLUGIN_NAME"/> este blocat conform politicii companiei</translation>
@@ -556,6 +564,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="4416582610654027550">Introdu o adresă URL validă</translation>
 <translation id="2806891468525657116">Comanda rapidă există deja</translation>
 <translation id="394183848452296464">Nu se poate crea comanda rapidă</translation>
+<translation id="329703603001918157">Nu se poate modifica această comandă rapidă</translation>
+<translation id="6732900235521116609">Nu se poate elimina comanda rapidă</translation>
 <translation id="7109543803214225826">Comanda rapidă a fost eliminată</translation>
 <translation id="8017679124341497925">Comanda rapidă a fost editată</translation>
 <translation id="1174073918202301297">Comanda rapidă a fost adăugată</translation>
@@ -1440,6 +1450,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1800308196794859773">Trimite-ți vocea la Brave Software pentru a permite dictarea în orice câmp de text.</translation>
 <translation id="8758418656925882523">Activează introducerea textului prin dictare</translation>
 <translation id="7580671184200851182">Redă același conținut audio în toate difuzoarele (audio mono)</translation>
+<translation id="8186639008852027301">Redă un indicator audio la pornire</translation>
 <translation id="1189418886587279221">Activați funcțiile de accesibilitate, pentru a face dispozitivul mai ușor de utilizat.</translation>
 <translation id="48704129375571883">Adaugă funcții suplimentare</translation>
 <translation id="7230787553283372882">Personalizează dimensiunea textului</translation>
@@ -1537,6 +1548,10 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="5029568752722684782">Șterge copia</translation>
 <translation id="2154484045852737596">Editează cardul</translation>
 <translation id="5087580092889165836">Adaugă un card</translation>
+<translation id="7284555534810614828">Salvează cardul pentru a folosi Brave Software Pay</translation>
+<translation id="6281511959351052816">Salvează cardurile pentru a folosi Brave Software Pay</translation>
+<translation id="1904518222538904133">Unul dintre cardurile tale poate fi folosit numai pe acest dispozitiv</translation>
+<translation id="8065485338434000013">Unele dintre cardurile tale pot fi folosite numai pe acest dispozitiv</translation>
 <translation id="4807098396393229769">Numele de pe card</translation>
 <translation id="2612676031748830579">Număr card</translation>
 <translation id="869891660844655955">Dată de expirare</translation>
@@ -2184,6 +2199,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3422989461909154470">Toate conturile tale Brave Software conectate din aplicații și site-uri pot fi gestionate aici.</translation>
 <translation id="1987317783729300807">Conturi</translation>
 <translation id="8418661265246754237">Conturi Brave Software</translation>
+<translation id="3297951628821704004">Elimină contul de pe acest dispozitiv</translation>
 <translation id="1059855432287631118">Înregistrează amprenta digitală</translation>
 <translation id="878068003854005405">Să începem. Pune degetul pe senzor.</translation>
 <translation id="7189965711416741966">Amprentă digitală adăugată.</translation>
@@ -2242,8 +2258,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="2459230470861708651">Criptează parolele sincronizate folosind numele de utilizator și parola Brave Software</translation>
 <translation id="6383051423892982287">Criptează datele sincronizate folosind propria <ph name="BEGIN_LINK"/>expresie de acces<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Numai un utilizator care are expresia de acces poate citi datele criptate. Expresia de acces nu este trimisă sau stocată la Brave Software. Dacă uiți expresia de acces sau dorești să modifici această setare, va fi necesar să <ph name="BEGIN_LINK"/>resetezi sincronizarea<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizarea<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Ca să activezi această opțiune, <ph name="BEGIN_LINK"/>resetează sincronizarea<ph name="END_LINK"/> pentru a elimina expresia de acces pentru sincronizare</translation>
 <translation id="988978206646512040">Trebuie să fie introdusă expresia de acces</translation>
 <translation id="1651008383952180276">Trebuie să introduci aceeași expresie de acces de două ori</translation>
 <translation id="2136476978468204130">Expresia de acces pe care ai introdus-o nu este corectă</translation>
@@ -2401,6 +2415,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1940546824932169984">Dispozitive conectate</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebookul funcționează și mai bine cu telefonul. <ph name="LINK_BEGIN"/>Află mai multe.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Nu există dispozitive eligibile. <ph name="LINK_BEGIN"/>Află mai multe.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Se așteaptă confirmarea. <ph name="LINK_BEGIN"/>Află mai multe.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Nu s-a putut conecta la telefon. <ph name="LINK_BEGIN"/>Află mai multe.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together este activat</translation>

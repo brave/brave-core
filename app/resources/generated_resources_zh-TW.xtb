@@ -2258,8 +2258,6 @@
 <translation id="2459230470861708651">使用你的 Brave Software 使用者名稱與密碼將經過同步處理的密碼加密</translation>
 <translation id="6383051423892982287">使用你的<ph name="BEGIN_LINK"/>同步通關密語<ph name="END_LINK"/>將經過同步處理的資料加密</translation>
 <translation id="4817583816512767754">只有知道通關密語的使用者可以讀取你的加密資料。系統不會將通關密語傳送給 Brave Software，Brave Software 也不會儲存通關密語。如果你忘記自己的通關密語，或是想變更這項設定，則必須<ph name="BEGIN_LINK"/>重設同步功能<ph name="END_LINK"/>。</translation>
-<translation id="4300305918532693141">如要變更這項設定，請<ph name="BEGIN_LINK"/>重設同步功能<ph name="END_LINK"/>。</translation>
-<translation id="3873315167136380065">如要啟用這項功能，請<ph name="BEGIN_LINK"/>重設同步功能<ph name="END_LINK"/>以移除同步處理通關密語</translation>
 <translation id="988978206646512040">通關密語欄位不得留空</translation>
 <translation id="1651008383952180276">你必須輸入兩次相同的通關密語</translation>
 <translation id="2136476978468204130">你輸入的通關密語不正確</translation>
@@ -2417,6 +2415,7 @@
 <translation id="1940546824932169984">已連結的裝置</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">與手機連結可進一步提升 Bravebook 的效能。<ph name="LINK_BEGIN"/>瞭解詳情。<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">沒有適用裝置。<ph name="LINK_BEGIN"/>瞭解詳情。<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">等待驗證中。<ph name="LINK_BEGIN"/>瞭解詳情。<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">無法與手機連結。<ph name="LINK_BEGIN"/>瞭解詳情。<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together 已啟用</translation>

@@ -2260,8 +2260,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2459230470861708651">Enkripsikan sandi yang disinkronkan dengan nama pengguna dan sandi Brave Software Anda</translation>
 <translation id="6383051423892982287">Enkripsikan data yang disinkronkan dengan <ph name="BEGIN_LINK"/>frasa sandi sinkronisasi<ph name="END_LINK"/> Anda sendiri</translation>
 <translation id="4817583816512767754">Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi. Frasa sandi tidak dikirim ke atau disimpan oleh Brave Software. Jika lupa frasa sandi atau ingin mengubah setelan ini, Anda perlu <ph name="BEGIN_LINK"/>menyetel ulang sinkronisasi<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Untuk mengaktifkannya, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/> untuk menghapus frasa sandi sinkronisasi</translation>
 <translation id="988978206646512040">Frasa sandi tidak boleh kosong</translation>
 <translation id="1651008383952180276">Anda harus memasukkan frasa sandi yang sama dua kali</translation>
 <translation id="2136476978468204130">Frasa sandi yang Anda masukkan salah</translation>
@@ -2419,6 +2417,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1940546824932169984">Perangkat yang terhubung</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook berfungsi lebih baik dengan ponsel. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Tidak ada perangkat yang memenuhi syarat. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Menunggu verifikasi. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Tidak dapat terhubung ke ponsel. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together aktif</translation>

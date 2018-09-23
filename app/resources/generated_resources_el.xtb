@@ -506,13 +506,21 @@
 <translation id="3861241522664181545">Η σελίδα τέθηκε σε παύση.</translation>
 <translation id="6921709132208495314">Διακοπή χρήσης δεδομένων σε αυτήν τη σελίδα</translation>
 <translation id="2724841811573117416">Αρχεία καταγραφής WebRTC</translation>
+<translation id="1969654639948595766">Αρχεία καταγραφής κειμένου WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Αρχεία καταγραφής συμβάντων WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Έγινε λήψη αρχείου καταγραφής WebRTC <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Τοπικό αρχείο:</translation>
 <translation id="2071393345806050157">Δεν υπάρχει τοπικό αρχείο καταγραφής.</translation>
 <translation id="6628328486509726751">Ανέβηκε <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Η μεταφόρτωση απέτυχε (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Αναγνωριστικό αναφοράς <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Σφάλμα αρχείου</translation>
+<translation id="3650845953328929506">Η μεταφόρτωση του αρχείου καταγραφής είναι σε εκκρεμότητα.</translation>
+<translation id="1818913467757368489">Η μεταφόρτωση του αρχείου καταγραφής βρίσκεται σε εξέλιξη.</translation>
 <translation id="1188807932851744811">Το αρχείο καταγραφής δεν έχει ενημερωθεί.</translation>
+<translation id="4688036121858134881">Τοπικό αναγνωριστικό αρχείου καταγραφής: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Δεν υπάρχουν αρχεία καταγραφής κειμένου WebRTC τα οποία λήφθηκαν πρόσφατα.</translation>
+<translation id="3954953195017194676">Δεν υπάρχουν αρχεία καταγραφής WebRTC που λήφθηκαν πρόσφατα.</translation>
 <translation id="2076269580855484719">Απόκρυψη αυτής της προσθήκης</translation>
 <translation id="2129825002735785149">Ενημέρωση προσθήκης</translation>
 <translation id="9088234649737575428">Η προσθήκη <ph name="PLUGIN_NAME"/> αποκλείστηκε λόγω επιχειρηματικής πολιτικής</translation>
@@ -557,6 +565,8 @@
 <translation id="4416582610654027550">Πληκτρολογήστε ένα έγκυρο URL</translation>
 <translation id="2806891468525657116">Η συντόμευση υπάρχει ήδη</translation>
 <translation id="394183848452296464">Δεν είναι δυνατή η δημιουργία συντόμευσης</translation>
+<translation id="329703603001918157">Δεν είναι δυνατή η επεξεργασία της συντόμευσης</translation>
+<translation id="6732900235521116609">Δεν είναι δυνατή η κατάργηση της συντόμευσης</translation>
 <translation id="7109543803214225826">Η συντόμευση καταργήθηκε</translation>
 <translation id="8017679124341497925">Η συντόμευση τροποποιήθηκε</translation>
 <translation id="1174073918202301297">Η συντόμευση προστέθηκε</translation>
@@ -1441,6 +1451,7 @@
 <translation id="1800308196794859773">Αποστολή της φωνής σας στην Brave Software, ώστε να επιτρέπεται η υπαγόρευση σε οποιοδήποτε πεδίο κειμένου.</translation>
 <translation id="8758418656925882523">Ενεργοποίηση υπαγόρευσης (μιλήστε για πληκτρολόγηση)</translation>
 <translation id="7580671184200851182">Αναπαραγωγή του ίδιου ήχου μέσω όλων των ηχείων (μονοφωνικός ήχος)</translation>
+<translation id="8186639008852027301">Αναπαραγωγή ηχητικής ένδειξης κατά την εκκίνηση</translation>
 <translation id="1189418886587279221">Ενεργοποιήστε τις λειτουργίες προσβασιμότητας για να κάνετε τη συσκευή σας πιο εύχρηστη.</translation>
 <translation id="48704129375571883">Προσθήκη επιπλέον λειτουργιών</translation>
 <translation id="7230787553283372882">Προσαρμόστε το μέγεθος του κειμένου σας</translation>
@@ -1538,6 +1549,10 @@
 <translation id="5029568752722684782">Διαγραφή αντιγράφου</translation>
 <translation id="2154484045852737596">Επεξεργασία κάρτας</translation>
 <translation id="5087580092889165836">Προσθήκη κάρτας</translation>
+<translation id="7284555534810614828">Αποθήκευση κάρτας για χρήση του Brave Software Pay</translation>
+<translation id="6281511959351052816">Αποθήκευση καρτών για χρήση του Brave Software Pay</translation>
+<translation id="1904518222538904133">Μόνο 1 από τις κάρτες σας μπορεί να χρησιμοποιηθεί σε αυτήν τη συσκευή</translation>
+<translation id="8065485338434000013">Ορισμένες από τις κάρτες σας μπορούν να χρησιμοποιηθούν μόνο σε αυτήν τη συσκευή</translation>
 <translation id="4807098396393229769">Όνομα στην κάρτα</translation>
 <translation id="2612676031748830579">Αριθμός κάρτας</translation>
 <translation id="869891660844655955">Ημερομηνία λήξης</translation>
@@ -2185,6 +2200,7 @@
 <translation id="3422989461909154470">Μπορείτε να διαχειριστείτε από εδώ όλους τους Λογαριασμούς Brave Software στους οποίους έχετε συνδεθεί από εφαρμογές και ιστοτόπους.</translation>
 <translation id="1987317783729300807">Λογαριασμοί</translation>
 <translation id="8418661265246754237">Λογαριασμοί Brave Software</translation>
+<translation id="3297951628821704004">Κατάργηση λογαριασμού από αυτήν τη συσκευή</translation>
 <translation id="1059855432287631118">Εγγραφή δακτυλικού αποτυπώματος</translation>
 <translation id="878068003854005405">Ας ξεκινήσουμε. Τοποθετήστε το δάκτυλό σας στον αισθητήρα.</translation>
 <translation id="7189965711416741966">Προστέθηκε δακτυλικό αποτύπωμα.</translation>
@@ -2243,8 +2259,6 @@
 <translation id="2459230470861708651">Κρυπτογράφηση συγχρονισμένων κωδικών πρόσβαση με το όνομα χρήστη και τον κωδικό πρόσβασης Brave Software</translation>
 <translation id="6383051423892982287">Κρυπτογράφηση συγχρονισμένων δεδομένων με τη δική σας <ph name="BEGIN_LINK"/>φράση πρόσβασης συγχρονισμού<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Μόνο κάποιος που γνωρίζει τη φράση πρόσβασης μπορεί να διαβάσει τα κρυπτογραφημένα δεδομένα σας. Η φράση πρόσβασης δεν αποστέλλεται ούτε αποθηκεύεται στην Brave Software. Εάν ξεχάσετε τη φράση πρόσβασης ή θέλετε να αλλάξετε αυτήν τη ρύθμιση, θα πρέπει να <ph name="BEGIN_LINK"/>επαναφέρετε τον συγχρονισμό<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Για να αλλάξετε αυτήν τη ρύθμιση, <ph name="BEGIN_LINK"/>επαναφέρετε τον συγχρονισμό<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Για ενεργοποίηση, <ph name="BEGIN_LINK"/>κάντε επαναφορά στον συγχρονισμό<ph name="END_LINK"/>, ώστε να καταργηθεί η φράση πρόσβασης συγχρονισμού</translation>
 <translation id="988978206646512040">Δεν επιτρέπεται να είναι κενή η φράση πρόσβασης</translation>
 <translation id="1651008383952180276">Πρέπει να εισαγάγετε δύο φορές την ίδια φράση πρόσβασης</translation>
 <translation id="2136476978468204130">Η φράση πρόσβασης που έχετε εισαγάγει είναι εσφαλμένη</translation>
@@ -2402,6 +2416,7 @@
 <translation id="1940546824932169984">Συνδεδεμένες συσκευές</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Το Bravebook λειτουργεί ακόμα καλύτερα με το τηλέφωνό σας. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Δεν υπάρχουν κατάλληλες συσκευές. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Αναμονή για επαλήθευση. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Δεν ήταν δυνατή η σύνδεση στο τηλέφωνο. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Η λειτουργία Better Together είναι ενεργή</translation>

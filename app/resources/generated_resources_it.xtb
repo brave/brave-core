@@ -2258,8 +2258,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2459230470861708651">Cripta le password sincronizzate con la password e il nome utente del tuo account Brave Software</translation>
 <translation id="6383051423892982287">Cripta i dati sincronizzati con la tua <ph name="BEGIN_LINK"/>passphrase di sincronizzazione<ph name="END_LINK"/>.</translation>
 <translation id="4817583816512767754">Soltanto chi conosce la tua passphrase può leggere i tuoi dati criptati. La passphrase non viene inviata a Brave Software né memorizzata. Se dimentichi la passphrase o vuoi modificare questa impostazione, dovrai <ph name="BEGIN_LINK"/>reimpostare la sincronizzazione<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Per modificare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizzazione<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Per attivare questa funzione, <ph name="BEGIN_LINK"/>reimposta la sincronizzazione<ph name="END_LINK"/> per rimuovere la passphrase di sincronizzazione</translation>
 <translation id="988978206646512040">Non è consentita una passphrase vuota</translation>
 <translation id="1651008383952180276">Devi inserire la stessa passphrase due volte</translation>
 <translation id="2136476978468204130">La passphrase inserita non è corretta</translation>
@@ -2417,6 +2415,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1940546824932169984">Dispositivi collegati</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Il Bravebook funziona ancora meglio insieme al tuo telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/>.</translation>
+<translation id="6148052338549899048">Nessun dispositivo idoneo. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/>.</translation>
 <translation id="3465800511193611451">In attesa di verifica. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/>.</translation>
 <translation id="2315821125498993513">Impossibile connettersi al telefono. <ph name="LINK_BEGIN"/>Ulteriori informazioni<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Funzione Better Together attiva</translation>

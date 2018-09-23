@@ -504,13 +504,21 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="3861241522664181545">Lapas ielāde ir apturēta.</translation>
 <translation id="6921709132208495314">Pārtraukt resursu ielādi šajā lapā</translation>
 <translation id="2724841811573117416">WebRTC žurnāli</translation>
+<translation id="1969654639948595766">WebRTC teksta žurnāli (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC notikumu žurnāli (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC žurnāls — ierakstīts šādā datumā: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokālais fails:</translation>
 <translation id="2071393345806050157">Nav lokālā žurnālfaila.</translation>
 <translation id="6628328486509726751">Augšupielādēts: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Augšupielāde neizdevās (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Pārskata ID: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Faila blusa</translation>
+<translation id="3650845953328929506">Tiek gaidīta žurnāla augšupielāde.</translation>
+<translation id="1818913467757368489">Notiek žurnāla augšupielāde.</translation>
 <translation id="1188807932851744811">Žurnāls nav augšupielādēts.</translation>
+<translation id="4688036121858134881">Lokālā žurnāla ID: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Jums nav nesen ierakstītu WebRTC tekstu žurnālu.</translation>
+<translation id="3954953195017194676">Jums nav nesen ierakstītu WebRTC notikumu žurnālu.</translation>
 <translation id="2076269580855484719">Slēpt šo spraudni</translation>
 <translation id="2129825002735785149">Atjaunināt spraudni</translation>
 <translation id="9088234649737575428">Spraudnis <ph name="PLUGIN_NAME"/> tika bloķēts saskaņā ar uzņēmuma politiku</translation>
@@ -555,6 +563,8 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="4416582610654027550">Ievadiet derīgu URL.</translation>
 <translation id="2806891468525657116">Saīsne jau pastāv</translation>
 <translation id="394183848452296464">Nevar izveidot saīsni</translation>
+<translation id="329703603001918157">Nevar rediģēt saīsni</translation>
+<translation id="6732900235521116609">Nevar noņemt saīsni</translation>
 <translation id="7109543803214225826">Saīsne noņemta</translation>
 <translation id="8017679124341497925">Saīsne rediģēta</translation>
 <translation id="1174073918202301297">Saīsne pievienota</translation>
@@ -1440,6 +1450,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1800308196794859773">Nosūtiet savus balss datus Brave Software serveriem, lai atļautu diktēšanu jebkurā teksta laukā.</translation>
 <translation id="8758418656925882523">Iespējot diktēšanu (rakstīšanu, izmantojot balss ievadi)</translation>
 <translation id="7580671184200851182">Atskaņot to pašu audio saturu visos skaļruņos (mono audio)</translation>
+<translation id="8186639008852027301">Atskaņot audio indikatoru sākumā</translation>
 <translation id="1189418886587279221">Iespējojiet pieejamības funkcijas, lai jūsu ierīce kļūtu vienkāršāk lietojama.</translation>
 <translation id="48704129375571883">Pievienot papildu funkcijas</translation>
 <translation id="7230787553283372882">Pielāgojiet teksta lielumu.</translation>
@@ -1537,6 +1548,10 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="5029568752722684782">Dzēst kopiju</translation>
 <translation id="2154484045852737596">Kartes informācijas rediģēšana</translation>
 <translation id="5087580092889165836">Pievienot karti</translation>
+<translation id="7284555534810614828">Saglabāt kartīti, lai izmantotu Brave Software Pay</translation>
+<translation id="6281511959351052816">Saglabājiet kartītes, lai izmantotu Brave Software Pay</translation>
+<translation id="1904518222538904133">1 no jūsu kartītēm var tikt izmantota tikai šajā ierīcē</translation>
+<translation id="8065485338434000013">Dažas no jūsu kartītēm var tikt izmantotas tikai šajā ierīcē</translation>
 <translation id="4807098396393229769">Vārds uz kartes</translation>
 <translation id="2612676031748830579">Kartes numurs</translation>
 <translation id="869891660844655955">Derīguma termiņš</translation>
@@ -2184,6 +2199,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3422989461909154470">Šeit varat pārvaldīt visus Brave Software kontus, kuros esat pierakstījies lietotnēs un vietnēs.</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="8418661265246754237">Brave Software konti</translation>
+<translation id="3297951628821704004">Noņemt kontu no šīs ierīces</translation>
 <translation id="1059855432287631118">Pirksta nospieduma reģistrēšana</translation>
 <translation id="878068003854005405">Sāciet pievienošanu. Novietojiet pirkstu uz sensora.</translation>
 <translation id="7189965711416741966">Pirksta nospiedums tika pievienots.</translation>
@@ -2242,8 +2258,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2459230470861708651">Šifrēt sinhronizētās paroles, izmantojot savu Brave Software lietotājvārdu un paroli</translation>
 <translation id="6383051423892982287">Šifrējiet sinhronizētos datus, izmantojot savu <ph name="BEGIN_LINK"/>sinhronizācijas ieejas frāzi<ph name="END_LINK"/>.</translation>
 <translation id="4817583816512767754">Jūsu šifrētos datus var lasīt tikai personas, kurām ir zināma jūsu ieejas frāze. Ieejas frāze netiek sūtīta Brave Software serveriem un netiek tajos glabāta. Ja aizmirsīsiet ieejas frāzi vai vēlēsieties mainīt šo iestatījumu, jums būs <ph name="BEGIN_LINK"/>jāatiestata sinhronizācija<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizāciju<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Lai ieslēgtu šo funkciju un noņemtu sinhronizēšanas ieejas frāzi, <ph name="BEGIN_LINK"/>atiestatiet sinhronizāciju<ph name="END_LINK"/>.</translation>
 <translation id="988978206646512040">Nav atļauta tukša ieejas frāze.</translation>
 <translation id="1651008383952180276">Jums divreiz jāievada viena un tā pati ieejas frāze.</translation>
 <translation id="2136476978468204130">Ievadītā ieejas frāze nav pareiza.</translation>
@@ -2401,6 +2415,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1940546824932169984">Pievienotās ierīces</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Kopā ar tālruni Bravebook dators darbojas vēl labāk. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
+<translation id="6148052338549899048">Nav piemērotu ierīču. <ph name="LINK_BEGIN"/>Uzzināt vairāk.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Tiek gaidīta verifikācija. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="2315821125498993513">Nevarēja izveidot savienojumu ar tālruni. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Lietotne Better Together ir ieslēgta</translation>

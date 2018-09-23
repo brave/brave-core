@@ -506,13 +506,21 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3861241522664181545">Sayfa duraklatıldı.</translation>
 <translation id="6921709132208495314">Bu sayfada veri kullanmayı durdurun</translation>
 <translation id="2724841811573117416">WebRTC günlükleri</translation>
+<translation id="1969654639948595766">WebRTC metin günlükleri (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC etkinlik günlükleri (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC günlüğü yakalandı: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Yerel dosya:</translation>
 <translation id="2071393345806050157">Yerel günlük dosyası yok.</translation>
 <translation id="6628328486509726751">Yüklenme zamanı: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Yükleme başarısız oldu (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Rapor kimliği <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Hata bildir</translation>
+<translation id="3650845953328929506">Günlük yükleme işlemi beklemede.</translation>
+<translation id="1818913467757368489">Günlük yükleniyor.</translation>
 <translation id="1188807932851744811">Günlük yüklenmedi.</translation>
+<translation id="4688036121858134881">Yerel günlük kimliği: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Yakın zamanda yakalanmış herhangi bir WebRTC metin günlüğünüz yok.</translation>
+<translation id="3954953195017194676">Yakın zamanda yakalanmış herhangi bir WebRTC etkinlik günlüğünüz yok.</translation>
 <translation id="2076269580855484719">Bu eklentiyi gizle</translation>
 <translation id="2129825002735785149">Eklentiyi güncelle</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> eklentisi kurumsal politika tarafından engellendi</translation>
@@ -557,6 +565,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="4416582610654027550">Geçerli bir URL yazın</translation>
 <translation id="2806891468525657116">Kısayol zaten mevcut</translation>
 <translation id="394183848452296464">Kısayol oluşturulamıyor</translation>
+<translation id="329703603001918157">Kısayol düzenlenemiyor</translation>
+<translation id="6732900235521116609">Kısayol kaldırılamıyor</translation>
 <translation id="7109543803214225826">Kısayol kaldırıldı</translation>
 <translation id="8017679124341497925">Kısayol düzenlendi</translation>
 <translation id="1174073918202301297">Kısayol eklendi</translation>
@@ -1441,6 +1451,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1800308196794859773">Dikte özelliğiyle metin alanına herhangi bir şey yazabilmek için sesinizi Brave Software'a gönderin.</translation>
 <translation id="8758418656925882523">Dikte özelliğini (konuşarak yazma) etkinleştir</translation>
 <translation id="7580671184200851182">Tüm hoparlörlerden aynı sesi çal (mono ses)</translation>
+<translation id="8186639008852027301">Başlangıçta sesli uyarı çal</translation>
 <translation id="1189418886587279221">Cihazınızı daha kolay kullanılır duruma getirmek için erişilebilirlik özelliklerini etkinleştirin.</translation>
 <translation id="48704129375571883">İlave özellikler ekle</translation>
 <translation id="7230787553283372882">Metin boyutunu özelleştir</translation>
@@ -1538,6 +1549,10 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5029568752722684782">Kopyayı temizle</translation>
 <translation id="2154484045852737596">Kartı düzenle</translation>
 <translation id="5087580092889165836">Kart ekle</translation>
+<translation id="7284555534810614828">Kullanılacak kartı Brave Software Pay'e kaydet</translation>
+<translation id="6281511959351052816">Brave Software Pay'i kullanmak için kart bilgilerini kaydet</translation>
+<translation id="1904518222538904133">Kartlarınızın 1 tanesi yalnızca bu cihazda kullanılabilir</translation>
+<translation id="8065485338434000013">Kartlarınızın bazıları yalnızca bu cihazda kullanılabilir</translation>
 <translation id="4807098396393229769">Kartın üzerindeki ad</translation>
 <translation id="2612676031748830579">Kart numarası</translation>
 <translation id="869891660844655955">Son kullanma tarihi</translation>
@@ -2185,6 +2200,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3422989461909154470">Uygulama ve web sitelerinde oturum açtığınız tüm Brave Software hesapları burada yönetilebilir.</translation>
 <translation id="1987317783729300807">Hesaplar</translation>
 <translation id="8418661265246754237">Brave Software Hesapları</translation>
+<translation id="3297951628821704004">Hesabı bu cihazdan kaldır</translation>
 <translation id="1059855432287631118">Parmak izi kaydedin</translation>
 <translation id="878068003854005405">Haydi başlayalım. Parmağınızı sensörün üzerine yerleştirin.</translation>
 <translation id="7189965711416741966">Parmak izi eklendi.</translation>
@@ -2243,8 +2259,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2459230470861708651">Senkronize edilen şifreleri Brave Software kullanıcı adınız ve şifrenizle şifreleyin</translation>
 <translation id="6383051423892982287">Senkronize edilen verileri kendi <ph name="BEGIN_LINK"/>senkronizasyon parolanızla<ph name="END_LINK"/> şifreleyin</translation>
 <translation id="4817583816512767754">Yalnızca parolanızı bilen biri, şifrelenmiş verilerinizi okuyabilir. Parola Brave Software'a gönderilmez veya Brave Software tarafından saklanmaz. Parolanızı unutursanız veya bu ayarı değiştirmek isterseniz <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlamanız<ph name="END_LINK"/> gerekir.</translation>
-<translation id="4300305918532693141">Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlayın<ph name="END_LINK"/></translation>
-<translation id="3873315167136380065">Bu özelliği açmak için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlayarak<ph name="END_LINK"/> senkronizasyon parolanızı kaldırın</translation>
 <translation id="988978206646512040">Boş parolaya izin verilmez</translation>
 <translation id="1651008383952180276">Aynı parolayı iki kez girmelisiniz</translation>
 <translation id="2136476978468204130">Girdiğiniz parola yanlış</translation>
@@ -2402,6 +2416,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1940546824932169984">Bağlı cihazlar</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook'unuz telefonunuzla daha da iyi çalışır. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Uygun cihaz yok. <ph name="LINK_BEGIN"/>Daha fazla bilgi.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Doğrulama bekleniyor. <ph name="LINK_BEGIN"/>Daha fazla bilgi.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Telefona bağlanılamadı. <ph name="LINK_BEGIN"/>Daha fazla bilgi.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together özelliği açık</translation>

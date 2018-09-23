@@ -2258,8 +2258,6 @@
 <translation id="2459230470861708651">‏تشفير كلمات المرور المتزامنة باستخدام اسم المستخدم وكلمة المرور لحساب Brave Software</translation>
 <translation id="6383051423892982287">تشفير البيانات المتزامنة باستخدام <ph name="BEGIN_LINK"/>عبارة مرور المزامنة<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">‏لا يمكن لأحد قراءة بياناتك المشفرة سوى من لديه عبارة المرور التي تستخدمها. ولا يتم إرسال عبارة المرور إلى شركة Brave Software أو تخزينها لديها. إذا نسيت عبارة المرور أو رغبت في تغيير هذا الإعداد، فسيلزمك <ph name="BEGIN_LINK"/>إعادة تعيين المزامنة<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">لتغيير هذا الإعداد، يمكنك <ph name="BEGIN_LINK"/>إعادة تعيين المزامنة<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">لتفعيل هذا الإعداد، يمكنك <ph name="BEGIN_LINK"/>إعادة ضبط المزامنة<ph name="END_LINK"/> لإزالة عبارة مرور المزامنة.</translation>
 <translation id="988978206646512040">غير مسموح باستخدام عبارة مرور فارغة</translation>
 <translation id="1651008383952180276">يجب إدخال عبارة المرور نفسها مرتين</translation>
 <translation id="2136476978468204130">عبارة المرور التي أدخلتها غير صحيحة</translation>
@@ -2417,6 +2415,7 @@
 <translation id="1940546824932169984">الأجهزة المتصلة</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">‏يعمل جهاز Bravebook بشكل أفضل عند ربطه بهاتفك. <ph name="LINK_BEGIN"/>مزيد من المعلومات<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">لا تتوفَّر أجهزة مؤهلة. <ph name="LINK_BEGIN"/>مزيد من المعلومات.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">في انتظار التحقُّق من صحة الاتصال. <ph name="LINK_BEGIN"/>مزيد من المعلومات<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">تعذَّر الربط مع هاتفك. <ph name="LINK_BEGIN"/>مزيد من المعلومات<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">‏خدمة Better Together مفعّلة</translation>

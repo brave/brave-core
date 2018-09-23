@@ -2259,8 +2259,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="2459230470861708651">Šifriraj sinkronizirane zaporke moijm korisničkim imenom i zaporkom za Brave Software</translation>
 <translation id="6383051423892982287">Kriptiraj sinkronizirane podatke vlastitom <ph name="BEGIN_LINK"/>šifrom za sinkronizaciju<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Samo osoba koja ima vašu šifru može čitati vaše kriptirane podatke. Šifra se ne šalje Brave Softwareu i ne pohranjuje na njemu. Ako zaboravite šifru ili želite promijeniti tu postavku, morat ćete <ph name="BEGIN_LINK"/>poništiti sinkronizaciju<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaciju<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Da biste uključili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaciju<ph name="END_LINK"/> radi uklanjanja vaše šifre za sinkronizaciju</translation>
 <translation id="988978206646512040">Prazne šifre nisu dopuštene</translation>
 <translation id="1651008383952180276">Morate dvaput unijeti istu šifru</translation>
 <translation id="2136476978468204130">Šifra koju ste unijeli nije točna</translation>
@@ -2418,6 +2416,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="1940546824932169984">Povezani uređaji</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Vaš Bravebook funkcionira još bolje s vašim telefonom. <ph name="LINK_BEGIN"/>Saznajte više.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Nema uređaja koji ispunjavaju uvjete. <ph name="LINK_BEGIN"/>Saznajte više.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Čeka se potvrda. <ph name="LINK_BEGIN"/>Saznajte više.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Povezivanje s telefonom nije uspjelo. <ph name="LINK_BEGIN"/>Saznajte više.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Uključen je Better Together</translation>

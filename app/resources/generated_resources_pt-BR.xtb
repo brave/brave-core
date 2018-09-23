@@ -2260,8 +2260,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="2459230470861708651">Criptografar senhas sincronizadas com seu nome de usuário e senha do Brave Software</translation>
 <translation id="6383051423892982287">Criptografar dados sincronizados com sua <ph name="BEGIN_LINK"/>senha longa de sincronização<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Somente uma pessoa que tenha sua senha longa pode ler seus dados criptografados. A senha longa não é enviada para o Brave Software ou armazenada por ele. Se você esquecer sua senha longa ou quiser alterar essa configuração, será necessário <ph name="BEGIN_LINK"/>redefinir a sincronização<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronização<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Para ativar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronização<ph name="END_LINK"/> e remova sua senha longa de sincronização</translation>
 <translation id="988978206646512040">A senha longa não pode ficar em branco</translation>
 <translation id="1651008383952180276">Informe a mesma senha longa duas vezes</translation>
 <translation id="2136476978468204130">A senha longa informada está incorreta</translation>
@@ -2419,6 +2417,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="1940546824932169984">Dispositivos conectados</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">O Bravebook funciona ainda melhor com seu smartphone. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/>.</translation>
+<translation id="6148052338549899048">Nenhum dispositivo qualificado. <ph name="LINK_BEGIN"/>Saiba mais.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Aguardando verificação. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/>.</translation>
 <translation id="2315821125498993513">Não foi possível se conectar ao smartphone. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">"Better Together" está ativado</translation>

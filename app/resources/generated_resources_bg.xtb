@@ -506,13 +506,21 @@
 <translation id="3861241522664181545">Страницата е поставена на пауза.</translation>
 <translation id="6921709132208495314">Спиране на използването на данни на тази страница</translation>
 <translation id="2724841811573117416">Регистрационни файлове за WebRTC</translation>
+<translation id="1969654639948595766">Регистрационни файлове за предаване на текст с WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Регистрационни файлове за събития с WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Записан е регистрационен файл за WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Локален файл:</translation>
 <translation id="2071393345806050157">Няма локален регистрационен файл.</translation>
 <translation id="6628328486509726751">Качено: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Качването не бе успешно (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Идентификатор на отчета: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Картотекиране на програмната грешка</translation>
+<translation id="3650845953328929506">Качването на регистрационния файл предстои.</translation>
+<translation id="1818913467757368489">Качването на регистрационния файл е в ход.</translation>
 <translation id="1188807932851744811">Регистрационният файл не е качен.</translation>
+<translation id="4688036121858134881">Локален идентификатор на регистрационния файл: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Нямате наскоро записани регистрационни файлове за предаване на текст с WebRTC.</translation>
+<translation id="3954953195017194676">Нямате наскоро записани регистрационни файлове за събития с WebRTC.</translation>
 <translation id="2076269580855484719">Скриване на тази приставка</translation>
 <translation id="2129825002735785149">Актуализиране на приставката</translation>
 <translation id="9088234649737575428">Приставката <ph name="PLUGIN_NAME"/> е блокирана от корпоративно правило</translation>
@@ -557,6 +565,8 @@
 <translation id="4416582610654027550">Въведете валиден URL адрес</translation>
 <translation id="2806891468525657116">Прекият път вече съществува</translation>
 <translation id="394183848452296464">Прекият път не може да бъде създаден</translation>
+<translation id="329703603001918157">Прекият път не може да се редактира</translation>
+<translation id="6732900235521116609">Прекият път не може да се премахне</translation>
 <translation id="7109543803214225826">Прекият път бе премахнат</translation>
 <translation id="8017679124341497925">Прекият път бе редактиран</translation>
 <translation id="1174073918202301297">Прекият път бе добавен</translation>
@@ -1441,6 +1451,7 @@
 <translation id="1800308196794859773">Изпращане на гласа ви до Brave Software, за да можете да диктувате във всяко текстово поле.</translation>
 <translation id="8758418656925882523">Активиране на режима на диктуване (въвеждане чрез говор)</translation>
 <translation id="7580671184200851182">Възпроизвеждане на един и същ звук през всички високоговорители (моно)</translation>
+<translation id="8186639008852027301">Възпроизвеждане на звуков сигнал при стартиране</translation>
 <translation id="1189418886587279221">Активирайте функциите за достъпност, за да улесните използването на устройството си.</translation>
 <translation id="48704129375571883">Добавяне на допълнителни функции</translation>
 <translation id="7230787553283372882">Персонализирайте размера на текста</translation>
@@ -1538,6 +1549,10 @@
 <translation id="5029568752722684782">Изчистване на копието</translation>
 <translation id="2154484045852737596">Редактиране на картата</translation>
 <translation id="5087580092889165836">Добавяне на карта</translation>
+<translation id="7284555534810614828">Запазване на картата с цел използване на Brave Software Pay</translation>
+<translation id="6281511959351052816">Запазване на картите с цел използване на Brave Software Pay</translation>
+<translation id="1904518222538904133">Една от картите ви може да се използва само на това устройство</translation>
+<translation id="8065485338434000013">Някои от картите ви могат да се използват само на това устройство</translation>
 <translation id="4807098396393229769">Име върху картата</translation>
 <translation id="2612676031748830579">Номер на картата</translation>
 <translation id="869891660844655955">Дата на валидност</translation>
@@ -2186,6 +2201,7 @@
 <translation id="3422989461909154470">Оттук можете да управлявате всички профили в Brave Software, в които сте влезли от приложения и уебсайтове.</translation>
 <translation id="1987317783729300807">Профили</translation>
 <translation id="8418661265246754237">Профили в Brave Software</translation>
+<translation id="3297951628821704004">Премахване на профила от това устройство</translation>
 <translation id="1059855432287631118">Отпечатъкът се регистрира</translation>
 <translation id="878068003854005405">Да започваме. Поставете пръста си върху сензора.</translation>
 <translation id="7189965711416741966">Отпечатъкът е добавен.</translation>
@@ -2244,8 +2260,6 @@
 <translation id="2459230470861708651">Шифроване на синхронизираните пароли с потребителското име и паролата ви в Brave Software</translation>
 <translation id="6383051423892982287">Шифроване на синхронизираните данни със собствения ви <ph name="BEGIN_LINK"/>пропуск за синхронизиране<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Само някой с пропуска ви може да прочете шифрованите ви данни – той не се изпраща до Brave Software, нито се съхранява от нас. Ако го забравите или искате да промените тази настройка, ще се наложи <ph name="BEGIN_LINK"/>да нулирате синхронизирането<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">За да промените тази настройка, <ph name="BEGIN_LINK"/>нулирайте синхронизирането<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">За да включите тази настройка, <ph name="BEGIN_LINK"/>нулирайте синхронизирането<ph name="END_LINK"/>, така че да премахнете съответния си пропуск</translation>
 <translation id="988978206646512040">Трябва да се въведе пропуск</translation>
 <translation id="1651008383952180276">Трябва да въведете един и същ пропуск два пъти</translation>
 <translation id="2136476978468204130">Въвели сте неправилен пропуск</translation>
@@ -2403,6 +2417,7 @@
 <translation id="1940546824932169984">Свързани устройства</translation>
 <translation id="5235565664420173924">По-добре заедно</translation>
 <translation id="5375767622559981303">Вашият Bravebook работи още по-добре с телефона ви. <ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/>.</translation>
+<translation id="6148052338549899048">Няма отговарящи на условията устройства. <ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="3465800511193611451">Чака се потвърждение. <ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="2315821125498993513">Не можа да се установи връзка с телефона. <ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Функцията По-добре заедно е включена</translation>

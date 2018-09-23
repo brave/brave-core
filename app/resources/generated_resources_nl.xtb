@@ -504,13 +504,21 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3861241522664181545">Pagina is onderbroken.</translation>
 <translation id="6921709132208495314">Geen data meer gebruiken op deze pagina</translation>
 <translation id="2724841811573117416">WebRTC-logboeken</translation>
+<translation id="1969654639948595766">WebRTC-tekstlogboeken (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC-gebeurtenislogboeken (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-logboek vastgelegd op <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokaal bestand:</translation>
 <translation id="2071393345806050157">Geen lokaal logbestand.</translation>
 <translation id="6628328486509726751">Geüploade <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Upload mislukt (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Rapport-ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Bug indienen</translation>
+<translation id="3650845953328929506">De upload van het logboek is in behandeling.</translation>
+<translation id="1818913467757368489">Het logboek wordt geüpload.</translation>
 <translation id="1188807932851744811">Logbestand niet geüpload.</translation>
+<translation id="4688036121858134881">ID van lokaal logboek: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Je hebt geen onlangs vastgelegde WebRTC-tekstlogboeken.</translation>
+<translation id="3954953195017194676">Je hebt geen onlangs vastgelegde WebRTC-gebeurtenislogboeken.</translation>
 <translation id="2076269580855484719">Deze plugin verbergen</translation>
 <translation id="2129825002735785149">Plug-in updaten</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> is geblokkeerd op basis van bedrijfsbeleid</translation>
@@ -555,6 +563,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="4416582610654027550">Voer een geldige URL in</translation>
 <translation id="2806891468525657116">Snelkoppeling bestaat al</translation>
 <translation id="394183848452296464">Kan snelkoppeling niet maken</translation>
+<translation id="329703603001918157">Kan snelkoppeling niet bewerken</translation>
+<translation id="6732900235521116609">Kan snelkoppeling niet verwijderen</translation>
 <translation id="7109543803214225826">Snelkoppeling verwijderd</translation>
 <translation id="8017679124341497925">Snelkoppeling bewerkt</translation>
 <translation id="1174073918202301297">Snelkoppeling toegevoegd</translation>
@@ -1439,6 +1449,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1800308196794859773">Verzend je stem naar Brave Software zodat je kunt dicteren in tekstvelden.</translation>
 <translation id="8758418656925882523">Dicteren inschakelen (spreken om te typen)</translation>
 <translation id="7580671184200851182">Dezelfde audio afspelen via alle speakers (mono-audio)</translation>
+<translation id="8186639008852027301">Een audiosignaal afspelen bij opstarten</translation>
 <translation id="1189418886587279221">Schakel toegankelijkheidsfuncties in om je apparaat gebruiksvriendelijker te maken.</translation>
 <translation id="48704129375571883">Aanvullende functies toevoegen</translation>
 <translation id="7230787553283372882">Tekstgrootte aanpassen</translation>
@@ -1536,6 +1547,10 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5029568752722684782">Kopie wissen</translation>
 <translation id="2154484045852737596">Kaart bewerken</translation>
 <translation id="5087580092889165836">Kaart toevoegen</translation>
+<translation id="7284555534810614828">Kaart opslaan om Brave Software Pay te gebruiken</translation>
+<translation id="6281511959351052816">Kaarten opslaan om Brave Software Pay te gebruiken</translation>
+<translation id="1904518222538904133">Een van je kaarten kan alleen worden gebruikt op dit apparaat</translation>
+<translation id="8065485338434000013">Sommige van je kaarten kunnen alleen worden gebruikt op dit apparaat</translation>
 <translation id="4807098396393229769">Naam op kaart</translation>
 <translation id="2612676031748830579">Kaartnummer</translation>
 <translation id="869891660844655955">Vervaldatum</translation>
@@ -1673,6 +1688,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="5317780077021120954">Opslaan</translation>
 <translation id="5696679855467848181">PPD-bestand dat momenteel wordt gebruikt: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloudprinter</translation>
+<translation id="5646376287012673985">Locatie</translation>
 <translation id="7754704193130578113">Voorafgaand aan een download vragen waar een bestand moet worden opgeslagen</translation>
 <translation id="5713072761819014678">Brave Software Drive-account ontkoppelen</translation>
 <translation id="486635084936119914">Bepaalde bestandstypen na downloaden automatisch openen</translation>
@@ -1985,6 +2001,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Zie <ph name="BEGIN_LINK"/>Synchronisatie en personalisatie<ph name="END_LINK"/> voor meer instellingen die zijn gerelateerd aan privacy, beveiliging en gegevensverzameling</translation>
 <translation id="7222718784508482526">Bekijk <ph name="BEGIN_LINK"/>Synchronisatie en Brave Software-services<ph name="END_LINK"/> voor meer instellingen die verband houden met privacy, beveiliging en gegevensverzameling.</translation>
+<translation id="6438234780621650381">Instellingen resetten</translation>
 <translation id="5293170712604732402">Instellingen terugzetten naar de oorspronkelijke standaardwaarden</translation>
 <translation id="892706138619340876">Sommige instellingen zijn gereset</translation>
 <translation id="2334029754052191847">Brave heeft gedetecteerd dat sommige van je instellingen zijn beschadigd door een ander programma en heeft de instellingen teruggezet naar de oorspronkelijke standaardwaarden.</translation>
@@ -2183,6 +2200,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3422989461909154470">Hier kun je alle ingelogde Brave Software-accounts voor apps en websites beheren.</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="8418661265246754237">Brave Software-accounts</translation>
+<translation id="3297951628821704004">Account verwijderen van dit apparaat</translation>
 <translation id="1059855432287631118">Vingerafdruk registreren</translation>
 <translation id="878068003854005405">Ga aan de slag door je vinger op de sensor te plaatsen.</translation>
 <translation id="7189965711416741966">Vingerafdruk is toegevoegd.</translation>
@@ -2241,8 +2259,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2459230470861708651">Gesynchroniseerde wachtwoorden versleutelen met je Brave Software-gebruikersnaam en -wachtwoord</translation>
 <translation id="6383051423892982287">Gesynchroniseerde gegevens versleutelen met je eigen <ph name="BEGIN_LINK"/>wachtwoordzin voor synchronisatie<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Alleen iemand met je wachtwoordzin kan je versleutelde gegevens lezen. De wachtwoordzin wordt niet verzonden naar of opgeslagen door Brave Software. Als je je wachtwoordzin vergeet of deze instelling wilt wijzigen, moet je de <ph name="BEGIN_LINK"/>synchronisatie resetten<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Als je deze instelling wilt wijzigen, moet je de <ph name="BEGIN_LINK"/>synchronisatie resetten<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Als je dit wilt inschakelen, <ph name="BEGIN_LINK"/>reset je de synchronisatie<ph name="END_LINK"/> om de wachtwoordzin voor synchronisatie te verwijderen</translation>
 <translation id="988978206646512040">Een lege wachtwoordzin is niet toegestaan</translation>
 <translation id="1651008383952180276">Je moet twee keer dezelfde wachtwoordzin opgeven</translation>
 <translation id="2136476978468204130">De opgegeven wachtwoordzin is onjuist</translation>
@@ -2400,6 +2416,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1940546824932169984">Verbonden apparaten</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Je Bravebook werkt nog beter in combinatie met je telefoon. <ph name="LINK_BEGIN"/>Meer informatie.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Geen geschikte apparaten. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Wachten op verificatie. <ph name="LINK_BEGIN"/>Meer informatie.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Kan geen verbinding maken met de telefoon. <ph name="LINK_BEGIN"/>Meer informatie.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together is ingeschakeld</translation>
