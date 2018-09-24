@@ -187,7 +187,7 @@ public class DAU {
         let weekly = dSecs >= SECONDS_IN_A_WEEK
         let monthly = month != _month || year != _year
         log.debug("Dau stat params, daily: \(daily), weekly: \(weekly), monthly:\(monthly), dSecs: \(dSecs)")
-        if (!daily && !weekly && !monthly) {
+        if !daily && !weekly && !monthly {
             // No changes, no ping
             return nil
         }

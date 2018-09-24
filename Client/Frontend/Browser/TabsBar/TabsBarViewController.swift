@@ -155,7 +155,7 @@ class TabsBarViewController: UIViewController {
     }
     
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
-        switch(gesture.state) {
+        switch gesture.state {
         case .began:
             guard let selectedIndexPath = self.collectionView.indexPathForItem(at: gesture.location(in: self.collectionView)) else {
                 break

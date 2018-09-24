@@ -41,11 +41,11 @@ public enum IconType: Int {
 open class Favicon: Identifiable {
     open var id: Int?
 
-    open let url: String
-    open let date: Date
+    public let url: String
+    public let date: Date
     open var width: Int?
     open var height: Int?
-    open let type: IconType?
+    public let type: IconType?
 
     // BRAVE TODO: consider removing `type` optional
     public init(url: String, date: Date = Date(), type: IconType? = nil) {
@@ -65,8 +65,8 @@ open class Site: Identifiable, Hashable {
         return URL(string: url)?.domainURL ?? URL(string: "about:blank")!
     }
 
-    open let url: String
-    open let title: String
+    public let url: String
+    public let title: String
     open var metadata: PageMetadata?
      // Sites may have multiple favicons. We'll return the largest.
     open var icon: Favicon?

@@ -138,7 +138,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
     }
     
     // Should not be used for updating, modify to increase protection
-    class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, color: UIColor? = nil, context: NSManagedObjectContext) -> Bookmark? {
+    @discardableResult class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, color: UIColor? = nil, context: NSManagedObjectContext) -> Bookmark? {
         let bookmark = root
         let site = bookmark?.site
      
@@ -199,13 +199,14 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
   
     // TODO: DELETE
     // Aways uses main context
-    @discardableResult public class func add(url: URL?,
-                       title: String?,
-                       customTitle: String? = nil, // Folders only use customTitle
-                       parentFolder: Bookmark? = nil,
-                       isFolder: Bool = false,
-                       isFavorite: Bool = false,
-                       color: UIColor? = nil) -> Bookmark? {
+    @discardableResult public class func add(
+        url: URL?,
+        title: String?,
+        customTitle: String? = nil, // Folders only use customTitle
+        parentFolder: Bookmark? = nil,
+        isFolder: Bool = false,
+        isFavorite: Bool = false,
+        color: UIColor? = nil) -> Bookmark? {
         
         let site = SyncSite()
         site.title = title
@@ -284,8 +285,10 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         return [Bookmark]()
     }
 
-    public class func reorderBookmarks(frc: NSFetchedResultsController<NSFetchRequestResult>?, sourceIndexPath: IndexPath,
-                                destinationIndexPath: IndexPath) {
+    public class func reorderBookmarks(
+        frc: NSFetchedResultsController<NSFetchRequestResult>?,
+        sourceIndexPath: IndexPath,
+        destinationIndexPath: IndexPath) {
         guard let frc = frc else { return }
         
         let dest = frc.object(at: destinationIndexPath) as! Bookmark
@@ -344,8 +347,11 @@ extension Bookmark {
         return nil
     }
     
-    public static func getChildren(forFolderUUID syncUUID: [Int]?, ignoreFolders: Bool = false, context: NSManagedObjectContext,
-                            orderSort: Bool = false) -> [Bookmark]? {
+    public static func getChildren(
+        forFolderUUID syncUUID: [Int]?,
+        ignoreFolders: Bool = false,
+        context: NSManagedObjectContext,
+        orderSort: Bool = false) -> [Bookmark]? {
         guard let searchableUUID = SyncHelpers.syncDisplay(fromUUID: syncUUID) else {
             return nil
         }

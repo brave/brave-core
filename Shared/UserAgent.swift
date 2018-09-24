@@ -24,9 +24,7 @@ open class UserAgent {
      * Use this if you know that a value must have been computed before your
      * code runs, or you don't mind failure.
      */
-    public static func cachedUserAgent(checkiOSVersion: Bool = true,
-                                     checkFirefoxVersion: Bool = true,
-                                     checkFirefoxBuildNumber: Bool = true) -> String? {
+    public static func cachedUserAgent(checkiOSVersion: Bool = true, checkFirefoxVersion: Bool = true, checkFirefoxBuildNumber: Bool = true) -> String? {
         let currentiOSVersion = UIDevice.current.systemVersion
         let lastiOSVersion = defaults.string(forKey: "LastDeviceSystemVersionNumber")
 

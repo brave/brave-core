@@ -86,7 +86,7 @@ class ImageCache: NSObject, FICImageCacheDelegate {
     // Guard from locked filesystem on private browsing.
     // FIC will crash on init.
     let fileManager = FileManager.default
-    var paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true) as [String]
+    let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true) as [String]
     guard let path = paths.first else { return }
     if !fileManager.isWritableFile(atPath: path) {
       return

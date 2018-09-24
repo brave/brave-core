@@ -156,10 +156,8 @@ class ClearPrivateDataTableViewController: UITableViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // for some reason, even after all webviews killed, an big delay is needed before the filehandles are unlocked
             var clear = [Clearable]()
-            for i in 0..<self.clearables.count {
-                if self.toggles[i] {
-                    clear.append(self.clearables[i].clearable)
-                }
+            for i in 0..<self.clearables.count where i < self.toggles.count {
+                clear.append(self.clearables[i].clearable)
             }
             
             // TODO: Bring back PrivateBrowsing

@@ -669,10 +669,8 @@ class BookmarkFactory {
             switch type {
             case .bookmark:
                 return itemRowFactory(row, forceEditable: forceEditable)
-            case .dynamicContainer:
-                // This should never be hit: we exclude dynamic containers from our models.
-                fallthrough
-            case .folder:
+            case .dynamicContainer, .folder:
+                // dynamicContainer should never be hit: we exclude dynamic containers from our models.
                 return folderFactory(row)
             case .separator:
                 return separatorFactory(row)

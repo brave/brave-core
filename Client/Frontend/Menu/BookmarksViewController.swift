@@ -615,7 +615,7 @@ extension BookmarksViewController: NSFetchedResultsControllerDelegate {
   }
   
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-    switch (type) {
+    switch type {
     case .update:
       guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {
         return

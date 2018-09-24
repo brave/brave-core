@@ -413,7 +413,7 @@ extension Sync {
         // TODO: Abstract this logic, same used as in getExistingObjects
         guard let recordJSON = data?.rootElements, let apiRecodType = data?.arg1, let recordType = SyncRecordType(rawValue: apiRecodType) else { return }
         
-        guard var fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
+        guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
 
         // Currently only prefs are device related
         if recordType == .prefs, let data = fetchedRecords as? [SyncDevice] {
