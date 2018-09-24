@@ -35,6 +35,11 @@ int OnBeforeURLRequest_StaticRedirectWork(
   static std::vector<URLPattern> allowed_patterns({
     // Brave updates
     URLPattern(URLPattern::SCHEME_HTTPS, "https://go-updater.brave.com/*"),
+    // Brave updates staging
+    // In the future, we may want to exclude the value of the
+    // BRAVE_REFERRALS_SERVER environment variable rather than
+    // hardcoding the server name here
+    URLPattern(URLPattern::SCHEME_HTTPS, "https://laptop-updates-staging.herokuapp.com/*"),
     // CRX file download
     URLPattern(URLPattern::SCHEME_HTTPS, "https://brave-core-ext.s3.brave.com/release/*"),
     // We do allow redirects to the Google update server for extensions we don't support
