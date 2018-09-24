@@ -10,6 +10,9 @@ import { Store } from 'react-chrome-redux'
 import Theme from 'brave-ui/theme/brave-default'
 import { ThemeProvider } from 'brave-ui/theme'
 import { initLocale } from 'brave-ui/helpers'
+require('emptykit.css')
+require('../../../fonts/muli.css')
+require('../../../fonts/poppins.css')
 
 // Components
 import App from './components/app'

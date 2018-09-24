@@ -8,7 +8,10 @@
     "scripts": ["out/brave_rewards_panel_background.bundle.js"],
     "persistent": true
   },
-  "permissions": ["tabs"],
+  "permissions": [
+    "tabs",
+    "chrome://favicon/*"
+  ],
   "browser_action": {
     "default_popup": "brave_rewards_panel.html",
     "default_icon": {

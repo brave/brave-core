@@ -18,14 +18,44 @@ interface Props extends RewardsExtension.ComponentProps {
 
 interface State {
   showSummary: boolean
+  publisherKey: string | null
 }
 
 export class Panel extends React.Component<Props, State> {
-
   constructor (props: Props) {
     super(props)
     this.state = {
-      showSummary: true
+      showSummary: true,
+      publisherKey: null
+    }
+  }
+
+  componentDidMount () {
+    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+    const newKey = publisher && publisher.publisher_key
+
+    if (newKey) {
+      this.setState({
+        showSummary: false,
+        publisherKey: newKey
+      })
+    }
+  }
+
+  componentDidUpdate (prevProps: Props, prevState: State) {
+    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+    const newKey = publisher && publisher.publisher_key
+
+    if (!prevState.publisherKey && newKey) {
+      this.setState({
+        showSummary: false,
+        publisherKey: newKey
+      })
+    } else if (prevState.publisherKey && !newKey) {
+      this.setState({
+        showSummary: true,
+        publisherKey: null
+      })
     }
   }
 
@@ -45,6 +75,12 @@ export class Panel extends React.Component<Props, State> {
     }
 
     return this.props.rewardsPanelData.publishers[windowId]
+  }
+
+  onSliderToggle = () => {
+    this.setState({
+      showSummary: !this.state.showSummary
+    })
   }
 
   render () {
@@ -89,7 +125,7 @@ export class Panel extends React.Component<Props, State> {
       >
         <WalletSummarySlider
           id={'panel-slider'}
-          onToggle={this.doNothing}
+          onToggle={this.onSliderToggle}
         >
           {
             publisher && publisher.publisher_key
@@ -97,7 +133,7 @@ export class Panel extends React.Component<Props, State> {
               id={'wallet-panel'}
               platform={publisher.provider as Provider}
               publisherName={publisher.name}
-              publisherImg={publisher.favicon_url || `chrome://favicon/size/48@1x/${publisher.url}/`}
+              publisherImg={publisher.favicon_url || `chrome://favicon/size/48@1x/${publisher.url}`}
               monthlyAmount={10}
               isVerified={publisher.verified}
               tipsEnabled={true}
