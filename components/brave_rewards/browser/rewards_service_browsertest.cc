@@ -65,7 +65,7 @@ void BraveURLFetcher::DetermineURLResponsePath(std::string url) {
     PREFIX_V2, braveledger_bat_helper::SERVER_TYPES::BALANCE)) == 0) {
     SetResponseString(brave_test_resp::wallet_);
   } else if (url.find(braveledger_bat_helper::buildURL(GET_SET_PROMOTION,
-    PREFIX_V1, braveledger_bat_helper::SERVER_TYPES::LEDGER)) == 0) {
+    PREFIX_V2, braveledger_bat_helper::SERVER_TYPES::LEDGER)) == 0) {
     SetResponseString(brave_test_resp::grant_);
   } else if (url.find(braveledger_bat_helper::buildURL(GET_PUBLISHERS_LIST_V1,
     "", braveledger_bat_helper::SERVER_TYPES::PUBLISHER)) == 0) {
