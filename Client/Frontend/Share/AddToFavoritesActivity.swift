@@ -6,17 +6,17 @@ import Foundation
 import Shared
 
 class AddToFavoritesActivity: UIActivity {
-    fileprivate let callback: () -> ()
+    fileprivate let callback: () -> Void
 
-    init(callback: @escaping () -> ()) {
+    init(callback: @escaping () -> Void) {
         self.callback = callback
     }
 
-    override var activityTitle : String? {
+    override var activityTitle: String? {
         return Strings.Add_to_favorites
     }
 
-    override var activityImage : UIImage? {
+    override var activityImage: UIImage? {
         return #imageLiteral(resourceName: "add_to_favorites_share_action")
     }
 

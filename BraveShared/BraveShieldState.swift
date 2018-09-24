@@ -20,7 +20,7 @@ public struct BraveShieldState {
 //        }
     }
 
-    public enum Shield : String {
+    public enum Shield: String {
         case AllOff = "all_off"
         case AdblockAndTp = "adblock_and_tp"
         case HTTPSE = "httpse"
@@ -29,12 +29,12 @@ public struct BraveShieldState {
         case NoScript = "noscript"
     }
 
-    fileprivate var state = [Shield:Bool]()
+    fileprivate var state = [Shield: Bool]()
 
     typealias DomainKey = String
     static var perNormalizedDomain = [DomainKey: BraveShieldState]()
 
-    public static func setInMemoryforDomain(_ domain: String, setState state:(BraveShieldState.Shield, Bool?)) {
+    public static func setInMemoryforDomain(_ domain: String, setState state: (BraveShieldState.Shield, Bool?)) {
         var shields = perNormalizedDomain[domain]
         if shields == nil {
             if state.1 == nil {
@@ -53,7 +53,7 @@ public struct BraveShieldState {
 
     public init(jsonStateFromDbRow: String) {
         let js = JSON(parseJSON: jsonStateFromDbRow)
-        for (k,v) in (js.dictionary ?? [:]) {
+        for (k, v) in (js.dictionary ?? [:]) {
             if let key = Shield(rawValue: k) {
                 setState(key, on: v.bool)
             } else {
@@ -136,7 +136,6 @@ open class BraveGlobalShieldStats {
             NotificationCenter.default.post(name: Notification.Name(rawValue: BraveGlobalShieldStats.DidUpdateNotification), object: nil)
         }
     }
-    
 
     enum Shield: String {
         case Adblock = "adblock"

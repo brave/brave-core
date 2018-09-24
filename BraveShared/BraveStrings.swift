@@ -144,7 +144,7 @@ public extension Strings {
     public static let This_allows_you_to_save_the_image_to_your_CameraRoll = NSLocalizedString("This allows you to save the image to your Camera Roll.", comment: "See http://mzl.la/1G7uHo7")
     public static let Open_Settings = NSLocalizedString("Open Settings", comment: "See http://mzl.la/1G7uHo7")
     public static let Copy_Image = NSLocalizedString("Copy Image", comment: "Context menu item for copying an image to the clipboard")
-    public static let Call = NSLocalizedString("Call", comment:"Alert Call Button")
+    public static let Call = NSLocalizedString("Call", comment: "Alert Call Button")
     public static let AllowOpenITunes_template = NSLocalizedString("Allow %@ to open iTunes?", comment: "Ask user if site can open iTunes store URL")
     public static let Paste_and_Go = NSLocalizedString("Paste & Go", comment: "Paste the URL into the location bar and visit")
     public static let Paste = NSLocalizedString("Paste", comment: "Paste the URL into the location bar")
@@ -315,7 +315,6 @@ public extension Strings {
     public static let DefaultTitleUntitled = NSLocalizedString("Default.Bookmark.Title", value: "Untitled", comment: "The default name for bookmark item without titles.")
     public static let desktopBookmarksLabel = NSLocalizedString("Desktop Bookmarks", comment: "The folder name for the virtual folder that contains all desktop bookmarks.")
 }
-
 
 public extension Strings {
     public static let Block_Popups = NSLocalizedString("Block Popups", comment: "Setting to enable popup blocking")

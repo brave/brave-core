@@ -30,7 +30,7 @@ class FaviconHandler {
 
         let deferred = Deferred<Maybe<(Favicon, Data?)>>()
 
-        var imageOperation: SDWebImageOperation? = nil
+        var imageOperation: SDWebImageOperation?
 
         let webImageCache = WebImageCacheManager.shared
 

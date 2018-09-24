@@ -115,7 +115,7 @@ class ImageCache: NSObject, FICImageCacheDelegate {
     bitmapCache?.setFormats([imageFormat, imageSquareFormat])
   }
   
-  func cache(_ image: UIImage, url: URL, type: ImageCacheEntityType, callback: (()->Void)?) {
+  func cache(_ image: UIImage, url: URL, type: ImageCacheEntityType, callback: (() -> Void)?) {
     guard let bitmapCache = bitmapCache else { callback?(); return }
     
     let entity = ImageEntity(url: url)
@@ -138,7 +138,7 @@ class ImageCache: NSObject, FICImageCacheDelegate {
     })
   }
   
-  func image(_ url: URL, type: ImageCacheEntityType, callback: @escaping (_ image: UIImage?)->Void) {
+  func image(_ url: URL, type: ImageCacheEntityType, callback: @escaping (_ image: UIImage?) -> Void) {
     guard let bitmapCache = bitmapCache else { callback(nil); return }
     
     let entity = ImageEntity(url: url)

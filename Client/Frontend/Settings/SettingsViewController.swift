@@ -59,8 +59,7 @@ private func BoolRow(title: String, option: Preferences.Option<Bool>) -> Row {
     return Row(
         text: title,
         accessory: .switchToggle(
-            value: option.value,
-            { option.value = $0 }
+            value: option.value, { option.value = $0 }
         ),
         uuid: option.key
     )
@@ -217,12 +216,12 @@ class SettingsViewController: TableViewController {
                 accessory: .disclosureIndicator
             )
         ]
-        var cookieControlRow = Row(text: Strings.Cookie_Control, detailText: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value)?.displayString, accessory: .disclosureIndicator)
+        var cookieControlRow = Row(text: Strings.Cookie_Control, detailText: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value)?.displayString, accessory: .disclosureIndicator)
         cookieControlRow.selection = { [unowned self] in
             // Show Options for cookie control
             let optionsViewController = OptionSelectionViewController<HTTPCookie.AcceptPolicy>(
                 options: [.onlyFromMainDocumentDomain, .never, .always],
-                selectedOption: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value),
+                selectedOption: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value),
                 optionChanged: { [unowned self] _, option in
                     Preferences.Privacy.cookieAcceptPolicy.value = option.rawValue
                     

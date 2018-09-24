@@ -16,7 +16,7 @@ class JSInjector: NSObject {
     /// The amount of time (in seconds) between each delay attempt
     internal var delayLengthInSeconds = Int64(1.5)
     
-    internal func executeBlockOnReady(_ block: @escaping () -> ()) {
+    internal func executeBlockOnReady(_ block: @escaping () -> Void) {
         // Must have `isJavascriptReadyCheck`
         
         guard let readyCheck = isJavascriptReadyCheck else {
@@ -34,7 +34,7 @@ class JSInjector: NSObject {
                 self.executeBlockOnReady(block)
             })
             
-            return;
+            return
         }
         
         block()

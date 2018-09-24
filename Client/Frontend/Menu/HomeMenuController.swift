@@ -120,21 +120,21 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     
     settingsButton.setImage(#imageLiteral(resourceName: "menu-settings").template, for: .normal)
     settingsButton.addTarget(self, action: #selector(onClickSettingsButton), for: .touchUpInside)
-    settingsButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
+    settingsButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     settingsButton.accessibilityLabel = Strings.Settings
     
     bookmarksButton.setImage(#imageLiteral(resourceName: "menu-bookmark-list").template, for: .normal)
-    bookmarksButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
+    bookmarksButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     bookmarksButton.accessibilityLabel = Strings.Show_Bookmarks
     
     historyButton.setImage(#imageLiteral(resourceName: "menu-history").template, for: .normal)
-    historyButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
+    historyButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     historyButton.accessibilityLabel = Strings.Show_History
     
     addBookmarkButton.addTarget(self, action: #selector(onClickBookmarksButton), for: .touchUpInside)
     addBookmarkButton.setImage(#imageLiteral(resourceName: "menu-add-bookmark").template, for: .normal)
     addBookmarkButton.setImage(#imageLiteral(resourceName: "menu-marked-bookmark").template, for: .selected)
-    addBookmarkButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
+    addBookmarkButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     addBookmarkButton.accessibilityLabel = Strings.Add_Bookmark
     
     pageButtons.keys.forEach { $0.addTarget(self, action: #selector(onClickPageButton), for: .touchUpInside) }

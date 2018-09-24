@@ -302,8 +302,7 @@ class Tab: NSObject {
     var displayTitle: String {
         if let title = webView?.title, !title.isEmpty {
             return title.contains("localhost") ? "" : title
-        }
-        else if let url = webView?.url ?? self.url, url.isAboutHomeURL {
+        } else if let url = webView?.url ?? self.url, url.isAboutHomeURL {
             return Strings.NewTabTitle
         }
         

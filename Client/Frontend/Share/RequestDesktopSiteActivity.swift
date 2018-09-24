@@ -7,9 +7,9 @@ import Shared
 
 class RequestDesktopSiteActivity: UIActivity {
     private let tab: Tab?
-    fileprivate let callback: () -> ()
+    fileprivate let callback: () -> Void
 
-    init(tab: Tab?, callback: @escaping () -> ()) {
+    init(tab: Tab?, callback: @escaping () -> Void) {
         self.tab = tab
         self.callback = callback
     }
@@ -18,11 +18,11 @@ class RequestDesktopSiteActivity: UIActivity {
         return tab?.desktopSite ?? true
     }
     
-    override var activityTitle : String? {
+    override var activityTitle: String? {
         return isDesktopSite ? Strings.AppMenuViewMobileSiteTitleString : Strings.AppMenuViewDesktopSiteTitleString
     }
 
-    override var activityImage : UIImage? {
+    override var activityImage: UIImage? {
         return isDesktopSite ? #imageLiteral(resourceName: "shareRequestMobileSite") : #imageLiteral(resourceName: "shareRequestDesktopSite")
     }
 

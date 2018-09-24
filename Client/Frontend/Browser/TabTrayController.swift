@@ -419,7 +419,7 @@ class TabTrayController: UIViewController, Themeable {
         let scaleDownTransform = CGAffineTransform(scaleX: 0.9, y: 0.9)
 
         let newOffset = CGPoint(x: 0.0, y: collectionView.contentOffset.y)
-        collectionView.setContentOffset(self.otherBrowsingModeOffset, animated:false)
+        collectionView.setContentOffset(self.otherBrowsingModeOffset, animated: false)
         self.otherBrowsingModeOffset = newOffset
         let fromView: UIView
         if !privateTabsAreEmpty(), let snapshot = collectionView.snapshotView(afterScreenUpdates: false) {

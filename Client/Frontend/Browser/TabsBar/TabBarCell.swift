@@ -44,7 +44,7 @@ class TabBarCell: UICollectionViewCell {
     weak var tab: Tab?
     weak var tabManager: TabManager?
     
-    var closeTabCallback: ((Tab) -> ())?
+    var closeTabCallback: ((Tab) -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,13 +61,13 @@ class TabBarCell: UICollectionViewCell {
     }
     
     private func initConstraints() {
-        titleLabel.snp.makeConstraints{ make in
+        titleLabel.snp.makeConstraints { make in
             make.top.bottom.equalTo(self)
             make.left.equalTo(self).inset(16)
             make.right.equalTo(closeButton.snp.left)
         }
         
-        closeButton.snp.makeConstraints{ make in
+        closeButton.snp.makeConstraints { make in
             make.top.bottom.equalTo(self)
             make.right.equalTo(self).inset(2)
             make.width.equalTo(30)

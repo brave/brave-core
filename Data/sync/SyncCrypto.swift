@@ -22,12 +22,12 @@ class SyncCrypto: JSInjector {
         self.isJavascriptReadyCheck = { return self.isSyncCryptoReady }
         
         // Load HTML and await for response, to verify the webpage is loaded to receive brave-crypto commands
-        self.syncCryptoWebView.navigationDelegate = self;
+        self.syncCryptoWebView.navigationDelegate = self
         // Must load HTML for delegate method to fire
         self.syncCryptoWebView.loadHTMLString("<body>TEST</body>", baseURL: nil)
     }
     
-    fileprivate class var webConfig:WKWebViewConfiguration {
+    fileprivate class var webConfig: WKWebViewConfiguration {
         let webCfg = WKWebViewConfiguration()
         webCfg.userContentController = WKUserContentController()
         
