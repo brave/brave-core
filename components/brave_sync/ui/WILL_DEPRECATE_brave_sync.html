@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Sync</title>
+<link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
+<script src="chrome://resources/js/cr.js"></script>
+<script src="chrome://resources/js/load_time_data.js"></script>
+<script src="chrome://resources/js/util.js"></script>
+<script src="chrome://resources/js/i18n_template.js"></script>
+
+<script src="chrome://bravesync/brave_sync.js"></script>
+<script src="chrome://bravesync/qrcode.js"></script>
+
+<style>
+table {
+    border-collapse: collapse;
+}
+
+table, td, th {
+    border: 1px solid black;
+}
+</style>
+
+</head>
+<body>
+  <p id="welcome-message"></p>
+  <!-- Test Button -->
+  <div id='area_test'>
+    <button type="button" id='btn_test' >Test</button>
+  </div>
+  <!-- Header -->
+  <div id='area_header'>
+    <h1>Brave Sync</h1>
+    </br>
+    <div>
+        Sync encrypted browser data between your devices securely and privately using Brave Sync.
+    </div>
+    <div>
+         Note: Sync for iOS and Android is still being completed and will be released soon.
+    </div>
+  <hr>
+  </div>
+  <!-- Buttons <I am new to sync> <I have a sync code> -->
+  <div id='area_buttons_start'>
+    <div>
+      <button type="button" id='btn_new_to_sync' >I am new to sync</button>
+    </div>
+    <div>
+      <button type="button" id='btn_have_sync_code'>I have a sync code</button>
+    </div>
+  <hr>
+  </div>
+  <!-- Area of I have a sync code dialog-->
+  <div id='area_have_sync_code'>
+    <div>
+      <h1>I have and an existing Sync code</h1>
+      <div>
+        <h3>Enter your sync words</h2>
+        <input type="text" name="edit_sync_words" id="edit_sync_words" style='width:300px'><br>
+        <h3>Enter an optional name for your device</h2>
+        <input type="text" name="edit_device_name_have_code" id="edit_device_name_have_code" style='width:300px'><br>
+      </div>
+      <div>
+        <button type="button" id='btn_setup_sync_have_code'>Setup Sync</button>
+      </div>
+    </div>
+  <hr>
+  </div>
+  <!-- Area of I am new to sync-->
+  <div id='area_new_to_sync'>
+    <div>
+      <h1>I am new to sync</h1>
+      <div>
+        <h3>Enter an optional name for your device</h2>
+        <input type="text" name="edit_device_name_new_to_sync" id="edit_device_name_new_to_sync"><br>
+      </div>
+      <div>
+        <button type="button" id='btn_setup_sync_new_to_sync'>Setup Sync</button>
+      </div>
+    </div>
+  <hr>
+  </div>
+  <!-- <Sync this device> block -->
+  <div id='area_sync_this_device'>
+    <table>
+      <col width="200">
+      <col width="200">
+      <tr>
+        <td>
+          <input type="checkbox" id='checkbox_sync_this_device'> Sync this device <br>
+        </td>
+        <td>
+          <div>Device Name</div>
+          <div id='text_this_device_name'></div>
+        </td>
+      </tr>
+    </table>
+  <hr>
+  </div>
+  <!-- <Devices> list  block -->
+  <div id='area_devices_list'>
+    <div><h3>Devices</h3></div>
+    <div>
+      <table id='table_devices'>
+        <col width="50">
+        <col width="200">
+        <col width="200">
+        <tr>
+          <th>id</th>
+          <th>Device name</th>
+          <th>Last active</th>
+          <th></th>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <button type="button" id='btn_sync_new_device'>Sync a new device...</button>
+    </div>
+  <hr>
+  </div>
+  <!-- <Sync Data>  block -->
+  <div id='area_sync_data_types'>
+    <div><h3>Sync Data</h3></div>
+    <div>Sync the folowwing data from this device:</div>
+    <div>
+      <input type="checkbox" id='checkbox_bookmarks'>Bookmarks<br>
+      <input type="checkbox" id='checkbox_site_settings'>Saved site settings<br>
+      <input type="checkbox" id='checkbox_history'>Browsing history<br>
+    </div>
+  <hr>
+  </div>
+  <!-- <Clear data> block -->
+  <div id='area_clear_data'>
+    <div><h3>Clear Data</h3></div>
+    <div>
+      <button type="button" id='btn_reset_sync'>Reset sync... (aka Remove this device)</button>
+    </div>
+  <hr>
+  </div>
+
+  <!-- Add another device -->
+  <div id='area_add_another_device'>
+    <div id='area_add_another_device_type'>
+      <div>
+        <button type="button" id='btn_add_mobile_device'>Add a Mobile Device</button>
+      </div>
+      <div>
+        <button type="button" id='btn_add_computer'>Add a Computer</button>
+      </div>
+    <hr>
+    </div>
+
+    <div id='area_add_mobile_device'>
+      <div>
+        <h3>Scan this sync code</h3>
+      </div>
+      <div>
+        Using phone or tablet, navigate to Brave Settings > Sync > Scan
+      </div>
+
+      <div>
+        <div id='area_add_mobile_device_qrcode'>
+          QR code
+        </div>
+        <div id='area_add_mobile_device_qrcode2'>
+          QR code
+        </div>
+        <button type="button" id='btn_add_mobile_device_done'>Done</button>
+      </div>
+    <hr>
+    </div>
+
+    <div id='area_add_computer'>
+      <div>
+        <h3>Enter the sync chain code</h3>
+      </div>
+      <div>
+        <div>On your computer, navigate to Brave Settings > Sync. Choose "Enter a Sync Chain Code".</div>
+        </br>
+        <div>Enter the code words above, including spaces.</div>
+      </div>
+      <div id='area_add_computer_syncphrase'>
+        <input type="text" value="" id='edit_add_computer_sync_phrase' style='width:300px'>
+      </div>
+      <div>
+        <button type="button" id='btn_add_computer_copy_to_clipboard'>Copy to Clipboard</button>
+      </div>
+      <div>
+        <button type="button" id='btn_add_computer_done'>Done</button>
+      </div>
+    <hr>
+    </div>
+  </div>
+  <!-- Add another device -->
+  <div id='area_debug_log'>
+    <div><h3>Debug log</h3></div>
+    <div id='box_log' style='background-color:lightgray;font-family:Courier;'></div>
+  </div>
+
+</body>
+</html>
