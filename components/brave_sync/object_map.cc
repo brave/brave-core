@@ -85,6 +85,7 @@ void ObjectMap::CreateOpenDatabase() {
 }
 
 std::string ObjectMap::GetLocalIdByObjectId(const Type &type, const std::string &objectId) {
+  DCHECK(!objectId.empty());
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return "";
@@ -93,12 +94,14 @@ std::string ObjectMap::GetLocalIdByObjectId(const Type &type, const std::string 
   std::string value;
   leveldb::Status db_status = level_db_->Get(leveldb::ReadOptions(), objectId, &value);
   if (!db_status.ok()) {
+    LOG(ERROR) << "TAGAB brave_sync::ObjectMap::GetLocalIdByObjectId type=<" << type << ">";
+    LOG(ERROR) << "TAGAB brave_sync::ObjectMap::GetLocalIdByObjectId objectId=<" << objectId << ">";
     LOG(ERROR) << "sync level db get error " << db_status.ToString();
   }
 
   std::string local_id;
   Type read_type = Unset;
-  if (local_id.empty()) {
+  if (value.empty()) {
     return "";
   }
 
