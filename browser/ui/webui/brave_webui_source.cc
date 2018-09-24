@@ -109,9 +109,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_DONATE_BG_2 },
       }
     }, {
-      std::string("bravesync"), {
-      { "qrcode.js", IDR_BRAVE_SYNC_QR }
-      }
+      std::string("bravesync"), {}
     }
   };
   AddResourcePaths(source, resources[name]);
@@ -413,6 +411,48 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "whyBraveRewardsDesc1", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1 },
         { "whyBraveRewardsDesc2", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2 },
         { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET }
+      }
+    }, {
+      std::string("bravesync"), {
+        { "sync", IDS_BRAVE_SYNC_TITLE },
+        { "beta", IDS_BRAVE_SYNC_TITLE_BETA },
+        { "syncInfo1", IDS_BRAVE_SYNC_INFO_1 },
+        { "syncInfo2", IDS_BRAVE_SYNC_INFO_2 },
+        { "syncThisDevice", IDS_BRAVE_SYNC_DEVICE_SYNC },
+        { "done", IDS_BRAVE_SYNC_DONE },
+        { "cancel", IDS_BRAVE_SYNC_CANCEL },
+        { "areYouSure", IDS_BRAVE_SYNC_ARE_YOU_SURE },
+
+        { "iAmNewToSync", IDS_BRAVE_SYNC_I_AM_NEW_TO_SYNC },
+        { "iHaveAnExistingSyncCode", IDS_BRAVE_SYNC_I_HAVE_AN_EXISTING_SYNC_CODE },
+
+        { "devices", IDS_BRAVE_SYNC_DEVICES },
+        { "deviceName", IDS_BRAVE_SYNC_DEVICE_NAME },
+        { "id", IDS_BRAVE_SYNC_ID },
+        { "lastActive", IDS_BRAVE_SYNC_LAST_ACTIVE },
+        { "syncANewDevice", IDS_BRAVE_SYNC_NEW_DEVICE },
+        { "syncData", IDS_BRAVE_SYNC_DATA },
+        { "syncDataInfo", IDS_BRAVE_SYNC_DATA_INFO },
+        { "bookmarks", IDS_BRAVE_SYNC_BOOKMARKS },
+        { "savedSiteSettings", IDS_BRAVE_SYNC_SAVED_SITE_SETTINGS },
+        { "browsingHistory", IDS_BRAVE_SYNC_BROWSING_HISTORY },
+        { "clearData", IDS_BRAVE_SYNC_CLEAR_DATA },
+        { "resetSync", IDS_BRAVE_SYNC_RESET_SYNC },
+
+        { "setUpSync", IDS_BRAVE_SYNC_SET_UP_SYNC },
+
+        { "enterYourSyncCodeWords", IDS_BRAVE_SYNC_ENTER_SYNC_CODE_WORDS },
+        { "enterAnOptionalName", IDS_BRAVE_SYNC_ENTER_OPTIONAL_NAME_FOR_THIS_DEVICE },
+
+        { "syncANewDeviceFirstBulletText", IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_FIRST_BULLET },
+        { "syncANewDeviceSecondBulletText", IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_SECOND_BULLET },
+        { "syncANewDeviceThirdBulletText", IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_THIRD_BULLET },
+        { "showSecretQRCode", IDS_BRAVE_SYNC_SHOW_QR_CODE },
+        { "showSecretCodeWords", IDS_BRAVE_SYNC_SHOW_SECRET_CODE_WORDS },
+
+        { "resetSyncFirstBullet", IDS_BRAVE_SYNC_RESET_SYNC_FIRST_BULLET },
+        { "resetSyncSecondBullet", IDS_BRAVE_SYNC_RESET_SYNC_SECOND_BULLET },
+        { "resetSyncThirdBullet", IDS_BRAVE_SYNC_RESET_SYNC_THIRD_BULLET }
       }
     }, {
       std::string("adblock"), {

@@ -221,7 +221,7 @@
       "json"
     ],
     "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      ".(ts|tsx)": "ts-jest"
     },
     "resetMocks": true,
     "resetModules": true,
@@ -256,6 +256,7 @@
     "@types/enzyme": "^3.1.12",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^23.3.0",
+    "@types/qr-image": "^3.2.1",
     "@types/react": "^16.4.10",
     "@types/react-dnd": "^2.0.36",
     "@types/react-dom": "^16.0.7",
@@ -283,7 +284,6 @@
     "less": "^3.7.1",
     "less-loader": "^4.0.5",
     "react": "^16.2.0",
-    "qrcode-generator": "^1.4.0",
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^5.0.1",
     "react-dom": "^16.3.0",
