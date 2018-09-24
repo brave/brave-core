@@ -32,6 +32,7 @@ class BraveReferralsService {
 
  private:
   void PerformFirstRunTasks();
+  void GetFirstRunTime();
   base::FilePath GetPromoCodeFileName() const;
   bool ReadPromoCode();
   void DeletePromoCodeFile() const;
@@ -64,6 +65,7 @@ class BraveReferralsService {
   void OnFirstRunTasksComplete();
 
   bool initialized_;
+  base::Time first_run_timestamp_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   std::unique_ptr<network::SimpleURLLoader> referral_headers_loader_;
   std::unique_ptr<network::SimpleURLLoader> referral_init_loader_;

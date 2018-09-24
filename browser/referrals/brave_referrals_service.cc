@@ -25,6 +25,8 @@
 #include "chrome/common/chrome_paths.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -82,6 +84,11 @@ void BraveReferralsService::Start() {
   if (initialized_)
     return;
 
+  // Retrieve first run sentinel creation time.
+  task_runner_->PostTask(FROM_HERE,
+                         base::Bind(&BraveReferralsService::GetFirstRunTime,
+                                    base::Unretained(this)));
+
   // Periodically fetch referral headers.
   DCHECK(!fetch_referral_headers_timer_);
   fetch_referral_headers_timer_ = std::make_unique<base::RepeatingTimer>();
@@ -102,12 +109,6 @@ void BraveReferralsService::Start() {
                    weak_factory_.GetWeakPtr()));
   else
     FetchReferralHeaders();
-
-  // Delete the promo code preference, if appropriate.
-  MaybeDeletePromoCodePref();
-
-  // Check for referral finalization, if appropriate.
-  MaybeCheckForReferralFinalization();
 
   initialized_ = true;
 }
@@ -244,6 +245,24 @@ void BraveReferralsService::PerformFirstRunTasks() {
   ReadPromoCode();
 }
 
+void BraveReferralsService::GetFirstRunTime() {
+  first_run_timestamp_ = first_run::GetFirstRunSentinelCreationTime();
+  if (first_run_timestamp_.is_null())
+    return;
+
+  // Delete the promo code preference, if appropriate.
+  base::PostTaskWithTraits(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&BraveReferralsService::MaybeDeletePromoCodePref,
+                     base::Unretained(this)));
+
+  // Check for referral finalization, if appropriate.
+  base::PostTaskWithTraits(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&BraveReferralsService::MaybeCheckForReferralFinalization,
+                     base::Unretained(this)));
+}
+
 base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
@@ -279,6 +298,8 @@ void BraveReferralsService::DeletePromoCodeFile() const {
 }
 
 void BraveReferralsService::MaybeCheckForReferralFinalization() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
   if (download_id.empty()) {
     return;
@@ -287,8 +308,7 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
   // Only check for referral finalization after 30 days have elapsed
   // since first run.
   base::Time now = base::Time::Now();
-  base::Time firstrun_timestamp = first_run::GetFirstRunSentinelCreationTime();
-  if (now - firstrun_timestamp < base::TimeDelta::FromDays(30))
+  if (now - first_run_timestamp_ < base::TimeDelta::FromDays(30))
     return;
 
   // Only check for referral finalization 30 times, with a 24-hour
@@ -312,9 +332,9 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
 }
 
 void BraveReferralsService::MaybeDeletePromoCodePref() const {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   base::Time now = base::Time::Now();
-  base::Time firstrun_timestamp = first_run::GetFirstRunSentinelCreationTime();
-  if (now - firstrun_timestamp >= base::TimeDelta::FromDays(90))
+  if (now - first_run_timestamp_ >= base::TimeDelta::FromDays(90))
     pref_service_->ClearPref(kReferralPromoCode);
 }
 
