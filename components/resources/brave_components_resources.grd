@@ -79,6 +79,10 @@
       <include name="IDR_BRAVE_ADBLOCK_HTML" file="../brave_adblock_ui/brave_adblock.html" type="BINDATA" />
       <include name="IDR_BRAVE_ADBLOCK_JS" file="${root_gen_dir}/brave/brave_adblock.bundle.js" type="BINDATA" use_base_dir="false" />
 
+      <!-- WebUI adblock resources -->
+      <include name="IDR_BRAVE_ADS_HTML" file="../brave_ads/ui/brave_ads.html" type="BINDATA" />
+      <include name="IDR_BRAVE_ADS_JS" file="${root_gen_dir}/brave/brave_ads.bundle.js" type="BINDATA" use_base_dir="false" />
+
       <!-- WebUI welcome page resources -->
       <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
       <include name="IDR_BRAVE_WELCOME_JS" file="${root_gen_dir}/brave/brave_welcome.bundle.js" type="BINDATA" use_base_dir="false" />

@@ -6,6 +6,8 @@
 
 const char kAdblockHost[] = "adblock";
 const char kAdblockJS[] = "brave_adblock.js";
+const char kAdsHost[] = "ads";
+const char kAdsJS[] = "brave_ads.js";
 const char kRewardsHost[] = "rewards";
 const char kRewardsJS[] = "brave_rewards.js";
 const char kWelcomeHost[] = "welcome";
@@ -14,3 +16,4 @@ const char kBraveNewTabJS[] = "brave_new_tab.js";
 const char kBraveUIWelcomeURL[] = "chrome://welcome/";
 const char kBraveUIRewardsURL[] = "chrome://rewards/";
 const char kBraveUIAdblockURL[] = "chrome://adblock/";
+const char kBraveUIAdsURL[] = "chrome://ads/";

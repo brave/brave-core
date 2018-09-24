@@ -10,6 +10,7 @@ class Browser;
 namespace brave {
 
 void ShowBraveAdblock(Browser* browser);
+void ShowBraveAds(Browser* browser);
 void ShowBraveRewards(Browser* browser);
 
 }  // namespace brave

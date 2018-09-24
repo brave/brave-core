@@ -6,6 +6,7 @@ module.exports = {
   devtool: '#inline-source-map',
   entry: {
     brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
+    brave_ads: path.join(__dirname, '../brave_ads/ui/brave_ads'),
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
     brave_rewards: path.join(__dirname, '../brave_rewards/ui/brave_rewards'),
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),

@@ -74,6 +74,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForBraveRewards();
 #endif
   UpdateCommandForBraveAdblock();
+  UpdateCommandForBraveAds();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -82,6 +83,10 @@ void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
 
 void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK, true);
+}
+
+void BraveBrowserCommandController::UpdateCommandForBraveAds() {
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_ADS, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -102,7 +107,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_ADBLOCK:
       brave::ShowBraveAdblock(browser_);
       break;
-
+    case IDC_SHOW_BRAVE_ADS:
+      brave::ShowBraveAds(browser_);
+      break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
       break;
