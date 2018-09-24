@@ -20,7 +20,7 @@ import { CaratUpIcon, CaratDownIcon } from '../../../components/icons'
 export interface Props {
   id?: string,
   onToggle?: () => void
-  children?: React.ReactNode[]
+  children?: React.ReactNode | React.ReactNode[]
 }
 
 interface State {
@@ -93,6 +93,14 @@ export default class WalletSummarySlider extends React.PureComponent<Props, Stat
 
   render () {
     const { id, children } = this.props
+
+    if (!Array.isArray(children) || children[0] === null) {
+      return (
+        <StyledWrapper id={id}>
+          {children}
+        </StyledWrapper>
+      )
+    }
 
     if (!children || children.length !== 2) {
       return null
