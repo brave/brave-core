@@ -26,9 +26,9 @@ open class DiskImageStore {
     fileprivate let quality: CGFloat
     fileprivate var keys: Set<String>
 
-    required public init(files: FileAccessor, namespace: String, quality: Float) {
+    required public init(files: FileAccessor, namespace: String, quality: Float) throws {
         self.files = files
-        self.filesDir = try! files.getAndEnsureDirectory(namespace)
+        self.filesDir = try files.getAndEnsureDirectory(namespace)
         self.quality = CGFloat(quality)
 
         // Build an in-memory set of keys from the existing images on disk.
