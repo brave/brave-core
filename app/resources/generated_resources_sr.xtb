@@ -506,13 +506,21 @@
 <translation id="3861241522664181545">Страница је паузирана.</translation>
 <translation id="6921709132208495314">Прекини употребу података на овој страници</translation>
 <translation id="2724841811573117416">WebRTC евиденције</translation>
+<translation id="1969654639948595766">Евиденције WebRTC текста (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC евиденције догађаја (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC евиденција је снимљена <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Локална датотека:</translation>
 <translation id="2071393345806050157">Нема локалне датотеке евиденције.</translation>
 <translation id="6628328486509726751">Отпремљено <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Отпремање није успело (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ИД извештаја <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Пријави грешку</translation>
+<translation id="3650845953328929506">Отпремање евиденције је на чекању.</translation>
+<translation id="1818913467757368489">Отпремање евиденције је у току.</translation>
 <translation id="1188807932851744811">Евиденција није отпремљена.</translation>
+<translation id="4688036121858134881">ИД локалне евиденције: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Нисте недавно снимили ниједну WebRTC евиденцију текста.</translation>
+<translation id="3954953195017194676">Нисте недавно снимили ниједну WebRTC евиденцију догађаја.</translation>
 <translation id="2076269580855484719">Сакриј овај додатак</translation>
 <translation id="2129825002735785149">Ажурирај додатну компоненту</translation>
 <translation id="9088234649737575428">Додатну компоненту <ph name="PLUGIN_NAME"/> блокирају смернице предузећа</translation>
@@ -557,6 +565,8 @@
 <translation id="4416582610654027550">Унесите важећи URL</translation>
 <translation id="2806891468525657116">Пречица већ постоји</translation>
 <translation id="394183848452296464">Прављење пречице није успело</translation>
+<translation id="329703603001918157">Не можемо да изменимо пречицу</translation>
+<translation id="6732900235521116609">Не можемо да уклонимо пречицу</translation>
 <translation id="7109543803214225826">Пречица је уклоњена</translation>
 <translation id="8017679124341497925">Пречица је измењена</translation>
 <translation id="1174073918202301297">Пречица је додата</translation>
@@ -1441,6 +1451,7 @@
 <translation id="1800308196794859773">Шаљите податке о гласу Brave Software-у да би се омогућило диктирање у свим пољима за текст.</translation>
 <translation id="8758418656925882523">Омогући диктирање (говорите за куцање)</translation>
 <translation id="7580671184200851182">Пуштај исти звук на свим звучницима (моно звук)</translation>
+<translation id="8186639008852027301">Пусти звучни индикатор при покретању</translation>
 <translation id="1189418886587279221">Омогућите функције приступачности да бисте лакше користили уређај.</translation>
 <translation id="48704129375571883">Додајте још функција</translation>
 <translation id="7230787553283372882">Прилагодите величину текста</translation>
@@ -1538,6 +1549,10 @@
 <translation id="5029568752722684782">Обриши копију</translation>
 <translation id="2154484045852737596">Измените картицу</translation>
 <translation id="5087580092889165836">Додај картицу</translation>
+<translation id="7284555534810614828">Сачувајте картицу да бисте користили Brave Software Pay</translation>
+<translation id="6281511959351052816">Сачувајте картице да бисте користили Brave Software Pay</translation>
+<translation id="1904518222538904133">1 од ваших картица може да се користи само на овом уређају</translation>
+<translation id="8065485338434000013">Неке од картица могу да се користе само на овом уређају</translation>
 <translation id="4807098396393229769">Име и презиме на картици</translation>
 <translation id="2612676031748830579">Број картице</translation>
 <translation id="869891660844655955">Датум истека</translation>
@@ -2185,6 +2200,7 @@
 <translation id="3422989461909154470">Одавде можете да управљате свим Brave Software налозима на које сте пријављени у апликацијама и на веб-сајтовима.</translation>
 <translation id="1987317783729300807">Налози</translation>
 <translation id="8418661265246754237">Brave Software налози</translation>
+<translation id="3297951628821704004">Уклони налог са овог уређаја</translation>
 <translation id="1059855432287631118">Региструје се отисак прста</translation>
 <translation id="878068003854005405">Започнимо. Поставите прст на сензор.</translation>
 <translation id="7189965711416741966">Додали сте отисак прста.</translation>
@@ -2243,8 +2259,6 @@
 <translation id="2459230470861708651">Шифруј синхронизоване лозинке помоћу Brave Software корисничког имена и лозинке</translation>
 <translation id="6383051423892982287">Шифрујте синхронизоване податке помоћу сопствене <ph name="BEGIN_LINK"/>приступне фразе за синхронизацију<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Само неко ко има приступну фразу може да чита шифроване податке. Brave Software не шаље нити чува приступну фразу. Ако заборавите приступну фразу или желите да промените ово подешавање, мораћете да <ph name="BEGIN_LINK"/>ресетујете синхронизацију<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Да бисте променили ово подешавање, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Да бисте укључили ово, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/> да бисте уклонили приступну фразу за синхронизацију</translation>
 <translation id="988978206646512040">Поље за приступну фразу не може да буде празно</translation>
 <translation id="1651008383952180276">Двапут треба да унесете исту приступну фразу</translation>
 <translation id="2136476978468204130">Приступна фраза коју сте унели је нетачна</translation>
@@ -2402,6 +2416,7 @@
 <translation id="1940546824932169984">Повезани уређаји</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook ради још боље са телефоном. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Нема уређаја који испуњавају услове. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Чека се верификација. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Повезивање са телефоном није успело. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together: укључено</translation>

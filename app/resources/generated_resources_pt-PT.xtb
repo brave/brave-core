@@ -506,13 +506,21 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3861241522664181545">Página em pausa.</translation>
 <translation id="6921709132208495314">Parar de utilizar dados nesta página</translation>
 <translation id="2724841811573117416">Registos de WebRTC</translation>
+<translation id="1969654639948595766">Registos de texto WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Registos de eventos WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Registo de WebRTC capturado <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Ficheiro local:</translation>
 <translation id="2071393345806050157">Nenhum ficheiro de registo local.</translation>
 <translation id="6628328486509726751">Carregado <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">O carregamento falhou (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID do relatório <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Erro de ficheiro</translation>
+<translation id="3650845953328929506">Carregamento de registos pendente.</translation>
+<translation id="1818913467757368489">Carregamento do registo em curso.</translation>
 <translation id="1188807932851744811">Registo não carregado.</translation>
+<translation id="4688036121858134881">ID do registo local: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Não existem registos de textos WebRTC capturados recentemente.</translation>
+<translation id="3954953195017194676">Não existem registos de eventos WebRTC capturados recentemente.</translation>
 <translation id="2076269580855484719">Ocultar este plug-in</translation>
 <translation id="2129825002735785149">Atualizar plug-in</translation>
 <translation id="9088234649737575428">O <ph name="PLUGIN_NAME"/> está bloqueado pela política da empresa</translation>
@@ -557,6 +565,8 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="4416582610654027550">Introduza um URL válido.</translation>
 <translation id="2806891468525657116">O atalho já existe.</translation>
 <translation id="394183848452296464">Não é possível criar o atalho.</translation>
+<translation id="329703603001918157">Não é possível editar o atalho</translation>
+<translation id="6732900235521116609">Não foi possível remover o atalho.</translation>
 <translation id="7109543803214225826">Atalho removido</translation>
 <translation id="8017679124341497925">Atalho editado</translation>
 <translation id="1174073918202301297">Atalho adicionado</translation>
@@ -1441,6 +1451,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="1800308196794859773">Envie a sua voz para o Brave Software para permitir a introdução por voz em qualquer campo de texto.</translation>
 <translation id="8758418656925882523">Ativar o ditado (falar para escrever)</translation>
 <translation id="7580671184200851182">Reproduzir o mesmo áudio em todas as colunas (áudio mono)</translation>
+<translation id="8186639008852027301">Reproduzir um indicador áudio ao arrancar</translation>
 <translation id="1189418886587279221">Ativa as funcionalidades de acessibilidade para facilitar a utilização do dispositivo.</translation>
 <translation id="48704129375571883">Adicionar mais funcionalidades</translation>
 <translation id="7230787553283372882">Personalizar o tamanho do texto</translation>
@@ -1538,6 +1549,10 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="5029568752722684782">Limpar cópia</translation>
 <translation id="2154484045852737596">Editar cartão</translation>
 <translation id="5087580092889165836">Adicionar cartão</translation>
+<translation id="7284555534810614828">Guardar cartão para utilizar no Brave Software Pay</translation>
+<translation id="6281511959351052816">Guardar cartões para utilizar no Brave Software Pay</translation>
+<translation id="1904518222538904133">1 dos seus cartões apenas pode ser utilizado neste dispositivo</translation>
+<translation id="8065485338434000013">Alguns dos seus cartões só podem ser utilizados neste dispositivo</translation>
 <translation id="4807098396393229769">Nome no cartão</translation>
 <translation id="2612676031748830579">Número do cartão</translation>
 <translation id="869891660844655955">Data de expiração</translation>
@@ -2185,6 +2200,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3422989461909154470">É possível gerir todas as suas Contas Brave Software com sessão iniciada em aplicações e Websites aqui.</translation>
 <translation id="1987317783729300807">Contas</translation>
 <translation id="8418661265246754237">Contas Brave Software</translation>
+<translation id="3297951628821704004">Remover conta deste dispositivo</translation>
 <translation id="1059855432287631118">Registar a impressão digital</translation>
 <translation id="878068003854005405">Vamos começar. Coloque o dedo no sensor.</translation>
 <translation id="7189965711416741966">Impressão digital adicionada.</translation>
@@ -2243,8 +2259,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="2459230470861708651">Encriptar as palavras-passe sincronizadas com o seu nome de utilizador e palavra-passe Brave Software</translation>
 <translation id="6383051423892982287">Encriptar dados sincronizados com a sua própria <ph name="BEGIN_LINK"/>frase de acesso de sincronização<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Apenas alguém que conheça a sua frase de acesso pode ler os seus dados encriptados. A frase de acesso não é enviada para a Brave Software nem armazenada pela mesma. Se se esquecer da frase de acesso ou pretender alterar esta definição, tem de <ph name="BEGIN_LINK"/>repor a sincronização<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Para alterar esta definição, <ph name="BEGIN_LINK"/>reponha a sincronização<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Para ativar isto, <ph name="BEGIN_LINK"/>reponha a sincronização<ph name="END_LINK"/> para remover a frase de acesso de sincronização.</translation>
 <translation id="988978206646512040">Não é permitida uma frase de acesso vazia</translation>
 <translation id="1651008383952180276">Tem de introduzir a mesma frase de acesso duas vezes</translation>
 <translation id="2136476978468204130">A frase de acesso introduzida está incorreta</translation>
@@ -2402,6 +2416,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="1940546824932169984">Dispositivos associados</translation>
 <translation id="5235565664420173924">Melhores em conjunto</translation>
 <translation id="5375767622559981303">O seu Bravebook funciona ainda melhor com o seu telemóvel. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/>.</translation>
+<translation id="6148052338549899048">Nenhum dispositivo elegível. <ph name="LINK_BEGIN"/>Saiba mais.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">A aguardar a validação. <ph name="LINK_BEGIN"/>Saiba mais.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Não foi possível estabelecer ligação ao telemóvel. <ph name="LINK_BEGIN"/>Saiba mais.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Melhores em conjunto ativado</translation>

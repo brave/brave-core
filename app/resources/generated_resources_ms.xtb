@@ -2259,8 +2259,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2459230470861708651">Sulitkan kata laluan yang disegerakkan dengan nama pengguna dan kata laluan Brave Software anda</translation>
 <translation id="6383051423892982287">Sulitkan data yang disegerakkan dengan <ph name="BEGIN_LINK"/>ungkapan laluan penyegerakan<ph name="END_LINK"/> anda sendiri</translation>
 <translation id="4817583816512767754">Hanya orang yang tahu ungkapan laluan anda boleh membaca data anda yang disulitkan. Ungkapan laluan tidak dihantar atau disimpan oleh Brave Software. Jika anda terlupa ungkapan laluan atau ingin menukar tetapan ini, anda perlu <ph name="BEGIN_LINK"/>menetapkan semula penyegerakan<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Untuk menghidupkan ciri ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<ph name="END_LINK"/> untuk mengalih keluar ungkapan laluan penyegerakan anda</translation>
 <translation id="988978206646512040">Ungkapan laluan yang dikosongkan tidak dibenarkan</translation>
 <translation id="1651008383952180276">Anda mesti memasukkan ungkapan laluan yang sama dua kali</translation>
 <translation id="2136476978468204130">Ungkapan laluan yang anda masukkan tidak betul</translation>
@@ -2418,6 +2416,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="1940546824932169984">Peranti yang disambungkan</translation>
 <translation id="5235565664420173924">Lebih Baik Bersama</translation>
 <translation id="5375767622559981303">Bravebook anda berfungsi lebih baik dengan telefon anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Tiada peranti yang layak. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Menunggu pengesahan. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Tidak dapat menyambung ke telefon. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Lebih Baik Bersama dihidupkan</translation>

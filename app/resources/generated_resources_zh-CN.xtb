@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">已暂停加载网页资源。</translation>
 <translation id="6921709132208495314">停止在此网页上消耗数据流量</translation>
 <translation id="2724841811573117416">WebRTC日志</translation>
+<translation id="1969654639948595766">WebRTC 文本日志 (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC 事件日志 (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC日志记录时间：<ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">本地文件：</translation>
 <translation id="2071393345806050157">没有本地日志文件。</translation>
 <translation id="6628328486509726751">上传时间：<ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">上传失败（<ph name="WEBRTC_LOG_UPLOAD_TIME"/>）。</translation>
 <translation id="5946591249682680882">报告ID：<ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">提交错误</translation>
+<translation id="3650845953328929506">正在等待上传日志。</translation>
+<translation id="1818913467757368489">正在上传日志。</translation>
 <translation id="1188807932851744811">未上传日志。</translation>
+<translation id="4688036121858134881">本地日志 ID：<ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>。</translation>
+<translation id="7497981768003291373">您最近未记录 WebRTC 文本日志。</translation>
+<translation id="3954953195017194676">您最近未记录 WebRTC 事件日志。</translation>
 <translation id="2076269580855484719">隐藏此插件</translation>
 <translation id="2129825002735785149">更新插件</translation>
 <translation id="9088234649737575428">系统已根据企业政策屏蔽 <ph name="PLUGIN_NAME"/></translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">请输入一个有效网址</translation>
 <translation id="2806891468525657116">快捷方式已存在</translation>
 <translation id="394183848452296464">无法创建快捷方式</translation>
+<translation id="329703603001918157">无法修改快捷方式</translation>
+<translation id="6732900235521116609">无法移除快捷方式</translation>
 <translation id="7109543803214225826">已移除快捷方式</translation>
 <translation id="8017679124341497925">已修改快捷方式</translation>
 <translation id="1174073918202301297">快捷方式已添加</translation>
@@ -1440,6 +1450,7 @@
 <translation id="1800308196794859773">将您的语音内容发送给 Brave Software，以便能向任何文本字段输入语音内容。</translation>
 <translation id="8758418656925882523">启用语音输入（说话即可输入）</translation>
 <translation id="7580671184200851182">在所有音响设备上播放相同的音频（单声道音频）</translation>
+<translation id="8186639008852027301">启动时播放指示音频</translation>
 <translation id="1189418886587279221">启用辅助功能，以便更轻松地使用您的设备。</translation>
 <translation id="48704129375571883">添加其他功能</translation>
 <translation id="7230787553283372882">自定义文字大小</translation>
@@ -1537,6 +1548,10 @@
 <translation id="5029568752722684782">清除副本</translation>
 <translation id="2154484045852737596">修改支付卡</translation>
 <translation id="5087580092889165836">添加新卡</translation>
+<translation id="7284555534810614828">保存一张信用卡以便使用 Brave Software Pay</translation>
+<translation id="6281511959351052816">保存多张信用卡以便使用 Brave Software Pay</translation>
+<translation id="1904518222538904133">您有 1 张卡只能在这部设备上使用</translation>
+<translation id="8065485338434000013">您的某些卡只能在这部设备上使用</translation>
 <translation id="4807098396393229769">持卡人姓名</translation>
 <translation id="2612676031748830579">卡号</translation>
 <translation id="869891660844655955">截止日期</translation>
@@ -2184,6 +2199,7 @@
 <translation id="3422989461909154470">您可在此处集中管理您的已通过应用和网站登录的所有 Brave Software 帐号。</translation>
 <translation id="1987317783729300807">帐号</translation>
 <translation id="8418661265246754237">Brave Software 帐号</translation>
+<translation id="3297951628821704004">从此设备上移除帐号</translation>
 <translation id="1059855432287631118">正在注册指纹</translation>
 <translation id="878068003854005405">让我们开始吧。请将您的手指放在传感器上。</translation>
 <translation id="7189965711416741966">已添加指纹。</translation>
@@ -2242,8 +2258,6 @@
 <translation id="2459230470861708651">使用您的 Brave Software 用户名和密码加密已同步的密码</translation>
 <translation id="6383051423892982287">使用您自己的<ph name="BEGIN_LINK"/>同步密码<ph name="END_LINK"/>加密已同步的数据</translation>
 <translation id="4817583816512767754">只有知道您密码的人才能读取您的已加密数据。系统不会将该密码发送给 Brave Software，Brave Software 也不会存储该密码。如果您忘记了密码或想更改此设置，则需<ph name="BEGIN_LINK"/>重置同步<ph name="END_LINK"/>。</translation>
-<translation id="4300305918532693141">要更改此设置，请<ph name="BEGIN_LINK"/>重置同步<ph name="END_LINK"/>。</translation>
-<translation id="3873315167136380065">要启用此功能，请<ph name="BEGIN_LINK"/>重置同步功能<ph name="END_LINK"/>以移除同步密码</translation>
 <translation id="988978206646512040">密码字段不能留空</translation>
 <translation id="1651008383952180276">您两次输入的密码必须相同</translation>
 <translation id="2136476978468204130">您输入的密码不正确</translation>
@@ -2401,6 +2415,7 @@
 <translation id="1940546824932169984">已连接的设备</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">将您的 Bravebook 连接到手机，可获得更好的体验。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/>。</translation>
+<translation id="6148052338549899048">没有任何符合条件的设备。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/>。</translation>
 <translation id="3465800511193611451">正在等待验证。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/>。</translation>
 <translation id="2315821125498993513">无法连接到手机。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/>。</translation>
 <translation id="5598551463564921617">已开启 Better Together 功能</translation>

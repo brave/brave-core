@@ -506,15 +506,19 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3861241522664181545">La pàgina s'ha posat en pausa.</translation>
 <translation id="6921709132208495314">Deixa d'utilitzar dades en aquesta pàgina</translation>
 <translation id="2724841811573117416">Registres de WebRTC</translation>
+<translation id="1969654639948595766">Registres de text de WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Registres d'esdeveniments de WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Data i hora del registre de WebRTC capturat: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Fitxer local:</translation>
 <translation id="2071393345806050157">No hi ha cap fitxer de registre local.</translation>
 <translation id="6628328486509726751">Data i hora de la pujada: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Ha fallat la pujada (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Identificador de l'informe: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Arxiva l'error</translation>
 <translation id="3650845953328929506">Registre de càrrega pendent</translation>
 <translation id="1818913467757368489">S\'ha iniciat la càrrega de registre</translation>
 <translation id="1188807932851744811">El registre no s'ha penjat.</translation>
+<translation id="4688036121858134881">Identificador del registre local: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
 <translation id="7497981768003291373">No teniu registres de text WebRTC capturats recentment.</translation>
 <translation id="3954953195017194676">No teniu registres d\'esdeveniments WebRTC capturats recentment.</translation>
 <translation id="2076269580855484719">Amaga aquest connector</translation>
@@ -2257,8 +2261,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2459230470861708651">Encripta les contrasenyes sincronitzades amb el teu nom d'usuari i la teva contrasenya de Brave Software</translation>
 <translation id="6383051423892982287">Encripta les dades sincronitzades amb la teva <ph name="BEGIN_LINK"/>frase de contrasenya de sincronització<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Només els usuaris que sàpiguen la teva frase de contrasenya poden llegir les dades que encriptis. La frase de contrasenya no s'envia a Brave Software, ni Brave Software l'emmagatzema. Si l'oblides o vols canviar aquesta configuració, hauràs de <ph name="BEGIN_LINK"/>restablir la sincronització<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Per canviar aquesta configuració, <ph name="BEGIN_LINK"/>restableix la sincronització<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Si vols activar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització<ph name="END_LINK"/> per suprimir la frase de contrasenya de sincronització</translation>
 <translation id="988978206646512040">No es permeten les frases de contrasenya buides</translation>
 <translation id="1651008383952180276">Has d'escriure la mateixa frase de contrasenya dues vegades</translation>
 <translation id="2136476978468204130">La frase de contrasenya que has escrit no és correcta</translation>
@@ -2416,6 +2418,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1940546824932169984">Dispositius connectats</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook funciona encara millor amb el telèfon. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">No hi ha cap dispositiu apte. <ph name="LINK_BEGIN"/>Obtén més informació.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">S'està esperant la verificació. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">No s'ha pogut connectar amb el telèfon. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together està activat</translation>

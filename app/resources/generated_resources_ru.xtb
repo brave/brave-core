@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">Загрузка страницы приостановлена</translation>
 <translation id="6921709132208495314">Остановить загрузку страницы</translation>
 <translation id="2724841811573117416">Журналы WebRTC</translation>
+<translation id="1969654639948595766">Текстовые журналы WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Журналы событий WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Время сохранения журнала WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Локальный файл:</translation>
 <translation id="2071393345806050157">Нет локального файла журнала.</translation>
 <translation id="6628328486509726751">Время загрузки: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Ошибка загрузки (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Идентификатор отчета: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Сообщить об ошибке</translation>
+<translation id="3650845953328929506">Журнал в очереди загрузки.</translation>
+<translation id="1818913467757368489">Журнал загружается.</translation>
 <translation id="1188807932851744811">Журнал не загружен.</translation>
+<translation id="4688036121858134881">Локальный идентификатор журнала: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Не обнаружено недавно сохраненных текстовых журналов WebRTC.</translation>
+<translation id="3954953195017194676">Не обнаружено недавно сохраненных журналов событий WebRTC.</translation>
 <translation id="2076269580855484719">Скрыть подключаемый модуль</translation>
 <translation id="2129825002735785149">Обновить плагин</translation>
 <translation id="9088234649737575428">Плагин "<ph name="PLUGIN_NAME"/>" заблокирован в соответствии с корпоративной политикой</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">Введите действительный URL.</translation>
 <translation id="2806891468525657116">Ярлык уже добавлен</translation>
 <translation id="394183848452296464">Не удалось создать ярлык</translation>
+<translation id="329703603001918157">Невозможно изменить ярлык</translation>
+<translation id="6732900235521116609">Невозможно удалить ярлык</translation>
 <translation id="7109543803214225826">Ярлык удален</translation>
 <translation id="8017679124341497925">Ярлык изменен</translation>
 <translation id="1174073918202301297">Ярлык добавлен</translation>
@@ -1440,6 +1450,7 @@
 <translation id="1800308196794859773">Запись вашего голоса отправляется в Brave Software. Это позволяет использовать голосовой набор для любого текстового поля.</translation>
 <translation id="8758418656925882523">Включить голосовой ввод (преобразование речи в текст)</translation>
 <translation id="7580671184200851182">Воспроизводить одно и то же аудио через все динамики (моноаудио)</translation>
+<translation id="8186639008852027301">Воспроизводить сигнал запуска</translation>
 <translation id="1189418886587279221">Включите специальные возможности, чтобы сделать устройство более удобным.</translation>
 <translation id="48704129375571883">Добавить ещё функции</translation>
 <translation id="7230787553283372882">Позволяет настроить размер текста</translation>
@@ -1537,6 +1548,10 @@
 <translation id="5029568752722684782">Удалить данные</translation>
 <translation id="2154484045852737596">Изменение данных карты</translation>
 <translation id="5087580092889165836">Добавить карту</translation>
+<translation id="7284555534810614828">Сохранить карту в Brave Software Pay</translation>
+<translation id="6281511959351052816">Сохранить карты в Brave Software Pay</translation>
+<translation id="1904518222538904133">Одну из ваших карт можно использовать только на этом устройстве</translation>
+<translation id="8065485338434000013">Некоторые из ваших карт можно использовать только на этом устройстве</translation>
 <translation id="4807098396393229769">Имя владельца</translation>
 <translation id="2612676031748830579">Номер карты</translation>
 <translation id="869891660844655955">Срок действия</translation>
@@ -2184,6 +2199,7 @@
 <translation id="3422989461909154470">Здесь можно управлять всеми аккаунтами Brave Software, в которые вы вошли в приложениях и на сайтах.</translation>
 <translation id="1987317783729300807">Аккаунты</translation>
 <translation id="8418661265246754237">Аккаунты Brave Software</translation>
+<translation id="3297951628821704004">Удалить аккаунт с этого устройства</translation>
 <translation id="1059855432287631118">Регистрация отпечатка пальца</translation>
 <translation id="878068003854005405">Положите палец на сканер.</translation>
 <translation id="7189965711416741966">Отпечаток добавлен.</translation>
@@ -2242,8 +2258,6 @@
 <translation id="2459230470861708651">Шифровать синхронизированные пароли с помощью имени пользователя Brave Software и пароля</translation>
 <translation id="6383051423892982287">Шифровать синхронизированные данные с помощью <ph name="BEGIN_LINK"/>кодовой фразы<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Ваши зашифрованные данные может прочитать только тот, кто знает кодовую фразу. Она не пересылается и не хранится в Brave Software. Если вы забудете фразу или решите изменить эту настройку, вам придется <ph name="BEGIN_LINK"/>сбросить параметры синхронизации<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Чтобы изменить эту настройку, <ph name="BEGIN_LINK"/>сбросьте параметры синхронизации<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Чтобы включить эту настройку, <ph name="BEGIN_LINK"/>сбросьте настройки синхронизации<ph name="END_LINK"/> и удалите кодовую фразу.</translation>
 <translation id="988978206646512040">Поле с кодовой фразой не должно быть пустым</translation>
 <translation id="1651008383952180276">Необходимо дважды ввести одну кодовую фразу</translation>
 <translation id="2136476978468204130">Неверная кодовая фраза</translation>
@@ -2401,6 +2415,7 @@
 <translation id="1940546824932169984">Подключенные устройства</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Подключите телефон к устройству Bravebook и получите дополнительные возможности. <ph name="LINK_BEGIN"/>Подробнее…<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Нет подходящих устройств. <ph name="LINK_BEGIN"/>Подробнее…<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Требуется подтверждение. <ph name="LINK_BEGIN"/>Подробнее…<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Не удалось подключиться к телефону. <ph name="LINK_BEGIN"/>Подробнее…<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Режим Better Together включен</translation>

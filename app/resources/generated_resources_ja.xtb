@@ -2258,8 +2258,6 @@
 <translation id="2459230470861708651">Brave Software のユーザー名とパスワードを使用して同期パスワードを暗号化する</translation>
 <translation id="6383051423892982287">同期データを<ph name="BEGIN_LINK"/>同期パスフレーズ<ph name="END_LINK"/>で暗号化する</translation>
 <translation id="4817583816512767754">パスフレーズを知っているユーザーだけが暗号化データを読み取ることができます。パスフレーズが Brave Software に送信されたり Brave Software で保存されたりすることはありません。パスフレーズを忘れた場合や、この設定を変更する場合は、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>する必要があります。</translation>
-<translation id="4300305918532693141">この設定を変更するには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>します。</translation>
-<translation id="3873315167136380065">この設定をオンにするには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>して同期パスフレーズを削除します</translation>
 <translation id="988978206646512040">パスフレーズは必ず指定してください</translation>
 <translation id="1651008383952180276">同じパスフレーズを 2 回入力する必要があります</translation>
 <translation id="2136476978468204130">入力したパスフレーズが正しくありません</translation>
@@ -2417,6 +2415,7 @@
 <translation id="1940546824932169984">接続済みの端末</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook とスマートフォンを連携させると活用の幅が広がります。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">対象となる端末はありません。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">確認を待っています。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">スマートフォンに接続できませんでした。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together がオンになっています</translation>

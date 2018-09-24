@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">പേജ് താൽക്കാലികമായി നിർത്തി.</translation>
 <translation id="6921709132208495314">ഈ പേജിൽ ഡാറ്റ ഉപയോഗിക്കുന്നത് നിർത്തുക</translation>
 <translation id="2724841811573117416">WebRTC ലോഗുകൾ</translation>
+<translation id="1969654639948595766">WebRTC ടെക്‌സ്‌റ്റ് ലോഗുകൾ (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC ഇവന്റ് ലോഗുകൾ (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC ലോഗ് <ph name="WEBRTC_LOG_CAPTURE_TIME"/>-ന് ക്യാപ്‌ചർചെയ്‌തു</translation>
 <translation id="4093955363990068916">പ്രാദേശിക ഫയൽ:</translation>
 <translation id="2071393345806050157">പ്രദേശിക ലോഗ് ഫയലൊന്നുമില്ല.</translation>
 <translation id="6628328486509726751"><ph name="WEBRTC_LOG_UPLOAD_TIME"/> അപ്‌ലോഡുചെ‌യ്തു</translation>
+<translation id="6458701200018867744">(<ph name="WEBRTC_LOG_UPLOAD_TIME"/>)-ലെ അപ്‌ലോഡ് പരാജയപ്പെട്ടു.</translation>
 <translation id="5946591249682680882">റിപ്പോർട്ട് ഐഡി <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">ഫയല്‍ പിശക്</translation>
+<translation id="3650845953328929506">ലോഗ് അപ്‌ലോഡ് ബാക്കിയാണ്.</translation>
+<translation id="1818913467757368489">ലോഗ് അപ്‌ലോഡ് നടന്നുകൊണ്ടിരിക്കുന്നു.</translation>
 <translation id="1188807932851744811">ലോഗ് അപ്‌ലോഡുചെയ്‌തില്ല.</translation>
+<translation id="4688036121858134881">ലോക്കൽ ലോഗ് ഐഡി: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">നിങ്ങൾക്ക് സമീപകാലത്ത് ക്യാപ്‌ച‌ർ ചെയ്‌ത WebRTC ടെക്‌സ്‌റ്റ് ലോഗുകളൊന്നുമില്ല.</translation>
+<translation id="3954953195017194676">നിങ്ങൾക്ക് സമീപകാലത്ത് ക്യാപ്‌ച‌ർചെയ്‌ത WebRTC ഇവന്റ് ലോഗുകളൊന്നുമില്ല.</translation>
 <translation id="2076269580855484719">ഈ പ്ലഗിന്‍ മറയ്ക്കുക</translation>
 <translation id="2129825002735785149">പ്ലഗിൻ അപ്ഡേറ്റുചെയ്യുക</translation>
 <translation id="9088234649737575428">എന്റർപ്രൈസ് നയം <ph name="PLUGIN_NAME"/> എന്നതിനെ ബ്ലോക്കുചെയ്‌തു</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">സാധുതയുള്ള URL ടൈപ്പ് ചെയ്യുക</translation>
 <translation id="2806891468525657116">കുറുക്കുവഴി മുമ്പേ നിലവിലുണ്ട്</translation>
 <translation id="394183848452296464">കുറുക്കുവഴി സൃഷ്‌ടിക്കാനാവില്ല</translation>
+<translation id="329703603001918157">കുറുക്കുവഴി എഡിറ്റ് ചെയ്യാനാകില്ല</translation>
+<translation id="6732900235521116609">കുറുക്കുവഴി നീക്കം ചെയ്യാനാകില്ല</translation>
 <translation id="7109543803214225826">കുറുക്കുവഴി നീക്കം ചെയ്‌തു</translation>
 <translation id="8017679124341497925">കുറുക്കുവഴി എഡിറ്റ് ചെയ്‌തു</translation>
 <translation id="1174073918202301297">കുറുക്കുവഴി ചേർത്തു</translation>
@@ -1440,6 +1450,7 @@
 <translation id="1800308196794859773">ഏതെങ്കിലും ടെക്‌സ്‌റ്റ് ഫീൽഡിലേക്ക് കേട്ടെഴുതുന്നത് അനുവദിക്കാൻ നിങ്ങളുടെ വോയ്‌സ് Brave Software-ലേക്ക് അയയ്‌ക്കുക.</translation>
 <translation id="8758418656925882523">പറഞ്ഞ് കൊടുക്കൽ പ്രവർത്തനക്ഷമമാക്കുക (ടൈപ്പ് ചെയ്യാൻ പറഞ്ഞ് കൊടുക്കുക)</translation>
 <translation id="7580671184200851182">എല്ലാ സ്‌പീക്കറുകളിലൂടെയും സമാനമായ ഓഡിയോ പ്ലേ ചെയ്യുക (മോണോ ഓഡിയോ)</translation>
+<translation id="8186639008852027301">ആരംഭത്തിൽ ഓഡിയോ ഇൻഡിക്കേറ്റർ പ്ലേ ചെയ്യുക</translation>
 <translation id="1189418886587279221">നിങ്ങളുടെ ഉപകരണം ഉപയോഗിക്കുന്നത് എളുപ്പമാക്കുന്നതിന് ഉപയോഗസഹായി സവിശേഷതകൾ പ്രവർത്തനക്ഷമമാക്കുക.</translation>
 <translation id="48704129375571883">കൂടുതൽ ഫീച്ചറുകൾ ചേർക്കുക</translation>
 <translation id="7230787553283372882">നിങ്ങളുടെ ടെക്‌സ്‌‌റ്റ് വലുപ്പം ഇഷ്‌ടാനുസൃതമാക്കുക</translation>
@@ -1537,6 +1548,10 @@
 <translation id="5029568752722684782">പകർപ്പ് മായ്‌ക്കുക</translation>
 <translation id="2154484045852737596">കാർഡ് എഡിറ്റുചെയ്യുക</translation>
 <translation id="5087580092889165836">കാർഡ് ചേർക്കുക</translation>
+<translation id="7284555534810614828">Brave Software Pay ഉപയോഗിക്കാൻ കാർഡ് സംരക്ഷിക്കുക</translation>
+<translation id="6281511959351052816">Brave Software Pay ഉപയോഗിക്കാൻ കാർഡുകൾ സംരക്ഷിക്കുക</translation>
+<translation id="1904518222538904133">നിങ്ങളുടെ കാർഡുകളിൽ 1 മാത്രമേ ഈ ഉപകരണത്തിൽ ഉപയോഗിക്കാനാകൂ</translation>
+<translation id="8065485338434000013">നിങ്ങളുടെ ചില കാർഡുകൾ മാത്രമേ ഈ ഉപകരണത്തിൽ ഉപയോഗിക്കാനാകു</translation>
 <translation id="4807098396393229769">കാര്‍‌ഡിലെ നാമം</translation>
 <translation id="2612676031748830579">കാർഡ് നമ്പർ</translation>
 <translation id="869891660844655955">കാലഹരണപ്പെടല്‍‌ തീയതി</translation>
@@ -2184,6 +2199,7 @@
 <translation id="3422989461909154470">നിങ്ങളുടെ, ആപ്പുകളിൽ നിന്നും വെബ്‌സൈറ്റുകളിൽ നിന്നും സൈൻ ഇൻ ചെയ്തിരിക്കുന്ന എല്ലാ Brave Software അക്കൗണ്ടുകളും ഇവിടെ മാനേജ് ചെയ്യാവുന്നതാണ്.</translation>
 <translation id="1987317783729300807">അക്കൗണ്ടുകൾ‌</translation>
 <translation id="8418661265246754237">Brave Software അക്കൗണ്ടുകൾ</translation>
+<translation id="3297951628821704004">ഈ ഉപകരണത്തിൽ നിന്ന് അക്കൗണ്ട് നീക്കം ചെയ്യുക</translation>
 <translation id="1059855432287631118">ഫിംഗർപ്രിന്റ് രജിസ്‌റ്റർ ചെയ്യുന്നു</translation>
 <translation id="878068003854005405">നമുക്ക് ആരംഭിക്കാം. നിങ്ങളുടെ വിരൽ സെൻസറിൽ വയ്ക്കൂ.</translation>
 <translation id="7189965711416741966">ഫിംഗർപ്രിന്റ് ചേർത്തു.</translation>
@@ -2242,8 +2258,6 @@
 <translation id="2459230470861708651">നിങ്ങളുടെ Brave Software ഉപയോക്തൃനാമവും പാസ്‌വേഡും ഉപയോഗിച്ച് സമന്വയിപ്പിച്ച പാസ്‌വേഡുകൾ എൻക്രിപ്‌റ്റുചെയ്യുക</translation>
 <translation id="6383051423892982287">നിങ്ങളുടെ സ്വന്തം <ph name="BEGIN_LINK"/>പാസ്‌ഫ്രെയ്‌സ് സമന്വയിപ്പിക്കൽ<ph name="END_LINK"/> ഉപയോഗിച്ച് സമന്വയിപ്പിച്ച വിവരങ്ങൾ എൻക്രി‌പ്‌റ്റുചെയ്യുക</translation>
 <translation id="4817583816512767754">നിങ്ങളുടെ പാസ്‌ഫ്രെയ്‌സുള്ള ഒരാൾക്ക് മാത്രമേ എൻക്രിപ്‌റ്റുചെയ്‌ത ഡാറ്റ വായിക്കാനാവൂ. Brave Software-ലേക്ക് പാസ്‌ഫ്രെയ്‌സ് അയയ്‌ക്കുകയോ Brave Software അത് സൂക്ഷിക്കുകയോ ചെയ്യില്ല. പാസ്‌ഫ്രെയ്‌സ് മറന്നുപോയെങ്കിലോ ഈ ക്രമീകരണം മാറ്റണമെങ്കിലോ നിങ്ങൾ <ph name="BEGIN_LINK"/>സമന്വയിപ്പിക്കൽ റീസെറ്റുചെയ്യേണ്ടതുണ്ട്<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">ഈ ക്രമീകരണം മാറ്റാൻ, <ph name="BEGIN_LINK"/>സമന്വയം റീസെറ്റുചെയ്യുക<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">ഇത് ഓണാക്കാൻ, നിങ്ങളുടെ സമന്വയിപ്പിച്ച പാസ്‌ഫ്രെയ്‌സ് നീക്കം ചെയ്യാൻ <ph name="BEGIN_LINK"/>സമന്വയം പുനഃസജ്ജമാക്കുക<ph name="END_LINK"/></translation>
 <translation id="988978206646512040">പാസ്‌ഫ്രെയ്‌സ് പൂരിപ്പിക്കാതിരിക്കാൻ കഴിയില്ല</translation>
 <translation id="1651008383952180276">ഒരേ പാസ്ഫ്രെയ്‌സ് തന്നെ നിങ്ങള്‍ രണ്ടുതവണ നല്‍കേണ്ടതുണ്ട്</translation>
 <translation id="2136476978468204130">നിങ്ങള്‍ നല്‍കിയ പാസ്ഫ്രേസ് തെറ്റാണ്</translation>
@@ -2401,6 +2415,7 @@
 <translation id="1940546824932169984">കണക്‌റ്റുചെയ്ത ഉപകരണം</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">നിങ്ങളുടെ Bravebook നിങ്ങളുടെ ഫോണുമായി ചേർന്ന് കൂടുതൽ മികച്ച രീതിയിൽ പ്രവർത്തിക്കും. <ph name="LINK_BEGIN"/>കൂടുതലറിയുക.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">യോഗ്യമായ ഉപകരണങ്ങൾ ഇല്ല. <ph name="LINK_BEGIN"/>കൂടുതലറിയുക.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">പരിശോധിച്ച് ഉറപ്പിക്കുവാൻ കാത്തിരിക്കുന്നു. <ph name="LINK_BEGIN"/>കൂടുതലറിയുക<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">ഫോണിലേക്ക് കണക്‌റ്റ് ചെയ്യാനായില്ല. <ph name="LINK_BEGIN"/>കൂടുതലറിയുക.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together ഓണാണ്</translation>

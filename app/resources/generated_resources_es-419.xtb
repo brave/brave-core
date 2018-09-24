@@ -505,15 +505,21 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3861241522664181545">Se pausó la página.</translation>
 <translation id="6921709132208495314">Dejar de usar datos en esta página</translation>
 <translation id="2724841811573117416">Registros de WebRTC</translation>
+<translation id="1969654639948595766">Registros de texto de WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Registros de acontecimientos de WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Fecha y hora de captura de registro de WebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Archivo local:</translation>
 <translation id="2071393345806050157">No hay ningún archivo de registro local.</translation>
 <translation id="6628328486509726751">Fecha y hora de carga: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">No se pudo realizar la descarga (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID de informe: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Incluir error</translation>
 <translation id="3650845953328929506">Subida de Bitácora (Log) pendiente.</translation>
 <translation id="1818913467757368489">Subida de registro en camino.</translation>
 <translation id="1188807932851744811">No se cargó el registro.</translation>
+<translation id="4688036121858134881">ID de registro local: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">No capturaste ningún registro de texto de WebRTC recientemente.</translation>
+<translation id="3954953195017194676">No capturaste ningún registro de acontecimientos de WebRTC recientemente.</translation>
 <translation id="2076269580855484719">Ocultar este complemento</translation>
 <translation id="2129825002735785149">Actualizar complemento</translation>
 <translation id="9088234649737575428">La política empresarial bloqueó <ph name="PLUGIN_NAME"/></translation>
@@ -1545,6 +1551,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5087580092889165836">Agregar tarjeta</translation>
 <translation id="7284555534810614828">Grabar la tarjeta para utilizar Brave Pay</translation>
 <translation id="6281511959351052816">Guardar tarjetas para usar en Brave Pay</translation>
+<translation id="1904518222538904133">1 de tus tarjetas solo se puede usar en este dispositivo</translation>
+<translation id="8065485338434000013">Algunas de tus tarjetas solo se pueden usar en este dispositivo</translation>
 <translation id="4807098396393229769">Nombre en la tarjeta</translation>
 <translation id="2612676031748830579">Número de tarjeta</translation>
 <translation id="869891660844655955">Fecha de vencimiento</translation>
@@ -1682,6 +1690,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5317780077021120954">Guardar</translation>
 <translation id="5696679855467848181">Archivo PPD actualmente en uso: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">Ubicación</translation>
 <translation id="7754704193130578113">Pedir ubicación antes de la descarga</translation>
 <translation id="5713072761819014678">Desconectar la cuenta de Brave Software Drive</translation>
 <translation id="486635084936119914">Abre determinados tipos de archivo después de descargarlos</translation>
@@ -2043,7 +2052,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2089795179672254991">Preguntarme cuando un sitio desee ver el texto y las imágenes copiados en el portapapeles (recomendado)</translation>
 <translation id="16815041330799488">No permitir que los sitios vean el texto ni las imágenes copiados en el portapapeles</translation>
 <translation id="3668823961463113931">Controladores</translation>
-<translation id="5646376287012673985">Ubicación</translation>
 <translation id="3227137524299004712">Micrófono</translation>
 <translation id="2482878487686419369">Notificaciones</translation>
 <translation id="9219103736887031265">Imágenes</translation>
@@ -2194,6 +2202,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3422989461909154470">Aquí puedes administrar todas las cuentas de Brave Software con la que hayas accedido en apps y sitios web.</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="8418661265246754237">Cuentas de Brave Software</translation>
+<translation id="3297951628821704004">Quitar cuenta de este dispositivo</translation>
 <translation id="1059855432287631118">Registro de huella digital</translation>
 <translation id="878068003854005405">Comencemos. Coloca tu dedo en el sensor.</translation>
 <translation id="7189965711416741966">Se agregó una huella digital.</translation>
@@ -2252,8 +2261,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2459230470861708651">Encriptar las contraseñas sincronizadas con tu contraseña y nombre de usuario de Brave Software</translation>
 <translation id="6383051423892982287">Encriptar los datos sincronizados con tu propia <ph name="BEGIN_LINK"/>frase de contraseña de sincronización<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Solo las personas que tengan tu frase de contraseña pueden leer los datos encriptados. Brave Software no envía ni almacena la frase de contraseña. Si la olvidas o quieres cambiar esta configuración, deberás <ph name="BEGIN_LINK"/>restablecer la sincronización<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">A fin de activar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/> para quitar la frase de contraseña de sincronización</translation>
 <translation id="988978206646512040">No se permite una frase de contraseña vacía</translation>
 <translation id="1651008383952180276">Debes ingresar la misma frase de contraseña dos veces</translation>
 <translation id="2136476978468204130">La frase de contraseña que ingresaste es incorrecta</translation>
@@ -2411,6 +2418,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1940546824932169984">Dispositivos conectados</translation>
 <translation id="5235565664420173924">Mejor juntos</translation>
 <translation id="5375767622559981303">Tu Bravebook funciona mejor con el teléfono. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">No hay dispositivos compatibles. <ph name="LINK_BEGIN"/>Obtén más información<ph name="LINK_END"/>.</translation>
 <translation id="3465800511193611451">La verificación está pendiente. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">No se pudo establecer conexión con el teléfono. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Se activó "Mejor juntos"</translation>

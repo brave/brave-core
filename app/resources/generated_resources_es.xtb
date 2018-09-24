@@ -505,13 +505,21 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3861241522664181545">Se ha pausado la página.</translation>
 <translation id="6921709132208495314">Detener el consumo de datos en esta página</translation>
 <translation id="2724841811573117416">Registros de WebRTC</translation>
+<translation id="1969654639948595766">Registros de texto de WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Registros de eventos de WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Captura de registro de ReWebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Archivo local:</translation>
 <translation id="2071393345806050157">No hay ningún archivo de registro local.</translation>
 <translation id="6628328486509726751">Fecha y hora de subida: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">No se ha podido subir (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID de informe <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Incluir error</translation>
+<translation id="3650845953328929506">Subida del registro pendiente.</translation>
+<translation id="1818913467757368489">Se está subiendo el registro.</translation>
 <translation id="1188807932851744811">No se ha subido el registro.</translation>
+<translation id="4688036121858134881">ID de registro local: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">No has capturado ningún registro de texto de WebRTC recientemente.</translation>
+<translation id="3954953195017194676">No has capturado ningún registro de eventos de WebRTC recientemente.</translation>
 <translation id="2076269580855484719">Ocultar este complemento</translation>
 <translation id="2129825002735785149">Actualizar complemento</translation>
 <translation id="9088234649737575428">Una política de empresa ha bloqueado el complemento <ph name="PLUGIN_NAME"/></translation>
@@ -556,6 +564,8 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4416582610654027550">Escribe una URL válida</translation>
 <translation id="2806891468525657116">El acceso directo ya existe</translation>
 <translation id="394183848452296464">No se puede crear el acceso directo</translation>
+<translation id="329703603001918157">No se puede editar el acceso directo</translation>
+<translation id="6732900235521116609">No se ha podido retirar el acceso directo</translation>
 <translation id="7109543803214225826">Se ha quitado el acceso directo</translation>
 <translation id="8017679124341497925">Se ha editado el acceso directo</translation>
 <translation id="1174073918202301297">Se ha añadido el acceso directo</translation>
@@ -1440,6 +1450,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1800308196794859773">Envía tu voz a Brave Software para utilizar el dictado en cualquier campo de texto.</translation>
 <translation id="8758418656925882523">Habilitar dictado (hablar para escribir)</translation>
 <translation id="7580671184200851182">Reproducir el mismo audio en todos los altavoces (audio mono)</translation>
+<translation id="8186639008852027301">Reproducir un sonido al iniciar</translation>
 <translation id="1189418886587279221">Permite habilitar las funciones de accesibilidad para facilitar el uso de tu dispositivo.</translation>
 <translation id="48704129375571883">Añadir funciones adicionales</translation>
 <translation id="7230787553283372882">Personalizar el tamaño del texto</translation>
@@ -1537,6 +1548,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5029568752722684782">Borrar copia</translation>
 <translation id="2154484045852737596">Editar tarjeta</translation>
 <translation id="5087580092889165836">Añadir tarjeta</translation>
+<translation id="7284555534810614828">Guardar tarjeta para usar Brave Software Play</translation>
+<translation id="6281511959351052816">Guarda tarjetas para usar Brave Software Play</translation>
+<translation id="1904518222538904133">Una de tus tarjetas solo puede usarse en este dispositivo</translation>
+<translation id="8065485338434000013">Algunas de tus tarjetas solo pueden usarse en este dispositivo</translation>
 <translation id="4807098396393229769">Titular de la tarjeta</translation>
 <translation id="2612676031748830579">Número de la tarjeta</translation>
 <translation id="869891660844655955">Fecha de caducidad</translation>
@@ -2184,6 +2199,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3422989461909154470">En esta página puedes gestionar todas tus cuentas de Brave Software con las que hayas iniciado sesión en sitios web y aplicaciones.</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="8418661265246754237">Cuentas de Brave Software</translation>
+<translation id="3297951628821704004">Retirar cuenta de este dispositivo</translation>
 <translation id="1059855432287631118">Registrando huella digital</translation>
 <translation id="878068003854005405">Empecemos. Coloca el dedo en el sensor.</translation>
 <translation id="7189965711416741966">Huella digital añadida.</translation>
@@ -2242,8 +2258,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2459230470861708651">Cifrar las contraseñas sincronizadas con tu nombre de usuario y contraseña de Brave Software</translation>
 <translation id="6383051423892982287">Cifrar los datos sincronizados con tu propia <ph name="BEGIN_LINK"/>frase de contraseña de sincronización<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Solo alguien que tenga tu frase de contraseña puede leer tus datos cifrados. Brave Software no envía ni almacena la frase de contraseña. Si la olvidas o quieres cambiar estos ajustes, debes <ph name="BEGIN_LINK"/>restablecer la sincronización<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Para cambiar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Para activar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/> para eliminar tu frase de contraseña de sincronización</translation>
 <translation id="988978206646512040">La frase de contraseña no puede estar vacía</translation>
 <translation id="1651008383952180276">Debes introducir la misma frase de contraseña dos veces</translation>
 <translation id="2136476978468204130">La frase de contraseña que has introducido no es correcta</translation>
@@ -2401,6 +2415,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1940546824932169984">Dispositivos conectados</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Tu Bravebook funciona aún mejor con tu teléfono. Consulta <ph name="LINK_BEGIN"/>más información<ph name="LINK_END"/>.</translation>
+<translation id="6148052338549899048">No hay ningún dispositivo apto. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Esperando verificación. Consulta <ph name="LINK_BEGIN"/>más información<ph name="LINK_END"/>.</translation>
 <translation id="2315821125498993513">No se ha podido establecer conexión con el teléfono. Consulta <ph name="LINK_BEGIN"/>más información<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Better Together está activado</translation>

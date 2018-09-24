@@ -2259,8 +2259,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2459230470861708651">Krüpteeri sünkroonitud paroolid minu Brave Software'i kasutajanime ja parooliga</translation>
 <translation id="6383051423892982287">Krüpteeri sünkroonitud andmed <ph name="BEGIN_LINK"/>sünkroonimisparooliga<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Teie krüpteeritud andmeid saavad lugeda vaid need, kes teavad teie parooli – seda ei saadeta Brave Software'ile ja Brave Software ei talleta seda. Kui unustate parooli või soovite seda seadet muuta, tuleb teil <ph name="BEGIN_LINK"/>sünkroonimine lähtestada<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Selle seade muutmiseks tuleb teil <ph name="BEGIN_LINK"/>sünkroonimine lähtestada<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Selle sisselülitamiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_LINK"/>, et eemaldada oma sünkroonimisparool</translation>
 <translation id="988978206646512040">Tühi parool ei ole lubatud</translation>
 <translation id="1651008383952180276">Peate sisestama sama parooli kaks korda</translation>
 <translation id="2136476978468204130">Sisestatud parool on vale</translation>
@@ -2418,6 +2416,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="1940546824932169984">Ühendatud seadmed</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Teie Bravebook töötab koos teie telefoniga veelgi paremini. <ph name="LINK_BEGIN"/>Vaadake lisateavet.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Sobilikke seadmeid ei ole. <ph name="LINK_BEGIN"/>Vaadake lisateavet.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Kinnitamise ootel. <ph name="LINK_BEGIN"/>Vaadake lisateavet.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Telefoniga ei õnnestunud ühendada. <ph name="LINK_BEGIN"/>Vaadake lisateavet.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together on sisse lülitatud</translation>

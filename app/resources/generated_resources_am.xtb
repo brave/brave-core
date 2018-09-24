@@ -2261,8 +2261,6 @@ nil</translation>
 <translation id="2459230470861708651">የሰመሩ ይለፍ ቃላ በእርስዎ የBrave Software ተጠቃሚ ስም እና ይለፍ ቃል ያመስጥሯቸው</translation>
 <translation id="6383051423892982287">የሰመረ ውሂብ በራስዎ <ph name="BEGIN_LINK"/>የስምረት ይለፍ ሐረግ<ph name="END_LINK"/> ያመሣጥሩ</translation>
 <translation id="4817583816512767754">የእርስዎን የይለፍ ሐረግ ያለው ሰው ብቻ ነው የተመሰጠረ ውሂብዎን ማየት የሚችለው። የይለፍ ሐረጉ ለBrave Software አይላክም ወይም በእሱ አይከማችም። የይለፍ ሐረግዎን ከረሱት <ph name="BEGIN_LINK"/>ስምረትን ዳግም ማስጀመር<ph name="END_LINK"/> ይኖርብዎታል።</translation>
-<translation id="4300305918532693141">ይህን ቅንብር ለመለወጥ <ph name="BEGIN_LINK"/>ስምረትን ዳግም ያስጀምሩ<ph name="END_LINK"/></translation>
-<translation id="3873315167136380065">ይህን ለማብራት፣ የእርስዎን የስምረት ግዢ ለማስወገድ <ph name="BEGIN_LINK"/>ስምረትን ዳግም ያቀናብሩ<ph name="END_LINK"/></translation>
 <translation id="988978206646512040">ባዶ የይለፍ ሐረግ አይፈቀድም</translation>
 <translation id="1651008383952180276">ተመሳሳዩ የይለፍ ሐረጉን ሁለት ጊዜ ማስገባት አለብዎት</translation>
 <translation id="2136476978468204130">ያስገቡት የይለፍ ሐረግ ትክክል አይደለም</translation>
@@ -2420,6 +2418,7 @@ nil</translation>
 <translation id="1940546824932169984">የተገናኙ መሣሪያዎች</translation>
 <translation id="5235565664420173924">አብሮ ሲሆን የተሻለ</translation>
 <translation id="5375767622559981303">የእርስዎ Bravebook ከእርስዎ ስልክ ጋር እንዲያውም የተሻለ ይሠራል። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት።<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">ምንም ብቁ የሆኑ መሣሪያዎች የሉም። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት።<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">ማረጋገጫን በመጠበቅ ላይ። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት።<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">ወደ ስልክ ማገናኘት አልተቻለም። <ph name="LINK_BEGIN"/>የበለጠ ለመረዳት።<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">አብሮ ሲሆን የተሻለ በርቷል</translation>
