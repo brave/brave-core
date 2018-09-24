@@ -2258,8 +2258,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2459230470861708651">I-encrypt ang mga naka-sync na password sa iyong username at password sa Brave Software</translation>
 <translation id="6383051423892982287">I-encrypt ang naka-sync na data gamit ang iyong sariling <ph name="BEGIN_LINK"/>passphrase sa pag-sync<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Ang taong may alam ng passphrase mo lang ang makakabasa sa iyong naka-encrypt na data. Hindi ipinapadala sa o iniimbak ng Brave Software ang passphrase. Kung makalimutan mo ang iyong passphrase o gusto mong baguhin ang setting na ito, kakailanganin mong <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Upang baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Para i-on ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/> para alisin ang iyong passphrase sa pag-sync</translation>
 <translation id="988978206646512040">Hindi pinapayagan ang passphrase na walang laman</translation>
 <translation id="1651008383952180276">Dapat mong ilagay ang katulad na passphrase nang dalawang beses</translation>
 <translation id="2136476978468204130">Mali ang inilagay mong passphrase</translation>
@@ -2417,6 +2415,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1940546824932169984">Mga nakakonektang device</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Mas mahusay na gumagana ang iyong Bravebook sa telepono mo. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Walang kwalipikadong device. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Naghihintay ng pag-verify. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Hindi makakonekta sa telepono. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Naka-on ang Better Together</translation>

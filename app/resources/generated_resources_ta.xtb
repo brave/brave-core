@@ -2259,8 +2259,6 @@
 <translation id="2459230470861708651">ஒத்திசைக்கப்பட்ட கடவுச்சொற்களை எனது Brave Software பயனர்பெயர் மற்றும் கடவுச்சொல் மூலம் என்கிரிப்ட் செய்</translation>
 <translation id="6383051423892982287">எனது சொந்த <ph name="BEGIN_LINK"/>ஒத்திசைவுக் கடவுச்சொற்றொடர்<ph name="END_LINK"/> மூலம் ஒத்திசைக்கப்பட்ட தரவை என்கிரிப்ட் செய்</translation>
 <translation id="4817583816512767754">உங்கள் கடவுச்சொற்றொடரை அறிந்தவரால் மட்டுமே என்கிரிப்ட் செய்யப்பட்ட உங்கள் தரவைப் படிக்க முடியும். கடவுச்சொற்றொடரானது Brave Softwareக்கு அனுப்பப்படுவதில்லை அல்லது Brave Software அதைச் சேமிப்பதில்லை. கடவுச்சொற்றொடரை மறந்துவிட்டால் அல்லது இந்த அமைப்பை மாற்ற விரும்பினால், நீங்கள் <ph name="BEGIN_LINK"/>ஒத்திசைவை மீட்டமைக்க வேண்டும்<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">இந்த அமைப்பை மாற்ற,<ph name="BEGIN_LINK"/>ஒத்திசைவை மீட்டமைக்கவும்<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">இதை இயக்குவதற்கு, <ph name="BEGIN_LINK"/>ஒத்திசைவை மீட்டமைத்து<ph name="END_LINK"/> உங்கள் ஒத்திசைவுக் கடவுச்சொற்றொடரை அகற்றவும்.</translation>
 <translation id="988978206646512040">கடவுச்சொற்றொடர் வெறுமையாக இருக்கக்கூடாது</translation>
 <translation id="1651008383952180276">ஒரே கடவுச்சொற்றொடரை இருமுறை உள்ளிட வேண்டும்</translation>
 <translation id="2136476978468204130">உள்ளிட்ட கடவுச்சொற்றொடர் தவறானது</translation>
@@ -2418,6 +2416,7 @@
 <translation id="1940546824932169984">இணைத்துள்ள சாதனங்கள்</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">உங்கள் ஃபோனுடன் இணைக்கும்போது Bravebook இன்னும் சிறப்பாக வேலை செய்யும். <ph name="LINK_BEGIN"/>மேலும் அறிக.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">தகுதியான சாதனங்கள் இல்லை. <ph name="LINK_BEGIN"/>மேலும் அறிக.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">சரிபார்ப்புக்காகக் காத்திருக்கிறது. <ph name="LINK_BEGIN"/>மேலும் அறிக.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">ஃபோனுடன் இணைக்க முடியவில்லை. <ph name="LINK_BEGIN"/>மேலும் அறிக.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together இயக்கப்பட்டுள்ளது</translation>

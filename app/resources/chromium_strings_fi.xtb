@@ -18,6 +18,7 @@
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. Kaikki oikeudet pidätetään.</translation>
 <translation id="2310890394934209120">Brave-käyttöjärjestelmän ovat tehneet mahdolliseksi muut <ph name="BEGIN_LINK_CROS_OSS"/>avoimen lähdekoodin ohjelmistot<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="8160794320557846790">Toinen <ph name="BEGIN_LINK_CROS_OSS"/>avoimen lähdekoodin ohjelmisto<ph name="END_LINK_CROS_OSS"/> tukee Brave-käyttöjärjestelmää, kuten myös <ph name="BEGIN_LINK_LINUX_OSS"/>Linuxia (beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="5019879183386042809">Tee Braveista oletusselain</translation>
 <translation id="5063987220091207247">Brave-käyttöjärjestelmä ei voi avata tätä sivua.</translation>
 <translation id="4065288863231444640">Jätä Brave käyntiin taustalle</translation>

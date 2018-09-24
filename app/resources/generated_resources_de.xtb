@@ -505,13 +505,21 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="3861241522664181545">Seite pausiert.</translation>
 <translation id="6921709132208495314">Datenverbrauch auf dieser Seite stoppen</translation>
 <translation id="2724841811573117416">WebRTC-Protokolle</translation>
+<translation id="1969654639948595766">WebRTC-Textprotokolle (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC-Ereignisprotokolle (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-Protokoll erfasst am <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokale Datei:</translation>
 <translation id="2071393345806050157">Keine lokale Protokolldatei vorhanden</translation>
 <translation id="6628328486509726751">Hochgeladen am <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Upload fehlgeschlagen (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Bericht-ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Fehler melden</translation>
+<translation id="3650845953328929506">Protokoll-Upload steht aus.</translation>
+<translation id="1818913467757368489">Das Protokoll wird hochgeladen.</translation>
 <translation id="1188807932851744811">Protokoll nicht hochgeladen</translation>
+<translation id="4688036121858134881">Lokale Protokoll-ID: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Es sind keine kürzlich erfassten WebRTC-Textprotokolle vorhanden.</translation>
+<translation id="3954953195017194676">Es sind keine kürzlich erfassten WebRTC-Ereignisprotokolle vorhanden.</translation>
 <translation id="2076269580855484719">Dieses Plug-in ausblenden</translation>
 <translation id="2129825002735785149">Plug-in aktualisieren</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> wurde aufgrund von Unternehmensrichtlinien blockiert</translation>
@@ -556,6 +564,8 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="4416582610654027550">Geben Sie eine gültige URL ein</translation>
 <translation id="2806891468525657116">Verknüpfung ist bereits vorhanden</translation>
 <translation id="394183848452296464">Verknüpfung konnte nicht erstellt werden</translation>
+<translation id="329703603001918157">Verknüpfung kann nicht bearbeitet werden</translation>
+<translation id="6732900235521116609">Verknüpfung kann nicht entfernt werden</translation>
 <translation id="7109543803214225826">Verknüpfung entfernt</translation>
 <translation id="8017679124341497925">Verknüpfung bearbeitet</translation>
 <translation id="1174073918202301297">Verknüpfung hinzugefügt</translation>
@@ -1441,6 +1451,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="1800308196794859773">Ihre Spracheingaben werden an Brave Software gesendet, damit sie in das entsprechende Textfeld eingetragen werden können.</translation>
 <translation id="8758418656925882523">Diktierfunktion aktivieren (zum Tippen sprechen)</translation>
 <translation id="7580671184200851182">Dieselben Audioinhalte über alle Lautsprecher wiedergeben (Mono-Audio)</translation>
+<translation id="8186639008852027301">Ton beim Start abspielen</translation>
 <translation id="1189418886587279221">Aktivieren Sie die Bedienungshilfe-Funktionen, damit Ihr Gerät leichter zu verwenden ist.</translation>
 <translation id="48704129375571883">Zusätzliche Funktionen hinzufügen</translation>
 <translation id="7230787553283372882">Textgröße anpassen</translation>
@@ -1538,6 +1549,10 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5029568752722684782">Kopie löschen</translation>
 <translation id="2154484045852737596">Karte bearbeiten</translation>
 <translation id="5087580092889165836">Karte hinzufügen</translation>
+<translation id="7284555534810614828">Karte speichern, um Brave Software Pay zu nutzen</translation>
+<translation id="6281511959351052816">Karten speichern, um Brave Software Pay zu nutzen</translation>
+<translation id="1904518222538904133">Eine Ihrer Karten kann nur auf diesem Gerät verwendet werden</translation>
+<translation id="8065485338434000013">Einige Ihrer Karten können nur auf diesem Gerät verwendet werden</translation>
 <translation id="4807098396393229769">Name auf Karte</translation>
 <translation id="2612676031748830579">Kartennummer</translation>
 <translation id="869891660844655955">Ablaufdatum</translation>
@@ -2185,6 +2200,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3422989461909154470">Hier können alle Ihre angemeldeten Brave Software-Konten von Apps und Websites verwaltet werden.</translation>
 <translation id="1987317783729300807">Konten</translation>
 <translation id="8418661265246754237">Brave Software Konten</translation>
+<translation id="3297951628821704004">Konto von diesem Gerät entfernen</translation>
 <translation id="1059855432287631118">Registrieren des Fingerabdrucks</translation>
 <translation id="878068003854005405">Fangen wir an. Legen Sie Ihren Finger auf den Sensor.</translation>
 <translation id="7189965711416741966">Fingerabdruck hinzugefügt.</translation>
@@ -2243,8 +2259,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="2459230470861708651">Synchronisierte Passwörter mit meinem Brave Software-Nutzernamen und meinem Passwort verschlüsseln</translation>
 <translation id="6383051423892982287">Alle synchronisierten Daten werden mit meiner eigenen <ph name="BEGIN_LINK"/>Synchronisierungspassphrase<ph name="END_LINK"/> verschlüsselt</translation>
 <translation id="4817583816512767754">Nur Personen mit Ihrer Passphrase können Ihre verschlüsselten Daten lesen. Die Passphrase wird nicht an Brave Software gesendet oder von Brave Software gespeichert. Falls Sie sie vergessen oder diese Einstellung ändern möchten, müssen Sie die <ph name="BEGIN_LINK"/>Synchronisierung zurücksetzen<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie die Synchronisierung zurück<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Wenn Sie diese Funktion aktivieren möchten, müssen Sie die <ph name="BEGIN_LINK"/>Synchronisierung zurücksetzen<ph name="END_LINK"/>, um die Synchronisierungspassphrase zu entfernen</translation>
 <translation id="988978206646512040">Eine leere Passphrase ist nicht zulässig</translation>
 <translation id="1651008383952180276">Sie müssen zweimal dieselbe Passphrase eingeben</translation>
 <translation id="2136476978468204130">Sie haben eine ungültige Passphrase eingegeben</translation>
@@ -2402,6 +2416,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="1940546824932169984">Verbundene Geräte</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Ihr Bravebook wird noch besser, wenn Sie Ihr Smartphone damit verbinden. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Keine geeigneten Geräte vorhanden. <ph name="LINK_BEGIN"/>Weitere Informationen.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Bestätigung steht aus. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Keine Verbindung zum Smartphone möglich. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together ist an</translation>

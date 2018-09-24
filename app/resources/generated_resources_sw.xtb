@@ -2258,8 +2258,6 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="2459230470861708651">Simba kwa njia fiche manenosiri yaliyosawazishwa kwa jina la mtumiaji na nenosiri lako la Brave Software</translation>
 <translation id="6383051423892982287">Simba data iliyosawazishwa kwa njia fiche ukitumia <ph name="BEGIN_LINK"/>kauli yako ya siri ya usawazishaji<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Ni mtu mwenye kauli yako ya siri tu anaweza kusoma data yako iliyosimbwa kwa njia fiche. Kauli ya siri haitumwi au kuhifadhiwa na Brave Software. Ukisahau kauli yako ya siri, au unataka kubadilisha mipangilio hii, utahitaji <ph name="BEGIN_LINK"/>kuweka upya usawazishaji<ph name="END_LINK"/></translation>
-<translation id="4300305918532693141">Ili kubadilisha mipangilio hii, <ph name="BEGIN_LINK"/>weka upya usawazishaji<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Ili kuwasha kipengele hiki, <ph name="BEGIN_LINK"/>weka upya kipengele cha usawazishaji<ph name="END_LINK"/> ili kuondoa kauli yako ya siri ya usawazishaji</translation>
 <translation id="988978206646512040">Kauli ya siri tupu hairuhusiwi</translation>
 <translation id="1651008383952180276">Lazima uweke kauli ya siri sawa mara mbili</translation>
 <translation id="2136476978468204130">Kauli ya siri uliyoweka si sahihi</translation>
@@ -2417,6 +2415,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1940546824932169984">Vifaa vilivyounganishwa</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook yako inafanya kazi vizuri zaidi kupitia simu. <ph name="LINK_BEGIN"/>Pata maelezo zaidi.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Hakuna vifaa vinavyostahiki. <ph name="LINK_BEGIN"/>Pata maelezo zaidi.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Inasubiri uthibitishaji. <ph name="LINK_BEGIN"/>Pata maelezo zaidi.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Imeshindwa kuunganisha kwenye simu. <ph name="LINK_BEGIN"/>Pata maelezo zaidi.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Umewasha Better Together</translation>

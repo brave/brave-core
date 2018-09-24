@@ -2257,8 +2257,6 @@
 <translation id="2459230470861708651">‏رمزگذاری گذرواژه‌های همگام‌سازی‌شده با گذرواژه و نام کاربری Brave Software شما</translation>
 <translation id="6383051423892982287">رمزگذاری داده‌های همگام‌سازی‌شده با <ph name="BEGIN_LINK"/>عبارت عبور همگام‌سازی<ph name="END_LINK"/> خودتان</translation>
 <translation id="4817583816512767754">‏فقط فردی که عبارت عبور شما را دارد می‌تواند اطلاعات رمزگذاری‌شده‌تان را بخواند. این عبارت عبور به Brave Software ارسال یا در سرورهای آن ذخیره نمی‌شود. اگر عبارت عبورتان را فراموش کنید، باید همگام‌سازی را بازنشانی کنید. <ph name="BEGIN_LINK"/>بازنشانی همگام‌سازی<ph name="END_LINK"/></translation>
-<translation id="4300305918532693141">برای تغییر این تنظیم، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">برای روشن کردن این گزینه، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/> تا عبارت عبور همگام‌سازی حذف شود</translation>
 <translation id="988978206646512040">عبارت عبور خالی مجاز نیست</translation>
 <translation id="1651008383952180276">باید همان عبارت عبور را دو بار وارد کنید</translation>
 <translation id="2136476978468204130">عبارت عبوری که وارد کردید نادرست است</translation>
@@ -2416,6 +2414,7 @@
 <translation id="1940546824932169984">دستگاه‌های متصل</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">‏Bravebook با تلفنتان به‌مراتب بهتر کار می‌کند. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">دستگاه واجد شرایطی وجود ندارد. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">در انتظار تأیید. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">ارتباط با تلفن برقرار نشد. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">‏Better Together روشن است</translation>

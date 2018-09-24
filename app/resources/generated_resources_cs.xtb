@@ -504,13 +504,21 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3861241522664181545">Stránka je pozastavená.</translation>
 <translation id="6921709132208495314">Přestat na této stránce využívat data</translation>
 <translation id="2724841811573117416">Protokoly WebRTC</translation>
+<translation id="1969654639948595766">Textové protokoly WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Protokoly událostí WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Protokol WebRTC zaznamenaný <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Místní soubor:</translation>
 <translation id="2071393345806050157">Žádný místní soubor protokolu není k dispozici.</translation>
 <translation id="6628328486509726751">Nahráno <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Nahrávání se nezdařilo (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID hlášení <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Oznámit chybu</translation>
+<translation id="3650845953328929506">Čeká se na nahrání protokolu.</translation>
+<translation id="1818913467757368489">Probíhá nahrávání protokolu.</translation>
 <translation id="1188807932851744811">Protokol nebyl nahrán.</translation>
+<translation id="4688036121858134881">Místní ID protokolu: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Nemáte žádné nedávno zaznamenané textové protokoly WebRTC.</translation>
+<translation id="3954953195017194676">Nemáte žádné nedávno zaznamenané protokoly událostí WebRTC.</translation>
 <translation id="2076269580855484719">Skrýt tento plugin</translation>
 <translation id="2129825002735785149">Aktualizovat plugin</translation>
 <translation id="9088234649737575428">Plugin <ph name="PLUGIN_NAME"/> je blokován podnikovými zásadami</translation>
@@ -555,6 +563,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4416582610654027550">Zadejte platnou adresu URL</translation>
 <translation id="2806891468525657116">Zkratka už existuje</translation>
 <translation id="394183848452296464">Zkratku nelze vytvořit</translation>
+<translation id="329703603001918157">Zkratku nelze upravit</translation>
+<translation id="6732900235521116609">Zkratku nelze odstranit</translation>
 <translation id="7109543803214225826">Zkratka byla odebrána</translation>
 <translation id="8017679124341497925">Zkratka byla upravena</translation>
 <translation id="1174073918202301297">Zkratka byla přidána</translation>
@@ -1439,6 +1449,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1800308196794859773">Odesílat hlasové údaje do Googlu, aby bylo možné diktovat do libovolného textového pole.</translation>
 <translation id="8758418656925882523">Povolit diktování (hlasové zadávání textu)</translation>
 <translation id="7580671184200851182">Přehrávat ve všech reproduktorech stejný zvuk (mono)</translation>
+<translation id="8186639008852027301">Při spuštění se přehraje zvukový signál</translation>
 <translation id="1189418886587279221">Aktivuje funkce usnadnění přístupu pro snazší používání zařízení.</translation>
 <translation id="48704129375571883">Přidat další funkce</translation>
 <translation id="7230787553283372882">Přizpůsobení velikosti textu</translation>
@@ -1536,6 +1547,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5029568752722684782">Vymazat kopii</translation>
 <translation id="2154484045852737596">Úprava karty</translation>
 <translation id="5087580092889165836">Přidat kartu</translation>
+<translation id="7284555534810614828">Uložit kartu k použití ve službě Brave Software Pay</translation>
+<translation id="6281511959351052816">Uložit karty k použití ve službě Brave Software Pay</translation>
+<translation id="1904518222538904133">V tomto zařízení lze použít jen jednu z vašich karet</translation>
+<translation id="8065485338434000013">V tomto zařízení lze použít jen některé z vašich karet</translation>
 <translation id="4807098396393229769">Jméno na kartě</translation>
 <translation id="2612676031748830579">Číslo karty</translation>
 <translation id="869891660844655955">Datum vypršení platnosti</translation>
@@ -2183,6 +2198,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3422989461909154470">Zde lze spravovat všechny vaše přihlášené účty z aplikací a webů.</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="8418661265246754237">Účty Brave Software</translation>
+<translation id="3297951628821704004">Odstranit účet z tohoto zařízení</translation>
 <translation id="1059855432287631118">Registrace otisku prstu</translation>
 <translation id="878068003854005405">Začněte tím, že umístíte prst na snímač.</translation>
 <translation id="7189965711416741966">Otisk byl přidán.</translation>
@@ -2241,8 +2257,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2459230470861708651">Šifrovat synchronizovaná hesla pomocí vašeho uživatelského jména a hesla</translation>
 <translation id="6383051423892982287">Šifrovat synchronizovaná data pomocí vlastní <ph name="BEGIN_LINK"/>heslové fráze pro synchronizaci<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslovou frázi. Heslová fráze se neodesílá do Googlu a není na Googlu uložena. Pokud heslovou frázi zapomenete nebo toto nastavení budete chtít změnit, budete muset <ph name="BEGIN_LINK"/>synchronizaci resetovat<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Chcete-li toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Chcete-li tuto funkci zapnout, <ph name="BEGIN_LINK"/>resetováním synchronizace<ph name="END_LINK"/> odstraňte svou heslovou frázi pro synchronizaci</translation>
 <translation id="988978206646512040">Prázdné přístupové heslo není povoleno</translation>
 <translation id="1651008383952180276">Musíte zadat dvakrát stejnou heslovou frázi</translation>
 <translation id="2136476978468204130">Zadaná heslová fráze není správná</translation>
@@ -2400,6 +2414,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1940546824932169984">Připojená zařízení</translation>
 <translation id="5235565664420173924">Společně ještě lepší</translation>
 <translation id="5375767622559981303">S telefonem funguje Bravebook ještě lépe. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Žádná způsobilá zařízení. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Čeká na ověření. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">K telefonu se nelze připojit. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Funkce Společně ještě lepší je zapnutá</translation>

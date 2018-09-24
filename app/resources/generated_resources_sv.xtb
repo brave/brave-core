@@ -505,13 +505,21 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3861241522664181545">Sidan har pausats.</translation>
 <translation id="6921709132208495314">Sluta använda data på den här sidan</translation>
 <translation id="2724841811573117416">WebRTC-loggar</translation>
+<translation id="1969654639948595766">WebRTC-textloggar (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC-händelseloggar (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-logg registrerades <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokal fil:</translation>
 <translation id="2071393345806050157">Det finns ingen lokal loggfil.</translation>
 <translation id="6628328486509726751">Uppladdat <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Uppladdningen misslyckades (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Rapport-id <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Rapportera fel</translation>
+<translation id="3650845953328929506">Uppladdning av loggfil väntar.</translation>
+<translation id="1818913467757368489">Uppladdning av loggfil pågår.</translation>
 <translation id="1188807932851744811">Loggen har inte laddats upp.</translation>
+<translation id="4688036121858134881">Lokalt logg-id: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Du har inga nyligen registrerade WebRTC-textloggar.</translation>
+<translation id="3954953195017194676">Du har inga nyligen registrerade WebRTC-händelseloggar.</translation>
 <translation id="2076269580855484719">Dölj det här plugin-programmet</translation>
 <translation id="2129825002735785149">Uppdatera pluginprogrammet</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> har blockerats av en företagspolicy</translation>
@@ -556,6 +564,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4416582610654027550">Ange en giltig webbadress</translation>
 <translation id="2806891468525657116">Genvägen finns redan</translation>
 <translation id="394183848452296464">Det gick inte att skapa genvägen</translation>
+<translation id="329703603001918157">Det gick inte att redigera genvägen</translation>
+<translation id="6732900235521116609">Det gick inte att ta bort genvägen</translation>
 <translation id="7109543803214225826">Genvägen har tagits bort</translation>
 <translation id="8017679124341497925">Genvägen har ändrats</translation>
 <translation id="1174073918202301297">Genvägen har lagts till</translation>
@@ -1440,6 +1450,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1800308196794859773">Skicka det du säger till Brave Software så att du kan tala in text i vilket textfält som helst.</translation>
 <translation id="8758418656925882523">Aktivera diktering (skriv genom att tala)</translation>
 <translation id="7580671184200851182">Spela samma ljud i alla högtalare (monoljud)</translation>
+<translation id="8186639008852027301">Spela upp en ljudsignal vid start</translation>
 <translation id="1189418886587279221">Aktivera tillgänglighetsfunktioner så att enheten blir lättare att använda.</translation>
 <translation id="48704129375571883">Lägg till ytterligare funktioner</translation>
 <translation id="7230787553283372882">Anpassa textstorleken</translation>
@@ -1537,6 +1548,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5029568752722684782">Ta bort kopia</translation>
 <translation id="2154484045852737596">Redigera kortet</translation>
 <translation id="5087580092889165836">Lägg till kort</translation>
+<translation id="7284555534810614828">Spara kortet för Brave Software Pay</translation>
+<translation id="6281511959351052816">Spara korten för Brave Software Pay</translation>
+<translation id="1904518222538904133">Ett av korten kan bara användas på den här enheten</translation>
+<translation id="8065485338434000013">Några av korten kan bara användas på den här enheten</translation>
 <translation id="4807098396393229769">Namn på kort</translation>
 <translation id="2612676031748830579">Kortnummer</translation>
 <translation id="869891660844655955">Utgångsdatum</translation>
@@ -2184,6 +2199,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3422989461909154470">Alla inloggade Brave Software-konton från appar och webbplatser kan hanteras här.</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="8418661265246754237">Brave Software Konton</translation>
+<translation id="3297951628821704004">Ta bort kontot från enheten</translation>
 <translation id="1059855432287631118">Registrera fingeravtryck</translation>
 <translation id="878068003854005405">Nu sätter vi igång. Placera fingret på sensorn.</translation>
 <translation id="7189965711416741966">Fingeravtrycket har lagts till.</translation>
@@ -2242,8 +2258,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2459230470861708651">Kryptera synkroniserade lösenord med ditt användarnamn och lösenord på Brave Software</translation>
 <translation id="6383051423892982287">Kryptera synkroniserad data med en egen <ph name="BEGIN_LINK"/>lösenfras för synkronisering<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Endast personer som har ditt lösenord kan läsa dina krypterade uppgifter. Lösenordet skickas inte till och sparas inte av Brave Software. Om du glömmer lösenordet måste du <ph name="BEGIN_LINK"/>återställa synkroniseringen<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> om du vill ändra den här inställningen</translation>
-<translation id="3873315167136380065"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> så att lösenfrasen för synkronisering tas bort om du vill aktivera detta</translation>
 <translation id="988978206646512040">Lösenfrasen får inte vara tom</translation>
 <translation id="1651008383952180276">Du måste ange samma lösenfras två gånger</translation>
 <translation id="2136476978468204130">Den angivna lösenfrasen är felaktig</translation>
@@ -2401,6 +2415,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1940546824932169984">Anslutna enheter</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Chomebook fungerar ännu bättre ihop med mobilen. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Du har ingen enhet som uppfyller villkoren. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Väntar på verifiering. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Det gick inte att ansluta till mobilen. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together har aktiverats</translation>

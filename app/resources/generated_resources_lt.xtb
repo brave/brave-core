@@ -2259,8 +2259,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2459230470861708651">Šifruokite sinchronizuotus slaptažodžius naudodami savo „Brave Software“ naudotojo vardą ir slaptažodį</translation>
 <translation id="6383051423892982287">Šifruokite sinchronizuojamus duomenis taikydami savo <ph name="BEGIN_LINK"/>sinchronizavimo slaptafrazę<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Tik jūsų slaptafrazę žinantis asmuo gali skaityti šifruotus duomenis. Slaptafrazė nesiunčiama į sistemą „Brave Software“ ir joje nesaugoma. Pamiršę slaptafrazę arba norėdami pakeisti šį nustatymą turėsite <ph name="BEGIN_LINK"/>iš naujo nustatyti sinchronizavimą<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Kad pakeistumėte šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykite sinchronizavimą<ph name="END_LINK"/>.</translation>
-<translation id="3873315167136380065">Norėdami tai įjungti <ph name="BEGIN_LINK"/>nustatykite sinchronizavimą iš naujo<ph name="END_LINK"/>, kad pašalintumėte sinchronizavimo slaptafrazę</translation>
 <translation id="988978206646512040">Neleidžiama naudoti tuščio slaptafrazės lauko</translation>
 <translation id="1651008383952180276">Reikia dukart įvesti tą pačią slaptafrazę</translation>
 <translation id="2136476978468204130">Įvesta slaptafrazė netinka</translation>
@@ -2418,6 +2416,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="1940546824932169984">Prijungti įrenginiai</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">„Bravebook“ veikia dar geriau susiejus su telefonu. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Nėra tinkamų įrenginių. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Laukiama patvirtinimo. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Nepavyko prisijungti prie telefono. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">„Better Together“ įjungta</translation>
