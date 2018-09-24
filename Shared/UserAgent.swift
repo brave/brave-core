@@ -67,17 +67,13 @@ open class UserAgent {
         let userAgent = webView.stringByEvaluatingJavaScript(from: "navigator.userAgent")!
 
         // Extract the WebKit version and use it as the Safari version.
-        let webKitVersionRegex = try! NSRegularExpression(pattern: "AppleWebKit/([^ ]+) ", options: [])
-
-        let match = webKitVersionRegex.firstMatch(in: userAgent, options: [],
-            range: NSRange(location: 0, length: userAgent.count))
-
-        if match == nil {
+        let webKitVersionRegex = try? NSRegularExpression(pattern: "AppleWebKit/([^ ]+) ", options: [])
+        guard let match = webKitVersionRegex?.firstMatch(in: userAgent, options: [], range: NSRange(location: 0, length: userAgent.count)) else {
             print("Error: Unable to determine WebKit version in UA.")
             return userAgent     // Fall back to Safari's.
         }
 
-        let webKitVersion = (userAgent as NSString).substring(with: match!.range(at: 1))
+        let webKitVersion = (userAgent as NSString).substring(with: match.range(at: 1))
 
         // Insert "FxiOS/<version>" before the Mobile/ section.
         let mobileRange = (userAgent as NSString).range(of: "Mobile/")
@@ -100,17 +96,16 @@ open class UserAgent {
         let userAgent = NSMutableString(string: defaultUserAgent())
 
         // Spoof platform section
-        let platformRegex = try! NSRegularExpression(pattern: "\\([^\\)]+\\)", options: [])
-        guard let platformMatch = platformRegex.firstMatch(in: userAgent as String, options: [], range: NSRange(location: 0, length: userAgent.length)) else {
+        let platformRegex = try? NSRegularExpression(pattern: "\\([^\\)]+\\)", options: [])
+        guard let platformMatch = platformRegex?.firstMatch(in: userAgent as String, options: [], range: NSRange(location: 0, length: userAgent.length)) else {
             print("Error: Unable to determine platform in UA.")
             return String(userAgent)
         }
         userAgent.replaceCharacters(in: platformMatch.range, with: "(Macintosh; Intel Mac OS X 10_11_1)")
 
         // Strip mobile section
-        let mobileRegex = try! NSRegularExpression(pattern: " FxiOS/[^ ]+ Mobile/[^ ]+", options: [])
-        
-        guard let mobileMatch = mobileRegex.firstMatch(in: userAgent as String, options: [], range: NSRange(location: 0, length: userAgent.length)) else {
+        let mobileRegex = try? NSRegularExpression(pattern: " FxiOS/[^ ]+ Mobile/[^ ]+", options: [])
+        guard let mobileMatch = mobileRegex?.firstMatch(in: userAgent as String, options: [], range: NSRange(location: 0, length: userAgent.length)) else {
             print("Error: Unable to find Mobile section in UA.")
             return String(userAgent)
         }

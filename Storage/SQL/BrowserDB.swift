@@ -21,6 +21,8 @@ open class BrowserDB {
     public init(filename: String, secretKey: String? = nil, schema: Schema, files: FileAccessor) {
         log.debug("Initializing BrowserDB: \(filename).")
 
+        // Probably will be removed with Storage framework
+        // swiftlint:disable:next force_try
         let file = URL(fileURLWithPath: (try! files.getAndEnsureDirectory())).appendingPathComponent(filename).path
 
         if AppConstants.BuildChannel == .developer && secretKey != nil {

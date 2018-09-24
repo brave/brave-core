@@ -266,24 +266,32 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
 
     // Default favicons and background colors provided via mozilla/tippy-top-sites
     class func getDefaultIcons() -> [String: (color: UIColor, url: String)] {
-        let filePath = Bundle.main.path(forResource: "top_sites", ofType: "json")
-        let file = try! Data(contentsOf: URL(fileURLWithPath: filePath!))
-        let json = JSON(file)
-        var icons: [String: (color: UIColor, url: String)] = [:]
-        json.forEach({
-            guard let url = $0.1["domain"].string, let color = $0.1["background_color"].string, var path = $0.1["image_url"].string else {
-                return
-            }
-            path = path.replacingOccurrences(of: ".png", with: "")
-            let filePath = Bundle.main.path(forResource: "TopSites/" + path, ofType: "png")
-            if let filePath = filePath {
-                if color == "#fff" || color == "#FFF" {
-                    icons[url] = (UIColor.clear, filePath)
-                } else {
-                    icons[url] = (UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath)
+        guard let filePath = Bundle.main.path(forResource: "top_sites", ofType: "json") else {
+            log.error("Failed to get bundle path for \"top_sites.json\"")
+            return [:]
+        }
+        do {
+            let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
+            let json = JSON(file)
+            var icons: [String: (color: UIColor, url: String)] = [:]
+            json.forEach({
+                guard let url = $0.1["domain"].string, let color = $0.1["background_color"].string, var path = $0.1["image_url"].string else {
+                    return
                 }
-            }
-        })
-        return icons
+                path = path.replacingOccurrences(of: ".png", with: "")
+                let filePath = Bundle.main.path(forResource: "TopSites/" + path, ofType: "png")
+                if let filePath = filePath {
+                    if color == "#fff" || color == "#FFF" {
+                        icons[url] = (UIColor.clear, filePath)
+                    } else {
+                        icons[url] = (UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath)
+                    }
+                }
+            })
+            return icons
+        } catch {
+            log.error("Failed to get default icons at \(filePath): \(error.localizedDescription)")
+            return [:]
+        }
     }
 }
