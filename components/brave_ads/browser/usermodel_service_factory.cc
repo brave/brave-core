@@ -49,22 +49,22 @@ UsermodelServiceFactory* UsermodelServiceFactory::GetInstance() {
 }
 
 UsermodelServiceFactory::UsermodelServiceFactory()
-    : BrowserContextKeyedServiceFactory(
-          "UsermodelService",
-          BrowserContextDependencyManager::GetInstance()) {
+  : BrowserContextKeyedServiceFactory(
+        "UsermodelService",
+        BrowserContextDependencyManager::GetInstance()) {
 }
 
 UsermodelServiceFactory::~UsermodelServiceFactory() {
 }
 
 KeyedService* UsermodelServiceFactory::BuildServiceInstanceFor(
-    content::BrowserContext* context) const {
+  content::BrowserContext* context) const {
 
-    std::unique_ptr<UsermodelService> usermodel_service(
-      new UsermodelService(Profile::FromBrowserContext(context))
-    );
+  std::unique_ptr<UsermodelService> usermodel_service(
+    new UsermodelService(Profile::FromBrowserContext(context))
+  );
 
-    return usermodel_service.release();
+  return usermodel_service.release();
 }
 
 content::BrowserContext* UsermodelServiceFactory::GetBrowserContextToUse(

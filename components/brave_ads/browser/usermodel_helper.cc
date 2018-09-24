@@ -8,6 +8,7 @@
 
 #include "user_profile.h"
 
+#include "content/public/common/isolated_world_ids.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -55,41 +56,34 @@ void brave_ads::UserModelHelper::TitleWasSet(content::NavigationEntry* entry) {
   LOG(INFO) << "Title: " << entry->GetTitle();
 }
 
-void brave_ads::UserModelHelper::Classify(const std::string& html, const std::string& url) {
-  LOG(INFO) << "Start classification";
-  auto scores = usermodel_service_->usermodel_.classifyPage(html);
-
-  // update profiles
-  std::string profile_json;
-  usermodel_service_->usermodel_state_->Get("user_profile", &profile_json);
-  auto profile = usermodel::UserProfile::FromJSON(profile_json);
-  profile->Update(scores, url);
-
-  auto predicted = usermodel_service_->usermodel_.winningCategory(scores);
-  LOG(INFO) << "Predicted class: "  << predicted;
+void brave_ads::UserModelHelper::OnWebContentsFocused(content::RenderWidgetHost* render_widget_host) {
+  usermodel_service_->OnTabFocused(tab_id_);
 }
 
-void brave_ads::UserModelHelper::OnDataReceived(const std::string& url, const base::Value* val) {
-  std::string html;
-  val->GetAsString(&html);
-  base::PostTask(FROM_HERE, 
-                 base::BindOnce(&brave_ads::UserModelHelper::Classify, 
-                 base::Unretained(this), 
-                 html,
-                 url));
-}
+void  brave_ads::UserModelHelper::DocumentOnLoadCompletedInMainFrame() {
+  usermodel_service_->OnPageVisited(
+    tab_id_, 
+    web_contents()->GetMainFrame(), 
+    web_contents()->GetVisibleURL().spec());
+};
 
-void brave_ads::UserModelHelper::ClassifyPage(content::RenderFrameHost* render_frame_host, const std::string& url) {
-  LOG(INFO) << "Fetching the html";
-  std::string js("document.getElementsByTagName('html')[0].innerHTML");
-  render_frame_host->ExecuteJavaScript(
-    base::UTF8ToUTF16(js), 
-    base::Bind(&brave_ads::UserModelHelper::OnDataReceived, base::Unretained(this), url)
-  );
-}
+void brave_ads::UserModelHelper::OnAudioStateChanged(bool audible) {
+  if (audible) {
+    usermodel_service_->do_not_disturb_reasons_++;
+  } else {
+    if (usermodel_service_->do_not_disturb_reasons_ > 0) {
+      usermodel_service_->do_not_disturb_reasons_--;
+    }
+  }
+};
 
-void brave_ads::UserModelHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                       const GURL& validated_url) {
-    this->ClassifyPage(render_frame_host, validated_url.spec());
-    LOG(INFO) << "Usermodel: " << validated_url.spec();
-}
+void brave_ads::UserModelHelper::DidToggleFullscreenModeForTab(bool entered_fullscreen,
+                                  bool will_cause_resize) {
+  if (entered_fullscreen) {
+    usermodel_service_->do_not_disturb_reasons_++;
+  } else {
+    if (usermodel_service_->do_not_disturb_reasons_ > 0) {
+      usermodel_service_->do_not_disturb_reasons_--;
+    }
+  }
+};

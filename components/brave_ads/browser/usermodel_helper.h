@@ -27,15 +27,14 @@ class UserModelHelper : public content::WebContentsObserver,
  public:
     UserModelHelper(content::WebContents*);
     ~UserModelHelper() override;
-    // content::WebContentsObserver
+    
     void TitleWasSet(content::NavigationEntry* entry) override;
-
-    void DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                       const GURL& validated_url) override;
-
-    void OnDataReceived(const std::string& url, const base::Value* val);
-    void ClassifyPage(content::RenderFrameHost* render_frame_host, const std::string& url);
-    void Classify(const std::string& html, const std::string& url);
+    void OnWebContentsFocused(content::RenderWidgetHost* render_widget_host) override;
+    void DocumentOnLoadCompletedInMainFrame() override;
+    void OnAudioStateChanged(bool audible) override;
+    void DidToggleFullscreenModeForTab(bool entered_fullscreen,
+                                      bool will_cause_resize) override;
+ 
  private:
   SessionID tab_id_;
 

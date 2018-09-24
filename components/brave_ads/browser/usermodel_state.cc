@@ -72,6 +72,7 @@ bool UserModelState::EnsureInitialized() {
     base::DeleteFile(path_, true);
     status = leveldb_env::OpenDB(options, path, &db_);
   }
+  
   if (status.ok()) {
     CHECK(db_);
     return true;

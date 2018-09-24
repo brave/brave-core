@@ -25,6 +25,7 @@ source_set("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//brave/vendor/bat-native-usermodel",
+    "//brave/vendor/bat-native-rapidjson",
     "//third_party/leveldatabase",
   ]
 }

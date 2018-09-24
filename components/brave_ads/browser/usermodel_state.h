@@ -22,9 +22,9 @@ class UserModelState {
 
   bool Put(const std::string& key, const std::string& value);
   bool Get(const std::string& lookup, std::string* value);
+  bool EnsureInitialized();
 
  private:
-  bool EnsureInitialized();
   const base::FilePath path_;
   std::unique_ptr<leveldb::DB> db_;
 
