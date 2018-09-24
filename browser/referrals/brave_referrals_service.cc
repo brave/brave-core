@@ -131,10 +131,12 @@ void BraveReferralsService::OnReferralHeadersLoadComplete(
         referral_headers_loader_->ResponseInfo()->headers->response_code();
   if (referral_headers_loader_->NetError() != net::OK || response_code < 200 ||
       response_code > 299) {
+    const std::string safe_response_body =
+        response_body ? *response_body : std::string();
     LOG(ERROR) << "Failed to fetch headers from referral server"
                << ", error: " << referral_headers_loader_->NetError()
                << ", response code: " << response_code
-               << ", payload: " << *response_body
+               << ", payload: " << safe_response_body
                << ", url: " << referral_headers_loader_->GetFinalURL().spec();
     return;
   }
@@ -156,10 +158,12 @@ void BraveReferralsService::OnReferralInitLoadComplete(
         referral_init_loader_->ResponseInfo()->headers->response_code();
   if (referral_init_loader_->NetError() != net::OK || response_code < 200 ||
       response_code > 299) {
+    const std::string safe_response_body =
+        response_body ? *response_body : std::string();
     LOG(ERROR) << "Failed to initialize referral"
                << ", error: " << referral_init_loader_->NetError()
                << ", response code: " << response_code
-               << ", payload: " << *response_body
+               << ", payload: " << safe_response_body
                << ", url: " << referral_init_loader_->GetFinalURL().spec();
     return;
   }
@@ -210,10 +214,12 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
                         ->headers->response_code();
   if (referral_finalization_check_loader_->NetError() != net::OK ||
       response_code < 200 || response_code > 299) {
+    const std::string safe_response_body =
+        response_body ? *response_body : std::string();
     LOG(ERROR) << "Failed to perform referral finalization check"
                << ", error: " << referral_finalization_check_loader_->NetError()
                << ", response code: " << response_code
-               << ", payload: " << *response_body << ", url: "
+               << ", payload: " << safe_response_body << ", url: "
                << referral_finalization_check_loader_->GetFinalURL().spec();
     return;
   }
