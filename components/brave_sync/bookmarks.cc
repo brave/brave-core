@@ -198,20 +198,54 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
   }
 
   auto sync_record_ptr = jslib::SyncRecord::Clone(sync_record);
+  auto s_parent_local_object_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark,
+    sync_record.GetBookmark().parentFolderObjectId);
 
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
     FROM_HERE, base::Bind(&Bookmarks::AddBookmarkUiWork,
-         base::Unretained(this), base::Passed(std::move(sync_record_ptr)) ));
+         base::Unretained(this), base::Passed(std::move(sync_record_ptr)), s_parent_local_object_id ));
 }
 
-void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record) {
+void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const std::string &s_parent_local_object_id) {
   DCHECK(controller_exports_);
   DCHECK(controller_exports_->GetTaskRunner());
 
   const jslib::Bookmark &sync_bookmark = sync_record->GetBookmark();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork location="<<sync_bookmark.site.location;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork title="<<sync_bookmark.site.title;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork s_parent_local_object_id="<<s_parent_local_object_id;
 
+  int64_t parent_local_object_id = -1;
+  const bookmarks::BookmarkNode* parent_node = nullptr;
+  if (base::StringToInt64(s_parent_local_object_id, &parent_local_object_id) && parent_local_object_id != -1) {
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork parent_local_object_id=" << parent_local_object_id;
+    parent_node = bookmarks::GetBookmarkNodeByID(model_, parent_local_object_id);
+  } else {
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork StringToInt64 failed for <s_parent_local_object_id" << s_parent_local_object_id << ">";
+  }
+
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork (GetBookmarkNodeByID) parent_node="<<parent_node;
+  if (!parent_node) {
+    //parent_node = bookmarks::GetParentForNewNodes(model_);
+    //LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork (GetParentForNewNodes) parent_node="<<parent_node;
+
+    // Here are 3 options why we cannot find parent
+    // 1) Parent is one of permanent nodes 'bookmark bar', 'other' or 'mobile',
+    //    we do not send it on sync because we cannot create it
+    // 2) Parent is 'root' node - something is wrong
+    // 3) Parent is not a permanent node but was not yet synced
+
+    if (!sync_record->GetBookmark().hideInToolbar) {
+      parent_node = model_->bookmark_bar_node();
+      LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork use bookmark_bar_node";
+    } else if (!sync_record->GetBookmark().order.empty() && sync_record->GetBookmark().order.at(0) == '2') {
+      parent_node = model_->mobile_node();
+      LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork use mobile_node";
+    } else {
+      parent_node = model_->other_node();
+      LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork use other";
+    }
+  }
 
   PauseObserver();
 
@@ -222,19 +256,27 @@ void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record
   // new_node->set_type(BookmarkNode::URL);
   // cannot use, ^-- are private
 
-  const bookmarks::BookmarkNode* parent = bookmarks::GetParentForNewNodes(model_);
-
   base::string16 title16 = base::UTF8ToUTF16(sync_bookmark.site.title);
-  const bookmarks::BookmarkNode* added_node = model_->AddURLWithCreationTimeAndMetaInfo(
-      parent,
-      parent->child_count(),//int index,
-      title16,
-      GURL(sync_bookmark.site.location),
-      sync_bookmark.site.creationTime, //const base::Time& creation_time,
-      nullptr//const BookmarkNode::MetaInfoMap* meta_info
-    );
+  const bookmarks::BookmarkNode* added_node;
+  if (sync_bookmark.isFolder) {
+    added_node = model_->AddFolder(
+        parent_node,
+      parent_node->child_count(),//int index,
+      title16);
+  } else {
+    added_node = model_->AddURLWithCreationTimeAndMetaInfo(
+        parent_node,
+        parent_node->child_count(),//int index,
+        title16,
+        GURL(sync_bookmark.site.location),
+        sync_bookmark.site.creationTime, //const base::Time& creation_time,
+        nullptr//const BookmarkNode::MetaInfoMap* meta_info
+      );
+  }
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork added_node="<<added_node;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork added_node->id()="<<added_node->id();
+
+
   // TODO, AB: apply these:
   //          sync_bookmark.site.customTitle
   //          sync_bookmark.site.lastAccessedTime
@@ -334,8 +376,16 @@ void Bookmarks::GetInitialBookmarksWithOrdersWork(
   for (int i = 0; i < this_parent_node->child_count(); ++i) {
     const bookmarks::BookmarkNode* node = this_parent_node->GetChild(i);
     std::string node_order = this_node_order + "." + std::to_string(i + 1); // Index goes from 0, order goes from 0, so "+ 1"
-    nodes.push_back(node);
-    order_map[node] = node_order;
+
+    if (!model_->is_permanent_node(node)) {
+      // Ignoring permanent nodes: 'bookmark bar', 'other' or 'mobile' node.
+      // Because they are childeren of root node and we are not allowed
+      // to add anything into 'root' bookmark node directly.
+      // See BookmarkModel::AddFolderWithMetaInfo or BookmarkModel::AddURLWithCreationTimeAndMetaInfo
+      nodes.push_back(node);
+      order_map[node] = node_order;
+    }
+
     if (!node->empty()) {
       GetInitialBookmarksWithOrdersWork(node, node_order, nodes, order_map);
     }
@@ -395,7 +445,10 @@ std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
     bookmark->isFolder = node->is_folder();
     bookmark->parentFolderObjectId = parent_folder_object_sync_id;
     //bookmark->fields = ;
-    //bookmark->hideInToolbar = ;
+
+    // 'Show in toolbar' means the node is descendant of 'bookmark bar' node
+    // 'Hide in toolbar means' the node is not a descendant of 'bookmark bar' node
+    bookmark->hideInToolbar = !node->HasAncestor(model_->bookmark_bar_node());
     bookmark->order = node_order;
     record->SetBookmark(std::move(bookmark));
 
@@ -424,6 +477,11 @@ void Bookmarks::BookmarkNodeMoved(bookmarks::BookmarkModel* model,
   const bookmarks::BookmarkNode* node = new_parent->GetChild(new_index);
   LOG(ERROR) << "TAGAB node->id()=" << node->id();
   LOG(ERROR) << "TAGAB node->title=" << node->GetTitledUrlNodeTitle();
+
+  if (!controller_exports_ || !controller_exports_->IsSyncConfigured()) {
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeMoved sync is not configured";
+    return;
+  }
 
   int64_t prev_item_id = (new_index == 0) ? (-1) : new_parent->GetChild(new_index - 1)->id();
   int64_t next_item_id = (new_index == new_parent->child_count() - 1) ? (-1) : new_parent->GetChild(new_index + 1)->id();
@@ -482,6 +540,11 @@ void Bookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded node->GetTitle()=" << node->GetTitle();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded GetBookmarkNodeString(node->type())=" << GetBookmarkNodeString(node->type());
 
+  if (!controller_exports_ || !controller_exports_->IsSyncConfigured()) {
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded sync is not configured";
+    return;
+  }
+
   // Send to sync cloud
   controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionCreate,
     {node}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
@@ -501,6 +564,11 @@ void Bookmarks::BookmarkNodeRemoved(
     LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved url_no_longer_bookmarked.spec()="<<url_no_longer_bookmarked.spec();
   }
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  if (!controller_exports_ || !controller_exports_->IsSyncConfigured()) {
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved sync is not configured";
+    return;
+  }
 
   // TODO, AB: what to do with no_longer_bookmarked?
   // How no_longer_bookmarked appears,

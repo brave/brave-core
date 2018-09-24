@@ -60,6 +60,14 @@ ControllerImpl::~ControllerImpl() {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::~ControllerImpl DTOR";
 }
 
+bool ControllerImpl::IsSyncConfigured() {
+  return sync_configured_;
+}
+
+bool ControllerImpl::IsSyncInitialized() {
+  return sync_initialized_;
+}
+
 // Usually initialized at BraveSyncExtensionLoadedFunction::Run
 void ControllerImpl::SetProfile(Profile *profile) {
   LOG(ERROR) << "TAGAB  ControllerImpl::SetProfile profile="<<profile;
@@ -96,6 +104,7 @@ void ControllerImpl::SetProfile(Profile *profile) {
 
   if (!sync_prefs_->GetSeed().empty() && !sync_prefs_->GetThisDeviceName().empty()) {
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl sync is configured";
+    sync_configured_ = true;
   } else {
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl sync is NOT configured";
   }
@@ -225,6 +234,8 @@ void ControllerImpl::OnResetSyncPostFileUiWork() {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResetSyncPostFileUiWork";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->Clear();
+
+  sync_configured_ = false;
 
   if (sync_ui_) {
     sync_ui_->OnSyncStateChanged();
@@ -657,8 +668,10 @@ void ControllerImpl::OnResolvedBookmarks(const RecordsList &records) {
 
   for (const auto &sync_record : records) {
     DCHECK(sync_record->has_bookmark());
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: sync_record->objectId=<" << sync_record->objectId << ">";
+    DCHECK(!sync_record->objectId.empty());
     std::string local_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark, sync_record->objectId);
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: local_id=" << local_id;
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: local_id=<" << local_id << ">";
 
     if (sync_record->action == jslib::SyncRecord::Action::CREATE && local_id.empty()) {
       bookmarks_->AddBookmark(*sync_record);

@@ -73,6 +73,9 @@ public:
   void GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) override;
   void GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Settings> settings, const GetSettingsAndDevicesCallback &callback);
 
+  bool IsSyncConfigured() override;
+  bool IsSyncInitialized() override;
+
 private:
   DISALLOW_COPY_AND_ASSIGN(ControllerImpl);
   friend struct base::DefaultSingletonTraits<ControllerImpl>;
@@ -220,8 +223,10 @@ private:
 
   BraveSyncClient *sync_client_;
 
+  // True when is in active sync chain
+  bool sync_configured_ = false;
   // True if we have received SyncReady from JS lib
-  bool sync_initialized_;
+  bool sync_initialized_ = false;
   // Version received from "get-init-data" command
   std::string sync_version_;
 

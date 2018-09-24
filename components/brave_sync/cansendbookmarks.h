@@ -32,6 +32,9 @@ public:
     const int64_t &next_item_id) = 0;
 
   virtual base::SequencedTaskRunner *GetTaskRunner() = 0;
+
+  virtual bool IsSyncConfigured() = 0;
+  virtual bool IsSyncInitialized() = 0;
 };
 
 } // namespace brave_sync
