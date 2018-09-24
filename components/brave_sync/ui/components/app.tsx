@@ -6,8 +6,22 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
-// Components
-// TODO: Add brave-ui components
+// Feature-specific components
+import {
+  Main,
+  Title,
+  EmphasisText,
+  SecondaryText,
+  Link,
+  SectionBlock
+} from 'brave-ui/features/sync'
+
+// Component groups
+import DisabledContent from './disabledContent'
+import EnabledContent from './enabledContent'
+
+// Utils
+import { getLocale } from '../../../common/locale'
 
 // Utils
 import * as syncActions from '../actions/sync_actions'
@@ -15,25 +29,38 @@ import * as syncActions from '../actions/sync_actions'
 // Assets
 require('../../../fonts/muli.css')
 require('../../../fonts/poppins.css')
+require('emptykit.css')
 
 interface Props {
   syncData: Sync.State
   actions: any
 }
 
-export class SyncPage extends React.Component<Props, {}> {
-  get actions () {
-    return this.props.actions
-  }
+const syncLink = 'https://github.com/brave/sync/wiki/Design'
 
-  doSomething = () => {
-    this.actions.doSomethingSync('PIKACHU IS OVERRATED')
-  }
-
+class SyncPage extends React.PureComponent<Props, {}> {
   render () {
+    if (!this.props.syncData) {
+      return null
+    }
+    const { syncData, actions } = this.props
     return (
       <div id='syncPage'>
-        <button onClick={this.doSomething}>action dispatched! check console</button>
+        <Main>
+          <Title level={2}>{getLocale('sync')}</Title>
+            <EmphasisText>
+              {getLocale('syncInfo1')}
+              <Link href={syncLink} target='_blank' rel='noreferrer noopener'>?</Link>
+            </EmphasisText>
+            <SecondaryText>{getLocale('syncInfo2')}</SecondaryText>
+          <SectionBlock>
+            {
+              this.props.syncData.isSyncEnabled
+                ? <EnabledContent syncData={syncData} actions={actions} />
+                : <DisabledContent syncData={syncData} actions={actions} />
+            }
+          </SectionBlock>
+        </Main>
       </div>
     )
   }

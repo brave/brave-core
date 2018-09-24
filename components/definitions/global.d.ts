@@ -32,7 +32,7 @@ declare global {
     brave_welcome: {
       initialize: () => void
     },
-    brave_sync: {
+    sync_ui_exports: {
       initialize: () => void
     }
   }

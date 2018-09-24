@@ -8,7 +8,7 @@ import { debounce } from '../../common/debounce'
 const keyName = 'sync-data'
 
 const defaultState = {
-  something: ''
+  isSyncEnabled: false
 }
 
 const cleanData = (state: Sync.State) => {
