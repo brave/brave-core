@@ -84,7 +84,7 @@ void ObjectMap::CreateOpenDatabase() {
   }
 }
 
-std::string ObjectMap::GetLocalIdByObjectId(const std::string &objectId) {
+std::string ObjectMap::GetLocalIdByObjectId(const Type &type, const std::string &objectId) {
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return "";
@@ -96,13 +96,18 @@ std::string ObjectMap::GetLocalIdByObjectId(const std::string &objectId) {
     LOG(ERROR) << "sync level db get error " << db_status.ToString();
   }
 
-  return value;
+  std::string local_id;
+  Type read_type = Unset;
+  SplitRawLocalId(value, local_id, read_type);
+  DCHECK(type == read_type);
+
+  return local_id;
 }
 
-std::string ObjectMap::GetObjectIdByLocalId(const std::string &localId) {
+std::string ObjectMap::GetObjectIdByLocalId(const Type &type, const std::string &localId) {
   std::string object_id;
 
-  bool ret = GetParsedDataByLocalId(localId, &object_id, nullptr, nullptr);
+  bool ret = GetParsedDataByLocalId(type, localId, &object_id, nullptr, nullptr);
 
   if (!ret) {
     return "";
@@ -112,9 +117,11 @@ std::string ObjectMap::GetObjectIdByLocalId(const std::string &localId) {
 }
 
 bool ObjectMap::GetParsedDataByLocalId(
+  const Type &type,
   const std::string &localId,
   std::string *object_id, std::string *order, std::string *api_version) {
-  std::string json = GetRawJsonByLocalId(localId);
+  std::string raw_local_id = ComposeRawLocalId(type, localId);
+  std::string json = GetRawJsonByLocalId(raw_local_id);
 
   LOG(ERROR) << "TAGAB ObjectMap::GetParsedDataByLocalId: json=" << json;
 
@@ -168,6 +175,7 @@ bool ObjectMap::GetParsedDataByLocalId(
 }
 
 void ObjectMap::UpdateOrderByLocalObjectId(
+  const Type &type,
   const std::string &localId,
   const std::string &new_order) {
   LOG(ERROR) << "TAGAB ObjectMap::UpdateOrderByLocalObjectId";
@@ -176,6 +184,7 @@ void ObjectMap::UpdateOrderByLocalObjectId(
   std::string object_id;
   std::string old_order;
   bool ret = GetParsedDataByLocalId(
+    type,
     localId,
     &object_id, &old_order, nullptr);
   DCHECK(ret);
@@ -185,7 +194,7 @@ void ObjectMap::UpdateOrderByLocalObjectId(
     return;
   }
 
-  SaveObjectIdAndOrder(localId, object_id, new_order);
+  SaveObjectIdAndOrder(type, localId, object_id, new_order);
 }
 
 std::string ObjectMap::GetRawJsonByLocalId(const std::string &localId) {
@@ -205,7 +214,7 @@ std::string ObjectMap::GetRawJsonByLocalId(const std::string &localId) {
 }
 
 void ObjectMap::SaveObjectIdRawJson(
-  const std::string &localId,
+  const std::string &raw_local_id,
   const std::string &objectIdJSON,
   const std::string &objectId) {
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectIdRawJson - enter";
@@ -216,13 +225,13 @@ void ObjectMap::SaveObjectIdRawJson(
     return;
   }
 
-  leveldb::Status db_status = level_db_->Put(leveldb::WriteOptions(), localId, objectIdJSON);
+  leveldb::Status db_status = level_db_->Put(leveldb::WriteOptions(), raw_local_id, objectIdJSON);
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db put error " << db_status.ToString();
   }
 
   if (0 != objectId.size()) {
-      db_status = level_db_->Put(leveldb::WriteOptions(), objectId, localId);
+      db_status = level_db_->Put(leveldb::WriteOptions(), objectId, raw_local_id);
       if (!db_status.ok()) {
         LOG(ERROR) << "sync level db put error " << db_status.ToString();
       }
@@ -235,11 +244,11 @@ std::string ObjectMap::GetSpecialJSONByLocalId(const std::string &localId) {
   return json;
 }
 
-std::string ObjectMap::GetOrderByObjectId(const std::string &object_id) {
-  std::string local_id = GetLocalIdByObjectId(object_id);
+std::string ObjectMap::GetOrderByObjectId(const Type &type, const std::string &object_id) {
+  std::string local_id = GetLocalIdByObjectId(type, object_id);
   std::string order;
   std::string object_id_saved;
-  bool ret = GetParsedDataByLocalId(local_id, &object_id_saved, &order, nullptr);
+  bool ret = GetParsedDataByLocalId(type, local_id, &object_id_saved, &order, nullptr);
 
   if (!ret) {
     return "";
@@ -250,10 +259,10 @@ std::string ObjectMap::GetOrderByObjectId(const std::string &object_id) {
   return order;
 }
 
-std::string ObjectMap::GetOrderByLocalObjectId(const std::string &localId) {
+std::string ObjectMap::GetOrderByLocalObjectId(const Type &type, const std::string &localId) {
   std::string order;
   std::string object_id_saved;
-  bool ret = GetParsedDataByLocalId(localId, &object_id_saved, &order, nullptr);
+  bool ret = GetParsedDataByLocalId(type, localId, &object_id_saved, &order, nullptr);
 
   if (!ret) {
     return "";
@@ -263,22 +272,24 @@ std::string ObjectMap::GetOrderByLocalObjectId(const std::string &localId) {
 }
 
 void ObjectMap::SaveObjectId(
+  const Type &type,
   const std::string &localId,
   const std::string &objectId) {
   DCHECK(!api_version_.empty()); // Not sure how to manage this. For now this is just a passthorugh from "OnGetInitData"
                                  // Android:  private String mApiVersion = "0"; just hardcoded
 
   std::string json = "[{\"objectId\": \"" + objectId + "\", apiVersion\": \"" + api_version_ + "\"}]";
-  SaveObjectIdRawJson(localId, json, objectId);
+  SaveObjectIdRawJson(ComposeRawLocalId(type, localId), json, objectId);
 }
 
 void ObjectMap::SaveObjectIdAndOrder(
+  const Type &type,
   const std::string &localId,
   const std::string &objectId,
   const std::string &order) {
   DCHECK(!api_version_.empty());
   std::string json = "[{\"objectId\": \"" + objectId + "\", \"order\": \"" + order + "\", \"apiVersion\": \"" + api_version_ + "\"}]";
-  SaveObjectIdRawJson(localId, json, objectId);
+  SaveObjectIdRawJson(ComposeRawLocalId(type, localId), json, objectId);
 }
 
 void ObjectMap::SaveSpecialJson(
@@ -287,25 +298,26 @@ void ObjectMap::SaveSpecialJson(
   SaveObjectIdRawJson(localId, specialJSON, "");
 }
 
-void ObjectMap::DeleteByLocalId(const std::string &localId) {
+void ObjectMap::DeleteByLocalId(const Type &type, const std::string &localId) {
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return;
   }
 
-  std::string value;
-  leveldb::Status db_status = level_db_->Get(leveldb::ReadOptions(), localId, &value);
-  if (!db_status.ok()) {
-    LOG(ERROR) << "sync level db get error " << db_status.ToString();
-  }
+  std::string raw_local_id = ComposeRawLocalId(type, localId);
 
-  db_status = level_db_->Delete(leveldb::WriteOptions(), localId);
+  std::string object_id;
+  bool got_parsed = GetParsedDataByLocalId(type, localId, &object_id, nullptr, nullptr);
+
+  leveldb::Status db_status = level_db_->Delete(leveldb::WriteOptions(), raw_local_id);
   if (!db_status.ok()) {
     LOG(ERROR) << "sync level db delete error " << db_status.ToString();
   }
-  db_status = level_db_->Delete(leveldb::WriteOptions(), value);
-  if (!db_status.ok()) {
-    LOG(ERROR) << "sync level db delete error " << db_status.ToString();
+  if (got_parsed && !object_id.empty()) {
+    db_status = level_db_->Delete(leveldb::WriteOptions(), object_id);
+    if (!db_status.ok()) {
+      LOG(ERROR) << "sync level db delete error " << db_status.ToString();
+    }
   }
 }
 
@@ -345,6 +357,46 @@ void ObjectMap::ResetSync(const std::string& key) {
       return;
   }
   level_db_->Delete(leveldb::WriteOptions(), key);
+}
+
+void ObjectMap::SplitRawLocalId(const std::string &raw_local_id, std::string &local_id, Type &read_type) {
+  if (raw_local_id.empty()) {
+    local_id = "";
+    read_type = Unset;
+    return;
+  }
+
+  char object_type_char = raw_local_id.at(0);
+  switch (object_type_char) {
+    case 'b':
+      read_type = Bookmark;
+      local_id.assign(raw_local_id.begin() + 1, raw_local_id.end());
+    break;
+    case 'h':
+      read_type = History;
+      local_id.assign(raw_local_id.begin() + 1, raw_local_id.end());
+    break;
+    default:
+      read_type = Unset;
+      local_id.assign(raw_local_id);
+    break;
+  }
+}
+
+std::string ObjectMap::ComposeRawLocalId(const ObjectMap::Type &type, const std::string &localId) {
+  switch (type) {
+    case Unset:
+      return localId;
+    break;
+    case Bookmark:
+      return 'b' + localId;
+    break;
+    case History:
+      return 'h' + localId;
+    break;
+    default:
+      NOTREACHED();
+  }
 }
 
 } // namespace storage

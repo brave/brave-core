@@ -491,7 +491,7 @@ void ControllerImpl::GetExistingHistoryObjects(
   std::vector<int64_t> ids_to_get_history(records.size());
 
   for (const SyncRecordPtr &record : records ) {
-    auto local_id = sync_obj_map_->GetLocalIdByObjectId(record->objectId);
+    auto local_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::History, record->objectId);
     int64_t i_local_id = 0;
     if (base::StringToInt64(local_id, &i_local_id)) {
       ids_to_get_history.push_back(i_local_id);
@@ -657,7 +657,7 @@ void ControllerImpl::OnResolvedBookmarks(const RecordsList &records) {
 
   for (const auto &sync_record : records) {
     DCHECK(sync_record->has_bookmark());
-    std::string local_id = sync_obj_map_->GetLocalIdByObjectId(sync_record->objectId);
+    std::string local_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark, sync_record->objectId);
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: local_id=" << local_id;
 
     if (sync_record->action == jslib::SyncRecord::Action::CREATE && local_id.empty()) {
@@ -721,7 +721,8 @@ void ControllerImpl::OnSaveBookmarkOrderFileWork(const int64_t &bookmark_local_i
   LOG(ERROR) << "TAGAB bookmark_local_id=" << bookmark_local_id;
   LOG(ERROR) << "TAGAB order=" << order;
 
-  sync_obj_map_->UpdateOrderByLocalObjectId( std::to_string(bookmark_local_id), order);
+  sync_obj_map_->UpdateOrderByLocalObjectId(storage::ObjectMap::Type::Bookmark,
+     std::to_string(bookmark_local_id), order);
 
   const bookmarks::BookmarkNode* node = bookmarks_->GetNodeById(bookmark_local_id);
   LOG(ERROR) << "TAGAB node=" << node;
@@ -998,10 +999,12 @@ void ControllerImpl::BookmarkMoved(
   std::string next_item_order;
 
   if (prev_item_id != -1) {
-    prev_item_order = sync_obj_map_->GetOrderByLocalObjectId(std::to_string(prev_item_id));
+    prev_item_order = sync_obj_map_->GetOrderByLocalObjectId(
+      storage::ObjectMap::Type::Bookmark, std::to_string(prev_item_id));
   }
   if (next_item_id != -1) {
-    next_item_order = sync_obj_map_->GetOrderByLocalObjectId(std::to_string(next_item_id));
+    next_item_order = sync_obj_map_->GetOrderByLocalObjectId(
+      storage::ObjectMap::Type::Bookmark, std::to_string(next_item_id));
   }
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
   LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
@@ -1087,20 +1090,8 @@ void ControllerImpl::CreateUpdateDeleteHistorySites(
   }
 
   DCHECK(sync_client_);
-  //std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(list, action);
   std::unique_ptr<RecordsList> records = history_->NativeHistoryToSyncRecords(list, action);
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_HISTORY, *records);
-}
-
-
-
-std::string ControllerImpl::GenerateObjectIdWithMapCheck(const std::string &local_id) {
-  std::string res = sync_obj_map_->GetObjectIdByLocalId(local_id);
-  if (!res.empty()) {
-    return res;
-  }
-
-  return brave_sync::tools::GenerateObjectId();
 }
 
 static const int64_t kCheckUpdatesIntervalSec = 60;

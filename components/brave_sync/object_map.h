@@ -32,25 +32,28 @@ public:
 
   // Local ids both of bookmarks and history are just int64_t and can be the same.
   enum Type {
-    Bookmark,
-    History
+    Unset = 0,
+    Bookmark = 1,
+    History = 2
   };
 
   void SetApiVersion(const std::string &api_version);
 
-  std::string GetLocalIdByObjectId(const std::string &object_id);
+  std::string GetLocalIdByObjectId(const Type &type, const std::string &object_id);
 
-  std::string GetObjectIdByLocalId(const std::string &localId);
+  std::string GetObjectIdByLocalId(const Type &type, const std::string &localId);
   std::string GetSpecialJSONByLocalId(const std::string &localId);
 
-  std::string GetOrderByObjectId(const std::string &object_id);
-  std::string GetOrderByLocalObjectId(const std::string &localId);
+  std::string GetOrderByObjectId(const Type &type, const std::string &object_id);
+  std::string GetOrderByLocalObjectId(const Type &type, const std::string &localId);
 
   void SaveObjectId(
+    const Type &type,
     const std::string &localId,
     const std::string &objectId);
 
   void SaveObjectIdAndOrder(
+    const Type &type,
     const std::string &localId,
     const std::string &objectId,
     const std::string &order);
@@ -60,10 +63,11 @@ public:
     const std::string &specialJSON);
 
   void UpdateOrderByLocalObjectId(
+    const Type &type,
     const std::string &localId,
     const std::string &order);
 
-  void DeleteByLocalId(const std::string &localId);
+  void DeleteByLocalId(const Type &type, const std::string &localId);
   void Close();
   void CloseDBHandle();
   void ResetSync(const std::string& key);
@@ -76,10 +80,13 @@ private:
     const std::string &objectId);
   std::string GetRawJsonByLocalId(const std::string &localId);
 
-  bool GetParsedDataByLocalId(const std::string &localId, std::string *object_id, std::string *order, std::string *api_version);
+  bool GetParsedDataByLocalId(const Type &type, const std::string &localId, std::string *object_id, std::string *order, std::string *api_version);
 
   void CreateOpenDatabase();
   void TraceAll();
+
+  void SplitRawLocalId(const std::string &raw_local_id, std::string &local_id, Type &read_type);
+  std::string ComposeRawLocalId(const Type &type, const std::string &localId);
 
   Profile *profile_;
   std::unique_ptr<leveldb::DB> level_db_;

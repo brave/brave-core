@@ -184,13 +184,14 @@ std::unique_ptr<RecordsList> History::NativeHistoryToSyncRecords(
 std::string History::GetOrCreateObjectByLocalId(const int64_t &local_id) {
   CHECK(sync_obj_map_);
   const std::string s_local_id = base::Int64ToString(local_id);
-  std::string object_id = sync_obj_map_->GetObjectIdByLocalId(s_local_id);
+  std::string object_id = sync_obj_map_->GetObjectIdByLocalId(storage::ObjectMap::Type::History, s_local_id);
   if (!object_id.empty()) {
     return object_id;
   }
 
   object_id = tools::GenerateObjectId(); // TODO, AB: pack 8 bytes from s_local_id?
   sync_obj_map_->SaveObjectId(
+        storage::ObjectMap::Type::History,
         s_local_id,
         object_id);
 
@@ -205,7 +206,7 @@ void History::SetThisDeviceId(const std::string &device_id) {
 
 std::unique_ptr<jslib::SyncRecord> History::GetResolvedHistoryValue(const std::string &object_id) {
   LOG(ERROR) << "TAGAB brave_sync::History::GetResolvedHistoryValue object_id=<"<<object_id<<">";
-  std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(object_id);
+  std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::History, object_id);
   LOG(ERROR) << "TAGAB brave_sync::History::GetResolvedHistoryValue local_object_id=<"<<local_object_id<<">";
   if(local_object_id.empty()) {
     return nullptr;

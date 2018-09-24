@@ -200,8 +200,6 @@ private:
     const std::vector<std::string> &ids,
     NotSyncedRecordsOperation operation);
 
-  std::string GenerateObjectIdWithMapCheck(const std::string &local_id);
-
   void StartLoop();
   void StopLoop();
   void LoopProc();
