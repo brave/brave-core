@@ -81,6 +81,26 @@ bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
   return false;
 }
 
+void ApplyPotentialReferrerBlock(net::URLRequest* request) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  GURL target_origin = GURL(request->url()).GetOrigin();
+  GURL tab_origin = request->site_for_cookies().GetOrigin();
+  bool allow_referrers = brave_shields::IsAllowContentSettingFromIO(
+      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kReferrers);
+  bool shields_up = brave_shields::IsAllowContentSettingFromIO(
+      request, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields);
+  const std::string original_referrer = request->referrer();
+  Referrer new_referrer;
+  if (brave_shields::ShouldSetReferrer(allow_referrers, shields_up,
+          GURL(original_referrer), tab_origin, request->url(), target_origin,
+          Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
+              request->referrer_policy()), &new_referrer)) {
+    request->SetReferrer(new_referrer.url.spec());
+  }
+}
+
 int OnBeforeURLRequest_SiteHacksWork(
     net::URLRequest* request,
     GURL* new_url,
@@ -105,6 +125,11 @@ int OnBeforeURLRequest_SiteHacksWork(
   bool allow_ads = brave_shields::IsAllowContentSettingFromIO(
       request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kAds);
+
+  if (allow_brave_shields) {
+    ApplyPotentialReferrerBlock(request);
+  }
+
   if (GetPolyfillForAdBlock(allow_brave_shields, allow_ads,
         tab_origin, url, new_url)) {
     return net::OK;
@@ -139,30 +164,6 @@ bool IsBlockTwitterSiteHack(net::URLRequest* request,
   return false;
 }
 
-int ApplyPotentialReferrerBlock(net::URLRequest* request,
-    const ResponseCallback& next_callback,
-    net::HttpRequestHeaders* headers) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  GURL target_origin = GURL(request->url()).GetOrigin();
-  GURL tab_origin = request->site_for_cookies().GetOrigin();
-  bool allow_referrers = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers);
-  bool shields_up = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
-  std::string original_referrer;
-  headers->GetHeader(kRefererHeader, &original_referrer);
-  Referrer new_referrer;
-  if (brave_shields::ShouldSetReferrer(allow_referrers, shields_up,
-          GURL(original_referrer), tab_origin, request->url(), target_origin,
-          Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
-              request->referrer_policy()), &new_referrer)) {
-      headers->SetHeader(kRefererHeader, new_referrer.url.spec());
-  }
-  return net::OK;
-}
-
 int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
@@ -181,7 +182,7 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
       headers->SetHeader(kUserAgentHeader, user_agent);
     }
   }
-  return ApplyPotentialReferrerBlock(request, next_callback, headers);
+  return net::OK;
 }
 
 }  // namespace brave

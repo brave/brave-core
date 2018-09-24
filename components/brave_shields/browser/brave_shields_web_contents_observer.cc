@@ -288,6 +288,17 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
 
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
+  // when the main frame navigate away
+  if (navigation_handle->IsInMainFrame() &&
+      !navigation_handle->IsSameDocument() &&
+      navigation_handle->GetReloadType() == content::ReloadType::NONE) {
+    allowed_script_origins_.clear();
+  }
+
+  navigation_handle->GetWebContents()->SendToAllFrames(
+      new BraveFrameMsg_AllowScriptsOnce(
+        MSG_ROUTING_NONE, allowed_script_origins_));
+
   auto frame_tree_node_id = navigation_handle->GetFrameTreeNodeId();
   auto *frame_tree_node = content::FrameTreeNode::GloballyFindByID(
       frame_tree_node_id);
@@ -331,19 +342,9 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
           navigation_handle->GetURL(),
           navigation_handle->GetURL().GetOrigin(),
           original_referrer.policy, &new_referrer)) {
-    navigation_entry->SetReferrer(new_referrer);
+    navigation_entry->SetExtraData("referrer." + navigation_handle->GetURL().spec(),
+          base::UTF8ToUTF16(new_referrer.url.spec()));
   }
-
-  // when the main frame navigate away
-  if (navigation_handle->IsInMainFrame() &&
-      !navigation_handle->IsSameDocument() &&
-      navigation_handle->GetReloadType() == content::ReloadType::NONE) {
-    allowed_script_origins_.clear();
-  }
-
-  navigation_handle->GetWebContents()->SendToAllFrames(
-      new BraveFrameMsg_AllowScriptsOnce(
-        MSG_ROUTING_NONE, allowed_script_origins_));
 }
 
 void BraveShieldsWebContentsObserver::AllowScriptsOnce(
