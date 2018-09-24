@@ -98,7 +98,14 @@ std::string ObjectMap::GetLocalIdByObjectId(const Type &type, const std::string 
 
   std::string local_id;
   Type read_type = Unset;
+  if (local_id.empty()) {
+    return "";
+  }
+
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::GetLocalIdByObjectId value="<<value;
   SplitRawLocalId(value, local_id, read_type);
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::GetLocalIdByObjectId local_id="<<local_id;
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::GetLocalIdByObjectId type="<<type;
   DCHECK(type == read_type);
 
   return local_id;
