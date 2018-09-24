@@ -27,7 +27,7 @@ class FaviconFetcherErrorType: MaybeErrorType {
  * If that fails, it will attempt to find a favicon.ico in the root host domain.
  */
 open class FaviconFetcher: NSObject, XMLParserDelegate {
-    open static var userAgent: String = ""
+    public static var userAgent: String = ""
     static let ExpirationTime = TimeInterval(60*60*24*7) // Only check for icons once a week
     fileprivate static var characterToFaviconCache = [String: UIImage]()
     static var defaultFavicon: UIImage = {
@@ -173,7 +173,6 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     func getFavicon(_ siteUrl: URL, icon: Favicon, profile: Profile) -> Deferred<Maybe<Favicon>> {
         let deferred = Deferred<Maybe<Favicon>>()
         let url = icon.url
-        let site = Site(url: siteUrl.absoluteString, title: "")
 
         var favicon = Favicon(url: url)
         if let url = url.asURL {

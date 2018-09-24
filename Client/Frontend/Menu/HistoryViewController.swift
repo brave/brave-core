@@ -203,7 +203,7 @@ class HistoryViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    if (editingStyle == UITableViewCellEditingStyle.delete) {
+    if editingStyle == .delete {
       if let obj = self.frc?.object(at: indexPath) as? History {
         obj.remove(save: true)
       }
@@ -233,7 +233,7 @@ extension HistoryViewController: NSFetchedResultsControllerDelegate {
   }
   
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-    switch (type) {
+    switch type {
     case .insert:
       if let indexPath = newIndexPath {
         tableView.insertRows(at: [indexPath], with: .automatic)

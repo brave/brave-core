@@ -933,13 +933,7 @@ extension TabManager: WKNavigationDelegate {
     func tabForWebView(_ webView: WKWebView) -> Tab? {
         objc_sync_enter(self); defer { objc_sync_exit(self) }
         
-        for tab in tabs {
-            if tab.webView === webView {
-                return tab
-            }
-        }
-        
-        return nil
+        return tabs.first(where: { $0.webView === webView })
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

@@ -368,7 +368,7 @@ fileprivate class ListSelectionController: NSObject {
 
     fileprivate unowned let tableView: UITableView
 
-    fileprivate(set) var selectedIndexPaths = [IndexPath]()
+    var selectedIndexPaths = [IndexPath]()
 
     var selectedCount: Int {
         return selectedIndexPaths.count

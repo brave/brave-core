@@ -245,9 +245,7 @@ extension SQLiteBookmarks {
                 case .synced:
                     log.debug("We don't expect folders to ever be marked as Synced.")
                     try bumpParentStatus(SyncStatus.changed.rawValue)
-                case .new:
-                    fallthrough
-                case .changed:
+                case .new, .changed:
                     // Leave it marked as new or changed, but bump the timestamp.
                     try bumpParentStatus(syncStatus.rawValue)
                 }
