@@ -383,8 +383,9 @@ void Bookmarks::GetInitialBookmarksWithOrdersWork(
       // to add anything into 'root' bookmark node directly.
       // See BookmarkModel::AddFolderWithMetaInfo or BookmarkModel::AddURLWithCreationTimeAndMetaInfo
       nodes.push_back(node);
-      order_map[node] = node_order;
     }
+    // In anyway, even for permanent node, save node to order the map
+    order_map[node] = node_order;
 
     if (!node->empty()) {
       GetInitialBookmarksWithOrdersWork(node, node_order, nodes, order_map);
@@ -399,15 +400,29 @@ std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
   LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords:";
   std::unique_ptr<RecordsList> records = std::make_unique<RecordsList>();
 
+  LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: order_map.size()" << order_map.size();
+  for (const auto & the_pair : order_map) {
+    LOG(ERROR) << "TAGAB <" << the_pair.first << "> => <" << the_pair.second << ">";
+  }
+
   for (const bookmarks::BookmarkNode* node : list) {
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: node=" << node;
+    LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: node->parent()=" << node->parent();
 
     int64_t parent_folder_id = node->parent() ? node->parent()->id() : 0;
+    LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: parent_folder_id=" << parent_folder_id;
+
     std::string parent_folder_object_sync_id;
     if (parent_folder_id) {
       if (!order_map.empty()) {
-        const std::string parent_node_order = order_map.at(node->parent());
-        parent_folder_object_sync_id = GetOrCreateObjectByLocalId(parent_folder_id, parent_node_order);
+        const auto &it_node_parent_pair = order_map.find(node->parent());
+        DCHECK(it_node_parent_pair != order_map.end());
+        if (it_node_parent_pair != order_map.end()) {
+          const std::string parent_node_order = order_map.at(node->parent()); // Segmentation fault here, because there is no such item
+          parent_folder_object_sync_id = GetOrCreateObjectByLocalId(parent_folder_id, parent_node_order);
+        } else {
+          // Could not find the order for parent node
+        }
       } else {
         parent_folder_object_sync_id = sync_obj_map_->GetObjectIdByLocalId(
           storage::ObjectMap::Type::Bookmark, std::to_string(parent_folder_id));
