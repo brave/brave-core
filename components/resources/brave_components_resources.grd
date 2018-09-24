@@ -198,6 +198,42 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON" desc="Button to move to the next slide of the welcome tour">Next</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
 
+      <!-- WebUI brave sync resources -->
+      <message name="IDS_BRAVE_SYNC_TITLE" desc="The Brave Sync title">Brave Sync</message>
+      <message name="IDS_BRAVE_SYNC_TITLE_BETA" desc="The Brave Sync beta label">beta</message>
+      <message name="IDS_BRAVE_SYNC_INFO_1" desc="">Sync encrypted browser data between your devices securely and privately using Brave Sync</message>
+      <message name="IDS_BRAVE_SYNC_INFO_2" desc="The Brave Sync decription about usage on mobile devices">Note: Sync for iOS and Android is still being completed and will be released soon.</message>
+      <message name="IDS_BRAVE_SYNC_DEVICE_SYNC" desc="">Sync this device</message>
+
+      <message name="IDS_BRAVE_SYNC_DONE" desc="The Brave Sync `Done` button">Done</message>
+      <message name="IDS_BRAVE_SYNC_CANCEL" desc="The Brave Sync `Cancel` button">Cancel</message>
+      <message name="IDS_BRAVE_SYNC_ARE_YOU_SURE" desc="The Brave Sync `Are You Sure?` button">Are you sure?</message>
+      <message name="IDS_BRAVE_SYNC_I_AM_NEW_TO_SYNC" desc="The Brave Sync `I am new to Sync` button">I am new to Sync</message>
+      <message name="IDS_BRAVE_SYNC_I_HAVE_AN_EXISTING_SYNC_CODE" desc="The Brave Sync `I have an existing Sync code` button">I have an existing Sync code</message>
+      <message name="IDS_BRAVE_SYNC_DEVICES" desc="The Brave Sync `Devices` label">Devices</message>
+      <message name="IDS_BRAVE_SYNC_DEVICE_NAME" desc="The Brave Sync `Device Name` label">Device Name</message>
+      <message name="IDS_BRAVE_SYNC_ID" desc="The Brave Sync `ID` table row">ID</message>
+      <message name="IDS_BRAVE_SYNC_LAST_ACTIVE" desc="The Brave Sync `last active` table row">Last active</message>
+      <message name="IDS_BRAVE_SYNC_NEW_DEVICE" desc="The Brave Sync `Sync a new device...` button">Sync a new device...</message>
+      <message name="IDS_BRAVE_SYNC_DATA" desc="The Brave Sync `Sync Data` title">Sync Data</message>
+      <message name="IDS_BRAVE_SYNC_DATA_INFO" desc="The Brave Sync `Sync the following data from this device` title">Sync the following data from this device:</message>
+      <message name="IDS_BRAVE_SYNC_BOOKMARKS" desc="The Brave Sync `Bookmarks` toggle label">Bookmarks</message>
+      <message name="IDS_BRAVE_SYNC_SAVED_SITE_SETTINGS" desc="The Brave Sync `Saved Site Settings` toggle label">Saved Site Settings</message>
+      <message name="IDS_BRAVE_SYNC_BROWSING_HISTORY" desc="The Brave Sync `Browsing History` toggle label">Browsing History</message>
+      <message name="IDS_BRAVE_SYNC_CLEAR_DATA" desc="The Brave Sync `Clear Data` title">Clear Data</message>
+      <message name="IDS_BRAVE_SYNC_RESET_SYNC" desc="The Brave Sync `Reset Sync...` button">Reset Sync...</message>
+      <message name="IDS_BRAVE_SYNC_SET_UP_SYNC" desc="The Brave Sync `Set up Sync` button">Set up Sync</message>
+      <message name="IDS_BRAVE_SYNC_ENTER_SYNC_CODE_WORDS" desc="The Brave Sync `Enter your Sync code words:` label">Enter your Sync code words:</message>
+      <message name="IDS_BRAVE_SYNC_ENTER_OPTIONAL_NAME_FOR_THIS_DEVICE" desc="The Brave Sync `Enter an optional name for this device` label">Enter an optional name for this device:</message>
+      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_FIRST_BULLET" desc="The Brave Sync instructions on how to set up a new device">Open Brave on your new device and go to Preferences > Sync > "I have an existing synced device."</message>
+      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_SECOND_BULLET" desc="The Brave Sync instructions about QR code">If it asks you to scan a QR code, click the button below and point your camera at the QR code.</message>
+      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_THIRD_BULLET" desc="The Brave Sync instructions about code words ">If asks you to enter code words, type in the words below.</message>
+      <message name="IDS_BRAVE_SYNC_SHOW_QR_CODE" desc="The Brave Sync `Show secret QR code` label">Show secret QR code. (Do not share!)</message>
+      <message name="IDS_BRAVE_SYNC_SHOW_SECRET_CODE_WORDS" desc="The Brave Sync `Show secret code words` label">Show secret code words. (Do not share!)</message>
+      <message name="IDS_BRAVE_SYNC_RESET_SYNC_FIRST_BULLET" desc="The Brave Sync first bullet of the Reset Sync Modal">Resetting Sync clears data stored on the Sync server and resets this device's Sync settings.</message>
+      <message name="IDS_BRAVE_SYNC_RESET_SYNC_SECOND_BULLET" desc="The Brave Sync second bullet of the Reset Sync Modal">You will keep any bookmarks, history and other browsing data currently on this device.</message>
+      <message name="IDS_BRAVE_SYNC_RESET_SYNC_THIRD_BULLET" desc="The Brave Sync third bullet of the Reset Sync Modal">If you've synced other devices, they will continue to sync their future browsing data. If you don't want that, you should reset Sync on those devices as well</message>
+
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Ads</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
