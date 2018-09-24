@@ -1,6 +1,5 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 import UIKit
 import CoreData
 import Foundation
@@ -79,9 +78,9 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         fetchRequest.entity = Bookmark.entity(context: context)
         fetchRequest.fetchBatchSize = 20
 
-        let orderSort = NSSortDescriptor(key:"order", ascending: true)
-        let folderSort = NSSortDescriptor(key:"isFolder", ascending: false)
-        let createdSort = NSSortDescriptor(key:"created", ascending: true)
+        let orderSort = NSSortDescriptor(key: "order", ascending: true)
+        let folderSort = NSSortDescriptor(key: "isFolder", ascending: false)
+        let createdSort = NSSortDescriptor(key: "created", ascending: true)
         fetchRequest.sortDescriptors = [orderSort, folderSort, createdSort]
 
         if let parentFolder = parentFolder {
@@ -90,7 +89,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
             fetchRequest.predicate = NSPredicate(format: "parentFolder == nil AND isFavorite == NO")
         }
 
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext:context,
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context,
                                           sectionNameKeyPath: nil, cacheName: nil)
     }
     
@@ -99,7 +98,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
         title = site.title
         update(customTitle: site.customTitle, url: site.location)
-        lastVisited = Date(timeIntervalSince1970:(Double(site.lastAccessedTime ?? 0) / 1000.0))
+        lastVisited = Date(timeIntervalSince1970: (Double(site.lastAccessedTime ?? 0) / 1000.0))
         syncParentUUID = bookmark.parentFolderObjectId
         // No auto-save, must be handled by caller if desired
     }
@@ -203,7 +202,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
     @discardableResult public class func add(url: URL?,
                        title: String?,
                        customTitle: String? = nil, // Folders only use customTitle
-                       parentFolder:Bookmark? = nil,
+                       parentFolder: Bookmark? = nil,
                        isFolder: Bool = false,
                        isFavorite: Bool = false,
                        color: UIColor? = nil) -> Bookmark? {
@@ -352,7 +351,7 @@ extension Bookmark {
         }
 
         // New bookmarks are added with order 0, we are looking at created date then
-        let sortRules = [NSSortDescriptor(key:"order", ascending: true), NSSortDescriptor(key:"created", ascending: false)]
+        let sortRules = [NSSortDescriptor(key: "order", ascending: true), NSSortDescriptor(key: "created", ascending: false)]
         let sort = orderSort ? sortRules : nil
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.entity = Bookmark.entity(context: context)

@@ -149,7 +149,7 @@ public class TabMO: NSManagedObject {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.entity = TabMO.entity(context)
         fetchRequest.predicate = NSPredicate(format: "\(#keyPath(TabMO.syncUUID)) == %@", id)
-        var result: TabMO? = nil
+        var result: TabMO?
         do {
             let results = try context.fetch(fetchRequest) as? [TabMO]
             if let item = results?.first {

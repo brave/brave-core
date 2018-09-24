@@ -32,7 +32,7 @@ class TestAppDelegate: AppDelegate {
 
                 let enumerator = FileManager.default.enumerator(atPath: profileDir)
                 let filePaths = enumerator?.allObjects as! [String]
-                filePaths.filter{ $0.contains(".db") }.forEach { item in
+                filePaths.filter { $0.contains(".db") }.forEach { item in
                     try! FileManager.default.removeItem(at: URL(fileURLWithPath: "\(profileDir)/\(item)"))
                 }
 

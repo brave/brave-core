@@ -1,6 +1,5 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 import CoreData
 import Shared
 import BraveShared
@@ -81,10 +80,10 @@ public class History: NSManagedObject, WebsitePresentable {
         fetchRequest.entity = History.entity(context)
         fetchRequest.fetchBatchSize = 20
         fetchRequest.fetchLimit = 200
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key:"visitedOn", ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "visitedOn", ascending: false)]
         fetchRequest.predicate = NSPredicate(format: "visitedOn >= %@", History.ThisMonth as CVarArg)
 
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext:context, sectionNameKeyPath: "sectionIdentifier", cacheName: nil)
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: "sectionIdentifier", cacheName: nil)
     }
 
     public override func awakeFromFetch() {
@@ -107,7 +106,7 @@ public class History: NSManagedObject, WebsitePresentable {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.entity = History.entity(context)
         fetchRequest.predicate = NSPredicate(format: "url == %@", url.absoluteString)
-        var result: History? = nil
+        var result: History?
         do {
             let results = try context.fetch(fetchRequest) as? [History]
             if let item = results?.first {
@@ -120,7 +119,7 @@ public class History: NSManagedObject, WebsitePresentable {
         return result
     }
 
-    public class func frecencyQuery(_ context: NSManagedObjectContext, containing:String? = nil) -> [History] {
+    public class func frecencyQuery(_ context: NSManagedObjectContext, containing: String? = nil) -> [History] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.fetchLimit = 100
         fetchRequest.entity = History.entity(context)
@@ -152,7 +151,7 @@ public class History: NSManagedObject, WebsitePresentable {
         }
     }
     
-    public class func deleteAll(_ completionOnMain: @escaping ()->()) {
+    public class func deleteAll(_ completionOnMain: @escaping () -> Void) {
         let context = DataController.workerThreadContext
         context.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()

@@ -70,7 +70,7 @@ public class DataController: NSObject {
 
        // TransformerUUID.setValueTransformer(transformer: NSValueTransformer?, forName name: String)
 
-        guard let modelURL = Bundle(for: DataController.self).url(forResource: "Model", withExtension:"momd") else {
+        guard let modelURL = Bundle(for: DataController.self).url(forResource: "Model", withExtension: "momd") else {
             fatalError("Error loading model from bundle")
         }
         guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
@@ -87,7 +87,7 @@ public class DataController: NSObject {
                 let options: [String: AnyObject] = [
                     NSMigratePersistentStoresAutomaticallyOption: true as AnyObject,
                     NSInferMappingModelAutomaticallyOption: true as AnyObject,
-                    NSPersistentStoreFileProtectionKey : FileProtectionType.complete as AnyObject
+                    NSPersistentStoreFileProtectionKey: FileProtectionType.complete as AnyObject
                 ]
                 
                 let type = AppConstants.IsRunningTest ? NSInMemoryStoreType : NSSQLiteStoreType
@@ -98,8 +98,7 @@ public class DataController: NSObject {
                 
                 storeURL = docURL.appendingPathComponent("Model.sqlite")
                 try self.persistentStoreCoordinator.addPersistentStore(ofType: type, configurationName: nil, at: storeURL, options: options)
-            }
-            catch {
+            } catch {
                 fatalError("Error migrating store: \(error)")
             }
         }

@@ -22,7 +22,7 @@ public class FaviconMO: NSManagedObject {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.entity = FaviconMO.entity(context)
         fetchRequest.predicate = NSPredicate(format: "url == %@", urlString)
-        var result: FaviconMO? = nil
+        var result: FaviconMO?
         do {
             let results = try context.fetch(fetchRequest) as? [FaviconMO]
             if let item = results?.first {

@@ -20,7 +20,7 @@ public class DAU {
     private var launchTimer: Timer?
     private let today: Date
     private var todayComponents: DateComponents {
-        return (Calendar.current as NSCalendar).components([.day, .month , .year, .weekday], from: today)
+        return (Calendar.current as NSCalendar).components([.day, .month, .year, .weekday], from: today)
     }
     
     public init(date: Date = Date()) {
@@ -67,7 +67,6 @@ public class DAU {
         
         task.resume()
     }
-    
     
     /// Return params query or nil if no ping should be send to server.
     func paramsAndPrefsSetup() -> [URLQueryItem]? {
@@ -225,7 +224,7 @@ private extension DateComponents {
         let dayDifference = isSunday ? sundayToMondayDayDifference : weekday - 2 // -2 because monday is second weekday
         
         let monday = Date(timeInterval: -TimeInterval(dayDifference * dayInSeconds), since: today)
-        let mondayComponents = (Calendar.current as NSCalendar).components([.day, .month , .year], from: monday)
+        let mondayComponents = (Calendar.current as NSCalendar).components([.day, .month, .year], from: monday)
         
         guard let mYear = mondayComponents.year, let mMonth = mondayComponents.month, let mDay = mondayComponents.day else {
             log.error("First monday of the week components are nil")

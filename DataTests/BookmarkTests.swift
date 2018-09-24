@@ -39,7 +39,6 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNil(result4.displayTitle)
         DataController.remove(object: result4)
         
-        
         // Case 4: Titles not nil but empty
         let result5 = createAndWait(url: nil, title: title, customTitle: "")
         XCTAssertEqual(result5.displayTitle, title)
@@ -492,7 +491,6 @@ class BookmarkTests: CoreDataTestCase {
         
         // CD objects we saved before will get updated after this call.
         Bookmark.reorderBookmarks(frc: frc, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
-        
         
         // Test order has changed, won't work when swapping bookmarks with order = 0
         if !skipOrderChangeTests {

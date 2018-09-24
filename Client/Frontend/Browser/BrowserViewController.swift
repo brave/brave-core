@@ -113,11 +113,11 @@ class BrowserViewController: UIViewController {
     // Keep track of allowed `URLRequest`s from `webView(_:decidePolicyFor:decisionHandler:)` so
     // that we can obtain the originating `URLRequest` when a `URLResponse` is received. This will
     // allow us to re-trigger the `URLRequest` if the user requests a file to be downloaded.
-    var pendingRequests = [String : URLRequest]()
+    var pendingRequests = [String: URLRequest]()
 
     // This is set when the user taps "Download Link" from the context menu. We then force a
     // download of the next request through the `WKNavigationDelegate` that matches this URL.
-    var pendingDownloadURL: URL? = nil
+    var pendingDownloadURL: URL?
 
     let downloadQueue = DownloadQueue()
 
