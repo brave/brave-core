@@ -51,6 +51,7 @@ LEDGER_EXPORT struct PublisherInfoFilter {
   int category;
   PUBLISHER_MONTH month;
   int year;
+  PUBLISHER_EXCLUDE excluded;
 
   std::vector<std::pair<std::string, bool>> order_by;
 };

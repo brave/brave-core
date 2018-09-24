@@ -88,7 +88,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY category,
       ledger::PUBLISHER_MONTH month,
-      int year);
+      int year,
+      ledger::PUBLISHER_EXCLUDE excluded);
 
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
