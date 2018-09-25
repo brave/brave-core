@@ -1,0 +1,11 @@
+<html><head><title>remote iframe</title></head>
+<body>
+<!--
+  Below only works if the CrossSiteRedirector is running on the embedded test
+  server, and the host_resolver is set up to handle those hosts.
+  See comments here <https://cs.chromium.org/chromium/src/content/public/test/browser_test_utils.h?l=434>
+  for more details on how CrossSiteRedirector works.
+-->
+<script src="/cross-site/a.com/create_iframe.js"></script>
+<iframe src="/cross-site/b.com/iframe_with_script.html"></iframe>
+</body></html>
