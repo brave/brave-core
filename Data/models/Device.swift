@@ -88,13 +88,13 @@ class Device: NSManagedObject, Syncable {
     class func deleteAll(completionOnMain: () -> Void) {
         let context = DataController.workerThreadContext
         context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            let fetchRequest = NSFetchRequest<Device>()
             fetchRequest.entity = Device.entity(context: context)
             fetchRequest.includesPropertyValues = false
             do {
                 let results = try context.fetch(fetchRequest)
                 for result in results {
-                    context.delete(result as! NSManagedObject)
+                    context.delete(result)
                 }
                 
             } catch {

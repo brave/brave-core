@@ -155,7 +155,7 @@ class Sync: JSInjector {
         
         let alert = UIAlertController(title: "Sync Disabled", message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        (UIApplication.shared.delegate as! AppDelegate).browserViewController.present(alert, animated: true, completion: nil)
+        (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.present(alert, animated: true, completion: nil)
         #endif
         
         if let joinedSeed = seed, joinedSeed.count == Sync.SeedByteLength {
@@ -285,7 +285,7 @@ class Sync: JSInjector {
         }
 
         let mirror = Mirror(reflecting: isSyncFullyInitialized)
-        let ready = mirror.children.reduce(true) { $0 && $1.1 as! Bool }
+        let ready = mirror.children.reduce(true) { $0 && $1.1 as! Bool } // swiftlint:disable:this force_cast
         if ready {
             // Attempt to authorize device
             

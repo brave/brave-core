@@ -73,8 +73,8 @@ public class History: NSManagedObject, WebsitePresentable {
         }
     }
 
-    public class func frc() -> NSFetchedResultsController<NSFetchRequestResult> {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+    public class func frc() -> NSFetchedResultsController<History> {
+        let fetchRequest = NSFetchRequest<History>()
         let context = DataController.mainThreadContext
         
         fetchRequest.entity = History.entity(context)
@@ -154,13 +154,13 @@ public class History: NSManagedObject, WebsitePresentable {
     public class func deleteAll(_ completionOnMain: @escaping () -> Void) {
         let context = DataController.workerThreadContext
         context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            let fetchRequest = NSFetchRequest<History>()
             fetchRequest.entity = History.entity(context)
             fetchRequest.includesPropertyValues = false
             do {
                 let results = try context.fetch(fetchRequest)
                 for result in results {
-                    context.delete(result as! NSManagedObject)
+                    context.delete(result)
                 }
 
             } catch {

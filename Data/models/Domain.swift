@@ -126,12 +126,11 @@ public class Domain: NSManagedObject {
 
         let context = DataController.workerThreadContext
         context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            let fetchRequest = NSFetchRequest<Domain>()
             fetchRequest.entity = Domain.entity(context)
             do {
                 let results = try context.fetch(fetchRequest)
-                for obj in results {
-                    let domain = obj as! Domain
+                for domain in results {
                     guard let urlString = domain.url, let url = URL(string: urlString) else { continue }
                     let normalizedUrl = url.normalizedHost ?? ""
 
@@ -169,11 +168,11 @@ public class Domain: NSManagedObject {
     class func deleteNonBookmarkedAndClearSiteVisits(_ completionOnMain: @escaping () -> Void) {
         let context = DataController.workerThreadContext
         context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            let fetchRequest = NSFetchRequest<Domain>()
             fetchRequest.entity = Domain.entity(context)
             do {
                 let results = try context.fetch(fetchRequest)
-                (results as? [Domain])?.forEach {
+                results.forEach {
                     if let bms = $0.bookmarks, bms.count > 0 {
                         // Clear visit count
                         $0.visits = 0
@@ -184,7 +183,7 @@ public class Domain: NSManagedObject {
                 }
                 for obj in results {
                     // Cascading delete on favicon, it will also get deleted
-                    context.delete(obj as! NSManagedObject)
+                    context.delete(obj)
                 }
             } catch {
                 let fetchError = error as NSError

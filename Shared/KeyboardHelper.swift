@@ -14,7 +14,7 @@ public struct KeyboardState {
 
     fileprivate init(_ userInfo: [AnyHashable: Any]) {
         self.userInfo = userInfo
-        animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double) ?? 0.2
         // HACK: UIViewAnimationCurve doesn't expose the keyboard animation used (curveValue = 7),
         // so UIViewAnimationCurve(rawValue: curveValue) returns nil. As a workaround, get a
         // reference to an EaseIn curve, then change the underlying pointer data with that ref.

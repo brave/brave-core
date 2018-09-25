@@ -18,7 +18,7 @@ private struct HistoryViewControllerUX {
 class HistoryViewController: SiteTableViewController {
   weak var linkNavigationDelegate: LinkNavigationDelegate?
   fileprivate lazy var emptyStateOverlayView: UIView = self.createEmptyStateOverview()
-  var frc: NSFetchedResultsController<NSFetchRequestResult>?
+  var frc: NSFetchedResultsController<History>?
   
   let tabState: TabState
   
@@ -111,7 +111,7 @@ class HistoryViewController: SiteTableViewController {
       cell.addGestureRecognizer(lp)
     }
     
-    let site = frc!.object(at: indexPath) as! History
+    let site = frc!.object(at: indexPath)
     cell.backgroundColor = UIColor.clear
     cell.setLines(site.title, detailText: site.url)
     
@@ -176,9 +176,9 @@ class HistoryViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let site = frc?.object(at: indexPath) as! History
+    let site = frc?.object(at: indexPath)
     
-    if let u = site.url, let url = URL(string: u) {
+    if let u = site?.url, let url = URL(string: u) {
       linkNavigationDelegate?.linkNavigatorDidSelectURL(url: url, visitType: .typed)
     }
     tableView.deselectRow(at: indexPath, animated: true)
@@ -204,7 +204,7 @@ class HistoryViewController: SiteTableViewController {
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
-      if let obj = self.frc?.object(at: indexPath) as? History {
+      if let obj = self.frc?.object(at: indexPath) {
         obj.remove(save: true)
       }
     }
@@ -267,7 +267,7 @@ extension HistoryViewController {
     guard gesture.state == .began,
       let cell = gesture.view as? UITableViewCell,
       let indexPath = tableView.indexPath(for: cell),
-      let history = frc?.object(at: indexPath) as? History else {
+      let history = frc?.object(at: indexPath) else {
         return
     }
     
