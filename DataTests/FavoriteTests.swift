@@ -107,7 +107,7 @@ class FavoriteTests: CoreDataTestCase {
     private func reorder(_ index: Int, toIndex: Int) {
         backgroundSaveAndWaitForExpectation {
             Bookmark.reorderBookmarks(
-                frc: fetchController as? NSFetchedResultsController<NSFetchRequestResult>,
+                frc: fetchController,
                 sourceIndexPath: IndexPath(row: index, section: 0),
                 destinationIndexPath: IndexPath(row: toIndex, section: 0)
             )
