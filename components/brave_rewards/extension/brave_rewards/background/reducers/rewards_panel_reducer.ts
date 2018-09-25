@@ -33,7 +33,13 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     case types.ON_TAB_RETRIEVED:
       const tab: chrome.tabs.Tab = payload.tab
-      if (!tab || !tab.url || tab.incognito || !state.walletCreated) {
+      if (
+        !tab ||
+        !tab.url ||
+        tab.incognito ||
+        !tab.active ||
+        !state.walletCreated
+      ) {
         break
       }
 
@@ -42,9 +48,15 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     case types.ON_PUBLISHER_DATA:
       {
-
+        let publisher = payload.publisher
         let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
-        publishers[payload.windowId.toString()] = payload.publisher
+
+        if (publisher && !publisher.publisher_key) {
+          delete publishers[payload.windowId.toString()]
+        } else {
+          publishers[payload.windowId.toString()] = payload.publisher
+        }
+
         state = {
           ...state,
           publishers

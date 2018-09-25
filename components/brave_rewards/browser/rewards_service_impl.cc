@@ -1030,8 +1030,12 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const st
 
   auto now = base::Time::Now();
   auto origin = parsedUrl.GetOrigin();
-  const std::string tld =
+  std::string tld =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
+
+  if (tld == "") {
+    tld = "-1";
+  }
 
   ledger_->GetPublisherActivityFromUrl(windowId,
       tld,
@@ -1043,14 +1047,19 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const st
 void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
                                              std::unique_ptr<ledger::PublisherInfo> info,
                                              uint64_t windowId) {
-  if (result != ledger::Result::LEDGER_OK) {
-    return;
-  }
+  if (result == ledger::Result::LEDGER_OK || result == ledger::Result::NOT_FOUND) {
+    EventRouter* event_router = EventRouter::Get(profile_);
+    if (!event_router) {
+      return;
+    }
 
-  // extension
-  EventRouter* event_router = EventRouter::Get(profile_);
-  if (event_router && info) {
     extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
+
+    if (!info.get()) {
+      info.reset(new ledger::PublisherInfo());
+      info->id = "";
+    }
+
     publisher.percentage = info->percent;
     publisher.verified = info->verified;
     publisher.excluded = info->excluded;
