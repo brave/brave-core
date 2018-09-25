@@ -131,11 +131,14 @@ bool ObjectMap::GetParsedDataByLocalId(
   const std::string &localId,
   std::string *object_id, std::string *order, std::string *api_version) {
   std::string raw_local_id = ComposeRawLocalId(type, localId);
+  LOG(ERROR) << "TAGAB ObjectMap::GetParsedDataByLocalId: raw_local_id=<" << raw_local_id << ">";
   std::string json = GetRawJsonByLocalId(raw_local_id);
 
-  LOG(ERROR) << "TAGAB ObjectMap::GetParsedDataByLocalId: json=" << json;
+  LOG(ERROR) << "TAGAB ObjectMap::GetParsedDataByLocalId: json=<" << json << ">";
 
   if (json.empty()) {
+    LOG(ERROR) << "TAGAB ObjectMap::GetParsedDataByLocalId: json is empty, tracing all";
+    TraceAll();
     return false;
   }
 
@@ -244,6 +247,9 @@ void ObjectMap::SaveObjectIdRawJson(
   const std::string &objectIdJSON,
   const std::string &objectId) {
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectIdRawJson - enter";
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectIdRawJson raw_local_id="<<raw_local_id;
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectIdRawJson objectIdJSON="<<objectIdJSON;
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectIdRawJson objectId="<<objectId;
 
   CreateOpenDatabase();
   if (nullptr == level_db_) {
@@ -286,6 +292,7 @@ std::string ObjectMap::GetOrderByObjectId(const Type &type, const std::string &o
 }
 
 std::string ObjectMap::GetOrderByLocalObjectId(const Type &type, const std::string &localId) {
+  LOG(ERROR) << "TAGAB ObjectMap::GetOrderByLocalObjectId " << localId;
   std::string order;
   std::string object_id_saved;
   bool ret = GetParsedDataByLocalId(type, localId, &object_id_saved, &order, nullptr);

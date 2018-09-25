@@ -185,13 +185,14 @@ void Bookmarks::SaveIdMap(const int64_t &local_id, const std::string &order, con
         s_local_id,
         sync_object_id,
         order);
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SaveIdMap <"<<s_local_id<<"> ==> <"<<sync_object_id<<">";
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::SaveIdMap <"<<s_local_id<<"> ==> <"<<sync_object_id<<">, <"<<order<<">";
 }
 
 void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
   const jslib::Bookmark &sync_bookmark = sync_record.GetBookmark();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark location="<<sync_bookmark.site.location;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark title="<<sync_bookmark.site.title;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark order="<<sync_bookmark.order;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark parentFolderObjectId="<<sync_record.GetBookmark().parentFolderObjectId;
   DCHECK(model_);
   if (model_ == nullptr) {
@@ -219,8 +220,10 @@ void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record
   DCHECK(controller_exports_->GetTaskRunner());
 
   const jslib::Bookmark &sync_bookmark = sync_record->GetBookmark();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork objectId="<<sync_record->objectId;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork location="<<sync_bookmark.site.location;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork title="<<sync_bookmark.site.title;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork order="<<sync_bookmark.order;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork s_parent_local_object_id="<<s_parent_local_object_id;
 
   int64_t parent_local_object_id = -1;
@@ -328,7 +331,10 @@ void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record
 }
 
 void Bookmarks::AddBookmarkPostUiFileWork(const int64_t &added_node_id, const std::string &order, const std::string &sync_record_object_id) {
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkPostUiFileWork added_node_id="<<added_node_id<<" sync_record_object_id="<<sync_record_object_id;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkPostUiFileWork added_node_id="<<added_node_id;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkPostUiFileWork order="<<order;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkPostUiFileWork sync_record_object_id="<<sync_record_object_id;
+
   SaveIdMap(added_node_id, order, sync_record_object_id);
 }
 

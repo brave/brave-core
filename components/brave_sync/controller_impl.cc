@@ -61,10 +61,12 @@ ControllerImpl::~ControllerImpl() {
 }
 
 bool ControllerImpl::IsSyncConfigured() {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::IsSyncConfigured will return sync_configured_="<<sync_configured_;
   return sync_configured_;
 }
 
 bool ControllerImpl::IsSyncInitialized() {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::IsSyncConfigured will return sync_initialized_="<<sync_initialized_;
   return sync_initialized_;
 }
 
@@ -107,6 +109,8 @@ void ControllerImpl::SetProfile(Profile *profile) {
     sync_configured_ = true;
   } else {
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl sync is NOT configured";
+    LOG(ERROR) << "TAGAB sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() << ">";
+    LOG(ERROR) << "TAGAB sync_prefs_->GetThisDeviceName()=<" << sync_prefs_->GetThisDeviceName() << ">";
   }
 
   profile_ = profile;
@@ -405,6 +409,9 @@ void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &de
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: saved seed="<<temp_storage_.seed_str_;
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: saved temp_storage_.device_name_="<<temp_storage_.device_name_;
 
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: sync_configured_ = true";
+  sync_configured_ = true;
+
   sync_prefs_->SetSyncThisDevice(true);
 
   sync_prefs_->SetSyncBookmarksEnabled(true);
@@ -668,7 +675,9 @@ void ControllerImpl::OnResolvedBookmarks(const RecordsList &records) {
 
   for (const auto &sync_record : records) {
     DCHECK(sync_record->has_bookmark());
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: title=<" << sync_record->GetBookmark().site.title << ">";
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: sync_record->objectId=<" << sync_record->objectId << ">";
+    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: order=<" << sync_record->GetBookmark().order << ">";
     DCHECK(!sync_record->objectId.empty());
     std::string local_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark, sync_record->objectId);
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: local_id=<" << local_id << ">";
@@ -1066,6 +1075,9 @@ void ControllerImpl::BookmarkAdded(
   const int64_t &next_item_id) {
   // Should be invoked on FILE-enabled thread
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkAdded";
+  LOG(ERROR) << "TAGAB node_id="<<node_id;
+  LOG(ERROR) << "TAGAB prev_item_id="<<prev_item_id;
+  LOG(ERROR) << "TAGAB next_item_id="<<next_item_id;
 
   std::string prev_item_order;
   std::string next_item_order;
@@ -1073,10 +1085,12 @@ void ControllerImpl::BookmarkAdded(
   if (prev_item_id != -1) {
     prev_item_order = sync_obj_map_->GetOrderByLocalObjectId(
       storage::ObjectMap::Type::Bookmark, std::to_string(prev_item_id));
+    DCHECK(!prev_item_order.empty());
   }
   if (next_item_id != -1) {
     next_item_order = sync_obj_map_->GetOrderByLocalObjectId(
       storage::ObjectMap::Type::Bookmark, std::to_string(next_item_id));
+    DCHECK(!next_item_order.empty());
   }
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
   LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
