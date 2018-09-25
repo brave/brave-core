@@ -1,14 +1,14 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 866453bdfddf5c899472633b11910ad41de81e35..eb0a03558de4637cd7df733fc2795023db8d20ed 100644
+index 866453bdfddf5c899472633b11910ad41de81e35..a06e14f588a8d3d33b519f3d2a87b94927f82601 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
 @@ -328,9 +328,12 @@ cr.define('settings', function() {
  
        // TODO(tommycli): Find a way to refactor these repetitive category
        // routes.
-+<if expr="_google_chrome">
++      // <if expr="_google_chrome">
        r.SITE_SETTINGS_ADS = r.SITE_SETTINGS.createChild('ads');
-+</if>
++      // </if>
        r.SITE_SETTINGS_AUTOMATIC_DOWNLOADS =
            r.SITE_SETTINGS.createChild('automaticDownloads');
 +      r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay');
