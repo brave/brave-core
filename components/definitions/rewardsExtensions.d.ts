@@ -1,7 +1,7 @@
 declare namespace RewardsExtension {
   interface State {
     publishers: Record<string, Publisher>
-    report: RewardsExtension.Report
+    report: Report
     walletCreated: boolean
     walletCreateFailed: boolean
     walletProperties: WalletProperties
