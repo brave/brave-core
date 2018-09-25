@@ -192,14 +192,22 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
   const jslib::Bookmark &sync_bookmark = sync_record.GetBookmark();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark location="<<sync_bookmark.site.location;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark title="<<sync_bookmark.site.title;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark parentFolderObjectId="<<sync_record.GetBookmark().parentFolderObjectId;
   DCHECK(model_);
   if (model_ == nullptr) {
     return;
   }
 
   auto sync_record_ptr = jslib::SyncRecord::Clone(sync_record);
-  auto s_parent_local_object_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark,
-    sync_record.GetBookmark().parentFolderObjectId);
+  std::string s_parent_local_object_id;
+  if (!sync_record.GetBookmark().parentFolderObjectId.empty()) {
+    s_parent_local_object_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark,
+      sync_record.GetBookmark().parentFolderObjectId);
+  } else {
+    // We don't send parentFolderObjectId if the parent is permanent node
+    // "bookmarks bar", "other" or "mobile" because it is impossible to create
+    // a node direct child of the root node
+  }
 
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
     FROM_HERE, base::Bind(&Bookmarks::AddBookmarkUiWork,
@@ -217,7 +225,7 @@ void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record
 
   int64_t parent_local_object_id = -1;
   const bookmarks::BookmarkNode* parent_node = nullptr;
-  if (base::StringToInt64(s_parent_local_object_id, &parent_local_object_id) && parent_local_object_id != -1) {
+  if (!s_parent_local_object_id.empty() && base::StringToInt64(s_parent_local_object_id, &parent_local_object_id) && parent_local_object_id != -1) {
     LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork parent_local_object_id=" << parent_local_object_id;
     parent_node = bookmarks::GetBookmarkNodeByID(model_, parent_local_object_id);
   } else {
