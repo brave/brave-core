@@ -86,14 +86,16 @@ PublisherInfoFilter::PublisherInfoFilter() :
     category(PUBLISHER_CATEGORY::ALL_CATEGORIES),
     month(PUBLISHER_MONTH::ANY),
     year(-1),
-    excluded(PUBLISHER_EXCLUDE::DEFAULT) {}
+    excluded(PUBLISHER_EXCLUDE::DEFAULT),
+    min_duration(0) {}
 PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     id(filter.id),
     category(filter.category),
     month(filter.month),
     year(filter.year),
     excluded(filter.excluded),
-    order_by(filter.order_by) {}
+    order_by(filter.order_by),
+    min_duration(filter.min_duration) {}
 PublisherInfoFilter::~PublisherInfoFilter() {}
 
 PublisherInfo::PublisherInfo() :

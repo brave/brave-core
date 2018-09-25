@@ -360,6 +360,7 @@ void BatGetMedia::getMediaActivityFromUrl(uint64_t windowId,
                                               const std::string& providerType,
                                               ledger::PUBLISHER_MONTH month,
                                               int year) {
+  // TODO NZ add logic
 
 }
 
