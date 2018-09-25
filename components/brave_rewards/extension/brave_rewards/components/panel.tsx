@@ -165,6 +165,12 @@ export class Panel extends React.Component<Props, State> {
     return props
   }
 
+  openRewardsPage () {
+    chrome.tabs.create({
+      url: 'chrome://rewards'
+    })
+  }
+
   render () {
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
@@ -180,12 +186,12 @@ export class Panel extends React.Component<Props, State> {
         actions={[
           {
             name: 'Add funds',
-            action: this.doNothing,
+            action: this.openRewardsPage,
             icon: <WalletAddIcon />
           },
           {
             name: 'Rewards Settings',
-            action: this.doNothing,
+            action: this.openRewardsPage,
             icon: <BatColorIcon />
           }
         ]}
@@ -204,11 +210,11 @@ export class Panel extends React.Component<Props, State> {
               id={'wallet-panel'}
               platform={publisher.provider as Provider}
               publisherName={publisher.name}
-              publisherImg={publisher.favicon_url || `chrome://favicon/size/48@1x/${publisher.url}`}
+              publisherImg={publisher.favicon_url || `chrome://favicon/size/48@2x/${publisher.url}`}
               monthlyAmount={10}
               isVerified={publisher.verified}
               tipsEnabled={true}
-              includeInAuto={publisher.excluded}
+              includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
               donationAmounts={
                 [5, 10, 15, 20, 30, 50, 100]
