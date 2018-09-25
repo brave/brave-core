@@ -12,28 +12,51 @@ import { Title, Label, SectionBlock, FlexColumn } from 'brave-ui/features/sync'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { getDefaultDeviceName } from '../../helpers'
 
 interface NewToSyncModalProps {
   onClose: () => void
+  actions: any
 }
 
-class NewToSyncModal extends React.PureComponent<NewToSyncModalProps, {}> {
-  get fakeDeviceName () {
-    return 'Your favorite coding OS'
+interface NewToSyncModalState {
+  deviceName: string
+}
+
+class NewToSyncModal extends React.PureComponent<NewToSyncModalProps, NewToSyncModalState> {
+  constructor (props: NewToSyncModalProps) {
+    super(props)
+    this.state = { deviceName: '' }
+  }
+
+  get deviceName () {
+    return this.state.deviceName === ''
+      ? getDefaultDeviceName()
+      : this.state.deviceName
+  }
+
+  getUserInputDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('user is typing ', e.target.value)
+    this.setState({ deviceName: e.target.value })
   }
 
   setupSync = () => {
-    console.log('fake: setting up sync')
+    this.props.actions.setupSyncOwnDevice(this.deviceName)
   }
 
   render () {
     const { onClose } = this.props
+    const { deviceName } = this.state
     return (
       <Modal id='showIAmNewToSyncModal' onClose={onClose} size='small'>
         <Title level={1}>{getLocale('iAmNewToSync')}</Title>
         <Label>{getLocale('enterAnOptionalName')}</Label>
         <SectionBlock>
-          <Input placeholder={this.fakeDeviceName} />
+          <Input
+            placeholder={this.deviceName}
+            value={deviceName}
+            onChange={this.getUserInputDeviceName}
+          />
         </SectionBlock>
         <FlexColumn items='center' content='flex-end'>
           <Button

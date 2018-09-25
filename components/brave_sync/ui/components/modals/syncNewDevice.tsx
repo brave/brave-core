@@ -8,28 +8,20 @@ import * as React from 'react'
 import { Button, Modal, TextArea } from 'brave-ui'
 
 // Feature-specific components
-import {
-  Title,
-  List,
-  ListBullet,
-  FlexColumn,
-  QRCode
-} from 'brave-ui/features/sync'
+import { Title, List, ListBullet, FlexColumn } from 'brave-ui/features/sync'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-
-// Assets
-// QR CODE GOES HERE
-// const fakeQRCodeImage = require('../../../assets/img/fakeQRCodeImage.png')
+// import { generateQRCode } from '../../helpers'
 
 interface SyncANewDeviceModalProps {
   onClose: () => void
+  actions: any
 }
 
 interface SyncEnabledContentState {
   showQRCodeModal: boolean
-  showCodeWordsModal: boolean
+  showSyncWordsModal: boolean
 }
 
 class SyncANewDeviceModal extends React.PureComponent<SyncANewDeviceModalProps, SyncEnabledContentState> {
@@ -37,12 +29,8 @@ class SyncANewDeviceModal extends React.PureComponent<SyncANewDeviceModalProps, 
     super(props)
     this.state = {
       showQRCodeModal: false,
-      showCodeWordsModal: false
+      showSyncWordsModal: false
     }
-  }
-
-  get fakeDeviceName () {
-    return 'Your favorite coding OS'
   }
 
   get fakePassphrase () {
@@ -53,11 +41,16 @@ class SyncANewDeviceModal extends React.PureComponent<SyncANewDeviceModalProps, 
   }
 
   showQRCode = () => {
+    const { actions } = this.props
     this.setState({ showQRCodeModal: !this.state.showQRCodeModal })
+    actions.requestSyncQRCode()
+    // generateQRCode()
   }
 
-  showCodeWords = () => {
-    this.setState({ showCodeWordsModal: !this.state.showCodeWordsModal })
+  showSyncWords = () => {
+    const { actions } = this.props
+    this.setState({ showSyncWordsModal: !this.state.showSyncWordsModal })
+    actions.requestSyncWords()
   }
 
   render () {
@@ -79,7 +72,7 @@ class SyncANewDeviceModal extends React.PureComponent<SyncANewDeviceModalProps, 
               />
               {
                 this.state.showQRCodeModal
-                  ? <div><QRCode src='' /></div>
+                  ? <div>qr code aqui boyeeee</div>
                   : null
               }
           </ListBullet>
@@ -90,11 +83,11 @@ class SyncANewDeviceModal extends React.PureComponent<SyncANewDeviceModalProps, 
                 level='secondary'
                 type='accent'
                 size='small'
-                onClick={this.showCodeWords}
+                onClick={this.showSyncWords}
                 text={getLocale('showSecretCodeWords')}
               />
               {
-                this.state.showCodeWordsModal
+                this.state.showSyncWordsModal
                   ? <TextArea readOnly={true} value={this.fakePassphrase} />
                   : null
               }

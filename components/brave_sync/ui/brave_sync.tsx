@@ -13,36 +13,59 @@ import App from './components/app'
 import store from './store'
 import { ThemeProvider } from 'brave-ui/theme'
 import Theme from 'brave-ui/theme/brave-default'
-// import { getActions as getUtilActions, setActions } from './utils'
-// import * as syncActions from './actions/sync_actions'
+import { getActions as getUtilActions, setActions } from './helpers'
+import * as syncActions from './actions/sync_actions'
+import { bindActionCreators } from 'redux'
 
 window.cr.define('sync_ui_exports', function () {
   'use strict'
 
   function initialize () {
-    render(
+    render (
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
           <App />
         </ThemeProvider>
       </Provider>,
-      document.getElementById('root'))
+      document.getElementById('root')
+    )
+    chrome.send('pageLoaded')
     window.i18nTemplate.process(window.document, window.loadTimeData)
   }
 
-  // TODO: Check whether or not we need this for sync actions API
-  // function getActions () {
-  //   const actions: any = getUtilActions()
-  //   if (actions) {
-  //     return actions
-  //   }
-  //   const newActions = bindActionCreators(rewardsActions, store.dispatch.bind(store))
-  //   setActions(newActions)
-  //   return newActions
-  // }
+  function getActions () {
+    const actions: any = getUtilActions()
+    if (actions) {
+      return actions
+    }
+    const newActions = bindActionCreators(syncActions, store.dispatch.bind(store))
+    setActions(newActions)
+    return newActions
+  }
+
+  function showSettings (settings: any, devices: any) {
+    getActions().onShowSettings(settings, devices)
+  }
+
+  function haveSyncWords (syncWords: any) {
+    getActions().onHaveSyncWords(syncWords)
+  }
+
+  function haveSeedForQrCode (seed: any) {
+    getActions().onHaveSeedForQrCode(seed)
+  }
+
+  // for testing purposes
+  function logMessage (message: any) {
+    getActions().onLogMessage(message)
+  }
 
   return {
-    initialize
+    initialize,
+    showSettings,
+    haveSyncWords,
+    haveSeedForQrCode,
+    logMessage
   }
 })
 

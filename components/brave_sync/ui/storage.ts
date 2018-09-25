@@ -5,10 +5,22 @@
 // Utils
 import { debounce } from '../../common/debounce'
 
-const keyName = 'sync-data'
+const keyName = 'sync-data0'
 
 const defaultState = {
-  isSyncEnabled: false
+  isSyncEnabled: false,
+  mainDeviceName: '',
+  devices: [],
+  setImmediateSyncDevice: true,
+  syncBookmarks: true,
+  syncSavedSiteSettings: true,
+  syncBrowsingHistory: true,
+  // TBD
+  TBDsettings: [],
+  TBDdevices: [],
+  TBDsyncWords: '',
+  TBDseed: '',
+  TBDmessage: ''
 }
 
 const cleanData = (state: Sync.State) => {

@@ -2,15 +2,22 @@ import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("ui") {
   inputs = [
-    "../../brave_sync/ui/brave_sync.html",
-    "../../brave_sync/ui/brave_sync.tsx",
-    "../../brave_sync/ui/storage.ts",
-    "../../brave_sync/ui/store.ts",
     "../../brave_sync/ui/actions/sync_actions.ts",
+    "../../brave_sync/ui/components/modals/existingSyncCode.tsx",
+    "../../brave_sync/ui/components/modals/newToSync.tsx",
+    "../../brave_sync/ui/components/modals/resetSync.tsx",
+    "../../brave_sync/ui/components/modals/syncNewDevice.tsx",
     "../../brave_sync/ui/components/app.tsx",
+    "../../brave_sync/ui/components/disabledContent.tsx",
+    "../../brave_sync/ui/components/enabledContent.tsx",
     "../../brave_sync/ui/constants/sync_types.ts",
     "../../brave_sync/ui/reducers/index.ts",
     "../../brave_sync/ui/reducers/sync_reducer.ts",
+    "../../brave_sync/ui/brave_sync.html",
+    "../../brave_sync/ui/brave_sync.tsx",
+    "../../brave_sync/ui/helpers.ts",
+    "../../brave_sync/ui/storage.ts",
+    "../../brave_sync/ui/store.ts"
   ]
 
   bundle_names = ["brave_sync.bundle.js"]

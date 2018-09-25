@@ -385,6 +385,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "deviceName", IDS_BRAVE_SYNC_DEVICE_NAME },
         { "id", IDS_BRAVE_SYNC_ID },
         { "lastActive", IDS_BRAVE_SYNC_LAST_ACTIVE },
+        { "remove", IDS_BRAVE_SYNC_REMOVE },
         { "syncANewDevice", IDS_BRAVE_SYNC_NEW_DEVICE },
         { "syncData", IDS_BRAVE_SYNC_DATA },
         { "syncDataInfo", IDS_BRAVE_SYNC_DATA_INFO },

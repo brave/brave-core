@@ -214,6 +214,7 @@
       <message name="IDS_BRAVE_SYNC_DEVICE_NAME" desc="The Brave Sync `Device Name` label">Device Name</message>
       <message name="IDS_BRAVE_SYNC_ID" desc="The Brave Sync `ID` table row">ID</message>
       <message name="IDS_BRAVE_SYNC_LAST_ACTIVE" desc="The Brave Sync `last active` table row">Last active</message>
+      <message name="IDS_BRAVE_SYNC_REMOVE" desc="The Brave Sync `remove` table row">Remove</message>
       <message name="IDS_BRAVE_SYNC_NEW_DEVICE" desc="The Brave Sync `Sync a new device...` button">Sync a new device...</message>
       <message name="IDS_BRAVE_SYNC_DATA" desc="The Brave Sync `Sync Data` title">Sync Data</message>
       <message name="IDS_BRAVE_SYNC_DATA_INFO" desc="The Brave Sync `Sync the following data from this device` title">Sync the following data from this device:</message>

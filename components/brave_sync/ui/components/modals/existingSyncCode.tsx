@@ -12,18 +12,36 @@ import { Title, Label, SectionBlock, FlexColumn } from 'brave-ui/features/sync'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { getDefaultDeviceName } from '../../helpers'
 
 interface ExistingSyncCodeModalProps {
   onClose: () => void
+  actions: any
 }
 
-class ExistingSyncCodeModal extends React.PureComponent<ExistingSyncCodeModalProps, {}> {
-  get fakeDeviceName () {
-    return 'Your favorite coding OS'
+interface ExistingSyncCodeModalState {
+  deviceName: string
+  syncWords: string
+}
+
+class ExistingSyncCodeModal extends React.PureComponent<ExistingSyncCodeModalProps, ExistingSyncCodeModalState> {
+  get defaultDeviceName () {
+    return getDefaultDeviceName()
   }
 
-  setUpSync = () => {
-    console.log('fake: setting up sync')
+  getUserInputDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('user is typing device name ', e.target.value)
+    this.setState({ deviceName: e.target.value })
+  }
+
+  getUserInputSyncWords = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    console.log('user is typing sync words ', e.target.value)
+    this.setState({ syncWords: e.target.value })
+  }
+
+  setupSyncAnotherDevice = () => {
+    const { actions } = this.props
+    actions.setupSyncAnotherDevice(this.state.syncWords, this.state.deviceName)
   }
 
   render () {
@@ -33,18 +51,21 @@ class ExistingSyncCodeModal extends React.PureComponent<ExistingSyncCodeModalPro
         <Title level={1}>{getLocale('iHaveAnExistingSyncCode')}</Title>
         <Label>{getLocale('enterYourSyncCodeWords')}</Label>
         <SectionBlock>
-          <TextArea />
+          <TextArea onChange={this.getUserInputSyncWords} />
         </SectionBlock>
         <Label>{getLocale('enterAnOptionalName')}</Label>
         <SectionBlock>
-          <Input placeholder={this.fakeDeviceName} />
+          <Input
+            placeholder={this.defaultDeviceName}
+            onChange={this.getUserInputDeviceName}
+          />
         </SectionBlock>
         <FlexColumn items='center' content='flex-end'>
           <Button
             level='primary'
             type='accent'
             size='medium'
-            onClick={this.setUpSync}
+            onClick={this.setupSyncAnotherDevice}
             text={getLocale('setUpSync')}
           />
         </FlexColumn>
