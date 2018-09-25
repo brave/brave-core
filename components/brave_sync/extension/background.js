@@ -88,7 +88,7 @@ chrome.runtime.onStartup.addListener(function() {
     console.log('arr_int=', arr_int);
     var buffer = new Uint8Array(arr_int);
     console.log('buffer=', buffer);
-    var words = module.exports.passphrase.fromBytesOrHex(buffer, /*useNiceware*/true);
+    var words = module.exports.passphrase.fromBytesOrHex(buffer, /*useNiceware=*/ false /* use bip39 */);
     console.log('words=', words);
     chrome.braveSync.syncWordsPrepared(words);
   });
