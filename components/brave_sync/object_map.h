@@ -67,6 +67,12 @@ public:
     const std::string &localId,
     const std::string &order);
 
+  void CreateOrderByLocalObjectId(
+    const Type &type,
+    const std::string &localId,
+    const std::string &objectId,
+    const std::string &order);
+
   void DeleteByLocalId(const Type &type, const std::string &localId);
   void Close();
   void CloseDBHandle();

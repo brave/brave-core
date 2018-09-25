@@ -717,25 +717,40 @@ void ControllerImpl::OnSaveBookmarkOrder(const std::string &order,
   //            1. apply new order string in obj map
   //            2. send updated bookmark
 
-  int64_t between_order_rr_context = PopRRContext(prev_order, next_order);
-  LOG(ERROR) << "TAGAB between_order_rr_context=" << between_order_rr_context;
-  DCHECK(between_order_rr_context != -1);
+  int64_t between_order_rr_context_node_id = -1;
+  int action = -1;
+  PopRRContext(prev_order, next_order, between_order_rr_context_node_id, action);
+
+  LOG(ERROR) << "TAGAB between_order_rr_context_node_id=" << between_order_rr_context_node_id;
+  LOG(ERROR) << "TAGAB action=" << action;
+  DCHECK(between_order_rr_context_node_id != -1);
+  DCHECK(action != -1);
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnSaveBookmarkOrderFileWork, base::Unretained(this),
-    between_order_rr_context,
-    order)
+    base::Bind(&ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork, base::Unretained(this),
+    between_order_rr_context_node_id,
+    order,
+    action)
   );
 }
 
-void ControllerImpl::OnSaveBookmarkOrderFileWork(const int64_t &bookmark_local_id, const std::string &order) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarkOrderFileWork";
+void ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t &bookmark_local_id,
+  const std::string &order, const int &action) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork";
   LOG(ERROR) << "TAGAB bookmark_local_id=" << bookmark_local_id;
   LOG(ERROR) << "TAGAB order=" << order;
+  LOG(ERROR) << "TAGAB action=" << action;
 
-  sync_obj_map_->UpdateOrderByLocalObjectId(storage::ObjectMap::Type::Bookmark,
-     std::to_string(bookmark_local_id), order);
+  if (action == jslib_const::kActionUpdate) {
+    sync_obj_map_->UpdateOrderByLocalObjectId(storage::ObjectMap::Type::Bookmark,
+      std::to_string(bookmark_local_id), order);
+  } else if (action == jslib_const::kActionCreate) {
+    sync_obj_map_->CreateOrderByLocalObjectId(storage::ObjectMap::Type::Bookmark,
+      std::to_string(bookmark_local_id), tools::GenerateObjectId(), order);
+  } else {
+    NOTREACHED();
+  }
 
   const bookmarks::BookmarkNode* node = bookmarks_->GetNodeById(bookmark_local_id);
   LOG(ERROR) << "TAGAB node=" << node;
@@ -748,7 +763,8 @@ void ControllerImpl::OnSaveBookmarkOrderFileWork(const int64_t &bookmark_local_i
   std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(
     {node},
     std::map<const bookmarks::BookmarkNode*, std::string>(),
-    jslib_const::kActionUpdate);
+    action //jslib_const::kActionUpdate
+  );
 
   DCHECK(records);
   LOG(ERROR) << "TAGAB records->size()=" << records->size();
@@ -757,21 +773,21 @@ void ControllerImpl::OnSaveBookmarkOrderFileWork(const int64_t &bookmark_local_i
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, *records);
 }
 
-void ControllerImpl::PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &context) {
+void ControllerImpl::PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &node_id, const int &action) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::tuple<std::string, std::string> key(prev_order, next_order);
   DCHECK(rr_map_.find(key) == rr_map_.end());
-  rr_map_[key] = context;
+  rr_map_[key] = std::make_tuple(node_id, action);
 }
 
-int64_t ControllerImpl::PopRRContext(const std::string &prev_order, const std::string &next_order) {
+void ControllerImpl::PopRRContext(const std::string &prev_order, const std::string &next_order, int64_t &node_id, int &action) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::tuple<std::string, std::string> key(prev_order, next_order);
   auto it = rr_map_.find(key);
   DCHECK(it != rr_map_.end());
-  int64_t ret = it->second;
+  node_id = std::get<0>(it->second);
+  action = std::get<1>(it->second);
   rr_map_.erase(it);
-  return ret;
 }
 
 void ControllerImpl::OnSyncWordsPrepared(const std::string &words) {
@@ -1038,7 +1054,50 @@ void ControllerImpl::BookmarkMovedQueryNewOrderUiWork(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(sync_client_);
 
-  PushRRContext(prev_item_order, next_item_order, node_id);
+  PushRRContext(prev_item_order, next_item_order, node_id, jslib_const::kActionUpdate);
+
+  sync_client_->SendGetBookmarkOrder(prev_item_order, next_item_order);
+  // See later in OnSaveBookmarkOrder
+}
+
+void ControllerImpl::BookmarkAdded(
+  const int64_t &node_id,
+  const int64_t &prev_item_id,
+  const int64_t &next_item_id) {
+  // Should be invoked on FILE-enabled thread
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkAdded";
+
+  std::string prev_item_order;
+  std::string next_item_order;
+
+  if (prev_item_id != -1) {
+    prev_item_order = sync_obj_map_->GetOrderByLocalObjectId(
+      storage::ObjectMap::Type::Bookmark, std::to_string(prev_item_id));
+  }
+  if (next_item_id != -1) {
+    next_item_order = sync_obj_map_->GetOrderByLocalObjectId(
+      storage::ObjectMap::Type::Bookmark, std::to_string(next_item_id));
+  }
+  LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
+  LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
+
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
+    FROM_HERE, base::Bind(&ControllerImpl::BookmarkAddedQueryNewOrderUiWork,
+         base::Unretained(this), node_id, prev_item_order, next_item_order));
+}
+
+void ControllerImpl::BookmarkAddedQueryNewOrderUiWork(
+  const int64_t &node_id,
+  const std::string &prev_item_order,
+  const std::string &next_item_order) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkAddedQueryNewOrderUiWork";
+  LOG(ERROR) << "TAGAB node_id="<<node_id;
+  LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
+  LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(sync_client_);
+
+  PushRRContext(prev_item_order, next_item_order, node_id, jslib_const::kActionCreate);
 
   sync_client_->SendGetBookmarkOrder(prev_item_order, next_item_order);
   // See later in OnSaveBookmarkOrder

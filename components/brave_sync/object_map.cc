@@ -207,6 +207,22 @@ void ObjectMap::UpdateOrderByLocalObjectId(
   SaveObjectIdAndOrder(type, localId, object_id, new_order);
 }
 
+void ObjectMap::CreateOrderByLocalObjectId(
+  const Type &type,
+  const std::string &localId,
+  const std::string &objectId,
+  const std::string &order) {
+  LOG(ERROR) << "TAGAB ObjectMap::CreateOrderByLocalObjectId";
+  LOG(ERROR) << "TAGAB localId="<<localId;
+  LOG(ERROR) << "TAGAB objectId="<<objectId;
+  LOG(ERROR) << "TAGAB order="<<order;
+  DCHECK(!localId.empty());
+  DCHECK(!objectId.empty());
+  DCHECK(!order.empty());
+
+  SaveObjectIdAndOrder(type, localId, objectId, order);
+}
+
 std::string ObjectMap::GetRawJsonByLocalId(const std::string &localId) {
   CreateOpenDatabase();
   if (nullptr == level_db_) {

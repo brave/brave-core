@@ -31,6 +31,11 @@ public:
     const int64_t &prev_item_id,
     const int64_t &next_item_id) = 0;
 
+  virtual void BookmarkAdded(
+    const int64_t &node_id,
+    const int64_t &prev_item_id,
+    const int64_t &next_item_id) = 0;
+
   virtual base::SequencedTaskRunner *GetTaskRunner() = 0;
 
   virtual bool IsSyncConfigured() = 0;

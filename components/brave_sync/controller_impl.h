@@ -133,7 +133,7 @@ private:
   void OnResetSyncFileWork(const std::string &device_id);
   void OnResetSyncPostFileUiWork();
 
-  void OnSaveBookmarkOrderFileWork(const int64_t &bookmark_local_id, const std::string &order);
+  void OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t &bookmark_local_id, const std::string &order, const int &action);
 
   // Other private methods
   void RequestSyncData();
@@ -167,6 +167,16 @@ private:
     const int64_t &next_item_id) override;
 
   void BookmarkMovedQueryNewOrderUiWork(
+    const int64_t &node_id,
+    const std::string &prev_item_order,
+    const std::string &next_item_order);
+
+  void BookmarkAdded(
+    const int64_t &node_id,
+    const int64_t &prev_item_id,
+    const int64_t &next_item_id) override;
+
+  void BookmarkAddedQueryNewOrderUiWork(
     const int64_t &node_id,
     const std::string &prev_item_order,
     const std::string &next_item_order);
@@ -215,8 +225,8 @@ private:
 
   base::SequencedTaskRunner *GetTaskRunner() override;
 
-  void PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &context);
-  int64_t PopRRContext(const std::string &prev_order, const std::string &next_order);
+  void PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &node_id, const int &action);
+  void PopRRContext(const std::string &prev_order, const std::string &next_order, int64_t &node_id, int &action);
 
   // Messages Controller => SyncWebUi
   SyncUI *sync_ui_;
@@ -253,7 +263,9 @@ private:
 
   bool seen_get_init_data_ = false;
 
-  std::map<std::tuple<std::string, std::string>, int64_t> rr_map_; // Map to keep tracking between request and response on query bookmarks order
+  // Map to keep tracking between request and response on query bookmarks order, access only in UI thread
+  // <prev_order, next_order> => <node_id, action>
+  std::map<std::tuple<std::string, std::string>, std::tuple<int64_t, int>> rr_map_;
 
   std::unique_ptr<base::RepeatingTimer> timer_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;

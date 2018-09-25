@@ -400,7 +400,7 @@ std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
   LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords:";
   std::unique_ptr<RecordsList> records = std::make_unique<RecordsList>();
 
-  LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: order_map.size()" << order_map.size();
+  LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: order_map.size()=" << order_map.size();
   for (const auto & the_pair : order_map) {
     LOG(ERROR) << "TAGAB <" << the_pair.first << "> => <" << the_pair.second << ">";
   }
@@ -409,11 +409,11 @@ std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: node=" << node;
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: node->parent()=" << node->parent();
 
-    int64_t parent_folder_id = node->parent() ? node->parent()->id() : 0;
+    int64_t parent_folder_id = node->parent() ? node->parent()->id() : -1;
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: parent_folder_id=" << parent_folder_id;
 
     std::string parent_folder_object_sync_id;
-    if (parent_folder_id) {
+    if (parent_folder_id != -1) {
       if (!order_map.empty()) {
         const auto &it_node_parent_pair = order_map.find(node->parent());
         DCHECK(it_node_parent_pair != order_map.end());
@@ -560,9 +560,42 @@ void Bookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
     return;
   }
 
-  // Send to sync cloud
-  controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionCreate,
-    {node}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
+  int64_t prev_item_id = (index == 0) ? (-1) : parent->GetChild(index - 1)->id();
+  int64_t next_item_id = (index == parent->child_count() - 1) ? (-1) : parent->GetChild(index + 1)->id();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded prev_item_id=" << prev_item_id;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded next_item_id=" << next_item_id;
+  const bookmarks::BookmarkNode* prev_bookmark = nullptr;
+  const bookmarks::BookmarkNode* next_bookmark = nullptr;
+  if (index > 0) {
+    prev_bookmark = parent->GetChild(index - 1);
+    LOG(ERROR) << "TAGAB prev_bookmark->id=" << prev_bookmark->id();
+    LOG(ERROR) << "TAGAB prev_bookmark->title=" << prev_bookmark->GetTitledUrlNodeTitle();
+  } else {
+    LOG(ERROR) << "TAGAB prev_bookmark empty";
+  }
+  if (index != parent->child_count() - 1) {
+    next_bookmark = parent->GetChild(index + 1);
+    LOG(ERROR) << "TAGAB next_bookmark->id=" << next_bookmark->id();
+    LOG(ERROR) << "TAGAB next_bookmark->title=" << next_bookmark->GetTitledUrlNodeTitle();
+  } else {
+    LOG(ERROR) << "TAGAB next_bookmark empty";
+  }
+
+  if (prev_bookmark) {
+    DCHECK(prev_bookmark->id() == prev_item_id);
+  }
+  if (next_bookmark) {
+    DCHECK(next_bookmark->id() == next_item_id);
+  }
+
+  // Next: ask lib, jump into task runner to get orders with file ops
+  controller_exports_->GetTaskRunner()->PostTask(
+    FROM_HERE,
+    base::Bind(&ControllerForBookmarksExports::BookmarkAdded, base::Unretained(controller_exports_),
+    node->id(),
+    prev_item_id,
+    next_item_id)
+  );
 }
 
 void Bookmarks::BookmarkNodeRemoved(
