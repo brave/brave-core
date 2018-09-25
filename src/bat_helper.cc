@@ -1852,7 +1852,7 @@ static bool ignore_ = false;
 
   uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& media_key, const std::string& type) {
     uint64_t duration = 0;
-
+    
     if (YOUTUBE_MEDIA_TYPE == type) {
       std::map<std::string, std::string>::const_iterator iterSt = data.find("st");
       std::map<std::string, std::string>::const_iterator iterEt = data.find("et");
@@ -1864,7 +1864,8 @@ static bool ignore_ = false;
         if (startTime.size() != endTime.size()) {
           return 0;
         }
-        double tempTime = 0;
+        // get all the intervals and combine them. 
+        // (Should only be one set if there were no seeks)
         for (size_t i = 0; i < startTime.size(); i++) {
           std::stringstream tempET(endTime[i]);
           std::stringstream tempST(startTime[i]);
@@ -1872,9 +1873,12 @@ static bool ignore_ = false;
           double et = 0;
           tempET >> et;
           tempST >> st;
-          tempTime = et - st;
+
+          // round instead of truncate
+          // also make sure we include previous iterations
+          // if more than one set exists
+          duration += (uint64_t)std::round(et - st);
         }
-        duration = (uint64_t)tempTime;
       }
     } else if (TWITCH_MEDIA_TYPE == type) {
       // We set the correct duration for twitch in BatGetMedia class
