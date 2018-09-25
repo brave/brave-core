@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
+#include "base/rand_util.h"
 #include "base/strings/string_util.h"
 #include "base/sys_info.h"
 #include "base/task/post_task.h"
@@ -93,7 +94,9 @@ void BraveReferralsService::Start() {
   DCHECK(!fetch_referral_headers_timer_);
   fetch_referral_headers_timer_ = std::make_unique<base::RepeatingTimer>();
   fetch_referral_headers_timer_->Start(
-      FROM_HERE, base::TimeDelta::FromSeconds(kFetchReferralHeadersFrequency),
+      FROM_HERE,
+      base::TimeDelta::FromSeconds(kFetchReferralHeadersFrequency +
+                                   base::RandInt(0, 60 * 10)),
       this, &BraveReferralsService::OnFetchReferralHeadersTimerFired);
   DCHECK(fetch_referral_headers_timer_->IsRunning());
 
