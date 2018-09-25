@@ -71,9 +71,9 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         return SyncBookmark(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
     }
 
-    public class func frc(parentFolder: Bookmark?) -> NSFetchedResultsController<NSFetchRequestResult> {
+    public class func frc(parentFolder: Bookmark?) -> NSFetchedResultsController<Bookmark> {
         let context = DataController.mainThreadContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        let fetchRequest = NSFetchRequest<Bookmark>()
         
         fetchRequest.entity = Bookmark.entity(context: context)
         fetchRequest.fetchBatchSize = 20
@@ -286,13 +286,13 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
     }
 
     public class func reorderBookmarks(
-        frc: NSFetchedResultsController<NSFetchRequestResult>?,
+        frc: NSFetchedResultsController<Bookmark>?,
         sourceIndexPath: IndexPath,
         destinationIndexPath: IndexPath) {
         guard let frc = frc else { return }
         
-        let dest = frc.object(at: destinationIndexPath) as! Bookmark
-        let src = frc.object(at: sourceIndexPath) as! Bookmark
+        let dest = frc.object(at: destinationIndexPath)
+        let src = frc.object(at: sourceIndexPath)
         
         if dest === src {
             return
@@ -301,7 +301,7 @@ public class Bookmark: NSManagedObject, WebsitePresentable, Syncable {
         // Warning, this could be a bottleneck, grabs ALL the bookmarks in the current folder
         // But realistically, with a batch size of 20, and most reads around 1ms, a bottleneck here is an edge case.
         // Optionally: grab the parent folder, and the on a bg thread iterate the bms and update their order. Seems like overkill.
-        var bms = frc.fetchedObjects as! [Bookmark]
+        var bms = frc.fetchedObjects!
         bms.remove(at: bms.index(of: src)!)
         if sourceIndexPath.row > destinationIndexPath.row {
             // insert before

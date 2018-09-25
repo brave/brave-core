@@ -90,7 +90,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     }
     
     func loadSitesFromProfile() {
-        let sql = profile.favicons as! SQLiteHistory
+        let sql = profile.favicons as! SQLiteHistory // swiftlint:disable:this force_cast
         let urls = listData.compactMap {$0.url.isLocal ? $0.url.getQuery()["url"]?.unescape() : $0.url.absoluteString}
 
         sql.getSitesForURLs(urls).uponQueue(.main) { result in
@@ -219,6 +219,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable:next force_cast
         let cell = self.tableView.dequeueReusableCell(withIdentifier: BackForwardListCellIdentifier, for: indexPath) as! BackForwardTableViewCell
         let item = listData[indexPath.item]
         let urlString = item.url.isLocal ? item.url.getQuery()["url"]?.unescape() : item.url.absoluteString

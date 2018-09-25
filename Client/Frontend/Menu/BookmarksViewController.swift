@@ -108,7 +108,7 @@ class BookmarksViewController: SiteTableViewController {
   
   weak var linkNavigationDelegate: LinkNavigationDelegate?
   
-  var bookmarksFRC: NSFetchedResultsController<NSFetchRequestResult>?
+  var bookmarksFRC: NSFetchedResultsController<Bookmark>?
   
   var editBookmarksToolbar: UIToolbar!
   var editBookmarksButton: UIBarButtonItem!
@@ -319,7 +319,7 @@ class BookmarksViewController: SiteTableViewController {
   
   fileprivate func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
     
-    guard let item = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return }
+    guard let item = bookmarksFRC?.object(at: indexPath) else { return }
     cell.tag = item.objectID.hashValue
     
     func configCell(image: UIImage? = nil, icon: FaviconMO? = nil) {
@@ -431,7 +431,7 @@ class BookmarksViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    guard let bookmark = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return false }
+    guard let bookmark = bookmarksFRC?.object(at: indexPath) else { return false }
     
     return !bookmark.isFavorite
   }
@@ -439,7 +439,7 @@ class BookmarksViewController: SiteTableViewController {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: false)
     
-    guard let bookmark = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return }
+    guard let bookmark = bookmarksFRC?.object(at: indexPath) else { return }
     
     if !bookmark.isFolder {
       if tableView.isEditing {
@@ -474,7 +474,7 @@ class BookmarksViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-    guard let item = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return nil }
+    guard let item = bookmarksFRC?.object(at: indexPath) else { return nil }
     
     let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Strings.Delete, handler: { (action, indexPath) in
       
@@ -503,7 +503,7 @@ class BookmarksViewController: SiteTableViewController {
   }
   
   fileprivate func showEditBookmarkController(_ tableView: UITableView, indexPath: IndexPath) {
-    guard let item = bookmarksFRC?.object(at: indexPath) as? Bookmark, !item.isFavorite else { return }
+    guard let item = bookmarksFRC?.object(at: indexPath), !item.isFavorite else { return }
     let nextController = BookmarkEditingViewController(bookmarksPanel: self, indexPath: indexPath, bookmark: item)
     
     nextController.completionBlock = { controller in
@@ -645,7 +645,7 @@ extension BookmarksViewController {
     guard gesture.state == .began,
       let cell = gesture.view as? UITableViewCell,
       let indexPath = tableView.indexPath(for: cell),
-      let bookmark = bookmarksFRC?.object(at: indexPath) as? Bookmark else {
+      let bookmark = bookmarksFRC?.object(at: indexPath) else {
       return
     }
     

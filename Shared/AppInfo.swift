@@ -20,15 +20,15 @@ open class AppInfo {
     }
 
     public static var displayName: String {
-        return applicationBundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
+        return applicationBundle.infoDictionaryString(forKey: "CFBundleDisplayName")
     }
 
     public static var appVersion: String {
-        return applicationBundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        return applicationBundle.infoDictionaryString(forKey: "CFBundleShortVersionString")
     }
 
     public static var buildNumber: String {
-        return applicationBundle.object(forInfoDictionaryKey: String(kCFBundleVersionKey)) as! String
+        return applicationBundle.infoDictionaryString(forKey: String(kCFBundleVersionKey))
     }
 
     public static var majorAppVersion: String {
@@ -65,7 +65,7 @@ open class AppInfo {
     /// of the *base* bundle identifier.
     public static var baseBundleIdentifier: String {
         let bundle = Bundle.main
-        let packageType = bundle.object(forInfoDictionaryKey: "CFBundlePackageType") as! String
+        let packageType = bundle.infoDictionaryString(forKey: "CFBundlePackageType")
         let baseBundleIdentifier = bundle.bundleIdentifier!
         if packageType == "XPC!" {
             let components = baseBundleIdentifier.components(separatedBy: ".")
@@ -76,11 +76,11 @@ open class AppInfo {
 
     // Return the MozWhatsNewTopic key from the Info.plist
     public static var whatsNewTopic: String? {
-        return Bundle.main.object(forInfoDictionaryKey: "MozWhatsNewTopic") as? String
+        return Bundle.main.infoDictionaryString(forKey: "MozWhatsNewTopic")
     }
 
     // Return whether the currently executing code is running in an Application
     public static var isApplication: Bool {
-        return Bundle.main.object(forInfoDictionaryKey: "CFBundlePackageType") as! String == "APPL"
+        return Bundle.main.infoDictionaryString(forKey: "CFBundlePackageType") == "APPL"
     }
 }

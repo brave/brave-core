@@ -9,7 +9,7 @@ import Data
 private let log = Logger.browserLogger
 
 class FavoritesDataSource: NSObject, UICollectionViewDataSource {
-    var frc: NSFetchedResultsController<NSFetchRequestResult>?
+    var frc: NSFetchedResultsController<Bookmark>?
     weak var collectionView: UICollectionView?
 
     var isEditing: Bool = false {
@@ -44,7 +44,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
     func favoriteBookmark(at indexPath: IndexPath) -> Bookmark? {
         // Favorites may be not updated at this point, fetching them again.
         try? frc?.performFetch()
-        return frc?.object(at: indexPath) as? Bookmark
+        return frc?.object(at: indexPath)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -52,6 +52,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // swiftlint:disable:next force_cast
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteCell.identifier, for: indexPath) as! FavoriteCell
         return configureCell(cell: cell, at: indexPath)
     }
@@ -63,7 +64,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
 
     @discardableResult
     fileprivate func configureCell(cell: FavoriteCell, at indexPath: IndexPath) -> UICollectionViewCell {
-        guard let fav = frc?.object(at: indexPath) as? Bookmark else { return UICollectionViewCell() }
+        guard let fav = frc?.object(at: indexPath) else { return UICollectionViewCell() }
 
         cell.textLabel.text = fav.displayTitle ?? fav.url
         cell.accessibilityLabel = cell.textLabel.text

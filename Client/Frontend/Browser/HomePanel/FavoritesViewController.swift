@@ -437,7 +437,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 extension FavoritesViewController: FavoriteCellDelegate {
     func editFavorite(_ favoriteCell: FavoriteCell) {
         guard let indexPath = collection.indexPath(for: favoriteCell),
-            let fav = dataSource.frc?.fetchedObjects?[indexPath.item] as? Bookmark else { return }
+            let fav = dataSource.frc?.fetchedObjects?[indexPath.item] else { return }
         
         let actionSheet = UIAlertController(title: fav.displayTitle, message: nil, preferredStyle: .actionSheet)
         
