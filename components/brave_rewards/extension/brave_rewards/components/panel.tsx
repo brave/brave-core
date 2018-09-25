@@ -8,9 +8,11 @@ import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
+import BigNumber from 'bignumber.js'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
+import * as utils from '../../../ui/utils'
 
 interface Props extends RewardsExtension.ComponentProps {
   windowId: number
@@ -40,6 +42,9 @@ export class Panel extends React.Component<Props, State> {
         publisherKey: newKey
       })
     }
+
+    this.props.actions.getWalletProperties()
+    this.props.actions.getCurrentReport()
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -83,16 +88,95 @@ export class Panel extends React.Component<Props, State> {
     })
   }
 
+  getGrants = (grants?: RewardsExtension.Grant[]) => {
+    if (!grants) {
+      return []
+    }
+
+    return grants.map((grant: RewardsExtension.Grant) => {
+      return {
+        tokens: new BigNumber(grant.probi.toString()).dividedBy('1e18').toNumber(),
+        expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString()
+      }
+    })
+  }
+
+  getWalletSummary = () => {
+    const { walletProperties, report } = this.props.rewardsPanelData
+    const { rates } = walletProperties
+    const contributionMonthly = 10 // TODO NZ fix with new reports refactor https://github.com/brave/brave-core/pull/409
+    const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
+    let total = contributionMonthly * -1
+
+    let props = {
+      contribute: {
+        tokens: contributionMonthly,
+        converted: convertedMonthly
+      },
+      total: {
+        tokens: contributionMonthly,
+        converted: convertedMonthly
+      }
+    }
+
+    if (report) {
+      if (report.ads) {
+        props['ads'] = {
+          tokens: report.ads,
+          converted: utils.convertBalance(report.ads, rates)
+        }
+
+        total += report.ads
+      }
+
+      if (report.donations) {
+        props['donation'] = {
+          tokens: report.donations,
+          converted: utils.convertBalance(report.donations, rates)
+        }
+
+        total -= report.donations
+      }
+
+      if (report.grants) {
+        props['grant'] = {
+          tokens: report.grants,
+          converted: utils.convertBalance(report.grants, rates)
+        }
+
+        total += report.grants
+      }
+
+      if (report.oneTime) {
+        props['tips'] = {
+          tokens: report.oneTime,
+          converted: utils.convertBalance(report.oneTime, rates)
+        }
+
+        total -= report.oneTime
+      }
+
+      props['total'] = {
+        tokens: total,
+        converted: utils.convertBalance(total, rates)
+      }
+    }
+
+    return props
+  }
+
   render () {
+    const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+    const converted = utils.convertBalance(balance, rates)
 
     return (
       <WalletWrapper
         compact={true}
         contentPadding={false}
         gradientTop={this.gradientColor}
-        tokens={30}
-        converted={'15.50 USD'}
+        tokens={balance}
+        converted={utils.formatConverted(converted)}
         actions={[
           {
             name: 'Add funds',
@@ -108,20 +192,7 @@ export class Panel extends React.Component<Props, State> {
         showCopy={false}
         showSecActions={false}
         connectedWallet={false}
-        grants={[
-          {
-            tokens: 8,
-            expireDate: '7/15/2018'
-          },
-          {
-            tokens: 10,
-            expireDate: '9/10/2018'
-          },
-          {
-            tokens: 10,
-            expireDate: '10/10/2018'
-          }
-        ]}
+        grants={this.getGrants(grants)}
       >
         <WalletSummarySlider
           id={'panel-slider'}
@@ -149,15 +220,7 @@ export class Panel extends React.Component<Props, State> {
             />
             : null
           }
-          <WalletSummary
-            compact={true}
-            grant={{ tokens: 10, converted: 0.25 }}
-            ads={{ tokens: 10, converted: 0.25 }}
-            contribute={{ tokens: 10, converted: 0.25 }}
-            donation={{ tokens: 2, converted: 0.25 }}
-            tips={{ tokens: 19, converted: 5.25 }}
-            total={{ tokens: 1, converted: 5.25 }}
-          />
+          <WalletSummary compact={true} {...this.getWalletSummary()}/>
         </WalletSummarySlider>
       </WalletWrapper>
     )

@@ -1,8 +1,10 @@
 declare namespace RewardsExtension {
   interface State {
     publishers: Record<string, Publisher>
+    report: RewardsExtension.Report
     walletCreated: boolean
     walletCreateFailed: boolean
+    walletProperties: WalletProperties
   }
 
   interface ApplicationState {
@@ -23,5 +25,29 @@ declare namespace RewardsExtension {
     provider: string
     url: string
     verified: boolean
+  }
+
+  export interface Grant {
+    altcurrency: string
+    probi: string
+    expiryTime: number
+  }
+
+  export interface WalletProperties {
+    balance: number
+    probi: string
+    rates: Record<string, number>
+    grants?: Grant[]
+  }
+
+  export interface Report {
+    ads: number
+    closing: number
+    contribute: number
+    donations: number
+    grants: number
+    oneTime: number
+    opening: number
+    total?: number
   }
 }

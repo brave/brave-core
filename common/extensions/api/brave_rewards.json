@@ -64,6 +64,111 @@
             }
           }
         ]
+      },
+      {
+        "name": "onWalletProperties",
+        "type": "function",
+        "description": "Fired when wallet properties (balance) is fetched",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "probi": {
+                "type": "string",
+                "description": "balance represented in probis"
+              },
+              "balance": {
+                "type": "double",
+                "description": "balance"
+              },
+              "rates": {
+                "type": "object",
+                "description": "rates for different currencies",
+                "properties": {
+                  "BTC": {
+                    "type": "double",
+                    "description": "BTC rate"
+                  },
+                  "ETH": {
+                    "type": "double",
+                    "description": "ETH rate"
+                  },
+                  "USD": {
+                    "type": "double",
+                    "description": "USD rate"
+                  },
+                  "EUR": {
+                    "type": "double",
+                    "description": "EUR rate"
+                  }
+                }
+              },
+              "grants": {
+                "type": "array",
+                "description": "user claimed grants",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "altcurrency": {
+                      "type": "string",
+                      "description": "currency in which grant is served"
+                    },
+                    "probi": {
+                      "type": "string",
+                      "description": "amount of the grant represented in probis"
+                    },
+                    "expiryTime": {
+                      "type": "integer",
+                      "description": "when grant expires, timestamp"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "onCurrentReport",
+        "type": "function",
+        "description": "Fired when we get current report back",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "openingBalance": {
+                "type": "double",
+                "description": ""
+              },
+              "closingBalance": {
+                "type": "double",
+                "description": ""
+              },
+              "grants": {
+                "type": "double",
+                "description": ""
+              },
+              "earningFromAds": {
+                "type": "double",
+                "description": ""
+              },
+              "autoContribute": {
+                "type": "double",
+                "description": ""
+              },
+              "recurringDonation": {
+                "type": "double",
+                "description": ""
+              },
+              "oneTimeDonation": {
+                "type": "double",
+                "description": ""
+              }
+            }
+          }
+        ]
       }
     ],
    "functions": [
@@ -87,6 +192,18 @@
            "type": "string"
          }
        ]
+     },
+     {
+       "name": "getWalletProperties",
+       "type": "function",
+       "description": "Get wallet data (balance, grant)",
+       "parameters": []
+     },
+     {
+       "name": "getCurrentReport",
+       "type": "function",
+       "description": "Get current month wallet report",
+       "parameters": []
      }
    ]
   }

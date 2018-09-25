@@ -21,7 +21,9 @@ BraveRewardsCreateWalletFunction::~BraveRewardsCreateWalletFunction() {
 ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-  rewards_service_->CreateWallet();
+  if (rewards_service_) {
+    rewards_service_->CreateWallet();
+  }
   return RespondNow(NoArguments());
 }
 
@@ -33,7 +35,33 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
       brave_rewards::GetPublisherData::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-  rewards_service_->GetPublisherActivityFromUrl(params->window_id, params->url);
+  if (rewards_service_) {
+    rewards_service_->GetPublisherActivityFromUrl(params->window_id, params->url);
+  }
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsGetWalletPropertiesFunction::~BraveRewardsGetWalletPropertiesFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsGetWalletPropertiesFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_) {
+    rewards_service_->GetWalletProperties();
+  }
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsGetCurrentReportFunction::~BraveRewardsGetCurrentReportFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsGetCurrentReportFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_) {
+    rewards_service_->GetCurrentBalanceReport();
+  }
   return RespondNow(NoArguments());
 }
 

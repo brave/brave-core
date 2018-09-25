@@ -11,3 +11,11 @@ chrome.braveRewards.onWalletCreated.addListener(() => {
 chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: RewardsExtension.Publisher) => {
   rewardsPanelActions.onPublisherData(windowId, publisher)
 })
+
+chrome.braveRewards.onWalletProperties.addListener((properties: RewardsExtension.WalletProperties) => {
+  rewardsPanelActions.onWalletProperties(properties)
+})
+
+chrome.braveRewards.onCurrentReport.addListener((properties: RewardsExtension.Report) => {
+  rewardsPanelActions.onCurrentReport(properties)
+})

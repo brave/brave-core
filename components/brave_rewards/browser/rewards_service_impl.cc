@@ -800,8 +800,41 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     }
   }
 
+  // webui
   for (auto& observer : observers_)
     observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
+
+  // extension
+  EventRouter* event_router = EventRouter::Get(profile_);
+  if (event_router) {
+    extensions::api::brave_rewards::OnWalletProperties::Properties properties;
+
+    properties.probi = wallet_info->probi_;
+    properties.balance = wallet_info->balance_;
+    properties.rates.btc = wallet_info->rates_["BTC"];
+    properties.rates.eth = wallet_info->rates_["ETH"];
+    properties.rates.usd = wallet_info->rates_["USD"];
+    properties.rates.eur = wallet_info->rates_["EUR"];
+
+    for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
+      properties.grants.push_back(extensions::api::brave_rewards::OnWalletProperties::Properties::GrantsType());
+      auto& grant = properties.grants[properties.grants.size() -1];
+
+      grant.altcurrency = wallet_info->grants_[i].altcurrency;
+      grant.probi = wallet_info->grants_[i].probi;
+      grant.expiry_time = wallet_info->grants_[i].expiryTime;
+    }
+
+    std::unique_ptr<base::ListValue> args(
+        extensions::api::brave_rewards::OnWalletProperties::Create(properties)
+            .release());
+
+    std::unique_ptr<Event> event(
+        new Event(extensions::events::BRAVE_ON_WALLET_PROPERTIES,
+                  extensions::api::brave_rewards::OnWalletProperties::kEventName,
+                  std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+  }
 }
 
 void RewardsServiceImpl::GetWalletProperties() {
@@ -1015,6 +1048,39 @@ std::map<std::string, brave_rewards::BalanceReport> RewardsServiceImpl::GetAllBa
   }
 
   return newReports;
+}
+
+void RewardsServiceImpl::GetCurrentBalanceReport() {
+  ledger::BalanceReportInfo report;
+  auto now = base::Time::Now();
+  bool success = ledger_->GetBalanceReport(
+      GetPublisherMonth(now),
+      GetPublisherYear(now),
+      &report);
+
+  if (success) {
+    EventRouter* event_router = EventRouter::Get(profile_);
+    if (event_router) {
+      extensions::api::brave_rewards::OnCurrentReport::Properties properties;
+
+      properties.opening_balance = report.opening_balance_;
+      properties.closing_balance = report.closing_balance_;
+      properties.grants = report.grants_;
+      properties.earning_from_ads = report.earning_from_ads_;
+      properties.auto_contribute = report.auto_contribute_;
+      properties.recurring_donation = report.recurring_donation_;
+      properties.one_time_donation = report.one_time_donation_;
+
+      std::unique_ptr<base::ListValue> args(
+          extensions::api::brave_rewards::OnCurrentReport::Create(properties)
+              .release());
+      std::unique_ptr<Event> event(
+          new Event(extensions::events::BRAVE_ON_CURRENT_REPORT,
+                    extensions::api::brave_rewards::OnCurrentReport::kEventName,
+                    std::move(args)));
+      event_router->BroadcastEvent(std::move(event));
+    }
+  }
 }
 
 bool RewardsServiceImpl::IsWalletCreated() {

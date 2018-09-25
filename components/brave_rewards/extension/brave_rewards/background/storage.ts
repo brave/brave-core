@@ -10,7 +10,23 @@ const keyName = 'rewards-panel-data'
 const defaultState: RewardsExtension.State = {
   walletCreated: false,
   walletCreateFailed: false,
-  publishers: {}
+  publishers: {},
+  walletProperties: {
+    balance: 0,
+    probi: '0',
+    grants: [],
+    rates: {}
+  },
+  report: {
+    ads: 0,
+    closing: 0,
+    contribute: 0,
+    donations: 0,
+    grants: 0,
+    oneTime: 0,
+    opening: 0,
+    total: 0
+  }
 }
 
 // TODO check if windowId persist, because if not then we need to

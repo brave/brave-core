@@ -63,6 +63,24 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         }
         break
       }
+    case types.GET_WALLET_PROPERTIES:
+      chrome.braveRewards.getWalletProperties()
+      break
+    case types.ON_WALLET_PROPERTIES:
+      {
+        state = { ...state }
+        state.walletProperties = payload.properties
+        break
+      }
+    case types.GET_CURRENT_REPORT:
+      chrome.braveRewards.getCurrentReport()
+      break
+    case types.ON_CURRENT_REPORT:
+      {
+        state = { ...state }
+        state.report = payload.properties
+        break
+      }
   }
 
   if (state !== startingState) {
