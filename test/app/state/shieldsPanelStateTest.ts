@@ -729,7 +729,7 @@ describe('shieldsPanelState test', () => {
           url: 'https://brave.com',
           noScriptInfo: {
             'https://a.com': { actuallyBlocked: true, willBlock: true },
-            'https://b.com': { actuallyBlocked: false, willBlock: false }
+            'https://b.com': { actuallyBlocked: true, willBlock: false }
           },
           adsBlockedResources: [],
           trackersBlockedResources: [],
@@ -796,7 +796,6 @@ describe('shieldsPanelState test', () => {
               fingerprintingBlocked: 0,
               url: 'https://brave.com',
               noScriptInfo: {
-                'https://a.com': { actuallyBlocked: false, willBlock: true },
                 'https://b.com': { actuallyBlocked: false, willBlock: false }
               },
               adsBlockedResources: [],
