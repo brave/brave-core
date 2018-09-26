@@ -422,6 +422,9 @@ std::string PublisherInfoDatabase::BuildClauses(int start,
   if (filter.year > 0)
     clauses += " AND ai.year = ?";
 
+  if (filter.min_duration > 0)
+    clauses += " AND ai.duration >= ?";
+
   for (const auto& it : filter.order_by) {
     clauses += " ORDER BY " + it.first;
     clauses += (it.second ? " ASC" : " DESC");
@@ -452,6 +455,9 @@ void PublisherInfoDatabase::BindFilter(sql::Statement& statement,
 
   if (filter.year > 0)
     statement.BindInt(column++, filter.year);
+
+  if (filter.min_duration > 0)
+    statement.BindInt(column++, filter.min_duration);
 }
 
 // static
