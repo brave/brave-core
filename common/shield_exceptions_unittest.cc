@@ -23,7 +23,8 @@ TEST_F(BraveShieldsExceptionsTest, WidevineInstallableURL) {
     GURL("https://bitmovin.com/subdir"),
     GURL("https://www.primevideo.com/subdir"),
     GURL("https://www.spotify.com/subdir"),
-    GURL("https://shaka-player-demo.appspot.com/subdir")
+    GURL("https://shaka-player-demo.appspot.com/subdir"),
+    GURL("https://hulu.com/watch/bf77880c-2f2e-4e09-b26d-5c7cc1de47ce")
   });
   std::for_each(urls.begin(), urls.end(),
       [this](GURL url){
