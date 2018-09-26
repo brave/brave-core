@@ -101,7 +101,15 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
 
   bool allow = ContentSettingsObserver::AllowScriptFromSource(
       enabled_per_settings, script_url);
+
+  // scripts with whitelisted protocols, such as chrome://extensions should
+  // be allowed
+  bool should_white_list = IsWhitelistedForContentSettings(
+      blink::WebSecurityOrigin::Create(script_url),
+      render_frame()->GetWebFrame()->GetDocument().Url());
+
   allow = allow ||
+    should_white_list ||
     IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
     IsScriptTemporilyAllowed(secondary_url);
 
