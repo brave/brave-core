@@ -79,7 +79,7 @@ class ContributeBox extends React.Component<Props, State> {
         type={'contribute'}
       >
         • {getLocale('contributionDisabledText1')} <br />
-        • {getLocale('contributionDisabledText2')}}
+        • {getLocale('contributionDisabledText2')}
       </DisabledContent>
     )
   }
