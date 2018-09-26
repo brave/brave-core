@@ -340,7 +340,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         })
     }
 
-    func loader(dataLoaded data: Cursor<Site>) {
+    func loader(dataLoaded data: [Site]) {
         self.data = data
         tableView.reloadData()
     }
@@ -348,10 +348,9 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = SearchListSection(rawValue: indexPath.section)!
         if section == SearchListSection.bookmarksAndHistory {
-            if let site = data[indexPath.row] {
-                if let url = URL(string: site.url) {
-                    searchDelegate?.searchViewController(self, didSelectURL: url)
-                }
+            let site = data[indexPath.row]
+            if let url = URL(string: site.url) {
+                searchDelegate?.searchViewController(self, didSelectURL: url)
             }
         }
     }
@@ -386,21 +385,20 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
         case .bookmarksAndHistory:
             let cell = super.tableView(tableView, cellForRowAt: indexPath)
-            if let site = data[indexPath.row] {
-                if let cell = cell as? TwoLineTableViewCell {
-                    let isBookmark = site.bookmarked ?? false
-                    cell.setLines(site.title, detailText: site.url)
-                    cell.setRightBadge(isBookmark ? self.bookmarkedBadge : nil)
-                    cell.imageView!.layer.borderColor = SearchViewControllerUX.IconBorderColor.cgColor
-                    cell.imageView!.layer.borderWidth = SearchViewControllerUX.IconBorderWidth
-                    cell.imageView?.setIcon(site.icon, forURL: site.tileURL, completed: { (color, url) in
-                        if site.tileURL == url {
-                            cell.imageView?.image = cell.imageView?.image?.createScaled(CGSize(width: SearchViewControllerUX.IconSize, height: SearchViewControllerUX.IconSize))
-                            cell.imageView?.contentMode = .center
-                            cell.imageView?.backgroundColor = color
-                        }
-                    })
-                }
+            let site = data[indexPath.row]
+            if let cell = cell as? TwoLineTableViewCell {
+                let isBookmark = site.bookmarked ?? false
+                cell.setLines(site.title, detailText: site.url)
+                cell.setRightBadge(isBookmark ? self.bookmarkedBadge : nil)
+                cell.imageView?.layer.borderColor = SearchViewControllerUX.IconBorderColor.cgColor
+                cell.imageView?.layer.borderWidth = SearchViewControllerUX.IconBorderWidth
+                cell.imageView?.setIcon(site.icon, forURL: site.tileURL, completed: { (color, url) in
+                    if site.tileURL == url {
+                        cell.imageView?.image = cell.imageView?.image?.createScaled(CGSize(width: SearchViewControllerUX.IconSize, height: SearchViewControllerUX.IconSize))
+                        cell.imageView?.contentMode = .center
+                        cell.imageView?.backgroundColor = color
+                    }
+                })
             }
             return cell
         }
@@ -424,8 +422,8 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             return
         }
 
-        if section == .bookmarksAndHistory,
-            let suggestion = data[indexPath.item] {
+        if section == .bookmarksAndHistory {
+            let suggestion = data[indexPath.item]
             searchDelegate?.searchViewController(self, didHighlightText: suggestion.url, search: false)
         }
     }

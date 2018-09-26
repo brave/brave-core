@@ -96,6 +96,27 @@ class HistoryTests: CoreDataTestCase {
         
         XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
     }
+    
+    func testFrecencyQuery() {
+        createAndWait(url: URL(string: "https://example.com/page1")!)
+        createAndWait(url: URL(string: "https://example.com/page2")!)
+        createAndWait(url: URL(string: "https://example.com/page3")!)
+        createAndWait(url: URL(string: "https://brave.com")!)
+        
+        let found = History.frecencyQuery(DataController.mainThreadContext, containing: "example")
+        XCTAssertEqual(found.count, 3)
+        
+        // Changing dates of two bookmarks to be something older than 1 week.
+        found.first?.visitedOn = Date(timeIntervalSince1970: 1)
+        found.last?.visitedOn = Date(timeIntervalSince1970: 1)
+        DataController.saveContext(context: DataController.mainThreadContext)
+        
+        let found2 = History.frecencyQuery(DataController.mainThreadContext, containing: "example")
+        XCTAssertEqual(found2.count, 1)
+        
+        let notFound = History.frecencyQuery(DataController.mainThreadContext, containing: "notfound")
+        XCTAssertEqual(notFound.count, 0)
+    }
 
     @discardableResult
     private func createAndWait(title: String = "New title", url: URL = URL(string: "https://example.com")!) -> History {

@@ -78,7 +78,8 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
             reloadData()
         }
     }
-    var data: Cursor<Site> = Cursor<Site>(status: .success, msg: "No data set")
+
+    var data = [Site]()
     var tableView = UITableView()
 
     override func viewDidLoad() {
@@ -113,11 +114,7 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func reloadData() {
-        if data.status != .success {
-            print("Err: \(data.statusMessage)", terminator: "\n")
-        } else {
-            self.tableView.reloadData()
-        }
+        self.tableView.reloadData()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

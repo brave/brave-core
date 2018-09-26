@@ -120,9 +120,7 @@ public class History: NSManagedObject, WebsitePresentable {
         return result
     }
 
-    class func frecencyQuery(_ context: NSManagedObjectContext, containing:String? = nil) -> [History] {
-        assert(!Thread.isMainThread)
-
+    public class func frecencyQuery(_ context: NSManagedObjectContext, containing:String? = nil) -> [History] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.fetchLimit = 100
         fetchRequest.entity = History.entity(context)
