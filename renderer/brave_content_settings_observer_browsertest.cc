@@ -470,8 +470,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFPGetImageD
   EXPECT_EQ(400, bufLen);
 }
 
-DISABLED_IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
-    BlockReferrerByDefault) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+    DISABLED_BlockReferrerByDefault) {
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers, &settings);
@@ -494,7 +494,7 @@ DISABLED_IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       child_frame()).c_str(), iframe_url().GetOrigin().spec().c_str());
 }
 
-DISABLED_DISABLED_IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrer) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, DISABLED_BlockReferrer) {
   BlockReferrers();
   NavigateToPageWithIframe();
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
@@ -517,7 +517,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowReferrer) {
       url().spec().c_str());
 }
 
-DISABLED_IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrerShieldsDown) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, DISABLED_BlockReferrerShieldsDown) {
   BlockReferrers();
   ShieldsDown();
   NavigateToPageWithIframe();
