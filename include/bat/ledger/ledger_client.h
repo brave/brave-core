@@ -80,6 +80,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnPublisherActivity(Result result,
                                    std::unique_ptr<ledger::PublisherInfo>,
                                    uint64_t windowId) = 0;
+  virtual void OnExcludedSitesChanged() = 0;
 
   //uint64_t time_offset (input): timer offset in seconds.
   //uint32_t timer_id (output) : 0 in case of failure

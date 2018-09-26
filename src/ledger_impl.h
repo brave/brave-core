@@ -81,6 +81,7 @@ class LedgerImpl : public ledger::Ledger,
   bool GetRewardsMainEnabled() const override;
   uint64_t GetPublisherMinVisitTime() const override; // In milliseconds
   unsigned int GetPublisherMinVisits() const override;
+  unsigned int GetNumExcludedSites() const override;
   bool GetPublisherAllowNonVerified() const override;
   bool GetPublisherAllowVideos() const override;
   double GetContributionAmount() const override;
@@ -151,6 +152,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnPublisherActivity(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
+  void OnExcludedSitesChanged();
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

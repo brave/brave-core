@@ -50,6 +50,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void setPublishersLastRefreshTimestamp(uint64_t ts);
 
+  void setNumExcludedSites(const unsigned int& amount);
+
   void setExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude);
   void restorePublishers();
 
@@ -67,6 +69,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   unsigned int getPublisherMinVisits() const;
   bool getPublisherAllowNonVerified() const;
   uint64_t getLastPublishersListLoadTimestamp() const;
+  unsigned int getNumExcludedSites() const;
   bool getPublisherAllowVideos() const;
 
   std::vector<braveledger_bat_helper::WINNERS_ST> winners(const unsigned int& ballots);
@@ -131,6 +134,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
+  void setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclude);
+
   void makePaymentInternal(
       ledger::PaymentData payment_data,
       ledger::Result result,
@@ -158,6 +163,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                            std::unique_ptr<ledger::PublisherInfo> publisher_info,
                            uint64_t windowId,
                            const std::string& publisherKey);
+
+  void OnExcludedSitesChanged();
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 

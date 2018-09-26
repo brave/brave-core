@@ -146,6 +146,7 @@ class LEDGER_EXPORT Ledger {
   virtual bool GetRewardsMainEnabled() const = 0;
   virtual uint64_t GetPublisherMinVisitTime() const = 0; // In milliseconds
   virtual unsigned int GetPublisherMinVisits() const = 0;
+  virtual unsigned int GetNumExcludedSites() const = 0;
   virtual bool GetPublisherAllowNonVerified() const = 0;
   virtual bool GetPublisherAllowVideos() const = 0;
   virtual double GetContributionAmount() const = 0;
