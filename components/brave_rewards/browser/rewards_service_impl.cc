@@ -229,7 +229,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
     next_timer_id_(0) {
 // TODO(bridiver) - production/verbose should
 // also be controllable by command line flags
-#if defined(IS_OFFICIAL_BUILD)
+#if defined(OFFICIAL_BUILD)
 ledger::is_production = true;
 #else
 ledger::is_production = false;
