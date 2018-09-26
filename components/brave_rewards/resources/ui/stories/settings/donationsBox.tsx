@@ -127,9 +127,6 @@ class DonationsBox extends React.Component<{}, State> {
         <List title={locale.donationTotal}>
           <Tokens value={21} converted={7} />
         </List>
-        <List title={locale.donationList}>
-          Total &nbsp;<Tokens value={3} hideText={true} toFixed={false} />
-        </List>
         <TableDonation
           rows={this.donationRows}
           allItems={true}

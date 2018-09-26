@@ -20,7 +20,7 @@ class AdsBox extends React.Component {
         image={adsImg}
         type={'ads'}
       >
-        <h3>Coming soon.</h3>
+        <h3>{locale.adsDisabledText}</h3>
       </DisabledContent>
     )
   }

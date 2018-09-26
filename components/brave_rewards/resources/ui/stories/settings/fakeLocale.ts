@@ -4,6 +4,7 @@
 
 const locale = {
   adsDesc: 'Earn tokens by seeing ads on Brave. Ads are matched from machine learning and the data temporarily present in your browser without tracking your information or sending it outside.',
+  adsDisabledText: 'Coming soon',
   adsDisplayed: 'Ads displayed',
   adsEarnings: 'Earnings this month',
   adsFreq: 'Ad Frequency',
@@ -26,7 +27,6 @@ const locale = {
   contributionVisit1: '1 visit',
   contributionVisit5: '5 visits',
   donationDesc: 'Donate to sites as you browse or give tips to posts when you ‘Like’ them. You can also make the donation recurring monthly so you can support the site continuously. All accessed from the address bar.',
-  donationList: 'List of donations',
   donationTitle: 'Direct Donations',
   donationTotal: 'Total donations this month'
 }

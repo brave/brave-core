@@ -28,7 +28,7 @@ export const StyledCenterSection = styled<{}, 'section'>('section')`
 export const StyledCenterContent = styled<{}, 'div'>('div')`
   margin: 0 auto;
   max-width: 692px;
-  padding: 67px 0 13px;
+  padding: 67px 0 20px;
 `
 
 export const StyledSection = styled<{}, 'div'>('div')`
@@ -71,7 +71,7 @@ export const StyledActionTitle = styled(Heading)`
   color: #5C58C2;
   font-weight: normal;
   line-height: 28px;
-  margin: 18px 0 0;
+  margin: 18px 0 30px;
 `
 
 export const StyledCenterTitle = styled(Heading)`
@@ -117,16 +117,6 @@ export const StyledTeaserParagraph = styled<{}, 'p'>('p')`
   opacity: 0.5;
 `
 
-export const StyledReadyParagraph = styled<{}, 'p'>('p')`
-  font-size: 16px;
-  line-height: 1.75;
-  color: #484B4E;
-  font-weight: 300;
-  letter-spacing: 0.16px;
-  margin: 0;
-  padding: 12px 0 24px;
-`
-
 export const StyledCenterParagraph = styled<{}, 'p'>('p')`
   font-size: 16px;
   line-height: 28px;
@@ -134,19 +124,7 @@ export const StyledCenterParagraph = styled<{}, 'p'>('p')`
   font-weight: 300;
   letter-spacing: 0.16px;
   max-width: 475px;
-  margin: 0 0 10px;
-`
-
-export const StyledBoldParagraph = styled<{}, 'p'>('p')`
-  font-weight: 600;
-  font-size: 16px;
-  color: #484B4E;
-  margin: 0 0 60px;
-`
-
-export const StyledStrong = styled<{}, 'strong'>('strong')`
-  font-weight: 600;
-  padding: 0 5px;
+  margin: 0 0 15px;
 `
 
 export const StyledAnchor = styled<{}, 'button'>('button')`
