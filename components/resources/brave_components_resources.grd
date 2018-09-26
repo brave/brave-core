@@ -394,8 +394,8 @@
       <message name="IDS_BRAVE_UI_WELCOME_HEADER_TWO" desc="">You are about to start a very Brave way to browse the web.</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC" desc="">Did you know that the Internet is not actually free?</message>
-      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC1" desc="">With conventional browsers, you pay to browse the web by viewing ads with your valuable attention, spending your valuable time downloading invasive ad technology, that transmits your valuable private data to advertisers — without your consent.</message>
-      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC2" desc="">Well, you've come to the right place. Brave welcomes you to the new internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
+      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1" desc="">With conventional browsers, you pay to browse the web by viewing ads with your valuable attention, spending your valuable time downloading invasive ad technology, that transmits your valuable private data to advertisers — without your consent.</message>
+      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2" desc="">Well, you've come to the right place. Brave welcomes you to the new internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your wallet</message>
     </messages>
   </release>
