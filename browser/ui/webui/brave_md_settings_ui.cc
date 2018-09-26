@@ -5,6 +5,7 @@
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
+#include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 
 BraveMdSettingsUI::BraveMdSettingsUI(content::WebUI* web_ui,
@@ -12,6 +13,7 @@ BraveMdSettingsUI::BraveMdSettingsUI(content::WebUI* web_ui,
     : MdSettingsUI(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<settings::MetricsReportingHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAppearanceHandler>());
+  web_ui->AddMessageHandler(std::make_unique<DefaultBraveShieldsHandler>());
 }
 
 BraveMdSettingsUI::~BraveMdSettingsUI() {

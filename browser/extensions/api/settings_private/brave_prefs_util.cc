@@ -23,13 +23,16 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   const auto chromium_prefs = PrefsUtil::GetWhitelistedKeys();
   s_brave_whitelist->insert(chromium_prefs.begin(), chromium_prefs.end());
   // Add Brave values to the whitelist
-#if !defined(OS_CHROMEOS)
   // import data
   (*s_brave_whitelist)[::prefs::kImportDialogCookies] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[::prefs::kImportDialogStats] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-#endif
+  // Default Brave shields
+  (*s_brave_whitelist)[kHTTPSEVerywhereControlType] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kNoScriptControlType] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // appearance prefs
   (*s_brave_whitelist)[kLocationBarIsWide] =
     settings_api::PrefType::PREF_TYPE_BOOLEAN;

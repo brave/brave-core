@@ -90,6 +90,50 @@ def main():
         brave_appearance_page_js_element.set('preprocess', 'true')
         brave_appearance_page_html_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS"]')[0]
         brave_appearance_page_html_element.addnext(brave_appearance_page_js_element)
+
+    # Add four resources for default brave shields options
+    # Add IDR_SETTINGS_BROWSER_PROXY_HTML(default_brave_shields_browser_proxy.html)
+    browser_proxy_html_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_HTML"]'))
+    if browser_proxy_html_element_len == 0:
+        browser_proxy_html_element = etree.Element('structure')
+        browser_proxy_html_element.set('name', 'IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_HTML')
+        browser_proxy_html_element.set('file', 'default_brave_shields_page/default_brave_shields_browser_proxy.html')
+        browser_proxy_html_element.set('type', 'chrome_html')
+        default_brave_shields_page_js_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_APPEARANCE_PAGE_JS"]')[0]
+        default_brave_shields_page_js_element.addnext(browser_proxy_html_element)
+    # Add IDR_SETTINGS_BROWSER_PROXY_JS(default_brave_shields_browser_proxy.js)
+    browser_proxy_js_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS"]'))
+    if browser_proxy_js_element_len == 0:
+        browser_proxy_js_element = etree.Element('structure')
+        browser_proxy_js_element.set('name', 'IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS')
+        browser_proxy_js_element.set('file', 'default_brave_shields_page/default_brave_shields_browser_proxy.js')
+        browser_proxy_js_element.set('type', 'chrome_html')
+        browser_proxy_js_element.set('preprocess', 'true')
+        browser_proxy_html_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_HTML"]')[0]
+        browser_proxy_html_element.addnext(browser_proxy_js_element)
+    # Add IDR_SETTINGS_PAGE_HTML(default_brave_shields_page.html)
+    default_brave_shields_page_html_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_HTML"]'))
+    if default_brave_shields_page_html_element_len == 0:
+        default_brave_shields_page_html_element = etree.Element('structure')
+        default_brave_shields_page_html_element.set('name', 'IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_HTML')
+        default_brave_shields_page_html_element.set('file', 'default_brave_shields_page/default_brave_shields_page.html')
+        default_brave_shields_page_html_element.set('type', 'chrome_html')
+        default_brave_shields_page_html_element.set('preprocess', 'true')
+        default_brave_shields_page_html_element.set('allowexternalscript', 'true')
+        browser_proxy_js_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS"]')[0]
+        browser_proxy_js_element.addnext(default_brave_shields_page_html_element)
+    # Add IDR_SETTINGS_PAGE_JS(default_brave_shields_page.js)
+    page_js_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_JS"]'))
+    if page_js_element_len == 0:
+        default_brave_shields_page_js_element = etree.Element('structure')
+        default_brave_shields_page_js_element.set('name', 'IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_JS')
+        default_brave_shields_page_js_element.set('file', 'default_brave_shields_page/default_brave_shields_page.js')
+        default_brave_shields_page_js_element.set('type', 'chrome_html')
+        default_brave_shields_page_js_element.set('preprocess', 'true')
+        default_brave_shields_page_html_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS"]')[0]
+        default_brave_shields_page_html_element.addnext(default_brave_shields_page_js_element)
+
+
   if filename == 'browser_resources':
     elem1 = xml_tree.xpath('//include[@name="IDR_MD_HISTORY_SIDE_BAR_HTML"]')[0]
     elem1.set('flattenhtml', 'true')
