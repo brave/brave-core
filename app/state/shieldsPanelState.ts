@@ -108,7 +108,13 @@ export const resetNoScriptInfo: shieldState.ResetNoScriptInfo = (state, tabId, n
   if (newOrigin !== tabs[tabId].origin) { // navigate away
     tabs[tabId].noScriptInfo = {}
   }
-  Object.keys(tabs[tabId].noScriptInfo).map(key => tabs[tabId].noScriptInfo[key].actuallyBlocked = false)
+  Object.keys(tabs[tabId].noScriptInfo).map(key => {
+    tabs[tabId].noScriptInfo[key].actuallyBlocked = false
+    // only keep entries which users want to allow
+    if (tabs[tabId].noScriptInfo[key].willBlock) {
+      delete tabs[tabId].noScriptInfo[key]
+    }
+  })
   return { ...state, tabs }
 }
 
