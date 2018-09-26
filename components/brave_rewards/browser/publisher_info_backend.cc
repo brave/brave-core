@@ -5,12 +5,15 @@
 #include "brave/components/brave_rewards/browser/publisher_info_backend.h"
 
 #include "base/files/file_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "third_party/leveldatabase/env_chromium.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 #include "third_party/leveldatabase/src/include/leveldb/iterator.h"
 #include "third_party/leveldatabase/src/include/leveldb/options.h"
 #include "third_party/leveldatabase/src/include/leveldb/slice.h"
 #include "third_party/leveldatabase/src/include/leveldb/status.h"
+
+#include <codecvt>
 
 namespace brave_rewards {
 
@@ -57,7 +60,7 @@ bool PublisherInfoBackend::Get(const std::string& lookup,
 
 bool PublisherInfoBackend::Search(const std::vector<std::string>& prefixes,
               uint32_t start, uint32_t limit,
-              std::vector<const std::string>& results) {
+              std::vector<std::string>& results) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   bool initialized = EnsureInitialized();
   DCHECK(initialized);
@@ -70,7 +73,7 @@ bool PublisherInfoBackend::Search(const std::vector<std::string>& prefixes,
 
   uint32_t count = 0;
   uint32_t position = 0;
-  for (std::vector<const std::string>::const_iterator prefix =
+  for (std::vector<std::string>::const_iterator prefix =
         prefixes.begin(); prefix != prefixes.end(); ++prefix) {
 
     auto slice = leveldb::Slice(*prefix);
@@ -94,7 +97,7 @@ bool PublisherInfoBackend::Search(const std::vector<std::string>& prefixes,
 
 bool PublisherInfoBackend::Load(uint32_t start,
                                 uint32_t limit,
-                                std::vector<const std::string>& results) {
+                                std::vector<std::string>& results) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   bool initialized = EnsureInitialized();
   DCHECK(initialized);
@@ -125,7 +128,11 @@ bool PublisherInfoBackend::EnsureInitialized() {
 
   leveldb_env::Options options;
   options.create_if_missing = true;
+#if defined(OS_WIN)
+  std::string path = base::UTF16ToUTF8(path_.value());
+#else
   std::string path = path_.value();
+#endif
   leveldb::Status status = leveldb_env::OpenDB(options, path, &db_);
 
   if (status.IsCorruption()) {
