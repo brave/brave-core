@@ -69,7 +69,8 @@ GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
       update_url, "first", stats_updater_params.GetFirstCheckMadeParam());
   update_url = net::AppendQueryParameter(
       update_url, "woi", stats_updater_params.GetWeekOfInstallationParam());
-  update_url = net::AppendQueryParameter(update_url, "ref", "none");
+  update_url = net::AppendQueryParameter(
+      update_url, "ref", stats_updater_params.GetReferralCodeParam());
   return update_url;
 }
 

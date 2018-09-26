@@ -44,6 +44,7 @@ if (is_win) {
 } else if (is_mac) {
   brave_exe = "$chrome_product_full_name.app"
   brave_dmg = "$chrome_product_full_name.dmg"
+  brave_pkg = "$chrome_product_full_name.pkg"
 
   brave_product_dir_name_suffix = ""
   if (is_official_build) {

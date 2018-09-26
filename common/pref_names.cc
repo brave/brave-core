@@ -20,3 +20,9 @@ const char kUseAlternatePrivateSearchEngine[] =
     "brave.use_alternate_private_search_engine";
 const char kBraveThemeType[] = "brave.theme.type";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
+const char kReferralPromoCode[] = "brave.referral.promo_code";
+const char kReferralDownloadID[] = "brave.referral.download_id";
+const char kReferralTimestamp[] = "brave.referral.timestamp";
+const char kReferralAttemptTimestamp[] = "brave.referral.referral_attempt_timestamp";
+const char kReferralAttemptCount[] = "brave.referral.referral_attempt_count";
+const char kReferralHeaders[] = "brave.referral.headers";

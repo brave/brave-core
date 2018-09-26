@@ -4,8 +4,8 @@
 
 #include "brave/browser/brave_stats_updater.h"
 
-#include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/brave_stats_updater_params.h"
+#include "brave/browser/referrals/brave_referrals_service.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/testing_pref_service.h"
@@ -32,6 +32,7 @@ class BraveStatsUpdaterTest: public testing::Test {
   ~BraveStatsUpdaterTest() override {}
   void SetUp() override {
     brave::RegisterPrefsForBraveStatsUpdater(testing_local_state_.registry());
+    brave::RegisterPrefsForBraveReferralsService(testing_local_state_.registry());
   }
 
   PrefService* GetLocalState() { return &testing_local_state_; }
