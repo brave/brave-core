@@ -49,7 +49,10 @@ public:
     const std::string &object_id/*,
     const std::string &parent_object_id*/);
 
+  // Requests from sync lib
   void AddBookmark(const jslib::SyncRecord &sync_record);
+  void DeleteBookmark(const jslib::SyncRecord &sync_record);
+  void UpdateBookmark(const jslib::SyncRecord &sync_record);
 
   void GetAllBookmarks_DEPRECATED(std::vector<const bookmarks::BookmarkNode*> &nodes);
   std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
@@ -110,6 +113,9 @@ private:
 
   void AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const std::string &s_parent_local_object_id);
   void AddBookmarkPostUiFileWork(const int64_t &added_node_id, const std::string &order, const std::string &sync_record_object_id);
+
+  void DeleteBookmarkUiWork(const int64_t &local_object_id);
+  void DeleteBookmarkPostUiFileWork(const std::string &s_local_object_id);
 
   std::string GetOrCreateObjectByLocalId(const int64_t &local_id, const std::string &order);
   void SaveIdMap(const int64_t &local_id, const std::string &order, const std::string &sync_object_id);

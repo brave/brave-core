@@ -684,8 +684,18 @@ void ControllerImpl::OnResolvedBookmarks(const RecordsList &records) {
 
     if (sync_record->action == jslib::SyncRecord::Action::CREATE && local_id.empty()) {
       bookmarks_->AddBookmark(*sync_record);
-    } else {
-      ///DCHECK(false);
+    } else if (sync_record->action == jslib::SyncRecord::Action::DELETE && !local_id.empty()) {
+      bookmarks_->DeleteBookmark(*sync_record);
+    } else if (sync_record->action == jslib::SyncRecord::Action::UPDATE && !local_id.empty()) {
+      bookmarks_->UpdateBookmark(*sync_record);
+    }
+    // Abnormal cases
+    if (sync_record->action == jslib::SyncRecord::Action::DELETE && local_id.empty()) {
+      DCHECK(false) << "TAGAB received request to delete bookmark which we don't have";
+    } else if (sync_record->action == jslib::SyncRecord::Action::CREATE && !local_id.empty()) {
+      DCHECK(false) << "TAGAB received request to create bookmark which already exists";
+    } else if (sync_record->action == jslib::SyncRecord::Action::UPDATE && local_id.empty()) {
+      DCHECK(false) << "TAGAB received request to update bookmark which we don't have";
     }
   }
 }

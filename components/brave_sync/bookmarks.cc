@@ -6,7 +6,6 @@
 #include <map>
 #include <memory>
 #include <string>
-//#include "base/values.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/cansendbookmarks.h"
@@ -19,13 +18,11 @@
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
-//#include "chrome/browser/ui/browser.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 #include "content/public/browser/browser_thread.h"
 #include "ui/base/models/tree_node_iterator.h"
-
 
 namespace brave_sync {
 
@@ -101,7 +98,7 @@ std::unique_ptr<jslib::Bookmark> Bookmarks::GetFromNode(const bookmarks::Bookmar
   bookmark->isFolder = node->is_folder();
   bookmark->parentFolderObjectId = parent_folder_object_sync_id; // bytes
 
-  //bookmark->hideInToolbar = false; ??
+  bookmark->hideInToolbar = !node->HasAncestor(model_->bookmark_bar_node());
   bookmark->order = node_order; // order should be taken from obj map
 
   return bookmark;
@@ -216,6 +213,7 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
 }
 
 void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const std::string &s_parent_local_object_id) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(controller_exports_);
   DCHECK(controller_exports_->GetTaskRunner());
 
@@ -336,6 +334,71 @@ void Bookmarks::AddBookmarkPostUiFileWork(const int64_t &added_node_id, const st
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkPostUiFileWork sync_record_object_id="<<sync_record_object_id;
 
   SaveIdMap(added_node_id, order, sync_record_object_id);
+}
+
+void Bookmarks::DeleteBookmark(const jslib::SyncRecord &sync_record) {
+  const jslib::Bookmark &sync_bookmark = sync_record.GetBookmark();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmark location="<<sync_bookmark.site.location;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmark title="<<sync_bookmark.site.title;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmark order="<<sync_bookmark.order;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmark parentFolderObjectId="<<sync_record.GetBookmark().parentFolderObjectId;
+  DCHECK(model_);
+  if (model_ == nullptr) {
+    return;
+  }
+
+  std::string s_local_object_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark,
+    sync_record.objectId);
+  DCHECK(!s_local_object_id.empty());
+  if (s_local_object_id.empty()) {
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmark: could not find local id";
+    return;
+  }
+
+  int64_t local_object_id = -1;
+  if (!base::StringToInt64(s_local_object_id, &local_object_id) || local_object_id == -1) {
+    LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmark: could not convert local id";
+    return;
+  }
+
+  // Jump to UI thread and then back to file thread
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTaskAndReply(
+    FROM_HERE,
+    base::Bind(&Bookmarks::DeleteBookmarkUiWork, base::Unretained(this), local_object_id ),
+    base::Bind(&Bookmarks::DeleteBookmarkPostUiFileWork, base::Unretained(this), s_local_object_id )
+  );
+}
+
+void Bookmarks::DeleteBookmarkUiWork(const int64_t &local_object_id) {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmarkUiWork local_object_id=" << local_object_id;
+  DCHECK(local_object_id != -1);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  const bookmarks::BookmarkNode* node = bookmarks::GetBookmarkNodeByID(model_, local_object_id);
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmarkUiWork node=" << node;
+  if (!node) {
+    return;
+  }
+
+  PauseObserver();
+  model_->Remove(node);
+  ResumeObserver();
+}
+
+void Bookmarks::DeleteBookmarkPostUiFileWork(const std::string &s_local_object_id) {
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmarkUiWork s_local_object_id=<" << s_local_object_id << ">";
+  DCHECK(!s_local_object_id.empty());
+  sync_obj_map_->DeleteByLocalId(storage::ObjectMap::Type::Bookmark, s_local_object_id);
+}
+
+void Bookmarks::UpdateBookmark(const jslib::SyncRecord &sync_record) {
+  const jslib::Bookmark &sync_bookmark = sync_record.GetBookmark();
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::UpdateBookmark location="<<sync_bookmark.site.location;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::UpdateBookmark title="<<sync_bookmark.site.title;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::UpdateBookmark order="<<sync_bookmark.order;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::UpdateBookmark parentFolderObjectId="<<sync_record.GetBookmark().parentFolderObjectId;
+  DCHECK(model_);
+  NOTIMPLEMENTED();
 }
 
 void Bookmarks::PauseObserver() {
