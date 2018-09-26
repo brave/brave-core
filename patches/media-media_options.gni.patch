@@ -1,0 +1,13 @@
+diff --git a/media/media_options.gni b/media/media_options.gni
+index d8e20f62c19d34d036760883a02d3350aa696f1b..0d920ed8e57e1b4bbd928a937cec88b40b1fb18e 100644
+--- a/media/media_options.gni
++++ b/media/media_options.gni
+@@ -146,7 +146,7 @@ declare_args() {
+   # Enables host verification for CDMs.
+   # Windows and Mac.
+   enable_cdm_host_verification =
+-      enable_library_cdms && (is_mac || is_win) && is_chrome_branded
++      enable_library_cdms && (is_mac || is_win)
+ 
+   # Enable Storage ID which is used by CDMs. This is only available with chrome
+   # branding, but may be overridden by other embedders.
