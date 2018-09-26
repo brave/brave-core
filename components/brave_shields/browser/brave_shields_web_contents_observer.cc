@@ -348,7 +348,7 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
           navigation_handle->GetURL().GetOrigin(),
           original_referrer.policy, &new_referrer)) {
     navigation_entry->SetExtraData("referrer." + navigation_handle->GetURL().spec(),
-          base::UTF8ToUTF16(new_referrer.url.spec()));
+          base::UTF8ToUTF16(""));
   }
 }
 
