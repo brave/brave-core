@@ -70,6 +70,8 @@ source_set("ui") {
     "webui/brave_welcome_ui.h",
     "webui/settings/brave_appearance_handler.cc",
     "webui/settings/brave_appearance_handler.h",
+    "webui/settings/default_brave_shields_handler.cc",
+    "webui/settings/default_brave_shields_handler.h",
   ]
 
   if (is_mac || is_win || is_chromeos) {

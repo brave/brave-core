@@ -26,5 +26,7 @@ extern const char kReferralTimestamp[];
 extern const char kReferralAttemptTimestamp[];
 extern const char kReferralAttemptCount[];
 extern const char kReferralHeaders[];
+extern const char kHTTPSEVerywhereControlType[];
+extern const char kNoScriptControlType[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

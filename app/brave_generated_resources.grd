@@ -168,6 +168,49 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME" desc="The utility process which launch Tor">
         Tor Launcher
       </message>
+      <!-- Brave Shields Defaults -->
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields defaults in settings">
+        Brave shields defaults
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave ad control setting label">
+        Ad Control
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookie control setting label">
+        Cookie Control
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
+        Fingerprinting protection
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave HTTPS Everywhere control setting label">
+        HTTPS Everywhere
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
+        Script blocking
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_ADS" desc="Select value">
+        Block ads
+      </message>
+      <message name="IDS_SETTINGS_ALLOW_ADS_AND_TRACKING" desc="Select value">
+        Allow ads and tracking
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
+        Block 3rd party cookies
+      </message>
+      <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
+        Allow all cookies
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_ALL_COOKIES" desc="Select value">
+        Block all cookies
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_FINGERPRINTING" desc="Select value">
+        Block 3rd party fingerprinting
+      </message>
+      <message name="IDS_SETTINGS_ALLOW_FINGERPRINTING" desc="Select value">
+        Allow fingerprinting
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_FINGERPRINTING" desc="Select value">
+        Block all fingerprinting
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />

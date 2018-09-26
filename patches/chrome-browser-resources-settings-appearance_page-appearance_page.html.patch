@@ -1,19 +1,20 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-index 720d25d126a118315a08cef90d77d1fc78775254..24928e2e3e764dee4e2ebe1310ffc70ca9c032c5 100644
+index 720d25d126a118315a08cef90d77d1fc78775254..24a7a07aeedd81af8f7bc5de5781a0af92eca165 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-@@ -19,6 +19,10 @@
+@@ -19,6 +19,11 @@
  <link rel="import" href="appearance_fonts_page.html">
  <link rel="import" href="home_url_input.html">
  
 +<if expr="not _google_chrome">
 +<link rel="import" href="../brave_appearance_page/brave_appearance_page.html">
++<link rel="import" href="../default_brave_shields_page/default_brave_shields_page.html">
 +</if>
 +
  <dom-module id="settings-appearance-page">
    <template>
      <style include="settings-shared md-select iron-flex">
-@@ -63,6 +67,9 @@
+@@ -63,6 +68,9 @@
            </template>
          </cr-link-row>
          <div class="hr"></div>
@@ -23,7 +24,7 @@ index 720d25d126a118315a08cef90d77d1fc78775254..24928e2e3e764dee4e2ebe1310ffc70c
  </if>
          <div class="settings-row continuation" id="themeRow"
              hidden="[[!pageVisibility.setTheme]]">
-@@ -140,6 +147,9 @@
+@@ -140,6 +148,9 @@
              </settings-radio-group>
            </div>
          </template>
