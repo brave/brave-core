@@ -1,0 +1,13 @@
+diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
+index 82a93622585a424f56c3567050f9ba4822de6c1e..9c89d9a0c0a8b2df4e082cfd1ef9ace6ed8fc929 100644
+--- a/third_party/widevine/cdm/widevine.gni
++++ b/third_party/widevine/cdm/widevine.gni
+@@ -11,7 +11,7 @@ declare_args() {
+ }
+ 
+ enable_widevine_cdm_host_verification =
+-    (is_chrome_branded || enable_widevine) && enable_cdm_host_verification
++    enable_widevine && enable_cdm_host_verification
+ 
+ # Only bundle Widevine CDM in Google Chrome builds.
+ should_bundle_widevine_cdm = is_chrome_branded && enable_library_cdms
