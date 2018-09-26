@@ -74,6 +74,10 @@ void BookmarkButton::OnBubbleWidgetCreated(views::Widget* bubble_widget) {
     SetHighlighted(true);
 }
 
+void BookmarkButton::OnThemeChanged() {
+  SetToggled(active_);
+}
+
 BookmarkButton::WidgetObserver::WidgetObserver(BookmarkButton* parent)
     : parent_(parent), scoped_observer_(this) {}
 
