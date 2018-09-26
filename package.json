@@ -94,7 +94,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.24.1",
-    "brave-ui": "^0.24.4",
+    "brave-ui": "^0.24.7",
     "css-loader": "^0.28.9",
     "csstype": "^2.5.5",
     "emptykit.css": "^1.0.1",
