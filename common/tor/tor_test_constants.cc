@@ -4,11 +4,13 @@
 
 #include "brave/common/tor/tor_test_constants.h"
 
+#define FPL FILE_PATH_LITERAL
+
 namespace tor {
 
 const char kTestTorProxy[] = "socks5://127.0.0.1:9999";
 const char kTestTorPacString[] = "SOCKS5 127.0.0.1:9999";
-const char kTestTorPath[] = ".";
+const base::FilePath::CharType kTestTorPath[] = FPL(".");
 
 
 }  // namespace tor
