@@ -161,7 +161,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.NEW_TAB_SITE_IGNORED: {
       const topSiteIndex: number = state.topSites.findIndex((site) => site.url === payload.url)
       const ignoredTopSites: NewTab.Site[] = state.ignoredTopSites.slice()
-      ignoredTopSites.splice(0, 1, state.topSites[topSiteIndex])
+      ignoredTopSites.push(state.topSites[topSiteIndex])
       state = {
         ...state,
         ignoredTopSites,
