@@ -6,6 +6,7 @@
 #include "bat_get_media.h"
 
 #include <sstream>
+#include <cmath>
 
 #include "bat_get_media.h"
 #include "bat_helper.h"
@@ -112,12 +113,16 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
           _2,
           _3));
     } else if (TWITCH_MEDIA_TYPE == providerName) {
-      const std::string mediaUrl = getMediaURL(mediaId, providerName);
+      const std::string twitchMediaID = 
+        mediaId.find(MEDIA_DELIMITER) != std::string::npos ?
+        mediaId :
+        braveledger_bat_helper::split(mediaId, MEDIA_DELIMITER)[0];
+      const std::string mediaUrl = getMediaURL(twitchMediaID, providerName);
       std::unique_ptr<ledger::PublisherInfo> new_publisher_info(new ledger::PublisherInfo());
       new_publisher_info->favicon_url = "";
       new_publisher_info->url = mediaUrl + "/videos";
-      std::string id = providerName + "#author:" + mediaId;
-      new_publisher_info->name = mediaId;
+      std::string id = providerName + "#author:" + twitchMediaID;
+      new_publisher_info->name = twitchMediaID;
       new_publisher_info->id = id;
 
       ledger::TwitchEventInfo oldEvent;
@@ -253,11 +258,15 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
     return 0;
   }
 
+  if (oldEventInfo.status_.empty()) { // if autoplay is off and play is pressed
+    return 0;
+  }
+  
   if (time > TWITCH_MAXIMUM_SECONDS_CHUNK) {
     time = TWITCH_MAXIMUM_SECONDS_CHUNK;
   }
 
-  return (uint64_t)time;
+  return (uint64_t)std::round(time);
 }
 
 void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, const std::string& media_key,
