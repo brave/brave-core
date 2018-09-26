@@ -427,6 +427,26 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNotNil(dict["objectData"])
     }
     
+    func testFrecencyQuery() {
+        insertBookmarks(amount: 6)
+        
+        let found = Bookmark.frecencyQuery(context: DataController.mainThreadContext, containing: "brave")
+        // Query limit is 5
+        XCTAssertEqual(found.count, 5)
+        
+        // Changing dates of two bookmarks to be something older than 1 week.
+        // Because we added 6 bookmarks and query limit is 5, the frequency query should return 4 bookmarks.
+        found.first?.lastVisited = Date(timeIntervalSince1970: 1)
+        found.last?.lastVisited = Date(timeIntervalSince1970: 1)
+        DataController.saveContext(context: DataController.mainThreadContext)
+        
+        let found2 = Bookmark.frecencyQuery(context: DataController.mainThreadContext, containing: "brave")
+        XCTAssertEqual(found2.count, 4)
+        
+        let notFound = Bookmark.frecencyQuery(context: DataController.mainThreadContext, containing: "notfound")
+        XCTAssertEqual(notFound.count, 0)
+    }
+    
     // MARK: - Helpers
     
     /// Wrapper around `Bookmark.create()` with context save wait expectation and fetching object from view context.

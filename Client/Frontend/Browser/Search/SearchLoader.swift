@@ -6,6 +6,8 @@ import Foundation
 import Shared
 import Storage
 import XCGLogger
+import Deferred
+import Data
 
 private let log = Logger.browserLogger
 
@@ -19,10 +21,11 @@ typealias SearchLoader = _SearchLoader<AnyObject, AnyObject>
  * Shared data source for the SearchViewController and the URLBar domain completion.
  * Since both of these use the same SQL query, we can perform the query once and dispatch the results.
  */
-class _SearchLoader<UnusedA, UnusedB>: Loader<Cursor<Site>, SearchViewController> {
+class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
     fileprivate let profile: Profile
     fileprivate let urlBar: URLBarView
     fileprivate let frecentHistory: FrecentHistory
+    fileprivate var inProgress: Cancellable?
 
     init(profile: Profile, urlBar: URLBarView) {
         self.profile = profile
@@ -49,51 +52,58 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<Cursor<Site>, SearchViewController
             }
 
             if query.isEmpty {
-                load(Cursor(status: .success, msg: "Empty query"))
+                load([])
                 return
             }
-
-            if let currentDbQuery = currentDbQuery {
-                profile.db.cancel(databaseOperation: WeakRef(currentDbQuery))
+            
+            if let inProgress = inProgress {
+                inProgress.cancel()
+                self.inProgress = nil
             }
 
-            let deferred = frecentHistory.getSites(whereURLContains: query, historyLimit: 100, bookmarksLimit: 5)
-            currentDbQuery = deferred as? Cancellable
+            let deferred = getSitesByFrecency(query)
+            inProgress = deferred as? Cancellable
 
             deferred.uponQueue(.main) { result in
                 defer {
-                    self.currentDbQuery = nil
+                    self.inProgress = nil
                 }
-
-                guard let deferred = deferred as? Cancellable, !deferred.cancelled else {
-                    return
-                }
-
-                // Failed cursors are excluded in .get().
-                if let cursor = result.successValue {
-                    // First, see if the query matches any URLs from the user's search history.
-                    self.load(cursor)
-                    for site in cursor {
-                        if let url = site?.url, let completion = self.completionForURL(url) {
-                            if oldValue.count < self.query.count {
-                                self.urlBar.setAutocompleteSuggestion(completion)
-                            }
-                            return
-                        }
+                
+                // First, see if the query matches any URLs from the user's search history.
+                self.load(result)
+                for site in result {
+                    if let completion = self.completionForURL(site.url) {
+                        self.urlBar.setAutocompleteSuggestion(completion)
+                        return
                     }
-
-                    // If there are no search history matches, try matching one of the Alexa top domains.
-                    for domain in self.topDomains {
-                        if let completion = self.completionForDomain(domain) {
-                            if oldValue.count < self.query.count {
-                                self.urlBar.setAutocompleteSuggestion(completion)
-                            }
-                            return
-                        }
+                }
+                
+                // If there are no search history matches, try matching one of the Alexa top domains.
+                for domain in self.topDomains {
+                    if let completion = self.completionForDomain(domain) {
+                        self.urlBar.setAutocompleteSuggestion(completion)
+                        return
                     }
                 }
             }
         }
+    }
+    
+    // TODO: This is not a proper frecency query, it just gets sites from the past week. See issue #289
+    fileprivate func getSitesByFrecency(_ containing: String? = nil) -> Deferred<[Site]> {
+        let result = Deferred<[Site]>()
+        
+        let context = DataController.shared.workerContext
+        context.perform {
+            
+            let history: [WebsitePresentable] = History.frecencyQuery(context, containing: containing)
+            let bookmarks: [WebsitePresentable] = Bookmark.frecencyQuery(context: context, containing: containing)
+            
+            // History must come before bookmarks, since later items replace existing ones, and want bookmarks to replace history entries
+            let uniqueSites = Set<Site>( (history + bookmarks).map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: $0 is Bookmark) } )
+            result.fill(Array(uniqueSites))
+        }
+        return result
     }
 
     fileprivate func completionForURL(_ url: String) -> String? {
