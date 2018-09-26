@@ -216,3 +216,18 @@ export const StyledAlertClose = styled<{}, 'button'>('button')`
   height: 30px;
   color: #B8B9C4;
 `
+
+export const StyledBAT = styled<{}, 'div'>('div')`
+  text-align: center;
+  max-width: 300px;
+  margin: 20px auto 0;
+  color: #686978;
+
+  a {
+    color: #686978;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+`
