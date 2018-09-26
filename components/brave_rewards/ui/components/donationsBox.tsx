@@ -93,9 +93,6 @@ class DonationBox extends React.Component<Props, {}> {
         <List title={getLocale('donationTotalDonations')}>
           <Tokens value={0} converted={0} />
         </List>
-        <List title={getLocale('donationList')}>
-          {getLocale('total')} &nbsp;<Tokens value={numRows} hideText={true} toFixed={false} />
-        </List>
         <TableDonation
           rows={donationRows}
           allItems={allSites}
