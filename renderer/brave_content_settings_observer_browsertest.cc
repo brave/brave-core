@@ -470,7 +470,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFPGetImageD
   EXPECT_EQ(400, bufLen);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+DISABLED_IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
     BlockReferrerByDefault) {
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
@@ -494,7 +494,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       child_frame()).c_str(), iframe_url().GetOrigin().spec().c_str());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrer) {
+DISABLED_DISABLED_IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrer) {
   BlockReferrers();
   NavigateToPageWithIframe();
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
@@ -517,7 +517,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowReferrer) {
       url().spec().c_str());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrerShieldsDown) {
+DISABLED_IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrerShieldsDown) {
   BlockReferrers();
   ShieldsDown();
   NavigateToPageWithIframe();
