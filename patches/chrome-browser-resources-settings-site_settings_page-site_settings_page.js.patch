@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
+index c6213ed665ed4ba6b60b5a8b118bfbd2a4fb2f28..54f84e1e54d4f184bdf82f0242d161b4db81ac38 100644
+--- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
++++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
+@@ -121,7 +121,9 @@ Polymer({
+       [R.SITE_SETTINGS_UNSANDBOXED_PLUGINS, 'unsandboxed-plugins'],
+       [R.SITE_SETTINGS_HANDLERS, 'protocol-handlers'],
+       [R.SITE_SETTINGS_MIDI_DEVICES, 'midi-devices'],
++      // <if expr="_google_chrome">
+       [R.SITE_SETTINGS_ADS, 'ads'],
++      // </if>
+       [R.SITE_SETTINGS_ZOOM_LEVELS, 'zoom-levels'],
+       [R.SITE_SETTINGS_USB_DEVICES, 'usb-devices'],
+       [R.SITE_SETTINGS_PDF_DOCUMENTS, 'pdf-documents'],
