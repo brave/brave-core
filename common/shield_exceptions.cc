@@ -129,6 +129,7 @@ bool IsWidevineInstallableURL(const GURL& url) {
     URLPattern(URLPattern::SCHEME_ALL, "https://www.primevideo.com/*"),
     URLPattern(URLPattern::SCHEME_ALL, "https://www.spotify.com/*"),
     URLPattern(URLPattern::SCHEME_ALL, "https://shaka-player-demo.appspot.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.hulu.com/*"),
     // Used for tests
     URLPattern(URLPattern::SCHEME_ALL, "http://www.netflix.com:*/*")
   });
