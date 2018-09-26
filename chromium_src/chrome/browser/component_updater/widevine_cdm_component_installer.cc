@@ -16,6 +16,8 @@
 
 namespace component_updater {
 
+#if defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+
 void OnWidevineRegistered() {
   ComponentsUI demand_updater;
   // This weird looking call is ok, it is just like this to not need
@@ -45,4 +47,13 @@ void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
   }
 }
 
+#endif  // defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+
+void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
+#if defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+  auto installer = base::MakeRefCounted<ComponentInstaller>(
+      std::make_unique<WidevineCdmComponentInstallerPolicy>());
+  installer->Register(cus, base::OnceClosure());
+#endif  // defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+}
 }  // namespace component_updater
