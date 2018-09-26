@@ -36,6 +36,7 @@ test("brave_unit_tests") {
     "//brave/browser/tor/mock_tor_profile_service_factory.cc",
     "//brave/browser/tor/mock_tor_profile_service_factory.h",
     "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_referrals_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_tor_network_delegate_helper_unittest.cc",

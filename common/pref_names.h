@@ -20,5 +20,11 @@ extern const char kWidevineOptedIn[];
 extern const char kUseAlternatePrivateSearchEngine[];
 extern const char kBraveThemeType[];
 extern const char kLocationBarIsWide[];
+extern const char kReferralPromoCode[];
+extern const char kReferralDownloadID[];
+extern const char kReferralTimestamp[];
+extern const char kReferralAttemptTimestamp[];
+extern const char kReferralAttemptCount[];
+extern const char kReferralHeaders[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_
