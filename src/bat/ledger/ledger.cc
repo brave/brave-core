@@ -92,8 +92,8 @@ PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     category(filter.category),
     month(filter.month),
     year(filter.year),
-    order_by(filter.order_by),
-    excluded(filter.excluded) {}
+    excluded(filter.excluded),
+    order_by(filter.order_by) {}
 PublisherInfoFilter::~PublisherInfoFilter() {}
 
 PublisherInfo::PublisherInfo() :
