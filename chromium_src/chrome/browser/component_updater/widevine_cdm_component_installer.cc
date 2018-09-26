@@ -7,23 +7,42 @@
 #undef RegisterWidevineCdmComponent
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_component_extension.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "brave/common/extensions/extension_constants.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 
 namespace component_updater {
 
-// Do nothing, we will register if the user opts in!
-void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
+void OnWidevineRegistered() {
+  ComponentsUI demand_updater;
+  // This weird looking call is ok, it is just like this to not need
+  // to patch for friend access.
+  demand_updater.OnDemandUpdate(g_browser_process->component_updater(),
+      widevine_extension_id);
+}
 
+void RegisterAndInstallWidevine() {
+  // This code is similar to RegisterWidevineCdmComponent_ChromiumImpl
+  // but that ignores the callback, and we handle it so we can force
+  // an on demand update.
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<WidevineCdmComponentInstallerPolicy>());
+  installer->Register(g_browser_process->component_updater(),
+      base::Bind(&OnWidevineRegistered));
+}
+
+// Do nothing unless the user opts in!
+void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   bool widevine_opted_in =
       prefs->GetBoolean(kWidevineOptedIn);
   if (widevine_opted_in) {
-    RegisterWidevineCdmComponent_ChromiumImpl(
-        g_brave_browser_process->component_updater());
+    RegisterAndInstallWidevine();
   }
 }
 
 }  // namespace component_updater
-
