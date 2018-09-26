@@ -128,6 +128,11 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(
     RenderFrameHost* rfh) {
+  if (rfh && allowed_script_origins_.size()) {
+    rfh->Send(new BraveFrameMsg_AllowScriptsOnce(
+          rfh->GetRoutingID(), allowed_script_origins_));
+  }
+
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
     UpdateContentSettingsToRendererFrames(web_contents);
