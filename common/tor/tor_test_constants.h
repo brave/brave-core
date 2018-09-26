@@ -5,12 +5,13 @@
 #ifndef BRAVE_COMMON_TOR_TOR_TEST_CONSTANTS_H_
 #define BRAVE_COMMON_TOR_TOR_TEST_CONSTANTS_H_
 
+#include "base/files/file_path.h"
 
 namespace tor {
 
 extern const char kTestTorProxy[];
 extern const char kTestTorPacString[];
-extern const char kTestTorPath[];
+extern const base::FilePath::CharType kTestTorPath[];
 
 }  // namespace tor
 
