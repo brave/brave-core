@@ -36,8 +36,11 @@ void RegisterAndInstallWidevine() {
       base::Bind(&OnWidevineRegistered));
 }
 
+#endif  // defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+
 // Do nothing unless the user opts in!
 void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
+#if defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   bool widevine_opted_in =
@@ -45,15 +48,7 @@ void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
   if (widevine_opted_in) {
     RegisterAndInstallWidevine();
   }
-}
-
-#endif  // defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
-
-void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
-#if defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
-  auto installer = base::MakeRefCounted<ComponentInstaller>(
-      std::make_unique<WidevineCdmComponentInstallerPolicy>());
-  installer->Register(cus, base::OnceClosure());
 #endif  // defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
 }
+
 }  // namespace component_updater
