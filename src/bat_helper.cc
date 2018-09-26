@@ -1852,7 +1852,7 @@ static bool ignore_ = false;
 
   uint64_t getMediaDuration(const std::map<std::string, std::string>& data, const std::string& media_key, const std::string& type) {
     uint64_t duration = 0;
-    
+
     if (YOUTUBE_MEDIA_TYPE == type) {
       std::map<std::string, std::string>::const_iterator iterSt = data.find("st");
       std::map<std::string, std::string>::const_iterator iterEt = data.find("et");

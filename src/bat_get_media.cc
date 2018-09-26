@@ -95,14 +95,8 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
     return;
   }
 
-  std::vector<std::string> split = braveledger_bat_helper::split(mediaId, '_');
-  std::string new_media_id = mediaId;
-  if (!split.empty()) {
-    new_media_id = split[0];
-  }
-
   if (!publisher_info.get()) {
-    std::string mediaURL = getMediaURL(new_media_id, providerName);
+    std::string mediaURL = getMediaURL(mediaId, providerName);
     if (YOUTUBE_MEDIA_TYPE == providerName) {
       auto request = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + ledger_->URIEncode(mediaURL),
         std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
@@ -118,12 +112,12 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
           _2,
           _3));
     } else if (TWITCH_MEDIA_TYPE == providerName) {
-      const std::string mediaUrl = getMediaURL(new_media_id, providerName);
+      const std::string mediaUrl = getMediaURL(mediaId, providerName);
       std::unique_ptr<ledger::PublisherInfo> new_publisher_info(new ledger::PublisherInfo());
       new_publisher_info->favicon_url = "";
       new_publisher_info->url = mediaUrl + "/videos";
-      std::string id = providerName + "#author:" + new_media_id;
-      new_publisher_info->name = new_media_id;
+      std::string id = providerName + "#author:" + mediaId;
+      new_publisher_info->name = mediaId;
       new_publisher_info->id = id;
 
       ledger::TwitchEventInfo oldEvent;
