@@ -855,7 +855,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1371301976177520732">Bokmärken, lösenord, historik med mera på alla dina enheter</translation>
 <translation id="3111958038206230539">Anpassa Brave Softwares tjänster</translation>
 <translation id="295992419959320001">Brave Software kan anpassa Sök, annonser och andra Brave Software-tjänster utifrån webbhistoriken.</translation>
-<translation id="4800091108248587380">Anpassade tjänster från Brave Software, som Brave Software Pay</translation>
+<translation id="4205523465226408285">Personligare tjänster från Brave Software, till exempel förbättrade förslag på sidor</translation>
 <translation id="3070156078150543526">Brave Software kan använda webbhistoriken för att anpassa Sök och andra tjänster från Brave Software.</translation>
 <translation id="2532167245710864499">Gör Brave bättre och säkrare genom att skicka information om system och användning till Brave Software</translation>
 <translation id="2709453993673701466">Vill du hantera synkronisering och anpassning innan du aktiverar det? Öppna <ph name="BEGIN_LINK"/>inställningarna<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7754704193130578113">Fråga var filerna ska sparas före nedladdning</translation>
 <translation id="5713072761819014678">Koppla från Brave Software Drive-konto</translation>
 <translation id="486635084936119914">Öppna vissa filtyper automatiskt efter att de har laddats ned</translation>
-<translation id="870073306461175568">Network File Share</translation>
-<translation id="6189273858858366896">Konfigurera eller hantera Network File Share.</translation>
 <translation id="2367199180085172140">Lägg till File Share</translation>
-<translation id="8984654317541110628">Webbadress för filresurs</translation>
 <translation id="5247051749037287028">Visningsnamn (valfritt)</translation>
 <translation id="6091761513005122595">Den delade resursen har monterats.</translation>
 <translation id="9024158959543687197">Det gick inte att montera den delade resursen. Kontrollera filresursens webbadress och försök igen.</translation>
@@ -2258,6 +2255,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2459230470861708651">Kryptera synkroniserade lösenord med ditt användarnamn och lösenord på Brave Software</translation>
 <translation id="6383051423892982287">Kryptera synkroniserad data med en egen <ph name="BEGIN_LINK"/>lösenfras för synkronisering<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Endast personer som har ditt lösenord kan läsa dina krypterade uppgifter. Lösenordet skickas inte till och sparas inte av Brave Software. Om du glömmer lösenordet måste du <ph name="BEGIN_LINK"/>återställa synkroniseringen<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> så att lösenfrasen för synkronisering tas bort om du vill ändra den här inställningen</translation>
+<translation id="3873315167136380065"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> så att lösenfrasen för synkronisering tas bort om du vill aktivera detta</translation>
 <translation id="988978206646512040">Lösenfrasen får inte vara tom</translation>
 <translation id="1651008383952180276">Du måste ange samma lösenfras två gånger</translation>
 <translation id="2136476978468204130">Den angivna lösenfrasen är felaktig</translation>
@@ -2455,6 +2454,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1607139524282324606">Rensa post</translation>
 <translation id="6025215716629925253">Stack trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 rad visas inte&gt;}other{&lt;$1 rader visas inte&gt;}}</translation>
+<translation id="5334899159203764908">Läs mer om <ph name="BEGIN_LINK"/>webbplatsåtkomst<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Tillåt det här tillägget att läsa och ändra all din data på webbplatser du besöker</translation>
 <translation id="407173827865827707">Vid klick</translation>
 <translation id="6455264371803474013">På valda webbplatser</translation>

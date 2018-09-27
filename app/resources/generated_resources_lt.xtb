@@ -856,7 +856,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="1371301976177520732">Žymės, slaptažodžiai, istorija ir daugiau visuose jūsų įrenginiuose</translation>
 <translation id="3111958038206230539">„Brave Software“ paslaugų suasmeninimas</translation>
 <translation id="295992419959320001">„Brave Software“ gali naudoti jūsų naršymo istoriją, kad suasmenintų Paiešką, skelbimus ir kitas „Brave Software“ paslaugas</translation>
-<translation id="4800091108248587380">Suasmenintos „Brave Software“ paslaugos, pvz., „Brave Software Pay“</translation>
+<translation id="4205523465226408285">Daugiau asmeninių „Brave Software“ paslaugų, pvz., geresni puslapių pasiūlymai</translation>
 <translation id="3070156078150543526">„Brave Software“ gali naudoti jūsų naršymo istoriją, kad suasmenintų Paiešką ir kitas „Brave Software“ paslaugas</translation>
 <translation id="2532167245710864499">Patobulinkite „Brave“ ir jos saugą siųsdami sistemos bei naudojimo informaciją „Brave Software“</translation>
 <translation id="2709453993673701466">Norite tvarkyti sinchronizavimą ir suasmeninimą prieš įjungdami šias funkcijas? Apsilankykite skiltyje <ph name="BEGIN_LINK"/>„Nustatymai“<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7754704193130578113">Prieš atsiunčiant failą klausti, kur jį išsaugoti</translation>
 <translation id="5713072761819014678">Atjungti „Brave Software“ disko paskyrą</translation>
 <translation id="486635084936119914">Automatiškai atidaryti tam tikrų tipų failus, kai jie atsisiunčiami</translation>
-<translation id="870073306461175568">Tinklo failų bendrinimas</translation>
-<translation id="6189273858858366896">Nustatykite arba tvarkykite tinklo failų bendrinimą.</translation>
 <translation id="2367199180085172140">Nustatyti failo bendrinimą</translation>
-<translation id="8984654317541110628">Failo bendrinimo URL</translation>
 <translation id="5247051749037287028">Rodomas pavadinimas (neprivaloma)</translation>
 <translation id="6091761513005122595">Bendrinamas objektas įdėtas sėkmingai.</translation>
 <translation id="9024158959543687197">Klaida įdedant bendrinamą objektą. Patikrinkite failo bendrinamo objekto URL ir bandykite dar kartą.</translation>
@@ -2259,6 +2256,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2459230470861708651">Šifruokite sinchronizuotus slaptažodžius naudodami savo „Brave Software“ naudotojo vardą ir slaptažodį</translation>
 <translation id="6383051423892982287">Šifruokite sinchronizuojamus duomenis taikydami savo <ph name="BEGIN_LINK"/>sinchronizavimo slaptafrazę<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Tik jūsų slaptafrazę žinantis asmuo gali skaityti šifruotus duomenis. Slaptafrazė nesiunčiama į sistemą „Brave Software“ ir joje nesaugoma. Pamiršę slaptafrazę arba norėdami pakeisti šį nustatymą turėsite <ph name="BEGIN_LINK"/>iš naujo nustatyti sinchronizavimą<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>nustatykite sinchronizavimą iš naujo<ph name="END_LINK"/>, kad pašalintumėte sinchronizavimo slaptafrazę</translation>
+<translation id="3873315167136380065">Norėdami tai įjungti <ph name="BEGIN_LINK"/>nustatykite sinchronizavimą iš naujo<ph name="END_LINK"/>, kad pašalintumėte sinchronizavimo slaptafrazę</translation>
 <translation id="988978206646512040">Neleidžiama naudoti tuščio slaptafrazės lauko</translation>
 <translation id="1651008383952180276">Reikia dukart įvesti tą pačią slaptafrazę</translation>
 <translation id="2136476978468204130">Įvesta slaptafrazė netinka</translation>
@@ -2456,6 +2455,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="1607139524282324606">Išvalyti įrašą</translation>
 <translation id="6025215716629925253">Dėklo pėdsakas</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 eilutė nerodoma&gt;}one{&lt;$1 eilutė nerodoma&gt;}few{&lt;$1 eilutės nerodomos&gt;}many{&lt;$1 eilutės nerodoma&gt;}other{&lt;$1 eilučių nerodoma&gt;}}</translation>
+<translation id="5334899159203764908">Sužinokite daugiau apie <ph name="BEGIN_LINK"/>prieigą prie svetainės<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Leisti šiam plėtiniui skaityti ir keisti visus lankomų svetainių duomenis:</translation>
 <translation id="407173827865827707">Spustelėjus</translation>
 <translation id="6455264371803474013">Konkrečiose svetainėse</translation>

@@ -855,7 +855,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1371301976177520732">Dấu trang, mật khẩu, lịch sử và nhiều nội dung khác trên tất cả các thiết bị của bạn</translation>
 <translation id="3111958038206230539">Cá nhân hóa dịch vụ của Brave Software</translation>
 <translation id="295992419959320001">Brave Software có thể sử dụng lịch sử duyệt web của bạn để cá nhân hóa Tìm kiếm, quảng cáo và các dịch vụ khác của Brave Software</translation>
-<translation id="4800091108248587380">Các dịch vụ được cá nhân hóa của Brave Software, chẳng hạn như Brave Software Pay</translation>
+<translation id="4205523465226408285">Thêm các dịch vụ của Brave Software tùy chỉnh cho cá nhân, như nội dung đề xuất trang hiệu quả hơn</translation>
 <translation id="3070156078150543526">Brave Software có thể sử dụng lịch sử duyệt web của bạn để cá nhân hóa Tìm kiếm và các dịch vụ khác của Brave Software.</translation>
 <translation id="2532167245710864499">Cải thiện Brave và tăng cường bảo mật bằng cách gửi thông tin sử dụng và thông tin về hệ thống cho Brave Software</translation>
 <translation id="2709453993673701466">Bạn muốn quản lý tính năng đồng bộ hóa và cá nhân hóa trước khi bật? Hãy truy cập vào <ph name="BEGIN_LINK"/>Cài đặt<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7754704193130578113">Hỏi vị trí lưu từng tệp trước khi tải xuống</translation>
 <translation id="5713072761819014678">Ngắt kết nối tài khoản Brave Software Drive</translation>
 <translation id="486635084936119914">Tự động mở một số loại tệp nhất định sau khi tải xuống</translation>
-<translation id="870073306461175568">Chia sẻ tệp trong mạng</translation>
-<translation id="6189273858858366896">Thiết lập hoặc quản lý cài đặt Chia sẻ tệp trong mạng.</translation>
 <translation id="2367199180085172140">Thêm Chia sẻ tệp</translation>
-<translation id="8984654317541110628">URL chia sẻ tệp</translation>
 <translation id="5247051749037287028">Tên hiển thị (tùy chọn)</translation>
 <translation id="6091761513005122595">Đã kết nối thành công với thư mục chia sẻ.</translation>
 <translation id="9024158959543687197">Lỗi khi kết nối với thư mục chia sẻ. Hãy kiểm tra URL chia sẻ tệp rồi thử lại.</translation>
@@ -2258,6 +2255,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2459230470861708651">Mã hóa mật khẩu đã đồng bộ hóa với tên người dùng và mật khẩu Brave Software của bạn</translation>
 <translation id="6383051423892982287">Mã hóa dữ liệu đã đồng bộ hóa bằng <ph name="BEGIN_LINK"/>cụm mật khẩu đồng bộ hóa<ph name="END_LINK"/> của riêng bạn</translation>
 <translation id="4817583816512767754">Chỉ người có cụm mật khẩu mới có thể đọc dữ liệu được mã hóa của bạn. Cụm mật khẩu không được gửi tới hoặc được lưu trữ bởi Brave Software. Nếu bạn quên cụm mật khẩu hoặc muốn thay đổi cài đặt này, bạn sẽ cần <ph name="BEGIN_LINK"/>đặt lại đồng bộ hóa<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Để thay đổi mục cài đặt này, hãy <ph name="BEGIN_LINK"/>đặt lại tính năng đồng bộ hóa<ph name="END_LINK"/> để xóa cụm mật khẩu đồng bộ hóa của bạn</translation>
+<translation id="3873315167136380065">Để bật tính năng này, hãy <ph name="BEGIN_LINK"/>đặt lại tính năng đồng bộ hóa<ph name="END_LINK"/> để xóa cụm mật khẩu đồng bộ hóa của bạn</translation>
 <translation id="988978206646512040">Không cho phép cụm mật khẩu trống</translation>
 <translation id="1651008383952180276">Bạn phải nhập cùng một cụm mật khẩu hai lần</translation>
 <translation id="2136476978468204130">Cụm mật khẩu bạn đã nhập không chính xác</translation>
@@ -2455,6 +2454,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1607139524282324606">Xóa mục nhập</translation>
 <translation id="6025215716629925253">Dấu vết ngăn xếp</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 dòng không hiển thị&gt;}other{&lt;$1 dòng không hiển thị&gt;}}</translation>
+<translation id="5334899159203764908">Tìm hiểu thêm về <ph name="BEGIN_LINK"/>quyền truy cập vào trang web<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Cho phép tiện ích này đọc và thay đổi tất cả dữ liệu trên các trang web bạn truy cập:</translation>
 <translation id="407173827865827707">Khi nhấp chuột</translation>
 <translation id="6455264371803474013">Trên các trang web cụ thể</translation>

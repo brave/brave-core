@@ -855,7 +855,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="1371301976177520732">Teie järjehoidjad, paroolid, ajalugu ja muu kõigis teie seadmetes</translation>
 <translation id="3111958038206230539">Brave Software'i teenuste isikupärastamine</translation>
 <translation id="295992419959320001">Brave Software võib kasutada teie sirvimisajalugu otsingu, reklaamide ja muude Brave Software'i teenuste isikupärastamiseks</translation>
-<translation id="4800091108248587380">Isikupärastatud Brave Software'i teenused, nagu Brave Software Pay</translation>
+<translation id="4205523465226408285">Isiklikumad Brave Software'i teenused, nt paremad lehesoovitused</translation>
 <translation id="3070156078150543526">Brave Software võib kasutada teie sirvimisajalugu otsingu ja teiste Brave Software'i teenuste isikupärastamiseks</translation>
 <translation id="2532167245710864499">Täiustage Brave'i ja selle turvalisust, saates Brave Software'ile süsteemi- ja kasutusteavet</translation>
 <translation id="2709453993673701466">Kas soovite sünkroonimist ja isikupärastamist enne nende sisselülitamist hallata? Avage jaotis <ph name="BEGIN_LINK"/>Seaded<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7754704193130578113">Küsi enne iga faili allalaadimist, kuhu see salvestada.</translation>
 <translation id="5713072761819014678">Brave Software Drive'i konto ühenduse katkestamine</translation>
 <translation id="486635084936119914">Teatud failitüübid avatakse pärast allalaadimist automaatselt</translation>
-<translation id="870073306461175568">Failide võrguhoidlad</translation>
-<translation id="6189273858858366896">Seadistage või hallake failide võrguhoidlaid.</translation>
 <translation id="2367199180085172140">Lisa failide võrguhoidla</translation>
-<translation id="8984654317541110628">Failide jagamise URL</translation>
 <translation id="5247051749037287028">Kuvatav nimi (valikuline)</translation>
 <translation id="6091761513005122595">Jagatava üksuse ühendamine õnnestus.</translation>
 <translation id="9024158959543687197">Viga jagatava üksuse ühendamisel. Kontrollige failide jagamise URL-i ja proovige uuesti.</translation>
@@ -2259,6 +2256,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2459230470861708651">Krüpteeri sünkroonitud paroolid minu Brave Software'i kasutajanime ja parooliga</translation>
 <translation id="6383051423892982287">Krüpteeri sünkroonitud andmed <ph name="BEGIN_LINK"/>sünkroonimisparooliga<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Teie krüpteeritud andmeid saavad lugeda vaid need, kes teavad teie parooli – seda ei saadeta Brave Software'ile ja Brave Software ei talleta seda. Kui unustate parooli või soovite seda seadet muuta, tuleb teil <ph name="BEGIN_LINK"/>sünkroonimine lähtestada<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Seade muutmiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_LINK"/>, et sünkroonimisparool eemaldada</translation>
+<translation id="3873315167136380065">Selle sisselülitamiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_LINK"/>, et eemaldada oma sünkroonimisparool</translation>
 <translation id="988978206646512040">Tühi parool ei ole lubatud</translation>
 <translation id="1651008383952180276">Peate sisestama sama parooli kaks korda</translation>
 <translation id="2136476978468204130">Sisestatud parool on vale</translation>
@@ -2456,6 +2455,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="1607139524282324606">Kustuta sisestus</translation>
 <translation id="6025215716629925253">Virna jälg</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 rida pole kuvatud&gt;}other{&lt;$1 rida pole kuvatud&gt;}}</translation>
+<translation id="5334899159203764908">Lisateave <ph name="BEGIN_LINK"/>saidijuurdepääsu<ph name="END_LINK"/> kohta</translation>
 <translation id="8389492867173948260">Lubage sellel laiendusel lugeda ja muuta külastatavate veebisaitide andmeid:</translation>
 <translation id="407173827865827707">Klõpsamisel</translation>
 <translation id="6455264371803474013">Konkreetsetel saitidel</translation>

@@ -854,7 +854,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="1371301976177520732">Jūsu grāmatzīmes, paroles, vēsture un cits saturs visās jūsu ierīcēs</translation>
 <translation id="3111958038206230539">Brave Software pakalpojumu personalizēšana</translation>
 <translation id="295992419959320001">Brave Software var izmantot jūsu pārlūkošanas vēsturi, lai personalizētu Meklēšanu, reklāmas un citus Brave Software pakalpojumus.</translation>
-<translation id="4800091108248587380">Brave Software pakalpojumu, piemēram, Brave Software Pay personalizēšana</translation>
+<translation id="4205523465226408285">Personalizētāki Brave Software pakalpojumi, piemēram, precīzāki lapu ieteikumi</translation>
 <translation id="3070156078150543526">Brave Software var izmantot jūsu pārlūkošanas vēsturi, lai personalizētu Meklēšanu un citus Brave Software pakalpojumus.</translation>
 <translation id="2532167245710864499">Uzlabojiet pārlūku Brave un tā drošību, nosūtot sistēmas informāciju un lietojuma datus Brave Software serveriem</translation>
 <translation id="2709453993673701466">Vai vēlaties pirms sinhronizēšanas un personalizēšanas ieslēgšanas pārvaldīt to iestatījumus? Apmeklējiet lapu <ph name="BEGIN_LINK"/>Iestatījumi<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7754704193130578113">Jautāt, kur saglabāt ikvienu failu pirms lejuplādēšanas</translation>
 <translation id="5713072761819014678">Atspējot Brave Software diska kontu</translation>
 <translation id="486635084936119914">Automātiski atvērt noteikta veida failus pēc to lejupielādes</translation>
-<translation id="870073306461175568">Tīkla failu kopīgošana</translation>
-<translation id="6189273858858366896">Izveidojiet vai pārvaldiet tīkla failu kopīgošanu.</translation>
 <translation id="2367199180085172140">Pievienot failu kopīgošanu</translation>
-<translation id="8984654317541110628">Failu kopīgošanas URL</translation>
 <translation id="5247051749037287028">Parādāmais nosaukums (neobligāti)</translation>
 <translation id="6091761513005122595">Kopīgošana veiksmīgi iekļauta.</translation>
 <translation id="9024158959543687197">Iekļaujot kopīgošanu, radās kļūda. Pārbaudiet failu kopīgošanas URL un mēģiniet vēlreiz.</translation>
@@ -2258,6 +2255,8 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2459230470861708651">Šifrēt sinhronizētās paroles, izmantojot savu Brave Software lietotājvārdu un paroli</translation>
 <translation id="6383051423892982287">Šifrējiet sinhronizētos datus, izmantojot savu <ph name="BEGIN_LINK"/>sinhronizācijas ieejas frāzi<ph name="END_LINK"/>.</translation>
 <translation id="4817583816512767754">Jūsu šifrētos datus var lasīt tikai personas, kurām ir zināma jūsu ieejas frāze. Ieejas frāze netiek sūtīta Brave Software serveriem un netiek tajos glabāta. Ja aizmirsīsiet ieejas frāzi vai vēlēsieties mainīt šo iestatījumu, jums būs <ph name="BEGIN_LINK"/>jāatiestata sinhronizācija<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizāciju<ph name="END_LINK"/>, lai noņemtu sinhronizācijas ieejas frāzi.</translation>
+<translation id="3873315167136380065">Lai ieslēgtu šo funkciju un noņemtu sinhronizēšanas ieejas frāzi, <ph name="BEGIN_LINK"/>atiestatiet sinhronizāciju<ph name="END_LINK"/>.</translation>
 <translation id="988978206646512040">Nav atļauta tukša ieejas frāze.</translation>
 <translation id="1651008383952180276">Jums divreiz jāievada viena un tā pati ieejas frāze.</translation>
 <translation id="2136476978468204130">Ievadītā ieejas frāze nav pareiza.</translation>
@@ -2455,6 +2454,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1607139524282324606">Notīrīt ierakstu</translation>
 <translation id="6025215716629925253">Steka izsekošana</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 rindiņa netiek rādīta&gt;}zero{&lt;$1 rindiņas netiek rādītas&gt;}one{&lt;$1 rindiņa netiek rādīta&gt;}other{&lt;$1 rindiņas netiek rādītas&gt;}}</translation>
+<translation id="5334899159203764908">Uzzināt vairāk par <ph name="BEGIN_LINK"/>piekļuvi vietnēm<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Ļaut šim paplašinājumam lasīt un mainīt visus jūsu datus jūsu apmeklētajās vietnēs:</translation>
 <translation id="407173827865827707">Noklikšķinot</translation>
 <translation id="6455264371803474013">Konkrētās vietnēs</translation>

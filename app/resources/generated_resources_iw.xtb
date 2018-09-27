@@ -504,13 +504,21 @@
 <translation id="3861241522664181545">הדף מושהה.</translation>
 <translation id="6921709132208495314">הפסקת השימוש בנתונים בדף הזה</translation>
 <translation id="2724841811573117416">‏יומני WebRTC</translation>
+<translation id="1969654639948595766">‏יומני טקסט של WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">‏יומני אירועים של WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">‏יומני WebRTC תועדו בתאריך <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">קובץ מקומי:</translation>
 <translation id="2071393345806050157">אין קובץ יומן מקומי.</translation>
 <translation id="6628328486509726751">הועלה בתאריך <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">ההעלאה נכשלה (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">מזהה דיווח <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">דיווח על באג</translation>
+<translation id="3650845953328929506">העלאת היומן בהמתנה.</translation>
+<translation id="1818913467757368489">העלאת היומן מתבצעת.</translation>
 <translation id="1188807932851744811">היומן לא הועלה.</translation>
+<translation id="4688036121858134881">מזהה יומן מקומי: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">‏אין לך יומני טקסט של WebRTC שתועדו לאחרונה.</translation>
+<translation id="3954953195017194676">‏אין לך יומנים של אירועי WebRTC שתועדו לאחרונה.</translation>
 <translation id="2076269580855484719">הסתר פלאגין זה</translation>
 <translation id="2129825002735785149">עדכן פלאגין</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> חסום לפי מדיניות הארגון</translation>
@@ -555,6 +563,8 @@
 <translation id="4416582610654027550">יש להקליד כתובת אתר חוקית</translation>
 <translation id="2806891468525657116">קיצור הדרך כבר קיים</translation>
 <translation id="394183848452296464">לא ניתן ליצור קיצור דרך</translation>
+<translation id="329703603001918157">לא ניתן לערוך את קיצור הדרך</translation>
+<translation id="6732900235521116609">לא ניתן להסיר את קיצור הדרך</translation>
 <translation id="7109543803214225826">קיצור הדרך הוסר</translation>
 <translation id="8017679124341497925">קיצור הדרך עבר עריכה</translation>
 <translation id="1174073918202301297">קיצור הדרך נוסף</translation>
@@ -844,7 +854,7 @@
 <translation id="1371301976177520732">הסימניות, הסיסמאות, ההיסטוריה ונתונים נוספים שלך - בכל המכשירים שברשותך</translation>
 <translation id="3111958038206230539">‏התאמה אישית של שירותי Brave Software</translation>
 <translation id="295992419959320001">‏חברת Brave Software עשויה להשתמש בהיסטוריית הגלישה שלך לצורך התאמה אישית של חיפוש Brave Software, מודעות Brave Software ושירותי Brave Software אחרים</translation>
-<translation id="4800091108248587380">‏שירותים מותאמים אישית של Brave Software, כמו Brave Software Pay</translation>
+<translation id="4205523465226408285">‏שירותי Brave Software בהתאמה אישית יותר, כמו הצעות טובות יותר לדפים</translation>
 <translation id="3070156078150543526">‏Brave Software עשויה להשתמש בהיסטוריית הגלישה שלך כדי להתאים אישית את החיפוש ושירותים אחרים של Brave Software</translation>
 <translation id="2532167245710864499">‏שליחה של פרטי המערכת ונתוני שימוש אל Brave Software תשפר את Brave ואת האבטחה שלו</translation>
 <translation id="2709453993673701466">רוצה לנהל את הסנכרון וההתאמה האישית לפני הפעלתם? אפשר לעשות זאת ב<ph name="BEGIN_LINK"/>הגדרות<ph name="END_LINK"/>.</translation>
@@ -1439,6 +1449,7 @@
 <translation id="1800308196794859773">‏שליחת הקלטה של הקול שלך אל Brave Software מאפשרת הכתבה בכל תיבת טקסט.</translation>
 <translation id="8758418656925882523">הפעלת הכתבה (דיבור להקלדה)</translation>
 <translation id="7580671184200851182">השמע את אותו אודיו מכל הרמקולים (אודיו מונו)</translation>
+<translation id="8186639008852027301">השמעת צליל בהפעלה</translation>
 <translation id="1189418886587279221">הפעל תכונות נגישות על מנת להקל את השימוש במכשיר שלך.</translation>
 <translation id="48704129375571883">הוסף תכונות נוספות</translation>
 <translation id="7230787553283372882">התאם אישית את גודל הטקסט</translation>
@@ -1536,6 +1547,10 @@
 <translation id="5029568752722684782">נקה את העותק</translation>
 <translation id="2154484045852737596">עריכת כרטיס</translation>
 <translation id="5087580092889165836">הוסף כרטיס</translation>
+<translation id="7284555534810614828">‏שמירת הכרטיס לשימוש ב-Brave Software Pay</translation>
+<translation id="6281511959351052816">‏שמירת כרטיסים לשימוש ב-Brave Software Pay</translation>
+<translation id="1904518222538904133">אחד מהכרטיסים שלך זמין לשימוש רק במכשיר הזה</translation>
+<translation id="8065485338434000013">חלק מהכרטיסים שלך זמינים לשימוש רק במכשיר הזה</translation>
 <translation id="4807098396393229769">שם על הכרטיס</translation>
 <translation id="2612676031748830579">מספר הכרטיס</translation>
 <translation id="869891660844655955">תאריך תפוגה</translation>
@@ -1676,10 +1691,7 @@
 <translation id="7754704193130578113">שאל היכן לשמור כל קובץ לפני הורדתו</translation>
 <translation id="5713072761819014678">‏נתק חשבון Brave Software Drive</translation>
 <translation id="486635084936119914">פתיחת סוגי קבצים מסוימים באופן אוטומטי לאחר הורדתם</translation>
-<translation id="870073306461175568">שיתופי קבצים ברשת</translation>
-<translation id="6189273858858366896">הגדרה או ניהול של שיתופי קבצים ברשת.</translation>
 <translation id="2367199180085172140">הוספת שיתוף קובץ</translation>
-<translation id="8984654317541110628">כתובת אתר של התקן רשת לשיתוף קבצים</translation>
 <translation id="5247051749037287028">שם תצוגה (אופציונלי)</translation>
 <translation id="6091761513005122595">התקן הרשת לשיתוף קבצים נטען בהצלחה.</translation>
 <translation id="9024158959543687197">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. יש לבדוק את כתובת האתר של ההתקן ולנסות שוב.</translation>
@@ -2183,6 +2195,7 @@
 <translation id="3422989461909154470">‏כאן ניתן לנהל את כל חשבונות Brave Software המחוברים מאפליקציות ומאתרים.</translation>
 <translation id="1987317783729300807">חשבונות</translation>
 <translation id="8418661265246754237">‏חשבונות Brave Software</translation>
+<translation id="3297951628821704004">הסרת החשבון מהמכשיר הזה</translation>
 <translation id="1059855432287631118">רישום טביעת אצבע</translation>
 <translation id="878068003854005405">שנתחיל? צריך להניח את האצבע על החיישן.</translation>
 <translation id="7189965711416741966">טביעת האצבע נוספה.</translation>
@@ -2241,6 +2254,8 @@
 <translation id="2459230470861708651">‏הצפן סיסמאות מסונכרנות עם שם המשתמש והסיסמה שלך ב-Brave Software</translation>
 <translation id="6383051423892982287">הצפן נתונים מסונכרנים בעזרת <ph name="BEGIN_LINK"/>ביטוי סיסמה משלך לסנכרון<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">‏רק מי שיודע את ביטוי הסיסמה יכול לקרוא את הנתונים המוצפנים. ביטוי הסיסמה לא נשלח אל Brave Software והיא אינה מאחסנת אותו. אם תשכח את ביטוי הסיסמה או אם תרצה לשנות את ההגדרה הזו, יהיה עליך <ph name="BEGIN_LINK"/>לאפס את הסנכרון<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">כדי לשנות את ההגדרה הזאת, צריך להסיר את ביטוי הסיסמה של הסנכרון על ידי <ph name="BEGIN_LINK"/>איפוס הסנכרון<ph name="END_LINK"/></translation>
+<translation id="3873315167136380065">כדי להפעיל את האפשרות הזאת, צריך <ph name="BEGIN_LINK"/>לאפס את הסנכרון<ph name="END_LINK"/> כדי להסיר את ביטוי הסיסמה של הסנכרון</translation>
 <translation id="988978206646512040">השדה של ביטוי הסיסמה לא יכול להישאר ריק</translation>
 <translation id="1651008383952180276">עליך להזין אותו ביטוי סיסמה פעמיים</translation>
 <translation id="2136476978468204130">הזנת ביטוי סיסמה שגוי</translation>
@@ -2398,6 +2413,7 @@
 <translation id="1940546824932169984">מכשירים מחוברים</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">‏יחד עם הטלפון, ה-Bravebook יכול לפעול עוד יותר טוב. <ph name="LINK_BEGIN"/>מידע נוסף.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">אין מכשירים שיכולים להתחבר. <ph name="LINK_BEGIN"/>מידע נוסף.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">ממתין לאימות. <ph name="LINK_BEGIN"/>מידע נוסף.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">לא ניתן היה להתחבר אל הטלפון. <ph name="LINK_BEGIN"/>מידע נוסף.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">‏תכונת Better Together פועלת</translation>

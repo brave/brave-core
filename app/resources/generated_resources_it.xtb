@@ -855,7 +855,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1371301976177520732">I tuoi Preferiti, le password, la cronologia e altri dati su tutti i tuoi dispositivi</translation>
 <translation id="3111958038206230539">Personalizza i servizi Brave Software</translation>
 <translation id="295992419959320001">Brave Software può utilizzare la tua cronologia di navigazione per personalizzare la Ricerca, gli annunci e altri servizi Brave Software.</translation>
-<translation id="4800091108248587380">Servizi Brave Software personalizzati come Brave Software Pay</translation>
+<translation id="4205523465226408285">Più servizi Brave Software personali, ad esempio suggerimenti di pagine migliori</translation>
 <translation id="3070156078150543526">Brave Software può utilizzare la tua cronologia di navigazione per personalizzare la Ricerca e altri servizi Brave Software</translation>
 <translation id="2532167245710864499">Migliora Brave e la sua sicurezza inviando dati di sistema e utilizzo a Brave Software</translation>
 <translation id="2709453993673701466">Vuoi gestire la sincronizzazione e la personalizzazione prima di attivarle? Visita le <ph name="BEGIN_LINK"/>Impostazioni<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7754704193130578113">Chiedi dove salvare il file prima di scaricarlo</translation>
 <translation id="5713072761819014678">Scollega account Brave Software Drive</translation>
 <translation id="486635084936119914">Apri automaticamente determinati tipi di file dopo il download</translation>
-<translation id="870073306461175568">Condivisioni file di rete</translation>
-<translation id="6189273858858366896">Configura o gestisci condivisioni file di rete.</translation>
 <translation id="2367199180085172140">Aggiungi Condivisione file</translation>
-<translation id="8984654317541110628">URL condivisione file</translation>
 <translation id="5247051749037287028">Nome visualizzato (facoltativo)</translation>
 <translation id="6091761513005122595">Condivisione montata correttamente.</translation>
 <translation id="9024158959543687197">Errore durante il montaggio della condivisione. Verifica l'URL condivisione file e riprova.</translation>
@@ -2258,6 +2255,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2459230470861708651">Cripta le password sincronizzate con la password e il nome utente del tuo account Brave Software</translation>
 <translation id="6383051423892982287">Cripta i dati sincronizzati con la tua <ph name="BEGIN_LINK"/>passphrase di sincronizzazione<ph name="END_LINK"/>.</translation>
 <translation id="4817583816512767754">Soltanto chi conosce la tua passphrase può leggere i tuoi dati criptati. La passphrase non viene inviata a Brave Software né memorizzata. Se dimentichi la passphrase o vuoi modificare questa impostazione, dovrai <ph name="BEGIN_LINK"/>reimpostare la sincronizzazione<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Per modificare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizzazione<ph name="END_LINK"/> per rimuovere la passphrase di sincronizzazione.</translation>
+<translation id="3873315167136380065">Per attivare questa funzione, <ph name="BEGIN_LINK"/>reimposta la sincronizzazione<ph name="END_LINK"/> per rimuovere la passphrase di sincronizzazione</translation>
 <translation id="988978206646512040">Non è consentita una passphrase vuota</translation>
 <translation id="1651008383952180276">Devi inserire la stessa passphrase due volte</translation>
 <translation id="2136476978468204130">La passphrase inserita non è corretta</translation>
@@ -2455,6 +2454,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1607139524282324606">Cancella voce</translation>
 <translation id="6025215716629925253">Analisi dello stack</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 riga non mostrata&gt;}other{&lt;$1 righe non mostrate&gt;}}</translation>
+<translation id="5334899159203764908">Ulteriori informazioni sull'<ph name="BEGIN_LINK"/>accesso ai siti<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permetti a questa estensione di leggere e modificare tutti i dati relativi ai siti web che hai visitato:</translation>
 <translation id="407173827865827707">Al clic</translation>
 <translation id="6455264371803474013">Su siti specifici</translation>

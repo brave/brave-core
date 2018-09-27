@@ -856,7 +856,7 @@
 <translation id="1371301976177520732">Обележивачи, историја и други садржај доступни на свим уређајима</translation>
 <translation id="3111958038206230539">Персонализујте Brave Software услуге</translation>
 <translation id="295992419959320001">Brave Software може да користи историју прегледања за персонализацију Претраге, огласа и других Brave Software услуга</translation>
-<translation id="4800091108248587380">Персонализоване Brave Software услуге као што је Brave Software Pay</translation>
+<translation id="4205523465226408285">Персонализованије Brave Software услуге, попут бољих предлога страница</translation>
 <translation id="3070156078150543526">Brave Software може да користи историју прегледања за персонализацију Претраге и других Brave Software услуга</translation>
 <translation id="2532167245710864499">Шаљите Brave Software-у информације о систему и коришћењу да бисте побољшали Brave и његову безбедност</translation>
 <translation id="2709453993673701466">Желите ли да управљате синхронизацијом и персонализацијом пре него што их укључите? Посетите <ph name="BEGIN_LINK"/>Подешавања<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@
 <translation id="7754704193130578113">Питај где треба сачувати сваку датотеку пре преузимања</translation>
 <translation id="5713072761819014678">Прекини везу са налогом Brave Software диска</translation>
 <translation id="486635084936119914">Аутоматски отварајте одређене типове датотека после преузимања</translation>
-<translation id="870073306461175568">Дељења датотека на мрежи</translation>
-<translation id="6189273858858366896">Подесите дељења датотека на мрежи или управљајте њима.</translation>
 <translation id="2367199180085172140">Додајте дељење датотека</translation>
-<translation id="8984654317541110628">URL дељења датотека</translation>
 <translation id="5247051749037287028">Име за приказ (опционално)</translation>
 <translation id="6091761513005122595">Дељена датотека је учитана.</translation>
 <translation id="9024158959543687197">Грешка при учитавању дељене датотеке. Проверите URL дељења датотека и пробајте поново.</translation>
@@ -2259,6 +2256,8 @@
 <translation id="2459230470861708651">Шифруј синхронизоване лозинке помоћу Brave Software корисничког имена и лозинке</translation>
 <translation id="6383051423892982287">Шифрујте синхронизоване податке помоћу сопствене <ph name="BEGIN_LINK"/>приступне фразе за синхронизацију<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Само неко ко има приступну фразу може да чита шифроване податке. Brave Software не шаље нити чува приступну фразу. Ако заборавите приступну фразу или желите да промените ово подешавање, мораћете да <ph name="BEGIN_LINK"/>ресетујете синхронизацију<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Да бисте променили ово подешавање, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/> да бисте уклонили приступну фразу за синхронизацију</translation>
+<translation id="3873315167136380065">Да бисте укључили ово, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/> да бисте уклонили приступну фразу за синхронизацију</translation>
 <translation id="988978206646512040">Поље за приступну фразу не може да буде празно</translation>
 <translation id="1651008383952180276">Двапут треба да унесете исту приступну фразу</translation>
 <translation id="2136476978468204130">Приступна фраза коју сте унели је нетачна</translation>
@@ -2456,6 +2455,7 @@
 <translation id="1607139524282324606">Обриши унос</translation>
 <translation id="6025215716629925253">Стање низа</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 ред није приказан&gt;}one{&lt;$1 ред није приказан&gt;}few{&lt;$1 реда нису приказана&gt;}other{&lt;$1 редова није приказано&gt;}}</translation>
+<translation id="5334899159203764908">Сазнајте више о <ph name="BEGIN_LINK"/>приступу сајтовима<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Дозволите да овај додатак чита и мења све податке на веб-сајтовима које посећујете:</translation>
 <translation id="407173827865827707">При клику</translation>
 <translation id="6455264371803474013">На одређеним сајтовима</translation>
