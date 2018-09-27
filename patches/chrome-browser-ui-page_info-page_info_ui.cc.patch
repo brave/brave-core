@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_info/page_info_ui.cc b/chrome/browser/ui/page_info/page_info_ui.cc
-index 5ee17ace67eb81201c6a3cb2c0b6044376521e27..c08ccb65390beb30bc7b954d16973b7809d40bed 100644
+index 16c119ddfdddbc5dd84ea251e4fbb27771537963..6b8858742fb0ba832a365e9411e47e1625bb1164 100644
 --- a/chrome/browser/ui/page_info/page_info_ui.cc
 +++ b/chrome/browser/ui/page_info/page_info_ui.cc
-@@ -552,6 +552,9 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
+@@ -550,6 +550,9 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
      case CONTENT_SETTINGS_TYPE_USB_GUARD:
        icon = &vector_icons::kUsbIcon;
        break;
