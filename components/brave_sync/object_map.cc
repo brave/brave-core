@@ -7,6 +7,7 @@
 
 #include "base/base_paths.h"
 #include "base/files/file_util.h"
+#include "base/files/file_path.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
@@ -24,14 +25,13 @@ namespace storage {
 
 static const char DB_FILE_NAME[] = "brave_sync_db";
 
-ObjectMap::ObjectMap(Profile *profile) : profile_(nullptr) {
-  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR profile="<<profile;
-  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR profile->GetPath()="<<profile->GetPath();
+ObjectMap::ObjectMap(const base::FilePath &profile_path) {
+  LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ObjectMap CTOR profile_path="<<profile_path;
 
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
-  DCHECK(profile);
-  profile_ = profile;
+  DCHECK(!profile_path.empty());
+  profile_path_ = profile_path;
 }
 
 ObjectMap::~ObjectMap() {
@@ -61,9 +61,9 @@ void ObjectMap::CreateOpenDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (nullptr == level_db_) {
-    DCHECK(profile_);
+    DCHECK(!profile_path_.empty());
+    base::FilePath dbFilePath = profile_path_.Append(DB_FILE_NAME);
 
-    base::FilePath dbFilePath = profile_->GetPath().Append(DB_FILE_NAME);
     LOG(ERROR) << "TAGAB ObjectMap::CreateOpenDatabase dbFilePath=" << dbFilePath;
     leveldb::Options options;
     options.create_if_missing = true;
@@ -369,12 +369,12 @@ void ObjectMap::CloseDBHandle() {
 void ObjectMap::DestroyDB() {
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::DestroyDB, DCHECK_CALLED_ON_VALID_SEQUENCE " << GetThreadInfoString();
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(profile_);
+  DCHECK(!profile_path_.empty());
 
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::ResetObjects";
   CloseDBHandle();
 
-  base::FilePath dbFilePath = profile_->GetPath().Append(DB_FILE_NAME);
+  base::FilePath dbFilePath = profile_path_.Append(DB_FILE_NAME);
   LOG(ERROR) << "TAGAB ResetObjects dbFilePath=" << dbFilePath;
 
   leveldb::Status db_status = leveldb::DestroyDB(dbFilePath.value(), leveldb::Options());

@@ -88,7 +88,7 @@ void ControllerImpl::SetProfile(Profile *profile) {
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN} );
 
-  sync_obj_map_ = std::make_unique<storage::ObjectMap>(profile);
+  sync_obj_map_ = std::make_unique<storage::ObjectMap>(profile->GetPath());
 
   bookmarks_ = std::make_unique<brave_sync::Bookmarks>(this);
   bookmarks_->SetProfile(profile);

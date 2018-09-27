@@ -7,10 +7,9 @@
 #include <string>
 #include <memory>
 
-#include "base/sequence_checker.h"
+#include "base/files/file_path.h"
 #include "base/macros.h"
-
-class Profile;
+#include "base/sequence_checker.h"
 
 namespace leveldb {
   class DB;
@@ -27,7 +26,7 @@ namespace storage {
 
 class ObjectMap {
 public:
-  ObjectMap(Profile *profile);
+  ObjectMap(const base::FilePath &profile_path);
   ~ObjectMap();
 
   // Local ids both of bookmarks and history are just int64_t and can be the same.
@@ -94,7 +93,7 @@ private:
   void SplitRawLocalId(const std::string &raw_local_id, std::string &local_id, Type &read_type);
   std::string ComposeRawLocalId(const Type &type, const std::string &localId);
 
-  Profile *profile_;
+  base::FilePath profile_path_;
   std::unique_ptr<leveldb::DB> level_db_;
   std::string api_version_;
 
