@@ -1395,16 +1395,16 @@
 
   <if expr="chromeos">
     <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB shares setting section.">
-      Network File Shares
+      Network file shares
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to setup SMB shares.">
-      Set up or manage Network File Shares.
+      Set up or manage network file shares.
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES_ADD_SHARE" desc="In SMB shares settings subpage, text for the link to add a new SMB share.">
       Add File Share
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_URL" desc="Title for the input that lets users specify the name of an SMB URL.">
-      File Share URL
+      File share URL
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_NAME" desc="Title for the input that lets users specify the display name of an SMB mount.">
       Display name (optional)
