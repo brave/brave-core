@@ -23,6 +23,11 @@ window.cr.define('sync_ui_exports', function () {
     $('btn_add_computer_copy_to_clipboard').onclick = btn_add_computer_copy_to_clipboard_onclick;
     $('btn_add_computer_done').onclick = btn_add_computer_done_onclick;
 
+    $('checkbox_sync_this_device').onchange = checkbox_sync_this_device_onchange;
+    $('checkbox_bookmarks').onchange = checkbox_bookmarks_onchange;
+    $('checkbox_site_settings').onchange = checkbox_site_settings_onchange;
+    $('checkbox_history').onchange = checkbox_history_onchange;
+
     $('btn_test').onclick = btn_test_onclick;
 
     $('area_new_to_sync').style.display = 'none';
@@ -259,4 +264,20 @@ function btn_add_computer_done_onclick() {
 function btn_test_onclick() {
   alert('Test');
   chrome.send('testClicked');
+}
+
+function checkbox_sync_this_device_onchange(event) {
+  chrome.send('syncThisDevice', [event.target.checked]);
+}
+
+function checkbox_bookmarks_onchange(event) {
+  chrome.send('syncBookmarks', [event.target.checked]);
+}
+
+function checkbox_site_settings_onchange(event) {
+  chrome.send('syncSavedSiteSettings', [event.target.checked]);
+}
+
+function checkbox_history_onchange(event) {
+  chrome.send('syncBrowsingHistory', [event.target.checked]);
 }
