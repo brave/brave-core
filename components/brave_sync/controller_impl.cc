@@ -153,8 +153,24 @@ void ControllerImpl::OnSetupSyncHaveCode(const std::string &sync_words,
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetupSyncHaveCode";
   LOG(ERROR) << "TAGAB sync_words=" << sync_words;
   LOG(ERROR) << "TAGAB device_name=" << device_name;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (sync_words.empty() || device_name.empty()) {
+    OnSyncSetupError("missing sync words or device name");
+    return;
+  }
+
+  if (temp_storage_.currently_initializing_guard_) {
+    if (sync_ui_) sync_ui_->OnLogMessage("currently initializing");
+    return;
+  }
+
+  if (IsSyncConfigured()) {
+    if (sync_ui_) sync_ui_->OnLogMessage("already configured");
+    return;
+  }
 
   temp_storage_.device_name_ = device_name; // Fill here, but save in OnSaveInitData
+  temp_storage_.currently_initializing_guard_ = true;
 
   DCHECK(sync_client_);
   sync_client_->NeedBytesFromSyncWords(sync_words);
@@ -163,8 +179,24 @@ void ControllerImpl::OnSetupSyncHaveCode(const std::string &sync_words,
 void ControllerImpl::OnSetupSyncNewToSync(const std::string &device_name) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetupSyncNewToSync";
   LOG(ERROR) << "TAGAB device_name="<<device_name;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (device_name.empty()) {
+    OnSyncSetupError("missing device name");
+    return;
+  }
+
+  if (temp_storage_.currently_initializing_guard_) {
+    if (sync_ui_) sync_ui_->OnLogMessage("currently initializing");
+    return;
+  }
+
+  if (IsSyncConfigured()) {
+    if (sync_ui_) sync_ui_->OnLogMessage("already configured");
+    return;
+  }
 
   temp_storage_.device_name_ = device_name; // Fill here, but save in OnSaveInitData
+  temp_storage_.currently_initializing_guard_ = true;
 
   InitJsLib(true); // Init will cause load of the Script
   // Then we will got GOT_INIT_DATA and SAVE_INIT_DATA, where we will save the seed and device id
@@ -325,6 +357,7 @@ void ControllerImpl::OnSyncDebug(const std::string &message) {
 }
 
 void ControllerImpl::OnSyncSetupError(const std::string &error) {
+  temp_storage_.currently_initializing_guard_ = false;
   OnSyncDebug(error);
 }
 
@@ -372,7 +405,10 @@ void ControllerImpl::OnGetInitData(const std::string &sync_version) {
 
 void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData:";
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
   DCHECK(false == sync_initialized_);
+  DCHECK(temp_storage_.currently_initializing_guard_);
 
   std::string seed_str = StrFromUint8Array(seed);
   std::string device_id_str = StrFromUint8Array(device_id);
@@ -417,6 +453,8 @@ void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &de
   sync_prefs_->SetSyncBookmarksEnabled(true);
   sync_prefs_->SetSyncSiteSettingsEnabled(true);
   sync_prefs_->SetSyncHistoryEnabled(true);
+
+  temp_storage_.currently_initializing_guard_ = false;
 }
 
 void ControllerImpl::OnSyncReady() {

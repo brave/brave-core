@@ -250,6 +250,8 @@ private:
     std::string device_name_;
     // Between OnWordsToBytesDone => InitJsLib|OnSaveInitData
     std::string seed_str_;
+    // Guard to prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync while being initialized
+    bool currently_initializing_guard_ = false;
   };
   TempStorage temp_storage_;
 
