@@ -321,6 +321,30 @@ std::string ControllerImpl::GetSeed() {
   return seed;
 }
 
+void ControllerImpl::OnSetSyncThisDevice(const bool &sync_this_device) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetSyncThisDevice " << sync_this_device;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  sync_prefs_->SetSyncThisDevice(sync_this_device);
+}
+
+void ControllerImpl::OnSetSyncBookmarks(const bool &sync_bookmarks) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetSyncBookmarks " << sync_bookmarks;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
+}
+
+void ControllerImpl::OnSetSyncBrowsingHistory(const bool &sync_browsing_history) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetSyncBrowsingHistory " << sync_browsing_history;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  sync_prefs_->SetSyncHistoryEnabled(sync_browsing_history);
+}
+
+void ControllerImpl::OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) {
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncSavedSiteSettings " << sync_saved_site_settings;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  sync_prefs_->SetSyncSiteSettingsEnabled(sync_saved_site_settings);
+}
+
 void ControllerImpl::InitJsLib(const bool &setup_new_sync) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::InitJsLib " << GetThreadInfoString();
 

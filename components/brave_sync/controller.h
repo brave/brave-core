@@ -35,6 +35,11 @@ namespace brave_sync {
     virtual void GetSyncWords() = 0;
     virtual std::string GetSeed() = 0;
 
+    virtual void OnSetSyncThisDevice(const bool &sync_this_device) = 0;
+    virtual void OnSetSyncBookmarks(const bool &sync_bookmarks) = 0;
+    virtual void OnSetSyncBrowsingHistory(const bool &sync_browsing_history) = 0;
+    virtual void OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) = 0;
+
     virtual void SetupUi(SyncUI *sync_ui) = 0;
   };
 

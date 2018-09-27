@@ -55,6 +55,22 @@ void SyncUIImpl::RegisterCallbacks() {
      base::Bind(&SyncUIImpl::NeedSyncQRcode,
                 base::Unretained(this)));
 
+  this->web_ui()->RegisterMessageCallback("syncThisDevice",
+     base::Bind(&SyncUIImpl::SyncThisDevice,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("syncBookmarks",
+     base::Bind(&SyncUIImpl::SyncBookmarks,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("syncBrowsingHistory",
+     base::Bind(&SyncUIImpl::SyncBrowsingHistory,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("syncSavedSiteSettings",
+     base::Bind(&SyncUIImpl::SyncSavedSiteSettings,
+                base::Unretained(this)));
+
   this->web_ui()->RegisterMessageCallback("deleteDevice",
      base::Bind(&SyncUIImpl::DeleteDevice,
                 base::Unretained(this)));
@@ -136,6 +152,42 @@ void SyncUIImpl::NeedSyncQRcode(const base::ListValue* args) {
   LOG(ERROR) << "SyncUIImpl::NeedSyncQRcode";
   std::string seed = sync_controller_->GetSeed();
   web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.haveSeedForQrCode", base::Value(seed));
+}
+
+void SyncUIImpl::SyncThisDevice(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIImpl::SyncThisDevice";
+  bool new_value;
+  if (!args->GetBoolean(0, &new_value)) {
+    return;
+  }
+  sync_controller_->OnSetSyncThisDevice(new_value);
+}
+
+void SyncUIImpl::SyncBookmarks(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIImpl::SyncBookmarks";
+  bool new_value;
+  if (!args->GetBoolean(0, &new_value)) {
+    return;
+  }
+  sync_controller_->OnSetSyncBookmarks(new_value);
+}
+
+void SyncUIImpl::SyncBrowsingHistory(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIImpl::SyncBrowsingHistory";
+  bool new_value;
+  if (!args->GetBoolean(0, &new_value)) {
+    return;
+  }
+  sync_controller_->OnSetSyncBrowsingHistory(new_value);
+}
+
+void SyncUIImpl::SyncSavedSiteSettings(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIImpl::SyncSavedSiteSettings";
+  bool new_value;
+  if (!args->GetBoolean(0, &new_value)) {
+    return;
+  }
+  sync_controller_->OnSetSyncSavedSiteSettings(new_value);
 }
 
 void SyncUIImpl::DeleteDevice(const base::ListValue* args) {

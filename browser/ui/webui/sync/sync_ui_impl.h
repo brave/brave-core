@@ -43,6 +43,11 @@ class SyncUIImpl : public BasicUI, //AB: should bot be inherited from BasicUI,
   void NeedSyncWords(const base::ListValue* args);
   void NeedSyncQRcode(const base::ListValue* args);
 
+  void SyncThisDevice(const base::ListValue* args);
+  void SyncBookmarks(const base::ListValue* args);
+  void SyncBrowsingHistory(const base::ListValue* args);
+  void SyncSavedSiteSettings(const base::ListValue* args);
+
   void DeleteDevice(const base::ListValue* args);
   void ResetSync(const base::ListValue* args);
 

@@ -68,6 +68,10 @@ public:
   void OnResetSync() override;
   void GetSyncWords() override;
   std::string GetSeed() override;
+  void OnSetSyncThisDevice(const bool &sync_this_device) override;
+  void OnSetSyncBookmarks(const bool &sync_bookmarks) override;
+  void OnSetSyncBrowsingHistory(const bool &sync_browsing_history) override;
+  void OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) override;
   void SetupUi(SyncUI *sync_ui) override;
 
   void GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) override;
