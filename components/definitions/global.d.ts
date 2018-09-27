@@ -32,5 +32,8 @@ declare global {
     brave_welcome: {
       initialize: () => void
     }
+    sync_ui_exports: {
+      initialize: () => void
+    }
   }
 }
