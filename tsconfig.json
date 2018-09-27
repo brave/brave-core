@@ -27,6 +27,7 @@
     "./components/**/*"
   ],
   "exclude": [
-    "./components/test/**/*"
+    "./components/test/**/*",
+    "./components/brave_sync/extension"
   ]
 }
