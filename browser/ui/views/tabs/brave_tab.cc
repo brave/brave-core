@@ -4,11 +4,31 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
+#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/tabs/tab_controller.h"
+#include "ui/gfx/animation/animation_container.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/scoped_canvas.h"
+#include "ui/gfx/skia_paint_util.h"
 
 using namespace chrome_browser_ui_views_tabs_tab_cc;
+
+BraveTab::BraveTab(TabController* controller, gfx::AnimationContainer* container)
+          : Tab::Tab(controller, container) {
+  // Reserve more space than parent class since
+  // Brave tab strip starts at the top, to allow for more shadow
+  SetBorder(views::CreateEmptyBorder(GetContentsInsets()));
+}
+
+gfx::Insets BraveTab::GetContentsInsets() const {
+  gfx::Insets tab_contents_insets(Tab::GetContentsInsets());
+  // inset top to reserve space for shadow / drag area
+  return tab_contents_insets + gfx::Insets(
+                                BrowserNonClientFrameView::kMinimumDragHeight,
+                                0,
+                                0,
+                                0);
+}
 
 // Same as Chomium Tab implementation except separators are
 // achored to bottom (instead of floating in middle) and rounded ends
@@ -19,7 +39,6 @@ void BraveTab::PaintSeparators(gfx::Canvas* canvas) {
 
   gfx::ScopedCanvas scoped_canvas(canvas);
   const float scale = canvas->UndoDeviceScaleFactor();
-
   const gfx::RectF aligned_bounds =
       ScaleAndAlignBounds(bounds(), scale, GetStrokeThickness());
   const int corner_radius = GetCornerRadius();
@@ -54,4 +73,51 @@ void BraveTab::PaintSeparators(gfx::Canvas* canvas) {
   flags.setColor(separator_color(separator_opacities.right));
   canvas->DrawRoundRect(
                      trailing_separator_bounds, scaled_separator_radius, flags);
+}
+
+void BraveTab::PaintTabShadows(gfx::Canvas* canvas, const gfx::Path& fill_path) {
+  const bool active = IsActive();
+  const bool hover = !active && hover_controller_.ShouldDraw();
+  if (active || hover) {
+    gfx::ScopedCanvas scoped_canvas(canvas);
+    const float scale = canvas->UndoDeviceScaleFactor();
+    canvas->sk_canvas()->clipPath(fill_path, SkClipOp::kDifference, true);
+    std::vector<gfx::ShadowValue> shadows;
+    double alpha = 100;
+    double blur = 6;
+    if (hover) {
+      double animation_value = hover_controller_.GetAnimationValue();
+      alpha = animation_value * (alpha * 0.66);
+      blur = animation_value * blur;
+    }
+    gfx::ShadowValue shadow(
+        gfx::Vector2d(0, 0), blur * scale,
+        SkColorSetARGB(alpha, 0x00, 0x00, 0x00));
+    shadows.push_back(shadow.Scale(scale));
+
+    cc::PaintFlags shadow_flags;
+    shadow_flags.setLooper(gfx::CreateShadowDrawLooper(shadows));
+    shadow_flags.setColor(SK_ColorTRANSPARENT);
+    canvas->DrawPath(fill_path, shadow_flags);
+  }
+}
+
+void BraveTab::PaintTabBackgroundFill(gfx::Canvas* canvas,
+                                const gfx::Path& fill_path,
+                                bool active,
+                                bool paint_hover_effect,
+                                SkColor active_color,
+                                SkColor inactive_color,
+                                int fill_id,
+                                int y_inset) {
+  // Insert shadow painting
+  PaintTabShadows(canvas, fill_path);
+  Tab::PaintTabBackgroundFill(canvas, fill_path, active, paint_hover_effect,
+                              active_color, inactive_color, fill_id, y_inset);
+}
+
+void BraveTab::OnPaint(gfx::Canvas* canvas) {
+  // apply inset but allow painting outside bounds, for shadow
+  canvas->Translate(gfx::Vector2d(0, BrowserNonClientFrameView::kMinimumDragHeight));
+  Tab::OnPaint(canvas);
 }

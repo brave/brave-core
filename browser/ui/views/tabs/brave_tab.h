@@ -7,22 +7,46 @@
 
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/insets.h"
 
-namespace chrome_browser_ui_views_tabs_tab_cc {
+class TabController;
 
-const gfx::RectF ScaleAndAlignBounds(const gfx::Rect& bounds,
-                                     float scale,
-                                     float stroke_thickness);
-
+namespace gfx {
+class AnimationContainer;
 }
 
+namespace chrome_browser_ui_views_tabs_tab_cc {
+// Define methods that we want exposed from
+// parent module's anonymous namespace
+const gfx::RectF ScaleAndAlignBounds(const gfx::Rect& bounds,
+                                      float scale,
+                                      float stroke_thickness);
+}
+
+
+// Purposes for this child class:
+// - Paint Brave-style Separators
+// - Paint Shadows
+// - Allow Tab to be inset more on top, so that it can draw shadows in
+//   window area which is acting as non-client
 class BraveTab : public Tab {
   public:
-    using Tab::Tab;
+    BraveTab(TabController* controller, gfx::AnimationContainer* container);
+    gfx::Insets GetContentsInsets() const override;
+    void OnPaint(gfx::Canvas* canvas) override;
   private:
     // Paints the separator lines on the left and right edge of the tab if in
     // material refresh mode.
     void PaintSeparators(gfx::Canvas* canvas) override;
+    void PaintTabShadows(gfx::Canvas* canvas, const gfx::Path& fill_path);
+    void PaintTabBackgroundFill(gfx::Canvas* canvas,
+                                 const gfx::Path& fill_path,
+                                 bool active,
+                                 bool paint_hover_effect,
+                                 SkColor active_color,
+                                 SkColor inactive_color,
+                                 int fill_id,
+                                 int y_inset) override;
     DISALLOW_COPY_AND_ASSIGN(BraveTab);
 };
 

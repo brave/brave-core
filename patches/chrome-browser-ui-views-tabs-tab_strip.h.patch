@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip.h b/chrome/browser/ui/views/tabs/tab_strip.h
+index 9c468f69e47c8edabf55e26e211997d071a67557..1a4cf5249fc3a017887526c3abadb56778dc047d 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip.h
++++ b/chrome/browser/ui/views/tabs/tab_strip.h
+@@ -65,6 +65,7 @@ class TabStrip : public views::View,
+                  public TabController,
+                  public BrowserRootView::DropTarget {
+  public:
++  friend class BraveTabStrip;
+   explicit TabStrip(std::unique_ptr<TabStripController> controller);
+   ~TabStrip() override;
+ 
+@@ -90,7 +91,7 @@ class TabStrip : public views::View,
+ 
+   // Returns true if the specified point (in TabStrip coordinates) is in the
+   // window caption area of the browser window.
+-  bool IsPositionInWindowCaption(const gfx::Point& point);
++  virtual bool IsPositionInWindowCaption(const gfx::Point& point);
+ 
+   // Returns false when there is a drag operation in progress so that the frame
+   // doesn't close.
+@@ -512,7 +513,7 @@ class TabStrip : public views::View,
+ 
+   // Generates the ideal bounds for each of the tabs as well as the new tab
+   // button.
+-  void GenerateIdealBounds();
++  virtual void GenerateIdealBounds();
+ 
+   // Generates the ideal bounds for the pinned tabs. Returns the index to
+   // position the first non-pinned tab and sets |first_non_pinned_index| to the

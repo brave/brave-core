@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.h b/chrome/browser/ui/views/tabs/tab.h
-index 5be5d08990a6133511b9cb16ee660ce17cc907e8..6b55d3e9f733c2fe99ff6cf460def4d12f87b60d 100644
+index 5be5d08990a6133511b9cb16ee660ce17cc907e8..6909b3d2936b4c9fef8f23ac05d5a7234a722624 100644
 --- a/chrome/browser/ui/views/tabs/tab.h
 +++ b/chrome/browser/ui/views/tabs/tab.h
 @@ -56,7 +56,7 @@ class Tab : public gfx::AnimationDelegate,
@@ -11,6 +11,15 @@ index 5be5d08990a6133511b9cb16ee660ce17cc907e8..6b55d3e9f733c2fe99ff6cf460def4d1
  
    // When the content's width of the tab shrinks to below this size we should
    // hide the close button on inactive tabs. Any smaller and they're too easy
+@@ -188,7 +188,7 @@ class Tab : public gfx::AnimationDelegate,
+   int GetWidthOfLargestSelectableRegion() const;
+ 
+   // Returns the insets to use for laying out tab contents.
+-  gfx::Insets GetContentsInsets() const;
++  virtual gfx::Insets GetContentsInsets() const;
+ 
+   // Returns the horizontal insets to use for laying out tab contents.
+   static gfx::Insets GetContentsHorizontalInsets();
 @@ -235,6 +235,7 @@ class Tab : public gfx::AnimationDelegate,
    friend class AlertIndicatorButtonTest;
    friend class TabTest;
@@ -19,6 +28,15 @@ index 5be5d08990a6133511b9cb16ee660ce17cc907e8..6b55d3e9f733c2fe99ff6cf460def4d1
    FRIEND_TEST_ALL_PREFIXES(TabStripTest, TabCloseButtonVisibilityWhenStacked);
    FRIEND_TEST_ALL_PREFIXES(TabStripTest,
                             TabCloseButtonVisibilityWhenNotStacked);
+@@ -268,7 +269,7 @@ class Tab : public gfx::AnimationDelegate,
+                           const gfx::Path* clip);
+ 
+   // Helper methods for PaintTabBackground.
+-  void PaintTabBackgroundFill(gfx::Canvas* canvas,
++  virtual void PaintTabBackgroundFill(gfx::Canvas* canvas,
+                               const gfx::Path& fill_path,
+                               bool active,
+                               bool hover,
 @@ -284,7 +285,7 @@ class Tab : public gfx::AnimationDelegate,
  
    // Paints the separator lines on the left and right edge of the tab if in

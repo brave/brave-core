@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
+index 64fc254f05e6496de9d724a030d42aa2f4e0a804..8553bcded9b9f73da3dec1e51622d0340391e663 100644
+--- a/chrome/browser/ui/views/frame/browser_view.cc
++++ b/chrome/browser/ui/views/frame/browser_view.cc
+@@ -77,7 +77,7 @@
+ #include "chrome/browser/ui/views/extensions/extension_keybinding_registry_views.h"
+ #include "chrome/browser/ui/views/find_bar_host.h"
+ #include "chrome/browser/ui/views/frame/app_menu_button.h"
+-#include "chrome/browser/ui/views/frame/browser_view_layout.h"
++#include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
+ #include "chrome/browser/ui/views/frame/browser_view_layout_delegate.h"
+ #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
+ #include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
+@@ -96,7 +96,7 @@
+ #include "chrome/browser/ui/views/tab_contents/chrome_web_contents_view_focus_helper.h"
+ #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
+ #include "chrome/browser/ui/views/tabs/tab.h"
+-#include "chrome/browser/ui/views/tabs/tab_strip.h"
++#include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+ #include "chrome/browser/ui/views/toolbar/browser_actions_container.h"
+ #include "chrome/browser/ui/views/toolbar/reload_button.h"
+ #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+@@ -2345,7 +2345,7 @@ void BrowserView::InitViews() {
+   BrowserTabStripController* tabstrip_controller =
+       new BrowserTabStripController(browser_->tab_strip_model(), this);
+   tabstrip_ =
+-      new TabStrip(std::unique_ptr<TabStripController>(tabstrip_controller));
++      new BraveTabStrip(std::unique_ptr<TabStripController>(tabstrip_controller));
+   top_container_->AddChildView(tabstrip_);  // Takes ownership.
+   tabstrip_controller->InitFromModel(tabstrip_);
+ 
+@@ -2371,7 +2371,7 @@ void BrowserView::InitViews() {
+   immersive_mode_controller_->Init(this);
+   immersive_mode_controller_->AddObserver(this);
+ 
+-  auto browser_view_layout = std::make_unique<BrowserViewLayout>();
++  auto browser_view_layout = std::make_unique<BraveBrowserViewLayout>();
+   browser_view_layout->Init(new BrowserViewLayoutDelegateImpl(this),
+                             browser(),
+                             this,

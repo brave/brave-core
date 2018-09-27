@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 0dcdb4bebb1286e493d0b85eac586954353e10d1..5fe6861d927b1eb38336b073e8c8c50f8094c620 100644
+index 0dcdb4bebb1286e493d0b85eac586954353e10d1..e95283d59bb88ece6e6a3c33b8cf9863c7dfe741 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -76,7 +76,7 @@
@@ -20,7 +20,16 @@ index 0dcdb4bebb1286e493d0b85eac586954353e10d1..5fe6861d927b1eb38336b073e8c8c50f
  constexpr int kTabSeparatorTouchHeight = 24;
  
  // Helper functions ------------------------------------------------------------
-@@ -230,7 +230,7 @@ gfx::Path GetRefreshInteriorPath(float scale,
+@@ -163,6 +163,8 @@ const gfx::RectF ScaleAndAlignBounds(const gfx::Rect& bounds,
+   // of one tab's layout bounds is the same as the left edge of the next tab's;
+   // this way the two tabs' separators will be drawn at the same coordinate.
+   gfx::RectF aligned_bounds(bounds);
++  // Brave: make sure painting calcs don't consider shadow / window drag area
++  aligned_bounds.set_height(aligned_bounds.height() - BrowserNonClientFrameView::kMinimumDragHeight);
+   const int corner_radius = Tab::GetCornerRadius();
+   // Note: This intentionally doesn't subtract TABSTRIP_TOOLBAR_OVERLAP from the
+   // bottom inset, because we want to pixel-align the bottom of the stroke, not
+@@ -230,7 +232,7 @@ gfx::Path GetRefreshInteriorPath(float scale,
    bottom_offset *= scale;
  
    const float radius = GetTopCornerRadiusForWidth(bounds.width()) * scale;
@@ -29,7 +38,7 @@ index 0dcdb4bebb1286e493d0b85eac586954353e10d1..5fe6861d927b1eb38336b073e8c8c50f
    const float top_radius = std::max(radius - stroke_thickness, 0.f);
  
    // Compute |extension| as the width outside the separators.  This is a fixed
-@@ -366,8 +366,8 @@ gfx::Path GetRefreshBorderPath(const gfx::Rect& bounds,
+@@ -366,8 +368,8 @@ gfx::Path GetRefreshBorderPath(const gfx::Rect& bounds,
    bottom_offset *= scale;
  
    const float top_radius = GetTopCornerRadiusForWidth(bounds.width()) * scale;
@@ -40,7 +49,7 @@ index 0dcdb4bebb1286e493d0b85eac586954353e10d1..5fe6861d927b1eb38336b073e8c8c50f
  
    // See comments in GetRefreshInteriorPath().
    const float extension = Tab::GetCornerRadius() * scale;
-@@ -491,6 +491,7 @@ gfx::Path GetBorderPath(float scale,
+@@ -491,6 +493,7 @@ gfx::Path GetBorderPath(float scale,
  }
  
  }  // namespace

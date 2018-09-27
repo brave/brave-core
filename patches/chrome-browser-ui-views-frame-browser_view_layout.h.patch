@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/browser_view_layout.h b/chrome/browser/ui/views/frame/browser_view_layout.h
+index 4de4cfe8d18f3d00bb5267b2fac52050d4779d20..5b2989f52c825f36b5feed15f254f6653615dd40 100644
+--- a/chrome/browser/ui/views/frame/browser_view_layout.h
++++ b/chrome/browser/ui/views/frame/browser_view_layout.h
+@@ -37,6 +37,7 @@ class WebContentsModalDialogHost;
+ // The layout manager used in chrome browser.
+ class BrowserViewLayout : public views::LayoutManager {
+  public:
++  friend class BraveBrowserViewLayout;
+   BrowserViewLayout();
+   ~BrowserViewLayout() override;
+ 
