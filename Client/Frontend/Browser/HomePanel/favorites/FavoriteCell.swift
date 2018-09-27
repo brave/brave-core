@@ -86,7 +86,6 @@ class FavoriteCell: UICollectionViewCell {
         $0.isExclusiveTouch = true
         let removeButtonImage = #imageLiteral(resourceName: "edit-small").template
         $0.setImage(removeButtonImage, for: .normal)
-        $0.addTarget(self, action: #selector(FavoriteCell.editButtonTapped), for: UIControlEvents.touchUpInside)
         $0.accessibilityLabel = Strings.Edit_Bookmark
         $0.isHidden = true
         $0.backgroundColor = UX.GreyC
@@ -134,6 +133,8 @@ class FavoriteCell: UICollectionViewCell {
         
         // Prevents the textLabel from getting squished in relation to other view priorities.
         textLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
+        
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         
         NotificationCenter.default.addObserver(self, selector: #selector(showEditMode), name: Notification.Name.ThumbnailEditOn, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(hideEditMode), name: Notification.Name.ThumbnailEditOff, object: nil)
