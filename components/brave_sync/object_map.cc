@@ -162,7 +162,7 @@ bool ObjectMap::GetParsedDataByLocalId(
     return false;
   }
 
-  LOG(ERROR) << "TAGAB ObjectMap::GetParsedDataByLocalId: val=" << brave::debug::ToPrintableString(*val);
+  //LOG(ERROR) << "TAGAB ObjectMap::GetParsedDataByLocalId: val=" << brave::debug::ToPrintableString(*val);
 
   DCHECK(val->is_list());
   DCHECK(val->GetList().size() == 1);

@@ -538,10 +538,21 @@ SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
 
     if (category_name == jslib_const::kBookmarks) {
       //"BOOKMARKS"
-      LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ record->GetBookmark().site.title=" << record->GetBookmark().site.title;
-      LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ record->GetBookmark().site.location=" << record->GetBookmark().site.location;
-      LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ record->GetBookmark().order=<" << record->GetBookmark().order << ">";
+      LOG(ERROR) << "TAGAB PRR record->GetBookmark().site.title=" << record->GetBookmark().site.title;
+      LOG(ERROR) << "TAGAB PRR record->GetBookmark().site.location=" << record->GetBookmark().site.location;
+      LOG(ERROR) << "TAGAB PRR record->GetBookmark().order=<" << record->GetBookmark().order << ">";
       resolved_record->second = bookmarks_->GetResolvedBookmarkValue(object_id/*, record->GetBookmark().order*/);
+      ;;;;
+      LOG(ERROR) << "TAGAB PRR resolved_record->second.get()=" << resolved_record->second.get();
+      if (resolved_record->second.get()) {
+        LOG(ERROR) << "TAGAB PRR action=" << resolved_record->second->action;
+        LOG(ERROR) << "TAGAB PRR has_bookmark=" << resolved_record->second->has_bookmark();
+        LOG(ERROR) << "TAGAB PRR title=" << resolved_record->second->GetBookmark().site.title;
+        LOG(ERROR) << "TAGAB PRR location=" << resolved_record->second->GetBookmark().site.location;
+      } else {
+        LOG(ERROR) << "TAGAB PRR second is NULL";
+      }
+
     } else if (category_name == jslib_const::kHistorySites) {
       //"HISTORY_SITES";
       resolved_record->second = history_->GetResolvedHistoryValue(object_id);

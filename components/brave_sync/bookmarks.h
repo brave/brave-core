@@ -117,6 +117,8 @@ private:
   void DeleteBookmarkUiWork(const int64_t &local_object_id);
   void DeleteBookmarkPostUiFileWork(const std::string &s_local_object_id);
 
+  void UpdateBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const int64_t &local_object_id);
+
   std::string GetOrCreateObjectByLocalId(const int64_t &local_id, const std::string &order);
   void SaveIdMap(const int64_t &local_id, const std::string &order, const std::string &sync_object_id);
   std::unique_ptr<jslib::Bookmark> GetFromNode(const bookmarks::BookmarkNode* node,
@@ -124,6 +126,13 @@ private:
     const std::string &parent_order);
 
   void BookmarkNodeRemovedFileWork(const bookmarks::BookmarkNode* node);
+
+  int CalculateNewIndex(
+    const bookmarks::BookmarkNode* new_parent_node,
+    const bookmarks::BookmarkNode* old_parent_node,
+    const bookmarks::BookmarkNode* target_node,
+    const std::string &old_order,
+    const std::string &inserted_node_order);
 
   void PauseObserver();
   void ResumeObserver();

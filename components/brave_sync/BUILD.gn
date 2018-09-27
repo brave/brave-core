@@ -10,6 +10,8 @@ source_set("brave_sync") {
     "api/brave_sync_event_router.h",
     "bookmarks.cc",
     "bookmarks.h",
+    "bookmark_order_util.cc",
+    "bookmark_order_util.h",
     "client/client.h",
     "client/client_ext_impl.cc",
     "client/client_ext_impl.h",
