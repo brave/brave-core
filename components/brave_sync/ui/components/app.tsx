@@ -56,6 +56,10 @@ class SyncPage extends React.PureComponent<Props, State> {
     this.setState({ showSyncWords: true })
   }
 
+  onSyncReset = () => {
+    this.props.actions.onSyncReset()
+  }
+
   render () {
     const { syncData } = this.props
     if (!syncData) {
@@ -76,6 +80,7 @@ class SyncPage extends React.PureComponent<Props, State> {
               <h1>Hello, your device named {syncData.thisDeviceName} was configured!</h1>
               <button onClick={this.onRequestQRCode}>Request QR Code</button>
               <button onClick={this.onRequestSyncWords}>Request Sync Words</button>
+              <button onClick={this.onSyncReset}>RESET SYNC!!!!</button>
               {
                 this.state.showQRCode
                   ? <div><img src={syncData.seedQRImageSource} /></div>

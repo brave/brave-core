@@ -67,6 +67,12 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       chrome.send('needSyncWords')
       break
 
+    case types.SYNC_ON_RESET:
+      chrome.send('resetSync')
+      // sync is reset. clear all data
+      state = { ...storage.defaultState }
+      break
+
     case types.SYNC_ON_LOG_MESSAGE:
       if (process.env.TARGET_GEN_DIR !== 'prod') {
         console.info('[SYNC] log message received from sync:', payload.message)

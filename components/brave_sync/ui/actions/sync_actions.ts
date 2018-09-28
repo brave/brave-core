@@ -61,6 +61,13 @@ export const onRequestSyncWords = () => {
 }
 
 /**
+ * Dispatches a message telling the back-end that user has reset Sync
+ */
+export const onSyncReset = () => {
+  return action(types.SYNC_ON_RESET)
+}
+
+/**
  * Dispatched by the back-end to inform useful log messages for debugging purposes
  * @param {string} message - the log message
  */
