@@ -6,6 +6,16 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
+// Feature-specific components
+import {
+  Main,
+  Title,
+  EmphasisText,
+  SecondaryText,
+  Link,
+  SectionBlock
+} from 'brave-ui/features/sync'
+
 // Utils
 import { getLocale } from '../../../common/locale'
 import * as syncActions from '../actions/sync_actions'
@@ -104,77 +114,78 @@ export class SyncPage extends React.PureComponent<Props, State> {
     }
     return (
       <div id='syncPage'>
-        <h1>{getLocale('sync')}</h1>
-        <p>
-          {getLocale('syncInfo1')}&snbp;
-          <a href={syncLink} target='_blank' rel='noreferrer noopener'>?</a>
-        </p>
-        <p>{getLocale('syncInfo2')}</p>
-        {
-          syncData.isSyncConfigured
-            ? (
-              <div style={{background: 'darkgreen', color: 'white'}}>
-              <h1>Hello, your device named {syncData.thisDeviceName} was configured!</h1>
-              <button onClick={this.onRequestQRCode}>Request QR Code</button>
-              <button onClick={this.onRequestSyncWords}>Request Sync Words</button>
-              <button onClick={this.onSyncReset}>RESET SYNC!!!!</button>
-              <input id='syncMe' onChange={this.onToggleSyncThisDevice} type='checkbox' checked={syncData.shouldSyncThisDevice}/><label htmlFor='syncMe'>Keep syncing this device?</label>
-              <ul>
-                <li><input id='bookmarks' onChange={this.onSyncBookmarks}  type='checkbox' checked={syncData.syncBookmarks} /><label htmlFor='bookmarks'>Sync bookmarks?</label></li>
-                <li><input id='siteSettings' onChange={this.onSyncSavedSiteSettings} type='checkbox' checked={syncData.syncSavedSiteSettings} /><label htmlFor='siteSettings'>Sync site settings?</label></li>
-                <li><input id='browsingHistory' onChange={this.onSyncBrowsingHistory} type='checkbox' checked={syncData.syncBrowsingHistory} /><label htmlFor='browsingHistory'>Sync browsing history?</label></li>
-              </ul>
-              <div style={{
-                color: 'gray',
-                display: 'grid',
-                height: '100%',
-                gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                gridTemplateRows: '1fr',
-                gridGap: '15px'
-              }}>
-                {
-                  syncData.devices.map((device: Sync.Devices) => {
-                    return (
-                      <>
-                        <div key={`id-${device.id}`}>{device.id}</div>
-                        <div key={`name-${device.id}`}>{device.name}</div>
-                        <div key={`lastActive-${device.id}`}>{device.lastActive}</div>
-                        <button id={device.id.toString()} key={`remove-${device.id}`} onClick={this.onRemoveDevice}>remove device</button>
-                      </>
-                    )
-                  })
-                }
-              </div>
-              {
-                this.state.showQRCode
-                  ? <div><img src={syncData.seedQRImageSource} /></div>
-                  : null
-              }
-              {
-                this.state.showSyncWords
-                  ? <div>{syncData.syncWords}</div>
-                  : null
-              }
-              </div>
-            )
-            : (
-              <>
-                <div style={{background: 'darkblue', color: 'white'}}>
-                  <input type='text' onChange={this.onGetUserInputDeviceName} />
-                  <button onClick={this.onSetupNewToSync}>Setup Sync</button>
-                </div>
-                <div style={{background: 'lightyellow'}}>
-                  <textarea onChange={this.onGetUserInputSyncWords} />
-                  <button onClick={this.onSetupSyncHaveCode}>
-                    I have an existing sync code!
-                  </button>
-                </div>
-              </>
-            )
-        }
-        <footer style={{background: 'black', color: 'white'}}>
-          {JSON.stringify(syncData)}
-        </footer>
+        <Main>
+          <Title level={2}>{getLocale('sync')}</Title>
+            <EmphasisText>
+              {getLocale('syncInfo1')}
+              <Link href={syncLink} target='_blank' rel='noreferrer noopener'>?</Link>
+            </EmphasisText>
+            <SecondaryText>{getLocale('syncInfo2')}</SecondaryText>
+          <SectionBlock>
+            {
+              syncData.isSyncConfigured
+                ? (
+                  <div style={{background: 'darkgreen', color: 'white'}}>
+                  <h1>Hello, your device named {syncData.thisDeviceName} was configured!</h1>
+                  <button onClick={this.onRequestQRCode}>Request QR Code</button>
+                  <button onClick={this.onRequestSyncWords}>Request Sync Words</button>
+                  <button onClick={this.onSyncReset}>RESET SYNC!!!!</button>
+                  <input id='syncMe' onChange={this.onToggleSyncThisDevice} type='checkbox' checked={syncData.shouldSyncThisDevice} /><label htmlFor='syncMe'>Keep syncing this device?</label>
+                  <ul>
+                    <li><input id='bookmarks' onChange={this.onSyncBookmarks}  type='checkbox' checked={syncData.syncBookmarks} /><label htmlFor='bookmarks'>Sync bookmarks?</label></li>
+                    <li><input id='siteSettings' onChange={this.onSyncSavedSiteSettings}  type='checkbox' checked={syncData.syncSavedSiteSettings} /><label htmlFor='siteSettings'>Sync site settings?</label></li>
+                    <li><input id='browsingHistory' onChange={this.onSyncBrowsingHistory}  type='checkbox' checked={syncData.syncBrowsingHistory} /><label htmlFor='browsingHistory'>Sync browsing history?</label></li>
+                  </ul>
+                  <div style={{
+                    color: 'gray',
+                    display: 'grid',
+                    height: '100%',
+                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                    gridTemplateRows: '1fr',
+                    gridGap: '15px'
+                  }}>
+                    {
+                      syncData.devices.map((device: Sync.Devices) => {
+                        return (
+                          <>
+                            <div key={`id-${device.id}`}>{device.id}</div>
+                            <div key={`name-${device.id}`}>{device.name}</div>
+                            <div key={`lastActive-${device.id}`}>{device.lastActive}</div>
+                            <button id={device.id.toString()} key={`remove-${device.id}`} onClick={this.onRemoveDevice}>remove device</button>
+                          </>
+                        )
+                      })
+                    }
+                  </div>
+                  {
+                    this.state.showQRCode
+                      ? <div><img src={syncData.seedQRImageSource} /></div>
+                      : null
+                  }
+                  {
+                    this.state.showSyncWords
+                      ? <div>{syncData.syncWords}</div>
+                      : null
+                  }
+                  </div>
+                )
+                : (
+                  <>
+                    <div style={{background: 'darkblue', color: 'white'}}>
+                      <input type='text' onChange={this.onGetUserInputDeviceName} />
+                      <button onClick={this.onSetupNewToSync}>Setup Sync</button>
+                    </div>
+                    <div style={{background: 'lightyellow'}}>
+                      <textarea onChange={this.onGetUserInputSyncWords} />
+                      <button onClick={this.onSetupSyncHaveCode}>
+                        I have an existing sync code!
+                      </button>
+                    </div>
+                  </>
+                )
+            }
+          </SectionBlock>
+        </Main>
       </div>
     )
   }
