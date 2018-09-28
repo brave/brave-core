@@ -13,7 +13,9 @@ source_set("browser") {
       "usermodel_service_factory.h",
       "usermodel_service_factory.cc",
       "usermodel_state.h",
-      "usermodel_state.cc"
+      "usermodel_state.cc",
+      "ads_database.h",
+      "ads_database.cc"
     ]
 
   deps = [
@@ -27,5 +29,6 @@ source_set("browser") {
     "//brave/vendor/bat-native-usermodel",
     "//brave/vendor/bat-native-rapidjson",
     "//third_party/leveldatabase",
+    "//third_party/re2"
   ]
 }
