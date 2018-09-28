@@ -6,7 +6,7 @@
 - [ ] Ran `git rebase -i` to squash commits (if needed).
 - [ ] Tagged reviewers and labelled the pull request as needed.
 - [ ] Request a security/privacy review as needed.
-- [ ] Add appropriate QA labels (QA/Needed or QA/No-QA-Needed) to include the closed issue in milestone 
+- [ ] Add appropriate QA labels (QA/Yes or QA/No) to include the closed issue in milestone
 
 ## Test Plan:
 
