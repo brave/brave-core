@@ -20,6 +20,12 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
   const startingState = state
 
   switch (action.type) {
+    // inform SyncUIImpl we can start requesting sync settings data
+    case types.SYNC_ON_PAGE_LOADED:
+      console.warn('[CEZAR] page loaded fired...')
+      chrome.send('pageLoaded')
+      break
+
     case types.SYNC_ON_SHOW_SETTINGS:
       console.info('[SYNC] settings received:', payload.settings)
       console.info('[SYNC] devices received:', payload.devices)
@@ -60,6 +66,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
     case types.SYNC_ON_SETUP_NEW_TO_SYNC:
       chrome.send('setupSyncNewToSync', [payload.thisDeviceName])
       break
+
 
     case types.SYNC_ON_REQUEST_QR_CODE:
       chrome.send('needSyncQRcode')

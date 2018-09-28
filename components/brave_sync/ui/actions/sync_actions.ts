@@ -8,6 +8,13 @@ import { action } from 'typesafe-actions'
 import { types } from '../constants/sync_types'
 
 /**
+ * Dispatches a message telling the back-end that sync page has loaded
+ */
+export const onPageLoaded = () => {
+  return action(types.SYNC_ON_PAGE_LOADED)
+}
+
+/**
  * Action dispatched by the back-end with useful information
  * about devices and settings synced
  * @param {any} settings - the sync settings information

@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const enum types {
+  SYNC_ON_PAGE_LOADED = '@@sync/SYNC_ON_PAGE_LOADED',
   SYNC_ON_SHOW_SETTINGS = '@@sync/SYNC_ON_SHOW_SETTINGS',
   SYNC_ON_HAVE_SYNC_WORDS = '@@sync/SYNC_ON_HAVE_SYNC_WORDS',
   SYNC_ON_HAVE_SEED_FOR_QR_CODE = '@@sync/SYNC_ON_HAVE_SEED_FOR_QR_CODE',
