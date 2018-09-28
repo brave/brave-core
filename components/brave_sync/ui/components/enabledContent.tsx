@@ -21,7 +21,7 @@ import {
 } from 'brave-ui/features/sync'
 
 // Modals
-// import SyncANewDeviceModal from './modals/syncNewDevice'
+import SyncANewDeviceModal from './modals/syncNewDevice'
 import ResetSyncModal from './modals/resetSync'
 
 // Utils
@@ -81,6 +81,10 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
     this.props.actions.onRemoveDevice(target.id)
   }
 
+  syncANewDeviceModal = () => {
+    this.setState({ syncANewDevice: !this.state.syncANewDevice })
+  }
+
   resetSyncModal = () => {
     this.setState({ resetSync: !this.state.resetSync })
   }
@@ -109,11 +113,16 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
     const { actions, syncData } = this.props
     return (
       <>
-        {/*
+        {
           this.state.syncANewDevice
-            ? <SyncANewDeviceModal actions={actions} onClose={this.syncANewDevice} />
+            ? <SyncANewDeviceModal
+                actions={actions}
+                seedQRImageSource={syncData.seedQRImageSource}
+                syncWords={syncData.syncWords}
+                onClose={this.syncANewDeviceModal}
+              />
             : null
-        */}
+        }
         {
           this.state.resetSync
             ? <ResetSyncModal actions={actions} onClose={this.resetSyncModal} />
@@ -141,15 +150,13 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
           <Table header={this.header} rows={this.getRows(syncData.devices)}>
             Device list is empty
           </Table>
-          {/*
           <Button
             level='primary'
             type='accent'
             size='medium'
             text={getLocale('syncANewDevice')}
-            onClick={this.syncANewDevice}
+            onClick={this.syncANewDeviceModal}
           />
-          */}
         </SectionBlock>
         <SectionBlock>
           <SubTitle level={2}>{getLocale('syncData')}</SubTitle>
