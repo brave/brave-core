@@ -200,12 +200,18 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
 
   return allow;
 }
+
 bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetDocument().GetSecurityOrigin();
   // default allow local files
   if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme)
     return true;
+
+  bool allow = ContentSettingsObserver::AllowAutoplay(default_value);
+  if (allow) {
+    return true;
+  }
 
   blink::mojom::blink::PermissionServicePtr permission_service;
 
@@ -219,5 +225,5 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
                                           base::DoNothing());
   }
 
-  return ContentSettingsObserver::AllowAutoplay(default_value);
+  return allow;
 }
