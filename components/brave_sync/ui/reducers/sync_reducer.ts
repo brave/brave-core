@@ -22,19 +22,10 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
   switch (action.type) {
     // inform SyncUIImpl we can start requesting sync settings data
     case types.SYNC_ON_PAGE_LOADED:
-      console.warn('[CEZAR] page loaded fired...')
       chrome.send('pageLoaded')
       break
 
     case types.SYNC_ON_SHOW_SETTINGS:
-      console.info('[SYNC] settings received:', payload.settings)
-      console.info('[SYNC] devices received:', payload.devices)
-      console.info('[SYNC] is bookmarks syncing?', payload.settings.sync_bookmarks)
-      console.info('[SYNC] is sync configured?', payload.settings.sync_configured)
-      console.info('[SYNC] is history syncing?', payload.settings.sync_history)
-      console.info('[SYNC] is site settings syncing?', payload.settings.sync_settings)
-      console.info('[SYNC] is this device syncing?', payload.settings.sync_this_device)
-
       const devices = payload.devices.map((device: Sync.DevicesFromBackEnd) => {
         return {
           name: device.name,
@@ -56,6 +47,9 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_HAVE_SEED_FOR_QR_CODE:
+      if (!payload.seed) {
+        break
+      }
       generateQRCodeImageSource(payload.seed)
       break
 
@@ -68,9 +62,11 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_SETUP_NEW_TO_SYNC:
+      if (!payload.thisDeviceName) {
+        break
+      }
       chrome.send('setupSyncNewToSync', [payload.thisDeviceName])
       break
-
 
     case types.SYNC_ON_REQUEST_QR_CODE:
       chrome.send('needSyncQRcode')
@@ -87,22 +83,37 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_REMOVE_DEVICE:
+      if (!payload.id) {
+        break
+      }
       chrome.send('deleteDevice', [payload.id])
       break
 
     case types.SYNC_ON_SYNC_THIS_DEVICE:
+      if (!payload.shouldSyncThisDevice) {
+        break
+      }
       chrome.send('syncThisDevice', [payload.shouldSyncThisDevice])
       break
 
     case types.SYNC_BOOKMARKS:
+      if (!payload.shouldEnable) {
+        break
+      }
       chrome.send('syncBookmarks', [payload.shouldEnable])
       break
 
     case types.SYNC_SAVED_SITE_SETTINGS:
+      if (!payload.shouldEnable) {
+        break
+      }
       chrome.send('syncSavedSiteSettings', [payload.shouldEnable])
       break
 
     case types.SYNC_BROWSING_HISTORY:
+      if (!payload.shouldEnable) {
+        break
+      }
       chrome.send('syncBrowsingHistory', [payload.shouldEnable])
       break
 
