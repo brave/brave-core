@@ -855,7 +855,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="1371301976177520732">Vaše oznake, zaporke, povijest i još mnogo na svim vašim uređajima</translation>
 <translation id="3111958038206230539">Prilagođavanje Brave Softwareovih usluga</translation>
 <translation id="295992419959320001">Brave Software može upotrebljavati vašu povijest pregledavanja za prilagodbu Pretraživanja, oglasa i drugih Brave Softwareovih usluga</translation>
-<translation id="4800091108248587380">Prilagođene Brave Softwareove usluge kao što je Brave Software Pay</translation>
+<translation id="4205523465226408285">Više prilagođenih Brave Softwareovih usluga, na primjer bolji prijedlozi stranica</translation>
 <translation id="3070156078150543526">Brave Software može upotrebljavati vašu povijest pregledavanja za prilagodbu Pretraživanja i drugih Brave Softwareovih usluga.</translation>
 <translation id="2532167245710864499">Poboljšajte Brave i njegovu sigurnost slanjem podataka o sustavu i upotrebi Brave Softwareu</translation>
 <translation id="2709453993673701466">Želite li upravljati sinkronizacijom i prilagodbom prije uključivanja? Otvorite <ph name="BEGIN_LINK"/>Postavke<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="7754704193130578113">Pitaj gdje spremiti svaku datoteku prije preuzimanja</translation>
 <translation id="5713072761819014678">Prekini vezu računa Brave Software diska</translation>
 <translation id="486635084936119914">Otvaranje određenih vrsta datoteka automatski nakon preuzimanja</translation>
-<translation id="870073306461175568">Mrežno dijeljenje datoteka</translation>
-<translation id="6189273858858366896">Postavite mrežno dijeljenje datoteka ili upravljajte njime.</translation>
 <translation id="2367199180085172140">Dodaj dijeljenje datoteka</translation>
-<translation id="8984654317541110628">URL za dijeljenje datoteka</translation>
 <translation id="5247051749037287028">Ime za prikaz (izborno)</translation>
 <translation id="6091761513005122595">Dijeljenje je učitano.</translation>
 <translation id="9024158959543687197">Pogreška pri učitavanju dijeljenja. Provjerite URL za dijeljenje datoteka i pokušajte ponovo.</translation>
@@ -2259,6 +2256,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="2459230470861708651">Šifriraj sinkronizirane zaporke moijm korisničkim imenom i zaporkom za Brave Software</translation>
 <translation id="6383051423892982287">Kriptiraj sinkronizirane podatke vlastitom <ph name="BEGIN_LINK"/>šifrom za sinkronizaciju<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Samo osoba koja ima vašu šifru može čitati vaše kriptirane podatke. Šifra se ne šalje Brave Softwareu i ne pohranjuje na njemu. Ako zaboravite šifru ili želite promijeniti tu postavku, morat ćete <ph name="BEGIN_LINK"/>poništiti sinkronizaciju<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaciju<ph name="END_LINK"/> radi uklanjanja vaše šifre za sinkronizaciju</translation>
+<translation id="3873315167136380065">Da biste uključili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaciju<ph name="END_LINK"/> radi uklanjanja vaše šifre za sinkronizaciju</translation>
 <translation id="988978206646512040">Prazne šifre nisu dopuštene</translation>
 <translation id="1651008383952180276">Morate dvaput unijeti istu šifru</translation>
 <translation id="2136476978468204130">Šifra koju ste unijeli nije točna</translation>
@@ -2456,6 +2455,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="1607139524282324606">Brisanje unosa</translation>
 <translation id="6025215716629925253">Trag stoga</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linija nije prikazana&gt;}one{&lt;$1 linija nije prikazana&gt;}few{&lt;$1 linije nisu prikazane&gt;}other{&lt;$1 linija nije prikazano&gt;}}</translation>
+<translation id="5334899159203764908">Saznajte više o <ph name="BEGIN_LINK"/>pristupu web-lokacijama<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Dopustite ovom proširenju da čita i mijenja sve vaše podatke na web-lokacijama koje posjećujete:</translation>
 <translation id="407173827865827707">Na klik</translation>
 <translation id="6455264371803474013">Na određenim web-lokacijama</translation>

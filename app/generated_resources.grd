@@ -3739,6 +3739,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_ALL_SITES" desc="The label in an extension's context menu to always allow the extension access on all sites (sentence case).">
             On all sites
           </message>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_LEARN_MORE" desc="The label in an extension's context menu that the user can click to learn more about site access (sentence case).">
+            Learn more about site access
+          </message>
           <message name="IDS_EXTENSIONS_OPTIONS_MENU_ITEM" desc="The text for the options menu item in context menus (sentence case).">
             Options
           </message>
@@ -3776,6 +3779,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_RUN_ON_ALL_SITES" desc="The label in an extension's context menu to always allow the extension access on all sites (title case).">
             On All Sites
+          </message>
+          <message name="IDS_EXTENSIONS_CONTEXT_MENU_PAGE_ACCESS_LEARN_MORE" desc="The label in an extension's context menu that the user can click to learn more about site access (title case).">
+            Learn More About Site Access
           </message>
           <message name="IDS_EXTENSIONS_OPTIONS_MENU_ITEM" desc="The text for the options menu item in context menus (title case).">
             Options
@@ -6482,7 +6488,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Brave may use your browsing history to personalize Search, ads, and other Brave services
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_PERSONALIZE_SERVICES_BODY" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow">
-        Personalized Brave services like Brave Pay
+        More personal Brave services, like better page suggestions
       </message>
       <message name="IDS_SYNC_CONFIRMATION_PERSONALIZE_SERVICES_BODY_CHILD_ACCOUNT" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow for child accounts" formatter_data="android_java">
         Brave may use your browsing history to personalize Search and other Brave services
@@ -8922,10 +8928,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Something went wrong
       </message>
       <message name="IDS_WEBAUTHN_ERROR_INTERNAL_UNRECOGNIZED_DESCRIPTION" desc="Description in the dialog shown when the user's could not sign in to a web site using a hardware-based authentication mechanism built in to the computer (e.g. a fingerprint reader), because they never registered the device with this website before.">
-        We couldn't verify your identity on this device
+        Your identity couldn't be verified
       </message>
       <message name="IDS_WEBAUTHN_ERROR_NO_TRANSPORTS_TITLE" desc="Title of the dialog shown when the user could not sign in to a web site, because their computer did not support any of the hardware-based authentication mechanisms desired by the web site.">
-        We couldn't verify your identity on this device
+        Your identity couldn't be verified
       </message>
       <message name="IDS_WEBAUTHN_ERROR_NO_TRANSPORTS_DESCRIPTION" desc="Description in the dialog shown when the user could not sign in to a web site, because their computer did not support any of the hardware-based authentication mechanisms desired by the web site.">
         This device doesn't support the type of security key requested by this website

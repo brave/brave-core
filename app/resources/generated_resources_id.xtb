@@ -855,7 +855,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1371301976177520732">Bookmark, sandi, histori, dan lainnya di semua perangkat Anda</translation>
 <translation id="3111958038206230539">Personalisasi layanan Brave Software</translation>
 <translation id="295992419959320001">Brave Software dapat menggunakan histori penjelajahan Anda untuk mempersonalisasi Penelusuran, iklan, dan layanan Brave Software lainnya</translation>
-<translation id="4800091108248587380">Layanan Brave Software yang dipersonalisasi seperti Brave Software Pay</translation>
+<translation id="4205523465226408285">Layanan Brave Software yang lebih personal, seperti saran halaman yang lebih baik</translation>
 <translation id="3070156078150543526">Brave Software dapat menggunakan histori penjelajahan Anda untuk mempersonalisasi Penelusuran dan layanan Brave Software lainnya</translation>
 <translation id="2532167245710864499">Sempurnakan Brave dan keamanannya dengan mengirimkan informasi penggunaan dan sistem ke Brave Software</translation>
 <translation id="2709453993673701466">Ingin mengelola sinkronisasi dan personalisasi sebelum diaktifkan? Buka <ph name="BEGIN_LINK"/>Setelan<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7754704193130578113">Tanyakan lokasi penyimpanan setiap file sebelum mendownload</translation>
 <translation id="5713072761819014678">Memutuskan hubungan akun Brave Software Drive</translation>
 <translation id="486635084936119914">Buka jenis file tertentu secara otomatis setelah didownload</translation>
-<translation id="870073306461175568">Berbagi File Jaringan</translation>
-<translation id="6189273858858366896">Siapkan atau kelola Berbagi File Jaringan.</translation>
 <translation id="2367199180085172140">Tambahkan Berbagi File</translation>
-<translation id="8984654317541110628">URL Berbagi File</translation>
 <translation id="5247051749037287028">Nama yang ditampilkan (opsional)</translation>
 <translation id="6091761513005122595">URL berbagi berhasil dipasang.</translation>
 <translation id="9024158959543687197">Error saat memasang URL berbagi. Periksa URL berbagi file dan coba lagi.</translation>
@@ -2260,6 +2257,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2459230470861708651">Enkripsikan sandi yang disinkronkan dengan nama pengguna dan sandi Brave Software Anda</translation>
 <translation id="6383051423892982287">Enkripsikan data yang disinkronkan dengan <ph name="BEGIN_LINK"/>frasa sandi sinkronisasi<ph name="END_LINK"/> Anda sendiri</translation>
 <translation id="4817583816512767754">Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi. Frasa sandi tidak dikirim ke atau disimpan oleh Brave Software. Jika lupa frasa sandi atau ingin mengubah setelan ini, Anda perlu <ph name="BEGIN_LINK"/>menyetel ulang sinkronisasi<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/> untuk menghapus frasa sandi sinkronisasi</translation>
+<translation id="3873315167136380065">Untuk mengaktifkannya, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/> untuk menghapus frasa sandi sinkronisasi</translation>
 <translation id="988978206646512040">Frasa sandi tidak boleh kosong</translation>
 <translation id="1651008383952180276">Anda harus memasukkan frasa sandi yang sama dua kali</translation>
 <translation id="2136476978468204130">Frasa sandi yang Anda masukkan salah</translation>
@@ -2457,6 +2456,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1607139524282324606">Hapus entri</translation>
 <translation id="6025215716629925253">Pelacakan Tumpukan</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 baris tidak ditampilkan&gt;}other{&lt;$1 baris tidak ditampilkan&gt;}}</translation>
+<translation id="5334899159203764908">Pelajari lebih lanjut tentang <ph name="BEGIN_LINK"/>akses situs<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Mengizinkan ekstensi ini membaca dan mengubah semua data Anda di situs yang dibuka:</translation>
 <translation id="407173827865827707">Saat diklik</translation>
 <translation id="6455264371803474013">Di situs tertentu</translation>

@@ -495,6 +495,9 @@
 <translation id="8743864605301774756">1 કલાક પહેલા અપડેટ કર્યું</translation>
 <translation id="5638497698949808140"><ph name="HOURS"/> કલાક પહેલા અપડેટ કર્યું</translation>
 <translation id="1329584516321524826">હમણા જ અપડેટ કર્યું</translation>
+<translation id="224940702122312781">આ પેજ ઘણા બધા ડેટાનો ઉપયોગ કરશે.</translation>
+<translation id="3861241522664181545">પેજ થોભાવ્યું.</translation>
+<translation id="6921709132208495314">આ પેજ પર ડેટાનો ઉપયોગ કરવાનું બંધ કરો</translation>
 <translation id="2724841811573117416">WebRTC લૉગ્સ</translation>
 <translation id="1969654639948595766">WebRTC ટેક્સ્ટ લૉગ (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC ઇવેન્ટ લૉગ (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -549,6 +552,7 @@
 <translation id="6363797201514053536">Brave Software પર શોધો અથવા URL લખો</translation>
 <translation id="6078323886959318429">શોર્ટકટ ઉમેરો</translation>
 <translation id="6324916366299863871">શૉર્ટકટમાં ફેરફાર કરો</translation>
+<translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="8730621377337864115">થઈ ગયું</translation>
 <translation id="4416582610654027550">માન્ય URL લખો</translation>
@@ -845,7 +849,7 @@
 <translation id="1371301976177520732">તમારા બધા ઉપકરણો પર તમારા બુકમાર્ક, પાસવર્ડ, ઇતિહાસ, અને બીજું ઘણું</translation>
 <translation id="3111958038206230539">Brave Software સેવાઓને વ્યક્તિગત કરો</translation>
 <translation id="295992419959320001">શોધ, જાહેરાતો અને અન્ય Brave Software સેવાઓને વ્યક્તિગત કરવા માટે Brave Software, તમારા બ્રાઉઝિંગ ઇતિહાસનો ઉપયોગ કરી શકે છે</translation>
-<translation id="4800091108248587380">Brave Software Pay જેવી વ્યક્તિગત કરેલી Brave Software સેવાઓ</translation>
+<translation id="4205523465226408285">Brave Softwareની વધુ વ્યક્તિગત સેવાઓ, જેમ કે પેજના વધુ સારા સૂચનો</translation>
 <translation id="3070156078150543526">Brave Software, શોધ અને અન્ય Brave Software સેવાઓને વ્યક્તિગત કરવા માટે તમારા બ્રાઉઝિંગ ઇતિહાસનો ઉપયોગ કરી શકે છે</translation>
 <translation id="2532167245710864499">Brave Softwareને સિસ્ટમ તથા વપરાશ વિશેની માહિતી મોકલીને Brave અને તેની સુરક્ષા બહેતર બનાવો</translation>
 <translation id="2709453993673701466">સિંક અને વૈયક્તિકરણ ચાલુ થાય તે પહેલાં તેને સંચાલિત કરવા માગો છો? <ph name="BEGIN_LINK"/>સેટિંગ્સ <ph name="END_LINK"/>ની મુલાકાત લો.</translation>
@@ -1049,6 +1053,7 @@
 <translation id="5562781907504170924">આ ટૅબ Bluetooth ઉપકરણ સાથે કનેક્ટ થયેલ છે.</translation>
 <translation id="5884474295213649357">આ ટૅબ USB ઉપકરણ સાથે કનેક્ટ થયેલ છે.</translation>
 <translation id="8466417995783206254">આ ટૅબમાં ચિત્રમાં ચિત્ર મોડમાં વીડિઓ ચાલી રહ્યો છે.</translation>
+<translation id="2585724835339714757">આ ટૅબ તમારી સ્ક્રીન શેર કરી રહી છે.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> - કૅમેરા અથવા માઇક્રોફોન રેકોર્ડિંગ</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> - ટૅબની સામગ્રી શેર કરી</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> - વીડિઓ ચિત્રમાં ચિત્ર મોડમાં ચાલી રહ્યો છે</translation>
@@ -1681,10 +1686,7 @@
 <translation id="7754704193130578113">ડાઉનલોડ કરતાં પહેલાં પ્રત્યેક ફાઇલને ક્યાં સાચવવી છે તે જણાવો</translation>
 <translation id="5713072761819014678">Brave Software ડ્રાઇવ એકાઉન્ટ ડિસ્કનેક્ટ કરો</translation>
 <translation id="486635084936119914">ડાઉનલોડ કર્યા પછી કેટલાક ફાઇલ પ્રકારોને આપમેળે ખોલો</translation>
-<translation id="870073306461175568">નેટવર્ક ફાઇલ શેર</translation>
-<translation id="6189273858858366896">નેટવર્ક ફાઇલ શેર સેટ કરો અને મેનેજ કરો.</translation>
 <translation id="2367199180085172140">ફાઇલ શેર ઉમેરો</translation>
-<translation id="8984654317541110628">શેર કરેલ ફાઇલ URL</translation>
 <translation id="5247051749037287028">ડિસ્પ્લે નામ (વૈકલ્પિક)</translation>
 <translation id="6091761513005122595">શેર સફળતાપૂર્વક માઉન્ટ થયું.</translation>
 <translation id="9024158959543687197">શેર માઉન્ટ કરવામાં ભૂલ આવી. શેર કરેલ ફાઇલ URL ચેક કરો અને ફરી પ્રયાસ કરો.</translation>
@@ -2015,6 +2017,8 @@
 <translation id="7136694880210472378">ડિફૉલ્ટ બનાવો</translation>
 <translation id="102272308210570439">સહાયકને તમારી સ્ક્રીન પર જે છે તેનો ઉપયોગ કરવા દો</translation>
 <translation id="8624205858755890468">સહાયક તમને સંબંધિત માહિતી, ઍપ અને ક્રિયાઓ બતાવે તે ચાલુ કરે છે.</translation>
+<translation id="4737453247496280552">"ઓકે Brave Software" શોધ</translation>
+<translation id="6409553560184414680">તમારી સ્ક્રીન ચાલુ હોય ત્યારે તમે કોઈપણ સમયે "ઓકે Brave Software" બોલીને તમારા આસિસ્ટંટને ઍક્સેસ કરો.</translation>
 <translation id="8669919703154928649">આસિસ્ટંટને તમને નોટિફિકેશનો બતાવવા દો</translation>
 <translation id="3430342160185525240">આસિસ્ટંટ તમને નોટિફિકેશનો બતાવે તે ચાલુ કરે છે.</translation>
 <translation id="3908743412684152579">Brave Software સહાયકની સેટિંગ્સ</translation>
@@ -2104,7 +2108,9 @@
 <translation id="8708000541097332489">બહાર નીકળવા પર સાફ કરો</translation>
 <translation id="8037357227543935929">પૂછો (ડિફૉલ્ટ)</translation>
 <translation id="3427092606871434483">મંજૂરી આપો (ડિફૉલ્ટ)</translation>
+<translation id="4879491255372875719">ઑટોમૅટિક (ડિફૉલ્ટ)</translation>
 <translation id="4312866146174492540">અવરોધિત કરો (ડિફૉલ્ટ)</translation>
+<translation id="6979440798594660689">મ્યૂટ કરો (ડિફૉલ્ટ)</translation>
 <translation id="2356070529366658676">કહો</translation>
 <translation id="5063480226653192405">ઉપયોગ</translation>
 <translation id="3006881078666935414">કોઈ વપરાશ ડેટા નથી</translation>
@@ -2136,6 +2142,7 @@
 <translation id="2318923050469484167">વર્તમાન છૂપું સત્ર (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">કોઈ સાઇટનું ઝૂમ વધારેલ અથવા તો ઘટાડેલ નથી</translation>
 <translation id="3566721612727112615">કોઈ સાઇટ્સ ઉમેરી નથી</translation>
+<translation id="8098574385249290065">સાઇટ સાઉન્ડ ક્યારે ચલાવી શકે તે Braveને પસંદ કરવા દો (સુઝાવ આપેલ)</translation>
 <translation id="5763751966069581670">કોઈ USB ઉપકરણ મળ્યું નથી</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">એક સાઇટ ઉમેરો</translation>
@@ -2242,6 +2249,8 @@
 <translation id="2459230470861708651">તમારા Brave Software વપરાશકર્તાનામ અને પાસવર્ડ સાથે સમન્વયિત પાસવર્ડને એન્ક્રિપ્ટ કરો</translation>
 <translation id="6383051423892982287">તમારા પોતાના <ph name="BEGIN_LINK"/>સમન્વયન પાસફ્રેઝ<ph name="END_LINK"/> સાથે સમન્વયિત ડેટા એન્ક્રિપ્ટ કરો</translation>
 <translation id="4817583816512767754">માત્ર તમારા પાસફ્રેઝ સાથેની કોઈ વ્યક્તિ જ તમારા એન્ક્રિપ્ટ કરેલા ડેટાને વાંચી શકે છે. Brave Software ને પાસફ્રેઝ મોકલવામાં આવતો નથી કે તેના દ્વારા સંગ્રહિત કરવામાં આવતો નથી. જો તમે તમારો પાસફ્રેઝ ભૂલી જાઓ અથવા આ સેટિંગ બદલવા માંગતા હોવ, તો તમારે <ph name="BEGIN_LINK"/>સમન્વયનને ફરીથી સેટ<ph name="END_LINK"/> કરવું પડશે.</translation>
+<translation id="7441736921018636843">આ સેટિંગ બદલવા, સિંક પાસફ્રેઝ કાઢી નાખવા માટે <ph name="BEGIN_LINK"/>સિંક રીસેટ કરો<ph name="END_LINK"/></translation>
+<translation id="3873315167136380065">આ ચાલુ કરવા માટે, તમારો સિંક પાસફ્રેઝ કાઢી નાખવા માટે <ph name="BEGIN_LINK"/>સિંકને રીસેટ કરો<ph name="END_LINK"/></translation>
 <translation id="988978206646512040">ખાલી પાસફ્રેઝને મંજૂરી નથી</translation>
 <translation id="1651008383952180276">તમારે તે જ પાસફ્રેઝ બે વાર દાખલ કરવો આવશ્યક છે</translation>
 <translation id="2136476978468204130">તમે દાખલ કરેલો પાસફ્રેઝ ખોટો છે</translation>
@@ -2439,6 +2448,7 @@
 <translation id="1607139524282324606">એન્ટ્રી સાફ કરો</translation>
 <translation id="6025215716629925253">સ્ટેક ટ્રેસ</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 રેખા બતાવેલ નથી&gt;}one{&lt;$1 રેખાઓ બતાવેલ નથી&gt;}other{&lt;$1 રેખાઓ બતાવેલ નથી&gt;}}</translation>
+<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>સાઇટના ઍક્સેસ<ph name="END_LINK"/> વિશે વધુ જાણો</translation>
 <translation id="8389492867173948260">આ એક્સટેંશનને તમે મુલાકાત લો તે વેબસાઇટ પરનો તમારો બધો ડેટા વાંચવાની અને બદલવાની મંજૂરી આપો:</translation>
 <translation id="407173827865827707">ક્લિક કરવા પર</translation>
 <translation id="6455264371803474013">વિશિષ્ટ સાઇટ પર</translation>
@@ -2512,6 +2522,7 @@
 <translation id="2202898655984161076">પિંટર્સની સૂચિ બનાવવામાં સમસ્યા આવી. તમારા કેટલાક પ્રિંટર્સ<ph name="CLOUD_PRINT_NAME"/> સાથે સફળતાપૂર્વક નોંધાઈ શક્યા નથી.</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> કનેક્ટર પ્રક્રિયા ક્રેશ થઈ ગઈ. ફરીથી શરૂ કરીએ?</translation>
 <translation id="6904655473976120856">બહાર નીકળવા માટે ઍપ્લિકેશન બટન દવાબો</translation>
+<translation id="79766959863778284">XR આઇસોલેટેડ ડિવાઇસ સેવા</translation>
 <translation id="8909833622202089127">સાઇટ તમારા સ્થાનને ટ્રૅક કરી રહી છે</translation>
 <translation id="375636864092143889">સાઇટ તમારા માઇક્રોફોનનો ઉપયોગ કરી રહી છે</translation>
 <translation id="310671807099593501">સાઇટ બ્લૂટૂથનો ઉપયોગ કરી રહી છે</translation>

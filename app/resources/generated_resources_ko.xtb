@@ -853,7 +853,7 @@
 <translation id="1371301976177520732">북마크, 비밀번호, 방문 기록 등을 모든 기기에 동기화</translation>
 <translation id="3111958038206230539">Brave Software 서비스 맞춤설정</translation>
 <translation id="295992419959320001">Brave Software에서 검색, 광고 및 다른 Brave Software 서비스를 맞춤설정하기 위하여 내 인터넷 사용 기록을 사용할 수 있습니다.</translation>
-<translation id="4800091108248587380">Brave Software Pay와 같은 맞춤형 Brave Software 서비스</translation>
+<translation id="4205523465226408285">향상된 페이지 추천과 같이 더욱 맞춤설정된 Brave Software 서비스</translation>
 <translation id="3070156078150543526">검색 및 다른 Brave Software 서비스를 맞춤설정하기 위하여 Brave Software에서 인터넷 사용 기록을 사용할 수 있습니다.</translation>
 <translation id="2532167245710864499">시스템 정보와 사용 기록을 Brave Software에 전송하여 Brave 및 보안 개선</translation>
 <translation id="2709453993673701466">동기화 및 맞춤설정을 관리한 다음 사용 설정하시겠습니까? <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>으로 이동하세요.</translation>
@@ -1690,10 +1690,7 @@
 <translation id="7754704193130578113">다운로드 전에 각 파일의 저장 위치 확인</translation>
 <translation id="5713072761819014678">Brave Software 드라이브 계정을 연결 해제합니다.</translation>
 <translation id="486635084936119914">다운로드 후에 특정 파일 형식을 자동으로 열기</translation>
-<translation id="870073306461175568">Network File Shares</translation>
-<translation id="6189273858858366896">Network File Shares를 설정하거나 관리합니다.</translation>
 <translation id="2367199180085172140">파일 공유 추가</translation>
-<translation id="8984654317541110628">파일 공유 URL</translation>
 <translation id="5247051749037287028">표시 이름(선택사항)</translation>
 <translation id="6091761513005122595">공유가 성공적으로 마운트되었습니다.</translation>
 <translation id="9024158959543687197">공유를 마운트하는 중에 오류가 발생했습니다. 파일 공유 URL을 확인한 후 다시 시도해 주세요.</translation>
@@ -2256,6 +2253,8 @@
 <translation id="2459230470861708651">Brave Software 사용자 이름과 비밀번호로 동기화 데이터 암호화</translation>
 <translation id="6383051423892982287">나만의 <ph name="BEGIN_LINK"/>동기화 암호<ph name="END_LINK"/>로 동기화 데이터 암호화</translation>
 <translation id="4817583816512767754">암호를 아는 사람만 암호화된 데이터를 읽을 수 있습니다. 암호는 Brave Software로 전송되거나 Brave Software에 저장되지 않습니다. 암호가 기억나지 않거나 이 설정을 변경하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>해야 합니다.</translation>
+<translation id="7441736921018636843">이 설정을 변경하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>하여 동기화 암호를 삭제하세요.</translation>
+<translation id="3873315167136380065">사용하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>하여 동기화 암호를 삭제하세요.</translation>
 <translation id="988978206646512040">암호를 빈칸으로 두어서는 안 됩니다.</translation>
 <translation id="1651008383952180276">동일한 암호를 두 번 입력해야 합니다.</translation>
 <translation id="2136476978468204130">입력한 암호가 잘못되었습니다.</translation>
@@ -2453,6 +2452,7 @@
 <translation id="1607139524282324606">항목 삭제</translation>
 <translation id="6025215716629925253">스택 추적</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1줄이 표시되지 않음&gt;}other{&lt;$1줄이 표시되지 않음&gt;}}</translation>
+<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>사이트 액세스 권한<ph name="END_LINK"/> 자세히 알아보기</translation>
 <translation id="8389492867173948260">이 확장 프로그램이 내가 방문하는 다음 웹사이트의 모든 데이터를 읽고 변경하도록 허용합니다.</translation>
 <translation id="407173827865827707">클릭 시</translation>
 <translation id="6455264371803474013">특정 사이트에서</translation>

@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">পৃষ্ঠাতে লোড করা থামানো হয়েছে।</translation>
 <translation id="6921709132208495314">এই পৃষ্ঠাটিতে ডেটা ব্যবহার করা বন্ধ করুন</translation>
 <translation id="2724841811573117416">WebRTC লগগুলি</translation>
+<translation id="1969654639948595766">WebRTC টেক্সট লগ (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC ইভেন্ট লগ (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460"><ph name="WEBRTC_LOG_CAPTURE_TIME"/> এ WebRTC লগ ক্যাপচার করা হয়েছে</translation>
 <translation id="4093955363990068916">স্থানীয় ফাইল:</translation>
 <translation id="2071393345806050157">কোনো স্থানীয় লগ ফাইল নেই।</translation>
 <translation id="6628328486509726751"><ph name="WEBRTC_LOG_UPLOAD_TIME"/> এ আপলোড করা হয়েছে</translation>
+<translation id="6458701200018867744">আপলোড করা যায়নি (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>)।</translation>
 <translation id="5946591249682680882">আইডি অভিযোগ করুন <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">ফাইল বাগ</translation>
+<translation id="3650845953328929506">লগ আপলোড করা বাকি আছে।</translation>
+<translation id="1818913467757368489">লগ আপলোড করা চলছে।</translation>
 <translation id="1188807932851744811">লগ আপলোড করা হয়নি।</translation>
+<translation id="4688036121858134881">স্থানীয় লগ আইডি: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>।</translation>
+<translation id="7497981768003291373">আপনার সাম্প্রতিক কোনও ক্যাপচার করা WebRTC টেক্সট লগ নেই।</translation>
+<translation id="3954953195017194676">আপনার সাম্প্রতিক কোনও ক্যাপচার করা WebRTC ইভেন্ট লগ নেই।</translation>
 <translation id="2076269580855484719">এই প্লাগইনটি লুকান</translation>
 <translation id="2129825002735785149">প্ল্যাগ ইন আপডেট করুন</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> কে এন্টারপ্রাইজ নীতি দ্বারা অবরুদ্ধ করা হয়েছে</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">একটি সঠিক URL লিখুন</translation>
 <translation id="2806891468525657116">শর্টকাটটি আগে থেকেই আছে</translation>
 <translation id="394183848452296464">শর্টকাট তৈরি করা যাবে না</translation>
+<translation id="329703603001918157">শর্টকাট এডিট করা যাচ্ছে না</translation>
+<translation id="6732900235521116609">শর্টকাট সরানো যাচ্ছে না</translation>
 <translation id="7109543803214225826">শর্টকাট সরানো হয়েছে</translation>
 <translation id="8017679124341497925">শর্টকাট এডিট করা হয়েছে</translation>
 <translation id="1174073918202301297">শর্টকাট যোগ করা হয়েছে</translation>
@@ -845,7 +855,7 @@
 <translation id="1371301976177520732">আপনার সমস্ত ডিভাইসে বুকমার্ক, পাসওয়ার্ড, ইতিহাস এবং আরও অনেক কিছু সিঙ্ক হয়</translation>
 <translation id="3111958038206230539">Brave Software পরিষেবাগুলিকে ব্যক্তিগত করুন</translation>
 <translation id="295992419959320001">সার্চ, বিজ্ঞাপন এবং অন্যান্য Brave Software পরিষেবা ব্যক্তিগতকৃত করতে Brave Software আপনার ব্রাউজিং ইতিহাস ব্যবহার করতে পারে</translation>
-<translation id="4800091108248587380">Brave Software Pay-এর মতো Brave Software পরিষেবাগুলি নিজের মতো সাজিয়ে নিন</translation>
+<translation id="4205523465226408285">ভাল পৃষ্ঠার সাজেশনের মতো আরও ব্যক্তিগত Brave Software পরিষেবা</translation>
 <translation id="3070156078150543526">সার্চ এবং অন্যান্য Brave Software পরিষেবাগুলি ব্যক্তিগতকৃত করতে Brave Software আপনার ব্রাউজিং ইতিহাস ব্যবহার করতে পারে</translation>
 <translation id="2532167245710864499">Brave Software-এ সিস্টেম ও ব্যবহারের তথ্য পাঠিয়ে Brave এবং তার নিরাপত্তা উন্নত করুন</translation>
 <translation id="2709453993673701466">চালু করার আগেই সিঙ্ক এবং ব্যক্তিগতকরণ পরিচালনা করতে চান?
@@ -1442,6 +1452,7 @@
 <translation id="1800308196794859773">যেকোনও টেক্সট ক্ষেত্রে ডিকটেশনের অনুমতি দেওয়ার জন্য Brave Software-কে আপনার ভয়েস পাঠান।</translation>
 <translation id="8758418656925882523">ডিক্টেশন চালু করুন (টাইপ করার জন্য বলুন)</translation>
 <translation id="7580671184200851182">সব স্পিকারে একই অডিও বাজান (মোনো অডিও)</translation>
+<translation id="8186639008852027301">চালু হওয়ার সময় একটি অডিও সূচক চালান</translation>
 <translation id="1189418886587279221">আপনার ডিভাইসের ব্যবহার আরও সহজ করতে অ্যাক্সেসযোগ্যতার বৈশিষ্ট্যগুলি সক্ষম করুন৷</translation>
 <translation id="48704129375571883">অতিরিক্ত বৈশিষ্ট্যগুলি যোগ করুন</translation>
 <translation id="7230787553283372882">আপনার পাঠ্যের আকার কাস্টমাইজ করুন</translation>
@@ -1539,6 +1550,10 @@
 <translation id="5029568752722684782">প্রতিলিপি সাফ করুন</translation>
 <translation id="2154484045852737596">কার্ড সম্পাদনা করুন</translation>
 <translation id="5087580092889165836">কার্ড জুড়ুন</translation>
+<translation id="7284555534810614828">Brave Software Pay ব্যবহার করতে কার্ড সেভ করুন</translation>
+<translation id="6281511959351052816">Brave Software Pay ব্যবহার করার জন্য কার্ড সেভ করুন</translation>
+<translation id="1904518222538904133">এই ডিভাইসে আপনার কার্ডগুলির মধ্যে শুধুমাত্র ১টি ব্যবহার করা যায়</translation>
+<translation id="8065485338434000013">আপনার কিছু কার্ড শুধুমাত্র এই ডিভাইসে ব্যবহার করা যেতে পারে</translation>
 <translation id="4807098396393229769">কার্ডে থাকা নাম</translation>
 <translation id="2612676031748830579">কার্ড নম্বর</translation>
 <translation id="869891660844655955">মেয়াদকাল সমাপ্তির তারিখ</translation>
@@ -1679,10 +1694,7 @@
 <translation id="7754704193130578113">প্রতিটি ফাইল ডাউনলোড করার আগে তা কোথায় সংরক্ষণ করতে হবে জিজ্ঞাসা করুন</translation>
 <translation id="5713072761819014678">Brave Software ড্রাইভ অ্যাকাউন্টের সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="486635084936119914">নির্দিষ্ট কিছু প্রকারের ফাইল ডাউনলোডের পরে স্বয়ংক্রিয়ভাবে খুলুন</translation>
-<translation id="870073306461175568">নেটওয়ার্ক ফাইল শেয়ার</translation>
-<translation id="6189273858858366896">নেটওয়ার্ক ফাইল শেয়ার সেট-আপ বা পরিচালনা করুন।</translation>
 <translation id="2367199180085172140">ফাইল শেয়ার যোগ করুন</translation>
-<translation id="8984654317541110628">ফাইল শেয়ার করার ইউআরএল</translation>
 <translation id="5247051749037287028">প্রদর্শিত নাম (ঐচ্ছিক)</translation>
 <translation id="6091761513005122595">শেয়ার মাউন্ট করা হয়েছে।</translation>
 <translation id="9024158959543687197">শেয়ার মাউন্ট করা যায়নি। ফাইল শেয়ার করার ইউআরএল যাচাই করে আবার চেষ্টা করুন।</translation>
@@ -2186,6 +2198,7 @@
 <translation id="3422989461909154470">অ্যাপ এবং ওয়েবসাইটগুলি থেকে আপনার সাইন-ইন করা সমস্ত Brave Software অ্যাকাউন্টগুলি এখানে পরিচালনা করা যেতে পারে।</translation>
 <translation id="1987317783729300807">অ্যাকাউন্টসমূহ</translation>
 <translation id="8418661265246754237">Brave Software অ্যাকাউন্ট</translation>
+<translation id="3297951628821704004">এই ডিভাইস থেকে অ্যাকাউন্ট সরান</translation>
 <translation id="1059855432287631118">আঙুলের ছাপ রেজিস্টার করুন</translation>
 <translation id="878068003854005405">শুরু করা যাক। আপনার আঙুলটি সেন্সরের ওপর রাখুন।</translation>
 <translation id="7189965711416741966">আঙ্গুলের ছাপ যোগ করা হয়েছে।</translation>
@@ -2244,6 +2257,8 @@
 <translation id="2459230470861708651">আপনার Brave Software ইউজারনেম ও পাসওয়ার্ড দিয়ে সিঙ্ক করা পাসওয়ার্ডগুলি এনক্রিপ্ট করুন</translation>
 <translation id="6383051423892982287">আপনার নিজস্ব <ph name="BEGIN_LINK"/>সিঙ্ক পাসফ্রেজ<ph name="END_LINK"/> দিয়ে সিঙ্ক হওয়া ডেটা এনক্রিপ্ট করুন</translation>
 <translation id="4817583816512767754">শুধুমাত্র আপনার পাসফ্রেজ সহ কোনো ব্যক্তি আপনার এনক্রিপ্ট করা ডেটা পড়তে পারবেন৷ পাসফ্রেজটি Brave Software এ পাঠানো হয় না বা এর দ্বারা সংরক্ষণ করা হয় না৷ যদি আপনি আপনার পাসফ্রেজ ভুলে যান বা এই সেটিং পরিবর্তন করতে চান, তাহলে আপনাকে <ph name="BEGIN_LINK"/>সিঙ্ক আবার সেট<ph name="END_LINK"/> করতে হবে।</translation>
+<translation id="7441736921018636843">এই সেটিংটি পরিবর্তন করতে, আপনার সিঙ্ক পাসফ্রেজটি সরানোর জন্য <ph name="BEGIN_LINK"/>সিঙ্ক রিসেট করুন<ph name="END_LINK"/></translation>
+<translation id="3873315167136380065">এটি চালু করতে, আপনার সিঙ্ক পাসফ্রেজটি সরিয়ে দিতে <ph name="BEGIN_LINK"/>সিঙ্ক রিসেট করুন<ph name="END_LINK"/></translation>
 <translation id="988978206646512040">পাসফ্রেজ ফাঁকা রাখা চলবে না</translation>
 <translation id="1651008383952180276">আপনাকে একই পাসফ্রেজ অবশ্যই দু'বার লিখতে হবে</translation>
 <translation id="2136476978468204130">আপনার লেখা পাসফ্রেজটি ভুল</translation>
@@ -2401,6 +2416,7 @@
 <translation id="1940546824932169984">সংযুক্ত ডিভাইস</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">আপনার Bravebook ফোনের সাথে আরও ভাল কাজ করে। <ph name="LINK_BEGIN"/>আরও জানুন।<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">কোনও উপযুক্ত ডিভাইস নেই। <ph name="LINK_BEGIN"/>আরও জানুন।<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">যাচাই করার জন্য অপেক্ষা করা হচ্ছে। <ph name="LINK_BEGIN"/>আরও জানুন।<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">ফোনের সাথে কানেক্ট করা যায়নি। <ph name="LINK_BEGIN"/>আরও জানুন।<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together চালু আছে</translation>
@@ -2440,6 +2456,7 @@
 <translation id="1607139524282324606">এন্ট্রি মুছে দিন</translation>
 <translation id="6025215716629925253">ট্রেস স্ট্যাক</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;১টি লাইন দেখানো হয়নি&gt;}one{&lt;$1টি লাইন দেখানো হয়নি&gt;}other{&lt;$1টি লাইন দেখানো হয়নি&gt;}}</translation>
+<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>সাইট অ্যাক্সেস<ph name="END_LINK"/> সম্পর্কে আরও জানুন</translation>
 <translation id="8389492867173948260">আপনার দেখা ওয়েবসাইটে আপনার সমস্ত ডেটা পড়ার এবং পরিবর্তন করার জন্য এই এক্সটেনশনটিকে অনুমতি দিন:</translation>
 <translation id="407173827865827707">ক্লিক করা হলে</translation>
 <translation id="6455264371803474013">নির্দিষ্ট সাইটগুলিতে</translation>

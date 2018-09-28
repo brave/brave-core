@@ -855,7 +855,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="1371301976177520732">Tus favoritos, las contraseñas, el historial y mucho más en todos tus dispositivos</translation>
 <translation id="3111958038206230539">Personalizar los servicios de Brave Software</translation>
 <translation id="295992419959320001">Es posible que Brave Software use tu historial de navegación para personalizar Búsqueda, Ads y otros servicios de Brave Software</translation>
-<translation id="4800091108248587380">Servicios personalizados de Brave Software, como Brave Software Pay</translation>
+<translation id="4205523465226408285">Servicios de Brave Software más personalizados, como mejores sugerencias de páginas</translation>
 <translation id="3070156078150543526">Es posible que Brave Software use tu historial de navegación para personalizar Búsqueda y otros servicios de Brave Software</translation>
 <translation id="2532167245710864499">Para mejorar Brave y su seguridad, envía información a Brave Software sobre el sistema y el uso</translation>
 <translation id="2709453993673701466">¿Deseas administrar la sincronización y la personalización antes de activarlas? Accede a la <ph name="BEGIN_LINK"/>Configuración<ph name="END_LINK"/>.</translation>
@@ -1694,10 +1694,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7754704193130578113">Pedir ubicación antes de la descarga</translation>
 <translation id="5713072761819014678">Desconectar la cuenta de Brave Software Drive</translation>
 <translation id="486635084936119914">Abre determinados tipos de archivo después de descargarlos</translation>
-<translation id="870073306461175568">Network File Shares</translation>
-<translation id="6189273858858366896">Configura o administra Network File Shares.</translation>
 <translation id="2367199180085172140">Agregar uso compartido del archivo</translation>
-<translation id="8984654317541110628">URL de archivo compartido</translation>
 <translation id="5247051749037287028">Nombre comercial (opcional)</translation>
 <translation id="6091761513005122595">Se activó correctamente el recurso compartido.</translation>
 <translation id="9024158959543687197">Se produjo un error al activar el recurso compartido. Revisa la URL del archivo compartido y vuelve a intentarlo.</translation>
@@ -2261,6 +2258,8 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2459230470861708651">Encriptar las contraseñas sincronizadas con tu contraseña y nombre de usuario de Brave Software</translation>
 <translation id="6383051423892982287">Encriptar los datos sincronizados con tu propia <ph name="BEGIN_LINK"/>frase de contraseña de sincronización<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Solo las personas que tengan tu frase de contraseña pueden leer los datos encriptados. Brave Software no envía ni almacena la frase de contraseña. Si la olvidas o quieres cambiar esta configuración, deberás <ph name="BEGIN_LINK"/>restablecer la sincronización<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">A fin de cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/> para quitar la frase de contraseña de sincronización</translation>
+<translation id="3873315167136380065">A fin de activar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/> para quitar la frase de contraseña de sincronización</translation>
 <translation id="988978206646512040">No se permite una frase de contraseña vacía</translation>
 <translation id="1651008383952180276">Debes ingresar la misma frase de contraseña dos veces</translation>
 <translation id="2136476978468204130">La frase de contraseña que ingresaste es incorrecta</translation>
@@ -2458,6 +2457,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1607139524282324606">Borrar entrada</translation>
 <translation id="6025215716629925253">Seguimiento de la pila</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;no se muestra 1 línea&gt;}other{&lt;no se muestran $1 líneas&gt;}}</translation>
+<translation id="5334899159203764908">Más información sobre el <ph name="BEGIN_LINK"/>acceso del sitio<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permitir que esta extensión lea y cambie todos tus datos en los sitios web que visitas:</translation>
 <translation id="407173827865827707">Al hacer clic</translation>
 <translation id="6455264371803474013">En sitios específicos</translation>

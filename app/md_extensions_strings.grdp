@@ -92,6 +92,9 @@
   <message name="IDS_MD_EXTENSIONS_HOST_PERMISSIONS_EDIT" desc="The label of the button used to edit an extension's access to a given website.">
     Edit
   </message>
+  <message name="IDS_MD_EXTENSIONS_HOST_PERMISSIONS_LEARN_MORE" desc="The caption containing the link at which the user can learn more about extension host access">
+    Learn more about <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>site access<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
   <message name="IDS_MD_EXTENSIONS_ITEM_ERRORS" desc="The label of the button to bring the user to the page showing an extension's errors.">
     Errors
   </message>

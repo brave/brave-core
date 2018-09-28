@@ -855,7 +855,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="1371301976177520732">Bokmerkene dine, loggen din med mer på alle enhetene dine.</translation>
 <translation id="3111958038206230539">Tilpass Brave Software-tjenester</translation>
 <translation id="295992419959320001">Brave Software kan bruke nettlesingsloggen din for å gi Søk, annonser og andre Brave Software-tjenester et personlig preg</translation>
-<translation id="4800091108248587380">Brave Software-tjenester med et personlig preg, som for eksempel Brave Software Pay</translation>
+<translation id="4205523465226408285">Brave Software-tjenester med et mer personlig preg, som for eksempel bedre sideforslag</translation>
 <translation id="3070156078150543526">Brave Software kan bruke nettlesingsloggen din for å gi Søk og andre Brave Software-tjenester et personlig preg</translation>
 <translation id="2532167245710864499">Gjør Brave bedre og sikrere ved å sende systeminformasjon og bruksinformasjon til Brave Software</translation>
 <translation id="2709453993673701466">Vil du administrere synkronisering og personlig tilpasning før du slår det på? Gå til <ph name="BEGIN_LINK"/>innstillingene<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="7754704193130578113">Spør før nedlasting hvor hver fil skal lagres</translation>
 <translation id="5713072761819014678">Koble fra Brave Software Disk-kontoen.</translation>
 <translation id="486635084936119914">Åpne visse filtyper automatisk når de lastes ned</translation>
-<translation id="870073306461175568">Fildelinger på nettverket</translation>
-<translation id="6189273858858366896">Konfigurer eller administrer fildelinger på nettverket.</translation>
 <translation id="2367199180085172140">Legg til fildeling</translation>
-<translation id="8984654317541110628">Nettadresse for fildeling</translation>
 <translation id="5247051749037287028">Visningsnavn (valgfritt)</translation>
 <translation id="6091761513005122595">Delingen er aktivert.</translation>
 <translation id="9024158959543687197">Feil ved aktivering av deling. Sjekk nettadressen for fildeling og prøv igjen.</translation>
@@ -2258,6 +2255,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2459230470861708651">Kryptér synkroniserte passord med Brave Software-brukernavnet og -passordet ditt</translation>
 <translation id="6383051423892982287">Kryptér synkroniserte data med din egen <ph name="BEGIN_LINK"/>passordfrase for synkronisering<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Bare de som har passordfrasen din, kan lese de krypterte dataene dine. Passordfrasen blir verken sendt til Brave Software eller lagret av oss. Hvis du glemmer passordfrasen eller vil endre denne innstillingen, må du <ph name="BEGIN_LINK"/>tilbakestille synkroniseringen<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronisering<ph name="END_LINK"/> for å fjerne passordfrasen din for synkronisering</translation>
+<translation id="3873315167136380065">For å slå dette på, <ph name="BEGIN_LINK"/>tilbakestill synkroniseringen<ph name="END_LINK"/> for å fjerne passordfrasen din for synkronisering</translation>
 <translation id="988978206646512040">Tomme passordfraser er ikke tillatt</translation>
 <translation id="1651008383952180276">Du må skrive inn den samme passordfrasen to ganger</translation>
 <translation id="2136476978468204130">Passordfrasen du skrev inn, er feil</translation>
@@ -2455,6 +2454,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1607139524282324606">Tøm oppføring</translation>
 <translation id="6025215716629925253">Stabelsporing</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linje vises ikke&gt;}other{&lt;$1 linjer vises ikke&gt;}}</translation>
+<translation id="5334899159203764908">Finn ut mer om <ph name="BEGIN_LINK"/>nettstedstilgang<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">La denne utvidelsen lese og endre alle dataene dine på nettsteder du besøker:</translation>
 <translation id="407173827865827707">Ved klikk</translation>
 <translation id="6455264371803474013">På bestemte nettsteder</translation>

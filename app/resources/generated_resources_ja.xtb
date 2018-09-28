@@ -855,7 +855,7 @@
 <translation id="1371301976177520732">すべての端末で同じブックマーク、パスワード、その他の設定を使用できます</translation>
 <translation id="3111958038206230539">Brave Software サービスのカスタマイズ</translation>
 <translation id="295992419959320001">検索、広告、その他の Brave Software サービスをカスタマイズする目的で、Brave Software が閲覧履歴を使用することがあります</translation>
-<translation id="4800091108248587380">カスタマイズされた Brave Software サービス（Brave Software Pay など）を利用できます</translation>
+<translation id="4205523465226408285">おすすめのページなど、カスタマイズされた Brave Software サービスを利用できます</translation>
 <translation id="3070156078150543526">検索やその他の Brave Software サービスをカスタマイズする目的で、Brave Software が閲覧履歴を使用することがあります</translation>
 <translation id="2532167245710864499">システムと使用状況に関する情報が Brave Software に送信され、Brave とそのセキュリティの向上に役立てられます</translation>
 <translation id="2709453993673701466">同期とパーソナライズを有効にする前に管理するには、[<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] に移動します。</translation>
@@ -1692,10 +1692,7 @@
 <translation id="7754704193130578113">ダウンロード前に各ファイルの保存場所を確認する</translation>
 <translation id="5713072761819014678">Brave Software ドライブ アカウントを切断</translation>
 <translation id="486635084936119914">ダウンロード後に特定の種類のファイルを自動的に開きます</translation>
-<translation id="870073306461175568">ネットワーク ファイル共有</translation>
-<translation id="6189273858858366896">ネットワーク ファイル共有を設定または管理する。</translation>
 <translation id="2367199180085172140">ファイル共有を追加</translation>
-<translation id="8984654317541110628">ファイル共有 URL</translation>
 <translation id="5247051749037287028">表示名（省略可）</translation>
 <translation id="6091761513005122595">共有フォルダが正常にマウントされました。</translation>
 <translation id="9024158959543687197">共有フォルダのマウントエラー。ファイルの共有 URL を確認してもう一度お試しください。</translation>
@@ -2258,6 +2255,8 @@
 <translation id="2459230470861708651">Brave Software のユーザー名とパスワードを使用して同期パスワードを暗号化する</translation>
 <translation id="6383051423892982287">同期データを<ph name="BEGIN_LINK"/>同期パスフレーズ<ph name="END_LINK"/>で暗号化する</translation>
 <translation id="4817583816512767754">パスフレーズを知っているユーザーだけが暗号化データを読み取ることができます。パスフレーズが Brave Software に送信されたり Brave Software で保存されたりすることはありません。パスフレーズを忘れた場合や、この設定を変更する場合は、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>する必要があります。</translation>
+<translation id="7441736921018636843">この設定を変更するには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>して同期パスフレーズを削除します</translation>
+<translation id="3873315167136380065">この設定をオンにするには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>して同期パスフレーズを削除します</translation>
 <translation id="988978206646512040">パスフレーズは必ず指定してください</translation>
 <translation id="1651008383952180276">同じパスフレーズを 2 回入力する必要があります</translation>
 <translation id="2136476978468204130">入力したパスフレーズが正しくありません</translation>
@@ -2455,6 +2454,7 @@
 <translation id="1607139524282324606">エラー項目を消去</translation>
 <translation id="6025215716629925253">スタック トレース</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 行が非表示です&gt;}other{&lt;$1 行が非表示です&gt;}}</translation>
+<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>サイトアクセス<ph name="END_LINK"/>の詳細</translation>
 <translation id="8389492867173948260">アクセスしたウェブサイト上にある自分の全データの読み取りと変更をこの拡張機能に許可します。</translation>
 <translation id="407173827865827707">クリックされた場合のみ</translation>
 <translation id="6455264371803474013">特定のサイト</translation>

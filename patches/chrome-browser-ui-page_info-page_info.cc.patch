@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_info/page_info.cc b/chrome/browser/ui/page_info/page_info.cc
-index c6f7db417951dc101e88e19b10bbcf4ec6423305..f2d516c3cd40865d42d86a4dfb4e9a8564fbfaca 100644
+index e7e7c5d1c2c0699f8892d4be90281c2bb7c7d1b9..1a6713c6604bab2f05d4d2de89a83f488e6be089 100644
 --- a/chrome/browser/ui/page_info/page_info.cc
 +++ b/chrome/browser/ui/page_info/page_info.cc
 @@ -197,7 +197,7 @@ bool ShouldShowPermission(

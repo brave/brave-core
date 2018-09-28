@@ -856,7 +856,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1371301976177520732">Yer işaretleriniz, şifreleriniz, geçmişiniz ve daha fazlası tüm cihazlarınızda sizi bekliyor</translation>
 <translation id="3111958038206230539">Brave Software hizmetlerini kişiselleştirme</translation>
 <translation id="295992419959320001">Brave Software; Arama, reklamlar ve diğer Brave Software hizmetlerini kişiselleştirmek için tarama geçmişinizi kullanabilir</translation>
-<translation id="4800091108248587380">Brave Software Pay gibi kişiselleştirilmiş Brave Software hizmetlerinden yararlanın</translation>
+<translation id="4205523465226408285">Daha iyi sayfa önerileri gibi daha kişisel Brave Software hizmetleri</translation>
 <translation id="3070156078150543526">Brave Software, Arama ve diğer Brave Software hizmetlerini kişiselleştirmek için tarama geçmişinizi kullanabilir</translation>
 <translation id="2532167245710864499">Brave Software'a sistem ve kullanım bilgilerini göndererek Brave'u ve güvenliğini iyileştirin</translation>
 <translation id="2709453993673701466">Senkronizasyonu ve kişiselleştirmeyi açılmadan önce yönetmek ister misiniz? <ph name="BEGIN_LINK"/>Ayarlar<ph name="END_LINK"/>'ı ziyaret edin.</translation>
@@ -1693,10 +1693,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7754704193130578113">İndirmeden önce her dosyanın nereye kaydedileceğini sor</translation>
 <translation id="5713072761819014678">Brave Software Drive hesabının bağlantısını kes</translation>
 <translation id="486635084936119914">Belirli türdeki dosyaları indirildikten sonra otomatik olarak aç</translation>
-<translation id="870073306461175568">Ağ Dosya Paylaşımları</translation>
-<translation id="6189273858858366896">Ağ Dosya Paylaşımlarını kurun veya yönetin.</translation>
 <translation id="2367199180085172140">Dosya Paylaşımı Ekle</translation>
-<translation id="8984654317541110628">Dosya Paylaşımı URL'si</translation>
 <translation id="5247051749037287028">Görünen ad (isteğe bağlı)</translation>
 <translation id="6091761513005122595">Paylaşım başarıyla eklendi.</translation>
 <translation id="9024158959543687197">Paylaşım eklenirken hata oluştu. Dosya paylaşım URL'sini kontrol edin ve tekrar deneyin.</translation>
@@ -2259,6 +2256,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2459230470861708651">Senkronize edilen şifreleri Brave Software kullanıcı adınız ve şifrenizle şifreleyin</translation>
 <translation id="6383051423892982287">Senkronize edilen verileri kendi <ph name="BEGIN_LINK"/>senkronizasyon parolanızla<ph name="END_LINK"/> şifreleyin</translation>
 <translation id="4817583816512767754">Yalnızca parolanızı bilen biri, şifrelenmiş verilerinizi okuyabilir. Parola Brave Software'a gönderilmez veya Brave Software tarafından saklanmaz. Parolanızı unutursanız veya bu ayarı değiştirmek isterseniz <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlamanız<ph name="END_LINK"/> gerekir.</translation>
+<translation id="7441736921018636843">Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlayarak<ph name="END_LINK"/> senkronizasyon parolanızı kaldırın</translation>
+<translation id="3873315167136380065">Bu özelliği açmak için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlayarak<ph name="END_LINK"/> senkronizasyon parolanızı kaldırın</translation>
 <translation id="988978206646512040">Boş parolaya izin verilmez</translation>
 <translation id="1651008383952180276">Aynı parolayı iki kez girmelisiniz</translation>
 <translation id="2136476978468204130">Girdiğiniz parola yanlış</translation>
@@ -2456,6 +2455,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1607139524282324606">Girişi temizle</translation>
 <translation id="6025215716629925253">Yığın İzleme</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 satır gösterilmiyor&gt;}other{&lt;$1 satır gösterilmiyor&gt;}}</translation>
+<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>Site erişimi<ph name="END_LINK"/> hakkında daha fazla bilgi edinin</translation>
 <translation id="8389492867173948260">Bu uzantının ziyaret ettiğiniz web sitelerindeki tüm verilerinizi okuması ve değiştirmesine izin verin:</translation>
 <translation id="407173827865827707">Tıklandığında</translation>
 <translation id="6455264371803474013">Belirli sitelerde</translation>

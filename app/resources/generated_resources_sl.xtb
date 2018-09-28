@@ -856,7 +856,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="1371301976177520732">Zaznamki, gesla, zgodovina in drugi podatki v vseh vaših napravah</translation>
 <translation id="3111958038206230539">Prilagajanje Googlovih storitev</translation>
 <translation id="295992419959320001">Brave Software lahko vašo zgodovino brskanja uporabi za prilagajanje Iskanja Brave Software, oglasov in drugih Googlovih storitev.</translation>
-<translation id="4800091108248587380">Prilagojene Googlove storitve, kot je Brave Software Pay</translation>
+<translation id="4205523465226408285">Bolj osebne Googlove storitve, kot so boljši predlogi strani</translation>
 <translation id="3070156078150543526">Brave Software lahko vašo zgodovino brskanja uporabi za prilagajanje Iskanja Brave Software in drugih Googlovih storitev</translation>
 <translation id="2532167245710864499">Izboljšajte Brave in njegovo varnost tako, da pošiljate podatke o sistemu in uporabi Googlu</translation>
 <translation id="2709453993673701466">Ali želite upravljati sinhronizacijo in prilagajanje, preden ju vklopite? Odprite <ph name="BEGIN_LINK"/>nastavitve<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="7754704193130578113">Pred prenosom vprašaj, kam želim shraniti vsako datoteko</translation>
 <translation id="5713072761819014678">Prekinitev povezave z računom za Brave Software Drive</translation>
 <translation id="486635084936119914">Samodejno odpiranje nekaterih vrst datotek po prenosu</translation>
-<translation id="870073306461175568">Omrežne naprave za skupno rabo datotek</translation>
-<translation id="6189273858858366896">Nastavitev ali upravljanje omrežnih naprav za skupno rabo datotek.</translation>
 <translation id="2367199180085172140">Dodajanje naprave za skupno rabo datotek</translation>
-<translation id="8984654317541110628">URL datotečnega sredstva v skupni rabi</translation>
 <translation id="5247051749037287028">Prikazno ime (izbirno)</translation>
 <translation id="6091761513005122595">Datotečno sredstvo v skupni rabi je bilo uspešno vpeto.</translation>
 <translation id="9024158959543687197">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Preverite URL datotečnega sredstva v skupni rabi in poskusite znova.</translation>
@@ -2259,6 +2256,8 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="2459230470861708651">Šifriraj sinhronizirana gesla z uporabniškim imenom in geslom za Brave Software</translation>
 <translation id="6383051423892982287">Šifriranje sinhroniziranih podatkov z vašim <ph name="BEGIN_LINK"/>geslom za šifriranje<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Vaše šifrirane podatke lahko bere samo oseba z vašim geslom. Geslo ni poslano Googlu in ni shranjeno v Googlu. Če ga pozabite ali če želite spremeniti to nastavitev, boste morali <ph name="BEGIN_LINK"/>sinhronizacijo ponastaviti<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Če želite spremeniti to nastavitev, <ph name="BEGIN_LINK"/>ponastavite sinhronizacijo<ph name="END_LINK"/>, da odstranite geslo za sinhronizacijo</translation>
+<translation id="3873315167136380065">Če želite to vklopiti, <ph name="BEGIN_LINK"/>ponastavite sinhronizacijo<ph name="END_LINK"/>, da odstranite geslo za sinhronizacijo</translation>
 <translation id="988978206646512040">Prazno geslo ni dovoljeno</translation>
 <translation id="1651008383952180276">Dvakrat morate vnesti isto geslo</translation>
 <translation id="2136476978468204130">Vnesli ste napačno geslo</translation>
@@ -2456,6 +2455,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="1607139524282324606">Izbris vnosa</translation>
 <translation id="6025215716629925253">Sledenje sklada</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 vrstica ni prikazana&gt;}one{&lt;$1 vrstica ni prikazana&gt;}two{&lt;$1 vrstici nista prikazani&gt;}few{&lt;$1 vrstice niso prikazane&gt;}other{&lt;$1 vrstic ni prikazanih&gt;}}</translation>
+<translation id="5334899159203764908">Preberite več o <ph name="BEGIN_LINK"/>dostopu do spletnih mest<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Omogočite to razširitev za branje in spreminjanje vseh podatkov na spletnih mestih, ki jih obiščete:</translation>
 <translation id="407173827865827707">Ob kliku</translation>
 <translation id="6455264371803474013">Na določenih spletnih mestih</translation>

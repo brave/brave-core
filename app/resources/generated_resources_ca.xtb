@@ -856,7 +856,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1371301976177520732">Tindràs les adreces d'interès, les contrasenyes, l'historial i altres elements en tots els dispositius</translation>
 <translation id="3111958038206230539">Personalitzeu els serveis de Brave Software</translation>
 <translation id="295992419959320001">És possible que Brave Software utilitzi el vostre historial de navegació per personalitzar la Cerca, els anuncis i altres serveis de Brave Software</translation>
-<translation id="4800091108248587380">Serveis de Brave Software personalitzats, com ara Brave Software Pay</translation>
+<translation id="4205523465226408285">Serveis de Brave Software més personals, com ara millors suggeriments de pàgines</translation>
 <translation id="3070156078150543526">És possible que Brave Software utilitzi el vostre historial de navegació per personalitzar la Cerca i altres serveis de Brave Software</translation>
 <translation id="2532167245710864499">Envia a Brave Software informació del sistema i dades sobre l'ús de Brave per millorar aquest servei i la seva seguretat</translation>
 <translation id="2709453993673701466">Vols gestionar la sincronització i la personalització abans que s'activin? Ves a <ph name="BEGIN_LINK"/>Configuració<ph name="END_LINK"/>.</translation>
@@ -1694,10 +1694,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7754704193130578113">Pregunta on es desarà cada fitxer abans de baixar-lo</translation>
 <translation id="5713072761819014678">Desconnecta el compte de Brave Software Drive</translation>
 <translation id="486635084936119914">Obre alguns tipus de fitxer automàticament després de baixar-los</translation>
-<translation id="870073306461175568">Ús compartit dels fitxers de la xarxa</translation>
-<translation id="6189273858858366896">Configura o gestiona l'ús compartit dels fitxers de la xarxa.</translation>
 <translation id="2367199180085172140">Afegeix un nou ús compartit de fitxers</translation>
-<translation id="8984654317541110628">URL de l'ús compartit del fitxer</translation>
 <translation id="5247051749037287028">Nom de visualització (opcional)</translation>
 <translation id="6091761513005122595">L'ús compartit s'ha activat correctament.</translation>
 <translation id="9024158959543687197">S'ha produït un error en activar l'ús compartit. Comprova l'URL de l'ús compartit del fitxer i torna-ho a provar.</translation>
@@ -2261,6 +2258,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2459230470861708651">Encripta les contrasenyes sincronitzades amb el teu nom d'usuari i la teva contrasenya de Brave Software</translation>
 <translation id="6383051423892982287">Encripta les dades sincronitzades amb la teva <ph name="BEGIN_LINK"/>frase de contrasenya de sincronització<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Només els usuaris que sàpiguen la teva frase de contrasenya poden llegir les dades que encriptis. La frase de contrasenya no s'envia a Brave Software, ni Brave Software l'emmagatzema. Si l'oblides o vols canviar aquesta configuració, hauràs de <ph name="BEGIN_LINK"/>restablir la sincronització<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Si vols canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització<ph name="END_LINK"/> perquè se suprimeixi la frase de contrasenya de sincronització</translation>
+<translation id="3873315167136380065">Si vols activar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització<ph name="END_LINK"/> per suprimir la frase de contrasenya de sincronització</translation>
 <translation id="988978206646512040">No es permeten les frases de contrasenya buides</translation>
 <translation id="1651008383952180276">Has d'escriure la mateixa frase de contrasenya dues vegades</translation>
 <translation id="2136476978468204130">La frase de contrasenya que has escrit no és correcta</translation>
@@ -2458,6 +2457,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1607139524282324606">Esborra l'entrada</translation>
 <translation id="6025215716629925253">Traça de la pila</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;Hi ha 1 línia que no es mostra&gt;}other{&lt;Hi ha $1 línies que no es mostren&gt;}}</translation>
+<translation id="5334899159203764908">Més informació sobre l'<ph name="BEGIN_LINK"/>accés als llocs web<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permet que aquesta extensió llegeixi i modifiqui totes les dades dels llocs web que visitis.</translation>
 <translation id="407173827865827707">En fer clic</translation>
 <translation id="6455264371803474013">En llocs web específics</translation>
