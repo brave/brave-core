@@ -60,6 +60,10 @@ export default class Box extends React.PureComponent<Props, State> {
     this.setState({ settingsOpened: !this.state.settingsOpened })
   }
 
+  getSettingsTitle = (title: string) => {
+    return `${title} ${getLocale('settings')}`
+  }
+
   render () {
     const {
       id,
@@ -102,7 +106,7 @@ export default class Box extends React.PureComponent<Props, State> {
                 settingsChild && ((toggle && checked) || !toggle) ?
                 <Tooltip
                   id={'brave-ads-tip'}
-                  content={getLocale('contributeTooltip')}
+                  content={this.getSettingsTitle(title)}
                 >
                   <StyledSettingsIcon float={'right'} onClick={this.settingsClick}>
                     <SettingsIcon />
@@ -129,7 +133,7 @@ export default class Box extends React.PureComponent<Props, State> {
                 <StyledSettingsIcon>
                   <SettingsIcon />
                 </StyledSettingsIcon>
-                <StyledSettingsText>{title} {getLocale('settings')}</StyledSettingsText>
+                <StyledSettingsText>{this.getSettingsTitle(title)}</StyledSettingsText>
               </StyledSettingsTitle>
               {settingsChild}
             </StyledSettingsWrapper>

@@ -261,9 +261,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
         <div
           className="c16"
         >
-          test
-           
-          MISSING: settings
+          test MISSING: settings
         </div>
       </div>
     </div>
