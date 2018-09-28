@@ -757,7 +757,7 @@ class BrowserViewController: UIViewController {
     
     func updateTabsBarVisibility() {
         func shouldShowTabBar() -> Bool {
-            let tabCount = tabManager.tabs.count
+            let tabCount = tabManager.tabs(withType: TabType.of(tabManager.selectedTab)).count
             guard let tabBarVisibility = TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value) else {
                 // This should never happen
                 assertionFailure("Invalid tab bar visibility preference: \(Preferences.General.tabBarVisibility.value).")
