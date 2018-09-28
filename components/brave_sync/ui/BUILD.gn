@@ -6,6 +6,7 @@ transpile_web_ui("ui") {
     "../../brave_sync/ui/components/modals/newToSync.tsx",
     "../../brave_sync/ui/components/app.tsx",
     "../../brave_sync/ui/components/disabledContent.tsx",
+    "../../brave_sync/ui/components/enabledContent.tsx",
     "../../brave_sync/ui/constants/sync_types.ts",
     "../../brave_sync/ui/reducers/index.ts",
     "../../brave_sync/ui/reducers/sync_reducer.ts",

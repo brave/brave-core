@@ -18,6 +18,7 @@ import {
 
 // Component groups
 import DisabledContent from './disabledContent'
+import EnabledContent from './enabledContent'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -77,31 +78,6 @@ export class SyncPage extends React.PureComponent<Props, State> {
     this.props.actions.onSetupSyncHaveCode(syncWords, deviceName)
   }
 
-  onRemoveDevice = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const target = event.target as HTMLButtonElement
-    this.props.actions.onRemoveDevice(target.id)
-  }
-
-  onSyncReset = () => {
-    this.props.actions.onSyncReset()
-  }
-
-  onToggleSyncThisDevice = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.onToggleSyncThisDevice(event.target.checked)
-  }
-
-  onSyncBookmarks = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.onSyncBookmarks(event.target.checked)
-  }
-
-  onSyncSavedSiteSettings = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.onSyncSavedSiteSettings(event.target.checked)
-  }
-
-  onSyncBrowsingHistory = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.onSyncBrowsingHistory(event.target.checked)
-  }
-
   render () {
     const { syncData, actions } = this.props
     if (!syncData) {
@@ -119,51 +95,7 @@ export class SyncPage extends React.PureComponent<Props, State> {
           <SectionBlock>
             {
               syncData.isSyncConfigured
-                ? (
-                  <div style={{background: 'darkgreen', color: 'white'}}>
-                  <h1>Hello, your device named {syncData.thisDeviceName} was configured!</h1>
-                  <button onClick={this.onRequestQRCode}>Request QR Code</button>
-                  <button onClick={this.onRequestSyncWords}>Request Sync Words</button>
-                  <button onClick={this.onSyncReset}>RESET SYNC!!!!</button>
-                  <input id='syncMe' onChange={this.onToggleSyncThisDevice} type='checkbox' checked={syncData.shouldSyncThisDevice} /><label htmlFor='syncMe'>Keep syncing this device?</label>
-                  <ul>
-                    <li><input id='bookmarks' onChange={this.onSyncBookmarks}  type='checkbox' checked={syncData.syncBookmarks} /><label htmlFor='bookmarks'>Sync bookmarks?</label></li>
-                    <li><input id='siteSettings' onChange={this.onSyncSavedSiteSettings}  type='checkbox' checked={syncData.syncSavedSiteSettings} /><label htmlFor='siteSettings'>Sync site settings?</label></li>
-                    <li><input id='browsingHistory' onChange={this.onSyncBrowsingHistory}  type='checkbox' checked={syncData.syncBrowsingHistory} /><label htmlFor='browsingHistory'>Sync browsing history?</label></li>
-                  </ul>
-                  <div style={{
-                    color: 'gray',
-                    display: 'grid',
-                    height: '100%',
-                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                    gridTemplateRows: '1fr',
-                    gridGap: '15px'
-                  }}>
-                    {
-                      syncData.devices.map((device: Sync.Devices) => {
-                        return (
-                          <>
-                            <div key={`id-${device.id}`}>{device.id}</div>
-                            <div key={`name-${device.id}`}>{device.name}</div>
-                            <div key={`lastActive-${device.id}`}>{device.lastActive}</div>
-                            <button id={device.id.toString()} key={`remove-${device.id}`} onClick={this.onRemoveDevice}>remove device</button>
-                          </>
-                        )
-                      })
-                    }
-                  </div>
-                  {
-                    this.state.showQRCode
-                      ? <div><img src={syncData.seedQRImageSource} /></div>
-                      : null
-                  }
-                  {
-                    this.state.showSyncWords
-                      ? <div>{syncData.syncWords}</div>
-                      : null
-                  }
-                  </div>
-                )
+                ? <EnabledContent syncData={syncData} actions={actions} />
                 : <DisabledContent syncData={syncData} actions={actions} />
             }
           </SectionBlock>
