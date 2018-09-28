@@ -854,7 +854,7 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="1371301976177520732">Historia, manenosiri, alamisho na vipengee vingine kwenye vifaa vyako vyote</translation>
 <translation id="3111958038206230539">Badilisha huduma za Brave Software zikufae</translation>
 <translation id="295992419959320001">Brave Software inaweza kutumia historia ya jinsi unavyovinjari ili kuweka mapendeleo kwenye huduma ya Tafuta na Brave Software, matangazo na huduma nyingine za Brave Software</translation>
-<translation id="4800091108248587380">Huduma za Brave Software zilizowekewa mapendeleo kama vile Brave Software Pay</translation>
+<translation id="4205523465226408285">Huduma zaidi za Brave Software zinazokufaa, kama vile mapendekezo bora zaidi ya ukurasa</translation>
 <translation id="3070156078150543526">Brave Software inaweza kutumia historia yako ya mambo uliyovinjari kuweka mapendeleo ya huduma za Tafuta na huduma nyingine za Brave Software.</translation>
 <translation id="2532167245710864499">Boresha Brave na usalama wake kwa kuitumia Brave Software data ya mfumo na utumiaji</translation>
 <translation id="2709453993673701466">Je, ungependa kudhibiti usawazishaji na kuuboresha zaidi kabla haujazimwa? Tembelea <ph name="BEGIN_LINK"/>Mipangilio<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="7754704193130578113">Uliza mahali pa kuhifadhi kila faili kabla ya kuipakua.</translation>
 <translation id="5713072761819014678">Ondoa akaunti ya Hifadhi ya Brave Software</translation>
 <translation id="486635084936119914">Fungua baadhi ya aina za faili kiotomatiki baada ya kupakua</translation>
-<translation id="870073306461175568">Faili Zinazoshirikiwa katika Mtandao</translation>
-<translation id="6189273858858366896">Dhibiti au uweke mipangilio ya Faili Zinazoshirikiwa katika Mitandao.</translation>
 <translation id="2367199180085172140">Ongeza Faili Utakayoshiriki</translation>
-<translation id="8984654317541110628">URL ya Faili ya Kushiriki</translation>
 <translation id="5247051749037287028">Jina linaloonyeshwa (si lazima)</translation>
 <translation id="6091761513005122595">Imepachika faili ya kushiriki.</translation>
 <translation id="9024158959543687197">Hitilafu imetokea wakati wa kupachika faili ya kushiriki. Angalia URL ya faili ya kushiriki kisha ujaribu tena.</translation>
@@ -2258,6 +2255,8 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="2459230470861708651">Simba kwa njia fiche manenosiri yaliyosawazishwa kwa jina la mtumiaji na nenosiri lako la Brave Software</translation>
 <translation id="6383051423892982287">Simba data iliyosawazishwa kwa njia fiche ukitumia <ph name="BEGIN_LINK"/>kauli yako ya siri ya usawazishaji<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Ni mtu mwenye kauli yako ya siri tu anaweza kusoma data yako iliyosimbwa kwa njia fiche. Kauli ya siri haitumwi au kuhifadhiwa na Brave Software. Ukisahau kauli yako ya siri, au unataka kubadilisha mipangilio hii, utahitaji <ph name="BEGIN_LINK"/>kuweka upya usawazishaji<ph name="END_LINK"/></translation>
+<translation id="7441736921018636843">Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>weka upya kipengele cha usawazishaji<ph name="END_LINK"/> ili kuondoa kauli yako ya siri ya usawazishaji</translation>
+<translation id="3873315167136380065">Ili kuwasha kipengele hiki, <ph name="BEGIN_LINK"/>weka upya kipengele cha usawazishaji<ph name="END_LINK"/> ili kuondoa kauli yako ya siri ya usawazishaji</translation>
 <translation id="988978206646512040">Kauli ya siri tupu hairuhusiwi</translation>
 <translation id="1651008383952180276">Lazima uweke kauli ya siri sawa mara mbili</translation>
 <translation id="2136476978468204130">Kauli ya siri uliyoweka si sahihi</translation>
@@ -2455,6 +2454,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1607139524282324606">Futa kipengele</translation>
 <translation id="6025215716629925253">Alama ya Bunda</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;Haijaonyesha mstari 1&gt;}other{&lt;Haijaonyesha mistari $1&gt;}}</translation>
+<translation id="5334899159203764908">Pata maelezo zaidi kuhusu <ph name="BEGIN_LINK"/>ufikiaji wa tovuti<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Ruhusu kiendelezi hiki kisome na kubadilisha data yako yote iliyo kwenye tovuti unazotembelea:</translation>
 <translation id="407173827865827707">Unapobofya</translation>
 <translation id="6455264371803474013">Kwenye tovuti mahususi</translation>

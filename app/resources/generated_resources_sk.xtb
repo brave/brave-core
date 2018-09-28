@@ -855,7 +855,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1371301976177520732">Záložky, heslá, história a ďalší obsah vo všetkých vašich zariadeniach</translation>
 <translation id="3111958038206230539">Prispôsobenie služieb Brave Software</translation>
 <translation id="295992419959320001">Brave Software môže používať vašu históriu prehliadania na prispôsobenie Vyhľadávania, reklám a ďalších služieb Brave Software</translation>
-<translation id="4800091108248587380">Prispôsobené služby Googlu, ako Brave Software Pay</translation>
+<translation id="4205523465226408285">Viac osobných služieb Googlu, napríklad lepšie návrhy stránok</translation>
 <translation id="3070156078150543526">Brave Software môže používať vašu históriu prehliadania na prispôsobenie Vyhľadávania a ďalších služieb Brave Software</translation>
 <translation id="2532167245710864499">Zlepšite Brave a jeho zabezpečenie odosielaním informácií o systéme a využití do Googlu</translation>
 <translation id="2709453993673701466">Chcete pred zapnutím spravovať možnosti synchronizácie a prispôsobenia? Prejdite do <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7754704193130578113">Pred každým sťahovaním sa spýtať, kam uložiť súbor</translation>
 <translation id="5713072761819014678">Odpojiť účet služby Disk Brave Software</translation>
 <translation id="486635084936119914">Automaticky otvoriť určité typy súborov po ich stiahnutí</translation>
-<translation id="870073306461175568">Zdieľanie súborov v sieti</translation>
-<translation id="6189273858858366896">Nastaviť alebo spravovať zdieľanie súborov v sieti</translation>
 <translation id="2367199180085172140">Pridať zdieľanie súboru</translation>
-<translation id="8984654317541110628">Webová adresa zdieľaného úložiska</translation>
 <translation id="5247051749037287028">Zobrazovaný názov (voliteľné)</translation>
 <translation id="6091761513005122595">Zdieľané úložisko sa úspešne pripojilo.</translation>
 <translation id="9024158959543687197">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Skontrolujte jeho webovú adresu a skúste to znova.</translation>
@@ -2258,6 +2255,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2459230470861708651">Šifrovať synchronizované heslá pomocou používateľského mena a hesla Brave Software</translation>
 <translation id="6383051423892982287">Šifrovať synchronizované údaje pomocou vlastnej <ph name="BEGIN_LINK"/>prístupovej frázy synchronizácie<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Šifrované údaje môže čítať iba používateľ s prístupovou frázou. Prístupová fráza sa do Googlu neodosiela a Brave Software ju ani neukladá. Ak zabudnete prístupovú frázu alebo budete chcieť zmeniť toto nastavenie zmeniť, musíte <ph name="BEGIN_LINK"/>resetovať synchronizáciu<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Ak chcete zmeniť toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/> a odstráňte tak prístupovú frázu synchronizácie</translation>
+<translation id="3873315167136380065">Zapnite toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/> a odstráňte tak prístupovú frázu synchronizácie</translation>
 <translation id="988978206646512040">Prístupová fráza nemôže byť prázdna</translation>
 <translation id="1651008383952180276">Rovnakú prístupovú frázu musíte zadať dvakrát</translation>
 <translation id="2136476978468204130">Zadaná prístupová fráza je nesprávna</translation>
@@ -2455,6 +2454,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1607139524282324606">Vymazať záznam</translation>
 <translation id="6025215716629925253">Správa Stack Trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;Nie je zobrazený 1 riadok&gt;}few{&lt;Nie sú zobrazené $1 riadky&gt;}many{&lt;Nie je zobrazeného $1 riadka&gt;}other{&lt;Nie je zobrazených $1 riadkov&gt;}}</translation>
+<translation id="5334899159203764908">Ďalšie informácie o <ph name="BEGIN_LINK"/>prístupe k webu<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Umožniť tomuto rozšíreniu čítať a meniť všetky dáta na navštevovaných weboch:</translation>
 <translation id="407173827865827707">Po kliknutí</translation>
 <translation id="6455264371803474013">Na konkrétnych weboch</translation>

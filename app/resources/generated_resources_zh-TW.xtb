@@ -855,7 +855,7 @@
 <translation id="1371301976177520732">使用任何裝置均可取得自己的書籤、密碼、歷史記錄及其他設定</translation>
 <translation id="3111958038206230539">享有個人化的 Brave Software 服務</translation>
 <translation id="295992419959320001">Brave Software 可能會使用您的瀏覽記錄，為您提供個人化的搜尋服務、廣告內容和其他各項 Brave Software 服務</translation>
-<translation id="4800091108248587380">個人化的 Brave Software 服務，例如 Brave Software Pay</translation>
+<translation id="4205523465226408285">體驗更加個人化的 Brave Software 服務 (例如更適切的網頁建議)</translation>
 <translation id="3070156078150543526">Brave Software 可能會使用您的瀏覽記錄，為您提供個人化的搜尋服務和其他各項 Brave Software 服務。</translation>
 <translation id="2532167245710864499">傳送系統資訊和使用情形資料給 Brave Software，協助改善 Brave 及其安全性</translation>
 <translation id="2709453993673701466">想在開啟同步功能和個人化功能前先進行管理嗎？請前往「<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>」。</translation>
@@ -1692,10 +1692,7 @@
 <translation id="7754704193130578113">下載每個檔案前先詢問儲存位置</translation>
 <translation id="5713072761819014678">取消連結 Brave Software 雲端硬碟帳戶</translation>
 <translation id="486635084936119914">下載特定類型的檔案後自動開啟</translation>
-<translation id="870073306461175568">網路檔案共用</translation>
-<translation id="6189273858858366896">設定或管理網路檔案共用。</translation>
 <translation id="2367199180085172140">新增檔案共用</translation>
-<translation id="8984654317541110628">檔案共用網址</translation>
 <translation id="5247051749037287028">顯示名稱 (選填)</translation>
 <translation id="6091761513005122595">已成功共用掛接的裝置。</translation>
 <translation id="9024158959543687197">掛接共用裝置時發生錯誤。請檢查檔案共用網址，然後再試一次。</translation>
@@ -2258,6 +2255,8 @@
 <translation id="2459230470861708651">使用你的 Brave Software 使用者名稱與密碼將經過同步處理的密碼加密</translation>
 <translation id="6383051423892982287">使用你的<ph name="BEGIN_LINK"/>同步通關密語<ph name="END_LINK"/>將經過同步處理的資料加密</translation>
 <translation id="4817583816512767754">只有知道通關密語的使用者可以讀取你的加密資料。系統不會將通關密語傳送給 Brave Software，Brave Software 也不會儲存通關密語。如果你忘記自己的通關密語，或是想變更這項設定，則必須<ph name="BEGIN_LINK"/>重設同步功能<ph name="END_LINK"/>。</translation>
+<translation id="7441736921018636843">如要變更這項設定，請<ph name="BEGIN_LINK"/>重設同步處理功能<ph name="END_LINK"/>以移除同步處理通關密語</translation>
+<translation id="3873315167136380065">如要啟用這項功能，請<ph name="BEGIN_LINK"/>重設同步功能<ph name="END_LINK"/>以移除同步處理通關密語</translation>
 <translation id="988978206646512040">通關密語欄位不得留空</translation>
 <translation id="1651008383952180276">你必須輸入兩次相同的通關密語</translation>
 <translation id="2136476978468204130">你輸入的通關密語不正確</translation>

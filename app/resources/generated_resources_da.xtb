@@ -854,7 +854,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1371301976177520732">Din historik samt dine bogmærker, adgangskoder og meget mere på alle dine enheder</translation>
 <translation id="3111958038206230539">Tilpas Brave Software-tjenester</translation>
 <translation id="295992419959320001">Brave Software kan bruge din browserhistorik til at personliggøre Søgning, annoncer og andre Brave Software-tjenester.</translation>
-<translation id="4800091108248587380">Tilpassede Brave Software-tjenester såsom Brave Software Pay</translation>
+<translation id="4205523465226408285">Mere personlige Brave Software-tjenester, f.eks. bedre sideforslag</translation>
 <translation id="3070156078150543526">Brave Software bruger muligvis din browserhistorik til at personliggøre Søgning og andre Brave Software-tjenester</translation>
 <translation id="2532167245710864499">Gør Brave og dens sikkerhed bedre ved at sende systemoplysninger og oplysninger om brug til Brave Software</translation>
 <translation id="2709453993673701466">Vil du administrere synkronisering og tilpasning, før disse funktioner er slået til? Gå til <ph name="BEGIN_LINK"/>Indstillinger<ph name="END_LINK"/>.</translation>
@@ -1691,10 +1691,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7754704193130578113">Spørg, hvor hver enkelt fil skal gemmes, inden download begynder</translation>
 <translation id="5713072761819014678">Fjern tilknytningen af din Brave Software Drev-konto</translation>
 <translation id="486635084936119914">Åbn bestemte filtyper automatisk efter download</translation>
-<translation id="870073306461175568">Fildeling via netværk</translation>
-<translation id="6189273858858366896">Konfigurer eller administrer fildeling via netværk.</translation>
 <translation id="2367199180085172140">Tilføj fildeling</translation>
-<translation id="8984654317541110628">Webadresse til fildeling</translation>
 <translation id="5247051749037287028">Vist navn (valgfrit)</translation>
 <translation id="6091761513005122595">Delingen blev anvendt.</translation>
 <translation id="9024158959543687197">Der opstod en fejl ved anvendelse af deling. Tjek webadressen til fildeling, og prøv igen.</translation>
@@ -2257,6 +2254,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2459230470861708651">Kryptér synkroniserede adgangskoder med brugernavnet og adgangskoden til din Brave Software-konto</translation>
 <translation id="6383051423892982287">Kryptér synkroniserede data med din egen <ph name="BEGIN_LINK"/>adgangssætning til synkronisering<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Det er kun personer med din adgangssætning, der kan læse dine krypterede data. Adgangssætningen sendes ikke til og gemmes ikke af Brave Software. Hvis du glemmer din adgangssætning eller vil ændre denne indstilling, skal du <ph name="BEGIN_LINK"/>nulstille synkroniseringen<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Hvis du vil ændre denne indstilling, skal du <ph name="BEGIN_LINK"/>nulstille synkronisering<ph name="END_LINK"/> for at fjerne din adgangssætning for synkronisering</translation>
+<translation id="3873315167136380065">Du kan aktivere indstillingen ved at <ph name="BEGIN_LINK"/>nulstille synkronisering<ph name="END_LINK"/> for at fjerne din adgangssætning til synkronisering</translation>
 <translation id="988978206646512040">Tomme adgangssætninger er ikke tilladt</translation>
 <translation id="1651008383952180276">Du skal angive den samme adgangssætning to gange</translation>
 <translation id="2136476978468204130">Den adgangssætning, du angav, er forkert.</translation>
@@ -2454,6 +2453,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1607139524282324606">Ryd indtastning</translation>
 <translation id="6025215716629925253">Stakspor</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linje vises ikke&gt;}one{&lt;$1 linje vises ikke&gt;}other{&lt;$1 linjer vises ikke&gt;}}</translation>
+<translation id="5334899159203764908">Få flere oplysninger om <ph name="BEGIN_LINK"/>websiteadgang<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Tillad, at denne udvidelse læser og ændrer alle dine data på websites, du besøger:</translation>
 <translation id="407173827865827707">Ved klik</translation>
 <translation id="6455264371803474013">På specifikke websites</translation>

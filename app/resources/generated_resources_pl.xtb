@@ -855,7 +855,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="1371301976177520732">Twoje zakładki, hasła, historia i inne dane na wszystkich Twoich urządzeniach</translation>
 <translation id="3111958038206230539">Dostosowywanie usług Brave Software</translation>
 <translation id="295992419959320001">Brave Software może korzystać z Twojej historii przeglądania, by dostosowywać wyniki wyszukiwania, reklamy i działanie innych usług.</translation>
-<translation id="4800091108248587380">Spersonalizowane usługi Brave Software, takie jak Brave Software Pay</translation>
+<translation id="4205523465226408285">Bardziej spersonalizowane usługi Brave Software, na przykład lepsze podpowiedzi stron</translation>
 <translation id="3070156078150543526">Brave Software może korzystać z Twojej historii przeglądania, by dostosowywać wyniki wyszukiwania i działanie innych usług</translation>
 <translation id="2532167245710864499">Pomóż nam ulepszyć działanie i zwiększyć bezpieczeństwo Brave, wysyłając informacje o systemie i użytkowaniu do Brave Software</translation>
 <translation id="2709453993673701466">Chcesz dostosować ustawienia synchronizacji i personalizacji przed ich włączeniem? Wprowadź zmiany w <ph name="BEGIN_LINK"/>Ustawieniach<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="7754704193130578113">Pytaj przed pobraniem, gdzie zapisać każdy plik</translation>
 <translation id="5713072761819014678">Odłącz konto na Dysku Brave Software</translation>
 <translation id="486635084936119914">Automatycznie otwieraj określone typy plików po pobraniu</translation>
-<translation id="870073306461175568">Sieciowe magazyny plików</translation>
-<translation id="6189273858858366896">Skonfiguruj sieciowe magazyny plików lub nimi zarządzaj.</translation>
 <translation id="2367199180085172140">Dodaj udział plików</translation>
-<translation id="8984654317541110628">URL udziału plików</translation>
 <translation id="5247051749037287028">Wyświetlana nazwa (opcjonalnie)</translation>
 <translation id="6091761513005122595">Udział został podłączony.</translation>
 <translation id="9024158959543687197">Błąd podczas podłączania udziału. Sprawdź URL udziału plików i spróbuj ponownie.</translation>
@@ -2259,6 +2256,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="2459230470861708651">Szyfruj synchronizowane hasła przy użyciu nazwy użytkownika i hasła Brave Software</translation>
 <translation id="6383051423892982287">Szyfruj synchronizowane dane za pomocą własnego <ph name="BEGIN_LINK"/>hasła synchronizacji<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Twoje zaszyfrowane dane może odczytać tylko ktoś znający hasło. Brave Software nie otrzyma Twojego hasła ani nie będzie go przechowywać. Jeśli je zapomnisz lub zechcesz zmienić to ustawienie, musisz <ph name="BEGIN_LINK"/>zresetować synchronizację<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph name="END_LINK"/>, by usunąć hasło synchronizacji</translation>
+<translation id="3873315167136380065">Aby włączyć tę funkcję, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph name="END_LINK"/> w celu usunięcia hasła synchronizacji</translation>
 <translation id="988978206646512040">Puste hasło jest niedozwolone</translation>
 <translation id="1651008383952180276">Musisz dwukrotnie wpisać to samo hasło</translation>
 <translation id="2136476978468204130">Wpisane hasło jest nieprawidłowe</translation>
@@ -2456,6 +2455,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1607139524282324606">Wyczyść wpis</translation>
 <translation id="6025215716629925253">Zrzut stosu</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 wiersz jest niewidoczny&gt;}few{&lt;$1 wiersze są niewidoczne&gt;}many{&lt;$1 wierszy jest niewidocznych&gt;}other{&lt;$1 wiersza jest niewidoczne&gt;}}</translation>
+<translation id="5334899159203764908">Więcej informacji o uprawnieniach <ph name="BEGIN_LINK"/>dostępu dla strony<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Zezwól temu rozszerzeniu na odczytywanie i zmienianie wszystkich Twoich danych na stronach, które otwierasz:</translation>
 <translation id="407173827865827707">Po kliknięciu</translation>
 <translation id="6455264371803474013">Na określonych stronach</translation>

@@ -855,7 +855,7 @@
 <translation id="1371301976177520732">الحصول على الإشارات المرجعية وكلمات المرور والسجلّ وغيرها على جميع أجهزتك</translation>
 <translation id="3111958038206230539">‏تخصيص خدمات Brave Software</translation>
 <translation id="295992419959320001">‏قد تستخدم Brave Software سجل التصفح لتخصيص البحث، والإعلانات، وخدمات Brave Software الأخرى</translation>
-<translation id="4800091108248587380">‏الاستفادة من خدمات Brave Software المخصّصة مثل Brave Software Pay</translation>
+<translation id="4205523465226408285">‏مزيد من خدمات Brave Software الشخصية، مثل أفضل اقتراحات الصفحة</translation>
 <translation id="3070156078150543526">‏قد يستخدم Brave Software سجل التصفح لتخصيص البحث وخدمات Brave Software الأخرى.</translation>
 <translation id="2532167245710864499">‏تحسين Brave وإعدادات الأمان فيه عن طريق إرسال معلومات النظام والاستخدام إلى Brave Software</translation>
 <translation id="2709453993673701466">هل ترغب في إدارة المزامنة والتخصيص قبل تشغيلهما؟ انتقل إلى <ph name="BEGIN_LINK"/>الإعدادات<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@
 <translation id="7754704193130578113">السؤال عن مكان حفظ الملفّات قبل التحميل</translation>
 <translation id="5713072761819014678">‏إلغاء ربط حساب Brave Software Drive</translation>
 <translation id="486635084936119914">فتح أنواع معينة من الملفات تلقائيًا بعد التنزيل</translation>
-<translation id="870073306461175568">مشاركات ملف الشبكة</translation>
-<translation id="6189273858858366896">إعداد مشاركات ملف الشبكة أو إدارتها.</translation>
 <translation id="2367199180085172140">إضافة "مشاركة ملف"</translation>
-<translation id="8984654317541110628">‏عنوان URL لخادم مشاركة الملفات</translation>
 <translation id="5247051749037287028">الاسم المعروض (اختياري)</translation>
 <translation id="6091761513005122595">تم تحميل المشاركة بنجاح.</translation>
 <translation id="9024158959543687197">‏حدث خطأ في تحميل المشاركة. يُرجى التحقُّق من عنوان URL لخادم مشاركة الملفات وإعادة المحاولة.</translation>
@@ -2258,6 +2255,8 @@
 <translation id="2459230470861708651">‏تشفير كلمات المرور المتزامنة باستخدام اسم المستخدم وكلمة المرور لحساب Brave Software</translation>
 <translation id="6383051423892982287">تشفير البيانات المتزامنة باستخدام <ph name="BEGIN_LINK"/>عبارة مرور المزامنة<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">‏لا يمكن لأحد قراءة بياناتك المشفرة سوى من لديه عبارة المرور التي تستخدمها. ولا يتم إرسال عبارة المرور إلى شركة Brave Software أو تخزينها لديها. إذا نسيت عبارة المرور أو رغبت في تغيير هذا الإعداد، فسيلزمك <ph name="BEGIN_LINK"/>إعادة تعيين المزامنة<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">لتغيير هذا الإعداد، يمكنك <ph name="BEGIN_LINK"/>إعادة ضبط المزامنة<ph name="END_LINK"/> لإزالة عبارة مرور المزامنة.</translation>
+<translation id="3873315167136380065">لتفعيل هذا الإعداد، يمكنك <ph name="BEGIN_LINK"/>إعادة ضبط المزامنة<ph name="END_LINK"/> لإزالة عبارة مرور المزامنة.</translation>
 <translation id="988978206646512040">غير مسموح باستخدام عبارة مرور فارغة</translation>
 <translation id="1651008383952180276">يجب إدخال عبارة المرور نفسها مرتين</translation>
 <translation id="2136476978468204130">عبارة المرور التي أدخلتها غير صحيحة</translation>
@@ -2455,6 +2454,7 @@
 <translation id="1607139524282324606">محو الإدخال</translation>
 <translation id="6025215716629925253">تتبع التكديس</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;لم يظهر خط واحد (1)&gt;}zero{&lt;لم يظهر $1 خط&gt;}two{&lt;لم يظهر خطان ($1)&gt;}few{&lt;لم يظهر $1 خطوط&gt;}many{&lt;لم يظهر $1 خطًّا&gt;}other{&lt;لم يظهر $1 خط&gt;}}</translation>
+<translation id="5334899159203764908">مزيد من المعلومات عن <ph name="BEGIN_LINK"/>إمكانية الوصول إلى موقع الويب<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">السماح لهذه الإضافة بقراءة جميع بياناتك وتغييرها على المواقع الإلكترونية التي تزورها:</translation>
 <translation id="407173827865827707">عند النقر</translation>
 <translation id="6455264371803474013">على مواقع إلكترونية محددة</translation>

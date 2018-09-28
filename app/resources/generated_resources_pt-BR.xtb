@@ -856,7 +856,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="1371301976177520732">Seus favoritos, senhas, histórico e muito mais em todos os seus dispositivos</translation>
 <translation id="3111958038206230539">Personalizar os serviços do Brave Software</translation>
 <translation id="295992419959320001">O Brave Software pode usar seu histórico de navegação para personalizar a Pesquisa Brave Software, os anúncios e outros serviços nossos</translation>
-<translation id="4800091108248587380">Serviços do Brave Software personalizados, como o Brave Software Pay</translation>
+<translation id="4205523465226408285">Serviços do Brave Software mais personalizados, como melhores sugestões de páginas</translation>
 <translation id="3070156078150543526">O Brave Software pode usar seu histórico de navegação para personalizar a Pesquisa e outros serviços Brave Software</translation>
 <translation id="2532167245710864499">Ajude a aprimorar o Brave e a segurança do app enviando informações de uso e do sistema para o Brave Software</translation>
 <translation id="2709453993673701466">Quer gerenciar a sincronização e a personalização antes que elas sejam ativadas? Visite <ph name="BEGIN_LINK"/>Configurações<ph name="END_LINK"/>.</translation>
@@ -1694,10 +1694,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="7754704193130578113">Perguntar onde salvar cada arquivo antes de fazer download</translation>
 <translation id="5713072761819014678">Desconectar a conta do Brave Software Drive</translation>
 <translation id="486635084936119914">Abrir alguns tipos de arquivo automaticamente depois do download</translation>
-<translation id="870073306461175568">Compartilhamentos de arquivos de rede</translation>
-<translation id="6189273858858366896">Configurar ou gerenciar compartilhamentos de arquivos de rede.</translation>
 <translation id="2367199180085172140">Adicionar compartilhamento de arquivos</translation>
-<translation id="8984654317541110628">URL de compartilhamento de arquivos</translation>
 <translation id="5247051749037287028">Nome de exibição (opcional)</translation>
 <translation id="6091761513005122595">Compartilhamento ativado.</translation>
 <translation id="9024158959543687197">Erro ao ativar o compartilhamento. Verifique o URL de compartilhamento de arquivos e tente novamente.</translation>
@@ -2260,6 +2257,8 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="2459230470861708651">Criptografar senhas sincronizadas com seu nome de usuário e senha do Brave Software</translation>
 <translation id="6383051423892982287">Criptografar dados sincronizados com sua <ph name="BEGIN_LINK"/>senha longa de sincronização<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Somente uma pessoa que tenha sua senha longa pode ler seus dados criptografados. A senha longa não é enviada para o Brave Software ou armazenada por ele. Se você esquecer sua senha longa ou quiser alterar essa configuração, será necessário <ph name="BEGIN_LINK"/>redefinir a sincronização<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Para mudar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronização<ph name="END_LINK"/> e remova sua senha longa de sincronização</translation>
+<translation id="3873315167136380065">Para ativar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronização<ph name="END_LINK"/> e remova sua senha longa de sincronização</translation>
 <translation id="988978206646512040">A senha longa não pode ficar em branco</translation>
 <translation id="1651008383952180276">Informe a mesma senha longa duas vezes</translation>
 <translation id="2136476978468204130">A senha longa informada está incorreta</translation>
@@ -2457,6 +2456,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="1607139524282324606">Limpar entrada</translation>
 <translation id="6025215716629925253">Rastreamento de pilha</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linha não mostrada&gt;}one{&lt;$1 linha não mostrada&gt;}other{&lt;$1 linhas não mostradas&gt;}}</translation>
+<translation id="5334899159203764908">Saiba mais sobre o <ph name="BEGIN_LINK"/>acesso de site<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permitir que a extensão leia e modifique todos os seus dados nos sites que você visitar:</translation>
 <translation id="407173827865827707">Ao clicar</translation>
 <translation id="6455264371803474013">Em sites específicos</translation>
