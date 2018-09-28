@@ -16,6 +16,9 @@ import {
   SectionBlock
 } from 'brave-ui/features/sync'
 
+// Component groups
+import DisabledContent from './disabledContent'
+
 // Utils
 import { getLocale } from '../../../common/locale'
 import * as syncActions from '../actions/sync_actions'
@@ -108,7 +111,7 @@ export class SyncPage extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { syncData } = this.props
+    const { syncData, actions } = this.props
     if (!syncData) {
       return null
     }
@@ -169,20 +172,7 @@ export class SyncPage extends React.PureComponent<Props, State> {
                   }
                   </div>
                 )
-                : (
-                  <>
-                    <div style={{background: 'darkblue', color: 'white'}}>
-                      <input type='text' onChange={this.onGetUserInputDeviceName} />
-                      <button onClick={this.onSetupNewToSync}>Setup Sync</button>
-                    </div>
-                    <div style={{background: 'lightyellow'}}>
-                      <textarea onChange={this.onGetUserInputSyncWords} />
-                      <button onClick={this.onSetupSyncHaveCode}>
-                        I have an existing sync code!
-                      </button>
-                    </div>
-                  </>
-                )
+                : <DisabledContent syncData={syncData} actions={actions} />
             }
           </SectionBlock>
         </Main>
