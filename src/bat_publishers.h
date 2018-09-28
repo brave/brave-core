@@ -83,13 +83,40 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool loadPublisherList(const std::string& data);
 
+  void getPublisherActivityFromUrl(uint64_t windowId,
+                               const std::string& tld,
+                               const std::string& path,
+                               ledger::PUBLISHER_MONTH month,
+                               int year);
+
  private:
+  ledger::PublisherInfoFilter CreatePublisherFilter(
+      const std::string& publisher_id,
+      ledger::PUBLISHER_CATEGORY category,
+      ledger::PUBLISHER_MONTH month,
+      int year);
+
   ledger::PublisherInfoFilter CreatePublisherFilter(
       const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY category,
       ledger::PUBLISHER_MONTH month,
       int year,
       ledger::PUBLISHER_EXCLUDE excluded);
+
+  ledger::PublisherInfoFilter CreatePublisherFilter(
+      const std::string& publisher_id,
+      ledger::PUBLISHER_CATEGORY category,
+      ledger::PUBLISHER_MONTH month,
+      int year,
+      bool min_duration);
+
+  ledger::PublisherInfoFilter CreatePublisherFilter(
+      const std::string& publisher_id,
+      ledger::PUBLISHER_CATEGORY category,
+      ledger::PUBLISHER_MONTH month,
+      int year,
+      ledger::PUBLISHER_EXCLUDE excluded,
+      bool min_duration);
 
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
@@ -126,6 +153,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void synopsisNormalizerInternal(const ledger::PublisherInfoList& list, uint32_t /* next_record */);
 
   bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
+
+  void onPublisherActivity(ledger::Result result,
+                           std::unique_ptr<ledger::PublisherInfo> publisher_info,
+                           uint64_t windowId,
+                           const std::string& publisherKey);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 

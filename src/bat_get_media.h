@@ -35,6 +35,11 @@ class BatGetMedia {
   void getPublisherFromMediaProps(const std::string& mediaId, const std::string& media_key, const std::string& providerName,
       const uint64_t& duration, const ledger::TwitchEventInfo& twitchEventInfo,
       const ledger::VisitData& visit_data);
+  void getMediaActivityFromUrl(uint64_t windowId,
+                                   const std::string& url,
+                                   const std::string& providerType,
+                                   ledger::PUBLISHER_MONTH month,
+                                   int year);
 
  private:
   std::string getMediaURL(const std::string& mediaId, const std::string& providerName);

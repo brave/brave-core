@@ -77,6 +77,9 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnGrantCaptcha(const std::string& image, const std::string& hint) = 0;
   virtual void OnRecoverWallet(Result result, double balance, const std::vector<ledger::Grant>& grants) = 0;
   virtual void OnGrantFinish(ledger::Result result, const ledger::Grant& grant) = 0;
+  virtual void OnPublisherActivity(Result result,
+                                   std::unique_ptr<ledger::PublisherInfo>,
+                                   uint64_t windowId) = 0;
 
   //uint64_t time_offset (input): timer offset in seconds.
   //uint32_t timer_id (output) : 0 in case of failure
