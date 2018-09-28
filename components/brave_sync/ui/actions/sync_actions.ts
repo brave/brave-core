@@ -17,10 +17,10 @@ export const onPageLoaded = () => {
 /**
  * Action dispatched by the back-end with useful information
  * about devices and settings synced
- * @param {any} settings - the sync settings information
- * @param {any} devices - the sync devices information
+ * @param {Sync.SettingsFromBackEnd} settings - the sync settings information
+ * @param {Sync.DevicesFromBackEnd} devices - the sync original devices information
 */
-export const onShowSettings = (settings: any, devices: any) => {
+export const onShowSettings = (settings: Sync.SettingsFromBackEnd, devices: Sync.DevicesFromBackEnd) => {
   return action(types.SYNC_ON_SHOW_SETTINGS, { settings, devices })
 }
 
