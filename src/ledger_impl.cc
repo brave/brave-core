@@ -625,11 +625,11 @@ bool LedgerImpl::IsWalletCreated() const {
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(uint64_t windowId,
-                                             const std::string& tld,
+                                             const std::string& baseDomain,
                                              const std::string& path,
                                              ledger::PUBLISHER_MONTH month,
                                              int year) {
-  bat_publishers_->getPublisherActivityFromUrl(windowId, tld, path, month, year);
+  bat_publishers_->getPublisherActivityFromUrl(windowId, baseDomain, path, month, year);
 }
 
 void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,

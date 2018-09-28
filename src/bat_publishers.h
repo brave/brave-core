@@ -84,7 +84,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool loadPublisherList(const std::string& data);
 
   void getPublisherActivityFromUrl(uint64_t windowId,
-                               const std::string& tld,
+                               const std::string& baseDomain,
                                const std::string& path,
                                ledger::PUBLISHER_MONTH month,
                                int year);

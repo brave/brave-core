@@ -640,28 +640,28 @@ bool BatPublishers::loadPublisherList(const std::string& data) {
 }
 
 void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId,
-                                            const std::string& tld,
+                                            const std::string& baseDomain,
                                             const std::string& path,
                                             ledger::PUBLISHER_MONTH month,
                                             int year) {
-  if ((tld == YOUTUBE_TLD || tld == TWITCH_TLD) && path != "" && path != "/") {
+  if ((baseDomain == YOUTUBE_TLD || baseDomain == TWITCH_TLD) && path != "" && path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
-    if (tld == TWITCH_TLD) {
+    if (baseDomain == TWITCH_TLD) {
       type = TWITCH_MEDIA_TYPE;
     }
 
     // TODO NZ add logic
-    // ledger_->GetMediaActivityFromUrl(windowId, (std::string)tld + path, type, month, year);
+    // ledger_->GetMediaActivityFromUrl(windowId, (std::string)baseDomain + path, type, month, year);
     return;
   }
 
-  auto filter = CreatePublisherFilter(tld,
+  auto filter = CreatePublisherFilter(baseDomain,
         ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
         month,
         year,
         false);
     ledger_->GetPublisherInfo(filter,
-        std::bind(&BatPublishers::onPublisherActivity, this, _1, _2, windowId, tld));
+        std::bind(&BatPublishers::onPublisherActivity, this, _1, _2, windowId, baseDomain));
 }
 
 void BatPublishers::onPublisherActivity(ledger::Result result,

@@ -139,7 +139,7 @@ class LedgerImpl : public ledger::Ledger,
   void RestorePublishers() override;
   bool IsWalletCreated() const override;
   void GetPublisherActivityFromUrl(uint64_t windowId,
-                               const std::string& tld,
+                               const std::string& baseDomain,
                                const std::string& path,
                                ledger::PUBLISHER_MONTH month,
                                int year) override;
