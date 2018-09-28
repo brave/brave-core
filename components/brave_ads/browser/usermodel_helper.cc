@@ -61,6 +61,8 @@ void brave_ads::UserModelHelper::OnWebContentsFocused(content::RenderWidgetHost*
 }
 
 void  brave_ads::UserModelHelper::DocumentOnLoadCompletedInMainFrame() {
+  // TODO: check if its about:blank, new_tab, chrome page and return
+
   usermodel_service_->OnPageVisited(
     tab_id_, 
     web_contents()->GetMainFrame(), 

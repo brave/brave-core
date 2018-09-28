@@ -22,7 +22,12 @@
 #include "components/sessions/core/session_id.h"
 
 #include "ad_catalog.h"
+#include "ads_agent.h"
+#include "ads_database.h"
+
 #include "notification_event_type.h"
+
+#include <set>
 
 namespace base {
 class SequencedTaskRunner;
@@ -52,41 +57,47 @@ class UsermodelService : public KeyedService,
     void OnDataReceived(SessionID tab_id, const std::string& url, const base::Value* val);
     void OnTabFocused(SessionID tab_id);
     void Classify(const std::string& html, const std::string& url, SessionID tab_id);
+    std::set<std::string> GetAdsHistory(int timestamp);
 
-    //void SettingsUpdated(); 
+    //void SettingsUpdated();
     void OnNotificationEvent(usermodel::NotificationEventType event);
 
-    void ShowAd();
+    void ShowAd(const usermodel::Ad& ad);
+    void AddToHistory(const usermodel::Ad& ad);
+    void RankAdsAndShow(const std::set<std::string>& seen_ads_ids);
 
     usermodel::UserModel usermodel_;
     usermodel::AdCatalog ad_catalog_;
     std::unique_ptr<usermodel::UserProfile> user_profile_;
-    
+
+    AdsDatabase* ads_database_;
     UserModelState* usermodel_state_;
+    usermodel::AdsAgent* ads_agent;
 
     // bool doNotDisturb = false;
    const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
-  
-    // this counts how many reasons exist 
-    // to not disturb the user. E.g. 
+
+    // this counts how many reasons exist
+    // to not disturb the user. E.g.
     // playing audio and being in fullscreen mode
     // counts for 2 reasons. If you exit fullscreen mode
     // but keep playing audio, then you have 1 reason.
     // A notification can be shown only when reasons == 0
     unsigned int do_not_disturb_reasons_ = 0;
-    
+
  private:
 
   typedef std::map<SessionID, std::vector<double>> TabCache;
-  TabCache tab_cache_; 
+  TabCache tab_cache_;
 
    const base::FilePath usermodel_state_path_;
    const base::FilePath taxonomy_model_path_;
    const base::FilePath ads_feed_path_;
+   const base::FilePath ads_database_path_;
 
   bool initialized_;
   time_t last_focused_timestamp_;
 };
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_BRAVE_USERMODEL_USERMODEL_SERVICE_H_ 
+#endif  // BRAVE_BROWSER_BRAVE_USERMODEL_USERMODEL_SERVICE_H_
