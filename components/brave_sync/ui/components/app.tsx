@@ -72,6 +72,11 @@ class SyncPage extends React.PureComponent<Props, State> {
     this.props.actions.onSetupSyncHaveCode(syncWords, deviceName)
   }
 
+  onRemoveDevice = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const target = event.target as HTMLButtonElement
+    this.props.actions.onRemoveDevice(target.id)
+  }
+
   onSyncReset = () => {
     this.props.actions.onSyncReset()
   }
@@ -123,7 +128,7 @@ class SyncPage extends React.PureComponent<Props, State> {
                 color: 'gray',
                 display: 'grid',
                 height: '100%',
-                gridTemplateColumns: '1fr 1fr 1fr',
+                gridTemplateColumns: '1fr 1fr 1fr 1fr',
                 gridTemplateRows: '1fr',
                 gridGap: '15px'
               }}>
@@ -134,6 +139,7 @@ class SyncPage extends React.PureComponent<Props, State> {
                         <div key={`id-${device.id}`}>{device.id}</div>
                         <div key={`name-${device.id}`}>{device.name}</div>
                         <div key={`lastActive-${device.id}`}>{device.lastActive}</div>
+                        <button id={device.id.toString()} key={`remove-${device.id}`} onClick={this.onRemoveDevice}>remove device</button>
                       </>
                     )
                   })

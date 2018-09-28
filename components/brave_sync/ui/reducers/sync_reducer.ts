@@ -86,6 +86,10 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       state = { ...storage.defaultState }
       break
 
+    case types.SYNC_ON_REMOVE_DEVICE:
+      chrome.send('deleteDevice', [payload.id])
+      break
+
     case types.SYNC_ON_SYNC_THIS_DEVICE:
       chrome.send('syncThisDevice', [payload.shouldSyncThisDevice])
       break

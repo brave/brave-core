@@ -68,6 +68,14 @@ export const onRequestSyncWords = () => {
 }
 
 /**
+ * Dispatches a message telling the back-end that the user removed a given device
+ * @param {number} id - The device ID
+ */
+export const onRemoveDevice = (id: number) => {
+  return action(types.SYNC_ON_REMOVE_DEVICE, { id })
+}
+
+/**
  * Dispatches a message telling the back-end that user has reset Sync
  */
 export const onSyncReset = () => {
