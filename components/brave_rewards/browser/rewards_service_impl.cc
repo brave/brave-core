@@ -286,20 +286,20 @@ void RewardsServiceImpl::GetContentSiteList(
 
 void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   auto origin = url.GetOrigin();
-  const std::string tld =
+  const std::string baseDomain =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
 
-  if (tld == "")
+  if (baseDomain == "")
     return;
 
   auto now = base::Time::Now();
-  ledger::VisitData data(tld,
+  ledger::VisitData data(baseDomain,
                          origin.host(),
                          url.path(),
                          tab_id.id(),
                          GetPublisherMonth(now),
                          GetPublisherYear(now),
-                         tld,
+                         baseDomain,
                          origin.spec(),
                          "",
                          "");
@@ -781,24 +781,26 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     std::unique_ptr<ledger::WalletInfo> wallet_info) {
   std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
 
-  if (wallet_info) {
-    wallet_properties.reset(new brave_rewards::WalletProperties);
-    wallet_properties->probi = wallet_info->probi_;
-    wallet_properties->balance = wallet_info->balance_;
-    wallet_properties->rates = wallet_info->rates_;
-    wallet_properties->parameters_choices = wallet_info->parameters_choices_;
-    wallet_properties->parameters_range = wallet_info->parameters_range_;
-    wallet_properties->parameters_days = wallet_info->parameters_days_;
+  if (!wallet_info) {
+    return;
+  }
 
-    for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
-      brave_rewards::Grant grant;
+  wallet_properties.reset(new brave_rewards::WalletProperties);
+  wallet_properties->probi = wallet_info->probi_;
+  wallet_properties->balance = wallet_info->balance_;
+  wallet_properties->rates = wallet_info->rates_;
+  wallet_properties->parameters_choices = wallet_info->parameters_choices_;
+  wallet_properties->parameters_range = wallet_info->parameters_range_;
+  wallet_properties->parameters_days = wallet_info->parameters_days_;
 
-      grant.altcurrency = wallet_info->grants_[i].altcurrency;
-      grant.probi = wallet_info->grants_[i].probi;
-      grant.expiryTime = wallet_info->grants_[i].expiryTime;
+  for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
+    brave_rewards::Grant grant;
 
-      wallet_properties->grants.push_back(grant);
-    }
+    grant.altcurrency = wallet_info->grants_[i].altcurrency;
+    grant.probi = wallet_info->grants_[i].probi;
+    grant.expiryTime = wallet_info->grants_[i].expiryTime;
+
+    wallet_properties->grants.push_back(grant);
   }
 
   // webui
@@ -1097,15 +1099,17 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const st
 
   auto now = base::Time::Now();
   auto origin = parsedUrl.GetOrigin();
-  std::string tld =
+  std::string baseDomain =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
 
-  if (tld == "") {
-    tld = "-1";
+  if (baseDomain == "") {
+    std::unique_ptr<ledger::PublisherInfo> info;
+    OnPublisherActivity(ledger::Result::NOT_FOUND, std::move(info), windowId);
+    return;
   }
 
   ledger_->GetPublisherActivityFromUrl(windowId,
-      tld,
+      baseDomain,
       parsedUrl.path(),
       GetPublisherMonth(now),
       GetPublisherYear(now));

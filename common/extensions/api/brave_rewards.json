@@ -19,7 +19,7 @@
       {
         "name": "onPublisherData",
         "type": "function",
-        "description": "Fired when wallet is created",
+        "description": "Fired when we get publisher data from the DB",
         "parameters": [
            {
              "name": "windowId",
@@ -120,7 +120,7 @@
                     },
                     "expiryTime": {
                       "type": "integer",
-                      "description": "when grant expires, timestamp"
+                      "description": "when grant expires, timestamp in seconds"
                     }
                   }
                 }
@@ -140,31 +140,31 @@
             "properties": {
               "openingBalance": {
                 "type": "double",
-                "description": ""
+                "description": "balance defined in BAT"
               },
               "closingBalance": {
                 "type": "double",
-                "description": ""
+                "description": "balance defined in BAT"
               },
               "grants": {
                 "type": "double",
-                "description": ""
+                "description": "balance defined in BAT"
               },
               "earningFromAds": {
                 "type": "double",
-                "description": ""
+                "description": "balance defined in BAT"
               },
               "autoContribute": {
                 "type": "double",
-                "description": ""
+                "description": "balance defined in BAT"
               },
               "recurringDonation": {
                 "type": "double",
-                "description": ""
+                "description": "balance defined in BAT"
               },
               "oneTimeDonation": {
                 "type": "double",
-                "description": ""
+                "description": "balance defined in BAT"
               }
             }
           }
