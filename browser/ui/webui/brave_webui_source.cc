@@ -100,9 +100,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
       std::string("adblock"), {
       }
     }, {
-      std::string("bravesync"), {
-      { "qrcode.js", IDR_BRAVE_SYNC_QR }
-      }
+      std::string("bravesync"), {}
     }
   };
   AddResourcePaths(source, resources[name]);

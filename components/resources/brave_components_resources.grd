@@ -138,7 +138,6 @@
       <!-- WebUI sync resources -->
       <include name="IDR_BRAVE_SYNC_HTML" file="../brave_sync/ui/brave_sync.html" type="BINDATA" />
       <include name="IDR_BRAVE_SYNC_JS" file="${root_gen_dir}/brave/brave_sync.bundle.js" type="BINDATA" use_base_dir="false" />
-      <include name="IDR_BRAVE_SYNC_QR" file="../../node_modules/qrcode-generator/qrcode.js" type="BINDATA" />
 
     </includes>
     <messages fallback_to_english="true">
