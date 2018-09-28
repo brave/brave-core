@@ -78,11 +78,12 @@ extension UIColor {
 
     struct TabTray {
         static let Background = Browser.Background
+        static let ToolbarButtonTint = BrowserColor(normal: Photon.Grey80, pbm: Photon.Grey30)
     }
 
     struct TopTabs {
         static let PrivateModeTint = BrowserColor(normal: Photon.Grey10, pbm: Photon.Grey40)
-        static let Background = Photon.Grey80
+        static let Background = BrowserColor(normal: Photon.White100, pbm: Photon.Grey80)
     }
 }
 
