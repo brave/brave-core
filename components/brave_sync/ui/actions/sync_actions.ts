@@ -91,6 +91,14 @@ export const onSyncBookmarks = (shouldEnable: boolean) => {
 }
 
 /**
+ * Dispatches a message telling the back-end that user toggled the site settings sync
+ * @param {boolean} shouldEnable - Whether or not it should sync the site settings
+ */
+export const onSyncSavedSiteSettings = (shouldEnable: boolean) => {
+  return action(types.SYNC_SAVED_SITE_SETTINGS, { shouldEnable })
+}
+
+/**
  * Dispatched by the back-end to inform useful log messages for debugging purposes
  * @param {string} message - the log message
  */

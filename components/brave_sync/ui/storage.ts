@@ -14,7 +14,8 @@ export const defaultState = {
   shouldSyncThisDevice: true,
   seedQRImageSource: '',
   syncWords: '',
-  syncBookmarks: true
+  syncBookmarks: true,
+  syncSavedSiteSettings: true
 }
 
 const cleanData = (state: Sync.State) => {

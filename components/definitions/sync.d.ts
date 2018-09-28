@@ -11,5 +11,6 @@ declare namespace Sync {
     seedQRImageSource: string
     syncWords: string
     syncBookmarks: boolean
+    syncSavedSiteSettings: boolean
   }
 }

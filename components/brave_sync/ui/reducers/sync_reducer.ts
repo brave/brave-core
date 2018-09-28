@@ -47,7 +47,8 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
         shouldSyncThisDevice: payload.settings.sync_this_device,
         thisDeviceName: payload.settings.this_device_name,
         devices: [ ...state.devices, ...newDevices ],
-        syncBookmarks: payload.settings.sync_bookmarks
+        syncBookmarks: payload.settings.sync_bookmarks,
+        syncSavedSiteSettings: payload.settings.sync_settings
       }
       break
 
@@ -88,6 +89,10 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
 
     case types.SYNC_BOOKMARKS:
       chrome.send('syncBookmarks', [payload.shouldEnable])
+      break
+
+    case types.SYNC_SAVED_SITE_SETTINGS:
+      chrome.send('syncSavedSiteSettings', [payload.shouldEnable])
       break
 
     case types.SYNC_ON_LOG_MESSAGE:
