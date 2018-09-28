@@ -81,7 +81,7 @@ bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
   return false;
 }
 
-void ApplyPotentialReferrerBlock(net::URLRequest* request) {
+bool ApplyPotentialReferrerBlock(net::URLRequest* request) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   GURL target_origin = GURL(request->url()).GetOrigin();
   GURL tab_origin = request->site_for_cookies().GetOrigin();
@@ -98,7 +98,9 @@ void ApplyPotentialReferrerBlock(net::URLRequest* request) {
           Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
               request->referrer_policy()), &new_referrer)) {
     request->SetReferrer(new_referrer.url.spec());
+    return true;
   }
+  return false;
 }
 
 int OnBeforeURLRequest_SiteHacksWork(
@@ -126,9 +128,8 @@ int OnBeforeURLRequest_SiteHacksWork(
       request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kAds);
 
-  if (allow_brave_shields) {
-    ApplyPotentialReferrerBlock(request);
-  }
+  if (ApplyPotentialReferrerBlock(request))
+    *new_url = request->url();
 
   if (GetPolyfillForAdBlock(allow_brave_shields, allow_ads,
         tab_origin, url, new_url)) {
