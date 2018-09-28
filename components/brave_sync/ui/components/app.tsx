@@ -58,14 +58,6 @@ export class SyncPage extends React.PureComponent<Props, State> {
     syncActions.onPageLoaded()
   }
 
-  onGetUserInputDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ deviceName: e.target.value })
-  }
-
-  onSetupNewToSync = () => {
-    this.props.actions.onSetupNewToSync(this.state.deviceName)
-  }
-
   onRequestQRCode = () => {
     this.props.actions.onRequestQRCode()
     this.setState({ showQRCode: true })

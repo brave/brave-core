@@ -11,7 +11,7 @@ import { Button } from 'brave-ui'
 import { Grid } from 'brave-ui/features/sync'
 
 // Modals
-// import NewToSyncModal from './modals/newToSync'
+import NewToSyncModal from './modals/newToSync'
 // import ExistingSyncCodeModal from './modals/existingSyncCode'
 
 // Utils
@@ -45,10 +45,10 @@ class SyncDisabledContent extends React.PureComponent<SyncDisabledContentProps, 
   }
 
   render () {
-    // const { actions } = this.props
+    const { actions } = this.props
     return (
       <Grid columns='auto 1fr'>
-        {/*
+        {
           this.state.newToSync
             ? <NewToSyncModal
                 actions={actions}
@@ -56,7 +56,7 @@ class SyncDisabledContent extends React.PureComponent<SyncDisabledContentProps, 
               />
             : null
         }
-        {
+        {/*
           this.state.existingSyncCode
             ? <ExistingSyncCodeModal
                 actions={actions}
