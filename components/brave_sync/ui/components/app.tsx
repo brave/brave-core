@@ -24,6 +24,7 @@ interface State {
   deviceName: string
   showQRCode: boolean
   showSyncWords: boolean
+  syncWords: string
 }
 
 const syncLink = 'https://github.com/brave/sync/wiki/Design'
@@ -34,7 +35,8 @@ class SyncPage extends React.PureComponent<Props, State> {
     this.state = {
       deviceName: '',
       showQRCode: false,
-      showSyncWords: false
+      showSyncWords: false,
+      syncWords: ''
     }
   }
 
@@ -56,9 +58,18 @@ class SyncPage extends React.PureComponent<Props, State> {
     this.setState({ showQRCode: true })
   }
 
+  onGetUserInputSyncWords = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ syncWords: event.target.value })
+  }
+
   onRequestSyncWords = () => {
     this.props.actions.onRequestSyncWords()
     this.setState({ showSyncWords: true })
+  }
+
+  onSetupSyncHaveCode = () => {
+    const { deviceName, syncWords } = this.state
+    this.props.actions.onSetupSyncHaveCode(syncWords, deviceName)
   }
 
   onSyncReset = () => {
@@ -141,10 +152,18 @@ class SyncPage extends React.PureComponent<Props, State> {
               </div>
             )
             : (
-              <div style={{background: 'darkblue', color: 'white'}}>
-                <input type='text' onChange={this.onGetUserInputDeviceName} />
-                <button onClick={this.onSetupNewToSync}>Setup Sync</button>
-              </div>
+              <>
+                <div style={{background: 'darkblue', color: 'white'}}>
+                  <input type='text' onChange={this.onGetUserInputDeviceName} />
+                  <button onClick={this.onSetupNewToSync}>Setup Sync</button>
+                </div>
+                <div style={{background: 'lightyellow'}}>
+                  <textarea onChange={this.onGetUserInputSyncWords} />
+                  <button onClick={this.onSetupSyncHaveCode}>
+                    I have an existing sync code!
+                  </button>
+                </div>
+              </>
             )
         }
         <footer style={{background: 'black', color: 'white'}}>

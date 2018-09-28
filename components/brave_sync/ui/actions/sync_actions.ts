@@ -107,6 +107,16 @@ export const onSyncBrowsingHistory = (shouldEnable: boolean) => {
 }
 
 /**
+ * Setup another device by informing the sync words needed to connect.
+ * Triggered by the initial Sync action "I have an existing Sync code"
+ * @param {string} syncWords - The sync words needed to find the new device
+ * @param {string} deviceName - The new device name
+ */
+export const onSetupSyncHaveCode = (syncWords: string, deviceName: string) => {
+  return action(types.SYNC_SETUP_SYNC_HAVE_CODE, { syncWords, deviceName })
+}
+
+/**
  * Dispatched by the back-end to inform useful log messages for debugging purposes
  * @param {string} message - the log message
  */

@@ -102,6 +102,18 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       chrome.send('syncBrowsingHistory', [payload.shouldEnable])
       break
 
+    case types.SYNC_SETUP_SYNC_HAVE_CODE:
+      const wordsAsArray = payload.syncWords.split(' ')
+      if (payload.deviceName.length === 0) {
+        window.alert('device name is required')
+      }
+      if (wordsAsArray.length !== 24) {
+        window.alert('Invalid input code')
+        break
+      }
+      chrome.send('setupSyncHaveCode', [payload.syncWords, payload.deviceName])
+      break
+
       case types.SYNC_ON_LOG_MESSAGE:
       if (process.env.TARGET_GEN_DIR !== 'prod') {
         console.info('[SYNC] log message received from sync:', payload.message)
