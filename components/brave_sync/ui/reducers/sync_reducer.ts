@@ -35,18 +35,20 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       console.info('[SYNC] is site settings syncing?', payload.settings.sync_settings)
       console.info('[SYNC] is this device syncing?', payload.settings.sync_this_device)
 
-      const newDevices = payload.devices.map((device: any) => ({
-        name: device.name,
-        id: device.device_id,
-        lastActive: (new Date(device.last_active)).toString()
-      }))
+      const devices = payload.devices.map((device: Sync.DevicesFromBackEnd) => {
+        return {
+          name: device.name,
+          id: device.device_id,
+          lastActive: (new Date(device.last_active)).toString()
+        }
+      })
 
       state = {
         ...state,
+        devices: [ ...devices ],
         isSyncConfigured: payload.settings.sync_configured,
         shouldSyncThisDevice: payload.settings.sync_this_device,
         thisDeviceName: payload.settings.this_device_name,
-        devices: [ ...state.devices, ...newDevices ],
         syncBookmarks: payload.settings.sync_bookmarks,
         syncSavedSiteSettings: payload.settings.sync_settings,
         syncBrowsingHistory: payload.settings.sync_history

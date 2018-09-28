@@ -3,9 +3,19 @@ declare namespace Sync {
     syncData: State | undefined
   }
 
+  export interface DevicesFromBackEnd {
+    name: string
+    device_id: number
+    last_active: number
+  }
+  export interface Devices {
+    name: string
+    id: number
+    lastActive: number
+  }
   export interface State {
     thisDeviceName: string
-    devices: Array<object>
+    devices: Devices[]
     isSyncConfigured: boolean
     shouldSyncThisDevice: boolean
     seedQRImageSource: string

@@ -108,6 +108,26 @@ class SyncPage extends React.PureComponent<Props, State> {
                 <li><input id='siteSettings' onChange={this.onSyncSavedSiteSettings} type='checkbox' checked={syncData.syncSavedSiteSettings} /><label htmlFor='siteSettings'>Sync site settings?</label></li>
                 <li><input id='browsingHistory' onChange={this.onSyncBrowsingHistory} type='checkbox' checked={syncData.syncBrowsingHistory} /><label htmlFor='browsingHistory'>Sync browsing history?</label></li>
               </ul>
+              <div style={{
+                color: 'gray',
+                display: 'grid',
+                height: '100%',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gridTemplateRows: '1fr',
+                gridGap: '15px'
+              }}>
+                {
+                  syncData.devices.map((device: Sync.Devices) => {
+                    return (
+                      <>
+                        <div key={`id-${device.id}`}>{device.id}</div>
+                        <div key={`name-${device.id}`}>{device.name}</div>
+                        <div key={`lastActive-${device.id}`}>{device.lastActive}</div>
+                      </>
+                    )
+                  })
+                }
+              </div>
               {
                 this.state.showQRCode
                   ? <div><img src={syncData.seedQRImageSource} /></div>
