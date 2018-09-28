@@ -25,18 +25,49 @@ export const onShowSettings = (settings: any, devices: any) => {
 }
 
 /**
+ * Action dispatched by the back-end when sync words are available
+ * for use in the front-end
+ */
+export const onHaveSyncWords = (syncWords: string) => {
+  return action(types.SYNC_ON_HAVE_SYNC_WORDS, { syncWords })
+}
+
+/**
+ * Action dispatched by the back-end containing the seed needed
+ * to request the QR code
+ * @param {string} seed - The seed used by the QR code generator
+ */
+export const onHaveSeedForQrCode = (seed: string) => {
+  return action(types.SYNC_ON_HAVE_SEED_FOR_QR_CODE, { seed })
+}
+
+/**
  * Dispatches a message telling the back-end that a new device setup
  * was requested by the user
  * @param {string} thisDeviceName - The newly synced device name
  */
-export const syncOnSetupNewToSync = (thisDeviceName: string) => {
+export const onSetupNewToSync = (thisDeviceName: string) => {
   return action(types.SYNC_ON_SETUP_NEW_TO_SYNC, { thisDeviceName })
 }
 
 /**
- * onLogMessage
- * Dispatched by the back-end to inform useful log messages for debugging purposes
+ * Dispatches a message telling the back-end that the user requested the QR code
  */
-export const onLogMessage = (message: any) => {
+export const onRequestQRCode = () => {
+  return action(types.SYNC_ON_REQUEST_QR_CODE)
+}
+
+/**
+ * Dispatches a message telling the back-end that the user requested the sync words
+ */
+export const onRequestSyncWords = () => {
+  return action(types.SYNC_ON_REQUEST_SYNC_WORDS)
+}
+
+/**
+ * Dispatched by the back-end to inform useful log messages for debugging purposes
+ * @param {string} message - the log message
+ */
+export const onLogMessage = (message: string) => {
   return action(types.SYNC_ON_LOG_MESSAGE, { message })
 }

@@ -37,12 +37,20 @@ class SyncPage extends React.PureComponent<Props, State> {
     syncActions.onPageLoaded()
   }
 
-  getUserInputDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  onGetUserInputDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ deviceName: e.target.value })
   }
   
-  syncOnSetupNewToSync = () => {
-    this.props.actions.syncOnSetupNewToSync(this.state.deviceName)
+  onSetupNewToSync = () => {
+    this.props.actions.onSetupNewToSync(this.state.deviceName)
+  }
+
+  onRequestQRCode = () => {
+    this.props.actions.onRequestQRCode()
+  }
+  
+  onRequestSyncWords = () => {
+    this.props.actions.onRequestSyncWords()
   }
 
   render () {
@@ -63,12 +71,14 @@ class SyncPage extends React.PureComponent<Props, State> {
             ? (
               <div style={{background: 'darkgreen', color: 'white'}}>
               <h1>Hello, your device named {syncData.thisDeviceName} was configured!</h1>
+              <button onClick={this.onRequestQRCode}>Request QR Code</button>
+              <button onClick={this.onRequestSyncWords}>Request Sync Words</button>
               </div>
             )
             : (
               <div style={{background: 'darkblue', color: 'white'}}>
-                <input type='text' onChange={this.getUserInputDeviceName} />
-                <button onClick={this.syncOnSetupNewToSync}>Setup Sync</button>
+                <input type='text' onChange={this.onGetUserInputDeviceName} />
+                <button onClick={this.onSetupNewToSync}>Setup Sync</button>
               </div>
             )
         }

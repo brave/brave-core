@@ -48,9 +48,26 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       }
       break
 
+    case types.SYNC_ON_HAVE_SEED_FOR_QR_CODE:
+      console.log('[BY SYNC] seed for QR code is', payload.seed)
+      break
+
+    case types.SYNC_ON_HAVE_SYNC_WORDS:
+      console.log('[BY SYNC] sync words are', payload.syncWords)
+      break
+
     case types.SYNC_ON_SETUP_NEW_TO_SYNC:
       console.warn('[CEZAR] own device sync requested!', payload.thisDeviceName)
       chrome.send('setupSyncNewToSync', [payload.thisDeviceName])
+      break
+
+
+    case types.SYNC_ON_REQUEST_QR_CODE:
+      chrome.send('needSyncQRcode')
+      break
+
+    case types.SYNC_ON_REQUEST_SYNC_WORDS:
+      chrome.send('needSyncWords')
       break
 
     case types.SYNC_ON_LOG_MESSAGE:

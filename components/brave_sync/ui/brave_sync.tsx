@@ -46,14 +46,24 @@ window.cr.define('sync_ui_exports', function () {
     getActions().onShowSettings(settings, devices)
   }
 
+  function haveSyncWords (syncWords: string) {
+    getActions().onHaveSyncWords(syncWords)
+  }
+
+  function haveSeedForQrCode (seed: string) {
+    getActions().onHaveSeedForQrCode(seed)
+  }
+
   // for testing purposes
-  function logMessage (message: any) {
+  function logMessage (message: string) {
     getActions().onLogMessage(message)
   }
 
   return {
     initialize,
     showSettings,
+    haveSyncWords,
+    haveSeedForQrCode,
     logMessage
   }
 })
