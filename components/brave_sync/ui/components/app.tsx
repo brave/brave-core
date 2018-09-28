@@ -54,7 +54,7 @@ export class SyncPage extends React.PureComponent<Props, State> {
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount () {
     // Inform the back-end that Sync can be loaded
     syncActions.onPageLoaded()
   }
