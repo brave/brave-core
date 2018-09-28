@@ -38,11 +38,6 @@ class SyncPage extends React.PureComponent<Props, State> {
     }
   }
 
-  componentDidMount = () => {
-    // Inform the back-end that Sync can be loaded
-    syncActions.onPageLoaded()
-  }
-
   onGetUserInputDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ deviceName: e.target.value })
   }
