@@ -10,7 +10,9 @@ const keyName = 'sync-data_test1'
 export const defaultState = {
   thisDeviceName: '',
   devices: [],
-  isSyncConfigured: false
+  isSyncConfigured: false,
+  seedQRImageSource: '',
+  syncWords: ''
 }
 
 const cleanData = (state: Sync.State) => {

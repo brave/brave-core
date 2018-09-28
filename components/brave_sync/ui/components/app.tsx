@@ -22,6 +22,8 @@ interface Props {
 
 interface State {
   deviceName: string
+  showQRCode: boolean
+  showSyncWords: boolean
 }
 
 const syncLink = 'https://github.com/brave/sync/wiki/Design'
@@ -29,7 +31,11 @@ const syncLink = 'https://github.com/brave/sync/wiki/Design'
 class SyncPage extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { deviceName: '' }
+    this.state = {
+      deviceName: '',
+      showQRCode: false,
+      showSyncWords: false
+    }
   }
 
   componentDidMount = () => {
@@ -40,17 +46,19 @@ class SyncPage extends React.PureComponent<Props, State> {
   onGetUserInputDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ deviceName: e.target.value })
   }
-  
+
   onSetupNewToSync = () => {
     this.props.actions.onSetupNewToSync(this.state.deviceName)
   }
 
   onRequestQRCode = () => {
     this.props.actions.onRequestQRCode()
+    this.setState({ showQRCode: true })
   }
-  
+
   onRequestSyncWords = () => {
     this.props.actions.onRequestSyncWords()
+    this.setState({ showSyncWords: true })
   }
 
   render () {
@@ -73,6 +81,16 @@ class SyncPage extends React.PureComponent<Props, State> {
               <h1>Hello, your device named {syncData.thisDeviceName} was configured!</h1>
               <button onClick={this.onRequestQRCode}>Request QR Code</button>
               <button onClick={this.onRequestSyncWords}>Request Sync Words</button>
+              {
+                this.state.showQRCode
+                  ? <div><img src={syncData.seedQRImageSource} /></div>
+                  : null
+              }
+              {
+                this.state.showSyncWords
+                  ? <div>{syncData.syncWords}</div>
+                  : null
+              }
               </div>
             )
             : (

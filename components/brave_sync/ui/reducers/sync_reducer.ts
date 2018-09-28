@@ -9,6 +9,7 @@ import { types } from '../constants/sync_types'
 
 // Utils
 import * as storage from '../storage'
+import { generateQRCodeImageSource } from '../helpers'
 
 const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefined, action: any) => {
   if (state === undefined) {
@@ -49,15 +50,18 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_HAVE_SEED_FOR_QR_CODE:
-      console.log('[BY SYNC] seed for QR code is', payload.seed)
+      generateQRCodeImageSource(payload.seed)
+      break
+
+    case types.SYNC_ON_GENERATE_QR_CODE_IMAGE_SOURCE:
+      state = { ...state, seedQRImageSource: payload.imageSource }
       break
 
     case types.SYNC_ON_HAVE_SYNC_WORDS:
-      console.log('[BY SYNC] sync words are', payload.syncWords)
+      state = { ...state, syncWords: payload.syncWords }
       break
 
     case types.SYNC_ON_SETUP_NEW_TO_SYNC:
-      console.warn('[CEZAR] own device sync requested!', payload.thisDeviceName)
       chrome.send('setupSyncNewToSync', [payload.thisDeviceName])
       break
 

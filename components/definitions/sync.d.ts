@@ -7,5 +7,7 @@ declare namespace Sync {
     thisDeviceName: string
     devices: Array<object>
     isSyncConfigured: boolean
+    seedQRImageSource: string
+    syncWords: string
   }
 }
