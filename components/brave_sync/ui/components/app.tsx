@@ -29,7 +29,7 @@ interface State {
 
 const syncLink = 'https://github.com/brave/sync/wiki/Design'
 
-class SyncPage extends React.PureComponent<Props, State> {
+export class SyncPage extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {

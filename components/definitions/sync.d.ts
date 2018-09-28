@@ -3,6 +3,14 @@ declare namespace Sync {
     syncData: State | undefined
   }
 
+  export interface SettingsFromBackEnd {
+    sync_bookmarks: boolean
+    sync_configured: boolean
+    sync_history: boolean
+    sync_settings: boolean
+    sync_this_device: boolean
+  }
+
   export interface DevicesFromBackEnd {
     name: string
     device_id: number
