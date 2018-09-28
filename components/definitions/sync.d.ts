@@ -12,5 +12,6 @@ declare namespace Sync {
     syncWords: string
     syncBookmarks: boolean
     syncSavedSiteSettings: boolean
+    syncBrowsingHistory: boolean
   }
 }

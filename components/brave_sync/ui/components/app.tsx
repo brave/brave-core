@@ -77,6 +77,10 @@ class SyncPage extends React.PureComponent<Props, State> {
     this.props.actions.onSyncSavedSiteSettings(event.target.checked)
   }
 
+  onSyncBrowsingHistory = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.actions.onSyncBrowsingHistory(event.target.checked)
+  }
+
   render () {
     const { syncData } = this.props
     if (!syncData) {
@@ -101,7 +105,8 @@ class SyncPage extends React.PureComponent<Props, State> {
               <input id='syncMe' onChange={this.onToggleSyncThisDevice} type='checkbox' checked={syncData.shouldSyncThisDevice}/><label htmlFor='syncMe'>Keep syncing this device?</label>
               <ul>
                 <li><input id='bookmarks' onChange={this.onSyncBookmarks}  type='checkbox' checked={syncData.syncBookmarks} /><label htmlFor='bookmarks'>Sync bookmarks?</label></li>
-                <li><input id='siteSettings' onChange={this.onSyncSavedSiteSettings}  type='checkbox' checked={syncData.syncSavedSiteSettings} /><label htmlFor='siteSettings'>Sync site settings?</label></li>
+                <li><input id='siteSettings' onChange={this.onSyncSavedSiteSettings} type='checkbox' checked={syncData.syncSavedSiteSettings} /><label htmlFor='siteSettings'>Sync site settings?</label></li>
+                <li><input id='browsingHistory' onChange={this.onSyncBrowsingHistory} type='checkbox' checked={syncData.syncBrowsingHistory} /><label htmlFor='browsingHistory'>Sync browsing history?</label></li>
               </ul>
               {
                 this.state.showQRCode

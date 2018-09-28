@@ -99,6 +99,14 @@ export const onSyncSavedSiteSettings = (shouldEnable: boolean) => {
 }
 
 /**
+ * Dispatches a message telling the back-end that user toggled the browsing history sync
+ * @param {boolean} shouldEnable - Whether or not it should sync browsing history
+ */
+export const onSyncBrowsingHistory = (shouldEnable: boolean) => {
+  return action(types.SYNC_BROWSING_HISTORY, { shouldEnable })
+}
+
+/**
  * Dispatched by the back-end to inform useful log messages for debugging purposes
  * @param {string} message - the log message
  */

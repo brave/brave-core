@@ -48,7 +48,8 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
         thisDeviceName: payload.settings.this_device_name,
         devices: [ ...state.devices, ...newDevices ],
         syncBookmarks: payload.settings.sync_bookmarks,
-        syncSavedSiteSettings: payload.settings.sync_settings
+        syncSavedSiteSettings: payload.settings.sync_settings,
+        syncBrowsingHistory: payload.settings.sync_history
       }
       break
 
@@ -95,7 +96,11 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       chrome.send('syncSavedSiteSettings', [payload.shouldEnable])
       break
 
-    case types.SYNC_ON_LOG_MESSAGE:
+    case types.SYNC_BROWSING_HISTORY:
+      chrome.send('syncBrowsingHistory', [payload.shouldEnable])
+      break
+
+      case types.SYNC_ON_LOG_MESSAGE:
       if (process.env.TARGET_GEN_DIR !== 'prod') {
         console.info('[SYNC] log message received from sync:', payload.message)
       }
