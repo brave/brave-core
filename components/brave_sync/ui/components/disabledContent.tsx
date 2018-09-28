@@ -12,7 +12,7 @@ import { Grid } from 'brave-ui/features/sync'
 
 // Modals
 import NewToSyncModal from './modals/newToSync'
-// import ExistingSyncCodeModal from './modals/existingSyncCode'
+import ExistingSyncCodeModal from './modals/existingSyncCode'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -56,14 +56,14 @@ class SyncDisabledContent extends React.PureComponent<SyncDisabledContentProps, 
               />
             : null
         }
-        {/*
+        {
           this.state.existingSyncCode
             ? <ExistingSyncCodeModal
                 actions={actions}
                 onClose={this.existingSyncCodeModal}
               />
             : null
-        */}
+        }
         <div>
           <Button
             level='primary'

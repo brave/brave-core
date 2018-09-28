@@ -59,25 +59,6 @@ export class SyncPage extends React.PureComponent<Props, State> {
     syncActions.onPageLoaded()
   }
 
-  onRequestQRCode = () => {
-    this.props.actions.onRequestQRCode()
-    this.setState({ showQRCode: true })
-  }
-
-  onGetUserInputSyncWords = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.setState({ syncWords: event.target.value })
-  }
-
-  onRequestSyncWords = () => {
-    this.props.actions.onRequestSyncWords()
-    this.setState({ showSyncWords: true })
-  }
-
-  onSetupSyncHaveCode = () => {
-    const { deviceName, syncWords } = this.state
-    this.props.actions.onSetupSyncHaveCode(syncWords, deviceName)
-  }
-
   render () {
     const { syncData, actions } = this.props
     if (!syncData) {

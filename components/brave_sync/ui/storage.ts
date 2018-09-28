@@ -5,7 +5,7 @@
 // Utils
 import { debounce } from '../../common/debounce'
 
-const keyName = 'sync-data_test1'
+const keyName = 'sync-data_t'
 
 export const defaultState = {
   thisDeviceName: '',

@@ -3,6 +3,7 @@ import("//brave/components/common/typescript.gni")
 transpile_web_ui("ui") {
   inputs = [
     "../../brave_sync/ui/actions/sync_actions.ts",
+    "../../brave_sync/ui/components/modals/existingSyncCode.tsx",
     "../../brave_sync/ui/components/modals/newToSync.tsx",
     "../../brave_sync/ui/components/modals/resetSync.tsx",
     "../../brave_sync/ui/components/modals/syncNewDevice.tsx",
