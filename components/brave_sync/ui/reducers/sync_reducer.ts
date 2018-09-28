@@ -38,6 +38,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       state = {
         ...state,
         isSyncConfigured: payload.settings.sync_configured,
+        shouldSyncThisDevice: payload.settings.sync_this_device,
         thisDeviceName: payload.settings.this_device_name,
         devices: [ ...state.devices, ...newDevices ]
       }
@@ -71,6 +72,10 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       chrome.send('resetSync')
       // sync is reset. clear all data
       state = { ...storage.defaultState }
+      break
+
+    case types.SYNC_ON_SYNC_THIS_DEVICE:
+      chrome.send('syncThisDevice', [payload.shouldSyncThisDevice])
       break
 
     case types.SYNC_ON_LOG_MESSAGE:
