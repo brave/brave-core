@@ -1175,6 +1175,7 @@ void ControllerImpl::BookmarkAdded(
       storage::ObjectMap::Type::Bookmark, std::to_string(next_item_id));
     DCHECK(!next_item_order.empty());
   }
+
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
   LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
 
@@ -1185,8 +1186,16 @@ void ControllerImpl::BookmarkAdded(
 
 void ControllerImpl::BookmarkAddedQueryNewOrderUiWork(
   const int64_t &node_id,
-  const std::string &prev_item_order,
-  const std::string &next_item_order) {
+  const std::string &prev_item_order_arg,
+  const std::string &next_item_order_arg) {
+  std::string prev_item_order = prev_item_order_arg;
+  std::string next_item_order = next_item_order_arg;
+  // prev_item_id == -1
+  if (prev_item_order.empty())
+    prev_item_order = sync_prefs_->GetBookmarksBaseOrder();
+  // next_item_id == -1
+  if (next_item_order.empty())
+    next_item_order = sync_prefs_->GetBookmarksBaseOrder();
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkAddedQueryNewOrderUiWork";
   LOG(ERROR) << "TAGAB node_id="<<node_id;
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
