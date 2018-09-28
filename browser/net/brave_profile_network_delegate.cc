@@ -20,11 +20,11 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
     BraveNetworkDelegateBase(event_router) {
   brave::OnBeforeURLRequestCallback
   callback =
-      base::Bind(brave::OnBeforeURLRequest_HttpsePreFileWork);
+      base::Bind(brave::OnBeforeURLRequest_SiteHacksWork);
   before_url_request_callbacks_.push_back(callback);
 
   callback =
-      base::Bind(brave::OnBeforeURLRequest_SiteHacksWork);
+      base::Bind(brave::OnBeforeURLRequest_HttpsePreFileWork);
   before_url_request_callbacks_.push_back(callback);
 
   callback =
