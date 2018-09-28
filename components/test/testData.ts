@@ -65,3 +65,19 @@ export const adblockInitialState: AdBlock.ApplicationState = {
     }
   }
 }
+
+export const syncInitialState: Sync.ApplicationState = {
+  syncData: {
+    thisDeviceName: '',
+    devices: [
+      {
+        name: '',
+        id: 0,
+        lastActive: ''
+      }
+    ],
+    isSyncConfigured: false,
+    seedQRImageSource: '',
+    syncWords: ''
+  }
+}
