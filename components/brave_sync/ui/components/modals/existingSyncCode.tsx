@@ -25,7 +25,7 @@ interface ExistingSyncCodeModalState {
 }
 
 class ExistingSyncCodeModal extends React.PureComponent<ExistingSyncCodeModalProps, ExistingSyncCodeModalState> {
-  constructor(props: ExistingSyncCodeModalProps) {
+  constructor (props: ExistingSyncCodeModalProps) {
     super(props)
     this.state = {
       deviceName: '',

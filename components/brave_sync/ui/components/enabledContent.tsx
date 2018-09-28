@@ -115,12 +115,14 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
       <>
         {
           this.state.syncANewDevice
-            ? <SyncANewDeviceModal
+            ? (
+              <SyncANewDeviceModal
                 actions={actions}
                 seedQRImageSource={syncData.seedQRImageSource}
                 syncWords={syncData.syncWords}
                 onClose={this.syncANewDeviceModal}
               />
+            )
             : null
         }
         {

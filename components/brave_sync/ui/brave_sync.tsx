@@ -21,7 +21,7 @@ window.cr.define('sync_ui_exports', function () {
   'use strict'
 
   function initialize () {
-    render (
+    render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
           <App />
