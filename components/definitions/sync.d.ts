@@ -10,5 +10,6 @@ declare namespace Sync {
     shouldSyncThisDevice: boolean
     seedQRImageSource: string
     syncWords: string
+    syncBookmarks: boolean
   }
 }

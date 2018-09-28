@@ -76,6 +76,14 @@ export const onToggleSyncThisDevice = (shouldSyncThisDevice: boolean) => {
 }
 
 /**
+ * Dispatches a message telling the back-end that user toggled the bookmarks sync
+ * @param {boolean} shouldEnable - Whether or not it should sync the bookmarks
+ */
+export const onSyncBookmarks = (shouldEnable: boolean) => {
+  return action(types.SYNC_BOOKMARKS, { shouldEnable })
+}
+
+/**
  * Dispatched by the back-end to inform useful log messages for debugging purposes
  * @param {string} message - the log message
  */

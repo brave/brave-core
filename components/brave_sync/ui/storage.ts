@@ -13,7 +13,8 @@ export const defaultState = {
   isSyncConfigured: false,
   shouldSyncThisDevice: true,
   seedQRImageSource: '',
-  syncWords: ''
+  syncWords: '',
+  syncBookmarks: true
 }
 
 const cleanData = (state: Sync.State) => {

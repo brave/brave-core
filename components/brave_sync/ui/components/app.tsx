@@ -64,6 +64,10 @@ class SyncPage extends React.PureComponent<Props, State> {
     this.props.actions.onToggleSyncThisDevice(event.target.checked)
   }
 
+  onSyncBookmarks = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.actions.onSyncBookmarks(event.target.checked)
+  }
+
   render () {
     const { syncData } = this.props
     if (!syncData) {
@@ -86,6 +90,9 @@ class SyncPage extends React.PureComponent<Props, State> {
               <button onClick={this.onRequestSyncWords}>Request Sync Words</button>
               <button onClick={this.onSyncReset}>RESET SYNC!!!!</button>
               <input id='syncMe' onChange={this.onToggleSyncThisDevice} type='checkbox' checked={syncData.shouldSyncThisDevice}/><label htmlFor='syncMe'>Keep syncing this device?</label>
+              <ul>
+                <li><input id='bookmarks' onChange={this.onSyncBookmarks}  type='checkbox' checked={syncData.syncBookmarks} /><label htmlFor='bookmarks'>Sync bookmarks?</label></li>
+              </ul>
               {
                 this.state.showQRCode
                   ? <div><img src={syncData.seedQRImageSource} /></div>
