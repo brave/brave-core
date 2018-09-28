@@ -855,7 +855,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1371301976177520732">Makita ang iyong mga bookmark, password, history, at higit pa sa lahat ng device mo</translation>
 <translation id="3111958038206230539">I-personalize ang mga serbisyo ng Brave Software</translation>
 <translation id="295992419959320001">Maaaring gamitin ng Brave Software ang iyong history ng pagba-browse upang i-personalize ang Search, mga ad at iba pang mga serbisyo ng Brave Software</translation>
-<translation id="4800091108248587380">Mga naka-personalize na serbisyo ng Brave Software tulad ng Brave Software Pay</translation>
+<translation id="4205523465226408285">Higit pang personal na serbisyo ng Brave Software, tulad ng mas mahuhusay na suhestyon sa page</translation>
 <translation id="3070156078150543526">Maaaring gamitin ng Brave Software ang iyong history ng pagba-browse upang ma-personalize ang Search at iba pang mga serbisyo ng Brave Software</translation>
 <translation id="2532167245710864499">Pahusayin ang Brave at ang seguridad nito sa pamamagitan ng pagpapadala ng impormasyon ng system at paggamit sa Brave Software</translation>
 <translation id="2709453993673701466">Gusto mong pamahalaan ang pag-sync at pag-personalize bago i-on ang mga ito? Bisitahin ang <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7754704193130578113">Magtanong kung saan ise-save ang bawat file bago ang pagda-download</translation>
 <translation id="5713072761819014678">Alisin sa pagkakakonekta ang Brave Software Drive account</translation>
 <translation id="486635084936119914">Awtomatikong buksan ang ilang partikular na uri ng file pagkatapos ma-download</translation>
-<translation id="870073306461175568">Mga Pagbabahagi ng File sa Network</translation>
-<translation id="6189273858858366896">I-set up o pamahalaan ang Mga Pagbabahagi ng File sa Network.</translation>
 <translation id="2367199180085172140">Magdagdag ng Pagbabahagi ng File</translation>
-<translation id="8984654317541110628">URL ng File Share</translation>
 <translation id="5247051749037287028">Display name (opsyonal)</translation>
 <translation id="6091761513005122595">Matagumpay na na-mount ang share</translation>
 <translation id="9024158959543687197">Nagka-error sa pag-mount ng share. Tingnan ang URL ng file share at subukang muli.</translation>
@@ -2258,6 +2255,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2459230470861708651">I-encrypt ang mga naka-sync na password sa iyong username at password sa Brave Software</translation>
 <translation id="6383051423892982287">I-encrypt ang naka-sync na data gamit ang iyong sariling <ph name="BEGIN_LINK"/>passphrase sa pag-sync<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Ang taong may alam ng passphrase mo lang ang makakabasa sa iyong naka-encrypt na data. Hindi ipinapadala sa o iniimbak ng Brave Software ang passphrase. Kung makalimutan mo ang iyong passphrase o gusto mong baguhin ang setting na ito, kakailanganin mong <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/> para alisin ang iyong passphrase sa pag-sync</translation>
+<translation id="3873315167136380065">Para i-on ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/> para alisin ang iyong passphrase sa pag-sync</translation>
 <translation id="988978206646512040">Hindi pinapayagan ang passphrase na walang laman</translation>
 <translation id="1651008383952180276">Dapat mong ilagay ang katulad na passphrase nang dalawang beses</translation>
 <translation id="2136476978468204130">Mali ang inilagay mong passphrase</translation>
@@ -2455,6 +2454,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1607139524282324606">I-clear ang entry</translation>
 <translation id="6025215716629925253">Stack Trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linya ang hindi ipinapakita&gt;}one{&lt;$1 linya ang hindi ipinapakita&gt;}other{&lt;$1 na linya ang hindi ipinapakita&gt;}}</translation>
+<translation id="5334899159203764908">Matuto pa tungkol sa <ph name="BEGIN_LINK"/>access sa site<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Pahintulutan ang extension na ito na i-read at baguhin ang lahat ng iyong data sa mga website na binibisita mo:</translation>
 <translation id="407173827865827707">Sa pag-click</translation>
 <translation id="6455264371803474013">Sa mga partikular na site</translation>

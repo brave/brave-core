@@ -855,7 +855,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1371301976177520732">Your bookmarks, passwords, history and more on all your devices</translation>
 <translation id="3111958038206230539">Personalise Brave Software services</translation>
 <translation id="295992419959320001">Brave Software may use your browsing history to personalise Search, ads and other Brave Software services</translation>
-<translation id="4800091108248587380">Personalised Brave Software services such as Brave Software Pay</translation>
+<translation id="4205523465226408285">More personal Brave Software services, such as better page suggestions</translation>
 <translation id="3070156078150543526">Brave Software may use your browsing history to personalise Search and other Brave Software services</translation>
 <translation id="2532167245710864499">Improve Brave and its security by sending system and usage information to Brave Software</translation>
 <translation id="2709453993673701466">Want to manage sync and personalisation before they’re turned on? Visit <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7754704193130578113">Ask where to save each file before downloading</translation>
 <translation id="5713072761819014678">Disconnect Brave Software Drive account</translation>
 <translation id="486635084936119914">Open certain file types automatically after downloading</translation>
-<translation id="870073306461175568">Network File Shares</translation>
-<translation id="6189273858858366896">Set up or manage Network File Shares.</translation>
 <translation id="2367199180085172140">Add File Share</translation>
-<translation id="8984654317541110628">File Share URL</translation>
 <translation id="5247051749037287028">Display name (optional)</translation>
 <translation id="6091761513005122595">Share mounted successfully.</translation>
 <translation id="9024158959543687197">Error mounting share. Check the file share URL and try again.</translation>
@@ -2258,6 +2255,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2459230470861708651">Encrypt synced passwords with your Brave Software username and password</translation>
 <translation id="6383051423892982287">Encrypt synced data with your own <ph name="BEGIN_LINK"/>sync passphrase<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave Software. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/> to remove your sync passphrase</translation>
+<translation id="3873315167136380065">To turn this on, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/> to remove your sync passphrase</translation>
 <translation id="988978206646512040">Empty passphrase is not allowed</translation>
 <translation id="1651008383952180276">You must enter the same passphrase twice</translation>
 <translation id="2136476978468204130">The passphrase you entered is incorrect</translation>
@@ -2455,6 +2454,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1607139524282324606">Clear entry</translation>
 <translation id="6025215716629925253">Stack Trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 line not shown&gt;}other{&lt;$1 lines not shown&gt;}}</translation>
+<translation id="5334899159203764908">Find out more about <ph name="BEGIN_LINK"/>site access<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Allow this extension to read and change all your data on websites that you visit:</translation>
 <translation id="407173827865827707">On click</translation>
 <translation id="6455264371803474013">On specific sites</translation>

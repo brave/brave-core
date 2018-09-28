@@ -858,7 +858,7 @@ nil</translation>
 <translation id="1371301976177520732">የእርስዎ ዕልባቶች፣ ታሪክ እና ተጨማሪ ነገሮች በሁሉም መሣሪያዎችዎ ላይ</translation>
 <translation id="3111958038206230539">የBrave Software አገልግሎቶችን ግላዊነት አላብስ</translation>
 <translation id="295992419959320001">Brave Software ፍለጋን፣ ማስታወቂያዎችን እና ሌሎች የBrave Software አገልግሎቶችን ግላዊነት ለማላበስ ሲል የአሰሳ ታሪክዎን ሊጠቀም ይችላል።</translation>
-<translation id="4800091108248587380">እንደ Brave Software Pay ያሉ ግላዊነት የተላበሱ የBrave Software አገልግሎቶች</translation>
+<translation id="4205523465226408285">እንደ የተሻሉ የገጽ ጥቆማዎች ያሉ ይበልጥ የግል Brave Software አገልግሎቶች</translation>
 <translation id="3070156078150543526">Brave Software ፍለጋን እና ሌሎች የBrave Software አገልግሎቶችን ግላዊነት ለማላበስ የአሰሳ ታሪክዎን ሊጠቀም ይችላል</translation>
 <translation id="2532167245710864499">የሥርዓት እና አጠቃቀም መረጃ ወደ Brave Software በመላክ Braveን እና ደህንነቱን ያሻሽሉ</translation>
 <translation id="2709453993673701466">ስምረት እና ግላዊነት ማላበስ ከመብራታቸው በፊት ማቀናበር ይፈልጋሉ? <ph name="BEGIN_LINK"/>ቅንብሮች<ph name="END_LINK"/>ን ይጎብኙ።</translation>
@@ -1695,10 +1695,7 @@ nil</translation>
 <translation id="7754704193130578113">እያንዳንዱ ፋይል ከመውረዱ በፊት የት እንደሚቀመጥ ጠይቅ</translation>
 <translation id="5713072761819014678">የBrave Software Drive መለያን አላቅቅ</translation>
 <translation id="486635084936119914">ካወረዱ በኋላ የተወሰኑ የፋይል አይነቶችን ክፈት</translation>
-<translation id="870073306461175568">የአውታረ መረብ ፋይል ማጋራቶች</translation>
-<translation id="6189273858858366896">የአውታረ መረብ ፋይል ማጋራቶችን ያዋቅሩ ወይም ያቀናብሩ</translation>
 <translation id="2367199180085172140">ፋይል አጋራን ያክሉ</translation>
-<translation id="8984654317541110628">የፋይል ማጋራት ዩአርኤል</translation>
 <translation id="5247051749037287028">የማሳያ ስም (ከተፈለገ)</translation>
 <translation id="6091761513005122595">አጋራ በተሳካ ሁኔታ ተፈናጥጧል።</translation>
 <translation id="9024158959543687197">ማጋራትን ማፈናጠጥ ላይ ስህተት። የፋይል አጋራ ዩአርኤሉን ይፈትሹትና እንደገና ይሞክሩ።</translation>
@@ -2261,6 +2258,8 @@ nil</translation>
 <translation id="2459230470861708651">የሰመሩ ይለፍ ቃላ በእርስዎ የBrave Software ተጠቃሚ ስም እና ይለፍ ቃል ያመስጥሯቸው</translation>
 <translation id="6383051423892982287">የሰመረ ውሂብ በራስዎ <ph name="BEGIN_LINK"/>የስምረት ይለፍ ሐረግ<ph name="END_LINK"/> ያመሣጥሩ</translation>
 <translation id="4817583816512767754">የእርስዎን የይለፍ ሐረግ ያለው ሰው ብቻ ነው የተመሰጠረ ውሂብዎን ማየት የሚችለው። የይለፍ ሐረጉ ለBrave Software አይላክም ወይም በእሱ አይከማችም። የይለፍ ሐረግዎን ከረሱት <ph name="BEGIN_LINK"/>ስምረትን ዳግም ማስጀመር<ph name="END_LINK"/> ይኖርብዎታል።</translation>
+<translation id="7441736921018636843">ይህን ቅንብር ለመቀየር፣ የእርስዎን የስምረት ይለፍ ሐረግ ለማስወገድ <ph name="BEGIN_LINK"/>ስምረትን ዳግም ያቀናብሩ<ph name="END_LINK"/></translation>
+<translation id="3873315167136380065">ይህን ለማብራት፣ የእርስዎን የስምረት ግዢ ለማስወገድ <ph name="BEGIN_LINK"/>ስምረትን ዳግም ያቀናብሩ<ph name="END_LINK"/></translation>
 <translation id="988978206646512040">ባዶ የይለፍ ሐረግ አይፈቀድም</translation>
 <translation id="1651008383952180276">ተመሳሳዩ የይለፍ ሐረጉን ሁለት ጊዜ ማስገባት አለብዎት</translation>
 <translation id="2136476978468204130">ያስገቡት የይለፍ ሐረግ ትክክል አይደለም</translation>
@@ -2458,6 +2457,7 @@ nil</translation>
 <translation id="1607139524282324606">ግቤትን አጽዳ</translation>
 <translation id="6025215716629925253">የቁልል መከታተያ</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 መስመር አይታይም&gt;}one{&lt;$1 መስመሮች አይታዩም&gt;}other{&lt;$1 መስመሮች አይታዩም&gt;}}</translation>
+<translation id="5334899159203764908">ስለ <ph name="BEGIN_LINK"/>ጣቢያ መዳረሻ<ph name="END_LINK"/> የበለጠ ይረዱ</translation>
 <translation id="8389492867173948260">ይህ ቅጥያ በሚጎበኟቸው ድር ጣቢያዎች ላይ ያለው ሁሉም ውሂብዎን እንዲያነብብ እና እንዲቀይር ይፍቀዱ፦</translation>
 <translation id="407173827865827707">ጠቅ ሲደረግ</translation>
 <translation id="6455264371803474013">በተወሰኑ ጣቢያዎች ላይ</translation>

@@ -854,7 +854,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1371301976177520732">Kirjanmerkit, historia ja paljon muuta kaikilla laitteillasi</translation>
 <translation id="3111958038206230539">Muokkaa Brave Software-palveluita</translation>
 <translation id="295992419959320001">Brave Software voi muokata hakua, mainoksia ja muita Brave Softwaren palveluita selaushistoriasi perusteella.</translation>
-<translation id="4800091108248587380">Personoidut Brave Software-palvelut, esim. Brave Software Pay</translation>
+<translation id="4205523465226408285">Personoidumpia Brave Software-palveluja, kuten parempia sivuehdotuksia</translation>
 <translation id="3070156078150543526">Brave Software voi muokata hakua ja muita Brave Softwaren palveluita selaushistoriasi perusteella.</translation>
 <translation id="2532167245710864499">Paranna Bravea ja sen turvallisuutta lähettämällä järjestelmä- ja käyttötietoja Brave Softwarelle</translation>
 <translation id="2709453993673701466">Haluatko hallinnoida synkronointia ja räätälöintiä ennen kuin ne otetaan käyttöön? Siirry <ph name="BEGIN_LINK"/>Asetuksiin<ph name="END_LINK"/>.</translation>
@@ -1691,10 +1691,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7754704193130578113">Kysy, minne kukin tiedosto tallennetaan ennen lataamista</translation>
 <translation id="5713072761819014678">Katkaise yhteys Brave Software Drive -tiliin.</translation>
 <translation id="486635084936119914">Avaa tietyn tyyppiset tiedostot automaattisesti latauksen jälkeen.</translation>
-<translation id="870073306461175568">Verkkotiedostojen jakaminen</translation>
-<translation id="6189273858858366896">Määritä tai hallinnoi verkkotiedostojen jakamista.</translation>
 <translation id="2367199180085172140">Lisää jaettu tiedosto</translation>
-<translation id="8984654317541110628">Tiedostojaon URL-osoite</translation>
 <translation id="5247051749037287028">Näyttönimi (valinnainen)</translation>
 <translation id="6091761513005122595">Jako otettiin käyttöön.</translation>
 <translation id="9024158959543687197">Virhe jaon käyttöönotossa. Tarkista tiedostojaon URL-osoite ja yritä uudelleen.</translation>
@@ -2257,6 +2254,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2459230470861708651">Salaa synkronoidut salasanat Brave Software-käyttäjänimellä ja ‑salasanalla</translation>
 <translation id="6383051423892982287">Salaa synkronoidut tiedot oman <ph name="BEGIN_LINK"/>synkronoinnin tunnuslauseesi<ph name="END_LINK"/> avulla</translation>
 <translation id="4817583816512767754">Salattuja tietojasi voi lukea vain tunnuslauseesi avulla. Tunnuslausetta ei lähetetä Brave Softwarelle eikä Brave Software tallenna sitä. Jos unohdat tunnuslauseesi tai haluat muokata tätä asetusta, <ph name="BEGIN_LINK"/>synkronointi on nollattava<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Jos haluat muuttaa tätä, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name="END_LINK"/> poistaaksesi synkronoinnin tunnuslauseen</translation>
+<translation id="3873315167136380065">Jos haluat ottaa tämän käyttöön, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name="END_LINK"/> poistaaksesi synkronoinnin tunnuslauseen</translation>
 <translation id="988978206646512040">Tunnuslause ei voi olla tyhjä.</translation>
 <translation id="1651008383952180276">Kirjoita sama tunnuslause kahdesti.</translation>
 <translation id="2136476978468204130">Antamasi tunnuslause on virheellinen.</translation>
@@ -2454,6 +2453,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1607139524282324606">Tyhjennä merkintä</translation>
 <translation id="6025215716629925253">Pinon jälki</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 riviä ei näytetä&gt;}other{&lt;$1 riviä ei näytetä&gt;}}</translation>
+<translation id="5334899159203764908">Lisätietoja <ph name="BEGIN_LINK"/>sivustojen käyttöoikeuksista<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Salli tämän laajennuksen lukea ja muuttaa kaikkea dataasi avatuilla verkkosivustoilla:</translation>
 <translation id="407173827865827707">Klikkaamalla</translation>
 <translation id="6455264371803474013">Tietyillä sivustoilla</translation>

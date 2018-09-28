@@ -855,7 +855,7 @@
 <translation id="1371301976177520732">आपके बुकमार्क, पासवर्ड, इतिहास और दूसरी कई चीज़ें आपके सभी डिवाइस पर</translation>
 <translation id="3111958038206230539">Brave Software सेवाओं को वैयक्तिकृत करें</translation>
 <translation id="295992419959320001">खोज, विज्ञापन और अन्य Brave Software सेवाओं को वैयक्तिकृत करने के लिए Brave Software आपके ब्राउज़िंग इतिहास का उपयोग कर सकता है</translation>
-<translation id="4800091108248587380">Brave Software Pay जैसी दर्शकों के पसंद के मुताबिक Brave Software सेवाएं</translation>
+<translation id="4205523465226408285">ज़्यादा निजी Brave Software सेवाएं, जैसे कि बेहतर पेज सुझाव</translation>
 <translation id="3070156078150543526">खोज और अन्य Brave Software सेवाओं को वैयक्तिकृत करने के लिए Brave Software आपके ब्राउज़िंग इतिहास का उपयोग कर सकता है</translation>
 <translation id="2532167245710864499">Brave Software को सिस्टम और इस्तेमाल से जुड़ी जानकारी भेजकर Brave और उसकी सुरक्षा को बेहतर बनाएं</translation>
 <translation id="2709453993673701466">सिंक और मनमुताबिक बनाने की सुविधा के चालू होने से पहले उन्हें प्रबंधित करना चाहते हैं? <ph name="BEGIN_LINK"/>सेटिंग<ph name="END_LINK"/> पर जाएं.</translation>
@@ -1692,10 +1692,7 @@
 <translation id="7754704193130578113">डाउनलोड करने से पहले प्रत्येक फ़ाइल को सहेजने का स्थान पूछें</translation>
 <translation id="5713072761819014678">Brave Software डिस्‍क खाता डिस्‍कनेक्‍ट करें</translation>
 <translation id="486635084936119914">कुछ निश्चित फ़ाइल प्रकारों को डाउनलोड करने के बाद उन्हें अपने आप खोलें</translation>
-<translation id="870073306461175568">Network File Shares</translation>
-<translation id="6189273858858366896">Network File Shares सेट अप करें या प्रबंधित करें.</translation>
 <translation id="2367199180085172140">File Share जोड़ें</translation>
-<translation id="8984654317541110628">फ़ाइल शेयर यूआरएल</translation>
 <translation id="5247051749037287028">दिखाई देने वाला नाम (वैकल्पिक)</translation>
 <translation id="6091761513005122595">शेयर माउंट करना सफल रहा.</translation>
 <translation id="9024158959543687197">शेयर माउंट करने में गड़बड़ी. फ़ाइल शेयर यूआरएल देखें और दोबारा कोशिश करें.</translation>
@@ -2258,6 +2255,8 @@
 <translation id="2459230470861708651">सिंक किए गए पासवर्ड अपने Brave Software उपयोगकर्ता नाम और पासवर्ड से एन्क्रिप्ट करें</translation>
 <translation id="6383051423892982287">सिंक किए गए डेटा को अपने खुद के <ph name="BEGIN_LINK"/>सिंक पासफ़्रेज़<ph name="END_LINK"/> से एन्क्रिप्ट करें</translation>
 <translation id="4817583816512767754">आपके एन्क्रिप्ट किए गए डेटा को केवल वही व्यक्ति पढ़ सकता है जिसके पास आपका पासफ़्रेज़ है. Brave Software द्वारा पासफ़्रेज़ भेजा या संग्रहित नहीं किया जाता. यदि आप अपना पासफ़्रेज़ भूल जाते हैं या यह सेटिंग बदलना चाहते हैं, तो आपको <ph name="BEGIN_LINK"/>सिंक रीसेट करना<ph name="END_LINK"/> होगा.</translation>
+<translation id="7441736921018636843">यह सेटिंग बदलने के लिए, <ph name="BEGIN_LINK"/>सिंक रीसेट करें<ph name="END_LINK"/> ताकि आपका सिंक करने का लंबा पासवर्ड हटाया जा सके</translation>
+<translation id="3873315167136380065">इसे चालू करने के लिए, <ph name="BEGIN_LINK"/>सिंक रीसेट करें<ph name="END_LINK"/> ताकि आपका सिंक करने का लंबा पासवर्ड हटाया जा सके</translation>
 <translation id="988978206646512040">खाली पासफ़्रेज़ की अनुमति नहीं है</translation>
 <translation id="1651008383952180276">आपको एक ही पासफ़्रेज़ दो बार डालना होगा</translation>
 <translation id="2136476978468204130">आपने जो पासफ़्रेज़ डाला है वह गलत है</translation>
@@ -2455,6 +2454,7 @@
 <translation id="1607139524282324606">प्रविष्टि हटाएं</translation>
 <translation id="6025215716629925253">स्टैक ट्रेस</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 पंक्ति नहीं दिखाई गई है&gt;}one{&lt;$1 पंक्तियां नहीं दिखाई गई हैं&gt;}other{&lt;$1 पंक्तियां नहीं दिखाई गई हैं&gt;}}</translation>
+<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>साइट एक्सेस<ph name="END_LINK"/> करने के बारे में ज़्यादा जानें</translation>
 <translation id="8389492867173948260">इस एक्सटेंशन को आपकी देखी जाने वाली इन वेबसाइटों पर मौजूद अपना सभी डेटा पढ़ने और बदलने दें:</translation>
 <translation id="407173827865827707">क्लिक करने पर</translation>
 <translation id="6455264371803474013">कुछ खास साइटों पर</translation>

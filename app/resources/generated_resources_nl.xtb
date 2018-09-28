@@ -854,7 +854,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1371301976177520732">Je bladwijzers, wachtwoorden, geschiedenis en meer op al je apparaten</translation>
 <translation id="3111958038206230539">Brave Software-services personaliseren</translation>
 <translation id="295992419959320001">Brave Software kan je browsegeschiedenis gebruiken om Brave Software Zoeken, advertenties en andere Brave Software-services te personaliseren</translation>
-<translation id="4800091108248587380">Gepersonaliseerde Brave Software-services zoals Brave Software Pay</translation>
+<translation id="4205523465226408285">Meer persoonlijke Brave Software-services, zoals betere paginasuggesties</translation>
 <translation id="3070156078150543526">Brave Software kan je browsegeschiedenis gebruiken om Brave Software Zoeken en andere Brave Software-services te personaliseren</translation>
 <translation id="2532167245710864499">Verbeter Brave en de beveiliging ervan door systeem- en gebruiksgegevens naar Brave Software te verzenden</translation>
 <translation id="2709453993673701466">Wil je synchronisatie en personalisatie beheren voordat ze worden ingeschakeld? Ga naar <ph name="BEGIN_LINK"/>Instellingen<ph name="END_LINK"/>.</translation>
@@ -1692,10 +1692,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7754704193130578113">Voorafgaand aan een download vragen waar een bestand moet worden opgeslagen</translation>
 <translation id="5713072761819014678">Brave Software Drive-account ontkoppelen</translation>
 <translation id="486635084936119914">Bepaalde bestandstypen na downloaden automatisch openen</translation>
-<translation id="870073306461175568">Network File Shares</translation>
-<translation id="6189273858858366896">Network File Shares instellen of beheren.</translation>
 <translation id="2367199180085172140">File Share toevoegen</translation>
-<translation id="8984654317541110628">URL voor fileshare</translation>
 <translation id="5247051749037287028">Weergavenaam (optioneel)</translation>
 <translation id="6091761513005122595">Fileshare geactiveerd.</translation>
 <translation id="9024158959543687197">Fout bij het activeren van de fileshare. Controleer de fileshare-URL en probeer het opnieuw.</translation>
@@ -2259,6 +2256,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2459230470861708651">Gesynchroniseerde wachtwoorden versleutelen met je Brave Software-gebruikersnaam en -wachtwoord</translation>
 <translation id="6383051423892982287">Gesynchroniseerde gegevens versleutelen met je eigen <ph name="BEGIN_LINK"/>wachtwoordzin voor synchronisatie<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Alleen iemand met je wachtwoordzin kan je versleutelde gegevens lezen. De wachtwoordzin wordt niet verzonden naar of opgeslagen door Brave Software. Als je je wachtwoordzin vergeet of deze instelling wilt wijzigen, moet je de <ph name="BEGIN_LINK"/>synchronisatie resetten<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Als je deze instelling wilt wijzigen, moet je de <ph name="BEGIN_LINK"/>synchronisatie resetten<ph name="END_LINK"/> om de wachtwoordzin voor synchronisatie te verwijderen</translation>
+<translation id="3873315167136380065">Als je dit wilt inschakelen, <ph name="BEGIN_LINK"/>reset je de synchronisatie<ph name="END_LINK"/> om de wachtwoordzin voor synchronisatie te verwijderen</translation>
 <translation id="988978206646512040">Een lege wachtwoordzin is niet toegestaan</translation>
 <translation id="1651008383952180276">Je moet twee keer dezelfde wachtwoordzin opgeven</translation>
 <translation id="2136476978468204130">De opgegeven wachtwoordzin is onjuist</translation>
@@ -2456,6 +2455,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="1607139524282324606">Item wissen</translation>
 <translation id="6025215716629925253">Stack-tracering</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 regel niet weergegeven&gt;}other{&lt;$1 regels niet weergegeven&gt;}}</translation>
+<translation id="5334899159203764908">Meer informatie over <ph name="BEGIN_LINK"/>sitetoegang<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Hiermee kan deze extensie al je gegevens lezen en wijzigen op de websites die je bezoekt:</translation>
 <translation id="407173827865827707">Bij klik</translation>
 <translation id="6455264371803474013">Op specifieke sites</translation>

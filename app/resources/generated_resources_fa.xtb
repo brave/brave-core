@@ -854,7 +854,7 @@
 <translation id="1371301976177520732">در همه دستگاه‌هایتان می‌توانید به نشانک‌ها، سابقه و موارد دیگر دسترسی داشته باشید</translation>
 <translation id="3111958038206230539">‏شخصی‌سازی خدمات Brave Software</translation>
 <translation id="295992419959320001">‏Brave Software ممکن است از سابقه مرور شما برای شخصی‌سازی جستجو، آگهی‌ها و سایر سرویس‌های Brave Software استفاده کند</translation>
-<translation id="4800091108248587380">‏سرویس‌های شخصی‌شده Brave Software مانند Brave Software Pay</translation>
+<translation id="4205523465226408285">‏سرویس‌های Brave Software شخصی‌شده بیشتر، مثل پیشنهادهای بهتر برای صفحه</translation>
 <translation id="3070156078150543526">‏Brave Software ممکن است از سابقه مرورتان برای شخصی‌سازی جستجو و سایر سرویس‌های Brave Software استفاده کند.</translation>
 <translation id="2532167245710864499">‏بهبود Brave و امنیت آن با ارسال اطلاعات و آمار استفاده سیستم به Brave Software</translation>
 <translation id="2709453993673701466">می‌خواهید همگام‌سازی و شخصی‌سازی را پیش از روشن کردن مدیریت کنید؟ از <ph name="BEGIN_LINK"/>تنظیمات<ph name="END_LINK"/> بازدید کنید.</translation>
@@ -1691,10 +1691,7 @@
 <translation id="7754704193130578113">قبل از بارگیری هر فایل، درباره مکان ذخیره سؤال شود</translation>
 <translation id="5713072761819014678">‏قطع ارتباط حساب Brave Software Drive</translation>
 <translation id="486635084936119914">باز شدن خودکار برخی از انواع فایل بعد از بارگیری</translation>
-<translation id="870073306461175568">Network File Shares</translation>
-<translation id="6189273858858366896">‏راه‌اندازی یا مدیریت Network File Shares.</translation>
 <translation id="2367199180085172140">افزودن فایل هم‌رسانی</translation>
-<translation id="8984654317541110628">نشانی وب دستگاه ذخیره‌سازی متصل به شبکه</translation>
 <translation id="5247051749037287028">نام نمایشی (اختیاری)</translation>
 <translation id="6091761513005122595">دستگاه ذخیره‌سازی متصل به شبکه با موفقیت نشانده شد.</translation>
 <translation id="9024158959543687197">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. لطفاً نشانی وب دستگاه ذخیره‌سازی متصل به شبکه را بررسی کنید و دوباره امتحان کنید.</translation>
@@ -2257,6 +2254,8 @@
 <translation id="2459230470861708651">‏رمزگذاری گذرواژه‌های همگام‌سازی‌شده با گذرواژه و نام کاربری Brave Software شما</translation>
 <translation id="6383051423892982287">رمزگذاری داده‌های همگام‌سازی‌شده با <ph name="BEGIN_LINK"/>عبارت عبور همگام‌سازی<ph name="END_LINK"/> خودتان</translation>
 <translation id="4817583816512767754">‏فقط فردی که عبارت عبور شما را دارد می‌تواند اطلاعات رمزگذاری‌شده‌تان را بخواند. این عبارت عبور به Brave Software ارسال یا در سرورهای آن ذخیره نمی‌شود. اگر عبارت عبورتان را فراموش کنید، باید همگام‌سازی را بازنشانی کنید. <ph name="BEGIN_LINK"/>بازنشانی همگام‌سازی<ph name="END_LINK"/></translation>
+<translation id="7441736921018636843">برای تغییر این تنظیم، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/> تا عبارت عبور همگام‌سازی حذف شود</translation>
+<translation id="3873315167136380065">برای روشن کردن این گزینه، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/> تا عبارت عبور همگام‌سازی حذف شود</translation>
 <translation id="988978206646512040">عبارت عبور خالی مجاز نیست</translation>
 <translation id="1651008383952180276">باید همان عبارت عبور را دو بار وارد کنید</translation>
 <translation id="2136476978468204130">عبارت عبوری که وارد کردید نادرست است</translation>
@@ -2454,6 +2453,7 @@
 <translation id="1607139524282324606">پاک کردن ورودی</translation>
 <translation id="6025215716629925253">ردیابی پشته‌ای</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;۱ خط نشان داده نمی‌شود&gt;}one{&lt;$1 خط نشان داده نمی‌شود&gt;}other{&lt;$1 خط نشان داده نمی‌شود&gt;}}</translation>
+<translation id="5334899159203764908">درباره <ph name="BEGIN_LINK"/>دسترسی به سایت<ph name="END_LINK"/> بیشتر بدانید</translation>
 <translation id="8389492867173948260">به این افزونه اجازه دهید همه داده‌هایتان را در وب‌سایت‌هایی که بازدید می‌کنید بخواند و تغییر دهد:</translation>
 <translation id="407173827865827707">با کلیک</translation>
 <translation id="6455264371803474013">در سایت‌هایی خاص</translation>

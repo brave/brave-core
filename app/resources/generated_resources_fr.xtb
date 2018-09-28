@@ -856,7 +856,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1371301976177520732">Vos favoris, vos mots de passe, votre historique et plus encore sur tous vos appareils</translation>
 <translation id="3111958038206230539">Personnaliser les services Brave Software</translation>
 <translation id="295992419959320001">Brave Software peut utiliser votre historique de navigation pour personnaliser la recherche, les annonces et d'autres services Brave Software.</translation>
-<translation id="4800091108248587380">Des services Brave Software personnalisés, tels que Brave Software Pay</translation>
+<translation id="4205523465226408285">Des services Brave Software plus personnalisés, comme des suggestions de pages plus pertinentes</translation>
 <translation id="3070156078150543526">Brave Software peut utiliser votre historique de navigation pour personnaliser la recherche et d'autres services Brave Software.</translation>
 <translation id="2532167245710864499">Aidez Brave Software à améliorer Brave et son niveau de sécurité en envoyant des informations relatives au système et à la consommation des données</translation>
 <translation id="2709453993673701466">Vous souhaitez gérer la synchronisation et la personnalisation avant de les activer ? Accédez aux <ph name="BEGIN_LINK"/>paramètres<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7754704193130578113">Toujours demander où enregistrer les fichiers</translation>
 <translation id="5713072761819014678">Déconnecter le compte Brave Software Drive</translation>
 <translation id="486635084936119914">Ouvrir automatiquement certains types de fichiers après leur téléchargement</translation>
-<translation id="870073306461175568">Partages de fichiers en réseau</translation>
-<translation id="6189273858858366896">Configurez ou gérez des partages de fichiers en réseau.</translation>
 <translation id="2367199180085172140">Ajouter un partage de fichiers</translation>
-<translation id="8984654317541110628">URL de partage de fichiers</translation>
 <translation id="5247051749037287028">Nom à afficher (facultatif)</translation>
 <translation id="6091761513005122595">Le partage a bien été installé.</translation>
 <translation id="9024158959543687197">Erreur lors de l'installation du partage. Vérifiez l'URL de partage de fichiers, puis réessayez.</translation>
@@ -2259,6 +2256,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="2459230470861708651">Chiffrer les mots de passe synchronisés avec votre nom d'utilisateur et votre mot de passe Brave Software</translation>
 <translation id="6383051423892982287">Chiffrer les données synchronisées avec votre propre <ph name="BEGIN_LINK"/>phrase secrète de synchronisation<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Seule une personne connaissant votre phrase secrète peut lire vos données chiffrées. La phrase secrète ne nous est pas envoyée et nous ne la stockons pas. Si vous l'oubliez ou si vous voulez modifier ce paramètre, vous devrez <ph name="BEGIN_LINK"/>réinitialiser la synchronisation<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronisation<ph name="END_LINK"/> pour supprimer votre phrase secrète de synchronisation</translation>
+<translation id="3873315167136380065">Pour activer cette fonctionnalité, <ph name="BEGIN_LINK"/>réinitialisez la synchronisation<ph name="END_LINK"/> pour supprimer votre phrase secrète de synchronisation</translation>
 <translation id="988978206646512040">Phrase secrète obligatoire</translation>
 <translation id="1651008383952180276">Vous devez saisir deux fois la même phrase secrète</translation>
 <translation id="2136476978468204130">La phrase secrète que vous avez saisie est incorrecte</translation>
@@ -2456,6 +2455,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1607139524282324606">Effacer l'entrée</translation>
 <translation id="6025215716629925253">Trace de la pile</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 ligne non affichée&gt;}one{&lt;$1 ligne non affichée&gt;}other{&lt;$1 lignes non affichées&gt;}}</translation>
+<translation id="5334899159203764908">En savoir plus sur l'<ph name="BEGIN_LINK"/>accès au site<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Autorisez cette extension à lire et à modifier toutes vos données sur les sites Web que vous consultez :</translation>
 <translation id="407173827865827707">En cas de clic</translation>
 <translation id="6455264371803474013">Sur des sites spécifiques</translation>

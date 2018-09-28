@@ -856,7 +856,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="1371301976177520732">Os seus marcadores, palavras-passe, histórico e muito mais em todos os seus dispositivos.</translation>
 <translation id="3111958038206230539">Personalizar os serviços Brave Software</translation>
 <translation id="295992419959320001">A Brave Software pode utilizar o seu histórico de navegação para personalizar a Pesquisa Brave Software, os anúncios e outros serviços Brave Software</translation>
-<translation id="4800091108248587380">Serviços Brave Software personalizados, como o Brave Software Pay.</translation>
+<translation id="4205523465226408285">Serviços Brave Software mais pessoais, como melhores sugestões de páginas</translation>
 <translation id="3070156078150543526">A Brave Software pode utilizar o seu histórico de navegação para personalizar a Pesquisa Brave Software e outros serviços Brave Software</translation>
 <translation id="2532167245710864499">Melhore o Brave e a sua segurança ao enviar informações do sistema e de utilização para a Brave Software.</translation>
 <translation id="2709453993673701466">Pretende gerir a sincronização e a personalização antes de serem ativadas? Aceda às <ph name="BEGIN_LINK"/>Definições<ph name="END_LINK"/>.</translation>
@@ -1693,10 +1693,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7754704193130578113">Perguntar onde guardar cada ficheiro antes da transferência</translation>
 <translation id="5713072761819014678">Desligar a conta do Brave Software Drive</translation>
 <translation id="486635084936119914">Abrir determinados tipos de ficheiro automaticamente após a transferência</translation>
-<translation id="870073306461175568">Partilhas de ficheiros na rede</translation>
-<translation id="6189273858858366896">Configurar ou gerir Partilhas de ficheiros na rede.</translation>
 <translation id="2367199180085172140">Adicionar partilha de ficheiros</translation>
-<translation id="8984654317541110628">URL de partilha de ficheiros</translation>
 <translation id="5247051749037287028">Nome a apresentar (opcional)</translation>
 <translation id="6091761513005122595">A partilha foi montada com êxito.</translation>
 <translation id="9024158959543687197">Erro ao montar a partilha. Verifique o URL de partilha de ficheiros e tente novamente.</translation>
@@ -2259,6 +2256,8 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="2459230470861708651">Encriptar as palavras-passe sincronizadas com o seu nome de utilizador e palavra-passe Brave Software</translation>
 <translation id="6383051423892982287">Encriptar dados sincronizados com a sua própria <ph name="BEGIN_LINK"/>frase de acesso de sincronização<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Apenas alguém que conheça a sua frase de acesso pode ler os seus dados encriptados. A frase de acesso não é enviada para a Brave Software nem armazenada pela mesma. Se se esquecer da frase de acesso ou pretender alterar esta definição, tem de <ph name="BEGIN_LINK"/>repor a sincronização<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Para alterar esta definição, <ph name="BEGIN_LINK"/>reponha a sincronização<ph name="END_LINK"/> para remover a sua frase de acesso de sincronização</translation>
+<translation id="3873315167136380065">Para ativar isto, <ph name="BEGIN_LINK"/>reponha a sincronização<ph name="END_LINK"/> para remover a frase de acesso de sincronização.</translation>
 <translation id="988978206646512040">Não é permitida uma frase de acesso vazia</translation>
 <translation id="1651008383952180276">Tem de introduzir a mesma frase de acesso duas vezes</translation>
 <translation id="2136476978468204130">A frase de acesso introduzida está incorreta</translation>
@@ -2456,6 +2455,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="1607139524282324606">Limpar entrada</translation>
 <translation id="6025215716629925253">Rastreio de pilha</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linha não apresentada&gt;}other{&lt;$1 linhas não apresentadas&gt;}}</translation>
+<translation id="5334899159203764908">Saiba mais acerca do <ph name="BEGIN_LINK"/>acesso a sites<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permitir que esta extensão leia e altere todos os dados nos Websites que visita:</translation>
 <translation id="407173827865827707">Ao clicar</translation>
 <translation id="6455264371803474013">Em sites específicos</translation>

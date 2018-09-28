@@ -854,7 +854,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1371301976177520732">Záložky, historii a další údaje budete mít na všech svých zařízeních</translation>
 <translation id="3111958038206230539">Přizpůsobení služeb Brave Software</translation>
 <translation id="295992419959320001">Brave Software vaši historii procházení může používat k personalizaci Vyhledávání, reklam a dalších služeb Brave Software</translation>
-<translation id="4800091108248587380">Personalizované služby Brave Software, jako např. Brave Software Pay</translation>
+<translation id="4205523465226408285">Více osobních služeb Brave Software, např. lepší návrhy stránek</translation>
 <translation id="3070156078150543526">Brave Software vaši historii procházení může používat k přizpůsobení Vyhledávání a dalších služeb Brave Software.</translation>
 <translation id="2532167245710864499">Vylepšete prohlížeč Brave a jeho zabezpečení tím, že do Googlu budete odesílat informace o systému a využití</translation>
 <translation id="2709453993673701466">Chcete synchronizaci a personalizaci před zapnutím upravit? Přejděte do <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
@@ -1691,10 +1691,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7754704193130578113">Před stažením se vždy zeptat na místo uložení každého souboru</translation>
 <translation id="5713072761819014678">Odpojit účet Disku Brave Software</translation>
 <translation id="486635084936119914">Určité typy souborů po stažení automaticky otevírat</translation>
-<translation id="870073306461175568">Sdílené síťové složky</translation>
-<translation id="6189273858858366896">Nastavit nebo spravovat sdílené síťové složky.</translation>
 <translation id="2367199180085172140">Přidat sdílenou složku</translation>
-<translation id="8984654317541110628">Adresa URL sdílené složky</translation>
 <translation id="5247051749037287028">Zobrazovaný název (volitelné)</translation>
 <translation id="6091761513005122595">Sdílená složka byla úspěšně připojena.</translation>
 <translation id="9024158959543687197">Při připojování sdílené složky došlo k chybě. Zkontrolujte adresu URL sdíleného úložiště a zkuste to znovu.</translation>
@@ -2257,6 +2254,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2459230470861708651">Šifrovat synchronizovaná hesla pomocí vašeho uživatelského jména a hesla</translation>
 <translation id="6383051423892982287">Šifrovat synchronizovaná data pomocí vlastní <ph name="BEGIN_LINK"/>heslové fráze pro synchronizaci<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslovou frázi. Heslová fráze se neodesílá do Googlu a není na Googlu uložena. Pokud heslovou frázi zapomenete nebo toto nastavení budete chtít změnit, budete muset <ph name="BEGIN_LINK"/>synchronizaci resetovat<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Chcete-li toto nastavení změnit, <ph name="BEGIN_LINK"/>resetováním synchronizace<ph name="END_LINK"/> odstraňte svou heslovou frázi pro synchronizaci</translation>
+<translation id="3873315167136380065">Chcete-li tuto funkci zapnout, <ph name="BEGIN_LINK"/>resetováním synchronizace<ph name="END_LINK"/> odstraňte svou heslovou frázi pro synchronizaci</translation>
 <translation id="988978206646512040">Prázdné přístupové heslo není povoleno</translation>
 <translation id="1651008383952180276">Musíte zadat dvakrát stejnou heslovou frázi</translation>
 <translation id="2136476978468204130">Zadaná heslová fráze není správná</translation>
@@ -2454,6 +2453,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1607139524282324606">Vymazat položku</translation>
 <translation id="6025215716629925253">Trasování zásobníku</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 řádek není zobrazen&gt;}few{&lt;$1 řádky nejsou zobrazeny&gt;}many{&lt;$1 řádku není zobrazeno&gt;}other{&lt;$1 řádků není zobrazeno&gt;}}</translation>
+<translation id="5334899159203764908">Další informace o <ph name="BEGIN_LINK"/>přístupu k webu<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Povolit tomuto rozšíření číst a měnit všechna vaše data na navštívených webech:</translation>
 <translation id="407173827865827707">Při kliknutí</translation>
 <translation id="6455264371803474013">Na konkrétních webech</translation>
