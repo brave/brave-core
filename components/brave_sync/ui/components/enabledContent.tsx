@@ -22,7 +22,7 @@ import {
 
 // Modals
 // import SyncANewDeviceModal from './modals/syncNewDevice'
-// import ResetSyncModal from './modals/resetSync'
+import ResetSyncModal from './modals/resetSync'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -81,6 +81,10 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
     this.props.actions.onRemoveDevice(target.id)
   }
 
+  resetSyncModal = () => {
+    this.setState({ resetSync: !this.state.resetSync })
+  }
+
   onSyncReset = () => {
     this.props.actions.onSyncReset()
   }
@@ -102,19 +106,19 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
   }
 
   render () {
-    const { syncData } = this.props
+    const { actions, syncData } = this.props
     return (
       <>
         {/*
           this.state.syncANewDevice
             ? <SyncANewDeviceModal actions={actions} onClose={this.syncANewDevice} />
             : null
-        }
+        */}
         {
           this.state.resetSync
-            ? <ResetSyncModal actions={actions} onClose={this.resetSync} />
+            ? <ResetSyncModal actions={actions} onClose={this.resetSyncModal} />
             : null
-        */}
+        }
         <Card>
           <Grid columns='1fr 1fr'>
             <FlexColumn items='center'>
