@@ -4,15 +4,22 @@
 
 import UIKit
 
-class PrivateModeButton: ToggleButton, Themeable {
+class PrivateModeButton: InsetButton, Themeable {
     var light: Bool = false
+    
+    override var isSelected: Bool {
+        didSet {
+            backgroundColor = isSelected ? UIColor.Photon.Purple60 : .clear
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         accessibilityLabel = PrivateModeStrings.toggleAccessibilityLabel
         accessibilityHint = PrivateModeStrings.toggleAccessibilityHint
-        let maskImage = #imageLiteral(resourceName: "smallPrivateMask").template
-        setImage(maskImage, for: [])
+        
+        titleEdgeInsets = UIEdgeInsets(top: -3, left: 6, bottom: -3, right: 6)
+        layer.cornerRadius = 4.0
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -20,7 +27,7 @@ class PrivateModeButton: ToggleButton, Themeable {
     }
     
     func applyTheme(_ theme: Theme) {
-        tintColor = UIColor.Browser.Tint.colorFor(theme)
+        setTitleColor(UIColor.TabTray.ToolbarButtonTint.colorFor(theme), for: .normal)
         imageView?.tintColor = tintColor
         isSelected = theme.isPrivate
         accessibilityValue = isSelected ? PrivateModeStrings.toggleAccessibilityValueOn : PrivateModeStrings.toggleAccessibilityValueOff
