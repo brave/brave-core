@@ -234,6 +234,8 @@ private extension TabScrollingController {
 
         let alpha = 1 - abs(headerTopOffset / topScrollHeight)
         urlBar?.updateAlphaForSubviews(alpha)
+        let tabsAlpha = 1 - abs((headerTopOffset - tabsBarOffset) / topScrollHeight)
+        tabsBar?.view.alpha = tabsAlpha
     }
 
     func isHeaderDisplayedForGivenOffset(_ offset: CGFloat) -> Bool {
@@ -265,6 +267,7 @@ private extension TabScrollingController {
             self.headerTopOffset = headerOffset + self.tabsBarOffset
             self.footerBottomOffset = footerOffset
             self.urlBar?.updateAlphaForSubviews(alpha)
+            self.tabsBar?.view.alpha = alpha
             self.header?.superview?.layoutIfNeeded()
         }
 
