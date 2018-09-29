@@ -575,9 +575,10 @@ void RewardsServiceImpl::OnPublisherStateSaved(
 void RewardsServiceImpl::SavePublisherInfo(
     std::unique_ptr<ledger::PublisherInfo> publisher_info,
     ledger::PublisherInfoCallback callback) {
+  ledger::PublisherInfo info_copy = *publisher_info;
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&SavePublisherInfoOnFileTaskRunner,
-                    *publisher_info,
+                    info_copy,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnPublisherInfoSaved,
                      AsWeakPtr(),
