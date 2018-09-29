@@ -43,9 +43,15 @@ export const StyledFigure = styled<{}, 'figure'>('figure')`
 `
 export const StyledGrid = styled<{}, 'div'>('div')`
   display: grid;
+  grid-gap: 0px;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 640px) {
+    grid-gap: 20px;
+    grid-template-columns: 1fr;
+  }
 `
 
 export const StyledColumn = styled<{}, 'div'>('div')`

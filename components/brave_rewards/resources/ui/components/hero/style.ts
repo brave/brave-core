@@ -7,6 +7,6 @@ export const StyledHero = styled<{}, 'div'>('div')`
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
   background: linear-gradient(#392DD1, #8C41DE);
-  border-bottom-left-radius: 150% 200px;
-  border-bottom-right-radius: 150% 200px;
+  border-bottom-left-radius: 150% 120px;
+  border-bottom-right-radius: 150% 120px;
 `

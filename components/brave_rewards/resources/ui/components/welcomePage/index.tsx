@@ -37,7 +37,8 @@ import {
   StyledCenterParagraph,
   StyledAnchor,
   StyledOptInSecond,
-  StyledAlert
+  StyledAlert,
+  StyledHeroInfo
 } from './style'
 
 const turnOnRewardsImage = require('./assets/turnOnRewards')
@@ -97,16 +98,18 @@ class WelcomePage extends React.PureComponent<Props, State> {
           <StyledBatLogo>
             <BatColorIcon />
           </StyledBatLogo>
-          <StyledRewardsTitle level={2}>
-            {getLocale('braveRewardsTitle')}
-          </StyledRewardsTitle>
-          <StyledTrademark>TM</StyledTrademark>
-          <StyledSubTitle level={4}>
-            {getLocale('braveRewardsSubTitle')}
-          </StyledSubTitle>
-          <StyledRewardsParagraph>
-            {getLocale('braveRewardsDesc')}
-          </StyledRewardsParagraph>
+          <StyledHeroInfo>
+            <StyledRewardsTitle level={2}>
+              {getLocale('braveRewardsTitle')}
+            </StyledRewardsTitle>
+            <StyledTrademark>TM</StyledTrademark>
+            <StyledSubTitle level={4}>
+              {getLocale('braveRewardsSubTitle')}
+            </StyledSubTitle>
+            <StyledRewardsParagraph>
+              {getLocale('braveRewardsDesc')}
+            </StyledRewardsParagraph>
+          </StyledHeroInfo>
         </StyledSection>
         <StyledOptInSection>
           {
@@ -148,7 +151,7 @@ class WelcomePage extends React.PureComponent<Props, State> {
   get centerTextContent () {
     return (
       <StyledCenterContent>
-        <StyledSection>
+        <StyledCenterInner>
           <StyledCenterTitle level={3}>
             {getLocale('whyBraveRewards')}
           </StyledCenterTitle>
@@ -161,7 +164,7 @@ class WelcomePage extends React.PureComponent<Props, State> {
           <StyledCenterParagraph>
             {getLocale('whyBraveRewardsDesc2')}
           </StyledCenterParagraph>
-        </StyledSection>
+        </StyledCenterInner>
       </StyledCenterContent>
     )
   }
@@ -236,9 +239,9 @@ class WelcomePage extends React.PureComponent<Props, State> {
             {this.hero()}
           </StyledSection>
           <StyledCenterSection>
-            <StyledCenterInner innerRef={this.refSet}>
+            <StyledCenterSection innerRef={this.refSet}>
               {this.centerTextContent}
-            </StyledCenterInner>
+            </StyledCenterSection>
             <StyledInfoContent>
               <InfoCard
                 id='rewards-info'

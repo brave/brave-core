@@ -29,7 +29,7 @@ const dummyOptInAction = () => {
   console.log(dummyOptInAction)
 }
 
-storiesOf('Feature Components/Rewards/Concepts', module)
+storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
   .addDecorator(withKnobs)
   .add('Settings Page', () => <Settings />)
   .add('Welcome Page', () => (
@@ -252,3 +252,10 @@ storiesOf('Feature Components/Rewards/Concepts', module)
       </div>
     )
   }))
+storiesOf('Feature Components/Rewards/Concepts/Mobile', module)
+  .add('Welcome Page', () => (
+    <WelcomePage
+      id={'welcome-page'}
+      optInAction={dummyOptInAction}
+    />
+  ))

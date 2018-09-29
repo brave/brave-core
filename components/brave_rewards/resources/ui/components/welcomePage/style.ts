@@ -29,6 +29,12 @@ export const StyledCenterContent = styled<{}, 'div'>('div')`
   margin: 0 auto;
   max-width: 692px;
   padding: 67px 0 20px;
+
+  @media (max-width: 767px) {
+    max-width: none;
+    width: 100%;
+    padding-top: 30px;
+  }
 `
 
 export const StyledSection = styled<{}, 'div'>('div')`
@@ -36,7 +42,10 @@ export const StyledSection = styled<{}, 'div'>('div')`
 `
 
 export const StyledCenterInner = styled<{}, 'section'>('section')`
-  display: block;
+  @media (max-width: 767px) {
+    margin: 0 auto;
+    width: 80%;
+  }
 `
 
 export const StyledInfoContent = styled<{}, 'section'>('section')`
@@ -53,6 +62,10 @@ export const StyledTakeActionContent = styled<{}, 'section'>('section')`
 
 export const StyledBackground = styled<{}, 'div'>('div')`
   background: url(${centerBackground}) no-repeat top;
+
+  @media (max-width: 980px) {
+    background: #F8FAFF;
+  }
 `
 
 export const StyledBatLogo = styled<{}, 'div'>('div')`
@@ -142,4 +155,14 @@ export const StyledAlert = styled<{}, 'div'>('div')`
   border: 1px solid #FF7900;
   border-radius: 4px;
   overflow: hidden;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+`
+
+export const StyledHeroInfo = styled<{}, 'div'>('div')`
+  @media (max-width: 400px) {
+    padding: 0 10px;
+  }
 `
