@@ -30,7 +30,7 @@ promisifyAll(chrome.storage, [
   'local'
 ])
 
-promisifyAll(chrome.contentSettings, [
+promisifyAll(chrome.braveShields, [
   'javascript',
   'plugins'
 ])

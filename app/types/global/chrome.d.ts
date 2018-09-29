@@ -26,13 +26,6 @@ declare namespace chrome.windows {
   const getAllAsync: any
 }
 
-declare namespace chrome.contentSettings {
-  interface ContentSetting {
-    setAsync: any
-    getAsync: any
-  }
-}
-
 declare namespace chrome.braveShields {
   const onBlocked: {
     addListener: (callback: (detail: BlockDetails) => void) => void
@@ -40,4 +33,6 @@ declare namespace chrome.braveShields {
   }
 
   const allowScriptsOnce: any
+  const javascript: any
+  const plugins: any
 }
