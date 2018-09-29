@@ -9,7 +9,7 @@ announcements.
 
 ## Resources
 
-- [Issues](https://github.com/brave/brave-browser/issues)
+- [Issues](https://github.com/brave/brave-core/issues)
 - [Releases](https://github.com/brave/brave-browser/releases)
 - [Documentation wiki](https://github.com/brave/brave-browser/wiki)
 
