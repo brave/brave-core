@@ -166,7 +166,7 @@ class LEDGER_EXPORT Ledger {
   virtual void RestorePublishers() = 0;
   virtual bool IsWalletCreated() const = 0;
   virtual void GetPublisherActivityFromUrl(uint64_t windowId,
-                               const std::string& tld,
+                               const std::string& baseDomain,
                                const std::string& path,
                                ledger::PUBLISHER_MONTH month,
                                int year) = 0;
