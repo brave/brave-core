@@ -1,0 +1,14 @@
+source_set("renderer") {
+  visibility = [ "//extensions/renderer" ]
+
+  sources = [
+    "brave_native_extension_bindings_system.cc",
+    "brave_native_extension_bindings_system.h",
+    "brave_shields_content_setting.cc",
+    "brave_shields_content_setting.h",
+  ]
+
+  # Didn't add any dependencies because sources of this target
+  # will compiled together with //extensions/renderer target and these files
+  # doesn't add additional dependencies.
+}
