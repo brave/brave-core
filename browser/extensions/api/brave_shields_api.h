@@ -20,6 +20,30 @@ class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveShieldsContentSettingGetFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.get", UNKNOWN)
+
+ protected:
+  ~BraveShieldsContentSettingGetFunction() override {}
+
+  // ExtensionFunction:
+  ResponseAction Run() override;
+};
+
+class BraveShieldsContentSettingSetFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.set", UNKNOWN)
+
+ protected:
+  ~BraveShieldsContentSettingSetFunction() override {}
+
+  // ExtensionFunction:
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

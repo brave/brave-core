@@ -79,6 +79,13 @@ void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
         CONTENT_SETTINGS_TYPE_PLUGINS,
         brave_shields::kAds,
         value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+  HostContentSettingsMapFactory::GetForProfile(profile_)->
+      SetContentSettingCustomScope(
+        ContentSettingsPattern::Wildcard(),
+        ContentSettingsPattern::Wildcard(),
+        CONTENT_SETTINGS_TYPE_PLUGINS,
+        brave_shields::kTrackers,
+        value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(const base::ListValue* args) {

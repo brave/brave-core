@@ -5,9 +5,16 @@
 #include "base/path_service.h"
 #include "brave/browser/extensions/api/brave_shields_api.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/extensions/api/content_settings/content_settings_api.h"
+#include "chrome/browser/extensions/api/content_settings/content_settings_api_constants.h"
+#include "chrome/browser/extensions/api/content_settings/content_settings_helpers.h"
+#include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
+#include "chrome/browser/extensions/api/content_settings/content_settings_store.h"
 #include "chrome/browser/extensions/extension_function_test_utils.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -18,6 +25,10 @@
 #include "extensions/common/extension_builder.h"
 #include "net/dns/mock_host_resolver.h"
 
+namespace extensions {
+
+using api::BraveShieldsContentSettingGetFunction;
+using api::BraveShieldsContentSettingSetFunction;
 using extensions::api::BraveShieldsAllowScriptsOnceFunction;
 using extension_function_test_utils::RunFunctionAndReturnError;
 using extension_function_test_utils::RunFunctionAndReturnSingleResult;
@@ -36,6 +47,8 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
 
       ASSERT_TRUE(embedded_test_server()->Start());
       extension_ = extensions::ExtensionBuilder("Test").Build();
+      content_settings_ =
+          HostContentSettingsMapFactory::GetForProfile(browser()->profile());
     }
 
     content::WebContents* active_contents() {
@@ -46,10 +59,12 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
       return extension_;
     }
 
+    HostContentSettingsMap* content_settings() const {
+      return content_settings_;
+    }
+
     void BlockScripts() {
-      HostContentSettingsMap* content_settings =
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-      content_settings->SetContentSettingCustomScope(
+      content_settings_->SetContentSettingCustomScope(
           ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
           CONTENT_SETTINGS_TYPE_JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
     }
@@ -85,6 +100,7 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
     }
 
   private:
+    HostContentSettingsMap* content_settings_;
     scoped_refptr<extensions::Extension> extension_;
 };
 
@@ -140,3 +156,116 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceIframe) {
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 3u) <<
     "Scripts from b.com should be temporarily allowed.";
 }
+
+constexpr char kJavascriptSetParams[] =
+    "[\"javascript\", {\"primaryPattern\": \"https://www.brave.com/*\","
+    "\"setting\": \"block\"}]";
+constexpr char kJavascriptGetParams[] =
+    "[\"javascript\", {\"primaryUrl\": \"https://www.brave.com/*\"}]";
+constexpr char kBraveURLPattern[] = "https://www.brave.com/*";
+const GURL kBraveURL("https://www.brave.com");
+
+// Test javascript content setting works properly via braveShields api.
+IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
+                       ContentSettingJavascriptAPI) {
+  // Default content settings for javascript is allow.
+  scoped_refptr<BraveShieldsContentSettingGetFunction> get_function(
+      new BraveShieldsContentSettingGetFunction());
+  get_function->set_extension(extension().get());
+  std::unique_ptr<base::Value> value;
+  value.reset(RunFunctionAndReturnSingleResult(get_function.get(),
+                                               kJavascriptGetParams,
+                                               browser()));
+  EXPECT_EQ(value->FindKey(
+      content_settings_api_constants::kContentSettingKey)->GetString(),
+      std::string("allow"));
+
+  // Block javascript.
+  scoped_refptr<BraveShieldsContentSettingSetFunction> set_function(
+      new BraveShieldsContentSettingSetFunction());
+  set_function->set_extension(extension().get());
+  RunFunctionAndReturnSingleResult(set_function.get(),
+                                   kJavascriptSetParams,
+                                   browser());
+
+  // Check Block is set.
+  get_function = base::MakeRefCounted<BraveShieldsContentSettingGetFunction>();
+  get_function->set_extension(extension().get());
+  value.reset(RunFunctionAndReturnSingleResult(get_function.get(),
+                                               kJavascriptGetParams,
+                                               browser()));
+  EXPECT_EQ(value->FindKey(
+      content_settings_api_constants::kContentSettingKey)->GetString(),
+      std::string("block"));
+}
+
+// Test previous settings set by extension is deleted when setting is newly
+// modifed.
+IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
+                       ContentSettingValueFromExtensionDelete) {
+  // Set javascript content setting via ContentSettingsStore and check this
+  // settings comes from extension. chrome.contentSettings.javascript.set()
+  // sets settings into ContentSettingsStore.
+  std::string primary_error;
+  ContentSettingsPattern primary_pattern =
+      content_settings_helpers::ParseExtensionPattern(kBraveURLPattern,
+                                                      &primary_error);
+  scoped_refptr<ContentSettingsStore> store =
+      ContentSettingsService::Get(browser()->profile())->
+          content_settings_store();
+  store->SetExtensionContentSetting(brave_extension_id,
+                                    primary_pattern,
+                                    ContentSettingsPattern::Wildcard(),
+                                    CONTENT_SETTINGS_TYPE_JAVASCRIPT,
+                                    std::string(),
+                                    CONTENT_SETTING_ALLOW,
+                                    kExtensionPrefsScopeRegular);
+  DCHECK(primary_pattern.IsValid());
+
+  content_settings::SettingInfo info;
+  content_settings()->GetWebsiteSetting(
+      kBraveURL, kBraveURL,
+      CONTENT_SETTINGS_TYPE_JAVASCRIPT, std::string(), &info);
+  // Check source is extension.
+  EXPECT_EQ(info.source,
+            content_settings::SettingSource::SETTING_SOURCE_EXTENSION);
+
+  // Check this value via braveShields api.
+  scoped_refptr<BraveShieldsContentSettingGetFunction> get_function(
+      new BraveShieldsContentSettingGetFunction());
+  get_function->set_extension(extension().get());
+  std::unique_ptr<base::Value> value;
+  value.reset(RunFunctionAndReturnSingleResult(get_function.get(),
+                                               kJavascriptGetParams,
+                                               browser()));
+  EXPECT_EQ(value->FindKey(
+      content_settings_api_constants::kContentSettingKey)->GetString(),
+      std::string("allow"));
+
+  // Block via shields api.
+  scoped_refptr<BraveShieldsContentSettingSetFunction> set_function(
+      new BraveShieldsContentSettingSetFunction());
+  set_function->set_extension(extension().get());
+  RunFunctionAndReturnSingleResult(set_function.get(),
+                                   kJavascriptSetParams,
+                                   browser());
+
+  // Check Block is set.
+  get_function = base::MakeRefCounted<BraveShieldsContentSettingGetFunction>();
+  get_function->set_extension(extension().get());
+  value.reset(RunFunctionAndReturnSingleResult(get_function.get(),
+                                               kJavascriptGetParams,
+                                               browser()));
+  EXPECT_EQ(value->FindKey(
+      content_settings_api_constants::kContentSettingKey)->GetString(),
+      std::string("block"));
+
+  content_settings()->GetWebsiteSetting(
+      kBraveURL, kBraveURL,
+      CONTENT_SETTINGS_TYPE_JAVASCRIPT, std::string(), &info);
+  // Check source is user.
+  EXPECT_EQ(info.source,
+            content_settings::SettingSource::SETTING_SOURCE_USER);
+}
+
+}  // namespace extensions
