@@ -11,6 +11,7 @@
 #include "base/macros.h"
 
 #include "components/bookmarks/browser/bookmark_model_observer.h"
+#include "brave/components/brave_sync/jslib_messages.h" // To get nested enum SyncRecord::Action
 
 class Profile;
 
@@ -35,6 +36,14 @@ namespace storage {
 class Controller;
 class ControllerForBookmarksExports;
 
+class InitialBookmarkNodeInfo {
+public:
+  InitialBookmarkNodeInfo(){}
+  InitialBookmarkNodeInfo(const bookmarks::BookmarkNode* node, bool should_send) : node_(node), should_send_(should_send) {}
+  const bookmarks::BookmarkNode* node_ = nullptr;
+  bool should_send_ = true;
+};
+
 class Bookmarks : public bookmarks::BookmarkModelObserver {
 public:
   Bookmarks(ControllerForBookmarksExports *controller_exports);
@@ -46,8 +55,8 @@ public:
   const bookmarks::BookmarkNode* GetNodeById(const int64_t &bookmark_local_id);
 
   std::unique_ptr<jslib::SyncRecord> GetResolvedBookmarkValue(
-    const std::string &object_id/*,
-    const std::string &parent_object_id*/);
+    const std::string &object_id,
+    const jslib::SyncRecord::Action &action);
 
   // Requests from sync lib
   void AddBookmark(const jslib::SyncRecord &sync_record);
@@ -56,12 +65,13 @@ public:
 
   void GetAllBookmarks_DEPRECATED(std::vector<const bookmarks::BookmarkNode*> &nodes);
   std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
+
   void GetInitialBookmarksWithOrders(
-    std::vector<const bookmarks::BookmarkNode*> &nodes,
+    std::vector<InitialBookmarkNodeInfo> &nodes,
     std::map<const bookmarks::BookmarkNode*, std::string> &order_map);
 
   std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(
-    const std::vector<const bookmarks::BookmarkNode*> &list,
+    const std::vector<InitialBookmarkNodeInfo> &list,
     const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
     int action);
 
@@ -108,7 +118,7 @@ private:
   void GetInitialBookmarksWithOrdersWork(
     const bookmarks::BookmarkNode* this_parent_node,
     const std::string &this_node_order,
-    std::vector<const bookmarks::BookmarkNode*> &nodes,
+    std::vector<InitialBookmarkNodeInfo> &nodes,
     std::map<const bookmarks::BookmarkNode*, std::string> &order_map);
 
   void AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const std::string &s_parent_local_object_id);

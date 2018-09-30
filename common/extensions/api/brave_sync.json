@@ -117,7 +117,7 @@
           },
           "objectData": {
             "type": "string",
-            "description": "may be bookmark|device|historySite|siteSetting..."
+            "description": "may be bookmark|device|historySite|siteSetting"
           },
           "syncTimestamp": {
             "type": "number",

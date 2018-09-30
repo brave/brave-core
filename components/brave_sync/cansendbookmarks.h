@@ -14,6 +14,8 @@ namespace bookmarks {
 
 namespace brave_sync {
 
+class InitialBookmarkNodeInfo;
+
 class ControllerForBookmarksExports {
 public:
   virtual ~ControllerForBookmarksExports() = default;
@@ -21,7 +23,7 @@ public:
   // Not sure about to place it here or to have a separate interface
   virtual void CreateUpdateDeleteBookmarks(
     const int &action,
-    const std::vector<const bookmarks::BookmarkNode*> &list,
+    const std::vector<InitialBookmarkNodeInfo> &list,
     const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
     const bool &addIdsToNotSynced,
     const bool &isInitialSync) = 0;
@@ -34,7 +36,8 @@ public:
   virtual void BookmarkAdded(
     const int64_t &node_id,
     const int64_t &prev_item_id,
-    const int64_t &next_item_id) = 0;
+    const int64_t &next_item_id,
+    const int64_t &parent_id) = 0;
 
   virtual base::SequencedTaskRunner *GetTaskRunner() = 0;
 

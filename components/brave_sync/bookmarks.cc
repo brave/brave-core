@@ -106,7 +106,7 @@ std::unique_ptr<jslib::Bookmark> Bookmarks::GetFromNode(const bookmarks::Bookmar
 }
 
 std::unique_ptr<jslib::SyncRecord> Bookmarks::GetResolvedBookmarkValue(
-  const std::string &object_id) {
+  const std::string &object_id, const jslib::SyncRecord::Action &action) {
 
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::GetResolvedBookmarkValue object_id=<"<<object_id<<">";
 
@@ -135,9 +135,10 @@ std::unique_ptr<jslib::SyncRecord> Bookmarks::GetResolvedBookmarkValue(
   }
 
   auto record = std::make_unique<jslib::SyncRecord>();
-  record->action = jslib::SyncRecord::Action::CREATE;
+  record->action = action;
   record->deviceId = device_id_;
   record->objectId = object_id;
+  record->objectData = "bookmark";
 
   std::string node_order = sync_obj_map_->GetOrderByLocalObjectId(storage::ObjectMap::Type::Bookmark, local_object_id);
   std::string parent_local_object_id;
@@ -580,11 +581,16 @@ void Bookmarks::GetAllBookmarks_DEPRECATED(std::vector<const bookmarks::Bookmark
 }
 
 void Bookmarks::GetInitialBookmarksWithOrders(
-  std::vector<const bookmarks::BookmarkNode*> &nodes,
+  std::vector<InitialBookmarkNodeInfo> &nodes,
   std::map<const bookmarks::BookmarkNode*, std::string> &order_map) {
   DCHECK(nodes.empty());
   DCHECK(order_map.empty());
   DCHECK(!base_order_.empty());
+
+  LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrders: model_->root_node()" << model_->root_node();
+  LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrders: model_->bookmark_bar_node()" << model_->bookmark_bar_node();
+  LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrders: model_->other_node()" << model_->other_node();
+  LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrders: model_-> mobile_node()" << model_->mobile_node();
 
   GetInitialBookmarksWithOrdersWork(model_->root_node(), base_order_, nodes, order_map);
 }
@@ -592,19 +598,32 @@ void Bookmarks::GetInitialBookmarksWithOrders(
 void Bookmarks::GetInitialBookmarksWithOrdersWork(
   const bookmarks::BookmarkNode* this_parent_node,
   const std::string &this_node_order,
-  std::vector<const bookmarks::BookmarkNode*> &nodes,
+  std::vector<InitialBookmarkNodeInfo> &nodes,
   std::map<const bookmarks::BookmarkNode*, std::string> &order_map) {
+
+  LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrdersWork: this_parent_node->child_count()" << this_parent_node->child_count();
 
   for (int i = 0; i < this_parent_node->child_count(); ++i) {
     const bookmarks::BookmarkNode* node = this_parent_node->GetChild(i);
     std::string node_order = this_node_order + "." + std::to_string(i + 1); // Index goes from 0, order goes from 0, so "+ 1"
 
-    if (!model_->is_permanent_node(node)) {
-      // Ignoring permanent nodes: 'bookmark bar', 'other' or 'mobile' node.
+    if (node != model_->root_node()) {
+      // Permanent nodes: 'bookmark bar', 'other' or 'mobile' will not be sent to sync backend, just save order.
       // Because they are childeren of root node and we are not allowed
       // to add anything into 'root' bookmark node directly.
       // See BookmarkModel::AddFolderWithMetaInfo or BookmarkModel::AddURLWithCreationTimeAndMetaInfo
-      nodes.push_back(node);
+
+      if (model_->is_permanent_node(node)) {
+        LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrdersWork: PERM NODE ptr=" << node;
+        LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrdersWork: PERM NODE id=" << node->id();
+        LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrdersWork: PERM NODE tittle=" << node->GetTitledUrlNodeTitle();
+        LOG(ERROR) << "TAGAB GetInitialBookmarksWithOrdersWork: PERM NODE order=" << node_order;
+      }
+
+      InitialBookmarkNodeInfo info;
+      info.node_ = node;
+      info.should_send_ = !model_->is_permanent_node(node);
+      nodes.push_back(info);
     }
     // In anyway, even for permanent node, save node to order the map
     order_map[node] = node_order;
@@ -616,7 +635,7 @@ void Bookmarks::GetInitialBookmarksWithOrdersWork(
 }
 
 std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
-  const std::vector<const bookmarks::BookmarkNode*> &list,
+  const std::vector<InitialBookmarkNodeInfo> &list,
   const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
   int action) {
   LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords:";
@@ -627,9 +646,11 @@ std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
     LOG(ERROR) << "TAGAB <" << the_pair.first << "> => <" << the_pair.second << ">";
   }
 
-  for (const bookmarks::BookmarkNode* node : list) {
+  for (const InitialBookmarkNodeInfo &info : list) {
+    const bookmarks::BookmarkNode* node = info.node_;
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: node=" << node;
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: node->parent()=" << node->parent();
+    LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: node->title=" << node->GetTitledUrlNodeTitle();
 
     int64_t parent_folder_id = node->parent() ? node->parent()->id() : -1;
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: parent_folder_id=" << parent_folder_id;
@@ -638,7 +659,7 @@ std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
     if (parent_folder_id != -1) {
       if (!order_map.empty()) {
         const auto &it_node_parent_pair = order_map.find(node->parent());
-        DCHECK(it_node_parent_pair != order_map.end());
+        DCHECK(it_node_parent_pair != order_map.end()  || info.should_send_ == false);
         if (it_node_parent_pair != order_map.end()) {
           const std::string parent_node_order = order_map.at(node->parent()); // Segmentation fault here, because there is no such item
           parent_folder_object_sync_id = GetOrCreateObjectByLocalId(parent_folder_id, parent_node_order);
@@ -662,6 +683,11 @@ std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
     std::string object_id = GetOrCreateObjectByLocalId(node->id(), node_order);
     LOG(ERROR) << "TAGAB NativeBookmarksToSyncLV: object_id=<" << object_id << ">";
     CHECK(!object_id.empty());
+
+    if (!info.should_send_) {
+      LOG(ERROR) << "TAGAB NativeBookmarksToSyncRecords: (!info.should_send_) for " << node->GetTitledUrlNodeTitle();
+      continue;
+    }
 
     std::unique_ptr<jslib::SyncRecord> record = std::make_unique<jslib::SyncRecord>();
     record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
@@ -816,7 +842,8 @@ void Bookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
     base::Bind(&ControllerForBookmarksExports::BookmarkAdded, base::Unretained(controller_exports_),
     node->id(),
     prev_item_id,
-    next_item_id)
+    next_item_id,
+    parent->id())
   );
 }
 
@@ -862,7 +889,7 @@ void Bookmarks::BookmarkNodeRemoved(
   // This line below works or a single bookmark but should be checked for the folder
 
   controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionDelete,
-    {node}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
+    {InitialBookmarkNodeInfo(node, true)}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
 
   //=> File task
   // node can be dead
@@ -889,7 +916,7 @@ void Bookmarks::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeChanged node->GetTitle()=" << node->GetTitle();
 
   controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionUpdate,
-     {node}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
+     {InitialBookmarkNodeInfo(node, true)}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
 }
 
 void Bookmarks::BookmarkNodeFaviconChanged(bookmarks::BookmarkModel* model,

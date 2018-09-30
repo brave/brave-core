@@ -48,6 +48,7 @@ class Controller;
 class Settings;
 class Bookmarks;
 class History;
+class InitialBookmarkNodeInfo;
 
 class ControllerImpl : public Controller,
                        public SyncLibToBrowserHandler,
@@ -126,7 +127,7 @@ private:
 
   void CreateUpdateDeleteBookmarksFileWork(
     const int &action,
-    const std::vector<const bookmarks::BookmarkNode*> &list,
+    const std::vector<InitialBookmarkNodeInfo> &list,
     const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
     const bool &addIdsToNotSynced,
     const bool &isInitialSync);
@@ -137,6 +138,8 @@ private:
   void OnResetSyncFileWork(const std::string &device_id);
   void OnResetSyncPostFileUiWork();
 
+  void OnSaveBookmarkOrderInternal(const std::string &order,
+    const int64_t &node_id, const int &action);
   void OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t &bookmark_local_id, const std::string &order, const int &action);
 
   // Other private methods
@@ -160,7 +163,7 @@ private:
   // CanSendBookMarks overrides
   void CreateUpdateDeleteBookmarks(
     const int &action,
-    const std::vector<const bookmarks::BookmarkNode*> &list,
+    const std::vector<InitialBookmarkNodeInfo> &list,
     const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
     const bool &addIdsToNotSynced,
     const bool &isInitialSync) override;
@@ -178,12 +181,14 @@ private:
   void BookmarkAdded(
     const int64_t &node_id,
     const int64_t &prev_item_id,
-    const int64_t &next_item_id) override;
+    const int64_t &next_item_id,
+    const int64_t &parent_id) override;
 
   void BookmarkAddedQueryNewOrderUiWork(
     const int64_t &node_id,
     const std::string &prev_item_order,
-    const std::string &next_item_order);
+    const std::string &next_item_order,
+    const std::string &parent_folder_order);
 
   void CreateUpdateDeleteHistorySites(
     const int &action,
