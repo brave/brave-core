@@ -105,6 +105,15 @@ void BraveSyncEventRouter::ResolveSyncRecords(const std::string &category_name,
     return;
   }
 
+  for (const auto & entry : records_and_existing_objects) {
+    DCHECK(!entry.server_record.object_data.empty());
+    DCHECK(!entry.local_record || (entry.local_record->object_data == "bookmark" ||
+      entry.local_record->object_data == "device" ||
+      entry.local_record->object_data == "historySite" ||
+      entry.local_record->object_data == "siteSetting"
+    ));
+  }
+
   std::unique_ptr<base::ListValue> args(
      extensions::api::brave_sync::OnResolveSyncRecords::Create(category_name, records_and_existing_objects)
        .release());

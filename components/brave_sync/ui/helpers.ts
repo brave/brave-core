@@ -14,7 +14,15 @@ export const setActions = (newActions: any) => actions = newActions
  * @param {string} seed - the seed received by the sync back-end
  */
 export const generateQRCodeImageSource = (seed: string) => {
-  const image = qr.image(Buffer.from(seed).toString('hex'))
+  var arr_int = seed.split(',').map(Number);
+  let toHexString = (byteArray: Array<Number>) => {
+   return Array.from(byteArray, function(byte: number) {
+     return ('0'.concat((byte & 0xFF).toString(16)) ).slice(-2);
+   }).join('')
+  }
+  var s = toHexString(arr_int);
+  const image = qr.image(s)
+
   try {
     let chunks: Array<Uint8Array> = []
     image
