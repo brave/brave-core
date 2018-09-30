@@ -8,7 +8,10 @@ source_set("renderer") {
     "brave_shields_content_setting.h",
   ]
 
-  # Didn't add any dependencies because sources of this target
-  # will compiled together with //extensions/renderer target and these files
-  # doesn't add additional dependencies.
+  deps = [
+    "//base",
+    "//extensions/common",
+    "//extensions/common/api",
+    "//gin",
+  ]
 }
