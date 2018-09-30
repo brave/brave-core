@@ -10,12 +10,11 @@
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
-#include "brave/browser/ui/webui/sync/sync_ui_impl.h"
+#include "brave/browser/ui/webui/sync/sync_ui.h"
 
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/common/url_constants.h"
-#include "components/grit/brave_components_resources.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -43,8 +42,7 @@ template<>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   if (host == kBraveUISyncHost) {
-    return new SyncUIImpl(web_ui, url.host(), kBraveSyncJS,
-        IDR_BRAVE_SYNC_JS, IDR_BRAVE_SYNC_HTML);
+    return new SyncUI(web_ui, url.host());
   } else
   if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());

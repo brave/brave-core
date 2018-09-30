@@ -148,21 +148,27 @@ std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
 
 void Prefs::SetLatestRecordTime(const base::Time &time) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  LOG(ERROR) << "TAGAB SetLatestRecordTime time=<"<<time<<"> ToJsTime()=" << time.ToJsTime() << " casted=" << base::checked_cast<int64_t>(time.ToJsTime());
   pref_service_->SetTime(kLatestRecordTime, time);
 }
 
 base::Time Prefs::GetLatestRecordTime() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  const auto time = pref_service_->GetTime(kLatestRecordTime);
+  LOG(ERROR) << "TAGAB GetLatestRecordTime time=<"<<time<<"> ToJsTime()=" << time.ToJsTime() << " casted=" << base::checked_cast<int64_t>(time.ToJsTime());
   return pref_service_->GetTime(kLatestRecordTime);
 }
 
 void Prefs::SetLastFetchTime(const base::Time &time) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  LOG(ERROR) << "TAGAB SetLastFetchTime time=<"<<time<<"> ToJsTime()=" << time.ToJsTime() << " casted=" << base::checked_cast<int64_t>(time.ToJsTime());
   pref_service_->SetTime(kLastFetchTime, time);
 }
 
 base::Time Prefs::GetLastFetchTime() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  const auto time = pref_service_->GetTime(kLastFetchTime);
+  LOG(ERROR) << "TAGAB GetLastFetchTime time=<"<<time<<"> ToJsTime()=" << time.ToJsTime() << " casted=" << base::checked_cast<int64_t>(time.ToJsTime());
   return pref_service_->GetTime(kLastFetchTime);
 }
 

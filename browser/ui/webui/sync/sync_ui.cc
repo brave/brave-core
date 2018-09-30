@@ -1,0 +1,267 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+#include "brave/browser/ui/webui/sync/sync_ui.h"
+
+#include "base/bind.h"
+#include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_sync/controller.h"
+#include "brave/components/brave_sync/controller_factory.h"
+#include "brave/components/brave_sync/controller_observer.h"
+#include "brave/components/brave_sync/debug.h"
+#include "brave/components/brave_sync/devices.h"
+#include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/values_conv.h"
+#include "brave/components/brave_sync/value_debug.h"
+#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/web_ui_message_handler.h"
+#include "components/grit/brave_components_resources.h"
+
+using content::WebUIMessageHandler;
+
+namespace {
+
+// The handler for Javascript messages for Brave about: pages
+class SyncUIDOMHandler : public WebUIMessageHandler,
+                          public brave_sync::ControllerObserver {
+ public:
+  SyncUIDOMHandler() {};
+  ~SyncUIDOMHandler() override;
+
+  void Init();
+
+  // WebUIMessageHandler implementation.
+  void RegisterMessages() override;
+
+ private:
+  void SetupSyncHaveCode(const base::ListValue* args);
+  void SetupSyncNewToSync(const base::ListValue* args);
+  void PageLoaded(const base::ListValue* args);
+  void NeedSyncWords(const base::ListValue* args);
+  void NeedSyncQRcode(const base::ListValue* args);
+  void SyncThisDevice(const base::ListValue* args);
+  void SyncBookmarks(const base::ListValue* args);
+  void SyncBrowsingHistory(const base::ListValue* args);
+  void SyncSavedSiteSettings(const base::ListValue* args);
+  void DeleteDevice(const base::ListValue* args);
+  void ResetSync(const base::ListValue* args);
+
+  void OnSyncStateChanged(brave_sync::Controller *sync_controller) override;
+  void OnHaveSyncWords(brave_sync::Controller *sync_controller, const std::string &sync_words) override;
+  void OnLogMessage(brave_sync::Controller *sync_controller, const std::string &message) override;
+
+  // this should grab actual data from controller and update the page
+  void LoadSyncSettingsView();
+
+  // Move to observer
+  void GetSettingsAndDevicesComplete(
+    std::unique_ptr<brave_sync::Settings> settings,
+    std::unique_ptr<brave_sync::SyncDevices> devices);
+
+  brave_sync::Controller *sync_controller_;  // NOT OWNED
+
+  DISALLOW_COPY_AND_ASSIGN(SyncUIDOMHandler);
+};
+
+SyncUIDOMHandler::~SyncUIDOMHandler() {
+  if (sync_controller_)
+    sync_controller_->RemoveObserver(this);
+}
+
+void SyncUIDOMHandler::RegisterMessages() {
+  this->web_ui()->RegisterMessageCallback("setupSyncHaveCode",
+     base::Bind(&SyncUIDOMHandler::SetupSyncHaveCode,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("setupSyncNewToSync",
+     base::Bind(&SyncUIDOMHandler::SetupSyncNewToSync,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("pageLoaded",
+     base::Bind(&SyncUIDOMHandler::PageLoaded,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("needSyncWords",
+     base::Bind(&SyncUIDOMHandler::NeedSyncWords,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("needSyncQRcode",
+     base::Bind(&SyncUIDOMHandler::NeedSyncQRcode,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("syncThisDevice",
+     base::Bind(&SyncUIDOMHandler::SyncThisDevice,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("syncBookmarks",
+     base::Bind(&SyncUIDOMHandler::SyncBookmarks,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("syncBrowsingHistory",
+     base::Bind(&SyncUIDOMHandler::SyncBrowsingHistory,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("syncSavedSiteSettings",
+     base::Bind(&SyncUIDOMHandler::SyncSavedSiteSettings,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("deleteDevice",
+     base::Bind(&SyncUIDOMHandler::DeleteDevice,
+                base::Unretained(this)));
+
+  this->web_ui()->RegisterMessageCallback("resetSync",
+     base::Bind(&SyncUIDOMHandler::ResetSync,
+                base::Unretained(this)));
+}
+
+void SyncUIDOMHandler::Init() {
+  Profile* profile = Profile::FromWebUI(web_ui());
+  sync_controller_ = brave_sync::ControllerFactory::GetForBrowserContext(profile);
+  if (sync_controller_)
+    sync_controller_->AddObserver(this);
+}
+
+void SyncUIDOMHandler::SetupSyncHaveCode(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::SetupSyncHaveCode";
+  std::string sync_words, device_name;
+  if (!args->GetString(0, &sync_words) || !args->GetString(1, &device_name))
+   return;
+
+  LOG(ERROR) << "SyncUIDOMHandler::SetupSyncHaveCode sync_words=" << sync_words;
+  LOG(ERROR) << "SyncUIDOMHandler::SetupSyncHaveCode device_name=" << device_name;
+
+  sync_controller_->OnSetupSyncHaveCode(sync_words, device_name);
+}
+
+void SyncUIDOMHandler::SetupSyncNewToSync(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::SetupSyncNewToSync";
+  std::string sync_words, device_name;
+  if (!args->GetString(0, &device_name)) {
+   return;
+  }
+
+  LOG(ERROR) << "SyncUIDOMHandler::SetupSyncHaveCode device_name=" << device_name;
+
+  sync_controller_->OnSetupSyncNewToSync(device_name);
+}
+
+void SyncUIDOMHandler::PageLoaded(const base::ListValue* args) {
+LOG(ERROR) << "SyncUIDOMHandler::PageLoaded";
+  LoadSyncSettingsView();
+}
+
+void SyncUIDOMHandler::NeedSyncWords(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::NeedSyncWords";
+  sync_controller_->GetSyncWords();
+  // sync_controller will fire async sync_ui_exports.haveSyncWords when it will
+  // have the words ready
+}
+
+void SyncUIDOMHandler::NeedSyncQRcode(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::NeedSyncQRcode";
+  std::string seed = sync_controller_->GetSeed();
+  LOG(ERROR) << "SyncUIDOMHandler::NeedSyncQRcode seed=<" << seed << ">";
+  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.haveSeedForQrCode", base::Value(seed));
+}
+
+void SyncUIDOMHandler::SyncThisDevice(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::SyncThisDevice";
+  bool new_value;
+  if (!args->GetBoolean(0, &new_value)) {
+    return;
+  }
+  sync_controller_->OnSetSyncThisDevice(new_value);
+}
+
+void SyncUIDOMHandler::SyncBookmarks(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::SyncBookmarks";
+  bool new_value;
+  if (!args->GetBoolean(0, &new_value)) {
+    return;
+  }
+  sync_controller_->OnSetSyncBookmarks(new_value);
+}
+
+void SyncUIDOMHandler::SyncBrowsingHistory(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::SyncBrowsingHistory";
+  bool new_value;
+  if (!args->GetBoolean(0, &new_value)) {
+    return;
+  }
+  sync_controller_->OnSetSyncBrowsingHistory(new_value);
+}
+
+void SyncUIDOMHandler::SyncSavedSiteSettings(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::SyncSavedSiteSettings";
+  bool new_value;
+  if (!args->GetBoolean(0, &new_value)) {
+    return;
+  }
+  sync_controller_->OnSetSyncSavedSiteSettings(new_value);
+}
+
+void SyncUIDOMHandler::DeleteDevice(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::DeleteDevice args=" << brave::debug::ToPrintableString(*args);
+
+  std::string device_id;
+  if (!args->GetString(0, &device_id)) {
+    return;
+  }
+  LOG(ERROR) << "SyncUIDOMHandler::DeleteDevice device_id=" << device_id;
+  sync_controller_->OnDeleteDevice(device_id);
+}
+
+void SyncUIDOMHandler::ResetSync(const base::ListValue* args) {
+  LOG(ERROR) << "SyncUIDOMHandler::ResetSync args=" << brave::debug::ToPrintableString(*args);
+
+  sync_controller_->OnResetSync();
+}
+
+void SyncUIDOMHandler::OnLogMessage(brave_sync::Controller *sync_controller, const std::string &message) {
+  LOG(ERROR) << "SyncUIDOMHandler::LogMessage message=<" << message << ">";
+  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.logMessage", base::Value(message));
+}
+
+void SyncUIDOMHandler::OnSyncStateChanged(brave_sync::Controller *sync_controller) {
+LOG(ERROR) << "SyncUIDOMHandler::OnSyncStateChanged";
+  LoadSyncSettingsView();
+}
+
+void SyncUIDOMHandler::LoadSyncSettingsView() {
+LOG(ERROR) << "SyncUIDOMHandler::LoadSyncSettingsView " << GetThreadInfoString();
+
+  sync_controller_->GetSettingsAndDevices(base::Bind(&SyncUIDOMHandler::GetSettingsAndDevicesComplete, base::Unretained(this)) );
+}
+
+void SyncUIDOMHandler::GetSettingsAndDevicesComplete(
+  std::unique_ptr<brave_sync::Settings> settings,
+  std::unique_ptr<brave_sync::SyncDevices> devices) {
+  LOG(ERROR) << "SyncUIDOMHandler::GetSettingsAndDevicesComplete " << GetThreadInfoString();
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  std::unique_ptr<base::Value> bv_devices = devices->ToValueArrOnly();
+  LOG(ERROR) << "SyncUIDOMHandler::GetSettingsAndDevicesComplete bv_devices: " << brave::debug::ToPrintableString(*bv_devices);
+  std::unique_ptr<base::Value> bv_settings = brave_sync::BraveSyncSettingsToValue(settings.get());
+  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.showSettings", *bv_settings, *bv_devices);
+}
+
+void SyncUIDOMHandler::OnHaveSyncWords(brave_sync::Controller *sync_controller, const std::string &sync_words) {
+LOG(ERROR) << "SyncUIDOMHandler::OnHaveSyncWords sync_words="<<sync_words;
+  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.haveSyncWords", base::Value(sync_words));
+}
+
+} // namespace
+
+SyncUI::SyncUI(content::WebUI* web_ui, const std::string& name)
+    : BasicUI(web_ui, name, kBraveSyncJS,
+        IDR_BRAVE_SYNC_JS, IDR_BRAVE_SYNC_HTML) {
+
+  auto handler_owner = std::make_unique<SyncUIDOMHandler>();
+  SyncUIDOMHandler * handler = handler_owner.get();
+  web_ui->AddMessageHandler(std::move(handler_owner));
+  handler->Init();
+}
+
+SyncUI::~SyncUI() {
+}
