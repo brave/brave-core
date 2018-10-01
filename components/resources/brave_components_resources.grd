@@ -347,7 +347,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT2" desc="">3 ways to fill your wallet:</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT3" desc="">You can add funds.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT4" desc="">You can earn tokens from Brave Ads.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT5" desc="">Occasionally, you be offered token grants from Brave. So keep an eye out for the offer!</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT5" desc="">Occasionally, you'll be offered token grants from Brave. So keep an eye out for the offer!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT1" desc="">Get Rewarded for Browsing!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2" desc="">Earn tokens for your attention to ads and pay it forward to support content creators you value!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT1" desc="">Add, withdraw and manage funds at</message>
@@ -357,7 +357,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT1" desc="">Restore your Wallet</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Enter the recovery key to restore your Brave wallet. Make sure that the current wallet doesn’t have any balance or is backed up safely. Restoring a wallet replaces the current wallet and you will loose any balance if you don’t back up its recovery key.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Enter your recovery key or</message>
-      <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
+      <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Transactions by Category</message>
       <message name="IDS_BRAVE_UI_REWARDS_WHY" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all {{numItems}} items</message>
@@ -368,10 +368,10 @@
       <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
       <message name="IDS_BRAVE_UI_SITES" desc="">sites</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
-      <message name="IDS_BRAVE_UI_TITLE_BAT" desc="">Basic Attention token (BAT)</message>
+      <message name="IDS_BRAVE_UI_TITLE_BAT" desc="">Basic Attention Token (BAT)</message>
       <message name="IDS_BRAVE_UI_TITLE_BTC" desc="">BitCoin (BTC)</message>
-      <message name="IDS_BRAVE_UI_TITLE_ETH" desc="">Etherium (ETH)</message>
-      <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">Lite Coin (LTC)</message>
+      <message name="IDS_BRAVE_UI_TITLE_ETH" desc="">Ethereum (ETH)</message>
+      <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">LiteCoin (LTC)</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grant</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
