@@ -23,20 +23,15 @@ const colors: Record<Type, string> = {
 export const StyledCard = styled(Card as ComponentType<CardProps>)`
   margin-bottom: 28px;
   font-family: Poppins, sans-serif;
-  overflow: hidden;
 `
 
 export const StyledFlip = styled<StyleProps, 'div'>('div')`
-  display: flex;
-  width: 200%;
-  overflow: hidden;
+  display: block;
 `
 
 export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
-  display: flex;
-  flex-basis: 50%;
-  margin-left: ${p => p.open ? '0' : '-50%'};
   flex-wrap: wrap;
+  display: ${p => p.open ? 'flex' : 'none'};
 `
 
 export const StyledLeft = styled<{}, 'div'>('div')`
@@ -97,7 +92,7 @@ export const StyledContent = styled<{}, 'div'>('div')`
 export const StyledSettingsWrapper = styled<StyleProps, 'div'>('div')`
   background: #fff;
   overflow: hidden;
-  flex-basis: 50%;
+  display: ${p => p.open ? 'block' : 'none'};
 `
 
 export const StyledSettingsClose = styled<StyleProps, 'button'>('button')`

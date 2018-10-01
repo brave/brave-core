@@ -123,23 +123,18 @@ export default class Box extends React.PureComponent<Props, State> {
               }
             </StyledContent>
           </StyledContentWrapper>
-          {
-            !isDisabled
-            ? <StyledSettingsWrapper open={this.state.settingsOpened}>
-              <StyledSettingsClose onClick={this.settingsClick} open={this.state.settingsOpened}>
-                <CloseStrokeIcon />
-              </StyledSettingsClose>
-              <StyledSettingsTitle>
-                <StyledSettingsIcon>
-                  <SettingsIcon />
-                </StyledSettingsIcon>
-                <StyledSettingsText>{this.getSettingsTitle(title)}</StyledSettingsText>
-              </StyledSettingsTitle>
-              {settingsChild}
-            </StyledSettingsWrapper>
-            : null
-          }
-
+          <StyledSettingsWrapper open={this.state.settingsOpened}>
+            <StyledSettingsClose onClick={this.settingsClick} open={this.state.settingsOpened}>
+              <CloseStrokeIcon />
+            </StyledSettingsClose>
+            <StyledSettingsTitle>
+              <StyledSettingsIcon>
+                <SettingsIcon />
+              </StyledSettingsIcon>
+              <StyledSettingsText>{this.getSettingsTitle(title)}</StyledSettingsText>
+            </StyledSettingsTitle>
+            {settingsChild}
+          </StyledSettingsWrapper>
         </StyledFlip>
       </StyledCard>
     )
