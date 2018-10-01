@@ -79,7 +79,9 @@ class RewardsService : public KeyedService {
   virtual void SetAutoContribute(bool enabled) const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t& timer_id) = 0;
   virtual std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() = 0;
+  virtual void GetCurrentBalanceReport() = 0;
   virtual bool IsWalletCreated() = 0;
+  virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

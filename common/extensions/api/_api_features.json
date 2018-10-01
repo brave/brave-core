@@ -63,5 +63,13 @@
     "dependencies": ["manifest:sockets"],
     "contexts": ["blessed_extension"],
     "whitelist": ["3D9518A72EB02667A773B69DBA9E72E0F4A37423"]
+  },
+  "braveRewards": {
+    "channel": "stable",
+    "dependencies": [],
+    "contexts": ["blessed_extension"],
+    "whitelist": [
+      "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
+    ]
   }
 }

@@ -2,6 +2,8 @@ import("//build/config/features.gni")
 
 source_set("extensions") {
   sources = [
+    "api/brave_rewards_api.cc",
+    "api/brave_rewards_api.h",
     "api/brave_shields_api.cc",
     "api/brave_shields_api.h",
     "api/settings_private/brave_prefs_util.cc",
@@ -31,7 +33,7 @@ source_set("extensions") {
   deps = [
     "//brave/browser/resources:brave_extension_grit",
     "//brave/common/extensions/api",
-    "//brave/components/brave_rewards:resources",
+    "//brave/components/brave_rewards/extension:resources",
     "//brave/components/brave_webtorrent:resources",
     "//chrome/browser",
     "//content/public/browser",

@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 4865a69fe984b428c4b6591d11d778e6c2669d2d..2665bac61335b60ef60d0f8eca15acbf5405a295 100644
+index 4865a69fe984b428c4b6591d11d778e6c2669d2d..49e92b60ff1cafb14cccf620af09cd517e212f38 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -181,6 +181,10 @@ if (!is_android && !is_mac) {
@@ -92,7 +92,7 @@ index 4865a69fe984b428c4b6591d11d778e6c2669d2d..2665bac61335b60ef60d0f8eca15acbf
        deps += [ ":default_apps" ]
      }
 +    if (brave_chromium_build) {
-+      deps += [ "//brave/vendor/brave-extension:brave_extension_framework_bundle_data", ]
++      deps += [ "//brave:framework_bundle_data", ]
 +      if (defined(chrome_framework_version)) { framework_contents += [ "Frameworks", ] }
 +    }
  
