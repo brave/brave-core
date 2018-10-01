@@ -82,6 +82,7 @@
       <!-- WebUI welcome page resources -->
       <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
       <include name="IDR_BRAVE_WELCOME_JS" file="${root_gen_dir}/brave/brave_welcome.bundle.js" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_WELCOME_FAVICON" file="../img/welcome/favicon.ico" type="BINDATA" />
 
       <include name="IDR_BRAVE_WELCOME_SLIDE_1_IMAGE" file="../img/welcome/brave_logo.png" type="BINDATA" />
       <include name="IDR_BRAVE_WELCOME_SLIDE_2_IMAGE" file="../img/welcome/features.png" type="BINDATA" />
