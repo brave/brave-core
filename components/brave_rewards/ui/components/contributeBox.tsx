@@ -247,6 +247,7 @@ class ContributeBox extends React.Component<Props, State> {
           numSites={numRows}
           onShowAll={this.onModalContributeToggle}
           headerColor={true}
+          showRemove={true}
         >
           {getLocale('contributionVisitSome')}
         </TableContribute>
