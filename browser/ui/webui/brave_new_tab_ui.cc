@@ -54,6 +54,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
   pref_change_registrar_->Add(kHttpsUpgrades,
     base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(kUseAlternatePrivateSearchEngine,
+    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
 
   web_ui->AddMessageHandler(std::make_unique<NewTabDOMHandler>());
 }
