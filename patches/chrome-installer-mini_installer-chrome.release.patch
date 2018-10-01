@@ -1,17 +1,18 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index 29da523563d3dbbe773f8843dc17db9310016311..5555da9c8d9e1f44257d815c94b7acd9db711b47 100644
+index 29da523563d3dbbe773f8843dc17db9310016311..1e982aaaed60f301810cad40ffb32110c34ffc7a 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
-@@ -6,7 +6,7 @@
+@@ -6,7 +6,8 @@
  #
  # Chrome Application dir entries, sorted alphabetically.
  #
 -chrome.exe: %(ChromeDir)s\
 +brave.exe: %(ChromeDir)s\
++brave.exe.sig: %(ChromeDir)s\
  #
  # Chrome version dir assembly manifest.
  # The name of this file must match the name of the version dir, so we cannot
-@@ -18,6 +18,8 @@ chrome.exe: %(ChromeDir)s\
+@@ -18,6 +19,8 @@ chrome.exe: %(ChromeDir)s\
  # Chrome version dir entries, sorted alphabetically.
  #
  chrome.dll: %(VersionDir)s\
@@ -20,7 +21,7 @@ index 29da523563d3dbbe773f8843dc17db9310016311..5555da9c8d9e1f44257d815c94b7acd9
  chrome_100_percent.pak: %(VersionDir)s\
  chrome_child.dll: %(VersionDir)s\
  chrome_elf.dll: %(VersionDir)s\
-@@ -68,6 +70,7 @@ swiftshader\libGLESv2.dll: %(VersionDir)s\swiftshader\
+@@ -68,6 +71,7 @@ swiftshader\libGLESv2.dll: %(VersionDir)s\swiftshader\
  
  [HIDPI]
  chrome_200_percent.pak: %(VersionDir)s\
