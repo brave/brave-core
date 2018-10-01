@@ -167,7 +167,7 @@ class SearchEngines {
     }
 
     fileprivate func customEngineFilePath() -> String {
-        let profilePath = try! self.fileAccessor.getAndEnsureDirectory() as NSString
+        let profilePath = try! self.fileAccessor.getAndEnsureDirectory() as NSString // swiftlint:disable:this force_try
         return profilePath.appendingPathComponent(customSearchEnginesFileName)
     }
 

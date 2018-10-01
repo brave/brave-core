@@ -16,9 +16,9 @@ private struct HistoryViewControllerUX {
 }
 
 class HistoryViewController: SiteTableViewController {
-  weak var linkNavigationDelegate: LinkNavigationDelegate? = nil
+  weak var linkNavigationDelegate: LinkNavigationDelegate?
   fileprivate lazy var emptyStateOverlayView: UIView = self.createEmptyStateOverview()
-  var frc: NSFetchedResultsController<NSFetchRequestResult>?
+  var frc: NSFetchedResultsController<History>?
   
   let tabState: TabState
   
@@ -111,7 +111,7 @@ class HistoryViewController: SiteTableViewController {
       cell.addGestureRecognizer(lp)
     }
     
-    let site = frc!.object(at: indexPath) as! History
+    let site = frc!.object(at: indexPath)
     cell.backgroundColor = UIColor.clear
     cell.setLines(site.title, detailText: site.url)
     
@@ -122,8 +122,7 @@ class HistoryViewController: SiteTableViewController {
     
     if let faviconMO = site.domain?.favicon, let urlString = faviconMO.url, let url = URL(string: urlString), let siteUrlString = site.url, let siteUrl = URL(string: siteUrlString) {
       setCellImage(cell, iconUrl: url, cacheWithUrl: siteUrl)
-    }
-    else if let urlString = site.url, let siteUrl = URL(string: urlString) {
+    } else if let urlString = site.url, let siteUrl = URL(string: urlString) {
       if ImageCache.shared.hasImage(siteUrl, type: .square) {
         // no relationship - check cache for icon which may have been stored recently for url.
         ImageCache.shared.image(siteUrl, type: .square, callback: { (image) in
@@ -131,16 +130,14 @@ class HistoryViewController: SiteTableViewController {
             cell.imageView?.image = image
           }
         })
-      }
-      else {
+      } else {
         // no relationship - attempt to resolove domain problem
         let context = DataController.mainThreadContext
         if let domain = Domain.getOrCreateForUrl(siteUrl, context: context), let faviconMO = domain.favicon, let urlString = faviconMO.url, let url = URL(string: urlString) {
           DispatchQueue.main.async {
             self.setCellImage(cell, iconUrl: url, cacheWithUrl: siteUrl)
           }
-        }
-        else {
+        } else {
           // last resort - download the icon
           downloadFaviconsAndUpdateForUrl(siteUrl, indexPath: indexPath)
         }
@@ -162,8 +159,7 @@ class HistoryViewController: SiteTableViewController {
         DispatchQueue.main.async {
           cell.imageView?.image = image
         }
-      }
-      else {
+      } else {
         DispatchQueue.main.async {
           cell.imageView?.sd_setImage(with: iconUrl, completed: { (img, err, type, url) in
             guard let img = img else {
@@ -180,9 +176,9 @@ class HistoryViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let site = frc?.object(at: indexPath) as! History
+    let site = frc?.object(at: indexPath)
     
-    if let u = site.url, let url = URL(string: u) {
+    if let u = site?.url, let url = URL(string: u) {
       linkNavigationDelegate?.linkNavigatorDidSelectURL(url: url, visitType: .typed)
     }
     tableView.deselectRow(at: indexPath, animated: true)
@@ -207,15 +203,15 @@ class HistoryViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    if (editingStyle == UITableViewCellEditingStyle.delete) {
-      if let obj = self.frc?.object(at: indexPath) as? History {
+    if editingStyle == .delete {
+      if let obj = self.frc?.object(at: indexPath) {
         obj.remove(save: true)
       }
     }
   }
 }
 
-extension HistoryViewController : NSFetchedResultsControllerDelegate {
+extension HistoryViewController: NSFetchedResultsControllerDelegate {
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     tableView.beginUpdates()
   }
@@ -232,12 +228,12 @@ extension HistoryViewController : NSFetchedResultsControllerDelegate {
     case .delete:
       let sectionIndexSet = IndexSet(integer: sectionIndex)
       self.tableView.deleteSections(sectionIndexSet, with: .fade)
-    default: break;
+    default: break
     }
   }
   
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-    switch (type) {
+    switch type {
     case .insert:
       if let indexPath = newIndexPath {
         tableView.insertRows(at: [indexPath], with: .automatic)
@@ -271,7 +267,7 @@ extension HistoryViewController {
     guard gesture.state == .began,
       let cell = gesture.view as? UITableViewCell,
       let indexPath = tableView.indexPath(for: cell),
-      let history = frc?.object(at: indexPath) as? History else {
+      let history = frc?.object(at: indexPath) else {
         return
     }
     

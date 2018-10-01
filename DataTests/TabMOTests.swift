@@ -111,7 +111,6 @@ class TabMOTests: CoreDataTestCase {
         XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
         DataController.remove(object: object)
         
-        
         // FIXME: This fails most of the times.
         XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
     }
@@ -202,7 +201,7 @@ class TabMOTests: CoreDataTestCase {
 private extension UIImage {
     class func sampleImage() -> UIImage {
         let color = UIColor.blue
-        let rect = CGRect(origin: CGPoint(x: 0, y:0), size: CGSize(width: 1, height: 1))
+        let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 1, height: 1))
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()!
         

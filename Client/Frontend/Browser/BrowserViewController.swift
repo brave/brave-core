@@ -113,11 +113,11 @@ class BrowserViewController: UIViewController {
     // Keep track of allowed `URLRequest`s from `webView(_:decidePolicyFor:decisionHandler:)` so
     // that we can obtain the originating `URLRequest` when a `URLResponse` is received. This will
     // allow us to re-trigger the `URLRequest` if the user requests a file to be downloaded.
-    var pendingRequests = [String : URLRequest]()
+    var pendingRequests = [String: URLRequest]()
 
     // This is set when the user taps "Download Link" from the context menu. We then force a
     // download of the next request through the `WKNavigationDelegate` that matches this URL.
-    var pendingDownloadURL: URL? = nil
+    var pendingDownloadURL: URL?
 
     let downloadQueue = DownloadQueue()
 
@@ -670,17 +670,7 @@ class BrowserViewController: UIViewController {
             assertionFailure("homePanelController is still nil after assignment.")
             return
         }
-
-        let panelNumber = tabManager.selectedTab?.url?.fragment
-
-        // splitting this out to see if we can get better crash reports when this has a problem
-        var newSelectedButtonIndex = 0
-        if let numberArray = panelNumber?.components(separatedBy: "=") {
-            if let last = numberArray.last, let lastInt = Int(last) {
-                newSelectedButtonIndex = lastInt
-            }
-        }
-
+        
         // We have to run this animation, even if the view is already showing because there may be a hide animation running
         // and we want to be sure to override its results.
         UIView.animate(withDuration: 0.2, animations: { () -> Void in
@@ -833,8 +823,7 @@ class BrowserViewController: UIViewController {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        let webView = object as! WKWebView
-        guard let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
+        guard let webView = object as? WKWebView, let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
             assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
             return
         }

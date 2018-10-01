@@ -152,7 +152,7 @@ class TabsButton: UIButton {
             }
 
             // make a 'clone' of the tabs button
-            let newTabsButton = clone() as! TabsButton
+            let newTabsButton = clone() as! TabsButton // swiftlint:disable:this force_cast
 
             self.clonedTabsButton = newTabsButton
             newTabsButton.frame = self.bounds

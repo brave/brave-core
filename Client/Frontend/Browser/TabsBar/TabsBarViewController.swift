@@ -21,7 +21,7 @@ class TabsBarViewController: UIViewController {
     private lazy var plusButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "add_tab").template, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10)
+        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
         button.tintColor = UIColor.black
         button.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
@@ -155,7 +155,7 @@ class TabsBarViewController: UIViewController {
     }
     
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
-        switch(gesture.state) {
+        switch gesture.state {
         case .began:
             guard let selectedIndexPath = self.collectionView.indexPathForItem(at: gesture.location(in: self.collectionView)) else {
                 break

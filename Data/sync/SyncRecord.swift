@@ -100,4 +100,3 @@ extension SyncRecordProtocol where Self: SyncRecord {
     }
 }
 
-

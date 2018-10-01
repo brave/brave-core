@@ -6,17 +6,17 @@ import Foundation
 import Shared
 
 class FindInPageActivity: UIActivity {
-    fileprivate let callback: () -> ()
+    fileprivate let callback: () -> Void
 
-    init(callback: @escaping () -> ()) {
+    init(callback: @escaping () -> Void) {
         self.callback = callback
     }
 
-    override var activityTitle : String? {
+    override var activityTitle: String? {
         return Strings.Find_in_Page
     }
 
-    override var activityImage : UIImage? {
+    override var activityImage: UIImage? {
         return #imageLiteral(resourceName: "shareFindInPage")
     }
 

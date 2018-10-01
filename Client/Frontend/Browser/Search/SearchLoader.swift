@@ -11,6 +11,7 @@ import Data
 
 private let log = Logger.browserLogger
 
+// swiftlint:disable:next force_try
 private let URLBeforePathRegex = try! NSRegularExpression(pattern: "^https?://([^/]+)/", options: [])
 
 // TODO: Swift currently requires that classes extending generic classes must also be generic.
@@ -36,8 +37,11 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
     }
 
     fileprivate lazy var topDomains: [String] = {
-        let filePath = Bundle.main.path(forResource: "topdomains", ofType: "txt")
-        return try! String(contentsOfFile: filePath!).components(separatedBy: "\n")
+        guard let filePath = Bundle.main.path(forResource: "topdomains", ofType: "txt"),
+            let domains = try? String(contentsOfFile: filePath).components(separatedBy: "\n") else {
+                return []
+        }
+        return domains
     }()
 
     // `weak` usage here allows deferred queue to be the owner. The deferred is always filled and this set to nil,
@@ -100,7 +104,7 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
             let bookmarks: [WebsitePresentable] = Bookmark.frecencyQuery(context: context, containing: containing)
             
             // History must come before bookmarks, since later items replace existing ones, and want bookmarks to replace history entries
-            let uniqueSites = Set<Site>( (history + bookmarks).map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: $0 is Bookmark) } )
+            let uniqueSites = Set<Site>((history + bookmarks).map { Site(url: $0.url ?? "", title: $0.title ?? "", bookmarked: $0 is Bookmark) })
             result.fill(Array(uniqueSites))
         }
         return result

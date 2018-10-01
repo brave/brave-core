@@ -63,7 +63,6 @@ class TabScrollingController: NSObject {
         return (scrollDirection == .down && !tabsBar.view.isHidden) ? UX.TabsBar.height : 0
     }
 
-
     fileprivate var footerBottomOffset: CGFloat = 0 {
         didSet {
             footerBottomConstraint?.update(offset: footerBottomOffset)

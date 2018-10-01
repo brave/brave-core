@@ -598,7 +598,7 @@ fileprivate class SuggestionCell: UITableViewCell {
     @objc
     func didLongPressSuggestion(_ recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began {
-            if let button = recognizer.view as! UIButton? {
+            if let button = recognizer.view as? UIButton {
                 delegate?.suggestionCell(self, didLongPressSuggestion: button.titleLabel!.text!)
             }
         }
@@ -623,8 +623,8 @@ fileprivate class SuggestionCell: UITableViewCell {
         var currentTop = SearchViewControllerUX.SuggestionCellVerticalPadding
         var currentRow = 0
 
-        for view in container.subviews {
-            let button = view as! UIButton
+        for view in container.subviews.compactMap({ $0 as? UIButton }) {
+            let button = view
             var buttonSize = button.intrinsicContentSize
 
             // Update our base frame height by the max size of either the image or the button so we never

@@ -39,7 +39,7 @@ class BookmarkEditingViewController: FormViewController {
   let BOOKMARK_URL_ROW_TAG: String = "BOOKMARK_URL_ROW_TAG"
   let BOOKMARK_FOLDER_ROW_TAG: String = "BOOKMARK_FOLDER_ROW_TAG"
   
-  var titleRow:TextRow?
+  var titleRow: TextRow?
   var urlRow: URLRow?
   
   init(bookmarksPanel: BookmarksViewController, indexPath: IndexPath, bookmark: Bookmark) {
@@ -108,16 +108,16 @@ class BookmarksViewController: SiteTableViewController {
   
   weak var linkNavigationDelegate: LinkNavigationDelegate?
   
-  var bookmarksFRC: NSFetchedResultsController<NSFetchRequestResult>?
+  var bookmarksFRC: NSFetchedResultsController<Bookmark>?
   
   var editBookmarksToolbar: UIToolbar!
   var editBookmarksButton: UIBarButtonItem!
   var addFolderButton: UIBarButtonItem?
   weak var addBookmarksFolderOkAction: UIAlertAction?
   
-  var isEditingIndividualBookmark:Bool = false
+  var isEditingIndividualBookmark: Bool = false
   
-  var currentFolder: Bookmark? = nil
+  var currentFolder: Bookmark?
   let tabState: TabState
   
   init(folder: Bookmark?, tabState: TabState) {
@@ -147,7 +147,7 @@ class BookmarksViewController: SiteTableViewController {
     let navBar = self.navigationController?.navigationBar
     navBar?.barTintColor = BraveUX.BackgroundColorForSideToolbars
     navBar?.isTranslucent = false
-    navBar?.titleTextAttributes = [.font : UIFont.systemFont(ofSize: UIConstants.DefaultChromeSize, weight: .medium), .foregroundColor : BraveUX.GreyJ]
+    navBar?.titleTextAttributes = [.font: UIFont.systemFont(ofSize: UIConstants.DefaultChromeSize, weight: .medium), .foregroundColor: BraveUX.GreyJ]
     navBar?.clipsToBounds = true
     
     let width = self.view.bounds.size.width
@@ -168,7 +168,7 @@ class BookmarksViewController: SiteTableViewController {
     }
     
     tableView.snp.makeConstraints { make in
-      make.bottom.equalTo(self.view).inset(UIEdgeInsetsMake(0, 0, toolbarHeight, 0))
+      make.bottom.equalTo(self.view).inset(UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0))
     }
     
     reloadData()
@@ -195,8 +195,8 @@ class BookmarksViewController: SiteTableViewController {
     switchTableEditingMode(true)
   }
   
-  func switchTableEditingMode(_ forceOff:Bool = false) {
-    let editMode:Bool = forceOff ? false : !tableView.isEditing
+  func switchTableEditingMode(_ forceOff: Bool = false) {
+    let editMode: Bool = forceOff ? false : !tableView.isEditing
     tableView.setEditing(editMode, animated: forceOff ? false : true)
     
     updateEditBookmarksButton(editMode)
@@ -205,7 +205,7 @@ class BookmarksViewController: SiteTableViewController {
     addFolderButton?.isEnabled = !editMode
   }
   
-  func updateEditBookmarksButton(_ tableIsEditing:Bool) {
+  func updateEditBookmarksButton(_ tableIsEditing: Bool) {
     self.editBookmarksButton.title = tableIsEditing ? Strings.Done : Strings.Edit
     self.editBookmarksButton.style = tableIsEditing ? .done : .plain
   }
@@ -319,7 +319,7 @@ class BookmarksViewController: SiteTableViewController {
   
   fileprivate func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
     
-    guard let item = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return }
+    guard let item = bookmarksFRC?.object(at: indexPath) else { return }
     cell.tag = item.objectID.hashValue
     
     func configCell(image: UIImage? = nil, icon: FaviconMO? = nil) {
@@ -338,12 +338,10 @@ class BookmarksViewController: SiteTableViewController {
         // folder or preset icon
         cell.imageView?.image = image
         cell.imageView?.contentMode = .center
-      }
-      else if let faviconMO = item.domain?.favicon, let urlString = faviconMO.url, let url = URL(string: urlString), let bookmarkUrlString = item.url, let bookmarkUrl = URL(string: bookmarkUrlString) {
+      } else if let faviconMO = item.domain?.favicon, let urlString = faviconMO.url, let url = URL(string: urlString), let bookmarkUrlString = item.url, let bookmarkUrl = URL(string: bookmarkUrlString) {
         // favicon object associated through domain relationship - set from cache or download
         setCellImage(cell, iconUrl: url, cacheWithUrl: bookmarkUrl)
-      }
-      else if let urlString = item.url, let bookmarkUrl = URL(string: urlString) {
+      } else if let urlString = item.url, let bookmarkUrl = URL(string: urlString) {
         if ImageCache.shared.hasImage(bookmarkUrl, type: .square) {
           // no relationship - check cache for icon which may have been stored recently for url.
           ImageCache.shared.image(bookmarkUrl, type: .square, callback: { (image) in
@@ -351,16 +349,14 @@ class BookmarksViewController: SiteTableViewController {
               cell.imageView?.image = image
             }
           })
-        }
-        else {
+        } else {
           // no relationship - attempt to resolove domain problem
           let context = DataController.mainThreadContext
           if let domain = Domain.getOrCreateForUrl(bookmarkUrl, context: context), let faviconMO = domain.favicon, let urlString = faviconMO.url, let url = URL(string: urlString) {
             DispatchQueue.main.async {
               self.setCellImage(cell, iconUrl: url, cacheWithUrl: bookmarkUrl)
             }
-          }
-          else {
+          } else {
             // last resort - download the icon
             downloadFaviconsAndUpdateForUrl(bookmarkUrl, indexPath: indexPath)
           }
@@ -402,8 +398,7 @@ class BookmarksViewController: SiteTableViewController {
         DispatchQueue.main.async {
           cell.imageView?.image = image
         }
-      }
-      else {
+      } else {
         DispatchQueue.main.async {
           cell.imageView?.sd_setImage(with: iconUrl, completed: { (img, err, type, url) in
             guard let img = img else {
@@ -436,7 +431,7 @@ class BookmarksViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    guard let bookmark = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return false }
+    guard let bookmark = bookmarksFRC?.object(at: indexPath) else { return false }
     
     return !bookmark.isFavorite
   }
@@ -444,14 +439,13 @@ class BookmarksViewController: SiteTableViewController {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: false)
     
-    guard let bookmark = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return }
+    guard let bookmark = bookmarksFRC?.object(at: indexPath) else { return }
     
     if !bookmark.isFolder {
       if tableView.isEditing {
         //show editing view for bookmark item
         self.showEditBookmarkController(tableView, indexPath: indexPath)
-      }
-      else {
+      } else {
         if let url = URL(string: bookmark.url ?? "") {
           linkNavigationDelegate?.linkNavigatorDidSelectURL(url: url, visitType: .bookmark)
         }
@@ -460,8 +454,7 @@ class BookmarksViewController: SiteTableViewController {
       if tableView.isEditing {
         //show editing view for bookmark item
         self.showEditBookmarkController(tableView, indexPath: indexPath)
-      }
-      else {
+      } else {
         let nextController = BookmarksViewController(folder: bookmark, tabState: tabState)
         nextController.profile = profile
         nextController.bookmarksDidChange = bookmarksDidChange
@@ -481,7 +474,7 @@ class BookmarksViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-    guard let item = bookmarksFRC?.object(at: indexPath) as? Bookmark else { return nil }
+    guard let item = bookmarksFRC?.object(at: indexPath) else { return nil }
     
     let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Strings.Delete, handler: { (action, indexPath) in
       
@@ -509,8 +502,8 @@ class BookmarksViewController: SiteTableViewController {
     return [deleteAction, editAction]
   }
   
-  fileprivate func showEditBookmarkController(_ tableView: UITableView, indexPath:IndexPath) {
-    guard let item = bookmarksFRC?.object(at: indexPath) as? Bookmark, !item.isFavorite else { return }
+  fileprivate func showEditBookmarkController(_ tableView: UITableView, indexPath: IndexPath) {
+    guard let item = bookmarksFRC?.object(at: indexPath), !item.isFavorite else { return }
     let nextController = BookmarkEditingViewController(bookmarksPanel: self, indexPath: indexPath, bookmark: item)
     
     nextController.completionBlock = { controller in
@@ -532,7 +525,7 @@ extension BookmarksViewController: BookmarkFolderTableViewHeaderDelegate {
   }
 }
 
-fileprivate class BookmarkFolderTableViewHeader : UITableViewHeaderFooterView {
+fileprivate class BookmarkFolderTableViewHeader: UITableViewHeaderFooterView {
   var delegate: BookmarkFolderTableViewHeaderDelegate?
   
   lazy var titleLabel: UILabel = {
@@ -611,7 +604,7 @@ fileprivate class BookmarkFolderTableViewHeader : UITableViewHeaderFooterView {
   }
 }
 
-extension BookmarksViewController : NSFetchedResultsControllerDelegate {
+extension BookmarksViewController: NSFetchedResultsControllerDelegate {
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     tableView.beginUpdates()
   }
@@ -622,7 +615,7 @@ extension BookmarksViewController : NSFetchedResultsControllerDelegate {
   }
   
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-    switch (type) {
+    switch type {
     case .update:
       guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {
         return
@@ -652,7 +645,7 @@ extension BookmarksViewController {
     guard gesture.state == .began,
       let cell = gesture.view as? UITableViewCell,
       let indexPath = tableView.indexPath(for: cell),
-      let bookmark = bookmarksFRC?.object(at: indexPath) as? Bookmark else {
+      let bookmark = bookmarksFRC?.object(at: indexPath) else {
       return
     }
     

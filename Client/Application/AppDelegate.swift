@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     weak var application: UIApplication?
     var launchOptions: [AnyHashable: Any]?
 
-    let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+    let appVersion = Bundle.main.infoDictionaryString(forKey: "CFBundleShortVersionString")
 
     var receivedURLs: [URL]?
     
@@ -97,9 +97,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             // Set up a web server that serves us static content. Do this early so that it is ready when the UI is presented.
             setUpWebServer(profile)
         }
-
-        let imageStore = DiskImageStore(files: profile.files, namespace: "TabManagerScreenshots", quality: UIConstants.ScreenshotQuality)
-
+        
+        var imageStore: DiskImageStore?
+        do {
+            imageStore = try DiskImageStore(files: profile.files, namespace: "TabManagerScreenshots", quality: UIConstants.ScreenshotQuality)
+        } catch {
+            log.error("Failed to create an image store for files: \(profile.files) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
+            assertionFailure()
+        }
+        
         // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
         if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {
             class_addMethod(clazz, MenuHelper.SelectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
@@ -224,7 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         return shouldPerformAdditionalDelegateHandling
     }
 
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
         guard let routerpath = NavigationPath(url: url) else {
             return false
         }
@@ -232,7 +238,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         if let profile = profile, let _ = profile.prefs.boolForKey(PrefsKeys.AppExtensionTelemetryOpenUrl) {
             profile.prefs.removeObjectForKey(PrefsKeys.AppExtensionTelemetryOpenUrl)
         }
-
 
         DispatchQueue.main.async {
             NavigationPath.handle(nav: routerpath, with: self.browserViewController)

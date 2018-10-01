@@ -92,8 +92,7 @@ class FavoritesTileDecorator {
                 DispatchQueue.main.async {
                     self.setCellImage(self.cell, iconUrl: iconUrl, cacheWithUrl: self.url)
                 }
-            }
-            else {
+            } else {
                 // last resort - download the icon
                 downloadFaviconsAndUpdateForUrl(url, indexPath: indexPath)
             }
@@ -111,8 +110,7 @@ class FavoritesTileDecorator {
                 DispatchQueue.main.async {
                     cell.imageView.image = image
                 }
-            }
-            else {
+            } else {
                 DispatchQueue.main.async {
                     cell.imageView.sd_setImage(with: iconUrl, completed: { (img, err, type, url) in
                         var finalImage = img

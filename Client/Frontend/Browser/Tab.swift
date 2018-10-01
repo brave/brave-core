@@ -231,7 +231,7 @@ class Tab: NSObject {
             for urlString in sessionData.history {
                 guard let url = URL(string: urlString) else { continue }
                 let updatedURL = WebServer.sharedInstance.updateLocalURL(url)!.absoluteString
-                let current = updatedURL.regexReplacePattern("https?:..", with: "")
+                guard let current = try? updatedURL.regexReplacePattern("https?:..", with: "") else { continue }
                 if current.count > 1 && current == previous {
                     updatedURLs.removeLast()
                 }
@@ -302,8 +302,7 @@ class Tab: NSObject {
     var displayTitle: String {
         if let title = webView?.title, !title.isEmpty {
             return title.contains("localhost") ? "" : title
-        }
-        else if let url = webView?.url ?? self.url, url.isAboutHomeURL {
+        } else if let url = webView?.url ?? self.url, url.isAboutHomeURL {
             return Strings.NewTabTitle
         }
         

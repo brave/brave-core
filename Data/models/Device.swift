@@ -1,6 +1,5 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 import UIKit
 import CoreData
 import Foundation
@@ -86,16 +85,16 @@ class Device: NSManagedObject, Syncable {
         return sharedCurrentDevice
     }
     
-    class func deleteAll(completionOnMain: ()->()) {
+    class func deleteAll(completionOnMain: () -> Void) {
         let context = DataController.workerThreadContext
         context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            let fetchRequest = NSFetchRequest<Device>()
             fetchRequest.entity = Device.entity(context: context)
             fetchRequest.includesPropertyValues = false
             do {
                 let results = try context.fetch(fetchRequest)
                 for result in results {
-                    context.delete(result as! NSManagedObject)
+                    context.delete(result)
                 }
                 
             } catch {
