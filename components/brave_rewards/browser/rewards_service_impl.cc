@@ -34,6 +34,11 @@
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
 
+#include "extensions/browser/event_router.h"
+#include "extensions/browser/extension_api_frame_id_map.h"
+#include "brave/common/extensions/api/brave_rewards.h"
+using extensions::Event;
+using extensions::EventRouter;
 
 using namespace net::registry_controlled_domains;
 using namespace std::placeholders;
@@ -268,6 +273,7 @@ void RewardsServiceImpl::GetContentSiteList(
   filter.category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
   filter.month = GetPublisherMonth(now);
   filter.year = GetPublisherYear(now);
+  filter.min_duration = ledger_->GetPublisherMinVisitTime();
   filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
 
   ledger_->GetPublisherInfoList(start, limit,
@@ -280,20 +286,20 @@ void RewardsServiceImpl::GetContentSiteList(
 
 void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   auto origin = url.GetOrigin();
-  const std::string tld =
+  const std::string baseDomain =
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
 
-  if (tld == "")
+  if (baseDomain == "")
     return;
 
   auto now = base::Time::Now();
-  ledger::VisitData data(tld,
+  ledger::VisitData data(baseDomain,
                          origin.host(),
                          url.path(),
                          tab_id.id(),
                          GetPublisherMonth(now),
                          GetPublisherYear(now),
-                         tld,
+                         baseDomain,
                          origin.spec(),
                          "",
                          "");
@@ -755,36 +761,83 @@ void RewardsServiceImpl::RunTask(
 }
 
 void RewardsServiceImpl::TriggerOnWalletInitialized(int error_code) {
+  // webui
   for (auto& observer : observers_)
     observer.OnWalletInitialized(this, error_code);
+
+  // extension
+  EventRouter* event_router = EventRouter::Get(profile_);
+  if (event_router) {
+    std::unique_ptr<base::ListValue> args(new base::ListValue());
+    std::unique_ptr<Event> event(
+        new Event(extensions::events::BRAVE_WALLET_CREATED,
+          extensions::api::brave_rewards::OnWalletCreated::kEventName,
+          std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+  }
 }
 
 void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     std::unique_ptr<ledger::WalletInfo> wallet_info) {
   std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
 
-  if (wallet_info) {
-    wallet_properties.reset(new brave_rewards::WalletProperties);
-    wallet_properties->probi = wallet_info->probi_;
-    wallet_properties->balance = wallet_info->balance_;
-    wallet_properties->rates = wallet_info->rates_;
-    wallet_properties->parameters_choices = wallet_info->parameters_choices_;
-    wallet_properties->parameters_range = wallet_info->parameters_range_;
-    wallet_properties->parameters_days = wallet_info->parameters_days_;
+  if (!wallet_info) {
+    return;
+  }
+
+  wallet_properties.reset(new brave_rewards::WalletProperties);
+  wallet_properties->probi = wallet_info->probi_;
+  wallet_properties->balance = wallet_info->balance_;
+  wallet_properties->rates = wallet_info->rates_;
+  wallet_properties->parameters_choices = wallet_info->parameters_choices_;
+  wallet_properties->parameters_range = wallet_info->parameters_range_;
+  wallet_properties->parameters_days = wallet_info->parameters_days_;
+
+  for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
+    brave_rewards::Grant grant;
+
+    grant.altcurrency = wallet_info->grants_[i].altcurrency;
+    grant.probi = wallet_info->grants_[i].probi;
+    grant.expiryTime = wallet_info->grants_[i].expiryTime;
+
+    wallet_properties->grants.push_back(grant);
+  }
+
+  // webui
+  for (auto& observer : observers_)
+    observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
+
+  // extension
+  EventRouter* event_router = EventRouter::Get(profile_);
+  if (event_router) {
+    extensions::api::brave_rewards::OnWalletProperties::Properties properties;
+
+    properties.probi = wallet_info->probi_;
+    properties.balance = wallet_info->balance_;
+    properties.rates.btc = wallet_info->rates_["BTC"];
+    properties.rates.eth = wallet_info->rates_["ETH"];
+    properties.rates.usd = wallet_info->rates_["USD"];
+    properties.rates.eur = wallet_info->rates_["EUR"];
 
     for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
-      brave_rewards::Grant grant;
+      properties.grants.push_back(extensions::api::brave_rewards::OnWalletProperties::Properties::GrantsType());
+      auto& grant = properties.grants[properties.grants.size() -1];
 
       grant.altcurrency = wallet_info->grants_[i].altcurrency;
       grant.probi = wallet_info->grants_[i].probi;
-      grant.expiryTime = wallet_info->grants_[i].expiryTime;
-
-      wallet_properties->grants.push_back(grant);
+      grant.expiry_time = wallet_info->grants_[i].expiryTime;
     }
-  }
 
-  for (auto& observer : observers_)
-    observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
+    std::unique_ptr<base::ListValue> args(
+        extensions::api::brave_rewards::OnWalletProperties::Create(properties)
+            .release());
+
+    std::unique_ptr<Event> event(
+        new Event(extensions::events::BRAVE_ON_WALLET_PROPERTIES,
+                  extensions::api::brave_rewards::OnWalletProperties::kEventName,
+                  std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+  }
 }
 
 void RewardsServiceImpl::GetWalletProperties() {
@@ -1000,8 +1053,102 @@ std::map<std::string, brave_rewards::BalanceReport> RewardsServiceImpl::GetAllBa
   return newReports;
 }
 
+void RewardsServiceImpl::GetCurrentBalanceReport() {
+  ledger::BalanceReportInfo report;
+  auto now = base::Time::Now();
+  bool success = ledger_->GetBalanceReport(
+      GetPublisherMonth(now),
+      GetPublisherYear(now),
+      &report);
+
+  if (success) {
+    EventRouter* event_router = EventRouter::Get(profile_);
+    if (event_router) {
+      extensions::api::brave_rewards::OnCurrentReport::Properties properties;
+
+      properties.opening_balance = report.opening_balance_;
+      properties.closing_balance = report.closing_balance_;
+      properties.grants = report.grants_;
+      properties.earning_from_ads = report.earning_from_ads_;
+      properties.auto_contribute = report.auto_contribute_;
+      properties.recurring_donation = report.recurring_donation_;
+      properties.one_time_donation = report.one_time_donation_;
+
+      std::unique_ptr<base::ListValue> args(
+          extensions::api::brave_rewards::OnCurrentReport::Create(properties)
+              .release());
+      std::unique_ptr<Event> event(
+          new Event(extensions::events::BRAVE_ON_CURRENT_REPORT,
+                    extensions::api::brave_rewards::OnCurrentReport::kEventName,
+                    std::move(args)));
+      event_router->BroadcastEvent(std::move(event));
+    }
+  }
+}
+
 bool RewardsServiceImpl::IsWalletCreated() {
   return ledger_->IsWalletCreated();
+}
+
+void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) {
+  GURL parsedUrl(url);
+
+  if (!parsedUrl.is_valid()) {
+    return;
+  }
+
+  auto now = base::Time::Now();
+  auto origin = parsedUrl.GetOrigin();
+  std::string baseDomain =
+      GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
+
+  if (baseDomain == "") {
+    std::unique_ptr<ledger::PublisherInfo> info;
+    OnPublisherActivity(ledger::Result::NOT_FOUND, std::move(info), windowId);
+    return;
+  }
+
+  ledger_->GetPublisherActivityFromUrl(windowId,
+      baseDomain,
+      parsedUrl.path(),
+      GetPublisherMonth(now),
+      GetPublisherYear(now));
+}
+
+void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
+                                             std::unique_ptr<ledger::PublisherInfo> info,
+                                             uint64_t windowId) {
+  if (result == ledger::Result::LEDGER_OK || result == ledger::Result::NOT_FOUND) {
+    EventRouter* event_router = EventRouter::Get(profile_);
+    if (!event_router) {
+      return;
+    }
+
+    extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
+
+    if (!info.get()) {
+      info.reset(new ledger::PublisherInfo());
+      info->id = "";
+    }
+
+    publisher.percentage = info->percent;
+    publisher.verified = info->verified;
+    publisher.excluded = info->excluded;
+    publisher.name = info->name;
+    publisher.url = info->url;
+    publisher.provider = info->provider;
+    publisher.favicon_url = info->favicon_url;
+    publisher.publisher_key = info->id;
+    std::unique_ptr<base::ListValue> args(
+        extensions::api::brave_rewards::OnPublisherData::Create(windowId, publisher)
+          .release());
+
+    std::unique_ptr<Event> event(
+        new Event(extensions::events::BRAVE_ON_PUBLISHER_DATA,
+          extensions::api::brave_rewards::OnPublisherData::kEventName,
+          std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+  }
 }
 
 }  // namespace brave_rewards

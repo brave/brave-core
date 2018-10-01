@@ -160,7 +160,6 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-
     const { contributionMonthly, walletInfo, reports } = this.props.rewardsData
     const { rates } = walletInfo
     const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
