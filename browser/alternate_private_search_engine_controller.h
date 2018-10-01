@@ -40,7 +40,8 @@ class AlternatePrivateSearchEngineController
   BooleanPrefMember use_alternate_private_search_engine_enabled_;
 
   Profile* profile_;
-  TemplateURLService* template_url_service_;
+  TemplateURLService* original_template_url_service_;
+  TemplateURLService* private_template_url_service_;
 
   DISALLOW_COPY_AND_ASSIGN(AlternatePrivateSearchEngineController);
 };

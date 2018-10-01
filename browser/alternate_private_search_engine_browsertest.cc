@@ -13,6 +13,14 @@
 
 using AlternatePrivateSearchEngineTest = InProcessBrowserTest;
 
+TemplateURLData CreateTestSearchEngine() {
+  TemplateURLData result;
+  result.SetShortName(base::ASCIIToUTF16("test1"));
+  result.SetKeyword(base::ASCIIToUTF16("test.com"));
+  result.SetURL("http://test.com/search?t={searchTerms}");
+  return result;
+}
+
 IN_PROC_BROWSER_TEST_F(AlternatePrivateSearchEngineTest, PrefTest) {
   Profile* profile = browser()->profile();
   Profile* incognito_profile = profile->GetOffTheRecordProfile();
@@ -46,4 +54,12 @@ IN_PROC_BROWSER_TEST_F(AlternatePrivateSearchEngineTest, PrefTest) {
             normal_search_engine);
   EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
             normal_search_engine);
+
+  // Check private search engine uses normal mode search engine when alternative
+  // search engine pref is false.
+  TemplateURLData test_data = CreateTestSearchEngine();
+  std::unique_ptr<TemplateURL> test_url(new TemplateURL(test_data));
+  service->SetUserSelectedDefaultSearchProvider(test_url.get());
+  EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
+            base::ASCIIToUTF16("test1"));
 }

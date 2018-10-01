@@ -38,9 +38,12 @@ void AlternatePrivateSearchEngineController::Create(Profile* profile) {
 AlternatePrivateSearchEngineController::AlternatePrivateSearchEngineController(
     Profile* profile)
     : profile_(profile),
-      template_url_service_(
+      original_template_url_service_(
+          TemplateURLServiceFactory::GetForProfile(
+              profile_->GetOriginalProfile())),
+      private_template_url_service_(
           TemplateURLServiceFactory::GetForProfile(profile_)) {
-  DCHECK(profile_->GetProfileType() == Profile::INCOGNITO_PROFILE);
+  DCHECK_EQ(profile_->GetProfileType(), Profile::INCOGNITO_PROFILE);
 
   use_alternate_private_search_engine_enabled_.Init(
       kUseAlternatePrivateSearchEngine,
@@ -48,7 +51,7 @@ AlternatePrivateSearchEngineController::AlternatePrivateSearchEngineController(
       base::Bind(&AlternatePrivateSearchEngineController::OnPreferenceChanged,
                  base::Unretained(this)));
 
-  template_url_service_->AddObserver(this);
+  original_template_url_service_->AddObserver(this);
   private_search_engine_url_.reset(
       new TemplateURL(GetPrivateSearchEngineData()));
   ConfigureAlternatePrivateSearchEngineProvider();
@@ -59,39 +62,41 @@ AlternatePrivateSearchEngineController::
 }
 
 void AlternatePrivateSearchEngineController::OnTemplateURLServiceChanged() {
-  // When normal profile's default search provider is changed, it changes
-  // incognito's default search provider.
-  // Set alternate search engine again if needed.
-  ConfigureAlternatePrivateSearchEngineProvider();
+  // If private mode uses ddg, search provider changing of original profile can
+  // be ignored.
+  if (use_alternate_private_search_engine_enabled_.GetValue())
+    return;
+
+  // When normal profile's default search provider is changed, apply it to
+  // alternate search engine again if private mode doesn't use ddg.
+  SetNormalModeDefaultSearchEngineAsDefaultPrivateSearchProvider();
 }
 
 void
 AlternatePrivateSearchEngineController::OnTemplateURLServiceShuttingDown() {
-  template_url_service_->RemoveObserver(this);
+  original_template_url_service_->RemoveObserver(this);
   delete this;
 }
 
 void AlternatePrivateSearchEngineController::
 SetAlternateDefaultPrivateSearchEngine() {
-  template_url_service_->SetUserSelectedDefaultSearchProvider(
+  private_template_url_service_->SetUserSelectedDefaultSearchProvider(
       private_search_engine_url_.get());
 }
 
 void AlternatePrivateSearchEngineController::
 SetNormalModeDefaultSearchEngineAsDefaultPrivateSearchProvider() {
-  auto* normal_mode_service =
-      TemplateURLServiceFactory::GetForProfile(profile_->GetOriginalProfile());
-
-  TemplateURL normal_url(normal_mode_service->GetDefaultSearchProvider()->data());
-  template_url_service_->SetUserSelectedDefaultSearchProvider(&normal_url);
+  TemplateURL normal_url(
+      original_template_url_service_->GetDefaultSearchProvider()->data());
+  private_template_url_service_->SetUserSelectedDefaultSearchProvider(
+      &normal_url);
 }
 
 void AlternatePrivateSearchEngineController::
 ConfigureAlternatePrivateSearchEngineProvider() {
-  if (use_alternate_private_search_engine_enabled_.GetValue())
-    SetAlternateDefaultPrivateSearchEngine();
-  else
-    SetNormalModeDefaultSearchEngineAsDefaultPrivateSearchProvider();
+  use_alternate_private_search_engine_enabled_.GetValue()
+      ? SetAlternateDefaultPrivateSearchEngine()
+      : SetNormalModeDefaultSearchEngineAsDefaultPrivateSearchProvider();
 }
 
 void AlternatePrivateSearchEngineController::OnPreferenceChanged(
