@@ -76,7 +76,7 @@ private extension TrayToBrowserAnimator {
             cell.layer.borderWidth = 0.0
 
             bvc.tabTrayDidDismiss(tabTray)
-            UIApplication.shared.windows.first?.backgroundColor = UIConstants.AppBackgroundColor
+            UIApplication.shared.windows.first?.backgroundColor = TabTrayControllerUX.BackgroundColor.colorFor(tabTray.privateMode ? .private : .regular)
             tabTray.navigationController?.setNeedsStatusBarAppearanceUpdate()
             tabTray.toolbar.transform = CGAffineTransform(translationX: 0, y: UIConstants.BottomToolbarHeight)
             tabCollectionViewSnapshot.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -310,13 +310,8 @@ private func createTransitionCellFromTab(_ tab: Tab?, withFrame frame: CGRect) -
         cell.favicon.sd_setImage(with: URL(string: favIcon.url)!)
     } else {
         cell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
-
-        switch TabType.of(tab) {
-        case .regular: break
-        case .private:
-            cell.favicon.tintColor = UIColor.Photon.White100
-        }
     }
+    cell.applyTheme(PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular)
 
     return cell
 }

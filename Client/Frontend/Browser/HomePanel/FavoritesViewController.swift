@@ -46,56 +46,6 @@ class FavoritesViewController: UIViewController {
     }()
     private lazy var dataSource: FavoritesDataSource = { return FavoritesDataSource() }()
     
-    // MARK: - Views initialization
-    private let privateTabMessageContainer = UIView().then {
-        $0.isUserInteractionEnabled = true
-        $0.isHidden = !PrivateBrowsingManager.shared.isPrivateBrowsing
-    }
-    
-    private let privateTabTitleLabel = UILabel().then {
-        $0.lineBreakMode = .byWordWrapping
-        $0.textAlignment = .center
-        $0.numberOfLines = 0
-        $0.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.semibold)
-        $0.textColor = UIColor(white: 1, alpha: 0.6)
-        $0.text = Strings.Private_Tab_Title
-    }
-    
-    fileprivate let privateTabInfoLabel = UILabel().then {
-        $0.lineBreakMode = .byWordWrapping
-        $0.textAlignment = .center
-        $0.numberOfLines = 0
-        $0.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
-        $0.textColor = UIColor(white: 1, alpha: 1.0)
-        $0.text = Strings.Private_Tab_Body
-    }
-    
-    private lazy var privateTabLinkButton = UIButton().then {
-        let linkButtonTitle = NSAttributedString(string: Strings.Private_Tab_Link, attributes:
-            [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue])
-        $0.setAttributedTitle(linkButtonTitle, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
-        $0.titleLabel?.textColor = UIColor(white: 1, alpha: 0.25)
-        $0.titleLabel?.textAlignment = .center
-        $0.titleLabel?.lineBreakMode = .byWordWrapping
-        $0.addTarget(self, action: #selector(showPrivateTabInfo), for: .touchUpInside)
-    }
-    
-    private let ddgLogo = UIImageView(image: #imageLiteral(resourceName: "duckduckgo"))
-    
-    private let ddgLabel = UILabel().then {
-        $0.numberOfLines = 0
-        $0.textColor = UX.GreyD
-        $0.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
-        // BRAVE TODO:
-        // label.text = Strings.DDG_promotion
-        $0.text = "ddg promotion text TODO"
-    }
-    
-    private lazy var ddgButton = UIControl().then {
-        $0.addTarget(self, action: #selector(showDDGCallout), for: .touchUpInside)
-    }
-    
     private let braveShieldStatsView = BraveShieldStatsView(frame: CGRect.zero).then {
         $0.autoresizingMask = [.flexibleWidth]
     }
@@ -111,8 +61,6 @@ class FavoritesViewController: UIViewController {
                            name: Notification.Name.TopSitesConversion, object: nil)
             $0.addObserver(self, selector: #selector(privateBrowsingModeChanged), 
                            name: Notification.Name.PrivacyModeChanged, object: nil)
-            $0.addObserver(self, selector: #selector(updateIphoneConstraints), 
-                           name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
         }   
     }
     
@@ -129,7 +77,6 @@ class FavoritesViewController: UIViewController {
         NotificationCenter.default.do {
             $0.removeObserver(self, name: Notification.Name.TopSitesConversion, object: nil)
             $0.removeObserver(self, name: Notification.Name.PrivacyModeChanged, object: nil)
-            $0.removeObserver(self, name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
         }
     }
     
@@ -142,7 +89,7 @@ class FavoritesViewController: UIViewController {
         collection.addGestureRecognizer(longPressGesture)
         
         view.addSubview(collection)
-        collection.dataSource = PrivateBrowsingManager.shared.isPrivateBrowsing ? nil : dataSource
+        collection.dataSource = dataSource
         dataSource.collectionView = collection
         
         // Could setup as section header but would need to use flow layout,
@@ -158,27 +105,7 @@ class FavoritesViewController: UIViewController {
         
         collection.addSubview(braveShieldStatsView)
         
-        ddgButton.addSubview(ddgLogo)
-        ddgButton.addSubview(ddgLabel)
-        
-        privateTabMessageContainer.addSubview(privateTabTitleLabel)
-        privateTabMessageContainer.addSubview(privateTabInfoLabel)
-        privateTabMessageContainer.addSubview(privateTabLinkButton)
-        privateTabMessageContainer.addSubview(ddgButton)
-        collection.addSubview(privateTabMessageContainer)
-        
         makeConstraints()
-        
-        // BRAVE TODO:
-        /*
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let profile = appDelegate.profile, profile.searchEngines.defaultEngine(forType: .privateMode).shortName == "DuckDuckGo" {
-            hideDDG()
-        }
-        */
-        
-        ddgPrivateSearchCompletionBlock = { [weak self] in
-            self?.hideDDG()
-        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -212,63 +139,6 @@ class FavoritesViewController: UIViewController {
         collection.snp.makeConstraints { make in
             make.edges.equalTo(self.view.safeAreaLayoutGuide.snp.edges)
         }
-        
-        privateTabMessageContainer.snp.makeConstraints { make in
-            make.centerX.equalTo(collection)
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                make.centerY.equalTo(self.view)
-                make.width.equalTo(400)
-            } else {
-                make.top.equalTo(self.braveShieldStatsView.snp.bottom).offset(25)
-                make.leftMargin.equalTo(collection).offset(8)
-                make.rightMargin.equalTo(collection).offset(-8)
-            }
-            make.bottom.equalTo(collection.frameLayoutGuide)
-        }
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            privateTabTitleLabel.snp.makeConstraints { make in
-                make.top.equalTo(15)
-                make.centerX.equalTo(self.privateTabMessageContainer)
-                make.left.right.equalTo(0)
-            }
-            
-            privateTabInfoLabel.snp.makeConstraints { make in
-                make.top.equalTo(self.privateTabTitleLabel.snp.bottom).offset(10)
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    make.centerX.equalTo(collection)
-                }
-                
-                make.left.equalTo(16)
-                make.right.equalTo(-16)
-            }
-            
-            privateTabLinkButton.snp.makeConstraints { make in
-                make.top.equalTo(self.privateTabInfoLabel.snp.bottom).offset(10)
-                make.left.equalTo(0)
-                make.right.equalTo(0)
-            }
-            
-            ddgLogo.snp.makeConstraints { make in
-                make.top.left.bottom.equalTo(0)
-                make.size.equalTo(38)
-            }
-            
-            ddgLabel.snp.makeConstraints { make in
-                make.top.right.bottom.equalTo(0)
-                make.left.equalTo(self.ddgLogo.snp.right).offset(5)
-                make.width.equalTo(180)
-                make.centerY.equalTo(self.ddgLogo)
-            }
-            
-            ddgButton.snp.makeConstraints { make in
-                make.top.equalTo(self.privateTabLinkButton.snp.bottom).offset(30)
-                make.centerX.equalTo(self.collection)
-                make.bottom.equalTo(-8)
-            }
-        } else {
-            updateIphoneConstraints()
-        }
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -286,68 +156,6 @@ class FavoritesViewController: UIViewController {
         }
     }
     
-    @objc func updateIphoneConstraints() {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return
-        }
-        
-        let isLandscape = UIApplication.shared.statusBarOrientation.isLandscape
-        let offset = isLandscape ? 10 : 15
-        
-        privateTabTitleLabel.snp.remakeConstraints { make in
-            if isLandscape {
-                make.top.equalTo(0)
-            } else {
-                make.top.equalTo(offset)
-            }
-            make.centerX.equalTo(self.privateTabMessageContainer)
-            make.left.right.equalTo(0)
-        }
-        
-        privateTabInfoLabel.snp.remakeConstraints { make in
-            make.top.equalTo(self.privateTabTitleLabel.snp.bottom).offset(offset)
-            make.left.equalTo(32)
-            make.right.equalTo(-32)
-        }
-        
-        privateTabLinkButton.snp.remakeConstraints { make in
-            make.top.equalTo(self.privateTabInfoLabel.snp.bottom).offset(offset)
-            make.left.equalTo(32)
-            make.right.equalTo(-32)
-        }
-        
-        ddgLogo.snp.remakeConstraints { make in
-            make.top.left.bottom.equalTo(0)
-            make.size.equalTo(38)
-        }
-        
-        ddgLabel.snp.remakeConstraints { make in
-            make.top.right.bottom.equalTo(0)
-            make.left.equalTo(self.ddgLogo.snp.right).offset(5)
-            make.width.equalTo(180)
-            make.centerY.equalTo(self.ddgLogo)
-        }
-        
-        ddgButton.snp.remakeConstraints { make in
-            make.top.equalTo(self.privateTabLinkButton.snp.bottom).offset(30)
-            make.centerX.equalTo(self.collection)
-            make.bottom.equalTo(-8)
-        }
-        
-        self.view.setNeedsUpdateConstraints()
-    }
-    
-    // MARK: - Duckduckgo popup
-    
-    @objc func showDDGCallout() {
-        // BRAVE TODO:
-        // getApp().browserViewController.presentDDGCallout(force: true)
-    }
-    
-    func hideDDG() {
-        ddgButton.isHidden = true
-    }
-    
     // MARK: - Private browsing modde
     @objc func privateBrowsingModeChanged() {
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
@@ -355,14 +163,7 @@ class FavoritesViewController: UIViewController {
         // TODO: This entire blockshould be abstracted
         //  to make code in this class DRY (duplicates from elsewhere)
         collection.backgroundColor = isPrivateBrowsing ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
-        privateTabMessageContainer.isHidden = !isPrivateBrowsing
         braveShieldStatsView.timeStatView.color = isPrivateBrowsing ? UX.GreyA : UX.GreyJ
-        // Handling edge case when app starts in private only browsing mode and is switched back to normal mode.
-        if collection.dataSource == nil && !isPrivateBrowsing {
-            collection.dataSource = dataSource
-        } else if isPrivateBrowsing {
-            collection.dataSource = nil
-        }
         collection.reloadData()
     }
     
