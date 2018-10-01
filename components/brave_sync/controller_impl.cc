@@ -15,6 +15,7 @@
 #include "brave/components/brave_sync/bookmarks.h"
 #include "brave/components/brave_sync/client/client_ext_impl.h"
 #include "brave/components/brave_sync/client/client_factory.h"
+#include "brave/components/brave_sync/controller_observer.h"
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/devices.h"
 #include "brave/components/brave_sync/history.h"
@@ -42,7 +43,6 @@ ControllerImpl::TempStorage::~TempStorage() {
 }
 
 ControllerImpl::ControllerImpl(Profile *profile) :
-  sync_ui_(nullptr),
   sync_client_(nullptr),
   sync_initialized_(false),
   profile_(nullptr),
@@ -160,12 +160,12 @@ void ControllerImpl::OnSetupSyncHaveCode(const std::string &sync_words,
   }
 
   if (temp_storage_.currently_initializing_guard_) {
-    if (sync_ui_) sync_ui_->OnLogMessage("currently initializing");
+    TriggerOnLogMessage("currently initializing");
     return;
   }
 
   if (IsSyncConfigured()) {
-    if (sync_ui_) sync_ui_->OnLogMessage("already configured");
+    TriggerOnLogMessage("already configured");
     return;
   }
 
@@ -186,12 +186,12 @@ void ControllerImpl::OnSetupSyncNewToSync(const std::string &device_name) {
   }
 
   if (temp_storage_.currently_initializing_guard_) {
-    if (sync_ui_) sync_ui_->OnLogMessage("currently initializing");
+    TriggerOnLogMessage("currently initializing");
     return;
   }
 
   if (IsSyncConfigured()) {
-    if (sync_ui_) sync_ui_->OnLogMessage("already configured");
+    TriggerOnLogMessage("already configured");
     return;
   }
 
@@ -273,9 +273,7 @@ void ControllerImpl::OnResetSyncPostFileUiWork() {
 
   sync_configured_ = false;
 
-  if (sync_ui_) {
-    sync_ui_->OnSyncStateChanged();
-  }
+  TriggerOnSyncStateChanged();
 }
 
 void ControllerImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) {
@@ -359,15 +357,6 @@ void ControllerImpl::InitJsLib(const bool &setup_new_sync) {
   }
 }
 
-void ControllerImpl::SetupUi(SyncUI *sync_ui) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SetupUi sync_ui=" << sync_ui;
-
-  DCHECK(sync_ui);
-  DCHECK(sync_ui_ == nullptr);
-
-  sync_ui_ = sync_ui;
-}
-
 void ControllerImpl::OnMessageFromSyncReceived() {
   ;
 }
@@ -375,9 +364,7 @@ void ControllerImpl::OnMessageFromSyncReceived() {
 // SyncLibToBrowserHandler overrides
 void ControllerImpl::OnSyncDebug(const std::string &message) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncDebug: message=<" << message << ">";
-  if (sync_ui_ != nullptr) {
-    sync_ui_->OnLogMessage(message);
-  }
+  TriggerOnLogMessage(message);
 }
 
 void ControllerImpl::OnSyncSetupError(const std::string &error) {
@@ -498,15 +485,7 @@ void ControllerImpl::OnSyncReady() {
   DCHECK(false == sync_initialized_);
   sync_initialized_ = true;
 
-  if (sync_ui_) {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: have sync ui, inform state changed";
-    // inform WebUI page that data is ready
-    // changed this device name and id
-    sync_ui_->OnSyncStateChanged();
-  } else {
-    // it can be ui page is not opened yet
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: sync_ui_ is null";
-  }
+  TriggerOnSyncStateChanged();
 
   // fetch the records
   RequestSyncData();
@@ -736,14 +715,12 @@ void ControllerImpl::OnResolvedPreferences(const RecordsList &records) {
 
   // Inform devices list chain has been changed
   LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged()";
-  if (sync_ui_) {
-    LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged(), post in UI thread SyncUI::OnSyncStateChanged";
-    content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
-      FROM_HERE, base::Bind(&SyncUI::OnSyncStateChanged,
-           base::Unretained(sync_ui_)));
-  } else {
-    LOG(ERROR) << "TAGAB OnResolvedPreferences sync_ui_ is empty, don't call OnSyncStateChanged()";
-  }
+
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
+    FROM_HERE, base::Bind(&ControllerImpl::TriggerOnSyncStateChanged,
+         base::Unretained(this)));
+
+
   LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged() done";
 }
 
@@ -896,8 +873,7 @@ void ControllerImpl::PopRRContext(const std::string &prev_order, const std::stri
 }
 
 void ControllerImpl::OnSyncWordsPrepared(const std::string &words) {
-  CHECK(sync_ui_);
-  sync_ui_->OnHaveSyncWords(words);
+  TriggerOnHaveSyncWords(words);
 }
 
 void ControllerImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
@@ -915,9 +891,6 @@ void ControllerImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
     InitJsLib(true);//Init will cause load of the Script;
   } else {
     LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnBytesFromSyncWordsPrepared failed, " << error_message;
-    // if (sync_ui_) {
-    //   sync_ui_->ShowError(error_message);
-    // }
   }
 }
 
@@ -1351,6 +1324,21 @@ void ControllerImpl::LoopProcThreadAligned() {
 
 base::SequencedTaskRunner *ControllerImpl::GetTaskRunner() {
   return task_runner_.get();
+}
+
+void ControllerImpl::TriggerOnLogMessage(const std::string &message) {
+  for (auto& observer : observers_)
+    observer.OnLogMessage(this, message);
+}
+
+void ControllerImpl::TriggerOnSyncStateChanged() {
+  for (auto& observer : observers_)
+    observer.OnSyncStateChanged(this);
+}
+
+void ControllerImpl::TriggerOnHaveSyncWords(const std::string &sync_words) {
+  for (auto& observer : observers_)
+    observer.OnHaveSyncWords(this, sync_words);
 }
 
 } // namespace brave_sync

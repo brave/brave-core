@@ -72,8 +72,7 @@ source_set("ui") {
     "webui/settings/brave_appearance_handler.h",
     "webui/settings/default_brave_shields_handler.cc",
     "webui/settings/default_brave_shields_handler.h",
-    "webui/sync/sync_ui_impl.cc",
-    "webui/sync/sync_ui_impl.h",
+    "webui/sync/sync_ui.cc",
     "webui/sync/sync_ui.h",
   ]
 

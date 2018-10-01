@@ -14,7 +14,6 @@
 #include "brave/components/brave_sync/can_send_history.h"
 
 class Browser;
-class SyncUI;
 
 namespace base {
   class RepeatingTimer;
@@ -73,7 +72,6 @@ public:
   void OnSetSyncBookmarks(const bool &sync_bookmarks) override;
   void OnSetSyncBrowsingHistory(const bool &sync_browsing_history) override;
   void OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) override;
-  void SetupUi(SyncUI *sync_ui) override;
 
   void GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) override;
   void GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Settings> settings, const GetSettingsAndDevicesCallback &callback);
@@ -237,8 +235,9 @@ private:
   void PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &node_id, const int &action);
   void PopRRContext(const std::string &prev_order, const std::string &next_order, int64_t &node_id, int &action);
 
-  // Messages Controller => SyncWebUi
-  SyncUI *sync_ui_;
+  void TriggerOnLogMessage(const std::string &message);
+  void TriggerOnSyncStateChanged();
+  void TriggerOnHaveSyncWords(const std::string &sync_words);
 
   BraveSyncClient *sync_client_;
 

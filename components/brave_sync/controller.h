@@ -6,10 +6,9 @@
 
 #include <string>
 
+#include "base/macros.h"
+#include "base/observer_list.h"
 #include "components/keyed_service/core/keyed_service.h"
-
-class SyncJsLayer;
-class SyncUI;
 
 class Profile;
 
@@ -17,10 +16,12 @@ namespace brave_sync {
 
   class Settings;
   class SyncDevices;
+  class ControllerObserver;
 
   class Controller : public KeyedService {
   public:
-    ~Controller() override = default;
+    Controller();
+    ~Controller() override;
     virtual void OnSetupSyncHaveCode(const std::string &sync_words,
       const std::string &device_name) = 0;
 
@@ -40,7 +41,14 @@ namespace brave_sync {
     virtual void OnSetSyncBrowsingHistory(const bool &sync_browsing_history) = 0;
     virtual void OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) = 0;
 
-    virtual void SetupUi(SyncUI *sync_ui) = 0;
+    void AddObserver(ControllerObserver* observer);
+    void RemoveObserver(ControllerObserver* observer);
+
+   protected:
+    base::ObserverList<ControllerObserver> observers_;
+
+   private:
+    DISALLOW_COPY_AND_ASSIGN(Controller);
   };
 
 } // namespace brave_sync
