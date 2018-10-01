@@ -21,8 +21,10 @@
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/viz/common/features.h"
 #include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
+#include "gpu/config/gpu_finch_features.h"
 #include "ui/base/ui_base_features.h"
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
@@ -129,7 +131,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     << "," << extensions::features::kNewExtensionUpdaterService.name;
 
   std::stringstream disabled_features;
-  disabled_features << features::kSharedArrayBuffer.name;
+  disabled_features << features::kSharedArrayBuffer.name
+    << "," << features::kDefaultEnableOopRasterization.name
+    << "," << features::kVizDisplayCompositor.name;
 
   command_line.AppendSwitchASCII(switches::kEnableFeatures,
       enabled_features.str());
