@@ -215,7 +215,7 @@ extension UIAlertController {
                                   placeholder2: String? = Strings.Name,
                                   keyboardType2: UIKeyboardType? = nil,
                                   forcedInput: Bool = true,
-                                  callbackOnMain: @escaping (_ input: String?, _ input2: String?) -> ()) -> UIAlertController {
+                                  callbackOnMain: @escaping (_ input: String?, _ input2: String?) -> Void) -> UIAlertController {
         // Returning alert, so no external, strong reference to initial instance
         return UserTextInputAlert(title: title, message: message,
                                   startingText: startingText,
@@ -243,7 +243,7 @@ class UserTextInputAlert {
                   placeholder2: String? = nil,
                   keyboardType2: UIKeyboardType? = nil,
                   forcedInput: Bool = true,
-                  callbackOnMain: @escaping (_ input: String?, _ input2: String?) -> ()) {
+                  callbackOnMain: @escaping (_ input: String?, _ input2: String?) -> Void) {
         
         alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -280,7 +280,7 @@ class UserTextInputAlert {
     }
     
     private func textFieldConfig(text: String?, placeholder: String?, keyboardType: UIKeyboardType?, forcedInput: Bool)
-        -> (UITextField) -> () {
+        -> (UITextField) -> Void {
             return { textField in
                 textField.placeholder = placeholder
                 textField.isSecureTextEntry = false

@@ -53,7 +53,7 @@ class HistoryTests: CoreDataTestCase {
         
         XCTAssertNoThrow(try frc.performFetch())
         
-        let objects = frc.fetchedObjects as! [History]
+        let objects = frc.fetchedObjects!
         
         XCTAssertEqual(objects.first?.url, secondObject.url)
         XCTAssertEqual(objects.last?.url, firstObject.url)

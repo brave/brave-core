@@ -22,7 +22,7 @@ class FavoriteCell: UICollectionViewCell {
         
         static let labelColor = UIAccessibilityDarkerSystemColorsEnabled() ? UX.GreyJ : UX.GreyH
         static let labelAlignment: NSTextAlignment = .center
-        static let labelInsets = UIEdgeInsetsMake(0, 3, 2, 3)
+        static let labelInsets = UIEdgeInsets(top: 0, left: 3, bottom: 2, right: 3)
         
         static let editButtonAnimationDuration: TimeInterval = 0.4
         static let editButtonAnimationDamping: CGFloat = 0.6
@@ -51,8 +51,7 @@ class FavoriteCell: UICollectionViewCell {
                     image = image.scale(toSize: ContainerSize.scaledDown())
                     
                     imageView.contentMode = .center
-                }
-                else if image.size.width > 32 {
+                } else if image.size.width > 32 {
                     imageView.contentMode = .scaleAspectFit
                 }
                 imageView.image = image

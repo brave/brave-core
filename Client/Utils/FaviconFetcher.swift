@@ -27,7 +27,7 @@ class FaviconFetcherErrorType: MaybeErrorType {
  * If that fails, it will attempt to find a favicon.ico in the root host domain.
  */
 open class FaviconFetcher: NSObject, XMLParserDelegate {
-    open static var userAgent: String = ""
+    public static var userAgent: String = ""
     static let ExpirationTime = TimeInterval(60*60*24*7) // Only check for icons once a week
     fileprivate static var characterToFaviconCache = [String: UIImage]()
     static var defaultFavicon: UIImage = {
@@ -135,7 +135,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
                 let root = try? HTMLDocument(data: data as Data) else {
                     return deferMaybe([])
             }
-            var reloadUrl: URL? = nil
+            var reloadUrl: URL?
             for meta in root.xpath("//head/meta") {
                 if let refresh = meta["http-equiv"], refresh == "Refresh",
                     let content = meta["content"],
@@ -173,7 +173,6 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     func getFavicon(_ siteUrl: URL, icon: Favicon, profile: Profile) -> Deferred<Maybe<Favicon>> {
         let deferred = Deferred<Maybe<Favicon>>()
         let url = icon.url
-        let site = Site(url: siteUrl.absoluteString, title: "")
 
         var favicon = Favicon(url: url)
         if let url = url.asURL {
@@ -267,24 +266,32 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
 
     // Default favicons and background colors provided via mozilla/tippy-top-sites
     class func getDefaultIcons() -> [String: (color: UIColor, url: String)] {
-        let filePath = Bundle.main.path(forResource: "top_sites", ofType: "json")
-        let file = try! Data(contentsOf: URL(fileURLWithPath: filePath!))
-        let json = JSON(file)
-        var icons: [String: (color: UIColor, url: String)] = [:]
-        json.forEach({
-            guard let url = $0.1["domain"].string, let color = $0.1["background_color"].string, var path = $0.1["image_url"].string else {
-                return
-            }
-            path = path.replacingOccurrences(of: ".png", with: "")
-            let filePath = Bundle.main.path(forResource: "TopSites/" + path, ofType: "png")
-            if let filePath = filePath {
-                if color == "#fff" || color == "#FFF" {
-                    icons[url] = (UIColor.clear, filePath)
-                } else {
-                    icons[url] = (UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath)
+        guard let filePath = Bundle.main.path(forResource: "top_sites", ofType: "json") else {
+            log.error("Failed to get bundle path for \"top_sites.json\"")
+            return [:]
+        }
+        do {
+            let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
+            let json = JSON(file)
+            var icons: [String: (color: UIColor, url: String)] = [:]
+            json.forEach({
+                guard let url = $0.1["domain"].string, let color = $0.1["background_color"].string, var path = $0.1["image_url"].string else {
+                    return
                 }
-            }
-        })
-        return icons
+                path = path.replacingOccurrences(of: ".png", with: "")
+                let filePath = Bundle.main.path(forResource: "TopSites/" + path, ofType: "png")
+                if let filePath = filePath {
+                    if color == "#fff" || color == "#FFF" {
+                        icons[url] = (UIColor.clear, filePath)
+                    } else {
+                        icons[url] = (UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath)
+                    }
+                }
+            })
+            return icons
+        } catch {
+            log.error("Failed to get default icons at \(filePath): \(error.localizedDescription)")
+            return [:]
+        }
     }
 }

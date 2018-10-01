@@ -60,8 +60,8 @@ class DAUTests: XCTestCase {
         XCTAssertNil(dau.dauStatParams(nil, firstPing: false, channel: .beta))
         XCTAssertNil(dau.dauStatParams(nil, firstPing: false, channel: .release))
         XCTAssertNil(dau.dauStatParams([], firstPing: false, channel: .beta))
-        XCTAssertNil(dau.dauStatParams([1,2], firstPing: false, channel: .beta))
-        XCTAssertNil(dau.dauStatParams([1,2,3,4], firstPing: false, channel: .beta))
+        XCTAssertNil(dau.dauStatParams([1, 2], firstPing: false, channel: .beta))
+        XCTAssertNil(dau.dauStatParams([1, 2, 3, 4], firstPing: false, channel: .beta))
     }
     
     func testStatParamsValidInputs() {

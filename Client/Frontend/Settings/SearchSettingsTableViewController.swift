@@ -175,8 +175,7 @@ class SearchSettingsTableViewController: UITableViewController {
             searchEnginePicker.delegate = self
             searchEnginePicker.selectedSearchEngineName = model.defaultEngine(forType: .standard).shortName
             navigationController?.pushViewController(searchEnginePicker, animated: true)
-        }
-        else if indexPath.section == SectionDefault && indexPath.item == ItemDefaultPrivateEngine {
+        } else if indexPath.section == SectionDefault && indexPath.item == ItemDefaultPrivateEngine {
             let searchEnginePicker = SearchEnginePicker(type: .privateMode)
             // Order alphabetically, so that picker is always consistently ordered.
             // Every engine is a valid choice for the default engine, even the current default engine.
@@ -218,6 +217,7 @@ class SearchSettingsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // swiftlint:disable:next force_cast
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SectionHeaderIdentifier) as! SettingsTableSectionHeaderFooterView
         
         let sectionTitle = section == SectionDefault ?

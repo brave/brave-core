@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// swiftlint:disable file_header
 // ADAPTED FROM:
 //
 //  GradientProgressBar.swift
@@ -10,6 +11,7 @@
 //  Created by Felix Mau on 01.03.17.
 //  Copyright © 2017 Felix Mau. All rights reserved.
 //
+// swiftlint:enable file_header
 
 import UIKit
 

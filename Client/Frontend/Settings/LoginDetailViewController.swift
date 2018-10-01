@@ -177,6 +177,7 @@ extension LoginDetailViewController: UITableViewDataSource {
             return loginCell
 
         case .lastModifiedSeparator:
+            // swiftlint:disable:next force_cast
             let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: SeparatorIdentifier) as! SettingsTableSectionHeaderFooterView
             footer.titleAlignment = .top
             let lastModified = NSLocalizedString("Last modified %@", tableName: "LoginManager", comment: "Footer label describing when the current login was last modified with the timestamp as the parameter.")
@@ -196,6 +197,7 @@ extension LoginDetailViewController: UITableViewDataSource {
     }
 
     fileprivate func dequeueLoginCellForIndexPath(_ indexPath: IndexPath) -> LoginTableViewCell {
+        // swiftlint:disable:next force_cast
         let loginCell = tableView.dequeueReusableCell(withIdentifier: LoginCellIdentifier, for: indexPath) as! LoginTableViewCell
         loginCell.selectionStyle = .none
         loginCell.delegate = self
@@ -301,7 +303,7 @@ extension LoginDetailViewController {
 
     @objc func edit() {
         editingInfo = true
-
+        // swiftlint:disable:next force_cast
         let cell = tableView.cellForRow(at: InfoItem.usernameItem.indexPath) as! LoginTableViewCell
         cell.descriptionLabel.becomeFirstResponder()
 

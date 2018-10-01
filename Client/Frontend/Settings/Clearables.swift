@@ -35,12 +35,11 @@ struct ClearableErrorType: MaybeErrorType {
     }
 }
 
-
 // Delete all the contents of a the folder, and verify using validateClearedWithNameContains that critical files are removed (any remaining file must not contain the specified substring(s))
 // Alert the user if these files still exist after clearing.
 // validateClearedWithNameContains can be nil, in which case the check is skipped or pass [] as a special case to verify that
 // the directory is empty.
-private func deleteLibraryFolderContents(_ folder: String, validateClearedExceptFor:[String]?) throws {
+private func deleteLibraryFolderContents(_ folder: String, validateClearedExceptFor: [String]?) throws {
     let manager = FileManager.default
     let library = manager.urls(for: FileManager.SearchPathDirectory.libraryDirectory, in: .userDomainMask)[0]
     let dir = library.appendingPathComponent(folder)
@@ -122,8 +121,8 @@ class CacheClearable: Clearable {
         let result = Deferred<Maybe<()>>()
         // need event loop to run to autorelease UIWebViews fully
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            URLCache.shared.memoryCapacity = 0;
-            URLCache.shared.diskCapacity = 0;
+            URLCache.shared.memoryCapacity = 0
+            URLCache.shared.diskCapacity = 0
             // Remove the basic cache.
             URLCache.shared.removeAllCachedResponses()
             
@@ -150,7 +149,6 @@ class CacheClearable: Clearable {
         return result
     }
 }
-
 
 // Clears our browsing history, including favicons and thumbnails.
 class HistoryClearable: Clearable {

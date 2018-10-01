@@ -39,7 +39,7 @@ class FavoritesViewController: UIViewController {
             $0.alwaysBounceVertical = true
             $0.accessibilityIdentifier = "Top Sites View"
             // Entire site panel, including the stats view insets
-            $0.contentInset = UIEdgeInsetsMake(UI.statsHeight, 0, 0, 0)
+            $0.contentInset = UIEdgeInsets(top: UI.statsHeight, left: 0, bottom: 0, right: 0)
         }
         
         return view
@@ -101,7 +101,7 @@ class FavoritesViewController: UIViewController {
     }
     
     /// Called after user taps on ddg popup to set it as a default search enginge in private browsing mode.
-    var ddgPrivateSearchCompletionBlock: (() -> ())?
+    var ddgPrivateSearchCompletionBlock: (() -> Void)?
     
     // MARK: - Init/lifecycle
     init() {
@@ -218,8 +218,7 @@ class FavoritesViewController: UIViewController {
             if UIDevice.current.userInterfaceIdiom == .pad {
                 make.centerY.equalTo(self.view)
                 make.width.equalTo(400)
-            }
-            else {
+            } else {
                 make.top.equalTo(self.braveShieldStatsView.snp.bottom).offset(25)
                 make.leftMargin.equalTo(collection).offset(8)
                 make.rightMargin.equalTo(collection).offset(-8)
@@ -424,11 +423,11 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         } else {
             // Portrait iPad
             if size.height > size.width {
-                cols = 4;
+                cols = 4
             }
                 // Landscape iPad
             else {
-                cols = 5;
+                cols = 5
             }
         }
         return cols + 1
@@ -438,7 +437,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 extension FavoritesViewController: FavoriteCellDelegate {
     func editFavorite(_ favoriteCell: FavoriteCell) {
         guard let indexPath = collection.indexPath(for: favoriteCell),
-            let fav = dataSource.frc?.fetchedObjects?[indexPath.item] as? Bookmark else { return }
+            let fav = dataSource.frc?.fetchedObjects?[indexPath.item] else { return }
         
         let actionSheet = UIAlertController(title: fav.displayTitle, message: nil, preferredStyle: .actionSheet)
         

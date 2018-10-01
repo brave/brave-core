@@ -23,7 +23,7 @@ extension POPAnimatableProperty: ExpressibleByPropertyAnimator {
 
 extension String: ExpressibleByPropertyAnimator {
   public var animatableProperty: POPAnimatableProperty {
-    return POPAnimatableProperty.property(withName: self) as! POPAnimatableProperty
+    return POPAnimatableProperty.property(withName: self) as! POPAnimatableProperty // swiftlint:disable:this force_cast
   }
 }
 
@@ -104,14 +104,14 @@ extension CustomPropertyAnimator {
       guard let property = property else { return }
       
       property.readBlock = {
-        $1?[0] = reading($0 as! Self)[0]
+        $1?[0] = reading($0 as! Self)[0] // swiftlint:disable:this force_cast
       }
       property.writeBlock = {
-        writing($0 as! Self, [$1!.pointee])
+        writing($0 as! Self, [$1!.pointee]) // swiftlint:disable:this force_cast
       }
       
       property.threshold = threshold
-    }) as! POPAnimatableProperty
+    }) as! POPAnimatableProperty // swiftlint:disable:this force_cast
   }
 }
 
