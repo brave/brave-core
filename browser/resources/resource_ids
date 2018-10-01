@@ -22,7 +22,5 @@
     "includes": [36500],
   },
   # brave webtorrent 37500
-  "brave/components/brave_rewards/resources.grd": {
-    "includes": [38000],
-  },
+  # brave rewards 38000
 }

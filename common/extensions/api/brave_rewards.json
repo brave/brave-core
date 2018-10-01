@@ -1,0 +1,210 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "braveRewards",
+    "description": "Use the <code>chrome.braveRewards</code> API for rewards panel.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/brave_rewards_api.h"
+    },
+    "events": [
+      {
+        "name": "onWalletCreated",
+        "type": "function",
+        "description": "Fired when wallet is created",
+        "parameters": []
+      },
+      {
+        "name": "onPublisherData",
+        "type": "function",
+        "description": "Fired when we get publisher data from the DB",
+        "parameters": [
+           {
+             "name": "windowId",
+             "type": "integer"
+           },
+          {
+            "name": "publisher",
+            "type": "object",
+            "properties": {
+              "percentage": {
+                "type": "integer",
+                "description": "publisher attention score"
+              },
+              "excluded": {
+                "type": "boolean",
+                "description": "is site excluded from auto contribute"
+              },
+              "provider": {
+                "type": "string",
+                "description": "provider (if media publisher) for this publisher"
+              },
+              "favicon_url": {
+                "type": "string",
+                "description": "publisher image url"
+              },
+              "publisher_key": {
+                "type": "string",
+                "description": "publisher key, unique identifier"
+              },
+              "name": {
+                "type": "string",
+                "description": "publisher name"
+              },
+              "url": {
+                "type": "string",
+                "description": "url of the current tab"
+              },
+              "verified": {
+                "type": "boolean",
+                "description": "is publisher verified"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "onWalletProperties",
+        "type": "function",
+        "description": "Fired when wallet properties (balance) is fetched",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "probi": {
+                "type": "string",
+                "description": "balance represented in probis"
+              },
+              "balance": {
+                "type": "double",
+                "description": "balance"
+              },
+              "rates": {
+                "type": "object",
+                "description": "rates for different currencies",
+                "properties": {
+                  "BTC": {
+                    "type": "double",
+                    "description": "BTC rate"
+                  },
+                  "ETH": {
+                    "type": "double",
+                    "description": "ETH rate"
+                  },
+                  "USD": {
+                    "type": "double",
+                    "description": "USD rate"
+                  },
+                  "EUR": {
+                    "type": "double",
+                    "description": "EUR rate"
+                  }
+                }
+              },
+              "grants": {
+                "type": "array",
+                "description": "user claimed grants",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "altcurrency": {
+                      "type": "string",
+                      "description": "currency in which grant is served"
+                    },
+                    "probi": {
+                      "type": "string",
+                      "description": "amount of the grant represented in probis"
+                    },
+                    "expiryTime": {
+                      "type": "integer",
+                      "description": "when grant expires, timestamp in seconds"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "onCurrentReport",
+        "type": "function",
+        "description": "Fired when we get current report back",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "openingBalance": {
+                "type": "double",
+                "description": "balance defined in BAT"
+              },
+              "closingBalance": {
+                "type": "double",
+                "description": "balance defined in BAT"
+              },
+              "grants": {
+                "type": "double",
+                "description": "balance defined in BAT"
+              },
+              "earningFromAds": {
+                "type": "double",
+                "description": "balance defined in BAT"
+              },
+              "autoContribute": {
+                "type": "double",
+                "description": "balance defined in BAT"
+              },
+              "recurringDonation": {
+                "type": "double",
+                "description": "balance defined in BAT"
+              },
+              "oneTimeDonation": {
+                "type": "double",
+                "description": "balance defined in BAT"
+              }
+            }
+          }
+        ]
+      }
+    ],
+   "functions": [
+     {
+       "name": "createWallet",
+       "type": "function",
+       "description": "Creates new wallet",
+       "parameters": []
+     },
+     {
+       "name": "getPublisherData",
+       "type": "function",
+       "description": "Get publisher data",
+       "parameters": [
+         {
+           "name": "windowId",
+           "type": "integer"
+         },
+         {
+           "name": "url",
+           "type": "string"
+         }
+       ]
+     },
+     {
+       "name": "getWalletProperties",
+       "type": "function",
+       "description": "Get wallet data (balance, grant)",
+       "parameters": []
+     },
+     {
+       "name": "getCurrentReport",
+       "type": "function",
+       "description": "Get current month wallet report",
+       "parameters": []
+     }
+   ]
+  }
+]
