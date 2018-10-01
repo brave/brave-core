@@ -40,7 +40,7 @@ protocol TabCellDelegate: class {
     func tabCellDidClose(_ cell: TabCell)
 }
 
-class TabCell: UICollectionViewCell {
+class TabCell: UICollectionViewCell, Themeable {
     static let Identifier = "TabCellIdentifier"
     static let BorderWidth: CGFloat = 3
 
@@ -191,6 +191,14 @@ class TabCell: UICollectionViewCell {
     @objc
     func close() {
         self.animator.closeWithoutGesture()
+    }
+    
+    func applyTheme(_ theme: Theme) {
+        backgroundHolder.backgroundColor = theme == .private ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
+        screenshotView.backgroundColor = backgroundHolder.backgroundColor
+        if theme == .private {
+            favicon.tintColor = UIColor.Photon.White100
+        }
     }
 }
 
@@ -391,6 +399,7 @@ class TabTrayController: UIViewController, Themeable {
     
     func applyTheme(_ theme: Theme) {
         collectionView?.backgroundColor = TabTrayControllerUX.BackgroundColor.colorFor(theme)
+        collectionView?.visibleCells.compactMap({ $0 as? TabCell }).forEach { $0.applyTheme(theme) }
         toolbar.applyTheme(theme)
     }
 
@@ -756,10 +765,6 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
             tabCell.favicon.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "defaultFavicon"), options: [], completed: nil)
         } else {
             tabCell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
-
-            if tab.isPrivate {
-                tabCell.favicon.tintColor = UIColor.Photon.White100
-            }
         }
 
         if tab == tabManager.selectedTab {
@@ -767,7 +772,8 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
         }
 
         tabCell.screenshotView.image = tab.screenshot
-
+        tabCell.applyTheme(PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular)
+        
         return tabCell
     }
 
