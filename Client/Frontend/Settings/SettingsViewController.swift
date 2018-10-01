@@ -36,7 +36,7 @@ extension PasswordManagerShortcutBehavior: RepresentableOptionType {
         case .showPicker: return Strings.ShowPicker
         case .onePassword: return "1Password"
         case .lastPass: return "LastPass"
-        case .bitwarden: return "bitwarden"
+        case .bitwarden: return "Bitwarden"
         case .trueKey: return "True Key"
         }
     }
