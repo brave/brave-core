@@ -63,6 +63,9 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
   })
 }
 
+const getScope = () =>
+  chrome.extension.inIncognitoContext ? 'incognito_session_only' : 'regular'
+
 /**
  * Obtains specified tab data
  * @return a promise with the active tab data
@@ -93,7 +96,8 @@ export const setAllowBraveShields = (origin: string, setting: string) =>
   chrome.braveShields.plugins.setAsync({
     primaryPattern: origin.replace(/^(http|https):\/\//, '*://') + '/*',
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_BRAVE_SHIELDS },
-    setting
+    setting,
+    scope: getScope()
   })
 
 /**
@@ -107,7 +111,8 @@ export const setAllowAds = (origin: string, setting: string) =>
   chrome.braveShields.plugins.setAsync({
     primaryPattern: origin + '/*',
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_ADS },
-    setting
+    setting,
+    scope: getScope()
   })
 
 /**
@@ -121,7 +126,8 @@ export const setAllowTrackers = (origin: string, setting: string) =>
   chrome.braveShields.plugins.setAsync({
     primaryPattern: origin + '/*',
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS },
-    setting
+    setting,
+    scope: getScope()
   })
 
 /**
@@ -135,7 +141,8 @@ export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOp
   return chrome.braveShields.plugins.setAsync({
     primaryPattern,
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES },
-    setting
+    setting,
+    scope: getScope()
   })
 }
 
@@ -148,7 +155,8 @@ export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOp
 export const setAllowJavaScript = (origin: string, setting: string) =>
   chrome.braveShields.javascript.setAsync({
     primaryPattern: origin + '/*',
-    setting
+    setting,
+    scope: getScope()
   })
 
 /**
@@ -164,14 +172,16 @@ export const setAllowFingerprinting = (origin: string, setting: string) => {
   const p1 = chrome.braveShields.plugins.setAsync({
     primaryPattern: origin + '/*',
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
-    setting: originSetting
+    setting: originSetting,
+    scope: getScope()
   })
 
   const p2 = chrome.braveShields.plugins.setAsync({
     primaryPattern: origin + '/*',
     secondaryPattern: 'https://firstParty/*',
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
-    setting: firstPartySetting
+    setting: firstPartySetting,
+    scope: getScope()
   })
 
   return Promise.all([p1, p2])
@@ -189,20 +199,23 @@ export const setAllowCookies = (origin: string, setting: string) => {
   const p1 = chrome.braveShields.plugins.setAsync({
     primaryPattern: origin + '/*',
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_REFERRERS },
-    setting: originSetting
+    setting: originSetting,
+    scope: getScope()
   })
 
   const p2 = chrome.braveShields.plugins.setAsync({
     primaryPattern: origin + '/*',
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
-    setting: originSetting
+    setting: originSetting,
+    scope: getScope()
   })
 
   const p3 = chrome.braveShields.plugins.setAsync({
     primaryPattern: origin + '/*',
     secondaryPattern: 'https://firstParty/*',
     resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
-    setting: firstPartySetting
+    setting: firstPartySetting,
+    scope: getScope()
   })
 
   return Promise.all([p1, p2, p3])
