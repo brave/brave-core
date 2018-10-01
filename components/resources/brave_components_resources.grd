@@ -282,6 +282,7 @@
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Brave Ads</message>
       <message name="IDS_BRAVE_UI_ENABLE_TIPS" desc="">Enable Tips</message>
+      <message name="IDS_BRAVE_UI_EXCLUDE_SITE" desc="">Exclude this site</message>
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES" desc="">Total number of sites you excluded from Auto-Contribute:</message>
       <message name="IDS_BRAVE_UI_EXPIRES_ON" desc="">expires on</message>
       <message name="IDS_BRAVE_UI_FOR" desc="">for</message>
