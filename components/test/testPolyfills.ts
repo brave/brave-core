@@ -7,7 +7,8 @@ import { getMockChrome } from './testData'
 (global as any).window = {} as any
 
 (window as any).localStorage = {
-  getItem: jest.fn()
+  getItem: jest.fn(),
+  setItem: jest.fn()
 } as any
 
 (window as any).location = {
