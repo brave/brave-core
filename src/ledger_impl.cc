@@ -195,6 +195,7 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
   }
 
   OnWalletInitialized(result);
+  RefreshPublishersList(false);
 }
 
 void LedgerImpl::SaveLedgerState(const std::string& data) {
@@ -234,7 +235,6 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
 
   if (result == ledger::Result::LEDGER_OK) {
     initialized_ = true;
-    RefreshPublishersList(false);
   }
 }
 
