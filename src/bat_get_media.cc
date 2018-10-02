@@ -6,6 +6,7 @@
 #include "bat_get_media.h"
 
 #include <sstream>
+#include <cmath>
 
 #include "bat_get_media.h"
 #include "bat_helper.h"
@@ -95,14 +96,8 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
     return;
   }
 
-  std::vector<std::string> split = braveledger_bat_helper::split(mediaId, '_');
-  std::string new_media_id = mediaId;
-  if (!split.empty()) {
-    new_media_id = split[0];
-  }
-
   if (!publisher_info.get()) {
-    std::string mediaURL = getMediaURL(new_media_id, providerName);
+    std::string mediaURL = getMediaURL(mediaId, providerName);
     if (YOUTUBE_MEDIA_TYPE == providerName) {
       auto request = ledger_->LoadURL((std::string)YOUTUBE_PROVIDER_URL + "?format=json&url=" + ledger_->URIEncode(mediaURL),
         std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
@@ -118,12 +113,16 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
           _2,
           _3));
     } else if (TWITCH_MEDIA_TYPE == providerName) {
-      const std::string mediaUrl = getMediaURL(new_media_id, providerName);
+      const std::string twitchMediaID = 
+        mediaId.find(MEDIA_DELIMITER) != std::string::npos ?
+        mediaId :
+        braveledger_bat_helper::split(mediaId, MEDIA_DELIMITER)[0];
+      const std::string mediaUrl = getMediaURL(twitchMediaID, providerName);
       std::unique_ptr<ledger::PublisherInfo> new_publisher_info(new ledger::PublisherInfo());
       new_publisher_info->favicon_url = "";
       new_publisher_info->url = mediaUrl + "/videos";
-      std::string id = providerName + "#author:" + new_media_id;
-      new_publisher_info->name = new_media_id;
+      std::string id = providerName + "#author:" + twitchMediaID;
+      new_publisher_info->name = twitchMediaID;
       new_publisher_info->id = id;
 
       ledger::TwitchEventInfo oldEvent;
@@ -259,11 +258,15 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
     return 0;
   }
 
+  if (oldEventInfo.status_.empty()) { // if autoplay is off and play is pressed
+    return 0;
+  }
+  
   if (time > TWITCH_MAXIMUM_SECONDS_CHUNK) {
     time = TWITCH_MAXIMUM_SECONDS_CHUNK;
   }
 
-  return (uint64_t)time;
+  return (uint64_t)std::round(time);
 }
 
 void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, const std::string& media_key,
