@@ -26,6 +26,7 @@ const updateBookmarkInfo = (state: NewTab.State, url: string, bookmarkTreeNode?:
     gridSite.bookmarked = topSite.bookmarked = pinnedTopSite.bookmarked = bookmarkTreeNode
   } else {
     delete bookmarks[url]
+    gridSite.bookmarked = topSite.bookmarked = pinnedTopSite.bookmarked = undefined
   }
   state = { ...state, bookmarks, gridSites }
 
@@ -82,7 +83,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
   const payload = action.payload
   switch (action.type) {
     case types.BOOKMARK_ADDED:
-      const topSite: NewTab.Site | undefined = state.topSites.find((site) => site.url === action.url)
+      const topSite: NewTab.Site | undefined = state.topSites.find((site) => site.url === payload.url)
       if (topSite) {
         chrome.bookmarks.create({
           title: topSite.title,

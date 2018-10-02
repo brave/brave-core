@@ -58,7 +58,7 @@ class NewTabPage extends React.Component<Props, {}> {
   }
 
   onToggleBookmark (site: NewTab.Site) {
-    if (site.bookmarked) {
+    if (site.bookmarked === undefined) {
       this.actions.bookmarkAdded(site.url)
     } else {
       this.actions.bookmarkRemoved(site.url)
