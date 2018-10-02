@@ -9,14 +9,13 @@ import { Page,PageWrapper, PageHeader, Clock, NewTabHeading } from 'brave-ui/fea
 import PrivateTabTorOption from './privateTabTorOption'
 import PrivateTabSearchEngineOption from './privateTabSearchEngineOption'
 import PrivateTabFooter from './privateTabFooter'
-import Stats from './stats'
 
 // Assets
 import { getLocale } from '../../common/locale'
 require('emptykit.css')
 
 interface Props {
-  stats: NewTab.Stats,
+  children: React.ReactNode
   useAlternativePrivateSearchEngine: boolean,
   isTor: boolean,
   onChangePrivateSearchEngine: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -25,21 +24,16 @@ interface Props {
 export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   render () {
     const {
-      stats,
+      children,
       useAlternativePrivateSearchEngine,
       isTor,
       onChangePrivateSearchEngine
     } = this.props
-
-    // do not render if stats aren't loaded yet
-    if (!stats) {
-      return null
-    }
     return (
       <Page>
         <PageWrapper>
           <PageHeader>
-            <Stats stats={stats} />
+            {children}
             <Clock />
           </PageHeader>
           <main>
