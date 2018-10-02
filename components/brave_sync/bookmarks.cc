@@ -193,7 +193,7 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark location="<<sync_bookmark.site.location;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark title="<<sync_bookmark.site.title;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark order="<<sync_bookmark.order;
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark parentFolderObjectId="<<sync_record.GetBookmark().parentFolderObjectId;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmark parentFolderObjectId="<<sync_bookmark.parentFolderObjectId;
   DCHECK(model_);
   if (model_ == nullptr) {
     return;
@@ -201,9 +201,9 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
 
   auto sync_record_ptr = jslib::SyncRecord::Clone(sync_record);
   std::string s_parent_local_object_id;
-  if (!sync_record.GetBookmark().parentFolderObjectId.empty()) {
+  if (!sync_bookmark.parentFolderObjectId.empty()) {
     s_parent_local_object_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark,
-      sync_record.GetBookmark().parentFolderObjectId);
+      sync_bookmark.parentFolderObjectId);
   } else {
     // We don't send parentFolderObjectId if the parent is permanent node
     // "bookmarks bar", "other" or "mobile" because it is impossible to create
@@ -924,7 +924,8 @@ void Bookmarks::BookmarkNodeMoved(bookmarks::BookmarkModel* model,
     base::Bind(&ControllerForBookmarksExports::BookmarkMoved, base::Unretained(controller_exports_),
     node->id(),
     prev_item_id,
-    next_item_id)
+    next_item_id,
+    new_parent->id())
   );
 }
 

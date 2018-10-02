@@ -169,12 +169,14 @@ private:
   void BookmarkMoved(
     const int64_t &node_id,
     const int64_t &prev_item_id,
-    const int64_t &next_item_id) override;
+    const int64_t &next_item_id,
+    const int64_t &parent_id) override;
 
   void BookmarkMovedQueryNewOrderUiWork(
     const int64_t &node_id,
     const std::string &prev_item_order,
-    const std::string &next_item_order);
+    const std::string &next_item_order,
+    const std::string &parent_folder_order);
 
   void BookmarkAdded(
     const int64_t &node_id,

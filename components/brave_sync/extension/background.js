@@ -200,9 +200,9 @@ function fixupSyncRecordExtToBrowser(sync_record) {
       sync_record.bookmark.parentFolderObjectId = new Uint8Array();
     }
     if ('parentFolderObjectIdStr' in sync_record.bookmark) {
-      // if (sync_record.bookmark.parentFolderObjectIdStr) {
-      //   sync_record.bookmark.parentFolderObjectId = new Uint8Array(IntArrayFromString(sync_record.bookmark.parentFolderObjectIdStr));
-      // }
+      if (sync_record.bookmark.parentFolderObjectIdStr) {
+        sync_record.bookmark.parentFolderObjectId = new Uint8Array(IntArrayFromString(sync_record.bookmark.parentFolderObjectIdStr));
+      }
       delete sync_record.bookmark.parentFolderObjectIdStr;
     }
   }
