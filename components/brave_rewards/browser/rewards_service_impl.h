@@ -64,6 +64,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetGrantCaptcha() override;
   void SolveGrantCaptcha(const std::string& solution) const override;
   std::string GetWalletPassphrase() const override;
+  unsigned int GetNumExcludedSites() const override;
   void RecoverWallet(const std::string passPhrase) const override;
   void GetContentSiteList(uint32_t start,
                           uint32_t limit,
@@ -194,6 +195,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherActivity(ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info,
                           uint64_t windowId) override;
+  void OnExcludedSitesChanged() override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

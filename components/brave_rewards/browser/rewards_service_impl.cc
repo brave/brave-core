@@ -881,6 +881,10 @@ std::string RewardsServiceImpl::GetWalletPassphrase() const {
   return ledger_->GetWalletPassphrase();
 }
 
+unsigned int RewardsServiceImpl::GetNumExcludedSites() const {
+  return ledger_->GetNumExcludedSites();
+}
+
 void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
   return ledger_->RecoverWallet(passPhrase);
 }
@@ -1113,6 +1117,11 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const st
       parsedUrl.path(),
       GetPublisherMonth(now),
       GetPublisherYear(now));
+}
+
+void RewardsServiceImpl::OnExcludedSitesChanged() {
+  for (auto& observer : observers_)
+    observer.OnExcludedSitesChanged(this);
 }
 
 void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
