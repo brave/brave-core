@@ -17,6 +17,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/common/webrtc_ip_handling_policy.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using content::BrowserThread;
@@ -43,6 +44,8 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
     ->SetString(prefs::kProfileName,
                 l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
   pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
+  pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
+                          content::kWebRTCIPHandlingDisableNonProxiedUdp);
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
