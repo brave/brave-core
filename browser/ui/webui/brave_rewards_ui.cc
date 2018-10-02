@@ -75,6 +75,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                        unsigned int result,
                        brave_rewards::Grant grant) override;
   void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
+  void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -371,6 +372,13 @@ void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) {
   rewards_service_->GetContentSiteList(0, 0, base::Bind(&RewardsDOMHandler::OnGetContentSiteList, base::Unretained(this)));
+}
+
+void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service) {
+  if (rewards_service_ && web_ui()->CanCallJavascript()) {
+    int num = (int)rewards_service_->GetNumExcludedSites();
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.numExcludedSites", base::Value(num));
+  }
 }
 
 void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {

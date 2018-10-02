@@ -425,6 +425,9 @@ std::string PublisherInfoDatabase::BuildClauses(int start,
   if (filter.min_duration > 0)
     clauses += " AND ai.duration >= ?";
 
+  if (filter.excluded != ledger::PUBLISHER_EXCLUDE::ALL)
+    clauses += " AND pi.excluded = ?";
+
   for (const auto& it : filter.order_by) {
     clauses += " ORDER BY " + it.first;
     clauses += (it.second ? " ASC" : " DESC");
@@ -458,6 +461,9 @@ void PublisherInfoDatabase::BindFilter(sql::Statement& statement,
 
   if (filter.min_duration > 0)
     statement.BindInt(column++, filter.min_duration);
+
+  if (filter.excluded != ledger::PUBLISHER_EXCLUDE::ALL)
+    statement.BindInt(column++, filter.excluded);
 }
 
 // static
