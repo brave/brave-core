@@ -4,6 +4,7 @@
 
 #include "brave/browser/search_engine_provider_util.h"
 
+#include "brave/browser/guest_window_search_engine_provider_controller.h"
 #include "brave/browser/private_window_search_engine_provider_controller.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -29,8 +30,16 @@ void RegisterAlternativeSearchEngineProviderProfilePrefs(
 }
 
 void InitializeSearchEngineProviderIfNeeded(Profile* profile) {
-  if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE)
+  // These search engine provider will be destroyed when observing template url
+  // service is terminated.
+  if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE) {
     new PrivateWindowSearchEngineProviderController(profile);
+    return;
+  }
+
+  if (profile->GetProfileType() == Profile::GUEST_PROFILE) {
+    new GuestWindowSearchEngineProviderController(profile);
+  }
 }
 
 }  // namespace brave

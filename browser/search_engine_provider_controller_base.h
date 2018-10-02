@@ -22,12 +22,14 @@ class SearchEngineProviderControllerBase : public TemplateURLServiceObserver {
   ~SearchEngineProviderControllerBase() override;
 
  protected:
+  virtual void ConfigureSearchEngineProvider() = 0;
+
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceShuttingDown() override;
 
-  virtual void ConfigureSearchEngineProvider() = 0;
-
   bool UseAlternativeSearchEngineProvider() const;
+  void ChangeToAlternativeSearchEngineProvider();
+  void ChangeToNormalWindowSearchEngineProvider();
 
   // Points off the record profile.
   Profile* otr_profile_;

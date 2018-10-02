@@ -64,3 +64,18 @@ bool
 SearchEngineProviderControllerBase::UseAlternativeSearchEngineProvider() const {
   return use_alternative_search_engine_provider_.GetValue();
 }
+
+void SearchEngineProviderControllerBase::
+ChangeToAlternativeSearchEngineProvider() {
+  otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
+      alternative_search_engine_url_.get());
+}
+
+void SearchEngineProviderControllerBase::
+ChangeToNormalWindowSearchEngineProvider() {
+  TemplateURL normal_url(
+      original_template_url_service_->GetDefaultSearchProvider()->data());
+  otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
+      &normal_url);
+}
+

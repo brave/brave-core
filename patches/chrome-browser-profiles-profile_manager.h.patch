@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index 8a62433e9107a48d4e7ae919af5e82c3639d612a..113f24bab445cb6e31b55c5d2064002e909204ff 100644
+index 8a62433e9107a48d4e7ae919af5e82c3639d612a..3e4b3c4f303bbebeeba8cc44447f14ff57a77a52 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
 @@ -140,7 +140,7 @@ class ProfileManager : public content::NotificationObserver,
@@ -20,3 +20,12 @@ index 8a62433e9107a48d4e7ae919af5e82c3639d612a..113f24bab445cb6e31b55c5d2064002e
  
    // Register and add testing profile to the ProfileManager. Use ONLY in tests.
    // This allows the creation of Profiles outside of the standard creation path
+@@ -347,7 +347,7 @@ class ProfileManager : public content::NotificationObserver,
+ 
+   // Apply settings for profiles created by the system rather than users: The
+   // (desktop) Guest User profile and (desktop) System Profile.
+-  void SetNonPersonalProfilePrefs(Profile* profile);
++  virtual void SetNonPersonalProfilePrefs(Profile* profile);
+ 
+   // For ChromeOS, determines if profile should be otr.
+   bool ShouldGoOffTheRecord(Profile* profile);

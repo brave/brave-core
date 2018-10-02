@@ -20,9 +20,6 @@ class PrivateWindowSearchEngineProviderController
   // SearchEngineProviderControllerBase overrides:
   void ConfigureSearchEngineProvider() override;
 
-  void ChangeToAlternativeSearchEngineProvider();
-  void ChangeToNormalWindowSearchEngineProvider();
-
   DISALLOW_COPY_AND_ASSIGN(PrivateWindowSearchEngineProviderController);
 };
 

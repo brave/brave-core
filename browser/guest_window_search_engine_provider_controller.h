@@ -17,7 +17,9 @@ class GuestWindowSearchEngineProviderController
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
-  void ConfigureSearchEngineProvider() override {}
+  void ConfigureSearchEngineProvider() override;
+
+  bool ignore_template_url_service_changing_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(GuestWindowSearchEngineProviderController);
 };

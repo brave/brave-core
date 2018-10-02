@@ -43,17 +43,3 @@ PrivateWindowSearchEngineProviderController::OnTemplateURLServiceChanged() {
   ChangeToNormalWindowSearchEngineProvider();
 }
 
-void PrivateWindowSearchEngineProviderController::
-ChangeToAlternativeSearchEngineProvider() {
-  otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
-      alternative_search_engine_url_.get());
-}
-
-void PrivateWindowSearchEngineProviderController::
-ChangeToNormalWindowSearchEngineProvider() {
-  TemplateURL normal_url(
-      original_template_url_service_->GetDefaultSearchProvider()->data());
-  otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
-      &normal_url);
-}
-
