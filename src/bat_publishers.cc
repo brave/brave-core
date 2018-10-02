@@ -179,6 +179,13 @@ void onVisitSavedDummy(ledger::Result result,
   // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
 }
 
+void BatPublishers::setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclude) {
+  unsigned int previousNum = getNumExcludedSites();
+  setNumExcludedSites((exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED)
+                      ? ++previousNum
+                      : --previousNum);
+}
+
 void BatPublishers::makePaymentInternal(
       ledger::PaymentData payment_data,
       ledger::Result result,
@@ -275,9 +282,11 @@ void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
   publisher_info->year = -1;
   publisher_info->excluded = exclude;
   publisher_info->month = ledger::PUBLISHER_MONTH::ANY;
+  setNumExcludedSitesInternal(exclude);
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
       std::bind(&onVisitSavedDummy, _1, _2));
+  OnExcludedSitesChanged();
 }
 
 void BatPublishers::restorePublishers() {
@@ -317,6 +326,11 @@ void BatPublishers::setPublishersLastRefreshTimestamp(uint64_t ts) {
   saveState();
 }
 
+void BatPublishers::setNumExcludedSites(const unsigned int& amount) {
+  state_->num_excluded_sites_ = amount;
+  saveState();
+}
+
 void BatPublishers::setPublisherAllowNonVerified(const bool& allow) {
   state_->allow_non_verified_ = allow;
   saveState();
@@ -338,8 +352,13 @@ unsigned int BatPublishers::getPublisherMinVisits() const {
 bool BatPublishers::getPublisherAllowNonVerified() const {
   return state_->allow_non_verified_;
 }
+
 uint64_t BatPublishers::getLastPublishersListLoadTimestamp() const {
   return state_->pubs_load_timestamp_;
+}
+
+unsigned int BatPublishers::getNumExcludedSites() const {
+  return state_->num_excluded_sites_;
 }
 
 bool BatPublishers::getPublisherAllowVideos() const {
@@ -669,6 +688,10 @@ void BatPublishers::onPublisherActivity(ledger::Result result,
                                         uint64_t windowId,
                                         const std::string& publisherKey) {
   ledger_->OnPublisherActivity(result, std::move(info), windowId);
+}
+
+void BatPublishers::OnExcludedSitesChanged() {
+  ledger_->OnExcludedSitesChanged();
 }
 
 }  // namespace braveledger_bat_publisher

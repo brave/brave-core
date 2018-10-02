@@ -237,6 +237,7 @@ namespace braveledger_bat_helper {
 
     uint64_t min_pubslisher_duration_ = braveledger_ledger::_default_min_pubslisher_duration;  // In seconds
     unsigned int min_visits_ = 1u;
+    unsigned int num_excluded_sites_ = 0;
     bool allow_non_verified_ = true;
     uint64_t pubs_load_timestamp_ = 0ull; //last publishers list load timestamp (seconds)
     bool allow_videos_ = true;

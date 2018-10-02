@@ -777,6 +777,7 @@ static bool ignore_ = false;
   PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
     min_pubslisher_duration_(braveledger_ledger::_default_min_pubslisher_duration),
     min_visits_(1),
+    num_excluded_sites_(0),
     allow_non_verified_(true),
     pubs_load_timestamp_ (0ull),
     allow_videos_(true) {}
@@ -784,6 +785,7 @@ static bool ignore_ = false;
   PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
     min_pubslisher_duration_ = state.min_pubslisher_duration_;
     min_visits_ = state.min_visits_;
+    num_excluded_sites_ = state.num_excluded_sites_;
     allow_non_verified_ = state.allow_non_verified_;
     pubs_load_timestamp_ = state.pubs_load_timestamp_;
     allow_videos_ = state.allow_videos_;
@@ -802,6 +804,7 @@ static bool ignore_ = false;
     if (false == error) {
       error = !(d.HasMember("min_pubslisher_duration") && d["min_pubslisher_duration"].IsUint() &&
         d.HasMember("min_visits") && d["min_visits"].IsUint() &&
+        d.HasMember("num_excluded_sites") && d["num_excluded_sites"].IsUint() &&
         d.HasMember("allow_non_verified") && d["allow_non_verified"].IsBool() &&
         d.HasMember("pubs_load_timestamp") && d["pubs_load_timestamp"].IsUint64() &&
         d.HasMember("allow_videos") && d["allow_videos"].IsBool() &&
@@ -812,6 +815,7 @@ static bool ignore_ = false;
     if (false == error) {
       min_pubslisher_duration_ = d["min_pubslisher_duration"].GetUint();
       min_visits_ = d["min_visits"].GetUint();
+      num_excluded_sites_ = d["num_excluded_sites"].GetUint();
       allow_non_verified_ = d["allow_non_verified"].GetBool();
       pubs_load_timestamp_ = d["pubs_load_timestamp"].GetUint64();
       allow_videos_ = d["allow_videos"].GetBool();
@@ -860,6 +864,9 @@ static bool ignore_ = false;
 
     writer.String("min_visits");
     writer.Uint(data.min_visits_);
+
+    writer.String("num_excluded_sites");
+    writer.Uint(data.num_excluded_sites_);
 
     writer.String("allow_non_verified");
     writer.Bool(data.allow_non_verified_);

@@ -365,6 +365,10 @@ unsigned int LedgerImpl::GetPublisherMinVisits() const {
   return bat_publishers_->getPublisherMinVisits();
 }
 
+unsigned int LedgerImpl::GetNumExcludedSites() const {
+  return bat_publishers_->getNumExcludedSites();
+}
+
 bool LedgerImpl::GetPublisherAllowNonVerified() const {
   return bat_publishers_->getPublisherAllowNonVerified();
 }
@@ -645,6 +649,10 @@ void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,
 void LedgerImpl::OnPublisherActivity(ledger::Result result,
                                         std::unique_ptr<ledger::PublisherInfo> info, uint64_t windowId) {
   ledger_client_->OnPublisherActivity(result, std::move(info), windowId);
+}
+
+void LedgerImpl::OnExcludedSitesChanged() {
+  ledger_client_->OnExcludedSitesChanged();
 }
 
 }  // namespace bat_ledger
