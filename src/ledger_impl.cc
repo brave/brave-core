@@ -175,11 +175,13 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
                                         const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_client_->loadState(data)) {
-      result = ledger::Result::INVALID_LEDGER_STATE;
+      OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
+    } else {
+      LoadPublisherState(this);
     }
+  } else {
     OnWalletInitialized(result);
   }
-  LoadPublisherState(this);
 }
 
 void LedgerImpl::LoadPublisherState(ledger::LedgerCallbackHandler* handler) {
@@ -195,7 +197,6 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
   }
 
   OnWalletInitialized(result);
-  RefreshPublishersList(false);
 }
 
 void LedgerImpl::SaveLedgerState(const std::string& data) {
@@ -235,6 +236,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
 
   if (result == ledger::Result::LEDGER_OK) {
     initialized_ = true;
+    RefreshPublishersList(false);
   }
 }
 
