@@ -9,9 +9,18 @@
 <dom-module id="settings-brave-personalization-options">
   <template>
     <style include="settings-shared md-select iron-flex">
+      .settings-box {
+        display: flex;
+        justify-content: space-between;
+      }
     </style>
     <div class="settings-box">
-      <div class="start">$i18n{webRTCPolicyLabel}</div>
+      <div calss="start" id="labelWrapper">
+        <div class="label">$i18n{webRTCPolicyLabel}</div>
+        <a id="learnMore" href="$i18n{webRTCLearnMoreURL}" target="_blank">
+          $i18n{webRTCPolicySubLabel}
+        </a>
+      </div>
       <select id="webRTCPolicy" class="md-select"
           on-change="onWebRTCPolicyChange_">
         <template is="dom-repeat" items="[[webRTCPolicies_]]">

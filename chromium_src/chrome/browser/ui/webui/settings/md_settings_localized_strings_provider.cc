@@ -17,6 +17,9 @@ void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
 }
 #endif
 
+const char kWebRTCLearnMoreURL[] =
+  "https://github.com/brave/brave-browser/wiki/WebRTC-Custom-Settings";
+
 void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profile) {
   LocalizedString localized_strings[] = {
     {"siteSettingsAutoplay",
@@ -61,6 +64,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profi
       IDS_SETTINGS_BLOCK_FINGERPRINTING},
     {"webRTCPolicyLabel",
       IDS_SETTINGS_WEBRTC_POLICY_LABEL},
+    {"webRTCPolicySubLabel",
+      IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
     {"webRTCDefault",
       IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
     {"defaultPublicAndPrivateInterfaces",
@@ -72,6 +77,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profi
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));
+  html_source->AddString("webRTCLearnMoreURL",
+      base::ASCIIToUTF16(kWebRTCLearnMoreURL));
 }
 
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,

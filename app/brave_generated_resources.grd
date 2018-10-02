@@ -215,6 +215,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
         WebRTC IP Handling Policy
       </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL" desc="WebRTC policy setting sub-label">
+        Learn more
+      </message>
       <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT" desc="Select value">
         Default
       </message>
