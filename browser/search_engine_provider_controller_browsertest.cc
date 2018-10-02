@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/alternate_private_search_engine_util.h"
+#include "brave/browser/search_engine_provider_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -11,7 +11,7 @@
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
 
-using AlternatePrivateSearchEngineTest = InProcessBrowserTest;
+using SearchEngineProviderControllerTest = InProcessBrowserTest;
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
@@ -21,7 +21,7 @@ TemplateURLData CreateTestSearchEngine() {
   return result;
 }
 
-IN_PROC_BROWSER_TEST_F(AlternatePrivateSearchEngineTest, PrefTest) {
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest, PrefTest) {
   Profile* profile = browser()->profile();
   Profile* incognito_profile = profile->GetOffTheRecordProfile();
 
@@ -30,7 +30,7 @@ IN_PROC_BROWSER_TEST_F(AlternatePrivateSearchEngineTest, PrefTest) {
       TemplateURLServiceFactory::GetForProfile(incognito_profile);
 
   // Test pref is initially disabled.
-  EXPECT_FALSE(brave::UseAlternatePrivateSearchEngineEnabled(profile));
+  EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
 
   // Both mode should use same search engine if alternate pref is disabled.
   base::string16 normal_search_engine =
@@ -40,16 +40,16 @@ IN_PROC_BROWSER_TEST_F(AlternatePrivateSearchEngineTest, PrefTest) {
 
   // Toggle pref and check incognito_service uses duckduckgo search engine and
   // normal mode service uses existing one.
-  brave::ToggleUseAlternatePrivateSearchEngine(profile);
-  EXPECT_TRUE(brave::UseAlternatePrivateSearchEngineEnabled(profile));
+  brave::ToggleUseAlternativeSearchEngineProvider(profile);
+  EXPECT_TRUE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
   EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
             base::ASCIIToUTF16("DuckDuckGo"));
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             normal_search_engine);
 
   // Toggle pref again and check both mode uses same search engine.
-  brave::ToggleUseAlternatePrivateSearchEngine(profile);
-  EXPECT_FALSE(brave::UseAlternatePrivateSearchEngineEnabled(profile));
+  brave::ToggleUseAlternativeSearchEngineProvider(profile);
+  EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(profile));
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             normal_search_engine);
   EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
