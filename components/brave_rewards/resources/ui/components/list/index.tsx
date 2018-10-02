@@ -7,7 +7,7 @@ import { StyledWrapper, StyledTitle, StyledContentWrapper } from './style'
 
 export interface Props {
   id?: string
-  title?: string
+  title?: string | React.ReactNode
   children?: React.ReactNode
 }
 

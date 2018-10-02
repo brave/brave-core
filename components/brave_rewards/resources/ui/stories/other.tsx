@@ -25,6 +25,9 @@ import {
   Tooltip,
   DonationOverlay
 } from '../../../src/features/rewards'
+import {
+  BoxMobile
+} from '../../../src/features/rewards/mobile'
 import { BatColorIcon, SettingsIcon, UpholdColorIcon } from '../../../src/components/icons'
 import GrantClaim from '../../../src/features/rewards/grantClaim'
 
@@ -42,7 +45,7 @@ const donationAmounts = [
   { tokens: '10.0', converted: '3.00', selected: false }
 ]
 
-storiesOf('Feature Components/Rewards/Other', module)
+storiesOf('Feature Components/Rewards/Other/Desktop', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Box', withState({ checked: false, toggle: true }, (store) => {
@@ -290,3 +293,31 @@ storiesOf('Feature Components/Rewards/Other', module)
         </div>
       )
     }))
+storiesOf('Feature Components/Rewards/Other/Mobile', module)
+  .addDecorator(withKnobs)
+  .addDecorator(centered)
+  .add('Box', withState({ checked: true, toggle: true }, (store) => {
+    const onToggle = () => {
+      store.set({ checked: !store.state.checked })
+    }
+
+    return (
+      <div style={{ width: '100%' }}>
+        <BoxMobile
+          title={text('Title', 'Brave Auto-Contribute')}
+          toggle={boolean('Show toggle', store.state.toggle)}
+          checked={boolean('Toggle checked', store.state.checked)}
+          type={select('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
+          description={
+            text('Description', `A simple way to support content creators. Set monthly allowance and browse normally. Your favorite sites (content sites only) receive your contributions automatically. You can exclude sites from funding right from the list below.`)
+          }
+          toggleAction={onToggle}
+          settingsChild={<div>Settings content</div>}
+        >
+          <div style={{ padding: '0px 25px' }}>
+            <p>Detail Content</p>
+          </div>
+        </BoxMobile>
+      </div>
+    )
+  }))

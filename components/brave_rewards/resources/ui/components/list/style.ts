@@ -7,7 +7,7 @@ import styled from 'styled-components'
 export const StyledWrapper = styled<{}, 'div'>('div')`
   position: relative;
   display: flex;
-  border-bottom: solid 1px #cfd5da;
+  border-bottom: solid 1px #E5E5EA;
   justify-content: space-between;
   align-items: baseline;
   align-content: flex-start;

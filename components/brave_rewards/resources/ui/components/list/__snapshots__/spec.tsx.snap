@@ -7,7 +7,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  border-bottom: solid 1px #cfd5da;
+  border-bottom: solid 1px #E5E5EA;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;

@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Box tests basic tests matches the snapshot 1`] = `
+.c1 {
+  max-width: 100%;
+  width: 100%;
+  min-height: auto;
+  margin: 0;
+  padding: 30px 36px;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 0 8px 0 rgba(99,105,110,0.12);
+  font-size: inherit;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.c0 {
+  margin-bottom: 28px;
+  padding: 30px;
+  font-family: Poppins,sans-serif;
+}
+
+.c2 {
+  display: block;
+}
+
+.c3 {
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c5 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  -webkit-flex-basis: 50%;
+  -ms-flex-preferred-size: 50%;
+  flex-basis: 50%;
+}
+
+.c7 {
+  -webkit-flex-basis: 40px;
+  -ms-flex-preferred-size: 40px;
+  flex-basis: 40px;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 30px;
+}
+
+.c6 {
+  height: 36px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.27;
+  -webkit-letter-spacing: normal;
+  -moz-letter-spacing: normal;
+  -ms-letter-spacing: normal;
+  letter-spacing: normal;
+  display: inline-block;
+  vertical-align: default;
+  margin-left: 0px;
+  color: #4b4c5c;
+  margin-top: 0px;
+}
+
+.c8 {
+  width: 100%;
+  display: block;
+}
+
+.c9 {
+  width: 100%;
+  font-family: Muli,sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  -webkit-letter-spacing: 0px;
+  -moz-letter-spacing: 0px;
+  -ms-letter-spacing: 0px;
+  letter-spacing: 0px;
+  font-weight: 200;
+  color: #7C7D8C;
+  margin-top: -5px;
+}
+
+.c4 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: -8px;
+  padding: 0px;
+}
+
+<div
+  className="c0 c1"
+  data-test-id="box"
+>
+  <div
+    className="c2"
+  >
+    <div
+      className="c3"
+      open={true}
+    >
+      <div
+        className="c4"
+      >
+        <div
+          className="c5"
+        >
+          <div
+            className="c6"
+          >
+            test
+          </div>
+        </div>
+        <div
+          className="c7"
+        />
+      </div>
+      <div
+        className="c8"
+      />
+      <div
+        className="c5"
+      >
+        <div
+          className="c9"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
