@@ -58,7 +58,17 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profi
     {"allowAllFingerprinting",
       IDS_SETTINGS_ALLOW_FINGERPRINTING},
     {"blockAllFingerprinting",
-      IDS_SETTINGS_BLOCK_FINGERPRINTING}
+      IDS_SETTINGS_BLOCK_FINGERPRINTING},
+    {"webRTCPolicyLabel",
+      IDS_SETTINGS_WEBRTC_POLICY_LABEL},
+    {"webRTCDefault",
+      IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
+    {"defaultPublicAndPrivateInterfaces",
+      IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES},
+    {"defaultPublicInterfaceOnly",
+      IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_INTERFACE_ONLY},
+    {"disableNonProxiedUdp",
+      IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP}
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));
