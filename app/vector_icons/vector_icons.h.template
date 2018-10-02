@@ -1,0 +1,22 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// vector_icons.h.template is used to generate vector_icons.h. Edit the former
+// rather than the latter.
+
+#ifndef BRAVE_APP_VECTOR_ICONS_VECTOR_ICONS_H_
+#define BRAVE_APP_VECTOR_ICONS_VECTOR_ICONS_H_
+
+namespace gfx {
+struct VectorIcon;
+}
+
+#define VECTOR_ICON_TEMPLATE_H(icon_name) \
+extern const gfx::VectorIcon icon_name;
+
+TEMPLATE_PLACEHOLDER
+
+#undef VECTOR_ICON_TEMPLATE_H
+
+#endif  // BRAVE_APP_VECTOR_ICONS_VECTOR_ICONS_H_
