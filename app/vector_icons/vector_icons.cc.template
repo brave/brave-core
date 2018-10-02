@@ -1,0 +1,18 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// vector_icons.cc.template is used to generate vector_icons.cc. Edit the former
+// rather than the latter.
+
+#include "brave/app/vector_icons/vector_icons.h"
+
+#include "base/logging.h"
+#include "ui/gfx/animation/tween.h"
+#include "ui/gfx/vector_icon_types.h"
+
+#include "components/vector_icons/cc_macros.h"
+
+using namespace gfx;
+
+TEMPLATE_PLACEHOLDER

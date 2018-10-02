@@ -1,0 +1,24 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//components/vector_icons/vector_icons.gni")
+
+aggregate_vector_icons("brave_vector_icons") {
+  icon_directory = "."
+
+  icons = [
+    "tor_profile.icon"
+  ]
+}
+
+source_set("vector_icons") {
+  sources = get_target_outputs(":brave_vector_icons")
+
+  deps = [
+    ":brave_vector_icons",
+    "//base",
+    "//skia",
+    "//ui/gfx",
+  ]
+}
