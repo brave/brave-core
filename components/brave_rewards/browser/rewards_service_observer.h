@@ -36,6 +36,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
                                  unsigned int result,
                                  brave_rewards::Grant grant) {};
   virtual void OnContentSiteUpdated(RewardsService* rewards_service) {};
+  virtual void OnExcludedSitesChanged(RewardsService* rewards_service) {};
 };
 
 }  // namespace brave_rewards

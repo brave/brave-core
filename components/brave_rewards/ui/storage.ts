@@ -22,6 +22,7 @@ export const defaultState: Rewards.State = {
   contributionVideos: true,
   donationAbilityYT: true,
   donationAbilityTwitter: true,
+  numExcludedSites: 0,
   walletInfo: {
     balance: 0,
     choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0],

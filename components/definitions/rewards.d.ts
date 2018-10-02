@@ -32,6 +32,7 @@ declare namespace Rewards {
     contributionVideos: boolean
     donationAbilityYT: boolean
     donationAbilityTwitter: boolean
+    numExcludedSites: number
     walletInfo: WalletProperties
     connectedWallet: boolean
     recoveryKey: string
@@ -83,13 +84,17 @@ declare namespace Rewards {
     expiryTime: number
   }
 
-  export type Excluded = 0 | 1 | 2
+  export enum Status {
+    DEFAULT = 0,
+    EXCLUDED = 1,
+    INCLUDED = 2
+  }
 
   export interface Publisher {
     publisherKey: string
     percentage: number
     verified: boolean
-    excluded: Excluded
+    excluded: Status
     url: string
     name: string
     provider: string

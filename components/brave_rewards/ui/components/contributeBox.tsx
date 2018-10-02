@@ -39,14 +39,6 @@ class ContributeBox extends React.Component<Props, State> {
     }
   }
 
-  getIncludedPublishers = (list: Rewards.Publisher[]) => {
-    if (!list) {
-      return []
-    }
-
-    return list.filter((item: Rewards.Publisher) => item.excluded !== 1)
-  }
-
   getContributeRows = (list: Rewards.Publisher[]) => {
     return list.map((item: Rewards.Publisher) => {
       let name = item.name
@@ -183,16 +175,15 @@ class ContributeBox extends React.Component<Props, State> {
       contributionMonthly,
       enabledContribute,
       reconcileStamp,
+      numExcludedSites,
       autoContributeList
     } = this.props.rewardsData
-    const includedPublishers = this.getIncludedPublishers(autoContributeList)
     const toggleOn = !(firstLoad !== false || !enabledMain)
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, walletInfo.rates)
-    const contributeRows = this.getContributeRows(includedPublishers)
+    const contributeRows = this.getContributeRows(autoContributeList)
     const topRows = contributeRows.slice(0, 5)
-    const numRows = includedPublishers && includedPublishers.length
+    const numRows = contributeRows && contributeRows.length
     const allSites = !(numRows > 5)
-    const numExcludedSites = autoContributeList.length - includedPublishers.length
 
     return (
       <Box
