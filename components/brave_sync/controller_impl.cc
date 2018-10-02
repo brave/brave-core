@@ -1099,12 +1099,14 @@ void ControllerImpl::CreateUpdateDeleteBookmarksFileWork(
 void ControllerImpl::BookmarkMoved(
   const int64_t &node_id,
   const int64_t &prev_item_id,
-  const int64_t &next_item_id) {
+  const int64_t &next_item_id,
+  const int64_t &parent_id) {
   // Should be invoked on FILE-enabled thread
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkMoved";
 
   std::string prev_item_order;
   std::string next_item_order;
+  std::string parent_folder_order;
 
   if (prev_item_id != -1) {
     prev_item_order = sync_obj_map_->GetOrderByLocalObjectId(
@@ -1114,18 +1116,27 @@ void ControllerImpl::BookmarkMoved(
     next_item_order = sync_obj_map_->GetOrderByLocalObjectId(
       storage::ObjectMap::Type::Bookmark, std::to_string(next_item_id));
   }
+
+  if (parent_id != -1) {
+    parent_folder_order = sync_obj_map_->GetOrderByLocalObjectId(
+      storage::ObjectMap::Type::Bookmark, std::to_string(parent_id));
+    DCHECK(!parent_folder_order.empty());
+  }
+
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
   LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
 
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
     FROM_HERE, base::Bind(&ControllerImpl::BookmarkMovedQueryNewOrderUiWork,
-         base::Unretained(this), node_id, prev_item_order, next_item_order));
+         base::Unretained(this), node_id, prev_item_order, next_item_order,
+         parent_folder_order));
 }
 
 void ControllerImpl::BookmarkMovedQueryNewOrderUiWork(
   const int64_t &node_id,
   const std::string &prev_item_order,
-  const std::string &next_item_order) {
+  const std::string &next_item_order,
+  const std::string &parent_folder_order) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkMovedQueryNewOrderUiWork";
   LOG(ERROR) << "TAGAB node_id="<<node_id;
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
@@ -1133,10 +1144,15 @@ void ControllerImpl::BookmarkMovedQueryNewOrderUiWork(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(sync_client_);
 
-  PushRRContext(prev_item_order, next_item_order, node_id, jslib_const::kActionUpdate);
+  if (prev_item_order.empty() && next_item_order.empty()) {
+    const std::string &order = parent_folder_order + ".1";
+    OnSaveBookmarkOrderInternal(order, node_id, jslib_const::kActionUpdate);
+  } else {
+    PushRRContext(prev_item_order, next_item_order, node_id, jslib_const::kActionUpdate);
 
-  sync_client_->SendGetBookmarkOrder(prev_item_order, next_item_order);
-  // See later in OnSaveBookmarkOrder
+    sync_client_->SendGetBookmarkOrder(prev_item_order, next_item_order);
+    // See later in OnSaveBookmarkOrder
+  }
 }
 
 void ControllerImpl::BookmarkAdded(
