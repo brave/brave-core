@@ -84,6 +84,9 @@ void BraveThemeService::Init(Profile* profile) {
 
 
 SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
+  // Brave Tor profiles are always 'incognito' (for now)
+  if (!incognito && profile()->IsTorProfile())
+    incognito = true;
   const BraveThemeType theme = GetActiveBraveThemeType(profile());
   const base::Optional<SkColor> braveColor = MaybeGetDefaultColorForBraveUi(id, incognito, theme);
   if (braveColor)
