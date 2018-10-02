@@ -72,6 +72,8 @@ source_set("ui") {
     "webui/brave_welcome_ui.h",
     "webui/settings/brave_appearance_handler.cc",
     "webui/settings/brave_appearance_handler.h",
+    "webui/settings/brave_privacy_handler.cc",
+    "webui/settings/brave_privacy_handler.h",
     "webui/settings/default_brave_shields_handler.cc",
     "webui/settings/default_brave_shields_handler.h",
   ]
@@ -108,7 +110,9 @@ source_set("ui") {
     "//brave/browser/tor",
     "//brave/components/resources:brave_components_resources_grit",
     "//chrome/app:command_ids",
+    "//chrome/common",
     "//content/public/browser",
+    "//content/public/common",
     "//skia",
     "//ui/accessibility",
     "//ui/base",

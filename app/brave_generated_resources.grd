@@ -211,6 +211,25 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BLOCK_FINGERPRINTING" desc="Select value">
         Block all fingerprinting
       </message>
+      <!-- WebRTC Policy Setting -->
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
+        WebRTC IP Handling Policy
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL" desc="WebRTC policy setting sub-label">
+        Learn more
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT" desc="Select value">
+        Default
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES" desc="Select value">
+        Default public and private interfaces
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_INTERFACE_ONLY" desc="Select value">
+        Default public interface only
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP" desc="Select value">
+        Disable non-proxied UDP
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
