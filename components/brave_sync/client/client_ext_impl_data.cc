@@ -112,10 +112,10 @@ std::unique_ptr<extensions::api::brave_sync::Bookmark> FromLibBookmark(const jsl
   ext_bookmark->site = std::move(*FromLibSite(lib_bookmark.site));
 
   ext_bookmark->is_folder = lib_bookmark.isFolder;
-  // if (!lib_bookmark.parentFolderObjectId.empty()) {
-  //   ext_bookmark->parent_folder_object_id.reset(new std::vector<char>(CharVecFromString(lib_bookmark.parentFolderObjectId)));
-  //   ext_bookmark->parent_folder_object_id_str.reset(new std::string(lib_bookmark.parentFolderObjectId));
-  // }
+  if (!lib_bookmark.parentFolderObjectId.empty()) {
+    ext_bookmark->parent_folder_object_id.reset(new std::vector<unsigned char>(UCharVecFromString(lib_bookmark.parentFolderObjectId)));
+    ext_bookmark->parent_folder_object_id_str.reset(new std::string(lib_bookmark.parentFolderObjectId));
+  }
 
   if (!lib_bookmark.fields.empty()) {
     ext_bookmark->fields.reset(new std::vector<std::string>(lib_bookmark.fields));
