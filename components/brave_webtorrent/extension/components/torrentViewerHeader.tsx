@@ -64,17 +64,19 @@ export default class TorrentViewerHeader extends React.PureComponent<Props, {}> 
           />
         </Column>
         <Column size={3} customStyle={theme.headerColumnRight}>
-          <Button
-            type='accent'
-            text={mainButtonText}
-            onClick={this.onClick}
-          />
-          <Button
-            type='accent'
-            level='secondary'
-            text={copyButtonText}
-            onClick={this.onCopyClick}
-          />
+          <div style={theme.buttonContainer}>
+            <Button
+              type='accent'
+              text={mainButtonText}
+              onClick={this.onClick}
+            />
+            <Button
+              type='accent'
+              level='secondary'
+              text={copyButtonText}
+              onClick={this.onCopyClick}
+            />
+          </div>
         </Column>
       </Grid>
     )
