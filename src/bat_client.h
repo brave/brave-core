@@ -58,6 +58,11 @@ class BatClient {
   void getWalletProperties();
   bool isWalletCreated() const;
 
+  void continueRecover(int result, size_t *written, std::vector<uint8_t>& newSeed);
+
+  void OnNicewareListLoaded(const std::string& pass_phrase,
+                                ledger::Result result,
+                                const std::string& data);
  private:
   void saveState();
   void getGrantCaptchaCallback(bool result, const std::string& response,

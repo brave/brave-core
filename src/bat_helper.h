@@ -423,6 +423,9 @@ namespace braveledger_bat_helper {
 
   bool ignore_for_testing();
   void set_ignore_for_testing(bool ignore);
+  uint8_t niceware_mnemonic_to_bytes(const std::string& w,
+    std::vector<uint8_t>& bytes_out, size_t *written,
+    std::vector<std::string> wordDictionary);
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_

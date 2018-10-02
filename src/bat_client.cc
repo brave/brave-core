@@ -928,11 +928,45 @@ void BatClient::saveState() {
   ledger_->SaveLedgerState(data);
 }
 
-void BatClient::recoverWallet(const std::string& passPhrase) {
-  std::vector<unsigned char> newSeed;
-  newSeed.resize(32);
+void BatClient::recoverWallet(const std::string& pass_phrase) {
   size_t written = 0;
-  int result = bip39_mnemonic_to_bytes(nullptr, passPhrase.c_str(), &newSeed.front(), newSeed.size(), &written);
+  std::vector<unsigned char> newSeed;
+  if (braveledger_bat_helper::split(pass_phrase,
+    WALLET_PASSPHRASE_DELIM).size() == 16) {
+    // use niceware for legacy wallet passphrases
+    ledger_->LoadNicewareList(
+      std::bind(&BatClient::OnNicewareListLoaded, this, pass_phrase, _1, _2));
+  } else {
+    std::vector<unsigned char> newSeed;
+    newSeed.resize(32);
+    int result = bip39_mnemonic_to_bytes
+      (nullptr, pass_phrase.c_str(), &newSeed.front(),
+      newSeed.size(), &written);
+    continueRecover(result, &written, newSeed);
+  }
+}
+
+void BatClient::OnNicewareListLoaded(const std::string& pass_phrase,
+                                        ledger::Result result,
+                                        const std::string& data) {
+  if (result == ledger::Result::LEDGER_OK &&
+    braveledger_bat_helper::split(pass_phrase,
+    WALLET_PASSPHRASE_DELIM).size() == 16) {
+    std::vector<uint8_t> seed;
+    seed.resize(32);
+    size_t written = 0;
+    uint8_t nwResult = braveledger_bat_helper::niceware_mnemonic_to_bytes(
+      pass_phrase, seed, &written, braveledger_bat_helper::split(
+      data, DICTIONARY_DELIMITER));
+    continueRecover(nwResult, &written, seed);
+  } else {
+    std::vector<braveledger_bat_helper::GRANT> empty;
+    ledger_->OnRecoverWallet(result, 0, empty);
+    return;
+  }
+}
+
+void BatClient::continueRecover(int result, size_t *written, std::vector<uint8_t>& newSeed) {
   if (ledger::is_verbose) {
     LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
   }

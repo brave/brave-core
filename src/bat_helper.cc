@@ -1871,7 +1871,7 @@ static bool ignore_ = false;
         if (startTime.size() != endTime.size()) {
           return 0;
         }
-        // get all the intervals and combine them. 
+        // get all the intervals and combine them.
         // (Should only be one set if there were no seeks)
         for (size_t i = 0; i < startTime.size(); i++) {
           std::stringstream tempET(endTime[i]);
@@ -1943,4 +1943,32 @@ static bool ignore_ = false;
     return ignore_;
   }
 
+  std::string toLowerCase(std::string word) {
+    std::transform(word.begin(), word.end(), word.begin(), ::tolower);
+    return word;
+  }
+
+  uint8_t niceware_mnemonic_to_bytes(const std::string& w,
+    std::vector<uint8_t>& bytes_out, size_t *written,
+    std::vector<std::string> wordDictionary) {
+    std::vector<std::string> wordList = split(toLowerCase(w),
+      WALLET_PASSPHRASE_DELIM);
+    std::vector<uint8_t> buffer(wordList.size() * 2);
+
+    for (uint8_t ix = 0; ix < wordList.size(); ix++) {
+      std::vector<std::string>::iterator it =
+        std::find(wordDictionary.begin(),
+        wordDictionary.end(), wordList[ix]);
+      if (it != wordDictionary.end()) {
+        int wordIndex = std::distance(wordDictionary.begin(), it);
+        buffer[2 * ix] = floor(wordIndex / 256);
+        buffer[2 * ix + 1] = wordIndex % 256;
+      } else {
+        return INVALID_LEGACY_WALLET;
+      }
+    }
+    bytes_out = buffer;
+    *written = NICEWARE_BYTES_WRITTEN;
+    return 0;
+  }
 }  // namespace braveledger_bat_helper

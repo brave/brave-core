@@ -95,6 +95,7 @@ class LedgerImpl : public ledger::Ledger,
   void SavePublisherState(const std::string& data,
                           ledger::LedgerCallbackHandler* handler);
   void SavePublishersList(const std::string& data);
+  void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler);

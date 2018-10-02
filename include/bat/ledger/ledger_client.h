@@ -31,6 +31,8 @@ using PublisherInfoCallback = std::function<void(Result,
     std::unique_ptr<PublisherInfo>)>;
 using GetPublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
+using GetNicewareListCallback =
+    std::function<void(Result, const std::string&)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -58,6 +60,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void LoadPublisherList(LedgerCallbackHandler* handler) = 0;
 
 
+  virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
   virtual void SavePublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
                                 PublisherInfoCallback callback) = 0;

@@ -54,9 +54,14 @@
 #define YOUTUBE_TLD                     "youtube.com"
 #define TWITCH_TLD                      "twitch.com"
 #define MEDIA_DELIMITER                 '_'
+#define WALLET_PASSPHRASE_DELIM         ' '
+#define DICTIONARY_DELIMITER            '\n'
+#define NICEWARE_BYTES_WRITTEN          32
 
 #define SEED_LENGTH                     32
 #define SALT_LENGTH                     64
+
+#define INVALID_LEGACY_WALLET           -1
 
 #define TWITCH_MINIMUM_SECONDS          10
 #define TWITCH_MAXIMUM_SECONDS_CHUNK    120
