@@ -23,6 +23,7 @@
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "content/public/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -134,6 +135,11 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
   EXPECT_FALSE(
     profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
   EXPECT_TRUE(profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
+
+  // Check WebRTC IP handling policy.
+  EXPECT_EQ(
+    profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
+    content::kWebRTCIPHandlingDisableNonProxiedUdp);
 }
 
 // This is for tor guest window, remove it when we have persistent tor profiles
