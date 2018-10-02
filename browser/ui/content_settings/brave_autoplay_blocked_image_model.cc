@@ -6,6 +6,7 @@
 
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -32,7 +33,7 @@ void BraveAutoplayBlockedImageModel::UpdateFromWebContents(
 
   set_visible(true);
   const gfx::VectorIcon* badge_id = &kBlockedBadgeIcon;
-  const gfx::VectorIcon* icon = &kExtensionIcon;
+  const gfx::VectorIcon* icon = &kAutoplayStatusIcon;
   set_icon(*icon, *badge_id);
   set_explanatory_string_id(IDS_BLOCKED_AUTOPLAY_TITLE);
   set_tooltip(l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_TITLE));
