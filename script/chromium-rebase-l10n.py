@@ -133,6 +133,47 @@ def main():
         default_brave_shields_page_html_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS"]')[0]
         default_brave_shields_page_html_element.addnext(default_brave_shields_page_js_element)
 
+    # Add four resources for WebRTC policy setting
+    # Add IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_HTML(brave_personalization_options.html)
+    brave_personalization_options_html_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_HTML"]'))
+    if brave_personalization_options_html_element_len == 0:
+        brave_personalization_options_html_element = etree.Element('structure')
+        brave_personalization_options_html_element.set('name', 'IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_HTML')
+        brave_personalization_options_html_element.set('file', 'brave_privacy_page/brave_personalization_options.html')
+        brave_personalization_options_html_element.set('type', 'chrome_html')
+        brave_personalization_options_html_element.set('preprocess', 'true')
+        brave_personalization_options_html_element.set('allowexternalscript', 'true')
+        personalization_options_js_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_PERSONALIZATION_OPTIONS_JS"]')[0]
+        personalization_options_js_element.addnext(brave_personalization_options_html_element)
+    # Add IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_JS(brave_personalization_options.js)
+    brave_personalization_options_js_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_JS"]'))
+    if brave_personalization_options_js_element_len == 0:
+        brave_personalization_options_js_element = etree.Element('structure')
+        brave_personalization_options_js_element.set('name', 'IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_JS')
+        brave_personalization_options_js_element.set('file', 'brave_privacy_page/brave_personalization_options.js')
+        brave_personalization_options_js_element.set('type', 'chrome_html')
+        brave_personalization_options_js_element.set('preprocess', 'true')
+        brave_personalization_options_html_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_HTML"]')[0]
+        brave_personalization_options_html_element.addnext(brave_personalization_options_js_element)
+    # Add IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_HTML(brave_privacy_page_browser_proxy.html)
+    brave_privacy_page_browser_proxy_html_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_HTML"]'))
+    if brave_privacy_page_browser_proxy_html_element_len == 0:
+        brave_privacy_page_browser_proxy_html_element = etree.Element('structure')
+        brave_privacy_page_browser_proxy_html_element.set('name', 'IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_HTML')
+        brave_privacy_page_browser_proxy_html_element.set('file', 'brave_privacy_page/brave_privacy_page_browser_proxy.html')
+        brave_privacy_page_browser_proxy_html_element.set('type', 'chrome_html')
+        privacy_page_browser_proxy_js_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_PRIVACY_PAGE_BROWSER_PROXY_JS"]')[0]
+        privacy_page_browser_proxy_js_element.addnext(brave_privacy_page_browser_proxy_html_element)
+    # Add IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_JS(brave_privacy_page_browser_proxy.js)
+    brave_privacy_page_browser_proxy_js_element_len = len(xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_JS"]'))
+    if brave_privacy_page_browser_proxy_js_element_len == 0:
+        brave_privacy_page_browser_proxy_js_element = etree.Element('structure')
+        brave_privacy_page_browser_proxy_js_element.set('name', 'IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_JS')
+        brave_privacy_page_browser_proxy_js_element.set('file', 'brave_privacy_page/brave_privacy_page_browser_proxy.js')
+        brave_privacy_page_browser_proxy_js_element.set('type', 'chrome_html')
+        brave_privacy_page_browser_proxy_js_element.set('preprocess', 'true')
+        brave_privacy_page_browser_proxy_html_element = xml_tree.xpath('//structure[@name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_HTML"]')[0]
+        brave_privacy_page_browser_proxy_html_element.addnext(brave_privacy_page_browser_proxy_js_element)
 
   if filename == 'browser_resources':
     elem1 = xml_tree.xpath('//include[@name="IDR_MD_HISTORY_SIDE_BAR_HTML"]')[0]
