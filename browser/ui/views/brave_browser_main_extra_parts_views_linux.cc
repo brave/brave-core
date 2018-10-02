@@ -33,7 +33,8 @@ ui::NativeTheme* GetNativeThemeForWindow(aura::Window* window) {
                             BraveThemeService::GetActiveBraveThemeType(profile);
   const bool dark_mode = (
       active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
-      profile->GetProfileType() == Profile::INCOGNITO_PROFILE);
+      profile->GetProfileType() == Profile::INCOGNITO_PROFILE ||
+      profile->IsTorProfile());
   if (dark_mode &&
       BrowserView::GetBrowserViewForNativeWindow(window)) {
     return ui::NativeThemeDarkAura::instance();
