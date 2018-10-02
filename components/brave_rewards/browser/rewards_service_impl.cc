@@ -37,6 +37,9 @@
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
 #include "brave/common/extensions/api/brave_rewards.h"
+#include "components/grit/brave_components_resources.h"
+#include "ui/base/resource/resource_bundle.h"
+
 using extensions::Event;
 using extensions::EventRouter;
 
@@ -576,6 +579,19 @@ void RewardsServiceImpl::OnPublisherStateSaved(
     bool success) {
   handler->OnPublisherStateSaved(success ? ledger::Result::LEDGER_OK
                                          : ledger::Result::LEDGER_ERROR);
+}
+
+void RewardsServiceImpl::LoadNicewareList(
+  ledger::GetNicewareListCallback callback) {
+  std::string data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
+  IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
+
+  if (data.empty()) {
+    LOG(ERROR) << "Failed to read in niceware list";
+  }
+  callback(data.empty() ? ledger::Result::LEDGER_ERROR
+                                             : ledger::Result::LEDGER_OK,
+                                data);
 }
 
 void RewardsServiceImpl::SavePublisherInfo(

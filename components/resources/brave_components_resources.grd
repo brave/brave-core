@@ -135,7 +135,7 @@
       <include name="IDR_BRAVE_REWARDS_IMG_BTC" file="../img/rewards/BTC.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_ETH" file="../img/rewards/ETH.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_LTC" file="../img/rewards/LTC.svg" type="BINDATA" />
-
+      <include name="IDR_BRAVE_REWARDS_NICEWARE_LIST" file="../../vendor/bat-native-ledger/niceware/wordlist" type="BINDATA" />
     </includes>
     <messages fallback_to_english="true">
       <!-- WebUI newtab resources -->
