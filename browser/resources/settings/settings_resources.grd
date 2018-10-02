@@ -320,11 +320,11 @@
       <structure name="IDR_SETTINGS_PDF_DOCUMENTS_HTML" file="site_settings/pdf_documents.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_PDF_DOCUMENTS_JS" file="site_settings/pdf_documents.js" type="chrome_html" />
       <structure name="IDR_SETTINGS_PERSONALIZATION_OPTIONS_HTML" file="privacy_page/personalization_options.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
-      <structure name="IDR_SETTINGS_PERSONALIZATION_OPTIONS_JS" file="privacy_page/personalization_options.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PERSONALIZATION_OPTIONS_JS" file="privacy_page/personalization_options.js" preprocess="true" type="chrome_html" /><structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_HTML" file="brave_privacy_page/brave_personalization_options.html" type="chrome_html" preprocess="true" allowexternalscript="true" /><structure name="IDR_SETTINGS_BRAVE_PERSONALIZATION_OPTIONS_JS" file="brave_privacy_page/brave_personalization_options.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_PRIVACY_PAGE_HTML" file="privacy_page/privacy_page.html" type="chrome_html" flattenhtml="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_PRIVACY_PAGE_JS" file="privacy_page/privacy_page.js" preprocess="true" type="chrome_html" />
       <structure name="IDR_SETTINGS_PRIVACY_PAGE_BROWSER_PROXY_HTML" file="privacy_page/privacy_page_browser_proxy.html" type="chrome_html" />
-      <structure name="IDR_SETTINGS_PRIVACY_PAGE_BROWSER_PROXY_JS" file="privacy_page/privacy_page_browser_proxy.js" preprocess="true" type="chrome_html" />
+      <structure name="IDR_SETTINGS_PRIVACY_PAGE_BROWSER_PROXY_JS" file="privacy_page/privacy_page_browser_proxy.js" preprocess="true" type="chrome_html" /><structure name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_HTML" file="brave_privacy_page/brave_privacy_page_browser_proxy.html" type="chrome_html" /><structure name="IDR_SETTINGS_BRAVE_PRIVACY_PAGE_BROWSER_PROXY_JS" file="brave_privacy_page/brave_privacy_page_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_PROTOCOL_HANDLERS_HTML" file="site_settings/protocol_handlers.html" preprocess="true" type="chrome_html" />
       <structure name="IDR_SETTINGS_PROTOCOL_HANDLERS_JS" file="site_settings/protocol_handlers.js" preprocess="true" type="chrome_html" />
       <structure name="IDR_SETTINGS_ROUTE_HTML" file="route.html" type="chrome_html" />
