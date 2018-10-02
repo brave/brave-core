@@ -118,11 +118,12 @@ class NewTabPage extends React.Component<Props, {}> {
     if (this.props.newTabData.isIncognito) {
       return (
         <NewPrivateTab
-          stats={newTabData.stats}
           useAlternativePrivateSearchEngine={this.useAlternativePrivateSearchEngine}
           isTor={this.props.newTabData.isTor}
           onChangePrivateSearchEngine={this.onChangePrivateSearchEngine}
-        />
+        >
+          <Stats stats={newTabData.stats}/>
+        </NewPrivateTab>
       )
     }
 
