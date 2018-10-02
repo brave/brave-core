@@ -160,9 +160,9 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW_WITH_TOR" desc="Private Window with Tor Title">This is a Private Window with Tor</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BROWSE_THE_WEB_MORE_PRIVATELY_WITH" desc="Description about Tor">Browse the web more privately with</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_DISCLAIMER" desc="Disclaimer about Tor">To browse with even more privacy, enable Tor protection by opening a new window with Tor protection from the profile menu. This functionality is in early Beta and is very volatile. It’s only advised for advanced users.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="Learn more link">Search preferences</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="Learn more link">Learn more</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DEFAULT_SEARCH_ENGINE_DISCLAIMER" desc="Disclaimer about the default search engine for Tor">By default, DuckDuckGo is the search engine for Private windows with Tor.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PREFERENCES" desc="Link to Search Preferences">Learn more</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PREFERENCES" desc="Link to Search Preferences">Search preferences</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_WITH" desc="Partial text for making your private navigation more private">Private search with</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DDG_DISCLAIMER" desc="Disclaimer about the DuckDuckGo search engine">DuckDuckGo is a search engine that does not track your search history, enabling you to search more privately.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_MORE_ABOUT_PRIVATE_TABS" desc="Link to know more about private tabs">More about private windows</message>
