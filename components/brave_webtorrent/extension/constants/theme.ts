@@ -13,5 +13,12 @@ export const theme = {
   },
   privacyNoticeBody: {
     fontSize: '12px'
+  },
+  buttonContainer: {
+    display: 'grid',
+    height: '100%',
+    gridTemplateColumns: '1fr 1fr',
+    gridTemplateRows: '1fr',
+    gridGap: '15px'
   }
 }
