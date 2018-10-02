@@ -30,11 +30,20 @@ void GuestWindowSearchEngineProviderController::OnTemplateURLServiceChanged() {
   if (ignore_template_url_service_changing_)
     return;
 
+  // Prevent search engine changing from settings page for tor profile.
+  // TODO(simonhong): Revisit when related ux is determined.
+  if (otr_profile_->IsTorProfile()) {
+    base::AutoReset<bool> reset(&ignore_template_url_service_changing_, true);
+    ChangeToAlternativeSearchEngineProvider();
+    return;
+  }
+
+
   // The purpose of below code is turn off alternative prefs
   // when user changes to different search engine provider from settings.
   // However, this callback is also called during the TemplateURLService
   // initialization phase. Because of this, guest view always starts with
-  // pref off state.
+  // this prefs off state when browser restarted(persisted during the runtime).
   // Currently I don't know how to determine who is caller of this callback.
   // TODO(simonhong): Revisit here when brave's related ux is determined.
   if (UseAlternativeSearchEngineProvider())

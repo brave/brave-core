@@ -62,6 +62,11 @@ void SearchEngineProviderControllerBase::OnPreferenceChanged(
 
 bool
 SearchEngineProviderControllerBase::UseAlternativeSearchEngineProvider() const {
+  // Currently, use alternative search engine provider for tor profile.
+  // TODO(simonhong): Revisit when related setting ux is determined.
+  if (otr_profile_->IsTorProfile())
+    return true;
+
   return use_alternative_search_engine_provider_.GetValue();
 }
 
