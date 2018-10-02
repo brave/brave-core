@@ -50,9 +50,9 @@ void Site::FromValue(const base::Value *site_value) {
   this->customTitle = custom_title_value->GetString();
 
   this->lastAccessedTime = ExtractTimeFieldFromDict(site_value, "lastAccessedTime");
-  DCHECK(!this->lastAccessedTime.is_null());
+  //this->lastAccessedTime may be empty
   this->creationTime = ExtractTimeFieldFromDict(site_value, "creationTime");
-  DCHECK(!this->creationTime.is_null());
+  //this->creationTime may be empty
 
   const base::Value *favicon_value = site_value->FindKeyOfType("favicon", base::Value::Type::STRING);
   DCHECK(favicon_value);

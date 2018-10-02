@@ -500,7 +500,23 @@ void ControllerImpl::OnGetExistingObjects(const std::string &category_name,
   LOG(ERROR) << "TAGAB records.size()=" << records->size();
   LOG(ERROR) << "TAGAB last_record_time_stamp=" << last_record_time_stamp;
   LOG(ERROR) << "TAGAB is_truncated=" << is_truncated;
+  for(const auto & r : *records) {
+    if (r->has_bookmark()) {
+      LOG(ERROR) << "TAGAB title           =" << r->GetBookmark().site.title;
+      LOG(ERROR) << "TAGAB syncTimestamp   =" << r->syncTimestamp;
+      LOG(ERROR) << "TAGAB syncTimestampJS =" << static_cast<int64_t>(r->syncTimestamp.ToJsTime());
+      LOG(ERROR) << "TAGAB -----";
+    }
+  }
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  if (!tools::IsTimeEmpty(last_record_time_stamp)) {
+    sync_prefs_->SetLatestRecordTime(last_record_time_stamp);
+  }
+
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetExistingObjects: last_time_fetch_sent_=" << last_time_fetch_sent_;
+  DCHECK(!tools::IsTimeEmpty(last_time_fetch_sent_));
+  sync_prefs_->SetLastFetchTime(last_time_fetch_sent_);
 
   // Jump to task runner thread to perform FILE operation and then back to UI
   task_runner_->PostTask(
@@ -642,16 +658,6 @@ void ControllerImpl::OnResolvedSyncRecords(const std::string &category_name,
   std::unique_ptr<RecordsList> records) {
   LOG(ERROR) << "TAGAB OnResolvedSyncRecords records->size()" << records->size();
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
-  // Get latest received record time
-  base::Time latest_record_time;
-  for (const auto & record : *records) {
-    LOG(ERROR) << "TAGAB OnResolvedSyncRecords record->syncTimestamp=" << record->syncTimestamp << " ="<<base::checked_cast<int64_t>(record->syncTimestamp.ToJsTime());
-    if (record->syncTimestamp > latest_record_time) {
-       latest_record_time = record->syncTimestamp;
-    }
-  }
-  sync_prefs_->SetLatestRecordTime(latest_record_time);
 
   // Jump to thread allowed perform file operations
   task_runner_->PostTask(
@@ -919,15 +925,18 @@ void ControllerImpl::RequestSyncData() {
     return;
   }
 
-  base::Time last_record_time = sync_prefs_->GetLatestRecordTime();
-  const int64_t start_at = base::checked_cast<int64_t>(last_record_time.ToJsTime());
   const int max_records = 300;
   base::Time last_fetch_time = sync_prefs_->GetLastFetchTime();
+  base::Time latest_record_time = sync_prefs_->GetLatestRecordTime();
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: start_at="<<start_at;
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: last_fetch_time="<<last_fetch_time;
+
+  const int64_t start_at = base::checked_cast<int64_t>(latest_record_time.ToJsTime());
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: latest_record_time="<<latest_record_time;
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: start_at="<<start_at;
+
   //bool dbg_ignore_create_device = true; //the logic should rely upon sync_prefs_->GetTimeLastFetch() which is not saved yet
-  if (last_fetch_time.is_null()
+  if (tools::IsTimeEmpty(last_fetch_time)
   /*0 == start_at*/ /*&& !dbg_ignore_create_device*/) {
     //SetUpdateDeleteDeviceName(CREATE_RECORD, mDeviceName, mDeviceId, "");
     SendCreateDevice();
@@ -936,15 +945,6 @@ void ControllerImpl::RequestSyncData() {
   }
 
   FetchSyncRecords(bookmarks, history, preferences, start_at, max_records);
-  sync_prefs_->SetLastFetchTime(base::Time::Now());
-  // save last received record time in OnResolved
-
-//DBG Test
-  // if (!once_done) {
-  //   SendAllLocalHistorySites();
-  //   once_done = true;
-  // }
-
 }
 
 void ControllerImpl::FetchSyncRecords(const bool &bookmarks,
@@ -968,15 +968,13 @@ void ControllerImpl::FetchSyncRecords(const bool &bookmarks,
   }
 
   DCHECK(sync_client_);
+  last_time_fetch_sent_ = base::Time::Now();
+  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::FetchSyncRecords: last_time_fetch_sent_=" << last_time_fetch_sent_;
   base::Time start_at_time = base::Time::FromJsTime(start_at);
   sync_client_->SendFetchSyncRecords(
     category_names,
     start_at_time,
-    max_records
-  );
-
-  base::Time this_fetch_time = base::Time::Now();
-  sync_prefs_->SetLastFetchTime(this_fetch_time);
+    max_records);
 }
 
 namespace {

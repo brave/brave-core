@@ -5,6 +5,7 @@
 #include <sstream>
 #include "crypto/random.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "build/build_config.h"
 
 namespace brave_sync {
@@ -28,14 +29,6 @@ std::string GenerateObjectId() {
   return ss.str();
 }
 
-std::string replaceUnsupportedCharacters(const std::string &in) {
-  std::string result;
-  base::ReplaceChars(in, "\\", "\\\\", &result);
-  base::ReplaceChars(result, "\"", "\\\"", &result);
-
-  return result;
-}
-
 std::string GetPlatformName() {
   #if defined(OS_ANDROID)
       const std::string platform = "android";
@@ -49,6 +42,10 @@ std::string GetPlatformName() {
       const std::string platform = "ios";
   #endif
   return platform;
+}
+
+bool IsTimeEmpty(const base::Time &time) {
+  return time.is_null() || base::checked_cast<int64_t>(time.ToJsTime()) == 0;
 }
 
 } // namespace tools

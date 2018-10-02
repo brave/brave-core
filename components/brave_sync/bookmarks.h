@@ -122,12 +122,15 @@ private:
     std::map<const bookmarks::BookmarkNode*, std::string> &order_map);
 
   void AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const std::string &s_parent_local_object_id);
-  void AddBookmarkPostUiFileWork(const int64_t &folder_id, const int64_t &added_node_id, const std::string &order, const std::string &sync_record_object_id);
+  void AddOrUpdateBookmarkPostUiFileWork(const int64_t &folder_id, const int64_t &added_node_id, const std::string &order, const std::string &sync_record_object_id);
 
   void DeleteBookmarkUiWork(const int64_t &local_object_id);
   void DeleteBookmarkPostUiFileWork(const std::string &s_local_object_id);
 
-  void UpdateBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const int64_t &local_object_id);
+  void UpdateBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record,
+    const int64_t &local_object_id,
+    const std::string &s_new_parent_object_id,
+    const std::string &old_order);
 
   std::string GetOrCreateObjectByLocalId(const int64_t &local_id, const std::string &order);
   void SaveIdMap(const int64_t &local_id, const std::string &order, const std::string &sync_object_id);

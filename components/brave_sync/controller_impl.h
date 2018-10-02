@@ -273,6 +273,10 @@ private:
 
   bool seen_get_init_data_ = false;
 
+  // Moment when FETCH_SYNC_RECORDS was sent,
+  // will be saved on GET_EXISTING_OBJECTS to be sure request was processed
+  base::Time last_time_fetch_sent_;
+
   // Map to keep tracking between request and response on query bookmarks order, access only in UI thread
   // <prev_order, next_order> => <node_id, action>
   std::map<std::tuple<std::string, std::string>, std::tuple<int64_t, int>> rr_map_;

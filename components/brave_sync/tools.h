@@ -6,13 +6,18 @@
 
 #include <string>
 
+namespace base {
+  class Time;
+} // namespace base
+
 namespace brave_sync {
 
 namespace tools {
 
 std::string GenerateObjectId();
-std::string replaceUnsupportedCharacters(const std::string &in);
 std::string GetPlatformName();
+
+bool IsTimeEmpty(const base::Time &time);
 
 } // namespace tools
 
