@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
+index 123fcfa175708b5290df332b0f61af7725f6a597..3f99df509c0336660174401bf52d33e1875ce73f 100644
+--- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
++++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
+@@ -24,6 +24,7 @@ class AvatarToolbarButton : public ToolbarButton,
+                             public GaiaCookieManagerService::Observer,
+                             public AccountTrackerService::Observer {
+  public:
++  friend class BraveAvatarToolbarButton;
+   explicit AvatarToolbarButton(Browser* browser);
+   ~AvatarToolbarButton() override;
+ 
+@@ -65,7 +66,7 @@ class AvatarToolbarButton : public ToolbarButton,
+   bool IsIncognito() const;
+   bool ShouldShowGenericIcon() const;
+   base::string16 GetAvatarTooltipText() const;
+-  gfx::ImageSkia GetAvatarIcon() const;
++  virtual gfx::ImageSkia GetAvatarIcon() const;
+   gfx::Image GetIconImageFromProfile() const;
+   SyncState GetSyncState() const;
+ 
