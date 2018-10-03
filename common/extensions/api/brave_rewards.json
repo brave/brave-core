@@ -179,40 +179,55 @@
         ]
       }
     ],
-   "functions": [
-     {
-       "name": "createWallet",
-       "type": "function",
-       "description": "Creates new wallet",
-       "parameters": []
-     },
-     {
-       "name": "getPublisherData",
-       "type": "function",
-       "description": "Get publisher data",
-       "parameters": [
-         {
-           "name": "windowId",
-           "type": "integer"
-         },
-         {
-           "name": "url",
-           "type": "string"
-         }
-       ]
-     },
-     {
-       "name": "getWalletProperties",
-       "type": "function",
-       "description": "Get wallet data (balance, grant)",
-       "parameters": []
-     },
-     {
-       "name": "getCurrentReport",
-       "type": "function",
-       "description": "Get current month wallet report",
-       "parameters": []
-     }
-   ]
+    "functions": [
+      {
+        "name": "createWallet",
+        "type": "function",
+        "description": "Creates new wallet",
+        "parameters": []
+      },
+      {
+        "name": "donateToSite",
+        "type": "function",
+        "description": "Allow the user to perform a donation to a tab's site",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "publisherKey",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "getPublisherData",
+        "type": "function",
+        "description": "Get publisher data",
+        "parameters": [
+          {
+            "name": "windowId",
+            "type": "integer"
+          },
+          {
+            "name": "url",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "getWalletProperties",
+        "type": "function",
+        "description": "Get wallet data (balance, grant)",
+        "parameters": []
+      },
+      {
+        "name": "getCurrentReport",
+        "type": "function",
+        "description": "Get current month wallet report",
+        "parameters": []
+      }
+    ]
   }
 ]

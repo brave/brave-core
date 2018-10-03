@@ -11,6 +11,7 @@ cr.define('brave_rewards.donate', function () {
       try {
         const args = JSON.parse(dialogArgsRaw)
         console.log('incoming dialog args', args)
+        document.querySelector('.dialog--publisher-key').innerText = args.publisherKey
       }
       catch (e) {
         console.error('Error parsing incoming dialog args', dialogArgsRaw, e)

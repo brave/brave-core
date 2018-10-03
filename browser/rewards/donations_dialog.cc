@@ -6,6 +6,8 @@
 
 #include <string>
 
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/ui/browser.h"
@@ -26,7 +28,8 @@ namespace {
 // A ui::WebDialogDelegate that specifies the donation dialog appearance.
 class DonationDialogDelegate : public ui::WebDialogDelegate {
  public:
-  explicit DonationDialogDelegate(WebContents* initiator);
+  explicit DonationDialogDelegate(WebContents* initiator,
+                                          std::string publisher_key);
   ~DonationDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
@@ -42,12 +45,15 @@ class DonationDialogDelegate : public ui::WebDialogDelegate {
 
  private:
   WebContents* initiator_;
+  const std::string publisher_key_;
 
   DISALLOW_COPY_AND_ASSIGN(DonationDialogDelegate);
 };
 
-DonationDialogDelegate::DonationDialogDelegate(WebContents* initiator)
-    : initiator_(initiator) {
+DonationDialogDelegate::DonationDialogDelegate(WebContents* initiator,
+                                                    std::string publisher_key)
+    : initiator_(initiator),
+      publisher_key_(publisher_key) {
 }
 
 DonationDialogDelegate::~DonationDialogDelegate() {
@@ -96,14 +102,11 @@ void DonationDialogDelegate::GetDialogSize(gfx::Size* size) const {
 }
 
 std::string DonationDialogDelegate::GetDialogArgs() const {
-  // todo: specify args in ctor
-  // std::string data;
-  // base::DictionaryValue dialog_args;
-  // dialog_args.SetString("lastEmail", last_email_);
-  // dialog_args.SetString("newEmail", new_email_);
-  // base::JSONWriter::Write(dialog_args, &data);
-  // return data;
-  return std::string();
+  std::string data;
+  base::DictionaryValue dialog_args;
+  dialog_args.SetString("publisherKey", publisher_key_);
+  base::JSONWriter::Write(dialog_args, &data);
+  return data;
 }
 
 void DonationDialogDelegate::OnDialogClosed(
@@ -123,9 +126,11 @@ bool DonationDialogDelegate::ShouldShowDialogTitle() const {
 
 namespace donations {
 
-  void OpenDonationDialog(WebContents* initiator) {
+  void OpenDonationDialog(WebContents* initiator,
+                          const std::string& publisher_key) {
     ShowConstrainedWebDialog(initiator->GetBrowserContext(),
-                              new DonationDialogDelegate(initiator),
+                              new DonationDialogDelegate(initiator,
+                                                          publisher_key),
                               initiator);
   }
 

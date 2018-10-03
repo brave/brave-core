@@ -5,12 +5,15 @@
 #ifndef BRAVE_BROWSER_REWARDS_DONATIONS_DIALOG_CONTROLLER_H_
 #define BRAVE_BROWSER_REWARDS_DONATIONS_DIALOG_CONTROLLER_H_
 
+#include <string>
+
 namespace content {
   class WebContents;
 }
 
 namespace donations {
-  void OpenDonationDialog(content::WebContents* initiator);
+  void OpenDonationDialog(content::WebContents* initiator,
+                          const std::string& publisher_key);
 }
 
 
