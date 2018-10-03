@@ -7,9 +7,7 @@
 
 #include <cstddef>
 
-#include "components/search_engines/search_engine_type.h"
-
-struct PrepopulatedEngine;
+#include "components/search_engines/prepopulated_engines.h"
 
 namespace TemplateURLPrepopulateData {
 
