@@ -11,25 +11,25 @@ const BaseImage = styled<{}, 'img'>('img')`
 `
 
 export const BraveImage = styled(BaseImage)`
-  width: 90px;
+  height: 120px;
 `
 
 export const ImportImage = styled(BaseImage)`
-  width: 215px;
+  height: 200px;
 `
 
 export const SearchImage = styled(BaseImage)`
-  width: 394px;
+  height: 200px;
 `
 
 export const ThemeImage = styled(BaseImage)`
-  width: 297px;
+  height: 200px;
 `
 
 export const PaymentsImage = styled(BaseImage)`
-  width: 230px;
+  height: 200px;
 `
 
 export const ShieldsImage = styled(BaseImage)`
-  width: 185px;
+  height: 200px;
 `

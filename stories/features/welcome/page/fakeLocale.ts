@@ -5,7 +5,7 @@
 const locale = {
   // first screen
   welcome: 'Welcome to Brave',
-  whatIsBrave: 'Let\'s get you ready to enjoy a faster and more secure browsing experience with a browser built to protect your privacy.',
+  whatIsBrave: 'Get ready to enjoy a faster and more secure browsing experience with a browser built to protect your privacy.',
   letsGo: 'LET\'S GO',
   // second screen
   importFromAnotherBrowser: 'Import bookmarks & settings',
@@ -24,8 +24,8 @@ const locale = {
   showMeWhere: 'SHOW ME WHERE',
   // sixth screen
   enableBraveRewards: 'Enable Brave Rewards',
-  setupBraveRewards: 'Brave Rewards is a new way of thinking about how the web works. Earn blockchain-based tokens for viewing malware free ads while you browse. Experience the web in a new way.',
-  getStarted: 'GET STARTED',
+  setupBraveRewards: 'Brave Rewards is a new way of thinking about how the web works. Earn blockchain-based tokens for viewing malware free ads while you browse.',
+  getStarted: 'SETUP REWARDS',
   // footer
   skipWelcomeTour: 'Skip welcome tour',
   next: 'NEXT',

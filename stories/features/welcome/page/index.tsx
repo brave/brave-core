@@ -13,11 +13,11 @@ import locale from './fakeLocale'
 
 // Images
 const braveLogo = require('../../../assets/img/lion_logo.svg')
-const paymentsImage = require('../../../assets/img/payments.png')
-const importImage = require('../../../assets/img/import.png')
-const shieldsImage = require('../../../assets/img/shields.png')
-const themeImage = require('../../../assets/img/theme.png')
-const searchImage = require('../../../assets/img/search.png')
+const paymentsImage = require('../../../assets/img/welcome_rewards.svg')
+const importImage = require('../../../assets/img/welcome_import.svg')
+const shieldsImage = require('../../../assets/img/welcome_shields.svg')
+const themeImage = require('../../../assets/img/welcome_theme.svg')
+const searchImage = require('../../../assets/img/welcome_search.svg')
 const background = require('../../../assets/img/welcomebg.svg')
 
 // Fonts
@@ -81,7 +81,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
           </Select>
           <Button
             level='primary'
-            type={this.state.fakeBookmarksImported ? 'default' : 'accent'}
+            type={this.state.fakeBookmarksImported ? 'accent' : 'accent'}
             size='large'
             text={this.state.fakeBookmarksImported ? locale.imported : locale.import}
             onClick={this.onClickImport}
@@ -133,7 +133,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
           </Select>
           <Button
             level='primary'
-            type={this.state.fakeChangedDefaultTheme ? 'default' : 'accent'}
+            type={this.state.fakeChangedDefaultTheme ? 'accent' : 'accent'}
             size='large'
             text={this.state.fakeChangedDefaultTheme ? locale.confirmed : locale.confirm}
             onClick={this.onClickChooseYourTheme}
@@ -316,7 +316,10 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
             <div
               style={{
                 maxWidth: 'inherit',
-                minHeight: '540px'
+                minHeight: '540px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
               }}
             >
               {this.firstScreen}

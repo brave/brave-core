@@ -96,7 +96,7 @@ export const Content = styled<ContentProps, 'section'>('section')`
   justify-content: center;
   align-items: center;
   flex: 1;
-  padding: 50px 60px 0;
+  padding: 0 60px;
 
   ${p => p.active && css`
     /* animation start state must be the same as "from" keyframe */
@@ -134,7 +134,7 @@ export const Panel = styled(Card)`
   /* end of animation stuff */
   position: relative;
   overflow: hidden;
-  background-color: rgba(255,255,255,0.95);
+  background-color: rgba(255,255,255,0.99);
   border-radius: 20px;
   box-shadow: 0 6px 12px 0 rgba(39, 46, 64, 0.2);
   max-width: 600px;

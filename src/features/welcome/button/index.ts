@@ -18,12 +18,14 @@ const BaseButton = styled<BaseButtonProps, 'button'>('button')`
   border: none;
   cursor: pointer;
   outline: inherit;
+  letter-spacing:1px;
 `
 
 export const SkipButton = styled(BaseButton)`
   color: #7C7D8C;
   text-decoration: underline;
   font-weight: 300;
+  letter-spacing: 0;
 
   &:hover {
     color: #343546;
@@ -34,6 +36,7 @@ export const Bullet = styled(BaseButton)`
   padding: 0 7px;
   font-size: 36px;
   color: #7C7D8C;
+  letter-spacing: 0;
 
   &:hover {
     color: #343546;
