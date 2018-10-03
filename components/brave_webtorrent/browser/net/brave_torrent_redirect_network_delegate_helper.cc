@@ -6,8 +6,10 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "content/public/browser/resource_request_info.h"
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"
@@ -63,6 +65,23 @@ bool IsWebtorrentInitiated(net::URLRequest* request) {
       brave_webtorrent_extension_id, "/"});
 }
 
+bool IsTorProfile(net::URLRequest* request) {
+  const content::ResourceRequestInfo* resource_info =
+    content::ResourceRequestInfo::ForRequest(request);
+  if (!resource_info) {
+    return false;
+  }
+
+  const BraveNavigationUIData* ui_data =
+    static_cast<const BraveNavigationUIData*>(
+        resource_info->GetNavigationUIData());
+  if (!ui_data) {
+    return false;
+  }
+
+  return ui_data->GetTorProfileService() ? true : false;
+}
+
 } // namespace
 
 namespace webtorrent {
@@ -76,6 +95,7 @@ int OnHeadersReceived_TorrentRedirectWork(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
 
   if (!request || !original_response_headers ||
+      IsTorProfile(request) ||
       IsWebtorrentInitiated(request) || // download .torrent, do not redirect
       !IsTorrentFile(request, original_response_headers)) {
     return net::OK;
