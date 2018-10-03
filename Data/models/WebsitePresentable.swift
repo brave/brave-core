@@ -2,7 +2,7 @@
 
 import Foundation
 
-@objc protocol WebsitePresentable {
+@objc public protocol WebsitePresentable {
     var title: String? { get }
     var url: String? { get }
 }

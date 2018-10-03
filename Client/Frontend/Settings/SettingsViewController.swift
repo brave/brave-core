@@ -36,7 +36,7 @@ extension PasswordManagerShortcutBehavior: RepresentableOptionType {
         case .showPicker: return Strings.ShowPicker
         case .onePassword: return "1Password"
         case .lastPass: return "LastPass"
-        case .bitwarden: return "bitwarden"
+        case .bitwarden: return "Bitwarden"
         case .trueKey: return "True Key"
         }
     }
@@ -59,8 +59,7 @@ private func BoolRow(title: String, option: Preferences.Option<Bool>) -> Row {
     return Row(
         text: title,
         accessory: .switchToggle(
-            value: option.value,
-            { option.value = $0 }
+            value: option.value, { option.value = $0 }
         ),
         uuid: option.key
     )
@@ -136,10 +135,13 @@ class SettingsViewController: TableViewController {
         var general = Section(
             header: .title(Strings.SettingsGeneralSectionTitle),
             rows: [
-                Row(text: Strings.DefaultSearchEngine, selection: {
-                    // Show default engines
+                Row(text: Strings.SearchEngines, selection: {
+                    let viewController = SearchSettingsTableViewController()
+                    viewController.model = self.profile.searchEngines
+                    viewController.profile = self.profile
+                    self.navigationController?.pushViewController(viewController, animated: true)
                 }, accessory: .disclosureIndicator),
-                BoolRow(title: Strings.SaveLogin, option: Preferences.General.saveLogins),
+                BoolRow(title: Strings.Save_Logins, option: Preferences.General.saveLogins),
                 BoolRow(title: Strings.Block_Popups, option: Preferences.General.blockPopups),
             ]
         )
@@ -214,12 +216,12 @@ class SettingsViewController: TableViewController {
                 accessory: .disclosureIndicator
             )
         ]
-        var cookieControlRow = Row(text: Strings.Cookie_Control, detailText: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value)?.displayString, accessory: .disclosureIndicator)
+        var cookieControlRow = Row(text: Strings.Cookie_Control, detailText: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value)?.displayString, accessory: .disclosureIndicator)
         cookieControlRow.selection = { [unowned self] in
             // Show Options for cookie control
             let optionsViewController = OptionSelectionViewController<HTTPCookie.AcceptPolicy>(
                 options: [.onlyFromMainDocumentDomain, .never, .always],
-                selectedOption: HTTPCookie.AcceptPolicy(rawValue:  Preferences.Privacy.cookieAcceptPolicy.value),
+                selectedOption: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value),
                 optionChanged: { [unowned self] _, option in
                     Preferences.Privacy.cookieAcceptPolicy.value = option.rawValue
                     

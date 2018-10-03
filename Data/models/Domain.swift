@@ -1,6 +1,5 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 import UIKit
 import CoreData
 import Foundation
@@ -44,9 +43,7 @@ public final class Domain: NSManagedObject, CRUD {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         fetchRequest.entity = Domain.entity(context)
         fetchRequest.predicate = NSPredicate(format: "url == %@", domainString)
-        var result: Domain? = nil
-        
-        
+        var result: Domain?
         context.performAndWait {
             do {
                 let results = try context.fetch(fetchRequest) as? [Domain]
@@ -104,18 +101,17 @@ public final class Domain: NSManagedObject, CRUD {
 //        DataController.save(context: context)
     }
 
-    class func loadShieldsIntoMemory(_ completionOnMain: @escaping ()->()) {
+    class func loadShieldsIntoMemory(_ completionOnMain: @escaping () -> Void) {
         // Brave TODO:
 //        BraveShieldState.perNormalizedDomain.removeAll()
 
         let context = DataController.newBackgroundContext()
         context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            let fetchRequest = NSFetchRequest<Domain>()
             fetchRequest.entity = Domain.entity(context)
             do {
                 let results = try context.fetch(fetchRequest)
-                for obj in results {
-                    let domain = obj as! Domain
+                for domain in results {
                     guard let urlString = domain.url, let url = URL(string: urlString) else { continue }
                     let normalizedUrl = url.normalizedHost ?? ""
 
@@ -153,11 +149,11 @@ public final class Domain: NSManagedObject, CRUD {
     class func deleteNonBookmarkedAndClearSiteVisits(context: NSManagedObjectContext, _ completionOnMain: @escaping ()->()) {
         
         context.perform {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            let fetchRequest = NSFetchRequest<Domain>()
             fetchRequest.entity = Domain.entity(context)
             do {
                 let results = try context.fetch(fetchRequest)
-                (results as? [Domain])?.forEach {
+                results.forEach {
                     if let bms = $0.bookmarks, bms.count > 0 {
                         // Clear visit count
                         $0.visits = 0
@@ -168,7 +164,7 @@ public final class Domain: NSManagedObject, CRUD {
                 }
                 for obj in results {
                     // Cascading delete on favicon, it will also get deleted
-                    context.delete(obj as! NSManagedObject)
+                    context.delete(obj)
                 }
             } catch {
                 let fetchError = error as NSError

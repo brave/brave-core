@@ -12,6 +12,16 @@
 # Use the --force option to force a rebuild of the dependencies.
 #
 
+missingCommand() {
+    echo >&2 "Brave requires the command: \033[1m$1\033[0m\nPlease install it via Homebrew or directly from $2"
+    exit 1
+}
+
+# First Check to see if they have the neccessary software installed
+command -v carthage >/dev/null 2>&1 || { missingCommand "carthage" "https://github.com/Carthage/Carthage/releases"; }
+command -v swiftlint >/dev/null 2>&1 || { missingCommand "swiftlint" "https://github.com/realm/SwiftLint/releases"; }
+command -v npm >/dev/null 2>&1 || { missingCommand "npm" "https://nodejs.org/en/download/"; }
+
 if [ "$1" == "--force" ]; then
     rm -rf Carthage/*
     rm -rf ~/Library/Caches/org.carthage.CarthageKit

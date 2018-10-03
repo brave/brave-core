@@ -1,11 +1,10 @@
 disabled_rules: # rule identifiers to exclude from running
-  - variable_name
+  - identifier_name
   - todo
   - trailing_newline
   - type_name
   - function_body_length
   - missing_docs
-  - valid_docs
   - cyclomatic_complexity
   - type_body_length
   - function_parameter_count
@@ -59,14 +58,14 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - FxAClient
   - build
   - UITests/EarlGrey.swift
-  - Storage/ThirdParty/SwiftData.swift
+  - Storage/
   - UITests/
   - XCUITests/
   - SyncTests/
   - StorageTests/
-  - ReadingListTests/
   - ClientTests/
-  - AccountTests/
+  - BraveSharedTests/
+  - DataTests/
   - fastlane/
   - SharedTests/
   - Client/Assets/Search/get_supported_locales.swift
@@ -78,15 +77,13 @@ empty_count: error
 closing_brace: error
 opening_brace: error
 return_arrow_whitespace: error
-statement_position: error
-colon: error
+statement_position:
+  severity: error
+colon:
+  severity: error
 comma: error
 force_try: warning
 force_cast: warning
-
-
-file_header:
-  required_string: "/* This Source Code Form is subject to the terms of the Mozilla Public\n * License, v. 2.0. If a copy of the MPL was not distributed with this\n * file, You can obtain one at http://mozilla.org/MPL/2.0/. */"
 line_length: 1000
 
-reporter: "json" # reporter type (xcode, json, csv, checkstyle)
+reporter: "xcode" # reporter type (xcode, json, csv, checkstyle)

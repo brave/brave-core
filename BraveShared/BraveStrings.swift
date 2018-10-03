@@ -88,7 +88,11 @@ public extension Strings {
     public static let SyncUnableCreateGroup = NSLocalizedString("Unable to create new sync group.", comment: "Description on popup when setting up a sync group fails")
     
     public static let ShowTour = NSLocalizedString("Show Tour", comment: "Show the on-boarding screen again from the settings")
-    public static let DefaultSearchEngine = NSLocalizedString("Settings.Open.Default.Search", value: "Default Search Engine", comment: "Open search section of settings")
+    public static let CurrentlyUsedSearchEngines = NSLocalizedString("Settings.Open.Default.SearchEngineForMode", value: "Currently used search engines", comment: "Currently usedd search engines section name.")
+    public static let QuickSearchEngines = NSLocalizedString("Quick-Search Engines", comment: "Title for quick-search engines settings section.")
+    public static let StandardTabSearch = NSLocalizedString("Standard Tab", comment: "Open search section of settings")
+    public static let PrivateTabSearch = NSLocalizedString("Private Tab", comment: "Default engine for private search.")
+    public static let SearchEngines = NSLocalizedString("Settings.Open.Default.Search", value: "Search Engines", comment: "Search engines section of settings")
     public static let Logins = NSLocalizedString("Logins", comment: "Label used as an item in Settings. When touched, the user will be navigated to the Logins/Password manager.")
     public static let Settings = NSLocalizedString("Settings", comment: "")
     public static let OtherSettings = NSLocalizedString("Other Settings", comment: "Other settings sectiont title")
@@ -140,7 +144,7 @@ public extension Strings {
     public static let This_allows_you_to_save_the_image_to_your_CameraRoll = NSLocalizedString("This allows you to save the image to your Camera Roll.", comment: "See http://mzl.la/1G7uHo7")
     public static let Open_Settings = NSLocalizedString("Open Settings", comment: "See http://mzl.la/1G7uHo7")
     public static let Copy_Image = NSLocalizedString("Copy Image", comment: "Context menu item for copying an image to the clipboard")
-    public static let Call = NSLocalizedString("Call", comment:"Alert Call Button")
+    public static let Call = NSLocalizedString("Call", comment: "Alert Call Button")
     public static let AllowOpenITunes_template = NSLocalizedString("Allow %@ to open iTunes?", comment: "Ask user if site can open iTunes store URL")
     public static let Paste_and_Go = NSLocalizedString("Paste & Go", comment: "Paste the URL into the location bar and visit")
     public static let Paste = NSLocalizedString("Paste", comment: "Paste the URL into the location bar")
@@ -311,7 +315,6 @@ public extension Strings {
     public static let DefaultTitleUntitled = NSLocalizedString("Default.Bookmark.Title", value: "Untitled", comment: "The default name for bookmark item without titles.")
     public static let desktopBookmarksLabel = NSLocalizedString("Desktop Bookmarks", comment: "The folder name for the virtual folder that contains all desktop bookmarks.")
 }
-
 
 public extension Strings {
     public static let Block_Popups = NSLocalizedString("Block Popups", comment: "Setting to enable popup blocking")

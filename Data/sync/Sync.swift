@@ -25,7 +25,7 @@ import BraveShared
 let NotificationSyncReady = "NotificationSyncReady"
 
 // TODO: Make capitals - pluralize - call 'categories' not 'type'
-public enum SyncRecordType : String {
+public enum SyncRecordType: String {
     case bookmark = "BOOKMARKS"
     case history = "HISTORY_SITES"
     case prefs = "PREFERENCES"
@@ -34,15 +34,14 @@ public enum SyncRecordType : String {
     case devices = "DEVICES"
     //
     
-    
     // These are 'static', and do not change, would make actually lazy/static, but not allow for enums
     var fetchedModelType: SyncRecord.Type? {
-        let map: [SyncRecordType : SyncRecord.Type] = [.bookmark : SyncBookmark.self, .prefs : SyncDevice.self]
+        let map: [SyncRecordType: SyncRecord.Type] = [.bookmark: SyncBookmark.self, .prefs: SyncDevice.self]
         return map[self]
     }
     
     var coredataModelType: Syncable.Type? {
-        let map: [SyncRecordType : Syncable.Type] = [.bookmark : Bookmark.self, .prefs : Device.self]
+        let map: [SyncRecordType: Syncable.Type] = [.bookmark: Bookmark.self, .prefs: Device.self]
         return map[self]
     }
     
@@ -51,7 +50,7 @@ public enum SyncRecordType : String {
     }
 }
 
-public enum SyncObjectDataType : String {
+public enum SyncObjectDataType: String {
     case Bookmark = "bookmark"
     case Prefs = "preference" // Remove
     
@@ -104,7 +103,7 @@ class Sync: JSInjector {
 
     fileprivate let apiVersion = 0
 
-    fileprivate var webConfig:WKWebViewConfiguration {
+    fileprivate var webConfig: WKWebViewConfiguration {
         let webCfg = WKWebViewConfiguration()
         let userController = WKUserContentController()
 
@@ -147,7 +146,6 @@ class Sync: JSInjector {
     /// Notice:: seed will be ignored if the keychain already has one, a user must disconnect from existing sync group prior to joining a new one
     func initializeSync(seed: [Int]? = nil, deviceName: String? = nil) {
         
-        
         #if NO_SYNC
         if syncSeed == nil { return }
         
@@ -160,7 +158,7 @@ class Sync: JSInjector {
         
         let alert = UIAlertController(title: "Sync Disabled", message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        (UIApplication.shared.delegate as! AppDelegate).browserViewController.present(alert, animated: true, completion: nil)
+        (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.present(alert, animated: true, completion: nil)
         #endif
         
         if let joinedSeed = seed, joinedSeed.count == Sync.SeedByteLength {
@@ -192,10 +190,10 @@ class Sync: JSInjector {
         self.webView.loadHTMLString("<body>TEST</body>", baseURL: nil)
     }
 
-    class func getScript(_ name:String) -> String? {
+    class func getScript(_ name: String) -> String? {
         // TODO: Add unwrapping warnings
         // TODO: Place in helper location
-        guard let filePath = Bundle.main.path(forResource: name, ofType:"js") else {
+        guard let filePath = Bundle.main.path(forResource: name, ofType: "js") else {
             return nil
         }
         
@@ -263,7 +261,6 @@ class Sync: JSInjector {
         return seed?.count == Sync.SeedByteLength ? seed : nil
     }
     
-    
     // TODO: Abstract into classes as static members, each object type needs their own sync time stamp!
     // This includes just the last record that was fetched, used to store timestamp until full process has been completed
     //  then set into defaults
@@ -283,7 +280,6 @@ class Sync: JSInjector {
     //  Used to know if data on get-existing-objects was trimmed, this value is used inside resolved-sync-records
     fileprivate var lastFetchWasTrimmed: Bool = false
     ////////////////////////////////
-    
 
     @discardableResult func checkIsSyncReady() -> Bool {
         
@@ -292,7 +288,7 @@ class Sync: JSInjector {
         }
 
         let mirror = Mirror(reflecting: isSyncFullyInitialized)
-        let ready = mirror.children.reduce(true) { $0 && $1.1 as! Bool }
+        let ready = mirror.children.reduce(true) { $0 && $1.1 as! Bool } // swiftlint:disable:this force_cast
         if ready {
             // Attempt to authorize device
             
@@ -324,7 +320,8 @@ class Sync: JSInjector {
                 // Sync local bookmarks, then proceed with fetching
                 // Pull all local bookmarks
                 // Insane .map required for mapping obj-c class to Swift, in order to use protocol instead of class for array param
-                self.sendSyncRecords(action: .create, records: Bookmark.getAllBookmarks(context: DataController.newBackgroundContext()).map{$0}) { error in
+                self.sendSyncRecords(action: .create, records:
+                Bookmark.getAllBookmarks(context: DataController.newBackgroundContext()).map {$0}) { error in
                     startFetching()
                 }
             } else {
@@ -420,7 +417,7 @@ extension Sync {
         // TODO: Abstract this logic, same used as in getExistingObjects
         guard let recordJSON = data?.rootElements, let apiRecodType = data?.arg1, let recordType = SyncRecordType(rawValue: apiRecodType) else { return }
         
-        guard var fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
+        guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
 
         // Currently only prefs are device related
         if recordType == .prefs, let data = fetchedRecords as? [SyncDevice] {
@@ -513,7 +510,6 @@ extension Sync {
 
         let ids = fetchedRecords.flatMap { $0.objectId }
         let localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: DataController.newBackgroundContext()) as? [Bookmark]
-        
         
         var matchedBookmarks = [[Any]]()
         for fetchedBM in fetchedRecords {

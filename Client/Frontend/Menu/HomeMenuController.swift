@@ -30,6 +30,15 @@ protocol HomeMenuControllerDelegate: class {
   func menuDidBatchOpenURLs(_ menu: HomeMenuController, urls: [URL])
 }
 
+protocol LinkNavigationDelegate: class {
+    func linkNavigatorDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool)
+    func linkNavigatorDidRequestToCopyURL(_ url: URL)
+    func linkNavigatorDidRequestToShareURL(_ url: URL)
+    func linkNavigatorDidRequestToBatchOpenURLs(_ urls: [URL])
+    func linkNavigatorDidSelectURL(url: URL, visitType: VisitType)
+    func linkNavigatorDidSelectURLString(url: String, visitType: VisitType)
+}
+
 class HomeMenuController: UIViewController, PopoverContentComponent {
   
   weak var delegate: HomeMenuControllerDelegate?
@@ -81,12 +90,12 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     bookmarksController.profile = profile
     historyController.profile = profile
     
-    bookmarksController.homePanelDelegate = self
+    bookmarksController.linkNavigationDelegate = self
     bookmarksController.bookmarksDidChange = { [weak self] in
       self?.updateBookmarkStatus()
     }
     
-    historyController.homePanelDelegate = self
+    historyController.linkNavigationDelegate = self
   }
   
   @available(*, unavailable)
@@ -111,21 +120,21 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
     
     settingsButton.setImage(#imageLiteral(resourceName: "menu-settings").template, for: .normal)
     settingsButton.addTarget(self, action: #selector(onClickSettingsButton), for: .touchUpInside)
-    settingsButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
+    settingsButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     settingsButton.accessibilityLabel = Strings.Settings
     
     bookmarksButton.setImage(#imageLiteral(resourceName: "menu-bookmark-list").template, for: .normal)
-    bookmarksButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
+    bookmarksButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     bookmarksButton.accessibilityLabel = Strings.Show_Bookmarks
     
     historyButton.setImage(#imageLiteral(resourceName: "menu-history").template, for: .normal)
-    historyButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
+    historyButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     historyButton.accessibilityLabel = Strings.Show_History
     
     addBookmarkButton.addTarget(self, action: #selector(onClickBookmarksButton), for: .touchUpInside)
     addBookmarkButton.setImage(#imageLiteral(resourceName: "menu-add-bookmark").template, for: .normal)
     addBookmarkButton.setImage(#imageLiteral(resourceName: "menu-marked-bookmark").template, for: .selected)
-    addBookmarkButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10)
+    addBookmarkButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
     addBookmarkButton.accessibilityLabel = Strings.Add_Bookmark
     
     pageButtons.keys.forEach { $0.addTarget(self, action: #selector(onClickPageButton), for: .touchUpInside) }
@@ -257,37 +266,29 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   }
 }
 
-extension HomeMenuController: HomePanelDelegate {
-  
-  func homePanelDidRequestToSignIn(_ homePanel: HomePanel) {
-    // New from FF, but has no use in Brave
-  }
-  
-  func homePanelDidRequestToCreateAccount(_ homePanel: HomePanel) {
-    // New from FF, but has no use in Brave
-  }
-  
-  func homePanelDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool) {
+extension HomeMenuController: LinkNavigationDelegate {
+    
+  func linkNavigatorDidRequestToOpenInNewTab(_ url: URL, isPrivate: Bool) {
     delegate?.menuDidSelectURL(self, url: url, visitType: .unknown, action: .openInNewTab(isPrivate: isPrivate))
   }
   
-  func homePanelDidRequestToCopyURL(_ url: URL) {
+  func linkNavigatorDidRequestToCopyURL(_ url: URL) {
     delegate?.menuDidSelectURL(self, url: url, visitType: .unknown, action: .copy)
   }
   
-  func homePanelDidRequestToShareURL(_ url: URL) {
+  func linkNavigatorDidRequestToShareURL(_ url: URL) {
     delegate?.menuDidSelectURL(self, url: url, visitType: .unknown, action: .share)
   }
   
-  func homePanelDidRequestToBatchOpenURLs(_ urls: [URL]) {
+  func linkNavigatorDidRequestToBatchOpenURLs(_ urls: [URL]) {
     delegate?.menuDidBatchOpenURLs(self, urls: urls)
   }
   
-  func homePanel(_ homePanel: HomePanel, didSelectURL url: URL, visitType: VisitType) {
+  func linkNavigatorDidSelectURL(url: URL, visitType: VisitType) {
     delegate?.menuDidSelectURL(self, url: url, visitType: visitType, action: .openInCurrentTab)
   }
   
-  func homePanel(_ homePanel: HomePanel, didSelectURLString url: String, visitType: VisitType) {
+  func linkNavigatorDidSelectURLString(url: String, visitType: VisitType) {
     guard let profile = profile else { return }
     
     // If we can't get a real URL out of what should be a URL, we let the user's
@@ -296,11 +297,11 @@ extension HomeMenuController: HomePanelDelegate {
     // (e.g., "http://foo.com/bar/?query=%s"), and this will get them the same behavior as if
     // they'd copied and pasted into the URL bar.
     // See BrowserViewController.urlBar:didSubmitText:.
-    guard let url = URIFixup.getURL(url) ?? profile.searchEngines.defaultEngine.searchURLForQuery(url) else {
+    guard let url = URIFixup.getURL(url) ?? profile.searchEngines.defaultEngine().searchURLForQuery(url) else {
       Logger.browserLogger.warning("Invalid URL, and couldn't generate a search URL for it.")
       return
     }
     
-    return self.homePanel(homePanel, didSelectURL: url, visitType: visitType)
+    return self.linkNavigatorDidSelectURL(url: url, visitType: visitType)
   }
 }

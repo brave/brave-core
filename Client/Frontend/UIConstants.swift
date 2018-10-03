@@ -25,7 +25,7 @@ struct BrowserColor {
     }
 
     func colorFor(_ theme: Theme) -> UIColor {
-        return color(isPBM: theme == .Private)
+        return color(isPBM: theme.isPrivate)
     }
 }
 
@@ -78,20 +78,12 @@ extension UIColor {
 
     struct TabTray {
         static let Background = Browser.Background
+        static let ToolbarButtonTint = BrowserColor(normal: Photon.Grey80, pbm: Photon.Grey30)
     }
 
     struct TopTabs {
         static let PrivateModeTint = BrowserColor(normal: Photon.Grey10, pbm: Photon.Grey40)
-        static let Background = Photon.Grey80
-    }
-
-    struct HomePanel {
-        // These values are the same for both private/normal.
-        // The homepanel toolbar needed to be able to theme, not anymore.
-        // Keep this just in case someone decides they want it to theme again
-        static let ToolbarBackground = BrowserColor(normal: Photon.Grey10, pbm: Photon.Grey10)
-        static let ToolbarHighlight = BrowserColor(normal: Photon.Blue50, pbm: Photon.Blue50)
-        static let ToolbarTint = BrowserColor(normal: Photon.Grey50, pbm: Photon.Grey50)
+        static let Background = BrowserColor(normal: Photon.White100, pbm: Photon.Grey80)
     }
 }
 

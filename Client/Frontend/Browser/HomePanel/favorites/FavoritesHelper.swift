@@ -13,21 +13,21 @@ struct FavoritesHelper {
     // Indicates if favorites have been initialized.
     static let initPrefsKey = "FavoritesHelperInitPrefsKey"
 
-    static func frc() -> NSFetchedResultsController<NSFetchRequestResult> {
+    static func frc() -> NSFetchedResultsController<Bookmark> {
         let context = DataController.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        let fetchRequest = NSFetchRequest<Bookmark>()
 
         fetchRequest.entity = Bookmark.entity(context: context)
         fetchRequest.fetchBatchSize = 20
 
         // We always want favorites folder to be on top, in the first section.
-        let orderSort = NSSortDescriptor(key:"order", ascending: true)
-        let createdSort = NSSortDescriptor(key:"created", ascending: false)
+        let orderSort = NSSortDescriptor(key: "order", ascending: true)
+        let createdSort = NSSortDescriptor(key: "created", ascending: false)
         fetchRequest.sortDescriptors = [orderSort, createdSort]
 
         fetchRequest.predicate = NSPredicate(format: "isFavorite == YES")
 
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext:context,
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context,
                                           sectionNameKeyPath: nil, cacheName: nil)
     }
 
@@ -50,7 +50,7 @@ struct FavoritesHelper {
         Bookmark.add(url: url, title: title, isFavorite: true, color: color)
     }
 
-    static func isAlreadyAdded(_ url: URL) -> Bool{
+    static func isAlreadyAdded(_ url: URL) -> Bool {
         return Bookmark.contains(url: url, getFavorites: true)
     }
     

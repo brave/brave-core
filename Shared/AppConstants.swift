@@ -8,6 +8,10 @@ public enum AppBuildChannel: String {
     case release = "release"
     case beta = "beta"
     case developer = "developer"
+    
+    public var isRelease: Bool {
+        return self == .release
+    }
 }
 
 public enum KVOConstants: String {
@@ -19,6 +23,7 @@ public enum KVOConstants: String {
     case canGoForward = "canGoForward"
     case contentSize = "contentSize"
     case hasOnlySecureContent = "hasOnlySecureContent"
+    case serverTrust = "serverTrust"
 }
 
 public struct AppConstants {

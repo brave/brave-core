@@ -17,7 +17,7 @@ class TabBarCell: UICollectionViewCell {
         let button = UIButton()
         button.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
         button.setImage(#imageLiteral(resourceName: "close_tab_bar").template, for: .normal)
-        button.tintColor = UIApplication.isInPrivateMode ? UIColor.white : UIColor.black
+        button.tintColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UIColor.white : UIColor.black
         // Close button is a bit wider to increase tap area, this aligns the 'X' image closer to the right.
         button.imageEdgeInsets.left = 6
         return button
@@ -44,7 +44,7 @@ class TabBarCell: UICollectionViewCell {
     weak var tab: Tab?
     weak var tabManager: TabManager?
     
-    var closeTabCallback: ((Tab) -> ())?
+    var closeTabCallback: ((Tab) -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,13 +61,13 @@ class TabBarCell: UICollectionViewCell {
     }
     
     private func initConstraints() {
-        titleLabel.snp.makeConstraints{ make in
+        titleLabel.snp.makeConstraints { make in
             make.top.bottom.equalTo(self)
             make.left.equalTo(self).inset(16)
             make.right.equalTo(closeButton.snp.left)
         }
         
-        closeButton.snp.makeConstraints{ make in
+        closeButton.snp.makeConstraints { make in
             make.top.bottom.equalTo(self)
             make.right.equalTo(self).inset(2)
             make.width.equalTo(30)
@@ -90,17 +90,17 @@ class TabBarCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet(selected) {
-            closeButton.tintColor = UIApplication.isInPrivateMode ? UIColor.white : UIColor.black
+            closeButton.tintColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UIColor.white : UIColor.black
             if selected {
                 titleLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
                 closeButton.isHidden = false
-                titleLabel.textColor = UIApplication.isInPrivateMode ? UIColor.white : UIColor.black
-                backgroundColor = UIApplication.isInPrivateMode ? BraveUX.DarkToolbarsBackgroundSolidColor : BraveUX.ToolbarsBackgroundSolidColor
+                titleLabel.textColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UIColor.white : UIColor.black
+                backgroundColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? BraveUX.DarkToolbarsBackgroundSolidColor : BraveUX.ToolbarsBackgroundSolidColor
             }
                 // Prevent swipe and release outside- deselects cell.
             else if currentIndex != tabManager?.currentDisplayedIndex {
                 titleLabel.font = UIFont.systemFont(ofSize: 12)
-                titleLabel.textColor = UIApplication.isInPrivateMode ? UIColor(white: 1.0, alpha: 0.4) : UIColor(white: 0.0, alpha: 0.4)
+                titleLabel.textColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UIColor(white: 1.0, alpha: 0.4) : UIColor(white: 0.0, alpha: 0.4)
                 closeButton.isHidden = true
                 backgroundColor = .clear
             }

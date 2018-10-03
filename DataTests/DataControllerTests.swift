@@ -7,11 +7,10 @@ import CoreData
 @testable import Data
 
 class DataControllerTests: CoreDataTestCase {
-    // TopSite is the simplest model we have for testing DataController internals.
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: TopSite.self))
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Device.self))
     
     private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
-        return NSEntityDescription.entity(forEntityName: String(describing: TopSite.self), in: context)!
+        return NSEntityDescription.entity(forEntityName: String(describing: Device.self), in: context)!
     }
     
     func testStoreIsEmpty() {
@@ -47,7 +46,7 @@ class DataControllerTests: CoreDataTestCase {
     func testSavingMainContext() {
         let context = DataController.viewContext
         
-        _ = TopSite(entity: entity(for: context), insertInto: context)
+        _ = Device(entity: entity(for: context), insertInto: context)
         DataController.save(context: context)
         
         let result = try! context.fetch(fetchRequest)
@@ -57,7 +56,7 @@ class DataControllerTests: CoreDataTestCase {
     func testSavingBackgroundContext() {
         let context = DataController.newBackgroundContext()
         
-        _ = TopSite(entity: entity(for: context), insertInto: context)
+        _ = Device(entity: entity(for: context), insertInto: context)
         backgroundSaveAndWaitForExpectation {
             DataController.save(context: context)
         }
@@ -73,7 +72,7 @@ class DataControllerTests: CoreDataTestCase {
     func testSaveAndRemove() {
         let context = DataController.newBackgroundContext()
         
-        _ = TopSite(entity: entity(for: context), insertInto: context)
+        _ = Device(entity: entity(for: context), insertInto: context)
         backgroundSaveAndWaitForExpectation {
             DataController.save(context: context)
         }
@@ -82,7 +81,7 @@ class DataControllerTests: CoreDataTestCase {
         XCTAssertEqual(result.count, 1)
         
         backgroundSaveAndWaitForExpectation {
-            (result.first as! TopSite).delete()
+            (result.first as! Device).delete()
         }
         
         let newResult = try! DataController.viewContext.fetch(fetchRequest)

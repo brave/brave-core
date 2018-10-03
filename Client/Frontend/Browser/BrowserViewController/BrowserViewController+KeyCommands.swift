@@ -8,13 +8,13 @@ import Shared
 extension BrowserViewController {
 
     @objc private func reloadTabKeyCommand() {
-        if let tab = tabManager.selectedTab, topSitesViewController == nil {
+        if let tab = tabManager.selectedTab, favoritesViewController == nil {
             tab.reload()
         }
     }
 
     @objc private func goBackKeyCommand() {
-        if let tab = tabManager.selectedTab, tab.canGoBack, topSitesViewController == nil {
+        if let tab = tabManager.selectedTab, tab.canGoBack, favoritesViewController == nil {
             tab.goBack()
         }
     }
@@ -26,7 +26,7 @@ extension BrowserViewController {
     }
 
     @objc private func findInPageKeyCommand() {
-        if let tab = tabManager.selectedTab, topSitesViewController == nil {
+        if let tab = tabManager.selectedTab, favoritesViewController == nil {
             self.tab(tab, didSelectFindInPageForSelection: "")
         }
     }
@@ -58,7 +58,7 @@ extension BrowserViewController {
             return
         }
 
-        let tabs = currentTab.isPrivate ? tabManager.privateTabs : tabManager.normalTabs
+        let tabs = tabManager.tabs(withType: currentTab.type)
         if let index = tabs.index(of: currentTab), index + 1 < tabs.count {
             tabManager.selectTab(tabs[index + 1])
         } else if let firstTab = tabs.first {
@@ -71,7 +71,7 @@ extension BrowserViewController {
             return
         }
 
-        let tabs = currentTab.isPrivate ? tabManager.privateTabs : tabManager.normalTabs
+        let tabs = tabManager.tabs(withType: currentTab.type)
         if let index = tabs.index(of: currentTab), index - 1 < tabs.count && index != 0 {
             tabManager.selectTab(tabs[index - 1])
         } else if let lastTab = tabs.last {

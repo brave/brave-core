@@ -51,7 +51,7 @@ extension UIView {
      */
     @objc func clone() -> UIView {
         let data = NSKeyedArchiver.archivedData(withRootObject: self)
-        return NSKeyedUnarchiver.unarchiveObject(with: data) as! UIView
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as! UIView // swiftlint:disable:this force_cast
     }
 
     /**

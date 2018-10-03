@@ -28,6 +28,6 @@ class TitleActivityItemProvider: UIActivityItemProvider {
     }
 
     override func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivityType?) -> String {
-        return placeholderItem as! String
+        return placeholderItem as! String // swiftlint:disable:this force_cast
     }
 }

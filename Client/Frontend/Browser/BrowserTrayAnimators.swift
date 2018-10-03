@@ -24,7 +24,7 @@ private extension TrayToBrowserAnimator {
         guard let selectedTab = bvc.tabManager.selectedTab else { return }
 
         let tabManager = bvc.tabManager
-        let displayedTabs = selectedTab.isPrivate ? tabManager.privateTabs : tabManager.normalTabs
+        let displayedTabs = tabManager.tabs(withType: selectedTab.type)
         guard let expandFromIndex = displayedTabs.index(of: selectedTab) else { return }
 
         bvc.view.frame = transitionContext.finalFrame(for: bvc)
@@ -32,7 +32,7 @@ private extension TrayToBrowserAnimator {
         // Hide browser components
         bvc.toggleSnackBarVisibility(show: false)
         toggleWebViewVisibility(false, usingTabManager: bvc.tabManager)
-        bvc.topSitesViewController?.view.isHidden = true
+        bvc.favoritesViewController?.view.isHidden = true
         bvc.webViewContainerBackdrop.isHidden = true
         bvc.statusBarOverlay.isHidden = false
         if let url = selectedTab.url, !url.isReaderModeURL {
@@ -72,10 +72,11 @@ private extension TrayToBrowserAnimator {
             // Scale up the cell and reset the transforms for the header/footers
             cell.frame = finalFrame
             container.layoutIfNeeded()
-            cell.title.transform = CGAffineTransform(translationX: 0, y: -cell.title.frame.height)
+            cell.titleBackgroundView.transform = CGAffineTransform(translationX: 0, y: -cell.titleBackgroundView.frame.height)
+            cell.layer.borderWidth = 0.0
 
             bvc.tabTrayDidDismiss(tabTray)
-            UIApplication.shared.windows.first?.backgroundColor = UIConstants.AppBackgroundColor
+            UIApplication.shared.windows.first?.backgroundColor = TabTrayControllerUX.BackgroundColor.colorFor(tabTray.privateMode ? .private : .regular)
             tabTray.navigationController?.setNeedsStatusBarAppearanceUpdate()
             tabTray.toolbar.transform = CGAffineTransform(translationX: 0, y: UIConstants.BottomToolbarHeight)
             tabCollectionViewSnapshot.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -88,7 +89,7 @@ private extension TrayToBrowserAnimator {
             bvc.toggleSnackBarVisibility(show: true)
             toggleWebViewVisibility(true, usingTabManager: bvc.tabManager)
             bvc.webViewContainerBackdrop.isHidden = false
-            bvc.topSitesViewController?.view.isHidden = false
+            bvc.favoritesViewController?.view.isHidden = false
             bvc.urlBar.isTransitioning = false
             transitionContext.completeTransition(true)
         })
@@ -115,7 +116,7 @@ private extension BrowserToTrayAnimator {
         guard let selectedTab = bvc.tabManager.selectedTab else { return }
 
         let tabManager = bvc.tabManager
-        let displayedTabs = selectedTab.isPrivate ? tabManager.privateTabs : tabManager.normalTabs
+        let displayedTabs = tabManager.tabs(withType: selectedTab.type)
         guard let scrollToIndex = displayedTabs.index(of: selectedTab) else { return }
 
         tabTray.view.frame = transitionContext.finalFrame(for: tabTray)
@@ -146,10 +147,10 @@ private extension BrowserToTrayAnimator {
         
         container.addSubview(cell)
         cell.layoutIfNeeded()
-        cell.title.transform = CGAffineTransform(translationX: 0, y: -cell.title.frame.size.height)
+        cell.titleBackgroundView.transform = CGAffineTransform(translationX: 0, y: -cell.titleBackgroundView.frame.size.height)
 
         // Hide views we don't want to show during the animation in the BVC
-        bvc.topSitesViewController?.view.isHidden = true
+        bvc.favoritesViewController?.view.isHidden = true
         bvc.statusBarOverlay.isHidden = true
         bvc.toggleSnackBarVisibility(show: false)
         toggleWebViewVisibility(false, usingTabManager: bvc.tabManager)
@@ -171,11 +172,12 @@ private extension BrowserToTrayAnimator {
                 options: [],
                 animations: {
                 cell.frame = finalFrame
-                cell.title.transform = .identity
+                cell.titleBackgroundView.transform = .identity
                 cell.layoutIfNeeded()
-                
-                UIApplication.shared.windows.first?.backgroundColor = TabTrayControllerUX.BackgroundColor
+                UIApplication.shared.windows.first?.backgroundColor = TabTrayControllerUX.BackgroundColor.colorFor(tabTray.privateMode ? .private : .regular)
                 tabTray.navigationController?.setNeedsStatusBarAppearanceUpdate()
+                    
+                cell.layer.borderWidth = TabTrayControllerUX.DefaultBorderWidth
                 
                 transformHeaderFooterForBVC(bvc, toFrame: finalFrame, container: container)
 
@@ -193,7 +195,7 @@ private extension BrowserToTrayAnimator {
 
                 bvc.toggleSnackBarVisibility(show: true)
                 toggleWebViewVisibility(true, usingTabManager: bvc.tabManager)
-                bvc.topSitesViewController?.view.isHidden = false
+                bvc.favoritesViewController?.view.isHidden = false
 
                 resetTransformsForViews([bvc.header, bvc.readerModeBar, bvc.footer])
                 bvc.urlBar.isTransitioning = false
@@ -304,20 +306,12 @@ private func createTransitionCellFromTab(_ tab: Tab?, withFrame frame: CGRect) -
     cell.screenshotView.image = tab?.screenshot
     cell.titleText.text = tab?.displayTitle
 
-    if let tab = tab, tab.isPrivate {
-        cell.style = .dark
-    }
-
     if let favIcon = tab?.displayFavicon {
         cell.favicon.sd_setImage(with: URL(string: favIcon.url)!)
     } else {
-        let defaultFavicon = #imageLiteral(resourceName: "defaultFavicon")
-        if tab?.isPrivate ?? false {
-            cell.favicon.image = defaultFavicon
-            cell.favicon.tintColor = (tab?.isPrivate ?? false) ? UIColor.Photon.White100 : UIColor.Photon.Grey60
-        } else {
-            cell.favicon.image = defaultFavicon
-        }
+        cell.favicon.image = #imageLiteral(resourceName: "defaultFavicon")
     }
+    cell.applyTheme(PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular)
+
     return cell
 }

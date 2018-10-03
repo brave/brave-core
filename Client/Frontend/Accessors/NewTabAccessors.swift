@@ -30,8 +30,6 @@ enum NewTabPage: String {
     case blankPage = "Blank"
     case homePage = "HomePage"
     case topSites = "TopSites"
-    case bookmarks = "Bookmarks"
-    case history = "History"
 
     var settingTitle: String {
         switch self {
@@ -41,32 +39,16 @@ enum NewTabPage: String {
             return Strings.SettingsNewTabHomePage
         case .topSites:
             return Strings.SettingsNewTabTopSites
-        case .bookmarks:
-            return Strings.SettingsNewTabBookmarks
-        case .history:
-            return Strings.SettingsNewTabHistory
-        }
-    }
-
-    var homePanelType: HomePanelType? {
-        switch self {
-        case .topSites:
-            return HomePanelType.topSites
-        case .bookmarks:
-            return HomePanelType.bookmarks
-        case .history:
-            return HomePanelType.history
-        default:
-            return nil
         }
     }
 
     var url: URL? {
-        guard let homePanel = self.homePanelType else {
-            return nil
-        }
-        return homePanel.localhostURL as URL
+        // TODO: #258: If we aren't going to inherit the NewPageTab preference (since we'll always open to favourites),
+        //       probably best to remove `NewTabPage` all-together in the future and refactor out its usages.
+        
+        // For now, we are going to just default to 0 which used to be `HomePanelType.topSites`
+        return URL(string: "#panel=0", relativeTo: UIConstants.AboutHomePage as URL)!
     }
 
-    static let allValues = [blankPage, topSites, bookmarks, history, homePage]
+    static let allValues = [blankPage, topSites, homePage]
 }

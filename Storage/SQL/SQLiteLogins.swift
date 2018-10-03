@@ -232,7 +232,7 @@ open class SQLiteLogins: BrowserLogins {
     open func searchLoginsWithQuery(_ query: String?) -> Deferred<Maybe<Cursor<Login>>> {
         let projection = SQLiteLogins.LoginColumns
         var searchClauses = [String]()
-        var args: Args? = nil
+        var args: Args?
         if let query = query, !query.isEmpty {
             // Add wildcards to change query to 'contains in' and add them to args. We need 6 args because
             // we include the where clause twice: Once for the local table and another for the remote.
