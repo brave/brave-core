@@ -57,25 +57,23 @@ int OnBeforeURLRequest_StaticRedirectWork(
     URLPattern(URLPattern::SCHEME_HTTPS, "https://safebrowsing.brave.com/v4/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://ssl.gstatic.com/safebrowsing/*"),
 
+    // ChromeCast network discovery
+    URLPattern(URLPattern::SCHEME_HTTP, "http://*:8008/ssdp/device-desc.xml"),
+    URLPattern(URLPattern::SCHEME_HTTP, "http://*:60000/upnp/dev/*/desc"),
+
     // Will be removed when https://github.com/brave/brave-browser/issues/663 is fixed
     URLPattern(URLPattern::SCHEME_HTTPS, "https://www.gstatic.com/*"),
   });
-  // Check to make sure the URL being requested matches at least one of the allowed patterns
-  bool is_url_allowed = std::any_of(allowed_patterns.begin(), allowed_patterns.end(),
+  // Check to make sure the URL being requested matches at least one of the allowed patterns.
+  // Also allow invalid URLs (required for intranet_redirect_detector.cc to work)
+  bool is_url_allowed = (!gurl.is_valid()) || std::any_of(allowed_patterns.begin(), allowed_patterns.end(),
     [&gurl](URLPattern pattern) {
       if (pattern.MatchesURL(gurl)) {
         return true;
       }
       return false;
     });
-  if (!is_url_allowed) {
-    LOG(ERROR) << "URL not allowed from system network delegate: " << gurl;
-  }
-  // TODO: Before we can turn this into DCHECK we have to find a way to allow these, I think they are for Chrome Cast
-  // http://192.168.0.13:8008/ssdp/device-desc.xml
-  // http://192.168.0.27:60000/upnp/dev/e16bf493-ed87-5798-ffff-ffffeb4f1c34/desc
-  // And also I don't know where they're from, but there's always 3 requests similar to this:
-  // http://vijscbncpv/
+  DCHECK(is_url_allowed) << "URL not allowed from system network delegate: " << gurl;
 #endif
 
   return net::OK;
