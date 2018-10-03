@@ -67,11 +67,13 @@ static bool HandleTorrentURLRewrite(GURL* url,
   return false;
 }
 
-static bool IsWebtorrentInstalled(content::BrowserContext* browser_context) {
+static bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
+  bool isTorProfile =
+    Profile::FromBrowserContext(browser_context)->IsTorProfile();
   extensions::ExtensionRegistry* registry =
     extensions::ExtensionRegistry::Get(browser_context);
-  return registry->enabled_extensions().Contains(
-      brave_webtorrent_extension_id);
+  return !isTorProfile &&
+    registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
 static void LoadOrLaunchMagnetURL(
@@ -83,7 +85,7 @@ static void LoadOrLaunchMagnetURL(
   if (!web_contents)
     return;
 
-  if (IsWebtorrentInstalled(web_contents->GetBrowserContext())) {
+  if (IsWebtorrentEnabled(web_contents->GetBrowserContext())) {
     web_contents->GetController().LoadURL(url, content::Referrer(),
         page_transition, std::string());
   } else {
@@ -96,7 +98,7 @@ static void LoadOrLaunchMagnetURL(
 
 static bool HandleMagnetURLRewrite(GURL* url,
     content::BrowserContext* browser_context) {
-  if (IsWebtorrentInstalled(browser_context) && url->SchemeIs(kMagnetScheme)) {
+  if (IsWebtorrentEnabled(browser_context) && url->SchemeIs(kMagnetScheme)) {
     *url = TranslateMagnetURL(*url);
     return true;
   }
