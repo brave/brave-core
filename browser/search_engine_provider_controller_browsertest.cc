@@ -3,15 +3,26 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/search_engine_provider_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
+#include "content/public/test/test_utils.h"
 
 using SearchEngineProviderControllerTest = InProcessBrowserTest;
+
+class TorSearchEngineProviderControllerTest : public InProcessBrowserTest {
+ public:
+  void SetUp() override {
+    disable_io_checks();
+    InProcessBrowserTest::SetUp();
+  }
+};
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
@@ -62,4 +73,22 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest, PrefTest) {
   service->SetUserSelectedDefaultSearchProvider(test_url.get());
   EXPECT_EQ(incognito_service->GetDefaultSearchProvider()->data().short_name(),
             base::ASCIIToUTF16("test1"));
+}
+
+// This test crashes with below. I don't know how to deal with now.
+// [FATAL:brave_content_browser_client.cc(217)] Check failed: !path.empty().
+// TODO(simonhong): Enable this later.
+IN_PROC_BROWSER_TEST_F(TorSearchEngineProviderControllerTest,
+                       DISABLED_CheckTorProfileSearchProviderTest) {
+  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  Profile* tor_profile = profile_manager->GetProfile(tor_path);
+  EXPECT_TRUE(tor_profile->IsTorProfile());
+
+  auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
+  //Check tor profile's search provider is set to ddg.
+  EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
+            base::ASCIIToUTF16("DuckDuckGo"));
+
+  content::RunAllTasksUntilIdle();
 }
