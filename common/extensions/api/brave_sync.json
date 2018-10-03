@@ -88,7 +88,7 @@
         }
       },
       {
-        "id": "SyncRecord2",
+        "id": "SyncRecord",
         "type": "object",
         "description": "Record representing sync entity",
         "properties": {
@@ -104,7 +104,9 @@
             "type": "binary",
             "description": "object id"
           },
-          // "deviceIdStr" and "objectIdStr" are workarounf because SyncRecord2::ToValue() somehow gets empty objects `"objectId":{}` '"deviceId":{}'
+          // "deviceIdStr", "objectIdStr" and "parentFolderObjectIdStr" are
+          // workaround because js lib uses UInt8Array type for ids,
+          // and there is no appropriate conversion
           "deviceIdStr" : {
             "type": "string",
             "description": "device id",
@@ -158,11 +160,11 @@
         "description": "represents pair of sync record and sync record with existing object",
         "properties": {
           "serverRecord" : {
-            "$ref": "SyncRecord2",
+            "$ref": "SyncRecord",
             "description": "original sync record"
           },
           "localRecord" : {
-            "$ref": "SyncRecord2",
+            "$ref": "SyncRecord",
             "description": "existing sync record",
             "optional": true
           }
@@ -246,7 +248,7 @@
             "name": "categoryName"
           },
           {
-            "type": "array", "items": {"$ref": "SyncRecord2"},
+            "type": "array", "items": {"$ref": "SyncRecord"},
             "name": "records"
           }
         ]
@@ -416,7 +418,7 @@
             "name": "category_name"
           },
           {
-            "type": "array", "items": {"$ref": "SyncRecord2"},
+            "type": "array", "items": {"$ref": "SyncRecord"},
             "name": "records"
           },
 
@@ -440,7 +442,7 @@
             "name": "category_name"
           },
           {
-            "type": "array", "items": {"$ref": "SyncRecord2"},
+            "type": "array", "items": {"$ref": "SyncRecord"},
             "name": "records"
           }
         ]

@@ -10,8 +10,8 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_sync/bookmarks_client.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
-#include "brave/components/brave_sync/cansendbookmarks.h"
 #include "brave/components/brave_sync/client/client.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
@@ -29,9 +29,9 @@
 
 namespace brave_sync {
 
-Bookmarks::Bookmarks(ControllerForBookmarksExports *controller_exports) :
+Bookmarks::Bookmarks(BookmarksClient *client) :
   profile_(nullptr), model_(nullptr), sync_obj_map_(nullptr),
-  observer_is_set_(false), controller_exports_(controller_exports) {
+  observer_is_set_(false), client_(client) {
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::Bookmarks CTOR";
 }
 
@@ -234,8 +234,8 @@ void Bookmarks::AddBookmarkUiWork(
     const std::string &s_parent_local_object_id, int64_t* parent_folder_id,
     int64_t* added_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(controller_exports_);
-  DCHECK(controller_exports_->GetTaskRunner());
+  DCHECK(client_);
+  DCHECK(client_->GetTaskRunner());
 
   const jslib::Bookmark &sync_bookmark = sync_record->GetBookmark();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::AddBookmarkUiWork objectId="<<sync_record->objectId;
@@ -378,7 +378,7 @@ void Bookmarks::ReorderFolderUiWorkCollectChildren(const int64_t &folder_id) {
   }
 
   // Jump to file thread
-  controller_exports_->GetTaskRunner()->PostTask(
+  client_->GetTaskRunner()->PostTask(
     FROM_HERE,
     base::Bind(&Bookmarks::ReorderFolderFileWorkCalculateSortedIndexes,
       base::Unretained(this), folder_id, children_local_ids)
@@ -648,7 +648,7 @@ void Bookmarks::UpdateBookmarkUiWork(
   // Jump to File thread, save new order
   // Then in any way reorder bookmarks in new folder
   // The same as during AddBookmark
-  controller_exports_->GetTaskRunner()->PostTask(
+  client_->GetTaskRunner()->PostTask(
     FROM_HERE,
     base::Bind(&Bookmarks::AddOrUpdateBookmarkPostUiFileWork,
       base::Unretained(this),
@@ -721,21 +721,6 @@ void Bookmarks::ResumeObserver() {
   DCHECK(observer_is_set_ == false);
   model_->AddObserver(this);
   observer_is_set_ = true;
-}
-
-void Bookmarks::GetAllBookmarks_DEPRECATED(std::vector<const bookmarks::BookmarkNode*> &nodes) {
-  const size_t max_count = 300;
-
-  ui::TreeNodeIterator<const bookmarks::BookmarkNode> iterator(model_->root_node());
-  while (iterator.has_next()) {
-    const bookmarks::BookmarkNode* node = iterator.Next();
-    if ( model_->is_permanent_node(node)) {
-      continue;
-    }
-    nodes.push_back(node);
-    if (nodes.size() == max_count)
-      return;
-  }
 }
 
 void Bookmarks::GetInitialBookmarksWithOrders(
@@ -899,7 +884,7 @@ void Bookmarks::BookmarkNodeMoved(bookmarks::BookmarkModel* model,
   LOG(ERROR) << "TAGAB node->id()=" << node->id();
   LOG(ERROR) << "TAGAB node->title=" << node->GetTitledUrlNodeTitle();
 
-  if (!controller_exports_ || !controller_exports_->IsSyncConfigured()) {
+  if (!client_ || !client_->IsSyncConfigured()) {
     LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeMoved sync is not configured";
     return;
   }
@@ -934,9 +919,9 @@ void Bookmarks::BookmarkNodeMoved(bookmarks::BookmarkModel* model,
   }
 
   // Next: ask lib, jump into task runner to get orders with file ops
-  controller_exports_->GetTaskRunner()->PostTask(
+  client_->GetTaskRunner()->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerForBookmarksExports::BookmarkMoved, base::Unretained(controller_exports_),
+    base::Bind(&BookmarksClient::BookmarkMoved, base::Unretained(client_),
     node->id(),
     prev_item_id,
     next_item_id,
@@ -962,7 +947,7 @@ void Bookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded node->GetTitle()=" << node->GetTitle();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded GetBookmarkNodeString(node->type())=" << GetBookmarkNodeString(node->type());
 
-  if (!controller_exports_ || !controller_exports_->IsSyncConfigured()) {
+  if (!client_ || !client_->IsSyncConfigured()) {
     LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeAdded sync is not configured";
     return;
   }
@@ -996,9 +981,9 @@ void Bookmarks::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
   }
 
   // Next: ask lib, jump into task runner to get orders with file ops
-  controller_exports_->GetTaskRunner()->PostTask(
+  client_->GetTaskRunner()->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerForBookmarksExports::BookmarkAdded, base::Unretained(controller_exports_),
+    base::Bind(&BookmarksClient::BookmarkAdded, base::Unretained(client_),
     node->id(),
     prev_item_id,
     next_item_id,
@@ -1021,7 +1006,7 @@ void Bookmarks::BookmarkNodeRemoved(
   }
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!controller_exports_ || !controller_exports_->IsSyncConfigured()) {
+  if (!client_ || !client_->IsSyncConfigured()) {
     LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved sync is not configured";
     return;
   }
@@ -1047,12 +1032,12 @@ void Bookmarks::BookmarkNodeRemoved(
   //
   // This line below works or a single bookmark but should be checked for the folder
 
-  controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionDelete,
+  client_->CreateUpdateDeleteBookmarks(jslib_const::kActionDelete,
     {InitialBookmarkNodeInfo(node, true)}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
 
   //=> File task
   // node can be dead
-  controller_exports_->GetTaskRunner()->PostTask(
+  client_->GetTaskRunner()->PostTask(
     FROM_HERE,
     base::Bind(&Bookmarks::BookmarkNodeRemovedFileWork, base::Unretained(this), node)
   );
@@ -1074,7 +1059,7 @@ void Bookmarks::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeChanged node->GetTitledUrlNodeTitle()=" << node->GetTitledUrlNodeTitle();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeChanged node->GetTitle()=" << node->GetTitle();
 
-  controller_exports_->CreateUpdateDeleteBookmarks(jslib_const::kActionUpdate,
+  client_->CreateUpdateDeleteBookmarks(jslib_const::kActionUpdate,
      {InitialBookmarkNodeInfo(node, true)}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
 }
 

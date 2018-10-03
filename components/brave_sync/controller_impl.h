@@ -8,8 +8,8 @@
 #include <map>
 #include "base/macros.h"
 #include "base/memory/singleton.h"
+#include "brave/components/brave_sync/bookmarks_client.h"
 #include "brave/components/brave_sync/controller.h"
-#include "brave/components/brave_sync/cansendbookmarks.h"
 #include "brave/components/brave_sync/client/client.h"
 #include "brave/components/brave_sync/can_send_history.h"
 
@@ -51,7 +51,7 @@ class InitialBookmarkNodeInfo;
 
 class ControllerImpl : public Controller,
                        public SyncLibToBrowserHandler,
-                       public ControllerForBookmarksExports,
+                       public BookmarksClient,
                        public CanSendSyncHistory {
 public:
   ControllerImpl(Profile *profile);
@@ -158,7 +158,7 @@ private:
   void SendAllLocalBookmarks();
   void SendAllLocalHistorySites();
 
-  // CanSendBookMarks overrides
+  // BookmarksClient overrides
   void CreateUpdateDeleteBookmarks(
     const int &action,
     const std::vector<InitialBookmarkNodeInfo> &list,

@@ -34,7 +34,7 @@ namespace storage {
 }
 
 class Controller;
-class ControllerForBookmarksExports;
+class BookmarksClient;
 
 class InitialBookmarkNodeInfo {
 public:
@@ -46,7 +46,7 @@ public:
 
 class Bookmarks : public bookmarks::BookmarkModelObserver {
 public:
-  Bookmarks(ControllerForBookmarksExports *controller_exports);
+  Bookmarks(BookmarksClient *client);
   ~Bookmarks() override;
   void SetProfile(Profile *profile);
   void SetThisDeviceId(const std::string &device_id);
@@ -63,7 +63,6 @@ public:
   void DeleteBookmark(const jslib::SyncRecord &sync_record);
   void UpdateBookmark(const jslib::SyncRecord &sync_record);
 
-  void GetAllBookmarks_DEPRECATED(std::vector<const bookmarks::BookmarkNode*> &nodes);
   std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
 
   void GetInitialBookmarksWithOrders(
@@ -165,7 +164,7 @@ private:
   bool observer_is_set_;
   std::string base_order_;
 
-  ControllerForBookmarksExports *controller_exports_;
+  BookmarksClient *client_;
 };
 
 } // namespace brave_sync
