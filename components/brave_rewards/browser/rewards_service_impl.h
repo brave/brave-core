@@ -17,10 +17,12 @@
 #include "base/timer/timer.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/common/one_shot_event.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "ui/gfx/image/image.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -195,10 +197,16 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAmount(double amount) const override;
   void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
+  void OnExcludedSitesChanged() override;
   void OnPublisherActivity(ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info,
                           uint64_t windowId) override;
-  void OnExcludedSitesChanged() override;
+  void FetchFavIcon(const std::string& url, const std::string& favicon_key) override;
+  void OnFetchFavIconCompleted(const std::string& favicon_key,
+                          const GURL& url,
+                          const BitmapFetcherService::RequestId& request_id,
+                          const SkBitmap& image);
+  void OnSetOnDemandFaviconComplete(bool success);
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
@@ -215,6 +223,8 @@ class RewardsServiceImpl : public RewardsService,
   extensions::OneShotEvent ready_;
   std::map<const net::URLFetcher*, FetchCallback> fetchers_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
+  std::vector<std::string> current_media_fetchers_;
+  std::vector<BitmapFetcherService::RequestId> request_ids_;
 
   uint32_t next_timer_id_;
 
