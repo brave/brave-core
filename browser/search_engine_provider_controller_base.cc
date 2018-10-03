@@ -4,29 +4,14 @@
 
 #include "brave/browser/search_engine_provider_controller_base.h"
 
-#include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/prepopulated_engines.h"
+#include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
-
-namespace {
-
-TemplateURLData GetAlternativeSearchEngineData() {
-  TemplateURLData private_search_engine_data;
-  private_search_engine_data.SetShortName(base::ASCIIToUTF16("DuckDuckGo"));
-  private_search_engine_data.SetKeyword(base::ASCIIToUTF16("duckduckgo.com"));
-  private_search_engine_data.SetURL(
-      "https://duckduckgo.com/?q={searchTerms}&t=brave");
-  private_search_engine_data.favicon_url =
-      GURL("https://duckduckgo.com/favicon.ico");
-  private_search_engine_data.suggestions_url =
-      "https://duckduckgo.com/ac/?q={searchTerms}&type=list";
-  return private_search_engine_data;
-}
-
-}  // namespace
 
 SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
     Profile* profile)
@@ -42,8 +27,10 @@ SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
       base::Bind(&SearchEngineProviderControllerBase::OnPreferenceChanged,
                  base::Unretained(this)));
 
-  alternative_search_engine_url_.reset(
-      new TemplateURL(GetAlternativeSearchEngineData()));
+  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      profile->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
+  alternative_search_engine_url_.reset(new TemplateURL(*data));
 }
 
 SearchEngineProviderControllerBase::~SearchEngineProviderControllerBase() {
