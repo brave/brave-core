@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E199" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
-        <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="customTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -38,6 +37,7 @@
     </entity>
     <entity name="Domain" representedClassName=".Domain" syncable="YES">
         <attribute name="blockedFromTopSites" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="shield_adblockAndTp" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="shield_allOff" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="shield_fpProtection" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -77,7 +77,6 @@
         <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="historyItems" inverseEntity="Domain" syncable="YES"/>
     </entity>
     <entity name="TabMO" representedClassName=".TabMO" syncable="YES">
-        <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isClosed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSelected" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -100,12 +99,12 @@
         <relationship name="favicon" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Favicon" inverseName="topSite" inverseEntity="Favicon" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Bookmark" positionX="0" positionY="-450" width="155" height="285"/>
+        <element name="Bookmark" positionX="0" positionY="-450" width="155" height="270"/>
         <element name="Device" positionX="-252" positionY="-207" width="128" height="150"/>
-        <element name="Domain" positionX="225" positionY="-321" width="128" height="240"/>
+        <element name="Domain" positionX="225" positionY="-321" width="128" height="255"/>
         <element name="Favicon" positionX="439" positionY="-414" width="128" height="135"/>
         <element name="History" positionX="493" positionY="-150" width="128" height="135"/>
-        <element name="TabMO" positionX="-488" positionY="-229" width="128" height="225"/>
+        <element name="TabMO" positionX="-488" positionY="-229" width="128" height="210"/>
         <element name="TopSite" positionX="-117" positionY="-663" width="128" height="150"/>
     </elements>
 </model>
