@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/brave_shields_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api_constants.h"
@@ -266,6 +267,33 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
   // Check source is user.
   EXPECT_EQ(info.source,
             content_settings::SettingSource::SETTING_SOURCE_USER);
+}
+
+// Checks shields configuration is persisted across the sessions.
+IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
+                       PRE_ShieldSettingsPersistTest) {
+  HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
+      SetContentSettingCustomScope(
+        ContentSettingsPattern::Wildcard(),
+        ContentSettingsPattern::Wildcard(),
+        CONTENT_SETTINGS_TYPE_PLUGINS,
+        brave_shields::kHTTPUpgradableResources,
+        CONTENT_SETTING_ALLOW);
+
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
+          GetContentSetting(GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+                            brave_shields::kHTTPUpgradableResources);
+  EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
+                       ShieldSettingsPersistTest) {
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
+          GetContentSetting(GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+                            brave_shields::kHTTPUpgradableResources);
+  EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
 }
 
 }  // namespace extensions
