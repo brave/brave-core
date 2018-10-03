@@ -808,9 +808,9 @@ extension TabManager {
             // the screenshot in the tab as long as long as a newer one hasn't been taken.
             if let screenshotUUID = savedTab.screenshotUUID,
                let imageStore = self.imageStore {
-                tab.screenshotUUID = screenshotUUID
-                imageStore.get(screenshotUUID.uuidString) >>== { screenshot in
-                    if tab.screenshotUUID == screenshotUUID {
+                tab.screenshotUUID = UUID(uuidString: screenshotUUID)
+                imageStore.get(screenshotUUID) >>== { screenshot in
+                    if tab.screenshotUUID?.uuidString == screenshotUUID {
                         tab.setScreenshot(screenshot, revUUID: false)
                     }
                 }
