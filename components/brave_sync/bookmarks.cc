@@ -167,7 +167,7 @@ std::string Bookmarks::GetOrCreateObjectByLocalId(const int64_t &local_id, const
     return object_id;
   }
 
-  object_id = tools::GenerateObjectId(); // TODO, AB: pack 8 bytes from s_local_id?
+  object_id = tools::GenerateObjectId();
   sync_obj_map_->SaveObjectIdAndOrder(
         storage::ObjectMap::Type::Bookmark,
         s_local_id,

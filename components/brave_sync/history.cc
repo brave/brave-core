@@ -96,12 +96,6 @@ void History::GetAllHistory() {
 //
 
 
-// TODO: AB: time with
-/*
-double MilliSecondsFromTime(const base::Time& time) {
-  return 1000 * time.ToDoubleT();
-}
-*/
 
     //AB: AddRef();               // Balanced in SearchComplete().
 /*
