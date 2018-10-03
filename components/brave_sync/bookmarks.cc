@@ -210,12 +210,29 @@ void Bookmarks::AddBookmark(const jslib::SyncRecord &sync_record) {
     // a node direct child of the root node
   }
 
+  model_->BeginExtensiveChanges();
+
+  int64_t parent_folder_id = -1;
+  int64_t added_node_id = -1;
+
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
     FROM_HERE, base::Bind(&Bookmarks::AddBookmarkUiWork,
-         base::Unretained(this), base::Passed(std::move(sync_record_ptr)), s_parent_local_object_id ));
+         base::Unretained(this), base::Passed(std::move(sync_record_ptr)),
+         s_parent_local_object_id, &parent_folder_id, &added_node_id));
+
+  while (model_->IsDoingExtensiveChanges()) {
+    LOG(ERROR) << "brave_sync::Bookmarks::AddBookmark IsDoingExtensiveChanges";
+    sleep(1);
+  }
+  AddOrUpdateBookmarkPostUiFileWork(parent_folder_id, added_node_id,
+                                    sync_record.GetBookmark().order,
+                                    sync_record.objectId);
 }
 
-void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const std::string &s_parent_local_object_id) {
+void Bookmarks::AddBookmarkUiWork(
+    std::unique_ptr<jslib::SyncRecord> sync_record,
+    const std::string &s_parent_local_object_id, int64_t* parent_folder_id,
+    int64_t* added_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(controller_exports_);
   DCHECK(controller_exports_->GetTaskRunner());
@@ -320,15 +337,13 @@ void Bookmarks::AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record
   // all these are private
   // No matter we want ChromiumSync and Brave backend.
 
-  ResumeObserver();
-
   DCHECK(!sync_bookmark.order.empty()); // What if I recieve empty order from old browser-laptop, maybe we should generate it?
 
-  controller_exports_->GetTaskRunner()->PostTask(
-    FROM_HERE,
-    base::Bind(&Bookmarks::AddOrUpdateBookmarkPostUiFileWork, base::Unretained(this), parent_node->id(), added_node->id(), sync_bookmark.order, sync_record->objectId)
-  );
+  ResumeObserver();
 
+  *parent_folder_id = parent_node->id();
+  *added_node_id = added_node->id();
+  model_->EndExtensiveChanges();
 }
 
 void Bookmarks::AddOrUpdateBookmarkPostUiFileWork(const int64_t &folder_id, const int64_t &added_node_id, const std::string &order, const std::string &sync_record_object_id) {

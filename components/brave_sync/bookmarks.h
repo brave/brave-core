@@ -121,7 +121,9 @@ private:
     std::vector<InitialBookmarkNodeInfo> &nodes,
     std::map<const bookmarks::BookmarkNode*, std::string> &order_map);
 
-  void AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record, const std::string &s_parent_local_object_id);
+  void AddBookmarkUiWork(std::unique_ptr<jslib::SyncRecord> sync_record,
+                         const std::string &s_parent_local_object_id,
+                         int64_t* parent_folder_id, int64_t* added_node_id);
   void AddOrUpdateBookmarkPostUiFileWork(const int64_t &folder_id, const int64_t &added_node_id, const std::string &order, const std::string &sync_record_object_id);
 
   void DeleteBookmarkUiWork(const int64_t &local_object_id);
