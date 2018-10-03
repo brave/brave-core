@@ -1,0 +1,43 @@
+diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
+index 148487d43102628d754eac08dd24d4ab219575dd..2ffc61fbb53e99c293f9b70dbb7d8f2ff575ecae 100644
+--- a/chrome/browser/ui/views/download/download_item_view.h
++++ b/chrome/browser/ui/views/download/download_item_view.h
+@@ -56,6 +56,8 @@ class MdTextButton;
+ class ViewHierarchyChangedDetails;
+ }
+ 
++class BraveDownloadItemView;
++
+ // Represents a single download item on the download shelf. Encompasses an icon,
+ // text, malicious download warnings, etc.
+ class DownloadItemView : public views::InkDropHostView,
+@@ -63,6 +65,7 @@ class DownloadItemView : public views::InkDropHostView,
+                          public views::ContextMenuController,
+                          public download::DownloadItem::Observer,
+                          public gfx::AnimationDelegate {
++  friend BraveDownloadItemView;
+  public:
+   DownloadItemView(download::DownloadItem* download,
+                    DownloadShelfView* parent,
+@@ -201,10 +204,10 @@ class DownloadItemView : public views::InkDropHostView,
+ 
+   // This function calculates the vertical coordinate to draw the file name text
+   // relative to local bounds.
+-  int GetYForFilenameText() const;
++  virtual int GetYForFilenameText() const;
+ 
+   // Painting of various download item bits.
+-  void DrawStatusText(gfx::Canvas* canvas);
++  virtual void DrawStatusText(gfx::Canvas* canvas);
+   void DrawFilename(gfx::Canvas* canvas);
+   void DrawIcon(gfx::Canvas* canvas);
+ 
+@@ -278,7 +281,7 @@ class DownloadItemView : public views::InkDropHostView,
+   // so that screenreaders can access the filename, status text, and
+   // dangerous download warning message (if any). The name will be presented
+   // when the download item receives focus.
+-  void UpdateAccessibleName();
++  virtual void UpdateAccessibleName();
+ 
+   // Update accessible status text.
+   // If |is_last_update| is false, then a timer is used to notify screen readers
