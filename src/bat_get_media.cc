@@ -113,8 +113,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
           _2,
           _3));
     } else if (providerName == TWITCH_MEDIA_TYPE) {
-      int n = mediaId.length();
-      if (n == 0) {
+      if (mediaId.empty()) {
         return;
       }
 
@@ -141,15 +140,19 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
       updated_visit_data.favicon_url = "";
       updated_visit_data.provider = TWITCH_PROVIDER_NAME;
 
-      char char_array[n+1];
-      strcpy(char_array, mediaId.c_str());
-      if (strstr(char_array, "_vod_") != NULL) {
+      if (mediaId.find("_vod_") != std::string::npos) {
         // VOD
-        twitchMediaID = braveledger_bat_helper::split(mediaId, MEDIA_DELIMITER)[0];
+        std::vector<std::string> media_props = braveledger_bat_helper::split(mediaId, MEDIA_DELIMITER);
+        if (media_props.empty()) {
+          return;
+        }
+
+        twitchMediaID = media_props[0];
         mediaUrl = getMediaURL(twitchMediaID, providerName);
+        std::string oembed_url = (std::string)TWITCH_VOD_URL + media_props[media_props.size() - 1];
         updated_visit_data.name = twitchMediaID;
         updated_visit_data.url = mediaUrl + "/videos";
-        auto request = ledger_->LoadURL((std::string)TWITCH_PROVIDER_URL + "?json&url=" + ledger_->URIEncode(mediaUrl),
+        auto request = ledger_->LoadURL((std::string)TWITCH_PROVIDER_URL + "?json&url=" + ledger_->URIEncode(oembed_url),
                                         std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
         handler_.AddRequestHandler(std::move(request),
                                    std::bind(&BatGetMedia::getPublisherFromMediaPropsCallback,
@@ -184,7 +187,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
       ledger_->SaveMediaVisit(id, updated_visit_data, duration);
     } else if (providerName == TWITCH_MEDIA_TYPE) {
       updated_visit_data.provider = TWITCH_PROVIDER_NAME;
-      updated_visit_data.favicon_url = publisher_info->url;
+      updated_visit_data.favicon_url = publisher_info->favicon_url;
 
       ledger::TwitchEventInfo oldEvent;
       std::map<std::string, ledger::TwitchEventInfo>::const_iterator iter = twitchEvents.find(media_key);
@@ -335,8 +338,12 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, c
     std::string id = providerName + "#author:" + twitchMediaID;
 
     ledger::VisitData updated_visit_data(visit_data);
-    updated_visit_data.favicon_url = fav_icon;
+    updated_visit_data.favicon_url = "https://" + providerName + "-" + twitchMediaID + "-brave.com";
     updated_visit_data.name = author_name;
+
+    if (fav_icon.length() > 0) {
+      ledger_->FetchFavIcon(fav_icon, updated_visit_data.favicon_url);
+    }
 
     ledger_->SaveMediaVisit(id, updated_visit_data, duration);
     ledger_->SetMediaPublisherInfo(media_key, id);
@@ -347,8 +354,8 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
     const std::string& providerName, const std::string& mediaURL, const std::string& publisherURL,
     const std::string& publisherName, const ledger::VisitData& visit_data, bool success, const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  if (success && YOUTUBE_MEDIA_TYPE == providerName) {
-    std::string favIconURL;
+  if (success &&  providerName == YOUTUBE_MEDIA_TYPE) {
+    std::string favIconURL = "";
     std::string avatarStr = "\"avatar\":{\"thumbnails\":[{\"url\":\"";
     size_t startPos = response.find(avatarStr) + avatarStr.size();
     if (startPos != std::string::npos) {
@@ -364,17 +371,18 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
     if (pos != std::string::npos && pos < publisherURL.length() - 1) {
       publisher_id += publisherURL.substr(pos + 1);
     }
-    std::unique_ptr<ledger::PublisherInfo> publisher_info(new ledger::PublisherInfo());
-    publisher_info->name = publisherName;
-    publisher_info->url = mediaURL;
-    publisher_info->favicon_url = favIconURL;
-    publisher_info->id = publisher_id;
+
+    if (favIconURL.length() > 0) {
+      std::string favicon_key = "https://" + providerName + "-" + publisherName + "-brave.com";
+      ledger_->FetchFavIcon(favIconURL, favicon_key);
+      favIconURL = favicon_key;
+    }
 
     ledger::VisitData updated_visit_data(visit_data);
-    updated_visit_data.favicon_url = publisher_info->favicon_url;
-    updated_visit_data.provider = YOUTUBE_PROVIDER_NAME;
-    updated_visit_data.name = publisher_info->name;
-    updated_visit_data.url = publisher_info->url;
+    updated_visit_data.favicon_url = favIconURL;
+    updated_visit_data.provider = providerName;
+    updated_visit_data.name = publisherName;
+    updated_visit_data.url = mediaURL;
 
     ledger_->SaveMediaVisit(publisher_id, updated_visit_data, duration);
     ledger_->SetMediaPublisherInfo(media_key, publisher_id);
