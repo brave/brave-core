@@ -246,7 +246,7 @@ open class SQLiteRemoteClientsAndTabs: RemoteClientsAndTabs {
 
             // Most recent first.
             let fillTabs: (RemoteClient) -> ClientAndTabs = { client in
-                var tabs: [RemoteTab]? = nil
+                var tabs: [RemoteTab]?
                 if let guid: String = client.guid {
                     tabs = acc[guid]
                 }

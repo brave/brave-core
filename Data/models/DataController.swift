@@ -12,7 +12,8 @@ public class DataController: NSObject {
     
     private lazy var container: NSPersistentContainer = {
         let modelName = "Model"
-        guard let modelURL = Bundle(for: DataController.self).url(forResource: modelName, withExtension:"momd") else {
+        guard let modelURL =
+            Bundle(for: DataController.self).url(forResource: modelName, withExtension: "momd") else {
             fatalError("Error loading model from bundle")
         }
         guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {

@@ -4,10 +4,11 @@
 
 import Foundation
 import Shared
-import SDWebImage
 import XCGLogger
 
 private let log = Logger.browserLogger
+
+// swiftlint:disable force_try force_cast
 
 class TestAppDelegate: AppDelegate {
     override func getProfile(_ application: UIApplication) -> Profile {
@@ -33,7 +34,7 @@ class TestAppDelegate: AppDelegate {
 
                 let enumerator = FileManager.default.enumerator(atPath: profileDir)
                 let filePaths = enumerator?.allObjects as! [String]
-                filePaths.filter{ $0.contains(".db") }.forEach { item in
+                filePaths.filter { $0.contains(".db") }.forEach { item in
                     try! FileManager.default.removeItem(at: URL(fileURLWithPath: "\(profileDir)/\(item)"))
                 }
 
@@ -83,8 +84,11 @@ class TestAppDelegate: AppDelegate {
         log.debug("Wiping everything for a clean start.")
 
         // Clear image cache
-        SDImageCache.shared().clearDisk()
-        SDImageCache.shared().clearMemory()
+        WebImageCacheManager.shared.clearMemoryCache()
+        WebImageCacheManager.shared.clearDiskCache()
+        
+        WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
+        WebImageCacheWithNoPrivacyProtectionManager.shared.clearDiskCache()
 
         // Clear the cookie/url cache
         URLCache.shared.removeAllCachedResponses()

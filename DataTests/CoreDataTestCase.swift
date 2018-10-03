@@ -29,7 +29,7 @@ class CoreDataTestCase: XCTestCase {
     
     // MARK: - Handling background context reads/writes
 
-    var contextSaveCompletionsArray: [() -> ()] = []
+    var contextSaveCompletionsArray: [() -> Void] = []
     
     @objc func contextSaved() {
         contextSaveCompletionsArray.forEach { $0() }
@@ -40,7 +40,7 @@ class CoreDataTestCase: XCTestCase {
     
     /// Waits for core data context save notification. Use this for single background context saves if you want to wait
     /// for view context to update itself. Unfortunately there is no notification after changes are merged into context.
-    func backgroundSaveAndWaitForExpectation(code: () -> ()) {
+    func backgroundSaveAndWaitForExpectation(code: () -> Void) {
         // We do not care about expectation name as long as it is unique.
         let uuid = UUID().uuidString
         let saveExpectation = expectation(description: uuid)

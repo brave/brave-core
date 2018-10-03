@@ -47,7 +47,6 @@ class BookmarkTests: CoreDataTestCase {
             result4.delete()
         }
         
-        
         // Case 4: Titles not nil but empty
         let result5 = createAndWait(url: nil, title: title, customTitle: "")
         XCTAssertEqual(result5.displayTitle, title)
@@ -73,7 +72,7 @@ class BookmarkTests: CoreDataTestCase {
         insertBookmarks(amount: bookmarksToAdd)
         
         XCTAssertNoThrow(try frc.performFetch()) 
-        let objects = frc.fetchedObjects as! [Bookmark]
+        let objects = frc.fetchedObjects!
         
         XCTAssertNotNil(objects)
         XCTAssertEqual(objects.count, bookmarksToAdd)
@@ -88,8 +87,8 @@ class BookmarkTests: CoreDataTestCase {
         createAndWait(url: URL(string: ""), title: folderTitle, isFolder: true)
         
         try! frc.performFetch()
-        let obj = frc.fetchedObjects?.first as! Bookmark
-        XCTAssertEqual(obj.title, folderTitle)
+        let obj = frc.fetchedObjects!.first
+        XCTAssertEqual(obj?.title, folderTitle)
     }
     
     func testFrcWithParentFolder() {
@@ -333,14 +332,14 @@ class BookmarkTests: CoreDataTestCase {
         let sourceIndexPath = IndexPath(row: 5, section: 0)
         let destinationIndexPath = IndexPath(row: 5, section: 0)
         
-        let sourceOrderBefore = (frc.object(at: sourceIndexPath) as! Bookmark).order
-        let destinationOrderBefore = (frc.object(at: destinationIndexPath) as! Bookmark).order
+        let sourceOrderBefore = (frc.object(at: sourceIndexPath)).order
+        let destinationOrderBefore = (frc.object(at: destinationIndexPath)).order
         
         Bookmark.reorderBookmarks(frc: frc, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
         
         // Test order haven't changed
-        XCTAssertEqual((frc.object(at: sourceIndexPath) as! Bookmark).order, sourceOrderBefore)
-        XCTAssertEqual((frc.object(at: destinationIndexPath) as! Bookmark).order, destinationOrderBefore)
+        XCTAssertEqual((frc.object(at: sourceIndexPath)).order, sourceOrderBefore)
+        XCTAssertEqual((frc.object(at: destinationIndexPath)).order, destinationOrderBefore)
     }
     
     func testBookmarksReorderNilFrc() {
@@ -445,6 +444,26 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNotNil(dict["objectData"])
     }
     
+    func testFrecencyQuery() {
+        insertBookmarks(amount: 6)
+        
+        let found = Bookmark.frecencyQuery(context: DataController.viewContext, containing: "brave")
+        // Query limit is 5
+        XCTAssertEqual(found.count, 5)
+        
+        // Changing dates of two bookmarks to be something older than 1 week.
+        // Because we added 6 bookmarks and query limit is 5, the frequency query should return 4 bookmarks.
+        found.first?.lastVisited = Date(timeIntervalSince1970: 1)
+        found.last?.lastVisited = Date(timeIntervalSince1970: 1)
+        DataController.save(context: DataController.viewContext)
+        
+        let found2 = Bookmark.frecencyQuery(context: DataController.viewContext, containing: "brave")
+        XCTAssertEqual(found2.count, 4)
+        
+        let notFound = Bookmark.frecencyQuery(context: DataController.viewContext, containing: "notfound")
+        XCTAssertEqual(notFound.count, 0)
+    }
+    
     // MARK: - Helpers
     
     /// Wrapper around `Bookmark.create()` with context save wait expectation and fetching object from view context.
@@ -482,15 +501,14 @@ class BookmarkTests: CoreDataTestCase {
         let sourceIndexPath = IndexPath(row: sourcePosition, section: 0)
         let destinationIndexPath = IndexPath(row: destinationposition, section: 0)
         
-        let sourceObject = frc.object(at: sourceIndexPath) as! Bookmark
-        let destinationObject = frc.object(at: destinationIndexPath) as! Bookmark
+        let sourceObject = frc.object(at: sourceIndexPath)
+        let destinationObject = frc.object(at: destinationIndexPath)
         
-        let sourceOrderBefore = (frc.object(at: sourceIndexPath) as! Bookmark).order
-        let destinationOrderBefore = (frc.object(at: destinationIndexPath) as! Bookmark).order
+        let sourceOrderBefore = (frc.object(at: sourceIndexPath)).order
+        let destinationOrderBefore = (frc.object(at: destinationIndexPath)).order
         
         // CD objects we saved before will get updated after this call.
         Bookmark.reorderBookmarks(frc: frc, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
-        
         
         // Test order has changed, won't work when swapping bookmarks with order = 0
         if !skipOrderChangeTests {

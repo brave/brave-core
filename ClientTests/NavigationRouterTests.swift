@@ -29,13 +29,4 @@ class NavigationRouterTests: XCTestCase {
         let badNav = NavigationPath(url: URL(string: "\(appScheme)://open-url?url=blah")!)
         XCTAssertEqual(badNav, NavigationPath.url(webURL: URL(string: "blah"), isPrivate: false))
     }
-    
-    // Test EVERY deep link
-    func testDeepLinks() {
-        XCTAssertEqual(NavigationPath(url: URL(string: "\(appScheme)://deep-link?url=/homepanel/bookmarks")!), NavigationPath.deepLink(DeepLink.homePanel(.bookmarks)))
-        XCTAssertEqual(NavigationPath(url: URL(string: "\(appScheme)://deep-link?url=/homepanel/topsites")!), NavigationPath.deepLink(DeepLink.homePanel(.topsites)))
-        XCTAssertEqual(NavigationPath(url: URL(string: "\(appScheme)://deep-link?url=/homepanel/history")!), NavigationPath.deepLink(DeepLink.homePanel(.history)))
-        XCTAssertEqual(NavigationPath(url: URL(string: "\(appScheme)://deep-link?url=/homepanel/badbad")!), nil)
-    }
-
 }

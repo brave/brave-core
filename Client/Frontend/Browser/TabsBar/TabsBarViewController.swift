@@ -21,7 +21,7 @@ class TabsBarViewController: UIViewController {
     private lazy var plusButton: UIButton = {
         let button = UIButton()
         button.setImage(#imageLiteral(resourceName: "add_tab").template, for: .normal)
-        button.imageEdgeInsets = UIEdgeInsetsMake(6, 10, 6, 10)
+        button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
         button.tintColor = UIColor.black
         button.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
@@ -129,7 +129,7 @@ class TabsBarViewController: UIViewController {
     }
     
     @objc func addTabPressed() {
-        tabManager?.addTabAndSelect(isPrivate: UIApplication.isInPrivateMode)
+        tabManager?.addTabAndSelect(isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
     
     func updateData() {
@@ -155,7 +155,7 @@ class TabsBarViewController: UIViewController {
     }
     
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
-        switch(gesture.state) {
+        switch gesture.state {
         case .began:
             guard let selectedIndexPath = self.collectionView.indexPathForItem(at: gesture.location(in: self.collectionView)) else {
                 break
@@ -197,7 +197,7 @@ class TabsBarViewController: UIViewController {
     private func addScrollHint(for side: HintSide, maskLayer: CAGradientLayer) {
         maskLayer.removeFromSuperlayer()
         
-        let barsColor = UIApplication.isInPrivateMode ?
+        let barsColor = PrivateBrowsingManager.shared.isPrivateBrowsing ?
             UX.barsDarkBackgroundSolidColor : UX.barsBackgroundSolidColor
         let colors = [barsColor.withAlphaComponent(0).cgColor, barsColor.cgColor]
         
@@ -290,10 +290,11 @@ extension TabsBarViewController: UICollectionViewDataSource {
             let toTab = tabList[destinationIndexPath.row] else { return }
         
         // Find original from/to index... we need to target the full list not partial.
-        guard let from = manager.tabs.index(where: {$0 === fromTab}),
-            let to = manager.tabs.index(where: {$0 === toTab}) else { return }
+        let tabs = manager.tabs(withType: fromTab.type)
+        guard let from = tabs.index(where: {$0 === fromTab}),
+            let to = tabs.index(where: {$0 === toTab}) else { return }
         
-        manager.moveTab(isPrivate: UIApplication.isInPrivateMode, fromIndex: from, toIndex: to)
+        manager.moveTab(fromIndex: from, toIndex: to)
         updateData()
         
         guard let selectedTab = tabList[destinationIndexPath.row] else { return }
@@ -325,9 +326,17 @@ extension TabsBarViewController: TabManagerDelegate {
 
 extension TabsBarViewController: Themeable {
     func applyTheme(_ theme: Theme) {
-        view.backgroundColor = theme == .Private ? BraveUX.Black : BraveUX.GreyB
-        plusButton.tintColor = theme == .Private ? UIColor.white : BraveUX.GreyI
+        switch theme {
+        case .regular:
+            view.backgroundColor = BraveUX.GreyB
+            plusButton.tintColor = BraveUX.GreyI
+            bottomLine.backgroundColor = UIColor(white: 0.0, alpha: 0.2)
+        case .private:
+            view.backgroundColor = BraveUX.Black
+            plusButton.tintColor = UIColor.white
+            bottomLine.backgroundColor = UIColor(white: 1.0, alpha: 0.2)
+        }
+
         collectionView.backgroundColor = view.backgroundColor
-        bottomLine.backgroundColor = theme == .Private ? UIColor(white: 1.0, alpha: 0.2) : UIColor(white: 0.0, alpha: 0.2)
     }
 }

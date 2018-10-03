@@ -71,7 +71,7 @@ open class TabToolbarHelper: NSObject {
         toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControlEvents.touchUpInside)
         toolbar.addTabButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:))))
 
-        setTheme(theme: .Normal, forButtons: toolbar.actionButtons)
+        setTheme(theme: .regular, forButtons: toolbar.actionButtons)
     }
 
     func didClickBack() {
@@ -251,7 +251,13 @@ extension TabToolbar: TabToolbarProtocol {
 
 extension TabToolbar: Themeable {
     func applyTheme(_ theme: Theme) {
-        backgroundColor = theme == .Normal ? BraveUX.ToolbarsBackgroundSolidColor : BraveUX.DarkToolbarsBackgroundSolidColor
+        switch theme {
+        case .regular:
+            backgroundColor = BraveUX.ToolbarsBackgroundSolidColor
+        case .private:
+            backgroundColor = BraveUX.DarkToolbarsBackgroundSolidColor
+        }
+
         helper?.setTheme(theme: theme, forButtons: actionButtons)
     }
 }

@@ -1,6 +1,5 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 import UIKit
 import CoreData
 import Foundation
@@ -72,16 +71,16 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         return SyncBookmark(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
     }
 
-    public class func frc(parentFolder: Bookmark?) -> NSFetchedResultsController<NSFetchRequestResult> {
+    public class func frc(parentFolder: Bookmark?) -> NSFetchedResultsController<Bookmark> {
         let context = DataController.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        let fetchRequest = NSFetchRequest<Bookmark>()
         
         fetchRequest.entity = Bookmark.entity(context: context)
         fetchRequest.fetchBatchSize = 20
 
-        let orderSort = NSSortDescriptor(key:"order", ascending: true)
-        let folderSort = NSSortDescriptor(key:"isFolder", ascending: false)
-        let createdSort = NSSortDescriptor(key:"created", ascending: true)
+        let orderSort = NSSortDescriptor(key: "order", ascending: true)
+        let folderSort = NSSortDescriptor(key: "isFolder", ascending: false)
+        let createdSort = NSSortDescriptor(key: "created", ascending: true)
         fetchRequest.sortDescriptors = [orderSort, folderSort, createdSort]
 
         if let parentFolder = parentFolder {
@@ -90,7 +89,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
             fetchRequest.predicate = NSPredicate(format: "parentFolder == nil AND isFavorite == NO")
         }
 
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext:context,
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context,
                                           sectionNameKeyPath: nil, cacheName: nil)
     }
     
@@ -99,7 +98,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         guard let bookmark = record as? SyncBookmark, let site = bookmark.site else { return }
         title = site.title
         update(customTitle: site.customTitle, url: site.location)
-        lastVisited = Date(timeIntervalSince1970:(Double(site.lastAccessedTime ?? 0) / 1000.0))
+        lastVisited = Date(timeIntervalSince1970: (Double(site.lastAccessedTime ?? 0) / 1000.0))
         syncParentUUID = bookmark.parentFolderObjectId
         // No auto-save, must be handled by caller if desired
     }
@@ -158,7 +157,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     }
     
     // Should not be used for updating, modify to increase protection
-    class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, color: UIColor? = nil) {
+    @discardableResult class func add(rootObject root: SyncBookmark?, save: Bool = false, sendToSync: Bool = false, parentFolder: Bookmark? = nil, color: UIColor? = nil) {
         let context = DataController.newBackgroundContext()
         
         let bookmark = root
@@ -217,12 +216,12 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     }
   
     public class func add(url: URL?,
-                       title: String?,
-                       customTitle: String? = nil, // Folders only use customTitle
-                       parentFolder:Bookmark? = nil,
-                       isFolder: Bool = false,
-                       isFavorite: Bool = false,
-                       color: UIColor? = nil) {
+                          title: String?,
+                          customTitle: String? = nil, // Folders only use customTitle
+                          parentFolder: Bookmark? = nil,
+                          isFolder: Bool = false,
+                          isFavorite: Bool = false,
+                          color: UIColor? = nil) {
         
         let site = SyncSite()
         site.title = title
@@ -243,12 +242,14 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         return count > 0
     }
 
-    public class func reorderBookmarks(frc: NSFetchedResultsController<NSFetchRequestResult>?, sourceIndexPath: IndexPath,
-                                destinationIndexPath: IndexPath) {
+    public class func reorderBookmarks(
+        frc: NSFetchedResultsController<Bookmark>?,
+        sourceIndexPath: IndexPath,
+        destinationIndexPath: IndexPath) {
         guard let frc = frc else { return }
         
-        let dest = frc.object(at: destinationIndexPath) as! Bookmark
-        let src = frc.object(at: sourceIndexPath) as! Bookmark
+        let dest = frc.object(at: destinationIndexPath)
+        let src = frc.object(at: sourceIndexPath)
         
         if dest === src {
             return
@@ -257,7 +258,7 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
         // Warning, this could be a bottleneck, grabs ALL the bookmarks in the current folder
         // But realistically, with a batch size of 20, and most reads around 1ms, a bottleneck here is an edge case.
         // Optionally: grab the parent folder, and the on a bg thread iterate the bms and update their order. Seems like overkill.
-        var bms = frc.fetchedObjects as! [Bookmark]
+        var bms = frc.fetchedObjects!
         bms.remove(at: bms.index(of: src)!)
         if sourceIndexPath.row > destinationIndexPath.row {
             // insert before
@@ -342,5 +343,27 @@ extension Bookmark {
         
         let record = first(where: predicate, context: context)
         record?.delete()
+    }
+    
+    public class func frecencyQuery(context: NSManagedObjectContext, containing: String?) -> [Bookmark] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequest.fetchLimit = 5
+        fetchRequest.entity = Bookmark.entity(context: context)
+        
+        var predicate = NSPredicate(format: "lastVisited > %@", History.ThisWeek as CVarArg)
+        if let query = containing {
+            predicate = NSPredicate(format: predicate.predicateFormat + " AND url CONTAINS %@", query)
+        }
+        fetchRequest.predicate = predicate
+        
+        do {
+            if let results = try context.fetch(fetchRequest) as? [Bookmark] {
+                return results
+            }
+        } catch {
+            let fetchError = error as NSError
+            print(fetchError)
+        }
+        return [Bookmark]()
     }
 }

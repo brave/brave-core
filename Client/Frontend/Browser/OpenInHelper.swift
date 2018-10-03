@@ -64,31 +64,9 @@ class DownloadHelper: NSObject, OpenInHelper {
         self.preflightResponse = response
         self.browserViewController = browserViewController
     }
-
+    
     func open() {
-        guard let host = request.url?.host else {
-            return
-        }
-
-        let download = Download(preflightResponse: preflightResponse, request: request)
-
-        let expectedSize = download.totalBytesExpected != nil ? ByteCountFormatter.string(fromByteCount: download.totalBytesExpected!, countStyle: .file) : nil
-
-        let filenameItem: PhotonActionSheetItem
-        if let expectedSize = expectedSize {
-            let expectedSizeAndHost = "\(expectedSize) — \(host)"
-            filenameItem = PhotonActionSheetItem(title: download.filename, text: expectedSizeAndHost, iconString: "file", iconAlignment: .right, bold: true)
-        } else {
-            filenameItem = PhotonActionSheetItem(title: download.filename, text: host, iconString: "file", iconAlignment: .right, bold: true)
-        }
-
-        let downloadFileItem = PhotonActionSheetItem(title: Strings.OpenInDownloadHelperAlertDownloadNow, iconString: "download") { _ in
-            self.browserViewController.downloadQueue.enqueueDownload(download)
-        }
-
-        let actions = [[filenameItem], [downloadFileItem]]
-
-        browserViewController.presentSheetWith(actions: actions, on: browserViewController, from: browserViewController.urlBar, closeButtonTitle: Strings.CancelString, suppressPopover: true)
+        // When this is re-enabled in the future, present the new UI here
     }
 }
 
@@ -107,7 +85,7 @@ class OpenPassBookHelper: NSObject, OpenInHelper {
 
     func open() {
         guard let passData = try? Data(contentsOf: url) else { return }
-        var error: NSError? = nil
+        var error: NSError?
         let pass = PKPass(data: passData, error: &error)
         if let _ = error {
             // display an error

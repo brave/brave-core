@@ -22,7 +22,7 @@ class FavoriteCell: UICollectionViewCell {
         
         static let labelColor = UIAccessibilityDarkerSystemColorsEnabled() ? UX.GreyJ : UX.GreyH
         static let labelAlignment: NSTextAlignment = .center
-        static let labelInsets = UIEdgeInsetsMake(0, 3, 2, 3)
+        static let labelInsets = UIEdgeInsets(top: 0, left: 3, bottom: 2, right: 3)
         
         static let editButtonAnimationDuration: TimeInterval = 0.4
         static let editButtonAnimationDamping: CGFloat = 0.6
@@ -51,8 +51,7 @@ class FavoriteCell: UICollectionViewCell {
                     image = image.scale(toSize: ContainerSize.scaledDown())
                     
                     imageView.contentMode = .center
-                }
-                else if image.size.width > 32 {
+                } else if image.size.width > 32 {
                     imageView.contentMode = .scaleAspectFit
                 }
                 imageView.image = image
@@ -86,7 +85,6 @@ class FavoriteCell: UICollectionViewCell {
         $0.isExclusiveTouch = true
         let removeButtonImage = #imageLiteral(resourceName: "edit-small").template
         $0.setImage(removeButtonImage, for: .normal)
-        $0.addTarget(self, action: #selector(FavoriteCell.editButtonTapped), for: UIControlEvents.touchUpInside)
         $0.accessibilityLabel = Strings.Edit_Bookmark
         $0.isHidden = true
         $0.backgroundColor = UX.GreyC
@@ -135,6 +133,8 @@ class FavoriteCell: UICollectionViewCell {
         // Prevents the textLabel from getting squished in relation to other view priorities.
         textLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(showEditMode), name: Notification.Name.ThumbnailEditOn, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(hideEditMode), name: Notification.Name.ThumbnailEditOff, object: nil)
     }
@@ -163,7 +163,7 @@ class FavoriteCell: UICollectionViewCell {
         backgroundColor = UIColor.clear
         textLabel.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
         textLabel.textColor = 
-            UIApplication.isInPrivateMode ? UX.Favorites.cellLabelColorPrivate : UX.Favorites.cellLabelColorNormal
+            PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.Favorites.cellLabelColorPrivate : UX.Favorites.cellLabelColorNormal
         imageView.backgroundColor = UIColor.clear
         imageView.image = nil
     }

@@ -29,14 +29,14 @@ class FaviconHandler {
         }
 
         let deferred = Deferred<Maybe<(Favicon, Data?)>>()
-        let manager = SDWebImageManager.shared()
-        let options: SDWebImageOptions = tab.isPrivate ? SDWebImageOptions([.lowPriority, .cacheMemoryOnly]) : SDWebImageOptions([.lowPriority])
 
-        var fetch: SDWebImageOperation? = nil
+        var imageOperation: SDWebImageOperation?
 
-        let onProgress: SDWebImageDownloaderProgressBlock = { (receivedSize, expectedSize, _) -> Void in
-            if receivedSize > FaviconHandler.MaximumFaviconSize || expectedSize > FaviconHandler.MaximumFaviconSize {
-                fetch?.cancel()
+        let webImageCache = WebImageCacheManager.shared
+
+        let onProgress: ImageCacheProgress = { receivedSize, expectedSize, _ in
+            if receivedSize >= FaviconHandler.MaximumFaviconSize || expectedSize > FaviconHandler.MaximumFaviconSize {
+                imageOperation?.cancel()
             }
         }
 
@@ -52,15 +52,10 @@ class FaviconHandler {
             }
         }
 
-        let onCompletedSiteFavicon: SDInternalCompletionBlock = { (img, data, _, _, _, url) -> Void in
-            guard let urlString = url?.absoluteString else {
-                deferred.fill(Maybe(failure: FaviconError()))
-                return
-            }
+        let onCompletedSiteFavicon: ImageCacheCompletion = { image, data, _, _, url in
+            let favicon = Favicon(url: url.absoluteString, date: Date())
 
-            let favicon = Favicon(url: urlString, date: Date())
-
-            guard let img = img else {
+            guard let image = image else {
                 favicon.width = 0
                 favicon.height = 0
 
@@ -68,30 +63,31 @@ class FaviconHandler {
                 return
             }
 
-            favicon.width = Int(img.size.width)
-            favicon.height = Int(img.size.height)
+            favicon.width = Int(image.size.width)
+            favicon.height = Int(image.size.height)
 
             onSuccess(favicon, data)
         }
 
-        let onCompletedPageFavicon: SDInternalCompletionBlock = { (img, data, _, _, _, url) -> Void in
-            guard let img = img, let urlString = url?.absoluteString else {
+        let onCompletedPageFavicon: ImageCacheCompletion = { image, data, _, _, url in
+            guard let image = image else {
                 // If we failed to download a page-level icon, try getting the domain-level icon
                 // instead before ultimately failing.
                 let siteIconURL = currentURL.domainURL.appendingPathComponent("favicon.ico")
-                fetch = manager.loadImage(with: siteIconURL, options: options, progress: onProgress, completed: onCompletedSiteFavicon)
+                imageOperation = webImageCache.load(from: siteIconURL, options: [.lowPriority], progress: onProgress, completion: onCompletedSiteFavicon)
 
                 return
             }
 
-            let favicon = Favicon(url: urlString, date: Date())
-            favicon.width = Int(img.size.width)
-            favicon.height = Int(img.size.height)
+            let favicon = Favicon(url: url.absoluteString, date: Date())
+            favicon.width = Int(image.size.width)
+            favicon.height = Int(image.size.height)
 
             onSuccess(favicon, data)
         }
 
-        fetch = manager.loadImage(with: iconURL, options: options, progress: onProgress, completed: onCompletedPageFavicon)
+        imageOperation = webImageCache.load(from: iconURL, options: [.lowPriority], progress: onProgress, completion: onCompletedPageFavicon)
+
         return deferred
     }
 }

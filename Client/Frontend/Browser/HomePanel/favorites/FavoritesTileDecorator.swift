@@ -71,7 +71,7 @@ class FavoritesTileDecorator {
             cell.imageView.backgroundColor = website.backgroundColor
             cell.imageView.contentMode = .scaleAspectFit
             cell.imageView.layer.minificationFilter = kCAFilterTrilinear
-            cell.showBorder(!UIApplication.isInPrivateMode)
+            cell.showBorder(!PrivateBrowsingManager.shared.isPrivateBrowsing)
             
             let size = CGSize(width: image.size.width - 6, height: image.size.height - 6)
             cell.imageView.image = image.scale(toSize: size)
@@ -92,8 +92,7 @@ class FavoritesTileDecorator {
                 DispatchQueue.main.async {
                     self.setCellImage(self.cell, iconUrl: iconUrl, cacheWithUrl: self.url)
                 }
-            }
-            else {
+            } else {
                 // last resort - download the icon
                 downloadFaviconsAndUpdateForUrl(url, indexPath: indexPath)
             }
@@ -111,8 +110,7 @@ class FavoritesTileDecorator {
                 DispatchQueue.main.async {
                     cell.imageView.image = image
                 }
-            }
-            else {
+            } else {
                 DispatchQueue.main.async {
                     cell.imageView.sd_setImage(with: iconUrl, completed: { (img, err, type, url) in
                         var finalImage = img

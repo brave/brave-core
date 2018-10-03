@@ -148,8 +148,8 @@ extension SwipeAnimator {
 
 extension SwipeAnimator: UIGestureRecognizerDelegate {
     @objc func gestureRecognizerShouldBegin(_ recognizer: UIGestureRecognizer) -> Bool {
+        guard let panGesture = recognizer as? UIPanGestureRecognizer else { return false }
         let cellView = recognizer.view
-        let panGesture = recognizer as! UIPanGestureRecognizer
         let translation = panGesture.translation(in: cellView?.superview)
         return fabs(translation.x) > fabs(translation.y)
     }

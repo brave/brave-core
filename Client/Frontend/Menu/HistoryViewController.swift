@@ -15,10 +15,10 @@ private struct HistoryViewControllerUX {
   static let WelcomeScreenItemWidth = 170
 }
 
-class HistoryViewController: SiteTableViewController, HomePanel {
-  weak var homePanelDelegate: HomePanelDelegate? = nil
+class HistoryViewController: SiteTableViewController {
+  weak var linkNavigationDelegate: LinkNavigationDelegate?
   fileprivate lazy var emptyStateOverlayView: UIView = self.createEmptyStateOverview()
-  var frc: NSFetchedResultsController<NSFetchRequestResult>?
+  var frc: NSFetchedResultsController<History>?
   
   let tabState: TabState
   
@@ -111,7 +111,7 @@ class HistoryViewController: SiteTableViewController, HomePanel {
       cell.addGestureRecognizer(lp)
     }
     
-    let site = frc!.object(at: indexPath) as! History
+    let site = frc!.object(at: indexPath)
     cell.backgroundColor = UIColor.clear
     cell.setLines(site.title, detailText: site.url)
     
@@ -122,8 +122,7 @@ class HistoryViewController: SiteTableViewController, HomePanel {
     
     if let faviconMO = site.domain?.favicon, let urlString = faviconMO.url, let url = URL(string: urlString), let siteUrlString = site.url, let siteUrl = URL(string: siteUrlString) {
       setCellImage(cell, iconUrl: url, cacheWithUrl: siteUrl)
-    }
-    else if let urlString = site.url, let siteUrl = URL(string: urlString) {
+    } else if let urlString = site.url, let siteUrl = URL(string: urlString) {
       if ImageCache.shared.hasImage(siteUrl, type: .square) {
         // no relationship - check cache for icon which may have been stored recently for url.
         ImageCache.shared.image(siteUrl, type: .square, callback: { (image) in
@@ -131,16 +130,14 @@ class HistoryViewController: SiteTableViewController, HomePanel {
             cell.imageView?.image = image
           }
         })
-      }
-      else {
+      } else {
         // no relationship - attempt to resolove domain problem
         let context = DataController.viewContext
         if let domain = Domain.getOrCreateForUrl(siteUrl, context: context), let faviconMO = domain.favicon, let urlString = faviconMO.url, let url = URL(string: urlString) {
           DispatchQueue.main.async {
             self.setCellImage(cell, iconUrl: url, cacheWithUrl: siteUrl)
           }
-        }
-        else {
+        } else {
           // last resort - download the icon
           downloadFaviconsAndUpdateForUrl(siteUrl, indexPath: indexPath)
         }
@@ -162,8 +159,7 @@ class HistoryViewController: SiteTableViewController, HomePanel {
         DispatchQueue.main.async {
           cell.imageView?.image = image
         }
-      }
-      else {
+      } else {
         DispatchQueue.main.async {
           cell.imageView?.sd_setImage(with: iconUrl, completed: { (img, err, type, url) in
             guard let img = img else {
@@ -180,10 +176,10 @@ class HistoryViewController: SiteTableViewController, HomePanel {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let site = frc?.object(at: indexPath) as! History
+    let site = frc?.object(at: indexPath)
     
-    if let u = site.url, let url = URL(string: u) {
-      homePanelDelegate?.homePanel(self, didSelectURL: url, visitType: .typed)
+    if let u = site?.url, let url = URL(string: u) {
+      linkNavigationDelegate?.linkNavigatorDidSelectURL(url: url, visitType: .typed)
     }
     tableView.deselectRow(at: indexPath, animated: true)
   }
@@ -215,7 +211,7 @@ class HistoryViewController: SiteTableViewController, HomePanel {
   }
 }
 
-extension HistoryViewController : NSFetchedResultsControllerDelegate {
+extension HistoryViewController: NSFetchedResultsControllerDelegate {
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     tableView.beginUpdates()
   }
@@ -232,12 +228,12 @@ extension HistoryViewController : NSFetchedResultsControllerDelegate {
     case .delete:
       let sectionIndexSet = IndexSet(integer: sectionIndex)
       self.tableView.deleteSections(sectionIndexSet, with: .fade)
-    default: break;
+    default: break
     }
   }
   
   func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-    switch (type) {
+    switch type {
     case .insert:
       if let indexPath = newIndexPath {
         tableView.insertRows(at: [indexPath], with: .automatic)
@@ -271,14 +267,14 @@ extension HistoryViewController {
     guard gesture.state == .began,
       let cell = gesture.view as? UITableViewCell,
       let indexPath = tableView.indexPath(for: cell),
-      let history = frc?.object(at: indexPath) as? History else {
+      let history = frc?.object(at: indexPath) else {
         return
     }
     
     let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     
     alert.title = history.url?.replacingOccurrences(of: "mailto:", with: "").ellipsize(maxLength: ActionSheetTitleMaxLength)
-    actionsForHistory(history, currentTabIsPrivate: tabState.isPrivate).forEach { alert.addAction($0) }
+    actionsForHistory(history, currentTabIsPrivate: tabState.type.isPrivate).forEach { alert.addAction($0) }
     
     let cancelAction = UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil)
     alert.addAction(cancelAction)
@@ -300,24 +296,24 @@ extension HistoryViewController {
     // New Tab
     items.append(UIAlertAction(title: Strings.Open_In_Background_Tab, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
-      self.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(url, isPrivate: currentTabIsPrivate)
+      self.linkNavigationDelegate?.linkNavigatorDidRequestToOpenInNewTab(url, isPrivate: currentTabIsPrivate)
     }))
     if !currentTabIsPrivate {
       // New Private Tab
       items.append(UIAlertAction(title: Strings.Open_In_New_Private_Tab, style: .default, handler: { [weak self] _ in
         guard let `self` = self else { return }
-        self.homePanelDelegate?.homePanelDidRequestToOpenInNewTab(url, isPrivate: true)
+        self.linkNavigationDelegate?.linkNavigatorDidRequestToOpenInNewTab(url, isPrivate: true)
       }))
     }
     // Copy
     items.append(UIAlertAction(title: Strings.Copy_Link, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
-      self.homePanelDelegate?.homePanelDidRequestToCopyURL(url)
+      self.linkNavigationDelegate?.linkNavigatorDidRequestToCopyURL(url)
     }))
     // Share
     items.append(UIAlertAction(title: Strings.Share_Link, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
-      self.homePanelDelegate?.homePanelDidRequestToShareURL(url)
+      self.linkNavigationDelegate?.linkNavigatorDidRequestToShareURL(url)
     }))
     
     return items

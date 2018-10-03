@@ -14,7 +14,6 @@ protocol TabLocationViewDelegate {
     func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView)
     func tabLocationViewDidLongPressLocation(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView)
-    func tabLocationViewDidTapPageOptions(_ tabLocationView: TabLocationView, from button: UIButton)
     func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
     func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton)
@@ -50,12 +49,11 @@ class TabLocationView: UIView {
         didSet {
             updateLockImageView()
             updateTextWithURL()
-            pageOptionsButton.isHidden = (url == nil)
             setNeedsUpdateConstraints()
         }
     }
 
-    var hasOnlySecureContent = false {
+    var contentIsSecure = false {
         didSet {
             updateLockImageView()
         }
@@ -75,8 +73,8 @@ class TabLocationView: UIView {
     
     private func updateLockImageView() {
         let wasHidden = lockImageView.isHidden
-        let isFullySecure = (url?.scheme == "https" && hasOnlySecureContent)
-        lockImageView.isHidden = !isFullySecure
+        lockImageView.isHidden = !contentIsSecure
+
         if wasHidden != lockImageView.isHidden {
             UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil)
         }
@@ -161,18 +159,6 @@ class TabLocationView: UIView {
         return readerModeButton
     }()
     
-    lazy var pageOptionsButton: ToolbarButton = {
-        let pageOptionsButton = ToolbarButton(frame: .zero)
-        pageOptionsButton.setImage(#imageLiteral(resourceName: "menu-More-Options").template, for: .normal)
-        pageOptionsButton.addTarget(self, action: #selector(didPressPageOptionsButton), for: .touchUpInside)
-        pageOptionsButton.isAccessibilityElement = true
-        pageOptionsButton.isHidden = true
-        pageOptionsButton.imageView?.contentMode = .left
-        pageOptionsButton.accessibilityLabel = NSLocalizedString("Page Options Menu", comment: "Accessibility label for the Page Options menu button")
-        pageOptionsButton.accessibilityIdentifier = "TabLocationView.pageOptionsButton"
-        return pageOptionsButton
-    }()
-    
     lazy var reloadButton = ToolbarButton().then {
         $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
         $0.accessibilityLabel = NSLocalizedString("Reload", comment: "Accessibility Label for the tab toolbar Reload button")
@@ -203,7 +189,7 @@ class TabLocationView: UIView {
         addGestureRecognizer(longPressRecognizer)
         addGestureRecognizer(tapRecognizer)
 
-        let subviews = [lockImageView, urlTextField, readerModeButton, separatorLine, pageOptionsButton, reloadButton]
+        let subviews = [lockImageView, urlTextField, readerModeButton, separatorLine, reloadButton]
         contentView = UIStackView(arrangedSubviews: subviews)
         contentView.distribution = .fill
         contentView.alignment = .center
@@ -223,10 +209,6 @@ class TabLocationView: UIView {
             make.height.equalTo(TabLocationViewUX.ButtonSize)
         }
 
-        pageOptionsButton.snp.makeConstraints { make in
-            make.size.equalTo(TabLocationViewUX.ButtonSize)
-        }
-        
         reloadButton.snp.makeConstraints { make in
             make.width.equalTo(TabLocationViewUX.ButtonSize.height)
             make.height.equalTo(TabLocationViewUX.ButtonSize.height)
@@ -256,7 +238,7 @@ class TabLocationView: UIView {
 
     override var accessibilityElements: [Any]? {
         get {
-            return [lockImageView, urlTextField, readerModeButton, pageOptionsButton].filter { !$0.isHidden }
+            return [lockImageView, urlTextField, readerModeButton].filter { !$0.isHidden }
         }
         set {
             super.accessibilityElements = newValue
@@ -273,10 +255,6 @@ class TabLocationView: UIView {
         }
     }
     
-    @objc func didPressPageOptionsButton(_ button: UIButton) {
-        delegate?.tabLocationViewDidTapPageOptions(self, from: button)
-    }
-
     @objc func longPressLocation(_ recognizer: UITapGestureRecognizer) {
         if recognizer.state == .began {
             delegate?.tabLocationViewDidLongPressLocation(self)
@@ -358,15 +336,18 @@ extension TabLocationView: AccessibilityActionsSource {
 
 extension TabLocationView: Themeable {
     func applyTheme(_ theme: Theme) {
-        backgroundColor = theme == .Normal ? BraveUX.LocationBarBackgroundColor : BraveUX.LocationBarBackgroundColor_PrivateMode
+        switch theme {
+        case .regular:
+            backgroundColor = BraveUX.LocationBarBackgroundColor
+        case .private:
+            backgroundColor = BraveUX.LocationBarBackgroundColor_PrivateMode
+        }
+
         urlTextField.textColor = UIColor.Browser.Tint.colorFor(theme)
         readerModeButton.selectedTintColor = UIColor.TextField.ReaderModeButtonSelected.colorFor(theme)
         readerModeButton.unselectedTintColor = UIColor.TextField.ReaderModeButtonUnselected.colorFor(theme)
         
         reloadButton.applyTheme(theme)
-        pageOptionsButton.selectedTintColor = UIColor.TextField.PageOptionsSelected.colorFor(theme)
-        pageOptionsButton.unselectedTintColor = UIColor.TextField.PageOptionsUnselected.colorFor(theme)
-        pageOptionsButton.tintColor = pageOptionsButton.unselectedTintColor
         separatorLine.backgroundColor = UIColor.TextField.Separator.colorFor(theme)
     }
 }

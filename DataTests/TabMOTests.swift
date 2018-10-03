@@ -207,7 +207,7 @@ class TabMOTests: CoreDataTestCase {
 private extension UIImage {
     class func sampleImage() -> UIImage {
         let color = UIColor.blue
-        let rect = CGRect(origin: CGPoint(x: 0, y:0), size: CGSize(width: 1, height: 1))
+        let rect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 1, height: 1))
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()!
         

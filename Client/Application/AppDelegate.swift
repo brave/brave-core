@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     weak var application: UIApplication?
     var launchOptions: [AnyHashable: Any]?
 
-    let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+    let appVersion = Bundle.main.infoDictionaryString(forKey: "CFBundleShortVersionString")
 
     var receivedURLs: [URL]?
     
@@ -90,15 +90,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         Logger.browserLogger.newLogWithDate(logDate)
 
         let profile = getProfile(application)
-        Preferences.migrate(from: profile)
+        let profilePrefix = profile.prefs.getBranchPrefix()
+        Preferences.migratePreferences(keyPrefix: profilePrefix)
 
         if !DebugSettingsBundleOptions.disableLocalWebServer {
             // Set up a web server that serves us static content. Do this early so that it is ready when the UI is presented.
             setUpWebServer(profile)
         }
-
-        let imageStore = DiskImageStore(files: profile.files, namespace: "TabManagerScreenshots", quality: UIConstants.ScreenshotQuality)
-
+        
+        var imageStore: DiskImageStore?
+        do {
+            imageStore = try DiskImageStore(files: profile.files, namespace: "TabManagerScreenshots", quality: UIConstants.ScreenshotQuality)
+        } catch {
+            log.error("Failed to create an image store for files: \(profile.files) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
+            assertionFailure()
+        }
+        
         // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
         if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {
             class_addMethod(clazz, MenuHelper.SelectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
@@ -204,9 +211,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
         
-        if let profile = profile,  profile.prefs.boolForKey(PrefsKeys.IsFirstLaunch) != true {
+        DAU().sendPingToServer()
+        
+        if Preferences.General.isFirstLaunch.value {
             FavoritesHelper.addDefaultFavorites()
-            profile.prefs.setBool(true, forKey: PrefsKeys.IsFirstLaunch)
+            Preferences.General.isFirstLaunch.value = false
         }
 
         UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
@@ -221,7 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         return shouldPerformAdditionalDelegateHandling
     }
 
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
         guard let routerpath = NavigationPath(url: url) else {
             return false
         }
@@ -229,7 +238,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         if let profile = profile, let _ = profile.prefs.boolForKey(PrefsKeys.AppExtensionTelemetryOpenUrl) {
             profile.prefs.removeObjectForKey(PrefsKeys.AppExtensionTelemetryOpenUrl)
         }
-
 
         DispatchQueue.main.async {
             NavigationPath.handle(nav: routerpath, with: self.browserViewController)
@@ -472,13 +480,5 @@ extension AppDelegate: MFMailComposeViewControllerDelegate {
         // Dismiss the view controller and start the app up
         controller.dismiss(animated: true, completion: nil)
         startApplication(application!, withLaunchOptions: self.launchOptions)
-    }
-}
-
-extension UIApplication {
-  
-    static var isInPrivateMode: Bool {
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        return appDelegate?.browserViewController.tabManager.selectedTab?.isPrivate ?? false
     }
 }

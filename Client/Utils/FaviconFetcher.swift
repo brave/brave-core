@@ -27,7 +27,7 @@ class FaviconFetcherErrorType: MaybeErrorType {
  * If that fails, it will attempt to find a favicon.ico in the root host domain.
  */
 open class FaviconFetcher: NSObject, XMLParserDelegate {
-    open static var userAgent: String = ""
+    public static var userAgent: String = ""
     static let ExpirationTime = TimeInterval(60*60*24*7) // Only check for icons once a week
     fileprivate static var characterToFaviconCache = [String: UIImage]()
     static var defaultFavicon: UIImage = {
@@ -135,7 +135,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
                 let root = try? HTMLDocument(data: data as Data) else {
                     return deferMaybe([])
             }
-            var reloadUrl: URL? = nil
+            var reloadUrl: URL?
             for meta in root.xpath("//head/meta") {
                 if let refresh = meta["http-equiv"], refresh == "Refresh",
                     let content = meta["content"],
@@ -173,37 +173,33 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     func getFavicon(_ siteUrl: URL, icon: Favicon, profile: Profile) -> Deferred<Maybe<Favicon>> {
         let deferred = Deferred<Maybe<Favicon>>()
         let url = icon.url
-        let manager = SDWebImageManager.shared()
-        let site = Site(url: siteUrl.absoluteString, title: "")
 
-        var fav = Favicon(url: url)
+        var favicon = Favicon(url: url)
         if let url = url.asURL {
-            var fetch: SDWebImageOperation?
-            fetch = manager.loadImage(with: url,
-                options: .lowPriority,
-                progress: { (receivedSize, expectedSize, _) in
-                    if receivedSize > FaviconHandler.MaximumFaviconSize || expectedSize > FaviconHandler.MaximumFaviconSize {
-                        fetch?.cancel()
-                    }
-                },
-                completed: { (img, _, _, _, _, url) in
-                    guard let url = url else {
-                        deferred.fill(Maybe(failure: FaviconError()))
-                        return
-                    }
-                    fav = Favicon(url: url.absoluteString)
+            var imageOperation: SDWebImageOperation?
 
-                    if let img = img {
-                        fav.width = Int(img.size.width)
-                        fav.height = Int(img.size.height)
-                        FaviconMO.add(fav, forSiteUrl: siteUrl)
-                    } else {
-                        fav.width = 0
-                        fav.height = 0
-                    }
+            let onProgress: ImageCacheProgress = { receivedSize, expectedSize, _ in
+                if receivedSize > FaviconHandler.MaximumFaviconSize || expectedSize > FaviconHandler.MaximumFaviconSize {
+                    imageOperation?.cancel()
+                }
+            }
+            
+            let onCompletion: ImageCacheCompletion = { image, _, _, _, url in
+                favicon = Favicon(url: url.absoluteString)
 
-                    deferred.fill(Maybe(success: fav))
-            })
+                if let image = image {
+                    favicon.width = Int(image.size.width)
+                    favicon.height = Int(image.size.height)
+                    FaviconMO.add(favicon, forSiteUrl: siteUrl)
+                } else {
+                    favicon.width = 0
+                    favicon.height = 0
+                }
+
+                deferred.fill(Maybe(success: favicon))
+            }
+
+            imageOperation = WebImageCacheWithNoPrivacyProtectionManager.shared.load(from: url, options: [.lowPriority], progress: onProgress, completion: onCompletion)
         } else {
             return deferMaybe(FaviconFetcherErrorType(description: "Invalid URL \(url)"))
         }
@@ -215,18 +211,17 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     class func fetchFavImageForURL(forURL url: URL, profile: Profile) -> Deferred<Maybe<UIImage>> {
         let deferred = Deferred<Maybe<UIImage>>()
         FaviconFetcher.getForURL(url.domainURL, profile: profile).uponQueue(.main) { result in
-            var iconURL: URL?
-            if let favicons = result.successValue, favicons.count > 0, let faviconImageURL = favicons.first?.url.asURL {
-                iconURL = faviconImageURL
-            } else {
+            guard let favicons = result.successValue, let favicon = favicons.first, let faviconURL = favicon.url.asURL else {
                 return deferred.fill(Maybe(failure: FaviconError()))
             }
-            SDWebImageManager.shared().loadImage(with: iconURL, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-                if let image = image {
-                    deferred.fill(Maybe(success: image))
-                } else {
+
+            WebImageCacheWithNoPrivacyProtectionManager.shared.load(from: faviconURL) { image, _, _, _, _ in
+                guard let image = image else {
                     deferred.fill(Maybe(failure: FaviconError()))
+                    return
                 }
+                
+                deferred.fill(Maybe(success: image))
             }
         }
         return deferred
@@ -271,24 +266,32 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
 
     // Default favicons and background colors provided via mozilla/tippy-top-sites
     class func getDefaultIcons() -> [String: (color: UIColor, url: String)] {
-        let filePath = Bundle.main.path(forResource: "top_sites", ofType: "json")
-        let file = try! Data(contentsOf: URL(fileURLWithPath: filePath!))
-        let json = JSON(file)
-        var icons: [String: (color: UIColor, url: String)] = [:]
-        json.forEach({
-            guard let url = $0.1["domain"].string, let color = $0.1["background_color"].string, var path = $0.1["image_url"].string else {
-                return
-            }
-            path = path.replacingOccurrences(of: ".png", with: "")
-            let filePath = Bundle.main.path(forResource: "TopSites/" + path, ofType: "png")
-            if let filePath = filePath {
-                if color == "#fff" || color == "#FFF" {
-                    icons[url] = (UIColor.clear, filePath)
-                } else {
-                    icons[url] = (UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath)
+        guard let filePath = Bundle.main.path(forResource: "top_sites", ofType: "json") else {
+            log.error("Failed to get bundle path for \"top_sites.json\"")
+            return [:]
+        }
+        do {
+            let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
+            let json = JSON(file)
+            var icons: [String: (color: UIColor, url: String)] = [:]
+            json.forEach({
+                guard let url = $0.1["domain"].string, let color = $0.1["background_color"].string, var path = $0.1["image_url"].string else {
+                    return
                 }
-            }
-        })
-        return icons
+                path = path.replacingOccurrences(of: ".png", with: "")
+                let filePath = Bundle.main.path(forResource: "TopSites/" + path, ofType: "png")
+                if let filePath = filePath {
+                    if color == "#fff" || color == "#FFF" {
+                        icons[url] = (UIColor.clear, filePath)
+                    } else {
+                        icons[url] = (UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath)
+                    }
+                }
+            })
+            return icons
+        } catch {
+            log.error("Failed to get default icons at \(filePath): \(error.localizedDescription)")
+            return [:]
+        }
     }
 }

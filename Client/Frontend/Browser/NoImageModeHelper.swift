@@ -5,6 +5,7 @@
 import Foundation
 import WebKit
 import Shared
+import BraveShared
 
 struct NoImageModePrefsKey {
     static let NoImageModeStatus = PrefsKeys.KeyNoImageModeStatus

@@ -368,7 +368,7 @@ fileprivate class ListSelectionController: NSObject {
 
     fileprivate unowned let tableView: UITableView
 
-    fileprivate(set) var selectedIndexPaths = [IndexPath]()
+    var selectedIndexPaths = [IndexPath]()
 
     var selectedCount: Int {
         return selectedIndexPaths.count
@@ -456,6 +456,7 @@ class LoginDataSource: NSObject, UITableViewDataSource {
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable:next force_cast
         let cell = tableView.dequeueReusableCell(withIdentifier: LoginCellIdentifier, for: indexPath) as! LoginTableViewCell
         let login = loginAtIndexPath(indexPath)!
         cell.style = .noIconAndBothLabels
