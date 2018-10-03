@@ -4,7 +4,7 @@
 
 #include "brave/browser/profile_creation_monitor.h"
 
-#include "brave/browser/alternate_private_search_engine_controller.h"
+#include "brave/browser/search_engine_provider_util.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/notification_service.h"
@@ -23,8 +23,7 @@ void ProfileCreationMonitor::Observe(
   switch (type) {
     case chrome::NOTIFICATION_PROFILE_CREATED: {
       Profile* profile = content::Source<Profile>(source).ptr();
-      if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE)
-        AlternatePrivateSearchEngineController::Create(profile);
+      brave::InitializeSearchEngineProviderIfNeeded(profile);
       break;
     }
     default:

@@ -389,10 +389,15 @@ if (is_mac) {
     info_plist_target = ":brave_app_plist"
 
     extra_substitutions = [
-      "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id.$brave_channel",
       "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
       "CHROMIUM_CREATOR=$chrome_mac_creator_code",
     ]
+    # brave_channel is an empty string for release
+    if (brave_channel == "") {
+      extra_substitutions += ["CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id"]
+    } else {
+      extra_substitutions += ["CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id.$brave_channel"]
+    }
 
     sources = [
       "//chrome/app/chrome_exe_main_mac.cc",

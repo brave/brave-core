@@ -3,10 +3,6 @@ import("//build/config/features.gni")
 
 source_set("browser_process") {
   sources = [
-    "alternate_private_search_engine_controller.cc",
-    "alternate_private_search_engine_controller.h",
-    "alternate_private_search_engine_util.cc",
-    "alternate_private_search_engine_util.h",
     "autocomplete/brave_autocomplete_scheme_classifier.cc",
     "autocomplete/brave_autocomplete_scheme_classifier.h",
     "brave_browser_main_extra_parts.cc",
@@ -31,6 +27,8 @@ source_set("browser_process") {
     "component_updater/brave_component_installer.h",
     "component_updater/brave_component_updater_configurator.cc",
     "component_updater/brave_component_updater_configurator.h",
+    "guest_window_search_engine_provider_controller.cc",
+    "guest_window_search_engine_provider_controller.h",
     "importer/brave_external_process_importer_client.cc",
     "importer/brave_external_process_importer_client.h",
     "importer/brave_external_process_importer_host.cc",
@@ -48,8 +46,14 @@ source_set("browser_process") {
     "mac/sparkle_glue.mm",
     "mac/sparkle_glue.h",
     "mac/su_updater.h",
+    "private_window_search_engine_provider_controller.cc",
+    "private_window_search_engine_provider_controller.h",
     "profile_creation_monitor.cc",
     "profile_creation_monitor.h",
+    "search_engine_provider_controller_base.cc",
+    "search_engine_provider_controller_base.h",
+    "search_engine_provider_util.cc",
+    "search_engine_provider_util.h",
     "update_util.cc",
     "update_util.h",
 
