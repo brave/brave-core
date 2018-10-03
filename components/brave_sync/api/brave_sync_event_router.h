@@ -13,7 +13,7 @@ class Profile;
 namespace extensions {
 namespace api {
 namespace brave_sync {
-  struct SyncRecord2;
+  struct SyncRecord;
   struct Config;
   struct RecordAndExistingObject;
 } // namespace brave_sync
@@ -47,7 +47,7 @@ public:
   void ResolveSyncRecords(const std::string &category_name,
     const std::vector<extensions::api::brave_sync::RecordAndExistingObject>& records_and_existing_objects);
 
-  void SendSyncRecords(const std::string &category_name, const std::vector<api::brave_sync::SyncRecord2>& records);
+  void SendSyncRecords(const std::string &category_name, const std::vector<api::brave_sync::SyncRecord>& records);
 
   void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform);
 

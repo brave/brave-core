@@ -1,8 +1,8 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CANSENDBOOKMARKS_H
-#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CANSENDBOOKMARKS_H
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_BOOKMARKS_CLIENT_H
+#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_BOOKMARKS_CLIENT_H
 
 namespace base {
   class SequencedTaskRunner;
@@ -16,9 +16,9 @@ namespace brave_sync {
 
 class InitialBookmarkNodeInfo;
 
-class ControllerForBookmarksExports {
+class BookmarksClient {
 public:
-  virtual ~ControllerForBookmarksExports() = default;
+  virtual ~BookmarksClient() = default;
 
   // Not sure about to place it here or to have a separate interface
   virtual void CreateUpdateDeleteBookmarks(
@@ -48,4 +48,4 @@ public:
 
 } // namespace brave_sync
 
-#endif //BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CANSENDBOOKMARKS_H
+#endif //BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_BOOKMARKS_CLIENT_H

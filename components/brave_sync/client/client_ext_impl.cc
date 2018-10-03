@@ -114,7 +114,7 @@ void ClientExtImpl::SendResolveSyncRecords(const std::string &category_name,
 void ClientExtImpl::SendSyncRecords(const std::string &category_name,
   const RecordsList &records) {
 
-  std::vector<extensions::api::brave_sync::SyncRecord2> records_ext;
+  std::vector<extensions::api::brave_sync::SyncRecord> records_ext;
   ConvertSyncRecordsFromLibToExt(records, records_ext);
 
   brave_sync_event_router_->SendSyncRecords(category_name, records_ext);

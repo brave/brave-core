@@ -52,7 +52,6 @@ std::string StrFromUnsignedCharArray(const std::vector<unsigned char> &vec);
 Uint8Array Uint8ArrayFromIntVec(const std::vector<int> vec);
 Uint8Array Uint8ArrayFromString(const std::string &data_string);
 std::vector<int> IntVecFromString(const std::string &data_string);
-std::vector<char> CharVecFromString(const std::string &data_string);
 std::vector<unsigned char> UCharVecFromString(const std::string &data_string);
 std::unique_ptr<base::Value> VecToListValue(const std::vector<char> &v);
 std::unique_ptr<base::Value> BytesListFromString(const std::string &data_string);
