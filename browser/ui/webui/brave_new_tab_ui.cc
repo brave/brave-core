@@ -4,7 +4,7 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 
-#include "brave/browser/alternate_private_search_engine_util.h"
+#include "brave/browser/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -28,12 +28,14 @@ class NewTabDOMHandler : public content::WebUIMessageHandler {
     web_ui()->RegisterMessageCallback(
         "toggleAlternativePrivateSearchEngine",
         base::BindRepeating(
-            &NewTabDOMHandler::HandleToggleAlternativePrivateSearchEngine,
+            &NewTabDOMHandler::HandleToggleAlternativeSearchEngineProvider,
             base::Unretained(this)));
   }
 
-  void HandleToggleAlternativePrivateSearchEngine(const base::ListValue* args) {
-    brave::ToggleUseAlternatePrivateSearchEngine(Profile::FromWebUI(web_ui()));
+  void HandleToggleAlternativeSearchEngineProvider(
+      const base::ListValue* args) {
+    brave::ToggleUseAlternativeSearchEngineProvider(
+        Profile::FromWebUI(web_ui()));
   }
 
   DISALLOW_COPY_AND_ASSIGN(NewTabDOMHandler);
@@ -53,6 +55,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   pref_change_registrar_->Add(kTrackersBlocked,
     base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
   pref_change_registrar_->Add(kHttpsUpgrades,
+    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(kUseAlternativeSearchEngineProvider,
     base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
 
   web_ui->AddMessageHandler(std::make_unique<NewTabDOMHandler>());
@@ -82,8 +86,8 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
         std::to_string(prefs->GetUint64(kFingerprintingBlocked)));
     render_view_host->SetWebUIProperty(
         "useAlternativePrivateSearchEngine",
-        prefs->GetBoolean(kUseAlternatePrivateSearchEngine) ? "true"
-                                                            : "false");
+        prefs->GetBoolean(kUseAlternativeSearchEngineProvider) ? "true"
+                                                               : "false");
     render_view_host->SetWebUIProperty(
         "isTor", profile->IsTorProfile() ? "true" : "false");
   }
