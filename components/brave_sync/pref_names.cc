@@ -24,8 +24,7 @@ const char kBookmarksBaseOrder[] = "bravesync.bookmarks_base_order";
 // Boolean, whether sync is enabled for the current device
 // If true, then sync is enabled and running
 // If false, then sync is not enabled or not running (disabled after enabling,
-// but seed and device id are configured) //TODO, AB: maybe split these
-// to separate entries
+// but seed and device id are configured)
 const char kSyncThisDeviceEnabled[] = "bravesync.sync_this_device_enabled";
 
 const char kSyncBookmarksEnabled[] = "bravesync.bookmarks_enabled";

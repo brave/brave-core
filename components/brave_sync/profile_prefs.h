@@ -25,7 +25,6 @@ class Settings;
 
 namespace prefs {
 
-//TODO, AB: subclass SyncPrefs components/sync/base/sync_prefs.h ?
 class Prefs {
 public:
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
@@ -49,9 +48,6 @@ public:
   void SetSyncSiteSettingsEnabled(const bool &sync_site_settings);
   bool GetSyncHistoryEnabled() const;
   void SetSyncHistoryEnabled(const bool &sync_history_enabled);
-
-  // uint64_t GetTimeLastFetch() const;
-  // void SetTimeLastFetch(const uint64_t &time_last_fetch);
 
   void SetLatestRecordTime(const base::Time &time);
   base::Time GetLatestRecordTime();
