@@ -9,11 +9,13 @@
 
 #include "components/search_engines/search_engine_type.h"
 
+struct PrepopulatedEngine;
+
 namespace TemplateURLPrepopulateData {
 
 extern const int kBraveCurrentDataVersion;
 
-// See comments on prepopulated engines ids in 
+// See comments on prepopulated engines ids in
 // components/search_engines/prepopulated_engines_schema.json above the
 // definition of the id field and in
 // components/search_engines/prepopulated_engines.json at the top of the file.

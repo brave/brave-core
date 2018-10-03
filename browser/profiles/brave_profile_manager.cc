@@ -15,7 +15,9 @@
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/signin/core/browser/signin_pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -98,4 +100,14 @@ void BraveProfileManager::LaunchTorProcess(Profile* profile) {
     tor::TorConfig config(path, proxy);
     tor_profile_service->LaunchTor(config);
   }
+}
+
+// This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.
+// W/o this, prefs set by GuestWindowSearchEngineProviderController is cleared
+// during the initialization.
+void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
+  PrefService* prefs = profile->GetPrefs();
+  prefs->SetBoolean(prefs::kSigninAllowed, false);
+  prefs->SetBoolean(bookmarks::prefs::kEditBookmarksEnabled, false);
+  prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
 }
