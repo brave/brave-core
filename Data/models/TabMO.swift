@@ -34,7 +34,7 @@ public struct SavedTab {
 
 private let log = Logger.browserLogger
 
-public class TabMO: NSManagedObject {
+public final class TabMO: NSManagedObject, CRUD {
     
     @NSManaged public var title: String?
     @NSManaged public var url: String?
@@ -70,18 +70,20 @@ public class TabMO: NSManagedObject {
     }
     
     /// Creates new tab. If you want to add urls to existing tabs use `update()` method. 
-    public class func create(_ context: NSManagedObjectContext = DataController.mainThreadContext) -> TabMO {
+    public class func create(uuidString: String = UUID().uuidString) -> TabMO {
+        let context = DataController.newBackgroundContext()
         let tab = TabMO(entity: TabMO.entity(context), insertInto: context)
         // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
-        tab.syncUUID = UUID().uuidString
+        tab.syncUUID = uuidString
         tab.title = Strings.New_Tab
-        DataController.saveContext(context: context)
+        DataController.save(context: context)
         return tab
     }
 
     // Updates existing tab with new data. Usually called when user navigates to a new website for in his existing tab.
-    @discardableResult public class func update(with id: String, tabData: SavedTab, context: NSManagedObjectContext) -> TabMO? {
-        guard let tab = get(fromId: id, context: context) else { return nil }
+    @discardableResult public class func update(tabData: SavedTab) -> TabMO? {
+        let context = DataController.newBackgroundContext()
+        guard let tab = get(fromId: tabData.id, context: context) else { return nil }
         
         if let screenshot = tabData.screenshot {
             tab.screenshot = UIImageJPEGRepresentation(screenshot, 1)
@@ -93,73 +95,27 @@ public class TabMO: NSManagedObject {
         tab.urlHistoryCurrentIndex = tabData.historyIndex
         tab.isSelected = tabData.isSelected
         
-        DataController.saveContext(context: context)
+        DataController.save(context: context)
         
         return tab
     }
     
-    public class func preserve(savedTab: SavedTab) {
-        let context = DataController.workerThreadContext
-        context.perform {
-            TabMO.update(with: savedTab.id, tabData: savedTab, context: context)
-        }
-    }
-    
     public class func saveScreenshotUUID(_ uuid: UUID?, tabId: String?) {
-        let context = DataController.mainThreadContext
+        let context = DataController.newBackgroundContext()
         let tabMO = TabMO.get(fromId: tabId, context: context)
         tabMO?.screenshotUUID = uuid
-        DataController.saveContext(context: context)
+        DataController.save(context: context)
     }
 
     public class func getAll() -> [TabMO] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let context = DataController.mainThreadContext
-        
-        fetchRequest.entity = TabMO.entity(context)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
-        do {
-            return try context.fetch(fetchRequest) as? [TabMO] ?? []
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        return []
-    }
-    
-    public class func removeAll() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let context = DataController.mainThreadContext
-        
-        fetchRequest.entity = TabMO.entity(context)
-        do {
-            let results = try context.fetch(fetchRequest) as? [TabMO] ?? []
-            for tab in results {
-                DataController.remove(object: tab)
-            }
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
+        let sortDescriptors = [NSSortDescriptor(key: #keyPath(TabMO.order), ascending: true)]
+        return all(sortDescriptors: sortDescriptors) ?? []
     }
     
     public class func get(fromId id: String?, context: NSManagedObjectContext) -> TabMO? {
         guard let id = id else { return nil }
+        let predicate = NSPredicate(format: "\(#keyPath(TabMO.syncUUID)) == %@", id)
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        fetchRequest.entity = TabMO.entity(context)
-        fetchRequest.predicate = NSPredicate(format: "\(#keyPath(TabMO.syncUUID)) == %@", id)
-        var result: TabMO?
-        do {
-            let results = try context.fetch(fetchRequest) as? [TabMO]
-            if let item = results?.first {
-                result = item
-            }
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        return result
+        return first(where: predicate, context: context)
     }
 }
-

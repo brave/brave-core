@@ -128,7 +128,10 @@ class Sync: JSInjector {
         self.maximumDelayAttempts = 15
         self.delayLengthInSeconds = Int64(3.0)
         
-        webView = WKWebView(frame: CGRect(x: 30, y: 30, width: 300, height: 500), configuration: webConfig)
+        // WKWebView initialization must happen on main thread.
+        DispatchQueue.main.async {
+            self.webView = WKWebView(frame: CGRect(x: 30, y: 30, width: 300, height: 500), configuration: self.webConfig)
+        }
         // Attempt sync setup
         initializeSync()
     }
@@ -166,7 +169,7 @@ class Sync: JSInjector {
         // Check to not override deviceName with `nil` on sync init, which happens every app launch
         if let deviceName = deviceName {
             Device.currentDevice()?.name = deviceName
-            DataController.saveContext(context: Device.currentDevice()?.managedObjectContext)
+            DataController.save(context: Device.currentDevice()?.managedObjectContext)
         }
         
         // Autoload sync if already connected to a sync group, otherwise just wait for user initiation
@@ -182,7 +185,7 @@ class Sync: JSInjector {
         }
         
         Device.currentDevice()?.name = name
-        DataController.saveContext(context: Device.currentDevice()?.managedObjectContext)
+        DataController.save(context: Device.currentDevice()?.managedObjectContext)
         
         self.webView.loadHTMLString("<body>TEST</body>", baseURL: nil)
     }
@@ -237,7 +240,7 @@ class Sync: JSInjector {
                 self.sendSyncRecords(action: .delete, records: [device])
             }
             
-            Device.deleteAll {}
+            Device.deleteAll()
             
             lastFetchedRecordTimestamp = 0
             lastSuccessfulSync = 0
@@ -296,7 +299,7 @@ class Sync: JSInjector {
                 
                 // Currently just force this, should use network, but too error prone currently
                 Device.currentDevice()?.isSynced = true
-                DataController.saveContext(context: Device.currentDevice()?.managedObjectContext)
+                DataController.save(context: Device.currentDevice()?.managedObjectContext)
             }
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationSyncReady), object: nil)
@@ -317,7 +320,8 @@ class Sync: JSInjector {
                 // Sync local bookmarks, then proceed with fetching
                 // Pull all local bookmarks
                 // Insane .map required for mapping obj-c class to Swift, in order to use protocol instead of class for array param
-                self.sendSyncRecords(action: .create, records: Bookmark.getAllBookmarks(context: DataController.workerThreadContext).map {$0}) { error in
+                self.sendSyncRecords(action: .create, records:
+                Bookmark.getAllBookmarks(context: DataController.newBackgroundContext()).map {$0}) { error in
                     startFetching()
                 }
             } else {
@@ -416,14 +420,14 @@ extension Sync {
         guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
 
         // Currently only prefs are device related
-        if recordType == .prefs, let data = fetchedRecords as? [SyncDevice] {
+        if recordType == .prefs /*, let data = fetchedRecords as? [SyncDevice] */ {
             // Devices have really bad data filtering, so need to manually process more of it
             // Sort to not rely on API - Reverse sort, so unique pulls the `latest` not just the `first`
             // BRAVE TODO: 
 //            fetchedRecords = data.sorted { $0.0.syncTimestamp ?? -1 > $0.1.syncTimestamp ?? -1 }.unique { $0.objectId ?? [] == $1.objectId ?? [] }
         }
         
-        let context = DataController.workerThreadContext
+        let context = DataController.newBackgroundContext()
         for fetchedRoot in fetchedRecords {
             
             guard
@@ -445,7 +449,7 @@ extension Sync {
                     
                 // TODO: Needs favicon
                 if clientRecord == nil {
-                    recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
+                    _ = recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
                 } else {
                     // TODO: use Switch with `fallthrough`
                     action = .update
@@ -458,7 +462,7 @@ extension Sync {
             }
         }
         
-        DataController.saveContext(context: context)
+        DataController.save(context: context)
         print("\(fetchedRecords.count) \(recordType.rawValue) processed")
         
         // Make generic when other record types are supported
@@ -505,7 +509,7 @@ extension Sync {
         guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
 
         let ids = fetchedRecords.compactMap { $0.objectId }
-        let localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: DataController.workerThreadContext) as? [Bookmark]
+        let localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: DataController.newBackgroundContext()) as? [Bookmark]
         
         var matchedBookmarks = [[Any]]()
         for fetchedBM in fetchedRecords {
@@ -564,7 +568,7 @@ extension Sync {
         if let deviceArray = data["arg2"].array, deviceArray.count > 0 {
             // TODO: Just don't set, if bad, allow sync to recover on next init
             Device.currentDevice()?.deviceId = deviceArray.map { $0.intValue }
-            DataController.saveContext(context: Device.currentDevice()?.managedObjectContext)
+            DataController.save(context: Device.currentDevice()?.managedObjectContext)
         } else if Device.currentDevice()?.deviceId == nil {
             print("Device Id expected!")
         }

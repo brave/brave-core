@@ -14,10 +14,11 @@ class DataControllerTests: CoreDataTestCase {
     }
     
     func testStoreIsEmpty() {
-        let viewContext = DataController.mainThreadContext
+        // Checking view and background contexts with TopSite entity
+        let viewContext = DataController.viewContext
         XCTAssertEqual(try! viewContext.count(for: fetchRequest), 0)
         
-        let backgroundContext = DataController.workerThreadContext
+        let backgroundContext = DataController.newBackgroundContext()
         XCTAssertEqual(try! backgroundContext.count(for: fetchRequest), 0)
         
         // Checking rest of entities
@@ -43,21 +44,21 @@ class DataControllerTests: CoreDataTestCase {
     }
     
     func testSavingMainContext() {
-        let context = DataController.mainThreadContext
+        let context = DataController.viewContext
         
         _ = Device(entity: entity(for: context), insertInto: context)
-        DataController.saveContext(context: context)
+        DataController.save(context: context)
         
         let result = try! context.fetch(fetchRequest)
         XCTAssertEqual(result.count, 1)
     }
     
     func testSavingBackgroundContext() {
-        let context = DataController.workerThreadContext
+        let context = DataController.newBackgroundContext()
         
         _ = Device(entity: entity(for: context), insertInto: context)
         backgroundSaveAndWaitForExpectation {
-            DataController.saveContext(context: context)
+            DataController.save(context: context)
         }
         
         let result = try! context.fetch(fetchRequest)
@@ -65,36 +66,37 @@ class DataControllerTests: CoreDataTestCase {
         XCTAssertEqual(result.count, 1)
         
         // Check if object got updated on view context(merge from parent check)
-        XCTAssertEqual(try! DataController.mainThreadContext.fetch(fetchRequest).count, 1)
+        XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
     }
     
     func testSaveAndRemove() {
-        let context = DataController.workerThreadContext
+        let context = DataController.newBackgroundContext()
         
         _ = Device(entity: entity(for: context), insertInto: context)
         backgroundSaveAndWaitForExpectation {
-            DataController.saveContext(context: context)
+            DataController.save(context: context)
         }
         
-        let result = try! DataController.mainThreadContext.fetch(fetchRequest)
+        let result = try! DataController.viewContext.fetch(fetchRequest)
         XCTAssertEqual(result.count, 1)
         
-        DataController.remove(object: result.first as! Device)
+        backgroundSaveAndWaitForExpectation {
+            (result.first as! Device).delete()
+        }
         
-        DataController.mainThreadContext.refreshAllObjects()
-        let newResult = try! DataController.mainThreadContext.fetch(fetchRequest)
+        let newResult = try! DataController.viewContext.fetch(fetchRequest)
         
         XCTAssertEqual(newResult.count, 0)
     }
     
     func testNilContext() {
-        DataController.saveContext(context: nil)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
+        DataController.save(context: nil)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     
     func testNoChangesContext() {
-        let context = DataController.workerThreadContext
-        DataController.saveContext(context: context)
+        let context = DataController.newBackgroundContext()
+        DataController.save(context: context)
         XCTAssertEqual(try! context.count(for: fetchRequest), 0)
     }
 

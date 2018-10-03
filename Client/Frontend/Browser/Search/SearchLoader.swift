@@ -97,7 +97,7 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
     fileprivate func getSitesByFrecency(_ containing: String? = nil) -> Deferred<[Site]> {
         let result = Deferred<[Site]>()
         
-        let context = DataController.shared.workerContext
+        let context = DataController.newBackgroundContext()
         context.perform {
             
             let history: [WebsitePresentable] = History.frecencyQuery(context, containing: containing)

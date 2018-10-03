@@ -357,7 +357,7 @@ class TabManager: NSObject {
     }
     
     private func saveTabOrder() {
-        let context = DataController.workerThreadContext
+        let context = DataController.newBackgroundContext()
         context.perform {
             for (i, tab) in self.tabs.enumerated() {
                 guard let managedObject = TabMO.get(fromId: tab.id, context: context) else { 
@@ -367,7 +367,7 @@ class TabManager: NSObject {
                 managedObject.order = Int16(i)
             }
             
-            DataController.saveContext(context: context)
+            DataController.save(context: context)
         }
     }
 
@@ -441,7 +441,7 @@ class TabManager: NSObject {
     func saveTab(_ tab: Tab, saveOrder: Bool = false) {
         guard let data = savedTabData(tab: tab) else { return }
         
-        TabMO.preserve(savedTab: data)
+        TabMO.update(tabData: data)
         if saveOrder {
             saveTabOrder()
         }
@@ -451,7 +451,7 @@ class TabManager: NSObject {
         
         guard let webView = tab.webView, let order = indexOfWebView(webView) else { return nil }
         
-        let context = DataController.mainThreadContext
+        let context = DataController.viewContext
         
         // Ignore session restore data.
         guard let urlString = tab.url?.absoluteString, !urlString.contains("localhost") else { return nil }
@@ -520,9 +520,9 @@ class TabManager: NSObject {
         let prevCount = count
         tabs.remove(at: removalIndex)
         
-        let context = DataController.mainThreadContext
+        let context = DataController.viewContext
         if let tab = TabMO.get(fromId: tab.id, context: context) {
-            DataController.remove(object: tab, context: context)
+            tab.delete()
         }
 
         currentTabs = tabs(withType: tab.type)
@@ -786,7 +786,7 @@ extension TabManager {
         var tabToSelect: Tab?
         for savedTab in savedTabs {
             if savedTab.url == nil {
-                DataController.remove(object: savedTab)
+                savedTab.delete()
                 continue
             }
             
@@ -797,7 +797,8 @@ extension TabManager {
             // Since this is a restored tab, reset the URL to be loaded as that will be handled by the SessionRestoreHandler
             tab.url = nil
 
-            if let urlString = savedTab.url, let url = URL(string: urlString), let faviconURL = Domain.getOrCreateForUrl(url, context: DataController.shared.workerContext)?.favicon?.url {
+            if let urlString = savedTab.url, let url = URL(string: urlString),
+                let faviconURL = Domain.getOrCreateForUrl(url, context: DataController.viewContext)?.favicon?.url {
                 let icon = Favicon(url: faviconURL, date: Date())
                 icon.width = 1
                 tab.favicons.append(icon)
@@ -843,7 +844,7 @@ extension TabManager {
     
     func restoreTab(_ tab: Tab) {
         // Tab was created with no active webview or session data. Restore tab data from CD and configure.
-        guard let savedTab = TabMO.get(fromId: tab.id, context: DataController.mainThreadContext) else { return }
+        guard let savedTab = TabMO.get(fromId: tab.id, context: DataController.viewContext) else { return }
         
         if let history = savedTab.urlHistorySnapshot as? [String], let tabUUID = savedTab.syncUUID, let url = savedTab.url {
             let data = SavedTab(id: tabUUID, title: savedTab.title, url: url, isSelected: savedTab.isSelected, order: savedTab.order, screenshot: nil, history: history, historyIndex: savedTab.urlHistoryCurrentIndex)
