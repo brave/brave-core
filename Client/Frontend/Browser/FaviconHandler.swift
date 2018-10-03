@@ -48,6 +48,7 @@ class FaviconHandler {
             tab.favicons.append(favicon)
             if !tab.isPrivate {
                 FaviconMO.add(favicon, forSiteUrl: currentURL)
+                
             }
         }
 

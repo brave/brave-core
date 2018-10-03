@@ -19,11 +19,11 @@ class FaviconMOTests: CoreDataTestCase {
     }
 
     func testAdd() {
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
         
         createAndWait()
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
     }
     
     func testGet() {
@@ -31,9 +31,9 @@ class FaviconMOTests: CoreDataTestCase {
         
         createAndWait()
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
-        let context = DataController.mainThreadContext
+        let context = DataController.viewContext
         
         XCTAssertNil(FaviconMO.get(forFaviconUrl: wrongUrl, context: context))
         XCTAssertNotNil(FaviconMO.get(forFaviconUrl: exampleUrl.absoluteString, context: context))
@@ -48,6 +48,6 @@ class FaviconMOTests: CoreDataTestCase {
             FaviconMO.add(favicon, forSiteUrl: exampleUrl)
         }
         
-        return try! DataController.mainThreadContext.fetch(fetchRequest).first
+        return try! DataController.viewContext.fetch(fetchRequest).first
     }
 }

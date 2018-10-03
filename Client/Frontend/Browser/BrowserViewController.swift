@@ -507,7 +507,7 @@ class BrowserViewController: UIViewController {
                 self.tabManager.restoreTabs()
             },
             noCallback: { _ in
-                TabMO.removeAll()
+                TabMO.deleteAll()
                 self.tabManager.addTabAndSelect()
             }
         )

@@ -18,7 +18,7 @@ class HistoryTests: CoreDataTestCase {
         let url = URL(string: "https://brave.com")!
         
         let object = createAndWait(title: title, url: url)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         XCTAssertEqual(object.title, title)
         XCTAssertEqual(object.url, url.absoluteString)
@@ -30,12 +30,14 @@ class HistoryTests: CoreDataTestCase {
     func testAddTwice() {
         let object = createAndWait()
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         XCTAssertEqual(object.domain!.visits, 1)
         
         let newObject = createAndWait()
+        DataController.viewContext.refreshAllObjects()
+        
         // Should still be one object but with 2 visits recorded.
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         XCTAssertEqual(newObject.domain!.visits, 2)
     }
     
@@ -49,7 +51,7 @@ class HistoryTests: CoreDataTestCase {
         // Wait a moment to make a date difference
         sleep(UInt32(2))
         let secondObject = createAndWait(title: "Second", url: URL(string: "https://brave.com")!)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 2)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
         
         XCTAssertNoThrow(try frc.performFetch())
         
@@ -66,7 +68,7 @@ class HistoryTests: CoreDataTestCase {
         
         _ = createAndWait(title: title, url: url)
         
-        let context = DataController.workerThreadContext
+        let context = DataController.newBackgroundContext()
         
         XCTAssertNil(History.getExisting(wrongUrl, context: context))
         XCTAssertNotNil(History.getExisting(url, context: context))
@@ -74,27 +76,35 @@ class HistoryTests: CoreDataTestCase {
     
     func testRemove() {
         let object = createAndWait()
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
-        object.remove(save: true)
+        backgroundSaveAndWaitForExpectation {
+            object.delete()
+        }
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     
     func testDeleteAll() {
-        let deleteExpectation = expectation(description: "delete all")
+        // TODO: This test should be more robust. Deleting history also deletes domain, favicons and
+        // updates visits count.
+        
+        let deleteExpectation = expectation(description: "deleteExpectation")
         
         createAndWait()
         createAndWait(title: "title", url: URL(string: "https://brave.com")!)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 2)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
         
-        History.deleteAll {
-            deleteExpectation.fulfill()
+        backgroundSaveAndWaitForExpectation {
+            History.deleteAll {
+                deleteExpectation.fulfill()
+            }
         }
         
-        waitForExpectations(timeout: 1, handler: nil)
         
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
+        wait(for: [deleteExpectation], timeout: 1)
+        
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     
     func testFrecencyQuery() {
@@ -103,18 +113,18 @@ class HistoryTests: CoreDataTestCase {
         createAndWait(url: URL(string: "https://example.com/page3")!)
         createAndWait(url: URL(string: "https://brave.com")!)
         
-        let found = History.frecencyQuery(DataController.mainThreadContext, containing: "example")
+        let found = History.frecencyQuery(DataController.viewContext, containing: "example")
         XCTAssertEqual(found.count, 3)
         
         // Changing dates of two bookmarks to be something older than 1 week.
         found.first?.visitedOn = Date(timeIntervalSince1970: 1)
         found.last?.visitedOn = Date(timeIntervalSince1970: 1)
-        DataController.saveContext(context: DataController.mainThreadContext)
+        DataController.save(context: DataController.viewContext)
         
-        let found2 = History.frecencyQuery(DataController.mainThreadContext, containing: "example")
+        let found2 = History.frecencyQuery(DataController.viewContext, containing: "example")
         XCTAssertEqual(found2.count, 1)
         
-        let notFound = History.frecencyQuery(DataController.mainThreadContext, containing: "notfound")
+        let notFound = History.frecencyQuery(DataController.viewContext, containing: "notfound")
         XCTAssertEqual(notFound.count, 0)
     }
 
@@ -124,6 +134,9 @@ class HistoryTests: CoreDataTestCase {
             History.add(title, url: url)
         }
         
-        return try! DataController.mainThreadContext.fetch(fetchRequest).first!
+        let urlKeyPath = #keyPath(History.url)
+        let predicate = NSPredicate(format: "\(urlKeyPath) == %@", url.absoluteString)
+        
+        return History.first(where: predicate)!
     }
 }

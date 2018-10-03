@@ -22,7 +22,7 @@ class FavoriteTests: CoreDataTestCase {
     
     private lazy var fetchController = NSFetchedResultsController<Bookmark>(
         fetchRequest: fetchRequest,
-        managedObjectContext: DataController.mainThreadContext,
+        managedObjectContext: DataController.viewContext,
         sectionNameKeyPath: nil,
         cacheName: nil
     )
@@ -38,7 +38,7 @@ class FavoriteTests: CoreDataTestCase {
         let title = "Brave"
         
         let favoritedBookmark = createAndWait(url: URL(string: url), title: title)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         XCTAssertEqual(favoritedBookmark.url, url)
         XCTAssertEqual(favoritedBookmark.title, title)
@@ -59,7 +59,7 @@ class FavoriteTests: CoreDataTestCase {
             object.update(customTitle: nil, url: newUrl, save: true)
         }
         // Make sure only one record was added to DB
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         XCTAssertNotEqual(object.url, url)
         XCTAssertEqual(object.url, newUrl)
@@ -79,7 +79,7 @@ class FavoriteTests: CoreDataTestCase {
             object.update(customTitle: newTitle, url: nil, save: true)
         }
         // Make sure only one record was added to DB
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 1)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
         
         XCTAssertNotEqual(object.displayTitle, customTitle)
         XCTAssertEqual(object.displayTitle, newTitle)
@@ -90,16 +90,16 @@ class FavoriteTests: CoreDataTestCase {
     func testDeleteFavorite() {
         let bookmarks = makeFavorites(5)
         
-        DataController.mainThreadContext.delete(bookmarks.first!)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), bookmarks.count - 1)
+        DataController.viewContext.delete(bookmarks.first!)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), bookmarks.count - 1)
     }
     
     func testDeleteAllFavorites() {
         let bookmarks = makeFavorites(5)
         
         // Delete them all
-        bookmarks.forEach { DataController.mainThreadContext.delete($0) }
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), 0)
+        bookmarks.forEach { DataController.viewContext.delete($0) }
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
     }
     
     // MARK: - Reordering
@@ -211,7 +211,7 @@ class FavoriteTests: CoreDataTestCase {
     private func makeFavorites(_ count: Int) -> [Bookmark] {
         let bookmarks = (0..<count).map { createAndWait(url: URL(string: "http://brave.com/\($0)"), title: "brave") }
         XCTAssertEqual(bookmarks.count, count)
-        XCTAssertEqual(try! DataController.mainThreadContext.count(for: fetchRequest), bookmarks.count)
+        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), bookmarks.count)
         return bookmarks
     }
     
@@ -220,7 +220,7 @@ class FavoriteTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation {
             Bookmark.add(url: url, title: title, customTitle: customTitle, isFavorite: true)
         }
-        let bookmark = try! DataController.mainThreadContext.fetch(fetchRequest).first!
+        let bookmark = try! DataController.viewContext.fetch(fetchRequest).first!
         XCTAssertTrue(bookmark.isFavorite)
         return bookmark
     }

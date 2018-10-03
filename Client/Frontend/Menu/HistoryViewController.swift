@@ -132,7 +132,7 @@ class HistoryViewController: SiteTableViewController {
         })
       } else {
         // no relationship - attempt to resolove domain problem
-        let context = DataController.mainThreadContext
+        let context = DataController.viewContext
         if let domain = Domain.getOrCreateForUrl(siteUrl, context: context), let faviconMO = domain.favicon, let urlString = faviconMO.url, let url = URL(string: urlString) {
           DispatchQueue.main.async {
             self.setCellImage(cell, iconUrl: url, cacheWithUrl: siteUrl)
@@ -203,9 +203,9 @@ class HistoryViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
+    if editingStyle == UITableViewCellEditingStyle.delete {
       if let obj = self.frc?.object(at: indexPath) {
-        obj.remove(save: true)
+        obj.delete()
       }
     }
   }

@@ -14,7 +14,7 @@ struct FavoritesHelper {
     static let initPrefsKey = "FavoritesHelperInitPrefsKey"
 
     static func frc() -> NSFetchedResultsController<Bookmark> {
-        let context = DataController.mainThreadContext
+        let context = DataController.viewContext
         let fetchRequest = NSFetchRequest<Bookmark>()
 
         fetchRequest.entity = Bookmark.entity(context: context)
@@ -33,12 +33,9 @@ struct FavoritesHelper {
 
     // MARK: - Favorites initialization
     static func addDefaultFavorites() {
-        var bookmark: Bookmark?
         PreloadedFavorites.getList().forEach { fav in
-            bookmark = Bookmark.add(url: fav.url, title: fav.title, isFavorite: true)
+            Bookmark.add(url: fav.url, title: fav.title, isFavorite: true)
         }
-        // Save immediately to prevent against data lose on fast launch crash
-        DataController.saveContext(context: bookmark?.managedObjectContext)
     }
 
     static func convertToBookmarks(_ sites: [Site]) {
@@ -54,7 +51,7 @@ struct FavoritesHelper {
     }
 
     static func isAlreadyAdded(_ url: URL) -> Bool {
-        return Bookmark.contains(url: url, getFavorites: true, context: DataController.mainThreadContext)
+        return Bookmark.contains(url: url, getFavorites: true)
     }
     
     static func fallbackIcon(withLetter letter: String, color: UIColor, andSize iconSize: CGSize) -> UIImage {

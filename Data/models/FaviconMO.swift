@@ -5,7 +5,7 @@ import CoreData
 import Foundation
 import Storage
 
-public class FaviconMO: NSManagedObject {
+public final class FaviconMO: NSManagedObject, CRUD {
     
     @NSManaged public var url: String?
     @NSManaged public var width: Int16
@@ -19,24 +19,14 @@ public class FaviconMO: NSManagedObject {
     }
 
     public class func get(forFaviconUrl urlString: String, context: NSManagedObjectContext) -> FaviconMO? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        fetchRequest.entity = FaviconMO.entity(context)
-        fetchRequest.predicate = NSPredicate(format: "url == %@", urlString)
-        var result: FaviconMO?
-        do {
-            let results = try context.fetch(fetchRequest) as? [FaviconMO]
-            if let item = results?.first {
-                result = item
-            }
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-        return result
+        let urlKeyPath = #keyPath(FaviconMO.url)
+        let predicate = NSPredicate(format: "\(urlKeyPath) == %@", urlString)
+        
+        return first(where: predicate, context: context)
     }
 
     public class func add(_ favicon: Favicon, forSiteUrl siteUrl: URL) {
-        let context = DataController.workerThreadContext
+        let context = DataController.newBackgroundContext()
         context.perform {
             var item = FaviconMO.get(forFaviconUrl: favicon.url, context: context)
             if item == nil {
@@ -63,7 +53,7 @@ public class FaviconMO: NSManagedObject {
                 item!.type = t
             }
 
-            DataController.saveContext(context: context)
+            DataController.save(context: context)
         }
     }
 }
