@@ -118,7 +118,7 @@ ExtensionFunction::ResponseAction BraveSyncGetExistingObjectsFunction::Run() {
 
   //std::vector<std::unique_ptr<base::Value>> records;
 
-  // params->records of vector<extensions::api::brave_sync::SyncRecord2>
+  // params->records of vector<extensions::api::brave_sync::SyncRecord>
   // to
   // const vector<brave_sync::SyncRecordPtr>
 

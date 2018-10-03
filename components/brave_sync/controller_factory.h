@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef H_BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H
-#define H_BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H_
 
 #include "base/macros.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
@@ -48,4 +48,4 @@ private:
 } // namespace brave_sync
 
 
-#endif // H_BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H
+#endif // BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H_

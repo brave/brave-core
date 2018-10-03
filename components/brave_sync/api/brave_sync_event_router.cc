@@ -129,7 +129,7 @@ void BraveSyncEventRouter::ResolveSyncRecords(const std::string &category_name,
 }
 
 void BraveSyncEventRouter::SendSyncRecords(const std::string &category_name,
-  const std::vector<api::brave_sync::SyncRecord2>& records) {
+  const std::vector<api::brave_sync::SyncRecord>& records) {
   if (!profile_) {
     LOG(ERROR) << "profile is not set";
     return;

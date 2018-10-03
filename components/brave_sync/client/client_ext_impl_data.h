@@ -12,7 +12,7 @@ namespace extensions {
 namespace api {
 namespace brave_sync {
   struct Config;
-  struct SyncRecord2;
+  struct SyncRecord;
   struct RecordAndExistingObject;
 }
 }
@@ -36,14 +36,14 @@ namespace brave_sync {
   void ConvertConfig(const brave_sync::client_data::Config &config,
     extensions::api::brave_sync::Config &config_extension);
 
-  void ConvertSyncRecords(const std::vector<extensions::api::brave_sync::SyncRecord2> &records_extension,
+  void ConvertSyncRecords(const std::vector<extensions::api::brave_sync::SyncRecord> &records_extension,
     std::vector<brave_sync::SyncRecordPtr> &records);
 
   void ConvertResolvedPairs(const SyncRecordAndExistingList &records_and_existing_objects,
     std::vector<extensions::api::brave_sync::RecordAndExistingObject> &records_and_existing_objects_ext);
 
   void ConvertSyncRecordsFromLibToExt(const std::vector<brave_sync::SyncRecordPtr> &records,
-    std::vector<extensions::api::brave_sync::SyncRecord2> &records_extension);
+    std::vector<extensions::api::brave_sync::SyncRecord> &records_extension);
 
 } // namespace brave_sync
 

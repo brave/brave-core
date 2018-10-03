@@ -159,9 +159,9 @@ std::unique_ptr<extensions::api::brave_sync::Device> FromLibDevice(const jslib::
   return ext_device;
 }
 
-std::unique_ptr<extensions::api::brave_sync::SyncRecord2> FromLibSyncRecord(const brave_sync::SyncRecordPtr &lib_record) {
+std::unique_ptr<extensions::api::brave_sync::SyncRecord> FromLibSyncRecord(const brave_sync::SyncRecordPtr &lib_record) {
   DCHECK(lib_record);
-  std::unique_ptr<extensions::api::brave_sync::SyncRecord2> ext_record = std::make_unique<extensions::api::brave_sync::SyncRecord2>();
+  std::unique_ptr<extensions::api::brave_sync::SyncRecord> ext_record = std::make_unique<extensions::api::brave_sync::SyncRecord>();
 
   ext_record->action = static_cast<int>(lib_record->action);
   ext_record->device_id = UCharVecFromString(lib_record->deviceId);
@@ -186,7 +186,7 @@ std::unique_ptr<extensions::api::brave_sync::SyncRecord2> FromLibSyncRecord(cons
   return ext_record;
 }
 
-brave_sync::SyncRecordPtr FromExtSyncRecord(const extensions::api::brave_sync::SyncRecord2 &ext_record) {
+brave_sync::SyncRecordPtr FromExtSyncRecord(const extensions::api::brave_sync::SyncRecord &ext_record) {
   brave_sync::SyncRecordPtr record = std::make_unique<brave_sync::jslib::SyncRecord>();
 
   record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(ext_record.action,
@@ -222,11 +222,11 @@ brave_sync::SyncRecordPtr FromExtSyncRecord(const extensions::api::brave_sync::S
   return record;
 }
 
-void ConvertSyncRecords(const std::vector<extensions::api::brave_sync::SyncRecord2> &records_extension,
+void ConvertSyncRecords(const std::vector<extensions::api::brave_sync::SyncRecord> &records_extension,
   std::vector<brave_sync::SyncRecordPtr> &records) {
   DCHECK(records.empty());
 
-  for (const extensions::api::brave_sync::SyncRecord2 &ext_record : records_extension) {
+  for (const extensions::api::brave_sync::SyncRecord &ext_record : records_extension) {
 //LOG(ERROR) << "" << ext_record.object_id[0];
     brave_sync::SyncRecordPtr record = FromExtSyncRecord(ext_record);
     records.emplace_back(std::move(record));
@@ -254,7 +254,7 @@ LOG(ERROR) << "" << src->first->objectId;
 }
 
 void ConvertSyncRecordsFromLibToExt(const std::vector<brave_sync::SyncRecordPtr> &records,
-  std::vector<extensions::api::brave_sync::SyncRecord2> &records_extension) {
+  std::vector<extensions::api::brave_sync::SyncRecord> &records_extension) {
   DCHECK(records_extension.empty());
   LOG(ERROR) << "TAGAB ConvertSyncRecordsFromLibToExt=============";
 
@@ -279,7 +279,7 @@ void ConvertSyncRecordsFromLibToExt(const std::vector<brave_sync::SyncRecordPtr>
     }
     LOG(ERROR) << "TAGAB src->syncTimestamp ="<<src->syncTimestamp;
 
-    std::unique_ptr<extensions::api::brave_sync::SyncRecord2> dest = FromLibSyncRecord(src);
+    std::unique_ptr<extensions::api::brave_sync::SyncRecord> dest = FromLibSyncRecord(src);
 
     LOG(ERROR) << "TAGAB DEST:";
     LOG(ERROR) << "TAGAB dest->action=" << dest->action;
