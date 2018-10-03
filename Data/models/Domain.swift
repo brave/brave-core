@@ -109,11 +109,11 @@ public final class Domain: NSManagedObject, CRUD {
         context.perform {
             let fetchRequest = NSFetchRequest<Domain>()
             fetchRequest.entity = Domain.entity(context)
-            do {
-                let results = try context.fetch(fetchRequest)
-                for domain in results {
-                    guard let urlString = domain.url, let url = URL(string: urlString) else { continue }
-                    let normalizedUrl = url.normalizedHost ?? ""
+//            do {
+//                let results = try context.fetch(fetchRequest)
+//                for domain in results {
+//                    guard let urlString = domain.url, let url = URL(string: urlString) else { continue }
+//                    let normalizedUrl = url.normalizedHost ?? ""
 
 //                    print(normalizedUrl)
 //                    if let shield = domain.shield_allOff {
@@ -134,11 +134,11 @@ public final class Domain: NSManagedObject, CRUD {
 //                    if let shield = domain.shield_noScript {
 //                        BraveShieldState.setInMemoryforDomain(normalizedUrl, setState: (.NoScript, shield.boolValue))
 //                    }
-                }
-            } catch {
-                let fetchError = error as NSError
-                print(fetchError)
-            }
+//                }
+//            } catch {
+//                let fetchError = error as NSError
+//                print(fetchError)
+//            }
 
             DispatchQueue.main.async {
                 completionOnMain()
@@ -146,7 +146,7 @@ public final class Domain: NSManagedObject, CRUD {
         }
     }
 
-    class func deleteNonBookmarkedAndClearSiteVisits(context: NSManagedObjectContext, _ completionOnMain: @escaping ()->()) {
+    class func deleteNonBookmarkedAndClearSiteVisits(context: NSManagedObjectContext, _ completionOnMain: @escaping () -> Void) {
         
         context.perform {
             let fetchRequest = NSFetchRequest<Domain>()

@@ -420,7 +420,7 @@ extension Sync {
         guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
 
         // Currently only prefs are device related
-        if recordType == .prefs, let data = fetchedRecords as? [SyncDevice] {
+        if recordType == .prefs /*, let data = fetchedRecords as? [SyncDevice] */ {
             // Devices have really bad data filtering, so need to manually process more of it
             // Sort to not rely on API - Reverse sort, so unique pulls the `latest` not just the `first`
             // BRAVE TODO: 
@@ -449,7 +449,7 @@ extension Sync {
                     
                 // TODO: Needs favicon
                 if clientRecord == nil {
-                    recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
+                    _ = recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
                 } else {
                     // TODO: use Switch with `fallthrough`
                     action = .update

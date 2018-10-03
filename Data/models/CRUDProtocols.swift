@@ -22,7 +22,7 @@ public protocol Readable where Self: NSManagedObject {
     static func count(predicate: NSPredicate?) -> Int?
     static func first(where predicate: NSPredicate?, context: NSManagedObjectContext) -> Self?
     static func all(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int, 
-                       context: NSManagedObjectContext) -> [Self]?
+                    context: NSManagedObjectContext) -> [Self]?
 }
 
 // MARK: - Implementations
@@ -88,7 +88,7 @@ public extension Readable where Self: NSManagedObject {
     }
     
     static func all(where predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, 
-                       fetchLimit: Int = 0, context: NSManagedObjectContext = DataController.viewContext) -> [Self]? {
+                    fetchLimit: Int = 0, context: NSManagedObjectContext = DataController.viewContext) -> [Self]? {
         let request = getFetchRequest()
         
         request.predicate = predicate
