@@ -1,0 +1,53 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Donate</title>
+  <link rel="import" href="chrome://resources/html/cr.html">
+  <script src="chrome://resources/js/cr.js"></script>
+  <script src="chrome://resources/js/load_time_data.js"></script>
+  <script src="chrome://resources/js/util.js"></script>
+  <script src="chrome://donate/brave_donate.js"></script>
+  <style>
+  body
+  {
+    background: #444;
+    padding: 0;
+    margin: 0;
+  }
+  .dialog
+  {
+    padding-top: 10px;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: rebeccapurple;
+    width: 100%;
+    min-height: 250px;
+  }
+  .dialog--close
+  {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    font-size: 44px;
+    font-weight: bold;
+    border: solid 1px white;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  </style>
+</head>
+<body>
+  <div class="dialog">
+    <div class="dialog--close">X</div>
+    <h1>Donate</h1>
+  </div>
+</body>
+</html>

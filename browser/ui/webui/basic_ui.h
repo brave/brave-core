@@ -17,6 +17,14 @@ class WebUIDataSource;
 class WebUI;
 }
 
+class Profile;
+
+content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
+                                                  const std::string& name,
+                                                  const std::string& js_file,
+                                                  int js_resource_id,
+                                                  int html_resource_id);
+
 class BasicUI : public content::WebUIController {
  public:
   BasicUI(content::WebUI* web_ui, const std::string& host,

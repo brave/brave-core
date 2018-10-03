@@ -20,6 +20,7 @@ grit("brave_components_resources_grit") {
   if (brave_rewards_enabled) {
     deps += [
       "//brave/components/brave_rewards/ui",
+      "//brave/components/brave_rewards/donate",
     ]
   }
   grit_flags = [
