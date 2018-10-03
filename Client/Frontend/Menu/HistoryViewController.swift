@@ -203,8 +203,8 @@ class HistoryViewController: SiteTableViewController {
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    if (editingStyle == UITableViewCellEditingStyle.delete) {
-      if let obj = self.frc?.object(at: indexPath) as? History {
+    if editingStyle == UITableViewCellEditingStyle.delete {
+      if let obj = self.frc?.object(at: indexPath) {
         obj.delete()
       }
     }

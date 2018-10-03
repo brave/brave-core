@@ -121,7 +121,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
         return all(where: predicate, fetchLimit: 100) ?? []
     }
     
-    public class func deleteAll(_ completionOnMain: @escaping ()->()) {
+    public class func deleteAll(_ completionOnMain: @escaping () -> Void) {
         let context = DataController.newBackgroundContext()
         
         // No save, save in Domain
