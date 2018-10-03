@@ -126,9 +126,9 @@ export const Panel = styled(Card)`
   /* animation start state must be the same as "from" keyframe */
   opacity: 0;
   /* animation stuff courtesy of ross */
-  animation-delay: 1.5s;
+  animation-delay: .5s;
   animation-name: ${fadeIn};
-  animation-duration: 1.5s;
+  animation-duration: 1s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   /* end of animation stuff */

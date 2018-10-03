@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { Heading } from '../../../index'
 
 export const Title = styled(Heading)`
-  font-size: 32px;
+  font-size: 28px;
   color: #212121;
   margin: 30px 0 0;
   text-align: center;
@@ -16,9 +16,9 @@ export const Title = styled(Heading)`
 export const Paragraph = styled<{}, 'p'>('p')`
   display: block;
   -webkit-font-smoothing: antialiased;
-  font-size: 18px;
+  font-size: 16px;
   color: #76777A;
   line-height: 34px;
   text-align: center;
-  margin: 20px 0;
+  margin: 10px 0 20px;
 `

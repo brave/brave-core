@@ -21,29 +21,29 @@ const BaseButton = styled<BaseButtonProps, 'button'>('button')`
 `
 
 export const SkipButton = styled(BaseButton)`
-  color: #76777A;
+  color: #7C7D8C;
   text-decoration: underline;
   font-weight: 300;
 
   &:hover {
-    color: #8B8A8E;
+    color: #343546;
   }
 `
 
 export const Bullet = styled(BaseButton)`
   padding: 0 7px;
-  font-size: 40px;
-  color: #76777A;
+  font-size: 36px;
+  color: #7C7D8C;
 
   &:hover {
-    color: #8B8A8E;
+    color: #343546;
   }
 
   ${p => p.active && css`
     color: #FB542B;
 
     &:hover {
-      color: #FB542B;
+      color: #C72E03;
     }
   `}
 `

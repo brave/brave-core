@@ -38,5 +38,5 @@ export const Background = styled<BackgroundProps, 'div'>('div')`
   background-repeat: repeat-x;
   background-image: url('${p => p.background.image}');
   background-position-x: ${p => p.background.position};
-  transition: 1.5s ease-in-out;
+  transition: 2.5s ease-in-out;
 `

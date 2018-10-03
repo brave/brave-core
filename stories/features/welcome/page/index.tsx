@@ -225,6 +225,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
                 <Button
                   level='secondary'
                   type='default'
+                  size='medium'
                   onClick={this.onClickNext}
                   text={locale.next}
                   icon={{ position: 'after', image: <ArrowRightIcon /> }}
@@ -234,6 +235,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
                 <Button
                   level='secondary'
                   type='default'
+                  size='medium'
                   onClick={this.onClickDone}
                   text={locale.done}
                 />
@@ -286,15 +288,15 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
       case 1:
         return '100%'
       case 2:
-        return '150%'
-      case 3:
         return '200%'
-      case 4:
-        return '250%'
-      case 5:
+      case 3:
         return '300%'
+      case 4:
+        return '400%'
+      case 5:
+        return '500%'
       case 6:
-        return '350%'
+        return '600%'
       default:
         return '100%'
     }
