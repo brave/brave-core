@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		03CCC9181AF05E7300DBF30D /* RelativeDatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */; };
 		0A38EA80216532DB00142710 /* CRUDProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */; };
-		0A38EA82216532F600142710 /* CRUDProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A38EA81216532F600142710 /* CRUDProtocolsTests.swift */; };
 		0A4B012020D02EC4004D4011 /* TabsBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */; };
 		0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012120D02F26004D4011 /* TabBarCell.swift */; };
 		0A4B012420D0321A004D4011 /* UX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4B012320D0321A004D4011 /* UX.swift */; };
@@ -870,7 +869,6 @@
 /* Begin PBXFileReference section */
 		03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelativeDatesTests.swift; sourceTree = "<group>"; };
 		0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDProtocolsTests.swift; sourceTree = "<group>"; };
-		0A38EA81216532F600142710 /* CRUDProtocolsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CRUDProtocolsTests.swift; path = ../../../CRUDProtocolsTests.swift; sourceTree = "<group>"; };
 		0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsBarViewController.swift; sourceTree = "<group>"; };
 		0A4B012120D02F26004D4011 /* TabBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCell.swift; sourceTree = "<group>"; };
 		0A4B012320D0321A004D4011 /* UX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UX.swift; sourceTree = "<group>"; };
@@ -2031,7 +2029,6 @@
 			isa = PBXGroup;
 			children = (
 				0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */,
-				0A38EA81216532F600142710 /* CRUDProtocolsTests.swift */,
 				0AF3B4EA213D8E3200695962 /* BookmarkTests.swift */,
 				0AF3B4E5213D8E3200695962 /* CoreDataTestCase.swift */,
 				0AF3B4E9213D8E3200695962 /* DataControllerTests.swift */,
@@ -4085,7 +4082,6 @@
 				A176323B20CF2AF800126F25 /* DeferredTestUtils.swift in Sources */,
 				2798E01D213EFC3F003EDBB1 /* FavoriteTests.swift in Sources */,
 				0AF3B4ED213D8E3300695962 /* CoreDataTestCase.swift in Sources */,
-				0A38EA80216532DB00142710 /* CRUDProtocolsTests.swift in Sources */,
 				0AF3B4EF213D8E3300695962 /* DomainTests.swift in Sources */,
 				0AF3B4EE213D8E3300695962 /* HistoryTests.swift in Sources */,
 				0AF3B4F1213D8E3300695962 /* DataControllerTests.swift in Sources */,
