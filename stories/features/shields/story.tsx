@@ -6,10 +6,24 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 // @ts-ignore
 import centered from '@storybook/addon-centered/dist'
+import { withKnobs, boolean } from '@storybook/addon-knobs'
+import { withState } from '@dump247/storybook-state'
 
 // Components
-import BraveShields from './panel/index'
+import Shields from './index'
 
 storiesOf('Feature Components/Shields', module)
-  .addDecorator(centered)
-  .add('Page', () => <BraveShields />)
+  // .addDecorator(centered)
+  .addDecorator(withKnobs)
+  .add('Enabled', withState({ enabled: false }, (store) => {
+    const fakeOnChange = () => {
+      store.set({ enabled: !store.state.enabled })
+    }
+    return <Shields fakeOnChange={fakeOnChange} enabled={boolean('Enabled?', store.state.enabled)} />
+  }))
+  .add('Disabled', withState({ enabled: false }, (store) => {
+    const fakeOnChange = () => {
+      store.set({ enabled: !store.state.enabled })
+    }
+    return <Shields fakeOnChange={fakeOnChange} enabled={boolean('Enabled?', store.state.enabled)} />
+  }))
