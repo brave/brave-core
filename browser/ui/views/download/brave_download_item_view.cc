@@ -1,0 +1,222 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/download/brave_download_item_view.h"
+
+#include "base/auto_reset.h"
+#include "base/strings/string16.h"
+#include "brave/app/vector_icons/vector_icons.h"
+#include "chrome/browser/ui/views/download/download_shelf_view.h"
+#include "components/strings/grit/components_strings.h"
+#include "components/vector_icons/vector_icons.h"
+#include "content/public/common/origin_util.h"
+#include "third_party/skia/include/core/SkColor.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "ui/gfx/canvas.h"
+#include "ui/gfx/image/image.h"
+#include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/text_elider.h"
+#include "ui/gfx/text_utils.h"
+
+using download::DownloadItem;
+
+namespace {
+
+// The minimum vertical padding above and below contents of the download item.
+constexpr int kMinimumVerticalPadding = 6;
+
+// The normal height of the item which may be exceeded if text is large.
+constexpr int kDefaultHeight = 65;
+
+// Lock icon color.
+constexpr SkColor kDownloadUnlockIconColor = SkColorSetRGB(0xC6, 0x36, 0x26);
+
+// Decrement of lock icon height from font baseline
+constexpr int kDownloadUnlockIconHeightDecr = 1;
+
+} // namespace
+
+BraveDownloadItemView::BraveDownloadItemView(DownloadItem* download,
+                                             DownloadShelfView* parent,
+                                             views::View* accessible_alert)
+    : DownloadItemView(download, parent, accessible_alert),
+      brave_model_(model_),
+      is_origin_url_secure_(false) {
+  // Prepare origin url font.
+  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
+  origin_url_font_list_ =
+      rb.GetFontList(ui::ResourceBundle::BaseFont).DeriveWithSizeDelta(-1);
+}
+
+BraveDownloadItemView::~BraveDownloadItemView() {}
+
+// View overrides.
+
+gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
+  // Call base class to get the width.
+  gfx::Size size = DownloadItemView::CalculatePreferredSize();
+  // Calculate the height accounting for the extra line.
+  int child_height = font_list_.GetHeight() + kBraveVerticalTextPadding +
+                     origin_url_font_list_.GetHeight() + kBraveVerticalTextPadding +
+                     status_font_list_.GetHeight();
+  if (IsShowingWarningDialog()) {
+    child_height =
+        std::max({child_height, GetButtonSize().height(), kWarningIconSize});
+  }
+  size.set_height(
+      std::max(kDefaultHeight, 2 * kMinimumVerticalPadding + child_height));
+  return size;
+}
+
+void BraveDownloadItemView::OnPaint(gfx::Canvas* canvas) {
+  DownloadItemView::OnPaint(canvas);
+  DrawOriginURL(canvas);
+}
+
+// download::DownloadItem::Observer overrides.
+
+void BraveDownloadItemView::OnDownloadUpdated(
+  download::DownloadItem* download) {
+  // Check for conditions that would disregard origin url change and fall back
+  // onto base implementation to handle them.
+  if (!model_.ShouldShowInShelf()) {
+    DownloadItemView::OnDownloadUpdated(download);
+    return;
+  }
+
+  if (IsShowingWarningDialog() != model_.IsDangerous()) {
+    DownloadItemView::OnDownloadUpdated(download);
+  } else {
+    // Update origin url first so that if the base class triggers paint fast
+    // enough the new origin url is used and UpdateAccessibleName can use it
+    // as well.
+    bool needs_repaint = false;
+    bool new_is_secure = false;
+    base::string16 new_origin_url = brave_model_.GetOriginURLText(new_is_secure);
+    if (new_origin_url != origin_url_text_ ||
+      new_is_secure != is_origin_url_secure_) {
+      origin_url_text_ = new_origin_url;
+      is_origin_url_secure_ = new_is_secure;
+      needs_repaint = true;
+    }
+
+    DownloadItemView::OnDownloadUpdated(download);
+
+    // Don't know if the base implementation triggered a repaint so trigger it
+    // ourselves if we need to.
+    if (needs_repaint)
+      SchedulePaint();
+  }
+
+  // Update tooltip.
+  base::string16 new_tip = brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
+  if (new_tip != tooltip_text_) {
+    tooltip_text_ = new_tip;
+    TooltipTextChanged();
+  }
+}
+
+// Positioning routines.
+
+int BraveDownloadItemView::GetYForFilenameText() const {
+  int text_height = font_list_.GetHeight();
+  if (!origin_url_text_.empty())
+    text_height +=
+        kBraveVerticalTextPadding + origin_url_font_list_.GetHeight();
+  if (!status_text_.empty())
+    text_height += kBraveVerticalTextPadding + status_font_list_.GetHeight();
+  return (height() - text_height) / 2;
+}
+
+int BraveDownloadItemView::GetYForOriginURLText() const {
+  int y = GetYForFilenameText();
+  y += (font_list_.GetHeight() + kBraveVerticalTextPadding);
+  return y;
+}
+
+int BraveDownloadItemView::GetYForStatusText() const {
+  int y = GetYForOriginURLText();
+  if (!origin_url_text_.empty())
+    y += (origin_url_font_list_.GetHeight() + kBraveVerticalTextPadding);
+  return y;
+}
+
+// Drawing routines.
+
+void BraveDownloadItemView::DrawStatusText(gfx::Canvas* canvas) {
+  if (status_text_.empty() || IsShowingWarningDialog())
+    return;
+
+  int mirrored_x = GetMirroredXWithWidthInView(
+      kStartPadding + DownloadShelf::kProgressIndicatorSize +
+          kProgressTextPadding,
+      kTextWidth);
+  canvas->DrawStringRect(status_text_, status_font_list_, GetDimmedTextColor(),
+                         gfx::Rect(mirrored_x, GetYForStatusText(), kTextWidth,
+                                   status_font_list_.GetHeight()));
+}
+
+void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
+  if (origin_url_text_.empty() || IsShowingWarningDialog())
+    return;
+
+  int x = kStartPadding + DownloadShelf::kProgressIndicatorSize +
+          kProgressTextPadding;
+  int text_width = kTextWidth;
+ 
+  if (!is_origin_url_secure_) {
+    DrawLockIcon(canvas);
+    int dx = origin_url_font_list_.GetBaseline() + kOriginURLIconRightPadding;
+    x += dx;
+    text_width -= dx;
+  }
+
+  base::string16 originURL = gfx::ElideText(
+      origin_url_text_, origin_url_font_list_, text_width, gfx::ELIDE_TAIL);
+  int mirrored_x = GetMirroredXWithWidthInView(x, text_width);
+
+  canvas->DrawStringRect(
+      originURL, origin_url_font_list_, GetDimmedTextColor(),
+      gfx::Rect(mirrored_x, GetYForOriginURLText(), text_width,
+                origin_url_font_list_.GetHeight()));
+}
+
+void BraveDownloadItemView::DrawLockIcon(gfx::Canvas* canvas) {
+  if (origin_url_text_.empty() || IsShowingWarningDialog())
+    return;
+
+  int mirrored_x = GetMirroredXWithWidthInView(
+      kStartPadding + DownloadShelf::kProgressIndicatorSize +
+          kProgressTextPadding,
+      kTextWidth);
+
+  // Get lock icon of the needed height.
+  int dy = origin_url_font_list_.GetBaseline() - kDownloadUnlockIconHeightDecr;
+  int y = GetYForOriginURLText() + (origin_url_font_list_.GetHeight() - dy) / 2;
+  canvas->DrawImageInt(GetLockIcon(dy), mirrored_x, y);
+}
+
+// Get lock icon from vector icons.
+gfx::ImageSkia BraveDownloadItemView::GetLockIcon(int height) {
+  return gfx::CreateVectorIcon(kDownloadUnlockIcon, height,
+    kDownloadUnlockIconColor);
+}
+
+// Update accessible name with origin URL.
+void BraveDownloadItemView::UpdateAccessibleName() {
+  DownloadItemView::UpdateAccessibleName();
+  if (IsShowingWarningDialog())
+    return;
+
+  if (!origin_url_text_.empty()) {
+    base::string16 extra;
+    if (!is_origin_url_secure_)
+      extra += base::char16(' ')
+                   + l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE);
+    extra += base::char16(' ') + origin_url_text_;
+
+    accessible_name_ += extra;
+  }
+}
