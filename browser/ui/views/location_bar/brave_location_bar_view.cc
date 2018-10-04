@@ -58,6 +58,16 @@ void BraveLocationBarView::OnChanged() {
   LocationBarView::OnChanged();
 }
 
+void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
+  // We should trigger Layout() when visibility of |brave_actions_| is changed.
+  // When BraveActionsContainer::Update() is called by
+  // BraveLocationBarView::Update(), the location bar's Layout() is triggered.
+  // However, when BraveActionsContainer::Update() is called by others, the
+  // location bar isn't re-layouted.
+  if (child == brave_actions_)
+    Layout();
+}
+
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   gfx::Size min_size = LocationBarView::CalculatePreferredSize();
   if (brave_actions_ && brave_actions_->visible()){
