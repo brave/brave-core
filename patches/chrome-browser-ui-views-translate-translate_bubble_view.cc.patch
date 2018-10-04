@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/translate/translate_bubble_view.cc b/chrome/browser/ui/views/translate/translate_bubble_view.cc
+index 4052cba5e7dc..2eeea20250cf 100644
+--- a/chrome/browser/ui/views/translate/translate_bubble_view.cc
++++ b/chrome/browser/ui/views/translate/translate_bubble_view.cc
+@@ -103,6 +103,7 @@ views::Widget* TranslateBubbleView::ShowBubble(
+     translate::TranslateStep step,
+     translate::TranslateErrors::Type error_type,
+     DisplayReason reason) {
++  return nullptr; // feature disabled in Brave
+   if (translate_bubble_view_) {
+     // When the user reads the advanced setting panel, the bubble should not be
+     // changed because they are focusing on the bubble.
