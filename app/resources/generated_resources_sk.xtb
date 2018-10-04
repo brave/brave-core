@@ -839,7 +839,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6845038076637626672">Otvoriť maximalizované</translation>
 <translation id="6860427144121307915">Otvoriť na karte</translation>
 <translation id="3074037959626057712">Prihlásili ste sa a zapli synchronizáciu</translation>
-<translation id="6264422956566238156">Zapli ste synchronizáciu</translation>
 <translation id="9125982323641182972">Získajte inteligentné doplnky Googlu v Brave</translation>
 <translation id="7988117629517051942">Získajte viac inteligentných doplnkov Googlu</translation>
 <translation id="5596627076506792578">Ďalšie možnosti</translation>
@@ -1625,7 +1624,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="784934925303690534">Časové obdobie</translation>
 <translation id="2496180316473517155">História prehliadania</translation>
 <translation id="8662811608048051533">Odhlási vás z väčšiny webov.</translation>
-<translation id="8218628800671693884">Odhlási vás z väčšiny webov, ale nie z účtu Brave Software.</translation>
 <translation id="2017836877785168846">Vymaže históriu a automaticky doplňované výrazy v paneli s adresou.</translation>
 <translation id="8096327394278038498">Vymaže históriu a záznamy automatického dopĺňania v paneli s adresou. Váš účet Brave Software môže mať ďalšie formy histórie prehliadania na adrese <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Vymaže históriu zo všetkých prihlásených zariadení. Váš účet Brave Software môže mať ďalšie formy histórie prehliadania na adrese <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7754704193130578113">Pred každým sťahovaním sa spýtať, kam uložiť súbor</translation>
 <translation id="5713072761819014678">Odpojiť účet služby Disk Brave Software</translation>
 <translation id="486635084936119914">Automaticky otvoriť určité typy súborov po ich stiahnutí</translation>
+<translation id="3653160965917900914">Sieťové zdieľané úložiská</translation>
+<translation id="5763315388120433852">Nastaviť alebo spravovať sieťové zdieľané úložiská</translation>
 <translation id="2367199180085172140">Pridať zdieľanie súboru</translation>
+<translation id="247051149076336810">Webová adresa zdieľaného úložiska</translation>
 <translation id="5247051749037287028">Zobrazovaný názov (voliteľné)</translation>
 <translation id="6091761513005122595">Zdieľané úložisko sa úspešne pripojilo.</translation>
 <translation id="9024158959543687197">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Skontrolujte jeho webovú adresu a skúste to znova.</translation>
@@ -1700,6 +1701,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2148219725039824548">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Uvedené úložisko sa v sieti nenašlo.</translation>
 <translation id="7234406375359457793">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Dané úložisko nie je podporované.</translation>
 <translation id="706626672220389329">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Dané úložisko je už pripojené.</translation>
+<translation id="5985458664595100876">Neplatný formát webovej adresy. Podporované formáty sú \\server\share a smb://server/share.</translation>
 <translation id="3101709781009526431">Dátum a čas</translation>
 <translation id="2059913712424898428">Časové pásmo</translation>
 <translation id="4547672827276975204">Nastaviť automaticky</translation>

@@ -838,7 +838,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6845038076637626672">Otevřít maximalizované</translation>
 <translation id="6860427144121307915">Otevřít na kartě</translation>
 <translation id="3074037959626057712">Přihlásili jste se a zapnuli jste synchronizaci.</translation>
-<translation id="6264422956566238156">Zapnuli jste synchronizaci</translation>
 <translation id="9125982323641182972">Získejte do Chromu chytré funkce Brave Software</translation>
 <translation id="7988117629517051942">Získejte více chytrých funkcí Brave Software</translation>
 <translation id="5596627076506792578">Další možnosti</translation>
@@ -1624,7 +1623,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="784934925303690534">Časové období</translation>
 <translation id="2496180316473517155">Historie procházení</translation>
 <translation id="8662811608048051533">Odhlásí vás z většiny webů.</translation>
-<translation id="8218628800671693884">Odhlásí vás z většiny webů. Z účtu Brave Software odhlášeni nebudete.</translation>
 <translation id="2017836877785168846">Vymaže historii a automatická dokončení v adresním řádku.</translation>
 <translation id="8096327394278038498">Vymaže historii a automatická dokončení v adresním řádku. Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici další druhy historie prohlížení zaznamenané ve vašem účtu Brave Software.</translation>
 <translation id="8122693181154564064">Vymaže historii ze všech zařízení, na kterých jste přihlášeni. Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici další druhy historie prohlížení zaznamenané ve vašem účtu Brave Software.</translation>
@@ -1691,7 +1689,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7754704193130578113">Před stažením se vždy zeptat na místo uložení každého souboru</translation>
 <translation id="5713072761819014678">Odpojit účet Disku Brave Software</translation>
 <translation id="486635084936119914">Určité typy souborů po stažení automaticky otevírat</translation>
+<translation id="3653160965917900914">Sdílená úložiště na síti</translation>
+<translation id="5763315388120433852">Nastavit nebo spravovat sdílená úložiště na síti.</translation>
 <translation id="2367199180085172140">Přidat sdílenou složku</translation>
+<translation id="247051149076336810">Adresa URL sdíleného úložiště</translation>
 <translation id="5247051749037287028">Zobrazovaný název (volitelné)</translation>
 <translation id="6091761513005122595">Sdílená složka byla úspěšně připojena.</translation>
 <translation id="9024158959543687197">Při připojování sdílené složky došlo k chybě. Zkontrolujte adresu URL sdíleného úložiště a zkuste to znovu.</translation>
@@ -1699,6 +1700,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2148219725039824548">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka v síti nebyla nalezena.</translation>
 <translation id="7234406375359457793">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka není podporována.</translation>
 <translation id="706626672220389329">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka je už připojená.</translation>
+<translation id="5985458664595100876">Neplatný formát adresy URL. Podporované formáty jsou \\server\share a smb://server/share.</translation>
 <translation id="3101709781009526431">Datum a čas</translation>
 <translation id="2059913712424898428">Časové pásmo</translation>
 <translation id="4547672827276975204">Nastavit automaticky</translation>

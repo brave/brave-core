@@ -839,7 +839,6 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="6845038076637626672">Ava maksimeeritult</translation>
 <translation id="6860427144121307915">Ava vahekaardil</translation>
 <translation id="3074037959626057712">Olete sisse logitud ja sünkroonimise sisse lülitanud</translation>
-<translation id="6264422956566238156">Olete sünkroonimise sisse lülitanud</translation>
 <translation id="9125982323641182972">Brave Software'i nutikus Brave'is</translation>
 <translation id="7988117629517051942">Hankige rohkem Brave Software'i nutikaid funktsioone</translation>
 <translation id="5596627076506792578">Rohkem valikuid</translation>
@@ -1626,7 +1625,6 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="784934925303690534">Ajavahemik</translation>
 <translation id="2496180316473517155">Sirvimise ajalugu</translation>
 <translation id="8662811608048051533">Logib teid enamikult saitidelt välja.</translation>
-<translation id="8218628800671693884">Logib teid enamikult saitidelt välja. Brave Software'i kontolt teid välja ei logita.</translation>
 <translation id="2017836877785168846">Kustutab aadressiribalt ajaloo ja automaatse täitmise teabe.</translation>
 <translation id="8096327394278038498">Kustutab aadressiribalt ajaloo ja automaatse täitmise andmed. Aadressil <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> võib teie Brave Software'i kontol olla muus vormis sirvimisajalugu.</translation>
 <translation id="8122693181154564064">Kustutab ajaloo kõigist sisselogitud seadmetest. Aadressil <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> võib teie Brave Software'i kontol olla muus vormis sirvimisajalugu.</translation>
@@ -1693,7 +1691,10 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7754704193130578113">Küsi enne iga faili allalaadimist, kuhu see salvestada.</translation>
 <translation id="5713072761819014678">Brave Software Drive'i konto ühenduse katkestamine</translation>
 <translation id="486635084936119914">Teatud failitüübid avatakse pärast allalaadimist automaatselt</translation>
+<translation id="3653160965917900914">Failide võrguhoidlad</translation>
+<translation id="5763315388120433852">Seadistage või hallake failide võrguhoidlaid.</translation>
 <translation id="2367199180085172140">Lisa failide võrguhoidla</translation>
+<translation id="247051149076336810">Failide võrguhoidla URL</translation>
 <translation id="5247051749037287028">Kuvatav nimi (valikuline)</translation>
 <translation id="6091761513005122595">Jagatava üksuse ühendamine õnnestus.</translation>
 <translation id="9024158959543687197">Viga jagatava üksuse ühendamisel. Kontrollige failide jagamise URL-i ja proovige uuesti.</translation>
@@ -1701,6 +1702,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="2148219725039824548">Viga jagatava üksuse ühendamisel. Jagatavat üksust võrgust ei leitud.</translation>
 <translation id="7234406375359457793">Viga jagatava üksuse ühendamisel. Määratud jagatavat üksust ei toetata.</translation>
 <translation id="706626672220389329">Viga jagatava üksuse ühendamisel. Määratud jagatav üksus on juba ühendatud.</translation>
+<translation id="5985458664595100876">URL-i sobimatu vorming. Toetatud vormingud on \\server\share ja smb://server/share.</translation>
 <translation id="3101709781009526431">Kuupäev ja kellaaeg</translation>
 <translation id="2059913712424898428">Ajavöönd</translation>
 <translation id="4547672827276975204">Määra automaatselt</translation>

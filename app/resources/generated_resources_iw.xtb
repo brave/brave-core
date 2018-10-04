@@ -838,7 +838,6 @@
 <translation id="6845038076637626672">פתח בגודל מרבי</translation>
 <translation id="6860427144121307915">פתח בכרטיסייה</translation>
 <translation id="3074037959626057712">נכנסת לחשבונך והפעלת את הסנכרון</translation>
-<translation id="6264422956566238156">הפעלת את הסינכרון</translation>
 <translation id="9125982323641182972">‏תכונות חכמות של Brave Software</translation>
 <translation id="7988117629517051942">‏גישה אל עוד יכולות חכמות של Brave Software</translation>
 <translation id="5596627076506792578">אפשרויות נוספות</translation>
@@ -1624,7 +1623,6 @@
 <translation id="784934925303690534">טווח זמן</translation>
 <translation id="2496180316473517155">היסטוריית גלישה</translation>
 <translation id="8662811608048051533">תבוצע יציאה שלך מרוב האתרים.</translation>
-<translation id="8218628800671693884">‏תבוצע יציאה שלך מרוב האתרים. לא תבוצע יציאה מחשבון Brave Software שלך.</translation>
 <translation id="2017836877785168846">מנקה את ההיסטוריה וההשלמות האוטומטיות בסרגל הכתובות</translation>
 <translation id="8096327394278038498">‏ניקוי ההיסטוריה וההשלמות האוטומטיות בסרגל הכתובות. ייתכן שלחשבון Brave Software שלך יהיו צורות אחרות של היסטוריית גלישה בכתובת <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">‏ניקוי ההיסטוריה מכל המכשירים שבהם המשתמש נכנס לחשבון. ייתכן שלחשבון Brave Software שלך יהיו צורות אחרות של היסטוריית גלישה בכתובת <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1691,7 +1689,10 @@
 <translation id="7754704193130578113">שאל היכן לשמור כל קובץ לפני הורדתו</translation>
 <translation id="5713072761819014678">‏נתק חשבון Brave Software Drive</translation>
 <translation id="486635084936119914">פתיחת סוגי קבצים מסוימים באופן אוטומטי לאחר הורדתם</translation>
+<translation id="3653160965917900914">התקני רשת לשיתוף קבצים</translation>
+<translation id="5763315388120433852">הגדרה או ניהול של התקני רשת לשיתוף קבצים.</translation>
 <translation id="2367199180085172140">הוספת שיתוף קובץ</translation>
+<translation id="247051149076336810">כתובת אתר של התקן רשת לשיתוף קבצים</translation>
 <translation id="5247051749037287028">שם תצוגה (אופציונלי)</translation>
 <translation id="6091761513005122595">התקן הרשת לשיתוף קבצים נטען בהצלחה.</translation>
 <translation id="9024158959543687197">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. יש לבדוק את כתובת האתר של ההתקן ולנסות שוב.</translation>
@@ -1699,6 +1700,7 @@
 <translation id="2148219725039824548">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. ההתקן שצוין לא נמצא ברשת.</translation>
 <translation id="7234406375359457793">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. ההתקן שצוין אינו נתמך.</translation>
 <translation id="706626672220389329">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. ההתקן שצוין כבר נטען.</translation>
+<translation id="5985458664595100876">‏פורמט כתובת האתר לא חוקי. הפורמטים הנתמכים הם ‎\\server\share ו-smb://server/share.</translation>
 <translation id="3101709781009526431">תאריך ושעה</translation>
 <translation id="2059913712424898428">אזור זמן</translation>
 <translation id="4547672827276975204">הגדרה באופן אוטומטי</translation>
@@ -2453,6 +2455,7 @@
 <translation id="1607139524282324606">ניקוי רשומה</translation>
 <translation id="6025215716629925253">התחקות אחר ערימה</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;שורה אחת לא מוצגת&gt;}two{&lt;$1 שורות לא מוצגות&gt;}many{&lt;$1 שורות לא מוצגות&gt;}other{&lt;$1 שורות לא מוצגות&gt;}}</translation>
+<translation id="5334899159203764908">אפשר לקרוא מידע נוסף לגבי <ph name="BEGIN_LINK"/>גישת אתרים<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">מתן הרשאה לתוסף הזה לקרוא ולשנות את כל הנתונים שלך באתרים שאליהם נכנסת:</translation>
 <translation id="407173827865827707">בזמן לחיצה</translation>
 <translation id="6455264371803474013">באתרים ספציפיים</translation>

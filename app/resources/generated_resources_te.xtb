@@ -835,7 +835,6 @@
 <translation id="6845038076637626672">గరిష్టీకరించిన దాన్ని తెరువు</translation>
 <translation id="6860427144121307915">ట్యాబ్‌లో తెరువు</translation>
 <translation id="3074037959626057712">మీరు సైన్ ఇన్ చేసి, సింక్‌ను ఆన్ చేసారు</translation>
-<translation id="6264422956566238156">మీరు సింక్‌ని ఆన్ చేసారు</translation>
 <translation id="9125982323641182972">Braveలో Brave Software స్మార్ట్‌లను పొందండి</translation>
 <translation id="7988117629517051942">మరిన్ని Brave Software స్మార్ట్‌లను పొందండి</translation>
 <translation id="5596627076506792578">మరిన్ని ఎంపికలు</translation>
@@ -1622,7 +1621,6 @@
 <translation id="784934925303690534">సమయ పరిధి</translation>
 <translation id="2496180316473517155">బ్రౌజింగ్ చరిత్ర</translation>
 <translation id="8662811608048051533">చాలా సైట్‌ల నుండి మిమ్మల్ని సైన్ అవుట్ చేస్తుంది.</translation>
-<translation id="8218628800671693884">చాలా సైట్‌ల నుండి మిమ్మల్ని సైన్ అవుట్ చేస్తుంది. మీరు మీ Brave Software ఖాతా నుండి సైన్ అవుట్ చేయబడరు.</translation>
 <translation id="2017836877785168846">చిరునామా బార్‌లో చరిత్రను మరియు స్వీయ పూరణలను క్లియర్ చేస్తుంది.</translation>
 <translation id="8096327394278038498">చిరునామా బార్‌లో చరిత్ర మరియు స్వీయ పూరణలను తొలగిస్తుంది. మీ Brave Software ఖాతా <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>లో ఇతర రూపాల్లో ఉన్న బ్రౌజింగ్ చరిత్రను కలిగి ఉండవచ్చు.</translation>
 <translation id="8122693181154564064">సైన్ ఇన్ చేసిన అన్ని పరికరాల నుండి చరిత్రను తొలగిస్తుంది. మీ Brave Software ఖాతా <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>లో ఇతర రూపాల్లో ఉన్న బ్రౌజింగ్ చరిత్రను కలిగి ఉండవచ్చు.</translation>
@@ -1689,7 +1687,10 @@
 <translation id="7754704193130578113">ప్రతి ఫైల్‌ను డౌన్‌లోడ్ చేసే ముందు ఎక్కడ సేవ్ చెయ్యాలో అడుగు</translation>
 <translation id="5713072761819014678">Brave Software డిస్క్ ఖాతాను డిస్‌కనెక్ట్ చేయి</translation>
 <translation id="486635084936119914">డౌన్‌లోడ్ చేసిన తర్వాత స్వయంచాలకంగా నిర్దిష్ట ఫైల్ రకాలను తెరువు</translation>
+<translation id="3653160965917900914">నెట్‌వర్క్ ఫైల్ షేర్‌లు</translation>
+<translation id="5763315388120433852">నెట్‌వర్క్ ఫైల్ షేర్‌లను సెటప్ చేయండి లేదా నిర్వహించండి.</translation>
 <translation id="2367199180085172140">ఫైల్ షేర్‌ని జోడించండి</translation>
+<translation id="247051149076336810">ఫైల్ షేర్ URL</translation>
 <translation id="5247051749037287028">ప్రదర్శన పేరు (ఐచ్ఛికం)</translation>
 <translation id="6091761513005122595">షేర్ విజయవంతంగా మౌంట్ చేయబడింది.</translation>
 <translation id="9024158959543687197">షేర్‌ను మౌంట్ చేయడంలో లోపం ఏర్పడింది. ఫైల్ షేర్ URLని తనిఖీ చేసి, ఆపై మళ్లీ ప్రయత్నించండి.</translation>
@@ -1697,6 +1698,7 @@
 <translation id="2148219725039824548">షేర్‌ను మౌంట్ చేయడంలో ఎర్రర్ ఏర్పడింది. పేర్కొన్న షేర్ నెట్‌వర్క్‌లో కనుగొనబడలేదు.</translation>
 <translation id="7234406375359457793">షేర్‌ను మౌంట్ చేయడంలో ఎర్రర్ ఏర్పడింది. పేర్కొన్న షేర్‌కు మద్దుత లేదు.</translation>
 <translation id="706626672220389329">షేర్‌ను మౌంట్ చేయడంలో ఎర్రర్ ఏర్పడింది. పేర్కొన్న షేర్ ఇప్పటికే మౌంట్ చేయబడింది.</translation>
+<translation id="5985458664595100876">URL ఫార్మాట్ చెల్లదు. మద్దతు ఉన్న ఫార్మాట్‌లు \\server\share మరియు smb://server/share.</translation>
 <translation id="3101709781009526431">తేదీ మరియు సమయం</translation>
 <translation id="2059913712424898428">సమయ మండలి</translation>
 <translation id="4547672827276975204">స్వయంచాలకంగా సెట్ చేయి</translation>
