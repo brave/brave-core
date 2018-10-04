@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H_
-#define BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_FACTORY_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_FACTORY_H_
 
 #include "base/macros.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
@@ -14,23 +14,23 @@ template <typename T> struct DefaultSingletonTraits;
 
 namespace brave_sync {
 
-class Controller;
+class BraveSyncService;
 
-class ControllerFactory : public BrowserContextKeyedServiceFactory {
+class BraveSyncServiceFactory : public BrowserContextKeyedServiceFactory {
 public:
-  static Controller* GetForBrowserContext(
+  static BraveSyncService* GetForBrowserContext(
       content::BrowserContext* browser_context);
 
-  static Controller* GetForBrowserContextIfExists(
+  static BraveSyncService* GetForBrowserContextIfExists(
       content::BrowserContext* browser_context);
 
-  static ControllerFactory* GetInstance();
+  static BraveSyncServiceFactory* GetInstance();
 
 private:
-  friend struct base::DefaultSingletonTraits<ControllerFactory>;
+  friend struct base::DefaultSingletonTraits<BraveSyncServiceFactory>;
 
-  ControllerFactory();
-  ~ControllerFactory() override;
+  BraveSyncServiceFactory();
+  ~BraveSyncServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
@@ -41,11 +41,11 @@ private:
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
 
-  DISALLOW_COPY_AND_ASSIGN(ControllerFactory);
+  DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceFactory);
 };
 
 
 } // namespace brave_sync
 
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_CONTROLLER_FACTORY_H_
+#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_FACTORY_H_

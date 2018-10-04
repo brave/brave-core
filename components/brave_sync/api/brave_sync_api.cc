@@ -10,7 +10,7 @@
 #include "brave/components/brave_sync/client/client_factory.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/jslib_messages.h"
-#include "brave/components/brave_sync/controller_factory.h"
+#include "brave/components/brave_sync/brave_sync_service_factory.h"
 
 namespace extensions {
 namespace api {
@@ -220,7 +220,7 @@ ExtensionFunction::ResponseAction BraveSyncExtensionLoadedFunction::Run() {
   LOG(ERROR) << "TAGAB BraveSyncExtensionLoadedFunction::Run";
 
   // Usually this is the earlier point of initialization
-  ::brave_sync::Controller* brave_sync_controller = ::brave_sync::ControllerFactory::GetForBrowserContext(browser_context());
+  ::brave_sync::BraveSyncService* brave_sync_controller = ::brave_sync::BraveSyncServiceFactory::GetForBrowserContext(browser_context());
   LOG(ERROR) << "TAGAB BraveSyncExtensionLoadedFunction::Run brave_sync_controller="<<brave_sync_controller;
 
   // Also inform sync client extension started
@@ -230,5 +230,5 @@ ExtensionFunction::ResponseAction BraveSyncExtensionLoadedFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-} // namespace api
-} // namespace extensions
+}  // namespace api
+}  // namespace extensions
