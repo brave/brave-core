@@ -8,6 +8,7 @@
 #include <map>
 #include "base/macros.h"
 #include "base/memory/singleton.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/bookmarks_client.h"
 #include "brave/components/brave_sync/controller.h"
 #include "brave/components/brave_sync/client/client.h"
@@ -80,7 +81,6 @@ public:
   bool IsSyncInitialized() override;
 
 private:
-  DISALLOW_COPY_AND_ASSIGN(ControllerImpl);
   friend struct base::DefaultSingletonTraits<ControllerImpl>;
 
   void SetProfile(Profile *profile);
@@ -286,6 +286,9 @@ private:
   std::unique_ptr<base::RepeatingTimer> timer_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   SEQUENCE_CHECKER(sequence_checker_);
+
+  base::WeakPtrFactory<ControllerImpl> weak_ptr_factory_;
+  DISALLOW_COPY_AND_ASSIGN(ControllerImpl);
 };
 
 } // namespace brave_sync
