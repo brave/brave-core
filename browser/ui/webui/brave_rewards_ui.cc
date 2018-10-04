@@ -153,15 +153,15 @@ void RewardsDOMHandler::GetAllBalanceReports() {
     for (auto const& report : reports) {
       const brave_rewards::BalanceReport oldReport = report.second;
       auto newReport = std::make_unique<base::DictionaryValue>();
-      newReport->SetString("opening", std::to_string(oldReport.opening_balance));
-      newReport->SetString("closing", std::to_string(oldReport.closing_balance));
-      newReport->SetString("grant", std::to_string(oldReport.grants));
-      newReport->SetString("deposit", std::to_string(oldReport.deposits));
-      newReport->SetString("ads", std::to_string(oldReport.earning_from_ads));
-      newReport->SetString("contribute", std::to_string(oldReport.auto_contribute));
-      newReport->SetString("donation", std::to_string(oldReport.recurring_donation));
-      newReport->SetString("tips", std::to_string(oldReport.one_time_donation));
-      newReport->SetString("total", std::to_string(oldReport.total));
+      newReport->SetString("opening", oldReport.opening_balance);
+      newReport->SetString("closing", oldReport.closing_balance);
+      newReport->SetString("grant", oldReport.grants);
+      newReport->SetString("deposit", oldReport.deposits);
+      newReport->SetString("ads", oldReport.earning_from_ads);
+      newReport->SetString("contribute", oldReport.auto_contribute);
+      newReport->SetString("donation", oldReport.recurring_donation);
+      newReport->SetString("tips", oldReport.one_time_donation);
+      newReport->SetString("total", oldReport.total);
       newReports.SetDictionary(report.first, std::move(newReport));
     }
 

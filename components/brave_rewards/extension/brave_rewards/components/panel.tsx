@@ -12,7 +12,7 @@ import BigNumber from 'bignumber.js'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
-import * as utils from '../../../ui/utils'
+import * as utils from '../utils'
 
 interface Props extends RewardsExtension.ComponentProps {
   windowId: number
@@ -104,42 +104,19 @@ export class Panel extends React.Component<Props, State> {
   getWalletSummary = () => {
     const { walletProperties, report } = this.props.rewardsPanelData
     const { rates } = walletProperties
-    const contributionMonthly = 10 // TODO NZ fix with new reports refactor https://github.com/brave/brave-core/pull/409
-    const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
 
-    let props = {
-      contribute: {
-        tokens: contributionMonthly,
-        converted: convertedMonthly
-      }
-    }
+    let props = {}
 
     if (report) {
-      if (report.ads) {
-        props['ads'] = {
-          tokens: report.ads,
-          converted: utils.convertBalance(report.ads, rates)
-        }
-      }
+      for (let key in report) {
+        const item = report[key]
 
-      if (report.donations) {
-        props['donation'] = {
-          tokens: report.donations,
-          converted: utils.convertBalance(report.donations, rates)
-        }
-      }
-
-      if (report.grants) {
-        props['grant'] = {
-          tokens: report.grants,
-          converted: utils.convertBalance(report.grants, rates)
-        }
-      }
-
-      if (report.oneTime) {
-        props['tips'] = {
-          tokens: report.oneTime,
-          converted: utils.convertBalance(report.oneTime, rates)
+        if (item.length > 1 && key !== 'total') {
+          const tokens = utils.convertProbiToDouble(item)
+          props[key] = {
+            tokens,
+            converted: utils.convertBalance(tokens, rates)
+          }
         }
       }
     }

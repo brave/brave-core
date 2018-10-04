@@ -16,7 +16,6 @@ import {
   WalletSummary
 } from 'brave-ui/features/rewards'
 import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
-import { Props as WalletSummaryProps } from 'brave-ui/features/rewards/walletSummary'
 import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
 
 // Utils
@@ -181,7 +180,7 @@ class PageWallet extends React.Component<Props, State> {
     const { walletInfo, reports } = this.props.rewardsData
     const { rates } = walletInfo
 
-    let props = {} as WalletSummaryProps
+    let props = {}
 
     const currentTime = new Date()
     const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
@@ -190,7 +189,7 @@ class PageWallet extends React.Component<Props, State> {
       for (let key in report) {
         const item = report[key]
 
-        if (item.length > 1 || key === 'total') {
+        if (item.length > 1 && key !== 'total') {
           const tokens = utils.convertProbiToDouble(item)
           props[key] = {
             tokens,
@@ -200,7 +199,9 @@ class PageWallet extends React.Component<Props, State> {
       }
     }
 
-    return props
+    return {
+      report: props
+    }
   }
 
   render () {

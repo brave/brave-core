@@ -6,15 +6,15 @@
 namespace brave_rewards {
 
   BalanceReport::BalanceReport() :
-      opening_balance(0),
-      closing_balance(0),
-      deposits(0),
-      grants(0),
-      earning_from_ads(0),
-      auto_contribute(0),
-      recurring_donation(0),
-      one_time_donation(0),
-      total(0) {
+      opening_balance("0"),
+      closing_balance("0"),
+      deposits("0"),
+      grants("0"),
+      earning_from_ads("0"),
+      auto_contribute("0"),
+      recurring_donation("0"),
+      one_time_donation("0"),
+      total("0") {
   }
 
   BalanceReport::~BalanceReport() { }

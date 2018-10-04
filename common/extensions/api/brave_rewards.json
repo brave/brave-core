@@ -138,33 +138,41 @@
             "name": "properties",
             "type": "object",
             "properties": {
-              "openingBalance": {
-                "type": "double",
-                "description": "balance defined in BAT"
+              "ads": {
+                "type": "string",
+                "description": "balance defined in probi"
               },
-              "closingBalance": {
-                "type": "double",
-                "description": "balance defined in BAT"
+              "closing": {
+                "type": "string",
+                "description": "balance defined in probi"
               },
-              "grants": {
-                "type": "double",
-                "description": "balance defined in BAT"
+              "contribute": {
+                "type": "string",
+                "description": "balance defined in probi"
               },
-              "earningFromAds": {
-                "type": "double",
-                "description": "balance defined in BAT"
+              "deposit": {
+                "type": "string",
+                "description": "balance defined in probi"
               },
-              "autoContribute": {
-                "type": "double",
-                "description": "balance defined in BAT"
+              "grant": {
+                "type": "string",
+                "description": "balance defined in probi"
               },
-              "recurringDonation": {
-                "type": "double",
-                "description": "balance defined in BAT"
+              "opening": {
+                "type": "string",
+                "description": "balance defined in probi"
               },
-              "oneTimeDonation": {
-                "type": "double",
-                "description": "balance defined in BAT"
+              "recurring": {
+                "type": "string",
+                "description": "balance defined in probi"
+              },
+              "tips": {
+                "type": "string",
+                "description": "balance defined in probi"
+              },
+              "total": {
+                "type": "string",
+                "description": "balance defined in probi"
               }
             }
           }
