@@ -46,7 +46,8 @@ ControllerImpl::ControllerImpl(Profile *profile) :
   sync_client_(nullptr),
   sync_initialized_(false),
   profile_(nullptr),
-  timer_(std::make_unique<base::RepeatingTimer>()) {
+  timer_(std::make_unique<base::RepeatingTimer>()),
+  weak_ptr_factory_(this) {
   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl CTOR";
   LOG(ERROR) << base::debug::StackTrace().ToString();
   LOG(ERROR) << "TAGAB ---------------------";
@@ -123,9 +124,9 @@ void ControllerImpl::SetProfile(Profile *profile) {
   LOG(ERROR) << "TAGAB  ControllerImpl::SetProfile sync_client_="<<sync_client_;
 
   LOG(ERROR) << "TAGAB  ControllerImpl::SetProfile sync_client_ null, post in UI ControllerImpl::InitJsLib";
-  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
-    FROM_HERE, base::Bind(&ControllerImpl::InitJsLib,
-         base::Unretained(this), false));
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
+    ->PostTask(FROM_HERE, base::Bind(&ControllerImpl::InitJsLib,
+                                     base::Unretained(this), false));
 
   StartLoop();
 }
@@ -140,7 +141,8 @@ void ControllerImpl::Shutdown() {
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::ShutdownFileWork, base::Unretained(this))
+    base::Bind(&ControllerImpl::ShutdownFileWork,
+               weak_ptr_factory_.GetWeakPtr())
   );
 }
 
@@ -213,7 +215,8 @@ void ControllerImpl::OnDeleteDevice(const std::string &device_id) {
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnDeleteDeviceFileWork, base::Unretained(this), device_id)
+    base::Bind(&ControllerImpl::OnDeleteDeviceFileWork,
+               weak_ptr_factory_.GetWeakPtr(), device_id)
   );
 }
 
@@ -252,7 +255,8 @@ void ControllerImpl::OnResetSync() {
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnResetSyncFileWork, base::Unretained(this), device_id)
+    base::Bind(&ControllerImpl::OnResetSyncFileWork,
+               weak_ptr_factory_.GetWeakPtr(), device_id)
   );
 }
 
@@ -262,8 +266,8 @@ void ControllerImpl::OnResetSyncFileWork(const std::string &device_id) {
   sync_obj_map_->DestroyDB();
 
   content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
-    base::Bind(&ControllerImpl::OnResetSyncPostFileUiWork, base::Unretained(this))
-  );
+    base::Bind(&ControllerImpl::OnResetSyncPostFileUiWork,
+               base::Unretained(this)));
 }
 
 void ControllerImpl::OnResetSyncPostFileUiWork() {
@@ -286,7 +290,9 @@ void ControllerImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCallback &
   // Jump to task runner thread to perform FILE operation and then back to UI
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::GetSettingsAndDevicesImpl, base::Unretained(this), base::Passed(std::move(settings)), callback)
+    base::Bind(&ControllerImpl::GetSettingsAndDevicesImpl,
+               weak_ptr_factory_.GetWeakPtr(),
+               base::Passed(std::move(settings)), callback)
   );
 }
 
@@ -300,7 +306,8 @@ void ControllerImpl::GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Setti
 
   // Jump back to UI with an answer
   content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
-    base::Bind(callback, base::Passed(std::move(settings)), base::Passed(std::move(devices)))
+    base::Bind(callback, base::Passed(std::move(settings)),
+               base::Passed(std::move(devices)))
   );
 }
 
@@ -521,9 +528,10 @@ void ControllerImpl::OnGetExistingObjects(const std::string &category_name,
   // Jump to task runner thread to perform FILE operation and then back to UI
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnGetExistingObjectsFileWork, base::Unretained(this),
-    category_name, base::Passed(std::move(records)), last_record_time_stamp, is_truncated )
-  );
+    base::Bind(&ControllerImpl::OnGetExistingObjectsFileWork,
+               weak_ptr_factory_.GetWeakPtr(), category_name,
+               base::Passed(std::move(records)), last_record_time_stamp,
+               is_truncated));
 }
 
 void ControllerImpl::OnGetExistingObjectsFileWork(const std::string &category_name,
@@ -662,9 +670,9 @@ void ControllerImpl::OnResolvedSyncRecords(const std::string &category_name,
   // Jump to thread allowed perform file operations
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnResolvedSyncRecordsFileWork, base::Unretained(this),
-    category_name,
-    base::Passed(std::move(records)))
+    base::Bind(&ControllerImpl::OnResolvedSyncRecordsFileWork,
+               weak_ptr_factory_.GetWeakPtr(), category_name,
+               base::Passed(std::move(records)))
   );
 }
 
@@ -722,9 +730,9 @@ void ControllerImpl::OnResolvedPreferences(const RecordsList &records) {
   // Inform devices list chain has been changed
   LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged()";
 
-  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
-    FROM_HERE, base::Bind(&ControllerImpl::TriggerOnSyncStateChanged,
-         base::Unretained(this)));
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
+    ->PostTask(FROM_HERE, base::Bind(&ControllerImpl::TriggerOnSyncStateChanged,
+                                     base::Unretained(this)));
 
 
   LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged() done";
@@ -816,11 +824,11 @@ void ControllerImpl::OnSaveBookmarkOrderInternal(const std::string &order,
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork, base::Unretained(this),
-    node_id,
-    order,
-    action)
-  );
+    base::Bind(&ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork,
+               weak_ptr_factory_.GetWeakPtr(),
+               node_id,
+               order,
+               action));
 }
 
 void ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t &bookmark_local_id,
@@ -1074,13 +1082,13 @@ void ControllerImpl::CreateUpdateDeleteBookmarks(
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::CreateUpdateDeleteBookmarksFileWork, base::Unretained(this),
-    action,
-    list,
-    order_map,
-    addIdsToNotSynced,
-    isInitialSync)
-  );
+    base::Bind(&ControllerImpl::CreateUpdateDeleteBookmarksFileWork,
+               weak_ptr_factory_.GetWeakPtr(),
+               action,
+               list,
+               order_map,
+               addIdsToNotSynced,
+               isInitialSync));
 }
 
 void ControllerImpl::CreateUpdateDeleteBookmarksFileWork(
@@ -1126,10 +1134,11 @@ void ControllerImpl::BookmarkMoved(
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
   LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
 
-  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
-    FROM_HERE, base::Bind(&ControllerImpl::BookmarkMovedQueryNewOrderUiWork,
-         base::Unretained(this), node_id, prev_item_order, next_item_order,
-         parent_folder_order));
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
+    ->PostTask(FROM_HERE,
+               base::Bind(&ControllerImpl::BookmarkMovedQueryNewOrderUiWork,
+                          base::Unretained(this), node_id, prev_item_order,
+                          next_item_order,parent_folder_order));
 }
 
 void ControllerImpl::BookmarkMovedQueryNewOrderUiWork(
@@ -1192,9 +1201,11 @@ void ControllerImpl::BookmarkAdded(
   LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
   LOG(ERROR) << "TAGAB parent_folder_order="<<parent_folder_order;
 
-  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)->PostTask(
-    FROM_HERE, base::Bind(&ControllerImpl::BookmarkAddedQueryNewOrderUiWork,
-         base::Unretained(this), node_id, prev_item_order, next_item_order, parent_folder_order));
+  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
+    ->PostTask(FROM_HERE,
+               base::Bind(&ControllerImpl::BookmarkAddedQueryNewOrderUiWork,
+                          base::Unretained(this), node_id, prev_item_order,
+                          next_item_order, parent_folder_order));
 }
 
 void ControllerImpl::BookmarkAddedQueryNewOrderUiWork(
@@ -1308,7 +1319,7 @@ void ControllerImpl::LoopProc() {
 
   // task_runner_->PostTask(FROM_HERE,
   // base::Bind(&ControllerImpl::LoopProcThreadAligned,
-  //     base::Unretained(this)));
+  //     weak_ptr_factory_.GetWeakPtr()));
   //in UI THREAD
 
   LoopProcThreadAligned();
