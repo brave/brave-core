@@ -131,7 +131,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       gradientTop
     } = this.props
 
-    const enabled = this.hasGrants(grants)
+    const hasGrants = this.hasGrants(grants)
 
     return (
       <>
@@ -174,20 +174,23 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                 ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
                 : null
               }
-              <StyleGrantButton>
-                <Button
-                  text={getLocale('grants')}
-                  size={'small'}
-                  type={'subtle'}
-                  level={'secondary'}
-                  onClick={enabled ? this.toggleGrantDetails : undefined}
-                  disabled={!enabled}
-                  icon={{ position: 'after', image: this.state.grantDetails && enabled ? <CaratUpIcon /> : <CaratDownIcon /> }}
-                />
-              </StyleGrantButton>
+              {
+                hasGrants
+                ? <StyleGrantButton>
+                  <Button
+                    text={getLocale('grants')}
+                    size={'small'}
+                    type={'subtle'}
+                    level={'secondary'}
+                    onClick={this.toggleGrantDetails}
+                    icon={{ position: 'after', image: this.state.grantDetails ? <CaratUpIcon /> : <CaratDownIcon /> }}
+                  />
+                </StyleGrantButton>
+                : null
+              }
             </StyledBalance>
             {
-              this.state.grantDetails && enabled
+              this.state.grantDetails && hasGrants
               ? <StyledGrantWrapper>
                 {
                   grants && grants.map((grant: Grant, i: number) => {

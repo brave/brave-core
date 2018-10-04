@@ -29,6 +29,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
       onAlertClose: doNothing
     }
     const showAlert = boolean('Show alert', false)
+    const showGrant = boolean('Show grants', false)
 
     return (
       <WalletWrapper
@@ -51,7 +52,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
             icon: <WalletImportIcon />
           }
         ]}
-        grants={object('Grants', [
+        grants={showGrant ? [
           {
             tokens: 8,
             expireDate: '7/15/2018'
@@ -64,7 +65,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
             tokens: 10,
             expireDate: '10/10/2018'
           }
-        ])}
+        ] : []}
         alert={showAlert ? alert : undefined}
       >
        Some content
