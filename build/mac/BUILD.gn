@@ -17,7 +17,12 @@ action("sign_app") {
 
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/sign_app.sh"
-  provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
+  if (brave_channel == "") {
+    provisioning_profile = "//brave/build/mac/release.provisionprofile"
+  }
+  else {
+    provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
+  }
 
   inputs = [
     shell_script,
