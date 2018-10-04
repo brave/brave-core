@@ -309,17 +309,18 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerPreserved) {
                                  TRAFFIC_ANNOTATION_FOR_TESTS);
     net::HttpRequestHeaders headers;
     std::string original_referrer = "https://hello.brianbondy.com/about";
-    headers.SetHeader(kRefererHeader, original_referrer);
+    request->SetReferrer(original_referrer);
 
     std::shared_ptr<brave::BraveRequestInfo>
         brave_request_info(new brave::BraveRequestInfo());
     brave::ResponseCallback callback;
-    int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
+    GURL new_url;
+    int ret = brave::OnBeforeURLRequest_SiteHacksWork(request.get(), &new_url,
         callback, brave_request_info);
-    std::string referrer;
-    headers.GetHeader(kRefererHeader, &referrer);
     EXPECT_EQ(ret, net::OK);
-    EXPECT_STREQ(referrer.c_str(), original_referrer.c_str());
+    // new_url should not be set
+    EXPECT_STREQ(new_url.spec().c_str(), "");
+    EXPECT_STREQ(request->referrer().c_str(), original_referrer.c_str());
   });
 }
 
@@ -335,19 +336,20 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
     std::unique_ptr<net::URLRequest> request =
         context()->CreateRequest(url, net::IDLE, &test_delegate,
                                  TRAFFIC_ANNOTATION_FOR_TESTS);
-    net::HttpRequestHeaders headers;
+
     std::string original_referrer = "https://hello.brianbondy.com/about";
-    headers.SetHeader(kRefererHeader, original_referrer);
+    request->SetReferrer(original_referrer);
 
     std::shared_ptr<brave::BraveRequestInfo>
         brave_request_info(new brave::BraveRequestInfo());
     brave::ResponseCallback callback;
-    int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
+    GURL new_url;
+    int ret = brave::OnBeforeURLRequest_SiteHacksWork(request.get(), &new_url,
         callback, brave_request_info);
-    std::string referrer;
-    headers.GetHeader(kRefererHeader, &referrer);
     EXPECT_EQ(ret, net::OK);
-    EXPECT_STREQ(referrer.c_str(), url.GetOrigin().spec().c_str());
+    // new_url must be set to trigger an internal redirect
+    EXPECT_STREQ(new_url.spec().c_str(), url.spec().c_str());
+    EXPECT_STREQ(request->referrer().c_str(), url.GetOrigin().spec().c_str());
   });
 }
 
