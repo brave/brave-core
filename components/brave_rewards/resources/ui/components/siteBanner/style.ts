@@ -78,6 +78,9 @@ export const StyledClose = styled<{}, 'button'>('button')`
   border: none;
   padding: 0;
   cursor: pointer;
+  width: 27px;
+  height: 27px;
+  color: #B8B9C4;
 `
 
 export const StyledLogoWrapper = styled<{}, 'div'>('div')`

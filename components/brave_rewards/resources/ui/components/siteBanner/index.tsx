@@ -186,7 +186,9 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     return (
       <StyledWrapper id={id} onKeyUp={this.onKeyUp} tabIndex={0}>
         <StyledBanner>
-          <StyledClose onClick={onClose}>{close}</StyledClose>
+          <StyledClose onClick={onClose}>
+            <CloseStrokeIcon />
+          </StyledClose>
           <StyledBannerImage bgImage={bgImage}>
             <StyledCenter>
               {domain}

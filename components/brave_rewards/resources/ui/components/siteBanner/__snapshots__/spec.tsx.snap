@@ -11,7 +11,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -34,7 +34,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   margin: 0 auto;
 }
 
-.c6 {
+.c7 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -62,7 +62,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   align-content: space-between;
 }
 
-.c13 {
+.c14 {
   -webkit-flex-basis: 336px;
   -ms-flex-preferred-size: 336px;
   flex-basis: 336px;
@@ -86,7 +86,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   background: #DBE3F3;
 }
 
-.c3 {
+.c4 {
   font-size: 38px;
   font-weight: 600;
   line-height: 0.74;
@@ -103,16 +103,19 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   border: none;
   padding: 0;
   cursor: pointer;
+  width: 27px;
+  height: 27px;
+  color: #B8B9C4;
 }
 
-.c7 {
+.c8 {
   padding-left: 45px;
   -webkit-flex-basis: 217px;
   -ms-flex-preferred-size: 217px;
   flex-basis: 217px;
 }
 
-.c9 {
+.c10 {
   background: inherit;
   -webkit-background-clip: text;
   color: transparent;
@@ -133,7 +136,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   user-select: none;
 }
 
-.c8 {
+.c9 {
   border: 6px solid #fff;
   border-radius: 50%;
   width: 160px;
@@ -144,7 +147,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   overflow: hidden;
 }
 
-.c10 {
+.c11 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -157,7 +160,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   flex-basis: calc(100% - 217px);
 }
 
-.c11 {
+.c12 {
   font-size: 28px;
   font-weight: 600;
   line-height: 1;
@@ -165,7 +168,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   margin: 41px 0 0;
 }
 
-.c12 {
+.c13 {
   font-family: Muli,sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -173,7 +176,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   padding-right: 37px;
 }
 
-.c14 {
+.c15 {
   font-size: 12px;
   color: #afb2f1;
   text-align: right;
@@ -181,11 +184,11 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   padding: 0 19px 0 55px;
 }
 
-.c15 {
+.c16 {
   color: #fff;
 }
 
-.c23 {
+.c24 {
   display: inline-block;
   margin-left: 6px;
   color: #A1A8F2;
@@ -193,11 +196,11 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   height: 17px;
 }
 
-.c22 {
+.c23 {
   color: rgba(255,255,255,0.65);
 }
 
-.c4 {
+.c5 {
   max-width: 1024px;
   padding: 126px 0 0 238px;
   margin: 0 auto;
@@ -207,7 +210,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   user-select: none;
 }
 
-.c16 {
+.c17 {
   position: relative;
   font-family: Poppins,sans-serif;
   --donate-content-padding: 0 19px 0 55px;
@@ -217,11 +220,11 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   --donate-funds-padding: 13px 12px 13px 24px;
 }
 
-.c17 {
+.c18 {
   padding: var(--donate-content-padding);
 }
 
-.c18 {
+.c19 {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
@@ -233,7 +236,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   max-width: 167px;
 }
 
-.c25 {
+.c26 {
   background: var(--donate-send-bg);
   font-size: 13px;
   font-weight: 600;
@@ -250,7 +253,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c26 {
+.c27 {
   vertical-align: middle;
   display: inline-block;
   margin-right: 15px;
@@ -259,19 +262,25 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   height: 29px;
 }
 
-.c24 {
+.c3 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c27 {
+.c25 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c19 {
+.c28 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c20 {
   font-family: Poppins,sans-serif;
   line-height: 1.3;
   display: -webkit-box;
@@ -286,7 +295,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c20 {
+.c21 {
   border-radius: 2px;
   text-align: center;
   display: -webkit-box;
@@ -316,7 +325,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   margin-right: var(--checkbox-box-spacing);
 }
 
-.c21 {
+.c22 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -342,43 +351,54 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   >
     <button
       className="c2"
-    />
+    >
+      <svg
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M15.77817 14.36396l7.07107-7.07107c.39053-.39052 1.0237-.39052 1.41422 0 .39052.39053.39052 1.0237 0 1.41422l-7.07107 7.07106 7.07107 7.07107c.39052.39053.39052 1.0237 0 1.41422-.39053.39052-1.0237.39052-1.41422 0l-7.07107-7.07107-7.07106 7.07107c-.39053.39052-1.0237.39052-1.41422 0-.39052-.39053-.39052-1.0237 0-1.41422l7.07107-7.07107L7.2929 8.70711c-.39052-.39053-.39052-1.0237 0-1.41422.39053-.39052 1.0237-.39052 1.41422 0l7.07106 7.07107z"
+        />
+      </svg>
+    </button>
     <div
-      className="c3"
+      className="c4"
     >
       <div
-        className="c4"
+        className="c5"
       />
     </div>
     <div
-      className="c5"
+      className="c6"
     >
       <div
-        className="c6"
+        className="c7"
       >
         <div
-          className="c7"
+          className="c8"
         >
           <div
-            className="c8"
+            className="c9"
           >
             <div
-              className="c9"
+              className="c10"
             >
               
             </div>
           </div>
         </div>
         <div
-          className="c10"
+          className="c11"
         >
           <div
-            className="c11"
+            className="c12"
           >
             MISSING: welcome
           </div>
           <div
-            className="c12"
+            className="c13"
           >
             <p>
               MISSING: rewardsBannerText1
@@ -390,63 +410,63 @@ exports[`List tests basic tests matches the snapshot 1`] = `
         </div>
       </div>
       <div
-        className="c13"
+        className="c14"
       >
         <div
-          className="c14"
+          className="c15"
         >
           MISSING: walletBalance
            
           <span
-            className="c15"
+            className="c16"
           >
              
             MISSING: tokens
           </span>
         </div>
         <div
-          className="c16"
+          className="c17"
           disabled={false}
         >
           <div
-            className="c17"
+            className="c18"
           >
             <div
-              className="c18"
+              className="c19"
             >
               MISSING: donationAmount
             </div>
             <div>
               <div
-                className="c19"
+                className="c20"
                 onClick={[Function]}
                 size="small"
                 type="dark"
               >
                 <span
-                  className="c20"
+                  className="c21"
                   disabled={false}
                   selected={false}
                   size="small"
                   type="dark"
                 />
                 <span
-                  className="c21"
+                  className="c22"
                   disabled={false}
                   size="small"
                 >
                   <span
-                    className="c22"
+                    className="c23"
                   >
                     MISSING: makeMonthly
                   </span>
                    
                   <span
-                    className="c23"
+                    className="c24"
                   >
                     <svg
                       aria-hidden="true"
-                      className="c24"
+                      className="c25"
                       focusable="false"
                       viewBox="0 0 32 32"
                     >
@@ -460,16 +480,16 @@ exports[`List tests basic tests matches the snapshot 1`] = `
             </div>
           </div>
           <button
-            className="c25"
+            className="c26"
             onClick={[Function]}
           >
             <span
-              className="c26"
+              className="c27"
               disabled={false}
             >
               <svg
                 aria-hidden="true"
-                className="c27"
+                className="c28"
                 focusable="false"
                 viewBox="0 0 32 32"
               >
