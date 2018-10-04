@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 12aa760c00b9d3d21e49f7ff71618d302fb50c6f..615bf73aa5e1a31e832907359d77cd0272fb5a52 100644
+index 5342af963014ded14e36c4a42764cc0d1008cec3..55fcaf1a38356caae45569804ef3ccfff9037ab9 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -191,6 +191,7 @@
+@@ -217,6 +217,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -10,7 +10,7 @@ index 12aa760c00b9d3d21e49f7ff71618d302fb50c6f..615bf73aa5e1a31e832907359d77cd02
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}">
            <category-default-setting
-@@ -205,6 +206,7 @@
+@@ -231,6 +232,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -18,7 +18,7 @@ index 12aa760c00b9d3d21e49f7ff71618d302fb50c6f..615bf73aa5e1a31e832907359d77cd02
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}">
            <media-picker label="$i18n{siteSettingsCameraLabel}" type="camera">
-@@ -227,11 +229,13 @@
+@@ -253,11 +255,13 @@
                toggle-on-label="$i18n{siteSettingsCookiesAllowedRecommended}"
                sub-option-label="$i18n{deleteDataPostSession}">
            </category-default-setting>
@@ -32,7 +32,7 @@ index 12aa760c00b9d3d21e49f7ff71618d302fb50c6f..615bf73aa5e1a31e832907359d77cd02
            <div id="site-data-trigger" class="settings-box" actionable
                on-click="onSiteDataTap_">
               <div class="start" id="cookiesLink">
-@@ -301,11 +305,13 @@
+@@ -327,11 +331,13 @@
        </template>
        <template is="dom-if" route-path="/content/javascript" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryJavascript}">
@@ -46,7 +46,7 @@ index 12aa760c00b9d3d21e49f7ff71618d302fb50c6f..615bf73aa5e1a31e832907359d77cd02
            <category-setting-exceptions
                category="{{ContentSettingsTypes.JAVASCRIPT}}"
                block-header="$i18n{siteSettingsBlock}">
-@@ -380,6 +386,19 @@
+@@ -406,6 +412,19 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
