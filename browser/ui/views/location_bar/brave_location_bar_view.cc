@@ -59,6 +59,7 @@ void BraveLocationBarView::OnChanged() {
 }
 
 void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
+  LocationBarView::ChildVisibilityChanged(child);
   // We should trigger Layout() when visibility of |brave_actions_| is changed.
   // When BraveActionsContainer::Update() is called by
   // BraveLocationBarView::Update(), the location bar's Layout() is triggered.
