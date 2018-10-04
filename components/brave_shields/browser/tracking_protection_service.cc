@@ -41,7 +41,10 @@ TrackingProtectionService::TrackingProtectionService()
       "scontent-sjc2-1.xx.fbcdn.net",
       "platform.twitter.com",
       "syndication.twitter.com",
-      "cdn.syndication.twimg.com"
+      "cdn.syndication.twimg.com",
+      // We whitelist this here so that the mock will get a chance
+      // to mock it instead.
+      "www.googletagservices.com"
     }),
     weak_factory_(this) {
 }
