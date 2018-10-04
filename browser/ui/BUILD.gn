@@ -108,6 +108,7 @@ source_set("ui") {
     "//brave/app/vector_icons:vector_icons",
     "//brave/components/brave_rewards/browser",
     "//brave/browser/tor",
+    "//brave/browser/resources:brave_settings_resources",
     "//brave/components/resources:brave_components_resources_grit",
     "//chrome/app:command_ids",
     "//chrome/common",

@@ -9,10 +9,18 @@
 
 #include "chrome/browser/ui/webui/settings/md_settings_ui.h"
 
+namespace content {
+class WebUIDataSource;
+}
+
+class Profile;
+
 class BraveMdSettingsUI : public settings::MdSettingsUI {
  public:
   BraveMdSettingsUI(content::WebUI* web_ui, const std::string& host);
   ~BraveMdSettingsUI() override;
+
+  static void AddResources(content::WebUIDataSource* html_source, Profile* profile);
 
   DISALLOW_COPY_AND_ASSIGN(BraveMdSettingsUI);
 };

@@ -4,9 +4,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 } // namespace settings
 #include "../../../../../../chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc"
 
+#include "brave/browser/ui/webui/brave_md_settings_ui.h"
+
 namespace settings {
 
-#if !defined(OS_CHROMEOS)
 void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
   LocalizedString localized_strings[] = {
     {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
@@ -15,12 +16,12 @@ void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));
 }
-#endif
 
 const char kWebRTCLearnMoreURL[] =
   "https://github.com/brave/brave-browser/wiki/WebRTC-Custom-Settings";
 
-void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profile) {
+void BraveAddCommonStrings(content::WebUIDataSource* html_source,
+                           Profile* profile) {
   LocalizedString localized_strings[] = {
     {"siteSettingsAutoplay",
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY},
@@ -81,10 +82,16 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source, Profile* profi
       base::ASCIIToUTF16(kWebRTCLearnMoreURL));
 }
 
+void BraveAddResources(content::WebUIDataSource* html_source,
+                       Profile* profile) {
+  BraveMdSettingsUI::AddResources(html_source, profile);
+}
+
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
                               Profile* profile) {
   BraveAddImportDataStrings(html_source);
   BraveAddCommonStrings(html_source, profile);
+  BraveAddResources(html_source, profile);
 }
 
 } // namespace settings
