@@ -659,6 +659,19 @@ void Bookmarks::UpdateBookmarkUiWork(
   );
 }
 
+std::vector<InitialBookmarkNodeInfo>
+Bookmarks::IterateChildren(const bookmarks::BookmarkNode* node) {
+  std::vector<InitialBookmarkNodeInfo> list;
+  if (node->is_folder()) {
+    for (int i = 0; i < node->child_count(); ++i) {
+      auto child_list = IterateChildren(node->GetChild(i));
+      list.insert(list.end(), child_list.begin(), child_list.end());
+    }
+  }
+  list.push_back(InitialBookmarkNodeInfo(node, true));
+  return list;
+}
+
 int Bookmarks::CalculateNewIndex(
   const bookmarks::BookmarkNode* new_parent_node,
   const bookmarks::BookmarkNode* old_parent_node,
@@ -1011,36 +1024,21 @@ void Bookmarks::BookmarkNodeRemoved(
     return;
   }
 
-  // TODO, AB: what to do with no_longer_bookmarked?
-  // How no_longer_bookmarked appears,
-  //void BookmarkModel::Remove(const BookmarkNode* node) {
-  // std::set<GURL> removed_urls;
-  // std::unique_ptr<BookmarkNode> owned_node =
-  //     url_index_->Remove(AsMutable(node), &removed_urls);
-  //
-  //std::unique_ptr<UrlIndex> url_index_;
-  // ...
-  //void UrlIndex::RemoveImpl(BookmarkNode* node, std::set<GURL>* removed_urls) {
-  //   if (removed_urls)
-  //     removed_urls->insert(node->url());
-  // }
-  // for (int i = node->child_count() - 1; i >= 0; --i)
-  //   RemoveImpl(node->GetChild(i), removed_urls);
-  //
-  // no_longer_bookmarked is the set of urls which were removed as child nodes
-  // of |node| if the node is a folder
-  //
-  // This line below works or a single bookmark but should be checked for the folder
+  std::vector<InitialBookmarkNodeInfo> list = IterateChildren(node);
 
-  client_->CreateUpdateDeleteBookmarks(jslib_const::kActionDelete,
-    {InitialBookmarkNodeInfo(node, true)}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
+
+  client_->CreateUpdateDeleteBookmarks(
+    jslib_const::kActionDelete, list, std::map<const bookmarks::BookmarkNode*,
+    std::string>(), false, false);
 
   //=> File task
   // node can be dead
-  client_->GetTaskRunner()->PostTask(
-    FROM_HERE,
-    base::Bind(&Bookmarks::BookmarkNodeRemovedFileWork, base::Unretained(this), node)
+  for (auto entry: list) {
+    client_->GetTaskRunner()
+      ->PostTask(FROM_HERE, base::Bind(&Bookmarks::BookmarkNodeRemovedFileWork,
+                                       base::Unretained(this), entry.node_)
   );
+  }
 }
 
 void Bookmarks::BookmarkNodeRemovedFileWork(const bookmarks::BookmarkNode* node) {
