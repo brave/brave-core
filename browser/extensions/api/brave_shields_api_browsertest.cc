@@ -273,16 +273,15 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
                        PRE_ShieldSettingsPersistTest) {
   HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
+      SetContentSettingDefaultScope(
+        kBraveURL, kBraveURL,
         CONTENT_SETTINGS_TYPE_PLUGINS,
         brave_shields::kHTTPUpgradableResources,
         CONTENT_SETTING_ALLOW);
 
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
-          GetContentSetting(GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+          GetContentSetting(kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
                             brave_shields::kHTTPUpgradableResources);
   EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
 }
@@ -291,9 +290,35 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
                        ShieldSettingsPersistTest) {
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
-          GetContentSetting(GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+          GetContentSetting(kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
                             brave_shields::kHTTPUpgradableResources);
   EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
+}
+
+// Checks flash configuration isn't persisted across the sessions.
+IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
+                       PRE_FlashPersistTest) {
+  HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
+      SetContentSettingDefaultScope(
+        kBraveURL, kBraveURL,
+        CONTENT_SETTINGS_TYPE_PLUGINS,
+        std::string(),
+        CONTENT_SETTING_ALLOW);
+
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
+          GetContentSetting(kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
+                            std::string());
+  EXPECT_EQ(setting, CONTENT_SETTING_ALLOW);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
+                       FlashPersistTest) {
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
+          GetContentSetting(kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
+                            std::string());
+  EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
 }
 
 }  // namespace extensions
