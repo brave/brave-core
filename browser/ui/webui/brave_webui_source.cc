@@ -100,6 +100,11 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
     }, {
       std::string("adblock"), {
       }
+    }, {
+      std::string("donate"), {
+        { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_DONATE_BG_1 },
+        { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_DONATE_BG_2 },
+      }
     }
   };
   AddResourcePaths(source, resources[name]);
@@ -372,6 +377,18 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "regionalAdblockEnabledTitle", IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED_TITLE},
         { "regionalAdblockEnabled", IDS_ADBLOCK_REGIONAL_AD_BLOCK_ENABLED },
         { "regionalAdblockDisabled", IDS_ADBLOCK_REGIONAL_AD_BLOCK_DISABLED },
+      }
+    }, {
+      std::string("donate"), {
+        { "about", IDS_BRAVE_UI_ABOUT },
+        { "donationAmount", IDS_BRAVE_UI_DONATION_AMOUNT },
+        { "makeMonthly", IDS_BRAVE_UI_MAKE_MONTHLY },
+        { "rewardsBannerText1", IDS_BRAVE_UI_REWARDS_BANNER_TEXT1 },
+        { "rewardsBannerText2", IDS_BRAVE_UI_REWARDS_BANNER_TEXT2 },
+        { "sendDonation", IDS_BRAVE_UI_SEND_DONATION },
+        { "tokens", IDS_BRAVE_UI_TOKENS },
+        { "walletBalance", IDS_BRAVE_UI_WALLET_BALANCE },
+        { "welcome", IDS_BRAVE_UI_WELCOME },
       }
     }
   };

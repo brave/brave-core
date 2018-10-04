@@ -42,5 +42,8 @@ declare global {
     brave_welcome: {
       initialize: () => void
     }
+    brave_rewards_donate: {
+      initialize: () => void
+    }
   }
 }

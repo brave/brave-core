@@ -142,10 +142,10 @@ export class Panel extends React.Component<Props, State> {
         return
       }
       const tabId = tabs[0].id
-      if (tabId === undefined) {
+      if (tabId === undefined || !publisher) {
         return
       }
-      chrome.braveRewards.donateToSite(tabId, publisher ? publisher.publisher_key : 'Test Publsher')
+      chrome.braveRewards.donateToSite(tabId, publisher.publisher_key)
     })
   }
 
@@ -178,7 +178,6 @@ export class Panel extends React.Component<Props, State> {
         connectedWallet={false}
         grants={this.getGrants(grants)}
       >
-        <button onClick={this.showDonateToSiteDetail}>Donate</button>
         <WalletSummarySlider
           id={'panel-slider'}
           onToggle={this.onSliderToggle}

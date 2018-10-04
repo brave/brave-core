@@ -19,8 +19,152 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 
 using content::WebUIMessageHandler;
+
+namespace {
+
+// The handler for Javascript messages for Brave about: pages
+class RewardsDonateDOMHandler : public WebUIMessageHandler,
+                                public brave_rewards::RewardsServiceObserver {
+public:
+  RewardsDonateDOMHandler() {};
+  ~RewardsDonateDOMHandler() override;
+
+  void Init();
+
+  // WebUIMessageHandler implementation.
+  void RegisterMessages() override;
+
+private:
+  void GetPublisherDonateData(const base::ListValue* args);
+  void GetWalletProperties(const base::ListValue* args);
+
+  // RewardsServiceObserver implementation
+  void OnWalletProperties(brave_rewards::RewardsService* rewards_service,
+      int error_code,
+      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
+
+  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+
+  DISALLOW_COPY_AND_ASSIGN(RewardsDonateDOMHandler);
+};
+
+RewardsDonateDOMHandler::~RewardsDonateDOMHandler() {
+  if (rewards_service_)
+    rewards_service_->RemoveObserver(this);
+}
+
+void RewardsDonateDOMHandler::Init() {
+  Profile* profile = Profile::FromWebUI(web_ui());
+  rewards_service_ =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_)
+    rewards_service_->AddObserver(this);
+}
+
+void RewardsDonateDOMHandler::RegisterMessages() {
+  web_ui()->RegisterMessageCallback("brave_rewards_donate.getPublisherBanner",
+                                    base::BindRepeating(&RewardsDonateDOMHandler::GetPublisherDonateData,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards_donate.getWalletProperties",
+                                    base::BindRepeating(&RewardsDonateDOMHandler::GetWalletProperties,
+                                                        base::Unretained(this)));
+}
+
+void RewardsDonateDOMHandler::GetPublisherDonateData(const base::ListValue* args) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  std::string publisher_key;
+  args->GetString(0, &publisher_key);
+  brave_rewards::PublisherBanner banner = rewards_service_->GetPublisherBanner(publisher_key);
+
+  base::DictionaryValue result;
+  result.SetString("publisherKey", publisher_key);
+  result.SetString("title", banner.title);
+  result.SetString("description", banner.description);
+  result.SetString("background", banner.background);
+  result.SetString("logo", banner.logo);
+
+  auto amounts = std::make_unique<base::ListValue>();
+  for (int const& value : banner.amounts) {
+    amounts->AppendInteger(value);
+  }
+  result.SetList("amounts", std::move(amounts));
+
+  auto social = std::make_unique<base::DictionaryValue>();
+  for (auto const& item : banner.social) {
+    social->SetString(item.first, item.second);
+  }
+  result.SetDictionary("social", std::move(social));
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_donate.publisherBanner", result);
+}
+
+void RewardsDonateDOMHandler::GetWalletProperties(const base::ListValue* args) {
+  if (!rewards_service_)
+    return;
+
+  rewards_service_->GetWalletProperties();
+}
+
+void RewardsDonateDOMHandler::OnWalletProperties(
+    brave_rewards::RewardsService* rewards_service,
+    int error_code,
+    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
+
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::DictionaryValue result;
+  result.SetInteger("status", error_code);
+  auto walletInfo = std::make_unique<base::DictionaryValue>();
+
+  if (error_code == 0 && wallet_properties) {
+    walletInfo->SetDouble("balance", wallet_properties->balance);
+    walletInfo->SetString("probi", wallet_properties->probi);
+
+    auto rates = std::make_unique<base::DictionaryValue>();
+    for (auto const& rate : wallet_properties->rates) {
+      rates->SetDouble(rate.first, rate.second);
+    }
+    walletInfo->SetDictionary("rates", std::move(rates));
+
+    auto choices = std::make_unique<base::ListValue>();
+    for (double const& choice : wallet_properties->parameters_choices) {
+      choices->AppendDouble(choice);
+    }
+    walletInfo->SetList("choices", std::move(choices));
+
+    auto range = std::make_unique<base::ListValue>();
+    for (double const& value : wallet_properties->parameters_range) {
+      range->AppendDouble(value);
+    }
+    walletInfo->SetList("range", std::move(range));
+
+    auto grants = std::make_unique<base::ListValue>();
+    for (auto const& item : wallet_properties->grants) {
+      auto grant = std::make_unique<base::DictionaryValue>();
+      grant->SetString("probi", item.probi);
+      grant->SetInteger("expiryTime", item.expiryTime);
+      grants->Append(std::move(grant));
+    }
+    walletInfo->SetList("grants", std::move(grants));
+  }
+
+  result.SetDictionary("wallet", std::move(walletInfo));
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_donate.walletProperties", result);
+}
+
+}  // namespace
 
 BraveDonateUI::BraveDonateUI(content::WebUI* web_ui, const std::string& name)
     : ConstrainedWebDialogUI(web_ui) {
@@ -32,6 +176,11 @@ BraveDonateUI::BraveDonateUI(content::WebUI* web_ui, const std::string& name)
                                               IDR_BRAVE_DONATE_JS,
                                               IDR_BRAVE_DONATE_HTML);
   content::WebUIDataSource::Add(profile, data_source);
+
+  auto handler_owner = std::make_unique<RewardsDonateDOMHandler>();
+  RewardsDonateDOMHandler * handler = handler_owner.get();
+  web_ui->AddMessageHandler(std::move(handler_owner));
+  handler->Init();
 }
 
 BraveDonateUI::~BraveDonateUI() {

@@ -19,6 +19,8 @@ source_set("browser") {
     "wallet_properties.h",
     "grant.cc",
     "grant.h",
+    "publisher_banner.cc",
+    "publisher_banner.h",
   ]
 
   deps = [

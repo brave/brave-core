@@ -1285,4 +1285,19 @@ void RewardsServiceImpl::OnSetOnDemandFaviconComplete(bool success) {
   }
 }
 
+brave_rewards::PublisherBanner RewardsServiceImpl::GetPublisherBanner(const std::string& publisher_id) {
+  ledger::PublisherBanner banner = ledger_->GetPublisherBanner(publisher_id);
+
+  brave_rewards::PublisherBanner new_banner;
+
+  new_banner.title = banner.title;
+  new_banner.description = banner.description;
+  new_banner.background = banner.background;
+  new_banner.logo = banner.logo;
+  new_banner.amounts = banner.amounts;
+  new_banner.social = banner.social;
+
+  return new_banner;
+}
+
 }  // namespace brave_rewards
