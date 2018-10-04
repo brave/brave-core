@@ -40,6 +40,9 @@ bool BraveEphemeralProvider::SetWebsiteSetting(
     return false;
   }
 
+  // Only flash plugin setting can be reached here.
+  DCHECK(resource_identifier.empty());
+
   return EphemeralProvider::SetWebsiteSetting(
       primary_pattern, secondary_pattern,
       content_type, resource_identifier, in_value);

@@ -44,8 +44,8 @@ bool BravePrefProvider::SetWebsiteSetting(
     ContentSettingsType content_type,
     const ResourceIdentifier& resource_identifier,
     base::Value* in_value) {
-  // Flash type shouldn't be handled here. Its id is empty.
-  // It's type is plugin and id is empty string.
+  // Flash's setting shouldn't be reached here.
+  // Its content type is plugin and id is empty string.
   // One excpetion is default setting. It can be persisted.
   if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS &&
       resource_identifier.empty()) {
