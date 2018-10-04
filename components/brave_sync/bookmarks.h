@@ -33,7 +33,6 @@ namespace storage {
   class ObjectMap;
 }
 
-class Controller;
 class BookmarksClient;
 
 class InitialBookmarkNodeInfo {

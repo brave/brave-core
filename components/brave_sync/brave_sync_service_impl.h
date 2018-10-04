@@ -2,15 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_CONTROLLER_IMPL_H_
-#define BRAVE_COMPONENTS_SYNC_CONTROLLER_IMPL_H_
+#ifndef BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
 
 #include <map>
 #include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/bookmarks_client.h"
-#include "brave/components/brave_sync/controller.h"
+#include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/client.h"
 #include "brave/components/brave_sync/can_send_history.h"
 
@@ -44,24 +44,24 @@ namespace prefs {
 }
 
 class SyncDevices;
-class Controller;
+class BraveSyncService;
 class Settings;
 class Bookmarks;
 class History;
 class InitialBookmarkNodeInfo;
 
-class ControllerImpl : public Controller,
+class BraveSyncServiceImpl : public BraveSyncService,
                        public SyncLibToBrowserHandler,
                        public BookmarksClient,
                        public CanSendSyncHistory {
 public:
-  ControllerImpl(Profile *profile);
-  ~ControllerImpl() override;
+  BraveSyncServiceImpl(Profile *profile);
+  ~BraveSyncServiceImpl() override;
 
   // KeyedService overrides
   void Shutdown() override;
 
-  // Controller messages from UI
+  // BraveSyncService messages from UI
   void OnSetupSyncHaveCode(const std::string &sync_words,
     const std::string &device_name) override;
   void OnSetupSyncNewToSync(const std::string &device_name) override;
@@ -81,7 +81,7 @@ public:
   bool IsSyncInitialized() override;
 
 private:
-  friend struct base::DefaultSingletonTraits<ControllerImpl>;
+  friend struct base::DefaultSingletonTraits<BraveSyncServiceImpl>;
 
   void SetProfile(Profile *profile);
 
@@ -287,10 +287,10 @@ private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   SEQUENCE_CHECKER(sequence_checker_);
 
-  base::WeakPtrFactory<ControllerImpl> weak_ptr_factory_;
-  DISALLOW_COPY_AND_ASSIGN(ControllerImpl);
+  base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
+  DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceImpl);
 };
 
 } // namespace brave_sync
 
-#endif //BRAVE_COMPONENTS_SYNC_CONTROLLER_IMPL_H_
+#endif //BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_

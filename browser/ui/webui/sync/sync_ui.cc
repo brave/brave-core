@@ -5,9 +5,9 @@
 
 #include "base/bind.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_sync/controller.h"
-#include "brave/components/brave_sync/controller_factory.h"
-#include "brave/components/brave_sync/controller_observer.h"
+#include "brave/components/brave_sync/brave_sync_service.h"
+#include "brave/components/brave_sync/brave_sync_service_factory.h"
+#include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/devices.h"
 #include "brave/components/brave_sync/settings.h"
@@ -24,7 +24,7 @@ namespace {
 
 // The handler for Javascript messages for Brave about: pages
 class SyncUIDOMHandler : public WebUIMessageHandler,
-                          public brave_sync::ControllerObserver {
+                         public brave_sync::BraveSyncServiceObserver {
  public:
   SyncUIDOMHandler() {};
   ~SyncUIDOMHandler() override;
@@ -47,9 +47,9 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
   void DeleteDevice(const base::ListValue* args);
   void ResetSync(const base::ListValue* args);
 
-  void OnSyncStateChanged(brave_sync::Controller *sync_controller) override;
-  void OnHaveSyncWords(brave_sync::Controller *sync_controller, const std::string &sync_words) override;
-  void OnLogMessage(brave_sync::Controller *sync_controller, const std::string &message) override;
+  void OnSyncStateChanged(brave_sync::BraveSyncService *sync_controller) override;
+  void OnHaveSyncWords(brave_sync::BraveSyncService *sync_controller, const std::string &sync_words) override;
+  void OnLogMessage(brave_sync::BraveSyncService *sync_controller, const std::string &message) override;
 
   // this should grab actual data from controller and update the page
   void LoadSyncSettingsView();
@@ -59,14 +59,14 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
     std::unique_ptr<brave_sync::Settings> settings,
     std::unique_ptr<brave_sync::SyncDevices> devices);
 
-  brave_sync::Controller *sync_controller_;  // NOT OWNED
+  brave_sync::BraveSyncService *sync_service_;  // NOT OWNED
 
   DISALLOW_COPY_AND_ASSIGN(SyncUIDOMHandler);
 };
 
 SyncUIDOMHandler::~SyncUIDOMHandler() {
-  if (sync_controller_)
-    sync_controller_->RemoveObserver(this);
+  if (sync_service_)
+    sync_service_->RemoveObserver(this);
 }
 
 void SyncUIDOMHandler::RegisterMessages() {
@@ -117,9 +117,9 @@ void SyncUIDOMHandler::RegisterMessages() {
 
 void SyncUIDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
-  sync_controller_ = brave_sync::ControllerFactory::GetForBrowserContext(profile);
-  if (sync_controller_)
-    sync_controller_->AddObserver(this);
+  sync_service_ = brave_sync::BraveSyncServiceFactory::GetForBrowserContext(profile);
+  if (sync_service_)
+    sync_service_->AddObserver(this);
 }
 
 void SyncUIDOMHandler::SetupSyncHaveCode(const base::ListValue* args) {
@@ -131,7 +131,7 @@ void SyncUIDOMHandler::SetupSyncHaveCode(const base::ListValue* args) {
   LOG(ERROR) << "SyncUIDOMHandler::SetupSyncHaveCode sync_words=" << sync_words;
   LOG(ERROR) << "SyncUIDOMHandler::SetupSyncHaveCode device_name=" << device_name;
 
-  sync_controller_->OnSetupSyncHaveCode(sync_words, device_name);
+  sync_service_->OnSetupSyncHaveCode(sync_words, device_name);
 }
 
 void SyncUIDOMHandler::SetupSyncNewToSync(const base::ListValue* args) {
@@ -143,7 +143,7 @@ void SyncUIDOMHandler::SetupSyncNewToSync(const base::ListValue* args) {
 
   LOG(ERROR) << "SyncUIDOMHandler::SetupSyncHaveCode device_name=" << device_name;
 
-  sync_controller_->OnSetupSyncNewToSync(device_name);
+  sync_service_->OnSetupSyncNewToSync(device_name);
 }
 
 void SyncUIDOMHandler::PageLoaded(const base::ListValue* args) {
@@ -153,14 +153,14 @@ LOG(ERROR) << "SyncUIDOMHandler::PageLoaded";
 
 void SyncUIDOMHandler::NeedSyncWords(const base::ListValue* args) {
   LOG(ERROR) << "SyncUIDOMHandler::NeedSyncWords";
-  sync_controller_->GetSyncWords();
+  sync_service_->GetSyncWords();
   // sync_controller will fire async sync_ui_exports.haveSyncWords when it will
   // have the words ready
 }
 
 void SyncUIDOMHandler::NeedSyncQRcode(const base::ListValue* args) {
   LOG(ERROR) << "SyncUIDOMHandler::NeedSyncQRcode";
-  std::string seed = sync_controller_->GetSeed();
+  std::string seed = sync_service_->GetSeed();
   LOG(ERROR) << "SyncUIDOMHandler::NeedSyncQRcode seed=<" << seed << ">";
   web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.haveSeedForQrCode", base::Value(seed));
 }
@@ -171,7 +171,7 @@ void SyncUIDOMHandler::SyncThisDevice(const base::ListValue* args) {
   if (!args->GetBoolean(0, &new_value)) {
     return;
   }
-  sync_controller_->OnSetSyncThisDevice(new_value);
+  sync_service_->OnSetSyncThisDevice(new_value);
 }
 
 void SyncUIDOMHandler::SyncBookmarks(const base::ListValue* args) {
@@ -180,7 +180,7 @@ void SyncUIDOMHandler::SyncBookmarks(const base::ListValue* args) {
   if (!args->GetBoolean(0, &new_value)) {
     return;
   }
-  sync_controller_->OnSetSyncBookmarks(new_value);
+  sync_service_->OnSetSyncBookmarks(new_value);
 }
 
 void SyncUIDOMHandler::SyncBrowsingHistory(const base::ListValue* args) {
@@ -189,7 +189,7 @@ void SyncUIDOMHandler::SyncBrowsingHistory(const base::ListValue* args) {
   if (!args->GetBoolean(0, &new_value)) {
     return;
   }
-  sync_controller_->OnSetSyncBrowsingHistory(new_value);
+  sync_service_->OnSetSyncBrowsingHistory(new_value);
 }
 
 void SyncUIDOMHandler::SyncSavedSiteSettings(const base::ListValue* args) {
@@ -198,7 +198,7 @@ void SyncUIDOMHandler::SyncSavedSiteSettings(const base::ListValue* args) {
   if (!args->GetBoolean(0, &new_value)) {
     return;
   }
-  sync_controller_->OnSetSyncSavedSiteSettings(new_value);
+  sync_service_->OnSetSyncSavedSiteSettings(new_value);
 }
 
 void SyncUIDOMHandler::DeleteDevice(const base::ListValue* args) {
@@ -209,21 +209,21 @@ void SyncUIDOMHandler::DeleteDevice(const base::ListValue* args) {
     return;
   }
   LOG(ERROR) << "SyncUIDOMHandler::DeleteDevice device_id=" << device_id;
-  sync_controller_->OnDeleteDevice(device_id);
+  sync_service_->OnDeleteDevice(device_id);
 }
 
 void SyncUIDOMHandler::ResetSync(const base::ListValue* args) {
   LOG(ERROR) << "SyncUIDOMHandler::ResetSync args=" << brave::debug::ToPrintableString(*args);
 
-  sync_controller_->OnResetSync();
+  sync_service_->OnResetSync();
 }
 
-void SyncUIDOMHandler::OnLogMessage(brave_sync::Controller *sync_controller, const std::string &message) {
+void SyncUIDOMHandler::OnLogMessage(brave_sync::BraveSyncService *sync_controller, const std::string &message) {
   LOG(ERROR) << "SyncUIDOMHandler::LogMessage message=<" << message << ">";
   web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.logMessage", base::Value(message));
 }
 
-void SyncUIDOMHandler::OnSyncStateChanged(brave_sync::Controller *sync_controller) {
+void SyncUIDOMHandler::OnSyncStateChanged(brave_sync::BraveSyncService *sync_controller) {
 LOG(ERROR) << "SyncUIDOMHandler::OnSyncStateChanged";
   LoadSyncSettingsView();
 }
@@ -231,7 +231,7 @@ LOG(ERROR) << "SyncUIDOMHandler::OnSyncStateChanged";
 void SyncUIDOMHandler::LoadSyncSettingsView() {
 LOG(ERROR) << "SyncUIDOMHandler::LoadSyncSettingsView " << GetThreadInfoString();
 
-  sync_controller_->GetSettingsAndDevices(base::Bind(&SyncUIDOMHandler::GetSettingsAndDevicesComplete, base::Unretained(this)) );
+  sync_service_->GetSettingsAndDevices(base::Bind(&SyncUIDOMHandler::GetSettingsAndDevicesComplete, base::Unretained(this)) );
 }
 
 void SyncUIDOMHandler::GetSettingsAndDevicesComplete(
@@ -246,7 +246,7 @@ void SyncUIDOMHandler::GetSettingsAndDevicesComplete(
   web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.showSettings", *bv_settings, *bv_devices);
 }
 
-void SyncUIDOMHandler::OnHaveSyncWords(brave_sync::Controller *sync_controller, const std::string &sync_words) {
+void SyncUIDOMHandler::OnHaveSyncWords(brave_sync::BraveSyncService *sync_controller, const std::string &sync_words) {
 LOG(ERROR) << "SyncUIDOMHandler::OnHaveSyncWords sync_words="<<sync_words;
   web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.haveSyncWords", base::Value(sync_words));
 }
