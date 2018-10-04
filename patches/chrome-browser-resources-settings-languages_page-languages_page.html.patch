@@ -1,15 +1,17 @@
 diff --git a/chrome/browser/resources/settings/languages_page/languages_page.html b/chrome/browser/resources/settings/languages_page/languages_page.html
-index a979b391e553..8336e875bb0e 100644
+index a979b391e553..50bb65730a93 100644
 --- a/chrome/browser/resources/settings/languages_page/languages_page.html
 +++ b/chrome/browser/resources/settings/languages_page/languages_page.html
-@@ -182,10 +182,6 @@
+@@ -182,10 +182,12 @@
                </a>
              </div>
            </div>
--          <settings-toggle-button id="offerTranslateOtherLanguages"
--              class="first" pref="{{prefs.translate.enabled}}"
--              label="$i18n{offerToEnableTranslate}">
--          </settings-toggle-button>
++<!--
+           <settings-toggle-button id="offerTranslateOtherLanguages"
+               class="first" pref="{{prefs.translate.enabled}}"
+               label="$i18n{offerToEnableTranslate}">
+           </settings-toggle-button>
++-->
          </iron-collapse>
  <if expr="chromeos">
          <div id="manageInputMethodsSubpageTrigger"
