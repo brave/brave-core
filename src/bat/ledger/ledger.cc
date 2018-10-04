@@ -196,14 +196,28 @@ Grant::Grant (const ledger::Grant &properties) {
 }
 
 BalanceReportInfo::BalanceReportInfo():
-  opening_balance_(0),
-  closing_balance_(0),
-  grants_(0),
-  earning_from_ads_(0),
-  auto_contribute_(0),
-  recurring_donation_(0),
-  one_time_donation_(0),
-  total_(0) {}
+  opening_balance_("0"),
+  closing_balance_("0"),
+  grants_("0"),
+  earning_from_ads_("0"),
+  auto_contribute_("0"),
+  recurring_donation_("0"),
+  one_time_donation_("0"),
+  total_("0") {}
+
+BalanceReportInfo::BalanceReportInfo(const BalanceReportInfo& state) {
+  opening_balance_ = state.opening_balance_;
+  closing_balance_ = state.closing_balance_;
+  deposits_ = state.deposits_;
+  grants_ = state.grants_;
+  earning_from_ads_ = state.earning_from_ads_;
+  auto_contribute_ = state.auto_contribute_;
+  recurring_donation_ = state.recurring_donation_;
+  one_time_donation_ = state.one_time_donation_;
+  total_ = state.total_;
+}
+
+BalanceReportInfo::~BalanceReportInfo() {}
 
 bool Ledger::IsMediaLink(const std::string& url, const std::string& first_party_url, const std::string& referrer) {
   return braveledger_bat_get_media::BatGetMedia::GetLinkType(url, first_party_url, referrer) == TWITCH_MEDIA_TYPE;

@@ -659,4 +659,10 @@ void LedgerImpl::OnExcludedSitesChanged() {
   ledger_client_->OnExcludedSitesChanged();
 }
 
+void LedgerImpl::SetBalanceReportCatpcha(ledger::PUBLISHER_MONTH month,
+                                         int year,
+                                         const std::string& probi) {
+  bat_publishers_->setBalanceReportCatpcha(month, year, probi);
+}
+
 }  // namespace bat_ledger

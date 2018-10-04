@@ -214,19 +214,20 @@ namespace braveledger_bat_helper {
 
   struct REPORT_BALANCE_ST {
     REPORT_BALANCE_ST();
+    REPORT_BALANCE_ST(const REPORT_BALANCE_ST&);
     ~REPORT_BALANCE_ST();
 
     bool loadFromJson(const std::string &json);
 
-    uint64_t opening_balance_ = 0;
-    uint64_t closing_balance_ = 0;
-    uint64_t deposits_ = 0;
-    uint64_t grants_ = 0;
-    uint64_t earning_from_ads_ = 0;
-    uint64_t auto_contribute_ = 0;
-    uint64_t recurring_donation_ = 0;
-    uint64_t one_time_donation_ = 0;
-    uint64_t total_ = 0;
+    std::string opening_balance_ = "0";
+    std::string closing_balance_ = "0";
+    std::string deposits_ = "0";
+    std::string grants_ = "0";
+    std::string earning_from_ads_ = "0";
+    std::string auto_contribute_ = "0";
+    std::string recurring_donation_ = "0";
+    std::string one_time_donation_ = "0";
+    std::string total_ = "0";
   };
 
   struct PUBLISHER_STATE_ST {
@@ -428,7 +429,6 @@ namespace braveledger_bat_helper {
   uint8_t niceware_mnemonic_to_bytes(const std::string& w,
     std::vector<uint8_t>& bytes_out, size_t *written,
     std::vector<std::string> wordDictionary);
-  uint64_t doubleToProbi (const double amount);
 }  // namespace braveledger_bat_helper
 
 #endif  // BRAVELEDGER_BAT_HELPER_H_

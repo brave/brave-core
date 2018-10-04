@@ -13,16 +13,18 @@ namespace ledger {
 
 LEDGER_EXPORT struct BalanceReportInfo {
   BalanceReportInfo();
+  BalanceReportInfo(const BalanceReportInfo&);
+  ~BalanceReportInfo();
 
-  uint64_t opening_balance_ = 0;
-  uint64_t closing_balance_ = 0;
-  uint64_t deposits_ = 0;
-  uint64_t grants_ = 0;
-  uint64_t earning_from_ads_ = 0;
-  uint64_t auto_contribute_ = 0;
-  uint64_t recurring_donation_ = 0;
-  uint64_t one_time_donation_ = 0;
-  uint64_t total_ = 0;
+  std::string opening_balance_ = "0";
+  std::string closing_balance_ = "0";
+  std::string deposits_ = "0";
+  std::string grants_ = "0";
+  std::string earning_from_ads_ = "0";
+  std::string auto_contribute_ = "0";
+  std::string recurring_donation_ = "0";
+  std::string one_time_donation_ = "0";
+  std::string total_ = "0";
 };
 
 }  // namespace ledger

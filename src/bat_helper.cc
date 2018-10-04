@@ -708,15 +708,27 @@ static bool ignore_ = false;
 
   /////////////////////////////////////////////////////////////////////////////
   REPORT_BALANCE_ST::REPORT_BALANCE_ST():
-    opening_balance_(0),
-    closing_balance_(0),
-    deposits_(0),
-    grants_(0),
-    earning_from_ads_(0),
-    auto_contribute_(0),
-    recurring_donation_(0),
-    one_time_donation_(0),
-    total_(0) {}
+    opening_balance_("0"),
+    closing_balance_("0"),
+    deposits_("0"),
+    grants_("0"),
+    earning_from_ads_("0"),
+    auto_contribute_("0"),
+    recurring_donation_("0"),
+    one_time_donation_("0"),
+    total_("0") {}
+
+  REPORT_BALANCE_ST::REPORT_BALANCE_ST(const REPORT_BALANCE_ST& state) {
+    opening_balance_ = state.opening_balance_;
+    closing_balance_ = state.closing_balance_;
+    deposits_ = state.deposits_;
+    grants_ = state.grants_;
+    earning_from_ads_ = state.earning_from_ads_;
+    auto_contribute_ = state.auto_contribute_;
+    recurring_donation_ = state.recurring_donation_;
+    one_time_donation_ = state.one_time_donation_;
+    total_ = state.total_;
+  }
 
   REPORT_BALANCE_ST::~REPORT_BALANCE_ST() {}
 
@@ -726,27 +738,27 @@ static bool ignore_ = false;
 
     bool error = d.HasParseError();
     if (false == error) {
-      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsUint64() &&
-        d.HasMember("closing_balance") && d["closing_balance"].IsUint64() &&
-        d.HasMember("deposits") && d["deposits"].IsUint64() &&
-        d.HasMember("grants") && d["grants"].IsUint64() &&
-        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsUint64() &&
-        d.HasMember("auto_contribute") && d["auto_contribute"].IsUint64() &&
-        d.HasMember("recurring_donation") && d["recurring_donation"].IsUint64() &&
-        d.HasMember("one_time_donation") && d["one_time_donation"].IsUint64() &&
-        d.HasMember("total") && d["total"].IsUint64());
+      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsString() &&
+        d.HasMember("closing_balance") && d["closing_balance"].IsString() &&
+        d.HasMember("deposits") && d["deposits"].IsString() &&
+        d.HasMember("grants") && d["grants"].IsString() &&
+        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsString() &&
+        d.HasMember("auto_contribute") && d["auto_contribute"].IsString() &&
+        d.HasMember("recurring_donation") && d["recurring_donation"].IsString() &&
+        d.HasMember("one_time_donation") && d["one_time_donation"].IsString() &&
+        d.HasMember("total") && d["total"].IsString());
     }
 
     if (false == error) {
-      opening_balance_ = d["opening_balance"].GetUint64();
-      closing_balance_ = d["closing_balance"].GetUint64();
-      deposits_ = d["deposits"].GetUint64();
-      grants_ = d["grants"].GetUint64();
-      earning_from_ads_ = d["earning_from_ads"].GetUint64();
-      auto_contribute_ = d["auto_contribute"].GetUint64();
-      recurring_donation_ = d["recurring_donation"].GetUint64();
-      one_time_donation_ = d["one_time_donation"].GetUint64();
-      total_ = d["total"].GetUint64();
+      opening_balance_ = d["opening_balance"].GetString();
+      closing_balance_ = d["closing_balance"].GetString();
+      deposits_ = d["deposits"].GetString();
+      grants_ = d["grants"].GetString();
+      earning_from_ads_ = d["earning_from_ads"].GetString();
+      auto_contribute_ = d["auto_contribute"].GetString();
+      recurring_donation_ = d["recurring_donation"].GetString();
+      one_time_donation_ = d["one_time_donation"].GetString();
+      total_ = d["total"].GetString();
     }
 
     return !error;
@@ -756,31 +768,40 @@ static bool ignore_ = false;
     writer.StartObject();
 
     writer.String("opening_balance");
-    writer.Uint64(data.opening_balance_);
+
+    writer.String(data.opening_balance_.c_str());
 
     writer.String("closing_balance");
-    writer.Uint64(data.closing_balance_);
+
+    writer.String(data.closing_balance_.c_str());
 
     writer.String("deposits");
-    writer.Uint64(data.deposits_);
+
+    writer.String(data.deposits_.c_str());
 
     writer.String("grants");
-    writer.Uint64(data.grants_);
+
+    writer.String(data.grants_.c_str());
 
     writer.String("earning_from_ads");
-    writer.Uint64(data.earning_from_ads_);
+
+    writer.String(data.earning_from_ads_.c_str());
 
     writer.String("auto_contribute");
-    writer.Uint64(data.auto_contribute_);
+
+    writer.String(data.auto_contribute_.c_str());
 
     writer.String("recurring_donation");
-    writer.Uint64(data.recurring_donation_);
+
+    writer.String(data.recurring_donation_.c_str());
 
     writer.String("one_time_donation");
-    writer.Uint64(data.one_time_donation_);
+
+    writer.String(data.one_time_donation_.c_str());
 
     writer.String("total");
-    writer.Uint64(data.total_);
+
+    writer.String(data.total_.c_str());
 
     writer.EndObject();
   }
@@ -1982,9 +2003,5 @@ static bool ignore_ = false;
     bytes_out = buffer;
     *written = NICEWARE_BYTES_WRITTEN;
     return 0;
-  }
-
-  uint64_t doubleToProbi(const double amount) {
-    return amount * 1000000000000000000;
   }
 }  // namespace braveledger_bat_helper

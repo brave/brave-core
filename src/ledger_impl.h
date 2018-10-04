@@ -154,6 +154,9 @@ class LedgerImpl : public ledger::Ledger,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
   void OnExcludedSitesChanged();
+  void SetBalanceReportCatpcha(ledger::PUBLISHER_MONTH month,
+                               int year,
+                               const std::string& probi) override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

@@ -92,6 +92,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                                ledger::PUBLISHER_MONTH month,
                                int year);
 
+  void setBalanceReportCatpcha(ledger::PUBLISHER_MONTH month,
+                               int year,
+                               const std::string& probi);
+
  private:
   ledger::PublisherInfoFilter CreatePublisherFilter(
       const std::string& publisher_id,
