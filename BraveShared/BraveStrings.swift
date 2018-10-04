@@ -373,6 +373,11 @@ public extension Strings {
     public static let Browser_lock_callout_message = NSLocalizedString("With Browser Lock, you will need to enter a PIN in order to access Brave.", comment: "Browser Lock feature callout message.")
     public static let Browser_lock_callout_not_now = NSLocalizedString("Not Now", comment: "Browser Lock feature callout not now action.")
     public static let Browser_lock_callout_enable = NSLocalizedString("Enable", comment: "Browser Lock feature callout enable action.")
+    public static let DDG_callout_title = NSLocalizedString("Private search with DuckDuckGo?", comment: "DuckDuckGo callout title.")
+    public static let DDG_callout_message = NSLocalizedString("With private search, Brave will use DuckDuckGo to answer your searches while you are in this private tab. DuckDuckGo is a search engine that does not track your search history, enabling you to search privately.", comment: "DuckDuckGo message.")
+    public static let DDG_callout_no = NSLocalizedString("No", comment: "DuckDuckGo callout no action.")
+    public static let DDG_callout_enable = NSLocalizedString("Yes", comment: "DuckDuckGo callout enable action.")
+    public static let DDG_promotion = NSLocalizedString("Learn about private search \rwith DuckDuckGo", comment: "DuckDuckGo promotion label.")
 }
 
 // SYNC.

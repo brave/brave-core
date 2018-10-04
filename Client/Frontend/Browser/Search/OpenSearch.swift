@@ -11,7 +11,11 @@ private let TypeSuggest = "application/x-suggestions+json"
 
 class OpenSearchEngine: NSObject, NSCoding {
     static let PreferredIconSize = 30
-
+    
+    struct EngineNames {
+        static let duckDuckGo = "DuckDuckGo"
+    }
+    
     let shortName: String
     let engineID: String?
     let image: UIImage

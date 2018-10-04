@@ -28,10 +28,10 @@ enum PasswordManagerShortcutBehavior: Int {
 // MARK: - Other Preferences
 extension Preferences {
     final class Popups {
-        /// Whether or not the user has opted-in for using DuckDuckGo during a Private Browsing session
+        /// Whether or not the user has seen the DuckDuckGo popup at least once
         ///
-        /// Defaults to nil, meaning the user has not been given the choice yet
-        static let duckDuckGoPrivateSearch = Option<Bool?>(key: "popups.ddg-private-search", default: nil)
+        /// Defaults to false, meaning the user has not been given the choice yet
+        static let duckDuckGoPrivateSearch = Option<Bool>(key: "popups.ddg-private-search", default: false)
     }
     final class AppState {
         /// A flag for determining if the app exited with user interaction in the previous session
