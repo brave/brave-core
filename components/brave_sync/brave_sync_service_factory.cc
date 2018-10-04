@@ -2,11 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/controller_factory.h"
+#include "brave/components/brave_sync/brave_sync_service_factory.h"
 
 #include "base/memory/singleton.h"
-#include "brave/components/brave_sync/controller.h"
-#include "brave/components/brave_sync/controller_impl.h"
+#include "brave/components/brave_sync/brave_sync_service.h"
+#include "brave/components/brave_sync/brave_sync_service_impl.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -16,38 +16,38 @@
 namespace brave_sync {
 
 // static
-Controller* ControllerFactory::GetForBrowserContext(
+BraveSyncService* BraveSyncServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
-  return static_cast<Controller*>(
+  return static_cast<BraveSyncService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 // static
-Controller* ControllerFactory::GetForBrowserContextIfExists(
+BraveSyncService* BraveSyncServiceFactory::GetForBrowserContextIfExists(
     content::BrowserContext* context) {
-  return static_cast<Controller*>(
+  return static_cast<BraveSyncService*>(
       GetInstance()->GetServiceForBrowserContext(context, false));
 }
 
 // static
-ControllerFactory* ControllerFactory::GetInstance() {
-  return base::Singleton<ControllerFactory>::get();
+BraveSyncServiceFactory* BraveSyncServiceFactory::GetInstance() {
+  return base::Singleton<BraveSyncServiceFactory>::get();
 }
 
-ControllerFactory::ControllerFactory()
+BraveSyncServiceFactory::BraveSyncServiceFactory()
     : BrowserContextKeyedServiceFactory(
-        "BraveSyncController",
+        "BraveSyncBraveSyncService",
         BrowserContextDependencyManager::GetInstance()) {
   ////DependsOn();
 }
 
-ControllerFactory::~ControllerFactory() = default;
+BraveSyncServiceFactory::~BraveSyncServiceFactory() = default;
 
-KeyedService* ControllerFactory::BuildServiceInstanceFor(
+KeyedService* BraveSyncServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   Profile* profile = Profile::FromBrowserContext(context);
 
-  ControllerImpl *brave_sync_controller = new brave_sync::ControllerImpl(profile);
+  BraveSyncServiceImpl *brave_sync_controller = new brave_sync::BraveSyncServiceImpl(profile);
   //brave_sync_controller->SetProfile(profile);
   // ^ now passed to CTOR
 
@@ -67,17 +67,17 @@ KeyedService* ControllerFactory::BuildServiceInstanceFor(
   // return bookmark_model;
 }
 
-void ControllerFactory::RegisterProfilePrefs(
+void BraveSyncServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   // move here brave_sync::prefs::Prefs::RegisterProfilePrefs
 }
 
-content::BrowserContext* ControllerFactory::GetBrowserContextToUse(
+content::BrowserContext* BraveSyncServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
 
-bool ControllerFactory::ServiceIsNULLWhileTesting() const {
+bool BraveSyncServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 

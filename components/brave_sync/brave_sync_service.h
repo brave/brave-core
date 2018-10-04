@@ -1,8 +1,8 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#ifndef BRAVE_COMPONENTS_SYNC_CONTROLLER_H_
-#define BRAVE_COMPONENTS_SYNC_CONTROLLER_H_
+#ifndef BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_H_
+#define BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_H_
 
 #include <string>
 
@@ -16,12 +16,12 @@ namespace brave_sync {
 
   class Settings;
   class SyncDevices;
-  class ControllerObserver;
+  class BraveSyncServiceObserver;
 
-  class Controller : public KeyedService {
+  class BraveSyncService : public KeyedService {
   public:
-    Controller();
-    ~Controller() override;
+    BraveSyncService();
+    ~BraveSyncService() override;
     virtual void OnSetupSyncHaveCode(const std::string &sync_words,
       const std::string &device_name) = 0;
 
@@ -41,16 +41,16 @@ namespace brave_sync {
     virtual void OnSetSyncBrowsingHistory(const bool &sync_browsing_history) = 0;
     virtual void OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) = 0;
 
-    void AddObserver(ControllerObserver* observer);
-    void RemoveObserver(ControllerObserver* observer);
+    void AddObserver(BraveSyncServiceObserver* observer);
+    void RemoveObserver(BraveSyncServiceObserver* observer);
 
    protected:
-    base::ObserverList<ControllerObserver> observers_;
+    base::ObserverList<BraveSyncServiceObserver> observers_;
 
    private:
-    DISALLOW_COPY_AND_ASSIGN(Controller);
+    DISALLOW_COPY_AND_ASSIGN(BraveSyncService);
   };
 
 } // namespace brave_sync
 
-#endif //BRAVE_COMPONENTS_SYNC_CONTROLLER_H_
+#endif //BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_H_

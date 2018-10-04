@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/controller_impl.h"
+#include "brave/components/brave_sync/brave_sync_service_impl.h"
 
 #include <sstream>
 
@@ -15,7 +15,7 @@
 #include "brave/components/brave_sync/bookmarks.h"
 #include "brave/components/brave_sync/client/client_ext_impl.h"
 #include "brave/components/brave_sync/client/client_factory.h"
-#include "brave/components/brave_sync/controller_observer.h"
+#include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/devices.h"
 #include "brave/components/brave_sync/history.h"
@@ -36,19 +36,19 @@
 
 namespace brave_sync {
 
-ControllerImpl::TempStorage::TempStorage() {
+BraveSyncServiceImpl::TempStorage::TempStorage() {
 }
 
-ControllerImpl::TempStorage::~TempStorage() {
+BraveSyncServiceImpl::TempStorage::~TempStorage() {
 }
 
-ControllerImpl::ControllerImpl(Profile *profile) :
+BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
   sync_client_(nullptr),
   sync_initialized_(false),
   profile_(nullptr),
   timer_(std::make_unique<base::RepeatingTimer>()),
   weak_ptr_factory_(this) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl CTOR";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl CTOR";
   LOG(ERROR) << base::debug::StackTrace().ToString();
   LOG(ERROR) << "TAGAB ---------------------";
 
@@ -57,23 +57,23 @@ ControllerImpl::ControllerImpl(Profile *profile) :
   SetProfile(profile);
 }
 
-ControllerImpl::~ControllerImpl() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::~ControllerImpl DTOR";
+BraveSyncServiceImpl::~BraveSyncServiceImpl() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::~BraveSyncServiceImpl DTOR";
 }
 
-bool ControllerImpl::IsSyncConfigured() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::IsSyncConfigured will return sync_configured_="<<sync_configured_;
+bool BraveSyncServiceImpl::IsSyncConfigured() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::IsSyncConfigured will return sync_configured_="<<sync_configured_;
   return sync_configured_;
 }
 
-bool ControllerImpl::IsSyncInitialized() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::IsSyncConfigured will return sync_initialized_="<<sync_initialized_;
+bool BraveSyncServiceImpl::IsSyncInitialized() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::IsSyncConfigured will return sync_initialized_="<<sync_initialized_;
   return sync_initialized_;
 }
 
 // Usually initialized at BraveSyncExtensionLoadedFunction::Run
-void ControllerImpl::SetProfile(Profile *profile) {
-  LOG(ERROR) << "TAGAB  ControllerImpl::SetProfile profile="<<profile;
+void BraveSyncServiceImpl::SetProfile(Profile *profile) {
+  LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile profile="<<profile;
   // LOG(ERROR) << base::debug::StackTrace().ToString();
   // LOG(ERROR) << "TAGAB ---------------------";
 
@@ -82,8 +82,8 @@ void ControllerImpl::SetProfile(Profile *profile) {
 
   sync_prefs_.reset(new brave_sync::prefs::Prefs(profile));
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() <<">";
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl sync_prefs_->GetThisDeviceName()=<" << sync_prefs_->GetThisDeviceName() <<">";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() <<">";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync_prefs_->GetThisDeviceName()=<" << sync_prefs_->GetThisDeviceName() <<">";
 
   task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
@@ -106,10 +106,10 @@ void ControllerImpl::SetProfile(Profile *profile) {
 
 
   if (!sync_prefs_->GetSeed().empty() && !sync_prefs_->GetThisDeviceName().empty()) {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl sync is configured";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync is configured";
     sync_configured_ = true;
   } else {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::ControllerImpl sync is NOT configured";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync is NOT configured";
     LOG(ERROR) << "TAGAB sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() << ">";
     LOG(ERROR) << "TAGAB sync_prefs_->GetThisDeviceName()=<" << sync_prefs_->GetThisDeviceName() << ">";
   }
@@ -121,18 +121,18 @@ void ControllerImpl::SetProfile(Profile *profile) {
     sync_client_->SetSyncToBrowserHandler(this);
   }
 
-  LOG(ERROR) << "TAGAB  ControllerImpl::SetProfile sync_client_="<<sync_client_;
+  LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile sync_client_="<<sync_client_;
 
-  LOG(ERROR) << "TAGAB  ControllerImpl::SetProfile sync_client_ null, post in UI ControllerImpl::InitJsLib";
+  LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile sync_client_ null, post in UI BraveSyncServiceImpl::InitJsLib";
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
-    ->PostTask(FROM_HERE, base::Bind(&ControllerImpl::InitJsLib,
+    ->PostTask(FROM_HERE, base::Bind(&BraveSyncServiceImpl::InitJsLib,
                                      base::Unretained(this), false));
 
   StartLoop();
 }
 
-void ControllerImpl::Shutdown() {
-  LOG(ERROR) << "TAGAB ControllerImpl::Shutdown";
+void BraveSyncServiceImpl::Shutdown() {
+  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::Shutdown";
 
   StopLoop();
 
@@ -141,18 +141,18 @@ void ControllerImpl::Shutdown() {
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::ShutdownFileWork,
+    base::Bind(&BraveSyncServiceImpl::ShutdownFileWork,
                weak_ptr_factory_.GetWeakPtr())
   );
 }
 
-void ControllerImpl::ShutdownFileWork() {
+void BraveSyncServiceImpl::ShutdownFileWork() {
   sync_obj_map_.reset();
 }
 
-void ControllerImpl::OnSetupSyncHaveCode(const std::string &sync_words,
+void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string &sync_words,
   const std::string &device_name) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetupSyncHaveCode";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSetupSyncHaveCode";
   LOG(ERROR) << "TAGAB sync_words=" << sync_words;
   LOG(ERROR) << "TAGAB device_name=" << device_name;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -178,8 +178,8 @@ void ControllerImpl::OnSetupSyncHaveCode(const std::string &sync_words,
   sync_client_->NeedBytesFromSyncWords(sync_words);
 }
 
-void ControllerImpl::OnSetupSyncNewToSync(const std::string &device_name) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetupSyncNewToSync";
+void BraveSyncServiceImpl::OnSetupSyncNewToSync(const std::string &device_name) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSetupSyncNewToSync";
   LOG(ERROR) << "TAGAB device_name="<<device_name;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (device_name.empty()) {
@@ -205,8 +205,8 @@ void ControllerImpl::OnSetupSyncNewToSync(const std::string &device_name) {
   // Then when we will receive sync_ready, we should display web page with sync settings
 }
 
-void ControllerImpl::OnDeleteDevice(const std::string &device_id) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDevice";
+void BraveSyncServiceImpl::OnDeleteDevice(const std::string &device_id) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDevice";
   LOG(ERROR) << "TAGAB device_id="<<device_id;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -215,26 +215,26 @@ void ControllerImpl::OnDeleteDevice(const std::string &device_id) {
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnDeleteDeviceFileWork,
+    base::Bind(&BraveSyncServiceImpl::OnDeleteDeviceFileWork,
                weak_ptr_factory_.GetWeakPtr(), device_id)
   );
 }
 
-void ControllerImpl::OnDeleteDeviceFileWork(const std::string &device_id) {
-  LOG(ERROR) << "TAGAB  ControllerImpl::OnDeleteDeviceFileWork";
+void BraveSyncServiceImpl::OnDeleteDeviceFileWork(const std::string &device_id) {
+  LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::OnDeleteDeviceFileWork";
   std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   SyncDevices syncDevices;
   syncDevices.FromJson(json);
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork json="<<json;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork json="<<json;
 
   const SyncDevice *device = syncDevices.GetByDeviceId(device_id);
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork device="<<device;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork device="<<device;
   //DCHECK(device); // once I saw it nullptr
   if (device) {
     const std::string device_name = device->name_;
     const std::string object_id = device->object_id_;
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork device_name="<<device_name;
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnDeleteDeviceFileWork object_id="<<object_id;
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork device_name="<<device_name;
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork object_id="<<object_id;
 
     SendDeviceSyncRecord(jslib::SyncRecord::Action::DELETE,
       device_name,
@@ -243,35 +243,35 @@ void ControllerImpl::OnDeleteDeviceFileWork(const std::string &device_id) {
   }
 }
 
-void ControllerImpl::OnResetSync() {
-  LOG(ERROR) << "TAGAB  ControllerImpl::OnResetSync";
+void BraveSyncServiceImpl::OnResetSync() {
+  LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::OnResetSync";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   DCHECK(sync_client_ != nullptr);
   //DCHECK(sync_initialized_);
 
   const std::string device_id = sync_prefs_->GetThisDeviceId();
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResetSync device_id="<<device_id;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResetSync device_id="<<device_id;
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnResetSyncFileWork,
+    base::Bind(&BraveSyncServiceImpl::OnResetSyncFileWork,
                weak_ptr_factory_.GetWeakPtr(), device_id)
   );
 }
 
-void ControllerImpl::OnResetSyncFileWork(const std::string &device_id) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResetSyncFileWork";
+void BraveSyncServiceImpl::OnResetSyncFileWork(const std::string &device_id) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResetSyncFileWork";
   OnDeleteDeviceFileWork(device_id);
   sync_obj_map_->DestroyDB();
 
   content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
-    base::Bind(&ControllerImpl::OnResetSyncPostFileUiWork,
+    base::Bind(&BraveSyncServiceImpl::OnResetSyncPostFileUiWork,
                base::Unretained(this)));
 }
 
-void ControllerImpl::OnResetSyncPostFileUiWork() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResetSyncPostFileUiWork";
+void BraveSyncServiceImpl::OnResetSyncPostFileUiWork() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResetSyncPostFileUiWork";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->Clear();
 
@@ -280,8 +280,8 @@ void ControllerImpl::OnResetSyncPostFileUiWork() {
   TriggerOnSyncStateChanged();
 }
 
-void ControllerImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetSettingsAndDevices " << GetThreadInfoString();
+void BraveSyncServiceImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevices " << GetThreadInfoString();
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   // pref service should be queried on UI thread in anyway
@@ -290,19 +290,19 @@ void ControllerImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCallback &
   // Jump to task runner thread to perform FILE operation and then back to UI
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::GetSettingsAndDevicesImpl,
+    base::Bind(&BraveSyncServiceImpl::GetSettingsAndDevicesImpl,
                weak_ptr_factory_.GetWeakPtr(),
                base::Passed(std::move(settings)), callback)
   );
 }
 
-void ControllerImpl::GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Settings> settings, const GetSettingsAndDevicesCallback &callback) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetSettingsAndDevicesImpl " << GetThreadInfoString();
+void BraveSyncServiceImpl::GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Settings> settings, const GetSettingsAndDevicesCallback &callback) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevicesImpl " << GetThreadInfoString();
 
   std::unique_ptr<brave_sync::SyncDevices> devices = std::make_unique<brave_sync::SyncDevices>();
   std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   devices->FromJson(json);
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetSettingsAndDevicesImpl json="<<json;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevicesImpl json="<<json;
 
   // Jump back to UI with an answer
   content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
@@ -311,8 +311,8 @@ void ControllerImpl::GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Setti
   );
 }
 
-void ControllerImpl::GetSyncWords() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetSyncWords";
+void BraveSyncServiceImpl::GetSyncWords() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSyncWords";
 
   // Ask sync client
   DCHECK(sync_client_);
@@ -320,92 +320,92 @@ void ControllerImpl::GetSyncWords() {
   sync_client_->NeedSyncWords(seed);
 }
 
-std::string ControllerImpl::GetSeed() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetSeed";
+std::string BraveSyncServiceImpl::GetSeed() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSeed";
   std::string seed = sync_prefs_->GetSeed();
   return seed;
 }
 
-void ControllerImpl::OnSetSyncThisDevice(const bool &sync_this_device) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetSyncThisDevice " << sync_this_device;
+void BraveSyncServiceImpl::OnSetSyncThisDevice(const bool &sync_this_device) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSetSyncThisDevice " << sync_this_device;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncThisDevice(sync_this_device);
 }
 
-void ControllerImpl::OnSetSyncBookmarks(const bool &sync_bookmarks) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetSyncBookmarks " << sync_bookmarks;
+void BraveSyncServiceImpl::OnSetSyncBookmarks(const bool &sync_bookmarks) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSetSyncBookmarks " << sync_bookmarks;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
 }
 
-void ControllerImpl::OnSetSyncBrowsingHistory(const bool &sync_browsing_history) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSetSyncBrowsingHistory " << sync_browsing_history;
+void BraveSyncServiceImpl::OnSetSyncBrowsingHistory(const bool &sync_browsing_history) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSetSyncBrowsingHistory " << sync_browsing_history;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncHistoryEnabled(sync_browsing_history);
 }
 
-void ControllerImpl::OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncSavedSiteSettings " << sync_saved_site_settings;
+void BraveSyncServiceImpl::OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncSavedSiteSettings " << sync_saved_site_settings;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncSiteSettingsEnabled(sync_saved_site_settings);
 }
 
-void ControllerImpl::InitJsLib(const bool &setup_new_sync) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::InitJsLib " << GetThreadInfoString();
+void BraveSyncServiceImpl::InitJsLib(const bool &setup_new_sync) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::InitJsLib " << GetThreadInfoString();
 
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::InitJsLib sync_client_=" << sync_client_;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::InitJsLib sync_client_=" << sync_client_;
 
   DCHECK(sync_client_);
   if ( !seen_get_init_data_ && ( (!sync_prefs_->GetSeed().empty() && !sync_prefs_->GetThisDeviceName().empty()) ||
       setup_new_sync) ) {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::InitJsLib sync is active or setup_new_sync";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::InitJsLib sync is active or setup_new_sync";
     sync_client_->LoadClient();
   }
 }
 
-void ControllerImpl::OnMessageFromSyncReceived() {
+void BraveSyncServiceImpl::OnMessageFromSyncReceived() {
   ;
 }
 
 // SyncLibToBrowserHandler overrides
-void ControllerImpl::OnSyncDebug(const std::string &message) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncDebug: message=<" << message << ">";
+void BraveSyncServiceImpl::OnSyncDebug(const std::string &message) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncDebug: message=<" << message << ">";
   TriggerOnLogMessage(message);
 }
 
-void ControllerImpl::OnSyncSetupError(const std::string &error) {
+void BraveSyncServiceImpl::OnSyncSetupError(const std::string &error) {
   temp_storage_.currently_initializing_guard_ = false;
   OnSyncDebug(error);
 }
 
-void ControllerImpl::OnGetInitData(const std::string &sync_version) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData sync_version="<<sync_version<<"----------";
+void BraveSyncServiceImpl::OnGetInitData(const std::string &sync_version) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData sync_version="<<sync_version<<"----------";
   LOG(ERROR) << base::debug::StackTrace().ToString();
 
   seen_get_init_data_ = true;
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() << ">";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() << ">";
 
   Uint8Array seed;
   if (!temp_storage_.seed_str_.empty()) {
     seed = Uint8ArrayFromString(temp_storage_.seed_str_);
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData take seed from temp store";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData take seed from temp store";
   } else if (!sync_prefs_->GetSeed().empty()) {
     seed = Uint8ArrayFromString(sync_prefs_->GetSeed());
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData take seed from prefs store";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData take seed from prefs store";
   } else {
     // We are starting a new chain, so we don't know neither seed nor device id
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData starting new chain, use no seeds";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData starting new chain, use no seeds";
   }
 
   Uint8Array device_id;
   if (!sync_prefs_->GetThisDeviceId().empty()) {
     device_id = Uint8ArrayFromString(sync_prefs_->GetThisDeviceId());
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData use device id from prefs StrFromUint8Array(device_id)="<<StrFromUint8Array(device_id);
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData use device id from prefs StrFromUint8Array(device_id)="<<StrFromUint8Array(device_id);
   } else {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData use empty device id";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData use empty device id";
   }
 
   DCHECK(!sync_version.empty());
@@ -418,11 +418,11 @@ void ControllerImpl::OnGetInitData(const std::string &sync_version) {
   config.debug = true;
   sync_client_->SendGotInitData(seed, device_id, config);
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetInitData called sync_client_->SendGotInitData---";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData called sync_client_->SendGotInitData---";
 }
 
-void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData:";
+void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData:";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   DCHECK(false == sync_initialized_);
@@ -431,19 +431,19 @@ void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &de
   std::string seed_str = StrFromUint8Array(seed);
   std::string device_id_str = StrFromUint8Array(device_id);
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: seed=<"<<seed_str<<">";
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: device_id="<<device_id_str<<">";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: seed=<"<<seed_str<<">";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: device_id="<<device_id_str<<">";
 
   if (temp_storage_.seed_str_.empty() && !seed_str.empty()) {
     temp_storage_.seed_str_ = seed_str;
   }
 
   // Check existing values
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: GetThisDeviceId()="<<sync_prefs_->GetThisDeviceId();
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: GetSeed()="<<sync_prefs_->GetSeed();
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: GetThisDeviceName()="<<sync_prefs_->GetThisDeviceName();
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: GetThisDeviceId()="<<sync_prefs_->GetThisDeviceId();
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: GetSeed()="<<sync_prefs_->GetSeed();
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: GetThisDeviceName()="<<sync_prefs_->GetThisDeviceName();
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: temp_storage_.seed_str_="<<temp_storage_.seed_str_;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: temp_storage_.seed_str_="<<temp_storage_.seed_str_;
 
   if (temp_storage_.device_name_.empty()) {
     temp_storage_.device_name_ = sync_prefs_->GetThisDeviceName();
@@ -459,11 +459,11 @@ void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &de
   }
   DCHECK(!temp_storage_.device_name_.empty());
   sync_prefs_->SetThisDeviceName(temp_storage_.device_name_);
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: saved device_id="<<device_id_str;
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: saved seed="<<temp_storage_.seed_str_;
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: saved temp_storage_.device_name_="<<temp_storage_.device_name_;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: saved device_id="<<device_id_str;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: saved seed="<<temp_storage_.seed_str_;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: saved temp_storage_.device_name_="<<temp_storage_.device_name_;
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveInitData: sync_configured_ = true";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: sync_configured_ = true";
   sync_configured_ = true;
 
   sync_prefs_->SetSyncThisDevice(true);
@@ -475,19 +475,19 @@ void ControllerImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &de
   temp_storage_.currently_initializing_guard_ = false;
 }
 
-void ControllerImpl::OnSyncReady() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady:";
+void BraveSyncServiceImpl::OnSyncReady() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady:";
   const std::string bookmarks_base_order = sync_prefs_->GetBookmarksBaseOrder();
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: bookmarks_base_order="<<bookmarks_base_order;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady: bookmarks_base_order="<<bookmarks_base_order;
   if (bookmarks_base_order.empty()) {
     std::string platform = tools::GetPlatformName();
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: platform=" << platform;
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: sync_prefs_->GetThisDeviceId()=" << sync_prefs_->GetThisDeviceId();
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady: platform=" << platform;
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady: sync_prefs_->GetThisDeviceId()=" << sync_prefs_->GetThisDeviceId();
     sync_client_->SendGetBookmarksBaseOrder(sync_prefs_->GetThisDeviceId(), platform);
     return;
   }
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSyncReady: about to call SetBaseOrder " << bookmarks_base_order;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady: about to call SetBaseOrder " << bookmarks_base_order;
   bookmarks_->SetBaseOrder(bookmarks_base_order);
   DCHECK(false == sync_initialized_);
   sync_initialized_ = true;
@@ -498,11 +498,11 @@ void ControllerImpl::OnSyncReady() {
   RequestSyncData();
 }
 
-void ControllerImpl::OnGetExistingObjects(const std::string &category_name,
+void BraveSyncServiceImpl::OnGetExistingObjects(const std::string &category_name,
   std::unique_ptr<RecordsList> records,
   const base::Time &last_record_time_stamp,
   const bool &is_truncated) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetExistingObjects:";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetExistingObjects:";
   LOG(ERROR) << "TAGAB category_name=" << category_name;
   LOG(ERROR) << "TAGAB records.size()=" << records->size();
   LOG(ERROR) << "TAGAB last_record_time_stamp=" << last_record_time_stamp;
@@ -521,26 +521,26 @@ void ControllerImpl::OnGetExistingObjects(const std::string &category_name,
     sync_prefs_->SetLatestRecordTime(last_record_time_stamp);
   }
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetExistingObjects: last_time_fetch_sent_=" << last_time_fetch_sent_;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetExistingObjects: last_time_fetch_sent_=" << last_time_fetch_sent_;
   DCHECK(!tools::IsTimeEmpty(last_time_fetch_sent_));
   sync_prefs_->SetLastFetchTime(last_time_fetch_sent_);
 
   // Jump to task runner thread to perform FILE operation and then back to UI
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnGetExistingObjectsFileWork,
+    base::Bind(&BraveSyncServiceImpl::OnGetExistingObjectsFileWork,
                weak_ptr_factory_.GetWeakPtr(), category_name,
                base::Passed(std::move(records)), last_record_time_stamp,
                is_truncated));
 }
 
-void ControllerImpl::OnGetExistingObjectsFileWork(const std::string &category_name,
+void BraveSyncServiceImpl::OnGetExistingObjectsFileWork(const std::string &category_name,
   std::unique_ptr<RecordsList> records,
   const base::Time &last_record_time_stamp,
   const bool &is_truncated) {
   // Runs in task_runner_
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnGetExistingObjectsFileWork:";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetExistingObjectsFileWork:";
   LOG(ERROR) << "TAGAB category_name=" << category_name;
   LOG(ERROR) << "TAGAB records.size()=" << records->size();
   LOG(ERROR) << "TAGAB last_record_time_stamp=" << last_record_time_stamp;
@@ -559,11 +559,11 @@ void ControllerImpl::OnGetExistingObjectsFileWork(const std::string &category_na
   }
 }
 
-void ControllerImpl::GetExistingHistoryObjects(
+void BraveSyncServiceImpl::GetExistingHistoryObjects(
   const RecordsList &records,
   const base::Time &last_record_time_stamp,
   const bool &is_truncated ) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::GetExistingHistoryObjects:";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetExistingHistoryObjects:";
 
   return;
 
@@ -588,7 +588,7 @@ void ControllerImpl::GetExistingHistoryObjects(
   // TODO, AB: use brave_sync::History and history::HistoryService::QueryHistoryByIds
 }
 
-SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
+SyncRecordAndExistingList BraveSyncServiceImpl::PrepareResolvedResponse(
   const std::string &category_name,
   const RecordsList &records) {
   SyncRecordAndExistingList resolvedResponse;
@@ -599,8 +599,8 @@ SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
 
     std::string object_id = record->objectId;
 
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ object_id=" << object_id;
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ record->action=" << record->action;
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse_ object_id=" << object_id;
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse_ record->action=" << record->action;
 
     if (category_name == jslib_const::kBookmarks) {
       //"BOOKMARKS"
@@ -625,44 +625,44 @@ SyncRecordAndExistingList ControllerImpl::PrepareResolvedResponse(
       resolved_record->second = history_->GetResolvedHistoryValue(object_id);
     } else if (category_name == jslib_const::kPreferences) {
       //"PREFERENCES"
-      LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_: resolving device";
+      LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse_: resolving device";
       resolved_record->second = PrepareResolvedDevice(object_id);
-      LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_: -----------------";
+      LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse_: -----------------";
     }
 
     resolvedResponse.emplace_back(std::move(resolved_record));
   }
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse_ -----------------------------";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse_ -----------------------------";
   return resolvedResponse;
 }
 
-SyncRecordPtr ControllerImpl::PrepareResolvedDevice(const std::string &object_id) {
+SyncRecordPtr BraveSyncServiceImpl::PrepareResolvedDevice(const std::string &object_id) {
   // std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   // SyncDevices devices;
   // devices.FromJson(json);
   //
   // SyncDevice* device = devices.GetByObjectId(object_id);
-  // LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse device=" << device;
+  // LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse device=" << device;
   // if (device) {
-  //   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse will ret value";
+  //   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse will ret value";
   //   return device->ToValue();
   // } else {
-  //   LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::PrepareResolvedResponse will ret none";
+  //   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse will ret none";
   //   return std::make_unique<base::Value>(base::Value::Type::NONE);
   // }
 
   return nullptr;
 }
 
-void ControllerImpl::SendResolveSyncRecords(const std::string &category_name,
+void BraveSyncServiceImpl::SendResolveSyncRecords(const std::string &category_name,
   const SyncRecordAndExistingList& records_and_existing_objects) {
   DCHECK(sync_client_);
 
   sync_client_->SendResolveSyncRecords(category_name, records_and_existing_objects);
 }
 
-void ControllerImpl::OnResolvedSyncRecords(const std::string &category_name,
+void BraveSyncServiceImpl::OnResolvedSyncRecords(const std::string &category_name,
   std::unique_ptr<RecordsList> records) {
   LOG(ERROR) << "TAGAB OnResolvedSyncRecords records->size()" << records->size();
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -670,13 +670,13 @@ void ControllerImpl::OnResolvedSyncRecords(const std::string &category_name,
   // Jump to thread allowed perform file operations
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnResolvedSyncRecordsFileWork,
+    base::Bind(&BraveSyncServiceImpl::OnResolvedSyncRecordsFileWork,
                weak_ptr_factory_.GetWeakPtr(), category_name,
                base::Passed(std::move(records)))
   );
 }
 
-void ControllerImpl::OnResolvedSyncRecordsFileWork(const std::string &category_name,
+void BraveSyncServiceImpl::OnResolvedSyncRecordsFileWork(const std::string &category_name,
   std::unique_ptr<RecordsList> records) {
   if (category_name == brave_sync::jslib_const::kPreferences) {
     OnResolvedPreferences(*records.get());
@@ -687,12 +687,12 @@ void ControllerImpl::OnResolvedSyncRecordsFileWork(const std::string &category_n
   }
 }
 
-void ControllerImpl::OnResolvedPreferences(const RecordsList &records) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedPreferences:";
+void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList &records) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedPreferences:";
 
   SyncDevices existing_sync_devices;
   std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedPreferences: existing json=<" << json << ">";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedPreferences: existing json=<" << json << ">";
   existing_sync_devices.FromJson(json);
 
   //SyncDevices sync_devices;
@@ -731,25 +731,25 @@ void ControllerImpl::OnResolvedPreferences(const RecordsList &records) {
   LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged()";
 
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
-    ->PostTask(FROM_HERE, base::Bind(&ControllerImpl::TriggerOnSyncStateChanged,
+    ->PostTask(FROM_HERE, base::Bind(&BraveSyncServiceImpl::TriggerOnSyncStateChanged,
                                      base::Unretained(this)));
 
 
   LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged() done";
 }
 
-void ControllerImpl::OnResolvedBookmarks(const RecordsList &records) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: ";
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: " << GetThreadInfoString();
+void BraveSyncServiceImpl::OnResolvedBookmarks(const RecordsList &records) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedBookmarks: ";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedBookmarks: " << GetThreadInfoString();
 
   for (const auto &sync_record : records) {
     DCHECK(sync_record->has_bookmark());
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: title=<" << sync_record->GetBookmark().site.title << ">";
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: sync_record->objectId=<" << sync_record->objectId << ">";
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: order=<" << sync_record->GetBookmark().order << ">";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedBookmarks: title=<" << sync_record->GetBookmark().site.title << ">";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedBookmarks: sync_record->objectId=<" << sync_record->objectId << ">";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedBookmarks: order=<" << sync_record->GetBookmark().order << ">";
     DCHECK(!sync_record->objectId.empty());
     std::string local_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark, sync_record->objectId);
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnResolvedBookmarks: local_id=<" << local_id << ">";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedBookmarks: local_id=<" << local_id << ">";
 
     if (sync_record->action == jslib::SyncRecord::Action::CREATE && local_id.empty()) {
       bookmarks_->AddBookmark(*sync_record);
@@ -769,29 +769,29 @@ void ControllerImpl::OnResolvedBookmarks(const RecordsList &records) {
   }
 }
 
-void ControllerImpl::OnResolvedHistorySites(const RecordsList &records) {
+void BraveSyncServiceImpl::OnResolvedHistorySites(const RecordsList &records) {
   NOTIMPLEMENTED();
 }
 
-void ControllerImpl::OnDeletedSyncUser() {
+void BraveSyncServiceImpl::OnDeletedSyncUser() {
   NOTIMPLEMENTED();
 }
 
-void ControllerImpl::OnDeleteSyncSiteSettings()  {
+void BraveSyncServiceImpl::OnDeleteSyncSiteSettings()  {
   NOTIMPLEMENTED();
 }
 
-void ControllerImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarksBaseOrder order=<" << order << ">";
+void BraveSyncServiceImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveBookmarksBaseOrder order=<" << order << ">";
   DCHECK(!order.empty());
   sync_prefs_->SetBookmarksBaseOrder(order);
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarksBaseOrder: forced call of OnSyncReady";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveBookmarksBaseOrder: forced call of OnSyncReady";
   OnSyncReady();
 }
 
-void ControllerImpl::OnSaveBookmarkOrder(const std::string &order,
+void BraveSyncServiceImpl::OnSaveBookmarkOrder(const std::string &order,
   const std::string &prev_order, const std::string &next_order) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarkOrder";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveBookmarkOrder";
   LOG(ERROR) << "TAGAB order=" << order;
   LOG(ERROR) << "TAGAB prev_order=" << prev_order;
   LOG(ERROR) << "TAGAB next_order=" << next_order;
@@ -819,21 +819,21 @@ void ControllerImpl::OnSaveBookmarkOrder(const std::string &order,
   OnSaveBookmarkOrderInternal(order, between_order_rr_context_node_id, action);
 }
 
-void ControllerImpl::OnSaveBookmarkOrderInternal(const std::string &order,
+void BraveSyncServiceImpl::OnSaveBookmarkOrderInternal(const std::string &order,
   const int64_t &node_id, const int &action) {
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork,
+    base::Bind(&BraveSyncServiceImpl::OnSaveBookmarkOrderOrNodeAddedFileWork,
                weak_ptr_factory_.GetWeakPtr(),
                node_id,
                order,
                action));
 }
 
-void ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t &bookmark_local_id,
+void BraveSyncServiceImpl::OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t &bookmark_local_id,
   const std::string &order, const int &action) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveBookmarkOrderOrNodeAddedFileWork";
   LOG(ERROR) << "TAGAB bookmark_local_id=" << bookmark_local_id;
   LOG(ERROR) << "TAGAB order=" << order;
   LOG(ERROR) << "TAGAB action=" << action;
@@ -869,14 +869,14 @@ void ControllerImpl::OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t &bookm
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, *records);
 }
 
-void ControllerImpl::PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &node_id, const int &action) {
+void BraveSyncServiceImpl::PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &node_id, const int &action) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::tuple<std::string, std::string> key(prev_order, next_order);
   DCHECK(rr_map_.find(key) == rr_map_.end());
   rr_map_[key] = std::make_tuple(node_id, action);
 }
 
-void ControllerImpl::PopRRContext(const std::string &prev_order, const std::string &next_order, int64_t &node_id, int &action) {
+void BraveSyncServiceImpl::PopRRContext(const std::string &prev_order, const std::string &next_order, int64_t &node_id, int &action) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::tuple<std::string, std::string> key(prev_order, next_order);
   auto it = rr_map_.find(key);
@@ -886,37 +886,37 @@ void ControllerImpl::PopRRContext(const std::string &prev_order, const std::stri
   rr_map_.erase(it);
 }
 
-void ControllerImpl::OnSyncWordsPrepared(const std::string &words) {
+void BraveSyncServiceImpl::OnSyncWordsPrepared(const std::string &words) {
   TriggerOnHaveSyncWords(words);
 }
 
-void ControllerImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
+void BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
   const std::string &error_message) {
   //OnWordsToBytesDone
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnBytesFromSyncWordsPrepared";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared";
   LOG(ERROR) << "TAGAB bytes.size()=" << bytes.size();
   LOG(ERROR) << "TAGAB error_message=" << error_message;
 
   if (!bytes.empty()) {
     //DCHECK(temp_storage_.seed_str_.empty()); can be not epmty if try to do twice with error on first time
     temp_storage_.seed_str_ = StrFromUint8Array(bytes);
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnBytesFromSyncWordsPrepared temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnWordsToBytesDone: call InitJsLib";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnWordsToBytesDone: call InitJsLib";
     InitJsLib(true);//Init will cause load of the Script;
   } else {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::OnBytesFromSyncWordsPrepared failed, " << error_message;
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared failed, " << error_message;
   }
 }
 
 //bool once_done = false;
 
 // Here we query sync lib for the records after initialization (or again later)
-void ControllerImpl::RequestSyncData() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData:";
+void BraveSyncServiceImpl::RequestSyncData() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData:";
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: sync_prefs_->GetSyncThisDevice()=" << sync_prefs_->GetSyncThisDevice();
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: sync_prefs_->GetSyncThisDevice()=" << sync_prefs_->GetSyncThisDevice();
   if (!sync_prefs_->GetSyncThisDevice()) {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: sync is not enabled for this device";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: sync is not enabled for this device";
     return;
   }
 
@@ -924,12 +924,12 @@ void ControllerImpl::RequestSyncData() {
   const bool history = sync_prefs_->GetSyncHistoryEnabled();
   const bool preferences = sync_prefs_->GetSyncSiteSettingsEnabled();
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: bookmarks="<<bookmarks;
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: history="<<history;
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: preferences="<<preferences;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: bookmarks="<<bookmarks;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: history="<<history;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: preferences="<<preferences;
 
   if (!bookmarks && !history && !preferences) {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: none of option is enabled, abort";
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: none of option is enabled, abort";
     return;
   }
 
@@ -937,11 +937,11 @@ void ControllerImpl::RequestSyncData() {
   base::Time last_fetch_time = sync_prefs_->GetLastFetchTime();
   base::Time latest_record_time = sync_prefs_->GetLatestRecordTime();
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: last_fetch_time="<<last_fetch_time;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: last_fetch_time="<<last_fetch_time;
 
   const int64_t start_at = base::checked_cast<int64_t>(latest_record_time.ToJsTime());
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: latest_record_time="<<latest_record_time;
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::RequestSyncData: start_at="<<start_at;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: latest_record_time="<<latest_record_time;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: start_at="<<start_at;
 
   //bool dbg_ignore_create_device = true; //the logic should rely upon sync_prefs_->GetTimeLastFetch() which is not saved yet
   if (tools::IsTimeEmpty(last_fetch_time)
@@ -955,9 +955,9 @@ void ControllerImpl::RequestSyncData() {
   FetchSyncRecords(bookmarks, history, preferences, start_at, max_records);
 }
 
-void ControllerImpl::FetchSyncRecords(const bool &bookmarks,
+void BraveSyncServiceImpl::FetchSyncRecords(const bool &bookmarks,
   const bool &history, const bool &preferences, int64_t start_at, int max_records) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::FetchSyncRecords:";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::FetchSyncRecords:";
   DCHECK(bookmarks || history || preferences);
   if (!(bookmarks || history || preferences)) {
     return;
@@ -977,7 +977,7 @@ void ControllerImpl::FetchSyncRecords(const bool &bookmarks,
 
   DCHECK(sync_client_);
   last_time_fetch_sent_ = base::Time::Now();
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::FetchSyncRecords: last_time_fetch_sent_=" << last_time_fetch_sent_;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::FetchSyncRecords: last_time_fetch_sent_=" << last_time_fetch_sent_;
   base::Time start_at_time = base::Time::FromJsTime(start_at);
   sync_client_->SendFetchSyncRecords(
     category_names,
@@ -1010,15 +1010,15 @@ RecordsListPtr CreateDeviceCreationRecordExtension(
 }
 }
 
-void ControllerImpl::SendCreateDevice() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendCreateDevice";
+void BraveSyncServiceImpl::SendCreateDevice() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SendCreateDevice";
 
   std::string device_name = sync_prefs_->GetThisDeviceName();
   std::string object_id = brave_sync::tools::GenerateObjectId();
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendCreateDevice deviceName=" << device_name;
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendCreateDevice objectId=" << object_id;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SendCreateDevice deviceName=" << device_name;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SendCreateDevice objectId=" << object_id;
   std::string device_id = sync_prefs_->GetThisDeviceId();
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendCreateDevice deviceId=" << device_id;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SendCreateDevice deviceId=" << device_id;
   CHECK(!device_id.empty());
 
   SendDeviceSyncRecord(jslib::SyncRecord::Action::CREATE,
@@ -1027,7 +1027,7 @@ void ControllerImpl::SendCreateDevice() {
     object_id);
 }
 
-void ControllerImpl::SendDeviceSyncRecord(const int &action,
+void BraveSyncServiceImpl::SendDeviceSyncRecord(const int &action,
   const std::string &device_name,
   const std::string &device_id,
   const std::string &object_id) {
@@ -1040,17 +1040,17 @@ void ControllerImpl::SendDeviceSyncRecord(const int &action,
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_PREFERENCES, *records);
 }
 
-std::vector<std::string> ControllerImpl::SaveGetDeleteNotSyncedRecords(
+std::vector<std::string> BraveSyncServiceImpl::SaveGetDeleteNotSyncedRecords(
   const std::string &recordType, const std::string &action,
   const std::vector<std::string> &ids,
   NotSyncedRecordsOperation operation) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SaveGetDeleteNotSyncedRecords, early quit";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SaveGetDeleteNotSyncedRecords, early quit";
   return std::vector<std::string>();
   // java SaveGetDeleteNotSyncedRecords
 }
 
-void ControllerImpl::SendAllLocalBookmarks() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendAllLocalBookmarks";
+void BraveSyncServiceImpl::SendAllLocalBookmarks() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SendAllLocalBookmarks";
   static const int SEND_RECORDS_COUNT_LIMIT = 1000;
   std::vector<InitialBookmarkNodeInfo> localBookmarks;
   std::map<const bookmarks::BookmarkNode*, std::string> order_map;
@@ -1063,18 +1063,18 @@ void ControllerImpl::SendAllLocalBookmarks() {
   }
 }
 
-void ControllerImpl::CreateUpdateDeleteBookmarks(
+void BraveSyncServiceImpl::CreateUpdateDeleteBookmarks(
   const int &action,
   const std::vector<InitialBookmarkNodeInfo> &list,
   const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
   const bool &addIdsToNotSynced,
   const bool &isInitialSync) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteBookmarks";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::CreateUpdateDeleteBookmarks";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteBookmarks list.empty()=" << list.empty();
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteBookmarks sync_initialized_=" << sync_initialized_;
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteBookmarks sync_prefs_->GetSyncBookmarksEnabled()=" << sync_prefs_->GetSyncBookmarksEnabled();
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::CreateUpdateDeleteBookmarks list.empty()=" << list.empty();
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::CreateUpdateDeleteBookmarks sync_initialized_=" << sync_initialized_;
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::CreateUpdateDeleteBookmarks sync_prefs_->GetSyncBookmarksEnabled()=" << sync_prefs_->GetSyncBookmarksEnabled();
 
   if (list.empty() || !sync_initialized_ || !sync_prefs_->GetSyncBookmarksEnabled() ) {
     return;
@@ -1082,7 +1082,7 @@ void ControllerImpl::CreateUpdateDeleteBookmarks(
 
   task_runner_->PostTask(
     FROM_HERE,
-    base::Bind(&ControllerImpl::CreateUpdateDeleteBookmarksFileWork,
+    base::Bind(&BraveSyncServiceImpl::CreateUpdateDeleteBookmarksFileWork,
                weak_ptr_factory_.GetWeakPtr(),
                action,
                list,
@@ -1091,26 +1091,26 @@ void ControllerImpl::CreateUpdateDeleteBookmarks(
                isInitialSync));
 }
 
-void ControllerImpl::CreateUpdateDeleteBookmarksFileWork(
+void BraveSyncServiceImpl::CreateUpdateDeleteBookmarksFileWork(
   const int &action,
   const std::vector<InitialBookmarkNodeInfo> &list,
   const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
   const bool &addIdsToNotSynced,
   const bool &isInitialSync) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteBookmarksFileWork";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::CreateUpdateDeleteBookmarksFileWork";
 
   DCHECK(sync_client_);
   std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(list, order_map, action);
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, *records);
 }
 
-void ControllerImpl::BookmarkMoved(
+void BraveSyncServiceImpl::BookmarkMoved(
   const int64_t &node_id,
   const int64_t &prev_item_id,
   const int64_t &next_item_id,
   const int64_t &parent_id) {
   // Should be invoked on FILE-enabled thread
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkMoved";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BookmarkMoved";
 
   std::string prev_item_order;
   std::string next_item_order;
@@ -1136,17 +1136,17 @@ void ControllerImpl::BookmarkMoved(
 
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
     ->PostTask(FROM_HERE,
-               base::Bind(&ControllerImpl::BookmarkMovedQueryNewOrderUiWork,
+               base::Bind(&BraveSyncServiceImpl::BookmarkMovedQueryNewOrderUiWork,
                           base::Unretained(this), node_id, prev_item_order,
                           next_item_order,parent_folder_order));
 }
 
-void ControllerImpl::BookmarkMovedQueryNewOrderUiWork(
+void BraveSyncServiceImpl::BookmarkMovedQueryNewOrderUiWork(
   const int64_t &node_id,
   const std::string &prev_item_order,
   const std::string &next_item_order,
   const std::string &parent_folder_order) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkMovedQueryNewOrderUiWork";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BookmarkMovedQueryNewOrderUiWork";
   LOG(ERROR) << "TAGAB node_id="<<node_id;
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
   LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
@@ -1164,13 +1164,13 @@ void ControllerImpl::BookmarkMovedQueryNewOrderUiWork(
   }
 }
 
-void ControllerImpl::BookmarkAdded(
+void BraveSyncServiceImpl::BookmarkAdded(
   const int64_t &node_id,
   const int64_t &prev_item_id,
   const int64_t &next_item_id,
   const int64_t &parent_id) {
   // Should be invoked on FILE-enabled thread
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkAdded";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BookmarkAdded";
   LOG(ERROR) << "TAGAB node_id="<<node_id;
   LOG(ERROR) << "TAGAB prev_item_id="<<prev_item_id;
   LOG(ERROR) << "TAGAB next_item_id="<<next_item_id;
@@ -1203,18 +1203,18 @@ void ControllerImpl::BookmarkAdded(
 
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
     ->PostTask(FROM_HERE,
-               base::Bind(&ControllerImpl::BookmarkAddedQueryNewOrderUiWork,
+               base::Bind(&BraveSyncServiceImpl::BookmarkAddedQueryNewOrderUiWork,
                           base::Unretained(this), node_id, prev_item_order,
                           next_item_order, parent_folder_order));
 }
 
-void ControllerImpl::BookmarkAddedQueryNewOrderUiWork(
+void BraveSyncServiceImpl::BookmarkAddedQueryNewOrderUiWork(
   const int64_t &node_id,
   const std::string &prev_item_order,
   const std::string &next_item_order,
   const std::string &parent_folder_order) {
 
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::BookmarkAddedQueryNewOrderUiWork";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BookmarkAddedQueryNewOrderUiWork";
   LOG(ERROR) << "TAGAB node_id="<<node_id;
   LOG(ERROR) << "TAGAB prev_item_order="<<prev_item_order;
   LOG(ERROR) << "TAGAB next_item_order="<<next_item_order;
@@ -1235,8 +1235,8 @@ void ControllerImpl::BookmarkAddedQueryNewOrderUiWork(
   }
 }
 
-void ControllerImpl::SendAllLocalHistorySites() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::SendAllLocalHistorySites";
+void BraveSyncServiceImpl::SendAllLocalHistorySites() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SendAllLocalHistorySites";
   ;
   ///static const int SEND_RECORDS_COUNT_LIMIT = 1000;
   history_->GetAllHistory();
@@ -1248,8 +1248,8 @@ void ControllerImpl::SendAllLocalHistorySites() {
   // }
 }
 
-void ControllerImpl::HaveInitialHistory(history::QueryResults* results) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::HaveInitialHistory";
+void BraveSyncServiceImpl::HaveInitialHistory(history::QueryResults* results) {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::HaveInitialHistory";
   static const int SEND_RECORDS_COUNT_LIMIT = 1000;
 
   if (!results || results->empty() || !sync_initialized_ || !sync_prefs_->GetSyncHistoryEnabled() ) {
@@ -1257,12 +1257,12 @@ void ControllerImpl::HaveInitialHistory(history::QueryResults* results) {
   }
 
   if (results && !results->empty()) {
-    LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::HaveInitialHistory results->size()=" << results->size();
+    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::HaveInitialHistory results->size()=" << results->size();
     for (const auto& item : *results){
       //history_item_vec.push_back(GetHistoryItem(item));
       //item.visit_time();
       item.visit_time();
-      LOG(ERROR) << "brave_sync::ControllerImpl::HaveInitialHistory item=" << item.url().spec();
+      LOG(ERROR) << "brave_sync::BraveSyncServiceImpl::HaveInitialHistory item=" << item.url().spec();
     }
 
     for(size_t i = 0; i < results->size(); i += SEND_RECORDS_COUNT_LIMIT) {
@@ -1280,13 +1280,13 @@ void ControllerImpl::HaveInitialHistory(history::QueryResults* results) {
 }
 
 
-void ControllerImpl::CreateUpdateDeleteHistorySites(
+void BraveSyncServiceImpl::CreateUpdateDeleteHistorySites(
   const int &action,
   //const history::QueryResults::URLResultVector &list,
   const std::vector<history::URLResult> &list,
   const bool &addIdsToNotSynced,
   const bool &isInitialSync) {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::CreateUpdateDeleteHistorySites";
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::CreateUpdateDeleteHistorySites";
 
   if (list.empty() || !sync_initialized_ || !sync_prefs_->GetSyncHistoryEnabled() ) {
     return;
@@ -1299,26 +1299,26 @@ void ControllerImpl::CreateUpdateDeleteHistorySites(
 
 static const int64_t kCheckUpdatesIntervalSec = 60;
 
-void ControllerImpl::StartLoop() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::StartLoop " << GetThreadInfoString();
+void BraveSyncServiceImpl::StartLoop() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::StartLoop " << GetThreadInfoString();
   // Repeated task runner
   //https://chromium.googlesource.com/chromium/src/+/lkgr/docs/threading_and_tasks.md#posting-a-repeating-task-with-a-delay
   timer_->Start(FROM_HERE, base::TimeDelta::FromSeconds(kCheckUpdatesIntervalSec),
-                 this, &ControllerImpl::LoopProc);
+                 this, &BraveSyncServiceImpl::LoopProc);
   //in UI THREAD
 }
 
-void ControllerImpl::StopLoop() {
-  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::StopLoop " << GetThreadInfoString();
+void BraveSyncServiceImpl::StopLoop() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::StopLoop " << GetThreadInfoString();
   timer_->Stop();
   //in UI THREAD
 }
 
-void ControllerImpl::LoopProc() {
-//  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::LoopProc " << GetThreadInfoString();
+void BraveSyncServiceImpl::LoopProc() {
+//  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::LoopProc " << GetThreadInfoString();
 
   // task_runner_->PostTask(FROM_HERE,
-  // base::Bind(&ControllerImpl::LoopProcThreadAligned,
+  // base::Bind(&BraveSyncServiceImpl::LoopProcThreadAligned,
   //     weak_ptr_factory_.GetWeakPtr()));
   //in UI THREAD
 
@@ -1327,8 +1327,8 @@ void ControllerImpl::LoopProc() {
   // sync_prefs_ which should be accessed in UI thread
 }
 
-void ControllerImpl::LoopProcThreadAligned() {
-//  LOG(ERROR) << "TAGAB brave_sync::ControllerImpl::LoopProcThreadAligned " << GetThreadInfoString();
+void BraveSyncServiceImpl::LoopProcThreadAligned() {
+//  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::LoopProcThreadAligned " << GetThreadInfoString();
 
   //LOG(ERROR) << "ChromeNetworkDelegate " << " PID=" << getpid() << " tid="<< gettid();`
   // Ensure not UI thread
@@ -1347,21 +1347,21 @@ void ControllerImpl::LoopProcThreadAligned() {
   RequestSyncData();
 }
 
-base::SequencedTaskRunner *ControllerImpl::GetTaskRunner() {
+base::SequencedTaskRunner *BraveSyncServiceImpl::GetTaskRunner() {
   return task_runner_.get();
 }
 
-void ControllerImpl::TriggerOnLogMessage(const std::string &message) {
+void BraveSyncServiceImpl::TriggerOnLogMessage(const std::string &message) {
   for (auto& observer : observers_)
     observer.OnLogMessage(this, message);
 }
 
-void ControllerImpl::TriggerOnSyncStateChanged() {
+void BraveSyncServiceImpl::TriggerOnSyncStateChanged() {
   for (auto& observer : observers_)
     observer.OnSyncStateChanged(this);
 }
 
-void ControllerImpl::TriggerOnHaveSyncWords(const std::string &sync_words) {
+void BraveSyncServiceImpl::TriggerOnHaveSyncWords(const std::string &sync_words) {
   for (auto& observer : observers_)
     observer.OnHaveSyncWords(this, sync_words);
 }
