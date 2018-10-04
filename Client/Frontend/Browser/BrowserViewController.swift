@@ -495,6 +495,7 @@ class BrowserViewController: UIViewController {
         
         updateTabCountUsingTabManager(tabManager, animated: false)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
+        favoritesViewController?.updateDuckDuckGoVisibility()
     }
 
     fileprivate func showRestoreTabsAlert() {
@@ -540,6 +541,12 @@ class BrowserViewController: UIViewController {
             show(toast: toast, afterWaiting: ButtonToastUX.ToastDelay)
         }
         showQueuedAlertIfAvailable()
+        
+        if PrivateBrowsingManager.shared.isPrivateBrowsing {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                self.presentDuckDuckGoCallout()
+            }
+        }
     }
 
     // THe logic for shouldShowWhatsNewTab is as follows: If we do not have the LatestAppVersionProfileKey in
@@ -656,7 +663,7 @@ class BrowserViewController: UIViewController {
         homePanelIsInline = inline
 
         if favoritesViewController == nil {
-            let homePanelController = FavoritesViewController()
+            let homePanelController = FavoritesViewController(profile: profile)
             homePanelController.delegate = self
             homePanelController.view.alpha = 0
 
@@ -1182,6 +1189,44 @@ class BrowserViewController: UIViewController {
         
         // Remember whether or not a desktop site was requested
         tab.desktopSite = webView.customUserAgent?.isEmpty == false
+    }
+    
+    // MARK: DuckDuckGo Callout
+    
+    func presentDuckDuckGoCallout(force: Bool = false) {
+        // Check to see if its been presented already
+        if Preferences.Popups.duckDuckGoPrivateSearch.value && !force {
+            // TODO: #312 Show Browser Lock Popup
+            return
+        }
+        
+        // Do not show ddg popup if user already chose it for private browsing.
+        if profile.searchEngines.defaultEngine(forType: .privateMode).shortName == OpenSearchEngine.EngineNames.duckDuckGo {
+            // TODO: #312 Show Browser Lock Popup
+            return
+        }
+        
+        let popup = AlertPopupView(image: UIImage(named: "duckduckgo"), title: Strings.DDG_callout_title, message: Strings.DDG_callout_message)
+        popup.dismissHandler = {
+            // TODO: #312 Show Browser Lock Popup
+        }
+        popup.addButton(title: Strings.DDG_callout_no) {
+            Preferences.Popups.duckDuckGoPrivateSearch.value = true
+            return .flyDown
+        }
+        popup.addDefaultButton(title: Strings.DDG_callout_enable) { [weak self] in
+            if self?.profile == nil {
+                return .flyUp
+            }
+            
+            Preferences.Popups.duckDuckGoPrivateSearch.value = true
+            self?.profile.searchEngines.setDefaultEngine(OpenSearchEngine.EngineNames.duckDuckGo, forType: .privateMode)
+            
+            self?.favoritesViewController?.updateDuckDuckGoVisibility()
+            
+            return .flyUp
+        }
+        popup.showWithType(showType: .flyUp)
     }
 }
 
@@ -2672,7 +2717,11 @@ extension BrowserViewController: TopSitesDelegate {
     
     func didSelectUrl(url: URL) {
         finishEditingAndSubmit(url, visitType: .bookmark)
-}
+    }
+    
+    func didTapDuckDuckGoCallout() {
+        presentDuckDuckGoCallout(force: true)
+    }
 }
 
 extension BrowserViewController: PreferencesObserver {
