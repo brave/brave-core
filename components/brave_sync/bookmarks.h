@@ -141,6 +141,9 @@ private:
 
   void BookmarkNodeRemovedFileWork(const bookmarks::BookmarkNode* node);
 
+  std::vector<InitialBookmarkNodeInfo> IterateChildren(
+    const bookmarks::BookmarkNode* node);
+
   int CalculateNewIndex(
     const bookmarks::BookmarkNode* new_parent_node,
     const bookmarks::BookmarkNode* old_parent_node,
@@ -155,7 +158,6 @@ private:
   void PauseObserver();
   void ResumeObserver();
 
-  DISALLOW_COPY_AND_ASSIGN(Bookmarks);
   Profile *profile_;
   bookmarks::BookmarkModel* model_;
   std::string device_id_;
@@ -165,6 +167,7 @@ private:
   std::string base_order_;
 
   BookmarksClient *client_;
+  DISALLOW_COPY_AND_ASSIGN(Bookmarks);
 };
 
 } // namespace brave_sync
