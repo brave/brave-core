@@ -1091,13 +1091,13 @@ class TrayToolbar: UIView {
         }
 
         doneButton.snp.makeConstraints { make in
-            make.centerY.equalTo(self)
+            make.centerY.equalTo(safeArea.centerY)
             make.trailing.equalTo(self).offset(-sideOffset)
         }
 
         addSubview(privateModeButton)
         privateModeButton.snp.makeConstraints { make in
-            make.centerY.equalTo(self)
+            make.centerY.equalTo(safeArea.centerY)
             make.leading.equalTo(self).offset(sideOffset)
         }
     }
