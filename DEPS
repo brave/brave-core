@@ -16,7 +16,7 @@ deps = {
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@0559543f458a949b83b58035273ef7f8f1a1b111",
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
   "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@75c1bb10c4a54275de4fb10afd9f204cc07284a8",
-  "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@64e4e9ed4f0e06f44102b5970b42e8542c4662db",
+  "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@c07866c3b9c8264195756a81112bb74b8fa90858",
 }
 
 hooks = [
