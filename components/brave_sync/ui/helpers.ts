@@ -14,21 +14,24 @@ export const setActions = (newActions: any) => actions = newActions
  * @param {string} seed - the seed received by the sync back-end
  */
 export const generateQRCodeImageSource = (seed: string) => {
-  var arr_int = seed.split(',').map(Number);
-  let toHexString = (byteArray: Array<Number>) => {
-   return Array.from(byteArray, function(byte: number) {
-     return ('0'.concat((byte & 0xFF).toString(16)) ).slice(-2);
-   }).join('')
+  const intArr = seed.split(',').map(Number)
+
+  const toHexString = (intArr: ArrayLike<number>) => {
+    return Array
+    .from(new Uint8Array(intArr))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('')
   }
-  var s = toHexString(arr_int);
-  const image = qr.image(s)
+
+  const hexString = toHexString(intArr)
+  const image = qr.image(hexString)
 
   try {
     let chunks: Array<Uint8Array> = []
     image
       .on('data', (chunk: Uint8Array) => chunks.push(chunk))
       .on('end', () => {
-        const base64Image = 'data:image/png;base64,' + Buffer.concat(chunks).toString('base64')
+        const base64Image = `data:image/png;base64,${Buffer.concat(chunks).toString('base64')}`
         actions.onGenerateQRCodeImageSource(base64Image)
       })
   } catch (error) {
