@@ -83,8 +83,20 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_REMOVE_DEVICE:
-      if (!payload.id) {
+      if (typeof payload.id === undefined || typeof payload.deviceName === undefined) {
         break
+      }
+
+      // if the device removed is the main device, reset sync
+      if (payload.deviceName === state.thisDeviceName && payload.id === 0) {
+        state = { ...storage.defaultState }
+        chrome.send('resetSync')
+        break
+      }
+
+      state = {
+        ...state,
+        devices: [ ...state.devices.filter((device: Sync.Devices) => device.id !== payload.id) ]
       }
       chrome.send('deleteDevice', [payload.id])
       break
