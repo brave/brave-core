@@ -839,7 +839,6 @@
 <translation id="6845038076637626672">最大化して開く</translation>
 <translation id="6860427144121307915">タブで開く</translation>
 <translation id="3074037959626057712">ログインして同期を有効にしました</translation>
-<translation id="6264422956566238156">同期を有効にしました</translation>
 <translation id="9125982323641182972">Brave で Brave Software の最先端技術を活用</translation>
 <translation id="7988117629517051942">Brave Software の最先端技術をさらに活用</translation>
 <translation id="5596627076506792578">その他のオプション</translation>
@@ -1625,7 +1624,6 @@
 <translation id="784934925303690534">期間</translation>
 <translation id="2496180316473517155">閲覧履歴</translation>
 <translation id="8662811608048051533">ほとんどのサイトからログアウトします。</translation>
-<translation id="8218628800671693884">ほとんどのサイトからログアウトします。Brave Software アカウントへのログイン状態は維持されます。</translation>
 <translation id="2017836877785168846">アドレスバーの履歴とオートコンプリート データを削除します。</translation>
 <translation id="8096327394278038498">アドレスバーの履歴とオートコンプリートを削除します。お使いの Brave Software アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
 <translation id="8122693181154564064">ログインしているすべての端末の履歴を削除します。お使いの Brave Software アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
@@ -1692,7 +1690,10 @@
 <translation id="7754704193130578113">ダウンロード前に各ファイルの保存場所を確認する</translation>
 <translation id="5713072761819014678">Brave Software ドライブ アカウントを切断</translation>
 <translation id="486635084936119914">ダウンロード後に特定の種類のファイルを自動的に開きます</translation>
+<translation id="3653160965917900914">ネットワーク ファイル共有</translation>
+<translation id="5763315388120433852">ネットワーク ファイル共有を設定または管理する。</translation>
 <translation id="2367199180085172140">ファイル共有を追加</translation>
+<translation id="247051149076336810">ファイル共有 URL</translation>
 <translation id="5247051749037287028">表示名（省略可）</translation>
 <translation id="6091761513005122595">共有フォルダが正常にマウントされました。</translation>
 <translation id="9024158959543687197">共有フォルダのマウントエラー。ファイルの共有 URL を確認してもう一度お試しください。</translation>
@@ -1700,6 +1701,7 @@
 <translation id="2148219725039824548">共有フォルダのマウントエラー。指定された共有フォルダがネットワークで見つかりませんでした。</translation>
 <translation id="7234406375359457793">共有フォルダのマウントエラー。指定された共有フォルダはサポートされていません。</translation>
 <translation id="706626672220389329">共有フォルダのマウントエラー。指定された共有フォルダはすでにマウントされています。</translation>
+<translation id="5985458664595100876">URL の形式が無効です。サポートされている形式は \\server\share と smb://server/share です。</translation>
 <translation id="3101709781009526431">日時</translation>
 <translation id="2059913712424898428">タイムゾーン</translation>
 <translation id="4547672827276975204">自動的に設定する</translation>

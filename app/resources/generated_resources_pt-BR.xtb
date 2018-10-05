@@ -840,7 +840,6 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="6845038076637626672">Abrir maximizado</translation>
 <translation id="6860427144121307915">Abrir em uma guia</translation>
 <translation id="3074037959626057712">Você fez login e ativou a sincronização</translation>
-<translation id="6264422956566238156">Você ativou a sincronização</translation>
 <translation id="9125982323641182972">A tecnologia Brave Software no Brave</translation>
 <translation id="7988117629517051942">Aproveite mais a tecnologia do Brave Software</translation>
 <translation id="5596627076506792578">Mais opções</translation>
@@ -1627,7 +1626,6 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="784934925303690534">Intervalo de tempo</translation>
 <translation id="2496180316473517155">Histórico de navegação</translation>
 <translation id="8662811608048051533">Desconecta você da maioria dos sites.</translation>
-<translation id="8218628800671693884">Desconecta você da maioria dos sites, mas não da sua Conta do Brave Software.</translation>
 <translation id="2017836877785168846">Limpa o histórico e o preenchimento automático na barra de endereço.</translation>
 <translation id="8096327394278038498">Limpa o histórico e os preenchimentos automáticos na barra de endereço. Sua Conta do Brave Software pode ter outras formas de histórico de navegação em <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Limpa o histórico de todos os dispositivos conectados. Sua Conta do Brave Software pode ter outras formas de histórico de navegação em <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1694,7 +1692,10 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="7754704193130578113">Perguntar onde salvar cada arquivo antes de fazer download</translation>
 <translation id="5713072761819014678">Desconectar a conta do Brave Software Drive</translation>
 <translation id="486635084936119914">Abrir alguns tipos de arquivo automaticamente depois do download</translation>
+<translation id="3653160965917900914">Compartilhamentos de arquivos de rede</translation>
+<translation id="5763315388120433852">Configurar ou gerenciar compartilhamentos de arquivos de rede.</translation>
 <translation id="2367199180085172140">Adicionar compartilhamento de arquivos</translation>
+<translation id="247051149076336810">URL de compartilhamento de arquivos</translation>
 <translation id="5247051749037287028">Nome de exibição (opcional)</translation>
 <translation id="6091761513005122595">Compartilhamento ativado.</translation>
 <translation id="9024158959543687197">Erro ao ativar o compartilhamento. Verifique o URL de compartilhamento de arquivos e tente novamente.</translation>
@@ -1702,6 +1703,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="2148219725039824548">Erro ao ativar o compartilhamento. O compartilhamento especificado não foi encontrado na rede.</translation>
 <translation id="7234406375359457793">Erro ao ativar o compartilhamento. O compartilhamento especificado não é compatível.</translation>
 <translation id="706626672220389329">Erro ao ativar o compartilhamento. O compartilhamento especificado já está ativado.</translation>
+<translation id="5985458664595100876">Formato de URL inválido. Os formatos compatíveis são \\server\share e smb://server/share.</translation>
 <translation id="3101709781009526431">Data e hora</translation>
 <translation id="2059913712424898428">Fuso horário</translation>
 <translation id="4547672827276975204">Definir automaticamente</translation>

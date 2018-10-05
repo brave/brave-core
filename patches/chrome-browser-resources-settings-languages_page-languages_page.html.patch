@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/languages_page/languages_page.html b/chrome/browser/resources/settings/languages_page/languages_page.html
-index a979b391e553..50bb65730a93 100644
+index a979b391e5536dcf098ee3c94fa34aaf33239951..50bb65730a93e36e9656848f10d095556b2d99d1 100644
 --- a/chrome/browser/resources/settings/languages_page/languages_page.html
 +++ b/chrome/browser/resources/settings/languages_page/languages_page.html
 @@ -182,10 +182,12 @@

@@ -840,7 +840,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6845038076637626672">Odpri povečano</translation>
 <translation id="6860427144121307915">Odpri na zavihku</translation>
 <translation id="3074037959626057712">Prijavili ste se in vklopili sinhronizacijo</translation>
-<translation id="6264422956566238156">Vklopili ste sinhroniziranje</translation>
 <translation id="9125982323641182972">Prejmite Googlove pametne rešitve v Chromu</translation>
 <translation id="7988117629517051942">Zagotovite si več Googlovih pametnih rešitev</translation>
 <translation id="5596627076506792578">Več možnosti</translation>
@@ -1626,7 +1625,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="784934925303690534">Časovno obdobje</translation>
 <translation id="2496180316473517155">Zgodovina brskanja</translation>
 <translation id="8662811608048051533">Odjavi vas iz večine spletnih mest.</translation>
-<translation id="8218628800671693884">Odjavi vas iz večine spletnih mest, vendar ne iz Brave Software Računa.</translation>
 <translation id="2017836877785168846">Izbriše zgodovino in samodokončanja v naslovni vrstici.</translation>
 <translation id="8096327394278038498">Izbriše zgodovino in samodokončanja v naslovni vrstici. V Brave Software Računu so morda druge vrste zgodovine brskanja na <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Izbriše zgodovino iz vseh naprav, v katerih ste prijavljeni. V Brave Software Računu so morda druge vrste zgodovine brskanja na <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1693,7 +1691,10 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="7754704193130578113">Pred prenosom vprašaj, kam želim shraniti vsako datoteko</translation>
 <translation id="5713072761819014678">Prekinitev povezave z računom za Brave Software Drive</translation>
 <translation id="486635084936119914">Samodejno odpiranje nekaterih vrst datotek po prenosu</translation>
+<translation id="3653160965917900914">Omrežna datotečna sredstva v skupni rabi</translation>
+<translation id="5763315388120433852">Nastavitev ali upravljanje omrežnih datotečnih sredstev v skupni rabi.</translation>
 <translation id="2367199180085172140">Dodajanje naprave za skupno rabo datotek</translation>
+<translation id="247051149076336810">URL datotečnega sredstva v skupni rabi</translation>
 <translation id="5247051749037287028">Prikazno ime (izbirno)</translation>
 <translation id="6091761513005122595">Datotečno sredstvo v skupni rabi je bilo uspešno vpeto.</translation>
 <translation id="9024158959543687197">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Preverite URL datotečnega sredstva v skupni rabi in poskusite znova.</translation>
@@ -1701,6 +1702,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="2148219725039824548">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Določeno datotečno sredstvo v skupni rabi ni bilo najdeno v omrežju.</translation>
 <translation id="7234406375359457793">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Določeno datotečno sredstvo v skupni rabi ni podprto.</translation>
 <translation id="706626672220389329">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Določeno datotečno sredstvo v skupni rabi je že vpeto.</translation>
+<translation id="5985458664595100876">Neveljavna oblika URL-ja. Podprti obliki sta \\server\share in smb://server/share.</translation>
 <translation id="3101709781009526431">Datum in ura</translation>
 <translation id="2059913712424898428">Časovni pas</translation>
 <translation id="4547672827276975204">Nastavi samodejno</translation>

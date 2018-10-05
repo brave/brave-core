@@ -29,7 +29,6 @@ group("child_dependencies") {
 group("browser_dependencies") {
   deps = [
     "//brave/browser",
-    "//brave/components/content_settings/core/browser",
     "common",
     ":packed_resources",
     "chromium_src:browser",

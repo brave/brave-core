@@ -840,7 +840,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6845038076637626672">Obre-la maximitzada</translation>
 <translation id="6860427144121307915">Obre en una pestanya</translation>
 <translation id="3074037959626057712">Has iniciat la sessió i has activat la sincronització</translation>
-<translation id="6264422956566238156">Has activat la sincronització</translation>
 <translation id="9125982323641182972">Eines intel·ligents a Brave</translation>
 <translation id="7988117629517051942">Gaudeix de més eines intel·ligents de Brave Software</translation>
 <translation id="5596627076506792578">Més opcions</translation>
@@ -1626,7 +1625,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="784934925303690534">Interval de temps</translation>
 <translation id="2496180316473517155">Historial de navegació</translation>
 <translation id="8662811608048051533">Et tanca la sessió de la majoria de llocs.</translation>
-<translation id="8218628800671693884">Et tanca la sessió de la majoria de llocs web, però no la del compte de Brave Software.</translation>
 <translation id="2017836877785168846">Esborra l'historial i les complecions automàtiques a la barra d'adreces.</translation>
 <translation id="8096327394278038498">Esborra l'historial i les complecions automàtiques a la barra d'adreces. A <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>, trobaràs altres maneres d'explorar l'historial del teu compte de Brave Software.</translation>
 <translation id="8122693181154564064">Esborra l'historial de tots els dispositius en què tinguis iniciada la sessió. A <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>, trobaràs altres maneres d'explorar l'historial del teu compte de Brave Software.</translation>
@@ -1694,7 +1692,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7754704193130578113">Pregunta on es desarà cada fitxer abans de baixar-lo</translation>
 <translation id="5713072761819014678">Desconnecta el compte de Brave Software Drive</translation>
 <translation id="486635084936119914">Obre alguns tipus de fitxer automàticament després de baixar-los</translation>
+<translation id="3653160965917900914">Ús compartit dels fitxers de la xarxa</translation>
+<translation id="5763315388120433852">Configura o gestiona l'ús compartit dels fitxers de la xarxa.</translation>
 <translation id="2367199180085172140">Afegeix un nou ús compartit de fitxers</translation>
+<translation id="247051149076336810">URL de l'ús compartit del fitxer</translation>
 <translation id="5247051749037287028">Nom de visualització (opcional)</translation>
 <translation id="6091761513005122595">L'ús compartit s'ha activat correctament.</translation>
 <translation id="9024158959543687197">S'ha produït un error en activar l'ús compartit. Comprova l'URL de l'ús compartit del fitxer i torna-ho a provar.</translation>
@@ -1702,6 +1703,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2148219725039824548">S'ha produït un error en activar l'ús compartit especificat perquè no s'ha trobat a la xarxa.</translation>
 <translation id="7234406375359457793">S'ha produït un error en activar l'ús compartit especificat perquè no s'admet.</translation>
 <translation id="706626672220389329">S'ha produït un error en activar l'ús compartit especificat perquè ja està activat.</translation>
+<translation id="5985458664595100876">El format de l'URL no és vàlid. S'admeten els formats del tipus \\server\share i smb://server\share.</translation>
 <translation id="3101709781009526431">Data i hora</translation>
 <translation id="2059913712424898428">Zona horària</translation>
 <translation id="4547672827276975204">Defineix automàticament</translation>

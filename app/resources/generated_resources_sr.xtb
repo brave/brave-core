@@ -840,7 +840,6 @@
 <translation id="6845038076637626672">Отвори увећано</translation>
 <translation id="6860427144121307915">Отвори на картици</translation>
 <translation id="3074037959626057712">Пријавили сте се и укључили синхронизацију</translation>
-<translation id="6264422956566238156">Искључили сте синхронизацију</translation>
 <translation id="9125982323641182972">Паметне Brave Software функције</translation>
 <translation id="7988117629517051942">Набавите још паметних Brave Software функција</translation>
 <translation id="5596627076506792578">Још опција</translation>
@@ -1626,7 +1625,6 @@
 <translation id="784934925303690534">Временски опсег</translation>
 <translation id="2496180316473517155">Историја прегледања</translation>
 <translation id="8662811608048051533">Одјавиће вас са већине сајтова.</translation>
-<translation id="8218628800671693884">Одјавиће вас са већине сајтова. Неће вас одјавити са Brave Software налога.</translation>
 <translation id="2017836877785168846">Брише историју и аутоматска довршавања у траци за адресу.</translation>
 <translation id="8096327394278038498">Брише историју и аутоматска довршавања у траци за адресу. Brave Software налог може да има друге облике историје прегледања на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Брише историју са свих уређаја на којима сте пријављени. Brave Software налог може да има друге облике историје прегледања на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1693,7 +1691,10 @@
 <translation id="7754704193130578113">Питај где треба сачувати сваку датотеку пре преузимања</translation>
 <translation id="5713072761819014678">Прекини везу са налогом Brave Software диска</translation>
 <translation id="486635084936119914">Аутоматски отварајте одређене типове датотека после преузимања</translation>
+<translation id="3653160965917900914">Дељења датотека на мрежи</translation>
+<translation id="5763315388120433852">Подесите дељења датотека на мрежи или управљајте њима.</translation>
 <translation id="2367199180085172140">Додајте дељење датотека</translation>
+<translation id="247051149076336810">URL за дељење датотека</translation>
 <translation id="5247051749037287028">Име за приказ (опционално)</translation>
 <translation id="6091761513005122595">Дељена датотека је учитана.</translation>
 <translation id="9024158959543687197">Грешка при учитавању дељене датотеке. Проверите URL дељења датотека и пробајте поново.</translation>
@@ -1701,6 +1702,7 @@
 <translation id="2148219725039824548">Грешка при учитавању дељене датотеке. Наведена дељена датотека није пронађена на мрежи.</translation>
 <translation id="7234406375359457793">Грешка при учитавању дељене датотеке. Наведена дељена датотека није подржана.</translation>
 <translation id="706626672220389329">Грешка при учитавању дељене датотеке. Наведена дељена датотека је већ учитана.</translation>
+<translation id="5985458664595100876">Неважећи формат URL-а. Подржани формати су \\server\share и smb://server/share.</translation>
 <translation id="3101709781009526431">Датум и време</translation>
 <translation id="2059913712424898428">Временска зона</translation>
 <translation id="4547672827276975204">Подеси аутоматски</translation>

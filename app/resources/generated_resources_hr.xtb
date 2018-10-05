@@ -839,7 +839,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="6845038076637626672">Maksimalno otvaranje</translation>
 <translation id="6860427144121307915">Otvori u kartici</translation>
 <translation id="3074037959626057712">Prijavili ste se i uključili sinkronizaciju</translation>
-<translation id="6264422956566238156">Sinkronizacija je uključena</translation>
 <translation id="9125982323641182972">Brave Softwareove značajke za Brave</translation>
 <translation id="7988117629517051942">Iskoristite više pametnih Brave Softwareovih značajki</translation>
 <translation id="5596627076506792578">Više opcija</translation>
@@ -1626,7 +1625,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="784934925303690534">Vremenski raspon</translation>
 <translation id="2496180316473517155">Povijest pregledavanja</translation>
 <translation id="8662811608048051533">Odjavit ćete se s većine web-lokacija.</translation>
-<translation id="8218628800671693884">Odjavit ćete se s većine web-lokacija, ali se nećete odjaviti s Brave Software računa.</translation>
 <translation id="2017836877785168846">Briše povijest i automatsko dovršavanje u adresnoj traci.</translation>
 <translation id="8096327394278038498">Briše povijest i automatska dovršavanja u adresnoj traci. Na vašem Brave Software računu možda postoje drugi oblici povijesti pregledavanja na stranici <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Briše povijest na svim uređajima na kojima ste prijavljeni. Na vašem Brave Software računu možda postoje drugi oblici povijesti pregledavanja na stranici <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1693,7 +1691,10 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="7754704193130578113">Pitaj gdje spremiti svaku datoteku prije preuzimanja</translation>
 <translation id="5713072761819014678">Prekini vezu računa Brave Software diska</translation>
 <translation id="486635084936119914">Otvaranje određenih vrsta datoteka automatski nakon preuzimanja</translation>
+<translation id="3653160965917900914">Mrežna dijeljenja datoteka</translation>
+<translation id="5763315388120433852">Postavite mrežna dijeljenja datoteka ili upravljajte njima.</translation>
 <translation id="2367199180085172140">Dodaj dijeljenje datoteka</translation>
+<translation id="247051149076336810">URL za dijeljenje datoteka</translation>
 <translation id="5247051749037287028">Ime za prikaz (izborno)</translation>
 <translation id="6091761513005122595">Dijeljenje je učitano.</translation>
 <translation id="9024158959543687197">Pogreška pri učitavanju dijeljenja. Provjerite URL za dijeljenje datoteka i pokušajte ponovo.</translation>
@@ -1701,6 +1702,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="2148219725039824548">Pogreška pri učitavanju dijeljenja. Navedeno dijeljenje nije pronađeno na mreži.</translation>
 <translation id="7234406375359457793">Pogreška pri učitavanju dijeljenja. Navedeno dijeljenje nije podržano.</translation>
 <translation id="706626672220389329">Pogreška pri učitavanju dijeljenja. Navedeno dijeljenje već je učitano.</translation>
+<translation id="5985458664595100876">Format URL-a nije važeći. Podržani su formati \\server\share i smb://server/share.</translation>
 <translation id="3101709781009526431">Datum i vrijeme</translation>
 <translation id="2059913712424898428">Vremenska zona</translation>
 <translation id="4547672827276975204">Postavi automatski</translation>

@@ -838,7 +838,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6845038076637626672">Avaa suuressa koossa</translation>
 <translation id="6860427144121307915">Avaa välilehdessä</translation>
 <translation id="3074037959626057712">Olet kirjautunut sisään ja ottanut synkronoinnin käyttöön.</translation>
-<translation id="6264422956566238156">Synkronointi on käytössä</translation>
 <translation id="9125982323641182972">Brave Softwaren älykkäitä ratkaisuja Braveen</translation>
 <translation id="7988117629517051942">Lisää Brave Softwaren älykkäitä ratkaisuja</translation>
 <translation id="5596627076506792578">Lisäasetukset</translation>
@@ -1624,7 +1623,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="784934925303690534">Aikaväli</translation>
 <translation id="2496180316473517155">Selaushistoria</translation>
 <translation id="8662811608048051533">Kirjaa sinut ulos useimmilta sivustoilta.</translation>
-<translation id="8218628800671693884">Tämä kirjaa sinut ulos useimmilta sivustoilta. Sinua ei kirjata ulos Brave Software-tililtäsi.</translation>
 <translation id="2017836877785168846">Tyhjentää historian ja osoitepalkin automaattiset täydennykset.</translation>
 <translation id="8096327394278038498">Tyhjentää historian ja osoitekentän automaattiset täydennykset. Brave Software-tililläsi voi olla muita selaushistoriatietoja osoitteessa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Tyhjentää kaikkien sisäänkirjautuneiden laitteiden historian. Brave Software-tililläsi voi olla muuta toimintaa osoitteessa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1691,7 +1689,10 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7754704193130578113">Kysy, minne kukin tiedosto tallennetaan ennen lataamista</translation>
 <translation id="5713072761819014678">Katkaise yhteys Brave Software Drive -tiliin.</translation>
 <translation id="486635084936119914">Avaa tietyn tyyppiset tiedostot automaattisesti latauksen jälkeen.</translation>
+<translation id="3653160965917900914">Verkkotiedostojen jakaminen</translation>
+<translation id="5763315388120433852">Määritä verkkotiedostojen jakaminen tai muuta sitä.</translation>
 <translation id="2367199180085172140">Lisää jaettu tiedosto</translation>
+<translation id="247051149076336810">Tiedostonjaon URL-osoite</translation>
 <translation id="5247051749037287028">Näyttönimi (valinnainen)</translation>
 <translation id="6091761513005122595">Jako otettiin käyttöön.</translation>
 <translation id="9024158959543687197">Virhe jaon käyttöönotossa. Tarkista tiedostojaon URL-osoite ja yritä uudelleen.</translation>
@@ -1699,6 +1700,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2148219725039824548">Virhe jaon käyttöönotossa. Kyseistä jakoa ei löytynyt verkosta.</translation>
 <translation id="7234406375359457793">Virhe jaon käyttöönotossa. Kyseistä jakoa ei tueta.</translation>
 <translation id="706626672220389329">Virhe jaon käyttöönotossa. Kyseinen jako on jo otettu käyttöön.</translation>
+<translation id="5985458664595100876">Virheellinen URL-osoitteen muoto. Tuettuja muotoja ovat \\server\share ja smb://server/share.</translation>
 <translation id="3101709781009526431">Aika ja päivämäärä</translation>
 <translation id="2059913712424898428">Aikavyöhyke</translation>
 <translation id="4547672827276975204">Aseta automaattisesti</translation>
