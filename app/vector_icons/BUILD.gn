@@ -8,7 +8,8 @@ aggregate_vector_icons("brave_vector_icons") {
   icon_directory = "."
 
   icons = [
-    "tor_profile.icon"
+    "autoplay_status.icon",
+    "tor_profile.icon",
   ]
 }
 
