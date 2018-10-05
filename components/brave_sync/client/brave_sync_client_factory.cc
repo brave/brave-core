@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/client/client_factory.h"
+#include "brave/components/brave_sync/client/brave_sync_client_factory.h"
 
 #include "base/memory/singleton.h"
-#include "brave/components/brave_sync/client/client_ext_impl.h"
+#include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -38,8 +38,8 @@ KeyedService* BraveSyncClientFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   Profile* profile = Profile::FromBrowserContext(context);
 
-  BraveSyncClient *brave_sync_client = new brave_sync::ClientExtImpl(profile);
-
+  BraveSyncClient *brave_sync_client =
+      new brave_sync::BraveSyncClientImpl(profile);
   return brave_sync_client;
 }
 

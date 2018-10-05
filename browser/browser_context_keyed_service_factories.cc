@@ -15,7 +15,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_rewards::RewardsServiceFactory::GetInstance();
   brave_rewards::RewardsNotificationsServiceFactory::GetInstance();
   brave_sync::BraveSyncServiceFactory::GetInstance();
-  brave_sync::BraveSyncClientFactory::GetInstance();
   TorProfileServiceFactory::GetInstance();
 }
 
