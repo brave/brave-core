@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/md_extensions/sidebar.html b/chrome/browser/resources/md_extensions/sidebar.html
-index 32cfa03491ccab9e56b25750a04c9d21d6bfcc2b..84ed8c3a9a87bff1b852c39b6c2c854f97195302 100644
+index 32cfa03491ccab9e56b25750a04c9d21d6bfcc2b..bf7e8b31c0af3586c88b61b99601bb19af3fe12c 100644
 --- a/chrome/browser/resources/md_extensions/sidebar.html
 +++ b/chrome/browser/resources/md_extensions/sidebar.html
 @@ -73,6 +73,7 @@
          <paper-ripple></paper-ripple>
        </a>
      </iron-selector>
-+<if expr="_google_chrome">
++<!--
      <div hidden="[[isSupervised]]">
        <div class="separator"></div>
        <a class="section-item" id="more-extensions" target="_blank"
@@ -14,7 +14,7 @@ index 32cfa03491ccab9e56b25750a04c9d21d6bfcc2b..84ed8c3a9a87bff1b852c39b6c2c854f
          <paper-ripple></paper-ripple>
        </a>
      </div>
-+</if>
++-->
    </template>
    <script src="sidebar.js"></script>
  </dom-module>
