@@ -288,13 +288,14 @@ class PageWallet extends React.Component<{}, State> {
           {
             content === 'summary'
               ? <WalletSummary
-                grant={{ tokens: 10, converted: 0.25 }}
-                ads={{ tokens: 10, converted: 0.25 }}
-                deposit={{ tokens: 10, converted: 0.25 }}
-                contribute={{ tokens: 10, converted: 0.25 }}
-                donation={{ tokens: 2, converted: 0.25 }}
-                tips={{ tokens: 19, converted: 5.25 }}
-                total={{ tokens: 1, converted: 5.25 }}
+                report={{
+                  grant: { tokens: 10, converted: 0.25 },
+                  ads: { tokens: 10, converted: 0.25 },
+                  deposit: { tokens: 10, converted: 0.25 },
+                  contribute: { tokens: 10, converted: 0.25 },
+                  donation: { tokens: 2, converted: 0.25 },
+                  tips: { tokens: 19, converted: 5.25 }
+                }}
                 onActivity={this.onActivity}
               />
               : null

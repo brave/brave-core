@@ -36,7 +36,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   text-transform: uppercase;
 }
 
-.c16 {
+.c14 {
   font-size: 12px;
   color: #686978;
   margin-top: 26px;
@@ -48,7 +48,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c17 {
+.c15 {
   vertical-align: middle;
   margin-right: 11px;
   width: 22px;
@@ -64,31 +64,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   display: -ms-flexbox;
   display: flex;
   border-bottom: 1px solid #d0d6dc;
-  border-top: none;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: baseline;
-  -webkit-box-align: baseline;
-  -ms-flex-align: baseline;
-  align-items: baseline;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
-  -webkit-flex-wrap: nowrap;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  font-family: Poppins,sans-serif;
-}
-
-.c14 {
-  position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: none;
   border-top: none;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
@@ -158,13 +133,6 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   --tokens-tokenNum-size: 16px;
 }
 
-.c15 {
-  --tokens-value-color: #4b4c5c;
-  --tokens-text-size: 12px;
-  --tokens-token-size: 14px;
-  --tokens-tokenNum-size: 16px;
-}
-
 .c8 {
   font-family: Poppins,sans-serif;
   font-weight: 300;
@@ -195,7 +163,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   margin-left: 4px;
 }
 
-.c18 {
+.c16 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -426,58 +394,17 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
           </span>
         </div>
       </div>
-      <div
-        className="c14"
-      >
-        <div
-          className="c5"
-        >
-          MISSING: total
-        </div>
-        <div
-          className="c6"
-        >
-          <span
-            className="c15"
-            color="default"
-            size="normal"
-          >
-            <span
-              className="c8"
-            >
-              <span
-                className="c9"
-              >
-                
-                19.0
-              </span>
-              <span
-                className="c10"
-              >
-                BAT
-              </span>
-            </span>
-            <span
-              className="c11"
-            >
-              5.25
-               
-              USD
-            </span>
-          </span>
-        </div>
-      </div>
     </div>
     <button
-      className="c16"
+      className="c14"
       onClick={[Function]}
     >
       <span
-        className="c17"
+        className="c15"
       >
         <svg
           aria-hidden="true"
-          className="c18"
+          className="c16"
           focusable="false"
           viewBox="0 0 32 32"
         >

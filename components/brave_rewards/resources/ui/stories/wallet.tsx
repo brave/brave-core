@@ -83,13 +83,14 @@ storiesOf('Feature Components/Rewards/Wallet', module)
     return (
       <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
         <WalletSummary
-          grant={object('Grant', { tokens: 10, converted: 0.25 })}
-          deposit={object('Deposit', { tokens: 10, converted: 0.25 })}
-          ads={object('Ads', { tokens: 10, converted: 0.25 })}
-          contribute={object('Contribute', { tokens: 10, converted: 0.25 })}
-          donation={object('Donation', { tokens: 2, converted: 0.25 })}
-          tips={object('Tips', { tokens: 19, converted: 5.25 })}
-          total={object('Total', { tokens: 1, converted: 5.25 })}
+          report={{
+            grant: object('Grant', { tokens: 10, converted: 0.25 }),
+            deposit: object('Deposit', { tokens: 10, converted: 0.25 }),
+            ads: object('Ads', { tokens: 10, converted: 0.25 }),
+            contribute: object('Contribute', { tokens: 10, converted: 0.25 }),
+            donation: object('Donation', { tokens: 2, converted: 0.25 }),
+            tips: object('Tips', { tokens: 19, converted: 5.25 })
+          }}
           onActivity={doNothing}
         />
       </div>

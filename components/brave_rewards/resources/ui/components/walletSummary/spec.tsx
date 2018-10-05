@@ -5,24 +5,14 @@ import { create } from 'react-test-renderer'
 import WalletSummary, { Props } from './index'
 
 const props = {
-  grant: {tokens: 10, converted: 0.25},
-  ads: {tokens: 10, converted: 0.25},
-  contribute: {tokens: 10, converted: 0.25},
-  donation: {tokens: 2, converted: 0.25},
-  tips: {tokens: 19, converted: 5.25},
-  total: {tokens: 19, converted: 5.25},
-  grants: [
-    {
-      id: '1',
-      tokens: 15,
-      converted: 0.75
-    },
-    {
-      id: '2',
-      tokens: 10,
-      converted: 0.50
-    }
-  ],
+  report: {
+    grant: {tokens: 10, converted: 0.25},
+    ads: {tokens: 10, converted: 0.25},
+    contribute: {tokens: 10, converted: 0.25},
+    donation: {tokens: 2, converted: 0.25},
+    tips: {tokens: 19, converted: 5.25},
+    total: {tokens: 19, converted: 5.25},
+  },
   onActivity: ()=>{}
 }
 

@@ -238,12 +238,13 @@ storiesOf('Feature Components/Rewards/Concepts', module)
               />
               <WalletSummary
                 compact={true}
-                grant={object('Grant', { tokens: 10, converted: 0.25 })}
-                ads={object('Ads', { tokens: 10, converted: 0.25 })}
-                contribute={object('Contribute', { tokens: 10, converted: 0.25 })}
-                donation={object('Donation', { tokens: 2, converted: 0.25 })}
-                tips={object('Tips', { tokens: 19, converted: 5.25 })}
-                total={object('Total', { tokens: 1, converted: 5.25 })}
+                report={{
+                  grant: object('Grant', { tokens: 10, converted: 0.25 }),
+                  ads: object('Ads', { tokens: 10, converted: 0.25 }),
+                  contribute: object('Contribute', { tokens: 10, converted: 0.25 }),
+                  donation: object('Donation', { tokens: 2, converted: 0.25 }),
+                  tips: object('Tips', { tokens: 19, converted: 5.25 })
+                }}
               />
             </WalletSummarySlider>
           </WalletWrapper>

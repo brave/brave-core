@@ -11,7 +11,8 @@ import {
   StyledActivity,
   StyledActivityIcon
 } from './style'
-import ListToken from '../listToken/index'
+import ListToken from '../listToken'
+import { Type } from '../tokens'
 import { getLocale } from '../../../helpers'
 import { WalletActivityIcon } from '../../../components/icons'
 
@@ -23,35 +24,91 @@ type Token = {
 
 export interface Props {
   onActivity?: () => void
-  grant?: Token
-  deposit?: Token
-  ads?: Token
-  contribute: Token
-  donation?: Token
-  tips?: Token
-  total: Token
+  report: {
+    grant?: Token
+    deposit?: Token
+    ads?: Token
+    contribute?: Token
+    donation?: Token
+    tips?: Token
+  }
   id?: string
   compact?: boolean
 }
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
+  generateList = () => {
+    const tokenSize = this.props.compact ? 'small' : 'normal'
+    const list = [
+      {
+        key: 'grant',
+        translation: 'tokenGrant',
+        color: 'earnings'
+      },
+      {
+        key: 'ads',
+        translation: 'earningsAds',
+        color: 'earnings'
+      },
+      {
+        key: 'deposit',
+        translation: 'deposits',
+        color: 'earnings'
+      },
+      {
+        key: 'contribute',
+        translation: 'rewardsContribute',
+        color: 'contribute',
+        negative: true
+      },
+      {
+        key: 'donation',
+        translation: 'recurringDonations',
+        color: 'donation',
+        negative: true
+      },
+      {
+        key: 'tips',
+        translation: 'oneTimeDonation',
+        color: 'donation',
+        negative: true
+      }
+    ]
+
+    let result: React.ReactNode[] = []
+    const all = Object.keys(this.props.report).length
+    let current = 0
+
+    list.forEach(item => {
+      const data = (this.props.report as Record<string, Token>)[item.key]
+      if (data) {
+        current++
+        result.push((
+          <ListToken
+            size={tokenSize}
+            value={data.tokens}
+            converted={data.converted}
+            color={item.color as Type}
+            title={getLocale(item.translation)}
+            isNegative={item.negative}
+            border={all === current ? 'last' : undefined}
+          />
+        ))
+      }
+    })
+
+    return result
+  }
+
   render () {
     const {
       id,
-      grant,
-      ads,
-      contribute,
-      donation,
-      tips,
       onActivity,
-      total,
-      deposit,
       compact
     } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
     const year = date.getFullYear()
-    const tokenSize = compact ? 'small' : 'normal'
 
     return (
       <StyledWrapper
@@ -62,79 +119,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           <StyledSummary>{getLocale('rewardsSummary')}</StyledSummary>
           <StyledTitle>{month} {year}</StyledTitle>
           <div>
-            {
-              grant
-              ? <ListToken
-                size={tokenSize}
-                value={grant.tokens}
-                converted={grant.converted}
-                color={'earnings'}
-                title={getLocale('tokenGrant')}
-              />
-              : null
-            }
-            {
-              ads
-              ? <ListToken
-                size={tokenSize}
-                value={ads.tokens}
-                converted={ads.converted}
-                color={'earnings'}
-                title={getLocale('earningsAds')}
-              />
-              : null
-            }
-            {
-              deposit
-              ? <ListToken
-                size={tokenSize}
-                value={deposit.tokens}
-                converted={deposit.converted}
-                color={'earnings'}
-                title={getLocale('deposits')}
-              />
-              : null
-            }
-            <ListToken
-              size={tokenSize}
-              value={contribute.tokens}
-              converted={contribute.converted}
-              color={'contribute'}
-              title={getLocale('rewardsContribute')}
-              isNegative={true}
-            />
-            {
-              donation
-              ? <ListToken
-                size={tokenSize}
-                value={donation.tokens}
-                converted={donation.converted}
-                color={'donation'}
-                title={getLocale('recurringDonations')}
-                isNegative={true}
-              />
-              : null
-            }
-            {
-              tips
-              ? <ListToken
-                size={tokenSize}
-                value={tips.tokens}
-                converted={tips.converted}
-                color={'donation'}
-                title={getLocale('oneTimeDonation')}
-                isNegative={true}
-              />
-              : null
-            }
-            <ListToken
-              size={tokenSize}
-              value={total.tokens}
-              converted={total.converted}
-              border={'last'}
-              title={getLocale('total')}
-              isNegative={total.isNegative || false}
-            />
+            {this.generateList()}
           </div>
           {
             onActivity
