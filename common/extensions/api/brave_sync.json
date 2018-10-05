@@ -173,17 +173,6 @@
     ],
     "events": [
       {
-        "name": "onBrowserToBackgroundPage",
-        "type": "function",
-        "description": "Fired when sync lib sends data to browser.",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "arg1"
-          }
-        ]
-      },
-      {
         "name": "onGotInitData",
         "type": "function",
         "description": "Browser sends init data to sync js",
@@ -318,28 +307,6 @@
         "type": "function",
         "description": "Notifies extension has been loaded",
         "parameters": []
-      },
-      {
-        "name": "backgroundPageToBrowser",
-        "type": "function",
-        "description": "Sends message to brave_sync api",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "message"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "optional": true,
-            "parameters": [
-              {
-                "name": "callback_arg1",
-                "type": "integer"
-              }
-            ]
-          }
-        ]
       },
       {
         "name": "getInitData",

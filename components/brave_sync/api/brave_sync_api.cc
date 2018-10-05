@@ -14,22 +14,6 @@
 namespace extensions {
 namespace api {
 
-ExtensionFunction::ResponseAction BraveSyncBackgroundPageToBrowserFunction::Run() {
-  LOG(ERROR) << "TAGAB BraveSyncBackgroundPageToBrowserFunction::Run";
-  std::unique_ptr<brave_sync::BackgroundPageToBrowser::Params> params(
-      brave_sync::BackgroundPageToBrowser::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  LOG(ERROR) << "TAGAB BraveSyncBackgroundPageToBrowserFunction::Run params->message=" << params->message;
-
-  // if (error) {
-  //   return RespondNow(Error(error));
-  // }
-
-  auto result = std::make_unique<base::Value>(43);
-  return RespondNow(OneArgument(std::move(result)));
-}
-
 ExtensionFunction::ResponseAction BraveSyncGetInitDataFunction::Run() {
   LOG(ERROR) << "TAGAB BraveSyncGetInitDataFunction::Run";
   std::unique_ptr<brave_sync::GetInitData::Params> params(

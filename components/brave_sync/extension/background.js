@@ -4,16 +4,6 @@ console.log("in chrome.runtime.onInstalled 001");
 
 chrome.runtime.onStartup.addListener(function() {
   console.log("in chrome.runtime.onStartup");
-  var arg1 = 142;
-  chrome.braveSync.backgroundPageToBrowser("message", function(callback_arg1) {
-    console.log("in chrome.runtime.onStartup 002-4 backgroundPageToBrowser callback callback_arg1=", callback_arg1);
-  });
-  console.log("in chrome.runtime.onStartup 002-5");
-
-  chrome.braveSync.onBrowserToBackgroundPage.addListener(function(arg1) {
-    console.log("in chrome.braveSync.onBrowserToBackgroundPage browser-native initiated call", arg1);
-  });
-
   chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config) {
     console.log("in chrome.braveSync.onGotInitData ", JSON.stringify(arguments));
     console.log("in chrome.braveSync.onGotInitData seed=", JSON.stringify(seed));
@@ -120,18 +110,6 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 console.log("in chrome.runtime.onInstalled 003");
-var theVar1 = 42;
-
-/*
-CAN DO
-EXT=>BROWSER:
-  chrome.braveSync.backgroundPageToBrowser
-
-BROWSER=>EXT:
-  chrome.braveSync.onBrowserToBackgroundPage.addListener(function(...))
-
-
-*/
 
 //-------------------------------------------------------------
 
@@ -285,13 +263,6 @@ class InjectedObject {
         chrome.braveSync.saveBookmarkOrder(arg1/*order*/, arg2/*prevOrder*/, arg3/*nextOrder*/);
         break;
       default:
-        console.log('background.js TAGAB will call default chrome.braveSync.backgroundPageToBrowser????');
-        chrome.braveSync.backgroundPageToBrowser(
-          message ? JSON.stringify(message) : "<message?>",
-          arg1 ? JSON.stringify(arg1) : "<arg1?>",
-          arg2 ? JSON.stringify(arg2) : "<arg2?>",
-          arg3 ? JSON.stringify(arg3) : "<arg3?>",
-          arg4 ? JSON.stringify(arg4) : "<arg4?>");
         break;
     }
   }

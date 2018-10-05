@@ -32,8 +32,6 @@ public:
   BraveSyncEventRouter(Profile* profile);
   ~BraveSyncEventRouter();
 
-  void BrowserToBackgroundPage(const std::string &arg1);
-
   void GotInitData(
     const brave_sync::Uint8Array &seed,
     const brave_sync::Uint8Array &device_id,

@@ -4,15 +4,12 @@
 
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
-#include "brave/common/webui_url_constants.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/browser/ui/webui/brave_rewards_ui.h"
-
-#include "brave/browser/ui/webui/sync/sync_ui.h"
-
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
+#include "brave/browser/ui/webui/sync/sync_ui.h"
+#include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/common/url_constants.h"
 #include "url/gurl.h"
