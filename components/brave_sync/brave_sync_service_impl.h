@@ -83,8 +83,6 @@ public:
 private:
   friend struct base::DefaultSingletonTraits<BraveSyncServiceImpl>;
 
-  void SetProfile(Profile *profile);
-
   void InitJsLib(const bool &setup_new_sync);
 
   // Compiler complains at

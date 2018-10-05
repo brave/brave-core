@@ -56,9 +56,13 @@ source_set("brave_sync") {
     "value_debug.h",
   ]
 
-  public_deps = [
+  deps = [
+    "//base",
     "//content/public/browser",
     "//brave/common/extensions/api",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
   ]
 }
 
@@ -71,5 +75,6 @@ grit("resources") {
     "brave_sync_resources.pak",
   ]
 
+  # fix paths so we don't have to do this
   resource_ids = ""
 }
