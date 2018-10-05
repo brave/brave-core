@@ -46,6 +46,7 @@ void ObjectMap::SetApiVersion(const std::string &api_version) {
 }
 
 void ObjectMap::TraceAll() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::TraceAll:-----------------------";
   leveldb::Iterator* it = level_db_->NewIterator(leveldb::ReadOptions());
   for (it->SeekToFirst(); it->Valid(); it->Next()) {
@@ -85,6 +86,7 @@ void ObjectMap::CreateOpenDatabase() {
 }
 
 std::string ObjectMap::GetLocalIdByObjectId(const Type &type, const std::string &objectId) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!objectId.empty());
   CreateOpenDatabase();
   if (nullptr == level_db_) {
@@ -227,6 +229,7 @@ void ObjectMap::CreateOrderByLocalObjectId(
 }
 
 std::string ObjectMap::GetRawJsonByLocalId(const std::string &localId) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return "";
@@ -246,6 +249,7 @@ void ObjectMap::SaveObjectIdRawJson(
   const std::string &raw_local_id,
   const std::string &objectIdJSON,
   const std::string &objectId) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectIdRawJson - enter";
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectIdRawJson raw_local_id="<<raw_local_id;
   LOG(ERROR) << "TAGAB brave_sync::ObjectMap::SaveObjectIdRawJson objectIdJSON="<<objectIdJSON;
@@ -332,6 +336,7 @@ void ObjectMap::SaveSpecialJson(
 }
 
 void ObjectMap::DeleteByLocalId(const Type &type, const std::string &localId) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return;
@@ -385,6 +390,7 @@ void ObjectMap::DestroyDB() {
 }
 
 void ObjectMap::ResetSync(const std::string& key) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CreateOpenDatabase();
   if (nullptr == level_db_) {
       return;

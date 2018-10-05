@@ -97,6 +97,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
 
 BraveSyncServiceImpl::~BraveSyncServiceImpl() {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::~BraveSyncServiceImpl DTOR";
+  task_runner_->DeleteSoon(FROM_HERE, sync_obj_map_.release());
 }
 
 bool BraveSyncServiceImpl::IsSyncConfigured() {
