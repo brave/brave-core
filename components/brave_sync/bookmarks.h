@@ -59,6 +59,8 @@ public:
 
   std::unique_ptr<RecordsList> NativeBookmarksToSyncRecords(const std::vector<const bookmarks::BookmarkNode*> &list, int action);
 
+  std::unique_ptr<RecordsList> GetSyncRecordsByLocalIds(const std::vector<int64_t> &ids, const int &action);
+
   void GetInitialBookmarksWithOrders(
     std::vector<InitialBookmarkNodeInfo> &nodes,
     std::map<const bookmarks::BookmarkNode*, std::string> &order_map);
@@ -107,6 +109,8 @@ public:
   void SetBaseOrder(const std::string &base_order);
 
 private:
+  void FillSyncBookmarkFromNode(jslib::Bookmark *sync_bookmark,
+    const bookmarks::BookmarkNode* node);
 
   void GetInitialBookmarksWithOrdersWork(
     const bookmarks::BookmarkNode* this_parent_node,
@@ -133,7 +137,10 @@ private:
     const std::string &node_order,
     const std::string &parent_order);
 
-  void BookmarkNodeRemovedFileWork(const bookmarks::BookmarkNode* node);
+  // Delete, as it does only removing data from obj_map,
+  // with a support of unsynced records, data from sync obj map should be removed
+  // when on get_records we see sync backed has DELETE for this object id
+  //void BookmarkNodeRemovedFileWork(const bookmarks::BookmarkNode* node);
 
   std::vector<InitialBookmarkNodeInfo> IterateChildren(
     const bookmarks::BookmarkNode* node);

@@ -25,8 +25,7 @@ public:
     const int &action,
     const std::vector<InitialBookmarkNodeInfo> &list,
     const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
-    const bool &addIdsToNotSynced,
-    const bool &isInitialSync) = 0;
+    const bool &addIdsToNotSynced) = 0;
 
   virtual void BookmarkMoved(
     const int64_t &node_id,

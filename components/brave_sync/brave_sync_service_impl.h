@@ -127,8 +127,7 @@ private:
     const int &action,
     const std::vector<InitialBookmarkNodeInfo> &list,
     const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
-    const bool &addIdsToNotSynced,
-    const bool &isInitialSync);
+    const bool &addIdsToNotSynced);
 
   void ShutdownFileWork();
 
@@ -163,8 +162,7 @@ private:
     const int &action,
     const std::vector<InitialBookmarkNodeInfo> &list,
     const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
-    const bool &addIdsToNotSynced,
-    const bool &isInitialSync) override;
+    const bool &addIdsToNotSynced) override;
 
   void BookmarkMoved(
     const int64_t &node_id,
@@ -205,22 +203,11 @@ private:
     const std::string &device_id,
     const std::string &object_id);
 
-  enum NotSyncedRecordsOperation {
-    GetItems,
-    AddItems,
-    DeleteItems
-  };
-
   void SetUpdateDeleteDeviceName_Ext(
     const std::string &action,
     const std::string &deviceName,
     const std::string &deviceId,
     const std::string &objectId);
-
-  std::vector<std::string> SaveGetDeleteNotSyncedRecords(
-    const std::string &recordType, const std::string &action,
-    const std::vector<std::string> &ids,
-    NotSyncedRecordsOperation operation);
 
   void StartLoop();
   void StopLoop();
@@ -240,6 +227,13 @@ private:
   void TriggerOnLogMessage(const std::string &message);
   void TriggerOnSyncStateChanged();
   void TriggerOnHaveSyncWords(const std::string &sync_words);
+
+  // Not synced records support
+  void SendNonSyncedRecords();
+  void SendNonSyncedBookmarks(const int &action);
+  void AddToNotSyncedBookmarks(int action, const std::vector<InitialBookmarkNodeInfo> &list);
+  void RemoveFromNotSyncedBookmarks(const std::vector<std::tuple<std::string, int>> &seen_records);
+  std::set<std::string> GetNotSyncedBookmarks(const int &action);
 
   BraveSyncClient *sync_client_;
 
@@ -282,6 +276,9 @@ private:
   // Map to keep tracking between request and response on query bookmarks order, access only in UI thread
   // <prev_order, next_order> => <node_id, action>
   std::map<std::tuple<std::string, std::string>, std::tuple<int64_t, int>> rr_map_;
+
+  const int ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS = 2/*for tests 2*/; //10;
+  int attempts_before_send_not_synced_records_ = ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS;
 
   std::unique_ptr<base::RepeatingTimer> timer_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
