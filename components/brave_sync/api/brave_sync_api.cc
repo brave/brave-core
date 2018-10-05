@@ -5,9 +5,9 @@
 #include "brave/components/brave_sync/api/brave_sync_api.h"
 
 #include "brave/common/extensions/api/brave_sync.h"
-#include "brave/components/brave_sync/client/client.h"
+#include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
-#include "brave/components/brave_sync/client/client_factory.h"
+#include "brave/components/brave_sync/client/brave_sync_client_factory.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 
