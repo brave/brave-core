@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
+index 94eac105b83912271b14e6e2b363289425739499..e5b356a06120214594025c48f69718ac016f4257 100644
+--- a/components/content_settings/core/browser/BUILD.gn
++++ b/components/content_settings/core/browser/BUILD.gn
+@@ -50,6 +50,7 @@ static_library("browser") {
+ 
+   deps = [
+     "//base",
++    "//brave/components/content_settings/core/browser",
+     "//components/content_settings/core/common",
+     "//components/keyed_service/core",
+     "//components/pref_registry:pref_registry",

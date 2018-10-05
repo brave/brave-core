@@ -839,7 +839,6 @@
 <translation id="6845038076637626672">Развернуть</translation>
 <translation id="6860427144121307915">Открыть в новой вкладке</translation>
 <translation id="3074037959626057712">Вы вошли и включили синхронизацию</translation>
-<translation id="6264422956566238156">Синхронизация включена</translation>
 <translation id="9125982323641182972">Интеллектуальные функции Brave Software в Brave</translation>
 <translation id="7988117629517051942">Расширенный доступ к интеллектуальным функциям Brave Software</translation>
 <translation id="5596627076506792578">Ещё</translation>
@@ -1625,7 +1624,6 @@
 <translation id="784934925303690534">Временной диапазон</translation>
 <translation id="2496180316473517155">История просмотров</translation>
 <translation id="8662811608048051533">Вы автоматически выйдете из учетных записей на большинстве сайтов.</translation>
-<translation id="8218628800671693884">Вы выйдете из аккаунтов на большинстве сайтов, но останетесь в аккаунте Brave Software.</translation>
 <translation id="2017836877785168846">Удаление истории и вариантов автозаполнения в адресной строке</translation>
 <translation id="8096327394278038498">Удаление истории и вариантов автозаполнения в адресной строке. Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Удаление истории со всех устройств, на которых выполнен вход в аккаунт. Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@
 <translation id="7754704193130578113">Всегда указывать место для скачивания</translation>
 <translation id="5713072761819014678">Отключить аккаунт Brave Software Диска</translation>
 <translation id="486635084936119914">Автоматически открывать некоторые типы файлов после скачивания</translation>
+<translation id="3653160965917900914">Общие папки сети</translation>
+<translation id="5763315388120433852">Как настроить общие папки сети</translation>
 <translation id="2367199180085172140">Добавить файл в общий доступ.</translation>
+<translation id="247051149076336810">URL общей папки</translation>
 <translation id="5247051749037287028">Отображаемое название (необязательно)</translation>
 <translation id="6091761513005122595">Ресурс подключен.</translation>
 <translation id="9024158959543687197">Не удалось подключить ресурс. Проверьте URL и повторите попытку.</translation>
@@ -1700,6 +1701,7 @@
 <translation id="2148219725039824548">Ошибка. Не удалось найти указанный ресурс в сети.</translation>
 <translation id="7234406375359457793">Ошибка. Указанный ресурс не поддерживается.</translation>
 <translation id="706626672220389329">Ошибка. Указанный ресурс уже подключен.</translation>
+<translation id="5985458664595100876">Произошла ошибка. Необходимо использовать допустимые форматы URL: \\server\share или smb://server/share.</translation>
 <translation id="3101709781009526431">Дата и время</translation>
 <translation id="2059913712424898428">Часовой пояс</translation>
 <translation id="4547672827276975204">Автоматическое определение</translation>

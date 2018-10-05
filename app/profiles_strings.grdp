@@ -86,7 +86,10 @@
     Syncing to
   </message>
   <message name="IDS_PROFILES_DICE_SIGNIN_BUTTON" desc="Button in the profile user menu to sign in and turn on Sync.">
-    Sign in
+    Turn on sync...
+  </message>
+  <message name="IDS_PROFILES_DICE_NOT_SYNCING_TITLE" desc="Title of the sync promo account card in the user menu.">
+    Not syncing
   </message>
   <message name="IDS_PROFILES_DICE_SIGNIN_FIRST_ACCOUNT_BUTTON" desc="Button to sign in and turn on Sync for a specific web account.">
     Sync as <ph name="ACCOUNT_FULL_NAME">$1<ex>John Doe</ex></ph>

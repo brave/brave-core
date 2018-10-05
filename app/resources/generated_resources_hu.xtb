@@ -840,7 +840,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6845038076637626672">Megnyitás teljes méretben</translation>
 <translation id="6860427144121307915">Megnyitás lapon</translation>
 <translation id="3074037959626057712">Bejelentkezett, és a szinkronizálás be van kapcsolva</translation>
-<translation id="6264422956566238156">Bekapcsolta a szinkronizálást</translation>
 <translation id="9125982323641182972">Brave Software-funkciók a Brave-ban</translation>
 <translation id="7988117629517051942">Még több okos megoldás a Brave Software-től</translation>
 <translation id="5596627076506792578">További lehetőségek</translation>
@@ -1626,7 +1625,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="784934925303690534">Időszak</translation>
 <translation id="2496180316473517155">Böngészés előzményei</translation>
 <translation id="8662811608048051533">A rendszer a legtöbb webhelyről kijelentkezteti Önt.</translation>
-<translation id="8218628800671693884">A rendszer a legtöbb webhelyről kijelentkezteti Önt, de Brave Software-fiókjából nem.</translation>
 <translation id="2017836877785168846">Törli a címsávban található előzményeket és automatikus kiegészítéseket.</translation>
 <translation id="8096327394278038498">Törli a címsávban található előzményeket és automatikus kiegészítéseket. Előfordulhat, hogy a böngészési előzmények más formái még megtalálhatók Brave Software-fiókjában a <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> webhelyen.</translation>
 <translation id="8122693181154564064">Törli az előzményeket valamennyi bejelentkezett eszközről. Előfordulhat, hogy a böngészési előzmények más formái még megtalálhatók Brave Software-fiókjában a <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> webhelyen.</translation>
@@ -1693,7 +1691,10 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="7754704193130578113">A letöltés előtt kérdezze meg, hová mentse az adott fájlokat</translation>
 <translation id="5713072761819014678">Brave Software Drive-fiók leválasztása</translation>
 <translation id="486635084936119914">Bizonyos fájltípusok automatikus megnyitása letöltés után</translation>
+<translation id="3653160965917900914">Hálózati fájlmegosztások</translation>
+<translation id="5763315388120433852">Hálózati fájlmegosztások beállítása, illetve kezelése.</translation>
 <translation id="2367199180085172140">Fájlmegosztás hozzáadása</translation>
+<translation id="247051149076336810">Fájlmegosztási URL</translation>
 <translation id="5247051749037287028">Megjelenítendő név (nem kötelező)</translation>
 <translation id="6091761513005122595">A megosztott tároló csatlakoztatása sikeres volt.</translation>
 <translation id="9024158959543687197">Hiba történt a megosztott tároló csatlakoztatása során. Ellenőrizze a fájlmegosztási URL-t, és próbálkozzon újra.</translation>
@@ -1701,6 +1702,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="2148219725039824548">Hiba történt a megosztott tároló csatlakoztatása során. A megadott megosztott tároló nem található a hálózaton.</translation>
 <translation id="7234406375359457793">Hiba történt a megosztott tároló csatlakoztatása során. A megadott megosztott tárolót nem támogatja a rendszer.</translation>
 <translation id="706626672220389329">Hiba történt a megosztott tároló csatlakoztatása során. Az adott megosztott tároló már csatlakoztatva van.</translation>
+<translation id="5985458664595100876">Érvénytelen URL-formátum. A támogatott formátumok: \\server\share és smb://server/share.</translation>
 <translation id="3101709781009526431">Dátum és idő</translation>
 <translation id="2059913712424898428">Időzóna</translation>
 <translation id="4547672827276975204">Automatikus beállítás</translation>

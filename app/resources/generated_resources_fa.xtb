@@ -838,7 +838,6 @@
 <translation id="6845038076637626672">باز کردن در حداکثر اندازه</translation>
 <translation id="6860427144121307915">باز کردن در یک برگه</translation>
 <translation id="3074037959626057712">به سیستم وارد شده‌اید و «همگام‌سازی» را روشن کرده‌اید</translation>
-<translation id="6264422956566238156">همگام‌سازی را روشن کردید</translation>
 <translation id="9125982323641182972">‏هوشمندی‌های Brave Software را در Brave دریافت کنید</translation>
 <translation id="7988117629517051942">‏دریافت هوشمندی‌های بیشتری از Brave Software</translation>
 <translation id="5596627076506792578">گزینه‌های بیشتر</translation>
@@ -1624,7 +1623,6 @@
 <translation id="784934925303690534">محدوده زمانی</translation>
 <translation id="2496180316473517155">سابقه مرور</translation>
 <translation id="8662811608048051533">شما را از سیستم اکثر سایت‌ها خارج می‌کند.</translation>
-<translation id="8218628800671693884">‏شما را از سیستم اکثر سایت‌ها خارج می‌‌کند. از سیستم حساب Brave Software خارج نمی‌شوید.</translation>
 <translation id="2017836877785168846">سابقه و تکمیل خودکار را در نوار نشانی پاک می‌کند.</translation>
 <translation id="8096327394278038498">‏سابقه و تکمیل‌های خودکار را در نوار نشانی پاک می‌کند. ممکن است حساب Brave Software شما اشکال دیگری از سابقه مرور در <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> داشته باشد.</translation>
 <translation id="8122693181154564064">‏سابقه را از همه دستگاه‌های به سیستم واردشده پاک می‌کند. ممکن است حساب Brave Software شما اشکال دیگری از سابقه مرور در <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> داشته باشد.</translation>
@@ -1691,7 +1689,10 @@
 <translation id="7754704193130578113">قبل از بارگیری هر فایل، درباره مکان ذخیره سؤال شود</translation>
 <translation id="5713072761819014678">‏قطع ارتباط حساب Brave Software Drive</translation>
 <translation id="486635084936119914">باز شدن خودکار برخی از انواع فایل بعد از بارگیری</translation>
+<translation id="3653160965917900914">دستگاه ذخیره‌سازی متصل به شبکه</translation>
+<translation id="5763315388120433852">راه‌اندازی یا مدیریت دستگاه‌های ذخیره‌سازی متصل به شبکه.</translation>
 <translation id="2367199180085172140">افزودن فایل هم‌رسانی</translation>
+<translation id="247051149076336810">نشانی وب دستگاه ذخیره‌سازی متصل به شبکه</translation>
 <translation id="5247051749037287028">نام نمایشی (اختیاری)</translation>
 <translation id="6091761513005122595">دستگاه ذخیره‌سازی متصل به شبکه با موفقیت نشانده شد.</translation>
 <translation id="9024158959543687197">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. لطفاً نشانی وب دستگاه ذخیره‌سازی متصل به شبکه را بررسی کنید و دوباره امتحان کنید.</translation>
@@ -1699,6 +1700,7 @@
 <translation id="2148219725039824548">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. دستگاه ذخیره‌سازی مشخص‌شده در شبکه پیدا نشد.</translation>
 <translation id="7234406375359457793">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. دستگاه ذخیره‌سازی مشخص‌شده پشتیبانی نمی‌شود.</translation>
 <translation id="706626672220389329">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. دستگاه ذخیره‌سازی مشخص‌شده قبلاً نشانده شده است.</translation>
+<translation id="5985458664595100876">‏قالب نشانی وب نامعتبر است. قالب‌های پشتیبانی‌شده عبارتند از: \\server\share و smb://server/share.</translation>
 <translation id="3101709781009526431">تاریخ و ساعت</translation>
 <translation id="2059913712424898428">منطقه زمانی</translation>
 <translation id="4547672827276975204">تنظیم خودکار</translation>

@@ -839,7 +839,6 @@
 <translation id="6845038076637626672">فتح في وضع التكبير</translation>
 <translation id="6860427144121307915">فتح في علامة تبويب</translation>
 <translation id="3074037959626057712">تم تسجيل دخولك وتشغيل المزامنة</translation>
-<translation id="6264422956566238156">تم تفعيل المزامنة</translation>
 <translation id="9125982323641182972">‏الحصول على ميزات Brave Software الذكية في Brave</translation>
 <translation id="7988117629517051942">‏الحصول على مزيد من ميزات Brave Software الذكية</translation>
 <translation id="5596627076506792578">خيارات إضافية</translation>
@@ -1625,7 +1624,6 @@
 <translation id="784934925303690534">النطاق الزمني</translation>
 <translation id="2496180316473517155">سجل التصفح</translation>
 <translation id="8662811608048051533">يخرجك من معظم مواقع الويب.</translation>
-<translation id="8218628800671693884">‏سيتم تسجيل الخروج من معظم مواقع الويب لكن لن يتم تسجيل الخروج من حسابك في Brave Software.</translation>
 <translation id="2017836877785168846">مسح السجل وعمليات الإكمال التلقائي في شريط العناوين.</translation>
 <translation id="8096327394278038498">‏مسح السجل وميزة الإكمال التلقائي في شريط العناوين. وقد يتضمن حسابك في Brave Software نماذج أخرى من سجل التصفح في <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">‏يمسح السجل من كل الأجهزة التي تم تسجيل الدخول عليها. وقد يتضمن حسابك في Brave Software نماذج أخرى من سجل التصفح في <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@
 <translation id="7754704193130578113">السؤال عن مكان حفظ الملفّات قبل التحميل</translation>
 <translation id="5713072761819014678">‏إلغاء ربط حساب Brave Software Drive</translation>
 <translation id="486635084936119914">فتح أنواع معينة من الملفات تلقائيًا بعد التنزيل</translation>
+<translation id="3653160965917900914">مشاركات ملفات الشبكة</translation>
+<translation id="5763315388120433852">إعداد مشاركات ملفات الشبكة أو إدارتها</translation>
 <translation id="2367199180085172140">إضافة "مشاركة ملف"</translation>
+<translation id="247051149076336810">‏عنوان URL لخادم مشاركة الملفات</translation>
 <translation id="5247051749037287028">الاسم المعروض (اختياري)</translation>
 <translation id="6091761513005122595">تم تحميل المشاركة بنجاح.</translation>
 <translation id="9024158959543687197">‏حدث خطأ في تحميل المشاركة. يُرجى التحقُّق من عنوان URL لخادم مشاركة الملفات وإعادة المحاولة.</translation>
@@ -1700,6 +1701,7 @@
 <translation id="2148219725039824548">حدث خطأ في تحميل المشاركة. لم يتم العثور على المشاركة المُحدَّدة في الشبكة.</translation>
 <translation id="7234406375359457793">حدث خطأ في تحميل المشاركة. المشاركة المُحدَّدة غير متاحة.</translation>
 <translation id="706626672220389329">حدث خطأ في تحميل المشاركة. تم تحميل المشاركة المُحدّدة من قبل.</translation>
+<translation id="5985458664595100876">‏تنسيق عنوان URL غير صالح. التنسيقات المدعومة هي \\server\share وsmb://server/share.</translation>
 <translation id="3101709781009526431">التاريخ والوقت</translation>
 <translation id="2059913712424898428">المنطقة الزمنية</translation>
 <translation id="4547672827276975204">التعيين تلقائيًا</translation>

@@ -839,7 +839,6 @@
 <translation id="6845038076637626672">เปิดแบบเต็มหน้าจอ</translation>
 <translation id="6860427144121307915">เปิดในแท็บ</translation>
 <translation id="3074037959626057712">คุณลงชื่อเข้าใช้และเปิดใช้การซิงค์แล้ว</translation>
-<translation id="6264422956566238156">เปิดการซิงค์แล้ว</translation>
 <translation id="9125982323641182972">ใช้ฟีเจอร์เจ๋งๆ จาก Brave Software ใน Brave</translation>
 <translation id="7988117629517051942">ใช้ฟีเจอร์เจ๋งๆ จาก Brave Software มากขึ้น</translation>
 <translation id="5596627076506792578">ตัวเลือกเพิ่มเติม</translation>
@@ -1625,7 +1624,6 @@
 <translation id="784934925303690534">ช่วงเวลา</translation>
 <translation id="2496180316473517155">ประวัติการเข้าชมที่เรียกดู</translation>
 <translation id="8662811608048051533">นำคุณออกจากระบบของเว็บไซต์ส่วนใหญ่</translation>
-<translation id="8218628800671693884">นำคุณออกจากระบบของเว็บไซต์ส่วนใหญ่ แต่คุณจะไม่ออกจากระบบบัญชี Brave Software</translation>
 <translation id="2017836877785168846">ล้างประวัติการเข้าชมและการเติมข้อความอัตโนมัติในแถบที่อยู่เว็บ</translation>
 <translation id="8096327394278038498">ล้างประวัติและการเติมข้อความอัตโนมัติในแถบที่อยู่เว็บ บัญชี Brave Software อาจมีประวัติการท่องเว็บรูปแบบอื่นๆ ที่ <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/></translation>
 <translation id="8122693181154564064">ล้างประวัติจากอุปกรณ์ที่ลงชื่อเข้าใช้ทั้งหมด บัญชี Brave Software อาจมีประวัติการท่องเว็บรูปแบบอื่นๆ ที่ <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/></translation>
@@ -1692,7 +1690,10 @@
 <translation id="7754704193130578113">สอบถามที่เก็บไฟล์ก่อนดาวน์โหลด</translation>
 <translation id="5713072761819014678">ยกเลิกการเชื่อมต่อบัญชี Brave Software ไดรฟ์</translation>
 <translation id="486635084936119914">เปิดไฟล์บางประเภทโดยอัตโนมัติหลังจากที่ดาวน์โหลดมา</translation>
+<translation id="3653160965917900914">พื้นที่แชร์ไฟล์ของเครือข่าย</translation>
+<translation id="5763315388120433852">ตั้งค่าหรือจัดการพื้นที่แชร์ไฟล์ของเครือข่าย</translation>
 <translation id="2367199180085172140">เพิ่มการแชร์ไฟล์</translation>
+<translation id="247051149076336810">URL ของพื้นที่แชร์ไฟล์</translation>
 <translation id="5247051749037287028">ชื่อที่แสดง (ไม่บังคับ)</translation>
 <translation id="6091761513005122595">ต่อเชื่อมพื้นที่แชร์สำเร็จแล้ว</translation>
 <translation id="9024158959543687197">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ ตรวจสอบ URL ของพื้นที่แชร์ไฟล์แล้วลองอีกครั้ง</translation>
@@ -1700,6 +1701,7 @@
 <translation id="2148219725039824548">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ ไม่พบพื้นที่แชร์ที่ระบุในเครือข่าย</translation>
 <translation id="7234406375359457793">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ ไม่รองรับพื้นที่แชร์ที่ระบุ</translation>
 <translation id="706626672220389329">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ ต่อเชื่อมพื้นที่แชร์ที่ระบุแล้ว</translation>
+<translation id="5985458664595100876">รูปแบบ URL ไม่ถูกต้อง รูปแบบที่รองรับคือ \\server\share และ smb://server/share</translation>
 <translation id="3101709781009526431">วันที่และเวลา</translation>
 <translation id="2059913712424898428">เขตเวลา</translation>
 <translation id="4547672827276975204">ตั้งค่าโดยอัตโนมัติ</translation>

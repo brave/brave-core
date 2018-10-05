@@ -837,7 +837,6 @@
 <translation id="6845038076637626672">최대화 상태로 열기</translation>
 <translation id="6860427144121307915">탭에서 열기</translation>
 <translation id="3074037959626057712">로그인하고 동기화를 사용 설정함</translation>
-<translation id="6264422956566238156">동기화가 사용 설정됨</translation>
 <translation id="9125982323641182972">Brave Software로 Brave을 더욱 스마트하게</translation>
 <translation id="7988117629517051942">더욱 스마트한 Brave Software을 사용하세요</translation>
 <translation id="5596627076506792578">옵션 더보기</translation>
@@ -1623,7 +1622,6 @@
 <translation id="784934925303690534">기간</translation>
 <translation id="2496180316473517155">인터넷 사용 기록</translation>
 <translation id="8662811608048051533">대부분의 사이트에서 로그아웃됩니다.</translation>
-<translation id="8218628800671693884">대부분의 사이트에서 로그아웃됩니다. Brave Software 계정에서는 로그아웃되지 않습니다.</translation>
 <translation id="2017836877785168846">검색주소창의 검색 기록 및 자동 완성 항목을 삭제합니다.</translation>
 <translation id="8096327394278038498">검색주소창에 저장된 방문 기록과 자동 완성 내역을 지웁니다. Brave Software 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
 <translation id="8122693181154564064">로그인된 모든 기기에서 방문 기록을 지웁니다. Brave Software 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
@@ -1690,7 +1688,10 @@
 <translation id="7754704193130578113">다운로드 전에 각 파일의 저장 위치 확인</translation>
 <translation id="5713072761819014678">Brave Software 드라이브 계정을 연결 해제합니다.</translation>
 <translation id="486635084936119914">다운로드 후에 특정 파일 형식을 자동으로 열기</translation>
+<translation id="3653160965917900914">네트워크 파일 공유</translation>
+<translation id="5763315388120433852">네트워크 파일 공유를 설정하거나 관리합니다.</translation>
 <translation id="2367199180085172140">파일 공유 추가</translation>
+<translation id="247051149076336810">파일 공유 URL</translation>
 <translation id="5247051749037287028">표시 이름(선택사항)</translation>
 <translation id="6091761513005122595">공유가 성공적으로 마운트되었습니다.</translation>
 <translation id="9024158959543687197">공유를 마운트하는 중에 오류가 발생했습니다. 파일 공유 URL을 확인한 후 다시 시도해 주세요.</translation>
@@ -1698,6 +1699,7 @@
 <translation id="2148219725039824548">공유를 마운트하는 중에 오류가 발생했습니다. 네트워크에서 지정된 공유를 찾을 수 없습니다.</translation>
 <translation id="7234406375359457793">공유를 마운트하는 중에 오류가 발생했습니다. 지정된 공유가 지원되지 않습니다.</translation>
 <translation id="706626672220389329">공유를 마운트하는 중에 오류가 발생했습니다. 지정된 공유가 이미 마운트되었습니다.</translation>
+<translation id="5985458664595100876">URL 형식이 잘못되었습니다. \\server\share 및 smb://server/share 형식이 지원됩니다.</translation>
 <translation id="3101709781009526431">날짜 및 시간</translation>
 <translation id="2059913712424898428">시간대</translation>
 <translation id="4547672827276975204">자동 설정</translation>

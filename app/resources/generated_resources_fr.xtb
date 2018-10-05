@@ -840,7 +840,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6845038076637626672">Ouvrir la version agrandie</translation>
 <translation id="6860427144121307915">Ouvrir dans un onglet</translation>
 <translation id="3074037959626057712">Vous êtes connecté et avez activé la synchronisation</translation>
-<translation id="6264422956566238156">Vous avez activé la synchronisation</translation>
 <translation id="9125982323641182972">Fonct. Brave Software dans Brave</translation>
 <translation id="7988117629517051942">Profitez d'encore plus de fonctionnalités intelligentes de Brave Software</translation>
 <translation id="5596627076506792578">Plus d'options</translation>
@@ -1626,7 +1625,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="784934925303690534">Période</translation>
 <translation id="2496180316473517155">Historique de navigation</translation>
 <translation id="8662811608048051533">Vous déconnecte de la plupart des sites.</translation>
-<translation id="8218628800671693884">Vous déconnecte de la plupart des sites. Vous ne serez cependant pas déconnecté de votre compte Brave Software.</translation>
 <translation id="2017836877785168846">Efface l'historique et les saisies semi-automatiques dans la barre d'adresse.</translation>
 <translation id="8096327394278038498">Efface l'historique et les saisies semi-automatiques dans la barre d'adresse. Votre compte Brave Software conserve peut-être d'autres formes d'historique de navigation sur la page <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Efface l'historique de tous les appareils sur lesquels vous êtes connecté à votre compte Brave Software. Ce dernier peut conserver d'autres formes d'historique de navigation sur la page <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1693,7 +1691,10 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7754704193130578113">Toujours demander où enregistrer les fichiers</translation>
 <translation id="5713072761819014678">Déconnecter le compte Brave Software Drive</translation>
 <translation id="486635084936119914">Ouvrir automatiquement certains types de fichiers après leur téléchargement</translation>
+<translation id="3653160965917900914">Partages de fichiers en réseau</translation>
+<translation id="5763315388120433852">Configurer ou gérer des partages de fichiers en réseau.</translation>
 <translation id="2367199180085172140">Ajouter un partage de fichiers</translation>
+<translation id="247051149076336810">URL de partage de fichiers</translation>
 <translation id="5247051749037287028">Nom à afficher (facultatif)</translation>
 <translation id="6091761513005122595">Le partage a bien été installé.</translation>
 <translation id="9024158959543687197">Erreur lors de l'installation du partage. Vérifiez l'URL de partage de fichiers, puis réessayez.</translation>
@@ -1701,6 +1702,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="2148219725039824548">Erreur lors de l'installation du partage. Le partage indiqué est introuvable sur le réseau.</translation>
 <translation id="7234406375359457793">Erreur lors de l'installation du partage. Le partage indiqué n'est pas accepté.</translation>
 <translation id="706626672220389329">Erreur lors de l'installation du partage. Le partage indiqué est déjà installé.</translation>
+<translation id="5985458664595100876">Le format de l'URL n'est pas valide. Les formats acceptés sont \\server\share et smb://server/share.</translation>
 <translation id="3101709781009526431">Date et heure</translation>
 <translation id="2059913712424898428">Fuseau horaire</translation>
 <translation id="4547672827276975204">Définir automatiquement</translation>

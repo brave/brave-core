@@ -839,7 +839,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6845038076637626672">Deschideți aplicația maximizată</translation>
 <translation id="6860427144121307915">Deschideți într-o filă</translation>
 <translation id="3074037959626057712">Te-ai conectat și ai activat Sincronizarea</translation>
-<translation id="6264422956566238156">Ai activat Sincronizarea</translation>
 <translation id="9125982323641182972">Profită de ingeniozitatea Brave Software în Brave</translation>
 <translation id="7988117629517051942">Profită mai mult de ingeniozitatea Brave Software</translation>
 <translation id="5596627076506792578">Mai multe opțiuni</translation>
@@ -1625,7 +1624,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="784934925303690534">Interval de timp</translation>
 <translation id="2496180316473517155">Istoricul de navigare</translation>
 <translation id="8662811608048051533">Te deconectează de pe majoritatea site-urilor.</translation>
-<translation id="8218628800671693884">Te deconectează de pe majoritatea site-urilor. Nu te va deconecta de la Contul Brave Software.</translation>
 <translation id="2017836877785168846">Șterge istoricul și completările automate din bara de adrese.</translation>
 <translation id="8096327394278038498">Șterge istoricul și completările automate din bara de adrese. Contul Brave Software poate să ofere alte forme ale istoricului de navigare la <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Șterge istoricul de pe toate dispozitivele conectate. Contul Brave Software poate să ofere alte forme ale istoricului de navigare la <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="7754704193130578113">Întreabă-mă unde se salvează fiecare fișier înainte de a-l descărca</translation>
 <translation id="5713072761819014678">Deconectează contul Brave Software Drive</translation>
 <translation id="486635084936119914">Deschide automat anumite tipuri de fișiere după descărcare</translation>
+<translation id="3653160965917900914">Spații comune de stocare fișiere în rețea</translation>
+<translation id="5763315388120433852">Configurează sau gestionează spații comune de stocare fișiere în rețea.</translation>
 <translation id="2367199180085172140">Adaugă un dispozitiv de stocare în rețea</translation>
+<translation id="247051149076336810">Adresa URL a spațiului comun de stocare fișiere</translation>
 <translation id="5247051749037287028">Numele afișat (opțional)</translation>
 <translation id="6091761513005122595">Dispozitivul de stocare în rețea a fost montat.</translation>
 <translation id="9024158959543687197">Eroare la montarea dispozitivului de stocare în rețea. Verifică adresa URL a dispozitivului și încearcă din nou.</translation>
@@ -1700,6 +1701,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="2148219725039824548">Eroare la montarea dispozitivului de stocare în rețea. Dispozitivul indicat nu a fost găsit în rețea.</translation>
 <translation id="7234406375359457793">Eroare la montarea dispozitivului de stocare în rețea. Dispozitivul indicat nu este acceptat.</translation>
 <translation id="706626672220389329">Eroare la montarea dispozitivului de stocare în rețea. Dispozitivul indicat este deja montat.</translation>
+<translation id="5985458664595100876">Format nevalid al adresei URL. Formatele acceptate sunt \\server\share și smb://server/share.</translation>
 <translation id="3101709781009526431">Data și ora</translation>
 <translation id="2059913712424898428">Fus orar</translation>
 <translation id="4547672827276975204">Setează în mod automat</translation>

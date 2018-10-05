@@ -839,7 +839,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6845038076637626672">Abrir de forma maximizada</translation>
 <translation id="6860427144121307915">Abrir en una pestaña</translation>
 <translation id="3074037959626057712">Has iniciado sesión y activado la sincronización</translation>
-<translation id="6264422956566238156">Has activado la sincronización</translation>
 <translation id="9125982323641182972">Obtén funciones inteligentes en Brave</translation>
 <translation id="7988117629517051942">Obtener más funciones inteligentes de Brave Software</translation>
 <translation id="5596627076506792578">Más opciones</translation>
@@ -1625,7 +1624,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="784934925303690534">Intervalo de tiempo</translation>
 <translation id="2496180316473517155">Historial de navegación</translation>
 <translation id="8662811608048051533">Cierra tu sesión en la mayoría de los sitios web.</translation>
-<translation id="8218628800671693884">Cierra tu sesión en la mayoría de los sitios web. No se cerrará la sesión en tu cuenta de Brave Software.</translation>
 <translation id="2017836877785168846">Borra el historial y los autocompletados de la barra de direcciones.</translation>
 <translation id="8096327394278038498">Borra el historial y los autocompletados de la barra de direcciones. Es posible que tu cuenta de Brave Software tenga otros tipos de historial de navegación en <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Borra el historial de todos los dispositivos en los que hayas iniciado sesión. Es posible que tu cuenta de Brave Software tenga otros tipos de historial de navegación en <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7754704193130578113">Preguntar dónde se guardará cada archivo antes de descargarlo</translation>
 <translation id="5713072761819014678">Desconectar cuenta de Brave Software Drive</translation>
 <translation id="486635084936119914">Abre determinados tipos de archivo automáticamente después de la descarga</translation>
+<translation id="3653160965917900914">Sistemas de archivos compartidos de red</translation>
+<translation id="5763315388120433852">Configurar o gestionar sistemas de archivos compartidos de red.</translation>
 <translation id="2367199180085172140">Añadir uso compartido de archivo</translation>
+<translation id="247051149076336810">URL del sistema de archivos compartidos</translation>
 <translation id="5247051749037287028">Nombre visible (opcional)</translation>
 <translation id="6091761513005122595">El recurso compartido se ha activado correctamente.</translation>
 <translation id="9024158959543687197">No se ha podido activar el recurso compartido. Comprueba la URL del recurso compartido y vuelve a intentarlo.</translation>
@@ -1700,6 +1701,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2148219725039824548">No se ha podido activar el recurso compartido. No se ha encontrado el recurso especificado en la red.</translation>
 <translation id="7234406375359457793">No se ha podido activar el recurso compartido. El recurso especificado no es compatible.</translation>
 <translation id="706626672220389329">No se ha podido activar el recurso compartido. El recurso especificado ya está activado.</translation>
+<translation id="5985458664595100876">El formato de la URL no es válido. Los formatos admitidos son \\server\share y smb://server/share.</translation>
 <translation id="3101709781009526431">Fecha y hora</translation>
 <translation id="2059913712424898428">Zona horaria</translation>
 <translation id="4547672827276975204">Definir automáticamente</translation>
@@ -2454,6 +2456,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1607139524282324606">Borrar entrada</translation>
 <translation id="6025215716629925253">Seguimiento de la pila</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;No se muestra 1 línea&gt;}other{&lt;No se muestran $1 líneas&gt;}}</translation>
+<translation id="5334899159203764908">Más información sobre el <ph name="BEGIN_LINK"/>acceso del sitio web<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permitir que esta extensión lea y cambie todos los datos de los sitios web que visites:</translation>
 <translation id="407173827865827707">Al hacer clic</translation>
 <translation id="6455264371803474013">En sitios web específicos</translation>

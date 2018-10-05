@@ -840,7 +840,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6845038076637626672">Buka dimaksimumkan</translation>
 <translation id="6860427144121307915">Buka dalam Tab</translation>
 <translation id="3074037959626057712">Anda telah mengelog masuk dan menghidupkan Penyegerakan</translation>
-<translation id="6264422956566238156">Anda telah menghidupkan Penyegerakan</translation>
 <translation id="9125982323641182972">Brave Software pintar di Brave</translation>
 <translation id="7988117629517051942">Dapatkan lagi Brave Software pintar</translation>
 <translation id="5596627076506792578">Lagi pilihan</translation>
@@ -1626,7 +1625,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="784934925303690534">Julat masa</translation>
 <translation id="2496180316473517155">Sejarah penyemakan imbas</translation>
 <translation id="8662811608048051533">Mengelog anda keluar daripada kebanyakan tapak.</translation>
-<translation id="8218628800671693884">Mengelog anda keluar daripada kebanyakan tapak. Anda tidak akan dilog keluar daripada Akaun Brave Software anda.</translation>
 <translation id="2017836877785168846">Kosongkan sejarah dan pelengkapan automatik dalam bar alamat.</translation>
 <translation id="8096327394278038498">Mengosongkan sejarah dan autoselesai dalam bar alamat. Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk lain di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Mengosongkan sejarah daripada semua peranti yang dilog masuk. Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk lain di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1693,7 +1691,10 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7754704193130578113">Tanyakan tempat untuk menyimpan setiap fail sebelum memuat turun</translation>
 <translation id="5713072761819014678">Putuskan sambungan akaun Brave Software Drive</translation>
 <translation id="486635084936119914">Buka jenis fail tertentu secara automatik selepas memuat turun</translation>
+<translation id="3653160965917900914">Perkongsian fail rangkaian</translation>
+<translation id="5763315388120433852">Sediakan atau urus perkongsian fail rangkaian.</translation>
 <translation id="2367199180085172140">Tambah Perkongsian Fail</translation>
+<translation id="247051149076336810">URL perkongsian fail</translation>
 <translation id="5247051749037287028">Nama paparan (pilihan)</translation>
 <translation id="6091761513005122595">Perkongsian berjaya dilekapkan.</translation>
 <translation id="9024158959543687197">Ralat melekapkan perkongsian. Semak URL perkongsian fail dan cuba lagi.</translation>
@@ -1701,6 +1702,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2148219725039824548">Ralat melekapkan perkongsian. Perkongsian yang dinyatakan tidak ditemui pada rangkaian.</translation>
 <translation id="7234406375359457793">Ralat melekapkan perkongsian. Perkongsian yang dinyatakan tidak disokong.</translation>
 <translation id="706626672220389329">Ralat melekapkan perkongsian. Perkongsian yang dinyatakan sudah dilekapkan.</translation>
+<translation id="5985458664595100876">Format URL tidak sah. Format yang disokong ialah \\server\share dan smb://server/share.</translation>
 <translation id="3101709781009526431">Tarikh dan masa</translation>
 <translation id="2059913712424898428">Zon waktu</translation>
 <translation id="4547672827276975204">Tetapkan secara automatik</translation>

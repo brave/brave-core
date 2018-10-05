@@ -838,7 +838,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6845038076637626672">Åbn maksimeret</translation>
 <translation id="6860427144121307915">Åbn på en fane</translation>
 <translation id="3074037959626057712">Du er logget ind og har slået synkronisering til</translation>
-<translation id="6264422956566238156">Du har aktiveret Brave-synkronisering</translation>
 <translation id="9125982323641182972">Få Brave Softwares smarte funktioner i Brave</translation>
 <translation id="7988117629517051942">Få flere af Brave Softwares smarte funktioner</translation>
 <translation id="5596627076506792578">Flere valgmuligheder</translation>
@@ -1624,7 +1623,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="784934925303690534">Tidsinterval</translation>
 <translation id="2496180316473517155">Browserhistorik</translation>
 <translation id="8662811608048051533">Logger dig ud af de fleste websites.</translation>
-<translation id="8218628800671693884">Logger dig ud af de fleste websites. Du bliver ikke logget ud af din Brave Software-konto.</translation>
 <translation id="2017836877785168846">Nulstiller historikken og autofuldførelser i adresselinjen.</translation>
 <translation id="8096327394278038498">Rydder historikken og autofuldførelser i adresselinjen. Din Brave Software-konto kan have andre former for browserhistorik på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Rydder historikken på alle enheder, hvor du er logget ind. Din Brave Software-konto kan have andre former for browserhistorik på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1691,7 +1689,10 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7754704193130578113">Spørg, hvor hver enkelt fil skal gemmes, inden download begynder</translation>
 <translation id="5713072761819014678">Fjern tilknytningen af din Brave Software Drev-konto</translation>
 <translation id="486635084936119914">Åbn bestemte filtyper automatisk efter download</translation>
+<translation id="3653160965917900914">Fildeling via netværk</translation>
+<translation id="5763315388120433852">Konfigurer eller administrer fildeling via netværk.</translation>
 <translation id="2367199180085172140">Tilføj fildeling</translation>
+<translation id="247051149076336810">Webadresse til fildeling</translation>
 <translation id="5247051749037287028">Vist navn (valgfrit)</translation>
 <translation id="6091761513005122595">Delingen blev anvendt.</translation>
 <translation id="9024158959543687197">Der opstod en fejl ved anvendelse af deling. Tjek webadressen til fildeling, og prøv igen.</translation>
@@ -1699,6 +1700,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2148219725039824548">Der opstod en fejl ved anvendelse af deling. Den angivne deling blev ikke fundet på netværket.</translation>
 <translation id="7234406375359457793">Der opstod en fejl ved anvendelse af deling. Den angivne deling understøttes ikke.</translation>
 <translation id="706626672220389329">Der opstod en fejl ved anvendelse af deling. Den angivne deling anvendes allerede.</translation>
+<translation id="5985458664595100876">Ugyldigt webadresseformat. De understøttede formater er \\server\share og smb://server/share.</translation>
 <translation id="3101709781009526431">Dato og klokkeslæt</translation>
 <translation id="2059913712424898428">Tidszone</translation>
 <translation id="4547672827276975204">Indstil automatisk</translation>

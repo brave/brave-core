@@ -839,7 +839,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6845038076637626672">Öppna maximerad</translation>
 <translation id="6860427144121307915">Öppna i en flik</translation>
 <translation id="3074037959626057712">Du är inloggad och har aktiverat synkronisering</translation>
-<translation id="6264422956566238156">Du har aktiverat Sync</translation>
 <translation id="9125982323641182972">Få Brave Software-teknik i Brave</translation>
 <translation id="7988117629517051942">Få mer Brave Software-teknik</translation>
 <translation id="5596627076506792578">Fler alternativ</translation>
@@ -1625,7 +1624,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="784934925303690534">Tidsintervall</translation>
 <translation id="2496180316473517155">Webbhistorik</translation>
 <translation id="8662811608048051533">Du loggas ut från de flesta webbplatser.</translation>
-<translation id="8218628800671693884">Du loggas ut från de flesta webbplatser. Du loggas inte ut från Brave Software-kontot.</translation>
 <translation id="2017836877785168846">Rensar historik och autoslutföranden i adressfältet.</translation>
 <translation id="8096327394278038498">Historik och autoslutföranden i adressfältet rensas. Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Historik rensas från alla inloggade enheter. Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7754704193130578113">Fråga var filerna ska sparas före nedladdning</translation>
 <translation id="5713072761819014678">Koppla från Brave Software Drive-konto</translation>
 <translation id="486635084936119914">Öppna vissa filtyper automatiskt efter att de har laddats ned</translation>
+<translation id="3653160965917900914">Filresurser i nätverk</translation>
+<translation id="5763315388120433852">Konfigurera eller hantera filresurser i nätverk.</translation>
 <translation id="2367199180085172140">Lägg till File Share</translation>
+<translation id="247051149076336810">Webbadress för filresurs</translation>
 <translation id="5247051749037287028">Visningsnamn (valfritt)</translation>
 <translation id="6091761513005122595">Den delade resursen har monterats.</translation>
 <translation id="9024158959543687197">Det gick inte att montera den delade resursen. Kontrollera filresursens webbadress och försök igen.</translation>
@@ -1700,6 +1701,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2148219725039824548">Det gick inte att montera den delade resursen. Den angivna resursen hittades inte i nätverket.</translation>
 <translation id="7234406375359457793">Det gick inte att montera den delade resursen. Den angivna resursen stöds inte.</translation>
 <translation id="706626672220389329">Det gick inte att montera den delade resursen. Den angivna resursen har redan monterats.</translation>
+<translation id="5985458664595100876">Ogiltigt webbadressformat. Följande format stöds: \\server\share och smb://server/share.</translation>
 <translation id="3101709781009526431">Datum och tid</translation>
 <translation id="2059913712424898428">Tidszon</translation>
 <translation id="4547672827276975204">Ange automatiskt</translation>

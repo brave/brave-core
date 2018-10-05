@@ -834,7 +834,6 @@
 <translation id="6845038076637626672">वाढवलेले उघडा</translation>
 <translation id="6860427144121307915">एका टॅबमध्ये उघडा</translation>
 <translation id="3074037959626057712">तुम्ही साइन इन केलेले आहे आणि सिंक करणे चालू केलेले आहे</translation>
-<translation id="6264422956566238156">तुम्ही सिंक सुरू केले आहे</translation>
 <translation id="9125982323641182972">Brave मध्ये Brave Software स्मार्ट मिळवा</translation>
 <translation id="7988117629517051942">Brave Software स्मार्टकडून बरेच काही मिळवा</translation>
 <translation id="5596627076506792578">अधिक पर्याय</translation>
@@ -1620,7 +1619,6 @@
 <translation id="784934925303690534">वेळ वर्गवारी</translation>
 <translation id="2496180316473517155">ब्राउझिंग इतिहास</translation>
 <translation id="8662811608048051533">तुम्हाला बहुतांश साइटवरून साइन आउट करते.</translation>
-<translation id="8218628800671693884">तुम्हाला बहुतांश साइटमधून साइन आउट करते. तुम्हाला तुमच्या Brave Software खात्यामधून साइन आउट केले जाणार नाही.</translation>
 <translation id="2017836877785168846">अॅड्रेस बारमधील इतिहास आणि आपोआप पूर्ण केलेले साफ करते.</translation>
 <translation id="8096327394278038498">अ‍ॅड्रेस बारवरील इतिहास आणि आपोआप पूर्ण करण्याचे दाखले साफ करते. तुमच्या Brave Software खात्यामध्ये <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> वर कदाचित ब्राउझिंगचे इतर फॉर्म असतील.</translation>
 <translation id="8122693181154564064">साइन-इन केलेल्या सर्व डिव्हाइसमधून इतिहास साफ करते. तुमच्या Brave Software खात्यामध्ये <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> वर कदाचित ब्राउझिंगचे इतर फॉर्म असतील.</translation>
@@ -1687,7 +1685,10 @@
 <translation id="7754704193130578113">डाउनलोड करण्यापूर्वी प्रत्येक फाइल कोठे सेव्ह करावी ते विचारा</translation>
 <translation id="5713072761819014678">Brave Software ड्राइव्ह खाते डिस्कनेक्ट करा</translation>
 <translation id="486635084936119914">डाउनलोड केल्यानंतर काही फाईल प्रकार स्वयंचलितपणे उघडा</translation>
+<translation id="3653160965917900914">नेटवर्क फाइल शेअर</translation>
+<translation id="5763315388120433852">नेटवर्क फाइल शेअर सेट किंवा व्यवस्थापित करा</translation>
 <translation id="2367199180085172140">फाइल शेअर जोडा</translation>
+<translation id="247051149076336810">फाइल शेअर URL</translation>
 <translation id="5247051749037287028">डिस्प्ले नाव (पर्यायी)</translation>
 <translation id="6091761513005122595">शेअर यशस्वीरीत्‍‍‍‍या माउंट केले आहे.</translation>
 <translation id="9024158959543687197">शेअर माउंट करताना एरर आली. फाइल शेअर URL तपासा आणि पुन्हा प्रयत्न करा.</translation>
@@ -1695,6 +1696,7 @@
 <translation id="2148219725039824548">शेअर माउंट करताना एरर आली. नेटवर्कमध्ये निर्दिष्ट केलेला शेअर आढळला नाही.</translation>
 <translation id="7234406375359457793">शेअर माउंट करताना एरर आली. निर्दिष्ट शेअरला सपोर्ट नाही.</translation>
 <translation id="706626672220389329">शेअर माउंट करताना एरर आली. निर्दिष्ट केलेला शेअर आधीच माउंट केलेला आहे.</translation>
+<translation id="5985458664595100876">चुकीचा URL फॉरमॅट. सपोर्ट केले जाणारे फॉरमॅट \\server\share आणि smb://server/share आहेत.</translation>
 <translation id="3101709781009526431">तारीख आणि वेळ</translation>
 <translation id="2059913712424898428">टाइमझोन</translation>
 <translation id="4547672827276975204">आपोआप सेट करा</translation>

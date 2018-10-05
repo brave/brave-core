@@ -839,7 +839,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6845038076637626672">Apri ingrandita</translation>
 <translation id="6860427144121307915">Apri in una scheda</translation>
 <translation id="3074037959626057712">Hai eseguito l'accesso e attivato la sincronizzazione</translation>
-<translation id="6264422956566238156">Hai attivato la sincronizzazione</translation>
 <translation id="9125982323641182972">Tutta l'intelligenza Brave Software in Brave</translation>
 <translation id="7988117629517051942">Utilizza il meglio dell'intelligenza di Brave Software</translation>
 <translation id="5596627076506792578">Altre opzioni</translation>
@@ -1625,7 +1624,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="784934925303690534">Intervallo di tempo</translation>
 <translation id="2496180316473517155">Cronologia di navigazione</translation>
 <translation id="8662811608048051533">Vieni scollegato dalla maggior parte dei siti.</translation>
-<translation id="8218628800671693884">Verrai scollegato dalla maggior parte dei siti, ma non dal tuo account Brave Software.</translation>
 <translation id="2017836877785168846">Consente di cancellare la cronologia e i completamenti automatici nella barra degli indirizzi.</translation>
 <translation id="8096327394278038498">Consente di cancellare la cronologia e i completamenti automatici nella barra degli indirizzi. Il tuo account Brave Software potrebbe avere altri tipi di cronologia di navigazione all'indirizzo <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Consente di cancellare la cronologia da tutti i dispositivi su cui hai eseguito l'accesso. Il tuo account Brave Software potrebbe avere altri tipi di cronologia di navigazione all'indirizzo <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7754704193130578113">Chiedi dove salvare il file prima di scaricarlo</translation>
 <translation id="5713072761819014678">Scollega account Brave Software Drive</translation>
 <translation id="486635084936119914">Apri automaticamente determinati tipi di file dopo il download</translation>
+<translation id="3653160965917900914">Condivisioni file di rete</translation>
+<translation id="5763315388120433852">Configura o gestisci condivisioni file di rete.</translation>
 <translation id="2367199180085172140">Aggiungi Condivisione file</translation>
+<translation id="247051149076336810">URL condivisione file</translation>
 <translation id="5247051749037287028">Nome visualizzato (facoltativo)</translation>
 <translation id="6091761513005122595">Condivisione montata correttamente.</translation>
 <translation id="9024158959543687197">Errore durante il montaggio della condivisione. Verifica l'URL condivisione file e riprova.</translation>
@@ -1700,6 +1701,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2148219725039824548">Errore durante il montaggio della condivisione. Impossibile trovare la condivisione specificata sulla rete.</translation>
 <translation id="7234406375359457793">Errore durante il montaggio della condivisione. La condivisione specificata non è supportata.</translation>
 <translation id="706626672220389329">Errore durante il montaggio della condivisione. La condivisione specificata è già montata.</translation>
+<translation id="5985458664595100876">Formato dell'URL non valido. I formati supportati sono \\server\share e smb://server/share.</translation>
 <translation id="3101709781009526431">Data e ora</translation>
 <translation id="2059913712424898428">Fuso orario</translation>
 <translation id="4547672827276975204">Imposta automaticamente</translation>
