@@ -10,12 +10,6 @@
 namespace extensions {
 namespace api {
 
-class BraveSyncBackgroundPageToBrowserFunction : public UIThreadExtensionFunction {
-  ~BraveSyncBackgroundPageToBrowserFunction() override {}
-  DECLARE_EXTENSION_FUNCTION("braveSync.backgroundPageToBrowser", UNKNOWN)
-  ResponseAction Run() override;
-};
-
 class BraveSyncGetInitDataFunction : public UIThreadExtensionFunction {
   ~BraveSyncGetInitDataFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.getInitData", UNKNOWN)
