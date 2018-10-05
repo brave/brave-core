@@ -14,9 +14,13 @@
 
 namespace brave_sync {
 
-ClientExtImpl::ClientExtImpl(Profile *profile) : handler_(nullptr),
-  profile_(nullptr), startup_complete_(false), set_load_pending_(false) {
-  SetProfile(profile);
+ClientExtImpl::ClientExtImpl(Profile* profile) :
+    handler_(nullptr),
+    brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
+    profile_(profile),
+    startup_complete_(false),
+    set_load_pending_(false) {
+  DCHECK(profile_);
 }
 
 ClientExtImpl::~ClientExtImpl() {
@@ -25,27 +29,6 @@ ClientExtImpl::~ClientExtImpl() {
 
 void ClientExtImpl::Shutdown() {
   LOG(ERROR) << "TAGAB ClientExtImpl::Shutdown";
-}
-
-void ClientExtImpl::SetProfile(Profile *profile) {
-  LOG(ERROR) << "TAGAB ClientExtImpl::SetProfile profile=" << profile;
-  DCHECK(profile);
-  if (profile_ == profile) {
-    LOG(WARNING) << "TAGAB ClientExtImpl::SetProfile profile already set";
-    DCHECK(false);
-    return;
-  }
-
-  DCHECK(!brave_sync_event_router_);
-  DCHECK(!profile_);
-
-  if (!brave_sync_event_router_) {
-    brave_sync_event_router_ = std::make_unique<extensions::BraveSyncEventRouter>(profile);
-  }
-
-  if (!profile_) {
-    profile_ = profile;
-  }
 }
 
 void ClientExtImpl::ExtensionStartupComplete() {
