@@ -9,7 +9,6 @@
 #include <map>
 
 #include "base/macros.h"
-
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 #include "brave/components/brave_sync/jslib_messages.h" // To get nested enum SyncRecord::Action
 
@@ -22,10 +21,6 @@ namespace bookmarks {
 
 namespace brave_sync {
 
-namespace jslib {
-  class SyncRecord;
-  class Bookmark;
-}
 typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
 typedef std::vector<SyncRecordPtr> RecordsList;
 
@@ -166,6 +161,7 @@ private:
   std::string base_order_;
 
   BookmarksClient *client_;
+
   DISALLOW_COPY_AND_ASSIGN(Bookmarks);
 };
 

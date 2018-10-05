@@ -6,7 +6,9 @@
 #define BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_IMPL_H_
 
 #include <map>
+
 #include "base/macros.h"
+#include "base/sequence_checker.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/bookmarks_client.h"
