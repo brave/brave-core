@@ -27,8 +27,6 @@ namespace prefs {
 
 class Prefs {
 public:
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
-
   Prefs(Profile *profile);
 
   std::string GetSeed() const;

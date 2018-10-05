@@ -9,7 +9,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_sync/profile_prefs.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -24,7 +23,6 @@ namespace brave {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(registry);
-  brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
 
   RegisterAlternatePrivateSearchEngineProfilePrefs(registry);
 

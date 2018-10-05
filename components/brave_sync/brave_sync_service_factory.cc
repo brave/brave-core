@@ -7,26 +7,28 @@
 #include "base/memory/singleton.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_impl.h"
+#include "brave/components/brave_sync/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
-
+#include "components/pref_registry/pref_registry_syncable.h"
 
 namespace brave_sync {
 
 // static
 BraveSyncService* BraveSyncServiceFactory::GetForBrowserContext(
-    content::BrowserContext* context) {
-  return static_cast<BraveSyncService*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
+    content::BrowserContext* browser_context) {
+  return GetForProfile(Profile::FromBrowserContext(browser_context));
 }
 
 // static
-BraveSyncService* BraveSyncServiceFactory::GetForBrowserContextIfExists(
-    content::BrowserContext* context) {
+BraveSyncService* BraveSyncServiceFactory::GetForProfile(Profile* profile) {
+  if (profile->IsOffTheRecord())
+    return NULL;
+
   return static_cast<BraveSyncService*>(
-      GetInstance()->GetServiceForBrowserContext(context, false));
+      GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 
 // static
@@ -36,40 +38,33 @@ BraveSyncServiceFactory* BraveSyncServiceFactory::GetInstance() {
 
 BraveSyncServiceFactory::BraveSyncServiceFactory()
     : BrowserContextKeyedServiceFactory(
-        "BraveSyncBraveSyncService",
+        "BraveSyncService",
         BrowserContextDependencyManager::GetInstance()) {
-  ////DependsOn();
 }
 
 BraveSyncServiceFactory::~BraveSyncServiceFactory() = default;
 
 KeyedService* BraveSyncServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  Profile* profile = Profile::FromBrowserContext(context);
-
-  BraveSyncServiceImpl *brave_sync_controller = new brave_sync::BraveSyncServiceImpl(profile);
-  //brave_sync_controller->SetProfile(profile);
-  // ^ now passed to CTOR
-
-  return brave_sync_controller;
-
-  // BookmarkModel* bookmark_model =
-  //     new BookmarkModel(std::make_unique<ChromeBookmarkClient>(
-  //         profile, ManagedBookmarkServiceFactory::GetForProfile(profile),
-  //         BookmarkSyncServiceFactory::GetForProfile(profile)));
-  // bookmark_model->Load(profile->GetPrefs(), profile->GetPath(),
-  //                      StartupTaskRunnerServiceFactory::GetForProfile(profile)
-  //                          ->GetBookmarkTaskRunner(),
-  //                      content::BrowserThread::GetTaskRunnerForThread(
-  //                          content::BrowserThread::UI));
-  // BookmarkUndoServiceFactory::GetForProfile(profile)->Start(bookmark_model);
-  //
-  // return bookmark_model;
+  std::unique_ptr<BraveSyncServiceImpl> brave_sync_service(
+      new BraveSyncServiceImpl(Profile::FromBrowserContext(context)));
+  return brave_sync_service.release();
 }
 
 void BraveSyncServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  // move here brave_sync::prefs::Prefs::RegisterProfilePrefs
+  registry->RegisterStringPref(prefs::kThisDeviceId, std::string());
+  registry->RegisterStringPref(prefs::kSeed, std::string());
+  registry->RegisterStringPref(prefs::kThisDeviceName, std::string());
+  registry->RegisterStringPref(prefs::kBookmarksBaseOrder, std::string());
+
+  registry->RegisterBooleanPref(prefs::kSyncThisDeviceEnabled, false);
+  registry->RegisterBooleanPref(prefs::kSyncBookmarksEnabled, false);
+  registry->RegisterBooleanPref(prefs::kSiteSettingsEnabled, false);
+  registry->RegisterBooleanPref(prefs::kHistoryEnabled, false);
+
+  registry->RegisterTimePref(prefs::kLatestRecordTime, base::Time());
+  registry->RegisterTimePref(prefs::kLastFetchTime, base::Time());
 }
 
 content::BrowserContext* BraveSyncServiceFactory::GetBrowserContextToUse(
@@ -81,5 +76,4 @@ bool BraveSyncServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-
-} // namespace brave_sync
+}  // namespace brave_sync

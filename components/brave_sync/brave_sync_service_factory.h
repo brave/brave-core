@@ -6,11 +6,10 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_FACTORY_H_
 
 #include "base/macros.h"
+#include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-namespace base {
-template <typename T> struct DefaultSingletonTraits;
-}
+class Profile;
 
 namespace brave_sync {
 
@@ -18,11 +17,9 @@ class BraveSyncService;
 
 class BraveSyncServiceFactory : public BrowserContextKeyedServiceFactory {
 public:
+  static BraveSyncService* GetForProfile(Profile* profile);
   static BraveSyncService* GetForBrowserContext(
-      content::BrowserContext* browser_context);
-
-  static BraveSyncService* GetForBrowserContextIfExists(
-      content::BrowserContext* browser_context);
+      content::BrowserContext* context);
 
   static BraveSyncServiceFactory* GetInstance();
 
@@ -44,8 +41,6 @@ private:
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceFactory);
 };
 
-
 } // namespace brave_sync
-
 
 #endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_FACTORY_H_

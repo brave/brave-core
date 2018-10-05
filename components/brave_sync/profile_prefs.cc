@@ -7,33 +7,13 @@
 #include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/pref_names.h"
 #include "brave/components/brave_sync/settings.h"
-
-#include "chrome/browser/profiles/profile_manager.h"
-#include "components/pref_registry/pref_registry_syncable.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace brave_sync {
 
 namespace prefs {
-
-void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  LOG(ERROR) << "TAGAB brave_sync::prefs::RegisterProfilePrefs ";
-  //LOG(ERROR) << base::debug::StackTrace().ToString();
-
-  registry->RegisterStringPref(kThisDeviceId, std::string());
-  registry->RegisterStringPref(kSeed, std::string());
-  registry->RegisterStringPref(kThisDeviceName, std::string());
-  registry->RegisterStringPref(kBookmarksBaseOrder, std::string());
-
-  registry->RegisterBooleanPref(kSyncThisDeviceEnabled, false);
-  registry->RegisterBooleanPref(kSyncBookmarksEnabled, false);
-  registry->RegisterBooleanPref(kSiteSettingsEnabled, false);
-  registry->RegisterBooleanPref(kHistoryEnabled, false);
-
-  registry->RegisterTimePref(kLatestRecordTime, base::Time());
-  registry->RegisterTimePref(kLastFetchTime, base::Time());
-}
 
 Prefs::Prefs(Profile* profile) : pref_service_(nullptr) {
   DCHECK(profile);
