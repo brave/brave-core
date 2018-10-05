@@ -58,7 +58,15 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
           { content: device.name },
           { content: device.lastActive },
           {
-            content: (<span id={device.deviceId} onClick={this.onRemoveDevice}>&times;</span>),
+            content: (
+              <span
+                style={{ cursor: 'pointer' /* TODO: cezar make this a component */ }}
+                data-id={device.id}
+                data-name={device.name}
+                onClick={this.onRemoveDevice}>
+                  &times;
+              </span>
+            ),
             customStyle: { 'text-align': 'center' }
           }
         ]
@@ -76,9 +84,9 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
     ]
   }
 
-  onRemoveDevice = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const target = event.target as HTMLButtonElement
-    this.props.actions.onRemoveDevice(target.id)
+  onRemoveDevice = (event: React.MouseEvent<HTMLSpanElement>) => {
+    const target = event.target as HTMLSpanElement
+    this.props.actions.onRemoveDevice(Number(target.dataset.id), target.dataset.name)
   }
 
   syncANewDeviceModal = () => {
