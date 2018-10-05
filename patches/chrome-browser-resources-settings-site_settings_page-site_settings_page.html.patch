@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-index b2894017d199903bb468124871b0a4d1223f923f..89ba15f6145479784520630932db317abbdfedee 100644
+index b2894017d199903bb468124871b0a4d1223f923f..a16e9d69f33bdccf5bbca482d3fd6fd3beff315b 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
 @@ -148,6 +148,25 @@
@@ -32,24 +32,15 @@ index b2894017d199903bb468124871b0a4d1223f923f..89ba15f6145479784520630932db317a
              aria-describedby="popupsSecondary"></button>
        </paper-icon-button-light>
      </div>
-+<if expr="_google_chrome">
++<!--
      <template is="dom-if" if="[[enableSafeBrowsingSubresourceFilter_]]">
        <div id="ads" class="settings-box two-line"
            category$="[[ContentSettingsTypes.ADS]]"
-@@ -242,6 +262,8 @@
-         </paper-icon-button-light>
-       </div>
-     </template>
-+</if>
-+<if expr="_google_chrome">
-     <div id="background-sync" class="settings-box two-line"
-         category$="[[ContentSettingsTypes.BACKGROUND_SYNC]]"
-         data-route="SITE_SETTINGS_BACKGROUND_SYNC" on-click="onTapNavigate_"
-@@ -261,6 +283,7 @@
+@@ -261,6 +281,7 @@
              aria-describedby="backgroundSyncSecondary"></button>
        </paper-icon-button-light>
      </div>
-+</if>
++-->
      <template is="dom-if" if="[[enableSoundContentSetting_]]">
        <div id="sound" class="settings-box two-line"
            category$="[[ContentSettingsTypes.SOUND]]"

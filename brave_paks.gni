@@ -56,6 +56,7 @@ template("brave_extra_paks") {
     sources = [
       "$root_gen_dir/brave/brave_generated_resources.pak",
       "$root_gen_dir/brave/brave_unscaled_resources.pak",
+      "$root_gen_dir/brave/browser/resources/brave_settings_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
       "$root_gen_dir/brave/components/brave_rewards/extension/brave_rewards_resources.pak",
       "$target_gen_dir/browser/resources/brave_extension.pak",
@@ -69,6 +70,7 @@ template("brave_extra_paks") {
       "//brave/components/brave_webtorrent:resources",
       "//brave/components/resources:brave_components_resources_grit",
       "//brave/browser/resources:brave_extension_grit",
+      "//brave/browser/resources:brave_settings_resources",
       "//brave/common/extensions/api"
     ]
 
