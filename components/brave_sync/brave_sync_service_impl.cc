@@ -9,7 +9,6 @@
 #include "base/debug/stack_trace.h"
 #include "base/task_runner.h"
 #include "base/task/post_task.h"
-
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
 #include "brave/components/brave_sync/bookmarks.h"
@@ -27,7 +26,6 @@
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/value_debug.h"
-
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -43,7 +41,7 @@ BraveSyncServiceImpl::TempStorage::~TempStorage() {
 }
 
 BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
-  sync_client_(nullptr),
+  sync_client_(BraveSyncClientFactory::GetForBrowserContext(profile)),
   sync_initialized_(false),
   profile_(nullptr),
   timer_(std::make_unique<base::RepeatingTimer>()),
@@ -53,32 +51,6 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
   LOG(ERROR) << "TAGAB ---------------------";
 
   DETACH_FROM_SEQUENCE(sequence_checker_);
-
-  SetProfile(profile);
-}
-
-BraveSyncServiceImpl::~BraveSyncServiceImpl() {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::~BraveSyncServiceImpl DTOR";
-}
-
-bool BraveSyncServiceImpl::IsSyncConfigured() {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::IsSyncConfigured will return sync_configured_="<<sync_configured_;
-  return sync_configured_;
-}
-
-bool BraveSyncServiceImpl::IsSyncInitialized() {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::IsSyncConfigured will return sync_initialized_="<<sync_initialized_;
-  return sync_initialized_;
-}
-
-// Usually initialized at BraveSyncExtensionLoadedFunction::Run
-void BraveSyncServiceImpl::SetProfile(Profile *profile) {
-  LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile profile="<<profile;
-  // LOG(ERROR) << base::debug::StackTrace().ToString();
-  // LOG(ERROR) << "TAGAB ---------------------";
-
-  DCHECK(profile);
-  DCHECK(!profile_);
 
   sync_prefs_.reset(new brave_sync::prefs::Prefs(profile));
 
@@ -114,21 +86,27 @@ void BraveSyncServiceImpl::SetProfile(Profile *profile) {
     LOG(ERROR) << "TAGAB sync_prefs_->GetThisDeviceName()=<" << sync_prefs_->GetThisDeviceName() << ">";
   }
 
-  profile_ = profile;
-
-  if (!sync_client_) {
-    sync_client_ = BraveSyncClientFactory::GetForBrowserContext(profile);
-    sync_client_->SetSyncToBrowserHandler(this);
-  }
+  sync_client_->SetSyncToBrowserHandler(this);
 
   LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile sync_client_="<<sync_client_;
 
   LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile sync_client_ null, post in UI BraveSyncServiceImpl::InitJsLib";
-  content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
-    ->PostTask(FROM_HERE, base::Bind(&BraveSyncServiceImpl::InitJsLib,
-                                     base::Unretained(this), false));
-
+  InitJsLib(false);
   StartLoop();
+}
+
+BraveSyncServiceImpl::~BraveSyncServiceImpl() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::~BraveSyncServiceImpl DTOR";
+}
+
+bool BraveSyncServiceImpl::IsSyncConfigured() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::IsSyncConfigured will return sync_configured_="<<sync_configured_;
+  return sync_configured_;
+}
+
+bool BraveSyncServiceImpl::IsSyncInitialized() {
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::IsSyncConfigured will return sync_initialized_="<<sync_initialized_;
+  return sync_initialized_;
 }
 
 void BraveSyncServiceImpl::Shutdown() {
@@ -147,6 +125,7 @@ void BraveSyncServiceImpl::Shutdown() {
 }
 
 void BraveSyncServiceImpl::ShutdownFileWork() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   sync_obj_map_.reset();
 }
 
@@ -222,6 +201,7 @@ void BraveSyncServiceImpl::OnDeleteDevice(const std::string &device_id) {
 
 void BraveSyncServiceImpl::OnDeleteDeviceFileWork(const std::string &device_id) {
   LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::OnDeleteDeviceFileWork";
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   SyncDevices syncDevices;
   syncDevices.FromJson(json);
@@ -262,6 +242,7 @@ void BraveSyncServiceImpl::OnResetSync() {
 
 void BraveSyncServiceImpl::OnResetSyncFileWork(const std::string &device_id) {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResetSyncFileWork";
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   OnDeleteDeviceFileWork(device_id);
   sync_obj_map_->DestroyDB();
 
@@ -298,6 +279,7 @@ void BraveSyncServiceImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCall
 
 void BraveSyncServiceImpl::GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Settings> settings, const GetSettingsAndDevicesCallback &callback) {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevicesImpl " << GetThreadInfoString();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   std::unique_ptr<brave_sync::SyncDevices> devices = std::make_unique<brave_sync::SyncDevices>();
   std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
@@ -538,7 +520,7 @@ void BraveSyncServiceImpl::OnGetExistingObjectsFileWork(const std::string &categ
   std::unique_ptr<RecordsList> records,
   const base::Time &last_record_time_stamp,
   const bool &is_truncated) {
-  // Runs in task_runner_
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetExistingObjectsFileWork:";
   LOG(ERROR) << "TAGAB category_name=" << category_name;
@@ -908,12 +890,9 @@ void BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
   }
 }
 
-//bool once_done = false;
-
 // Here we query sync lib for the records after initialization (or again later)
 void BraveSyncServiceImpl::RequestSyncData() {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData:";
-
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: sync_prefs_->GetSyncThisDevice()=" << sync_prefs_->GetSyncThisDevice();
   if (!sync_prefs_->GetSyncThisDevice()) {
     LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: sync is not enabled for this device";
@@ -1301,33 +1280,30 @@ static const int64_t kCheckUpdatesIntervalSec = 60;
 
 void BraveSyncServiceImpl::StartLoop() {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::StartLoop " << GetThreadInfoString();
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // Repeated task runner
   //https://chromium.googlesource.com/chromium/src/+/lkgr/docs/threading_and_tasks.md#posting-a-repeating-task-with-a-delay
   timer_->Start(FROM_HERE, base::TimeDelta::FromSeconds(kCheckUpdatesIntervalSec),
                  this, &BraveSyncServiceImpl::LoopProc);
-  //in UI THREAD
 }
 
 void BraveSyncServiceImpl::StopLoop() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::StopLoop " << GetThreadInfoString();
   timer_->Stop();
   //in UI THREAD
 }
 
 void BraveSyncServiceImpl::LoopProc() {
-//  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::LoopProc " << GetThreadInfoString();
-
-  // task_runner_->PostTask(FROM_HERE,
-  // base::Bind(&BraveSyncServiceImpl::LoopProcThreadAligned,
-  //     weak_ptr_factory_.GetWeakPtr()));
-  //in UI THREAD
-
-  LoopProcThreadAligned();
-  // For now cannot run LoopProcThreadAligned in a task runner because it uses
-  // sync_prefs_ which should be accessed in UI thread
+  content::BrowserThread::GetTaskRunnerForThread(
+      content::BrowserThread::UI)->PostTask(
+          FROM_HERE,
+          base::Bind(&BraveSyncServiceImpl::LoopProcThreadAligned,
+                    weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveSyncServiceImpl::LoopProcThreadAligned() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 //  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::LoopProcThreadAligned " << GetThreadInfoString();
 
   //LOG(ERROR) << "ChromeNetworkDelegate " << " PID=" << getpid() << " tid="<< gettid();`
@@ -1338,8 +1314,6 @@ void BraveSyncServiceImpl::LoopProcThreadAligned() {
   //where Chromium runs sync tasks
   // Chromium uses
   // GetUpdatesProcessor::PrepareGetUpdates 001  tid=13213 IsThreadInitialized(UI)=1 IsThreadInitialized(IO)=1 UNKNOWN THREAD
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
   if (!sync_initialized_) {
     return;
   }
