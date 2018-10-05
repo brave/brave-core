@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_EXT_IMPL_H
-#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_EXT_IMPL_H
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H
+#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H
 
-#include "brave/components/brave_sync/client/client.h"
+#include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "base/macros.h"
 
 class Profile;
@@ -15,11 +15,11 @@ class BraveSyncEventRouter;
 
 namespace brave_sync {
 
-class ClientExtImpl : public BraveSyncClient/*,
+class BraveSyncClientImpl : public BraveSyncClient/*,
                       public extensions::ExtensionRegistryObserver */{
  public:
-  ClientExtImpl(Profile *profile);
-  ~ClientExtImpl() override;
+  BraveSyncClientImpl(Profile *profile);
+  ~BraveSyncClientImpl() override;
 
   void Shutdown() override;
 
@@ -60,9 +60,9 @@ class ClientExtImpl : public BraveSyncClient/*,
   bool startup_complete_;
   bool set_load_pending_;
 
-  DISALLOW_COPY_AND_ASSIGN(ClientExtImpl);
+  DISALLOW_COPY_AND_ASSIGN(BraveSyncClientImpl);
 };
 
 } // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_EXT_IMPL_H
+#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H

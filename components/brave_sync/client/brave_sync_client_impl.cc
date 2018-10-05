@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/client/client_ext_impl.h"
+#include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 
 #include "base/logging.h"
 #include "brave/components/brave_sync/api/brave_sync_event_router.h"
@@ -14,7 +14,7 @@
 
 namespace brave_sync {
 
-ClientExtImpl::ClientExtImpl(Profile* profile) :
+BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
     handler_(nullptr),
     brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
     profile_(profile),
@@ -23,67 +23,67 @@ ClientExtImpl::ClientExtImpl(Profile* profile) :
   DCHECK(profile_);
 }
 
-ClientExtImpl::~ClientExtImpl() {
-  LOG(ERROR) << "TAGAB ClientExtImpl::~ClientExtImpl";
+BraveSyncClientImpl::~BraveSyncClientImpl() {
+  LOG(ERROR) << "TAGAB BraveSyncClientImpl::~BraveSyncClientImpl";
 }
 
-void ClientExtImpl::Shutdown() {
-  LOG(ERROR) << "TAGAB ClientExtImpl::Shutdown";
+void BraveSyncClientImpl::Shutdown() {
+  LOG(ERROR) << "TAGAB BraveSyncClientImpl::Shutdown";
 }
 
-void ClientExtImpl::ExtensionStartupComplete() {
-  LOG(WARNING) << "TAGAB ClientExtImpl::ExtensionStartupComplete";
+void BraveSyncClientImpl::ExtensionStartupComplete() {
+  LOG(WARNING) << "TAGAB BraveSyncClientImpl::ExtensionStartupComplete";
   DCHECK(!startup_complete_);
   startup_complete_ = true;
   if (set_load_pending_) {
-    LOG(WARNING) << "TAGAB ClientExtImpl::ExtensionStartupComplete loading pending";
+    LOG(WARNING) << "TAGAB BraveSyncClientImpl::ExtensionStartupComplete loading pending";
     brave_sync_event_router_->LoadClient();
   }
 }
 
-void ClientExtImpl::SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) {
+void BraveSyncClientImpl::SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) {
   DCHECK(handler);
   DCHECK(!handler_);
   handler_ = handler;
 }
 
-SyncLibToBrowserHandler *ClientExtImpl::GetSyncToBrowserHandler() {
+SyncLibToBrowserHandler *BraveSyncClientImpl::GetSyncToBrowserHandler() {
   DCHECK(handler_);
   return handler_;
 }
 
-void ClientExtImpl::LoadClient() {
-  LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient";
-  LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient WILL DO LOAD";
+void BraveSyncClientImpl::LoadClient() {
+  LOG(ERROR) << "TAGAB BraveSyncClientImpl::LoadClient";
+  LOG(ERROR) << "TAGAB BraveSyncClientImpl::LoadClient WILL DO LOAD";
   if (startup_complete_) {
-    LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient WILL DO LOAD RIGHT HERE";
+    LOG(ERROR) << "TAGAB BraveSyncClientImpl::LoadClient WILL DO LOAD RIGHT HERE";
     brave_sync_event_router_->LoadClient();
   } else {
-    LOG(ERROR) << "TAGAB ClientExtImpl::LoadClient WILL DO LOAD PENDING";
+    LOG(ERROR) << "TAGAB BraveSyncClientImpl::LoadClient WILL DO LOAD PENDING";
     DCHECK(!set_load_pending_);
     set_load_pending_ = true;
     // Not happy with this, but extensions::ExtensionRegistryObserver approach does not work
   }
 }
 
-void ClientExtImpl::SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
+void BraveSyncClientImpl::SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
   const client_data::Config &config) {
   extensions::api::brave_sync::Config config_extension;
   ConvertConfig(config, config_extension);
   brave_sync_event_router_->GotInitData(seed, device_id, config_extension);
 }
 
-void ClientExtImpl::SendFetchSyncRecords(
+void BraveSyncClientImpl::SendFetchSyncRecords(
   const std::vector<std::string> &category_names, const base::Time &startAt,
   const int &max_records) {
   brave_sync_event_router_->FetchSyncRecords(category_names, startAt, max_records);
 }
 
-void ClientExtImpl::SendFetchSyncDevices() {
+void BraveSyncClientImpl::SendFetchSyncDevices() {
   NOTIMPLEMENTED();
 }
 
-void ClientExtImpl::SendResolveSyncRecords(const std::string &category_name,
+void BraveSyncClientImpl::SendResolveSyncRecords(const std::string &category_name,
   const SyncRecordAndExistingList &records_and_existing_objects) {
 
   std::vector<extensions::api::brave_sync::RecordAndExistingObject> records_and_existing_objects_ext;
@@ -94,7 +94,7 @@ void ClientExtImpl::SendResolveSyncRecords(const std::string &category_name,
     records_and_existing_objects_ext);
 }
 
-void ClientExtImpl::SendSyncRecords(const std::string &category_name,
+void BraveSyncClientImpl::SendSyncRecords(const std::string &category_name,
   const RecordsList &records) {
 
   std::vector<extensions::api::brave_sync::SyncRecord> records_ext;
@@ -103,29 +103,29 @@ void ClientExtImpl::SendSyncRecords(const std::string &category_name,
   brave_sync_event_router_->SendSyncRecords(category_name, records_ext);
 }
 
-void ClientExtImpl::SendDeleteSyncUser()  {
+void BraveSyncClientImpl::SendDeleteSyncUser()  {
   NOTIMPLEMENTED();
 }
 
-void ClientExtImpl::SendDeleteSyncCategory(const std::string &category_name) {
+void BraveSyncClientImpl::SendDeleteSyncCategory(const std::string &category_name) {
   NOTIMPLEMENTED();
 }
 
-void ClientExtImpl::SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) {
-  LOG(ERROR) << "TAGAB ClientExtImpl::SendGetBookmarksBaseOrder: device_id="<<device_id<<" platform="<<platform;
+void BraveSyncClientImpl::SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) {
+  LOG(ERROR) << "TAGAB BraveSyncClientImpl::SendGetBookmarksBaseOrder: device_id="<<device_id<<" platform="<<platform;
   brave_sync_event_router_->SendGetBookmarksBaseOrder(device_id, platform);
 }
 
-void ClientExtImpl::SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) {
-  LOG(ERROR) << "TAGAB ClientExtImpl::SendGetBookmarkOrder: prevOrder="<<prevOrder<<" nextOrder="<<nextOrder;
+void BraveSyncClientImpl::SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) {
+  LOG(ERROR) << "TAGAB BraveSyncClientImpl::SendGetBookmarkOrder: prevOrder="<<prevOrder<<" nextOrder="<<nextOrder;
   brave_sync_event_router_->SendGetBookmarkOrder(prevOrder, nextOrder);
 }
 
-void ClientExtImpl::NeedSyncWords(const std::string &seed) {
+void BraveSyncClientImpl::NeedSyncWords(const std::string &seed) {
   brave_sync_event_router_->NeedSyncWords(seed);
 }
 
-void ClientExtImpl::NeedBytesFromSyncWords(const std::string &words) {
+void BraveSyncClientImpl::NeedBytesFromSyncWords(const std::string &words) {
   brave_sync_event_router_->NeedBytesFromSyncWords(words);
 }
 

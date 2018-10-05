@@ -12,7 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/bookmarks_client.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
-#include "brave/components/brave_sync/client/client.h"
+#include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/object_map.h"

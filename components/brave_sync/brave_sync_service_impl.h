@@ -13,7 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/bookmarks_client.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
-#include "brave/components/brave_sync/client/client.h"
+#include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/can_send_history.h"
 
 class Browser;

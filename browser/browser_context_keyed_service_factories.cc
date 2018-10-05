@@ -6,7 +6,7 @@
 
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
-#include "brave/components/brave_sync/client/client_factory.h"
+#include "brave/components/brave_sync/client/brave_sync_client_factory.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 
 namespace brave {
