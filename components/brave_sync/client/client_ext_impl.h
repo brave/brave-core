@@ -17,7 +17,7 @@ namespace brave_sync {
 
 class ClientExtImpl : public BraveSyncClient/*,
                       public extensions::ExtensionRegistryObserver */{
-public:
+ public:
   ClientExtImpl(Profile *profile);
   ~ClientExtImpl() override;
 
@@ -52,16 +52,15 @@ public:
   void NeedSyncWords(const std::string &seed) override;
   void NeedBytesFromSyncWords(const std::string &words) override;
 
-private:
-  void SetProfile(Profile *profile);
-
-  DISALLOW_COPY_AND_ASSIGN(ClientExtImpl);
+ private:
   SyncLibToBrowserHandler *handler_;
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
   Profile *profile_;
 
   bool startup_complete_;
   bool set_load_pending_;
+
+  DISALLOW_COPY_AND_ASSIGN(ClientExtImpl);
 };
 
 } // namespace brave_sync

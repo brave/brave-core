@@ -21,13 +21,6 @@ BraveSyncClient* BraveSyncClientFactory::GetForBrowserContext(
 }
 
 // static
-BraveSyncClient* BraveSyncClientFactory::GetForBrowserContextIfExists(
-    content::BrowserContext* context) {
-  return static_cast<BraveSyncClient*>(
-      GetInstance()->GetServiceForBrowserContext(context, false));
-}
-
-// static
 BraveSyncClientFactory* BraveSyncClientFactory::GetInstance() {
   return base::Singleton<BraveSyncClientFactory>::get();
 }

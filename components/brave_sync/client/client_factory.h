@@ -21,9 +21,6 @@ public:
   static BraveSyncClient* GetForBrowserContext(
       content::BrowserContext* browser_context);
 
-  static BraveSyncClient* GetForBrowserContextIfExists(
-      content::BrowserContext* browser_context);
-
   static BraveSyncClientFactory* GetInstance();
 
 private:
