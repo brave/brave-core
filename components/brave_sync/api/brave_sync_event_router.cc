@@ -18,26 +18,6 @@ BraveSyncEventRouter::~BraveSyncEventRouter() {
   ;
 }
 
-void BraveSyncEventRouter::BrowserToBackgroundPage(const std::string &arg1) {
-   if (!profile_) {
-     LOG(ERROR) << "TAGAB BraveSyncEventRouter::BrowserToBackgroundPage profile is not set";
-     return;
-   }
-
-   EventRouter* event_router = EventRouter::Get(profile_);
-
-   if (event_router) {
-    std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_sync::OnBrowserToBackgroundPage::Create(arg1)
-          .release());
-    std::unique_ptr<Event> event(
-        new Event(extensions::events::FOR_TEST,
-          extensions::api::brave_sync::OnBrowserToBackgroundPage::kEventName,
-          std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
-  }
-}
-
 void BraveSyncEventRouter::GotInitData(
   const brave_sync::Uint8Array &seed,
   const brave_sync::Uint8Array &device_id,
