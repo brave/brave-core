@@ -9,6 +9,8 @@ import Hero from '../hero'
 import SettingsPage from '../settingsPage'
 import Button from '../../../components/buttonsIndicators/button'
 import InfoCard, { CardProps } from '../infoCard'
+import { ArrowDownIcon, BatColorIcon, LoaderIcon } from '../../../components/icons'
+import Alert from '../alert'
 
 // Utils
 import { getLocale } from '../../../helpers'
@@ -37,8 +39,6 @@ import {
   StyledOptInSecond,
   StyledAlert
 } from './style'
-import { ArrowDownIcon, BatColorIcon } from '../../../components/icons'
-import Alert from '../alert'
 
 const turnOnRewardsImage = require('./assets/turnOnRewards')
 const braveAdsImage = require('./assets/braveAds')
@@ -49,12 +49,19 @@ export interface Props {
   optInAction: () => void
 }
 
-class WelcomePage extends React.PureComponent<Props, {}> {
+interface State {
+  creating: boolean
+}
+
+class WelcomePage extends React.PureComponent<Props, State> {
   private centerTextSection: HTMLDivElement | null
 
   constructor (props: Props) {
     super(props)
     this.centerTextSection = null
+    this.state = {
+      creating: false
+    }
   }
 
   scrollToCenter = () => {
@@ -73,6 +80,14 @@ class WelcomePage extends React.PureComponent<Props, {}> {
 
   refSet = (node: HTMLDivElement) => {
     this.centerTextSection = node
+  }
+
+  optInAction = () => {
+    this.setState({
+      creating: true
+    })
+
+    this.props.optInAction()
   }
 
   hero () {
@@ -94,14 +109,29 @@ class WelcomePage extends React.PureComponent<Props, {}> {
           </StyledRewardsParagraph>
         </StyledSection>
         <StyledOptInSection>
-          <Button
-            level='secondary'
-            size='call-to-action'
-            type='subtle'
-            text={getLocale('braveRewardsOptInText')}
-            onClick={this.props.optInAction}
-            data-test-id='optInAction'
-          />
+          {
+            this.state.creating
+            ? <Button
+              level='secondary'
+              size='call-to-action'
+              type='subtle'
+              text={getLocale('braveRewardsCreatingText')}
+              disabled={true}
+              data-test-id='optInAction'
+              icon={{
+                image: <LoaderIcon />,
+                position: 'after'
+              }}
+            />
+            : <Button
+              level='secondary'
+              size='call-to-action'
+              type='subtle'
+              text={getLocale('braveRewardsOptInText')}
+              onClick={this.optInAction}
+              data-test-id='optInAction'
+            />
+          }
         </StyledOptInSection>
         <StyledSection>
           <StyledTeaserParagraph>
@@ -143,13 +173,27 @@ class WelcomePage extends React.PureComponent<Props, {}> {
           {getLocale('readyToTakePart')}
         </StyledActionTitle>
         <StyledOptInSecond>
-          <Button
-            level={'primary'}
-            size={'call-to-action'}
-            type={'accent'}
-            text={getLocale('readyToTakePartOptInText')}
-            onClick={this.props.optInAction}
-          />
+          {
+            this.state.creating
+            ? <Button
+              level={'primary'}
+              size={'call-to-action'}
+              type={'accent'}
+              text={getLocale('braveRewardsCreatingText')}
+              disabled={true}
+              icon={{
+                image: <LoaderIcon />,
+                position: 'after'
+              }}
+            />
+            : <Button
+              level={'primary'}
+              size={'call-to-action'}
+              type={'accent'}
+              text={getLocale('readyToTakePartOptInText')}
+              onClick={this.optInAction}
+            />
+          }
         </StyledOptInSecond>
       </StyledOptInInnerSection>
     )
