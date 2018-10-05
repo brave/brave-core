@@ -277,7 +277,7 @@ private:
   // <prev_order, next_order> => <node_id, action>
   std::map<std::tuple<std::string, std::string>, std::tuple<int64_t, int>> rr_map_;
 
-  const int ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS = 2/*for tests 2*/; //10;
+  const int ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS = 10;
   int attempts_before_send_not_synced_records_ = ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS;
 
   std::unique_ptr<base::RepeatingTimer> timer_;
