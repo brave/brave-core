@@ -18,7 +18,7 @@ const importImage = require('../../../assets/img/welcome_import.svg')
 const shieldsImage = require('../../../assets/img/welcome_shields.svg')
 const themeImage = require('../../../assets/img/welcome_theme.svg')
 const searchImage = require('../../../assets/img/welcome_search.svg')
-const background = require('../../../assets/img/welcomebg.svg')
+const background = require('../../../assets/img/welcome_bg.svg')
 
 // Fonts
 import '../../../assets/fonts/muli.css'
@@ -58,6 +58,7 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
           size='large'
           text={locale.letsGo}
           onClick={this.onClickLetsGo}
+          icon={{ position: 'after', image: <ArrowRightIcon /> }}
         />
       </Welcome.Content>
     )
@@ -129,7 +130,6 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
           <Select id='theme' type='light' value='default'>
             <div data-value='default'>Default Theme</div>
             <div data-value='dark'>Dark Theme</div>
-            <div data-value='night'>Night Theme</div>
           </Select>
           <Button
             level='primary'
@@ -270,16 +270,20 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   onClickImport = () => {
     this.setState({ fakeBookmarksImported: !this.state.fakeBookmarksImported })
+    // prob not the correct syntax for this behavior, but a reminder that clicking this button executes functionality and then auto proceed to next screen
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
     console.log('IMPORTED!')
   }
 
   onClickConfirmDefaultSearchEngine = () => {
     this.setState({ fakeChangedSearchEngine: !this.state.fakeChangedSearchEngine })
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
     console.log('CHANGED DEFAULT SEARCH ENGINE!')
   }
 
   onClickChooseYourTheme = () => {
     this.setState({ fakeChangedDefaultTheme: !this.state.fakeChangedDefaultTheme })
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
     console.log('NEW THEME CHOOSED')
   }
 

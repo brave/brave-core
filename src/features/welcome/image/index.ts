@@ -11,7 +11,7 @@ const BaseImage = styled<{}, 'img'>('img')`
 `
 
 export const BraveImage = styled(BaseImage)`
-  height: 120px;
+  height: 140px;
 `
 
 export const ImportImage = styled(BaseImage)`
