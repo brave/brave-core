@@ -6,6 +6,7 @@
 
 #include <string>
 #include <memory>
+#include <set>
 
 #include "base/files/file_path.h"
 #include "base/macros.h"
@@ -34,6 +35,12 @@ public:
     Unset = 0,
     Bookmark = 1,
     History = 2
+  };
+
+  enum NotSyncedRecordsOperation {
+    GetItems = 0,
+    AddItems = 1,
+    DeleteItems = 2
   };
 
   void SetApiVersion(const std::string &api_version);
@@ -72,6 +79,12 @@ public:
     const std::string &objectId,
     const std::string &order);
 
+  std::set<std::string> SaveGetDeleteNotSyncedRecords(
+    const Type &type,
+    const std::string &action,
+    const std::vector<std::string> &local_ids,
+    const NotSyncedRecordsOperation &operation);
+
   void DeleteByLocalId(const Type &type, const std::string &localId);
   void Close();
   void CloseDBHandle();
@@ -92,6 +105,14 @@ private:
 
   void SplitRawLocalId(const std::string &raw_local_id, std::string &local_id, Type &read_type);
   std::string ComposeRawLocalId(const Type &type, const std::string &localId);
+
+  std::set<std::string> GetNotSyncedRecords(const std::string &key);
+  void SaveNotSyncedRecords(const std::string &key, const std::set<std::string> &existing_list);
+  std::set<std::string> DeserializeList(const std::string &raw);
+  std::string SerializeList(const std::set<std::string> &existing_list);
+
+  std::string ToString(const Type &type);
+  std::string ToString(const NotSyncedRecordsOperation &operation);
 
   base::FilePath profile_path_;
   std::unique_ptr<leveldb::DB> level_db_;

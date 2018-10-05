@@ -80,6 +80,23 @@ const bookmarks::BookmarkNode* Bookmarks::GetNodeById(const int64_t &bookmark_lo
   return node;
 }
 
+void Bookmarks::FillSyncBookmarkFromNode(jslib::Bookmark *sync_bookmark,
+  const bookmarks::BookmarkNode* node) {
+  DCHECK_NE(sync_bookmark, nullptr);
+  DCHECK_NE(node, nullptr);
+
+  sync_bookmark->site.location = node->url().spec();
+  sync_bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
+  sync_bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
+  //bookmark->site.lastAccessedTime - ignored
+  sync_bookmark->site.creationTime = node->date_added();
+  sync_bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
+  sync_bookmark->isFolder = node->is_folder();
+  // 'Show in toolbar' means the node is descendant of 'bookmark bar' node
+  // 'Hide in toolbar means' the node is not a descendant of 'bookmark bar' node
+  sync_bookmark->hideInToolbar = !node->HasAncestor(model_->bookmark_bar_node());
+}
+
 std::unique_ptr<jslib::Bookmark> Bookmarks::GetFromNode(const bookmarks::BookmarkNode* node,
   const std::string &node_order,
   const std::string &parent_order) {
@@ -91,17 +108,8 @@ std::unique_ptr<jslib::Bookmark> Bookmarks::GetFromNode(const bookmarks::Bookmar
     parent_folder_object_sync_id = GetOrCreateObjectByLocalId(parent_folder_id, parent_order/* dont need it here*/);
   }
 
-  bookmark->site.location = node->url().spec();
-  bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
-  bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
-  //bookmark->site.lastAccessedTime = ; ??
-  bookmark->site.creationTime = node->date_added();
-  bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
-
-  bookmark->isFolder = node->is_folder();
+  FillSyncBookmarkFromNode(bookmark.get(), node);
   bookmark->parentFolderObjectId = parent_folder_object_sync_id; // bytes
-
-  bookmark->hideInToolbar = !node->HasAncestor(model_->bookmark_bar_node());
   bookmark->order = node_order; // order should be taken from obj map
 
   return bookmark;
@@ -452,6 +460,20 @@ void Bookmarks::ReorderFolderUiWorkApplyIndexes(const int64_t &folder_id, const 
     }
   }
 
+  // ? need in the same UI
+  if ((int)sorted_children.size() != parent->child_count()) {
+    LOG(ERROR) << "TAGAB ReorderFolderUiWorkApplyIndexes could not apply sorting";
+    LOG(ERROR) << "TAGAB sorted_children.size()=" << sorted_children.size();
+    LOG(ERROR) << "TAGAB parent->child_count()=" << parent->child_count();
+    for (int i = 0; i < parent->child_count(); ++i) {
+      const bookmarks::BookmarkNode* current_child = parent->GetChild(i);
+      LOG(ERROR) << "TAGAB   id="<< current_child->id();
+      LOG(ERROR) << "TAGAB   title="<< current_child->GetTitledUrlNodeTitle();
+    }
+    DCHECK(false);
+    return;
+  }
+
   PauseObserver();
   model_->ReorderChildren(parent, ordered_nodes);
   ResumeObserver();
@@ -507,6 +529,7 @@ void Bookmarks::DeleteBookmarkUiWork(const int64_t &local_object_id) {
 }
 
 void Bookmarks::DeleteBookmarkPostUiFileWork(const std::string &s_local_object_id) {
+  // Happens if bookmark has been removed on other computer in a sync chain
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::DeleteBookmarkUiWork s_local_object_id=<" << s_local_object_id << ">";
   DCHECK(!s_local_object_id.empty());
   sync_obj_map_->DeleteByLocalId(storage::ObjectMap::Type::Bookmark, s_local_object_id);
@@ -855,23 +878,71 @@ std::unique_ptr<RecordsList> Bookmarks::NativeBookmarksToSyncRecords(
     record->objectData = "bookmark";
 
     std::unique_ptr<jslib::Bookmark> bookmark = std::make_unique<jslib::Bookmark>();
-    bookmark->site.location = node->url().spec();
-    bookmark->site.title = base::UTF16ToUTF8(node->GetTitledUrlNodeTitle());
-    bookmark->site.customTitle = base::UTF16ToUTF8(node->GetTitle());
-    //bookmark->site.lastAccessedTime = ;
-    bookmark->site.creationTime = node->date_added();
-    bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
-    bookmark->isFolder = node->is_folder();
+    FillSyncBookmarkFromNode(bookmark.get(), node);
     bookmark->parentFolderObjectId = parent_folder_object_sync_id;
-    //bookmark->fields = ;
-
-    // 'Show in toolbar' means the node is descendant of 'bookmark bar' node
-    // 'Hide in toolbar means' the node is not a descendant of 'bookmark bar' node
-    bookmark->hideInToolbar = !node->HasAncestor(model_->bookmark_bar_node());
     bookmark->order = node_order;
     record->SetBookmark(std::move(bookmark));
 
-    record->syncTimestamp = base::Time::Now();
+    //record->syncTimestamp, is read-only, set by js sync library
+    records->emplace_back(std::move(record));
+  }
+
+  return records;
+}
+
+std::unique_ptr<RecordsList> Bookmarks::GetSyncRecordsByLocalIds(
+  const std::vector<int64_t> &local_ids, const int &action) {
+  LOG(ERROR) << "TAGAB Bookmarks::GetSyncRecordsByLocalIds:";
+  LOG(ERROR) << "TAGAB local_ids.size()=" << local_ids.size();
+  LOG(ERROR) << "TAGAB action=" << action;
+
+  for (const int64_t &local_id: local_ids) {
+    LOG(ERROR) << "TAGAB local_id=" << local_id;
+  }
+
+  std::unique_ptr<RecordsList> records = std::make_unique<RecordsList>();
+
+  for (const int64_t &local_id: local_ids) {
+    std::unique_ptr<jslib::SyncRecord> record = std::make_unique<jslib::SyncRecord>();
+
+    const std::string object_id = sync_obj_map_->GetObjectIdByLocalId(
+      storage::ObjectMap::Type::Bookmark, std::to_string(local_id));
+
+    DCHECK(!object_id.empty());
+    if (object_id.empty()) {
+      continue;
+    }
+
+    record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
+        brave_sync::jslib::SyncRecord::Action::A_MIN,
+        brave_sync::jslib::SyncRecord::Action::A_MAX,
+        brave_sync::jslib::SyncRecord::Action::A_INVALID);
+
+    record->deviceId = device_id_;
+    record->objectId = object_id;
+    record->objectData = "bookmark";
+
+    std::unique_ptr<jslib::Bookmark> bookmark = std::make_unique<jslib::Bookmark>();
+    const bookmarks::BookmarkNode* node = bookmarks::GetBookmarkNodeByID(model_, local_id);
+    if (node) {
+      std::string node_order = sync_obj_map_->GetOrderByLocalObjectId(
+        storage::ObjectMap::Type::Bookmark, std::to_string(local_id));
+      DCHECK(!node_order.empty());
+
+      std::string parent_folder_object_sync_id;
+      if (node->parent()) {
+        parent_folder_object_sync_id = sync_obj_map_->GetObjectIdByLocalId(
+          storage::ObjectMap::Type::Bookmark, std::to_string(node->parent()->id()));
+      }
+
+      FillSyncBookmarkFromNode(bookmark.get(), node);
+      bookmark->parentFolderObjectId = parent_folder_object_sync_id;
+      bookmark->order = node_order;
+    } else {
+      // For resending not-synced delete it is enough to send action and object id
+    }
+
+    record->SetBookmark(std::move(bookmark));
     records->emplace_back(std::move(record));
   }
 
@@ -1013,6 +1084,7 @@ void Bookmarks::BookmarkNodeRemoved(
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved model="<<model;
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved parent->url().spec()="<<parent->url().spec();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved old_index="<<old_index;
+  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved node->id()="<<node->id();
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved node->url().spec()="<<node->url().spec();
   for (const GURL &url_no_longer_bookmarked : no_longer_bookmarked) {
     LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemoved url_no_longer_bookmarked.spec()="<<url_no_longer_bookmarked.spec();
@@ -1029,26 +1101,29 @@ void Bookmarks::BookmarkNodeRemoved(
 
   client_->CreateUpdateDeleteBookmarks(
     jslib_const::kActionDelete, list, std::map<const bookmarks::BookmarkNode*,
-    std::string>(), false, false);
+    std::string>(), true);
 
-  //=> File task
-  // node can be dead
-  for (auto entry: list) {
-    client_->GetTaskRunner()
-      ->PostTask(FROM_HERE, base::Bind(&Bookmarks::BookmarkNodeRemovedFileWork,
-                                       base::Unretained(this), entry.node_)
-  );
-  }
+  // //=> File task
+  // // node can be dead
+  // for (auto entry: list) {
+  //   client_->GetTaskRunner()
+  //     ->PostTask(FROM_HERE, base::Bind(&Bookmarks::BookmarkNodeRemovedFileWork,
+  //                                      base::Unretained(this), entry.node_)
+  // );
+  // }
 }
 
-void Bookmarks::BookmarkNodeRemovedFileWork(const bookmarks::BookmarkNode* node) {
-  LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemovedFileWork";
-  LOG(ERROR) << "TAGAB node=" << node;
-  LOG(ERROR) << "TAGAB node->url().spec()=" << node->url().spec();
-
-  //=> File task
-  sync_obj_map_->DeleteByLocalId(storage::ObjectMap::Type::Bookmark, base::NumberToString(node->id()));
-}
+// void Bookmarks::BookmarkNodeRemovedFileWork(const bookmarks::BookmarkNode* node) {
+//   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeRemovedFileWork";
+//   LOG(ERROR) << "TAGAB node=" << node;
+//   LOG(ERROR) << "TAGAB node->url().spec()=" << node->url().spec();
+//
+//   // Will not remove object id from object map here, it will be removed for NotSyncedRecordsOperation.DeleteItems, DELETE_RECORD
+//   // in ObjectMap::SaveGetDeleteNotSyncedRecords after confirmation SyncRecord appeared on the backend
+//
+//   //=> File task
+//   //sync_obj_map_->DeleteByLocalId(storage::ObjectMap::Type::Bookmark, base::NumberToString(node->id()));
+// }
 
 void Bookmarks::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* node) {
@@ -1058,7 +1133,7 @@ void Bookmarks::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
   LOG(ERROR) << "TAGAB brave_sync::Bookmarks::BookmarkNodeChanged node->GetTitle()=" << node->GetTitle();
 
   client_->CreateUpdateDeleteBookmarks(jslib_const::kActionUpdate,
-     {InitialBookmarkNodeInfo(node, true)}, std::map<const bookmarks::BookmarkNode*, std::string>(), false, false);
+     {InitialBookmarkNodeInfo(node, true)}, std::map<const bookmarks::BookmarkNode*, std::string>(), true);
 }
 
 void Bookmarks::BookmarkNodeFaviconChanged(bookmarks::BookmarkModel* model,

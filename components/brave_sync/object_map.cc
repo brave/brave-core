@@ -9,12 +9,14 @@
 #include "base/files/file_util.h"
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
 #include "base/threading/thread.h"
 #include "base/threading/thread_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_sync/debug.h"
+#include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/value_debug.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_paths.h"
@@ -343,9 +345,11 @@ void ObjectMap::DeleteByLocalId(const Type &type, const std::string &localId) {
   }
 
   std::string raw_local_id = ComposeRawLocalId(type, localId);
+  LOG(ERROR) << "TAGAB ObjectMap::DeleteByLocalId raw_local_id=" << raw_local_id;
 
   std::string object_id;
   bool got_parsed = GetParsedDataByLocalId(type, localId, &object_id, nullptr, nullptr);
+  LOG(ERROR) << "TAGAB ObjectMap::DeleteByLocalId object_id=" << object_id;
 
   leveldb::Status db_status = level_db_->Delete(leveldb::WriteOptions(), raw_local_id);
   if (!db_status.ok()) {
@@ -357,6 +361,137 @@ void ObjectMap::DeleteByLocalId(const Type &type, const std::string &localId) {
       LOG(ERROR) << "sync level db delete error " << db_status.ToString();
     }
   }
+}
+
+std::set<std::string> ObjectMap::SaveGetDeleteNotSyncedRecords(
+  const Type &type,
+  const std::string &action,
+  const std::vector<std::string> &local_ids,
+  const NotSyncedRecordsOperation &operation) {
+  // recordType: "BOOKMARKS" | "HISTORY_SITES" | "PREFERENCES"
+  // action: "0" | "1" | "2"
+  std::string recordType;
+  switch(type) {
+    case Bookmark:
+      recordType = "BOOKMARKS";
+      break;
+    case History:
+      recordType = "HISTORY_SITES";
+      break;
+    default:
+      NOTREACHED();
+  }
+
+  LOG(ERROR) << "TAGAB: ObjectMap::SaveGetDeleteNotSyncedRecords";
+  LOG(ERROR) << "TAGAB: type=" << ToString(type);
+  LOG(ERROR) << "TAGAB: action=" << action;
+  LOG(ERROR) << "TAGAB: operation=" << ToString(operation);
+  LOG(ERROR) << "TAGAB: local_ids=";
+  for (const auto &id : local_ids) {
+    LOG(ERROR) << "TAGAB:     id="<<id;
+  }
+
+  std::string key = recordType + action;
+  std::set<std::string> existing_list = GetNotSyncedRecords(key);
+  LOG(ERROR) << "TAGAB: existing_list=";
+  for (const auto &id : existing_list) {
+    LOG(ERROR) << "TAGAB:     id="<<id;
+  }
+
+  if (operation == GetItems) {
+    return existing_list;
+  } else if (operation == AddItems) {
+    for (const auto & id: local_ids) {
+      existing_list.insert(id);
+    }
+  } else if (operation == DeleteItems) {
+    bool list_changed = false;
+    bool clear_local_db = (action == jslib_const::DELETE_RECORD); // "2"
+    for (const auto & id: local_ids) {
+      size_t items_removed = existing_list.erase(id);
+      if (!list_changed) {
+        list_changed = (items_removed != 0);
+      }
+      // Delete corresponding objectIds
+      if (clear_local_db) {
+        DeleteByLocalId(type, id);
+      }
+    }
+  } else {
+    NOTREACHED();
+  }
+
+  SaveNotSyncedRecords(key, existing_list);
+
+  return std::set<std::string>();
+}
+
+std::set<std::string> ObjectMap::GetNotSyncedRecords(const std::string &key) {
+  std::string raw = GetRawJsonByLocalId(key);
+  LOG(ERROR) << "TAGAB ObjectMap::GetNotSyncedRecords: key="<<key;
+  LOG(ERROR) << "TAGAB ObjectMap::GetNotSyncedRecords: raw="<<raw;
+  std::set<std::string> list = DeserializeList(raw);
+  LOG(ERROR) << "TAGAB ObjectMap::GetNotSyncedRecords: list.size()="<<list.size();
+  return list;
+}
+
+void ObjectMap::SaveNotSyncedRecords(const std::string &key, const std::set<std::string> &existing_list) {
+  LOG(ERROR) << "TAGAB ObjectMap::SaveNotSyncedRecords: key="<<key;
+  LOG(ERROR) << "TAGAB ObjectMap::SaveNotSyncedRecords: existing_list.size()="<<existing_list.size();
+  std::string raw = SerializeList(existing_list);
+  LOG(ERROR) << "TAGAB ObjectMap::SaveNotSyncedRecords: raw="<<raw;
+  SaveObjectIdRawJson(key, raw, std::string());
+}
+
+std::set<std::string> ObjectMap::DeserializeList(const std::string &raw) {
+  // Parse JSON
+  int error_code_out = 0;
+  std::string error_msg_out;
+  int error_line_out = 0;
+  int error_column_out = 0;
+  std::unique_ptr<base::Value> list = base::JSONReader::ReadAndReturnError(
+    raw,
+    base::JSONParserOptions::JSON_PARSE_RFC,
+    &error_code_out,
+    &error_msg_out,
+    &error_line_out,
+    &error_column_out);
+
+  LOG(ERROR) << "TAGAB ObjectMap::DeserializeList: val.get()="<<list.get();
+  LOG(ERROR) << "TAGAB ObjectMap::DeserializeList: error_msg_out="<<error_msg_out;
+
+  if (!list) {
+    return std::set<std::string>();
+  }
+
+  std::set<std::string> ret;
+  DCHECK(list->is_list());
+
+  for (const auto &val : list->GetList() ) {
+    ret.insert(val.GetString());
+  }
+
+  return ret;
+}
+
+std::string ObjectMap::SerializeList(const std::set<std::string> &existing_list) {
+  LOG(ERROR) << "TAGAB ObjectMap::SerializeList: existing_list.size()="<<existing_list.size();
+  using base::Value;
+  auto list = std::make_unique<Value>(Value::Type::LIST);
+  for (const auto & item: existing_list) {
+    list->GetList().push_back(base::Value(item));
+  }
+
+  std::string json;
+  bool result = base::JSONWriter::WriteWithOptions(
+    *list,
+    0,
+    &json);
+
+  LOG(ERROR) << "TAGAB ObjectMap::SerializeList: result="<<result;
+  LOG(ERROR) << "TAGAB ObjectMap::SerializeList: json="<<json;
+  DCHECK(result);
+  return json;
 }
 
 void ObjectMap::Close() {
@@ -432,6 +567,38 @@ std::string ObjectMap::ComposeRawLocalId(const ObjectMap::Type &type, const std:
     break;
     case History:
       return 'h' + localId;
+    break;
+    default:
+      NOTREACHED();
+  }
+}
+
+std::string ObjectMap::ToString(const Type &type) {
+  switch (type) {
+    case Unset:
+      return "Unset";
+    break;
+    case Bookmark:
+      return "Bookmark";
+    break;
+    case History:
+      return "History";
+    break;
+    default:
+      NOTREACHED();
+  }
+}
+
+std::string ObjectMap::ToString(const NotSyncedRecordsOperation &operation) {
+  switch (operation) {
+    case GetItems:
+      return "GetItems";
+    break;
+    case AddItems:
+      return "AddItems";
+    break;
+    case DeleteItems:
+      return "DeleteItems";
     break;
     default:
       NOTREACHED();
