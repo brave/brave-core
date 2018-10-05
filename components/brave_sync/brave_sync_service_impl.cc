@@ -576,6 +576,9 @@ SyncRecordAndExistingList BraveSyncServiceImpl::PrepareResolvedResponse(
   const RecordsList &records) {
   SyncRecordAndExistingList resolvedResponse;
 
+  // <local id, action>
+  std::vector<std::tuple<std::string, int>> seen_records;
+
   for (const SyncRecordPtr &record : records ) {
     SyncRecordAndExistingPtr resolved_record = std::make_unique<SyncRecordAndExisting>();
     resolved_record->first = jslib::SyncRecord::Clone(*record);
@@ -590,7 +593,15 @@ SyncRecordAndExistingList BraveSyncServiceImpl::PrepareResolvedResponse(
       LOG(ERROR) << "TAGAB PRR record->GetBookmark().site.title=" << record->GetBookmark().site.title;
       LOG(ERROR) << "TAGAB PRR record->GetBookmark().site.location=" << record->GetBookmark().site.location;
       LOG(ERROR) << "TAGAB PRR record->GetBookmark().order=<" << record->GetBookmark().order << ">";
-      resolved_record->second = bookmarks_->GetResolvedBookmarkValue(object_id/*, record->GetBookmark().order*/, record->action);
+
+      std::string local_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::Bookmark, object_id);
+      if (!local_id.empty()) {
+        LOG(ERROR) << "TAGAB PRR insert into seen_records local_id=" << local_id << " action=" << record->action;
+        seen_records.push_back(std::make_tuple(local_id, record->action));
+        //TODO, AB: move local_id into bookmarks_->GetResolvedBookmarkValue arg?
+      }
+
+      resolved_record->second = bookmarks_->GetResolvedBookmarkValue(object_id, record->action);
       LOG(ERROR) << "TAGAB PRR resolved_record->second.get()=" << resolved_record->second.get();
       if (resolved_record->second.get()) {
         LOG(ERROR) << "TAGAB PRR objectData=" << resolved_record->second->objectData;
@@ -616,7 +627,14 @@ SyncRecordAndExistingList BraveSyncServiceImpl::PrepareResolvedResponse(
     resolvedResponse.emplace_back(std::move(resolved_record));
   }
 
+  // Remove seen records from NotSyncedRecords
+  if (category_name == jslib_const::kBookmarks) {
+    LOG(ERROR) << "TAGAB PRR will call RemoveFromNotSyncedBookmarks";
+    RemoveFromNotSyncedBookmarks(seen_records);
+  }
+
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse_ -----------------------------";
+
   return resolvedResponse;
 }
 
@@ -647,7 +665,7 @@ void BraveSyncServiceImpl::SendResolveSyncRecords(const std::string &category_na
 
 void BraveSyncServiceImpl::OnResolvedSyncRecords(const std::string &category_name,
   std::unique_ptr<RecordsList> records) {
-  LOG(ERROR) << "TAGAB OnResolvedSyncRecords records->size()" << records->size();
+  LOG(ERROR) << "TAGAB OnResolvedSyncRecords records->size()=" << records->size();
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   // Jump to thread allowed perform file operations
@@ -668,6 +686,9 @@ void BraveSyncServiceImpl::OnResolvedSyncRecordsFileWork(const std::string &cate
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
     OnResolvedHistorySites(*records.get());
   }
+
+  LOG(ERROR) << "TAGAB OnResolvedSyncRecordsFileWork will call SendNonSyncedRecords";
+  SendNonSyncedRecords();
 }
 
 void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList &records) {
@@ -743,9 +764,13 @@ void BraveSyncServiceImpl::OnResolvedBookmarks(const RecordsList &records) {
     }
     // Abnormal cases
     if (sync_record->action == jslib::SyncRecord::Action::DELETE && local_id.empty()) {
-      DCHECK(false) << "TAGAB received request to delete bookmark which we don't have";
+      LOG(ERROR) << "TAGAB received request to delete bookmark which we don't have";
+      //DCHECK(false) << "TAGAB received request to delete bookmark which we don't have";
+      // ^ saw this while testing not-synced records on delete records on acceptor side
     } else if (sync_record->action == jslib::SyncRecord::Action::CREATE && !local_id.empty()) {
-      DCHECK(false) << "TAGAB received request to create bookmark which already exists";
+      LOG(ERROR) << "TAGAB received request to create bookmark which already exists";
+      //DCHECK(false) << "TAGAB received request to create bookmark which already exists";
+      // ^ saw this case when forced start_at  on "fetch-sync-records" to a const time
     } else if (sync_record->action == jslib::SyncRecord::Action::UPDATE && local_id.empty()) {
       DCHECK(false) << "TAGAB received request to update bookmark which we don't have";
     }
@@ -839,8 +864,9 @@ void BraveSyncServiceImpl::OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t 
   }
 
   DCHECK(bookmarks_);
+  const std::vector<InitialBookmarkNodeInfo> list = {InitialBookmarkNodeInfo(node, true)};
   std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(
-    {InitialBookmarkNodeInfo(node, true)},
+    list,
     std::map<const bookmarks::BookmarkNode*, std::string>(),
     action //jslib_const::kActionUpdate
   );
@@ -849,6 +875,8 @@ void BraveSyncServiceImpl::OnSaveBookmarkOrderOrNodeAddedFileWork(const int64_t 
   LOG(ERROR) << "TAGAB records->size()=" << records->size();
   DCHECK(records->size() == 1);
 
+  LOG(ERROR) << "TAGAB OnSaveBookmarkOrderOrNodeAddedFileWork will call AddToNotSyncedBookmarks";
+  AddToNotSyncedBookmarks(action, list);
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, *records);
 }
 
@@ -932,7 +960,11 @@ void BraveSyncServiceImpl::RequestSyncData() {
     //SendAllLocalHistorySites();
   }
 
-  FetchSyncRecords(bookmarks, history, preferences, start_at, max_records);
+  //LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: forcing start_at to 0";
+  FetchSyncRecords(bookmarks, history, preferences,
+    start_at,
+    //0,
+    max_records);
 }
 
 void BraveSyncServiceImpl::FetchSyncRecords(const bool &bookmarks,
@@ -1020,15 +1052,6 @@ void BraveSyncServiceImpl::SendDeviceSyncRecord(const int &action,
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_PREFERENCES, *records);
 }
 
-std::vector<std::string> BraveSyncServiceImpl::SaveGetDeleteNotSyncedRecords(
-  const std::string &recordType, const std::string &action,
-  const std::vector<std::string> &ids,
-  NotSyncedRecordsOperation operation) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SaveGetDeleteNotSyncedRecords, early quit";
-  return std::vector<std::string>();
-  // java SaveGetDeleteNotSyncedRecords
-}
-
 void BraveSyncServiceImpl::SendAllLocalBookmarks() {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SendAllLocalBookmarks";
   static const int SEND_RECORDS_COUNT_LIMIT = 1000;
@@ -1039,7 +1062,7 @@ void BraveSyncServiceImpl::SendAllLocalBookmarks() {
   for(size_t i = 0; i < localBookmarks.size(); i += SEND_RECORDS_COUNT_LIMIT) {
     size_t sub_list_last = std::min(localBookmarks.size(), i + SEND_RECORDS_COUNT_LIMIT);
     std::vector<InitialBookmarkNodeInfo> sub_list(localBookmarks.begin()+i, localBookmarks.begin()+sub_list_last);
-    CreateUpdateDeleteBookmarks(jslib_const::kActionCreate, sub_list, order_map, true, true);
+    CreateUpdateDeleteBookmarks(jslib_const::kActionCreate, sub_list, order_map, true);
   }
 }
 
@@ -1047,8 +1070,7 @@ void BraveSyncServiceImpl::CreateUpdateDeleteBookmarks(
   const int &action,
   const std::vector<InitialBookmarkNodeInfo> &list,
   const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
-  const bool &addIdsToNotSynced,
-  const bool &isInitialSync) {
+  const bool &addIdsToNotSynced) {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::CreateUpdateDeleteBookmarks";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -1067,20 +1089,23 @@ void BraveSyncServiceImpl::CreateUpdateDeleteBookmarks(
                action,
                list,
                order_map,
-               addIdsToNotSynced,
-               isInitialSync));
+               addIdsToNotSynced));
 }
 
 void BraveSyncServiceImpl::CreateUpdateDeleteBookmarksFileWork(
   const int &action,
   const std::vector<InitialBookmarkNodeInfo> &list,
   const std::map<const bookmarks::BookmarkNode*, std::string> &order_map,
-  const bool &addIdsToNotSynced,
-  const bool &isInitialSync) {
+  const bool &addIdsToNotSynced) {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::CreateUpdateDeleteBookmarksFileWork";
+  LOG(ERROR) << "TAGAB addIdsToNotSynced=" << addIdsToNotSynced;
 
   DCHECK(sync_client_);
   std::unique_ptr<RecordsList> records = bookmarks_->NativeBookmarksToSyncRecords(list, order_map, action);
+  if (addIdsToNotSynced) {
+    LOG(ERROR) << "TAGAB CreateUpdateDeleteBookmarksFileWork will call AddToNotSyncedBookmarks";
+    AddToNotSyncedBookmarks(action, list);
+  }
   sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, *records);
 }
 
@@ -1339,6 +1364,143 @@ void BraveSyncServiceImpl::TriggerOnSyncStateChanged() {
 void BraveSyncServiceImpl::TriggerOnHaveSyncWords(const std::string &sync_words) {
   for (auto& observer : observers_)
     observer.OnHaveSyncWords(this, sync_words);
+}
+
+namespace {
+  std::string SyncRecordActionToStringAction(const int &action) {
+    std::string s_action;
+    using jslib::SyncRecord;
+    switch(action) {
+      case SyncRecord::CREATE:
+        s_action = jslib_const::CREATE_RECORD;
+      break;
+      case SyncRecord::UPDATE:
+        s_action = jslib_const::UPDATE_RECORD;
+      break;
+      case SyncRecord::DELETE:
+        s_action = jslib_const::DELETE_RECORD;
+      break;
+      default:
+        NOTREACHED();
+    }
+    return s_action;
+  }
+} // namespace
+
+void BraveSyncServiceImpl::SendNonSyncedRecords() {
+  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::SendNonSyncedRecords";
+  attempts_before_send_not_synced_records_--;
+  LOG(ERROR) << "TAGAB attempts_before_send_not_synced_records_="<<attempts_before_send_not_synced_records_;
+
+  if (attempts_before_send_not_synced_records_ == 0) {
+    LOG(ERROR) << "TAGAB do actual send";
+    attempts_before_send_not_synced_records_ = ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS;
+    SendNonSyncedBookmarks(jslib::SyncRecord::Action::CREATE);
+    SendNonSyncedBookmarks(jslib::SyncRecord::Action::UPDATE);
+    SendNonSyncedBookmarks(jslib::SyncRecord::Action::DELETE);
+  } else {
+    LOG(ERROR) << "TAGAB skip send";
+  }
+}
+
+void BraveSyncServiceImpl::SendNonSyncedBookmarks(const int &action) {
+  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::SendNonSyncedBookmarks action=" << action;
+
+  std::set<std::string> s_local_ids = GetNotSyncedBookmarks(action);
+  for (const auto & s : s_local_ids) {
+    LOG(ERROR) << "TAGAB s_id="<<s;
+  }
+
+  std::vector<int64_t> local_ids;
+  for (const auto &s : s_local_ids) {
+    int64_t output = -1;
+    if (base::StringToInt64(s, &output) && output != -1) {
+      local_ids.push_back(output);
+    }
+  }
+
+  for(const auto &id: local_ids) {
+    LOG(ERROR) << "TAGAB i_id="<<id;
+  }
+
+  std::unique_ptr<RecordsList> records = bookmarks_->GetSyncRecordsByLocalIds(local_ids, action);
+  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::SendNonSyncedBookmarks have to send records->size()=" << records->size();
+
+  sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, *records);
+}
+
+void BraveSyncServiceImpl::AddToNotSyncedBookmarks(int action, const std::vector<InitialBookmarkNodeInfo> &list) {
+  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::AddToNotSyncedBookmarks";
+  LOG(ERROR) << "TAGAB action=" << action;
+  LOG(ERROR) << "TAGAB list.size()=" << list.size();
+  for (const auto & info : list) {
+    LOG(ERROR) << "TAGAB info.node_->id()=" << info.node_->id();
+  }
+
+  std::string s_action = SyncRecordActionToStringAction(action);
+  if (s_action.empty()) {
+    return;
+  }
+
+  std::vector<std::string> ids;
+  for (const auto & info : list) {
+    if (info.should_send_) {
+      ids.push_back(std::to_string(info.node_->id()));
+    }
+  }
+
+  sync_obj_map_->SaveGetDeleteNotSyncedRecords(
+    storage::ObjectMap::Type::Bookmark,
+    s_action,
+    ids,
+    storage::ObjectMap::NotSyncedRecordsOperation::AddItems);
+}
+
+void BraveSyncServiceImpl::RemoveFromNotSyncedBookmarks(const std::vector<std::tuple<std::string, int>> &seen_records) {
+  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::RemoveFromNotSyncedBookmarks";
+  LOG(ERROR) << "TAGAB seen_records.size()=" << seen_records.size();
+  for (const auto & seen_record : seen_records) {
+    LOG(ERROR) << "TAGAB id=" << std::get<0>(seen_record);
+    LOG(ERROR) << "TAGAB action=" << std::get<1>(seen_record);
+  }
+
+  // Arrange action -> [ids]
+  std::map<int, std::vector<std::string>> arranged;
+  for (const auto & seen_record : seen_records) {
+    arranged[std::get<1>(seen_record)].push_back(std::get<0>(seen_record));
+  }
+
+  for (const auto & arranged_pair : arranged) {
+    std::string s_action = SyncRecordActionToStringAction(arranged_pair.first);
+    if (s_action.empty()) {
+      continue;
+    }
+
+    sync_obj_map_->SaveGetDeleteNotSyncedRecords(
+      storage::ObjectMap::Type::Bookmark,
+      s_action,
+      arranged_pair.second,
+      storage::ObjectMap::NotSyncedRecordsOperation::DeleteItems);
+  }
+}
+
+std::set<std::string> BraveSyncServiceImpl::GetNotSyncedBookmarks(const int &action) {
+  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::GetNotSyncedBookmarks action="<<action;
+
+  const std::string saction = SyncRecordActionToStringAction(action);
+
+  std::set<std::string> local_ids_per_action = sync_obj_map_->SaveGetDeleteNotSyncedRecords(
+    storage::ObjectMap::Type::Bookmark,
+    saction,
+    std::vector<std::string>(),
+    storage::ObjectMap::NotSyncedRecordsOperation::GetItems);
+
+  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::GetNotSyncedBookmarks local_ids_per_action.size()="<<local_ids_per_action.size();
+  for (const std::string &id: local_ids_per_action) {
+    LOG(ERROR) << "TAGAB id=" << id;
+  }
+
+  return local_ids_per_action;
 }
 
 } // namespace brave_sync
