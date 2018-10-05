@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.h b/chrome/browser/ui/views/profiles/profile_chooser_view.h
-index d9214627c0a5aff53879d4bbb0a483ba2d350d4b..b2951b4555ce43a2c3d1c1830777ccb5e0ca1f4a 100644
+index 15aec59e78e93a8847cf1024069afebabd3031de..fa43886e84a06850c224abb112472e97aa8fab36 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.h
 @@ -72,6 +72,7 @@ class ProfileChooserView : public content::WebContentsDelegate,

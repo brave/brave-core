@@ -839,7 +839,6 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="6845038076637626672">Maksimer ved åpning</translation>
 <translation id="6860427144121307915">Åpne i en fane</translation>
 <translation id="3074037959626057712">Du har logget på og slått på synkronisering</translation>
-<translation id="6264422956566238156">Du har slått på synkronisering</translation>
 <translation id="9125982323641182972">Få Brave Softwares smarte funksjoner i Brave</translation>
 <translation id="7988117629517051942">Få flere smarte funksjoner fra Brave Software</translation>
 <translation id="5596627076506792578">Flere alternativer</translation>
@@ -1625,7 +1624,6 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="784934925303690534">Tidsperiode</translation>
 <translation id="2496180316473517155">Nettlesingslogg</translation>
 <translation id="8662811608048051533">Logger deg av de fleste nettsteder.</translation>
-<translation id="8218628800671693884">Logger deg av de fleste nettsteder. Du blir ikke logget av Brave Software-kontoen din.</translation>
 <translation id="2017836877785168846">Tømmer loggen og fjerner automatiske fullføringer fra adressefeltet.</translation>
 <translation id="8096327394278038498">Tømmer loggen og fjerner autofullføringer i adressefeltet. Det kan hende Brave Software-kontoen din har andre typer nettlesingslogger på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Tømmer loggen på alle påloggede enheter. Det kan hende Brave Software-kontoen din har andre typer nettlesingslogger på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="7754704193130578113">Spør før nedlasting hvor hver fil skal lagres</translation>
 <translation id="5713072761819014678">Koble fra Brave Software Disk-kontoen.</translation>
 <translation id="486635084936119914">Åpne visse filtyper automatisk når de lastes ned</translation>
+<translation id="3653160965917900914">Fildelinger på nettverket</translation>
+<translation id="5763315388120433852">Konfigurer eller administrer fildelinger på nettverket.</translation>
 <translation id="2367199180085172140">Legg til fildeling</translation>
+<translation id="247051149076336810">Nettadresse for fildeling</translation>
 <translation id="5247051749037287028">Visningsnavn (valgfritt)</translation>
 <translation id="6091761513005122595">Delingen er aktivert.</translation>
 <translation id="9024158959543687197">Feil ved aktivering av deling. Sjekk nettadressen for fildeling og prøv igjen.</translation>

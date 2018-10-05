@@ -840,7 +840,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6845038076637626672">Atidaryti padidintą</translation>
 <translation id="6860427144121307915">Atidaryti skirtuko lape</translation>
 <translation id="3074037959626057712">Prisijungėte ir įjungėte sinchronizavimą</translation>
-<translation id="6264422956566238156">Įjungėt sinchronizavimą</translation>
 <translation id="9125982323641182972">„Brave Software“ išm. funkc. „Brave“</translation>
 <translation id="7988117629517051942">Gaukite daugiau „Brave Software“ išmaniųjų funkcijų</translation>
 <translation id="5596627076506792578">Daugiau parinkčių</translation>
@@ -1626,7 +1625,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="784934925303690534">Laikotarpis</translation>
 <translation id="2496180316473517155">Naršymo istorija</translation>
 <translation id="8662811608048051533">Būsite atjungti nuo daugelio svetainių.</translation>
-<translation id="8218628800671693884">Būsite atjungti nuo daugelio svetainių. Nebūsite atjungti nuo „Brave Software“ paskyros.</translation>
 <translation id="2017836877785168846">Išvaloma istorija ir automatiniai užbaigimai adreso juostoje.</translation>
 <translation id="8096327394278038498">Išvaloma istorija ir automatiniai užbaigimai adreso juostoje. „Brave Software“ paskyroje gali būti kito tipo naršymo istorijos, kuri pasiekiama adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Išvaloma visų įrenginių, prie kurių prisijungta, istorija. „Brave Software“ paskyroje gali būti kito tipo naršymo istorijos, kuri pasiekiama adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1693,7 +1691,10 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7754704193130578113">Prieš atsiunčiant failą klausti, kur jį išsaugoti</translation>
 <translation id="5713072761819014678">Atjungti „Brave Software“ disko paskyrą</translation>
 <translation id="486635084936119914">Automatiškai atidaryti tam tikrų tipų failus, kai jie atsisiunčiami</translation>
+<translation id="3653160965917900914">Tinklo failų bendrinimas</translation>
+<translation id="5763315388120433852">Nustatykite arba tvarkykite tinklo failų bendrinimą.</translation>
 <translation id="2367199180085172140">Nustatyti failo bendrinimą</translation>
+<translation id="247051149076336810">Failo bendrinimo URL</translation>
 <translation id="5247051749037287028">Rodomas pavadinimas (neprivaloma)</translation>
 <translation id="6091761513005122595">Bendrinamas objektas įdėtas sėkmingai.</translation>
 <translation id="9024158959543687197">Klaida įdedant bendrinamą objektą. Patikrinkite failo bendrinamo objekto URL ir bandykite dar kartą.</translation>
@@ -1701,6 +1702,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2148219725039824548">Klaida įdedant bendrinamą objektą. Nurodytas bendrinamas objektas nerastas tinkle.</translation>
 <translation id="7234406375359457793">Klaida įdedant bendrinamą objektą. Nurodytas bendrinamas objektas nepalaikomas.</translation>
 <translation id="706626672220389329">Klaida įdedant bendrinamą objektą. Nurodytas bendrinamas objektas jau įdėtas.</translation>
+<translation id="5985458664595100876">Netinkamas URL formatas. Palaikomi formatai yra „\\server\share“ ir „smb://server/share“.</translation>
 <translation id="3101709781009526431">Data ir laikas</translation>
 <translation id="2059913712424898428">Laiko juosta</translation>
 <translation id="4547672827276975204">Nustatyti automatiškai</translation>

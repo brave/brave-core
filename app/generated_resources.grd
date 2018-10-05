@@ -6435,7 +6435,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         You've signed in and turned on Sync
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Dice is enabled">
-        You've turned on Sync
+        Turn on sync?
       </message>
       <message name="IDS_SYNC_CONFIRMATION_UNITY_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Unity is enabled">
         Get Brave smarts in Brave
@@ -6505,14 +6505,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SYNC_CONFIRMATION_DICE_SYNC_SETTINGS_DESCRIPTION" desc="Body of the personalize services section of the sync confirmation dialog in the tab modal signin flow for child accounts">
         Brave may use content on sites you visit, plus browser activity and interactions, to personalize Brave and other Brave services like Translate, Search, and ads. You can customize this in Settings.
       </message>
-      <message name="IDS_SYNC_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
-        Ok, got it
-      </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the sync confirmation dialog of the tab modal signin flow">
         Yes, I'm in
-      </message>
-      <message name="IDS_SYNC_CONFIRMATION_UNDO_BUTTON_LABEL" desc="Label of the undo button in the sync confirmation dialog of the tab modal signin flow">
-        Undo
       </message>
       <message name="IDS_SYNC_CONFIRMATION_DICE_SETTINGS_BUTTON_LABEL" desc="Label of the button in the sync confirmation dialog of the tab modal signin flow to open settings">
         Settings

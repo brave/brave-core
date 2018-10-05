@@ -842,7 +842,6 @@ nil</translation>
 <translation id="6845038076637626672">ሰፍቶ ክፈት</translation>
 <translation id="6860427144121307915">በትር ውስጥ ክፈት</translation>
 <translation id="3074037959626057712">በመለያ ገብተው ስምረትን አብርተዋል</translation>
-<translation id="6264422956566238156">ስምረትን አብርተዋል</translation>
 <translation id="9125982323641182972">Brave Software ዘመናዊ ነገሮችን በBrave ላይ ያግኙ</translation>
 <translation id="7988117629517051942">ተጨማሪ Brave Software ዘመናዊ ነገሮችን ያግኙ</translation>
 <translation id="5596627076506792578">ተጨማሪ አማራጮች</translation>
@@ -1628,7 +1627,6 @@ nil</translation>
 <translation id="784934925303690534">የጊዜ ወሰን</translation>
 <translation id="2496180316473517155">ታሪክ አሰሳ</translation>
 <translation id="8662811608048051533">ከአብዛኛዎቹ ጣቢያዎች ዘግተው እንዲወጡ ያደርገዎታል።</translation>
-<translation id="8218628800671693884">ከአብዛኛዎቹ ጣቢያዎች ዘግተው ያስወጣዎታል። ከእርስዎ የBrave Software መለያ ዘግተው እንዲወጡ አይደረጉም።</translation>
 <translation id="2017836877785168846">በአድራሻ አሞሌው ውስጥ ታሪክን እና ራስ-ሰር ማጠናቀቆችን ያጸዳል።</translation>
 <translation id="8096327394278038498">በአድራሻ አሞሌው ላይ ታሪክን እና ራስ-ማጠናቀቆችን ያጸዳል። የእርስዎ Brave Software መለያ <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> ላይ ሌሎች የአሰሳ ታሪክ አይነቶች ሊኖሩት ይችላል።</translation>
 <translation id="8122693181154564064">ታሪክን በመለያ ከገቡ ሁሉም መሣሪያዎች ላይ ያጸዳል። የእርስዎ Brave Software መለያ <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> ላይ ሌሎች የአሰሳ ታሪክ ዓይነቶች ሊኖረው ይችላል</translation>
@@ -1695,7 +1693,10 @@ nil</translation>
 <translation id="7754704193130578113">እያንዳንዱ ፋይል ከመውረዱ በፊት የት እንደሚቀመጥ ጠይቅ</translation>
 <translation id="5713072761819014678">የBrave Software Drive መለያን አላቅቅ</translation>
 <translation id="486635084936119914">ካወረዱ በኋላ የተወሰኑ የፋይል አይነቶችን ክፈት</translation>
+<translation id="3653160965917900914">የአውታረ መረብ ፋይል ማጋራቶች</translation>
+<translation id="5763315388120433852">የአውታረ መረብ ፋይል ማጋራቶችን ያዋቅሩ ወይም ያቀናብሩ።</translation>
 <translation id="2367199180085172140">ፋይል አጋራን ያክሉ</translation>
+<translation id="247051149076336810">የፋይል ማጋራት ዩአርኤል</translation>
 <translation id="5247051749037287028">የማሳያ ስም (ከተፈለገ)</translation>
 <translation id="6091761513005122595">አጋራ በተሳካ ሁኔታ ተፈናጥጧል።</translation>
 <translation id="9024158959543687197">ማጋራትን ማፈናጠጥ ላይ ስህተት። የፋይል አጋራ ዩአርኤሉን ይፈትሹትና እንደገና ይሞክሩ።</translation>
@@ -1703,6 +1704,7 @@ nil</translation>
 <translation id="2148219725039824548">ማጋራትን ማፈናጠጥ ላይ ስህተት። የተገለጸው ማጋራት በአውታረ መረቡ ላይ አልተገኘም።</translation>
 <translation id="7234406375359457793">ማፈናጠጥ ላይ ስህተት። የተገለጸው ማጋራት የሚደገፍ አይደለም።</translation>
 <translation id="706626672220389329">ማጋራትን ማፈናጠጥ ላይ ስህተት። የተገለጸው ማጋራት አስቀድሞ ተፈናጥጧል።</translation>
+<translation id="5985458664595100876">ልክ ያልሆነ የዩአርኤል ቅርጸት። የሚደገፉ ቅርጸቶች \\server\share እና smb://server/share ናቸው።</translation>
 <translation id="3101709781009526431">ቀን እና ሰዓት</translation>
 <translation id="2059913712424898428">የሰዓት ሰቅ</translation>
 <translation id="4547672827276975204">በራስ-ሰር አቀናብር</translation>

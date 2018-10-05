@@ -833,7 +833,6 @@
 <translation id="6845038076637626672">મહત્તમ ખોલો</translation>
 <translation id="6860427144121307915">એક ટેબમાં ખોલો</translation>
 <translation id="3074037959626057712">તમે સાઇન ઇન કરેલું છે અને સિંક ચાલુ કરેલ છે</translation>
-<translation id="6264422956566238156">તમે સિંક ચાલુ કર્યું છે</translation>
 <translation id="9125982323641182972">Braveમાં Brave Software સ્માર્ટ મેળવો</translation>
 <translation id="7988117629517051942">વધુ Brave Software સ્માર્ટ મેળવો</translation>
 <translation id="5596627076506792578">વધુ વિકલ્પો</translation>
@@ -1619,7 +1618,6 @@
 <translation id="784934925303690534">સમય શ્રેણી</translation>
 <translation id="2496180316473517155">બ્રાઉઝિંગ ઇતિહાસ</translation>
 <translation id="8662811608048051533">તમને મોટાભાગની સાઇટોમાંથી સાઇન આઉટ કરે છે.</translation>
-<translation id="8218628800671693884">તમને મોટાભાગની સાઇટોમાંથી સાઇન આઉટ કરે છે. તમે તમારા Brave Software એકાઉન્ટમાંથી સાઇન આઉટ નહીં થાઓ.</translation>
 <translation id="2017836877785168846">ઍડ્રેસ બારમાં ઇતિહાસ અને સ્વતઃપૂર્ણ કરવું સાફ કરો.</translation>
 <translation id="8096327394278038498">ઍડ્રેસ બારમાં ઇતિહાસ અને આપમેળે પૂર્ણતા સાફ કરે છે. તમારા Brave Software એકાઉન્ટમાં <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> પર બ્રાઉઝિંગ ઇતિહાસના અન્ય સ્વરૂપો હોઈ શકે છે.</translation>
 <translation id="8122693181154564064">બધા સાઇન ઇન કરેલ ઉપકરણોમાંથી ઇતિહાસ સાફ કરે છે. તમારા Brave Software એકાઉન્ટમાં <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> પર બ્રાઉઝિંગ ઇતિહાસના અન્ય સ્વરૂપો હોઈ શકે છે.</translation>
@@ -1686,7 +1684,10 @@
 <translation id="7754704193130578113">ડાઉનલોડ કરતાં પહેલાં પ્રત્યેક ફાઇલને ક્યાં સાચવવી છે તે જણાવો</translation>
 <translation id="5713072761819014678">Brave Software ડ્રાઇવ એકાઉન્ટ ડિસ્કનેક્ટ કરો</translation>
 <translation id="486635084936119914">ડાઉનલોડ કર્યા પછી કેટલાક ફાઇલ પ્રકારોને આપમેળે ખોલો</translation>
+<translation id="3653160965917900914">નેટવર્ક ફાઇલ શેર</translation>
+<translation id="5763315388120433852">નેટવર્ક ફાઇલ શેર સેટઅપ કરો અથવા મેનેજ કરો.</translation>
 <translation id="2367199180085172140">ફાઇલ શેર ઉમેરો</translation>
+<translation id="247051149076336810">ફાઇલ શેર URL</translation>
 <translation id="5247051749037287028">ડિસ્પ્લે નામ (વૈકલ્પિક)</translation>
 <translation id="6091761513005122595">શેર સફળતાપૂર્વક માઉન્ટ થયું.</translation>
 <translation id="9024158959543687197">શેર માઉન્ટ કરવામાં ભૂલ આવી. શેર કરેલ ફાઇલ URL ચેક કરો અને ફરી પ્રયાસ કરો.</translation>
@@ -1694,6 +1695,7 @@
 <translation id="2148219725039824548">શેર માઉન્ટ કરવામાં ભૂલ આવી. નેટવર્ક પર ઉલ્લેખિત શેર મળ્યું નથી.</translation>
 <translation id="7234406375359457793">શેર માઉન્ટ કરવામાં ભૂલ આવી. ઉલ્લેખિત શેર સમર્થિત નથી.</translation>
 <translation id="706626672220389329">શેર માઉન્ટ કરવામાં ભૂલ આવી. ઉલ્લેખિત શેર પહેલેથી જ માઉન્ટ કરેલ છે.</translation>
+<translation id="5985458664595100876">અમાન્ય URL ફોર્મેટ. સમર્થિત ફોર્મેટ \\server\share અને smb://server/share મુજબનું છે.</translation>
 <translation id="3101709781009526431">તારીખ અને સમય</translation>
 <translation id="2059913712424898428">સમય ઝોન</translation>
 <translation id="4547672827276975204">આપમેળે સેટ કરો</translation>

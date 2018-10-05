@@ -838,7 +838,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6845038076637626672">Gemaximaliseerd openen</translation>
 <translation id="6860427144121307915">Openen in een tabblad</translation>
 <translation id="3074037959626057712">Je bent ingelogd en hebt synchronisatie ingeschakeld</translation>
-<translation id="6264422956566238156">Je hebt synchronisatie ingeschakeld</translation>
 <translation id="9125982323641182972">Brave Software-functies in Brave</translation>
 <translation id="7988117629517051942">Gebruik meer slimme Brave Software-functies</translation>
 <translation id="5596627076506792578">Meer opties</translation>
@@ -1624,7 +1623,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="784934925303690534">Periode</translation>
 <translation id="2496180316473517155">Browsegeschiedenis</translation>
 <translation id="8662811608048051533">Hiermee word je uitgelogd van de meeste sites.</translation>
-<translation id="8218628800671693884">Hiermee word je uitgelogd van de meeste sites. Je wordt niet uitgelogd van je Brave Software-account.</translation>
 <translation id="2017836877785168846">Wist de geschiedenis en automatische aanvullingen in de adresbalk.</translation>
 <translation id="8096327394278038498">Hiermee worden de geschiedenis en automatische aanvullingen voor de adresbalk gewist. Er kunnen andere vormen van browsegeschiedenis zijn opgeslagen voor je Brave Software-account op <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Hiermee wordt de geschiedenis van alle ingelogde apparaten gewist. Er kunnen andere vormen van browsegeschiedenis zijn opgeslagen voor je Brave Software-account op <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1692,7 +1690,10 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7754704193130578113">Voorafgaand aan een download vragen waar een bestand moet worden opgeslagen</translation>
 <translation id="5713072761819014678">Brave Software Drive-account ontkoppelen</translation>
 <translation id="486635084936119914">Bepaalde bestandstypen na downloaden automatisch openen</translation>
+<translation id="3653160965917900914">Fileshares via netwerk</translation>
+<translation id="5763315388120433852">Fileshares via netwerk instellen of beheren.</translation>
 <translation id="2367199180085172140">File Share toevoegen</translation>
+<translation id="247051149076336810">URL voor fileshare</translation>
 <translation id="5247051749037287028">Weergavenaam (optioneel)</translation>
 <translation id="6091761513005122595">Fileshare geactiveerd.</translation>
 <translation id="9024158959543687197">Fout bij het activeren van de fileshare. Controleer de fileshare-URL en probeer het opnieuw.</translation>
@@ -1700,6 +1701,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="2148219725039824548">Fout bij het activeren van de fileshare. De opgegeven fileshare kan niet in het netwerk worden gevonden.</translation>
 <translation id="7234406375359457793">Fout bij het activeren van de fileshare. De opgegeven fileshare wordt niet ondersteund.</translation>
 <translation id="706626672220389329">Fout bij het activeren van de fileshare. De opgegeven fileshare is al geactiveerd.</translation>
+<translation id="5985458664595100876">Ongeldige URL-indeling. Ondersteunde formaten zijn \\server\share en smb://server/share.</translation>
 <translation id="3101709781009526431">Datum en tijd</translation>
 <translation id="2059913712424898428">Tijdzone</translation>
 <translation id="4547672827276975204">Automatisch instellen</translation>
