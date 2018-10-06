@@ -40,7 +40,7 @@ export const StyledSlider = styled<Props, 'label'>('label')`
 `
 
 const transform = (p: Props) => {
-  let x = p.size === 'small' ? '12px' : '16px'
+  let x = p.size === 'small' ? '12px' : '20px'
   let y = p.size === 'small' ? '3px' : '4px'
 
   if (!p.checked) {
@@ -56,10 +56,11 @@ export const StyledBullet = styled<Props, 'label'>('label')`
   box-sizing: border-box;
   position: relative;
   border-radius: 50%;
-  transition: 200ms ease-out;
+  transition: all .4s ease;
   transform: ${p => `translate(${transformBullet(p)})`};
-  width: ${p => p.size === 'small' ? '16px' : '24px'};
-  height: ${p => p.size === 'small' ? '16px' : '24px'};
+  width: ${p => p.size === 'small' ? '16px' : '20px'};
+  height: ${p => p.size === 'small' ? '16px' : '20px'};
   background-color: ${p => p.disabled && 'rgba(235,236,240,0.8)' || p.checked ? '#fb542b' : '#ebecf0'};
   display: block;
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
 `

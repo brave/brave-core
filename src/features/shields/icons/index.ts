@@ -23,6 +23,8 @@ export const ShieldIcon = styled(AlertShieldIcon as ComponentType)`
   box-sizing: border-box;
   width: 48px;
   height: 48px;
+  display: block;
+  margin: auto;
 
   * {
     fill: ${palette.grey600};

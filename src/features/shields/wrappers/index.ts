@@ -39,7 +39,7 @@ export const EnabledText = styled<{}, 'div'>('div')`
 `
 
 export const DisabledText = styled(EnabledText)`
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 2fr 4fr;
   max-width: 90%;
   margin: 10px auto 10px;
 `
