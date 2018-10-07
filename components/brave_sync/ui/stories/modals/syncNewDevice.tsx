@@ -74,7 +74,7 @@ class SyncANewDeviceModal extends React.PureComponent<SyncANewDeviceModalProps, 
                 className='syncButton'
                 level='secondary'
                 type='accent'
-                size='small'
+                size='medium'
                 onClick={this.showQRCode}
                 text={locale.showSecretQRCode}
               />
@@ -90,7 +90,7 @@ class SyncANewDeviceModal extends React.PureComponent<SyncANewDeviceModalProps, 
                 className='syncButton'
                 level='secondary'
                 type='accent'
-                size='small'
+                size='medium'
                 onClick={this.showCodeWords}
                 text={locale.showSecretCodeWords}
               />
@@ -103,7 +103,7 @@ class SyncANewDeviceModal extends React.PureComponent<SyncANewDeviceModalProps, 
         </List>
         <FlexColumn items='center' content='flex-end'>
           <Button
-            level='secondary'
+            level='primary'
             type='accent'
             size='medium'
             onClick={onClose}

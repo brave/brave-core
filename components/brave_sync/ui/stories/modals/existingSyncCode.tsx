@@ -22,7 +22,7 @@ interface ExistingSyncCodeModalProps {
 
 class ExistingSyncCodeModal extends React.PureComponent<ExistingSyncCodeModalProps, {}> {
   get fakeDeviceName () {
-    return 'Your favorite coding OS'
+    return 'Work Computer'
   }
 
   setUpSync = () => {

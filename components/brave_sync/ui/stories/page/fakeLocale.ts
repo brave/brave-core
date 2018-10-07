@@ -19,30 +19,30 @@ const locale = {
   deviceName: 'Device name',
   id: 'id',
   lastActive: 'Last active',
-  syncANewDevice: 'Sync a new device...',
+  syncANewDevice: 'Sync a new device',
   syncData: 'Sync Data',
   syncDataInfo: 'Sync the following data from this device:',
   bookmarks: 'Bookmarks',
   savedSiteSettings: 'Saved Site Settings',
   browsingHistory: 'Browsing History',
   clearData: 'Clear Data',
-  resetSync: 'Reset Sync...',
+  resetSync: 'Reset Sync',
   // i am new to sync modal
-  enterAnOptionalName: 'Enter an optional name for this device',
+  enterAnOptionalName: 'Enter a name for this device',
   setUpSync: 'Set up Sync',
   // i have an existing sync code modal
   enterYourSyncCodeWords: 'Enter your Sync code words:',
-  enterAnOptionalNameForThisDevice: 'Enter an optional name for this device:',
+  enterAnOptionalNameForThisDevice: 'Enter a name for this device:',
   // sync a new device modal
-  syncANewDeviceFirstBulletText: 'Open Brave on your new device and go to Preferences > Sync > "I have an existing synced device."',
-  syncANewDeviceSecondBulletText: 'If it asks you to scan a QR code, click the button below and point your camera at the QR code.',
-  syncANewDeviceThirdBulletText: 'If asks you to enter code words, type in the words below.',
-  showSecretQRCode: 'Show secret QR code. (Do not share!)',
-  showSecretCodeWords: 'Show secret code words. (Do not share!)',
+  syncANewDeviceFirstBulletText: 'Open Brave on your target device and go to Preferences > Sync > I have an existing synced device.',
+  syncANewDeviceSecondBulletText: 'If asked to scan a QR code, click the button below and scan the code using the device\'s camera.',
+  syncANewDeviceThirdBulletText: 'If prompted for security codes, type in the words below.',
+  showSecretQRCode: 'Show Sync QR Code',
+  showSecretCodeWords: 'Show Sync Code Words',
   // reset sync modal
   resetSyncFirstBullet: 'Resetting Sync clears data stored on the Sync server and resets this device\'s Sync settings.',
   resetSyncSecondBullet: 'You will keep any bookmarks, history and other browsing data currently on this device.',
-  resetSyncThirdBullet: 'If you\'ve synced other devices, they will continue to sync their future browsing data. If you don\'t want that, you should reset Sync on those devices as well'
+  resetSyncThirdBullet: 'If you\'ve synced other devices, they will continue to sync their future browsing data. If you don\'t want that, you should reset Sync on those devices as well.'
 }
 
 export default locale
