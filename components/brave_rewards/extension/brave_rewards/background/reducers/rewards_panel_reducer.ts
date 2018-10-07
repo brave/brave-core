@@ -170,6 +170,13 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         setBadgeText(state)
         break
       }
+    case types.INCLUDE_IN_AUTO_CONTRIBUTION:
+      {
+        let publisherKey = payload.publisherKey
+        let excluded = payload.excluded
+        chrome.braveRewards.includeInAutoContribution(publisherKey, excluded)
+        break
+      }
   }
 
   if (state !== startingState) {

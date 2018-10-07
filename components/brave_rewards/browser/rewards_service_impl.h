@@ -110,6 +110,8 @@ class RewardsServiceImpl : public RewardsService,
   void RemoveRecurring(const std::string& publisher_key) override;
   void UpdateRecurringDonationsList() override;
   void UpdateTipsList() override;
+  void SetContributionAutoInclude(
+    std::string publisher_key, bool excluded) override;
 
  private:
   friend void RunIOTaskCallback(

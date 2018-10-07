@@ -78,6 +78,15 @@ export class Panel extends React.Component<Props, State> {
     console.log('doNothing click')
   }
 
+  switchAutoContribute = () => {
+    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+    const publisherKey = publisher && publisher.publisher_key
+    const excluded = publisher && publisher.excluded
+    if (publisherKey && publisherKey.length > 0 && excluded !== undefined) {
+      this.props.actions.includeInAutoContribution(publisherKey, !excluded)
+    }
+  }
+
   getPublisher = () => {
     let windowId = this.props.windowId.toString()
 
@@ -251,7 +260,7 @@ export class Panel extends React.Component<Props, State> {
               onToggleTips={this.doNothing}
               donationAction={this.showDonateToSiteDetail}
               onAmountChange={this.doNothing}
-              onIncludeInAuto={this.doNothing}
+              onIncludeInAuto={this.switchAutoContribute}
             />
             : null
           }

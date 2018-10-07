@@ -54,3 +54,8 @@ export const onNotificationDeleted = (id: number, type: number, timestamp: numbe
 export const deleteNotification = (id: number) => action(types.DELETE_NOTIFICATION, {
   id
 })
+
+export const includeInAutoContribution = (publisherKey: string, excluded: boolean) => action(types.INCLUDE_IN_AUTO_CONTRIBUTION, {
+  publisherKey,
+  excluded
+})

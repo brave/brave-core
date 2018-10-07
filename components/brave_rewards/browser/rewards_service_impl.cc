@@ -1573,4 +1573,10 @@ void RewardsServiceImpl::OnRemoveRecurring(const std::string& publisher_key,
                      AsWeakPtr(), callback));
 }
 
+void RewardsServiceImpl::SetContributionAutoInclude(std::string publisher_key,
+  bool excluded) {
+  ledger_->SetPublisherExclude(publisher_key, excluded ?
+    ledger::PUBLISHER_EXCLUDE::EXCLUDED : ledger::PUBLISHER_EXCLUDE::INCLUDED);
+}
+
 }  // namespace brave_rewards

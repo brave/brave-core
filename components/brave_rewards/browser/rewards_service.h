@@ -92,6 +92,8 @@ class RewardsService : public KeyedService {
   virtual void RemoveRecurring(const std::string& publisher_key) = 0;
   virtual void UpdateRecurringDonationsList() = 0;
   virtual void UpdateTipsList() = 0;
+  virtual void SetContributionAutoInclude(
+    std::string publisher_key, bool excluded) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

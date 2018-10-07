@@ -69,6 +69,25 @@ ExtensionFunction::ResponseAction BraveRewardsDonateToSiteFunction::Run() {
 BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {
 }
 
+BraveRewardsIncludeInAutoContributionFunction::
+  ~BraveRewardsIncludeInAutoContributionFunction() {
+}
+
+ExtensionFunction::ResponseAction
+  BraveRewardsIncludeInAutoContributionFunction::Run() {
+
+  std::unique_ptr<brave_rewards::IncludeInAutoContribution::Params> params(
+    brave_rewards::IncludeInAutoContribution::Params::Create(*args_));
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_) {
+    rewards_service_->SetContributionAutoInclude(
+      params->publisher_key, params->excluded);
+  }
+  return RespondNow(NoArguments());
+}
+
 ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   std::unique_ptr<brave_rewards::GetPublisherData::Params> params(
       brave_rewards::GetPublisherData::Params::Create(*args_));
