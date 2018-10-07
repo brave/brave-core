@@ -85,8 +85,25 @@ class PageWallet extends React.Component<Props, State> {
 
   onModalBackupOnRestore = (key: string | MouseEvent) => {
     if (typeof key === 'string' && key.length > 0) {
+      key = this.pullRecoveryKeyFromFile(key)
       this.actions.recoverWallet(key)
     }
+  }
+
+  pullRecoveryKeyFromFile = (key: string) => {
+    let recoveryKey = null
+    if (key) {
+      let messageLines = key.match(/^.+$/gm)
+      if (messageLines) {
+        let passphraseLine = '' || messageLines[2]
+        if (passphraseLine) {
+          const passphrasePattern = new RegExp(['Recovery Key:', '(.+)$'].join(' '))
+          recoveryKey = (passphraseLine.match(passphrasePattern) || [])[1]
+          return recoveryKey
+        }
+      }
+    }
+    return key
   }
 
   onModalBackupOnImport = () => {
