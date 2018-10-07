@@ -121,7 +121,7 @@ export default class ModalAddFunds extends React.PureComponent<Props, State> {
             }
           </StyledAddresses>
           <StyledNote>
-            {getLocale('addFundsNote')} <StyledLink href='https://brave.com/faq-payments/#brave-payments'>
+            {getLocale('addFundsNote')} <StyledLink href='https://brave.com/faq-payments/#brave-payments' target={'_blank'}>
               {getLocale('addFundsFAQ')}
               </StyledLink>.
           </StyledNote>
