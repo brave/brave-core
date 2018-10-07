@@ -135,6 +135,7 @@ exports[`ModalAddFunds tests basic tests matches the snapshot 1`] = `
           <a
             className="c9"
             href="https://brave.com/faq-payments/#brave-payments"
+            target="_blank"
           >
             MISSING: addFundsFAQ
           </a>
