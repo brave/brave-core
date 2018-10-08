@@ -1,38 +1,24 @@
 'use strict';
 
-console.log("in chrome.runtime.onInstalled 001");
-
 chrome.runtime.onStartup.addListener(function() {
-  console.log("in chrome.runtime.onStartup");
   chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config) {
-    console.log("in chrome.braveSync.onGotInitData ", JSON.stringify(arguments));
-    console.log("in chrome.braveSync.onGotInitData seed=", JSON.stringify(seed));
-    console.log("in chrome.braveSync.onGotInitData device_id=", JSON.stringify(device_id));
-    console.log("in chrome.braveSync.onGotInitData config=", JSON.stringify(config));
     if ((seed instanceof Array && seed.length == 0) || (seed instanceof Uint8Array && seed.length == 0)) {
       seed = null;
     }
+    console.log(`"got-init-data" seed=${JSON.stringify(seed)} device_id=${JSON.stringify(device_id)} config=${JSON.stringify(config)}`);
     callbackList["got-init-data"](null, seed, device_id, config);
   });
 
   chrome.braveSync.onFetchSyncRecords.addListener(function(category_names, start_at, max_records) {
-    console.log("in chrome.braveSync.onFetchSyncRecords ", arguments);
-    console.log("in chrome.braveSync.onFetchSyncRecords category_names=", category_names);
-    console.log("in chrome.braveSync.onFetchSyncRecords start_at=", start_at);
-    console.log("in chrome.braveSync.onFetchSyncRecords max_records=", max_records);
+    console.log(`"fetch-sync-records" category_names=${JSON.stringify(category_names)} start_at=${JSON.stringify(start_at)} max_records=${JSON.stringify(max_records)}`);
     callbackList["fetch-sync-records"](null, category_names, start_at, max_records);
   });
 
   chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, recordsAndExistingObjects) {
-    console.log("in chrome.braveSync.onResolveSyncRecords ", arguments);
-    console.log("in chrome.braveSync.onResolveSyncRecords category_name=", category_name);
-    console.log("in chrome.braveSync.onResolveSyncRecords recordsAndExistingObjects=", recordsAndExistingObjects);
-
     var recordsAndExistingObjectsArrArr = [];
     for(var i = 0; i < recordsAndExistingObjects.length; ++i) {
       var cur_rec = recordsAndExistingObjects[i];
       if ('localRecord' in cur_rec) {
-        //console.log('have localRecord');
         fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
         fixupSyncRecordBrowserToExt(cur_rec.localRecord);
         recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, cur_rec.localRecord]);
@@ -41,56 +27,44 @@ chrome.runtime.onStartup.addListener(function() {
         recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, null]);
       }
     }
-
-    console.log("in chrome.braveSync.onSendSyncRecords JSON.stringify(recordsAndExistingObjectsArrArr)=", JSON.stringify(recordsAndExistingObjectsArrArr) );
-
+    console.log(`"resolve-sync-records" category_name=${JSON.stringify(category_name)} recordsAndExistingObjects=${JSON.stringify(recordsAndExistingObjectsArrArr)}`);
     callbackList["resolve-sync-records"](null, category_name, recordsAndExistingObjectsArrArr);
   });
 
   chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) {
-    console.log("in chrome.braveSync.onSendSyncRecords ", arguments);
-    console.log("in chrome.braveSync.onSendSyncRecords category_name=", category_name);
-    console.log("in chrome.braveSync.onSendSyncRecords records=", records);
-
-    console.log("in chrome.braveSync.onSendSyncRecords JSON.stringify(r)=", JSON.stringify(records) );
-
     // Fixup ids
     for (var i = 0; i < records.length; ++i) {
       fixupSyncRecordBrowserToExt(records[i]);
     }
-    console.log("in chrome.braveSync.onSendSyncRecords JSON.stringify(r2)=", JSON.stringify(records) );
+    console.log(`"send-sync-records" category_name=${JSON.stringify(category_name)} records=${JSON.stringify(records)}`);
     callbackList["send-sync-records"](null, category_name, records);
   });
 
   chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, platform) {
-    console.log("in chrome.braveSync.onSendGetBookmarksBaseOrder ", arguments);
+    console.log(`"get-bookmarks-base-order" deviceId=${JSON.stringify(deviceId)} platform=${JSON.stringify(platform)}`);
     callbackList["get-bookmarks-base-order"](null, deviceId, platform);
   });
 
   chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder) {
-    console.log("in chrome.braveSync.onSendGetBookmarkOrder", arguments);
+    console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)}`);
     callbackList["get-bookmark-order"](null, prevOrder, nextOrder);
   });
 
   chrome.braveSync.onNeedSyncWords.addListener(function(seed) {
-    console.log("in chrome.braveSync.onGetSyncWords seed=", seed);
     var arr_int = seed.split(',').map(Number);
-    console.log('arr_int=', arr_int);
     var buffer = new Uint8Array(arr_int);
-    console.log('buffer=', buffer);
     var words = module.exports.passphrase.fromBytesOrHex(buffer, /*useNiceware=*/ false /* use bip39 */);
-    console.log('words=', words);
+    console.log(`"NeedSyncWords" seed=${JSON.stringify(seed)} words=${JSON.stringify(words)}`);
     chrome.braveSync.syncWordsPrepared(words);
   });
 
   chrome.braveSync.onNeedBytesFromSyncWords.addListener(function(words) {
-    console.log("in chrome.braveSync.onNeedBytesFromSyncWords words=", JSON.stringify(words));
     try {
       var bytes = module.exports.passphrase.toBytes32(words);
-      console.log("in chrome.braveSync.onNeedBytesFromSyncWords bytes=", JSON.stringify(bytes));
+      console.log(`"NeedBytesFromSyncWords" words=${JSON.stringify(words)} bytes=${JSON.stringify(bytes)}`);
       chrome.braveSync.bytesFromSyncWordsPrepared(bytes, '');
     } catch(err) {
-      console.log("in chrome.braveSync.onNeedBytesFromSyncWords failed err.message=", err.message);
+      console.log(`"NeedBytesFromSyncWords" words=${JSON.stringify(words)} err.message=${err.message}`);
       chrome.braveSync.bytesFromSyncWordsPrepared(new Uint8Array([]), err.message);
     }
   });
@@ -100,16 +74,8 @@ chrome.runtime.onStartup.addListener(function() {
     LoadJsLibScript();
   });
 
-  console.log("will call chrome.braveSync.extensionLoaded()");
   chrome.braveSync.extensionLoaded();
-  console.log("done call chrome.braveSync.extensionLoaded()");
 });
-
-chrome.runtime.onInstalled.addListener(function() {
-  console.log("in chrome.runtime.onInstalled");
-});
-
-console.log("in chrome.runtime.onInstalled 003");
 
 //-------------------------------------------------------------
 
@@ -131,7 +97,6 @@ function IntArrayFromString(str) {
 
 function fixupSyncRecordBrowserToExt(sync_record) {
   fixupSyncRecordExtToBrowser(sync_record);
-  // Maybe remove syncTimeStamp
 }
 
 function fixupSyncRecordExtToBrowser(sync_record) {
@@ -188,38 +153,24 @@ function fixupSyncRecordExtToBrowser(sync_record) {
 }
 
 function fixupSyncRecordsArrayExtensionToBrowser(records) {
-  //
   for(var i = 0; i < records.length; ++i) {
-    console.log('background.js TAGAB fixupSyncRecordsArray records[i]', JSON.stringify(records[i]));
-    //'parentFolderObjectId';
-    //'deviceId'
-    //'objectId'
-    console.log('background.js TAGAB fixupSyncRecordsArray typeof records[i].deviceId=', typeof records[i].deviceId);
-    console.log('background.js TAGAB fixupSyncRecordsArray typeof records[i].objectId=', typeof records[i].objectId);
     fixupSyncRecordExtToBrowser(records[i]);
-    console.log('background.js TAGAB fixupSyncRecordsArray records[i](2)', JSON.stringify(records[i]));
   }
 }
 
 class InjectedObject {
   handleMessage(message, arg1, arg2, arg3, arg4) {
-    console.log('background.js TAGAB InjectedObject.handleMessage', message, arg1, arg2, arg3, arg4);
-    console.log('background.js TAGAB message=' + message);
-    console.log('background.js TAGAB arg1=' + arg1);
-    console.log('background.js TAGAB arg2=' + arg2);
-    console.log('background.js TAGAB arg3=' + arg3);
-    console.log('background.js TAGAB arg4=' + arg4);
-
     switch (message) {
       case "get-init-data":
-        console.log('background.js TAGAB will call chrome.braveSync.getInitData');
+        console.log(`"get-init-data" syncVersion=${JSON.stringify(arg1)}`);
         chrome.braveSync.getInitData(arg1/*syncVersion*/);
         break;
       case "sync-setup-error":
-      console.log('background.js TAGAB will call chrome.braveSync.syncSetupError');
+        console.log(`"sync-setup-error" error=${JSON.stringify(arg1)}`);
         chrome.braveSync.syncSetupError(arg1/*error*/);
         break;
       case "sync-debug":
+        console.log(`"sync-debug" message=${JSON.stringify(arg1)}`);
         chrome.braveSync.syncDebug(arg1/*message*/);
         break;
       case "save-init-data":
@@ -230,39 +181,39 @@ class InjectedObject {
         if (!arg1) {
           arg1 = null;
         }
-        console.log('background.js save-init-data arg1=',JSON.stringify(arg1));
-        console.log('background.js save-init-data deviceId=',JSON.stringify(deviceId));
-        console.log('background.js save-init-data typeof arg1=',typeof arg1);
-        console.log('background.js save-init-data typeof deviceId=',typeof deviceId);
-
+        console.log(`"save-init-data" seed=${JSON.stringify(arg1)} deviceId=${JSON.stringify(deviceId)}`);
         chrome.braveSync.saveInitData(arg1/*seed*/, deviceId);
         break;
       case "sync-ready":
+        console.log(`"save-init-data"`);
         chrome.braveSync.syncReady();
         break;
       case "get-existing-objects":
-         console.log('background.js get-existing-objects arg1=',JSON.stringify(arg1));
-         console.log('background.js get-existing-objects arg2=',JSON.stringify(arg2));
         fixupBookmarkParentFolderObjectId(arg1, arg2);
+        console.log(`"get-existing-objects" category_name=${JSON.stringify(arg1)} records=${JSON.stringify(arg2)} lastRecordTimeStamp=${arg3 ? arg3 : 0} isTruncated=${arg4 != undefined ? arg4 : false} `);
         chrome.braveSync.getExistingObjects(arg1/*category_name*/,
           arg2/*records*/, arg3 ? arg3 : 0/*lastRecordTimeStamp*/, arg4 != undefined ? arg4 : false/*isTruncated*/);
         break;
       case "resolved-sync-records":
-        console.log("in resolved-sync-records JSON.stringify(arg2)=", JSON.stringify(arg2));
         fixupSyncRecordsArrayExtensionToBrowser(arg2);
+        console.log(`"resolved-sync-records" categoryName=${JSON.stringify(arg1)} records=${JSON.stringify(arg2)}`);
         chrome.braveSync.resolvedSyncRecords(arg1/*categoryName*/, arg2/*records*/);
         break;
       case "save-bookmarks-base-order":
-        console.log("in save-bookmarks-base-order JSON.stringify(arg1)=", JSON.stringify(arg1));
+        console.log(`"save-bookmarks-base-order" order=${JSON.stringify(arg1)} `);
         chrome.braveSync.saveBookmarksBaseOrder(arg1/*order*/);
         break;
       case "save-bookmark-order":
-        console.log("in save-bookmark-order JSON.stringify(arg1)=", JSON.stringify(arg1));
-        console.log("in save-bookmark-order JSON.stringify(arg2)=", JSON.stringify(arg2));
-        console.log("in save-bookmark-order JSON.stringify(arg3)=", JSON.stringify(arg3));
+        console.log(`"save-bookmark-order" order=${JSON.stringify(arg1)} prevOrder=${JSON.stringify(arg2)} nextOrder=${JSON.stringify(arg3)}`);
         chrome.braveSync.saveBookmarkOrder(arg1/*order*/, arg2/*prevOrder*/, arg3/*nextOrder*/);
         break;
       default:
+        console.log('background.js TAGAB InjectedObject.handleMessage unknown message', message, arg1, arg2, arg3, arg4);
+        console.log('background.js TAGAB message=' + message);
+        console.log('background.js TAGAB arg1=' + arg1);
+        console.log('background.js TAGAB arg2=' + arg2);
+        console.log('background.js TAGAB arg3=' + arg3);
+        console.log('background.js TAGAB arg4=' + arg4);
         break;
     }
   }
@@ -279,27 +230,20 @@ function dynamicallyLoadScript(url) {
 }
 
 function LoadJsLibScript() {
-  console.log('background.js TAGAB LoadJsLibScript ----');
   var sync_bundle_url = chrome.runtime.getURL('extension/brave-sync/bundles/bundle.js');
-  console.log('background.js TAGAB LoadJsLibScript sync_bundle_url=',sync_bundle_url);
   dynamicallyLoadScript(sync_bundle_url);
 }
 
-console.log('background.js TAGAB doing the call----')
-
 var callbackList = {}; /* message name to callback function */
 
-console.log('background.js TAGAB (2) chrome.send=', chrome.send)
 if (!self.chrome) {
   self.chrome = {};
 }
 
 if(!self.chrome.ipc) {
-  console.log('background.js TAGAB (3) chrome.send=', chrome.send)
   var ipc = {};
 
   ipc.once = function (message, cb) {
-    console.log('background.js TAGAB (3.5) ipc.once, message=', message);
     callbackList[message] = cb;
     // injectedObject.handleMessage(message, '0', '0', '', false); // seems I should not call it. Just save the fn here
   };
@@ -311,8 +255,5 @@ if(!self.chrome.ipc) {
   };
 
   self.chrome.ipc = ipc;
-  console.log('background.js TAGAB (4) chrome.send=', chrome.send)
   chrome.ipcRenderer = chrome.ipc;
 }
-
-console.log('background.js TAGAB the sync call done----')
