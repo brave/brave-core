@@ -269,6 +269,21 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         }
         setAllowCookies(tabData.origin, action.setting)
           .then(() => {
+            if (action.setting == 'block') {
+              chrome.cookies.getAll({domain:tabData.origin},function(cookies) {
+                cookies.forEach(function(cookie) {
+                  var url = "http" + (cookie.secure ? "s" : "") + "://" +
+                    cookie.domain + cookie.path;
+                  chrome.cookies.remove({"url":url, "name": cookie.name});
+                })
+              })
+              chrome.tabs.executeScript(tabData.id, {
+                code:"try { window.sessionStorage.clear(); } catch(e) {}"})
+              // clearing localStorage may fail with SecurityError if third-
+              // party cookies are already blocked, but that's okay
+              chrome.tabs.executeScript(tabData.id, {
+                code:"try { window.localStorage.clear(); } catch(e) {}"})
+            }
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
             reloadTab(tabData.id, true).catch(() => {
               console.error('Tab reload was not successful')
