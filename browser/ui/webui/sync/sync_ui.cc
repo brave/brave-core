@@ -135,13 +135,13 @@ void SyncUIDOMHandler::SetupSyncHaveCode(const base::ListValue* args) {
 }
 
 void SyncUIDOMHandler::SetupSyncNewToSync(const base::ListValue* args) {
-  LOG(ERROR) << "SyncUIDOMHandler::SetupSyncNewToSync";
+  DLOG(INFO) << "[Brave Sync] " << __func__;
   std::string sync_words, device_name;
   if (!args->GetString(0, &device_name)) {
    return;
   }
 
-  LOG(ERROR) << "SyncUIDOMHandler::SetupSyncHaveCode device_name=" << device_name;
+  DLOG(INFO) << "[Brave Sync] device_name=" << device_name;
 
   sync_service_->OnSetupSyncNewToSync(device_name);
 }
