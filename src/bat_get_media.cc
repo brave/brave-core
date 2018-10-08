@@ -29,7 +29,7 @@ BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
 
 BatGetMedia::~BatGetMedia() {}
 
-std::string BatGetMedia::GetLinkType(const std::string& url, const std::string& first_party_url, 
+std::string BatGetMedia::GetLinkType(const std::string& url, const std::string& first_party_url,
   const std::string& referrer) {
   std::string type = "";
 
@@ -38,7 +38,7 @@ std::string BatGetMedia::GetLinkType(const std::string& url, const std::string& 
     type = YOUTUBE_MEDIA_TYPE;
   }  else if (
     (
-      (first_party_url.find("https://www.twitch.tv/") == 0 || 
+      (first_party_url.find("https://www.twitch.tv/") == 0 ||
         first_party_url.find("https://m.twitch.tv/") == 0) ||
       (referrer.find("https://player.twitch.tv/") == 0)
     ) &&
@@ -113,7 +113,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
           _2,
           _3));
     } else if (TWITCH_MEDIA_TYPE == providerName) {
-      const std::string twitchMediaID = 
+      const std::string twitchMediaID =
         mediaId.find(MEDIA_DELIMITER) != std::string::npos ?
         mediaId :
         braveledger_bat_helper::split(mediaId, MEDIA_DELIMITER)[0];
@@ -261,7 +261,7 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
   if (oldEventInfo.status_.empty()) { // if autoplay is off and play is pressed
     return 0;
   }
-  
+
   if (time > TWITCH_MAXIMUM_SECONDS_CHUNK) {
     time = TWITCH_MAXIMUM_SECONDS_CHUNK;
   }
@@ -270,7 +270,7 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
 }
 
 void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, const std::string& media_key,
-    const std::string& providerName, const std::string& mediaURL, const ledger::VisitData& visit_data, 
+    const std::string& providerName, const std::string& mediaURL, const ledger::VisitData& visit_data,
     bool success, const std::string& response, const std::map<std::string, std::string>& headers) {
   if (success && YOUTUBE_MEDIA_TYPE == providerName) {
     std::string publisherURL;
@@ -302,26 +302,15 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
     const std::map<std::string, std::string>& headers) {
   if (success && YOUTUBE_MEDIA_TYPE == providerName) {
     std::string favIconURL;
-//    size_t pos = response.find("<div id=\"img-preload\"");
-//
-//    do {
-//      if (pos != std::string::npos) {
-//        pos = response.find("<img src=\"", pos);
-//        if (pos != std::string::npos) {
-//          size_t posEnd = response.find("\">", pos);
-//          if (posEnd != std::string::npos) {
-//            favIconURL = response.substr(pos + 10, posEnd - pos - 10);
-//          }
-//        }
-//      } else {
-//        break;
-//      }
-//      pos++;
-//      if (pos > response.length() - 1) {
-//        pos = std::string::npos;
-//      }
-//    } while (favIconURL.find("photo.jpg") == std::string::npos);
-//    LOG(ERROR) << "publisher's picture URL == " << favIconURL;
+    std::string avatarStr = "\"avatar\":{\"thumbnails\":[{\"url\":\"";
+    size_t startPos = response.find(avatarStr) + avatarStr.size();
+    if (startPos != std::string::npos) {
+      size_t endPos = response.find("\"", startPos + avatarStr.size());
+      if (endPos != std::string::npos && endPos > startPos) {
+        favIconURL = response.substr(startPos, endPos - startPos);
+      }
+    }
+
     std::string mediaURL = publisherURL + "/videos";
     size_t pos = publisherURL.rfind("/");
     std::string publisher_id = providerName + "#channel:";
