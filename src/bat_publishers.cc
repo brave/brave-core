@@ -486,7 +486,6 @@ void BatPublishers::topNInternal(const unsigned int& ballots, const std::string&
   std::vector<braveledger_bat_helper::WINNERS_ST> res;
   // TODO there is underscore.shuffle
   for (size_t i = 0; i < newList.size(); i++) {
-    //LOG(ERROR) << "!!!name == " << newList[i].id << ", score == " << newList[i].score;
     if (newList[i].percent <= 0) {
       continue;
     }

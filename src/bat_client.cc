@@ -178,7 +178,9 @@ void BatClient::registerPersonaCallback(bool result,
 }
 
 void BatClient::resetReconcileStamp() {
-  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 24 * 60 * 60;
+  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
+  // For testing (reconcile will happen 5min after wallet creation
+  //state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 5 * 60;
   saveState();
 }
 
@@ -312,7 +314,6 @@ void BatClient::currentReconcile() {
   amount << state_->fee_amount_;
   std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_ + "?refresh=true" + "&amount=" + amount.str() + "&altcurrency=" + state_->fee_currency_;
 
-  //LOG(ERROR) << "!!!currentReconcile path == " << path;
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL(path, PREFIX_V2),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET, &handler_);
