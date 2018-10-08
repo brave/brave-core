@@ -4,10 +4,8 @@
 
 #include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
 
-#include "brave/common/tor/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/prefs/pref_service.h"
 
 BraveHostContentSettingsMap::BraveHostContentSettingsMap(
     PrefService* prefs,
@@ -22,23 +20,9 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
   InitializeCookieContentSetting();
   InitializeBraveShieldsContentSetting();
   InitializeFlashContentSetting();
-
-  if (prefs->HasPrefPath(tor::prefs::kProfileUsingTor) &&
-      prefs->GetBoolean(tor::prefs::kProfileUsingTor)) {
-    BlockGeolocation();
-  }
 }
 
 BraveHostContentSettingsMap::~BraveHostContentSettingsMap() {
-}
-
-void BraveHostContentSettingsMap::BlockGeolocation() {
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_GEOLOCATION,
-      std::string(),
-      CONTENT_SETTING_BLOCK);
 }
 
 void BraveHostContentSettingsMap::InitializeFingerprintingContentSetting() {
