@@ -20,6 +20,7 @@ class BraveHostContentSettingsMap : public HostContentSettingsMap {
    void InitializeCookieContentSetting();
    void InitializeBraveShieldsContentSetting();
    void InitializeFlashContentSetting();
+   void BlockGeolocation();
    ~BraveHostContentSettingsMap() override;
 };
 

@@ -12,6 +12,9 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/common/tor:pref_names",
+    "//components/content_settings/core/common",
+    "//components/prefs",
     "//net",
     "//url",
   ]
