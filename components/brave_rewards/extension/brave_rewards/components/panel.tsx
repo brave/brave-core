@@ -106,14 +106,9 @@ export class Panel extends React.Component<Props, State> {
     const { rates } = walletProperties
     const contributionMonthly = 10 // TODO NZ fix with new reports refactor https://github.com/brave/brave-core/pull/409
     const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
-    let total = contributionMonthly * -1
 
     let props = {
       contribute: {
-        tokens: contributionMonthly,
-        converted: convertedMonthly
-      },
-      total: {
         tokens: contributionMonthly,
         converted: convertedMonthly
       }
@@ -125,8 +120,6 @@ export class Panel extends React.Component<Props, State> {
           tokens: report.ads,
           converted: utils.convertBalance(report.ads, rates)
         }
-
-        total += report.ads
       }
 
       if (report.donations) {
@@ -134,8 +127,6 @@ export class Panel extends React.Component<Props, State> {
           tokens: report.donations,
           converted: utils.convertBalance(report.donations, rates)
         }
-
-        total -= report.donations
       }
 
       if (report.grants) {
@@ -143,8 +134,6 @@ export class Panel extends React.Component<Props, State> {
           tokens: report.grants,
           converted: utils.convertBalance(report.grants, rates)
         }
-
-        total += report.grants
       }
 
       if (report.oneTime) {
@@ -152,17 +141,12 @@ export class Panel extends React.Component<Props, State> {
           tokens: report.oneTime,
           converted: utils.convertBalance(report.oneTime, rates)
         }
-
-        total -= report.oneTime
-      }
-
-      props['total'] = {
-        tokens: total,
-        converted: utils.convertBalance(total, rates)
       }
     }
 
-    return props
+    return {
+      report: props
+    }
   }
 
   openRewardsPage () {
