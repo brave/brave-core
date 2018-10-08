@@ -780,36 +780,33 @@ void RewardsServiceImpl::TriggerOnWalletInitialized(int error_code) {
 void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     std::unique_ptr<ledger::WalletInfo> wallet_info) {
   std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
+  for (auto& observer : observers_) {
+    if (wallet_info) {
+      wallet_properties.reset(new brave_rewards::WalletProperties);
+      wallet_properties->probi = wallet_info->probi_;
+      wallet_properties->balance = wallet_info->balance_;
+      wallet_properties->rates = wallet_info->rates_;
+      wallet_properties->parameters_choices = wallet_info->parameters_choices_;
+      wallet_properties->parameters_range = wallet_info->parameters_range_;
+      wallet_properties->parameters_days = wallet_info->parameters_days_;
 
-  if (!wallet_info) {
-    return;
-  }
+      for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
+        brave_rewards::Grant grant;
 
-  wallet_properties.reset(new brave_rewards::WalletProperties);
-  wallet_properties->probi = wallet_info->probi_;
-  wallet_properties->balance = wallet_info->balance_;
-  wallet_properties->rates = wallet_info->rates_;
-  wallet_properties->parameters_choices = wallet_info->parameters_choices_;
-  wallet_properties->parameters_range = wallet_info->parameters_range_;
-  wallet_properties->parameters_days = wallet_info->parameters_days_;
+        grant.altcurrency = wallet_info->grants_[i].altcurrency;
+        grant.probi = wallet_info->grants_[i].probi;
+        grant.expiryTime = wallet_info->grants_[i].expiryTime;
 
-  for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
-    brave_rewards::Grant grant;
+        wallet_properties->grants.push_back(grant);
+      }
+    }
 
-    grant.altcurrency = wallet_info->grants_[i].altcurrency;
-    grant.probi = wallet_info->grants_[i].probi;
-    grant.expiryTime = wallet_info->grants_[i].expiryTime;
-
-    wallet_properties->grants.push_back(grant);
-  }
-
-  // webui
-  for (auto& observer : observers_)
+    // webui
     observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
-
+  }
   // extension
   EventRouter* event_router = EventRouter::Get(profile_);
-  if (event_router) {
+  if (event_router && wallet_info) {
     extensions::api::brave_rewards::OnWalletProperties::Properties properties;
 
     properties.probi = wallet_info->probi_;
