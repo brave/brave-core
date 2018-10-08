@@ -63,6 +63,12 @@ test("brave_unit_tests") {
     "../utility/importer/firefox_importer_unittest.cc",
   ]
 
+  if (brave_rewards_enabled) {
+    sources += [
+      "//brave/vendor/bat-native-ledger/src/test/niceware_partial_unittest.cc",
+    ]
+  }
+
   # On Windows, brave_install_static_unittests covers channel test.
   if (is_mac || is_linux) {
     sources += [
