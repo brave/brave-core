@@ -24,6 +24,7 @@ class BraveComponentLoader : public ComponentLoader {
   // platforms this |skip_session_components| is expected to be unset.
   void AddDefaultComponentExtensions(bool skip_session_components) override;
 
+ private:
   DISALLOW_COPY_AND_ASSIGN(BraveComponentLoader);
 };
 

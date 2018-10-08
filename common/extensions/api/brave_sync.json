@@ -303,9 +303,9 @@
     ],
     "functions": [
       {
-        "name": "extensionLoaded",
+        "name": "extensionInitialized",
         "type": "function",
-        "description": "Notifies extension has been loaded",
+        "description": "Notifies extension has registered all listeners",
         "parameters": []
       },
       {

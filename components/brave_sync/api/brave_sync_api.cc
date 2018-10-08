@@ -199,12 +199,12 @@ ExtensionFunction::ResponseAction BraveSyncBytesFromSyncWordsPreparedFunction::R
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction BraveSyncExtensionLoadedFunction::Run() {
-  LOG(ERROR) << "TAGAB BraveSyncExtensionLoadedFunction::Run";
+ExtensionFunction::ResponseAction BraveSyncExtensionInitializedFunction::Run() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
 
   // Also inform sync client extension started
   ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
-  sync_client->ExtensionStartupComplete();
+  sync_client->OnExtensionInitialized();
 
   return RespondNow(NoArguments());
 }

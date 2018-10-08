@@ -76,9 +76,9 @@ class BraveSyncBytesFromSyncWordsPreparedFunction : public UIThreadExtensionFunc
   ResponseAction Run() override;
 };
 
-class BraveSyncExtensionLoadedFunction : public UIThreadExtensionFunction {
-  ~BraveSyncExtensionLoadedFunction() override {}
-  DECLARE_EXTENSION_FUNCTION("braveSync.extensionLoaded", UNKNOWN)
+class BraveSyncExtensionInitializedFunction : public UIThreadExtensionFunction {
+  ~BraveSyncExtensionInitializedFunction() override {}
+  DECLARE_EXTENSION_FUNCTION("braveSync.extensionInitialized", UNKNOWN)
   ResponseAction Run() override;
 };
 

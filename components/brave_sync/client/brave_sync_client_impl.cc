@@ -7,37 +7,76 @@
 #include "base/logging.h"
 #include "brave/components/brave_sync/api/brave_sync_event_router.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
+#include "brave/components/brave_sync/pref_names.h"
+#include "brave/components/brave_sync/profile_prefs.h"
 #include "brave/common/extensions/api/brave_sync.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/extensions/component_loader.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_system.h"
+#include "extensions/common/one_shot_event.h"
 
 namespace brave_sync {
 
 BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
+    extension_loaded_(false),
     handler_(nullptr),
     brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
     profile_(profile),
-    startup_complete_(false),
-    set_load_pending_(false) {
+    extension_registry_observer_(this),
+    weak_ptr_factory_(this) {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK(profile_);
+
+  sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
+
+  // Handle when the extension system is ready
+  extensions::ExtensionSystem::Get(profile)->ready().Post(
+      FROM_HERE, base::Bind(&BraveSyncClientImpl::OnExtensionSystemReady,
+                            weak_ptr_factory_.GetWeakPtr()));
+  sync_this_device_enabled_.Init(
+      prefs::kSyncThisDeviceEnabled,
+      profile->GetPrefs(),
+      base::Bind(&BraveSyncClientImpl::OnPreferenceChanged,
+                 base::Unretained(this)));
 }
 
 BraveSyncClientImpl::~BraveSyncClientImpl() {
   LOG(ERROR) << "TAGAB BraveSyncClientImpl::~BraveSyncClientImpl";
 }
 
-void BraveSyncClientImpl::Shutdown() {
-  LOG(ERROR) << "TAGAB BraveSyncClientImpl::Shutdown";
+void BraveSyncClientImpl::OnExtensionInitialized() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
+  DCHECK(extension_loaded_);
+  if (extension_loaded_)
+    brave_sync_event_router_->LoadClient();
 }
 
-void BraveSyncClientImpl::ExtensionStartupComplete() {
-  LOG(WARNING) << "TAGAB BraveSyncClientImpl::ExtensionStartupComplete";
-  DCHECK(!startup_complete_);
-  startup_complete_ = true;
-  if (set_load_pending_) {
-    LOG(WARNING) << "TAGAB BraveSyncClientImpl::ExtensionStartupComplete loading pending";
-    brave_sync_event_router_->LoadClient();
+void BraveSyncClientImpl::Shutdown() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
+  LoadOrUnloadExtension(false);
+}
+
+void BraveSyncClientImpl::OnExtensionLoaded(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension) {
+  if (extension->id() == brave_sync_extension_id) {
+    DLOG(INFO) << "[Brave Sync] " << __func__;
+    extension_loaded_ = true;
+  }
+}
+
+void BraveSyncClientImpl::OnExtensionUnloaded(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension,
+    extensions::UnloadedExtensionReason reason) {
+  if (extension->id() == brave_sync_extension_id) {
+    DLOG(INFO) << "[Brave Sync] " << __func__;
+    extension_loaded_ = false;
   }
 }
 
@@ -50,20 +89,6 @@ void BraveSyncClientImpl::SetSyncToBrowserHandler(SyncLibToBrowserHandler *handl
 SyncLibToBrowserHandler *BraveSyncClientImpl::GetSyncToBrowserHandler() {
   DCHECK(handler_);
   return handler_;
-}
-
-void BraveSyncClientImpl::LoadClient() {
-  LOG(ERROR) << "TAGAB BraveSyncClientImpl::LoadClient";
-  LOG(ERROR) << "TAGAB BraveSyncClientImpl::LoadClient WILL DO LOAD";
-  if (startup_complete_) {
-    LOG(ERROR) << "TAGAB BraveSyncClientImpl::LoadClient WILL DO LOAD RIGHT HERE";
-    brave_sync_event_router_->LoadClient();
-  } else {
-    LOG(ERROR) << "TAGAB BraveSyncClientImpl::LoadClient WILL DO LOAD PENDING";
-    DCHECK(!set_load_pending_);
-    set_load_pending_ = true;
-    // Not happy with this, but extensions::ExtensionRegistryObserver approach does not work
-  }
 }
 
 void BraveSyncClientImpl::SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
@@ -127,6 +152,49 @@ void BraveSyncClientImpl::NeedSyncWords(const std::string &seed) {
 
 void BraveSyncClientImpl::NeedBytesFromSyncWords(const std::string &words) {
   brave_sync_event_router_->NeedBytesFromSyncWords(words);
+}
+
+void BraveSyncClientImpl::LoadOrUnloadExtension(bool load) {
+  DLOG(INFO) << "[Brave Sync] " << __func__ << ":" << load;
+  base::FilePath brave_sync_extension_path(FILE_PATH_LITERAL(""));
+  brave_sync_extension_path =
+      brave_sync_extension_path.Append(FILE_PATH_LITERAL("brave_sync"));
+  extensions::ExtensionSystem* system =
+    extensions::ExtensionSystem::Get(profile_);
+  extensions::ComponentLoader* component_loader =
+    system->extension_service()->component_loader();
+  if (load) {
+    component_loader->Add(IDR_BRAVE_SYNC_EXTENSION, brave_sync_extension_path);
+  } else {
+    // Remove by root path doesn't have effect, using extension id instead
+    // component_loader->Remove(brave_sync_extension_path);
+    component_loader->Remove(brave_sync_extension_id);
+  }
+}
+
+void BraveSyncClientImpl::OnExtensionSystemReady() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
+  // observe changes in extension system
+  extension_registry_observer_.Add(
+    extensions::ExtensionRegistry::Get(profile_));
+  DCHECK(!extension_loaded_);
+  if (sync_prefs_->GetSyncThisDevice()) {
+    LoadOrUnloadExtension(true);
+  }
+};
+
+void BraveSyncClientImpl::OnPreferenceChanged(
+    const std::string& pref_name) {
+  DCHECK(pref_name == prefs::kSyncThisDeviceEnabled);
+  if (sync_prefs_->GetSyncThisDevice()) {
+    DLOG(INFO) << "[Brave Sync] " << __func__
+      << " kSyncThisDeviceEnabled <= true";
+    LoadOrUnloadExtension(true);
+  } else {
+    DLOG(INFO) << "[Brave Sync] " << __func__
+      << " kSyncThisDeviceEnabled <= false";
+    LoadOrUnloadExtension(false);
+  }
 }
 
 } // namespace brave_sync
