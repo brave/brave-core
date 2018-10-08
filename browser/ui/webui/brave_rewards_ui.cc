@@ -9,6 +9,9 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/rewards_notifications_service.h"
+#include "brave/components/brave_rewards/browser/rewards_notifications_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_notifications_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/common/webui_url_constants.h"
@@ -28,6 +31,7 @@ namespace {
 
 // The handler for Javascript messages for Brave about: pages
 class RewardsDOMHandler : public WebUIMessageHandler,
+                          public brave_rewards::RewardsNotificationsServiceObserver,
                           public brave_rewards::RewardsServiceObserver {
  public:
   RewardsDOMHandler() {};
@@ -82,6 +86,23 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                            const std::string& viewing_id,
                            const std::string& probi) override;
 
+  // RewardsNotificationsServiceObserver implementation
+  void OnNotificationAdded(
+      brave_rewards::RewardsNotificationsService* rewards_notifications_service,
+      brave_rewards::RewardsNotificationsService::RewardsNotification notification)
+      override;
+  void OnNotificationDeleted(
+      brave_rewards::RewardsNotificationsService* rewards_notifications_service,
+      brave_rewards::RewardsNotificationsService::RewardsNotification notification)
+      override;
+  void OnAllNotificationsDeleted(brave_rewards::RewardsNotificationsService*
+                                     rewards_notifications_service) override;
+  void OnGetNotification(
+      brave_rewards::RewardsNotificationsService* rewards_notifications_service,
+      brave_rewards::RewardsNotificationsService::RewardsNotification notification)
+      override;
+
+  brave_rewards::RewardsNotificationsService* rewards_notifications_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
@@ -90,6 +111,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 RewardsDOMHandler::~RewardsDOMHandler() {
   if (rewards_service_)
     rewards_service_->RemoveObserver(this);
+  if (rewards_notifications_service_)
+    rewards_notifications_service_->RemoveObserver(this);
 }
 
 void RewardsDOMHandler::RegisterMessages() {
@@ -146,6 +169,10 @@ void RewardsDOMHandler::Init() {
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service_)
     rewards_service_->AddObserver(this);
+  rewards_notifications_service_ =
+      brave_rewards::RewardsNotificationsServiceFactory::GetForProfile(profile);
+  if (rewards_notifications_service_)
+    rewards_notifications_service_->AddObserver(this);
 }
 
 void RewardsDOMHandler::GetAllBalanceReports() {
@@ -389,6 +416,25 @@ void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* re
     int num = (int)rewards_service_->GetNumExcludedSites();
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.numExcludedSites", base::Value(num));
   }
+}
+
+void RewardsDOMHandler::OnNotificationAdded(
+    brave_rewards::RewardsNotificationsService* rewards_notifications_service,
+    brave_rewards::RewardsNotificationsService::RewardsNotification notification) {
+}
+
+void RewardsDOMHandler::OnNotificationDeleted(
+    brave_rewards::RewardsNotificationsService* rewards_notifications_service,
+    brave_rewards::RewardsNotificationsService::RewardsNotification notification) {
+}
+
+void RewardsDOMHandler::OnAllNotificationsDeleted(
+  brave_rewards::RewardsNotificationsService* rewards_notifications_service) {
+}
+
+void RewardsDOMHandler::OnGetNotification(
+    brave_rewards::RewardsNotificationsService* rewards_notifications_service,
+    brave_rewards::RewardsNotificationsService::RewardsNotification notification) {
 }
 
 void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {

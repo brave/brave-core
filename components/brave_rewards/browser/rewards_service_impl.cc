@@ -25,6 +25,8 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
 #include "brave/common/extensions/api/brave_rewards.h"
+#include "brave/components/brave_rewards/browser/rewards_notifications_service.h"
+#include "brave/components/brave_rewards/browser/rewards_notifications_service_factory.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -230,18 +232,21 @@ const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
 const base::FilePath::StringType kPublishers_list("publishers_list");
 #endif
 
-RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
-    profile_(profile),
-    ledger_(ledger::Ledger::CreateInstance(this)),
-    file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
-        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-    ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
-    publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
-    publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
-    publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
-    publisher_info_backend_(new PublisherInfoDatabase(publisher_info_db_path_)),
-    next_timer_id_(0) {
+RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
+    : profile_(profile),
+      ledger_(ledger::Ledger::CreateInstance(this)),
+      rewards_notifications_service_(
+          RewardsNotificationsServiceFactory::GetForProfile(profile)),
+      file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
+      publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
+      publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
+      publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
+      publisher_info_backend_(
+          new PublisherInfoDatabase(publisher_info_db_path_)),
+      next_timer_id_(0) {
 // TODO(bridiver) - production/verbose should
 // also be controllable by command line flags
 #if defined(OFFICIAL_BUILD)
@@ -489,6 +494,8 @@ void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
 void RewardsServiceImpl::OnGrant(ledger::Result result,
                                  const ledger::Grant& grant) {
   TriggerOnGrant(result, grant);
+  rewards_notifications_service_->AddNotification(
+      RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT);
 }
 
 void RewardsServiceImpl::OnGrantCaptcha(const std::string& image, const std::string& hint) {
