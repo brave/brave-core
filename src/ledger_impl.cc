@@ -239,7 +239,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
 
   if (result == ledger::Result::LEDGER_OK) {
     initialized_ = true;
-    RefreshPublishersList(false);
+    LoadPublisherList(this);
     Reconcile();
   }
 }
@@ -712,6 +712,10 @@ void LedgerImpl::SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
 
 void LedgerImpl::FetchFavIcon(const std::string& url, const std::string& publisher_key) {
   ledger_client_->FetchFavIcon(url, publisher_key);
+}
+
+ledger::PublisherBanner LedgerImpl::GetPublisherBanner(const std::string& publisher_id) {
+  return bat_publishers_->getPublisherBanner(publisher_id);
 }
 
 }  // namespace bat_ledger

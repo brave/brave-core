@@ -1250,6 +1250,19 @@ static bool ignore_ = false;
 
   BATCH_PROOF::~BATCH_PROOF() {}
 
+  /////////////////////////////////////////////////////////////////////////////
+  SERVER_LIST_BANNER::SERVER_LIST_BANNER() {}
+
+  SERVER_LIST_BANNER::SERVER_LIST_BANNER(const SERVER_LIST_BANNER& banner):
+    title_(banner.title_),
+    description_(banner.description_),
+    background_(banner.background_),
+    logo_(banner.logo_),
+    amounts_(banner.amounts_),
+    social_(banner.social_) {}
+
+  SERVER_LIST_BANNER::~SERVER_LIST_BANNER() {}
+
 /////////////////////////////////////////////////////////////////////////////
   void split(std::vector<std::string>& tmp, std::string query, char delimiter) {
     std::stringstream ss(query);
@@ -1552,6 +1565,41 @@ static bool ignore_ = false;
         SERVER_LIST item;
         item.verified = i[1].GetBool();
         item.excluded = i[2].GetBool();
+
+        SERVER_LIST_BANNER banner;
+
+        if (i.Size() > 3 && i[3].IsObject()) {
+          if (i[3].HasMember("title") && i[3]["title"].IsString()) {
+            banner.title_ = i[3]["title"].GetString();
+          }
+
+          if (i[3].HasMember("description") && i[3]["description"].IsString()) {
+            banner.description_ = i[3]["description"].GetString();
+          }
+
+          if (i[3].HasMember("backgroundUrl") && i[3]["backgroundUrl"].IsString()) {
+            banner.background_ = i[3]["backgroundUrl"].GetString();
+          }
+
+          if (i[3].HasMember("logoUrl") && i[3]["logoUrl"].IsString()) {
+            banner.logo_ = i[3]["logoUrl"].GetString();
+          }
+
+          if (i[3].HasMember("donationAmounts") && i[3]["donationAmounts"].IsArray()) {
+            for (auto &j : i[3]["donationAmounts"].GetArray()) {
+              banner.amounts_.emplace_back(j.GetInt());
+            }
+          }
+
+          if (i[3].HasMember("socialLinks") && i[3]["socialLinks"].IsObject()) {
+            for ( auto & k : i[3]["socialLinks"].GetObject()) {
+              banner.social_.insert(std::make_pair(k.name.GetString(), k.value.GetString()));
+            }
+          }
+        }
+
+        item.banner = banner;
+
         list.emplace(i[0].GetString(), item);
       }
     }

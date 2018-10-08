@@ -753,4 +753,29 @@ void BatPublishers::setBalanceReportItem(ledger::PUBLISHER_MONTH month,
   setBalanceReport(month, year, report_info);
 }
 
+ledger::PublisherBanner BatPublishers::getPublisherBanner(const std::string& publisher_id) {
+  ledger::PublisherBanner banner;
+
+  if (server_list_.empty()) {
+    return banner;
+  }
+
+  auto result = server_list_.find(publisher_id);
+
+  if (result == server_list_.end()) {
+    return banner;
+  }
+
+  const braveledger_bat_helper::SERVER_LIST values = result->second;
+
+  banner.title = values.banner.title_;
+  banner.description = values.banner.description_;
+  banner.background = values.banner.background_;
+  banner.logo = values.banner.logo_;
+  banner.amounts = values.banner.amounts_;
+  banner.social = values.banner.social_;
+
+  return banner;
+}
+
 }  // namespace braveledger_bat_publisher
