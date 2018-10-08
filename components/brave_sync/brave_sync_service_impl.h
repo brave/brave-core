@@ -15,6 +15,7 @@
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/can_send_history.h"
+#include "extensions/browser/extension_registry_observer.h"
 
 class Browser;
 
@@ -53,10 +54,10 @@ class History;
 class InitialBookmarkNodeInfo;
 
 class BraveSyncServiceImpl : public BraveSyncService,
-                       public SyncLibToBrowserHandler,
-                       public BookmarksClient,
-                       public CanSendSyncHistory {
-public:
+                             public SyncLibToBrowserHandler,
+                             public BookmarksClient,
+                             public CanSendSyncHistory {
+ public:
   BraveSyncServiceImpl(Profile *profile);
   ~BraveSyncServiceImpl() override;
 
@@ -82,10 +83,8 @@ public:
   bool IsSyncConfigured() override;
   bool IsSyncInitialized() override;
 
-private:
+ private:
   friend struct base::DefaultSingletonTraits<BraveSyncServiceImpl>;
-
-  void InitJsLib(const bool &setup_new_sync);
 
   // Compiler complains at
   void OnMessageFromSyncReceived() override;
@@ -246,7 +245,7 @@ private:
 
   // Mark members with an small life time
   class TempStorage {
-  public:
+   public:
     TempStorage();
     ~TempStorage();
     // This should be used only for passing
@@ -259,7 +258,7 @@ private:
   };
   TempStorage temp_storage_;
 
-  std::auto_ptr<brave_sync::prefs::Prefs> sync_prefs_;
+  std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
   std::unique_ptr<brave_sync::Settings> settings_;
   std::unique_ptr<brave_sync::storage::ObjectMap> sync_obj_map_;
   std::unique_ptr<brave_sync::Bookmarks> bookmarks_;

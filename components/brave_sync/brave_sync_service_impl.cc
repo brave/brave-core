@@ -43,7 +43,7 @@ BraveSyncServiceImpl::TempStorage::~TempStorage() {
 BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
   sync_client_(BraveSyncClientFactory::GetForBrowserContext(profile)),
   sync_initialized_(false),
-  profile_(nullptr),
+  profile_(profile),
   timer_(std::make_unique<base::RepeatingTimer>()),
   weak_ptr_factory_(this) {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl CTOR";
@@ -52,7 +52,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
 
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
-  sync_prefs_.reset(new brave_sync::prefs::Prefs(profile));
+  sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
 
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() <<">";
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync_prefs_->GetThisDeviceName()=<" << sync_prefs_->GetThisDeviceName() <<">";
@@ -90,8 +90,6 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
 
   LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile sync_client_="<<sync_client_;
 
-  LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile sync_client_ null, post in UI BraveSyncServiceImpl::InitJsLib";
-  InitJsLib(false);
   StartLoop();
 }
 
@@ -154,6 +152,8 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string &sync_words,
   temp_storage_.device_name_ = device_name; // Fill here, but save in OnSaveInitData
   temp_storage_.currently_initializing_guard_ = true;
 
+  sync_prefs_->SetSyncThisDevice(true);
+
   DCHECK(sync_client_);
   sync_client_->NeedBytesFromSyncWords(sync_words);
 }
@@ -180,9 +180,7 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(const std::string &device_name) 
   temp_storage_.device_name_ = device_name; // Fill here, but save in OnSaveInitData
   temp_storage_.currently_initializing_guard_ = true;
 
-  InitJsLib(true); // Init will cause load of the Script
-  // Then we will got GOT_INIT_DATA and SAVE_INIT_DATA, where we will save the seed and device id
-  // Then when we will receive sync_ready, we should display web page with sync settings
+  sync_prefs_->SetSyncThisDevice(true);
 }
 
 void BraveSyncServiceImpl::OnDeleteDevice(const std::string &device_id) {
@@ -260,6 +258,8 @@ void BraveSyncServiceImpl::OnResetSyncPostFileUiWork() {
   sync_configured_ = false;
 
   TriggerOnSyncStateChanged();
+
+  sync_prefs_->SetSyncThisDevice(false);
 }
 
 void BraveSyncServiceImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) {
@@ -331,20 +331,6 @@ void BraveSyncServiceImpl::OnSetSyncSavedSiteSettings(const bool &sync_saved_sit
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncSavedSiteSettings " << sync_saved_site_settings;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncSiteSettingsEnabled(sync_saved_site_settings);
-}
-
-void BraveSyncServiceImpl::InitJsLib(const bool &setup_new_sync) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::InitJsLib " << GetThreadInfoString();
-
-
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::InitJsLib sync_client_=" << sync_client_;
-
-  DCHECK(sync_client_);
-  if ( !seen_get_init_data_ && ( (!sync_prefs_->GetSeed().empty() && !sync_prefs_->GetThisDeviceName().empty()) ||
-      setup_new_sync) ) {
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::InitJsLib sync is active or setup_new_sync";
-    sync_client_->LoadClient();
-  }
 }
 
 void BraveSyncServiceImpl::OnMessageFromSyncReceived() {
@@ -448,8 +434,6 @@ void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Arr
 
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: sync_configured_ = true";
   sync_configured_ = true;
-
-  sync_prefs_->SetSyncThisDevice(true);
 
   sync_prefs_->SetSyncBookmarksEnabled(true);
   sync_prefs_->SetSyncSiteSettingsEnabled(true);
@@ -722,7 +706,9 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList &records) {
   } // for each device
 
 
-  DCHECK(existing_sync_devices.devices_.size() > 0);
+  DCHECK(existing_sync_devices.devices_.size() > 0)
+    << "existing_sync_devices.devices_.size() =="
+    << existing_sync_devices.devices_.size();
 
   std::string sync_devices_json = existing_sync_devices.ToJson();
   LOG(ERROR) << "TAGAB OnResolvedPreferences sync_devices_json="<<sync_devices_json;
@@ -908,8 +894,6 @@ void BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
     //DCHECK(temp_storage_.seed_str_.empty()); can be not epmty if try to do twice with error on first time
     temp_storage_.seed_str_ = StrFromUint8Array(bytes);
     LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnWordsToBytesDone: call InitJsLib";
-    InitJsLib(true);//Init will cause load of the Script;
   } else {
     LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared failed, " << error_message;
   }

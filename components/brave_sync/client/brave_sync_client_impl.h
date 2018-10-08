@@ -7,32 +7,47 @@
 
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "base/macros.h"
+#include "base/scoped_observer.h"
+#include "base/memory/weak_ptr.h"
+#include "components/prefs/pref_member.h"
+#include "extensions/browser/extension_registry_observer.h"
 
 class Profile;
 namespace extensions {
 class BraveSyncEventRouter;
+class ExtensionRegistry;
 }
+
+using extensions::ExtensionRegistryObserver;
+using extensions::ExtensionRegistry;
 
 namespace brave_sync {
 
-class BraveSyncClientImpl : public BraveSyncClient/*,
-                      public extensions::ExtensionRegistryObserver */{
+namespace prefs {
+  class Prefs;
+}
+
+class BraveSyncClientImpl : public BraveSyncClient,
+                            public ExtensionRegistryObserver {
  public:
   BraveSyncClientImpl(Profile *profile);
   ~BraveSyncClientImpl() override;
 
   void Shutdown() override;
 
-  void ExtensionStartupComplete() override;
+  void OnExtensionInitialized() override;
+
+  // ExtensionRegistryObserver:
+  void OnExtensionLoaded(content::BrowserContext* browser_context,
+                         const extensions::Extension* extension) override;
+  void OnExtensionUnloaded(content::BrowserContext* browser_context,
+                           const extensions::Extension* extension,
+                           extensions::UnloadedExtensionReason reason) override;
   // BraveSyncClient overrides
 
   // BraveSync to Browser messages
   void SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) override;
   SyncLibToBrowserHandler *GetSyncToBrowserHandler() override;
-
-  // After this call the library gets loaded and
-  // sends SyncLibToBrowserHandler::OnGetInitData and so on
-  void LoadClient() override;
 
   // Browser to BraveSync messages
   void SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
@@ -53,12 +68,24 @@ class BraveSyncClientImpl : public BraveSyncClient/*,
   void NeedBytesFromSyncWords(const std::string &words) override;
 
  private:
+  void LoadOrUnloadExtension(bool load);
+  void OnExtensionSystemReady();
+  void OnPreferenceChanged(const std::string& pref_name);
+
+  bool extension_loaded_;
+
   SyncLibToBrowserHandler *handler_;
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
   Profile *profile_;
 
-  bool startup_complete_;
-  bool set_load_pending_;
+  std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
+
+  BooleanPrefMember sync_this_device_enabled_;
+
+  ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
+    extension_registry_observer_;
+
+  base::WeakPtrFactory<BraveSyncClientImpl> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncClientImpl);
 };

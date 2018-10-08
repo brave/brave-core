@@ -1,81 +1,80 @@
 'use strict';
 
-chrome.runtime.onStartup.addListener(function() {
-  chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config) {
-    if ((seed instanceof Array && seed.length == 0) || (seed instanceof Uint8Array && seed.length == 0)) {
-      seed = null;
-    }
-    console.log(`"got-init-data" seed=${JSON.stringify(seed)} device_id=${JSON.stringify(device_id)} config=${JSON.stringify(config)}`);
-    callbackList["got-init-data"](null, seed, device_id, config);
-  });
-
-  chrome.braveSync.onFetchSyncRecords.addListener(function(category_names, start_at, max_records) {
-    console.log(`"fetch-sync-records" category_names=${JSON.stringify(category_names)} start_at=${JSON.stringify(start_at)} max_records=${JSON.stringify(max_records)}`);
-    callbackList["fetch-sync-records"](null, category_names, start_at, max_records);
-  });
-
-  chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, recordsAndExistingObjects) {
-    var recordsAndExistingObjectsArrArr = [];
-    for(var i = 0; i < recordsAndExistingObjects.length; ++i) {
-      var cur_rec = recordsAndExistingObjects[i];
-      if ('localRecord' in cur_rec) {
-        fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
-        fixupSyncRecordBrowserToExt(cur_rec.localRecord);
-        recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, cur_rec.localRecord]);
-      } else {
-        fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
-        recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, null]);
-      }
-    }
-    console.log(`"resolve-sync-records" category_name=${JSON.stringify(category_name)} recordsAndExistingObjects=${JSON.stringify(recordsAndExistingObjectsArrArr)}`);
-    callbackList["resolve-sync-records"](null, category_name, recordsAndExistingObjectsArrArr);
-  });
-
-  chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) {
-    // Fixup ids
-    for (var i = 0; i < records.length; ++i) {
-      fixupSyncRecordBrowserToExt(records[i]);
-    }
-    console.log(`"send-sync-records" category_name=${JSON.stringify(category_name)} records=${JSON.stringify(records)}`);
-    callbackList["send-sync-records"](null, category_name, records);
-  });
-
-  chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, platform) {
-    console.log(`"get-bookmarks-base-order" deviceId=${JSON.stringify(deviceId)} platform=${JSON.stringify(platform)}`);
-    callbackList["get-bookmarks-base-order"](null, deviceId, platform);
-  });
-
-  chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder) {
-    console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)}`);
-    callbackList["get-bookmark-order"](null, prevOrder, nextOrder);
-  });
-
-  chrome.braveSync.onNeedSyncWords.addListener(function(seed) {
-    var arr_int = seed.split(',').map(Number);
-    var buffer = new Uint8Array(arr_int);
-    var words = module.exports.passphrase.fromBytesOrHex(buffer, /*useNiceware=*/ false /* use bip39 */);
-    console.log(`"NeedSyncWords" seed=${JSON.stringify(seed)} words=${JSON.stringify(words)}`);
-    chrome.braveSync.syncWordsPrepared(words);
-  });
-
-  chrome.braveSync.onNeedBytesFromSyncWords.addListener(function(words) {
-    try {
-      var bytes = module.exports.passphrase.toBytes32(words);
-      console.log(`"NeedBytesFromSyncWords" words=${JSON.stringify(words)} bytes=${JSON.stringify(bytes)}`);
-      chrome.braveSync.bytesFromSyncWordsPrepared(bytes, '');
-    } catch(err) {
-      console.log(`"NeedBytesFromSyncWords" words=${JSON.stringify(words)} err.message=${err.message}`);
-      chrome.braveSync.bytesFromSyncWordsPrepared(new Uint8Array([]), err.message);
-    }
-  });
-
-  chrome.braveSync.onLoadClient.addListener(function() {
-    console.log("in chrome.braveSync.onLoadClient");
-    LoadJsLibScript();
-  });
-
-  chrome.braveSync.extensionLoaded();
+chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config) {
+  if ((seed instanceof Array && seed.length == 0) || (seed instanceof Uint8Array && seed.length == 0)) {
+    seed = null;
+  }
+  console.log(`"got-init-data" seed=${JSON.stringify(seed)} device_id=${JSON.stringify(device_id)} config=${JSON.stringify(config)}`);
+  callbackList["got-init-data"](null, seed, device_id, config);
 });
+
+chrome.braveSync.onFetchSyncRecords.addListener(function(category_names, start_at, max_records) {
+  console.log(`"fetch-sync-records" category_names=${JSON.stringify(category_names)} start_at=${JSON.stringify(start_at)} max_records=${JSON.stringify(max_records)}`);
+  callbackList["fetch-sync-records"](null, category_names, start_at, max_records);
+});
+
+chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, recordsAndExistingObjects) {
+  var recordsAndExistingObjectsArrArr = [];
+  for(var i = 0; i < recordsAndExistingObjects.length; ++i) {
+    var cur_rec = recordsAndExistingObjects[i];
+    if ('localRecord' in cur_rec) {
+      fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
+      fixupSyncRecordBrowserToExt(cur_rec.localRecord);
+      recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, cur_rec.localRecord]);
+    } else {
+      fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
+      recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, null]);
+    }
+  }
+  console.log(`"resolve-sync-records" category_name=${JSON.stringify(category_name)} recordsAndExistingObjects=${JSON.stringify(recordsAndExistingObjectsArrArr)}`);
+  callbackList["resolve-sync-records"](null, category_name, recordsAndExistingObjectsArrArr);
+});
+
+chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) {
+  // Fixup ids
+  for (var i = 0; i < records.length; ++i) {
+    fixupSyncRecordBrowserToExt(records[i]);
+  }
+  console.log(`"send-sync-records" category_name=${JSON.stringify(category_name)} records=${JSON.stringify(records)}`);
+  callbackList["send-sync-records"](null, category_name, records);
+});
+
+chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, platform) {
+  console.log(`"get-bookmarks-base-order" deviceId=${JSON.stringify(deviceId)} platform=${JSON.stringify(platform)}`);
+  callbackList["get-bookmarks-base-order"](null, deviceId, platform);
+});
+
+chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder) {
+  console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)}`);
+  callbackList["get-bookmark-order"](null, prevOrder, nextOrder);
+});
+
+chrome.braveSync.onNeedSyncWords.addListener(function(seed) {
+  var arr_int = seed.split(',').map(Number);
+  var buffer = new Uint8Array(arr_int);
+  var words = module.exports.passphrase.fromBytesOrHex(buffer, /*useNiceware=*/ false /* use bip39 */);
+  console.log(`"NeedSyncWords" seed=${JSON.stringify(seed)} words=${JSON.stringify(words)}`);
+  chrome.braveSync.syncWordsPrepared(words);
+});
+
+chrome.braveSync.onNeedBytesFromSyncWords.addListener(function(words) {
+  try {
+    var bytes = module.exports.passphrase.toBytes32(words);
+    console.log(`"NeedBytesFromSyncWords" words=${JSON.stringify(words)} bytes=${JSON.stringify(bytes)}`);
+    chrome.braveSync.bytesFromSyncWordsPrepared(bytes, '');
+  } catch(err) {
+    console.log(`"NeedBytesFromSyncWords" words=${JSON.stringify(words)} err.message=${err.message}`);
+    chrome.braveSync.bytesFromSyncWordsPrepared(new Uint8Array([]), err.message);
+  }
+});
+
+chrome.braveSync.onLoadClient.addListener(function() {
+  console.log("in chrome.braveSync.onLoadClient");
+  LoadJsLibScript();
+});
+
+chrome.braveSync.extensionInitialized();
+console.log("chrome.braveSync.extensionInitialized");
 
 //-------------------------------------------------------------
 
