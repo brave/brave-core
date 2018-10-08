@@ -764,15 +764,11 @@ void BraveSyncServiceImpl::OnResolvedBookmarks(const RecordsList &records) {
     }
     // Abnormal cases
     if (sync_record->action == jslib::SyncRecord::Action::DELETE && local_id.empty()) {
-      LOG(ERROR) << "TAGAB received request to delete bookmark which we don't have";
-      //DCHECK(false) << "TAGAB received request to delete bookmark which we don't have";
-      // ^ saw this while testing not-synced records on delete records on acceptor side
+      LOG(WARNING) << "received request to delete bookmark which we don't have, ignoring";
     } else if (sync_record->action == jslib::SyncRecord::Action::CREATE && !local_id.empty()) {
-      LOG(ERROR) << "TAGAB received request to create bookmark which already exists";
-      //DCHECK(false) << "TAGAB received request to create bookmark which already exists";
-      // ^ saw this case when forced start_at  on "fetch-sync-records" to a const time
+      LOG(WARNING) << "received request to create bookmark which already exists, ignoring";
     } else if (sync_record->action == jslib::SyncRecord::Action::UPDATE && local_id.empty()) {
-      DCHECK(false) << "TAGAB received request to update bookmark which we don't have";
+      LOG(WARNING) << "received request to update bookmark which we don't have, ignoring";
     }
   }
 }
