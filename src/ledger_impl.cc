@@ -293,6 +293,10 @@ void LedgerImpl::RestorePublishers() {
   bat_publishers_->restorePublishers();
 }
 
+void LedgerImpl::LoadNicewareList(ledger::GetNicewareListCallback callback) {
+  ledger_client_->LoadNicewareList(callback);
+}
+
 void LedgerImpl::OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
                                     ledger::Result result,
                                     std::unique_ptr<ledger::PublisherInfo> info) {
