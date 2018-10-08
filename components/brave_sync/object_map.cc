@@ -413,7 +413,7 @@ std::set<std::string> ObjectMap::SaveGetDeleteNotSyncedRecords(
         list_changed = (items_removed != 0);
       }
       // Delete corresponding objectIds
-      if (clear_local_db) {
+      if (clear_local_db && (items_removed != 0)) {
         DeleteByLocalId(type, id);
       }
     }
