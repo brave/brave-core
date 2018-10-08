@@ -171,6 +171,9 @@ class LEDGER_EXPORT Ledger {
                                const std::string& path,
                                ledger::PUBLISHER_MONTH month,
                                int year) = 0;
+  virtual void SetBalanceReportCatpcha(PUBLISHER_MONTH month,
+                                       int year,
+                                       const std::string& probi) = 0;
 };
 
 }  // namespace ledger

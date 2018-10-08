@@ -708,13 +708,27 @@ static bool ignore_ = false;
 
   /////////////////////////////////////////////////////////////////////////////
   REPORT_BALANCE_ST::REPORT_BALANCE_ST():
-    opening_balance_(.0),
-    closing_balance_(.0),
-    grants_(.0),
-    earning_from_ads_(.0),
-    auto_contribute_(.0),
-    recurring_donation_(.0),
-    one_time_donation_(.0) {}
+    opening_balance_("0"),
+    closing_balance_("0"),
+    deposits_("0"),
+    grants_("0"),
+    earning_from_ads_("0"),
+    auto_contribute_("0"),
+    recurring_donation_("0"),
+    one_time_donation_("0"),
+    total_("0") {}
+
+  REPORT_BALANCE_ST::REPORT_BALANCE_ST(const REPORT_BALANCE_ST& state) {
+    opening_balance_ = state.opening_balance_;
+    closing_balance_ = state.closing_balance_;
+    deposits_ = state.deposits_;
+    grants_ = state.grants_;
+    earning_from_ads_ = state.earning_from_ads_;
+    auto_contribute_ = state.auto_contribute_;
+    recurring_donation_ = state.recurring_donation_;
+    one_time_donation_ = state.one_time_donation_;
+    total_ = state.total_;
+  }
 
   REPORT_BALANCE_ST::~REPORT_BALANCE_ST() {}
 
@@ -724,23 +738,27 @@ static bool ignore_ = false;
 
     bool error = d.HasParseError();
     if (false == error) {
-      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsDouble() &&
-        d.HasMember("closing_balance") && d["closing_balance"].IsDouble() &&
-        d.HasMember("grants") && d["grants"].IsDouble() &&
-        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsDouble() &&
-        d.HasMember("auto_contribute") && d["auto_contribute"].IsDouble() &&
-        d.HasMember("recurring_donation") && d["recurring_donation"].IsDouble() &&
-        d.HasMember("one_time_donation") && d["one_time_donation"].IsDouble());
+      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsString() &&
+        d.HasMember("closing_balance") && d["closing_balance"].IsString() &&
+        d.HasMember("deposits") && d["deposits"].IsString() &&
+        d.HasMember("grants") && d["grants"].IsString() &&
+        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsString() &&
+        d.HasMember("auto_contribute") && d["auto_contribute"].IsString() &&
+        d.HasMember("recurring_donation") && d["recurring_donation"].IsString() &&
+        d.HasMember("one_time_donation") && d["one_time_donation"].IsString() &&
+        d.HasMember("total") && d["total"].IsString());
     }
 
     if (false == error) {
-      opening_balance_ = d["opening_balance"].GetDouble();
-      closing_balance_ = d["closing_balance"].GetDouble();
-      grants_ = d["grants"].GetDouble();
-      earning_from_ads_ = d["earning_from_ads"].GetDouble();
-      auto_contribute_ = d["auto_contribute"].GetDouble();
-      recurring_donation_ = d["recurring_donation"].GetDouble();
-      one_time_donation_ = d["one_time_donation"].GetDouble();
+      opening_balance_ = d["opening_balance"].GetString();
+      closing_balance_ = d["closing_balance"].GetString();
+      deposits_ = d["deposits"].GetString();
+      grants_ = d["grants"].GetString();
+      earning_from_ads_ = d["earning_from_ads"].GetString();
+      auto_contribute_ = d["auto_contribute"].GetString();
+      recurring_donation_ = d["recurring_donation"].GetString();
+      one_time_donation_ = d["one_time_donation"].GetString();
+      total_ = d["total"].GetString();
     }
 
     return !error;
@@ -750,25 +768,40 @@ static bool ignore_ = false;
     writer.StartObject();
 
     writer.String("opening_balance");
-    writer.Double(data.opening_balance_);
+
+    writer.String(data.opening_balance_.c_str());
 
     writer.String("closing_balance");
-    writer.Double(data.closing_balance_);
+
+    writer.String(data.closing_balance_.c_str());
+
+    writer.String("deposits");
+
+    writer.String(data.deposits_.c_str());
 
     writer.String("grants");
-    writer.Double(data.grants_);
+
+    writer.String(data.grants_.c_str());
 
     writer.String("earning_from_ads");
-    writer.Double(data.earning_from_ads_);
+
+    writer.String(data.earning_from_ads_.c_str());
 
     writer.String("auto_contribute");
-    writer.Double(data.auto_contribute_);
+
+    writer.String(data.auto_contribute_.c_str());
 
     writer.String("recurring_donation");
-    writer.Double(data.recurring_donation_);
+
+    writer.String(data.recurring_donation_.c_str());
 
     writer.String("one_time_donation");
-    writer.Double(data.one_time_donation_);
+
+    writer.String(data.one_time_donation_.c_str());
+
+    writer.String("total");
+
+    writer.String(data.total_.c_str());
 
     writer.EndObject();
   }

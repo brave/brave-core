@@ -9,6 +9,7 @@
 #include <algorithm>
 
 #include "bat_helper.h"
+#include "bignum.h"
 #include "ledger_impl.h"
 #include "rapidjson_bat_helper.h"
 #include "static_values.h"
@@ -537,11 +538,20 @@ void BatPublishers::setBalanceReport(ledger::PUBLISHER_MONTH month,
   report_balance.opening_balance_ = report_info.opening_balance_;
   report_balance.closing_balance_ = report_info.closing_balance_;
   report_balance.grants_ = report_info.grants_;
+  report_balance.deposits_ = report_info.deposits_;
   report_balance.earning_from_ads_ = report_info.earning_from_ads_;
-  report_balance.auto_contribute_ = report_info.auto_contribute_;
   report_balance.recurring_donation_ = report_info.recurring_donation_;
   report_balance.one_time_donation_ = report_info.one_time_donation_;
 
+  std::string total = "0";
+  total = braveledger_bat_bignum::sum(total, report_balance.grants_);
+  total = braveledger_bat_bignum::sum(total, report_balance.earning_from_ads_);
+  total = braveledger_bat_bignum::sum(total, report_balance.deposits_);
+  total = braveledger_bat_bignum::sub(total, report_balance.auto_contribute_);
+  total = braveledger_bat_bignum::sub(total, report_balance.recurring_donation_);
+  total = braveledger_bat_bignum::sub(total, report_balance.one_time_donation_);
+
+  report_balance.total_ = total;
   state_->monthly_balances_[GetBalanceReportName(month, year)] = report_balance;
   saveState();
 }
@@ -692,6 +702,15 @@ void BatPublishers::onPublisherActivity(ledger::Result result,
 
 void BatPublishers::OnExcludedSitesChanged() {
   ledger_->OnExcludedSitesChanged();
+}
+
+void BatPublishers::setBalanceReportCatpcha(ledger::PUBLISHER_MONTH month,
+                                            int year,
+                                            const std::string& probi) {
+  ledger::BalanceReportInfo report_info;
+  getBalanceReport(month, year, &report_info);
+  report_info.grants_ = braveledger_bat_bignum::sum(report_info.grants_, probi);
+  setBalanceReport(month, year, report_info);
 }
 
 }  // namespace braveledger_bat_publisher
