@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
-#include "chrome/browser/renderer_host/chrome_navigation_ui_data.h"
 
 #define ChromeNavigationUIData BraveNavigationUIData
 #include "../../../../chrome/browser/ui/browser_navigator.cc"
