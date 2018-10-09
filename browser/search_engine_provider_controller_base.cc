@@ -13,6 +13,32 @@
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
+class SearchEngineProviderControllerBase::Destroyer
+    : public TemplateURLServiceObserver {
+ public:
+  Destroyer(SearchEngineProviderControllerBase* controller,
+            TemplateURLService* otr_service)
+      : controller_(controller),
+        otr_service_(otr_service) {
+    otr_service_->AddObserver(this);
+  }
+  ~Destroyer() override {}
+
+ private:
+  // TemplateURLServiceObserver overrides:
+  void OnTemplateURLServiceChanged() override {}
+  void OnTemplateURLServiceShuttingDown() override {
+    otr_service_->RemoveObserver(this);
+    delete controller_;
+    delete this;
+  }
+
+  SearchEngineProviderControllerBase* controller_;
+  TemplateURLService* otr_service_;
+
+  DISALLOW_COPY_AND_ASSIGN(Destroyer);
+};
+
 SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
     Profile* profile)
     : otr_profile_(profile),
@@ -27,6 +53,10 @@ SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
       base::Bind(&SearchEngineProviderControllerBase::OnPreferenceChanged,
                  base::Unretained(this)));
 
+  // This class should be destroyed together with otr profile's template url
+  // service. If not, this can access dangling otr profile would be accessed.
+  destroyer_ = new Destroyer(this, otr_template_url_service_);
+
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
       profile->GetPrefs(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
@@ -34,10 +64,6 @@ SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
 }
 
 SearchEngineProviderControllerBase::~SearchEngineProviderControllerBase() {
-}
-
-void SearchEngineProviderControllerBase::OnTemplateURLServiceShuttingDown() {
-  delete this;
 }
 
 void SearchEngineProviderControllerBase::OnPreferenceChanged(
