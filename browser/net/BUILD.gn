@@ -31,6 +31,8 @@ source_set("net") {
     "//brave/components/brave_webtorrent/browser/net",
     "//chrome/browser",
     "//content/public/browser",
+    "//content/public/common",
+    "//extensions/common:common_constants",
     "//net",
   ]
 }
