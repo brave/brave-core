@@ -230,18 +230,17 @@ void BatPublishers::saveVisitInternal(
                                                    visit_data.local_month,
                                                    visit_data.local_year));
 
-  if (isExcluded(publisher_info->id, publisher_info->excluded)) {
-    return;
-  }
-
-
   publisher_info->favicon_url = visit_data.favicon_url;
   publisher_info->name = visit_data.name;
   publisher_info->provider = visit_data.provider;
   publisher_info->url = visit_data.url;
-  publisher_info->duration += duration;
   publisher_info->visits += 1;
   publisher_info->category = ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE;
+  if (!isExcluded(publisher_info->id, publisher_info->excluded)) {
+    publisher_info->duration += duration;
+  } else {
+    publisher_info->duration = 0;
+  }
   publisher_info->score += concaveScore(duration);
   publisher_info->verified = isVerified(publisher_info->id);
   publisher_info->reconcile_stamp = ledger_->GetReconcileStamp();
@@ -257,7 +256,7 @@ std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
     return info;
   }
 
-  if (!isEligableForContribution(*info)) {
+  if (!isEligibleForContribution(*info)) {
     return info;
   }
 
@@ -548,7 +547,7 @@ bool BatPublishers::isExcluded(const std::string& publisher_id, const ledger::PU
   return values.excluded;
 }
 
-bool BatPublishers::isEligableForContribution(const ledger::PublisherInfo& info) {
+bool BatPublishers::isEligibleForContribution(const ledger::PublisherInfo& info) {
 
   if (isExcluded(info.id, info.excluded) || (!state_->allow_non_verified_ && !isVerified(info.id)))
     return false;
