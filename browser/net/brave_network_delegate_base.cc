@@ -131,7 +131,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
       if (rv == net::ERR_IO_PENDING) {
         return;
       }
-      if (rv == net::ERR_ABORTED) {
+      if (rv != net::OK) {
         break;
       }
     }
@@ -146,7 +146,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
       if (rv == net::ERR_IO_PENDING) {
         return;
       }
-      if (rv == net::ERR_ABORTED) {
+      if (rv != net::OK) {
         break;
       }
     }
@@ -163,13 +163,13 @@ void BraveNetworkDelegateBase::RunNextCallback(
       if (rv == net::ERR_IO_PENDING) {
         return;
       }
-      if (rv == net::ERR_ABORTED) {
+      if (rv != net::OK) {
         break;
       }
     }
   }
 
-  if (rv == net::ERR_ABORTED) {
+  if (rv != net::OK) {
     RunCallbackForRequestIdentifier(ctx->request_identifier, rv);
     return;
   }
