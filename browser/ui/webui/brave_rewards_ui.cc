@@ -77,6 +77,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                        brave_rewards::Grant grant) override;
   void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service) override;
+  void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
+                           unsigned int result,
+                           const std::string& viewing_id,
+                           const std::string& probi) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -480,6 +484,13 @@ void RewardsDOMHandler::GetContributionAmount(const base::ListValue* args) {
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributionAmount", base::Value(amount));
   }
+}
+
+void RewardsDOMHandler::OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
+  unsigned int result,
+  const std::string& viewing_id,
+  const std::string& probi) {
+  GetAllBalanceReports();
 }
 
 }  // namespace
