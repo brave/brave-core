@@ -14,10 +14,10 @@ const createWallet = (state: Rewards.State) => {
   state.enabledAds = true
   state.enabledContribute = true
   state.createdTimestamp = new Date().getTime()
-  chrome.send('getReconcileStamp', [])
-  chrome.send('getAddresses', [])
-  chrome.send('saveSetting', ['enabledMain', 'true'])
-  chrome.send('saveSetting', ['enabledContribute', 'true'])
+  chrome.send('brave_rewards.getReconcileStamp', [])
+  chrome.send('brave_rewards.getAddresses', [])
+  chrome.send('brave_rewards.saveSetting', ['enabledMain', 'true'])
+  chrome.send('brave_rewards.saveSetting', ['enabledContribute', 'true'])
 
   return state
 }
@@ -25,7 +25,7 @@ const createWallet = (state: Rewards.State) => {
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
     case types.CREATE_WALLET:
-      chrome.send('createWalletRequested', [])
+      chrome.send('brave_rewards.createWalletRequested', [])
       break
     case types.WALLET_CREATED:
       state = { ...state }
@@ -36,7 +36,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state.walletCreateFailed = true
       break
     case types.GET_WALLET_PROPERTIES:
-      chrome.send('getWalletProperties', [])
+      chrome.send('brave_rewards.getWalletProperties', [])
       break
     case types.ON_WALLET_PROPERTIES:
       {
@@ -59,7 +59,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
     case types.GET_WALLLET_PASSPHRASE:
-      chrome.send('getWalletPassphrase', [])
+      chrome.send('brave_rewards.getWalletPassphrase', [])
       break
     case types.ON_WALLLET_PASSPHRASE:
       const value = action.payload.pass
@@ -81,7 +81,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
 
-      chrome.send('recoverWallet', [action.payload.key])
+      chrome.send('brave_rewards.recoverWallet', [action.payload.key])
       break
     case types.ON_RECOVER_WALLET_DATA:
       {
@@ -97,8 +97,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         if (result === 0) {
           walletInfo.balance = balance
           walletInfo.grants = grants || []
-          chrome.send('getWalletPassphrase', [])
-          chrome.send('getAddresses', [])
+          chrome.send('brave_rewards.getWalletPassphrase', [])
+          chrome.send('brave_rewards.getAddresses', [])
           ui.emptyWallet = balance <= 0
           ui.modalBackup = false
         }
@@ -168,7 +168,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
     case types.CHECK_WALLET_EXISTENCE:
       {
-        chrome.send('checkWalletExistence')
+        chrome.send('brave_rewards.checkWalletExistence')
         break
       }
     case types.ON_WALLET_EXISTS:

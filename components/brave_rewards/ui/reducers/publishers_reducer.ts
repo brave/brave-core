@@ -24,10 +24,10 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       if (!action.payload.publisherKey) {
         break
       }
-      chrome.send('excludePublisher', [action.payload.publisherKey])
+      chrome.send('brave_rewards.excludePublisher', [action.payload.publisherKey])
       break
     case types.ON_RESTORE_PUBLISHERS:
-      chrome.send('restorePublishers', [])
+      chrome.send('brave_rewards.restorePublishers', [])
       break
   }
 

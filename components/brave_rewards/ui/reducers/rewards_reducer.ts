@@ -15,7 +15,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const value = action.payload.value
       if (key) {
         state[key] = value
-        chrome.send('saveSetting', [key, value.toString()])
+        chrome.send('brave_rewards.saveSetting', [key, value.toString()])
       }
       break
     case types.ON_MODAL_BACKUP_CLOSE:
