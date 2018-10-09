@@ -12,11 +12,17 @@
 using content::NavigationHandle;
 using tor::TorProfileService;
 
+enum class WindowOpenDisposition;
+
 class BraveNavigationUIData : public ChromeNavigationUIData {
  public:
   BraveNavigationUIData();
   explicit BraveNavigationUIData(NavigationHandle* navigation_handle);
   ~BraveNavigationUIData() override;
+
+  static std::unique_ptr<ChromeNavigationUIData> CreateForMainFrameNavigation(
+      content::WebContents* web_contents,
+      WindowOpenDisposition disposition);
 
   std::unique_ptr<content::NavigationUIData> Clone() const override;
 

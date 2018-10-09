@@ -147,3 +147,38 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
   EXPECT_TRUE(proxy_service->config()->value().proxy_rules().Equals(rules));
   EXPECT_EQ(ret, net::OK);
 }
+
+TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
+
+  Profile* profile = profile_manager->GetProfile(tor_path);
+  ASSERT_TRUE(profile);
+
+  net::TestDelegate test_delegate;
+  GURL url("file://test");
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(url, net::IDLE, &test_delegate,
+                             TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo>
+      before_url_context(new brave::BraveRequestInfo());
+  brave::ResponseCallback callback;
+
+  std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
+    std::make_unique<BraveNavigationUIData>();
+  BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
+  content::ResourceRequestInfo::AllocateForTesting(
+    request.get(), content::RESOURCE_TYPE_MAIN_FRAME, resource_context(),
+    kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
+    /*is_main_frame=*/true, /*allow_download=*/false, /*is_async=*/true,
+    content::PREVIEWS_OFF, std::move(navigation_ui_data));
+
+  MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
+                                                   navigation_ui_data_ptr);
+  GURL new_url;
+  int ret =
+    brave::OnBeforeURLRequest_TorWork(request.get(), &new_url, callback,
+                                      before_url_context);
+  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_EQ(ret, net::ERR_DISALLOWED_URL_SCHEME);
+}
