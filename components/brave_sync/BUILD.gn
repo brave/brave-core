@@ -60,6 +60,7 @@ source_set("brave_sync") {
     "//base",
     "//content/public/browser",
     "//brave/common/extensions/api",
+    "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/pref_registry",
