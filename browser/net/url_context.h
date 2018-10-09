@@ -9,6 +9,7 @@
 #include <string>
 
 #include "chrome/browser/net/chrome_network_delegate.h"
+#include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
 namespace brave {
@@ -33,6 +34,7 @@ struct BraveRequestInfo {
   GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   const base::ListValue* referral_headers_list = nullptr;
+  content::ResourceType resource_type;
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 

@@ -4,6 +4,7 @@
 
 #include "brave/browser/net/brave_profile_network_delegate.h"
 
+#include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
@@ -21,6 +22,10 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   brave::OnBeforeURLRequestCallback
   callback =
       base::Bind(brave::OnBeforeURLRequest_SiteHacksWork);
+  before_url_request_callbacks_.push_back(callback);
+
+  callback =
+      base::Bind(brave::OnBeforeURLRequest_AdBlockTPWork);
   before_url_request_callbacks_.push_back(callback);
 
   callback =

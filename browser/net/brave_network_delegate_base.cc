@@ -169,10 +169,8 @@ void BraveNetworkDelegateBase::RunNextCallback(
     }
   }
 
-  std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
-      callbacks_.find(ctx->request_identifier);
   if (rv == net::ERR_ABORTED) {
-    std::move(it->second).Run(rv);
+    RunCallbackForRequestIdentifier(ctx->request_identifier, rv);
     return;
   }
 
