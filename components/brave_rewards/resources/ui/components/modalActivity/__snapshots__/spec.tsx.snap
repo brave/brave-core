@@ -167,7 +167,7 @@ exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
 
 .c17 {
   width: 100%;
-  margin-bottom: 11px;
+  margin-bottom: 20px;
 }
 
 .c18 {
