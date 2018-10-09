@@ -15,10 +15,7 @@
 
 using extensions::ExtensionBrowserTest;
 
-const char kAdsPage[] = "/blocking.html";
-const char kAdsPageV4[] = "/blocking_v4.html";
-const char kAdsPageRegional[] = "/blocking_regional.html";
-const char kNoAdsPage[] = "/no_blocking.html";
+const char kAdBlockTestPage[] = "/blocking.html";
 
 const std::string kAdBlockEasyListFranceUUID("9852EFC4-99E4-4F2D-A915-9C3196C7A1DE");
 
@@ -154,7 +151,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
       kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
 
-  GURL url = embedded_test_server()->GetURL(kAdsPage);
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -163,7 +160,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(imgLoaded())",
+      "addElement('ad_banner.png')",
       &img_loaded));
   EXPECT_FALSE(img_loaded);
 }
@@ -175,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByDefaultBlocker
       kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
 
-  GURL url = embedded_test_server()->GetURL(kNoAdsPage);
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -184,7 +181,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByDefaultBlocker
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(imgLoaded())",
+      "addElement('logo.png')",
       &img_loaded));
   EXPECT_TRUE(img_loaded);
 }
@@ -202,7 +199,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
       kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
 
-  GURL url = embedded_test_server()->GetURL(kAdsPageRegional);
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -211,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(imgLoaded())",
+      "addElement('ad_fr.png')",
       &img_loaded));
   EXPECT_FALSE(img_loaded);
 }
@@ -229,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByRegionalBlocke
       kRegionalAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallRegionalAdBlockExtension(kAdBlockEasyListFranceUUID));
 
-  GURL url = embedded_test_server()->GetURL(kNoAdsPage);
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -238,7 +235,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByRegionalBlocke
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(imgLoaded())",
+      "addElement('logo.png')",
       &img_loaded));
   EXPECT_TRUE(img_loaded);
 }
@@ -260,7 +257,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedAfterDataFileVersionUpgr
   SetDATFileVersionForTest("4");
   ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v4", 0));
 
-  GURL url = embedded_test_server()->GetURL(kAdsPageV4);
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -269,7 +266,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedAfterDataFileVersionUpgr
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(imgLoaded())",
+      "addElement('v4_specific_banner.png')",
       &img_loaded));
   EXPECT_FALSE(img_loaded);
 }

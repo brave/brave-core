@@ -14,6 +14,8 @@
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "brave/vendor/tracking-protection/TPParser.h"
 
@@ -44,6 +46,7 @@ TrackingProtectionService::TrackingProtectionService()
       "cdn.syndication.twimg.com"
     }),
     weak_factory_(this) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 TrackingProtectionService::~TrackingProtectionService() {
@@ -57,6 +60,7 @@ void TrackingProtectionService::Cleanup() {
 bool TrackingProtectionService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string &tab_host) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string host = url.host();
   if (!tracking_protection_client_->matchesTracker(
         tab_host.c_str(), host.c_str())) {
@@ -180,6 +184,11 @@ void TrackingProtectionService::SetComponentIdAndBase64PublicKeyForTest(
     const std::string& component_base64_public_key) {
   g_tracking_protection_component_id_ = component_id;
   g_tracking_protection_component_base64_public_key_ = component_base64_public_key;
+}
+
+scoped_refptr<base::SequencedTaskRunner> TrackingProtectionService::GetTaskRunner() {
+  // We share the same task runner for all ad-block and TP code
+  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

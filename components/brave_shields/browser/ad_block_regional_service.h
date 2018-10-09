@@ -26,13 +26,10 @@ class AdBlockRegionalService : public AdBlockBaseService {
   AdBlockRegionalService();
   ~AdBlockRegionalService() override;
 
-  bool ShouldStartRequest(const GURL &url,
-    content::ResourceType resource_type,
-    const std::string& tab_host) override;
-
   static bool IsSupportedLocale(const std::string& locale);
   std::string GetUUID() const { return uuid_; }
   std::string GetTitle() const { return title_; }
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
 
  protected:
   bool Init() override;
