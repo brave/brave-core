@@ -33,13 +33,13 @@ public extension Strings {
 
 // Error pages.
 public extension Strings {
-//    public static let ErrorPagesAdvancedButton = NSLocalizedString("Advanced", comment: "Label for button to perform advanced actions on the error page")
-//    public static let ErrorPagesAdvancedWarning1 = NSLocalizedString("Warning: we can't confirm your connection to this website is secure.", comment: "Warning text when clicking the Advanced button on error pages")
-//    public static let ErrorPagesAdvancedWarning2 = NSLocalizedString("It may be a misconfiguration or tampering by an attacker. Proceed if you accept the potential risk.", comment: "Additional warning text when clicking the Advanced button on error pages")
-//    public static let ErrorPagesCertWarningDescription = NSLocalizedString("The owner of %@ has configured their website improperly. To protect your information from being stolen, Brave has not connected to this website.", comment: "Warning text on the certificate error page")
-//    public static let ErrorPagesCertWarningTitle = NSLocalizedString("Your connection is not private", comment: "Title on the certificate error page")
-//    public static let ErrorPagesGoBackButton = NSLocalizedString("Go Back", comment: "Label for button to go back from the error page")
-//    public static let ErrorPagesVisitOnceButton = NSLocalizedString("Visit site anyway", comment: "Button label to temporarily continue to the site from the certificate error page")
+    public static let ErrorPagesAdvancedButton = NSLocalizedString("Advanced", comment: "Label for button to perform advanced actions on the error page")
+    public static let ErrorPagesAdvancedWarning1 = NSLocalizedString("Warning: we can't confirm your connection to this website is secure.", comment: "Warning text when clicking the Advanced button on error pages")
+    public static let ErrorPagesAdvancedWarning2 = NSLocalizedString("It may be a misconfiguration or tampering by an attacker. Proceed if you accept the potential risk.", comment: "Additional warning text when clicking the Advanced button on error pages")
+    public static let ErrorPagesCertWarningDescription = NSLocalizedString("The owner of %@ has configured their website improperly. To protect your information from being stolen, Brave has not connected to this website.", comment: "Warning text on the certificate error page")
+    public static let ErrorPagesCertWarningTitle = NSLocalizedString("Your connection is not private", comment: "Title on the certificate error page")
+    public static let ErrorPagesGoBackButton = NSLocalizedString("Go Back", comment: "Label for button to go back from the error page")
+    public static let ErrorPagesVisitOnceButton = NSLocalizedString("Visit site anyway", comment: "Button label to temporarily continue to the site from the certificate error page")
 }
 
 // Logins Helper.
