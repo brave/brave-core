@@ -24,9 +24,6 @@ class SearchEngineProviderControllerBase : public TemplateURLServiceObserver {
  protected:
   virtual void ConfigureSearchEngineProvider() = 0;
 
-  // TemplateURLServiceObserver overrides:
-  void OnTemplateURLServiceShuttingDown() override;
-
   bool UseAlternativeSearchEngineProvider() const;
   void ChangeToAlternativeSearchEngineProvider();
   void ChangeToNormalWindowSearchEngineProvider();
@@ -42,6 +39,11 @@ class SearchEngineProviderControllerBase : public TemplateURLServiceObserver {
 
  private:
   void OnPreferenceChanged(const std::string& pref_name);
+
+  // |destroyer_| controls the lifecycle of this class and it is destroyed
+  // by itself.
+  class Destroyer;
+  Destroyer* destroyer_ = nullptr;
 
   BooleanPrefMember use_alternative_search_engine_provider_;
 
