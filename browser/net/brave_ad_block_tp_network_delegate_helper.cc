@@ -18,6 +18,7 @@
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/resource_request_info.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
