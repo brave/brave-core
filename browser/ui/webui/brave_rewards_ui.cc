@@ -88,46 +88,46 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 }
 
 void RewardsDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback("createWalletRequested",
+  web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getWalletProperties",
+  web_ui()->RegisterMessageCallback("brave_rewards.getWalletProperties",
       base::BindRepeating(&RewardsDOMHandler::GetWalletProperties,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getGrant",
+  web_ui()->RegisterMessageCallback("brave_rewards.getGrant",
                                     base::BindRepeating(&RewardsDOMHandler::GetGrant,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getGrantCaptcha",
+  web_ui()->RegisterMessageCallback("brave_rewards.getGrantCaptcha",
                                     base::BindRepeating(&RewardsDOMHandler::GetGrantCaptcha,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getWalletPassphrase",
+  web_ui()->RegisterMessageCallback("brave_rewards.getWalletPassphrase",
                                     base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("recoverWallet",
+  web_ui()->RegisterMessageCallback("brave_rewards.recoverWallet",
                                     base::BindRepeating(&RewardsDOMHandler::RecoverWallet,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("solveGrantCaptcha",
+  web_ui()->RegisterMessageCallback("brave_rewards.solveGrantCaptcha",
                                     base::BindRepeating(&RewardsDOMHandler::SolveGrantCaptcha,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getReconcileStamp",
+  web_ui()->RegisterMessageCallback("brave_rewards.getReconcileStamp",
                                     base::BindRepeating(&RewardsDOMHandler::GetReconcileStamp,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getAddresses",
+  web_ui()->RegisterMessageCallback("brave_rewards.getAddresses",
                                     base::BindRepeating(&RewardsDOMHandler::GetAddresses,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("saveSetting",
+  web_ui()->RegisterMessageCallback("brave_rewards.saveSetting",
                                     base::BindRepeating(&RewardsDOMHandler::SaveSetting,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("getBalanceReports",
+  web_ui()->RegisterMessageCallback("brave_rewards.getBalanceReports",
                                     base::BindRepeating(&RewardsDOMHandler::GetBalanceReports,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("excludePublisher",
+  web_ui()->RegisterMessageCallback("brave_rewards.excludePublisher",
                                     base::BindRepeating(&RewardsDOMHandler::ExcludePublisher,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("restorePublishers",
+  web_ui()->RegisterMessageCallback("brave_rewards.restorePublishers",
                                     base::BindRepeating(&RewardsDOMHandler::RestorePublishers,
                                                         base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("checkWalletExistence",
+  web_ui()->RegisterMessageCallback("brave_rewards.checkWalletExistence",
                                     base::BindRepeating(&RewardsDOMHandler::WalletExists,
                                                         base::Unretained(this)));
 }
