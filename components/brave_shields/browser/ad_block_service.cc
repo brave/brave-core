@@ -36,12 +36,6 @@ AdBlockService::AdBlockService() {
 AdBlockService::~AdBlockService() {
 }
 
-bool AdBlockService::ShouldStartRequest(const GURL& url,
-    content::ResourceType resource_type,
-    const std::string& tab_host) {
-  return AdBlockBaseService::ShouldStartRequest(url, resource_type, tab_host);
-}
-
 bool AdBlockService::Init() {
   Register(kAdBlockComponentName, g_ad_block_component_id_,
            g_ad_block_component_base64_public_key_);

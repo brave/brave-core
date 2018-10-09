@@ -7,7 +7,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_resource_throttle.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 
@@ -32,8 +31,4 @@ void BraveResourceDispatcherHostDelegate::AppendStandardResourceThrottles(
     std::vector<std::unique_ptr<content::ResourceThrottle>>* throttles) {
   ChromeResourceDispatcherHostDelegate::AppendStandardResourceThrottles(
     request, resource_context, resource_type, throttles);
-
-  content::ResourceThrottle* throttle = MaybeCreateBraveShieldsResourceThrottle(
-    request, resource_type);
-  throttles->push_back(base::WrapUnique(throttle));
 }

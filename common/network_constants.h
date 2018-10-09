@@ -9,6 +9,7 @@ extern const char kBraveReferralsInitPath[];
 extern const char kBraveReferralsActivityPath[];
 
 extern const char kEmptyDataURI[];
+extern const char kEmptyImageDataURI[];
 extern const char kJSDataURLPrefix[];
 extern const char kGeoLocationsPattern[];
 extern const char kGoogleTagManagerPattern[];

@@ -19,6 +19,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "brave/vendor/ad-block/data_file_version.h"
 #include "brave/vendor/ad-block/lists/regions.h"
@@ -59,12 +60,6 @@ AdBlockRegionalService::AdBlockRegionalService() {
 }
 
 AdBlockRegionalService::~AdBlockRegionalService() {
-}
-
-bool AdBlockRegionalService::ShouldStartRequest(const GURL& url,
-    content::ResourceType resource_type,
-    const std::string& tab_host) {
-  return AdBlockBaseService::ShouldStartRequest(url, resource_type, tab_host);
 }
 
 bool AdBlockRegionalService::UnregisterComponentByLocale(const std::string& locale) {
@@ -133,6 +128,11 @@ void AdBlockRegionalService::SetComponentIdAndBase64PublicKeyForTest(
 void AdBlockRegionalService::SetDATFileVersionForTest(
   const std::string& dat_file_version) {
   g_ad_block_regional_dat_file_version_ = dat_file_version;
+}
+
+scoped_refptr<base::SequencedTaskRunner> AdBlockRegionalService::GetTaskRunner() {
+  // We share the same task runner for all ad-block and TP code
+  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

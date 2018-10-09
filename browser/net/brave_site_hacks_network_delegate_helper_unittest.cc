@@ -10,8 +10,6 @@
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
 
-using brave::GetPolyfillForAdBlock;
-
 namespace {
 
 class BraveSiteHacksNetworkDelegateHelperTest: public testing::Test {
@@ -30,92 +28,6 @@ class BraveSiteHacksNetworkDelegateHelperTest: public testing::Test {
   content::TestBrowserThreadBundle thread_bundle_;
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
-
-
-TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NoChangeURL) {
-  net::TestDelegate test_delegate;
-  GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
-  std::unique_ptr<net::URLRequest> request =
-      context()->CreateRequest(url, net::IDLE, &test_delegate,
-                               TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo>
-      brave_request_info(new brave::BraveRequestInfo());
-  brave::ResponseCallback callback;
-  GURL new_url;
-  int ret =
-    OnBeforeURLRequest_SiteHacksWork(request.get(), &new_url, callback,
-        brave_request_info);
-  EXPECT_TRUE(new_url.is_empty());
-  EXPECT_EQ(ret, net::OK);
-}
-
-TEST_F(BraveSiteHacksNetworkDelegateHelperTest, RedirectsToEmptyDataURLs) {
-  std::vector<GURL> urls({
-    GURL("https://sp1.nypost.com"),
-    GURL("https://sp.nasdaq.com")
-  });
-  std::for_each(urls.begin(), urls.end(),
-      [this](GURL url){
-    net::TestDelegate test_delegate;
-    std::unique_ptr<net::URLRequest> request =
-        context()->CreateRequest(url, net::IDLE, &test_delegate,
-                                 TRAFFIC_ANNOTATION_FOR_TESTS);
-    std::shared_ptr<brave::BraveRequestInfo>
-        brave_request_info(new brave::BraveRequestInfo());
-    brave::ResponseCallback callback;
-    GURL new_url;
-    int ret =
-      OnBeforeURLRequest_SiteHacksWork(request.get(), &new_url, callback,
-          brave_request_info);
-    EXPECT_EQ(ret, net::OK);
-    EXPECT_STREQ(new_url.spec().c_str(), kEmptyDataURI);
-  });
-}
-
-TEST_F(BraveSiteHacksNetworkDelegateHelperTest, RedirectsToStubs) {
-  std::vector<GURL> urls({
-    GURL(kGoogleTagManagerPattern),
-    GURL(kGoogleTagServicesPattern)
-  });
-  std::for_each(urls.begin(), urls.end(),
-      [this](GURL url){
-    net::TestDelegate test_delegate;
-    std::unique_ptr<net::URLRequest> request =
-        context()->CreateRequest(url, net::IDLE, &test_delegate,
-                                 TRAFFIC_ANNOTATION_FOR_TESTS);
-    std::shared_ptr<brave::BraveRequestInfo>
-        brave_request_info(new brave::BraveRequestInfo());
-    brave::ResponseCallback callback;
-    GURL new_url;
-    int ret =
-      OnBeforeURLRequest_SiteHacksWork(request.get(), &new_url, callback,
-          brave_request_info);
-    EXPECT_EQ(ret, net::OK);
-    EXPECT_TRUE(new_url.SchemeIs("data"));
-  });
-}
-
-TEST_F(BraveSiteHacksNetworkDelegateHelperTest, Blocking) {
-  std::vector<GURL> urls({
-    GURL("https://www.lesechos.fr/xtcore.js"),
-    GURL("https://bradhatesprimes.y8.com/js/sdkloader/outstream.js")
-  });
-  std::for_each(urls.begin(), urls.end(),
-      [this](GURL url){
-    net::TestDelegate test_delegate;
-    std::unique_ptr<net::URLRequest> request =
-        context()->CreateRequest(url, net::IDLE, &test_delegate,
-                                 TRAFFIC_ANNOTATION_FOR_TESTS);
-    std::shared_ptr<brave::BraveRequestInfo>
-        brave_request_info(new brave::BraveRequestInfo());
-    brave::ResponseCallback callback;
-    GURL new_url;
-    int ret =
-      OnBeforeURLRequest_SiteHacksWork(request.get(), &new_url, callback,
-          brave_request_info);
-    EXPECT_EQ(ret, net::ERR_ABORTED);
-  });
-}
 
 TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ForbesWithCookieHeader) {
   GURL url("https://www.forbes.com");
@@ -351,42 +263,6 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
     EXPECT_STREQ(new_url.spec().c_str(), url.spec().c_str());
     EXPECT_STREQ(request->referrer().c_str(), url.GetOrigin().spec().c_str());
   });
-}
-
-
-TEST_F(BraveSiteHacksNetworkDelegateHelperTest, GetPolyfill) {
-  GURL tab_origin("https://test.com");
-  GURL tag_manager_url(kGoogleTagManagerPattern);
-  GURL tag_services_url(kGoogleTagServicesPattern);
-  GURL normal_url("https://a.com");
-  GURL out_url;
-  // Shields up, block ads, tag manager should get polyfill
-  ASSERT_TRUE(GetPolyfillForAdBlock(true, false, tab_origin, tag_manager_url, &out_url));
-  // Shields up, block ads, tag services should get polyfill
-  ASSERT_TRUE(GetPolyfillForAdBlock(true, false, tab_origin, tag_services_url, &out_url));
-  // Shields up, block ads, normal URL should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(true, false, tab_origin, normal_url, &out_url));
-
-  // Shields up, allow ads, tag manager should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin, tag_manager_url, &out_url));
-  // Shields up, allow ads, tag services should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin, tag_services_url, &out_url));
-  // Shields up, allow ads, normal URL should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin, normal_url, &out_url));
-
-  // Shields down, allow ads, tag manager should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin, tag_manager_url, &out_url));
-  // Shields down, allow ads, tag services should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin, tag_services_url, &out_url));
-  // Shields down, allow ads, normal URL should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin, normal_url, &out_url));
-
-  // Shields down, block ads, tag manager should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin, tag_manager_url, &out_url));
-  // Shields down, block ads, tag services should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin, tag_services_url, &out_url));
-  // Shields down, block ads, normal URL should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin, normal_url, &out_url));
 }
 
 }  // namespace
