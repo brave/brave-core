@@ -122,7 +122,7 @@ class ContributeBox extends React.Component<Props, State> {
             >
               {
                 monthlyList.map((choice: MonthlyChoice) => {
-                  return <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
+                  return <div key={`choice-setting-${choice.tokens}`} data-value={choice.tokens.toString()}>
                     <Tokens
                       value={choice.tokens}
                       converted={choice.converted}
@@ -229,7 +229,7 @@ class ContributeBox extends React.Component<Props, State> {
           </Select>
         </List>
         <List title={getLocale('contributionNextDate')}>
-          <NextContribution>{new Date(reconcileStamp).toLocaleDateString()}</NextContribution>
+          <NextContribution>{new Date(reconcileStamp * 1000).toLocaleDateString()}</NextContribution>
         </List>
         <List title={getLocale('contributionSites')}>
           {getLocale('total')} &nbsp;<Tokens

@@ -1173,4 +1173,8 @@ void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
   }
 }
 
+double RewardsServiceImpl::GetContributionAmount() {
+  return ledger_->GetContributionAmount();
+}
+
 }  // namespace brave_rewards

@@ -83,6 +83,7 @@ class RewardsService : public KeyedService {
   virtual void GetCurrentBalanceReport() = 0;
   virtual bool IsWalletCreated() = 0;
   virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) = 0;
+  virtual double GetContributionAmount() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

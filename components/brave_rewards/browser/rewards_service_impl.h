@@ -99,6 +99,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetCurrentBalanceReport() override;
   bool IsWalletCreated() override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) override;
+  double GetContributionAmount() override;
 
  private:
   typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
