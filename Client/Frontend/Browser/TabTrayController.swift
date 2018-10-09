@@ -959,7 +959,7 @@ fileprivate class EmptyPrivateTabsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        titleLabel.text =  Strings.Private_Tab_Title
+        titleLabel.text =  Strings.Private_Browsing
         descriptionLabel.text = Strings.Private_Tab_Body
 
         addSubview(titleLabel)
