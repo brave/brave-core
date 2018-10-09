@@ -479,6 +479,7 @@ void BatClient::viewingCredentialsCallback(bool result,
 
   std::vector<std::string> surveyors;
   braveledger_bat_helper::getJSONList(SURVEYOR_IDS, response, surveyors);
+  std::string probi = "0";
   // Save the rest values to transactions
   for (size_t i = 0; i < state_->transactions_.size(); i++) {
     if (state_->transactions_[i].viewingId_ != currentReconcile_->viewingId_) {
@@ -488,11 +489,11 @@ void BatClient::viewingCredentialsCallback(bool result,
     state_->transactions_[i].registrarVK_ = currentReconcile_->registrarVK_;
     state_->transactions_[i].masterUserToken_ = currentReconcile_->masterUserToken_;
     state_->transactions_[i].surveyorIds_ = surveyors;
+    probi = state_->transactions_[i].contribution_probi_;
   }
 
   saveState();
-  ledger_->OnReconcileComplete(ledger::Result::LEDGER_OK, currentReconcile_->viewingId_);
-  //LOG(ERROR) << "!!!response masterUserToken == " << currentReconcile_.masterUserToken_;
+  ledger_->OnReconcileComplete(ledger::Result::LEDGER_OK, currentReconcile_->viewingId_, probi);
 }
 
 unsigned int BatClient::ballots(const std::string& viewingId) {

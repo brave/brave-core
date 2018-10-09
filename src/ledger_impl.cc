@@ -429,11 +429,12 @@ void LedgerImpl::Reconcile() {
 }
 
 void LedgerImpl::OnReconcileComplete(ledger::Result result,
-                                    const std::string& viewing_id) {
+                                    const std::string& viewing_id,
+                                    const std::string& probi) {
   // TODO SZ: we have to save old timestamp in case of failure
   uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
 
-  ledger_client_->OnReconcileComplete(result, viewing_id);
+  ledger_client_->OnReconcileComplete(result, viewing_id, probi);
   // Start the timer again
   bat_client_->resetReconcileStamp();
   Reconcile();
@@ -702,10 +703,11 @@ void LedgerImpl::OnExcludedSitesChanged() {
   ledger_client_->OnExcludedSitesChanged();
 }
 
-void LedgerImpl::SetBalanceReportCatpcha(ledger::PUBLISHER_MONTH month,
-                                         int year,
-                                         const std::string& probi) {
-  bat_publishers_->setBalanceReportCatpcha(month, year, probi);
+void LedgerImpl::SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
+                                      int year,
+                                      ledger::ReportType type,
+                                      const std::string& probi) {
+  bat_publishers_->setBalanceReportItem(month, year, type, probi);
 }
 
 }  // namespace bat_ledger

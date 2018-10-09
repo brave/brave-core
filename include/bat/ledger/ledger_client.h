@@ -45,7 +45,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnWalletProperties(Result result,
                                   std::unique_ptr<ledger::WalletInfo>) = 0;
   virtual void OnReconcileComplete(Result result,
-                                   const std::string& viewing_id) = 0;
+                                   const std::string& viewing_id,
+                                   const std::string& probi) = 0;
 
   virtual void LoadLedgerState(LedgerCallbackHandler* handler) = 0;
   virtual void SaveLedgerState(const std::string& ledger_state,

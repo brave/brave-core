@@ -570,6 +570,7 @@ void BatPublishers::setBalanceReport(ledger::PUBLISHER_MONTH month,
   report_balance.earning_from_ads_ = report_info.earning_from_ads_;
   report_balance.recurring_donation_ = report_info.recurring_donation_;
   report_balance.one_time_donation_ = report_info.one_time_donation_;
+  report_balance.auto_contribute_ = report_info.auto_contribute_;
 
   std::string total = "0";
   total = braveledger_bat_bignum::sum(total, report_balance.grants_);
@@ -732,12 +733,24 @@ void BatPublishers::OnExcludedSitesChanged() {
   ledger_->OnExcludedSitesChanged();
 }
 
-void BatPublishers::setBalanceReportCatpcha(ledger::PUBLISHER_MONTH month,
-                                            int year,
-                                            const std::string& probi) {
+void BatPublishers::setBalanceReportItem(ledger::PUBLISHER_MONTH month,
+                                         int year,
+                                         ledger::ReportType type,
+                                         const std::string& probi) {
   ledger::BalanceReportInfo report_info;
   getBalanceReport(month, year, &report_info);
-  report_info.grants_ = braveledger_bat_bignum::sum(report_info.grants_, probi);
+
+  switch (type) {
+    case ledger::ReportType::GRANT:
+      report_info.grants_ = braveledger_bat_bignum::sum(report_info.grants_, probi);
+      break;
+    case ledger::ReportType::AUTO_CONTRIBUTION:
+      report_info.auto_contribute_ = braveledger_bat_bignum::sum(report_info.auto_contribute_, probi);
+      break;
+    default:
+      break;
+  }
+
   setBalanceReport(month, year, report_info);
 }
 
