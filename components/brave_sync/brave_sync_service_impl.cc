@@ -26,6 +26,7 @@
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/value_debug.h"
+#include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -152,10 +153,18 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string &sync_words,
   temp_storage_.device_name_ = device_name; // Fill here, but save in OnSaveInitData
   temp_storage_.currently_initializing_guard_ = true;
 
-  sync_prefs_->SetSyncThisDevice(true);
-
-  DCHECK(sync_client_);
-  sync_client_->NeedBytesFromSyncWords(sync_words);
+  std::vector<unsigned char> sync_bytes;
+  sync_bytes.resize(32);
+  size_t written = 0;
+  int result = bip39_mnemonic_to_bytes(nullptr, sync_words.c_str(), &sync_bytes.front(), sync_bytes.size(), &written);
+  DLOG(INFO) << "bip39_mnemonic_to_bytes result="<<result;
+  DLOG(INFO) << "bip39_mnemonic_to_bytes written="<<written;
+  // Workaround to use C++ sync words => bytes conversion
+  if (0 != result || 0 == written) {
+    OnBytesFromSyncWordsPrepared(Uint8Array(), "Wrong sync words");
+  } else {
+    OnBytesFromSyncWordsPrepared(sync_bytes, std::string());
+  }
 }
 
 void BraveSyncServiceImpl::OnSetupSyncNewToSync(const std::string &device_name) {
@@ -894,6 +903,8 @@ void BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
     //DCHECK(temp_storage_.seed_str_.empty()); can be not epmty if try to do twice with error on first time
     temp_storage_.seed_str_ = StrFromUint8Array(bytes);
     LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
+    // Workaround to use C++ sync words => bytes conversion
+    sync_prefs_->SetSyncThisDevice(true);
   } else {
     LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared failed, " << error_message;
   }
