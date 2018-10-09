@@ -7,6 +7,8 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
 import BraveShields from './containers/braveShields'
+require('./assets/fonts/muli.css')
+require('./assets/fonts/poppins.css')
 
 chrome.storage.local.get('state', (obj) => {
   const store: any = new Store({
