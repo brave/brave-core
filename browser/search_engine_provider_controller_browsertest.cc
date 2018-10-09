@@ -75,6 +75,16 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest, PrefTest) {
             base::ASCIIToUTF16("test1"));
 }
 
+// Check crash isn't happened with multiple private window is used.
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+                       MultiplePrivateWindowTest) {
+  Browser* private_window_1 = CreateIncognitoBrowser();
+  CloseBrowserSynchronously(private_window_1);
+
+  Browser* private_window_2 = CreateIncognitoBrowser();
+  brave::ToggleUseAlternativeSearchEngineProvider(private_window_2->profile());
+}
+
 // This test crashes with below. I don't know how to deal with now.
 // [FATAL:brave_content_browser_client.cc(217)] Check failed: !path.empty().
 // TODO(simonhong): Enable this later.
