@@ -3,10 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import BraveShieldsHeader from './braveShieldsHeader'
-import BraveShieldsStats from './braveShieldsStats'
-import BraveShieldsControls from './braveShieldsControls'
-import BraveShieldsFooter from './braveShieldsFooter'
+// import BraveShieldsHeader from './braveShieldsHeader'
+// import BraveShieldsStats from './braveShieldsStats'
+// import BraveShieldsControls from './braveShieldsControls'
+// import BraveShieldsFooter from './braveShieldsFooter'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { Tab } from '../../types/state/shieldsPannelState'
 
@@ -27,7 +27,7 @@ interface BraveShieldsProps {
 
 export default class BraveShields extends React.Component<BraveShieldsProps, {}> {
   render () {
-    const { shieldsPanelTabData, actions } = this.props
+    const { shieldsPanelTabData /*, actions */ } = this.props
 
     if (!shieldsPanelTabData) {
       return null
@@ -35,7 +35,8 @@ export default class BraveShields extends React.Component<BraveShieldsProps, {}>
 
     return (
       <div data-test-id='brave-shields-panel'>
-        <BraveShieldsHeader
+        to-do
+        {/* <BraveShieldsHeader
           braveShields={shieldsPanelTabData.braveShields}
           shieldsToggled={actions.shieldsToggled}
           hostname={shieldsPanelTabData.hostname}
@@ -73,7 +74,7 @@ export default class BraveShields extends React.Component<BraveShieldsProps, {}>
           allowScriptOriginsOnce={actions.allowScriptOriginsOnce}
           changeNoScriptSettings={actions.changeNoScriptSettings}
         />
-        <BraveShieldsFooter tabId={shieldsPanelTabData.id} />
+        <BraveShieldsFooter tabId={shieldsPanelTabData.id} /> */}
       </div>
     )
   }
