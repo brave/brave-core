@@ -975,6 +975,8 @@ class BrowserViewController: UIViewController {
     }
 
     func openURLInNewTab(_ url: URL?, isPrivate: Bool = false, isPrivileged: Bool) {
+        urlBar.leaveOverlayMode(didCancel: true)
+
         if let selectedTab = tabManager.selectedTab {
             screenshotHelper.takeScreenshot(selectedTab)
         }
@@ -1664,10 +1666,7 @@ extension BrowserViewController: TabToolbarDelegate {
 extension BrowserViewController: TabsBarViewControllerDelegate {
     func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab) {
         if tab == tabManager.selectedTab { return }
-        if urlBar.inOverlayMode {
-            // Lose focus
-            urlBar.leaveOverlayMode(didCancel: true)
-        }
+        urlBar.leaveOverlayMode(didCancel: true)
         tabManager.selectTab(tab)
     }
 }
@@ -1904,7 +1903,7 @@ extension BrowserViewController: TabManagerDelegate {
         updateTabCountUsingTabManager(tabManager)
         // tabDelegate is a weak ref (and the tab's webView may not be destroyed yet)
         // so we don't expcitly unset it.
-
+        urlBar.leaveOverlayMode(didCancel: true)
         if let url = tab.url, !url.isAboutURL && !tab.isPrivate {
             profile.recentlyClosedTabs.addTab(url as URL, title: tab.title, faviconURL: tab.displayFavicon?.url)
         }
