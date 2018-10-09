@@ -6,7 +6,13 @@ import Foundation
 
 final class PrivateBrowsingManager {
     
-    var isPrivateBrowsing = false
+    var isPrivateBrowsing = false {
+        didSet {
+            if oldValue != isPrivateBrowsing {
+                NotificationCenter.default.post(name: .PrivacyModeChanged, object: nil)
+            }
+        }
+    }
     
     static let shared = PrivateBrowsingManager()
     
