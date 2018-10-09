@@ -15,21 +15,21 @@ export const BraveImage = styled(BaseImage)`
 `
 
 export const ImportImage = styled(BaseImage)`
-  height: 200px;
+  height: 190px;
 `
 
 export const SearchImage = styled(BaseImage)`
-  height: 200px;
+  height: 190px;
 `
 
 export const ThemeImage = styled(BaseImage)`
-  height: 200px;
+  height: 190px;
 `
 
 export const PaymentsImage = styled(BaseImage)`
-  height: 200px;
+  height: 190px;
 `
 
 export const ShieldsImage = styled(BaseImage)`
-  height: 200px;
+  height: 190px;
 `

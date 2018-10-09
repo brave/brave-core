@@ -57,7 +57,7 @@ export const SelectGrid = styled(BaseGrid)`
 export const Footer = styled(BaseGrid.withComponent('footer'))`
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  padding: 0 60px 50px;
+  padding: 0 50px 40px;
 `
 
 export const FooterLeftColumn = styled(BaseColumn)`
@@ -138,7 +138,7 @@ export const Panel = styled(Card)`
   border-radius: 20px;
   box-shadow: 0 6px 12px 0 rgba(39, 46, 64, 0.2);
   max-width: 600px;
-  min-height: 580px;
+  min-height: 540px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
