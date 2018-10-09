@@ -7,6 +7,9 @@
 #include <memory>
 
 #include "base/memory/ptr_util.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/web_contents.h"
 
 BraveNavigationUIData::BraveNavigationUIData()
     : ChromeNavigationUIData(),
@@ -18,6 +21,25 @@ BraveNavigationUIData::BraveNavigationUIData(
       tor_profile_service_(nullptr) {}
 
 BraveNavigationUIData::~BraveNavigationUIData() {}
+
+// static
+std::unique_ptr<ChromeNavigationUIData>
+BraveNavigationUIData::CreateForMainFrameNavigation(
+    content::WebContents* web_contents,
+    WindowOpenDisposition disposition) {
+  auto navigation_ui_data =
+    ChromeNavigationUIData::CreateForMainFrameNavigation(
+        web_contents, disposition);
+  BraveNavigationUIData* ui_data =
+    static_cast<BraveNavigationUIData*>(navigation_ui_data.get());
+
+  Profile* profile = Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  TorProfileServiceFactory::SetTorNavigationUIData(
+      profile,
+      ui_data);
+
+  return navigation_ui_data;
+}
 
 std::unique_ptr<content::NavigationUIData> BraveNavigationUIData::Clone()
     const {
