@@ -222,9 +222,35 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
   }
 
   // in the absence of an explicit block rule, whitelist the following sites
+  std::string kWhitelistPatterns[] = {
+      "[*.]youtube.com",
+      "[*.]khanacademy.org",
+      "[*.]twitch.tv",
+      "[*.]vimeo.com",
+      "[*.]udemy.com",
+      "[*.]duolingo.com",
+      "[*.]giphy.com",
+      "[*.]imgur.com",
+      "[*.]netflix.com",
+      "[*.]hulu.com",
+      "[*.]primevideo.com",
+      "[*.]dailymotion.com",
+      "[*.]tv.com",
+      "[*.]viewster.com",
+      "[*.]metacafe.com",
+      "[*.]d.tube",
+      "[*.]spotify.com",
+      "[*.]lynda.com",
+      "[*.]soundcloud.com",
+      "[*.]pandora.com",
+      "[*.]periscope.tv",
+      "[*.]pscp.tv",
+  };
   const GURL& primary_url = GetOriginOrURL(frame);
-  if (ContentSettingsPattern::FromString("[*.]youtube.com").Matches(primary_url)) {
-      return true;
+  for (const auto& pattern : kWhitelistPatterns) {
+    if (ContentSettingsPattern::FromString(pattern).Matches(primary_url)) {
+        return true;
+    }
   }
 
   blink::mojom::blink::PermissionServicePtr permission_service;
