@@ -14,6 +14,7 @@ class BraveBrowserFrame : public BrowserFrame {
     explicit BraveBrowserFrame(BrowserView* browser_view);
     ~BraveBrowserFrame() override;
     const ui::NativeTheme* GetNativeTheme() const override;
+    void ThemeChanged() override;
 
   private:
     // The BrowserView is our ClientView. This is a pointer to it.

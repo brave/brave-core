@@ -1,0 +1,13 @@
+diff --git a/ui/views/widget/widget.h b/ui/views/widget/widget.h
+index 2efbe5c4d899ec9ec683b6f8ecb058cbe903cd94..d43b471c277a95b3daa245a25d74c2e5624211de 100644
+--- a/ui/views/widget/widget.h
++++ b/ui/views/widget/widget.h
+@@ -637,7 +637,7 @@ class VIEWS_EXPORT Widget : public internal::NativeWidgetDelegate,
+ 
+   // Notifies the view hierarchy contained in this widget that theme resources
+   // changed.
+-  void ThemeChanged();
++  virtual void ThemeChanged();
+ 
+   // Notifies the view hierarchy contained in this widget that the device scale
+   // factor changed.
