@@ -161,6 +161,10 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       console.log('do nothing')
     }
 
+    const onCloseNotification = () => {
+      console.log(onCloseNotification)
+    }
+
     const onSummaryToggle = () => {
       store.set({ showSummary: !store.state.showSummary })
     }
@@ -181,6 +185,13 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             contentPadding={false}
             gradientTop={getGradientColor()}
             balance={text('Tokens', '30.0')}
+            notification={{
+              id: '001',
+              type: 'ads',
+              date: 'July 7',
+              onCloseNotification: onCloseNotification,
+              text: <span>You've earned 10 BAT from Brave Ads</span>
+            }}
             converted={text('Converted', '15.50 USD')}
             actions={[
               {

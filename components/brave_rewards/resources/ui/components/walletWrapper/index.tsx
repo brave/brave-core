@@ -25,7 +25,16 @@ import {
   StyledAlertClose,
   StyleGrantButton,
   StyledActionText,
-  StyledBAT
+  StyledBAT,
+  StyledNotificationIcon,
+  StyledNotificationCloseIcon,
+  StyledTypeText,
+  StyledMessageText,
+  StyledDateText,
+  StyledNotificationContent,
+  StyledButton,
+  StyledNotificationMessage,
+  StyledPipe
 } from './style'
 import { getLocale } from '../../../helpers'
 import Alert, { Type as AlertType } from '../alert'
@@ -36,7 +45,10 @@ import {
   CloseStrokeIcon,
   SettingsAdvancedIcon,
   UpholdColorIcon,
-  UpholdSystemIcon
+  UpholdSystemIcon,
+  LoveIcon,
+  GiftIcon,
+  MegaphoneIcon
 } from '../../../components/icons'
 
 type Grant = {
@@ -56,6 +68,16 @@ export interface ActionWallet {
   action: () => void
 }
 
+export type NotificationType = 'ads' | 'contribute' | 'token'
+
+export interface Notification {
+  id: string,
+  date: string,
+  type: NotificationType,
+  text: React.ReactNode,
+  onCloseNotification: (id: string) => void
+}
+
 export interface Props {
   balance: string
   converted: string | null
@@ -71,7 +93,8 @@ export interface Props {
   grants?: Grant[]
   alert?: AlertWallet | null
   id?: string
-  gradientTop?: string
+  gradientTop?: string,
+  notification?: Notification
 }
 
 interface State {
@@ -97,12 +120,97 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     })
   }
 
+  generateNotification = (notification: Notification | undefined) => {
+    if (!notification) {
+      return null
+    }
+
+    const onClose = notification.onCloseNotification.bind(this, notification.id)
+
+    return (
+      <>
+        <StyledNotificationCloseIcon>
+          <CloseStrokeIcon onClick={onClose} />
+        </StyledNotificationCloseIcon>
+        <StyledNotificationContent>
+          {this.getNotificationIcon(notification)}
+          {this.getNotificationMessage(notification)}
+          <StyledButton>
+            <Button
+              size={'small'}
+              type={'accent'}
+              level={'primary'}
+              onClick={onClose}
+              text={getLocale('ok').toUpperCase()}
+            />
+          </StyledButton>
+        </StyledNotificationContent>
+      </>
+    )
+  }
+
   toggleGrantDetails = () => {
     this.setState({ grantDetails: !this.state.grantDetails })
   }
 
   hasGrants = (grants?: Grant[]) => {
     return grants && grants.length > 0
+  }
+
+  getNotificationIcon = (notification: Notification) => {
+    let icon
+
+    switch (notification.type) {
+      case 'ads':
+        icon = <MegaphoneIcon />
+        break
+      case 'contribute':
+        icon = <LoveIcon />
+        break
+      case 'token':
+        icon = <GiftIcon />
+        break
+      default:
+        icon = ''
+        break
+    }
+
+    if (!icon) {
+      return null
+    }
+
+    return (
+      <StyledNotificationIcon notification={notification}>
+        {icon}
+      </StyledNotificationIcon>
+    )
+  }
+
+  getNotificationMessage = (notification: Notification) => {
+    let typeText
+
+    switch (notification.type) {
+      case 'ads':
+        typeText = getLocale('braveAdsTitle')
+        break
+      case 'contribute':
+        typeText = getLocale('braveContributeTitle')
+        break
+      case 'token':
+        typeText = getLocale('tokenGrant')
+        break
+      default:
+        typeText = ''
+        break
+    }
+
+    return (
+      <StyledNotificationMessage>
+        <StyledTypeText>{typeText}</StyledTypeText> <StyledPipe>|</StyledPipe>
+        <StyledMessageText>{notification.text}</StyledMessageText> <StyledPipe>|</StyledPipe>
+        <StyledDateText>{notification.date}</StyledDateText>
+      </StyledNotificationMessage>
+    )
   }
 
   render () {
@@ -120,7 +228,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       grants,
       onSettingsClick,
       alert,
-      gradientTop
+      gradientTop,
+      notification
     } = this.props
 
     const hasGrants = this.hasGrants(grants)
@@ -130,73 +239,79 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         <StyledWrapper
           id={id}
           compact={compact}
+          notification={notification}
         >
           <StyledHeader>
             {
-              alert && alert.node
-              ? <StyledAlertWrapper>
+              !notification
+              ? <>
                 {
-                  alert.onAlertClose
-                  ? <StyledAlertClose onClick={alert.onAlertClose}>
-                    <CloseStrokeIcon />
-                  </StyledAlertClose>
+                  alert && alert.node
+                  ? <StyledAlertWrapper>
+                    {
+                      alert.onAlertClose
+                      ? <StyledAlertClose onClick={alert.onAlertClose}>
+                        <CloseStrokeIcon />
+                      </StyledAlertClose>
+                      : null
+                    }
+                    <Alert type={alert.type} bg={true}>
+                        {alert.node}
+                    </Alert>
+                  </StyledAlertWrapper>
                   : null
                 }
-                <Alert type={alert.type} bg={true}>
-                    {alert.node}
-                </Alert>
-              </StyledAlertWrapper>
-              : null
-            }
-            <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
-            {
-              showSecActions
-              ? <StyledIconAction onClick={onSettingsClick} data-test-id='settingsButton'>
-                <SettingsAdvancedIcon />
-              </StyledIconAction>
-              : null
-            }
-
-            <StyledBalance>
-              <StyledBalanceTokens>
-                {balance} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
-              </StyledBalanceTokens>
-              {
-                converted
-                ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
-                : null
-              }
-              {
-                hasGrants
-                ? <StyleGrantButton>
-                  <Button
-                    text={getLocale('grants')}
-                    size={'small'}
-                    type={'subtle'}
-                    level={'secondary'}
-                    onClick={this.toggleGrantDetails}
-                    icon={{ position: 'after', image: this.state.grantDetails ? <CaratUpIcon /> : <CaratDownIcon /> }}
-                  />
-                </StyleGrantButton>
-                : null
-              }
-            </StyledBalance>
-            {
-              this.state.grantDetails && hasGrants
-              ? <StyledGrantWrapper>
+                <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
                 {
-                  grants && grants.map((grant: Grant, i: number) => {
-                    return <StyledGrant key={`${id}-grant-${i}`}>
-                      <b>{grant.tokens} BAT</b> <span>{getLocale('expiresOn')} {grant.expireDate}</span>
-                    </StyledGrant>
-                  })
+                  showSecActions
+                  ? <StyledIconAction onClick={onSettingsClick} data-test-id='settingsButton'>
+                    <SettingsAdvancedIcon />
+                  </StyledIconAction>
+                  : null
                 }
-              </StyledGrantWrapper>
-              : null
+                <StyledBalance>
+                  <StyledBalanceTokens>
+                    {balance} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
+                  </StyledBalanceTokens>
+                  {
+                    converted
+                    ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
+                    : null
+                  }
+                  {
+                    hasGrants
+                    ? <StyleGrantButton>
+                      <Button
+                        text={getLocale('grants')}
+                        size={'small'}
+                        type={'subtle'}
+                        level={'secondary'}
+                        onClick={this.toggleGrantDetails}
+                        icon={{ position: 'after', image: this.state.grantDetails ? <CaratUpIcon /> : <CaratDownIcon /> }}
+                      />
+                    </StyleGrantButton>
+                    : null
+                  }
+                </StyledBalance>
+                {
+                  this.state.grantDetails && hasGrants
+                  ? <StyledGrantWrapper>
+                    {
+                      grants && grants.map((grant: Grant, i: number) => {
+                        return <StyledGrant key={`${id}-grant-${i}`}>
+                          <b>{grant.tokens} BAT</b> <span>{getLocale('expiresOn')} {grant.expireDate}</span>
+                        </StyledGrant>
+                      })
+                    }
+                  </StyledGrantWrapper>
+                  : null
+                }
+                <StyledActionWrapper>
+                  {this.generateActions(actions, id)}
+                </StyledActionWrapper>
+              </>
+              : this.generateNotification(notification)
             }
-            <StyledActionWrapper>
-              {this.generateActions(actions, id)}
-            </StyledActionWrapper>
             <StyledCurve background={gradientTop}/>
           </StyledHeader>
           <StyledContent

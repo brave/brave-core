@@ -2,13 +2,15 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { Notification } from './'
 import styled from 'styled-components'
 
 interface StyledProps {
   connected?: boolean,
   contentPadding?: boolean,
   compact?: boolean,
-  background?: string
+  background?: string,
+  notification?: Notification | undefined
 }
 
 const panelBg = require('./assets/panel.svg')
@@ -17,15 +19,39 @@ const getRGB = (rgbColor: string) => {
   return `rgb(${rgbColor})`
 }
 
+const getIconColor = (notification: Notification | undefined) => {
+  if (!notification) {
+    return '#FFBBAA'
+  }
+
+  switch (notification.type) {
+    case 'ads':
+      return '#D666A2'
+    case 'contribute':
+      return '#9F22A1'
+    case 'token':
+      return '#FFBBAA'
+    default:
+      return '#FFBBAA'
+  }
+}
+
+const wrapperBackgroundRules = (notification: Notification | undefined) => {
+  if (!notification) {
+    return `url(${panelBg}) no-repeat top left,
+    linear-gradient(172deg, #392dd1, rgba(255, 26, 26, 0.53)),
+    linear-gradient(#7d7bdc, #7d7bdc)`
+  }
+
+  return 'linear-gradient(-180deg, rgba(255,255,255,1) 0%, rgba(215,236,255,1) 30%)'
+}
+
 export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   overflow: hidden;
   box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
   font-family: Poppins, sans-serif;
   width: 373px;
-  background:
-    url(${panelBg}) no-repeat top left,
-    linear-gradient(172deg, #392dd1, rgba(255, 26, 26, 0.53)),
-    linear-gradient(#7d7bdc, #7d7bdc);
+  background: ${p => wrapperBackgroundRules(p.notification)};
   min-height: ${p => p.compact ? 'unset' : '715px'};
   border-radius: ${p => p.compact ? '0' : '6px'};
   display: flex;
@@ -230,4 +256,59 @@ export const StyledBAT = styled<{}, 'div'>('div')`
       text-decoration: none;
     }
   }
+`
+
+export const StyledNotificationIcon = styled<StyledProps, 'div'>('div')`
+  height: 53px;
+  width: 53px;
+  margin: 8px auto 0px;
+  color: ${p => getIconColor(p.notification)};
+`
+
+export const StyledNotificationCloseIcon = styled<StyledProps, 'div'>('div')`
+  height: 20px;
+  width: 20px;
+  float: right;
+  margin-right: -6px;
+  color: #B8B9C4;
+  cursor: pointer;
+`
+
+export const StyledNotificationContent = styled<StyledProps, 'div'>('div')`
+  display: block;
+  text-align: center;
+`
+
+export const StyledNotificationMessage = styled<StyledProps, 'div'>('div')`
+  max-width: 285px;
+  color: #4B4C5C;
+  padding: 5px 0px;
+  margin: 0 auto;
+`
+
+export const StyledTypeText = styled<StyledProps, 'span'>('span')`
+  font-weight: 500;
+  margin-right: 5px;
+  display: inline-block;
+`
+
+export const StyledMessageText = styled<StyledProps, 'span'>('span')`
+  line-height: 20px;
+  font-weight: 300;
+  margin: 0px 5px;
+`
+
+export const StyledDateText = styled<StyledProps, 'span'>('span')`
+  font-weight: 200;
+  margin-left: 5px;
+  display: inline-block;
+`
+
+export const StyledButton = styled<StyledProps, 'div'>('div')`
+  width: 88px;
+  margin: 12px auto 15px;
+`
+
+export const StyledPipe = styled<StyledProps, 'span'>('span')`
+  font-weight: 300;
 `
