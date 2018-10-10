@@ -38,7 +38,7 @@ storiesOf('Feature Components/Rewards/Wallet', module)
         connectedWallet={boolean('Connected wallet', false)}
         showCopy={boolean('Show Uphold', false)}
         showSecActions={boolean('Show secondary actions', true)}
-        tokens={number('Tokens', 25)}
+        balance={text('Balance', '25.0')}
         converted={text('Converted', '163230.50 USD')}
         actions={[
           {

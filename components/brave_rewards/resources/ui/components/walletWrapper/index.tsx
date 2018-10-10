@@ -57,7 +57,7 @@ export interface ActionWallet {
 }
 
 export interface Props {
-  tokens: number
+  balance: string
   converted: string | null
   actions: ActionWallet[]
   connectedWallet?: boolean
@@ -109,7 +109,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const {
       id,
       children,
-      tokens,
+      balance,
       converted,
       actions,
       showCopy,
@@ -159,7 +159,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
             <StyledBalance>
               <StyledBalanceTokens>
-                {tokens} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
+                {balance} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
               </StyledBalanceTokens>
               {
                 converted
