@@ -489,7 +489,7 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
                                        const ledger::Grant& grant) {
   ledger::BalanceReportInfo report_info;
   auto now = base::Time::Now();
-  ledger_->SetBalanceReportCatpcha(GetPublisherMonth(now), GetPublisherYear(now), grant.probi);
+  ledger_->SetBalanceReportCaptcha(GetPublisherMonth(now), GetPublisherYear(now), grant.probi);
   TriggerOnGrantFinish(result, grant);
 }
 
