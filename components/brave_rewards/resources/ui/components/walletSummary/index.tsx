@@ -79,12 +79,13 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
     const all = Object.keys(this.props.report).length
     let current = 0
 
-    list.forEach(item => {
+    list.forEach((item, index) => {
       const data = (this.props.report as Record<string, Token>)[item.key]
       if (data) {
         current++
         result.push((
           <ListToken
+            key={`summary-${tokenSize}-${index}-${data.tokens}`}
             size={tokenSize}
             value={data.tokens}
             converted={data.converted}
