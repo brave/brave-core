@@ -522,6 +522,7 @@ void ObjectMap::DestroyDB() {
     LOG(ERROR) << "sync level db destroy error " << db_status.ToString();
     DCHECK(false);
   }
+  api_version_.clear();
 }
 
 void ObjectMap::ResetSync(const std::string& key) {

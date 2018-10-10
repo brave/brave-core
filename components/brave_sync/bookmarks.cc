@@ -470,7 +470,7 @@ void Bookmarks::ReorderFolderUiWorkApplyIndexes(const int64_t &folder_id, const 
       LOG(ERROR) << "TAGAB   id="<< current_child->id();
       LOG(ERROR) << "TAGAB   title="<< current_child->GetTitledUrlNodeTitle();
     }
-    DCHECK(false);
+    //DCHECK(false); Silent now, bookmarks will be re-done in UI thread
     return;
   }
 
@@ -1168,5 +1168,9 @@ void Bookmarks::SetBaseOrder(const std::string &base_order) {
   }
 }
 
+void Bookmarks::ClearData() {
+  device_id_.clear();
+  base_order_.clear();
+}
 
 } // namespace brave_sync

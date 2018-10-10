@@ -265,6 +265,9 @@ void BraveSyncServiceImpl::OnResetSyncPostFileUiWork() {
   sync_prefs_->Clear();
 
   sync_configured_ = false;
+  sync_initialized_ = false;
+
+  bookmarks_->ClearData();
 
   TriggerOnSyncStateChanged();
 
@@ -674,19 +677,21 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(const std::string &category_nam
   LOG(ERROR) << "TAGAB OnResolvedSyncRecords records->size()=" << records->size();
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
+  std::string this_device_id = sync_prefs_->GetThisDeviceId();
+
   // Jump to thread allowed perform file operations
   task_runner_->PostTask(
     FROM_HERE,
     base::Bind(&BraveSyncServiceImpl::OnResolvedSyncRecordsFileWork,
                weak_ptr_factory_.GetWeakPtr(), category_name,
-               base::Passed(std::move(records)))
+               base::Passed(std::move(records)), this_device_id)
   );
 }
 
-void BraveSyncServiceImpl::OnResolvedSyncRecordsFileWork(const std::string &category_name,
-  std::unique_ptr<RecordsList> records) {
+void BraveSyncServiceImpl::OnResolvedSyncRecordsFileWork(const std::string& category_name,
+  std::unique_ptr<RecordsList> records, const std::string& this_device_id) {
   if (category_name == brave_sync::jslib_const::kPreferences) {
-    OnResolvedPreferences(*records.get());
+    OnResolvedPreferences(*records.get(), this_device_id);
   } else if (category_name == brave_sync::jslib_const::kBookmarks) {
     OnResolvedBookmarks(*records.get());
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
@@ -697,24 +702,21 @@ void BraveSyncServiceImpl::OnResolvedSyncRecordsFileWork(const std::string &cate
   SendNonSyncedRecords();
 }
 
-void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList &records) {
+void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records,
+  const std::string& this_device_id) {
   DLOG(INFO) << "[Brave Sync] " << __func__ << ":";
+  DLOG(INFO) << "[Brave Sync] this_device_id=" << this_device_id;
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   SyncDevices existing_sync_devices;
   std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedPreferences: existing json=<" << json << ">";
   existing_sync_devices.FromJson(json);
 
-  //SyncDevices sync_devices;
-
-  //then merge to existing
-
-  // std::unique_ptr<base::Value> root = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  // std::unique_ptr<base::Value> arr_devices = std::make_unique<base::Value>(base::Value::Type::LIST);
+  bool this_device_deleted = false;
 
   for (const auto &record : records) {
     DCHECK(record->has_device() || record->has_sitesetting());
-
     if (record->has_device()) {
       DLOG(INFO) << "[Brave Sync] record->GetDevice().name=" <<
                     record->GetDevice().name;
@@ -724,8 +726,12 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList &records) {
       DLOG(INFO) << "[Brave Sync] record->objectId=" << record->objectId;
       DLOG(INFO) << "[Brave Sync] record->action=" << record->action;
 
+      bool actually_merged = false;
       existing_sync_devices.Merge(SyncDevice(record->GetDevice().name,
-          record->objectId, record->deviceId, record->syncTimestamp.ToJsTime()), record->action);
+          record->objectId, record->deviceId, record->syncTimestamp.ToJsTime()),
+          record->action, actually_merged);
+      this_device_deleted = this_device_deleted ||
+        (record->deviceId == this_device_id && record->action == jslib::SyncRecord::Action::DELETE && actually_merged);
     }
   } // for each device
 
@@ -739,6 +745,13 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList &records) {
   DLOG(INFO) << "[Brave Sync] OnResolvedPreferences before SaveObjectId";
   sync_obj_map_->SaveSpecialJson(jslib_const::DEVICES_NAMES, sync_devices_json);
   DLOG(INFO) << "[Brave Sync] OnResolvedPreferences SaveObjectId done";
+
+  DLOG(INFO) << "[Brave Sync] " << __func__ << " this_device_deleted=" << this_device_deleted;
+  // We received request to delete the current device
+  if (this_device_deleted) {
+    OnResetSyncFileWork(this_device_id);
+    return;
+  }
 
   // Inform devices list chain has been changed
   DLOG(INFO) << "[Brave Sync] OnResolvedPreferences OnSyncStateChanged()";
