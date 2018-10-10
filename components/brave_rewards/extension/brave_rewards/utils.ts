@@ -24,5 +24,11 @@ export const formatConverted = (converted: string, currency: string = 'USD'): st
 }
 
 export const convertProbiToFixed = (probi: string, places: number = 1) => {
-  return new BigNumber(probi.toString()).dividedBy('1e18').toFixed(places, BigNumber.ROUND_DOWN)
+  const result = new BigNumber(probi).dividedBy('1e18').toFixed(places, BigNumber.ROUND_DOWN)
+
+  if (result === 'NaN') {
+    return '0.0'
+  }
+
+  return result
 }
