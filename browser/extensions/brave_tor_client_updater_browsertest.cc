@@ -87,7 +87,7 @@ public:
       return false;
 
     g_brave_browser_process->tor_client_updater()->OnComponentReady(
-        tor_client_updater->id(), tor_client_updater->path());
+        tor_client_updater->id(), tor_client_updater->path(), "");
     WaitForTorClientUpdaterThread();
 
     return true;
