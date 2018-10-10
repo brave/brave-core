@@ -19,7 +19,7 @@ Getting involved
 
 We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution.
 
-* [Discord](https://discord.gg/cR3gmq5): 
+* [Discord](https://discord.gg/cR3gmq5):
     -  `#ios` channel for general conversing.
     - `#developers-ios` channel for development discussion.
 * Bugs:           [File a new bug](https://github.com/brave/brave-ios/issues/new) • [Existing bugs](https://github.com/brave/brave-ios/issues)
@@ -34,6 +34,10 @@ Building the code
     ```shell
     brew update
     brew install carthage
+    ```
+1. Install SwiftLint:
+    ```shell
+    brew install swiftlint
     ```
 1. Clone the repository:
     ```shell
@@ -93,4 +97,4 @@ The entire `Local` directory is included in the `.gitignore`, so these changes a
 The easiest known way to find your team ID is to log into your [Apple Developer](https://developer.apple.com) account. After logging in, the team ID is currently shown at the end of the URL:
 <br>`https://developer.apple.com/account/<TEAM ID>`
 
-Use this string literal in the above, `DevTeam.xcconfig` file to code sign 
+Use this string literal in the above, `DevTeam.xcconfig` file to code sign
