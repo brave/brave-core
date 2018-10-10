@@ -14,7 +14,6 @@ interface StyleProps {
 }
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
-  background-color: rgba(12, 13, 33, 0.85);
   font-family: Poppins, sans-serif;
 `
 
