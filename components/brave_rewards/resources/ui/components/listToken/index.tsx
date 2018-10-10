@@ -8,8 +8,8 @@ import Tokens, { Size, Type } from '../tokens/index'
 
 export interface Props {
   title: React.ReactNode
-  value: number
-  converted: number
+  value: string
+  converted: string
   id?: string
   isNegative?: boolean
   size?: Size

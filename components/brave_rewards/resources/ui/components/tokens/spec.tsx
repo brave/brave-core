@@ -6,7 +6,7 @@ import Tokens from './index'
 import { TestThemeProvider } from '../../../theme'
 
 describe('Tokens tests', () => {
-  const baseComponent = (props?: object) => <TestThemeProvider><Tokens id={'tokens'} value={10} /></TestThemeProvider>
+  const baseComponent = (props?: object) => <TestThemeProvider><Tokens id={'tokens'} value={'10'} /></TestThemeProvider>
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {

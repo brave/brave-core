@@ -31,8 +31,8 @@ type DonationType = 'donation' | 'tip' | 'recurring'
 export interface DetailRow {
   profile: ProfileCell
   contribute: {
-    tokens: number
-    converted: number
+    tokens: string
+    converted: string
   }
   url: string
   type: DonationType

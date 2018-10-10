@@ -54,15 +54,15 @@ storiesOf('Feature Components/Rewards/Wallet', module)
         ]}
         grants={showGrant ? [
           {
-            tokens: 8,
+            tokens: '8.0',
             expireDate: '7/15/2018'
           },
           {
-            tokens: 10,
+            tokens: '10.0',
             expireDate: '9/10/2018'
           },
           {
-            tokens: 10,
+            tokens: '10.0',
             expireDate: '10/10/2018'
           }
         ] : []}
@@ -84,12 +84,12 @@ storiesOf('Feature Components/Rewards/Wallet', module)
       <div style={{ width: '373px', background: '#f9fbfc', padding: '0 25px' }}>
         <WalletSummary
           report={{
-            grant: object('Grant', { tokens: 10, converted: 0.25 }),
-            deposit: object('Deposit', { tokens: 10, converted: 0.25 }),
-            ads: object('Ads', { tokens: 10, converted: 0.25 }),
-            contribute: object('Contribute', { tokens: 10, converted: 0.25 }),
-            donation: object('Donation', { tokens: 2, converted: 0.25 }),
-            tips: object('Tips', { tokens: 19, converted: 5.25 })
+            grant: object('Grant', { tokens: '10.0', converted: '0.25' }),
+            deposit: object('Deposit', { tokens: '10.0', converted: '0.25' }),
+            ads: object('Ads', { tokens: '10.0', converted: '0.25' }),
+            contribute: object('Contribute', { tokens: '10.0', converted: '0.25' }),
+            donation: object('Donation', { tokens: '2.0', converted: '0.25' }),
+            tips: object('Tips', { tokens: '19.0', converted: '5.25' })
           }}
           onActivity={doNothing}
         />
@@ -110,7 +110,24 @@ storiesOf('Feature Components/Rewards/Wallet', module)
           includeInAuto={boolean('Include in monthly', true)}
           attentionScore={'15'}
           donationAmounts={
-            [5, 10, 15, 20, 30, 50, 100]
+            [
+              {
+                tokens: '0.0',
+                converted: '0.00'
+              },
+              {
+                tokens: '1.0',
+                converted: '0.50'
+              },
+              {
+                tokens: '5.0',
+                converted: '2.50'
+              },
+              {
+                tokens: '10.0',
+                converted: '5.00'
+              }
+            ]
           }
           onToggleTips={doNothing}
           donationAction={doNothing}

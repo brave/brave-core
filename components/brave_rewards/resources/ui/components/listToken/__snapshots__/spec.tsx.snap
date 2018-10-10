@@ -106,7 +106,7 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
           className="c5"
         >
           
-          10.0
+          10
         </span>
         <span
           className="c6"

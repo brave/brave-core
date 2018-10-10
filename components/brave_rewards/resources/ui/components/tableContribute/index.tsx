@@ -30,7 +30,7 @@ export interface DetailRow {
   attention: number
   url: string
   onRemove?: () => void
-  token?: { value: number, converted: number }
+  token?: { value: string, converted: string }
 }
 
 export interface Props {

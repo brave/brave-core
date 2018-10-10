@@ -36,6 +36,11 @@ import ToggleTips from '../toggleTips/index'
 import Profile, { Provider } from '../profile/index'
 import { AlertCircleIcon, RefreshIcon } from '../../../components/icons'
 
+export type Token = {
+  tokens: string,
+  converted: string
+}
+
 export interface Props {
   id?: string
   platform?: Provider
@@ -46,7 +51,7 @@ export interface Props {
   tipsEnabled: boolean
   includeInAuto: boolean
   monthlyAmount: number
-  donationAmounts: number[]
+  donationAmounts: Token[]
   donationAction: () => void
   onToggleTips: () => void
   onAmountChange: () => void
@@ -86,15 +91,16 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           value={monthlyAmount.toString()}
           onChange={this.props.onAmountChange}
         >
-          {donationAmounts.map((amount: number, index: number) => {
+          {donationAmounts.map((token: Token, index: number) => {
             return (
               <div
                 key={`donationAmount-${index}`}
-                data-value={amount.toString()}
+                data-value={token.tokens}
               >
                 <Tokens
                   size={'mini'}
-                  value={amount}
+                  value={token.tokens}
+                  converted={token.converted}
                   color={'donation'}
                 />
               </div>

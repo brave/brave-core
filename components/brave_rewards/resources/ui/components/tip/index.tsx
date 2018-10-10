@@ -16,12 +16,12 @@ import Toggle from '../../../components/formControls/toggle'
 import { getLocale } from '../../../helpers'
 import { CloseStrokeIcon } from '../../../components/icons'
 
-type Donation = {tokens: number, converted: number, selected?: boolean}
+type Donation = {tokens: string, converted: string, selected?: boolean}
 
 export interface Props {
   allow: boolean
   provider: string
-  balance: number
+  balance: string
   currentAmount: number
   donationAmounts: Donation[]
   onAmountSelection?: (tokens: number) => void
@@ -67,7 +67,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
         <Donate
           title={title || ''}
           actionText={getLocale('sendTip')}
-          balance={balance}
+          balance={parseFloat(balance)}
           donationAmounts={donationAmounts}
           onAmountSelection={this.onAmountChange}
           onDonate={this.onDonate}

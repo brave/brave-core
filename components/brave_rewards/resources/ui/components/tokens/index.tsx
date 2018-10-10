@@ -9,12 +9,11 @@ export type Size = 'mini' | 'small' | 'normal'
 export type Type = 'contribute' | 'donation' | 'earnings' | 'default' | 'notPaid'
 
 export interface Props {
-  value: number
+  value: string
   id?: string
-  converted?: number
+  converted?: string
   currency?: string
   hideText?: boolean
-  toFixed?: boolean
   isNegative?: boolean
   size?: Size
   color?: Type
@@ -29,13 +28,13 @@ export default class Tokens extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, converted, value, hideText, isNegative, size, color, currency, toFixed } = this.props
+    const { id, converted, value, hideText, isNegative, size, color, currency } = this.props
 
     return (
       <StyledWrapper id={id} size={size} color={color}>
         <StyledTokens>
           <StyledTokenValue>
-            {isNegative ? '-' : ''}{toFixed ? value.toFixed(1) : value}
+            {isNegative ? '-' : ''}{value}
           </StyledTokenValue>
           {
             !hideText
@@ -46,7 +45,7 @@ export default class Tokens extends React.PureComponent<Props, {}> {
         {
           converted !== undefined
           ? <StyledContent>
-            {toFixed ? converted.toFixed(2) : converted} {currency}
+            {converted} {currency}
           </StyledContent>
           : null
         }

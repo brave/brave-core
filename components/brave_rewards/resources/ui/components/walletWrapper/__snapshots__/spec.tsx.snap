@@ -120,7 +120,6 @@ exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
       <div
         className="c4"
       >
-        00.00
          
         <span
           className="c5"

@@ -17,8 +17,8 @@ import { getLocale } from '../../../helpers'
 import { WalletActivityIcon } from '../../../components/icons'
 
 type Token = {
-  tokens: number,
-  converted: number
+  tokens: string,
+  converted: string
   isNegative?: boolean
 }
 

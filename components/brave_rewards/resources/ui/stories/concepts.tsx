@@ -20,9 +20,9 @@ const siteScreen = require('../../assets/img/ddgo_site.png')
 const tipScreen = require('../../assets/img/tip_site.jpg')
 
 const donationAmounts = [
-  { tokens: 1, converted: 0.3, selected: false },
-  { tokens: 5, converted: 1.5, selected: false },
-  { tokens: 10, converted: 3, selected: false }
+  { tokens: '1.0', converted: '0.30', selected: false },
+  { tokens: '5.0', converted: '1.50', selected: false },
+  { tokens: '10.0', converted: '3.00', selected: false }
 ]
 
 const dummyOptInAction = () => {
@@ -64,7 +64,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             domain={text('Domain', 'duckduckgo.com')}
             title={text('Title', '')}
             currentDonation={number('Current recurring donation', 0)}
-            balance={number('Balance ', 5)}
+            balance={text('Balance ', '5.0')}
             bgImage={boolean('Show bg image', false) ? siteBgImage : null}
             logo={boolean('Show logo', false) ? siteBgLogo : null}
             donationAmounts={object('Donations', store.state.donationAmounts)}
@@ -119,7 +119,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             title={text('Title', 'Bart Baker')}
             allow={boolean('Allow tips', store.state.allow)}
             provider={text('Provider', 'YouTube')}
-            balance={5}
+            balance={text('Balance', '5')}
             onDonate={onDonate}
             onClose={onClose}
             onAllow={onAllow}
@@ -198,15 +198,15 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             connectedWallet={boolean('Connected wallet', false)}
             grants={object('Grants', [
               {
-                tokens: 8,
+                tokens: '8.0',
                 expireDate: '7/15/2018'
               },
               {
-                tokens: 10,
+                tokens: '10.0',
                 expireDate: '9/10/2018'
               },
               {
-                tokens: 10,
+                tokens: '10.0',
                 expireDate: '10/10/2018'
               }
             ])}
@@ -226,7 +226,24 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                 includeInAuto={boolean('Tips enabled', store.state.includeInAuto)}
                 attentionScore={'17'}
                 donationAmounts={
-                  [5, 10, 15, 20, 30, 50, 100]
+                  [
+                    {
+                      tokens: '0.0',
+                      converted: '0.00'
+                    },
+                    {
+                      tokens: '1.0',
+                      converted: '0.50'
+                    },
+                    {
+                      tokens: '5.0',
+                      converted: '2.50'
+                    },
+                    {
+                      tokens: '10.0',
+                      converted: '5.00'
+                    }
+                  ]
                 }
                 onToggleTips={onToggleTips}
                 donationAction={doNothing}
@@ -236,11 +253,11 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
               <WalletSummary
                 compact={true}
                 report={{
-                  grant: object('Grant', { tokens: 10, converted: 0.25 }),
-                  ads: object('Ads', { tokens: 10, converted: 0.25 }),
-                  contribute: object('Contribute', { tokens: 10, converted: 0.25 }),
-                  donation: object('Donation', { tokens: 2, converted: 0.25 }),
-                  tips: object('Tips', { tokens: 19, converted: 5.25 })
+                  grant: object('Grant', { tokens: '10.0', converted: '0.25' }),
+                  ads: object('Ads', { tokens: '10.0', converted: '0.25' }),
+                  contribute: object('Contribute', { tokens: '10.0', converted: '0.25' }),
+                  donation: object('Donation', { tokens: '2.0', converted: '0.25' }),
+                  tips: object('Tips', { tokens: '19.0', converted: '5.25' })
                 }}
               />
             </WalletSummarySlider>

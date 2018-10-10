@@ -45,10 +45,10 @@ import {
 
 type Social = {type: SocialType, url: string}
 type SocialType = 'twitter' | 'youtube' | 'twitch'
-type Donation = {tokens: number, converted: number, selected?: boolean}
+type Donation = {tokens: string, converted: string, selected?: boolean}
 
 export interface Props {
-  balance: number
+  balance: string
   currentAmount: number
   donationAmounts: Donation[]
   onAmountSelection: (tokens: number) => void
@@ -219,7 +219,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 {getLocale('walletBalance')} <StyledTokens>{balance} BAT</StyledTokens>
               </StyledWallet>
               <Donate
-                balance={balance}
+                balance={parseFloat(balance)}
                 donationAmounts={donationAmounts}
                 title={getLocale('donationAmount')}
                 onDonate={this.onDonate}

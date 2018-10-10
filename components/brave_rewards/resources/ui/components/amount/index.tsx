@@ -8,8 +8,8 @@ import { getLocale } from '../../../helpers'
 import { BatColorIcon } from '../../../components/icons'
 
 export interface Props {
-  amount: number
-  converted: number
+  amount: string
+  converted: string
   onSelect: (amount: number) => void
   id?: string
   selected?: boolean
@@ -33,7 +33,7 @@ export default class Amount extends React.PureComponent<Props, {}> {
           <StyledLogo><BatColorIcon /></StyledLogo><StyledNumber>{amount}</StyledNumber> <StyledTokens>{type === 'big' ? 'BAT' : null}</StyledTokens>
         </StyledAmount>
         <StyledConverted selected={selected} type={type}>
-          {getLocale('about')} {converted.toFixed(2)} {currency}
+          {getLocale('about')} {converted} {currency}
         </StyledConverted>
       </StyledWrapper>
     )

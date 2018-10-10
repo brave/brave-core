@@ -26,7 +26,7 @@ export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
   vertical-align: baseline;
   padding: ${p => p.type === 'big' ? '0 16px' : '0 12px'};
   min-height: ${p => p.type === 'big' ? 40 : 32}px;
-  min-width: ${p => p.type === 'big' ? '118px' : '69px'};
+  min-width: ${p => p.type === 'big' ? '118px' : '82px'};
   font-size: 13px;
   font-weight: 600;
   margin-right: 12px;

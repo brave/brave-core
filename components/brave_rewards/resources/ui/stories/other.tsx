@@ -37,9 +37,9 @@ const dummyClick = () => {
 }
 
 const donationAmounts = [
-  { tokens: 1, converted: 0.3, selected: false },
-  { tokens: 5, converted: 1.5, selected: false },
-  { tokens: 10, converted: 3, selected: false }
+  { tokens: '1.0', converted: '0.30', selected: false },
+  { tokens: '5.0', converted: '1.50', selected: false },
+  { tokens: '10.0', converted: '3.00', selected: false }
 ]
 
 storiesOf('Feature Components/Rewards/Other', module)
@@ -144,8 +144,8 @@ storiesOf('Feature Components/Rewards/Other', module)
         <div style={{ width: '400px' }}>
           <ListToken
             title={text('Title', 'Brave Contribute')}
-            value={number('Value', 10)}
-            converted={number('Converted', 0.25)}
+            value={text('Value', '10.0')}
+            converted={text('Converted', '0.25')}
             isNegative={boolean('Is negative', false)}
             color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
             size={select('Size', { normal: 'normal', small: 'small' }, 'small')}
@@ -156,8 +156,8 @@ storiesOf('Feature Components/Rewards/Other', module)
     .add('Tokens',() => {
       return (
         <Tokens
-          value={number('Tokens value', 10)}
-          converted={number('Converted value', 4)}
+          value={text('Tokens value', '10.0')}
+          converted={text('Converted value', '4.00')}
           currency={text('Currency', 'USD')}
           isNegative={boolean('Is negative', false)}
           color={select('Color', { contribute: 'contribute', donation: 'donation', earnings: 'earnings', notPaid: 'notPaid', default: 'default' }, 'default')}
@@ -186,8 +186,8 @@ storiesOf('Feature Components/Rewards/Other', module)
       return (
         <div style={{ background: '#696fdc', width: '335px', padding: '50px' }}>
           <Amount
-            amount={number('Amount', 5)}
-            converted={number('Converted', 1.5)}
+            amount={text('Amount', '5.0')}
+            converted={text('Converted', '1.50')}
             selected={boolean('Selected', store.state.selected)}
             type={select('Type', { big: 'Big', small: 'Small' }, 'big')}
             onSelect={onSelect}

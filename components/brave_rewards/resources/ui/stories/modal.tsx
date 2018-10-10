@@ -125,8 +125,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         attention: 40,
         onRemove: doNothing,
         token: {
-          value: 5,
-          converted: 5
+          value: '5.0',
+          converted: '5.00'
         }
       },
       {
@@ -139,8 +139,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         attention: 20,
         onRemove: doNothing,
         token: {
-          value: 4,
-          converted: 11
+          value: '4.0',
+          converted: '11.00'
         }
       },
       {
@@ -153,8 +153,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         attention: 10,
         onRemove: doNothing,
         token: {
-          value: 3,
-          converted: 15
+          value: '3.0',
+          converted: '15.00'
         }
       },
       {
@@ -167,8 +167,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         attention: 5,
         onRemove: doNothing,
         token: {
-          value: 2,
-          converted: 17
+          value: '2.0',
+          converted: '17.00'
         }
       },
       {
@@ -181,8 +181,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         attention: 4,
         onRemove: doNothing,
         token: {
-          value: 1,
-          converted: 11
+          value: '1.0',
+          converted: '11.00'
         }
       }
     ]
@@ -193,8 +193,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         type: 'deposit',
         description: 'Brave Ads payment for May',
         amount: {
-          value: 5,
-          converted: 5
+          value: '5.0',
+          converted: '5.00'
         }
       },
       {
@@ -206,8 +206,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         },
         amount: {
           isNegative: true,
-          value: 5,
-          converted: 11
+          value: '5.0',
+          converted: '11.00'
         }
       },
       {
@@ -215,8 +215,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         type: 'deposit',
         description: 'Token grant made available or unlocked',
         amount: {
-          value: 10,
-          converted: 15
+          value: '10.0',
+          converted: '15.00'
         }
       },
       {
@@ -225,8 +225,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         description: 'coinmarketcap.com',
         amount: {
           isNegative: true,
-          value: 10,
-          converted: 15
+          value: '10.0',
+          converted: '15.00'
         }
       },
       {
@@ -238,8 +238,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         },
         amount: {
           isNegative: true,
-          value: 1,
-          converted: 2
+          value: '1.0',
+          converted: '2.00'
         }
       },
       {
@@ -247,8 +247,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         type: 'deposit',
         description: 'Added via Uphold',
         amount: {
-          value: 10,
-          converted: 15
+          value: '10.0',
+          converted: '15.00'
         }
       },
       {
@@ -257,8 +257,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         description: 'Monthly payment',
         amount: {
           isNegative: true,
-          value: 10,
-          converted: 15
+          value: '10.0',
+          converted: '15.00'
         }
       },
       {
@@ -267,8 +267,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
         description: 'Monthly payment',
         amount: {
           isNegative: true,
-          value: 5,
-          converted: 15
+          value: '5.0',
+          converted: '15.00'
         }
       }
     ]
@@ -288,24 +288,24 @@ storiesOf('Feature Components/Rewards/Modal', module)
             text: 'Token Grant available',
             type: 'grant',
             token: {
-              value: 10,
-              converted: 5.20
+              value: '10.0',
+              converted: '5.20'
             }
           },
           {
             text: 'Earnings from Brave Ads',
             type: 'ads',
             token: {
-              value: 10,
-              converted: 5.20
+              value: '10.0',
+              converted: '5.20'
             }
           },
           {
             text: 'Deposits',
             type: 'deposit',
             token: {
-              value: 10,
-              converted: 5.20
+              value: '10.0',
+              converted: '5.20'
             }
           },
           {
@@ -313,8 +313,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
             type: 'contribute',
             notPaid: true,
             token: {
-              value: 10,
-              converted: 5.20,
+              value: '10.0',
+              converted: '5.20',
               isNegative: true
             }
           },
@@ -323,8 +323,8 @@ storiesOf('Feature Components/Rewards/Modal', module)
             type: 'recurring',
             notPaid: true,
             token: {
-              value: 2,
-              converted: 1.1,
+              value: '2.0',
+              converted: '1.10',
               isNegative: true
             }
           },
@@ -332,24 +332,24 @@ storiesOf('Feature Components/Rewards/Modal', module)
             text: 'One-time Donations/Tips',
             type: 'donations',
             token: {
-              value: 19,
-              converted: 10.10,
+              value: '19.0',
+              converted: '10.10',
               isNegative: true
             }
           }
         ]}
         total={{
-          value: 11,
-          converted: 0.5
+          value: '11.0',
+          converted: '0.5'
         }}
         paymentDay={12}
         openBalance={{
-          value: 10,
-          converted: 5.20
+          value: '10.0',
+          converted: '5.20'
         }}
         closingBalance={{
-          value: 21,
-          converted: 5.30
+          value: '21.0',
+          converted: '5.30'
         }}
       />
     )

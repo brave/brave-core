@@ -53,10 +53,10 @@ class ContributeBox extends React.Component<{}, State> {
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <ControlWrapper text={locale.contributionMonthly}>
                 <Select>
-                  <div data-value='10'><Tokens value={10} converted={4}/></div>
-                  <div data-value='20'><Tokens value={20} converted={6}/></div>
-                  <div data-value='40'><Tokens value={40} converted={12}/></div>
-                  <div data-value='100'><Tokens value={100} converted={40}/></div>
+                  <div data-value='10'><Tokens value={'10.0'} converted={'4.00'}/></div>
+                  <div data-value='20'><Tokens value={'20.0'} converted={'6.00'}/></div>
+                  <div data-value='40'><Tokens value={'40.0'} converted={'12.00'}/></div>
+                  <div data-value='100'><Tokens value={'100.0'} converted={'40.00'}/></div>
                 </Select>
               </ControlWrapper>
               <ControlWrapper text={locale.contributionMinTime}>
@@ -194,10 +194,10 @@ class ContributeBox extends React.Component<{}, State> {
         }
         <List title={locale.contributionMonthly}>
           <Select floating={true}>
-            <div data-value='10'><Tokens value={10} converted={4}/></div>
-            <div data-value='20'><Tokens value={20} converted={6}/></div>
-            <div data-value='40'><Tokens value={40} converted={12}/></div>
-            <div data-value='100'><Tokens value={100} converted={40}/></div>
+            <div data-value='10'><Tokens value={'10.0'} converted={'4.00'}/></div>
+            <div data-value='20'><Tokens value={'20.0'} converted={'6.00'}/></div>
+            <div data-value='40'><Tokens value={'40.0'} converted={'12.00'}/></div>
+            <div data-value='100'><Tokens value={'100.0'} converted={'40.00'}/></div>
           </Select>
         </List>
         <List
@@ -206,7 +206,7 @@ class ContributeBox extends React.Component<{}, State> {
           <NextContribution>July 25th</NextContribution>
         </List>
         <List title={locale.contributionSites}>
-          Total &nbsp;<Tokens value={55} hideText={true} toFixed={false}/>
+          Total &nbsp;<Tokens value={'55'} hideText={true}/>
         </List>
         <TableContribute
           header={[

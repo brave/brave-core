@@ -114,8 +114,8 @@ storiesOf('Feature Components/Rewards/Table', module)
         url: 'https://brave.com',
         type: 'recurring',
         contribute: {
-          tokens: 2,
-          converted: 0.2
+          tokens: '2.0',
+          converted: '0.20'
         },
         onRemove: doNothing
       },
@@ -128,8 +128,8 @@ storiesOf('Feature Components/Rewards/Table', module)
         url: 'https://brave.com',
         type: 'donation',
         contribute: {
-          tokens: 12000,
-          converted: 6000.2
+          tokens: '12000.0',
+          converted: '6000.20'
         },
         text: 'May 7'
       },
@@ -143,8 +143,8 @@ storiesOf('Feature Components/Rewards/Table', module)
         url: 'https://brave.com',
         type: 'tip',
         contribute: {
-          tokens: 7,
-          converted: 3.2
+          tokens: '7.0',
+          converted: '3.20'
         },
         text: 'May 2'
       }
@@ -169,8 +169,8 @@ storiesOf('Feature Components/Rewards/Table', module)
         type: 'deposit',
         description: 'Brave Ads payment for May',
         amount: {
-          value: 5,
-          converted: 5
+          value: '5.0',
+          converted: '5.00'
         }
       },
       {
@@ -182,8 +182,8 @@ storiesOf('Feature Components/Rewards/Table', module)
         },
         amount: {
           isNegative: true,
-          value: 5,
-          converted: 11
+          value: '5.0',
+          converted: '11.00'
         }
       },
       {
@@ -192,8 +192,8 @@ storiesOf('Feature Components/Rewards/Table', module)
         description: 'Monthly payment',
         amount: {
           isNegative: true,
-          value: 5,
-          converted: 15
+          value: '5.0',
+          converted: '15.00'
         }
       }
     ]

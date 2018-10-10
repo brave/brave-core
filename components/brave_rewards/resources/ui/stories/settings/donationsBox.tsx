@@ -51,8 +51,8 @@ class DonationsBox extends React.Component<{}, State> {
         url: 'https://brave.com',
         type: 'recurring',
         contribute: {
-          tokens: 2,
-          converted: 0.2
+          tokens: '2.0',
+          converted: '0.20'
         },
         onRemove: doNothing
       },
@@ -65,8 +65,8 @@ class DonationsBox extends React.Component<{}, State> {
         url: 'https://brave.com',
         type: 'donation',
         contribute: {
-          tokens: 12,
-          converted: 6.2
+          tokens: '12.0',
+          converted: '6.20'
         },
         text: 'May 7'
       },
@@ -80,8 +80,8 @@ class DonationsBox extends React.Component<{}, State> {
         url: 'https://brave.com',
         type: 'tip',
         contribute: {
-          tokens: 7,
-          converted: 3.2
+          tokens: '7.0',
+          converted: '3.20'
         },
         text: 'May 2'
       }
@@ -125,7 +125,7 @@ class DonationsBox extends React.Component<{}, State> {
         settingsChild={this.donationSettingsChild()}
       >
         <List title={locale.donationTotal}>
-          <Tokens value={21} converted={7} />
+          <Tokens value={'21.0'} converted={'7.00'} />
         </List>
         <TableDonation
           rows={this.donationRows}

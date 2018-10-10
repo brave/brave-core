@@ -40,7 +40,7 @@ import {
 } from '../../../components/icons'
 
 type Grant = {
-  tokens: number,
+  tokens: string,
   expireDate: string
 }
 
@@ -84,14 +84,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     this.state = {
       grantDetails: false
     }
-  }
-
-  formatTokens (tokens: number) {
-    if (isNaN(tokens)) {
-      return '00.00'
-    }
-
-    return tokens.toFixed(1)
   }
 
   generateActions (actions: {icon: React.ReactNode, name: string, action: () => void}[], id?: string) {
@@ -167,7 +159,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
             <StyledBalance>
               <StyledBalanceTokens>
-                {this.formatTokens(tokens)} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
+                {tokens} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
               </StyledBalanceTokens>
               {
                 converted
@@ -195,7 +187,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                 {
                   grants && grants.map((grant: Grant, i: number) => {
                     return <StyledGrant key={`${id}-grant-${i}`}>
-                      <b>{this.formatTokens(grant.tokens)} BAT</b> <span>{getLocale('expiresOn')} {grant.expireDate}</span>
+                      <b>{grant.tokens} BAT</b> <span>{getLocale('expiresOn')} {grant.expireDate}</span>
                     </StyledGrant>
                   })
                 }

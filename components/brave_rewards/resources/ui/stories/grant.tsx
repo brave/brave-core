@@ -58,7 +58,7 @@ storiesOf('Feature Components/Rewards/Grant', module)
         <div style={{ width: '373px', height: '715px', position: 'relative' }}>
           <GrantComplete
             onClose={dummyClick}
-            amount={30}
+            amount={'30.0'}
             date={'8/15/2018'}
           />
         </div>

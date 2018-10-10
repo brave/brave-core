@@ -31,7 +31,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   vertical-align: baseline;
   padding: 0 12px;
   min-height: 32px;
-  min-width: 69px;
+  min-width: 82px;
   font-size: 13px;
   font-weight: 600;
   margin-right: 12px;
@@ -134,7 +134,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   >
     MISSING: about
      
-    0.40
+    0.4
      
     USD
   </div>

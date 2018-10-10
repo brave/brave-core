@@ -20,7 +20,7 @@ export interface DetailRow {
   date: string
   type: TransactionType
   description: Description
-  amount: { value: number, converted: number, isNegative?: boolean }
+  amount: { value: string, converted: string, isNegative?: boolean }
 }
 
 export interface Props {

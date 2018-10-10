@@ -42,8 +42,8 @@ import { Type as TokenType } from '../tokens'
 import { getLocale } from '../../../helpers'
 
 export interface Token {
-  value: number
-  converted: number
+  value: string
+  converted: string
   isNegative?: boolean
 }
 

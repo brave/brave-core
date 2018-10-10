@@ -10,7 +10,7 @@ import Button from '../../../components/buttonsIndicators/button'
 export interface Props {
   id?: string
   onClose: () => void
-  amount: number
+  amount: string
   date: string
 }
 

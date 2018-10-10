@@ -21,8 +21,8 @@ import { EmoteSadIcon, SendIcon } from '../../../components/icons'
 export type DonateType = 'big' | 'small'
 
 type Donation = {
-  tokens: number,
-  converted: number
+  tokens: string,
+  converted: string
 }
 
 export interface Props {
@@ -101,7 +101,7 @@ export default class Donate extends React.PureComponent<Props, State> {
               return <div key={`${id}-donate-${donation.tokens}`}>
                 <Amount
                   amount={donation.tokens}
-                  selected={donation.tokens === currentAmount}
+                  selected={donation.tokens === currentAmount.toString()}
                   onSelect={this.onAmountChange}
                   converted={donation.converted}
                   type={donateType}

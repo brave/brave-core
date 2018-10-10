@@ -60,8 +60,8 @@ class PageWallet extends React.Component<{}, State> {
         attention: 40,
         onRemove: doNothing,
         token: {
-          value: 5,
-          converted: 5
+          value: '5.0',
+          converted: '5.00'
         }
       },
       {
@@ -74,8 +74,8 @@ class PageWallet extends React.Component<{}, State> {
         attention: 20,
         onRemove: doNothing,
         token: {
-          value: 4,
-          converted: 11
+          value: '4.0',
+          converted: '11.00'
         }
       },
       {
@@ -88,8 +88,8 @@ class PageWallet extends React.Component<{}, State> {
         attention: 10,
         onRemove: doNothing,
         token: {
-          value: 3,
-          converted: 15
+          value: '3.0',
+          converted: '15.00'
         }
       },
       {
@@ -102,8 +102,8 @@ class PageWallet extends React.Component<{}, State> {
         attention: 5,
         onRemove: doNothing,
         token: {
-          value: 2,
-          converted: 17
+          value: '2.0',
+          converted: '17.00'
         }
       },
       {
@@ -116,8 +116,8 @@ class PageWallet extends React.Component<{}, State> {
         attention: 4,
         onRemove: doNothing,
         token: {
-          value: 1,
-          converted: 11
+          value: '1.0',
+          converted: '11.00'
         }
       }
     ]
@@ -130,8 +130,8 @@ class PageWallet extends React.Component<{}, State> {
         type: 'deposit',
         description: 'Brave Ads payment for May',
         amount: {
-          value: 5,
-          converted: 5
+          value: '5.0',
+          converted: '5.00'
         }
       },
       {
@@ -143,8 +143,8 @@ class PageWallet extends React.Component<{}, State> {
         },
         amount: {
           isNegative: true,
-          value: 5,
-          converted: 11
+          value: '5.0',
+          converted: '11.00'
         }
       },
       {
@@ -152,8 +152,8 @@ class PageWallet extends React.Component<{}, State> {
         type: 'deposit',
         description: 'Token grant made available or unlocked',
         amount: {
-          value: 10,
-          converted: 15
+          value: '10.0',
+          converted: '15.00'
         }
       },
       {
@@ -162,8 +162,8 @@ class PageWallet extends React.Component<{}, State> {
         description: 'coinmarketcap.com',
         amount: {
           isNegative: true,
-          value: 10,
-          converted: 15
+          value: '10.0',
+          converted: '15.00'
         }
       },
       {
@@ -175,8 +175,8 @@ class PageWallet extends React.Component<{}, State> {
         },
         amount: {
           isNegative: true,
-          value: 1,
-          converted: 2
+          value: '1.0',
+          converted: '2.00'
         }
       },
       {
@@ -184,8 +184,8 @@ class PageWallet extends React.Component<{}, State> {
         type: 'deposit',
         description: 'Added via Uphold',
         amount: {
-          value: 10,
-          converted: 15
+          value: '10.0',
+          converted: '15.00'
         }
       },
       {
@@ -194,8 +194,8 @@ class PageWallet extends React.Component<{}, State> {
         description: 'Monthly payment',
         amount: {
           isNegative: true,
-          value: 10,
-          converted: 15
+          value: '10.0',
+          converted: '15.00'
         }
       },
       {
@@ -204,8 +204,8 @@ class PageWallet extends React.Component<{}, State> {
         description: 'Monthly payment',
         amount: {
           isNegative: true,
-          value: 5,
-          converted: 15
+          value: '5.0',
+          converted: '15.00'
         }
       }
     ]
@@ -268,15 +268,15 @@ class PageWallet extends React.Component<{}, State> {
           showSecActions={true}
           grants={object('Claimed grants', [
             {
-              tokens: 8,
+              tokens: '8.0',
               expireDate: '7/15/2018'
             },
             {
-              tokens: 10,
+              tokens: '10.0',
               expireDate: '9/10/2018'
             },
             {
-              tokens: 10,
+              tokens: '10.0',
               expireDate: '10/10/2018'
             }
           ])}
@@ -289,12 +289,12 @@ class PageWallet extends React.Component<{}, State> {
             content === 'summary'
               ? <WalletSummary
                 report={{
-                  grant: { tokens: 10, converted: 0.25 },
-                  ads: { tokens: 10, converted: 0.25 },
-                  deposit: { tokens: 10, converted: 0.25 },
-                  contribute: { tokens: 10, converted: 0.25 },
-                  donation: { tokens: 2, converted: 0.25 },
-                  tips: { tokens: 19, converted: 5.25 }
+                  grant: { tokens: '10.0', converted: '0.25' },
+                  ads: { tokens: '10.0', converted: '0.25' },
+                  deposit: { tokens: '10.0', converted: '0.25' },
+                  contribute: { tokens: '10.0', converted: '0.25' },
+                  donation: { tokens: '2.0', converted: '0.25' },
+                  tips: { tokens: '19.0', converted: '5.25' }
                 }}
                 onActivity={this.onActivity}
               />
@@ -338,16 +338,16 @@ class PageWallet extends React.Component<{}, State> {
                 text: 'Token Grant available',
                 type: 'grant',
                 token: {
-                  value: 10,
-                  converted: 5.20
+                  value: '10.0',
+                  converted: '5.20'
                 }
               },
               {
                 text: 'Earnings from Brave Ads',
                 type: 'ads',
                 token: {
-                  value: 10,
-                  converted: 5.20
+                  value: '10.0',
+                  converted: '5.20'
                 }
               },
               {
@@ -355,8 +355,8 @@ class PageWallet extends React.Component<{}, State> {
                 type: 'contribute',
                 notPaid: true,
                 token: {
-                  value: 10,
-                  converted: 5.20,
+                  value: '10.0',
+                  converted: '5.20',
                   isNegative: true
                 }
               },
@@ -365,8 +365,8 @@ class PageWallet extends React.Component<{}, State> {
                 type: 'recurring',
                 notPaid: true,
                 token: {
-                  value: 2,
-                  converted: 1.1,
+                  value: '2.0',
+                  converted: '1.1',
                   isNegative: true
                 }
               },
@@ -374,24 +374,24 @@ class PageWallet extends React.Component<{}, State> {
                 text: 'One-time Donations/Tips',
                 type: 'donations',
                 token: {
-                  value: 19,
-                  converted: 10.10,
+                  value: '19.0',
+                  converted: '10.10',
                   isNegative: true
                 }
               }
             ]}
             total={{
-              value: 1,
-              converted: 0.5
+              value: '1.0',
+              converted: '0.5'
             }}
             paymentDay={12}
             openBalance={{
-              value: 10,
-              converted: 5.20
+              value: '10.0',
+              converted: '5.20'
             }}
             closingBalance={{
-              value: 11,
-              converted: 5.30
+              value: '11.0',
+              converted: '5.30'
             }}
           />
           : null

@@ -6,12 +6,12 @@ import WalletSummary, { Props } from './index'
 
 const props = {
   report: {
-    grant: {tokens: 10, converted: 0.25},
-    ads: {tokens: 10, converted: 0.25},
-    contribute: {tokens: 10, converted: 0.25},
-    donation: {tokens: 2, converted: 0.25},
-    tips: {tokens: 19, converted: 5.25},
-    total: {tokens: 19, converted: 5.25},
+    grant: {tokens: '10.0', converted: '0.25'},
+    ads: {tokens: '10.0', converted: '0.25'},
+    contribute: {tokens: '10.0', converted: '0.25'},
+    donation: {tokens: '2.0', converted: '0.25'},
+    tips: {tokens: '19.0', converted: '5.25'},
+    total: {tokens: '19.0', converted: '5.25'},
   },
   onActivity: ()=>{}
 }
