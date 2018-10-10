@@ -6,6 +6,7 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
@@ -24,6 +25,10 @@ using content::WebContents;
 using content::WebUIMessageHandler;
 
 namespace {
+
+constexpr int kDialogMargin = 25;
+constexpr int kDialogMinHeight = 300;
+constexpr int kDialogMaxHeight = 700;
 
 // A ui::WebDialogDelegate that specifies the donation dialog appearance.
 class DonationDialogDelegate : public ui::WebDialogDelegate {
@@ -97,8 +102,9 @@ void DonationDialogDelegate::GetDialogSize(gfx::Size* size) const {
     target_size = host->GetMaximumDialogSize();
   else
     target_size = outermost_web_contents->GetContainerBounds().size();
-
-  size->SetSize(target_size.width() - 25, target_size.height() - 25);
+  // initial size in between min and max
+  const int max_height = kDialogMinHeight + (kDialogMaxHeight - kDialogMinHeight);
+  size->SetSize(target_size.width() - kDialogMargin, max_height);
 }
 
 std::string DonationDialogDelegate::GetDialogArgs() const {
@@ -128,10 +134,17 @@ namespace donations {
 
   void OpenDonationDialog(WebContents* initiator,
                           const std::string& publisher_key) {
-    ShowConstrainedWebDialog(initiator->GetBrowserContext(),
+    content::WebContents* outermost_web_contents =
+      guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
+    gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();
+    gfx::Size min_size(host_size.width() - kDialogMargin, kDialogMinHeight);
+    gfx::Size max_size(host_size.width() - kDialogMargin, kDialogMaxHeight);
+    // TODO: adjust min and max when host size changes (e.g. window resize)
+    ShowConstrainedWebDialogWithAutoResize(initiator->GetBrowserContext(),
                               new DonationDialogDelegate(initiator,
                                                           publisher_key),
-                              initiator);
+                              initiator, min_size, max_size);
+
   }
 
 }
