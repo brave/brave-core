@@ -98,7 +98,7 @@ public:
       return false;
 
     g_brave_browser_process->ad_block_service()->OnComponentReady(
-        ad_block_extension->id(), ad_block_extension->path());
+        ad_block_extension->id(), ad_block_extension->path(), "");
     WaitForDefaultAdBlockServiceThread();
 
     return true;
@@ -116,7 +116,7 @@ public:
       return false;
 
     g_brave_browser_process->ad_block_regional_service()->OnComponentReady(
-        ad_block_extension->id(), ad_block_extension->path());
+        ad_block_extension->id(), ad_block_extension->path(), "");
     WaitForRegionalAdBlockServiceThread();
 
     return true;

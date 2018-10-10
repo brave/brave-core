@@ -15,7 +15,6 @@ class BraveExtensionManagement : public ExtensionManagement {
   ~BraveExtensionManagement() override;
 
  private:
-  void RegisterForceInstalledExtensions();
   void RegisterBraveExtensions();
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };
