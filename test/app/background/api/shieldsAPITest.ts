@@ -198,7 +198,8 @@ describe('Shields API', () => {
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_ADS },
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
     })
     it('passes only 1 arg to chrome.braveShields.plugins', function () {
@@ -226,7 +227,8 @@ describe('Shields API', () => {
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS },
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
     })
     it('passes only 1 arg to chrome.braveShields.plugins', function () {
@@ -254,7 +256,8 @@ describe('Shields API', () => {
       assert.deepEqual(arg0, {
         primaryPattern: '*://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES },
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
     })
     it('passes only 1 arg to chrome.braveShields.plugins', function () {
@@ -283,7 +286,8 @@ describe('Shields API', () => {
       const arg0 = this.spy.getCall(0).args[0]
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
     })
 
@@ -313,14 +317,16 @@ describe('Shields API', () => {
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
       const arg1 = this.spy.getCall(1).args[0]
       assert.deepEqual(arg1, {
         primaryPattern: 'https://www.brave.com/*',
         secondaryPattern: 'https://firstParty/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
     })
     it('passes only 1 arg to chrome.braveShields.plugins', function () {
@@ -351,20 +357,23 @@ describe('Shields API', () => {
       assert.deepEqual(arg0, {
         primaryPattern: 'https://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_REFERRERS },
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
       const arg1 = this.spy.getCall(1).args[0]
       assert.deepEqual(arg1, {
         primaryPattern: 'https://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
       const arg2 = this.spy.getCall(2).args[0]
       assert.deepEqual(arg2, {
         primaryPattern: 'https://www.brave.com/*',
         secondaryPattern: 'https://firstParty/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
-        setting: 'block'
+        setting: 'block',
+        scope: 'incognito_session_only'
       })
     })
     it('passes only 1 arg to chrome.braveShields.plugins', function () {
