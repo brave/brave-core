@@ -388,7 +388,6 @@
             "type": "array", "items": {"$ref": "SyncRecord"},
             "name": "records"
           },
-
           {
             "type": "number",
             "name": "last_record_timestamp"
