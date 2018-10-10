@@ -15,8 +15,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
 
 .c0 {
   text-align: center;
-  border-radius: 8px;
-  font-family: "Poppins",sans-serif;
+  font-family: Poppins,sans-serif;
   background-image: linear-gradient(140deg,#392DD1 0%,#8E2995 100%);
 }
 

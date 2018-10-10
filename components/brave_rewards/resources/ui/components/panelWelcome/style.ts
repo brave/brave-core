@@ -9,8 +9,7 @@ const batOutline = require('./assets/batOutline.svg')
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
-  border-radius: 8px;
-  font-family: "Poppins", sans-serif;
+  font-family: Poppins, sans-serif;
   background-image: linear-gradient(140deg, #392DD1 0%, #8E2995 100%);
 ` as any
 

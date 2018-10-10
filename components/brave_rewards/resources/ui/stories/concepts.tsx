@@ -133,13 +133,13 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
   .add('Pre Opt-In', () => {
     return (
       <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '40px', left: '120px', width: '373px', minHeight: '446px' }}>
+        <div style={{ position: 'absolute', top: '40px', left: '120px', width: '373px', minHeight: '446px', borderRadius: '8px', overflow: 'hidden' }}>
           <PanelWelcome
             variant={'one'}
             optInAction={dummyOptInAction}
           />
         </div>
-        <div style={{ position: 'absolute', top: '40px', left: '565px', width: '373px', minHeight: '446px' }}>
+        <div style={{ position: 'absolute', top: '40px', left: '565px', width: '373px', minHeight: '446px', borderRadius: '8px', overflow: 'hidden' }}>
           <PanelWelcome
             variant={'two'}
             optInAction={dummyOptInAction}
@@ -174,12 +174,12 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
 
     return (
       <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '50px', left: '560px' }}>
+        <div style={{ position: 'absolute', top: '50px', left: '560px', borderRadius: '8px', overflow: 'hidden' }}>
           <WalletWrapper
             compact={true}
             contentPadding={false}
             gradientTop={getGradientColor()}
-            tokens={number('Tokens', 30)}
+            balance={text('Tokens', '30.0')}
             converted={text('Converted', '15.50 USD')}
             actions={[
               {

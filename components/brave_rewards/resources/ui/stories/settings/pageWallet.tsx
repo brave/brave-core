@@ -246,7 +246,7 @@ class PageWallet extends React.Component<{}, State> {
     return (
       <>
         <WalletWrapper
-          tokens={25}
+          balance={'25.0'}
           converted={'6.00 USD'}
           actions={[
             {

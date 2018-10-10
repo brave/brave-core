@@ -99,7 +99,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
                 data-value={token.tokens}
               >
                 <Tokens
-                  size={'mini'}
+                  size={'small'}
                   value={token.tokens}
                   converted={token.converted}
                   color={'donation'}

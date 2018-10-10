@@ -2,13 +2,13 @@
 
 exports[`WalletWrapper tests basic tests matches the snapshot 1`] = `
 .c0 {
-  border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 0 8px 0 rgba(99,105,110,0.12);
   font-family: Poppins,sans-serif;
   width: 373px;
   background: url(test-file-stub) no-repeat top left, linear-gradient(172deg,#392dd1,rgba(255,26,26,0.53)), linear-gradient(#7d7bdc,#7d7bdc);
   min-height: 715px;
+  border-radius: 6px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

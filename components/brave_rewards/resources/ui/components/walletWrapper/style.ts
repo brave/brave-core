@@ -18,7 +18,6 @@ const getRGB = (rgbColor: string) => {
 }
 
 export const StyledWrapper = styled<StyledProps, 'div'>('div')`
-  border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
   font-family: Poppins, sans-serif;
@@ -28,6 +27,7 @@ export const StyledWrapper = styled<StyledProps, 'div'>('div')`
     linear-gradient(172deg, #392dd1, rgba(255, 26, 26, 0.53)),
     linear-gradient(#7d7bdc, #7d7bdc);
   min-height: ${p => p.compact ? 'unset' : '715px'};
+  border-radius: ${p => p.compact ? '0' : '6px'};
   display: flex;
   flex-direction: column;
 `
