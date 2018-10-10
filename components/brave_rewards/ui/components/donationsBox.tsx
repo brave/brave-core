@@ -91,7 +91,7 @@ class DonationBox extends React.Component<Props, {}> {
         disabledContent={showDisabled ? this.disabledContent() : null}
       >
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens value={0} converted={0} />
+          <Tokens value={'0.0'} converted={'0.00'} />
         </List>
         <TableDonation
           rows={donationRows}

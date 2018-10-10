@@ -5,7 +5,6 @@
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import BigNumber from 'bignumber.js'
 
 // Components
 import {
@@ -113,7 +112,7 @@ class PageWallet extends React.Component<Props, State> {
 
   getConversion = () => {
     const walletInfo = this.props.rewardsData.walletInfo
-    return utils.convertBalance(walletInfo.balance, walletInfo.rates)
+    return utils.convertBalance(walletInfo.balance.toString(), walletInfo.rates)
   }
 
   getGrants = () => {
@@ -124,7 +123,7 @@ class PageWallet extends React.Component<Props, State> {
 
     return grants.map((grant: Rewards.Grant) => {
       return {
-        tokens: new BigNumber(grant.probi.toString()).dividedBy('1e18').toNumber(),
+        tokens: utils.convertProbiToFixed(grant.probi),
         expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString()
       }
     })
@@ -177,46 +176,24 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { contributionMonthly, walletInfo, reports } = this.props.rewardsData
+    const { walletInfo, reports } = this.props.rewardsData
     const { rates } = walletInfo
-    const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
 
-    let props = {
-      contribute: {
-        tokens: contributionMonthly,
-        converted: convertedMonthly
-      }
-    }
+    let props = {}
 
     const currentTime = new Date()
     const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
     const report: Rewards.Report = reports[reportKey]
     if (report) {
-      if (report.ads) {
-        props['ads'] = {
-          tokens: report.ads,
-          converted: utils.convertBalance(report.ads, rates)
-        }
-      }
+      for (let key in report) {
+        const item = report[key]
 
-      if (report.donations) {
-        props['donation'] = {
-          tokens: report.donations,
-          converted: utils.convertBalance(report.donations, rates)
-        }
-      }
-
-      if (report.grants) {
-        props['grant'] = {
-          tokens: report.grants,
-          converted: utils.convertBalance(report.grants, rates)
-        }
-      }
-
-      if (report.oneTime) {
-        props['tips'] = {
-          tokens: report.oneTime,
-          converted: utils.convertBalance(report.oneTime, rates)
+        if (item.length > 1 && key !== 'total') {
+          const tokens = utils.convertProbiToFixed(item)
+          props[key] = {
+            tokens,
+            converted: utils.convertBalance(tokens, rates)
+          }
         }
       }
     }
@@ -235,7 +212,7 @@ class PageWallet extends React.Component<Props, State> {
     return (
       <>
         <WalletWrapper
-          tokens={balance}
+          balance={balance.toFixed(1)}
           converted={utils.formatConverted(this.getConversion())}
           actions={[
             {
@@ -304,8 +281,8 @@ class PageWallet extends React.Component<Props, State> {
                   attention: 40,
                   onRemove: this.onModalActivityRemove,
                   token: {
-                    value: 5,
-                    converted: 5
+                    value: '5.0',
+                    converted: '5.00'
                   }
                 }
               ]}
@@ -315,8 +292,8 @@ class PageWallet extends React.Component<Props, State> {
                   type: 'deposit',
                   description: 'Brave Ads payment for May',
                   amount: {
-                    value: 5,
-                    converted: 5
+                    value: '5.0',
+                    converted: '5.00'
                   }
                 }
               ]}
@@ -337,16 +314,16 @@ class PageWallet extends React.Component<Props, State> {
                   text: 'Token Grant available',
                   type: 'grant',
                   token: {
-                    value: 10,
-                    converted: 5.20
+                    value: '10.0',
+                    converted: '5.20'
                   }
                 },
                 {
                   text: 'Earnings from Brave Ads',
                   type: 'ads',
                   token: {
-                    value: 10,
-                    converted: 5.20
+                    value: '10.0',
+                    converted: '5.20'
                   }
                 },
                 {
@@ -354,8 +331,8 @@ class PageWallet extends React.Component<Props, State> {
                   type: 'contribute',
                   notPaid: true,
                   token: {
-                    value: 10,
-                    converted: 5.20,
+                    value: '10.0',
+                    converted: '5.20',
                     isNegative: true
                   }
                 },
@@ -364,8 +341,8 @@ class PageWallet extends React.Component<Props, State> {
                   type: 'recurring',
                   notPaid: true,
                   token: {
-                    value: 2,
-                    converted: 1.1,
+                    value: '2.0',
+                    converted: '1.1',
                     isNegative: true
                   }
                 },
@@ -373,24 +350,24 @@ class PageWallet extends React.Component<Props, State> {
                   text: 'One-time Donations/Tips',
                   type: 'donations',
                   token: {
-                    value: 19,
-                    converted: 10.10,
+                    value: '19.0',
+                    converted: '10.10',
                     isNegative: true
                   }
                 }
               ]}
               total={{
-                value: 1,
-                converted: 0.5
+                value: '1.0',
+                converted: '0.5'
               }}
               paymentDay={12}
               openBalance={{
-                value: 10,
-                converted: 5.20
+                value: '10.0',
+                converted: '5.20'
               }}
               closingBalance={{
-                value: 11,
-                converted: 5.30
+                value: '11.0',
+                converted: '5.30'
               }}
             />
             : null

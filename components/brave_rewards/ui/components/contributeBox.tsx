@@ -24,8 +24,8 @@ interface State {
 }
 
 interface MonthlyChoice {
-  tokens: number
-  converted: number
+  tokens: string
+  converted: string
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -123,7 +123,10 @@ class ContributeBox extends React.Component<Props, State> {
               {
                 monthlyList.map((choice: MonthlyChoice) => {
                   return <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                    <Tokens value={choice.tokens} converted={choice.converted} />
+                    <Tokens
+                      value={choice.tokens}
+                      converted={choice.converted}
+                    />
                   </div>
                 })
               }
@@ -216,7 +219,10 @@ class ContributeBox extends React.Component<Props, State> {
             {
               monthlyList.map((choice: MonthlyChoice) => {
                 return <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                  <Tokens value={choice.tokens} converted={choice.converted} />
+                  <Tokens
+                    value={choice.tokens}
+                    converted={choice.converted}
+                  />
                 </div>
               })
             }
@@ -226,7 +232,10 @@ class ContributeBox extends React.Component<Props, State> {
           <NextContribution>{new Date(reconcileStamp).toLocaleDateString()}</NextContribution>
         </List>
         <List title={getLocale('contributionSites')}>
-          {getLocale('total')} &nbsp;<Tokens value={numRows} hideText={true} toFixed={false} />
+          {getLocale('total')} &nbsp;<Tokens
+            value={numRows.toString()}
+            hideText={true}
+          />
         </List>
         <TableContribute
           header={[

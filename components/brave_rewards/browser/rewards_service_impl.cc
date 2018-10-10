@@ -489,9 +489,7 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
                                        const ledger::Grant& grant) {
   ledger::BalanceReportInfo report_info;
   auto now = base::Time::Now();
-  ledger_->GetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now), &report_info);
-  report_info.grants_ += 10.0; // TODO NZ convert probi to
-  ledger_->SetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now), report_info);
+  ledger_->SetBalanceReportCaptcha(GetPublisherMonth(now), GetPublisherYear(now), grant.probi);
   TriggerOnGrantFinish(result, grant);
 }
 
@@ -971,7 +969,7 @@ void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
 }
 
 void RewardsServiceImpl::SetContributionAmount(double amount) const {
-  return ledger_->SetContributionAmount(amount);
+  ledger_->SetContributionAmount(amount);
 }
 
 void RewardsServiceImpl::SetUserChangedContribution() const {
@@ -1083,13 +1081,15 @@ void RewardsServiceImpl::GetCurrentBalanceReport() {
     if (event_router) {
       extensions::api::brave_rewards::OnCurrentReport::Properties properties;
 
-      properties.opening_balance = report.opening_balance_;
-      properties.closing_balance = report.closing_balance_;
-      properties.grants = report.grants_;
-      properties.earning_from_ads = report.earning_from_ads_;
-      properties.auto_contribute = report.auto_contribute_;
-      properties.recurring_donation = report.recurring_donation_;
-      properties.one_time_donation = report.one_time_donation_;
+      properties.ads = report.earning_from_ads_;
+      properties.closing = report.closing_balance_;
+      properties.contribute = report.auto_contribute_;
+      properties.deposit = report.deposits_;
+      properties.grant = report.grants_;
+      properties.tips = report.one_time_donation_;
+      properties.opening = report.opening_balance_;
+      properties.total = report.total_;
+      properties.recurring = report.recurring_donation_;
 
       std::unique_ptr<base::ListValue> args(
           extensions::api::brave_rewards::OnCurrentReport::Create(properties)
