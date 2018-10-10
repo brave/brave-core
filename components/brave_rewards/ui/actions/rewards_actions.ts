@@ -107,3 +107,7 @@ export const restorePublishers = () => action(types.ON_RESTORE_PUBLISHERS)
 export const onNumExcludedSites = (num: string) => action(types.ON_NUM_EXCLUDED_SITES, {
   num
 })
+
+export const onContributionAmount = (amount: number) => action(types.ON_CONTRIBUTION_AMOUNT, {
+  amount
+})

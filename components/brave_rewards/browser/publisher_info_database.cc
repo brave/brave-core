@@ -153,6 +153,7 @@ bool PublisherInfoDatabase::CreateActivityInfoTable() {
       "category INTEGER NOT NULL,"
       "month INTEGER NOT NULL,"
       "year INTEGER NOT NULL,"
+      "reconcile_stamp INTEGER DEFAULT 0 NOT NULL,"
       "CONSTRAINT fk_activity_info_publisher_id"
       "    FOREIGN KEY (publisher_id)"
       "    REFERENCES publisher_info (publisher_id)"
@@ -226,12 +227,13 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   sql::Statement activity_get(
       db_.GetUniqueStatement("SELECT publisher_id FROM activity_info WHERE "
                              "publisher_id=? AND category=? "
-                             "AND month=? AND year=?"));
+                             "AND month=? AND year=? AND reconcile_stamp=?"));
 
   activity_get.BindString(0, info.id);
   activity_get.BindInt(1, info.category);
   activity_get.BindInt(2, info.month);
   activity_get.BindInt(3, info.year);
+  activity_get.BindInt64(4, info.reconcile_stamp);
 
   if (activity_get.Step()) {
     sql::Statement activity_info_update(
@@ -240,7 +242,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
           "duration=?, score=?, percent=?, "
           "weight=? WHERE "
           "publisher_id=? AND category=? "
-          "AND month=? AND year=?"));
+          "AND month=? AND year=? AND reconcile_stamp=?"));
 
     activity_info_update.BindInt64(0, (int)info.duration);
     activity_info_update.BindDouble(1, info.score);
@@ -250,6 +252,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     activity_info_update.BindInt(5, info.category);
     activity_info_update.BindInt(6, info.month);
     activity_info_update.BindInt(7, info.year);
+    activity_info_update.BindInt64(8, info.reconcile_stamp);
 
     return activity_info_update.Run();
   }
@@ -258,8 +261,8 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     GetDB().GetCachedStatement(SQL_FROM_HERE,
         "INSERT INTO activity_info "
         "(publisher_id, duration, score, percent, "
-        "weight, category, month, year) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
+        "weight, category, month, year, reconcile_stamp) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"));
 
   activity_info_insert.BindString(0, info.id);
   activity_info_insert.BindInt64(1, (int)info.duration);
@@ -269,6 +272,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   activity_info_insert.BindInt(5, info.category);
   activity_info_insert.BindInt(6, info.month);
   activity_info_insert.BindInt(7, info.year);
+  activity_info_insert.BindInt64(8, info.reconcile_stamp);
 
   return activity_info_insert.Run();
 }
@@ -340,7 +344,7 @@ bool PublisherInfoDatabase::Find(int start,
 
   std::string query = "SELECT ai.publisher_id, ai.duration, ai.score, ai.percent, "
       "ai.weight, pi.verified, pi.excluded, ai.category, ai.month, ai.year, pi.name, "
-      "pi.url, pi.provider, pi.favIcon "
+      "pi.url, pi.provider, pi.favIcon, ai.reconcile_stamp "
       "FROM activity_info AS ai "
       "INNER JOIN publisher_info AS pi ON ai.publisher_id = pi.publisher_id "
       "WHERE 1 = 1";
@@ -368,6 +372,7 @@ bool PublisherInfoDatabase::Find(int start,
     info.url = info_sql.ColumnString(11);
     info.provider = info_sql.ColumnString(12);
     info.favicon_url = info_sql.ColumnString(13);
+    info.reconcile_stamp = info_sql.ColumnInt64(14);
 
     info.excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
     info.category =
@@ -422,6 +427,9 @@ std::string PublisherInfoDatabase::BuildClauses(int start,
   if (filter.year > 0)
     clauses += " AND ai.year = ?";
 
+  if (filter.reconcile_stamp > 0)
+    clauses += " AND ai.reconcile_stamp = ?";
+
   if (filter.min_duration > 0)
     clauses += " AND ai.duration >= ?";
 
@@ -458,6 +466,9 @@ void PublisherInfoDatabase::BindFilter(sql::Statement& statement,
 
   if (filter.year > 0)
     statement.BindInt(column++, filter.year);
+
+   if (filter.reconcile_stamp > 0)
+    statement.BindInt64(column++, filter.reconcile_stamp);
 
   if (filter.min_duration > 0)
     statement.BindInt(column++, filter.min_duration);

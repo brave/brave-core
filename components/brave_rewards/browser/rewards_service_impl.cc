@@ -489,14 +489,27 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
                                        const ledger::Grant& grant) {
   ledger::BalanceReportInfo report_info;
   auto now = base::Time::Now();
-  ledger_->SetBalanceReportCaptcha(GetPublisherMonth(now), GetPublisherYear(now), grant.probi);
+  ledger_->SetBalanceReportItem(GetPublisherMonth(now),
+                                GetPublisherYear(now),
+                                ledger::ReportType::GRANT,
+                                grant.probi);
   TriggerOnGrantFinish(result, grant);
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
-                                              const std::string& viewing_id) {
-  LOG(ERROR) << "reconcile complete " << viewing_id;
-  // TODO - TriggerOnReconcileComplete
+  const std::string& viewing_id,
+  const std::string& probi) {
+  if (result == ledger::Result::LEDGER_OK) {
+    // TODO add notification service when implemented
+    auto now = base::Time::Now();
+    ledger_->SetBalanceReportItem(GetPublisherMonth(now),
+                                  GetPublisherYear(now),
+                                  ledger::ReportType::AUTO_CONTRIBUTION,
+                                  probi);
+  }
+
+  for (auto& observer : observers_)
+    observer.OnReconcileComplete(this, result, viewing_id, probi);
 }
 
 void RewardsServiceImpl::LoadLedgerState(
@@ -1171,6 +1184,10 @@ void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
           std::move(args)));
     event_router->BroadcastEvent(std::move(event));
   }
+}
+
+double RewardsServiceImpl::GetContributionAmount() {
+  return ledger_->GetContributionAmount();
 }
 
 }  // namespace brave_rewards
