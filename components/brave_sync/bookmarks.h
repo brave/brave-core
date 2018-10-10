@@ -107,6 +107,7 @@ public:
       bookmarks::BookmarkModel* model,
       const std::set<GURL>& removed_urls) override;
   void SetBaseOrder(const std::string &base_order);
+  void ClearData();
 
 private:
   void FillSyncBookmarkFromNode(jslib::Bookmark *sync_bookmark,

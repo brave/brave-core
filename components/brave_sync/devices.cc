@@ -142,14 +142,14 @@ void SyncDevices::FromJson(const std::string &str_json) {
 
 }
 
-void SyncDevices::Merge(const SyncDevice &device, int action) {
+void SyncDevices::Merge(const SyncDevice& device, int action, bool& actually_merged) {
   LOG(ERROR) << "SyncDevices::Merge device.object_id_==" << device.object_id_ << " action="<<action;
   /*
   const int kActionCreate = 0;
   const int kActionUpdate = 1;
   const int kActionDelete = 2;
   */
-  //SyncDevice* existing_device = GetByObjectId(device.object_id_);
+  actually_merged = false;
   auto existing_it = std::find_if(std::begin(devices_), std::end(devices_), [device](const SyncDevice &cur_dev) {
     return cur_dev.object_id_ == device.object_id_;
   });
@@ -158,6 +158,7 @@ void SyncDevices::Merge(const SyncDevice &device, int action) {
     LOG(ERROR) << "SyncDevices::Merge: existing device not found";
   } else {
     LOG(ERROR) << "SyncDevices::Merge: found existing device name=" << existing_it->name_;
+    LOG(ERROR) << "SyncDevices::Merge: found existing device_id_=" << existing_it->device_id_;
   }
 
   switch (action) {
@@ -165,6 +166,7 @@ void SyncDevices::Merge(const SyncDevice &device, int action) {
       //DCHECK(existing_device == nullptr);
       if (existing_it == std::end(devices_)) {
         devices_.push_back(device);
+        actually_merged = true;
       } else {
         // ignoring create, already have device
       }
@@ -176,6 +178,7 @@ void SyncDevices::Merge(const SyncDevice &device, int action) {
       DCHECK(existing_it != std::end(devices_));
       //*existing_device = device;
       *existing_it = device;
+      actually_merged = true;
       LOG(ERROR) << "SyncDevices::GetByObjectId device updated";
       break;
     }
@@ -183,8 +186,13 @@ void SyncDevices::Merge(const SyncDevice &device, int action) {
       //DCHECK(existing_device != nullptr);
       DCHECK(existing_it != std::end(devices_));
       //DeleteByObjectId(device.object_id_);
-      devices_.erase(existing_it);
-      LOG(ERROR) << "SyncDevices::GetByObjectId device deleted";
+      if (existing_it != std::end(devices_)) {
+        devices_.erase(existing_it);
+        actually_merged = true;
+        DLOG(INFO) << "[Brave Sync] " << "device deleted";
+      } else {
+        DLOG(ERROR) << "[Brave Sync] " << "device not found, not deleted";
+      }
       break;
     }
   }
