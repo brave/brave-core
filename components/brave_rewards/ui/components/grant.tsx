@@ -17,7 +17,7 @@ import {
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 import { getLocale } from '../../../common/locale'
-import { convertProbiToDouble } from '../utils'
+import { convertProbiToFixed } from '../utils'
 
 interface State {
   grantShow: boolean
@@ -65,9 +65,9 @@ class Grant extends React.Component<Props, State> {
       return null
     }
 
-    let tokens = 0
+    let tokens = '0.0'
     if (grant.probi) {
-      tokens = convertProbiToDouble(grant.probi.toString())
+      tokens = convertProbiToFixed(grant.probi)
     }
 
     return (

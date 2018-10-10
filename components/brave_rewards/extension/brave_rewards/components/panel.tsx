@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
-import BigNumber from 'bignumber.js'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
@@ -95,7 +94,7 @@ export class Panel extends React.Component<Props, State> {
 
     return grants.map((grant: RewardsExtension.Grant) => {
       return {
-        tokens: new BigNumber(grant.probi.toString()).dividedBy('1e18').toNumber(),
+        tokens: utils.convertProbiToFixed(grant.probi),
         expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString()
       }
     })
@@ -112,7 +111,7 @@ export class Panel extends React.Component<Props, State> {
         const item = report[key]
 
         if (item.length > 1 && key !== 'total') {
-          const tokens = utils.convertProbiToDouble(item)
+          const tokens = utils.convertProbiToFixed(item)
           props[key] = {
             tokens,
             converted: utils.convertBalance(tokens, rates)
@@ -135,14 +134,14 @@ export class Panel extends React.Component<Props, State> {
   render () {
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const converted = utils.convertBalance(balance, rates)
+    const converted = utils.convertBalance(balance.toString(), rates)
 
     return (
       <WalletWrapper
         compact={true}
         contentPadding={false}
         gradientTop={this.gradientColor}
-        tokens={balance}
+        balance={balance.toFixed(1)}
         converted={utils.formatConverted(converted)}
         actions={[
           {
@@ -178,7 +177,24 @@ export class Panel extends React.Component<Props, State> {
               includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
               donationAmounts={
-                [5, 10, 15, 20, 30, 50, 100]
+                [
+                  {
+                    tokens: '0.0',
+                    converted: '0.00'
+                  },
+                  {
+                    tokens: '1.0',
+                    converted: '0.50'
+                  },
+                  {
+                    tokens: '5.0',
+                    converted: '2.50'
+                  },
+                  {
+                    tokens: '10.0',
+                    converted: '5.00'
+                  }
+                ]
               }
               onToggleTips={this.doNothing}
               donationAction={this.doNothing}

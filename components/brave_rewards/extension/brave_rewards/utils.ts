@@ -4,28 +4,25 @@
 
 import BigNumber from 'bignumber.js'
 
-export const convertBalance = (tokens: number, rates: Record<string, number> | undefined, currency: string = 'USD'): number => {
-  if (tokens === 0 || !rates || !rates[currency]) {
-    return 0
+export const convertBalance = (tokens: string, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
+  const tokensNum = parseFloat(tokens)
+  if (tokensNum === 0 || !rates || !rates[currency]) {
+    return '0.00'
   }
 
-  const converted = tokens * rates[currency]
+  const converted = tokensNum * rates[currency]
 
   if (isNaN(converted)) {
-    return 0
+    return '0.00'
   }
 
-  return parseFloat(converted.toFixed(2))
+  return converted.toFixed(2)
 }
 
-export const formatConverted = (converted: number, currency: string = 'USD'): string | null => {
-  if (isNaN(converted) || converted < 0) {
-    return null
-  }
-
-  return `${converted.toFixed(2)} ${currency}`
+export const formatConverted = (converted: string, currency: string = 'USD'): string | null => {
+  return `${converted} ${currency}`
 }
 
-export const convertProbiToDouble = (probi: string) => {
-  return new BigNumber(probi.toString()).dividedBy('1e18').toNumber()
+export const convertProbiToFixed = (probi: string, places: number = 1) => {
+  return new BigNumber(probi.toString()).dividedBy('1e18').toFixed(places, BigNumber.ROUND_DOWN)
 }
