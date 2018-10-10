@@ -50,7 +50,7 @@ void BraveIpfsClientUpdater::InitExecutablePath(
        current = traversal.Next()) {
     base::FileEnumerator::FileInfo file_info = traversal.GetInfo();
     if (!RE2::FullMatch(file_info.GetName().MaybeAsASCII(),
-                        "ipfs-\\d+\\.\\d+\\.\\d+\\.\\d+-\\w+-brave-\\d+"))
+                        "ipfs-client"))
       continue;
     executable_path = current;
     break;
