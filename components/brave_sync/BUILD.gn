@@ -2,14 +2,22 @@ import("//build/config/features.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
-source_set("brave_sync") {
+source_set("api") {
   sources = [
     "api/brave_sync_api.cc",
     "api/brave_sync_api.h",
     "api/brave_sync_event_router.cc",
     "api/brave_sync_event_router.h",
-    "bookmarks.cc",
-    "bookmarks.h",
+  ]
+
+  deps = [
+    "//content/public/browser",
+    "//extensions/browser",
+  ]
+}
+
+source_set("brave_sync") {
+  sources = [
     "bookmarks_client.h",
     "bookmark_order_util.cc",
     "bookmark_order_util.h",
@@ -57,9 +65,9 @@ source_set("brave_sync") {
   ]
 
   deps = [
+    ":api",
     "//base",
     "//content/public/browser",
-    "//brave/common/extensions/api",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
