@@ -13,13 +13,15 @@ namespace brave_rewards {
     ~BalanceReport();
     BalanceReport(const BalanceReport& properties);
 
-    double opening_balance = .0;
-    double closing_balance = .0;
-    double grants = .0;
-    double earning_from_ads = .0;
-    double auto_contribute = .0;
-    double recurring_donation = .0;
-    double one_time_donation = .0;
+    std::string opening_balance = "0";
+    std::string closing_balance = "0";
+    std::string deposits = "0";
+    std::string grants = "0";
+    std::string earning_from_ads = "0";
+    std::string auto_contribute = "0";
+    std::string recurring_donation = "0";
+    std::string one_time_donation = "0";
+    std::string total = "0";
   };
 
 }  // namespace brave_rewards

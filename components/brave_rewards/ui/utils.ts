@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const qr = require('qr-image')
+import BigNumber from 'bignumber.js'
 import { Address } from 'brave-ui/features/rewards/modalAddFunds'
 
 export let actions: any = null
@@ -10,26 +11,23 @@ export let actions: any = null
 export const getActions = () => actions
 export const setActions = (newActions: any) => actions = newActions
 
-export const convertBalance = (tokens: number, rates: Record<string, number> | undefined, currency: string = 'USD'): number => {
-  if (tokens === 0 || !rates || !rates[currency]) {
-    return 0
+export const convertBalance = (tokens: string, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
+  const tokensNum = parseFloat(tokens)
+  if (tokensNum === 0 || !rates || !rates[currency]) {
+    return '0.00'
   }
 
-  const converted = tokens * rates[currency]
+  const converted = tokensNum * rates[currency]
 
   if (isNaN(converted)) {
-    return 0
+    return '0.00'
   }
 
-  return parseFloat(converted.toFixed(2))
+  return converted.toFixed(2)
 }
 
-export const formatConverted = (converted: number, currency: string = 'USD'): string | null => {
-  if (isNaN(converted) || converted < 0) {
-    return null
-  }
-
-  return `${converted.toFixed(2)} ${currency}`
+export const formatConverted = (converted: string, currency: string = 'USD'): string | null => {
+  return `${converted} ${currency}`
 }
 
 export const generateContributionMonthly = (list: number[], rates: Record<string, number> | undefined) => {
@@ -39,8 +37,8 @@ export const generateContributionMonthly = (list: number[], rates: Record<string
 
   return list.map((item: number) => {
     return {
-      tokens: item,
-      converted: convertBalance(item, rates)
+      tokens: item.toFixed(1),
+      converted: convertBalance(item.toString(), rates)
     }
   })
 }
@@ -105,6 +103,16 @@ export const getAddresses = (addresses?: Record<Rewards.AddressesType, Rewards.A
       })
     }
   })
+
+  return result
+}
+
+export const convertProbiToFixed = (probi: string, places: number = 1) => {
+  const result = new BigNumber(probi).dividedBy('1e18').toFixed(places, BigNumber.ROUND_DOWN)
+
+  if (result === 'NaN') {
+    return '0.0'
+  }
 
   return result
 }
