@@ -150,17 +150,6 @@ export const StyledAnchor = styled<{}, 'button'>('button')`
   overflow: hidden;
 `
 
-export const StyledAlert = styled<{}, 'div'>('div')`
-  margin-bottom: 30px;
-  border: 1px solid #FF7900;
-  border-radius: 4px;
-  overflow: hidden;
-
-  @media (max-width: 767px) {
-    display: none;
-  }
-`
-
 export const StyledHeroInfo = styled<{}, 'div'>('div')`
   @media (max-width: 400px) {
     padding: 0 10px;
