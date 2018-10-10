@@ -43,9 +43,9 @@ import {
   TwitchColorIcon
 } from '../../../components/icons'
 
-type Social = {type: SocialType, url: string}
-type SocialType = 'twitter' | 'youtube' | 'twitch'
-type Donation = {tokens: string, converted: string, selected?: boolean}
+export type Social = {type: SocialType, url: string}
+export type SocialType = 'twitter' | 'youtube' | 'twitch'
+export type Donation = {tokens: string, converted: string, selected?: boolean}
 
 export interface Props {
   balance: string
