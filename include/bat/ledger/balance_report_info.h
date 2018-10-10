@@ -11,6 +11,15 @@
 
 namespace ledger {
 
+LEDGER_EXPORT enum ReportType {
+  GRANT = 0,
+  AUTO_CONTRIBUTION = 1,
+  DEPOSIT = 2,
+  ADS = 3,
+  DONATION_RECURRING = 4,
+  DONATION = 5
+};
+
 LEDGER_EXPORT struct BalanceReportInfo {
   BalanceReportInfo();
   BalanceReportInfo(const BalanceReportInfo&);

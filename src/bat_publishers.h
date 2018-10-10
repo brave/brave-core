@@ -72,7 +72,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   unsigned int getNumExcludedSites() const;
   bool getPublisherAllowVideos() const;
 
-  std::vector<braveledger_bat_helper::WINNERS_ST> winners(const unsigned int& ballots);
+  void winners(const unsigned int& ballots,
+    const uint64_t& currentReconcileStamp, const std::string& viewing_id);
 
   std::unique_ptr<ledger::PublisherInfo> onPublisherInfoUpdated(
       ledger::Result result,
@@ -92,8 +93,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                                ledger::PUBLISHER_MONTH month,
                                int year);
 
-  void setBalanceReportCatpcha(ledger::PUBLISHER_MONTH month,
+  void setBalanceReportItem(ledger::PUBLISHER_MONTH month,
                                int year,
+                               ledger::ReportType type,
                                const std::string& probi);
 
  private:
@@ -123,7 +125,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::PUBLISHER_MONTH month,
       int year,
       ledger::PUBLISHER_EXCLUDE excluded,
-      bool min_duration);
+      bool min_duration,
+      const uint64_t& currentReconcileStamp);
 
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
@@ -159,7 +162,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void calcScoreConsts();
 
   void synopsisNormalizer(const ledger::PublisherInfo& info);
-  void synopsisNormalizerInternal(const ledger::PublisherInfoList& list, uint32_t /* next_record */);
+  void synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
+    const ledger::PublisherInfoList& list, uint32_t /* next_record */);
 
   bool isPublisherVisible(const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
@@ -172,7 +176,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
-  std::vector<braveledger_bat_helper::PUBLISHER_ST> topN();
+  void topN(const unsigned int& ballots,
+    const uint64_t& currentReconcileStamp, const std::string& viewing_id);
+  void topNInternal(const unsigned int& ballots, const std::string& viewing_id,
+    const ledger::PublisherInfoList& list, uint32_t /* next_record */);
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
 

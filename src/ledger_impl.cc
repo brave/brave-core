@@ -31,7 +31,10 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     initializing_(false),
     last_tab_active_time_(0),
     last_shown_tab_id_(-1),
-    last_pub_load_timer_id_ (0u){
+    last_pub_load_timer_id_(0u),
+    last_reconcile_timer_id_(0u),
+    last_prepare_vote_batch_timer_id_(0u),
+    last_vote_batch_timer_id_(0u) {
 }
 
 LedgerImpl::~LedgerImpl() {
@@ -237,6 +240,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   if (result == ledger::Result::LEDGER_OK) {
     initialized_ = true;
     RefreshPublishersList(false);
+    Reconcile();
   }
 }
 
@@ -410,30 +414,61 @@ uint64_t LedgerImpl::GetReconcileStamp() const {
 }
 
 void LedgerImpl::Reconcile() {
-  // That function should be triggeres from the main process periodically to make payments
-  if (bat_client_->isReadyForReconcile()) {
-    bat_client_->reconcile(GenerateGUID());
+  if (last_reconcile_timer_id_ != 0) {
+    // Timer in progress
+    return;
   }
+
+  uint64_t now = std::time(nullptr);
+  uint64_t nextReconcileTimestamp = GetReconcileStamp();
+
+  uint64_t time_to_next_reconcile = (nextReconcileTimestamp == 0 || nextReconcileTimestamp < now) ? 
+    0 : nextReconcileTimestamp - now;
+
+  ledger_client_->SetTimer(time_to_next_reconcile, last_reconcile_timer_id_);
 }
 
 void LedgerImpl::OnReconcileComplete(ledger::Result result,
-                                    const std::string& viewing_id) {
-  ledger_client_->OnReconcileComplete(result, viewing_id);
+                                    const std::string& viewing_id,
+                                    const std::string& probi) {
+  // TODO SZ: we have to save old timestamp in case of failure
+  uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
+
+  ledger_client_->OnReconcileComplete(result, viewing_id, probi);
+  // Start the timer again
+  bat_client_->resetReconcileStamp();
+  Reconcile();
   if (result != ledger::Result::LEDGER_OK) {
     // error handling
     return;
   }
-  LOG(ERROR) << "!!!in reconcile callback";
   unsigned int ballotsCount = bat_client_->ballots("");
-  LOG(ERROR) << "!!!ballotsCount == " << ballotsCount;
-  std::vector<braveledger_bat_helper::WINNERS_ST> winners = bat_publishers_->winners(ballotsCount);
+  bat_publishers_->winners(ballotsCount, currentReconcileStamp, viewing_id);
+}
+
+void LedgerImpl::VotePublishers(const std::vector<braveledger_bat_helper::WINNERS_ST>& winners,
+    const std::string& viewing_id) {
   std::vector<std::string> publishers;
   for (size_t i = 0; i < winners.size(); i++) {
     publishers.push_back(winners[i].publisher_data_.id_);
   }
   bat_client_->votePublishers(publishers, viewing_id);
-  // TODO call prepareBallots by timeouts like in js library
   bat_client_->prepareBallots();
+}
+
+void LedgerImpl::PrepareVoteBatchTimer() {
+  uint64_t start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
+
+  LOG(ERROR) << "!!!PrepareVoteBatchTimer starts in " << start_timer_in;
+  ledger_client_->SetTimer(start_timer_in, last_prepare_vote_batch_timer_id_);
+}
+
+void LedgerImpl::VoteBatchTimer() {
+  uint64_t start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
+
+  LOG(ERROR) << "!!!VoteBatchTimer starts in " << start_timer_in;
+
+  ledger_client_->SetTimer(start_timer_in, last_vote_batch_timer_id_);
 }
 
 void LedgerImpl::OnWalletProperties(ledger::Result result,
@@ -568,6 +603,15 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
     auto url_loader = LoadURL(url, std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, &handler_);
     handler_.AddRequestHandler(std::move(url_loader),
       std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2,_3));
+  } else if (timer_id == last_reconcile_timer_id_) {
+    last_reconcile_timer_id_ = 0;
+    bat_client_->reconcile(GenerateGUID());
+  } else if (timer_id == last_prepare_vote_batch_timer_id_) {
+    last_prepare_vote_batch_timer_id_ = 0;
+    bat_client_->prepareVoteBatch();
+  } else if (timer_id == last_vote_batch_timer_id_) {
+    last_vote_batch_timer_id_ = 0;
+    bat_client_->voteBatch();
   }
 }
 
@@ -659,10 +703,11 @@ void LedgerImpl::OnExcludedSitesChanged() {
   ledger_client_->OnExcludedSitesChanged();
 }
 
-void LedgerImpl::SetBalanceReportCatpcha(ledger::PUBLISHER_MONTH month,
-                                         int year,
-                                         const std::string& probi) {
-  bat_publishers_->setBalanceReportCatpcha(month, year, probi);
+void LedgerImpl::SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
+                                      int year,
+                                      ledger::ReportType type,
+                                      const std::string& probi) {
+  bat_publishers_->setBalanceReportItem(month, year, type, probi);
 }
 
 }  // namespace bat_ledger

@@ -39,6 +39,7 @@ class BatClient {
   const std::string& getBTCAddress() const;
   const std::string& getETHAddress() const;
   const std::string& getLTCAddress() const;
+  void resetReconcileStamp();
   uint64_t getReconcileStamp() const;
   bool didUserChangeContributionAmount() const;
   double getContributionAmount() const;
@@ -57,6 +58,8 @@ class BatClient {
   void getGrantCaptcha();
   void getWalletProperties();
   bool isWalletCreated() const;
+  void prepareVoteBatch();
+  void voteBatch();
 
   void continueRecover(int result, size_t *written, std::vector<uint8_t>& newSeed);
 
@@ -79,8 +82,6 @@ class BatClient {
   void prepareBatchCallback(bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
   void proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof);
-  void prepareVoteBatch();
-  void voteBatch();
   void voteBatchCallback(const std::string& publisher, bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
   //void prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
@@ -94,9 +95,6 @@ class BatClient {
   void currentReconcileCallback(bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
   void reconcilePayloadCallback(bool result, const std::string& response,
-      const std::map<std::string, std::string>& headers);
-  void updateRulesCallback(bool reconcile, bool result, const std::string& response);
-  void updateRulesV2Callback(bool reconcile, bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
   void registerViewing();
   void registerViewingCallback(bool result, const std::string& response,
