@@ -10,26 +10,24 @@ namespace brave_sync {
 
 namespace jslib {
 
-Site::Site() {
-  ;
-}
+Site::Site() {}
 
 Site::Site(const base::Value *value) {
   FromValue(value);
 }
 
-Site::~Site() {
-  ;
+Site::Site(const Site& site) {
+  location = site.location;
+  title = site.title;
+  customTitle = site.customTitle;
+  creationTime = site.creationTime;
+  favicon = site.favicon;
 }
 
+Site::~Site() {}
+
 std::unique_ptr<Site> Site::Clone(const Site& site) {
-   auto ret_val = std::make_unique<Site>();
-   ret_val->location = site.location;
-   ret_val->title = site.title;
-   ret_val->customTitle = site.customTitle;
-   ret_val->creationTime = site.creationTime;
-   ret_val->favicon = site.favicon;
-   return  ret_val;
+  return std::make_unique<Site>(site);
 }
 
 void Site::FromValue(const base::Value *site_value) {
@@ -59,27 +57,25 @@ void Site::FromValue(const base::Value *site_value) {
   this->favicon = favicon_value->GetString();
 }
 
-Bookmark::Bookmark() : isFolder(false), hideInToolbar(false) {
-  ;
-}
+Bookmark::Bookmark() : isFolder(false), hideInToolbar(false) {}
 
 Bookmark::Bookmark(const base::Value *value) : isFolder(false), hideInToolbar(false) {
   FromValue(value);
 }
 
-Bookmark::~Bookmark() {
-  ;
+Bookmark::Bookmark(const Bookmark& bookmark) {
+  site = bookmark.site;
+  isFolder = bookmark.isFolder;
+  parentFolderObjectId = bookmark.parentFolderObjectId;
+  fields = bookmark.fields;
+  hideInToolbar = bookmark.hideInToolbar;
+  order = bookmark.order;
 }
 
+Bookmark::~Bookmark() {}
+
 std::unique_ptr<Bookmark> Bookmark::Clone(const Bookmark& bookmark) {
-   auto ret_val = std::make_unique<Bookmark>();
-   ret_val->site = std::move(*Site::Clone(bookmark.site));
-   ret_val->isFolder = bookmark.isFolder;
-   ret_val->parentFolderObjectId = bookmark.parentFolderObjectId;
-   ret_val->fields = bookmark.fields;
-   ret_val->hideInToolbar = bookmark.hideInToolbar;
-   ret_val->order = bookmark.order;
-   return  ret_val;
+   return std::make_unique<Bookmark>(bookmark);
 }
 
 void Bookmark::FromValue(const base::Value *bookmark_value) {

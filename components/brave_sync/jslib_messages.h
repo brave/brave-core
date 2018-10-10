@@ -29,6 +29,7 @@ class Site {
 public:
   Site();
   Site(const base::Value *value);
+  Site(const Site& site);
   ~Site();
   static std::unique_ptr<Site> Clone(const Site& site);
 
@@ -47,6 +48,7 @@ class Bookmark {
 public:
   Bookmark();
   Bookmark(const base::Value *value);
+  Bookmark(const Bookmark& bookmark);
   ~Bookmark();
   static std::unique_ptr<Bookmark> Clone(const Bookmark& bookmark);
 

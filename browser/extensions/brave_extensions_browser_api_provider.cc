@@ -7,9 +7,6 @@
 #include "brave/common/extensions/api/generated_api_registration.h"
 #include "extensions/browser/extension_function_registry.h"
 
-// TOOD: I don't know why this isn't automatically linked in
-#include "gen/brave/common/extensions/api/generated_api_registration.cc"
-
 namespace extensions {
 
 BraveExtensionsBrowserAPIProvider::BraveExtensionsBrowserAPIProvider() =

@@ -62,7 +62,7 @@ public:
   virtual void OnSyncReady() = 0;
   virtual void OnGetExistingObjects(const std::string &category_name,
     std::unique_ptr<RecordsList> records,
-    const base::Time &last_record_time_stamp, const bool &is_truncated) = 0;
+    const base::Time &last_record_time_stamp, const bool is_truncated) = 0;
   virtual void OnResolvedSyncRecords(const std::string &category_name,
     std::unique_ptr<RecordsList> records) = 0;
   virtual void OnDeletedSyncUser() = 0;
