@@ -14,6 +14,7 @@
 #include "static_values.h"
 
 namespace braveledger_bat_helper {
+  bool isProbiValid(const std::string& number);
 
   struct REQUEST_CREDENTIALS_ST {
     REQUEST_CREDENTIALS_ST();
