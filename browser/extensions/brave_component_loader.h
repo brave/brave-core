@@ -26,12 +26,14 @@ class BraveComponentLoader : public ComponentLoader {
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
   void OnComponentReady(std::string extension_id,
+    bool allow_file_access,
     const base::FilePath& install_dir,
     const std::string& manifest);
   void AddExtension(const std::string& id,
       const std::string& name, const std::string& public_key);
  
-
+ private:
+  Profile* profile_;
   DISALLOW_COPY_AND_ASSIGN(BraveComponentLoader);
 };
 

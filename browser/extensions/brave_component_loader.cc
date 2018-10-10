@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/extension/grit/brave_rewards_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "components/grit/brave_components_resources.h"
+#include "extensions/browser/extension_prefs.h"
 
 namespace extensions {
 
@@ -22,7 +23,8 @@ BraveComponentLoader::BraveComponentLoader(
     PrefService* profile_prefs,
     PrefService* local_state,
     Profile* profile)
-    : ComponentLoader(extension_service, profile_prefs, local_state, profile) {
+    : ComponentLoader(extension_service, profile_prefs, local_state, profile),
+      profile_(profile) {
 }
 
 BraveComponentLoader::~BraveComponentLoader() {
@@ -37,9 +39,14 @@ void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
 }
 
 void BraveComponentLoader::OnComponentReady(std::string extension_id,
+    bool allow_file_access,
     const base::FilePath& install_dir,
     const std::string& manifest) {
   Add(manifest, install_dir);
+  if (allow_file_access) {
+    ExtensionPrefs::Get((content::BrowserContext *)profile_)->
+        SetAllowFileAccess(extension_id, true);
+  }
 }
 
 void BraveComponentLoader::AddExtension(const std::string& extension_id,
@@ -50,7 +57,7 @@ void BraveComponentLoader::AddExtension(const std::string& extension_id,
     base::Bind(&BraveComponentLoader::OnComponentRegistered,
         base::Unretained(this), extension_id),
     base::Bind(&BraveComponentLoader::OnComponentReady,
-        base::Unretained(this), extension_id));
+        base::Unretained(this), extension_id, true));
 }
 
 void BraveComponentLoader::AddDefaultComponentExtensions(
