@@ -21,7 +21,8 @@ import {
   StyledToggleWrapper,
   StyledSelectWrapper,
   StyledGrid,
-  StyledColumn
+  StyledColumn,
+  StyleToggleTips
 } from './style'
 
 // Components
@@ -34,7 +35,7 @@ import {
 import { Tokens } from '../'
 import ToggleTips from '../toggleTips/index'
 import Profile, { Provider } from '../profile/index'
-import { AlertCircleIcon, RefreshIcon } from '../../../components/icons'
+import { RefreshIcon } from '../../../components/icons'
 
 export type Token = {
   tokens: string,
@@ -132,9 +133,6 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             <StyledDonateText>
               {getLocale('includeInAuto')}
             </StyledDonateText>
-            <StyledIcon>
-              <AlertCircleIcon/>
-            </StyledIcon>
           </StyledColumn>
           <StyledColumn size={'1'}>
             <StyledToggleWrapper>
@@ -192,12 +190,14 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             />
           </StyledDonateWrapper>
         </StyledContainer>
-        <ToggleTips
-          id={'toggle-tips'}
-          provider={platform}
-          onToggleTips={onToggleTips}
-          tipsEnabled={tipsEnabled}
-        />
+        <StyleToggleTips>
+          <ToggleTips
+            id={'toggle-tips'}
+            provider={platform}
+            onToggleTips={onToggleTips}
+            tipsEnabled={tipsEnabled}
+          />
+        </StyleToggleTips>
       </StyledWrapper>
     )
   }

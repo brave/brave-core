@@ -83,3 +83,7 @@ export const StyledGrid = styled<{}, 'div'>('div')`
 export const StyledColumn = styled<StyleProps, 'div'>('div')`
   flex: ${p => p.size} 0 0;
 `
+
+export const StyleToggleTips = styled<StyleProps, 'div'>('div')`
+  display: none;
+`
