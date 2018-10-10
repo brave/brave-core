@@ -5,7 +5,11 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 
 #include "base/command_line.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/component_updater/brave_component_installer.h"
+#include "brave/browser/extensions/brave_component_extension.h"
 #include "brave/common/brave_switches.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/extension/grit/brave_rewards_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
@@ -24,6 +28,31 @@ BraveComponentLoader::BraveComponentLoader(
 BraveComponentLoader::~BraveComponentLoader() {
 }
 
+void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
+  ComponentsUI demand_updater;
+  // This weird looking call is ok, it is just like this to not need
+  // to patch for friend access.
+  demand_updater.OnDemandUpdate(g_browser_process->component_updater(),
+      extension_id);
+}
+
+void BraveComponentLoader::OnComponentReady(std::string extension_id,
+    const base::FilePath& install_dir,
+    const std::string& manifest) {
+  Add(manifest, install_dir);
+}
+
+void BraveComponentLoader::AddExtension(const std::string& extension_id,
+    const std::string& name, const std::string& public_key) {
+  brave::RegisterComponent(g_browser_process->component_updater(),
+    name,
+    public_key,
+    base::Bind(&BraveComponentLoader::OnComponentRegistered,
+        base::Unretained(this), extension_id),
+    base::Bind(&BraveComponentLoader::OnComponentReady,
+        base::Unretained(this), extension_id));
+}
+
 void BraveComponentLoader::AddDefaultComponentExtensions(
     bool skip_session_components) {
   ComponentLoader::AddDefaultComponentExtensions(skip_session_components);
@@ -35,6 +64,10 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     brave_extension_path =
         brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
     Add(IDR_BRAVE_EXTENSON, brave_extension_path);
+  }
+
+  if (!command_line.HasSwitch(switches::kDisablePDFJSExtension)) {
+    AddExtension(pdfjs_extension_id, pdfjs_extension_name, pdfjs_extension_public_key);
   }
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)

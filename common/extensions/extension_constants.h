@@ -5,5 +5,8 @@
 extern const char brave_extension_id[];
 extern const char brave_rewards_extension_id[];
 extern const char brave_webtorrent_extension_id[];
-extern const char pdfjs_extension_id[];
 extern const char widevine_extension_id[];
+
+extern const char pdfjs_extension_id[];
+extern const char pdfjs_extension_name[];
+extern const char pdfjs_extension_public_key[];
