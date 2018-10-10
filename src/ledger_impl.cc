@@ -66,6 +66,14 @@ void LedgerImpl::AddRecurringPayment(const std::string& publisher_id, const doub
 void LedgerImpl::MakePayment(const ledger::PaymentData& payment_data) {
   bat_publishers_->MakePayment(payment_data);
 }
+  
+braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(const std::string& viewingId) {
+  return bat_client_->GetReconcileById(viewingId);
+}
+  
+void LedgerImpl::RemoveReconcileById(const std::string& viewingId) {
+  bat_client_->removeReconcileById(viewingId);
+}
 
 void LedgerImpl::OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) {
   if (visit_data.domain.empty()) {
@@ -434,16 +442,20 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   // TODO SZ: we have to save old timestamp in case of failure
   uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
 
-  // Start the timer again
-  bat_client_->resetReconcileStamp();
-  ledger_client_->OnReconcileComplete(result, viewing_id, probi);
-  Reconcile();
+   // Start the timer again if it wasn't a direct donation
+  if (GetReconcileById(viewing_id).directions_.empty()) {
+    bat_client_->resetReconcileStamp();
+    // TODO why was this one removed
+    // ledger_client_->OnReconcileComplete(result, viewing_id, probi);
+    Reconcile();
+  }
   if (result != ledger::Result::LEDGER_OK) {
     // error handling
     return;
   }
   unsigned int ballotsCount = bat_client_->ballots("");
   bat_publishers_->winners(ballotsCount, currentReconcileStamp, viewing_id);
+  bat_client_->removeReconcileById(viewing_id);
 }
 
 void LedgerImpl::VotePublishers(const std::vector<braveledger_bat_helper::WINNERS_ST>& winners,
@@ -593,6 +605,11 @@ void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
                                 const ledger::BalanceReportInfo& report_info) {
   bat_publishers_->setBalanceReport(month, year, report_info);
 }
+  
+void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) {
+  auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher, amount, currency);
+  bat_client_->reconcile(GenerateGUID(), false, std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction });
+}
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
   if (timer_id == last_pub_load_timer_id_) {
@@ -605,7 +622,10 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
       std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2,_3));
   } else if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
-    bat_client_->reconcile(GenerateGUID(), braveledger_bat_helper::RECONCILE_OPTIONS());
+    // Auto-contribution
+    bat_client_->reconcile(GenerateGUID(), false);
+    // Recurring direct donation
+    bat_client_->reconcile(GenerateGUID(), true);
   } else if (timer_id == last_prepare_vote_batch_timer_id_) {
     last_prepare_vote_batch_timer_id_ = 0;
     bat_client_->prepareVoteBatch();

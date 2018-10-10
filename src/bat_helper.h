@@ -12,6 +12,7 @@
 
 #include "bat_helper_platform.h"
 #include "static_values.h"
+#include "bat/ledger/publisher_info.h"
 
 namespace braveledger_bat_helper {
   bool isProbiValid(const std::string& number);
@@ -326,6 +327,16 @@ namespace braveledger_bat_helper {
     BALLOT_ST ballot_;
   };
 
+  struct RECONCILE_DIRECTION {
+    RECONCILE_DIRECTION();
+    RECONCILE_DIRECTION(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency);
+    ~RECONCILE_DIRECTION();
+    
+    ledger::PublisherInfo publisher_;
+    int amount_;
+    std::string currency_;
+  };
+  
   struct CURRENT_RECONCILE {
     CURRENT_RECONCILE();
     ~CURRENT_RECONCILE();
@@ -341,23 +352,8 @@ namespace braveledger_bat_helper {
     std::string amount_;
     std::string currency_;
     double fee_;
-  };
-  
-  struct RECONCILE_DIRECTION {
-    RECONCILE_DIRECTION();
-    ~RECONCILE_DIRECTION();
-    
-    std::string publisher_key_;
-    int amount_;
-    std::string currency_;
-  };
-  
-  struct RECONCILE_OPTIONS {
-    RECONCILE_OPTIONS();
-    ~RECONCILE_OPTIONS();
-    
     std::vector<RECONCILE_DIRECTION> directions_;
-    bool immediate_;
+    bool reccuring_;
   };
 
   enum class SERVER_TYPES {

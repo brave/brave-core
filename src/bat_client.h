@@ -45,7 +45,9 @@ class BatClient {
   double getContributionAmount() const;
   bool getAutoContribute() const;
   bool isReadyForReconcile();
-  void reconcile(const std::string& viewingId, const braveledger_bat_helper::RECONCILE_OPTIONS& options);
+  braveledger_bat_helper::CURRENT_RECONCILE GetReconcileById(const std::string& viewingId);
+  void removeReconcileById(const std::string& viewingId);
+  void reconcile(const std::string& viewingId, const bool recurring, const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions = {});
   unsigned int ballots(const std::string& viewingId);
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
   void prepareBallots();
@@ -89,24 +91,24 @@ class BatClient {
   //void prepareBallotCallback(bool result, const std::string& response, const braveledger_bat_helper::FETCH_CALLBACK_EXTRA_DATA_ST& extraData);
   //void commitBallotCallback(bool result, const std::string& response);
   void vote(const std::string& publisher, const std::string& viewingId);
-  void reconcileCallback(bool result, const std::string& response,
+  void reconcileCallback(const std::string& viewingId, bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
-  void currentReconcile();
-  void currentReconcileCallback(bool result, const std::string& response,
+  void currentReconcile(const std::string& viewingId);
+  void currentReconcileCallback(const std::string& viewingId, bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
-  void reconcilePayloadCallback(bool result, const std::string& response,
+  void reconcilePayloadCallback(const std::string& viewingId, bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
-  void registerViewing();
-  void registerViewingCallback(bool result, const std::string& response,
+  void registerViewing(const std::string& viewingId);
+  void registerViewingCallback(const std::string& viewingId, bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
-  void viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId);
-  void viewingCredentialsCallback(bool result, const std::string& response,
+  void viewingCredentials(const std::string& viewingId, const std::string& proofStringified, const std::string& anonizeViewingId);
+  void viewingCredentialsCallback(const std::string& viewingId, bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
   std::string getAnonizeProof(const std::string& registrarVK, const std::string& id, std::string& preFlight);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
-  std::unique_ptr<braveledger_bat_helper::CURRENT_RECONCILE> currentReconcile_;
+  std::unique_ptr<std::map<std::string, braveledger_bat_helper::CURRENT_RECONCILE>> currentReconciles_;
 
   bat_ledger::URLRequestHandler handler_;
 };

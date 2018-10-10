@@ -22,7 +22,7 @@ namespace braveledger_bat_client {
 BatClient::BatClient(bat_ledger::LedgerImpl* ledger) :
       ledger_(ledger),
       state_(new braveledger_bat_helper::CLIENT_STATE_ST()),
-      currentReconcile_(new braveledger_bat_helper::CURRENT_RECONCILE) {
+      currentReconciles_(new std::map<std::string, braveledger_bat_helper::CURRENT_RECONCILE>) {
   // Enable emscripten calls
   //braveledger_bat_helper::readEmscripten();
   initAnonize();
@@ -281,37 +281,36 @@ bool BatClient::isReadyForReconcile() {
   return true;
 }
 
-void BatClient::reconcile(const std::string& viewingId, const braveledger_bat_helper::RECONCILE_OPTIONS& options) {
-  currentReconcile_->viewingId_ = viewingId;
+void BatClient::reconcile(const std::string& viewingId, bool reccuring, const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions) {
+  if (currentReconciles_->count(viewingId) > 0) {
+    LOG(ERROR) << "unable to reconcile with the same viewing id";
+    return;
+  }
+  
+  auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
 
   double fee = .0;
-  for (auto direction : options.directions_) {
-    const auto amount = direction.amount_;
-    
-    if (direction.publisher_key_.empty()) {
+  for (const auto& direction : directions) {
+    if (direction.publisher_.name.empty()) {
       LOG(ERROR) << "reconcile direction missing publisher";
       return;
     }
     
     if (direction.currency_ != CURRENCY) {
-      LOG(ERROR) << "reconcile direction currency invalid for " << direction.publisher_key_;
+      LOG(ERROR) << "reconcile direction currency invalid for " << direction.publisher_.name;
       return;
     }
     
-    fee += amount;
+    fee += direction.amount_;
   }
   
-  if ((fee > 0) && (!options.immediate_)) {
-    const auto currency = state_->walletProperties_.altcurrency_;
-    if (currency != CURRENCY) {
-      LOG(ERROR) << "invalid recurring currency " << currency;
-      return;
-    }
-    fee += state_->walletProperties_.fee_amount_;
-  }
-  
-  currentReconcile_->fee_ = fee;
+  reconcile.viewingId_ = viewingId;
+  reconcile.fee_ = fee;
+  reconcile.directions_ = directions;
+  reconcile.reccuring_ = reccuring;
 
+  currentReconciles_->insert(std::make_pair(viewingId, reconcile));
+  
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)RECONCILE_CONTRIBUTION + state_->userId_, PREFIX_V2),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET,
@@ -320,12 +319,14 @@ void BatClient::reconcile(const std::string& viewingId, const braveledger_bat_he
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::reconcileCallback,
                                        this,
+                                       viewingId,
                                        _1,
                                        _2,
                                        _3));
 }
 
-void BatClient::reconcileCallback(bool result,
+void BatClient::reconcileCallback(const std::string& viewingId,
+                                  bool result,
                                   const std::string& response,
                                   const std::map<std::string, std::string>& headers) {
   if (!result) {
@@ -333,11 +334,11 @@ void BatClient::reconcileCallback(bool result,
     return;
   }
   //currentReconcile_->viewingId_ = extraData.string1;
-  braveledger_bat_helper::getJSONValue(SURVEYOR_ID, response, currentReconcile_->surveyorInfo_.surveyorId_);
-  currentReconcile();
+  braveledger_bat_helper::getJSONValue(SURVEYOR_ID, response, currentReconciles_->at(viewingId).surveyorInfo_.surveyorId_);
+  currentReconcile(viewingId);
 }
 
-void BatClient::currentReconcile() {
+void BatClient::currentReconcile(const std::string& viewingId) {
   std::ostringstream amount;
   amount << state_->fee_amount_;
   std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_ + "?refresh=true" + "&amount=" + amount.str() + "&altcurrency=" + state_->fee_currency_;
@@ -348,30 +349,47 @@ void BatClient::currentReconcile() {
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::currentReconcileCallback,
                                        this,
+                                       viewingId,
                                        _1,
                                        _2,
                                        _3));
 }
+  
+braveledger_bat_helper::CURRENT_RECONCILE BatClient::GetReconcileById(const std::string& viewingId) {
+  if (currentReconciles_->count(viewingId) == 0) {
+    LOG(ERROR) << "Could not find any reconcile tasks with the id " << viewingId;
+    // For safety we don't crash, perhaps in a dev build we want to throw an exception anyways
+    return braveledger_bat_helper::CURRENT_RECONCILE();
+  }
+  return currentReconciles_->at(viewingId);
+}
+  
+void BatClient::removeReconcileById(const std::string& viewingId) {
+  currentReconciles_->erase(currentReconciles_->find(viewingId));
+}
 
-void BatClient::currentReconcileCallback(bool result,
+void BatClient::currentReconcileCallback(const std::string& viewingId,
+                                         bool result,
                                          const std::string& response,
                                          const std::map<std::string, std::string>& headers) {
   if (!result) {
-    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
     // TODO errors handling
     return;
   }
+  
+  auto reconcile = GetReconcileById(viewingId);
 
-  braveledger_bat_helper::getJSONRates(response, currentReconcile_->rates_);
+  braveledger_bat_helper::getJSONRates(response, reconcile.rates_);
   braveledger_bat_helper::UNSIGNED_TX unsignedTx;
   braveledger_bat_helper::getJSONUnsignedTx(response, unsignedTx);
   if (unsignedTx.amount_.empty() && unsignedTx.currency_.empty() && unsignedTx.destination_.empty()) {
-    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, reconcile.viewingId_);
     // We don't have any unsigned transactions
     return;
   }
-  currentReconcile_->amount_ = unsignedTx.amount_;
-  currentReconcile_->currency_ = unsignedTx.currency_;
+  reconcile.amount_ = unsignedTx.amount_;
+  reconcile.currency_ = unsignedTx.currency_;
 
   std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsignedTx);
   std::string headerDigest = "SHA-256=" + braveledger_bat_helper::getBase64(braveledger_bat_helper::getSHA256(octets));
@@ -393,8 +411,8 @@ void BatClient::currentReconcileCallback(bool result,
   reconcilePayload.request_signedtx_headers_signature_ = headerSignature;
   reconcilePayload.request_signedtx_body_ = unsignedTx;
   reconcilePayload.request_signedtx_octets_ = octets;
-  reconcilePayload.request_viewingId_ = currentReconcile_->viewingId_;
-  reconcilePayload.request_surveyorId_ = currentReconcile_->surveyorInfo_.surveyorId_;
+  reconcilePayload.request_viewingId_ = reconcile.viewingId_;
+  reconcilePayload.request_surveyorId_ = reconcile.surveyorInfo_.surveyorId_;
   std::string payloadStringify = braveledger_bat_helper::stringifyReconcilePayloadSt(reconcilePayload);
   //LOG(ERROR) << "!!!payloadStringify == " << payloadStringify;
 
@@ -409,99 +427,112 @@ void BatClient::currentReconcileCallback(bool result,
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::reconcilePayloadCallback,
                                        this,
+                                       viewingId,
                                        _1,
                                        _2,
                                        _3));
 }
 
-void BatClient::reconcilePayloadCallback(bool result,
+void BatClient::reconcilePayloadCallback(const std::string& viewingId,
+                                         bool result,
                                          const std::string& response,
                                          const std::map<std::string, std::string>& headers) {
   if (!result) {
-    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
     // TODO errors handling
     return;
   }
+  
+  const auto reconcile = GetReconcileById(viewingId);
+  
   braveledger_bat_helper::TRANSACTION_ST transaction;
   braveledger_bat_helper::getJSONTransaction(response, transaction);
-  transaction.viewingId_ = currentReconcile_->viewingId_;
-  transaction.surveyorId_ = currentReconcile_->surveyorInfo_.surveyorId_;
-  transaction.contribution_rates_ = currentReconcile_->rates_;
-  transaction.contribution_fiat_amount_ = currentReconcile_->amount_;
-  transaction.contribution_fiat_currency_ = currentReconcile_->currency_;
+  transaction.viewingId_ = reconcile.viewingId_;
+  transaction.surveyorId_ = reconcile.surveyorInfo_.surveyorId_;
+  transaction.contribution_rates_ = reconcile.rates_;
+  transaction.contribution_fiat_amount_ = reconcile.amount_;
+  transaction.contribution_fiat_currency_ = reconcile.currency_;
 
   state_->transactions_.push_back(transaction);
   saveState();
   // TODO set a new timestamp for the next reconcile
   // TODO self.state.updateStamp var in old lib
-  registerViewing();
+  registerViewing(viewingId);
 }
 
-void BatClient::registerViewing() {
+void BatClient::registerViewing(const std::string& viewingId) {
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)REGISTER_VIEWING, PREFIX_V2),
     std::vector<std::string>(), "", "",
     ledger::URL_METHOD::GET, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::registerViewingCallback,
                                        this,
+                                       viewingId,
                                        _1,
                                        _2,
                                        _3));
 }
 
-void BatClient::registerViewingCallback(bool result,
+void BatClient::registerViewingCallback(const std::string& viewingId,
+                                        bool result,
                                         const std::string& response,
                                         const std::map<std::string, std::string>& headers) {
   if (!result) {
-    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
     // TODO errors handling
     return;
   }
+  
+  auto reconcile = GetReconcileById(viewingId);
 
-  braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response, currentReconcile_->registrarVK_);
-  DCHECK(!currentReconcile_->registrarVK_.empty());
-  currentReconcile_->anonizeViewingId_ = currentReconcile_->viewingId_;
-  currentReconcile_->anonizeViewingId_.erase(std::remove(currentReconcile_->anonizeViewingId_.begin(), currentReconcile_->anonizeViewingId_.end(), '-'), currentReconcile_->anonizeViewingId_.end());
-  currentReconcile_->anonizeViewingId_.erase(12, 1);
-  std::string proof = getAnonizeProof(currentReconcile_->registrarVK_, currentReconcile_->anonizeViewingId_, currentReconcile_->preFlight_);
+  braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response, reconcile.registrarVK_);
+  DCHECK(!reconcile.registrarVK_.empty());
+  reconcile.anonizeViewingId_ = reconcile.viewingId_;
+  reconcile.anonizeViewingId_.erase(std::remove(reconcile.anonizeViewingId_.begin(), reconcile.anonizeViewingId_.end(), '-'), reconcile.anonizeViewingId_.end());
+  reconcile.anonizeViewingId_.erase(12, 1);
+  std::string proof = getAnonizeProof(reconcile.registrarVK_, reconcile.anonizeViewingId_, reconcile.preFlight_);
   //LOG(ERROR) << "!!!proof1 == " << proof;
 
   std::string keys[1] = {"proof"};
   std::string values[1] = {proof};
   std::string proofStringified = braveledger_bat_helper::stringify(keys, values, 1);
-  viewingCredentials(proofStringified, currentReconcile_->anonizeViewingId_);
+  viewingCredentials(viewingId, proofStringified, reconcile.anonizeViewingId_);
 }
 
-void BatClient::viewingCredentials(const std::string& proofStringified, const std::string& anonizeViewingId) {
+void BatClient::viewingCredentials(const std::string& viewingId, const std::string& proofStringified, const std::string& anonizeViewingId) {
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)REGISTER_VIEWING + "/" + anonizeViewingId, PREFIX_V2),
     std::vector<std::string>(), proofStringified, "application/json; charset=utf-8",
     ledger::URL_METHOD::POST, &handler_);
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatClient::viewingCredentialsCallback,
                                        this,
+                                       viewingId,
                                        _1,
                                        _2,
                                        _3));
 }
 
-void BatClient::viewingCredentialsCallback(bool result,
+void BatClient::viewingCredentialsCallback(const std::string& viewingId,
+                                           bool result,
                                            const std::string& response,
                                            const std::map<std::string, std::string>& headers) {
   //LOG(ERROR) << "!!!response viewingCredentialsCallback == " << response;
   if (!result) {
-    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, currentReconcile_->viewingId_);
+    ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
     // TODO errors handling
     return;
   }
+  
+  auto reconcile = GetReconcileById(viewingId);
 
   std::string verification;
   braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME, response, verification);
   //LOG(ERROR) << "!!!response verification == " << verification;
-  const char* masterUserToken = registerUserFinal(currentReconcile_->anonizeViewingId_.c_str(), verification.c_str(),
-    currentReconcile_->preFlight_.c_str(), currentReconcile_->registrarVK_.c_str());
+  const char* masterUserToken = registerUserFinal(reconcile.anonizeViewingId_.c_str(), verification.c_str(),
+    reconcile.preFlight_.c_str(), reconcile.registrarVK_.c_str());
 
   if (nullptr != masterUserToken) {
-    currentReconcile_->masterUserToken_ = masterUserToken;
+    reconcile.masterUserToken_ = masterUserToken;
     free((void*)masterUserToken);
   }
 
@@ -510,18 +541,18 @@ void BatClient::viewingCredentialsCallback(bool result,
   std::string probi = "0";
   // Save the rest values to transactions
   for (size_t i = 0; i < state_->transactions_.size(); i++) {
-    if (state_->transactions_[i].viewingId_ != currentReconcile_->viewingId_) {
+    if (state_->transactions_[i].viewingId_ != reconcile.viewingId_) {
       continue;
     }
-    state_->transactions_[i].anonizeViewingId_ = currentReconcile_->anonizeViewingId_;
-    state_->transactions_[i].registrarVK_ = currentReconcile_->registrarVK_;
-    state_->transactions_[i].masterUserToken_ = currentReconcile_->masterUserToken_;
+    state_->transactions_[i].anonizeViewingId_ = reconcile.anonizeViewingId_;
+    state_->transactions_[i].registrarVK_ = reconcile.registrarVK_;
+    state_->transactions_[i].masterUserToken_ = reconcile.masterUserToken_;
     state_->transactions_[i].surveyorIds_ = surveyors;
     probi = state_->transactions_[i].contribution_probi_;
   }
 
   saveState();
-  ledger_->OnReconcileComplete(ledger::Result::LEDGER_OK, currentReconcile_->viewingId_, probi);
+  ledger_->OnReconcileComplete(ledger::Result::LEDGER_OK, reconcile.viewingId_, probi);
 }
 
 unsigned int BatClient::ballots(const std::string& viewingId) {

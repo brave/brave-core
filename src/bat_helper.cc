@@ -1108,13 +1108,10 @@ static bool ignore_ = false;
     timestamp_(0) {}
 
   CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
-
-  /////////////////////////////////////////////////////////////////////////////
-  RECONCILE_OPTIONS::RECONCILE_OPTIONS() : directions_(std::vector<RECONCILE_DIRECTION>()), immediate_(false) {}
-  RECONCILE_OPTIONS::~RECONCILE_OPTIONS() {}
   
   /////////////////////////////////////////////////////////////////////////////
   RECONCILE_DIRECTION::RECONCILE_DIRECTION() {}
+  RECONCILE_DIRECTION::RECONCILE_DIRECTION(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) : publisher_(publisher), amount_(amount), currency_(currency) {}
   RECONCILE_DIRECTION::~RECONCILE_DIRECTION() {}
   
   /////////////////////////////////////////////////////////////////////////////
