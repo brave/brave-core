@@ -63,11 +63,9 @@ def main():
       upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
   elif PLATFORM == 'win32':
     if get_target_arch() == 'x64':
-      upload_brave(repo, release, os.path.join(output_dir(),
-          'brave_installer.exe'), 'brave_installer-x64.exe', force=args.force)
+      upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'), 'brave_installer-x64.exe', force=args.force)
     else:
-      upload_brave(repo, release, os.path.join(output_dir(),
-          'brave_installer.exe'), 'brave_installer-ia32.exe', force=args.force)
+      upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'), 'brave_installer-ia32.exe', force=args.force)
   else:
     if get_target_arch() == 'x64':
       for pkg in pkgs:
@@ -89,22 +87,31 @@ def main():
 
 
 def yield_brave_packages(dir, channel, version):
-  # NOTE: mbacchi - before official release this must handle stable release channel which is ""
+  channel_capitalized = channel.capitalize()
   for _, _, files in os.walk(dir):
     for file in files:
       if PLATFORM == 'darwin':
-          sought_file = 'Brave-Browser-' + channel.capitalize() + '.dmg'
-          if re.match(r'Brave Browser ' + channel.capitalize() + r'.*\.dmg$', file):
-            print('a' + sought_file)
-            os.rename(os.path.join(dir, file), os.path.join(dir, sought_file))
-            yield sought_file
-          elif re.match(r'Brave-Browser-' + channel.capitalize() + r'.*\.dmg$', file):
-            print('b' + sought_file)
-            yield sought_file
-      elif PLATFORM == 'linux':
-        if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
-          or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
+        if channel_capitalized == 'Release':
+          file_desired = 'Brave-Browser.dmg'
+          if file == 'Brave Browser.dmg':
+            os.rename(os.path.join(dir, file), os.path.join(dir, file_desired))
+            yield file_desired
+        else:
+          file_desired = 'Brave-Browser-' + channel_capitalized + '.dmg'
+          if re.match(r'Brave Browser ' + channel_capitalized + r'.*\.dmg$', file):
+            os.rename(os.path.join(dir, file), os.path.join(dir, file_desired))
+            yield file_desired
+        if file == file_desired:
           yield file
+      elif PLATFORM == 'linux':
+        if channel == 'release':
+          if re.match(r'brave-browser' + '_' + version + r'.*\.deb$', file) \
+          or re.match(r'brave-browser' + '-' + version + r'.*\.rpm$', file):
+            yield file
+        else:
+          if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
+          or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
+            yield file
 
 def get_draft(repo, tag):
   release = None
@@ -231,12 +238,14 @@ def upload_brave(github, release, file_path, filename=None, force=False):
     upload_brave(github, release, arm_file_path)
 
 
-def upload_io_to_github(github, release, name, io, content_type, retries=3):
+def upload_io_to_github(github, release, name, io, content_type):
   io.seek(0)
   github.releases(release['id']).assets.post(
-  params={'name': name},
-  headers={'Content-Type': content_type},
-  data=io, verify=False
+    params={'name': name},
+    headers={'Content-Type': content_type},
+    data=io,
+    # TODO mplesa should this be True?
+    verify=False
   )
 
 
@@ -278,4 +287,3 @@ def delete_file(github, release, name, retries=3):
 if __name__ == '__main__':
   import sys
   sys.exit(main())
-
