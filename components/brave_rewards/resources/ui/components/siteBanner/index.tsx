@@ -222,7 +222,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
             </StyledContent>
             <StyledDonation>
               <StyledWallet>
-                {getLocale('walletBalance')} <StyledTokens>{balance} {getLocale('tokens')}</StyledTokens>
+                {getLocale('walletBalance')} <StyledTokens>{balance} BAT</StyledTokens>
               </StyledWallet>
               <Donate
                 balance={balance}

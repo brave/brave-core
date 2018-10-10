@@ -420,8 +420,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
           <span
             className="c16"
           >
-             
-            MISSING: tokens
+             BAT
           </span>
         </div>
         <div
