@@ -3,11 +3,6 @@
 exports[`List tests basic tests matches the snapshot 1`] = `
 .c0 {
   background-color: rgba(12,13,33,0.85);
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100%;
   font-family: Poppins,sans-serif;
 }
 
