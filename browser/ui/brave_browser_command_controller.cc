@@ -90,6 +90,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
 
 void BraveBrowserCommandController::UpdateCommandForTor() {
   UpdateCommandEnabled(IDC_NEW_TOR_IDENTITY, true);
+  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -109,6 +110,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_BRAVE_ADBLOCK:
       brave::ShowBraveAdblock(browser_);
+      break;
+    case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
+      brave::NewOffTheRecordWindowTor(browser_);
       break;
     case IDC_NEW_TOR_IDENTITY:
       brave::NewTorIdentity(browser_);
