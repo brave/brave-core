@@ -99,6 +99,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetCurrentBalanceReport() override;
   bool IsWalletCreated() override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) override;
+  double GetContributionAmount() override;
 
  private:
   typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
@@ -152,7 +153,8 @@ class RewardsServiceImpl : public RewardsService,
                       double balance,
                       const std::vector<ledger::Grant>& grants) override;
   void OnReconcileComplete(ledger::Result result,
-                           const std::string& viewing_id) override;
+                           const std::string& viewing_id,
+                           const std::string& probi) override;
   void OnGrantFinish(ledger::Result result,
                      const ledger::Grant& grant) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;

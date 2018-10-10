@@ -55,6 +55,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void ExcludePublisher(const base::ListValue* args);
   void RestorePublishers(const base::ListValue* args);
   void WalletExists(const base::ListValue* args);
+  void GetContributionAmount(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -76,6 +77,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                        brave_rewards::Grant grant) override;
   void OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service) override;
+  void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
+                           unsigned int result,
+                           const std::string& viewing_id,
+                           const std::string& probi) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -129,6 +134,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.checkWalletExistence",
                                     base::BindRepeating(&RewardsDOMHandler::WalletExists,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getContributionAmount",
+                                    base::BindRepeating(&RewardsDOMHandler::GetContributionAmount,
                                                         base::Unretained(this)));
 }
 
@@ -468,6 +476,21 @@ void RewardsDOMHandler::WalletExists(const base::ListValue* args) {
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletExists", base::Value(exist));
   }
+}
+
+void RewardsDOMHandler::GetContributionAmount(const base::ListValue* args) {
+  if (rewards_service_ && web_ui()->CanCallJavascript()) {
+    double amount = rewards_service_->GetContributionAmount();
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.contributionAmount", base::Value(amount));
+  }
+}
+
+void RewardsDOMHandler::OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
+  unsigned int result,
+  const std::string& viewing_id,
+  const std::string& probi) {
+  GetAllBalanceReports();
 }
 
 }  // namespace
