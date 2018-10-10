@@ -213,6 +213,20 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
     return true;
   }
 
+  // respect user's blocklist, if any
+  if (GetContentSettingFromRules(
+      content_setting_rules_->autoplay_rules, frame,
+      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL()) ==
+      CONTENT_SETTING_BLOCK) {
+      return false;
+  }
+
+  // in the absence of an explicit block rule, whitelist the following sites
+  const GURL& primary_url = GetOriginOrURL(frame);
+  if (ContentSettingsPattern::FromString("[*.]youtube.com").Matches(primary_url)) {
+      return true;
+  }
+
   blink::mojom::blink::PermissionServicePtr permission_service;
 
   render_frame()->GetRemoteInterfaces()
