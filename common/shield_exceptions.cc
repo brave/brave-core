@@ -39,7 +39,8 @@ bool IsUAWhitelisted(const GURL& gurl) {
 bool IsBlockedResource(const GURL& gurl) {
   static std::vector<URLPattern> blocked_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://www.lesechos.fr/xtcore.js"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js")
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://pdfjs.robwu.nl/*")
   });
   return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
       [&gurl](URLPattern pattern){
