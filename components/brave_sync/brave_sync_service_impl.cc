@@ -613,7 +613,7 @@ SyncRecordAndExistingList BraveSyncServiceImpl::PrepareResolvedResponse(
     } else if (category_name == jslib_const::kPreferences) {
       //"PREFERENCES"
       LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse_: resolving device";
-      resolved_record->second = PrepareResolvedDevice(object_id);
+      resolved_record->second = PrepareResolvedDevice(object_id, record->action);
       LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse_: -----------------";
     }
 
@@ -631,22 +631,35 @@ SyncRecordAndExistingList BraveSyncServiceImpl::PrepareResolvedResponse(
   return resolvedResponse;
 }
 
-SyncRecordPtr BraveSyncServiceImpl::PrepareResolvedDevice(const std::string &object_id) {
-  // std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
-  // SyncDevices devices;
-  // devices.FromJson(json);
-  //
-  // SyncDevice* device = devices.GetByObjectId(object_id);
-  // LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse device=" << device;
-  // if (device) {
-  //   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse will ret value";
-  //   return device->ToValue();
-  // } else {
-  //   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::PrepareResolvedResponse will ret none";
-  //   return std::make_unique<base::Value>(base::Value::Type::NONE);
-  // }
+SyncRecordPtr BraveSyncServiceImpl::PrepareResolvedDevice(const std::string& object_id,
+  int action) {
+  std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
+  SyncDevices devices;
+  devices.FromJson(json);
 
-  return nullptr;
+  SyncDevice* device = devices.GetByObjectId(object_id);
+  DLOG(INFO) << "[Brave Sync] " << __func__ << " device=" << device;
+  if (device) {
+    DLOG(INFO) << "[Brave Sync] " << __func__ << " found " << device->name_;
+    auto record = std::make_unique<jslib::SyncRecord>();
+
+    record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
+        brave_sync::jslib::SyncRecord::Action::A_MIN,
+        brave_sync::jslib::SyncRecord::Action::A_MAX,
+        brave_sync::jslib::SyncRecord::Action::A_INVALID);
+    record->deviceId = device->device_id_;
+    record->objectId = device->object_id_;
+    record->objectData = jslib_const::SyncObjectData_DEVICE; // "device"
+
+    std::unique_ptr<jslib::Device> device_record = std::make_unique<jslib::Device>();
+    device_record->name = device->name_;
+    record->SetDevice(std::move(device_record));
+
+    return record;
+  } else {
+     DLOG(INFO) << "[Brave Sync] " << __func__ << " will ret none";
+     return nullptr;
+  }
 }
 
 void BraveSyncServiceImpl::SendResolveSyncRecords(const std::string &category_name,
@@ -685,7 +698,7 @@ void BraveSyncServiceImpl::OnResolvedSyncRecordsFileWork(const std::string &cate
 }
 
 void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList &records) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedPreferences:";
+  DLOG(INFO) << "[Brave Sync] " << __func__ << ":";
 
   SyncDevices existing_sync_devices;
   std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
@@ -703,38 +716,38 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList &records) {
     DCHECK(record->has_device() || record->has_sitesetting());
 
     if (record->has_device()) {
-      LOG(ERROR) << "TAGAB OnResolvedPreferences record->GetDevice().name=" << record->GetDevice().name;
-      LOG(ERROR) << "TAGAB OnResolvedPreferences record->deviceId=" << record->deviceId;
-      LOG(ERROR) << "TAGAB OnResolvedPreferences record->objectId=" << record->objectId;
-
-      LOG(ERROR) << "TAGAB OnResolvedPreferences record->action=" << record->action;
+      DLOG(INFO) << "[Brave Sync] record->GetDevice().name=" <<
+                    record->GetDevice().name;
+      DLOG(INFO) << "[Brave Sync] record->syncTimestamp=<" <<
+                    record->syncTimestamp << ">";
+      DLOG(INFO) << "[Brave Sync] record->deviceId=" << record->deviceId;
+      DLOG(INFO) << "[Brave Sync] record->objectId=" << record->objectId;
+      DLOG(INFO) << "[Brave Sync] record->action=" << record->action;
 
       existing_sync_devices.Merge(SyncDevice(record->GetDevice().name,
           record->objectId, record->deviceId, record->syncTimestamp.ToJsTime()), record->action);
     }
   } // for each device
 
-
   DCHECK(existing_sync_devices.devices_.size() > 0)
     << "existing_sync_devices.devices_.size() =="
     << existing_sync_devices.devices_.size();
 
   std::string sync_devices_json = existing_sync_devices.ToJson();
-  LOG(ERROR) << "TAGAB OnResolvedPreferences sync_devices_json="<<sync_devices_json;
+  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences sync_devices_json="<<sync_devices_json;
 
-  LOG(ERROR) << "TAGAB OnResolvedPreferences before SaveObjectId";
+  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences before SaveObjectId";
   sync_obj_map_->SaveSpecialJson(jslib_const::DEVICES_NAMES, sync_devices_json);
-  LOG(ERROR) << "TAGAB OnResolvedPreferences SaveObjectId done";
+  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences SaveObjectId done";
 
   // Inform devices list chain has been changed
-  LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged()";
+  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences OnSyncStateChanged()";
 
   content::BrowserThread::GetTaskRunnerForThread(content::BrowserThread::UI)
     ->PostTask(FROM_HERE, base::Bind(&BraveSyncServiceImpl::TriggerOnSyncStateChanged,
                                      base::Unretained(this)));
 
-
-  LOG(ERROR) << "TAGAB OnResolvedPreferences OnSyncStateChanged() done";
+  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences OnSyncStateChanged() done";
 }
 
 void BraveSyncServiceImpl::OnResolvedBookmarks(const RecordsList &records) {
