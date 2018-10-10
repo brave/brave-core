@@ -1110,6 +1110,14 @@ static bool ignore_ = false;
   CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
 
   /////////////////////////////////////////////////////////////////////////////
+  RECONCILE_OPTIONS::RECONCILE_OPTIONS() : directions_(std::vector<RECONCILE_DIRECTION>()), immediate_(false) {}
+  RECONCILE_OPTIONS::~RECONCILE_OPTIONS() {}
+  
+  /////////////////////////////////////////////////////////////////////////////
+  RECONCILE_DIRECTION::RECONCILE_DIRECTION() {}
+  RECONCILE_DIRECTION::~RECONCILE_DIRECTION() {}
+  
+  /////////////////////////////////////////////////////////////////////////////
   SURVEYOR_ST::SURVEYOR_ST() {}
 
   SURVEYOR_ST::~SURVEYOR_ST() {}

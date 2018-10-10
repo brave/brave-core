@@ -605,7 +605,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
       std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2,_3));
   } else if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
-    bat_client_->reconcile(GenerateGUID());
+    bat_client_->reconcile(GenerateGUID(), braveledger_bat_helper::RECONCILE_OPTIONS());
   } else if (timer_id == last_prepare_vote_batch_timer_id_) {
     last_prepare_vote_batch_timer_id_ = 0;
     bat_client_->prepareVoteBatch();

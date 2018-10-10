@@ -340,6 +340,24 @@ namespace braveledger_bat_helper {
     std::map<std::string, double> rates_;
     std::string amount_;
     std::string currency_;
+    double fee_;
+  };
+  
+  struct RECONCILE_DIRECTION {
+    RECONCILE_DIRECTION();
+    ~RECONCILE_DIRECTION();
+    
+    std::string publisher_key_;
+    int amount_;
+    std::string currency_;
+  };
+  
+  struct RECONCILE_OPTIONS {
+    RECONCILE_OPTIONS();
+    ~RECONCILE_OPTIONS();
+    
+    std::vector<RECONCILE_DIRECTION> directions_;
+    bool immediate_;
   };
 
   enum class SERVER_TYPES {

@@ -281,8 +281,36 @@ bool BatClient::isReadyForReconcile() {
   return true;
 }
 
-void BatClient::reconcile(const std::string& viewingId) {
+void BatClient::reconcile(const std::string& viewingId, const braveledger_bat_helper::RECONCILE_OPTIONS& options) {
   currentReconcile_->viewingId_ = viewingId;
+
+  double fee = .0;
+  for (auto direction : options.directions_) {
+    const auto amount = direction.amount_;
+    
+    if (direction.publisher_key_.empty()) {
+      LOG(ERROR) << "reconcile direction missing publisher";
+      return;
+    }
+    
+    if (direction.currency_ != CURRENCY) {
+      LOG(ERROR) << "reconcile direction currency invalid for " << direction.publisher_key_;
+      return;
+    }
+    
+    fee += amount;
+  }
+  
+  if ((fee > 0) && (!options.immediate_)) {
+    const auto currency = state_->walletProperties_.altcurrency_;
+    if (currency != CURRENCY) {
+      LOG(ERROR) << "invalid recurring currency " << currency;
+      return;
+    }
+    fee += state_->walletProperties_.fee_amount_;
+  }
+  
+  currentReconcile_->fee_ = fee;
 
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)RECONCILE_CONTRIBUTION + state_->userId_, PREFIX_V2),
       std::vector<std::string>(), "", "",

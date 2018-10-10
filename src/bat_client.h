@@ -45,7 +45,7 @@ class BatClient {
   double getContributionAmount() const;
   bool getAutoContribute() const;
   bool isReadyForReconcile();
-  void reconcile(const std::string& viewingId);
+  void reconcile(const std::string& viewingId, const braveledger_bat_helper::RECONCILE_OPTIONS& options);
   unsigned int ballots(const std::string& viewingId);
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
   void prepareBallots();
