@@ -15,6 +15,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
@@ -45,6 +46,7 @@ class TrackingProtectionService : public BaseBraveShieldsService {
   bool ShouldStartRequest(const GURL& spec,
     content::ResourceType resource_type,
     const std::string& tab_host) override;
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
 
  protected:
   bool Init() override;
@@ -72,8 +74,8 @@ class TrackingProtectionService : public BaseBraveShieldsService {
   std::map<std::string, std::vector<std::string>> third_party_hosts_cache_;
   std::mutex third_party_hosts_mutex_;
 
+  SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<TrackingProtectionService> weak_factory_;
-
   DISALLOW_COPY_AND_ASSIGN(TrackingProtectionService);
 };
 

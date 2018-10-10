@@ -94,19 +94,19 @@ export const images: NewTab.Image[] = [
     'link': 'https://www.photoserge.com/'
   },
   {
-    'name': 'Paris:Conciergeri',
+    'name': 'Paris: Conciergeri',
     'source': 'Phoyoserge_ParisConciergeri.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   },
   {
-    'name': 'Paris:The Roof',
+    'name': 'Paris: The Roof',
     'source': 'Phoyoserge_Theroofparis.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'
   },
   {
-    'name': 'Paris:The Seant',
+    'name': 'Paris: The Senate',
     'source': 'Phoyoserge_TheSeantParis.jpg',
     'author': 'Serge Ramelli',
     'link': 'https://www.photoserge.com/'

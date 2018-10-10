@@ -1,0 +1,10 @@
+<script>
+  function isSharedArrayBufferDisabled() {
+    try {
+      new SharedArrayBuffer();
+    } catch (err) {
+      return true;
+    }
+    return false;
+  }
+</script>

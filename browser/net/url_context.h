@@ -9,6 +9,7 @@
 #include <string>
 
 #include "chrome/browser/net/chrome_network_delegate.h"
+#include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
 namespace brave {
@@ -16,6 +17,7 @@ namespace brave {
 enum BraveNetworkDelegateEventType {
   kOnBeforeRequest,
   kOnBeforeStartTransaction,
+  kOnHeadersReceived,
   kUnknownEventType
 };
 
@@ -27,7 +29,12 @@ struct BraveRequestInfo {
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
   net::HttpRequestHeaders* headers = nullptr;
+  const net::HttpResponseHeaders* original_response_headers = nullptr;
+  scoped_refptr<net::HttpResponseHeaders>* override_response_headers = nullptr;
+  GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
+  const base::ListValue* referral_headers_list = nullptr;
+  content::ResourceType resource_type;
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 
@@ -44,6 +51,14 @@ using OnBeforeStartTransactionCallback =
         net::HttpRequestHeaders* headers,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnHeadersReceivedCallback =
+    base::Callback<int(net::URLRequest* request,
+        const net::HttpResponseHeaders* original_response_headers,
+        scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+        GURL* allowed_unsafe_redirect_url,
+        const ResponseCallback& next_callback,
+        std::shared_ptr<BraveRequestInfo> ctx)>;
+
 }  // namespace brave
 
 

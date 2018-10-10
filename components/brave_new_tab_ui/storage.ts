@@ -20,6 +20,7 @@ const defaultState: NewTab.State = {
   showEmptyPage: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
+  isTor: chrome.getVariableValue('isTor') === 'true',
   bookmarks: {},
   stats: {
     adsBlockedStat: 0,

@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
+index e4909a9b80ed30510843b72f0ede108d500f6ac3..518cc1d8522819572d217a6f7716e0cc912cfd5e 100644
+--- a/components/content_settings/core/common/cookie_settings_base.cc
++++ b/components/content_settings/core/common/cookie_settings_base.cc
+@@ -57,6 +57,7 @@ bool CookieSettingsBase::IsCookieSessionOnly(const GURL& origin) const {
+ bool CookieSettingsBase::IsValidSetting(ContentSetting setting) {
+   return (setting == CONTENT_SETTING_ALLOW ||
+           setting == CONTENT_SETTING_SESSION_ONLY ||
++          setting == CONTENT_SETTING_DEFAULT ||
+           setting == CONTENT_SETTING_BLOCK);
+ }
+ 

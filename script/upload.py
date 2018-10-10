@@ -93,7 +93,7 @@ def yield_brave_packages(dir, channel, version):
   for _, _, files in os.walk(dir):
     for file in files:
       if PLATFORM == 'darwin':
-        if re.match(r'Brave-Browser-' + channel.capitalize() + r'.*\.dmg$', file):
+        if re.match(r'Brave Browser ' + channel.capitalize() + r'.*\.dmg$', file):
           yield file
       elif PLATFORM == 'linux':
         if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
@@ -167,7 +167,7 @@ def get_text_with_editor(name):
 def create_release_draft(repo, tag):
   name = '{0} {1}'.format(release_name(), tag)
   # TODO: Parse release notes from CHANGELOG.md
-  body = '''*This is not the released version of Brave. **Be careful** — things are unstable and might even be broken.*
+  body = '''*This is not the released version of Brave. **Be careful** - things are unstable and might even be broken.*
 
 These builds are an unpolished and unfinished early preview for the new version of Brave on the desktop. These builds show our work in progress and they aren't for the faint-of-heart. Features may be missing or broken in new and exciting ways; familiar functionality may have unfamiliar side-effects. These builds showcase the newest advances that we're bringing to your browser, but this is still a prototype, not a reliable daily driver. Try it out only if you're looking for a little extra spice and adventure in your browsing.
 

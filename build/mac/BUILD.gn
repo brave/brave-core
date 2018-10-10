@@ -17,7 +17,12 @@ action("sign_app") {
 
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/sign_app.sh"
-  provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
+  if (brave_channel == "") {
+    provisioning_profile = "//brave/build/mac/release.provisionprofile"
+  }
+  else {
+    provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
+  }
 
   inputs = [
     shell_script,
@@ -42,6 +47,46 @@ action("sign_app") {
     "//brave:chrome_app",
     "//chrome/installer/mac"
   ]
+}
+
+action("create_pkg") {
+  output = "$root_out_dir/unsigned/$brave_pkg"
+  script = "//build/gn_run_binary.py"
+  shell_script = "//brave/build/mac/create_pkg.sh"
+  inputs = [
+    script,
+    shell_script,
+  ]
+  outputs = [ output ]
+  args = [
+    rebase_path(shell_script, root_build_dir),
+    rebase_path(_target_app_path, root_build_dir),
+    rebase_path("//brave/build/mac/pkg-scripts"),
+    rebase_path("$root_out_dir/Brave Browser Component.plist"),
+    "unsigned/$brave_pkg",
+  ]
+
+  deps = [":sign_app"]
+}
+
+action("sign_pkg") {
+  script = "//build/gn_run_binary.py"
+  shell_script = "sign_pkg.sh"
+  inputs = [
+    script,
+    shell_script,
+    "$root_out_dir/unsigned/$brave_pkg",
+  ]
+  outputs = [ "${root_out_dir}/signing/$brave_pkg" ]
+  args = [
+    rebase_path(shell_script, root_build_dir),
+    rebase_path("$root_out_dir/unsigned/$brave_pkg"),
+    rebase_path("$root_out_dir/$brave_pkg"),
+    keychain_db,
+    mac_signing_identifier,
+  ]
+
+  deps = [":create_pkg"]
 }
 
 action("create_dmg") {

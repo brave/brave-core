@@ -1,0 +1,10 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/omnibox/browser/brave_autocomplete_controller.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
+
+#define AutocompleteController BraveAutocompleteController
+#include "../../../../../../../components/omnibox/browser/omnibox_controller.cc"
+#undef AutocompleteController

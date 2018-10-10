@@ -4,9 +4,10 @@
 
 #include "brave/browser/brave_profile_prefs.h"
 
-#include "brave/browser/alternate_private_search_engine_util.h"
+#include "brave/browser/search_engine_provider_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/common/pref_names.h"
+#include "brave/browser/tor/tor_profile_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
@@ -23,11 +24,19 @@ namespace brave {
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(registry);
 
-  RegisterAlternatePrivateSearchEngineProfilePrefs(registry);
+  RegisterAlternativeSearchEngineProviderProfilePrefs(registry);
 
+  // appearance
   BraveThemeService::RegisterProfilePrefs(registry);
+  registry->RegisterBooleanPref(kLocationBarIsWide, false);
+
+  tor::TorProfileService::RegisterProfilePrefs(registry);
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
+
+  // Default Brave shields
+  registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
+  registry->RegisterBooleanPref(kNoScriptControlType, false);
 
   // No sign into Brave functionality
   registry->SetDefaultPrefValue(prefs::kSigninAllowed, base::Value(false));

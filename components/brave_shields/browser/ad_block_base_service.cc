@@ -98,6 +98,7 @@ AdBlockBaseService::AdBlockBaseService()
     : BaseBraveShieldsService(),
       ad_block_client_(new AdBlockClient()),
       weak_factory_(this) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 AdBlockBaseService::~AdBlockBaseService() {
@@ -111,7 +112,7 @@ void AdBlockBaseService::Cleanup() {
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type,
     const std::string& tab_host) {
-
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   FilterOption current_option = ResourceTypeToFilterOption(resource_type);
   if (ad_block_client_->matches(url.spec().c_str(),
         current_option,

@@ -64,6 +64,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetGrantCaptcha() override;
   void SolveGrantCaptcha(const std::string& solution) const override;
   std::string GetWalletPassphrase() const override;
+  unsigned int GetNumExcludedSites() const override;
   void RecoverWallet(const std::string passPhrase) const override;
   void GetContentSiteList(uint32_t start,
                           uint32_t limit,
@@ -92,16 +93,22 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;
   void SaveMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id) override;
+  void ExcludePublisher(const std::string publisherKey) const override;
+  void RestorePublishers() override;
   std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() override;
+  void GetCurrentBalanceReport() override;
+  bool IsWalletCreated() override;
+  void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) override;
 
  private:
-  typedef base::Callback<void(int, const std::string&)> FetchCallback;
+  typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
 
   const extensions::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
                           bool success);
   void OnLedgerStateLoaded(ledger::LedgerCallbackHandler* handler,
                               const std::string& data);
+  void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnPublisherStateSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
   void OnPublisherStateLoaded(ledger::LedgerCallbackHandler* handler,
@@ -110,7 +117,7 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnWalletProperties(int error_code,
                                  std::unique_ptr<ledger::WalletInfo> result);
   void TriggerOnGrant(ledger::Result result, const ledger::Grant& grant);
-  void TriggerOnGrantCaptcha(const std::string& image);
+  void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
   void TriggerOnRecoverWallet(ledger::Result result,
                               double balance,
                               const std::vector<ledger::Grant>& grants);
@@ -140,7 +147,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
   void OnGrant(ledger::Result result, const ledger::Grant& grant) override;
-  void OnGrantCaptcha(const std::string& image) override;
+  void OnGrantCaptcha(const std::string& image, const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,
                       double balance,
                       const std::vector<ledger::Grant>& grants) override;
@@ -178,12 +185,18 @@ class RewardsServiceImpl : public RewardsService,
 
   void RunIOTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
   void RunTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
+  void SetRewardsMainEnabled(bool enabled) const override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
   void SetPublisherMinVisits(unsigned int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
   void SetContributionAmount(double amount) const override;
+  void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
+  void OnPublisherActivity(ledger::Result result,
+                          std::unique_ptr<ledger::PublisherInfo> info,
+                          uint64_t windowId) override;
+  void OnExcludedSitesChanged() override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

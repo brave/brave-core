@@ -505,13 +505,21 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3861241522664181545">Stránka bola pozastavená.</translation>
 <translation id="6921709132208495314">Prestať používať dáta na tejto stránke</translation>
 <translation id="2724841811573117416">Denníky WebRTC</translation>
+<translation id="1969654639948595766">Textové denníky WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Denníky udalostí WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Denník WebRTC zaznamenaný <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Miestny súbor:</translation>
 <translation id="2071393345806050157">Žiadny miestny súbor denníka nie je k dispozícii.</translation>
 <translation id="6628328486509726751">Nahrané <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Nepodarilo sa nahrať (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID prehľadu <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Nahlásiť chybu</translation>
+<translation id="3650845953328929506">Čaká sa na nahranie do denníka.</translation>
+<translation id="1818913467757368489">Prebieha nahrávanie do denníka.</translation>
 <translation id="1188807932851744811">Denník nebol nahraný.</translation>
+<translation id="4688036121858134881">Identifikátor miestneho denníka: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Nemáte žiadne nedávno zaznamenané textové denníky WebRTC.</translation>
+<translation id="3954953195017194676">Nemáte žiadne nedávno zaznamenané denníky udalostí WebRTC.</translation>
 <translation id="2076269580855484719">Skryť tento doplnok</translation>
 <translation id="2129825002735785149">Aktualizovať doplnok</translation>
 <translation id="9088234649737575428">Doplnok <ph name="PLUGIN_NAME"/> je blokovaný podnikovými pravidlami</translation>
@@ -556,6 +564,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4416582610654027550">Zadajte platnú webovú adresu</translation>
 <translation id="2806891468525657116">Skratka už existuje</translation>
 <translation id="394183848452296464">Skratka sa nedá vytvoriť</translation>
+<translation id="329703603001918157">Skratka sa nedá upraviť</translation>
+<translation id="6732900235521116609">Skrátka sa nedá odstrániť</translation>
 <translation id="7109543803214225826">Skratka bola odstránená</translation>
 <translation id="8017679124341497925">Skratka bola upravená</translation>
 <translation id="1174073918202301297">Odkaz bol pridaný</translation>
@@ -829,7 +839,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6845038076637626672">Otvoriť maximalizované</translation>
 <translation id="6860427144121307915">Otvoriť na karte</translation>
 <translation id="3074037959626057712">Prihlásili ste sa a zapli synchronizáciu</translation>
-<translation id="6264422956566238156">Zapli ste synchronizáciu</translation>
 <translation id="9125982323641182972">Získajte inteligentné doplnky Googlu v Brave</translation>
 <translation id="7988117629517051942">Získajte viac inteligentných doplnkov Googlu</translation>
 <translation id="5596627076506792578">Ďalšie možnosti</translation>
@@ -845,7 +854,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1371301976177520732">Záložky, heslá, história a ďalší obsah vo všetkých vašich zariadeniach</translation>
 <translation id="3111958038206230539">Prispôsobenie služieb Brave Software</translation>
 <translation id="295992419959320001">Brave Software môže používať vašu históriu prehliadania na prispôsobenie Vyhľadávania, reklám a ďalších služieb Brave Software</translation>
-<translation id="4800091108248587380">Prispôsobené služby Googlu, ako Brave Software Pay</translation>
+<translation id="4205523465226408285">Viac osobných služieb Googlu, napríklad lepšie návrhy stránok</translation>
 <translation id="3070156078150543526">Brave Software môže používať vašu históriu prehliadania na prispôsobenie Vyhľadávania a ďalších služieb Brave Software</translation>
 <translation id="2532167245710864499">Zlepšite Brave a jeho zabezpečenie odosielaním informácií o systéme a využití do Googlu</translation>
 <translation id="2709453993673701466">Chcete pred zapnutím spravovať možnosti synchronizácie a prispôsobenia? Prejdite do <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
@@ -1440,6 +1449,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1800308196794859773">Odošlite svoj hlas do Googlu a umožnite tak diktovanie do všetkých textových polí.</translation>
 <translation id="8758418656925882523">Povoliť diktovanie (písanie hlasom)</translation>
 <translation id="7580671184200851182">Prehrávajte rovnaký zvuk zo všetkých reproduktorov (monofónny zvuk)</translation>
+<translation id="8186639008852027301">Pri spustení prehrať indikátor zvuku</translation>
 <translation id="1189418886587279221">Povoliť funkcie zjednodušenia prístupu na jednoduchšie používanie zariadenia.</translation>
 <translation id="48704129375571883">Pridať ďalšie funkcie</translation>
 <translation id="7230787553283372882">Prispôsobiť veľkosť textu</translation>
@@ -1537,6 +1547,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5029568752722684782">Vymazať kópiu</translation>
 <translation id="2154484045852737596">Úprava karty</translation>
 <translation id="5087580092889165836">Pridať kartu</translation>
+<translation id="7284555534810614828">Uložiť kartu na používanie služby Brave Software Pay</translation>
+<translation id="6281511959351052816">Uložiť karty na používanie služby Brave Software Pay</translation>
+<translation id="1904518222538904133">1 zo svojich kariet môžete použiť iba v tomto zariadení</translation>
+<translation id="8065485338434000013">Niektoré karty sa dajú použiť iba v tomto zariadení</translation>
 <translation id="4807098396393229769">Meno na karte</translation>
 <translation id="2612676031748830579">Číslo karty</translation>
 <translation id="869891660844655955">Koniec platnosti</translation>
@@ -1610,7 +1624,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="784934925303690534">Časové obdobie</translation>
 <translation id="2496180316473517155">História prehliadania</translation>
 <translation id="8662811608048051533">Odhlási vás z väčšiny webov.</translation>
-<translation id="8218628800671693884">Odhlási vás z väčšiny webov, ale nie z účtu Brave Software.</translation>
 <translation id="2017836877785168846">Vymaže históriu a automaticky doplňované výrazy v paneli s adresou.</translation>
 <translation id="8096327394278038498">Vymaže históriu a záznamy automatického dopĺňania v paneli s adresou. Váš účet Brave Software môže mať ďalšie formy histórie prehliadania na adrese <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Vymaže históriu zo všetkých prihlásených zariadení. Váš účet Brave Software môže mať ďalšie formy histórie prehliadania na adrese <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1677,10 +1690,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7754704193130578113">Pred každým sťahovaním sa spýtať, kam uložiť súbor</translation>
 <translation id="5713072761819014678">Odpojiť účet služby Disk Brave Software</translation>
 <translation id="486635084936119914">Automaticky otvoriť určité typy súborov po ich stiahnutí</translation>
-<translation id="870073306461175568">Zdieľanie súborov v sieti</translation>
-<translation id="6189273858858366896">Nastaviť alebo spravovať zdieľanie súborov v sieti</translation>
+<translation id="3653160965917900914">Sieťové zdieľané úložiská</translation>
+<translation id="5763315388120433852">Nastaviť alebo spravovať sieťové zdieľané úložiská</translation>
 <translation id="2367199180085172140">Pridať zdieľanie súboru</translation>
-<translation id="8984654317541110628">Webová adresa zdieľaného úložiska</translation>
+<translation id="247051149076336810">Webová adresa zdieľaného úložiska</translation>
 <translation id="5247051749037287028">Zobrazovaný názov (voliteľné)</translation>
 <translation id="6091761513005122595">Zdieľané úložisko sa úspešne pripojilo.</translation>
 <translation id="9024158959543687197">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Skontrolujte jeho webovú adresu a skúste to znova.</translation>
@@ -1688,6 +1701,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2148219725039824548">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Uvedené úložisko sa v sieti nenašlo.</translation>
 <translation id="7234406375359457793">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Dané úložisko nie je podporované.</translation>
 <translation id="706626672220389329">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Dané úložisko je už pripojené.</translation>
+<translation id="5985458664595100876">Neplatný formát webovej adresy. Podporované formáty sú \\server\share a smb://server/share.</translation>
 <translation id="3101709781009526431">Dátum a čas</translation>
 <translation id="2059913712424898428">Časové pásmo</translation>
 <translation id="4547672827276975204">Nastaviť automaticky</translation>
@@ -1976,8 +1990,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5282733140964383898">Ak povolíte možnosť Nesledovať, žiadosť sa zahrnie do údajov prehliadania. Záleží na tom, či webové stránky na túto žiadosť zareagujú a akým spôsobom ju interpretujú. Niektoré webové stránky môžu napríklad na túto žiadosť odpovedať zobrazením reklám, ktoré nie sú založené na iných navštívených webových stránkach. Veľa webových stránok bude aj naďalej zhromažďovať a používať vaše dáta prehliadania – napríklad na zlepšenie zabezpečenia, na poskytovanie obsahu, služieb, reklám a odporúčaní na webových stránkach a na generovanie štatistík. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Povolí overený prístup</translation>
 <translation id="5557991081552967863">Počas spánku ponechať zapnutú sieť Wi‑Fi</translation>
-<translation id="8562084399541316921">Pokračovať v čítaní</translation>
-<translation id="6201926614538916789">Pokračujte v prezeraní webov z mobilu v Bravebooku</translation>
 <translation id="1521442365706402292">Spravovať certifikáty</translation>
 <translation id="7075625805486468288">Správa certifikátov a nastavení HTTPS/SSL</translation>
 <translation id="8871974300055371298">Nastavenia obsahu</translation>
@@ -2186,6 +2198,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3422989461909154470">Tu môžete spravovať všetky účty Brave Software aplikácií a webov, do ktorých ste sa prihlásili.</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="8418661265246754237">Účty Brave Software</translation>
+<translation id="3297951628821704004">Odstrániť účet z tohto zariadenia</translation>
 <translation id="1059855432287631118">Registrácia odtlačku prsta</translation>
 <translation id="878068003854005405">Poďme na to. Položte prst na senzor.</translation>
 <translation id="7189965711416741966">Odtlačok prsta bol pridaný.</translation>
@@ -2244,7 +2257,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2459230470861708651">Šifrovať synchronizované heslá pomocou používateľského mena a hesla Brave Software</translation>
 <translation id="6383051423892982287">Šifrovať synchronizované údaje pomocou vlastnej <ph name="BEGIN_LINK"/>prístupovej frázy synchronizácie<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Šifrované údaje môže čítať iba používateľ s prístupovou frázou. Prístupová fráza sa do Googlu neodosiela a Brave Software ju ani neukladá. Ak zabudnete prístupovú frázu alebo budete chcieť zmeniť toto nastavenie zmeniť, musíte <ph name="BEGIN_LINK"/>resetovať synchronizáciu<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Ak chcete zmeniť toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Ak chcete zmeniť toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/> a odstráňte tak prístupovú frázu synchronizácie</translation>
 <translation id="3873315167136380065">Zapnite toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/> a odstráňte tak prístupovú frázu synchronizácie</translation>
 <translation id="988978206646512040">Prístupová fráza nemôže byť prázdna</translation>
 <translation id="1651008383952180276">Rovnakú prístupovú frázu musíte zadať dvakrát</translation>
@@ -2403,6 +2416,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1940546824932169984">Pripojené zariadenia</translation>
 <translation id="5235565664420173924">Spoločne ešte lepšie</translation>
 <translation id="5375767622559981303">Váš Bravebook funguje ešte lepšie s telefónom. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Žiadne zariadenia spĺňajúce kritériá. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Čaká sa na overenie. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">K telefónu sa nepodarilo pripojiť. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Funkcia Spoločne ešte lepšie je zapnutá</translation>
@@ -2442,6 +2456,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1607139524282324606">Vymazať záznam</translation>
 <translation id="6025215716629925253">Správa Stack Trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;Nie je zobrazený 1 riadok&gt;}few{&lt;Nie sú zobrazené $1 riadky&gt;}many{&lt;Nie je zobrazeného $1 riadka&gt;}other{&lt;Nie je zobrazených $1 riadkov&gt;}}</translation>
+<translation id="5334899159203764908">Ďalšie informácie o <ph name="BEGIN_LINK"/>prístupe k webu<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Umožniť tomuto rozšíreniu čítať a meniť všetky dáta na navštevovaných weboch:</translation>
 <translation id="407173827865827707">Po kliknutí</translation>
 <translation id="6455264371803474013">Na konkrétnych weboch</translation>

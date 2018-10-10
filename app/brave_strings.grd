@@ -1144,7 +1144,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
           Not now
         </message>
         <message name="IDS_DICE_WELCOME_DESCRIPTION" desc="A message on the welcome page explaining the purpose of signing in.">
-          Sign in to sync and personalize Brave across your devices
+          Sync and personalize Brave across your devices
         </message>
       </if>
 

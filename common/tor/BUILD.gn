@@ -1,0 +1,36 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("tor") {
+  sources = [
+    "switches.cc",
+    "switches.h",
+    "tor_common.cc",
+    "tor_common.h",
+    "tor_constants.cc",
+    "tor_constants.h",
+  ]
+
+  deps = [
+    ":pref_names",
+    "//base",
+    "//chrome/common:constants",
+    "//url:url",
+  ]
+}
+
+source_set("pref_names") {
+  sources = [
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+}
+
+mojom("tor_mojom_bindings") {
+  sources = [
+    "tor_config.mojom",
+    "tor_launcher.mojom",
+  ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+  ]
+}

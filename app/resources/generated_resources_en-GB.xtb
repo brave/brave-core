@@ -505,15 +505,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3861241522664181545">Page paused.</translation>
 <translation id="6921709132208495314">Stop using data on this page</translation>
 <translation id="2724841811573117416">WebRTC logs</translation>
+<translation id="1969654639948595766">WebRTC text logs (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC event logs (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC log captured <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Local file:</translation>
 <translation id="2071393345806050157">No local log file.</translation>
 <translation id="6628328486509726751">Uploaded <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Upload failed (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Report ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">File bug</translation>
 <translation id="3650845953328929506">Log upload pending.</translation>
 <translation id="1818913467757368489">Log upload underway.</translation>
 <translation id="1188807932851744811">Log not uploaded.</translation>
+<translation id="4688036121858134881">Local log ID: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
 <translation id="7497981768003291373">You have no recently captured WebRTC text logs.</translation>
 <translation id="3954953195017194676">You have no recently captured WebRTC event logs.</translation>
 <translation id="2076269580855484719">Hide this plug-in</translation>
@@ -835,7 +839,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6845038076637626672">Open Maximised</translation>
 <translation id="6860427144121307915">Open in a Tab</translation>
 <translation id="3074037959626057712">You've signed in and turned on Sync</translation>
-<translation id="6264422956566238156">You've turned on Sync</translation>
 <translation id="9125982323641182972">Get Brave Software smarts in Brave</translation>
 <translation id="7988117629517051942">Get more Brave Software smarts</translation>
 <translation id="5596627076506792578">More options</translation>
@@ -851,7 +854,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1371301976177520732">Your bookmarks, passwords, history and more on all your devices</translation>
 <translation id="3111958038206230539">Personalise Brave Software services</translation>
 <translation id="295992419959320001">Brave Software may use your browsing history to personalise Search, ads and other Brave Software services</translation>
-<translation id="4800091108248587380">Personalised Brave Software services such as Brave Software Pay</translation>
+<translation id="4205523465226408285">More personal Brave Software services, such as better page suggestions</translation>
 <translation id="3070156078150543526">Brave Software may use your browsing history to personalise Search and other Brave Software services</translation>
 <translation id="2532167245710864499">Improve Brave and its security by sending system and usage information to Brave Software</translation>
 <translation id="2709453993673701466">Want to manage sync and personalisation before they’re turned on? Visit <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
@@ -1621,7 +1624,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="784934925303690534">Time range</translation>
 <translation id="2496180316473517155">Browsing history</translation>
 <translation id="8662811608048051533">Signs you out of most sites.</translation>
-<translation id="8218628800671693884">Signs you out of most sites. You won't be signed out of your Brave Software Account.</translation>
 <translation id="2017836877785168846">Clears history and autocompletions in the address bar.</translation>
 <translation id="8096327394278038498">Clears history and autocompletions in the address bar. Your Brave Software account may have other forms of browsing history at <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Clears history from all signed-in devices. Your Brave Software account may have other forms of browsing history at <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1688,10 +1690,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7754704193130578113">Ask where to save each file before downloading</translation>
 <translation id="5713072761819014678">Disconnect Brave Software Drive account</translation>
 <translation id="486635084936119914">Open certain file types automatically after downloading</translation>
-<translation id="870073306461175568">Network File Shares</translation>
-<translation id="6189273858858366896">Set up or manage Network File Shares.</translation>
+<translation id="3653160965917900914">Network file shares</translation>
+<translation id="5763315388120433852">Set up or manage network file shares.</translation>
 <translation id="2367199180085172140">Add File Share</translation>
-<translation id="8984654317541110628">File Share URL</translation>
+<translation id="247051149076336810">File share URL</translation>
 <translation id="5247051749037287028">Display name (optional)</translation>
 <translation id="6091761513005122595">Share mounted successfully.</translation>
 <translation id="9024158959543687197">Error mounting share. Check the file share URL and try again.</translation>
@@ -1699,6 +1701,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2148219725039824548">Error mounting share. The specified share was not found on the network.</translation>
 <translation id="7234406375359457793">Error mounting share. The specified share is not supported.</translation>
 <translation id="706626672220389329">Error mounting share. The specified share is already mounted.</translation>
+<translation id="5985458664595100876">Invalid URL format. Supported formats are \\server\share and smb://server/share.</translation>
 <translation id="3101709781009526431">Date and time</translation>
 <translation id="2059913712424898428">Time zone</translation>
 <translation id="4547672827276975204">Set automatically</translation>
@@ -1987,8 +1990,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5282733140964383898">Enabling 'Do Not Track' means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data – for example, to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics. <ph name="BEGIN_LINK"/>Find out more<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Enable Verified Access</translation>
 <translation id="5557991081552967863">Keep Wi-Fi on during sleep</translation>
-<translation id="8562084399541316921">Continue reading</translation>
-<translation id="6201926614538916789">Resume viewing sites from mobile on your Bravebook</translation>
 <translation id="1521442365706402292">Manage certificates</translation>
 <translation id="7075625805486468288">Manage HTTPS/SSL certificates and settings</translation>
 <translation id="8871974300055371298">Content Settings ...</translation>
@@ -2256,7 +2257,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2459230470861708651">Encrypt synced passwords with your Brave Software username and password</translation>
 <translation id="6383051423892982287">Encrypt synced data with your own <ph name="BEGIN_LINK"/>sync passphrase<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave Software. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></translation>
+<translation id="7441736921018636843">To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/> to remove your sync passphrase</translation>
 <translation id="3873315167136380065">To turn this on, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/> to remove your sync passphrase</translation>
 <translation id="988978206646512040">Empty passphrase is not allowed</translation>
 <translation id="1651008383952180276">You must enter the same passphrase twice</translation>
@@ -2415,6 +2416,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1940546824932169984">Connected devices</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Your Bravebook works even better with your phone. <ph name="LINK_BEGIN"/>Find out more.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">No eligible devices. <ph name="LINK_BEGIN"/>Find out more.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Waiting for verification. <ph name="LINK_BEGIN"/>Find out more.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Couldn't connect to phone. <ph name="LINK_BEGIN"/>Find out more.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together is on</translation>
@@ -2454,6 +2456,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1607139524282324606">Clear entry</translation>
 <translation id="6025215716629925253">Stack Trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 line not shown&gt;}other{&lt;$1 lines not shown&gt;}}</translation>
+<translation id="5334899159203764908">Find out more about <ph name="BEGIN_LINK"/>site access<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Allow this extension to read and change all your data on websites that you visit:</translation>
 <translation id="407173827865827707">On click</translation>
 <translation id="6455264371803474013">On specific sites</translation>

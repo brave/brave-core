@@ -33,7 +33,8 @@ if [[ -d "$DEST" ]]; then
   rm -rf "$DEST"
 fi
 
-mkdir -p "$(dirname $DEST)"
+tmpdir=$(dirname "$DEST")
+mkdir -p "$tmpdir"
 
 cp -a "$SOURCE" "$DEST"
 

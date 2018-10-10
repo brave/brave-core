@@ -505,13 +505,21 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3861241522664181545">Na-pause ang page.</translation>
 <translation id="6921709132208495314">Ihinto ang paggamit ng data sa page na ito</translation>
 <translation id="2724841811573117416">Mga log ng WebRTC</translation>
+<translation id="1969654639948595766">Mga log ng text sa WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Mga log ng event ng WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Na-capture ang log ng WebRTC noong <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokal na file:</translation>
 <translation id="2071393345806050157">Walang lokal na log file.</translation>
 <translation id="6628328486509726751">Na-upload noong <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Hindi na-upload (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Report ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">I-file ang bug</translation>
+<translation id="3650845953328929506">Nakabinbin ang pag-upload ng log.</translation>
+<translation id="1818913467757368489">I-log ang isinasagawang pag-upload.</translation>
 <translation id="1188807932851744811">Hindi na-upload ang log.</translation>
+<translation id="4688036121858134881">Local log ID: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Wala kang kamakailang nakuhang log ng text ng WebRTC.</translation>
+<translation id="3954953195017194676">Wala kang kamakailang nakuhang log ng event ng WebRTC.</translation>
 <translation id="2076269580855484719">Itago ang plugin na ito</translation>
 <translation id="2129825002735785149">I-update ang plugin</translation>
 <translation id="9088234649737575428">Na-block ang <ph name="PLUGIN_NAME"/> ng patakaran ng kumpanya</translation>
@@ -556,6 +564,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4416582610654027550">Mag-type ng valid na URL</translation>
 <translation id="2806891468525657116">Mayroon nang ganitong shortcut</translation>
 <translation id="394183848452296464">Hindi makagawa ng shortcut</translation>
+<translation id="329703603001918157">Hindi ma-edit ang shortcut</translation>
+<translation id="6732900235521116609">Hindi maalis ang shortcut</translation>
 <translation id="7109543803214225826">Inalis ang shortcut</translation>
 <translation id="8017679124341497925">Na-edit ang shortcut</translation>
 <translation id="1174073918202301297">Naidagdag na ang shortcut</translation>
@@ -829,7 +839,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6845038076637626672">Buksan ang naka-maximize</translation>
 <translation id="6860427144121307915">Buksan sa isang Tab</translation>
 <translation id="3074037959626057712">Nag-sign ka at na-on mo ang Pag-sync</translation>
-<translation id="6264422956566238156">Na-on mo ang Pag-sync</translation>
 <translation id="9125982323641182972">Magkaroon ng mga smart na feature ng Brave Software sa Brave</translation>
 <translation id="7988117629517051942">Magkaroon ng higit pang smart na feature ng Brave Software</translation>
 <translation id="5596627076506792578">Higit pang opsyon</translation>
@@ -845,7 +854,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1371301976177520732">Makita ang iyong mga bookmark, password, history, at higit pa sa lahat ng device mo</translation>
 <translation id="3111958038206230539">I-personalize ang mga serbisyo ng Brave Software</translation>
 <translation id="295992419959320001">Maaaring gamitin ng Brave Software ang iyong history ng pagba-browse upang i-personalize ang Search, mga ad at iba pang mga serbisyo ng Brave Software</translation>
-<translation id="4800091108248587380">Mga naka-personalize na serbisyo ng Brave Software tulad ng Brave Software Pay</translation>
+<translation id="4205523465226408285">Higit pang personal na serbisyo ng Brave Software, tulad ng mas mahuhusay na suhestyon sa page</translation>
 <translation id="3070156078150543526">Maaaring gamitin ng Brave Software ang iyong history ng pagba-browse upang ma-personalize ang Search at iba pang mga serbisyo ng Brave Software</translation>
 <translation id="2532167245710864499">Pahusayin ang Brave at ang seguridad nito sa pamamagitan ng pagpapadala ng impormasyon ng system at paggamit sa Brave Software</translation>
 <translation id="2709453993673701466">Gusto mong pamahalaan ang pag-sync at pag-personalize bago i-on ang mga ito? Bisitahin ang <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/>.</translation>
@@ -1440,6 +1449,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1800308196794859773">Ipinapadala ang iyong boses sa Brave Software para mabigyang-daan ang dictation sa anumang field ng text.</translation>
 <translation id="8758418656925882523">I-enable ang pagdidikta (magsalita para mag-type)</translation>
 <translation id="7580671184200851182">I-play ang parehong audio sa lahat ng speaker (mono audio)</translation>
+<translation id="8186639008852027301">Mag-play ng audio indicator sa startup</translation>
 <translation id="1189418886587279221">Paganahin ang mga tampok ng accessibility upang maging mas madaling gamitin ang iyong device.</translation>
 <translation id="48704129375571883">Magdagdag ng mga karagdagang feature</translation>
 <translation id="7230787553283372882">I-customize ang laki ng iyong text</translation>
@@ -1537,6 +1547,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5029568752722684782">I-clear ang kopya</translation>
 <translation id="2154484045852737596">I-edit ang card</translation>
 <translation id="5087580092889165836">Magdagdag ng card</translation>
+<translation id="7284555534810614828">I-save ang card para magamit ang Brave Software Pay</translation>
+<translation id="6281511959351052816">Mag-save ng mga card para magamit ang Brave Software Pay</translation>
+<translation id="1904518222538904133">1 sa iyong mga card ang magagamit lang sa device na ito</translation>
+<translation id="8065485338434000013">Ang ilan sa iyong mga card ay magagamit lang sa device na ito</translation>
 <translation id="4807098396393229769">Pangalang makikita sa card</translation>
 <translation id="2612676031748830579">Numero ng card</translation>
 <translation id="869891660844655955">Expiration date</translation>
@@ -1610,7 +1624,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="784934925303690534">Sakop na oras</translation>
 <translation id="2496180316473517155">History ng Pagba-browse</translation>
 <translation id="8662811608048051533">Nagsa-sign out sa iyo sa karamihan ng site.</translation>
-<translation id="8218628800671693884">Isa-sign out ka sa karamihan ng mga site. Hindi ka masa-sign out sa iyong Brave Software Account.</translation>
 <translation id="2017836877785168846">Kini-clear ang history at mga awtomatikong pagkumpleto sa address bar.</translation>
 <translation id="8096327394278038498">Kini-clear ang history at mga autocompletion sa address bar. Maaaring may iba pang anyo ng history ng pag-browse ang iyong Brave Software Account sa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Kini-clear ang history sa lahat ng naka-sign in na device. Maaaring may iba pang anyo ng history ng pag-browse ang iyong Brave Software Account sa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1677,10 +1690,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7754704193130578113">Magtanong kung saan ise-save ang bawat file bago ang pagda-download</translation>
 <translation id="5713072761819014678">Alisin sa pagkakakonekta ang Brave Software Drive account</translation>
 <translation id="486635084936119914">Awtomatikong buksan ang ilang partikular na uri ng file pagkatapos ma-download</translation>
-<translation id="870073306461175568">Mga Pagbabahagi ng File sa Network</translation>
-<translation id="6189273858858366896">I-set up o pamahalaan ang Mga Pagbabahagi ng File sa Network.</translation>
+<translation id="3653160965917900914">Mga file share ng network</translation>
+<translation id="5763315388120433852">Mag-set up o mamahala ng mga file share ng network.</translation>
 <translation id="2367199180085172140">Magdagdag ng Pagbabahagi ng File</translation>
-<translation id="8984654317541110628">URL ng File Share</translation>
+<translation id="247051149076336810">URL ng file share</translation>
 <translation id="5247051749037287028">Display name (opsyonal)</translation>
 <translation id="6091761513005122595">Matagumpay na na-mount ang share</translation>
 <translation id="9024158959543687197">Nagka-error sa pag-mount ng share. Tingnan ang URL ng file share at subukang muli.</translation>
@@ -1688,6 +1701,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2148219725039824548">Nagka-error sa pag-mount ng share. Hindi nakita ang isinaad na share sa network.</translation>
 <translation id="7234406375359457793">Nagka-error sa pag-mount ng share. Hindi sinusuportahan ang isinaad na share.</translation>
 <translation id="706626672220389329">Nagka-error sa pag-mount ng share. Naka-mount na ang isinaad na share.</translation>
+<translation id="5985458664595100876">Invalid ang format ng URL. Ang mga sinusuportahang format ay \\server\share at smb://server/share.</translation>
 <translation id="3101709781009526431">Petsa at oras</translation>
 <translation id="2059913712424898428">Time zone</translation>
 <translation id="4547672827276975204">Awtomatikong itakda</translation>
@@ -1976,8 +1990,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5282733140964383898">Kung ie-enable ang "Huwag Subaybayan," may isasamang kahilingan sa iyong trapiko sa pag-browse. Nakadepende ang anumang epekto sa kung tutugon sa kahilingan ang isang website, at kung paano ipapahiwatig ang kahilingan. Halimbawa, maaaring tumugon ang ilang website sa kahilingang ito sa pamamagitan ng pagpapakita sa iyo ng mga ad na hindi nakabatay sa iba pang website na binisita mo. Maraming website ang mangongolekta at gagamit pa rin ng iyong data mula sa pag-browse - halimbawa, upang pahusayin ang seguridad, makapagbigay ng content, mga serbisyo, ad, at rekomendasyon sa kanilang mga website, at makagawa ng mga istatistika sa pag-uulat. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">I-enable ang Bine-verify na Access</translation>
 <translation id="5557991081552967863">Panatilihing naka-on ang Wi-Fi habang naka-sleep</translation>
-<translation id="8562084399541316921">Magpatuloy sa Pagbabasa</translation>
-<translation id="6201926614538916789">Ipagpatuloy sa iyong Bravebook ang pagtingin sa mga site mula sa mobile</translation>
 <translation id="1521442365706402292">Pamahalaan ang mga sertipiko</translation>
 <translation id="7075625805486468288">Pamahalaan ang mga certificate at setting ng HTTPS/SSL</translation>
 <translation id="8871974300055371298">Mga setting ng content</translation>
@@ -2186,6 +2198,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3422989461909154470">Maaaring pamahalaan dito ang lahat ng iyong naka-sign in na Brave Software account mula sa mga app at website.</translation>
 <translation id="1987317783729300807">Mga Account</translation>
 <translation id="8418661265246754237">Mga Brave Software Account</translation>
+<translation id="3297951628821704004">Alisin ang account sa device na ito</translation>
 <translation id="1059855432287631118">Pagrehistro ng fingerprint</translation>
 <translation id="878068003854005405">Magsimula na tayo. Ilagay ang iyong daliri sa sensor.</translation>
 <translation id="7189965711416741966">Naidagdag ang fingerprint.</translation>
@@ -2244,7 +2257,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2459230470861708651">I-encrypt ang mga naka-sync na password sa iyong username at password sa Brave Software</translation>
 <translation id="6383051423892982287">I-encrypt ang naka-sync na data gamit ang iyong sariling <ph name="BEGIN_LINK"/>passphrase sa pag-sync<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Ang taong may alam ng passphrase mo lang ang makakabasa sa iyong naka-encrypt na data. Hindi ipinapadala sa o iniimbak ng Brave Software ang passphrase. Kung makalimutan mo ang iyong passphrase o gusto mong baguhin ang setting na ito, kakailanganin mong <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Upang baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/> para alisin ang iyong passphrase sa pag-sync</translation>
 <translation id="3873315167136380065">Para i-on ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/> para alisin ang iyong passphrase sa pag-sync</translation>
 <translation id="988978206646512040">Hindi pinapayagan ang passphrase na walang laman</translation>
 <translation id="1651008383952180276">Dapat mong ilagay ang katulad na passphrase nang dalawang beses</translation>
@@ -2403,6 +2416,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1940546824932169984">Mga nakakonektang device</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Mas mahusay na gumagana ang iyong Bravebook sa telepono mo. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Walang kwalipikadong device. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Naghihintay ng pag-verify. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Hindi makakonekta sa telepono. <ph name="LINK_BEGIN"/>Matuto pa.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Naka-on ang Better Together</translation>
@@ -2442,6 +2456,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1607139524282324606">I-clear ang entry</translation>
 <translation id="6025215716629925253">Stack Trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linya ang hindi ipinapakita&gt;}one{&lt;$1 linya ang hindi ipinapakita&gt;}other{&lt;$1 na linya ang hindi ipinapakita&gt;}}</translation>
+<translation id="5334899159203764908">Matuto pa tungkol sa <ph name="BEGIN_LINK"/>access sa site<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Pahintulutan ang extension na ito na i-read at baguhin ang lahat ng iyong data sa mga website na binibisita mo:</translation>
 <translation id="407173827865827707">Sa pag-click</translation>
 <translation id="6455264371803474013">Sa mga partikular na site</translation>

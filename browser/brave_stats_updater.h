@@ -13,11 +13,17 @@
 class PrefRegistrySimple;
 class PrefService;
 
+namespace net {
+class HttpResponseHeaders;
+}
+
 namespace network {
 class SimpleURLLoader;
 }
 
 namespace brave {
+
+class BraveStatsUpdaterParams;
 
 class BraveStatsUpdater {
  public:
@@ -29,7 +35,9 @@ class BraveStatsUpdater {
 
  private:
   // Invoked from SimpleURLLoader after download is complete.
-  void OnSimpleLoaderComplete(std::unique_ptr<std::string> response_body);
+  void OnSimpleLoaderComplete(
+      std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
+      scoped_refptr<net::HttpResponseHeaders> headers);
 
   // Invoked from RepeatingTimer when server ping timer fires.
   void OnServerPingTimerFired();

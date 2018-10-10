@@ -36,6 +36,13 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   int OnBeforeStartTransaction(net::URLRequest* request,
                                net::CompletionOnceCallback callback,
                                net::HttpRequestHeaders* headers) override;
+  int OnHeadersReceived(
+      net::URLRequest* request,
+      net::CompletionOnceCallback callback,
+      const net::HttpResponseHeaders* original_response_headers,
+      scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+      GURL* allowed_unsafe_redirect_url) override;
+
   void OnURLRequestDestroyed(net::URLRequest* request) override;
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
@@ -48,8 +55,12 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       before_url_request_callbacks_;
   std::vector<brave::OnBeforeStartTransactionCallback>
       before_start_transaction_callbacks_;
+  std::vector<brave::OnHeadersReceivedCallback>
+      headers_received_callbacks_;
 
  private:
+  void GetReferralHeaders();
+  const base::ListValue* referral_headers_list_;
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);

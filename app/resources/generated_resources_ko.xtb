@@ -503,13 +503,21 @@
 <translation id="3861241522664181545">페이지가 일시중지되었습니다.</translation>
 <translation id="6921709132208495314">이 페이지에서 데이터 사용 중지</translation>
 <translation id="2724841811573117416">WebRTC 로그</translation>
+<translation id="1969654639948595766">WebRTC 텍스트 로그(<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC 이벤트 로그(<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC 로그 캡처 시간: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">로컬 파일:</translation>
 <translation id="2071393345806050157">로컬 로그 파일이 없습니다.</translation>
 <translation id="6628328486509726751">업로드 시간: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">업로드 실패(<ph name="WEBRTC_LOG_UPLOAD_TIME"/>)</translation>
 <translation id="5946591249682680882">보고서 ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">버그 신고</translation>
+<translation id="3650845953328929506">로그 업데이트가 대기 중입니다.</translation>
+<translation id="1818913467757368489">로그 업로드가 진행 중입니다.</translation>
 <translation id="1188807932851744811">로그가 업로드되지 않았습니다.</translation>
+<translation id="4688036121858134881">로컬 로그 ID: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/></translation>
+<translation id="7497981768003291373">최근 캡처한 WebRTC 텍스트 로그가 없습니다.</translation>
+<translation id="3954953195017194676">최근 캡처한 WebRTC 이벤트 로그가 없습니다.</translation>
 <translation id="2076269580855484719">이 플러그인 숨기기</translation>
 <translation id="2129825002735785149">플러그인 업데이트</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/>이(가) 기업 정책에 의해 차단되었습니다.</translation>
@@ -554,6 +562,8 @@
 <translation id="4416582610654027550">유효한 URL을 입력하세요.</translation>
 <translation id="2806891468525657116">바로가기가 이미 존재합니다.</translation>
 <translation id="394183848452296464">바로가기를 만들 수 없음</translation>
+<translation id="329703603001918157">바로가기를 수정할 수 없음</translation>
+<translation id="6732900235521116609">바로가기를 삭제할 수 없음</translation>
 <translation id="7109543803214225826">바로가기 삭제됨</translation>
 <translation id="8017679124341497925">바로가기 수정됨</translation>
 <translation id="1174073918202301297">바로가기 추가됨</translation>
@@ -827,7 +837,6 @@
 <translation id="6845038076637626672">최대화 상태로 열기</translation>
 <translation id="6860427144121307915">탭에서 열기</translation>
 <translation id="3074037959626057712">로그인하고 동기화를 사용 설정함</translation>
-<translation id="6264422956566238156">동기화가 사용 설정됨</translation>
 <translation id="9125982323641182972">Brave Software로 Brave을 더욱 스마트하게</translation>
 <translation id="7988117629517051942">더욱 스마트한 Brave Software을 사용하세요</translation>
 <translation id="5596627076506792578">옵션 더보기</translation>
@@ -843,7 +852,7 @@
 <translation id="1371301976177520732">북마크, 비밀번호, 방문 기록 등을 모든 기기에 동기화</translation>
 <translation id="3111958038206230539">Brave Software 서비스 맞춤설정</translation>
 <translation id="295992419959320001">Brave Software에서 검색, 광고 및 다른 Brave Software 서비스를 맞춤설정하기 위하여 내 인터넷 사용 기록을 사용할 수 있습니다.</translation>
-<translation id="4800091108248587380">Brave Software Pay와 같은 맞춤형 Brave Software 서비스</translation>
+<translation id="4205523465226408285">향상된 페이지 추천과 같이 더욱 맞춤설정된 Brave Software 서비스</translation>
 <translation id="3070156078150543526">검색 및 다른 Brave Software 서비스를 맞춤설정하기 위하여 Brave Software에서 인터넷 사용 기록을 사용할 수 있습니다.</translation>
 <translation id="2532167245710864499">시스템 정보와 사용 기록을 Brave Software에 전송하여 Brave 및 보안 개선</translation>
 <translation id="2709453993673701466">동기화 및 맞춤설정을 관리한 다음 사용 설정하시겠습니까? <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>으로 이동하세요.</translation>
@@ -1438,6 +1447,7 @@
 <translation id="1800308196794859773">모든 텍스트 입력란에서 음성기록 기능을 지원하기 위해 Brave Software에 음성이 전송됩니다.</translation>
 <translation id="8758418656925882523">받아쓰기 사용(말하여 입력)</translation>
 <translation id="7580671184200851182">모든 스피커에서 동일한 오디오 실행(모노 오디오)</translation>
+<translation id="8186639008852027301">시작 시 오디오 표시기 재생</translation>
 <translation id="1189418886587279221">기기를 보다 간편하게 사용할 수 있도록 접근성 기능을 사용합니다.</translation>
 <translation id="48704129375571883">추가 기능 추가</translation>
 <translation id="7230787553283372882">텍스트 크기 맞춤설정</translation>
@@ -1535,6 +1545,10 @@
 <translation id="5029568752722684782">사본 지우기</translation>
 <translation id="2154484045852737596">카드 수정</translation>
 <translation id="5087580092889165836">카드 추가</translation>
+<translation id="7284555534810614828">Brave Software Pay에 사용할 카드 저장</translation>
+<translation id="6281511959351052816">Brave Software Pay에 사용할 카드 저장</translation>
+<translation id="1904518222538904133">이 기기에는 카드 중 1개만 사용할 수 있습니다.</translation>
+<translation id="8065485338434000013">일부 카드는 이 기기에서만 사용할 수 있습니다.</translation>
 <translation id="4807098396393229769">카드 명의</translation>
 <translation id="2612676031748830579">카드번호</translation>
 <translation id="869891660844655955">유효기간</translation>
@@ -1608,7 +1622,6 @@
 <translation id="784934925303690534">기간</translation>
 <translation id="2496180316473517155">인터넷 사용 기록</translation>
 <translation id="8662811608048051533">대부분의 사이트에서 로그아웃됩니다.</translation>
-<translation id="8218628800671693884">대부분의 사이트에서 로그아웃됩니다. Brave Software 계정에서는 로그아웃되지 않습니다.</translation>
 <translation id="2017836877785168846">검색주소창의 검색 기록 및 자동 완성 항목을 삭제합니다.</translation>
 <translation id="8096327394278038498">검색주소창에 저장된 방문 기록과 자동 완성 내역을 지웁니다. Brave Software 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
 <translation id="8122693181154564064">로그인된 모든 기기에서 방문 기록을 지웁니다. Brave Software 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
@@ -1675,10 +1688,10 @@
 <translation id="7754704193130578113">다운로드 전에 각 파일의 저장 위치 확인</translation>
 <translation id="5713072761819014678">Brave Software 드라이브 계정을 연결 해제합니다.</translation>
 <translation id="486635084936119914">다운로드 후에 특정 파일 형식을 자동으로 열기</translation>
-<translation id="870073306461175568">Network File Shares</translation>
-<translation id="6189273858858366896">Network File Shares를 설정하거나 관리합니다.</translation>
+<translation id="3653160965917900914">네트워크 파일 공유</translation>
+<translation id="5763315388120433852">네트워크 파일 공유를 설정하거나 관리합니다.</translation>
 <translation id="2367199180085172140">파일 공유 추가</translation>
-<translation id="8984654317541110628">파일 공유 URL</translation>
+<translation id="247051149076336810">파일 공유 URL</translation>
 <translation id="5247051749037287028">표시 이름(선택사항)</translation>
 <translation id="6091761513005122595">공유가 성공적으로 마운트되었습니다.</translation>
 <translation id="9024158959543687197">공유를 마운트하는 중에 오류가 발생했습니다. 파일 공유 URL을 확인한 후 다시 시도해 주세요.</translation>
@@ -1686,6 +1699,7 @@
 <translation id="2148219725039824548">공유를 마운트하는 중에 오류가 발생했습니다. 네트워크에서 지정된 공유를 찾을 수 없습니다.</translation>
 <translation id="7234406375359457793">공유를 마운트하는 중에 오류가 발생했습니다. 지정된 공유가 지원되지 않습니다.</translation>
 <translation id="706626672220389329">공유를 마운트하는 중에 오류가 발생했습니다. 지정된 공유가 이미 마운트되었습니다.</translation>
+<translation id="5985458664595100876">URL 형식이 잘못되었습니다. \\server\share 및 smb://server/share 형식이 지원됩니다.</translation>
 <translation id="3101709781009526431">날짜 및 시간</translation>
 <translation id="2059913712424898428">시간대</translation>
 <translation id="4547672827276975204">자동 설정</translation>
@@ -1974,8 +1988,6 @@
 <translation id="5282733140964383898">'추적 안함'을 사용 설정하면 요청이 탐색 트래픽에 포함됩니다. 웹사이트가 요청에 응답하는지와 요청이 어떻게 해석되는가에 따라 결과가 달라집니다. 예를 들어, 어떤 웹사이트는 사용자의 웹사이트 방문 기록과 관계없는 광고를 표시하는 방식으로 요청에 응답할 수 있습니다. 이 설정을 사용해도 대부분의 웹사이트에서는 보안을 강화하거나 웹사이트에서 콘텐츠, 서비스, 광고 및 추천 정보를 제공하거나 보고서 통계를 생성하는 등의 목적으로 사용자의 인터넷 사용 기록을 수집하고 사용됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">인증 액세스 서비스 사용</translation>
 <translation id="5557991081552967863">절전 모드 중에 Wi-Fi 계속 사용</translation>
-<translation id="8562084399541316921">계속 읽기</translation>
-<translation id="6201926614538916789">Bravebook에서 모바일 사이트 보기 재개</translation>
 <translation id="1521442365706402292">인증서 관리</translation>
 <translation id="7075625805486468288">HTTPS/SSL 인증서 및 설정 관리</translation>
 <translation id="8871974300055371298">콘텐츠 설정</translation>
@@ -2184,6 +2196,7 @@
 <translation id="3422989461909154470">앱 및 웹사이트에서 로그인한 모든 Brave Software 계정을 여기에서 관리할 수 있습니다.</translation>
 <translation id="1987317783729300807">계정</translation>
 <translation id="8418661265246754237">Brave Software 계정</translation>
+<translation id="3297951628821704004">이 기기에서 계정 삭제</translation>
 <translation id="1059855432287631118">지문 등록</translation>
 <translation id="878068003854005405">시작해 보겠습니다. 센서 위에 손가락을 올리세요.</translation>
 <translation id="7189965711416741966">지문이 추가되었습니다.</translation>
@@ -2242,7 +2255,7 @@
 <translation id="2459230470861708651">Brave Software 사용자 이름과 비밀번호로 동기화 데이터 암호화</translation>
 <translation id="6383051423892982287">나만의 <ph name="BEGIN_LINK"/>동기화 암호<ph name="END_LINK"/>로 동기화 데이터 암호화</translation>
 <translation id="4817583816512767754">암호를 아는 사람만 암호화된 데이터를 읽을 수 있습니다. 암호는 Brave Software로 전송되거나 Brave Software에 저장되지 않습니다. 암호가 기억나지 않거나 이 설정을 변경하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>해야 합니다.</translation>
-<translation id="4300305918532693141">이 설정을 변경하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>합니다.</translation>
+<translation id="7441736921018636843">이 설정을 변경하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>하여 동기화 암호를 삭제하세요.</translation>
 <translation id="3873315167136380065">사용하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>하여 동기화 암호를 삭제하세요.</translation>
 <translation id="988978206646512040">암호를 빈칸으로 두어서는 안 됩니다.</translation>
 <translation id="1651008383952180276">동일한 암호를 두 번 입력해야 합니다.</translation>
@@ -2401,6 +2414,7 @@
 <translation id="1940546824932169984">연결된 기기</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook이 휴대전화와 더 효과적으로 연동됩니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">사용 가능한 기기가 없습니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">확인을 기다리는 중입니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">휴대전화에 연결할 수 없습니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together 사용</translation>
@@ -2440,6 +2454,7 @@
 <translation id="1607139524282324606">항목 삭제</translation>
 <translation id="6025215716629925253">스택 추적</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1줄이 표시되지 않음&gt;}other{&lt;$1줄이 표시되지 않음&gt;}}</translation>
+<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>사이트 액세스 권한<ph name="END_LINK"/> 자세히 알아보기</translation>
 <translation id="8389492867173948260">이 확장 프로그램이 내가 방문하는 다음 웹사이트의 모든 데이터를 읽고 변경하도록 허용합니다.</translation>
 <translation id="407173827865827707">클릭 시</translation>
 <translation id="6455264371803474013">특정 사이트에서</translation>

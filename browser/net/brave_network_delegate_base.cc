@@ -7,6 +7,9 @@
 #include <algorithm>
 
 #include "brave/browser/net/url_context.h"
+#include "brave/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_request.h"
 
@@ -14,11 +17,21 @@
 using content::BrowserThread;
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
-    extensions::EventRouterForwarder* event_router) :
-    ChromeNetworkDelegate(event_router) {
+    extensions::EventRouterForwarder* event_router)
+    : ChromeNetworkDelegate(event_router), referral_headers_list_(nullptr) {
+  // Retrieve the current referral headers, if any.
+  BrowserThread::PostTask(
+      BrowserThread::UI, FROM_HERE,
+      base::Bind(&BraveNetworkDelegateBase::GetReferralHeaders,
+                 base::Unretained(this)));
 }
 
 BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {
+}
+
+void BraveNetworkDelegateBase::GetReferralHeaders() {
+  referral_headers_list_ =
+      g_browser_process->local_state()->GetList(kReferralHeaders);
 }
 
 int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
@@ -49,7 +62,38 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
   ctx->headers = headers;
   ctx->request_identifier = request->identifier();
   ctx->event_type = brave::kOnBeforeStartTransaction;
+  ctx->referral_headers_list = referral_headers_list_;
   RunNextCallback(request, nullptr, ctx);
+  return net::ERR_IO_PENDING;
+}
+
+int BraveNetworkDelegateBase::OnHeadersReceived(net::URLRequest* request,
+      net::CompletionOnceCallback callback,
+      const net::HttpResponseHeaders* original_response_headers,
+      scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+      GURL* allowed_unsafe_redirect_url) {
+  if (headers_received_callbacks_.empty() || !request) {
+    return ChromeNetworkDelegate::OnHeadersReceived(request,
+        std::move(callback), original_response_headers,
+        override_response_headers, allowed_unsafe_redirect_url);
+  }
+
+  std::shared_ptr<brave::BraveRequestInfo> ctx(
+      new brave::BraveRequestInfo());
+  callbacks_[request->identifier()] = std::move(callback);
+  ctx->request_identifier = request->identifier();
+  ctx->event_type = brave::kOnHeadersReceived;
+  ctx->original_response_headers = original_response_headers;
+  ctx->override_response_headers = override_response_headers;
+  ctx->allowed_unsafe_redirect_url = allowed_unsafe_redirect_url;
+
+  // Return ERR_IO_PENDING and run callbacks later by posting a task.
+  // URLRequestHttpJob::awaiting_callback_ will be set to true after we
+  // return net::ERR_IO_PENDING here, callbacks need to be run later than this
+  // to set awaiting_callback_ back to false.
+  BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
+      base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
+        base::Unretained(this), request, nullptr, ctx));
   return net::ERR_IO_PENDING;
 }
 
@@ -87,7 +131,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
       if (rv == net::ERR_IO_PENDING) {
         return;
       }
-      if (rv == net::ERR_ABORTED) {
+      if (rv != net::OK) {
         break;
       }
     }
@@ -102,16 +146,31 @@ void BraveNetworkDelegateBase::RunNextCallback(
       if (rv == net::ERR_IO_PENDING) {
         return;
       }
-      if (rv == net::ERR_ABORTED) {
+      if (rv != net::OK) {
+        break;
+      }
+    }
+  } else if (ctx->event_type == brave::kOnHeadersReceived) {
+    while(headers_received_callbacks_.size() != ctx->next_url_request_index) {
+      brave::OnHeadersReceivedCallback callback =
+          headers_received_callbacks_[ctx->next_url_request_index++];
+      brave::ResponseCallback next_callback =
+          base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
+              base::Unretained(this), request, new_url, ctx);
+      rv = callback.Run(request, ctx->original_response_headers,
+          ctx->override_response_headers, ctx->allowed_unsafe_redirect_url,
+          next_callback, ctx);
+      if (rv == net::ERR_IO_PENDING) {
+        return;
+      }
+      if (rv != net::OK) {
         break;
       }
     }
   }
 
-  std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
-      callbacks_.find(ctx->request_identifier);
-  if (rv == net::ERR_ABORTED) {
-    std::move(it->second).Run(rv);
+  if (rv != net::OK) {
+    RunCallbackForRequestIdentifier(ctx->request_identifier, rv);
     return;
   }
 
@@ -124,6 +183,10 @@ void BraveNetworkDelegateBase::RunNextCallback(
   } else if (ctx->event_type == brave::kOnBeforeStartTransaction) {
     rv = ChromeNetworkDelegate::OnBeforeStartTransaction(request,
         std::move(wrapped_callback), ctx->headers);
+  } else if (ctx->event_type == brave::kOnHeadersReceived) {
+    rv = ChromeNetworkDelegate::OnHeadersReceived(request,
+        std::move(wrapped_callback), ctx->original_response_headers,
+        ctx->override_response_headers, ctx->allowed_unsafe_redirect_url);
   }
 
   // ChromeNetworkDelegate returns net::ERR_IO_PENDING if an extension is

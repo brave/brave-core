@@ -58,7 +58,7 @@ class NewTabPage extends React.Component<Props, {}> {
   }
 
   onToggleBookmark (site: NewTab.Site) {
-    if (site.bookmarked) {
+    if (site.bookmarked === undefined) {
       this.actions.bookmarkAdded(site.url)
     } else {
       this.actions.bookmarkRemoved(site.url)
@@ -118,10 +118,12 @@ class NewTabPage extends React.Component<Props, {}> {
     if (this.props.newTabData.isIncognito) {
       return (
         <NewPrivateTab
-          stats={newTabData.stats}
           useAlternativePrivateSearchEngine={this.useAlternativePrivateSearchEngine}
+          isTor={this.props.newTabData.isTor}
           onChangePrivateSearchEngine={this.onChangePrivateSearchEngine}
-        />
+        >
+          <Stats stats={newTabData.stats}/>
+        </NewPrivateTab>
       )
     }
 

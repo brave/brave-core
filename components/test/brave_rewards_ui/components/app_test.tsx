@@ -63,7 +63,9 @@ describe('rewardsPage component', () => {
     it('renders the component', () => {
       const wrapper = shallow(
         <App
-          actions={{}}
+          actions={{
+            checkWalletExistence: () => false
+          }}
           rewardsData={rewardsInitialState.rewardsData as Rewards.State}
         />
       )

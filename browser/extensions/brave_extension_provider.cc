@@ -19,9 +19,14 @@ bool IsBlacklisted(const extensions::Extension* extension) {
   // This is a hardcoded list of extensions to block.
   // Typically instead you can just use the brave/go-updater to list
   // a blacklisted extension that you want to block for existing clients.
-  // mlklomjnahgiddgfdgjhibinlfibfffc is used for tests, it corresponds to
-  // brave/test/data/should-be-blocked-extension
-  return extension->id() == "mlklomjnahgiddgfdgjhibinlfibfffc";
+  static std::vector<std::string> blacklisted_extensions({
+    // Used for tests, corresponds to brave/test/data/should-be-blocked-extension.
+    "mlklomjnahgiddgfdgjhibinlfibfffc",
+    // Chromium PDF Viewer.
+    "mhjfbmdgcfjbbpaeojofohoefgiehjai"
+  });
+  return std::find(blacklisted_extensions.begin(), blacklisted_extensions.end(),
+      extension->id()) != blacklisted_extensions.end();
 }
 
 }  // namespace
@@ -31,6 +36,7 @@ namespace extensions {
 bool BraveExtensionProvider::IsVetted(const Extension* extension) {
   static std::vector<std::string> vetted_extensions({
     brave_extension_id,
+    brave_rewards_extension_id,
     brave_webtorrent_extension_id,
     pdfjs_extension_id,
     // 1Password
@@ -128,11 +134,9 @@ bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
                                    base::UTF8ToUTF16(extension->name()),
                                    base::UTF8ToUTF16(extension->id()));
     }
-#if defined(NDEBUG)
-    LOG(ERROR) << "Extension will not install "
+    DVLOG(1) << "Extension will not install "
       << " ID: " << base::UTF8ToUTF16(extension->id()) << ", "
       << " Name: " << base::UTF8ToUTF16(extension->name());
-#endif
     return false;
   }
   return true;
@@ -141,6 +145,7 @@ bool BraveExtensionProvider::UserMayLoad(const Extension* extension,
 bool BraveExtensionProvider::MustRemainInstalled(const Extension* extension,
                                                  base::string16* error) const {
   return extension->id() == brave_extension_id ||
+    extension->id() == brave_rewards_extension_id ||
     extension->id() == brave_webtorrent_extension_id;
 }
 

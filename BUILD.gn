@@ -29,10 +29,13 @@ group("child_dependencies") {
 group("browser_dependencies") {
   deps = [
     "//brave/browser",
-    "//brave/components/content_settings/core/browser",
     "common",
     ":packed_resources",
     "chromium_src:browser",
+  ]
+
+  data_deps = [
+    ":unpacked_resources",
   ]
 }
 
@@ -42,6 +45,23 @@ group("brave") {
     "build/$target_os:brave",
     "//chrome",
   ]
+}
+
+if (is_mac) {
+  group("framework_bundle_data") {
+    deps = [
+      "vendor/brave-extension:brave_extension_framework_bundle_data",
+      "components/brave_rewards/extension:framework_bundle_data",
+    ]
+  }
+}
+
+group("unpacked_resources") {
+  if (!is_mac) {
+    deps = [
+      "//brave/components/brave_rewards/extension:locales",
+    ]
+  }
 }
 
 group("brave_tests") {
@@ -88,6 +108,12 @@ group("create_dist") {
   }
   if (is_mac) {
     deps += [ "build/mac:create_dist_mac" ]
+    if (brave_channel == "") {
+      deps += [
+        "build/mac:create_pkg",
+        "build/mac:sign_pkg",
+      ]
+    }
   }
   if (is_linux) {
     deps += [
@@ -362,10 +388,15 @@ if (is_mac) {
     info_plist_target = ":brave_app_plist"
 
     extra_substitutions = [
-      "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id.$brave_channel",
       "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
       "CHROMIUM_CREATOR=$chrome_mac_creator_code",
     ]
+    # brave_channel is an empty string for release
+    if (brave_channel == "") {
+      extra_substitutions += ["CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id"]
+    } else {
+      extra_substitutions += ["CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id.$brave_channel"]
+    }
 
     sources = [
       "//chrome/app/chrome_exe_main_mac.cc",

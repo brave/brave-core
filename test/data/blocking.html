@@ -1,9 +1,23 @@
+<html>
+<head>
 <script>
+function addElement(src) {
+  const img = document.createElement('img')
+  img.id = 'adImage'
+  img.src = src
+  img.addEventListener('load', imgLoaded)
+  document.body.appendChild(img)
+}
+
 function imgLoaded() {
   const adImage = document.querySelector('#adImage')
-  return adImage.complete && adImage.naturalHeight !== 0;
+  // Blocked image should be a 1x1 stub
+  window.domAutomationController.send(adImage.complete &&
+    (adImage.naturalHeight !== 1 ||
+    adImage.naturalWidth !== 1))
 }
 </script>
-
-Ad banner:
-<img id='adImage' src='/ad_banner.png'>
+</head>
+<body>
+</body>
+</html>

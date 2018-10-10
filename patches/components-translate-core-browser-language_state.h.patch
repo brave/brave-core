@@ -1,0 +1,13 @@
+diff --git a/components/translate/core/browser/language_state.h b/components/translate/core/browser/language_state.h
+index 3cee8dc8f3108c101cbf488ed1012029f046264b..2957ecb16a4226c52fe736adf10d3d56ba06c3fd 100644
+--- a/components/translate/core/browser/language_state.h
++++ b/components/translate/core/browser/language_state.h
+@@ -70,7 +70,7 @@ class LanguageState {
+   void set_translation_declined(bool value) { translation_declined_ = value; }
+ 
+   // Whether the translate is enabled.
+-  bool translate_enabled() const { return translate_enabled_; }
++  bool translate_enabled() const { return false; }
+   void SetTranslateEnabled(bool value);
+ 
+   // Whether the current page's language is different from the previous

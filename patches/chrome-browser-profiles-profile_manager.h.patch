@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
+index 8a62433e9107a48d4e7ae919af5e82c3639d612a..3e4b3c4f303bbebeeba8cc44447f14ff57a77a52 100644
+--- a/chrome/browser/profiles/profile_manager.h
++++ b/chrome/browser/profiles/profile_manager.h
+@@ -140,7 +140,7 @@ class ProfileManager : public content::NotificationObserver,
+ 
+   // Get the name of the last used profile, or if that's undefined, the default
+   // profile.
+-  std::string GetLastUsedProfileName();
++  virtual std::string GetLastUsedProfileName();
+ 
+   // Get the Profiles which are currently open, i.e. have open browsers or were
+   // open the last time Chrome was running. Profiles that fail to initialize are
+@@ -221,7 +221,7 @@ class ProfileManager : public content::NotificationObserver,
+ 
+   // Initializes user prefs of |profile|. This includes profile name and
+   // avatar values.
+-  void InitProfileUserPrefs(Profile* profile);
++  virtual void InitProfileUserPrefs(Profile* profile);
+ 
+   // Register and add testing profile to the ProfileManager. Use ONLY in tests.
+   // This allows the creation of Profiles outside of the standard creation path
+@@ -347,7 +347,7 @@ class ProfileManager : public content::NotificationObserver,
+ 
+   // Apply settings for profiles created by the system rather than users: The
+   // (desktop) Guest User profile and (desktop) System Profile.
+-  void SetNonPersonalProfilePrefs(Profile* profile);
++  virtual void SetNonPersonalProfilePrefs(Profile* profile);
+ 
+   // For ChromeOS, determines if profile should be otr.
+   bool ShouldGoOffTheRecord(Profile* profile);

@@ -99,6 +99,7 @@ bool BraveCookieSettings::IsCookieAccessAllowed(const GURL& url,
   GetCookieSetting(url, first_party_url, tab_url, nullptr, &setting);
   DCHECK(setting == CONTENT_SETTING_ALLOW ||
          setting == CONTENT_SETTING_SESSION_ONLY ||
+         setting == CONTENT_SETTING_DEFAULT ||
          setting == CONTENT_SETTING_BLOCK);
   return setting == CONTENT_SETTING_ALLOW ||
          setting == CONTENT_SETTING_SESSION_ONLY;

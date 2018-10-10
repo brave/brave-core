@@ -61,4 +61,8 @@ bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
   return true;
 }
 
+scoped_refptr<base::SequencedTaskRunner> BaseBraveShieldsService::GetTaskRunner() {
+  return task_runner_;
+}
+
 }  // namespace brave_shields

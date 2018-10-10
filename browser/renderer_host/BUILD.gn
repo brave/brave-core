@@ -1,0 +1,11 @@
+source_set("renderer_host") {
+  sources = [
+    "brave_navigation_ui_data.cc",
+    "brave_navigation_ui_data.h",
+  ]
+
+  deps = [
+    "//brave/browser/tor",
+    "//chrome/browser",
+  ]
+}

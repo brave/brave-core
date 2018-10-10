@@ -1,5 +1,6 @@
 brave_common_typescript_includes = [
   rebase_path("classSet.ts"),
+  rebase_path("dns.ts"),
   rebase_path("debounce.ts"),
   rebase_path("locale.ts"),
 ]

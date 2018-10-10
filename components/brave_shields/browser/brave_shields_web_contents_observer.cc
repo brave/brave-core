@@ -128,6 +128,11 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(
     RenderFrameHost* rfh) {
+  if (rfh && allowed_script_origins_.size()) {
+    rfh->Send(new BraveFrameMsg_AllowScriptsOnce(
+          rfh->GetRoutingID(), allowed_script_origins_));
+  }
+
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
     UpdateContentSettingsToRendererFrames(web_contents);
@@ -288,52 +293,6 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
 
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
-  auto frame_tree_node_id = navigation_handle->GetFrameTreeNodeId();
-  auto *frame_tree_node = content::FrameTreeNode::GloballyFindByID(
-      frame_tree_node_id);
-  auto* navigation_entry =
-    frame_tree_node->navigator()->GetController()->GetPendingEntry();
-
-  if (!navigation_entry) {
-    navigation_entry =
-      frame_tree_node->navigator()->GetController()->GetLastCommittedEntry();
-  }
-  GURL target_origin = navigation_handle->GetURL().GetOrigin();
-  if (!navigation_entry) {
-    return;
-  }
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  GURL tab_origin(navigation_entry->GetURL().GetOrigin());
-
-  std::unique_ptr<base::Value> referrer_value =
-      HostContentSettingsMapFactory::GetForProfile(profile)
-      ->GetWebsiteSetting(
-          tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kReferrers, NULL);
-  ContentSetting referrer_setting =
-      content_settings::ValueToContentSetting(referrer_value.get());
-
-  std::unique_ptr<base::Value> shields_value =
-      HostContentSettingsMapFactory::GetForProfile(profile)
-      ->GetWebsiteSetting(
-          tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields, NULL);
-  ContentSetting shields_setting =
-      content_settings::ValueToContentSetting(shields_value.get());
-
-  content::Referrer original_referrer = navigation_handle->GetReferrer();
-  content::Referrer new_referrer;
-  if (ShouldSetReferrer(referrer_setting == CONTENT_SETTING_ALLOW,
-          shields_setting != CONTENT_SETTING_BLOCK,
-          original_referrer.url,
-          tab_origin,
-          navigation_handle->GetURL(),
-          navigation_handle->GetURL().GetOrigin(),
-          original_referrer.policy, &new_referrer)) {
-    navigation_entry->SetReferrer(new_referrer);
-  }
-
   // when the main frame navigate away
   if (navigation_handle->IsInMainFrame() &&
       !navigation_handle->IsSameDocument() &&

@@ -21,13 +21,14 @@ struct ContentSite {
   std::string id;
   double percentage;
   bool verified;
+  int excluded;
   std::string name;
   std::string favicon_url;
   std::string url;
   std::string provider;
 };
 
-typedef std::vector<const ContentSite> ContentSiteList;
+typedef std::vector<ContentSite> ContentSiteList;
 
 }  // namespace brave_rewards
 

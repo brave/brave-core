@@ -85,8 +85,25 @@ class PageWallet extends React.Component<Props, State> {
 
   onModalBackupOnRestore = (key: string | MouseEvent) => {
     if (typeof key === 'string' && key.length > 0) {
+      key = this.pullRecoveryKeyFromFile(key)
       this.actions.recoverWallet(key)
     }
+  }
+
+  pullRecoveryKeyFromFile = (key: string) => {
+    let recoveryKey = null
+    if (key) {
+      let messageLines = key.match(/^.+$/gm)
+      if (messageLines) {
+        let passphraseLine = '' || messageLines[2]
+        if (passphraseLine) {
+          const passphrasePattern = new RegExp(['Recovery Key:', '(.+)$'].join(' '))
+          recoveryKey = (passphraseLine.match(passphrasePattern) || [])[1]
+          return recoveryKey
+        }
+      }
+    }
+    return key
   }
 
   onModalBackupOnImport = () => {
@@ -160,18 +177,12 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-
     const { contributionMonthly, walletInfo, reports } = this.props.rewardsData
     const { rates } = walletInfo
     const convertedMonthly = utils.convertBalance(contributionMonthly, rates)
-    let total = contributionMonthly * -1
 
     let props = {
       contribute: {
-        tokens: contributionMonthly,
-        converted: convertedMonthly
-      },
-      total: {
         tokens: contributionMonthly,
         converted: convertedMonthly
       }
@@ -186,8 +197,6 @@ class PageWallet extends React.Component<Props, State> {
           tokens: report.ads,
           converted: utils.convertBalance(report.ads, rates)
         }
-
-        total += report.ads
       }
 
       if (report.donations) {
@@ -195,8 +204,6 @@ class PageWallet extends React.Component<Props, State> {
           tokens: report.donations,
           converted: utils.convertBalance(report.donations, rates)
         }
-
-        total -= report.donations
       }
 
       if (report.grants) {
@@ -204,8 +211,6 @@ class PageWallet extends React.Component<Props, State> {
           tokens: report.grants,
           converted: utils.convertBalance(report.grants, rates)
         }
-
-        total += report.grants
       }
 
       if (report.oneTime) {
@@ -213,17 +218,12 @@ class PageWallet extends React.Component<Props, State> {
           tokens: report.oneTime,
           converted: utils.convertBalance(report.oneTime, rates)
         }
-
-        total -= report.oneTime
-      }
-
-      props['total'] = {
-        tokens: total,
-        converted: utils.convertBalance(total, rates)
       }
     }
 
-    return props
+    return {
+      report: props
+    }
   }
 
   render () {

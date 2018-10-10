@@ -101,7 +101,15 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
 
   bool allow = ContentSettingsObserver::AllowScriptFromSource(
       enabled_per_settings, script_url);
+
+  // scripts with whitelisted protocols, such as chrome://extensions should
+  // be allowed
+  bool should_white_list = IsWhitelistedForContentSettings(
+      blink::WebSecurityOrigin::Create(script_url),
+      render_frame()->GetWebFrame()->GetDocument().Url());
+
   allow = allow ||
+    should_white_list ||
     IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
     IsScriptTemporilyAllowed(secondary_url);
 
@@ -192,12 +200,18 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
 
   return allow;
 }
+
 bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetDocument().GetSecurityOrigin();
   // default allow local files
   if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme)
     return true;
+
+  bool allow = ContentSettingsObserver::AllowAutoplay(default_value);
+  if (allow) {
+    return true;
+  }
 
   blink::mojom::blink::PermissionServicePtr permission_service;
 
@@ -211,5 +225,5 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
                                           base::DoNothing());
   }
 
-  return ContentSettingsObserver::AllowAutoplay(default_value);
+  return allow;
 }

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index 98559f61b2de51ffa974c391b5ada5fdac67c49d..e87b9bd38130f770e33ea41c5f79188207e2f1df 100644
+index 051cb2897f036a897113aa691816c103e3363f4c..6a2b5e751f1acb389be3f326916d0afe3265a14d 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 @@ -28,6 +28,7 @@

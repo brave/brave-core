@@ -505,13 +505,21 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3861241522664181545">Se ha pausado la página.</translation>
 <translation id="6921709132208495314">Detener el consumo de datos en esta página</translation>
 <translation id="2724841811573117416">Registros de WebRTC</translation>
+<translation id="1969654639948595766">Registros de texto de WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Registros de eventos de WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Captura de registro de ReWebRTC: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Archivo local:</translation>
 <translation id="2071393345806050157">No hay ningún archivo de registro local.</translation>
 <translation id="6628328486509726751">Fecha y hora de subida: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">No se ha podido subir (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID de informe <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Incluir error</translation>
+<translation id="3650845953328929506">Subida del registro pendiente.</translation>
+<translation id="1818913467757368489">Se está subiendo el registro.</translation>
 <translation id="1188807932851744811">No se ha subido el registro.</translation>
+<translation id="4688036121858134881">ID de registro local: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">No has capturado ningún registro de texto de WebRTC recientemente.</translation>
+<translation id="3954953195017194676">No has capturado ningún registro de eventos de WebRTC recientemente.</translation>
 <translation id="2076269580855484719">Ocultar este complemento</translation>
 <translation id="2129825002735785149">Actualizar complemento</translation>
 <translation id="9088234649737575428">Una política de empresa ha bloqueado el complemento <ph name="PLUGIN_NAME"/></translation>
@@ -556,6 +564,8 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4416582610654027550">Escribe una URL válida</translation>
 <translation id="2806891468525657116">El acceso directo ya existe</translation>
 <translation id="394183848452296464">No se puede crear el acceso directo</translation>
+<translation id="329703603001918157">No se puede editar el acceso directo</translation>
+<translation id="6732900235521116609">No se ha podido retirar el acceso directo</translation>
 <translation id="7109543803214225826">Se ha quitado el acceso directo</translation>
 <translation id="8017679124341497925">Se ha editado el acceso directo</translation>
 <translation id="1174073918202301297">Se ha añadido el acceso directo</translation>
@@ -829,7 +839,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6845038076637626672">Abrir de forma maximizada</translation>
 <translation id="6860427144121307915">Abrir en una pestaña</translation>
 <translation id="3074037959626057712">Has iniciado sesión y activado la sincronización</translation>
-<translation id="6264422956566238156">Has activado la sincronización</translation>
 <translation id="9125982323641182972">Obtén funciones inteligentes en Brave</translation>
 <translation id="7988117629517051942">Obtener más funciones inteligentes de Brave Software</translation>
 <translation id="5596627076506792578">Más opciones</translation>
@@ -845,7 +854,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1371301976177520732">Tus marcadores, contraseñas, historial y mucho más en todos tus dispositivos</translation>
 <translation id="3111958038206230539">Personalizar los servicios de Brave Software</translation>
 <translation id="295992419959320001">Brave Software puede utilizar tu historial de navegación para personalizar la Búsqueda, los anuncios y otros servicios de Brave Software</translation>
-<translation id="4800091108248587380">Servicios de Brave Software personalizados, como Brave Software Pay</translation>
+<translation id="4205523465226408285">Servicios de Brave Software más personalizados, como mejores sugerencias de páginas</translation>
 <translation id="3070156078150543526">Brave Software puede utilizar tu historial de navegación para personalizar la Búsqueda y otros servicios de Brave Software</translation>
 <translation id="2532167245710864499">Envía información de uso y del sistema a Brave Software para mejorar Brave y su seguridad</translation>
 <translation id="2709453993673701466">¿Quieres administrar la sincronización y personalización antes de que se activen? Accede a <ph name="BEGIN_LINK"/>Configuración<ph name="END_LINK"/>.</translation>
@@ -1440,6 +1449,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1800308196794859773">Envía tu voz a Brave Software para utilizar el dictado en cualquier campo de texto.</translation>
 <translation id="8758418656925882523">Habilitar dictado (hablar para escribir)</translation>
 <translation id="7580671184200851182">Reproducir el mismo audio en todos los altavoces (audio mono)</translation>
+<translation id="8186639008852027301">Reproducir un sonido al iniciar</translation>
 <translation id="1189418886587279221">Permite habilitar las funciones de accesibilidad para facilitar el uso de tu dispositivo.</translation>
 <translation id="48704129375571883">Añadir funciones adicionales</translation>
 <translation id="7230787553283372882">Personalizar el tamaño del texto</translation>
@@ -1537,6 +1547,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5029568752722684782">Borrar copia</translation>
 <translation id="2154484045852737596">Editar tarjeta</translation>
 <translation id="5087580092889165836">Añadir tarjeta</translation>
+<translation id="7284555534810614828">Guardar tarjeta para usar Brave Software Play</translation>
+<translation id="6281511959351052816">Guarda tarjetas para usar Brave Software Play</translation>
+<translation id="1904518222538904133">Una de tus tarjetas solo puede usarse en este dispositivo</translation>
+<translation id="8065485338434000013">Algunas de tus tarjetas solo pueden usarse en este dispositivo</translation>
 <translation id="4807098396393229769">Titular de la tarjeta</translation>
 <translation id="2612676031748830579">Número de la tarjeta</translation>
 <translation id="869891660844655955">Fecha de caducidad</translation>
@@ -1610,7 +1624,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="784934925303690534">Intervalo de tiempo</translation>
 <translation id="2496180316473517155">Historial de navegación</translation>
 <translation id="8662811608048051533">Cierra tu sesión en la mayoría de los sitios web.</translation>
-<translation id="8218628800671693884">Cierra tu sesión en la mayoría de los sitios web. No se cerrará la sesión en tu cuenta de Brave Software.</translation>
 <translation id="2017836877785168846">Borra el historial y los autocompletados de la barra de direcciones.</translation>
 <translation id="8096327394278038498">Borra el historial y los autocompletados de la barra de direcciones. Es posible que tu cuenta de Brave Software tenga otros tipos de historial de navegación en <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Borra el historial de todos los dispositivos en los que hayas iniciado sesión. Es posible que tu cuenta de Brave Software tenga otros tipos de historial de navegación en <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1677,10 +1690,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7754704193130578113">Preguntar dónde se guardará cada archivo antes de descargarlo</translation>
 <translation id="5713072761819014678">Desconectar cuenta de Brave Software Drive</translation>
 <translation id="486635084936119914">Abre determinados tipos de archivo automáticamente después de la descarga</translation>
-<translation id="870073306461175568">Uso compartido de archivos del sistema</translation>
-<translation id="6189273858858366896">Configurar o gestionar archivos compartidos de la red.</translation>
+<translation id="3653160965917900914">Sistemas de archivos compartidos de red</translation>
+<translation id="5763315388120433852">Configurar o gestionar sistemas de archivos compartidos de red.</translation>
 <translation id="2367199180085172140">Añadir uso compartido de archivo</translation>
-<translation id="8984654317541110628">URL de recurso compartido</translation>
+<translation id="247051149076336810">URL del sistema de archivos compartidos</translation>
 <translation id="5247051749037287028">Nombre visible (opcional)</translation>
 <translation id="6091761513005122595">El recurso compartido se ha activado correctamente.</translation>
 <translation id="9024158959543687197">No se ha podido activar el recurso compartido. Comprueba la URL del recurso compartido y vuelve a intentarlo.</translation>
@@ -1688,6 +1701,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2148219725039824548">No se ha podido activar el recurso compartido. No se ha encontrado el recurso especificado en la red.</translation>
 <translation id="7234406375359457793">No se ha podido activar el recurso compartido. El recurso especificado no es compatible.</translation>
 <translation id="706626672220389329">No se ha podido activar el recurso compartido. El recurso especificado ya está activado.</translation>
+<translation id="5985458664595100876">El formato de la URL no es válido. Los formatos admitidos son \\server\share y smb://server/share.</translation>
 <translation id="3101709781009526431">Fecha y hora</translation>
 <translation id="2059913712424898428">Zona horaria</translation>
 <translation id="4547672827276975204">Definir automáticamente</translation>
@@ -1976,8 +1990,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5282733140964383898">Al habilitar la opción No realizar seguimiento, se incluirá una solicitud con tu tráfico de navegación. El efecto dependerá de si un sitio web responde a la solicitud y de cómo se interprete. Por ejemplo, algunos sitios web pueden responder a la solicitud mostrándote anuncios que no están basados en otros sitios web que has visitado. Muchos sitios web seguirán recogiendo y utilizando tus datos de navegación para, por ejemplo, mejorar la seguridad, proporcionar contenido, servicios, anuncios y recomendaciones sobre sus sitios web, y generar estadísticas de informes. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Habilitar acceso verificado</translation>
 <translation id="5557991081552967863">Usar Wi-Fi en suspensión</translation>
-<translation id="8562084399541316921">Seguir leyendo</translation>
-<translation id="6201926614538916789">Sigue leyendo en tu Bravebook los sitios web que tengas en el móvil</translation>
 <translation id="1521442365706402292">Gestionar certificados</translation>
 <translation id="7075625805486468288">Administrar configuración y certificados HTTPS/SSL</translation>
 <translation id="8871974300055371298">Configuración de contenido</translation>
@@ -2186,6 +2198,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3422989461909154470">En esta página puedes gestionar todas tus cuentas de Brave Software con las que hayas iniciado sesión en sitios web y aplicaciones.</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="8418661265246754237">Cuentas de Brave Software</translation>
+<translation id="3297951628821704004">Retirar cuenta de este dispositivo</translation>
 <translation id="1059855432287631118">Registrando huella digital</translation>
 <translation id="878068003854005405">Empecemos. Coloca el dedo en el sensor.</translation>
 <translation id="7189965711416741966">Huella digital añadida.</translation>
@@ -2244,7 +2257,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2459230470861708651">Cifrar las contraseñas sincronizadas con tu nombre de usuario y contraseña de Brave Software</translation>
 <translation id="6383051423892982287">Cifrar los datos sincronizados con tu propia <ph name="BEGIN_LINK"/>frase de contraseña de sincronización<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Solo alguien que tenga tu frase de contraseña puede leer tus datos cifrados. Brave Software no envía ni almacena la frase de contraseña. Si la olvidas o quieres cambiar estos ajustes, debes <ph name="BEGIN_LINK"/>restablecer la sincronización<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Para cambiar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Para cambiar este ajuste, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/> para eliminar tu frase de contraseña de sincronización</translation>
 <translation id="3873315167136380065">Para activar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<ph name="END_LINK"/> para eliminar tu frase de contraseña de sincronización</translation>
 <translation id="988978206646512040">La frase de contraseña no puede estar vacía</translation>
 <translation id="1651008383952180276">Debes introducir la misma frase de contraseña dos veces</translation>
@@ -2403,6 +2416,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1940546824932169984">Dispositivos conectados</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Tu Bravebook funciona aún mejor con tu teléfono. Consulta <ph name="LINK_BEGIN"/>más información<ph name="LINK_END"/>.</translation>
+<translation id="6148052338549899048">No hay ningún dispositivo apto. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Esperando verificación. Consulta <ph name="LINK_BEGIN"/>más información<ph name="LINK_END"/>.</translation>
 <translation id="2315821125498993513">No se ha podido establecer conexión con el teléfono. Consulta <ph name="LINK_BEGIN"/>más información<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Better Together está activado</translation>
@@ -2442,6 +2456,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1607139524282324606">Borrar entrada</translation>
 <translation id="6025215716629925253">Seguimiento de la pila</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;No se muestra 1 línea&gt;}other{&lt;No se muestran $1 líneas&gt;}}</translation>
+<translation id="5334899159203764908">Más información sobre el <ph name="BEGIN_LINK"/>acceso del sitio web<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Permitir que esta extensión lea y cambie todos los datos de los sitios web que visites:</translation>
 <translation id="407173827865827707">Al hacer clic</translation>
 <translation id="6455264371803474013">En sitios web específicos</translation>

@@ -146,6 +146,90 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
         Brave colors
       </message>
+      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
+        Use wide location bar
+      </message>
+      <!-- Tor -->
+      <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
+        New Tor Identity
+      </message>
+      <message name="IDS_PROFILES_EXIT_TOR" desc="Button in the avatar menu bubble view for exiting the active Tor session.">
+        Exit Tor
+      </message>
+      <message name="IDS_TOR_PROFILE_NAME" desc="The name given to the Tor browsing profile. Displayed in the avatar menu bubble and button UI.">
+        Tor
+      </message>
+      <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a Tor window.">
+        Open Tor Window
+      </message>
+      <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
+        Tor
+      </message>
+      <message name="IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME" desc="The utility process which launch Tor">
+        Tor Launcher
+      </message>
+      <!-- Brave Shields Defaults -->
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields defaults in settings">
+        Brave shields defaults
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL" desc="Default Brave ad control setting label">
+        Ad Control
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookie control setting label">
+        Cookie Control
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
+        Fingerprinting protection
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave HTTPS Everywhere control setting label">
+        HTTPS Everywhere
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
+        Script blocking
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_ADS" desc="Select value">
+        Block ads
+      </message>
+      <message name="IDS_SETTINGS_ALLOW_ADS_AND_TRACKING" desc="Select value">
+        Allow ads and tracking
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
+        Block 3rd party cookies
+      </message>
+      <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
+        Allow all cookies
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_ALL_COOKIES" desc="Select value">
+        Block all cookies
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_FINGERPRINTING" desc="Select value">
+        Block 3rd party fingerprinting
+      </message>
+      <message name="IDS_SETTINGS_ALLOW_FINGERPRINTING" desc="Select value">
+        Allow fingerprinting
+      </message>
+      <message name="IDS_SETTINGS_BLOCK_FINGERPRINTING" desc="Select value">
+        Block all fingerprinting
+      </message>
+      <!-- WebRTC Policy Setting -->
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
+        WebRTC IP Handling Policy
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL" desc="WebRTC policy setting sub-label">
+        Learn more
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT" desc="Select value">
+        Default
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES" desc="Select value">
+        Default public and private interfaces
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DEFAULT_PUBLIC_INTERFACE_ONLY" desc="Select value">
+        Default public interface only
+      </message>
+      <message name="IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP" desc="Select value">
+        Disable non-proxied UDP
+      </message>
     </messages>
     <includes>
       <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />

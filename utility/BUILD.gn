@@ -17,6 +17,7 @@ source_set("utility") {
 
   defines = []
   deps = [
+    "tor",
     "//chrome/common",
     "//chrome/utility",
     "//content/public/common",

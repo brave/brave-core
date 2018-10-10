@@ -32,8 +32,8 @@ export const onGrant = (properties: Rewards.Grant) => action(types.ON_GRANT, {
 
 export const getGrantCaptcha = () => action(types.GET_GRANT_CAPTCHA)
 
-export const onGrantCaptcha = (image: string) => action(types.ON_GRANT_CAPTCHA, {
-  image
+export const onGrantCaptcha = (captcha: Rewards.Captcha) => action(types.ON_GRANT_CAPTCHA, {
+  captcha
 })
 
 export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GRANT_CAPTCHA, {
@@ -90,4 +90,20 @@ export const onContributeList = (list: Rewards.Publisher[]) => action(types.ON_C
 
 export const onBalanceReports = (reports: Record<string, Rewards.Report>) => action(types.ON_BALANCE_REPORTS, {
   reports
+})
+
+export const excludePublisher = (publisherKey: string) => action(types.ON_EXCLUDE_PUBLISHER, {
+  publisherKey
+})
+
+export const checkWalletExistence = () => action(types.CHECK_WALLET_EXISTENCE)
+
+export const onWalletExists = (exists: boolean) => action(types.ON_WALLET_EXISTS, {
+  exists
+})
+
+export const restorePublishers = () => action(types.ON_RESTORE_PUBLISHERS)
+
+export const onNumExcludedSites = (num: string) => action(types.ON_NUM_EXCLUDED_SITES, {
+  num
 })

@@ -18,15 +18,22 @@ BraveBrowserFrame::~BraveBrowserFrame() {
 }
 
 const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
+  // Gets the platform-specific override for NativeTheme,
+  // unless we're in dark mode in which case get cross-platform
+  // dark theme.
+  // TODO: Have platform-specific version of dark theme too.
 #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_CHROMEOS)
   BraveThemeType active_builtin_theme =
             BraveThemeService::GetActiveBraveThemeType(
                               browser_view_->browser()->profile());
   if (active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
       browser_view_->browser()->profile()->GetProfileType() ==
-          Profile::INCOGNITO_PROFILE) {
+          Profile::INCOGNITO_PROFILE ||
+      browser_view_->browser()->profile()->IsTorProfile()) {
     return ui::NativeThemeDarkAura::instance();
   }
 #endif
+  // Each platform will implement ui::NativeTheme::GetInstanceForNativeUi
+  // separately, which Widget::GetNativeTheme calls.
   return views::Widget::GetNativeTheme();
 }

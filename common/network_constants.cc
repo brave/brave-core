@@ -4,7 +4,13 @@ const char kBraveUpdatesExtensionsEndpoint[] = "https://go-updater.brave.com/ext
 // For debgugging:
 // const char kBraveUpdatesExtensionsEndpoint[] = "http://localhost:8192/extensions";
 
-const char kEmptyDataURI[] = "data:application/javascript;base64,MA==";
+const char kBraveReferralsServer[] = "laptop-updates.brave.com";
+const char kBraveReferralsHeadersPath[] = "/promo/custom-headers";
+const char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
+const char kBraveReferralsActivityPath[] = "/promo/activity";
+
+const char kEmptyDataURI[] = "data:text/plain,";
+const char kEmptyImageDataURI[] = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 const char kJSDataURLPrefix[] = "data:application/javascript;base64,";
 const char kGeoLocationsPattern[] = "https://www.googleapis.com/geolocation/v1/geolocate?key=*";
 const char kSafeBrowsingPrefix[] = "https://safebrowsing.googleapis.com/";
@@ -20,3 +26,6 @@ const char kCookieHeader[] = "Cookie";
 // Intentional misspelling on referrer to match HTTP spec
 const char kRefererHeader[] = "Referer";
 const char kUserAgentHeader[] = "User-Agent";
+
+const char kBittorrentMimeType[] = "application/x-bittorrent";
+const char kOctetStreamMimeType[] = "application/octet-stream";

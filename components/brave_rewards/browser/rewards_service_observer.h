@@ -26,7 +26,8 @@ class RewardsServiceObserver : public base::CheckedObserver {
                            unsigned int error_code,
                            brave_rewards::Grant properties) {};
   virtual void OnGrantCaptcha(RewardsService* rewards_service,
-                                  std::string image) {};
+                              std::string image,
+                              std::string hint) {};
   virtual void OnRecoverWallet(RewardsService* rewards_service,
                                unsigned int result,
                                double balance,
@@ -35,6 +36,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
                                  unsigned int result,
                                  brave_rewards::Grant grant) {};
   virtual void OnContentSiteUpdated(RewardsService* rewards_service) {};
+  virtual void OnExcludedSitesChanged(RewardsService* rewards_service) {};
 };
 
 }  // namespace brave_rewards

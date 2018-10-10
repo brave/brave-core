@@ -505,14 +505,21 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3861241522664181545">Halaman dijeda.</translation>
 <translation id="6921709132208495314">Berhenti menggunakan data di halaman ini</translation>
 <translation id="2724841811573117416">Log WebRTC</translation>
+<translation id="1969654639948595766">Log teks WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Log aktivitas WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Log WebRTC direkam pada <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">File lokal:</translation>
 <translation id="2071393345806050157">Tidak ada file log lokal.</translation>
 <translation id="6628328486509726751"><ph name="WEBRTC_LOG_UPLOAD_TIME"/> yang diupload</translation>
+<translation id="6458701200018867744">Upload gagal (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID Laporan <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Bug file</translation>
 <translation id="3650845953328929506">Unggahan log tertunda.</translation>
+<translation id="1818913467757368489">Upload log sedang berlangsung.</translation>
 <translation id="1188807932851744811">Log tidak diupload.</translation>
+<translation id="4688036121858134881">ID log lokal: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Anda tidak memiliki log teks WebRTC yang direkam baru-baru ini.</translation>
+<translation id="3954953195017194676">Anda tidak memiliki log aktivitas WebRTC yang direkam baru-baru ini.</translation>
 <translation id="2076269580855484719">Sembunyikan plugin ini</translation>
 <translation id="2129825002735785149">Perbarui plugin</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> diblokir oleh kebijakan perusahaan</translation>
@@ -557,6 +564,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4416582610654027550">Ketik URL yang valid</translation>
 <translation id="2806891468525657116">Pintasan sudah ada</translation>
 <translation id="394183848452296464">Tidak dapat membuat pintasan</translation>
+<translation id="329703603001918157">Tidak dapat mengedit pintasan</translation>
+<translation id="6732900235521116609">Tidak dapat menghapus pintasan</translation>
 <translation id="7109543803214225826">Pintasan dihapus</translation>
 <translation id="8017679124341497925">Pintasan diedit</translation>
 <translation id="1174073918202301297">Pintasan ditambahkan</translation>
@@ -830,7 +839,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6845038076637626672">Buka yang Dimaksimalkan</translation>
 <translation id="6860427144121307915">Buka di Tab</translation>
 <translation id="3074037959626057712">Anda telah login dan mengaktifkan Sinkronisasi</translation>
-<translation id="6264422956566238156">Anda telah mengaktifkan fitur Sinkronisasi</translation>
 <translation id="9125982323641182972">Dapatkan kecanggihan Brave Software di Brave</translation>
 <translation id="7988117629517051942">Dapatkan kecanggihan Brave Software lainnya</translation>
 <translation id="5596627076506792578">Opsi lainnya</translation>
@@ -846,7 +854,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1371301976177520732">Bookmark, sandi, histori, dan lainnya di semua perangkat Anda</translation>
 <translation id="3111958038206230539">Personalisasi layanan Brave Software</translation>
 <translation id="295992419959320001">Brave Software dapat menggunakan histori penjelajahan Anda untuk mempersonalisasi Penelusuran, iklan, dan layanan Brave Software lainnya</translation>
-<translation id="4800091108248587380">Layanan Brave Software yang dipersonalisasi seperti Brave Software Pay</translation>
+<translation id="4205523465226408285">Layanan Brave Software yang lebih personal, seperti saran halaman yang lebih baik</translation>
 <translation id="3070156078150543526">Brave Software dapat menggunakan histori penjelajahan Anda untuk mempersonalisasi Penelusuran dan layanan Brave Software lainnya</translation>
 <translation id="2532167245710864499">Sempurnakan Brave dan keamanannya dengan mengirimkan informasi penggunaan dan sistem ke Brave Software</translation>
 <translation id="2709453993673701466">Ingin mengelola sinkronisasi dan personalisasi sebelum diaktifkan? Buka <ph name="BEGIN_LINK"/>Setelan<ph name="END_LINK"/>.</translation>
@@ -1441,6 +1449,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1800308196794859773">Kirimkan suara Anda ke Brave Software untuk memungkinkan pengetikan dengan suara ke kolom teks.</translation>
 <translation id="8758418656925882523">Aktifkan dikte (ucapkan untuk mengetik)</translation>
 <translation id="7580671184200851182">Putar audio yang sama melalui semua speaker (audio mono)</translation>
+<translation id="8186639008852027301">Putar indikator audio saat dimulai</translation>
 <translation id="1189418886587279221">Aktifkan fitur aksesibilitas untuk membuat perangkat Anda lebih mudah digunakan.</translation>
 <translation id="48704129375571883">Tambahkan fitur tambahan</translation>
 <translation id="7230787553283372882">Menyesuaikan ukuran teks</translation>
@@ -1540,6 +1549,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5087580092889165836">Tambahkan kartu</translation>
 <translation id="7284555534810614828">Simpan kartu untuk menggunakan Brave Pay</translation>
 <translation id="6281511959351052816">Simpan kartu untuk menggunakan Brave Pay</translation>
+<translation id="1904518222538904133">1 kartu Anda hanya dapat digunakan di perangkat ini</translation>
+<translation id="8065485338434000013">Sebagian kartu Anda hanya dapat digunakan di perangkat ini</translation>
 <translation id="4807098396393229769">Nama di kartu</translation>
 <translation id="2612676031748830579">Nomor kartu kredit</translation>
 <translation id="869891660844655955">Masa berlaku</translation>
@@ -1613,7 +1624,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="784934925303690534">Rentang waktu</translation>
 <translation id="2496180316473517155">Histori jelajah</translation>
 <translation id="8662811608048051533">Membuat Anda logout dari sebagian besar situs.</translation>
-<translation id="8218628800671693884">Membuat Anda logout dari sebagian besar situs. Anda tidak akan logout dari Akun Brave Software.</translation>
 <translation id="2017836877785168846">Hapus histori dan pelengkapan otomatis di kolom URL.</translation>
 <translation id="8096327394278038498">Menghapus histori dan pelengkapan otomatis di kolom URL. Akun Brave Software Anda mungkin memiliki bentuk histori browsing lainnya di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Menghapus histori dari semua perangkat yang dibuat login. Akun Brave Software Anda mungkin memiliki bentuk histori browsing lain di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1681,10 +1691,10 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7754704193130578113">Tanyakan lokasi penyimpanan setiap file sebelum mendownload</translation>
 <translation id="5713072761819014678">Memutuskan hubungan akun Brave Software Drive</translation>
 <translation id="486635084936119914">Buka jenis file tertentu secara otomatis setelah didownload</translation>
-<translation id="870073306461175568">Berbagi File Jaringan</translation>
-<translation id="6189273858858366896">Siapkan atau kelola Berbagi File Jaringan.</translation>
+<translation id="3653160965917900914">Berbagi file jaringan</translation>
+<translation id="5763315388120433852">Siapkan atau kelola berbagi file jaringan.</translation>
 <translation id="2367199180085172140">Tambahkan Berbagi File</translation>
-<translation id="8984654317541110628">URL Berbagi File</translation>
+<translation id="247051149076336810">URL berbagi file</translation>
 <translation id="5247051749037287028">Nama yang ditampilkan (opsional)</translation>
 <translation id="6091761513005122595">URL berbagi berhasil dipasang.</translation>
 <translation id="9024158959543687197">Error saat memasang URL berbagi. Periksa URL berbagi file dan coba lagi.</translation>
@@ -1692,6 +1702,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2148219725039824548">Error saat memasang URL berbagi. URL berbagi yang ditentukan tidak ditemukan di jaringan.</translation>
 <translation id="7234406375359457793">Error saat memasang URL berbagi. URL berbagi yang ditentukan tidak didukung.</translation>
 <translation id="706626672220389329">Error saat memasang URL berbagi. URL berbagi yang ditentukan sudah dipasang.</translation>
+<translation id="5985458664595100876">Format URL tidak valid. Format yang didukung adalah \\server\share dan smb://server/share.</translation>
 <translation id="3101709781009526431">Tanggal dan waktu</translation>
 <translation id="2059913712424898428">Zona waktu</translation>
 <translation id="4547672827276975204">Setel otomatis</translation>
@@ -1980,8 +1991,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5282733140964383898">Dengan mengaktifkan ''Jangan Lacak'', permintaan akan disertakan dalam traffic penjelajahan Anda. Pengaruh apa pun bergantung pada apakah situs menanggapi permintaan atau tidak, dan cara permintaan diinterpretasikan. Misalnya, beberapa situs mungkin menanggapi permintaan ini dengan menayangkan iklan yang tidak didasarkan pada situs lain yang telah Anda kunjungi. Banyak situs yang masih akan mengumpulkan dan menggunakan data browsing Anda - misalnya untuk meningkatkan keamanan, menyediakan konten, layanan, iklan, dan saran pada situs mereka, serta membuat statistik pelaporan. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Mengaktifkan Akses Terverifikasi</translation>
 <translation id="5557991081552967863">Tetap aktifkan Wi-Fi saat dalam mode tidur</translation>
-<translation id="8562084399541316921">Lanjutkan Membaca</translation>
-<translation id="6201926614538916789">Lanjutkan melihat situs dari seluler di Bravebook Anda</translation>
 <translation id="1521442365706402292">Kelola sertifikat</translation>
 <translation id="7075625805486468288">Mengelola sertifikat dan setelan HTTPS/SSL</translation>
 <translation id="8871974300055371298">Setelan konten</translation>
@@ -2250,7 +2259,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2459230470861708651">Enkripsikan sandi yang disinkronkan dengan nama pengguna dan sandi Brave Software Anda</translation>
 <translation id="6383051423892982287">Enkripsikan data yang disinkronkan dengan <ph name="BEGIN_LINK"/>frasa sandi sinkronisasi<ph name="END_LINK"/> Anda sendiri</translation>
 <translation id="4817583816512767754">Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi. Frasa sandi tidak dikirim ke atau disimpan oleh Brave Software. Jika lupa frasa sandi atau ingin mengubah setelan ini, Anda perlu <ph name="BEGIN_LINK"/>menyetel ulang sinkronisasi<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/> untuk menghapus frasa sandi sinkronisasi</translation>
 <translation id="3873315167136380065">Untuk mengaktifkannya, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph name="END_LINK"/> untuk menghapus frasa sandi sinkronisasi</translation>
 <translation id="988978206646512040">Frasa sandi tidak boleh kosong</translation>
 <translation id="1651008383952180276">Anda harus memasukkan frasa sandi yang sama dua kali</translation>
@@ -2409,6 +2418,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1940546824932169984">Perangkat yang terhubung</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook berfungsi lebih baik dengan ponsel. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Tidak ada perangkat yang memenuhi syarat. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Menunggu verifikasi. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Tidak dapat terhubung ke ponsel. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together aktif</translation>
@@ -2448,6 +2458,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1607139524282324606">Hapus entri</translation>
 <translation id="6025215716629925253">Pelacakan Tumpukan</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 baris tidak ditampilkan&gt;}other{&lt;$1 baris tidak ditampilkan&gt;}}</translation>
+<translation id="5334899159203764908">Pelajari lebih lanjut tentang <ph name="BEGIN_LINK"/>akses situs<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Mengizinkan ekstensi ini membaca dan mengubah semua data Anda di situs yang dibuka:</translation>
 <translation id="407173827865827707">Saat diklik</translation>
 <translation id="6455264371803474013">Di situs tertentu</translation>

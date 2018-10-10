@@ -504,13 +504,21 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3861241522664181545">Stránka je pozastavená.</translation>
 <translation id="6921709132208495314">Přestat na této stránce využívat data</translation>
 <translation id="2724841811573117416">Protokoly WebRTC</translation>
+<translation id="1969654639948595766">Textové protokoly WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Protokoly událostí WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Protokol WebRTC zaznamenaný <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Místní soubor:</translation>
 <translation id="2071393345806050157">Žádný místní soubor protokolu není k dispozici.</translation>
 <translation id="6628328486509726751">Nahráno <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Nahrávání se nezdařilo (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID hlášení <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Oznámit chybu</translation>
+<translation id="3650845953328929506">Čeká se na nahrání protokolu.</translation>
+<translation id="1818913467757368489">Probíhá nahrávání protokolu.</translation>
 <translation id="1188807932851744811">Protokol nebyl nahrán.</translation>
+<translation id="4688036121858134881">Místní ID protokolu: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Nemáte žádné nedávno zaznamenané textové protokoly WebRTC.</translation>
+<translation id="3954953195017194676">Nemáte žádné nedávno zaznamenané protokoly událostí WebRTC.</translation>
 <translation id="2076269580855484719">Skrýt tento plugin</translation>
 <translation id="2129825002735785149">Aktualizovat plugin</translation>
 <translation id="9088234649737575428">Plugin <ph name="PLUGIN_NAME"/> je blokován podnikovými zásadami</translation>
@@ -555,6 +563,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4416582610654027550">Zadejte platnou adresu URL</translation>
 <translation id="2806891468525657116">Zkratka už existuje</translation>
 <translation id="394183848452296464">Zkratku nelze vytvořit</translation>
+<translation id="329703603001918157">Zkratku nelze upravit</translation>
+<translation id="6732900235521116609">Zkratku nelze odstranit</translation>
 <translation id="7109543803214225826">Zkratka byla odebrána</translation>
 <translation id="8017679124341497925">Zkratka byla upravena</translation>
 <translation id="1174073918202301297">Zkratka byla přidána</translation>
@@ -828,7 +838,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6845038076637626672">Otevřít maximalizované</translation>
 <translation id="6860427144121307915">Otevřít na kartě</translation>
 <translation id="3074037959626057712">Přihlásili jste se a zapnuli jste synchronizaci.</translation>
-<translation id="6264422956566238156">Zapnuli jste synchronizaci</translation>
 <translation id="9125982323641182972">Získejte do Chromu chytré funkce Brave Software</translation>
 <translation id="7988117629517051942">Získejte více chytrých funkcí Brave Software</translation>
 <translation id="5596627076506792578">Další možnosti</translation>
@@ -844,7 +853,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1371301976177520732">Záložky, historii a další údaje budete mít na všech svých zařízeních</translation>
 <translation id="3111958038206230539">Přizpůsobení služeb Brave Software</translation>
 <translation id="295992419959320001">Brave Software vaši historii procházení může používat k personalizaci Vyhledávání, reklam a dalších služeb Brave Software</translation>
-<translation id="4800091108248587380">Personalizované služby Brave Software, jako např. Brave Software Pay</translation>
+<translation id="4205523465226408285">Více osobních služeb Brave Software, např. lepší návrhy stránek</translation>
 <translation id="3070156078150543526">Brave Software vaši historii procházení může používat k přizpůsobení Vyhledávání a dalších služeb Brave Software.</translation>
 <translation id="2532167245710864499">Vylepšete prohlížeč Brave a jeho zabezpečení tím, že do Googlu budete odesílat informace o systému a využití</translation>
 <translation id="2709453993673701466">Chcete synchronizaci a personalizaci před zapnutím upravit? Přejděte do <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
@@ -1439,6 +1448,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1800308196794859773">Odesílat hlasové údaje do Googlu, aby bylo možné diktovat do libovolného textového pole.</translation>
 <translation id="8758418656925882523">Povolit diktování (hlasové zadávání textu)</translation>
 <translation id="7580671184200851182">Přehrávat ve všech reproduktorech stejný zvuk (mono)</translation>
+<translation id="8186639008852027301">Při spuštění se přehraje zvukový signál</translation>
 <translation id="1189418886587279221">Aktivuje funkce usnadnění přístupu pro snazší používání zařízení.</translation>
 <translation id="48704129375571883">Přidat další funkce</translation>
 <translation id="7230787553283372882">Přizpůsobení velikosti textu</translation>
@@ -1536,6 +1546,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5029568752722684782">Vymazat kopii</translation>
 <translation id="2154484045852737596">Úprava karty</translation>
 <translation id="5087580092889165836">Přidat kartu</translation>
+<translation id="7284555534810614828">Uložit kartu k použití ve službě Brave Software Pay</translation>
+<translation id="6281511959351052816">Uložit karty k použití ve službě Brave Software Pay</translation>
+<translation id="1904518222538904133">V tomto zařízení lze použít jen jednu z vašich karet</translation>
+<translation id="8065485338434000013">V tomto zařízení lze použít jen některé z vašich karet</translation>
 <translation id="4807098396393229769">Jméno na kartě</translation>
 <translation id="2612676031748830579">Číslo karty</translation>
 <translation id="869891660844655955">Datum vypršení platnosti</translation>
@@ -1609,7 +1623,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="784934925303690534">Časové období</translation>
 <translation id="2496180316473517155">Historie procházení</translation>
 <translation id="8662811608048051533">Odhlásí vás z většiny webů.</translation>
-<translation id="8218628800671693884">Odhlásí vás z většiny webů. Z účtu Brave Software odhlášeni nebudete.</translation>
 <translation id="2017836877785168846">Vymaže historii a automatická dokončení v adresním řádku.</translation>
 <translation id="8096327394278038498">Vymaže historii a automatická dokončení v adresním řádku. Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici další druhy historie prohlížení zaznamenané ve vašem účtu Brave Software.</translation>
 <translation id="8122693181154564064">Vymaže historii ze všech zařízení, na kterých jste přihlášeni. Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici další druhy historie prohlížení zaznamenané ve vašem účtu Brave Software.</translation>
@@ -1676,10 +1689,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7754704193130578113">Před stažením se vždy zeptat na místo uložení každého souboru</translation>
 <translation id="5713072761819014678">Odpojit účet Disku Brave Software</translation>
 <translation id="486635084936119914">Určité typy souborů po stažení automaticky otevírat</translation>
-<translation id="870073306461175568">Sdílené síťové složky</translation>
-<translation id="6189273858858366896">Nastavit nebo spravovat sdílené síťové složky.</translation>
+<translation id="3653160965917900914">Sdílená úložiště na síti</translation>
+<translation id="5763315388120433852">Nastavit nebo spravovat sdílená úložiště na síti.</translation>
 <translation id="2367199180085172140">Přidat sdílenou složku</translation>
-<translation id="8984654317541110628">Adresa URL sdílené složky</translation>
+<translation id="247051149076336810">Adresa URL sdíleného úložiště</translation>
 <translation id="5247051749037287028">Zobrazovaný název (volitelné)</translation>
 <translation id="6091761513005122595">Sdílená složka byla úspěšně připojena.</translation>
 <translation id="9024158959543687197">Při připojování sdílené složky došlo k chybě. Zkontrolujte adresu URL sdíleného úložiště a zkuste to znovu.</translation>
@@ -1687,6 +1700,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2148219725039824548">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka v síti nebyla nalezena.</translation>
 <translation id="7234406375359457793">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka není podporována.</translation>
 <translation id="706626672220389329">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka je už připojená.</translation>
+<translation id="5985458664595100876">Neplatný formát adresy URL. Podporované formáty jsou \\server\share a smb://server/share.</translation>
 <translation id="3101709781009526431">Datum a čas</translation>
 <translation id="2059913712424898428">Časové pásmo</translation>
 <translation id="4547672827276975204">Nastavit automaticky</translation>
@@ -1975,8 +1989,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5282733140964383898">Nastavení „Do Not Track“ (Nesledovat) znamená, že k vašemu provozu při prohlížení bude přidán speciální požadavek. Efekt tohoto požadavku však závisí na tom, zda na něj web reaguje a jak jej interpretuje. Některé weby na tento požadavek mohou reagovat například tím, že při zobrazování reklam nebudou používat informace o tom, které jiné weby jste navštívili. Mnohé weby budou nadále sbírat a používat vaše údaje o prohlížení – např. za účelem zlepšení zabezpečení, poskytování obsahu, služeb, reklam a doporučení na svých webových stránkách a generování přehledových statistik. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Aktivuje ověřený přístup.</translation>
 <translation id="5557991081552967863">Při spánku ponechat zapnutou síť Wi-Fi</translation>
-<translation id="8562084399541316921">Pokračovat ve čtení</translation>
-<translation id="6201926614538916789">Pokračujte na Bravebooku ve čtení webů z mobilu</translation>
 <translation id="1521442365706402292">Správa certifikátů</translation>
 <translation id="7075625805486468288">Správa certifikátů a nastavení protokolů HTTPS/SSL</translation>
 <translation id="8871974300055371298">Nastavení obsahu</translation>
@@ -2185,6 +2197,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3422989461909154470">Zde lze spravovat všechny vaše přihlášené účty z aplikací a webů.</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="8418661265246754237">Účty Brave Software</translation>
+<translation id="3297951628821704004">Odstranit účet z tohoto zařízení</translation>
 <translation id="1059855432287631118">Registrace otisku prstu</translation>
 <translation id="878068003854005405">Začněte tím, že umístíte prst na snímač.</translation>
 <translation id="7189965711416741966">Otisk byl přidán.</translation>
@@ -2243,7 +2256,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2459230470861708651">Šifrovat synchronizovaná hesla pomocí vašeho uživatelského jména a hesla</translation>
 <translation id="6383051423892982287">Šifrovat synchronizovaná data pomocí vlastní <ph name="BEGIN_LINK"/>heslové fráze pro synchronizaci<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslovou frázi. Heslová fráze se neodesílá do Googlu a není na Googlu uložena. Pokud heslovou frázi zapomenete nebo toto nastavení budete chtít změnit, budete muset <ph name="BEGIN_LINK"/>synchronizaci resetovat<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Chcete-li toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Chcete-li toto nastavení změnit, <ph name="BEGIN_LINK"/>resetováním synchronizace<ph name="END_LINK"/> odstraňte svou heslovou frázi pro synchronizaci</translation>
 <translation id="3873315167136380065">Chcete-li tuto funkci zapnout, <ph name="BEGIN_LINK"/>resetováním synchronizace<ph name="END_LINK"/> odstraňte svou heslovou frázi pro synchronizaci</translation>
 <translation id="988978206646512040">Prázdné přístupové heslo není povoleno</translation>
 <translation id="1651008383952180276">Musíte zadat dvakrát stejnou heslovou frázi</translation>
@@ -2402,6 +2415,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1940546824932169984">Připojená zařízení</translation>
 <translation id="5235565664420173924">Společně ještě lepší</translation>
 <translation id="5375767622559981303">S telefonem funguje Bravebook ještě lépe. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Žádná způsobilá zařízení. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Čeká na ověření. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">K telefonu se nelze připojit. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Funkce Společně ještě lepší je zapnutá</translation>
@@ -2441,6 +2455,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1607139524282324606">Vymazat položku</translation>
 <translation id="6025215716629925253">Trasování zásobníku</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 řádek není zobrazen&gt;}few{&lt;$1 řádky nejsou zobrazeny&gt;}many{&lt;$1 řádku není zobrazeno&gt;}other{&lt;$1 řádků není zobrazeno&gt;}}</translation>
+<translation id="5334899159203764908">Další informace o <ph name="BEGIN_LINK"/>přístupu k webu<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Povolit tomuto rozšíření číst a měnit všechna vaše data na navštívených webech:</translation>
 <translation id="407173827865827707">Při kliknutí</translation>
 <translation id="6455264371803474013">Na konkrétních webech</translation>

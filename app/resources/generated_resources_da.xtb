@@ -504,13 +504,21 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3861241522664181545">Siden er sat på pause.</translation>
 <translation id="6921709132208495314">Stop med at bruge data på denne side</translation>
 <translation id="2724841811573117416">WebRTC-logfiler</translation>
+<translation id="1969654639948595766">WebRTC-tekstlogfiler (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC-hændelseslogfiler (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-logfil blev registreret <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokal fil:</translation>
 <translation id="2071393345806050157">Ingen lokal logfil.</translation>
 <translation id="6628328486509726751">Uploadet <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Upload mislykkedes (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Rapport-id <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Indgiv fejl</translation>
+<translation id="3650845953328929506">Upload af logfil afventer.</translation>
+<translation id="1818913467757368489">Upload af logfil er i gang.</translation>
 <translation id="1188807932851744811">Logfilen blev ikke uploadet.</translation>
+<translation id="4688036121858134881">Lokalt log-id: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Du har ingen nyligt registrerede WebRTC-tekstlogfiler.</translation>
+<translation id="3954953195017194676">Du har ingen nyligt registrerede WebRTC-hændelseslogfiler.</translation>
 <translation id="2076269580855484719">Skjul dette plugin</translation>
 <translation id="2129825002735785149">Opdater plugin</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> er blokeret af en virksomhedspolitik</translation>
@@ -555,6 +563,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4416582610654027550">Angiv en gyldig webadresse</translation>
 <translation id="2806891468525657116">Genvejen findes allerede</translation>
 <translation id="394183848452296464">Genvejen kan ikke oprettes</translation>
+<translation id="329703603001918157">Genvejen kan ikke redigeres</translation>
+<translation id="6732900235521116609">Genvejen kan ikke fjernes</translation>
 <translation id="7109543803214225826">Genvejen blev fjernet</translation>
 <translation id="8017679124341497925">Genvejen blev redigeret</translation>
 <translation id="1174073918202301297">Genvejen blev tilføjet</translation>
@@ -828,7 +838,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6845038076637626672">Åbn maksimeret</translation>
 <translation id="6860427144121307915">Åbn på en fane</translation>
 <translation id="3074037959626057712">Du er logget ind og har slået synkronisering til</translation>
-<translation id="6264422956566238156">Du har aktiveret Brave-synkronisering</translation>
 <translation id="9125982323641182972">Få Brave Softwares smarte funktioner i Brave</translation>
 <translation id="7988117629517051942">Få flere af Brave Softwares smarte funktioner</translation>
 <translation id="5596627076506792578">Flere valgmuligheder</translation>
@@ -844,7 +853,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1371301976177520732">Din historik samt dine bogmærker, adgangskoder og meget mere på alle dine enheder</translation>
 <translation id="3111958038206230539">Tilpas Brave Software-tjenester</translation>
 <translation id="295992419959320001">Brave Software kan bruge din browserhistorik til at personliggøre Søgning, annoncer og andre Brave Software-tjenester.</translation>
-<translation id="4800091108248587380">Tilpassede Brave Software-tjenester såsom Brave Software Pay</translation>
+<translation id="4205523465226408285">Mere personlige Brave Software-tjenester, f.eks. bedre sideforslag</translation>
 <translation id="3070156078150543526">Brave Software bruger muligvis din browserhistorik til at personliggøre Søgning og andre Brave Software-tjenester</translation>
 <translation id="2532167245710864499">Gør Brave og dens sikkerhed bedre ved at sende systemoplysninger og oplysninger om brug til Brave Software</translation>
 <translation id="2709453993673701466">Vil du administrere synkronisering og tilpasning, før disse funktioner er slået til? Gå til <ph name="BEGIN_LINK"/>Indstillinger<ph name="END_LINK"/>.</translation>
@@ -1439,6 +1448,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1800308196794859773">Send din stemme til Brave Software, så du kan diktere i ethvert tekstfelt.</translation>
 <translation id="8758418656925882523">Aktivér diktering (tal for at skrive)</translation>
 <translation id="7580671184200851182">Afspil den samme lyd via alle højttalere (monolyd)</translation>
+<translation id="8186639008852027301">Afspil en lydindikator ved opstart</translation>
 <translation id="1189418886587279221">Aktivér hjælpefunktioner for at gøre din enhed nemmere at bruge.</translation>
 <translation id="48704129375571883">Tilføj yderligere funktioner</translation>
 <translation id="7230787553283372882">Tilpas din tekststørrelse</translation>
@@ -1536,6 +1546,10 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5029568752722684782">Slet kopi</translation>
 <translation id="2154484045852737596">Rediger kort</translation>
 <translation id="5087580092889165836">Tilføj kort</translation>
+<translation id="7284555534810614828">Gem kort for at bruge Brave Software Pay</translation>
+<translation id="6281511959351052816">Gem kort for at bruge Brave Software Pay</translation>
+<translation id="1904518222538904133">1 af dine kort kan kun bruges på denne enhed</translation>
+<translation id="8065485338434000013">Nogle af dine kort kan kun bruges på denne enhed</translation>
 <translation id="4807098396393229769">Navn på kort</translation>
 <translation id="2612676031748830579">Kortnummer</translation>
 <translation id="869891660844655955">Udløbsdato</translation>
@@ -1609,7 +1623,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="784934925303690534">Tidsinterval</translation>
 <translation id="2496180316473517155">Browserhistorik</translation>
 <translation id="8662811608048051533">Logger dig ud af de fleste websites.</translation>
-<translation id="8218628800671693884">Logger dig ud af de fleste websites. Du bliver ikke logget ud af din Brave Software-konto.</translation>
 <translation id="2017836877785168846">Nulstiller historikken og autofuldførelser i adresselinjen.</translation>
 <translation id="8096327394278038498">Rydder historikken og autofuldførelser i adresselinjen. Din Brave Software-konto kan have andre former for browserhistorik på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Rydder historikken på alle enheder, hvor du er logget ind. Din Brave Software-konto kan have andre former for browserhistorik på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1676,10 +1689,10 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7754704193130578113">Spørg, hvor hver enkelt fil skal gemmes, inden download begynder</translation>
 <translation id="5713072761819014678">Fjern tilknytningen af din Brave Software Drev-konto</translation>
 <translation id="486635084936119914">Åbn bestemte filtyper automatisk efter download</translation>
-<translation id="870073306461175568">Fildeling via netværk</translation>
-<translation id="6189273858858366896">Konfigurer eller administrer fildeling via netværk.</translation>
+<translation id="3653160965917900914">Fildeling via netværk</translation>
+<translation id="5763315388120433852">Konfigurer eller administrer fildeling via netværk.</translation>
 <translation id="2367199180085172140">Tilføj fildeling</translation>
-<translation id="8984654317541110628">Webadresse til fildeling</translation>
+<translation id="247051149076336810">Webadresse til fildeling</translation>
 <translation id="5247051749037287028">Vist navn (valgfrit)</translation>
 <translation id="6091761513005122595">Delingen blev anvendt.</translation>
 <translation id="9024158959543687197">Der opstod en fejl ved anvendelse af deling. Tjek webadressen til fildeling, og prøv igen.</translation>
@@ -1687,6 +1700,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2148219725039824548">Der opstod en fejl ved anvendelse af deling. Den angivne deling blev ikke fundet på netværket.</translation>
 <translation id="7234406375359457793">Der opstod en fejl ved anvendelse af deling. Den angivne deling understøttes ikke.</translation>
 <translation id="706626672220389329">Der opstod en fejl ved anvendelse af deling. Den angivne deling anvendes allerede.</translation>
+<translation id="5985458664595100876">Ugyldigt webadresseformat. De understøttede formater er \\server\share og smb://server/share.</translation>
 <translation id="3101709781009526431">Dato og klokkeslæt</translation>
 <translation id="2059913712424898428">Tidszone</translation>
 <translation id="4547672827276975204">Indstil automatisk</translation>
@@ -1975,8 +1989,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5282733140964383898">Hvis du aktiverer "Do Not Track", medtages der en anmodning i din browsertrafik. Anmodningens virkning afhænger af, om et website reagerer på den, og hvordan anmodningen fortolkes. Nogle websites kan f.eks. reagere på denne anmodning ved at vise dig annoncer, der ikke er baseret på andre websites, du har besøgt. Mange websites vil stadig indsamle og bruge dine browserdata, f.eks. for at forbedre sikkerheden, for at levere indhold, tjenester, annoncer og anbefalinger på websitene og for at generere statistik til rapportering. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Aktivér Bekræftet adgang</translation>
 <translation id="5557991081552967863">Behold Wi-Fi slået til under dvale</translation>
-<translation id="8562084399541316921">Læs videre</translation>
-<translation id="6201926614538916789">Genoptag visning af websites fra din mobilenhed på din Bravebook</translation>
 <translation id="1521442365706402292">Administrer certifikater</translation>
 <translation id="7075625805486468288">Administrer HTTPS-/SSL-certifikater og -indstillinger</translation>
 <translation id="8871974300055371298">Indstillinger for indhold</translation>
@@ -2185,6 +2197,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3422989461909154470">Alle dine Brave Software-konti, der er logget ind i apps og på websites, kan administreres her.</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="8418661265246754237">Brave Software Konti</translation>
+<translation id="3297951628821704004">Fjern kontoen fra denne enhed</translation>
 <translation id="1059855432287631118">Registrering af fingeraftryk</translation>
 <translation id="878068003854005405">Lad os komme i gang. Placer fingeren på sensoren.</translation>
 <translation id="7189965711416741966">Fingeraftryk er tilføjet.</translation>
@@ -2243,7 +2256,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2459230470861708651">Kryptér synkroniserede adgangskoder med brugernavnet og adgangskoden til din Brave Software-konto</translation>
 <translation id="6383051423892982287">Kryptér synkroniserede data med din egen <ph name="BEGIN_LINK"/>adgangssætning til synkronisering<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Det er kun personer med din adgangssætning, der kan læse dine krypterede data. Adgangssætningen sendes ikke til og gemmes ikke af Brave Software. Hvis du glemmer din adgangssætning eller vil ændre denne indstilling, skal du <ph name="BEGIN_LINK"/>nulstille synkroniseringen<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Hvis du vil ændre denne indstilling, skal du<ph name="BEGIN_LINK"/>nulstille synkroniseringen<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Hvis du vil ændre denne indstilling, skal du <ph name="BEGIN_LINK"/>nulstille synkronisering<ph name="END_LINK"/> for at fjerne din adgangssætning for synkronisering</translation>
 <translation id="3873315167136380065">Du kan aktivere indstillingen ved at <ph name="BEGIN_LINK"/>nulstille synkronisering<ph name="END_LINK"/> for at fjerne din adgangssætning til synkronisering</translation>
 <translation id="988978206646512040">Tomme adgangssætninger er ikke tilladt</translation>
 <translation id="1651008383952180276">Du skal angive den samme adgangssætning to gange</translation>
@@ -2402,6 +2415,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1940546824932169984">Tilsluttede enheder</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Din Bravebook fungerer endnu bedre med din telefon. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/>.</translation>
+<translation id="6148052338549899048">Der er ingen kvalificerede enheder. <ph name="LINK_BEGIN"/>Få flere oplysninger.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Venter på bekræftelse. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/>.</translation>
 <translation id="2315821125498993513">Der kunne ikke oprettes forbindelse til telefonen. <ph name="LINK_BEGIN"/>Få flere oplysninger<ph name="LINK_END"/>.</translation>
 <translation id="5598551463564921617">Better Together er aktiveret</translation>
@@ -2441,6 +2455,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1607139524282324606">Ryd indtastning</translation>
 <translation id="6025215716629925253">Stakspor</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 linje vises ikke&gt;}one{&lt;$1 linje vises ikke&gt;}other{&lt;$1 linjer vises ikke&gt;}}</translation>
+<translation id="5334899159203764908">Få flere oplysninger om <ph name="BEGIN_LINK"/>websiteadgang<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Tillad, at denne udvidelse læser og ændrer alle dine data på websites, du besøger:</translation>
 <translation id="407173827865827707">Ved klik</translation>
 <translation id="6455264371803474013">På specifikke websites</translation>

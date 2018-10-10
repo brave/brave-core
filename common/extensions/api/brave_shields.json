@@ -27,29 +27,178 @@
         ]
       }
     ],
-   "functions": [
-     {
-       "name": "allowScriptsOnce",
-       "type": "function",
-       "description": "Allow scripts from a list of origins until next reload",
-       "parameters": [
-         {
-           "name": "origins",
-           "type": "array",
-           "items": {"type": "string"}
-         },
-         {
-           "name": "tabID",
-           "type": "integer"
-         },
-         {
-           "type": "function",
-           "name": "callback",
-           "optional": true,
-           "parameters": []
-         }
-       ]
-     }
-   ]
+    "functions": [
+      {
+        "name": "allowScriptsOnce",
+        "type": "function",
+        "description": "Allow scripts from a list of origins until next reload",
+        "parameters": [
+          {
+            "name": "origins",
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": []
+          }
+        ]
+      }
+    ],
+    "types": [
+      {
+        "id": "ResourceIdentifier",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The resource identifier for the given content type."
+          },
+          "description": {
+            "type": "string",
+            "optional": true,
+            "description": "A human readable description of the resource."
+          }
+        },
+        "description": "The only content type using resource identifiers is $(ref:contentSettings.plugins). For more information, see <a href=\"contentSettings#resource-identifiers\">Resource Identifiers</a>."
+      },
+      {
+        "id": "Scope",
+        "type": "string",
+        "enum": ["regular", "incognito_session_only"],
+        "description": "The scope of the ContentSetting. One of<br><var>regular</var>: setting for regular profile (which is inherited by the incognito profile if not overridden elsewhere),<br><var>incognito_session_only</var>: setting for incognito profile that can only be set during an incognito session and is deleted when the incognito session ends (overrides regular settings)."
+      },
+      {
+        "id": "ContentSetting",
+        "js_module": "ContentSetting",
+        "type": "object",
+        "functions": [
+          {
+            "name": "get",
+            "type": "function",
+            "description": "Gets the current content setting for a given pair of URLs.",
+            "parameters": [
+              {
+                "name": "details",
+                "type": "object",
+                "properties": {
+                  "primaryUrl": {
+                    "type": "string",
+                    "description": "The primary URL for which the content setting should be retrieved. Note that the meaning of a primary URL depends on the content type."
+                  },
+                  "secondaryUrl": {
+                    "type": "string",
+                    "description": "The secondary URL for which the content setting should be retrieved. Defaults to the primary URL. Note that the meaning of a secondary URL depends on the content type, and not all content types use secondary URLs.",
+                    "optional": true
+                  },
+                  "resourceIdentifier": {
+                    "$ref": "ResourceIdentifier",
+                    "optional": true,
+                    "description": "A more specific identifier of the type of content for which the settings should be retrieved."
+                  },
+                  "incognito": {
+                    "type": "boolean",
+                    "optional": true,
+                    "description": "Whether to check the content settings for an incognito session. (default false)"
+                  }
+                }
+              },
+              {
+                "type": "function",
+                "name": "callback",
+                "parameters": [
+                  {
+                    "name": "details",
+                    "type": "object",
+                    "properties": {
+                      "setting": {
+                        "type": "any",
+                        "description": "The content setting. See the description of the individual ContentSetting objects for the possible values."
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "set",
+            "type": "function",
+            "description": "Applies a new content setting rule.",
+            "parameters": [
+              {
+                "name": "details",
+                "type": "object",
+                "properties": {
+                  "primaryPattern": {
+                    "type": "string",
+                    "description": "The pattern for the primary URL. For details on the format of a pattern, see <a href='contentSettings#patterns'>Content Setting Patterns</a>."
+                  },
+                  "secondaryPattern": {
+                    "type": "string",
+                    "description": "The pattern for the secondary URL. Defaults to matching all URLs. For details on the format of a pattern, see <a href='contentSettings#patterns'>Content Setting Patterns</a>.",
+                    "optional": true
+                  },
+                  "resourceIdentifier": {
+                    "$ref": "ResourceIdentifier",
+                    "optional": true,
+                    "description": "The resource identifier for the content type."
+                  },
+                  "setting": {
+                    "type": "any",
+                    "description": "The setting applied by this rule. See the description of the individual ContentSetting objects for the possible values."
+                  },
+                  "scope": {
+                    "$ref": "Scope",
+                    "optional": true,
+                    "description": "Where to set the setting (default: regular)."
+                  }
+                }
+              },
+              {
+                "type": "function",
+                "name": "callback",
+                "optional": true,
+                "parameters": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "JavascriptContentSetting",
+        "type": "string",
+        "enum": ["allow", "block"]
+      },
+      {
+        "id": "PluginsContentSetting",
+        "type": "string",
+        "enum": ["allow", "block", "detect_important_content"]
+      }
+    ],
+    "properties": {
+      "javascript": {
+        "$ref": "ContentSetting",
+        "description": "Whether to run JavaScript. One of<br><var>allow</var>: Run JavaScript,<br><var>block</var>: Don't run JavaScript. <br>Default is <var>allow</var>.<br>The primary URL is the URL of the top-level frame. The secondary URL is not used.",
+        "value": [
+          "javascript",
+          {"$ref":"JavascriptContentSetting"}
+        ]
+      },
+      "plugins": {
+        "$ref": "ContentSetting",
+        "description": "Whether to run plugins. One of<br><var>allow</var>: Run plugins automatically,<br><var>block</var>: Don't run plugins automatically,<br><var>detect_important_content</var>: Only run automatically those plugins that are detected as the website's main content.<br>The primary URL is the URL of the top-level frame. The secondary URL is not used.",
+        "value": [
+          "plugins",
+          {"$ref":"PluginsContentSetting"}
+        ]
+      }
+    }
   }
 ]

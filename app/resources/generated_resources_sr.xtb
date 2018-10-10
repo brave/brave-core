@@ -506,13 +506,21 @@
 <translation id="3861241522664181545">Страница је паузирана.</translation>
 <translation id="6921709132208495314">Прекини употребу података на овој страници</translation>
 <translation id="2724841811573117416">WebRTC евиденције</translation>
+<translation id="1969654639948595766">Евиденције WebRTC текста (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC евиденције догађаја (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC евиденција је снимљена <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Локална датотека:</translation>
 <translation id="2071393345806050157">Нема локалне датотеке евиденције.</translation>
 <translation id="6628328486509726751">Отпремљено <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Отпремање није успело (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ИД извештаја <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Пријави грешку</translation>
+<translation id="3650845953328929506">Отпремање евиденције је на чекању.</translation>
+<translation id="1818913467757368489">Отпремање евиденције је у току.</translation>
 <translation id="1188807932851744811">Евиденција није отпремљена.</translation>
+<translation id="4688036121858134881">ИД локалне евиденције: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Нисте недавно снимили ниједну WebRTC евиденцију текста.</translation>
+<translation id="3954953195017194676">Нисте недавно снимили ниједну WebRTC евиденцију догађаја.</translation>
 <translation id="2076269580855484719">Сакриј овај додатак</translation>
 <translation id="2129825002735785149">Ажурирај додатну компоненту</translation>
 <translation id="9088234649737575428">Додатну компоненту <ph name="PLUGIN_NAME"/> блокирају смернице предузећа</translation>
@@ -557,6 +565,8 @@
 <translation id="4416582610654027550">Унесите важећи URL</translation>
 <translation id="2806891468525657116">Пречица већ постоји</translation>
 <translation id="394183848452296464">Прављење пречице није успело</translation>
+<translation id="329703603001918157">Не можемо да изменимо пречицу</translation>
+<translation id="6732900235521116609">Не можемо да уклонимо пречицу</translation>
 <translation id="7109543803214225826">Пречица је уклоњена</translation>
 <translation id="8017679124341497925">Пречица је измењена</translation>
 <translation id="1174073918202301297">Пречица је додата</translation>
@@ -830,7 +840,6 @@
 <translation id="6845038076637626672">Отвори увећано</translation>
 <translation id="6860427144121307915">Отвори на картици</translation>
 <translation id="3074037959626057712">Пријавили сте се и укључили синхронизацију</translation>
-<translation id="6264422956566238156">Искључили сте синхронизацију</translation>
 <translation id="9125982323641182972">Паметне Brave Software функције</translation>
 <translation id="7988117629517051942">Набавите још паметних Brave Software функција</translation>
 <translation id="5596627076506792578">Још опција</translation>
@@ -846,7 +855,7 @@
 <translation id="1371301976177520732">Обележивачи, историја и други садржај доступни на свим уређајима</translation>
 <translation id="3111958038206230539">Персонализујте Brave Software услуге</translation>
 <translation id="295992419959320001">Brave Software може да користи историју прегледања за персонализацију Претраге, огласа и других Brave Software услуга</translation>
-<translation id="4800091108248587380">Персонализоване Brave Software услуге као што је Brave Software Pay</translation>
+<translation id="4205523465226408285">Персонализованије Brave Software услуге, попут бољих предлога страница</translation>
 <translation id="3070156078150543526">Brave Software може да користи историју прегледања за персонализацију Претраге и других Brave Software услуга</translation>
 <translation id="2532167245710864499">Шаљите Brave Software-у информације о систему и коришћењу да бисте побољшали Brave и његову безбедност</translation>
 <translation id="2709453993673701466">Желите ли да управљате синхронизацијом и персонализацијом пре него што их укључите? Посетите <ph name="BEGIN_LINK"/>Подешавања<ph name="END_LINK"/>.</translation>
@@ -1441,6 +1450,7 @@
 <translation id="1800308196794859773">Шаљите податке о гласу Brave Software-у да би се омогућило диктирање у свим пољима за текст.</translation>
 <translation id="8758418656925882523">Омогући диктирање (говорите за куцање)</translation>
 <translation id="7580671184200851182">Пуштај исти звук на свим звучницима (моно звук)</translation>
+<translation id="8186639008852027301">Пусти звучни индикатор при покретању</translation>
 <translation id="1189418886587279221">Омогућите функције приступачности да бисте лакше користили уређај.</translation>
 <translation id="48704129375571883">Додајте још функција</translation>
 <translation id="7230787553283372882">Прилагодите величину текста</translation>
@@ -1538,6 +1548,10 @@
 <translation id="5029568752722684782">Обриши копију</translation>
 <translation id="2154484045852737596">Измените картицу</translation>
 <translation id="5087580092889165836">Додај картицу</translation>
+<translation id="7284555534810614828">Сачувајте картицу да бисте користили Brave Software Pay</translation>
+<translation id="6281511959351052816">Сачувајте картице да бисте користили Brave Software Pay</translation>
+<translation id="1904518222538904133">1 од ваших картица може да се користи само на овом уређају</translation>
+<translation id="8065485338434000013">Неке од картица могу да се користе само на овом уређају</translation>
 <translation id="4807098396393229769">Име и презиме на картици</translation>
 <translation id="2612676031748830579">Број картице</translation>
 <translation id="869891660844655955">Датум истека</translation>
@@ -1611,7 +1625,6 @@
 <translation id="784934925303690534">Временски опсег</translation>
 <translation id="2496180316473517155">Историја прегледања</translation>
 <translation id="8662811608048051533">Одјавиће вас са већине сајтова.</translation>
-<translation id="8218628800671693884">Одјавиће вас са већине сајтова. Неће вас одјавити са Brave Software налога.</translation>
 <translation id="2017836877785168846">Брише историју и аутоматска довршавања у траци за адресу.</translation>
 <translation id="8096327394278038498">Брише историју и аутоматска довршавања у траци за адресу. Brave Software налог може да има друге облике историје прегледања на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Брише историју са свих уређаја на којима сте пријављени. Brave Software налог може да има друге облике историје прегледања на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1678,10 +1691,10 @@
 <translation id="7754704193130578113">Питај где треба сачувати сваку датотеку пре преузимања</translation>
 <translation id="5713072761819014678">Прекини везу са налогом Brave Software диска</translation>
 <translation id="486635084936119914">Аутоматски отварајте одређене типове датотека после преузимања</translation>
-<translation id="870073306461175568">Дељења датотека на мрежи</translation>
-<translation id="6189273858858366896">Подесите дељења датотека на мрежи или управљајте њима.</translation>
+<translation id="3653160965917900914">Дељења датотека на мрежи</translation>
+<translation id="5763315388120433852">Подесите дељења датотека на мрежи или управљајте њима.</translation>
 <translation id="2367199180085172140">Додајте дељење датотека</translation>
-<translation id="8984654317541110628">URL дељења датотека</translation>
+<translation id="247051149076336810">URL за дељење датотека</translation>
 <translation id="5247051749037287028">Име за приказ (опционално)</translation>
 <translation id="6091761513005122595">Дељена датотека је учитана.</translation>
 <translation id="9024158959543687197">Грешка при учитавању дељене датотеке. Проверите URL дељења датотека и пробајте поново.</translation>
@@ -1689,6 +1702,7 @@
 <translation id="2148219725039824548">Грешка при учитавању дељене датотеке. Наведена дељена датотека није пронађена на мрежи.</translation>
 <translation id="7234406375359457793">Грешка при учитавању дељене датотеке. Наведена дељена датотека није подржана.</translation>
 <translation id="706626672220389329">Грешка при учитавању дељене датотеке. Наведена дељена датотека је већ учитана.</translation>
+<translation id="5985458664595100876">Неважећи формат URL-а. Подржани формати су \\server\share и smb://server/share.</translation>
 <translation id="3101709781009526431">Датум и време</translation>
 <translation id="2059913712424898428">Временска зона</translation>
 <translation id="4547672827276975204">Подеси аутоматски</translation>
@@ -1977,8 +1991,6 @@
 <translation id="5282733140964383898">Омогућавање опције „Не прати“ значи да ће захтев бити укључен у саобраћај прегледања. Све последице зависе од тога да ли веб-сајт одговара на захтев и како се захтев тумачи. На пример, неки веб-сајтови могу да одговарају на овај захтев тако што ће вам приказивати огласе који нису засновани на другим веб-сајтовима које сте посетили. Многи веб-сајтови ће и даље прикупљати и користити податке прегледања, на пример, да би побољшали безбедност, пружали садржај, услуге, огласе и препоруке и да би генерисали статистику извештавања. <ph name="BEGIN_LINK"/>Сазнајте више<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Омогућите верификовани приступ</translation>
 <translation id="5557991081552967863">Не искључуј Wi-Fi током спавања</translation>
-<translation id="8562084399541316921">Наставите читање</translation>
-<translation id="6201926614538916789">Наставите да прегледате сајтове са мобилног уређаја на Bravebook-у</translation>
 <translation id="1521442365706402292">Управљај сертификатима</translation>
 <translation id="7075625805486468288">Управљање HTTPS/SSL сертификатима и подешавањима</translation>
 <translation id="8871974300055371298">Подешавања садржаја</translation>
@@ -2187,6 +2199,7 @@
 <translation id="3422989461909154470">Одавде можете да управљате свим Brave Software налозима на које сте пријављени у апликацијама и на веб-сајтовима.</translation>
 <translation id="1987317783729300807">Налози</translation>
 <translation id="8418661265246754237">Brave Software налози</translation>
+<translation id="3297951628821704004">Уклони налог са овог уређаја</translation>
 <translation id="1059855432287631118">Региструје се отисак прста</translation>
 <translation id="878068003854005405">Започнимо. Поставите прст на сензор.</translation>
 <translation id="7189965711416741966">Додали сте отисак прста.</translation>
@@ -2245,7 +2258,7 @@
 <translation id="2459230470861708651">Шифруј синхронизоване лозинке помоћу Brave Software корисничког имена и лозинке</translation>
 <translation id="6383051423892982287">Шифрујте синхронизоване податке помоћу сопствене <ph name="BEGIN_LINK"/>приступне фразе за синхронизацију<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Само неко ко има приступну фразу може да чита шифроване податке. Brave Software не шаље нити чува приступну фразу. Ако заборавите приступну фразу или желите да промените ово подешавање, мораћете да <ph name="BEGIN_LINK"/>ресетујете синхронизацију<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Да бисте променили ово подешавање, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Да бисте променили ово подешавање, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/> да бисте уклонили приступну фразу за синхронизацију</translation>
 <translation id="3873315167136380065">Да бисте укључили ово, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/> да бисте уклонили приступну фразу за синхронизацију</translation>
 <translation id="988978206646512040">Поље за приступну фразу не може да буде празно</translation>
 <translation id="1651008383952180276">Двапут треба да унесете исту приступну фразу</translation>
@@ -2404,6 +2417,7 @@
 <translation id="1940546824932169984">Повезани уређаји</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook ради још боље са телефоном. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Нема уређаја који испуњавају услове. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Чека се верификација. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Повезивање са телефоном није успело. <ph name="LINK_BEGIN"/>Сазнајте више.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together: укључено</translation>
@@ -2443,6 +2457,7 @@
 <translation id="1607139524282324606">Обриши унос</translation>
 <translation id="6025215716629925253">Стање низа</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 ред није приказан&gt;}one{&lt;$1 ред није приказан&gt;}few{&lt;$1 реда нису приказана&gt;}other{&lt;$1 редова није приказано&gt;}}</translation>
+<translation id="5334899159203764908">Сазнајте више о <ph name="BEGIN_LINK"/>приступу сајтовима<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Дозволите да овај додатак чита и мења све податке на веб-сајтовима које посећујете:</translation>
 <translation id="407173827865827707">При клику</translation>
 <translation id="6455264371803474013">На одређеним сајтовима</translation>

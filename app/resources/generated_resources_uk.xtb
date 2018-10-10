@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">Сторінку призупинено.</translation>
 <translation id="6921709132208495314">Припинити використання даних на цій сторінці</translation>
 <translation id="2724841811573117416">Журнали WebRTC</translation>
+<translation id="1969654639948595766">Текстові журнали WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">Журнали подій WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">Журнал WebRTC створено: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Локальний файл:</translation>
 <translation id="2071393345806050157">Немає локального файлу журналу.</translation>
 <translation id="6628328486509726751">Завантажено: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Помилка завантаження (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Ідентифікатор звіту: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Помилка файлу</translation>
+<translation id="3650845953328929506">Очікується завантаження журналу.</translation>
+<translation id="1818913467757368489">Завантажується журнал.</translation>
 <translation id="1188807932851744811">Журнал не завантажено.</translation>
+<translation id="4688036121858134881">Ідентифікатор локального журналу: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Немає нещодавно створених текстових журналів WebRTC.</translation>
+<translation id="3954953195017194676">Немає нещодавно створених журналів подій WebRTC.</translation>
 <translation id="2076269580855484719">Сховати цей плагін</translation>
 <translation id="2129825002735785149">Оновити плагін</translation>
 <translation id="9088234649737575428">Плагін <ph name="PLUGIN_NAME"/> заблоковано політикою підприємства</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">Введіть дійсну URL-адресу</translation>
 <translation id="2806891468525657116">Ярлик уже є</translation>
 <translation id="394183848452296464">Не вдається створити ярлик</translation>
+<translation id="329703603001918157">Неможливо змінити ярлик</translation>
+<translation id="6732900235521116609">Неможливо видалити ярлик</translation>
 <translation id="7109543803214225826">Ярлик видалено</translation>
 <translation id="8017679124341497925">Ярлик змінено</translation>
 <translation id="1174073918202301297">Ярлик додано</translation>
@@ -829,7 +839,6 @@
 <translation id="6845038076637626672">Відкрити в розгорнутому вигляді</translation>
 <translation id="6860427144121307915">Відкрити у вкладці</translation>
 <translation id="3074037959626057712">Ви ввійшли та ввімкнули синхронізацію</translation>
-<translation id="6264422956566238156">Ви ввімкнули синхронізацію</translation>
 <translation id="9125982323641182972">Розумні функції в Brave</translation>
 <translation id="7988117629517051942">Отримайте більше розумних функцій Brave Software</translation>
 <translation id="5596627076506792578">Інші опції</translation>
@@ -845,7 +854,7 @@
 <translation id="1371301976177520732">Ваші закладки, паролі, історія тощо на всіх ваших пристроях</translation>
 <translation id="3111958038206230539">Персоналізувати служби Brave Software</translation>
 <translation id="295992419959320001">Brave Software може використовувати вашу історію веб-перегляду, щоб персоналізувати Пошук, оголошення й інші служби Brave Software</translation>
-<translation id="4800091108248587380">Персоналізовані сервіси Brave Software, як-от Brave Software Pay</translation>
+<translation id="4205523465226408285">Більш персоналізовані сервіси Brave Software, як-от кращі пропозиції сторінок</translation>
 <translation id="3070156078150543526">Brave Software може використовувати вашу історію веб-перегляду, щоб персоналізувати Пошук та інші служби Brave Software</translation>
 <translation id="2532167245710864499">Покращуйте Brave і функції безпеки, надсилаючи в Brave Software дані про систему та використання</translation>
 <translation id="2709453993673701466">Хочете налаштувати синхронізацію та персоналізацію, перш ніж їх буде ввімкнено? Перейдіть у меню <ph name="BEGIN_LINK"/>Налаштування<ph name="END_LINK"/>.</translation>
@@ -1440,6 +1449,7 @@
 <translation id="1800308196794859773">Надішліть зразок свого голосу в Brave Software, щоб дозволити диктування в будь-якому текстовому полі.</translation>
 <translation id="8758418656925882523">Увімкнути диктування (голосовий набір тексту)</translation>
 <translation id="7580671184200851182">Відтворювати один аудіозапис на всіх динаміках (монофонічне аудіо)</translation>
+<translation id="8186639008852027301">Відтворювати звуковий сигнал під час запуску</translation>
 <translation id="1189418886587279221">Увімкніть функції доступності, щоб полегшити користування своїм пристроєм.</translation>
 <translation id="48704129375571883">Додати більше функцій</translation>
 <translation id="7230787553283372882">Налаштувати розмір тексту</translation>
@@ -1537,6 +1547,10 @@
 <translation id="5029568752722684782">Видалити копію</translation>
 <translation id="2154484045852737596">Редагувати картку</translation>
 <translation id="5087580092889165836">Додати картку</translation>
+<translation id="7284555534810614828">Збережіть картку, щоб оплачувати через Brave Software Pay</translation>
+<translation id="6281511959351052816">Зберегти картки, щоб оплачувати через Brave Software Pay</translation>
+<translation id="1904518222538904133">1 з ваших карток можна використовувати лише на цьому пристрої</translation>
+<translation id="8065485338434000013">Деякі картки можна використовувати лише на цьому пристрої</translation>
 <translation id="4807098396393229769">Ім'я на картці</translation>
 <translation id="2612676031748830579">Номер картки</translation>
 <translation id="869891660844655955">Діє до</translation>
@@ -1610,7 +1624,6 @@
 <translation id="784934925303690534">Період часу</translation>
 <translation id="2496180316473517155">Історія переглядів</translation>
 <translation id="8662811608048051533">Ви вийдете з більшості сайтів.</translation>
-<translation id="8218628800671693884">Ви вийдете з більшості сайтів, але не вийдете з облікового запису Brave Software.</translation>
 <translation id="2017836877785168846">Очищує історію й автозавершення в адресному рядку.</translation>
 <translation id="8096327394278038498">Очищує історію й автозавершення в адресному рядку. У вашому обліковому записі Brave Software на сторінці <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> можуть бути інші форми історії веб-перегляду.</translation>
 <translation id="8122693181154564064">Очищує історію на всіх пристроях, на яких ви ввійшли в обліковий запис. У вашому обліковому записі Brave Software на сторінці <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> можуть бути інші форми історії веб-перегляду.</translation>
@@ -1677,10 +1690,10 @@
 <translation id="7754704193130578113">Запитувати, де зберігати кожен файл перед завантаженням</translation>
 <translation id="5713072761819014678">Від’єднати обліковий запис Brave Software Диска</translation>
 <translation id="486635084936119914">Автоматично відкривати певні типи файлів після завантаження</translation>
-<translation id="870073306461175568">Спільні мережеві файли</translation>
-<translation id="6189273858858366896">Налаштувати або керувати спільними мережевими файлами.</translation>
+<translation id="3653160965917900914">Мережеві файлообмінники</translation>
+<translation id="5763315388120433852">Налаштувати мережеві файлообмінники або керувати ними.</translation>
 <translation id="2367199180085172140">Додати файл для спільного доступу</translation>
-<translation id="8984654317541110628">URL-адреса спільного файлу</translation>
+<translation id="247051149076336810">URL-адреса файлообмінника</translation>
 <translation id="5247051749037287028">Відображувана назва (необов’язково)</translation>
 <translation id="6091761513005122595">Спільний доступ надано.</translation>
 <translation id="9024158959543687197">Помилка підключення спільного доступу. Перевірте URL-адресу файлу та повторіть спробу.</translation>
@@ -1688,6 +1701,7 @@
 <translation id="2148219725039824548">Помилка підключення спільного доступу. Указаний пристрій не знайдено в мережі.</translation>
 <translation id="7234406375359457793">Помилка підключення спільного доступу. Указаний пристрій не підтримується.</translation>
 <translation id="706626672220389329">Помилка підключення спільного доступу. Указаний пристрій уже підключено.</translation>
+<translation id="5985458664595100876">Недійсний формат URL-адреси. Підтримувані формати: \\server\share і smb://server/share.</translation>
 <translation id="3101709781009526431">Дата та час</translation>
 <translation id="2059913712424898428">Часовий пояс</translation>
 <translation id="4547672827276975204">Налаштовувати автоматично</translation>
@@ -1976,8 +1990,6 @@
 <translation id="5282733140964383898">Якщо ввімкнути параметр "Не відстежувати", запит додається в трафік веб-перегляду. Результат залежить від того, чи реагує веб-сайт на цей запит і як тлумачиться запит. Наприклад, деякі веб-сайти можуть реагувати на такий запит, показуючи вам рекламу, не пов’язану з іншими веб-сайтами, які ви відвідали. Багато веб-сайтів будуть і надалі збирати й використовувати ваші дані веб-перегляду, наприклад щоб покращувати систему безпеки, пропонувати вміст, служби, рекламу та рекомендації, а також генерувати статистику для звітів. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Увімкнути перевірений доступ</translation>
 <translation id="5557991081552967863">Не від’єднуватися від мережі Wi-Fi у режимі сну</translation>
-<translation id="8562084399541316921">Продовжити читати</translation>
-<translation id="6201926614538916789">Продовжуйте переглядати сайт із мобільного пристрою на Bravebook</translation>
 <translation id="1521442365706402292">Керування сертифікатами</translation>
 <translation id="7075625805486468288">Керування сертифікатами та налаштуваннями HTTPS або SSL</translation>
 <translation id="8871974300055371298">Веб-контент</translation>
@@ -2186,6 +2198,7 @@
 <translation id="3422989461909154470">Усіма обліковими записами Brave Software, у які ви ввійшли в додатках або на веб-сайтах, можна керувати тут.</translation>
 <translation id="1987317783729300807">Облікові записи</translation>
 <translation id="8418661265246754237">Облікові записи Brave Software</translation>
+<translation id="3297951628821704004">Видалити обліковий запис із цього пристрою</translation>
 <translation id="1059855432287631118">Реєстрація відбитка</translation>
 <translation id="878068003854005405">Розпочнімо. Покладіть палець на датчик.</translation>
 <translation id="7189965711416741966">Відбиток додано.</translation>
@@ -2244,7 +2257,7 @@
 <translation id="2459230470861708651">Шифрувати синхронізовані паролі з іменем користувача та паролем Brave Software</translation>
 <translation id="6383051423892982287">Шифрувати синхронізовані дані за допомогою власної <ph name="BEGIN_LINK"/>парольної фрази<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Ваші зашифровані дані можуть переглядати лише користувачі, які знають вашу парольну фразу. Парольна фраза не надсилається й не зберігається в Brave Software. Якщо ви забули її або хочете змінити це налаштування, <ph name="BEGIN_LINK"/>скиньте синхронізацію<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141">Щоб змінити це налаштування, <ph name="BEGIN_LINK"/>скиньте синхронізацію<ph name="END_LINK"/>.</translation>
+<translation id="7441736921018636843">Щоб змінити це налаштування, видаліть парольну фразу для синхронізації, <ph name="BEGIN_LINK"/>скинувши параметри синхронізації<ph name="END_LINK"/></translation>
 <translation id="3873315167136380065">Щоб увімкнути цю функцію, видаліть парольну фразу синхронізації, <ph name="BEGIN_LINK"/>скинувши синхронізацію<ph name="END_LINK"/>.</translation>
 <translation id="988978206646512040">Потрібно вказати парольну фразу</translation>
 <translation id="1651008383952180276">Потрібно двічі ввести однакову парольну фразу</translation>
@@ -2403,6 +2416,7 @@
 <translation id="1940546824932169984">Під’єднані пристрої</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">З телефоном комп’ютер Bravebook працює навіть краще. <ph name="LINK_BEGIN"/>Докладніше.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Немає пристроїв, які відповідають вимогам. <ph name="LINK_BEGIN"/>Докладніше.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Очікується підтвердження. <ph name="LINK_BEGIN"/>Докладніше.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Не вдалося підключитися до телефона. <ph name="LINK_BEGIN"/>Докладніше.<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together увімкнено</translation>
@@ -2442,6 +2456,7 @@
 <translation id="1607139524282324606">Очистити введені дані</translation>
 <translation id="6025215716629925253">Запис стека</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;Не показано 1 рядок&gt;}one{&lt;Не показано $1 рядок&gt;}few{&lt;Не показано $1 рядки&gt;}many{&lt;Не показано $1 рядків&gt;}other{&lt;Не показано $1 рядка&gt;}}</translation>
+<translation id="5334899159203764908">Докладніше про <ph name="BEGIN_LINK"/>доступ до сайтів<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Дозвольте цьому розширенню переглядати й змінювати всі ваші дані на веб-сайтах, які ви відвідуєте.</translation>
 <translation id="407173827865827707">Після натискання</translation>
 <translation id="6455264371803474013">На певних сайтах</translation>

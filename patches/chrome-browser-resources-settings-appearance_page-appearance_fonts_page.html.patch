@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html b/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
-index f335b741d5abd47f69bb83eb4f65c41e5dc2df5c..12456171c16bba3d9520e03647d51705d7ab7e00 100644
+index f335b741d5abd47f69bb83eb4f65c41e5dc2df5c..eb3318ec9339d4f0b2d4605d92062ab3f596d728 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
 @@ -120,6 +120,7 @@
          $i18n{quickBrownFox}
        </div>
      </div>
-+<if expr="_google_chrome">
++<!--
      <template is="dom-if" if="[[!isGuest_]]">
        <div class="settings-box two-line" id="advancedButton"
            on-click="openAdvancedExtension_" actionable>
@@ -14,7 +14,7 @@ index f335b741d5abd47f69bb83eb4f65c41e5dc2df5c..12456171c16bba3d9520e03647d51705
          </paper-icon-button-light>
        </div>
      </template>
-+</if>
++-->
    </template>
    <script src="appearance_fonts_page.js"></script>
  </dom-module>

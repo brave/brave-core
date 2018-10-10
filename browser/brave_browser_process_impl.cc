@@ -6,17 +6,24 @@
 
 #include "base/bind.h"
 #include "base/task/post_task.h"
+#include "base/path_service.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+<<<<<<< HEAD
 #include "brave/browser/extensions/brave_ipfs_client_updater.h"
+=======
+#include "brave/browser/profiles/brave_profile_manager.h"
+>>>>>>> cda0e777fe8558871fa9f0ec123988c66e2a0700
 #include "brave/browser/profile_creation_monitor.h"
+#include "brave/browser/referrals/brave_referrals_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/io_thread.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
@@ -33,6 +40,17 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(scoped_refptr<PersistentPrefSto
       profile_creation_monitor_(new ProfileCreationMonitor) {
   g_browser_process = this;
   g_brave_browser_process = this;
+
+  brave_referrals_service_ = brave::BraveReferralsServiceFactory(local_state());
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](brave::BraveReferralsService* referrals_service) {
+            referrals_service->Start();
+          },
+          base::Unretained(brave_referrals_service_.get())),
+      base::TimeDelta::FromSeconds(30));
+
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
@@ -73,6 +91,13 @@ BraveBrowserProcessImpl::component_updater() {
   return component_updater_.get();
 }
 
+ProfileManager* BraveBrowserProcessImpl::profile_manager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!created_profile_manager_)
+    CreateProfileManager();
+  return profile_manager_.get();
+}
+
 brave_shields::AdBlockService*
 BraveBrowserProcessImpl::ad_block_service() {
   if (ad_block_service_)
@@ -111,6 +136,14 @@ BraveBrowserProcessImpl::https_everywhere_service() {
   return https_everywhere_service_.get();
 }
 
+extensions::BraveIpfsClientUpdater*
+BraveBrowserProcessImpl::ipfs_client_updater() {
+  if (ipfs_client_updater_)
+    return ipfs_client_updater_.get();
+
+  ipfs_client_updater_ = extensions::BraveIpfsClientUpdaterFactory();
+  return ipfs_client_updater_.get();
+
 extensions::BraveTorClientUpdater*
 BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
@@ -120,11 +153,11 @@ BraveBrowserProcessImpl::tor_client_updater() {
   return tor_client_updater_.get();
 }
 
-extensions::BraveIpfsClientUpdater*
-BraveBrowserProcessImpl::ipfs_client_updater() {
-  if (ipfs_client_updater_)
-    return ipfs_client_updater_.get();
+void BraveBrowserProcessImpl::CreateProfileManager() {
+  DCHECK(!created_profile_manager_ && !profile_manager_);
+  created_profile_manager_ = true;
 
-  ipfs_client_updater_ = extensions::BraveIpfsClientUpdaterFactory();
-  return ipfs_client_updater_.get();
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  profile_manager_ = std::make_unique<BraveProfileManager>(user_data_dir);
 }

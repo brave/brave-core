@@ -31,15 +31,31 @@ test("brave_unit_tests") {
     "//brave/browser/autoplay/autoplay_permission_context_unittest.cc",
     "//brave/browser/brave_resources_util_unittest.cc",
     "//brave/browser/brave_stats_updater_unittest.cc",
+    "//brave/browser/tor/mock_tor_profile_service_impl.cc",
+    "//brave/browser/tor/mock_tor_profile_service_impl.h",
+    "//brave/browser/tor/mock_tor_profile_service_factory.cc",
+    "//brave/browser/tor/mock_tor_profile_service_factory.h",
+    "//brave/browser/net/brave_ad_block_tp_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_common_static_redirect_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_referrals_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
+    "//brave/browser/net/brave_tor_network_delegate_helper_unittest.cc",
+    "//brave/browser/profiles/tor_unittest_profile_manager.cc",
+    "//brave/browser/profiles/tor_unittest_profile_manager.h",
+    "//brave/browser/profiles/brave_profile_manager_unittest.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
+    "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
+    "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
     "//brave/chromium_src/components/version_info/brave_version_info_unittest.cc",
     "//brave/common/importer/brave_mock_importer_bridge.cc",
     "//brave/common/importer/brave_mock_importer_bridge.h",
     "//brave/common/shield_exceptions_unittest.cc",
+    "//brave/common/tor/tor_test_constants.cc",
+    "//brave/common/tor/tor_test_constants.h",
     "//brave/components/brave_shields/browser/ad_block_regional_service_unittest.cc",
+    "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
+    "//brave/components/content_settings/core/browser/brave_host_content_settings_map_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",
     "//chrome/common/importer/mock_importer_bridge.h",
     "../browser/importer/chrome_profile_lock_unittest.cc",
@@ -47,6 +63,12 @@ test("brave_unit_tests") {
     "../utility/importer/brave_importer_unittest.cc",
     "../utility/importer/firefox_importer_unittest.cc",
   ]
+
+  if (brave_rewards_enabled) {
+    sources += [
+      "//brave/vendor/bat-native-ledger/src/test/niceware_partial_unittest.cc",
+    ]
+  }
 
   # On Windows, brave_install_static_unittests covers channel test.
   if (is_mac || is_linux) {
@@ -105,6 +127,28 @@ test("brave_unit_tests") {
   deps += [
     "//brave/browser/safebrowsing",
   ]
+
+  include_dirs = []
+
+  if (is_win) {
+    sources += [
+      "//brave/chromium_src/chrome/install_static/brave_install_details_unittest.cc",
+      "//brave/chromium_src/chrome/install_static/brave_install_modes_unittest.cc",
+      "//brave/chromium_src/chrome/install_static/brave_install_util_unittest.cc",
+      "//brave/chromium_src/chrome/install_static/brave_product_install_details_unittest.cc",
+      "//brave/chromium_src/chrome/install_static/brave_user_data_dir_win_unittest.cc",
+    ]
+    include_dirs += [ "$target_gen_dir" ]
+    deps += [
+      "//base",
+      "//base/test:run_all_unittests",
+      "//base/test:test_support",
+      "//chrome/install_static:install_static_util",
+      "//chrome/install_static/test:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
 }
 
 group("brave_browser_tests_deps") {
@@ -147,11 +191,11 @@ static_library("browser_tests_runner") {
 test("brave_browser_tests") {
   sources = [
     "//brave/app/brave_main_delegate_browsertest.cc",
+    "//brave/app/sharedarraybuffer_disabledtest.cc",
     "//brave/chromium_src/chrome/browser/google/chrome_google_url_tracker_client_browsertest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/battery/navigator_batterytest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/credentialmanager/credentials_containertest.cc",
-    "//brave/browser/alternate_private_search_engine_browsertest.cc",
     "//brave/browser/autoplay/autoplay_permission_context_browsertest.cc",
     "//brave/browser/brave_content_browser_client_browsertest.cc",
     "//brave/browser/brave_features_browsertest.cc",
@@ -161,6 +205,7 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_ipfs_client_updater_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
     "//brave/browser/extensions/brave_webstore_inline_installer_browsertest.cc",
+    "//brave/browser/search_engine_provider_controller_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_autoplay_blocked_image_model_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_widevine_blocked_image_model_browsertest.cc",
     "//brave/browser/ui/webui/brave_new_tab_ui_browsertest.cc",
@@ -185,8 +230,7 @@ test("brave_browser_tests") {
 
   if (brave_rewards_enabled) {
     sources += [
-      # temporarily disable browser tests because they all fail now
-      # "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
+      "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
     ]
   }
 
@@ -218,26 +262,4 @@ test("brave_browser_tests") {
     "//ppapi:ppapi_tests",
     "//ppapi:power_saver_test_plugin",
   ]
-}
-
-if (is_win) {
-  test("brave_install_static_unittests") {
-    sources = [
-      "//brave/chromium_src/chrome/install_static/brave_install_details_unittest.cc",
-      "//brave/chromium_src/chrome/install_static/brave_install_modes_unittest.cc",
-      "//brave/chromium_src/chrome/install_static/brave_install_util_unittest.cc",
-      "//brave/chromium_src/chrome/install_static/brave_product_install_details_unittest.cc",
-      "//brave/chromium_src/chrome/install_static/brave_user_data_dir_win_unittest.cc",
-    ]
-    include_dirs = [ "$target_gen_dir" ]
-    deps = [
-      "//base",
-      "//base/test:run_all_unittests",
-      "//base/test:test_support",
-      "//chrome/install_static:install_static_util",
-      "//chrome/install_static/test:test_support",
-      "//testing/gmock",
-      "//testing/gtest",
-    ]
-  }
 }

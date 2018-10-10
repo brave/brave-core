@@ -23,7 +23,8 @@ const char kTrackingScript[] =
     "const url = '%s';"
     "const img = document.createElement('img');"
     "img.src = url;"
-    "img.onload = function() { window.domAutomationController.send(true); };"
+    "img.onload = function() { window.domAutomationController.send(img.complete &&"
+    "    (img.naturalHeight !== 1 || img.naturalWidth !== 1)); };"
     "img.onerror = function() { window.domAutomationController.send(false); };"
     "document.body.appendChild(img);";
 

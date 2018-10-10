@@ -10,7 +10,7 @@ import { types } from '../constants/rewards_types'
 const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
     case types.GET_GRANT:
-      chrome.send('getGrant', [])
+      chrome.send('brave_rewards.getGrant', [])
       break
     case types.ON_GRANT:
       state = { ...state }
@@ -27,13 +27,15 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
       }
       break
     case types.GET_GRANT_CAPTCHA:
-      chrome.send('getGrantCaptcha', [])
+      chrome.send('brave_rewards.getGrantCaptcha', [])
       break
     case types.ON_GRANT_CAPTCHA:
       {
         if (state.grant) {
           let grant = state.grant
-          grant.captcha = `data:image/jpeg;base64,${action.payload.image}`
+          const props = action.payload.captcha
+          grant.captcha = `data:image/jpeg;base64,${props.image}`
+          grant.hint = props.hint
           state = {
             ...state,
             grant
@@ -44,7 +46,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
       }
     case types.SOLVE_GRANT_CAPTCHA:
       if (action.payload.x && action.payload.y) {
-        chrome.send('solveGrantCaptcha', [JSON.stringify({
+        chrome.send('brave_rewards.solveGrantCaptcha', [JSON.stringify({
           x: action.payload.x,
           y: action.payload.y
         })])
@@ -98,7 +100,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
               grant,
               ui
             }
-            chrome.send('getWalletProperties', [])
+            chrome.send('brave_rewards.getWalletProperties', [])
           }
         } else {
           state = { ...state }
@@ -111,7 +113,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
               grant
             }
           }
-          chrome.send('getGrantCaptcha', [])
+          chrome.send('brave_rewards.getGrantCaptcha', [])
         }
         break
       }

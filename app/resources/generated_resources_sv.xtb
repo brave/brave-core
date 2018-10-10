@@ -505,13 +505,21 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3861241522664181545">Sidan har pausats.</translation>
 <translation id="6921709132208495314">Sluta använda data på den här sidan</translation>
 <translation id="2724841811573117416">WebRTC-loggar</translation>
+<translation id="1969654639948595766">WebRTC-textloggar (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="6865708901122695652">WebRTC-händelseloggar (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
 <translation id="6592267180249644460">WebRTC-logg registrerades <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">Lokal fil:</translation>
 <translation id="2071393345806050157">Det finns ingen lokal loggfil.</translation>
 <translation id="6628328486509726751">Uppladdat <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">Uppladdningen misslyckades (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">Rapport-id <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Rapportera fel</translation>
+<translation id="3650845953328929506">Uppladdning av loggfil väntar.</translation>
+<translation id="1818913467757368489">Uppladdning av loggfil pågår.</translation>
 <translation id="1188807932851744811">Loggen har inte laddats upp.</translation>
+<translation id="4688036121858134881">Lokalt logg-id: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
+<translation id="7497981768003291373">Du har inga nyligen registrerade WebRTC-textloggar.</translation>
+<translation id="3954953195017194676">Du har inga nyligen registrerade WebRTC-händelseloggar.</translation>
 <translation id="2076269580855484719">Dölj det här plugin-programmet</translation>
 <translation id="2129825002735785149">Uppdatera pluginprogrammet</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> har blockerats av en företagspolicy</translation>
@@ -556,6 +564,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4416582610654027550">Ange en giltig webbadress</translation>
 <translation id="2806891468525657116">Genvägen finns redan</translation>
 <translation id="394183848452296464">Det gick inte att skapa genvägen</translation>
+<translation id="329703603001918157">Det gick inte att redigera genvägen</translation>
+<translation id="6732900235521116609">Det gick inte att ta bort genvägen</translation>
 <translation id="7109543803214225826">Genvägen har tagits bort</translation>
 <translation id="8017679124341497925">Genvägen har ändrats</translation>
 <translation id="1174073918202301297">Genvägen har lagts till</translation>
@@ -829,7 +839,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6845038076637626672">Öppna maximerad</translation>
 <translation id="6860427144121307915">Öppna i en flik</translation>
 <translation id="3074037959626057712">Du är inloggad och har aktiverat synkronisering</translation>
-<translation id="6264422956566238156">Du har aktiverat Sync</translation>
 <translation id="9125982323641182972">Få Brave Software-teknik i Brave</translation>
 <translation id="7988117629517051942">Få mer Brave Software-teknik</translation>
 <translation id="5596627076506792578">Fler alternativ</translation>
@@ -845,7 +854,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1371301976177520732">Bokmärken, lösenord, historik med mera på alla dina enheter</translation>
 <translation id="3111958038206230539">Anpassa Brave Softwares tjänster</translation>
 <translation id="295992419959320001">Brave Software kan anpassa Sök, annonser och andra Brave Software-tjänster utifrån webbhistoriken.</translation>
-<translation id="4800091108248587380">Anpassade tjänster från Brave Software, som Brave Software Pay</translation>
+<translation id="4205523465226408285">Personligare tjänster från Brave Software, till exempel förbättrade förslag på sidor</translation>
 <translation id="3070156078150543526">Brave Software kan använda webbhistoriken för att anpassa Sök och andra tjänster från Brave Software.</translation>
 <translation id="2532167245710864499">Gör Brave bättre och säkrare genom att skicka information om system och användning till Brave Software</translation>
 <translation id="2709453993673701466">Vill du hantera synkronisering och anpassning innan du aktiverar det? Öppna <ph name="BEGIN_LINK"/>inställningarna<ph name="END_LINK"/>.</translation>
@@ -1440,6 +1449,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1800308196794859773">Skicka det du säger till Brave Software så att du kan tala in text i vilket textfält som helst.</translation>
 <translation id="8758418656925882523">Aktivera diktering (skriv genom att tala)</translation>
 <translation id="7580671184200851182">Spela samma ljud i alla högtalare (monoljud)</translation>
+<translation id="8186639008852027301">Spela upp en ljudsignal vid start</translation>
 <translation id="1189418886587279221">Aktivera tillgänglighetsfunktioner så att enheten blir lättare att använda.</translation>
 <translation id="48704129375571883">Lägg till ytterligare funktioner</translation>
 <translation id="7230787553283372882">Anpassa textstorleken</translation>
@@ -1537,6 +1547,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5029568752722684782">Ta bort kopia</translation>
 <translation id="2154484045852737596">Redigera kortet</translation>
 <translation id="5087580092889165836">Lägg till kort</translation>
+<translation id="7284555534810614828">Spara kortet för Brave Software Pay</translation>
+<translation id="6281511959351052816">Spara korten för Brave Software Pay</translation>
+<translation id="1904518222538904133">Ett av korten kan bara användas på den här enheten</translation>
+<translation id="8065485338434000013">Några av korten kan bara användas på den här enheten</translation>
 <translation id="4807098396393229769">Namn på kort</translation>
 <translation id="2612676031748830579">Kortnummer</translation>
 <translation id="869891660844655955">Utgångsdatum</translation>
@@ -1610,7 +1624,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="784934925303690534">Tidsintervall</translation>
 <translation id="2496180316473517155">Webbhistorik</translation>
 <translation id="8662811608048051533">Du loggas ut från de flesta webbplatser.</translation>
-<translation id="8218628800671693884">Du loggas ut från de flesta webbplatser. Du loggas inte ut från Brave Software-kontot.</translation>
 <translation id="2017836877785168846">Rensar historik och autoslutföranden i adressfältet.</translation>
 <translation id="8096327394278038498">Historik och autoslutföranden i adressfältet rensas. Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Historik rensas från alla inloggade enheter. Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1677,10 +1690,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7754704193130578113">Fråga var filerna ska sparas före nedladdning</translation>
 <translation id="5713072761819014678">Koppla från Brave Software Drive-konto</translation>
 <translation id="486635084936119914">Öppna vissa filtyper automatiskt efter att de har laddats ned</translation>
-<translation id="870073306461175568">Network File Share</translation>
-<translation id="6189273858858366896">Konfigurera eller hantera Network File Share.</translation>
+<translation id="3653160965917900914">Filresurser i nätverk</translation>
+<translation id="5763315388120433852">Konfigurera eller hantera filresurser i nätverk.</translation>
 <translation id="2367199180085172140">Lägg till File Share</translation>
-<translation id="8984654317541110628">Webbadress för filresurs</translation>
+<translation id="247051149076336810">Webbadress för filresurs</translation>
 <translation id="5247051749037287028">Visningsnamn (valfritt)</translation>
 <translation id="6091761513005122595">Den delade resursen har monterats.</translation>
 <translation id="9024158959543687197">Det gick inte att montera den delade resursen. Kontrollera filresursens webbadress och försök igen.</translation>
@@ -1688,6 +1701,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2148219725039824548">Det gick inte att montera den delade resursen. Den angivna resursen hittades inte i nätverket.</translation>
 <translation id="7234406375359457793">Det gick inte att montera den delade resursen. Den angivna resursen stöds inte.</translation>
 <translation id="706626672220389329">Det gick inte att montera den delade resursen. Den angivna resursen har redan monterats.</translation>
+<translation id="5985458664595100876">Ogiltigt webbadressformat. Följande format stöds: \\server\share och smb://server/share.</translation>
 <translation id="3101709781009526431">Datum och tid</translation>
 <translation id="2059913712424898428">Tidszon</translation>
 <translation id="4547672827276975204">Ange automatiskt</translation>
@@ -1976,8 +1990,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5282733140964383898">Om du aktiverar Do Not Track innebär det att en begäran skickas med webbtrafiken. Vad som händer sedan beror på om webbplatserna svarar på din begäran och hur begäran tolkas. En del webbplatser kan till exempel svara genom att visa annonser som inte baseras på webbplatser du har besökt tidigare. Många webbplatser fortsätter att samla in och använda din webbinformation, till exempel för att förbättra säkerheten, för att erbjuda innehåll, tjänster, annonser och rekommendationer på sina webbplatser och för att generera statistik för rapporteringsändamål. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Aktivera verifierad åtkomst</translation>
 <translation id="5557991081552967863">Behåll Wi-Fi vid viloläge</translation>
-<translation id="8562084399541316921">Fortsätt läsa</translation>
-<translation id="6201926614538916789">Fortsätt att visa webbplatser från mobilen på Bravebook</translation>
 <translation id="1521442365706402292">Hantera certifikat</translation>
 <translation id="7075625805486468288">Hantera HTTPS/SSL-certifikat och inställningar</translation>
 <translation id="8871974300055371298">Innehållsinställningar</translation>
@@ -2186,6 +2198,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3422989461909154470">Alla inloggade Brave Software-konton från appar och webbplatser kan hanteras här.</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="8418661265246754237">Brave Software Konton</translation>
+<translation id="3297951628821704004">Ta bort kontot från enheten</translation>
 <translation id="1059855432287631118">Registrera fingeravtryck</translation>
 <translation id="878068003854005405">Nu sätter vi igång. Placera fingret på sensorn.</translation>
 <translation id="7189965711416741966">Fingeravtrycket har lagts till.</translation>
@@ -2244,7 +2257,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2459230470861708651">Kryptera synkroniserade lösenord med ditt användarnamn och lösenord på Brave Software</translation>
 <translation id="6383051423892982287">Kryptera synkroniserad data med en egen <ph name="BEGIN_LINK"/>lösenfras för synkronisering<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Endast personer som har ditt lösenord kan läsa dina krypterade uppgifter. Lösenordet skickas inte till och sparas inte av Brave Software. Om du glömmer lösenordet måste du <ph name="BEGIN_LINK"/>återställa synkroniseringen<ph name="END_LINK"/>.</translation>
-<translation id="4300305918532693141"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> om du vill ändra den här inställningen</translation>
+<translation id="7441736921018636843"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> så att lösenfrasen för synkronisering tas bort om du vill ändra den här inställningen</translation>
 <translation id="3873315167136380065"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> så att lösenfrasen för synkronisering tas bort om du vill aktivera detta</translation>
 <translation id="988978206646512040">Lösenfrasen får inte vara tom</translation>
 <translation id="1651008383952180276">Du måste ange samma lösenfras två gånger</translation>
@@ -2403,6 +2416,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1940546824932169984">Anslutna enheter</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Chomebook fungerar ännu bättre ihop med mobilen. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">Du har ingen enhet som uppfyller villkoren. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">Väntar på verifiering. <ph name="LINK_BEGIN"/>Läs mer.<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">Det gick inte att ansluta till mobilen. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together har aktiverats</translation>
@@ -2442,6 +2456,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1607139524282324606">Rensa post</translation>
 <translation id="6025215716629925253">Stack trace</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 rad visas inte&gt;}other{&lt;$1 rader visas inte&gt;}}</translation>
+<translation id="5334899159203764908">Läs mer om <ph name="BEGIN_LINK"/>webbplatsåtkomst<ph name="END_LINK"/></translation>
 <translation id="8389492867173948260">Tillåt det här tillägget att läsa och ändra all din data på webbplatser du besöker</translation>
 <translation id="407173827865827707">Vid klick</translation>
 <translation id="6455264371803474013">På valda webbplatser</translation>

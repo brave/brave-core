@@ -20,6 +20,7 @@ class BraveToolbarView : public ToolbarView {
     void Layout() override;
     void Update(content::WebContents* tab) override;
     void OnEditBookmarksEnabledChanged();
+    void OnLocationBarIsWideChanged();
     void ShowBookmarkBubble(const GURL& url,
                           bool already_bookmarked,
                           bookmarks::BookmarkBubbleObserver* observer) override;
@@ -29,9 +30,14 @@ class BraveToolbarView : public ToolbarView {
     // These two functions call through to GetSizeInternal(), passing themselves
     // as the function pointer |View::*get_size|.
     gfx::Size GetSizeInternal(gfx::Size (View::*get_size)() const) const override;
+    int SetLocationBarBounds(const int available_width,
+                            const int location_bar_min_width,
+                            const int next_element_x,
+                            const int element_padding);
     BookmarkButton* bookmark_ = nullptr;
     // Tracks the preference to determine whether bookmark editing is allowed.
     BooleanPrefMember edit_bookmarks_enabled_;
+    BooleanPrefMember location_bar_is_wide_;
 };
 
 #endif

@@ -46,7 +46,10 @@ class RewardsService : public KeyedService {
   virtual void GetGrantCaptcha() = 0;
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
+  virtual unsigned int GetNumExcludedSites() const = 0;
   virtual void RecoverWallet(const std::string passPhrase) const = 0;
+  virtual void ExcludePublisher(const std::string publisherKey) const = 0;
+  virtual void RestorePublishers() = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
   virtual void OnShow(SessionID tab_id) = 0;
@@ -67,14 +70,19 @@ class RewardsService : public KeyedService {
 
   virtual uint64_t GetReconcileStamp() const = 0;
   virtual std::map<std::string, std::string> GetAddresses() const = 0;
+  virtual void SetRewardsMainEnabled(bool enabled) const = 0;
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;
   virtual void SetPublisherMinVisits(unsigned int visits) const = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
   virtual void SetPublisherAllowVideos(bool allow) const = 0;
   virtual void SetContributionAmount(double amount) const = 0;
+  virtual void SetUserChangedContribution() const = 0;
   virtual void SetAutoContribute(bool enabled) const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t& timer_id) = 0;
   virtual std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() = 0;
+  virtual void GetCurrentBalanceReport() = 0;
+  virtual bool IsWalletCreated() = 0;
+  virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

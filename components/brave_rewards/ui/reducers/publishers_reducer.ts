@@ -14,6 +14,21 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       state.firstLoad = false
       state.autoContributeList = action.payload.list
       break
+    case types.ON_NUM_EXCLUDED_SITES:
+      state = { ...state }
+      if (action.payload.num != null) {
+        state.numExcludedSites = parseInt(action.payload.num, 10)
+      }
+      break
+    case types.ON_EXCLUDE_PUBLISHER:
+      if (!action.payload.publisherKey) {
+        break
+      }
+      chrome.send('brave_rewards.excludePublisher', [action.payload.publisherKey])
+      break
+    case types.ON_RESTORE_PUBLISHERS:
+      chrome.send('brave_rewards.restorePublishers', [])
+      break
   }
 
   return state

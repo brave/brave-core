@@ -1,0 +1,14 @@
+diff --git a/content/child/child_thread_impl.cc b/content/child/child_thread_impl.cc
+index f797ee88a232a5a1fe11949b9f148a83222f571a..5a3e5f20da14cc5909ff907a682f29f43121bd74 100644
+--- a/content/child/child_thread_impl.cc
++++ b/content/child/child_thread_impl.cc
+@@ -163,6 +163,9 @@ class SuicideOnChannelErrorFilter : public IPC::MessageFilter {
+     __lsan_do_leak_check();
+ #endif
+ #else
++#if defined(OS_MACOSX)
++    CleanupTor();
++#endif // defined(OS_MACOSX)
+     base::Process::TerminateCurrentProcessImmediately(0);
+ #endif
+   }

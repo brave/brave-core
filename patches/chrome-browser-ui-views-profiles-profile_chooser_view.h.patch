@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.h b/chrome/browser/ui/views/profiles/profile_chooser_view.h
+index 15aec59e78e93a8847cf1024069afebabd3031de..fa43886e84a06850c224abb112472e97aa8fab36 100644
+--- a/chrome/browser/ui/views/profiles/profile_chooser_view.h
++++ b/chrome/browser/ui/views/profiles/profile_chooser_view.h
+@@ -72,6 +72,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
+   const Browser* browser() const { return browser_; }
+ 
+  private:
++  friend class BraveProfileChooserView;
+   friend class ProfileChooserViewExtensionsTest;
+ 
+   typedef std::vector<size_t> Indexes;
+@@ -121,7 +122,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
+   // Tests set this to "false" for more consistent operation.
+   static bool close_on_deactivate_for_testing_;
+ 
+-  void ResetView();
++  virtual void ResetView();
+ 
+   // Shows the bubble with the |view_to_display|.
+   void ShowView(profiles::BubbleViewMode view_to_display,

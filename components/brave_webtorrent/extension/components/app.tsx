@@ -30,7 +30,10 @@ interface Props {
 export class BraveWebtorrentPage extends React.Component<Props, {}> {
   render () {
     const { actions, torrentState, torrentObj } = this.props
-    const torrentId = decodeURIComponent(window.location.search.substring(1))
+    let torrentId = decodeURIComponent(window.location.search.substring(1))
+    torrentId = window.location.hash
+      ? torrentId + window.location.hash
+      : torrentId
 
     // The active tab change might not be propagated here yet, so we might get
     // the old active tabId here which might be a different torrent page or a

@@ -48,7 +48,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "314e7529efec41c8867019815f4d8dad.svg", IDR_BRAVE_NEW_TAB_IMG4 },
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         { "50cc52a4f1743ea74a21da996fe44272.jpg", IDR_BRAVE_NEW_TAB_IMG14 },
-        { "b6dd4b1292cfd4470e58486c56ad0832.svg", IDR_BRAVE_NEW_TAB_PRIVATE_ICON },
         // New tab Backgrounds
         { "dksfoto1.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
         { "dksfoto2.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
@@ -69,10 +68,14 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "Phoyoserge_Theroofparis.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND17 },
         { "Phoyoserge_TheSeantParis.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND18 },
         { "Phoyoserge_VeniseSunset.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND19 },
-        { "Phoyoserge_Yosemite.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND20 }
+        { "Phoyoserge_Yosemite.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND20 },
+        // private tab
+        { "4697127f5404662b027f8dd436642cf7.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },
+        { "8640d24b8340ae4127895e4372aa295b.svg", IDR_BRAVE_PRIVATE_TAB_DDG_IMG }
       }
     }, {
       std::string("welcome"), {
+      { "ecaefa14dcf65df518730a336430727e.ico", IDR_BRAVE_WELCOME_FAVICON },
       { "51a13e5e543f312a990d4fd7e741d427.png", IDR_BRAVE_WELCOME_SLIDE_1_IMAGE },
       { "a6abd363c58f91a260f94f5beb32b172.png", IDR_BRAVE_WELCOME_SLIDE_2_IMAGE },
       { "fc31b8d3f7f3d32eec78365212f3002b.png", IDR_BRAVE_WELCOME_SLIDE_3_IMAGE },
@@ -87,12 +90,12 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "21bfb482964742768c5020312af36224.svg", IDR_BRAVE_REWARDS_IMG_DONATE_DISABLED },
         { "4fcfa7f92c5fc22c2b6f34701bfdcd0a.jpeg", IDR_BRAVE_REWARDS_IMG_BART_TEMP },
         { "6dd79d472f9c73429b26dae4ef14575e.svg", IDR_BRAVE_REWARDS_IMG_WALLET_BG },
-        { "a6f0c88adbc3c7a77cbb47e8c4e92f0d.png", IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT },
+        { "c9255cc2aa3d81ca6328e82d25a95766.png", IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT },
         { "1bb9aa85741c6d1c077f043324aae835.svg", IDR_BRAVE_REWARDS_IMG_WELCOME_BG },
         { "88eeadb981d67d5e096afb9b8fe26df7.svg", IDR_BRAVE_REWARDS_IMG_BAT },
         { "87186eec176189163ce037bcc7676f2a.svg", IDR_BRAVE_REWARDS_IMG_BTC },
         { "7d9f0ededf215a4702ae5c457f7779ae.svg", IDR_BRAVE_REWARDS_IMG_ETH },
-        { "2c6f798a519beabb327149c349912f5f.svg", IDR_BRAVE_REWARDS_IMG_LTC }
+        { "2c6f798a519beabb327149c349912f5f.svg", IDR_BRAVE_REWARDS_IMG_LTC },
       }
     }, {
       std::string("adblock"), {
@@ -119,11 +122,18 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "hours", IDS_BRAVE_NEW_TAB_HOURS },
         { "day", IDS_BRAVE_NEW_TAB_DAY },
         { "days", IDS_BRAVE_NEW_TAB_DAYS },
-        { "privateNewTabTitle", IDS_BRAVE_PRIVATE_NEW_TAB_TITLE },
-        { "privateNewTabDisclaimer1", IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER_1 },
-        { "privateNewTabDisclaimer2", IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER_2 },
-        { "duckduckGoSearchInfo", IDS_BRAVE_PRIVATE_NEW_TAB_DUCKDUCKGO_SEARCH_INFO },
-        { "privateNewTabSearchLabel", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_TOGGLE_LABEL }
+        // private tab
+        { "thisIsAPrivateWindow", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW },
+        { "thisIsAPrivateWindowWithTor", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW_WITH_TOR },
+        { "browseTheWebMorePrivatelyWith", IDS_BRAVE_PRIVATE_NEW_TAB_BROWSE_THE_WEB_MORE_PRIVATELY_WITH },
+        { "torDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_DISCLAIMER },
+        { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
+        { "defaultSearchEngineDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DEFAULT_SEARCH_ENGINE_DISCLAIMER },
+        { "searchPreferences", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PREFERENCES },
+        { "privateSearchWith", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_WITH },
+        { "duckduckgoDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DDG_DISCLAIMER },
+        { "moreAboutPrivateTabs", IDS_BRAVE_PRIVATE_NEW_TAB_MORE_ABOUT_PRIVATE_TABS },
+        { "privateTabsDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER }
       }
     }, {
       std::string("welcome"), {
@@ -175,7 +185,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "donationTitle",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE },
         { "donationDesc",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC },
         { "donationTotalDonations",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS },
-        { "donationList",  IDS_BRAVE_REWARDS_LOCAL_DONAT_LIST },
         { "donationVisitSome",  IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME },
         { "donationAbility",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY },
         { "donationAbilityYT",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_YT },
@@ -212,6 +221,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "braveContributeDesc", IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC },
         { "braveContributeTitle", IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE },
         { "braveRewards", IDS_BRAVE_UI_BRAVE_REWARDS },
+        { "braveRewardsCreatingText", IDS_BRAVE_UI_BRAVE_REWARDS_CREATING_TEXT },
         { "braveRewardsDesc", IDS_BRAVE_UI_BRAVE_REWARDS_DESC },
         { "braveRewardsOptInText", IDS_BRAVE_UI_BRAVE_REWARDS_OPT_IN_TEXT },
         { "braveRewardsSubTitle", IDS_BRAVE_UI_BRAVE_REWARDS_SUB_TITLE },
@@ -229,7 +239,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "deposit", IDS_BRAVE_UI_DEPOSIT },
         { "deposits", IDS_BRAVE_UI_DEPOSITS },
         { "description", IDS_BRAVE_UI_DESCRIPTION },
-        { "dndCaptcha", IDS_BRAVE_UI_DND_CAPTCHA },
+        { "dndCaptchaText1", IDS_BRAVE_UI_DND_CAPTCHA_TEXT_1 },
+        { "dndCaptchaText2", IDS_BRAVE_UI_DND_CAPTCHA_TEXT_2 },
         { "donation", IDS_BRAVE_UI_DONATION },
         { "donationAmount", IDS_BRAVE_UI_DONATION_AMOUNT },
         { "donateMonthly", IDS_BRAVE_UI_DONATE_MONTHLY },
@@ -238,13 +249,13 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "downloadPDF", IDS_BRAVE_UI_DOWNLOAD_PDF },
         { "earningsAds", IDS_BRAVE_UI_EARNINGS_ADS },
         { "enableTips", IDS_BRAVE_UI_ENABLE_TIPS },
+        { "excludeSite", IDS_BRAVE_UI_EXCLUDE_SITE },
+        { "excludedSitesText", IDS_BRAVE_UI_EXCLUDED_SITES },
         { "expiresOn", IDS_BRAVE_UI_EXPIRES_ON },
         { "for", IDS_BRAVE_UI_FOR },
         { "grantDisclaimer", IDS_BRAVE_UI_GRANT_DISCLAIMER },
         { "grantExpire", IDS_BRAVE_UI_GRANT_EXPIRE },
         { "grants", IDS_BRAVE_UI_GRANTS },
-        { "howDoesItWork", IDS_BRAVE_UI_HOW_DOES_IT_WORK },
-        { "howDoesItWorkDesc", IDS_BRAVE_UI_HOW_DOES_IT_WORK_DESC },
         { "import", IDS_BRAVE_UI_IMPORT },
         { "includeInAuto", IDS_BRAVE_UI_INCLUDE_IN_AUTO },
         { "makeMonthly", IDS_BRAVE_UI_MAKE_MONTHLY },
@@ -278,8 +289,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "pleaseNote", IDS_BRAVE_UI_PLEASE_NOTE },
         { "print", IDS_BRAVE_UI_PRINT },
         { "readyToTakePart", IDS_BRAVE_UI_READY_TO_TAKE_PART },
-        { "readyToTakePartBold", IDS_BRAVE_UI_READY_TO_TAKE_PART_BOLD },
-        { "readyToTakePartDesc", IDS_BRAVE_UI_READY_TO_TAKE_PART_DESC },
         { "readyToTakePartOptInText", IDS_BRAVE_UI_READY_TO_TAKE_PART_OPT_IN_TEXT },
         { "readyToTakePartStart", IDS_BRAVE_UI_READY_TO_TAKE_PART_START },
         { "recoveryKeys", IDS_BRAVE_UI_RECOVERY_KEYS },
@@ -288,6 +297,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "recurringDonations", IDS_BRAVE_UI_RECURRING_DONATIONS },
         { "remove", IDS_BRAVE_UI_REMOVE },
         { "restore", IDS_BRAVE_UI_RESTORE },
+        { "restoreAll", IDS_BRAVE_UI_RESTORE_ALL },
         { "rewardsBackupText1", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1 },
         { "rewardsBackupText2", IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2 },
         { "rewardsBannerText1", IDS_BRAVE_UI_REWARDS_BANNER_TEXT1 },
@@ -309,6 +319,8 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "rewardsPanelOffText2", IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2 },
         { "rewardsPanelText1", IDS_BRAVE_UI_REWARDS_PANEL_TEXT1 },
         { "rewardsPanelText2", IDS_BRAVE_UI_REWARDS_PANEL_TEXT2 },
+        { "rewardsPanelText3", IDS_BRAVE_UI_REWARDS_PANEL_TEXT3 },
+        { "rewardsPanelText4", IDS_BRAVE_UI_REWARDS_PANEL_TEXT4 },
         { "rewardsRestoreText1", IDS_BRAVE_UI_REWARDS_RESTORE_TEXT1 },
         { "rewardsRestoreText2", IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2 },
         { "rewardsRestoreText3", IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3 },
@@ -349,8 +361,9 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "welcomeHeaderOne", IDS_BRAVE_UI_WELCOME_HEADER_ONE},
         { "welcomeHeaderTwo", IDS_BRAVE_UI_WELCOME_HEADER_TWO},
         { "whyBraveRewards", IDS_BRAVE_UI_WHY_BRAVE_REWARDS },
-        { "whyBraveRewardsBold", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_BOLD },
         { "whyBraveRewardsDesc", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC },
+        { "whyBraveRewardsDesc1", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1 },
+        { "whyBraveRewardsDesc2", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2 },
         { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET }
       }
     }, {

@@ -11,6 +11,8 @@ module.exports = {
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),
     brave_webtorrent: path.join(__dirname, '../brave_webtorrent/extension/brave_webtorrent'),
     brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background'),
+    brave_rewards_panel: path.join(__dirname, '../brave_rewards/extension/brave_rewards/brave_rewards_panel'),
+    brave_rewards_panel_background: path.join(__dirname, '../brave_rewards/extension/brave_rewards/background'),
   },
   output: {
     path: process.env.TARGET_GEN_DIR,
@@ -35,9 +37,11 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
+      'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker'),
       'dgram': 'chrome-dgram',
+      'dns': path.resolve(__dirname, '../common/dns.ts'),
       'net': 'chrome-net',
-      'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker')
+      'torrent-discovery': path.resolve(__dirname, '../../node_modules/torrent-discovery')
     }
   },
   module: {
@@ -68,7 +72,7 @@ module.exports = {
         loader: 'url-loader?limit=13000&minetype=application/font-woff'
       },
       {
-        test: /\.(ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(ttf|eot|ico|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
       }]
   },

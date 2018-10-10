@@ -31,8 +31,11 @@ class BraveStatsUpdaterParams {
   std::string GetMonthlyParam() const;
   std::string GetFirstCheckMadeParam() const;
   std::string GetWeekOfInstallationParam() const;
+  std::string GetReferralCodeParam() const;
 
- private:
+  void SavePrefs();
+
+private:
   PrefService* pref_service_;
   std::string ymd_;
   int woy_;
@@ -42,9 +45,9 @@ class BraveStatsUpdaterParams {
   int last_check_month_;
   bool first_check_made_;
   std::string week_of_installation_;
+  std::string referral_promo_code_;
 
   void LoadPrefs();
-  void SavePrefs();
 
   std::string BooleanToString(bool bool_value) const;
 

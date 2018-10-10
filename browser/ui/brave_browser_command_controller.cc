@@ -7,6 +7,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
@@ -15,6 +16,8 @@ bool IsBraveCommands(int id) {
   return id >= IDC_BRAVE_COMMANDS_START && id <= IDC_BRAVE_COMMANDS_LAST;
 }
 }
+
+namespace chrome {
 
 BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
     : BrowserCommandController(browser),
@@ -74,6 +77,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForBraveRewards();
 #endif
   UpdateCommandForBraveAdblock();
+  UpdateCommandForTor();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -82,6 +86,10 @@ void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
 
 void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_ADBLOCK, true);
+}
+
+void BraveBrowserCommandController::UpdateCommandForTor() {
+  UpdateCommandEnabled(IDC_NEW_TOR_IDENTITY, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -102,6 +110,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_ADBLOCK:
       brave::ShowBraveAdblock(browser_);
       break;
+    case IDC_NEW_TOR_IDENTITY:
+      brave::NewTorIdentity(browser_);
+      break;
 
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
@@ -110,3 +121,5 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 
   return true;
 }
+
+}  // namespace chrome

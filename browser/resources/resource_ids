@@ -11,6 +11,10 @@
   "brave/browser/resources/brave_extension.grd": {
     "includes": [34000],
   },
+  "brave/browser/resources/settings/settings_resources.grd": {
+    "structures": [34500],
+    "includes": [34900],
+  },
   "brave/app/brave_generated_resources.grd": {
     "includes": [35000],
     "messages": [35500],
@@ -22,4 +26,5 @@
     "includes": [36500],
   },
   # brave webtorrent 37500
+  # brave rewards 38000
 }

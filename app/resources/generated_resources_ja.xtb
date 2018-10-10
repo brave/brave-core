@@ -505,13 +505,21 @@
 <translation id="3861241522664181545">ページの読み込みが一時停止されました。</translation>
 <translation id="6921709132208495314">このページでデータの使用を停止する</translation>
 <translation id="2724841811573117416">WebRTC ログ</translation>
+<translation id="1969654639948595766">WebRTC テキストログ（<ph name="WEBRTC_TEXT_LOG_COUNT"/>）</translation>
+<translation id="6865708901122695652">WebRTC イベントログ（<ph name="WEBRTC_EVENT_LOG_COUNT"/>）</translation>
 <translation id="6592267180249644460">WebRTC ログの記録日時: <ph name="WEBRTC_LOG_CAPTURE_TIME"/></translation>
 <translation id="4093955363990068916">ローカル ファイル:</translation>
 <translation id="2071393345806050157">ローカルのログ ファイルがありません。</translation>
 <translation id="6628328486509726751">アップロード日時: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
+<translation id="6458701200018867744">アップロードできませんでした（<ph name="WEBRTC_LOG_UPLOAD_TIME"/>）。</translation>
 <translation id="5946591249682680882">レポート ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">バグを報告</translation>
+<translation id="3650845953328929506">ログのアップロードを保留しています。</translation>
+<translation id="1818913467757368489">ログをアップロードしています。</translation>
 <translation id="1188807932851744811">ログがアップロードされていません。</translation>
+<translation id="4688036121858134881">ローカルログ ID は <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/> です。</translation>
+<translation id="7497981768003291373">最近記録された WebRTC テキストログはありません。</translation>
+<translation id="3954953195017194676">最近記録された WebRTC イベントログはありません。</translation>
 <translation id="2076269580855484719">このプラグインを表示しない</translation>
 <translation id="2129825002735785149">プラグインを更新</translation>
 <translation id="9088234649737575428"><ph name="PLUGIN_NAME"/> は会社のポリシーによってブロックされています</translation>
@@ -556,6 +564,8 @@
 <translation id="4416582610654027550">有効な URL を入力してください</translation>
 <translation id="2806891468525657116">ショートカットがすでに存在します</translation>
 <translation id="394183848452296464">ショートカットを作成できません</translation>
+<translation id="329703603001918157">ショートカットの編集はできません</translation>
+<translation id="6732900235521116609">ショートカットの削除はできません</translation>
 <translation id="7109543803214225826">ショートカットを削除しました</translation>
 <translation id="8017679124341497925">ショートカットを編集しました</translation>
 <translation id="1174073918202301297">ショートカットを追加しました</translation>
@@ -829,7 +839,6 @@
 <translation id="6845038076637626672">最大化して開く</translation>
 <translation id="6860427144121307915">タブで開く</translation>
 <translation id="3074037959626057712">ログインして同期を有効にしました</translation>
-<translation id="6264422956566238156">同期を有効にしました</translation>
 <translation id="9125982323641182972">Brave で Brave Software の最先端技術を活用</translation>
 <translation id="7988117629517051942">Brave Software の最先端技術をさらに活用</translation>
 <translation id="5596627076506792578">その他のオプション</translation>
@@ -845,7 +854,7 @@
 <translation id="1371301976177520732">すべての端末で同じブックマーク、パスワード、その他の設定を使用できます</translation>
 <translation id="3111958038206230539">Brave Software サービスのカスタマイズ</translation>
 <translation id="295992419959320001">検索、広告、その他の Brave Software サービスをカスタマイズする目的で、Brave Software が閲覧履歴を使用することがあります</translation>
-<translation id="4800091108248587380">カスタマイズされた Brave Software サービス（Brave Software Pay など）を利用できます</translation>
+<translation id="4205523465226408285">おすすめのページなど、カスタマイズされた Brave Software サービスを利用できます</translation>
 <translation id="3070156078150543526">検索やその他の Brave Software サービスをカスタマイズする目的で、Brave Software が閲覧履歴を使用することがあります</translation>
 <translation id="2532167245710864499">システムと使用状況に関する情報が Brave Software に送信され、Brave とそのセキュリティの向上に役立てられます</translation>
 <translation id="2709453993673701466">同期とパーソナライズを有効にする前に管理するには、[<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] に移動します。</translation>
@@ -1440,6 +1449,7 @@
 <translation id="1800308196794859773">テキスト欄で音声入力できるように Brave Software に音声を送信します。</translation>
 <translation id="8758418656925882523">音声入力を有効にする</translation>
 <translation id="7580671184200851182">すべてのスピーカーで同じオーディオを再生（モノラル オーディオ）</translation>
+<translation id="8186639008852027301">起動時にオーディオ インジケータを再生する</translation>
 <translation id="1189418886587279221">ユーザー補助機能を有効にするとデバイスが使いやすくなります。</translation>
 <translation id="48704129375571883">その他の機能を追加</translation>
 <translation id="7230787553283372882">テキストサイズをカスタマイズします</translation>
@@ -1537,6 +1547,10 @@
 <translation id="5029568752722684782">コピーを消去</translation>
 <translation id="2154484045852737596">カードを編集</translation>
 <translation id="5087580092889165836">カードを追加</translation>
+<translation id="7284555534810614828">Brave Software Pay にカードを保存して使用する</translation>
+<translation id="6281511959351052816">Brave Software Pay にカードを保存して使用する</translation>
+<translation id="1904518222538904133">この端末でのみ使用できるカードが 1 つあります</translation>
+<translation id="8065485338434000013">この端末でのみ使用できるカードがいくつかあります</translation>
 <translation id="4807098396393229769">カード名義人（半角英文字）</translation>
 <translation id="2612676031748830579">カード番号</translation>
 <translation id="869891660844655955">有効期限</translation>
@@ -1610,7 +1624,6 @@
 <translation id="784934925303690534">期間</translation>
 <translation id="2496180316473517155">閲覧履歴</translation>
 <translation id="8662811608048051533">ほとんどのサイトからログアウトします。</translation>
-<translation id="8218628800671693884">ほとんどのサイトからログアウトします。Brave Software アカウントへのログイン状態は維持されます。</translation>
 <translation id="2017836877785168846">アドレスバーの履歴とオートコンプリート データを削除します。</translation>
 <translation id="8096327394278038498">アドレスバーの履歴とオートコンプリートを削除します。お使いの Brave Software アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
 <translation id="8122693181154564064">ログインしているすべての端末の履歴を削除します。お使いの Brave Software アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
@@ -1677,10 +1690,10 @@
 <translation id="7754704193130578113">ダウンロード前に各ファイルの保存場所を確認する</translation>
 <translation id="5713072761819014678">Brave Software ドライブ アカウントを切断</translation>
 <translation id="486635084936119914">ダウンロード後に特定の種類のファイルを自動的に開きます</translation>
-<translation id="870073306461175568">ネットワーク ファイル共有</translation>
-<translation id="6189273858858366896">ネットワーク ファイル共有を設定または管理する。</translation>
+<translation id="3653160965917900914">ネットワーク ファイル共有</translation>
+<translation id="5763315388120433852">ネットワーク ファイル共有を設定または管理する。</translation>
 <translation id="2367199180085172140">ファイル共有を追加</translation>
-<translation id="8984654317541110628">ファイル共有 URL</translation>
+<translation id="247051149076336810">ファイル共有 URL</translation>
 <translation id="5247051749037287028">表示名（省略可）</translation>
 <translation id="6091761513005122595">共有フォルダが正常にマウントされました。</translation>
 <translation id="9024158959543687197">共有フォルダのマウントエラー。ファイルの共有 URL を確認してもう一度お試しください。</translation>
@@ -1688,6 +1701,7 @@
 <translation id="2148219725039824548">共有フォルダのマウントエラー。指定された共有フォルダがネットワークで見つかりませんでした。</translation>
 <translation id="7234406375359457793">共有フォルダのマウントエラー。指定された共有フォルダはサポートされていません。</translation>
 <translation id="706626672220389329">共有フォルダのマウントエラー。指定された共有フォルダはすでにマウントされています。</translation>
+<translation id="5985458664595100876">URL の形式が無効です。サポートされている形式は \\server\share と smb://server/share です。</translation>
 <translation id="3101709781009526431">日時</translation>
 <translation id="2059913712424898428">タイムゾーン</translation>
 <translation id="4547672827276975204">自動的に設定する</translation>
@@ -1976,8 +1990,6 @@
 <translation id="5282733140964383898">「トラッキング拒否」を有効にすると、閲覧トラフィックにリクエストが含まれるようになります。ウェブサイトがリクエストに応答するかどうか、またリクエストがどのように解釈されるかによって、この影響は異なります。たとえば、このリクエストに対応して、ユーザーが過去にアクセスしたウェブサイトに関係なく広告を表示するウェブサイトもあります。トラッキングを拒否しても、多くのウェブサイトではユーザーの閲覧データが収集され利用されるのが現状です。たとえば、セキュリティの強化、ウェブサイトでのコンテンツ、サービス、広告、おすすめ情報の表示、レポート統計情報の作成などにこれらのデータが利用されます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">確認済みのアクセスを有効にする</translation>
 <translation id="5557991081552967863">スリープ中に Wi-Fi 接続を維持する</translation>
-<translation id="8562084399541316921">読み続ける</translation>
-<translation id="6201926614538916789">Bravebook でモバイル接続を使ってサイトの閲覧を再開します</translation>
 <translation id="1521442365706402292">証明書の管理</translation>
 <translation id="7075625805486468288">HTTPS / SSL の証明書と設定を管理します</translation>
 <translation id="8871974300055371298">コンテンツの設定</translation>
@@ -2186,6 +2198,7 @@
 <translation id="3422989461909154470">アプリやウェブサイトからログインしているすべての Brave Software アカウントをここで管理できます。</translation>
 <translation id="1987317783729300807">アカウント</translation>
 <translation id="8418661265246754237">Brave Software アカウント</translation>
+<translation id="3297951628821704004">この端末からアカウントを削除</translation>
 <translation id="1059855432287631118">指紋の登録</translation>
 <translation id="878068003854005405">まず指をセンサーに置きます。</translation>
 <translation id="7189965711416741966">指紋の登録が完了しました。</translation>
@@ -2244,7 +2257,7 @@
 <translation id="2459230470861708651">Brave Software のユーザー名とパスワードを使用して同期パスワードを暗号化する</translation>
 <translation id="6383051423892982287">同期データを<ph name="BEGIN_LINK"/>同期パスフレーズ<ph name="END_LINK"/>で暗号化する</translation>
 <translation id="4817583816512767754">パスフレーズを知っているユーザーだけが暗号化データを読み取ることができます。パスフレーズが Brave Software に送信されたり Brave Software で保存されたりすることはありません。パスフレーズを忘れた場合や、この設定を変更する場合は、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>する必要があります。</translation>
-<translation id="4300305918532693141">この設定を変更するには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>します。</translation>
+<translation id="7441736921018636843">この設定を変更するには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>して同期パスフレーズを削除します</translation>
 <translation id="3873315167136380065">この設定をオンにするには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>して同期パスフレーズを削除します</translation>
 <translation id="988978206646512040">パスフレーズは必ず指定してください</translation>
 <translation id="1651008383952180276">同じパスフレーズを 2 回入力する必要があります</translation>
@@ -2403,6 +2416,7 @@
 <translation id="1940546824932169984">接続済みの端末</translation>
 <translation id="5235565664420173924">Better Together</translation>
 <translation id="5375767622559981303">Bravebook とスマートフォンを連携させると活用の幅が広がります。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
+<translation id="6148052338549899048">対象となる端末はありません。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="3465800511193611451">確認を待っています。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="2315821125498993513">スマートフォンに接続できませんでした。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5598551463564921617">Better Together がオンになっています</translation>
@@ -2442,6 +2456,7 @@
 <translation id="1607139524282324606">エラー項目を消去</translation>
 <translation id="6025215716629925253">スタック トレース</translation>
 <translation id="3475538074809281797">{LINE_COUNT,plural, =1{&lt;1 行が非表示です&gt;}other{&lt;$1 行が非表示です&gt;}}</translation>
+<translation id="5334899159203764908"><ph name="BEGIN_LINK"/>サイトアクセス<ph name="END_LINK"/>の詳細</translation>
 <translation id="8389492867173948260">アクセスしたウェブサイト上にある自分の全データの読み取りと変更をこの拡張機能に許可します。</translation>
 <translation id="407173827865827707">クリックされた場合のみ</translation>
 <translation id="6455264371803474013">特定のサイト</translation>

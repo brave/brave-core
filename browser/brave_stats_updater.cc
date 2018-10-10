@@ -11,9 +11,11 @@
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "content/public/browser/browser_thread.h"
 #include "brave/browser/version_info.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
+#include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -22,9 +24,6 @@ const char kBaseUpdateURL[] = "https://laptop-updates.brave.com/1/usage/brave-co
 
 // Ping the update server once an hour.
 const int kUpdateServerPingFrequency = 60 * 60;
-
-// Maximum size of the server ping response in bytes.
-const int kMaxUpdateServerPingResponseSizeBytes = 1024 * 1024;
 
 namespace {
 
@@ -68,7 +67,8 @@ GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
       update_url, "first", stats_updater_params.GetFirstCheckMadeParam());
   update_url = net::AppendQueryParameter(
       update_url, "woi", stats_updater_params.GetWeekOfInstallationParam());
-  update_url = net::AppendQueryParameter(update_url, "ref", "none");
+  update_url = net::AppendQueryParameter(
+      update_url, "ref", stats_updater_params.GetReferralCodeParam());
   return update_url;
 }
 
@@ -97,20 +97,24 @@ void BraveStatsUpdater::Stop() {
 }
 
 void BraveStatsUpdater::OnSimpleLoaderComplete(
-    std::unique_ptr<std::string> response_body) {
+    std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
+    scoped_refptr<net::HttpResponseHeaders> headers) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   int response_code = -1;
-  if (simple_url_loader_->ResponseInfo() &&
-      simple_url_loader_->ResponseInfo()->headers)
-    response_code =
-        simple_url_loader_->ResponseInfo()->headers->response_code();
-  if (simple_url_loader_->NetError() != net::OK || response_code != 200) {
+  if (headers)
+    response_code = headers->response_code();
+  if (simple_url_loader_->NetError() != net::OK || response_code < 200 ||
+      response_code > 299) {
     LOG(ERROR) << "Failed to send usage stats to update server"
                << ", error: " << simple_url_loader_->NetError()
                << ", response code: " << response_code
-               << ", payload: " << *response_body
                << ", url: " << simple_url_loader_->GetFinalURL().spec();
     return;
   }
+
+  // The request to the update server succeeded, so it's safe to save
+  // the usage preferences now.
+  stats_updater_params->SavePrefs();
 }
 
 void BraveStatsUpdater::OnServerPingTimerFired() {
@@ -134,9 +138,9 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
           policy_exception_justification:
             "Not implemented."
         })");
-  brave::BraveStatsUpdaterParams stats_updater_params(pref_service_);
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GetUpdateURL(stats_updater_params);
+  auto stats_updater_params = std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
+  resource_request->url = GetUpdateURL(*stats_updater_params);
   resource_request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -146,12 +150,10 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
           ->GetURLLoaderFactory();
   simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
-  simple_url_loader_->SetAllowHttpErrorResults(true);
-  simple_url_loader_->DownloadToString(
+  simple_url_loader_->DownloadHeadersOnly(
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnSimpleLoaderComplete,
-                     base::Unretained(this)),
-      kMaxUpdateServerPingResponseSizeBytes);
+                     base::Unretained(this), std::move(stats_updater_params)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

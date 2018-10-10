@@ -13,6 +13,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
@@ -44,8 +45,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
  private:
   void OnDATFileDataReady();
 
+  SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
-
   DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);
 };
 

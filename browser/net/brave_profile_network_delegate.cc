@@ -4,21 +4,28 @@
 
 #include "brave/browser/net/brave_profile_network_delegate.h"
 
+#include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
+#include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
+#include "brave/browser/net/brave_tor_network_delegate_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #endif
+#include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
 
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
     extensions::EventRouterForwarder* event_router) :
     BraveNetworkDelegateBase(event_router) {
-  brave::OnBeforeURLRequestCallback callback =
-      base::Bind(
-          brave::OnBeforeURLRequest_SiteHacksWork);
+  brave::OnBeforeURLRequestCallback
+  callback =
+      base::Bind(brave::OnBeforeURLRequest_SiteHacksWork);
+  before_url_request_callbacks_.push_back(callback);
+
+  callback =
+      base::Bind(brave::OnBeforeURLRequest_AdBlockTPWork);
   before_url_request_callbacks_.push_back(callback);
 
   callback =
@@ -34,9 +41,21 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   before_url_request_callbacks_.push_back(callback);
 #endif
 
-  brave::OnBeforeStartTransactionCallback start_transactions_callback =
+  callback = base::Bind(brave::OnBeforeURLRequest_TorWork);
+  before_url_request_callbacks_.push_back(callback);
+
+  brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::Bind(brave::OnBeforeStartTransaction_SiteHacksWork);
-  before_start_transaction_callbacks_.push_back(start_transactions_callback);
+  before_start_transaction_callbacks_.push_back(start_transaction_callback);
+
+  start_transaction_callback =
+      base::Bind(brave::OnBeforeStartTransaction_ReferralsWork);
+  before_start_transaction_callbacks_.push_back(start_transaction_callback);
+
+  brave::OnHeadersReceivedCallback headers_received_callback =
+      base::Bind(
+          webtorrent::OnHeadersReceived_TorrentRedirectWork);
+  headers_received_callbacks_.push_back(headers_received_callback);
 }
 
 BraveProfileNetworkDelegate::~BraveProfileNetworkDelegate() {
