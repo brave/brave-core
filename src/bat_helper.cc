@@ -12,6 +12,7 @@
 #include <memory>
 #include <iostream>
 #include <string>
+#include <regex>
 
 #include <openssl/base64.h>
 #include <openssl/digest.h>
@@ -30,6 +31,16 @@ namespace braveledger_bat_helper {
 namespace {
 static bool ignore_ = false;
 }  // namespace
+
+  bool isProbiValid(const std::string& probi) {
+    // probi shouldn't be longer then 44
+    if (probi.length() > 44) {
+      return false;
+    }
+
+    // checks if probi only contains numbers
+    return std::regex_match(probi, std::regex("^[0-9]*$"));
+  }
 
   REQUEST_CREDENTIALS_ST::REQUEST_CREDENTIALS_ST() {}
 
@@ -738,15 +749,15 @@ static bool ignore_ = false;
 
     bool error = d.HasParseError();
     if (false == error) {
-      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsString() &&
-        d.HasMember("closing_balance") && d["closing_balance"].IsString() &&
-        d.HasMember("deposits") && d["deposits"].IsString() &&
-        d.HasMember("grants") && d["grants"].IsString() &&
-        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsString() &&
-        d.HasMember("auto_contribute") && d["auto_contribute"].IsString() &&
-        d.HasMember("recurring_donation") && d["recurring_donation"].IsString() &&
-        d.HasMember("one_time_donation") && d["one_time_donation"].IsString() &&
-        d.HasMember("total") && d["total"].IsString());
+      error = !(d.HasMember("opening_balance") && d["opening_balance"].IsString() && isProbiValid(d["opening_balance"].GetString()) &&
+        d.HasMember("closing_balance") && d["closing_balance"].IsString() && isProbiValid(d["closing_balance"].GetString()) &&
+        d.HasMember("deposits") && d["deposits"].IsString() && isProbiValid(d["deposits"].GetString()) &&
+        d.HasMember("grants") && d["grants"].IsString() && isProbiValid(d["grants"].GetString()) &&
+        d.HasMember("earning_from_ads") && d["earning_from_ads"].IsString() && isProbiValid(d["earning_from_ads"].GetString()) &&
+        d.HasMember("auto_contribute") && d["auto_contribute"].IsString() && isProbiValid(d["auto_contribute"].GetString()) &&
+        d.HasMember("recurring_donation") && d["recurring_donation"].IsString() && isProbiValid(d["recurring_donation"].GetString()) &&
+        d.HasMember("one_time_donation") && d["one_time_donation"].IsString() && isProbiValid(d["one_time_donation"].GetString()) && 
+        d.HasMember("total") && d["total"].IsString() && isProbiValid(d["total"].GetString()));
     }
 
     if (false == error) {
