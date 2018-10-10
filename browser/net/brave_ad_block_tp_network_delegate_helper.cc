@@ -97,7 +97,7 @@ void OnBeforeURLRequest_AdBlockTPCheckWork(
     std::shared_ptr<BraveRequestInfo> ctx) {
   // Proper content settings can't be looked up, so do nothing.
   GURL tab_origin = request->site_for_cookies().GetOrigin();
-  if (tab_origin.is_empty()) {
+  if (tab_origin.is_empty() || !tab_origin.has_host()) {
     return;
   }
   DCHECK(ctx->request_identifier != 0);
