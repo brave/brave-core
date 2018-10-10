@@ -140,6 +140,9 @@ export const getMockChrome = () => {
         get: function (url: string) {},
         set: function (url: string, cssfilter: string) {}
       }
+    },
+    extension: {
+      inIncognitoContext: new ChromeEvent()
     }
   }
 }
