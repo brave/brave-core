@@ -135,9 +135,9 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
 .c11 {
   position: relative;
   border-radius: 50%;
-  -webkit-transition: 200ms ease-out;
-  transition: 200ms ease-out;
-  --toggle-bullet-size: 24px;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  --toggle-bullet-size: 20px;
   --toggle-bullet-transform: translate(-1px,calc(-50% - 4px));
   --toggle-bullet-background: #CDD1D5;
   width: var(--toggle-bullet-size);
@@ -146,6 +146,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   -ms-transform: var(--toggle-bullet-transform);
   transform: var(--toggle-bullet-transform);
   background-color: var(--toggle-bullet-background);
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
 }
 
 .c8 {
