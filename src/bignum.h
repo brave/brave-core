@@ -16,8 +16,8 @@ extern "C"
 }
 
 namespace braveledger_bat_bignum {
-  std::string checkProbi(const std::string& number);
   void prepareBigNum(bn_t& result, const std::string& number);
+  bool isProbiValid(const std::string& number);
   std::string bigNumToString(bn_t& number);
   std::string sum(const std::string& a_string, const std::string& b_string);
   std::string sub(const std::string& a_string, const std::string& b_string);
