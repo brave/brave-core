@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <regex>
 
 #if defined (CHECK)
 #undef CHECK
@@ -19,6 +20,16 @@ void prepareBigNum(bn_t& big_num, const std::string& probi) {
   bn_read_str(big_num, probi.c_str(), probi.length(), 10);
 }
 
+bool isProbiValid(const std::string& probi) {
+  // probi shouldn't be longer then 44
+  if (probi.length() > 44) {
+    return false;
+  }
+
+  // checks if probi only contains numbers
+  return std::regex_match(probi, std::regex("^[0-9]*$"));
+}
+
 std::string bigNumToString(bn_t& number) {
   int result_length = bn_size_str(number, 10);
   const int MAX_BN_BUFF = 256; //global
@@ -30,6 +41,10 @@ std::string bigNumToString(bn_t& number) {
 }
 
 std::string sum(const std::string& a_string, const std::string& b_string) {
+  if (!isProbiValid(a_string) || !isProbiValid(b_string)) {
+    return "0";
+  }
+
   bn_t a;
   bn_t b;
   bn_t result;
@@ -49,6 +64,10 @@ std::string sum(const std::string& a_string, const std::string& b_string) {
 }
 
 std::string sub(const std::string& a_string, const std::string& b_string) {
+  if (!isProbiValid(a_string) || !isProbiValid(b_string)) {
+    return "0";
+  }
+
   bn_t a;
   bn_t b;
   bn_t result;
@@ -68,6 +87,10 @@ std::string sub(const std::string& a_string, const std::string& b_string) {
 }
 
 std::string mul(const std::string& a_string, const std::string& b_string) {
+  if (!isProbiValid(a_string) || !isProbiValid(b_string)) {
+    return "0";
+  }
+
   bn_t a;
   bn_t b;
   bn_t result;
