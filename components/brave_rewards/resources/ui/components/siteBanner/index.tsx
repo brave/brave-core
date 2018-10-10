@@ -28,7 +28,8 @@ import {
   StyledSocialIcon,
   StyledOption,
   StyledIconRecurring,
-  StyledLogoText
+  StyledLogoText,
+  StyledSocialWrapper
 } from './style'
 
 import Donate from '../donate/index'
@@ -42,7 +43,7 @@ import {
   TwitchColorIcon
 } from '../../../components/icons'
 
-type Social = {type: SocialType, name: string, handler: string}
+type Social = {type: SocialType, url: string}
 type SocialType = 'twitter' | 'youtube' | 'twitch'
 type Donation = {tokens: number, converted: number, selected?: boolean}
 
@@ -83,27 +84,20 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
   }
 
   getSocialData (item: Social) {
-    let link = ''
     let logo = null
     switch (item.type) {
       case 'twitter':
-        link = `https://twitter.com/${item.handler}`
         logo = <TwitterColorIcon />
         break
       case 'youtube':
-        link = `https://www.youtube.com/channel/${item.handler}`
         logo = <YoutubeColorIcon />
         break
       case 'twitch':
-        link = `https://www.twitch.tv/${item.handler}`
         logo = <TwitchColorIcon />
         break
     }
 
-    return {
-      link,
-      logo
-    }
+    return logo
   }
 
   getSocial = (social?: Social[]) => {
@@ -113,16 +107,16 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
 
     const self = this
     return social.map((item: Social) => {
-      const data = self.getSocialData(item)
+      const logo = self.getSocialData(item)
       return (
         <StyledSocialItem
           key={`${self.props.id}-social-${item.type}`}
-          href={data.link}
+          href={item.url}
           target={'_blank'}
         >
           <StyledSocialIcon>
-            {data.logo}
-          </StyledSocialIcon> {item.name || item.handler}
+            {logo}
+          </StyledSocialIcon>
         </StyledSocialItem>
       )
     })
@@ -200,9 +194,9 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 <StyledLogoBorder padding={!logo} bg={logoBgColor}>
                   {this.getLogo(logo, domain)}
                 </StyledLogoBorder>
-                {this.getSocial(social)}
               </StyledLogoWrapper>
               <StyledTextWrapper>
+                <StyledSocialWrapper>{this.getSocial(social)}</StyledSocialWrapper>
                 <StyledTitle>{this.getTitle(title)}</StyledTitle>
                 <StyledText>{this.getText(children)}</StyledText>
               </StyledTextWrapper>

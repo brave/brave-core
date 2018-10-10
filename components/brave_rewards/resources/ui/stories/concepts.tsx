@@ -76,18 +76,15 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             social={[
               {
                 type: 'twitter',
-                name: '@DuckDuckGo',
-                handler: 'DuckDuckGo'
+                url: 'https://twitter.com/DuckDuckGo'
               },
               {
                 type: 'youtube',
-                name: 'duckduckgo',
-                handler: 'UCm_TyecHNHucwF_p4XpeFkQ'
+                url: 'https://www.youtube.com/channel/UCm_TyecHNHucwF_p4XpeFkQ'
               },
               {
                 type: 'twitch',
-                name: 'duckDuckGo',
-                handler: 'duckduckgo'
+                url: 'https://www.twitch.tv/duckduckgo'
               }
             ]}
           />

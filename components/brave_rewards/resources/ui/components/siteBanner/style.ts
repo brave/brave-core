@@ -124,7 +124,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-weight: 600;
   line-height: 1;
   color: #4b4c5c;
-  margin: 41px 0 0;
+  margin: 10px 0 0;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`
@@ -206,8 +206,9 @@ export const StyledSocialItem = styled<{}, 'a'>('a')`
   line-height: 2.5;
   letter-spacing: 0.2px;
   color: #9e9fab;
-  display: block;
   text-decoration: none;
+  display: inline-block;
+  margin: 0 8px;
 `
 
 export const StyledSocialIcon = styled<{}, 'span'>('span')`
@@ -216,4 +217,10 @@ export const StyledSocialIcon = styled<{}, 'span'>('span')`
   margin-right: 5px;
   width: 22px;
   height: 22px;
+`
+
+export const StyledSocialWrapper = styled<{}, 'div'>('div')`
+  text-align: right;
+  padding-right: 40px;
+  margin-top: 15px;
 `
