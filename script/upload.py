@@ -93,10 +93,14 @@ def yield_brave_packages(dir, channel, version):
   for _, _, files in os.walk(dir):
     for file in files:
       if PLATFORM == 'darwin':
-        sought_file = 'Brave-Browser-' + channel.capitalize() + '.dmg'
-        if re.match(r'Brave Browser ' + channel.capitalize() + r'.*\.dmg$', file):
-          os.rename(file, sought_file)
-          yield sought_file
+          sought_file = 'Brave-Browser-' + channel.capitalize() + '.dmg'
+          if re.match(r'Brave Browser ' + channel.capitalize() + r'.*\.dmg$', file):
+            print('a' + sought_file)
+            os.rename(os.path.join(dir, file), os.path.join(dir, sought_file))
+            yield sought_file
+          elif re.match(r'Brave-Browser-' + channel.capitalize() + r'.*\.dmg$', file):
+            print('b' + sought_file)
+            yield sought_file
       elif PLATFORM == 'linux':
         if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
           or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
