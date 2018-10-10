@@ -41,13 +41,14 @@ declare namespace RewardsExtension {
   }
 
   export interface Report {
-    ads: number
-    closing: number
-    contribute: number
-    donations: number
-    grants: number
-    oneTime: number
-    opening: number
-    total?: number
+    ads: string
+    closing: string
+    contribute: string
+    deposit: string
+    donation: string
+    grant: string
+    tips: string
+    opening: string
+    total: string
   }
 }

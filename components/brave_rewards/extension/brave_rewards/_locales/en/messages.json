@@ -128,7 +128,7 @@
     "description": ""
   },
   "tokenGrant": {
-    "message": "New Token Grant",
+    "message": "Token Grant",
     "description": ""
   },
   "earningsAds": {
@@ -136,7 +136,7 @@
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Brave Auto-Contribute",
+    "message": "Auto-Contribute",
     "description": ""
   },
   "oneTimeDonation": {
