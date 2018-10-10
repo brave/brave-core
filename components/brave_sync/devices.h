@@ -43,7 +43,7 @@ public:
    std::unique_ptr<base::Value> ToValueArrOnly() const;
    std::string ToJson() const;
    void FromJson(const std::string &str_json);
-   void Merge(const SyncDevice &device, int action);
+   void Merge(const SyncDevice& device, int action, bool& actually_merged);
 
    const SyncDevice* GetByDeviceId(const std::string &device_id);
    SyncDevice* GetByObjectId(const std::string &object_id);

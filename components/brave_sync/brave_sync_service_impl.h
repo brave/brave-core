@@ -109,7 +109,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnSyncWordsPrepared(const std::string &words) override;
   void OnBytesFromSyncWordsPrepared(const Uint8Array &bytes, const std::string &error_message) override;
 
-  void OnResolvedPreferences(const RecordsList &records);
+  void OnResolvedPreferences(const RecordsList &records, const std::string& this_device_id);
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
 
@@ -119,8 +119,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
      const base::Time &last_record_time_stamp,
      const bool &is_truncated
   );
-  void OnResolvedSyncRecordsFileWork(const std::string &category_name,
-    std::unique_ptr<RecordsList> records);
+  void OnResolvedSyncRecordsFileWork(const std::string& category_name,
+    std::unique_ptr<RecordsList> records, const std::string& this_device_id);
 
   void CreateUpdateDeleteBookmarksFileWork(
     const int &action,
