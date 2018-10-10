@@ -143,7 +143,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void FetchSyncRecords(const bool &bookmarks, const bool &history,
     const bool &preferences, int64_t start_at, int max_records);
 
-  SyncRecordPtr PrepareResolvedDevice(const std::string &object_id);
+  SyncRecordPtr PrepareResolvedDevice(const std::string& object_id,
+    int action);
 
   SyncRecordAndExistingList PrepareResolvedResponse(
     const std::string &category_name,

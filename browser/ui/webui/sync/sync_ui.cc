@@ -202,14 +202,17 @@ void SyncUIDOMHandler::SyncSavedSiteSettings(const base::ListValue* args) {
 }
 
 void SyncUIDOMHandler::DeleteDevice(const base::ListValue* args) {
-  LOG(ERROR) << "SyncUIDOMHandler::DeleteDevice args=" << brave::debug::ToPrintableString(*args);
+  DLOG(INFO) << "[Brave Sync] " << __func__ <<" args="
+    << brave::debug::ToPrintableString(*args);
 
-  std::string device_id;
-  if (!args->GetString(0, &device_id)) {
+  int i_device_id = -1;
+  if (!args->GetInteger(0, &i_device_id) || i_device_id == -1) {
+    DCHECK(false) << "[Brave Sync] could not get device id";
     return;
   }
-  LOG(ERROR) << "SyncUIDOMHandler::DeleteDevice device_id=" << device_id;
-  sync_service_->OnDeleteDevice(device_id);
+
+  DLOG(INFO) << "[Brave Sync] " << __func__ << " i_device_id=" << i_device_id;
+  sync_service_->OnDeleteDevice(std::to_string(i_device_id));
 }
 
 void SyncUIDOMHandler::ResetSync(const base::ListValue* args) {
