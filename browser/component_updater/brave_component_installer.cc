@@ -57,6 +57,21 @@ bool RewriteManifestFile(
   return true;
 }
 
+std::string GetManifestString(const base::DictionaryValue& manifest,
+    const std::string &public_key) {
+  std::unique_ptr<base::DictionaryValue> final_manifest(manifest.DeepCopy());
+  final_manifest->SetString(extensions::manifest_keys::kPublicKey, public_key);
+
+  std::string manifest_json;
+  JSONStringValueSerializer serializer(&manifest_json);
+  serializer.set_pretty_print(true);
+  if (!serializer.Serialize(*final_manifest)) {
+    return "";
+  }
+  return manifest_json;
+}
+
+
 }  // namespace
 
 namespace brave {
@@ -107,7 +122,7 @@ void BraveComponentInstallerPolicy::ComponentReady(
   const base::Version& version,
   const base::FilePath& install_dir,
   std::unique_ptr<base::DictionaryValue> manifest) {
-  ready_callback_.Run(install_dir);
+  ready_callback_.Run(install_dir, GetManifestString(*manifest, base64_public_key_));
 }
 
 base::FilePath BraveComponentInstallerPolicy::GetRelativeInstallDir() const {
