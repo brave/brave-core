@@ -110,6 +110,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
   // Compiler complains at
   void OnMessageFromSyncReceived() override;
 
+  void OnResetBookmarks();
   // SyncLibToBrowserHandler overrides
   void OnSyncDebug(const std::string &message) override;
   void OnSyncSetupError(const std::string &error) override;
@@ -133,8 +134,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnResolvedPreferences(const RecordsList &records, const std::string& this_device_id);
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
-
-  void ShutdownFileWork();
 
   void OnDeleteDeviceFileWork(const std::string &device_id);
   void OnResetSyncFileWork(const std::string &device_id);

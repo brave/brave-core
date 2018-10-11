@@ -94,10 +94,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
   StartLoop();
 }
 
-BraveSyncServiceImpl::~BraveSyncServiceImpl() {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::~BraveSyncServiceImpl DTOR";
-  task_runner_->DeleteSoon(FROM_HERE, sync_obj_map_.release());
-}
+BraveSyncServiceImpl::~BraveSyncServiceImpl() {}
 
 bool BraveSyncServiceImpl::IsSyncConfigured() {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::IsSyncConfigured will return sync_configured_="<<sync_configured_;
@@ -116,16 +113,7 @@ void BraveSyncServiceImpl::Shutdown() {
 
   history_.reset();
 
-  task_runner_->PostTask(
-    FROM_HERE,
-    base::Bind(&BraveSyncServiceImpl::ShutdownFileWork,
-               weak_ptr_factory_.GetWeakPtr())
-  );
-}
-
-void BraveSyncServiceImpl::ShutdownFileWork() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  sync_obj_map_.reset();
+  task_runner_->DeleteSoon(FROM_HERE, sync_obj_map_.release());
 }
 
 void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string &sync_words,
@@ -239,6 +227,8 @@ void BraveSyncServiceImpl::OnResetSync() {
 
   const std::string device_id = sync_prefs_->GetThisDeviceId();
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResetSync device_id="<<device_id;
+
+  OnResetBookmarks();
 
   task_runner_->PostTask(
     FROM_HERE,
@@ -471,6 +461,17 @@ void BraveSyncServiceImpl::OnSyncReady() {
 
   // fetch the records
   RequestSyncData();
+}
+
+void BraveSyncServiceImpl::OnResetBookmarks() {
+  ui::TreeNodeIterator<const bookmarks::BookmarkNode>
+      iterator(bookmark_model_->root_node());
+  while (iterator.has_next()) {
+    const bookmarks::BookmarkNode* node = iterator.Next();
+    bookmark_model_->DeleteNodeMetaInfo(node, "object_id");
+    bookmark_model_->DeleteNodeMetaInfo(node, "order");
+    bookmark_model_->DeleteNodeMetaInfo(node, "sync_timestamp");
+  }
 }
 
 void BraveSyncServiceImpl::OnGetExistingObjects(const std::string &category_name,
