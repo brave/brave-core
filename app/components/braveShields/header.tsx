@@ -83,7 +83,7 @@ export default class ShieldsHeader extends React.PureComponent<Props, {}> {
         <SiteInfoCard>
           <MainSiteInfoGrid>
             <img src={getFavicon(url)} />
-            <Label size='large'>{hostname}</Label>
+            <Label id='hostname' size='large'>{hostname}</Label>
           </MainSiteInfoGrid>
           {enabled ? this.renderEnabledContent() : this.renderDisabledContent()}
         </SiteInfoCard>
