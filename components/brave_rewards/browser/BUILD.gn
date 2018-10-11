@@ -46,6 +46,8 @@ source_set("browser") {
       "publisher_info_backend.h",
       "publisher_info_database.cc",
       "publisher_info_database.h",
+      "rewards_fetcher_service_observer.cc",
+      "rewards_fetcher_service_observer.h",
     ]
 
     deps += [

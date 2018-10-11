@@ -46,12 +46,17 @@ class ContributeBox extends React.Component<Props, State> {
         name = `${name} ${getLocale('on')} ${item.provider}`
       }
 
+      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      if (item.favIcon) {
+        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+      }
+
       return {
         profile: {
           name,
           verified: item.verified,
           provider: (item.provider ? item.provider : undefined) as Provider,
-          src: `chrome://favicon/size/48@1x/${item.url}/`
+          src: faviconUrl
         },
         url: item.url,
         attention: item.percentage,
