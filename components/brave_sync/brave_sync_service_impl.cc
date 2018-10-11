@@ -489,6 +489,74 @@ void BraveSyncServiceImpl::OnGetExistingObjects(const std::string &category_name
     GetExistingBookmarks(*records.get(), &records_and_existing_objects);
     sync_client_->SendResolveSyncRecords(
         category_name, records_and_existing_objects);
+  } else if (category_name == brave_sync::jslib_const::kPreferences) {
+    task_runner_->PostTask(
+      FROM_HERE,
+      base::Bind(&BraveSyncServiceImpl::OnGetExistingObjectsFileWork,
+                 weak_ptr_factory_.GetWeakPtr(), category_name,
+                 base::Passed(std::move(records)), last_record_time_stamp,
+                 is_truncated));
+  }
+}
+
+void BraveSyncServiceImpl::OnGetExistingObjectsFileWork(const std::string& category_name,
+  std::unique_ptr<RecordsList> records,
+  const base::Time& last_record_time_stamp,
+  bool is_truncated) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (category_name == jslib_const::kPreferences) {
+    SyncRecordAndExistingList records_and_existing_objects =
+                                     PrepareResolvedPreferences(*records.get());
+    sync_client_->SendResolveSyncRecords(category_name,
+                                         records_and_existing_objects);
+  } else if (category_name == jslib_const::kHistorySites) {
+    NOTIMPLEMENTED();
+  } else {
+    NOTREACHED();
+  }
+}
+
+SyncRecordAndExistingList BraveSyncServiceImpl::PrepareResolvedPreferences(
+  const RecordsList& records) {
+  SyncRecordAndExistingList resolvedResponse;
+  for (const SyncRecordPtr& record : records ) {
+    auto resolved_record = std::make_unique<SyncRecordAndExisting>();
+    resolved_record->first = jslib::SyncRecord::Clone(*record);
+    resolved_record->second = PrepareResolvedDevice(record->objectId, record->action);
+    resolvedResponse.emplace_back(std::move(resolved_record));
+  }
+  return resolvedResponse;
+}
+
+SyncRecordPtr BraveSyncServiceImpl::PrepareResolvedDevice(const std::string& object_id,
+  int action) {
+  std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
+  SyncDevices devices;
+  devices.FromJson(json);
+
+  SyncDevice* device = devices.GetByObjectId(object_id);
+  DLOG(INFO) << "[Brave Sync] " << __func__ << " device=" << device;
+  if (device) {
+    DLOG(INFO) << "[Brave Sync] " << __func__ << " found " << device->name_;
+    auto record = std::make_unique<jslib::SyncRecord>();
+
+    record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
+        brave_sync::jslib::SyncRecord::Action::A_MIN,
+        brave_sync::jslib::SyncRecord::Action::A_MAX,
+        brave_sync::jslib::SyncRecord::Action::A_INVALID);
+    record->deviceId = device->device_id_;
+    record->objectId = device->object_id_;
+    record->objectData = jslib_const::SyncObjectData_DEVICE; // "device"
+
+    std::unique_ptr<jslib::Device> device_record = std::make_unique<jslib::Device>();
+    device_record->name = device->name_;
+    record->SetDevice(std::move(device_record));
+
+    return record;
+  } else {
+     DLOG(INFO) << "[Brave Sync] " << __func__ << " will ret none";
+     return nullptr;
   }
 }
 
@@ -498,17 +566,23 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(const std::string &category_nam
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (category_name == brave_sync::jslib_const::kPreferences) {
-    // OnResolvedPreferences(*records.get());
+    std::string this_device_id = sync_prefs_->GetThisDeviceId();
+    task_runner_->PostTask(
+      FROM_HERE,
+      base::Bind(&BraveSyncServiceImpl::OnResolvedPreferences,
+                 weak_ptr_factory_.GetWeakPtr(), base::Passed(std::move(records)),
+                 this_device_id)
+    );
   } else if (category_name == brave_sync::jslib_const::kBookmarks) {
     OnResolvedBookmarks(*records.get());
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
-    // OnResolvedHistorySites(*records.get());
+    NOTIMPLEMENTED();
   }
 
   SendUnsyncedBookmarks();
 }
 
-void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records,
+void BraveSyncServiceImpl::OnResolvedPreferences(std::unique_ptr<RecordsList> records,
   const std::string& this_device_id) {
   DLOG(INFO) << "[Brave Sync] " << __func__ << ":";
   DLOG(INFO) << "[Brave Sync] this_device_id=" << this_device_id;
@@ -521,7 +595,7 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records,
 
   bool this_device_deleted = false;
 
-  for (const auto &record : records) {
+  for (const auto &record : *records) {
     DCHECK(record->has_device() || record->has_sitesetting());
     if (record->has_device()) {
       DLOG(INFO) << "[Brave Sync] record->GetDevice().name=" <<
@@ -856,8 +930,7 @@ void BraveSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
   DCHECK(sync_client_);
   sync_prefs_->SetLastFetchTime(base::Time::Now());
 
-  // TODO - is this right or should it be last record time?
-  base::Time start_at_time = sync_prefs_->GetLastFetchTime();
+  base::Time start_at_time = sync_prefs_->GetLatestRecordTime();
   sync_client_->SendFetchSyncRecords(
     category_names,
     start_at_time,

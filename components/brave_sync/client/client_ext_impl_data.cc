@@ -239,6 +239,7 @@ void ConvertResolvedPairs(const SyncRecordAndExistingList &records_and_existing_
   DCHECK(records_and_existing_objects_ext.empty());
 
   for (const SyncRecordAndExistingPtr &src : records_and_existing_objects) {
+    DCHECK(src->first.get() != nullptr);
 LOG(ERROR) << "" << src->first->objectId;
     std::unique_ptr<extensions::api::brave_sync::RecordAndExistingObject> dest =
       std::make_unique<extensions::api::brave_sync::RecordAndExistingObject>();
