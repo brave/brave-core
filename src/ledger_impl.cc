@@ -710,4 +710,8 @@ void LedgerImpl::SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
   bat_publishers_->setBalanceReportItem(month, year, type, probi);
 }
 
+void LedgerImpl::FetchFavIcon(const std::string& url, const std::string& publisher_key) {
+  ledger_client_->FetchFavIcon(url, publisher_key);
+}
+
 }  // namespace bat_ledger

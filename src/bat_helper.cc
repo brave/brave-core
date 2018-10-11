@@ -1883,9 +1883,9 @@ static bool ignore_ = false;
             iter = data.find("vod");
             if (iter != data.end()) {
               std::string idAddition(iter->second);
-              auto new_end = std::remove(idAddition.begin(), idAddition.end(), 'v');
-              id += "_vod_" + idAddition;
-              [&new_end] {}(); /*ignore [[nodiscard]]*/
+              if (idAddition.find('v') != std::string::npos) {
+                id += "_vod_" + braveledger_bat_helper::split(idAddition, 'v')[1];
+              }
             }
 
             return id;
