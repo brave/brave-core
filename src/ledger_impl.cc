@@ -434,9 +434,9 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   // TODO SZ: we have to save old timestamp in case of failure
   uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
 
-  ledger_client_->OnReconcileComplete(result, viewing_id, probi);
   // Start the timer again
   bat_client_->resetReconcileStamp();
+  ledger_client_->OnReconcileComplete(result, viewing_id, probi);
   Reconcile();
   if (result != ledger::Result::LEDGER_OK) {
     // error handling
