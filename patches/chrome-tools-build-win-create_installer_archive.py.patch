@@ -1,12 +1,13 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 0e12f2a17d11bdde2470330b6437f3254e3d1be7..a8f23d719fc822b26c9a6926a625d2b7dc1bf05a 100755
+index 0e12f2a17d11bdde2470330b6437f3254e3d1be7..a40a86a1d5c9baf8d01afcdf10649e2779e17d8b 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -109,6 +109,33 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
+@@ -109,6 +109,60 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
    if enable_hidpi == '1':
      CopySectionFilesToStagingDir(config, 'HIDPI', staging_dir, build_dir)
  
 +  CopyBraveExtensionLocalization(config, staging_dir)
++  CopyBraveRewardsExtensionLocalization(config, staging_dir)
 +
 +def CopyBraveExtensionLocalization(config, staging_dir):
 +  """Copies extension localization files from
@@ -33,10 +34,36 @@ index 0e12f2a17d11bdde2470330b6437f3254e3d1be7..a8f23d719fc822b26c9a6926a625d2b7
 +        rel_file = os.path.join(rel_dir, name)
 +        candidate = os.path.join('.', 'resources', 'brave_extension' '_locales', rel_file)
 +        g_archive_inputs.append(candidate)
++
++def CopyBraveRewardsExtensionLocalization(config, staging_dir):
++  """Copies extension localization files from
++  \\brave\components\brave_rewards\extension\brave_rewards\_locales to
++  \\<out_gen_dir>\chrome\installer\mini_installer\mini_installer\temp_installer_archive\Chrome-bin\<version>\resources\brave_rewards\_locales
++  """
++  brave_extension_dir = os.path.realpath(os.path.dirname(os.path.realpath(__file__)) )
++  brave_extension_dir = os.path.realpath(os.path.join(brave_extension_dir,
++    os.pardir,  os.pardir, os.pardir, os.pardir, 'brave', 'components', 'brave_rewards', 'extension', 'brave_rewards'))
++  locales_src_dir_path = os.path.join(brave_extension_dir, '_locales')
++  locales_dest_path = staging_dir
++  locales_dest_path = os.path.join(locales_dest_path, config.get('GENERAL', 'brave_resources.pak'),
++    'resources', 'brave_rewards', '_locales')
++  locales_dest_path = os.path.realpath(locales_dest_path)
++  try:
++    shutil.rmtree(locales_dest_path)
++  except:
++    pass
++  shutil.copytree(locales_src_dir_path, locales_dest_path)
++  # Files are copied, but we need to inform g_archive_inputs about that
++  for root, dirs, files in os.walk(locales_dest_path):
++    for name in files:
++        rel_dir = os.path.relpath(root, locales_dest_path)
++        rel_file = os.path.join(rel_dir, name)
++        candidate = os.path.join('.', 'resources', 'brave_rewards' '_locales', rel_file)
++        g_archive_inputs.append(candidate)
  
  def CopySectionFilesToStagingDir(config, section, staging_dir, src_dir):
    """Copies installer archive files specified in section from src_dir to
-@@ -557,6 +584,9 @@ def main(options):
+@@ -557,6 +611,9 @@ def main(options):
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
  
