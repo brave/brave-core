@@ -11,11 +11,11 @@
 
 namespace ads_bat_client {
 
-struct CLIENT_STATE_ST;
+struct USER_MODEL_STATE_ST;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
-void SaveToJson(JsonWriter& writer, const CLIENT_STATE_ST& state);
+void SaveToJson(JsonWriter& writer, const USER_MODEL_STATE_ST& state);
 
 template <typename T>
 void SaveToJsonString(const T& t, std::string& json) {
