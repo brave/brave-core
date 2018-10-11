@@ -51,6 +51,9 @@ export const Label = styled<LabelProps, 'label'>('label')`
   font-weight: ${p => setValueBasedOnSize(p.size, 'normal', '500', '500')};
   line-height: ${p => setValueBasedOnSize(p.size, '1', '18px', '27px')};
   color: ${p => setValueBasedOnSize(p.size, palette.grey100, palette.grey200, palette.grey200)};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 interface HighlightProps {
