@@ -190,6 +190,10 @@
           {
             "$ref": "Config",
             "name": "config"
+          },
+          {
+            "type": "string",
+            "name": "sync_words"
           }
         ]
       },
@@ -280,17 +284,6 @@
           {
             "type": "string",
             "name": "seed"
-          }
-        ]
-      },
-      {
-        "name": "onNeedBytesFromSyncWords",
-        "type": "function",
-        "description": "Browser informs js sync library it has sync words and wants to get bytes to connect to the sync chain.",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "words"
           }
         ]
       },
@@ -451,21 +444,6 @@
           {
             "type": "string",
             "name": "words"
-          }
-        ]
-      },
-      {
-        "name": "bytesFromSyncWordsPrepared",
-        "type": "function",
-        "description": "Browser gets notified the bytes from sync words are ready",
-        "parameters": [
-          {
-            "type": "binary",
-            "name": "bytes"
-          },
-          {
-            "type": "string",
-            "name": "error_message"
           }
         ]
       }

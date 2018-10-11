@@ -129,7 +129,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnSaveBookmarkOrder(const std::string &order,
     const std::string &prev_order, const std::string &next_order) override;
   void OnSyncWordsPrepared(const std::string &words) override;
-  void OnBytesFromSyncWordsPrepared(const Uint8Array &bytes, const std::string &error_message) override;
 
   void OnResolvedPreferences(std::unique_ptr<RecordsList> records, const std::string& this_device_id);
   void OnResolvedBookmarks(const RecordsList &records);
@@ -206,20 +205,11 @@ class BraveSyncServiceImpl : public BraveSyncService,
   // Version received from "get-init-data" command
   std::string sync_version_;
 
-  // Mark members with an small life time
-  class TempStorage {
-   public:
-    TempStorage();
-    ~TempStorage();
-    // This should be used only for passing
-    // between OnSetupSyncHaveCode or OnSetupSyncNewToSync to OnSaveInitData
-    std::string device_name_;
-    // Between OnWordsToBytesDone => InitJsLib|OnSaveInitData
-    std::string seed_str_;
-    // Guard to prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync while being initialized
-    bool currently_initializing_guard_ = false;
-  };
-  TempStorage temp_storage_;
+  // Prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync
+  // while being initializing
+  bool initializing_ = false;
+
+  std::string sync_words_;
 
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
   std::unique_ptr<brave_sync::Settings> settings_;
@@ -227,8 +217,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   std::unique_ptr<brave_sync::History> history_;
 
   Profile *profile_;
-
-  bool seen_get_init_data_ = false;
 
   // Moment when FETCH_SYNC_RECORDS was sent,
   // will be saved on GET_EXISTING_OBJECTS to be sure request was processed

@@ -19,10 +19,10 @@ BraveSyncEventRouter::~BraveSyncEventRouter() {
 }
 
 void BraveSyncEventRouter::GotInitData(
-  const brave_sync::Uint8Array &seed,
-  const brave_sync::Uint8Array &device_id,
-  const extensions::api::brave_sync::Config &config
-) {
+  const brave_sync::Uint8Array& seed,
+  const brave_sync::Uint8Array& device_id,
+  const extensions::api::brave_sync::Config& config,
+  const std::string& sync_words) {
   if (!profile_) {
     LOG(ERROR) << "TAGAB BraveSyncEventRouter::GotInitData profile is not set";
     return;
@@ -35,7 +35,10 @@ void BraveSyncEventRouter::GotInitData(
     const std::vector<int> arg_device_id(device_id.begin(), device_id.end());
 
     std::unique_ptr<base::ListValue> args(
-       extensions::api::brave_sync::OnGotInitData::Create(arg_seed, arg_device_id, config)
+       extensions::api::brave_sync::OnGotInitData::Create(arg_seed,
+                                                          arg_device_id,
+                                                          config,
+                                                          sync_words)
          .release());
     std::unique_ptr<Event> event(
        new Event(extensions::events::FOR_TEST,
@@ -210,28 +213,6 @@ void BraveSyncEventRouter::NeedSyncWords(const std::string &seed) {
   std::unique_ptr<Event> event(
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnNeedSyncWords::kEventName,
-       std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
-}
-
-void BraveSyncEventRouter::NeedBytesFromSyncWords(const std::string &words) {
-  if (!profile_) {
-    LOG(ERROR) << "profile is not set";
-    return;
-  }
-
-  EventRouter* event_router = EventRouter::Get(profile_);
-
-  if (!event_router) {
-    return;
-  }
-
-  std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnNeedBytesFromSyncWords::Create(words)
-       .release());
-  std::unique_ptr<Event> event(
-     new Event(extensions::events::FOR_TEST,
-       extensions::api::brave_sync::OnNeedBytesFromSyncWords::kEventName,
        std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }

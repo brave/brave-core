@@ -50,8 +50,8 @@ class BraveSyncClientImpl : public BraveSyncClient,
   SyncLibToBrowserHandler *GetSyncToBrowserHandler() override;
 
   // Browser to BraveSync messages
-  void SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
-    const client_data::Config &config) override;
+  void SendGotInitData(const Uint8Array& seed, const Uint8Array& device_id,
+    const client_data::Config& config, const std::string& sync_words) override;
   void SendFetchSyncRecords(
     const std::vector<std::string> &category_names, const base::Time &startAt,
     const int &max_records) override;
@@ -65,7 +65,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) override;
   void SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) override;
   void NeedSyncWords(const std::string &seed) override;
-  void NeedBytesFromSyncWords(const std::string &words) override;
 
  private:
   void LoadOrUnloadExtension(bool load);
