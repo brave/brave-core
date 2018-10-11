@@ -338,7 +338,7 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration, c
     std::string id = providerName + "#author:" + twitchMediaID;
 
     ledger::VisitData updated_visit_data(visit_data);
-    updated_visit_data.favicon_url = "https://" + providerName + "-" + twitchMediaID + "-brave.com";
+    updated_visit_data.favicon_url = "https://" + ledger_->GenerateGUID() + ".invalid";
     updated_visit_data.name = author_name;
 
     if (fav_icon.length() > 0) {
@@ -373,7 +373,7 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
     }
 
     if (favIconURL.length() > 0) {
-      std::string favicon_key = "https://" + providerName + "-" + publisherName + "-brave.com";
+      std::string favicon_key = "https://" + ledger_->GenerateGUID() + ".invalid";
       ledger_->FetchFavIcon(favIconURL, favicon_key);
       favIconURL = favicon_key;
     }
