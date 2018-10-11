@@ -131,7 +131,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnSyncWordsPrepared(const std::string &words) override;
   void OnBytesFromSyncWordsPrepared(const Uint8Array &bytes, const std::string &error_message) override;
 
-  void OnResolvedPreferences(const RecordsList &records, const std::string& this_device_id);
+  void OnResolvedPreferences(std::unique_ptr<RecordsList> records, const std::string& this_device_id);
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
 
@@ -169,6 +169,13 @@ class BraveSyncServiceImpl : public BraveSyncService,
     const std::string &deviceName,
     const std::string &deviceId,
     const std::string &objectId);
+
+  void OnGetExistingObjectsFileWork(const std::string& category_name,
+    std::unique_ptr<RecordsList> records,
+    const base::Time& last_record_time_stamp,
+    bool is_truncated);
+  SyncRecordAndExistingList PrepareResolvedPreferences(const RecordsList& records);
+  SyncRecordPtr PrepareResolvedDevice(const std::string& object_id, int action);
 
   void StartLoop();
   void StopLoop();
