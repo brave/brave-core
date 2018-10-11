@@ -27,7 +27,7 @@ import { NoScriptInfo } from '../../types/other/noScriptInfo'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { getMessage } from '../../background/api/localeAPI'
 
-interface Props {
+export interface Props {
   url: string
   hostname: string
   origin: string
@@ -158,7 +158,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
     }
 
     return (
-      <>
+      <div id='braveShieldsPrivacyControls'>
         {/* cookies select */}
         <SelectGrid hasUserInteraction={false}>
           <EmptyButton />
@@ -203,7 +203,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
               : null
           }
         </SelectGrid>
-      </>
+      </div>
     )
   }
 }

@@ -122,14 +122,14 @@ export interface ChangeNoScriptSettings {
   (origin: string): ChangeNoScriptSettingsReturn
 }
 
-interface BlockAllScriptsReturn {
+interface ChangeAllNoScriptSettingsReturn {
   type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
   origin: string,
   shouldBlock: boolean
 }
 
 export interface ChangeAllNoScriptSettings {
-  (origin: string, shouldBlock: boolean): BlockAllScriptsReturn
+  (origin: string, shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
 }
 
 export type shieldPanelActions =
@@ -144,4 +144,4 @@ export type shieldPanelActions =
   BlockCookiesReturn |
   AllowScriptOriginsOnceReturn |
   ChangeNoScriptSettingsReturn |
-  BlockAllScriptsReturn
+  ChangeAllNoScriptSettingsReturn
