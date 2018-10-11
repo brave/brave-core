@@ -43,9 +43,9 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
 
       ASSERT_TRUE(embedded_test_server()->Start());
 
-      whitelisted_attr_url_ = embedded_test_server()->GetURL("example.com", "/autoplay/autoplay_by_attr.html");
+      whitelisted_url_ = embedded_test_server()->GetURL("example.com", "/autoplay/autoplay_by_attr.html");
 
-      top_level_page_pattern_ =
+      user_blocklist_pattern_ =
           ContentSettingsPattern::FromString("http://example.com/*");
     }
 
@@ -54,10 +54,10 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
       content_client_.reset();
     }
 
-    const GURL& whitelisted_attr_url() { return whitelisted_attr_url_; }
+    const GURL& whitelisted_url() { return whitelisted_url_; }
 
-    const ContentSettingsPattern& top_level_page_pattern() {
-      return top_level_page_pattern_;
+    const ContentSettingsPattern& user_blocklist_pattern() {
+      return user_blocklist_pattern_;
     }
 
     HostContentSettingsMap * content_settings() {
@@ -66,7 +66,7 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
 
     void BlockAutoplay() {
       content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern_,
+          user_blocklist_pattern_,
           ContentSettingsPattern::Wildcard(),
           CONTENT_SETTINGS_TYPE_AUTOPLAY,
           std::string(),
@@ -90,13 +90,13 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
     }
 
   private:
-    GURL whitelisted_attr_url_;
-    ContentSettingsPattern top_level_page_pattern_;
+    GURL whitelisted_url_;
+    ContentSettingsPattern user_blocklist_pattern_;
     std::unique_ptr<ChromeContentClient> content_client_;
     std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
-// Allow autoplay on whitelisted URL
+// Allow autoplay on whitelisted URL by default
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest, AllowAutoplay) {
   std::string result;
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
@@ -106,7 +106,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest, AllowAutoplay) 
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
-  NavigateToURLUntilLoadStop(whitelisted_attr_url());
+  NavigateToURLUntilLoadStop(whitelisted_url());
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
@@ -117,7 +117,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest, AllowAutoplay) 
   EXPECT_EQ(result, kVideoPlaying);
 }
 
-// Block autoplay on whitelisted URL if user has blocklist pattern that matches URL
+// Block autoplay, even on whitelisted URL, if user has a blocklist pattern that
+// matches the whitelisted URL
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest, BlockAutoplay) {
   std::string result;
   BlockAutoplay();
@@ -128,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest, BlockAutoplay) 
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
 
-  NavigateToURLUntilLoadStop(whitelisted_attr_url());
+  NavigateToURLUntilLoadStop(whitelisted_url());
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
               PermissionRequestType::PERMISSION_AUTOPLAY));
