@@ -37,3 +37,21 @@ const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
   // separately, which Widget::GetNativeTheme calls.
   return views::Widget::GetNativeTheme();
 }
+
+void BraveBrowserFrame::ThemeChanged() {
+  BrowserFrame::ThemeChanged();
+  // Our native theme values must be changed when our theme is changed
+  // because of white text on white problem for the URLbar and probably
+  // other problems too.
+  // I tried a lot of ways but doing the NotifyObserers here is the only
+  // way that I found which works. Notify Observers does in turn trigger
+  // a call to ThemeChanged though, so to avoid infinite recurison we use
+  // the hack below.
+  static bool inThemeChanged = false;
+  if (!inThemeChanged) {
+    inThemeChanged = true;
+    ui::NativeThemeDarkAura::instance()->NotifyObservers();
+    views::Widget::GetNativeTheme()->NotifyObservers();
+  }
+  inThemeChanged = false;
+}
