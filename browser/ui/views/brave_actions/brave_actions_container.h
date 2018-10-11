@@ -70,6 +70,9 @@ class BraveActionsContainer : public views::View,
         content::WebContents* web_contents,
         content::BrowserContext* browser_context) override;
 
+    // views::View:
+    void ChildPreferredSizeChanged(views::View* child) override;
+
   private:
     // Special positions in the container designators
     enum ActionPosition : int {

@@ -105,18 +105,20 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension,
     // The button view
     actions_[id].view_ = std::make_unique<ToolbarActionView>(
         actions_[id].view_controller_.get(), this);
-    // we control destruction
-    actions_[id].view_->set_owned_by_client();
-    // Sets overall size of button but not image graphic. We set a large width
-    // in order to give space for the bubble.
-    actions_[id].view_->SetPreferredSize(gfx::Size(32, 24));
     // Add extension view after separator view
+    // `AddChildView` should be called first, so that changes that modify
+    // layout (e.g. preferred size) are forwarded to its parent
     if (actions_[id].position_ != ACTION_ANY_POSITION) {
       DCHECK(actions_[id].position_ > 0);
       AddChildViewAt(actions_[id].view_.get(), actions_[id].position_);
     } else {
       AddChildView(actions_[id].view_.get());
     }
+    // we control destruction
+    actions_[id].view_->set_owned_by_client();
+    // Sets overall size of button but not image graphic. We set a large width
+    // in order to give space for the bubble.
+    actions_[id].view_->SetPreferredSize(gfx::Size(32, 24));
     Update();
   }
 }
@@ -244,3 +246,7 @@ void BraveActionsContainer::OnExtensionActionUpdated(
     UpdateActionState(extension_action->extension_id());
 }
 // end ExtensionActionAPI::Observer
+
+void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
+  PreferredSizeChanged();
+}
