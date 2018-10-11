@@ -134,7 +134,7 @@ export default class ShieldsInterfaceControls extends React.PureComponent<Props,
     }
 
     return (
-      <>
+      <div id='braveShieldsInterfaceControls'>
         {/* ads toggle */}
         <ToggleGrid>
           <EmptyButton disabled={this.totalAdsTrackersBlocked === 0} onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
@@ -159,7 +159,7 @@ export default class ShieldsInterfaceControls extends React.PureComponent<Props,
             ? this.renderConnectionsEncryptedList(url, hostname, this.onToggleConnectionsEncrypted)
             : null
         }
-      </>
+      </div>
     )
   }
 }
