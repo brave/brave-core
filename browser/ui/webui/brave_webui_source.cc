@@ -381,8 +381,10 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
     }, {
       std::string("donate"), {
         { "about", IDS_BRAVE_UI_ABOUT },
+        { "addFunds", IDS_BRAVE_UI_ADD_FUNDS },
         { "donationAmount", IDS_BRAVE_UI_DONATION_AMOUNT },
         { "makeMonthly", IDS_BRAVE_UI_MAKE_MONTHLY },
+        { "notEnoughTokens", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS },
         { "rewardsBannerText1", IDS_BRAVE_UI_REWARDS_BANNER_TEXT1 },
         { "rewardsBannerText2", IDS_BRAVE_UI_REWARDS_BANNER_TEXT2 },
         { "sendDonation", IDS_BRAVE_UI_SEND_DONATION },
