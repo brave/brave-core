@@ -1,6 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -9,36 +10,42 @@
 #include <limits.h>
 
 #include "base/bind.h"
-#include "base/guid.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
+#include "base/guid.h"
 #include "base/i18n/time_formatting.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task_runner_util.h"
 #include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
+#include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/browser_process_impl.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
+#include "components/grit/brave_components_resources.h"
+#include "extensions/browser/event_router.h"
+#include "extensions/browser/extension_api_frame_id_map.h"
 #include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/url_request/url_fetcher.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "ui/gfx/image/image.h"
+#include "ui/gfx/image/image.h"
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
-
-#include "extensions/browser/event_router.h"
-#include "extensions/browser/extension_api_frame_id_map.h"
-#include "brave/common/extensions/api/brave_rewards.h"
-#include "components/grit/brave_components_resources.h"
-#include "ui/base/resource/resource_bundle.h"
 
 using extensions::Event;
 using extensions::EventRouter;
@@ -252,6 +259,14 @@ ledger::is_verbose = true;
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, publisher_info_backend_.release());
+  BitmapFetcherService* image_service =
+      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
+  if (image_service) {
+    for (auto request_id : request_ids_) {
+      image_service->CancelRequest(request_id);
+    }
+  }
+
 }
 
 void RewardsServiceImpl::Init() {
@@ -1188,6 +1203,86 @@ void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
 
 double RewardsServiceImpl::GetContributionAmount() {
   return ledger_->GetContributionAmount();
+}
+
+void RewardsServiceImpl::FetchFavIcon(const std::string& url, const std::string& favicon_key) {
+  GURL parsedUrl(url);
+
+  if (!parsedUrl.is_valid()) {
+    return;
+  }
+
+  std::vector<std::string>::iterator it;
+  it = find (current_media_fetchers_.begin(), current_media_fetchers_.end(), url);
+  if (it != current_media_fetchers_.end()) {
+    VLOG(1) << "Already fetching favicon: " << url;
+    return;
+  }
+
+  BitmapFetcherService* image_service =
+      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
+  if (image_service) {
+    net::NetworkTrafficAnnotationTag traffic_annotation =
+      net::DefineNetworkTrafficAnnotation("brave_rewards_favicon_fetcher", R"(
+        semantics {
+          sender:
+            "Brave Rewards Media Fetcher"
+          description:
+            "Fetches favicon for media publishers in Rewards."
+          trigger:
+            "User visits a media publisher content."
+          data: "Favicon for media publisher."
+          destination: WEBSITE
+        }
+        policy {
+          cookies_allowed: NO
+          setting:
+            "This feature cannot be disabled by settings."
+          policy_exception_justification:
+            "Not implemented."
+        })");
+    current_media_fetchers_.emplace_back(url);
+    request_ids_.push_back(image_service->RequestImage(
+          parsedUrl,
+          // Image Service takes ownership of the observer
+          new RewardsFetcherServiceObserver(
+              favicon_key,
+              parsedUrl,
+              base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted, base::Unretained(this))),
+          traffic_annotation));
+  }
+}
+
+void RewardsServiceImpl::OnFetchFavIconCompleted(const std::string& favicon_key,
+                                            const GURL& url,
+                                            const BitmapFetcherService::RequestId& request_id,
+                                            const SkBitmap& image) {
+  GURL publisher_url(favicon_key);
+  gfx::Image gfx_image = gfx::Image::CreateFrom1xBitmap(image);
+  favicon::FaviconService* favicon_service =
+          FaviconServiceFactory::GetForProfile(profile_, ServiceAccessType::EXPLICIT_ACCESS);
+  favicon_service->SetOnDemandFavicons(
+      publisher_url,
+      url, favicon_base::IconType::kFavicon, gfx_image,
+      base::BindOnce(&RewardsServiceImpl::OnSetOnDemandFaviconComplete, AsWeakPtr()));
+
+  std::vector<std::string>::iterator it_url;
+  it_url = find(current_media_fetchers_.begin(), current_media_fetchers_.end(), url.spec());
+  if (it_url != current_media_fetchers_.end()) {
+    current_media_fetchers_.erase(it_url);
+  }
+
+  std::vector<BitmapFetcherService::RequestId>::iterator it_ids;
+  it_ids = find(request_ids_.begin(), request_ids_.end(), request_id);
+  if (it_ids != request_ids_.end()) {
+    request_ids_.erase(it_ids);
+  }
+}
+
+void RewardsServiceImpl::OnSetOnDemandFaviconComplete(bool success) {
+  if (success) {
+    // TODO reload settings page brave/brave-browser#1521
+  }
 }
 
 }  // namespace brave_rewards
