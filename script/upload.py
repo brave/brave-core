@@ -87,31 +87,42 @@ def main():
 
 
 def yield_brave_packages(dir, channel, version):
+  def rename_and_get_desired_path(file_path, file_desired):
+    file_desired_path = os.path.join(dir, file_desired)
+    if os.path.isfile(file_path):
+      print('[INFO] Renaming' + file_path + ' to ' + file_desired_path)
+      os.rename(file_path, file_desired_path)
+    return file_desired_path
+
   channel_capitalized = channel.capitalize()
   for _, _, files in os.walk(dir):
     for file in files:
+      file_path = os.path.join(dir, file)
       if PLATFORM == 'darwin':
         if channel_capitalized == 'Release':
           file_desired = 'Brave-Browser.dmg'
           if file == 'Brave Browser.dmg':
-            os.rename(os.path.join(dir, file), os.path.join(dir, file_desired))
-            yield file_desired
+            if os.path.isfile(rename_and_get_desired_path(file_path, file_desired)):
+              yield file_desired
         else:
           file_desired = 'Brave-Browser-' + channel_capitalized + '.dmg'
           if re.match(r'Brave Browser ' + channel_capitalized + r'.*\.dmg$', file):
-            os.rename(os.path.join(dir, file), os.path.join(dir, file_desired))
-            yield file_desired
-        if file == file_desired:
+            if os.path.isfile(rename_and_get_desired_path(file_path, file_desired)):
+              yield file_desired
+        if file == file_desired and os.path.isfile(file_path):
           yield file
       elif PLATFORM == 'linux':
         if channel == 'release':
           if re.match(r'brave-browser' + '_' + version + r'.*\.deb$', file) \
           or re.match(r'brave-browser' + '-' + version + r'.*\.rpm$', file):
-            yield file
+            if os.path.isfile(file_path):
+              yield file
         else:
           if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
           or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
-            yield file
+            if os.path.isfile(file_path):
+              yield file
+
 
 def get_draft(repo, tag):
   release = None
@@ -244,7 +255,6 @@ def upload_io_to_github(github, release, name, io, content_type):
     params={'name': name},
     headers={'Content-Type': content_type},
     data=io,
-    # TODO mplesa should this be True?
     verify=False
   )
 
