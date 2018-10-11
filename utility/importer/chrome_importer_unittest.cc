@@ -78,11 +78,10 @@ TEST_F(ChromeImporterTest, ImportHistory) {
 
   importer_->StartImport(profile_, importer::HISTORY, bridge_.get());
 
-  ASSERT_EQ(4u, history.size());
+  ASSERT_EQ(3u, history.size());
   EXPECT_EQ("https://brave.com/", history[0].url.spec());
   EXPECT_EQ("https://github.com/brave", history[1].url.spec());
-  EXPECT_EQ("https://nytimes.com/", history[2].url.spec());
-  EXPECT_EQ("https://www.nytimes.com/", history[3].url.spec());
+  EXPECT_EQ("https://www.nytimes.com/", history[2].url.spec());
 }
 
 TEST_F(ChromeImporterTest, ImportBookmarks) {
