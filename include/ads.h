@@ -29,20 +29,6 @@ class Ads {
 
   ads::Ads* ads_;  // NOT OWNED
 
-  virtual void OnTimer(uint32_t timer_id) = 0;
-
-  virtual std::string URIEncode(const std::string& value) = 0;
-
-  virtual void SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
-      CampaignInfoCallback callback) = 0;
-  virtual void GetCampaignInfo(const catalog::CampaignInfoFilter& filter,
-      CampaignInfoCallback callback) = 0;
-
-  virtual void SetCreativeSetInfo(std::unique_ptr<catalog::CreativeSetInfo>
-      info, CreativeSetInfoCallback callback) = 0;
-  virtual void GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
-      CreativeSetInfoCallback callback) = 0;
-
   // Initialize
   virtual void Initialize() = 0;
 
@@ -102,6 +88,28 @@ class Ads {
 
   // Called when the user invokes "Show Sample Ad"
   virtual void ServeSampleAd(uint64_t windowId) = 0;
+
+  // Called when the timer is triggered
+  virtual void OnTimer(uint32_t timer_id) = 0;
+
+  // URI encode
+  virtual std::string URIEncode(const std::string& value) = 0;
+
+  // Set campaign info
+  virtual void SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
+      CampaignInfoCallback callback) = 0;
+
+  // Get campaign info
+  virtual void GetCampaignInfo(const catalog::CampaignInfoFilter& filter,
+      CampaignInfoCallback callback) = 0;
+
+  // Set creative set info
+  virtual void SetCreativeSetInfo(std::unique_ptr<catalog::CreativeSetInfo>
+      info, CreativeSetInfoCallback callback) = 0;
+
+  // Get creative set info
+  virtual void GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
+      CreativeSetInfoCallback callback) = 0;
 };
 
 }  // namespace ads
