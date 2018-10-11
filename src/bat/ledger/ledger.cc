@@ -100,6 +100,18 @@ PublisherInfoFilter::PublisherInfoFilter(const PublisherInfoFilter& filter) :
     reconcile_stamp(filter.reconcile_stamp) {}
 PublisherInfoFilter::~PublisherInfoFilter() {}
 
+PublisherBanner::PublisherBanner() {}
+
+PublisherBanner::PublisherBanner(const PublisherBanner& info) :
+    title(info.title),
+    description(info.description),
+    background(info.background),
+    logo(info.logo),
+    amounts(info.amounts),
+    social(info.social) {}
+
+PublisherBanner::~PublisherBanner() {}
+
 PublisherInfo::PublisherInfo() :
     duration(0u),
     score(.0),

@@ -164,6 +164,7 @@ class LedgerImpl : public ledger::Ledger,
   void PrepareVoteBatchTimer();
   void VoteBatchTimer();
   void FetchFavIcon(const std::string& url, const std::string& publisher_key);
+  ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

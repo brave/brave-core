@@ -175,6 +175,7 @@ class LEDGER_EXPORT Ledger {
                                     int year,
                                     ledger::ReportType type,
                                     const std::string& probi) = 0;
+  virtual ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) = 0;
 };
 
 }  // namespace ledger

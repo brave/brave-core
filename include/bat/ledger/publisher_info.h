@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include "bat/ledger/export.h"
 
@@ -67,6 +68,19 @@ LEDGER_EXPORT struct ContributionInfo {
   std::string publisher;  // Filled only for recurrent donations
   double value;
   uint64_t date;
+};
+
+LEDGER_EXPORT struct PublisherBanner {
+  PublisherBanner();
+  PublisherBanner(const PublisherBanner& info);
+  ~PublisherBanner();
+
+  std::string title;
+  std::string description;
+  std::string background;
+  std::string logo;
+  std::vector<int> amounts;
+  std::map<std::string, std::string> social;
 };
 
 LEDGER_EXPORT struct PublisherInfo {

@@ -92,6 +92,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                                const std::string& path,
                                ledger::PUBLISHER_MONTH month,
                                int year);
+  ledger::PublisherBanner getPublisherBanner(const std::string& publisher_id);
 
   void setBalanceReportItem(ledger::PUBLISHER_MONTH month,
                                int year,
