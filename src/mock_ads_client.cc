@@ -17,6 +17,15 @@ MockAdsClient::~MockAdsClient() = default;
 void MockAdsClient::Initialize() {
 }
 
+void MockAdsClient::AppFocused(bool focused) {
+}
+
+void MockAdsClient::TabUpdate() {
+}
+
+void MockAdsClient::RecordUnIdle() {
+}
+
 void MockAdsClient::RemoveAllHistory() {
 }
 

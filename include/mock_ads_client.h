@@ -26,6 +26,9 @@ class MockAdsClient : public ads::AdsClient {
  protected:
   // ads::AdsClient
   void Initialize() override;
+  void AppFocused(bool focused) override;
+  void TabUpdate() override;
+  void RecordUnIdle() override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
   void ConfirmAdUUIDIfAdEnabled(bool enabled) override;
