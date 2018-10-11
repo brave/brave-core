@@ -15,7 +15,7 @@ struct UX {
     }
     
     struct UrlBar {
-        static let height: CGFloat = UIConstants.TopToolbarHeight + UX.TabsBar.height
+        static let height: CGFloat = UIConstants.TopToolbarHeight
     }
     
     struct HomePanel {
