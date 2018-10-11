@@ -11,6 +11,8 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
+#include "brave/components/brave_sync/brave_sync_service_factory.h"
+#include "brave/components/brave_sync/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/pref_names.h"
@@ -87,6 +89,17 @@ BraveProfileManager::CreateProfileAsyncHelper(const base::FilePath& path,
      LaunchTorProcess(profile);
   }
   return profile;
+}
+
+void BraveProfileManager::DoFinalInitForServices(Profile* profile,
+                                                 bool go_off_the_record) {
+  ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
+  if (profile->GetPrefs()
+      ->GetBoolean(brave_sync::prefs::kSyncThisDeviceEnabled)) {
+    auto* service = brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
+    if (!service)
+      LOG(ERROR) << "brave_sync::BraveSyncServiceFactory::GetForProfile failed";
+  }
 }
 
 void BraveProfileManager::LaunchTorProcess(Profile* profile) {

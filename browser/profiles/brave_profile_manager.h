@@ -25,6 +25,8 @@ class BraveProfileManager : public ProfileManager {
    Profile* CreateProfileHelper(const base::FilePath& path) override;
    Profile* CreateProfileAsyncHelper(const base::FilePath& path,
                                      Delegate* delegate) override;
+   void DoFinalInitForServices(Profile* profile,
+                               bool go_off_the_record) override;
  private:
    void LaunchTorProcess(Profile* profile);
 
