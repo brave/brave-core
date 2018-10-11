@@ -209,8 +209,58 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
     return true;
 
   bool allow = ContentSettingsObserver::AllowAutoplay(default_value);
-  if (allow) {
+  if (allow)
     return true;
+
+  // respect user's site blocklist, if any
+  const GURL& primary_url = GetOriginOrURL(frame);
+  const GURL& secondary_url = url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
+  for (const auto& rule : content_setting_rules_->autoplay_rules) {
+    if (rule.primary_pattern == ContentSettingsPattern::Wildcard())
+        continue;
+    ContentSettingsPattern secondary_pattern = rule.secondary_pattern;
+    if (rule.secondary_pattern ==
+        ContentSettingsPattern::FromString("https://firstParty/*")) {
+        secondary_pattern = ContentSettingsPattern::FromString(
+            "[*.]" + GetOriginOrURL(frame).HostNoBrackets());
+    }
+    if (rule.primary_pattern.Matches(primary_url) &&
+        (secondary_pattern == ContentSettingsPattern::Wildcard() ||
+         secondary_pattern.Matches(secondary_url))) {
+      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK)
+        return false;
+    }
+  }
+
+  // in the absence of an explicit block rule, whitelist the following sites
+  std::string kWhitelistPatterns[] = {
+      "[*.]example.com",
+      "[*.]youtube.com",
+      "[*.]khanacademy.org",
+      "[*.]twitch.tv",
+      "[*.]vimeo.com",
+      "[*.]udemy.com",
+      "[*.]duolingo.com",
+      "[*.]giphy.com",
+      "[*.]imgur.com",
+      "[*.]netflix.com",
+      "[*.]hulu.com",
+      "[*.]primevideo.com",
+      "[*.]dailymotion.com",
+      "[*.]tv.com",
+      "[*.]viewster.com",
+      "[*.]metacafe.com",
+      "[*.]d.tube",
+      "[*.]spotify.com",
+      "[*.]lynda.com",
+      "[*.]soundcloud.com",
+      "[*.]pandora.com",
+      "[*.]periscope.tv",
+      "[*.]pscp.tv",
+  };
+  for (const auto& pattern : kWhitelistPatterns) {
+    if (ContentSettingsPattern::FromString(pattern).Matches(primary_url))
+      return true;
   }
 
   blink::mojom::blink::PermissionServicePtr permission_service;
