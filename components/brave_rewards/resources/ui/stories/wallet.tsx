@@ -12,6 +12,7 @@ import centered from '@storybook/addon-centered/dist'
 import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
 import { AlertWallet } from '../../../src/features/rewards/walletWrapper'
 import { WalletAddIcon, WalletImportIcon } from '../../../src/components/icons'
+import { WalletInfoHeader } from '../../../src/features/rewards/mobile'
 
 const bartBaker = require('../../assets/img/bartBaker.jpeg')
 
@@ -19,7 +20,7 @@ const doNothing = () => {
   console.log('nothing')
 }
 
-storiesOf('Feature Components/Rewards/Wallet', module)
+storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
   .add('Wrapper',() => {
@@ -150,6 +151,22 @@ storiesOf('Feature Components/Rewards/Wallet', module)
         <WalletSummarySlider
           id={'summary-slider'}
         />
+      </div>
+    )
+  })
+storiesOf('Feature Components/Rewards/Wallet/Mobile', module)
+  .addDecorator(withKnobs)
+  .addDecorator(centered)
+  .add('Wallet Info Header', () => {
+    return (
+      <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%' }}>
+        <div style={{ width: '100%', position: 'absolute', top: '30%' }}>
+          <WalletInfoHeader
+            id={'info-header'}
+            balance={text('Balance', '30.0')}
+            converted={text('Converted', '163230.50 USD')}
+          />
+        </div>
       </div>
     )
   })

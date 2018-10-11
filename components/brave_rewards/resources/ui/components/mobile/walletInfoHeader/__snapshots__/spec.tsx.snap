@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletInfoHeader tests basic tests matches the snapshot 1`] = `
+.c0 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 6px;
+  font-family: Poppins,sans-serif;
+  background: url(test-file-stub) no-repeat top left, linear-gradient(to bottom right,#392dd1 0%,#5813a6 100%) 100% no-repeat;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c1 {
+  padding: 16px 21px 14px 19px;
+  position: relative;
+}
+
+.c2 {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.38;
+  -webkit-letter-spacing: -0.2px;
+  -moz-letter-spacing: -0.2px;
+  -ms-letter-spacing: -0.2px;
+  letter-spacing: -0.2px;
+  color: rgba(255,255,255,0.65);
+}
+
+.c3 {
+  margin-top: -14px;
+  text-align: center;
+}
+
+.c4 {
+  font-size: 38px;
+  line-height: 0.61;
+  -webkit-letter-spacing: -0.4px;
+  -moz-letter-spacing: -0.4px;
+  -ms-letter-spacing: -0.4px;
+  letter-spacing: -0.4px;
+  color: #fff;
+  font-weight: 300;
+  margin-top: 10px;
+}
+
+.c5 {
+  text-transform: uppercase;
+  opacity: 0.66;
+  font-family: Muli,sans-serif;
+  font-size: 16px;
+  line-height: 14px;
+  color: #fff;
+  -webkit-letter-spacing: 0px;
+  -moz-letter-spacing: 0px;
+  -ms-letter-spacing: 0px;
+  letter-spacing: 0px;
+}
+
+<div
+  className="c0"
+  id="info-header"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      MISSING: yourWallet
+    </div>
+    <div
+      className="c3"
+    >
+      <div
+        className="c4"
+      >
+         
+        <span
+          className="c5"
+        >
+          BAT
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
