@@ -531,7 +531,7 @@ static bool ignore_ = false;
         d.HasMember("earning_from_ads") && d["earning_from_ads"].IsString() && isProbiValid(d["earning_from_ads"].GetString()) &&
         d.HasMember("auto_contribute") && d["auto_contribute"].IsString() && isProbiValid(d["auto_contribute"].GetString()) &&
         d.HasMember("recurring_donation") && d["recurring_donation"].IsString() && isProbiValid(d["recurring_donation"].GetString()) &&
-        d.HasMember("one_time_donation") && d["one_time_donation"].IsString() && isProbiValid(d["one_time_donation"].GetString()) && 
+        d.HasMember("one_time_donation") && d["one_time_donation"].IsString() && isProbiValid(d["one_time_donation"].GetString()) &&
         d.HasMember("total") && d["total"].IsString() && isProbiValid(d["total"].GetString()));
     }
 
@@ -594,7 +594,7 @@ static bool ignore_ = false;
 
   /////////////////////////////////////////////////////////////////////////////
   PUBLISHER_STATE_ST::PUBLISHER_STATE_ST():
-    min_pubslisher_duration_(braveledger_ledger::_default_min_pubslisher_duration),
+    min_publisher_duration_(braveledger_ledger::_default_min_publisher_duration),
     min_visits_(1),
     num_excluded_sites_(0),
     allow_non_verified_(true),
@@ -602,7 +602,7 @@ static bool ignore_ = false;
     allow_videos_(true) {}
 
   PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
-    min_pubslisher_duration_ = state.min_pubslisher_duration_;
+    min_publisher_duration_ = state.min_publisher_duration_;
     min_visits_ = state.min_visits_;
     num_excluded_sites_ = state.num_excluded_sites_;
     allow_non_verified_ = state.allow_non_verified_;
@@ -632,7 +632,7 @@ static bool ignore_ = false;
     }
 
     if (false == error) {
-      min_pubslisher_duration_ = d["min_pubslisher_duration"].GetUint();
+      min_publisher_duration_ = d["min_pubslisher_duration"].GetUint();
       min_visits_ = d["min_visits"].GetUint();
       num_excluded_sites_ = d["num_excluded_sites"].GetUint();
       allow_non_verified_ = d["allow_non_verified"].GetBool();
@@ -679,7 +679,7 @@ static bool ignore_ = false;
     writer.StartObject();
 
     writer.String("min_pubslisher_duration");
-    writer.Uint(data.min_pubslisher_duration_);
+    writer.Uint(data.min_publisher_duration_);
 
     writer.String("min_visits");
     writer.Uint(data.min_visits_);
