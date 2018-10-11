@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "./build/",
+        "skipLibCheck": true,
         "sourceMap": true,
         "noImplicitAny": true,
         "module": "commonjs",
