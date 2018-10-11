@@ -7,11 +7,7 @@
 
 #include <string>
 
-#if defined (CHECK)
-#undef CHECK
-#endif
-extern "C"
-{
+extern "C"{
 #include "relic.h"
 }
 
