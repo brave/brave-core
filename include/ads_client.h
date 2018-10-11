@@ -47,6 +47,14 @@ class AdsClient {
   // Initialize
   virtual void Initialize() = 0;
 
+  // Called whenever the browser gains or loses focus (the active application)
+  virtual void AppFocused(bool focused) = 0;
+
+  // Called to record user activity on a tab
+  virtual void TabUpdate() = 0;
+
+  // Called to record when a user is no longer idle
+  virtual void RecordUnIdle() = 0;
 
   // Called to remove all cached history
   virtual void RemoveAllHistory() = 0;
