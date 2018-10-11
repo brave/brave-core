@@ -19,7 +19,7 @@ export default class ShieldsFooter extends React.PureComponent<{}, {}> {
   }
   render () {
     return (
-      <MainFooterLinkFlex href='#' onClick={this.openSettings}>
+      <MainFooterLinkFlex id='braveShieldsFooter' href='#' onClick={this.openSettings}>
         <span>{getMessage('editDefaults')}</span>
         <LinkIcon />
       </MainFooterLinkFlex>
