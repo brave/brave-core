@@ -47,7 +47,7 @@ int OnBeforeURLRequest_StaticRedirectWork(
     // We do allow redirects to the Google update server for extensions we don't support
     URLPattern(URLPattern::SCHEME_HTTPS, "https://update.googleapis.com/service/update2"),
 
-    // Ledger URLs
+    // Rewards URLs
     URLPattern(URLPattern::SCHEME_HTTPS, "https://ledger.mercury.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://balance.mercury.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://publishers.basicattentiontoken.org/*"),
