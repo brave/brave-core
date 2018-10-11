@@ -183,22 +183,6 @@ ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction BraveSyncBytesFromSyncWordsPreparedFunction::Run() {
-  LOG(ERROR) << "TAGAB BraveSyncBytesFromSyncWordsPreparedFunction::Run";
-  std::unique_ptr<brave_sync::BytesFromSyncWordsPrepared::Params> params(
-      brave_sync::BytesFromSyncWordsPrepared::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  LOG(ERROR) << "TAGAB BraveSyncSyncWordsPreparedFunction::Run params->bytes.size()=" << params->bytes.size();
-  LOG(ERROR) << "TAGAB BraveSyncSyncWordsPreparedFunction::Run params->error_message=" << params->error_message;
-
-  ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
-  sync_client->GetSyncToBrowserHandler()->OnBytesFromSyncWordsPrepared(
-    ::brave_sync::Uint8ArrayFromUnsignedCharVec(params->bytes), params->error_message);
-
-  return RespondNow(NoArguments());
-}
-
 ExtensionFunction::ResponseAction BraveSyncExtensionInitializedFunction::Run() {
   DLOG(INFO) << "[Brave Sync] " << __func__;
 

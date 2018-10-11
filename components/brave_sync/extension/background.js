@@ -1,8 +1,11 @@
 'use strict';
 
-chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config) {
+chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config, sync_words) {
   if ((seed instanceof Array && seed.length == 0) || (seed instanceof Uint8Array && seed.length == 0)) {
     seed = null;
+  }
+  if (sync_words) {
+    seed = module.exports.passphrase.toBytes32(sync_words)
   }
   console.log(`"got-init-data" seed=${JSON.stringify(seed)} device_id=${JSON.stringify(device_id)} config=${JSON.stringify(config)}`);
   callbackList["got-init-data"](null, seed, device_id, config);
@@ -55,17 +58,6 @@ chrome.braveSync.onNeedSyncWords.addListener(function(seed) {
   var words = module.exports.passphrase.fromBytesOrHex(buffer, /*useNiceware=*/ false /* use bip39 */);
   console.log(`"NeedSyncWords" seed=${JSON.stringify(seed)} words=${JSON.stringify(words)}`);
   chrome.braveSync.syncWordsPrepared(words);
-});
-
-chrome.braveSync.onNeedBytesFromSyncWords.addListener(function(words) {
-  try {
-    var bytes = module.exports.passphrase.toBytes32(words);
-    console.log(`"NeedBytesFromSyncWords" words=${JSON.stringify(words)} bytes=${JSON.stringify(bytes)}`);
-    chrome.braveSync.bytesFromSyncWordsPrepared(bytes, '');
-  } catch(err) {
-    console.log(`"NeedBytesFromSyncWords" words=${JSON.stringify(words)} err.message=${err.message}`);
-    chrome.braveSync.bytesFromSyncWordsPrepared(new Uint8Array([]), err.message);
-  }
 });
 
 chrome.braveSync.onLoadClient.addListener(function() {

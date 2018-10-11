@@ -33,9 +33,10 @@ public:
   ~BraveSyncEventRouter();
 
   void GotInitData(
-    const brave_sync::Uint8Array &seed,
-    const brave_sync::Uint8Array &device_id,
-    const extensions::api::brave_sync::Config &config);
+    const brave_sync::Uint8Array& seed,
+    const brave_sync::Uint8Array& device_id,
+    const extensions::api::brave_sync::Config& config,
+    const std::string& sync_words);
 
   void FetchSyncRecords(
     const std::vector<std::string> &category_names,
@@ -52,8 +53,6 @@ public:
   void SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder);
 
   void NeedSyncWords(const std::string &seed);
-
-  void NeedBytesFromSyncWords(const std::string &words);
 
   void LoadClient();
 

@@ -44,34 +44,33 @@ public:
   virtual void OnMessageFromSyncReceived() = 0;
 
   //SYNC_DEBUG
-  //SYNC_SETUP_ERROR
-  //GET_INIT_DATA
-  //SAVE_INIT_DATA
-  //SYNC_READY
-  //GET_EXISTING_OBJECTS
-  //RESOLVED_SYNC_RECORDS
-  //DELETED_SYNC_USER
-  //DELETE_SYNC_SITE_SETTINGS
-  //SAVE_BOOKMARKS_BASE_ORDER
-  //SAVE_BOOKMARK_ORDER
-
   virtual void OnSyncDebug(const std::string &message) = 0;
+  //SYNC_SETUP_ERROR
   virtual void OnSyncSetupError(const std::string &error) = 0;
+  //GET_INIT_DATA
   virtual void OnGetInitData(const std::string &sync_version) = 0;
+  //SAVE_INIT_DATA
   virtual void OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) = 0;
+  //SYNC_READY
   virtual void OnSyncReady() = 0;
+  //GET_EXISTING_OBJECTS
   virtual void OnGetExistingObjects(const std::string &category_name,
     std::unique_ptr<RecordsList> records,
     const base::Time &last_record_time_stamp, const bool is_truncated) = 0;
+  //RESOLVED_SYNC_RECORDS
   virtual void OnResolvedSyncRecords(const std::string &category_name,
     std::unique_ptr<RecordsList> records) = 0;
+  //DELETED_SYNC_USER
   virtual void OnDeletedSyncUser() = 0;
+  //DELETE_SYNC_SITE_SETTINGS
   virtual void OnDeleteSyncSiteSettings() = 0;
+  //SAVE_BOOKMARKS_BASE_ORDER
   virtual void OnSaveBookmarksBaseOrder(const std::string &order) = 0;
+  //SAVE_BOOKMARK_ORDER
   virtual void OnSaveBookmarkOrder(const std::string &order,
     const std::string &prev_order, const std::string &next_order) = 0;
+
   virtual void OnSyncWordsPrepared(const std::string &words) = 0;
-  virtual void OnBytesFromSyncWordsPrepared(const Uint8Array &bytes, const std::string &error_message) = 0;
 };
 
 class BraveSyncClient : public KeyedService {
@@ -94,8 +93,10 @@ public:
   //GET_BOOKMARKS_BASE_ORDER
   //GET_BOOKMARK_ORDER
 
-  virtual void SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
-    const client_data::Config &config) = 0;
+  virtual void SendGotInitData(const Uint8Array& seed,
+                               const Uint8Array& device_id,
+                               const client_data::Config& config,
+                               const std::string& sync_words) = 0;
   virtual void SendFetchSyncRecords(
     const std::vector<std::string> &category_names, const base::Time &startAt,
     const int &max_records) = 0;
@@ -110,7 +111,6 @@ public:
   virtual void SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) = 0;
 
   virtual void NeedSyncWords(const std::string &seed) = 0;
-  virtual void NeedBytesFromSyncWords(const std::string &words) = 0;
 
   virtual void OnExtensionInitialized() = 0;
 };

@@ -6,7 +6,6 @@
 
 #include <sstream>
 
-#include "base/debug/stack_trace.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task_runner.h"
 #include "base/task/post_task.h"
@@ -40,15 +39,10 @@
 
 namespace brave_sync {
 
-BraveSyncServiceImpl::TempStorage::TempStorage() {
-}
-
-BraveSyncServiceImpl::TempStorage::~TempStorage() {
-}
-
 BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
   sync_client_(BraveSyncClientFactory::GetForBrowserContext(profile)),
   sync_initialized_(false),
+  sync_words_(std::string()),
   profile_(profile),
   timer_(std::make_unique<base::RepeatingTimer>()),
   bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)),
@@ -118,16 +112,15 @@ void BraveSyncServiceImpl::Shutdown() {
 
 void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string &sync_words,
   const std::string &device_name) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSetupSyncHaveCode";
-  LOG(ERROR) << "TAGAB sync_words=" << sync_words;
-  LOG(ERROR) << "TAGAB device_name=" << device_name;
+  DLOG(INFO) << "[Brave Sync] " << __func__ << " sync_words=" << sync_words <<
+    " device_name=" << device_name;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (sync_words.empty() || device_name.empty()) {
     OnSyncSetupError("missing sync words or device name");
     return;
   }
 
-  if (temp_storage_.currently_initializing_guard_) {
+  if (initializing_) {
     TriggerOnLogMessage("currently initializing");
     return;
   }
@@ -137,21 +130,11 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string &sync_words,
     return;
   }
 
-  temp_storage_.device_name_ = device_name; // Fill here, but save in OnSaveInitData
-  temp_storage_.currently_initializing_guard_ = true;
+  sync_prefs_->SetThisDeviceName(device_name);
+  initializing_ = true;
 
-  std::vector<unsigned char> sync_bytes;
-  sync_bytes.resize(32);
-  size_t written = 0;
-  int result = bip39_mnemonic_to_bytes(nullptr, sync_words.c_str(), &sync_bytes.front(), sync_bytes.size(), &written);
-  DLOG(INFO) << "bip39_mnemonic_to_bytes result="<<result;
-  DLOG(INFO) << "bip39_mnemonic_to_bytes written="<<written;
-  // Workaround to use C++ sync words => bytes conversion
-  if (0 != result || 0 == written) {
-    OnBytesFromSyncWordsPrepared(Uint8Array(), "Wrong sync words");
-  } else {
-    OnBytesFromSyncWordsPrepared(sync_bytes, std::string());
-  }
+  sync_prefs_->SetSyncThisDevice(true);
+  sync_words_ = sync_words;
 }
 
 void BraveSyncServiceImpl::OnSetupSyncNewToSync(const std::string &device_name) {
@@ -163,7 +146,7 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(const std::string &device_name) 
     return;
   }
 
-  if (temp_storage_.currently_initializing_guard_) {
+  if (initializing_) {
     TriggerOnLogMessage("currently initializing");
     return;
   }
@@ -173,8 +156,8 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(const std::string &device_name) 
     return;
   }
 
-  temp_storage_.device_name_ = device_name; // Fill here, but save in OnSaveInitData
-  temp_storage_.currently_initializing_guard_ = true;
+  sync_prefs_->SetThisDeviceName(device_name);
+  initializing_ = true;
 
   sync_prefs_->SetSyncThisDevice(true);
 }
@@ -344,37 +327,38 @@ void BraveSyncServiceImpl::OnSyncDebug(const std::string &message) {
 }
 
 void BraveSyncServiceImpl::OnSyncSetupError(const std::string &error) {
-  temp_storage_.currently_initializing_guard_ = false;
+  LOG(ERROR) << "[Brave Sync] " << __func__ << "error: " << error;
+  initializing_ = false;
+  if (!sync_initialized_) {
+    sync_prefs_->Clear();
+  }
   OnSyncDebug(error);
 }
 
 void BraveSyncServiceImpl::OnGetInitData(const std::string &sync_version) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData sync_version="<<sync_version<<"----------";
-  LOG(ERROR) << base::debug::StackTrace().ToString();
-
-  seen_get_init_data_ = true;
-
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() << ">";
+  DLOG(INFO) << "[Brave Sync] " << __func__ << " sync_version=" << sync_version;
 
   Uint8Array seed;
-  if (!temp_storage_.seed_str_.empty()) {
-    seed = Uint8ArrayFromString(temp_storage_.seed_str_);
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData take seed from temp store";
+  if (!sync_words_.empty()) {
+    DLOG(INFO) << "[Brave Sync] " << __func__ << " add device to existing" <<
+      "chain, seed from sync words will be sent back in OnSaveInitData()";
   } else if (!sync_prefs_->GetSeed().empty()) {
     seed = Uint8ArrayFromString(sync_prefs_->GetSeed());
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData take seed from prefs store";
+    DLOG(INFO) << "[Brave Sync] " << __func__ << " take seed from prefs. Seed="
+      << sync_prefs_->GetSeed();
   } else {
     // We are starting a new chain, so we don't know neither seed nor device id
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData starting new chain, use no seeds";
+    DLOG(INFO) << "[Brave Sync] " << __func__ << "starting new chaing, " <<
+      "new seed will be sent back in OnSaveInitData()";
   }
 
   Uint8Array device_id;
   if (!sync_prefs_->GetThisDeviceId().empty()) {
     device_id = Uint8ArrayFromString(sync_prefs_->GetThisDeviceId());
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData use device id from prefs StrFromUint8Array(device_id)="<<StrFromUint8Array(device_id);
+    DLOG(INFO) << "[Brave Sync] " << __func__ << " use device id from prefs," <<
+      "device_id="<< StrFromUint8Array(device_id);
   } else {
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData use empty device id";
+    DLOG(INFO) << "[Brave Sync] " << __func__ << " use empty device id";
   }
 
   DCHECK(!sync_version.empty());
@@ -383,62 +367,40 @@ void BraveSyncServiceImpl::OnGetInitData(const std::string &sync_version) {
 
   brave_sync::client_data::Config config;
   config.api_version = "0";
+#if defined(OFFICIAL_BUILD)
+  config.server_url = "https://sync.brave.com";
+#else
   config.server_url = "https://sync-staging.brave.com";
+#endif
   config.debug = true;
-  sync_client_->SendGotInitData(seed, device_id, config);
-
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnGetInitData called sync_client_->SendGotInitData---";
+  sync_client_->SendGotInitData(seed, device_id, config, sync_words_);
 }
 
 void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData:";
+  DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  DCHECK(false == sync_initialized_);
-  DCHECK(temp_storage_.currently_initializing_guard_);
+  DCHECK(!sync_initialized_);
+  DCHECK(initializing_);
 
   std::string seed_str = StrFromUint8Array(seed);
   std::string device_id_str = StrFromUint8Array(device_id);
 
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: seed=<"<<seed_str<<">";
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: device_id="<<device_id_str<<">";
+  DLOG(INFO) << "[Brave Sync] " << __func__ << " seed=" << seed_str <<
+    " device_id=" << device_id_str;
 
-  if (temp_storage_.seed_str_.empty() && !seed_str.empty()) {
-    temp_storage_.seed_str_ = seed_str;
-  }
-
-  // Check existing values
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: GetThisDeviceId()="<<sync_prefs_->GetThisDeviceId();
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: GetSeed()="<<sync_prefs_->GetSeed();
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: GetThisDeviceName()="<<sync_prefs_->GetThisDeviceName();
-
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: temp_storage_.seed_str_="<<temp_storage_.seed_str_;
-
-  if (temp_storage_.device_name_.empty()) {
-    temp_storage_.device_name_ = sync_prefs_->GetThisDeviceName();
-  }
-
-  //Save
+  sync_words_.clear();
+  DCHECK(!seed_str.empty());
+  sync_prefs_->SetSeed(seed_str);
   sync_prefs_->SetThisDeviceId(device_id_str);
-  // If we have already initialized sync earlier we don't receive seed again
-  // and do not save it
-  if (!temp_storage_.seed_str_.empty()) {
-    sync_prefs_->SetSeed(temp_storage_.seed_str_);
-  }
-  DCHECK(!temp_storage_.device_name_.empty());
-  sync_prefs_->SetThisDeviceName(temp_storage_.device_name_);
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: saved device_id="<<device_id_str;
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: saved seed="<<temp_storage_.seed_str_;
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: saved temp_storage_.device_name_="<<temp_storage_.device_name_;
 
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveInitData: sync_configured_ = true";
   sync_configured_ = true;
 
   sync_prefs_->SetSyncBookmarksEnabled(true);
   sync_prefs_->SetSyncSiteSettingsEnabled(true);
   sync_prefs_->SetSyncHistoryEnabled(true);
 
-  temp_storage_.currently_initializing_guard_ = false;
+  initializing_ = false;
 }
 
 void BraveSyncServiceImpl::OnSyncReady() {
@@ -849,24 +811,6 @@ void BraveSyncServiceImpl::PopRRContext(const std::string &prev_order, const std
 
 void BraveSyncServiceImpl::OnSyncWordsPrepared(const std::string &words) {
   TriggerOnHaveSyncWords(words);
-}
-
-void BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared(const Uint8Array &bytes,
-  const std::string &error_message) {
-  //OnWordsToBytesDone
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared";
-  LOG(ERROR) << "TAGAB bytes.size()=" << bytes.size();
-  LOG(ERROR) << "TAGAB error_message=" << error_message;
-
-  if (!bytes.empty()) {
-    //DCHECK(temp_storage_.seed_str_.empty()); can be not epmty if try to do twice with error on first time
-    temp_storage_.seed_str_ = StrFromUint8Array(bytes);
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared temp_storage_.seed_str_=<" << temp_storage_.seed_str_ << ">";
-    // Workaround to use C++ sync words => bytes conversion
-    sync_prefs_->SetSyncThisDevice(true);
-  } else {
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnBytesFromSyncWordsPrepared failed, " << error_message;
-  }
 }
 
 // Here we query sync lib for the records after initialization (or again later)

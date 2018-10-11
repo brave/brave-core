@@ -91,11 +91,14 @@ SyncLibToBrowserHandler *BraveSyncClientImpl::GetSyncToBrowserHandler() {
   return handler_;
 }
 
-void BraveSyncClientImpl::SendGotInitData(const Uint8Array &seed, const Uint8Array &device_id,
-  const client_data::Config &config) {
+void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
+                                          const Uint8Array& device_id,
+                                          const client_data::Config& config,
+                                          const std::string& sync_words) {
   extensions::api::brave_sync::Config config_extension;
   ConvertConfig(config, config_extension);
-  brave_sync_event_router_->GotInitData(seed, device_id, config_extension);
+  brave_sync_event_router_->GotInitData(seed, device_id, config_extension,
+                                        sync_words);
 }
 
 void BraveSyncClientImpl::SendFetchSyncRecords(
@@ -148,10 +151,6 @@ void BraveSyncClientImpl::SendGetBookmarkOrder(const std::string &prevOrder, con
 
 void BraveSyncClientImpl::NeedSyncWords(const std::string &seed) {
   brave_sync_event_router_->NeedSyncWords(seed);
-}
-
-void BraveSyncClientImpl::NeedBytesFromSyncWords(const std::string &words) {
-  brave_sync_event_router_->NeedBytesFromSyncWords(words);
 }
 
 void BraveSyncClientImpl::LoadOrUnloadExtension(bool load) {
