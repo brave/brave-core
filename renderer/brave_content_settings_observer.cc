@@ -205,24 +205,46 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetDocument().GetSecurityOrigin();
   // default allow local files
-  if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme)
+  if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme) {
+      LOG(INFO) << "no origin or local file, allowing autoplay, we're done";
     return true;
+  }
+
+  LOG(INFO) << "origin is not a local file, continuing";
 
   bool allow = ContentSettingsObserver::AllowAutoplay(default_value);
   if (allow) {
     return true;
   }
 
+  LOG(INFO) << "AllowAutoplay returned false, continuing";
+
   // respect user's blocklist, if any
-  if (GetContentSettingFromRules(
-      content_setting_rules_->autoplay_rules, frame,
-      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL()) ==
-      CONTENT_SETTING_BLOCK) {
-      return false;
+  const GURL& primary_url = GetOriginOrURL(frame);
+  const GURL& secondary_url = url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
+  for (const auto& rule : content_setting_rules_->autoplay_rules) {
+    ContentSettingsPattern secondary_pattern = rule.secondary_pattern;
+    if (rule.secondary_pattern ==
+        ContentSettingsPattern::FromString("https://firstParty/*")) {
+        secondary_pattern = ContentSettingsPattern::FromString(
+            "[*.]" + GetOriginOrURL(frame).HostNoBrackets());
+    }
+    if (rule.primary_pattern.Matches(primary_url) &&
+        (secondary_pattern == ContentSettingsPattern::Wildcard() ||
+         secondary_pattern.Matches(secondary_url))) {
+      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {
+          LOG(INFO) << rule.primary_pattern.ToString();
+          LOG(INFO) << "matches, blocking autoplay, we're done";
+        return false;
+      }
+    }
   }
+
+  LOG(INFO) << "GetContentSettingFromRules did not return CONTENT_SETTING_BLOCK, continuing";
 
   // in the absence of an explicit block rule, whitelist the following sites
   std::string kWhitelistPatterns[] = {
+      "[*.]example.com",
       "[*.]youtube.com",
       "[*.]khanacademy.org",
       "[*.]twitch.tv",
@@ -246,12 +268,15 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
       "[*.]periscope.tv",
       "[*.]pscp.tv",
   };
-  const GURL& primary_url = GetOriginOrURL(frame);
   for (const auto& pattern : kWhitelistPatterns) {
     if (ContentSettingsPattern::FromString(pattern).Matches(primary_url)) {
+        LOG(INFO) << pattern;
+        LOG(INFO) << "matches from whitelist, allowing autoplay, we're done";
         return true;
     }
   }
+
+  LOG(INFO) << "no autoplay whitelist match, continuing";
 
   blink::mojom::blink::PermissionServicePtr permission_service;
 
