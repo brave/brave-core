@@ -7,10 +7,9 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
 import BraveShields from './containers/braveShields'
-import { State } from './types/state/shieldsPannelState'
 
 chrome.storage.local.get('state', (obj) => {
-  const store: Store<State> = new Store({
+  const store: any = new Store({
     portName: 'BRAVE'
   })
 
