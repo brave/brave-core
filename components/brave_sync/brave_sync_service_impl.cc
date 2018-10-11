@@ -503,6 +503,8 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(const std::string &category_nam
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
     // OnResolvedHistorySites(*records.get());
   }
+
+  SendUnsyncedBookmarks();
 }
 
 void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records,
@@ -936,6 +938,11 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
   bookmark->isFolder = node->is_folder();
 
   // these will be empty for unsynced nodes
+  std::string sync_timestamp;
+  node->GetMetaInfo("sync_timestamp", &sync_timestamp);
+  if (!sync_timestamp.empty())
+    record->syncTimestamp = base::Time::FromJsTime(std::stod(sync_timestamp));
+
   std::string object_id;
   node->GetMetaInfo("object_id", &object_id);
   record->objectId = object_id;
@@ -978,7 +985,6 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
   return record;
 }
 
-
 void BraveSyncServiceImpl::GetExistingBookmarks(
     const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
     SyncRecordAndExistingList* records_and_existing_objects) {
@@ -986,8 +992,18 @@ void BraveSyncServiceImpl::GetExistingBookmarks(
     auto resolved_record = std::make_unique<SyncRecordAndExisting>();
     resolved_record->first = jslib::SyncRecord::Clone(*record);
     auto* node = FindByObjectId(bookmark_model_, record->objectId);
-    if (node)
+    if (node) {
       resolved_record->second = BookmarkNodeToSyncBookmark(node);
+      // updating the sync_timestamp marks this record as synced
+      std::string sync_timestamp;
+      node->GetMetaInfo("sync_timestamp", &sync_timestamp);
+      if (sync_timestamp.empty()) {
+        bookmark_model_->SetNodeMetaInfo(node,
+            "sync_timestamp",
+            std::to_string(record->syncTimestamp.ToJsTime()));
+      }
+    }
+
     records_and_existing_objects->push_back(std::move(resolved_record));
   }
 }
@@ -1001,9 +1017,9 @@ void BraveSyncServiceImpl::SendUnsyncedBookmarks() {
     const bookmarks::BookmarkNode* node = iterator.Next();
 
     // only send unsynced records
-    std::string object_id;
-    node->GetMetaInfo("object_id", &object_id);
-    if (!object_id.empty())
+    std::string sync_timestamp;
+    node->GetMetaInfo("sync_timestamp", &sync_timestamp);
+    if (!sync_timestamp.empty())
       continue;
 
     auto record = BookmarkNodeToSyncBookmark(node);
