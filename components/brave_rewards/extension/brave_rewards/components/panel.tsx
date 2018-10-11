@@ -146,6 +146,7 @@ export class Panel extends React.Component<Props, State> {
         return
       }
       chrome.braveRewards.donateToSite(tabId, publisher.publisher_key)
+      window.close()
     })
   }
 
