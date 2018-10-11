@@ -41,11 +41,18 @@ ExtensionFunction::ResponseAction BraveRewardsDonateToSiteFunction::Run() {
       brave_rewards::DonateToSite::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
+  // Sanity check: don't allow donations in private / tor contexts,
+  // although the command should not have been enabled in the first place.
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (profile->IsOffTheRecord()) {
+    return RespondNow(Error("Cannot donate to site in a private context"));
+  }
+
   // Get web contents for this tab
   content::WebContents* contents = nullptr;
   if (!ExtensionTabUtil::GetTabById(
         params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
+        profile,
         include_incognito_information(),
         nullptr,
         nullptr,
