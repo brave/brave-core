@@ -28,6 +28,8 @@ class BraveLocationBarView : public LocationBarView {
   private:
     void UpdateBookmarkStarVisibility() override;
     OmniboxTint GetTint() override;
+    void ChildVisibilityChanged(views::View* child) override;
+
     BraveActionsContainer* brave_actions_ = nullptr;
 
     DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
