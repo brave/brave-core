@@ -54,24 +54,9 @@ void AdsImpl::GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
   ads_client_->LoadCreativeSetInfo(filter, callback);
 }
 
-void AdsImpl::GenerateAdReportingEvent(const std::string& eventType,
-    const std::map<std::string, std::string>& action) {
-  // TODO(Terry Mancey): Implement GenerateAdReportingEvent (#37)
-}
 
 void AdsImpl::Initialize() {
-  // TODO(Terry Mancey): Add user model state (#10)
-  // TODO(Terry Mancey): Remove test paths
-
-  bundle_path_ = "/Users/terrym/Desktop/bundle.json";
-  catalog_path_ = "/Users/terrym/Desktop/catalog.json";
-
-  if (!bat_client_->IsAdsEnabled()) {
-  }
-}
-
-void AdsImpl::SetAdsEnabled(bool enabled) {
-  bat_client_->SetAdsEnabled(enabled);
+  // TODO(Terry Mancey): Implement Initialize (#42)
 }
 
 void AdsImpl::AppFocused(bool focused) {
@@ -138,6 +123,10 @@ void AdsImpl::ServeSampleAd(uint64_t windowId) {
   // TODO(Terry Mancey): Implement ServeSampleAd (#27)
 }
 
+
+void AdsImpl::SaveState(const std::string& json) {
+  ads_client_->SaveState(json, this);
+}
 std::string AdsImpl::URIEncode(const std::string& value) {
   return ads_client_->URIEncode(value);
 }

@@ -7,23 +7,32 @@
 
 namespace ads_bat_client {
 
-BatClient::BatClient(bat_ads::AdsImpl* ads) : ads_(ads) {
+BatClient::BatClient(bat_ads::AdsImpl* ads) :
+    ads_(ads),
+    userModelState_(new USER_MODEL_STATE_ST()) {
 }
 
 BatClient::~BatClient() = default;
 
-void BatClient::SetAdsEnabled(bool enabled) {
-  // TODO(Terry Mancey): Implement SetAdsEnabled
-}
+bool BatClient::LoadState(const std::string& json) {
+  USER_MODEL_STATE_ST state;
+  if (!LoadFromJson(state, json.c_str())) {
+    return false;
+  }
 
-bool BatClient::IsAdsEnabled() const {
-  // TODO(Terry Mancey): Implement IsAdsEnabled
+  userModelState_.reset(new USER_MODEL_STATE_ST(state));
 
-  return false;
+  return true;
 }
 
 void BatClient::ApplyCatalog(const catalog::Catalog& catalog, bool bootP) {
   // TODO(Terry Mancey): Implement ApplyCatalog
+}
+
+void BatClient::SaveState() {
+  std::string json;
+  SaveToJsonString(*userModelState_, json);
+  ads_->SaveState(json);
 }
 
 }  // namespace ads_bat_client

@@ -8,6 +8,7 @@
 
 #include "../include/ads_impl.h"
 #include "../include/catalog.h"
+#include "../include/state_user_model.h"
 
 namespace bat_ads {
 class AdsImpl;
@@ -20,12 +21,7 @@ class BatClient {
   explicit BatClient(bat_ads::AdsImpl* ads);
   ~BatClient();
 
-  // Called whenever Brave Ads is enabled or disabled by
-  // the user, or browser restart
-  void SetAdsEnabled(bool enabled);
-
-  // Returns true if Brave Ads is enabled, otherwise false
-  bool IsAdsEnabled() const;
+  bool LoadState(const std::string& json);
 
   // Called when the catalog server has returned a result.
   // If the result is good, an upcall is made to save the catalog state
@@ -33,7 +29,11 @@ class BatClient {
   void ApplyCatalog(const catalog::Catalog& catalog, bool bootP);
 
  private:
+  void SaveState();
+
   bat_ads::AdsImpl* ads_;  // NOT OWNED
+
+  std::unique_ptr<USER_MODEL_STATE_ST> userModelState_;
 };
 
 }  // namespace ads_bat_client

@@ -43,16 +43,8 @@ class Ads {
   virtual void GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
       CreativeSetInfoCallback callback) = 0;
 
-  // Called to generate an ad reporting event
-  virtual void GenerateAdReportingEvent(const std::string& eventType,
-      const std::map<std::string, std::string>& action) = 0;
-
   // Initialize
   virtual void Initialize() = 0;
-
-  // Called whenever Brave Ads is enabled or disabled by
-  // the user, or browser restart
-  virtual void SetAdsEnabled(bool enabled) = 0;
 
   // Called whenever the browser gains or loses focus (the active application)
   virtual void AppFocused(bool focused) = 0;

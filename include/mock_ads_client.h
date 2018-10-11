@@ -25,10 +25,7 @@ class MockAdsClient : public ads::AdsClient {
 
  protected:
   // ads::AdsClient
-  void GenerateAdReportingEvent(const std::string& eventType,
-      const std::map<std::string, std::string>& action) override;
   void Initialize() override;
-  void SetAdsEnabled(bool enabled) override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
   void ConfirmAdUUIDIfAdEnabled(bool enabled) override;

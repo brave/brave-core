@@ -14,14 +14,7 @@ MockAdsClient::MockAdsClient() : ads_(ads::Ads::CreateInstance(this)) {
 
 MockAdsClient::~MockAdsClient() = default;
 
-void MockAdsClient::GenerateAdReportingEvent(const std::string& eventType,
-      const std::map<std::string, std::string>& action) {
-}
-
 void MockAdsClient::Initialize() {
-}
-
-void MockAdsClient::SetAdsEnabled(bool enabled) {
 }
 
 void MockAdsClient::RemoveAllHistory() {
