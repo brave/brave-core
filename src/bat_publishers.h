@@ -131,7 +131,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
 
-  bool isEligableForContribution(const ledger::PublisherInfo& info);
+  bool isEligibleForContribution(const ledger::PublisherInfo& info);
   bool isVerified(const std::string& publisher_id);
   bool isExcluded(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& excluded);
   void saveVisitInternal(
