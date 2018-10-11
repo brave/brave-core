@@ -169,7 +169,10 @@ void RewardsDonateDOMHandler::OnWalletProperties(
 BraveDonateUI::BraveDonateUI(content::WebUI* web_ui, const std::string& name)
     : ConstrainedWebDialogUI(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
-
+  // Show error for non-supported contexts
+  if (profile->IsOffTheRecord()) {
+    return;
+  }
   content::WebUIDataSource* data_source = CreateBasicUIHTMLSource(profile,
                                               name,
                                               kDonateJS,
