@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/rewards/donations_dialog.h"
+#include "brave/browser/brave_rewards/donations_dialog.h"
 
 #include <string>
 
@@ -130,21 +130,22 @@ bool DonationDialogDelegate::ShouldShowDialogTitle() const {
 
 } // namespace
 
-namespace donations {
+namespace brave_rewards {
 
-  void OpenDonationDialog(WebContents* initiator,
-                          const std::string& publisher_key) {
-    content::WebContents* outermost_web_contents =
-      guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
-    gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();
-    gfx::Size min_size(host_size.width() - kDialogMargin, kDialogMinHeight);
-    gfx::Size max_size(host_size.width() - kDialogMargin, kDialogMaxHeight);
-    // TODO: adjust min and max when host size changes (e.g. window resize)
-    ShowConstrainedWebDialogWithAutoResize(initiator->GetBrowserContext(),
-                              new DonationDialogDelegate(initiator,
-                                                          publisher_key),
-                              initiator, min_size, max_size);
+void OpenDonationDialog(WebContents* initiator,
+                        const std::string& publisher_key) {
+  content::WebContents* outermost_web_contents =
+    guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
+  gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();
+  const int width = host_size.width() - kDialogMargin;
+  gfx::Size min_size(width, kDialogMinHeight);
+  gfx::Size max_size(width, kDialogMaxHeight);
+  // TODO: adjust min and max when host size changes (e.g. window resize)
+  ShowConstrainedWebDialogWithAutoResize(initiator->GetBrowserContext(),
+                            new DonationDialogDelegate(initiator,
+                                                        publisher_key),
+                            initiator, min_size, max_size);
 
-  }
+}
 
 }

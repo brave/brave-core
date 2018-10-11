@@ -6,7 +6,7 @@
 
 #include <string>
 
-#include "brave/browser/rewards/donations_dialog.h"
+#include "brave/browser/brave_rewards/donations_dialog.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
@@ -54,7 +54,7 @@ ExtensionFunction::ResponseAction BraveRewardsDonateToSiteFunction::Run() {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
                             base::IntToString(params->tab_id)));
   }
-  donations::OpenDonationDialog(contents, params->publisher_key);
+  ::brave_rewards::OpenDonationDialog(contents, params->publisher_key);
 
   return RespondNow(NoArguments());
 }

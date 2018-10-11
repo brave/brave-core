@@ -8,13 +8,14 @@
 #include <string>
 
 namespace content {
-  class WebContents;
+class WebContents;
 }
 
-namespace donations {
-  void OpenDonationDialog(content::WebContents* initiator,
-                          const std::string& publisher_key);
-}
+namespace brave_rewards {
 
+void OpenDonationDialog(content::WebContents* initiator,
+                        const std::string& publisher_key);
+
+}
 
 #endif
