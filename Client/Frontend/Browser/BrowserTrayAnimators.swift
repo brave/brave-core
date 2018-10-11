@@ -91,6 +91,7 @@ private extension TrayToBrowserAnimator {
             bvc.webViewContainerBackdrop.isHidden = false
             bvc.favoritesViewController?.view.isHidden = false
             bvc.urlBar.isTransitioning = false
+            bvc.updateTabsBarVisibility()
             transitionContext.completeTransition(true)
         })
     }
