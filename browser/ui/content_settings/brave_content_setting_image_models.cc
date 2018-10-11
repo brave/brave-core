@@ -9,6 +9,16 @@
 
 void BraveGenerateContentSettingImageModels(
     std::vector<std::unique_ptr<ContentSettingImageModel>>& result) {
+  // Remove the cookies content setting image model
+  // https://github.com/brave/brave-browser/issues/1197
+  for (size_t i = 0; i < result.size(); i++) {
+    if (result[i]->image_type() ==
+        ContentSettingImageModel::ImageType::COOKIES) {
+      result.erase(result.begin() + i);
+      break;
+    }
+  }
+
   result.push_back(std::make_unique<BraveWidevineBlockedImageModel>(
       BraveWidevineBlockedImageModel::ImageType::PLUGINS,
       CONTENT_SETTINGS_TYPE_PLUGINS));
