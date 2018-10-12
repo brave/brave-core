@@ -273,6 +273,10 @@
           {
             "type": "string",
             "name": "nextOrder"
+          },
+          {
+            "type": "string",
+            "name": "parentOrder"
           }
         ]
       },
@@ -433,6 +437,10 @@
           {
             "type": "string",
             "name": "nextOrder"
+          },
+          {
+            "type": "string",
+            "name": "parentOrder"
           }
         ]
       },

@@ -113,9 +113,12 @@ void BraveSyncClientImpl::SendGetBookmarksBaseOrder(const std::string &device_id
   brave_sync_event_router_->SendGetBookmarksBaseOrder(device_id, platform);
 }
 
-void BraveSyncClientImpl::SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) {
-  LOG(ERROR) << "TAGAB BraveSyncClientImpl::SendGetBookmarkOrder: prevOrder="<<prevOrder<<" nextOrder="<<nextOrder;
-  brave_sync_event_router_->SendGetBookmarkOrder(prevOrder, nextOrder);
+void BraveSyncClientImpl::SendGetBookmarkOrder(const std::string& prev_order,
+                                               const std::string& next_order,
+                                               const std::string& parent_order) {
+  LOG(ERROR) << "TAGAB BraveSyncClientImpl::SendGetBookmarkOrder: prev_order="<<prev_order<<" next_order="<<next_order;
+  brave_sync_event_router_->SendGetBookmarkOrder(
+      prev_order, next_order, parent_order);
 }
 
 void BraveSyncClientImpl::NeedSyncWords(const std::string &seed) {

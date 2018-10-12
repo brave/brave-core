@@ -164,7 +164,8 @@ ExtensionFunction::ResponseAction BraveSyncSaveBookmarkOrderFunction::Run() {
   LOG(ERROR) << "TAGAB BraveSyncSaveBookmarkOrderFunction::Run params->next_order=" << params->next_order;
 
   ::brave_sync::BraveSyncClient* sync_client = ::brave_sync::BraveSyncClientFactory::GetForBrowserContext(browser_context());
-  sync_client->GetSyncToBrowserHandler()->OnSaveBookmarkOrder(params->order, params->prev_order, params->next_order);
+  sync_client->GetSyncToBrowserHandler()->OnSaveBookmarkOrder(params->order,
+      params->prev_order, params->next_order, params->parent_order);
 
   return RespondNow(NoArguments());
 }
