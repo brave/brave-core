@@ -189,9 +189,6 @@ static bool ignore_ = false;
     registrarVK_ = transaction.registrarVK_;
     masterUserToken_ = transaction.masterUserToken_;
     surveyorIds_ = transaction.surveyorIds_;
-    satoshis_ = transaction.satoshis_;
-    altCurrency_ = transaction.altCurrency_;
-    probi_ = transaction.probi_;
     votes_ = transaction.votes_;
     ballots_ = transaction.ballots_;
   }
@@ -224,9 +221,6 @@ static bool ignore_ = false;
         d.HasMember("registrarVK") && d["registrarVK"].IsString() &&
         d.HasMember("masterUserToken") && d["masterUserToken"].IsString() &&
         d.HasMember("surveyorIds") && d["surveyorIds"].IsArray() &&
-        d.HasMember("satoshis") && d["satoshis"].IsString() &&
-        d.HasMember("altCurrency") && d["altCurrency"].IsString() &&
-        d.HasMember("probi") && d["probi"].IsString() &&
         d.HasMember("votes") && d["votes"].IsUint() &&
         d.HasMember("ballots") && d["ballots"].IsArray());
     }
@@ -244,9 +238,6 @@ static bool ignore_ = false;
       anonizeViewingId_ = d["anonizeViewingId"].GetString();
       registrarVK_ = d["registrarVK"].GetString();
       masterUserToken_ = d["masterUserToken"].GetString();
-      satoshis_ = d["satoshis"].GetString();
-      altCurrency_ = d["altCurrency"].GetString();
-      probi_ = d["probi"].GetString();
       votes_ = d["votes"].GetUint();
 
       for ( auto & i : d["rates"].GetObject()) {
@@ -326,26 +317,15 @@ static bool ignore_ = false;
     }
     writer.EndArray();
 
-    writer.String("satoshis");
-    writer.String(data.satoshis_.c_str());
-
-    writer.String("altCurrency");
-    writer.String(data.altCurrency_.c_str());
-
-    writer.String("probi");
-    writer.String(data.probi_.c_str());
-
     writer.String("votes");
     writer.Uint(data.votes_);
 
-    /* TODO: clarify if it needs to be serialized
     writer.String("ballots");
     writer.StartArray();
     for (auto & i : data.ballots_) {
       saveToJson(writer, i);
     }
     writer.EndArray();
-    */
 
     writer.EndObject();
   }
@@ -1106,6 +1086,21 @@ static bool ignore_ = false;
  /////////////////////////////////////////////////////////////////////////////
   CURRENT_RECONCILE::CURRENT_RECONCILE() :
     timestamp_(0) {}
+
+  CURRENT_RECONCILE::CURRENT_RECONCILE(const CURRENT_RECONCILE& data):
+    viewingId_(data.viewingId_),
+    anonizeViewingId_(data.anonizeViewingId_),
+    registrarVK_(data.registrarVK_),
+    preFlight_(data.preFlight_),
+    masterUserToken_(data.masterUserToken_),
+    surveyorInfo_(data.surveyorInfo_),
+    timestamp_(data.timestamp_),
+    rates_(data.rates_),
+    amount_(data.amount_),
+    currency_(data.currency_),
+    fee_(data.fee_),
+    directions_(data.directions_),
+    recurring_(data.recurring_) {}
 
   CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
   

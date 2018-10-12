@@ -46,6 +46,7 @@ class BatClient {
   bool getAutoContribute() const;
   bool isReadyForReconcile();
   braveledger_bat_helper::CURRENT_RECONCILE GetReconcileById(const std::string& viewingId);
+  bool SetReconcile(const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
   void removeReconcileById(const std::string& viewingId);
   void reconcile(const std::string& viewingId, const bool recurring, const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions = {});
   unsigned int ballots(const std::string& viewingId);
@@ -68,6 +69,8 @@ class BatClient {
   void OnNicewareListLoaded(const std::string& pass_phrase,
                                 ledger::Result result,
                                 const std::string& data);
+  double getBalance() const;
+
  private:
   void saveState();
   void getGrantCaptchaCallback(bool result, const std::string& response,

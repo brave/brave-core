@@ -462,32 +462,20 @@ void BatPublishers::winners(const unsigned int& ballots,
 void BatPublishers::topN(const unsigned int& ballots,
     const uint64_t& currentReconcileStamp, const std::string& viewing_id) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
-
-  ledger::PublisherInfoFilter filter;
-  if (reconcile.directions_.empty()) {
-    // Either an auto-contribution or a monthly direct contribution
-    if (reconcile.reccuring_) {
-      filter = CreatePublisherFilter("",
-        ledger::PUBLISHER_CATEGORY::RECURRING_DONATION,
-        ledger::PUBLISHER_MONTH::ANY,
-        -1,
-        ledger::PUBLISHER_EXCLUDE::DEFAULT,
-        false,
-        currentReconcileStamp
-      );
-    } else {
-      filter = CreatePublisherFilter("",
-         ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-         ledger::PUBLISHER_MONTH::ANY,
-         -1,
-         ledger::PUBLISHER_EXCLUDE::DEFAULT,
-         true,
-         currentReconcileStamp
-      );
-    }
+  if (reconcile.directions_.empty() && !reconcile.recurring_) {
+    ledger::PublisherInfoFilter filter = CreatePublisherFilter("",
+       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+       ledger::PUBLISHER_MONTH::ANY,
+       -1,
+       ledger::PUBLISHER_EXCLUDE::DEFAULT,
+       true,
+       currentReconcileStamp
+    );
     // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
     // We need to limit it and iterate.
     ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::topNInternal, this, ballots, viewing_id, _1, _2));
+  } else if (!reconcile.directions_.empty() && reconcile.recurring_) {
+    // TODO add for recurring direct donation
   } else {
     // Direct one-time contribution
     braveledger_bat_helper::WINNERS_ST winner;

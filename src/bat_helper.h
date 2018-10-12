@@ -103,9 +103,6 @@ namespace braveledger_bat_helper {
     std::string registrarVK_;
     std::string masterUserToken_;
     std::vector<std::string> surveyorIds_;
-    std::string satoshis_;
-    std::string altCurrency_;
-    std::string probi_;
     unsigned int votes_ = 0u;
     std::vector<TRANSACTION_BALLOT_ST> ballots_;
   };
@@ -339,6 +336,7 @@ namespace braveledger_bat_helper {
   
   struct CURRENT_RECONCILE {
     CURRENT_RECONCILE();
+    CURRENT_RECONCILE(const CURRENT_RECONCILE&);
     ~CURRENT_RECONCILE();
 
     std::string viewingId_;
@@ -353,7 +351,7 @@ namespace braveledger_bat_helper {
     std::string currency_;
     double fee_;
     std::vector<RECONCILE_DIRECTION> directions_;
-    bool reccuring_;
+    bool recurring_;
   };
 
   enum class SERVER_TYPES {
