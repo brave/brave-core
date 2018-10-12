@@ -11,6 +11,7 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -84,6 +85,7 @@ class RewardsService : public KeyedService {
   virtual bool IsWalletCreated() = 0;
   virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) = 0;
   virtual double GetContributionAmount() = 0;
+  virtual brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

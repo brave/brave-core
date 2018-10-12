@@ -16,6 +16,7 @@
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
+#include "brave/browser/ui/webui/brave_donate_ui.h"
 #endif
 
 using content::WebUI;
@@ -42,6 +43,8 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   } else if (host == kRewardsHost) {
     return new BraveRewardsUI(web_ui, url.host());
+  } else if (host == kDonateHost) {
+    return new BraveDonateUI(web_ui, url.host());
 #endif
   } else if (host == kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
@@ -61,6 +64,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   if (url.host_piece() == kAdblockHost ||
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
       url.host_piece() == kRewardsHost ||
+      url.host_piece() == kDonateHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == kBraveUIWelcomeURL ||
