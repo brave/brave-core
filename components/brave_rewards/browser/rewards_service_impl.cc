@@ -259,14 +259,6 @@ ledger::is_verbose = true;
 
 RewardsServiceImpl::~RewardsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, publisher_info_backend_.release());
-  BitmapFetcherService* image_service =
-      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
-  if (image_service) {
-    for (auto request_id : request_ids_) {
-      image_service->CancelRequest(request_id);
-    }
-  }
-
 }
 
 void RewardsServiceImpl::Init() {
@@ -470,6 +462,14 @@ std::string RewardsServiceImpl::GenerateGUID() const {
 }
 
 void RewardsServiceImpl::Shutdown() {
+  BitmapFetcherService* image_service =
+      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
+  if (image_service) {
+    for (auto request_id : request_ids_) {
+      image_service->CancelRequest(request_id);
+    }
+  }
+
   fetchers_.clear();
   ledger_.reset();
   RewardsService::Shutdown();
