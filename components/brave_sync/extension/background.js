@@ -48,8 +48,12 @@ chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, plat
 });
 
 chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder, parentOrder) {
-  console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)} parentOrder=${JSON.stringify(parentOrder)}`);
-  callbackList["get-bookmark-order"](null, prevOrder, nextOrder, parentOrder);
+  console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)}`);
+  try {
+    callbackList["get-bookmark-order"](null, prevOrder, nextOrder, parentOrder);
+  } catch (e) {
+    chrome.braveSync.saveBookmarkOrder("", prevOrder, nextOrder, parentOrder);
+  }
 });
 
 chrome.braveSync.onNeedSyncWords.addListener(function(seed) {

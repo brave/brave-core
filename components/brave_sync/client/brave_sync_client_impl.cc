@@ -27,8 +27,7 @@ BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
     handler_(nullptr),
     brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
     profile_(profile),
-    extension_registry_observer_(this),
-    weak_ptr_factory_(this) {
+    extension_registry_observer_(this) {
   DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK(profile_);
 
@@ -37,7 +36,7 @@ BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
   // Handle when the extension system is ready
   extensions::ExtensionSystem::Get(profile)->ready().Post(
       FROM_HERE, base::Bind(&BraveSyncClientImpl::OnExtensionSystemReady,
-                            weak_ptr_factory_.GetWeakPtr()));
+          base::Unretained(this)));
   sync_this_device_enabled_.Init(
       prefs::kSyncThisDeviceEnabled,
       profile->GetPrefs(),
@@ -80,12 +79,13 @@ void BraveSyncClientImpl::SendFetchSyncDevices() {
   NOTIMPLEMENTED();
 }
 
-void BraveSyncClientImpl::SendResolveSyncRecords(const std::string &category_name,
-  const SyncRecordAndExistingList &records_and_existing_objects) {
+void BraveSyncClientImpl::SendResolveSyncRecords(
+    const std::string &category_name,
+    std::unique_ptr<SyncRecordAndExistingList> records_and_existing_objects) {
 
   std::vector<extensions::api::brave_sync::RecordAndExistingObject> records_and_existing_objects_ext;
 
-  ConvertResolvedPairs(records_and_existing_objects, records_and_existing_objects_ext);
+  ConvertResolvedPairs(*records_and_existing_objects, records_and_existing_objects_ext);
 
   brave_sync_event_router_->ResolveSyncRecords(category_name,
     records_and_existing_objects_ext);

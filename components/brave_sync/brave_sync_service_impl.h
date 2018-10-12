@@ -156,10 +156,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
 
-  void OnDeleteDeviceFileWork(const std::string &device_id);
-  void OnResetSyncFileWork(const std::string &device_id);
-  void OnResetSyncPostFileUiWork();
-
   // Other private methods
   void RequestSyncData();
   void FetchSyncRecords(const bool bookmarks, const bool history,
@@ -180,23 +176,11 @@ class BraveSyncServiceImpl : public BraveSyncService,
   // CanSendHistory overrides
   void HaveInitialHistory(history::QueryResults* results) override;
 
-  void SendDeviceSyncRecord(const int &action,
-    const std::string &device_name,
-    const std::string &device_id,
-    const std::string &object_id);
-
   void SetUpdateDeleteDeviceName_Ext(
     const std::string &action,
     const std::string &deviceName,
     const std::string &deviceId,
     const std::string &objectId);
-
-  void OnGetExistingObjectsFileWork(const std::string& category_name,
-    std::unique_ptr<RecordsList> records,
-    const base::Time& last_record_time_stamp,
-    bool is_truncated);
-  SyncRecordAndExistingList PrepareResolvedPreferences(const RecordsList& records);
-  SyncRecordPtr PrepareResolvedDevice(const std::string& object_id, int action);
 
   void StartLoop();
   void StopLoop();
