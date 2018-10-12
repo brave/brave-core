@@ -442,14 +442,14 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   // TODO SZ: we have to save old timestamp in case of failure
   uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
 
-   // Start the timer again if it wasn't a direct donation
-   auto reconcile = GetReconcileById(viewing_id);
-  if (reconcile.directions_.empty() && !reconcile.recurring_) {
+  // Start the timer again if it wasn't a direct donation
+  auto reconcile = GetReconcileById(viewing_id);
+  if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
     bat_client_->resetReconcileStamp();
     Reconcile();
   }
-  // TODO add type of reconcile PUBLISHER_CATEGORY
-  ledger_client_->OnReconcileComplete(result, viewing_id, probi);
+
+  ledger_client_->OnReconcileComplete(result, viewing_id, reconcile.category_, probi);
   if (result != ledger::Result::LEDGER_OK) {
     // error handling
     return;
@@ -612,7 +612,7 @@ void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
 void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) {
   auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher, amount, currency);
   auto direction_list = std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
-  bat_client_->reconcile(GenerateGUID(), false, direction_list);
+  bat_client_->reconcile(GenerateGUID(), ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, direction_list);
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
@@ -627,10 +627,10 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   } else if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
     // Auto-contribution
-    bat_client_->reconcile(GenerateGUID(), false);
+    bat_client_->reconcile(GenerateGUID(), ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE);
     // Recurring direct donation
     // TODO we need to get donation amount here, so that we know how much ballots we need
-    // bat_client_->reconcile(GenerateGUID(), true);
+    // bat_client_->reconcile(GenerateGUID(), ledger::PUBLISHER_CATEGORY::RECURRING_DONATION);
   } else if (timer_id == last_prepare_vote_batch_timer_id_) {
     last_prepare_vote_batch_timer_id_ = 0;
     bat_client_->prepareVoteBatch();

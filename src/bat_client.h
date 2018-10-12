@@ -48,7 +48,7 @@ class BatClient {
   braveledger_bat_helper::CURRENT_RECONCILE GetReconcileById(const std::string& viewingId);
   bool SetReconcile(const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
   void removeReconcileById(const std::string& viewingId);
-  void reconcile(const std::string& viewingId, const bool recurring, const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions = {});
+  void reconcile(const std::string& viewingId, const ledger::PUBLISHER_CATEGORY category, const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions = {});
   unsigned int ballots(const std::string& viewingId);
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);
   void prepareBallots();

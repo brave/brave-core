@@ -46,6 +46,7 @@ class LEDGER_EXPORT LedgerClient {
                                   std::unique_ptr<ledger::WalletInfo>) = 0;
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,
+                                   ledger::PUBLISHER_CATEGORY category,
                                    const std::string& probi) = 0;
 
   virtual void LoadLedgerState(LedgerCallbackHandler* handler) = 0;

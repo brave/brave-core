@@ -351,7 +351,7 @@ namespace braveledger_bat_helper {
     std::string currency_;
     double fee_;
     std::vector<RECONCILE_DIRECTION> directions_;
-    bool recurring_;
+    ledger::PUBLISHER_CATEGORY category_;
   };
 
   enum class SERVER_TYPES {

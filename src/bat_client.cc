@@ -178,9 +178,9 @@ void BatClient::registerPersonaCallback(bool result,
 }
 
 void BatClient::resetReconcileStamp() {
-  // state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
+  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
   // For testing (reconcile will happen 3min after wallet creation
-  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 3 * 60;
+  //state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 3 * 60;
   saveState();
 }
 
@@ -281,7 +281,7 @@ bool BatClient::isReadyForReconcile() {
   return true;
 }
 
-void BatClient::reconcile(const std::string& viewingId, bool recurring, const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions) {
+void BatClient::reconcile(const std::string& viewingId, const ledger::PUBLISHER_CATEGORY category, const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions) {
   if (currentReconciles_->count(viewingId) > 0) {
     LOG(ERROR) << "unable to reconcile with the same viewing id";
     // TODO add error callback
@@ -309,22 +309,23 @@ void BatClient::reconcile(const std::string& viewingId, bool recurring, const st
 
   double balance = getBalance();
   // check for ac and recurring donations
-  if (directions.size() == 0) {
+  if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+    if (fee > balance) {
+    // TODO add error callback
+      return;
+    }
+  } else {
     double ac_amount = getContributionAmount();
     if (ac_amount + fee > balance) {
       // TODO add error callback
       return;
     }
-  } else if (fee > balance) {
-    // if one time donation is to big
-    // TODO add error callback
-    return;
   }
   
   reconcile.viewingId_ = viewingId;
   reconcile.fee_ = fee;
   reconcile.directions_ = directions;
-  reconcile.recurring_ = recurring;
+  reconcile.category_ = category;
 
   currentReconciles_->insert(std::make_pair(viewingId, reconcile));
   
@@ -366,10 +367,10 @@ void BatClient::currentReconcile(const std::string& viewingId) {
   std::ostringstream amount;
   auto reconcile = GetReconcileById(viewingId);
 
-  if (reconcile.fee_ > 0) {
-    amount << reconcile.fee_;
-  } else {
+  if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
     amount << state_->fee_amount_;
+  } else {
+    amount << reconcile.fee_;
   }
 
   std::string path = (std::string)WALLET_PROPERTIES + state_->walletInfo_.paymentId_ + "?refresh=true" + "&amount=" + amount.str() + "&altcurrency=" + state_->fee_currency_;
