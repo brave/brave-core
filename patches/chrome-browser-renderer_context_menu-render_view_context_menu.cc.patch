@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index 78628f4cca9eb1aa6dce06daf0d6cc0b11e212f4..9b34f346d5e112f6f1569dce9fb3070cfa7d2e9a 100644
+index 78628f4cca9eb1aa6dce06daf0d6cc0b11e212f4..06084e886ebac153c3dbe402c9edfceb63ce5516 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 @@ -1055,6 +1055,10 @@ void RenderViewContextMenu::AppendLinkItems() {
@@ -22,17 +22,7 @@ index 78628f4cca9eb1aa6dce06daf0d6cc0b11e212f4..9b34f346d5e112f6f1569dce9fb3070c
      }
  
      AppendOpenWithLinkItems();
-@@ -1779,6 +1785,9 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
-     case IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD:
-       return IsOpenLinkOTREnabled();
- 
-+    case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-+      return params_.link_url.is_valid() && !browser_context_->IsTorProfile();
-+
-     case IDC_PRINT:
-       return IsPrintPreviewEnabled();
- 
-@@ -1912,6 +1921,14 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
+@@ -1912,6 +1918,14 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
                                true /* started_from_context_menu */);
        break;
  
