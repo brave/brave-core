@@ -35,14 +35,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
 
   void Shutdown() override;
 
-  void OnExtensionInitialized() override;
-
-  // ExtensionRegistryObserver:
-  void OnExtensionLoaded(content::BrowserContext* browser_context,
-                         const extensions::Extension* extension) override;
-  void OnExtensionUnloaded(content::BrowserContext* browser_context,
-                           const extensions::Extension* extension,
-                           extensions::UnloadedExtensionReason reason) override;
   // BraveSyncClient overrides
 
   // BraveSync to Browser messages
@@ -67,6 +59,14 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void NeedSyncWords(const std::string &seed) override;
 
  private:
+  void OnExtensionInitialized() override;
+
+  // ExtensionRegistryObserver:
+  void OnExtensionLoaded(content::BrowserContext* browser_context,
+                         const extensions::Extension* extension) override;
+  void OnExtensionUnloaded(content::BrowserContext* browser_context,
+                           const extensions::Extension* extension,
+                           extensions::UnloadedExtensionReason reason) override;
   void LoadOrUnloadExtension(bool load);
   void OnExtensionSystemReady();
   void OnPreferenceChanged(const std::string& pref_name);

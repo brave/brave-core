@@ -11,6 +11,7 @@
 #include "base/task/post_task.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
@@ -36,6 +37,9 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_storage.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
+#include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_system.h"
+#include "extensions/common/one_shot_event.h"
 #include "ui/base/models/tree_node_iterator.h"
 
 namespace brave_sync {
@@ -77,46 +81,48 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
   timer_(std::make_unique<base::RepeatingTimer>()),
   unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
   bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)),
+  extension_registry_observer_(this),
   weak_ptr_factory_(this) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl CTOR";
-  LOG(ERROR) << "TAGAB ---------------------";
+    DLOG(INFO) << "[Brave Sync] " << __func__;
 
-  DETACH_FROM_SEQUENCE(sequence_checker_);
+    // Handle when the extension system is ready
+    extensions::ExtensionSystem::Get(profile)->ready().Post(
+        FROM_HERE, base::Bind(&BraveSyncServiceImpl::OnExtensionSystemReady,
+                              weak_ptr_factory_.GetWeakPtr()));
 
-  DCHECK(bookmark_model_);
+    DETACH_FROM_SEQUENCE(sequence_checker_);
 
-  sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
+    DCHECK(bookmark_model_);
 
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() <<">";
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync_prefs_->GetThisDeviceName()=<" << sync_prefs_->GetThisDeviceName() <<">";
+    sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
 
-  task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
-      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN} );
+    DLOG(INFO) << "[Brave Sync] " << __func__ << " sync_prefs_->GetSeed()="
+      << sync_prefs_->GetSeed();
+    DLOG(INFO) << "[Brave Sync] " << __func__ <<
+    " sync_prefs_->GetThisDeviceName()=" << sync_prefs_->GetThisDeviceName();
 
-  sync_obj_map_ = std::make_unique<storage::ObjectMap>(profile->GetPath());
+    task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN} );
 
-  history_ = std::make_unique<brave_sync::History>(/*this, */profile, this);
-  if (!sync_prefs_->GetThisDeviceId().empty()) {
-    history_->SetThisDeviceId(sync_prefs_->GetThisDeviceId());
-  }
-  history_->SetObjectMap(sync_obj_map_.get());
+    sync_obj_map_ = std::make_unique<storage::ObjectMap>(profile->GetPath());
+
+    history_ = std::make_unique<brave_sync::History>(/*this, */profile, this);
+    if (!sync_prefs_->GetThisDeviceId().empty()) {
+      history_->SetThisDeviceId(sync_prefs_->GetThisDeviceId());
+    }
+    history_->SetObjectMap(sync_obj_map_.get());
 
 
-  if (!sync_prefs_->GetSeed().empty() && !sync_prefs_->GetThisDeviceName().empty()) {
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync is configured";
-    sync_configured_ = true;
-  } else {
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl sync is NOT configured";
-    LOG(ERROR) << "TAGAB sync_prefs_->GetSeed()=<" << sync_prefs_->GetSeed() << ">";
-    LOG(ERROR) << "TAGAB sync_prefs_->GetThisDeviceName()=<" << sync_prefs_->GetThisDeviceName() << ">";
-  }
+    if (!sync_prefs_->GetSeed().empty() &&
+        !sync_prefs_->GetThisDeviceName().empty()) {
+      DLOG(INFO) << "[Brave Sync] " << __func__ << " sync is configured";
+      sync_configured_ = true;
+    } else {
+      DLOG(INFO) << "[Brave Sync] " << __func__ << " sync is NOT configured";
+    }
 
-  sync_client_->SetSyncToBrowserHandler(this);
-
-  LOG(ERROR) << "TAGAB  BraveSyncServiceImpl::SetProfile sync_client_="<<sync_client_;
-
-  StartLoop();
+    sync_client_->SetSyncToBrowserHandler(this);
 }
 
 BraveSyncServiceImpl::~BraveSyncServiceImpl() {}
@@ -141,8 +147,6 @@ bool BraveSyncServiceImpl::IsSyncInitialized() {
 
 void BraveSyncServiceImpl::Shutdown() {
   LOG(ERROR) << "TAGAB BraveSyncServiceImpl::Shutdown";
-
-  StopLoop();
 
   history_.reset();
 
@@ -442,14 +446,17 @@ void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array &seed, const Uint8Arr
 }
 
 void BraveSyncServiceImpl::OnSyncReady() {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady:";
+  DLOG(INFO) << "[Brave Sync] " << __func__;
   const std::string bookmarks_base_order = sync_prefs_->GetBookmarksBaseOrder();
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady: bookmarks_base_order="<<bookmarks_base_order;
+  DLOG(INFO) << "[Brave Sync] " << __func__ << " bookmarks_base_order=" <<
+    bookmarks_base_order;
   if (bookmarks_base_order.empty()) {
     std::string platform = tools::GetPlatformName();
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady: platform=" << platform;
-    LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSyncReady: sync_prefs_->GetThisDeviceId()=" << sync_prefs_->GetThisDeviceId();
-    sync_client_->SendGetBookmarksBaseOrder(sync_prefs_->GetThisDeviceId(), platform);
+    DLOG(INFO) << "[Brave Sync] " << __func__ << " platform=" << platform;
+    DLOG(INFO) << "[Brave Sync] " << __func__ <<
+      " sync_prefs_->GetThisDeviceId()=" << sync_prefs_->GetThisDeviceId();
+    sync_client_->SendGetBookmarksBaseOrder(sync_prefs_->GetThisDeviceId(),
+                                            platform);
     // OnSyncReady will be called by OnSaveBookmarksBaseOrder
     return;
   }
@@ -814,14 +821,9 @@ void BraveSyncServiceImpl::OnDeleteSyncSiteSettings()  {
 }
 
 void BraveSyncServiceImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
-  std::string normalized_order = order;
-  if (normalized_order.length() >= 3 &&
-      normalized_order.at(normalized_order.length() - 1) == '.')
-    normalized_order.resize(normalized_order.length() - 1);
-  DLOG(INFO) << "[Brave Sync ] " << __func__ << "received order=" << order
-    << " normalized order=" << normalized_order;
+  DLOG(INFO) << "[Brave Sync ] " << __func__ << "order=" << order;
   DCHECK(!order.empty());
-  sync_prefs_->SetBookmarksBaseOrder(normalized_order);
+  sync_prefs_->SetBookmarksBaseOrder(order);
   DLOG(INFO) << "[Brave Sync ] " << __func__ << " forced call of OnSyncReady";
   OnSyncReady();
 }
@@ -1046,7 +1048,6 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
     if (node->is_folder()) {
       bookmark->order =
           sync_prefs_->GetBookmarksBaseOrder() +
-          "." +
           std::to_string(index);
     } else {
       std::string order;
@@ -1327,6 +1328,7 @@ void BraveSyncServiceImpl::CreateUpdateDeleteHistorySites(
 static const int64_t kCheckUpdatesIntervalSec = 60;
 
 void BraveSyncServiceImpl::StartLoop() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   bookmark_model_->AddObserver(this);
   timer_->Start(FROM_HERE, base::TimeDelta::FromSeconds(kCheckUpdatesIntervalSec),
@@ -1334,6 +1336,7 @@ void BraveSyncServiceImpl::StartLoop() {
 }
 
 void BraveSyncServiceImpl::StopLoop() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   timer_->Stop();
   bookmark_model_->RemoveObserver(this);
@@ -1369,6 +1372,29 @@ void BraveSyncServiceImpl::TriggerOnSyncStateChanged() {
 void BraveSyncServiceImpl::TriggerOnHaveSyncWords(const std::string &sync_words) {
   for (auto& observer : observers_)
     observer.OnHaveSyncWords(this, sync_words);
+}
+
+void BraveSyncServiceImpl::OnExtensionSystemReady() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
+  // observe changes in extension system
+  extension_registry_observer_.Add(ExtensionRegistry::Get(profile_));
+};
+
+void BraveSyncServiceImpl::OnExtensionReady(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension) {
+  if (extension->id() == brave_sync_extension_id) {
+    StartLoop();
+  }
+}
+
+void BraveSyncServiceImpl::OnExtensionUnloaded(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension,
+    extensions::UnloadedExtensionReason reason) {
+  if (extension->id() == brave_sync_extension_id) {
+    StopLoop();
+  }
 }
 
 } // namespace brave_sync
