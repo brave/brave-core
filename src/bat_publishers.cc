@@ -765,6 +765,9 @@ void BatPublishers::setBalanceReportItem(ledger::PUBLISHER_MONTH month,
     case ledger::ReportType::DONATION:
       report_info.one_time_donation_ = braveledger_bat_bignum::sum(report_info.one_time_donation_, probi);
       break;
+    case ledger::ReportType::DONATION_RECURRING:
+      report_info.recurring_donation_ = braveledger_bat_bignum::sum(report_info.recurring_donation_, probi);
+      break;
     default:
       break;
   }

@@ -33,6 +33,8 @@ using GetPublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
+using RecurringDonationCallback = std::function<void(Result,
+    std::unique_ptr<std::vector<ledger::PublisherInfo>>)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
