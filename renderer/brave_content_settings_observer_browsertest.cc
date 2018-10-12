@@ -284,14 +284,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
       &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 1u) <<
-      "There should be one default fingerprinting rule.";
-  EXPECT_EQ(fp_settings[0].primary_pattern,
-      ContentSettingsPattern::Wildcard()) <<
-      "Primary pattern of default fingerprinting rule should be wildcard.";
-  EXPECT_EQ(fp_settings[0].secondary_pattern, first_party_pattern()) <<
-      "Secondary pattern of default fingerprinting rule should be the special "
-      "first party pattern we defined.";
+  EXPECT_EQ(fp_settings.size(), 0u) <<
+      "There should not be any visible fingerprinting rules.";
 
   NavigateToPageWithIframe();
 
@@ -314,7 +308,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFP) {
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
       &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 3u);
+  EXPECT_EQ(fp_settings.size(), 2u);
 
   NavigateToPageWithIframe();
 
@@ -337,7 +331,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFP) {
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
       &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 3u);
+  EXPECT_EQ(fp_settings.size(), 2u);
 
   NavigateToPageWithIframe();
 
@@ -361,7 +355,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
       &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 3u);
+  EXPECT_EQ(fp_settings.size(), 2u);
 
   NavigateToPageWithIframe();
 
@@ -385,7 +379,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPShieldsDo
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
       &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 3u);
+  EXPECT_EQ(fp_settings.size(), 2u);
 
   NavigateToPageWithIframe();
 
@@ -408,7 +402,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, Block3PFPGetImag
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
       &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 3u);
+  EXPECT_EQ(fp_settings.size(), 2u);
 
   NavigateToPageWithIframe();
 
@@ -431,7 +425,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPGetImageD
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
       &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 3u);
+  EXPECT_EQ(fp_settings.size(), 2u);
 
   NavigateToPageWithIframe();
 
@@ -454,7 +448,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFPGetImageD
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting,
       &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 3u);
+  EXPECT_EQ(fp_settings.size(), 2u);
 
   NavigateToPageWithIframe();
 

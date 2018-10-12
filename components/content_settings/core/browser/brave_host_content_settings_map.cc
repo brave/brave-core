@@ -17,7 +17,6 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
     bool migrate_requesting_and_top_level_origin_settings)
     : HostContentSettingsMap(prefs, is_incognito_profile, is_guest_profile,
         store_last_modified, migrate_requesting_and_top_level_origin_settings) {
-  InitializeFingerprintingContentSetting();
   InitializeReferrerContentSetting();
   InitializeCookieContentSetting();
   InitializeBraveShieldsContentSetting();
@@ -39,15 +38,6 @@ void BraveHostContentSettingsMap::BlockGeolocation() {
       CONTENT_SETTINGS_TYPE_GEOLOCATION,
       std::string(),
       CONTENT_SETTING_BLOCK);
-}
-
-void BraveHostContentSettingsMap::InitializeFingerprintingContentSetting() {
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting,
-      CONTENT_SETTING_ALLOW);
 }
 
 void BraveHostContentSettingsMap::InitializeReferrerContentSetting() {
