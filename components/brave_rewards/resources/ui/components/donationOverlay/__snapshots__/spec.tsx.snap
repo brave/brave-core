@@ -26,11 +26,11 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   justify-content: center;
 }
 
-.c2 {
+.c4 {
   display: block;
 }
 
-.c3 {
+.c5 {
   margin-top: 110px;
   padding-left: 5px;
   display: -webkit-box;
@@ -46,7 +46,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   align-items: center;
 }
 
-.c4 {
+.c6 {
   width: 55px;
   color: #E2052A;
   display: block;
@@ -54,7 +54,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   margin-bottom: 40px;
 }
 
-.c6 {
+.c8 {
   color: #FFFFFF;
   font-size: 28px;
   font-weight: 600;
@@ -67,7 +67,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   margin-bottom: 10px;
 }
 
-.c7 {
+.c9 {
   color: #FFFFFF;
   font-size: 16px;
   font-family: "Muli",sans-serif;
@@ -82,7 +82,27 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   width: 249px;
 }
 
-.c5 {
+.c2 {
+  top: 14px;
+  right: 17px;
+  position: absolute;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 27px;
+  height: 27px;
+  color: #FFF;
+  z-index: 2;
+}
+
+.c7 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c3 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -95,18 +115,32 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
     className="c1"
     id="donationoverlay"
   >
-    <div
+    <button
       className="c2"
     >
-      <div
+      <svg
+        aria-hidden="true"
         className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M15.77817 14.36396l7.07107-7.07107c.39053-.39052 1.0237-.39052 1.41422 0 .39052.39053.39052 1.0237 0 1.41422l-7.07107 7.07106 7.07107 7.07107c.39052.39053.39052 1.0237 0 1.41422-.39053.39052-1.0237.39052-1.41422 0l-7.07107-7.07107-7.07106 7.07107c-.39053.39052-1.0237.39052-1.41422 0-.39052-.39053-.39052-1.0237 0-1.41422l7.07107-7.07107L7.2929 8.70711c-.39052-.39053-.39052-1.0237 0-1.41422.39053-.39052 1.0237-.39052 1.41422 0l7.07106 7.07107z"
+        />
+      </svg>
+    </button>
+    <div
+      className="c4"
+    >
+      <div
+        className="c5"
       >
         <span
-          className="c4"
+          className="c6"
         >
           <svg
             aria-hidden="true"
-            className="c5"
+            className="c7"
             focusable="false"
             viewBox="0 0 32 32"
           >
@@ -116,12 +150,12 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
           </svg>
         </span>
         <span
-          className="c6"
+          className="c8"
         >
           MISSING: uhOh
         </span>
         <span
-          className="c7"
+          className="c9"
         >
           MISSING: donationFailureMsg
         </span>

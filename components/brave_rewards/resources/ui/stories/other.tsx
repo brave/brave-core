@@ -288,7 +288,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
                 success={boolean('Success', false)}
                 send={boolean('Is send page?', true)}
                 subText={text('Sub header', 'This is text.')}
-                letter={'B'}
+                domain={'brave.com'}
             />
             : null
           }

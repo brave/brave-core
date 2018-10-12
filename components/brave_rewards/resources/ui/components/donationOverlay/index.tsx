@@ -22,17 +22,18 @@ import {
   StyledBackgroundCurve,
   StyledImageBorder,
   StyleSubHeaderText,
-  StyledLetter
+  StyledLetter,
+  StyledClose
 } from './style'
 import { getLocale } from '../../../helpers'
-import { CloseCircleIcon, PaperAirplaneIcon } from '../../../components/icons'
+import { CloseCircleIcon, CloseStrokeIcon, PaperAirplaneIcon } from '../../../components/icons'
 
 export interface Props {
   id?: string
   send?: boolean
   success?: boolean
   siteImg?: string
-  letter?: string
+  domain?: string
   logoBgColor?: CSS.Color
   subText?: React.ReactNode
   onClose: () => void
@@ -57,7 +58,7 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
   }
 
   getOverlayContent = () => {
-    const { success, send, siteImg, subText, letter, logoBgColor } = this.props
+    const { success, send, siteImg, subText, domain, logoBgColor } = this.props
     return (
       <StyledOverlayContent>
         {
@@ -79,9 +80,9 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
               : null
             }
             {
-              !send && letter
+              !send && !siteImg && domain
               ? <StyledLetter logoBgColor={logoBgColor}>
-                {letter}
+                {(domain && domain.substring(0,1)) || ''}
               </StyledLetter>
               : null
             }
@@ -113,7 +114,7 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, send } = this.props
+    const { id, send, onClose } = this.props
 
     return (
       <StyledOuterWrapper>
@@ -123,6 +124,9 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
           : null
         }
         <StyledWrapper id={id}>
+          <StyledClose onClick={onClose}>
+            <CloseStrokeIcon />
+          </StyledClose>
           {this.getOverlayContent()}
         </StyledWrapper>
       </StyledOuterWrapper>

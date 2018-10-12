@@ -155,4 +155,18 @@ export const StyledLetter = styled<StyleProps, 'div'>('div')`
   text-align: center;
   line-height: 78px;
   font-size: 60px;
+  text-transform: uppercase;
+`
+export const StyledClose = styled<{}, 'button'>('button')`
+  top: 14px;
+  right: 17px;
+  position: absolute;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 27px;
+  height: 27px;
+  color: #FFF;
+  z-index: 2;
 `
