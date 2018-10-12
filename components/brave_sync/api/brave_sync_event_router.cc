@@ -166,8 +166,10 @@ void BraveSyncEventRouter::SendGetBookmarksBaseOrder(const std::string &device_i
          base::Unretained(event_router), base::Passed(std::move(event))));
 }
 
-void BraveSyncEventRouter::SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) {
-  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarkOrder: prevOrder="<<prevOrder<<" nextOrder="<<nextOrder;
+void BraveSyncEventRouter::SendGetBookmarkOrder(const std::string& prev_order,
+                                                const std::string& next_order,
+                                                const std::string& parent_order) {
+  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarkOrder: prev_order="<<prev_order<<" next_order="<<next_order;
   if (!profile_) {
     LOG(ERROR) << "profile is not set";
     return;
@@ -180,8 +182,8 @@ void BraveSyncEventRouter::SendGetBookmarkOrder(const std::string &prevOrder, co
   }
 
   std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnSendGetBookmarkOrder::Create(prevOrder, nextOrder)
-       .release());
+     extensions::api::brave_sync::OnSendGetBookmarkOrder::Create(
+        prev_order, next_order, parent_order).release());
   std::unique_ptr<Event> event(
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnSendGetBookmarkOrder::kEventName,

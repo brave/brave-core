@@ -55,7 +55,9 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void SendDeleteSyncUser() override;
   void SendDeleteSyncCategory(const std::string &category_name) override;
   void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) override;
-  void SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder) override;
+  void SendGetBookmarkOrder(const std::string& prev_order,
+                            const std::string& next_order,
+                            const std::string& parent_order) override;
   void NeedSyncWords(const std::string &seed) override;
 
  private:

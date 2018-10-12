@@ -147,7 +147,9 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnDeleteSyncSiteSettings() override;
   void OnSaveBookmarksBaseOrder(const std::string &order) override;
   void OnSaveBookmarkOrder(const std::string &order,
-    const std::string &prev_order, const std::string &next_order) override;
+                           const std::string &prev_order,
+                           const std::string &next_order,
+                           const std::string &parent_order) override;
   void OnSyncWordsPrepared(const std::string &words) override;
 
   void OnResolvedPreferences(std::unique_ptr<RecordsList> records, const std::string& this_device_id);
@@ -206,8 +208,16 @@ class BraveSyncServiceImpl : public BraveSyncService,
     const base::Time &last_record_time_stamp,
     const bool &is_truncated );
 
-  void PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &node_id, const int &action);
-  void PopRRContext(const std::string &prev_order, const std::string &next_order, int64_t &node_id, int &action);
+  void PushRRContext(const std::string &prev_order,
+                     const std::string &next_order,
+                     const std::string &parent_order,
+                     const int64_t &node_id,
+                     const int &action);
+  void PopRRContext(const std::string &prev_order,
+                    const std::string &next_order,
+                    const std::string &parent_order,
+                    int64_t &node_id,
+                    int &action);
 
   void TriggerOnLogMessage(const std::string &message);
   void TriggerOnSyncStateChanged();
@@ -252,13 +262,14 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
   // Map to keep tracking between request and response on query bookmarks order, access only in UI thread
   // <prev_order, next_order> => <node_id, action>
-  std::map<std::tuple<std::string, std::string>, std::tuple<int64_t, int>> rr_map_;
+  std::map<std::string, std::tuple<int64_t, int>> rr_map_;
 
   const int ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS = 10;
   int attempts_before_send_not_synced_records_ = ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS;
 
   std::unique_ptr<base::RepeatingTimer> timer_;
   base::TimeDelta unsynced_send_interval_;
+  uint64_t initial_sync_records_remaining_;
   bookmarks::BookmarkModel* bookmark_model_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   SEQUENCE_CHECKER(sequence_checker_);

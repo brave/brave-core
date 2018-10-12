@@ -50,7 +50,9 @@ public:
 
   void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform);
 
-  void SendGetBookmarkOrder(const std::string &prevOrder, const std::string &nextOrder);
+  void SendGetBookmarkOrder(const std::string& prev_order,
+                            const std::string& next_order,
+                            const std::string& parent_order);
 
   void NeedSyncWords(const std::string &seed);
 

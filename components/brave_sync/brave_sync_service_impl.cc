@@ -45,8 +45,30 @@
 namespace brave_sync {
 
 namespace {
+
 int64_t deleted_node_id = -1;
 bookmarks::BookmarkNode* deleted_node_root;
+
+void GetOrder(const bookmarks::BookmarkNode* parent,
+              int index,
+              std::string* prev_order,
+              std::string* next_order,
+              std::string* parent_order) {
+  auto* prev_node = index == 0 ?
+    nullptr :
+    parent->GetChild(index - 1);
+  auto* next_node = index == parent->child_count() - 1 ?
+    nullptr :
+    parent->GetChild(index + 1);
+
+  if (prev_node)
+    prev_node->GetMetaInfo("order", prev_order);
+
+  if (next_node)
+    next_node->GetMetaInfo("order", next_order);
+
+  parent->GetMetaInfo("order", parent_order);
+}
 
 }  // namespace
 
@@ -80,6 +102,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
   profile_(profile),
   timer_(std::make_unique<base::RepeatingTimer>()),
   unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
+  initial_sync_records_remaining_(0),
   bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)),
   extension_registry_observer_(this),
   weak_ptr_factory_(this) {
@@ -830,14 +853,16 @@ void BraveSyncServiceImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
 
 void BraveSyncServiceImpl::OnSaveBookmarkOrder(const std::string &order,
                                                const std::string &prev_order,
-                                               const std::string &next_order) {
+                                               const std::string &next_order,
+                                               const std::string &parent_order) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!prev_order.empty() || !next_order.empty());
 
   int64_t between_order_rr_context_node_id = -1;
   int action = -1;
 
-  PopRRContext(prev_order, next_order, between_order_rr_context_node_id, action);
+  PopRRContext(prev_order, next_order, parent_order,
+      between_order_rr_context_node_id, action);
 
   DCHECK(between_order_rr_context_node_id != -1);
   DCHECK(action != -1);
@@ -846,20 +871,38 @@ void BraveSyncServiceImpl::OnSaveBookmarkOrder(const std::string &order,
       bookmark_model_, between_order_rr_context_node_id);
 
   if (bookmark_node) {
+    bookmark_model_->SetNodeMetaInfo(bookmark_node, "order", order);
     BookmarkNodeChanged(bookmark_model_, bookmark_node);
+  }
+
+  --initial_sync_records_remaining_;
+
+  base::Time last_fetch_time = sync_prefs_->GetLastFetchTime();
+  if (tools::IsTimeEmpty(last_fetch_time) &&
+      initial_sync_records_remaining_ == 0) {
+    sync_prefs_->SetLastFetchTime(base::Time::Now());
+    RequestSyncData();
   }
 }
 
-void BraveSyncServiceImpl::PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &node_id, const int &action) {
+void BraveSyncServiceImpl::PushRRContext(const std::string &prev_order,
+                                         const std::string &next_order,
+                                         const std::string &parent_order,
+                                         const int64_t &node_id,
+                                         const int &action) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  std::tuple<std::string, std::string> key(prev_order, next_order);
+  std::string key(prev_order + "-" + next_order + "-" + parent_order);
   DCHECK(rr_map_.find(key) == rr_map_.end());
   rr_map_[key] = std::make_tuple(node_id, action);
 }
 
-void BraveSyncServiceImpl::PopRRContext(const std::string &prev_order, const std::string &next_order, int64_t &node_id, int &action) {
+void BraveSyncServiceImpl::PopRRContext(const std::string &prev_order,
+                                        const std::string &next_order,
+                                        const std::string &parent_order,
+                                        int64_t &node_id,
+                                        int &action) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  std::tuple<std::string, std::string> key(prev_order, next_order);
+  std::string key(prev_order + "-" + next_order + "-" + parent_order);
   auto it = rr_map_.find(key);
   DCHECK(it != rr_map_.end());
   node_id = std::get<0>(it->second);
@@ -880,6 +923,10 @@ void BraveSyncServiceImpl::RequestSyncData() {
     return;
   }
 
+  // still sending sync records
+  if (initial_sync_records_remaining_ > 0)
+    return;
+
   const bool bookmarks = sync_prefs_->GetSyncBookmarksEnabled();
   const bool history = sync_prefs_->GetSyncHistoryEnabled();
   const bool preferences = sync_prefs_->GetSyncSiteSettingsEnabled();
@@ -898,12 +945,36 @@ void BraveSyncServiceImpl::RequestSyncData() {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::RequestSyncData: last_fetch_time="<<last_fetch_time;
 
   //bool dbg_ignore_create_device = true; //the logic should rely upon sync_prefs_->GetTimeLastFetch() which is not saved yet
-  if (tools::IsTimeEmpty(last_fetch_time)
-  /*0 == start_at*/ /*&& !dbg_ignore_create_device*/) {
+  if (tools::IsTimeEmpty(last_fetch_time)) {
     //SetUpdateDeleteDeviceName(CREATE_RECORD, mDeviceName, mDeviceId, "");
     SendCreateDevice();
-    SendUnsyncedBookmarks();
+
+    auto* deleted_node = GetDeletedNodeRoot();
+    CHECK(deleted_node);
+    std::vector<const bookmarks::BookmarkNode*> root_nodes = {
+      bookmark_model_->other_node(),
+      bookmark_model_->bookmark_bar_node(),
+      deleted_node
+    };
+
+    std::vector<const bookmarks::BookmarkNode*> sync_nodes;
+    for (const auto* root_node : root_nodes) {
+      ui::TreeNodeIterator<const bookmarks::BookmarkNode>
+          iterator(root_node);
+      while (iterator.has_next())
+        sync_nodes.push_back(iterator.Next());
+    }
+
+    initial_sync_records_remaining_ = sync_nodes.size();
+
+    for (auto* node : sync_nodes)
+      BookmarkNodeAdded(bookmark_model_,
+                        node->parent(),
+                        node->parent()->GetIndexOf(node));
     //SendAllLocalHistorySites();
+
+    if (initial_sync_records_remaining_ > 0)
+      return;
   }
 
   FetchSyncRecords(bookmarks, history, preferences, 1000);
@@ -1028,13 +1099,11 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
   std::string parent_object_id;
   node->parent()->GetMetaInfo("object_id", &parent_object_id);
   bookmark->parentFolderObjectId = parent_object_id;
-  // this will be true as long as they are processed in TreeNodeIterator order
-  // However, if object locates at toolbar, prarent folder object id is empty.
-  // DCHECK(!parent_object_id.empty());
 
   std::string order;
   node->GetMetaInfo("order", &order);
   bookmark->order = order;
+  DCHECK(!order.empty());
 
   auto* deleted_node = GetDeletedNodeRoot();
   CHECK(deleted_node);
@@ -1042,19 +1111,7 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
   if (record->objectId.empty()) {
     record->objectId = tools::GenerateObjectId();
     record->action = jslib::SyncRecord::Action::CREATE;
-
-    DCHECK(bookmark->order.empty());
-    int index = node->parent()->GetIndexOf(node);
-    if (node->is_folder()) {
-      bookmark->order =
-          sync_prefs_->GetBookmarksBaseOrder() +
-          std::to_string(index);
-    } else {
-      std::string order;
-      node->parent()->GetMetaInfo("order", &order);
-      DCHECK(!order.empty());
-      bookmark->order = order + "." + std::to_string(index);
-    }
+    bookmark_model_->SetNodeMetaInfo(node, "object_id", record->objectId);
   } else if (node->HasAncestor(deleted_node)) {
    record->action = jslib::SyncRecord::Action::DELETE;
   } else {
@@ -1161,24 +1218,16 @@ void BraveSyncServiceImpl::BookmarkNodeMoved(
     int new_index) {
   auto* node = new_parent->GetChild(new_index);
 
-  auto* prev_node = new_index == 0 ?
-    nullptr :
-    new_parent->GetChild(new_index - 1);
-  auto* next_node = new_index == new_parent->child_count() - 1 ?
-    nullptr :
-    new_parent->GetChild(new_index + 1);
-
   std::string prev_node_order;
-  if (prev_node)
-    prev_node->GetMetaInfo("order", &prev_node_order);
-
   std::string next_node_order;
-  if (next_node)
-    next_node->GetMetaInfo("order", &next_node_order);
-
+  std::string parent_node_order;
+  GetOrder(new_parent, new_index,
+           &prev_node_order, &next_node_order, &parent_node_order);
   PushRRContext(
-      prev_node_order, next_node_order, node->id(), jslib_const::kActionUpdate);
-  sync_client_->SendGetBookmarkOrder(prev_node_order, next_node_order);
+      prev_node_order, next_node_order, parent_node_order,
+      node->id(), jslib_const::kActionUpdate);
+  sync_client_->SendGetBookmarkOrder(
+      prev_node_order, next_node_order, parent_node_order);
   // responds in OnSaveBookmarkOrder
 }
 
@@ -1187,24 +1236,17 @@ void BraveSyncServiceImpl::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
                                           int index) {
   auto* node = parent->GetChild(index);
 
-  auto* prev_node = index == 0 ?
-    nullptr :
-    parent->GetChild(index - 1);
-  auto* next_node = index == parent->child_count() - 1 ?
-    nullptr :
-    parent->GetChild(index + 1);
-
   std::string prev_node_order;
-  if (prev_node)
-    prev_node->GetMetaInfo("order", &prev_node_order);
-
   std::string next_node_order;
-  if (next_node)
-    next_node->GetMetaInfo("order", &next_node_order);
+  std::string parent_node_order;
+  GetOrder(parent, index,
+           &prev_node_order, &next_node_order, &parent_node_order);
 
   PushRRContext(
-      prev_node_order, next_node_order, node->id(), jslib_const::kActionCreate);
-  sync_client_->SendGetBookmarkOrder(prev_node_order, next_node_order);
+      prev_node_order, next_node_order, parent_node_order,
+      node->id(), jslib_const::kActionCreate);
+  sync_client_->SendGetBookmarkOrder(
+      prev_node_order, next_node_order, parent_node_order);
   // responds in OnSaveBookmarkOrder
 }
 
