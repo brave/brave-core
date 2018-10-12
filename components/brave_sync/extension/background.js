@@ -47,9 +47,9 @@ chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, plat
   callbackList["get-bookmarks-base-order"](null, deviceId, platform);
 });
 
-chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder) {
-  console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)}`);
-  callbackList["get-bookmark-order"](null, prevOrder, nextOrder);
+chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder, parentOrder) {
+  console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)} parentOrder=${JSON.stringify(parentOrder)}`);
+  callbackList["get-bookmark-order"](null, prevOrder, nextOrder, parentOrder);
 });
 
 chrome.braveSync.onNeedSyncWords.addListener(function(seed) {
@@ -195,8 +195,8 @@ class InjectedObject {
         chrome.braveSync.saveBookmarksBaseOrder(arg1/*order*/);
         break;
       case "save-bookmark-order":
-        console.log(`"save-bookmark-order" order=${JSON.stringify(arg1)} prevOrder=${JSON.stringify(arg2)} nextOrder=${JSON.stringify(arg3)}`);
-        chrome.braveSync.saveBookmarkOrder(arg1/*order*/, arg2/*prevOrder*/, arg3/*nextOrder*/);
+        console.log(`"save-bookmark-order" order=${JSON.stringify(arg1)} prevOrder=${JSON.stringify(arg2)} nextOrder=${JSON.stringify(arg3)} parentOrder=${JSON.stringify(arg3)}`);
+        chrome.braveSync.saveBookmarkOrder(arg1/*order*/, arg2/*prevOrder*/, arg3/*nextOrder*/, arg4/*parentOrder*/);
         break;
       default:
         console.log('background.js TAGAB InjectedObject.handleMessage unknown message', message, arg1, arg2, arg3, arg4);
