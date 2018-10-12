@@ -491,6 +491,8 @@ void RewardsDOMHandler::OnReconcileComplete(brave_rewards::RewardsService* rewar
   const std::string& viewing_id,
   const std::string& probi) {
   GetAllBalanceReports();
+  OnContentSiteUpdated(rewards_service);
+  GetReconcileStamp(nullptr);
 }
 
 }  // namespace

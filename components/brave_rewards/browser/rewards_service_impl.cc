@@ -293,6 +293,7 @@ void RewardsServiceImpl::GetContentSiteList(
   filter.year = GetPublisherYear(now);
   filter.min_duration = ledger_->GetPublisherMinVisitTime();
   filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
+  filter.reconcile_stamp = ledger_->GetReconcileStamp();
 
   ledger_->GetPublisherInfoList(start, limit,
       filter,
