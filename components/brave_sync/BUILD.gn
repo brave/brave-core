@@ -69,9 +69,13 @@ source_set("brave_sync") {
     "//base",
     "//content/public/browser",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
+    "//components/bookmarks/browser",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/history/content/browser",
+    "//components/history/core/browser",
     "//components/pref_registry",
+    "//ui/base",
   ]
 }
 
