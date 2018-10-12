@@ -6,8 +6,7 @@ import windowActions from '../actions/windowActions'
 import tabActions from '../actions/tabActions'
 import runtimeActions from '../actions/runtimeActions'
 
-chrome.runtime.onStartup.addListener(() => {
-  runtimeActions.runtimeDidStartup()
+function checkForNewWindows() {
   chrome.windows.getAllAsync({ populate: true }).then((windows: chrome.windows.Window[]) => {
     windows.forEach((win: chrome.windows.Window) => {
       windowActions.windowCreated(win)
@@ -18,4 +17,20 @@ chrome.runtime.onStartup.addListener(() => {
       }
     })
   })
+}
+
+chrome.runtime.onStartup.addListener(() => {
+  runtimeActions.runtimeDidStartup()
+  checkForNewWindows()
 })
+
+
+if (chrome.extension.inIncognitoContext) {
+  // This is a work-around for a longstanding Chromium bug where onStartup
+  // isn't called for incognito windows.  And since chrome.windows.onCreated
+  // doesn't get called for the first window, we need to work around it here.
+  // See https://github.com/brave/brave-browser/issues/1437 for more discussion.
+  setTimeout(() => {
+    checkForNewWindows()
+  }, 1000)
+}
