@@ -8,6 +8,7 @@
 #include <map>
 
 #include "base/macros.h"
+#include "base/scoped_observer.h"
 #include "base/sequence_checker.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
@@ -25,6 +26,13 @@ namespace base {
 namespace bookmarks {
   class BookmarkNode;
 }
+
+namespace extensions {
+class ExtensionRegistry;
+}
+
+using extensions::ExtensionRegistryObserver;
+using extensions::ExtensionRegistry;
 
 namespace history {
   class URLResult;
@@ -49,7 +57,8 @@ class InitialBookmarkNodeInfo;
 class BraveSyncServiceImpl : public BraveSyncService,
                              public SyncLibToBrowserHandler,
                              public CanSendSyncHistory,
-                             public bookmarks::BookmarkModelObserver {
+                             public bookmarks::BookmarkModelObserver,
+                             public ExtensionRegistryObserver {
  public:
   BraveSyncServiceImpl(Profile *profile);
   ~BraveSyncServiceImpl() override;
@@ -207,6 +216,14 @@ class BraveSyncServiceImpl : public BraveSyncService,
   std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
       const bookmarks::BookmarkNode* node);
 
+  void OnExtensionSystemReady();
+  // ExtensionRegistryObserver:
+  void OnExtensionReady(content::BrowserContext* browser_context,
+                         const extensions::Extension* extension) override;
+  void OnExtensionUnloaded(content::BrowserContext* browser_context,
+                           const extensions::Extension* extension,
+                           extensions::UnloadedExtensionReason reason) override;
+
   BraveSyncClient *sync_client_;
 
   // True when is in active sync chain
@@ -245,6 +262,9 @@ class BraveSyncServiceImpl : public BraveSyncService,
   bookmarks::BookmarkModel* bookmark_model_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   SEQUENCE_CHECKER(sequence_checker_);
+
+  ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
+    extension_registry_observer_;
 
   base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceImpl);

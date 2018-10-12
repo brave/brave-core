@@ -49,37 +49,6 @@ BraveSyncClientImpl::~BraveSyncClientImpl() {
   LOG(ERROR) << "TAGAB BraveSyncClientImpl::~BraveSyncClientImpl";
 }
 
-void BraveSyncClientImpl::OnExtensionInitialized() {
-  DLOG(INFO) << "[Brave Sync] " << __func__;
-  DCHECK(extension_loaded_);
-  if (extension_loaded_)
-    brave_sync_event_router_->LoadClient();
-}
-
-void BraveSyncClientImpl::Shutdown() {
-  DLOG(INFO) << "[Brave Sync] " << __func__;
-  LoadOrUnloadExtension(false);
-}
-
-void BraveSyncClientImpl::OnExtensionLoaded(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension) {
-  if (extension->id() == brave_sync_extension_id) {
-    DLOG(INFO) << "[Brave Sync] " << __func__;
-    extension_loaded_ = true;
-  }
-}
-
-void BraveSyncClientImpl::OnExtensionUnloaded(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension,
-    extensions::UnloadedExtensionReason reason) {
-  if (extension->id() == brave_sync_extension_id) {
-    DLOG(INFO) << "[Brave Sync] " << __func__;
-    extension_loaded_ = false;
-  }
-}
-
 void BraveSyncClientImpl::SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) {
   DCHECK(handler);
   DCHECK(!handler_);
@@ -153,6 +122,37 @@ void BraveSyncClientImpl::NeedSyncWords(const std::string &seed) {
   brave_sync_event_router_->NeedSyncWords(seed);
 }
 
+void BraveSyncClientImpl::OnExtensionInitialized() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
+  DCHECK(extension_loaded_);
+  if (extension_loaded_)
+    brave_sync_event_router_->LoadClient();
+}
+
+void BraveSyncClientImpl::Shutdown() {
+  DLOG(INFO) << "[Brave Sync] " << __func__;
+  LoadOrUnloadExtension(false);
+}
+
+void BraveSyncClientImpl::OnExtensionLoaded(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension) {
+  if (extension->id() == brave_sync_extension_id) {
+    DLOG(INFO) << "[Brave Sync] " << __func__;
+    extension_loaded_ = true;
+  }
+}
+
+void BraveSyncClientImpl::OnExtensionUnloaded(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension,
+    extensions::UnloadedExtensionReason reason) {
+  if (extension->id() == brave_sync_extension_id) {
+    DLOG(INFO) << "[Brave Sync] " << __func__;
+    extension_loaded_ = false;
+  }
+}
+
 void BraveSyncClientImpl::LoadOrUnloadExtension(bool load) {
   DLOG(INFO) << "[Brave Sync] " << __func__ << ":" << load;
   base::FilePath brave_sync_extension_path(FILE_PATH_LITERAL(""));
@@ -174,8 +174,7 @@ void BraveSyncClientImpl::LoadOrUnloadExtension(bool load) {
 void BraveSyncClientImpl::OnExtensionSystemReady() {
   DLOG(INFO) << "[Brave Sync] " << __func__;
   // observe changes in extension system
-  extension_registry_observer_.Add(
-    extensions::ExtensionRegistry::Get(profile_));
+  extension_registry_observer_.Add(ExtensionRegistry::Get(profile_));
   DCHECK(!extension_loaded_);
   if (sync_prefs_->GetSyncThisDevice()) {
     LoadOrUnloadExtension(true);
