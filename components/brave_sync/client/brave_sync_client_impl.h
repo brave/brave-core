@@ -8,7 +8,6 @@
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "base/macros.h"
 #include "base/scoped_observer.h"
-#include "base/memory/weak_ptr.h"
 #include "components/prefs/pref_member.h"
 #include "extensions/browser/extension_registry_observer.h"
 
@@ -48,8 +47,9 @@ class BraveSyncClientImpl : public BraveSyncClient,
     const std::vector<std::string> &category_names, const base::Time &startAt,
     const int &max_records) override;
   void SendFetchSyncDevices() override ;
-  void SendResolveSyncRecords(const std::string &category_name,
-    const SyncRecordAndExistingList &records_and_existing_objects) override;
+  void SendResolveSyncRecords(
+      const std::string &category_name,
+      std::unique_ptr<SyncRecordAndExistingList> records) override;
   void SendSyncRecords(const std::string &category_name,
     const RecordsList &records) override;
   void SendDeleteSyncUser() override;
@@ -85,8 +85,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;
-
-  base::WeakPtrFactory<BraveSyncClientImpl> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncClientImpl);
 };

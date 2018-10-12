@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "brave/components/brave_sync/client/client_data.h"
 
@@ -33,12 +34,10 @@ typedef std::pair<SyncRecordPtr, SyncRecordPtr> SyncRecordAndExisting;
 typedef std::unique_ptr<SyncRecordAndExisting> SyncRecordAndExistingPtr;
 typedef std::vector<SyncRecordAndExistingPtr> SyncRecordAndExistingList;
 
-
 using Uint8Array = std::vector<unsigned char>;
 
 class SyncLibToBrowserHandler {
 public:
-
 
   virtual ~SyncLibToBrowserHandler() = default;
   virtual void OnMessageFromSyncReceived() = 0;
@@ -75,7 +74,8 @@ public:
   virtual void OnSyncWordsPrepared(const std::string &words) = 0;
 };
 
-class BraveSyncClient : public KeyedService {
+class BraveSyncClient : public KeyedService,
+                        public base::SupportsWeakPtr<BraveSyncClient> {
 public:
   ~BraveSyncClient() override = default;
 
@@ -103,8 +103,9 @@ public:
     const std::vector<std::string> &category_names, const base::Time &startAt,
     const int &max_records) = 0;
   virtual void SendFetchSyncDevices() = 0;
-  virtual void SendResolveSyncRecords(const std::string &category_name,
-    const SyncRecordAndExistingList &records_and_existing_objects) = 0;
+  virtual void SendResolveSyncRecords(
+      const std::string &category_name,
+      std::unique_ptr<SyncRecordAndExistingList> list) = 0;
   virtual void SendSyncRecords(const std::string &category_name,
     const RecordsList &records) = 0;
   virtual void SendDeleteSyncUser() = 0;

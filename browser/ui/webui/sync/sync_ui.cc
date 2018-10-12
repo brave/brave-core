@@ -4,6 +4,7 @@
 #include "brave/browser/ui/webui/sync/sync_ui.h"
 
 #include "base/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
@@ -26,7 +27,7 @@ namespace {
 class SyncUIDOMHandler : public WebUIMessageHandler,
                          public brave_sync::BraveSyncServiceObserver {
  public:
-  SyncUIDOMHandler() {};
+  SyncUIDOMHandler();
   ~SyncUIDOMHandler() override;
 
   void Init();
@@ -61,8 +62,12 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
 
   brave_sync::BraveSyncService *sync_service_;  // NOT OWNED
 
+  base::WeakPtrFactory<SyncUIDOMHandler> weak_ptr_factory_;
+
   DISALLOW_COPY_AND_ASSIGN(SyncUIDOMHandler);
 };
+
+SyncUIDOMHandler::SyncUIDOMHandler() : weak_ptr_factory_(this) {}
 
 SyncUIDOMHandler::~SyncUIDOMHandler() {
   if (sync_service_)
@@ -232,19 +237,20 @@ LOG(ERROR) << "SyncUIDOMHandler::OnSyncStateChanged";
 }
 
 void SyncUIDOMHandler::LoadSyncSettingsView() {
-LOG(ERROR) << "SyncUIDOMHandler::LoadSyncSettingsView " << GetThreadInfoString();
-
-  sync_service_->GetSettingsAndDevices(base::Bind(&SyncUIDOMHandler::GetSettingsAndDevicesComplete, base::Unretained(this)) );
+  VLOG(1) << "SyncUIDOMHandler::LoadSyncSettingsView";
+  sync_service_->GetSettingsAndDevices(
+      base::Bind(&SyncUIDOMHandler::GetSettingsAndDevicesComplete,
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void SyncUIDOMHandler::GetSettingsAndDevicesComplete(
   std::unique_ptr<brave_sync::Settings> settings,
   std::unique_ptr<brave_sync::SyncDevices> devices) {
-  LOG(ERROR) << "SyncUIDOMHandler::GetSettingsAndDevicesComplete " << GetThreadInfoString();
+  VLOG(1) << "SyncUIDOMHandler::GetSettingsAndDevicesComplete";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   std::unique_ptr<base::Value> bv_devices = devices->ToValueArrOnly();
-  LOG(ERROR) << "SyncUIDOMHandler::GetSettingsAndDevicesComplete bv_devices: " << brave::debug::ToPrintableString(*bv_devices);
+  VLOG(1) << "SyncUIDOMHandler::GetSettingsAndDevicesComplete bv_devices: " << brave::debug::ToPrintableString(*bv_devices);
   std::unique_ptr<base::Value> bv_settings = brave_sync::BraveSyncSettingsToValue(settings.get());
   web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.showSettings", *bv_settings, *bv_devices);
 }

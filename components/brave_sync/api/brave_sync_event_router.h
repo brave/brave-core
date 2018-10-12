@@ -39,27 +39,29 @@ public:
     const std::string& sync_words);
 
   void FetchSyncRecords(
-    const std::vector<std::string> &category_names,
-    const base::Time &startAt,
-    const int &max_records);
+    const std::vector<std::string>& category_names,
+    const base::Time& startAt,
+    const int& max_records);
 
   void ResolveSyncRecords(const std::string &category_name,
     const std::vector<extensions::api::brave_sync::RecordAndExistingObject>& records_and_existing_objects);
 
-  void SendSyncRecords(const std::string &category_name, const std::vector<api::brave_sync::SyncRecord>& records);
+  void SendSyncRecords(const std::string& category_name,
+                       const std::vector<api::brave_sync::SyncRecord>& records);
 
-  void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform);
+  void SendGetBookmarksBaseOrder(const std::string& device_id,
+                                 const std::string& platform);
 
   void SendGetBookmarkOrder(const std::string& prev_order,
                             const std::string& next_order,
                             const std::string& parent_order);
 
-  void NeedSyncWords(const std::string &seed);
+  void NeedSyncWords(const std::string& seed);
 
   void LoadClient();
 
 private:
-  Profile* profile_;
+  EventRouter* event_router_;
 };
 
 } // namespace extensions
