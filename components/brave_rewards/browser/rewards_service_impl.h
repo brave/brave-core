@@ -23,6 +23,7 @@
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "ui/gfx/image/image.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -102,6 +103,7 @@ class RewardsServiceImpl : public RewardsService,
   bool IsWalletCreated() override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) override;
   double GetContributionAmount() override;
+  brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
 
  private:
   typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;

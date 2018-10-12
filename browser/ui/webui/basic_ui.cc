@@ -13,8 +13,6 @@
 
 using content::WebUIMessageHandler;
 
-namespace {
-
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
                                                   const std::string& js_file,
@@ -50,8 +48,6 @@ void BasicDOMHandler::RegisterMessages() {
 
 void BasicDOMHandler::Init() {
 }
-
-}  // namespace
 
 BasicUI::BasicUI(content::WebUI* web_ui,
     const std::string& name,
