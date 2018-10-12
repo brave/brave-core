@@ -11,6 +11,9 @@
 
 #include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
 
+// Make it clear which class we mean here.
+#undef RenderViewContextMenu
+
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost* render_frame_host,
     const content::ContextMenuParams& params)
@@ -26,3 +29,16 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   }
 }
 
+void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
+  switch (id) {
+    case IDC_CONTENT_CONTEXT_OPENLINKTOR:
+      profiles::SwitchToTorProfile(
+          base::Bind(
+              OnProfileCreated, params_.link_url,
+              content::Referrer(GURL(),
+                                blink::kWebReferrerPolicyStrictOrigin)));
+      break;
+    default:
+      RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
+  }
+}

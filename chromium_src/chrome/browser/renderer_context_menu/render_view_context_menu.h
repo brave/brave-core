@@ -10,12 +10,13 @@
 #include "../../../../../chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #undef RenderViewContextMenu
 
-// Declare our own subclass with an overridden method.
+// Declare our own subclass with overridden methods.
 class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
  public:
   BraveRenderViewContextMenu(content::RenderFrameHost* render_frame_host,
                              const content::ContextMenuParams& params);
   bool IsCommandIdEnabled(int command_id) const override;
+  void ExecuteCommand(int id, int event_flags) override;
 };
 
 // Use our own subclass as the real RenderViewContextMenu.

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index 78628f4cca9eb1aa6dce06daf0d6cc0b11e212f4..06084e886ebac153c3dbe402c9edfceb63ce5516 100644
+index 78628f4cca9eb1aa6dce06daf0d6cc0b11e212f4..f4aea61bb5e9d6f7e95a30671acd642d9564e24b 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 @@ -1055,6 +1055,10 @@ void RenderViewContextMenu::AppendLinkItems() {
@@ -22,18 +22,3 @@ index 78628f4cca9eb1aa6dce06daf0d6cc0b11e212f4..06084e886ebac153c3dbe402c9edfceb
      }
  
      AppendOpenWithLinkItems();
-@@ -1912,6 +1918,14 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
-                               true /* started_from_context_menu */);
-       break;
- 
-+    case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-+      profiles::SwitchToTorProfile(
-+          base::Bind(
-+              OnProfileCreated, params_.link_url,
-+              content::Referrer(GURL(),
-+                                blink::kWebReferrerPolicyStrictOrigin)));
-+      break;
-+
-     case IDC_CONTENT_CONTEXT_OPENLINKBOOKMARKAPP:
-       ExecOpenBookmarkApp();
-       break;
