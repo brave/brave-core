@@ -523,6 +523,7 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   const std::string& viewing_id,
+  ledger::PUBLISHER_CATEGORY category,
   const std::string& probi) {
   if (result == ledger::Result::LEDGER_OK) {
     // TODO add notification service when implemented

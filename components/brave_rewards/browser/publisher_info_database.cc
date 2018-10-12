@@ -22,7 +22,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 1;
+const int kCurrentVersionNumber = 2;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -521,23 +521,53 @@ sql::MetaTable& PublisherInfoDatabase::GetMetaTable() {
 
 // Migration -------------------------------------------------------------------
 
+bool PublisherInfoDatabase::MigrateV1toV2() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const char* name = "activity_info";
+  if (!GetDB().DoesTableExist(name)) {
+    return true;
+  }
+
+  std::string sql;
+  sql.append(" ALTER TABLE ");
+  sql.append(name);
+  sql.append(" ADD donation_amount INTEGER DEFAULT 0; ");
+
+  sql.append(" ALTER TABLE ");
+  sql.append(name);
+  sql.append(" ADD donation_date INTEGER DEFAULT 0; ");
+
+  const char* column = "reconcile_stamp";
+  if (!GetDB().DoesColumnExist(name, column)) {
+    sql.append(" ALTER TABLE ");
+    sql.append(name);
+    sql.append(" ADD reconcile_stamp INTEGER DEFAULT 0; ");
+  }
+  return GetDB().Execute(sql.c_str());
+}
+
 sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // We can't read databases newer than we were designed for.
-  if (meta_table_.GetCompatibleVersionNumber() > kCurrentVersionNumber) {
+  if (meta_table_.GetCompatibleVersionNumber() > GetCurrentVersion()) {
     LOG(WARNING) << "Publisher info database is too new.";
     return sql::INIT_TOO_NEW;
   }
 
-  int cur_version = meta_table_.GetVersionNumber();
+  const int old_version = meta_table_.GetVersionNumber();
 
-  // Put migration code here
+  const int cur_version = GetCurrentVersion();
 
-  // When the version is too old, we just try to continue anyway, there should
-  // not be a released product that makes a database too old for us to handle.
-  LOG_IF(WARNING, cur_version < GetCurrentVersion()) <<
-         "History database version " << cur_version << " is too old to handle.";
+  if (old_version == 1 && cur_version == 2) {
+    LOG(ERROR) << "I am in DB!";
+    if (!MigrateV1toV2()) {
+      LOG(ERROR) << "DB: Error with MigrateV1toV2";
+    }
+
+    meta_table_.SetVersionNumber(cur_version);
+  }
 
   return sql::INIT_OK;
 }
