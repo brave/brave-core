@@ -76,6 +76,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
   bool IsSyncInitialized();
 
  private:
+  bookmarks::BookmarkNode* GetDeletedNodeRoot();
   // bookmarks::BookmarkModelObserver implementation
   void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
                            bool ids_reassigned) override;
