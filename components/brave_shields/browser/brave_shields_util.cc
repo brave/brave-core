@@ -37,6 +37,8 @@ bool GetDefaultFromResourceIdentifier(const std::string& resource_identifier) {
     return false;
   } else if (resource_identifier == "braveShields") {
     return true;
+  } else if (resource_identifier == brave_shields::kReferrers) {
+    return false;
   }
   return false;
 }
@@ -69,11 +71,6 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   // TODO(bbondy): Add a static RegisterUserPrefs method for shields and use
   // prefs instead of simply returning true / false below.
   if (setting == CONTENT_SETTING_DEFAULT) {
-    if (setting_type == CONTENT_SETTINGS_TYPE_PLUGINS) {
-      if (resource_identifier == brave_shields::kReferrers) {
-        return false;
-      }
-    }
     return GetDefaultFromResourceIdentifier(resource_identifier);
   }
   return setting == CONTENT_SETTING_ALLOW;
