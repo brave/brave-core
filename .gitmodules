@@ -1,0 +1,12 @@
+[submodule "deps/bat-native-rapidjson"]
+	path = deps/bat-native-rapidjson
+	url = git@github.com:brave-intl/bat-native-rapidjson.git
+[submodule "deps/bat-native-usermodel"]
+	path = deps/bat-native-usermodel
+	url = git@github.com:brave-intl/bat-native-usermodel.git
+[submodule "third_party/sqlite_modern_cpp"]
+	path = third_party/sqlite_modern_cpp
+	url = git@github.com:SqliteModernCpp/sqlite_modern_cpp.git
+[submodule "third_party/curl"]
+	path = third_party/curl
+	url = git@github.com:curl/curl.git
