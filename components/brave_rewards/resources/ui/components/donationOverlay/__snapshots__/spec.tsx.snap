@@ -26,70 +26,12 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   justify-content: center;
 }
 
-.c8 {
-  color: #D1D1DB;
-  font-size: 38px;
-  font-weight: 600;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  line-height: 28px;
-}
-
-.c3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-top: 220px;
-}
-
 .c2 {
   display: block;
 }
 
-.c4 {
-  -webkit-flex: 1 0 0;
-  -ms-flex: 1 0 0;
-  flex: 1 0 0;
-  margin-top: -25px;
-}
-
-.c7 {
-  -webkit-flex: 9 0 0;
-  -ms-flex: 9 0 0;
-  flex: 9 0 0;
-  padding-top: 10px;
-  margin-right: -10px;
-}
-
-.c5 {
-  width: 90px;
-  height: 90px;
-  padding: 0 20px;
-  border-radius: 50%;
-  margin-right: 25px;
-  background-repeat: no-repeat;
-  background-size: 90px;
-  background-image: url();
-}
-
-.c6 {
-  position: relative;
-  top: 0;
-  left: -20px;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 5px solid #ffffff;
-}
-
-.c9 {
-  margin-top: 245px;
+.c3 {
+  margin-top: 110px;
   padding-left: 5px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -104,7 +46,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   align-items: center;
 }
 
-.c10 {
+.c4 {
   width: 55px;
   color: #E2052A;
   display: block;
@@ -112,7 +54,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   margin-bottom: 40px;
 }
 
-.c12 {
+.c6 {
   color: #FFFFFF;
   font-size: 28px;
   font-weight: 600;
@@ -125,7 +67,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   margin-bottom: 10px;
 }
 
-.c13 {
+.c7 {
   color: #FFFFFF;
   font-size: 16px;
   font-family: "Muli",sans-serif;
@@ -140,7 +82,7 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
   width: 249px;
 }
 
-.c11 {
+.c5 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -162,33 +104,9 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
         <span
           className="c4"
         >
-          <div
-            className="c5"
-          >
-            <div
-              className="c6"
-            />
-          </div>
-        </span>
-        <div
-          className="c7"
-        >
-          <span
-            className="c8"
-          >
-            MISSING: thankYou
-          </span>
-        </div>
-      </div>
-      <div
-        className="c9"
-      >
-        <span
-          className="c10"
-        >
           <svg
             aria-hidden="true"
-            className="c11"
+            className="c5"
             focusable="false"
             viewBox="0 0 32 32"
           >
@@ -198,12 +116,12 @@ exports[`DonationOverlay tests basic tests matches the snapshot 1`] = `
           </svg>
         </span>
         <span
-          className="c12"
+          className="c6"
         >
           MISSING: uhOh
         </span>
         <span
-          className="c13"
+          className="c7"
         >
           MISSING: donationFailureMsg
         </span>

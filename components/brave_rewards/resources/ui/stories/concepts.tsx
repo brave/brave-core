@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, boolean, text, object, number } from '@storybook/addon-knobs'
+import { withKnobs, boolean, text, object } from '@storybook/addon-knobs'
 
 // Components
 import Settings from './settings/settings'
@@ -64,7 +64,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             <SiteBanner
               domain={text('Domain', 'duckduckgo.com')}
               title={text('Title', '')}
-              currentDonation={number('Current recurring donation', 0)}
+              recurringDonation={boolean('Current recurring donation', true)}
               balance={text('Balance ', '5.0')}
               bgImage={boolean('Show bg image', false) ? siteBgImage : null}
               logo={boolean('Show logo', false) ? siteBgLogo : null}

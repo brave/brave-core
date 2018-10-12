@@ -4,6 +4,7 @@
 */
 
 import * as React from 'react'
+import * as CSS from 'csstype'
 import {
   StyledWrapper,
   StyledHeaderText,
@@ -19,15 +20,21 @@ import {
   StyledFailMsg,
   StyledOuterWrapper,
   StyledBackgroundCurve,
-  StyledImageBorder
+  StyledImageBorder,
+  StyleSubHeaderText,
+  StyledLetter
 } from './style'
 import { getLocale } from '../../../helpers'
 import { CloseCircleIcon, PaperAirplaneIcon } from '../../../components/icons'
 
 export interface Props {
   id?: string
+  send?: boolean
   success?: boolean
   siteImg?: string
+  letter?: string
+  logoBgColor?: CSS.Color
+  subText?: React.ReactNode
   onClose: () => void
 }
 
@@ -49,34 +56,56 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
     )
   }
 
-  getOverlayContent (success: boolean | undefined, siteImg: string | undefined) {
+  getOverlayContent = () => {
+    const { success, send, siteImg, subText, letter, logoBgColor } = this.props
     return (
       <StyledOverlayContent>
-        <StyledOverlayTop>
-          <StyledIconWrapper success={success}>
-          {
-            success
-            ? <StyledIcon>
-                <PaperAirplaneIcon/>
-              </StyledIcon>
-            : <StyledProviderImage src={siteImg}>
+        {
+          success || send
+          ? <StyledOverlayTop>
+            <StyledIconWrapper success={success}>
+            {
+              send
+              ? <StyledIcon>
+                  <PaperAirplaneIcon/>
+                </StyledIcon>
+              : null
+            }
+            {
+              !send && siteImg
+              ? <StyledProviderImage src={siteImg}>
                 <StyledImageBorder/>
               </StyledProviderImage>
-          }
-          </StyledIconWrapper>
-          <StyledMessage success={success}>
-            <StyledHeaderText>
-              {
-                success
-                ? getLocale('donationSent')
-                : getLocale('thankYou')
-              }
-            </StyledHeaderText>
-          </StyledMessage>
-        </StyledOverlayTop>
-        {
-          success
-          ? null
+              : null
+            }
+            {
+              !send && letter
+              ? <StyledLetter logoBgColor={logoBgColor}>
+                {letter}
+              </StyledLetter>
+              : null
+            }
+            </StyledIconWrapper>
+            <StyledMessage success={success}>
+              <StyledHeaderText>
+                {
+                  send
+                  ? getLocale('donationSent')
+                  : null
+                }
+                {
+                  success
+                  ? <>
+                    {getLocale('thankYou')}
+                    <StyleSubHeaderText>
+                      {subText}
+                    </StyleSubHeaderText>
+                  </>
+                  : null
+                }
+              </StyledHeaderText>
+            </StyledMessage>
+          </StyledOverlayTop>
           : this.getFailureContent()
         }
       </StyledOverlayContent>
@@ -84,17 +113,17 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, success, siteImg } = this.props
+    const { id, send } = this.props
 
     return (
       <StyledOuterWrapper>
         {
-          success
+          send
           ? <StyledBackgroundCurve/>
           : null
         }
         <StyledWrapper id={id}>
-          {this.getOverlayContent(success, siteImg)}
+          {this.getOverlayContent()}
         </StyledWrapper>
       </StyledOuterWrapper>
     )

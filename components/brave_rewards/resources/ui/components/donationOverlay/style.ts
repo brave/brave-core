@@ -4,10 +4,12 @@
 */
 
 import styled from 'styled-components'
+import * as CSS from 'csstype'
 
 interface StyleProps {
   src?: string
   success?: boolean
+  logoBgColor?: CSS.Color
 }
 
 export const StyledOuterWrapper = styled<{}, 'div'>('div')`
@@ -37,7 +39,7 @@ export const StyledHeaderText = styled<{}, 'span'>('span')`
 export const StyledOverlayTop = styled<{}, 'div'>('div')`
   display: flex;
   flex-direction: row;
-  padding-top: 220px;
+  padding-top: 110px;
 `
 
 export const StyledOverlayContent = styled<{}, 'div'>('div')`
@@ -84,7 +86,7 @@ export const StyledImageBorder = styled<{}, 'div'>('div')`
 `
 
 export const StyledFailWrapper = styled<{}, 'div'>('div')`
-  margin-top: 245px;
+  margin-top: 110px;
   padding-left: 5px;
   display: flex;
   flex-direction: column;
@@ -130,4 +132,27 @@ export const StyledBackgroundCurve = styled<{}, 'div'>('div')`
   background: #191A2E;
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 140%;
+`
+
+export const StyleSubHeaderText = styled<{}, 'div'>('div')`
+  font-size: 16px;
+  font-family: "Muli", sans-serif;
+  font-weight: normal;
+  letter-spacing: 0;
+  line-height: 28px;
+  display: block;
+  margin: 10px 0 0 5px;
+`
+export const StyledLetter = styled<StyleProps, 'div'>('div')`
+  border: 6px solid #fff;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  background: ${p => p.logoBgColor || '#DE4D26'};
+  overflow: hidden;
+  margin-right: 25px;
+  color: #fff;
+  text-align: center;
+  line-height: 78px;
+  font-size: 60px;
 `

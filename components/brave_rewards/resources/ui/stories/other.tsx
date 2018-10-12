@@ -284,9 +284,11 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
           {
             store.state.displayed
             ? <DonationOverlay
-                siteImg={bart}
                 onClose={onOverlayClose}
-                success={boolean('Success', true)}
+                success={boolean('Success', false)}
+                send={boolean('Is send page?', true)}
+                subText={text('Sub header', 'This is text.')}
+                letter={'B'}
             />
             : null
           }

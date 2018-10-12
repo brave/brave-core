@@ -129,28 +129,6 @@ export const StyledText = styled<{}, 'div'>('div')`
   padding-right: 37px;
 `
 
-export const StyledRecurring = styled<{}, 'div'>('div')`
-  flex-basis: 100%;
-  font-size: 14px;
-  line-height: 1.2;
-  color: #9e9fab;
-  background: #fff;
-  height: 56px;
-  padding: 0 0 0 45px;
-  display: flex;
-  align-items: center;
-`
-
-export const StyledRemove = styled<{}, 'span'>('span')`
-  font-family: Muli, sans-serif;
-  font-size: 14px;
-  line-height: 1.29;
-  color: #d1d1db;
-  display: flex;
-  margin-left: 15px;
-  align-items: center;
-`
-
 export const StyledWallet = styled<{}, 'div'>('div')`
   font-size: 12px;
   color: #afb2f1;
@@ -182,19 +160,6 @@ export const StyledCenter = styled<{}, 'div'>('div')`
   user-select: none;
 `
 
-export const StyledIconRecurringBig = styled<{}, 'span'>('span')`
-  margin-right: 5px;
-  width: 17px;
-  height: 17px;
-  color: #696fdc;
-`
-
-export const StyledIconRemove = styled<{}, 'span'>('span')`
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
-`
-
 export const StyledSocialItem = styled<{}, 'a'>('a')`
   font-size: 12px;
   line-height: 2.5;
@@ -217,4 +182,9 @@ export const StyledSocialWrapper = styled<{}, 'div'>('div')`
   text-align: right;
   padding-right: 40px;
   margin-top: 15px;
+`
+
+export const StyledEmptyBox = styled<{}, 'div'>('div')`
+  width: 100%;
+  height: 39px;
 `

@@ -17,19 +17,16 @@ import {
   StyledTextWrapper,
   StyledTitle,
   StyledText,
-  StyledRecurring,
-  StyledRemove,
   StyledWallet,
   StyledTokens,
   StyledCenter,
-  StyledIconRecurringBig,
-  StyledIconRemove,
   StyledSocialItem,
   StyledSocialIcon,
   StyledOption,
   StyledIconRecurring,
   StyledLogoText,
-  StyledSocialWrapper
+  StyledSocialWrapper,
+  StyledEmptyBox
 } from './style'
 
 import Donate from '../donate/index'
@@ -58,7 +55,7 @@ export interface Props {
   bgImage?: string
   logo?: string
   social?: Social[]
-  currentDonation?: number
+  recurringDonation?: boolean
   children?: React.ReactNode
   onDonate: (amount: number, monthly: boolean) => void
   onClose?: () => void
@@ -168,7 +165,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       social,
       children,
       title,
-      currentDonation,
+      recurringDonation,
       balance,
       donationAmounts,
       domain,
@@ -200,19 +197,6 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 <StyledTitle>{this.getTitle(title)}</StyledTitle>
                 <StyledText>{this.getText(children)}</StyledText>
               </StyledTextWrapper>
-              {
-                currentDonation && !isNaN(currentDonation) && currentDonation > 0
-                ? <StyledRecurring>
-                  <StyledIconRecurringBig>
-                    <RefreshIcon />
-                  </StyledIconRecurringBig>
-                  <span>{getLocale('currentDonation', { currentDonation })}</span>
-                  <StyledRemove>
-                    <StyledIconRemove><CloseStrokeIcon /></StyledIconRemove>{getLocale('remove')}
-                  </StyledRemove>
-                </StyledRecurring>
-                : null
-              }
             </StyledContent>
             <StyledDonation>
               <StyledWallet>
@@ -223,20 +207,25 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 donationAmounts={donationAmounts}
                 title={getLocale('donationAmount')}
                 onDonate={this.onDonate}
-                actionText={getLocale('sendDonation')}
+                actionText={this.state.monthly ? getLocale('doMonthly') : getLocale('sendDonation')}
                 onAmountSelection={onAmountSelection}
                 donateType={'big'}
                 currentAmount={currentAmount}
               >
-                <Checkbox
-                  value={{ make: this.state.monthly }}
-                  onChange={this.onMonthlyChange}
-                  type={'dark'}
-                >
-                  <div data-key='make'>
-                    <StyledOption>{getLocale('makeMonthly')}</StyledOption> <StyledIconRecurring><RefreshIcon /></StyledIconRecurring>
-                  </div>
-                </Checkbox>
+                {
+                  !recurringDonation
+                  ? <Checkbox
+                    value={{ make: this.state.monthly }}
+                    onChange={this.onMonthlyChange}
+                    type={'dark'}
+                  >
+                    <div data-key='make'>
+                      <StyledOption>{getLocale('makeMonthly')}</StyledOption> <StyledIconRecurring><RefreshIcon /></StyledIconRecurring>
+                    </div>
+                  </Checkbox>
+                  : <StyledEmptyBox />
+                }
+
               </Donate>
             </StyledDonation>
           </StyledContentWrapper>
