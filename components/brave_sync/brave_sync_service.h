@@ -21,6 +21,7 @@ class BraveSyncServiceObserver;
 
 bookmarks::BookmarkPermanentNodeList
 LoadExtraNodes(bookmarks::LoadExtraCallback callback, int64_t* next_node_id);
+bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node);
 
 class BraveSyncService : public KeyedService {
  public:

@@ -14,6 +14,7 @@
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/can_send_history.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
+#include "components/bookmarks/browser/bookmark_node_data.h"
 #include "extensions/browser/extension_registry_observer.h"
 
 namespace base {
@@ -103,6 +104,15 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void BookmarkAllUserNodesRemoved(
       bookmarks::BookmarkModel* model,
       const std::set<GURL>& removed_urls) override;
+
+  void CloneBookmarkNodeForDeleteImpl(
+      const bookmarks::BookmarkNodeData::Element& element,
+      bookmarks::BookmarkNode* parent,
+      int index);
+  void CloneBookmarkNodeForDelete(
+      const std::vector<bookmarks::BookmarkNodeData::Element>& elements,
+      bookmarks::BookmarkNode* parent,
+      int index);
 
   void GetExistingBookmarks(
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
@@ -231,6 +241,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
   int attempts_before_send_not_synced_records_ = ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS;
 
   std::unique_ptr<base::RepeatingTimer> timer_;
+  base::TimeDelta unsynced_send_interval_;
   bookmarks::BookmarkModel* bookmark_model_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   SEQUENCE_CHECKER(sequence_checker_);

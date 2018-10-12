@@ -44,42 +44,11 @@ namespace {
 int64_t deleted_node_id = -1;
 bookmarks::BookmarkNode* deleted_node_root;
 
-void CloneBookmarkNodeForDelete(
-    const std::vector<bookmarks::BookmarkNodeData::Element>& elements,
-    bookmarks::BookmarkNode* parent,
-    int index);
-
-void CloneBookmarkNodeForDeleteImpl(
-    const bookmarks::BookmarkNodeData::Element& element,
-    bookmarks::BookmarkNode* parent,
-    int index) {
-  auto cloned_node =
-      std::make_unique<bookmarks::BookmarkNode>(element.id(), element.url);
-  if (!element.is_url) {
-    cloned_node->set_type(bookmarks::BookmarkNode::FOLDER);
-    for (int i = 0; i < static_cast<int>(element.children.size()); ++i)
-      CloneBookmarkNodeForDeleteImpl(element.children[i], cloned_node.get(), i);
-  }
-  cloned_node->SetTitle(element.title);
-
-  // clear sync timestsamp so this sends in unsynced records
-  bookmarks::BookmarkNode::MetaInfoMap meta_info_map = element.meta_info_map;
-  meta_info_map.erase("sync_timestamp");
-  cloned_node->SetMetaInfoMap(meta_info_map);
-  parent->Add(std::move(cloned_node), index);
-}
-
-void CloneBookmarkNodeForDelete(
-    const std::vector<bookmarks::BookmarkNodeData::Element>& elements,
-    bookmarks::BookmarkNode* parent,
-    int index) {
-  for (size_t i = 0; i < elements.size(); ++i) {
-    CloneBookmarkNodeForDeleteImpl(
-        elements[i], parent, index + static_cast<int>(i));
-  }
-}
-
 }  // namespace
+
+bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node) {
+  return node->id() == deleted_node_id;
+}
 
 bookmarks::BookmarkPermanentNodeList
 LoadExtraNodes(bookmarks::LoadExtraCallback callback,
@@ -96,6 +65,7 @@ LoadExtraNodes(bookmarks::LoadExtraCallback callback,
   node->SetTitle(base::UTF8ToUTF16("Deleted Bookmarks"));
 
   extra_nodes.push_back(std::move(node));
+
   return extra_nodes;
 }
 
@@ -105,6 +75,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
   sync_words_(std::string()),
   profile_(profile),
   timer_(std::make_unique<base::RepeatingTimer>()),
+  unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
   bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)),
   weak_ptr_factory_(this) {
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::BraveSyncServiceImpl CTOR";
@@ -501,8 +472,11 @@ void BraveSyncServiceImpl::OnResetBookmarks() {
     bookmark_model_->DeleteNodeMetaInfo(node, "object_id");
     bookmark_model_->DeleteNodeMetaInfo(node, "order");
     bookmark_model_->DeleteNodeMetaInfo(node, "sync_timestamp");
+    bookmark_model_->DeleteNodeMetaInfo(node, "last_send_time");
   }
-  GetDeletedNodeRoot()->DeleteAll();
+  auto* deleted_node = GetDeletedNodeRoot();
+  CHECK(deleted_node);
+  deleted_node->DeleteAll();
   bookmark_model_->EndExtensiveChanges();
 }
 
@@ -711,6 +685,7 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
   return index;
 }
 
+// this should only be called for resolved records we get from the server
 void UpdateNode(bookmarks::BookmarkModel* model,
                 const bookmarks::BookmarkNode* node,
                 const jslib::SyncRecord* record) {
@@ -724,6 +699,7 @@ void UpdateNode(bookmarks::BookmarkModel* model,
     // sync_bookmark.site.lastAccessedTime
     // sync_bookmark.site.favicon
   }
+
   model->SetTitle(node,
       base::UTF8ToUTF16(bookmark.site.title));
   model->SetDateAdded(node, bookmark.site.creationTime);
@@ -737,6 +713,7 @@ void UpdateNode(bookmarks::BookmarkModel* model,
     model->SetNodeMetaInfo(node,
         "sync_timestamp",
         std::to_string(record->syncTimestamp.ToJsTime()));
+    model->DeleteNodeMetaInfo(node, "last_send_time");
   }
 }
 
@@ -746,23 +723,8 @@ void BraveSyncServiceImpl::OnResolvedBookmarks(const RecordsList &records) {
     DCHECK(sync_record->has_bookmark());
     DCHECK(!sync_record->objectId.empty());
 
+    auto* node = FindByObjectId(bookmark_model_, sync_record->objectId);
     auto bookmark_record = sync_record->GetBookmark();
-    std::vector<const bookmarks::BookmarkNode*> nodes;
-    bookmark_model_->GetNodesByURL(
-        GURL(bookmark_record.site.location), &nodes);
-
-    std::string object_id;
-    const bookmarks::BookmarkNode* node;
-    for (const auto* i : nodes) {
-      i->GetMetaInfo("object_id", &object_id);
-      if (object_id.empty())
-        continue;
-
-      if (object_id == sync_record->objectId) {
-        node = i;
-        break;
-      }
-    }
 
     if (node && sync_record->action == jslib::SyncRecord::Action::UPDATE) {
       UpdateNode(bookmark_model_, node, sync_record.get());
@@ -881,13 +843,9 @@ void BraveSyncServiceImpl::OnSaveBookmarkOrder(const std::string &order,
   auto* bookmark_node = bookmarks::GetBookmarkNodeByID(
       bookmark_model_, between_order_rr_context_node_id);
 
-  std::vector<std::unique_ptr<jslib::SyncRecord>> records;
-
-  auto record = BookmarkNodeToSyncBookmark(bookmark_node);
-  if (record)
-    records.push_back(std::move(record));
-
-  sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, records);
+  if (bookmark_node) {
+    BookmarkNodeChanged(bookmark_model_, bookmark_node);
+  }
 }
 
 void BraveSyncServiceImpl::PushRRContext(const std::string &prev_order, const std::string &next_order, const int64_t &node_id, const int &action) {
@@ -1076,6 +1034,9 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
   node->GetMetaInfo("order", &order);
   bookmark->order = order;
 
+  auto* deleted_node = GetDeletedNodeRoot();
+  CHECK(deleted_node);
+
   if (record->objectId.empty()) {
     record->objectId = tools::GenerateObjectId();
     record->action = jslib::SyncRecord::Action::CREATE;
@@ -1093,6 +1054,8 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
       DCHECK(!order.empty());
       bookmark->order = order + "." + std::to_string(index);
     }
+  } else if (node->HasAncestor(deleted_node)) {
+   record->action = jslib::SyncRecord::Action::DELETE;
   } else {
     record->action = jslib::SyncRecord::Action::UPDATE;
     DCHECK(!bookmark->order.empty());
@@ -1121,9 +1084,12 @@ void BraveSyncServiceImpl::GetExistingBookmarks(
 void BraveSyncServiceImpl::SendUnsyncedBookmarks() {
   std::vector<std::unique_ptr<jslib::SyncRecord>> records;
 
+  auto* deleted_node = GetDeletedNodeRoot();
+  CHECK(deleted_node);
   std::vector<const bookmarks::BookmarkNode*> root_nodes = {
     bookmark_model_->other_node(),
     bookmark_model_->bookmark_bar_node(),
+    deleted_node
   };
 
   for (const auto* root_node : root_nodes) {
@@ -1138,6 +1104,16 @@ void BraveSyncServiceImpl::SendUnsyncedBookmarks() {
       if (!sync_timestamp.empty())
         continue;
 
+      std::string last_send_time;
+      node->GetMetaInfo("last_send_time", &last_send_time);
+      if (!last_send_time.empty() &&
+          // don't send more often than unsynced_send_interval_
+          base::Time::Now() - base::Time::FromJsTime(std::stod(last_send_time)) <
+          unsynced_send_interval_)
+        continue;
+
+      bookmark_model_->SetNodeMetaInfo(node,
+          "last_send_time", std::to_string(base::Time::Now().ToJsTime()));
       auto record = BookmarkNodeToSyncBookmark(node);
       if (record)
         records.push_back(std::move(record));
@@ -1231,6 +1207,40 @@ void BraveSyncServiceImpl::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
   // responds in OnSaveBookmarkOrder
 }
 
+void BraveSyncServiceImpl::CloneBookmarkNodeForDeleteImpl(
+    const bookmarks::BookmarkNodeData::Element& element,
+    bookmarks::BookmarkNode* parent,
+    int index) {
+  auto cloned_node =
+      std::make_unique<bookmarks::BookmarkNode>(element.id(), element.url);
+  if (!element.is_url) {
+    cloned_node->set_type(bookmarks::BookmarkNode::FOLDER);
+    for (int i = 0; i < static_cast<int>(element.children.size()); ++i)
+      CloneBookmarkNodeForDeleteImpl(element.children[i], cloned_node.get(), i);
+  }
+  cloned_node->SetTitle(element.title);
+
+  // clear sync timestsamp so this sends in unsynced records
+  bookmarks::BookmarkNode::MetaInfoMap meta_info_map = element.meta_info_map;
+  meta_info_map.erase("sync_timestamp");
+  cloned_node->SetMetaInfoMap(meta_info_map);
+
+  auto* cloned_node_ptr = cloned_node.get();
+  parent->Add(std::move(cloned_node), index);
+  // we call `Changed` here because we don't want to update the order
+  BookmarkNodeChanged(bookmark_model_, cloned_node_ptr);
+}
+
+void BraveSyncServiceImpl::CloneBookmarkNodeForDelete(
+    const std::vector<bookmarks::BookmarkNodeData::Element>& elements,
+    bookmarks::BookmarkNode* parent,
+    int index) {
+  for (size_t i = 0; i < elements.size(); ++i) {
+    CloneBookmarkNodeForDeleteImpl(
+        elements[i], parent, index + static_cast<int>(i));
+  }
+}
+
 void BraveSyncServiceImpl::BookmarkNodeRemoved(
     bookmarks::BookmarkModel* model,
     const bookmarks::BookmarkNode* parent,
@@ -1239,6 +1249,7 @@ void BraveSyncServiceImpl::BookmarkNodeRemoved(
     const std::set<GURL>& no_longer_bookmarked) {
   // copy into the deleted node tree without firing any events
   auto* deleted_node = GetDeletedNodeRoot();
+  CHECK(deleted_node);
   bookmarks::BookmarkNodeData data(node);
   CloneBookmarkNodeForDelete(
       data.elements, deleted_node, deleted_node->child_count() + 1);
@@ -1246,12 +1257,10 @@ void BraveSyncServiceImpl::BookmarkNodeRemoved(
 
 void BraveSyncServiceImpl::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
                                           const bookmarks::BookmarkNode* node) {
-  std::vector<std::unique_ptr<jslib::SyncRecord>> records;
-  auto record = BookmarkNodeToSyncBookmark(node);
-  if (record)
-    records.push_back(std::move(record));
-
-  sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS, records);
+  // clearing the sync_timestamp will put the record back in the `Unsynced` list
+  model->DeleteNodeMetaInfo(node, "sync_timestamp");
+  // also clear the last send time because this is a new change
+  model->DeleteNodeMetaInfo(node, "last_send_time");
 }
 
 void BraveSyncServiceImpl::SendAllLocalHistorySites() {
