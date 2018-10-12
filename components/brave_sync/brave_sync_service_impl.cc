@@ -852,10 +852,15 @@ void BraveSyncServiceImpl::OnDeleteSyncSiteSettings()  {
 }
 
 void BraveSyncServiceImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveBookmarksBaseOrder order=<" << order << ">";
+  std::string normalized_order = order;
+  if (normalized_order.length() >= 3 &&
+      normalized_order.at(normalized_order.length() - 1) == '.')
+    normalized_order.resize(normalized_order.length() - 1);
+  DLOG(INFO) << "[Brave Sync ] " << __func__ << "received order=" << order
+    << " normalized order=" << normalized_order;
   DCHECK(!order.empty());
-  sync_prefs_->SetBookmarksBaseOrder(order);
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnSaveBookmarksBaseOrder: forced call of OnSyncReady";
+  sync_prefs_->SetBookmarksBaseOrder(normalized_order);
+  DLOG(INFO) << "[Brave Sync ] " << __func__ << " forced call of OnSyncReady";
   OnSyncReady();
 }
 
@@ -1064,13 +1069,12 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
   node->parent()->GetMetaInfo("object_id", &parent_object_id);
   bookmark->parentFolderObjectId = parent_object_id;
   // this will be true as long as they are processed in TreeNodeIterator order
-  DCHECK(!parent_object_id.empty());
+  // However, if object locates at toolbar, prarent folder object id is empty.
+  // DCHECK(!parent_object_id.empty());
 
   std::string order;
   node->GetMetaInfo("order", &order);
   bookmark->order = order;
-
-  record->SetBookmark(std::move(bookmark));
 
   if (record->objectId.empty()) {
     record->objectId = tools::GenerateObjectId();
@@ -1094,6 +1098,8 @@ BraveSyncServiceImpl::BookmarkNodeToSyncBookmark(
     DCHECK(!bookmark->order.empty());
     DCHECK(!record->objectId.empty());
   }
+
+  record->SetBookmark(std::move(bookmark));
 
   return record;
 }
@@ -1181,7 +1187,7 @@ void BraveSyncServiceImpl::BookmarkNodeMoved(
   auto* prev_node = new_index == 0 ?
     nullptr :
     new_parent->GetChild(new_index - 1);
-  auto* next_node = new_index >= new_parent->child_count() ?
+  auto* next_node = new_index == new_parent->child_count() - 1 ?
     nullptr :
     new_parent->GetChild(new_index + 1);
 
@@ -1207,7 +1213,7 @@ void BraveSyncServiceImpl::BookmarkNodeAdded(bookmarks::BookmarkModel* model,
   auto* prev_node = index == 0 ?
     nullptr :
     parent->GetChild(index - 1);
-  auto* next_node = index >= parent->child_count() ?
+  auto* next_node = index == parent->child_count() - 1 ?
     nullptr :
     parent->GetChild(index + 1);
 
