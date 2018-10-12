@@ -20,6 +20,16 @@ class BraveRewardsCreateWalletFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsDonateToSiteFunction : public UIThreadExtensionFunction {
+  public:
+    DECLARE_EXTENSION_FUNCTION("braveRewards.donateToSite", UNKNOWN)
+
+  protected:
+    ~BraveRewardsDonateToSiteFunction() override;
+
+    ResponseAction Run() override;
+};
+
 class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherData", UNKNOWN)

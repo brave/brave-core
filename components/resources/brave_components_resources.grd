@@ -136,6 +136,14 @@
       <include name="IDR_BRAVE_REWARDS_IMG_ETH" file="../img/rewards/ETH.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_LTC" file="../img/rewards/LTC.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_NICEWARE_LIST" file="../../vendor/bat-native-ledger/niceware/wordlist" type="BINDATA" />
+
+      <!-- WebUI donate resources -->
+      <include name="IDR_BRAVE_DONATE_BG_1" file="../img/rewards/donate_bg_1.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_DONATE_BG_2" file="../img/rewards/donate_bg_2.svg" type="BINDATA" />
+
+      <!-- WebUI donate resources -->
+      <include name="IDR_BRAVE_DONATE_HTML" file="../brave_rewards/donate/brave_donate.html" type="BINDATA" />
+      <include name="IDR_BRAVE_DONATE_JS" file="${root_gen_dir}/brave/brave_donate.bundle.js" type="BINDATA" use_base_dir="false" />
     </includes>
     <messages fallback_to_english="true">
       <!-- WebUI newtab resources -->

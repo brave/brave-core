@@ -21,6 +21,8 @@ source_set("browser_process") {
     "brave_stats_updater_params.h",
     "brave_tab_helpers.cc",
     "brave_tab_helpers.h",
+    "brave_rewards/donations_dialog.cc",
+    "brave_rewards/donations_dialog.h",
     "browser_context_keyed_service_factories.cc",
     "browser_context_keyed_service_factories.h",
     "component_updater/brave_component_installer.cc",
