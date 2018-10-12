@@ -22,6 +22,7 @@
 #include "extensions/common/one_shot_event.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 
@@ -146,6 +147,8 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
+  void OnDonate(const std::string& publisher_key, int amount, bool recurring) override;
+  void OnContributionInfoSaved(bool success);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -211,7 +214,12 @@ class RewardsServiceImpl : public RewardsService,
                           const BitmapFetcherService::RequestId& request_id,
                           const SkBitmap& image);
   void OnSetOnDemandFaviconComplete(bool success);
-  void OnDonate(const std::string& publisher_key, int amount, bool recurring) override;
+  void SaveContributionInfo(const std::string& probi,
+                            const int month,
+                            const int year,
+                            const uint32_t date,
+                            const std::string& publisher_key,
+                            const int category) override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

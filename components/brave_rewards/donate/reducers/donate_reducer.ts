@@ -50,6 +50,8 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
             parseInt(payload.amount, 10),
             payload.recurring
           ])
+          state = { ...state }
+          state.finished = true;
         } else {
           // TODO return error
         }

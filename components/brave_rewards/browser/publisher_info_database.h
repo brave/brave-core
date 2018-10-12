@@ -18,6 +18,7 @@
 #include "sql/database.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
+#include "brave/components/brave_rewards/browser/contribution_info.h"
 
 namespace brave_rewards {
 
@@ -34,6 +35,7 @@ class PublisherInfoDatabase {
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
   bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id);
+  bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
 
   bool Find(int start,
             int limit,
@@ -63,6 +65,8 @@ class PublisherInfoDatabase {
   bool CreateActivityInfoTable();
   bool CreateContributionInfoIndex();
   bool CreateActivityInfoIndex();
+  bool CreateRecurringDonationTable();
+  bool CreateRecurringDonationIndex();
 
   std::string BuildClauses(int start,
                            int limit,

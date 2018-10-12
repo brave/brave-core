@@ -32,10 +32,6 @@ class Banner extends React.Component<Props, State> {
     this.actions.getWalletProperties()
   }
 
-  doNothing () {
-    console.log('click')
-  }
-
   get actions () {
     return this.props.actions
   }
@@ -53,7 +49,6 @@ class Banner extends React.Component<Props, State> {
       amounts = publisher.amount
     }
 
-    // { tokens: 1, converted: 0.3, selected: false }
     return amounts.map((value: number) => {
       return {
         tokens: value.toFixed(1),
@@ -73,7 +68,7 @@ class Banner extends React.Component<Props, State> {
     const { publisher, walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
 
-    if (publisher && publisher.publisherKey && balance > amount) {
+    if (publisher && publisher.publisherKey && balance >= parseInt(amount.toString(), 10)) {
       this.actions.onDonate(publisher.publisherKey, amount, recurring)
     } else {
       // TODO return error

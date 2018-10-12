@@ -528,10 +528,12 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   if (result == ledger::Result::LEDGER_OK) {
     // TODO add notification service when implemented
     auto now = base::Time::Now();
-    ledger_->SetBalanceReportItem(GetPublisherMonth(now),
-                                  GetPublisherYear(now),
-                                  ledger::ReportType::AUTO_CONTRIBUTION,
-                                  probi);
+    ledger_->OnReconcileCompleteSuccess(viewing_id,
+        category,
+        probi,
+        GetPublisherMonth(now),
+        GetPublisherYear(now),
+        GetCurrentTimestamp());
   }
 
   for (auto& observer : observers_)
@@ -1323,6 +1325,44 @@ void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount, 
     -1);
 
   ledger_->DoDirectDonation(publisher_info, amount, "BAT");
+}
+
+bool SaveContributionInfoOnFileTaskRunner(const brave_rewards::ContributionInfo info,
+  PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertContributionInfo(info))
+    return true;
+
+  return false;
+}
+
+void RewardsServiceImpl::OnContributionInfoSaved(bool success) {
+  if (success) {
+    // TODO add contribution info reload function brave/brave-browser#930
+  }
+}
+
+void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
+  const int month,
+  const int year,
+  const uint32_t date,
+  const std::string& publisher_key,
+  const int category) {
+
+  brave_rewards::ContributionInfo info;
+  info.probi = probi;
+  info.month = month;
+  info.year = year;
+  info.date = date;
+  info.publisher_key = publisher_key;
+  info.category = category;
+
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&SaveContributionInfoOnFileTaskRunner,
+                    info,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
+                     AsWeakPtr()));
+
 }
 
 }  // namespace brave_rewards
