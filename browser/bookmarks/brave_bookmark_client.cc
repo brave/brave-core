@@ -22,3 +22,10 @@ bookmarks::LoadExtraCallback BraveBookmarkClient::GetLoadExtraNodesCallback() {
   return base::BindOnce(&brave_sync::LoadExtraNodes,
       ChromeBookmarkClient::GetLoadExtraNodesCallback());
 }
+
+bool BraveBookmarkClient::IsPermanentNodeVisible(
+    const bookmarks::BookmarkPermanentNode* node) {
+  if (brave_sync::IsSyncManagedNode(node))
+    return false;  // don't display sync managed nodes
+  return ChromeBookmarkClient::IsPermanentNodeVisible(node);
+}

@@ -15,9 +15,10 @@ class BraveBookmarkClient : public ChromeBookmarkClient {
       sync_bookmarks::BookmarkSyncService* bookmark_sync_service);
 
   bookmarks::LoadExtraCallback GetLoadExtraNodesCallback() override;
+  bool IsPermanentNodeVisible(
+      const bookmarks::BookmarkPermanentNode* node) override;
 
  private:
-
   DISALLOW_COPY_AND_ASSIGN(BraveBookmarkClient);
 };
 
