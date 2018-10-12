@@ -22,6 +22,7 @@ class RewardsNotificationsService : public KeyedService {
 
   typedef uint64_t RewardsNotificationID;
   typedef int64_t RewardsNotificationTimestamp;
+  typedef std::vector<std::string> RewardsNotificationArgs;
 
   enum RewardsNotificationType {
     REWARDS_NOTIFICATION_INVALID = 0,
@@ -34,7 +35,7 @@ class RewardsNotificationsService : public KeyedService {
 
   struct RewardsNotification {
     RewardsNotification()
-        : id_(0), type_(REWARDS_NOTIFICATION_INVALID), timestamp_(0) {}
+      : id_(0), type_(REWARDS_NOTIFICATION_INVALID), timestamp_(0) {}
     RewardsNotification(RewardsNotificationID id,
                         RewardsNotificationType type,
                         RewardsNotificationTimestamp timestamp)
@@ -44,7 +45,8 @@ class RewardsNotificationsService : public KeyedService {
     RewardsNotificationTimestamp timestamp_;
   };
 
-  virtual void AddNotification(RewardsNotificationType type) = 0;
+  virtual void AddNotification(RewardsNotificationType type,
+                               RewardsNotificationArgs args) = 0;
   virtual void DeleteNotification(RewardsNotificationID id) = 0;
   virtual void DeleteAllNotifications() = 0;
   virtual void GetNotification(RewardsNotificationID id) = 0;

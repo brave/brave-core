@@ -89,17 +89,19 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationsService* rewards_notifications_service,
-      brave_rewards::RewardsNotificationsService::RewardsNotification notification)
-      override;
+      const brave_rewards::RewardsNotificationsService::RewardsNotification&
+          notification,
+      const brave_rewards::RewardsNotificationsService::RewardsNotificationArgs&
+          args) override;
   void OnNotificationDeleted(
       brave_rewards::RewardsNotificationsService* rewards_notifications_service,
-      brave_rewards::RewardsNotificationsService::RewardsNotification notification)
-      override;
+      const brave_rewards::RewardsNotificationsService::RewardsNotification&
+          notification) override;
   void OnAllNotificationsDeleted(brave_rewards::RewardsNotificationsService*
                                      rewards_notifications_service) override;
   void OnGetNotification(
       brave_rewards::RewardsNotificationsService* rewards_notifications_service,
-      brave_rewards::RewardsNotificationsService::RewardsNotification notification)
+      const brave_rewards::RewardsNotificationsService::RewardsNotification& notification)
       override;
 
   brave_rewards::RewardsNotificationsService* rewards_notifications_service_;  // NOT OWNED
@@ -420,12 +422,16 @@ void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* re
 
 void RewardsDOMHandler::OnNotificationAdded(
     brave_rewards::RewardsNotificationsService* rewards_notifications_service,
-    brave_rewards::RewardsNotificationsService::RewardsNotification notification) {
+    const brave_rewards::RewardsNotificationsService::RewardsNotification&
+        notification,
+    const brave_rewards::RewardsNotificationsService::RewardsNotificationArgs&
+        args) {
 }
 
 void RewardsDOMHandler::OnNotificationDeleted(
     brave_rewards::RewardsNotificationsService* rewards_notifications_service,
-    brave_rewards::RewardsNotificationsService::RewardsNotification notification) {
+    const brave_rewards::RewardsNotificationsService::RewardsNotification&
+        notification) {
 }
 
 void RewardsDOMHandler::OnAllNotificationsDeleted(
@@ -434,7 +440,8 @@ void RewardsDOMHandler::OnAllNotificationsDeleted(
 
 void RewardsDOMHandler::OnGetNotification(
     brave_rewards::RewardsNotificationsService* rewards_notifications_service,
-    brave_rewards::RewardsNotificationsService::RewardsNotification notification) {
+    const brave_rewards::RewardsNotificationsService::RewardsNotification&
+        notification) {
 }
 
 void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {

@@ -26,6 +26,14 @@
            {
              "name": "timestamp",
              "type": "integer"
+           },
+           {
+             "name": "args",
+             "type": "array",
+             "items": {
+               "name": "value",
+               "type": "string"
+             }
            }
 	 ]
       },
@@ -83,6 +91,14 @@
           {
             "name": "type",
             "type": "integer"
+          },
+          {
+            "name": "args",
+            "type": "array",
+            "items": {
+              "name": "value",
+              "type": "string"
+            }
           }
 	]
       },

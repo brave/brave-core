@@ -27,7 +27,8 @@ ExtensionFunction::ResponseAction RewardsNotificationsAddNotificationFunction::R
   if (rewards_notifications_service) {
     rewards_notifications_service->AddNotification(
         static_cast<RewardsNotificationsService::RewardsNotificationType>(
-            params->type));
+            params->type),
+        params->args);
   }
   return RespondNow(NoArguments());
 }

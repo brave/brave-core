@@ -25,29 +25,34 @@ class RewardsNotificationsServiceImpl
   void Shutdown() override;
 
   void Init();
-  void AddNotification(RewardsNotificationType type) override;
+  void AddNotification(RewardsNotificationType type,
+                       RewardsNotificationArgs args) override;
   void DeleteNotification(RewardsNotificationID id) override;
   void DeleteAllNotifications() override;
   void GetNotification(RewardsNotificationID id) override;
 
 private:
-  void TriggerOnNotificationAdded(const RewardsNotification& rewards_notification);
-  void TriggerOnNotificationDeleted(const RewardsNotification& rewards_notification);
-  void TriggerOnAllNotificationsDeleted();
-  void TriggerOnGetNotification(const RewardsNotification& rewards_notification);
+ void TriggerOnNotificationAdded(
+     const RewardsNotification& rewards_notification,
+     const RewardsNotificationArgs& args);
+ void TriggerOnNotificationDeleted(
+     const RewardsNotification& rewards_notification);
+ void TriggerOnAllNotificationsDeleted();
+ void TriggerOnGetNotification(const RewardsNotification& rewards_notification);
 
-  void OnNotificationAdded(const RewardsNotification& rewards_notification);
-  void OnNotificationDeleted(const RewardsNotification& rewards_notification);
-  void OnAllNotificationsDeleted();
-  void OnGetNotification(const RewardsNotification& rewards_notification);
+ void OnNotificationAdded(const RewardsNotification& rewards_notification,
+                          const RewardsNotificationArgs& args);
+ void OnNotificationDeleted(const RewardsNotification& rewards_notification);
+ void OnAllNotificationsDeleted();
+ void OnGetNotification(const RewardsNotification& rewards_notification);
 
-  RewardsNotificationID GenerateRewardsNotificationID() const;
-  RewardsNotificationTimestamp GenerateRewardsNotificationTimestamp() const;
+ RewardsNotificationID GenerateRewardsNotificationID() const;
+ RewardsNotificationTimestamp GenerateRewardsNotificationTimestamp() const;
 
-  Profile* profile_;
-  std::map<RewardsNotificationID, RewardsNotification> rewards_notifications_;
+ Profile* profile_;
+ std::map<RewardsNotificationID, RewardsNotification> rewards_notifications_;
 
-  DISALLOW_COPY_AND_ASSIGN(RewardsNotificationsServiceImpl);
+ DISALLOW_COPY_AND_ASSIGN(RewardsNotificationsServiceImpl);
 };
 
 }  // namespace brave_rewards

@@ -15,15 +15,16 @@ class RewardsNotificationsServiceObserver : public base::CheckedObserver {
 
   virtual void OnNotificationAdded(
       RewardsNotificationsService* rewards_notifications_service,
-      RewardsNotificationsService::RewardsNotification notification) {}
+      const RewardsNotificationsService::RewardsNotification& notification,
+      const RewardsNotificationsService::RewardsNotificationArgs& args) {}
   virtual void OnNotificationDeleted(
       RewardsNotificationsService* rewards_notifications_service,
-      RewardsNotificationsService::RewardsNotification notification) {}
+      const RewardsNotificationsService::RewardsNotification& notification) {}
   virtual void OnAllNotificationsDeleted(
       RewardsNotificationsService* rewards_notifications_service) {}
   virtual void OnGetNotification(
       RewardsNotificationsService* rewards_notifications_service,
-      RewardsNotificationsService::RewardsNotification notification) {}
+      const RewardsNotificationsService::RewardsNotification& notification) {}
 };
 
 }  // namespace brave_rewards

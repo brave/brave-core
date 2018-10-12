@@ -27,12 +27,14 @@ void RewardsNotificationsServiceImpl::Shutdown() {
   RewardsNotificationsService::Shutdown();
 }
 
-void RewardsNotificationsServiceImpl::AddNotification(RewardsNotificationType type) {
+void RewardsNotificationsServiceImpl::AddNotification(
+    RewardsNotificationType type,
+    RewardsNotificationArgs args) {
   RewardsNotificationID id = GenerateRewardsNotificationID();
   RewardsNotification rewards_notification(
       id, type, GenerateRewardsNotificationTimestamp());
   rewards_notifications_[id] = rewards_notification;
-  OnNotificationAdded(rewards_notification);
+  OnNotificationAdded(rewards_notification, std::move(args));
 }
 
 void RewardsNotificationsServiceImpl::DeleteNotification(RewardsNotificationID id) {
@@ -65,9 +67,10 @@ RewardsNotificationsServiceImpl::GenerateRewardsNotificationTimestamp() const {
 }
 
 void RewardsNotificationsServiceImpl::TriggerOnNotificationAdded(
-    const RewardsNotification& rewards_notification) {
+    const RewardsNotification& rewards_notification,
+    const RewardsNotificationArgs& notification_args) {
   for (auto& observer : observers_)
-    observer.OnNotificationAdded(this, rewards_notification);
+    observer.OnNotificationAdded(this, rewards_notification, notification_args);
 
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
@@ -75,7 +78,7 @@ void RewardsNotificationsServiceImpl::TriggerOnNotificationAdded(
     std::unique_ptr<base::ListValue> args(
         extensions::api::rewards_notifications::OnNotificationAdded::Create(
             rewards_notification.id_, rewards_notification.type_,
-            rewards_notification.timestamp_)
+            rewards_notification.timestamp_, notification_args)
             .release());
     std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_REWARDS_NOTIFICATION_ADDED,
@@ -147,8 +150,9 @@ void RewardsNotificationsServiceImpl::TriggerOnGetNotification(
 }
 
 void RewardsNotificationsServiceImpl::OnNotificationAdded(
-    const RewardsNotification& rewards_notification) {
-  TriggerOnNotificationAdded(rewards_notification);
+    const RewardsNotification& rewards_notification,
+    const RewardsNotificationArgs& args) {
+  TriggerOnNotificationAdded(rewards_notification, args);
 }
 
 void RewardsNotificationsServiceImpl::OnNotificationDeleted(
