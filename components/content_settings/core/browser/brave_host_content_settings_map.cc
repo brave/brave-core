@@ -17,7 +17,6 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
     bool migrate_requesting_and_top_level_origin_settings)
     : HostContentSettingsMap(prefs, is_incognito_profile, is_guest_profile,
         store_last_modified, migrate_requesting_and_top_level_origin_settings) {
-  InitializeReferrerContentSetting();
   InitializeCookieContentSetting();
   InitializeBraveShieldsContentSetting();
   InitializeFlashContentSetting();
@@ -37,15 +36,6 @@ void BraveHostContentSettingsMap::BlockGeolocation() {
       ContentSettingsPattern::Wildcard(),
       CONTENT_SETTINGS_TYPE_GEOLOCATION,
       std::string(),
-      CONTENT_SETTING_BLOCK);
-}
-
-void BraveHostContentSettingsMap::InitializeReferrerContentSetting() {
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers,
       CONTENT_SETTING_BLOCK);
 }
 

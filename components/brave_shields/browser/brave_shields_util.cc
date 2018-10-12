@@ -6,6 +6,7 @@
 
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -68,6 +69,11 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   // TODO(bbondy): Add a static RegisterUserPrefs method for shields and use
   // prefs instead of simply returning true / false below.
   if (setting == CONTENT_SETTING_DEFAULT) {
+    if (setting_type == CONTENT_SETTINGS_TYPE_PLUGINS) {
+      if (resource_identifier == brave_shields::kReferrers) {
+        return false;
+      }
+    }
     return GetDefaultFromResourceIdentifier(resource_identifier);
   }
   return setting == CONTENT_SETTING_ALLOW;

@@ -103,7 +103,7 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       ContentSettingsForOneType settings;
       content_settings()->GetSettingsForOneType(
           CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers, &settings);
-      EXPECT_EQ(settings.size(), 2u);
+      EXPECT_EQ(settings.size(), 1u);
     }
 
     void AllowReferrers() {
@@ -113,7 +113,7 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       ContentSettingsForOneType settings;
       content_settings()->GetSettingsForOneType(
           CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers, &settings);
-      EXPECT_EQ(settings.size(), 2u);
+      EXPECT_EQ(settings.size(), 1u);
     }
 
     void Block3PCookies() {
@@ -469,14 +469,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers, &settings);
-  EXPECT_EQ(settings.size(), 1u) <<
-      "There should be one default referrer rule.";
-  EXPECT_EQ(settings[0].primary_pattern,
-      ContentSettingsPattern::Wildcard()) <<
-      "Primary pattern of default referrer rule should be wildcard.";
-  EXPECT_EQ(settings[0].secondary_pattern,
-      ContentSettingsPattern::Wildcard()) <<
-      "secondary pattern of default referrer rule should be wildcard.";
+  EXPECT_EQ(settings.size(), 0u) <<
+      "There should not be any visible referrer rules.";
 
   NavigateToPageWithIframe();
 
