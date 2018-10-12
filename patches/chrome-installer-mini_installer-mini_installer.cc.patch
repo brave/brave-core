@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 1f39abbeb2579098a54fa82612199f0307ea03b4..86fe3efd30bad573dba8b73be4788378b9d1f927 100644
+index 1f39abbeb2579098a54fa82612199f0307ea03b4..6aa317767ed09e31296c5c9af187481aecc0eeaf 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
 @@ -61,7 +61,7 @@ struct Context {
@@ -11,7 +11,7 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..86fe3efd30bad573dba8b73be4788378
  // Opens the Google Update ClientState key. If |binaries| is false, opens the
  // key for Google Chrome or Chrome SxS (canary). If |binaries| is true and an
  // existing multi-install Chrome is being updated, opens the key for the
-@@ -142,6 +142,105 @@ void SetInstallerFlags(const Configuration& configuration) {
+@@ -142,6 +142,119 @@ void SetInstallerFlags(const Configuration& configuration) {
  }
  #endif  // GOOGLE_CHROME_BUILD
  
@@ -88,9 +88,11 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..86fe3efd30bad573dba8b73be4788378
 +  return true;
 +}
 +
-+bool ParseReferralCode(const wchar_t* program, ReferralCodeString& referral_code) {
++bool ParseReferralCode(const wchar_t* installer_filename,
++                       ReferralCodeString& referral_code) {
 +  PathString filename;
-+  if (!filename.assign(GetNameFromPathExt(program, lstrlen(program))))
++  if (!filename.assign(
++          GetNameFromPathExt(installer_filename, lstrlen(installer_filename))))
 +    return false;
 +
 +  // Strip extension from filename.
@@ -112,24 +114,38 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..86fe3efd30bad573dba8b73be4788378
 +
 +  return true;
 +}
++
++bool GetStubInstallerFilename(PathString& installer_filename) {
++  wchar_t value[MAX_PATH];
++  if (RegKey::ReadSZValue(HKEY_CURRENT_USER, L"Software\\BraveSoftware\\Promo",
++                          L"StubInstallerPath", value, _countof(value)) &&
++      value[0] == L'0') {
++    return false;
++  }
++
++  installer_filename.assign(value);
++  return true;
++}
 +#endif  // BRAVE_CHROMIUM_BUILD
 +
  // Gets the setup.exe path from Registry by looking at the value of Uninstall
  // string.  |size| is measured in wchar_t units.
  ProcessExitResult GetSetupExePathForAppGuid(bool system_level,
-@@ -526,6 +625,19 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -526,6 +639,21 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+  ReferralCodeString referral_code;
-+  if (ParseReferralCode(configuration.program(), referral_code)) {
-+    if (!cmd_line.append(L" --") ||
-+        !cmd_line.append(L"brave-referral-code") ||
-+        !cmd_line.append(L"=\"") ||
-+        !cmd_line.append(referral_code.get()) ||
-+        !cmd_line.append(L"\"")) {
-+      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
++  PathString installer_filename;
++  if (GetStubInstallerFilename(installer_filename)) {
++    ReferralCodeString referral_code;
++    if (ParseReferralCode(installer_filename.get(), referral_code)) {
++      if (!cmd_line.append(L" --") ||
++          !cmd_line.append(L"brave-referral-code") ||
++          !cmd_line.append(L"=\"") || !cmd_line.append(referral_code.get()) ||
++          !cmd_line.append(L"\"")) {
++        return ProcessExitResult(COMMAND_STRING_OVERFLOW);
++      }
 +    }
 +  }
 +#endif
@@ -137,7 +153,7 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..86fe3efd30bad573dba8b73be4788378
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -873,7 +985,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -873,7 +1001,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (!GetWorkDir(module, &base_path, &exit_code))
      return exit_code;
  
@@ -146,7 +162,7 @@ index 1f39abbeb2579098a54fa82612199f0307ea03b4..86fe3efd30bad573dba8b73be4788378
    // Set the magic suffix in registry to try full installer next time. We ignore
    // any errors here and we try to set the suffix for user level unless
    // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
-@@ -898,7 +1010,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -898,7 +1026,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (ShouldDeleteExtractedFiles())
      DeleteExtractedFiles(base_path.get(), archive_path.get(), setup_path.get());
  
