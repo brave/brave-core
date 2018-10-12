@@ -23,6 +23,7 @@
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 
@@ -149,6 +150,8 @@ class RewardsServiceImpl : public RewardsService,
                              const std::string& data);
   void OnDonate(const std::string& publisher_key, int amount, bool recurring) override;
   void OnContributionInfoSaved(bool success);
+  void OnRecurringDonationSaved(bool success);
+  void SaveRecurringDonation(const std::string& publisher_key, const int amount);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

@@ -14,11 +14,12 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/publisher_info.h"
+#include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
-#include "brave/components/brave_rewards/browser/contribution_info.h"
 
 namespace brave_rewards {
 
@@ -36,6 +37,7 @@ class PublisherInfoDatabase {
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
   bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id);
   bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
+  bool InsertOrUpdateRecurringDonation(const brave_rewards::RecurringDonation& info);
 
   bool Find(int start,
             int limit,

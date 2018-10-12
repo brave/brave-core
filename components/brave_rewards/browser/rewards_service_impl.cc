@@ -45,9 +45,9 @@
 #include "net/url_request/url_fetcher.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
-#include "ui/gfx/image/image.h"
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
+#include "content_site.h"
 
 using extensions::Event;
 using extensions::EventRouter;
@@ -1315,7 +1315,7 @@ brave_rewards::PublisherBanner RewardsServiceImpl::GetPublisherBanner(const std:
 
 void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount, bool recurring) {
   if (recurring) {
-    // TODO add to contribution_info table
+    SaveRecurringDonation(publisher_key, amount);
     return;
   }
 
@@ -1362,6 +1362,69 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
                      AsWeakPtr()));
+
+}
+
+bool SaveRecurringDonationOnFileTaskRunner(const brave_rewards::RecurringDonation info,
+  PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertOrUpdateRecurringDonation(info))
+    return true;
+
+  return false;
+}
+
+void RewardsServiceImpl::OnRecurringDonationSaved(bool success) {
+  if (success) {
+    // TODO reload donate table
+  }
+}
+
+void RewardsServiceImpl::SaveRecurringDonation(const std::string& publisher_key, const int amount) {
+  brave_rewards::ContentSite publisher;
+  publisher.id = publisher_key;
+
+  brave_rewards::RecurringDonation info;
+  info.publisher = publisher;
+  info.amount = amount;
+  info.added_date = GetCurrentTimestamp();
+
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&SaveRecurringDonationOnFileTaskRunner,
+                    info,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnRecurringDonationSaved,
+                     AsWeakPtr()));
+
+}
+
+std::unique_ptr<std::vector<ledger::PublisherInfo>>
+GetRecurringDonationsOnFileTaskRunner(PublisherInfoDatabase* backend) {
+
+  std::unique_ptr<std::vector<ledger::PublisherInfo>> list;
+  if (!backend)
+    return std::move(list);
+
+  // TODO I left it here
+  std::vector<brave_rewards::RecurringDonation> temp_list = backend->GetRecurringDonations();
+  return std::move(list);
+}
+
+void RewardsServiceImpl::OnRecurringDonationsData(ledger::RecurringDonationCallback callback,
+    const std::unique_ptr<std::vector<ledger::PublisherInfo>> list) {
+  if (list) {
+    callback.Run(ledger::Result::LEDGER_OK, std::move(list))
+  } else {
+    callback.Run(ledger::Result::NOT_FOUND, std::move(list))
+  }
+}
+
+void RewardsServiceImpl::GetRecurringDonations(ledger::RecurringDonationCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&GetRecurringDonationsOnFileTaskRunner,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnRecurringDonationsData,
+                     AsWeakPtr(),
+                     callback));
 
 }
 

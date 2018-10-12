@@ -16,7 +16,7 @@
 #include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
-#include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "content_site.h"
 
 namespace brave_rewards {
 
@@ -211,7 +211,7 @@ bool PublisherInfoDatabase::CreateRecurringDonationTable() {
   sql.append(
       "("
       "publisher_id LONGVARCHAR NOT NULL,"
-      "value DOUBLE DEFAULT 0 NOT NULL,"
+      "amount DOUBLE DEFAULT 0 NOT NULL,"
       "added_date INTEGER DEFAULT 0 NOT NULL,"
       "CONSTRAINT fk_recurring_donation_publisher_id"
       "    FOREIGN KEY (publisher_id)"
@@ -537,6 +537,66 @@ bool PublisherInfoDatabase::InsertContributionInfo(const brave_rewards::Contribu
   statement.BindInt(5, info.year);
 
   return statement.Run();
+}
+
+bool PublisherInfoDatabase::InsertOrUpdateRecurringDonation(const brave_rewards::RecurringDonation& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT OR REPLACE INTO recurring_donation "
+      "(publisher_id, amount, added_date) "
+      "VALUES (?, ?, ?)"));
+
+  if(info.publisher.id.empty()) {
+    return false;
+  }
+
+  statement.BindString(0, info.publisher.id);
+  statement.BindDouble(1, info.amount);
+  statement.BindInt64(2, info.added_date);
+
+  return statement.Run();
+}
+
+std::vector<brave_rewards::RecurringDonation>
+PublisherInfoDatabase::GetRecurringDonations() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return info;
+
+  sql::Statement info_sql(
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, rd.amount, rd.added_date "
+                             "FROM recurring_donation as rd "
+                             "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
+
+  std::vector<brave_rewards::RecurringDonation> list;
+
+  while (info_sql.Step()) {
+    brave_rewards::ContentSite publisher;
+    publisher.id = info_sql.ColumnString(0);
+    publisher.name = info_sql.ColumnString(1);
+    publisher.url = info_sql.ColumnString(2);
+    publisher.favicon_url = info_sql.ColumnString(3);
+
+    brave_rewards::RecurringDonation donation;
+    donation.amount = info_sql.ColumnDouble(4);
+    donation.ColumnDouble = info_sql.ColumnInt64(5);
+    donation.publisher = publisher;
+
+    list->push_back(donation);
+  }
+
+  return list;
 }
 
 // static

@@ -30,6 +30,8 @@ source_set("browser") {
     "publisher_banner.h",
     "contribution_info.cc",
     "contribution_info.h",
+    "recurring_donation.cc",
+    "recurring_donation.h",
   ]
 
   deps = [
