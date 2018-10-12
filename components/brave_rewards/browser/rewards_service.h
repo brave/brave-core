@@ -88,6 +88,7 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) = 0;
   virtual double GetContributionAmount() = 0;
   virtual brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) = 0;
+  virtual void OnDonate(const std::string& publisher_key, int amount, bool recurring) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

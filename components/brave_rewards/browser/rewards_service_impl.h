@@ -210,6 +210,7 @@ class RewardsServiceImpl : public RewardsService,
                           const BitmapFetcherService::RequestId& request_id,
                           const SkBitmap& image);
   void OnSetOnDemandFaviconComplete(bool success);
+  void OnDonate(const std::string& publisher_key, int amount, bool recurring) override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

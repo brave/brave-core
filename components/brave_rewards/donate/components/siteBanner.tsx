@@ -69,8 +69,15 @@ class Banner extends React.Component<Props, State> {
     })
   }
 
-  onDonate = (amount: number, monthly: boolean) => {
-    console.log('donate', amount, monthly)
+  onDonate = (amount: number, recurring: boolean) => {
+    const { publisher, walletInfo } = this.props.rewardsDonateData
+    const { balance } = walletInfo
+
+    if (publisher && publisher.publisherKey && balance > amount) {
+      this.actions.onDonate(publisher.publisherKey, amount, recurring)
+    } else {
+      // TODO return error
+    }
   }
 
   generateSocialLinks = () => {

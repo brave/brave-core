@@ -1310,4 +1310,18 @@ brave_rewards::PublisherBanner RewardsServiceImpl::GetPublisherBanner(const std:
   return new_banner;
 }
 
+void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount, bool recurring) {
+  if (recurring) {
+    // TODO add to contribution_info table
+    return;
+  }
+
+  ledger::PublisherInfo publisher_info(
+    publisher_key,
+    ledger::PUBLISHER_MONTH::ANY,
+    -1);
+
+  ledger_->DoDirectDonation(publisher_info, amount, "BAT");
+}
+
 }  // namespace brave_rewards
