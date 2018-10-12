@@ -1,24 +1,12 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index 78628f4cca9eb1aa6dce06daf0d6cc0b11e212f4..f4aea61bb5e9d6f7e95a30671acd642d9564e24b 100644
+index 78628f4cca9eb1aa6dce06daf0d6cc0b11e212f4..8b5e065afbd187ae824935953514cf8dee1eac8b 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-@@ -1055,6 +1055,10 @@ void RenderViewContextMenu::AppendLinkItems() {
-           IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD,
-           is_app ? IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP
-                  : IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
-+      menu_model_.AddItemWithStringId(
-+          IDC_CONTENT_CONTEXT_OPENLINKTOR,
-+          is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
-+                 : IDS_CONTENT_CONTEXT_OPENLINKTOR);
- 
-     } else {
-       menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB,
-@@ -1067,6 +1071,8 @@ void RenderViewContextMenu::AppendLinkItems() {
- 
-       menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD,
+@@ -1069,6 +1069,7 @@ void RenderViewContextMenu::AppendLinkItems() {
                                        IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
-+      menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_OPENLINKTOR,
-+                                      IDS_CONTENT_CONTEXT_OPENLINKTOR);
      }
  
++    AppendBraveLinkItems();
      AppendOpenWithLinkItems();
+ 
+     // While ChromeOS supports multiple profiles, only one can be open at a

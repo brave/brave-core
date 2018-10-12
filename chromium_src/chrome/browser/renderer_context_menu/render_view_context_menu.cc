@@ -20,6 +20,26 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
   : RenderViewContextMenu_Chromium(render_frame_host, params) {
 }
 
+void RenderViewContextMenu_Chromium::AppendBraveLinkItems() {
+}
+
+void BraveRenderViewContextMenu::AppendBraveLinkItems() {
+  if (!params_.link_url.is_empty()) {
+    if (base::FeatureList::IsEnabled(features::kDesktopPWAWindowing)) {
+      const Browser* browser = GetBrowser();
+      const bool is_app = browser && browser->is_app();
+
+      menu_model_.AddItemWithStringId(
+          IDC_CONTENT_CONTEXT_OPENLINKTOR,
+          is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
+                 : IDS_CONTENT_CONTEXT_OPENLINKTOR);
+    } else {
+      menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_OPENLINKTOR,
+                                      IDS_CONTENT_CONTEXT_OPENLINKTOR);
+    }
+  }
+}
+
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
