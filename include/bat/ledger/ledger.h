@@ -178,6 +178,12 @@ class LEDGER_EXPORT Ledger {
                                     const std::string& probi) = 0;
   virtual ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) = 0;
   virtual double GetBalance() = 0;
+  virtual void OnReconcileCompleteSuccess(const std::string& viewing_id,
+                                          const ledger::PUBLISHER_CATEGORY category,
+                                          const std::string& probi,
+                                          const ledger::PUBLISHER_MONTH month,
+                                          const int year,
+                                          const uint32_t date) = 0;
 };
 
 }  // namespace ledger

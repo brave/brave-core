@@ -87,6 +87,12 @@ class LEDGER_EXPORT LedgerClient {
                                    uint64_t windowId) = 0;
   virtual void OnExcludedSitesChanged() = 0;
   virtual void FetchFavIcon(const std::string& url, const std::string& publisher_key) = 0;
+  virtual void SaveContributionInfo(const std::string& probi,
+                                    const int month,
+                                    const int year,
+                                    const uint32_t date,
+                                    const std::string& publisher_key,
+                                    const int category) = 0;
 
   //uint64_t time_offset (input): timer offset in seconds.
   //uint32_t timer_id (output) : 0 in case of failure

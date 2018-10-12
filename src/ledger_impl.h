@@ -171,6 +171,12 @@ class LedgerImpl : public ledger::Ledger,
   void FetchFavIcon(const std::string& url, const std::string& publisher_key);
   ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
   double GetBalance() override;
+  void OnReconcileCompleteSuccess(const std::string& viewing_id,
+                                  const ledger::PUBLISHER_CATEGORY category,
+                                  const std::string& probi,
+                                  const ledger::PUBLISHER_MONTH month,
+                                  const int year,
+                                  const uint32_t date) override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

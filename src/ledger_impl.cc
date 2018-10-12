@@ -742,8 +742,46 @@ void LedgerImpl::FetchFavIcon(const std::string& url, const std::string& publish
 ledger::PublisherBanner LedgerImpl::GetPublisherBanner(const std::string& publisher_id) {
   return bat_publishers_->getPublisherBanner(publisher_id);
 }
+
 double LedgerImpl::GetBalance() {
   return bat_client_->getBalance();
+}
+
+void LedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
+                                            const ledger::PUBLISHER_CATEGORY category,
+                                            const std::string& probi,
+                                            const ledger::PUBLISHER_MONTH month,
+                                            const int year,
+                                            const uint32_t date) {
+  std::string publisher_key;
+
+  if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+    SetBalanceReportItem(month,
+      year,
+      ledger::ReportType::AUTO_CONTRIBUTION,
+      probi);
+  }
+
+  if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+    SetBalanceReportItem(month,
+      year,
+      ledger::ReportType::DONATION,
+      probi);
+    auto reconcile = GetReconcileById(viewing_id);
+    auto donations = reconcile.directions_;
+    if (donations.size() > 0) {
+      publisher_key = donations[0].publisher_.id;
+    }
+  }
+
+  if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+    SetBalanceReportItem(month,
+      year,
+      ledger::ReportType::DONATION_RECURRING,
+      probi);
+  }
+
+  ledger_client_->SaveContributionInfo(probi, month, year, date, publisher_key, category);
 }
 
 }  // namespace bat_ledger
