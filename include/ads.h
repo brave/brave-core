@@ -29,30 +29,8 @@ class Ads {
 
   ads::Ads* ads_;  // NOT OWNED
 
-  virtual void OnTimer(uint32_t timer_id) = 0;
-
-  virtual std::string URIEncode(const std::string& value) = 0;
-
-  virtual void SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
-      CampaignInfoCallback callback) = 0;
-  virtual void GetCampaignInfo(const catalog::CampaignInfoFilter& filter,
-      CampaignInfoCallback callback) = 0;
-
-  virtual void SetCreativeSetInfo(std::unique_ptr<catalog::CreativeSetInfo>
-      info, CreativeSetInfoCallback callback) = 0;
-  virtual void GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
-      CreativeSetInfoCallback callback) = 0;
-
-  // Called to generate an ad reporting event
-  virtual void GenerateAdReportingEvent(const std::string& eventType,
-      const std::map<std::string, std::string>& action) = 0;
-
   // Initialize
   virtual void Initialize() = 0;
-
-  // Called whenever Brave Ads is enabled or disabled by
-  // the user, or browser restart
-  virtual void SetAdsEnabled(bool enabled) = 0;
 
   // Called whenever the browser gains or loses focus (the active application)
   virtual void AppFocused(bool focused) = 0;
@@ -110,6 +88,28 @@ class Ads {
 
   // Called when the user invokes "Show Sample Ad"
   virtual void ServeSampleAd(uint64_t windowId) = 0;
+
+  // Called when the timer is triggered
+  virtual void OnTimer(uint32_t timer_id) = 0;
+
+  // URI encode
+  virtual std::string URIEncode(const std::string& value) = 0;
+
+  // Set campaign info
+  virtual void SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
+      CampaignInfoCallback callback) = 0;
+
+  // Get campaign info
+  virtual void GetCampaignInfo(const catalog::CampaignInfoFilter& filter,
+      CampaignInfoCallback callback) = 0;
+
+  // Set creative set info
+  virtual void SetCreativeSetInfo(std::unique_ptr<catalog::CreativeSetInfo>
+      info, CreativeSetInfoCallback callback) = 0;
+
+  // Get creative set info
+  virtual void GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
+      CreativeSetInfoCallback callback) = 0;
 };
 
 }  // namespace ads

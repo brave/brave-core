@@ -16,62 +16,8 @@ AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
 
 AdsImpl::~AdsImpl() = default;
 
-void AdsImpl::OnTimer(uint32_t timer_id) {
-  // TODO(Terry Mancey): Download catalog
-}
-
-void AdsImpl::SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
-    ads::CampaignInfoCallback callback) {
-  ads_client_->SaveCampaignInfo(std::move(info),
-    std::bind(&AdsImpl::OnSetCampaignInfo, this, callback,
-    std::placeholders::_1, std::placeholders::_2));
-}
-
-void AdsImpl::OnSetCampaignInfo(ads::CampaignInfoCallback callback,
-    ads::Result result, std::unique_ptr<catalog::CampaignInfo> info) {
-  callback(result, std::move(info));
-}
-
-void AdsImpl::GetCampaignInfo(const catalog::CampaignInfoFilter& filter,
-    ads::CampaignInfoCallback callback) {
-  ads_client_->LoadCampaignInfo(filter, callback);
-}
-
-void AdsImpl::SetCreativeSetInfo(std::unique_ptr<catalog::CreativeSetInfo> info,
-    ads::CreativeSetInfoCallback callback) {
-  ads_client_->SaveCreativeSetInfo(std::move(info),
-    std::bind(&AdsImpl::OnSetCreativeSetInfo, this, callback,
-    std::placeholders::_1, std::placeholders::_2));
-}
-
-void AdsImpl::OnSetCreativeSetInfo(ads::CreativeSetInfoCallback callback,
-    ads::Result result, std::unique_ptr<catalog::CreativeSetInfo> info) {
-  callback(result, std::move(info));
-}
-
-void AdsImpl::GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
-    ads::CreativeSetInfoCallback callback) {
-  ads_client_->LoadCreativeSetInfo(filter, callback);
-}
-
-void AdsImpl::GenerateAdReportingEvent(const std::string& eventType,
-    const std::map<std::string, std::string>& action) {
-  // TODO(Terry Mancey): Implement GenerateAdReportingEvent (#37)
-}
-
 void AdsImpl::Initialize() {
-  // TODO(Terry Mancey): Add user model state (#10)
-  // TODO(Terry Mancey): Remove test paths
-
-  bundle_path_ = "/Users/terrym/Desktop/bundle.json";
-  catalog_path_ = "/Users/terrym/Desktop/catalog.json";
-
-  if (!bat_client_->IsAdsEnabled()) {
-  }
-}
-
-void AdsImpl::SetAdsEnabled(bool enabled) {
-  bat_client_->SetAdsEnabled(enabled);
+  // TODO(Terry Mancey): Implement Initialize (#42)
 }
 
 void AdsImpl::AppFocused(bool focused) {
@@ -136,6 +82,48 @@ void AdsImpl::CheckReadyAdServe(uint64_t windowId, bool forceP) {
 
 void AdsImpl::ServeSampleAd(uint64_t windowId) {
   // TODO(Terry Mancey): Implement ServeSampleAd (#27)
+}
+
+void AdsImpl::OnTimer(uint32_t timer_id) {
+  // TODO(Terry Mancey): Download catalog
+}
+
+void AdsImpl::SaveState(const std::string& json) {
+  ads_client_->SaveState(json, this);
+}
+
+void AdsImpl::SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
+    ads::CampaignInfoCallback callback) {
+  ads_client_->SaveCampaignInfo(std::move(info),
+    std::bind(&AdsImpl::OnSetCampaignInfo, this, callback,
+    std::placeholders::_1, std::placeholders::_2));
+}
+
+void AdsImpl::OnSetCampaignInfo(ads::CampaignInfoCallback callback,
+    ads::Result result, std::unique_ptr<catalog::CampaignInfo> info) {
+  callback(result, std::move(info));
+}
+
+void AdsImpl::GetCampaignInfo(const catalog::CampaignInfoFilter& filter,
+    ads::CampaignInfoCallback callback) {
+  ads_client_->LoadCampaignInfo(filter, callback);
+}
+
+void AdsImpl::SetCreativeSetInfo(std::unique_ptr<catalog::CreativeSetInfo> info,
+    ads::CreativeSetInfoCallback callback) {
+  ads_client_->SaveCreativeSetInfo(std::move(info),
+    std::bind(&AdsImpl::OnSetCreativeSetInfo, this, callback,
+    std::placeholders::_1, std::placeholders::_2));
+}
+
+void AdsImpl::OnSetCreativeSetInfo(ads::CreativeSetInfoCallback callback,
+    ads::Result result, std::unique_ptr<catalog::CreativeSetInfo> info) {
+  callback(result, std::move(info));
+}
+
+void AdsImpl::GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
+    ads::CreativeSetInfoCallback callback) {
+  ads_client_->LoadCreativeSetInfo(filter, callback);
 }
 
 std::string AdsImpl::URIEncode(const std::string& value) {

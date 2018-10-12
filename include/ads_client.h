@@ -30,6 +30,10 @@ class AdsClient {
  public:
   virtual ~AdsClient() = default;
 
+  virtual void LoadState(CallbackHandler* handler) = 0;
+  virtual void SaveState(const std::string& ads_state,
+      CallbackHandler* handler) = 0;
+
   virtual void SaveCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
       CampaignInfoCallback callback) = 0;
   virtual void LoadCampaignInfo(catalog::CampaignInfoFilter filter,
@@ -40,16 +44,17 @@ class AdsClient {
   virtual void LoadCreativeSetInfo(catalog::CreativeSetInfoFilter filter,
       CreativeSetInfoCallback callback) = 0;
 
-  // Called to generate ad report event
-  virtual void GenerateAdReportingEvent(const std::string& eventType,
-      const std::map<std::string, std::string>& action) = 0;
-
   // Initialize
   virtual void Initialize() = 0;
 
-  // Called whenever Brave Ads is enabled or disabled by
-  // the user, or browser restart
-  virtual void SetAdsEnabled(bool enabled) = 0;
+  // Called whenever the browser gains or loses focus (the active application)
+  virtual void AppFocused(bool focused) = 0;
+
+  // Called to record user activity on a tab
+  virtual void TabUpdate() = 0;
+
+  // Called to record when a user is no longer idle
+  virtual void RecordUnIdle() = 0;
 
   // Called to remove all cached history
   virtual void RemoveAllHistory() = 0;

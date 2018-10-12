@@ -26,10 +26,7 @@ class AdsImpl : public ads::Ads, public ads::CallbackHandler {
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
 
-  void GenerateAdReportingEvent(const std::string& eventType,
-      const std::map<std::string, std::string>& action) override;
   void Initialize() override;
-  void SetAdsEnabled(bool enabled) override;
   void AppFocused(bool focused) override;
   void TabUpdate() override;
   void RecordUnIdle() override;
@@ -48,6 +45,8 @@ class AdsImpl : public ads::Ads, public ads::CallbackHandler {
   void ServeSampleAd(uint64_t windowId) override;
 
   void OnTimer(uint32_t timer_id) override;
+
+  void SaveState(const std::string& json);
 
   void SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
       ads::CampaignInfoCallback callback) override;
