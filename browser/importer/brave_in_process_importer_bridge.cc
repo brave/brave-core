@@ -20,4 +20,9 @@ void BraveInProcessImporterBridge::UpdateStats(const BraveStats& stats) {
   writer_->UpdateStats(stats);
 }
 
+void BraveInProcessImporterBridge::UpdateLedger(
+    const BraveLedger& ledger) {
+  writer_->UpdateLedger(ledger);
+}
+
 BraveInProcessImporterBridge::~BraveInProcessImporterBridge() {}

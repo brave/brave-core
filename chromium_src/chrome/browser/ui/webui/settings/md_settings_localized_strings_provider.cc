@@ -11,7 +11,8 @@ namespace settings {
 void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
   LocalizedString localized_strings[] = {
     {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
-    {"importStats", IDS_SETTINGS_IMPORT_STATS_CHECKBOX}
+    {"importStats", IDS_SETTINGS_IMPORT_STATS_CHECKBOX},
+    {"importLedger", IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX},
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           arraysize(localized_strings));

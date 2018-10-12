@@ -1,13 +1,14 @@
 diff --git a/chrome/common/pref_names.cc b/chrome/common/pref_names.cc
-index 99932760446390c1d68351968c8207d247963e40..98c772a0a5614933a50daa4eaf8b80376d641282 100644
+index 99932760446390c1d68351968c8207d247963e40..66872c7d393ab39cf6222a136834d37166db6a41 100644
 --- a/chrome/common/pref_names.cc
 +++ b/chrome/common/pref_names.cc
-@@ -1084,6 +1084,8 @@ const char kImportDialogBookmarks[] = "import_dialog_bookmarks";
+@@ -1084,6 +1084,9 @@ const char kImportDialogBookmarks[] = "import_dialog_bookmarks";
  const char kImportDialogHistory[] = "import_dialog_history";
  const char kImportDialogSavedPasswords[] = "import_dialog_saved_passwords";
  const char kImportDialogSearchEngine[] = "import_dialog_search_engine";
 +const char kImportDialogCookies[] = "import_dialog_cookies";
 +const char kImportDialogStats[] = "import_dialog_stats";
++const char kImportDialogLedger[] = "import_dialog_ledger";
  
  // Profile avatar and name
  const char kProfileAvatarIndex[] = "profile.avatar_index";

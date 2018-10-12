@@ -33,7 +33,8 @@ class BraveImporter : public ChromeImporter {
   void ImportBookmarks() override;
   void ImportHistory() override;
   void ImportStats();
-
+  void ImportLedger();
+  
   std::unique_ptr<base::Value> ParseBraveSessionStore();
 
   void ParseBookmarks(std::vector<ImportedBookmarkEntry>* bookmarks);

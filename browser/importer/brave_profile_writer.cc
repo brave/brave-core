@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/importer/brave_profile_writer.h"
+#include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_stats.h"
 #include "brave/common/pref_names.h"
 #include "brave/utility/importer/brave_importer.h"
@@ -62,4 +63,8 @@ void BraveProfileWriter::UpdateStats(const BraveStats& stats) {
     prefs->SetUint64(kHttpsUpgrades,
                      https_upgrades + stats.httpsEverywhere_count);
   }
+}
+
+void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
+  LOG(ERROR) << "Reached BraveProfileWriter::UpdateLedger stub";
 }

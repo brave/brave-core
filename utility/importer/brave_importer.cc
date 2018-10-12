@@ -91,6 +91,12 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
     bridge_->NotifyItemEnded(importer::STATS);
   }
 
+  if ((items & importer::LEDGER) && !cancelled()) {
+    bridge_->NotifyItemStarted(importer::LEDGER);
+    ImportLedger();
+    bridge_->NotifyItemEnded(importer::LEDGER);
+  }
+
   bridge_->NotifyEnded();
 }
 
@@ -314,4 +320,8 @@ void BraveImporter::ImportStats() {
   }
 
   bridge_->UpdateStats(stats);
+}
+
+void BraveImporter::ImportLedger() {
+  LOG(ERROR) << "In BraveImporter::ImportLedger stub";
 }

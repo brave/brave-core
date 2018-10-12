@@ -12,6 +12,7 @@
 #include "net/cookies/canonical_cookie.h"
 
 struct BraveStats;
+struct BraveLedger;
 
 class BraveProfileWriter : public ProfileWriter {
  public:
@@ -19,6 +20,7 @@ class BraveProfileWriter : public ProfileWriter {
 
   virtual void AddCookies(const std::vector<net::CanonicalCookie>& cookies);
   virtual void UpdateStats(const BraveStats& stats);
+  virtual void UpdateLedger(const BraveLedger& ledger);
 
  protected:
   friend class base::RefCountedThreadSafe<BraveProfileWriter>;

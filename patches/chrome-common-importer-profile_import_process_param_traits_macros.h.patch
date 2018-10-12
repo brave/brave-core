@@ -1,16 +1,17 @@
 diff --git a/chrome/common/importer/profile_import_process_param_traits_macros.h b/chrome/common/importer/profile_import_process_param_traits_macros.h
-index dd005641f4349c017bc65d843d8fe49ec6122f64..b04d43977cfe6d6bb3aa98427be7fe4fa87aa697 100644
+index dd005641f4349c017bc65d843d8fe49ec6122f64..7087fa2316525fac9cf9abb0249b16aae6e9d46f 100644
 --- a/chrome/common/importer/profile_import_process_param_traits_macros.h
 +++ b/chrome/common/importer/profile_import_process_param_traits_macros.h
-@@ -14,6 +14,7 @@
+@@ -14,6 +14,8 @@
  #include "base/strings/string16.h"
  #include "base/values.h"
  #include "build/build_config.h"
++#include "brave/common/importer/brave_ledger.h"
 +#include "brave/common/importer/brave_stats.h"
  #include "chrome/common/common_param_traits_macros.h"
  #include "chrome/common/importer/imported_bookmark_entry.h"
  #include "chrome/common/importer/importer_autofill_form_data_entry.h"
-@@ -91,4 +92,10 @@ IPC_STRUCT_TRAITS_BEGIN(importer::ImporterIE7PasswordInfo)
+@@ -91,4 +93,14 @@ IPC_STRUCT_TRAITS_BEGIN(importer::ImporterIE7PasswordInfo)
    IPC_STRUCT_TRAITS_MEMBER(date_created)
  IPC_STRUCT_TRAITS_END()
  
@@ -18,6 +19,10 @@ index dd005641f4349c017bc65d843d8fe49ec6122f64..b04d43977cfe6d6bb3aa98427be7fe4f
 +  IPC_STRUCT_TRAITS_MEMBER(adblock_count)
 +  IPC_STRUCT_TRAITS_MEMBER(trackingProtection_count)
 +  IPC_STRUCT_TRAITS_MEMBER(httpsEverywhere_count)
++IPC_STRUCT_TRAITS_END()
++
++IPC_STRUCT_TRAITS_BEGIN(BraveLedger)
++  IPC_STRUCT_TRAITS_MEMBER(stub)
 +IPC_STRUCT_TRAITS_END()
 +
  #endif  // CHROME_COMMON_IMPORTER_PROFILE_IMPORT_PROCESS_PARAM_TRAITS_MACROS_H_
