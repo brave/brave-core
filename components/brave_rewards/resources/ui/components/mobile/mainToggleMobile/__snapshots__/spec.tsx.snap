@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
+.c0 {
+  font-family: Poppins,sans-serif;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  background-color: #fff;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 61px;
+  z-index: 2;
+  box-shadow: 0 0 2px 0 rgba(99,105,110,0.55);
+}
+
+.c1 {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0px 13px;
+}
+
+.c6 {
+  padding: 0px 15px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 66px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: -3px;
+}
+
+.c4 {
+  color: #4B4C5C;
+  font-size: 22px;
+  font-weight: 500;
+  -webkit-letter-spacing: 0.12px;
+  -moz-letter-spacing: 0.12px;
+  -ms-letter-spacing: 0.12px;
+  letter-spacing: 0.12px;
+  line-height: 44px;
+  margin-bottom: -23px;
+}
+
+.c5 {
+  font-size: 8px;
+  font-weight: 300;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: #222326;
+  position: relative;
+  top: -13px;
+  vertical-align: text-top;
+}
+
+.c2 {
+  width: 30px;
+  height: 30px;
+  margin-top: 13px;
+  margin-right: 5px;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c9 {
+  position: relative;
+  display: block;
+  height: 24px;
+  width: 40px;
+}
+
+.c10 {
+  background: #A7ACB2;
+  height: 8px;
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.c11 {
+  position: relative;
+  border-radius: 50%;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  --toggle-bullet-size: 20px;
+  --toggle-bullet-transform: translate(-1px,calc(-50% - 4px));
+  --toggle-bullet-background: #CDD1D5;
+  width: var(--toggle-bullet-size);
+  height: var(--toggle-bullet-size);
+  -webkit-transform: var(--toggle-bullet-transform);
+  -ms-transform: var(--toggle-bullet-transform);
+  transform: var(--toggle-bullet-transform);
+  background-color: var(--toggle-bullet-background);
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+}
+
+.c8 {
+  color: #838391;
+  font-size: 14px;
+  font-family: Poppins,sans-serif;
+  text-align: right;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin: 4px 8px 0 0;
+  opacity: 1;
+  -webkit-transition: 100ms ease-out;
+  transition: 100ms ease-out;
+}
+
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+@media (max-width:355px) {
+  .c6 {
+    width: 55px;
+    position: relative;
+    right: 45px;
+  }
+}
+
+<div
+  className="c0"
+  id="mainToggleMobile"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <svg
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <g
+          fill="none"
+          fillRule="evenodd"
+        >
+          <path
+            d="M2.05 27.5l8.2-4.87 5.65-10V3c-.15 0-.3.1-.42.3L8.8 15.14 2.1 26.98c-.1.2-.12.38-.04.51"
+            fill="#FF4724"
+          />
+          <path
+            d="M15.9 3v9.64l5.65 10 8.2 4.85c.07-.13.06-.3-.06-.5L23 15.13 16.3 3.3c-.1-.2-.25-.3-.4-.3"
+            fill="#9E1F63"
+          />
+          <path
+            d="M29.74 27.5l-8.2-4.87h-11.3l-8.2 4.86c.08.14.24.22.47.22h26.78c.22 0 .38-.08.45-.22"
+            fill="#662D91"
+          />
+          <path
+            d="M10.24 22.63h11.31l-5.65-9.99z"
+            fill="#FFF"
+          />
+        </g>
+      </svg>
+    </div>
+    <div
+      className="c4"
+    >
+      MISSING: braveRewards
+       
+      <span
+        className="c5"
+      >
+        TM
+      </span>
+    </div>
+  </div>
+  <div
+    className="c6"
+  >
+    <div
+      className="c7"
+    >
+      <div
+        className="c8"
+        size="large"
+      >
+        MISSING: off
+      </div>
+      <div
+        className="c9"
+        data-test-id="toggle"
+        size="large"
+      >
+        <div
+          className="c10"
+          size="large"
+        />
+        <div
+          className="c11"
+          size="large"
+          type="dark"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

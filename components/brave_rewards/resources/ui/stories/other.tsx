@@ -26,7 +26,8 @@ import {
   DonationOverlay
 } from '../../../src/features/rewards'
 import {
-  BoxMobile
+  BoxMobile,
+  MainToggleMobile
 } from '../../../src/features/rewards/mobile'
 import { BatColorIcon, SettingsIcon, UpholdColorIcon } from '../../../src/components/icons'
 import GrantClaim from '../../../src/features/rewards/grantClaim'
@@ -320,6 +321,29 @@ storiesOf('Feature Components/Rewards/Other/Mobile', module)
             <p>Detail Content</p>
           </div>
         </BoxMobile>
+      </div>
+    )
+  }))
+  .add('Main Toggle', withState({ checked: false }, (store) => {
+    let items = []
+    for (let i = 0; i < 25; i++) {
+      items.push(i)
+    }
+
+    const onToggle = () => {
+      store.set({ checked: !store.state.checked })
+    }
+    return (
+      <div style={{ width: '100%' }}>
+        <MainToggleMobile
+          enabled={boolean('Enable', store.state.checked)}
+          onToggle={onToggle}
+        />
+        {items.map(i =>
+          <div key={i}>
+            <List title={`Item No: ${i}`} />
+          </div>
+        )}
       </div>
     )
   }))
