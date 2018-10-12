@@ -54,6 +54,11 @@ int OnBeforeURLRequest_HttpsePreFileWork(
   std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
+  // Don't try to overwrite an already set URL by another delegate (adblock/tp)
+  if (!ctx->new_url_spec.empty()) {
+    return net::OK;
+  }
+
   GURL tab_origin = request->site_for_cookies().GetOrigin();
   bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
       request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
@@ -95,7 +100,8 @@ int OnBeforeURLRequest_HttpsePreFileWork(
     } else {
       if (!ctx->new_url_spec.empty()) {
         *new_url = GURL(ctx->new_url_spec);
-        brave_shields::DispatchBlockedEventFromIO(request, "httpsEverywhere");
+        brave_shields::DispatchBlockedEventFromIO(request,
+            brave_shields::kHTTPUpgradableResources);
       }
     }
   }
