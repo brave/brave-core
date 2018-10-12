@@ -6,20 +6,19 @@
 
 #include <string>
 
-#include "../include/json_bat_helper.h"
+namespace state {
 
-namespace ads_bat_client {
-
-struct SETTINGS_STATE_ST {
-  SETTINGS_STATE_ST();
-  SETTINGS_STATE_ST(const SETTINGS_STATE_ST& state);
-  ~SETTINGS_STATE_ST();
+struct SETTINGS_STATE {
+  SETTINGS_STATE();
+  SETTINGS_STATE(const SETTINGS_STATE& state);
+  ~SETTINGS_STATE();
 
   bool LoadFromJson(const std::string& json);
 
   bool ads_enabled;
+  std::string ads_locale;
   std::string ads_amount_day;
   std::string ads_amount_hour;
 };
 
-}  // namespace ads_bat_client
+}  // namespace state

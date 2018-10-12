@@ -5,45 +5,63 @@
 #pragma once
 
 #include <string>
-#include <map>
+#include <memory>
 
 #include "../include/ads_client.h"
-#include "../include/ads_url_loader.h"
-#include "../include/ads_impl.h"
 
 namespace ads {
+
 class Ads;
 class CallbackHandler;
-}  // namespace ads
 
-namespace bat_ads {
-
-class MockAdsClient : public ads::AdsClient {
+class MockAdsClient : public AdsClient {
  public:
   MockAdsClient();
   ~MockAdsClient() override;
 
+  std::unique_ptr<Ads> ads_;
+
  protected:
   // ads::AdsClient
-  void Initialize() override;
-  void AppFocused(bool focused) override;
-  void TabUpdate() override;
-  void RecordUnIdle() override;
-  void RemoveAllHistory() override;
-  void SaveCachedInfo() override;
-  void ConfirmAdUUIDIfAdEnabled(bool enabled) override;
-  void TestShoppingData(const std::string& url) override;
-  void TestSearchState(const std::string& url) override;
-  void RecordMediaPlaying(bool active, uint64_t tabId) override;
-  void ClassifyPage(uint64_t windowId) override;
-  void ChangeLocale(const std::string& locale) override;
-  void CollectActivity() override;
-  void RetrieveSSID(uint64_t error, const std::string& ssid) override;
-  void InitializeCatalog() override;
-  void CheckReadyAdServe(uint64_t windowId, bool forceP) override;
-  void ServeSampleAd(uint64_t windowId) override;
+  void GetClientInfo(ClientInfo& client_info) const override;
 
-  std::unique_ptr<ads::Ads> ads_;
+  void GenerateAdUUID(std::string& ad_uuid) const override;
+
+  void GetSSID(std::string& ssid) const override;
+
+  void ShowAd(const std::unique_ptr<AdInfo> info) const override;
+
+  void SetTimer(const uint64_t time_offset, uint32_t& timer_id) override;
+  void StopTimer(uint32_t& timer_id) override;
+
+  std::string URIEncode(const std::string& value) override;
+
+  std::unique_ptr<URLSession> URLSessionTask(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& contentType,
+      const URLSession::Method& method,
+      URLSessionCallbackHandlerCallback callback) override;
+
+  void LoadSettingsState(CallbackHandler* callback_handler) override;
+
+  void SaveUserModelState(
+      const std::string& json,
+      CallbackHandler* callback_handler) override;
+  void LoadUserModelState(CallbackHandler* callback_handler) override;
+
+  void SaveCatalogState(
+      const state::CATALOG_STATE& catalog_state,
+      CallbackHandler* callback_handler) override;
+
+  void GetCampaignInfo(
+      const catalog::CampaignInfoFilter& filter,
+      CallbackHandler* callback) override;
+
+  void Log(const LogLevel log_level, const char *fmt, ...) const override;
+
+  std::unique_ptr<state::CATALOG_STATE> catalog_state_;
 };
 
-}  // namespace bat_ads
+}  // namespace ads

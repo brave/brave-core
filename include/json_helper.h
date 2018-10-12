@@ -4,18 +4,31 @@
 
 #pragma once
 
+#include "../include/platform_helper.h"
+
 #include "../deps/bat-native-rapidjson/include/rapidjson/document.h"
 #include "../deps/bat-native-rapidjson/include/rapidjson/error/en.h"
 #include "../deps/bat-native-rapidjson/include/rapidjson/stringbuffer.h"
 #include "../deps/bat-native-rapidjson/include/rapidjson/writer.h"
 
-namespace ads_bat_client {
+static const char* _rapidjson_member_types[] = {
+  "Null",
+  "Bool",  // False
+  "Bool",  // True
+  "Object",
+  "Array",
+  "String",
+  "Number"};
 
-struct USER_MODEL_STATE_ST;
+namespace state {
+
+struct USER_MODEL_STATE;
+struct CATALOG_STATE;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
-void SaveToJson(JsonWriter& writer, const USER_MODEL_STATE_ST& state);
+void SaveToJson(JsonWriter& writer, const USER_MODEL_STATE& state);
+void SaveToJson(JsonWriter& writer, const CATALOG_STATE& state);
 
 template <typename T>
 void SaveToJsonString(const T& t, std::string& json) {
@@ -31,11 +44,10 @@ template <typename T>
 bool LoadFromJson(T& t, const std::string& json) {
   bool succeeded = t.LoadFromJson(json);
   if (!succeeded) {
-    // TODO(Terry Mancey): Implement LOG() (#39)
-    // LOG(ERROR) << "Failed to parse: " << json << std::endl;
+    LOG(ERROR) << "Failed to load JSON: " << json << std::endl;
   }
 
   return succeeded;
 }
 
-}  // namespace ads_bat_client
+}  // namespace state

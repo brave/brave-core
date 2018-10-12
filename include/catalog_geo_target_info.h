@@ -1,21 +1,23 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this
-* file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #pragma once
 
 #include <string>
 
+#include "../include/export.h"
+
 namespace catalog {
 
-struct GeoTargetInfo {
+ADS_EXPORT struct GeoTargetInfo {
   GeoTargetInfo() :
-      code(""),
-      name("") {}
+    code(""),
+    name("") {}
 
   GeoTargetInfo(const GeoTargetInfo& info) :
-      code(info.code),
-      name(info.name) {}
+    code(info.code),
+    name(info.name) {}
 
   ~GeoTargetInfo() {}
 

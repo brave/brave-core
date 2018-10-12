@@ -6,26 +6,53 @@
 
 #include <string>
 #include <ctime>
+#include <map>
+
+#include "../include/catalog.h"
+
+namespace state {
+class Catalog;
+}  // namespace state
+
+namespace rewards_ads {
+class AdsImpl;
+}  // namespace rewards_ads
 
 namespace catalog {
 
-class AdsServe {
+class AdsServe: public ads::CallbackHandler {
  public:
-  explicit AdsServe(const std::string& path);
+  AdsServe(
+      rewards_ads::AdsImpl* ads,
+      ads::AdsClient* ads_client,
+      std::shared_ptr<state::Catalog> catalog);
+
   ~AdsServe();
 
-  void set_ping(std::time_t ping);
+  void BuildURL();
 
-  std::time_t NextCatalogCheck();
+  void DownloadCatalog();
 
-  bool DownloadCatalog();
+  void OnCatalogDownloaded(
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+  void ResetNextCatalogCheck();
+
+  void UpdateNextCatalogCheck();
+  uint64_t NextCatalogCheck() const;
 
  private:
-  std::string url_;
-  std::string path_;
 
-  std::time_t next_catalog_check_;
-  std::time_t ping_;
+  std::string url_;
+
+  uint64_t next_catalog_check_;
+
+  rewards_ads::AdsImpl* ads_;  // NOT OWNED
+  ads::AdsClient* ads_client_;  // NOT OWNED
+
+  std::shared_ptr<state::Catalog> catalog_;
 };
 
 }  // namespace catalog

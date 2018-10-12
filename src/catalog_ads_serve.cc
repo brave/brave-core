@@ -2,29 +2,83 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "static_values.h"
 #include "../include/catalog_ads_serve.h"
+#include "../include/ads_impl.h"
 #include "../include/ads.h"
+#include "../include/static_values.h"
 
-catalog::AdsServe::AdsServe(const std::string& path) : ping_(0) {
-  if (ads::is_production) {
-    url_ = ADS_PRODUCTION_SERVER;
-  } else {
-    url_ = ADS_STAGING_SERVER;
+namespace catalog {
+
+AdsServe::AdsServe(
+    rewards_ads::AdsImpl* ads,
+    ads::AdsClient* ads_client,
+    std::shared_ptr<state::Catalog> catalog) :
+      ads_(ads),
+      ads_client_(ads_client),
+      catalog_(catalog) {
+  BuildURL();
+}
+
+AdsServe::~AdsServe() = default;
+
+void AdsServe::BuildURL() {
+  ads::ClientInfo client_info;
+  ads_client_->GetClientInfo(client_info);
+
+  url_ = ads::is_production ? ADS_PRODUCTION_SERVER : ADS_STAGING_SERVER;
+
+  url_ += "?braveVersion=" + client_info.application_version;
+  url_ += "&platform=" + client_info.platform;
+  url_ += "&platformVersion=" + client_info.platform_version;
+}
+
+void AdsServe::DownloadCatalog() {
+  auto url_session = ads_client_->URLSessionTask(
+    url_,
+    {},
+    "",
+    "",
+    ads::URLSession::Method::GET,
+    std::bind(
+      &AdsServe::OnCatalogDownloaded,
+      this,
+      std::placeholders::_1,
+      std::placeholders::_2,
+      std::placeholders::_3));
+}
+
+void AdsServe::OnCatalogDownloaded(
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers) {
+  bool success = false;
+
+  if (response_status_code / 100 == 2) {  // successful
+    success = catalog_->LoadState(response);
+  } else if (response_status_code == 304) {  // not modified
+    // TODO(Terry Mancey): Implement UserModelLog (#44)
+  } else {  // failed
+    // TODO(Terry Mancey): Implement UserModelLog (#44)
   }
+
+  if (success) {
+    UpdateNextCatalogCheck();
+  }
+
+  ads::Result result = success ? ads::Result::ADS_OK : ads::Result::ADS_ERROR;
+  ads_->OnCatalogStateLoaded(result, response);
 }
 
-catalog::AdsServe::~AdsServe() = default;
-
-void catalog::AdsServe::set_ping(std::time_t ping) {
-  ping_ = ping;
+void AdsServe::ResetNextCatalogCheck() {
+  next_catalog_check_ = 0;
 }
 
-std::time_t catalog::AdsServe::NextCatalogCheck() {
-  auto now = std::time(nullptr);
-  return now + ping_;
+void AdsServe::UpdateNextCatalogCheck() {
+  next_catalog_check_ = catalog_->GetPing();
 }
 
-bool catalog::AdsServe::DownloadCatalog() {
-  return false;
+uint64_t AdsServe::NextCatalogCheck() const {
+  return next_catalog_check_;
 }
+
+}  // namespace catalog

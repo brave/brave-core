@@ -6,18 +6,28 @@
 
 #include <string>
 #include <map>
+#include <vector>
+#include <memory>
 
 #include "../include/ads.h"
-#include "../include/callback_handler.h"
-#include "../include/ads_client.h"
+#include "../include/catalog_ads_serve.h"
+#include "../include/user_model.h"
+#include "../include/settings.h"
+#include "../include/catalog.h"
 
-namespace ads_bat_client {
-class BatClient;
-}
+namespace state {
+class Settings;
+class UserModel;
+class Catalog;
+}  // namespace state
 
-namespace bat_ads {
+namespace catalog {
+class AdsServe;
+}  // namespace catalog
 
-class AdsImpl : public ads::Ads, public ads::CallbackHandler {
+namespace rewards_ads {
+
+class AdsImpl : public ads::Ads, ads::CallbackHandler {
  public:
   explicit AdsImpl(ads::AdsClient* ads_client);
   ~AdsImpl() override;
@@ -32,51 +42,60 @@ class AdsImpl : public ads::Ads, public ads::CallbackHandler {
   void RecordUnIdle() override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
-  void ConfirmAdUUIDIfAdEnabled(bool enabled) override;
+  void ConfirmAdUUIDIfAdEnabled() override;
   void TestShoppingData(const std::string& url) override;
   void TestSearchState(const std::string& url) override;
-  void RecordMediaPlaying(bool active, uint64_t tabId) override;
-  void ClassifyPage(uint64_t windowId) override;
+  void RecordMediaPlaying(const std::string& tabId, bool active) override;
+  void ChangeNotificationsAvailable(bool available) override;
+  void ChangeNotificationsAllowed(bool allowed) override;
+  void ClassifyPage(const std::string& page) override;
   void ChangeLocale(const std::string& locale) override;
   void CollectActivity() override;
-  void InitializeCatalog() override;
-  void RetrieveSSID(uint64_t error, const std::string& ssid) override;
-  void CheckReadyAdServe(uint64_t windowId, bool forceP) override;
-  void ServeSampleAd(uint64_t windowId) override;
+  void ApplyCatalog() override;
+  void RetrieveSSID() override;
+  void CheckReadyAdServe(bool force) override;
+  void ServeSampleAd() override;
 
-  void OnTimer(uint32_t timer_id) override;
+  void OnTimer(const uint32_t timer_id) override;
 
-  void SaveState(const std::string& json);
+  void OnSettingsStateLoaded(
+      const ads::Result result,
+      const std::string& json) override;
 
-  void SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
-      ads::CampaignInfoCallback callback) override;
-  void OnSetCampaignInfo(ads::CampaignInfoCallback callback,
-      ads::Result result, std::unique_ptr<catalog::CampaignInfo> info);
-  void GetCampaignInfo(const catalog::CampaignInfoFilter& filter,
-      ads::CampaignInfoCallback callback) override;
+  void OnUserModelStateSaved(
+      const ads::Result result) override;
+  void OnUserModelStateLoaded(
+      const ads::Result result,
+      const std::string& json) override;
 
-  void SetCreativeSetInfo(std::unique_ptr<catalog::CreativeSetInfo> info,
-      ads::CreativeSetInfoCallback callback) override;
-  void OnSetCreativeSetInfo(ads::CreativeSetInfoCallback callback,
-      ads::Result result, std::unique_ptr<catalog::CreativeSetInfo> info);
-  void GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
-      ads::CreativeSetInfoCallback callback) override;
-
-  std::string URIEncode(const std::string& value) override;
-
-  std::unique_ptr<ads::AdsURLLoader> LoadURL(const std::string& url,
-      const std::vector<std::string>& headers, const std::string& content,
-      const std::string& contentType, const ads::URL_METHOD& method,
-      ads::CallbackHandler* handler);
+  void OnCatalogStateSaved(
+      const ads::Result result) override;
+  void OnCatalogStateLoaded(
+      const ads::Result result,
+      const std::string& json) override;
 
  private:
-  bool focused_;
+  bool initialized_;
+  void Deinitialize();
 
-  std::string bundle_path_;
-  std::string catalog_path_;
+  bool app_focused_;
 
-  ads::AdsClient* ads_client_;
-  std::unique_ptr<ads_bat_client::BatClient> bat_client_;
+  void StartCollectingActivity(const uint64_t start_timer_in);
+  bool IsCollectingActivity() const;
+  void StopCollectingActivity();
+  uint32_t collect_activity_timer_id_;
+
+  bool IsMediaPlaying() const;
+  std::map<std::string, bool> media_playing_;
+
+  void ProcessLocales(const std::vector<std::string>& locales);
+
+  ads::AdsClient* ads_client_;  // NOT OWNED
+
+  std::shared_ptr<state::Settings> settings_;
+  std::unique_ptr<state::UserModel> user_model_;
+  std::shared_ptr<state::Catalog> catalog_;
+  std::unique_ptr<catalog::AdsServe> catalog_ads_serve_;
 };
 
-}  // namespace bat_ads
+}  // namespace rewards_ads

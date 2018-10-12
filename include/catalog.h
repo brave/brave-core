@@ -5,27 +5,40 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
-#include "../include/catalog_campaign.h"
 #include "../include/ads_impl.h"
-#include "../include/callback_handler.h"
-#include "../include/catalog_campaign.h"
+#include "../include/catalog_state.h"
 
-namespace catalog {
+namespace rewards_ads {
+class AdsImpl;
+}  // namespace rewards_ads
 
-class Catalog {
+namespace state {
+
+class Catalog: public ads::CallbackHandler {
  public:
-  explicit Catalog(bat_ads::AdsImpl* ads);
+  Catalog(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client);
   ~Catalog();
 
-  std::string GetCatalogId();
+  bool LoadState(const std::string &json);
+  void SaveState();
 
-  int64_t GetVersion();
+  std::string GetCatalogId() const;
 
-  bool Parse(const std::string& json);
+  int64_t GetVersion() const;
+
+  int64_t GetPing() const;
+
+  void Reset();
 
  private:
-  bat_ads::AdsImpl* ads_;  // NOT OWNED
+  void OnCatalogStateSaved(const ads::Result result) override;
+
+  rewards_ads::AdsImpl* ads_;  // NOT OWNED
+  ads::AdsClient* ads_client_;  // NOT OWNED
+
+  std::shared_ptr<CATALOG_STATE> catalog_state_;
 };
 
-}  // namespace catalog
+}  // namespace state

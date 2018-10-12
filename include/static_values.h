@@ -6,3 +6,6 @@
 
 #define ADS_STAGING_SERVER "https://ads-serve-staging.brave.com/v1/catalog"
 #define ADS_PRODUCTION_SERVER "https://ads-serve.mercury.basicattentiontoken.org/v1/catalog"
+
+#define START_TIMER_IN_ONE_HOUR 60 * 60
+#define START_TIMER_IN_ONE_DAY 60 * 60 * 24

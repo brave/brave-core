@@ -3,27 +3,55 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "../include/catalog.h"
-#include "../include/ads.h"
+#include "../include/ads_impl.h"
+#include "../include/catalog_state.h"
+#include "../include/json_helper.h"
+#include "../include/ads_client.h"
 
-catalog::Catalog::Catalog(bat_ads::AdsImpl* ads) :
-    ads_(ads) {
+namespace state {
+
+Catalog::Catalog(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client) :
+      ads_(ads),
+      ads_client_(ads_client),
+      catalog_state_(new CATALOG_STATE()) {
 }
 
-catalog::Catalog::~Catalog() = default;
+Catalog::~Catalog() = default;
 
-std::string catalog::Catalog::GetCatalogId() {
-  // TODO(Terry Mancey): Get catalog id
-  return "";
+bool Catalog::LoadState(const std::string& json) {
+  CATALOG_STATE state;
+  if (!LoadFromJson(state, json.c_str())) {
+    return false;
+  }
+
+  catalog_state_.reset(new CATALOG_STATE(state));
+
+  return true;
 }
 
-int64_t catalog::Catalog::GetVersion() {
-  // TODO(Terry Mancey): Get version
-  return 0;
+void Catalog::SaveState() {
+  ads_client_->SaveCatalogState(*catalog_state_, this);
 }
 
-bool catalog::Catalog::Parse(const std::string& json) {
-  // TODO(Terry Mancey): Parse JSON and save to database (#4)
-  // TODO(Terry Mancey): Parse JSON and merge with database (#5)
-
-  return false;
+std::string Catalog::GetCatalogId() const {
+  return catalog_state_->catalog_id;
 }
+
+int64_t Catalog::GetVersion() const {
+  return catalog_state_->version;
+}
+
+int64_t Catalog::GetPing() const {
+  return catalog_state_->ping / 1000;
+}
+
+void Catalog::Reset() {
+  catalog_state_.reset(new CATALOG_STATE());
+
+  ads_client_->SaveCatalogState(*catalog_state_, this);
+}
+
+void Catalog::OnCatalogStateSaved(const ads::Result result) {
+}
+
+}  // namespace state

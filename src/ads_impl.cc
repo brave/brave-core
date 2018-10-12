@@ -4,138 +4,331 @@
 
 #include "../include/ads_impl.h"
 #include "../include/ads_client.h"
-#include "../include/bat_client.h"
+#include "../include/user_model.h"
+#include "../include/settings.h"
+#include "../include/catalog.h"
+#include "../include/callback_handler.h"
+#include "../include/ad_info.h"
+#include "../include/platform_helper.h"
+#include "../include/static_values.h"
 
-namespace bat_ads {
+// TODO(Terry Mancey): Implement URL validation
+// TODO(Terry Mancey): Profile performance
+// TODO(Terry Mancey): Profile memory consumption
+
+namespace rewards_ads {
 
 AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
     ads_client_(ads_client),
-    bat_client_(new ads_bat_client::BatClient(this)),
-    focused_(false) {
+    settings_(std::make_shared<state::Settings>(this, ads_client_)),
+    user_model_(std::make_unique<state::UserModel>
+      (this, ads_client_, settings_)),
+    catalog_(std::make_shared<state::Catalog>(this, ads_client_)),
+    catalog_ads_serve_(std::make_unique<catalog::AdsServe>
+      (this, ads_client_, catalog_)),
+    initialized_(false),
+    app_focused_(false),
+    media_playing_({}),
+    collect_activity_timer_id_(0) {
+  ads_client_->LoadSettingsState(this);
+  ads_client_->LoadUserModelState(this);
 }
 
 AdsImpl::~AdsImpl() = default;
 
 void AdsImpl::Initialize() {
-  // TODO(Terry Mancey): Implement Initialize (#42)
+  if (!settings_->IsAdsEnabled()) {
+    Deinitialize();
+    return;
+  }
+
+  if (initialized_) {
+    return;
+  }
+
+  initialized_ = true;
+
+  RetrieveSSID();
+
+  auto locales = user_model_->GetLocalesSync();
+  ProcessLocales(locales);
+
+  ConfirmAdUUIDIfAdEnabled();
+
+  catalog_ads_serve_->DownloadCatalog();
 }
 
-void AdsImpl::AppFocused(bool focused) {
-  focused_ = focused;
+void AdsImpl::AppFocused(const bool focused) {
+  app_focused_ = focused;
 }
 
 void AdsImpl::TabUpdate() {
-  // TODO(Terry Mancey): Implement TabUpdate (#14)
+  user_model_->UpdateLastUserActivity();
 }
 
 void AdsImpl::RecordUnIdle() {
-  // TODO(Terry Mancey): Implement RecordUnIdle (#15)
+  user_model_->UpdateLastUserIdleStopTime();
 }
 
 void AdsImpl::RemoveAllHistory() {
-  // TODO(Terry Mancey): Implement RemoveAllHistory (#16)
+  auto locales = user_model_->GetLocales();
+
+  user_model_->RemoveAllHistory();
+
+  ProcessLocales(locales);
+
+  ConfirmAdUUIDIfAdEnabled();
 }
 
 void AdsImpl::SaveCachedInfo() {
-  // TODO(Terry Mancey): Implement SaveCachedInfo (#17)
+  if (!settings_->IsAdsEnabled()) {
+    user_model_->RemoveAllHistory();
+  }
+
+  user_model_->SaveState();
 }
 
-void AdsImpl::ConfirmAdUUIDIfAdEnabled(bool enabled) {
-  // TODO(Terry Mancey): Implement ConfirmAdUUIDIfAdEnabled (#18)
+void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
+  if (!settings_->IsAdsEnabled()) {
+    StopCollectingActivity();
+    return;
+  }
+
+  user_model_->UpdateAdUUID();
+
+  StartCollectingActivity(START_TIMER_IN_ONE_HOUR);
 }
 
 void AdsImpl::TestShoppingData(const std::string& url) {
-  // TODO(Terry Mancey): Implement TestShoppingData (#19)
+  if (!initialized_ || !settings_->IsAdsEnabled()) {
+    return;
+  }
+
+  user_model_->TestShoppingData(url);
 }
 
 void AdsImpl::TestSearchState(const std::string& url) {
-  // TODO(Terry Mancey): Implement TestSearchState (#20)
+  if (!initialized_ || !settings_->IsAdsEnabled()) {
+    return;
+  }
+
+  user_model_->TestSearchState(url);
 }
 
-void AdsImpl::RecordMediaPlaying(bool active, uint64_t tabId) {
-  // TODO(Terry Mancey): Implement RecordMediaPlaying (#21)
+void AdsImpl::RecordMediaPlaying(const std::string& tabId, const bool active) {
+  std::map<std::string, bool>::iterator tab;
+  tab = media_playing_.find(tabId);
+
+  if (active) {
+    if (tab == media_playing_.end()) {
+      media_playing_.insert({tabId, active});
+    }
+  } else {
+    if (tab != media_playing_.end()) {
+      media_playing_.erase(tabId);
+    }
+  }
 }
 
-void AdsImpl::ClassifyPage(uint64_t windowId) {
+void AdsImpl::ChangeNotificationsAvailable(const bool available) {
+  user_model_->SetAvailable(available);
+}
+
+void AdsImpl::ChangeNotificationsAllowed(const bool allowed) {
+  user_model_->SetAllowed(allowed);
+}
+
+void AdsImpl::ClassifyPage(const std::string& page) {
   // TODO(Terry Mancey): Implement ClassifyPage (#22)
+
+  if (!initialized_ || !settings_->IsAdsEnabled()) {
+    return;
+  }
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
-  // TODO(Terry Mancey): Implement ChangeLocale (#23)
+  if (!initialized_ || !settings_->IsAdsEnabled()) {
+    return;
+  }
+
+  if (!user_model_->SetLocaleSync(locale)) {
+    return;
+  }
+
+  user_model_->SetLocale(locale);
 }
 
 void AdsImpl::CollectActivity() {
   // TODO(Terry Mancey): Implement CollectActivity (#24)
+
+  if (!initialized_ || !settings_->IsAdsEnabled()) {
+    return;
+  }
 }
 
-void AdsImpl::InitializeCatalog() {
-  // TODO(Terry Mancey): Implement InitializeCatalog (#25)
+void AdsImpl::ApplyCatalog() {
+  if (!initialized_ || !settings_->IsAdsEnabled()) {
+    return;
+  }
+
+  catalog_->SaveState();
+  user_model_->SaveState();
 }
 
-void AdsImpl::RetrieveSSID(uint64_t error, const std::string& ssid) {
-  // TODO(Terry Mancey): Implement RetrieveSSID (#38)
+void AdsImpl::RetrieveSSID() {
+  std::string ssid;
+  ads_client_->GetSSID(ssid);
+
+  user_model_->SetCurrentSSID(ssid);
 }
 
-void AdsImpl::CheckReadyAdServe(uint64_t windowId, bool forceP) {
-  // TODO(Terry Mancey): Implement CheckReadyAdServe (#26)
+void AdsImpl::CheckReadyAdServe(const bool forced) {
+  if (!initialized_ || !settings_->IsAdsEnabled()) {
+    return;
+  }
+
+  if (!forced) {
+    if (!app_focused_) {
+      // TODO(Terry Mancey): Implement User Model Log (#44)
+      return;
+    }
+
+    if (IsMediaPlaying()) {
+      // TODO(Terry Mancey): Implement User Model Log (#44)
+      return;
+    }
+
+    if (!user_model_->IsAllowedToShowAds()) {
+      // TODO(Terry Mancey): Implement User Model Log (#44)
+      return;
+    }
+  }
+
+  std::unique_ptr<ads::AdInfo> ad_info = user_model_->ServeAd();
+  ads_client_->ShowAd(std::move(ad_info));
 }
 
-void AdsImpl::ServeSampleAd(uint64_t windowId) {
-  // TODO(Terry Mancey): Implement ServeSampleAd (#27)
+void AdsImpl::ServeSampleAd() {
+  if (!initialized_ || !settings_->IsAdsEnabled()) {
+    return;
+  }
+
+  std::unique_ptr<ads::AdInfo> ad_info = user_model_->ServeSampleAd();
+  ads_client_->ShowAd(std::move(ad_info));
 }
 
-void AdsImpl::OnTimer(uint32_t timer_id) {
-  // TODO(Terry Mancey): Download catalog
+//////////////////////////////////////////////////////////////////////////////
+
+void AdsImpl::OnTimer(const uint32_t timer_id) {
+  if (timer_id == collect_activity_timer_id_) {
+    CollectActivity();
+  }
 }
 
-void AdsImpl::SaveState(const std::string& json) {
-  ads_client_->SaveState(json, this);
+//////////////////////////////////////////////////////////////////////////////
+
+void AdsImpl::OnSettingsStateLoaded(
+    const ads::Result result,
+    const std::string& json) {
+  if (result != ads::Result::ADS_OK) {
+    return;
+  }
+
+  settings_->LoadState(json);
 }
 
-void AdsImpl::SetCampaignInfo(std::unique_ptr<catalog::CampaignInfo> info,
-    ads::CampaignInfoCallback callback) {
-  ads_client_->SaveCampaignInfo(std::move(info),
-    std::bind(&AdsImpl::OnSetCampaignInfo, this, callback,
-    std::placeholders::_1, std::placeholders::_2));
+void AdsImpl::OnUserModelStateSaved(const ads::Result result) {
 }
 
-void AdsImpl::OnSetCampaignInfo(ads::CampaignInfoCallback callback,
-    ads::Result result, std::unique_ptr<catalog::CampaignInfo> info) {
-  callback(result, std::move(info));
+void AdsImpl::OnUserModelStateLoaded(
+    const ads::Result result,
+    const std::string& json) {
+  if (result != ads::Result::ADS_OK) {
+    return;
+  }
+
+  user_model_->LoadState(json);
 }
 
-void AdsImpl::GetCampaignInfo(const catalog::CampaignInfoFilter& filter,
-    ads::CampaignInfoCallback callback) {
-  ads_client_->LoadCampaignInfo(filter, callback);
+void AdsImpl::OnCatalogStateSaved(const ads::Result result) {
 }
 
-void AdsImpl::SetCreativeSetInfo(std::unique_ptr<catalog::CreativeSetInfo> info,
-    ads::CreativeSetInfoCallback callback) {
-  ads_client_->SaveCreativeSetInfo(std::move(info),
-    std::bind(&AdsImpl::OnSetCreativeSetInfo, this, callback,
-    std::placeholders::_1, std::placeholders::_2));
+void AdsImpl::OnCatalogStateLoaded(
+    const ads::Result result,
+    const std::string& json) {
+  if (result != ads::Result::ADS_OK) {
+    StartCollectingActivity(START_TIMER_IN_ONE_HOUR);
+    return;
+  }
+
+  ApplyCatalog();
+
+  uint64_t start_time_in = catalog_ads_serve_->NextCatalogCheck();
+  StartCollectingActivity(start_time_in);
 }
 
-void AdsImpl::OnSetCreativeSetInfo(ads::CreativeSetInfoCallback callback,
-    ads::Result result, std::unique_ptr<catalog::CreativeSetInfo> info) {
-  callback(result, std::move(info));
+//////////////////////////////////////////////////////////////////////////////
+
+void AdsImpl::Deinitialize() {
+  StopCollectingActivity();
+
+  RemoveAllHistory();
+
+  catalog_ads_serve_->ResetNextCatalogCheck();
+  catalog_->Reset();
+
+  initialized_ = false;
 }
 
-void AdsImpl::GetCreativeSetInfo(const catalog::CreativeSetInfoFilter& filter,
-    ads::CreativeSetInfoCallback callback) {
-  ads_client_->LoadCreativeSetInfo(filter, callback);
+//////////////////////////////////////////////////////////////////////////////
+
+void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
+  if (IsCollectingActivity()) {
+    return;
+  }
+
+  ads_client_->SetTimer(start_timer_in, collect_activity_timer_id_);
+
+  if (collect_activity_timer_id_ == 0) {
+    LOG(ERROR) << "Failed to start collect_activity_timer_id_ timer"
+      << std::endl;
+  }
 }
 
-std::string AdsImpl::URIEncode(const std::string& value) {
-  return ads_client_->URIEncode(value);
+bool AdsImpl::IsCollectingActivity() const {
+  return collect_activity_timer_id_ != 0 ? true : false;
 }
 
-std::unique_ptr<ads::AdsURLLoader> AdsImpl::LoadURL(
-    const std::string& url, const std::vector<std::string>& headers,
-    const std::string& content, const std::string& contentType,
-    const ads::URL_METHOD& method, ads::CallbackHandler* handler) {
-  return ads_client_->LoadURL(url, headers, content,
-    contentType, method, handler);
+void AdsImpl::StopCollectingActivity() {
+  if (!IsCollectingActivity()) {
+    return;
+  }
+
+  ads_client_->StopTimer(collect_activity_timer_id_);
+  collect_activity_timer_id_ = 0;
 }
 
-}  // namespace bat_ads
+//////////////////////////////////////////////////////////////////////////////
+
+bool AdsImpl::IsMediaPlaying() const {
+  return media_playing_.empty() ? false : true;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+void AdsImpl::ProcessLocales(const std::vector<std::string>& locales) {
+  if (locales.size() == 0) {
+    return;
+  }
+
+  user_model_->SetLocales(locales);
+
+  std::string locale = settings_->GetAdsLocale();
+  if (std::find(locales.begin(), locales.end(), locale) == locales.end()) {
+    locale = locales.front();
+  }
+
+  user_model_->SetLocaleSync(locale);
+}
+
+}  // namespace rewards_ads

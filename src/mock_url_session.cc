@@ -2,17 +2,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../include/ads.h"
-#include "../include/ads_impl.h"
+#include <cinttypes>
+
+#include "../include/mock_url_session.h"
 
 namespace ads {
 
-bool is_production = false;
-bool is_verbose = false;
+MockURLSession::MockURLSession() = default;
 
-// static
-Ads* Ads::CreateInstance(AdsClient* ads_client) {
-  return new rewards_ads::AdsImpl(ads_client);
+MockURLSession::~MockURLSession() = default;
+
+void MockURLSession::Start() {
+}
+
+uint64_t MockURLSession::GetSessionId() {
+  return 0;
 }
 
 }  // namespace ads
