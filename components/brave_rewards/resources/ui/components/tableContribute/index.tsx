@@ -144,16 +144,14 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
       if (this.props.showRowAmount) {
         if (this.props.showRemove) {
           const remaining = (100 - row.attention) / 1.04
-          const attention = row.attention / 1.04
-          const diff = remaining + attention
           cell.customStyle = {
             background: `linear-gradient(
               to right,
               transparent 0%,
               transparent ${remaining}%,
               rgba(210, 198, 243, 0.39) ${remaining}%,
-              rgba(210, 198, 243, 0.39) ${diff}%,
-              transparent ${diff}%,
+              rgba(210, 198, 243, 0.39) 100%,
+              transparent 100%,
               transparent 100%
             )`
           }

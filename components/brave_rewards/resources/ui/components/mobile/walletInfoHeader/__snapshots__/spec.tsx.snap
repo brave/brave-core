@@ -8,6 +8,7 @@ exports[`WalletInfoHeader tests basic tests matches the snapshot 1`] = `
   display: -ms-flexbox;
   display: flex;
   border-radius: 6px;
+  margin-bottom: 15px;
   font-family: Poppins,sans-serif;
   background: url(test-file-stub) no-repeat top left, linear-gradient(to bottom right,#392dd1 0%,#5813a6 100%) 100% no-repeat;
   -webkit-flex-direction: column;

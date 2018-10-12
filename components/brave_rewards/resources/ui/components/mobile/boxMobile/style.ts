@@ -40,7 +40,7 @@ const getFixedStyling = (detailView?: boolean) => {
 }
 
 export const StyledCard = styled(Card as ComponentType<CardStyleProps>)`
-  margin-bottom: 28px;
+  margin-bottom: 15px;
   padding: ${p => p.checked ? '30px 30px 10px' : '30px'};
   font-family: Poppins, sans-serif;
 `

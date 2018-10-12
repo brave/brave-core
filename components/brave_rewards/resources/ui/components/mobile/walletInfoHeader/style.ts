@@ -10,6 +10,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   width: 100%;
   display: flex;
   border-radius: 6px;
+  margin-bottom: 15px;
   font-family: Poppins, sans-serif;
   background: url(${panelBg}) no-repeat top left,
   linear-gradient(to bottom right, #392dd1 0%, #5813a6 100%) 100% no-repeat;

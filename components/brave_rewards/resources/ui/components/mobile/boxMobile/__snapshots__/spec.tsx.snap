@@ -16,7 +16,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
 }
 
 .c0 {
-  margin-bottom: 28px;
+  margin-bottom: 15px;
   padding: 30px;
   font-family: Poppins,sans-serif;
 }
