@@ -72,8 +72,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   unsigned int getNumExcludedSites() const;
   bool getPublisherAllowVideos() const;
 
-  void winners(const unsigned int& ballots,
-    const uint64_t& currentReconcileStamp, const std::string& viewing_id);
+  void winners(const unsigned int& ballots,const std::string& viewing_id);
 
   std::unique_ptr<ledger::PublisherInfo> onPublisherInfoUpdated(
       ledger::Result result,
@@ -99,7 +98,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                                ledger::ReportType type,
                                const std::string& probi);
 
- private:
   ledger::PublisherInfoFilter CreatePublisherFilter(
       const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY category,
@@ -128,6 +126,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::PUBLISHER_EXCLUDE excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp);
+
+ private:
 
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
@@ -177,10 +177,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
-  void topN(const unsigned int& ballots,
-    const uint64_t& currentReconcileStamp, const std::string& viewing_id);
-  void topNInternal(const unsigned int& ballots, const std::string& viewing_id,
-    const ledger::PublisherInfoList& list, uint32_t /* next_record */);
+  void topN(const unsigned int& ballots,const std::string& viewing_id);
+  void topNAutoContribute(const unsigned int& ballots, const std::string& viewing_id,
+    const ledger::PublisherInfoList& list);
+  void topNRecurringDonation(const unsigned int& ballots, const std::string& viewing_id,
+    const ledger::PublisherInfoList& list);
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
 

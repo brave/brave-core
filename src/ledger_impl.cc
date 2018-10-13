@@ -337,6 +337,12 @@ void LedgerImpl::GetPublisherInfoList(uint32_t start, uint32_t limit,
   ledger_client_->LoadPublisherInfoList(start, limit, filter, callback);
 }
 
+void LedgerImpl::GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
+                                const ledger::PublisherInfoFilter& filter,
+                                ledger::GetPublisherInfoListCallback callback) {
+  ledger_client_->LoadCurrentPublisherInfoList(start, limit, filter, callback);
+}
+
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
   bat_client_->setRewardsMainEnabled(enabled);
 }
@@ -439,9 +445,6 @@ void LedgerImpl::Reconcile() {
 void LedgerImpl::OnReconcileComplete(ledger::Result result,
                                     const std::string& viewing_id,
                                     const std::string& probi) {
-  // TODO SZ: we have to save old timestamp in case of failure
-  uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
-
   // Start the timer again if it wasn't a direct donation
   auto reconcile = GetReconcileById(viewing_id);
   if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
@@ -455,8 +458,7 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
     return;
   }
   unsigned int ballotsCount = bat_client_->ballots(viewing_id);
-  bat_publishers_->winners(ballotsCount, currentReconcileStamp, viewing_id);
-  bat_client_->removeReconcileById(viewing_id);
+  bat_publishers_->winners(ballotsCount, viewing_id);
 }
 
 void LedgerImpl::VotePublishers(const std::vector<braveledger_bat_helper::WINNERS_ST>& winners,
@@ -612,7 +614,22 @@ void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
 void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) {
   auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher, amount, currency);
   auto direction_list = std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
-  bat_client_->reconcile(GenerateGUID(), ledger::PUBLISHER_CATEGORY::DIRECT_DONATION, direction_list);
+  ledger::PublisherInfoList list;
+  bat_client_->reconcile(GenerateGUID(),
+                         ledger::PUBLISHER_CATEGORY::DIRECT_DONATION,
+                         list,
+                         direction_list);
+}
+
+void LedgerImpl::ReconcileContributeList(const ledger::PUBLISHER_CATEGORY category,
+                                        const ledger::PublisherInfoList& list,
+                                        uint32_t  next_record) {
+  bat_client_->reconcilePublisherList(category, list);
+}
+
+void LedgerImpl::ReconcileRecurringList(const ledger::PUBLISHER_CATEGORY category,
+                                        const ledger::PublisherInfoList& list) {
+  bat_client_->reconcilePublisherList(category, list);
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
@@ -626,11 +643,26 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
       std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2,_3));
   } else if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
+
     // Auto-contribution
-    bat_client_->reconcile(GenerateGUID(), ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE);
+    uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
+    ledger::PublisherInfoFilter filter = bat_publishers_->CreatePublisherFilter("",
+       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+       ledger::PUBLISHER_MONTH::ANY,
+       -1,
+       ledger::PUBLISHER_EXCLUDE::DEFAULT,
+       true,
+       currentReconcileStamp
+    );
+//    GetCurrentPublisherInfoList(0, 0, filter, std::bind(&LedgerImpl::ReconcileContributeList,
+//                                                 this,
+//                                                 ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+//                                                 _1,
+//                                                 _2));
     // Recurring direct donation
-    // TODO we need to get donation amount here, so that we know how much ballots we need
-    // bat_client_->reconcile(GenerateGUID(), ledger::PUBLISHER_CATEGORY::RECURRING_DONATION);
+    // TODO re-enable when server removes check
+    GetRecurringDonations();
+
   } else if (timer_id == last_prepare_vote_batch_timer_id_) {
     last_prepare_vote_batch_timer_id_ = 0;
     bat_client_->prepareVoteBatch();
@@ -640,7 +672,12 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   }
 }
 
-
+void LedgerImpl::GetRecurringDonations() {
+  ledger_client_->GetRecurringDonations(std::bind(&LedgerImpl::ReconcileRecurringList,
+                                        this,
+                                        ledger::PUBLISHER_CATEGORY::RECURRING_DONATION,
+                                        _1));
+}
 
 void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response, const std::map<std::string, std::string>& headers) {
   if (result && !response.empty()) {
@@ -753,13 +790,14 @@ void LedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
                                             const ledger::PUBLISHER_MONTH month,
                                             const int year,
                                             const uint32_t date) {
-  std::string publisher_key;
 
   if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
     SetBalanceReportItem(month,
       year,
       ledger::ReportType::AUTO_CONTRIBUTION,
       probi);
+      ledger_client_->SaveContributionInfo(probi, month, year, date, "", category);
+    return;
   }
 
   if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
@@ -770,18 +808,29 @@ void LedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
     auto reconcile = GetReconcileById(viewing_id);
     auto donations = reconcile.directions_;
     if (donations.size() > 0) {
-      publisher_key = donations[0].publisher_.id;
+      std::string publisher_key = donations[0].publisher_.id;
+      ledger_client_->SaveContributionInfo(probi, month, year, date, publisher_key, category);
     }
+    return;
   }
 
   if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+    auto reconcile = GetReconcileById(viewing_id);
     SetBalanceReportItem(month,
       year,
       ledger::ReportType::DONATION_RECURRING,
       probi);
+
+    for (auto &publisher : reconcile.list_) {
+      // TODO NZ remove when we completely switch to probi
+      const std::string probi = std::to_string((int)publisher.weight) + "000000000000000000";
+      ledger_client_->SaveContributionInfo(probi, month, year, date, publisher.id, category);
+    }
+
+    return;
   }
 
-  ledger_client_->SaveContributionInfo(probi, month, year, date, publisher_key, category);
+  bat_client_->removeReconcileById(viewing_id);
 }
 
 }  // namespace bat_ledger

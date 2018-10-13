@@ -33,8 +33,7 @@ using GetPublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
-using RecurringDonationCallback = std::function<void(Result,
-    std::unique_ptr<std::vector<ledger::PublisherInfo>>)>;
+using RecurringDonationCallback = std::function<void(const PublisherInfoList&)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -77,6 +76,9 @@ class LEDGER_EXPORT LedgerClient {
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
                                     GetPublisherInfoListCallback callback) = 0;
+  virtual void LoadCurrentPublisherInfoList(uint32_t start, uint32_t limit,
+                                    PublisherInfoFilter filter,
+                                    GetPublisherInfoListCallback callback) = 0;
 
   virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;
   virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
@@ -95,6 +97,7 @@ class LEDGER_EXPORT LedgerClient {
                                     const uint32_t date,
                                     const std::string& publisher_key,
                                     const int category) = 0;
+  virtual void GetRecurringDonations(ledger::RecurringDonationCallback callback) = 0;
 
   //uint64_t time_offset (input): timer offset in seconds.
   //uint32_t timer_id (output) : 0 in case of failure

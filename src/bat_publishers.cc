@@ -454,28 +454,16 @@ void BatPublishers::synopsisNormalizer(const ledger::PublisherInfo& info) {
           nullptr, true, _1, _2));
 }
 
-void BatPublishers::winners(const unsigned int& ballots,
-    const uint64_t& currentReconcileStamp, const std::string& viewing_id) {
-  topN(ballots, currentReconcileStamp, viewing_id);
+void BatPublishers::winners(const unsigned int& ballots, const std::string& viewing_id) {
+  topN(ballots, viewing_id);
 }
 
-void BatPublishers::topN(const unsigned int& ballots,
-    const uint64_t& currentReconcileStamp, const std::string& viewing_id) {
+void BatPublishers::topN(const unsigned int& ballots, const std::string& viewing_id) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
   if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
-    ledger::PublisherInfoFilter filter = CreatePublisherFilter("",
-       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-       ledger::PUBLISHER_MONTH::ANY,
-       -1,
-       ledger::PUBLISHER_EXCLUDE::DEFAULT,
-       true,
-       currentReconcileStamp
-    );
-    // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
-    // We need to limit it and iterate.
-    ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::topNInternal, this, ballots, viewing_id, _1, _2));
+    topNAutoContribute(ballots, viewing_id, reconcile.list_);
   } else if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
-    // TODO add for recurring direct donation
+    topNRecurringDonation(ballots, viewing_id, reconcile.list_);
   } else if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
     // Direct one-time contribution
     braveledger_bat_helper::WINNERS_ST winner;
@@ -490,29 +478,65 @@ void BatPublishers::topN(const unsigned int& ballots,
   }
 }
 
-void BatPublishers::topNInternal(const unsigned int& ballots, const std::string& viewing_id,
-    const ledger::PublisherInfoList& list, uint32_t  next_record) {
+void BatPublishers::topNAutoContribute(const unsigned int& ballots,
+                                       const std::string& viewing_id,
+                                       const ledger::PublisherInfoList& list) {
   ledger::PublisherInfoList newList;
-  synopsisNormalizerInternal(&newList, false, list, next_record);
+  synopsisNormalizerInternal(&newList, false, list, 0);
   std::sort(newList.begin(), newList.end());
 
   unsigned int totalVotes = 0;
   std::vector<unsigned int> votes;
   std::vector<braveledger_bat_helper::WINNERS_ST> res;
   // TODO there is underscore.shuffle
-  for (size_t i = 0; i < newList.size(); i++) {
-    if (newList[i].percent <= 0) {
+  for (auto &item : newList) {
+    if (item.percent <= 0) {
       continue;
     }
     braveledger_bat_helper::WINNERS_ST winner;
-    winner.votes_ = (unsigned int)std::lround((double)newList[i].percent * (double)ballots / 100.0);
+    winner.votes_ = (unsigned int)std::lround((double) item.percent * (double)ballots / 100.0);
     totalVotes += winner.votes_;
-    winner.publisher_data_.id_ = newList[i].id;
-    winner.publisher_data_.duration_ = newList[i].duration;
-    winner.publisher_data_.score_ = newList[i].score;
-    winner.publisher_data_.visits_ = newList[i].visits;
-    winner.publisher_data_.percent_ = newList[i].percent;
-    winner.publisher_data_.weight_ = newList[i].weight;
+    winner.publisher_data_.id_ = item.id;
+    winner.publisher_data_.duration_ = item.duration;
+    winner.publisher_data_.score_ = item.score;
+    winner.publisher_data_.visits_ = item.visits;
+    winner.publisher_data_.percent_ = item.percent;
+    winner.publisher_data_.weight_ = item.weight;
+    res.push_back(winner);
+  }
+  if (res.size()) {
+    while (totalVotes > ballots) {
+      std::vector<braveledger_bat_helper::WINNERS_ST>::iterator max = std::max_element(res.begin(), res.end(), winners_votes_compare);
+      (max->votes_)--;
+      totalVotes--;
+    }
+  }
+
+  ledger_->VotePublishers(res, viewing_id);
+}
+
+void BatPublishers::topNRecurringDonation(const unsigned int& ballots,
+                                          const std::string& viewing_id,
+                                          const ledger::PublisherInfoList& list) {
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+  unsigned int totalVotes = 0;
+  std::vector<unsigned int> votes;
+  std::vector<braveledger_bat_helper::WINNERS_ST> res;
+  for (const auto &item : list) {
+    if (item.weight <= 0) {
+      continue;
+    }
+
+    braveledger_bat_helper::WINNERS_ST winner;
+    double percent = item.weight / reconcile.fee_;
+    winner.votes_ = (unsigned int)std::lround(percent * (double)ballots);
+    totalVotes += winner.votes_;
+    winner.publisher_data_.id_ = item.id;
+    winner.publisher_data_.duration_ = 0;
+    winner.publisher_data_.score_ = 0;
+    winner.publisher_data_.visits_ = 0;
+    winner.publisher_data_.percent_ = 0;
+    winner.publisher_data_.weight_ = 0;
     res.push_back(winner);
   }
   if (res.size()) {

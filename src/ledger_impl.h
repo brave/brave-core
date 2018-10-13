@@ -59,6 +59,9 @@ class LedgerImpl : public ledger::Ledger,
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
                             ledger::GetPublisherInfoListCallback callback) override;
+  void GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
+                            const ledger::PublisherInfoFilter& filter,
+                            ledger::GetPublisherInfoListCallback callback) override;
                      
   void DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) override;
 
@@ -177,6 +180,7 @@ class LedgerImpl : public ledger::Ledger,
                                   const ledger::PUBLISHER_MONTH month,
                                   const int year,
                                   const uint32_t date) override;
+  void GetRecurringDonations();
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
@@ -202,6 +206,13 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& referrer,
       const std::string& post_data,
       const ledger::VisitData& visit_data) override;
+
+  void ReconcileContributeList(const ledger::PUBLISHER_CATEGORY category,
+                               const ledger::PublisherInfoList& list,
+                               uint32_t  next_record);
+
+  void ReconcileRecurringList(const ledger::PUBLISHER_CATEGORY category,
+                              const ledger::PublisherInfoList& list);
 
   void OnTimer(uint32_t timer_id) override;
 

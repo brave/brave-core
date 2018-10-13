@@ -1100,7 +1100,8 @@ static bool ignore_ = false;
     currency_(data.currency_),
     fee_(data.fee_),
     directions_(data.directions_),
-    category_(data.category_) {}
+    category_(data.category_),
+    list_(data.list_) {}
 
   CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
   

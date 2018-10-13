@@ -178,9 +178,9 @@ void BatClient::registerPersonaCallback(bool result,
 }
 
 void BatClient::resetReconcileStamp() {
-  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
+  //state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
   // For testing (reconcile will happen 3min after wallet creation
-  //state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 3 * 60;
+  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 4 * 60;
   saveState();
 }
 
@@ -281,7 +281,15 @@ bool BatClient::isReadyForReconcile() {
   return true;
 }
 
-void BatClient::reconcile(const std::string& viewingId, const ledger::PUBLISHER_CATEGORY category, const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions) {
+void BatClient::reconcilePublisherList(const ledger::PUBLISHER_CATEGORY category,
+                                       const ledger::PublisherInfoList& list) {
+  reconcile(ledger_->GenerateGUID(), category, list);
+}
+
+void BatClient::reconcile(const std::string& viewingId,
+    const ledger::PUBLISHER_CATEGORY category,
+    const ledger::PublisherInfoList& list,
+    const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions) {
   if (currentReconciles_->count(viewingId) > 0) {
     LOG(ERROR) << "unable to reconcile with the same viewing id";
     // TODO add error callback
@@ -291,35 +299,67 @@ void BatClient::reconcile(const std::string& viewingId, const ledger::PUBLISHER_
   auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
 
   double fee = .0;
-  for (const auto& direction : directions) {
-    if (direction.publisher_.id.empty()) {
-      LOG(ERROR) << "reconcile direction missing publisher";
-      // TODO add error callback
-      return;
-    }
-    
-    if (direction.currency_ != CURRENCY) {
-      LOG(ERROR) << "reconcile direction currency invalid for " << direction.publisher_.id;
-      // TODO add error callback
-      return;
-    }
-    
-    fee += direction.amount_;
-  }
 
   double balance = getBalance();
-  // check for ac and recurring donations
-  if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
-    if (fee > balance) {
-    // TODO add error callback
-      return;
-    }
-  } else {
+
+  if (category == ledger::PUBLISHER_CATEGORY ::AUTO_CONTRIBUTE) {
     double ac_amount = getContributionAmount();
-    if (ac_amount + fee > balance) {
+
+    if (list.size() == 0 || ac_amount > balance) {
+      resetReconcileStamp();
       // TODO add error callback
       return;
     }
+
+    reconcile.list_ = list;
+  }
+
+  if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+    if (list.size() == 0) {
+      // TODO add error callback
+      return;
+    }
+
+    for (const auto& publisher : list) {
+      if (publisher.id.empty()) {
+        LOG(ERROR) << "recurring donation is missing publisher";
+        // TODO add error callback
+        return;
+      }
+
+      fee += publisher.weight;
+    }
+
+    if (fee > balance) {
+      // TODO add error callback
+      return;
+    }
+
+    reconcile.list_ = list;
+  }
+
+  if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+    for (const auto& direction : directions) {
+      if (direction.publisher_.id.empty()) {
+        LOG(ERROR) << "reconcile direction missing publisher";
+        // TODO add error callback
+        return;
+      }
+
+      if (direction.currency_ != CURRENCY) {
+        LOG(ERROR) << "reconcile direction currency invalid for " << direction.publisher_.id;
+        // TODO add error callback
+        return;
+      }
+
+      fee += direction.amount_;
+    }
+
+    if (fee > balance) {
+      // TODO add error callback
+      return;
+    }
+
   }
   
   reconcile.viewingId_ = viewingId;
