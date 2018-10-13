@@ -1179,6 +1179,11 @@ void BraveSyncServiceImpl::SendUnsyncedBookmarks() {
       }
     }
   }
+  if (!records.empty()) {
+    sync_client_->SendSyncRecords(
+      jslib_const::SyncRecordType_BOOKMARKS, records);
+    records.clear();
+  }
 }
 
 void BraveSyncServiceImpl::BookmarkModelLoaded(
