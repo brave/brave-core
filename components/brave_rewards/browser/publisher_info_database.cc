@@ -553,50 +553,40 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringDonation(const brave_rewards:
       "(publisher_id, amount, added_date) "
       "VALUES (?, ?, ?)"));
 
-  if(info.publisher.id.empty()) {
-    return false;
-  }
-
-  statement.BindString(0, info.publisher.id);
+  statement.BindString(0, info.publisher_key);
   statement.BindDouble(1, info.amount);
   statement.BindInt64(2, info.added_date);
 
   return statement.Run();
 }
 
-std::vector<brave_rewards::RecurringDonation>
-PublisherInfoDatabase::GetRecurringDonations() {
+void PublisherInfoDatabase::GetRecurringDonations(ledger::PublisherInfoList* list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
 
   if (!initialized)
-    return info;
+    return;
 
   sql::Statement info_sql(
       db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, rd.amount, rd.added_date "
                              "FROM recurring_donation as rd "
                              "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
 
-  std::vector<brave_rewards::RecurringDonation> list;
-
   while (info_sql.Step()) {
-    brave_rewards::ContentSite publisher;
-    publisher.id = info_sql.ColumnString(0);
+    std::string id(info_sql.ColumnString(0));
+
+    ledger::PublisherInfo publisher(id, ledger::PUBLISHER_MONTH::ANY, -1);
+
     publisher.name = info_sql.ColumnString(1);
     publisher.url = info_sql.ColumnString(2);
     publisher.favicon_url = info_sql.ColumnString(3);
+    publisher.weight = info_sql.ColumnDouble(4);
+    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
 
-    brave_rewards::RecurringDonation donation;
-    donation.amount = info_sql.ColumnDouble(4);
-    donation.ColumnDouble = info_sql.ColumnInt64(5);
-    donation.publisher = publisher;
-
-    list->push_back(donation);
+    list->push_back(publisher);
   }
-
-  return list;
 }
 
 // static

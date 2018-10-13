@@ -23,7 +23,6 @@
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
-#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 
@@ -152,6 +151,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnContributionInfoSaved(bool success);
   void OnRecurringDonationSaved(bool success);
   void SaveRecurringDonation(const std::string& publisher_key, const int amount);
+  void OnRecurringDonationsData(const ledger::RecurringDonationCallback callback,
+                                const ledger::PublisherInfoList list);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -181,6 +182,11 @@ class RewardsServiceImpl : public RewardsService,
   void LoadPublisherInfo(ledger::PublisherInfoFilter filter,
                          ledger::PublisherInfoCallback callback) override;
   void LoadPublisherInfoList(
+      uint32_t start,
+      uint32_t limit,
+      ledger::PublisherInfoFilter filter,
+      ledger::GetPublisherInfoListCallback callback) override;
+  void LoadCurrentPublisherInfoList(
       uint32_t start,
       uint32_t limit,
       ledger::PublisherInfoFilter filter,
@@ -223,6 +229,7 @@ class RewardsServiceImpl : public RewardsService,
                             const uint32_t date,
                             const std::string& publisher_key,
                             const int category) override;
+  void GetRecurringDonations(ledger::RecurringDonationCallback callback) override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

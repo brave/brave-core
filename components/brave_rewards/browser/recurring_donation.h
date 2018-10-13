@@ -15,7 +15,7 @@ namespace brave_rewards {
     ~RecurringDonation();
     RecurringDonation(const RecurringDonation& data);
 
-    ContentSite publisher;
+    std::string publisher_key;
     double amount = 0;
     uint32_t added_date = 0;
   };

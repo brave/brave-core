@@ -693,6 +693,26 @@ void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
     ledger::GetPublisherInfoListCallback callback) {
+  auto now = base::Time::Now();
+  filter.month = GetPublisherMonth(now);
+  filter.year = GetPublisherYear(now);
+
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
+                    start, limit, filter,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnPublisherInfoListLoaded,
+                    AsWeakPtr(),
+                    start,
+                    limit,
+                    callback));
+}
+
+void RewardsServiceImpl::LoadCurrentPublisherInfoList(
+    uint32_t start,
+    uint32_t limit,
+    ledger::PublisherInfoFilter filter,
+    ledger::GetPublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
@@ -1380,11 +1400,8 @@ void RewardsServiceImpl::OnRecurringDonationSaved(bool success) {
 }
 
 void RewardsServiceImpl::SaveRecurringDonation(const std::string& publisher_key, const int amount) {
-  brave_rewards::ContentSite publisher;
-  publisher.id = publisher_key;
-
   brave_rewards::RecurringDonation info;
-  info.publisher = publisher;
+  info.publisher_key = publisher_key;
   info.amount = amount;
   info.added_date = GetCurrentTimestamp();
 
@@ -1397,25 +1414,20 @@ void RewardsServiceImpl::SaveRecurringDonation(const std::string& publisher_key,
 
 }
 
-std::unique_ptr<std::vector<ledger::PublisherInfo>>
-GetRecurringDonationsOnFileTaskRunner(PublisherInfoDatabase* backend) {
+ledger::PublisherInfoList GetRecurringDonationsOnFileTaskRunner(PublisherInfoDatabase* backend) {
+  ledger::PublisherInfoList list;
+  if (!backend) {
+    return list;
+  }
 
-  std::unique_ptr<std::vector<ledger::PublisherInfo>> list;
-  if (!backend)
-    return std::move(list);
+  backend->GetRecurringDonations(&list);
 
-  // TODO I left it here
-  std::vector<brave_rewards::RecurringDonation> temp_list = backend->GetRecurringDonations();
-  return std::move(list);
+  return list;
 }
 
-void RewardsServiceImpl::OnRecurringDonationsData(ledger::RecurringDonationCallback callback,
-    const std::unique_ptr<std::vector<ledger::PublisherInfo>> list) {
-  if (list) {
-    callback.Run(ledger::Result::LEDGER_OK, std::move(list))
-  } else {
-    callback.Run(ledger::Result::NOT_FOUND, std::move(list))
-  }
+void RewardsServiceImpl::OnRecurringDonationsData(const ledger::RecurringDonationCallback callback,
+                                                  const ledger::PublisherInfoList list) {
+  callback(list);
 }
 
 void RewardsServiceImpl::GetRecurringDonations(ledger::RecurringDonationCallback callback) {
