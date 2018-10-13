@@ -101,6 +101,8 @@ void BraveLocationBarView::OnThemeChanged() {
 }
 
 void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
+  LocationBarView::ChildPreferredSizeChanged(child);
+
   if (child != brave_actions_)
     return;
 
