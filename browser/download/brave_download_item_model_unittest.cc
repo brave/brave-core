@@ -125,7 +125,7 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
     // Expected tooltip text.
     const char* expected_tooltip;
   } kTestCases[] = {
-    {"http://example.com/foo.bar", "foo.bar\nNot secure http://example.com"},
+    {"http://example.com/foo.bar", "foo.bar\nNot Secure http://example.com"},
     {"https://example.com:5678/foo.bar", "foo.bar\nhttps://example.com:5678"},
   };
 
