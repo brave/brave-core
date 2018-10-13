@@ -9,7 +9,6 @@
 
 #include "base/macros.h"
 #include "base/scoped_observer.h"
-#include "base/sequence_checker.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
@@ -54,6 +53,11 @@ class Settings;
 class History;
 class InitialBookmarkNodeInfo;
 
+using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
+                                                           const std::string&,
+                                                           const std::string&,
+                                                           const std::string&)>;
+
 class BraveSyncServiceImpl : public BraveSyncService,
                              public SyncLibToBrowserHandler,
                              public CanSendSyncHistory,
@@ -79,8 +83,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnSetSyncBrowsingHistory(const bool &sync_browsing_history) override;
   void OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) override;
 
-  void GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) override;
-  void GetSettingsAndDevicesImpl(std::unique_ptr<brave_sync::Settings> settings, const GetSettingsAndDevicesCallback &callback);
+  void GetSettingsAndDevices(const GetSettingsAndDevicesCallback& callback) override;
 
   bool IsSyncConfigured();
   bool IsSyncInitialized();
@@ -152,16 +155,21 @@ class BraveSyncServiceImpl : public BraveSyncService,
                            const std::string &parent_order) override;
   void OnSyncWordsPrepared(const std::string &words) override;
 
-  void OnResolvedPreferences(std::unique_ptr<RecordsList> records, const std::string& this_device_id);
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
 
   // Other private methods
+  void OnResolvedPreferencesOnUIThread(bool this_device_deleted);
   void RequestSyncData();
   void FetchSyncRecords(const bool bookmarks, const bool history,
     const bool preferences, int max_records);
 
   void SendCreateDevice();
+  void SendDeviceSyncRecord(
+      const int action,
+      const std::string& device_name,
+      const std::string& device_id,
+      const std::string& object_id);
 
   void SendUnsyncedBookmarks();
   void SendAllLocalHistorySites();
@@ -210,7 +218,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
       const bookmarks::BookmarkNode* node);
 
-  void OnExtensionSystemReady();
   // ExtensionRegistryObserver:
   void OnExtensionReady(content::BrowserContext* browser_context,
                          const extensions::Extension* extension) override;
@@ -256,7 +263,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   uint64_t initial_sync_records_remaining_;
   bookmarks::BookmarkModel* bookmark_model_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  SEQUENCE_CHECKER(sequence_checker_);
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;

@@ -7,7 +7,9 @@
 #include "base/memory/singleton.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_impl.h"
+#include "brave/components/brave_sync/client/brave_sync_client_factory.h"
 #include "brave/components/brave_sync/pref_names.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -40,6 +42,8 @@ BraveSyncServiceFactory::BraveSyncServiceFactory()
     : BrowserContextKeyedServiceFactory(
         "BraveSyncService",
         BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(BookmarkModelFactory::GetInstance());
+  DependsOn(BraveSyncClientFactory::GetInstance());
 }
 
 BraveSyncServiceFactory::~BraveSyncServiceFactory() = default;

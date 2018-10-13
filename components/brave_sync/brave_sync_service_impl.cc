@@ -93,55 +93,9 @@ RecordsListPtr CreateDeviceCreationRecordExtension(
   return records;
 }
 
-void SendDeviceSyncRecord(
-    base::WeakPtr<BraveSyncClient> sync_client,
-    const int &action,
-    const std::string &device_name,
-    const std::string &device_id,
-    const std::string &object_id) {
-  if (!sync_client.get())
-    return;
-
-  RecordsListPtr records = CreateDeviceCreationRecordExtension(device_name, object_id,
-    static_cast<jslib::SyncRecord::Action>(action),
-    device_id);
-  sync_client->SendSyncRecords(jslib_const::SyncRecordType_PREFERENCES, *records);
-}
-
-void OnDeleteDeviceFileWork(base::WeakPtr<BraveSyncClient> sync_client,
-                            storage::ObjectMap* sync_object_map,
-                            const std::string &device_id) {
-  VLOG(1) << "TAGAB  OnDeleteDeviceFileWork";
-  std::string json = sync_object_map->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
-  SyncDevices syncDevices;
-  syncDevices.FromJson(json);
-  VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork json="<<json;
-
-  const SyncDevice *device = syncDevices.GetByDeviceId(device_id);
-  VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork device="<<device;
-  //DCHECK(device); // once I saw it nullptr
-  if (device) {
-    const std::string device_name = device->name_;
-    const std::string object_id = device->object_id_;
-    VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork device_name="<<device_name;
-    VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork object_id="<<object_id;
-
-    content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
-        base::Bind(&SendDeviceSyncRecord,
-            sync_client,
-            jslib::SyncRecord::Action::DELETE,
-            device_name,
-            device_id,
-            object_id));
-  }
-}
-
 void OnResetSyncFileWork(
-    base::WeakPtr<BraveSyncClient> sync_client,
-    storage::ObjectMap* sync_object_map,
-    const std::string &device_id) {
+    storage::ObjectMap* sync_object_map) {
   VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResetSyncFileWork";
-  OnDeleteDeviceFileWork(sync_client, sync_object_map, device_id);
   sync_object_map->DestroyDB();
 }
 
@@ -188,6 +142,84 @@ PrepareResolvedPreferences(
   return records_and_existing_objects;
 }
 
+bool OnResolvedPreferences(
+    storage::ObjectMap* object_map,
+    std::unique_ptr<RecordsList> records,
+    const std::string& this_device_id) {
+  VLOG(1) << "[Brave Sync] " << __func__ << ":";
+  VLOG(1) << "[Brave Sync] this_device_id=" << this_device_id;
+
+  SyncDevices existing_sync_devices;
+  std::string json = object_map->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
+  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedPreferences: existing json=<" << json << ">";
+  existing_sync_devices.FromJson(json);
+
+  bool this_device_deleted = false;
+
+  for (const auto &record : *records) {
+    DCHECK(record->has_device() || record->has_sitesetting());
+    if (record->has_device()) {
+      VLOG(1) << "[Brave Sync] record->GetDevice().name=" <<
+                    record->GetDevice().name;
+      VLOG(1) << "[Brave Sync] record->syncTimestamp=<" <<
+                    record->syncTimestamp << ">";
+      VLOG(1) << "[Brave Sync] record->deviceId=" << record->deviceId;
+      VLOG(1) << "[Brave Sync] record->objectId=" << record->objectId;
+      VLOG(1) << "[Brave Sync] record->action=" << record->action;
+
+      bool actually_merged = false;
+      existing_sync_devices.Merge(SyncDevice(record->GetDevice().name,
+          record->objectId, record->deviceId, record->syncTimestamp.ToJsTime()),
+          record->action, actually_merged);
+      this_device_deleted = this_device_deleted ||
+        (record->deviceId == this_device_id && record->action == jslib::SyncRecord::Action::DELETE && actually_merged);
+    }
+  } // for each device
+
+  DCHECK(existing_sync_devices.devices_.size() > 0)
+    << "existing_sync_devices.devices_.size() =="
+    << existing_sync_devices.devices_.size();
+
+  std::string sync_devices_json = existing_sync_devices.ToJson();
+  VLOG(1) << "[Brave Sync] OnResolvedPreferences sync_devices_json="<<sync_devices_json;
+
+  VLOG(1) << "[Brave Sync] OnResolvedPreferences before SaveObjectId";
+  object_map->SaveSpecialJson(jslib_const::DEVICES_NAMES, sync_devices_json);
+  VLOG(1) << "[Brave Sync] OnResolvedPreferences SaveObjectId done";
+
+  VLOG(1) << "[Brave Sync] " << __func__ << " this_device_deleted=" << this_device_deleted;
+
+  return this_device_deleted;
+}
+
+void OnDeleteDeviceFileWork(
+    storage::ObjectMap* sync_object_map,
+    const std::string &device_id,
+    SendDeviceSyncRecordCallback callback) {
+  VLOG(1) << "TAGAB  OnDeleteDeviceFileWork";
+  std::string json = sync_object_map->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
+  SyncDevices syncDevices;
+  syncDevices.FromJson(json);
+  VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork json="<<json;
+
+  const SyncDevice *device = syncDevices.GetByDeviceId(device_id);
+  VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork device="<<device;
+  //DCHECK(device); // once I saw it nullptr
+  if (device) {
+    const std::string device_name = device->name_;
+    const std::string object_id = device->object_id_;
+    VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork device_name="<<device_name;
+    VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::OnDeleteDeviceFileWork object_id="<<object_id;
+
+    content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+        base::BindOnce(std::move(callback),
+            jslib::SyncRecord::Action::DELETE,
+            device_name,
+            device_id,
+            object_id));
+  }
+}
+
 }  // namespace
 
 bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node) {
@@ -224,16 +256,10 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
     bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)),
     extension_registry_observer_(this),
     weak_ptr_factory_(this) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   CHECK(bookmark_model_);
   DLOG(INFO) << "[Brave Sync] " << __func__;
 
-  // Handle when the extension system is ready
-  extensions::ExtensionSystem::Get(profile)->ready().Post(
-      FROM_HERE, base::Bind(&BraveSyncServiceImpl::OnExtensionSystemReady,
-                            weak_ptr_factory_.GetWeakPtr()));
-
-  DETACH_FROM_SEQUENCE(sequence_checker_);
+  extension_registry_observer_.Add(ExtensionRegistry::Get(profile));
 
   sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
 
@@ -351,16 +377,15 @@ void BraveSyncServiceImpl::OnDeleteDevice(const std::string &device_id) {
   VLOG(1) << "TAGAB device_id="<<device_id;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  CHECK(sync_client_ != nullptr);
-  CHECK(sync_initialized_);
-
+  SendDeviceSyncRecordCallback callback =
+      base::BindOnce(&BraveSyncServiceImpl::SendDeviceSyncRecord,
+            weak_ptr_factory_.GetWeakPtr());
   task_runner_->PostTask(
       FROM_HERE,
-      base::Bind(&OnDeleteDeviceFileWork,
-          sync_client_->AsWeakPtr(),
+      base::BindOnce(&OnDeleteDeviceFileWork,
           sync_obj_map_.get(),
-          device_id)
-  );
+          device_id,
+          std::move(callback)));
 }
 
 void BraveSyncServiceImpl::OnResetSync() {
@@ -375,12 +400,13 @@ void BraveSyncServiceImpl::OnResetSync() {
 
   OnResetBookmarks();
 
+  OnDeleteDevice(device_id);
+
+  // delete device was posted first so it will run before OnResetSyncFileWork
   task_runner_->PostTaskAndReply(
       FROM_HERE,
       base::BindOnce(&OnResetSyncFileWork,
-          sync_client_->AsWeakPtr(),
-          sync_obj_map_.get(),
-          device_id),
+          sync_obj_map_.get()),
       base::BindOnce(&BraveSyncServiceImpl::TriggerOnSyncStateChanged,
           weak_ptr_factory_.GetWeakPtr()));
 
@@ -392,38 +418,27 @@ void BraveSyncServiceImpl::OnResetSync() {
   sync_prefs_->SetSyncThisDevice(false);
 }
 
-void BraveSyncServiceImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevices " << GetThreadInfoString();
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
-  // pref service should be queried on UI thread in anyway
-  std::unique_ptr<brave_sync::Settings> settings = sync_prefs_->GetBraveSyncSettings();
-
-  // Jump to task runner thread to perform FILE operation and then back to UI
-  task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&BraveSyncServiceImpl::GetSettingsAndDevicesImpl,
-                      weak_ptr_factory_.GetWeakPtr(),
-                      std::move(settings), std::move(callback))
-  );
+std::unique_ptr<brave_sync::SyncDevices> GetDevices(
+    storage::ObjectMap* sync_object_map) {
+  VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevicesImpl";
+  std::unique_ptr<brave_sync::SyncDevices> devices = std::make_unique<brave_sync::SyncDevices>();
+  std::string json = sync_object_map->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
+  devices->FromJson(json);
+  VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevicesImpl json="<<json;
+  return devices;
 }
 
-void BraveSyncServiceImpl::GetSettingsAndDevicesImpl(
-    std::unique_ptr<brave_sync::Settings> settings,
-    const GetSettingsAndDevicesCallback &callback) {
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevicesImpl " << GetThreadInfoString();
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+void BraveSyncServiceImpl::GetSettingsAndDevices(const GetSettingsAndDevicesCallback& callback) {
+  VLOG(1) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevices " << GetThreadInfoString();
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  std::unique_ptr<brave_sync::SyncDevices> devices = std::make_unique<brave_sync::SyncDevices>();
-  std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
-  devices->FromJson(json);
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::GetSettingsAndDevicesImpl json="<<json;
-
-  content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
-      base::Bind(std::move(callback),
-          base::Passed(std::move(settings)),
-          base::Passed(std::move(devices)))
-  );
+  auto settings = sync_prefs_->GetBraveSyncSettings();
+  // Jump to task runner thread to perform FILE operation and then back to UI
+  base::PostTaskAndReplyWithResult(task_runner_.get(),
+      FROM_HERE,
+      base::BindOnce(&GetDevices, sync_obj_map_.get()),
+      base::BindOnce(std::move(callback),
+                     std::move(settings)));
 }
 
 void BraveSyncServiceImpl::GetSyncWords() {
@@ -637,13 +652,14 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(const std::string &category_nam
 
   if (category_name == brave_sync::jslib_const::kPreferences) {
     std::string this_device_id = sync_prefs_->GetThisDeviceId();
-    task_runner_->PostTaskAndReply(
+    base::PostTaskAndReplyWithResult(
+        task_runner_.get(),
         FROM_HERE,
-        base::BindOnce(&BraveSyncServiceImpl::OnResolvedPreferences,
-            weak_ptr_factory_.GetWeakPtr(),
+        base::BindOnce(&OnResolvedPreferences,
+            sync_obj_map_.get(),
             std::move(records),
             this_device_id),
-        base::BindOnce(&BraveSyncServiceImpl::TriggerOnSyncStateChanged,
+        base::BindOnce(&BraveSyncServiceImpl::OnResolvedPreferencesOnUIThread,
             weak_ptr_factory_.GetWeakPtr()));
   } else if (category_name == brave_sync::jslib_const::kBookmarks) {
     OnResolvedBookmarks(*records.get());
@@ -654,63 +670,18 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(const std::string &category_nam
   SendUnsyncedBookmarks();
 }
 
-void BraveSyncServiceImpl::OnResolvedPreferences(
-    std::unique_ptr<RecordsList> records,
-    const std::string& this_device_id) {
-  DLOG(INFO) << "[Brave Sync] " << __func__ << ":";
-  DLOG(INFO) << "[Brave Sync] this_device_id=" << this_device_id;
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  SyncDevices existing_sync_devices;
-  std::string json = sync_obj_map_->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
-  LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::OnResolvedPreferences: existing json=<" << json << ">";
-  existing_sync_devices.FromJson(json);
-
-  bool this_device_deleted = false;
-
-  for (const auto &record : *records) {
-    DCHECK(record->has_device() || record->has_sitesetting());
-    if (record->has_device()) {
-      DLOG(INFO) << "[Brave Sync] record->GetDevice().name=" <<
-                    record->GetDevice().name;
-      DLOG(INFO) << "[Brave Sync] record->syncTimestamp=<" <<
-                    record->syncTimestamp << ">";
-      DLOG(INFO) << "[Brave Sync] record->deviceId=" << record->deviceId;
-      DLOG(INFO) << "[Brave Sync] record->objectId=" << record->objectId;
-      DLOG(INFO) << "[Brave Sync] record->action=" << record->action;
-
-      bool actually_merged = false;
-      existing_sync_devices.Merge(SyncDevice(record->GetDevice().name,
-          record->objectId, record->deviceId, record->syncTimestamp.ToJsTime()),
-          record->action, actually_merged);
-      this_device_deleted = this_device_deleted ||
-        (record->deviceId == this_device_id && record->action == jslib::SyncRecord::Action::DELETE && actually_merged);
-    }
-  } // for each device
-
-  DCHECK(existing_sync_devices.devices_.size() > 0)
-    << "existing_sync_devices.devices_.size() =="
-    << existing_sync_devices.devices_.size();
-
-  std::string sync_devices_json = existing_sync_devices.ToJson();
-  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences sync_devices_json="<<sync_devices_json;
-
-  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences before SaveObjectId";
-  sync_obj_map_->SaveSpecialJson(jslib_const::DEVICES_NAMES, sync_devices_json);
-  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences SaveObjectId done";
-
-  DLOG(INFO) << "[Brave Sync] " << __func__ << " this_device_deleted=" << this_device_deleted;
-  // We received request to delete the current device
-  if (this_device_deleted) {
-    OnResetSyncFileWork(
-        sync_client_->AsWeakPtr(), sync_obj_map_.get(), this_device_id);
-  }
-
-  DLOG(INFO) << "[Brave Sync] OnResolvedPreferences OnSyncStateChanged() done";
+void BraveSyncServiceImpl::OnResolvedPreferencesOnUIThread(
+    bool this_device_deleted) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (this_device_deleted)
+    OnResetSync();
+  else
+    TriggerOnSyncStateChanged();
 }
 
 const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
                                         const std::string& object_id) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ui::TreeNodeIterator<const bookmarks::BookmarkNode>
       iterator(model->root_node());
   while (iterator.has_next()) {
@@ -729,6 +700,7 @@ const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
 
 uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
                   const jslib::Bookmark& record) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   uint64_t index = 0;
   ui::TreeNodeIterator<const bookmarks::BookmarkNode> iterator(root_node);
   while (iterator.has_next()) {
@@ -749,6 +721,7 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
 void UpdateNode(bookmarks::BookmarkModel* model,
                 const bookmarks::BookmarkNode* node,
                 const jslib::SyncRecord* record) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto bookmark = record->GetBookmark();
   if (bookmark.isFolder) {
     // SetDateFolderModified
@@ -778,6 +751,7 @@ void UpdateNode(bookmarks::BookmarkModel* model,
 }
 
 void BraveSyncServiceImpl::OnResolvedBookmarks(const RecordsList &records) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   bookmark_model_->BeginExtensiveChanges();
   for (const auto& sync_record : records) {
     DCHECK(sync_record->has_bookmark());
@@ -874,6 +848,7 @@ void BraveSyncServiceImpl::OnDeleteSyncSiteSettings()  {
 }
 
 void BraveSyncServiceImpl::OnSaveBookmarksBaseOrder(const std::string &order)  {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DLOG(INFO) << "[Brave Sync ] " << __func__ << "order=" << order;
   DCHECK(!order.empty());
   sync_prefs_->SetBookmarksBaseOrder(order);
@@ -1042,6 +1017,7 @@ void BraveSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
 }
 
 void BraveSyncServiceImpl::SendCreateDevice() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   LOG(ERROR) << "TAGAB brave_sync::BraveSyncServiceImpl::SendCreateDevice";
 
   std::string device_name = sync_prefs_->GetThisDeviceName();
@@ -1053,11 +1029,22 @@ void BraveSyncServiceImpl::SendCreateDevice() {
   CHECK(!device_id.empty());
 
   SendDeviceSyncRecord(
-      sync_client_->AsWeakPtr(),
       jslib::SyncRecord::Action::CREATE,
       device_name,
       device_id,
       object_id);
+}
+
+void BraveSyncServiceImpl::SendDeviceSyncRecord(
+    const int action,
+    const std::string& device_name,
+    const std::string& device_id,
+    const std::string& object_id) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  RecordsListPtr records = CreateDeviceCreationRecordExtension(device_name, object_id,
+    static_cast<jslib::SyncRecord::Action>(action),
+    device_id);
+  sync_client_->SendSyncRecords(jslib_const::SyncRecordType_PREFERENCES, *records);
 }
 
 std::unique_ptr<jslib::SyncRecord>
@@ -1399,7 +1386,7 @@ void BraveSyncServiceImpl::LoopProc() {
   content::BrowserThread::GetTaskRunnerForThread(
       content::BrowserThread::UI)->PostTask(
           FROM_HERE,
-          base::Bind(&BraveSyncServiceImpl::LoopProcThreadAligned,
+          base::BindOnce(&BraveSyncServiceImpl::LoopProcThreadAligned,
               // the timer will always be destroyed before the service
               base::Unretained(this)));
 }
@@ -1414,25 +1401,22 @@ void BraveSyncServiceImpl::LoopProcThreadAligned() {
 }
 
 void BraveSyncServiceImpl::TriggerOnLogMessage(const std::string &message) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : observers_)
     observer.OnLogMessage(this, message);
 }
 
 void BraveSyncServiceImpl::TriggerOnSyncStateChanged() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : observers_)
     observer.OnSyncStateChanged(this);
 }
 
 void BraveSyncServiceImpl::TriggerOnHaveSyncWords(const std::string &sync_words) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : observers_)
     observer.OnHaveSyncWords(this, sync_words);
 }
-
-void BraveSyncServiceImpl::OnExtensionSystemReady() {
-  DLOG(INFO) << "[Brave Sync] " << __func__;
-  // observe changes in extension system
-  extension_registry_observer_.Add(ExtensionRegistry::Get(profile_));
-};
 
 void BraveSyncServiceImpl::OnExtensionReady(
     content::BrowserContext* browser_context,

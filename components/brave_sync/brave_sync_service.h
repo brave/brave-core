@@ -36,7 +36,7 @@ class BraveSyncService : public KeyedService {
   virtual void OnResetSync() = 0;
 
   typedef base::Callback<void(std::unique_ptr<brave_sync::Settings>, std::unique_ptr<brave_sync::SyncDevices>)> GetSettingsAndDevicesCallback;
-  virtual void GetSettingsAndDevices(const GetSettingsAndDevicesCallback &callback) = 0;
+  virtual void GetSettingsAndDevices(const GetSettingsAndDevicesCallback& callback) = 0;
 
   virtual void GetSyncWords() = 0;
   virtual std::string GetSeed() = 0;
