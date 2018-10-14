@@ -5,9 +5,12 @@
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/extension_action.h"
-#include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
+#include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/ui/browser.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
@@ -15,6 +18,15 @@
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/scoped_canvas.h"
+
+bool BraveActionViewController::IsEnabled(
+    content::WebContents* web_contents) const {
+  bool is_enabled = ExtensionActionViewController::IsEnabled(web_contents);
+  if (is_enabled && extension_->id() == brave_rewards_extension_id &&
+      browser_->profile()->IsOffTheRecord())
+    is_enabled = false;
+  return is_enabled;
+}
 
 void BraveActionViewController::HideActivePopup() {
   // Usually, for an extension this should call the main extensions
@@ -59,8 +71,7 @@ std::unique_ptr<BraveActionIconWithBadgeImageSource> BraveActionViewController::
   // state
   // If the extension doesn't want to run on the active web contents, we
   // grayscale it to indicate that.
-  bool is_enabled_for_tab = extension_action()->GetIsVisible(tab_id);
-  image_source->set_grayscale(!is_enabled_for_tab);
+  image_source->set_grayscale(!IsEnabled(web_contents));
   image_source->set_paint_page_action_decoration(false);
   return image_source;
 }
