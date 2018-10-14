@@ -528,7 +528,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               <div
                 className="c20"
                 data-test-id="optInAction"
-                onClick={[Function]}
                 size="call-to-action"
                 type="subtle"
               >
@@ -862,7 +861,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               >
                 <div
                   className="c20"
-                  onClick={[Function]}
                   size="call-to-action"
                   type="accent"
                 >

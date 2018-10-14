@@ -396,7 +396,6 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               >
                 <div
                   className="c19"
-                  onClick={[Function]}
                   size="small"
                   type="subtle"
                 >
@@ -411,7 +410,6 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               >
                 <div
                   className="c19"
-                  onClick={[Function]}
                   size="small"
                   type="subtle"
                 >
@@ -426,7 +424,6 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               >
                 <div
                   className="c19"
-                  onClick={[Function]}
                   size="small"
                   type="subtle"
                 >
@@ -445,7 +442,6 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
               >
                 <div
                   className="c19"
-                  onClick={[Function]}
                   size="medium"
                   type="accent"
                 >
