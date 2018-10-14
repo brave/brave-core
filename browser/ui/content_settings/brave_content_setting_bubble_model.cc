@@ -7,6 +7,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/plugins/plugin_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/subresource_filter/chrome_subresource_filter_client.h"
 #include "chrome/browser/ui/content_settings/content_setting_bubble_model_delegate.h"
 #include "chrome/grit/generated_resources.h"
@@ -25,15 +26,24 @@ BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
   GURL url = web_contents->GetURL();
   std::unique_ptr<base::Value> value =
       map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
+
+  set_show_learn_more(true);
+
+  // Do not show "Run flash this time" and "Manage" button in Tor profile.
+  if (profile->IsTorProfile()) {
+    set_manage_text_style(ContentSettingBubbleModel::ManageTextStyle::kNone);
+    return;
+  }
+
   // If the setting is not managed by the user, hide the "Manage" button.
   if (info.source != content_settings::SETTING_SOURCE_USER)
     set_manage_text_style(ContentSettingBubbleModel::ManageTextStyle::kNone);
+
   set_custom_link(l10n_util::GetStringUTF16(IDS_BLOCKED_PLUGINS_LOAD_ALL));
   set_custom_link_enabled(
       web_contents &&
       TabSpecificContentSettings::FromWebContents(web_contents)
           ->load_plugins_link_enabled());
-  set_show_learn_more(true);
 }
 
 void BraveContentSettingPluginBubbleModel::OnLearnMoreClicked() {
