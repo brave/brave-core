@@ -96,18 +96,19 @@ void OnBeforeURLRequest_AdBlockTPCheckWork(
     GURL* new_url,
     std::shared_ptr<BraveRequestInfo> ctx) {
   // Proper content settings can't be looked up, so do nothing.
+  GURL url(request->url());
   GURL tab_origin = request->site_for_cookies().GetOrigin();
-  if (tab_origin.is_empty() || !tab_origin.has_host()) {
+  if (tab_origin.is_empty() || !tab_origin.has_host() || url.is_empty()) {
     return;
   }
   DCHECK(ctx->request_identifier != 0);
   if (!g_brave_browser_process->tracking_protection_service()->
-      ShouldStartRequest(request->url(), ctx->resource_type, tab_origin.host())) {
+      ShouldStartRequest(url, ctx->resource_type, tab_origin.host())) {
     ctx->new_url_spec = GetBlankDataURLForResourceType(ctx->resource_type).spec();
   } else if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-           request->url(), ctx->resource_type, tab_origin.host()) ||
+           url, ctx->resource_type, tab_origin.host()) ||
        !g_brave_browser_process->ad_block_regional_service()
-            ->ShouldStartRequest(request->url(), ctx->resource_type,
+            ->ShouldStartRequest(url, ctx->resource_type,
                                  tab_origin.host())) {
     ctx->new_url_spec = GetBlankDataURLForResourceType(ctx->resource_type).spec();
   }
@@ -138,6 +139,10 @@ int OnBeforeURLRequest_AdBlockTPWork(
     std::shared_ptr<BraveRequestInfo> ctx) {
   const GURL& url = request->url();
   GURL tab_origin = request->site_for_cookies().GetOrigin();
+
+  if (request->url().is_empty()) {
+    return net::OK;
+  }
 
   // Get global shields, adblock, and TP settings for the tab_origin
   bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(

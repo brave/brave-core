@@ -49,6 +49,23 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
   EXPECT_EQ(ret, net::OK);
 }
 
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
+  net::TestDelegate test_delegate;
+  std::unique_ptr<net::URLRequest> request =
+      context()->CreateRequest(GURL(), net::IDLE, &test_delegate,
+                               TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo>
+      brave_request_info(new brave::BraveRequestInfo());
+  brave::ResponseCallback callback;
+  GURL new_url;
+  int ret =
+    OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+        brave_request_info);
+  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_EQ(ret, net::OK);
+}
+
+
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToEmptyDataURLs) {
   std::vector<GURL> urls({
     GURL("https://sp1.nypost.com"),
