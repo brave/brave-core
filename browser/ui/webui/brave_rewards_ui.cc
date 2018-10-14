@@ -612,8 +612,7 @@ void RewardsDOMHandler::RemoveRecurring(const base::ListValue *args) {
   if (rewards_service_) {
     std::string publisherKey;
     args->GetString(0, &publisherKey);
-    // TODO add
-    // rewards_service_->ExcludePublisher(publisherKey);
+    rewards_service_->RemoveRecurring(publisherKey);
   }
 }
 

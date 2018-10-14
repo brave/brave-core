@@ -625,6 +625,23 @@ void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list, ledger::PUB
   }
 }
 
+bool PublisherInfoDatabase::RemoveRecurring(const std::string& publisher_key) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "DELETE FROM recurring_donation WHERE publisher_id = ?"));
+
+  statement.BindString(0, publisher_key);
+
+  return statement.Run();
+}
+
 // static
 int PublisherInfoDatabase::GetCurrentVersion() {
   return kCurrentVersionNumber;

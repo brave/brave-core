@@ -1357,9 +1357,9 @@ bool SaveContributionInfoOnFileTaskRunner(const brave_rewards::ContributionInfo 
   return false;
 }
 
-void RewardsServiceImpl::OnContributionInfoSaved(bool success) {
-  if (success) {
-    // TODO add contribution info reload function brave/brave-browser#930
+void RewardsServiceImpl::OnContributionInfoSaved(const ledger::PUBLISHER_CATEGORY category, bool success) {
+  if (success && category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+    TipsUpdated();
   }
 }
 
@@ -1368,7 +1368,7 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
   const int year,
   const uint32_t date,
   const std::string& publisher_key,
-  const int category) {
+  const ledger::PUBLISHER_CATEGORY category) {
 
   brave_rewards::ContributionInfo info;
   info.probi = probi;
@@ -1383,11 +1383,8 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
                     info,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
-                     AsWeakPtr()));
-
-  if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
-    GetCurrentTips();
-  }
+                     AsWeakPtr(),
+                     category));
 }
 
 bool SaveRecurringDonationOnFileTaskRunner(const brave_rewards::RecurringDonation info,
@@ -1459,7 +1456,7 @@ void RewardsServiceImpl::OnRecurringDonationUpdated(const ledger::PublisherInfoL
   }
 }
 
-ledger::PublisherInfoList GetCurrentTipsOnFileTaskRunner(PublisherInfoDatabase* backend) {
+ledger::PublisherInfoList TipsUpdatedOnFileTaskRunner(PublisherInfoDatabase* backend) {
   ledger::PublisherInfoList list;
   if (!backend) {
     return list;
@@ -1471,7 +1468,7 @@ ledger::PublisherInfoList GetCurrentTipsOnFileTaskRunner(PublisherInfoDatabase* 
   return list;
 }
 
-void RewardsServiceImpl::OnGetCurrentTipsData(const ledger::PublisherInfoList list) {
+void RewardsServiceImpl::OnTipsUpdatedData(const ledger::PublisherInfoList list) {
   brave_rewards::ContentSiteList new_list;
 
   for (auto &publisher : list) {
@@ -1485,13 +1482,40 @@ void RewardsServiceImpl::OnGetCurrentTipsData(const ledger::PublisherInfoList li
   }
 }
 
-void RewardsServiceImpl::GetCurrentTips() {
+void RewardsServiceImpl::RemoveRecurring(const std::string& publisher_key) {
+  ledger_->RemoveRecurring(publisher_key);
+}
+
+void RewardsServiceImpl::TipsUpdated() {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetCurrentTipsOnFileTaskRunner,
+      base::Bind(&TipsUpdatedOnFileTaskRunner,
                     publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnGetCurrentTipsData,
+      base::Bind(&RewardsServiceImpl::OnTipsUpdatedData,
                      AsWeakPtr()));
 
+}
+
+bool RemoveRecurringOnFileTaskRunner(const std::string publisher_key, PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return false;
+  }
+
+  return backend->RemoveRecurring(publisher_key);
+}
+
+void RewardsServiceImpl::OnRemovedRecurring(ledger::RecurringRemoveCallback callback, bool success) {
+  callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  GetRecurringDonations(std::bind(&RewardsServiceImpl::OnRecurringDonationUpdated, this, _1));
+}
+
+void RewardsServiceImpl::OnRemoveRecurring(const std::string& publisher_key,
+                                           ledger::RecurringRemoveCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&RemoveRecurringOnFileTaskRunner,
+                    publisher_key,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnRemovedRecurring,
+                     AsWeakPtr(), callback));
 }
 
 }  // namespace brave_rewards

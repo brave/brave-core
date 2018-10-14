@@ -49,6 +49,7 @@ class PublisherInfoDatabase {
       const std::string& media_key);
   void GetRecurringDonations(ledger::PublisherInfoList* list);
   void GetTips(ledger::PublisherInfoList* list, ledger::PUBLISHER_MONTH month, int year);
+  bool RemoveRecurring(const std::string& publisher_key);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();

@@ -106,6 +106,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) override;
   double GetContributionAmount() override;
   brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
+  void RemoveRecurring(const std::string& publisher_key) override;
 
  private:
   typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
@@ -148,14 +149,16 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
   void OnDonate(const std::string& publisher_key, int amount, bool recurring) override;
-  void OnContributionInfoSaved(bool success);
+  void OnContributionInfoSaved(const ledger::PUBLISHER_CATEGORY category, bool success);
   void OnRecurringDonationSaved(bool success);
   void SaveRecurringDonation(const std::string& publisher_key, const int amount);
   void OnRecurringDonationsData(const ledger::RecurringDonationCallback callback,
                                 const ledger::PublisherInfoList list);
   void OnRecurringDonationUpdated(const ledger::PublisherInfoList& list);
-  void OnGetCurrentTipsData(const ledger::PublisherInfoList list);
-  void GetCurrentTips();
+  void OnTipsUpdatedData(const ledger::PublisherInfoList list);
+  void TipsUpdated();
+  void OnRemovedRecurring(ledger::RecurringRemoveCallback callback, bool success);
+  void OnRemoveRecurring(const std::string& publisher_key, ledger::RecurringRemoveCallback callback) override;
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -231,7 +234,7 @@ class RewardsServiceImpl : public RewardsService,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,
-                            const int category) override;
+                            const ledger::PUBLISHER_CATEGORY category) override;
   void GetRecurringDonations(ledger::RecurringDonationCallback callback) override;
 
   // URLFetcherDelegate impl
