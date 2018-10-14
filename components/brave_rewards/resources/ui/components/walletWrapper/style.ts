@@ -29,7 +29,7 @@ const getIconColor = (notification: Notification | undefined) => {
       return '#D666A2'
     case 'contribute':
       return '#9F22A1'
-    case 'token':
+    case 'grant':
       return '#FFBBAA'
     default:
       return '#FFBBAA'
