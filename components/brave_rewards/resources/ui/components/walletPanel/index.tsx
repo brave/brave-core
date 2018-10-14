@@ -113,21 +113,26 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
   }
 
   donationControls () {
+    const { donationAmounts } = this.props
     return (
       <StyledWrapper>
-        <StyledGrid>
-          <StyledColumn size={'5'}>
-            <StyledDonateText>
-              {getLocale('donateMonthly')}
-            </StyledDonateText>
-            <StyledIcon>
-              <RefreshIcon color={'#4C54D2'}/>
-            </StyledIcon>
-          </StyledColumn>
-          <StyledColumn size={'1'}>
-            {this.donationDropDown()}
-          </StyledColumn>
-        </StyledGrid>
+        {
+          donationAmounts
+          ? <StyledGrid>
+            <StyledColumn size={'5'}>
+              <StyledDonateText>
+                {getLocale('donateMonthly')}
+              </StyledDonateText>
+              <StyledIcon>
+                <RefreshIcon color={'#4C54D2'}/>
+              </StyledIcon>
+            </StyledColumn>
+            <StyledColumn size={'1'}>
+              {this.donationDropDown()}
+            </StyledColumn>
+          </StyledGrid>
+          : null
+        }
         <StyledGrid>
           <StyledColumn size={'5'}>
             <StyledDonateText>

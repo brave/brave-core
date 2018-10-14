@@ -52,20 +52,13 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   margin-left: 10px;
 }
 
-.c16 {
-  width: 15px;
-  margin-left: 5px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.c24 {
+.c22 {
   text-align: center;
   padding: 15px 0 0;
   margin: 0 auto;
 }
 
-.c18 {
+.c16 {
   margin-top: 6px;
 }
 
@@ -91,11 +84,11 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   flex: 1 0 0;
 }
 
-.c28 {
+.c26 {
   display: none;
 }
 
-.c26 {
+.c24 {
   --button-main-color: #4C54D2;
   --button-main-color-hover: #392DD1;
   --button-main-color-active: #AAAFEF;
@@ -135,20 +128,20 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   padding: 19px 15px;
 }
 
-.c26:hover:enabled {
+.c24:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c26:active:enabled {
+.c24:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c25 {
+.c23 {
   border: 1px solid;
   color: var(--button-state-color);
 }
 
-.c27 {
+.c25 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -169,26 +162,20 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c17 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c21 {
+.c19 {
   position: relative;
   display: block;
   height: 16px;
   width: 28px;
 }
 
-.c22 {
+.c20 {
   background: #A7ACB2;
   height: 6px;
   margin-top: 5px;
@@ -196,7 +183,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   border-radius: 3px;
 }
 
-.c23 {
+.c21 {
   position: relative;
   border-radius: 50%;
   -webkit-transition: all .4s ease;
@@ -213,7 +200,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   box-shadow: 0 3px 3px rgba(0,0,0,0.05);
 }
 
-.c20 {
+.c18 {
   color: #838391;
   font-size: 12px;
   font-family: Poppins,sans-serif;
@@ -381,39 +368,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
             <span
               className="c15"
             >
-              MISSING: donateMonthly
-            </span>
-            <span
-              className="c16"
-            >
-              <svg
-                aria-hidden="true"
-                className="c17"
-                color="#4C54D2"
-                focusable="false"
-                viewBox="0 0 32 32"
-              >
-                <path
-                  d="M23.68134 11.30439C22.08752 8.70199 19.21782 7 16 7c-4.97056 0-9 4.02944-9 9s4.02944 9 9 9c2.50086 0 4.83581-1.02378 6.52498-2.8012.38046-.40034 1.01342-.41646 1.41375-.036.40034.38046.41645 1.01342.036 1.41376C21.91179 25.74727 19.05469 27 16 27 9.92487 27 5 22.07513 5 16S9.92487 5 16 5c4.27936 0 8.05419 2.46205 9.86553 6.12678C27.10091 11.49832 28 12.64424 28 14c0 1.65667-1.34247 3-3.00056 3C23.34247 17 22 15.65667 22 14c0-1.1838.68547-2.2076 1.68134-2.69561z"
-                />
-              </svg>
-            </span>
-          </div>
-          <div
-            className="c12"
-            size="1"
-          />
-        </div>
-        <div
-          className="c9"
-        >
-          <div
-            className="c10"
-            size="5"
-          >
-            <span
-              className="c15"
-            >
               MISSING: includeInAuto
             </span>
           </div>
@@ -422,28 +376,28 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
             size="1"
           >
             <div
-              className="c18"
+              className="c16"
             >
               <div
-                className="c19"
+                className="c17"
               >
                 <div
-                  className="c20"
+                  className="c18"
                   size="small"
                 >
                   MISSING: off
                 </div>
                 <div
-                  className="c21"
+                  className="c19"
                   data-test-id="toggle"
                   size="small"
                 >
                   <div
-                    className="c22"
+                    className="c20"
                     size="small"
                   />
                   <div
-                    className="c23"
+                    className="c21"
                     size="small"
                     type="dark"
                   />
@@ -455,15 +409,15 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       </div>
     </section>
     <div
-      className="c24"
+      className="c22"
     >
       <button
-        className="c25 c26"
+        className="c23 c24"
         size="call-to-action"
         type="accent"
       >
         <div
-          className="c27"
+          className="c25"
           size="call-to-action"
           type="accent"
         >
@@ -473,7 +427,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
     </div>
   </div>
   <div
-    className="c28"
+    className="c26"
   />
 </div>
 `;
