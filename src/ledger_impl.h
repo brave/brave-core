@@ -180,7 +180,8 @@ class LedgerImpl : public ledger::Ledger,
                                   const ledger::PUBLISHER_MONTH month,
                                   const int year,
                                   const uint32_t date) override;
-  void GetRecurringDonations();
+  void GetRecurringDonations(ledger::RecurringDonationCallback callback);
+  void RemoveRecurring(const std::string& publisher_key) override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
@@ -222,6 +223,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
+
+  void OnRemovedRecurring(ledger::Result result);
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,

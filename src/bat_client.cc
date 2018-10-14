@@ -178,9 +178,9 @@ void BatClient::registerPersonaCallback(bool result,
 }
 
 void BatClient::resetReconcileStamp() {
-  //state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
+  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
   // For testing (reconcile will happen 3min after wallet creation
-  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 4 * 60;
+  // state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 4 * 60;
   saveState();
 }
 
@@ -537,8 +537,6 @@ void BatClient::reconcilePayloadCallback(const std::string& viewingId,
 
   state_->transactions_.push_back(transaction);
   saveState();
-  // TODO set a new timestamp for the next reconcile
-  // TODO self.state.updateStamp var in old lib
   registerViewing(viewingId);
 }
 

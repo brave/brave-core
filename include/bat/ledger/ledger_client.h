@@ -34,6 +34,7 @@ using GetPublisherInfoListCallback =
 using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
 using RecurringDonationCallback = std::function<void(const PublisherInfoList&)>;
+using RecurringRemoveCallback = std::function<void(Result)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -96,8 +97,10 @@ class LEDGER_EXPORT LedgerClient {
                                     const int year,
                                     const uint32_t date,
                                     const std::string& publisher_key,
-                                    const int category) = 0;
+                                    const ledger::PUBLISHER_CATEGORY category) = 0;
   virtual void GetRecurringDonations(ledger::RecurringDonationCallback callback) = 0;
+  virtual void OnRemoveRecurring(const std::string& publisher_key,
+                                 ledger::RecurringRemoveCallback callback) = 0;
 
   //uint64_t time_offset (input): timer offset in seconds.
   //uint32_t timer_id (output) : 0 in case of failure

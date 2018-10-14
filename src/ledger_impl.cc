@@ -654,14 +654,17 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
        true,
        currentReconcileStamp
     );
-//    GetCurrentPublisherInfoList(0, 0, filter, std::bind(&LedgerImpl::ReconcileContributeList,
-//                                                 this,
-//                                                 ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-//                                                 _1,
-//                                                 _2));
+    GetCurrentPublisherInfoList(0, 0, filter, std::bind(&LedgerImpl::ReconcileContributeList,
+                                                 this,
+                                                 ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+                                                 _1,
+                                                 _2));
+
     // Recurring direct donation
-    // TODO re-enable when server removes check
-    GetRecurringDonations();
+    GetRecurringDonations(std::bind(&LedgerImpl::ReconcileRecurringList,
+                                        this,
+                                        ledger::PUBLISHER_CATEGORY::RECURRING_DONATION,
+                                        _1));
 
   } else if (timer_id == last_prepare_vote_batch_timer_id_) {
     last_prepare_vote_batch_timer_id_ = 0;
@@ -672,11 +675,8 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   }
 }
 
-void LedgerImpl::GetRecurringDonations() {
-  ledger_client_->GetRecurringDonations(std::bind(&LedgerImpl::ReconcileRecurringList,
-                                        this,
-                                        ledger::PUBLISHER_CATEGORY::RECURRING_DONATION,
-                                        _1));
+void LedgerImpl::GetRecurringDonations(ledger::RecurringDonationCallback callback) {
+  ledger_client_->GetRecurringDonations(callback);
 }
 
 void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response, const std::map<std::string, std::string>& headers) {
@@ -731,7 +731,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
 }
 
 void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
-  bool retryAfterError = (ledger::Result::LEDGER_OK == result) ? false : true;
+  bool retryAfterError = !(ledger::Result::LEDGER_OK == result);
   bat_publishers_->OnPublishersListSaved(result);
   RefreshPublishersList(retryAfterError);
 }
@@ -831,6 +831,19 @@ void LedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
   }
 
   bat_client_->removeReconcileById(viewing_id);
+}
+
+void LedgerImpl::RemoveRecurring(const std::string& publisher_key) {
+  ledger_client_->OnRemoveRecurring(publisher_key, std::bind(&LedgerImpl::OnRemovedRecurring,
+                                        this,
+                                        _1));
+}
+
+void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
+    // TODO add error callback
+    return;
+  }
 }
 
 }  // namespace bat_ledger
