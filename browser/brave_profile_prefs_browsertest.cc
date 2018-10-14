@@ -44,5 +44,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DisableGoogleServicesByDefa
   EXPECT_EQ(
       browser()->profile()->GetPrefs()->GetInteger(prefs::kNetworkPredictionOptions),
       chrome_browser_net::NETWORK_PREDICTION_NEVER);
-
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(prefs::kSigninAllowedOnNextStartup));
 }
