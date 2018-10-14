@@ -833,6 +833,7 @@
 <translation id="6845038076637626672">મહત્તમ ખોલો</translation>
 <translation id="6860427144121307915">એક ટેબમાં ખોલો</translation>
 <translation id="3074037959626057712">તમે સાઇન ઇન કરેલું છે અને સિંક ચાલુ કરેલ છે</translation>
+<translation id="1231733316453485619">સિંક કરવાનું ચાલુ કરીએ?</translation>
 <translation id="9125982323641182972">Braveમાં Brave Software સ્માર્ટ મેળવો</translation>
 <translation id="7988117629517051942">વધુ Brave Software સ્માર્ટ મેળવો</translation>
 <translation id="5596627076506792578">વધુ વિકલ્પો</translation>
@@ -1283,6 +1284,8 @@
 <translation id="9220525904950070496">એકાઉન્ટ દૂર કરો</translation>
 <translation id="3340978935015468852">સેટિંગ્સ</translation>
 <translation id="5704875434923668958">આની સાથે સિંક કરી રહ્યાં છીએ</translation>
+<translation id="6257602895346497974">સિંક કરવું ચાલુ કરો…</translation>
+<translation id="8618141719844947886">સિંક કરી રહ્યાં નથી</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/> તરીકે સિંક કરો</translation>
 <translation id="1372841398847029212">તમારા એકાઉન્ટ સાથે સિંક કરો</translation>
 <translation id="2538361623464451692">સિંક બંધ કર્યું છે</translation>
@@ -1616,11 +1619,17 @@
 <translation id="6122875415561139701">આના પર લેખન ઓપરેશનને મંજૂરી નથી: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">નેટવર્ક ગોઠવણી, <ph name="USER_EMAIL"/> દ્વારા નિયંત્રિત છે.</translation>
 <translation id="784934925303690534">સમય શ્રેણી</translation>
+<translation id="3958004920128806270">તમારા Brave Software એકાઉન્ટમાં બ્રાઉઝિંગનો ડેટા રાખીને તેને માત્ર આ ડિવાઇસમાંથી સાફ કરવા માટે, <ph name="BEGIN_LINK"/>સાઇન આઉટ કરો<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">તમારા બધા સિંક કરેલા ડિવાઇસ અને તમારા Brave Software એકાઉન્ટમાંથી બ્રાઉઝિંગ ડેટા સાફ કરવા માટે, <ph name="BEGIN_LINK"/>સિંક સેટિંગની મુલાકાત લો<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">તમારા બધા સિંક કરેલા ડિવાઇસ અને તમારા Brave Software એકાઉન્ટમાંથી બ્રાઉઝિંગ ડેટા સાફ કરવા માટે, <ph name="BEGIN_LINK"/>તમારો પાસફ્રેઝ દાખલ કરો<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">તમારા બધા સિંક કરેલા ડિવાઇસ અને તમારા Brave Software એકાઉન્ટમાંથી બ્રાઉઝિંગ ડેટા સાફ કરવા માટે, <ph name="BEGIN_LINK"/>સાઇન ઇન કરો<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">બ્રાઉઝિંગ ઇતિહાસ</translation>
 <translation id="8662811608048051533">તમને મોટાભાગની સાઇટોમાંથી સાઇન આઉટ કરે છે.</translation>
+<translation id="4650925988509114690">આમ કરવાથી તમે મોટાભાગની સાઇટમાંથી સાઇન આઉટ થઈ જશો. તમે તમારા Brave Software એકાઉન્ટમાં સાઇન ઇન થયેલા રહેશો, જેથી તમારો સિંક થયેલો ડેટા સાફ કરી શકાય.</translation>
 <translation id="2017836877785168846">ઍડ્રેસ બારમાં ઇતિહાસ અને સ્વતઃપૂર્ણ કરવું સાફ કરો.</translation>
 <translation id="8096327394278038498">ઍડ્રેસ બારમાં ઇતિહાસ અને આપમેળે પૂર્ણતા સાફ કરે છે. તમારા Brave Software એકાઉન્ટમાં <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> પર બ્રાઉઝિંગ ઇતિહાસના અન્ય સ્વરૂપો હોઈ શકે છે.</translation>
 <translation id="8122693181154564064">બધા સાઇન ઇન કરેલ ઉપકરણોમાંથી ઇતિહાસ સાફ કરે છે. તમારા Brave Software એકાઉન્ટમાં <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> પર બ્રાઉઝિંગ ઇતિહાસના અન્ય સ્વરૂપો હોઈ શકે છે.</translation>
+<translation id="6148716538476291841">આ ડિવાઇસમાંથી ઇતિહાસ સાફ કરવામાં આવશે.</translation>
 <translation id="7127980134843952133">ડાઉનલોડ ઇતિહાસ</translation>
 <translation id="4699172675775169585">કેશ કરેલ છબીઓ અને ફાઇલો</translation>
 <translation id="1274997165432133392">કુકીઝ અને અન્ય સાઇટ ડેટા</translation>

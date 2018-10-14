@@ -840,6 +840,7 @@
 <translation id="6845038076637626672">Отвори увећано</translation>
 <translation id="6860427144121307915">Отвори на картици</translation>
 <translation id="3074037959626057712">Пријавили сте се и укључили синхронизацију</translation>
+<translation id="1231733316453485619">Желите ли да укључите синхронизацију?</translation>
 <translation id="9125982323641182972">Паметне Brave Software функције</translation>
 <translation id="7988117629517051942">Набавите још паметних Brave Software функција</translation>
 <translation id="5596627076506792578">Још опција</translation>
@@ -1290,6 +1291,8 @@
 <translation id="9220525904950070496">Уклањање налога</translation>
 <translation id="3340978935015468852">подешавања</translation>
 <translation id="5704875434923668958">Синхронизује се са</translation>
+<translation id="6257602895346497974">Укључи синхронизацију...</translation>
+<translation id="8618141719844947886">Не синхронизује се</translation>
 <translation id="5781092003150880845">Синхронизуј као <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Синхронизујте са налогом</translation>
 <translation id="2538361623464451692">Синхронизација је онемогућена</translation>
@@ -1623,11 +1626,17 @@
 <translation id="6122875415561139701">Операција писања није дозвољена на: „<ph name="DEVICE_NAME"/>“.</translation>
 <translation id="439266289085815679">Конфигурацију Bluetooth-а контролише <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Временски опсег</translation>
+<translation id="3958004920128806270">Да бисте обрисали податке прегледања само са овог уређаја, али не и са Brave Software налога, <ph name="BEGIN_LINK"/>одјавите се<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Да бисте обрисали податке прегледања са свих синхронизованих уређаја и са Brave Software налога, <ph name="BEGIN_LINK"/>идите у подешавања синхронизације<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Да бисте обрисали податке прегледања са свих синхронизованих уређаја и са Brave Software налога, <ph name="BEGIN_LINK"/>унесите приступну фразу<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Да бисте обрисали податке прегледања са свих синхронизованих уређаја и са Brave Software налога, <ph name="BEGIN_LINK"/>пријавите се<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Историја прегледања</translation>
 <translation id="8662811608048051533">Одјавиће вас са већине сајтова.</translation>
+<translation id="4650925988509114690">Одјављује вас са већине сајтова. Не одјављује вас са Brave Software налога, па синхронизовани подаци могу да се обришу.</translation>
 <translation id="2017836877785168846">Брише историју и аутоматска довршавања у траци за адресу.</translation>
 <translation id="8096327394278038498">Брише историју и аутоматска довршавања у траци за адресу. Brave Software налог може да има друге облике историје прегледања на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Брише историју са свих уређаја на којима сте пријављени. Brave Software налог може да има друге облике историје прегледања на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Брише историју са овог уређаја.</translation>
 <translation id="7127980134843952133">Историја преузимања</translation>
 <translation id="4699172675775169585">Кеширане слике и датотеке</translation>
 <translation id="1274997165432133392">Колачићи и други подаци о сајтовима</translation>

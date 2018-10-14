@@ -839,6 +839,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6845038076637626672">Open Maximised</translation>
 <translation id="6860427144121307915">Open in a Tab</translation>
 <translation id="3074037959626057712">You've signed in and turned on Sync</translation>
+<translation id="1231733316453485619">Turn on sync?</translation>
 <translation id="9125982323641182972">Get Brave Software smarts in Brave</translation>
 <translation id="7988117629517051942">Get more Brave Software smarts</translation>
 <translation id="5596627076506792578">More options</translation>
@@ -1289,6 +1290,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="9220525904950070496">Remove account</translation>
 <translation id="3340978935015468852">settings</translation>
 <translation id="5704875434923668958">Syncing to</translation>
+<translation id="6257602895346497974">Turn on sync…</translation>
+<translation id="8618141719844947886">Not syncing</translation>
 <translation id="5781092003150880845">Sync as <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sync to your account</translation>
 <translation id="2538361623464451692">Sync disabled</translation>
@@ -1622,11 +1625,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6122875415561139701">Write operation is not permitted on: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Bluetooth configuration is controlled by <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Time range</translation>
+<translation id="3958004920128806270">To clear browsing data from this device only, while keeping it in your Brave Software Account, <ph name="BEGIN_LINK"/>sign out<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">To clear browsing data from all of your synced devices and your Brave Software Account, <ph name="BEGIN_LINK"/>visit sync settings<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">To clear browsing data from all of your synced devices and your Brave Software Account, <ph name="BEGIN_LINK"/>enter your passphrase<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">To clear browsing data from all of your synced devices and your Brave Software Account, <ph name="BEGIN_LINK"/>sign in<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Browsing history</translation>
 <translation id="8662811608048051533">Signs you out of most sites.</translation>
+<translation id="4650925988509114690">Signs you out of most sites. You'll stay signed in to your Brave Software Account so that your synced data can be cleared.</translation>
 <translation id="2017836877785168846">Clears history and autocompletions in the address bar.</translation>
 <translation id="8096327394278038498">Clears history and autocompletions in the address bar. Your Brave Software account may have other forms of browsing history at <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Clears history from all signed-in devices. Your Brave Software account may have other forms of browsing history at <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Clears history from this device.</translation>
 <translation id="7127980134843952133">Download history</translation>
 <translation id="4699172675775169585">Cached images and files</translation>
 <translation id="1274997165432133392">Cookies and other site data</translation>

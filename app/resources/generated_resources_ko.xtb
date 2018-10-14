@@ -837,6 +837,7 @@
 <translation id="6845038076637626672">최대화 상태로 열기</translation>
 <translation id="6860427144121307915">탭에서 열기</translation>
 <translation id="3074037959626057712">로그인하고 동기화를 사용 설정함</translation>
+<translation id="1231733316453485619">동기화를 사용하시겠습니까?</translation>
 <translation id="9125982323641182972">Brave Software로 Brave을 더욱 스마트하게</translation>
 <translation id="7988117629517051942">더욱 스마트한 Brave Software을 사용하세요</translation>
 <translation id="5596627076506792578">옵션 더보기</translation>
@@ -1287,6 +1288,8 @@
 <translation id="9220525904950070496">계정 삭제</translation>
 <translation id="3340978935015468852">설정</translation>
 <translation id="5704875434923668958">다음에 동기화</translation>
+<translation id="6257602895346497974">동기화 사용...</translation>
+<translation id="8618141719844947886">동기화되지 않음</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/>님의 계정에 동기화</translation>
 <translation id="1372841398847029212">내 계정에 동기화</translation>
 <translation id="2538361623464451692">동기화 사용중지됨</translation>
@@ -1620,11 +1623,17 @@
 <translation id="6122875415561139701">기기(<ph name="DEVICE_NAME"/>)에서 쓰기 작업이 허용되지 않습니다.</translation>
 <translation id="439266289085815679">블루투스 구성은 <ph name="USER_EMAIL"/>님이 관리합니다.</translation>
 <translation id="784934925303690534">기간</translation>
+<translation id="3958004920128806270">이 기기에서만 인터넷 사용 기록을 삭제하고 Brave Software 계정에서는 유지하려면 <ph name="BEGIN_LINK"/>로그아웃<ph name="END_LINK"/>하세요.</translation>
+<translation id="4445433576366924090">동기화된 모든 기기 및 Brave Software 계정에서 인터넷 사용 기록을 삭제하려면 <ph name="BEGIN_LINK"/>동기화 설정을 방문<ph name="END_LINK"/>하세요.</translation>
+<translation id="563489167344291753">동기화된 모든 기기 및 Brave Software 계정에서 인터넷 사용 기록을 삭제하려면 <ph name="BEGIN_LINK"/>암호를 입력<ph name="END_LINK"/>하세요.</translation>
+<translation id="3895809404273995788">동기화된 모든 기기 및 Brave Software 계정에서 인터넷 사용 기록을 삭제하려면 <ph name="BEGIN_LINK"/>로그인<ph name="END_LINK"/>하세요.</translation>
 <translation id="2496180316473517155">인터넷 사용 기록</translation>
 <translation id="8662811608048051533">대부분의 사이트에서 로그아웃됩니다.</translation>
+<translation id="4650925988509114690">대부분의 사이트에서 로그아웃됩니다. 동기화된 데이터를 삭제할 수 있도록 Brave Software 계정에서는 로그아웃되지 않습니다.</translation>
 <translation id="2017836877785168846">검색주소창의 검색 기록 및 자동 완성 항목을 삭제합니다.</translation>
 <translation id="8096327394278038498">검색주소창에 저장된 방문 기록과 자동 완성 내역을 지웁니다. Brave Software 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
 <translation id="8122693181154564064">로그인된 모든 기기에서 방문 기록을 지웁니다. Brave Software 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
+<translation id="6148716538476291841">이 기기에서 인터넷 사용 기록을 삭제합니다.</translation>
 <translation id="7127980134843952133">다운로드 기록</translation>
 <translation id="4699172675775169585">캐시된 이미지 또는 파일</translation>
 <translation id="1274997165432133392">쿠키 및 기타 사이트 데이터</translation>

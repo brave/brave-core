@@ -838,6 +838,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6845038076637626672">Avaa suuressa koossa</translation>
 <translation id="6860427144121307915">Avaa välilehdessä</translation>
 <translation id="3074037959626057712">Olet kirjautunut sisään ja ottanut synkronoinnin käyttöön.</translation>
+<translation id="1231733316453485619">Otetaanko synkronointi käyttöön?</translation>
 <translation id="9125982323641182972">Brave Softwaren älykkäitä ratkaisuja Braveen</translation>
 <translation id="7988117629517051942">Lisää Brave Softwaren älykkäitä ratkaisuja</translation>
 <translation id="5596627076506792578">Lisäasetukset</translation>
@@ -1288,6 +1289,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="9220525904950070496">Poista tili</translation>
 <translation id="3340978935015468852">asetuksissa</translation>
 <translation id="5704875434923668958">Synkronoidaan kohteeseen</translation>
+<translation id="6257602895346497974">Ota synkronointi käyttöön…</translation>
+<translation id="8618141719844947886">Ei synkronointia</translation>
 <translation id="5781092003150880845">Vaihda synkronointitilille <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synkronoi tilillesi</translation>
 <translation id="2538361623464451692">Synkronointi pois käytöstä</translation>
@@ -1621,11 +1624,17 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6122875415561139701">Kirjoitustoiminto ei ole sallittu laitteella <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679"><ph name="USER_EMAIL"/> ohjaa Bluetooth-määritystä.</translation>
 <translation id="784934925303690534">Aikaväli</translation>
+<translation id="3958004920128806270">Jos haluat tyhjentää selailutiedot vain tältä laitteelta mutta pitää ne Brave Software-tililläsi, <ph name="BEGIN_LINK"/>kirjaudu ulos<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Jos haluat poistaa selailutiedot kaikilta synkronoiduilta laitteiltasi ja Brave Software-tililtäsi, <ph name="BEGIN_LINK"/>siirry synronointiasetuksiin<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Jos haluat poistaa selailutiedot kaikilta synkronoiduilta laitteiltasi ja Brave Software-tililtäsi, <ph name="BEGIN_LINK"/>kirjoita tunnuslauseesi<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Jos haluat poistaa selailutiedot kaikilta synkronoiduilta laitteiltasi ja Brave Software-tililtäsi, <ph name="BEGIN_LINK"/>kirjaudu sisään<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Selaushistoria</translation>
 <translation id="8662811608048051533">Kirjaa sinut ulos useimmilta sivustoilta.</translation>
+<translation id="4650925988509114690">Tämä kirjaa sinut ulos useimmilta sivustoilta. Sinua ei kirjata ulos Brave Software-tililtäsi, jotta synkronoitu datasi voidaan tyhjentää.</translation>
 <translation id="2017836877785168846">Tyhjentää historian ja osoitepalkin automaattiset täydennykset.</translation>
 <translation id="8096327394278038498">Tyhjentää historian ja osoitekentän automaattiset täydennykset. Brave Software-tililläsi voi olla muita selaushistoriatietoja osoitteessa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Tyhjentää kaikkien sisäänkirjautuneiden laitteiden historian. Brave Software-tililläsi voi olla muuta toimintaa osoitteessa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Tyhjentää tämän laitteen historian.</translation>
 <translation id="7127980134843952133">Lataushistoria</translation>
 <translation id="4699172675775169585">Välimuistissa olevat kuvat ja tiedostot</translation>
 <translation id="1274997165432133392">Evästeet ja muut sivuston tiedot</translation>

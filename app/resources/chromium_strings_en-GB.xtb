@@ -118,6 +118,9 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="7977435741986383568">Brave may use web services to improve your browsing experience. You may optionally disable these services. <ph name="BEGIN_LINK"/>Find out more<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">To fix spelling errors, Brave sends the text that you type in text fields to Brave Software</translation>
 <translation id="815816884817177844">Communicates with Brave Software to improve browsing and Brave</translation>
+<translation id="8586264863973514035">To apply your changes, relaunch Brave</translation>
+<translation id="7021823858304886493">Allow Brave sign-in</translation>
+<translation id="1649714546770135458">By turning this off, you can sign in to Brave Software sites such as Gmail, without signing in to Brave</translation>
 <translation id="6274110506580702455">Sign in to Brave is disabled by the administrator of this device.</translation>
 <translation id="9220324636239049437">This will delete 1 item from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">This will delete <ph name="ITEMS_COUNT"/> items from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>

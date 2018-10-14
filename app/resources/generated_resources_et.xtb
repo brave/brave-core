@@ -839,6 +839,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="6845038076637626672">Ava maksimeeritult</translation>
 <translation id="6860427144121307915">Ava vahekaardil</translation>
 <translation id="3074037959626057712">Olete sisse logitud ja sünkroonimise sisse lülitanud</translation>
+<translation id="1231733316453485619">Kas lülitada sünkroonimine sisse?</translation>
 <translation id="9125982323641182972">Brave Software'i nutikus Brave'is</translation>
 <translation id="7988117629517051942">Hankige rohkem Brave Software'i nutikaid funktsioone</translation>
 <translation id="5596627076506792578">Rohkem valikuid</translation>
@@ -1290,6 +1291,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="9220525904950070496">Konto eemaldamine</translation>
 <translation id="3340978935015468852">seaded</translation>
 <translation id="5704875434923668958">Sünkroonimine kontoga</translation>
+<translation id="6257602895346497974">Lülitage sünkroonimine sisse …</translation>
+<translation id="8618141719844947886">Ei sünkroonita</translation>
 <translation id="5781092003150880845">Sünkrooni kasutajana <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sünkrooni minu kontoga</translation>
 <translation id="2538361623464451692">Sünkroonimine on keelatud</translation>
@@ -1623,11 +1626,17 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6122875415561139701">Kirjutamistoiming pole seadmes „<ph name="DEVICE_NAME"/>” lubatud.</translation>
 <translation id="439266289085815679">Bluetoothi seadistust juhib <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Ajavahemik</translation>
+<translation id="3958004920128806270">Sirvimisandmete kustutamiseks ainult sellest seadmest ja nende säilitamiseks teie Brave Software'i kontol <ph name="BEGIN_LINK"/>logige välja<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Sirvimisandmete kustutamiseks kõigist sünkroonitud seadmetest ja oma Brave Software'i kontolt <ph name="BEGIN_LINK"/>avage sünkroonimisseaded<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Sirvimisandmete kustutamiseks kõigist sünkroonitud seadmetest ja oma Brave Software'i kontolt <ph name="BEGIN_LINK"/>sisestage oma parool<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Sirvimisandmete kustutamiseks kõigist sünkroonitud seadmetest ja oma Brave Software'i kontolt <ph name="BEGIN_LINK"/>logige sisse<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Sirvimise ajalugu</translation>
 <translation id="8662811608048051533">Logib teid enamikult saitidelt välja.</translation>
+<translation id="4650925988509114690">Teid logitakse enamikult saitidelt välja. Jääte oma Brave Software'i kontole sisselogituks, et teie sünkroonitud andmed saaks kustutada.</translation>
 <translation id="2017836877785168846">Kustutab aadressiribalt ajaloo ja automaatse täitmise teabe.</translation>
 <translation id="8096327394278038498">Kustutab aadressiribalt ajaloo ja automaatse täitmise andmed. Aadressil <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> võib teie Brave Software'i kontol olla muus vormis sirvimisajalugu.</translation>
 <translation id="8122693181154564064">Kustutab ajaloo kõigist sisselogitud seadmetest. Aadressil <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> võib teie Brave Software'i kontol olla muus vormis sirvimisajalugu.</translation>
+<translation id="6148716538476291841">Sellest seadmest kustutatakse ajalugu.</translation>
 <translation id="7127980134843952133">Allalaadimiste ajalugu</translation>
 <translation id="4699172675775169585">Vahemällu salvestatud kujutised ja failid</translation>
 <translation id="1274997165432133392">Küpsised ja muud saidi andmed</translation>

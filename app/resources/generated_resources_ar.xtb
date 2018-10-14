@@ -839,6 +839,7 @@
 <translation id="6845038076637626672">فتح في وضع التكبير</translation>
 <translation id="6860427144121307915">فتح في علامة تبويب</translation>
 <translation id="3074037959626057712">تم تسجيل دخولك وتشغيل المزامنة</translation>
+<translation id="1231733316453485619">هل تريد تفعيل المزامنة؟</translation>
 <translation id="9125982323641182972">‏الحصول على ميزات Brave Software الذكية في Brave</translation>
 <translation id="7988117629517051942">‏الحصول على مزيد من ميزات Brave Software الذكية</translation>
 <translation id="5596627076506792578">خيارات إضافية</translation>
@@ -1289,6 +1290,8 @@
 <translation id="9220525904950070496">إزالة الحساب</translation>
 <translation id="3340978935015468852">الإعدادات</translation>
 <translation id="5704875434923668958">المزامنة مع</translation>
+<translation id="6257602895346497974">تفعيل المزامنة...</translation>
+<translation id="8618141719844947886">لا تتم المزامنة</translation>
 <translation id="5781092003150880845">المزامنة باسم <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">المزامنة مع حسابك</translation>
 <translation id="2538361623464451692">تم إيقاف المزامنة.</translation>
@@ -1622,11 +1625,17 @@
 <translation id="6122875415561139701">لا يُسمح بعملية الكتابة على: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">يتم التحكّم في تهيئة البلوتوث من قِبل <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">النطاق الزمني</translation>
+<translation id="3958004920128806270">‏لمحو بيانات التصفُّح من هذا الجهاز فقط والاحتفاظ بها في حسابك على Brave Software، يُرجى <ph name="BEGIN_LINK"/>تسجيل الخروج<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">‏لمحو بيانات التصفُّح من جميع أجهزتك التي تمت مزامنتها ومن حسابك على Brave Software، يُرجى <ph name="BEGIN_LINK"/>الانتقال إلى إعدادات المزامنة<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">‏لمحو بيانات التصفُّح من جميع أجهزتك التي تمت مزامنتها ومن حسابك على Brave Software، يُرجى <ph name="BEGIN_LINK"/>إدخال عبارة المرور<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">‏لمحو بيانات التصفُّح من جميع أجهزتك التي تمت مزامنتها ومن حسابك على Brave Software، يُرجى <ph name="BEGIN_LINK"/>تسجيل الدخول<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">سجل التصفح</translation>
 <translation id="8662811608048051533">يخرجك من معظم مواقع الويب.</translation>
+<translation id="4650925988509114690">‏يؤدي هذا الخيار إلى تسجيل خروجك من معظم مواقع الويب. وسيستمر تسجيل دخولك إلى حسابك على Brave Software بحيث يمكن محو بياناتك التي تمت مزامنتها.</translation>
 <translation id="2017836877785168846">مسح السجل وعمليات الإكمال التلقائي في شريط العناوين.</translation>
 <translation id="8096327394278038498">‏مسح السجل وميزة الإكمال التلقائي في شريط العناوين. وقد يتضمن حسابك في Brave Software نماذج أخرى من سجل التصفح في <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">‏يمسح السجل من كل الأجهزة التي تم تسجيل الدخول عليها. وقد يتضمن حسابك في Brave Software نماذج أخرى من سجل التصفح في <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">لمحو السجلّ من هذا الجهاز.</translation>
 <translation id="7127980134843952133">سجل التنزيل</translation>
 <translation id="4699172675775169585">الصور والملفات المخزنة مؤقتًا</translation>
 <translation id="1274997165432133392">ملفات تعريف الارتباط وبيانات الموقع الأخرى</translation>

@@ -114,6 +114,9 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="7977435741986383568">Brave var izmantot tīmekļa pakalpojumus, lai uzlabotu jūsu pārlūkošanas pieredzi. Varat arī atspējot šos pakalpojumus. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="2312399718665761438">Lai izlabotu pareizrakstības kļūdas, Brave nosūta teksta laukos ievadīto tekstu Brave Software serveriem.</translation>
 <translation id="815816884817177844">Sazinās ar Brave Software, lai uzlabotu pārlūkošanu un pārlūku Brave</translation>
+<translation id="8586264863973514035">Lai ieviestu veiktās izmaiņas, atkārtoti palaidiet pārlūku Brave.</translation>
+<translation id="7021823858304886493">Atļaut pierakstīties pārlūkā Brave</translation>
+<translation id="1649714546770135458">Ja izslēgsiet šo iestatījumu, varēsiet pierakstīties Brave Software vietnēs, piemēram, pakalpojumā Gmail, nepierakstoties pārlūkā Brave.</translation>
 <translation id="6274110506580702455">Šīs ierīces administrators ir atspējojis pierakstīšanos pārlūkā Brave.</translation>
 <translation id="9220324636239049437">Veicot šo darbību, no šīs ierīces tiks dzēsts 1 vienums. Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Veicot šo darbību, no šīs ierīces tiks dzēsts(-i) <ph name="ITEMS_COUNT"/> vienums(-i). Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
