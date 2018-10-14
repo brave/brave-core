@@ -10,9 +10,9 @@ import { withKnobs, text } from '@storybook/addon-knobs'
 // Components
 import { TabsType } from '../../../src/features/rewards/modalBackupRestore'
 import { DetailRow as ContributeRow } from '../../../src/features/rewards/tableContribute'
+import { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
 import { DetailRow as TransactionsRow } from '../../../src/features/rewards/tableTransactions'
-import { ModalContribute, ModalBackupRestore } from '../../../src/features/rewards'
-import ModalActivity from '../../../src/features/rewards/modalActivity'
+import { ModalContribute, ModalBackupRestore, ModalActivity, ModalDonation } from '../../../src/features/rewards'
 import ModalAddFunds, { Address } from '../../../src/features/rewards/modalAddFunds'
 
 const bart = require('../../assets/img/bartBaker.jpeg')
@@ -20,6 +20,7 @@ const ddgo = require('../../assets/img/ddgo.jpg')
 const wiki = require('../../assets/img/wiki.jpg')
 const buzz = require('../../assets/img/buzz.jpg')
 const guardian = require('../../assets/img/guardian.jpg')
+const eich = require('../../assets/img/eich.jpg')
 
 const doNothing = () => {
   console.log('nothing')
@@ -381,6 +382,60 @@ storiesOf('Feature Components/Rewards/Modal', module)
     return (
       <ModalAddFunds
         addresses={addresses}
+        onClose={doNothing}
+      />
+    )
+  })
+  .add('Donation',() => {
+    const rows: DonationDetailRow[] = [
+      {
+        profile: {
+          name: 'Bart Baker',
+          verified: true,
+          provider: 'youtube',
+          src: bart
+        },
+        url: 'https://brave.com',
+        type: 'recurring',
+        contribute: {
+          tokens: '2.0',
+          converted: '0.20'
+        },
+        onRemove: doNothing
+      },
+      {
+        profile: {
+          verified: false,
+          name: 'theguardian.com',
+          src: guardian
+        },
+        url: 'https://brave.com',
+        type: 'donation',
+        contribute: {
+          tokens: '12000.0',
+          converted: '6000.20'
+        },
+        text: 'May 7'
+      },
+      {
+        profile: {
+          verified: false,
+          name: 'BrendanEich',
+          provider: 'twitter',
+          src: eich
+        },
+        url: 'https://brave.com',
+        type: 'tip',
+        contribute: {
+          tokens: '7.0',
+          converted: '3.20'
+        },
+        text: 'May 2'
+      }
+    ]
+    return (
+      <ModalDonation
+        rows={rows}
         onClose={doNothing}
       />
     )

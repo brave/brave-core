@@ -143,8 +143,8 @@ storiesOf('Feature Components/Rewards/Table', module)
         url: 'https://brave.com',
         type: 'tip',
         contribute: {
-          tokens: '7.0',
-          converted: '3.20'
+          tokens: '1.0',
+          converted: '0.20'
         },
         text: 'May 2'
       }

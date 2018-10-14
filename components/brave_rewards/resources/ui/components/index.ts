@@ -20,6 +20,7 @@ import ModalActivity from './modalActivity'
 import ModalAddFunds from './modalAddFunds'
 import ModalBackupRestore from './modalBackupRestore'
 import ModalContribute from './modalContribute'
+import ModalDonation from './modalDonation'
 import NextContribution from './nextContribution'
 import PanelWelcome from './panelWelcome'
 import Profile from './profile'
@@ -59,6 +60,7 @@ export {
   ModalAddFunds,
   ModalBackupRestore,
   ModalContribute,
+  ModalDonation,
   NextContribution,
   PanelWelcome,
   Profile,

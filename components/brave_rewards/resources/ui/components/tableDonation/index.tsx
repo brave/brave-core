@@ -116,7 +116,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
             ),
             customStyle: {
               'text-align': 'right',
-              'padding-right': '7px',
+              'padding': '0 7px 0 10px',
               'max-width': '40px'
             }
           }

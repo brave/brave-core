@@ -4,12 +4,16 @@
 
 import styled from 'styled-components'
 
-export const StyledRemove = styled<{}, 'div'>('div')`
+export const StyledRemove = styled<{}, 'button'>('button')`
   font-family: Muli, sans-serif;
   font-size: 14px;
   line-height: 1;
   margin-top: 3px;
   color: #d1d1db;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
 `
 
 export const StyledRemoveIcon = styled<{}, 'span'>('span')`
