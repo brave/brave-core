@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import { Checkbox, Column, Grid, ControlWrapper } from 'brave-ui/components'
-import { DisabledContent, Box, TableDonation, List, Tokens } from 'brave-ui/features/rewards'
+import { DisabledContent, Box, TableDonation, List, Tokens, ModalDonation } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
@@ -22,7 +22,18 @@ const donate = require('../../../img/rewards/donate_disabled.svg')
 interface Props extends Rewards.ComponentProps {
 }
 
-class DonationBox extends React.Component<Props, {}> {
+interface State {
+  modalShowAll: boolean
+}
+
+class DonationBox extends React.Component<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      modalShowAll: false
+    }
+  }
+
   get actions () {
     return this.props.actions
   }
@@ -156,11 +167,18 @@ class DonationBox extends React.Component<Props, {}> {
     return recurring.concat(tips)
   }
 
+  onModalToggle = () => {
+    this.setState({
+      modalShowAll: !this.state.modalShowAll
+    })
+  }
+
   render () {
     const { walletInfo, firstLoad, enabledMain } = this.props.rewardsData
     const showDisabled = firstLoad !== false || !enabledMain
     const donationRows = this.getDonationRows()
-    const numRows = donationRows.length
+    const topRows = donationRows.slice(0, 5)
+    const numRows = donationRows && donationRows.length
     const allSites = !(numRows > 5)
     const total = this.getTotal()
     const converted = utils.convertBalance(total, walletInfo.rates)
@@ -173,14 +191,23 @@ class DonationBox extends React.Component<Props, {}> {
         settingsChild={this.donationSettings()}
         disabledContent={showDisabled ? this.disabledContent() : null}
       >
+        {
+          this.state.modalShowAll
+          ? <ModalDonation
+            rows={donationRows}
+            onClose={this.onModalToggle}
+          />
+          : null
+        }
         <List title={getLocale('donationTotalDonations')}>
           <Tokens value={total} converted={converted} />
         </List>
         <TableDonation
-          rows={donationRows}
+          rows={topRows}
           allItems={allSites}
           numItems={numRows}
           headerColor={true}
+          onShowAll={this.onModalToggle}
         >
           {getLocale('donationVisitSome')}
         </TableDonation>

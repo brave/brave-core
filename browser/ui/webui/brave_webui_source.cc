@@ -276,6 +276,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "dndCaptchaText2", IDS_BRAVE_UI_DND_CAPTCHA_TEXT_2 },
         { "donation", IDS_BRAVE_UI_DONATION },
         { "donationAmount", IDS_BRAVE_UI_DONATION_AMOUNT },
+        { "donationTips", IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE },
         { "donateMonthly", IDS_BRAVE_UI_DONATE_MONTHLY },
         { "donateNow", IDS_BRAVE_UI_DONATE_NOW },
         { "done", IDS_BRAVE_UI_DONE },
