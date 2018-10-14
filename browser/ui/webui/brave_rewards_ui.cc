@@ -61,6 +61,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void WalletExists(const base::ListValue* args);
   void GetContributionAmount(const base::ListValue* args);
   void RemoveRecurring(const base::ListValue* args);
+  void UpdateRecurringDonationsList(const base::ListValue* args);
+  void UpdateTipsList(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -172,6 +174,12 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.removeRecurring",
                                     base::BindRepeating(&RewardsDOMHandler::RemoveRecurring,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.updateRecurringDonationsList",
+                                    base::BindRepeating(&RewardsDOMHandler::UpdateRecurringDonationsList,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.updateTipsList",
+                                    base::BindRepeating(&RewardsDOMHandler::UpdateTipsList,
                                                         base::Unretained(this)));
 }
 
@@ -613,6 +621,18 @@ void RewardsDOMHandler::RemoveRecurring(const base::ListValue *args) {
     std::string publisherKey;
     args->GetString(0, &publisherKey);
     rewards_service_->RemoveRecurring(publisherKey);
+  }
+}
+
+void RewardsDOMHandler::UpdateRecurringDonationsList(const base::ListValue *args) {
+  if (rewards_service_) {
+    rewards_service_->UpdateRecurringDonationsList();
+  }
+}
+
+void RewardsDOMHandler::UpdateTipsList(const base::ListValue *args) {
+  if (rewards_service_) {
+    rewards_service_->UpdateTipsList();
   }
 }
 

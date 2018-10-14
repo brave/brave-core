@@ -1397,7 +1397,7 @@ bool SaveRecurringDonationOnFileTaskRunner(const brave_rewards::RecurringDonatio
 
 void RewardsServiceImpl::OnRecurringDonationSaved(bool success) {
   if (success) {
-    GetRecurringDonations(std::bind(&RewardsServiceImpl::OnRecurringDonationUpdated, this, _1));
+    UpdateRecurringDonationsList();
   }
 }
 
@@ -1440,6 +1440,14 @@ void RewardsServiceImpl::GetRecurringDonations(ledger::RecurringDonationCallback
                      AsWeakPtr(),
                      callback));
 
+}
+
+void RewardsServiceImpl::UpdateRecurringDonationsList() {
+  GetRecurringDonations(std::bind(&RewardsServiceImpl::OnRecurringDonationUpdated, this, _1));
+}
+
+void RewardsServiceImpl::UpdateTipsList() {
+  TipsUpdated();
 }
 
 void RewardsServiceImpl::OnRecurringDonationUpdated(const ledger::PublisherInfoList& list) {
@@ -1505,7 +1513,7 @@ bool RemoveRecurringOnFileTaskRunner(const std::string publisher_key, PublisherI
 
 void RewardsServiceImpl::OnRemovedRecurring(ledger::RecurringRemoveCallback callback, bool success) {
   callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-  GetRecurringDonations(std::bind(&RewardsServiceImpl::OnRecurringDonationUpdated, this, _1));
+  UpdateRecurringDonationsList();
 }
 
 void RewardsServiceImpl::OnRemoveRecurring(const std::string& publisher_key,

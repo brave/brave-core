@@ -107,6 +107,8 @@ class RewardsServiceImpl : public RewardsService,
   double GetContributionAmount() override;
   brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
   void RemoveRecurring(const std::string& publisher_key) override;
+  void UpdateRecurringDonationsList() override;
+  void UpdateTipsList() override;
 
  private:
   typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
