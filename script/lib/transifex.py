@@ -14,6 +14,15 @@ import FP
 transifex_project_name = 'brave'
 base_url = 'https://www.transifex.com/api/2/'
 
+def transifex_name_from_filename(source_file_path, filename):
+  ext = os.path.splitext(source_file_path)[1]
+  if ext == '.grd':
+    return filename
+  elif 'brave_rewards' in source_file_path:
+    return 'rewards_extension'
+  elif 'brave-extension' in source_file_path:
+    return 'brave_extension'
+  assert False, 'JSON files should be mapped explicitly, this one is not: ' + source_file_path
 
 def create_xtb_format_translationbundle_tag(lang):
   """Creates the root XTB XML element"""
@@ -73,10 +82,10 @@ def get_transifex_languages(grd_file_path):
   return set([lang for (lang, xtb_rel_path) in xtb_files])
 
 
-def get_transifex_translation_file_content(filename, lang_code):
+def get_transifex_translation_file_content(source_file_path, filename, lang_code):
   """Obtains a translation Android xml format and returns the string"""
   lang_code = lang_code.replace('-', '_')
-  url_part = 'project/%s/resource/%s/translation/%s' % (transifex_project_name, filename, lang_code)
+  url_part = 'project/%s/resource/%s/translation/%s' % (transifex_project_name, transifex_name_from_filename(source_file_path, filename), lang_code)
   url = base_url + url_part
   r = requests.get(url, auth=get_auth())
   assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
@@ -99,10 +108,10 @@ def get_strings_dict_from_xtb_file(xtb_file_path):
   return { translation_tag.get('id'): textify(translation_tag) for translation_tag in translation_tags }
 
 
-def update_source_string_file_to_transifex(filename, content):
+def update_source_string_file_to_transifex(source_file_path, filename, content):
   """Uploads the specified source string file to transifex"""
   print 'Updating existing known resource for filename %s' % filename
-  url_part = 'project/%s/resource/%s/content' % (transifex_project_name, filename)
+  url_part = 'project/%s/resource/%s/content' % (transifex_project_name, transifex_name_from_filename(source_file_path, filename))
   url = base_url + url_part
   payload = {
     'content': content
@@ -113,13 +122,13 @@ def update_source_string_file_to_transifex(filename, content):
   return True
 
 
-def upload_source_string_file_to_transifex(filename, xml_content, i18n_type):
+def upload_source_string_file_to_transifex(source_file_path, filename, xml_content, i18n_type):
   """Uploads the specified source string file to transifex"""
   url_part = 'project/%s/resources/' % transifex_project_name
   url = base_url + url_part
   payload = {
-    'name': filename,
-    'slug': filename,
+    'name': transifex_name_from_filename(source_file_path, filename),
+    'slug': transifex_name_from_filename(source_file_path, filename),
     'content': xml_content,
     'i18n_type': i18n_type
   }
@@ -128,7 +137,7 @@ def upload_source_string_file_to_transifex(filename, xml_content, i18n_type):
   r = requests.post(url, json=payload, auth=get_auth(), headers=headers)
   if r.status_code < 200 or r.status_code > 299:
     if r.content.find('Resource with this Slug and Project already exists.') != -1:
-      return update_source_string_file_to_transifex(filename, xml_content)
+      return update_source_string_file_to_transifex(source_file_path, filename, xml_content)
     else:
       assert False, ('Aborting. Status code %d: %s' % (r.status_code, r.content))
   return True
@@ -319,9 +328,9 @@ def braveify(string_value):
           .replace('Google', 'Brave Software'))
 
 
-def upload_missing_translation_to_transifex(lang_code, filename, string_name, string_value, translated_value):
+def upload_missing_translation_to_transifex(source_string_path, lang_code, filename, string_name, string_value, translated_value):
   """Uploads the specified string to the specified language code."""
-  url_part = 'project/%s/resource/%s/translation/%s/string/%s/' % (transifex_project_name, filename, lang_code, get_transifex_string_hash(string_name))
+  url_part = 'project/%s/resource/%s/translation/%s/string/%s/' % (transifex_project_name, transifex_name_from_filename(source_string_path, filename), lang_code, get_transifex_string_hash(string_name))
   url = base_url + url_part
   translated_value = braveify(translated_value)
   payload = {
@@ -334,11 +343,11 @@ def upload_missing_translation_to_transifex(lang_code, filename, string_name, st
   headers = { 'Content-Type': 'application/json' }
   r = requests.put(url, json=payload, auth=get_auth(), headers=headers)
   assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
-  print 'Uploaded %s string: %s -- %s...' % (lang_code, string_name, translated_value[:12])
+  print 'Uploaded %s string: %s -- %s...' % (lang_code, string_name, translated_value[:12].encode('utf-8'))
   return True
 
 
-def upload_missing_translations_to_transifex(lang_code, filename, grd_strings, chromium_grd_strings, xtb_strings, chromium_xtb_strings):
+def upload_missing_translations_to_transifex(source_string_path, lang_code, filename, grd_strings, chromium_grd_strings, xtb_strings, chromium_xtb_strings):
   """For each chromium translation that we don't know about, upload it."""
   lang_code = lang_code.replace('-', '_')
   for idx, (string_name, string_value, string_fp) in enumerate(grd_strings):
@@ -346,7 +355,7 @@ def upload_missing_translations_to_transifex(lang_code, filename, grd_strings, c
     chromium_string_fp = str(chromium_grd_strings[idx][2])
     if chromium_string_fp in chromium_xtb_strings and string_fp not in xtb_strings:
       #print 'Uploading for locale %s for missing string ID: %s' % (lang_code, string_name)
-      upload_missing_translation_to_transifex(lang_code, filename, string_name, string_value, chromium_xtb_strings[chromium_string_fp])
+      upload_missing_translation_to_transifex(source_string_path, lang_code, filename, string_name, string_value, chromium_xtb_strings[chromium_string_fp])
 
 
 def fix_missing_xtb_strings_from_chromium_xtb_strings(src_root, grd_file_path):
@@ -374,7 +383,7 @@ def fix_missing_xtb_strings_from_chromium_xtb_strings(src_root, grd_file_path):
     xtb_strings = get_strings_dict_from_xtb_file(xtb_file)
     chromium_xtb_strings = get_strings_dict_from_xtb_file(chromium_xtb_file)
     assert(len(grd_strings) == len(chromium_grd_strings))
-    upload_missing_translations_to_transifex(lang_code, filename, grd_strings, chromium_grd_strings, xtb_strings, chromium_xtb_strings)
+    upload_missing_translations_to_transifex(grd_file_path, lang_code, filename, grd_strings, chromium_grd_strings, xtb_strings, chromium_xtb_strings)
 
 
 def check_for_chromium_upgrade(src_root, grd_file_path):
@@ -387,7 +396,7 @@ def check_for_chromium_upgrade(src_root, grd_file_path):
 def get_transifex_source_resource_strings(grd_file_path):
   """Obtains the list of strings from Transifex"""
   filename = os.path.basename(grd_file_path).split('.')[0]
-  url_part = 'project/%s/resource/%s/content/' % (transifex_project_name, filename)
+  url_part = 'project/%s/resource/%s/content/' % (transifex_project_name, transifex_name_from_filename(grd_file_path, filename))
   url = base_url + url_part
   r = requests.get(url, auth=get_auth())
   assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
@@ -430,33 +439,34 @@ def upload_source_files_to_transifex(source_file_path, filename):
   else:
     assert False, 'Unsupported source file ext %s: %s' % (ext, source_file_path)
 
-  uploaded = upload_source_string_file_to_transifex(filename, content, i18n_type)
+  uploaded = upload_source_string_file_to_transifex(source_file_path, filename, content, i18n_type)
   assert uploaded, 'Could not upload xml file'
 
 
 def pull_source_files_from_transifex(source_file_path, filename):
   ext = os.path.splitext(source_file_path)[1]
   if ext == '.grd':
-      # Generate the intermediate Transifex format
-      xtb_files = get_xtb_files(source_file_path)
-      base_path = os.path.dirname(source_file_path)
-      grd_strings = get_grd_strings(source_file_path)
-      for (lang_code, xtb_rel_path) in xtb_files:
-        xtb_file_path = os.path.join(base_path, xtb_rel_path)
-        print 'Updating: ', xtb_file_path, lang_code
-        xml_content = get_transifex_translation_file_content(filename, lang_code)
-        translations = get_strings_dict_from_xml_content(xml_content)
-        xtb_content = generate_xtb_content(lang_code, grd_strings, translations)
-        with open(xtb_file_path, mode='w') as f:
-          f.write(xtb_content)
+    # Generate the intermediate Transifex format
+    xtb_files = get_xtb_files(source_file_path)
+    base_path = os.path.dirname(source_file_path)
+    grd_strings = get_grd_strings(source_file_path)
+    for (lang_code, xtb_rel_path) in xtb_files:
+      xtb_file_path = os.path.join(base_path, xtb_rel_path)
+      print 'Updating: ', xtb_file_path, lang_code
+      xml_content = get_transifex_translation_file_content(source_file_path, filename, lang_code)
+      translations = get_strings_dict_from_xml_content(xml_content)
+      xtb_content = generate_xtb_content(lang_code, grd_strings, translations)
+      with open(xtb_file_path, mode='w') as f:
+        f.write(xtb_content)
   elif ext == '.json':
     langs_dir_path = os.path.dirname(os.path.dirname(source_file_path))
     lang_codes = set(os.listdir(langs_dir_path))
     lang_codes.discard('en_US')
+    lang_codes.discard('en')
     lang_codes.discard('.DS_Store')
     for lang_code in lang_codes:
       print 'getting filename %s for lang_code %s' % (filename, lang_code)
-      content = get_transifex_translation_file_content(filename, lang_code)
+      content = get_transifex_translation_file_content(source_file_path, filename, lang_code)
       localized_translation_path = os.path.join(langs_dir_path, lang_code, 'messages.json')
       with open(localized_translation_path, mode='w') as f:
         f.write(content.encode('utf-8'))
