@@ -218,15 +218,9 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
   for (const auto& rule : content_setting_rules_->autoplay_rules) {
     if (rule.primary_pattern == ContentSettingsPattern::Wildcard())
         continue;
-    ContentSettingsPattern secondary_pattern = rule.secondary_pattern;
-    if (rule.secondary_pattern ==
-        ContentSettingsPattern::FromString("https://firstParty/*")) {
-        secondary_pattern = ContentSettingsPattern::FromString(
-            "[*.]" + GetOriginOrURL(frame).HostNoBrackets());
-    }
     if (rule.primary_pattern.Matches(primary_url) &&
-        (secondary_pattern == ContentSettingsPattern::Wildcard() ||
-         secondary_pattern.Matches(secondary_url))) {
+        (rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
+         rule.secondary_pattern.Matches(secondary_url))) {
       if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK)
         return false;
     }
