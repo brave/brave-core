@@ -66,6 +66,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Make sync managed to dsiable some UI after password saving.
   registry->SetDefaultPrefValue(syncer::prefs::kSyncManaged, base::Value(true));
+
+  // Make sure sign into Brave is not enabled
+  // The older kSigninAllowed is deprecated and only in use in Android until C71.
+  registry->SetDefaultPrefValue(prefs::kSigninAllowedOnNextStartup, base::Value(false));
 }
 
 }  // namespace brave
