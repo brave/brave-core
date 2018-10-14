@@ -102,6 +102,7 @@ ContentSite PublisherInfoToContentSite(
   content_site.provider = publisher_info.provider;
   content_site.favicon_url = publisher_info.favicon_url;
   content_site.id = publisher_info.id;
+  content_site.reconcile_stamp = publisher_info.reconcile_stamp;
   return content_site;
 }
 
@@ -528,6 +529,7 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   if (result == ledger::Result::LEDGER_OK) {
     // TODO add notification service when implemented
     auto now = base::Time::Now();
+    GetWalletProperties();
     ledger_->OnReconcileCompleteSuccess(viewing_id,
         category,
         probi,
@@ -1383,6 +1385,9 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
       base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
                      AsWeakPtr()));
 
+  if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+    GetCurrentTips();
+  }
 }
 
 bool SaveRecurringDonationOnFileTaskRunner(const brave_rewards::RecurringDonation info,
@@ -1395,7 +1400,7 @@ bool SaveRecurringDonationOnFileTaskRunner(const brave_rewards::RecurringDonatio
 
 void RewardsServiceImpl::OnRecurringDonationSaved(bool success) {
   if (success) {
-    // TODO reload donate table
+    GetRecurringDonations(std::bind(&RewardsServiceImpl::OnRecurringDonationUpdated, this, _1));
   }
 }
 
@@ -1437,6 +1442,55 @@ void RewardsServiceImpl::GetRecurringDonations(ledger::RecurringDonationCallback
       base::Bind(&RewardsServiceImpl::OnRecurringDonationsData,
                      AsWeakPtr(),
                      callback));
+
+}
+
+void RewardsServiceImpl::OnRecurringDonationUpdated(const ledger::PublisherInfoList& list) {
+  brave_rewards::ContentSiteList new_list;
+
+  for (auto &publisher : list) {
+    brave_rewards::ContentSite site = PublisherInfoToContentSite(publisher);
+    site.percentage = publisher.weight;
+    new_list.push_back(site);
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnRecurringDonationUpdated(this, new_list);
+  }
+}
+
+ledger::PublisherInfoList GetCurrentTipsOnFileTaskRunner(PublisherInfoDatabase* backend) {
+  ledger::PublisherInfoList list;
+  if (!backend) {
+    return list;
+  }
+
+  auto now = base::Time::Now();
+  backend->GetTips(&list, GetPublisherMonth(now), GetPublisherYear(now));
+
+  return list;
+}
+
+void RewardsServiceImpl::OnGetCurrentTipsData(const ledger::PublisherInfoList list) {
+  brave_rewards::ContentSiteList new_list;
+
+  for (auto &publisher : list) {
+    brave_rewards::ContentSite site = PublisherInfoToContentSite(publisher);
+    site.percentage = publisher.weight;
+    new_list.push_back(site);
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnCurrentTips(this, new_list);
+  }
+}
+
+void RewardsServiceImpl::GetCurrentTips() {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&GetCurrentTipsOnFileTaskRunner,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnGetCurrentTipsData,
+                     AsWeakPtr()));
 
 }
 

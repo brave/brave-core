@@ -51,7 +51,7 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
             payload.recurring
           ])
           state = { ...state }
-          state.finished = true;
+          state.finished = true
         } else {
           // TODO return error
         }

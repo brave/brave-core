@@ -48,6 +48,7 @@ class PublisherInfoDatabase {
   std::unique_ptr<ledger::PublisherInfo> GetMediaPublisherInfo(
       const std::string& media_key);
   void GetRecurringDonations(ledger::PublisherInfoList* list);
+  void GetTips(ledger::PublisherInfoList* list, ledger::PUBLISHER_MONTH month, int year);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();

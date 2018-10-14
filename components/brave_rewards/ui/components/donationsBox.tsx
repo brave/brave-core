@@ -9,10 +9,12 @@ import { connect } from 'react-redux'
 // Components
 import { Checkbox, Column, Grid, ControlWrapper } from 'brave-ui/components'
 import { DisabledContent, Box, TableDonation, List, Tokens } from 'brave-ui/features/rewards'
+import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
 import { getLocale } from '../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
+import * as utils from '../utils'
 
 // Assets
 const donate = require('../../../img/rewards/donate_disabled.svg')
@@ -73,14 +75,95 @@ class DonationBox extends React.Component<Props, {}> {
     )
   }
 
-  getDonationRows = () => []
+  getTotal = () => {
+    const { reports } = this.props.rewardsData
+
+    const currentTime = new Date()
+    const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
+    const report: Rewards.Report = reports[reportKey]
+
+    if (report) {
+      return utils.donationTotal(report)
+    }
+
+    return '0.0'
+  }
+
+  getDonationRows = () => {
+    const { walletInfo, recurringList, tipsList } = this.props.rewardsData
+
+    // Recurring
+    const recurring = recurringList.map((item: Rewards.Publisher) => {
+      let name = item.name
+      if (item.provider) {
+        name = `${name} ${getLocale('on')} ${item.provider}`
+      }
+
+      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      if (item.favIcon) {
+        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+      }
+
+      return {
+        profile: {
+          name,
+          verified: item.verified,
+          provider: (item.provider ? item.provider : undefined) as Provider,
+          src: faviconUrl
+        },
+        contribute: {
+          tokens: item.percentage.toFixed(1),
+          converted: utils.convertBalance(item.percentage.toString(), walletInfo.rates)
+        },
+        url: item.url,
+        type: 'recurring' as any,
+        onRemove: () => { this.actions.removeRecurring(item.id) }
+      }
+    })
+
+    // Tips
+    const tips = tipsList.map((item: Rewards.Publisher) => {
+      let name = item.name
+      if (item.provider) {
+        name = `${name} ${getLocale('on')} ${item.provider}`
+      }
+
+      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      if (item.favIcon) {
+        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+      }
+
+      const token = utils.convertProbiToFixed(item.percentage.toString())
+
+      return {
+        profile: {
+          name,
+          verified: item.verified,
+          provider: (item.provider ? item.provider : undefined) as Provider,
+          src: faviconUrl
+        },
+        contribute: {
+          tokens: token,
+          converted: utils.convertBalance(token, walletInfo.rates)
+        },
+        url: item.url,
+        text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
+        type: 'donation' as any,
+        onRemove: () => { this.actions.removeRecurring(item.id) }
+      }
+    })
+
+    return recurring.concat(tips)
+  }
 
   render () {
-    const { rewardsData } = this.props
-    const showDisabled = rewardsData.firstLoad !== false || !rewardsData.enabledMain
+    const { walletInfo, firstLoad, enabledMain } = this.props.rewardsData
+    const showDisabled = firstLoad !== false || !enabledMain
     const donationRows = this.getDonationRows()
     const numRows = donationRows.length
     const allSites = !(numRows > 5)
+    const total = this.getTotal()
+    const converted = utils.convertBalance(total, walletInfo.rates)
 
     return (
       <Box
@@ -91,7 +174,7 @@ class DonationBox extends React.Component<Props, {}> {
         disabledContent={showDisabled ? this.disabledContent() : null}
       >
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens value={'0.0'} converted={'0.00'} />
+          <Tokens value={total} converted={converted} />
         </List>
         <TableDonation
           rows={donationRows}

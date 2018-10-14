@@ -116,3 +116,12 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
 
   return result
 }
+
+export const donationTotal = (report: Rewards.Report) => {
+  if (!report) {
+    return '0.0'
+  }
+
+  const tips = new BigNumber(report.tips)
+  return new BigNumber(report.donation).plus(tips).dividedBy('1e18').toFixed(1, BigNumber.ROUND_DOWN)
+}

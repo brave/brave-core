@@ -60,6 +60,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RestorePublishers(const base::ListValue* args);
   void WalletExists(const base::ListValue* args);
   void GetContributionAmount(const base::ListValue* args);
+  void RemoveRecurring(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -85,6 +86,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                            unsigned int result,
                            const std::string& viewing_id,
                            const std::string& probi) override;
+  void OnRecurringDonationUpdated(brave_rewards::RewardsService* rewards_service,
+                                  brave_rewards::ContentSiteList) override;
+  void OnCurrentTips(brave_rewards::RewardsService* rewards_service,
+                                  brave_rewards::ContentSiteList) override;
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -164,6 +169,9 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getContributionAmount",
                                     base::BindRepeating(&RewardsDOMHandler::GetContributionAmount,
+                                                        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.removeRecurring",
+                                    base::BindRepeating(&RewardsDOMHandler::RemoveRecurring,
                                                         base::Unretained(this)));
 }
 
@@ -552,6 +560,61 @@ void RewardsDOMHandler::OnReconcileComplete(brave_rewards::RewardsService* rewar
   GetAllBalanceReports();
   OnContentSiteUpdated(rewards_service);
   GetReconcileStamp(nullptr);
+}
+
+void RewardsDOMHandler::OnRecurringDonationUpdated(brave_rewards::RewardsService* rewards_service,
+                                                   const brave_rewards::ContentSiteList list) {
+   if (web_ui()->CanCallJavascript()) {
+    auto publishers = std::make_unique<base::ListValue>();
+    for (auto const& item : list) {
+      auto publisher = std::make_unique<base::DictionaryValue>();
+      publisher->SetString("id", item.id);
+      publisher->SetDouble("percentage", item.percentage);
+      publisher->SetString("publisherKey", item.id);
+      publisher->SetBoolean("verified", item.verified);
+      publisher->SetInteger("excluded", item.excluded);
+      publisher->SetString("name", item.name);
+      publisher->SetString("provider", item.provider);
+      publisher->SetString("url", item.url);
+      publisher->SetString("favIcon", item.favicon_url);
+      publisher->SetInteger("tipDate", 0);
+      publishers->Append(std::move(publisher));
+    }
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recurringDonationUpdate", *publishers);
+  }
+}
+
+void RewardsDOMHandler::OnCurrentTips(brave_rewards::RewardsService* rewards_service,
+                                                   const brave_rewards::ContentSiteList list) {
+   if (web_ui()->CanCallJavascript()) {
+    auto publishers = std::make_unique<base::ListValue>();
+    for (auto const& item : list) {
+      auto publisher = std::make_unique<base::DictionaryValue>();
+      publisher->SetString("id", item.id);
+      publisher->SetDouble("percentage", item.percentage);
+      publisher->SetString("publisherKey", item.id);
+      publisher->SetBoolean("verified", item.verified);
+      publisher->SetInteger("excluded", item.excluded);
+      publisher->SetString("name", item.name);
+      publisher->SetString("provider", item.provider);
+      publisher->SetString("url", item.url);
+      publisher->SetString("favIcon", item.favicon_url);
+      publisher->SetInteger("tipDate", item.reconcile_stamp);
+      publishers->Append(std::move(publisher));
+    }
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.currentTips", *publishers);
+  }
+}
+
+void RewardsDOMHandler::RemoveRecurring(const base::ListValue *args) {
+  if (rewards_service_) {
+    std::string publisherKey;
+    args->GetString(0, &publisherKey);
+    // TODO add
+    // rewards_service_->ExcludePublisher(publisherKey);
+  }
 }
 
 }  // namespace

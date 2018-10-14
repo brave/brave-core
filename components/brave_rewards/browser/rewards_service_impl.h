@@ -153,6 +153,9 @@ class RewardsServiceImpl : public RewardsService,
   void SaveRecurringDonation(const std::string& publisher_key, const int amount);
   void OnRecurringDonationsData(const ledger::RecurringDonationCallback callback,
                                 const ledger::PublisherInfoList list);
+  void OnRecurringDonationUpdated(const ledger::PublisherInfoList& list);
+  void OnGetCurrentTipsData(const ledger::PublisherInfoList list);
+  void GetCurrentTips();
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

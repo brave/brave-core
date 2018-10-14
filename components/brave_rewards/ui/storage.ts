@@ -38,7 +38,9 @@ export const defaultState: Rewards.State = {
     modalBackup: false
   },
   autoContributeList: [],
-  reports: {}
+  reports: {},
+  recurringList: [],
+  tipsList: []
 }
 
 const cleanData = (state: Rewards.State) => state

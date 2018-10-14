@@ -210,7 +210,7 @@ bool PublisherInfoDatabase::CreateRecurringDonationTable() {
   sql.append(name);
   sql.append(
       "("
-      "publisher_id LONGVARCHAR NOT NULL,"
+      "publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE,"
       "amount DOUBLE DEFAULT 0 NOT NULL,"
       "added_date INTEGER DEFAULT 0 NOT NULL,"
       "CONSTRAINT fk_recurring_donation_publisher_id"
@@ -573,6 +573,42 @@ void PublisherInfoDatabase::GetRecurringDonations(ledger::PublisherInfoList* lis
       db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, rd.amount, rd.added_date "
                              "FROM recurring_donation as rd "
                              "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
+
+  while (info_sql.Step()) {
+    std::string id(info_sql.ColumnString(0));
+
+    ledger::PublisherInfo publisher(id, ledger::PUBLISHER_MONTH::ANY, -1);
+
+    publisher.name = info_sql.ColumnString(1);
+    publisher.url = info_sql.ColumnString(2);
+    publisher.favicon_url = info_sql.ColumnString(3);
+    publisher.weight = info_sql.ColumnDouble(4);
+    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
+
+    list->push_back(publisher);
+  }
+}
+
+void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list, ledger::PUBLISHER_MONTH month, int year) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return;
+
+  sql::Statement info_sql(
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, ci.probi, ci.date "
+                             "FROM contribution_info as ci "
+                             "INNER JOIN publisher_info AS pi ON ci.publisher_id = pi.publisher_id "
+                             "AND ci.month = ? AND ci.year = ? "
+                             "AND (ci.category = ? OR ci.category = ?)"));
+
+  info_sql.BindInt(0, month);
+  info_sql.BindInt(1, year);
+  info_sql.BindInt(2, ledger::PUBLISHER_CATEGORY::DIRECT_DONATION);
+  info_sql.BindInt(3, ledger::PUBLISHER_CATEGORY::TIPPING);
 
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
