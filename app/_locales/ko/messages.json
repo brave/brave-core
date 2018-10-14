@@ -1,114 +1,123 @@
 {
-    "shieldsControlsCookieControl": {
-        "message": "쿠키 제어",
-        "description": "Label Cookie Control dropdown options"
-    },
-    "shieldsControlsCookieOptionBlockAll": {
-        "message": "모든 쿠키 차단",
-        "description": "Cookie control dropdown option Block All Cookies"
-    },
-    "shieldsControlsAdControlOptionAllowAdsTracking": {
-        "message": "광고 및 추적 허용",
-        "description": "Ad Control dropdown box, option allow ads and tracking"
-    },
-    "shieldsHeaderToggleLeftPosition": {
-        "message": "아래",
-        "description": "Label for top shields switch in shields header turned off position"
-    },
-    "shieldsStatsHttpsUpgrades": {
-        "message": "HTTPS 업그레이드",
-        "description": "Label for shields stats, HTTPS upgrades count"
-    },
-    "shieldsControlsFingerprintingOptionAllowAll": {
-        "message": "모든 디지털 지문 허용",
-        "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
-    },
-    "shieldsFooterReload": {
-        "message": "새로 고침...",
-        "description": "Shields controls footer, label for action reload page to apply current shields settings"
-    },
-    "shieldsControlsAdControl": {
-        "message": "광고 제어",
-        "description": "Label for Advertisement Control dropdown box options "
-    },
-    "shieldsStatsScriptsBlocked": {
-        "message": "차단된 스크립트",
-        "description": "Label for shields stats, Scripts Blocked count"
-    },
-    "shieldsHeaderToggleRightPosition": {
-        "message": "위",
-        "description": "Label for top shields switch in shields header turned on position"
-    },
-    "shieldsControlsFingerprintingOptionBlockAll": {
-        "message": "모든 디지털 지문  차단",
-        "description": "Fingerprinting control dropdown option Block All Fingerprinting"
-    },
-    "shieldsControlsCookieOptionAllowAll": {
-        "message": "모든 쿠키 허용",
-        "description": "Cookie control dropdown option Allow All Cookies"
-    },
-    "shieldsControlsHttpsEverywhereSwitch": {
-        "message": "항상 HTTPS 사용",
-        "description": "Shields controls, switch for HTTPS Everywhere"
-    },
-    "shieldsControlsCookieOptionBlock3p": {
-        "message": "타사 쿠키 차단",
-        "description": "Cookie control dropdown option Block 3rd Party Cookies"
-    },
-    "shieldsControlsFingerprintingOptionBlock3p": {
-        "message": "타사 디지털 지문 차단",
-        "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
-    },
-    "noScriptSwitches": {
-        "message": "스위치를 사용하여 스크립트 차단 중지",
-        "description": "Instructions for per-origin noScript switches"
-    },
-    "shieldsHeaderForSite": {
-        "message": "다음 사이트에 대한 차단 설정",
-        "description": "Label for shields header near current site name"
-    },
-    "noScriptApplyOnce": {
-        "message": "적용",
-        "description": "Label for applying per-origin noScript settings"
-    },
-    "shieldsHeaderShieldsToggle": {
-        "message": "차단",
-        "description": "Label for top shields switch in shields header"
-    },
-    "appName": {
-        "message": "Brave 확장 기능",
-        "description": "The name of the the extension."
-    },
-    "shieldsFooterEditDefault": {
-        "message": "기본 차단 설정 편집...",
-        "description": "Shields controls footer, link to edit default shields settings"
-    },
-    "shieldsControlsAdControlOptionBlockAds": {
-        "message": "광고 차단",
-        "description": "Ad Control dropdown box, option block ads"
-    },
-    "shieldsFingerPrintingBlocked": {
-        "message": "디지털 지문 요소 차단",
-        "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-    },
-    "shieldsControlsBlockPhishingMalwareSwitch": {
-        "message": "피싱/악성 코드 차단",
-        "description": "Shields controls, switch for Block Phishing/Malware"
-    },
-    "shieldsControlsAdvancedControls": {
-        "message": "고급 제어",
-        "description": "Label for advanced controls group"
-    },
-    "shieldsControlsBlockScriptsSwitch": {
-        "message": "스크립트 차단",
-        "description": "Shields controls, switch for Block Scripts"
-    },
-    "shieldsStatsAdsTrackersBlocked": {
-        "message": "차단된 광고 및 추적",
-        "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-    },
-    "shieldsControlsFingerprintingProtection": {
-        "message": "디지털 지문 보호",
-        "description": "Label Fingerprinting Protection dropdown options"
-    }
+  "appName": {
+    "message": "The Brave Extension",
+    "description": "The name of the the extension."
+  },
+
+  "shieldsStatsAdsTrackersBlocked": {
+    "message": "Ads and Trackers Blocked",
+    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  },
+  "shieldsStatsHttpsUpgrades": {
+    "message": "HTTPS Upgrades",
+    "description": "Label for shields stats, HTTPS upgrades count"
+  },
+  "shieldsStatsScriptsBlocked": {
+    "message": "Scripts Blocked",
+    "description": "Label for shields stats, Scripts Blocked count"
+  },
+  "shieldsFingerPrintingBlocked": {
+    "message": "Fingerprinting Methods Blocked",
+    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  },
+
+  "shieldsHeaderShieldsToggle": {
+    "message": "Shields",
+    "description": "Label for top shields switch in shields header"
+  },
+  "shieldsHeaderToggleLeftPosition": {
+    "message": "Down",
+    "description": "Label for top shields switch in shields header turned off position"
+  },
+  "shieldsHeaderToggleRightPosition": {
+    "message": "Up",
+    "description": "Label for top shields switch in shields header turned on position"
+  },
+  "shieldsHeaderForSite": {
+    "message": "Site shield settings for",
+    "description": "Label for shields header near current site name"
+  },
+
+  "shieldsControlsAdvancedControls": {
+    "message": "Advanced Controls",
+    "description": "Label for advanced controls group"
+  },
+
+  "shieldsControlsAdControl": {
+    "message": "Ad Control",
+    "description": "Label for Advertisement Control dropdown box options "
+  },
+  "shieldsControlsAdControlOptionBlockAds": {
+    "message": "Block Ads",
+    "description": "Ad Control dropdown box, option block ads"
+  },
+  "shieldsControlsAdControlOptionAllowAdsTracking": {
+    "message": "Allow Ads and Tracking",
+    "description": "Ad Control dropdown box, option allow ads and tracking"
+  },
+
+  "shieldsControlsCookieControl": {
+    "message": "Cookie Control",
+    "description": "Label Cookie Control dropdown options"
+  },
+  "shieldsControlsCookieOptionBlock3p": {
+    "message": "Block 3rd Party Cookies",
+    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  },
+  "shieldsControlsCookieOptionAllowAll": {
+    "message": "Allow All Cookies",
+    "description": "Cookie control dropdown option Allow All Cookies"
+  },
+  "shieldsControlsCookieOptionBlockAll": {
+    "message": "Block All Cookies",
+    "description": "Cookie control dropdown option Block All Cookies"
+  },
+
+  "shieldsControlsFingerprintingProtection": {
+    "message": "Fingerprinting Protection",
+    "description": "Label Fingerprinting Protection dropdown options"
+  },
+  "shieldsControlsFingerprintingOptionBlock3p": {
+    "message": "Block 3rd Party Fingerprinting",
+    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  },
+  "shieldsControlsFingerprintingOptionAllowAll": {
+    "message": "Allow All Fingerprinting",
+    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  },
+  "shieldsControlsFingerprintingOptionBlockAll": {
+    "message": "Block All Fingerprinting",
+    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  },
+
+  "shieldsControlsHttpsEverywhereSwitch": {
+    "message": "HTTPS Everywhere",
+    "description": "Shields controls, switch for HTTPS Everywhere"
+  },
+  "shieldsControlsBlockScriptsSwitch": {
+    "message": "Block Scripts",
+    "description": "Shields controls, switch for Block Scripts"
+  },
+  "shieldsControlsBlockPhishingMalwareSwitch": {
+    "message": "Block Phishing/Malware",
+    "description": "Shields controls, switch for Block Phishing/Malware"
+  },
+
+  "noScriptSwitches": {
+    "message": "Toggle switches to disable script blocking",
+    "description": "Instructions for per-origin noScript switches"
+  },
+  "noScriptApplyOnce": {
+    "message": "Apply",
+    "description": "Label for applying per-origin noScript settings"
+  },
+
+  "shieldsFooterEditDefault":{
+    "message": "Edit default shield settings...",
+    "description": "Shields controls footer, link to edit default shields settings"
+  },
+  "shieldsFooterReload":{
+    "message": "Reload...",
+    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  }
 }
