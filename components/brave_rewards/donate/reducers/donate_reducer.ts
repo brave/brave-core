@@ -57,6 +57,13 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
         }
         break
       }
+    case types.GET_RECURRING_DONATIONS:
+      chrome.send('brave_rewards_donate.getRecurringDonations')
+      break
+    case types.ON_RECURRING_DONATIONS:
+      state = { ...state }
+      state.recurringList = action.payload.list
+      break
   }
 
   return state

@@ -25,3 +25,9 @@ export const onDonate = (publisherKey: string, amount: number, recurring: boolea
   amount,
   recurring
 })
+
+export const getRecurringDonations = () => action(types.GET_RECURRING_DONATIONS)
+
+export const onRecurringDonations = (list: string[]) => action(types.ON_RECURRING_DONATIONS, {
+  list
+})
