@@ -371,6 +371,26 @@ bool BatPublishers::getPublisherAllowVideos() const {
   return state_->allow_videos_;
 }
 
+void BatPublishers::synopsisNormalizerInternalContributre(ledger::PublisherInfoList* newList, bool saveData,
+    const std::vector<braveledger_bat_helper::PUBLISHER_ST>& oldList, uint32_t record) {
+
+  ledger::PublisherInfoList list;
+
+  for(const auto& publisher: oldList) {
+    ledger::PublisherInfo new_publisher;
+    new_publisher.id = publisher.id_;
+    new_publisher.percent = publisher.percent_;
+    new_publisher.weight = publisher.weight_;
+    new_publisher.duration = publisher.duration_;
+    new_publisher.score = publisher.score_;
+    new_publisher.visits = publisher.visits_;
+
+    list.push_back(new_publisher);
+  }
+
+  synopsisNormalizerInternal(newList, saveData, list, record);
+}
+
 void BatPublishers::synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
     const ledger::PublisherInfoList& oldList, uint32_t /* next_record */) {
   // TODO SZ: We can pass non const value here to avoid copying
@@ -468,7 +488,7 @@ void BatPublishers::topN(const unsigned int& ballots, const std::string& viewing
     // Direct one-time contribution
     braveledger_bat_helper::WINNERS_ST winner;
     winner.votes_ = ballots;
-    winner.publisher_data_.id_ = reconcile.directions_.front().publisher_.id;
+    winner.publisher_data_.id_ = reconcile.directions_.front().publisher_key_;
     winner.publisher_data_.duration_ = 0;
     winner.publisher_data_.score_ = 0;
     winner.publisher_data_.visits_ = 0;
@@ -480,9 +500,9 @@ void BatPublishers::topN(const unsigned int& ballots, const std::string& viewing
 
 void BatPublishers::topNAutoContribute(const unsigned int& ballots,
                                        const std::string& viewing_id,
-                                       const ledger::PublisherInfoList& list) {
+                                       const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list) {
   ledger::PublisherInfoList newList;
-  synopsisNormalizerInternal(&newList, false, list, 0);
+  synopsisNormalizerInternalContributre(&newList, false, list, 0);
   std::sort(newList.begin(), newList.end());
 
   unsigned int totalVotes = 0;
@@ -517,21 +537,21 @@ void BatPublishers::topNAutoContribute(const unsigned int& ballots,
 
 void BatPublishers::topNRecurringDonation(const unsigned int& ballots,
                                           const std::string& viewing_id,
-                                          const ledger::PublisherInfoList& list) {
+                                          const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
   unsigned int totalVotes = 0;
   std::vector<unsigned int> votes;
   std::vector<braveledger_bat_helper::WINNERS_ST> res;
   for (const auto &item : list) {
-    if (item.weight <= 0) {
+    if (item.weight_ <= 0) {
       continue;
     }
 
     braveledger_bat_helper::WINNERS_ST winner;
-    double percent = item.weight / reconcile.fee_;
+    double percent = item.weight_ / reconcile.fee_;
     winner.votes_ = (unsigned int)std::lround(percent * (double)ballots);
     totalVotes += winner.votes_;
-    winner.publisher_data_.id_ = item.id;
+    winner.publisher_data_.id_ = item.id_;
     winner.publisher_data_.duration_ = 0;
     winner.publisher_data_.score_ = 0;
     winner.publisher_data_.visits_ = 0;

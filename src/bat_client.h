@@ -10,6 +10,7 @@
 #include <mutex>
 
 #include "bat/ledger/ledger_url_loader.h"
+#include "bat/ledger/publisher_info.h"
 #include "bat_helper.h"
 #include "url_request_handler.h"
 
@@ -52,7 +53,7 @@ class BatClient {
                               const ledger::PublisherInfoList& list);
   void reconcile(const std::string& viewingId,
       const ledger::PUBLISHER_CATEGORY category,
-      const ledger::PublisherInfoList& list,
+      const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list,
       const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions = {});
   unsigned int ballots(const std::string& viewingId);
   void votePublishers(const std::vector<std::string>& publishers, const std::string& viewingId);

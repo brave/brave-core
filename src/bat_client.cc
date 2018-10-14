@@ -283,12 +283,27 @@ bool BatClient::isReadyForReconcile() {
 
 void BatClient::reconcilePublisherList(const ledger::PUBLISHER_CATEGORY category,
                                        const ledger::PublisherInfoList& list) {
-  reconcile(ledger_->GenerateGUID(), category, list);
+
+  std::vector<braveledger_bat_helper::PUBLISHER_ST> newList;
+
+  for(const auto& publisher: list) {
+    braveledger_bat_helper::PUBLISHER_ST new_publisher;
+    new_publisher.id_ = publisher.id;
+    new_publisher.percent_ = publisher.percent;
+    new_publisher.weight_ = publisher.weight;
+    new_publisher.duration_ = publisher.duration;
+    new_publisher.score_ = publisher.score;
+    new_publisher.visits_ = publisher.visits;
+
+    newList.push_back(new_publisher);
+  }
+
+  reconcile(ledger_->GenerateGUID(), category, newList);
 }
 
 void BatClient::reconcile(const std::string& viewingId,
     const ledger::PUBLISHER_CATEGORY category,
-    const ledger::PublisherInfoList& list,
+    const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list,
     const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions) {
   if (currentReconciles_->count(viewingId) > 0) {
     LOG(ERROR) << "unable to reconcile with the same viewing id";
@@ -321,13 +336,13 @@ void BatClient::reconcile(const std::string& viewingId,
     }
 
     for (const auto& publisher : list) {
-      if (publisher.id.empty()) {
+      if (publisher.id_.empty()) {
         LOG(ERROR) << "recurring donation is missing publisher";
         // TODO add error callback
         return;
       }
 
-      fee += publisher.weight;
+      fee += publisher.weight_;
     }
 
     if (fee > balance) {
@@ -340,14 +355,14 @@ void BatClient::reconcile(const std::string& viewingId,
 
   if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
     for (const auto& direction : directions) {
-      if (direction.publisher_.id.empty()) {
+      if (direction.publisher_key_.empty()) {
         LOG(ERROR) << "reconcile direction missing publisher";
         // TODO add error callback
         return;
       }
 
       if (direction.currency_ != CURRENCY) {
-        LOG(ERROR) << "reconcile direction currency invalid for " << direction.publisher_.id;
+        LOG(ERROR) << "reconcile direction currency invalid for " << direction.publisher_key_;
         // TODO add error callback
         return;
       }

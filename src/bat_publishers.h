@@ -163,6 +163,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void calcScoreConsts();
 
   void synopsisNormalizer(const ledger::PublisherInfo& info);
+  void synopsisNormalizerInternalContributre(ledger::PublisherInfoList* newList, bool saveData,
+    const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list, uint32_t /* next_record */);
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
     const ledger::PublisherInfoList& list, uint32_t /* next_record */);
 
@@ -179,9 +181,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void topN(const unsigned int& ballots,const std::string& viewing_id);
   void topNAutoContribute(const unsigned int& ballots, const std::string& viewing_id,
-    const ledger::PublisherInfoList& list);
+    const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list);
   void topNRecurringDonation(const unsigned int& ballots, const std::string& viewing_id,
-    const ledger::PublisherInfoList& list);
+    const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list);
 
   std::unique_ptr<braveledger_bat_helper::PUBLISHER_STATE_ST> state_;
 

@@ -452,7 +452,7 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
     Reconcile();
   }
 
-  ledger_client_->OnReconcileComplete(result, viewing_id, reconcile.category_, probi);
+  ledger_client_->OnReconcileComplete(result, viewing_id, (ledger::PUBLISHER_CATEGORY )reconcile.category_, probi);
   if (result != ledger::Result::LEDGER_OK) {
     // error handling
     return;
@@ -612,9 +612,14 @@ void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
 }
   
 void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) {
-  auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher, amount, currency);
+  if (publisher.id.empty()) {
+    // TODO add error flow
+    return;
+  }
+
+  auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher.id, amount, currency);
   auto direction_list = std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
-  ledger::PublisherInfoList list;
+  std::vector<braveledger_bat_helper::PUBLISHER_ST> list;
   bat_client_->reconcile(GenerateGUID(),
                          ledger::PUBLISHER_CATEGORY::DIRECT_DONATION,
                          list,
@@ -808,7 +813,7 @@ void LedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
     auto reconcile = GetReconcileById(viewing_id);
     auto donations = reconcile.directions_;
     if (donations.size() > 0) {
-      std::string publisher_key = donations[0].publisher_.id;
+      std::string publisher_key = donations[0].publisher_key_;
       ledger_client_->SaveContributionInfo(probi, month, year, date, publisher_key, category);
     }
     return;
@@ -823,8 +828,8 @@ void LedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
 
     for (auto &publisher : reconcile.list_) {
       // TODO NZ remove when we completely switch to probi
-      const std::string probi = std::to_string((int)publisher.weight) + "000000000000000000";
-      ledger_client_->SaveContributionInfo(probi, month, year, date, publisher.id, category);
+      const std::string probi = std::to_string((int)publisher.weight_) + "000000000000000000";
+      ledger_client_->SaveContributionInfo(probi, month, year, date, publisher.id_, category);
     }
 
     return;

@@ -1107,7 +1107,12 @@ static bool ignore_ = false;
   
   /////////////////////////////////////////////////////////////////////////////
   RECONCILE_DIRECTION::RECONCILE_DIRECTION() {}
-  RECONCILE_DIRECTION::RECONCILE_DIRECTION(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) : publisher_(publisher), amount_(amount), currency_(currency) {}
+  RECONCILE_DIRECTION::RECONCILE_DIRECTION(const std::string& publisher_key,
+                                           const int amount,
+                                           const std::string& currency) :
+    publisher_key_(publisher_key),
+    amount_(amount),
+    currency_(currency) {}
   RECONCILE_DIRECTION::~RECONCILE_DIRECTION() {}
   
   /////////////////////////////////////////////////////////////////////////////
