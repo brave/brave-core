@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index 58b80612445aa0616462805f464bcae0b3ee1c3e..a5cedd2a5ede73bdaf2bb2391fa419c4feb8cac5 100644
+index 58b80612445aa0616462805f464bcae0b3ee1c3e..8ee1615b31e93caf6259d91e68b1c856c0ac5a70 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
 @@ -75,6 +75,7 @@ process_template() (
@@ -10,7 +10,7 @@ index 58b80612445aa0616462805f464bcae0b3ee1c3e..a5cedd2a5ede73bdaf2bb2391fa419c4
      -e "s#@@PROGNAME@@#${PROGNAME}#g" \
      -e "s#@@CHANNEL@@#${CHANNEL}#g" \
      -e "s#@@COMPANY_FULLNAME@@#${COMPANY_FULLNAME}#g" \
-@@ -154,6 +155,19 @@ stage_install_common() {
+@@ -154,6 +155,25 @@ stage_install_common() {
      install -m 644 "${BUILDDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
    fi
  
@@ -27,10 +27,16 @@ index 58b80612445aa0616462805f464bcae0b3ee1c3e..a5cedd2a5ede73bdaf2bb2391fa419c4
 +  find "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension/_locales" -type f -exec chmod 644 '{}' \;
 +  find "${STAGEDIR}/${INSTALLDIR}/resources/brave_extension/_locales" -type d -exec chmod 755 '{}' \;
 +
++  # localization files for Brave Rewards
++  install -d -m 755 "${STAGEDIR}/${INSTALLDIR}/resources/brave_rewards/_locales"
++  cp -a "${BUILDDIR}/resources/brave_rewards/_locales" "${STAGEDIR}/${INSTALLDIR}/resources/brave_rewards"
++  find "${STAGEDIR}/${INSTALLDIR}/resources/brave_rewards/_locales" -type f -exec chmod 644 '{}' \;
++  find "${STAGEDIR}/${INSTALLDIR}/resources/brave_rewards/_locales" -type d -exec chmod 755 '{}' \;
++
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${BUILDDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -275,11 +289,13 @@ stage_install_common() {
+@@ -275,11 +295,13 @@ stage_install_common() {
  
    # app icons
    local icon_regex=".*product_logo_[0-9]\+\."
@@ -46,7 +52,7 @@ index 58b80612445aa0616462805f464bcae0b3ee1c3e..a5cedd2a5ede73bdaf2bb2391fa419c4
      fi
    fi
    LOGO_RESOURCES_PNG=$(find "${BUILDDIR}/installer/theme/" \
-@@ -381,7 +397,7 @@ stage_install_common() {
+@@ -381,7 +403,7 @@ stage_install_common() {
          exit 1
        fi
        local expected_perms=777
