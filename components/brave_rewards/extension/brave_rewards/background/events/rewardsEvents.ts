@@ -19,3 +19,11 @@ chrome.braveRewards.onWalletProperties.addListener((properties: RewardsExtension
 chrome.braveRewards.onCurrentReport.addListener((properties: RewardsExtension.Report) => {
   rewardsPanelActions.onCurrentReport(properties)
 })
+
+chrome.rewardsNotifications.onNotificationAdded.addListener((id: number, type: number, timestamp: number, args: string[]) => {
+  rewardsPanelActions.onNotificationAdded(id, type, timestamp, args)
+})
+
+chrome.rewardsNotifications.onNotificationDeleted.addListener((id: number, type: number, timestamp: number) => {
+  rewardsPanelActions.onNotificationDeleted(id, type, timestamp)
+})

@@ -8,10 +8,13 @@ import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
+import { NotificationType } from 'brave-ui/features/rewards/walletWrapper'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
 import * as utils from '../utils'
+
+import { getMessage } from '../background/api/locale_api'
 
 interface Props extends RewardsExtension.ComponentProps {
   windowId: number
@@ -31,6 +34,10 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
+  get actions () {
+    return this.props.actions
+  }
+
   componentDidMount () {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const newKey = publisher && publisher.publisher_key
@@ -42,8 +49,8 @@ export class Panel extends React.Component<Props, State> {
       })
     }
 
-    this.props.actions.getWalletProperties()
-    this.props.actions.getCurrentReport()
+    this.actions.getWalletProperties()
+    this.actions.getCurrentReport()
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -150,10 +157,56 @@ export class Panel extends React.Component<Props, State> {
     })
   }
 
+  onCloseNotification = (id: string) => {
+    this.actions.deleteNotification(id)
+  }
+
+  getNotification = () => {
+    const { notifications, currentNotification } = this.props.rewardsPanelData
+
+    if (
+      currentNotification === undefined ||
+      !notifications ||
+      (currentNotification && !notifications[currentNotification])
+    ) {
+      return undefined
+    }
+
+    const notification: RewardsExtension.Notification = notifications[currentNotification]
+
+    let type: NotificationType
+    let text = ''
+    switch (notification.type) {
+      case 1:
+        type = 'contribute'
+        text = getMessage('contributeNotification', [
+          utils.convertProbiToFixed(notification.args[0]),
+          new Date(parseInt(notification.args[1], 10) * 1000).toLocaleDateString()
+        ])
+        break
+      case 2:
+        type = 'grant'
+        text = getMessage('grantNotification', notification.args)
+        break
+      default:
+        type = ''
+        break
+    }
+
+    return {
+      id: notification.id,
+      date: new Date(notification.timestamp * 1000).toLocaleDateString(),
+      type: type,
+      text: text,
+      onCloseNotification: this.onCloseNotification
+    }
+  }
+
   render () {
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const converted = utils.convertBalance(balance.toString(), rates)
+    const notification = this.getNotification()
 
     return (
       <WalletWrapper
@@ -178,6 +231,7 @@ export class Panel extends React.Component<Props, State> {
         showSecActions={false}
         connectedWallet={false}
         grants={this.getGrants(grants)}
+        notification={notification}
       >
         <WalletSummarySlider
           id={'panel-slider'}

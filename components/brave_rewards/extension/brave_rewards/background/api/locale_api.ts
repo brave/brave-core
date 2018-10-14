@@ -6,9 +6,9 @@
  * Gets the locale message specified in messages.json
  * @param {string} message - The locale string
  */
-export const getMessage = (message: string): string => {
+export const getMessage = (message: string, substitutions?: string[]): string => {
   if (chrome.i18n) {
-    let translated = chrome.i18n.getMessage(message)
+    let translated = chrome.i18n.getMessage(message, substitutions)
 
     if (translated) {
       return translated

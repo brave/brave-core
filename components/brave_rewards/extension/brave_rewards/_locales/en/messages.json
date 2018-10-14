@@ -158,5 +158,37 @@
   "off": {
     "message": "Off",
     "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "$amount$BAT": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "Free $amount$BAT have been awarded to you (claim before $date$)",
+    "description": "",
+    "placeholders": {
+      "$amount$BAT": {
+        "content": "$1",
+        "example": "7/25"
+      }
+    }
   }
 }
