@@ -66,7 +66,7 @@ void RewardsNotificationsServiceImpl::GetAllNotifications() {
 
 RewardsNotificationsServiceImpl::RewardsNotificationID
 RewardsNotificationsServiceImpl::GenerateRewardsNotificationID() const {
-  return base::RandUint64();
+  return base::RandInt(0, std::numeric_limits<int32_t>::max());
 }
 
 RewardsNotificationsServiceImpl::RewardsNotificationTimestamp

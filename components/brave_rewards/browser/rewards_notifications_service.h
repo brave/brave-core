@@ -20,7 +20,7 @@ class RewardsNotificationsService : public KeyedService {
   RewardsNotificationsService();
   ~RewardsNotificationsService() override;
 
-  typedef uint64_t RewardsNotificationID;
+  typedef uint32_t RewardsNotificationID;
   typedef int64_t RewardsNotificationTimestamp;
   typedef std::vector<std::string> RewardsNotificationArgs;
 
