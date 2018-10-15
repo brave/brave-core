@@ -175,19 +175,19 @@
     "message": "You've contributed $amount$BAT",
     "description": "",
     "placeholders": {
-      "$amount$BAT": {
+      "amount": {
         "content": "$1",
         "example": "10"
       }
     }
   },
   "grantNotification": {
-    "message": "Free $amount$BAT have been awarded to you (claim before $date$)",
+    "message": "Free BAT have been awarded to you $date$",
     "description": "",
     "placeholders": {
-      "$amount$BAT": {
-        "content": "$1",
-        "example": "7/25"
+      "date": {
+        "content": " (claim before $1)",
+        "example": " (claim before 7/25)"
       }
     }
   }

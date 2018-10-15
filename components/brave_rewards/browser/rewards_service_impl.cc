@@ -496,7 +496,6 @@ void RewardsServiceImpl::OnGrant(ledger::Result result,
   TriggerOnGrant(result, grant);
 
   RewardsNotificationsService::RewardsNotificationArgs args;
-  args.push_back(grant.probi);
   args.push_back(std::to_string(grant.expiryTime));
   rewards_notifications_service_->AddNotification(
       RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args);
