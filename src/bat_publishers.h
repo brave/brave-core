@@ -163,7 +163,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void calcScoreConsts();
 
   void synopsisNormalizer(const ledger::PublisherInfo& info);
-  void synopsisNormalizerInternalContributre(ledger::PublisherInfoList* newList, bool saveData,
+  void synopsisNormalizerInternalContribute(ledger::PublisherInfoList* newList, bool saveData,
     const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list, uint32_t /* next_record */);
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList, bool saveData,
     const ledger::PublisherInfoList& list, uint32_t /* next_record */);

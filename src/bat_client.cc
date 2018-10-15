@@ -871,14 +871,14 @@ void BatClient::voteBatch() {
   }
   braveledger_bat_helper::BATCH_VOTES_ST batchVotes = state_->batch_[0];
   std::vector<braveledger_bat_helper::BATCH_VOTES_INFO_ST> voteBatch;
+
   if (batchVotes.batchVotesInfo_.size() > VOTE_BATCH_SIZE) {
     voteBatch.assign(batchVotes.batchVotesInfo_.begin(), batchVotes.batchVotesInfo_.begin() + VOTE_BATCH_SIZE);
   } else {
     voteBatch = batchVotes.batchVotesInfo_;
   }
-  //std::string keysMsg[1] = {"payload"};
-  //std::string valuesMsg[1] = {braveledger_bat_helper::stringifyBatch(voteBatch)};
-  std::string payload = braveledger_bat_helper::stringifyBatch(voteBatch);//braveledger_bat_helper::stringify(keysMsg, valuesMsg, 1);
+
+  std::string payload = braveledger_bat_helper::stringifyBatch(voteBatch);
 
   auto request_id = ledger_->LoadURL(
     braveledger_bat_helper::buildURL((std::string)SURVEYOR_BATCH_VOTING , PREFIX_V2),

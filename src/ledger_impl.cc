@@ -452,7 +452,7 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
     Reconcile();
   }
 
-  ledger_client_->OnReconcileComplete(result, viewing_id, (ledger::PUBLISHER_CATEGORY )reconcile.category_, probi);
+  ledger_client_->OnReconcileComplete(result, viewing_id, (ledger::PUBLISHER_CATEGORY)reconcile.category_, probi);
   if (result != ledger::Result::LEDGER_OK) {
     // error handling
     return;
@@ -834,8 +834,6 @@ void LedgerImpl::OnReconcileCompleteSuccess(const std::string& viewing_id,
 
     return;
   }
-
-  bat_client_->removeReconcileById(viewing_id);
 }
 
 void LedgerImpl::RemoveRecurring(const std::string& publisher_key) {
