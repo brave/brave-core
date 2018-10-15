@@ -6,7 +6,7 @@ import windowActions from '../actions/windowActions'
 import tabActions from '../actions/tabActions'
 import runtimeActions from '../actions/runtimeActions'
 
-function checkForNewWindows() {
+function checkForNewWindows () {
   chrome.windows.getAllAsync({ populate: true }).then((windows: chrome.windows.Window[]) => {
     windows.forEach((win: chrome.windows.Window) => {
       windowActions.windowCreated(win)
@@ -23,7 +23,6 @@ chrome.runtime.onStartup.addListener(() => {
   runtimeActions.runtimeDidStartup()
   checkForNewWindows()
 })
-
 
 if (chrome.extension.inIncognitoContext) {
   // This is a work-around for a longstanding Chromium bug where onStartup
