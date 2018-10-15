@@ -14,6 +14,7 @@ class OpenSearchEngine: NSObject, NSCoding {
     
     struct EngineNames {
         static let duckDuckGo = "DuckDuckGo"
+        static let qwant = "Qwant"
     }
     
     let shortName: String

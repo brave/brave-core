@@ -45,6 +45,11 @@ class SearchEngines {
     fileprivate let prefs: Prefs
     fileprivate let fileAccessor: FileAccessor
 
+    static let defaultRegionSearchEngines = [
+        "DE": OpenSearchEngine.EngineNames.qwant,
+        "FR": OpenSearchEngine.EngineNames.qwant
+    ]
+    
     init(prefs: Prefs, files: FileAccessor) {
         self.prefs = prefs
         // By default, show search suggestions
@@ -52,6 +57,14 @@ class SearchEngines {
         self.fileAccessor = files
         self.disabledEngineNames = getDisabledEngineNames()
         self.orderedEngines = getOrderedEngines()
+    }
+    
+    func setupDefaultRegionalSearchEngines() {
+        guard let region = Locale.current.regionCode,
+            let searchEngine = SearchEngines.defaultRegionSearchEngines[region] else { return }
+        
+        setDefaultEngine(searchEngine, forType: .standard)
+        setDefaultEngine(searchEngine, forType: .privateMode)
     }
     
     /// If no engine type is specified this method returns search engine for regular browsing.
@@ -64,6 +77,13 @@ class SearchEngines {
         } else {
             return self.orderedEngines[0]
         }
+    }
+    
+    /// Whether or not we should show DuckDuckGo related promotions based on the users current region
+    static var shouldShowDuckDuckGoPromo: Bool {
+        // We want to show ddg promo in most cases so guard returns true.
+        guard let region = Locale.current.regionCode else { return true }
+        return !defaultRegionSearchEngines.keys.contains(region)
     }
 
     func setDefaultEngine(_ engine: String, forType type: DefaultEngineType) {

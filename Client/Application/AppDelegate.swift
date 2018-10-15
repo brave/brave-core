@@ -213,9 +213,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         DAU().sendPingToServer()
         
-        if Preferences.General.isFirstLaunch.value {
+        let isFirstLaunch = Preferences.General.isFirstLaunch.value
+        Preferences.General.isFirstLaunch.value = false
+        
+        if isFirstLaunch {
             FavoritesHelper.addDefaultFavorites()
-            Preferences.General.isFirstLaunch.value = false
+            profile?.searchEngines.setupDefaultRegionalSearchEngines()
         }
 
         UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
