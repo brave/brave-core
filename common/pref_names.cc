@@ -18,6 +18,8 @@ const char kAdBlockCurrentRegion[] = "brave.ad_block.current_region";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
+const char kAlternativeSearchEngineProviderInTor[] =
+    "brave.alternate_private_search_engine_in_tor";
 const char kBraveThemeType[] = "brave.theme.type";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralPromoCode[] = "brave.referral.promo_code";

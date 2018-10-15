@@ -56,9 +56,10 @@ source_set("browser_process") {
     "search_engine_provider_controller_base.h",
     "search_engine_provider_util.cc",
     "search_engine_provider_util.h",
+    "tor_window_search_engine_provider_controller.cc",
+    "tor_window_search_engine_provider_controller.h",
     "update_util.cc",
     "update_util.h",
-
   ]
 
   deps = [
