@@ -16,6 +16,7 @@ import SwiftyJSON
 import Deferred
 import Data
 import BraveShared
+import SwiftKeychainWrapper
 
 private let log = Logger.browserLogger
 
@@ -1191,24 +1192,50 @@ class BrowserViewController: UIViewController {
         tab.desktopSite = webView.customUserAgent?.isEmpty == false
     }
     
-    // MARK: DuckDuckGo Callout
+    // MARK: - Browser PIN Callout
+    
+    private var isBrowserLockEnabled: Bool {
+        return KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() != nil
+    }
+    
+    func presentBrowserLockCallout() {
+        if isBrowserLockEnabled || Preferences.Popups.browserLock.value { return }
+        
+        let popup = AlertPopupView(image: #imageLiteral(resourceName: "browser_lock_popup"), title: Strings.Browser_lock_callout_title, message: Strings.Browser_lock_callout_message)
+        popup.addButton(title: Strings.Browser_lock_callout_not_now) { () -> PopupViewDismissType in
+            Preferences.Popups.browserLock.value = true
+            return .flyDown
+        }
+        popup.addDefaultButton(title: Strings.Browser_lock_callout_enable) { [weak self] () -> PopupViewDismissType in
+            Preferences.Popups.browserLock.value = true
+            
+            let setupPasscodeController = SetupPasscodeViewController()
+            let container = UINavigationController(rootViewController: setupPasscodeController)
+            self?.present(container, animated: true)
+            
+            return .flyUp
+        }
+        popup.showWithType(showType: .flyUp)
+    }
+    
+    // MARK: - DuckDuckGo Callout
     
     func presentDuckDuckGoCallout(force: Bool = false) {
         // Check to see if its been presented already
         if Preferences.Popups.duckDuckGoPrivateSearch.value && !force {
-            // TODO: #312 Show Browser Lock Popup
+            presentBrowserLockCallout()
             return
         }
         
         // Do not show ddg popup if user already chose it for private browsing.
         if profile.searchEngines.defaultEngine(forType: .privateMode).shortName == OpenSearchEngine.EngineNames.duckDuckGo {
-            // TODO: #312 Show Browser Lock Popup
+            presentBrowserLockCallout()
             return
         }
         
         let popup = AlertPopupView(image: UIImage(named: "duckduckgo"), title: Strings.DDG_callout_title, message: Strings.DDG_callout_message)
-        popup.dismissHandler = {
-            // TODO: #312 Show Browser Lock Popup
+        popup.dismissHandler = { [weak self] in
+            self?.presentBrowserLockCallout()
         }
         popup.addButton(title: Strings.DDG_callout_no) {
             Preferences.Popups.duckDuckGoPrivateSearch.value = true
