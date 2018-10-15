@@ -33,7 +33,6 @@ class BraveStaticRedirectNetworkDelegateHelperTest: public testing::Test {
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 
-
 TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, NoModifyTypicalURL) {
   net::TestDelegate test_delegate;
   GURL url("https://bradhatesprimes.brave.com/composite_numbers_ftw");
@@ -42,15 +41,15 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, NoModifyTypicalURL) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
   GURL new_url;
   int ret =
-    OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
+    OnBeforeURLRequest_StaticRedirectWork(&new_url, callback,
         before_url_context);
   EXPECT_TRUE(new_url.is_empty());
   EXPECT_EQ(ret, net::OK);
 }
-
 
 TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
   net::TestDelegate test_delegate;
@@ -60,11 +59,12 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
   GURL new_url;
   GURL expected_url(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
   int ret =
-      OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_StaticRedirectWork(&new_url, callback,
                                             before_url_context);
   EXPECT_EQ(new_url, expected_url);
   EXPECT_EQ(ret, net::OK);
@@ -78,13 +78,14 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
   GURL new_url;
   GURL::Replacements replacements;
   replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
   GURL expected_url(url.ReplaceComponents(replacements));
   int ret =
-      OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_StaticRedirectWork(&new_url, callback,
                                             before_url_context);
   EXPECT_EQ(new_url, expected_url);
   EXPECT_EQ(ret, net::OK);
@@ -98,13 +99,14 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
   GURL new_url;
   GURL::Replacements replacements;
   replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
   GURL expected_url(url.ReplaceComponents(replacements));
   int ret =
-      OnBeforeURLRequest_StaticRedirectWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_StaticRedirectWork(&new_url, callback,
                                             before_url_context);
   EXPECT_EQ(new_url, expected_url);
   EXPECT_EQ(ret, net::OK);
