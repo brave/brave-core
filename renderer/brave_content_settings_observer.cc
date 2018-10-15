@@ -143,6 +143,9 @@ ContentSetting BraveContentSettingsObserver::GetContentSettingFromRules(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
 
+  if (rules.size() == 0)
+    return CONTENT_SETTING_DEFAULT;
+
   const GURL& primary_url = GetOriginOrURL(frame);
 
   for (const auto& rule : rules) {
