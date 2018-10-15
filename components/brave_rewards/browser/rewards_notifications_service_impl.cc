@@ -4,11 +4,16 @@
 
 #include "brave/components/brave_rewards/browser/rewards_notifications_service_impl.h"
 
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/common/extensions/api/rewards_notifications.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_notifications_service_observer.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/browser/event_router.h"
 
 namespace brave_rewards {
@@ -21,9 +26,11 @@ RewardsNotificationsServiceImpl::~RewardsNotificationsServiceImpl() {
 }
 
 void RewardsNotificationsServiceImpl::Init() {
+  ReadRewardsNotifications();
 }
 
 void RewardsNotificationsServiceImpl::Shutdown() {
+  StoreRewardsNotifications();
   RewardsNotificationsService::Shutdown();
 }
 
@@ -72,6 +79,55 @@ RewardsNotificationsServiceImpl::GenerateRewardsNotificationID() const {
 RewardsNotificationsServiceImpl::RewardsNotificationTimestamp
 RewardsNotificationsServiceImpl::GenerateRewardsNotificationTimestamp() const {
   return base::Time::Now().ToDeltaSinceWindowsEpoch().InSeconds();
+}
+
+void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {
+  std::string json = profile_->GetPrefs()->GetString(kRewardsNotifications);
+  if (json.empty())
+    return;
+  std::unique_ptr<base::ListValue> root =
+      base::ListValue::From(base::JSONReader::Read(json));
+  if (!root) {
+    LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
+    return;
+  }
+  for (auto it = root->begin(); it != root->end(); ++it) {
+    if (!it->is_dict())
+      continue;
+    base::DictionaryValue* dict_value;
+    if (!it->GetAsDictionary(&dict_value))
+      continue;
+    int notification_id;
+    int notification_type;
+    int notification_timestamp;
+    dict_value->GetInteger("id", &notification_id);
+    dict_value->GetInteger("type", &notification_type);
+    dict_value->GetInteger("timestamp", &notification_timestamp);
+    RewardsNotification notification(notification_id,
+                                     static_cast<RewardsNotificationType>(notification_type),
+                                     notification_timestamp);
+    rewards_notifications_[notification.id_] = notification;
+  }
+}
+
+void RewardsNotificationsServiceImpl::StoreRewardsNotifications() {
+  base::ListValue root;
+
+  for (auto& item : rewards_notifications_) {
+    auto dict = std::make_unique<base::DictionaryValue>();
+    dict->SetInteger("id", item.second.id_);
+    dict->SetInteger("type", item.second.type_);
+    dict->SetInteger("timestamp", item.second.timestamp_);
+    root.Append(std::move(dict));
+  }
+
+  std::string result;
+  if (!base::JSONWriter::Write(root, &result)) {
+    LOG(ERROR) << "Failed to serialize rewards notifications on shutdown";
+    return;
+  }
+
+  profile_->GetPrefs()->SetString(kRewardsNotifications, result);
 }
 
 void RewardsNotificationsServiceImpl::TriggerOnNotificationAdded(

@@ -54,6 +54,9 @@ private:
  RewardsNotificationID GenerateRewardsNotificationID() const;
  RewardsNotificationTimestamp GenerateRewardsNotificationTimestamp() const;
 
+ void ReadRewardsNotifications();
+ void StoreRewardsNotifications();
+
  Profile* profile_;
  std::map<RewardsNotificationID, RewardsNotification> rewards_notifications_;
 

@@ -17,6 +17,8 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
 
+class PrefRegistrySimple;
+
 namespace content {
 class NavigationHandle;
 }
@@ -89,6 +91,8 @@ class RewardsService : public KeyedService {
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
