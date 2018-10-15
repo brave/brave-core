@@ -840,6 +840,7 @@ Mantenha a sua chave de arquivo em um local seguro. Você precisará dela para c
 <translation id="6845038076637626672">Abrir maximizado</translation>
 <translation id="6860427144121307915">Abrir em uma guia</translation>
 <translation id="3074037959626057712">Você fez login e ativou a sincronização</translation>
+<translation id="1231733316453485619">Ativar sincronização?</translation>
 <translation id="9125982323641182972">A tecnologia Brave Software no Brave</translation>
 <translation id="7988117629517051942">Aproveite mais a tecnologia do Brave Software</translation>
 <translation id="5596627076506792578">Mais opções</translation>
@@ -1291,6 +1292,8 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="9220525904950070496">Remover conta</translation>
 <translation id="3340978935015468852">configurações</translation>
 <translation id="5704875434923668958">Sincronizando com</translation>
+<translation id="6257602895346497974">Ativar a sincronização…</translation>
+<translation id="8618141719844947886">Não está sincronizando</translation>
 <translation id="5781092003150880845">Sincronizar como <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sincronizar com sua conta</translation>
 <translation id="2538361623464451692">Sincronização desativada</translation>
@@ -1624,11 +1627,17 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="6122875415561139701">A operação de escrita não é permitida em: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">A configuração do Bluetooth é controlada por <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Intervalo de tempo</translation>
+<translation id="3958004920128806270">Para limpar os dados de navegação apenas deste dispositivo e mantê-los na sua Conta do Brave Software, <ph name="BEGIN_LINK"/>saia da sua conta<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Para limpar os dados de navegação de todos os dispositivos sincronizados e da sua Conta do Brave Software, <ph name="BEGIN_LINK"/>acesse as configurações de sincronização<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Para limpar os dados de navegação de todos os dispositivos sincronizados e da sua Conta do Brave Software, <ph name="BEGIN_LINK"/>digite sua senha longa<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Para limpar os dados de navegação de todos os dispositivos sincronizados e da sua Conta do Brave Software, <ph name="BEGIN_LINK"/>faça login<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Histórico de navegação</translation>
 <translation id="8662811608048051533">Desconecta você da maioria dos sites.</translation>
+<translation id="4650925988509114690">Desconecta você da maioria dos sites. Você permanecerá conectado à sua Conta do Brave Software, então seus dados sincronizados poderão ser excluídos.</translation>
 <translation id="2017836877785168846">Limpa o histórico e o preenchimento automático na barra de endereço.</translation>
 <translation id="8096327394278038498">Limpa o histórico e os preenchimentos automáticos na barra de endereço. Sua Conta do Brave Software pode ter outras formas de histórico de navegação em <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Limpa o histórico de todos os dispositivos conectados. Sua Conta do Brave Software pode ter outras formas de histórico de navegação em <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Limpa o histórico deste dispositivo.</translation>
 <translation id="7127980134843952133">Histórico de download</translation>
 <translation id="4699172675775169585">Imagens e arquivos armazenados em cache</translation>
 <translation id="1274997165432133392">Cookies e outros dados do site</translation>

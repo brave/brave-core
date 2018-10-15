@@ -839,6 +839,7 @@
 <translation id="6845038076637626672">ചെറുതാക്കി തുറക്കുക</translation>
 <translation id="6860427144121307915">ഒരു ടാബിൽ തുറക്കുക</translation>
 <translation id="3074037959626057712">നിങ്ങൾ സൈൻ ഇൻ ചെയ്‌ത്, സമന്വയിപ്പിക്കൽ ഓണാക്കി</translation>
+<translation id="1231733316453485619">സമന്വയിപ്പിക്കൽ ഓണാക്കണോ?</translation>
 <translation id="9125982323641182972">Brave-ൽ Brave Software സ്‌മാർട്‌സ് നേടുക</translation>
 <translation id="7988117629517051942">കൂടുതൽ Brave Software സ്‌മാർട്ട്‌സ് നേടുക</translation>
 <translation id="5596627076506792578">കൂടുതൽ‍ ഓപ്‌ഷനുകൾ</translation>
@@ -1289,6 +1290,8 @@
 <translation id="9220525904950070496">അക്കൗണ്ട് നീക്കംചെയ്യൽ</translation>
 <translation id="3340978935015468852">ക്രമീകരണങ്ങൾ</translation>
 <translation id="5704875434923668958">ഇതിലേക്ക് സമന്വയിപ്പിക്കുന്നു</translation>
+<translation id="6257602895346497974">സമന്വയിപ്പിക്കൽ ഓണാക്കുക...</translation>
+<translation id="8618141719844947886">സമന്വയിപ്പിക്കുന്നില്ല</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/> ആയി സമന്വയിപ്പിക്കുക</translation>
 <translation id="1372841398847029212">നിങ്ങളുടെ അക്കൗണ്ടിലേക്ക് സമന്വയിപ്പിക്കുക</translation>
 <translation id="2538361623464451692">സമന്വയം പ്രവർത്തനരഹിതമാക്കി</translation>
@@ -1622,11 +1625,17 @@
 <translation id="6122875415561139701">ഇനി പറയുന്നതിൽ എഴുതാൻ അനുമതിയില്ല: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Bluetooth കോൺഫിഗറേഷൻ നിയന്ത്രിക്കുന്നത് <ph name="USER_EMAIL"/> ആണ്.</translation>
 <translation id="784934925303690534">സമയ ശ്രേണി</translation>
+<translation id="3958004920128806270">ബ്രൗസിംഗ് ഡാറ്റ നിങ്ങളുടെ Brave Software അക്കൗണ്ടിൽ നിലനിർത്തുമ്പോൾ തന്നെ, ഈ ഉപകരണത്തിൽ നിന്ന് മാത്രം അവ മായ്ക്കാനായി, <ph name="BEGIN_LINK"/>സൈൻ ഔട്ട്<ph name="END_LINK"/> ചെയ്യുക.</translation>
+<translation id="4445433576366924090">നിങ്ങളുടെ സമന്വയിപ്പിച്ച എല്ലാ ഉപകരണങ്ങളിൽ നിന്നും Brave Software അക്കൗണ്ടിൽ നിന്നും ബ്രൗസിംഗ് ഡാറ്റ മായ്ക്കാൻ, <ph name="BEGIN_LINK"/>സമന്വയ ക്രമീകരണം സന്ദർശിക്കുക<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">നിങ്ങളുടെ സമന്വയിപ്പിച്ച എല്ലാ ഉപകരണങ്ങളിൽ നിന്നും Brave Software അക്കൗണ്ടിൽ നിന്നും ബ്രൗസിംഗ് ഡാറ്റ മായ്ക്കാൻ<ph name="BEGIN_LINK"/>നിങ്ങളുടെ പാസ്‌ഫ്രെയ്‌സ് നൽകുക<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">നിങ്ങളുടെ സമന്വയിപ്പിച്ച എല്ലാ ഉപകരണങ്ങളിൽ നിന്നും Brave Software അക്കൗണ്ടിൽ നിന്നും ബ്രൗസിംഗ് ഡാറ്റ മായ്ക്കാൻ<ph name="BEGIN_LINK"/>സൈൻ ഇൻ ചെയ്യുക<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">ബ്രൌസിംഗ് ചരിത്രം</translation>
 <translation id="8662811608048051533">നിങ്ങൾ മിക്ക സൈറ്റുകളിൽ നിന്നും സൈൻ ഔട്ടാകും.</translation>
+<translation id="4650925988509114690">ഇതിലൂടെ ഭൂരിഭാഗം സൈറ്റുകളിൽ നിന്നും നിങ്ങളുടെ അക്കൗണ്ട് സൈൻ ഔട്ട് ചെയ്യപ്പെടുന്നു. നിങ്ങളുടെ സമന്വയിപ്പിച്ച ഡാറ്റ മായ്ക്കാനായി നിങ്ങൾ Brave Software അക്കൗണ്ടിൽ സൈൻ ഇൻ ചെയ്‌ത നിലയിൽ തുടരും.</translation>
 <translation id="2017836877785168846">വിലാസ ബാറിലെ ചരിത്രവും സ്വയം പൂർത്തീകരണങ്ങളും മായ്ക്കുന്നു.</translation>
 <translation id="8096327394278038498">ചരിത്രവും വിലാസ ബാറിലെ സ്വയം പൂർത്തീകരണങ്ങളും മായ്ക്കുന്നു. നിങ്ങളുടെ Brave Software അക്കൗണ്ടിന് <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> എന്നതിൽ മറ്റ് തരത്തിലുള്ള ബ്രൗസിംഗ് ചരിത്രമുണ്ടായിരിക്കാം.</translation>
 <translation id="8122693181154564064">സൈൻ ഇൻ ചെയ്‌ത എല്ലാ ഉപകരണങ്ങളിൽ നിന്നും ചരിത്രം മായ്ക്കുന്നു. നിങ്ങളുടെ Brave Software അക്കൗണ്ടിന് <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> എന്നതിൽ മറ്റ് തരത്തിലുള്ള ബ്രൗസിംഗ് ചരിത്രങ്ങളുണ്ടായിരിക്കാം.</translation>
+<translation id="6148716538476291841">ഈ ഉപകരണത്തിൽ നിന്ന് ചരിത്രം മായ്ക്കുന്നു.</translation>
 <translation id="7127980134843952133">ഡൗൺലോഡ് ചരിത്രം</translation>
 <translation id="4699172675775169585">കാഷെ ചെയ്‌ത ചിത്രങ്ങളും ഫയലുകളും</translation>
 <translation id="1274997165432133392">കുക്കികളും മറ്റ് സൈറ്റ് ഡാറ്റയും</translation>

@@ -839,6 +839,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="6845038076637626672">Maximiert öffnen</translation>
 <translation id="6860427144121307915">In Tab öffnen</translation>
 <translation id="3074037959626057712">Sie haben sich angemeldet und die Synchronisierung aktiviert</translation>
+<translation id="1231733316453485619">Synchronisierung aktivieren?</translation>
 <translation id="9125982323641182972">Brave cleverer nutzen – dank Brave Software</translation>
 <translation id="7988117629517051942">Brave Software clever nutzen</translation>
 <translation id="5596627076506792578">Weitere Optionen</translation>
@@ -1290,6 +1291,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="9220525904950070496">Konto entfernen</translation>
 <translation id="3340978935015468852">Einstellungen</translation>
 <translation id="5704875434923668958">Synchronisierung mit</translation>
+<translation id="6257602895346497974">Synchronisierung aktivieren…</translation>
+<translation id="8618141719844947886">Keine Synchronisierung</translation>
 <translation id="5781092003150880845">Synchronisieren als <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Mit meinem Konto synchronisieren</translation>
 <translation id="2538361623464451692">Synchronisierung deaktiviert</translation>
@@ -1623,11 +1626,17 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6122875415561139701">Der Schreibvorgang ist auf folgendem Gerät nicht erlaubt: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Die Bluetooth-Konfiguration wird von <ph name="USER_EMAIL"/> festgelegt.</translation>
 <translation id="784934925303690534">Zeitraum</translation>
+<translation id="3958004920128806270">Wenn Sie Browserdaten nur von diesem Gerät, aber nicht aus Ihrem Brave Software-Konto löschen möchten, <ph name="BEGIN_LINK"/>melden Sie sich ab<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Wenn Sie Browserdaten von all Ihren synchronisierten Geräten und aus Ihrem Brave Software-Konto löschen möchten, <ph name="BEGIN_LINK"/>rufen Sie die Synchronisierungseinstellungen auf<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Wenn Sie Browserdaten von all Ihren synchronisierten Geräten und aus Ihrem Brave Software-Konto löschen möchten, <ph name="BEGIN_LINK"/>geben Sie Ihre Passphrase ein<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Wenn Sie Browserdaten von all Ihren synchronisierten Geräten und aus Ihrem Brave Software-Konto löschen möchten, <ph name="BEGIN_LINK"/>melden Sie sich an<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Browserverlauf</translation>
 <translation id="8662811608048051533">Sie werden von den meisten Websites abgemeldet.</translation>
+<translation id="4650925988509114690">Hiermit werden Sie von den meisten Websites abgemeldet. Sie bleiben jedoch in Ihrem Brave Software-Konto angemeldet, sodass Ihre synchronisierten Daten gelöscht werden können.</translation>
 <translation id="2017836877785168846">Löscht den Verlauf sowie Autovervollständigungen in der Adressleiste.</translation>
 <translation id="8096327394278038498">Löscht den Verlauf und Autovervollständigungen in der Adressleiste. Möglicherweise verfügt Ihr Brave Software-Konto unter <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> über andere Browserverläufe.</translation>
 <translation id="8122693181154564064">Löscht den Verlauf bei allen angemeldeten Geräten. Möglicherweise verfügt Ihr Brave Software-Konto unter <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> über andere Browserverläufe.</translation>
+<translation id="6148716538476291841">Löscht den Verlauf von diesem Gerät.</translation>
 <translation id="7127980134843952133">Downloadverlauf</translation>
 <translation id="4699172675775169585">Bilder und Dateien im Cache</translation>
 <translation id="1274997165432133392">Cookies und andere Websitedaten</translation>

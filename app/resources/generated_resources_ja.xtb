@@ -839,6 +839,7 @@
 <translation id="6845038076637626672">最大化して開く</translation>
 <translation id="6860427144121307915">タブで開く</translation>
 <translation id="3074037959626057712">ログインして同期を有効にしました</translation>
+<translation id="1231733316453485619">同期を有効にしますか？</translation>
 <translation id="9125982323641182972">Brave で Brave Software の最先端技術を活用</translation>
 <translation id="7988117629517051942">Brave Software の最先端技術をさらに活用</translation>
 <translation id="5596627076506792578">その他のオプション</translation>
@@ -1289,6 +1290,8 @@
 <translation id="9220525904950070496">アカウントを削除</translation>
 <translation id="3340978935015468852">設定</translation>
 <translation id="5704875434923668958">同期しています:</translation>
+<translation id="6257602895346497974">同期を有効にする...</translation>
+<translation id="8618141719844947886">同期していません</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/> として同期</translation>
 <translation id="1372841398847029212">アカウントに同期</translation>
 <translation id="2538361623464451692">同期が無効</translation>
@@ -1622,11 +1625,17 @@
 <translation id="6122875415561139701">「<ph name="DEVICE_NAME"/>」での書き込み操作は許可されていません。</translation>
 <translation id="439266289085815679">Bluetooth 設定は <ph name="USER_EMAIL"/> によって管理されています。</translation>
 <translation id="784934925303690534">期間</translation>
+<translation id="3958004920128806270">この端末からのみ閲覧データを削除して Brave Software アカウントにはデータを残しておく場合は、<ph name="BEGIN_LINK"/>ログアウト<ph name="END_LINK"/>してください。</translation>
+<translation id="4445433576366924090">同期しているすべての端末と Brave Software アカウントから閲覧データを削除するには、<ph name="BEGIN_LINK"/>同期設定に移動<ph name="END_LINK"/>してください。</translation>
+<translation id="563489167344291753">同期しているすべての端末と Brave Software アカウントから閲覧データを削除するには、<ph name="BEGIN_LINK"/>パスフレーズを入力<ph name="END_LINK"/>してください。</translation>
+<translation id="3895809404273995788">同期しているすべての端末と Brave Software アカウントから閲覧データを削除するには、<ph name="BEGIN_LINK"/>ログイン<ph name="END_LINK"/>してください。</translation>
 <translation id="2496180316473517155">閲覧履歴</translation>
 <translation id="8662811608048051533">ほとんどのサイトからログアウトします。</translation>
+<translation id="4650925988509114690">ほとんどのサイトからログアウトします。ただし、同期データを削除できるように Brave Software アカウントへのログイン状態は維持されます。</translation>
 <translation id="2017836877785168846">アドレスバーの履歴とオートコンプリート データを削除します。</translation>
 <translation id="8096327394278038498">アドレスバーの履歴とオートコンプリートを削除します。お使いの Brave Software アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
 <translation id="8122693181154564064">ログインしているすべての端末の履歴を削除します。お使いの Brave Software アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
+<translation id="6148716538476291841">この端末から履歴を削除します。</translation>
 <translation id="7127980134843952133">ダウンロード履歴</translation>
 <translation id="4699172675775169585">キャッシュされた画像とファイル</translation>
 <translation id="1274997165432133392">Cookie と他のサイト データ</translation>

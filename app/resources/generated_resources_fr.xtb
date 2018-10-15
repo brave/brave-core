@@ -840,6 +840,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6845038076637626672">Ouvrir la version agrandie</translation>
 <translation id="6860427144121307915">Ouvrir dans un onglet</translation>
 <translation id="3074037959626057712">Vous êtes connecté et avez activé la synchronisation</translation>
+<translation id="1231733316453485619">Activer la synchronisation ?</translation>
 <translation id="9125982323641182972">Fonct. Brave Software dans Brave</translation>
 <translation id="7988117629517051942">Profitez d'encore plus de fonctionnalités intelligentes de Brave Software</translation>
 <translation id="5596627076506792578">Plus d'options</translation>
@@ -1290,6 +1291,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="9220525904950070496">Supprimer le compte</translation>
 <translation id="3340978935015468852">paramètres</translation>
 <translation id="5704875434923668958">Synchronisation</translation>
+<translation id="6257602895346497974">Activer la synchronisation…</translation>
+<translation id="8618141719844947886">Aucune synchronisation</translation>
 <translation id="5781092003150880845">Synchroniser en tant que <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synchroniser avec votre compte</translation>
 <translation id="2538361623464451692">Synchronisation désactivée</translation>
@@ -1623,11 +1626,17 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6122875415561139701">L'opération d'écriture n'est pas autorisée sur l'appareil <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679">La configuration Bluetooth est contrôlée par <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Période</translation>
+<translation id="3958004920128806270">Pour effacer les données de navigation sur cet appareil uniquement, tout en les conservant dans votre compte Brave Software, <ph name="BEGIN_LINK"/>déconnectez-vous<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Pour effacer les données de navigation sur tous vos appareils synchronisés et dans votre compte Brave Software, <ph name="BEGIN_LINK"/>accédez aux paramètres de synchronisation<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Pour effacer les données de navigation sur tous vos appareils synchronisés et dans votre compte Brave Software, <ph name="BEGIN_LINK"/>saisissez votre phrase secrète<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Pour effacer les données de navigation sur tous vos appareils synchronisés et dans votre compte Brave Software, <ph name="BEGIN_LINK"/>connectez-vous<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historique de navigation</translation>
 <translation id="8662811608048051533">Vous déconnecte de la plupart des sites.</translation>
+<translation id="4650925988509114690">Cette option vous déconnecte de la plupart des sites. Vous restez cependant connecté à votre compte Brave Software afin que vos données synchronisées puissent être effacées.</translation>
 <translation id="2017836877785168846">Efface l'historique et les saisies semi-automatiques dans la barre d'adresse.</translation>
 <translation id="8096327394278038498">Efface l'historique et les saisies semi-automatiques dans la barre d'adresse. Votre compte Brave Software conserve peut-être d'autres formes d'historique de navigation sur la page <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Efface l'historique de tous les appareils sur lesquels vous êtes connecté à votre compte Brave Software. Ce dernier peut conserver d'autres formes d'historique de navigation sur la page <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Efface l'historique sur cet appareil.</translation>
 <translation id="7127980134843952133">Historique des téléchargements</translation>
 <translation id="4699172675775169585">Images et fichiers en cache</translation>
 <translation id="1274997165432133392">Cookies et autres données de site</translation>

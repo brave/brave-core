@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ca">
+<translation id="3333887201479867589">Premis de Brave</translation>
+<translation id="7942180974165298215">Blocatge d\'anuncis de Brave</translation>
+<translation id="7450557937477381864">Tanqueu Chrome</translation>
+<translation id="7008934821596358692">Per a finalitzar la importació tanqueu totes les finestres de Chrome</translation>
+<translation id="7753103220327065417">Tanqueu Brave</translation>
+<translation id="5588481533147090393">Per a finalitzar la importació tanqueu totes les finestres de Brave</translation>
+<translation id="6447842834002726250">Galetes</translation>
+<translation id="9173846700806833701">Widevine no està instal·lat</translation>
+<translation id="2433569048491784801">Widevine no està instal·lat</translation>
+<translation id="3699882589215410581">Instal·la i executa Widevine</translation>
+<translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l\'elecció de l\'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen. 
+
+En instal·lar aquesta extensió, accepteu les Condicions d\'ús de Google Widevine. Accepteu que Brave no es fa responsable dels danys o pèrdues relacionats amb el vostre ús de Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importat de Brave</translation>
 </translationbundle>

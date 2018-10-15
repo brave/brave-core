@@ -834,6 +834,7 @@
 <translation id="6845038076637626672">वाढवलेले उघडा</translation>
 <translation id="6860427144121307915">एका टॅबमध्ये उघडा</translation>
 <translation id="3074037959626057712">तुम्ही साइन इन केलेले आहे आणि सिंक करणे चालू केलेले आहे</translation>
+<translation id="1231733316453485619">सिंक सुरू करायचे का?</translation>
 <translation id="9125982323641182972">Brave मध्ये Brave Software स्मार्ट मिळवा</translation>
 <translation id="7988117629517051942">Brave Software स्मार्टकडून बरेच काही मिळवा</translation>
 <translation id="5596627076506792578">अधिक पर्याय</translation>
@@ -1284,6 +1285,8 @@
 <translation id="9220525904950070496">खाते काढा</translation>
 <translation id="3340978935015468852">सेटिंग्ज</translation>
 <translation id="5704875434923668958">याच्याशी सिंक करत आहे</translation>
+<translation id="6257602895346497974">सिंक सुरू करा…</translation>
+<translation id="8618141719844947886">सिंक होत नाही</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/> म्हणून सिंक करा</translation>
 <translation id="1372841398847029212">तुमच्या खात्याशी सिंक करा</translation>
 <translation id="2538361623464451692">सिंक बंद केले आहे</translation>
@@ -1617,11 +1620,17 @@
 <translation id="6122875415561139701">लिहा ऑपरेशनला यावर परवानगी नाही: " <ph name="DEVICE_NAME"/> ".</translation>
 <translation id="439266289085815679">ब्लूटूथ कॉन्फिगरेशन <ph name="USER_EMAIL"/> नियंत्रित करते.</translation>
 <translation id="784934925303690534">वेळ वर्गवारी</translation>
+<translation id="3958004920128806270">तुमच्या Brave Software खात्यामध्ये डेटा तसाच ठेवून फक्त या डिव्हाइसमधून ब्राउझ केलेला डेटा साफ करण्यासाठी, <ph name="BEGIN_LINK"/>साइन आउट करा<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">तुमच्या सिंक केलेल्या सर्व डिव्हाइसमधून आणि तुमच्या Brave Software खात्यामधून ब्राउझ केलेला डेटा साफ करण्यासाठी, <ph name="BEGIN_LINK"/>सिंक सेटिंग्जला भेट द्या<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">तुमच्या सिंक केलेल्या सर्व डिव्हाइसमधून आणि तुमच्या Brave Software खात्यामधून ब्राउझ केलेला डेटा साफ करण्यासाठी, <ph name="BEGIN_LINK"/>तुमचा पासफ्रेझ एंटर करा<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">तुमच्या सिंक केलेल्या सर्व डिव्हाइसमधून आणि तुमच्या Brave Software खात्यामधून ब्राउझ केलेला डेटा साफ करण्यासाठी, <ph name="BEGIN_LINK"/>साइन इन करा<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">ब्राउझिंग इतिहास</translation>
 <translation id="8662811608048051533">तुम्हाला बहुतांश साइटवरून साइन आउट करते.</translation>
+<translation id="4650925988509114690">बऱ्याच सायटींवरून तुम्हाला साइन आउट करते. तुम्ही तुमच्या Brave Software खात्यामध्ये साइन इन रहाल जेणेकरून तुमचा सिंक केलेला डेटा साफ केला जाऊ शकतो.</translation>
 <translation id="2017836877785168846">अॅड्रेस बारमधील इतिहास आणि आपोआप पूर्ण केलेले साफ करते.</translation>
 <translation id="8096327394278038498">अ‍ॅड्रेस बारवरील इतिहास आणि आपोआप पूर्ण करण्याचे दाखले साफ करते. तुमच्या Brave Software खात्यामध्ये <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> वर कदाचित ब्राउझिंगचे इतर फॉर्म असतील.</translation>
 <translation id="8122693181154564064">साइन-इन केलेल्या सर्व डिव्हाइसमधून इतिहास साफ करते. तुमच्या Brave Software खात्यामध्ये <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> वर कदाचित ब्राउझिंगचे इतर फॉर्म असतील.</translation>
+<translation id="6148716538476291841">या डिव्हाइसवरून इतिहास साफ करते.</translation>
 <translation id="7127980134843952133">इतिहास डाउनलोड करा</translation>
 <translation id="4699172675775169585">कॅश   इमेज आणि फायली</translation>
 <translation id="1274997165432133392">कुकीज आणि इतर साइट डेटा</translation>

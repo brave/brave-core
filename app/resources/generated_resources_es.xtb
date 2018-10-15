@@ -839,6 +839,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6845038076637626672">Abrir de forma maximizada</translation>
 <translation id="6860427144121307915">Abrir en una pestaña</translation>
 <translation id="3074037959626057712">Has iniciado sesión y activado la sincronización</translation>
+<translation id="1231733316453485619">¿Activar sincronización?</translation>
 <translation id="9125982323641182972">Obtén funciones inteligentes en Brave</translation>
 <translation id="7988117629517051942">Obtener más funciones inteligentes de Brave Software</translation>
 <translation id="5596627076506792578">Más opciones</translation>
@@ -1289,6 +1290,8 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="9220525904950070496">Quitar cuenta</translation>
 <translation id="3340978935015468852">configuración</translation>
 <translation id="5704875434923668958">Sincronizando con</translation>
+<translation id="6257602895346497974">Activar la sincronización...</translation>
+<translation id="8618141719844947886">No se está sincronizando</translation>
 <translation id="5781092003150880845">Sincronizar como <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sincronizar con tu cuenta</translation>
 <translation id="2538361623464451692">Sincronización inhabilitada</translation>
@@ -1622,11 +1625,17 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6122875415561139701">No se permite la operación de escritura en "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">El usuario <ph name="USER_EMAIL"/> controla la configuración del Bluetooth.</translation>
 <translation id="784934925303690534">Intervalo de tiempo</translation>
+<translation id="3958004920128806270">Para borrar los datos de navegación solo de este dispositivo, pero no de tu cuenta de Brave Software, <ph name="BEGIN_LINK"/>cierra la sesión<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Para borrar los datos de navegación de todos los dispositivos sincronizados y de tu cuenta de Brave Software, ve a la <ph name="BEGIN_LINK"/>configuración de sincronización<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Para borrar los datos de navegación de todos los dispositivos sincronizados y de tu cuenta de Brave Software, <ph name="BEGIN_LINK"/>introduce tu frase de contraseña<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Para borrar los datos de navegación de todos los dispositivos sincronizados y de tu cuenta de Brave Software, <ph name="BEGIN_LINK"/>inicia sesión<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historial de navegación</translation>
 <translation id="8662811608048051533">Cierra tu sesión en la mayoría de los sitios web.</translation>
+<translation id="4650925988509114690">Se cerrará la sesión de la mayoría de los sitios web. La sesión de tu cuenta de Brave Software seguirá abierta para que los datos sincronizados se puedan borrar.</translation>
 <translation id="2017836877785168846">Borra el historial y los autocompletados de la barra de direcciones.</translation>
 <translation id="8096327394278038498">Borra el historial y los autocompletados de la barra de direcciones. Es posible que tu cuenta de Brave Software tenga otros tipos de historial de navegación en <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Borra el historial de todos los dispositivos en los que hayas iniciado sesión. Es posible que tu cuenta de Brave Software tenga otros tipos de historial de navegación en <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Borra el historial de este dispositivo.</translation>
 <translation id="7127980134843952133">Historial de descargas</translation>
 <translation id="4699172675775169585">Archivos e imágenes almacenados en caché</translation>
 <translation id="1274997165432133392">Cookies y otros datos de sitios</translation>

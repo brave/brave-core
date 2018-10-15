@@ -839,6 +839,7 @@
 <translation id="6845038076637626672">बड़े दृश्य में खोलें</translation>
 <translation id="6860427144121307915">टैब में खोलें</translation>
 <translation id="3074037959626057712">आपने प्रवेश किया है और सिंक को चालू कर दिया है</translation>
+<translation id="1231733316453485619">क्या सिंक करना चालू करें?</translation>
 <translation id="9125982323641182972">Brave में Brave Software स्मार्ट पाएं</translation>
 <translation id="7988117629517051942">Brave Software की और भी स्मार्ट सुविधाएं पाएं</translation>
 <translation id="5596627076506792578">अधिक विकल्प</translation>
@@ -1289,6 +1290,8 @@
 <translation id="9220525904950070496">खाता हटाएं</translation>
 <translation id="3340978935015468852">सेटिंग</translation>
 <translation id="5704875434923668958">इससे सिंक हो रहा है:</translation>
+<translation id="6257602895346497974">'सिंक करें' चालू करें...</translation>
+<translation id="8618141719844947886">सिंक नहीं हो रहा है</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/> के रूप में सिंक करें</translation>
 <translation id="1372841398847029212">अपने खाते से सिंक करें</translation>
 <translation id="2538361623464451692">सिंक बंद किया गया है</translation>
@@ -1622,11 +1625,17 @@
 <translation id="6122875415561139701">लिखें कार्रवाई की इस पर अनुमति नहीं है: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">ब्लूटूथ कॉन्फ़िगरेशन को <ph name="USER_EMAIL"/> से नियंत्रित किया जाता है.</translation>
 <translation id="784934925303690534">समय सीमा</translation>
+<translation id="3958004920128806270">ब्राउजिंग डेटा को सिर्फ़ इस डिवाइस से साफ़ करने और अपने 'Brave Software खाते' में रखने के लिए, <ph name="BEGIN_LINK"/>साइन आउट करें<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">अपने सभी सिंक किए हुए डिवाइस और अपने 'Brave Software खाते' से ब्राउज़िंग डेटा साफ़ करने के लिए, <ph name="BEGIN_LINK"/>सिंक सेटिंग पर जाएं<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">अपने सभी सिंक किए हुए डिवाइस और अपने 'Brave Software खाते' से ब्राउज़िंग डेटा साफ़ करने के लिए, <ph name="BEGIN_LINK"/>अपना लंबा पासवर्ड डालें<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">अपने सभी सिंक किए हुए डिवाइस और अपने 'Brave Software खाते' से ब्राउज़िंग डेटा साफ़ करने के लिए, <ph name="BEGIN_LINK"/>साइन इन करें<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">ब्राउज़िंग इतिहास...</translation>
 <translation id="8662811608048051533">आपको ज़्यादातर साइट से साइन आउट कर देता है.</translation>
+<translation id="4650925988509114690">आपको अधिकतर साइटों से साइन आउट कर देता है. आप अपने 'Brave Software खाते' में साइन इन रहते हैं ताकि आपका सिंक किया हुआ डेटा साफ़ हो जाए.</translation>
 <translation id="2017836877785168846">इतिहास साफ़ करता है और पता बार में स्वत: पूर्णता को साफ़ करता है.</translation>
 <translation id="8096327394278038498">पता बार में स्वत: पूर्णता और इतिहास को हटाता है. आपके Brave Software खाते में <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> पर अन्य प्रकार के ब्राउज़िंग इतिहास हो सकतेे हैं.</translation>
 <translation id="8122693181154564064">प्रवेश किए हुए सभी डिवाइसों से इतिहास साफ़ कर देता है. आपके Brave Software खाते में <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> पर अन्य प्रकार के ब्राउज़िंग इतिहास हो सकतेे हैं.</translation>
+<translation id="6148716538476291841">इस डिवाइस से इतिहास साफ़ करता है.</translation>
 <translation id="7127980134843952133">डाउनलोड इतिहास</translation>
 <translation id="4699172675775169585">संचय चित्र और फ़ाइलें</translation>
 <translation id="1274997165432133392">कुकी और साइट का अन्य डेटा</translation>

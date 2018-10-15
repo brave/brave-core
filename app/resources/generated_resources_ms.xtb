@@ -840,6 +840,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6845038076637626672">Buka dimaksimumkan</translation>
 <translation id="6860427144121307915">Buka dalam Tab</translation>
 <translation id="3074037959626057712">Anda telah mengelog masuk dan menghidupkan Penyegerakan</translation>
+<translation id="1231733316453485619">Hidupkan penyegerakan?</translation>
 <translation id="9125982323641182972">Brave Software pintar di Brave</translation>
 <translation id="7988117629517051942">Dapatkan lagi Brave Software pintar</translation>
 <translation id="5596627076506792578">Lagi pilihan</translation>
@@ -1290,6 +1291,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="9220525904950070496">Alih keluar akaun</translation>
 <translation id="3340978935015468852">tetapan</translation>
 <translation id="5704875434923668958">Menyegerak ke</translation>
+<translation id="6257602895346497974">Hidupkan penyegerakan...</translation>
+<translation id="8618141719844947886">Tidak menyegerak</translation>
 <translation id="5781092003150880845">Segerakkan sebagai <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Segerakkan ke akaun anda</translation>
 <translation id="2538361623464451692">Penyegerakan dilumpuhkan</translation>
@@ -1623,11 +1626,17 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6122875415561139701">Pengendalian tulis tidak dibenarkan pada: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Konfigurasi Blueooth dikawal oleh <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Julat masa</translation>
+<translation id="3958004920128806270">Untuk mengosongkan data semakan imbas daripada peranti ini sahaja dan menyimpannya dalam Akaun Brave Software anda, <ph name="BEGIN_LINK"/>log keluar<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Untuk mengosongkan data semakan imbas daripada semua peranti tersegerak dan Akaun Brave Software anda, <ph name="BEGIN_LINK"/>lawati tetapan penyegerakan<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Untuk mengosongkan data semakan imbas daripada semua peranti tersegerak dan Akaun Brave Software anda, <ph name="BEGIN_LINK"/>masukkan frasa laluan anda<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Untuk mengosongkan data semakan imbas daripada semua peranti tersegerak dan Akaun Brave Software anda, <ph name="BEGIN_LINK"/>log masuk<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Sejarah penyemakan imbas</translation>
 <translation id="8662811608048051533">Mengelog anda keluar daripada kebanyakan tapak.</translation>
+<translation id="4650925988509114690">Mengelog anda keluar daripada kebanyakan tapak. Anda akan kekal dilog masuk ke Akaun Brave Software supaya data tersegerak anda dapat dikosongkan.</translation>
 <translation id="2017836877785168846">Kosongkan sejarah dan pelengkapan automatik dalam bar alamat.</translation>
 <translation id="8096327394278038498">Mengosongkan sejarah dan autoselesai dalam bar alamat. Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk lain di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Mengosongkan sejarah daripada semua peranti yang dilog masuk. Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentuk lain di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Mengosongkan sejarah daripada peranti ini.</translation>
 <translation id="7127980134843952133">Sejarah muat turun</translation>
 <translation id="4699172675775169585">Imej dan fail dicache</translation>
 <translation id="1274997165432133392">Kuki dan data tapak yang lain</translation>

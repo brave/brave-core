@@ -835,6 +835,7 @@
 <translation id="6845038076637626672">గరిష్టీకరించిన దాన్ని తెరువు</translation>
 <translation id="6860427144121307915">ట్యాబ్‌లో తెరువు</translation>
 <translation id="3074037959626057712">మీరు సైన్ ఇన్ చేసి, సింక్‌ను ఆన్ చేసారు</translation>
+<translation id="1231733316453485619">సమకాలీకరణను ఆన్ చేయాలా?</translation>
 <translation id="9125982323641182972">Braveలో Brave Software స్మార్ట్‌లను పొందండి</translation>
 <translation id="7988117629517051942">మరిన్ని Brave Software స్మార్ట్‌లను పొందండి</translation>
 <translation id="5596627076506792578">మరిన్ని ఎంపికలు</translation>
@@ -1286,6 +1287,8 @@
 <translation id="9220525904950070496">ఖాతాను తీసివేయండి</translation>
 <translation id="3340978935015468852">సెట్టింగ్‌లు</translation>
 <translation id="5704875434923668958">దీనికి సమకాలీకరిస్తోంది</translation>
+<translation id="6257602895346497974">సమకాలీకరణను ఆన్ చేయి...</translation>
+<translation id="8618141719844947886">సమకాలీకరించడం లేదు</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/>గా సింక్ చేయి</translation>
 <translation id="1372841398847029212">మీ ఖాతాకు సమకాలీకరించండి</translation>
 <translation id="2538361623464451692">సింక్ నిలిపివేయబడింది</translation>
@@ -1619,11 +1622,17 @@
 <translation id="6122875415561139701">దీనిలో వ్రాసే చర్యకు అనుమతి లేదు: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">బ్లూటూత్ కాన్ఫిగరేషన్ <ph name="USER_EMAIL"/> ద్వారా నియంత్రించబడుతుంది.</translation>
 <translation id="784934925303690534">సమయ పరిధి</translation>
+<translation id="3958004920128806270">బ్రౌజింగ్ డేటాను మీ Brave Software ఖాతాలో అలాగే ఉంచి, కేవలం ఈ పరికరం నుండి మాత్రమే తీసివేయడానికి <ph name="BEGIN_LINK"/>సైన్ అవుట్ చేయండి<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">మీ అన్ని సమకాలీకరించబడుతున్న పరికరాలతో సహా, మీ Brave Software ఖాతా నుండి బ్రౌజింగ్ డేటాను తీసివేయడానికి, <ph name="BEGIN_LINK"/>సమకాలీకరణ సెట్టింగ్‌లను సందర్శించండి<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">మీ అన్ని సమకాలీకరించబడుతున్న పరికరాలతో సహా, మీ Brave Software ఖాతా నుండి బ్రౌజింగ్ డేటాను తీసివేయడానికి, <ph name="BEGIN_LINK"/>మీ రహస్య పదబంధాన్ని నమోదు చేయండి<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">మీ అన్ని సమకాలీకరించబడుతున్న పరికరాలతో సహా, మీ Brave Software ఖాతా నుండి బ్రౌజింగ్ డేటాను తీసివేయడానికి, <ph name="BEGIN_LINK"/>సైన్ ఇన్ చేయండి<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">బ్రౌజింగ్ చరిత్ర</translation>
 <translation id="8662811608048051533">చాలా సైట్‌ల నుండి మిమ్మల్ని సైన్ అవుట్ చేస్తుంది.</translation>
+<translation id="4650925988509114690">చాలా సైట్‌ల నుండి మిమ్మల్ని సైన్ అవుట్ చేస్తుంది. మీరు మీ Brave Software ఖాతాలో అలాగే సైన్ ఇన్ చేసి ఉంటారు, కనుక మీ సమకాలీకరించిన డేటాను తీసివేయవచ్చు.</translation>
 <translation id="2017836877785168846">చిరునామా బార్‌లో చరిత్రను మరియు స్వీయ పూరణలను క్లియర్ చేస్తుంది.</translation>
 <translation id="8096327394278038498">చిరునామా బార్‌లో చరిత్ర మరియు స్వీయ పూరణలను తొలగిస్తుంది. మీ Brave Software ఖాతా <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>లో ఇతర రూపాల్లో ఉన్న బ్రౌజింగ్ చరిత్రను కలిగి ఉండవచ్చు.</translation>
 <translation id="8122693181154564064">సైన్ ఇన్ చేసిన అన్ని పరికరాల నుండి చరిత్రను తొలగిస్తుంది. మీ Brave Software ఖాతా <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>లో ఇతర రూపాల్లో ఉన్న బ్రౌజింగ్ చరిత్రను కలిగి ఉండవచ్చు.</translation>
+<translation id="6148716538476291841">ఈ పరికరం నుండి చరిత్రను తీసివేస్తుంది.</translation>
 <translation id="7127980134843952133">డౌన్‌లోడ్ చరిత్ర</translation>
 <translation id="4699172675775169585">కాష్ చేసిన చిత్రాలు మరియు ఫైల్‌లు</translation>
 <translation id="1274997165432133392">కుక్కీలు మరియు ఇతర సైట్ డేటా</translation>

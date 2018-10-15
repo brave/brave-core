@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
-<translation id="689261804992965033">Iklan yang Diblokir</translation>
-<translation id="1663506596135222606">Pelacak yang Diblokir</translation>
-<translation id="2313532038420432247">Pemutakhiran HTTPS</translation>
-<translation id="7679428712334662192">Perkiraan Penghematan Waktu</translation>
-<translation id="3772054137575942265">Gambar Mini yang Dihapus.</translation>
+<translation id="689261804992965033">Iklan Diblokir</translation>
+<translation id="1663506596135222606">Pelacak Diblokir</translation>
+<translation id="2313532038420432247">Peningkatan HTTPS</translation>
+<translation id="7679428712334662192">± Waktu Dihemat</translation>
+<translation id="3772054137575942265">Keluku Dihapus.</translation>
 <translation id="2079545284768500474">Urungkan</translation>
 <translation id="8529752221839395787">Pulihkan Semua</translation>
 <translation id="3022168349636134570">detik</translation>
@@ -16,13 +16,24 @@
 <translation id="8344569602005188545">jam</translation>
 <translation id="7100907433458266664">hari</translation>
 <translation id="4971389353431353387">hari</translation>
-<translation id="6199596294742117349">Ini adalah Tab Pribadi</translation>
-<translation id="5752267332751652945">Tab pribadi tidak dicatat di laman riwayat atau dihitung dalam kalkulasi Brave Payments. Tab pribadi dan kukinya akan menghilang ketika peramban ditutup.</translation>
-<translation id="7463160927746266889">Mohon dicatat: Meskipun situs yang Anda kunjungi di tab pribadi tidak disimpan secara lokal, mereka tidak membuat Anda anonim atau tidak terlihat oleh ISP Anda, bos Anda, atau pada situs yang Anda kunjungi.</translation>
-<translation id="910419239800579753">Dengan pencarian pribadi, Brave akan menggunakan DuckDuckGo untuk menjawab pencarian Anda ketika Anda menggunakan tab pribadi. DuckDuckGo adalah mesin pencari yang tidak melacak riwayat pencarian Anda, memungkinkan Anda untuk mencari secara pribadi.</translation>
-<translation id="3643126010006741083">Pencarian pribadi dengan DuckDuckGo</translation>
 <translation id="1869685517625607604">Total Iklan Diblokir:</translation>
 <translation id="6200814343085745765">Pemblokir Iklan Regional:</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
+<translation id="7207456302801184289">Selamat Datang di Brave</translation>
+<translation id="6001839398155993679">Mulai</translation>
+<translation id="8050847734948770789">Aktifkan Brave Rewards</translation>
+<translation id="4942016616604700968">Aktifkan Rewards</translation>
+<translation id="6450867671997742789">Impor dari peramban lain</translation>
+<translation id="5521187896304743452">Brave membuatnya mudah untuk menyiapkan peramban Anda dengan mengimpor markah dan setelan dari peramban lain yang terpasang di komputer Anda.</translation>
+<translation id="4138981897709579987">Impor Sekarang</translation>
+<translation id="9152220852742774324">Kelola setelan perisai Anda</translation>
+<translation id="2043261199283617849">Sesuaikan dan pantau tingkatan perlindungan Anda dengan mengklik logo Brave di bilah alat. Kelola setelan perisai global Anda di panel preferensi</translation>
+<translation id="3366308997091824722">Setelan Perisai</translation>
+<translation id="7024124499777560832">Ubahsuai preferensi Anda</translation>
+<translation id="2498783234010887316">Setelan tab, tampilan, ekstensi, dan riwayat dapat diatur di panel preferensi. Anda mungkin menemukan tema gelap di sana ;)</translation>
+<translation id="5801568494490449797">Preferensi</translation>
+<translation id="3829010735958850433">Lewati tur</translation>
+<translation id="1201402288615127009">Selanjutnya</translation>
+<translation id="8730621377337864115">Selesai</translation>
 </translationbundle>

@@ -838,6 +838,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="6845038076637626672">Atvērt maksimizētā logā</translation>
 <translation id="6860427144121307915">Atvērt cilnē</translation>
 <translation id="3074037959626057712">Jūs esat pierakstījies un ieslēdzis sinhronizēšanu</translation>
+<translation id="1231733316453485619">Vai ieslēgt sinhronizāciju?</translation>
 <translation id="9125982323641182972">Brave Software viedās tehnoloģijas pārlūkā Brave</translation>
 <translation id="7988117629517051942">Izmantojiet vairāk Brave Software viedo tehnoloģiju</translation>
 <translation id="5596627076506792578">Citas opcijas</translation>
@@ -1289,6 +1290,8 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="9220525904950070496">Konta noņemšana</translation>
 <translation id="3340978935015468852">Iestatījumi</translation>
 <translation id="5704875434923668958">Notiek sinhronizēšana ar</translation>
+<translation id="6257602895346497974">Ieslēgt sinhronizāciju...</translation>
+<translation id="8618141719844947886">Sinhronizācija netiek veikta</translation>
 <translation id="5781092003150880845">Sinhronizēt kā: <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sinhronizēt ar jūsu kontu</translation>
 <translation id="2538361623464451692">Sinhronizācija atspējota</translation>
@@ -1622,11 +1625,17 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6122875415561139701">Rakstīšanas darbība nav atļauta šajā ierīcē: “<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="439266289085815679">Bluetooth konfigurāciju kontrolē <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Laika periods</translation>
+<translation id="3958004920128806270">Lai notīrītu pārlūkošanas datus tikai no šīs ierīces un paturētu tos savā Brave Software kontā, <ph name="BEGIN_LINK"/>izrakstieties<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Lai notīrītu pārlūkošanas datus no visām savām sinhronizētajām ierīcēm un Brave Software konta, <ph name="BEGIN_LINK"/>pārejiet uz sinhronizācijas iestatījumiem<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Lai notīrītu pārlūkošanas datus no visām savām sinhronizētajām ierīcēm un Brave Software konta, <ph name="BEGIN_LINK"/>ievadiet ieejas frāzi<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Lai notīrītu pārlūkošanas datus no visām savām sinhronizētajām ierīcēm un Brave Software konta, <ph name="BEGIN_LINK"/>pierakstieties<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Pārlūkošanas vēsture</translation>
 <translation id="8662811608048051533">Jūs tiksiet izrakstīts no lielākās daļas vietņu.</translation>
+<translation id="4650925988509114690">Jūs tiksiet izrakstīts no lielākās daļas vietņu. Jūs paliksiet pierakstījies Brave Software kontā, lai varētu notīrīt sinhronizētos datus.</translation>
 <translation id="2017836877785168846">Notīra vēsturi un automātiskās pabeigšanas ierakstus adreses joslā.</translation>
 <translation id="8096327394278038498">Notīra vēsturi un automātiskās pabeigšanas datus adreses joslā. Jūsu Brave Software kontam var būt cita veida pārlūkošanas vēstures dati vietnē <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Notīra vēsturi no visām ierīcēm, kurās esat pierakstījies. Jūsu Brave Software kontam vietnē <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> var būt citu veidu pārlūkošanas vēstures dati.</translation>
+<translation id="6148716538476291841">Tiek dzēsta pārlūkošanas vēsture no šīs ierīces.</translation>
 <translation id="7127980134843952133">Lejupielādes vēsture</translation>
 <translation id="4699172675775169585">Kešatmiņā ievietotie attēli un faili</translation>
 <translation id="1274997165432133392">Sīkfaili un citi vietņu dati</translation>
