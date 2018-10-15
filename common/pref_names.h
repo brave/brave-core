@@ -18,6 +18,7 @@ extern const char kWeekOfInstallation[];
 extern const char kAdBlockCurrentRegion[];
 extern const char kWidevineOptedIn[];
 extern const char kUseAlternativeSearchEngineProvider[];
+extern const char kAlternativeSearchEngineProviderInTor[];
 extern const char kBraveThemeType[];
 extern const char kLocationBarIsWide[];
 extern const char kReferralPromoCode[];
