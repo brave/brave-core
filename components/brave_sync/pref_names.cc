@@ -19,7 +19,8 @@ const char kSeed[] = "bravesync.seed";
 // String of current device namefor sync
 const char kThisDeviceName[] = "bravesync.device_name";
 
-// The initial bookmarks order, in a format of "<1(desktop)|2(mobile)>.<device_id>.">
+// The initial bookmarks order, in a format of
+// "<1(desktop)|2(mobile)>.<device_id>.">
 const char kBookmarksBaseOrder[] = "bravesync.bookmarks_base_order";
 // Boolean, whether sync is enabled for the current device
 // If true, then sync is enabled and running

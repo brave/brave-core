@@ -21,6 +21,8 @@ namespace brave_sync {
 // static
 BraveSyncService* BraveSyncServiceFactory::GetForBrowserContext(
     content::BrowserContext* browser_context) {
+  if (browser_context->IsOffTheRecord())
+    return nullptr;
   return GetForProfile(Profile::FromBrowserContext(browser_context));
 }
 

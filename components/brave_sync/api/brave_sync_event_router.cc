@@ -6,7 +6,8 @@
 #include "brave/common/extensions/api/brave_sync.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_event_histogram_value.h"
-#include "content/public/browser/browser_thread.h"
+
+using extensions::api::brave_sync::RecordAndExistingObject;
 
 namespace extensions {
 
@@ -54,14 +55,14 @@ void BraveSyncEventRouter::FetchSyncRecords(
 
 void BraveSyncEventRouter::ResolveSyncRecords(
     const std::string& category_name,
-    const std::vector<extensions::api::brave_sync::RecordAndExistingObject>& records_and_existing_objects) {
+    const std::vector<RecordAndExistingObject>& records_and_existing_objects) {
   for (const auto & entry : records_and_existing_objects) {
     DCHECK(!entry.server_record.object_data.empty());
-    DCHECK(!entry.local_record || (entry.local_record->object_data == "bookmark" ||
-      entry.local_record->object_data == "device" ||
-      entry.local_record->object_data == "historySite" ||
-      entry.local_record->object_data == "siteSetting"
-    ));
+    DCHECK(!entry.local_record ||
+        (entry.local_record->object_data == "bookmark" ||
+        entry.local_record->object_data == "device" ||
+        entry.local_record->object_data == "historySite" ||
+        entry.local_record->object_data == "siteSetting"));
   }
 
   std::unique_ptr<base::ListValue> args(

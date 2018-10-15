@@ -10,7 +10,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_sync/jslib_const.h"
-#include "brave/components/brave_sync/value_debug.h"
 
 namespace brave_sync {
 
@@ -35,7 +34,8 @@ SyncDevice& SyncDevice::operator=(const SyncDevice&) & = default;
 SyncDevice::~SyncDevice() = default;
 
 std::unique_ptr<base::Value> SyncDevice::ToValue() const {
-  auto val_sync_device = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  auto val_sync_device =
+      std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
 
   val_sync_device->SetKey("name", base::Value(name_));
   val_sync_device->SetKey("object_id", base::Value(object_id_));

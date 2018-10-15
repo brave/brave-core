@@ -15,7 +15,6 @@
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/client/brave_sync_client_factory.h"
-#include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/devices.h"
 #include "brave/components/brave_sync/history.h"
 #include "brave/components/brave_sync/jslib_const.h"
@@ -25,7 +24,6 @@
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
-#include "brave/components/brave_sync/value_debug.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -141,7 +139,8 @@ bool OnResolvedPreferences(
     std::unique_ptr<RecordsList> records,
     const std::string& this_device_id) {
   SyncDevices existing_sync_devices;
-  std::string json = object_map->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
+  std::string json =
+      object_map->GetSpecialJSONByLocalId(jslib_const::DEVICES_NAMES);
   existing_sync_devices.FromJson(json);
 
   bool this_device_deleted = false;

@@ -16,14 +16,14 @@ namespace brave_sync {
 class BraveSyncService;
 
 class BraveSyncServiceFactory : public BrowserContextKeyedServiceFactory {
-public:
+ public:
   static BraveSyncService* GetForProfile(Profile* profile);
   static BraveSyncService* GetForBrowserContext(
       content::BrowserContext* context);
 
   static BraveSyncServiceFactory* GetInstance();
 
-private:
+ private:
   friend struct base::DefaultSingletonTraits<BraveSyncServiceFactory>;
 
   BraveSyncServiceFactory();

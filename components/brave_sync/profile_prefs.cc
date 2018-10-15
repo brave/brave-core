@@ -4,7 +4,6 @@
 #include "brave/components/brave_sync/profile_prefs.h"
 
 #include "base/debug/stack_trace.h"
-#include "brave/components/brave_sync/debug.h"
 #include "brave/components/brave_sync/pref_names.h"
 #include "brave/components/brave_sync/settings.h"
 #include "chrome/browser/profiles/profile.h"
@@ -57,7 +56,6 @@ std::string Prefs::GetBookmarksBaseOrder() {
 }
 void Prefs::SetBookmarksBaseOrder(const std::string& order) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(ValidateBookmarksBaseOrder(order));
   pref_service_->SetString(kBookmarksBaseOrder, order);
 }
 
