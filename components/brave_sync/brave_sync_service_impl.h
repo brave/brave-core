@@ -204,9 +204,9 @@ class BraveSyncServiceImpl : public BraveSyncService,
                     int64_t &node_id,
                     int *action);
 
-  void TriggerOnLogMessage(const std::string& message);
-  void TriggerOnSyncStateChanged();
-  void TriggerOnHaveSyncWords(const std::string& sync_words);
+  void NotifyLogMessage(const std::string& message);
+  void NotifySyncStateChanged();
+  void NotifyHaveSyncWords(const std::string& sync_words);
 
   std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
       const bookmarks::BookmarkNode* node);
