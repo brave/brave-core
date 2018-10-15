@@ -4,7 +4,7 @@
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Beginnen Sie jetzt mit dem Verdienen!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
@@ -36,11 +36,11 @@
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Ihr Wallet",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Zuschüsse",
     "description": ""
   },
   "on": {
@@ -52,11 +52,11 @@
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention Value",
+    "message": "Ihr Aufmerksamkeitswert",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Monatlich an diese Seite Spenden",
     "description": ""
   },
   "includeInAuto": {
@@ -92,7 +92,7 @@
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Februar",
     "description": ""
   },
   "monthJan": {
@@ -128,11 +128,11 @@
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Token-Zuteilung",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Einnahmen aus Brave Werbeanzeigen",
     "description": ""
   },
   "rewardsContribute": {
@@ -156,7 +156,7 @@
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Aus",
     "description": ""
   },
   "ok": {
