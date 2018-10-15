@@ -1492,7 +1492,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6352773953037195952">Muy alto</translation>
 <translation id="3677657024345889897">Mínimo</translation>
 <translation id="167160931442925455">Máximo</translation>
-<translation id="2445007895943112260">&lt;ph name=\"PERCENTAGE\"&gt;$1&lt;ex&gt;120&lt;/ex&gt;%&lt;/ph&gt;</translation>
 <translation id="9129010913019873477"><ph name="PERCENTAGE"/> (predeterminado)</translation>
 <translation id="3602290021589620013">Vista previa</translation>
 <translation id="7037509989619051237">Texto de prueba</translation>
@@ -2382,7 +2381,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="3954469006674843813"><ph name="WIDTH"/> × <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> Hertz)</translation>
 <translation id="7889565820482017512">Tamaño de la pantalla</translation>
 <translation id="8448729345478502352">Aumenta o reduce el tamaño de los elementos en tu pantalla</translation>
-<translation id="513425442047539523">&lt;ph name=\"DISPLAY_ZOOM\"&gt;$1&lt;ex&gt;120&lt;/ex&gt;%&lt;/ph&gt;</translation>
 <translation id="2155772377859296191">Resolución: <ph name="WIDTH"/> × <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Resolución: <ph name="WIDTH"/> × <ph name="HEIGHT"/> (predeterminada)</translation>
 <translation id="1125550662859510761">Resolución: <ph name="WIDTH"/> × <ph name="HEIGHT"/> (nativa)</translation>
