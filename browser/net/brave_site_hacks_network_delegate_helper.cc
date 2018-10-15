@@ -51,13 +51,12 @@ bool ApplyPotentialReferrerBlock(net::URLRequest* request) {
 namespace brave {
 
 int OnBeforeURLRequest_SiteHacksWork(
-    net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
 
-  if (ApplyPotentialReferrerBlock(request))
-    *new_url = request->url();
+  if (ApplyPotentialReferrerBlock(ctx->request))
+    *new_url = ctx->request_url;
 
   return net::OK;
 }
@@ -96,7 +95,6 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
       URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
       kForbesExtraCookies);
   if (IsBlockTwitterSiteHack(request, headers)) {
-    request->Cancel();
     return net::ERR_ABORTED;
   }
   if (IsUAWhitelisted(request->url())) {

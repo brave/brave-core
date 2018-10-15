@@ -123,24 +123,23 @@ void DispatchOnUI(
 }  // namespace
 
 int OnBeforeURLRequest(
-  net::URLRequest* request,
   GURL* new_url,
   const brave::ResponseCallback& next_callback,
   std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
-  if (IsMediaLink(request->url(),
-                  request->site_for_cookies(),
-                  GURL(request->referrer()))) {
+  if (IsMediaLink(ctx->request_url,
+                  ctx->request->site_for_cookies(),
+                  GURL(ctx->request->referrer()))) {
     std::string post_data;
-    if (GetPostData(request, &post_data)) {
+    if (GetPostData(ctx->request, &post_data)) {
       int render_process_id, render_frame_id, frame_tree_node_id;
-      GetRenderFrameInfo(request, &render_frame_id, &render_process_id,
+      GetRenderFrameInfo(ctx->request, &render_frame_id, &render_process_id,
           &frame_tree_node_id);
       content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
           base::BindOnce(&DispatchOnUI,
               post_data,
-              request->url(), request->site_for_cookies(), request->referrer(),
+              ctx->request_url, ctx->request->site_for_cookies(), ctx->request->referrer(),
               render_process_id, render_frame_id, frame_tree_node_id));
     }
   }
