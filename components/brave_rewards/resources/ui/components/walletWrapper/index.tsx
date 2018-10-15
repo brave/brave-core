@@ -63,18 +63,18 @@ export interface AlertWallet {
 }
 
 export interface ActionWallet {
-  icon: React.ReactNode,
-  name: string,
+  icon: React.ReactNode
+  name: string
   action: () => void
 }
 
 export type NotificationType = 'ads' | 'contribute' | 'grant' | 'error' | ''
 
 export interface Notification {
-  id: string,
-  date: string,
-  type: NotificationType,
-  text: React.ReactNode,
+  id: string
+  date: string
+  type: NotificationType
+  text: React.ReactNode
   onCloseNotification: (id: string) => void
 }
 
@@ -93,7 +93,7 @@ export interface Props {
   grants?: Grant[]
   alert?: AlertWallet | null
   id?: string
-  gradientTop?: string,
+  gradientTop?: string
   notification?: Notification
 }
 

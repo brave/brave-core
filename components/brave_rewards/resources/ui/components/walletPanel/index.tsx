@@ -38,7 +38,7 @@ import Profile, { Provider } from '../profile/index'
 import { RefreshIcon } from '../../../components/icons'
 
 export type Token = {
-  tokens: string,
+  tokens: string
   converted: string
 }
 

@@ -18,13 +18,13 @@ import {
 import { CaratUpIcon, CaratDownIcon } from '../../../components/icons'
 
 export interface Props {
-  id?: string,
+  id?: string
   onToggle?: () => void
   children?: React.ReactNode | React.ReactNode[]
 }
 
 interface State {
-  panelOneShown: boolean,
+  panelOneShown: boolean
   panelTwoShown: boolean
 }
 
