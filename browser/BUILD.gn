@@ -29,6 +29,8 @@ source_set("browser_process") {
     "component_updater/brave_component_installer.h",
     "component_updater/brave_component_updater_configurator.cc",
     "component_updater/brave_component_updater_configurator.h",
+    "geolocation/brave_geolocation_permission_context.cc",
+    "geolocation/brave_geolocation_permission_context.h",
     "guest_window_search_engine_provider_controller.cc",
     "guest_window_search_engine_provider_controller.h",
     "importer/brave_external_process_importer_client.cc",
