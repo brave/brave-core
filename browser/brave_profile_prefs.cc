@@ -70,6 +70,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Make sure sign into Brave is not enabled
   // The older kSigninAllowed is deprecated and only in use in Android until C71.
   registry->SetDefaultPrefValue(prefs::kSigninAllowedOnNextStartup, base::Value(false));
+
+  // Disable cloud print
+  // Cloud Print: Don't allow this browser to act as Cloud Print server
+  registry->SetDefaultPrefValue(prefs::kCloudPrintProxyEnabled, base::Value(false));
+  // Cloud Print: Don't allow jobs to be submitted
+  registry->SetDefaultPrefValue(prefs::kCloudPrintSubmitEnabled, base::Value(false));
 }
 
 }  // namespace brave
