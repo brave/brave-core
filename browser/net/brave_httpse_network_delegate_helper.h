@@ -5,19 +5,11 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_HTTPSE_NETWORK_DELEGATE_H_
 #define BRAVE_BROWSER_NET_BRAVE_HTTPSE_NETWORK_DELEGATE_H_
 
-#include "chrome/browser/net/chrome_network_delegate.h"
 #include "brave/browser/net/url_context.h"
-
-struct BraveRequestInfo;
-
-namespace net {
-class URLRequest;
-}
 
 namespace brave {
 
 int OnBeforeURLRequest_HttpsePreFileWork(
-    net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);

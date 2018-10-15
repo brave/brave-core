@@ -40,11 +40,13 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
                                TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
   brave::ResponseCallback callback;
   GURL new_url;
   int ret =
-    OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+    OnBeforeURLRequest_AdBlockTPPreWork(&new_url, callback,
         brave_request_info);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
   EXPECT_TRUE(new_url.is_empty());
   EXPECT_EQ(ret, net::OK);
 }
@@ -56,11 +58,13 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
                                TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
   brave::ResponseCallback callback;
   GURL new_url;
   int ret =
-    OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+    OnBeforeURLRequest_AdBlockTPPreWork(&new_url, callback,
         brave_request_info);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
   EXPECT_TRUE(new_url.is_empty());
   EXPECT_EQ(ret, net::OK);
 }
@@ -79,11 +83,13 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToEmptyDataURLs) {
                                  TRAFFIC_ANNOTATION_FOR_TESTS);
     std::shared_ptr<brave::BraveRequestInfo>
         brave_request_info(new brave::BraveRequestInfo());
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     brave::ResponseCallback callback;
     GURL new_url;
     int ret =
-      OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_AdBlockTPPreWork(&new_url, callback,
           brave_request_info);
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     EXPECT_EQ(ret, net::OK);
     EXPECT_STREQ(new_url.spec().c_str(), kEmptyDataURI);
   });
@@ -102,11 +108,13 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToStubs) {
                                  TRAFFIC_ANNOTATION_FOR_TESTS);
     std::shared_ptr<brave::BraveRequestInfo>
         brave_request_info(new brave::BraveRequestInfo());
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     brave::ResponseCallback callback;
     GURL new_url;
     int ret =
-      OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_AdBlockTPPreWork(&new_url, callback,
           brave_request_info);
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     EXPECT_EQ(ret, net::OK);
     EXPECT_TRUE(new_url.SchemeIs("data"));
   });
@@ -125,11 +133,13 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Blocking) {
                                  TRAFFIC_ANNOTATION_FOR_TESTS);
     std::shared_ptr<brave::BraveRequestInfo>
         brave_request_info(new brave::BraveRequestInfo());
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     brave::ResponseCallback callback;
     GURL new_url;
     int ret =
-      OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_AdBlockTPPreWork(&new_url, callback,
           brave_request_info);
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     EXPECT_STREQ(new_url.spec().c_str(), kEmptyDataURI);
     EXPECT_EQ(ret, net::OK);
   });

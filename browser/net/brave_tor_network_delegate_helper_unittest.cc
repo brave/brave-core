@@ -78,6 +78,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -89,7 +90,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
     content::PREVIEWS_OFF, std::move(navigation_ui_data));
   GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(request.get(), &new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(&new_url, callback,
                                       before_url_context);
   EXPECT_TRUE(new_url.is_empty());
   auto* proxy_service = request->context()->proxy_resolution_service();
@@ -116,6 +117,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -131,7 +133,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
                                                    navigation_ui_data_ptr);
   GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(request.get(), &new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(&new_url, callback,
                                       before_url_context);
   EXPECT_TRUE(new_url.is_empty());
   auto* proxy_service = request->context()->proxy_resolution_service();
@@ -162,6 +164,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -177,7 +180,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
                                                    navigation_ui_data_ptr);
   GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(request.get(), &new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(&new_url, callback,
                                       before_url_context);
   EXPECT_TRUE(new_url.is_empty());
   EXPECT_EQ(ret, net::ERR_DISALLOWED_URL_SCHEME);

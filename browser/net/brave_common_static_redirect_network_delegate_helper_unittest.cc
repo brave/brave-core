@@ -42,11 +42,12 @@ TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, ModifyComponentUpdate
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
   GURL new_url;
   GURL expected_url(std::string(kBraveUpdatesExtensionsEndpoint + query_string));
   int ret =
-      OnBeforeURLRequest_CommonStaticRedirectWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_CommonStaticRedirectWork(&new_url, callback,
                                                   before_url_context);
   EXPECT_EQ(new_url, expected_url);
   EXPECT_EQ(ret, net::OK);
@@ -61,11 +62,12 @@ TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, NoModifyComponentUpda
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
   GURL new_url;
   GURL expected_url;
   int ret =
-      OnBeforeURLRequest_CommonStaticRedirectWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_CommonStaticRedirectWork(&new_url, callback,
                                                   before_url_context);
   EXPECT_EQ(new_url, expected_url);
   EXPECT_EQ(ret, net::OK);
