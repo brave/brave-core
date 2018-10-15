@@ -37,10 +37,11 @@ BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
   extensions::ExtensionSystem::Get(profile)->ready().Post(
       FROM_HERE, base::Bind(&BraveSyncClientImpl::OnExtensionSystemReady,
           base::Unretained(this)));
-  sync_this_device_enabled_.Init(
+
+  profile_pref_change_registrar_.Init(profile->GetPrefs());
+  profile_pref_change_registrar_.Add(
       prefs::kSyncThisDeviceEnabled,
-      profile->GetPrefs(),
-      base::Bind(&BraveSyncClientImpl::OnPreferenceChanged,
+      base::Bind(&BraveSyncClientImpl::OnProfilePreferenceChanged,
                  base::Unretained(this)));
 }
 
@@ -144,7 +145,6 @@ void BraveSyncClientImpl::OnExtensionInitialized() {
 void BraveSyncClientImpl::Shutdown() {
   DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  LoadOrUnloadExtension(false);
 }
 
 void BraveSyncClientImpl::OnExtensionLoaded(
@@ -198,10 +198,8 @@ void BraveSyncClientImpl::OnExtensionSystemReady() {
   }
 };
 
-void BraveSyncClientImpl::OnPreferenceChanged(
-    const std::string& pref_name) {
+void BraveSyncClientImpl::OnProfilePreferenceChanged() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(pref_name == prefs::kSyncThisDeviceEnabled);
   if (sync_prefs_->GetSyncThisDevice()) {
     DLOG(INFO) << "[Brave Sync] " << __func__
       << " kSyncThisDeviceEnabled <= true";
