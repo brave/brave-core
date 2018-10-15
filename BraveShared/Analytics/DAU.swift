@@ -97,7 +97,10 @@ public class DAU {
             weekOfInstallationParam()
         ]
 
-        // TODO: #190 goes here
+        if let referralCode = UserReferralProgram.getReferralCode() {
+            params.append(URLQueryItem(name: "ref", value: referralCode))
+            UrpLog.log("DAU ping with added ref, params: \(params)")
+        }
         
         let secsMonthYear = [Int(today.timeIntervalSince1970), todayComponents.month, todayComponents.year]
         Preferences.DAU.lastLaunchInfo.value = secsMonthYear
