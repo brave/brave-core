@@ -313,7 +313,7 @@ bool BraveSyncServiceImpl::IsSyncInitialized() {
 }
 
 void BraveSyncServiceImpl::Shutdown() {
-  LOG(ERROR) << "TAGAB BraveSyncServiceImpl::Shutdown";
+  StopLoop();
 
   history_.reset();
 
