@@ -25,6 +25,7 @@ export type Variant = 'one' | 'two'
 export interface Props {
   id?: string
   variant?: Variant
+  link?: string
   optInAction: () => void
 }
 
@@ -49,7 +50,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, optInAction } = this.props
+    const { id, optInAction, link } = this.props
 
     return (
       <StyledWrapper id={id}>
@@ -76,7 +77,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
               text={getLocale(this.locale.button)}
             />
           </StyledButtonWrapper>
-          <StyledFooterText>
+          <StyledFooterText href={link}>
             {getLocale(this.locale.footer)}
           </StyledFooterText>
         </StyledInnerWrapper>

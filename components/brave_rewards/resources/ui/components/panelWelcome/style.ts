@@ -66,13 +66,14 @@ export const StyledButtonWrapper = styled<{}, 'div'>('div')`
   display: inline-block;
 ` as any
 
-export const StyledFooterText = styled<{}, 'p'>('p')`
+export const StyledFooterText = styled<{}, 'a'>('a')`
   color: #73CBFF;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.19px;
   line-height: 21px;
-  margin: 0 auto;
+  display: block;
+  text-align: center;
 ` as any
 
 export const StyledTrademark = styled<{}, 'span'>('span')`

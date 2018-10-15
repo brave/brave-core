@@ -87,7 +87,8 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: -0.19px;
   letter-spacing: -0.19px;
   line-height: 21px;
-  margin: 0 auto;
+  display: block;
+  text-align: center;
 }
 
 .c8 {
@@ -255,11 +256,11 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
         </div>
       </button>
     </div>
-    <p
+    <a
       className="c14"
     >
       MISSING: welcomeFooterTextOne
-    </p>
+    </a>
   </div>
 </div>
 `;
