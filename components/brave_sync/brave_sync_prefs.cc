@@ -1,18 +1,28 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave/components/brave_sync/profile_prefs.h"
 
-#include "base/debug/stack_trace.h"
-#include "brave/components/brave_sync/pref_names.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
+
 #include "brave/components/brave_sync/settings.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace brave_sync {
-
 namespace prefs {
+
+const char kSyncDeviceId[] = "brave_sync.device_id";
+const char kSyncSeed[] = "brave_sync.seed";
+const char kSyncDeviceName[] = "brave_sync.device_name";
+const char kSyncBookmarksBaseOrder[] = "brave_sync.bookmarks_base_order";
+const char kSyncEnabled[] = "brave_sync.enabled";
+const char kSyncBookmarksEnabled[] = "brave_sync.bookmarks_enabled";
+const char kSyncSiteSettingsEnabled[] = "brave_sync.site_settings_enabled";
+const char kSyncHistoryEnabled[] = "brave_sync.history_enabled";
+const char kSyncLatestRecordTime[] = "brave_sync.latest_record_time";
+const char kSyncLastFetchTime[] = "brave_sync.last_fetch_time";
+const char kSyncDeviceList[] = "brave_sync.device_list";
 
 Prefs::Prefs(Profile* profile) : pref_service_(nullptr) {
   DCHECK(profile);
@@ -21,52 +31,52 @@ Prefs::Prefs(Profile* profile) : pref_service_(nullptr) {
 
 std::string Prefs::GetSeed() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return pref_service_->GetString(kSeed);
+  return pref_service_->GetString(kSyncSeed);
 }
 
 void Prefs::SetSeed(const std::string& seed) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!seed.empty());
-  pref_service_->SetString(kSeed, seed);
+  pref_service_->SetString(kSyncSeed, seed);
 }
 
 std::string Prefs::GetThisDeviceId() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return pref_service_->GetString(kThisDeviceId);
+  return pref_service_->GetString(kSyncDeviceId);
 }
 
 void Prefs::SetThisDeviceId(const std::string& device_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!device_id.empty());
-  pref_service_->SetString(kThisDeviceId, device_id);
+  pref_service_->SetString(kSyncDeviceId, device_id);
 }
 
 std::string Prefs::GetThisDeviceName() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return pref_service_->GetString(kThisDeviceName);
+  return pref_service_->GetString(kSyncDeviceName);
 }
 
 void Prefs::SetThisDeviceName(const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!device_name.empty());
-  pref_service_->SetString(kThisDeviceName, device_name);
+  pref_service_->SetString(kSyncDeviceName, device_name);
 }
 std::string Prefs::GetBookmarksBaseOrder() {
-  return pref_service_->GetString(kBookmarksBaseOrder);
+  return pref_service_->GetString(kSyncBookmarksBaseOrder);
 }
 void Prefs::SetBookmarksBaseOrder(const std::string& order) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  pref_service_->SetString(kBookmarksBaseOrder, order);
+  pref_service_->SetString(kSyncBookmarksBaseOrder, order);
 }
 
 bool Prefs::GetSyncThisDevice() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return pref_service_->GetBoolean(kSyncThisDeviceEnabled);
+  return pref_service_->GetBoolean(kSyncEnabled);
 }
 
 void Prefs::SetSyncThisDevice(const bool sync_this_device) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  pref_service_->SetBoolean(kSyncThisDeviceEnabled, sync_this_device);
+  pref_service_->SetBoolean(kSyncEnabled, sync_this_device);
 }
 
 bool Prefs::GetSyncBookmarksEnabled() const {
@@ -81,22 +91,22 @@ void Prefs::SetSyncBookmarksEnabled(const bool sync_bookmarks_enabled) {
 
 bool Prefs::GetSyncSiteSettingsEnabled() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return pref_service_->GetBoolean(kSiteSettingsEnabled);
+  return pref_service_->GetBoolean(kSyncSiteSettingsEnabled);
 }
 
 void Prefs::SetSyncSiteSettingsEnabled(const bool sync_site_settings_enabled) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  pref_service_->SetBoolean(kSiteSettingsEnabled, sync_site_settings_enabled);
+  pref_service_->SetBoolean(kSyncSiteSettingsEnabled, sync_site_settings_enabled);
 }
 
 bool Prefs::GetSyncHistoryEnabled() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return pref_service_->GetBoolean(kHistoryEnabled);
+  return pref_service_->GetBoolean(kSyncHistoryEnabled);
 }
 
 void Prefs::SetSyncHistoryEnabled(const bool sync_history_enabled) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  pref_service_->SetBoolean(kHistoryEnabled, sync_history_enabled);
+  pref_service_->SetBoolean(kSyncHistoryEnabled, sync_history_enabled);
 }
 
 std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
@@ -117,37 +127,37 @@ std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
 
 void Prefs::SetLatestRecordTime(const base::Time &time) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  pref_service_->SetTime(kLatestRecordTime, time);
+  pref_service_->SetTime(kSyncLatestRecordTime, time);
 }
 
 base::Time Prefs::GetLatestRecordTime() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return pref_service_->GetTime(kLatestRecordTime);
+  return pref_service_->GetTime(kSyncLatestRecordTime);
 }
 
 void Prefs::SetLastFetchTime(const base::Time &time) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  pref_service_->SetTime(kLastFetchTime, time);
+  pref_service_->SetTime(kSyncLastFetchTime, time);
 }
 
 base::Time Prefs::GetLastFetchTime() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return pref_service_->GetTime(kLastFetchTime);
+  return pref_service_->GetTime(kSyncLastFetchTime);
 }
 
 void Prefs::Clear() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  pref_service_->ClearPref(kThisDeviceId);
-  pref_service_->ClearPref(kSeed);
-  pref_service_->ClearPref(kThisDeviceName);
-  pref_service_->ClearPref(kSyncThisDeviceEnabled);
+  pref_service_->ClearPref(kSyncDeviceId);
+  pref_service_->ClearPref(kSyncSeed);
+  pref_service_->ClearPref(kSyncDeviceName);
+  pref_service_->ClearPref(kSyncEnabled);
   pref_service_->ClearPref(kSyncBookmarksEnabled);
-  pref_service_->ClearPref(kSiteSettingsEnabled);
-  pref_service_->ClearPref(kHistoryEnabled);
-  pref_service_->ClearPref(kLatestRecordTime);
-  pref_service_->ClearPref(kLastFetchTime);
+  pref_service_->ClearPref(kSyncBookmarksBaseOrder);
+  pref_service_->ClearPref(kSyncSiteSettingsEnabled);
+  pref_service_->ClearPref(kSyncHistoryEnabled);
+  pref_service_->ClearPref(kSyncLatestRecordTime);
+  pref_service_->ClearPref(kSyncLastFetchTime);
 }
 
 } // namespace prefs
-
 } // namespace brave_sync
