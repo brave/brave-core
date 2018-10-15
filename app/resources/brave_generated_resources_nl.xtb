@@ -8,9 +8,46 @@
 <translation id="7753103220327065417">Brave Sluiten</translation>
 <translation id="5588481533147090393">Om de importering te voltooien, moet je alle Brave vensters sluiten.</translation>
 <translation id="6447842834002726250">Cookies</translation>
+<translation id="4983925687993168579">Statistieken</translation>
 <translation id="9173846700806833701">Widevine is niet geïnstalleerd</translation>
 <translation id="2433569048491784801">Widevine is niet geïnstalleerd</translation>
 <translation id="3699882589215410581">Widevine installeren en uitvoeren</translation>
+<translation id="8410111618231938546">Google Widevine is een voorbeeld van Digital Rights Management (DRM) code die wij bij Brave Software niet bezitten en niet kunnen inspecteren. De Google Widevine code wordt geladen vna de Google-servers, en niet van die van ons. Het wordt alleen geladen als je deze optie aanzet. We raden het gebruik van DRM af, maar we respecteren de keuzes van onze gebruikers en begrijpen dat sommige Brave-gebruikers graag diensten willen gebruiken waarvoor DRM nodig is.
+
+Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruikersvoorwaarden. Je gaat er mee akkoord dat Brave niet verantwoordelijk is voor enige schade of verliezen gerelateerd aan je gebruik van Google Widevine</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Geïmporteerd Vanuit Brave</translation>
+<translation id="453977518730680921">Speel media automatisch af</translation>
+<translation id="410351446219883937">Automatisch afspelen</translation>
+<translation id="2240268017737062801">Vraag als een site media automatisch wil afspelen</translation>
+<translation id="3371702087847741961">Vraag als een website media automatisch wil afspelen (aangeraden)</translation>
+<translation id="3218385319396786393">Automatisch afspelen is op deze pagina geblokkeerd</translation>
+<translation id="4150684676757176434">Blijf automatisch afspelen blokkeren</translation>
+<translation id="2044383478723007273">Brave-kleuren</translation>
+<translation id="5341901626640816374">Gebruik wijde locatie-versperring</translation>
+<translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
+<translation id="8784924142044142231">Sluit Tor af</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Open Tor-venster</translation>
+<translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="7372129767729198111">Brave shields standaardinstellingen</translation>
+<translation id="8029018702721078742">Advertentiebeheer</translation>
+<translation id="3544462288910360084">Cookie-beheer</translation>
+<translation id="8919235146866304148">Fingerprinting-bescherming</translation>
+<translation id="520895744850022668">Overal HTTPS</translation>
+<translation id="5259716416204774556">Blokkeer Scripts</translation>
+<translation id="6067014455220527258">Blokkeer advertenties</translation>
+<translation id="6985711843506827936">Sta advertenties en tracking toe</translation>
+<translation id="6132506775968708399">Blokkeer cookies van derden</translation>
+<translation id="5657156137487675418">Sta alle cookies toe</translation>
+<translation id="6883611015375728278">Blokkeer alle cookies</translation>
+<translation id="1442559343076146186">Blokkeer fingerprinting door derden</translation>
+<translation id="8034285923190068220">Sta vingerafdrukverificatie toe</translation>
+<translation id="4540198958192073185">Blokkeer alle vingerafdrukverzoeken</translation>
+<translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
+<translation id="6165508094623778733">Meer informatie</translation>
+<translation id="8798099450830957504">Standaard</translation>
+<translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
+<translation id="5825943197137337319">Alleen standaard openbare interface</translation>
+<translation id="1689062823386843231">Deactiveer non-proxied UDP</translation>
 </translationbundle>

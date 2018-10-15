@@ -4,159 +4,185 @@
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Aloita ansaitseminen nyt!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Liittymispalkinnot",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Voit nyt ansaita poletteja katsomalla yksityisyyteen keskittyviä Brave -mainoksia. Lahjoituksesi ei muutu.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Ansaitse poletteja katsomalla mainoksia ja anna hyvän kiertää suosikkisisällöntuottajillesi.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Katso, mitä on parannettu",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Lue lisää",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave-maksut on nyt Brave-palkinnot monien päivitysten kera.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Olet aloittamassa hyvin Rohkean tavan selata verkkoa.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Lompakkosi",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Lahjoitukset",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "päällä",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Braven vahvistettu julkaisija",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Lahjoita tälle sivustolle kuukausittain",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Lahjoita nyt...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Salli vinkit",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "kohteelle",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Liiketapahtumat kategorian mukaan",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Huhtikuu",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Elokuu",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Joulukuu",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Helmikuu",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Tammikuu",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Heinäkuu",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Kesäkuu",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Maaliskuu",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Toukokuu",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Marraskuu",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Lokakuu",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Syyskuu",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Polettilahjoitus",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Brave -mainoksista saadut ansiot ",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Automaattinen lahjoitus",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Kertaluontoiset lahjoitukset/vinkit",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Yhteensä",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "voimassaolo päättyy",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Toistuvat lahjoitukset",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Pois päältä ",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="7942180974165298215">Brave Werbeblocker</translation>
 <translation id="7450557937477381864">Schließen Sie Chrome</translation>
 <translation id="7008934821596358692">Um Ihre Daten vollständig zu importieren, muss Chrome komplett geschlossen werden.</translation>
 <translation id="7753103220327065417">Schließen Sie Brave</translation>
@@ -10,6 +11,37 @@
 <translation id="9173846700806833701">Widevine ist nicht installiert</translation>
 <translation id="2433569048491784801">Widevine ist nicht installiert.</translation>
 <translation id="3699882589215410581">Widevine installieren und ausführen</translation>
+<translation id="8410111618231938546">Google Widevine ist ein Stück Digital Rights Management (DRM)-Code, den wir bei Brave Software nicht besitzen und nicht überprüfen können. Der Google Widevine Code wird von Google Servern geladen, nicht von unseren Servern. Er wird nur geladen, wenn Sie diese Option aktivieren. Wir raten von der Verwendung von DRM ab, aber wir respektieren die Wahl der Benutzer und erkennen an, dass einige mutige Benutzer Dienste nutzen möchten, die dies erfordern.
+
+Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevine Nutzungsbedingungen einverstanden. Sie stimmen zu, dass Brave nicht für Schäden oder Verluste im Zusammenhang mit Ihrer Nutzung von Google Widevine verantwortlich ist.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Aus Brave importiert</translation>
+<translation id="453977518730680921">Automatische Medienwiedergabe</translation>
+<translation id="410351446219883937">Automatische Wiedergabe</translation>
+<translation id="2240268017737062801">Fragen, wenn eine Webseite Medien von selbst abspielen möchte</translation>
+<translation id="3371702087847741961">Fragen, wenn eine Webseite Medien automatisch abspielen will (empfohlen)</translation>
+<translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
+<translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
+<translation id="2044383478723007273">Brave Farben</translation>
+<translation id="8784924142044142231">Tor verlassen</translation>
+<translation id="3696187925156352769">Tor-Fenster Öffnen</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3155170474926428993">Tor-Startprogramm</translation>
+<translation id="8029018702721078742">Anzeigensteuerung</translation>
+<translation id="3544462288910360084">Cookie-Kontrolle</translation>
+<translation id="5259716416204774556">Skriptblockierung</translation>
+<translation id="6067014455220527258">Werbung blockieren</translation>
+<translation id="6985711843506827936">Werbung und Tracking erlauben</translation>
+<translation id="6132506775968708399">Cookies von Drittanbietern blockieren</translation>
+<translation id="5657156137487675418">Alle Cookies erlauben</translation>
+<translation id="6883611015375728278">Alle Cookies blockieren</translation>
+<translation id="1442559343076146186">Fingerabdruck von Drittanbietern blockieren</translation>
+<translation id="8034285923190068220">Fingerabdrucknahme erlauben</translation>
+<translation id="4540198958192073185">Alle Fingerabdrucknahmen sperren</translation>
+<translation id="8942080017911802454">WebRTC-IP-Handhabungs-Richtlinie</translation>
+<translation id="6165508094623778733">Mehr erfahren</translation>
+<translation id="8798099450830957504">Standard</translation>
+<translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
+<translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
+<translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
 </translationbundle>

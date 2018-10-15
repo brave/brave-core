@@ -52,7 +52,7 @@
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
@@ -60,7 +60,7 @@
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
@@ -157,6 +157,32 @@
   },
   "off": {
     "message": "Off",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

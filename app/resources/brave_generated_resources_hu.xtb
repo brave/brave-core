@@ -1,7 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
+<translation id="3333887201479867589">Brave jutalmak</translation>
+<translation id="7942180974165298215">Brave hirdetés blokkolása</translation>
 <translation id="7450557937477381864">Chrome bezárása</translation>
 <translation id="7008934821596358692">Az importálás befejezéséhez zárja be az összes Chrome ablakot.</translation>
+<translation id="7753103220327065417">Brave bezárása</translation>
+<translation id="5588481533147090393">Az importálás befejezéséhez zárja be az összes Brave ablakot.</translation>
 <translation id="6447842834002726250">Sütik</translation>
+<translation id="4983925687993168579">Statisztikák</translation>
+<translation id="9173846700806833701">A Widevine nincs telepítve</translation>
+<translation id="2433569048491784801">A Widevine nincs telepítve</translation>
+<translation id="3699882589215410581">Widevine telepítése és futtatása</translation>
+<translation id="8410111618231938546">A Google Widevine egy digitális jogkezelő (DRM - Digital Rights Management) kód, amelyet mi a Brave Software vállalatnál nem birtokolunk és nem vizsgálunk meg. A Google Widevine kódot Google szerverektől töltjük be, nem pedig saját szervereinkről. Csak akkor töltődik be, ha engedélyezi ezt az opciót. Javasoljuk a DRM használatát, de tiszteletben tartjuk a felhasználók döntését és elismerjük, hogy néhány Brave felhasználó olyan szolgáltatásokat szeretne használni, amelyekhez ez szükséges.
+
+Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhasználási feltételeit. Beleegyezik abba, hogy a Brave nem felelős semmilyen kárért vagy veszteségért, amely a Google Widevine használatával kapcsolatban keletkezik.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importálva a Brave alól</translation>
+<translation id="453977518730680921">Média automatikus lejátszása</translation>
+<translation id="410351446219883937">Automatikus lejátszás</translation>
+<translation id="2240268017737062801">Kérdezze meg, amikor egy honlap automatikusan le akar játszani egy médiát</translation>
+<translation id="3371702087847741961">Kérdezze meg, amikor egy honlap automatikusan le akar játszani valamilyen médiát (javasolt)</translation>
+<translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
+<translation id="4150684676757176434">Automatikus lejátszás további blokkolása</translation>
+<translation id="2044383478723007273">Brave színek</translation>
+<translation id="5341901626640816374">Széles helyszínsáv használata</translation>
+<translation id="7965178729203412357">Új Tor azonosító</translation>
+<translation id="8784924142044142231">Kilépés a Tor böngészőből</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Tor ablak megnyitása</translation>
+<translation id="3155170474926428993">Tor indítóprogram</translation>
+<translation id="7372129767729198111">Brave védelem beállítások</translation>
+<translation id="8029018702721078742">Hirdetések beállítása</translation>
+<translation id="3544462288910360084">Sütik beállítása</translation>
+<translation id="8919235146866304148">Ujjlenyomat-leolvasási védelem</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="5259716416204774556">Script blokkolása</translation>
+<translation id="6067014455220527258">Hirdetések blokkolása</translation>
+<translation id="6985711843506827936">Hirdetések és nyomkövetés engedélyezése</translation>
+<translation id="6132506775968708399">Harmadik fél sütijeinek blokkolása</translation>
+<translation id="5657156137487675418">Összes süti engedélyezése</translation>
+<translation id="6883611015375728278">Összes süti blokkolása</translation>
+<translation id="1442559343076146186">Harmadik fél ujjlenyomat-leolvasásának blokkolása</translation>
+<translation id="8034285923190068220">Ujjlenyomat-leolvasás engedélyezése</translation>
+<translation id="4540198958192073185">Minden ujjlenyomat-leolvasás blokkolása</translation>
+<translation id="8942080017911802454">WebRTC IP kezelési irányelvek</translation>
+<translation id="6165508094623778733">Tudjon meg többet</translation>
+<translation id="8798099450830957504">Alapértelmezett</translation>
+<translation id="1822560017823072927">Alapértelmezett publikus és privát interfészek</translation>
+<translation id="5825943197137337319">Kizárólag alapértelmezett publikus interfész</translation>
+<translation id="1689062823386843231">Proxy nélküli UDP letiltása</translation>
 </translationbundle>

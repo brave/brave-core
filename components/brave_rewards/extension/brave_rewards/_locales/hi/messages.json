@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "ब्रेव रिवार्ड्स ",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "अभी कमाना शुरू करें!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "रिवार्ड्स को जोड़ें",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "अब आप निजता केंद्रित Brave विज्ञापनों को देखने के लिए टोकन कमा सकते हैं। आपका योगदान वहीं रहता है।",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "विज्ञापन देखने के लिए टोकन कमाएं और इसे अपने पसंदीदा सामग्री निर्माताओं  को भेजें| ",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "जानिये कि क्या बेहतर हुआ है",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "और जानें ",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave भुगतान अब कई अपग्रेड्स के साथ Brave रिवार्ड्स हो गए हैं ।",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "आप वेब को ब्राउज़ करने का बिलकुल Brave तरीका शुरू करने जा रहे हैं| ",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "आपका वॉलेट ",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "अनुदान",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "पर",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave द्वारा प्रमाणित प्रकाशक ",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "इस साइट पर मासिक दान करें",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "अभी दान करें… ",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "सुझावों को सक्षम करें ",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "के लिए ",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "श्रेणीवार लेनदेन",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "अप्रैल",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "अगस्त ",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "दिसंबर ",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "फरवरी",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "जनवरी ",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "जुलाई",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "जून",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "मार्च ",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "मई ",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "नवंबर ",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "अक्टूबर",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "सितम्बर",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "टोकन अनुदान ",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "ब्रेव विज्ञापनों से कमाई",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "स्वतः योगदान ",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "One-टाइम दान/ सुझाव ",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "संपूर्ण",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "को समाप्त ",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "आवर्ती अनुदान ",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "बंद",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

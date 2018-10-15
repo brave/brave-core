@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Brave Ödülleri",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Şimdi Kazanmaya Başlayın!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Ödül'e Katılın",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Artık gizlilik odaklı Brave Reklamları izleyerek token kazanabilirsiniz. Katkınız aynı kalacaktır.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Reklam izleyerek token kazanın ve onları favori içerik oluşturucularınıza ödeyin.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Nelerin geliştirildiğini kontrol edin",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Daha Fazlasını Öğren",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave Ödeme artık birçok yükseltme ile Brave Ödül oldu.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "İnternette gezinmek için çok Cesur bir yola adım atmak üzeresiniz.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Cüzdanınız",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Yardımlar",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "açık",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave Onaylı Yayıncı",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Bu siteye aylık olarak bağış yap",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Şimdi Bağış Yap",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "İpuçlarını Etkinleştir",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "için",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Kategorilere Göre İşlemler",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Nisan",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Ağustos",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Aralık",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Şubat",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Ocak",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Temmuz",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Haziran",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Mart",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Mayıs",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Kasım",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Ekim",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Eylül",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Token Yardımı",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Brave Reklam'dan kazançlar",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Otomatik Katkı",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Tek Seferlik Bağışlar/Bahşişler",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Toplam",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "sona eriyor",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Tekrar Eden Bağışlar",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Kapalı",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

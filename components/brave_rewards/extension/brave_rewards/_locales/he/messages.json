@@ -4,159 +4,185 @@
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "התחילו להרוויח עכשיו!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "הצטרפות ל-Rewards",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "עכשיו ביכולתכם להרוויח אסימונים כאשר אתם צופים במודעות פרטיות ב-Brave. התרומות שלכם לא ישתנו.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "הרוויחו אסימונים עבור צפייה במודעות ושתפו הלאה בשביל התוכן המועדפים עליכם.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "בדקו מה יובא",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "לימדו עוד",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "תשלומי Brave הם עכשיו תגמולי Brave עם שדרוגים רבים.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "אתם עומדים להתחיל דרך אמיצה מאוד לגלוש באינטרנט.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "הארנק שלך",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "מענקים",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "פעיל",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "מפרסם מאומת של Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "תרמו לאתר זה כל חודש",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "תרמו עכשיו...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "הרשאת טיפים",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "בשביל",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "עסקאות לפי קטגוריה",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "אפריל",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "אוגוסט",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "דצמבר",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "פברואר",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "ינואר",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "יולי",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "יוני",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "מרץ",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "מאי",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "נובמבר",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "אוקטובר",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "ספטמבר",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "מענק Token",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "רווחים ממודעות Brave",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "תרומה אוטומטית",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "תרומות/טיפים חד פעמיים",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "סך הכל",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "פג תוקף ב-",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "תרומות חוזרות",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "מכובה",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

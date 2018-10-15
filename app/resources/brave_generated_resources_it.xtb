@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="it">
+<translation id="3333887201479867589">Ricompense Brave</translation>
+<translation id="7942180974165298215">Ad Block Brave</translation>
+<translation id="7450557937477381864">Chiudi Chrome</translation>
+<translation id="7008934821596358692">Per completare l\'importazione, chiudi tutte le finestre di Chrome.</translation>
+<translation id="7753103220327065417">Chiudi Brave</translation>
+<translation id="5588481533147090393">Per completare l\'importazione, chiudi tutte le finestre di Brave.</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="4983925687993168579">Statistiche</translation>
+<translation id="9173846700806833701">Widevine non è installato</translation>
+<translation id="2433569048491784801">Widevine non è installato.</translation>
+<translation id="3699882589215410581">Installa ed esegui Widevine</translation>
+<translation id="8410111618231938546">Google Widevine è un codice DRM (Digital Rights Management) che noi di Brave Software non possediamo e non possiamo ispezionare. Il codice di Google Widevine è caricato dai server di Google, non dai nostri server. Viene caricato solo quando si attiva questa opzione. Scoraggiamo l\'uso del DRM, ma rispettiamo la scelta dell\'utente e riconosciamo che alcuni utenti di Brave vorrebbero utilizzare i servizi per cui è obbligatorio.
+
+Installando questa estensione, accetti i Termini di utilizzo di Google Widevine. Accetti di non ritenere Brave responsabile per eventuali danni o perdite in relazione al tuo utilizzo di Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importa Da Brave</translation>
+<translation id="453977518730680921">Riproduci automaticamente il contenuto multimediale</translation>
+<translation id="410351446219883937">Riproduzione automatica</translation>
+<translation id="2240268017737062801">Chiedi quando un sito vuole riprodurre automaticamente i contenuti multimediali</translation>
+<translation id="3371702087847741961">Chiedi quando un sito vuole riprodurre automaticamente un contenuto multimediale (raccomandato)</translation>
+<translation id="3218385319396786393">La riproduzione automatica è stata bloccata su questa pagina</translation>
+<translation id="4150684676757176434">Continua a bloccare la riproduzione automatica</translation>
+<translation id="2044383478723007273">Colori di Brave</translation>
+<translation id="5341901626640816374">Utilizza la barra con posizione estesa</translation>
+<translation id="7965178729203412357">Nuova Identità Tor</translation>
+<translation id="8784924142044142231">Esci da Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Apri la finestra Tor</translation>
+<translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="7372129767729198111">Impostazioni predefinite di protezione di Brave</translation>
+<translation id="8029018702721078742">Controllo dell\'Annuncio</translation>
+<translation id="3544462288910360084">Controllo dei cookie</translation>
+<translation id="8919235146866304148">Protezione dal rilevamento delle impronte</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="5259716416204774556">Bloccaggio dello script</translation>
+<translation id="6067014455220527258">Blocca gli annunci</translation>
+<translation id="6985711843506827936">Consenti gli annunci e il tracciamento</translation>
+<translation id="6132506775968708399">Blocca i cookie di terze parti</translation>
+<translation id="5657156137487675418">Consenti tutti i cookie</translation>
+<translation id="6883611015375728278">Blocca tutti i cookie</translation>
+<translation id="1442559343076146186">Blocca le impronte di terze parti</translation>
+<translation id="8034285923190068220">Consenti la rilevazione delle impronte</translation>
+<translation id="4540198958192073185">Blocca il rilevamento di tutte le impronte</translation>
+<translation id="8942080017911802454">Politica di gestione IP WebRTC</translation>
+<translation id="6165508094623778733">Per saperne di più</translation>
+<translation id="8798099450830957504">Predefinito</translation>
+<translation id="1822560017823072927">Interfacce pubbliche e private predefinite</translation>
+<translation id="5825943197137337319">Solamente l\'interfaccia pubblica predefinita</translation>
+<translation id="1689062823386843231">Disabilita UDP senza proxy</translation>
 </translationbundle>

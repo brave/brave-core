@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-TW">
+<translation id="3333887201479867589">Brave 獎勵</translation>
+<translation id="7942180974165298215">Brave 廣告阻擋</translation>
+<translation id="7450557937477381864">關閉 Chrome</translation>
+<translation id="7008934821596358692">如要完成匯入，請關閉 Chrome 所有視窗。</translation>
+<translation id="7753103220327065417">關閉  Brave</translation>
+<translation id="5588481533147090393">關閉所有 Brave 視窗以結束匯入</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="4983925687993168579">統計數據</translation>
+<translation id="9173846700806833701">未安裝 Widevine</translation>
+<translation id="2433569048491784801">尚未安裝 Widevine。</translation>
+<translation id="3699882589215410581">安裝並執行 Widevine</translation>
+<translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
+
+安裝該擴充元件即表示您同意 Google Widevine 使用條款。您同意 Brave 不為您使用 Google Widevine 而產生的任何相關損害或損失負責。</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">自 Brave 匯入</translation>
+<translation id="453977518730680921">自動播放媒體</translation>
+<translation id="410351446219883937">自動播放</translation>
+<translation id="2240268017737062801">當網站想要自動撥放媒體時詢問我</translation>
+<translation id="3371702087847741961">當網站想要自動播放媒體時詢問我（建議使用）</translation>
+<translation id="3218385319396786393">此頁面已禁止自動播放</translation>
+<translation id="4150684676757176434">繼續封鎖自動撥放</translation>
+<translation id="2044383478723007273">Brave 顏色</translation>
+<translation id="5341901626640816374">使用寬網址列</translation>
+<translation id="7965178729203412357">新 Tor 身分</translation>
+<translation id="8784924142044142231">退出 Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">打開 Tor 視窗</translation>
+<translation id="3155170474926428993">Tor 啟動程式</translation>
+<translation id="7372129767729198111">預設 Brave shields</translation>
+<translation id="8029018702721078742">廣告控管</translation>
+<translation id="3544462288910360084">Cookie 控制</translation>
+<translation id="8919235146866304148">指紋辨識保護</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="5259716416204774556">封鎖 Script</translation>
+<translation id="6067014455220527258">封鎖廣告</translation>
+<translation id="6985711843506827936">允許廣告及追蹤</translation>
+<translation id="6132506775968708399">封鎖第三方 cookies</translation>
+<translation id="5657156137487675418">允許所有 cookie</translation>
+<translation id="6883611015375728278">阻擋所有 cookies</translation>
+<translation id="1442559343076146186">阻擋第三方指紋識別</translation>
+<translation id="8034285923190068220">允許指紋識別</translation>
+<translation id="4540198958192073185">阻擋所有指紋辨識</translation>
+<translation id="8942080017911802454">WebRTC IP 處理政策</translation>
+<translation id="6165508094623778733">更多訊息</translation>
+<translation id="8798099450830957504">預設</translation>
+<translation id="1822560017823072927">預設公共和隱私介面</translation>
+<translation id="5825943197137337319">僅限預設公用介面</translation>
+<translation id="1689062823386843231">停用非代理 UDP</translation>
 </translationbundle>
