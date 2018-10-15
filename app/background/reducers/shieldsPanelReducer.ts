@@ -39,7 +39,7 @@ const updateShieldsIconImage = (state: State) => {
   const tab: Tab = state.tabs[tabId]
   if (tab) {
     const url: string = tab.url
-    const isShieldsActive: boolean = state.tabs[tabId].braveShields === 'allow'
+    const isShieldsActive: boolean = state.tabs[tabId].braveShields !== 'block'
     setIcon(url, tabId, isShieldsActive)
   }
 }
