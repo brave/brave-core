@@ -70,6 +70,15 @@ export const Grid2Columns = styled<{}, 'section'>('section')`
     "image"
     "content";
   }
+
+  @media screen and (max-width: 1170px) {
+    grid-template-columns: 460px;
+    justify-content: center;
+    grid-template-areas:
+    "header"
+    "content1"
+    "content2";
+  }
 `
 
 export const HeaderGrid = styled<{}, 'section'>('section')`
@@ -104,5 +113,5 @@ export const HeaderGrid = styled<{}, 'section'>('section')`
 export const ButtonGroup = styled<{}, 'footer'>('footer')`
   display: flex;
   flex: 1;
-  justify-content: space-between;
+  justify-content: flex-start;
 `

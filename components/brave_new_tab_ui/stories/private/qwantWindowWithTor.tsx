@@ -21,7 +21,7 @@ import PrivateWindowsWithTorModal from './modals/privateWindowsWithTorModal'
 import TorInBraveModal from './modals/torInBraveModal'
 
 import locale from './fakeLocale'
-const privateWindowImg = require('../../../assets/img/private-window.svg')
+const privateWindowImg = require('../../../assets/img/private-window-tor.svg')
 
 interface State {
   learnMoreAboutPrivateWindowsWithTor: boolean
@@ -64,8 +64,8 @@ export default class QwantTab extends React.PureComponent<{}, State> {
               <TorImage src={privateWindowImg} />
               <div>
                 <SubTitle>{locale.headerLabel}</SubTitle>
-                <Title>{locale.headerTitle}</Title>
-                <Text>{locale.headerText}</Text>
+                <Title>{locale.headerTorTitle}</Title>
+                <Text>{locale.headerTorText}</Text>
               </div>
             </div>
           </HeaderBox>

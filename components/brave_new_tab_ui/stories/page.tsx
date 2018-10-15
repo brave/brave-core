@@ -11,7 +11,7 @@ import NewPrivateTab from './private/index'
 
 storiesOf('Feature Components/New Tab/Page', module)
   .addDecorator(withKnobs)
-  .add('Private Tab', () => {
+  .add('Private Window', () => {
     return (
       <NewPrivateTab
         isQwant={boolean('Is Qwant?', false)}
@@ -19,7 +19,7 @@ storiesOf('Feature Components/New Tab/Page', module)
       />
     )
   })
-  .add('Qwant Tab', () => {
+  .add('Qwant Window', () => {
     return (
       <NewPrivateTab
         isQwant={boolean('Is Qwant?', true)}
@@ -27,7 +27,15 @@ storiesOf('Feature Components/New Tab/Page', module)
       />
     )
   })
-  .add('Tor Tab', () => {
+  .add('Qwant Tor', () => {
+    return (
+      <NewPrivateTab
+        isQwant={boolean('Is Qwant?', true)}
+        isTor={boolean('Enable Tor?', true)}
+      />
+    )
+  })
+  .add('Tor Window', () => {
     return (
       <NewPrivateTab
         isQwant={boolean('Is Qwant?', false)}

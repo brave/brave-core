@@ -19,8 +19,8 @@ import {
   TorLockImage,
   Separator,
   PurpleButton,
-  FakeButton,
-  Link
+  FakeButton
+  // Link
 } from '../../../../src/features/newTab'
 
 import PrivateWindowsWithTorModal from './modals/privateWindowsWithTorModal'
@@ -28,7 +28,7 @@ import DuckDuckGoModal from './modals/duckDuckGoModal'
 import TorInBraveModal from './modals/torInBraveModal'
 
 import locale from './fakeLocale'
-const privateWindowImg = require('../../../assets/img/private-window.svg')
+const privateWindowImg = require('../../../assets/img/private-window-tor.svg')
 
 interface State {
   learnMoreAboutPrivateWindowsWithTor: boolean
@@ -105,7 +105,7 @@ export default class TorTab extends React.PureComponent<{}, State> {
                 <span>{locale.searchSettings}</span>
                 <OpenNewIcon />
               </FakeButton>
-              <Link onClick={this.onClickLearnMoreAboutDuckDuckGo}>{locale.learnMore}</Link>
+              {/* <Link onClick={this.onClickLearnMoreAboutDuckDuckGo}>{locale.learnMore}</Link> */}
             </ButtonGroup>
           </Box>
           <Box>

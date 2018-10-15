@@ -14,17 +14,19 @@ export const Modal = styled(DefaultModal as ComponentType<Props>)`
 export const LimitedBounds = styled<{}, 'article'>('article')`
   overflow: auto;
   height: 500px;
+  padding: 20px;
 `
 
 export const HeadingText = styled(Heading)`
-  font-size: 18px;
-  font-weight: normal;
+  font-size: 20px;
+  font-weight: 500;
 `
 
 export const Paragraph = styled<{}, 'p'>('p')`
-  font-size: 14px;
-  font-family: ${p => p.theme.fontFamily.heading};
-  letter-spacing: 0.14px;
+  font-size: 15px;
+  font-family: ${p => p.theme.fontFamily.body};
+  letter-spacing: .3px;
+  line-height: 24px;
 `
 
 export const Footer = styled<{}, 'footer'>('footer')`

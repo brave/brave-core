@@ -17,8 +17,8 @@ import {
   DuckDuckGoImage, TorLockImage,
   Separator,
   PurpleButton,
-  FakeButton,
-  Link
+  FakeButton
+  // Link
 } from '../../../../src/features/newTab'
 import { Toggle } from '../../../../src/features/shields'
 
@@ -104,7 +104,7 @@ export default class PrivateTab extends React.PureComponent<{}, State> {
                 <span>{locale.boxDdgButton}</span>
                 <Toggle />
               </FakeButton>
-              <Link onClick={this.onClickLearnMoreAboutDuckDuckGo}>{locale.learnMore}</Link>
+              {/* <Link onClick={this.onClickLearnMoreAboutDuckDuckGo}>{locale.learnMore}</Link> */}
             </ButtonGroup>
           </Box>
           <Box>

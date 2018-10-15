@@ -70,7 +70,7 @@ export const SubTitle = styled<{}, 'small'>('small')`
   font-size: 14px;
   text-transform: uppercase;
   font-weight: 600;
-  margin-bottom: 14px;
+  margin-bottom: 5px;
 `
 
 export const Title = styled(Heading)`
@@ -78,18 +78,18 @@ export const Title = styled(Heading)`
   letter-spacing: 0.02px;
   font-weight: 500;
   color: #fff;
-  margin: 0 0 23px;
+  margin: 0 0 0px;
 `
 export const Text = styled<{}, 'p'>('p')`
-  font-family: ${p => p.theme.fontFamily.heading};
+  font-family: ${p => p.theme.fontFamily.body};
   letter-spacing: 0.19px;
-  line-height: 22px;
-  font-size: 14px;
+  line-height: 26px;
+  font-size: 15px;
   color: #fff;
 `
 
 export const Separator = styled<{}, 'hr'>('hr')`
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.10);
   height: 0;
   width: 100%;
   margin: 25px 0 0;
@@ -100,7 +100,7 @@ export const PurpleButton = styled(Button as ComponentType<ButtonProps>)`
   font-size: 14px;
   font-weight: 500;
   padding: 14px 20px;
-  margin-top: 25px;
+  margin: 25px 0 0;
 `
 export const Link = styled<{}, 'a'>('a')`
   font-family: ${p => p.theme.fontFamily.heading};
@@ -109,7 +109,7 @@ export const Link = styled<{}, 'a'>('a')`
   font-style: normal;
   line-height: 1;
   align-self: center;
-  margin: 25px 10px 0;
+  margin: 25px 20px 0;
   cursor: pointer;
 `
 

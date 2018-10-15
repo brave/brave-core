@@ -16,7 +16,7 @@ const doNothing = () => {
 }
 
 storiesOf('Feature Components/New Tab/Private/Popups and Modals', module)
-  .add('About DuckDuckGo', () => <DuckDuckGoModal onClose={doNothing} />)
-  .add('About Private Window', () => <PrivateWindowsModal onClose={doNothing} />)
-  .add('About Private Window with Tor', () => <PrivateWindowsWithTorModal onClose={doNothing} />)
-  .add('About Tor in Brave', () => <TorInBraveModal onClose={doNothing} />)
+  .add('Learn more DDG Modal', () => <DuckDuckGoModal onClose={doNothing} />)
+  .add('Learn more Private Window Modal', () => <PrivateWindowsModal onClose={doNothing} />)
+  .add('Learn more Private Window with Tor Modal', () => <PrivateWindowsWithTorModal onClose={doNothing} />)
+  .add('Learn more about Tor Modal', () => <TorInBraveModal onClose={doNothing} />)

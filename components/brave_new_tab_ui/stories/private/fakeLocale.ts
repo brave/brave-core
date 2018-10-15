@@ -7,30 +7,32 @@ const locale = {
   learnMore: 'Learn more',
   done: 'Done',
   searchSettings: 'Search settings',
-  headerLabel: 'you are inside a',
+  headerLabel: 'You are inside a',
 
-  // Header Privaste Window
+  // Header Private Window
   headerTitle: 'Private Window',
-  headerText: 'Brave doesn’t record browsing information while in a Private Window. Sites you visit aren’t recorded in your history and cookies are deleted on close. Your activity is not completely anonymous though and may still be visible to your ISP or websites you visit.',
+  headerText: 'Brave doesn’t remember what you do in a Private Window. Sites you visit won\'t show up in your history and cookies vanish when you’re done. Private Windows don’t make you completely anonymous online, though.',
   headerButton: 'Learn more about Private Windows',
 
   // Header Private Window with Tor
   headerTorTitle: 'Private Window with Tor',
-  headerTorText: 'Brave doesn’t record browsing information while in a Private Window. Sites you visit aren’t recorded in your history and cookies are deleted on close. Your activity is not completely anonymous though and may still be visible to your ISP or websites you visit.',
+  headerTorText: 'Brave never remembers what you do in a Private Window. With Tor, your browsing is also hidden from your ISP or employer, and your IP address is hidden from the sites you visit.',
   headerTorButton: 'Learn more about Private Windows with Tor',
 
   // Box for DDG
   boxDdgLabel: 'Search Privately with',
   boxDdgTitle: 'DuckDuckGo',
-  boxDdgText: 'Brave recommends and defaults to using DuckDuckGo to search the web while inside private windows. DuckDuckGo is the search engine that doesn’t track you.  No personal information or data is collected by DuckDuckGo enabling you to search with more privacy.',
-  boxDdgText2: 'DuckDuckGo is the default search engine while in Private Windows with Tor. DuckDuckGo doesn’t track your search history and with Tor protection, your location is anonymized. You can change the search engine in settings but most popular alternatives behave poorly with Tor enabled.',
+  boxDdgText: 'Brave recommends and defaults to using DuckDuckGo to search the web while inside private windows. DuckDuckGo is the search engine that doesn’t track you. No personal information or data is collected by DuckDuckGo enabling you to search with more privacy.',
+  boxDdgText2: 'In Private Windows with Tor, DuckDuckGo is the default search engine. You can change the default, but some other popular search engines are harder to use with Tor. DuckDuckGo doesn’t track your search history; with Tor, they don’t even know your IP address.',
   boxDdgButton: 'Search with DuckDuckGo',
 
   // Box for Tor
   boxTorLabel: 'Browse anonymously with',
   boxTorTitle: 'Tor Protection',
-  boxTorText: 'Tor anonymizes your traffic from the sites you visit by sending your connection through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can’t see which sites you’re visiting either. Tor can slow down browsing and some might not work at all.',
-  boxTorText2: 'Browsing in a Private Window only changes what Brave records on your device. Your activity is not completely anonymous to others and may still be visible to your service provider or websites you visit. Tor hides your IP address from the sites you visit, and hides the sites you visit from your ISP or your employer.',
+  // Private Window with Tor - Tor Box
+  boxTorText: 'Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can’t see which sites you’re visiting. Tor can slow down browsing and some sites might not work at all.',
+  // Private Window - Tor Box
+  boxTorText2: 'Using Private Windows only change what Brave does on your device, it doesn\'t change anyone else\'s behavior. To browse more anonymously with Tor protection, open a New Private Window with Tor from the File menu.',
   boxTorButton: 'Learn more about Tor in Brave',
 
   // Modal Private Window with Tor
@@ -50,9 +52,12 @@ const locale = {
   modalPrivateWindowDisclaimer4: 'If an employer manages your device, they might also keep track of what you do with it. Using Private Windows probably won\'t stop them from knowing which sites you\'ve visited. Someone else with access to your device could also have installed software which monitors your activity, and Private Windows can\'t protect you from this either.',
 
   // Modal Tor in Brave
-  modalTorInBraveTitle: 'Tor in Brave',
-  modalTorInBraveDisclaimer1: 'Ross edit me',
-  modalTorInBraveDisclaimer2: 'Ross edit me too',
+  modalTorInBraveTitle: 'More about Tor in Brave',
+  modalTorInBraveDisclaimer1: 'When you use Tor, Brave doesn’t connect directly to a website like normal. Instead, you connect to a chain of three different computers in the volunteer-run Tor network, one after another, and only then to the website you’re visiting. Between those three Tor computers, only one knows where your connection is really coming from and only one knows where it’s really going. And those two don’t even talk to each other because there’s another computer in the middle!',
+  modalTorInBraveDisclaimer2: 'From the perspective of the websites you visit, it looks like your connection is coming from that last Tor computer — sites don’t learn your real IP address. But they can tell that the connection is being shuffled around by Tor because the list of Tor computers isn’t a secret. Some sites will treat you very differently because of this. Most often they’ll just keep asking you to prove you’re human. If a site relies on a feature which would reveal your real IP address or make you much easier to recognize when you’re not using Tor, that site might not work at all because we’d rather be safe than sorry',
+  modalTorInBraveDisclaimer3: 'Your ISP or employer or the owner of the WiFi network you’re connected to also won’t see which sites you visit because Brave doesn’t connect directly to the site. Instead, someone watching your network connection only sees that you’re making a connection to the Tor network. Some network owners try to block connections to the Tor network because they want to decide which sites you get to visit, and Tor lets you gets around that blocking.',
+  modalTorInBraveDisclaimer4: 'If your employer administers your device they might also keep track of what you do with it. Using Private windows, even with Tor, probably won\'t stop them from knowing which sites you\'ve visited. Someone else with access to your device could also have installed software which monitors your activity, and Brave can’t protect you from this either.',
+  modalTorInBraveDisclaimer5: 'With Tor, Brave works hard to ensure that you’re extremely difficult to track online while providing a delightful browsing experience. But if your personal safety depends on remaining anonymous you may wish to use the Tor Browser from https://torproject.org/ instead.',
 
   // Modal DuckDuckGo
   modalDuckduckGoTitle: 'DuckDuckGo',
