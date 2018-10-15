@@ -17,7 +17,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
 
 } // namespace
 
-#define ChromeGeolocationPermissionContext BraveGeolocationPermissionContext
+#define GeolocationPermissionContext BraveGeolocationPermissionContext
 #define PermissionManagerFactory BravePermissionManagerFactory
 #include "../../../../../chrome/browser/permissions/permission_manager.cc"
-#undef ChromeGeolocationPermissionContext
+#undef GeolocationPermissionContext
