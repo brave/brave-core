@@ -4,39 +4,39 @@
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "เริ่มรับเงินได้ตอนนี้!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "รางวัลการเข้าร่วม",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "ตอนนี้คุณสามารถรับโทเคนจากการชม Brave Ads ที่โฟกัสไปที่ความเป็นส่วนตัว การสนับสนุนของคุณยังคงเหมือนเดิม",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "รับเหรียญจากการชมโฆษณาและจ่ายต่อไปยังนักสร้างคอนเทนท์คนโปรดของคุณ",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "มาดูว่ามีอะไรปรับปรุงเปลี่ยนแปลงไปแล้วบ้าง",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "เรียนรู้เพิ่มเติม",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave Payments ตอนนี้เป็น Brave Rewards พร้อมการอัพเกรดหลายอย่าง",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "คุณกำลังจะเริ่มวิธีที่ Brave มากในการท่องเว็บ",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "กระเป๋าเงินของคุณ",
     "description": ""
   },
   "grants": {
@@ -44,87 +44,87 @@
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "เปิด",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "ผู้เผยแพร่ที่ได้รับการยืนยันแล้วของ Brave ",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "บริจาคเว็บนี้รายเดือน",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "ทำการบริจาคเดี๋ยวนี้...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "เปิดทิป",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "สำหรับ",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "ธุรกรรมตามหมวดหมู่",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "เมษายน",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "สิงหาคม",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "ธันวาคม",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "กุมภาพันธ์",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "มกราคม",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "กรกฏาคม",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "มิถุนายน",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "มีนาคม",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "พฤษภาคม",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "พฤศจิกายน",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "ตุลาคม",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "กันยายน",
     "description": ""
   },
   "tokenGrant": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "เงินได้จากโฆษณา Brave ",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,23 +140,49 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "บริจาคเพียงครั้งเดียว/ทิป",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "รวม",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "หมดอายุใน",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "การบริจาคประจำ",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "ปิด",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

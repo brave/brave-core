@@ -8,6 +8,7 @@
 <translation id="7753103220327065417">Brave 닫기</translation>
 <translation id="5588481533147090393">가져오기를 완료하려면 모든 Brave 창을 닫아야 합니다.</translation>
 <translation id="6447842834002726250">쿠키</translation>
+<translation id="4983925687993168579">통계</translation>
 <translation id="9173846700806833701">Widevine 설치되지 않음</translation>
 <translation id="2433569048491784801">Widevine가 설치되지 않았습니다.</translation>
 <translation id="3699882589215410581">Widevine 설치 및 실행</translation>
@@ -16,4 +17,37 @@
  이 확장 프로그램을 설치하면 Google Widevine의 이용 약관에 동의하게 됩니다. 당신은 Brave가 Google Widevine 사용과 관련하여 발생한 어떠한 손해 및 손실에 대해 책임지지 않음을 동의하게 됩니다.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Brave에서 가져오기</translation>
+<translation id="453977518730680921">미디어 자동 재생</translation>
+<translation id="410351446219883937">자동 재생</translation>
+<translation id="2240268017737062801">사이트가 언제 미디어를  자동재생하기를 원하는지 묻기</translation>
+<translation id="3371702087847741961">사이트가 언제 미디어를 자동재생하기를 원하는지 묻기(권장함)</translation>
+<translation id="3218385319396786393">이 페이지에서는 자동 재생이 차단되었습니다</translation>
+<translation id="4150684676757176434">계속해서 자동 재생 차단</translation>
+<translation id="2044383478723007273">Brave 색상</translation>
+<translation id="5341901626640816374">넓은 위치 표시줄 사용</translation>
+<translation id="7965178729203412357">새로운 Tor 계정</translation>
+<translation id="8784924142044142231">Tor 나가기</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Tor 창 열기</translation>
+<translation id="3155170474926428993">Tor 런처</translation>
+<translation id="7372129767729198111">Brave 쉴드 기본값</translation>
+<translation id="8029018702721078742">광고 콘트롤</translation>
+<translation id="3544462288910360084">쿠키 제어</translation>
+<translation id="8919235146866304148">지문 정보 보호</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="5259716416204774556">스크립트 차단</translation>
+<translation id="6067014455220527258">광고 차단</translation>
+<translation id="6985711843506827936">광고 및 추적 허용</translation>
+<translation id="6132506775968708399">제 3자 쿠키 차단하기</translation>
+<translation id="5657156137487675418">모든 쿠키 허용</translation>
+<translation id="6883611015375728278">모든 쿠키 차단</translation>
+<translation id="1442559343076146186">제 3자 지문 정보 차단하기</translation>
+<translation id="8034285923190068220">지문 정보 허용하기</translation>
+<translation id="4540198958192073185">모든 지문 정보 차단하기</translation>
+<translation id="8942080017911802454">WebRTC IP 취급 정책</translation>
+<translation id="6165508094623778733">더 자세한 정보</translation>
+<translation id="8798099450830957504">기본값</translation>
+<translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
+<translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
+<translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 </translationbundle>

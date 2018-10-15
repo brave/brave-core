@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Braveリワード",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "今すぐ獲得しましょう！",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "リワードに参加する",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Brave のプライバシー重視型広告を閲覧することでトークンを獲得できます。あなたの貢献度は変わりません. ",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "広告を視聴してトークンを獲得し、お気に入りのコンテンツ制作者にそれで支払いましょう。",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "改善された機能を確認",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "詳しく知る",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave PaymentsはアップグレードされてBraveリワードになりました。",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "ウェブサイト閲覧の新発想、Braveをご体感ください。",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "あなたのウォレット",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "補助金",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "オン",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Braveが検証済みのパブリッシャー",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "毎月このサイトに寄付する",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "寄付する...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "ヒントをオンにする",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "のための",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "カテゴリー別取引",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "4月",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "8月",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "12月",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "2月",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "1月",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "7月",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "6月",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "3月",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "5月",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "11月",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "10月",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "9月",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "トークンの付与",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Brave Adsからの収益",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "自動コントリビュート",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "一度だけ寄付/ヒント",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "合計",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "に期限切れ",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "反復的な寄付",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "オフ",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

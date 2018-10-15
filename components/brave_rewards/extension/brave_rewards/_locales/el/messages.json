@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Επιβραβεύσεις Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Ξεκινήστε να Κερδίζετε Τώρα!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Συμμετοχή σε Ανταμοιβές",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Μπορείτε τώρα να κερδίσετε μάρκες για να βλέπετε τις διαφημίσεις Brave που εστιάζουν  στην ιδιωτικότητα. Η συνεισφορά σας θα παραμείνει η ίδια.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Κερδίστε διακριτικά βλέποντας Διαφημίσεις και προσφέρετέ τα αμέσως στον αγαπημένο σας δημιουργό περιεχομένου.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Δείτε τι έχει βελτιωθεί",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Μάθετε Περισσότερα ",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Οι Πληρωμές Brave είναι τώρα Ανταμοιβές Brave με πολλές αναβαθμίσεις. ",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Πρόκειται να ξεκινήσετε έναν πολύ Brave τρόπο να περιηγείσε στο διαδίκτυο.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Το πορτοφόλι σας",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Επιχορηγήσεις ",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "ανοιχτό ",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Επαληθευμένος Εκδότης Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Δωρίστε σε αυτήν την σελίδα Μηνιαία",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Δωρίστε Τώρα...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Ενεργοποίηση Φιλοδωρημάτων",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "για",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Συναλλαγές ανά Κατηγορία",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Απρίλιος",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Αύγουστος",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Δεκέμβριος",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Φεβρουάριος ",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Ιανουάριος",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Ιούλιος",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Ιούνιος",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Μάρτιος",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Μάιος",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Νοέμβριος",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Οκτώβριος",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Σεπτέμβριος ",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Χορηγία Μάρκας",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Κέρδη από Διαφημίσεις Brave",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Αυτόματη-Δωρεά",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Συνεισφορές/Φιλοδωρήματα για Μια Φορά",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Σύνολο",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "λήγει στις",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Επαναλαμβανόμενες Δωρεές",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Κλειστό",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

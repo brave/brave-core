@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fi">
+<translation id="3333887201479867589">Brave -palkinnot</translation>
+<translation id="7942180974165298215">Brave-mainostenesto</translation>
+<translation id="7450557937477381864">Sulje Chrome</translation>
+<translation id="7008934821596358692">Sulje kaikki Chrome-ikkunat lopettaaksesi tuonnin.</translation>
+<translation id="7753103220327065417">Sulje Brave</translation>
+<translation id="5588481533147090393">Sulje kaikki Brave - ikkunat lopettaaksesi tuonnin.</translation>
+<translation id="6447842834002726250">Evästeet</translation>
+<translation id="4983925687993168579">Tilastot</translation>
+<translation id="9173846700806833701">Widevine ei ole asennettu</translation>
+<translation id="2433569048491784801">Widevine ei ole asennettu.</translation>
+<translation id="3699882589215410581">Asenna ja suorita Widevine</translation>
+<translation id="8410111618231938546">Google Widevine on osa digitaalisen käyttöoikeuksien hallinnan (DRM) koodia, jota me Brave Softwarella emme omista tai voi tarkkailla. Google Widevine -koodi ladataan Googlen palvelimilta, ei meidän palvelimiltamme. Se ladataan vain, kun sallit tämän vaihtoehdon. Emme suosittele DRM:n käyttöä, mutta kunnioitamme käyttäjiemme valintaa ja tiedostamme, että jotkut Braven käyttäjät saattavat haluta käyttää palveluita, jotka vaativat sitä.
+
+Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyväksyt, että Brave ei ole vastuussa mistään vahingoista tai menetyksistä, jotka liittyvät Google Widevinen käyttöön.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Tuotu Brave:sta</translation>
+<translation id="453977518730680921">Toista media automaattisesti</translation>
+<translation id="410351446219883937">Toista automaattisesti</translation>
+<translation id="2240268017737062801">Kysy, kun sivusto haluaa toistaa mediaa automaattisesti</translation>
+<translation id="3371702087847741961">Kysy, kun sivusto haluaa toistaa mediaa automaattisesti (suositeltu)</translation>
+<translation id="3218385319396786393">Automaattinen toisto on estetty tällä sivulla</translation>
+<translation id="4150684676757176434">Jatka automaattisen toiston estoa</translation>
+<translation id="2044383478723007273">Brave -värit</translation>
+<translation id="5341901626640816374">Käytä laajennettua sijaintipalkkia</translation>
+<translation id="7965178729203412357">Uusi Tor-identiteetti</translation>
+<translation id="8784924142044142231">Poistu Torista</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Avaa Tor-ikkuna</translation>
+<translation id="3155170474926428993">Tor -laukaisin</translation>
+<translation id="7372129767729198111">Braven oletussuojaus</translation>
+<translation id="8029018702721078742">Mainostenhallinta</translation>
+<translation id="3544462288910360084">Evästeiden hallinta</translation>
+<translation id="8919235146866304148">Tunnistesuojaus</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="5259716416204774556">Komentosarjojen esto</translation>
+<translation id="6067014455220527258">Estä mainokset</translation>
+<translation id="6985711843506827936">Salli mainokset ja seuranta</translation>
+<translation id="6132506775968708399">Estä kolmannen osapuolen evästeet</translation>
+<translation id="5657156137487675418">Salli kaikki evästeet</translation>
+<translation id="6883611015375728278">Estä kaikki evästeet</translation>
+<translation id="1442559343076146186">Estä kolmannen osapuolen tunnisteet</translation>
+<translation id="8034285923190068220">Salli tunnisteet</translation>
+<translation id="4540198958192073185">Estä kaikki tunnisteet</translation>
+<translation id="8942080017911802454">WebRTC IP käsittelykäytäntö</translation>
+<translation id="6165508094623778733">Lue lisää</translation>
+<translation id="8798099450830957504">Oletus</translation>
+<translation id="1822560017823072927">Julkinen ja yksityinen oletuskäyttöliittymä</translation>
+<translation id="5825943197137337319">Vain julkinen oletuskäyttöliittymä</translation>
+<translation id="1689062823386843231">Estä yhteydetön UDP</translation>
 </translationbundle>

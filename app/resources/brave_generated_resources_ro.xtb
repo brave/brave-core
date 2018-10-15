@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
+<translation id="3333887201479867589">Recompense Brave</translation>
+<translation id="7942180974165298215">Blocare reclame Brave</translation>
+<translation id="7450557937477381864">Închide Chrome</translation>
+<translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
+<translation id="7753103220327065417">Închide Brave</translation>
+<translation id="5588481533147090393">Pentru finalizarea importului, închideți toate ferestrele Brave.</translation>
+<translation id="6447842834002726250">Cookie-uri</translation>
+<translation id="4983925687993168579">Statistici</translation>
+<translation id="9173846700806833701">Widevine nu este instalat</translation>
+<translation id="2433569048491784801">Widevine nu este instalat.</translation>
+<translation id="3699882589215410581">Instalați și rulați Widevine</translation>
+<translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
+
+Instalând această extensie, sunteți de acord cu termenii de utilizare ai Google Widevine. Sunteți de acord că Brave nu este responsabil pentru nicio problemă sau pierdere a conexiunii în timpul utilizării Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importat din Brave</translation>
+<translation id="453977518730680921">Autoredare media</translation>
+<translation id="410351446219883937">Redare automată</translation>
+<translation id="2240268017737062801">Întrebați când un site vrea să redea automat media</translation>
+<translation id="3371702087847741961">Solicită când un site dorește să redea automat media (recomandat)</translation>
+<translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
+<translation id="4150684676757176434">Continuă blocarea autoredării</translation>
+<translation id="2044383478723007273">Culori Brave</translation>
+<translation id="5341901626640816374">Utilizați bara mare de locație</translation>
+<translation id="7965178729203412357">Identitate nouă Tor</translation>
+<translation id="8784924142044142231">Ieșire din Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Deschide fereastră Tor</translation>
+<translation id="3155170474926428993">Lansatorul Tor</translation>
+<translation id="7372129767729198111">Valori implicite scuturi Brave</translation>
+<translation id="8029018702721078742">Control reclame</translation>
+<translation id="3544462288910360084">Control cookie</translation>
+<translation id="8919235146866304148">Protecție amprentare</translation>
+<translation id="520895744850022668">HTTPS peste tot</translation>
+<translation id="5259716416204774556">Blocare script</translation>
+<translation id="6067014455220527258">Blochează reclame</translation>
+<translation id="6985711843506827936">Permite reclame și urmărire</translation>
+<translation id="6132506775968708399">Blochează cookie-uri de la terți</translation>
+<translation id="5657156137487675418">Permite toate cookie-urile</translation>
+<translation id="6883611015375728278">Blochează toate cookie-urile</translation>
+<translation id="1442559343076146186">Blochează amprentarea de la terți</translation>
+<translation id="8034285923190068220">Permite amprentarea</translation>
+<translation id="4540198958192073185">Blochează toate amprentările</translation>
+<translation id="8942080017911802454">Politica de manevrare a WebRTC IP</translation>
+<translation id="6165508094623778733">Află mai multe</translation>
+<translation id="8798099450830957504">Implicit</translation>
+<translation id="1822560017823072927">Interfețe implicite publice și private</translation>
+<translation id="5825943197137337319">Doar interfața publică implicită</translation>
+<translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
 </translationbundle>
