@@ -41,7 +41,7 @@ public:
   void FetchSyncRecords(
     const std::vector<std::string>& category_names,
     const base::Time& startAt,
-    const int& max_records);
+    const int max_records);
 
   void ResolveSyncRecords(const std::string &category_name,
     const std::vector<extensions::api::brave_sync::RecordAndExistingObject>& records_and_existing_objects);

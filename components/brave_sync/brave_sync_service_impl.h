@@ -26,10 +26,6 @@ namespace bookmarks {
   class BookmarkNode;
 }
 
-namespace extensions {
-class ExtensionRegistry;
-}
-
 using extensions::ExtensionRegistryObserver;
 using extensions::ExtensionRegistry;
 
@@ -71,17 +67,17 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void Shutdown() override;
 
   // BraveSyncService messages from UI
-  void OnSetupSyncHaveCode(const std::string &sync_words,
-    const std::string &device_name) override;
-  void OnSetupSyncNewToSync(const std::string &device_name) override;
-  void OnDeleteDevice(const std::string &device_id) override;
+  void OnSetupSyncHaveCode(const std::string& sync_words,
+    const std::string& device_name) override;
+  void OnSetupSyncNewToSync(const std::string& device_name) override;
+  void OnDeleteDevice(const std::string& device_id) override;
   void OnResetSync() override;
   void GetSyncWords() override;
   std::string GetSeed() override;
-  void OnSetSyncThisDevice(const bool &sync_this_device) override;
-  void OnSetSyncBookmarks(const bool &sync_bookmarks) override;
-  void OnSetSyncBrowsingHistory(const bool &sync_browsing_history) override;
-  void OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) override;
+  void OnSetSyncThisDevice(const bool sync_this_device) override;
+  void OnSetSyncBookmarks(const bool sync_bookmarks) override;
+  void OnSetSyncBrowsingHistory(const bool sync_browsing_history) override;
+  void OnSetSyncSavedSiteSettings(const bool sync_saved_site_settings) override;
 
   void GetSettingsAndDevices(const GetSettingsAndDevicesCallback& callback) override;
 
@@ -130,30 +126,27 @@ class BraveSyncServiceImpl : public BraveSyncService,
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
       SyncRecordAndExistingList* records_and_existing_objects);
 
-  // Compiler complains at
-  void OnMessageFromSyncReceived() override;
-
   void OnResetBookmarks();
   // SyncLibToBrowserHandler overrides
-  void OnSyncDebug(const std::string &message) override;
-  void OnSyncSetupError(const std::string &error) override;
-  void OnGetInitData(const std::string &sync_version) override;
+  void OnSyncDebug(const std::string& message) override;
+  void OnSyncSetupError(const std::string& error) override;
+  void OnGetInitData(const std::string& sync_version) override;
   void OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) override;
   void OnSyncReady() override;
-  void OnGetExistingObjects(const std::string &category_name,
+  void OnGetExistingObjects(const std::string& category_name,
     std::unique_ptr<RecordsList> records,
     const base::Time &last_record_time_stamp,
     const bool is_truncated) override;
-  void OnResolvedSyncRecords(const std::string &category_name,
+  void OnResolvedSyncRecords(const std::string& category_name,
     std::unique_ptr<RecordsList> records) override;
   void OnDeletedSyncUser() override;
   void OnDeleteSyncSiteSettings() override;
-  void OnSaveBookmarksBaseOrder(const std::string &order) override;
-  void OnSaveBookmarkOrder(const std::string &order,
-                           const std::string &prev_order,
-                           const std::string &next_order,
-                           const std::string &parent_order) override;
-  void OnSyncWordsPrepared(const std::string &words) override;
+  void OnSaveBookmarksBaseOrder(const std::string& order) override;
+  void OnSaveBookmarkOrder(const std::string& order,
+                           const std::string& prev_order,
+                           const std::string& next_order,
+                           const std::string& parent_order) override;
+  void OnSyncWordsPrepared(const std::string& words) override;
 
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
@@ -175,20 +168,20 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void SendAllLocalHistorySites();
 
   void CreateUpdateDeleteHistorySites(
-    const int &action,
+    const int action,
     //history::QueryResults::URLResultVector list,
     const std::vector<history::URLResult> &list,
-    const bool &addIdsToNotSynced,
-    const bool &isInitialSync);
+    const bool addIdsToNotSynced,
+    const bool isInitialSync);
 
   // CanSendHistory overrides
   void HaveInitialHistory(history::QueryResults* results) override;
 
   void SetUpdateDeleteDeviceName_Ext(
-    const std::string &action,
-    const std::string &deviceName,
-    const std::string &deviceId,
-    const std::string &objectId);
+    const std::string& action,
+    const std::string& deviceName,
+    const std::string& deviceId,
+    const std::string& objectId);
 
   void StartLoop();
   void StopLoop();
@@ -198,22 +191,22 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void GetExistingHistoryObjects(
     const RecordsList &records,
     const base::Time &last_record_time_stamp,
-    const bool &is_truncated );
+    const bool is_truncated );
 
-  void PushRRContext(const std::string &prev_order,
-                     const std::string &next_order,
-                     const std::string &parent_order,
+  void PushRRContext(const std::string& prev_order,
+                     const std::string& next_order,
+                     const std::string& parent_order,
                      const int64_t &node_id,
-                     const int &action);
-  void PopRRContext(const std::string &prev_order,
-                    const std::string &next_order,
-                    const std::string &parent_order,
+                     const int action);
+  void PopRRContext(const std::string& prev_order,
+                    const std::string& next_order,
+                    const std::string& parent_order,
                     int64_t &node_id,
-                    int &action);
+                    int *action);
 
-  void TriggerOnLogMessage(const std::string &message);
+  void TriggerOnLogMessage(const std::string& message);
   void TriggerOnSyncStateChanged();
-  void TriggerOnHaveSyncWords(const std::string &sync_words);
+  void TriggerOnHaveSyncWords(const std::string& sync_words);
 
   std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
       const bookmarks::BookmarkNode* node);

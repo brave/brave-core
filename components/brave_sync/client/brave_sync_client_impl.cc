@@ -28,7 +28,6 @@ BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
     brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
     profile_(profile),
     extension_registry_observer_(this) {
-  DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK(profile_);
 
   sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
@@ -45,9 +44,7 @@ BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
                  base::Unretained(this)));
 }
 
-BraveSyncClientImpl::~BraveSyncClientImpl() {
-  LOG(ERROR) << "TAGAB BraveSyncClientImpl::~BraveSyncClientImpl";
-}
+BraveSyncClientImpl::~BraveSyncClientImpl() {}
 
 void BraveSyncClientImpl::SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -76,7 +73,7 @@ void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
 void BraveSyncClientImpl::SendFetchSyncRecords(
     const std::vector<std::string> &category_names,
     const base::Time &startAt,
-    const int &max_records) {
+    const int max_records) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_event_router_->FetchSyncRecords(category_names, startAt, max_records);
 }
@@ -115,7 +112,6 @@ void BraveSyncClientImpl::SendDeleteSyncCategory(const std::string &category_nam
 }
 
 void BraveSyncClientImpl::SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) {
-  LOG(ERROR) << "TAGAB BraveSyncClientImpl::SendGetBookmarksBaseOrder: device_id="<<device_id<<" platform="<<platform;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_event_router_->SendGetBookmarksBaseOrder(device_id, platform);
 }
@@ -123,7 +119,6 @@ void BraveSyncClientImpl::SendGetBookmarksBaseOrder(const std::string &device_id
 void BraveSyncClientImpl::SendGetBookmarkOrder(const std::string& prev_order,
                                                const std::string& next_order,
                                                const std::string& parent_order) {
-  LOG(ERROR) << "TAGAB BraveSyncClientImpl::SendGetBookmarkOrder: prev_order="<<prev_order<<" next_order="<<next_order;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_event_router_->SendGetBookmarkOrder(
       prev_order, next_order, parent_order);
@@ -135,7 +130,6 @@ void BraveSyncClientImpl::NeedSyncWords(const std::string &seed) {
 }
 
 void BraveSyncClientImpl::OnExtensionInitialized() {
-  DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(extension_loaded_);
   if (extension_loaded_)
@@ -143,7 +137,6 @@ void BraveSyncClientImpl::OnExtensionInitialized() {
 }
 
 void BraveSyncClientImpl::Shutdown() {
-  DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 }
 
@@ -152,7 +145,6 @@ void BraveSyncClientImpl::OnExtensionLoaded(
     const extensions::Extension* extension) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (extension->id() == brave_sync_extension_id) {
-    DLOG(INFO) << "[Brave Sync] " << __func__;
     extension_loaded_ = true;
   }
 }
@@ -163,13 +155,11 @@ void BraveSyncClientImpl::OnExtensionUnloaded(
     extensions::UnloadedExtensionReason reason) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (extension->id() == brave_sync_extension_id) {
-    DLOG(INFO) << "[Brave Sync] " << __func__;
     extension_loaded_ = false;
   }
 }
 
 void BraveSyncClientImpl::LoadOrUnloadExtension(bool load) {
-  DLOG(INFO) << "[Brave Sync] " << __func__ << ":" << load;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   base::FilePath brave_sync_extension_path(FILE_PATH_LITERAL(""));
   brave_sync_extension_path =
@@ -188,7 +178,6 @@ void BraveSyncClientImpl::LoadOrUnloadExtension(bool load) {
 }
 
 void BraveSyncClientImpl::OnExtensionSystemReady() {
-  DLOG(INFO) << "[Brave Sync] " << __func__;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // observe changes in extension system
   extension_registry_observer_.Add(ExtensionRegistry::Get(profile_));
@@ -201,12 +190,8 @@ void BraveSyncClientImpl::OnExtensionSystemReady() {
 void BraveSyncClientImpl::OnProfilePreferenceChanged() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (sync_prefs_->GetSyncThisDevice()) {
-    DLOG(INFO) << "[Brave Sync] " << __func__
-      << " kSyncThisDeviceEnabled <= true";
     LoadOrUnloadExtension(true);
   } else {
-    DLOG(INFO) << "[Brave Sync] " << __func__
-      << " kSyncThisDeviceEnabled <= false";
     LoadOrUnloadExtension(false);
   }
 }

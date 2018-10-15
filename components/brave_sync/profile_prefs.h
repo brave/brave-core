@@ -39,13 +39,13 @@ public:
   void SetBookmarksBaseOrder(const std::string& order);
 
   bool GetSyncThisDevice() const;
-  void SetSyncThisDevice(const bool &sync_this_device);
+  void SetSyncThisDevice(const bool sync_this_device);
   bool GetSyncBookmarksEnabled() const;
-  void SetSyncBookmarksEnabled(const bool &sync_bookmarks_enabled);
+  void SetSyncBookmarksEnabled(const bool sync_bookmarks_enabled);
   bool GetSyncSiteSettingsEnabled() const;
-  void SetSyncSiteSettingsEnabled(const bool &sync_site_settings);
+  void SetSyncSiteSettingsEnabled(const bool sync_site_settings);
   bool GetSyncHistoryEnabled() const;
-  void SetSyncHistoryEnabled(const bool &sync_history_enabled);
+  void SetSyncHistoryEnabled(const bool sync_history_enabled);
 
   void SetLatestRecordTime(const base::Time &time);
   base::Time GetLatestRecordTime();

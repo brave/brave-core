@@ -38,9 +38,9 @@ void BraveSyncEventRouter::GotInitData(
 }
 
 void BraveSyncEventRouter::FetchSyncRecords(
-    const std::vector<std::string> &category_names,
-    const base::Time &startAt,
-    const int &max_records) {
+    const std::vector<std::string>& category_names,
+    const base::Time& startAt,
+    const int max_records) {
   std::unique_ptr<base::ListValue> args(
      extensions::api::brave_sync::OnFetchSyncRecords::Create(category_names,
        startAt.ToJsTime(), static_cast<double>(max_records))
@@ -53,7 +53,7 @@ void BraveSyncEventRouter::FetchSyncRecords(
 }
 
 void BraveSyncEventRouter::ResolveSyncRecords(
-    const std::string &category_name,
+    const std::string& category_name,
     const std::vector<extensions::api::brave_sync::RecordAndExistingObject>& records_and_existing_objects) {
   for (const auto & entry : records_and_existing_objects) {
     DCHECK(!entry.server_record.object_data.empty());
@@ -65,8 +65,9 @@ void BraveSyncEventRouter::ResolveSyncRecords(
   }
 
   std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnResolveSyncRecords::Create(category_name, records_and_existing_objects)
-       .release());
+     extensions::api::brave_sync::OnResolveSyncRecords::Create(
+          category_name,
+          records_and_existing_objects).release());
   std::unique_ptr<Event> event(
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnResolveSyncRecords::kEventName,
@@ -76,11 +77,12 @@ void BraveSyncEventRouter::ResolveSyncRecords(
 }
 
 void BraveSyncEventRouter::SendSyncRecords(
-    const std::string &category_name,
+    const std::string& category_name,
     const std::vector<api::brave_sync::SyncRecord>& records) {
   std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnSendSyncRecords::Create(category_name, records)
-       .release());
+     extensions::api::brave_sync::OnSendSyncRecords::Create(
+          category_name,
+          records).release());
   std::unique_ptr<Event> event(
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnSendSyncRecords::kEventName,
@@ -92,11 +94,9 @@ void BraveSyncEventRouter::SendSyncRecords(
 void BraveSyncEventRouter::SendGetBookmarksBaseOrder(
     const std::string& device_id,
     const std::string& platform) {
-  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarksBaseOrder: device_id="<<device_id<<" platform="<<platform;
-
   std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnSendGetBookmarksBaseOrder::Create(device_id, platform)
-       .release());
+     extensions::api::brave_sync::OnSendGetBookmarksBaseOrder::Create(
+        device_id, platform).release());
   std::unique_ptr<Event> event(
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnSendGetBookmarksBaseOrder::kEventName,
@@ -108,8 +108,6 @@ void BraveSyncEventRouter::SendGetBookmarksBaseOrder(
 void BraveSyncEventRouter::SendGetBookmarkOrder(const std::string& prev_order,
                                               const std::string& next_order,
                                               const std::string& parent_order) {
-  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarkOrder: prev_order="<<prev_order<<" next_order="<<next_order;
-
   std::unique_ptr<base::ListValue> args(
      extensions::api::brave_sync::OnSendGetBookmarkOrder::Create(
         prev_order, next_order, parent_order).release());
@@ -118,12 +116,10 @@ void BraveSyncEventRouter::SendGetBookmarkOrder(const std::string& prev_order,
        extensions::api::brave_sync::OnSendGetBookmarkOrder::kEventName,
        std::move(args)));
 
-  LOG(ERROR) << "TAGAB BraveSyncEventRouter::SendGetBookmarkOrder: extensions::api::brave_sync::OnSendGetBookmarkOrder::kEventName="<<extensions::api::brave_sync::OnSendGetBookmarkOrder::kEventName;
-
   event_router_->BroadcastEvent(std::move(event));
 }
 
-void BraveSyncEventRouter::NeedSyncWords(const std::string &seed) {
+void BraveSyncEventRouter::NeedSyncWords(const std::string& seed) {
   std::unique_ptr<base::ListValue> args(
      extensions::api::brave_sync::OnNeedSyncWords::Create(seed)
        .release());
