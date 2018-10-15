@@ -1307,14 +1307,16 @@ static bool ignore_ = false;
         batch_.push_back(b);
       }
 
-      for (const auto & i : d["current_reconciles_"].GetObject()) {
-        rapidjson::StringBuffer sb;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-        i.value.Accept(writer);
+      if (d.HasMember("current_reconciles") && d["current_reconciles"].IsObject()) {
+        for (const auto & i : d["current_reconciles"].GetObject()) {
+          rapidjson::StringBuffer sb;
+          rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+          i.value.Accept(writer);
 
-        CURRENT_RECONCILE b;
-        b.loadFromJson(sb.GetString());
-        current_reconciles_[i.name.GetString()] = b;
+          CURRENT_RECONCILE b;
+          b.loadFromJson(sb.GetString());
+          current_reconciles_[i.name.GetString()] = b;
+        }
       }
     }
 
@@ -1396,7 +1398,7 @@ static bool ignore_ = false;
     }
     writer.EndArray();
 
-    writer.String("current_reconciles_");
+    writer.String("current_reconciles");
     writer.StartObject();
     for (auto & t : data.current_reconciles_) {
       writer.Key(t.first.c_str());
