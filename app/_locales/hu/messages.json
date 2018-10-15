@@ -1,114 +1,123 @@
 {
-    "shieldsControlsCookieControl": {
-        "message": "Süti blokkoló",
-        "description": "Label Cookie Control dropdown options"
-    },
-    "shieldsControlsCookieOptionBlockAll": {
-        "message": "Minden süti letiltása",
-        "description": "Cookie control dropdown option Block All Cookies"
-    },
-    "shieldsControlsAdControlOptionAllowAdsTracking": {
-        "message": "Reklámok és követések engedélyezése",
-        "description": "Ad Control dropdown box, option allow ads and tracking"
-    },
-    "shieldsHeaderToggleLeftPosition": {
-        "message": "Le",
-        "description": "Label for top shields switch in shields header turned off position"
-    },
-    "shieldsStatsHttpsUpgrades": {
-        "message": "HTTPS frissítések",
-        "description": "Label for shields stats, HTTPS upgrades count"
-    },
-    "shieldsControlsFingerprintingOptionAllowAll": {
-        "message": "Minden ujjlenyomat engedélyezése",
-        "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
-    },
-    "shieldsFooterReload": {
-        "message": "Betöltés...",
-        "description": "Shields controls footer, label for action reload page to apply current shields settings"
-    },
-    "shieldsControlsAdControl": {
-        "message": "Reklám Blokkoló",
-        "description": "Label for Advertisement Control dropdown box options "
-    },
-    "shieldsStatsScriptsBlocked": {
-        "message": "Letiltott szkriptek",
-        "description": "Label for shields stats, Scripts Blocked count"
-    },
-    "shieldsHeaderToggleRightPosition": {
-        "message": "Fel",
-        "description": "Label for top shields switch in shields header turned on position"
-    },
-    "shieldsControlsFingerprintingOptionBlockAll": {
-        "message": "Minden ujjlenyomat letiltása",
-        "description": "Fingerprinting control dropdown option Block All Fingerprinting"
-    },
-    "shieldsControlsCookieOptionAllowAll": {
-        "message": "Összes süti engedélyezése",
-        "description": "Cookie control dropdown option Allow All Cookies"
-    },
-    "shieldsControlsHttpsEverywhereSwitch": {
-        "message": "HTTPS mindenhol",
-        "description": "Shields controls, switch for HTTPS Everywhere"
-    },
-    "shieldsControlsCookieOptionBlock3p": {
-        "message": "3. féltől származó sütik letiltása",
-        "description": "Cookie control dropdown option Block 3rd Party Cookies"
-    },
-    "shieldsControlsFingerprintingOptionBlock3p": {
-        "message": "3. fél ujjlenyomatainak letiltása",
-        "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
-    },
-    "noScriptSwitches": {
-        "message": "A választógomb elhúzásával letilthatja a szkript blokkolást",
-        "description": "Instructions for per-origin noScript switches"
-    },
-    "shieldsHeaderForSite": {
-        "message": "Weblap védelmi beállítások",
-        "description": "Label for shields header near current site name"
-    },
-    "noScriptApplyOnce": {
-        "message": "Alkalmaz",
-        "description": "Label for applying per-origin noScript settings"
-    },
-    "shieldsHeaderShieldsToggle": {
-        "message": "Védelmek",
-        "description": "Label for top shields switch in shields header"
-    },
-    "appName": {
-        "message": "Brave kiegészítő",
-        "description": "The name of the the extension."
-    },
-    "shieldsFooterEditDefault": {
-        "message": "Az alapvédelem beállításai...",
-        "description": "Shields controls footer, link to edit default shields settings"
-    },
-    "shieldsControlsAdControlOptionBlockAds": {
-        "message": "Reklámok tiltása",
-        "description": "Ad Control dropdown box, option block ads"
-    },
-    "shieldsFingerPrintingBlocked": {
-        "message": "Ujjlenyomatos azonosítások letiltva",
-        "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-    },
-    "shieldsControlsBlockPhishingMalwareSwitch": {
-        "message": "Adathalászat és malware-ek letiltása",
-        "description": "Shields controls, switch for Block Phishing/Malware"
-    },
-    "shieldsControlsAdvancedControls": {
-        "message": "Haladó beállítások",
-        "description": "Label for advanced controls group"
-    },
-    "shieldsControlsBlockScriptsSwitch": {
-        "message": "Szkriptek letiltása",
-        "description": "Shields controls, switch for Block Scripts"
-    },
-    "shieldsStatsAdsTrackersBlocked": {
-        "message": "Reklámok és követések letiltva",
-        "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-    },
-    "shieldsControlsFingerprintingProtection": {
-        "message": "Ujjlenyomat védelem",
-        "description": "Label Fingerprinting Protection dropdown options"
-    }
+  "appName": {
+    "message": "The Brave Extension",
+    "description": "The name of the the extension."
+  },
+
+  "shieldsStatsAdsTrackersBlocked": {
+    "message": "Ads and Trackers Blocked",
+    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
+  },
+  "shieldsStatsHttpsUpgrades": {
+    "message": "HTTPS Upgrades",
+    "description": "Label for shields stats, HTTPS upgrades count"
+  },
+  "shieldsStatsScriptsBlocked": {
+    "message": "Scripts Blocked",
+    "description": "Label for shields stats, Scripts Blocked count"
+  },
+  "shieldsFingerPrintingBlocked": {
+    "message": "Fingerprinting Methods Blocked",
+    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
+  },
+
+  "shieldsHeaderShieldsToggle": {
+    "message": "Shields",
+    "description": "Label for top shields switch in shields header"
+  },
+  "shieldsHeaderToggleLeftPosition": {
+    "message": "Down",
+    "description": "Label for top shields switch in shields header turned off position"
+  },
+  "shieldsHeaderToggleRightPosition": {
+    "message": "Up",
+    "description": "Label for top shields switch in shields header turned on position"
+  },
+  "shieldsHeaderForSite": {
+    "message": "Site shield settings for",
+    "description": "Label for shields header near current site name"
+  },
+
+  "shieldsControlsAdvancedControls": {
+    "message": "Advanced Controls",
+    "description": "Label for advanced controls group"
+  },
+
+  "shieldsControlsAdControl": {
+    "message": "Ad Control",
+    "description": "Label for Advertisement Control dropdown box options "
+  },
+  "shieldsControlsAdControlOptionBlockAds": {
+    "message": "Block Ads",
+    "description": "Ad Control dropdown box, option block ads"
+  },
+  "shieldsControlsAdControlOptionAllowAdsTracking": {
+    "message": "Allow Ads and Tracking",
+    "description": "Ad Control dropdown box, option allow ads and tracking"
+  },
+
+  "shieldsControlsCookieControl": {
+    "message": "Cookie Control",
+    "description": "Label Cookie Control dropdown options"
+  },
+  "shieldsControlsCookieOptionBlock3p": {
+    "message": "Block 3rd Party Cookies",
+    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  },
+  "shieldsControlsCookieOptionAllowAll": {
+    "message": "Allow All Cookies",
+    "description": "Cookie control dropdown option Allow All Cookies"
+  },
+  "shieldsControlsCookieOptionBlockAll": {
+    "message": "Block All Cookies",
+    "description": "Cookie control dropdown option Block All Cookies"
+  },
+
+  "shieldsControlsFingerprintingProtection": {
+    "message": "Fingerprinting Protection",
+    "description": "Label Fingerprinting Protection dropdown options"
+  },
+  "shieldsControlsFingerprintingOptionBlock3p": {
+    "message": "Block 3rd Party Fingerprinting",
+    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  },
+  "shieldsControlsFingerprintingOptionAllowAll": {
+    "message": "Allow All Fingerprinting",
+    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  },
+  "shieldsControlsFingerprintingOptionBlockAll": {
+    "message": "Block All Fingerprinting",
+    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  },
+
+  "shieldsControlsHttpsEverywhereSwitch": {
+    "message": "HTTPS Everywhere",
+    "description": "Shields controls, switch for HTTPS Everywhere"
+  },
+  "shieldsControlsBlockScriptsSwitch": {
+    "message": "Block Scripts",
+    "description": "Shields controls, switch for Block Scripts"
+  },
+  "shieldsControlsBlockPhishingMalwareSwitch": {
+    "message": "Block Phishing/Malware",
+    "description": "Shields controls, switch for Block Phishing/Malware"
+  },
+
+  "noScriptSwitches": {
+    "message": "Toggle switches to disable script blocking",
+    "description": "Instructions for per-origin noScript switches"
+  },
+  "noScriptApplyOnce": {
+    "message": "Apply",
+    "description": "Label for applying per-origin noScript settings"
+  },
+
+  "shieldsFooterEditDefault":{
+    "message": "Edit default shield settings...",
+    "description": "Shields controls footer, link to edit default shields settings"
+  },
+  "shieldsFooterReload":{
+    "message": "Reload...",
+    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  }
 }
