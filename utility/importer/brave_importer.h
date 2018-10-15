@@ -35,7 +35,8 @@ class BraveImporter : public ChromeImporter {
   void ImportStats();
   void ImportLedger();
   
-  std::unique_ptr<base::Value> ParseBraveSessionStore();
+  std::unique_ptr<base::Value> ParseBraveStateFile(
+    const std::string& filename);
 
   void ParseBookmarks(std::vector<ImportedBookmarkEntry>* bookmarks);
   void RecursiveReadBookmarksFolder(

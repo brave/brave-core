@@ -101,7 +101,8 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
 }
 
 void BraveImporter::ImportHistory() {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveSessionStore();
+  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+      "session-store-1");
   if (!session_store_json)
     return;
 
@@ -151,7 +152,8 @@ void BraveImporter::ImportHistory() {
 
 void BraveImporter::ParseBookmarks(
     std::vector<ImportedBookmarkEntry>* bookmarks) {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveSessionStore();
+  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+      "session-store-1");
   if (!session_store_json)
     return;
 
@@ -275,26 +277,27 @@ void BraveImporter::ImportBookmarks() {
   }
 }
 
-std::unique_ptr<base::Value> BraveImporter::ParseBraveSessionStore() {
-  base::FilePath session_store_path =
-    source_path_.Append(
-      base::FilePath::StringType(FILE_PATH_LITERAL("session-store-1")));
+std::unique_ptr<base::Value> BraveImporter::ParseBraveStateFile(
+    const std::string& filename) {
+  base::FilePath session_store_path = source_path_.AppendASCII(filename);
   std::string session_store_content;
   if (!ReadFileToString(session_store_path, &session_store_content)) {
-    LOG(ERROR) << "Reading Brave session-store-1 file failed";
+    LOG(ERROR) << "Could not read file: " << session_store_path;
     return nullptr;
   }
 
   std::unique_ptr<base::Value> session_store_json =
     base::JSONReader::Read(session_store_content);
   if (!session_store_json) {
-    LOG(ERROR) << "Parsing Brave session-store-1 JSON failed";
+    LOG(ERROR) << "Could not parse JSON from file: " << session_store_path;
   }
+
   return session_store_json;
 }
 
 void BraveImporter::ImportStats() {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveSessionStore();
+  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+      "session-store-1");
   if (!session_store_json)
     return;
 
@@ -323,5 +326,12 @@ void BraveImporter::ImportStats() {
 }
 
 void BraveImporter::ImportLedger() {
-  LOG(ERROR) << "In BraveImporter::ImportLedger stub";
+  std::unique_ptr<base::Value> ledger_state_json = ParseBraveStateFile(
+      "ledger-state.json");
+  if (!ledger_state_json)
+    return;
+
+  LOG(ERROR) << "Successfully parsed Brave ledger-state.json in BraveImporter::ImportLedger";
+
+  //bridge_->UpdateLedger(ledger);
 }
