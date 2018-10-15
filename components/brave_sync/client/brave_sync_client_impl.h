@@ -12,19 +12,21 @@
 #include "extensions/browser/extension_registry_observer.h"
 
 class Profile;
+
 namespace extensions {
 class BraveSyncEventRouter;
-class ExtensionRegistry;
 }
-
-using extensions::ExtensionRegistryObserver;
-using extensions::ExtensionRegistry;
 
 namespace brave_sync {
 
 namespace prefs {
   class Prefs;
 }
+
+using extensions::Extension;
+using extensions::ExtensionRegistry;
+using extensions::ExtensionRegistryObserver;
+using extensions::UnloadedExtensionReason;
 
 class BraveSyncClientImpl : public BraveSyncClient,
                             public ExtensionRegistryObserver {
@@ -45,30 +47,31 @@ class BraveSyncClientImpl : public BraveSyncClient,
     const client_data::Config& config, const std::string& sync_words) override;
   void SendFetchSyncRecords(
     const std::vector<std::string> &category_names, const base::Time &startAt,
-    const int &max_records) override;
+    const int max_records) override;
   void SendFetchSyncDevices() override ;
   void SendResolveSyncRecords(
-      const std::string &category_name,
+      const std::string& category_name,
       std::unique_ptr<SyncRecordAndExistingList> records) override;
-  void SendSyncRecords(const std::string &category_name,
+  void SendSyncRecords(const std::string& category_name,
     const RecordsList &records) override;
   void SendDeleteSyncUser() override;
-  void SendDeleteSyncCategory(const std::string &category_name) override;
-  void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) override;
+  void SendDeleteSyncCategory(const std::string& category_name) override;
+  void SendGetBookmarksBaseOrder(const std::string& device_id,
+                                 const std::string& platform) override;
   void SendGetBookmarkOrder(const std::string& prev_order,
                             const std::string& next_order,
                             const std::string& parent_order) override;
-  void NeedSyncWords(const std::string &seed) override;
+  void NeedSyncWords(const std::string& seed) override;
 
  private:
   void OnExtensionInitialized() override;
 
   // ExtensionRegistryObserver:
   void OnExtensionLoaded(content::BrowserContext* browser_context,
-                         const extensions::Extension* extension) override;
+                         const Extension* extension) override;
   void OnExtensionUnloaded(content::BrowserContext* browser_context,
-                           const extensions::Extension* extension,
-                           extensions::UnloadedExtensionReason reason) override;
+                           const Extension* extension,
+                           UnloadedExtensionReason reason) override;
   void LoadOrUnloadExtension(bool load);
   void OnExtensionSystemReady();
   void OnProfilePreferenceChanged();

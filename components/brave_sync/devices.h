@@ -19,10 +19,10 @@ class SyncDevice {
 public:
   SyncDevice();
   SyncDevice(const SyncDevice& other);
-  SyncDevice(const std::string &name,
-    const std::string &object_id,
-    const std::string &device_id,
-    const double &last_active_ts);
+  SyncDevice(const std::string& name,
+    const std::string& object_id,
+    const std::string& device_id,
+    const double last_active_ts);
   SyncDevice& operator=(const SyncDevice&) &;
   ~SyncDevice();
 
@@ -43,11 +43,11 @@ public:
    std::unique_ptr<base::Value> ToValueArrOnly() const;
    std::string ToJson() const;
    void FromJson(const std::string &str_json);
-   void Merge(const SyncDevice& device, int action, bool& actually_merged);
+   void Merge(const SyncDevice& device, int action, bool* actually_merged);
 
-   const SyncDevice* GetByDeviceId(const std::string &device_id);
-   SyncDevice* GetByObjectId(const std::string &object_id);
-   void DeleteByObjectId(const std::string &object_id);
+   const SyncDevice* GetByDeviceId(const std::string& device_id);
+   SyncDevice* GetByObjectId(const std::string& object_id);
+   void DeleteByObjectId(const std::string& object_id);
 };
 
 } // namespace brave_sync

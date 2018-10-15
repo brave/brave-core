@@ -35,16 +35,20 @@ class BraveSyncService : public KeyedService {
   virtual void OnDeleteDevice(const std::string &device_id) = 0;
   virtual void OnResetSync() = 0;
 
-  typedef base::Callback<void(std::unique_ptr<brave_sync::Settings>, std::unique_ptr<brave_sync::SyncDevices>)> GetSettingsAndDevicesCallback;
-  virtual void GetSettingsAndDevices(const GetSettingsAndDevicesCallback& callback) = 0;
+  typedef base::Callback<void(std::unique_ptr<brave_sync::Settings>,
+                              std::unique_ptr<brave_sync::SyncDevices>)>
+      GetSettingsAndDevicesCallback;
+  virtual void GetSettingsAndDevices(
+      const GetSettingsAndDevicesCallback& callback) = 0;
 
   virtual void GetSyncWords() = 0;
   virtual std::string GetSeed() = 0;
 
-  virtual void OnSetSyncThisDevice(const bool &sync_this_device) = 0;
-  virtual void OnSetSyncBookmarks(const bool &sync_bookmarks) = 0;
-  virtual void OnSetSyncBrowsingHistory(const bool &sync_browsing_history) = 0;
-  virtual void OnSetSyncSavedSiteSettings(const bool &sync_saved_site_settings) = 0;
+  virtual void OnSetSyncThisDevice(const bool sync_this_device) = 0;
+  virtual void OnSetSyncBookmarks(const bool sync_bookmarks) = 0;
+  virtual void OnSetSyncBrowsingHistory(const bool sync_browsing_history) = 0;
+  virtual void OnSetSyncSavedSiteSettings(
+      const bool sync_saved_site_settings) = 0;
 
   void AddObserver(BraveSyncServiceObserver* observer);
   void RemoveObserver(BraveSyncServiceObserver* observer);

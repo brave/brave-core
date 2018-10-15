@@ -42,7 +42,6 @@ std::string ExtractIdFieldFromDictOrList(const base::Value *val, const std::stri
   DCHECK(val->is_dict());
 
   const base::Value *val_field = val->FindKey(fileld_name);
-  LOG(ERROR) << "TAGAB ExtractIdFieldFromDictOrList val_field="<<val_field;
   DCHECK(val_field);
 
   if (val_field->is_dict()) {
@@ -57,12 +56,10 @@ std::string ExtractIdFieldFromDictOrList(const base::Value *val, const std::stri
 std::string ExtractIdFieldFromDict(const base::Value *val, const std::string &fileld_name) {
   CHECK(val);
   DCHECK(val->is_dict());
-  LOG(ERROR) << "TAGAB ExtractIdFieldFromDict val=" << brave::debug::ToPrintableString(*val);
   if (!val->is_dict()) {
     return "";
   }
   const base::Value *p_object_id = val->FindKey(fileld_name);
-  LOG(ERROR) << "TAGAB ExtractIdFieldFromDict p_object_data="<<p_object_id;
   DCHECK(p_object_id);
   if (p_object_id == nullptr || p_object_id->is_none()) {
     return "";
@@ -177,12 +174,10 @@ std::string ExtractObjectIdFromList(const base::Value *val) {
 std::string ExtractIdFieldFromList(const base::Value *val, const std::string &fileld_name) {
   CHECK(val);
   DCHECK(val->is_dict());
-  LOG(ERROR) << "TAGAB ExtractIdFieldFromList val=" << brave::debug::ToPrintableString(*val);
   if (!val->is_dict()) {
     return "";
   }
   const base::Value *p_object_id = val->FindKey(fileld_name);
-  LOG(ERROR) << "TAGAB ExtractIdFieldFromList p_object_data="<<p_object_id;
   DCHECK(p_object_id);
   if (p_object_id == nullptr) {
     return "";

@@ -40,7 +40,6 @@ class SyncLibToBrowserHandler {
 public:
 
   virtual ~SyncLibToBrowserHandler() = default;
-  virtual void OnMessageFromSyncReceived() = 0;
 
   //SYNC_DEBUG
   virtual void OnSyncDebug(const std::string &message) = 0;
@@ -101,7 +100,7 @@ public:
                                const std::string& sync_words) = 0;
   virtual void SendFetchSyncRecords(
     const std::vector<std::string> &category_names, const base::Time &startAt,
-    const int &max_records) = 0;
+    const int max_records) = 0;
   virtual void SendFetchSyncDevices() = 0;
   virtual void SendResolveSyncRecords(
       const std::string &category_name,

@@ -4,11 +4,11 @@
 
 #include "brave/components/brave_sync/devices.h"
 
-#include "base/values.h"
 #include "base/json/json_writer.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/time/time.h"
-
+#include "base/values.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/value_debug.h"
 
@@ -20,10 +20,10 @@ SyncDevice::SyncDevice() :
 
 SyncDevice::SyncDevice(const SyncDevice& other) = default;
 
-SyncDevice::SyncDevice(const std::string &name,
-  const std::string &object_id,
-  const std::string &device_id,
-  const double &last_active_ts) :
+SyncDevice::SyncDevice(const std::string& name,
+  const std::string& object_id,
+  const std::string& device_id,
+  const double last_active_ts) :
   name_(name),
   object_id_(object_id),
   device_id_(device_id),
@@ -61,7 +61,8 @@ std::string SyncDevices::ToJson() const {
 }
 
 std::unique_ptr<base::Value> SyncDevices::ToValue() const {
-  auto val_sync_device = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  auto val_sync_device =
+      std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
 
   auto arr_devices = std::make_unique<base::Value>(base::Value::Type::LIST);
   for (const SyncDevice &device : devices_) {
@@ -82,8 +83,7 @@ std::unique_ptr<base::Value> SyncDevices::ToValueArrOnly() const {
   return arr_devices;
 }
 
-void SyncDevices::FromJson(const std::string &str_json) {
-  LOG(ERROR) << "TAGAB SyncDevices::FromJson: str_json=<" << str_json << ">";
+void SyncDevices::FromJson(const std::string& str_json) {
   if (str_json.empty()) {
     devices_.clear();
     return;
@@ -102,14 +102,10 @@ void SyncDevices::FromJson(const std::string &str_json) {
     &error_line_out,
     &error_column_out);
 
-  LOG(ERROR) << "TAGAB SyncDevices::FromJson: records_v.get()="<<records_v.get();
-  LOG(ERROR) << "TAGAB SyncDevices::FromJson: error_msg_out="<<error_msg_out;
-
   DCHECK(records_v);
   if (!records_v) {
     return;
   }
-  //LOG(ERROR) << "SyncDevices::FromJson bv_devices: " << brave::debug::ToPrintableString(*records_v);
 
   devices_.clear();
   const base::Value* pv_arr = records_v->FindKey("devices");
@@ -123,14 +119,8 @@ void SyncDevices::FromJson(const std::string &str_json) {
     if (v_last_active->is_double()) {
       last_active = v_last_active->GetDouble();
     } else {
-      LOG(ERROR) << "TAGAB SyncDevices::FromJson: last_active is not double";
+      LOG(WARNING) << "SyncDevices::FromJson: last_active is not a double";
     }
-
-    LOG(ERROR) << "TAGAB SyncDevices::FromJson: name="<<name;
-    LOG(ERROR) << "TAGAB SyncDevices::FromJson: object_id="<<object_id;
-    LOG(ERROR) << "TAGAB SyncDevices::FromJson: device_id="<<device_id;
-    LOG(ERROR) << "TAGAB SyncDevices::FromJson: last_active="<<last_active;
-    LOG(ERROR) << "TAGAB SyncDevices::FromJson: base::Time::FromJsTime="<<base::Time::FromJsTime(last_active);
 
     devices_.push_back(SyncDevice(
       name,
@@ -142,23 +132,23 @@ void SyncDevices::FromJson(const std::string &str_json) {
 
 }
 
-void SyncDevices::Merge(const SyncDevice& device, int action, bool& actually_merged) {
-  LOG(ERROR) << "SyncDevices::Merge device.object_id_==" << device.object_id_ << " action="<<action;
+void SyncDevices::Merge(const SyncDevice& device,
+                        int action,
+                        bool* actually_merged) {
   /*
   const int kActionCreate = 0;
   const int kActionUpdate = 1;
   const int kActionDelete = 2;
   */
-  actually_merged = false;
-  auto existing_it = std::find_if(std::begin(devices_), std::end(devices_), [device](const SyncDevice &cur_dev) {
-    return cur_dev.object_id_ == device.object_id_;
-  });
+  *actually_merged = false;
+  auto existing_it = std::find_if(std::begin(devices_),
+                                  std::end(devices_),
+      [device](const SyncDevice &cur_dev) {
+        return cur_dev.object_id_ == device.object_id_;
+      });
 
   if (existing_it == std::end(devices_)) {
-    LOG(ERROR) << "SyncDevices::Merge: existing device not found";
-  } else {
-    LOG(ERROR) << "SyncDevices::Merge: found existing device name=" << existing_it->name_;
-    LOG(ERROR) << "SyncDevices::Merge: found existing device_id_=" << existing_it->device_id_;
+    // TODO(bridiver) - should this be an error or a DCHECK?
   }
 
   switch (action) {
@@ -166,11 +156,10 @@ void SyncDevices::Merge(const SyncDevice& device, int action, bool& actually_mer
       //DCHECK(existing_device == nullptr);
       if (existing_it == std::end(devices_)) {
         devices_.push_back(device);
-        actually_merged = true;
+        *actually_merged = true;
       } else {
         // ignoring create, already have device
       }
-      LOG(ERROR) << "SyncDevices::GetByObjectId device created";
       break;
     }
     case jslib_const::kActionUpdate: {
@@ -178,8 +167,7 @@ void SyncDevices::Merge(const SyncDevice& device, int action, bool& actually_mer
       DCHECK(existing_it != std::end(devices_));
       //*existing_device = device;
       *existing_it = device;
-      actually_merged = true;
-      LOG(ERROR) << "SyncDevices::GetByObjectId device updated";
+      *actually_merged = true;
       break;
     }
     case jslib_const::kActionDelete: {
@@ -188,10 +176,7 @@ void SyncDevices::Merge(const SyncDevice& device, int action, bool& actually_mer
       //DeleteByObjectId(device.object_id_);
       if (existing_it != std::end(devices_)) {
         devices_.erase(existing_it);
-        actually_merged = true;
-        DLOG(INFO) << "[Brave Sync] " << "device deleted";
-      } else {
-        DLOG(ERROR) << "[Brave Sync] " << "device not found, not deleted";
+        *actually_merged = true;
       }
       break;
     }
@@ -199,45 +184,40 @@ void SyncDevices::Merge(const SyncDevice& device, int action, bool& actually_mer
 }
 
 SyncDevice* SyncDevices::GetByObjectId(const std::string &object_id) {
-  LOG(ERROR) << "SyncDevices::GetByObjectId object_id="<<object_id;
   for (auto & device: devices_) {
-    LOG(ERROR) << "SyncDevices::GetByObjectId device.object_id_="<<device.object_id_;
     if (device.object_id_ == object_id) {
       return &device;
     }
   }
 
   //DCHECK(false) << "Not expected to find no device";
-  LOG(ERROR) << "SyncDevices::GetByObjectId found no devices";
   return nullptr;
 }
 
 const SyncDevice* SyncDevices::GetByDeviceId(const std::string &device_id) {
-  LOG(ERROR) << "SyncDevices::GetByDeviceId device_id="<<device_id;
   for (const auto & device: devices_) {
-    LOG(ERROR) << "SyncDevices::GetByDeviceId device.device_id_="<<device.device_id_;
     if (device.device_id_ == device_id) {
       return &device;
     }
   }
 
   //DCHECK(false) << "Not expected to find no device";
-  LOG(ERROR) << "SyncDevices::GetByDeviceId found no devices";
   return nullptr;
 }
 
 void SyncDevices::DeleteByObjectId(const std::string &object_id) {
-  LOG(ERROR) << "SyncDevices::DeleteByObjectId object_id="<<object_id;
-  auto existing_it = std::find_if(std::begin(devices_), std::end(devices_), [object_id](const SyncDevice &dev) {
-    return dev.object_id_ == object_id;
-  });
+  auto existing_it =
+      std::find_if(std::begin(devices_),
+                    std::end(devices_),
+                    [object_id](const SyncDevice &dev) {
+                      return dev.object_id_ == object_id;
+                    });
 
   if (existing_it != std::end(devices_)) {
     devices_.erase(existing_it);
-    LOG(ERROR) << "SyncDevices::DeleteByObjectId erased object_id="<<object_id;
   } else {
-    DCHECK(false);
-    LOG(ERROR) << "SyncDevices::DeleteByObjectId not found object_id="<<object_id;
+    // TODO(bridiver) - is this correct?
+    NOTREACHED();
   }
 }
 

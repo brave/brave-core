@@ -17,22 +17,15 @@ namespace prefs {
 
 Prefs::Prefs(Profile* profile) : pref_service_(nullptr) {
   DCHECK(profile);
-  LOG(ERROR) << "TAGAB brave_sync::Prefs::Prefs this="<<this;
-  LOG(ERROR) << "TAGAB brave_sync::Prefs::Prefs profile="<<profile;
-
   pref_service_ = profile->GetPrefs();
-
-  LOG(ERROR) << "TAGAB brave_sync::Prefs::Prefs pref_service_="<<pref_service_;
 }
 
 std::string Prefs::GetSeed() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  LOG(ERROR) << "TAGAB brave_sync::Prefs::GetSeed seed="<<pref_service_->GetString(kSeed);
   return pref_service_->GetString(kSeed);
 }
 
 void Prefs::SetSeed(const std::string& seed) {
-  LOG(ERROR) << "TAGAB brave_sync::Prefs::SetSeed seed=<"<<seed<<">";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!seed.empty());
   pref_service_->SetString(kSeed, seed);
@@ -44,7 +37,6 @@ std::string Prefs::GetThisDeviceId() const {
 }
 
 void Prefs::SetThisDeviceId(const std::string& device_id) {
-  LOG(ERROR) << "TAGAB brave_sync::Prefs::SetThisDeviceId device_id=<"<<device_id<<">";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!device_id.empty());
   pref_service_->SetString(kThisDeviceId, device_id);
@@ -56,7 +48,6 @@ std::string Prefs::GetThisDeviceName() const {
 }
 
 void Prefs::SetThisDeviceName(const std::string& device_name) {
-  LOG(ERROR) << "TAGAB brave_sync::Prefs::SetDeviceName device_name=<"<<device_name<<">";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!device_name.empty());
   pref_service_->SetString(kThisDeviceName, device_name);
@@ -65,7 +56,6 @@ std::string Prefs::GetBookmarksBaseOrder() {
   return pref_service_->GetString(kBookmarksBaseOrder);
 }
 void Prefs::SetBookmarksBaseOrder(const std::string& order) {
-  LOG(ERROR) << "TAGAB brave_sync::Prefs::SetBookmarksBaseOrder device_name=<"<<order<<">";
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(ValidateBookmarksBaseOrder(order));
   pref_service_->SetString(kBookmarksBaseOrder, order);
@@ -76,7 +66,7 @@ bool Prefs::GetSyncThisDevice() const {
   return pref_service_->GetBoolean(kSyncThisDeviceEnabled);
 }
 
-void Prefs::SetSyncThisDevice(const bool &sync_this_device) {
+void Prefs::SetSyncThisDevice(const bool sync_this_device) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   pref_service_->SetBoolean(kSyncThisDeviceEnabled, sync_this_device);
 }
@@ -86,7 +76,7 @@ bool Prefs::GetSyncBookmarksEnabled() const {
   return pref_service_->GetBoolean(kSyncBookmarksEnabled);
 }
 
-void Prefs::SetSyncBookmarksEnabled(const bool &sync_bookmarks_enabled) {
+void Prefs::SetSyncBookmarksEnabled(const bool sync_bookmarks_enabled) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   pref_service_->SetBoolean(kSyncBookmarksEnabled, sync_bookmarks_enabled);
 }
@@ -96,7 +86,7 @@ bool Prefs::GetSyncSiteSettingsEnabled() const {
   return pref_service_->GetBoolean(kSiteSettingsEnabled);
 }
 
-void Prefs::SetSyncSiteSettingsEnabled(const bool &sync_site_settings_enabled) {
+void Prefs::SetSyncSiteSettingsEnabled(const bool sync_site_settings_enabled) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   pref_service_->SetBoolean(kSiteSettingsEnabled, sync_site_settings_enabled);
 }
@@ -106,7 +96,7 @@ bool Prefs::GetSyncHistoryEnabled() const {
   return pref_service_->GetBoolean(kHistoryEnabled);
 }
 
-void Prefs::SetSyncHistoryEnabled(const bool &sync_history_enabled) {
+void Prefs::SetSyncHistoryEnabled(const bool sync_history_enabled) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   pref_service_->SetBoolean(kHistoryEnabled, sync_history_enabled);
 }
@@ -121,34 +111,29 @@ std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
   settings->sync_settings_ = GetSyncSiteSettingsEnabled();
   settings->sync_history_ = GetSyncHistoryEnabled();
 
-  settings->sync_configured_ = !GetSeed().empty() && !GetThisDeviceName().empty();
+  settings->sync_configured_ =
+      !GetSeed().empty() && !GetThisDeviceName().empty();
 
   return settings;
 }
 
 void Prefs::SetLatestRecordTime(const base::Time &time) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  LOG(ERROR) << "TAGAB SetLatestRecordTime time=<"<<time<<"> ToJsTime()=" << time.ToJsTime() << " casted=" << base::checked_cast<int64_t>(time.ToJsTime());
   pref_service_->SetTime(kLatestRecordTime, time);
 }
 
 base::Time Prefs::GetLatestRecordTime() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  const auto time = pref_service_->GetTime(kLatestRecordTime);
-  LOG(ERROR) << "TAGAB GetLatestRecordTime time=<"<<time<<"> ToJsTime()=" << time.ToJsTime() << " casted=" << base::checked_cast<int64_t>(time.ToJsTime());
   return pref_service_->GetTime(kLatestRecordTime);
 }
 
 void Prefs::SetLastFetchTime(const base::Time &time) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  LOG(ERROR) << "TAGAB SetLastFetchTime time=<"<<time<<"> ToJsTime()=" << time.ToJsTime() << " casted=" << base::checked_cast<int64_t>(time.ToJsTime());
   pref_service_->SetTime(kLastFetchTime, time);
 }
 
 base::Time Prefs::GetLastFetchTime() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  const auto time = pref_service_->GetTime(kLastFetchTime);
-  LOG(ERROR) << "TAGAB GetLastFetchTime time=<"<<time<<"> ToJsTime()=" << time.ToJsTime() << " casted=" << base::checked_cast<int64_t>(time.ToJsTime());
   return pref_service_->GetTime(kLastFetchTime);
 }
 
