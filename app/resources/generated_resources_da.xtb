@@ -838,6 +838,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6845038076637626672">Åbn maksimeret</translation>
 <translation id="6860427144121307915">Åbn på en fane</translation>
 <translation id="3074037959626057712">Du er logget ind og har slået synkronisering til</translation>
+<translation id="1231733316453485619">Vil du aktivere synkronisering?</translation>
 <translation id="9125982323641182972">Få Brave Softwares smarte funktioner i Brave</translation>
 <translation id="7988117629517051942">Få flere af Brave Softwares smarte funktioner</translation>
 <translation id="5596627076506792578">Flere valgmuligheder</translation>
@@ -1288,6 +1289,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="9220525904950070496">Fjern konto</translation>
 <translation id="3340978935015468852">indstillinger</translation>
 <translation id="5704875434923668958">Der synkroniseres med</translation>
+<translation id="6257602895346497974">Aktivér synkronisering...</translation>
+<translation id="8618141719844947886">Der synkroniseres ikke</translation>
 <translation id="5781092003150880845">Synkroniser som <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synkroniser med din konto</translation>
 <translation id="2538361623464451692">Synkronisering er deaktiveret</translation>
@@ -1621,11 +1624,17 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6122875415561139701">Skrivehandlingen er ikke tilladt på: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Bluetooth-konfiguration kontrolleres af <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Tidsinterval</translation>
+<translation id="3958004920128806270"><ph name="BEGIN_LINK"/>Log ud<ph name="END_LINK"/> for kun at rydde browserdata fra denne enhed uden at slette dataene på din Brave Software-konto.</translation>
+<translation id="4445433576366924090"><ph name="BEGIN_LINK"/>Gå til indstillingerne for synkronisering<ph name="END_LINK"/> for at rydde browserdata fra alle dine synkroniserede enheder og din Brave Software-konto.</translation>
+<translation id="563489167344291753"><ph name="BEGIN_LINK"/>Angiv din adgangssætning<ph name="END_LINK"/> for at rydde browserdata fra alle dine synkroniserede enheder og din Brave Software-konto.</translation>
+<translation id="3895809404273995788"><ph name="BEGIN_LINK"/>Log ind<ph name="END_LINK"/> for at rydde browserdata fra alle dine synkroniserede enheder og din Brave Software-konto.</translation>
 <translation id="2496180316473517155">Browserhistorik</translation>
 <translation id="8662811608048051533">Logger dig ud af de fleste websites.</translation>
+<translation id="4650925988509114690">Logger dig ud af de fleste websites. Du forbliver logget ind på din Brave Software-konto, så dine synkroniserede data kan ryddes.</translation>
 <translation id="2017836877785168846">Nulstiller historikken og autofuldførelser i adresselinjen.</translation>
 <translation id="8096327394278038498">Rydder historikken og autofuldførelser i adresselinjen. Din Brave Software-konto kan have andre former for browserhistorik på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Rydder historikken på alle enheder, hvor du er logget ind. Din Brave Software-konto kan have andre former for browserhistorik på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Rydder historikken fra denne enhed.</translation>
 <translation id="7127980134843952133">Downloadhistorik</translation>
 <translation id="4699172675775169585">Billeder og filer, der er gemt i cache</translation>
 <translation id="1274997165432133392">Cookies og andre websitedata</translation>

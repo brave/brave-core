@@ -840,6 +840,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6845038076637626672">Ekranı Kaplayacak Şekilde Aç</translation>
 <translation id="6860427144121307915">Sekmede aç</translation>
 <translation id="3074037959626057712">Oturum açtınız ve Senkronizasyonu etkinleştirdiniz</translation>
+<translation id="1231733316453485619">Senkronizasyon açılsın mı?</translation>
 <translation id="9125982323641182972">Brave Software zekası Brave'da</translation>
 <translation id="7988117629517051942">Brave Software zekasından daha fazla yararlanın</translation>
 <translation id="5596627076506792578">Diğer seçenekler</translation>
@@ -1290,6 +1291,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="9220525904950070496">Hesabı kaldır</translation>
 <translation id="3340978935015468852">ayarlar</translation>
 <translation id="5704875434923668958">Şu hesapla senkronize ediliyor:</translation>
+<translation id="6257602895346497974">Senkronizasyonu aç...</translation>
+<translation id="8618141719844947886">Senkronize edilmiyor</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/> olarak senkronize et</translation>
 <translation id="1372841398847029212">Hesabınızla senkronize edin</translation>
 <translation id="2538361623464451692">Senkronizasyon devre dışı</translation>
@@ -1623,11 +1626,17 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6122875415561139701">Şu cihazda yazma işlemine izin verilmiyor: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Bluetooth yapılandırması <ph name="USER_EMAIL"/> tarafından kontrol ediliyor.</translation>
 <translation id="784934925303690534">Zaman aralığı</translation>
+<translation id="3958004920128806270">Tarama verilerini yalnızca bu cihazdan temizleyip Brave Software Hesabınızda tutmak için <ph name="BEGIN_LINK"/>oturumu kapatın<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Tarama verilerini senkronize edilmiş tüm cihazlarınızdan ve Brave Software Hesabınızdan temizlemek için <ph name="BEGIN_LINK"/>senkronizasyon ayarlarına gidin<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Tarama verilerini senkronize edilmiş tüm cihazlarınızdan ve Brave Software Hesabınızdan temizlemek için <ph name="BEGIN_LINK"/>parolanızı girin<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Tarama verilerini senkronize edilmiş tüm cihazlarınızdan ve Brave Software Hesabınızdan temizlemek için <ph name="BEGIN_LINK"/>oturum açın<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Tarama geçmişi</translation>
 <translation id="8662811608048051533">Çoğu sitedeki oturumunuz kapatılır.</translation>
+<translation id="4650925988509114690">Bu işlem, çoğu sitedeki oturumunuzu kapatır. Brave Software Hesabınızda oturumunuz açık kalacağından senkronize edilmiş verileriniz temizlenebilecektir.</translation>
 <translation id="2017836877785168846">Geçmişi ve adres çubuğundaki otomatik tamamlama bilgilerini temizler.</translation>
 <translation id="8096327394278038498">Geçmişi ve adres çubuğundaki otomatik tamamlamaları temizler. Brave Software Hesabınızın <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> adresinde başka biçimlerde tarama geçmişi olabilir.</translation>
 <translation id="8122693181154564064">Oturumunuzun açık olduğu tüm cihazlarda geçmişi temizler. Brave Software Hesabınızın <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> adresinde başka biçimlerde tarama geçmişi olabilir.</translation>
+<translation id="6148716538476291841">Geçmişi bu cihazdan temizler.</translation>
 <translation id="7127980134843952133">İndirme geçmişi</translation>
 <translation id="4699172675775169585">Önbelleğe alınan resimler ve dosyalar</translation>
 <translation id="1274997165432133392">Çerezler ve diğer site verileri</translation>

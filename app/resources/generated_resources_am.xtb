@@ -842,6 +842,7 @@ nil</translation>
 <translation id="6845038076637626672">ሰፍቶ ክፈት</translation>
 <translation id="6860427144121307915">በትር ውስጥ ክፈት</translation>
 <translation id="3074037959626057712">በመለያ ገብተው ስምረትን አብርተዋል</translation>
+<translation id="1231733316453485619">አስምር ይብራ?</translation>
 <translation id="9125982323641182972">Brave Software ዘመናዊ ነገሮችን በBrave ላይ ያግኙ</translation>
 <translation id="7988117629517051942">ተጨማሪ Brave Software ዘመናዊ ነገሮችን ያግኙ</translation>
 <translation id="5596627076506792578">ተጨማሪ አማራጮች</translation>
@@ -1292,6 +1293,8 @@ nil</translation>
 <translation id="9220525904950070496">መለያ ያስወግዱ</translation>
 <translation id="3340978935015468852">ቅንብሮች</translation>
 <translation id="5704875434923668958">ከዚህ ጋር በማስመር ላይ፦</translation>
+<translation id="6257602895346497974">አስምርን አብራ...</translation>
+<translation id="8618141719844947886">እያሰመረ አይደለም</translation>
 <translation id="5781092003150880845">እንደ <ph name="ACCOUNT_FULL_NAME"/> ሆነው ያስምሩ</translation>
 <translation id="1372841398847029212">ከመለያዎ ጋር ያስምሩ</translation>
 <translation id="2538361623464451692">ስምረት ተሰናክሏል</translation>
@@ -1625,11 +1628,17 @@ nil</translation>
 <translation id="6122875415561139701">የመጻፍ ክወና በዚህ ላይ አይፈቀድም፦ «<ph name="DEVICE_NAME"/>»።</translation>
 <translation id="439266289085815679">የብሉቱዝ ውቅረትን የሚቆጣጠሩት <ph name="USER_EMAIL"/> ናቸው።</translation>
 <translation id="784934925303690534">የጊዜ ወሰን</translation>
+<translation id="3958004920128806270">በእርስዎ የBrave Software መለያ ውስጥ እንዳለ ሆኖ ከዚህ መሣሪያ ብቻ የአሰሳ ውሂብን ለማጽዳት <ph name="BEGIN_LINK"/>ዘግተው ይውጡ<ph name="END_LINK"/>።</translation>
+<translation id="4445433576366924090">ከሁሉም የእርስዎ የተመሳሰሉ መሣሪያዎች እና የእርስዎ የBrave Software መለያ ላይ የአሰሳ ውሂብን ለማጽዳት፣ <ph name="BEGIN_LINK"/>የአስምር ቅንብሮችን ይጎብኙ<ph name="END_LINK"/>።</translation>
+<translation id="563489167344291753">ከሁሉም የእርስዎ የተመሳሰሉ መሣሪያዎች እና የእርስዎ የBrave Software መለያ ላይ የአሰሳ ውሂብን ለማጽዳት፣ <ph name="BEGIN_LINK"/>የእርስዎን የይለፍ ሐረግ ያስገቡ<ph name="END_LINK"/>።</translation>
+<translation id="3895809404273995788">ከሁሉም የእርስዎ የተመሳሰሉ መሣሪያዎች እና የእርስዎ የBrave Software መለያ ላይ የአሰሳ ውሂብን ለማጽዳት፣ <ph name="BEGIN_LINK"/>በመለያ ይግቡ<ph name="END_LINK"/>።</translation>
 <translation id="2496180316473517155">ታሪክ አሰሳ</translation>
 <translation id="8662811608048051533">ከአብዛኛዎቹ ጣቢያዎች ዘግተው እንዲወጡ ያደርገዎታል።</translation>
+<translation id="4650925988509114690">ከአብዛኛዎቹ ጣቢያዎች ዘግተው ያስወጣዎታል። በእርስዎ የBrave Software መለያ ውስጥ በመለያ እንደገቡ ስለሚቆዩ የእርስዎ የሰመረ ውሂብ ሊጸዳ ይችላል።</translation>
 <translation id="2017836877785168846">በአድራሻ አሞሌው ውስጥ ታሪክን እና ራስ-ሰር ማጠናቀቆችን ያጸዳል።</translation>
 <translation id="8096327394278038498">በአድራሻ አሞሌው ላይ ታሪክን እና ራስ-ማጠናቀቆችን ያጸዳል። የእርስዎ Brave Software መለያ <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> ላይ ሌሎች የአሰሳ ታሪክ አይነቶች ሊኖሩት ይችላል።</translation>
 <translation id="8122693181154564064">ታሪክን በመለያ ከገቡ ሁሉም መሣሪያዎች ላይ ያጸዳል። የእርስዎ Brave Software መለያ <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> ላይ ሌሎች የአሰሳ ታሪክ ዓይነቶች ሊኖረው ይችላል</translation>
+<translation id="6148716538476291841">ከዚህ መሣሪያ ላይ ታሪክን ያጸዳል።</translation>
 <translation id="7127980134843952133">የአውርድ ታሪክ</translation>
 <translation id="4699172675775169585">የተሸጎጡ ምስሎች እና ፋይሎች</translation>
 <translation id="1274997165432133392">ኩኪዎች እና የሌላ ጣቢያ ውሂብ</translation>

@@ -839,6 +839,7 @@
 <translation id="6845038076637626672">Відкрити в розгорнутому вигляді</translation>
 <translation id="6860427144121307915">Відкрити у вкладці</translation>
 <translation id="3074037959626057712">Ви ввійшли та ввімкнули синхронізацію</translation>
+<translation id="1231733316453485619">Увімкнути синхронізацію?</translation>
 <translation id="9125982323641182972">Розумні функції в Brave</translation>
 <translation id="7988117629517051942">Отримайте більше розумних функцій Brave Software</translation>
 <translation id="5596627076506792578">Інші опції</translation>
@@ -1289,6 +1290,8 @@
 <translation id="9220525904950070496">Видалення облікового запису</translation>
 <translation id="3340978935015468852">налаштування</translation>
 <translation id="5704875434923668958">Синхронізовано з</translation>
+<translation id="6257602895346497974">Увімкнути синхронізацію…</translation>
+<translation id="8618141719844947886">Не синхронізується</translation>
 <translation id="5781092003150880845">Синхронізувати як <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Синхронізувати з обліковим записом</translation>
 <translation id="2538361623464451692">Синхронізацію вимкнено</translation>
@@ -1622,11 +1625,17 @@
 <translation id="6122875415561139701">Операцію внесення змін заборонено на пристрої <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679"><ph name="USER_EMAIL"/> керує налаштуваннями Bluetooth.</translation>
 <translation id="784934925303690534">Період часу</translation>
+<translation id="3958004920128806270">Щоб очистити дані веб-перегляду лише на цьому пристрої, але зберегти їх в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>вийдіть з облікового запису<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Щоб очистити дані веб-перегляду на всіх синхронізованих пристроях і в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>перейдіть у налаштування синхронізації<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Щоб очистити дані веб-перегляду на всіх синхронізованих пристроях і в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>введіть парольну фразу<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Щоб очистити дані веб-перегляду на всіх синхронізованих пристроях і в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>увійдіть в обліковий запис<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Історія переглядів</translation>
 <translation id="8662811608048051533">Ви вийдете з більшості сайтів.</translation>
+<translation id="4650925988509114690">Ви вийдете з більшості сайтів, але не з облікового запису Brave Software. Тому синхронізовані дані можуть бути очищені.</translation>
 <translation id="2017836877785168846">Очищує історію й автозавершення в адресному рядку.</translation>
 <translation id="8096327394278038498">Очищує історію й автозавершення в адресному рядку. У вашому обліковому записі Brave Software на сторінці <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> можуть бути інші форми історії веб-перегляду.</translation>
 <translation id="8122693181154564064">Очищує історію на всіх пристроях, на яких ви ввійшли в обліковий запис. У вашому обліковому записі Brave Software на сторінці <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> можуть бути інші форми історії веб-перегляду.</translation>
+<translation id="6148716538476291841">Очищає історію на цьому пристрої.</translation>
 <translation id="7127980134843952133">Історія завантажень</translation>
 <translation id="4699172675775169585">Кешовані зображення та файли</translation>
 <translation id="1274997165432133392">Файли cookie та інші дані із сайтів</translation>

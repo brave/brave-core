@@ -838,6 +838,7 @@
 <translation id="6845038076637626672">باز کردن در حداکثر اندازه</translation>
 <translation id="6860427144121307915">باز کردن در یک برگه</translation>
 <translation id="3074037959626057712">به سیستم وارد شده‌اید و «همگام‌سازی» را روشن کرده‌اید</translation>
+<translation id="1231733316453485619">همگام‌سازی روشن شود؟</translation>
 <translation id="9125982323641182972">‏هوشمندی‌های Brave Software را در Brave دریافت کنید</translation>
 <translation id="7988117629517051942">‏دریافت هوشمندی‌های بیشتری از Brave Software</translation>
 <translation id="5596627076506792578">گزینه‌های بیشتر</translation>
@@ -1288,6 +1289,8 @@
 <translation id="9220525904950070496">حذف حساب</translation>
 <translation id="3340978935015468852">تنظیمات</translation>
 <translation id="5704875434923668958">درحال همگام‌سازی در</translation>
+<translation id="6257602895346497974">روشن کردن همگام‌سازی…</translation>
+<translation id="8618141719844947886">درحال همگام‌سازی نیست</translation>
 <translation id="5781092003150880845">همگام‌سازی با حساب <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">همگام‌سازی با حسابتان</translation>
 <translation id="2538361623464451692">همگام‌سازی غیرفعال شد</translation>
@@ -1621,11 +1624,17 @@
 <translation id="6122875415561139701">عملیات نوشتن در این دستگاه مجاز نیست: «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="439266289085815679">‏پیکربندی Bluetooth توسط <ph name="USER_EMAIL"/> کنترل می‌شود.</translation>
 <translation id="784934925303690534">محدوده زمانی</translation>
+<translation id="3958004920128806270">‏برای اینکه داده‌های محصول مرور را از فقط این دستگاه پاک کنید اما آن‌ها را در حساب Brave Software خود نگه‌دارید، <ph name="BEGIN_LINK"/>از سیستم خارج شوید<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">‏برای اینکه داده‌های محصول مرور را از همه دستگاه‌های همگام‌سازی‌شده و حساب Brave Software خود پاک کنید، <ph name="BEGIN_LINK"/>به تنظیمات همگام‌سازی بروید<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">‏برای اینکه داده‌های محصول مرور را از همه دستگاه‌های همگام‌سازی‌شده و حساب Brave Software خود پاک کنید، <ph name="BEGIN_LINK"/>عبارت عبورتان را وارد کنید<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">‏برای اینکه داده‌های محصول مرور را از همه دستگاه‌های همگام‌سازی‌شده و حساب Brave Software خود پاک کنید، <ph name="BEGIN_LINK"/>به سیستم وارد شوید<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">سابقه مرور</translation>
 <translation id="8662811608048051533">شما را از سیستم اکثر سایت‌ها خارج می‌کند.</translation>
+<translation id="4650925988509114690">‏شما از سیستم بیشتر سایت‌ها خارج می‌کند. از حساب Brave Software خارج نخواهید شد بنابراین می‌توانید داده‌های همگام‌سازی‌شده‌تان را پاک کنید.</translation>
 <translation id="2017836877785168846">سابقه و تکمیل خودکار را در نوار نشانی پاک می‌کند.</translation>
 <translation id="8096327394278038498">‏سابقه و تکمیل‌های خودکار را در نوار نشانی پاک می‌کند. ممکن است حساب Brave Software شما اشکال دیگری از سابقه مرور در <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> داشته باشد.</translation>
 <translation id="8122693181154564064">‏سابقه را از همه دستگاه‌های به سیستم واردشده پاک می‌کند. ممکن است حساب Brave Software شما اشکال دیگری از سابقه مرور در <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> داشته باشد.</translation>
+<translation id="6148716538476291841">سابقه را از این دستگاه پاک می‌کند.</translation>
 <translation id="7127980134843952133">سابقه بارگیری</translation>
 <translation id="4699172675775169585">تصاویر و فایل‌های قرار گرفته در حافظه پنهان</translation>
 <translation id="1274997165432133392">کوکی‌ها و دیگر داده‌های سایت</translation>

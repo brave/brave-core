@@ -840,6 +840,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6845038076637626672">Obre-la maximitzada</translation>
 <translation id="6860427144121307915">Obre en una pestanya</translation>
 <translation id="3074037959626057712">Has iniciat la sessió i has activat la sincronització</translation>
+<translation id="1231733316453485619">Vols activar la sincronització?</translation>
 <translation id="9125982323641182972">Eines intel·ligents a Brave</translation>
 <translation id="7988117629517051942">Gaudeix de més eines intel·ligents de Brave Software</translation>
 <translation id="5596627076506792578">Més opcions</translation>
@@ -1290,6 +1291,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="9220525904950070496">Suprimir el compte</translation>
 <translation id="3340978935015468852">configuració</translation>
 <translation id="5704875434923668958">S'està sincronitzant amb</translation>
+<translation id="6257602895346497974">Activa la sincronització...</translation>
+<translation id="8618141719844947886">No s'està sincronitzant</translation>
 <translation id="5781092003150880845">Sincronitza com a <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sincronitza amb el meu compte</translation>
 <translation id="2538361623464451692">Sincronització desactivada</translation>
@@ -1623,11 +1626,17 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6122875415561139701">L'operació d'escriptura no es permet a <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679"><ph name="USER_EMAIL"/> controla la configuració del Bluetooth.</translation>
 <translation id="784934925303690534">Interval de temps</translation>
+<translation id="3958004920128806270">Per esborrar les dades només d'aquest dispositiu i conservar-les al Compte de Brave Software, <ph name="BEGIN_LINK"/>tanca la sessió<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Per esborrar les dades de navegació de tots els dispositius sincronitzats i del Compte de Brave Software, <ph name="BEGIN_LINK"/>ves a la configuració de sincronització<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Per esborrar les dades de navegació de tots els dispositius sincronitzats i del Compte de Brave Software, <ph name="BEGIN_LINK"/>introdueix la frase de contrasenya<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Per esborrar les dades de navegació de tots els dispositius sincronitzats i del Compte de Brave Software, <ph name="BEGIN_LINK"/>inicia la sessió<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historial de navegació</translation>
 <translation id="8662811608048051533">Et tanca la sessió de la majoria de llocs.</translation>
+<translation id="4650925988509114690">Se't tancarà la sessió de la majoria de llocs web, però continuaràs tenint la sessió iniciada al Compte de Brave Software. Pot ser que les dades sincronitzades s'esborrin.</translation>
 <translation id="2017836877785168846">Esborra l'historial i les complecions automàtiques a la barra d'adreces.</translation>
 <translation id="8096327394278038498">Esborra l'historial i les complecions automàtiques a la barra d'adreces. A <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>, trobaràs altres maneres d'explorar l'historial del teu compte de Brave Software.</translation>
 <translation id="8122693181154564064">Esborra l'historial de tots els dispositius en què tinguis iniciada la sessió. A <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>, trobaràs altres maneres d'explorar l'historial del teu compte de Brave Software.</translation>
+<translation id="6148716538476291841">Esborra l'historial d'aquest dispositiu.</translation>
 <translation id="7127980134843952133">Historial de baixades</translation>
 <translation id="4699172675775169585">Imatges i fitxers desats a la memòria cau</translation>
 <translation id="1274997165432133392">Galetes i altres dades dels llocs web</translation>

@@ -840,6 +840,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6845038076637626672">Atidaryti padidintą</translation>
 <translation id="6860427144121307915">Atidaryti skirtuko lape</translation>
 <translation id="3074037959626057712">Prisijungėte ir įjungėte sinchronizavimą</translation>
+<translation id="1231733316453485619">Įjungti sinchronizavimą?</translation>
 <translation id="9125982323641182972">„Brave Software“ išm. funkc. „Brave“</translation>
 <translation id="7988117629517051942">Gaukite daugiau „Brave Software“ išmaniųjų funkcijų</translation>
 <translation id="5596627076506792578">Daugiau parinkčių</translation>
@@ -1290,6 +1291,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="9220525904950070496">Pašalinti paskyrą</translation>
 <translation id="3340978935015468852">nustatymų</translation>
 <translation id="5704875434923668958">Sinchronizuojama su</translation>
+<translation id="6257602895346497974">Įjungti sinchronizavimą...</translation>
+<translation id="8618141719844947886">Nesinchronizuojama</translation>
 <translation id="5781092003150880845">Sinchronizuoti kaip <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sinchronizuoti paskyroje</translation>
 <translation id="2538361623464451692">Sinchronizavimas išjungtas</translation>
@@ -1623,11 +1626,17 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6122875415561139701">Rašymo operacija neleidžiama įrenginyje „<ph name="DEVICE_NAME"/>“.</translation>
 <translation id="439266289085815679">„Bluetooth“ konfigūravimą valdo <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Laikotarpis</translation>
+<translation id="3958004920128806270">Norėdami išvalyti naršymo duomenis tik iš šio įrenginio ir palikti juos „Brave Software“ paskyroje, <ph name="BEGIN_LINK"/>atsijunkite<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>apsilankykite sinchronizavimo nustatymuose<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>įveskite slaptafrazę<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>prisijunkite<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Naršymo istorija</translation>
 <translation id="8662811608048051533">Būsite atjungti nuo daugelio svetainių.</translation>
+<translation id="4650925988509114690">Būsite atjungti nuo daugelio svetainių. Liksite prisijungę prie „Brave Software“ paskyros, todėl sinchronizuoti duomenys gali būti išvalyti.</translation>
 <translation id="2017836877785168846">Išvaloma istorija ir automatiniai užbaigimai adreso juostoje.</translation>
 <translation id="8096327394278038498">Išvaloma istorija ir automatiniai užbaigimai adreso juostoje. „Brave Software“ paskyroje gali būti kito tipo naršymo istorijos, kuri pasiekiama adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Išvaloma visų įrenginių, prie kurių prisijungta, istorija. „Brave Software“ paskyroje gali būti kito tipo naršymo istorijos, kuri pasiekiama adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Išvaloma istorija iš šio įrenginio.</translation>
 <translation id="7127980134843952133">Atsisiuntimų istorija</translation>
 <translation id="4699172675775169585">Talpykloje esantys vaizdai ir failai</translation>
 <translation id="1274997165432133392">Slapukai ir kiti svetainių duomenys</translation>

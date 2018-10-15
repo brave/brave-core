@@ -838,6 +838,7 @@
 <translation id="6845038076637626672">פתח בגודל מרבי</translation>
 <translation id="6860427144121307915">פתח בכרטיסייה</translation>
 <translation id="3074037959626057712">נכנסת לחשבונך והפעלת את הסנכרון</translation>
+<translation id="1231733316453485619">להפעיל סנכרון?</translation>
 <translation id="9125982323641182972">‏תכונות חכמות של Brave Software</translation>
 <translation id="7988117629517051942">‏גישה אל עוד יכולות חכמות של Brave Software</translation>
 <translation id="5596627076506792578">אפשרויות נוספות</translation>
@@ -1288,6 +1289,8 @@
 <translation id="9220525904950070496">הסר חשבון</translation>
 <translation id="3340978935015468852">הגדרות</translation>
 <translation id="5704875434923668958">מסנכרן עם</translation>
+<translation id="6257602895346497974">הפעלת סנכרון...</translation>
+<translation id="8618141719844947886">אין סנכרון</translation>
 <translation id="5781092003150880845">סינכרון בשם <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">סנכרון עם החשבון שלך</translation>
 <translation id="2538361623464451692">הסינכרון מושבת</translation>
@@ -1621,11 +1624,17 @@
 <translation id="6122875415561139701">פעולת כתיבה אסורה במכשיר: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">‏הגדרת ה-Bluetooth היא בשליטת <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">טווח זמן</translation>
+<translation id="3958004920128806270">‏כדי לנקות את נתוני הגלישה ממכשיר זה בלבד ועדיין לשמור אותם בחשבון Brave Software שלך, <ph name="BEGIN_LINK"/>יש לבצע יציאה<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">‏כדי לנקות את נתוני הגלישה מכל המכשירים המסונכרנים ומחשבון Brave Software שלך, <ph name="BEGIN_LINK"/>יש להיכנס להגדרות הסנכרון<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">‏כדי לנקות את נתוני הגלישה מכל המכשירים המסונכרנים ומחשבון Brave Software שלך, <ph name="BEGIN_LINK"/>יש להזין את ביטוי הסיסמה<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">‏כדי לנקות את נתוני הגלישה מכל המכשירים המסונכרנים ומחשבון Brave Software שלך, <ph name="BEGIN_LINK"/>יש לבצע כניסה<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">היסטוריית גלישה</translation>
 <translation id="8662811608048051533">תבוצע יציאה שלך מרוב האתרים.</translation>
+<translation id="4650925988509114690">‏תבוצע יציאה שלך מרוב האתרים. לא תבוצע יציאה מחשבון Brave Software, כדי שניתן יהיה לנקות את הנתונים המסונכרנים.</translation>
 <translation id="2017836877785168846">מנקה את ההיסטוריה וההשלמות האוטומטיות בסרגל הכתובות</translation>
 <translation id="8096327394278038498">‏ניקוי ההיסטוריה וההשלמות האוטומטיות בסרגל הכתובות. ייתכן שלחשבון Brave Software שלך יהיו צורות אחרות של היסטוריית גלישה בכתובת <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">‏ניקוי ההיסטוריה מכל המכשירים שבהם המשתמש נכנס לחשבון. ייתכן שלחשבון Brave Software שלך יהיו צורות אחרות של היסטוריית גלישה בכתובת <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">ההיסטוריה תנוקה ממכשיר זה.</translation>
 <translation id="7127980134843952133">היסטוריית הורדות</translation>
 <translation id="4699172675775169585">תמונות וקבצים במטמון</translation>
 <translation id="1274997165432133392">‏קובצי Cookie ונתוני אתר נוספים</translation>

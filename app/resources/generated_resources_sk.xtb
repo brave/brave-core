@@ -839,6 +839,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6845038076637626672">Otvoriť maximalizované</translation>
 <translation id="6860427144121307915">Otvoriť na karte</translation>
 <translation id="3074037959626057712">Prihlásili ste sa a zapli synchronizáciu</translation>
+<translation id="1231733316453485619">Chcete zapnúť synchronizáciu?</translation>
 <translation id="9125982323641182972">Získajte inteligentné doplnky Googlu v Brave</translation>
 <translation id="7988117629517051942">Získajte viac inteligentných doplnkov Googlu</translation>
 <translation id="5596627076506792578">Ďalšie možnosti</translation>
@@ -1289,6 +1290,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="9220525904950070496">Odstrániť účet</translation>
 <translation id="3340978935015468852">nastavenia</translation>
 <translation id="5704875434923668958">Synchronizácia do účtu</translation>
+<translation id="6257602895346497974">Zapnúť synchronizáciu…</translation>
+<translation id="8618141719844947886">Nesynchronizuje sa</translation>
 <translation id="5781092003150880845">Synchronizovať ako <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synchronizovať do účtu</translation>
 <translation id="2538361623464451692">Synchronizácia je zakázaná</translation>
@@ -1622,11 +1625,17 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6122875415561139701">Operácia zápisu je na zariadení <ph name="DEVICE_NAME"/> zakázaná.</translation>
 <translation id="439266289085815679">Konfiguráciu rozhrania Bluetooth spravuje <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Časové obdobie</translation>
+<translation id="3958004920128806270">Ak chcete vymazať dáta prehliadania iba z tohto zariadenia a ponechať ich v účte Brave Software, <ph name="BEGIN_LINK"/>odhláste sa<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Ak chcete vymazať dáta prehliadania zo všetkých synchronizovaných zariadení a účtu Brave Software, <ph name="BEGIN_LINK"/>prejdite do nastavení synchronizácie<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Ak chcete vymazať dáta prehliadania zo všetkých synchronizovaných zariadení a účtu Brave Software, <ph name="BEGIN_LINK"/>zadajte prístupovú frázu<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Ak chcete vymazať dáta prehliadania zo všetkých synchronizovaných zariadení a účtu Brave Software, <ph name="BEGIN_LINK"/>prihláste sa<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">História prehliadania</translation>
 <translation id="8662811608048051533">Odhlási vás z väčšiny webov.</translation>
+<translation id="4650925988509114690">Odhlási vás z väčšiny webov, ale nie z účtu Brave Software, takže sa synchronizované dáta budú dať vymazať.</translation>
 <translation id="2017836877785168846">Vymaže históriu a automaticky doplňované výrazy v paneli s adresou.</translation>
 <translation id="8096327394278038498">Vymaže históriu a záznamy automatického dopĺňania v paneli s adresou. Váš účet Brave Software môže mať ďalšie formy histórie prehliadania na adrese <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Vymaže históriu zo všetkých prihlásených zariadení. Váš účet Brave Software môže mať ďalšie formy histórie prehliadania na adrese <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Vymaže históriu z tohto zariadenia.</translation>
 <translation id="7127980134843952133">História sťahovania</translation>
 <translation id="4699172675775169585">Obrázky a súbory vo vyrovnávacej pamäti</translation>
 <translation id="1274997165432133392">Súbory cookie a ďalšie dáta webov</translation>

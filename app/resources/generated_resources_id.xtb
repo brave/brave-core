@@ -839,6 +839,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6845038076637626672">Buka yang Dimaksimalkan</translation>
 <translation id="6860427144121307915">Buka di Tab</translation>
 <translation id="3074037959626057712">Anda telah login dan mengaktifkan Sinkronisasi</translation>
+<translation id="1231733316453485619">Aktifkan sinkronisasi?</translation>
 <translation id="9125982323641182972">Dapatkan kecanggihan Brave Software di Brave</translation>
 <translation id="7988117629517051942">Dapatkan kecanggihan Brave Software lainnya</translation>
 <translation id="5596627076506792578">Opsi lainnya</translation>
@@ -1289,6 +1290,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="9220525904950070496">Hapus akun</translation>
 <translation id="3340978935015468852">setelan</translation>
 <translation id="5704875434923668958">Menyinkronkan ke</translation>
+<translation id="6257602895346497974">Aktifkan sinkronisasi...</translation>
+<translation id="8618141719844947886">Tidak disinkronkan</translation>
 <translation id="5781092003150880845">Sinkronkan sebagai <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sinkronkan ke akun Anda</translation>
 <translation id="2538361623464451692">Sinkronisasi dinonaktifkan</translation>
@@ -1622,11 +1625,17 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6122875415561139701">Operasi menulis tidak diizinkan di: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Konfigurasi Bluetooth dikontrol oleh <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Rentang waktu</translation>
+<translation id="3958004920128806270">Untuk menghapus data browsing dari perangkat ini saja dan tetap menyimpannya di Akun Brave Software, <ph name="BEGIN_LINK"/>logout<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Untuk menghapus data browsing dari semua perangkat yang disinkronkan dan dari Akun Brave Software, <ph name="BEGIN_LINK"/>buka setelan sinkronisasi<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Untuk menghapus data browsing dari semua perangkat yang disinkronkan dan dari Akun Brave Software, <ph name="BEGIN_LINK"/>masukkan frasa sandi<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Untuk menghapus data browsing dari semua perangkat yang disinkronkan dan dari Akun Brave Software, <ph name="BEGIN_LINK"/>login<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Histori jelajah</translation>
 <translation id="8662811608048051533">Membuat Anda logout dari sebagian besar situs.</translation>
+<translation id="4650925988509114690">Membuat Anda logout dari sebagian besar situs. Anda akan tetap login di Akun Brave Software sehingga data yang disinkronkan dapat dihapus.</translation>
 <translation id="2017836877785168846">Hapus histori dan pelengkapan otomatis di kolom URL.</translation>
 <translation id="8096327394278038498">Menghapus histori dan pelengkapan otomatis di kolom URL. Akun Brave Software Anda mungkin memiliki bentuk histori browsing lainnya di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Menghapus histori dari semua perangkat yang dibuat login. Akun Brave Software Anda mungkin memiliki bentuk histori browsing lain di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Menghapus histori dari perangkat ini.</translation>
 <translation id="7127980134843952133">Histori download</translation>
 <translation id="4699172675775169585">File dan gambar yang disimpan dalam cache</translation>
 <translation id="1274997165432133392">Cookie dan data situs lain</translation>
