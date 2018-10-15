@@ -1222,7 +1222,7 @@ class BrowserViewController: UIViewController {
     
     func presentDuckDuckGoCallout(force: Bool = false) {
         // Check to see if its been presented already
-        if Preferences.Popups.duckDuckGoPrivateSearch.value && !force {
+        if SearchEngines.shouldShowDuckDuckGoPromo && Preferences.Popups.duckDuckGoPrivateSearch.value && !force {
             presentBrowserLockCallout()
             return
         }

@@ -236,7 +236,8 @@ class FavoritesViewController: UIViewController {
     func shouldShowDuckDuckGoCallout() -> Bool {
         let isSearchEngineSet = profile.searchEngines.defaultEngine(forType: .privateMode).shortName == OpenSearchEngine.EngineNames.duckDuckGo
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-        return isPrivateBrowsing && !isSearchEngineSet
+        let shouldShowPromo = SearchEngines.shouldShowDuckDuckGoPromo
+        return isPrivateBrowsing && !isSearchEngineSet && shouldShowPromo
     }
     
     func updateDuckDuckGoVisibility() {
