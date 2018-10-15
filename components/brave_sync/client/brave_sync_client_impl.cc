@@ -8,8 +8,7 @@
 #include "brave/components/brave_sync/api/brave_sync_event_router.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
-#include "brave/components/brave_sync/pref_names.h"
-#include "brave/components/brave_sync/profile_prefs.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/common/extensions/api/brave_sync.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -39,7 +38,7 @@ BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
 
   profile_pref_change_registrar_.Init(profile->GetPrefs());
   profile_pref_change_registrar_.Add(
-      prefs::kSyncThisDeviceEnabled,
+      prefs::kSyncEnabled,
       base::Bind(&BraveSyncClientImpl::OnProfilePreferenceChanged,
                  base::Unretained(this)));
 }

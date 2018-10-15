@@ -5,10 +5,10 @@
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
 
 #include "base/memory/singleton.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_impl.h"
 #include "brave/components/brave_sync/client/brave_sync_client_factory.h"
-#include "brave/components/brave_sync/pref_names.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -59,18 +59,18 @@ KeyedService* BraveSyncServiceFactory::BuildServiceInstanceFor(
 
 void BraveSyncServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterStringPref(prefs::kThisDeviceId, std::string());
-  registry->RegisterStringPref(prefs::kSeed, std::string());
-  registry->RegisterStringPref(prefs::kThisDeviceName, std::string());
-  registry->RegisterStringPref(prefs::kBookmarksBaseOrder, std::string());
+  registry->RegisterStringPref(prefs::kSyncDeviceId, std::string());
+  registry->RegisterStringPref(prefs::kSyncSeed, std::string());
+  registry->RegisterStringPref(prefs::kSyncDeviceName, std::string());
+  registry->RegisterStringPref(prefs::kSyncBookmarksBaseOrder, std::string());
 
-  registry->RegisterBooleanPref(prefs::kSyncThisDeviceEnabled, false);
+  registry->RegisterBooleanPref(prefs::kSyncEnabled, false);
   registry->RegisterBooleanPref(prefs::kSyncBookmarksEnabled, false);
-  registry->RegisterBooleanPref(prefs::kSiteSettingsEnabled, false);
-  registry->RegisterBooleanPref(prefs::kHistoryEnabled, false);
+  registry->RegisterBooleanPref(prefs::kSyncSiteSettingsEnabled, false);
+  registry->RegisterBooleanPref(prefs::kSyncHistoryEnabled, false);
 
-  registry->RegisterTimePref(prefs::kLatestRecordTime, base::Time());
-  registry->RegisterTimePref(prefs::kLastFetchTime, base::Time());
+  registry->RegisterTimePref(prefs::kSyncLatestRecordTime, base::Time());
+  registry->RegisterTimePref(prefs::kSyncLastFetchTime, base::Time());
 }
 
 content::BrowserContext* BraveSyncServiceFactory::GetBrowserContextToUse(
