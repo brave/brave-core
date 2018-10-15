@@ -179,14 +179,11 @@ export class Panel extends React.Component<Props, State> {
     switch (notification.type) {
       case 1:
         type = 'contribute'
-        text = getMessage('contributeNotification', [
-          utils.convertProbiToFixed(notification.args[0]),
-          new Date(parseInt(notification.args[1], 10) * 1000).toLocaleDateString()
-        ])
+        text = getMessage('contributeNotification')
         break
       case 2:
         type = 'grant'
-        text = getMessage('grantNotification', notification.args)
+        text = getMessage('grantNotification')
         break
       default:
         type = ''

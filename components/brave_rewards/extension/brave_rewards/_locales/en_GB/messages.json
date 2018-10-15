@@ -182,13 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "Free BAT have been awarded to you $date$",
-    "description": "",
-    "placeholders": {
-      "date": {
-        "content": " (claim before $1)",
-        "example": " (claim before 7/25)"
-      }
-    }
+    "message": "You have grant waiting for you.",
+    "description": ""
   }
 }
