@@ -454,6 +454,7 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
 
   ledger_client_->OnReconcileComplete(result, viewing_id, (ledger::PUBLISHER_CATEGORY)reconcile.category_, probi);
   if (result != ledger::Result::LEDGER_OK) {
+    RemoveReconcileById(viewing_id);
     // error handling
     return;
   }

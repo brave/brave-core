@@ -178,38 +178,6 @@ namespace braveledger_bat_helper {
     std::vector<GRANT> grants_;
   };
 
-  struct CLIENT_STATE_ST {
-    CLIENT_STATE_ST();
-    CLIENT_STATE_ST(const CLIENT_STATE_ST&);
-    ~CLIENT_STATE_ST();
-
-    // Load from json string
-    bool loadFromJson(const std::string & json);
-
-    WALLET_INFO_ST walletInfo_;
-    WALLET_PROPERTIES_ST walletProperties_;
-    uint64_t bootStamp_ = 0u;
-    uint64_t reconcileStamp_ = 0u;
-    std::string personaId_;
-    std::string userId_;
-    std::string registrarVK_;
-    std::string masterUserToken_;
-    std::string preFlight_;
-    std::string fee_currency_;
-    std::string settings_= AD_FREE_SETTINGS;
-    double fee_amount_ = .0;
-    bool user_changed_fee_ = false;
-    unsigned int days_ = 0u;
-    std::vector<TRANSACTION_ST> transactions_;
-    std::vector<BALLOT_ST> ballots_;
-    std::string ruleset_;
-    std::string rulesetV2_;
-    std::vector<BATCH_VOTES_ST> batch_;
-    GRANT grant_;
-    bool auto_contribute_ = false;
-    bool rewards_enabled_ = false;
-  };
-
   struct REPORT_BALANCE_ST {
     REPORT_BALANCE_ST();
     REPORT_BALANCE_ST(const REPORT_BALANCE_ST&);
@@ -251,6 +219,9 @@ namespace braveledger_bat_helper {
     ~PUBLISHER_ST();
     bool operator<(const PUBLISHER_ST& rhs) const;
 
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
     std::string id_;
     uint64_t duration_ = 0u;
     double score_ = .0;
@@ -288,6 +259,75 @@ namespace braveledger_bat_helper {
     std::string surveySK_;
   };
 
+  struct RECONCILE_DIRECTION {
+    RECONCILE_DIRECTION();
+    RECONCILE_DIRECTION(const std::string& publisher_key, const int amount, const std::string& currency);
+    ~RECONCILE_DIRECTION();
+
+    bool loadFromJson(const std::string &json);
+
+    std::string publisher_key_;
+    int amount_;
+    std::string currency_;
+  };
+
+  struct CURRENT_RECONCILE {
+    CURRENT_RECONCILE();
+    CURRENT_RECONCILE(const CURRENT_RECONCILE&);
+    ~CURRENT_RECONCILE();
+
+    //load from json string
+    bool loadFromJson(const std::string & json);
+
+    std::string viewingId_;
+    std::string anonizeViewingId_;
+    std::string registrarVK_;
+    std::string preFlight_;
+    std::string masterUserToken_;
+    SURVEYOR_INFO_ST surveyorInfo_;
+    uint64_t timestamp_ = 0u;
+    std::map<std::string, double> rates_;
+    std::string amount_;
+    std::string currency_;
+    double fee_;
+    std::vector<RECONCILE_DIRECTION> directions_;
+    int category_;
+    std::vector<PUBLISHER_ST> list_;
+  };
+
+  struct CLIENT_STATE_ST {
+    CLIENT_STATE_ST();
+    CLIENT_STATE_ST(const CLIENT_STATE_ST&);
+    ~CLIENT_STATE_ST();
+
+    // Load from json string
+    bool loadFromJson(const std::string & json);
+
+    WALLET_INFO_ST walletInfo_;
+    WALLET_PROPERTIES_ST walletProperties_;
+    uint64_t bootStamp_ = 0u;
+    uint64_t reconcileStamp_ = 0u;
+    std::string personaId_;
+    std::string userId_;
+    std::string registrarVK_;
+    std::string masterUserToken_;
+    std::string preFlight_;
+    std::string fee_currency_;
+    std::string settings_= AD_FREE_SETTINGS;
+    double fee_amount_ = .0;
+    bool user_changed_fee_ = false;
+    unsigned int days_ = 0u;
+    std::vector<TRANSACTION_ST> transactions_;
+    std::vector<BALLOT_ST> ballots_;
+    std::string ruleset_;
+    std::string rulesetV2_;
+    std::vector<BATCH_VOTES_ST> batch_;
+    GRANT grant_;
+    std::map<std::string, CURRENT_RECONCILE> current_reconciles_;
+    bool auto_contribute_ = false;
+    bool rewards_enabled_ = false;
+  };
+
   // The struct is serialized/deserialized from/into JSON as part of MEDIA_PUBLISHER_INFO
   struct TWITCH_EVENT_INFO {
     TWITCH_EVENT_INFO();
@@ -321,37 +361,6 @@ namespace braveledger_bat_helper {
 
     TRANSACTION_ST transaction_;
     BALLOT_ST ballot_;
-  };
-
-  struct RECONCILE_DIRECTION {
-    RECONCILE_DIRECTION();
-    RECONCILE_DIRECTION(const std::string& publisher_key, const int amount, const std::string& currency);
-    ~RECONCILE_DIRECTION();
-    
-    std::string publisher_key_;
-    int amount_;
-    std::string currency_;
-  };
-  
-  struct CURRENT_RECONCILE {
-    CURRENT_RECONCILE();
-    CURRENT_RECONCILE(const CURRENT_RECONCILE&);
-    ~CURRENT_RECONCILE();
-
-    std::string viewingId_;
-    std::string anonizeViewingId_;
-    std::string registrarVK_;
-    std::string preFlight_;
-    std::string masterUserToken_;
-    SURVEYOR_INFO_ST surveyorInfo_;
-    uint64_t timestamp_ = 0u;
-    std::map<std::string, double> rates_;
-    std::string amount_;
-    std::string currency_;
-    double fee_;
-    std::vector<RECONCILE_DIRECTION> directions_;
-    int category_;
-    std::vector<PUBLISHER_ST> list_;
   };
 
   enum class SERVER_TYPES {

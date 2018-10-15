@@ -21,8 +21,7 @@ namespace braveledger_bat_client {
 
 BatClient::BatClient(bat_ledger::LedgerImpl* ledger) :
       ledger_(ledger),
-      state_(new braveledger_bat_helper::CLIENT_STATE_ST()),
-      currentReconciles_(new std::map<std::string, braveledger_bat_helper::CURRENT_RECONCILE>) {
+      state_(new braveledger_bat_helper::CLIENT_STATE_ST()) {
   // Enable emscripten calls
   //braveledger_bat_helper::readEmscripten();
   initAnonize();
@@ -37,6 +36,11 @@ bool BatClient::loadState(const std::string& data) {
     return false;
 
   state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST(state));
+
+  if (state_->batch_.size() == 0) {
+    state_->current_reconciles_ = {};
+  }
+
   return true;
 }
 
@@ -305,7 +309,7 @@ void BatClient::reconcile(const std::string& viewingId,
     const ledger::PUBLISHER_CATEGORY category,
     const std::vector<braveledger_bat_helper::PUBLISHER_ST>& list,
     const std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>& directions) {
-  if (currentReconciles_->count(viewingId) > 0) {
+  if (state_->current_reconciles_.count(viewingId) > 0) {
     LOG(ERROR) << "unable to reconcile with the same viewing id";
     // TODO add error callback
     return;
@@ -382,7 +386,8 @@ void BatClient::reconcile(const std::string& viewingId,
   reconcile.directions_ = directions;
   reconcile.category_ = category;
 
-  currentReconciles_->insert(std::make_pair(viewingId, reconcile));
+  state_->current_reconciles_.insert(std::make_pair(viewingId, reconcile));
+  saveState();
   
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)RECONCILE_CONTRIBUTION + state_->userId_, PREFIX_V2),
       std::vector<std::string>(), "", "",
@@ -443,26 +448,27 @@ void BatClient::currentReconcile(const std::string& viewingId) {
 }
   
 braveledger_bat_helper::CURRENT_RECONCILE BatClient::GetReconcileById(const std::string& viewingId) {
-  if (currentReconciles_->count(viewingId) == 0) {
+  if (state_->current_reconciles_.count(viewingId) == 0) {
     LOG(ERROR) << "Could not find any reconcile tasks with the id " << viewingId;
     // For safety we don't crash, perhaps in a dev build we want to throw an exception anyways
     return braveledger_bat_helper::CURRENT_RECONCILE();
   }
-  return currentReconciles_->at(viewingId);
+  return state_->current_reconciles_[viewingId];
 }
 
 bool BatClient::SetReconcile(const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
-  if (currentReconciles_->count(reconcile.viewingId_) == 0) {
+  if (state_->current_reconciles_.count(reconcile.viewingId_) == 0) {
     return false;
   }
 
-  currentReconciles_->operator[](reconcile.viewingId_) = reconcile;
-
+  state_->current_reconciles_[reconcile.viewingId_] = reconcile;
+  saveState();
   return true;
 }
   
 void BatClient::removeReconcileById(const std::string& viewingId) {
-  currentReconciles_->erase(currentReconciles_->find(viewingId));
+  state_->current_reconciles_.erase(state_->current_reconciles_.find(viewingId));
+  saveState();
 }
 
 void BatClient::currentReconcileCallback(const std::string& viewingId,
