@@ -44,21 +44,6 @@ TEST_F(BookmarkOrderUtilTest, OrderToIntVect_SemiWrongValue) {
   EXPECT_EQ(result.at(0), 5);
 }
 
-TEST_F(BookmarkOrderUtilTest, ToOrderString_EmptyValue) {
-  std::string result = ToOrderString({});
-  EXPECT_EQ(result, "");
-}
-
-TEST_F(BookmarkOrderUtilTest, ToOrderString_SingleValue) {
-  std::string result = ToOrderString({1,2,3});
-  EXPECT_EQ(result, "1.2.3");
-}
-
-TEST_F(BookmarkOrderUtilTest, ToOrderString_WrongValue) {
-  std::string result = ToOrderString({-2,-3});
-  EXPECT_EQ(result, "");
-}
-
 TEST_F(BookmarkOrderUtilTest, CompareOrder) {
   EXPECT_FALSE(CompareOrder("", ""));
   EXPECT_TRUE(CompareOrder("1", "2"));

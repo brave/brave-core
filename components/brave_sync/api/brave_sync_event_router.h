@@ -13,13 +13,14 @@ class Profile;
 namespace extensions {
 namespace api {
 namespace brave_sync {
-  struct SyncRecord;
-  struct Config;
-  struct RecordAndExistingObject;
+struct SyncRecord;
+struct Config;
+struct RecordAndExistingObject;
 } // namespace brave_sync
 } // namespace api
 } // namespace extensions
 
+using extensions::api::brave_sync::RecordAndExistingObject;
 
 namespace brave_sync {
 using Uint8Array = std::vector<unsigned char>;
@@ -28,7 +29,7 @@ using Uint8Array = std::vector<unsigned char>;
 namespace extensions {
 
 class BraveSyncEventRouter {
-public:
+ public:
   BraveSyncEventRouter(Profile* profile);
   ~BraveSyncEventRouter();
 
@@ -44,7 +45,7 @@ public:
     const int max_records);
 
   void ResolveSyncRecords(const std::string &category_name,
-    const std::vector<extensions::api::brave_sync::RecordAndExistingObject>& records_and_existing_objects);
+    const std::vector<RecordAndExistingObject>& records_and_existing_objects);
 
   void SendSyncRecords(const std::string& category_name,
                        const std::vector<api::brave_sync::SyncRecord>& records);

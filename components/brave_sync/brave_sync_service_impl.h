@@ -18,12 +18,8 @@
 #include "extensions/browser/extension_registry_observer.h"
 
 namespace base {
-  class RepeatingTimer;
-  class SequencedTaskRunner;
-}
-
-namespace bookmarks {
-  class BookmarkNode;
+class RepeatingTimer;
+class SequencedTaskRunner;
 }
 
 using extensions::ExtensionRegistryObserver;
@@ -79,7 +75,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnSetSyncBrowsingHistory(const bool sync_browsing_history) override;
   void OnSetSyncSavedSiteSettings(const bool sync_saved_site_settings) override;
 
-  void GetSettingsAndDevices(const GetSettingsAndDevicesCallback& callback) override;
+  void GetSettingsAndDevices(
+      const GetSettingsAndDevicesCallback& callback) override;
 
   bool IsSyncConfigured();
   bool IsSyncInitialized();
@@ -131,7 +128,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnSyncDebug(const std::string& message) override;
   void OnSyncSetupError(const std::string& error) override;
   void OnGetInitData(const std::string& sync_version) override;
-  void OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) override;
+  void OnSaveInitData(const Uint8Array& seed,
+                      const Uint8Array& device_id) override;
   void OnSyncReady() override;
   void OnGetExistingObjects(const std::string& category_name,
     std::unique_ptr<RecordsList> records,
@@ -244,21 +242,22 @@ class BraveSyncServiceImpl : public BraveSyncService,
   // will be saved on GET_EXISTING_OBJECTS to be sure request was processed
   base::Time last_time_fetch_sent_;
 
-  // Map to keep tracking between request and response on query bookmarks order, access only in UI thread
-  // <prev_order, next_order> => <node_id, action>
+  // Map to keep tracking between request and response on query bookmarks order,
+  // access only in UI thread <prev_order, next_order> => <node_id, action>
   std::map<std::string, std::tuple<int64_t, int>> rr_map_;
 
-  const int ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS = 10;
-  int attempts_before_send_not_synced_records_ = ATTEMPTS_BEFORE_SENDING_NOT_SYNCED_RECORDS;
-
   std::unique_ptr<base::RepeatingTimer> timer_;
+
+  // send unsynced records in batches
   base::TimeDelta unsynced_send_interval_;
   uint64_t initial_sync_records_remaining_;
+
   bookmarks::BookmarkModel* bookmark_model_;
+
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
-    extension_registry_observer_;
+      extension_registry_observer_;
 
   base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceImpl);

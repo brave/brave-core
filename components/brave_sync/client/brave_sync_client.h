@@ -14,9 +14,9 @@
 #include "brave/components/brave_sync/client/client_data.h"
 
 namespace base {
-  class Time;
-  class ListValue;
-  class Value;
+class Time;
+class ListValue;
+class Value;
 }
 
 class Profile;
@@ -24,7 +24,7 @@ class Profile;
 namespace brave_sync {
 
 namespace jslib {
-  class SyncRecord;
+class SyncRecord;
 }
 
 typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
@@ -37,8 +37,7 @@ typedef std::vector<SyncRecordAndExistingPtr> SyncRecordAndExistingList;
 using Uint8Array = std::vector<unsigned char>;
 
 class SyncLibToBrowserHandler {
-public:
-
+ public:
   virtual ~SyncLibToBrowserHandler() = default;
 
   //SYNC_DEBUG
@@ -48,13 +47,14 @@ public:
   //GET_INIT_DATA
   virtual void OnGetInitData(const std::string &sync_version) = 0;
   //SAVE_INIT_DATA
-  virtual void OnSaveInitData(const Uint8Array &seed, const Uint8Array &device_id) = 0;
+  virtual void OnSaveInitData(const Uint8Array& seed,
+                              const Uint8Array& device_id) = 0;
   //SYNC_READY
   virtual void OnSyncReady() = 0;
   //GET_EXISTING_OBJECTS
   virtual void OnGetExistingObjects(const std::string &category_name,
-    std::unique_ptr<RecordsList> records,
-    const base::Time &last_record_time_stamp, const bool is_truncated) = 0;
+      std::unique_ptr<RecordsList> records,
+      const base::Time &last_record_time_stamp, const bool is_truncated) = 0;
   //RESOLVED_SYNC_RECORDS
   virtual void OnResolvedSyncRecords(const std::string &category_name,
     std::unique_ptr<RecordsList> records) = 0;
@@ -75,7 +75,7 @@ public:
 
 class BraveSyncClient : public KeyedService,
                         public base::SupportsWeakPtr<BraveSyncClient> {
-public:
+ public:
   ~BraveSyncClient() override = default;
 
   // BraveSync to Browser messages
@@ -99,8 +99,9 @@ public:
                                const client_data::Config& config,
                                const std::string& sync_words) = 0;
   virtual void SendFetchSyncRecords(
-    const std::vector<std::string> &category_names, const base::Time &startAt,
-    const int max_records) = 0;
+      const std::vector<std::string> &category_names,
+      const base::Time &startAt,
+      const int max_records) = 0;
   virtual void SendFetchSyncDevices() = 0;
   virtual void SendResolveSyncRecords(
       const std::string &category_name,
@@ -109,7 +110,8 @@ public:
     const RecordsList &records) = 0;
   virtual void SendDeleteSyncUser() = 0;
   virtual void SendDeleteSyncCategory(const std::string &category_name) = 0;
-  virtual void SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) = 0;
+  virtual void SendGetBookmarksBaseOrder(const std::string &device_id,
+                                         const std::string &platform) = 0;
   virtual void SendGetBookmarkOrder(const std::string& prev_rder,
                                     const std::string& next_order,
                                     const std::string& parent_order) = 0;

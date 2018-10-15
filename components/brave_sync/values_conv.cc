@@ -13,7 +13,6 @@
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "components/bookmarks/browser/bookmark_node.h"
-#include "brave/components/brave_sync/value_debug.h"
 
 namespace brave_sync {
 

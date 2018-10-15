@@ -27,12 +27,12 @@ class BraveSyncService : public KeyedService {
  public:
   BraveSyncService();
   ~BraveSyncService() override;
-  virtual void OnSetupSyncHaveCode(const std::string &sync_words,
-    const std::string &device_name) = 0;
+  virtual void OnSetupSyncHaveCode(const std::string& sync_words,
+    const std::string& device_name) = 0;
 
-  virtual void OnSetupSyncNewToSync(const std::string &device_name) = 0;
+  virtual void OnSetupSyncNewToSync(const std::string& device_name) = 0;
 
-  virtual void OnDeleteDevice(const std::string &device_id) = 0;
+  virtual void OnDeleteDevice(const std::string& device_id) = 0;
   virtual void OnResetSync() = 0;
 
   typedef base::Callback<void(std::unique_ptr<brave_sync::Settings>,
