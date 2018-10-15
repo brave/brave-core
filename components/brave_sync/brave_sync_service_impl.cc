@@ -293,12 +293,12 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
   }
 
   if (initializing_) {
-    TriggerOnLogMessage("currently initializing");
+    NotifyLogMessage("currently initializing");
     return;
   }
 
   if (IsSyncConfigured()) {
-    TriggerOnLogMessage("already configured");
+    NotifyLogMessage("already configured");
     return;
   }
 
@@ -318,12 +318,12 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(
   }
 
   if (initializing_) {
-    TriggerOnLogMessage("currently initializing");
+    NotifyLogMessage("currently initializing");
     return;
   }
 
   if (IsSyncConfigured()) {
-    TriggerOnLogMessage("already configured");
+    NotifyLogMessage("already configured");
     return;
   }
 
@@ -361,7 +361,7 @@ void BraveSyncServiceImpl::OnResetSync() {
       FROM_HERE,
       base::BindOnce(&OnResetSyncFileWork,
           sync_obj_map_.get()),
-      base::BindOnce(&BraveSyncServiceImpl::TriggerOnSyncStateChanged,
+      base::BindOnce(&BraveSyncServiceImpl::NotifySyncStateChanged,
           weak_ptr_factory_.GetWeakPtr()));
 
   sync_prefs_->Clear();
@@ -411,28 +411,32 @@ std::string BraveSyncServiceImpl::GetSeed() {
 void BraveSyncServiceImpl::OnSetSyncThisDevice(const bool sync_this_device) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncThisDevice(sync_this_device);
+  NotifySyncStateChanged();
 }
 
 void BraveSyncServiceImpl::OnSetSyncBookmarks(const bool sync_bookmarks) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
+  NotifySyncStateChanged();
 }
 
 void BraveSyncServiceImpl::OnSetSyncBrowsingHistory(
     const bool sync_browsing_history) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncHistoryEnabled(sync_browsing_history);
+  NotifySyncStateChanged();
 }
 
 void BraveSyncServiceImpl::OnSetSyncSavedSiteSettings(
     const bool sync_saved_site_settings) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncSiteSettingsEnabled(sync_saved_site_settings);
+  NotifySyncStateChanged();
 }
 
 // SyncLibToBrowserHandler overrides
 void BraveSyncServiceImpl::OnSyncDebug(const std::string& message) {
-  TriggerOnLogMessage(message);
+  NotifyLogMessage(message);
 }
 
 void BraveSyncServiceImpl::OnSyncSetupError(const std::string& error) {
@@ -518,7 +522,7 @@ void BraveSyncServiceImpl::OnSyncReady() {
   DCHECK(false == sync_initialized_);
   sync_initialized_ = true;
 
-  TriggerOnSyncStateChanged();
+  NotifySyncStateChanged();
 
   // fetch the records
   RequestSyncData();
@@ -606,7 +610,7 @@ void BraveSyncServiceImpl::OnResolvedPreferencesOnUIThread(
   if (this_device_deleted)
     OnResetSync();
   else
-    TriggerOnSyncStateChanged();
+    NotifySyncStateChanged();
 }
 
 const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
@@ -845,7 +849,7 @@ void BraveSyncServiceImpl::PopRRContext(const std::string& prev_order,
 }
 
 void BraveSyncServiceImpl::OnSyncWordsPrepared(const std::string& words) {
-  TriggerOnHaveSyncWords(words);
+  NotifyHaveSyncWords(words);
 }
 
 // Here we query sync lib for the records after initialization (or again later)
@@ -1314,19 +1318,19 @@ void BraveSyncServiceImpl::LoopProcThreadAligned() {
   RequestSyncData();
 }
 
-void BraveSyncServiceImpl::TriggerOnLogMessage(const std::string& message) {
+void BraveSyncServiceImpl::NotifyLogMessage(const std::string& message) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : observers_)
     observer.OnLogMessage(this, message);
 }
 
-void BraveSyncServiceImpl::TriggerOnSyncStateChanged() {
+void BraveSyncServiceImpl::NotifySyncStateChanged() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : observers_)
     observer.OnSyncStateChanged(this);
 }
 
-void BraveSyncServiceImpl::TriggerOnHaveSyncWords(
+void BraveSyncServiceImpl::NotifyHaveSyncWords(
     const std::string& sync_words) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : observers_)
