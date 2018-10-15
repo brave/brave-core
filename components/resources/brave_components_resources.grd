@@ -203,7 +203,7 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
 
       <!-- WebUI rewards resources -->
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Ads</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Ads</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.
@@ -221,7 +221,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2" desc="">Your monthly budget gets distributed across the sites you visit.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Please visit some sites</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total tips this month</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Please do some donations</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Have you tipped your favorite creator today?</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="">Add Funds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS" desc="">Manage Funds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_TOKENS" desc="">tokens</message>
@@ -265,7 +265,7 @@
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">Get paid to view relevant ads that respect your privacy.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Ads</message>
-      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Set a monthly budget and browse normally. Your favorite sites get paid automatically.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Support your favorite sites just by browsing – or tip a site any time you like.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
@@ -288,13 +288,13 @@
       <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
       <message name="IDS_BRAVE_UI_DND_CAPTCHA_TEXT_1" desc="">Drag and drop this logo onto the</message>
       <message name="IDS_BRAVE_UI_DND_CAPTCHA_TEXT_2" desc="">target</message>
-      <message name="IDS_BRAVE_UI_DONATION" desc="">Donation</message>
-      <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="">Donation amount</message>
+      <message name="IDS_BRAVE_UI_DONATION" desc="">Tip</message>
+      <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="">Tip amount</message>
       <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Donate to this site Monthl</message>
       <message name="IDS_BRAVE_UI_DONATE_NOW" desc="">Donate Now…</message>
       <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
-      <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Brave Ads</message>
+      <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Ads</message>
       <message name="IDS_BRAVE_UI_ENABLE_TIPS" desc="">Enable Tips</message>
       <message name="IDS_BRAVE_UI_EXCLUDE_SITE" desc="">Exclude this site</message>
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES" desc="">Total number of sites you excluded from Auto-Contribute:</message>
@@ -319,7 +319,7 @@
       <message name="IDS_BRAVE_UI_MONTH_OCT" desc="">October</message>
       <message name="IDS_BRAVE_UI_MONTH_SEP" desc="">September</message>
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">A free token grant is available.</message>
-      <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">New Token Grant</message>
+      <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">Free Token Grant</message>
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
       <message name="IDS_BRAVE_UI_NO_THANK_YOU" desc="">No, thank you</message>
       <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please</message>
@@ -332,7 +332,7 @@
       <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
       <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Auto-Contribute and the recurring donations, these payments are skipped for the period.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Auto-Contribute and your recurring tips, these payments are skipped for the period.</message>
       <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
       <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART" desc="">Ready to get started?</message>
@@ -353,10 +353,10 @@
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Your Attention Scor</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1" desc="">You’re currently supporting</message>
-      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT1" desc="">Do you know that you’ve been paying for the web content with your data for the digital ads? You didn’t have a voice in it and worse, you’re exposed to privacy and security risks.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT1" desc="">Do you know that you’ve been paying for web content with your data for digital ads? You didn’t have a voice in it and worse, you’re exposed to privacy and security risks.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT2" desc="">Brave Rewards allows you to take control back.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT3" desc="">How does it work?</message>
-      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT4" desc="">Your attention is valuable. Get paid for the ads. And pay directly the favorite content creators at your will. That way, they can grow and continue delivering the content that delights you.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT4" desc="">Your attention is valuable. Get paid for viewing privacy-respecting ads. And pay your favorite content creators directly. That way, they can grow and continue delivering content that delights you.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT1" desc="">Sadly, no tokens yet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT2" desc="">3 ways to fill your wallet:</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT3" desc="">You can add funds.</message>
@@ -376,7 +376,7 @@
       <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all {{numItems}} items</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_SITES" desc="">See all {{numSites}} sites</message>
-      <message name="IDS_BRAVE_UI_SEND_DONATION" desc="">Send my donation</message>
+      <message name="IDS_BRAVE_UI_SEND_DONATION" desc="">Send my Tip</message>
       <message name="IDS_BRAVE_UI_SEND_TIP" desc="">Send my Tip</message>
       <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
       <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
@@ -390,7 +390,7 @@
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
-      <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This turns on both Brave Ads and Auto-Contribute. You can turn either on or off at any time.</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
@@ -409,8 +409,8 @@
       <message name="IDS_BRAVE_UI_WELCOME_HEADER_TWO" desc="">Get ready to experience the next Internet.</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC" desc=""> </message>
-      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1" desc="">With conventional browsers, you pay to browse the web by viewing ads with your valuable attention, spending your valuable time downloading invasive ad technology, that transmits your valuable private data to advertisers — without your consent.</message>
-      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2" desc="">Well, you've come to the right place. Brave welcomes you to the new internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
+      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1" desc="">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmited your valuable private data to advertisers — without your consent.</message>
+      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2" desc="">Today, Brave welcomes you to the new Internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your wallet</message>
     </messages>
   </release>
