@@ -239,8 +239,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY" desc="">Enable ability to give tips on ‘Like’ posts</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_YT" desc="">YouTube</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1" desc="">Donate on the spot as you find gems.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">Enable Tips on Twitter, YouTube, and more, to give tips to posts you ‘Like’.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1" desc="">Tip on the spot as you find gems.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">Send Tips on Twitter, YouTube, and more, to reward posts you ‘Like’.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">{{balance}} BAT was recovered. Your wallet key has been verified and loaded successfully.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RESTORED" desc="">Wallet restored!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL" desc="">Please re-enter keys or try different keys.</message>
@@ -290,8 +290,8 @@
       <message name="IDS_BRAVE_UI_DND_CAPTCHA_TEXT_2" desc="">target</message>
       <message name="IDS_BRAVE_UI_DONATION" desc="">Tip</message>
       <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="">Tip amount</message>
-      <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Donate to this site Monthl</message>
-      <message name="IDS_BRAVE_UI_DONATE_NOW" desc="">Donate Now…</message>
+      <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Tip this site Monthly</message>
+      <message name="IDS_BRAVE_UI_DONATE_NOW" desc="">Send a Tip…</message>
       <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Ads</message>
@@ -346,12 +346,12 @@
       <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
       <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1" desc="">Backup your Wallet</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Below is the anonymized recovery key for your Brave wallet. Keep this key private and store it in a safe place. If you ever lose access to this device, you must have this key in order to restore your Brave wallet.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Keep this recovery key safe. You can always use this key to get your wallet back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your wallet. It's probably safest to write it down on a piece of paper, or wherever else you keep important info.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">Thanks for stopping by. We joined Brave’s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">Your donation is much appreciated and it encourages us to continue to improve our content.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">Your tip is much appreciated and it encourages us to continue to improve our content.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
-      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Your Attention Scor</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Attention Value</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1" desc="">You’re currently supporting</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT1" desc="">Do you know that you’ve been paying for web content with your data for digital ads? You didn’t have a voice in it and worse, you’re exposed to privacy and security risks.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT2" desc="">Brave Rewards allows you to take control back.</message>
@@ -360,8 +360,8 @@
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT1" desc="">Sadly, no tokens yet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT2" desc="">3 ways to fill your wallet:</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT3" desc="">You can add funds.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT4" desc="">You can earn tokens from Brave Ads.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT5" desc="">Occasionally, you'll be offered token grants from Brave. So keep an eye out for the offer!</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT4" desc="">You can earn tokens from viewing ads.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT5" desc="">Occasionally, you'll be offered free token grants from Brave. Be sure to keep an eye out for the alert!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT1" desc="">Get Rewarded for Browsing!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2" desc="">Earn tokens for your attention to ads and pay it forward to support content creators you value!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT1" desc="">Add, withdraw and manage funds at</message>
@@ -369,7 +369,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT3" desc="">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT4" desc="">here</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT1" desc="">Restore your Wallet</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Enter the recovery key to restore your Brave wallet. Note: Restoring a wallet replaces the current wallet. If you have an existing balance, you must back up the current wallet before restoring a different wallet.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Use your recovery key to restore your wallet. Restoring with a recovery key will replace your current wallet. Make sure you empty or back up your current wallet before restoring.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Enter your recovery key or</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_REWARDS_WHY" desc="">Why Brave Rewards?</message>
