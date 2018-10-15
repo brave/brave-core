@@ -25,6 +25,10 @@ class RewardsNotificationsServiceObserver : public base::CheckedObserver {
   virtual void OnGetNotification(
       RewardsNotificationsService* rewards_notifications_service,
       const RewardsNotificationsService::RewardsNotification& notification) {}
+  virtual void OnGetAllNotifications(
+      RewardsNotificationsService* rewards_notifications_service,
+      const RewardsNotificationsService::RewardsNotificationsList&
+          notifications_list) {}
 };
 
 }  // namespace brave_rewards

@@ -80,6 +80,34 @@
              "type": "integer"
            }
 	 ]
+      },
+      {
+        "name": "onGetAllNotifications",
+        "type": "function",
+        "description": "Fired when all notifications are retrieved",
+        "parameters": [
+           {
+             "name": "notifications",
+             "type": "array",
+             "items": {
+	       "type": "object",
+	       "properties": {
+	         "id": {
+		   "type": "integer",
+		   "description": "The rewards notification ID"
+		 },
+	         "type": {
+		   "type": "integer",
+		   "description": "The rewards notification type"
+		 },
+	         "timestamp": {
+		   "type": "integer",
+		   "description": "The rewards notification creation timestamp"
+		 }
+	       }
+             }
+           }
+	 ]
       }
     ],
     "functions": [
@@ -129,6 +157,12 @@
             "type": "integer"
           }
         ]
+      },
+      {
+        "name": "getAllNotifications",
+        "type": "function",
+        "description": "Retrieves all existing rewards notifications",
+        "parameters": []
       }
     ]
   }

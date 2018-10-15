@@ -76,5 +76,18 @@ ExtensionFunction::ResponseAction RewardsNotificationsGetNotificationFunction::R
   return RespondNow(NoArguments());
 }
 
+RewardsNotificationsGetAllNotificationsFunction::~RewardsNotificationsGetAllNotificationsFunction() {
+}
+
+ExtensionFunction::ResponseAction RewardsNotificationsGetAllNotificationsFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsNotificationsService* rewards_notifications_service =
+      RewardsNotificationsServiceFactory::GetForProfile(profile);
+  if (rewards_notifications_service) {
+    rewards_notifications_service->GetAllNotifications();
+  }
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions

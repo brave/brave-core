@@ -56,6 +56,14 @@ void RewardsNotificationsServiceImpl::GetNotification(RewardsNotificationID id) 
   OnGetNotification(rewards_notifications_[id]);
 }
 
+void RewardsNotificationsServiceImpl::GetAllNotifications() {
+  RewardsNotificationsList rewards_notifications_list;
+  for (auto& item : rewards_notifications_) {
+    rewards_notifications_list.push_back(item.second);
+  }
+  OnGetAllNotifications(rewards_notifications_list);
+}
+
 RewardsNotificationsServiceImpl::RewardsNotificationID
 RewardsNotificationsServiceImpl::GenerateRewardsNotificationID() const {
   return base::RandUint64();
@@ -149,6 +157,38 @@ void RewardsNotificationsServiceImpl::TriggerOnGetNotification(
   }
 }
 
+void RewardsNotificationsServiceImpl::TriggerOnGetAllNotifications(
+    const RewardsNotificationsList& rewards_notifications_list) {
+  for (auto& observer : observers_)
+    observer.OnGetAllNotifications(this, rewards_notifications_list);
+
+  extensions::EventRouter* event_router =
+      extensions::EventRouter::Get(profile_);
+  if (event_router) {
+    std::vector<extensions::api::rewards_notifications::OnGetAllNotifications::
+                    NotificationsType>
+        notifications_list;
+    for (auto& item : rewards_notifications_list) {
+      notifications_list.push_back(
+          extensions::api::rewards_notifications::OnGetAllNotifications::
+              NotificationsType());
+      auto& notifications_type = notifications_list[notifications_list.size() - 1];
+      notifications_type.id = item.id_;
+      notifications_type.type = item.type_;
+      notifications_type.timestamp = item.timestamp_;
+    }
+    std::unique_ptr<base::ListValue> args(
+        extensions::api::rewards_notifications::OnGetAllNotifications::Create(
+            notifications_list)
+            .release());
+    std::unique_ptr<extensions::Event> event(new extensions::Event(
+        extensions::events::BRAVE_REWARDS_GET_ALL_NOTIFICATIONS,
+        extensions::api::rewards_notifications::OnGetAllNotifications::kEventName,
+        std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+  }
+}
+
 void RewardsNotificationsServiceImpl::OnNotificationAdded(
     const RewardsNotification& rewards_notification,
     const RewardsNotificationArgs& args) {
@@ -167,6 +207,11 @@ void RewardsNotificationsServiceImpl::OnAllNotificationsDeleted() {
 void RewardsNotificationsServiceImpl::OnGetNotification(
     const RewardsNotification& rewards_notification) {
   TriggerOnGetNotification(rewards_notification);
+}
+
+void RewardsNotificationsServiceImpl::OnGetAllNotifications(
+    const RewardsNotificationsList& rewards_notifications_list) {
+  TriggerOnGetAllNotifications(rewards_notifications_list);
 }
 
 }  // namespace brave_rewards

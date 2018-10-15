@@ -50,6 +50,16 @@ class RewardsNotificationsGetNotificationFunction : public UIThreadExtensionFunc
   ResponseAction Run() override;
 };
 
+class RewardsNotificationsGetAllNotificationsFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("rewardsNotifications.getAllNotifications", UNKNOWN)
+
+ protected:
+  ~RewardsNotificationsGetAllNotificationsFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

@@ -103,6 +103,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsNotificationsService* rewards_notifications_service,
       const brave_rewards::RewardsNotificationsService::RewardsNotification& notification)
       override;
+  void OnGetAllNotifications(
+      brave_rewards::RewardsNotificationsService* rewards_notifications_service,
+      const brave_rewards::RewardsNotificationsService::
+          RewardsNotificationsList& notifications_list) override;
 
   brave_rewards::RewardsNotificationsService* rewards_notifications_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
@@ -442,6 +446,12 @@ void RewardsDOMHandler::OnGetNotification(
     brave_rewards::RewardsNotificationsService* rewards_notifications_service,
     const brave_rewards::RewardsNotificationsService::RewardsNotification&
         notification) {
+}
+
+void RewardsDOMHandler::OnGetAllNotifications(
+    brave_rewards::RewardsNotificationsService* rewards_notifications_service,
+    const brave_rewards::RewardsNotificationsService::RewardsNotificationsList&
+        notifications_list) {
 }
 
 void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {

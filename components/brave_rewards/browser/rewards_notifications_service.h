@@ -45,11 +45,14 @@ class RewardsNotificationsService : public KeyedService {
     RewardsNotificationTimestamp timestamp_;
   };
 
+  typedef std::vector<RewardsNotification> RewardsNotificationsList;
+
   virtual void AddNotification(RewardsNotificationType type,
                                RewardsNotificationArgs args) = 0;
   virtual void DeleteNotification(RewardsNotificationID id) = 0;
   virtual void DeleteAllNotifications() = 0;
   virtual void GetNotification(RewardsNotificationID id) = 0;
+  virtual void GetAllNotifications() = 0;
 
   void AddObserver(RewardsNotificationsServiceObserver* observer);
   void RemoveObserver(RewardsNotificationsServiceObserver* observer);

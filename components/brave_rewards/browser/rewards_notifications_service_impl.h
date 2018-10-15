@@ -30,6 +30,7 @@ class RewardsNotificationsServiceImpl
   void DeleteNotification(RewardsNotificationID id) override;
   void DeleteAllNotifications() override;
   void GetNotification(RewardsNotificationID id) override;
+  void GetAllNotifications() override;
 
 private:
  void TriggerOnNotificationAdded(
@@ -39,12 +40,16 @@ private:
      const RewardsNotification& rewards_notification);
  void TriggerOnAllNotificationsDeleted();
  void TriggerOnGetNotification(const RewardsNotification& rewards_notification);
+ void TriggerOnGetAllNotifications(
+     const RewardsNotificationsList& rewards_notifications_list);
 
  void OnNotificationAdded(const RewardsNotification& rewards_notification,
                           const RewardsNotificationArgs& args);
  void OnNotificationDeleted(const RewardsNotification& rewards_notification);
  void OnAllNotificationsDeleted();
  void OnGetNotification(const RewardsNotification& rewards_notification);
+ void OnGetAllNotifications(
+     const RewardsNotificationsList& rewards_notifications_list);
 
  RewardsNotificationID GenerateRewardsNotificationID() const;
  RewardsNotificationTimestamp GenerateRewardsNotificationTimestamp() const;
