@@ -44,7 +44,7 @@ TEST_F(BraveHTTPSENetworkDelegateHelperTest, AlreadySetNewURLNoOp) {
   brave::ResponseCallback callback;
   GURL new_url;
   int ret =
-    OnBeforeURLRequest_HttpsePreFileWork(request.get(), &new_url, callback,
+    OnBeforeURLRequest_HttpsePreFileWork(&new_url, callback,
         brave_request_info);
   EXPECT_TRUE(new_url.is_empty());
   EXPECT_EQ(ret, net::OK);

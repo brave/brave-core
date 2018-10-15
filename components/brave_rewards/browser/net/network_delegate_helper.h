@@ -7,16 +7,9 @@
 
 #include "brave/browser/net/url_context.h"
 
-class GURL;
-
-namespace net {
-class URLRequest;
-}
-
 namespace brave_rewards {
 
 int OnBeforeURLRequest(
-    net::URLRequest* request,
     GURL* new_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx);

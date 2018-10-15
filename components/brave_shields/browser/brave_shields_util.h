@@ -28,7 +28,8 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
     ContentSettingsType setting_type,
     const std::string& resource_identifier);
 
-void DispatchBlockedEventFromIO(net::URLRequest* request,
+void DispatchBlockedEventFromIO(const GURL &request_url, int render_frame_id,
+    int render_process_id, int frame_tree_node_id,
     const std::string& block_type);
 
 void GetRenderFrameInfo(net::URLRequest* request,

@@ -7,16 +7,9 @@
 
 #include "brave/browser/net/url_context.h"
 
-struct BraveRequestInfo;
-
-namespace net {
-class URLRequest;
-}
-
 namespace brave {
 
-int OnBeforeURLRequest_AdBlockTPWork(
-    net::URLRequest* request,
+int OnBeforeURLRequest_AdBlockTPPreWork(
     GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);

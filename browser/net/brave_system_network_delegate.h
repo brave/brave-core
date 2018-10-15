@@ -7,7 +7,6 @@
 
 #include "brave/browser/net/brave_network_delegate_base.h"
 
-
 class BraveSystemNetworkDelegate : public BraveNetworkDelegateBase {
  public:
   BraveSystemNetworkDelegate(extensions::EventRouterForwarder* event_router);
