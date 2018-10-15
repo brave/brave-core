@@ -3,32 +3,56 @@
  * v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Clock from './clock'
-import { FeatureBlock } from './featureBlock'
-import { Page, PageWrapper } from './page'
-import PageHeader from './pageHeader'
-import { StatsContainer, StatsItem } from './stats'
 import {
-  NewTabHeading,
+  Modal,
+  LimitedBounds,
+  HeadingText,
   Paragraph,
-  LinkText,
-  EmphasizedText,
-  LabelledText,
-  SmallText
-} from './text'
+  Footer
+} from './modal'
+import { Page, PageWrapper } from './page'
+import { Grid, Grid2Columns, HeaderGrid, ButtonGroup } from './grid'
+import {
+  Box,
+  Content,
+  HeaderBox,
+  DuckDuckGoImage,
+  TorLockImage,
+  PrivateImage,
+  TorImage,
+  SubTitle,
+  Title,
+  Text,
+  Separator,
+  PurpleButton,
+  FakeButton,
+  Link
+} from './box'
 
 export {
-  Clock,
-  FeatureBlock,
+  Modal,
+  LimitedBounds,
+  HeadingText,
+  Paragraph,
+  Footer,
   Page,
   PageWrapper,
-  PageHeader,
-  StatsContainer,
-  StatsItem,
-  NewTabHeading,
-  Paragraph,
-  LinkText,
-  EmphasizedText,
-  LabelledText,
-  SmallText
- }
+  Grid,
+  Grid2Columns,
+  HeaderGrid,
+  ButtonGroup,
+  Box,
+  Content,
+  HeaderBox,
+  DuckDuckGoImage,
+  TorLockImage,
+  PrivateImage,
+  TorImage,
+  SubTitle,
+  Title,
+  Text,
+  Separator,
+  FakeButton,
+  PurpleButton,
+  Link
+}

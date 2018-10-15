@@ -3,29 +3,22 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from '../../../theme'
-import palette from '../../../theme/palette'
 
-export const Page = styled<{}, 'div'>('div')`
+interface PageProps {
+  isPrivate: boolean
+}
+
+export const Page = styled<PageProps, 'div'>('div')`
+  box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  background: linear-gradient(#4b3c6e, #000);
+  background: linear-gradient(${p => p.isPrivate ? '#381980' : '#5F0C8A'}, #0C041E);
   min-height: 100%;
   height: initial;
-  padding: 40px 60px;
 `
 
 export const PageWrapper = styled<{}, 'main'>('main')`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-
-  h1 {
-    max-width: 800px;
-    font-size: 26px;
-    font-family: ${p => p.theme.fontFamily.heading};
-    color: ${palette.white};
-    letter-spacing: -0.4px;
-    margin: 20px 0 40px;
-    align-self: flex-start;
-  }
+  box-sizing: border-box;
+  padding: 85px 15px;
+  max-width: 950px;
+  margin: 0 auto;
 `
