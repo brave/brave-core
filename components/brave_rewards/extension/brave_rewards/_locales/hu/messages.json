@@ -1,90 +1,90 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Brave jutalmak",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Kezdjen pénzt keresni most!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Csatlakozási jutalmak",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Most már tokeneket szerezhet az adatvédelemre fókuszáló hirdetések megtekintésével. Hozzájárulása változatlan marad.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Szerezzen tokeneket reklámok megtekintésével és a kedvenc tartalomgyártóinak történő előrefizetéssel.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Nézze meg hogy mit fejlesztettek",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Tudjon meg többet",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "A Brave fizetések most már Brave jutalmak, sok fejlesztéssel.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Hamarosan belevág web böngészésének egy nagyobb bátor módjába.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Az ön tárcája",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "ADományok",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "bekapcsolva",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Ellenőrzött Brave tartalomszolgáltató",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Havi adományozás ennek a honlapnak",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Adományozzon most",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Borravalók engedélyezése",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "a következő részére:",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Tranzakciók kategóriánként",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Április",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Augusztus",
     "description": ""
   },
   "monthDec": {
@@ -92,27 +92,27 @@
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Február",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Január",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Július",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Június",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Március",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Május",
     "description": ""
   },
   "monthNov": {
@@ -120,43 +120,69 @@
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Október",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Szeptember",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Token megadása",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Jövedelem Brave hirdetésekből",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Automatikus hozzájárulás",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Egyszeri adományok és borravalók",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Összesen",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "lejárat dátuma",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Ismétlődő adományok",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Kikapcsolva",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

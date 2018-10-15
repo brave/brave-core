@@ -4,159 +4,185 @@
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "지금 벌기 시작하세요!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Rewards 합치기",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "개인정보 보호 특화 광고인 Brave Ads를 시청하셔서 토큰을 받으실 수 있습니다. 귀하의 기여분은 동일하게 유지됩니다.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "광고를 시청해서 토큰을 벌어 좋아하는 콘텐츠 제작자에게 보내세요.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "무엇이 개선되었는지 확인하기 ",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "더 자세한 정보 ",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave Payments가 많은 부분 업그레이드되어 Brave Rewards가 되었습니다.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "귀하는 아주 Brave한 방식으로 웹사이트를 브라우징 하려고 하고 계십니다.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "귀하의 지갑",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "그랜트",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "켜기",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave가 인증한 출판자 ",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "이 사이트에 달마다 기부",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "지금 기부하기...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "팁 활성화",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "위해서",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "카테고리별 거래 ",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "4월 ",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "8월 ",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "12월",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "2월 ",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "1월",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "7월",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "6월",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "3월",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "5월",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "11월",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "10월 ",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "9월",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "토큰 그랜트",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Brave 광고 시청에서 나온 수익",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "자동 기부",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "1회 기부/팁 ",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "전체 ",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "만료됩니다 ",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "기부 반복하기 ",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "끄기",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

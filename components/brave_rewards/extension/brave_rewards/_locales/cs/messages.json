@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Odměny Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Začněte vydělávat nyní! ",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Přidat se k Rewards ",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Za sledování reklam společnosti Brave zaměřených na soukromí můžete získat tokeny. Váš příspěvek zůstane stejný. ",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Získávejte tokeny za sledování reklam a posílejte je jako příspěvek tvůrcům vašeho oblíbeného obsahu. ",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Podívejte se, co jsme vylepšili ",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Zjistit více",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave Payments jsou nyní Brave Rewards s mnoha vylepšeními. ",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Chystáte se začít Bravurní způsob prohlížení webu. ",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Vaše peněženka",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Granty",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "zapnuto ",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Vydavatel ověřený společností Brave ",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Přispívat na tyto stránky každý měsíc",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Přispět nyní...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Povolit dary ",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "pro",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Transakce podle kategorie",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Duben ",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Srpen ",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Prosinec",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Únor",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Leden",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Červenec ",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Červen",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Březen",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Květen ",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Listopad",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Říjen",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Září",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Povolení tokenů ",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Výnosy z reklam Brave ",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Automaticky přispívat ",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Jednorázové příspěvky/dary",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Celkem ",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "platnost vyprší ",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Opakované příspěvky",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Vypnuto ",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

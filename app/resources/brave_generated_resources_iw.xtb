@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
+<translation id="3333887201479867589">תגמולי Brave</translation>
+<translation id="7942180974165298215">Brave חוסם מודעות</translation>
+<translation id="7450557937477381864">סגירת Chrome</translation>
+<translation id="7008934821596358692">על מנת לסיים את הייבוא, סגרו את כל חלונות הדפדפן.</translation>
+<translation id="7753103220327065417">סגירת Brave</translation>
+<translation id="5588481533147090393">כדי לסיים את הייבוא, סגרו את כל חלונות Brave.</translation>
+<translation id="6447842834002726250">עוגיות</translation>
+<translation id="4983925687993168579">סטטיסטיקות</translation>
+<translation id="9173846700806833701">Widevine איננו מותקן</translation>
+<translation id="2433569048491784801">Widevine איננו מותקן.</translation>
+<translation id="3699882589215410581">התקינו והפעילו Widevine</translation>
+<translation id="8410111618231938546">Google Widevine הוא מקטע קוד של ניהול זכויות דיגיטליות (DRM), שאיננו שייך לנו ב-Brave Software ואין באפשרותנו לפקח עליו. הקוד של Google Widevine הנטען ישירות מהשרתים של Google, ולא מהשרתים שלנו. הוא נטען רק בעת הפעלת אפשרות זו. אנחנו לא מעודדים שימוש ב-DRM, אך מכבדים את הבחירה של המשתמש ומודעים לכך שחלק מהמשתמשים של Brave מעדיפים להשתמש בשירותים אשר דורשים זאת.
+
+בעת התקנת התוסף הזה, אתם מסכימים לתנאי השימוש של Google Widevine. אתם מסכימים גם ש-Brave אינם אחראים לכל נזקים או הפסדים בהקשר השימוש שלכם ב-Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">מיובא מ-Brave</translation>
+<translation id="453977518730680921">ניגון אוטומטי של מדיה</translation>
+<translation id="410351446219883937">הפעלה אוטומטית</translation>
+<translation id="2240268017737062801">שאלו אותי כאשר אתר רוצה לנגן מדיה בצורה אוטומטית</translation>
+<translation id="3371702087847741961">שאל כאשר אתר רוצה להפעיל מדיה באופן אוטומטי (מומלץ)</translation>
+<translation id="3218385319396786393">ההפעלה האוטומטית נחסמה בדף זה</translation>
+<translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
+<translation id="2044383478723007273">צבעי Brave</translation>
+<translation id="5341901626640816374">שימוש בשורת כתובת רחבה</translation>
+<translation id="7965178729203412357">זהות Tor חדשה</translation>
+<translation id="8784924142044142231">יציאה מ-Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">פתחו חלון Tor</translation>
+<translation id="3155170474926428993">דפדפן Tor</translation>
+<translation id="7372129767729198111">ברירות מחדל של מגני Brave</translation>
+<translation id="8029018702721078742">בקרת פרסומות</translation>
+<translation id="3544462288910360084">בקרת עוגיות</translation>
+<translation id="8919235146866304148">הגנת טביעת אצבעות</translation>
+<translation id="520895744850022668">HTTPS בכל מקום</translation>
+<translation id="5259716416204774556">חסימת תסריטים</translation>
+<translation id="6067014455220527258">חסימת פרסומות</translation>
+<translation id="6985711843506827936">אפשר פרסומות ומעקב</translation>
+<translation id="6132506775968708399">חסימת כל קבצי עוגיות צד שלישי</translation>
+<translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
+<translation id="6883611015375728278">חסימת כל העוגיות</translation>
+<translation id="1442559343076146186">חוסם צד שלישי לטביעת אצבעות</translation>
+<translation id="8034285923190068220">אפשרו טביעות אצבע</translation>
+<translation id="4540198958192073185">חסימת כל טביעות האצבע</translation>
+<translation id="8942080017911802454">WebRTC IP מדיניות תפעול</translation>
+<translation id="6165508094623778733">ספרו לי עוד</translation>
+<translation id="8798099450830957504">ברירת מחדל</translation>
+<translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
+<translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
+<translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 </translationbundle>

@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Nagrody Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Zacznij zarabiać teraz!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Dołącz nagrody",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Teraz możesz otrzymywać tokeny za oglądanie reklam Brave szanujących prywatność. Twoja pomoc się nie zmienia.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Zarabiaj tokeny za oglądanie reklam i płać nimi ulubionym twórcom treści",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Sprawdź, co zostało poprawione",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Dowiedz się więcej",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "System Brave Payments to teraz Brave Rewards, z wieloma uaktualnieniami.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Za chwilę zaczniesz przeglądać Internet w bardzo odważny sposób.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Twój portfel",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Granty",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "wł.",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Zweryfikowany wydawca przeglądarki Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Przekaż darowiznę tej witrynie co miesiąc",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Złóż teraz darowiznę...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Włącz napiwki",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "dla",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Transakcje według kategorii",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Kwiecień",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Sierpień",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Grudzień",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Luty",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Styczeń",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Lipiec",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Czerwiec",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Marzec",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Maj",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Listopad",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Październik",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Wrzesień",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Subwencja tokenów",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Zarobki z reklam Brave",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Dołóż się automatycznie",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Jednorazowe darowizny/napiwki",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Suma",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "wygasa dnia",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Okresowe darowizny",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Wył.",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

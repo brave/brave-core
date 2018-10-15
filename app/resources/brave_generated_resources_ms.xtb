@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
+<translation id="3333887201479867589">Ganjaran Brave</translation>
+<translation id="7942180974165298215">Sekatan Iklan Brave</translation>
+<translation id="7450557937477381864">Tutup Chrome</translation>
+<translation id="7008934821596358692">Untuk melengkapkan pengimportan, tutup semua tetingkap Chrome.</translation>
+<translation id="7753103220327065417">Tutup Brave</translation>
+<translation id="5588481533147090393">Untuk menyiapkan pengimportan, tutup semua tetingkap Brave.</translation>
+<translation id="6447842834002726250">Kuki</translation>
+<translation id="4983925687993168579">Stat</translation>
+<translation id="9173846700806833701">Widevine tidak dipasang</translation>
+<translation id="2433569048491784801">Widevine tidak dipasang.</translation>
+<translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
+<translation id="8410111618231938546">Google Widevine ialah secebis kod Pengurusan Hak Digital (DRM) yang kami di Perisian Brave tidak memilikinya dan tidak boleh memeriksanya. The Kod Google Widevine dimuatkan dari pelayan Google, bukan dari pelayan kami. Ia dimuatkan hanya apabila anda mendayakan pilihan ini. Kami tidak menggalakkan anda untuk menggunakan DRM, namun kami menghormati pilihan pengguna dan mengakui bahawa sebahagian pengguna Brave ingin menggunakan perkhidmatan yang memerlukannya.
+
+Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevine. Anda bersetuju bahawa Brave tidak bertanggungjawab terhadap sebarang kerosakan atau ganti rugi berhubung dengan penggunaan Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Diimport Daripada Brave</translation>
+<translation id="453977518730680921">Automain media</translation>
+<translation id="410351446219883937">Main automatik</translation>
+<translation id="2240268017737062801">Tanya bila laman mahu memain automatik media</translation>
+<translation id="3371702087847741961">Tanya apabila laman mahu memainkan media (disyorkan)</translation>
+<translation id="3218385319396786393">Main automatik telah disekat di halaman ini</translation>
+<translation id="4150684676757176434">Teruskan menyekat autoplay</translation>
+<translation id="2044383478723007273">Warna-warna Brave</translation>
+<translation id="5341901626640816374">Gunakan bar lokasi yang lebar</translation>
+<translation id="7965178729203412357">Identiti Tor Baharu</translation>
+<translation id="8784924142044142231">Keluar Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Buka Tetingkap Tor</translation>
+<translation id="3155170474926428993">Pelancar Tor</translation>
+<translation id="7372129767729198111">Perisai asal Brave</translation>
+<translation id="8029018702721078742">Kawalan Iklan</translation>
+<translation id="3544462288910360084">Kawalan Kuki</translation>
+<translation id="8919235146866304148">Perlindungan cap jari</translation>
+<translation id="520895744850022668">HTTPS Di mana-mana</translation>
+<translation id="5259716416204774556">Sekatan skrip</translation>
+<translation id="6067014455220527258">Sekat iklan</translation>
+<translation id="6985711843506827936">Benarkan iklan dan penjejakan</translation>
+<translation id="6132506775968708399">Sekat kuki pihak ketiga</translation>
+<translation id="5657156137487675418">Benarkan semua kuki</translation>
+<translation id="6883611015375728278">Sekat semua kuki</translation>
+<translation id="1442559343076146186">Sekat pencapjarian pihak ke-3</translation>
+<translation id="8034285923190068220">Benarkan cap jari</translation>
+<translation id="4540198958192073185">Sekat semua cap jari</translation>
+<translation id="8942080017911802454">Dasar Pengendalian IP WebRTC</translation>
+<translation id="6165508094623778733">Ketahui lebih lanjut</translation>
+<translation id="8798099450830957504">Lalai</translation>
+<translation id="1822560017823072927">Antara muka awam dan peribadi yang asal</translation>
+<translation id="5825943197137337319">Antara muka awam asal sahaja</translation>
+<translation id="1689062823386843231">Lumpuhkan UDP bukan proksi</translation>
 </translationbundle>
