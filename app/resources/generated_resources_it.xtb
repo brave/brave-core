@@ -839,6 +839,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6845038076637626672">Apri ingrandita</translation>
 <translation id="6860427144121307915">Apri in una scheda</translation>
 <translation id="3074037959626057712">Hai eseguito l'accesso e attivato la sincronizzazione</translation>
+<translation id="1231733316453485619">Attivare la sincronizzazione?</translation>
 <translation id="9125982323641182972">Tutta l'intelligenza Brave Software in Brave</translation>
 <translation id="7988117629517051942">Utilizza il meglio dell'intelligenza di Brave Software</translation>
 <translation id="5596627076506792578">Altre opzioni</translation>
@@ -1289,6 +1290,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="9220525904950070496">Rimuovi account</translation>
 <translation id="3340978935015468852">impostazioni</translation>
 <translation id="5704875434923668958">Sincronizzazione con</translation>
+<translation id="6257602895346497974">Attiva la sincronizzazione...</translation>
+<translation id="8618141719844947886">Sincronizzazione non attiva</translation>
 <translation id="5781092003150880845">Sincronizza come <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sincronizza con il tuo account</translation>
 <translation id="2538361623464451692">Sincronizzazione disattivata</translation>
@@ -1622,11 +1625,17 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6122875415561139701">Scrittura non consentita su: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Configurazione Bluetooth controllata da <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Intervallo di tempo</translation>
+<translation id="3958004920128806270"><ph name="BEGIN_LINK"/>Esci<ph name="END_LINK"/> per cancellare i dati di navigazione soltanto da questo dispositivo e non dal tuo Account Brave Software.</translation>
+<translation id="4445433576366924090"><ph name="BEGIN_LINK"/>Accedi alle impostazioni di sincronizzazione<ph name="END_LINK"/> per cancellare i dati di navigazione da tutti i dispositivi sincronizzati e dal tuo Account Brave Software.</translation>
+<translation id="563489167344291753"><ph name="BEGIN_LINK"/>Inserisci la passphrase<ph name="END_LINK"/> per cancellare i dati di navigazione da tutti i dispositivi sincronizzati e dal tuo Account Brave Software.</translation>
+<translation id="3895809404273995788"><ph name="BEGIN_LINK"/>Accedi<ph name="END_LINK"/> per cancellare i dati di navigazione da tutti i dispositivi sincronizzati e dal tuo Account Brave Software.</translation>
 <translation id="2496180316473517155">Cronologia di navigazione</translation>
 <translation id="8662811608048051533">Vieni scollegato dalla maggior parte dei siti.</translation>
+<translation id="4650925988509114690">Uscirai dalla maggior parte dei siti, ma non dal tuo Account Brave Software, quindi i dati sincronizzati possono essere cancellati.</translation>
 <translation id="2017836877785168846">Consente di cancellare la cronologia e i completamenti automatici nella barra degli indirizzi.</translation>
 <translation id="8096327394278038498">Consente di cancellare la cronologia e i completamenti automatici nella barra degli indirizzi. Il tuo account Brave Software potrebbe avere altri tipi di cronologia di navigazione all'indirizzo <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Consente di cancellare la cronologia da tutti i dispositivi su cui hai eseguito l'accesso. Il tuo account Brave Software potrebbe avere altri tipi di cronologia di navigazione all'indirizzo <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">La cronologia viene cancellata da questo dispositivo.</translation>
 <translation id="7127980134843952133">Cronologia download</translation>
 <translation id="4699172675775169585">Immagini e file memorizzati nella cache</translation>
 <translation id="1274997165432133392">Cookie e altri dati dei siti</translation>

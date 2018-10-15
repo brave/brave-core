@@ -839,6 +839,7 @@
 <translation id="6845038076637626672">以最大化模式打开</translation>
 <translation id="6860427144121307915">在标签页中打开</translation>
 <translation id="3074037959626057712">您已登录并已启用同步</translation>
+<translation id="1231733316453485619">开启同步功能？</translation>
 <translation id="9125982323641182972">在 Brave 中畅享 Brave Software 的智能技术</translation>
 <translation id="7988117629517051942">畅享 Brave Software 的更多智能技术</translation>
 <translation id="5596627076506792578">更多选项</translation>
@@ -1289,6 +1290,8 @@
 <translation id="9220525904950070496">移除帐号</translation>
 <translation id="3340978935015468852">设置</translation>
 <translation id="5704875434923668958">同步到</translation>
+<translation id="6257602895346497974">开启同步功能…</translation>
+<translation id="8618141719844947886">未同步</translation>
 <translation id="5781092003150880845">以<ph name="ACCOUNT_FULL_NAME"/>的身份同步</translation>
 <translation id="1372841398847029212">同步到您的帐号中</translation>
 <translation id="2538361623464451692">同步功能已停用</translation>
@@ -1622,11 +1625,17 @@
 <translation id="6122875415561139701">禁止在“<ph name="DEVICE_NAME"/>”上执行写入操作。</translation>
 <translation id="439266289085815679">蓝牙配置由 <ph name="USER_EMAIL"/> 控制。</translation>
 <translation id="784934925303690534">时间范围</translation>
+<translation id="3958004920128806270">要想仅清除此设备中的浏览数据而保留您的 Brave Software 帐号中的浏览数据，请<ph name="BEGIN_LINK"/>退出<ph name="END_LINK"/>。</translation>
+<translation id="4445433576366924090">要想清除您的所有已同步设备中的浏览数据以及您的 Brave Software 帐号中的浏览数据，请<ph name="BEGIN_LINK"/>访问同步设置<ph name="END_LINK"/>。</translation>
+<translation id="563489167344291753">要想清除您的所有已同步设备中的浏览数据以及您的 Brave Software 帐号中的浏览数据，请<ph name="BEGIN_LINK"/>输入您的密码<ph name="END_LINK"/>。</translation>
+<translation id="3895809404273995788">要想清除您的所有已同步设备中的浏览数据以及您的 Brave Software 帐号中的浏览数据，请<ph name="BEGIN_LINK"/>登录<ph name="END_LINK"/>。</translation>
 <translation id="2496180316473517155">浏览记录</translation>
 <translation id="8662811608048051533">您会从大多数网站退出。</translation>
+<translation id="4650925988509114690">会致使您从大多数网站退出。但您的 Brave Software 帐号仍会保持登录状态，以便清除您的已同步数据。</translation>
 <translation id="2017836877785168846">清除历史记录和地址栏中的自动填充项。</translation>
 <translation id="8096327394278038498">清除历史记录和地址栏中的自动填充项。您的 Brave Software 帐号在 <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> 上可能有其他形式的浏览记录。</translation>
 <translation id="8122693181154564064">清除所有登录过的设备上的历史记录。您的 Brave Software 帐号在 <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> 上可能有其他形式的浏览记录。</translation>
+<translation id="6148716538476291841">清除此设备中的历史记录。</translation>
 <translation id="7127980134843952133">下载记录</translation>
 <translation id="4699172675775169585">缓存的图片和文件</translation>
 <translation id="1274997165432133392">Cookie 及其他网站数据</translation>

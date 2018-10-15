@@ -840,6 +840,7 @@
 <translation id="6845038076637626672">Άνοιγμα μεγιστοποιημένης εφαρμογής</translation>
 <translation id="6860427144121307915">Άνοιγμα σε καρτέλα</translation>
 <translation id="3074037959626057712">Έχετε συνδεθεί και ενεργοποιήσει τον συγχρονισμό</translation>
+<translation id="1231733316453485619">Ενεργοποίηση συγχρονισμού;</translation>
 <translation id="9125982323641182972">Έξυπνες λειτουργίες Brave Software στο Brave</translation>
 <translation id="7988117629517051942">Περισσότερες έξυπνες λειτουργίες Brave Software</translation>
 <translation id="5596627076506792578">Περισσότερες επιλογές</translation>
@@ -1290,6 +1291,8 @@
 <translation id="9220525904950070496">Κατάργηση λογαριασμού</translation>
 <translation id="3340978935015468852">ρυθμίσεις</translation>
 <translation id="5704875434923668958">Συγχρονισμός με</translation>
+<translation id="6257602895346497974">Ενεργοποίηση συγχρονισμού…</translation>
+<translation id="8618141719844947886">Δεν συγχρονίζεται</translation>
 <translation id="5781092003150880845">Συγχρονισμός ως <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Συγχρονισμός με τον λογαριασμό σας</translation>
 <translation id="2538361623464451692">Ο συγχρονισμός είναι απενεργοποιημένος</translation>
@@ -1623,11 +1626,17 @@
 <translation id="6122875415561139701">Η λειτουργία εγγραφής δεν επιτρέπεται στη συσκευή: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Η διαμόρφωση Bluetooth ελέγχεται από τον χρήστη <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Χρονικό εύρος</translation>
+<translation id="3958004920128806270">Για να διαγράψετε τα δεδομένα περιήγησης μόνο από αυτήν τη συσκευή, διατηρώντας τα στον Λογαριασμό σας Brave Software, <ph name="BEGIN_LINK"/>αποσυνδεθείτε<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Για να διαγράψετε τα δεδομένα περιήγησης από όλες τις συγχρονισμένες συσκευές σας και τον Λογαριασμό σας Brave Software, <ph name="BEGIN_LINK"/>μεταβείτε στις ρυθμίσεις συγχρονισμού<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Για να διαγράψετε τα δεδομένα περιήγησης από όλες τις συγχρονισμένες συσκευές σας και τον Λογαριασμό σας Brave Software, <ph name="BEGIN_LINK"/>εισαγάγετε τη φράση πρόσβασής σας<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Για να διαγράψετε τα δεδομένα περιήγησης από όλες τις συγχρονισμένες συσκευές σας και τον Λογαριασμό σας Brave Software, <ph name="BEGIN_LINK"/>συνδεθείτε<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Ιστορικό περιήγησης</translation>
 <translation id="8662811608048051533">Θα αποσυνδεθείτε από τους περισσότερους ιστοτόπους.</translation>
+<translation id="4650925988509114690">Θα αποσυνδεθείτε από τους περισσότερους ιστοτόπους. Θα παραμείνετε συνδεδεμένοι στον Λογαριασμό σας Brave Software, για να μπορέσετε να διαγράψετε τα συγχρονισμένα δεδομένα σας.</translation>
 <translation id="2017836877785168846">Διαγράφει το ιστορικό και τις αυτόματες συμπληρώσεις στη γραμμή διευθύνσεων.</translation>
 <translation id="8096327394278038498">Διαγράφει το ιστορικό και τα στοιχεία αυτόματης συμπλήρωσης στη γραμμή διευθύνσεων. Ο Λογαριασμός σας Brave Software ενδέχεται να διαθέτει άλλες μορφές ιστορικού περιήγησης στη διεύθυνση <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Διαγράφει το ιστορικό από όλες τις συνδεδεμένες συσκευές. Ο Λογαριασμός σας Brave Software ενδέχεται να διαθέτει άλλες μορφές ιστορικού περιήγησης στη διεύθυνση <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Διαγράφει το ιστορικό από αυτήν τη συσκευή.</translation>
 <translation id="7127980134843952133">Ιστορικό λήψεων</translation>
 <translation id="4699172675775169585">Εικόνες και αρχεία στην κρυφή μνήμη</translation>
 <translation id="1274997165432133392">Εμφάνιση cookie και άλλων δεδομένων ιστότοπου</translation>

@@ -840,6 +840,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6845038076637626672">Megnyitás teljes méretben</translation>
 <translation id="6860427144121307915">Megnyitás lapon</translation>
 <translation id="3074037959626057712">Bejelentkezett, és a szinkronizálás be van kapcsolva</translation>
+<translation id="1231733316453485619">Bekapcsolja a szinkronizálást?</translation>
 <translation id="9125982323641182972">Brave Software-funkciók a Brave-ban</translation>
 <translation id="7988117629517051942">Még több okos megoldás a Brave Software-től</translation>
 <translation id="5596627076506792578">További lehetőségek</translation>
@@ -1290,6 +1291,8 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="9220525904950070496">Fiók eltávolítása</translation>
 <translation id="3340978935015468852">beállítások</translation>
 <translation id="5704875434923668958">Szinkronizálás a következővel:</translation>
+<translation id="6257602895346497974">Szinkronizálás bekapcsolása…</translation>
+<translation id="8618141719844947886">Nincs szinkronizálva</translation>
 <translation id="5781092003150880845">Szinkronizálás mint <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Szinkronizálás saját fiókkal</translation>
 <translation id="2538361623464451692">Szinkronizálás letiltva</translation>
@@ -1623,11 +1626,17 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6122875415561139701">Az írási művelet nem engedélyezett a következőn: „<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="439266289085815679">A Bluetooth-konfigurációt <ph name="USER_EMAIL"/> szabályozza.</translation>
 <translation id="784934925303690534">Időszak</translation>
+<translation id="3958004920128806270">Ha csak erről az eszközről szeretné törölni böngészési adatait, Brave Software-fiókjából azonban nem, <ph name="BEGIN_LINK"/>jelentkezzen ki<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Ha az összes szinkronizált eszközéről és a Brave Software-fiókjából is törölni szeretné böngészési adatait, <ph name="BEGIN_LINK"/>keresse fel a szinkronizálási beállításokat<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Ha az összes szinkronizált eszközéről és a Brave Software-fiókjából is törölni szeretné böngészési adatait, <ph name="BEGIN_LINK"/>adja meg összetett jelszavát<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Ha az összes szinkronizált eszközéről és a Brave Software-fiókjából is törölni szeretné böngészési adatait, <ph name="BEGIN_LINK"/>jelentkezzen be<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Böngészés előzményei</translation>
 <translation id="8662811608048051533">A rendszer a legtöbb webhelyről kijelentkezteti Önt.</translation>
+<translation id="4650925988509114690">A rendszer kijelentkezteti a legtöbb webhelyről. Brave Software-fiókjába bejelentkezve marad, hogy lehetséges legyen a szinkronizált adatok törlése.</translation>
 <translation id="2017836877785168846">Törli a címsávban található előzményeket és automatikus kiegészítéseket.</translation>
 <translation id="8096327394278038498">Törli a címsávban található előzményeket és automatikus kiegészítéseket. Előfordulhat, hogy a böngészési előzmények más formái még megtalálhatók Brave Software-fiókjában a <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> webhelyen.</translation>
 <translation id="8122693181154564064">Törli az előzményeket valamennyi bejelentkezett eszközről. Előfordulhat, hogy a böngészési előzmények más formái még megtalálhatók Brave Software-fiókjában a <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> webhelyen.</translation>
+<translation id="6148716538476291841">Törli az előzményeket az eszközről.</translation>
 <translation id="7127980134843952133">Letöltési előzmények</translation>
 <translation id="4699172675775169585">A gyorsítótárban szereplő képek és fájlok</translation>
 <translation id="1274997165432133392">Cookie-k és egyéb webhelyadatok</translation>

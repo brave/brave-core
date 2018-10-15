@@ -838,6 +838,7 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="6845038076637626672">Fungua Iliyoongezwa</translation>
 <translation id="6860427144121307915">Fungua katika Kichupo</translation>
 <translation id="3074037959626057712">Umeingia katika akaunti na kuwasha kipengele cha Usawazishaji</translation>
+<translation id="1231733316453485619">Ungependa kuwasha usawazishaji?</translation>
 <translation id="9125982323641182972">Pata Brave Software mahiri kwenye Brave</translation>
 <translation id="7988117629517051942">Pata programu zaidi mahiri za Brave Software</translation>
 <translation id="5596627076506792578">Chaguo zaidi</translation>
@@ -1289,6 +1290,8 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="9220525904950070496">Ondoa akaunti</translation>
 <translation id="3340978935015468852">mipangilio</translation>
 <translation id="5704875434923668958">Inasawazisha kwenye</translation>
+<translation id="6257602895346497974">Washa kipengele cha kusawazisha...</translation>
+<translation id="8618141719844947886">Haisawazishi</translation>
 <translation id="5781092003150880845">Sawazisha ukitumia <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sawazisha katika akaunti yako</translation>
 <translation id="2538361623464451692">Kipengele cha kusawazisha kimezimwa</translation>
@@ -1622,11 +1625,17 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6122875415561139701">Shughuli za kuandika haziruhusiwi kwenye: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Mipangilio ya Bluetooth inadhibitiwa na <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Muda</translation>
+<translation id="3958004920128806270">Ili ufute data ya kuvinjari kwenye kifaa hiki pekee, bila kuiondoa katika Akaunti yako ya Brave Software, <ph name="BEGIN_LINK"/>ondoka katika akaunti<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Ili ufute data ya kuvinjari kwenye vifaa vyako vyote vilivyosawazishwa na Akaunti yako ya Brave Software <ph name="BEGIN_LINK"/>tembelea mipangilio ya usawazishaji<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Ili ufute data ya kuvinjari kwenye vifaa vyako vyote vilivyosawazishwa na Akaunti yako ya Brave Software, <ph name="BEGIN_LINK"/>weka kauli yako ya siri<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Ili ufute data ya kuvinjari kwenye vifaa vyako vyote vilivyosawazishwa na Akaunti yako ya Brave Software, <ph name="BEGIN_LINK"/>ingia katika akaunti<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historia ya kuvinjari</translation>
 <translation id="8662811608048051533">Hukuondoa kwenye tovuti nyingi.</translation>
+<translation id="4650925988509114690">Hukuondoa kwenye akaunti za tovuti nyingi. Hutaondolewa kwenye Akaunti yako ya Brave Software kwa hivyo data yako iliyosawazishwa inaweza kufutwa.</translation>
 <translation id="2017836877785168846">Hufuta historia na ujazaji kiotomatiki katika sehemu ya anwani.</translation>
 <translation id="8096327394278038498">Hufuta historia na ukamilishaji kiotomatiki kwenye sehemu ya anwani. Huenda Akaunti yako ya Brave Software ikawa na aina nyingine za historia ya kuvinjari kwenye <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Hufuta historia kwenye vifaa vyote ulivyotumia kuingia katika akaunti. Huenda Akaunti yako ya Brave Software ikawa na aina nyingine za historia ya kuvinjari kwenye <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Hufuta historia ya kuvinjari kwenye kifaa hiki.</translation>
 <translation id="7127980134843952133">Historia ya upakuaji</translation>
 <translation id="4699172675775169585">Picha na faili zilizoakibishwa</translation>
 <translation id="1274997165432133392">Vidakuzi na data ya tovuti nyingine</translation>

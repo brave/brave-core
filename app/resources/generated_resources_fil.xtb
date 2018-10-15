@@ -839,6 +839,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6845038076637626672">Buksan ang naka-maximize</translation>
 <translation id="6860427144121307915">Buksan sa isang Tab</translation>
 <translation id="3074037959626057712">Nag-sign ka at na-on mo ang Pag-sync</translation>
+<translation id="1231733316453485619">I-on ang pag-sync?</translation>
 <translation id="9125982323641182972">Magkaroon ng mga smart na feature ng Brave Software sa Brave</translation>
 <translation id="7988117629517051942">Magkaroon ng higit pang smart na feature ng Brave Software</translation>
 <translation id="5596627076506792578">Higit pang opsyon</translation>
@@ -1289,6 +1290,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="9220525904950070496">Alisin ang account</translation>
 <translation id="3340978935015468852">mga setting</translation>
 <translation id="5704875434923668958">Sini-sync sa</translation>
+<translation id="6257602895346497974">I-on ang pag-sync...</translation>
+<translation id="8618141719844947886">Hindi nagsi-sync</translation>
 <translation id="5781092003150880845">I-sync bilang <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">I-sync sa iyong account</translation>
 <translation id="2538361623464451692">Naka-disable ang pag-sync</translation>
@@ -1622,11 +1625,17 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6122875415561139701">Hindi pinapahintulutan ang write na operation sa: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Ang configuration ng bluetooth ay kinokontrol ni <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Sakop na oras</translation>
+<translation id="3958004920128806270">Para i-clear ang data mula sa pag-browse sa device lang na ito, habang pinapanatili ito sa iyong Brave Software Account, <ph name="BEGIN_LINK"/>mag-sign out<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Para i-clear ang data mula sa pag-browse sa lahat ng iyong naka-sync na device at sa Brave Software Account mo, <ph name="BEGIN_LINK"/>bisitahin ang mga setting ng pag-sync<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Para i-clear ang data mula sa pag-browse sa lahat ng iyong naka-sync na device at sa Brave Software Account mo, <ph name="BEGIN_LINK"/>ilagay ang iyong passphrase<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Para i-clear ang data mula sa pag-browse sa lahat ng iyong naka-sync na device at sa Brave Software Account mo, <ph name="BEGIN_LINK"/>mag-sign in<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">History ng Pagba-browse</translation>
 <translation id="8662811608048051533">Nagsa-sign out sa iyo sa karamihan ng site.</translation>
+<translation id="4650925988509114690">Sina-sign out ka sa karamihan ng mga site. Hindi ka masa-sign out sa iyong Brave Software Account kaya maki-clear ang naka-sync mong data.</translation>
 <translation id="2017836877785168846">Kini-clear ang history at mga awtomatikong pagkumpleto sa address bar.</translation>
 <translation id="8096327394278038498">Kini-clear ang history at mga autocompletion sa address bar. Maaaring may iba pang anyo ng history ng pag-browse ang iyong Brave Software Account sa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Kini-clear ang history sa lahat ng naka-sign in na device. Maaaring may iba pang anyo ng history ng pag-browse ang iyong Brave Software Account sa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Kini-clear ang history sa device na ito.</translation>
 <translation id="7127980134843952133">Kasaysayan ng pag-download</translation>
 <translation id="4699172675775169585">Mga naka-cache na larawan at file</translation>
 <translation id="1274997165432133392">Cookies at iba pang data ng site</translation>

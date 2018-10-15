@@ -838,6 +838,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6845038076637626672">Gemaximaliseerd openen</translation>
 <translation id="6860427144121307915">Openen in een tabblad</translation>
 <translation id="3074037959626057712">Je bent ingelogd en hebt synchronisatie ingeschakeld</translation>
+<translation id="1231733316453485619">Synchronisatie inschakelen?</translation>
 <translation id="9125982323641182972">Brave Software-functies in Brave</translation>
 <translation id="7988117629517051942">Gebruik meer slimme Brave Software-functies</translation>
 <translation id="5596627076506792578">Meer opties</translation>
@@ -1288,6 +1289,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="9220525904950070496">Rekening verwijderen</translation>
 <translation id="3340978935015468852">instellingen</translation>
 <translation id="5704875434923668958">Synchroniseren naar</translation>
+<translation id="6257602895346497974">Synchronisatie inschakelen...</translation>
+<translation id="8618141719844947886">Wordt niet gesynchroniseerd</translation>
 <translation id="5781092003150880845">Synchroniseren als <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synchroniseren met je account</translation>
 <translation id="2538361623464451692">Synchroniseren uitgeschakeld</translation>
@@ -1621,11 +1624,17 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6122875415561139701">Schrijfbewerking is niet toegestaan op: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679">Bluetooth-configuratie wordt beheerd door <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Periode</translation>
+<translation id="3958004920128806270">Als je browsergegevens alleen van dit apparaat wilt wissen, maar ze wilt behouden in je Brave Software-account, <ph name="BEGIN_LINK"/>log je uit<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Als je browsergegevens wilt wissen van al je gesynchroniseerde apparaten en je Brave Software-account, <ph name="BEGIN_LINK"/>ga je naar synchronisatie-instellingen<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Als je browsergegevens wilt wissen van al je gesynchroniseerde apparaten en je Brave Software-account, <ph name="BEGIN_LINK"/>geef je je wachtwoordzin op<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Als je browsergegevens wilt wissen van al je gesynchroniseerde apparaten en je Brave Software-account, <ph name="BEGIN_LINK"/>log je in<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Browsegeschiedenis</translation>
 <translation id="8662811608048051533">Hiermee word je uitgelogd van de meeste sites.</translation>
+<translation id="4650925988509114690">Hiermee word je uitgelogd bij de meeste sites. Je blijft ingelogd op je Brave Software-account zodat je gesynchroniseerde gegevens kunnen worden gewist.</translation>
 <translation id="2017836877785168846">Wist de geschiedenis en automatische aanvullingen in de adresbalk.</translation>
 <translation id="8096327394278038498">Hiermee worden de geschiedenis en automatische aanvullingen voor de adresbalk gewist. Er kunnen andere vormen van browsegeschiedenis zijn opgeslagen voor je Brave Software-account op <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Hiermee wordt de geschiedenis van alle ingelogde apparaten gewist. Er kunnen andere vormen van browsegeschiedenis zijn opgeslagen voor je Brave Software-account op <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Hiermee wordt de geschiedenis van dit apparaat gewist.</translation>
 <translation id="7127980134843952133">Downloadgeschiedenis</translation>
 <translation id="4699172675775169585">Gecachte afbeeldingen en bestanden</translation>
 <translation id="1274997165432133392">Cookies en andere sitegegevens</translation>

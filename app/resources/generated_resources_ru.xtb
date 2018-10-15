@@ -839,6 +839,7 @@
 <translation id="6845038076637626672">Развернуть</translation>
 <translation id="6860427144121307915">Открыть в новой вкладке</translation>
 <translation id="3074037959626057712">Вы вошли и включили синхронизацию</translation>
+<translation id="1231733316453485619">Включить синхронизацию?</translation>
 <translation id="9125982323641182972">Интеллектуальные функции Brave Software в Brave</translation>
 <translation id="7988117629517051942">Расширенный доступ к интеллектуальным функциям Brave Software</translation>
 <translation id="5596627076506792578">Ещё</translation>
@@ -1289,6 +1290,8 @@
 <translation id="9220525904950070496">Удалить аккаунт</translation>
 <translation id="3340978935015468852">настройках</translation>
 <translation id="5704875434923668958">Синхронизация:</translation>
+<translation id="6257602895346497974">Включить синхронизацию</translation>
+<translation id="8618141719844947886">Синхронизация отключена</translation>
 <translation id="5781092003150880845">Синхронизировать с аккаунтом пользователя <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Синхронизировать с моим аккаунтом</translation>
 <translation id="2538361623464451692">Синхронизация отключена</translation>
@@ -1622,11 +1625,17 @@
 <translation id="6122875415561139701">Запись данных на устройстве <ph name="DEVICE_NAME"/> запрещена.</translation>
 <translation id="439266289085815679">Конфигурацию Bluetooth контролирует пользователь <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Временной диапазон</translation>
+<translation id="3958004920128806270">Чтобы удалить данные о работе в браузере с этого устройства, но сохранить их в аккаунте Brave Software, <ph name="BEGIN_LINK"/>выйдите из системы<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Чтобы удалить данные о работе в браузере со всех синхронизированных устройств и из аккаунта Brave Software, перейдите в <ph name="BEGIN_LINK"/>настройки синхронизации<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Чтобы удалить данные о работе в браузере со всех синхронизированных устройств и из аккаунта Brave Software, <ph name="BEGIN_LINK"/>введите кодовую фразу<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Чтобы удалить данные о работе в браузере со всех синхронизированных устройств и из аккаунта Brave Software, <ph name="BEGIN_LINK"/>войдите в систему<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">История просмотров</translation>
 <translation id="8662811608048051533">Вы автоматически выйдете из учетных записей на большинстве сайтов.</translation>
+<translation id="4650925988509114690">Вы выйдете из системы на большинстве сайтов, но останетесь в аккаунте Brave Software и сможете удалить синхронизированные данные.</translation>
 <translation id="2017836877785168846">Удаление истории и вариантов автозаполнения в адресной строке</translation>
 <translation id="8096327394278038498">Удаление истории и вариантов автозаполнения в адресной строке. Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Удаление истории со всех устройств, на которых выполнен вход в аккаунт. Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Удаление истории с этого устройства.</translation>
 <translation id="7127980134843952133">История скачиваний</translation>
 <translation id="4699172675775169585">Изображения и другие файлы, сохраненные в кеше</translation>
 <translation id="1274997165432133392">Файлы cookie и другие данные сайтов</translation>

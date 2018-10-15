@@ -840,6 +840,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6845038076637626672">Odpri povečano</translation>
 <translation id="6860427144121307915">Odpri na zavihku</translation>
 <translation id="3074037959626057712">Prijavili ste se in vklopili sinhronizacijo</translation>
+<translation id="1231733316453485619">Želite vklopiti sinhronizacijo?</translation>
 <translation id="9125982323641182972">Prejmite Googlove pametne rešitve v Chromu</translation>
 <translation id="7988117629517051942">Zagotovite si več Googlovih pametnih rešitev</translation>
 <translation id="5596627076506792578">Več možnosti</translation>
@@ -1290,6 +1291,8 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="9220525904950070496">Odstranitev računa</translation>
 <translation id="3340978935015468852">nastavitve</translation>
 <translation id="5704875434923668958">Sinhronizacija z:</translation>
+<translation id="6257602895346497974">Vklopi sinhronizacijo …</translation>
+<translation id="8618141719844947886">Sinhronizacija ne poteka</translation>
 <translation id="5781092003150880845">Sinhronizacija z računom uporabnika <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sinhroniziraj z računom</translation>
 <translation id="2538361623464451692">Sinhronizacija je onemogočena</translation>
@@ -1623,11 +1626,17 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6122875415561139701">V tej napravi ni dovoljeno dejanje pisanja: »<ph name="DEVICE_NAME"/>«.</translation>
 <translation id="439266289085815679">Konfiguracijo Bluetootha nadzira <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Časovno obdobje</translation>
+<translation id="3958004920128806270">Če želite izbrisati podatke brskanja samo iz te naprave, v Brave Software Računu pa jih želite ohraniti, <ph name="BEGIN_LINK"/>se odjavite<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Če želite izbrisati podatke brskanja iz vseh sinhroniziranih naprav in Brave Software Računa, <ph name="BEGIN_LINK"/>odprite nastavitve sinhronizacije<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Če želite izbrisati podatke brskanja iz vseh sinhroniziranih naprav in Brave Software Računa, <ph name="BEGIN_LINK"/>vnesite geslo<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Če želite izbrisati podatke brskanja iz vseh sinhroniziranih naprav in Brave Software Računa, <ph name="BEGIN_LINK"/>se prijavite<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Zgodovina brskanja</translation>
 <translation id="8662811608048051533">Odjavi vas iz večine spletnih mest.</translation>
+<translation id="4650925988509114690">Odjavi vas iz večine spletnih mest. Ostali boste prijavljeni v Brave Software Račun, da bo mogoče izbrisati sinhronizirane podatke.</translation>
 <translation id="2017836877785168846">Izbriše zgodovino in samodokončanja v naslovni vrstici.</translation>
 <translation id="8096327394278038498">Izbriše zgodovino in samodokončanja v naslovni vrstici. V Brave Software Računu so morda druge vrste zgodovine brskanja na <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Izbriše zgodovino iz vseh naprav, v katerih ste prijavljeni. V Brave Software Računu so morda druge vrste zgodovine brskanja na <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Izbriše zgodovino iz te naprave.</translation>
 <translation id="7127980134843952133">Zgodovina prenosov</translation>
 <translation id="4699172675775169585">Predpomnjene slike in datoteke</translation>
 <translation id="1274997165432133392">Piškotki in drugi podatki spletnega mesta</translation>

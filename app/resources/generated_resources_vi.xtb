@@ -839,6 +839,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6845038076637626672">Mở ở dạng phóng to</translation>
 <translation id="6860427144121307915">Mở trong một tab</translation>
 <translation id="3074037959626057712">Bạn đã đăng nhập và bật Đồng bộ hóa</translation>
+<translation id="1231733316453485619">Bạn muốn bật tính năng đồng bộ hóa?</translation>
 <translation id="9125982323641182972">Trải nghiệm Brave Software thông minh trong Brave</translation>
 <translation id="7988117629517051942">Trải nghiệm thêm các tính năng thông minh của Brave Software</translation>
 <translation id="5596627076506792578">Tùy chọn khác</translation>
@@ -1289,6 +1290,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="9220525904950070496">Xóa tài khoản</translation>
 <translation id="3340978935015468852">cài đặt</translation>
 <translation id="5704875434923668958">Đồng bộ hóa với</translation>
+<translation id="6257602895346497974">Bật tính năng đồng bộ hóa...</translation>
+<translation id="8618141719844947886">Không đồng bộ hóa</translation>
 <translation id="5781092003150880845">Đồng bộ hóa dưới tên là <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Đồng bộ hóa với tài khoản của bạn</translation>
 <translation id="2538361623464451692">Tính năng đồng bộ hóa đã bị tắt</translation>
@@ -1622,11 +1625,17 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6122875415561139701">Tác vụ ghi không được phép trên: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Cấu hình Bluetooth do <ph name="USER_EMAIL"/> kiểm soát.</translation>
 <translation id="784934925303690534">Phạm vi thời gian</translation>
+<translation id="3958004920128806270">Để chỉ xóa dữ liệu duyệt web khỏi thiết bị này nhưng vẫn lưu giữ trong Tài khoản Brave Software của bạn, hãy <ph name="BEGIN_LINK"/>đăng xuất<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Để xóa dữ liệu duyệt web khỏi tất cả các thiết bị đã đồng bộ hóa và Tài khoản Brave Software của bạn, hãy <ph name="BEGIN_LINK"/>truy cập vào các tùy chọn cài đặt đồng bộ hóa<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Để xóa dữ liệu duyệt web khỏi tất cả các thiết bị đã đồng bộ hóa và Tài khoản Brave Software của bạn, hãy <ph name="BEGIN_LINK"/>nhập cụm mật khẩu<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Để xóa dữ liệu duyệt web khỏi tất cả các thiết bị đã đồng bộ hóa và Tài khoản Brave Software của bạn, hãy <ph name="BEGIN_LINK"/>đăng nhập<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Lịch sử duyệt web</translation>
 <translation id="8662811608048051533">Đăng xuất bạn khỏi hầu hết các trang web.</translation>
+<translation id="4650925988509114690">Đăng xuất bạn khỏi hầu hết các trang web. Bạn sẽ vẫn được duy trì trạng thái đăng nhập vào Tài khoản Brave Software để có thể xóa dữ liệu đã đồng bộ hóa.</translation>
 <translation id="2017836877785168846">Xóa lịch sử và tự động hoàn thành trong thanh địa chỉ.</translation>
 <translation id="8096327394278038498">Xóa lịch sử và tự động hoàn thành trong thanh địa chỉ. Tài khoản Brave Software của bạn có thể có các dạng lịch sử duyệt web khác tại <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Xóa lịch sử khỏi tất cả các thiết bị đã đăng nhập. Tài khoản Brave Software của bạn có thể có các dạng lịch sử duyệt web khác tại <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Xóa lịch sử khỏi thiết bị này.</translation>
 <translation id="7127980134843952133">Lịch sử tải xuống</translation>
 <translation id="4699172675775169585">Tệp và hình ảnh được lưu trong bộ nhớ đệm</translation>
 <translation id="1274997165432133392">Cookie và các dữ liệu trang web khác</translation>

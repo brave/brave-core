@@ -839,6 +839,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="6845038076637626672">Maksimer ved åpning</translation>
 <translation id="6860427144121307915">Åpne i en fane</translation>
 <translation id="3074037959626057712">Du har logget på og slått på synkronisering</translation>
+<translation id="1231733316453485619">Vil du slå på synkronisering?</translation>
 <translation id="9125982323641182972">Få Brave Softwares smarte funksjoner i Brave</translation>
 <translation id="7988117629517051942">Få flere smarte funksjoner fra Brave Software</translation>
 <translation id="5596627076506792578">Flere alternativer</translation>
@@ -1289,6 +1290,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="9220525904950070496">Fjern konto</translation>
 <translation id="3340978935015468852">innstillinger</translation>
 <translation id="5704875434923668958">Synkroniserer med</translation>
+<translation id="6257602895346497974">Slå på synkronisering</translation>
+<translation id="8618141719844947886">Ingen synkronisering</translation>
 <translation id="5781092003150880845">Synkroniser som <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synkroniser til kontoen din</translation>
 <translation id="2538361623464451692">Synkronisering deaktivert</translation>
@@ -1622,11 +1625,17 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6122875415561139701">Skriveoperasjonen er ikke tillatt på: «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="439266289085815679">Bluetooth-konfigurasjonen kontrolleres av <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Tidsperiode</translation>
+<translation id="3958004920128806270">For å slette nettleserdata på kun denne enheten, men beholde dataene på Brave Software-kontoen, må du <ph name="BEGIN_LINK"/>logge ut<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">For å slette nettleserdata på alle synkroniserte enheter og Brave Software-kontoen din <ph name="BEGIN_LINK"/>går du til innstillingene for synkronisering<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">For å slette nettleserdata på alle synkroniserte enheter og Brave Software-kontoen din må du <ph name="BEGIN_LINK"/>skrive inn passordfrasen din<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">For å slette nettleserdata på alle synkroniserte enheter og Brave Software-kontoen din må du <ph name="BEGIN_LINK"/>logge på<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Nettlesingslogg</translation>
 <translation id="8662811608048051533">Logger deg av de fleste nettsteder.</translation>
+<translation id="4650925988509114690">Logger deg av de fleste sider. Du forblir logget inn på Brave Software-kontoen din, så synkroniserte data kan slettes.</translation>
 <translation id="2017836877785168846">Tømmer loggen og fjerner automatiske fullføringer fra adressefeltet.</translation>
 <translation id="8096327394278038498">Tømmer loggen og fjerner autofullføringer i adressefeltet. Det kan hende Brave Software-kontoen din har andre typer nettlesingslogger på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Tømmer loggen på alle påloggede enheter. Det kan hende Brave Software-kontoen din har andre typer nettlesingslogger på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Sletter historikken på denne enheten.</translation>
 <translation id="7127980134843952133">Nedlastingslogg</translation>
 <translation id="4699172675775169585">Bufrede bilder og filer</translation>
 <translation id="1274997165432133392">Informasjonskapsler og andre nettstedsdata</translation>
@@ -1701,6 +1710,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2148219725039824548">Feil ved innsetting av deling. Den spesifiserte delingen ble ikke funnet på nettverket.</translation>
 <translation id="7234406375359457793">Feil ved aktivering av deling. Den spesifiserte delingen støttes ikke.</translation>
 <translation id="706626672220389329">Feil ved aktivering av deling. Den spesifiserte delingen er allerede aktivert.</translation>
+<translation id="5985458664595100876">Ugyldig nettadresseformat. Støttede formater er \\tjener\delt og smb://tjener/delt.</translation>
 <translation id="3101709781009526431">Dato og klokkeslett</translation>
 <translation id="2059913712424898428">Tidssone</translation>
 <translation id="4547672827276975204">Angi automatisk</translation>

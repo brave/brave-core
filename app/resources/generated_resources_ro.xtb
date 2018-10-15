@@ -839,6 +839,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6845038076637626672">Deschideți aplicația maximizată</translation>
 <translation id="6860427144121307915">Deschideți într-o filă</translation>
 <translation id="3074037959626057712">Te-ai conectat și ai activat Sincronizarea</translation>
+<translation id="1231733316453485619">Activezi sincronizarea?</translation>
 <translation id="9125982323641182972">Profită de ingeniozitatea Brave Software în Brave</translation>
 <translation id="7988117629517051942">Profită mai mult de ingeniozitatea Brave Software</translation>
 <translation id="5596627076506792578">Mai multe opțiuni</translation>
@@ -1289,6 +1290,8 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="9220525904950070496">Eliminați contul</translation>
 <translation id="3340978935015468852">setări</translation>
 <translation id="5704875434923668958">Se sincronizează cu</translation>
+<translation id="6257602895346497974">Activează sincronizarea...</translation>
+<translation id="8618141719844947886">Nu se sincronizează</translation>
 <translation id="5781092003150880845">Sincronizează ca <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Sincronizează cu contul tău</translation>
 <translation id="2538361623464451692">Sincronizare dezactivată</translation>
@@ -1622,11 +1625,17 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6122875415561139701">Operațiunea de scriere nu este permisă pe: „<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="439266289085815679">Configurația Bluetooth este controlată de <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Interval de timp</translation>
+<translation id="3958004920128806270">Pentru a șterge datele de navigare doar de pe acest dispozitiv, dar nu și din Contul Brave Software, <ph name="BEGIN_LINK"/>deconectează-te<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Pentru a șterge datele de navigare de pe toate dispozitivele sincronizate și din Contul Brave Software, <ph name="BEGIN_LINK"/>accesează setările de sincronizare<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Pentru a șterge datele de navigare de pe toate dispozitivele sincronizate și din Contul Brave Software, <ph name="BEGIN_LINK"/>introdu expresia de acces<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Pentru a șterge datele de navigare de pe toate dispozitivele sincronizate și din Contul Brave Software, <ph name="BEGIN_LINK"/>conectează-te<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Istoricul de navigare</translation>
 <translation id="8662811608048051533">Te deconectează de pe majoritatea site-urilor.</translation>
+<translation id="4650925988509114690">Te deconectează de pe majoritatea site-urilor. Vei rămâne conectat(ă) la Contul Brave Software, astfel încât datele sincronizate să poată fi șterse.</translation>
 <translation id="2017836877785168846">Șterge istoricul și completările automate din bara de adrese.</translation>
 <translation id="8096327394278038498">Șterge istoricul și completările automate din bara de adrese. Contul Brave Software poate să ofere alte forme ale istoricului de navigare la <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Șterge istoricul de pe toate dispozitivele conectate. Contul Brave Software poate să ofere alte forme ale istoricului de navigare la <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Șterge istoricul de pe acest dispozitiv.</translation>
 <translation id="7127980134843952133">Istoricul descărcărilor</translation>
 <translation id="4699172675775169585">Imaginile și fișierele memorate în cache</translation>
 <translation id="1274997165432133392">Cookie-urile și alte date privind site-ul</translation>

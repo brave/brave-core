@@ -840,6 +840,7 @@
 <translation id="6845038076637626672">Отваряне с увеличен изглед</translation>
 <translation id="6860427144121307915">Отваряне в раздел</translation>
 <translation id="3074037959626057712">Влязохте в профила си и включихте синхронизирането</translation>
+<translation id="1231733316453485619">Да се включи ли синхронизирането?</translation>
 <translation id="9125982323641182972">Brave с интелекта на Brave Software</translation>
 <translation id="7988117629517051942">Възползвайте се от още интелигентни функции на Brave Software</translation>
 <translation id="5596627076506792578">Още опции</translation>
@@ -1290,6 +1291,8 @@
 <translation id="9220525904950070496">Премахване на профила</translation>
 <translation id="3340978935015468852">настройки</translation>
 <translation id="5704875434923668958">Синхронизира се със:</translation>
+<translation id="6257602895346497974">Включване на синхронизирането...</translation>
+<translation id="8618141719844947886">Не се синхронизира</translation>
 <translation id="5781092003150880845">Синхронизиране като <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Синхронизиране с профила ви</translation>
 <translation id="2538361623464451692">Синхронизирането е деактивирано</translation>
@@ -1623,11 +1626,17 @@
 <translation id="6122875415561139701">Операцията за запис не е разрешена на: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679">Конфигурацията на Bluetooth се управлява от <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Период от време</translation>
+<translation id="3958004920128806270">За да изчистите данните за сърфирането само от това устройство, но да ги запазите в профила си в Brave Software, <ph name="BEGIN_LINK"/>излезте от профила си<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">За да изчистите данните за сърфирането от всичките си синхронизирани устройства и от профила си в Brave Software, <ph name="BEGIN_LINK"/>посетете настройките за синхронизиране<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">За да изчистите данните за сърфирането от всичките си синхронизирани устройства и от профила си в Brave Software, <ph name="BEGIN_LINK"/>въведете пропуска си<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">За да изчистите данните за сърфирането от всичките си синхронизирани устройства и от профила си в Brave Software, <ph name="BEGIN_LINK"/>влезте в него<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">История на сърфирането</translation>
 <translation id="8662811608048051533">Ще излезете от повечето сайтове.</translation>
+<translation id="4650925988509114690">Ще излезете от повечето сайтове, но не и от профила си в Brave Software, за да могат да бъдат изчистени синхронизираните ви данни.</translation>
 <translation id="2017836877785168846">Изчиства историята и автоматичните довършвания в адресната лента.</translation>
 <translation id="8096327394278038498">Изчиства историята и автоматичните довършвания в адресната лента. В профила ви в Brave Software може да има други видове история на сърфиране, съхранявани на адрес <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Изчиства историята от всички устройства, на които сте влезли в профила си в Brave Software. В него може да има други видове история на сърфиране, съхранявани на адрес <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Изчиства историята от това устройство.</translation>
 <translation id="7127980134843952133">История на изтеглянията</translation>
 <translation id="4699172675775169585">Кеширани изображения и файлове</translation>
 <translation id="1274997165432133392">„Бисквитки“ и други данни за сайтове</translation>

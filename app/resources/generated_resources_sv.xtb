@@ -839,6 +839,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6845038076637626672">Öppna maximerad</translation>
 <translation id="6860427144121307915">Öppna i en flik</translation>
 <translation id="3074037959626057712">Du är inloggad och har aktiverat synkronisering</translation>
+<translation id="1231733316453485619">Vill du aktivera synkronisering?</translation>
 <translation id="9125982323641182972">Få Brave Software-teknik i Brave</translation>
 <translation id="7988117629517051942">Få mer Brave Software-teknik</translation>
 <translation id="5596627076506792578">Fler alternativ</translation>
@@ -1289,6 +1290,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="9220525904950070496">Ta bort konto</translation>
 <translation id="3340978935015468852">inställningar</translation>
 <translation id="5704875434923668958">Synkroniserar till</translation>
+<translation id="6257602895346497974">Aktivera synkronisering …</translation>
+<translation id="8618141719844947886">Synkroniseras inte</translation>
 <translation id="5781092003150880845">Synkronisera till <ph name="ACCOUNT_FULL_NAME"/></translation>
 <translation id="1372841398847029212">Synkronisera till ditt konto</translation>
 <translation id="2538361623464451692">Synkronisering inaktiverad</translation>
@@ -1622,11 +1625,17 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6122875415561139701">Skrivbehörigheten för åtgärden saknas på: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679">Konfiguration av Bluetooth styrs av <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Tidsintervall</translation>
+<translation id="3958004920128806270"><ph name="BEGIN_LINK"/>Logga ut<ph name="END_LINK"/> om du vill rensa webbinformation från enheten utan att ta bort den från Brave Software-kontot.</translation>
+<translation id="4445433576366924090"><ph name="BEGIN_LINK"/>Besök inställningarna för synkronisering<ph name="END_LINK"/> om du vill rensa webbinformation från alla synkroniserade enheter och ditt Brave Software-konto.</translation>
+<translation id="563489167344291753"><ph name="BEGIN_LINK"/>Ange din lösenfras<ph name="END_LINK"/> om du vill rensa webbinformation från alla synkroniserade enheter och ditt Brave Software-konto.</translation>
+<translation id="3895809404273995788"><ph name="BEGIN_LINK"/>Logga in<ph name="END_LINK"/> om du vill rensa webbinformation från alla synkroniserade enheter och ditt Brave Software-konto.</translation>
 <translation id="2496180316473517155">Webbhistorik</translation>
 <translation id="8662811608048051533">Du loggas ut från de flesta webbplatser.</translation>
+<translation id="4650925988509114690">Du loggas ut från de flesta webbplatser. Du är fortfarande inloggad på Brave Software-kontot så att synkroniserad data kan rensas.</translation>
 <translation id="2017836877785168846">Rensar historik och autoslutföranden i adressfältet.</translation>
 <translation id="8096327394278038498">Historik och autoslutföranden i adressfältet rensas. Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Historik rensas från alla inloggade enheter. Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6148716538476291841">Historik rensas från den här enheten.</translation>
 <translation id="7127980134843952133">Nedladdningshistorik</translation>
 <translation id="4699172675775169585">Cachade bilder och filer</translation>
 <translation id="1274997165432133392">Cookies och andra webbplatsdata</translation>

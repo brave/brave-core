@@ -116,6 +116,9 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="7977435741986383568">Brave verwendet möglicherweise Webdienste zur Verbesserung Ihrer Nutzererfahrung beim Surfen im Internet. Sie haben die Möglichkeit, diese Dienste zu deaktivieren. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Zur Behebung von Tippfehlern sendet Brave eingegebenen Text an Brave Software</translation>
 <translation id="815816884817177844">Funktionen nutzen, die helfen, Brave für Sie noch besser zu machen</translation>
+<translation id="8586264863973514035">Starten Sie Brave neu, um die Änderungen zu übernehmen</translation>
+<translation id="7021823858304886493">Anmeldung in Brave zulassen</translation>
+<translation id="1649714546770135458">Wenn Sie diese Einstellung deaktivieren, können Sie sich auf Websites von Brave Software wie beispielsweise Gmail anmelden, ohne sich auch in Brave anmelden zu müssen</translation>
 <translation id="6274110506580702455">Die Anmeldung in Brave wurde vom Administrator dieses Geräts deaktiviert.</translation>
 <translation id="9220324636239049437">Dadurch wird 1 Element von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>
 <translation id="5853262807109651878">Dadurch werden <ph name="ITEMS_COUNT"/> Elemente von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>

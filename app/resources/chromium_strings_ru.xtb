@@ -112,6 +112,9 @@
 <translation id="7977435741986383568">Для более качественной работы Brave может использовать веб-сервисы. При необходимости отключите их. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Для проверки правописания Brave отправляет введенный вами текст в Brave Software.</translation>
 <translation id="815816884817177844">Обмен информацией с Brave Software для улучшения работы Brave</translation>
+<translation id="8586264863973514035">Чтобы изменения вступили в силу, перезапустите Brave.</translation>
+<translation id="7021823858304886493">Разрешить вход в Brave</translation>
+<translation id="1649714546770135458">Отключив эту функцию, вы сможете входить в систему на сайтах Brave Software (например, Gmail) без необходимости выполнять вход в Brave.</translation>
 <translation id="6274110506580702455">Вход в Brave отключен администратором устройства.</translation>
 <translation id="9220324636239049437">С устройства будет удален 1 объект. Чтобы восстановить данные позже, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">С устройства будут удалены объекты (<ph name="ITEMS_COUNT"/>). Чтобы восстановить данные позже, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>

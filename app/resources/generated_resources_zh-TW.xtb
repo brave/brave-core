@@ -839,6 +839,7 @@
 <translation id="6845038076637626672">最大化開啟</translation>
 <translation id="6860427144121307915">在分頁中開啟</translation>
 <translation id="3074037959626057712">你已登入帳戶並開啟了同步功能</translation>
+<translation id="1231733316453485619">要開啟同步處理功能嗎？</translation>
 <translation id="9125982323641182972">在 Brave 中體驗 Brave Software 智慧功能</translation>
 <translation id="7988117629517051942">體驗更多 Brave Software 強大的智慧功能</translation>
 <translation id="5596627076506792578">更多選項</translation>
@@ -1289,6 +1290,8 @@
 <translation id="9220525904950070496">移除帳戶</translation>
 <translation id="3340978935015468852">設定</translation>
 <translation id="5704875434923668958">同步到</translation>
+<translation id="6257602895346497974">開啟同步處理功能...</translation>
+<translation id="8618141719844947886">未同步處理</translation>
 <translation id="5781092003150880845">和 <ph name="ACCOUNT_FULL_NAME"/> 同步</translation>
 <translation id="1372841398847029212">同步到你的帳戶</translation>
 <translation id="2538361623464451692">同步處理已停用</translation>
@@ -1622,11 +1625,17 @@
 <translation id="6122875415561139701">無法在以下裝置上執行寫入作業：「<ph name="DEVICE_NAME"/>」。</translation>
 <translation id="439266289085815679">藍牙設定由 <ph name="USER_EMAIL"/> 控制。</translation>
 <translation id="784934925303690534">時間範圍</translation>
+<translation id="3958004920128806270">如果只要清除這個裝置中的瀏覽資料，並保留 Brave Software 帳戶中的資料，請先<ph name="BEGIN_LINK"/>登出<ph name="END_LINK"/>。</translation>
+<translation id="4445433576366924090">如要從所有同步的裝置和 Brave Software 帳戶中清除瀏覽資料，請<ph name="BEGIN_LINK"/>前往同步處理設定<ph name="END_LINK"/>。</translation>
+<translation id="563489167344291753">如要從所有同步的裝置和 Brave Software 帳戶中清除瀏覽資料，請<ph name="BEGIN_LINK"/>輸入通關密語<ph name="END_LINK"/>。</translation>
+<translation id="3895809404273995788">如要從所有同步的裝置和 Brave Software 帳戶中清除瀏覽資料，請先<ph name="BEGIN_LINK"/>登入<ph name="END_LINK"/>。</translation>
 <translation id="2496180316473517155">瀏覽記錄</translation>
 <translation id="8662811608048051533">你會從大多數網站登出。</translation>
+<translation id="4650925988509114690">你會從大多數網站登出，但不會因此登出 Brave Software 帳戶，所以仍可清除同步資料。</translation>
 <translation id="2017836877785168846">將歷史記錄和自動即時查詢從網址列中清除。</translation>
 <translation id="8096327394278038498">將歷史記錄和自動即時查詢從網址列中清除。你的 Brave Software 帳戶可能會儲存其他形式的瀏覽記錄，請參閱 <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>。</translation>
 <translation id="8122693181154564064">將歷史記錄從所有登入帳戶的裝置上清除。你的 Brave Software 帳戶可能會儲存其他形式的瀏覽記錄，請參閱 <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>。</translation>
+<translation id="6148716538476291841">清除這個裝置上的歷史記錄。</translation>
 <translation id="7127980134843952133">下載記錄</translation>
 <translation id="4699172675775169585">快取圖片和檔案</translation>
 <translation id="1274997165432133392">Cookie 和其他網站資料</translation>
