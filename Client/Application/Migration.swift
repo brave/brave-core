@@ -57,6 +57,7 @@ extension Preferences {
         
         // Popups
         migrate(key: "popupForDDG", to: Preferences.Popups.duckDuckGoPrivateSearch)
+        migrate(key: "popupForBrowserLock", to: Preferences.Popups.browserLock)
         
         // BraveShared
         migrateBraveShared(keyPrefix: keyPrefix)
