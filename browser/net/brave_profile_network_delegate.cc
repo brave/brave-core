@@ -25,7 +25,7 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   before_url_request_callbacks_.push_back(callback);
 
   callback =
-      base::Bind(brave::OnBeforeURLRequest_AdBlockTPWork);
+      base::Bind(brave::OnBeforeURLRequest_AdBlockTPPreWork);
   before_url_request_callbacks_.push_back(callback);
 
   callback =

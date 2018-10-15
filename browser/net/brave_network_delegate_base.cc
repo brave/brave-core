@@ -6,13 +6,12 @@
 
 #include <algorithm>
 
-#include "brave/browser/net/url_context.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_request.h"
-
 
 using content::BrowserThread;
 
@@ -42,9 +41,9 @@ int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
   }
   std::shared_ptr<brave::BraveRequestInfo> ctx(
       new brave::BraveRequestInfo());
-  callbacks_[request->identifier()] = std::move(callback);
-  ctx->request_identifier = request->identifier();
+  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
   ctx->event_type = brave::kOnBeforeRequest;
+  callbacks_[request->identifier()] = std::move(callback);
   RunNextCallback(request, new_url, ctx);
   return net::ERR_IO_PENDING;
 }
@@ -58,11 +57,11 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
   }
   std::shared_ptr<brave::BraveRequestInfo> ctx(
       new brave::BraveRequestInfo());
-  callbacks_[request->identifier()] = std::move(callback);
-  ctx->headers = headers;
-  ctx->request_identifier = request->identifier();
+  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
   ctx->event_type = brave::kOnBeforeStartTransaction;
+  ctx->headers = headers;
   ctx->referral_headers_list = referral_headers_list_;
+  callbacks_[request->identifier()] = std::move(callback);
   RunNextCallback(request, nullptr, ctx);
   return net::ERR_IO_PENDING;
 }
@@ -81,7 +80,7 @@ int BraveNetworkDelegateBase::OnHeadersReceived(net::URLRequest* request,
   std::shared_ptr<brave::BraveRequestInfo> ctx(
       new brave::BraveRequestInfo());
   callbacks_[request->identifier()] = std::move(callback);
-  ctx->request_identifier = request->identifier();
+  brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
   ctx->event_type = brave::kOnHeadersReceived;
   ctx->original_response_headers = original_response_headers;
   ctx->override_response_headers = override_response_headers;
@@ -127,7 +126,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
       brave::ResponseCallback next_callback =
           base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
               base::Unretained(this), request, new_url, ctx);
-      rv = callback.Run(request, new_url, next_callback, ctx);
+      rv = callback.Run(new_url, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
       }

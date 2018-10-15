@@ -18,14 +18,13 @@ using content::ResourceRequestInfo;
 namespace brave {
 
 int OnBeforeURLRequest_TorWork(
-    net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   const ResourceRequestInfo* resource_info =
-    ResourceRequestInfo::ForRequest(request);
+    ResourceRequestInfo::ForRequest(ctx->request);
   if (!resource_info) {
     return net::OK;
   }
@@ -42,15 +41,15 @@ int OnBeforeURLRequest_TorWork(
     return net::OK;
   }
 
-  if (!(request->url().SchemeIsHTTPOrHTTPS() ||
-        request->url().SchemeIs(content::kChromeUIScheme) ||
-        request->url().SchemeIs(extensions::kExtensionScheme) ||
-        request->url().SchemeIs(content::kChromeDevToolsScheme))) {
+  if (!(ctx->request_url.SchemeIsHTTPOrHTTPS() ||
+        ctx->request_url.SchemeIs(content::kChromeUIScheme) ||
+        ctx->request_url.SchemeIs(extensions::kExtensionScheme) ||
+        ctx->request_url.SchemeIs(content::kChromeDevToolsScheme))) {
     return net::ERR_DISALLOWED_URL_SCHEME;
   }
 
-  auto* proxy_service = request->context()->proxy_resolution_service();
-  tor_profile_service->SetProxy(proxy_service, request->url(), false);
+  auto* proxy_service = ctx->request->context()->proxy_resolution_service();
+  tor_profile_service->SetProxy(proxy_service, ctx->request_url, false);
 
   return net::OK;
 }

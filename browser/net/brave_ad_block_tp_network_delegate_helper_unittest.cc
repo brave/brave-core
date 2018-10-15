@@ -43,7 +43,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, NoChangeURL) {
   brave::ResponseCallback callback;
   GURL new_url;
   int ret =
-    OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+    OnBeforeURLRequest_AdBlockTPPreWork(request.get(), &new_url, callback,
         brave_request_info);
   EXPECT_TRUE(new_url.is_empty());
   EXPECT_EQ(ret, net::OK);
@@ -59,7 +59,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   brave::ResponseCallback callback;
   GURL new_url;
   int ret =
-    OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+    OnBeforeURLRequest_AdBlockTPPreWork(request.get(), &new_url, callback,
         brave_request_info);
   EXPECT_TRUE(new_url.is_empty());
   EXPECT_EQ(ret, net::OK);
@@ -82,7 +82,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToEmptyDataURLs) {
     brave::ResponseCallback callback;
     GURL new_url;
     int ret =
-      OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_AdBlockTPPreWork(request.get(), &new_url, callback,
           brave_request_info);
     EXPECT_EQ(ret, net::OK);
     EXPECT_STREQ(new_url.spec().c_str(), kEmptyDataURI);
@@ -105,7 +105,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToStubs) {
     brave::ResponseCallback callback;
     GURL new_url;
     int ret =
-      OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_AdBlockTPPreWork(request.get(), &new_url, callback,
           brave_request_info);
     EXPECT_EQ(ret, net::OK);
     EXPECT_TRUE(new_url.SchemeIs("data"));
@@ -128,7 +128,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, Blocking) {
     brave::ResponseCallback callback;
     GURL new_url;
     int ret =
-      OnBeforeURLRequest_AdBlockTPWork(request.get(), &new_url, callback,
+      OnBeforeURLRequest_AdBlockTPPreWork(request.get(), &new_url, callback,
           brave_request_info);
     EXPECT_STREQ(new_url.spec().c_str(), kEmptyDataURI);
     EXPECT_EQ(ret, net::OK);

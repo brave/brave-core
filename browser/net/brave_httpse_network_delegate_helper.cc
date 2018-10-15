@@ -7,21 +7,17 @@
 #include "base/task/post_task.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/browser_thread.h"
-#include "net/url_request/url_request.h"
 
 using content::BrowserThread;
 
 namespace brave {
 
 void OnBeforeURLRequest_HttpseFileWork(
-    net::URLRequest* request,
-    GURL* new_url,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+    GURL* new_url, std::shared_ptr<BraveRequestInfo> ctx) {
   base::ScopedBlockingCall scoped_blocking_call(
       base::BlockingType::WILL_BLOCK);
   DCHECK(ctx->request_identifier != 0);
@@ -30,17 +26,16 @@ void OnBeforeURLRequest_HttpseFileWork(
 }
 
 void OnBeforeURLRequest_HttpsePostFileWork(
-    net::URLRequest* request,
     GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   if (!ctx->new_url_spec.empty() &&
-    ctx->new_url_spec != request->url().spec()) {
+    ctx->new_url_spec != ctx->request_url.spec()) {
     *new_url = GURL(ctx->new_url_spec);
-    brave_shields::DispatchBlockedEventFromIO(request,
+    brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+        ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id,
         brave_shields::kHTTPUpgradableResources);
   }
 
@@ -48,10 +43,8 @@ void OnBeforeURLRequest_HttpsePostFileWork(
 }
 
 int OnBeforeURLRequest_HttpsePreFileWork(
-  net::URLRequest* request,
-  GURL* new_url,
-  const ResponseCallback& next_callback,
-  std::shared_ptr<BraveRequestInfo> ctx) {
+    GURL* new_url, const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   // Don't try to overwrite an already set URL by another delegate (adblock/tp)
@@ -59,48 +52,38 @@ int OnBeforeURLRequest_HttpsePreFileWork(
     return net::OK;
   }
 
-  GURL tab_origin = request->site_for_cookies().GetOrigin();
-  bool allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
-  bool allow_http_upgradable_resource = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kHTTPUpgradableResources);
-  if (tab_origin.is_empty() || allow_http_upgradable_resource ||
-      !allow_brave_shields) {
+  if (ctx->tab_origin.is_empty() || ctx->allow_http_upgradable_resource ||
+      !ctx->allow_brave_shields) {
     return net::OK;
   }
 
   bool is_valid_url = true;
-  if (request) {
-    is_valid_url = request->url().is_valid();
-    std::string scheme = request->url().scheme();
-    if (scheme.length()) {
-      std::transform(scheme.begin(), scheme.end(), scheme.begin(), ::tolower);
-      if ("http" != scheme && "https" != scheme) {
-        is_valid_url = false;
-      }
+  is_valid_url = ctx->request_url.is_valid();
+  std::string scheme = ctx->request_url.scheme();
+  if (scheme.length()) {
+    std::transform(scheme.begin(), scheme.end(), scheme.begin(), ::tolower);
+    if ("http" != scheme && "https" != scheme) {
+      is_valid_url = false;
     }
   }
 
   if (is_valid_url) {
     if (!g_brave_browser_process->https_everywhere_service()->
-        GetHTTPSURLFromCacheOnly(&request->url(), request->identifier(),
+        GetHTTPSURLFromCacheOnly(&ctx->request_url, ctx->request_identifier,
           ctx->new_url_spec)) {
-      ctx->request_url = request->url();
       g_brave_browser_process->https_everywhere_service()->
         GetTaskRunner()->PostTaskAndReply(FROM_HERE,
-          base::Bind(OnBeforeURLRequest_HttpseFileWork,
-              base::Unretained(request), new_url, ctx),
+          base::Bind(OnBeforeURLRequest_HttpseFileWork, new_url, ctx),
           base::Bind(base::IgnoreResult(
               &OnBeforeURLRequest_HttpsePostFileWork),
-              base::Unretained(request),
               new_url, next_callback, ctx));
       return net::ERR_IO_PENDING;
     } else {
       if (!ctx->new_url_spec.empty()) {
         *new_url = GURL(ctx->new_url_spec);
-        brave_shields::DispatchBlockedEventFromIO(request,
+        brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+            ctx->render_process_id, ctx->render_frame_id,
+            ctx->frame_tree_node_id,
             brave_shields::kHTTPUpgradableResources);
       }
     }
