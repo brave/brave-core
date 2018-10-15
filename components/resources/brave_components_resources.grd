@@ -206,17 +206,21 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Ads</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly allowance and browse normally. Your favorite sites receive your contributions automatically, based on your attention as measured by Brave.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.
+
+</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly budget</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Supported sites</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Donations &amp; Tips</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Donate to sites as you browse or give tips to posts when you ‘like’ them. You can also make recurring monthly donations so you can support sites continuously.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Tips</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Tip creators directly as you browse or give tips to videos and tweets that you ‘like’. You can also set up recurring monthly tips so you can support sites continuously.
+
+</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Reward creators for the content you love.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2" desc="">Your monthly budget gets distributed across the sites you visit.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Please visit some sites</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total donations this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total tips this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Please do some donations</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="">Add Funds</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_WITHDRAW_FUNDS" desc="">Manage Funds</message>
@@ -260,7 +264,7 @@
       <message name="IDS_BRAVE_UI_ALLOW_TIP" desc="">Allow tips on</message>
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">Get paid to view relevant ads that respect your privacy.</message>
-      <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Brave Ads</message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Ads</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Set a monthly budget and browse normally. Your favorite sites get paid automatically.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
@@ -314,7 +318,7 @@
       <message name="IDS_BRAVE_UI_MONTH_NOV" desc="">November</message>
       <message name="IDS_BRAVE_UI_MONTH_OCT" desc="">October</message>
       <message name="IDS_BRAVE_UI_MONTH_SEP" desc="">September</message>
-      <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">A new token grant is available.</message>
+      <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">A free token grant is available.</message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">New Token Grant</message>
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
       <message name="IDS_BRAVE_UI_NO_THANK_YOU" desc="">No, thank you</message>
@@ -323,7 +327,7 @@
       <message name="IDS_BRAVE_UI_OK" desc="">ok</message>
       <message name="IDS_BRAVE_UI_ON" desc="">on</message>
       <message name="IDS_BRAVE_UI_ONE_TIME" desc="">One time</message>
-      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="">One-time Donations/Tips</message>
+      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="">One-time Tips</message>
       <message name="IDS_BRAVE_UI_OPEN_BALANCE" desc="">Opening Balance</message>
       <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
       <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
@@ -336,13 +340,13 @@
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_START" desc="">You can start with the</message>
       <message name="IDS_BRAVE_UI_RECOVERY_KEYS" desc="">Recovery Key</message>
       <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
-      <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="">Recurring Donation</message>
-      <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Recurring Donations</message>
+      <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="">Monthly Tips</message>
+      <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Tips</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
       <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1" desc="">Backup your Wallet</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Keep this anonymized recovery key for your Brave wallet in the safe place in case you lose access to this browser. Your funds are safe as long as you keep this recovery key either on a paper or in a device with preferably no internet connection.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Below is the anonymized recovery key for your Brave wallet. Keep this key private and store it in a safe place. If you ever lose access to this device, you must have this key in order to restore your Brave wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">Thanks for stopping by. We joined Brave’s vision of protecting your privacy because we believe that fans like you would support us in our effort to keep the web a clean and safe place to be.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">Your donation is much appreciated and it encourages us to continue to improve our content.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
@@ -361,13 +365,13 @@
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT1" desc="">Get Rewarded for Browsing!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_OFF_TEXT2" desc="">Earn tokens for your attention to ads and pay it forward to support content creators you value!</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT1" desc="">Add, withdraw and manage funds at</message>
-      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT2" desc="">Brave wallet is managed by</message>
+      <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT2" desc="">Your Brave wallet is managed by</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT3" desc="">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT4" desc="">here</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT1" desc="">Restore your Wallet</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Enter the recovery key to restore your Brave wallet. Make sure that the current wallet doesn’t have any balance or is backed up safely. Restoring a wallet replaces the current wallet and you will loose any balance if you don’t back up its recovery key.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Enter the recovery key to restore your Brave wallet. Note: Restoring a wallet replaces the current wallet. If you have an existing balance, you must back up the current wallet before restoring a different wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Enter your recovery key or</message>
-      <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Transactions by Category</message>
+      <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_REWARDS_WHY" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all {{numItems}} items</message>
@@ -382,7 +386,7 @@
       <message name="IDS_BRAVE_UI_TITLE_BTC" desc="">BitCoin (BTC)</message>
       <message name="IDS_BRAVE_UI_TITLE_ETH" desc="">Ethereum (ETH)</message>
       <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">LiteCoin (LTC)</message>
-      <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grant</message>
+      <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
