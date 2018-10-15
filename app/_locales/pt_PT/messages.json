@@ -1,123 +1,123 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "A Extensão Brave",
     "description": "The name of the the extension."
   },
 
   "shieldsStatsAdsTrackersBlocked": {
-    "message": "Ads and Trackers Blocked",
+    "message": "Anúncios e Monitorizadores Bloqueados",
     "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
   },
   "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Upgrades",
+    "message": "Upgrades HTTPS",
     "description": "Label for shields stats, HTTPS upgrades count"
   },
   "shieldsStatsScriptsBlocked": {
-    "message": "Scripts Blocked",
+    "message": "Scripts Bloqueados",
     "description": "Label for shields stats, Scripts Blocked count"
   },
   "shieldsFingerPrintingBlocked": {
-    "message": "Fingerprinting Methods Blocked",
+    "message": "Métodos de Impressão Digital Bloqueados",
     "description": "Label for shields stats, Fingerprinting Methods Blocked count"
   },
 
   "shieldsHeaderShieldsToggle": {
-    "message": "Shields",
+    "message": "Escudos",
     "description": "Label for top shields switch in shields header"
   },
   "shieldsHeaderToggleLeftPosition": {
-    "message": "Down",
+    "message": "Baixo",
     "description": "Label for top shields switch in shields header turned off position"
   },
   "shieldsHeaderToggleRightPosition": {
-    "message": "Up",
+    "message": "Cima",
     "description": "Label for top shields switch in shields header turned on position"
   },
   "shieldsHeaderForSite": {
-    "message": "Site shield settings for",
+    "message": "Configurações de escudo do site para",
     "description": "Label for shields header near current site name"
   },
 
   "shieldsControlsAdvancedControls": {
-    "message": "Advanced Controls",
+    "message": "Controlos Avançados",
     "description": "Label for advanced controls group"
   },
 
   "shieldsControlsAdControl": {
-    "message": "Ad Control",
+    "message": "Controlo de anúncios",
     "description": "Label for Advertisement Control dropdown box options "
   },
   "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Block Ads",
+    "message": "Bloquear Anúncios",
     "description": "Ad Control dropdown box, option block ads"
   },
   "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Allow Ads and Tracking",
+    "message": "Permitir Anúncios e Monitorização",
     "description": "Ad Control dropdown box, option allow ads and tracking"
   },
 
   "shieldsControlsCookieControl": {
-    "message": "Cookie Control",
+    "message": "Controlo de Cookies",
     "description": "Label Cookie Control dropdown options"
   },
   "shieldsControlsCookieOptionBlock3p": {
-    "message": "Block 3rd Party Cookies",
+    "message": "Bloquear Cookies de Terceiros",
     "description": "Cookie control dropdown option Block 3rd Party Cookies"
   },
   "shieldsControlsCookieOptionAllowAll": {
-    "message": "Allow All Cookies",
+    "message": "Permitir Todas as Cookies",
     "description": "Cookie control dropdown option Allow All Cookies"
   },
   "shieldsControlsCookieOptionBlockAll": {
-    "message": "Block All Cookies",
+    "message": "Bloquear Todas as Cookies",
     "description": "Cookie control dropdown option Block All Cookies"
   },
 
   "shieldsControlsFingerprintingProtection": {
-    "message": "Fingerprinting Protection",
+    "message": "Proteção de Impressão Digital",
     "description": "Label Fingerprinting Protection dropdown options"
   },
   "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Block 3rd Party Fingerprinting",
+    "message": "Bloquear Impressão Digital de Terceiros",
     "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
   },
   "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Allow All Fingerprinting",
+    "message": "Permitir Todas as Impressões Digitais",
     "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
   },
   "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Block All Fingerprinting",
+    "message": "Bloquear todas as impressões digitais",
     "description": "Fingerprinting control dropdown option Block All Fingerprinting"
   },
 
   "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
+    "message": "HTTPS em todo o lado",
     "description": "Shields controls, switch for HTTPS Everywhere"
   },
   "shieldsControlsBlockScriptsSwitch": {
-    "message": "Block Scripts",
+    "message": "Bloquear Scripts",
     "description": "Shields controls, switch for Block Scripts"
   },
   "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Block Phishing/Malware",
+    "message": "Bloquear Phishing /Malware",
     "description": "Shields controls, switch for Block Phishing/Malware"
   },
 
   "noScriptSwitches": {
-    "message": "Toggle switches to disable script blocking",
+    "message": "Interruptores seletores para desativar o bloqueio de scripts",
     "description": "Instructions for per-origin noScript switches"
   },
   "noScriptApplyOnce": {
-    "message": "Apply",
+    "message": "Aplicar",
     "description": "Label for applying per-origin noScript settings"
   },
 
   "shieldsFooterEditDefault":{
-    "message": "Edit default shield settings...",
+    "message": "Editar configurações de escudo pré-definidas...",
     "description": "Shields controls footer, link to edit default shields settings"
   },
   "shieldsFooterReload":{
-    "message": "Reload...",
+    "message": "Recarregar...",
     "description": "Shields controls footer, label for action reload page to apply current shields settings"
   }
 }

@@ -1,123 +1,123 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "امتداد Brave",
     "description": "The name of the the extension."
   },
 
   "shieldsStatsAdsTrackersBlocked": {
-    "message": "Ads and Trackers Blocked",
+    "message": "تمَّ حجب الإعلانات والتعقب",
     "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
   },
   "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Upgrades",
+    "message": "ترقيات HTTPS",
     "description": "Label for shields stats, HTTPS upgrades count"
   },
   "shieldsStatsScriptsBlocked": {
-    "message": "Scripts Blocked",
+    "message": "البرامج النصية المحظورة",
     "description": "Label for shields stats, Scripts Blocked count"
   },
   "shieldsFingerPrintingBlocked": {
-    "message": "Fingerprinting Methods Blocked",
+    "message": "تم حظر طرق البصمات",
     "description": "Label for shields stats, Fingerprinting Methods Blocked count"
   },
 
   "shieldsHeaderShieldsToggle": {
-    "message": "Shields",
+    "message": "الدروع",
     "description": "Label for top shields switch in shields header"
   },
   "shieldsHeaderToggleLeftPosition": {
-    "message": "Down",
+    "message": "الأسفل",
     "description": "Label for top shields switch in shields header turned off position"
   },
   "shieldsHeaderToggleRightPosition": {
-    "message": "Up",
+    "message": "أعلى",
     "description": "Label for top shields switch in shields header turned on position"
   },
   "shieldsHeaderForSite": {
-    "message": "Site shield settings for",
+    "message": "إعدادات درع الموقع لـ",
     "description": "Label for shields header near current site name"
   },
 
   "shieldsControlsAdvancedControls": {
-    "message": "Advanced Controls",
+    "message": "الضوابط المتقدمة",
     "description": "Label for advanced controls group"
   },
 
   "shieldsControlsAdControl": {
-    "message": "Ad Control",
+    "message": "التحكم في الإعلان",
     "description": "Label for Advertisement Control dropdown box options "
   },
   "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Block Ads",
+    "message": "حجب الإعلانات",
     "description": "Ad Control dropdown box, option block ads"
   },
   "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Allow Ads and Tracking",
+    "message": "اسمح بالإعلانات والتتبع",
     "description": "Ad Control dropdown box, option allow ads and tracking"
   },
 
   "shieldsControlsCookieControl": {
-    "message": "Cookie Control",
+    "message": "التحكم في ملفات تعريف الارتباط",
     "description": "Label Cookie Control dropdown options"
   },
   "shieldsControlsCookieOptionBlock3p": {
-    "message": "Block 3rd Party Cookies",
+    "message": "حظر ملفات تعريف ارتباط الخاصة بالجهات الخارجية",
     "description": "Cookie control dropdown option Block 3rd Party Cookies"
   },
   "shieldsControlsCookieOptionAllowAll": {
-    "message": "Allow All Cookies",
+    "message": "السماح لكل ملفات تعريف الارتباط",
     "description": "Cookie control dropdown option Allow All Cookies"
   },
   "shieldsControlsCookieOptionBlockAll": {
-    "message": "Block All Cookies",
+    "message": "حظر جميع ملفات تعريف الارتباط",
     "description": "Cookie control dropdown option Block All Cookies"
   },
 
   "shieldsControlsFingerprintingProtection": {
-    "message": "Fingerprinting Protection",
+    "message": "حماية البصمات",
     "description": "Label Fingerprinting Protection dropdown options"
   },
   "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Block 3rd Party Fingerprinting",
+    "message": "حجب بصمة الطرف الثالث",
     "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
   },
   "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Allow All Fingerprinting",
+    "message": "السماح لجميع البصمات",
     "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
   },
   "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Block All Fingerprinting",
+    "message": "حظر جميع البصمات",
     "description": "Fingerprinting control dropdown option Block All Fingerprinting"
   },
 
   "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
+    "message": "HTTPS في كل مكان",
     "description": "Shields controls, switch for HTTPS Everywhere"
   },
   "shieldsControlsBlockScriptsSwitch": {
-    "message": "Block Scripts",
+    "message": "حظر البرامج النصية",
     "description": "Shields controls, switch for Block Scripts"
   },
   "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Block Phishing/Malware",
+    "message": "حظر التصيّد الاحتيالي/البرامج الخبيثة",
     "description": "Shields controls, switch for Block Phishing/Malware"
   },
 
   "noScriptSwitches": {
-    "message": "Toggle switches to disable script blocking",
+    "message": "قم بتبديل المفاتيح لتعطيل حظر النص البرمجي",
     "description": "Instructions for per-origin noScript switches"
   },
   "noScriptApplyOnce": {
-    "message": "Apply",
+    "message": "تطبيق",
     "description": "Label for applying per-origin noScript settings"
   },
 
   "shieldsFooterEditDefault":{
-    "message": "Edit default shield settings...",
+    "message": "تعديل الإعداداتِ الافتراضيةِ للدرع ...",
     "description": "Shields controls footer, link to edit default shields settings"
   },
   "shieldsFooterReload":{
-    "message": "Reload...",
+    "message": "إعادة تحميل...",
     "description": "Shields controls footer, label for action reload page to apply current shields settings"
   }
 }

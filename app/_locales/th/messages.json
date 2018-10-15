@@ -1,23 +1,23 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "ส่วนขยาย Brave ",
     "description": "The name of the the extension."
   },
 
   "shieldsStatsAdsTrackersBlocked": {
-    "message": "Ads and Trackers Blocked",
+    "message": "บล็อกโฆษณาและตัวติดตาม",
     "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
   },
   "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Upgrades",
+    "message": "การอัพเกรด HTTPS ",
     "description": "Label for shields stats, HTTPS upgrades count"
   },
   "shieldsStatsScriptsBlocked": {
-    "message": "Scripts Blocked",
+    "message": "บล็อกสคริปต์",
     "description": "Label for shields stats, Scripts Blocked count"
   },
   "shieldsFingerPrintingBlocked": {
-    "message": "Fingerprinting Methods Blocked",
+    "message": "บล็อกวิธีพิมพ์ลายนิ้วมือ",
     "description": "Label for shields stats, Fingerprinting Methods Blocked count"
   },
 
@@ -26,98 +26,98 @@
     "description": "Label for top shields switch in shields header"
   },
   "shieldsHeaderToggleLeftPosition": {
-    "message": "Down",
+    "message": "ล่าง",
     "description": "Label for top shields switch in shields header turned off position"
   },
   "shieldsHeaderToggleRightPosition": {
-    "message": "Up",
+    "message": "บน",
     "description": "Label for top shields switch in shields header turned on position"
   },
   "shieldsHeaderForSite": {
-    "message": "Site shield settings for",
+    "message": "การตั้งค่าป้องกันไซต์สำหรับ",
     "description": "Label for shields header near current site name"
   },
 
   "shieldsControlsAdvancedControls": {
-    "message": "Advanced Controls",
+    "message": "การควบคุมระดับสูง",
     "description": "Label for advanced controls group"
   },
 
   "shieldsControlsAdControl": {
-    "message": "Ad Control",
+    "message": "ควบคุมโฆษณา",
     "description": "Label for Advertisement Control dropdown box options "
   },
   "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Block Ads",
+    "message": "บล็อกโฆษณา",
     "description": "Ad Control dropdown box, option block ads"
   },
   "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Allow Ads and Tracking",
+    "message": "อนุญาตโฆษณาและการติดตาม",
     "description": "Ad Control dropdown box, option allow ads and tracking"
   },
 
   "shieldsControlsCookieControl": {
-    "message": "Cookie Control",
+    "message": "ควบคุมคุกกี้",
     "description": "Label Cookie Control dropdown options"
   },
   "shieldsControlsCookieOptionBlock3p": {
-    "message": "Block 3rd Party Cookies",
+    "message": "บล็อกคุกกี้จากบุคคลที่ 3",
     "description": "Cookie control dropdown option Block 3rd Party Cookies"
   },
   "shieldsControlsCookieOptionAllowAll": {
-    "message": "Allow All Cookies",
+    "message": "อนุญาตคุกกี้ทั้งหมด",
     "description": "Cookie control dropdown option Allow All Cookies"
   },
   "shieldsControlsCookieOptionBlockAll": {
-    "message": "Block All Cookies",
+    "message": "บล็อกคุกกี้ทั้งหมด",
     "description": "Cookie control dropdown option Block All Cookies"
   },
 
   "shieldsControlsFingerprintingProtection": {
-    "message": "Fingerprinting Protection",
+    "message": "การป้องกันการพิมพ์ลายนิ้วมือ",
     "description": "Label Fingerprinting Protection dropdown options"
   },
   "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Block 3rd Party Fingerprinting",
+    "message": "บล็อกการพิมพ์ลายนิ้วมือจากบุคคลที่ 3",
     "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
   },
   "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Allow All Fingerprinting",
+    "message": "อนุญาตการพิมพ์ลายนิ้วมือทั้งหมด",
     "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
   },
   "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Block All Fingerprinting",
+    "message": "บล็อกการพิมพ์ลายนิ้วมือทั้งหมด",
     "description": "Fingerprinting control dropdown option Block All Fingerprinting"
   },
 
   "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
+    "message": "HTTPS ทุกที่",
     "description": "Shields controls, switch for HTTPS Everywhere"
   },
   "shieldsControlsBlockScriptsSwitch": {
-    "message": "Block Scripts",
+    "message": "สคริปต์บล็อก",
     "description": "Shields controls, switch for Block Scripts"
   },
   "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Block Phishing/Malware",
+    "message": "บล็อกฟิชชิ่ง/มัลแวร์",
     "description": "Shields controls, switch for Block Phishing/Malware"
   },
 
   "noScriptSwitches": {
-    "message": "Toggle switches to disable script blocking",
+    "message": "เปิดสวิทซ์เพื่อปิดการบล็อกสคริปต์",
     "description": "Instructions for per-origin noScript switches"
   },
   "noScriptApplyOnce": {
-    "message": "Apply",
+    "message": "ใช้",
     "description": "Label for applying per-origin noScript settings"
   },
 
   "shieldsFooterEditDefault":{
-    "message": "Edit default shield settings...",
+    "message": "แก้ไขการตั้งค่าเริ่มต้นชิลด์",
     "description": "Shields controls footer, link to edit default shields settings"
   },
   "shieldsFooterReload":{
-    "message": "Reload...",
+    "message": "โหลดซ้ำ...",
     "description": "Shields controls footer, label for action reload page to apply current shields settings"
   }
 }
