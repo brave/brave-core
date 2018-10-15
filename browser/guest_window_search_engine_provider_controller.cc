@@ -13,6 +13,7 @@ GuestWindowSearchEngineProviderController::
 GuestWindowSearchEngineProviderController(Profile* profile)
     : SearchEngineProviderControllerBase(profile) {
   DCHECK_EQ(profile->GetProfileType(), Profile::GUEST_PROFILE);
+  DCHECK(!profile->IsTorProfile());
 
   // Monitor otr(off the record) profile's search engine changing to tracking
   // user's default search engine provider.
@@ -29,15 +30,6 @@ GuestWindowSearchEngineProviderController::
 void GuestWindowSearchEngineProviderController::OnTemplateURLServiceChanged() {
   if (ignore_template_url_service_changing_)
     return;
-
-  // Prevent search engine changing from settings page for tor profile.
-  // TODO(simonhong): Revisit when related ux is determined.
-  if (otr_profile_->IsTorProfile()) {
-    base::AutoReset<bool> reset(&ignore_template_url_service_changing_, true);
-    ChangeToAlternativeSearchEngineProvider();
-    return;
-  }
-
 
   // The purpose of below code is turn off alternative prefs
   // when user changes to different search engine provider from settings.
