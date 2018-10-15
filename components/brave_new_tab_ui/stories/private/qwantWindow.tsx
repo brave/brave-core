@@ -74,7 +74,7 @@ export default class QwantTab extends React.PureComponent<{}, State> {
               <TorLockImage />
               <SubTitle>{locale.boxTorLabel}</SubTitle>
               <Title>{locale.boxTorTitle}</Title>
-              <Text>{locale.boxTorText}</Text>
+              <Text>{locale.boxTorText2}</Text>
             </Content>
             <Separator />
             <PurpleButton text={locale.boxTorButton} onClick={this.onClickLearnMoreAboutTorInBrave} />
