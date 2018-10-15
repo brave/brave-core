@@ -29,6 +29,7 @@ interface State {
   modalBackupActive: 'backup' | 'restore'
   modalActivity: boolean
   modalAddFunds: boolean
+  currentActivity?: string
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -41,7 +42,8 @@ class PageWallet extends React.Component<Props, State> {
       modalBackup: false,
       modalBackupActive: 'backup',
       modalActivity: false,
-      modalAddFunds: false
+      modalAddFunds: false,
+      currentActivity: undefined
     }
   }
 
@@ -130,8 +132,15 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalActivityToggle = () => {
+
+    let current = this.state.currentActivity
+    if (this.state.modalActivity) {
+      current = undefined
+    }
+
     this.setState({
-      modalActivity: !this.state.modalActivity
+      modalActivity: !this.state.modalActivity,
+      currentActivity: current
     })
   }
 
@@ -179,7 +188,7 @@ class PageWallet extends React.Component<Props, State> {
     const { walletInfo, reports } = this.props.rewardsData
     const { rates } = walletInfo
 
-    let props = {}
+    let reportProps = {}
 
     const currentTime = new Date()
     const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
@@ -190,7 +199,7 @@ class PageWallet extends React.Component<Props, State> {
 
         if (item.length > 1 && key !== 'total') {
           const tokens = utils.convertProbiToFixed(item)
-          props[key] = {
+          reportProps[key] = {
             tokens,
             converted: utils.convertBalance(tokens, rates)
           }
@@ -198,9 +207,33 @@ class PageWallet extends React.Component<Props, State> {
       }
     }
 
-    return {
-      report: props
+    let props = {
+      report: reportProps
     }
+
+    if (reports) {
+      props['onActivity'] = this.onModalActivityToggle
+    }
+
+    return props
+  }
+
+  generateActivityModal = () => {
+    const { walletInfo, reports } = this.props.rewardsData
+    const { rates } = walletInfo
+
+    let props = {
+      contributeRows: [],
+      transactionRows: []
+    }
+
+    let current = this.state.currentActivity
+    if (!current) {
+      const currentTime = new Date()
+      current = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
+    }
+
+    return props
   }
 
   render () {
@@ -268,108 +301,7 @@ class PageWallet extends React.Component<Props, State> {
         {
           // TODO NZ add actual data for the whole section
           this.state.modalActivity
-            ? <ModalActivity
-              contributeRows={[
-                {
-                  profile: {
-                    name: 'Bart Baker',
-                    verified: true,
-                    provider: 'youtube',
-                    src: ''
-                  },
-                  url: 'https://brave.com',
-                  attention: 40,
-                  onRemove: this.onModalActivityRemove,
-                  token: {
-                    value: '5.0',
-                    converted: '5.00'
-                  }
-                }
-              ]}
-              transactionRows={[
-                {
-                  date: '6/1',
-                  type: 'deposit',
-                  description: 'Brave Ads payment for May',
-                  amount: {
-                    value: '5.0',
-                    converted: '5.00'
-                  }
-                }
-              ]}
-              onClose={this.onModalActivityToggle}
-              onPrint={this.onModalActivityAction.bind('onPrint')}
-              onDownloadPDF={this.onModalActivityAction.bind('onDownloadPDF')}
-              onMonthChange={this.onModalActivityAction.bind('onMonthChange')}
-              months={{
-                'aug-2018': 'August 2018',
-                'jul-2018': 'July 2018',
-                'jun-2018': 'June 2018',
-                'may-2018': 'May 2018',
-                'apr-2018': 'April 2018'
-              }}
-              currentMonth={'aug-2018'}
-              summary={[
-                {
-                  text: 'Token Grant available',
-                  type: 'grant',
-                  token: {
-                    value: '10.0',
-                    converted: '5.20'
-                  }
-                },
-                {
-                  text: 'Earnings from Brave Ads',
-                  type: 'ads',
-                  token: {
-                    value: '10.0',
-                    converted: '5.20'
-                  }
-                },
-                {
-                  text: 'Brave Contribute',
-                  type: 'contribute',
-                  notPaid: true,
-                  token: {
-                    value: '10.0',
-                    converted: '5.20',
-                    isNegative: true
-                  }
-                },
-                {
-                  text: 'Recurring Donations',
-                  type: 'recurring',
-                  notPaid: true,
-                  token: {
-                    value: '2.0',
-                    converted: '1.1',
-                    isNegative: true
-                  }
-                },
-                {
-                  text: 'One-time Donations/Tips',
-                  type: 'donations',
-                  token: {
-                    value: '19.0',
-                    converted: '10.10',
-                    isNegative: true
-                  }
-                }
-              ]}
-              total={{
-                value: '1.0',
-                converted: '0.5'
-              }}
-              paymentDay={12}
-              openBalance={{
-                value: '10.0',
-                converted: '5.20'
-              }}
-              closingBalance={{
-                value: '11.0',
-                converted: '5.30'
-              }}
-            />
+            ? <ModalActivity {...this.generateActivityModal()} />
             : null
         }
       </>
