@@ -8,6 +8,7 @@
 <translation id="7753103220327065417">Tutup Brave</translation>
 <translation id="5588481533147090393">Untuk menyelesaikan impor, tutup semua jendela Brave.</translation>
 <translation id="6447842834002726250">Kuki</translation>
+<translation id="4983925687993168579">Statistik</translation>
 <translation id="9173846700806833701">Widevine tidak terpasang</translation>
 <translation id="2433569048491784801">Widevine tidak terpasang.</translation>
 <translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
@@ -16,4 +17,37 @@
 Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Widevine. Anda setuju bahwa Brave tidak bertanggung jawab untuk setiap kerusakan atau kerugian sehubungan dengan penggunaan Google Widevine.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Diimpor dari Brave</translation>
+<translation id="453977518730680921">Mainkan otomatis media</translation>
+<translation id="410351446219883937">Mainkan otomatis</translation>
+<translation id="2240268017737062801">Tanya ketika situs ingin memutar otomatis media</translation>
+<translation id="3371702087847741961">Tanyakan ketika situs ingin memainkan media secara otomatis (direkomendasikan)</translation>
+<translation id="3218385319396786393">Main otomatis pada halaman ini diblokir</translation>
+<translation id="4150684676757176434">Lanjutkan memblokir main otomatis</translation>
+<translation id="2044383478723007273">Warna Brave</translation>
+<translation id="5341901626640816374">Gunakan bilah lokasi lebar</translation>
+<translation id="7965178729203412357">Identitas Tor Baru</translation>
+<translation id="8784924142044142231">Keluar dari Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Buka Jendela Tor</translation>
+<translation id="3155170474926428993">Peluncur Tor</translation>
+<translation id="7372129767729198111">Default Brave shields</translation>
+<translation id="8029018702721078742">Kontrol Iklan</translation>
+<translation id="3544462288910360084">Kontrol Kuki</translation>
+<translation id="8919235146866304148">Proteksi pengambilan sidik jari</translation>
+<translation id="520895744850022668">HTTPS Di Mana Saja</translation>
+<translation id="5259716416204774556">Pemblokiran script</translation>
+<translation id="6067014455220527258">Blokir iklan</translation>
+<translation id="6985711843506827936">Izinkan iklan dan pelacakan</translation>
+<translation id="6132506775968708399">Blokir cookie pihak ketiga</translation>
+<translation id="5657156137487675418">Izinkan semua cookie</translation>
+<translation id="6883611015375728278">Blokir semua kuki</translation>
+<translation id="1442559343076146186">Blokir pengambil sidik jari pihak ketiga</translation>
+<translation id="8034285923190068220">Izinkan pengambilan sidik jari</translation>
+<translation id="4540198958192073185">Blokir semua pengambilan sidik jari</translation>
+<translation id="8942080017911802454">Kebijakan Penanganan WebRTC IP</translation>
+<translation id="6165508094623778733">Pelajari lebih lanjut</translation>
+<translation id="8798099450830957504">Default</translation>
+<translation id="1822560017823072927">Antarmuka privat dan umum default</translation>
+<translation id="5825943197137337319">Hanya antarmuka publik default</translation>
+<translation id="1689062823386843231">Nonaktifkan UDP nonproxi</translation>
 </translationbundle>

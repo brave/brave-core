@@ -8,31 +8,31 @@
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Rewards beitreten",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Sie können jetzt Tokens verdienen, indem Sie datenschutzorientierte Brave Anzeigen ansehen. Ihr Beitrag bleibt gleich.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Verdienen Sie Tokens dafür, Werbung zu schauen und bezahlen Sie Ihre bevorzugten Ersteller von Inhalten.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Finden Sie heraus, was sich verbessert hat",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Lernen Sie Mehr",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave Payments ist jetzt Brave Rewards mit vielen Upgrades.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Sie sind dabei, einen sehr mutigen Weg einzuschlagen, um im Internet zu surfen.",
     "description": ""
   },
   "yourWallet": {
@@ -44,15 +44,15 @@
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "ein",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Verifizierter Brave-Herausgeber",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
@@ -60,23 +60,23 @@
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Jetzt Spenden...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Trinkgelder Aktivieren",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "für",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Transaktionen nach Kategorie",
     "description": ""
   },
   "monthApr": {
@@ -88,7 +88,7 @@
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Dezember",
     "description": ""
   },
   "monthFeb": {
@@ -96,23 +96,23 @@
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Januar",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Juli",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Juni",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "März",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Mai",
     "description": ""
   },
   "monthNov": {
@@ -120,7 +120,7 @@
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Oktober",
     "description": ""
   },
   "monthSep": {
@@ -136,27 +136,53 @@
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Selbsttätiges-Beitragen",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Einmalige Spenden/Tringelder",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Gesamtbetrag",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "läuft ab am",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Wiederkehrende Spenden",
     "description": ""
   },
   "off": {
     "message": "Off",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

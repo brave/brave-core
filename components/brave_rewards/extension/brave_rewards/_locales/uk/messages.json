@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Винагороди Brave ",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Почати заробляти зараз!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Приєднатись до нагород",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Тепер ви можете заробляти токени, дивлячись сфокусовану на приватності рекламу Brave. Ваші внески залишаться такими ж самими.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Заробляйте токени, дивлячись рекламу і платіть ними вашим улюбленим творцям контенту.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Перевірте, що вдосконалено",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Детальніше",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Платежі Brave тепер стали винагородами Brave з багатьма покращеннями.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Ви збираєтесь розпочати дуже Brave перегляд веб-сторінок.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Ваш гаманець",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Пожертвування",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "увімкнути",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Перевірений дописувач Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Жертвувати кошти для цього сайту щомісяця",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Пожертвувати зараз...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Увімкнути підказки",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "для",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Транзакції за категоріями",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Квітень",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Серпень",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Грудень",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Лютий",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Січень",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Липень",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Червень",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Березень",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Травень",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Листопад",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Жовтень",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Вересень",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Пожертвування з токенів",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Заробіток від реклами Brave",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Робити внески автоматично",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Одноразові пожертвування/Підказки",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Усього",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "строк дії закінчується",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Періодичні пожертви",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Вимкнути",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

@@ -1,86 +1,86 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Recompense Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Începeți să câștigați acum!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Recompense intrare",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Acum puteți câștiga token-uri pentru vizualizarea reclamelor Brave centrate pe confidențialitate. Contribuția dumneavoastră rămâne aceeași.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Câștigați simboluri pentru vizualizarea de reclame și folosiți-le pentru a sprijini creatorii de content preferați.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Citiți care sunt îmbunătățirile",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Aflați mai multe",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Plățile Brave au devenit Recompensele Brave cu multe actualizări.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Sunteți pe cale de a începe un mod foarte Brave de a naviga pe internet.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Portofelul dumneavoastră",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Granturi",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "pornit",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Editor verificat de Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Donați lunar pe acest site",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Donează acum...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Activează indicii",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "pentru",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Tranzacții după categorie",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Aprilie",
     "description": ""
   },
   "monthAug": {
@@ -88,59 +88,59 @@
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Decembrie",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Februarie",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Ianuarie",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Iulie",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Iunie",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Martie",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Mai",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Noiembrie",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Octombrie",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Septembrie",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Subvenție token",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Câștiguri din Brave Ads",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Contribuție automată",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Donații/indicii o dată",
     "description": ""
   },
   "total": {
@@ -148,15 +148,41 @@
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "expiră în data de",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Donații recurente",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Oprit",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

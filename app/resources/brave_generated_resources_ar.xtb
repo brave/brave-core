@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
+<translation id="3333887201479867589">مكافآت Brave</translation>
+<translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
+<translation id="7450557937477381864">أغلق Chrome</translation>
+<translation id="7008934821596358692">لإنهاء الاستيراد، أغلق جميع نوافذ كروم.</translation>
+<translation id="7753103220327065417">غلق Brave</translation>
+<translation id="5588481533147090393">لإنهاء الاستيراد، أغلق جميع نوافذ Brave.</translation>
+<translation id="6447842834002726250">ملفات تعريف الارتباط</translation>
+<translation id="4983925687993168579">الإحصائيات</translation>
+<translation id="9173846700806833701">Widevine غير مُثبَّت</translation>
+<translation id="2433569048491784801">Widevine غير مُثبَّت.</translation>
+<translation id="3699882589215410581">تثبيت وتشغيل Widevine</translation>
+<translation id="8410111618231938546">إن Google Widevine هو جزء من رمز إدارة الحقوق الرقمية (DRM) التي لا نمتلكها ولا يمكننا فحصها في Brave Software. يتم تحميل رمز Google Widevine من خوادم Google، وليس من خوادمنا. يتم تحميله فقط عند تمكين هذا الخيار. نحن لا نشجع استخدام DRM، لكننا نحترم اختيار المستخدم ونقر بأن بعض مستخدمي Brave يرغبون في استخدام الخدمات التي تتطلب ذلك.
+
+عن طريق تثبيت هذا الملحق، إنك توافق على شروط استخدام Google Widevine. وتوافق على أن Brave ليست مسؤولة عن أية أضرار أو خسائر متعلقة باستخدامك لـ Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">تم الاستيراد من Brave</translation>
+<translation id="453977518730680921">وسائط التشغيل التلقائي</translation>
+<translation id="410351446219883937">تشغيل تلقائي</translation>
+<translation id="2240268017737062801">اسأل عندما يريد أحد المواقع تشغيل الوسائط تلقائيًا</translation>
+<translation id="3371702087847741961">السؤال عندما يريد أحد المواقع تشغيل الوسائط تلقائيًا (مُوصى به)</translation>
+<translation id="3218385319396786393">تم حظر التشغيل التلقائي في هذه الصفحة</translation>
+<translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
+<translation id="2044383478723007273">ألوان Brave</translation>
+<translation id="5341901626640816374">استخدم شريط الموقع الواسع</translation>
+<translation id="7965178729203412357">هوية تور الجديدة</translation>
+<translation id="8784924142044142231">الخروج من برنامج تور (Tor)</translation>
+<translation id="5410152065859052603">برنامج تور (Tor)</translation>
+<translation id="3696187925156352769">افتح نافذة Tor</translation>
+<translation id="3155170474926428993">مشغِّل تور</translation>
+<translation id="7372129767729198111">الإعدادات الافتراضية لدروع Brave</translation>
+<translation id="8029018702721078742">التحكم في الإعلان</translation>
+<translation id="3544462288910360084">التحكم في ملفات تعريف الارتباط</translation>
+<translation id="8919235146866304148">حماية البصمة</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="5259716416204774556">حظر البرنامج النصية</translation>
+<translation id="6067014455220527258">حظر الإعلانات</translation>
+<translation id="6985711843506827936">السماح بالإعلانات والتتبع</translation>
+<translation id="6132506775968708399">حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية</translation>
+<translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
+<translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
+<translation id="1442559343076146186">حظر بصمة الجهات الخارجية</translation>
+<translation id="8034285923190068220">السماح بالبصمة</translation>
+<translation id="4540198958192073185">حظر كل البصمات</translation>
+<translation id="8942080017911802454">سياسة مناولة WebRTC IP</translation>
+<translation id="6165508094623778733">اعرف المزيد</translation>
+<translation id="8798099450830957504">الافتراضي</translation>
+<translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
+<translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
+<translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
 </translationbundle>

@@ -1492,6 +1492,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6352773953037195952">El més alt</translation>
 <translation id="3677657024345889897">Volum mínim</translation>
 <translation id="167160931442925455">Volum màxim</translation>
+<translation id="2445007895943112260">&lt;ph name=\"TANT PER CENT\"&gt;$1&lt;ex&gt;120&lt;/ex&gt;%&lt;/ph&gt;</translation>
 <translation id="9129010913019873477"><ph name="PERCENTAGE"/> (valor predeterminat)</translation>
 <translation id="3602290021589620013">Previsualitza</translation>
 <translation id="7037509989619051237">Text de prova</translation>
@@ -2381,6 +2382,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3954469006674843813"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> hertzs)</translation>
 <translation id="7889565820482017512">Mida de visualització</translation>
 <translation id="8448729345478502352">Amplia o redueix els elements de la pantalla</translation>
+<translation id="513425442047539523"></translation>
 <translation id="2155772377859296191">Resolució: <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Resolució: <ph name="WIDTH"/> x <ph name="HEIGHT"/> (predeterminada)</translation>
 <translation id="1125550662859510761">Resolució: <ph name="WIDTH"/> x <ph name="HEIGHT"/> (nativa)</translation>

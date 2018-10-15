@@ -1,82 +1,82 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Ganjaran Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Mula Dapatkan Sekarang!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Ganjaran Penyertaan",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Anda kini boleh memperoleh token dengan menonton Iklan Brave tertumpu privasi. Sumbangan anda akan kekal sama.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Dapatkan token apabila anda menonton Iklan dan hadiahkannya kepada pencipta kandungan kegemaran anda.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Lihat peningkatan yang telah dilakukan",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Ketahui lebih lanjut",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Bayaran Brave kini dikenali sebagai Ganjaran Brave dengan banyak naik taraf.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Anda akan memulakan cara Brave untuk melayari web.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Dompet anda",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Geran",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "pada",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Penerbit Sah Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Buat sumbangan ke laman ini setiap Bulan",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Derma Sekarang...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Dayakan Tip",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "untuk",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Transaksi mengikut Kategori",
     "description": ""
   },
   "monthApr": {
@@ -84,35 +84,35 @@
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Ogos",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Disember",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Februari",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Januari",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Julai",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Jun",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Mac",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Mei",
     "description": ""
   },
   "monthNov": {
@@ -120,7 +120,7 @@
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Oktober",
     "description": ""
   },
   "monthSep": {
@@ -128,35 +128,61 @@
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Pemberian Token",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Pendapatan dari Iklan Brave",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Sumbangan Automatik",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Derma/Tip Sekali Sahaja",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Jumlah",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "luput pada",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Derma Berulang",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Padam",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

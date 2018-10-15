@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Ricompense Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Inizia a Guadagnare Ora!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Partecipa alle Ricompense",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Ora puoi guadagnare gettoni per guardare pubblicità Brave incentrata sulla privacy. Il tuo contributo rimane lo stesso.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Guadagna gettoni per guardare gli annunci pubblicitari e dalli agli autori dei tuoi contenuti preferiti.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Scopri che cosa è migliorato",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Per saperne di più",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "I Pagamenti Brave ora si chiamano Ricompense Brave e hanno molti aggiornamenti.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Stai per iniziare a usare un modo molto coraggioso per navigare sul web.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Il tuo portafoglio",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Sovvenzioni",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "attivo",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Editore Brave verificato",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Dona a questo sito mensilmente",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Dona ora...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Attiva le Mance",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "per",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Transazioni per categoria",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Aprile",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Agosto",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Dicembre",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Febbraio",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Gennaio",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Luglio",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Giugni",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Marzo",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Maggio",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Novembre",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Ottobre",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Settembre",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Concessione di Token",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Guadagna dagli Annunci di Brave",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Contribuisci Automaticamente",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Donazioni/mance una tantum",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Totale",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "scade il",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Donazioni Periodiche",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Spento",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

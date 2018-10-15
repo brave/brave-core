@@ -1,162 +1,188 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Brave 報酬",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "現在就開始賺取金額！",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "參加獎勵制度",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "現在您可以透過瀏覽重視隱私的 Brave Ads 廣告賺取代幣。您的貢獻維持不變。",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "瀏覽廣告以賺取代幣，並可轉贈予您喜愛的內容創造者。",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "查看改進的地方",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "瞭解更多",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave Payments 進行許多升級後現成為 Brave Rewards",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "您即將開始以一種非常 Brave 的方式瀏覽網頁。",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "您的錢包",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "授權",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "在",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave 驗證發行者",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "每月捐贈給此網站",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "現在就捐贈",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "啟用小費功能",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "給",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "按類別顯示交易",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "四月",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "8 月",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "十二月",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "二月",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "1 月",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "七月",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "六月",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "3 月",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "5 月",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "11 月",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "十月",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "九月",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "獲贈代幣",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Brave Ads 收入",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "自動捐獻",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "單次捐贈/小費",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "合計",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "過期",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "週期性捐贈",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "關閉",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

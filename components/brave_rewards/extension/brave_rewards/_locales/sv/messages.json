@@ -1,82 +1,82 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Brave belöningar",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Börja tjäna nu!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Gå med i Rewards",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "You can now earn tokens for watching privacy focused Brave Ads. Your contribution stays the same.",
+    "message": "Du kan nu tjäna tokens genom att titta på integritetsinriktade Braveannonser. Ditt bidrag förblir detsamma.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Earn tokens for watching Ads and pay it forward to your favorite content creators.",
+    "message": "Tjäna polletter genom att titta på annonser och betala vidare till dina favorit-innehållskreatörer.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Kolla in vad som har förbättrats",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Läs mer",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brave Payments is now Brave Rewards with many upgrades.",
+    "message": "Brave Betalningar är nu Brave Belöningar med många uppgraderingar.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "You are about to start a very Brave way to browse the web.",
+    "message": "Du startar snart ett mycket \"modigt\" sätt att surfa på nätet.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Din plånbok",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Utgivningar",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "på",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave verifierad utgivare",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Your Attention Score",
+    "message": "Attention Value",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Donate to this site Monthly",
+    "message": "Donera till denna webbplats månadsvis",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Brave Auto-Contribute",
+    "message": "Include in Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Donate Now…",
+    "message": "Donera nu...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Sätt på dricks",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "för",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transactions by Category",
+    "message": "Transaktioner genom kategori",
     "description": ""
   },
   "monthApr": {
@@ -84,7 +84,7 @@
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Augusti",
     "description": ""
   },
   "monthDec": {
@@ -92,27 +92,27 @@
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Februari",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Januari",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Juli",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Juni",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Mars",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Maj",
     "description": ""
   },
   "monthNov": {
@@ -120,7 +120,7 @@
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Oktober",
     "description": ""
   },
   "monthSep": {
@@ -128,35 +128,61 @@
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Pollett-utgivning",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Brave Ads",
+    "message": "Förtjänst från Brave-annonser",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Auto-bidra",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Donations/Tips",
+    "message": "Engångsdonationer/tips",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Totalt",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "Går ut den",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Recurring Donations",
+    "message": "Återkommande donationer",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Av",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }
