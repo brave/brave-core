@@ -36,9 +36,10 @@ typedef std::vector<SyncRecordAndExistingPtr> SyncRecordAndExistingList;
 
 using Uint8Array = std::vector<unsigned char>;
 
-class SyncLibToBrowserHandler {
+class SyncMessageHandler {
  public:
-  virtual ~SyncLibToBrowserHandler() = default;
+  virtual void BackgroundSyncStarted() = 0;
+  virtual void BackgroundSyncStopped() = 0;
 
   //SYNC_DEBUG
   virtual void OnSyncDebug(const std::string &message) = 0;
@@ -69,30 +70,15 @@ class SyncLibToBrowserHandler {
                                    const std::string &prev_order,
                                    const std::string &next_order,
                                    const std::string &parent_order) = 0;
-
   virtual void OnSyncWordsPrepared(const std::string &words) = 0;
 };
 
-class BraveSyncClient : public KeyedService,
-                        public base::SupportsWeakPtr<BraveSyncClient> {
+class BraveSyncClient : public base::SupportsWeakPtr<BraveSyncClient> {
  public:
-  ~BraveSyncClient() override = default;
+  virtual ~BraveSyncClient() = default;
 
   // BraveSync to Browser messages
-  virtual void SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) = 0;
-  virtual SyncLibToBrowserHandler *GetSyncToBrowserHandler() = 0;
-
-  // Browser to BraveSync messages
-
-  //GOT_INIT_DATA
-  //FETCH_SYNC_RECORDS
-  //FETCH_SYNC_DEVICES
-  //RESOLVE_SYNC_RECORDS
-  //SEND_SYNC_RECORDS
-  //DELETE_SYNC_USER
-  //DELETE_SYNC_CATEGORY
-  //GET_BOOKMARKS_BASE_ORDER
-  //GET_BOOKMARK_ORDER
+  virtual SyncMessageHandler* sync_message_handler() = 0;
 
   virtual void SendGotInitData(const Uint8Array& seed,
                                const Uint8Array& device_id,

@@ -31,16 +31,13 @@ using extensions::UnloadedExtensionReason;
 class BraveSyncClientImpl : public BraveSyncClient,
                             public ExtensionRegistryObserver {
  public:
-  BraveSyncClientImpl(Profile *profile);
+  BraveSyncClientImpl(SyncMessageHandler* handler, Profile* profile);
   ~BraveSyncClientImpl() override;
-
-  void Shutdown() override;
 
   // BraveSyncClient overrides
 
   // BraveSync to Browser messages
-  void SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) override;
-  SyncLibToBrowserHandler *GetSyncToBrowserHandler() override;
+  SyncMessageHandler* sync_message_handler() override;
 
   // Browser to BraveSync messages
   void SendGotInitData(const Uint8Array& seed, const Uint8Array& device_id,
@@ -67,6 +64,8 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void OnExtensionInitialized() override;
 
   // ExtensionRegistryObserver:
+  void OnExtensionReady(content::BrowserContext* browser_context,
+                        const extensions::Extension* extension) override;
   void OnExtensionLoaded(content::BrowserContext* browser_context,
                          const Extension* extension) override;
   void OnExtensionUnloaded(content::BrowserContext* browser_context,
@@ -76,11 +75,11 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void OnExtensionSystemReady();
   void OnProfilePreferenceChanged();
 
+  SyncMessageHandler* handler_;  // not owned
+  Profile* profile_;  // not owned
   bool extension_loaded_;
 
-  SyncLibToBrowserHandler *handler_;
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
-  Profile *profile_;
 
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
 

@@ -4,17 +4,13 @@
 
 #include "brave/components/brave_sync/brave_sync_service_impl.h"
 
-// #include <sstream>
-
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
-#include "brave/components/brave_sync/client/brave_sync_client.h"
-#include "brave/components/brave_sync/client/brave_sync_client_factory.h"
+#include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/history.h"
 #include "brave/components/brave_sync/jslib_const.h"
@@ -22,14 +18,12 @@
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
-#include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_storage.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
-#include "extensions/browser/extension_registry.h"
 #include "ui/base/models/tree_node_iterator.h"
 
 namespace brave_sync {
@@ -129,8 +123,8 @@ LoadExtraNodes(bookmarks::LoadExtraCallback callback,
   return extra_nodes;
 }
 
-BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
-    sync_client_(BraveSyncClientFactory::GetForBrowserContext(profile)),
+BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
+    sync_client_(new BraveSyncClientImpl(this, profile)),
     sync_initialized_(false),
     sync_words_(std::string()),
     profile_(profile),
@@ -138,10 +132,8 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
     unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
     initial_sync_records_remaining_(0),
     bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)),
-    extension_registry_observer_(this),
     weak_ptr_factory_(this) {
   CHECK(bookmark_model_);
-  extension_registry_observer_.Add(ExtensionRegistry::Get(profile));
 
   sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
 
@@ -149,11 +141,13 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
       !sync_prefs_->GetThisDeviceName().empty()) {
     sync_configured_ = true;
   }
-
-  sync_client_->SetSyncToBrowserHandler(this);
 }
 
 BraveSyncServiceImpl::~BraveSyncServiceImpl() {}
+
+BraveSyncClient* BraveSyncServiceImpl::GetSyncClient() {
+  return sync_client_.get();
+}
 
 bookmarks::BookmarkNode* BraveSyncServiceImpl::GetDeletedNodeRoot() {
   if (!deleted_node_root)
@@ -306,6 +300,14 @@ void BraveSyncServiceImpl::OnSetSyncSavedSiteSettings(
 }
 
 // SyncLibToBrowserHandler overrides
+void BraveSyncServiceImpl::BackgroundSyncStarted() {
+  StartLoop();
+}
+
+void BraveSyncServiceImpl::BackgroundSyncStopped() {
+  StopLoop();
+}
+
 void BraveSyncServiceImpl::OnSyncDebug(const std::string& message) {
   NotifyLogMessage(message);
 }
@@ -1161,23 +1163,6 @@ void BraveSyncServiceImpl::NotifyHaveSyncWords(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : observers_)
     observer.OnHaveSyncWords(this, sync_words);
-}
-
-void BraveSyncServiceImpl::OnExtensionReady(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension) {
-  if (extension->id() == brave_sync_extension_id) {
-    StartLoop();
-  }
-}
-
-void BraveSyncServiceImpl::OnExtensionUnloaded(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension,
-    extensions::UnloadedExtensionReason reason) {
-  if (extension->id() == brave_sync_extension_id) {
-    StopLoop();
-  }
 }
 
 } // namespace brave_sync

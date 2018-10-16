@@ -7,15 +7,16 @@
 
 namespace brave_sync {
 
-  BraveSyncService::BraveSyncService() {}
+BraveSyncService::BraveSyncService() {}
 
-  BraveSyncService::~BraveSyncService() {}
+BraveSyncService::~BraveSyncService() {}
 
-  void BraveSyncService::AddObserver(BraveSyncServiceObserver* observer) {
-    observers_.AddObserver(observer);
-  }
+void BraveSyncService::AddObserver(BraveSyncServiceObserver* observer) {
+  observers_.AddObserver(observer);
+}
 
-  void BraveSyncService::RemoveObserver(BraveSyncServiceObserver* observer) {
-    observers_.RemoveObserver(observer);
-  }
-} // brave_sync
+void BraveSyncService::RemoveObserver(BraveSyncServiceObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+}  // namespace brave_sync

@@ -21,11 +21,12 @@
 
 namespace brave_sync {
 
-BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
-    extension_loaded_(false),
-    handler_(nullptr),
-    brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
+BraveSyncClientImpl::BraveSyncClientImpl(SyncMessageHandler* handler,
+                                         Profile* profile) :
+    handler_(handler),
     profile_(profile),
+    extension_loaded_(false),
+    brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
     extension_registry_observer_(this) {
   DCHECK(profile_);
 
@@ -45,16 +46,7 @@ BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
 
 BraveSyncClientImpl::~BraveSyncClientImpl() {}
 
-void BraveSyncClientImpl::SetSyncToBrowserHandler(SyncLibToBrowserHandler *handler) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(handler);
-  DCHECK(!handler_);
-  handler_ = handler;
-}
-
-SyncLibToBrowserHandler *BraveSyncClientImpl::GetSyncToBrowserHandler() {
-  DCHECK(handler_);
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+SyncMessageHandler* BraveSyncClientImpl::sync_message_handler() {
   return handler_;
 }
 
@@ -135,8 +127,11 @@ void BraveSyncClientImpl::OnExtensionInitialized() {
     brave_sync_event_router_->LoadClient();
 }
 
-void BraveSyncClientImpl::Shutdown() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+void BraveSyncClientImpl::OnExtensionReady(
+    content::BrowserContext* browser_context,
+    const extensions::Extension* extension) {
+  if (extension->id() == brave_sync_extension_id)
+    handler_->BackgroundSyncStarted();
 }
 
 void BraveSyncClientImpl::OnExtensionLoaded(
@@ -152,9 +147,9 @@ void BraveSyncClientImpl::OnExtensionUnloaded(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     extensions::UnloadedExtensionReason reason) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (extension->id() == brave_sync_extension_id) {
     extension_loaded_ = false;
+    handler_->BackgroundSyncStopped();
   }
 }
 

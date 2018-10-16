@@ -14,25 +14,19 @@
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 #include "components/bookmarks/browser/bookmark_node_data.h"
-#include "extensions/browser/extension_registry_observer.h"
 
 namespace base {
 class RepeatingTimer;
 }
 
-using extensions::ExtensionRegistryObserver;
-using extensions::ExtensionRegistry;
-
 namespace brave_sync {
 
-namespace prefs {
-  class Prefs;
-}
-
 class SyncDevices;
-class BraveSyncService;
 class Settings;
-class InitialBookmarkNodeInfo;
+
+namespace prefs {
+class Prefs;
+}  // namespace prefs
 
 using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
                                                            const std::string&,
@@ -40,9 +34,8 @@ using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
                                                            const std::string&)>;
 
 class BraveSyncServiceImpl : public BraveSyncService,
-                             public SyncLibToBrowserHandler,
-                             public bookmarks::BookmarkModelObserver,
-                             public ExtensionRegistryObserver {
+                             public SyncMessageHandler,
+                             public bookmarks::BookmarkModelObserver {
  public:
   BraveSyncServiceImpl(Profile *profile);
   ~BraveSyncServiceImpl() override;
@@ -68,6 +61,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
   bool IsSyncConfigured();
   bool IsSyncInitialized();
+
+  BraveSyncClient* GetSyncClient() override;
 
  private:
   bookmarks::BookmarkNode* GetDeletedNodeRoot();
@@ -112,7 +107,9 @@ class BraveSyncServiceImpl : public BraveSyncService,
       SyncRecordAndExistingList* records_and_existing_objects);
 
   void OnResetBookmarks();
-  // SyncLibToBrowserHandler overrides
+  // SyncMessageHandler overrides
+  void BackgroundSyncStarted() override;
+  void BackgroundSyncStopped() override;
   void OnSyncDebug(const std::string& message) override;
   void OnSyncSetupError(const std::string& error) override;
   void OnGetInitData(const std::string& sync_version) override;
@@ -188,14 +185,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
   std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
       const bookmarks::BookmarkNode* node);
 
-  // ExtensionRegistryObserver:
-  void OnExtensionReady(content::BrowserContext* browser_context,
-                         const extensions::Extension* extension) override;
-  void OnExtensionUnloaded(content::BrowserContext* browser_context,
-                           const extensions::Extension* extension,
-                           extensions::UnloadedExtensionReason reason) override;
-
-  BraveSyncClient *sync_client_;
+  std::unique_ptr<BraveSyncClient> sync_client_;
 
   // True when is in active sync chain
   bool sync_configured_ = false;
@@ -228,9 +218,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   uint64_t initial_sync_records_remaining_;
 
   bookmarks::BookmarkModel* bookmark_model_;
-
-  ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
-      extension_registry_observer_;
 
   base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceImpl);
