@@ -9,7 +9,7 @@
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
-#include "brave/components/brave_sync/devices.h"
+#include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/profiles/profile.h"

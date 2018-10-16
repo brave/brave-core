@@ -15,7 +15,7 @@
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/client/brave_sync_client_factory.h"
-#include "brave/components/brave_sync/devices.h"
+#include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/history.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
