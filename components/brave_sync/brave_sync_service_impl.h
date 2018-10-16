@@ -9,7 +9,6 @@
 
 #include "base/macros.h"
 #include "base/scoped_observer.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
@@ -219,7 +218,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
   bookmarks::BookmarkModel* bookmark_model_;
 
-  base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceImpl);
 };
 
