@@ -133,6 +133,7 @@ export const FakeButton = styled<FakeButtonProps, 'a'>('a')`
   user-select: none;
   border-radius: 20px;
   min-width: 104px;
+  width: fit-content;
   text-decoration: none;
   align-items: center;
   line-height: 1;

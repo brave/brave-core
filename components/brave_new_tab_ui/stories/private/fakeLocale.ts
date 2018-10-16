@@ -33,20 +33,7 @@ const locale = {
   boxTorText: 'Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can’t see which sites you’re visiting. Tor can slow down browsing and some sites might not work at all.',
   // Private Window - Tor Box
   boxTorText2: 'Tor hides your IP address from the sites you visit by routing your traffic through several Tor servers before it reaches your destination. Open a Private Window with Tor from the File Menu or by pressing "Alt+Shift+N" on Windows or "Option+Shift+N" on Mac.',
-  boxTorButton: 'Learn more about Tor in Brave',
-
-  // Modal Private Window with Tor
-  modalPrivateWindowTorTitle: 'Link out to: https://support.brave.com/hc/en-us/articles/360018121491',
-
-  // Modal Private Window
-  modalPrivateWindowTitle: 'Link out to: https://support.brave.com/hc/en-us/articles/360017840332',
-
-  // Modal Tor in Brave
-  modalTorInBraveTitle: 'Link out to: https://support.brave.com/hc/en-us/articles/360018121491',
-
-  // Modal DuckDuckGo
-  modalDuckduckGoTitle: 'Link out to: TBD'
-
+  boxTorButton: 'Learn more about Tor in Brave'
 }
 
 export default locale

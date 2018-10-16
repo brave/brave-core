@@ -14,73 +14,42 @@ import {
   TorImage,
   TorLockImage,
   Separator,
-  PurpleButton
+  FakeButton
 } from '../../../../src/features/newTab'
-
-import PrivateWindowsWithTorModal from './modals/privateWindowsWithTorModal'
-import TorInBraveModal from './modals/torInBraveModal'
 
 import locale from './fakeLocale'
 const privateWindowImg = require('../../../assets/img/private-window-tor.svg')
 
-interface State {
-  learnMoreAboutPrivateWindowsWithTor: boolean
-  learnMoreAboutTorInBrave: boolean
-}
-
-export default class QwantTab extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
-    super(props)
-    this.state = {
-      learnMoreAboutPrivateWindowsWithTor: false,
-      learnMoreAboutTorInBrave: false
-    }
-  }
-
-  onClickLearnMoreAboutPrivateWindowsWithTor = () => {
-    this.setState({ learnMoreAboutPrivateWindowsWithTor: !this.state.learnMoreAboutPrivateWindowsWithTor })
-  }
-
-  onClickLearnMoreAboutTorInBrave = () => {
-    this.setState({ learnMoreAboutTorInBrave: !this.state.learnMoreAboutTorInBrave })
-  }
-
+export default class QwantTab extends React.PureComponent<{}, {}> {
   render () {
     return (
-      <>
-        {
-          this.state.learnMoreAboutPrivateWindowsWithTor
-            ? <PrivateWindowsWithTorModal onClose={this.onClickLearnMoreAboutPrivateWindowsWithTor} />
-            : null
-        }
-        {
-          this.state.learnMoreAboutTorInBrave
-            ? <TorInBraveModal onClose={this.onClickLearnMoreAboutTorInBrave} />
-            : null
-        }
-        <Grid2Columns>
-          <HeaderBox>
+      <Grid2Columns>
+        <HeaderBox>
+          <div>
+            <TorImage src={privateWindowImg} />
             <div>
-              <TorImage src={privateWindowImg} />
-              <div>
-                <SubTitle>{locale.headerLabel}</SubTitle>
-                <Title>{locale.headerTorTitle}</Title>
-                <Text>{locale.headerTorText}</Text>
-              </div>
+              <SubTitle>{locale.headerLabel}</SubTitle>
+              <Title>{locale.headerTorTitle}</Title>
+              <Text>{locale.headerTorText}</Text>
             </div>
-          </HeaderBox>
-          <Box>
-            <Content>
-              <TorLockImage />
-              <SubTitle>{locale.boxTorLabel}</SubTitle>
-              <Title>{locale.boxTorTitle}</Title>
-              <Text>{locale.boxTorText}</Text>
-            </Content>
-            <Separator />
-            <PurpleButton text={locale.boxTorButton} onClick={this.onClickLearnMoreAboutTorInBrave} />
-          </Box>
-        </Grid2Columns>
-      </>
+          </div>
+        </HeaderBox>
+        <Box>
+          <Content>
+            <TorLockImage />
+            <SubTitle>{locale.boxTorLabel}</SubTitle>
+            <Title>{locale.boxTorTitle}</Title>
+            <Text>{locale.boxTorText}</Text>
+          </Content>
+          <Separator />
+          <FakeButton
+            href='https://support.brave.com/hc/en-us/articles/360018121491'
+            target='_blank'
+          >
+            {locale.boxTorButton}
+          </FakeButton>
+        </Box>
+      </Grid2Columns>
     )
   }
 }

@@ -9,7 +9,7 @@ import { withKnobs, boolean } from '@storybook/addon-knobs'
 // Components
 import NewPrivateTab from './private/index'
 
-storiesOf('Feature Components/New Tab/Page', module)
+storiesOf('Feature Components/New Tab/Private', module)
   .addDecorator(withKnobs)
   .add('Private Window', () => {
     return (
