@@ -10,14 +10,16 @@
 #include "base/observer_list.h"
 #include "components/bookmarks/browser/bookmark_storage.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "extensions/buildflags/buildflags.h"
 
 class Profile;
 
 namespace brave_sync {
 
+class BraveSyncClient;
+class BraveSyncServiceObserver;
 class Settings;
 class SyncDevices;
-class BraveSyncServiceObserver;
 
 bookmarks::BookmarkPermanentNodeList
 LoadExtraNodes(bookmarks::LoadExtraCallback callback, int64_t* next_node_id);
@@ -27,17 +29,17 @@ class BraveSyncService : public KeyedService {
  public:
   BraveSyncService();
   ~BraveSyncService() override;
-  virtual void OnSetupSyncHaveCode(const std::string& sync_words,
-    const std::string& device_name) = 0;
-
-  virtual void OnSetupSyncNewToSync(const std::string& device_name) = 0;
-
-  virtual void OnDeleteDevice(const std::string& device_id) = 0;
-  virtual void OnResetSync() = 0;
 
   typedef base::Callback<void(std::unique_ptr<brave_sync::Settings>,
                               std::unique_ptr<brave_sync::SyncDevices>)>
       GetSettingsAndDevicesCallback;
+
+  virtual void OnSetupSyncHaveCode(
+      const std::string& sync_words,
+      const std::string& device_name) = 0;
+  virtual void OnSetupSyncNewToSync(const std::string& device_name) = 0;
+  virtual void OnDeleteDevice(const std::string& device_id) = 0;
+  virtual void OnResetSync() = 0;
   virtual void GetSettingsAndDevices(
       const GetSettingsAndDevicesCallback& callback) = 0;
 
@@ -53,6 +55,10 @@ class BraveSyncService : public KeyedService {
   void AddObserver(BraveSyncServiceObserver* observer);
   void RemoveObserver(BraveSyncServiceObserver* observer);
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  virtual BraveSyncClient* GetSyncClient() = 0;
+#endif
+
  protected:
   base::ObserverList<BraveSyncServiceObserver> observers_;
 
@@ -60,6 +66,6 @@ class BraveSyncService : public KeyedService {
   DISALLOW_COPY_AND_ASSIGN(BraveSyncService);
 };
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif //BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_SYNC_BRAVE_SYNC_SERVICE_H_

@@ -8,7 +8,6 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_impl.h"
-#include "brave/components/brave_sync/client/brave_sync_client_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,7 +44,6 @@ BraveSyncServiceFactory::BraveSyncServiceFactory()
         "BraveSyncService",
         BrowserContextDependencyManager::GetInstance()) {
   DependsOn(BookmarkModelFactory::GetInstance());
-  DependsOn(BraveSyncClientFactory::GetInstance());
 }
 
 BraveSyncServiceFactory::~BraveSyncServiceFactory() = default;
