@@ -9,6 +9,8 @@ import { Page, PageWrapper } from 'brave-ui/features/newTab'
 
 // Components group
 import PrivateTab from './privateTab'
+import QwantTab from './qwantTab'
+import QwantTorTab from './qwantTorTab'
 import TorTab from './torTab'
 
 interface Props {
@@ -18,10 +20,21 @@ interface Props {
 }
 
 export default class NewPrivateTab extends React.PureComponent<Props, {}> {
+  get isQwant () {
+    return navigator.language === 'de' || navigator.language === 'fr'
+  }
+
   get currentWindow () {
     const { isTor, useAlternativePrivateSearchEngine, onChangePrivateSearchEngine } = this.props
     if (isTor) {
+      if (this.isQwant) {
+        return <QwantTorTab />
+      }
       return <TorTab />
+    }
+
+    if (this.isQwant) {
+      return <QwantTab />
     }
 
     return (
@@ -35,7 +48,7 @@ export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   render () {
     const { isTor } = this.props
     return (
-      <Page isPrivate={!isTor}>
+      <Page isPrivate={!isTor && !this.isQwant}>
         <PageWrapper>
           {this.currentWindow}
         </PageWrapper>
