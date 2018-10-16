@@ -18,6 +18,7 @@
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
+#include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
@@ -32,6 +33,10 @@ using content::RenderFrameHost;
 using content::WebContents;
 using content_settings::BraveCookieSettings;
 using brave_shields::BraveShieldsWebContentsObserver;
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+using extensions::ChromeContentBrowserClientExtensionsPart;
+#endif
 
 namespace {
 
@@ -218,4 +223,19 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
     command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
                                    path.BaseName());
   }
+}
+
+GURL BraveContentBrowserClient::GetEffectiveURL(
+    content::BrowserContext* browser_context,
+    const GURL& url) {
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (!profile)
+    return url;
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  return ChromeContentBrowserClientExtensionsPart::GetEffectiveURL(profile,
+                                                                   url);
+#else
+  return url;
+#endif
 }

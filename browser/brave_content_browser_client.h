@@ -56,6 +56,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const service_manager::Identity& identity,
       base::CommandLine* command_line) override;
 
+  GURL GetEffectiveURL(content::BrowserContext* browser_context,
+                       const GURL& url) override;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };
