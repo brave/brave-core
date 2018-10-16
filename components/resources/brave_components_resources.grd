@@ -219,7 +219,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT1" desc="">Reward creators for the content you love.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DISABLED_TEXT2" desc="">Your monthly budget gets distributed across the sites you visit.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Please visit some sites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Sites will appear as you browse</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total tips this month</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Have you tipped your favorite creator today?</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="">Add Funds</message>
@@ -281,7 +281,7 @@
       <message name="IDS_BRAVE_UI_CONTRIBUTE" desc="">Contribute</message>
       <message name="IDS_BRAVE_UI_CONTRIBUTE_ALLOCATION" desc="">Auto-Contribute Allocation</message>
       <message name="IDS_BRAVE_UI_COPY" desc="">Copy</message>
-      <message name="IDS_BRAVE_UI_CURRENT_DONATION" desc="">You’re currently donating {{currentDonation}} BAT to this site every month.</message>
+      <message name="IDS_BRAVE_UI_CURRENT_DONATION" desc="">You’re currently sending {{currentDonation}} BAT to this site every month.</message>
       <message name="IDS_BRAVE_UI_DATE" desc="">Date</message>
       <message name="IDS_BRAVE_UI_DEPOSIT" desc="">Deposit</message>
       <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
@@ -332,7 +332,7 @@
       <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
       <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Auto-Contribute and your recurring tips, these payments are skipped for the period.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Auto-Contribute and your recurring tips, these payments are skipped for this period.</message>
       <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
       <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART" desc="">Ready to get started?</message>
