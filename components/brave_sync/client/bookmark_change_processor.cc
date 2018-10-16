@@ -303,7 +303,7 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
   // this should be safe to ignore as it's only called for managed bookmarks
 }
 
-void BookmarkChangeProcessor::ResetBookmarks() {
+void BookmarkChangeProcessor::Reset() {
   ui::TreeNodeIterator<const bookmarks::BookmarkNode>
       iterator(bookmark_model_->root_node());
   bookmark_model_->BeginExtensiveChanges();
@@ -320,7 +320,8 @@ void BookmarkChangeProcessor::ResetBookmarks() {
   bookmark_model_->EndExtensiveChanges();
 }
 
-void BookmarkChangeProcessor::OnResolvedBookmarks(const RecordsList &records) {
+void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+    const RecordsList &records) {
   bookmark_model_->BeginExtensiveChanges();
   for (const auto& sync_record : records) {
     DCHECK(sync_record->has_bookmark());
@@ -513,7 +514,7 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   return record;
 }
 
-void BookmarkChangeProcessor::GetExistingBookmarks(
+void BookmarkChangeProcessor::GetAllSyncData(
     const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
     SyncRecordAndExistingList* records_and_existing_objects) {
   for (const auto& record : records){
@@ -535,7 +536,7 @@ bookmarks::BookmarkNode* BookmarkChangeProcessor::GetDeletedNodeRoot() {
   return deleted_node_root;
 }
 
-void BookmarkChangeProcessor::SendUnsyncedBookmarks(
+void BookmarkChangeProcessor::SendUnsynced(
     base::TimeDelta unsynced_send_interval) {
   std::vector<std::unique_ptr<jslib::SyncRecord>> records;
 
