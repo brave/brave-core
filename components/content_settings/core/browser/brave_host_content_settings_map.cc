@@ -4,7 +4,6 @@
 
 #include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
 
-#include "brave/common/tor/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/prefs/pref_service.h"
@@ -17,46 +16,11 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
     bool migrate_requesting_and_top_level_origin_settings)
     : HostContentSettingsMap(prefs, is_incognito_profile, is_guest_profile,
         store_last_modified, migrate_requesting_and_top_level_origin_settings) {
-  InitializeFingerprintingContentSetting();
-  InitializeReferrerContentSetting();
   InitializeCookieContentSetting();
-  InitializeBraveShieldsContentSetting();
   InitializeFlashContentSetting();
-
-  if (prefs->HasPrefPath(tor::prefs::kProfileUsingTor) &&
-      prefs->GetBoolean(tor::prefs::kProfileUsingTor)) {
-    BlockGeolocation();
-  }
 }
 
 BraveHostContentSettingsMap::~BraveHostContentSettingsMap() {
-}
-
-void BraveHostContentSettingsMap::BlockGeolocation() {
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_GEOLOCATION,
-      std::string(),
-      CONTENT_SETTING_BLOCK);
-}
-
-void BraveHostContentSettingsMap::InitializeFingerprintingContentSetting() {
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kFingerprinting,
-      CONTENT_SETTING_ALLOW);
-}
-
-void BraveHostContentSettingsMap::InitializeReferrerContentSetting() {
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers,
-      CONTENT_SETTING_BLOCK);
 }
 
 void BraveHostContentSettingsMap::InitializeCookieContentSetting() {
@@ -67,15 +31,6 @@ void BraveHostContentSettingsMap::InitializeCookieContentSetting() {
       ContentSettingsPattern::FromString("https://firstParty/*"),
       CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kCookies,
-      CONTENT_SETTING_ALLOW);
-}
-
-void BraveHostContentSettingsMap::InitializeBraveShieldsContentSetting() {
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields,
       CONTENT_SETTING_ALLOW);
 }
 

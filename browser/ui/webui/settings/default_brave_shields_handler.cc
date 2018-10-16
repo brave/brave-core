@@ -153,7 +153,7 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(const base::ListVa
           GURL(), GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting);
 
   std::string value;
-  if (setting != fp_setting) {
+  if (setting != fp_setting || setting == CONTENT_SETTING_DEFAULT) {
     value = "3p";
   } else {
     value = setting == CONTENT_SETTING_ALLOW ? "allow" : "block";
