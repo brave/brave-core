@@ -78,7 +78,7 @@ RewardsNotificationsServiceImpl::GenerateRewardsNotificationID() const {
 
 RewardsNotificationsServiceImpl::RewardsNotificationTimestamp
 RewardsNotificationsServiceImpl::GenerateRewardsNotificationTimestamp() const {
-  return base::Time::Now().ToDeltaSinceWindowsEpoch().InSeconds();
+  return base::Time::NowFromSystemTime().ToTimeT();
 }
 
 void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {

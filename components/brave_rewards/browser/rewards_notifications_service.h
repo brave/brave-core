@@ -21,7 +21,7 @@ class RewardsNotificationsService : public KeyedService {
   ~RewardsNotificationsService() override;
 
   typedef uint32_t RewardsNotificationID;
-  typedef int64_t RewardsNotificationTimestamp;
+  typedef uint64_t RewardsNotificationTimestamp;
   typedef std::vector<std::string> RewardsNotificationArgs;
 
   enum RewardsNotificationType {
