@@ -52,11 +52,11 @@
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention Value",
+    "message": "Attention",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip to this site Monthly",
+    "message": "Tip this site Monthly",
     "description": ""
   },
   "includeInAuto": {
@@ -140,7 +140,7 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Tips",
+    "message": "One-Time Tips",
     "description": ""
   },
   "total": {

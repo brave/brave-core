@@ -1,138 +1,138 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Zawadi za Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Anza Kupata Kipato Sasa!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Zawadi za Kujiunga",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Lipwa kwa kutazama matangazo na lipia moja kwa moja kuwasaidia watengenezaji wa maudhui unaowapenda.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Sasa unaweza kupata vianzio kwa kutazama matangazo yanayoheshimu faragha.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Angalia kile kilichoboreshwa",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Jifunze Zaidi",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Tumeboresha Brave Malipo kwa kiwango cha juu.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Kaa tayari kupata uzoefu wa Intaneti inayokuja.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Waleti Yako",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Ruzuku",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "katika",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Mchapishaji wa Brave Aliyethibitishwa",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention Value",
+    "message": "Attention",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip to this site Monthly",
+    "message": "Tip this site Monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Jumuisha kwenye Auto-Contribute",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Tuma Kidokeza...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Wezesha Vidokezo",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "kwa",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Muhtasari wa Zawadi",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Aprili",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Agosti",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Desemba",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Februari",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Januari",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Julai",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Juni",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Machi",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Mei",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Novemba",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Oktoba",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Septemba",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Ruzuku ya Kianzio",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Mapato kutokana na Matangazo",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,23 +140,49 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-time Tips",
+    "message": "One-Time Tips",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Jumla",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "huisha muda wake tarehe",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Vidokezo vya kila mwezi",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Zima",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
     "description": ""
   }
 }
