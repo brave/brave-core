@@ -581,11 +581,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               <p
                 className="c31"
               >
-                MISSING: whyBraveRewardsDesc
-              </p>
-              <p
-                className="c31"
-              >
                 MISSING: whyBraveRewardsDesc1
               </p>
               <p

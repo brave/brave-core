@@ -154,9 +154,6 @@ class WelcomePage extends React.PureComponent<Props, State> {
             {getLocale('whyBraveRewards')}
           </StyledCenterTitle>
           <StyledCenterParagraph>
-            {getLocale('whyBraveRewardsDesc')}
-          </StyledCenterParagraph>
-          <StyledCenterParagraph>
             {getLocale('whyBraveRewardsDesc1')}
           </StyledCenterParagraph>
           <StyledCenterParagraph>
