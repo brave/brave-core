@@ -9,7 +9,6 @@
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_sync/can_send_history.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
@@ -114,7 +113,7 @@ void History::GetAllHistoryComplete(history::QueryResults* results) {
       LOG(ERROR) << "History::GetAllHistoryComplete item= id()=" << item.id() <<  " url()=" << item.url().spec();
     }
     // inform controller have result
-    send_history_->HaveInitialHistory(results);
+    // send_history_->HaveInitialHistory(results);
   }
 
   //AB: Release();

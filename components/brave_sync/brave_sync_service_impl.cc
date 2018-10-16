@@ -145,8 +145,6 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile *profile) :
 
   sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
 
-  history_ = std::make_unique<brave_sync::History>(/*this, */profile, this);
-
   if (!sync_prefs_->GetSeed().empty() &&
       !sync_prefs_->GetThisDeviceName().empty()) {
     sync_configured_ = true;
@@ -175,8 +173,6 @@ bool BraveSyncServiceImpl::IsSyncInitialized() {
 
 void BraveSyncServiceImpl::Shutdown() {
   StopLoop();
-
-  history_.reset();
 }
 
 void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
@@ -380,7 +376,8 @@ void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
 
   sync_prefs_->SetSyncBookmarksEnabled(true);
   sync_prefs_->SetSyncSiteSettingsEnabled(true);
-  sync_prefs_->SetSyncHistoryEnabled(true);
+  // TODO(bridiver) - re-enable this when we add history
+  sync_prefs_->SetSyncHistoryEnabled(false);
 
   initializing_ = false;
 }
@@ -667,10 +664,6 @@ void BraveSyncServiceImpl::OnResolvedBookmarks(const RecordsList &records) {
   bookmark_model_->EndExtensiveChanges();
 }
 
-void BraveSyncServiceImpl::OnResolvedHistorySites(const RecordsList &records) {
-  NOTIMPLEMENTED();
-}
-
 void BraveSyncServiceImpl::OnDeletedSyncUser() {
   NOTIMPLEMENTED();
 }
@@ -791,7 +784,6 @@ void BraveSyncServiceImpl::RequestSyncData() {
       BookmarkNodeAdded(bookmark_model_,
                         node->parent(),
                         node->parent()->GetIndexOf(node));
-    //SendAllLocalHistorySites();
 
     if (initial_sync_records_remaining_ > 0)
       return;
@@ -1115,69 +1107,6 @@ void BraveSyncServiceImpl::BookmarkNodeChanged(bookmarks::BookmarkModel* model,
   model->DeleteNodeMetaInfo(node, "sync_timestamp");
   // also clear the last send time because this is a new change
   model->DeleteNodeMetaInfo(node, "last_send_time");
-}
-
-void BraveSyncServiceImpl::SendAllLocalHistorySites() {
-  // static const int SEND_RECORDS_COUNT_LIMIT = 1000;
-  // history_->GetAllHistory();
-
-  // for(size_t i = 0; i < localBookmarks.size(); i += SEND_RECORDS_COUNT_LIMIT) {
-  //   size_t sub_list_last =
-  //       std::min(localBookmarks.size(), i + SEND_RECORDS_COUNT_LIMIT);
-  //   std::vector<const bookmarks::BookmarkNode*> sub_list(
-  //       localBookmarks.begin()+i, localBookmarks.begin()+sub_list_last);
-  //   CreateUpdateDeleteBookmarks(
-  //       jslib_const::kActionCreate, sub_list, true, true);
-  // }
-}
-
-void BraveSyncServiceImpl::HaveInitialHistory(history::QueryResults* results) {
-  static const int SEND_RECORDS_COUNT_LIMIT = 1000;
-
-  if (!results || results->empty() || !sync_prefs_->GetSyncHistoryEnabled() ) {
-    return;
-  }
-
-  if (results && !results->empty()) {
-    for (const auto& item : *results){
-      //history_item_vec.push_back(GetHistoryItem(item));
-      //item.visit_time();
-      item.visit_time();
-    }
-
-    for(size_t i = 0; i < results->size(); i += SEND_RECORDS_COUNT_LIMIT) {
-      size_t sub_list_last =
-          std::min(results->size(), i + SEND_RECORDS_COUNT_LIMIT);
-      history::QueryResults::URLResultVector
-          sub_list(results->begin()+i, results->begin()+sub_list_last);
-
-      CreateUpdateDeleteHistorySites(
-          jslib_const::kActionCreate, sub_list, true, true);
-    }
-  }
-
-  // Convert
-  // Send Actually created sync
-  ;
-
-}
-
-
-void BraveSyncServiceImpl::CreateUpdateDeleteHistorySites(
-    const int action,
-    //const history::QueryResults::URLResultVector &list,
-    const std::vector<history::URLResult> &list,
-    const bool addIdsToNotSynced,
-    const bool isInitialSync) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (list.empty() || !sync_prefs_->GetSyncHistoryEnabled()) {
-    return;
-  }
-
-  DCHECK(sync_client_);
-  std::unique_ptr<RecordsList> records =
-      history_->NativeHistoryToSyncRecords(list, action);
-  sync_client_->SendSyncRecords(jslib_const::SyncRecordType_HISTORY, *records);
 }
 
 static const int64_t kCheckUpdatesIntervalSec = 60;

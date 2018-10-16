@@ -12,7 +12,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
-#include "brave/components/brave_sync/can_send_history.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 #include "components/bookmarks/browser/bookmark_node_data.h"
 #include "extensions/browser/extension_registry_observer.h"
@@ -24,10 +23,6 @@ class RepeatingTimer;
 using extensions::ExtensionRegistryObserver;
 using extensions::ExtensionRegistry;
 
-namespace history {
-  class URLResult;
-}
-
 namespace brave_sync {
 
 namespace prefs {
@@ -37,7 +32,6 @@ namespace prefs {
 class SyncDevices;
 class BraveSyncService;
 class Settings;
-class History;
 class InitialBookmarkNodeInfo;
 
 using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
@@ -47,7 +41,6 @@ using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
 
 class BraveSyncServiceImpl : public BraveSyncService,
                              public SyncLibToBrowserHandler,
-                             public CanSendSyncHistory,
                              public bookmarks::BookmarkModelObserver,
                              public ExtensionRegistryObserver {
  public:
@@ -160,17 +153,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
       const std::string& object_id);
 
   void SendUnsyncedBookmarks();
-  void SendAllLocalHistorySites();
-
-  void CreateUpdateDeleteHistorySites(
-    const int action,
-    //history::QueryResults::URLResultVector list,
-    const std::vector<history::URLResult> &list,
-    const bool addIdsToNotSynced,
-    const bool isInitialSync);
-
-  // CanSendHistory overrides
-  void HaveInitialHistory(history::QueryResults* results) override;
 
   void SetUpdateDeleteDeviceName_Ext(
     const std::string& action,
@@ -228,7 +210,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
   std::unique_ptr<brave_sync::Settings> settings_;
-  std::unique_ptr<brave_sync::History> history_;
 
   Profile *profile_;
 

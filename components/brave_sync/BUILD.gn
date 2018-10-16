@@ -39,7 +39,6 @@ source_set("brave_sync") {
     "brave_sync_service_impl.cc",
     "brave_sync_service_impl.h",
     "brave_sync_service_observer.h",
-    "can_send_history.h",
     "history.h",
     "history.cc",
     "jslib_const.cc",
