@@ -63,7 +63,7 @@ export default class TorTab extends React.PureComponent<{}, {}> {
         <Box>
           <Content>
             <TorLockImage />
-            <SubTitle>{getLocale('boxTorLabel')}</SubTitle>
+            <SubTitle>{getLocale('boxTorLabel2')}</SubTitle>
             <Title>{getLocale('boxTorTitle')}</Title>
             <Text>{getLocale('boxTorText')}</Text>
           </Content>
