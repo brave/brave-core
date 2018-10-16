@@ -37,7 +37,7 @@ export default class QwantTab extends React.PureComponent<{}, {}> {
         <Box>
           <Content>
             <TorLockImage />
-            <SubTitle>{locale.boxTorLabel}</SubTitle>
+            <SubTitle>{locale.boxTorLabel2}</SubTitle>
             <Title>{locale.boxTorTitle}</Title>
             <Text>{locale.boxTorText}</Text>
           </Content>
