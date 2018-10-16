@@ -31,7 +31,7 @@ void RegisterAlternativeSearchEngineProviderProfilePrefs(
   registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
   registry->RegisterIntegerPref(
       kAlternativeSearchEngineProviderInTor,
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
 }
 
 void InitializeSearchEngineProviderIfNeeded(Profile* profile) {
