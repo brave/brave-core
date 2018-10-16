@@ -197,10 +197,10 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
   std::string sync_words_;
 
-  std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
   std::unique_ptr<brave_sync::Settings> settings_;
 
   Profile *profile_;
+  std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
 
   // Moment when FETCH_SYNC_RECORDS was sent,
   // will be saved on GET_EXISTING_OBJECTS to be sure request was processed

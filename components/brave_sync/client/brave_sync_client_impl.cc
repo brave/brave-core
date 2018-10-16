@@ -25,13 +25,10 @@ BraveSyncClientImpl::BraveSyncClientImpl(SyncMessageHandler* handler,
                                          Profile* profile) :
     handler_(handler),
     profile_(profile),
+    sync_prefs_(new brave_sync::prefs::Prefs(profile->GetPrefs())),
     extension_loaded_(false),
     brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
     extension_registry_observer_(this) {
-  DCHECK(profile_);
-
-  sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
-
   // Handle when the extension system is ready
   extensions::ExtensionSystem::Get(profile)->ready().Post(
       FROM_HERE, base::Bind(&BraveSyncClientImpl::OnExtensionSystemReady,

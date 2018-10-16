@@ -128,13 +128,12 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
     sync_initialized_(false),
     sync_words_(std::string()),
     profile_(profile),
+    sync_prefs_(new brave_sync::prefs::Prefs(profile->GetPrefs())),
     timer_(std::make_unique<base::RepeatingTimer>()),
     unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
     initial_sync_records_remaining_(0),
     bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)) {
   CHECK(bookmark_model_);
-
-  sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);
 
   if (!sync_prefs_->GetSeed().empty() &&
       !sync_prefs_->GetThisDeviceName().empty()) {

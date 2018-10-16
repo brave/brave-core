@@ -77,11 +77,10 @@ class BraveSyncClientImpl : public BraveSyncClient,
 
   SyncMessageHandler* handler_;  // not owned
   Profile* profile_;  // not owned
+  std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
   bool extension_loaded_;
 
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
-
-  std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
 
   // Registrar used to monitor the profile prefs.
   PrefChangeRegistrar profile_pref_change_registrar_;
