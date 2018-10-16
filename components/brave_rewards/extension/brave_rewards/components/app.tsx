@@ -48,6 +48,7 @@ export class RewardsPanel extends React.Component<Props, State> {
           ? <PanelWelcome
             variant={'two'}
             optInAction={actions.createWallet}
+            link={'chrome://rewards'}
           />
           : <Panel windowId={this.state.windowId} />
         }
