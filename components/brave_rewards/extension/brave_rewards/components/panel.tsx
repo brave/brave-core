@@ -83,7 +83,7 @@ export class Panel extends React.Component<Props, State> {
     const publisherKey = publisher && publisher.publisher_key
     const excluded = publisher && publisher.excluded
     if (publisherKey && publisherKey.length > 0 && excluded !== undefined) {
-      this.props.actions.includeInAutoContribution(publisherKey, !excluded)
+      this.props.actions.includeInAutoContribution(publisherKey, !excluded, this.props.windowId)
     }
   }
 

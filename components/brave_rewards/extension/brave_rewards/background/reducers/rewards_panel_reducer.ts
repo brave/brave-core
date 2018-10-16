@@ -174,7 +174,9 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       {
         let publisherKey = payload.publisherKey
         let excluded = payload.excluded
-        chrome.braveRewards.includeInAutoContribution(publisherKey, excluded)
+        let windowId = payload.windowId
+        chrome.braveRewards.includeInAutoContribution(publisherKey, excluded,
+          windowId)
         break
       }
   }

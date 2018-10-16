@@ -83,7 +83,7 @@ ExtensionFunction::ResponseAction
     RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service_) {
     rewards_service_->SetContributionAutoInclude(
-      params->publisher_key, params->excluded);
+      params->publisher_key, params->excluded, params->window_id);
   }
   return RespondNow(NoArguments());
 }

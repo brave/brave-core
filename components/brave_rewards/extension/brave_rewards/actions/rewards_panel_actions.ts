@@ -55,7 +55,8 @@ export const deleteNotification = (id: number) => action(types.DELETE_NOTIFICATI
   id
 })
 
-export const includeInAutoContribution = (publisherKey: string, excluded: boolean) => action(types.INCLUDE_IN_AUTO_CONTRIBUTION, {
+export const includeInAutoContribution = (publisherKey: string, excluded: boolean, windowId: number) => action(types.INCLUDE_IN_AUTO_CONTRIBUTION, {
   publisherKey,
-  excluded
+  excluded,
+  windowId
 })

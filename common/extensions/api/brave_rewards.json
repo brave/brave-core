@@ -231,6 +231,25 @@
         "type": "function",
         "description": "Get current month wallet report",
         "parameters": []
+      },
+      {
+        "name": "includeInAutoContribution",
+        "type": "function",
+        "description": "Toggles auto-contribution for rewards panel",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          },
+          {
+            "name": "excluded",
+            "type": "boolean"
+          },
+          {
+            "name": "window_id",
+            "type": "integer"
+          }
+        ]
       }
     ]
   }

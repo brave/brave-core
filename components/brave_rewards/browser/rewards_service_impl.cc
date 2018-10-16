@@ -1265,7 +1265,7 @@ void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
 
     publisher.percentage = info->percent;
     publisher.verified = info->verified;
-    publisher.excluded = info->excluded;
+    publisher.excluded = info->excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
     publisher.name = info->name;
     publisher.url = info->url;
     publisher.provider = info->provider;
@@ -1574,9 +1574,10 @@ void RewardsServiceImpl::OnRemoveRecurring(const std::string& publisher_key,
 }
 
 void RewardsServiceImpl::SetContributionAutoInclude(std::string publisher_key,
-  bool excluded) {
-  ledger_->SetPublisherExclude(publisher_key, excluded ?
-    ledger::PUBLISHER_EXCLUDE::EXCLUDED : ledger::PUBLISHER_EXCLUDE::INCLUDED);
+  bool excluded, uint64_t windowId) {
+  ledger_->SetPublisherPanelExclude(publisher_key, excluded ?
+    ledger::PUBLISHER_EXCLUDE::EXCLUDED : ledger::PUBLISHER_EXCLUDE::INCLUDED,
+    windowId);
 }
 
 }  // namespace brave_rewards
