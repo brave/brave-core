@@ -71,8 +71,9 @@ SyncRecordPtr PrepareResolvedDevice(
 
 }  // namespace
 
-BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
-    sync_client_(new BraveSyncClientImpl(this, profile)),
+BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile,
+  BraveSyncClient* client) :
+    sync_client_(client),
     sync_initialized_(false),
     sync_words_(std::string()),
     profile_(profile),
@@ -117,6 +118,9 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
     sync_configured_ = true;
   }
 }
+
+BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
+  BraveSyncServiceImpl(profile, new BraveSyncClientImpl(this, profile)) {}
 
 BraveSyncServiceImpl::~BraveSyncServiceImpl() {}
 
