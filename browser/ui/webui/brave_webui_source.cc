@@ -69,9 +69,10 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "Phoyoserge_TheSeantParis.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND18 },
         { "Phoyoserge_VeniseSunset.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND19 },
         { "Phoyoserge_Yosemite.jpg", IDR_BRAVE_NEW_TAB_BACKGROUND20 },
+
         // private tab
-        { "4697127f5404662b027f8dd436642cf7.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },
-        { "8640d24b8340ae4127895e4372aa295b.svg", IDR_BRAVE_PRIVATE_TAB_DDG_IMG }
+        { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },
+        { "dbdc336ccc651b8a7c925b3482d6e65a.svg", IDR_BRAVE_PRIVATE_TAB_IMG }
       }
     }, {
       std::string("welcome"), {
@@ -131,18 +132,41 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "preferencesPageTitle", IDS_BRAVE_NEW_TAB_PREFERENCES_PAGE_TITLE },
         { "bookmarksPageTitle", IDS_BRAVE_NEW_TAB_BOOKMARKS_PAGE_TITLE },
         { "historyPageTitle", IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE },
-        // private tab
-        { "thisIsAPrivateWindow", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW },
-        { "thisIsAPrivateWindowWithTor", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A_PRIVATE_WINDOW_WITH_TOR },
-        { "browseTheWebMorePrivatelyWith", IDS_BRAVE_PRIVATE_NEW_TAB_BROWSE_THE_WEB_MORE_PRIVATELY_WITH },
-        { "torDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_DISCLAIMER },
+
+        // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
-        { "defaultSearchEngineDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DEFAULT_SEARCH_ENGINE_DISCLAIMER },
-        { "searchPreferences", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PREFERENCES },
-        { "privateSearchWith", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_WITH },
-        { "duckduckgoDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DDG_DISCLAIMER },
-        { "moreAboutPrivateTabs", IDS_BRAVE_PRIVATE_NEW_TAB_MORE_ABOUT_PRIVATE_TABS },
-        { "privateTabsDisclaimer", IDS_BRAVE_PRIVATE_NEW_TAB_DISCLAIMER }
+        { "done", IDS_BRAVE_PRIVATE_NEW_TAB_DONE },
+        { "searchSettings", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_SETTINGS },
+        { "headerLabel", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A },
+
+        // Private Tab - Header Private Window
+        { "headerTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW },
+        { "headerText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC },
+        { "headerButton", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON },
+
+        // Private Tab - Header Private Window with Tor
+        { "headerTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR },
+        { "headerTorText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC },
+        { "headerTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WIONDOW_TOR_BUTTON },
+
+        // Private Tab - Box for DDG
+        { "boxDdgLabel", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_LABEL },
+        { "boxDdgTitle", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TITLE },
+        { "boxDdgText", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_1 },
+        { "boxDdgText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_2 },
+        { "boxDdgButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_BUTTON },
+
+        // Private Tab - Box for Tor
+        { "boxTorLabel", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL },
+        { "boxTorLabel2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL_2 },
+        { "boxTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TITLE },
+
+        // Private Tab - Private Window with Tor - Tor Box
+        { "boxTorText", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_1 },
+
+        // Private Tab - Private Window - Tor Box
+        { "boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2 },
+        { "boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON }
       }
     }, {
       std::string("welcome"), {
