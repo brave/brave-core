@@ -165,7 +165,7 @@ void SyncUIDOMHandler::SyncThisDevice(const base::ListValue* args) {
     // TODO(bridiver) - does this need to report an error?
     return;
 
-  sync_service_->OnSetSyncThisDevice(new_value);
+  sync_service_->OnSetSyncEnabled(new_value);
 }
 
 void SyncUIDOMHandler::SyncBookmarks(const base::ListValue* args) {

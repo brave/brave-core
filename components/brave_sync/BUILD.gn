@@ -48,8 +48,6 @@ source_set("brave_sync") {
     "jslib_const.h",
     "jslib_messages.cc",
     "jslib_messages.h",
-    "object_map.cc",
-    "object_map.h",
     "settings.cc",
     "settings.h",
     "tools.cc",

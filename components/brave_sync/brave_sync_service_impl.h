@@ -19,7 +19,6 @@
 
 namespace base {
 class RepeatingTimer;
-class SequencedTaskRunner;
 }
 
 using extensions::ExtensionRegistryObserver;
@@ -30,10 +29,6 @@ namespace history {
 }
 
 namespace brave_sync {
-
-namespace storage {
-  class ObjectMap;
-}
 
 namespace prefs {
   class Prefs;
@@ -70,7 +65,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnResetSync() override;
   void GetSyncWords() override;
   std::string GetSeed() override;
-  void OnSetSyncThisDevice(const bool sync_this_device) override;
+  void OnSetSyncEnabled(const bool sync_this_device) override;
   void OnSetSyncBookmarks(const bool sync_bookmarks) override;
   void OnSetSyncBrowsingHistory(const bool sync_browsing_history) override;
   void OnSetSyncSavedSiteSettings(const bool sync_saved_site_settings) override;
@@ -148,9 +143,11 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
   void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
+  void OnResolvedPreferences(const RecordsList &records);
+  std::unique_ptr<SyncRecordAndExistingList> PrepareResolvedPreferences(
+    const RecordsList& records);
 
   // Other private methods
-  void OnResolvedPreferencesOnUIThread(bool this_device_deleted);
   void RequestSyncData();
   void FetchSyncRecords(const bool bookmarks, const bool history,
     const bool preferences, int max_records);
@@ -222,8 +219,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   bool sync_configured_ = false;
   // True if we have received SyncReady from JS lib
   bool sync_initialized_ = false;
-  // Version received from "get-init-data" command
-  std::string sync_version_;
 
   // Prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync
   // while being initializing
@@ -233,7 +228,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
   std::unique_ptr<brave_sync::Settings> settings_;
-  std::unique_ptr<brave_sync::storage::ObjectMap> sync_obj_map_;
   std::unique_ptr<brave_sync::History> history_;
 
   Profile *profile_;
@@ -253,8 +247,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   uint64_t initial_sync_records_remaining_;
 
   bookmarks::BookmarkModel* bookmark_model_;
-
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
       extension_registry_observer_;
