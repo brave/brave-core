@@ -5,7 +5,6 @@
 import * as React from 'react'
 import {
   Modal,
-  Paragraph,
   LimitedBounds,
   PurpleButton,
   HeadingText,
@@ -25,12 +24,6 @@ export default class PrivateWindowsWithTorModal extends React.PureComponent<Prop
       <Modal onClose={onClose} size='small'>
         <LimitedBounds>
           <HeadingText>{locale.modalPrivateWindowTorTitle}</HeadingText>
-          <Paragraph>{locale.modalPrivateWindowTorDisclaimer1}</Paragraph>
-          <Paragraph>{locale.modalPrivateWindowTorDisclaimer2}</Paragraph>
-          <Paragraph>{locale.modalPrivateWindowTorDisclaimer3}</Paragraph>
-          <Paragraph>{locale.modalPrivateWindowTorDisclaimer4}</Paragraph>
-          <Paragraph>{locale.modalPrivateWindowTorDisclaimer5}</Paragraph>
-          <Paragraph>{locale.modalPrivateWindowTorDisclaimer6}</Paragraph>
         </LimitedBounds>
         <Footer>
           <PurpleButton onClick={onClose} text={locale.done} />

@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { OpenNewIcon } from '../../../../src/components/icons'
+// import { OpenNewIcon } from '../../../../src/components/icons'
 import {
   Grid,
   HeaderGrid,
@@ -19,8 +19,8 @@ import {
   TorLockImage,
   Separator,
   PurpleButton,
-  FakeButton
-  // Link
+  // FakeButton,
+  Link
 } from '../../../../src/features/newTab'
 
 import PrivateWindowsWithTorModal from './modals/privateWindowsWithTorModal'
@@ -101,11 +101,11 @@ export default class TorTab extends React.PureComponent<{}, State> {
             </Content>
             <Separator />
             <ButtonGroup>
-              <FakeButton settings={true} href='chrome://settings' target='_blank'>
+              {/* <FakeButton settings={true} href='chrome://settings' target='_blank'>
                 <span>{locale.searchSettings}</span>
                 <OpenNewIcon />
-              </FakeButton>
-              {/* <Link onClick={this.onClickLearnMoreAboutDuckDuckGo}>{locale.learnMore}</Link> */}
+              </FakeButton> */}
+              <Link onClick={this.onClickLearnMoreAboutDuckDuckGo}>{locale.learnMore}</Link>
             </ButtonGroup>
           </Box>
           <Box>

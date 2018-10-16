@@ -109,7 +109,7 @@ export const Link = styled<{}, 'a'>('a')`
   font-style: normal;
   line-height: 1;
   align-self: center;
-  margin: 25px 20px 0;
+  margin: 25px 20px 0 0;
   cursor: pointer;
 `
 

@@ -5,7 +5,6 @@
 import * as React from 'react'
 import {
   Modal,
-  Paragraph,
   LimitedBounds,
   PurpleButton,
   HeadingText,
@@ -25,10 +24,6 @@ export default class PrivateWindowsModal extends React.PureComponent<Props, {}> 
       <Modal onClose={onClose} size='small'>
         <LimitedBounds>
           <HeadingText>{locale.modalPrivateWindowTitle}</HeadingText>
-          <Paragraph>{locale.modalPrivateWindowDisclaimer1}</Paragraph>
-          <Paragraph>{locale.modalPrivateWindowDisclaimer2}</Paragraph>
-          <Paragraph>{locale.modalPrivateWindowDisclaimer3}</Paragraph>
-          <Paragraph>{locale.modalPrivateWindowDisclaimer4}</Paragraph>
         </LimitedBounds>
         <Footer>
           <PurpleButton onClick={onClose} text={locale.done} />

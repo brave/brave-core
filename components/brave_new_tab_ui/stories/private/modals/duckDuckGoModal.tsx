@@ -5,7 +5,6 @@
 import * as React from 'react'
 import {
   Modal,
-  Paragraph,
   LimitedBounds,
   PurpleButton,
   HeadingText,
@@ -25,8 +24,6 @@ export default class DuckDuckGoModal extends React.PureComponent<Props, {}> {
       <Modal onClose={onClose} size='small'>
         <LimitedBounds>
           <HeadingText>{locale.modalDuckduckGoTitle}</HeadingText>
-          <Paragraph>{locale.modalDuckduckGoDisclaimer1}</Paragraph>
-          <Paragraph>{locale.modalDuckduckGoDisclaimer2}</Paragraph>
         </LimitedBounds>
         <Footer>
           <PurpleButton onClick={onClose} text={locale.done} />
