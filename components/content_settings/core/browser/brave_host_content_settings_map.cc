@@ -16,19 +16,7 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
     bool migrate_requesting_and_top_level_origin_settings)
     : HostContentSettingsMap(prefs, is_incognito_profile, is_guest_profile,
         store_last_modified, migrate_requesting_and_top_level_origin_settings) {
-  InitializeFlashContentSetting();
 }
 
 BraveHostContentSettingsMap::~BraveHostContentSettingsMap() {
-}
-
-void BraveHostContentSettingsMap::InitializeFlashContentSetting() {
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      // One would think this should be brave_shields::kFlash; however, if you
-      // use it, it will always ask and click-to-play will not work.
-      std::string(),
-      CONTENT_SETTING_BLOCK);
 }

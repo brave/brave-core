@@ -15,6 +15,7 @@
 #include "chrome/browser/extensions/api/content_settings/content_settings_store.h"
 #include "chrome/browser/extensions/extension_function_test_utils.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
+#include "chrome/browser/plugins/plugin_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -314,10 +315,11 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
                        FlashPersistTest) {
-  ContentSetting setting =
-      HostContentSettingsMapFactory::GetForProfile(browser()->profile())->
-          GetContentSetting(kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
-                            std::string());
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  ContentSetting setting = PluginUtils::GetFlashPluginContentSetting(
+      host_content_settings_map, url::Origin::Create(kBraveURL),
+      kBraveURL, nullptr);
   EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
 }
 
