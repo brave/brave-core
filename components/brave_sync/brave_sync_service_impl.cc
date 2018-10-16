@@ -515,7 +515,6 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
 
 const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
                                         const std::string& object_id) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ui::TreeNodeIterator<const bookmarks::BookmarkNode>
       iterator(model->root_node());
   while (iterator.has_next()) {
@@ -534,7 +533,6 @@ const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
 
 uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
                   const jslib::Bookmark& record) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   uint64_t index = 0;
   ui::TreeNodeIterator<const bookmarks::BookmarkNode> iterator(root_node);
   while (iterator.has_next()) {
@@ -555,7 +553,6 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
 void UpdateNode(bookmarks::BookmarkModel* model,
                 const bookmarks::BookmarkNode* node,
                 const jslib::SyncRecord* record) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto bookmark = record->GetBookmark();
   if (bookmark.isFolder) {
     // SetDateFolderModified
