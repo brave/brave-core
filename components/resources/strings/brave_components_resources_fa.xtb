@@ -1,7 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fa">
+<translation id="689261804992965033">آگهی مسدود شد</translation>
 <translation id="1663506596135222606">ردیاب‌ها مسدود شدند</translation>
 <translation id="2313532038420432247">به‌روزرسانی‌های HTTPS</translation>
+<translation id="7679428712334662192">زمان تخمینی ذخیره شد</translation>
+<translation id="3772054137575942265">رأی برداشته شد.</translation>
 <translation id="2079545284768500474">واگرد</translation>
+<translation id="8529752221839395787">بازیابی همه</translation>
+<translation id="3022168349636134570">ثانیه</translation>
+<translation id="8664519043722036194">ثانیه</translation>
+<translation id="755854589635502953">دقیقه</translation>
+<translation id="7210211103303402262">دقیقه</translation>
+<translation id="679011980069501619">ساعت</translation>
+<translation id="8344569602005188545">ساعت</translation>
+<translation id="7100907433458266664">روز</translation>
+<translation id="4971389353431353387">روز</translation>
 </translationbundle>
