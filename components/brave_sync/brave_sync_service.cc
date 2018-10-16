@@ -8,7 +8,6 @@
 namespace brave_sync {
 
 BraveSyncService::BraveSyncService() {}
-
 BraveSyncService::~BraveSyncService() {}
 
 void BraveSyncService::AddObserver(BraveSyncServiceObserver* observer) {

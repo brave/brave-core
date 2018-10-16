@@ -52,7 +52,7 @@ extern const char kSyncApiVersion[];
 
 class Prefs {
 public:
-  Prefs(Profile *profile);
+  Prefs(PrefService* pref_service);
 
   std::string GetSeed() const;
   void SetSeed(const std::string& seed);
