@@ -9,10 +9,9 @@
 
 #include "base/macros.h"
 #include "base/scoped_observer.h"
+#include "base/time/time.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
-#include "components/bookmarks/browser/bookmark_model_observer.h"
-#include "components/bookmarks/browser/bookmark_node_data.h"
 
 namespace base {
 class RepeatingTimer;
@@ -22,6 +21,7 @@ namespace brave_sync {
 
 class SyncDevices;
 class Settings;
+class BookmarkChangeProcessor;
 
 namespace prefs {
 class Prefs;
@@ -33,8 +33,7 @@ using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
                                                            const std::string&)>;
 
 class BraveSyncServiceImpl : public BraveSyncService,
-                             public SyncMessageHandler,
-                             public bookmarks::BookmarkModelObserver {
+                             public SyncMessageHandler {
  public:
   BraveSyncServiceImpl(Profile *profile);
   ~BraveSyncServiceImpl() override;
@@ -64,48 +63,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   BraveSyncClient* GetSyncClient() override;
 
  private:
-  bookmarks::BookmarkNode* GetDeletedNodeRoot();
-  // bookmarks::BookmarkModelObserver implementation
-  void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
-                           bool ids_reassigned) override;
-  void BookmarkNodeMoved(bookmarks::BookmarkModel* model,
-                         const bookmarks::BookmarkNode* old_parent,
-                         int old_index,
-                         const bookmarks::BookmarkNode* new_parent,
-                         int new_index) override;
-  void BookmarkNodeAdded(bookmarks::BookmarkModel* model,
-                         const bookmarks::BookmarkNode* parent,
-                         int index) override;
-  void BookmarkNodeRemoved(
-      bookmarks::BookmarkModel* model,
-      const bookmarks::BookmarkNode* parent,
-      int old_index,
-      const bookmarks::BookmarkNode* node,
-      const std::set<GURL>& no_longer_bookmarked) override;
-  void BookmarkNodeChanged(bookmarks::BookmarkModel* model,
-                           const bookmarks::BookmarkNode* node) override;
-  void BookmarkNodeFaviconChanged(bookmarks::BookmarkModel* model,
-                                  const bookmarks::BookmarkNode* node) override;
-  void BookmarkNodeChildrenReordered(bookmarks::BookmarkModel* model,
-                                     const bookmarks::BookmarkNode* node) override;
-  void BookmarkAllUserNodesRemoved(
-      bookmarks::BookmarkModel* model,
-      const std::set<GURL>& removed_urls) override;
-
-  void CloneBookmarkNodeForDeleteImpl(
-      const bookmarks::BookmarkNodeData::Element& element,
-      bookmarks::BookmarkNode* parent,
-      int index);
-  void CloneBookmarkNodeForDelete(
-      const std::vector<bookmarks::BookmarkNodeData::Element>& elements,
-      bookmarks::BookmarkNode* parent,
-      int index);
-
-  void GetExistingBookmarks(
-      const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
-      SyncRecordAndExistingList* records_and_existing_objects);
-
-  void OnResetBookmarks();
   // SyncMessageHandler overrides
   void BackgroundSyncStarted() override;
   void BackgroundSyncStopped() override;
@@ -130,7 +87,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
                            const std::string& parent_order) override;
   void OnSyncWordsPrepared(const std::string& words) override;
 
-  void OnResolvedBookmarks(const RecordsList &records);
   void OnResolvedHistorySites(const RecordsList &records);
   void OnResolvedPreferences(const RecordsList &records);
   std::unique_ptr<SyncRecordAndExistingList> PrepareResolvedPreferences(
@@ -148,8 +104,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
       const std::string& device_id,
       const std::string& object_id);
 
-  void SendUnsyncedBookmarks();
-
   void SetUpdateDeleteDeviceName_Ext(
     const std::string& action,
     const std::string& deviceName,
@@ -166,23 +120,9 @@ class BraveSyncServiceImpl : public BraveSyncService,
     const base::Time &last_record_time_stamp,
     const bool is_truncated );
 
-  void PushRRContext(const std::string& prev_order,
-                     const std::string& next_order,
-                     const std::string& parent_order,
-                     const int64_t &node_id,
-                     const int action);
-  void PopRRContext(const std::string& prev_order,
-                    const std::string& next_order,
-                    const std::string& parent_order,
-                    int64_t &node_id,
-                    int *action);
-
   void NotifyLogMessage(const std::string& message);
   void NotifySyncStateChanged();
   void NotifyHaveSyncWords(const std::string& sync_words);
-
-  std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
-      const bookmarks::BookmarkNode* node);
 
   std::unique_ptr<BraveSyncClient> sync_client_;
 
@@ -202,21 +142,16 @@ class BraveSyncServiceImpl : public BraveSyncService,
   Profile *profile_;
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
 
+  std::unique_ptr<BookmarkChangeProcessor> bookmark_change_processor_;
   // Moment when FETCH_SYNC_RECORDS was sent,
   // will be saved on GET_EXISTING_OBJECTS to be sure request was processed
   base::Time last_time_fetch_sent_;
-
-  // Map to keep tracking between request and response on query bookmarks order,
-  // access only in UI thread <prev_order, next_order> => <node_id, action>
-  std::map<std::string, std::tuple<int64_t, int>> rr_map_;
 
   std::unique_ptr<base::RepeatingTimer> timer_;
 
   // send unsynced records in batches
   base::TimeDelta unsynced_send_interval_;
   uint64_t initial_sync_records_remaining_;
-
-  bookmarks::BookmarkModel* bookmark_model_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceImpl);
 };
