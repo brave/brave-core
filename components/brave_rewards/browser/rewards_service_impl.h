@@ -22,6 +22,7 @@
 #include "extensions/common/one_shot_event.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 
@@ -105,6 +106,9 @@ class RewardsServiceImpl : public RewardsService,
   void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) override;
   double GetContributionAmount() override;
   brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
+  void RemoveRecurring(const std::string& publisher_key) override;
+  void UpdateRecurringDonationsList() override;
+  void UpdateTipsList() override;
 
  private:
   typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
@@ -146,6 +150,17 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
+  void OnDonate(const std::string& publisher_key, int amount, bool recurring) override;
+  void OnContributionInfoSaved(const ledger::PUBLISHER_CATEGORY category, bool success);
+  void OnRecurringDonationSaved(bool success);
+  void SaveRecurringDonation(const std::string& publisher_key, const int amount);
+  void OnRecurringDonationsData(const ledger::RecurringDonationCallback callback,
+                                const ledger::PublisherInfoList list);
+  void OnRecurringDonationUpdated(const ledger::PublisherInfoList& list);
+  void OnTipsUpdatedData(const ledger::PublisherInfoList list);
+  void TipsUpdated();
+  void OnRemovedRecurring(ledger::RecurringRemoveCallback callback, bool success);
+  void OnRemoveRecurring(const std::string& publisher_key, ledger::RecurringRemoveCallback callback) override;
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -159,6 +174,7 @@ class RewardsServiceImpl : public RewardsService,
                       const std::vector<ledger::Grant>& grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
+                           ledger::PUBLISHER_CATEGORY category,
                            const std::string& probi) override;
   void OnGrantFinish(ledger::Result result,
                      const ledger::Grant& grant) override;
@@ -174,6 +190,11 @@ class RewardsServiceImpl : public RewardsService,
   void LoadPublisherInfo(ledger::PublisherInfoFilter filter,
                          ledger::PublisherInfoCallback callback) override;
   void LoadPublisherInfoList(
+      uint32_t start,
+      uint32_t limit,
+      ledger::PublisherInfoFilter filter,
+      ledger::GetPublisherInfoListCallback callback) override;
+  void LoadCurrentPublisherInfoList(
       uint32_t start,
       uint32_t limit,
       ledger::PublisherInfoFilter filter,
@@ -210,6 +231,13 @@ class RewardsServiceImpl : public RewardsService,
                           const BitmapFetcherService::RequestId& request_id,
                           const SkBitmap& image);
   void OnSetOnDemandFaviconComplete(bool success);
+  void SaveContributionInfo(const std::string& probi,
+                            const int month,
+                            const int year,
+                            const uint32_t date,
+                            const std::string& publisher_key,
+                            const ledger::PUBLISHER_CATEGORY category) override;
+  void GetRecurringDonations(ledger::RecurringDonationCallback callback) override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;

@@ -41,6 +41,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
                                    unsigned int result,
                                    const std::string& viewing_id,
                                    const std::string& probi) {};
+  virtual void OnRecurringDonationUpdated(RewardsService* rewards_service,
+                                          brave_rewards::ContentSiteList) {};
+  virtual void OnCurrentTips(RewardsService* rewards_service,
+                                          brave_rewards::ContentSiteList) {};
 };
 
 }  // namespace brave_rewards

@@ -111,3 +111,17 @@ export const onNumExcludedSites = (num: string) => action(types.ON_NUM_EXCLUDED_
 export const onContributionAmount = (amount: number) => action(types.ON_CONTRIBUTION_AMOUNT, {
   amount
 })
+
+export const onRecurringDonationUpdate = (list: Rewards.Publisher[]) => action(types.ON_RECURRING_DONATION_UPDATE, {
+  list
+})
+
+export const removeRecurring = (publisherKey: string) => action(types.ON_REMOVE_RECURRING, {
+  publisherKey
+})
+
+export const onCurrentTips = (list: Rewards.Publisher[]) => action(types.ON_CURRENT_TIPS, {
+  list
+})
+
+export const getDonationTable = () => action(types.GET_DONATION_TABLE)

@@ -66,10 +66,15 @@ window.cr.define('brave_rewards_donate', function () {
     getActions().onWalletProperties(properties)
   }
 
+  function recurringDonations (list: string[]) {
+    getActions().onRecurringDonations(list)
+  }
+
   return {
     initialize,
     publisherBanner,
-    walletProperties
+    walletProperties,
+    recurringDonations
   }
 })
 
