@@ -86,6 +86,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void MakePayment(const PaymentData& payment_data) = 0;
   virtual void AddRecurringPayment(const std::string& publisher_id, const double& value) = 0;
+  virtual void DoDirectDonation(const PublisherInfo& publisher, const int amount, const std::string& currency) = 0;
   virtual void OnLoad(const VisitData& visit_data, const uint64_t& current_time) = 0;
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
   virtual void OnShow(uint32_t tab_id, const uint64_t& current_time) = 0;
@@ -125,6 +126,9 @@ class LEDGER_EXPORT Ledger {
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
                                     const ledger::PublisherInfoFilter& filter,
                                     GetPublisherInfoListCallback callback) = 0;
+  virtual void GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
+                            const ledger::PublisherInfoFilter& filter,
+                            ledger::GetPublisherInfoListCallback callback) = 0;
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) = 0;
@@ -176,6 +180,14 @@ class LEDGER_EXPORT Ledger {
                                     ledger::ReportType type,
                                     const std::string& probi) = 0;
   virtual ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) = 0;
+  virtual double GetBalance() = 0;
+  virtual void OnReconcileCompleteSuccess(const std::string& viewing_id,
+                                          const ledger::PUBLISHER_CATEGORY category,
+                                          const std::string& probi,
+                                          const ledger::PUBLISHER_MONTH month,
+                                          const int year,
+                                          const uint32_t date) = 0;
+  virtual void RemoveRecurring(const std::string& publisher_key) = 0;
 };
 
 }  // namespace ledger

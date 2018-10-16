@@ -33,6 +33,8 @@ using GetPublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
+using RecurringDonationCallback = std::function<void(const PublisherInfoList&)>;
+using RecurringRemoveCallback = std::function<void(Result)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -46,6 +48,7 @@ class LEDGER_EXPORT LedgerClient {
                                   std::unique_ptr<ledger::WalletInfo>) = 0;
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,
+                                   ledger::PUBLISHER_CATEGORY category,
                                    const std::string& probi) = 0;
 
   virtual void LoadLedgerState(LedgerCallbackHandler* handler) = 0;
@@ -74,6 +77,9 @@ class LEDGER_EXPORT LedgerClient {
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
                                     GetPublisherInfoListCallback callback) = 0;
+  virtual void LoadCurrentPublisherInfoList(uint32_t start, uint32_t limit,
+                                    PublisherInfoFilter filter,
+                                    GetPublisherInfoListCallback callback) = 0;
 
   virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;
   virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
@@ -86,6 +92,15 @@ class LEDGER_EXPORT LedgerClient {
                                    uint64_t windowId) = 0;
   virtual void OnExcludedSitesChanged() = 0;
   virtual void FetchFavIcon(const std::string& url, const std::string& publisher_key) = 0;
+  virtual void SaveContributionInfo(const std::string& probi,
+                                    const int month,
+                                    const int year,
+                                    const uint32_t date,
+                                    const std::string& publisher_key,
+                                    const ledger::PUBLISHER_CATEGORY category) = 0;
+  virtual void GetRecurringDonations(ledger::RecurringDonationCallback callback) = 0;
+  virtual void OnRemoveRecurring(const std::string& publisher_key,
+                                 ledger::RecurringRemoveCallback callback) = 0;
 
   //uint64_t time_offset (input): timer offset in seconds.
   //uint32_t timer_id (output) : 0 in case of failure

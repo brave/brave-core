@@ -59,6 +59,11 @@ class LedgerImpl : public ledger::Ledger,
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
                             ledger::GetPublisherInfoListCallback callback) override;
+  void GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
+                            const ledger::PublisherInfoFilter& filter,
+                            ledger::GetPublisherInfoListCallback callback) override;
+                     
+  void DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
@@ -158,6 +163,9 @@ class LedgerImpl : public ledger::Ledger,
                             int year,
                             ledger::ReportType type,
                             const std::string& probi) override;
+
+  braveledger_bat_helper::CURRENT_RECONCILE GetReconcileById(const std::string& viewingId);
+  void RemoveReconcileById(const std::string& viewingId);
   void Reconcile() override;
   void VotePublishers(const std::vector<braveledger_bat_helper::WINNERS_ST>& winners,
     const std::string& viewing_id);
@@ -165,6 +173,15 @@ class LedgerImpl : public ledger::Ledger,
   void VoteBatchTimer();
   void FetchFavIcon(const std::string& url, const std::string& publisher_key);
   ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
+  double GetBalance() override;
+  void OnReconcileCompleteSuccess(const std::string& viewing_id,
+                                  const ledger::PUBLISHER_CATEGORY category,
+                                  const std::string& probi,
+                                  const ledger::PUBLISHER_MONTH month,
+                                  const int year,
+                                  const uint32_t date) override;
+  void GetRecurringDonations(ledger::RecurringDonationCallback callback);
+  void RemoveRecurring(const std::string& publisher_key) override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
@@ -191,6 +208,13 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& post_data,
       const ledger::VisitData& visit_data) override;
 
+  void ReconcileContributeList(const ledger::PUBLISHER_CATEGORY category,
+                               const ledger::PublisherInfoList& list,
+                               uint32_t  next_record);
+
+  void ReconcileRecurringList(const ledger::PUBLISHER_CATEGORY category,
+                              const ledger::PublisherInfoList& list);
+
   void OnTimer(uint32_t timer_id) override;
 
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,
@@ -199,6 +223,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void saveVisitCallback(const std::string& publisher,
                          uint64_t verifiedTimestamp);
+
+  void OnRemovedRecurring(ledger::Result result);
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,
