@@ -85,6 +85,7 @@ export const Text = styled<{}, 'p'>('p')`
   letter-spacing: 0.19px;
   line-height: 26px;
   font-size: 15px;
+  margin: 15px 0;
   color: #fff;
 `
 
@@ -123,7 +124,7 @@ export const FakeButton = styled<FakeButtonProps, 'a'>('a')`
   height: 100%;
   grid-template-columns: ${p => p.settings ? 'auto 16px' : 'auto auto'};
   grid-template-rows: auto;
-  grid-gap: 10px;
+  grid-gap: ${p => p.withToggle ? '10px' : '0'};
   background: #5E35C3;
   font-family: ${p => p.theme.fontFamily.heading};
   font-size: 14px;
