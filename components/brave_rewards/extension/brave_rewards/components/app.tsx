@@ -38,6 +38,12 @@ export class RewardsPanel extends React.Component<Props, State> {
     })
   }
 
+  openRewards () {
+    chrome.tabs.create({
+      url: 'chrome://rewards'
+    })
+  }
+
   render () {
     const { rewardsPanelData, actions } = this.props
 
@@ -48,7 +54,7 @@ export class RewardsPanel extends React.Component<Props, State> {
           ? <PanelWelcome
             variant={'two'}
             optInAction={actions.createWallet}
-            link={'chrome://rewards'}
+            moreLink={this.openRewards}
           />
           : <Panel windowId={this.state.windowId} />
         }
