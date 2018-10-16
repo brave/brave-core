@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import Banner from './siteBanner'
+import DonationOverlay from 'brave-ui/features/rewards/donationOverlay'
 
 // Utils
 import * as rewardsActions from '../actions/donate_actions'
@@ -16,14 +17,32 @@ interface Props extends RewardsDonate.ComponentProps {
 }
 
 export class App extends React.Component<Props, {}> {
+
+  get actions () {
+    return this.props.actions
+  }
+
+  onClose = () => {
+    this.actions.onCloseDialog()
+  }
+
   render () {
-    const { finished, error } = this.props.rewardsDonateData
+    const { finished, error, publisher } = this.props.rewardsDonateData
     return (
       <>
         {
           !finished && !error
-            ? <Banner />
-            : null
+          ? <Banner />
+          : null
+        }
+        {
+          finished
+          ? <DonationOverlay
+              onClose={this.onClose}
+              success={true}
+              domain={publisher && publisher.publisherKey}
+          />
+          : null
         }
       </>
     )

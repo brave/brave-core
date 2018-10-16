@@ -29,6 +29,22 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
     case types.ON_RESTORE_PUBLISHERS:
       chrome.send('brave_rewards.restorePublishers', [])
       break
+    case types.ON_RECURRING_DONATION_UPDATE:
+      state = { ...state }
+      state.firstLoad = false
+      state.recurringList = action.payload.list
+      break
+    case types.ON_REMOVE_RECURRING:
+      if (!action.payload.publisherKey) {
+        break
+      }
+      chrome.send('brave_rewards.removeRecurring', [action.payload.publisherKey])
+      break
+    case types.ON_CURRENT_TIPS:
+      state = { ...state }
+      state.firstLoad = false
+      state.tipsList = action.payload.list
+      break
   }
 
   return state

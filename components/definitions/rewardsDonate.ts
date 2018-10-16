@@ -4,6 +4,7 @@ declare namespace RewardsDonate {
     walletInfo: WalletProperties
     finished: boolean
     error: boolean
+    recurringList?: string[]
   }
 
   interface ApplicationState {

@@ -19,3 +19,15 @@ export const onWalletProperties = (properties: {status: number, wallet: RewardsD
   action(types.ON_WALLET_PROPERTIES, {
     properties
   })
+
+export const onDonate = (publisherKey: string, amount: number, recurring: boolean) => action(types.ON_DONATE, {
+  publisherKey,
+  amount,
+  recurring
+})
+
+export const getRecurringDonations = () => action(types.GET_RECURRING_DONATIONS)
+
+export const onRecurringDonations = (list: string[]) => action(types.ON_RECURRING_DONATIONS, {
+  list
+})

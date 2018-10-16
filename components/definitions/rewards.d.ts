@@ -46,6 +46,8 @@ declare namespace Rewards {
       modalBackup: boolean
     }
     autoContributeList: Publisher[]
+    recurringList: Publisher[]
+    tipsList: Publisher[]
   }
 
   export interface ComponentProps {
@@ -100,6 +102,7 @@ declare namespace Rewards {
     provider: string
     favIcon: string
     id: string
+    tipDate?: number
   }
 
   export interface Report {
