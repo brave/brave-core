@@ -21,7 +21,14 @@ interface Props {
 
 export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   get isQwant () {
-    return navigator.language === 'de' || navigator.language === 'fr'
+    // This is not technically accurately describing whether
+    // the browser has been automatically set to a Qwant region.
+    // Temporarily we are detecting language here, but we should
+    // use the same setting logic as used during first-run.
+    // https://github.com/brave/brave-browser/issues/1632
+    return navigator.language &&
+           navigator.language.startsWith('de') ||
+           navigator.language.startsWith('fr')
   }
 
   get currentWindow () {
