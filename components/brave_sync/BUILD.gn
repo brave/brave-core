@@ -23,6 +23,8 @@ source_set("js_sync_lib_impl") {
     "client/brave_sync_client.h",
     "client/brave_sync_client_impl.cc",
     "client/brave_sync_client_impl.h",
+    "client/bookmark_change_processor.cc",
+    "client/bookmark_change_processor.h",
     "client/client_ext_impl_data.cc",
     "client/client_ext_impl_data.h",
     "client/client_data.cc",
