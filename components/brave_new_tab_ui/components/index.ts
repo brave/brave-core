@@ -11,6 +11,7 @@ import {
   Footer
 } from './modal'
 import { Page, PageWrapper } from './page'
+import { StatsContainer, StatsItem } from './stats'
 import { Grid, Grid2Columns, HeaderGrid, ButtonGroup } from './grid'
 import {
   Box,
@@ -37,6 +38,8 @@ export {
   Footer,
   Page,
   PageWrapper,
+  StatsContainer,
+  StatsItem,
   Grid,
   Grid2Columns,
   HeaderGrid,
