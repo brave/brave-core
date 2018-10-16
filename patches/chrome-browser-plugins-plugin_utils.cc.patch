@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/plugins/plugin_utils.cc b/chrome/browser/plugins/plugin_utils.cc
+index 8b04209fa967..f2372734502c 100644
+--- a/chrome/browser/plugins/plugin_utils.cc
++++ b/chrome/browser/plugins/plugin_utils.cc
+@@ -122,10 +122,13 @@ ContentSetting PluginUtils::GetFlashPluginContentSetting(
+     const GURL& plugin_url,
+     bool* is_managed) {
+   ContentSetting plugin_setting = CONTENT_SETTING_DEFAULT;
++  bool is_default = false;
+   GetPluginContentSettingInternal(host_content_settings_map,
+                                   false /* use_javascript_setting */,
+                                   main_frame_origin, plugin_url, kFlashPluginID,
+-                                  &plugin_setting, nullptr, is_managed);
++                                  &plugin_setting, &is_default, is_managed);
++  if (is_default)
++      plugin_setting = CONTENT_SETTING_BLOCK;
+   return plugin_setting;
+ }
+ 
