@@ -57,7 +57,8 @@ test("brave_unit_tests") {
     "//brave/common/tor/tor_test_constants.cc",
     "//brave/common/tor/tor_test_constants.h",
     "//brave/components/brave_shields/browser/ad_block_regional_service_unittest.cc",
-    "//brave/components/brave_sync/bookmark_order_util_unittest.cc",    
+    "//brave/components/brave_sync/bookmark_order_util_unittest.cc",
+    "//brave/components/brave_sync/brave_sync_service_unittest.cc",
     "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_host_content_settings_map_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",
@@ -102,6 +103,7 @@ test("brave_unit_tests") {
   }
 
   deps = [
+##"//chrome/test:unit_tests",#for browser_with_test_window_test.h, triggers rebuild +1470 files, not good, error: undefined symbol: BrowserWithTestWindowTest::SetUp()
     "//chrome:browser_dependencies",
     "//chrome:child_dependencies",
     "//chrome/test:test_support",
