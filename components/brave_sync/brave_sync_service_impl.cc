@@ -502,6 +502,7 @@ void BraveSyncServiceImpl::RequestSyncData() {
   }
 
   FetchSyncRecords(bookmarks, history, preferences, 1000);
+  sync_client_->SendFetchSyncDevices();
 }
 
 void BraveSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
