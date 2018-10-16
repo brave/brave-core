@@ -131,8 +131,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
     timer_(std::make_unique<base::RepeatingTimer>()),
     unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
     initial_sync_records_remaining_(0),
-    bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)),
-    weak_ptr_factory_(this) {
+    bookmark_model_(BookmarkModelFactory::GetForBrowserContext(profile)) {
   CHECK(bookmark_model_);
 
   sync_prefs_ = std::make_unique<brave_sync::prefs::Prefs>(profile);

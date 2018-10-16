@@ -9,7 +9,6 @@
 #include <vector>
 #include <memory>
 
-#include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "brave/components/brave_sync/client/client_data.h"
 
@@ -73,7 +72,7 @@ class SyncMessageHandler {
   virtual void OnSyncWordsPrepared(const std::string &words) = 0;
 };
 
-class BraveSyncClient : public base::SupportsWeakPtr<BraveSyncClient> {
+class BraveSyncClient {
  public:
   virtual ~BraveSyncClient() = default;
 
