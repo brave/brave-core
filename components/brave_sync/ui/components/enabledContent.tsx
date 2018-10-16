@@ -184,6 +184,7 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
               id='savedSiteSettings'
               checked={syncData.syncSavedSiteSettings}
               onChange={this.onSyncSavedSiteSettings}
+              disabled={true}
             />
             <SwitchLabel htmlFor='savedSiteSettings'>
               {getLocale('savedSiteSettings')}
@@ -192,6 +193,7 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
               id='browsingHistory'
               checked={syncData.syncBrowsingHistory}
               onChange={this.onSyncBrowsingHistory}
+              disabled={true}
             />
             <SwitchLabel htmlFor='browsingHistory'>
               {getLocale('browsingHistory')}
