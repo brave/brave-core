@@ -317,8 +317,8 @@ void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
   sync_configured_ = true;
 
   sync_prefs_->SetSyncBookmarksEnabled(true);
-  sync_prefs_->SetSyncSiteSettingsEnabled(true);
-  // TODO(bridiver) - re-enable this when we add history
+  // TODO(bridiver) - re-enable these when we add history, site settings
+  sync_prefs_->SetSyncSiteSettingsEnabled(false);
   sync_prefs_->SetSyncHistoryEnabled(false);
 
   initializing_ = false;
