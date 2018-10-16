@@ -338,17 +338,20 @@ void BraveSyncServiceImpl::OnGetInitData(const std::string& sync_version) {
   Uint8Array device_id;
   if (!sync_prefs_->GetThisDeviceId().empty()) {
     device_id = Uint8ArrayFromString(sync_prefs_->GetThisDeviceId());
-    DLOG(INFO) << "[Brave Sync] Init device id from prefs: " <<
+    VLOG(1) << "[Brave Sync] Init device id from prefs: " <<
         StrFromUint8Array(device_id);
   } else {
-    DLOG(INFO) << "[Brave Sync] Init empty device id";
+    VLOG(1) << "[Brave Sync] Init empty device id";
   }
 
   DCHECK(!sync_version.empty());
-  sync_prefs_->SetApiVersion(sync_version);
+  // TODO(bridiver) - this seems broken because using the version we get back
+  // from the server (currently v1.4.2) causes things to break. What is the
+  // the point of having this value?
+  sync_prefs_->SetApiVersion("0");
 
   brave_sync::client_data::Config config;
-  config.api_version = sync_version;
+  config.api_version = sync_prefs_->GetApiVersion();
 #if defined(OFFICIAL_BUILD)
   config.server_url = "https://sync.brave.com";
 #else
