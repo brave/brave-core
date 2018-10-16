@@ -125,7 +125,7 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
     // Expected tooltip text.
     const char* expected_tooltip;
   } kTestCases[] = {
-    {"http://example.com/foo.bar", "foo.bar\nNot Secure http://example.com"},
+    {"http://example.com/foo.bar", "foo.bar\nnot secure http://example.com"},
     {"https://example.com:5678/foo.bar", "foo.bar\nhttps://example.com:5678"},
   };
 
@@ -139,10 +139,9 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
     const TestCase& test_case = kTestCases[i];
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));
-    EXPECT_STREQ(
-        test_case.expected_tooltip,
-        base::UTF16ToUTF8(model().GetTooltipText(font_list, kTooltipWidth))
-            .c_str());
+    EXPECT_TRUE(base::LowerCaseEqualsASCII(base::UTF16ToUTF8(
+      model().GetTooltipText(font_list, kTooltipWidth)),
+      test_case.expected_tooltip));
     Mock::VerifyAndClearExpectations(&item());
   }
 }
