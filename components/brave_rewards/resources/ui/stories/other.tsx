@@ -212,7 +212,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
           <PanelWelcome
             optInAction={dummyClick}
             variant={select('Variant', { one: 'One', two: 'Two' }, 'one')}
-            link={'https://brave.com'}
+            moreLink={dummyClick}
           />
         </div>
       )

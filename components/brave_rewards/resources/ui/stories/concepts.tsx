@@ -138,6 +138,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
           <PanelWelcome
             variant={'one'}
             optInAction={dummyOptInAction}
+            moreLink={dummyOptInAction}
           />
         </div>
         <div style={{ position: 'absolute', top: '40px', left: '565px', width: '373px', minHeight: '446px', borderRadius: '8px', overflow: 'hidden' }}>

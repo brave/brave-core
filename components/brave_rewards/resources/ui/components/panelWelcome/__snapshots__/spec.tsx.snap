@@ -89,6 +89,7 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
   line-height: 21px;
   display: block;
   text-align: center;
+  cursor: pointer;
 }
 
 .c8 {
@@ -256,11 +257,11 @@ exports[`PanelWelcome tests basic tests matches the snapshot 1`] = `
         </div>
       </button>
     </div>
-    <a
+    <div
       className="c14"
     >
       MISSING: welcomeFooterTextOne
-    </a>
+    </div>
   </div>
 </div>
 `;

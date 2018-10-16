@@ -25,7 +25,7 @@ export type Variant = 'one' | 'two'
 export interface Props {
   id?: string
   variant?: Variant
-  link?: string
+  moreLink?: () => void
   optInAction: () => void
 }
 
@@ -50,7 +50,15 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, optInAction, link } = this.props
+    const { id, optInAction, moreLink } = this.props
+
+    let props = {}
+
+    if (moreLink) {
+      props = {
+        onClick: moreLink
+      }
+    }
 
     return (
       <StyledWrapper id={id}>
@@ -77,7 +85,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
               text={getLocale(this.locale.button)}
             />
           </StyledButtonWrapper>
-          <StyledFooterText href={link}>
+          <StyledFooterText {...props}>
             {getLocale(this.locale.footer)}
           </StyledFooterText>
         </StyledInnerWrapper>
