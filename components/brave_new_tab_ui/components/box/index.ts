@@ -117,6 +117,7 @@ export const Link = styled<{}, 'a'>('a')`
 
 interface FakeButtonProps {
   settings?: boolean
+  withToggle?: boolean
 }
 
 export const FakeButton = styled<FakeButtonProps, 'a'>('a')`
