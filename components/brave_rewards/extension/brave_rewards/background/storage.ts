@@ -27,7 +27,9 @@ const defaultState: RewardsExtension.State = {
     tips: '0',
     opening: '0',
     total: '0'
-  }
+  },
+  notifications: {},
+  currentNotification: undefined
 }
 
 const cleanData = (state: RewardsExtension.State) => {

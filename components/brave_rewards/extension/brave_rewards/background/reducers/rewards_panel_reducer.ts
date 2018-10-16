@@ -81,6 +81,68 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         state.report = payload.properties
         break
       }
+    case types.ON_NOTIFICATION_ADDED:
+      {
+        if (!payload || !payload.id) {
+          return
+        }
+
+        const id = payload.id.toString()
+        let notifications: Record<number, RewardsExtension.Notification> = state.notifications
+        notifications[id] = {
+          id: id,
+          type: payload.type,
+          timestamp: payload.timestamp,
+          args: payload.args
+        }
+
+        state = {
+          ...state,
+          notifications
+        }
+
+        if (state.currentNotification === undefined) {
+          state.currentNotification = id
+        }
+
+        break
+      }
+    case types.DELETE_NOTIFICATION:
+      {
+        chrome.rewardsNotifications.deleteNotification(parseInt(payload.id, 10))
+        break
+      }
+    case types.ON_NOTIFICATION_DELETED:
+      {
+        if (!payload || !payload.id) {
+          return
+        }
+
+        const id = payload.id.toString()
+        let notifications: Record<number, RewardsExtension.Notification> = state.notifications
+        delete notifications[id]
+
+        if (state.currentNotification === id) {
+          let current: number | undefined = undefined
+          Object.keys(state.notifications).forEach((key: string) => {
+            if (
+              current === undefined ||
+              !notifications[current] ||
+              notifications[key].timestamp > notifications[current].timestamp
+            ) {
+              current = notifications[key].id
+            }
+
+          })
+
+          state.currentNotification = current
+        }
+
+        state = {
+          ...state,
+          notifications
+        }
+      }
   }
 
   if (state !== startingState) {

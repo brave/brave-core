@@ -71,5 +71,13 @@
     "whitelist": [
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
     ]
+  },
+  "rewardsNotifications": {
+    "channel": "stable",
+    "dependencies": [],
+    "contexts": ["blessed_extension"],
+    "whitelist": [
+      "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
+    ]
   }
 }
