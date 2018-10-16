@@ -1,4 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
+<translation id="3333887201479867589">Brave 奖励</translation>
+<translation id="7942180974165298215">Brave 广告阻挡</translation>
+<translation id="7450557937477381864">关闭 Chrome</translation>
+<translation id="7008934821596358692">如要完成导出，请关闭所有 Chrome 窗口。</translation>
+<translation id="7753103220327065417">关闭 Brave</translation>
+<translation id="5588481533147090393">如要完成导出，请关闭所有 Brave 窗口。</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="9173846700806833701">Widevine 未安装</translation>
+<translation id="2433569048491784801">Widevine 未安装。</translation>
+<translation id="3699882589215410581">安装并运行 Widevine</translation>
+<translation id="8410111618231938546">Google Widevine 是一款数字版权管理（DRM）代码，Brave Software 不拥有这些代码，也无法检查。 Google Widevine 代码是从 Google 服务器加载的，而不是从我们的服务器加载的。仅在启用此选项时才会加载它。我们不鼓励使用 DRM，但我们尊重用户选择并了解某些 Brave 用户希望使用需要它的服务。
+
+安装此扩展程序即表示您同意 Google Widevine 使用条款。您同意 Brave对您使用 Google Widevine所造成的任何损害或损失概不负责。</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">已从 Brave 导出</translation>
 </translationbundle>
