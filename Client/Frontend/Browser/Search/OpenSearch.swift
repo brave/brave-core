@@ -9,7 +9,7 @@ import Fuzi
 private let TypeSearch = "text/html"
 private let TypeSuggest = "application/x-suggestions+json"
 
-class OpenSearchEngine: NSObject, NSCoding {
+class OpenSearchEngine: NSObject, NSSecureCoding {
     static let PreferredIconSize = 30
     
     struct EngineNames {
@@ -66,6 +66,10 @@ class OpenSearchEngine: NSObject, NSCoding {
         aCoder.encode(engineID, forKey: "engineID")
     }
 
+    static var supportsSecureCoding: Bool {
+        return true
+    }
+    
     /**
      * Returns the search URL for the given query.
      */
