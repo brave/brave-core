@@ -5,12 +5,15 @@
 import Foundation
 import Shared
 
+private let log = Logger.browserLogger
+
 open class ClosedTabsStore {
     let prefs: Prefs
 
     lazy open var tabs: [ClosedTab] = {
+        // If it fails to unarchive thats fine, we'll just return an empty array regardless
         guard let tabsArray: Data = self.prefs.objectForKey("recentlyClosedTabs") as Any? as? Data,
-              let unarchivedArray = NSKeyedUnarchiver.unarchiveObject(with: tabsArray) as? [ClosedTab] else {
+            let unarchivedArray = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(tabsArray)) as? [ClosedTab] else {
             return []
         }
         return unarchivedArray
@@ -26,8 +29,12 @@ open class ClosedTabsStore {
         if tabs.count > 5 {
             tabs.removeLast()
         }
-        let archivedTabsArray = NSKeyedArchiver.archivedData(withRootObject: tabs)
-        prefs.setObject(archivedTabsArray, forKey: "recentlyClosedTabs")
+        do {
+            let archivedTabsArray = try NSKeyedArchiver.archivedData(withRootObject: tabs, requiringSecureCoding: true)
+            prefs.setObject(archivedTabsArray, forKey: "recentlyClosedTabs")
+        } catch {
+            log.error("Failed to archive tabs array: \(tabs) - \(error.localizedDescription)")
+        }
     }
 
     open func clearTabs() {
@@ -36,7 +43,7 @@ open class ClosedTabsStore {
     }
 }
 
-open class ClosedTab: NSObject, NSCoding {
+open class ClosedTab: NSObject, NSSecureCoding {
     public let url: URL
     public let title: String?
     public let faviconURL: String?
@@ -57,14 +64,12 @@ open class ClosedTab: NSObject, NSCoding {
     }
 
     required convenience public init?(coder: NSCoder) {
-        guard let url = coder.decodeObject(forKey: "url") as? URL,
-              let faviconURL = coder.decodeObject(forKey: "faviconURL") as? String,
-              let title = coder.decodeObject(forKey: "title") as? String else { return nil }
+        guard let url = coder.decodeObject(forKey: "url") as? URL else { return nil }
 
         self.init(
             url: url,
-            title: title,
-            faviconURL: faviconURL
+            title: coder.decodeObject(forKey: "title") as? String,
+            faviconURL: coder.decodeObject(forKey: "faviconURL") as? String
         )
     }
 
@@ -72,5 +77,9 @@ open class ClosedTab: NSObject, NSCoding {
         coder.encode(url, forKey: "url")
         coder.encode(faviconURL, forKey: "faviconURL")
         coder.encode(title, forKey: "title")
+    }
+    
+    public static var supportsSecureCoding: Bool {
+        return true
     }
 }

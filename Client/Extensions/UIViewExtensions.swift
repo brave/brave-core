@@ -46,14 +46,6 @@ extension UIView {
         return screenshot(size, offset: offset, quality: quality)
     }
 
-    /*
-     * Performs a deep copy of the view. Does not copy constraints.
-     */
-    @objc func clone() -> UIView {
-        let data = NSKeyedArchiver.archivedData(withRootObject: self)
-        return NSKeyedUnarchiver.unarchiveObject(with: data) as! UIView // swiftlint:disable:this force_cast
-    }
-
     /**
      * rounds the requested corners of a view with the provided radius
      */
