@@ -1,4 +1,31 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hr">
+<translation id="689261804992965033">Oglasi su blokirani</translation>
+<translation id="1663506596135222606">Praćenje je blokirano</translation>
+<translation id="2313532038420432247">Nadogradnje HTTPS-a</translation>
+<translation id="7679428712334662192">Procjena ušteđenog vremena</translation>
+<translation id="3772054137575942265">Sličica je uklonjena.</translation>
+<translation id="2079545284768500474">Poništi</translation>
+<translation id="8529752221839395787">Vrati sve</translation>
+<translation id="3022168349636134570">sekunda</translation>
+<translation id="8664519043722036194">sekunde</translation>
+<translation id="755854589635502953">minuta</translation>
+<translation id="7210211103303402262">minute</translation>
+<translation id="679011980069501619">sat</translation>
+<translation id="8344569602005188545">sati</translation>
+<translation id="7100907433458266664">dan</translation>
+<translation id="4971389353431353387">dani</translation>
+<translation id="5158913487408505138">Ovo je privatni prozor</translation>
+<translation id="5214894565312237203">Ovo je privatni prozor s funkcijom Tor</translation>
+<translation id="6239612153190682904">Pregledavajte web s više privatnosti uz</translation>
+<translation id="5150485237594723474">Kako biste pregledavali s još više privatnosti, omogućite zaštitu Tor na način da otvorite novi prozor sa zaštitom Tor iz izbornika profila. Ta je funkcija u ranoj beta-verziji i vrlo je promjenjiva. Preporučuje se samo naprednim korisnicima.</translation>
+<translation id="6165508094623778733">Saznajte više</translation>
+<translation id="2822883288286163365">DuckDuckGo je zadana tražilica za privatne prozore s funkcijom Tor.</translation>
+<translation id="8630826211403662855">Postavke pretraživanja</translation>
+<translation id="7092225255390592066">Privatno pretraživanje uz</translation>
+<translation id="8903240903923161730">DuckDuckGo je tražilica koja ne prati vašu povijest pretraživanja, čime vam omogućuje privatnije pretraživanje.</translation>
+<translation id="8209127262866713535">Više o privatnim prozorima</translation>
+<translation id="6969724777403773753">Bilo da se služite funkcijom Tor ili ne, privatni prozori ne zapisuju se u povijesti stranica niti se uključuju u obračune plaćanja tvrtki Brave. Privatne kartice i njihovi kolačići uvijek nestaju kada se zatvori preglednik. Ako upotrebljavate privatne prozore bez funkcije Tor, mrežna mjesta koja posjetite bit će vidljiva vašem pružatelju internetskih usluga ili poslodavcu. Nećete biti anonimni, a mrežna mjesta saznat će vašu javnu IP adresu. Uz Tor, tvrtka Brave zalaže se kako bi bilo iznimno teško pratiti vas na internetu i pruža ugodno iskustvo pretraživanja. Međutim, ako vaša osobna sigurnost ovisi o anonimnosti, umjesto toga možete upotrijebiti preglednik Tor s mrežnog mjesta https://torproject.org/.</translation>
+<translation id="1869685517625607604">Ukupno blokiranih oglasa:</translation>
 </translationbundle>

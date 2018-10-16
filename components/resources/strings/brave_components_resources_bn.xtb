@@ -1,4 +1,29 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
+<translation id="689261804992965033">বিজ্ঞাপন অবরুদ্ধ</translation>
+<translation id="1663506596135222606">ট্র্যাকারগুলি অবরুদ্ধ</translation>
+<translation id="2313532038420432247">HTTPS আপগ্রেডগুলি</translation>
+<translation id="7679428712334662192">যে আনুমানিক সময় বাঁচানো গেছে</translation>
+<translation id="3772054137575942265">বুড়ো আঙ্গুল অপসারিত</translation>
+<translation id="2079545284768500474">পূর্বাবস্থায় ফিরে যাওয়া</translation>
+<translation id="8529752221839395787">পুনঃস্থাপন করা</translation>
+<translation id="3022168349636134570">সেকন্ড</translation>
+<translation id="8664519043722036194">সেকন্ডগুলি</translation>
+<translation id="755854589635502953">মিনিট</translation>
+<translation id="7210211103303402262">মিনিটগুলি</translation>
+<translation id="679011980069501619">ঘন্টা</translation>
+<translation id="8344569602005188545">ঘন্টাগুলি</translation>
+<translation id="7100907433458266664">দিন</translation>
+<translation id="4971389353431353387">দিনগুলি</translation>
+<translation id="5158913487408505138">এটি একটি ব্যক্তিগত উইন্ডো</translation>
+<translation id="5214894565312237203">এটি টর সহ একটি ব্যক্তিগত উইন্ডো</translation>
+<translation id="6239612153190682904">এর সাথে আরো ব্যক্তিগতভাবে ওয়েব ব্রাউজ করুন</translation>
+<translation id="5150485237594723474">আরো গোপনীয়তার সাথে ব্রাউজ করার জন্য, টর নিরাপত্তা সক্ষম করুন প্রোফাইল মেনু থেকে টর নিরাপত্তা সহ একটি নতুন উইন্ডো খুলে| এই কার্যকারিতাটি প্রাথমিক বিটা পর্যায়ে এবং অত্যন্ত অস্থিতিশীল|  It’s শুধু উন্নত স্তরের ব্যবহারকারীদের জন্যই সুপারিশকৃত|</translation>
+<translation id="6165508094623778733">আরো জানুন</translation>
+<translation id="2822883288286163365">ডিফল্ট হিসেবে, টর সহ ব্যক্তিগত ইউন্ডোর সার্চ ইঞ্জিন হলো ডাকডাকগো|</translation>
+<translation id="8630826211403662855">পছন্দসইতে সন্ধান করুন</translation>
+<translation id="7092225255390592066">এর দ্বারা ব্যক্তিগত অনুসন্ধান</translation>
+<translation id="8903240903923161730">ডাকডাকগো একটি সার্চ ইঞ্জিন যা আপনার অনুসন্ধানের ইতিহাস ট্র্যাক করে না, যার ফলে আপনি আরো ব্যক্তিগতভাবে অনুসন্ধান করতে পারেন|</translation>
+<translation id="8209127262866713535">ব্যক্তিগত উইন্ডো সম্বন্ধে আরো তথ্য</translation>
 </translationbundle>
