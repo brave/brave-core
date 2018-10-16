@@ -123,7 +123,7 @@ class Banner extends React.Component<Props, State> {
       <SiteBanner
         domain={publisherKey}
         title={title}
-        currentDonation={0}
+        recurringDonation={false}
         balance={balance.toString() || '0'}
         bgImage={background}
         logo={logo}

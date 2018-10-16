@@ -4,8 +4,10 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 
 #include "base/logging.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "components/prefs/pref_registry_simple.h"
 
 #if !BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "content/public/common/referrer.h"
@@ -33,6 +35,11 @@ void RewardsService::AddObserver(RewardsServiceObserver* observer) {
 
 void RewardsService::RemoveObserver(RewardsServiceObserver* observer) {
   observers_.RemoveObserver(observer);
+}
+
+// static
+void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterStringPref(kRewardsNotifications, "");
 }
 
 }  // namespace brave_rewards
