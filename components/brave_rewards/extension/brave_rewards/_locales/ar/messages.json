@@ -12,11 +12,11 @@
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "يمكنك الآن كسب الرموز المميزة لمشاهدة إعلانات Brave التي تركز على الخصوصية. تبقى مساهمتك كما هي.",
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "اربح الرموز مقابل مشاهدة الإعلانات وادفعها إلى منشئي المحتوى المفضلين لديك.",
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
     "description": ""
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "مدفوعات Brave أصبحت الآن مكافآت Brave مع العديد من الترقيات.",
+    "message": "We’ve given Brave Payments a big upgrade.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "أنت على وشك البدء في تصفح مواقع الويب بطريقة شجاعة جداً.",
+    "message": "Get ready to experience the next Internet.",
     "description": ""
   },
   "yourWallet": {
@@ -56,7 +56,7 @@
     "description": ""
   },
   "donateMonthly": {
-    "message": "تبرع لهذا الموقع شهرياً",
+    "message": "Tip to this site Monthly",
     "description": ""
   },
   "includeInAuto": {
@@ -64,7 +64,7 @@
     "description": ""
   },
   "donateNow": {
-    "message": "تبرع الآن...",
+    "message": "Send a Tip…",
     "description": ""
   },
   "enableTips": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "المعاملات حسب الفئة",
+    "message": "Rewards Summary",
     "description": ""
   },
   "monthApr": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "الأرباح من إعلانات Brave",
+    "message": "Earnings from Ads",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,7 +140,7 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "تبرعات/إكراميات المرة الواحدة",
+    "message": "One-time Tips",
     "description": ""
   },
   "total": {
@@ -152,37 +152,11 @@
     "description": ""
   },
   "recurringDonations": {
-    "message": "التبرعات المتكررة",
+    "message": "Monthly Tips",
     "description": ""
   },
   "off": {
     "message": "إيقاف",
-    "description": ""
-  },
-  "ok": {
-    "message": "ok",
-    "description": ""
-  },
-  "braveAdsTitle": {
-    "message": "Brave Ads",
-    "description": ""
-  },
-  "braveContributeTitle": {
-    "message": "Auto-Contribute",
-    "description": ""
-  },
-  "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

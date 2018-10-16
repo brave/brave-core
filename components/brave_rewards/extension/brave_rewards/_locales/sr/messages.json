@@ -12,11 +12,11 @@
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Sada možete da zarađujete tokene za gledanje Brave oglasa fokusiranih na privatnost. Vaš prilog se ne menja.",
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Zaradite tokene za gledanje oglasa i prosledite ih svojim omiljenim stvaraocima sadržaja.",
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
     "description": ""
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "Brejv isplate su sada Brejv nagrade sa mnogim nadogradnjama.",
+    "message": "We’ve given Brave Payments a big upgrade.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Započećete veoma Brave način da pretražujete veb.",
+    "message": "Get ready to experience the next Internet.",
     "description": ""
   },
   "yourWallet": {
@@ -56,7 +56,7 @@
     "description": ""
   },
   "donateMonthly": {
-    "message": "Doniraj ovoj veb lokaciji na mesečnom nivou",
+    "message": "Tip to this site Monthly",
     "description": ""
   },
   "includeInAuto": {
@@ -64,7 +64,7 @@
     "description": ""
   },
   "donateNow": {
-    "message": "Donirajte sada ...",
+    "message": "Send a Tip…",
     "description": ""
   },
   "enableTips": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transakcije po kategoriji",
+    "message": "Rewards Summary",
     "description": ""
   },
   "monthApr": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "Zarada od Brave oglasa",
+    "message": "Earnings from Ads",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,7 +140,7 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "Jednokratne donacije/napojnice",
+    "message": "One-time Tips",
     "description": ""
   },
   "total": {
@@ -152,37 +152,11 @@
     "description": ""
   },
   "recurringDonations": {
-    "message": "Ponavljajuće donacije",
+    "message": "Monthly Tips",
     "description": ""
   },
   "off": {
     "message": "Isključeno",
-    "description": ""
-  },
-  "ok": {
-    "message": "ok",
-    "description": ""
-  },
-  "braveAdsTitle": {
-    "message": "Brave Ads",
-    "description": ""
-  },
-  "braveContributeTitle": {
-    "message": "Auto-Contribute",
-    "description": ""
-  },
-  "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

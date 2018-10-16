@@ -12,11 +12,11 @@
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Ora puoi guadagnare gettoni per guardare pubblicità Brave incentrata sulla privacy. Il tuo contributo rimane lo stesso.",
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "Guadagna gettoni per guardare gli annunci pubblicitari e dalli agli autori dei tuoi contenuti preferiti.",
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
     "description": ""
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "I Pagamenti Brave ora si chiamano Ricompense Brave e hanno molti aggiornamenti.",
+    "message": "We’ve given Brave Payments a big upgrade.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Stai per iniziare a usare un modo molto coraggioso per navigare sul web.",
+    "message": "Get ready to experience the next Internet.",
     "description": ""
   },
   "yourWallet": {
@@ -56,7 +56,7 @@
     "description": ""
   },
   "donateMonthly": {
-    "message": "Dona a questo sito mensilmente",
+    "message": "Tip to this site Monthly",
     "description": ""
   },
   "includeInAuto": {
@@ -64,7 +64,7 @@
     "description": ""
   },
   "donateNow": {
-    "message": "Dona ora...",
+    "message": "Send a Tip…",
     "description": ""
   },
   "enableTips": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Transazioni per categoria",
+    "message": "Rewards Summary",
     "description": ""
   },
   "monthApr": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "Guadagna dagli Annunci di Brave",
+    "message": "Earnings from Ads",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,7 +140,7 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "Donazioni/mance una tantum",
+    "message": "One-time Tips",
     "description": ""
   },
   "total": {
@@ -152,37 +152,11 @@
     "description": ""
   },
   "recurringDonations": {
-    "message": "Donazioni Periodiche",
+    "message": "Monthly Tips",
     "description": ""
   },
   "off": {
     "message": "Spento",
-    "description": ""
-  },
-  "ok": {
-    "message": "ok",
-    "description": ""
-  },
-  "braveAdsTitle": {
-    "message": "Brave Ads",
-    "description": ""
-  },
-  "braveContributeTitle": {
-    "message": "Auto-Contribute",
-    "description": ""
-  },
-  "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "You have grant waiting for you.",
     "description": ""
   }
 }

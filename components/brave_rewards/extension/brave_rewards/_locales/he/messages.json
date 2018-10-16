@@ -12,11 +12,11 @@
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "עכשיו ביכולתכם להרוויח אסימונים כאשר אתם צופים במודעות פרטיות ב-Brave. התרומות שלכם לא ישתנו.",
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "הרוויחו אסימונים עבור צפייה במודעות ושתפו הלאה בשביל התוכן המועדפים עליכם.",
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
     "description": ""
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "תשלומי Brave הם עכשיו תגמולי Brave עם שדרוגים רבים.",
+    "message": "We’ve given Brave Payments a big upgrade.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "אתם עומדים להתחיל דרך אמיצה מאוד לגלוש באינטרנט.",
+    "message": "Get ready to experience the next Internet.",
     "description": ""
   },
   "yourWallet": {
@@ -56,7 +56,7 @@
     "description": ""
   },
   "donateMonthly": {
-    "message": "תרמו לאתר זה כל חודש",
+    "message": "Tip to this site Monthly",
     "description": ""
   },
   "includeInAuto": {
@@ -64,7 +64,7 @@
     "description": ""
   },
   "donateNow": {
-    "message": "תרמו עכשיו...",
+    "message": "Send a Tip…",
     "description": ""
   },
   "enableTips": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "עסקאות לפי קטגוריה",
+    "message": "Rewards Summary",
     "description": ""
   },
   "monthApr": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "רווחים ממודעות Brave",
+    "message": "Earnings from Ads",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,7 +140,7 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "תרומות/טיפים חד פעמיים",
+    "message": "One-time Tips",
     "description": ""
   },
   "total": {
@@ -152,37 +152,11 @@
     "description": ""
   },
   "recurringDonations": {
-    "message": "תרומות חוזרות",
+    "message": "Monthly Tips",
     "description": ""
   },
   "off": {
     "message": "מכובה",
-    "description": ""
-  },
-  "ok": {
-    "message": "ok",
-    "description": ""
-  },
-  "braveAdsTitle": {
-    "message": "Brave Ads",
-    "description": ""
-  },
-  "braveContributeTitle": {
-    "message": "Auto-Contribute",
-    "description": ""
-  },
-  "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1",
-        "example": "10"
-      }
-    }
-  },
-  "grantNotification": {
-    "message": "You have grant waiting for you.",
     "description": ""
   }
 }
