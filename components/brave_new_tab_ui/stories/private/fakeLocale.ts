@@ -7,12 +7,12 @@ const locale = {
   learnMore: 'Learn more',
   done: 'Done',
   searchSettings: 'Search settings',
-  headerLabel: 'You are inside a',
+  headerLabel: 'This is a',
 
   // Header Private Window
   headerTitle: 'Private Window',
   headerText: 'Brave doesn’t remember what you do in a Private Window. Sites you visit won\'t show up in your history and cookies vanish when you’re done. Private Windows don’t make you completely anonymous online, though.',
-  headerButton: 'Learn more about Private Windows',
+  headerButton: 'Learn more',
 
   // Header Private Window with Tor
   headerTorTitle: 'Private Window with Tor',
@@ -22,18 +22,32 @@ const locale = {
   // Box for DDG
   boxDdgLabel: 'Search Privately with',
   boxDdgTitle: 'DuckDuckGo',
-  boxDdgText: 'Brave recommends and defaults to using DuckDuckGo to search the web while inside private windows. DuckDuckGo is the search engine that doesn’t track you. No personal information or data is collected by DuckDuckGo enabling you to search with more privacy.',
-  boxDdgText2: 'DuckDuckGo is currently the only available search engine to use while in Private Windows with Tor. No personal information or data is collected by DuckDuckGo and with Tor, even they don’t know your IP address.',
+  boxDdgText: 'With private search, Brave will use DuckDuckGo for searches in Private Windows. DuckDuckGo doesn’t track your search history, so you can search privately.',
+  boxDdgText2: 'In Private Windows with Tor, DuckDuckGo is the default search engine. Some of the other popular search engines are harder to use with Tor. DuckDuckGo doesn’t track your search history; with Tor, they don’t even know your IP address.',
   boxDdgButton: 'Search with DuckDuckGo',
 
   // Box for Tor
   boxTorLabel: 'Browse privately with',
+  boxTorLabel2: 'You are browsing privately with',
   boxTorTitle: 'Tor Protection',
   // Private Window with Tor - Tor Box
-  boxTorText: 'Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can’t see which sites you’re visiting. Tor can slow down browsing and some sites might not work at all.',
+  boxTorText: 'Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can’t see which sites you’re visiting either. Tor can slow down browsing and some sites might not work at all.',
   // Private Window - Tor Box
-  boxTorText2: 'Tor hides your IP address from the sites you visit by routing your traffic through several Tor servers before it reaches your destination. Open a Private Window with Tor from the File Menu or by pressing "Alt+Shift+N" on Windows or "Option+Shift+N" on Mac.',
-  boxTorButton: 'Learn more about Tor in Brave'
+  boxTorText2: 'Using Private Tabs only changes what Brave does on your device — it doesn\'t change anyone else\'s behavior. Tor hides your IP address from the sites you visit, and hides the sites you visit from your ISP or your employer. Open a Private Window with Tor from the menu, or with Alt+Shift+N or Option+Shift+N.',
+  boxTorButton: 'Learn more about Tor in Brave',
+
+  // Modal Private Window with Tor
+  modalPrivateWindowTorTitle: 'Link out to: https://support.brave.com/hc/en-us/articles/360018121491',
+
+  // Modal Private Window
+  modalPrivateWindowTitle: 'Link out to: https://support.brave.com/hc/en-us/articles/360017840332',
+
+  // Modal Tor in Brave
+  modalTorInBraveTitle: 'Link out to: https://support.brave.com/hc/en-us/articles/360018121491',
+
+  // Modal DuckDuckGo
+  modalDuckduckGoTitle: 'Link out to: TBD'
+
 }
 
 export default locale

@@ -100,7 +100,7 @@ export const PurpleButton = styled(Button as ComponentType<ButtonProps>)`
   font-size: 14px;
   font-weight: 500;
   padding: 14px 20px;
-  margin: 25px 0 0;
+  margin: 25px 25px 0 0;
 `
 export const Link = styled<{}, 'a'>('a')`
   font-family: ${p => p.theme.fontFamily.heading};
@@ -111,6 +111,7 @@ export const Link = styled<{}, 'a'>('a')`
   align-self: center;
   margin: 25px 20px 0 0;
   cursor: pointer;
+  text-decoration: none;
 `
 
 interface FakeButtonProps {
@@ -128,7 +129,7 @@ export const FakeButton = styled<FakeButtonProps, 'a'>('a')`
   font-size: 14px;
   font-weight: 500;
   padding: 14px 20px;
-  margin-top: 25px;
+  margin: 25px 25px 0 0;
   color: #fff;
   user-select: none;
   border-radius: 20px;

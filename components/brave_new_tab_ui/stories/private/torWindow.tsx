@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-// import { OpenNewIcon } from '../../../../src/components/icons'
+import { OpenNewIcon } from '../../../../src/components/icons'
 import {
   Grid,
   HeaderGrid,
@@ -18,8 +18,8 @@ import {
   DuckDuckGoImage,
   TorLockImage,
   Separator,
-  FakeButton,
-  Link
+  FakeButton
+  // Link
 } from '../../../../src/features/newTab'
 
 import locale from './fakeLocale'
@@ -42,12 +42,12 @@ export default class TorTab extends React.PureComponent<{}, State> {
               <SubTitle>{locale.headerLabel}</SubTitle>
               <Title>{locale.headerTorTitle}</Title>
               <Text>{locale.headerTorText}</Text>
-              <FakeButton
+              {/* <FakeButton
                 href='https://support.brave.com/hc/en-us/articles/360018121491'
                 target='_blank'
               >
                 {locale.headerTorButton}
-              </FakeButton>
+              </FakeButton> */}
             </div>
           </HeaderGrid>
         </HeaderBox>
@@ -60,22 +60,22 @@ export default class TorTab extends React.PureComponent<{}, State> {
           </Content>
           <Separator />
           <ButtonGroup>
-            {/* <FakeButton settings={true} href='chrome://settings' target='_blank'>
-              <span>{locale.searchSettings}</span>
+            <FakeButton settings={true} href='https://support.brave.com/hc/en-us/articles/360018266171' target='_blank'>
+              <span>{locale.learnMore}</span>
               <OpenNewIcon />
-            </FakeButton> */}
-            <Link
+            </FakeButton>
+            {/* <Link
               href='https://support.brave.com/hc/en-us/articles/360018266171'
               target='_blank'
             >
               {locale.learnMore}
-            </Link>
+            </Link> */}
           </ButtonGroup>
         </Box>
         <Box>
           <Content>
             <TorLockImage />
-            <SubTitle>{locale.boxTorLabel}</SubTitle>
+            <SubTitle>{locale.boxTorLabel2}</SubTitle>
             <Title>{locale.boxTorTitle}</Title>
             <Text>{locale.boxTorText}</Text>
           </Content>
