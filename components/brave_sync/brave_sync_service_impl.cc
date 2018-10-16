@@ -85,6 +85,33 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
     unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
     initial_sync_records_remaining_(0) {
 
+  // Moniter syncs prefs required in GetSettingsAndDevices
+  profile_pref_change_registrar_.Init(profile->GetPrefs());
+  profile_pref_change_registrar_.Add(
+      prefs::kSyncEnabled,
+      base::Bind(&BraveSyncServiceImpl::OnSyncPrefsChanged,
+                 base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kSyncDeviceName,
+      base::Bind(&BraveSyncServiceImpl::OnSyncPrefsChanged,
+                 base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kSyncDeviceList,
+      base::Bind(&BraveSyncServiceImpl::OnSyncPrefsChanged,
+                 base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kSyncBookmarksEnabled,
+      base::Bind(&BraveSyncServiceImpl::OnSyncPrefsChanged,
+                 base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kSyncSiteSettingsEnabled,
+      base::Bind(&BraveSyncServiceImpl::OnSyncPrefsChanged,
+                 base::Unretained(this)));
+  profile_pref_change_registrar_.Add(
+      prefs::kSyncHistoryEnabled,
+      base::Bind(&BraveSyncServiceImpl::OnSyncPrefsChanged,
+                 base::Unretained(this)));
+
   if (!sync_prefs_->GetSeed().empty() &&
       !sync_prefs_->GetThisDeviceName().empty()) {
     sync_configured_ = true;
@@ -187,8 +214,6 @@ void BraveSyncServiceImpl::OnResetSync() {
   sync_initialized_ = false;
 
   sync_prefs_->SetSyncEnabled(false);
-
-  NotifySyncStateChanged();
 }
 
 void BraveSyncServiceImpl::GetSettingsAndDevices(
@@ -216,27 +241,23 @@ std::string BraveSyncServiceImpl::GetSeed() {
 void BraveSyncServiceImpl::OnSetSyncEnabled(const bool sync_this_device) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncEnabled(sync_this_device);
-  NotifySyncStateChanged();
 }
 
 void BraveSyncServiceImpl::OnSetSyncBookmarks(const bool sync_bookmarks) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
-  NotifySyncStateChanged();
 }
 
 void BraveSyncServiceImpl::OnSetSyncBrowsingHistory(
     const bool sync_browsing_history) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncHistoryEnabled(sync_browsing_history);
-  NotifySyncStateChanged();
 }
 
 void BraveSyncServiceImpl::OnSetSyncSavedSiteSettings(
     const bool sync_saved_site_settings) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   sync_prefs_->SetSyncSiteSettingsEnabled(sync_saved_site_settings);
-  NotifySyncStateChanged();
 }
 
 // SyncLibToBrowserHandler overrides
@@ -338,8 +359,6 @@ void BraveSyncServiceImpl::OnSyncReady() {
   DCHECK(false == sync_initialized_);
   sync_initialized_ = true;
 
-  NotifySyncStateChanged();
-
   // fetch the records
   RequestSyncData();
 }
@@ -432,8 +451,15 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
 
   if (this_device_deleted)
     OnResetSync();
-  else
-    NotifySyncStateChanged();
+}
+
+void BraveSyncServiceImpl::OnSyncPrefsChanged(const std::string& pref) {
+  if (pref == prefs::kSyncEnabled) {
+    sync_client_->OnSyncEnabledChanged();
+    if (!sync_prefs_->GetSyncEnabled())
+      sync_initialized_ = false;
+  }
+  NotifySyncStateChanged();
 }
 
 void BraveSyncServiceImpl::OnDeletedSyncUser() {

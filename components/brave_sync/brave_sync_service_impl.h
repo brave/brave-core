@@ -12,6 +12,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
+#include "components/prefs/pref_change_registrar.h"
 
 namespace base {
 class RepeatingTimer;
@@ -92,6 +93,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
   std::unique_ptr<SyncRecordAndExistingList> PrepareResolvedPreferences(
     const RecordsList& records);
 
+  void OnSyncPrefsChanged(const std::string& pref);
+
   // Other private methods
   void RequestSyncData();
   void FetchSyncRecords(const bool bookmarks, const bool history,
@@ -152,6 +155,9 @@ class BraveSyncServiceImpl : public BraveSyncService,
   // send unsynced records in batches
   base::TimeDelta unsynced_send_interval_;
   uint64_t initial_sync_records_remaining_;
+
+  // Registrar used to monitor the profile prefs.
+  PrefChangeRegistrar profile_pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceImpl);
 };

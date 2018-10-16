@@ -33,12 +33,6 @@ BraveSyncClientImpl::BraveSyncClientImpl(SyncMessageHandler* handler,
   extensions::ExtensionSystem::Get(profile)->ready().Post(
       FROM_HERE, base::Bind(&BraveSyncClientImpl::OnExtensionSystemReady,
           base::Unretained(this)));
-
-  profile_pref_change_registrar_.Init(profile->GetPrefs());
-  profile_pref_change_registrar_.Add(
-      prefs::kSyncEnabled,
-      base::Bind(&BraveSyncClientImpl::OnProfilePreferenceChanged,
-                 base::Unretained(this)));
 }
 
 BraveSyncClientImpl::~BraveSyncClientImpl() {}
@@ -125,6 +119,15 @@ void BraveSyncClientImpl::OnExtensionInitialized() {
     brave_sync_event_router_->LoadClient();
 }
 
+void BraveSyncClientImpl::OnSyncEnabledChanged() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (sync_prefs_->GetSyncEnabled()) {
+    LoadOrUnloadExtension(true);
+  } else {
+    LoadOrUnloadExtension(false);
+  }
+}
+
 void BraveSyncClientImpl::OnExtensionReady(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
@@ -178,14 +181,5 @@ void BraveSyncClientImpl::OnExtensionSystemReady() {
     LoadOrUnloadExtension(true);
   }
 };
-
-void BraveSyncClientImpl::OnProfilePreferenceChanged() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (sync_prefs_->GetSyncEnabled()) {
-    LoadOrUnloadExtension(true);
-  } else {
-    LoadOrUnloadExtension(false);
-  }
-}
 
 } // namespace brave_sync
