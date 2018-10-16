@@ -8,7 +8,6 @@
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "base/macros.h"
 #include "base/scoped_observer.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "extensions/browser/extension_registry_observer.h"
 
 class Profile;
@@ -62,6 +61,7 @@ class BraveSyncClientImpl : public BraveSyncClient,
 
  private:
   void OnExtensionInitialized() override;
+  void OnSyncEnabledChanged() override;
 
   // ExtensionRegistryObserver:
   void OnExtensionReady(content::BrowserContext* browser_context,
@@ -73,7 +73,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
                            UnloadedExtensionReason reason) override;
   void LoadOrUnloadExtension(bool load);
   void OnExtensionSystemReady();
-  void OnProfilePreferenceChanged();
 
   SyncMessageHandler* handler_;  // not owned
   Profile* profile_;  // not owned
@@ -81,9 +80,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
   bool extension_loaded_;
 
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
-
-  // Registrar used to monitor the profile prefs.
-  PrefChangeRegistrar profile_pref_change_registrar_;
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;

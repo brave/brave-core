@@ -104,6 +104,8 @@ class BraveSyncClient {
   virtual void NeedSyncWords(const std::string &seed) = 0;
 
   virtual void OnExtensionInitialized() = 0;
+
+  virtual void OnSyncEnabledChanged() = 0;
 };
 
 } // namespace brave_sync
