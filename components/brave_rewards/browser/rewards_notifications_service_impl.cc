@@ -39,9 +39,9 @@ void RewardsNotificationsServiceImpl::AddNotification(
     RewardsNotificationArgs args) {
   RewardsNotificationID id = GenerateRewardsNotificationID();
   RewardsNotification rewards_notification(
-      id, type, GenerateRewardsNotificationTimestamp());
+      id, type, GenerateRewardsNotificationTimestamp(), std::move(args));
   rewards_notifications_[id] = rewards_notification;
-  OnNotificationAdded(rewards_notification, std::move(args));
+  OnNotificationAdded(rewards_notification);
 }
 
 void RewardsNotificationsServiceImpl::DeleteNotification(RewardsNotificationID id) {
@@ -100,12 +100,22 @@ void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {
     int notification_id;
     int notification_type;
     int notification_timestamp;
+    RewardsNotificationArgs notification_args;
     dict_value->GetInteger("id", &notification_id);
     dict_value->GetInteger("type", &notification_type);
     dict_value->GetInteger("timestamp", &notification_timestamp);
+
+    base::ListValue* args;
+    dict_value->GetList("args", &args);
+    for (auto& arg : *args) {
+      std::string arg_string = arg.GetString();
+      notification_args.push_back(arg_string);
+    }
+
     RewardsNotification notification(notification_id,
                                      static_cast<RewardsNotificationType>(notification_type),
-                                     notification_timestamp);
+                                     notification_timestamp,
+                                     notification_args);
     rewards_notifications_[notification.id_] = notification;
   }
 }
@@ -118,6 +128,11 @@ void RewardsNotificationsServiceImpl::StoreRewardsNotifications() {
     dict->SetInteger("id", item.second.id_);
     dict->SetInteger("type", item.second.type_);
     dict->SetInteger("timestamp", item.second.timestamp_);
+    auto args = std::make_unique<base::ListValue>();
+    for (auto& arg : item.second.args_) {
+      args->AppendString(arg);
+    }
+    dict->SetList("args", std::move(args));
     root.Append(std::move(dict));
   }
 
@@ -131,10 +146,9 @@ void RewardsNotificationsServiceImpl::StoreRewardsNotifications() {
 }
 
 void RewardsNotificationsServiceImpl::TriggerOnNotificationAdded(
-    const RewardsNotification& rewards_notification,
-    const RewardsNotificationArgs& notification_args) {
+    const RewardsNotification& rewards_notification) {
   for (auto& observer : observers_)
-    observer.OnNotificationAdded(this, rewards_notification, notification_args);
+    observer.OnNotificationAdded(this, rewards_notification);
 
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
@@ -142,7 +156,7 @@ void RewardsNotificationsServiceImpl::TriggerOnNotificationAdded(
     std::unique_ptr<base::ListValue> args(
         extensions::api::rewards_notifications::OnNotificationAdded::Create(
             rewards_notification.id_, rewards_notification.type_,
-            rewards_notification.timestamp_, notification_args)
+            rewards_notification.timestamp_, rewards_notification.args_)
             .release());
     std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_REWARDS_NOTIFICATION_ADDED,
@@ -203,7 +217,7 @@ void RewardsNotificationsServiceImpl::TriggerOnGetNotification(
     std::unique_ptr<base::ListValue> args(
         extensions::api::rewards_notifications::OnGetNotification::Create(
             rewards_notification.id_, rewards_notification.type_,
-            rewards_notification.timestamp_)
+            rewards_notification.timestamp_, rewards_notification.args_)
             .release());
     std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_REWARDS_GET_NOTIFICATION,
@@ -232,6 +246,7 @@ void RewardsNotificationsServiceImpl::TriggerOnGetAllNotifications(
       notifications_type.id = item.id_;
       notifications_type.type = item.type_;
       notifications_type.timestamp = item.timestamp_;
+      notifications_type.args = item.args_;
     }
     std::unique_ptr<base::ListValue> args(
         extensions::api::rewards_notifications::OnGetAllNotifications::Create(
@@ -246,9 +261,8 @@ void RewardsNotificationsServiceImpl::TriggerOnGetAllNotifications(
 }
 
 void RewardsNotificationsServiceImpl::OnNotificationAdded(
-    const RewardsNotification& rewards_notification,
-    const RewardsNotificationArgs& args) {
-  TriggerOnNotificationAdded(rewards_notification, args);
+    const RewardsNotification& rewards_notification) {
+  TriggerOnNotificationAdded(rewards_notification);
 }
 
 void RewardsNotificationsServiceImpl::OnNotificationDeleted(

@@ -34,15 +34,17 @@ class RewardsNotificationsService : public KeyedService {
   };
 
   struct RewardsNotification {
-    RewardsNotification()
-      : id_(0), type_(REWARDS_NOTIFICATION_INVALID), timestamp_(0) {}
+    RewardsNotification();
+    RewardsNotification(const RewardsNotification& prop);
     RewardsNotification(RewardsNotificationID id,
                         RewardsNotificationType type,
-                        RewardsNotificationTimestamp timestamp)
-        : id_(id), type_(type), timestamp_(timestamp) {}
-    RewardsNotificationID id_;
-    RewardsNotificationType type_;
-    RewardsNotificationTimestamp timestamp_;
+                        RewardsNotificationTimestamp timestamp,
+                        RewardsNotificationArgs args);
+    ~RewardsNotification();
+    RewardsNotificationID id_ = 0;
+    RewardsNotificationType type_ = RewardsNotificationsService::REWARDS_NOTIFICATION_INVALID;
+    RewardsNotificationTimestamp timestamp_ = 0;
+    RewardsNotificationArgs args_;
   };
 
   typedef std::vector<RewardsNotification> RewardsNotificationsList;

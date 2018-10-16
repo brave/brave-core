@@ -28,11 +28,10 @@ class BraveRewardsNotificationsBrowserTest
 
   void OnNotificationAdded(
       RewardsNotificationsService* rewards_notifications_service,
-      const RewardsNotificationsService::RewardsNotification& notification,
-      const RewardsNotificationsService::RewardsNotificationArgs& args) override {
-    EXPECT_TRUE(args.size() == 2);
-    EXPECT_STREQ(args.at(0).c_str(), "foo");
-    EXPECT_STREQ(args.at(1).c_str(), "bar");
+      const RewardsNotificationsService::RewardsNotification& notification) override {
+    EXPECT_TRUE(notification.args_.size() == 2);
+    EXPECT_STREQ(notification.args_.at(0).c_str(), "foo");
+    EXPECT_STREQ(notification.args_.at(1).c_str(), "bar");
 
     EXPECT_TRUE(notification.id_ != 0);
     EXPECT_TRUE(notification.timestamp_ != 0);

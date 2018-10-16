@@ -90,9 +90,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationsService* rewards_notifications_service,
       const brave_rewards::RewardsNotificationsService::RewardsNotification&
-          notification,
-      const brave_rewards::RewardsNotificationsService::RewardsNotificationArgs&
-          args) override;
+          notification) override;
   void OnNotificationDeleted(
       brave_rewards::RewardsNotificationsService* rewards_notifications_service,
       const brave_rewards::RewardsNotificationsService::RewardsNotification&
@@ -427,9 +425,7 @@ void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* re
 void RewardsDOMHandler::OnNotificationAdded(
     brave_rewards::RewardsNotificationsService* rewards_notifications_service,
     const brave_rewards::RewardsNotificationsService::RewardsNotification&
-        notification,
-    const brave_rewards::RewardsNotificationsService::RewardsNotificationArgs&
-        args) {
+        notification) {
 }
 
 void RewardsDOMHandler::OnNotificationDeleted(

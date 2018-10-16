@@ -15,8 +15,7 @@ class RewardsNotificationsServiceObserver : public base::CheckedObserver {
 
   virtual void OnNotificationAdded(
       RewardsNotificationsService* rewards_notifications_service,
-      const RewardsNotificationsService::RewardsNotification& notification,
-      const RewardsNotificationsService::RewardsNotificationArgs& args) {}
+      const RewardsNotificationsService::RewardsNotification& notification) {}
   virtual void OnNotificationDeleted(
       RewardsNotificationsService* rewards_notifications_service,
       const RewardsNotificationsService::RewardsNotification& notification) {}

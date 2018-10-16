@@ -34,8 +34,7 @@ class RewardsNotificationsServiceImpl
 
 private:
  void TriggerOnNotificationAdded(
-     const RewardsNotification& rewards_notification,
-     const RewardsNotificationArgs& args);
+     const RewardsNotification& rewards_notification);
  void TriggerOnNotificationDeleted(
      const RewardsNotification& rewards_notification);
  void TriggerOnAllNotificationsDeleted();
@@ -43,8 +42,7 @@ private:
  void TriggerOnGetAllNotifications(
      const RewardsNotificationsList& rewards_notifications_list);
 
- void OnNotificationAdded(const RewardsNotification& rewards_notification,
-                          const RewardsNotificationArgs& args);
+ void OnNotificationAdded(const RewardsNotification& rewards_notification);
  void OnNotificationDeleted(const RewardsNotification& rewards_notification);
  void OnAllNotificationsDeleted();
  void OnGetNotification(const RewardsNotification& rewards_notification);

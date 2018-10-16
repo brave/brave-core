@@ -15,46 +15,46 @@
         "type": "function",
         "description": "Fired when a notification is added",
         "parameters": [
-           {
-             "name": "id",
-             "type": "integer"
-           },
-           {
-             "name": "type",
-             "type": "integer"
-           },
-           {
-             "name": "timestamp",
-             "type": "integer"
-           },
-           {
-             "name": "args",
-             "type": "array",
-             "items": {
-               "name": "value",
-               "type": "string"
-             }
-           }
-	 ]
+          {
+            "name": "id",
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "type": "integer"
+          },
+          {
+            "name": "timestamp",
+            "type": "integer"
+          },
+          {
+            "name": "args",
+            "type": "array",
+            "items": {
+              "name": "value",
+              "type": "string"
+            }
+          }
+        ]
       },
       {
         "name": "onNotificationDeleted",
         "type": "function",
         "description": "Fired when a notification is deleted",
         "parameters": [
-           {
-             "name": "id",
-             "type": "integer"
-           },
-           {
-             "name": "type",
-             "type": "integer"
-           },
-           {
-             "name": "timestamp",
-             "type": "integer"
-           }
-	 ]
+          {
+            "name": "id",
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "type": "integer"
+          },
+          {
+            "name": "timestamp",
+            "type": "integer"
+          }
+        ]
       },
       {
         "name": "onAllNotificationsDeleted",
@@ -67,47 +67,63 @@
         "type": "function",
         "description": "Fired when a notification is retrieved",
         "parameters": [
-           {
-             "name": "id",
-             "type": "integer"
-           },
-           {
-             "name": "type",
-             "type": "integer"
-           },
-           {
-             "name": "timestamp",
-             "type": "integer"
-           }
-	 ]
+          {
+            "name": "id",
+            "type": "integer"
+          },
+          {
+            "name": "type",
+            "type": "integer"
+          },
+          {
+            "name": "timestamp",
+            "type": "integer"
+          },
+          {
+            "name": "args",
+            "type": "array",
+            "items": {
+              "name": "value",
+              "type": "string"
+            }
+          }
+        ]
       },
       {
         "name": "onGetAllNotifications",
         "type": "function",
         "description": "Fired when all notifications are retrieved",
         "parameters": [
-           {
-             "name": "notifications",
-             "type": "array",
-             "items": {
-	       "type": "object",
-	       "properties": {
-	         "id": {
-		   "type": "integer",
-		   "description": "The rewards notification ID"
-		 },
-	         "type": {
-		   "type": "integer",
-		   "description": "The rewards notification type"
-		 },
-	         "timestamp": {
-		   "type": "integer",
-		   "description": "The rewards notification creation timestamp"
-		 }
-	       }
-             }
-           }
-	 ]
+          {
+            "name": "notifications",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The rewards notification ID"
+                },
+                "type": {
+                  "type": "integer",
+                  "description": "The rewards notification type"
+                },
+                "timestamp": {
+                  "type": "integer",
+                  "description": "The rewards notification creation timestamp"
+                },
+                "args": {
+                  "type": "array",
+                  "description": "Additional data for notification",
+                  "items": {
+                    "name": "value",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
       }
     ],
     "functions": [
@@ -128,7 +144,7 @@
               "type": "string"
             }
           }
-	]
+        ]
       },
       {
         "name": "deleteNotification",
@@ -139,7 +155,7 @@
             "name": "id",
             "type": "integer"
           }
-	]
+        ]
       },
       {
         "name": "deleteAllNotifications",
