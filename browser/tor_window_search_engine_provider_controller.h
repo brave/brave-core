@@ -20,6 +20,8 @@ class TorWindowSearchEngineProviderController
 
   void ConfigureSearchEngineProvider() override {}
 
+  int GetInitialSearchEngineProvider() const;
+
   IntegerPrefMember alternative_search_engine_provider_in_tor_;
 
   DISALLOW_COPY_AND_ASSIGN(TorWindowSearchEngineProviderController);

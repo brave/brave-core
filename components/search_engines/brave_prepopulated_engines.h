@@ -21,6 +21,8 @@ extern const int kBraveCurrentDataVersion;
 // additions by Chromium, so starting our ids from 500. Potential problem:
 // Chromium adds one of these engines to their list with a different id.
 enum BravePrepopulatedEngineID : unsigned int {
+  PREPOPULATED_ENGINE_ID_INVALID = 0,
+
   // These engine IDs are already defined in prepopulated_engines.json
   PREPOPULATED_ENGINE_ID_GOOGLE = 1,
   PREPOPULATED_ENGINE_ID_YAHOO = 2,
