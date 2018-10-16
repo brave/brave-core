@@ -67,7 +67,8 @@ void BraveSyncClientImpl::SendFetchSyncRecords(
 }
 
 void BraveSyncClientImpl::SendFetchSyncDevices() {
-  NOTIMPLEMENTED();
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  brave_sync_event_router_->FetchSyncDevices();
 }
 
 void BraveSyncClientImpl::SendResolveSyncRecords(

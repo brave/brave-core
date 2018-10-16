@@ -200,7 +200,7 @@
       {
         "name": "onFetchSyncRecords",
         "type": "function",
-        "description": "ent to fetch sync records after a given start time from the sync server",
+        "description": "sent to fetch sync records after a given start time from the sync server",
         "parameters": [
           {
             "type": "array", "items": {"type": "string"},
@@ -215,6 +215,12 @@
             "name": "maxRecords"
           }
         ]
+      },
+      {
+        "name": "onFetchSyncDevices",
+        "type": "function",
+        "description": "sent to fetch sync devices after a given start time from the sync server",
+        "parameters": []
       },
       {
         "name": "onResolveSyncRecords",
