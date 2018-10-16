@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lv">
+<translation id="3333887201479867589">Brave balvas</translation>
+<translation id="7942180974165298215">Brave reklāmu bloķētājs</translation>
+<translation id="7450557937477381864">Aizvērt Chrome</translation>
+<translation id="7008934821596358692">Lai pabeigtu importēšanu, aizveriet visus Chrome logus.</translation>
+<translation id="7753103220327065417">Aizvērt Brave</translation>
+<translation id="5588481533147090393">Lai pabeigtu importēšanu, aizveriet visus Brave logus.</translation>
+<translation id="6447842834002726250">Sīkfaili</translation>
+<translation id="4983925687993168579">Statistika</translation>
+<translation id="9173846700806833701">Widevine nav instalēta</translation>
+<translation id="2433569048491784801">Widevine nav instalēta.</translation>
+<translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
+<translation id="8410111618231938546">Google Widevine ir Digitālā satura tiesību pārvaldības (DRM) koda daļa, kas mums, Brave Software, nepieder un ko mēs nevaram pārbaudīt. Google Widevine kods tiek ielādēts no Google serveriem, nevis no mūsu serveriem. Tas tiek ielādēts tikai tad, ja Jūs iespējojat šo opciju. Mēs atturam no DRM izmantošanas, bet mēs cienām lietotāju izvēli un pieņemam, ka daži Brave lietotāji vēlas izmantot pakalpojumus, kuriem tas ir nepieciešams.
+
+Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas noteikumiem. Jūs piekrītat, ka Brave neatbild par jebkādiem bojājumiem vai zaudējumiem saistībā ar Jūsu Google Widevine lietojumu.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importēts no Brave</translation>
+<translation id="453977518730680921">Automātiski atskaņot medijus</translation>
+<translation id="410351446219883937">Automātiska atskaņošana</translation>
+<translation id="2240268017737062801">Vaicāt, ja vietne vēlas automātiski atskaņot medijus</translation>
+<translation id="3371702087847741961">Vaicāt, ja vietne vēlas automātiski atskaņot medijus (ieteicams)</translation>
+<translation id="3218385319396786393">Automātiskā atskaņošana šajā lapā tika bloķēta</translation>
+<translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
+<translation id="2044383478723007273">Brave krāsas</translation>
+<translation id="5341901626640816374">Lietot plato atrašanās vietas joslu</translation>
+<translation id="7965178729203412357">Jauna Tor identitāte</translation>
+<translation id="8784924142044142231">Iziet no Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Atvērt Tor logu</translation>
+<translation id="3155170474926428993">Tor palaidējs</translation>
+<translation id="7372129767729198111">Brave aizsarga noklusējumi</translation>
+<translation id="8029018702721078742">Reklāmu kontrole</translation>
+<translation id="3544462288910360084">Sīkfailu kontrole</translation>
+<translation id="8919235146866304148">Pirkstu nospiedumu aizsardzība</translation>
+<translation id="520895744850022668">HTTPS visur</translation>
+<translation id="5259716416204774556">Skriptu bloķēšana</translation>
+<translation id="6067014455220527258">Bloķēt reklāmas</translation>
+<translation id="6985711843506827936">Atļaut reklāmas un izsekošanu</translation>
+<translation id="6132506775968708399">Bloķēt trešās puses sīkfailus</translation>
+<translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
+<translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
+<translation id="1442559343076146186">Bloķēt trešās puses pirkstu nospiedumu ņemšanu</translation>
+<translation id="8034285923190068220">Atļaut pirkstu nospiedumu ņemšanu</translation>
+<translation id="4540198958192073185">Bloķēt visu pirkstu nospiedumu ņemšanu</translation>
+<translation id="8942080017911802454">WebRTC IP apstrādes politika</translation>
+<translation id="6165508094623778733">Uzziniet vairāk</translation>
+<translation id="8798099450830957504">Noklusējums</translation>
+<translation id="1822560017823072927">Noklusējuma publiskie un privātie interfeisi</translation>
+<translation id="5825943197137337319">Tikai noklusējuma publiskais interfeiss</translation>
+<translation id="1689062823386843231">Atspējot UDP protokolu, kam netiek izmantots starpniekserveris</translation>
 </translationbundle>
