@@ -5,8 +5,14 @@
 #ifndef BRAVE_COMMON_IMPORTER_BRAVE_LEDGER_H_
 #define BRAVE_COMMON_IMPORTER_BRAVE_LEDGER_H_
 
+#include <vector>
+
 struct BraveLedger {
-  int stub;  // TODO
+  BraveLedger();
+  BraveLedger(const BraveLedger& other);
+  ~BraveLedger();
+
+  std::vector<uint8_t> wallet_seed;
 };
 
 #endif  // BRAVE_COMMON_IMPORTER_BRAVE_LEDGER_H_

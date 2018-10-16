@@ -5,6 +5,7 @@
 #include "brave/utility/importer/brave_importer.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/files/file_util.h"
@@ -13,6 +14,8 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+
+#include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_stats.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/grit/generated_resources.h"
@@ -325,13 +328,51 @@ void BraveImporter::ImportStats() {
   bridge_->UpdateStats(stats);
 }
 
+std::vector<uint8_t> ParseWalletSeed(const base::Value& ledger_state_json) {
+  const base::Value* wallet_seed_json = ledger_state_json.FindPathOfType(
+      {"properties", "wallet", "keyinfo", "seed"},
+      base::Value::Type::DICTIONARY);
+  if (!wallet_seed_json) {
+    LOG(ERROR) << "Failed to parse wallet seed from ledger state";
+    return std::vector<uint8_t>();
+  }
+
+  // The wallet seed is a 32-byte Uint8Array, encoded in JSON as a
+  // dictionary of integers.
+  std::vector<uint8_t> wallet_seed;
+  for (int i = 0; i < 32; i++) {
+    const base::Value* value_json = wallet_seed_json->FindKey(std::to_string(i));
+    if (!value_json) {
+      LOG(ERROR) << "Expected seed byte not found: " << i;
+      return std::vector<uint8_t>();
+    }
+
+    int value = value_json->GetInt();
+    if (value < 0 || value > 255) {
+      LOG(ERROR) << "Seed byte at index " << i << " out of range: " << value;
+      return std::vector<uint8_t>();;
+    }
+
+    wallet_seed.push_back(static_cast<uint8_t>(value));
+  }
+
+  return wallet_seed;
+}
+
 void BraveImporter::ImportLedger() {
   std::unique_ptr<base::Value> ledger_state_json = ParseBraveStateFile(
       "ledger-state.json");
   if (!ledger_state_json)
     return;
 
-  LOG(ERROR) << "Successfully parsed Brave ledger-state.json in BraveImporter::ImportLedger";
+  auto wallet_seed = ParseWalletSeed(*ledger_state_json);
+  if (wallet_seed.empty()) {
+    LOG(ERROR) << "Failed parsing wallet seed";
+    return;
+  }
 
-  //bridge_->UpdateLedger(ledger);
+  BraveLedger ledger;
+  ledger.wallet_seed = wallet_seed;
+
+  bridge_->UpdateLedger(ledger);
 }

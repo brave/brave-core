@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/profile_import_process_param_traits_macros.h b/chrome/common/importer/profile_import_process_param_traits_macros.h
-index dd005641f4349c017bc65d843d8fe49ec6122f64..7087fa2316525fac9cf9abb0249b16aae6e9d46f 100644
+index dd005641f4349c017bc65d843d8fe49ec6122f64..18ef89f4d6fe9b134523d69fc103c90b10b283d8 100644
 --- a/chrome/common/importer/profile_import_process_param_traits_macros.h
 +++ b/chrome/common/importer/profile_import_process_param_traits_macros.h
 @@ -14,6 +14,8 @@
@@ -22,7 +22,7 @@ index dd005641f4349c017bc65d843d8fe49ec6122f64..7087fa2316525fac9cf9abb0249b16aa
 +IPC_STRUCT_TRAITS_END()
 +
 +IPC_STRUCT_TRAITS_BEGIN(BraveLedger)
-+  IPC_STRUCT_TRAITS_MEMBER(stub)
++  IPC_STRUCT_TRAITS_MEMBER(wallet_seed)
 +IPC_STRUCT_TRAITS_END()
 +
  #endif  // CHROME_COMMON_IMPORTER_PROFILE_IMPORT_PROCESS_PARAM_TRAITS_MACROS_H_

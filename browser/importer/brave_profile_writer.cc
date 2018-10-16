@@ -67,4 +67,8 @@ void BraveProfileWriter::UpdateStats(const BraveStats& stats) {
 
 void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
   LOG(ERROR) << "Reached BraveProfileWriter::UpdateLedger stub";
+  // DEBUG verify successful IPC
+  for (const auto v : ledger.wallet_seed) {
+    LOG(ERROR) << (int)v;
+  }
 }

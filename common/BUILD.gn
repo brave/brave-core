@@ -18,6 +18,7 @@ source_set("common") {
   sources = [
     "brave_switches.cc",
     "brave_switches.h",
+    "importer/brave_ledger.cc",
     "importer/brave_ledger.h",
     "pref_names.cc",
     "pref_names.h",
