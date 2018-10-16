@@ -58,6 +58,7 @@ source_set("core") {
     "jslib_const.h",
     "jslib_messages.cc",
     "jslib_messages.h",
+    "model/change_processor.h",
     "settings.cc",
     "settings.h",
     "sync_devices.cc",

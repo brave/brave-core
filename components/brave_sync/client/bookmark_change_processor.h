@@ -12,22 +12,37 @@
 #include "base/time/time.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
+#include "brave/components/brave_sync/model/change_processor.h"
 #include "components/bookmarks/browser/bookmark_model_observer.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_node_data.h"
 
 namespace brave_sync {
 
-class BookmarkChangeProcessor : public bookmarks::BookmarkModelObserver  {
+class BookmarkChangeProcessor : public ChangeProcessor,
+                                       bookmarks::BookmarkModelObserver  {
  public:
   BookmarkChangeProcessor(BraveSyncClient* sync_client,
                           prefs::Prefs* sync_prefs,
                           bookmarks::BookmarkModel* bookmark_model);
   ~BookmarkChangeProcessor() override;
 
-  void Start();
-  void Stop();
+  // ChangeProcessor implementation
+  void Start() override;
+  void Stop() override;
+  void Reset() override;
+  void ApplyChangesFromSyncModel(const RecordsList &records) override;
+  void OnGetBookmarkOrder(const std::string& order,
+                          const std::string& prev_order,
+                          const std::string& next_order,
+                          const std::string& parent_order);
+  void GetAllSyncData(
+      const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
+      SyncRecordAndExistingList* records_and_existing_objects) override;
+  void SendUnsynced(base::TimeDelta unsynced_send_interval) override;
+  uint64_t InitialSync() override;
 
+ private:
   // bookmarks::BookmarkModelObserver:
   void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
                            bool ids_reassigned) override;
@@ -61,19 +76,6 @@ class BookmarkChangeProcessor : public bookmarks::BookmarkModelObserver  {
       bookmarks::BookmarkModel* model,
       const bookmarks::BookmarkNode* node) override;
 
-  void ResetBookmarks();
-  void OnResolvedBookmarks(const RecordsList &records);
-  void OnGetBookmarkOrder(const std::string& order,
-                          const std::string& prev_order,
-                          const std::string& next_order,
-                          const std::string& parent_order);
-  void GetExistingBookmarks(
-      const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
-      SyncRecordAndExistingList* records_and_existing_objects);
-  void SendUnsyncedBookmarks(base::TimeDelta unsynced_send_interval);
-  uint64_t InitialSync();
-
- private:
   std::unique_ptr<jslib::SyncRecord> BookmarkNodeToSyncBookmark(
       const bookmarks::BookmarkNode* node);
   bookmarks::BookmarkNode* GetDeletedNodeRoot();

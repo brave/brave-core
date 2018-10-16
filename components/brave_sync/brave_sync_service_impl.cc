@@ -177,7 +177,7 @@ void BraveSyncServiceImpl::OnResetSync() {
 
   const std::string device_id = sync_prefs_->GetThisDeviceId();
 
-  bookmark_change_processor_->ResetBookmarks();
+  bookmark_change_processor_->Reset();
 
   OnDeleteDevice(device_id);
 
@@ -359,7 +359,7 @@ void BraveSyncServiceImpl::OnGetExistingObjects(
   if (category_name == jslib_const::kBookmarks) {
     auto records_and_existing_objects =
         std::make_unique<SyncRecordAndExistingList>();
-    bookmark_change_processor_->GetExistingBookmarks(
+    bookmark_change_processor_->GetAllSyncData(
         *records.get(), records_and_existing_objects.get());
     sync_client_->SendResolveSyncRecords(
         category_name, std::move(records_and_existing_objects));
@@ -378,12 +378,12 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(
   if (category_name == brave_sync::jslib_const::kPreferences) {
     OnResolvedPreferences(*records.get());
   } else if (category_name == brave_sync::jslib_const::kBookmarks) {
-    bookmark_change_processor_->OnResolvedBookmarks(*records.get());
+    bookmark_change_processor_->ApplyChangesFromSyncModel(*records.get());
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
     NOTIMPLEMENTED();
   }
 
-  bookmark_change_processor_->SendUnsyncedBookmarks(unsynced_send_interval_);
+  bookmark_change_processor_->SendUnsynced(unsynced_send_interval_);
 }
 
 std::unique_ptr<SyncRecordAndExistingList>
