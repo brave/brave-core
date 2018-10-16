@@ -19,10 +19,6 @@ class Profile;
 
 namespace brave_sync {
 
-namespace storage {
-  class ObjectMap;
-}
-
 namespace jslib {
   class SyncRecord;
   class Site;
@@ -40,7 +36,6 @@ public:
           CanSendSyncHistory *send_history);
   ~History() override;
 
-  void SetObjectMap(storage::ObjectMap* sync_obj_map);
   void SetThisDeviceId(const std::string &device_id);
 
 
@@ -78,7 +73,6 @@ private:
 
   CanSendSyncHistory *send_history_;
 
-  storage::ObjectMap* sync_obj_map_;
   std::string device_id_;
 
   DISALLOW_COPY_AND_ASSIGN(History);

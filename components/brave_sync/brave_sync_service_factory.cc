@@ -71,6 +71,9 @@ void BraveSyncServiceFactory::RegisterProfilePrefs(
 
   registry->RegisterTimePref(prefs::kSyncLatestRecordTime, base::Time());
   registry->RegisterTimePref(prefs::kSyncLastFetchTime, base::Time());
+
+  registry->RegisterStringPref(prefs::kSyncDeviceList, std::string());
+  registry->RegisterStringPref(prefs::kSyncApiVersion, std::string("0"));
 }
 
 content::BrowserContext* BraveSyncServiceFactory::GetBrowserContextToUse(

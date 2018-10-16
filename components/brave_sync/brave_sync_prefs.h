@@ -18,6 +18,7 @@ class Time;
 namespace brave_sync {
 
 class Settings;
+class SyncDevices;
 
 namespace prefs {
 
@@ -46,6 +47,8 @@ extern const char kSyncLastFetchTime[];
 // the list of all known sync devices
 // TODO(bridiver) - this should be a dictionary - not raw json
 extern const char kSyncDeviceList[];
+// the sync api version from the server
+extern const char kSyncApiVersion[];
 
 class Prefs {
 public:
@@ -60,8 +63,8 @@ public:
   std::string GetBookmarksBaseOrder();
   void SetBookmarksBaseOrder(const std::string& order);
 
-  bool GetSyncThisDevice() const;
-  void SetSyncThisDevice(const bool sync_this_device);
+  bool GetSyncEnabled() const;
+  void SetSyncEnabled(const bool sync_this_device);
   bool GetSyncBookmarksEnabled() const;
   void SetSyncBookmarksEnabled(const bool sync_bookmarks_enabled);
   bool GetSyncSiteSettingsEnabled() const;
@@ -73,6 +76,12 @@ public:
   base::Time GetLatestRecordTime();
   void SetLastFetchTime(const base::Time &time);
   base::Time GetLastFetchTime();
+
+  std::unique_ptr<SyncDevices> GetSyncDevices();
+  void SetSyncDevices(const SyncDevices& sync_devices);
+
+  std::string GetApiVersion();
+  void SetApiVersion(const std::string& api_version);
 
   std::unique_ptr<Settings> GetBraveSyncSettings() const;
 

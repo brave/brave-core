@@ -5,6 +5,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 
 #include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/devices.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
@@ -23,6 +24,7 @@ const char kSyncHistoryEnabled[] = "brave_sync.history_enabled";
 const char kSyncLatestRecordTime[] = "brave_sync.latest_record_time";
 const char kSyncLastFetchTime[] = "brave_sync.last_fetch_time";
 const char kSyncDeviceList[] = "brave_sync.device_list";
+const char kSyncApiVersion[] = "brave_sync.api_version";
 
 Prefs::Prefs(Profile* profile) : pref_service_(nullptr) {
   DCHECK(profile);
@@ -69,12 +71,12 @@ void Prefs::SetBookmarksBaseOrder(const std::string& order) {
   pref_service_->SetString(kSyncBookmarksBaseOrder, order);
 }
 
-bool Prefs::GetSyncThisDevice() const {
+bool Prefs::GetSyncEnabled() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   return pref_service_->GetBoolean(kSyncEnabled);
 }
 
-void Prefs::SetSyncThisDevice(const bool sync_this_device) {
+void Prefs::SetSyncEnabled(const bool sync_this_device) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   pref_service_->SetBoolean(kSyncEnabled, sync_this_device);
 }
@@ -114,7 +116,7 @@ std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
   auto settings = std::make_unique<brave_sync::Settings>();
 
   settings->this_device_name_ = GetThisDeviceName();
-  settings->sync_this_device_ = GetSyncThisDevice();
+  settings->sync_this_device_ = GetSyncEnabled();
   settings->sync_bookmarks_ = GetSyncBookmarksEnabled();
   settings->sync_settings_ = GetSyncSiteSettingsEnabled();
   settings->sync_history_ = GetSyncHistoryEnabled();
@@ -145,6 +147,27 @@ base::Time Prefs::GetLastFetchTime() {
   return pref_service_->GetTime(kSyncLastFetchTime);
 }
 
+std::unique_ptr<SyncDevices> Prefs::GetSyncDevices() {
+  auto existing_sync_devices = std::make_unique<SyncDevices>();
+  std::string json_device_list = pref_service_->GetString(kSyncDeviceList);
+  if (!json_device_list.empty())
+    existing_sync_devices->FromJson(json_device_list);
+
+  return existing_sync_devices;
+}
+
+void Prefs::SetSyncDevices(const SyncDevices& devices) {
+  pref_service_->SetString(kSyncDeviceList, devices.ToJson());
+}
+
+std::string Prefs::GetApiVersion() {
+  return pref_service_->GetString(kSyncApiVersion);
+}
+
+void Prefs::SetApiVersion(const std::string& api_version) {
+  pref_service_->SetString(kSyncApiVersion, api_version);
+}
+
 void Prefs::Clear() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   pref_service_->ClearPref(kSyncDeviceId);
@@ -157,6 +180,8 @@ void Prefs::Clear() {
   pref_service_->ClearPref(kSyncHistoryEnabled);
   pref_service_->ClearPref(kSyncLatestRecordTime);
   pref_service_->ClearPref(kSyncLastFetchTime);
+  pref_service_->ClearPref(kSyncDeviceList);
+  pref_service_->ClearPref(kSyncApiVersion);
 }
 
 } // namespace prefs

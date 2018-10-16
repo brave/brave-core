@@ -13,7 +13,6 @@
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
-#include "brave/components/brave_sync/object_map.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/history/core/browser/history_service.h"
@@ -25,7 +24,7 @@ namespace brave_sync {
 
 History::History(Profile* profile,
                   CanSendSyncHistory *send_history) :
-  profile_(profile), history_service_observer_(this), send_history_(send_history), sync_obj_map_(nullptr) {
+  profile_(profile), history_service_observer_(this), send_history_(send_history) {
   DCHECK(profile);
   DCHECK(send_history);
 
@@ -40,12 +39,6 @@ History::History(Profile* profile,
 
 History::~History() {
   LOG(ERROR) << "TAGAB brave_sync::History::History DTOR";
-}
-
-void History::SetObjectMap(storage::ObjectMap* sync_obj_map) {
-  DCHECK(sync_obj_map);
-  DCHECK(!sync_obj_map_);
-  sync_obj_map_ = sync_obj_map;
 }
 
 void History::OnURLVisited(history::HistoryService* history_service,
@@ -176,18 +169,17 @@ std::unique_ptr<RecordsList> History::NativeHistoryToSyncRecords(
 
 // TODO, AB: duplicate
 std::string History::GetOrCreateObjectByLocalId(const int64_t &local_id) {
-  CHECK(sync_obj_map_);
   const std::string s_local_id = base::Int64ToString(local_id);
-  std::string object_id = sync_obj_map_->GetObjectIdByLocalId(storage::ObjectMap::Type::History, s_local_id);
-  if (!object_id.empty()) {
-    return object_id;
-  }
+  std::string object_id = ""; //sync_obj_map_->GetObjectIdByLocalId(storage::ObjectMap::Type::History, s_local_id);
+  // if (!object_id.empty()) {
+  //   return object_id;
+  // }
 
   object_id = tools::GenerateObjectId(); // TODO, AB: pack 8 bytes from s_local_id?
-  sync_obj_map_->SaveObjectId(
-        storage::ObjectMap::Type::History,
-        s_local_id,
-        object_id);
+  // sync_obj_map_->SaveObjectId(
+  //       storage::ObjectMap::Type::History,
+  //       s_local_id,
+  //       object_id);
 
   return object_id;
 }
@@ -200,7 +192,7 @@ void History::SetThisDeviceId(const std::string &device_id) {
 
 std::unique_ptr<jslib::SyncRecord> History::GetResolvedHistoryValue(const std::string &object_id) {
   LOG(ERROR) << "TAGAB brave_sync::History::GetResolvedHistoryValue object_id=<"<<object_id<<">";
-  std::string local_object_id = sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::History, object_id);
+  std::string local_object_id = ""; //sync_obj_map_->GetLocalIdByObjectId(storage::ObjectMap::Type::History, object_id);
   LOG(ERROR) << "TAGAB brave_sync::History::GetResolvedHistoryValue local_object_id=<"<<local_object_id<<">";
   if(local_object_id.empty()) {
     return nullptr;

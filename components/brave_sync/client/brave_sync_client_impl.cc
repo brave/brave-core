@@ -181,14 +181,14 @@ void BraveSyncClientImpl::OnExtensionSystemReady() {
   // observe changes in extension system
   extension_registry_observer_.Add(ExtensionRegistry::Get(profile_));
   DCHECK(!extension_loaded_);
-  if (sync_prefs_->GetSyncThisDevice()) {
+  if (sync_prefs_->GetSyncEnabled()) {
     LoadOrUnloadExtension(true);
   }
 };
 
 void BraveSyncClientImpl::OnProfilePreferenceChanged() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (sync_prefs_->GetSyncThisDevice()) {
+  if (sync_prefs_->GetSyncEnabled()) {
     LoadOrUnloadExtension(true);
   } else {
     LoadOrUnloadExtension(false);
