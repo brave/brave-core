@@ -16,13 +16,13 @@
 #include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
-
+#include "content_site.h"
 
 namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 1;
+const int kCurrentVersionNumber = 2;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -55,11 +55,13 @@ bool PublisherInfoDatabase::Init() {
   if (!CreatePublisherInfoTable() ||
       !CreateContributionInfoTable() ||
       !CreateActivityInfoTable() ||
-      !CreateMediaPublisherInfoTable())
+      !CreateMediaPublisherInfoTable() ||
+      !CreateRecurringDonationTable())
     return false;
 
   CreateContributionInfoIndex();
   CreateActivityInfoIndex();
+  CreateRecurringDonationIndex();
 
   // Version check.
   sql::InitStatus version_status = EnsureCurrentVersion();
@@ -91,9 +93,12 @@ bool PublisherInfoDatabase::CreateContributionInfoTable() {
   sql.append(name);
   sql.append(
       "("
-      "publisher_id LONGVARCHAR NOT NULL,"
-      "value DOUBLE DEFAULT 0 NOT NULL,"
-      "date INTEGER DEFAULT 0 NOT NULL,"
+      "publisher_id LONGVARCHAR,"
+      "probi TEXT \"0\"  NOT NULL,"
+      "date INTEGER NOT NULL,"
+      "category INTEGER NOT NULL,"
+      "month INTEGER NOT NULL,"
+      "year INTEGER NOT NULL,"
       "CONSTRAINT fk_contribution_info_publisher_id"
       "    FOREIGN KEY (publisher_id)"
       "    REFERENCES publisher_info (publisher_id)"
@@ -189,6 +194,38 @@ bool PublisherInfoDatabase::CreateMediaPublisherInfoTable() {
       "    REFERENCES publisher_info (publisher_id)"
       "    ON DELETE CASCADE)");
   return GetDB().Execute(sql.c_str());
+}
+
+bool PublisherInfoDatabase::CreateRecurringDonationTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const char* name = "recurring_donation";
+  if (GetDB().DoesTableExist(name))
+    return true;
+
+  // Note: revise implementation for InsertOrUpdatePublisherInfo() if you add
+  // any new constraints to the schema.
+  std::string sql;
+  sql.append("CREATE TABLE ");
+  sql.append(name);
+  sql.append(
+      "("
+      "publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE,"
+      "amount DOUBLE DEFAULT 0 NOT NULL,"
+      "added_date INTEGER DEFAULT 0 NOT NULL,"
+      "CONSTRAINT fk_recurring_donation_publisher_id"
+      "    FOREIGN KEY (publisher_id)"
+      "    REFERENCES publisher_info (publisher_id)"
+      "    ON DELETE CASCADE)");
+  return GetDB().Execute(sql.c_str());
+}
+
+bool PublisherInfoDatabase::CreateRecurringDonationIndex() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  return GetDB().Execute(
+      "CREATE INDEX IF NOT EXISTS recurring_donation_publisher_id_index "
+      "ON recurring_donation (publisher_id)");
 }
 
 bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
@@ -477,6 +514,136 @@ void PublisherInfoDatabase::BindFilter(sql::Statement& statement,
     statement.BindInt(column++, filter.excluded);
 }
 
+bool PublisherInfoDatabase::InsertContributionInfo(const brave_rewards::ContributionInfo& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT INTO contribution_info "
+      "(publisher_id, probi, date, "
+      "category, month, year) "
+      "VALUES (?, ?, ?, ?, ?, ?)"));
+
+  statement.BindString(0, info.publisher_key);
+  statement.BindString(1, info.probi);
+  statement.BindInt64(2, info.date);
+  statement.BindInt(3, info.category);
+  statement.BindInt(4, info.month);
+  statement.BindInt(5, info.year);
+
+  return statement.Run();
+}
+
+bool PublisherInfoDatabase::InsertOrUpdateRecurringDonation(const brave_rewards::RecurringDonation& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT OR REPLACE INTO recurring_donation "
+      "(publisher_id, amount, added_date) "
+      "VALUES (?, ?, ?)"));
+
+  statement.BindString(0, info.publisher_key);
+  statement.BindDouble(1, info.amount);
+  statement.BindInt64(2, info.added_date);
+
+  return statement.Run();
+}
+
+void PublisherInfoDatabase::GetRecurringDonations(ledger::PublisherInfoList* list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return;
+
+  sql::Statement info_sql(
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, rd.amount, rd.added_date, pi.verified "
+                             "FROM recurring_donation as rd "
+                             "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
+
+  while (info_sql.Step()) {
+    std::string id(info_sql.ColumnString(0));
+
+    ledger::PublisherInfo publisher(id, ledger::PUBLISHER_MONTH::ANY, -1);
+
+    publisher.name = info_sql.ColumnString(1);
+    publisher.url = info_sql.ColumnString(2);
+    publisher.favicon_url = info_sql.ColumnString(3);
+    publisher.weight = info_sql.ColumnDouble(4);
+    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
+    publisher.verified = info_sql.ColumnBool(6);
+
+    list->push_back(publisher);
+  }
+}
+
+void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list, ledger::PUBLISHER_MONTH month, int year) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return;
+
+  sql::Statement info_sql(
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, ci.probi, ci.date, pi.verified "
+                             "FROM contribution_info as ci "
+                             "INNER JOIN publisher_info AS pi ON ci.publisher_id = pi.publisher_id "
+                             "AND ci.month = ? AND ci.year = ? "
+                             "AND (ci.category = ? OR ci.category = ?)"));
+
+  info_sql.BindInt(0, month);
+  info_sql.BindInt(1, year);
+  info_sql.BindInt(2, ledger::PUBLISHER_CATEGORY::DIRECT_DONATION);
+  info_sql.BindInt(3, ledger::PUBLISHER_CATEGORY::TIPPING);
+
+  while (info_sql.Step()) {
+    std::string id(info_sql.ColumnString(0));
+
+    ledger::PublisherInfo publisher(id, ledger::PUBLISHER_MONTH::ANY, -1);
+
+    publisher.name = info_sql.ColumnString(1);
+    publisher.url = info_sql.ColumnString(2);
+    publisher.favicon_url = info_sql.ColumnString(3);
+    publisher.weight = info_sql.ColumnDouble(4);
+    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
+    publisher.verified = info_sql.ColumnBool(6);
+
+    list->push_back(publisher);
+  }
+}
+
+bool PublisherInfoDatabase::RemoveRecurring(const std::string& publisher_key) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "DELETE FROM recurring_donation WHERE publisher_id = ?"));
+
+  statement.BindString(0, publisher_key);
+
+  return statement.Run();
+}
+
 // static
 int PublisherInfoDatabase::GetCurrentVersion() {
   return kCurrentVersionNumber;
@@ -521,23 +688,70 @@ sql::MetaTable& PublisherInfoDatabase::GetMetaTable() {
 
 // Migration -------------------------------------------------------------------
 
+bool PublisherInfoDatabase::MigrateV1toV2() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  std::string sql;
+
+  // Activity info
+  const char* activity = "activity_info";
+  if (GetDB().DoesTableExist(activity)) {
+    const char* column = "reconcile_stamp";
+    if (!GetDB().DoesColumnExist(activity, column)) {
+      sql.append(" ALTER TABLE ");
+      sql.append(activity);
+      sql.append(" ADD reconcile_stamp INTEGER DEFAULT 0 NOT NULL; ");
+    }
+  }
+
+  // Contribution info
+  const char* contribution = "contribution_info";
+  if (GetDB().DoesTableExist(contribution)) {
+    sql.append(" DROP TABLE ");
+    sql.append(contribution);
+    sql.append(" ; ");
+  }
+
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateContributionInfoTable()) {
+    return false;
+  }
+
+  if (!CreateContributionInfoIndex()) {
+    return false;
+  }
+
+  if (!CreateRecurringDonationTable()) {
+    return false;
+  }
+
+  return CreateRecurringDonationIndex();
+}
+
 sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // We can't read databases newer than we were designed for.
-  if (meta_table_.GetCompatibleVersionNumber() > kCurrentVersionNumber) {
+  if (meta_table_.GetCompatibleVersionNumber() > GetCurrentVersion()) {
     LOG(WARNING) << "Publisher info database is too new.";
     return sql::INIT_TOO_NEW;
   }
 
-  int cur_version = meta_table_.GetVersionNumber();
+  const int old_version = meta_table_.GetVersionNumber();
+  const int cur_version = GetCurrentVersion();
 
-  // Put migration code here
+  // Migration from version 1 to version 2
+  if (old_version == 1 && cur_version == 2) {
+    LOG(ERROR) << "I am in DB!";
+    if (!MigrateV1toV2()) {
+      LOG(ERROR) << "DB: Error with MigrateV1toV2";
+    }
 
-  // When the version is too old, we just try to continue anyway, there should
-  // not be a released product that makes a database too old for us to handle.
-  LOG_IF(WARNING, cur_version < GetCurrentVersion()) <<
-         "History database version " << cur_version << " is too old to handle.";
+    meta_table_.SetVersionNumber(cur_version);
+  }
 
   return sql::INIT_OK;
 }

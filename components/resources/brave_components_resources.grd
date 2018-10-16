@@ -308,6 +308,7 @@
       <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Tip this site Monthly</message>
       <message name="IDS_BRAVE_UI_DONATE_NOW" desc="">Send a Tip…</message>
       <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
+      <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="">Set recurring donation</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Ads</message>
       <message name="IDS_BRAVE_UI_ENABLE_TIPS" desc="">Enable Tips</message>
@@ -396,6 +397,7 @@
       <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
       <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
       <message name="IDS_BRAVE_UI_SITES" desc="">sites</message>
+      <message name="IDS_BRAVE_UI_THANK_YOU" desc="">Thank you</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
       <message name="IDS_BRAVE_UI_TITLE_BAT" desc="">Basic Attention Token (BAT)</message>
       <message name="IDS_BRAVE_UI_TITLE_BTC" desc="">BitCoin (BTC)</message>

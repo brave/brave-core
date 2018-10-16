@@ -30,10 +30,7 @@ class Banner extends React.Component<Props, State> {
 
   componentDidMount () {
     this.actions.getWalletProperties()
-  }
-
-  doNothing () {
-    console.log('click')
+    this.actions.getRecurringDonations()
   }
 
   get actions () {
@@ -45,15 +42,14 @@ class Banner extends React.Component<Props, State> {
   }
 
   generateAmounts = () => {
-    const publisher = this.props.rewardsDonateData.publisher
-    const walletInfo = this.props.rewardsDonateData.walletInfo
+    const { publisher, walletInfo } = this.props.rewardsDonateData
+
     let amounts = [1, 5, 10]
 
     if (publisher && publisher.amount) {
       amounts = publisher.amount
     }
 
-    // { tokens: 1, converted: 0.3, selected: false }
     return amounts.map((value: number) => {
       return {
         tokens: value.toFixed(1),
@@ -69,8 +65,15 @@ class Banner extends React.Component<Props, State> {
     })
   }
 
-  onDonate = (amount: number, monthly: boolean) => {
-    console.log('donate', amount, monthly)
+  onDonate = (amount: number, recurring: boolean) => {
+    const { publisher, walletInfo } = this.props.rewardsDonateData
+    const { balance } = walletInfo
+
+    if (publisher && publisher.publisherKey && balance >= parseInt(amount.toString(), 10)) {
+      this.actions.onDonate(publisher.publisherKey, amount, recurring)
+    } else {
+      // TODO return error
+    }
   }
 
   generateSocialLinks = () => {
@@ -98,7 +101,7 @@ class Banner extends React.Component<Props, State> {
   }
 
   render () {
-    const { publisher, walletInfo } = this.props.rewardsDonateData
+    const { publisher, walletInfo, recurringList } = this.props.rewardsDonateData
     const { balance } = walletInfo
 
     let title = ''
@@ -116,14 +119,13 @@ class Banner extends React.Component<Props, State> {
       description = publisher.description
     }
 
-    // TODO add current donation when donations are implemented
     // TODO we need to use title and not publisherKey for domain for media publishers
 
     return (
       <SiteBanner
         domain={publisherKey}
         title={title}
-        recurringDonation={false}
+        recurringDonation={recurringList && recurringList.includes(publisherKey)}
         balance={balance.toString() || '0'}
         bgImage={background}
         logo={logo}

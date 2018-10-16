@@ -60,6 +60,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         state.reconcileStamp = parseInt(action.payload.stamp, 10)
         break
       }
+    case types.GET_DONATION_TABLE:
+      {
+        chrome.send('brave_rewards.updateRecurringDonationsList')
+        chrome.send('brave_rewards.updateTipsList')
+        break
+      }
   }
 
   return state
