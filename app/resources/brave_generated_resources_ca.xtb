@@ -8,6 +8,7 @@
 <translation id="7753103220327065417">Tanqueu Brave</translation>
 <translation id="5588481533147090393">Per a finalitzar la importació tanqueu totes les finestres de Brave</translation>
 <translation id="6447842834002726250">Galetes</translation>
+<translation id="4983925687993168579">Estadístiques</translation>
 <translation id="9173846700806833701">Widevine no està instal·lat</translation>
 <translation id="2433569048491784801">Widevine no està instal·lat</translation>
 <translation id="3699882589215410581">Instal·la i executa Widevine</translation>
@@ -16,4 +17,38 @@
 En instal·lar aquesta extensió, accepteu les Condicions d\'ús de Google Widevine. Accepteu que Brave no es fa responsable dels danys o pèrdues relacionats amb el vostre ús de Google Widevine.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importat de Brave</translation>
+<translation id="453977518730680921">Reproducció automàtica de media</translation>
+<translation id="410351446219883937">Reproducció automàtica</translation>
+<translation id="2240268017737062801">Pregunta quan un lloc vol fer reproducció automàtica</translation>
+<translation id="3371702087847741961">Pregunta quan un lloc vol fer reproducció automàtica
+(recomanat)</translation>
+<translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
+<translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
+<translation id="2044383478723007273">Colors de Brave</translation>
+<translation id="5341901626640816374">Utilitza la barra d\'ubicació àmplia</translation>
+<translation id="7965178729203412357">Identitat nova de Tor</translation>
+<translation id="8784924142044142231">Surt de Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Obre una finestra de Tor</translation>
+<translation id="3155170474926428993">Llançador de Tor</translation>
+<translation id="7372129767729198111">Paràmetres per defecte dels escuts de Brave</translation>
+<translation id="8029018702721078742">Control d\'anuncis</translation>
+<translation id="3544462288910360084">Control de galetes</translation>
+<translation id="8919235146866304148">Protecció d\'empremta digital</translation>
+<translation id="520895744850022668">HTTPS per tot</translation>
+<translation id="5259716416204774556">Bloquejador de scripts</translation>
+<translation id="6067014455220527258">Bloqueja anuncis</translation>
+<translation id="6985711843506827936">Permet anuncis i rastrejadors</translation>
+<translation id="6132506775968708399">Bloqueja galetes de 3rs</translation>
+<translation id="5657156137487675418">Permet totes les galetes</translation>
+<translation id="6883611015375728278">Bloqueja totes les galetes</translation>
+<translation id="1442559343076146186">Bloqueja empremta digital de 3rs</translation>
+<translation id="8034285923190068220">Permet empremta digital</translation>
+<translation id="4540198958192073185">Bloqueja tot el sistema d\'empremta digital</translation>
+<translation id="8942080017911802454">Política de gestió del WebRTC IP</translation>
+<translation id="6165508094623778733">Saber més</translation>
+<translation id="8798099450830957504">Per defecte</translation>
+<translation id="1822560017823072927">Interfícies públiques i privades predeterminades</translation>
+<translation id="5825943197137337319">Només interfície pública predeterminada</translation>
+<translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
 </translationbundle>

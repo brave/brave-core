@@ -8,6 +8,7 @@
 <translation id="7753103220327065417">Schließen Sie Brave</translation>
 <translation id="5588481533147090393">Um Ihre Daten vollständig zu importieren, muss Brave komplett geschlossen werden.</translation>
 <translation id="6447842834002726250">Cookies</translation>
+<translation id="4983925687993168579">Statistiken</translation>
 <translation id="9173846700806833701">Widevine ist nicht installiert</translation>
 <translation id="2433569048491784801">Widevine ist nicht installiert.</translation>
 <translation id="3699882589215410581">Widevine installieren und ausführen</translation>
@@ -23,12 +24,17 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
 <translation id="2044383478723007273">Brave Farben</translation>
+<translation id="5341901626640816374">Breite Positionsleiste verwenden</translation>
+<translation id="7965178729203412357">Neue Tor-Identität</translation>
 <translation id="8784924142044142231">Tor verlassen</translation>
-<translation id="3696187925156352769">Tor-Fenster Öffnen</translation>
 <translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Tor-Fenster Öffnen</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
+<translation id="7372129767729198111">Brave Standardschilde</translation>
 <translation id="8029018702721078742">Anzeigensteuerung</translation>
 <translation id="3544462288910360084">Cookie-Kontrolle</translation>
+<translation id="8919235146866304148">Fingerabdruckschutz</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Skriptblockierung</translation>
 <translation id="6067014455220527258">Werbung blockieren</translation>
 <translation id="6985711843506827936">Werbung und Tracking erlauben</translation>
