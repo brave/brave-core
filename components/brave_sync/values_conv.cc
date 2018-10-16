@@ -9,7 +9,7 @@
 #include "base/strings/string_split.h"
 #include "base/values.h"
 #include "brave/components/brave_sync/settings.h"
-#include "brave/components/brave_sync/devices.h"
+#include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "components/bookmarks/browser/bookmark_node.h"

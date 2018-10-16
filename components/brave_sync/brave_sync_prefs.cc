@@ -5,7 +5,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 
 #include "brave/components/brave_sync/settings.h"
-#include "brave/components/brave_sync/devices.h"
+#include "brave/components/brave_sync/sync_devices.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
