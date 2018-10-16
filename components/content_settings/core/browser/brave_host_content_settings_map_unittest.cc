@@ -63,19 +63,3 @@ TEST_F(BraveHostContentSettingsMapTest, AskGeolocationNotInTorProfile) {
               CONTENT_SETTINGS_TYPE_GEOLOCATION,
               std::string()));
 }
-
-TEST_F(BraveHostContentSettingsMapTest, BlockGeolocationInTorProfile) {
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
-  Profile* profile = profile_manager->GetProfile(tor_path);
-  ASSERT_TRUE(profile);
-
-  HostContentSettingsMap* host_content_settings_map =
-    HostContentSettingsMapFactory::GetForProfile(profile);
-  EXPECT_EQ(CONTENT_SETTING_BLOCK,
-            host_content_settings_map->GetContentSetting(
-              url(),
-              url(),
-              CONTENT_SETTINGS_TYPE_GEOLOCATION,
-              std::string()));
-}
