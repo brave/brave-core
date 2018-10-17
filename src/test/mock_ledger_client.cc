@@ -73,9 +73,4 @@ void MockLedgerClient::RunIOTask(
   task->Run();
 }
 
-void MockLedgerClient::RunTask(
-      std::unique_ptr<ledger::LedgerTaskRunner> task) {
-  task->Run();
-}
-
 }  // namespace payments

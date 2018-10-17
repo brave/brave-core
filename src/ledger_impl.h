@@ -139,7 +139,6 @@ class LedgerImpl : public ledger::Ledger,
                            const std::string& viewing_id,
                            const std::string& probi = "0");
   void RunIOTask(LedgerTaskRunnerImpl::Task task);
-  void RunTask(LedgerTaskRunnerImpl::Task task);
   std::string URIEncode(const std::string& value) override;
   void SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) override;
   void SetPublisherExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) override;
