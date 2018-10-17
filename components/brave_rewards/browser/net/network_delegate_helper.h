@@ -10,7 +10,6 @@
 namespace brave_rewards {
 
 int OnBeforeURLRequest(
-    GURL* new_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
 

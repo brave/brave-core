@@ -17,7 +17,7 @@ using content::BrowserThread;
 namespace brave {
 
 void OnBeforeURLRequest_HttpseFileWork(
-    GURL* new_url, std::shared_ptr<BraveRequestInfo> ctx) {
+    std::shared_ptr<BraveRequestInfo> ctx) {
   base::ScopedBlockingCall scoped_blocking_call(
       base::BlockingType::WILL_BLOCK);
   DCHECK(ctx->request_identifier != 0);
@@ -26,14 +26,12 @@ void OnBeforeURLRequest_HttpseFileWork(
 }
 
 void OnBeforeURLRequest_HttpsePostFileWork(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != ctx->request_url.spec()) {
-    *new_url = GURL(ctx->new_url_spec);
     brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
         ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id,
         brave_shields::kHTTPUpgradableResources);
@@ -43,7 +41,7 @@ void OnBeforeURLRequest_HttpsePostFileWork(
 }
 
 int OnBeforeURLRequest_HttpsePreFileWork(
-    GURL* new_url, const ResponseCallback& next_callback,
+    const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
@@ -73,14 +71,13 @@ int OnBeforeURLRequest_HttpsePreFileWork(
           ctx->new_url_spec)) {
       g_brave_browser_process->https_everywhere_service()->
         GetTaskRunner()->PostTaskAndReply(FROM_HERE,
-          base::Bind(OnBeforeURLRequest_HttpseFileWork, new_url, ctx),
+          base::Bind(OnBeforeURLRequest_HttpseFileWork, ctx),
           base::Bind(base::IgnoreResult(
               &OnBeforeURLRequest_HttpsePostFileWork),
-              new_url, next_callback, ctx));
+              next_callback, ctx));
       return net::ERR_IO_PENDING;
     } else {
       if (!ctx->new_url_spec.empty()) {
-        *new_url = GURL(ctx->new_url_spec);
         brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
             ctx->render_process_id, ctx->render_frame_id,
             ctx->frame_tree_node_id,

@@ -13,6 +13,8 @@
 #include "net/url_request/url_request.h"
 #include "url/gurl.h"
 
+class BraveNetworkDelegateBase;
+
 namespace brave {
 
 struct BraveRequestInfo;
@@ -22,7 +24,6 @@ using ResponseCallback = base::Callback<void()>;
 
 namespace brave_rewards {
   int OnBeforeURLRequest(
-      GURL* new_url,
       const brave::ResponseCallback& next_callback,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
 }  // namespace brave_rewards
@@ -67,28 +68,27 @@ struct BraveRequestInfo {
   // Please don't add any more friends here if it can be avoided.
   // We should also remove the ones below.
   friend int OnBeforeURLRequest_SiteHacksWork(
-      GURL* new_url,
       const ResponseCallback& next_callback,
       std::shared_ptr<BraveRequestInfo> ctx);
   friend int brave_rewards::OnBeforeURLRequest(
-      GURL* new_url,
       const brave::ResponseCallback& next_callback,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
   friend int OnBeforeURLRequest_TorWork(
-      GURL* new_url,
       const ResponseCallback& next_callback,
       std::shared_ptr<BraveRequestInfo> ctx);
+  friend class ::BraveNetworkDelegateBase;
+
   // Don't use this directly after any dispatch
   // request is deprecated, do not use it.
   net::URLRequest* request;
+  GURL* new_url = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 
 //ResponseListener
 using OnBeforeURLRequestCallback =
-    base::Callback<int(GURL* new_url,
-        const ResponseCallback& next_callback,
+    base::Callback<int(const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnBeforeStartTransactionCallback =
     base::Callback<int(net::URLRequest* request,
