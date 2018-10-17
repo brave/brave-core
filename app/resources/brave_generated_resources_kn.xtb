@@ -1,4 +1,42 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="kn">
+<translation id="3333887201479867589">Brave ಪುರಸ್ಕಾರಗಳು</translation>
+<translation id="7942180974165298215">Brave ಜಾಹೀರಾತು ನಿರ್ಬಂಧ</translation>
+<translation id="7450557937477381864">Chrome ಮುಚ್ಚಿ</translation>
+<translation id="7008934821596358692">ಆಮದು ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು, ಎಲ್ಲಾ Chrome ವಿಂಡೋಗಳನ್ನು ಮುಚ್ಚಿ.</translation>
+<translation id="7753103220327065417">Brave ಮುಚ್ಚಿ</translation>
+<translation id="5588481533147090393">ಆಮದು ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ಎಲ್ಲಾ Brave ವಿಂಡೋಗಳನ್ನು ಮುಚ್ಚಿ.</translation>
+<translation id="6447842834002726250">ಕುಕೀಗಳು</translation>
+<translation id="4983925687993168579">ಅಂಕಿಅಂಶ</translation>
+<translation id="9173846700806833701">Widevine ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ</translation>
+<translation id="2433569048491784801">Widevine ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ.</translation>
+<translation id="3699882589215410581">Widevine ಸ್ಥಾಪಿಸಿ ಮತ್ತು ರನ್ ಮಾಡಿ</translation>
+<translation id="8410111618231938546">Google Widevine ಎಂಬುದು ಡಿಜಿಟಲ್ ರೈಟ್ಸ್ ಮ್ಯಾನೇಜ್‌ಮೆಂಟ್ (ಡಿಆರ್‌ಎಂ) ಕೋಡ್‌ನ ಭಾಗವಾಗಿದ್ದು, ನಾವು ಅಂದರೆ Brave ಅದರ ಮಾಲೀಕತ್ವವನ್ನು ಹೊಂದಿರುವುದಿಲ್ಲ ಮತ್ತು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. Google Widevine ಕೋಡ್ ಅನ್ನು Google ಸರ್ವರ್‌ಗಳಿಂದ ಲೋಡ್ ಮಾಡಲಾಗಿರುತ್ತದೆಯೇ ಹೊರತು, ನಮ್ಮ ಸರ್ವರ್‌ಗಳಿಂದಲ್ಲ. ನೀವು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ ಮಾತ್ರವೇ ಇದನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ. ನಾವು ಡಿಆರ್‌ಎಂ ಬಳಕೆಯನ್ನು ಪ್ರೋತ್ಸಾಹಿಸುವುದಿಲ್ಲವಾದರೂ, ಬಳಕೆದಾರರ ಆಯ್ಕೆಯನ್ನು ನಾವು ಗೌರವಿಸುತ್ತೇವೆ ಹಾಗೆಯೇ ಕೆಲವು Brave ಬಳಕೆದಾರರು ಇದರ ಅಗತ್ಯವಿರುವ ಸೇವೆಗಳನ್ನು ಬಳಸಲು ಬಯಸುತ್ತಾರೆ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇವೆ.
+
+ಈ ವಿಸ್ತರಣೆಯನ್ನು ಸ್ಥಾಪಿಸುವ ಮೂಲಕ, ನೀವು Google Widevine ಬಳಕೆಯ ನಿಯಮಗಳಿಗೆ ಒಪ್ಪಿಗೆ ಸೂಚಿಸುತ್ತಿದ್ದೀರಿ. ನಿಮ್ಮ Google Widevine ಬಳಕೆಗೆ ಸಂಬಂಧಿಸಿದಂತೆ ಉಂಟಾಗುವ ಯಾವುದೇ ಹಾನಿಗಳು ಅಥವಾ ನಷ್ಟಗಳಿಗೆ Brave ಜವಾಬ್ದಾರರಲ್ಲ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೀರಿ.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Brave ನಿಂದ ಆಮದು ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="453977518730680921">ಮೀಡಿಯಾ ಸ್ವಯಂಪ್ಲೇ</translation>
+<translation id="410351446219883937">ಸ್ವಯಂಪ್ಲೇ</translation>
+<translation id="2240268017737062801">ಸೈಟ್ ಮೀಡಿಯಾ ಸ್ವಯಂಪ್ಲೇ ಮಾಡಲು ಬಯಸಿದಾಗ ಕೇಳಿ</translation>
+<translation id="3371702087847741961">ಸೈಟ್ ಮೀಡಿಯಾ ಸ್ವಯಂಪ್ಲೇ ಮಾಡಲು ಬಯಸಿದಾಗ ಕೇಳಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
+<translation id="3218385319396786393">ಈ ಪುಟದಲ್ಲಿ ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
+<translation id="4150684676757176434">ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸುವಿಕೆಯನ್ನು ಮುಂದುವರಿಸಿ</translation>
+<translation id="2044383478723007273">Brave ಬಣ್ಣಗಳು</translation>
+<translation id="5341901626640816374">ವಿಶಾಲ ಸ್ಥಳ ಪಟ್ಟಿಯನ್ನು ಬಳಸಿ</translation>
+<translation id="7965178729203412357">ಹೊಸ Tor ಗುರುತಿಸುವಿಕೆ</translation>
+<translation id="8784924142044142231">Tor ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Tor ವಿಂಡೋ ತೆರೆಯಿರಿ</translation>
+<translation id="6313675821927505581">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
+<translation id="2638041073279639246">Tor ಮೂಲಕ ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
+<translation id="3425600262621021599">Tor ಮೂಲಕ Brave ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
+<translation id="3155170474926428993">Tor ಲಾಂಚರ್</translation>
+<translation id="7372129767729198111">Brave ಶೀಲ್ಡ್ ಡೀಫಾಲ್ಟ್‌ಗಳು</translation>
+<translation id="8029018702721078742">ಜಾಹೀರಾತು ನಿಯಂತ್ರಣ</translation>
+<translation id="3544462288910360084">ಕುಕೀ ನಿಯಂತ್ರಣ</translation>
+<translation id="8919235146866304148">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ಸಂರಕ್ಷಣೆ</translation>
+<translation id="520895744850022668">HTTPS ಎಲ್ಲೆಡೆ</translation>
+<translation id="5259716416204774556">ಸ್ಕ್ರಿಪ್ಟ್ ನಿರ್ಬಂಧಿಸುವಿಕೆ</translation>
 </translationbundle>

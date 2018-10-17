@@ -8,9 +8,46 @@
 <translation id="7753103220327065417">بستن Brave</translation>
 <translation id="5588481533147090393">برای تکمیل وارد کردن، همه پنجره‌های Brave را ببندید.</translation>
 <translation id="6447842834002726250">کوکی</translation>
+<translation id="4983925687993168579">آمار</translation>
 <translation id="9173846700806833701">Widevine نصب نشده است</translation>
 <translation id="2433569048491784801">Widevine نصب نشده است.</translation>
 <translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
+<translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
+
+با نصب این افزونه، «شرایط استفاده از Google Widevine» را می‌پذیرید و موافقت می‌کنید Brave مسئول هرگونه خسارت یا زیان مرتبط با استفاده شما از Google Widevine نیست.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">واردشده از Brave</translation>
+<translation id="453977518730680921">پخش خودکار رسانه</translation>
+<translation id="410351446219883937">پخش خودکار</translation>
+<translation id="2240268017737062801">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود</translation>
+<translation id="3371702087847741961">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود (توصیه می‌شود)</translation>
+<translation id="3218385319396786393">پخش خودکار در این صفحه مسدود شد</translation>
+<translation id="4150684676757176434">ادامه دادن به مسدود کردن پخش خودکار</translation>
+<translation id="2044383478723007273">رنگ‌های Brave</translation>
+<translation id="5341901626640816374">استفاده از نوار مکان پهن</translation>
+<translation id="7965178729203412357">هویت تور جدید</translation>
+<translation id="8784924142044142231">خروج از تور</translation>
+<translation id="5410152065859052603">تور</translation>
+<translation id="3696187925156352769">باز کردن پنجره تور</translation>
+<translation id="3155170474926428993">راه‌انداز تور</translation>
+<translation id="7372129767729198111">پیش‌فرض‌های سپرهای ایمنی Brave</translation>
+<translation id="8029018702721078742">کنترل آگهی</translation>
+<translation id="3544462288910360084">کنترل کوکی</translation>
+<translation id="8919235146866304148">محافظت اثر انگشت</translation>
+<translation id="520895744850022668">HTTPS در همه جا</translation>
+<translation id="5259716416204774556">مسدود کردن اسکریپت</translation>
+<translation id="6067014455220527258">مسدود کردن آگهی‌ها</translation>
+<translation id="6985711843506827936">اجازه دادن به آگهی و ردیابی</translation>
+<translation id="6132506775968708399">مسدود کردن کوکی‌های شخص ثالث</translation>
+<translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
+<translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
+<translation id="1442559343076146186">مسدود کردن اثر انگشت شخص ثالث</translation>
+<translation id="8034285923190068220">اجازه انگشت‌نگاری</translation>
+<translation id="4540198958192073185">مسدود کردن همه اثر انگشت‌ها</translation>
+<translation id="8942080017911802454">خط‌مشی مدیریت WebRTC IP</translation>
+<translation id="6165508094623778733">بیشتر بدانید</translation>
+<translation id="8798099450830957504">پیش‌فرض</translation>
+<translation id="1822560017823072927">رابط‌های عمومی و خصوصی پیش‌فرض</translation>
+<translation id="5825943197137337319">فقط رابط عمومی پیش‌فرض</translation>
+<translation id="1689062823386843231">غیرفعال کردن UDP غیرپروکسی</translation>
 </translationbundle>
