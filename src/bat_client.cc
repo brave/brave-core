@@ -917,7 +917,7 @@ void BatClient::continueRecover(int result, size_t *written, std::vector<uint8_t
   if (ledger::is_verbose) {
     LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
   }
-  if (0 != result || 0 == written) {
+  if (0 != result || 0 == *written) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::LEDGER_ERROR, 0, empty);
     return;
