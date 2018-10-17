@@ -9,7 +9,9 @@
 #include "base/macros.h"
 #include "base/scoped_observer.h"
 #include "extensions/browser/extension_registry_observer.h"
+#include "base/gtest_prod_util.h"
 
+class BraveSyncServiceTest;
 class Profile;
 
 namespace extensions {
@@ -30,7 +32,6 @@ using extensions::UnloadedExtensionReason;
 class BraveSyncClientImpl : public BraveSyncClient,
                             public ExtensionRegistryObserver {
  public:
-  BraveSyncClientImpl(SyncMessageHandler* handler, Profile* profile);
   ~BraveSyncClientImpl() override;
 
   // BraveSyncClient overrides
@@ -60,6 +61,12 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void NeedSyncWords(const std::string& seed) override;
 
  private:
+  friend class BraveSyncClient;
+  friend class ::BraveSyncServiceTest;
+  static void set_for_testing(BraveSyncClient* sync_client);
+
+  BraveSyncClientImpl(SyncMessageHandler* handler, Profile* profile);
+
   void OnExtensionInitialized() override;
   void OnSyncEnabledChanged() override;
 

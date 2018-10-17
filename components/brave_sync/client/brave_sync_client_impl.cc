@@ -21,6 +21,23 @@
 
 namespace brave_sync {
 
+BraveSyncClient* brave_sync_client_for_testing_;
+
+// static
+void BraveSyncClientImpl::set_for_testing(BraveSyncClient* sync_client) {
+  brave_sync_client_for_testing_ = sync_client;
+}
+
+// static
+BraveSyncClient* BraveSyncClient::Create(
+    SyncMessageHandler* handler,
+    Profile* profile) {
+  if (brave_sync_client_for_testing_)
+    return brave_sync_client_for_testing_;
+
+  return new BraveSyncClientImpl(handler, profile);
+}
+
 BraveSyncClientImpl::BraveSyncClientImpl(SyncMessageHandler* handler,
                                          Profile* profile) :
     handler_(handler),

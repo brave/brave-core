@@ -18,14 +18,6 @@
 namespace brave_sync {
 
 // static
-BraveSyncService* BraveSyncServiceFactory::GetForBrowserContext(
-    content::BrowserContext* browser_context) {
-  if (browser_context->IsOffTheRecord())
-    return nullptr;
-  return GetForProfile(Profile::FromBrowserContext(browser_context));
-}
-
-// static
 BraveSyncService* BraveSyncServiceFactory::GetForProfile(Profile* profile) {
   if (profile->IsOffTheRecord())
     return NULL;
@@ -80,7 +72,7 @@ content::BrowserContext* BraveSyncServiceFactory::GetBrowserContextToUse(
 }
 
 bool BraveSyncServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
+  return false;
 }
 
 }  // namespace brave_sync

@@ -74,6 +74,8 @@ class SyncMessageHandler {
 
 class BraveSyncClient {
  public:
+  static BraveSyncClient* Create(SyncMessageHandler* handler,
+                                 Profile* profile);
   virtual ~BraveSyncClient() = default;
 
   // BraveSync to Browser messages

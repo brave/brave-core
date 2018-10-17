@@ -116,3 +116,18 @@ grit("resources") {
   # fix paths so we don't have to do this
   resource_ids = ""
 }
+
+source_set("brave_sync_testutil") {
+  testonly = true
+
+  deps = [
+    ":brave_sync",
+    "//base",
+    "//content/public/browser",
+  ]
+
+  sources = [
+    "test_util.cc",
+    "test_util.h",
+  ]
+}
