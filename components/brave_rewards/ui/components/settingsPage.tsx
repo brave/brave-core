@@ -49,6 +49,7 @@ class SettingsPage extends React.Component<Props, {}> {
 
     this.actions.getGrant()
     this.actions.getDonationTable()
+    this.actions.getContributeList()
   }
 
   componentWillUnmount () {
