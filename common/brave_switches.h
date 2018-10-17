@@ -21,6 +21,10 @@ extern const char kDisablePDFJSExtension[];
 
 extern const char kDisableTorClientUpdaterExtension[];
 
+extern const char kRewardsEnv[];
+
+extern const char kRewardsReconcileInterval[];
+
 extern const char kUiMode[];
 
 }  // namespace switches
