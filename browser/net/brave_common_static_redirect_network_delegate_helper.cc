@@ -27,13 +27,12 @@ bool IsUpdaterURL(const GURL& gurl) {
 }
 
 int OnBeforeURLRequest_CommonStaticRedirectWork(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   GURL::Replacements replacements;
   if (IsUpdaterURL(ctx->request_url)) {
     replacements.SetQueryStr(ctx->request_url.query_piece());
-    *new_url = GURL(kBraveUpdatesExtensionsEndpoint).ReplaceComponents(replacements);
+    ctx->new_url_spec = GURL(kBraveUpdatesExtensionsEndpoint).ReplaceComponents(replacements).spec();
     return net::OK;
   }
   return net::OK;

@@ -18,7 +18,6 @@ using content::ResourceRequestInfo;
 namespace brave {
 
 int OnBeforeURLRequest_TorWork(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
