@@ -81,7 +81,9 @@ void BraveDownloadItemView::OnDownloadUpdated(
   download::DownloadItem* download) {
   // Check for conditions that would disregard origin url change and fall back
   // onto base implementation to handle them.
-  if (!model_.ShouldShowInShelf()) {
+  if (!model_.ShouldShowInShelf() ||
+      (DownloadItemView::download()->GetState() == DownloadItem::COMPLETE &&
+       model_.ShouldRemoveFromShelfWhenComplete())) {
     DownloadItemView::OnDownloadUpdated(download);
     return;
   }
