@@ -22,9 +22,10 @@ namespace brave_sync {
 class BookmarkChangeProcessor : public ChangeProcessor,
                                        bookmarks::BookmarkModelObserver  {
  public:
-  BookmarkChangeProcessor(BraveSyncClient* sync_client,
-                          prefs::Prefs* sync_prefs,
-                          bookmarks::BookmarkModel* bookmark_model);
+  static BookmarkChangeProcessor* Create(
+      Profile* profile,
+      BraveSyncClient* sync_client,
+      prefs::Prefs* sync_prefs);
   ~BookmarkChangeProcessor() override;
 
   // ChangeProcessor implementation
@@ -32,17 +33,22 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   void Stop() override;
   void Reset() override;
   void ApplyChangesFromSyncModel(const RecordsList &records) override;
-  void OnGetBookmarkOrder(const std::string& order,
-                          const std::string& prev_order,
-                          const std::string& next_order,
-                          const std::string& parent_order);
   void GetAllSyncData(
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
       SyncRecordAndExistingList* records_and_existing_objects) override;
   void SendUnsynced(base::TimeDelta unsynced_send_interval) override;
   uint64_t InitialSync() override;
 
+  void OnGetBookmarkOrder(const std::string& order,
+                          const std::string& prev_order,
+                          const std::string& next_order,
+                          const std::string& parent_order);
+
  private:
+  BookmarkChangeProcessor(Profile* profile,
+                          BraveSyncClient* sync_client,
+                          prefs::Prefs* sync_prefs);
+
   // bookmarks::BookmarkModelObserver:
   void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
                            bool ids_reassigned) override;

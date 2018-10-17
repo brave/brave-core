@@ -107,6 +107,7 @@ test("brave_unit_tests") {
   }
 
   deps = [
+    "//brave/components/brave_sync:brave_sync_testutil",
 ##"//chrome/test:unit_tests",#for browser_with_test_window_test.h, triggers rebuild +1470 files, not good, error: undefined symbol: BrowserWithTestWindowTest::SetUp()
     "//chrome:browser_dependencies",
     "//chrome:child_dependencies",

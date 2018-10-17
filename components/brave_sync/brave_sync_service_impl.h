@@ -37,7 +37,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
                              public SyncMessageHandler {
  public:
   BraveSyncServiceImpl(Profile *profile);
-  BraveSyncServiceImpl(Profile *profile, BraveSyncClient* client);
   ~BraveSyncServiceImpl() override;
 
   // KeyedService overrides
@@ -65,7 +64,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   BraveSyncClient* GetSyncClient() override;
 
  private:
-  friend class BraveSyncServiceImplTestAccess;
   // SyncMessageHandler overrides
   void BackgroundSyncStarted() override;
   void BackgroundSyncStopped() override;

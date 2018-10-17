@@ -10,6 +10,8 @@
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/tools.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/bookmarks/browser/bookmark_storage.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "ui/base/models/tree_node_iterator.h"
@@ -138,15 +140,25 @@ void UpdateNode(bookmarks::BookmarkModel* model,
 
 }  // namespace
 
-BookmarkChangeProcessor::BookmarkChangeProcessor(
+// static
+BookmarkChangeProcessor* BookmarkChangeProcessor::Create(
+    Profile* profile,
     BraveSyncClient* sync_client,
-    prefs::Prefs* sync_prefs,
-    bookmarks::BookmarkModel* bookmark_model)
+    prefs::Prefs* sync_prefs) {
+  return new BookmarkChangeProcessor(profile, sync_client, sync_prefs);
+}
+
+BookmarkChangeProcessor::BookmarkChangeProcessor(
+    Profile* profile,
+    BraveSyncClient* sync_client,
+    prefs::Prefs* sync_prefs)
     : sync_client_(sync_client),
       sync_prefs_(sync_prefs),
-      bookmark_model_(bookmark_model) {
-  DCHECK(bookmark_model_);
+      bookmark_model_(BookmarkModelFactory::GetForBrowserContext(
+          Profile::FromBrowserContext(profile))) {
   DCHECK(sync_client_);
+  DCHECK(sync_prefs);
+  DCHECK(bookmark_model_);
 }
 
 BookmarkChangeProcessor::~BookmarkChangeProcessor() {

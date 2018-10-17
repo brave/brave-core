@@ -16,7 +16,6 @@
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
-#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "components/bookmarks/browser/bookmark_model.h"
@@ -71,17 +70,16 @@ SyncRecordPtr PrepareResolvedDevice(
 
 }  // namespace
 
-BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile,
-  BraveSyncClient* client) :
-    sync_client_(client),
+BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
+    sync_client_(BraveSyncClient::Create(this, profile)),
     sync_initialized_(false),
     sync_words_(std::string()),
     profile_(profile),
     sync_prefs_(new brave_sync::prefs::Prefs(profile->GetPrefs())),
-    bookmark_change_processor_(new BookmarkChangeProcessor(
+    bookmark_change_processor_(BookmarkChangeProcessor::Create(
+        profile,
         sync_client_.get(),
-        sync_prefs_.get(),
-        BookmarkModelFactory::GetForBrowserContext(profile))),
+        sync_prefs_.get())),
     timer_(std::make_unique<base::RepeatingTimer>()),
     unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
     initial_sync_records_remaining_(0) {
@@ -118,9 +116,6 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile,
     sync_configured_ = true;
   }
 }
-
-BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
-  BraveSyncServiceImpl(profile, new BraveSyncClientImpl(this, profile)) {}
 
 BraveSyncServiceImpl::~BraveSyncServiceImpl() {}
 
