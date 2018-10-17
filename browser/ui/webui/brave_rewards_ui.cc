@@ -5,6 +5,7 @@
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
 #include "base/base64.h"
+#include "base/memory/weak_ptr.h"
 
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
@@ -34,7 +35,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                           public brave_rewards::RewardsNotificationsServiceObserver,
                           public brave_rewards::RewardsServiceObserver {
  public:
-  RewardsDOMHandler() {};
+  RewardsDOMHandler();
   ~RewardsDOMHandler() override;
 
   void Init();
@@ -115,9 +116,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   brave_rewards::RewardsNotificationsService* rewards_notifications_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+  base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
 };
+
+RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 
 RewardsDOMHandler::~RewardsDOMHandler() {
   if (rewards_service_)
@@ -428,7 +432,8 @@ void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) {
-  rewards_service_->GetContentSiteList(0, 0, base::Bind(&RewardsDOMHandler::OnGetContentSiteList, base::Unretained(this)));
+  rewards_service_->GetContentSiteList(0, 0,
+      base::Bind(&RewardsDOMHandler::OnGetContentSiteList, weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service) {
