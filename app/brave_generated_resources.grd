@@ -140,7 +140,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
-        NOT A RECOMMENDED BRAVE EXTENSION! Add "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
+        Brave hasn't reviewed this extension yet - it might be malicious. Add "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" anyway?
       </message>
       <!-- Appearance -->
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
