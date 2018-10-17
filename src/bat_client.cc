@@ -182,9 +182,11 @@ void BatClient::registerPersonaCallback(bool result,
 }
 
 void BatClient::resetReconcileStamp() {
-  state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
-  // For testing (reconcile will happen 3min after wallet creation
-  // state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + 4 * 60;
+  if (ledger::reconcile_time > 0) {
+    state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + ledger::reconcile_time * 60;
+  } else {
+    state_->reconcileStamp_ = braveledger_bat_helper::currentTime() + braveledger_ledger::_reconcile_default_interval;
+  }
   saveState();
 }
 
