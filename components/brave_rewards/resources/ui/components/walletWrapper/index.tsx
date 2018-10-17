@@ -141,7 +141,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               type={'accent'}
               level={'primary'}
               onClick={onClose}
-              text={getLocale('ok').toUpperCase()}
+              text={'OK'}
             />
           </StyledButton>
         </StyledNotificationContent>
