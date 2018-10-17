@@ -10,12 +10,11 @@
 namespace brave {
 
 int OnBeforeURLRequest_AdBlockTPPreWork(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
 
 bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
-    const GURL& tab_origin, const GURL& gurl, GURL *new_url);
+    const GURL& tab_origin, const GURL& gurl, std::string* new_url_spec);
 
 }  // namespace brave
 

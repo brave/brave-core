@@ -123,7 +123,6 @@ void DispatchOnUI(
 }  // namespace
 
 int OnBeforeURLRequest(
-  GURL* new_url,
   const brave::ResponseCallback& next_callback,
   std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);

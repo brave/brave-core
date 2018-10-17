@@ -42,9 +42,10 @@ int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
   std::shared_ptr<brave::BraveRequestInfo> ctx(
       new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
+  ctx->new_url = new_url;
   ctx->event_type = brave::kOnBeforeRequest;
   callbacks_[request->identifier()] = std::move(callback);
-  RunNextCallback(request, new_url, ctx);
+  RunNextCallback(request, ctx);
   return net::ERR_IO_PENDING;
 }
 
@@ -62,7 +63,7 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
   ctx->headers = headers;
   ctx->referral_headers_list = referral_headers_list_;
   callbacks_[request->identifier()] = std::move(callback);
-  RunNextCallback(request, nullptr, ctx);
+  RunNextCallback(request, ctx);
   return net::ERR_IO_PENDING;
 }
 
@@ -92,7 +93,7 @@ int BraveNetworkDelegateBase::OnHeadersReceived(net::URLRequest* request,
   // to set awaiting_callback_ back to false.
   BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
       base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-        base::Unretained(this), request, nullptr, ctx));
+        base::Unretained(this), request, ctx));
   return net::ERR_IO_PENDING;
 }
 
@@ -104,7 +105,6 @@ void BraveNetworkDelegateBase::RunCallbackForRequestIdentifier(uint64_t request_
 
 void BraveNetworkDelegateBase::RunNextCallback(
     net::URLRequest* request,
-    GURL* new_url,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
@@ -125,8 +125,8 @@ void BraveNetworkDelegateBase::RunNextCallback(
           before_url_request_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
           base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-              base::Unretained(this), request, new_url, ctx);
-      rv = callback.Run(new_url, next_callback, ctx);
+              base::Unretained(this), request, ctx);
+      rv = callback.Run(next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
       }
@@ -140,7 +140,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
           before_start_transaction_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
           base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-              base::Unretained(this), request, new_url, ctx);
+              base::Unretained(this), request, ctx);
       rv = callback.Run(request, ctx->headers, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -155,7 +155,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
           headers_received_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
           base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-              base::Unretained(this), request, new_url, ctx);
+              base::Unretained(this), request, ctx);
       rv = callback.Run(request, ctx->original_response_headers,
           ctx->override_response_headers, ctx->allowed_unsafe_redirect_url,
           next_callback, ctx);
@@ -177,8 +177,13 @@ void BraveNetworkDelegateBase::RunNextCallback(
       &BraveNetworkDelegateBase::RunCallbackForRequestIdentifier, base::Unretained(this), ctx->request_identifier);
 
   if (ctx->event_type == brave::kOnBeforeRequest) {
+    if (!ctx->new_url_spec.empty() &&
+        ctx->new_url_spec != ctx->request_url.spec() &&
+        IsRequestIdentifierValid(ctx->request_identifier)) {
+      *ctx->new_url = GURL(ctx->new_url_spec);
+    }
     rv = ChromeNetworkDelegate::OnBeforeURLRequest(request,
-        std::move(wrapped_callback), new_url);
+        std::move(wrapped_callback), ctx->new_url);
   } else if (ctx->event_type == brave::kOnBeforeStartTransaction) {
     rv = ChromeNetworkDelegate::OnBeforeStartTransaction(request,
         std::move(wrapped_callback), ctx->headers);
@@ -200,4 +205,8 @@ void BraveNetworkDelegateBase::OnURLRequestDestroyed(net::URLRequest* request) {
     callbacks_.erase(request->identifier());
   }
   ChromeNetworkDelegate::OnURLRequestDestroyed(request);
+}
+
+bool BraveNetworkDelegateBase::IsRequestIdentifierValid(uint64_t request_identifier) {
+  return ContainsKey(callbacks_, request_identifier);
 }

@@ -42,11 +42,9 @@ TEST_F(BraveHTTPSENetworkDelegateHelperTest, AlreadySetNewURLNoOp) {
       GURL("http://brad.brave.com/hide_all_primes_in_ui/composites_forever"));
   brave_request_info->new_url_spec = "data:image/png;base64,iVB";
   brave::ResponseCallback callback;
-  GURL new_url;
   int ret =
-    OnBeforeURLRequest_HttpsePreFileWork(&new_url, callback,
-        brave_request_info);
-  EXPECT_TRUE(new_url.is_empty());
+    OnBeforeURLRequest_HttpsePreFileWork(callback, brave_request_info);
+  EXPECT_EQ(brave_request_info->new_url_spec, brave_request_info->new_url_spec);
   EXPECT_EQ(ret, net::OK);
 }
 
