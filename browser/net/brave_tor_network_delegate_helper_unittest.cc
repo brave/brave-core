@@ -88,11 +88,10 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
     kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
     /*is_main_frame=*/true, /*allow_download=*/false, /*is_async=*/true,
     content::PREVIEWS_OFF, std::move(navigation_ui_data));
-  GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(&new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(callback,
                                       before_url_context);
-  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_TRUE(before_url_context->new_url_spec.empty());
   auto* proxy_service = request->context()->proxy_resolution_service();
   net::ProxyInfo info;
   proxy_service->TryResolveProxySynchronously(url, std::string(), &info,
@@ -131,11 +130,10 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
 
   MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
                                                    navigation_ui_data_ptr);
-  GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(&new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(callback,
                                       before_url_context);
-  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_TRUE(before_url_context->new_url_spec.empty());
   auto* proxy_service = request->context()->proxy_resolution_service();
   net::ProxyInfo info;
   std::unique_ptr<net::ProxyResolutionService::Request> proxy_request;
@@ -178,10 +176,9 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
 
   MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
                                                    navigation_ui_data_ptr);
-  GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(&new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(callback,
                                       before_url_context);
-  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_TRUE(before_url_context->new_url_spec.empty());
   EXPECT_EQ(ret, net::ERR_DISALLOWED_URL_SCHEME);
 }

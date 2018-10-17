@@ -43,11 +43,10 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, NoModifyTypicalURL) {
       before_url_context(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
-  GURL new_url;
   int ret =
-    OnBeforeURLRequest_StaticRedirectWork(&new_url, callback,
+    OnBeforeURLRequest_StaticRedirectWork(callback,
         before_url_context);
-  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_TRUE(before_url_context->new_url_spec.empty());
   EXPECT_EQ(ret, net::OK);
 }
 
@@ -61,12 +60,11 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
       before_url_context(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
-  GURL new_url;
   GURL expected_url(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
   int ret =
-      OnBeforeURLRequest_StaticRedirectWork(&new_url, callback,
+      OnBeforeURLRequest_StaticRedirectWork(callback,
                                             before_url_context);
-  EXPECT_EQ(new_url, expected_url);
+  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
   EXPECT_EQ(ret, net::OK);
 }
 
@@ -80,14 +78,13 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
       before_url_context(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
-  GURL new_url;
   GURL::Replacements replacements;
   replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
   GURL expected_url(url.ReplaceComponents(replacements));
   int ret =
-      OnBeforeURLRequest_StaticRedirectWork(&new_url, callback,
+      OnBeforeURLRequest_StaticRedirectWork(callback,
                                             before_url_context);
-  EXPECT_EQ(new_url, expected_url);
+  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
   EXPECT_EQ(ret, net::OK);
 }
 
@@ -101,14 +98,13 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
       before_url_context(new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
-  GURL new_url;
   GURL::Replacements replacements;
   replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
   GURL expected_url(url.ReplaceComponents(replacements));
   int ret =
-      OnBeforeURLRequest_StaticRedirectWork(&new_url, callback,
+      OnBeforeURLRequest_StaticRedirectWork(callback,
                                             before_url_context);
-  EXPECT_EQ(new_url, expected_url);
+  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
   EXPECT_EQ(ret, net::OK);
 }
 
