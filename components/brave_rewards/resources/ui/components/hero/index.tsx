@@ -7,15 +7,19 @@ import { StyledHero } from './style'
 
 export interface Props {
   id?: string
+  isMobile?: boolean
   children?: React.ReactNode
 }
 
 export default class Hero extends React.PureComponent<Props, {}> {
   render () {
-    const { id, children } = this.props
+    const { id, isMobile, children } = this.props
 
     return (
-      <StyledHero id={id}>
+      <StyledHero
+        id={id}
+        isMobile={isMobile}
+      >
         {children}
       </StyledHero>
     )

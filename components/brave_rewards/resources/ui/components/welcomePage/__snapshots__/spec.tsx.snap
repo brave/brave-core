@@ -348,7 +348,6 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: #5BC4FE;
   font-weight: 500;
   text-align: center;
-  line-height: 28px;
   margin: 18px 0 7px;
 }
 
@@ -401,10 +400,23 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   overflow: hidden;
 }
 
+@media (max-width:475px) {
+  .c5 {
+    padding-top: 35px;
+  }
+}
+
 @media (max-width:640px) {
   .c33 {
     grid-gap: 20px;
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width:410px) {
+  .c17 {
+    margin: 40px 20px;
+    max-width: unset;
   }
 }
 
@@ -426,6 +438,24 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
 @media (max-width:980px) {
   .c3 {
     background: #F8FAFF;
+  }
+}
+
+@media (max-width:460px) {
+  .c6 {
+    height: 100px;
+  }
+}
+
+@media (max-width:360px) {
+  .c9 {
+    font-size: 36px;
+  }
+}
+
+@media (max-width:360px) {
+  .c13 {
+    font-size: 22px;
   }
 }
 

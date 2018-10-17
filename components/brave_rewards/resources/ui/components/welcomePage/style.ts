@@ -10,6 +10,11 @@ const centerBackground = require('./assets/centerTextBackground.svg')
 export const StyledOptInSection = styled<{}, 'section'>('section')`
   margin: 40px auto;
   max-width: 303px;
+
+  @media (max-width: 410px) {
+    margin: 40px 20px;
+    max-width: unset;
+  }
 `
 
 export const StyledOptInSecond = styled<{}, 'section'>('section')`
@@ -71,6 +76,10 @@ export const StyledBackground = styled<{}, 'div'>('div')`
 export const StyledBatLogo = styled<{}, 'div'>('div')`
   margin: 5px auto 0;
   height: 152px;
+
+  @media (max-width: 460px) {
+    height: 100px;
+  }
 `
 
 export const StyledRewardsTitle = styled(Heading)`
@@ -78,6 +87,10 @@ export const StyledRewardsTitle = styled(Heading)`
   color: #FFF;
   display: inline-block;
   margin: 17px 0 4px;
+
+  @media (max-width: 360px) {
+    font-size: 36px;
+  }
 `
 
 export const StyledActionTitle = styled(Heading)`
@@ -100,8 +113,11 @@ export const StyledSubTitle = styled(Heading)`
   color: #5BC4FE;
   font-weight: 500;
   text-align: center;
-  line-height: 28px;
   margin: 18px 0 7px;
+
+  @media (max-width: 360px) {
+    font-size: 22px;
+  }
 `
 
 export const StyledTrademark = styled<{}, 'span'>('span')`

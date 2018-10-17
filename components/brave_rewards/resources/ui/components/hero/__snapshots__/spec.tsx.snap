@@ -12,6 +12,12 @@ exports[`Hero tests basic tests matches the snapshot 1`] = `
   border-bottom-right-radius: 150% 120px;
 }
 
+@media (max-width:475px) {
+  .c0 {
+    padding-top: 35px;
+  }
+}
+
 <div
   className="c0"
   id="test-hero"

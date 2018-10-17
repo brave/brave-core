@@ -55,11 +55,13 @@ export interface Props {
 }
 
 class WelcomePage extends React.PureComponent<Props, {}> {
+  private isTouchScreen: boolean
   private centerTextSection: HTMLDivElement | null
 
   constructor (props: Props) {
     super(props)
     this.centerTextSection = null
+    this.isTouchScreen = 'ontouchstart' in document.documentElement
   }
 
   scrollToCenter = () => {
@@ -86,7 +88,10 @@ class WelcomePage extends React.PureComponent<Props, {}> {
 
   hero () {
     return (
-      <Hero id={'rewards-hero'}>
+      <Hero
+        id={'rewards-hero'}
+        isMobile={this.isTouchScreen}
+      >
         <StyledSection>
           <StyledBatLogo>
             <BatColorIcon />
@@ -212,13 +217,11 @@ class WelcomePage extends React.PureComponent<Props, {}> {
     ]
   }
 
-  render () {
-    const { id, onReTry } = this.props
-
+  get welcomePageContent () {
     return (
-      <SettingsPage id={id}>
+      <>
         {
-          onReTry
+          this.props.onReTry
           ? <StyledAlert>
             <Alert type={'error'}>
               <StyledAlertContent>
@@ -229,7 +232,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
                     level={'primary'}
                     type={'accent'}
                     text={getLocale('walletFailedButton')}
-                    onClick={onReTry}
+                    onClick={this.props.onReTry}
                   />
               </StyledAlertContent>
             </Alert>
@@ -255,6 +258,21 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             </StyledTakeActionContent>
           </StyledCenterSection>
         </StyledBackground>
+      </>
+    )
+  }
+
+  render () {
+    const { id } = this.props
+
+    // We don't need the SettingsPage wrapper on touchscreen devices
+    if (this.isTouchScreen) {
+      return this.welcomePageContent
+    }
+
+    return (
+      <SettingsPage id={id}>
+        {this.welcomePageContent}
       </SettingsPage>
     )
   }
