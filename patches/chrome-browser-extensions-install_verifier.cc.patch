@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/extensions/install_verifier.cc b/chrome/browser/extensions/install_verifier.cc
+index ed1d3ad3d7f3f4f80fbeb050bf5861e89de09b8c..1bb5839b811d6a7e69e54dff328fa6d68b1472b8 100644
+--- a/chrome/browser/extensions/install_verifier.cc
++++ b/chrome/browser/extensions/install_verifier.cc
+@@ -15,6 +15,7 @@
+ #include "base/metrics/histogram_macros.h"
+ #include "base/stl_util.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/common/extensions/extension_constants.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/extensions/extension_management.h"
+ #include "chrome/browser/extensions/extension_service.h"
+@@ -213,6 +214,10 @@ bool InstallVerifier::NeedsVerification(const Extension& extension) {
+ 
+ // static
+ bool InstallVerifier::IsFromStore(const Extension& extension) {
++  // Do not fetch signatures for PDFJS which is hosted by Brave, not CWS
++  if (extension.id() == pdfjs_extension_id) {
++    return false;
++  }
+   return extension.from_webstore() ||
+          ManifestURL::UpdatesFromGallery(&extension);
+ }
