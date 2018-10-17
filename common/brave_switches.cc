@@ -26,6 +26,14 @@ const char kDisablePDFJSExtension[] = "disable-pdfjs-extension";
 // Allows disabling the Tor client updater extension.
 const char kDisableTorClientUpdaterExtension[] = "disable-tor-client-updater-extension";
 
+// Specifies which server should we use for rewards
+// Valid values are: "stag" | "prod".
+const char kRewardsEnv[] = "rewards-env";
+
+// Specifies how big is contribution interval in minutes
+// Valid value should be int.
+const char kRewardsReconcileInterval[] = "rewards-reconcile-interval";
+
 // Specifies overriding the built-in theme setting.
 // Valid values are: "dark" | "light".
 const char kUiMode[] = "ui-mode";

@@ -10,12 +10,14 @@
 #include <limits.h>
 
 #include "base/bind.h"
+#include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
 #include "base/i18n/time_formatting.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
@@ -24,11 +26,12 @@
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/extensions/api/brave_rewards.h"
-#include "brave/components/brave_rewards/browser/rewards_notifications_service.h"
-#include "brave/components/brave_rewards/browser/rewards_notifications_service_factory.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_notifications_service.h"
+#include "brave/components/brave_rewards/browser/rewards_notifications_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/browser_process_impl.h"
@@ -37,6 +40,7 @@
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/grit/brave_components_resources.h"
+#include "content_site.h"
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
 #include "net/base/escape.h"
@@ -47,7 +51,6 @@
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
-#include "content_site.h"
 
 using extensions::Event;
 using extensions::EventRouter;
@@ -248,19 +251,43 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       publisher_info_backend_(
           new PublisherInfoDatabase(publisher_info_db_path_)),
       next_timer_id_(0) {
-// TODO(bridiver) - production/verbose should
-// also be controllable by command line flags
-#if defined(OFFICIAL_BUILD)
-ledger::is_production = true;
-#else
-ledger::is_production = false;
-#endif
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
 
-#if defined(NDEBUG)
-ledger::is_verbose = false;
-#else
-ledger::is_verbose = true;
-#endif
+  // Environment
+  #if defined(OFFICIAL_BUILD)
+    ledger::is_production = true;
+  #else
+    ledger::is_production = false;
+  #endif
+
+  if (command_line.HasSwitch(switches::kRewardsEnv)) {
+    std::string defined_env = command_line.GetSwitchValueASCII(switches::kRewardsEnv);
+    std::string defined_env_lower = base::ToLowerASCII(defined_env);
+
+    if (defined_env_lower == "stag") {
+      ledger::is_production = false;
+    } else if (defined_env_lower == "prod") {
+      ledger::is_production = true;
+    }
+  }
+
+  // Reconcile interval
+  if (command_line.HasSwitch(switches::kRewardsReconcileInterval)) {
+    std::string defined_reconcile = command_line.GetSwitchValueASCII(switches::kRewardsReconcileInterval);
+    int defined_reconcile_int;
+    bool success = base::StringToInt(defined_reconcile, &defined_reconcile_int);
+    if (success && defined_reconcile_int > 0) {
+      ledger::reconcile_time = defined_reconcile_int;
+    }
+  }
+
+  // Verbose mode
+  #if defined(NDEBUG)
+    ledger::is_verbose = false;
+  #else
+    ledger::is_verbose = true;
+  #endif
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
