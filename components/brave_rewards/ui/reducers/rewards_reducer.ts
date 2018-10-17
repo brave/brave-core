@@ -66,6 +66,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         chrome.send('brave_rewards.updateTipsList')
         break
       }
+    case types.GET_CONTRIBUTE_LIST:
+      {
+        chrome.send('brave_rewards.getContributionList')
+        break
+      }
   }
 
   return state
