@@ -1,178 +1,178 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Brave ಪುರಸ್ಕಾರಗಳು",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "ಈಗ ಗಳಿಕೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "ಪುರಸ್ಕಾರಗಳಿಗೆ ಸೇರಿ",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಹಣಗಳಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಲು ಅದನ್ನು ಮುಂದಕ್ಕೆ ಫಾರ್ವರ್ಡ್ ಮಾಡಿ.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "ಗೌಪ್ಯತೆಯನ್ನು-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನೀವು ಇದೀಗ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "ಏನೆಲ್ಲಾ ಸುಧಾರಣೆಗಳಾಗಿವೆ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಿ",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "ನಾವು Brave ಪಾವತಿಗಳಲ್ಲಿ ಅಧಿಕ ಪರಿಷ್ಕರಣೆಗಳನ್ನು ಮಾಡಿದ್ದೇವೆ.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "ಹೊಸ ಇಂಟರ್ನೆಟ್ ಅನುಭವವನ್ನು ಪಡೆಯಲು ಸಿದ್ಧರಾಗಿ.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "ನಿಮ್ಮ ವಾಲೆಟ್",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "ಅನುದಾನಗಳು",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "ಆನ್",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave ಪರಿಶೀಲಿಸಿದ ಪ್ರಕಾಶಕರು",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "ಗಮನಿಸಿ",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "ಮಾಸಿಕವಾಗಿ ಈ ಸೈಟ್ ಕುರಿತು ಸಲಹೆ ನೀಡಿ",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿಕೊಳ್ಳಿ",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "ಸಲಹೆ ಕಳುಹಿಸಿ...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "ಸಲಹೆಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "ಇದಕ್ಕಾಗಿ",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "ಪುರಸ್ಕಾರಗಳ ಸಾರಾಂಶ",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "ಏಪ್ರಿಲ್",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "ಆಗಸ್ಟ್",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "ಡಿಸೆಂಬರ್",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "ಫೆಬ್ರವರಿ",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "ಜನವರಿ",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "ಜುಲೈ",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "ಜೂನ್",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "ಮಾರ್ಚ್",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "ಮೇ",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "ನವೆಂಬರ್",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "ಅಕ್ಟೋಬರ್",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "ಸೆಪ್ಟೆಂಬರ್",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "ಟೋಕನ್ ಅನುದಾನ",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "ಜಾಹೀರಾತುಗಳಿಂದ ಸಂಪಾದನೆಗಳು",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "ಒಟ್ಟು",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "ಮಾಸಿಕ ಸಲಹೆಗಳು",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "ಆಫ್",
     "description": ""
   },
   "ok": {
-    "message": "ok",
+    "message": "ಸರಿ",
     "description": ""
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Brave ಜಾಹೀರಾತುಗಳು",
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "ನೀವು $amount$BAT ಕೊಡುಗೆ ನೀಡಿರುವಿರಿ",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "ನಿಮ್ಮ ಅನುದಾನ ನಿಮಗಾಗಿ ಕಾಯುತ್ತಿದೆ.",
     "description": ""
   }
 }
