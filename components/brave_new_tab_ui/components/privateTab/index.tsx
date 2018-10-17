@@ -15,32 +15,22 @@ import TorTab from './torTab'
 
 interface Props {
   isTor: boolean
+  isQwant: boolean
   useAlternativePrivateSearchEngine: boolean
   onChangePrivateSearchEngine: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default class NewPrivateTab extends React.PureComponent<Props, {}> {
-  get isQwant () {
-    // This is not technically accurately describing whether
-    // the browser has been automatically set to a Qwant region.
-    // Temporarily we are detecting language here, but we should
-    // use the same setting logic as used during first-run.
-    // https://github.com/brave/brave-browser/issues/1632
-    return navigator.language &&
-           navigator.language.startsWith('de') ||
-           navigator.language.startsWith('fr')
-  }
-
   get currentWindow () {
-    const { isTor, useAlternativePrivateSearchEngine, onChangePrivateSearchEngine } = this.props
+    const { isTor, isQwant, useAlternativePrivateSearchEngine, onChangePrivateSearchEngine } = this.props
     if (isTor) {
-      if (this.isQwant) {
+      if (isQwant) {
         return <QwantTorTab />
       }
       return <TorTab />
     }
 
-    if (this.isQwant) {
+    if (isQwant) {
       return <QwantTab />
     }
 
@@ -53,9 +43,9 @@ export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { isTor } = this.props
+    const { isTor, isQwant } = this.props
     return (
-      <Page isPrivate={!isTor && !this.isQwant}>
+      <Page isPrivate={!isTor && !isQwant}>
         <PageWrapper>
           {this.currentWindow}
         </PageWrapper>
