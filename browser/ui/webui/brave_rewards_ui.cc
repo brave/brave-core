@@ -433,7 +433,7 @@ void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnContentSiteUpdated(brave_rewards::RewardsService* rewards_service) {
   rewards_service_->GetContentSiteList(0, 0,
-      base::Bind(&RewardsDOMHandler::OnGetContentSiteList, weak_factory_.GetWeakPtr()));
+      base::BindOnce(&RewardsDOMHandler::OnGetContentSiteList, weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service) {

@@ -32,7 +32,7 @@ bool IsMediaLink(const GURL& url,
 class RewardsServiceObserver;
 
 using GetContentSiteListCallback =
-    base::Callback<void(std::unique_ptr<ContentSiteList>,
+    base::OnceCallback<void(std::unique_ptr<ContentSiteList>,
         uint32_t /* next_record */)>;
 
 class RewardsService : public KeyedService {
