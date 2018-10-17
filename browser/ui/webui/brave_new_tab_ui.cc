@@ -49,9 +49,10 @@ bool IsQwantUsedInQwantRegion(Profile* profile) {
       TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
           profile->GetPrefs())->prepopulate_id ==
           TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
-  bool qwant_used =
-      profile->GetPrefs()->GetInteger(kAlternativeSearchEngineProviderInTor) ==
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
+  bool qwant_used = profile->IsTorProfile()
+      ? profile->GetPrefs()->GetInteger(kAlternativeSearchEngineProviderInTor) ==
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
+      : true;
   return region_for_qwant && qwant_used;
 }
 
