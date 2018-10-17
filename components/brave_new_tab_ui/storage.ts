@@ -21,6 +21,7 @@ const defaultState: NewTab.State = {
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   isTor: chrome.getVariableValue('isTor') === 'true',
+  isQwant: chrome.getVariableValue('isQwant') === 'true',
   bookmarks: {},
   stats: {
     adsBlockedStat: 0,
