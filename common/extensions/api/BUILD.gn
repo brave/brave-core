@@ -42,7 +42,7 @@ brave_extensions_api_schema_sources = [
   "brave_shields.json",
   "brave_rewards.json",
   "rewards_notifications.json",
-  "brave_sync.json","
+  "brave_sync.json",
 ]
 brave_extensions_api_uncompiled_sources = []
 brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
