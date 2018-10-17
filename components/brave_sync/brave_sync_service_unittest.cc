@@ -156,6 +156,8 @@ TEST_F(BraveSyncServiceTest, SetSyncEnabled) {
   sync_service()->OnSetSyncEnabled(true);
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
       brave_sync::prefs::kSyncEnabled));
+  EXPECT_FALSE(sync_service()->IsSyncInitialized());
+  EXPECT_FALSE(sync_service()->IsSyncConfigured());
 }
 
 TEST_F(BraveSyncServiceTest, SetSyncDisabled) {
@@ -166,7 +168,10 @@ TEST_F(BraveSyncServiceTest, SetSyncDisabled) {
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnSetSyncEnabled(false);
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+      brave_sync::prefs::kSyncEnabled));
   EXPECT_FALSE(sync_service()->IsSyncInitialized());
+  EXPECT_FALSE(sync_service()->IsSyncConfigured());
 }
 
 TEST_F(BraveSyncServiceTest, IsSyncConfiguredOnNewProfile) {
