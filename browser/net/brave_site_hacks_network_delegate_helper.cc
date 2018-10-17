@@ -51,12 +51,11 @@ bool ApplyPotentialReferrerBlock(net::URLRequest* request) {
 namespace brave {
 
 int OnBeforeURLRequest_SiteHacksWork(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
 
   if (ApplyPotentialReferrerBlock(ctx->request))
-    *new_url = ctx->request_url;
+    ctx->new_url_spec = ctx->request_url.spec();
 
   return net::OK;
 }

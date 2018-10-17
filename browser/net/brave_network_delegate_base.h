@@ -29,6 +29,8 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   BraveNetworkDelegateBase(extensions::EventRouterForwarder* event_router);
   ~BraveNetworkDelegateBase() override;
 
+  bool IsRequestIdentifierValid(uint64_t request_identifier);
+
   // NetworkDelegate implementation.
   int OnBeforeURLRequest(net::URLRequest* request,
                          net::CompletionOnceCallback callback,
@@ -49,7 +51,6 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
  protected:
   void RunNextCallback(
     net::URLRequest* request,
-    GURL *new_url,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
   std::vector<brave::OnBeforeURLRequestCallback>
       before_url_request_callbacks_;

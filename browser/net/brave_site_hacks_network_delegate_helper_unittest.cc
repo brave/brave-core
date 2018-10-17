@@ -235,12 +235,10 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerPreserved) {
         brave_request_info(new brave::BraveRequestInfo());
     brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     brave::ResponseCallback callback;
-    GURL new_url;
-    int ret = brave::OnBeforeURLRequest_SiteHacksWork(&new_url,
-        callback, brave_request_info);
+    int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback, brave_request_info);
     EXPECT_EQ(ret, net::OK);
     // new_url should not be set
-    EXPECT_STREQ(new_url.spec().c_str(), "");
+    EXPECT_TRUE(brave_request_info->new_url_spec.empty());
     EXPECT_STREQ(request->referrer().c_str(), original_referrer.c_str());
   });
 }
@@ -265,12 +263,10 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
         brave_request_info(new brave::BraveRequestInfo());
     brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
     brave::ResponseCallback callback;
-    GURL new_url;
-    int ret = brave::OnBeforeURLRequest_SiteHacksWork(&new_url,
-        callback, brave_request_info);
+    int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback, brave_request_info);
     EXPECT_EQ(ret, net::OK);
-    // new_url must be set to trigger an internal redirect
-    EXPECT_STREQ(new_url.spec().c_str(), url.spec().c_str());
+    // new_url_spec must be set to trigger an internal redirect
+    EXPECT_STREQ(brave_request_info->new_url_spec.c_str(), url.spec().c_str());
     EXPECT_STREQ(request->referrer().c_str(), url.GetOrigin().spec().c_str());
   });
 }

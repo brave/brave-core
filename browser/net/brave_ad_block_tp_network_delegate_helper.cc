@@ -66,7 +66,7 @@ std::string GetGoogleTagServicesPolyfillJS() {
 }
 
 bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
-    const GURL& tab_origin, const GURL& gurl, GURL *new_url) {
+    const GURL& tab_origin, const GURL& gurl, std::string* new_url_spec) {
   // Polyfills which are related to adblock should only apply when shields are up
   if (!allow_brave_shields || allow_ads) {
     return false;
@@ -76,21 +76,20 @@ bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
   static URLPattern tag_services(URLPattern::SCHEME_ALL, kGoogleTagServicesPattern);
   if (tag_manager.MatchesURL(gurl)) {
     std::string&& data_url = GetGoogleTagManagerPolyfillJS();
-    *new_url = GURL(data_url);
+    *new_url_spec = data_url;
     return true;
   }
 
   if (tag_services.MatchesURL(gurl)) {
     std::string&& data_url = GetGoogleTagServicesPolyfillJS();
-    *new_url = GURL(data_url);
+    *new_url_spec = data_url;
     return true;
   }
 
   return false;
 }
 
-void OnBeforeURLRequestAdBlockTPOnTaskRunner(
-    GURL* new_url, std::shared_ptr<BraveRequestInfo> ctx) {
+void OnBeforeURLRequestAdBlockTPOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
   if (ctx->tab_origin.is_empty() || !ctx->tab_origin.has_host() ||
@@ -111,13 +110,11 @@ void OnBeforeURLRequestAdBlockTPOnTaskRunner(
 }
 
 void OnBeforeURLRequestDispatchOnIOThread(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != ctx->request_url.spec()) {
-    *new_url = GURL(ctx->new_url_spec);
     // TODO: If we ever want to differentiate ads from tracking library
     // counts, then use brave_shields::kTrackers below.
     brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
@@ -129,7 +126,6 @@ void OnBeforeURLRequestDispatchOnIOThread(
 }
 
 int OnBeforeURLRequest_AdBlockTPPreWork(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
 
@@ -138,13 +134,13 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
   }
 
   if (GetPolyfillForAdBlock(ctx->allow_brave_shields, ctx->allow_ads,
-        ctx->tab_origin, ctx->request_url, new_url)) {
+        ctx->tab_origin, ctx->request_url, &ctx->new_url_spec)) {
     return net::OK;
   }
 
   // These should probably move to our ad block lists
   if (IsEmptyDataURLRedirect(ctx->request_url) || IsBlockedResource(ctx->request_url)) {
-    *new_url = GURL(kEmptyDataURI);
+    ctx->new_url_spec = kEmptyDataURI;
     return net::OK;
   }
 
@@ -157,10 +153,9 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
 
   g_brave_browser_process->ad_block_service()->
         GetTaskRunner()->PostTaskAndReply(FROM_HERE,
-          base::Bind(&OnBeforeURLRequestAdBlockTPOnTaskRunner, new_url, ctx),
+          base::Bind(&OnBeforeURLRequestAdBlockTPOnTaskRunner, ctx),
           base::Bind(base::IgnoreResult(
-              &OnBeforeURLRequestDispatchOnIOThread),
-              new_url, next_callback, ctx));
+              &OnBeforeURLRequestDispatchOnIOThread), next_callback, ctx));
 
   return net::ERR_IO_PENDING;
 }

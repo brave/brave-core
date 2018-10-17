@@ -10,7 +10,6 @@
 namespace brave {
 
 int OnBeforeURLRequest_StaticRedirectWork(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   GURL::Replacements replacements;
@@ -18,13 +17,13 @@ int OnBeforeURLRequest_StaticRedirectWork(
   static URLPattern safeBrowsing_pattern(URLPattern::SCHEME_HTTPS, kSafeBrowsingPrefix);
 
   if (geo_pattern.MatchesURL(ctx->request_url)) {
-    *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
+    ctx->new_url_spec = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY).spec();
     return net::OK;
   }
 
   if (safeBrowsing_pattern.MatchesHost(ctx->request_url)) {
     replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
-    *new_url = ctx->request_url.ReplaceComponents(replacements);
+    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
     return net::OK;
   }
 

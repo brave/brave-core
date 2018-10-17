@@ -10,7 +10,6 @@
 namespace brave {
 
 int OnBeforeURLRequest_CommonStaticRedirectWork(
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx);
 
