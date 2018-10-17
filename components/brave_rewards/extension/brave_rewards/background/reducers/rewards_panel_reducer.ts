@@ -7,8 +7,15 @@ import * as storage from '../storage'
 import { getTabData } from '../api/tabs_api'
 
 export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, action: any) => {
+  function setBadgeText (count: number): void {
+    chrome.browserAction.setBadgeText(count > 0
+      ? { text: count.toString() }
+      : { text: '' })
+  }
+
   if (state === undefined) {
     state = storage.load()
+    setBadgeText(Object.keys(state.notifications).length)
   }
 
   const startingState = state
@@ -105,6 +112,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           state.currentNotification = id
         }
 
+        setBadgeText(Object.keys(notifications).length)
         break
       }
     case types.DELETE_NOTIFICATION:
@@ -142,6 +150,9 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           ...state,
           notifications
         }
+
+        setBadgeText(Object.keys(notifications).length)
+        break
       }
   }
 
