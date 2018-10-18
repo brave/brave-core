@@ -281,7 +281,7 @@ class URLBarView: UIView {
         super.updateConstraints()
         if inOverlayMode {
             menuButton.snp.remakeConstraints { make in
-                make.leading.equalTo(self)
+                make.leading.equalTo(self.safeArea.leading)
                 make.centerY.equalTo(self)
                 make.size.equalTo(URLBarViewUX.ButtonHeight)
             }
