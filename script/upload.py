@@ -108,8 +108,6 @@ def yield_brave_packages(dir, channel, version):
           elif file == 'Brave Browser.pkg':
             if os.path.isfile(rename_and_get_desired_path(file_path, file_desired_pkg)):
               yield file_desired_pkg
-          elif file == file_desired_pkg:
-            yield file
         else:
           file_desired = 'Brave-Browser-' + channel_capitalized + '.dmg'
           if re.match(r'Brave Browser ' + channel_capitalized + r'.*\.dmg$', file):
