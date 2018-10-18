@@ -67,21 +67,6 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
-  onModalBackupOnCopy = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnCopy')
-  }
-
-  onModalBackupOnPrint = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnPrint')
-  }
-
-  onModalBackupOnSaveFile = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnSaveFile')
-  }
-
   onModalBackupOnRestore = (key: string | MouseEvent) => {
     if (typeof key === 'string' && key.length > 0) {
       key = this.pullRecoveryKeyFromFile(key)
@@ -249,9 +234,6 @@ class PageWallet extends React.Component<Props, State> {
               backupKey={recoveryKey}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
-              onCopy={this.onModalBackupOnCopy}
-              onPrint={this.onModalBackupOnPrint}
-              onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
               error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
             />
