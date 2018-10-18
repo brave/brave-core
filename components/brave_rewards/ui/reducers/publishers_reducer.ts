@@ -11,7 +11,11 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
   switch (action.type) {
     case types.ON_CONTRIBUTE_LIST:
       state = { ...state }
-      state.firstLoad = false
+      if (state.contributeLoad) {
+        state.firstLoad = false
+      } else {
+        state.contributeLoad = true
+      }
       state.autoContributeList = action.payload.list
       break
     case types.ON_NUM_EXCLUDED_SITES:
@@ -31,7 +35,11 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       break
     case types.ON_RECURRING_DONATION_UPDATE:
       state = { ...state }
-      state.firstLoad = false
+      if (state.recurringLoad) {
+        state.firstLoad = false
+      } else {
+        state.recurringLoad = true
+      }
       state.recurringList = action.payload.list
       break
     case types.ON_REMOVE_RECURRING:
@@ -42,7 +50,11 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       break
     case types.ON_CURRENT_TIPS:
       state = { ...state }
-      state.firstLoad = false
+      if (state.tipsLoad) {
+        state.firstLoad = false
+      } else {
+        state.tipsLoad = true
+      }
       state.tipsList = action.payload.list
       break
   }
