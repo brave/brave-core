@@ -1,0 +1,60 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+if (is_android) {
+  import("//build/config/android/rules.gni")
+}
+
+dep_base = rebase_path("../..", "//")
+
+config("external_config") {
+  include_dirs = [ "include" ]
+}
+
+config("internal_config") {
+  include_dirs = [ "src" ]
+}
+
+group("bat-native-confirmations") {
+  public_deps = [
+    ":confirmations",
+  ]
+
+  data_deps = [
+    ":bat-native-confirmations-standalone",
+  ]
+}
+
+static_library("bat-native-confirmations-standalone") {
+  # TODO(bridiver) - only export symbols from `include`
+  complete_static_lib = true
+
+  output_dir = root_out_dir
+
+  configs -= [ "//build/config/compiler:thin_archive" ]
+
+  defines = [
+    "STANDALONE_BUILD",
+  ]
+
+  deps = [
+    ":confirmations"
+  ]
+}
+
+source_set("confirmations") {
+  public_configs = [ ":external_config" ]
+  configs += [ ":internal_config" ]
+
+  output_name = "bat_native_confirmations"
+
+  sources = [
+    "src/confirmations.cc",
+    "src/confirmations_impl.cc",
+    "src/bat/confirmations/ad_info.cc",
+  ]
+
+  deps = [
+  ]
+}
