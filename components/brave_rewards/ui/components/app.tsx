@@ -16,15 +16,41 @@ import { WelcomePage } from 'brave-ui/features/rewards'
 interface Props extends Rewards.ComponentProps {
 }
 
-export class App extends React.Component<Props, {}> {
+interface State {
+  creating: boolean
+}
+
+export class App extends React.Component<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      creating: false
+    }
+  }
+
   componentDidMount () {
     if (!this.props.rewardsData.walletCreated) {
       this.actions.checkWalletExistence()
     }
   }
 
+  componentDidUpdate (prevProps: Props, prevState: State) {
+    if (
+      this.state.creating &&
+      !prevProps.rewardsData.walletCreateFailed &&
+      this.props.rewardsData.walletCreateFailed
+    ) {
+      this.setState({
+        creating: false
+      })
+    }
+  }
+
   onCreateWalletClicked = () => {
     this.actions.createWallet()
+    this.setState({
+      creating: true
+    })
   }
 
   get actions () {
@@ -32,25 +58,30 @@ export class App extends React.Component<Props, {}> {
   }
 
   render () {
-    const { rewardsData } = this.props
+    const { walletCreated, walletCreateFailed } = this.props.rewardsData
+
+    let props: {onReTry?: () => void} = {}
+
+    if (walletCreateFailed) {
+      props = {
+        onReTry: this.onCreateWalletClicked
+      }
+    }
 
     return (
       <div id='rewardsPage'>
         {
-          !rewardsData.walletCreated && !rewardsData.walletCreateFailed
+          !walletCreated
           ? <WelcomePage
             optInAction={this.onCreateWalletClicked}
+            creating={this.state.creating}
+            {...props}
           />
           : null
         }
         {
-          rewardsData.walletCreated
+          walletCreated
           ? <SettingsPage />
-          : null
-        }
-        {
-          rewardsData.walletCreateFailed
-          ? <div>Wallet Create Failed!</div>
           : null
         }
       </div>

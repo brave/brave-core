@@ -246,7 +246,6 @@ export class Panel extends React.Component<Props, State> {
               tipsEnabled={true}
               includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
-              donationAmounts={[]}
               onToggleTips={this.doNothing}
               donationAction={this.showDonateToSiteDetail}
               onAmountChange={this.doNothing}
