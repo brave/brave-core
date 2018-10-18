@@ -5,3 +5,5 @@
 import './background/store'
 import './background/events/rewardsEvents'
 import './background/events/tabEvents'
+
+chrome.browserAction.setBadgeBackgroundColor({ color: '#FF0000' })

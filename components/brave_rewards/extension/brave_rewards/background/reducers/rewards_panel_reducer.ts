@@ -6,9 +6,25 @@ import { types } from '../../constants/rewards_panel_types'
 import * as storage from '../storage'
 import { getTabData } from '../api/tabs_api'
 
+function setBadgeText (state: RewardsExtension.State): void {
+  let text = ''
+
+  if (state && state.notifications) {
+    const count = Object.keys(state.notifications).length
+    if (count > 0) {
+      text = count.toString()
+    }
+  }
+
+  chrome.browserAction.setBadgeText({
+    text
+  })
+}
+
 export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, action: any) => {
   if (state === undefined) {
     state = storage.load()
+    setBadgeText(state)
   }
 
   const startingState = state
@@ -105,6 +121,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           state.currentNotification = id
         }
 
+        setBadgeText(state)
         break
       }
     case types.DELETE_NOTIFICATION:
@@ -142,6 +159,9 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           ...state,
           notifications
         }
+
+        setBadgeText(state)
+        break
       }
   }
 
