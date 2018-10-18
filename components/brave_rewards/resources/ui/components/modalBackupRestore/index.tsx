@@ -26,9 +26,9 @@ export interface Props {
   activeTabId: TabsType
   onTabChange: (tab: TabsType) => void
   onClose: () => void
-  onCopy: (key: string) => void
-  onPrint: (key: string) => void
-  onSaveFile: (key: string) => void
+  onCopy?: (key: string) => void
+  onPrint?: (key: string) => void
+  onSaveFile?: (key: string) => void
   onRestore: (key: string) => void
   error?: React.ReactNode
   id?: string
@@ -118,27 +118,39 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
               />
             </ControlWrapper>
             <StyleButtonWrapper>
-              <GroupedButton
-                text={getLocale('copy')}
-                level={'secondary'}
-                size={'small'}
-                type={'subtle'}
-                onClick={onCopy.bind(this, backupKey)}
-              />
-              <GroupedButton
-                text={getLocale('print')}
-                level={'secondary'}
-                size={'small'}
-                type={'subtle'}
-                onClick={onPrint.bind(this, backupKey)}
-              />
-              <GroupedButton
-                text={getLocale('saveAsFile')}
-                level={'secondary'}
-                size={'small'}
-                type={'subtle'}
-                onClick={onSaveFile.bind(this, backupKey)}
-              />
+              {
+                onCopy
+                ? <GroupedButton
+                  text={getLocale('copy')}
+                  level={'secondary'}
+                  size={'small'}
+                  type={'subtle'}
+                  onClick={onCopy.bind(this, backupKey)}
+                />
+                : null
+              }
+              {
+                onPrint
+                ? <GroupedButton
+                  text={getLocale('print')}
+                  level={'secondary'}
+                  size={'small'}
+                  type={'subtle'}
+                  onClick={onPrint.bind(this, backupKey)}
+                />
+                : null
+              }
+              {
+                onSaveFile
+                ? <GroupedButton
+                  text={getLocale('saveAsFile')}
+                  level={'secondary'}
+                  size={'small'}
+                  type={'subtle'}
+                  onClick={onSaveFile.bind(this, backupKey)}
+                />
+                : null
+              }
             </StyleButtonWrapper>
             <StyledDoneWrapper>
               <Button
