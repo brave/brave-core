@@ -24,12 +24,11 @@ export const StyledAttentionScore = styled<{}, 'span'>('span')`
 ` as any
 
 export const StyledAttentionScoreTitle = styled<{}, 'span'>('span')`
-  margin: 0;
   font-weight: 300;
   color: #4B4C5C;
   font-size: 14px;
   letter-spacing: 0;
-  margin-left: 10px;
+  margin: 0 0 0 10px;
 ` as any
 
 export const StyledScoreWrapper = styled<{}, 'section'>('section')`
@@ -40,7 +39,6 @@ export const StyledControlsWrapper = styled<{}, 'section'>('section')`
   padding: 5px 0px;
   border-top: 1px solid #DBDFE3;
   border-bottom: 1px solid #DBDFE3;
-  min-height: 70px;
 ` as any
 
 export const StyledDonateText = styled<{}, 'span'>('span')`

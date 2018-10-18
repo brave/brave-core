@@ -17,7 +17,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c11 {
-  margin: 0;
   font-weight: 300;
   color: #4B4C5C;
   font-size: 14px;
@@ -25,7 +24,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
   letter-spacing: 0;
-  margin-left: 10px;
+  margin: 0 0 0 10px;
 }
 
 .c8 {
@@ -36,7 +35,6 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   padding: 5px 0px;
   border-top: 1px solid #DBDFE3;
   border-bottom: 1px solid #DBDFE3;
-  min-height: 70px;
 }
 
 .c15 {

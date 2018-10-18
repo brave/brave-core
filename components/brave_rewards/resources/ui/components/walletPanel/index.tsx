@@ -52,7 +52,7 @@ export interface Props {
   tipsEnabled: boolean
   includeInAuto: boolean
   monthlyAmount: number
-  donationAmounts: Token[]
+  donationAmounts?: Token[]
   donationAction: () => void
   onToggleTips: () => void
   onAmountChange: () => void
