@@ -336,7 +336,9 @@ void BatClient::reconcile(const std::string& viewingId,
   }
 
   if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+    double ac_amount = getContributionAmount();
     if (list.size() == 0) {
+      ledger_->StartAutoContribute();
       // TODO add error callback
       return;
     }
@@ -344,6 +346,7 @@ void BatClient::reconcile(const std::string& viewingId,
     for (const auto& publisher : list) {
       if (publisher.id_.empty()) {
         LOG(ERROR) << "recurring donation is missing publisher";
+        ledger_->StartAutoContribute();
         // TODO add error callback
         return;
       }
@@ -351,7 +354,7 @@ void BatClient::reconcile(const std::string& viewingId,
       fee += publisher.weight_;
     }
 
-    if (fee > balance) {
+    if (fee + ac_amount > balance) {
       // TODO add error callback
       return;
     }
