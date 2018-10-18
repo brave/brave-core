@@ -20,21 +20,23 @@ using bookmarks::BookmarkNode;
 using bookmarks::BookmarkModel;
 
 namespace {
- using brave_sync::BookmarkChangeProcessor;
- class ObserverScopedPause {
-  public:
-    ObserverScopedPause(brave_sync::BookmarkChangeProcessor* processor) :
-     processor_(processor) {
-      DCHECK_NE(processor_, nullptr);
-      processor_->Stop();
-    }
-    ~ObserverScopedPause() {
-      processor_->Start();
-    }
-  private:
-    BookmarkChangeProcessor* processor_; // Not owned
- };
-}
+
+class ScopedPauseObserver {
+ public:
+  ScopedPauseObserver(brave_sync::BookmarkChangeProcessor* processor) :
+      processor_(processor) {
+    DCHECK_NE(processor_, nullptr);
+    processor_->Stop();
+  }
+  ~ScopedPauseObserver() {
+    processor_->Start();
+  }
+
+ private:
+  brave_sync::BookmarkChangeProcessor* processor_;  // Not owned
+};
+
+}  // namespace
 
 namespace brave_sync {
 
@@ -48,6 +50,7 @@ bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node) {
 bookmarks::BookmarkPermanentNodeList
 LoadExtraNodes(bookmarks::LoadExtraCallback callback,
                int64_t* next_node_id) {
+  // TODO(bridiver) - deleted node should not be visible
   bookmarks::BookmarkPermanentNodeList extra_nodes;
   if (callback)
     extra_nodes = std::move(callback).Run(next_node_id);
@@ -96,10 +99,7 @@ const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
     std::string node_object_id;
     node->GetMetaInfo("object_id", &node_object_id);
 
-    if (node_object_id.empty())
-      continue;
-
-    if (object_id == node_object_id)
+    if (!node_object_id.empty() && object_id == node_object_id)
       return node;
   }
   return nullptr;
@@ -111,6 +111,10 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
   ui::TreeNodeIterator<const bookmarks::BookmarkNode> iterator(root_node);
   while (iterator.has_next()) {
     const bookmarks::BookmarkNode* node = iterator.Next();
+
+    if (node->parent() != root_node)
+      return index;
+
     std::string node_order;
     node->GetMetaInfo("order", &node_order);
 
@@ -153,6 +157,31 @@ void UpdateNode(bookmarks::BookmarkModel* model,
         std::to_string(record->syncTimestamp.ToJsTime()));
     model->DeleteNodeMetaInfo(node, "last_send_time");
   }
+}
+
+const bookmarks::BookmarkNode* FindParent(bookmarks::BookmarkModel* model,
+                                          const jslib::Bookmark& bookmark) {
+  auto* parent_node = FindByObjectId(model, bookmark.parentFolderObjectId);
+
+  if (!parent_node) {
+    if (!bookmark.order.empty() &&
+        bookmark.order.at(0) == '2') {
+      // mobile generated bookmarks go in the mobile folder so they don't
+      // get so we don't get m.xxx.xxx domains in the normal bookmarks
+      parent_node = model->mobile_node();
+    } else if (!bookmark.hideInToolbar) {
+      // this flag is a bit odd, but if the node doesn't have a parent and
+      // hideInToolbar is false, then this bookmark should go in the
+      // toolbar root. We don't care about this flag for records with
+      // a parent id because they will be inserted into the correct
+      // parent folder
+      parent_node = model->bookmark_bar_node();
+    } else {
+      parent_node = model->other_node();
+    }
+  }
+
+  return parent_node;
 }
 
 }  // namespace
@@ -223,7 +252,7 @@ void BookmarkChangeProcessor::BookmarkNodeAdded(BookmarkModel* model,
       node->id(), jslib_const::kActionCreate);
   sync_client_->SendGetBookmarkOrder(
       prev_node_order, next_node_order, parent_node_order);
-  // responds in OnSaveBookmarkOrder
+  // responds in OnGetBookmarkOrder
 }
 
 void BookmarkChangeProcessor::OnWillRemoveBookmarks(BookmarkModel* model,
@@ -318,7 +347,7 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
       node->id(), jslib_const::kActionUpdate);
   sync_client_->SendGetBookmarkOrder(
       prev_node_order, next_node_order, parent_node_order);
-  // responds in OnSaveBookmarkOrder
+  // responds in OnGetBookmarkOrder
 }
 
 void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
@@ -351,7 +380,7 @@ void BookmarkChangeProcessor::Reset() {
 
 void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
     const RecordsList &records) {
-  ObserverScopedPause pause(this);
+  ScopedPauseObserver pause(this);
   bookmark_model_->BeginExtensiveChanges();
   for (const auto& sync_record : records) {
     DCHECK(sync_record->has_bookmark());
@@ -361,7 +390,6 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
     auto bookmark_record = sync_record->GetBookmark();
 
     if (node && sync_record->action == jslib::SyncRecord::Action::UPDATE) {
-      UpdateNode(bookmark_model_, node, sync_record.get());
       int64_t old_parent_local_id = node->parent()->id();
       const bookmarks::BookmarkNode* old_parent_node =
           bookmarks::GetBookmarkNodeByID(bookmark_model_, old_parent_local_id);
@@ -371,20 +399,16 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
         old_parent_node->GetMetaInfo("object_id", &old_parent_object_id);
       }
 
-      const bookmarks::BookmarkNode* new_parent_node;
+      const bookmarks::BookmarkNode* new_parent_node = nullptr;
       if (bookmark_record.parentFolderObjectId != old_parent_object_id) {
-        new_parent_node = FindByObjectId(bookmark_model_,
-                                         bookmark_record.parentFolderObjectId);
-        // TODO(bridiver) - what if new_parent_node doesn't exist yet?
-        DCHECK(new_parent_node);
-      } else {
-        new_parent_node = nullptr;
+        new_parent_node = FindParent(bookmark_model_, bookmark_record);
       }
 
       if (new_parent_node) {
         int64_t index = GetIndex(new_parent_node, bookmark_record);
         bookmark_model_->Move(node, new_parent_node, index);
       }
+      UpdateNode(bookmark_model_, node, sync_record.get());
     } else if (node &&
                sync_record->action == jslib::SyncRecord::Action::DELETE) {
       if (node->parent() == GetDeletedNodeRoot()) {
@@ -397,27 +421,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
       }
     } else if (!node) {
       // TODO(bridiver) (make sure there isn't an existing record for objectId)
-
       const bookmarks::BookmarkNode* parent_node =
-          FindByObjectId(bookmark_model_, bookmark_record.parentFolderObjectId);
-
-      if (!parent_node) {
-        if (!bookmark_record.order.empty() &&
-            bookmark_record.order.at(0) == '2') {
-          // mobile generated bookmarks go in the mobile folder so they don't
-          // get so we don't get m.xxx.xxx domains in the normal bookmarks
-          parent_node = bookmark_model_->mobile_node();
-        } else if (!bookmark_record.hideInToolbar) {
-          // this flag is a bit odd, but if the node doesn't have a parent and
-          // hideInToolbar is false, then this bookmark should go in the
-          // toolbar root. We don't care about this flag for records with
-          // a parent id because they will be inserted into the correct
-          // parent folder
-          parent_node = bookmark_model_->bookmark_bar_node();
-        } else {
-          parent_node = bookmark_model_->other_node();
-        }
-      }
+          FindParent(bookmark_model_, bookmark_record);
 
       if (bookmark_record.isFolder) {
         node = bookmark_model_->AddFolder(
