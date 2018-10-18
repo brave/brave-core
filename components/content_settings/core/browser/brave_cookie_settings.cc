@@ -67,6 +67,9 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
   if (brave_1p_setting == CONTENT_SETTING_BLOCK) {
     *cookie_setting = CONTENT_SETTING_BLOCK;
     return;
+  } else if (brave_1p_setting == CONTENT_SETTING_DEFAULT) {
+    // in absence of an explicit rule, allow first-party cookies by default
+    brave_1p_setting = CONTENT_SETTING_ALLOW;
   }
 
   // Third party setting of allow, means always allow everything
@@ -77,6 +80,9 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
   if (brave_3p_setting == CONTENT_SETTING_ALLOW) {
     *cookie_setting = CONTENT_SETTING_ALLOW;
     return;
+  } else if (brave_3p_setting == CONTENT_SETTING_DEFAULT) {
+    // in absence of an explicit rule, block third-party cookies by default
+    brave_3p_setting = CONTENT_SETTING_BLOCK;
   }
 
   // Otherwise determine based on if the cookie is third-party or not.
@@ -86,8 +92,7 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
     if (SameDomainOrHost(url, first_party_url, INCLUDE_PRIVATE_REGISTRIES)) {
       *cookie_setting = brave_1p_setting;
     } else {
-      *cookie_setting = brave_3p_setting == CONTENT_SETTING_DEFAULT ?
-          CONTENT_SETTING_BLOCK : brave_3p_setting;
+      *cookie_setting = brave_3p_setting;
     }
   }
 }

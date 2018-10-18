@@ -16,22 +16,10 @@ BraveHostContentSettingsMap::BraveHostContentSettingsMap(
     bool migrate_requesting_and_top_level_origin_settings)
     : HostContentSettingsMap(prefs, is_incognito_profile, is_guest_profile,
         store_last_modified, migrate_requesting_and_top_level_origin_settings) {
-  InitializeCookieContentSetting();
   InitializeFlashContentSetting();
 }
 
 BraveHostContentSettingsMap::~BraveHostContentSettingsMap() {
-}
-
-void BraveHostContentSettingsMap::InitializeCookieContentSetting() {
-  // We intentionally do not use the cookies content settings so that
-  // these special rules do not show up in Chromium UI.
-  SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies,
-      CONTENT_SETTING_ALLOW);
 }
 
 void BraveHostContentSettingsMap::InitializeFlashContentSetting() {
