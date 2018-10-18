@@ -10,6 +10,7 @@ import SettingsPage from '../settingsPage'
 import Button from '../../../components/buttonsIndicators/button'
 import InfoCard, { CardProps } from '../infoCard'
 import { ArrowDownIcon, BatColorIcon, LoaderIcon } from '../../../components/icons'
+import Alert from '../alert'
 
 // Utils
 import { getLocale } from '../../../helpers'
@@ -36,7 +37,10 @@ import {
   StyledCenterParagraph,
   StyledAnchor,
   StyledOptInSecond,
-  StyledHeroInfo
+  StyledHeroInfo,
+  StyledAlert,
+  StyledAlertLeft,
+  StyledAlertContent
 } from './style'
 
 const turnOnRewardsImage = require('./assets/turnOnRewards')
@@ -46,21 +50,16 @@ const braveContributeImage = require('./assets/braveContribute')
 export interface Props {
   id?: string
   optInAction: () => void
+  creating?: boolean
+  onReTry?: () => void
 }
 
-interface State {
-  creating: boolean
-}
-
-class WelcomePage extends React.PureComponent<Props, State> {
+class WelcomePage extends React.PureComponent<Props, {}> {
   private centerTextSection: HTMLDivElement | null
 
   constructor (props: Props) {
     super(props)
     this.centerTextSection = null
-    this.state = {
-      creating: false
-    }
   }
 
   scrollToCenter = () => {
@@ -82,10 +81,6 @@ class WelcomePage extends React.PureComponent<Props, State> {
   }
 
   optInAction = () => {
-    this.setState({
-      creating: true
-    })
-
     this.props.optInAction()
   }
 
@@ -111,7 +106,7 @@ class WelcomePage extends React.PureComponent<Props, State> {
         </StyledSection>
         <StyledOptInSection>
           {
-            this.state.creating
+            this.props.creating
             ? <Button
               level='secondary'
               size='call-to-action'
@@ -172,7 +167,7 @@ class WelcomePage extends React.PureComponent<Props, State> {
         </StyledActionTitle>
         <StyledOptInSecond>
           {
-            this.state.creating
+            this.props.creating
             ? <Button
               level={'primary'}
               size={'call-to-action'}
@@ -218,10 +213,29 @@ class WelcomePage extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id } = this.props
+    const { id, onReTry } = this.props
 
     return (
       <SettingsPage id={id}>
+        {
+          onReTry
+          ? <StyledAlert>
+            <Alert type={'error'}>
+              <StyledAlertContent>
+                <StyledAlertLeft>
+                  <b>{getLocale('walletFailedTitle')}</b><br/>{getLocale('walletFailedText')}
+                </StyledAlertLeft>
+                  <Button
+                    level={'primary'}
+                    type={'accent'}
+                    text={getLocale('walletFailedButton')}
+                    onClick={onReTry}
+                  />
+              </StyledAlertContent>
+            </Alert>
+          </StyledAlert>
+          : null
+        }
         <StyledBackground>
           <StyledSection>
             {this.hero()}

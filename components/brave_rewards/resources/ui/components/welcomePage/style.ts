@@ -155,3 +155,23 @@ export const StyledHeroInfo = styled<{}, 'div'>('div')`
     padding: 0 10px;
   }
 `
+export const StyledAlert = styled<{}, 'div'>('div')`
+  margin-bottom: 30px;
+  border: 1px solid #F43405;
+  border-radius: 4px;
+  overflow: hidden;
+
+   @media (max-width: 767px) {
+    display: none;
+  }
+`
+
+export const StyledAlertContent = styled<{}, 'div'>('div')`
+  display: flex;
+  width: 100%;
+`
+
+export const StyledAlertLeft = styled<{}, 'div'>('div')`
+  flex-basis: 70%;
+  flex-grow: 1;
+`
