@@ -36,6 +36,7 @@ export interface Address {
 export interface Props {
   onClose: () => void
   id?: string
+  isMobile?: boolean
   addresses: Address[]
 }
 
@@ -65,11 +66,14 @@ export default class ModalAddFunds extends React.PureComponent<Props, State> {
   }
 
   getAddress = (address: Address) => {
-
+    const { isMobile } = this.props
     const current = address.type === this.state.current
 
     return (
-      <StyledAddress key={`address-${address.type}`}>
+      <StyledAddress
+        isMobile={!!isMobile}
+        key={`address-${address.type}`}
+      >
         <StyledHeader>
           <StyledLogo>
             {icons[address.type]}

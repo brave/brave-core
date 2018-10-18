@@ -44,7 +44,10 @@ class GrantMobile extends React.Component<{}, State > {
       <>
         {
           this.state.grantShow
-          ? <GrantClaim onClaim={this.onClaim}/>
+          ? <GrantClaim
+            isMobile={true}
+            onClaim={this.onClaim}
+          />
           : null
         }
         {

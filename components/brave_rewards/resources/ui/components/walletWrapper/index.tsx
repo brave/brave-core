@@ -94,6 +94,7 @@ export interface Props {
   alert?: AlertWallet | null
   id?: string
   gradientTop?: string
+  isMobile?: boolean
   notification?: Notification
 }
 
@@ -229,7 +230,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       onSettingsClick,
       alert,
       gradientTop,
-      notification
+      notification,
+      isMobile
     } = this.props
 
     const hasGrants = this.hasGrants(grants)
@@ -239,6 +241,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         <StyledWrapper
           id={id}
           compact={compact}
+          isMobile={isMobile}
           notification={notification}
         >
           <StyledHeader>

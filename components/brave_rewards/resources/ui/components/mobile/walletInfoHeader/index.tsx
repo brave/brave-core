@@ -18,15 +18,19 @@ export interface Props {
   id?: string
   balance: string
   converted?: string
+  onClick: () => void
 }
 
 export default class WalletInfoHeader extends React.PureComponent<Props, {}> {
 
   render () {
-    const { id, balance, converted } = this.props
+    const { id, balance, converted, onClick } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <StyledWrapper
+        id={id}
+        onClick={onClick}
+      >
         <StyledHeader>
           <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
             <StyledBalance>

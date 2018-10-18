@@ -67,3 +67,31 @@ export const StyledSupportSites = styled<{}, 'div'>('div')`
     font-size: 14px;
   }
 `
+
+export const StyledWalletOverlay = styled<{}, 'div'>('div')`
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: ${p => p.theme.color.modalOverlayBackground};
+  align-items: center;
+  z-index: 999;
+  justify-content: center;
+`
+
+export const StyledWalletWrapper = styled<{}, 'div'>('div')`
+  height: 90vh;
+  overflow-y: scroll;
+  width: 90%;
+  margin-top: 40px;
+`
+
+export const StyledWalletClose = styled<{}, 'div'>('div')`
+  top: 15px;
+  right: 15px;
+  position: fixed;
+  color: ${p => p.theme.color.subtleExclude};
+  width: 25px;
+`

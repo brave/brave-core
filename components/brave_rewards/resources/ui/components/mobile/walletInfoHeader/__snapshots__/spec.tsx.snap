@@ -62,6 +62,12 @@ exports[`WalletInfoHeader tests basic tests matches the snapshot 1`] = `
   letter-spacing: 0px;
 }
 
+@media (max-width:360px) {
+  .c2 {
+    font-size: 14px;
+  }
+}
+
 <div
   className="c0"
   id="info-header"

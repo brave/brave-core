@@ -4,7 +4,11 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+interface StyleProps {
+  isMobile?: boolean
+}
+
+export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
@@ -13,7 +17,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   background-color: #fff;
   overflow: hidden;
   padding-left: 20px;
-  margin-bottom: 19px;
+  margin-bottom: ${p => p.isMobile ? 15 : 19}px;
   width: 100%;
 `
 

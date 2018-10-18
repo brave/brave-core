@@ -163,6 +163,7 @@ storiesOf('Feature Components/Rewards/Wallet/Mobile', module)
         <div style={{ width: '100%', position: 'absolute', top: '30%' }}>
           <WalletInfoHeader
             id={'info-header'}
+            onClick={doNothing}
             balance={text('Balance', '30.0')}
             converted={text('Converted', '163230.50 USD')}
           />

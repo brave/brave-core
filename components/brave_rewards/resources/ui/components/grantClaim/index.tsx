@@ -9,15 +9,19 @@ import { GiftIcon } from '../../../components/icons'
 
 export interface Props {
   id?: string
+  isMobile?: boolean
   onClaim: () => void
 }
 
 export default class GrantClaim extends React.PureComponent<Props, {}> {
   render () {
-    const { id, onClaim } = this.props
+    const { id, isMobile, onClaim } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <StyledWrapper
+        id={id}
+        isMobile={isMobile}
+      >
         <StyledIcon>
           <GiftIcon />
         </StyledIcon>

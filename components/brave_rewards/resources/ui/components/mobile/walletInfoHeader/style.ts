@@ -28,6 +28,10 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   line-height: 1.38;
   letter-spacing: -0.2px;
   color: rgba(255, 255, 255, 0.65);
+
+  @media (max-width: 360px) {
+    font-size: 14px;
+  }
 `
 
 export const StyledBalance = styled<{}, 'div'>('div')`

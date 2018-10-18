@@ -10,6 +10,7 @@ interface StyledProps {
   contentPadding?: boolean,
   compact?: boolean,
   background?: string,
+  isMobile?: boolean,
   notification?: Notification | undefined
 }
 
@@ -50,7 +51,7 @@ export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   overflow: hidden;
   box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
   font-family: Poppins, sans-serif;
-  width: 373px;
+  width: ${p => p.isMobile ? '100%' : '373px'};
   background: ${p => wrapperBackgroundRules(p.notification)};
   min-height: ${p => p.compact ? 'unset' : '715px'};
   border-radius: ${p => p.compact ? '0' : '6px'};
@@ -135,7 +136,7 @@ export const StyledCopyImage = styled<{}, 'span'>('span')`
 
 export const StyledIconAction = styled<{}, 'button'>('button')`
   position: absolute;
-  top: 21px;
+  top: 15px;
   right: 21px;
   background: none;
   padding: 0;

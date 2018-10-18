@@ -6,6 +6,10 @@ import styled from 'styled-components'
 import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
 import { ComponentType } from 'react'
 
+interface StyleProps {
+  isMobile: boolean
+}
+
 export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
 `
@@ -33,11 +37,11 @@ export const StyledAddresses = styled<{}, 'div'>('div') `
   align-items: stretch;
 `
 
-export const StyledAddress = styled<{}, 'div'>('div') `
-  flex-basis: 50%;
+export const StyledAddress = styled<StyleProps, 'div'>('div') `
+  flex-basis: ${p => p.isMobile ? 100 : 50}%;
   flex-shrink: 0;
   flex-grow: 0;
-  width: 50%;
+  width: ${p => p.isMobile ? 100 : 50}%;
   box-sizing: border-box;
   padding: 0 15px 26px;
 `
