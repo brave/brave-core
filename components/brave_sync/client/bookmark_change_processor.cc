@@ -405,6 +405,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
       }
 
       if (new_parent_node) {
+        DCHECK(!bookmark_record.order.empty());
         int64_t index = GetIndex(new_parent_node, bookmark_record);
         bookmark_model_->Move(node, new_parent_node, index);
       }
