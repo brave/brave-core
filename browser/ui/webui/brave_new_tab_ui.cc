@@ -18,8 +18,6 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "components/search_engines/template_url_service.h"
 
 namespace {
 class NewTabDOMHandler : public content::WebUIMessageHandler {
@@ -50,16 +48,6 @@ bool IsRegionForQwant(Profile* profile) {
   return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
       profile->GetPrefs())->prepopulate_id ==
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
-}
-
-bool IsQwantUsed(Profile* profile) {
- return TemplateURLServiceFactory::GetForProfile(profile)->
-     GetDefaultSearchProvider()->prepopulate_id() ==
-     TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
-}
-
-bool IsQwantUsedInQwantRegion(Profile* profile) {
-  return IsRegionForQwant(profile) && IsQwantUsed(profile);
 }
 
 }  // namespace
@@ -114,7 +102,7 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
     render_view_host->SetWebUIProperty(
         "isTor", profile->IsTorProfile() ? "true" : "false");
     render_view_host->SetWebUIProperty(
-        "isQwant", IsQwantUsedInQwantRegion(profile) ? "true" : "false");
+        "isQwant", IsRegionForQwant(profile) ? "true" : "false");
   }
 }
 
