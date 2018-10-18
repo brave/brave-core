@@ -115,13 +115,8 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& contentType,
       const ledger::URL_METHOD& method,
       ledger::LedgerCallbackHandler* handler) = 0;
-  // RunIOTask and RunTask are temporary workarounds for leveldb
-  // and we should replace them with a ledger_client api for reading/writing
-  // individual records
+  // RunIOTask is a temporary workarounds for some IO tasks
   virtual void RunIOTask(std::unique_ptr<LedgerTaskRunner> task) = 0;
-  // If any callbacks are made from inside RunIOTask you must use
-  // RunTask to return back to the calling thread
-  virtual void RunTask(std::unique_ptr<LedgerTaskRunner> task) = 0;
 };
 
 }  // namespace ledger

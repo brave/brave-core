@@ -14,12 +14,10 @@ namespace bat_ledger {
 
 class LedgerTaskRunnerImpl : public ledger::LedgerTaskRunner {
  public:
-  using Task = std::function<void (void)>;
-
   LedgerTaskRunnerImpl(Task task);
   ~LedgerTaskRunnerImpl() override;
 
-  void Run() override;
+  void Run(const CallerThreadCallback& callback) override;
 
  private:
   Task task_;

@@ -780,11 +780,14 @@ void BatClient::prepareBatchCallback(bool result,
   }
 
   saveState();
-  proofBatch(batchProof);
-  ledger_->PrepareVoteBatchTimer();
+  ledger_->RunIOTask(std::bind(&BatClient::proofBatch, this, batchProof, _1));
 }
 
-void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof) {
+void BatClient::proofBatch(
+    const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof,
+    ledger::LedgerTaskRunner::CallerThreadCallback callback) {
+  std::vector<std::string> proofs;
+
   for (size_t i = 0; i < batchProof.size(); i++) {
     braveledger_bat_helper::SURVEYOR_ST surveyor;
     braveledger_bat_helper::loadFromJson(surveyor, batchProof[i].ballot_.prepareBallot_);
@@ -812,12 +815,23 @@ void BatClient::proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF
       free((void*)proof);
     }
 
+    proofs.push_back(anonProof);
+  }
+
+  callback(std::bind(&BatClient::proofBatchCallback, this, batchProof, proofs));
+}
+
+void BatClient::proofBatchCallback(
+    const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof,
+    const std::vector<std::string>& proofs) {
+  for (size_t i = 0; i < batchProof.size(); i++) {
     for (size_t j = 0; j < state_->ballots_.size(); j++) {
       if (state_->ballots_[j].surveyorId_ == batchProof[i].ballot_.surveyorId_) {
-        state_->ballots_[j].proofBallot_ = anonProof;
+        state_->ballots_[j].proofBallot_ = proofs[i];
       }
     }
   }
+  ledger_->PrepareVoteBatchTimer();
 }
 
 void BatClient::prepareVoteBatch() {

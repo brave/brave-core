@@ -9,6 +9,7 @@
 #include <vector>
 #include <mutex>
 
+#include "bat/ledger/ledger_task_runner.h"
 #include "bat/ledger/ledger_url_loader.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat_helper.h"
@@ -92,7 +93,12 @@ class BatClient {
   void prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);
   void prepareBatchCallback(bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
-  void proofBatch(const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof);
+  void proofBatch(
+      const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof,
+      ledger::LedgerTaskRunner::CallerThreadCallback callback);
+  void proofBatchCallback(
+      const std::vector<braveledger_bat_helper::BATCH_PROOF>& batchProof,
+      const std::vector<std::string>& proofs);
   void voteBatchCallback(const std::string& publisher, bool result, const std::string& response,
       const std::map<std::string, std::string>& headers);
   //void prepareBallot(const braveledger_bat_helper::BALLOT_ST& ballot, const braveledger_bat_helper::TRANSACTION_ST& transaction);

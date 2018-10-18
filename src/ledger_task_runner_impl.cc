@@ -6,11 +6,11 @@
 
 namespace bat_ledger {
 
-  LedgerTaskRunnerImpl::LedgerTaskRunnerImpl(Task task) : task_(task) {}
-  LedgerTaskRunnerImpl::~LedgerTaskRunnerImpl() {}
+LedgerTaskRunnerImpl::LedgerTaskRunnerImpl(Task task) : task_(task) {}
+LedgerTaskRunnerImpl::~LedgerTaskRunnerImpl() {}
 
-  void LedgerTaskRunnerImpl::Run() {
-    task_();
-  }
+void LedgerTaskRunnerImpl::Run(const CallerThreadCallback& callback) {
+  task_(std::move(callback));
+}
 
 }  // namespace ledger

@@ -13,8 +13,11 @@ namespace ledger {
 
 class LEDGER_EXPORT LedgerTaskRunner {
  public:
+  using CallerThreadCallback = std::function<void(std::function<void(void)>)>;
+  using Task = std::function<void(CallerThreadCallback)>;
+
   virtual ~LedgerTaskRunner() = default;
-  virtual void Run() = 0;
+  virtual void Run(const CallerThreadCallback& callback) = 0;
 };
 
 }  // namespace ledger

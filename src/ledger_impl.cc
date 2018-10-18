@@ -6,6 +6,7 @@
 #include <random>
 
 #include "ledger_impl.h"
+#include "ledger_task_runner_impl.h"
 
 #include "bat_client.h"
 #include "bat_get_media.h"
@@ -262,16 +263,10 @@ std::unique_ptr<ledger::LedgerURLLoader> LedgerImpl::LoadURL(const std::string& 
       url, headers, content, contentType, method, handler);
 }
 
-void LedgerImpl::RunIOTask(LedgerTaskRunnerImpl::Task io_task) {
+void LedgerImpl::RunIOTask(ledger::LedgerTaskRunner::Task io_task) {
   std::unique_ptr<LedgerTaskRunnerImpl> task_runner(
       new LedgerTaskRunnerImpl(io_task));
   ledger_client_->RunIOTask(std::move(task_runner));
-}
-
-void LedgerImpl::RunTask(LedgerTaskRunnerImpl::Task task) {
-  std::unique_ptr<LedgerTaskRunnerImpl> task_runner(
-      new LedgerTaskRunnerImpl(task));
-  ledger_client_->RunTask(std::move(task_runner));
 }
 
 std::string LedgerImpl::URIEncode(const std::string& value) {
