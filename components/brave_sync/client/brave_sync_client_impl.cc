@@ -120,6 +120,14 @@ void BraveSyncClientImpl::SendGetBookmarkOrder(const std::string& prev_order,
                                                const std::string& next_order,
                                                const std::string& parent_order) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  // we don't want new records to arrive while we're
+  // waiting for a response from the background page
+  // we re-enable in BraveSyncSaveBookmarksBaseOrderFunction
+  //
+  // TODO(bridiver) - we need to make sure we are handling all errors in
+  // this method call so BraveSyncSaveBookmarksBaseOrderFunction or another
+  // method is always called to start the sync loop again
+  handler_->BackgroundSyncStopped(false);
   brave_sync_event_router_->SendGetBookmarkOrder(
       prev_order, next_order, parent_order);
 }
@@ -149,7 +157,7 @@ void BraveSyncClientImpl::OnExtensionReady(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension) {
   if (extension->id() == brave_sync_extension_id)
-    handler_->BackgroundSyncStarted();
+    handler_->BackgroundSyncStarted(true);
 }
 
 void BraveSyncClientImpl::OnExtensionLoaded(
@@ -167,7 +175,7 @@ void BraveSyncClientImpl::OnExtensionUnloaded(
     extensions::UnloadedExtensionReason reason) {
   if (extension->id() == brave_sync_extension_id) {
     extension_loaded_ = false;
-    handler_->BackgroundSyncStopped();
+    handler_->BackgroundSyncStopped(true);
   }
 }
 

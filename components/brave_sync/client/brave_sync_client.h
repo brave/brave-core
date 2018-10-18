@@ -37,8 +37,8 @@ using Uint8Array = std::vector<unsigned char>;
 
 class SyncMessageHandler {
  public:
-  virtual void BackgroundSyncStarted() = 0;
-  virtual void BackgroundSyncStopped() = 0;
+  virtual void BackgroundSyncStarted(bool startup) = 0;
+  virtual void BackgroundSyncStopped(bool shutdown) = 0;
 
   //SYNC_DEBUG
   virtual void OnSyncDebug(const std::string &message) = 0;

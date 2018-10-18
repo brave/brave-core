@@ -65,8 +65,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
  private:
   // SyncMessageHandler overrides
-  void BackgroundSyncStarted() override;
-  void BackgroundSyncStopped() override;
+  void BackgroundSyncStarted(bool startup) override;
+  void BackgroundSyncStopped(bool shutdown) override;
   void OnSyncDebug(const std::string& message) override;
   void OnSyncSetupError(const std::string& error) override;
   void OnGetInitData(const std::string& sync_version) override;

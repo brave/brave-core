@@ -148,8 +148,15 @@ ExtensionFunction::ResponseAction BraveSyncSaveBookmarkOrderFunction::Run() {
 
   BraveSyncService* sync_service = GetBraveSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->GetSyncClient()->sync_message_handler()->OnSaveBookmarkOrder(params->order,
-      params->prev_order, params->next_order, params->parent_order);
+  sync_service->GetSyncClient()->sync_message_handler()->OnSaveBookmarkOrder(
+      params->order,
+      params->prev_order,
+      params->next_order,
+      params->parent_order);
+
+  // we have the order response so the client can continue syncing
+  sync_service->GetSyncClient()->sync_message_handler()->
+      BackgroundSyncStarted(false);
 
   return RespondNow(NoArguments());
 }

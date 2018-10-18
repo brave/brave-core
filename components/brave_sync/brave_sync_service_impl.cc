@@ -132,6 +132,9 @@ bool BraveSyncServiceImpl::IsSyncInitialized() {
 }
 
 void BraveSyncServiceImpl::Shutdown() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  bookmark_change_processor_->Stop();
+
   StopLoop();
 }
 
@@ -260,12 +263,19 @@ void BraveSyncServiceImpl::OnSetSyncSavedSiteSettings(
 }
 
 // SyncLibToBrowserHandler overrides
-void BraveSyncServiceImpl::BackgroundSyncStarted() {
+void BraveSyncServiceImpl::BackgroundSyncStarted(bool startup) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (startup)
+    bookmark_change_processor_->Start();
+
   StartLoop();
 }
 
-void BraveSyncServiceImpl::BackgroundSyncStopped() {
-  StopLoop();
+void BraveSyncServiceImpl::BackgroundSyncStopped(bool shutdown) {
+  if (shutdown)
+    Shutdown();
+  else
+    StopLoop();
 }
 
 void BraveSyncServiceImpl::OnSyncDebug(const std::string& message) {
@@ -593,8 +603,6 @@ void BraveSyncServiceImpl::SendDeviceSyncRecord(
 static const int64_t kCheckUpdatesIntervalSec = 60;
 
 void BraveSyncServiceImpl::StartLoop() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  bookmark_change_processor_->Start();
   timer_->Start(FROM_HERE,
                   base::TimeDelta::FromSeconds(kCheckUpdatesIntervalSec),
                   this,
@@ -602,8 +610,6 @@ void BraveSyncServiceImpl::StartLoop() {
 }
 
 void BraveSyncServiceImpl::StopLoop() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  bookmark_change_processor_->Stop();
   timer_->Stop();
 }
 
