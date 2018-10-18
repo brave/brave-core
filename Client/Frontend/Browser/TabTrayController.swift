@@ -392,7 +392,8 @@ class TabTrayController: UIViewController, Themeable {
         }
 
         toolbar.snp.makeConstraints { make in
-            make.left.right.bottom.equalTo(view)
+            make.left.right.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view)
             make.height.equalTo(UIConstants.BottomToolbarHeight)
         }
     }
