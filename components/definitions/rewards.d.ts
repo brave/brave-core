@@ -18,36 +18,39 @@ declare namespace Rewards {
 
   export interface State {
     addresses?: Record<AddressesType, Address>
-    createdTimestamp: number | null
-    enabledMain: boolean
-    enabledAds: boolean
-    enabledContribute: boolean
-    firstLoad: boolean | null
-    walletCreated: boolean
-    walletCreateFailed: boolean
+    autoContributeList: Publisher[]
+    connectedWallet: boolean
+    contributeLoad: boolean
     contributionMinTime: number
     contributionMinVisits: number
     contributionMonthly: number
     contributionNonVerified: boolean
     contributionVideos: boolean
-    donationAbilityYT: boolean
+    createdTimestamp: number | null
     donationAbilityTwitter: boolean
-    numExcludedSites: number
-    walletInfo: WalletProperties
-    connectedWallet: boolean
-    recoveryKey: string
+    donationAbilityYT: boolean
+    enabledAds: boolean
+    enabledContribute: boolean
+    enabledMain: boolean
+    firstLoad: boolean | null
     grant?: Grant
+    numExcludedSites: number
     reconcileStamp: number
-    reports: Record<string, Report>
-    ui: {
-      walletRecoverySuccess: boolean | null
-      emptyWallet: boolean
-      walletServerProblem: boolean
-      modalBackup: boolean
-    }
-    autoContributeList: Publisher[]
+    recoveryKey: string
     recurringList: Publisher[]
+    recurringLoad: boolean
+    reports: Record<string, Report>
     tipsList: Publisher[]
+    tipsLoad: boolean
+    ui: {
+      emptyWallet: boolean
+      modalBackup: boolean
+      walletRecoverySuccess: boolean | null
+      walletServerProblem: boolean
+    }
+    walletCreated: boolean
+    walletCreateFailed: boolean
+    walletInfo: WalletProperties
   }
 
   export interface ComponentProps {

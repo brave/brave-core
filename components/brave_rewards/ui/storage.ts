@@ -40,7 +40,10 @@ export const defaultState: Rewards.State = {
   autoContributeList: [],
   reports: {},
   recurringList: [],
-  tipsList: []
+  tipsList: [],
+  contributeLoad: false,
+  recurringLoad: false,
+  tipsLoad: false
 }
 
 const cleanData = (state: Rewards.State) => state
