@@ -15,6 +15,7 @@ import { Provider } from 'brave-ui/features/rewards/profile'
 import { getLocale } from '../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
+import { DetailRow } from 'brave-ui/features/rewards/tableDonation'
 
 // Assets
 const donate = require('../../../img/rewards/donate_disabled.svg')
@@ -104,65 +105,71 @@ class DonationBox extends React.Component<Props, State> {
     const { walletInfo, recurringList, tipsList } = this.props.rewardsData
 
     // Recurring
-    const recurring = recurringList.map((item: Rewards.Publisher) => {
-      let name = item.name
-      if (item.provider) {
-        name = `${name} ${getLocale('on')} ${item.provider}`
-      }
+    let recurring: DetailRow[] = []
+    if (recurringList) {
+      recurring = recurringList.map((item: Rewards.Publisher) => {
+        let name = item.name
+        if (item.provider) {
+          name = `${name} ${getLocale('on')} ${item.provider}`
+        }
 
-      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-      if (item.favIcon) {
-        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
-      }
+        let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+        if (item.favIcon) {
+          faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+        }
 
-      return {
-        profile: {
-          name,
-          verified: item.verified,
-          provider: (item.provider ? item.provider : undefined) as Provider,
-          src: faviconUrl
-        },
-        contribute: {
-          tokens: item.percentage.toFixed(1),
-          converted: utils.convertBalance(item.percentage.toString(), walletInfo.rates)
-        },
-        url: item.url,
-        type: 'recurring' as any,
-        onRemove: () => { this.actions.removeRecurring(item.id) }
-      }
-    })
+        return {
+          profile: {
+            name,
+            verified: item.verified,
+            provider: (item.provider ? item.provider : undefined) as Provider,
+            src: faviconUrl
+          },
+          contribute: {
+            tokens: item.percentage.toFixed(1),
+            converted: utils.convertBalance(item.percentage.toString(), walletInfo.rates)
+          },
+          url: item.url,
+          type: 'recurring' as any,
+          onRemove: () => { this.actions.removeRecurring(item.id) }
+        }
+      })
+    }
 
     // Tips
-    const tips = tipsList.map((item: Rewards.Publisher) => {
-      let name = item.name
-      if (item.provider) {
-        name = `${name} ${getLocale('on')} ${item.provider}`
-      }
+    let tips: DetailRow[] = []
+    if (tipsList) {
+      tips = tipsList.map((item: Rewards.Publisher) => {
+        let name = item.name
+        if (item.provider) {
+          name = `${name} ${getLocale('on')} ${item.provider}`
+        }
 
-      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-      if (item.favIcon) {
-        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
-      }
+        let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+        if (item.favIcon) {
+          faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+        }
 
-      const token = utils.convertProbiToFixed(item.percentage.toString())
+        const token = utils.convertProbiToFixed(item.percentage.toString())
 
-      return {
-        profile: {
-          name,
-          verified: item.verified,
-          provider: (item.provider ? item.provider : undefined) as Provider,
-          src: faviconUrl
-        },
-        contribute: {
-          tokens: token,
-          converted: utils.convertBalance(token, walletInfo.rates)
-        },
-        url: item.url,
-        text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
-        type: 'donation' as any,
-        onRemove: () => { this.actions.removeRecurring(item.id) }
-      }
-    })
+        return {
+          profile: {
+            name,
+            verified: item.verified,
+            provider: (item.provider ? item.provider : undefined) as Provider,
+            src: faviconUrl
+          },
+          contribute: {
+            tokens: token,
+            converted: utils.convertBalance(token, walletInfo.rates)
+          },
+          url: item.url,
+          text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
+          type: 'donation' as any,
+          onRemove: () => { this.actions.removeRecurring(item.id) }
+        }
+      })
+    }
 
     return recurring.concat(tips)
   }

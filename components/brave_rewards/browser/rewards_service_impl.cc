@@ -523,9 +523,11 @@ void RewardsServiceImpl::OnGrant(ledger::Result result,
                                  const ledger::Grant& grant) {
   TriggerOnGrant(result, grant);
 
-  RewardsNotificationsService::RewardsNotificationArgs args;
-  rewards_notifications_service_->AddNotification(
-      RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args);
+  if (result == ledger::Result::LEDGER_OK) {
+    RewardsNotificationsService::RewardsNotificationArgs args;
+    rewards_notifications_service_->AddNotification(
+        RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args);
+  }
 }
 
 void RewardsServiceImpl::OnGrantCaptcha(const std::string& image, const std::string& hint) {
