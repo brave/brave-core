@@ -208,6 +208,9 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
     "//brave/browser/extensions/brave_webstore_inline_installer_browsertest.cc",
+    "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
+    "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
+    "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
     "//brave/browser/search_engine_provider_controller_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_autoplay_blocked_image_model_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_widevine_blocked_image_model_browsertest.cc",
@@ -236,6 +239,12 @@ test("brave_browser_tests") {
     sources += [
       "//brave/components/brave_rewards/browser/rewards_notifications_service_browsertest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
+    ]
+  }
+
+  if (is_win || is_linux) {
+    sources += [
+      "//brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer_browsertest.cc",
     ]
   }
 
