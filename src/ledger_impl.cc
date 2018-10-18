@@ -447,6 +447,11 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
     Reconcile();
   }
 
+  // Trigger auto contribute after recurring donation
+  if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+    StartAutoContribute();
+  }
+
   ledger_client_->OnReconcileComplete(result, viewing_id, (ledger::PUBLISHER_CATEGORY)reconcile.category_, probi);
   if (result != ledger::Result::LEDGER_OK) {
     RemoveReconcileById(viewing_id);
@@ -455,6 +460,23 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   }
   unsigned int ballotsCount = bat_client_->ballots(viewing_id);
   bat_publishers_->winners(ballotsCount, viewing_id);
+}
+
+void LedgerImpl::StartAutoContribute () {
+  uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
+  ledger::PublisherInfoFilter filter = bat_publishers_->CreatePublisherFilter("",
+     ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+     ledger::PUBLISHER_MONTH::ANY,
+     -1,
+     ledger::PUBLISHER_EXCLUDE::DEFAULT,
+     true,
+     currentReconcileStamp
+  );
+  GetCurrentPublisherInfoList(0, 0, filter, std::bind(&LedgerImpl::ReconcileContributeList,
+                                                      this,
+                                                      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+                                                      _1,
+                                                      _2));
 }
 
 void LedgerImpl::VotePublishers(const std::vector<braveledger_bat_helper::WINNERS_ST>& winners,
@@ -644,22 +666,6 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
       std::bind(&LedgerImpl::LoadPublishersListCallback,this,_1,_2,_3));
   } else if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
-
-    // Auto-contribution
-    uint64_t currentReconcileStamp = bat_client_->getReconcileStamp();
-    ledger::PublisherInfoFilter filter = bat_publishers_->CreatePublisherFilter("",
-       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-       ledger::PUBLISHER_MONTH::ANY,
-       -1,
-       ledger::PUBLISHER_EXCLUDE::DEFAULT,
-       true,
-       currentReconcileStamp
-    );
-    GetCurrentPublisherInfoList(0, 0, filter, std::bind(&LedgerImpl::ReconcileContributeList,
-                                                 this,
-                                                 ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-                                                 _1,
-                                                 _2));
 
     // Recurring direct donation
     GetRecurringDonations(std::bind(&LedgerImpl::ReconcileRecurringList,
