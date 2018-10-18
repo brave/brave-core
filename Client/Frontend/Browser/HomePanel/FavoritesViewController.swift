@@ -33,7 +33,7 @@ class FavoritesViewController: UIViewController {
         layout.minimumLineSpacing = 6
         
         let view = UICollectionView(frame: self.view.frame, collectionViewLayout: layout).then {
-            $0.backgroundColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
+            $0.backgroundColor = .clear
             $0.delegate = self
         
             let cellIdentifier = FavoriteCell.identifier
@@ -179,7 +179,8 @@ class FavoritesViewController: UIViewController {
     // MARK: - Constraints setup
     fileprivate func makeConstraints() {
         collection.snp.makeConstraints { make in
-            make.edges.equalTo(self.view.safeAreaLayoutGuide.snp.edges)
+            make.left.right.equalTo(self.view.safeAreaLayoutGuide)
+            make.top.bottom.equalTo(self.view)
         }
         
         ddgLogo.snp.makeConstraints { make in
@@ -216,7 +217,7 @@ class FavoritesViewController: UIViewController {
         
         // TODO: This entire blockshould be abstracted
         //  to make code in this class DRY (duplicates from elsewhere)
-        collection.backgroundColor = isPrivateBrowsing ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
+        view.backgroundColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
         braveShieldStatsView.timeStatView.color = isPrivateBrowsing ? UX.GreyA : UX.GreyJ
         collection.reloadData()
         updateDuckDuckGoVisibility()
