@@ -19,6 +19,23 @@
 using bookmarks::BookmarkNode;
 using bookmarks::BookmarkModel;
 
+namespace {
+ using brave_sync::BookmarkChangeProcessor;
+ class ObserverScopedPause {
+  public:
+    ObserverScopedPause(brave_sync::BookmarkChangeProcessor* processor) :
+     processor_(processor) {
+      DCHECK_NE(processor_, nullptr);
+      processor_->Stop();
+    }
+    ~ObserverScopedPause() {
+      processor_->Start();
+    }
+  private:
+    BookmarkChangeProcessor* processor_; // Not owned
+ };
+}
+
 namespace brave_sync {
 
 int64_t deleted_node_id = -1;
@@ -334,6 +351,7 @@ void BookmarkChangeProcessor::Reset() {
 
 void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
     const RecordsList &records) {
+  ObserverScopedPause pause(this);
   bookmark_model_->BeginExtensiveChanges();
   for (const auto& sync_record : records) {
     DCHECK(sync_record->has_bookmark());
