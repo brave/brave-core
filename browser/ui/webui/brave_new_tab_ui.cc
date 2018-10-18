@@ -44,16 +44,10 @@ class NewTabDOMHandler : public content::WebUIMessageHandler {
   DISALLOW_COPY_AND_ASSIGN(NewTabDOMHandler);
 };
 
-bool IsQwantUsedInQwantRegion(Profile* profile) {
-  bool region_for_qwant =
-      TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-          profile->GetPrefs())->prepopulate_id ==
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
-  bool qwant_used = profile->IsTorProfile()
-      ? profile->GetPrefs()->GetInteger(kAlternativeSearchEngineProviderInTor) ==
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
-      : true;
-  return region_for_qwant && qwant_used;
+bool IsRegionForQwant(Profile* profile) {
+  return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
+      profile->GetPrefs())->prepopulate_id ==
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
 }
 
 }  // namespace
@@ -108,7 +102,7 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
     render_view_host->SetWebUIProperty(
         "isTor", profile->IsTorProfile() ? "true" : "false");
     render_view_host->SetWebUIProperty(
-        "isQwant", IsQwantUsedInQwantRegion(profile) ? "true" : "false");
+        "isQwant", IsRegionForQwant(profile) ? "true" : "false");
   }
 }
 
