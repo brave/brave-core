@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/toolbar/app_menu_model.h b/chrome/browser/ui/toolbar/app_menu_model.h
+index 85bccd4c88e45c3fe68d3a0bd387d7d01de5ff57..7b5440096810c18037509af19e5c453c9d7ea8a0 100644
+--- a/chrome/browser/ui/toolbar/app_menu_model.h
++++ b/chrome/browser/ui/toolbar/app_menu_model.h
+@@ -181,7 +181,9 @@ class AppMenuModel : public ui::SimpleMenuModel,
+   class HelpMenuModel;
+   friend class ::MockAppMenuModel;
+ 
+-  bool ShouldShowNewIncognitoWindowMenuItem();
++ protected:
++  virtual bool ShouldShowNewIncognitoWindowMenuItem();
++ private:
+ 
+   // Adds actionable global error menu items to the menu.
+   // Examples: Extension permissions and sign in errors.

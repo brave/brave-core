@@ -17,6 +17,7 @@ class BraveAppMenuModel : public AppMenuModel {
   // AppMenuModel overrides:
   void Build() override;
 
+  bool ShouldShowNewIncognitoWindowMenuItem() override;
   void InsertBraveMenuItems();
 
   Browser* const browser_;  // weak

@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/browser_command_controller.cc b/chrome/browser/ui/browser_command_controller.cc
+index 1d929e1556b5d48b73efec0d25ebe9f75043b992..3dbf84aebbe63a4c8932d8a843bc9e56118418ae 100644
+--- a/chrome/browser/ui/browser_command_controller.cc
++++ b/chrome/browser/ui/browser_command_controller.cc
+@@ -968,7 +968,8 @@ void BrowserCommandController::UpdateSharedCommandsForIncognitoAvailability(
+       incognito_availability != IncognitoModePrefs::FORCED);
+   command_updater->UpdateCommandEnabled(
+       IDC_NEW_INCOGNITO_WINDOW,
+-      incognito_availability != IncognitoModePrefs::DISABLED && !guest_session);
++      (incognito_availability != IncognitoModePrefs::DISABLED &&
++       (!guest_session || profile->IsTorProfile())));
+ 
+   const bool forced_incognito =
+       incognito_availability == IncognitoModePrefs::FORCED ||
