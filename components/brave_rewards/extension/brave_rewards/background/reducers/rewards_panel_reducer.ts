@@ -103,8 +103,13 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           return
         }
 
-        const id = payload.id.toString()
+        const id = `n_${payload.id}`
         let notifications: Record<number, RewardsExtension.Notification> = state.notifications
+
+        if (!notifications) {
+          notifications = []
+        }
+
         notifications[id] = {
           id: id,
           type: payload.type,
@@ -126,7 +131,8 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
     case types.DELETE_NOTIFICATION:
       {
-        chrome.rewardsNotifications.deleteNotification(parseInt(payload.id, 10))
+        const id = payload.id.toString().replace('n_', '')
+        chrome.rewardsNotifications.deleteNotification(parseInt(id, 10))
         break
       }
     case types.ON_NOTIFICATION_DELETED:
