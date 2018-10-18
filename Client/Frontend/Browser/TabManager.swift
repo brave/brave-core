@@ -798,7 +798,7 @@ extension TabManager {
             tab.url = nil
 
             if let urlString = savedTab.url, let url = URL(string: urlString),
-                let faviconURL = Domain.getOrCreateForUrl(url, context: DataController.viewContext)?.favicon?.url {
+                let faviconURL = Domain.getOrCreateForUrl(url, context: DataController.viewContext).favicon?.url {
                 let icon = Favicon(url: faviconURL, date: Date())
                 icon.width = 1
                 tab.favicons.append(icon)

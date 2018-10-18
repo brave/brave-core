@@ -148,8 +148,6 @@ class ContentBlockerHelper {
         guard !RunOnce.hasRun else { return }
         RunOnce.hasRun = true
 
-        migrateLegacyUserPrefs()
-
         let blockImages = NoImageModeDefaults.Script
         ContentBlockerHelper.ruleStore.compileContentRuleList(forIdentifier: NoImageModeDefaults.ScriptName, encodedContentRuleList: blockImages) { rule, error in
             assert(rule != nil && error == nil)
@@ -180,22 +178,6 @@ class ContentBlockerHelper {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-
-    // If a user had set a pref for Tracking Protection outside of the previous defaults then make sure to honor those settings
-    private func migrateLegacyUserPrefs() {
-        // If a user had set PrefEnabledState to ON this means that TP was on in normal browsing
-        // if a user had set PrefEnabledState to OFF this means that TP was off in both normal and private browsing
-        if let legacyPref = userPrefs?.stringForKey("prefkey.trackingprotection.enabled") {
-            if legacyPref == "on" {
-                userPrefs?.setBool(true, forKey: ContentBlockingConfig.Prefs.NormalBrowsingEnabledKey)
-            } else if legacyPref == "off" {
-                userPrefs?.setBool(false, forKey: ContentBlockingConfig.Prefs.NormalBrowsingEnabledKey)
-                userPrefs?.setBool(false, forKey: ContentBlockingConfig.Prefs.PrivateBrowsingEnabledKey)
-            }
-            // We only need to do this once. We can wipe the old pref
-            userPrefs?.removeObjectForKey("prefkey.trackingprotection.enabled")
-        }
     }
 
     // Function to install or remove TP for a tab

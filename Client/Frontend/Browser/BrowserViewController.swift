@@ -120,6 +120,10 @@ class BrowserViewController: UIViewController {
     var pendingDownloadURL: URL?
 
     let downloadQueue = DownloadQueue()
+    
+    fileprivate let shieldBlockStats = ShieldBlockedStats().then { _ in
+        Domain.loadShieldsIntoMemory()
+    }
 
     init(profile: Profile, tabManager: TabManager) {
         self.profile = profile
@@ -1529,8 +1533,8 @@ extension BrowserViewController: URLBarDelegate {
     }
     
     func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView) {
-        // BRAVE TODO: Insert shield block stats here
-        let shields = ShieldsViewController(url: tabManager.selectedTab?.url, shieldBlockStats: nil)
+        // BRAVE TODO: Use actual instance
+        let shields = ShieldsViewController(url: tabManager.selectedTab?.url, shieldBlockStats: shieldBlockStats)
         shields.shieldsSettingsChanged = { [unowned self] _ in
             // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
             // the setting changed is the global `.AllOff` shield
