@@ -37,8 +37,28 @@ bool BatClient::loadState(const std::string& data) {
 
   state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST(state));
 
+  bool stateChanged = false;
+
+  // clear old reconciles
   if (state_->batch_.size() == 0) {
     state_->current_reconciles_ = {};
+    stateChanged = true;
+  }
+
+  // fix timestamp ms to s conversion
+  if (std::to_string(state_->reconcileStamp_).length() > 10) {
+    state_->reconcileStamp_ = state_->reconcileStamp_ / 1000;
+    stateChanged = true;
+  }
+
+  // fix timestamp ms to s conversion
+  if (std::to_string(state_->bootStamp_).length() > 10) {
+    state_->bootStamp_ = state_->bootStamp_ / 1000;
+    stateChanged = true;
+  }
+
+  if (stateChanged) {
+    saveState();
   }
 
   return true;
