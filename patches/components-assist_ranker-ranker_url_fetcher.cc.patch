@@ -1,0 +1,12 @@
+diff --git a/components/assist_ranker/ranker_url_fetcher.cc b/components/assist_ranker/ranker_url_fetcher.cc
+index 8d0f709499b5..92d14d11eaf3 100644
+--- a/components/assist_ranker/ranker_url_fetcher.cc
++++ b/components/assist_ranker/ranker_url_fetcher.cc
+@@ -31,6 +31,7 @@ bool RankerURLFetcher::Request(
+     const GURL& url,
+     RankerURLFetcher::Callback callback,
+     network::mojom::URLLoaderFactory* url_loader_factory) {
++  return false; // feature disabled in Brave
+   // This function is not supposed to be called if the previous operation is not
+   // finished.
+   if (state_ == REQUESTING) {
