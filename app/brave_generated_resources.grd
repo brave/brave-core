@@ -162,15 +162,28 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a Tor window.">
         Open Tor Window
       </message>
-      <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="The text label of a menu item to open a new off-the-record window with Tor.">
-        New private window with Tor
-      </message>
-      <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR" desc="The name of the open a link in private window with Tor command">
-        Open link in private window with Tor
-      </message>
-      <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
-        Open link in Brave private window with Tor
-      </message>
+      <if expr="use_titlecase">
+        <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="Title case: The text label of a menu item to open a new off-the-record window with Tor.">
+          New Private Window with Tor
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR" desc="Title case: The name of the open a link in private window with Tor command">
+          Open Link in Private Window with Tor
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="Title case: The name of the open a link in private window with Tor command">
+          Open Link in Brave Private Window with Tor
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="The text label of a menu item to open a new off-the-record window with Tor.">
+          New private window with Tor
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR" desc="The name of the open a link in private window with Tor command">
+          Open link in private window with Tor
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
+          Open link in Brave private window with Tor
+        </message>
+      </if>
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
         Tor
       </message>
