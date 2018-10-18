@@ -141,7 +141,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           return
         }
 
-        const id = payload.id.toString()
+        const id = `n_${payload.id}`
         let notifications: Record<number, RewardsExtension.Notification> = state.notifications
         delete notifications[id]
 
