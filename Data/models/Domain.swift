@@ -32,40 +32,24 @@ public final class Domain: NSManagedObject, CRUD {
         super.awakeFromInsert()
     }
 
-    // Always use this function to save or lookup domains in the table
-    class func domainAndScheme(fromUrl url: URL?) -> String {
-        let domainUrl = (url?.scheme ?? "http") + "://" + (url?.normalizedHost ?? "")
-        return domainUrl
-    }
-
-    public class func getOrCreateForUrl(_ url: URL, context: NSManagedObjectContext) -> Domain? {
-        let domainString = Domain.domainAndScheme(fromUrl: url)
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        fetchRequest.entity = Domain.entity(context)
-        fetchRequest.predicate = NSPredicate(format: "url == %@", domainString)
-        var result: Domain?
-        context.performAndWait {
-            do {
-                let results = try context.fetch(fetchRequest) as? [Domain]
-                if let item = results?.first {
-                    result = item
-                } else {
-                    result = Domain(entity: Domain.entity(context), insertInto: context)
-                    result?.url = domainString
-                }
-            } catch {
-                let fetchError = error as NSError
-                print(fetchError)
-            }
+    public class func getOrCreateForUrl(_ url: URL, context: NSManagedObjectContext) -> Domain {
+        let domainString = url.domainURL.absoluteString
+        if let domain = Domain.first(where: NSPredicate(format: "url == %@", domainString), context: context) {
+            return domain
         }
-        return result
+            
+        var newDomain: Domain!
+        context.performAndWait {
+            newDomain = Domain(entity: Domain.entity(context), insertInto: context)
+            newDomain.url = domainString
+        }
+        return newDomain
     }
 
     class func blockFromTopSites(_ url: URL, context: NSManagedObjectContext) {
-        if let domain = getOrCreateForUrl(url, context: context) {
-            domain.blockedFromTopSites = true
-            DataController.save(context: context)
-        }
+        let domain = getOrCreateForUrl(url, context: context)
+        domain.blockedFromTopSites = true
+        DataController.save(context: context)
     }
 
     class func blockedTopSites(_ context: NSManagedObjectContext) -> [Domain] {
@@ -85,63 +69,45 @@ public final class Domain: NSManagedObject, CRUD {
         return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
     }
 
-    class func setBraveShield(forDomain domainString: String, state: Bool?, context: NSManagedObjectContext) {
-        // BRAVE TODO:
-//        guard let url = URL(string: domainString) else { return }
-//        let domain = Domain.getOrCreateForUrl(url, context: context)
-//        let shield = state.0
-//        switch (shield) {
-//            case .AllOff: domain?.shield_allOff = state.1 as NSNumber?
-//            case .AdblockAndTp: domain?.shield_adblockAndTp = state.1 as NSNumber?
-//            case .HTTPSE: domain?.shield_httpse = state.1 as NSNumber?
-//            case .SafeBrowsing: domain?.shield_safeBrowsing = state.1 as NSNumber?
-//            case .FpProtection: domain?.shield_fpProtection = state.1 as NSNumber?
-//            case .NoScript: domain?.shield_noScript = state.1 as NSNumber?
-//        }
-//        DataController.save(context: context)
+    public class func setBraveShield(forUrl url: URL, shield: BraveShieldState.Shield, isOn: Bool?) {
+        let context = DataController.newBackgroundContext()
+        
+        let domain = Domain.getOrCreateForUrl(url, context: context)
+        let setting = isOn as NSNumber?
+        switch shield {
+            case .AllOff: domain.shield_allOff = setting
+            case .AdblockAndTp: domain.shield_adblockAndTp = setting
+            case .HTTPSE: domain.shield_httpse = setting
+            case .SafeBrowsing: domain.shield_safeBrowsing = setting
+            case .FpProtection: domain.shield_fpProtection = setting
+            case .NoScript: domain.shield_noScript = setting
+        }
+        
+        DataController.save(context: context)
+        
+        // After save update app state
+        BraveShieldState.set(forUrl: url, state: (shield, isOn))
     }
 
-    class func loadShieldsIntoMemory(_ completionOnMain: @escaping () -> Void) {
-        // Brave TODO:
-//        BraveShieldState.perNormalizedDomain.removeAll()
+    // If `static` nature here is removed, this logic can be placed inside ShieldState's init
+    public class func loadShieldsIntoMemory() {
+        BraveShieldState.clearAllInMemoryDomainStates()
 
-        let context = DataController.newBackgroundContext()
-        context.perform {
-            let fetchRequest = NSFetchRequest<Domain>()
-            fetchRequest.entity = Domain.entity(context)
-//            do {
-//                let results = try context.fetch(fetchRequest)
-//                for domain in results {
-//                    guard let urlString = domain.url, let url = URL(string: urlString) else { continue }
-//                    let normalizedUrl = url.normalizedHost ?? ""
-
-//                    print(normalizedUrl)
-//                    if let shield = domain.shield_allOff {
-//                        BraveShieldState.setInMemoryforDomain(normalizedUrl, setState: (.AllOff, shield.boolValue))
-//                    }
-//                    if let shield = domain.shield_adblockAndTp {
-//                        BraveShieldState.setInMemoryforDomain(normalizedUrl, setState: (.AdblockAndTp, shield.boolValue))
-//                    }
-//                    if let shield = domain.shield_safeBrowsing {
-//                        BraveShieldState.setInMemoryforDomain(normalizedUrl, setState: (.SafeBrowsing, shield.boolValue))
-//                    }
-//                    if let shield = domain.shield_httpse {
-//                        BraveShieldState.setInMemoryforDomain(normalizedUrl, setState: (.HTTPSE, shield.boolValue))
-//                    }
-//                    if let shield = domain.shield_fpProtection {
-//                        BraveShieldState.setInMemoryforDomain(normalizedUrl, setState: (.FpProtection, shield.boolValue))
-//                    }
-//                    if let shield = domain.shield_noScript {
-//                        BraveShieldState.setInMemoryforDomain(normalizedUrl, setState: (.NoScript, shield.boolValue))
-//                    }
-//                }
-//            } catch {
-//                let fetchError = error as NSError
-//                print(fetchError)
-//            }
-
-            DispatchQueue.main.async {
-                completionOnMain()
+        // Should consider fetching Domains and passing list to shield states to flush themselves.
+        //  Or just place all of this directly on shield states, (reset memory states)
+        for domain in Domain.all() ?? [] {
+            guard let urlString = domain.url, let url = URL(string: urlString) else { continue }
+            
+            let shieldOptions: [(BraveShieldState.Shield, NSNumber?)] = [
+                (.AllOff, domain.shield_allOff),
+                (.AdblockAndTp, domain.shield_adblockAndTp),
+                (.SafeBrowsing, domain.shield_safeBrowsing),
+                (.HTTPSE, domain.shield_httpse),
+                (.FpProtection, domain.shield_fpProtection),
+                (.NoScript, domain.shield_noScript)
+            ]
+            shieldOptions.forEach { (shield, isOn) in
+                BraveShieldState.set(forUrl: url, state: (shield, isOn?.boolValue))
             }
         }
     }

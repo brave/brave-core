@@ -352,7 +352,8 @@ class BookmarksViewController: SiteTableViewController {
         } else {
           // no relationship - attempt to resolove domain problem
           let context = DataController.viewContext
-          if let domain = Domain.getOrCreateForUrl(bookmarkUrl, context: context), let faviconMO = domain.favicon, let urlString = faviconMO.url, let url = URL(string: urlString) {
+          let domain = Domain.getOrCreateForUrl(bookmarkUrl, context: context)
+          if let urlString = domain.favicon?.url, let url = URL(string: urlString) {
             DispatchQueue.main.async {
               self.setCellImage(cell, iconUrl: url, cacheWithUrl: bookmarkUrl)
             }

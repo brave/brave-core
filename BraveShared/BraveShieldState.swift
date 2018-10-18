@@ -6,20 +6,6 @@ import SwiftyJSON
 // These override the setting in the prefs
 public struct BraveShieldState {
 
-    public static func set(forDomain domain: String, state: (BraveShieldState.Shield, Bool?)) {
-        BraveShieldState.setInMemoryforDomain(domain, setState: state)
-
-        // BRAVE TODO:
-//        if PrivateBrowsing.singleton.isOn {
-//            return
-//        }
-//
-//        let context = DataController.newBackgroundContext()
-//        context.perform {
-//            Domain.setBraveShield(forDomain: domain, state: state, context: context)
-//        }
-    }
-
     public enum Shield: String {
         case AllOff = "all_off"
         case AdblockAndTp = "adblock_and_tp"
@@ -32,38 +18,35 @@ public struct BraveShieldState {
     fileprivate var state = [Shield: Bool]()
 
     typealias DomainKey = String
-    static var perNormalizedDomain = [DomainKey: BraveShieldState]()
+    private static var inMemoryDomainShieldSettings = [DomainKey: BraveShieldState]()
 
-    public static func setInMemoryforDomain(_ domain: String, setState state: (BraveShieldState.Shield, Bool?)) {
-        var shields = perNormalizedDomain[domain]
-        if shields == nil {
-            if state.1 == nil {
-                return
-            }
-            shields = BraveShieldState()
-        }
-
-        shields!.setState(state.0, on: state.1)
-        perNormalizedDomain[domain] = shields!
+    public static func clearAllInMemoryDomainStates() {
+        inMemoryDomainShieldSettings.removeAll()
+    }
+    
+    public static func set(forUrl url: URL, state: (BraveShieldState.Shield, Bool?)) {
+        let domain = url.domainURL.absoluteString
+        var shields = inMemoryDomainShieldSettings[domain] ?? BraveShieldState()
+        shields.set(shield: state.0, toOn: state.1)
+        inMemoryDomainShieldSettings[domain] = shields
     }
 
     public static func getStateForDomain(_ domain: String) -> BraveShieldState? {
-        return perNormalizedDomain[domain]
+        return inMemoryDomainShieldSettings[domain]
     }
 
     public init(jsonStateFromDbRow: String) {
         let js = JSON(parseJSON: jsonStateFromDbRow)
         for (k, v) in (js.dictionary ?? [:]) {
             if let key = Shield(rawValue: k) {
-                setState(key, on: v.bool)
+                set(shield: key, toOn: v.bool)
             } else {
                 assert(false, "db has bad brave shield state")
             }
         }
     }
 
-    public init() {
-    }
+    public init() {}
 
     public init(orig: BraveShieldState) {
         self.state = orig.state // Dict value type is copied
@@ -77,11 +60,11 @@ public struct BraveShieldState {
         return JSON(_state).rawString()
     }
 
-    mutating func setState(_ key: Shield, on: Bool?) {
+    mutating func set(shield: Shield, toOn on: Bool?) {
         if let on = on {
-            state[key] = on
+            state[shield] = on
         } else {
-            state.removeValue(forKey: key)
+            state.removeValue(forKey: shield)
         }
     }
 
