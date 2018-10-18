@@ -188,7 +188,7 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL_2" desc="">This Private Window is much more private</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TITLE" desc="">with Tor</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_1" desc="">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can’t see which sites you’re visiting either. Tor can slow down browsing and some sites might not work at all.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2" desc="">Using Private Tabs only changes what Brave does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit, and hides the sites you visit from your ISP or your employer. Open a Private Window with Tor from the menu, or with Alt+Shift+N or Option+Shift+N.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2" desc="">Using Private Tabs only changes what Brave does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit, and hides the sites you visit from your ISP or your employer. Open a Private Window with Tor from the menu, or with {{ key }}.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON" desc="">Learn more about Tor in Brave</message>
 
       <!-- WebUI adblock resources -->
