@@ -13,7 +13,7 @@ struct TabTrayControllerUX {
     static let DefaultBorderWidth = 1.0 / UIScreen.main.scale
     static let BackgroundColor = UIColor.TopTabs.Background
     static let CellBackgroundColor = UIColor.TopTabs.Background
-    static let ToolbarFont = UIFont.systemFont(ofSize: 17.0)
+    static let ToolbarFont = UIFont.systemFont(ofSize: 17.0, weight: .medium)
     static let TextBoxHeight = CGFloat(32.0)
     static let FaviconSize = CGFloat(20)
     static let Margin = CGFloat(15)
@@ -354,6 +354,9 @@ class TabTrayController: UIViewController, Themeable {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        if privateMode {
+            resetEmptyPrivateBrowsingView()
+        }
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -403,6 +406,12 @@ class TabTrayController: UIViewController, Themeable {
         collectionView?.visibleCells.compactMap({ $0 as? TabCell }).forEach { $0.applyTheme(theme) }
         toolbar.applyTheme(theme)
     }
+    
+    /// Reset the empty private browsing state (hide the details, unhide the learn more button) if it was changed
+    func resetEmptyPrivateBrowsingView() {
+        emptyPrivateTabsView.detailsLabel.isHidden = true
+        emptyPrivateTabsView.learnMoreButton.isHidden = false
+    }
 
 // MARK: Selectors
     @objc func didClickDone() {
@@ -421,8 +430,20 @@ class TabTrayController: UIViewController, Themeable {
     }
 
     @objc func didTapLearnMore() {
-        let learnMoreRequest = URLRequest(url: URL(string: "https://github.com/brave/browser-laptop/wiki/What-a-Private-Tab-actually-does")!)
-        openNewTab(learnMoreRequest)
+        self.emptyPrivateTabsView.detailsLabel.alpha = 0.0
+        UIView.animate(withDuration: 0.15, animations: {
+            self.emptyPrivateTabsView.learnMoreButton.isHidden = true
+            self.emptyPrivateTabsView.detailsLabel.isHidden = false
+        }, completion: { _ in
+                UIView.animate(withDuration: 0.15) {
+                    self.emptyPrivateTabsView.detailsLabel.alpha = 1.0
+                }
+        })
+        // Needs to be done in a separate call so the stack view's height is updated properly based on the hidden
+        // status of learnMoreButton/detailsLabel
+        UIView.animate(withDuration: 0.2) {
+            self.emptyPrivateTabsView.updateContentInset()
+        }
     }
 
     @objc func didTogglePrivateMode() {
@@ -914,81 +935,102 @@ fileprivate class TabLayoutDelegate: NSObject, UICollectionViewDelegateFlowLayou
 }
 
 private struct EmptyPrivateTabsViewUX {
-    static let TitleColor = UIColor.Photon.White100
-    static let TitleFont = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.medium)
-    static let DescriptionColor = UIColor.Photon.White100
+    static let TitleColor = UIColor.Photon.Grey10
+    static let TitleFont = UIFont.systemFont(ofSize: 20, weight: .semibold)
+    static let DescriptionColor = UIColor.Photon.Grey20
     static let DescriptionFont = UIFont.systemFont(ofSize: 14)
-    static let LearnMoreFont = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
-    static let TextMargin: CGFloat = 18
-    static let LearnMoreMargin: CGFloat = 15
-    static let DescriptionMargin: CGFloat = 20
-    static let MinBottomMargin: CGFloat = 10
+    static let LearnMoreFont = UIFont.systemFont(ofSize: 17, weight: .medium)
+    static let TextMargin: CGFloat = 40
+    static let MinBottomMargin: CGFloat = 15
+    static let StackViewSpacing: CGFloat = 15.0
 }
 
 // View we display when there are no private tabs created
 fileprivate class EmptyPrivateTabsView: UIView {
-    fileprivate lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = EmptyPrivateTabsViewUX.TitleColor
-        label.font = EmptyPrivateTabsViewUX.TitleFont
-        label.textAlignment = .center
-        return label
-    }()
+    
+    let scrollView = UIScrollView().then {
+        $0.alwaysBounceVertical = true
+        $0.indicatorStyle = .white
+    }
+    
+    let stackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.alignment = .center
+        $0.spacing = EmptyPrivateTabsViewUX.StackViewSpacing
+    }
+    
+    let titleLabel = UILabel().then {
+        $0.textColor = EmptyPrivateTabsViewUX.TitleColor
+        $0.font = EmptyPrivateTabsViewUX.TitleFont
+        $0.textAlignment = .center
+        $0.text = Strings.Private_Browsing
+    }
 
-    fileprivate var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = EmptyPrivateTabsViewUX.DescriptionColor
-        label.font = EmptyPrivateTabsViewUX.DescriptionFont
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        return label
-    }()
+    let descriptionLabel = UILabel().then {
+        $0.textColor = EmptyPrivateTabsViewUX.DescriptionColor
+        $0.font = EmptyPrivateTabsViewUX.DescriptionFont
+        $0.text = Strings.Private_Tab_Body
+        $0.numberOfLines = 0
+    }
+    
+    let detailsLabel = UILabel().then {
+        $0.textColor = EmptyPrivateTabsViewUX.DescriptionColor
+        $0.font = EmptyPrivateTabsViewUX.DescriptionFont
+        $0.text = Strings.Private_Tab_Details
+        $0.isHidden = true
+        $0.numberOfLines = 0
+    }
 
-    fileprivate var learnMoreButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle(Strings.Private_Tab_Link, for: [])
-        button.setTitleColor(UIConstants.PrivateModeTextHighlightColor, for: [])
-        button.titleLabel?.font = EmptyPrivateTabsViewUX.LearnMoreFont
-        return button
-    }()
+    let learnMoreButton = UIButton(type: .system).then {
+        $0.setTitle(Strings.Private_Tab_Link, for: [])
+        $0.setTitleColor(UIConstants.PrivateModeTextHighlightColor, for: [])
+        $0.titleLabel?.font = EmptyPrivateTabsViewUX.LearnMoreFont
+    }
 
-    fileprivate var iconImageView: UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "private_glasses"))
-        return imageView
-    }()
+    let iconImageView = UIImageView(image: #imageLiteral(resourceName: "private_glasses")).then {
+        $0.setContentHuggingPriority(.required, for: .vertical)
+        $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        titleLabel.text =  Strings.Private_Browsing
-        descriptionLabel.text = Strings.Private_Tab_Body
-
-        addSubview(titleLabel)
-        addSubview(descriptionLabel)
-        addSubview(iconImageView)
-        addSubview(learnMoreButton)
-
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(self).offset(-40.0)
-            make.centerX.equalTo(self)
+        addSubview(scrollView)
+        scrollView.addSubview(stackView)
+        stackView.addArrangedSubview(iconImageView)
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(descriptionLabel)
+        stackView.addArrangedSubview(detailsLabel)
+        stackView.addArrangedSubview(learnMoreButton)
+        
+        stackView.setCustomSpacing(EmptyPrivateTabsViewUX.StackViewSpacing * 2.0, after: iconImageView)
+        
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(self.snp.edges)
         }
-
-        iconImageView.snp.makeConstraints { make in
-            make.bottom.equalTo(titleLabel.snp.top).offset(-EmptyPrivateTabsViewUX.TextMargin)
-            make.centerX.equalTo(self)
+        scrollView.contentLayoutGuide.snp.makeConstraints {
+            $0.width.equalTo(self)
+            $0.top.equalTo(self.stackView).offset(-EmptyPrivateTabsViewUX.MinBottomMargin)
+            $0.bottom.equalTo(self.stackView).offset(EmptyPrivateTabsViewUX.MinBottomMargin)
         }
-
-        descriptionLabel.snp.makeConstraints { make in
-            make.left.right.equalTo(self).inset(EmptyPrivateTabsViewUX.DescriptionMargin)
-            make.top.equalTo(titleLabel.snp.bottom).offset(EmptyPrivateTabsViewUX.TextMargin)
-            make.centerX.equalTo(self)
+        stackView.snp.makeConstraints {
+            $0.left.right.equalTo(self).inset(EmptyPrivateTabsViewUX.TextMargin)
         }
-
-        learnMoreButton.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(EmptyPrivateTabsViewUX.LearnMoreMargin).priority(10)
-            make.bottom.lessThanOrEqualTo(self).offset(-EmptyPrivateTabsViewUX.MinBottomMargin).priority(1000)
-            make.centerX.equalTo(self)
+    }
+    
+    func updateContentInset() {
+        stackView.layoutIfNeeded()
+        if stackView.bounds.height < bounds.height {
+            // Center it in the container
+            scrollView.contentInset.top = ceil((scrollView.frame.height - stackView.bounds.height) / 2.0)
+        } else {
+            scrollView.contentInset.top = 0
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateContentInset()
     }
 
     required init?(coder aDecoder: NSCoder) {
