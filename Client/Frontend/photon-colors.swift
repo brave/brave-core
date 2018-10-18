@@ -15,7 +15,7 @@ extension UIColor {
         static let Magenta90 = UIColor(rgb: 0x440027)
 
         static let Purple50 = UIColor(rgb: 0x9400ff)
-        static let Purple60 = UIColor(rgb: 0x8000d7)
+        static let Purple60 = UIColor(rgb: 0x8236B9)
         static let Purple70 = UIColor(rgb: 0x6200a4)
         static let Purple80 = UIColor(rgb: 0x440071)
         static let Purple90 = UIColor(rgb: 0x25003e)
