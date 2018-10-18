@@ -5,6 +5,7 @@
 #ifndef BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_IMPL_
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_IMPL_
 
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>
@@ -111,6 +112,9 @@ class RewardsServiceImpl : public RewardsService,
   void UpdateTipsList() override;
 
  private:
+  friend void RunIOTaskCallback(
+      base::WeakPtr<RewardsServiceImpl>,
+      std::function<void(void)>);
   typedef base::Callback<void(int, const std::string&, const std::map<std::string, std::string>& headers)> FetchCallback;
 
   const extensions::OneShotEvent& ready() const { return ready_; }
@@ -212,7 +216,6 @@ class RewardsServiceImpl : public RewardsService,
       ledger::LedgerCallbackHandler* handler) override;
 
   void RunIOTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
-  void RunTask(std::unique_ptr<ledger::LedgerTaskRunner> task) override;
   void SetRewardsMainEnabled(bool enabled) const override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
   void SetPublisherMinVisits(unsigned int visits) const override;
@@ -238,6 +241,8 @@ class RewardsServiceImpl : public RewardsService,
                             const std::string& publisher_key,
                             const ledger::PUBLISHER_CATEGORY category) override;
   void GetRecurringDonations(ledger::RecurringDonationCallback callback) override;
+
+  void OnIOTaskComplete(std::function<void(void)> callback);
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
