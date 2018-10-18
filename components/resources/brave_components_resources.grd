@@ -415,6 +415,9 @@
       <message name="IDS_BRAVE_UI_WALLET_ACTIVITY" desc="">Wallet Activity</message>
       <message name="IDS_BRAVE_UI_WALLET_ADDRESS" desc="">Wallet Address</message>
       <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="">wallet balance</message>
+      <message name="IDS_BRAVE_UI_WALLET_FAILED_BUTTON" desc="">Try again</message>
+      <message name="IDS_BRAVE_UI_WALLET_FAILED_TITLE" desc="">Wallet creation failed</message>
+      <message name="IDS_BRAVE_UI_WALLET_FAILED_TEXT" desc="">Please check your internet connection.</message>
       <message name="IDS_BRAVE_UI_WELCOME" desc="">Welcome!</message>
       <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_ONE" desc="">Start Earning Now!</message>
       <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_TWO" desc="">Join Rewards</message>

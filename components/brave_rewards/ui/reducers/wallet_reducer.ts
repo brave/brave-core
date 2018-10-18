@@ -26,6 +26,9 @@ const createWallet = (state: Rewards.State) => {
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
     case types.CREATE_WALLET:
+      state = { ...state }
+      state.walletCreateFailed = false
+      state.walletCreated = false
       chrome.send('brave_rewards.createWalletRequested', [])
       break
     case types.WALLET_CREATED:
