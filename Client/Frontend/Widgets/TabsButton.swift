@@ -29,6 +29,8 @@ class TabsButton: UIButton {
     }
     var highlightTextColor: UIColor?
     var highlightBackgroundColor: UIColor?
+    
+    private var currentCount: Int?
 
     override var isHighlighted: Bool {
         didSet {
@@ -139,12 +141,13 @@ class TabsButton: UIButton {
     func updateTabCount(_ count: Int, animated: Bool = true) {
         let count = max(count, 1)
         // Sometimes tabs count state is held in the cloned tabs button.
-        let currentCount = countLabel.text ?? clonedTabsButton?.countLabel.text
         let infinity = "\u{221E}"
-        let countToBe = (count < 100) ? count.description : infinity
+        let countToBe = (count < 100) ? "\(count)" : infinity
 
         // only animate a tab count change if the tab count has actually changed
-        if currentCount != count.description {
+        if currentCount != count {
+            currentCount = count
+            
             if let _ = self.clonedTabsButton {
                 self.clonedTabsButton?.layer.removeAllAnimations()
                 self.clonedTabsButton?.removeFromSuperview()
