@@ -4,8 +4,12 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
-  position: absolute;
+interface StyleProps {
+  fullScreen?: boolean
+}
+
+export const StyledWrapper = styled<StyleProps, 'div'>('div')`
+  position: ${p => p.fullScreen ? 'fixed' : 'absolute'};
   top: 0;
   left: 0;
   z-index: 6;
@@ -14,12 +18,13 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   align-content: flex-start;
   flex-wrap: wrap;
   font-family: Poppins, sans-serif;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: ${p => p.fullScreen ? '#fff' : 'rgba(255, 255, 255, 0.95)'};
   overflow: hidden;
   width: 100%;
   padding: 0 52px 20px;
   border-radius: 6px;
-  height: 100%;
+  height: ${p => p.fullScreen ? '100%' : 'auto'};
+  overflow-y: ${p => p.fullScreen ? 'scroll' : 'hidden'};
 `
 
 export const StyledHeader = styled<{}, 'div'>('div')`

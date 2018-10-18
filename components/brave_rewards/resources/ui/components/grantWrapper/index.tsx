@@ -12,16 +12,20 @@ export interface Props {
   id?: string
   onClose: () => void
   title: string
+  fullScreen?: boolean
   text: React.ReactNode
   children: React.ReactNode
 }
 
 export default class GrantWrapper extends React.PureComponent<Props, {}> {
   render () {
-    const { id, onClose, title, text, children } = this.props
+    const { id, fullScreen, onClose, title, text, children } = this.props
 
     return (
-      <StyledWrapper id={id}>
+      <StyledWrapper
+        id={id}
+        fullScreen={fullScreen}
+      >
         <StyledClose onClick={onClose}>
           <CloseStrokeIcon />
         </StyledClose>

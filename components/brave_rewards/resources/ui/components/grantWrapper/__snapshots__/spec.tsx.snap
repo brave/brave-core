@@ -26,7 +26,8 @@ exports[`Grant wrapper tests basic tests matches the snapshot 1`] = `
   width: 100%;
   padding: 0 52px 20px;
   border-radius: 6px;
-  height: 100%;
+  height: auto;
+  overflow-y: hidden;
 }
 
 .c3 {

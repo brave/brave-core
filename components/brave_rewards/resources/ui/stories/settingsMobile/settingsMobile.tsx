@@ -5,6 +5,7 @@
 import * as React from 'react'
 
 // Components
+import GrantMobile from './grantMobile'
 import AdsBoxMobile from './adsBoxMobile'
 import ContributeBoxMobile from './contributeBoxMobile'
 import DonationsBoxMobile from './donationsBoxMobile'
@@ -60,6 +61,7 @@ class SettingsMobile extends React.PureComponent<{}, State> {
             </StyledDisabledContent>
           : null
         }
+        <GrantMobile />
         <WalletInfoHeader
           balance={'30.0'}
           id={'mobile-wallet'}
