@@ -14,7 +14,7 @@ import {
   WalletEmpty,
   WalletSummary
 } from 'brave-ui/features/rewards'
-import { WalletAddIcon, WalletImportIcon } from 'brave-ui/components/icons'
+import { WalletAddIcon } from 'brave-ui/components/icons'
 import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
 
 // Utils
@@ -65,21 +65,6 @@ class PageWallet extends React.Component<Props, State> {
     this.setState({
       modalBackupActive: tabId
     })
-  }
-
-  onModalBackupOnCopy = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnCopy')
-  }
-
-  onModalBackupOnPrint = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnPrint')
-  }
-
-  onModalBackupOnSaveFile = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnSaveFile')
   }
 
   onModalBackupOnRestore = (key: string | MouseEvent) => {
@@ -219,11 +204,6 @@ class PageWallet extends React.Component<Props, State> {
               name: getLocale('panelAddFunds'),
               action: this.onModalAddFundsToggle,
               icon: <WalletAddIcon />
-            },
-            {
-              name: getLocale('panelWithdrawFunds'),
-              action: () => { console.log('panelWithdrawFunds') },
-              icon: <WalletImportIcon />
             }
           ]}
           onSettingsClick={this.onModalBackupOpen}
@@ -249,9 +229,6 @@ class PageWallet extends React.Component<Props, State> {
               backupKey={recoveryKey}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
-              onCopy={this.onModalBackupOnCopy}
-              onPrint={this.onModalBackupOnPrint}
-              onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
               error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
             />
