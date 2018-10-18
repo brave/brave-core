@@ -1,0 +1,8 @@
+source_set("browser") {
+  visibility = [ "//content/browser" ]
+
+  sources = [
+    "renderer_host/brave_plugin_registry_impl.cc",
+    "renderer_host/brave_plugin_registry_impl.h",
+  ]
+}
