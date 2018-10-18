@@ -196,23 +196,19 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         
         //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-        let tab = manager.addTab()
+        let tab = manager.addTab(isPrivate: true)
         manager.selectTab(tab)
-        let privateTab = manager.addTab(isPrivate: true)
-        manager.selectTab(privateTab)
         manager.addDelegate(delegate)
         
         let didSelect = MethodSpy(functionName: "tabManager(_:didSelectedTabChange:previous:)") { tabs in
             let next = tabs[0]!
             let previous = tabs[1]!
             XCTAssertTrue(previous != next)
-            XCTAssertTrue(previous == privateTab)
-            XCTAssertTrue(next == tab)
-            XCTAssertTrue(previous.isPrivate)
-            XCTAssertTrue(manager.selectedTab == next)
+            XCTAssertTrue(previous == tab)
+            XCTAssertTrue(next.isPrivate)
         }
-        delegate.expect([willRemove, didRemove, didSelect])
-        manager.removeTab(privateTab)
+        delegate.expect([willRemove, didRemove, willAdd, didAdd, didSelect])
+        manager.removeTab(tab)
         delegate.verify("Not all delegate methods were called")
     }
     

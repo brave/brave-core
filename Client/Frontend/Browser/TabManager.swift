@@ -567,8 +567,8 @@ class TabManager: NSObject {
         delegates.forEach { $0.get()?.tabManager(self, didRemoveTab: tab) }
         TabEvent.post(.didClose, for: tab)
 
-        if !tab.isPrivate && currentTabs.isEmpty {
-            addTab()
+        if currentTabs.isEmpty {
+            addTab(isPrivate: tab.isPrivate)
         }
 
         // If the removed tab was selected, find the new tab to select.
