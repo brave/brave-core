@@ -18,6 +18,8 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "components/search_engines/template_url_service.h"
 
 namespace {
 class NewTabDOMHandler : public content::WebUIMessageHandler {
@@ -44,16 +46,20 @@ class NewTabDOMHandler : public content::WebUIMessageHandler {
   DISALLOW_COPY_AND_ASSIGN(NewTabDOMHandler);
 };
 
+bool IsRegionForQwant(Profile* profile) {
+  return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
+      profile->GetPrefs())->prepopulate_id ==
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
+}
+
+bool IsQwantUsed(Profile* profile) {
+ return TemplateURLServiceFactory::GetForProfile(profile)->
+     GetDefaultSearchProvider()->prepopulate_id() ==
+     TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
+}
+
 bool IsQwantUsedInQwantRegion(Profile* profile) {
-  bool region_for_qwant =
-      TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-          profile->GetPrefs())->prepopulate_id ==
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
-  bool qwant_used = profile->IsTorProfile()
-      ? profile->GetPrefs()->GetInteger(kAlternativeSearchEngineProviderInTor) ==
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
-      : true;
-  return region_for_qwant && qwant_used;
+  return IsRegionForQwant(profile) && IsQwantUsed(profile);
 }
 
 }  // namespace
