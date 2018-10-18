@@ -196,21 +196,6 @@ class FavoritesViewController: UIViewController {
         }
     }
     
-    override func viewSafeAreaInsetsDidChange() {
-        // Not sure why but when a side panel is opened and you transition from portait to landscape
-        // top site cells are misaligned, this is a workaroud for this edge case. Happens only on iPhoneX.
-        let isIphoneX = UIScreen.main.nativeBounds.height == 2436
-        
-        if isIphoneX {
-            collection.snp.remakeConstraints { make in
-                make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-                make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
-                make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading)
-                make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).offset(self.view.safeAreaInsets.right)
-            }
-        }
-    }
-    
     // MARK: - Private browsing modde
     @objc func privateBrowsingModeChanged() {
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
@@ -230,6 +215,12 @@ class FavoritesViewController: UIViewController {
             // let t = getApp().tabManager
             // _ = t?.addTabAndSelect(URLRequest(url: url))
         }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        collection.collectionViewLayout.invalidateLayout()
     }
     
     // MARK: DuckDuckGo
