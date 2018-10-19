@@ -57,13 +57,12 @@ export const StyledContent = styled<Partial<Props>, 'div'>('div')`
 `
 
 export const StyledTitleWrap = styled<Partial<Props>, 'div'>('div')`
+  width: 280px;
   margin-top: ${p => p.type === 'big' ? '2px' : 0};
   margin-left: ${p => p.type !== 'big' ? '10px' : 0};
 `
 
 export const StyledTitle = styled<Partial<Props>, 'span'>('span')`
-  white-space: nowrap;
-
   ${p => p.type === 'big'
     ? css`
       font-size: 18px;
@@ -89,7 +88,6 @@ export const StyledTitle = styled<Partial<Props>, 'span'>('span')`
 `
 
 export const StyledProvider = styled<Partial<Props>, 'span'>('span')`
-  white-space: nowrap;
   padding-left: 5px;
 
   ${p => p.type === 'big'

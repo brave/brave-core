@@ -266,12 +266,12 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
+  width: 280px;
   margin-top: 2px;
   margin-left: 0;
 }
 
 .c7 {
-  white-space: nowrap;
   font-size: 18px;
   font-weight: 500;
   line-height: 1.22;
