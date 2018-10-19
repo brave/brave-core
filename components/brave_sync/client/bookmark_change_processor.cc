@@ -149,9 +149,7 @@ void UpdateNode(bookmarks::BookmarkModel* model,
   model->SetNodeMetaInfo(node, "order", bookmark.order);
 
   // updating the sync_timestamp marks this record as synced
-  std::string sync_timestamp;
-  node->GetMetaInfo("sync_timestamp", &sync_timestamp);
-  if (sync_timestamp.empty()) {
+  if (!tools::IsTimeEmpty(record->syncTimestamp)) {
     model->SetNodeMetaInfo(node,
         "sync_timestamp",
         std::to_string(record->syncTimestamp.ToJsTime()));
@@ -320,10 +318,15 @@ void BookmarkChangeProcessor::BookmarkAllUserNodesRemoved(
 
 void BookmarkChangeProcessor::BookmarkNodeChanged(BookmarkModel* model,
                                                   const BookmarkNode* node) {
+  ScopedPauseObserver pause(this);
   // clearing the sync_timestamp will put the record back in the `Unsynced` list
   model->DeleteNodeMetaInfo(node, "sync_timestamp");
   // also clear the last send time because this is a new change
   model->DeleteNodeMetaInfo(node, "last_send_time");
+
+  model->SetNodeMetaInfo(node,
+      "last_updated_time",
+      std::to_string(base::Time::Now().ToJsTime()));
 }
 
 void BookmarkChangeProcessor::BookmarkMetaInfoChanged(
@@ -365,13 +368,19 @@ void BookmarkChangeProcessor::Reset() {
   ui::TreeNodeIterator<const bookmarks::BookmarkNode>
       iterator(bookmark_model_->root_node());
   bookmark_model_->BeginExtensiveChanges();
-  while (iterator.has_next()) {
-    const bookmarks::BookmarkNode* node = iterator.Next();
-    bookmark_model_->DeleteNodeMetaInfo(node, "object_id");
-    bookmark_model_->DeleteNodeMetaInfo(node, "order");
-    bookmark_model_->DeleteNodeMetaInfo(node, "sync_timestamp");
-    bookmark_model_->DeleteNodeMetaInfo(node, "last_send_time");
+
+  {
+    ScopedPauseObserver pause(this);
+    while (iterator.has_next()) {
+      const bookmarks::BookmarkNode* node = iterator.Next();
+      bookmark_model_->DeleteNodeMetaInfo(node, "object_id");
+      bookmark_model_->DeleteNodeMetaInfo(node, "order");
+      bookmark_model_->DeleteNodeMetaInfo(node, "sync_timestamp");
+      bookmark_model_->DeleteNodeMetaInfo(node, "last_send_time");
+      bookmark_model_->DeleteNodeMetaInfo(node, "last_updated_time");
+    }
   }
+
   auto* deleted_node = GetDeletedNodeRoot();
   CHECK(deleted_node);
   deleted_node->DeleteAll();
@@ -390,6 +399,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
     auto bookmark_record = sync_record->GetBookmark();
 
     if (node && sync_record->action == jslib::SyncRecord::Action::UPDATE) {
+      UpdateNode(bookmark_model_, node, sync_record.get());
+
       int64_t old_parent_local_id = node->parent()->id();
       const bookmarks::BookmarkNode* old_parent_node =
           bookmarks::GetBookmarkNodeByID(bookmark_model_, old_parent_local_id);
@@ -409,7 +420,6 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
         int64_t index = GetIndex(new_parent_node, bookmark_record);
         bookmark_model_->Move(node, new_parent_node, index);
       }
-      UpdateNode(bookmark_model_, node, sync_record.get());
     } else if (node &&
                sync_record->action == jslib::SyncRecord::Action::DELETE) {
       if (node->parent() == GetDeletedNodeRoot()) {
@@ -463,7 +473,6 @@ void BookmarkChangeProcessor::OnGetBookmarkOrder(
 
   if (bookmark_node) {
     bookmark_model_->SetNodeMetaInfo(bookmark_node, "order", order);
-    BookmarkNodeChanged(bookmark_model_, bookmark_node);
   }
 }
 
@@ -534,6 +543,7 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   CHECK(deleted_node);
 
   if (record->objectId.empty()) {
+    ScopedPauseObserver pause(this);
     record->objectId = tools::GenerateObjectId();
     record->action = jslib::SyncRecord::Action::CREATE;
     bookmark_model_->SetNodeMetaInfo(node, "object_id", record->objectId);
@@ -550,15 +560,38 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   return record;
 }
 
+bool IsUnsynced(const bookmarks::BookmarkNode* node) {
+  std::string sync_timestamp;
+  node->GetMetaInfo("sync_timestamp", &sync_timestamp);
+
+  if (sync_timestamp.empty())
+    return true;
+
+  std::string last_updated_time;
+  node->GetMetaInfo("last_updated_time", &last_updated_time);
+
+  return !last_updated_time.empty() &&
+      base::Time::FromJsTime(std::stod(last_updated_time)) >
+      base::Time::FromJsTime(std::stod(sync_timestamp));
+}
+
 void BookmarkChangeProcessor::GetAllSyncData(
     const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
     SyncRecordAndExistingList* records_and_existing_objects) {
-  for (const auto& record : records){
+  for (const auto& record : records) {
     auto resolved_record = std::make_unique<SyncRecordAndExisting>();
     resolved_record->first = jslib::SyncRecord::Clone(*record);
     auto* node = FindByObjectId(bookmark_model_, record->objectId);
-    if (node)
-      resolved_record->second = BookmarkNodeToSyncBookmark(node);
+    if (node) {
+      std::string sync_timestamp;
+      node->GetMetaInfo("sync_timestamp", &sync_timestamp);
+
+      // only match unsynced nodes so we don't accidentally overwrite
+      // changes from another client with our local changes
+      if (IsUnsynced(node)) {
+        resolved_record->second = BookmarkNodeToSyncBookmark(node);
+      }
+    }
 
     records_and_existing_objects->push_back(std::move(resolved_record));
   }
@@ -591,9 +624,7 @@ void BookmarkChangeProcessor::SendUnsynced(
       const bookmarks::BookmarkNode* node = iterator.Next();
 
       // only send unsynced records
-      std::string sync_timestamp;
-      node->GetMetaInfo("sync_timestamp", &sync_timestamp);
-      if (!sync_timestamp.empty())
+      if (!IsUnsynced(node))
         continue;
 
       std::string last_send_time;
@@ -605,8 +636,11 @@ void BookmarkChangeProcessor::SendUnsynced(
           unsynced_send_interval)
         continue;
 
-      bookmark_model_->SetNodeMetaInfo(node,
-          "last_send_time", std::to_string(base::Time::Now().ToJsTime()));
+      {
+        ScopedPauseObserver pause(this);
+        bookmark_model_->SetNodeMetaInfo(node,
+            "last_send_time", std::to_string(base::Time::Now().ToJsTime()));
+      }
       auto record = BookmarkNodeToSyncBookmark(node);
       if (record)
         records.push_back(std::move(record));
