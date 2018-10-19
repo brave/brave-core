@@ -154,6 +154,14 @@ void UpdateNode(bookmarks::BookmarkModel* model,
         "sync_timestamp",
         std::to_string(record->syncTimestamp.ToJsTime()));
     model->DeleteNodeMetaInfo(node, "last_send_time");
+
+    std::string last_updated_time;
+    node->GetMetaInfo("last_updated_time", &last_updated_time);
+    if (std::stod(last_updated_time) < record->syncTimestamp.ToJsTime()) {
+      LOG(ERROR) << "update last updated time";
+      model->SetNodeMetaInfo(node, "last_updated_time",
+          std::to_string(record->syncTimestamp.ToJsTime()));
+    }
   }
 }
 
