@@ -52,7 +52,8 @@ class LedgerImpl : public ledger::Ledger,
   void GetPublisherInfo(const ledger::PublisherInfoFilter& filter,
                         ledger::PublisherInfoCallback callback) override;
   void GetMediaPublisherInfo(const std::string& media_key,
-                                ledger::PublisherInfoCallback callback) override;
+                                ledger::PublisherInfoCallback callback,
+                                bool use_as_publisher_key = false) override;
   void SetMediaPublisherInfo(const std::string& media_key,
                             const std::string& publisher_id) override;
   std::vector<ledger::ContributionInfo> GetRecurringDonationPublisherInfo() override;
@@ -149,10 +150,8 @@ class LedgerImpl : public ledger::Ledger,
   bool IsWalletCreated() const override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) override;
   void GetMediaActivityFromUrl(uint64_t windowId,
-                               const std::string& url,
-                               const std::string& providerType,
-                               ledger::PUBLISHER_MONTH month,
-                               int year);
+                               const ledger::VisitData& visit_data,
+                               const std::string& providerType);
   void OnPublisherActivity(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);

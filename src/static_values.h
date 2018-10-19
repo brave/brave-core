@@ -53,7 +53,7 @@
 #define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
 #define TWITCH_PROVIDER_URL             "https://api.twitch.tv/v5/oembed"
 #define YOUTUBE_TLD                     "youtube.com"
-#define TWITCH_TLD                      "twitch.com"
+#define TWITCH_TLD                      "twitch.tv"
 #define TWITCH_VOD_URL                  "https://www.twitch.tv/videos/"
 #define MEDIA_DELIMITER                 '_'
 #define WALLET_PASSPHRASE_DELIM         ' '

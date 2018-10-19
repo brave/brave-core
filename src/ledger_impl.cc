@@ -327,7 +327,8 @@ void LedgerImpl::GetPublisherInfo(
 }
 
 void LedgerImpl::GetMediaPublisherInfo(const std::string& media_key,
-                                ledger::PublisherInfoCallback callback) {
+                                ledger::PublisherInfoCallback callback,
+                                bool use_as_publisher_key) {
   ledger_client_->LoadMediaPublisherInfo(media_key, callback);
 }
 
@@ -758,11 +759,10 @@ void LedgerImpl::GetPublisherActivityFromUrl(uint64_t windowId,
 }
 
 void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,
-                                             const std::string& providerType,
-                                             const std::string& url,
-                                             ledger::PUBLISHER_MONTH month,
-                                             int year) {
-  bat_get_media_->getMediaActivityFromUrl(windowId, url, providerType, month, year);
+                                         const ledger::VisitData& visit_data,
+                                         const std::string& providerType) {
+  bat_get_media_->getMediaActivityFromUrl(
+    windowId, visit_data, providerType);
 }
 
 void LedgerImpl::OnPublisherActivity(ledger::Result result,

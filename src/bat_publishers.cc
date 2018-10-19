@@ -864,8 +864,8 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
       type = TWITCH_MEDIA_TYPE;
     }
 
-    // TODO NZ add logic
-    // ledger_->GetMediaActivityFromUrl(windowId, (std::string)visit_data.domain + visit_data.path, type, month, year);
+    ledger_->GetMediaActivityFromUrl(
+      windowId, visit_data, type);
     return;
   }
 
