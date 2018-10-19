@@ -149,20 +149,15 @@ void UpdateNode(bookmarks::BookmarkModel* model,
   model->SetNodeMetaInfo(node, "order", bookmark.order);
 
   // updating the sync_timestamp marks this record as synced
-  if (!tools::IsTimeEmpty(record->syncTimestamp)) {
-    model->SetNodeMetaInfo(node,
-        "sync_timestamp",
-        std::to_string(record->syncTimestamp.ToJsTime()));
-    model->DeleteNodeMetaInfo(node, "last_send_time");
+  model->SetNodeMetaInfo(node,
+      "sync_timestamp",
+      std::to_string(record->syncTimestamp.ToJsTime()));
+  model->DeleteNodeMetaInfo(node, "last_send_time");
 
-    std::string last_updated_time;
-    node->GetMetaInfo("last_updated_time", &last_updated_time);
-    if (std::stod(last_updated_time) < record->syncTimestamp.ToJsTime()) {
-      LOG(ERROR) << "update last updated time";
-      model->SetNodeMetaInfo(node, "last_updated_time",
-          std::to_string(record->syncTimestamp.ToJsTime()));
-    }
-  }
+  std::string last_updated_time;
+  node->GetMetaInfo("last_updated_time", &last_updated_time);
+  model->SetNodeMetaInfo(node, "last_updated_time",
+      std::to_string(record->syncTimestamp.ToJsTime()));
 }
 
 const bookmarks::BookmarkNode* FindParent(bookmarks::BookmarkModel* model,
@@ -528,12 +523,6 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   bookmark->hideInToolbar =
       !node->HasAncestor(bookmark_model_->bookmark_bar_node());
 
-  // these will be empty for unsynced nodes
-  std::string sync_timestamp;
-  node->GetMetaInfo("sync_timestamp", &sync_timestamp);
-  if (!sync_timestamp.empty())
-    record->syncTimestamp = base::Time::FromJsTime(std::stod(sync_timestamp));
-
   std::string object_id;
   node->GetMetaInfo("object_id", &object_id);
   record->objectId = object_id;
@@ -591,9 +580,6 @@ void BookmarkChangeProcessor::GetAllSyncData(
     resolved_record->first = jslib::SyncRecord::Clone(*record);
     auto* node = FindByObjectId(bookmark_model_, record->objectId);
     if (node) {
-      std::string sync_timestamp;
-      node->GetMetaInfo("sync_timestamp", &sync_timestamp);
-
       // only match unsynced nodes so we don't accidentally overwrite
       // changes from another client with our local changes
       if (IsUnsynced(node)) {
