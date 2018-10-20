@@ -4891,16 +4891,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Get back here fast by bookmarking this page
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        You can browse privately using a Private Window
+        You can browse privately using a private window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_1" desc="Variations option 2. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Use the web without saving your browsing history with a Private Window
+        Use the web without saving your browsing history with a private window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_2" desc="Variations option 3. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Using a shared computer? Try opening a Private Window.
+        Using a shared computer? Try opening a private window.
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        To browse privately, click the dots icon menu to open a Private Window
+        To browse privately, click the dots icon menu to open a private window
       </message>
       <message name="IDS_NEWTAB_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab with one click
@@ -8542,10 +8542,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <!-- External Navigation Strings -->
       <if expr="is_android or chromeos">
         <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user (who is currently in incognito mode) that the site they are currently using is going to share data with an external application." formatter_data="android_java">
-          This site is about to share information with an app outside of Private mode.
+          This site is about to share information with an app outside of private mode.
         </message>
         <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING_TITLE" desc="Title for dialog asking if the user wants to leave incognito mode. [CHAR-LIMIT=32]" formatter_data="android_java">
-          Leave Private mode?
+          Leave private mode?
         </message>
         <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_STAY" desc="Label for the dialog button to stay in incognito mode. [CHAR-LIMIT=20]" formatter_data="android_java">
           Stay
