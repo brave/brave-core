@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 182d6de541de3a21d737aa321e42a218fe7d0d1c..271833dc37f4b7d4921ab7d1139679a89aa265be 100644
+index 4d333946de0433ccca2063426b35e83a5356e43d..28006495ac88fe6f3d7bff5bc5ef4a1db5c8a3c5 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -439,7 +439,7 @@ void TabStrip::StopAllHighlighting() {
+@@ -421,7 +421,7 @@ void TabStrip::StopAllHighlighting() {
  void TabStrip::AddTabAt(int model_index, TabRendererData data, bool is_active) {
    const bool was_single_tab_mode = SingleTabMode();
  

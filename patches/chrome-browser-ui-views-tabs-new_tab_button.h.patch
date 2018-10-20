@@ -1,29 +1,20 @@
 diff --git a/chrome/browser/ui/views/tabs/new_tab_button.h b/chrome/browser/ui/views/tabs/new_tab_button.h
-index ee40211315f979cfc34a7373195b2179b72429d4..6b0e87c2a7ae38b47c4a452ff0d6bacb1cb2620f 100644
+index 9c729b9b79aec8edd1d7de4857772a60bfcc8c6e..82b765dbdc6a33e9cc062e6015700dd3125e1f41 100644
 --- a/chrome/browser/ui/views/tabs/new_tab_button.h
 +++ b/chrome/browser/ui/views/tabs/new_tab_button.h
-@@ -25,6 +25,7 @@ class NewTabButton : public views::ImageButton,
-                      public views::MaskedTargeterDelegate,
-                      public views::WidgetObserver {
-  public:
-+  friend class BraveNewTabButton;
-   NewTabButton(TabStrip* tab_strip, views::ButtonListener* listener);
-   ~NewTabButton() override;
+@@ -60,6 +60,7 @@ class NewTabButton : public views::ImageButton,
+   NewTabPromoBubbleView* new_tab_promo() { return new_tab_promo_; }
  
-@@ -107,7 +108,7 @@ class NewTabButton : public views::ImageButton,
-                  gfx::Canvas* canvas) const;
+  private:
++  friend class BraveNewTabButton;
+ // views::ImageButton:
+ #if defined(OS_WIN)
+   void OnMouseReleased(const ui::MouseEvent& event) override;
+@@ -91,6 +92,7 @@ class NewTabButton : public views::ImageButton,
+   void PaintFill(gfx::Canvas* canvas) const;
  
    // Paints a properly sized plus (+) icon into the center of the button.
--  void PaintPlusIcon(gfx::Canvas* canvas, int offset, int size);
-+  virtual void PaintPlusIcon(gfx::Canvas* canvas, int offset, int size);
- 
-   SkColor GetButtonFillColor(bool opaque) const;
-   SkColor GetIconColor() const;
-@@ -120,6 +121,7 @@ class NewTabButton : public views::ImageButton,
-   // the path will be shrunk by 1px from all sides to allow room for the stroke
-   // to show up. If |extend_to_top| is true, the path is extended vertically to
-   // y = 0.
 +  virtual
-   SkPath GetNewerMaterialUiButtonPath(float button_y,
-                                       float scale,
-                                       bool extend_to_top,
+   void PaintPlusIcon(gfx::Canvas* canvas) const;
+ 
+   SkColor GetButtonFillColor() const;

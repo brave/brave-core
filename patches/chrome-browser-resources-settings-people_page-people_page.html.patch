@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/people_page/people_page.html b/chrome/browser/resources/settings/people_page/people_page.html
-index 9d3bdd19f133b0a9c392b4573269b0ed4930b4a5..08e1c1a1a9df74a1b43431c85d4b88c2fd9bc979 100644
+index 460ca3123aafccb8586b9f4dbd3d657365811ce4..cda43cc04656d5406d8e142e93e1f9251d96d34c 100644
 --- a/chrome/browser/resources/settings/people_page/people_page.html
 +++ b/chrome/browser/resources/settings/people_page/people_page.html
 @@ -194,6 +194,7 @@

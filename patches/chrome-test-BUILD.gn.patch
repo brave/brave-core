@@ -1,8 +1,8 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index b0b7066b6b087810dc98b2694504085d971e6542..8a14a811d2f2ed66e868f6c990bc3af1e812e62f 100644
+index 8500f29d7a7108f947969355d7ef302b6f5708bd..437844e024c7ec6773ed48ec4d6c1660d89fc04d 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -412,6 +412,8 @@ test("browser_tests") {
+@@ -411,6 +411,8 @@ test("browser_tests") {
      "//third_party/blink/public:buildflags",
    ]
  

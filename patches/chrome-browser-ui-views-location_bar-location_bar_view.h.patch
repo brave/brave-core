@@ -1,42 +1,24 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 99a8916f7cd71d7a689b9baae087f64232dda7cc..f2ca8944c44009a0892614bd046f85607947a187 100644
+index 2075a15849314b007467b19cd773eb9e92a88d23..4573256ddf8dcdf175270c11b52646a3be575f86 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
-@@ -50,6 +50,7 @@ class Profile;
- class SelectedKeywordView;
- class StarView;
- class TranslateIconView;
-+class BraveLocationBarView;
- 
- namespace autofill {
- class LocalCardMigrationIconView;
-@@ -79,6 +80,7 @@ class LocationBarView : public LocationBar,
-                         public views::ButtonListener,
-                         public ContentSettingImageView::Delegate,
-                         public PageActionIconView::Delegate {
-+ friend class BraveLocationBarView;
-  public:
-   class Delegate {
-    public:
-@@ -117,7 +119,7 @@ class LocationBarView : public LocationBar,
+@@ -119,6 +119,7 @@ class LocationBarView : public LocationBar,
    float GetBorderRadius() const;
  
    // Initializes the LocationBarView.
--  void Init();
-+  virtual void Init();
++  virtual
+   void Init();
  
    // True if this instance has been initialized by calling Init, which can only
-   // be called when the receiving instance is attached to a view container.
-@@ -212,7 +214,7 @@ class LocationBarView : public LocationBar,
+@@ -213,6 +214,7 @@ class LocationBarView : public LocationBar,
  
    // Updates the controller, and, if |contents| is non-null, restores saved
    // state that the tab holds.
--  void Update(const content::WebContents* contents);
-+  virtual void Update(const content::WebContents* contents);
++  virtual
+   void Update(const content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-   void ResetTabState(content::WebContents* contents);
-@@ -231,6 +233,7 @@ class LocationBarView : public LocationBar,
+@@ -232,6 +234,7 @@ class LocationBarView : public LocationBar,
    void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
    gfx::Size CalculatePreferredSize() const override;
    void Layout() override;
@@ -44,12 +26,19 @@ index 99a8916f7cd71d7a689b9baae087f64232dda7cc..f2ca8944c44009a0892614bd046f8560
    void OnThemeChanged() override;
    void OnNativeThemeChanged(const ui::NativeTheme* theme) override;
    void ChildPreferredSizeChanged(views::View* child) override;
-@@ -333,7 +336,7 @@ class LocationBarView : public LocationBar,
+@@ -266,6 +269,7 @@ class LocationBarView : public LocationBar,
+   void OnOmniboxHovered(bool is_hovering);
+ 
+  private:
++  friend class BraveLocationBarView;
+   FRIEND_TEST_ALL_PREFIXES(SecurityIndicatorTest, CheckIndicatorText);
+   FRIEND_TEST_ALL_PREFIXES(TouchLocationBarViewBrowserTest,
+                            OmniboxViewViewsSize);
+@@ -335,6 +339,7 @@ class LocationBarView : public LocationBar,
    OmniboxPopupView* GetOmniboxPopupView();
  
    // Gets the theme color tint for the location bar and results.
--  OmniboxTint GetTint();
-+  virtual OmniboxTint GetTint();
++  virtual
+   OmniboxTint GetTint();
  
    // LocationBar:
-   GURL GetDestinationURL() const override;

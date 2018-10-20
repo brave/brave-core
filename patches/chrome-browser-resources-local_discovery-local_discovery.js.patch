@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/local_discovery/local_discovery.js b/chrome/browser/resources/local_discovery/local_discovery.js
-index 0b9bc336cc97016029b14b9a41511a74009a7732..41517ac31dc1f9c7babb9e69e0be8a4692dc0afd 100644
+index 43e511d0a132cd533225bf5ccebd1668eb7ad5de..a863e8d342bfdcf8aeeeaf725ccbc2625659630f 100644
 --- a/chrome/browser/resources/local_discovery/local_discovery.js
 +++ b/chrome/browser/resources/local_discovery/local_discovery.js
-@@ -634,6 +634,7 @@ cr.define('local_discovery', function() {
+@@ -583,6 +583,7 @@ cr.define('local_discovery', function() {
      $('cloud-devices-retry-link')
          .addEventListener('click', retryLoadCloudDevices);
  
@@ -10,11 +10,11 @@ index 0b9bc336cc97016029b14b9a41511a74009a7732..41517ac31dc1f9c7babb9e69e0be8a46
      $('cloud-devices-login-link')
          .addEventListener('click', cloudDevicesLoginButtonClicked);
  
-@@ -642,6 +643,7 @@ cr.define('local_discovery', function() {
+@@ -591,6 +592,7 @@ cr.define('local_discovery', function() {
  
      $('register-overlay-login-button')
          .addEventListener('click', registerOverlayLoginButtonClicked);
 +    // </if>
  
-     if (loadTimeData.valueExists('backButtonURL')) {
-       $('back-link').hidden = false;
+     focusManager = new LocalDiscoveryFocusManager();
+     focusManager.initialize();
