@@ -100,12 +100,6 @@ source_set("ui") {
     ]
   }
 
-  if (is_mac && !mac_views_browser) {
-    sources += [
-      "cocoa/importer/brave_import_lock_dialog_cocoa.mm",
-    ]
-  }
-
   deps = [
     "//base",
     "//brave/app:command_ids",
