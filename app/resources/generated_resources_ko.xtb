@@ -815,7 +815,7 @@
 <translation id="8251578425305135684">미리보기 이미지가 삭제되었습니다.</translation>
 <translation id="4495419450179050807">이 페이지에 표시하지 않음</translation>
 <translation id="2948300991547862301"><ph name="PAGE_TITLE"/>(으)로 이동</translation>
-<translation id="3838486795898716504"><ph name="PAGE_TITLE"/> 더보기</translation>
+<translation id="3838486795898716504"><ph name="PAGE_TITLE"/> 더 보기</translation>
 <translation id="6169040057125497443">마이크를 확인하세요.</translation>
 <translation id="6007240208646052708">사용자의 언어로 음성 검색을 이용할 수 없습니다.</translation>
 <translation id="3141318088920353606">듣는 중...</translation>
@@ -838,9 +838,9 @@
 <translation id="6860427144121307915">탭에서 열기</translation>
 <translation id="3074037959626057712">로그인하고 동기화를 사용 설정함</translation>
 <translation id="1231733316453485619">동기화를 사용하시겠습니까?</translation>
-<translation id="9125982323641182972">Brave Software로 Brave을 더욱 스마트하게</translation>
-<translation id="7988117629517051942">더욱 스마트한 Brave Software을 사용하세요</translation>
-<translation id="5596627076506792578">옵션 더보기</translation>
+<translation id="9125982323641182972">Brave Software로 Brave를 더욱 스마트하게</translation>
+<translation id="7988117629517051942">더욱 스마트한 Brave Software를 사용하세요</translation>
+<translation id="5596627076506792578">옵션 더 보기</translation>
 <translation id="4419556793104466535">동기화, 맞춤설정 등 관리</translation>
 <translation id="184568702928428857">Brave에서 동기화, 맞춤설정 및 기타 Brave Software 서비스를 관리하는 설정이 변경되었습니다. 이로 인해 현재 설정이 영향을 받을 수 있습니다.</translation>
 <translation id="4192273449750167573">다음 화면에서 설정 검토</translation>
@@ -858,7 +858,7 @@
 <translation id="2532167245710864499">시스템 정보와 사용 기록을 Brave Software에 전송하여 Brave 및 보안 개선</translation>
 <translation id="2709453993673701466">동기화 및 맞춤설정을 관리한 다음 사용 설정하시겠습니까? <ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>으로 이동하세요.</translation>
 <translation id="2668128414154024727"><ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>에서 언제든지 Brave Software에서 수집하는 정보를 맞춤설정할 수 있습니다.</translation>
-<translation id="6035247993547372482">Brave Software에서 Brave을 비롯한 번역, Brave Software 검색과 같은 기타 Brave Software 서비스 및 광고를 맞춤설정하기 위해 사용자가 방문한 사이트의 콘텐츠, 브라우저 활동 및 상호작용 기록을 사용할 수 있습니다. 이는 설정에서 변경할 수 있습니다.</translation>
+<translation id="6035247993547372482">Brave Software에서 Brave를 비롯한 번역, Brave Software 검색과 같은 기타 Brave Software 서비스 및 광고를 맞춤설정하기 위해 사용자가 방문한 사이트의 콘텐츠, 브라우저 활동 및 상호작용 기록을 사용할 수 있습니다. 이는 설정에서 변경할 수 있습니다.</translation>
 <translation id="741204030948306876">사용</translation>
 <translation id="8428213095426709021">설정</translation>
 <translation id="2497852260688568942">관리자가 동기화를 사용 중지했습니다.</translation>
@@ -890,7 +890,7 @@
 <translation id="6664774537677393800">프로필을 여는 동안 문제가 발생했습니다. 로그아웃했다가 다시 로그인하세요.</translation>
 <translation id="1794791083288629568">이 문제를 해결하는 데 도움이 되도록 의견 전송</translation>
 <translation id="8234795456569844941">Brave Software 엔지니어가 이 문제를 해결하도록 도와주세요. 프로필 오류 메시지가 표시되기 직전에 무슨 일이 있었는지 알려 주시기 바랍니다.</translation>
-<translation id="6500340165622970282">프로필을 여는 동안 문제가 발생했기 때문에 Brave을 시작할 수 없습니다. Brave을 다시 시작해 보세요.</translation>
+<translation id="6500340165622970282">프로필을 여는 동안 문제가 발생했기 때문에 Brave를 시작할 수 없습니다. Brave를 다시 시작해 보세요.</translation>
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/>은(는) 루트로 실행할 수 없습니다.</translation>
 <translation id="2292848386125228270">일반 사용자로 <ph name="PRODUCT_NAME"/>을(를) 시작하세요. 개발용 루트로 실행해야 하는 경우 --no-sandbox 플래그를 사용하여 다시 실행하세요.</translation>
 <translation id="3122496702278727796">데이터 디렉토리 만들기 실패</translation>
@@ -925,7 +925,7 @@
 <translation id="9037008143807155145">https://www.google.com/calendar/render?cid=%s</translation>
 <translation id="5426179911063097041"><ph name="SITE"/>에서 알림을 보내려고 합니다.</translation>
 <translation id="7221855153210829124">알림 표시</translation>
-<translation id="6042308850641462728">더보기</translation>
+<translation id="6042308850641462728">더 보기</translation>
 <translation id="8393700583063109961">메시지 보내기</translation>
 <translation id="3016780570757425217">내 위치 확인</translation>
 <translation id="4068506536726151626">이 페이지에는 사용자 위치를 추적하는 다음 사이트의 요소가 포함되어 있습니다.</translation>
@@ -1147,7 +1147,7 @@
 <translation id="1122960773616686544">북마크 이름</translation>
 <translation id="3527085408025491307">폴더</translation>
 <translation id="2815693974042551705">북마크 폴더</translation>
-<translation id="457386861538956877">더보기...</translation>
+<translation id="457386861538956877">더 보기...</translation>
 <translation id="3508920295779105875">다른 폴더 선택...</translation>
 <translation id="3530305684079447434">어느 기기에서나 북마크를 사용하려면 <ph name="SIGN_IN_LINK"/>.</translation>
 <translation id="1140610710803014750">어느 기기에서나 내 북마크를 사용하려면 로그인하고 동기화를 사용 설정하세요.</translation>
@@ -1193,7 +1193,7 @@
 <translation id="1173894706177603556">이름 바꾸기</translation>
 <translation id="5170568018924773124">폴더 열기</translation>
 <translation id="6825184156888454064">이름순 정렬</translation>
-<translation id="3440663250074896476"><ph name="BOOKMARK_NAME"/>의 작업 메뉴 더보기</translation>
+<translation id="3440663250074896476"><ph name="BOOKMARK_NAME"/>의 작업 메뉴 더 보기</translation>
 <translation id="2903457445916429186">선택한 항목 열기</translation>
 <translation id="962802172452141067">북마크 폴더 구조</translation>
 <translation id="1338776410427958681"><ph name="FOLDER_NAME"/> 접기</translation>
@@ -2096,7 +2096,7 @@
 <translation id="7661259717474717992">사이트에서 쿠키 데이터 저장 및 읽기 허용</translation>
 <translation id="2913331724188855103">사이트에서 쿠키 데이터를 저장하고 읽도록 허용(권장)</translation>
 <translation id="5908769186679515905">사이트에서 Flash를 실행하지 못하도록 차단</translation>
-<translation id="6096007141921397775">Brave을 종료할 때까지 Flash 설정이 유지됩니다.</translation>
+<translation id="6096007141921397775">Brave를 종료할 때까지 Flash 설정이 유지됩니다.</translation>
 <translation id="2972642118232180842">중요한 콘텐츠만 실행(권장)</translation>
 <translation id="7084192839369222683">중요한 콘텐츠만 실행</translation>
 <translation id="8074127646604999664">최근에 닫은 사이트에서 데이터 전송 및 수신을 완료하도록 허용</translation>
@@ -2340,7 +2340,7 @@
 <translation id="8785622406424941542">스타일러스</translation>
 <translation id="4673442866648850031">스타일러스가 분리되면 스타일러스 도구가 열립니다.</translation>
 <translation id="5862109781435984885">실행기에 스타일러스 도구 표시</translation>
-<translation id="4244238649050961491">스타일러스 앱 더보기</translation>
+<translation id="4244238649050961491">스타일러스 앱 더 보기</translation>
 <translation id="1163818598439831131">Brave Software Play 열기</translation>
 <translation id="9116799625073598554">메모 앱</translation>
 <translation id="5458998536542739734">잠금 화면 메모</translation>
@@ -2473,7 +2473,7 @@
 <translation id="9063208415146866933"><ph name="ERROR_LINE_START"/>행부터 <ph name="ERROR_LINE_END"/>행까지에 오류가 있음</translation>
 <translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">뷰 검사</translation>
-<translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/>개 더보기...</translation>
+<translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/>개 더 보기...</translation>
 <translation id="2450849356604136918">활성화된 뷰 없음</translation>
 <translation id="5488468185303821006">시크릿 모드에서 허용</translation>
 <translation id="6124650939968185064">이 확장 프로그램에 종속되는 확장 프로그램:</translation>
@@ -2552,7 +2552,7 @@
 <translation id="7681095912841365527">사이트에서 블루투스를 사용할 수 있습니다.</translation>
 <translation id="3085412380278336437">사이트에서 카메라를 사용할 수 있습니다.</translation>
 <translation id="9180380851667544951">사이트에서 화면을 공유할 수 있습니다.</translation>
-<translation id="4992630054488400221">Brave을 VR로 사용하려면 Daydream 키보드를 설치하거나 업데이트하세요</translation>
+<translation id="4992630054488400221">Brave를 VR로 사용하려면 Daydream 키보드를 설치하거나 업데이트하세요</translation>
 <translation id="983511809958454316">이 기능은 VR에서 지원되지 않습니다</translation>
 <translation id="4008291085758151621">VR에서 사이트 정보를 사용할 수 없습니다</translation>
 <translation id="1439926347196400598">Brave에서 오디오를 녹음하도록 허용하시겠습니까?</translation>
