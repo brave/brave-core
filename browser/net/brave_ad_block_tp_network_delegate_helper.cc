@@ -100,12 +100,14 @@ void OnBeforeURLRequestAdBlockTPOnTaskRunner(std::shared_ptr<BraveRequestInfo> c
   if (!g_brave_browser_process->tracking_protection_service()->
       ShouldStartRequest(ctx->request_url, ctx->resource_type, ctx->tab_origin.host())) {
     ctx->new_url_spec = GetBlankDataURLForResourceType(ctx->resource_type).spec();
+    ctx->blocked_by = kTrackerBlocked;
   } else if (!g_brave_browser_process->ad_block_service()->ShouldStartRequest(
            ctx->request_url, ctx->resource_type, ctx->tab_origin.host()) ||
        !g_brave_browser_process->ad_block_regional_service()
             ->ShouldStartRequest(ctx->request_url, ctx->resource_type,
                                  ctx->tab_origin.host())) {
     ctx->new_url_spec = GetBlankDataURLForResourceType(ctx->resource_type).spec();
+    ctx->blocked_by = kAdBlocked;
   }
 }
 
@@ -115,11 +117,15 @@ void OnBeforeURLRequestDispatchOnIOThread(
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
   if (!ctx->new_url_spec.empty() &&
     ctx->new_url_spec != ctx->request_url.spec()) {
-    // TODO: If we ever want to differentiate ads from tracking library
-    // counts, then use brave_shields::kTrackers below.
-    brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
-        ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id,
-        brave_shields::kAds);
+    if (ctx->blocked_by == kAdBlocked) {
+      brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+          ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id,
+          brave_shields::kAds);
+    } else if (ctx->blocked_by == kTrackerBlocked) {
+      brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
+          ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id,
+          brave_shields::kTrackers);
+    }
   }
 
   next_callback.Run();
