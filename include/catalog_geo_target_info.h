@@ -6,16 +6,14 @@
 
 #include <string>
 
-#include "../include/export.h"
-
 namespace catalog {
 
-ADS_EXPORT struct GeoTargetInfo {
+struct GeoTargetInfo {
   GeoTargetInfo() :
     code(""),
     name("") {}
 
-  GeoTargetInfo(const GeoTargetInfo& info) :
+  explicit GeoTargetInfo(const GeoTargetInfo& info) :
     code(info.code),
     name(info.name) {}
 

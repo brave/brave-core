@@ -7,22 +7,31 @@
 #include <sstream>
 #include <cstdarg>
 
-#include <curl/curl.h>
+#include <uriparser/Uri.h>
 
-#include "../include/mock_ads_client.h"
-#include "../include/mock_url_session.h"
-#include "../include/ads.h"
-#include "../include/ad_info.h"
-#include "../include/platform_helper.h"
-#include "../include/url_session_callback_handler.h"
-#include "../include/user_model_state.h"
-#include "../include/catalog_state.h"
+#include "mock_ads_client.h"
+#include "mock_url_session.h"
+#include "callback_handler.h"
+#include "ad_info.h"
+#include "math_helper.h"
+#include "string_helper.h"
 
 namespace ads {
 
 MockAdsClient::MockAdsClient() :
   ads_(Ads::CreateInstance(this)),
-  catalog_state_(std::make_unique<state::CATALOG_STATE>()) {
+  locale_("en"),
+  bundle_state_(std::make_unique<state::BUNDLE_STATE>()) {
+    std::ifstream ifs{"mock_data/mock_sample_bundle.json"};
+
+    std::stringstream stream;
+    stream << ifs.rdbuf();
+    std::string json = stream.str();
+
+    state::BUNDLE_STATE bundle_state;
+    bundle_state.LoadFromJson(json);
+
+    sample_bundle_state_ = std::make_unique<state::BUNDLE_STATE>(bundle_state);
 }
 
 MockAdsClient::~MockAdsClient() = default;
@@ -34,6 +43,56 @@ void MockAdsClient::GetClientInfo(ClientInfo& client_info) const {
   client_info.platform_version = "1.0";
 }
 
+void MockAdsClient::LoadUserModel(CallbackHandler* callback_handler) {
+  std::stringstream path;
+  path << "mock_data/locales/" << locale_ << "/user_model.json";
+
+  std::ifstream ifs{path.str()};
+  if (ifs.fail()) {
+    if (callback_handler) {
+      callback_handler->OnUserModelLoaded(Result::FAILED);
+    }
+
+    return;
+  }
+
+  std::stringstream stream;
+  stream << ifs.rdbuf();
+  auto json = stream.str();
+
+  ads_->InitializeUserModel(json);
+
+  if (callback_handler) {
+    callback_handler->OnUserModelLoaded(Result::SUCCESS);
+  }
+}
+
+std::string MockAdsClient::SetLocale(const std::string& locale) {
+  std::vector<std::string> locales;
+  GetLocales(locales);
+
+  if (std::find(locales.begin(), locales.end(), locale) != locales.end()) {
+    locale_ = locale;
+  } else {
+    std::vector<std::string> locale_info;
+    helper::String::Split(locale, '_', locale_info);
+
+    auto language_code = locale_info.front();
+    if (std::find(locales.begin(), locales.end(),
+        language_code) != locales.end()) {
+      locale_ = language_code;
+    } else {
+      locale_ = "en";
+    }
+  }
+
+  return locale_;
+}
+
+void MockAdsClient::GetLocales(std::vector<std::string>& locales) const {
+  locales = { "en", "fr", "de" };
+}
+
 void MockAdsClient::GenerateAdUUID(std::string& ad_uuid) const {
   ad_uuid = "298b76ac-dcd9-47d8-aa29-f799ea8e7e02";
 }
@@ -42,8 +101,9 @@ void MockAdsClient::GetSSID(std::string& ssid) const {
   ssid = "My WiFi Network";
 }
 
-void MockAdsClient::ShowAd(const std::unique_ptr<AdInfo> info) const {
-  std::cout << "Ad:" << std::endl;
+void MockAdsClient::ShowAd(const std::unique_ptr<AdInfo> info) {
+  std::cout << "------------------------------------------------" << std::endl;
+  std::cout << "Advertisement:" << std::endl;
   std::cout << info->advertiser << std::endl;
   std::cout << info->category << std::endl;
   std::cout << info->notification_text << std::endl;
@@ -57,30 +117,12 @@ void MockAdsClient::SetTimer(const uint64_t time_offset, uint32_t& timer_id) {
 
   timer_id = mock_timer_id;
 
-  ads_->OnTimer(timer_id);
+  // Call the ads_->OnTimer(timer_id) function when the timer is fired
 }
 
 void MockAdsClient::StopTimer(uint32_t& timer_id) {
-}
-
-std::string MockAdsClient::URIEncode(const std::string& value) {
-  std::string encoded_uri = "";
-
-  CURL *curl = curl_easy_init();
-  if (curl) {
-    char *output = curl_easy_escape(curl, value.c_str(), value.length());
-    if (output) {
-      encoded_uri = output;
-
-      curl_free(output);
-      output = NULL;
-    }
-
-    curl_easy_cleanup(curl);
-    curl = NULL;
-  }
-
-  return encoded_uri;
+  int a = 0;
+  a++;
 }
 
 std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
@@ -92,12 +134,14 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
     URLSessionCallbackHandlerCallback callback) {
   auto mock_url_session = std::make_unique<MockURLSession>();
   auto callback_handler = std::make_unique<URLSessionCallbackHandler>();
-  callback_handler->AddCallbackHandler(std::move(mock_url_session), callback);
+  if (callback_handler) {
+    callback_handler->AddCallbackHandler(std::move(mock_url_session), callback);
+  }
 
-  int response_status_code = 200;
+  auto response_status_code = 200;
   std::string response = "";
 
-  std::ifstream ifs{"build/mock_catalog.json"};
+  std::ifstream ifs{"mock_data/mock_catalog.json"};
   if (ifs.fail()) {
     response_status_code = 404;
   } else {
@@ -107,27 +151,23 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
     response = stream.str();
   }
 
-  static uint64_t session_id = 0;
-
-  callback_handler->OnURLSessionReceivedResponse(
-    session_id,
-    url,
-    response_status_code,
-    response,
-    {});
-
-  session_id++;
+  if (callback_handler) {
+    if (!callback_handler->OnURLSessionReceivedResponse(0, url,
+        response_status_code, response, {})) {
+      Log(LogLevel::ERROR, "URL session callback handler not found");
+    }
+  }
 
   return mock_url_session;
 }
 
-void MockAdsClient::LoadSettingsState(CallbackHandler* callback_handler) {
-  std::string path = "build/mock_settings.json";
-  std::ifstream ifs{path};
+void MockAdsClient::LoadSettings(CallbackHandler* callback_handler) {
+  std::ifstream ifs{"mock_data/mock_settings_state.json"};
   if (ifs.fail()) {
-    LOG(ERROR) << "Failed to load state from " << path << std::endl;
+    if (callback_handler) {
+      callback_handler->OnSettingsLoaded(Result::FAILED);
+    }
 
-    callback_handler->OnSettingsStateLoaded(Result::ADS_ERROR, "");
     return;
   }
 
@@ -135,22 +175,29 @@ void MockAdsClient::LoadSettingsState(CallbackHandler* callback_handler) {
   stream << ifs.rdbuf();
   std::string json = stream.str();
 
-  callback_handler->OnSettingsStateLoaded(Result::ADS_OK, json);
+  if (callback_handler) {
+    callback_handler->OnSettingsLoaded(Result::SUCCESS, json);
+  }
 }
 
-void MockAdsClient::SaveUserModelState(
+void MockAdsClient::SaveClient(
     const std::string& json,
     CallbackHandler* callback_handler) {
-  callback_handler->OnUserModelStateSaved(Result::ADS_OK);
+  auto success = WriteJsonToDisk("build/client_state.json", json);
+
+  if (callback_handler) {
+    auto result = success ? Result::SUCCESS : Result::FAILED;
+    callback_handler->OnClientSaved(result);
+  }
 }
 
-void MockAdsClient::LoadUserModelState(CallbackHandler* callback_handler) {
-  std::string path = "build/mock_user_model.json";
-  std::ifstream ifs{path};
+void MockAdsClient::LoadClient(CallbackHandler* callback_handler) {
+  std::ifstream ifs{"mock_data/mock_client_state.json"};
   if (ifs.fail()) {
-    LOG(ERROR) << "Failed to load state from " << path << std::endl;
+    if (callback_handler) {
+      callback_handler->OnClientLoaded(Result::FAILED);
+    }
 
-    callback_handler->OnUserModelStateLoaded(Result::ADS_ERROR, "");
     return;
   }
 
@@ -158,28 +205,172 @@ void MockAdsClient::LoadUserModelState(CallbackHandler* callback_handler) {
   stream << ifs.rdbuf();
   std::string json = stream.str();
 
-  callback_handler->OnUserModelStateLoaded(Result::ADS_OK, json);
+  if (callback_handler) {
+    callback_handler->OnClientLoaded(Result::SUCCESS, json);
+  }
 }
 
-void MockAdsClient::SaveCatalogState(
-    const state::CATALOG_STATE& catalog_state,
+void MockAdsClient::SaveCatalog(
+    const std::string& json,
     CallbackHandler* callback_handler) {
-  catalog_state_ = std::make_unique<state::CATALOG_STATE>(catalog_state);
-  callback_handler->OnCatalogStateSaved(Result::ADS_OK);
+  auto success = WriteJsonToDisk("build/catalog.json", json);
+
+  if (callback_handler) {
+    auto result = success ? Result::SUCCESS : Result::FAILED;
+    callback_handler->OnCatalogSaved(result);
+  }
 }
 
-void MockAdsClient::GetCampaignInfo(
-    const catalog::CampaignInfoFilter& filter,
+void MockAdsClient::LoadCatalog(CallbackHandler* callback_handler) {
+  std::ifstream ifs{"build/catalog.json"};
+  if (ifs.fail()) {
+    if (callback_handler) {
+      callback_handler->OnCatalogLoaded(Result::FAILED);
+    }
+
+    return;
+  }
+
+  std::stringstream stream;
+  stream << ifs.rdbuf();
+  std::string json = stream.str();
+
+  if (callback_handler) {
+    callback_handler->OnCatalogLoaded(Result::SUCCESS, json);
+  }
+}
+
+void MockAdsClient::ResetCatalog() {
+  std::string path = "build/catalog.json";
+  std::ifstream ifs(path.c_str());
+  if (ifs.good()) {
+    std::remove(path.c_str());
+  }
+}
+
+void MockAdsClient::SaveBundle(
+    const state::BUNDLE_STATE& bundle_state,
+    CallbackHandler* callback_handler) {
+  bundle_state_ = std::make_unique<state::BUNDLE_STATE>(bundle_state);
+  if (callback_handler) {
+    callback_handler->OnBundleSaved(Result::SUCCESS);
+  }
+}
+
+void MockAdsClient::SaveBundle(
+    const std::string& json,
+    CallbackHandler* callback_handler) {
+  auto success = WriteJsonToDisk("build/bundle.json", json);
+
+  if (callback_handler) {
+    auto result = success ? Result::SUCCESS : Result::FAILED;
+    callback_handler->OnBundleSaved(result);
+  }
+}
+
+void MockAdsClient::LoadBundle(CallbackHandler* callback_handler) {
+  std::ifstream ifs{"build/bundle.json"};
+  if (ifs.fail()) {
+    if (callback_handler) {
+      callback_handler->OnBundleLoaded(Result::FAILED);
+    }
+
+    return;
+  }
+
+  std::stringstream stream;
+  stream << ifs.rdbuf();
+  std::string json = stream.str();
+
+  if (callback_handler) {
+    callback_handler->OnBundleLoaded(Result::SUCCESS, json);
+  }
+}
+
+void MockAdsClient::GetAds(
+    const std::string& winning_category,
+    CallbackHandler* callback_handler) {
+  std::string category;
+  uint64_t pos = winning_category.length();
+
+  do {
+    category = winning_category.substr(0, pos);
+
+    auto categories = bundle_state_->categories.find(category);
+    if (categories != bundle_state_->categories.end()) {
+      if (callback_handler) {
+        callback_handler->OnGetAds(Result::SUCCESS,
+          category, categories->second);
+      }
+    }
+
+    pos = category.find_last_of('-');
+  } while (pos != std::string::npos);
+
+  if (callback_handler) {
+    callback_handler->OnGetAds(Result::FAILED, category, {});
+  }
+}
+
+std::string MockAdsClient::GetSampleCategory(
     CallbackHandler* callback) {
-  // for (auto& campaign : catalog_state_) {
-  // }
+  std::map<std::string, std::vector<bundle::CategoryInfo>>::iterator
+    categories = sample_bundle_state_->categories.begin();
+
+  auto categories_count = sample_bundle_state_->categories.size();
+  if (categories_count == 0) {
+    return "";
+  }
+
+  auto rand = helper::Math::Random() % categories_count;
+  std::advance(categories, rand);
+
+  return categories->first;
 }
 
-void MockAdsClient::Log(const LogLevel log_level, const char *fmt, ...) const {
+void MockAdsClient::GetUrlComponents(
+    const std::string& url,
+    UrlComponents& components) const {
+  components.url = url;
+
+  UriParserStateA parser_state;
+
+  UriUriA uri;
+  parser_state.uri = &uri;
+  if (uriParseUriA(&parser_state, url.c_str()) == URI_SUCCESS) {
+    std::string scheme(uri.scheme.first, uri.scheme.afterLast);
+    components.scheme = scheme;
+
+    std::string user(uri.userInfo.first, uri.userInfo.afterLast);
+    components.user = user;
+
+    std::string hostname(uri.hostText.first, uri.hostText.afterLast);
+    components.hostname = hostname;
+
+    std::string port(uri.portText.first, uri.portText.afterLast);
+    components.port = port;
+
+    std::string query(uri.query.first, uri.query.afterLast);
+    components.query = query;
+
+    std::string fragment(uri.fragment.first, uri.fragment.afterLast);
+    components.fragment = fragment;
+
+    components.absolutePath = uri.absolutePath;
+  }
+
+  uriFreeUriMembersA(&uri);
+}
+
+void MockAdsClient::Log(const LogLevel log_level, const char* fmt, ...) const {
+  if (!_is_verbose) {
+    return;
+  }
+
   va_list arg;
   va_start(arg, fmt);
   size_t sz = snprintf(NULL, 0, fmt, arg);
-  char *buf = reinterpret_cast<char *>(malloc(sz + 1));
+  char* buf = reinterpret_cast<char*>(malloc(sz + 1));
   vsprintf(buf, fmt, arg);
   va_end(arg);
 
@@ -187,7 +378,7 @@ void MockAdsClient::Log(const LogLevel log_level, const char *fmt, ...) const {
 
   switch (log_level) {
     case LogLevel::INFORMATION: {
-      level = "INFORMATION";
+      level = "INFO";
     }
     case LogLevel::WARNING: {
       level = "WARNING";
@@ -197,7 +388,24 @@ void MockAdsClient::Log(const LogLevel log_level, const char *fmt, ...) const {
     }
   }
 
-  std::cout << std::endl << level << ": " << buf << std::endl;
+  std::cerr << level << ": " << buf << std::endl;
+}
+
+bool MockAdsClient::WriteJsonToDisk(
+    const std::string& path,
+    const std::string& json) const {
+  std::ofstream ofs;
+  ofs.open(path);
+  if (ofs.fail()) {
+    return false;
+  }
+
+  ofs << json << std::endl;
+  if (ofs.fail()) {
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace ads

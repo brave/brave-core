@@ -7,13 +7,12 @@
 #include <string>
 #include <vector>
 
-#include "../include/catalog_segment_info.h"
-#include "../include/catalog_creative_info.h"
-#include "../include/export.h"
+#include "catalog_segment_info.h"
+#include "catalog_creative_info.h"
 
 namespace catalog {
 
-ADS_EXPORT struct CreativeSetInfo {
+struct CreativeSetInfo {
   CreativeSetInfo() :
     creative_set_id(""),
     execution(""),

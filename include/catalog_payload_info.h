@@ -6,17 +6,15 @@
 
 #include <string>
 
-#include "../include/export.h"
-
 namespace catalog {
 
-ADS_EXPORT struct PayloadInfo {
+struct PayloadInfo {
   PayloadInfo() :
     body(""),
     title(""),
     target_url("") {}
 
-  PayloadInfo(const PayloadInfo& info) :
+  explicit PayloadInfo(const PayloadInfo& info) :
     body(info.body),
     title(info.title),
     target_url(info.target_url) {}

@@ -7,5 +7,12 @@
 #define ADS_STAGING_SERVER "https://ads-serve-staging.brave.com/v1/catalog"
 #define ADS_PRODUCTION_SERVER "https://ads-serve.mercury.basicattentiontoken.org/v1/catalog"
 
-#define START_TIMER_IN_ONE_HOUR 60 * 60
-#define START_TIMER_IN_ONE_DAY 60 * 60 * 24
+namespace rewards_ads {
+
+static const uint64_t _maximum_entries_in_page_score_history = 5;
+static const uint64_t _maximum_entries_in_ads_shown_history = 99;
+static const uint64_t _milliseconds_in_a_second = 1000;
+
+static const uint64_t _one_hour_in_seconds = 60 * 60;
+
+}  // namespace rewards_ads

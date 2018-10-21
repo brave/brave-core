@@ -5,9 +5,8 @@
 #include <string>
 #include <map>
 
-#include "../include/settings_state.h"
-#include "../include/json_helper.h"
-#include "../include/static_values.h"
+#include "settings_state.h"
+#include "json_helper.h"
 
 namespace state {
 
@@ -31,8 +30,6 @@ bool SETTINGS_STATE::LoadFromJson(const std::string& json) {
   settings.Parse(json.c_str());
 
   if (settings.HasParseError()) {
-    LOG(ERROR) << "Failed to parse Settings JSON" << std::endl;
-
     return false;
   }
 
@@ -43,20 +40,19 @@ bool SETTINGS_STATE::LoadFromJson(const std::string& json) {
     {"ads.amount.hour", "String"}
   };
 
-  // TODO(Terry Mancey): Refactor validateJson by moving to json_helper class
-  for (auto& member : settings.GetObject()) {
+  // TODO(Terry Mancey): Decouple validateJson into json_helper class
+  for (auto const& member : settings.GetObject()) {
     std::string member_name = member.name.GetString();
-    std::string member_type = _rapidjson_member_types[member.value.GetType()];
+    auto member_type = _rapidjson_member_types[member.value.GetType()];
 
     if (members.find(member_name) == members.end()) {
-      LOG(WARNING) "JSON " << member_name << " member not used" << std::endl;
+      // Member name not used
       continue;
     }
 
     std::string type = members.at(member_name);
-    if (type.compare(member_type) != 0) {
-      LOG(WARNING) << "Invalid type for JSON member "
-        << member_name << std::endl;
+    if (type != member_type) {
+      // Invalid member type
       return false;
     }
   }

@@ -9,35 +9,35 @@
 namespace ads {
 
 struct SearchProviderInfo {
+ public:
   SearchProviderInfo() :
     name(""),
-    base(""),
-    search(""),
-    any_visit_to_base_domain_is_search(false) {}
+    hostname(""),
+    search_template(""),
+    is_always_classed_as_a_search(false) {}
 
   SearchProviderInfo(
       const std::string& name,
-      const std::string& base,
-      const std::string& search,
-      bool any_visit_to_base_domain_is_search) :
+      const std::string& hostname,
+      const std::string& search_template,
+      bool is_always_classed_as_a_search) :
     name(name),
-    base(base),
-    search(search),
-    any_visit_to_base_domain_is_search(any_visit_to_base_domain_is_search) {}
+    hostname(hostname),
+    search_template(search_template),
+    is_always_classed_as_a_search(is_always_classed_as_a_search) {}
 
   SearchProviderInfo(const SearchProviderInfo& info) :
     name(info.name),
-    base(info.base),
-    search(info.search),
-    any_visit_to_base_domain_is_search(
-      info.any_visit_to_base_domain_is_search) {}
+    hostname(info.hostname),
+    search_template(info.search_template),
+    is_always_classed_as_a_search(info.is_always_classed_as_a_search) {}
 
   ~SearchProviderInfo() {}
 
   std::string name;
-  std::string base;
-  std::string search;
-  bool any_visit_to_base_domain_is_search;
+  std::string hostname;
+  std::string search_template;
+  bool is_always_classed_as_a_search;
 };
 
 }  // namespace ads

@@ -5,16 +5,17 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <map>
 
-#include "../include/catalog_campaign_info.h"
-#include "../include/json_helper.h"
+#include "catalog_campaign_info.h"
+#include "json_helper.h"
 
 namespace state {
 
 struct CATALOG_STATE {
   CATALOG_STATE();
-  CATALOG_STATE(const CATALOG_STATE& state);
+  explicit CATALOG_STATE(const CATALOG_STATE& state);
   ~CATALOG_STATE();
 
   bool LoadFromJson(const std::string& json);

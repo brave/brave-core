@@ -6,31 +6,32 @@
 
 #include <string>
 
+#include "export.h"
+
 namespace ads {
 
-struct AdInfo {
- public:
-    AdInfo() :
-      category(""),
-      advertiser(""),
-      notification_text(""),
-      notification_url(""),
-      uuid("") {}
+ADS_EXPORT struct AdInfo {
+  AdInfo() :
+    category(""),
+    advertiser(""),
+    notification_text(""),
+    notification_url(""),
+    uuid("") {}
 
-    AdInfo(const AdInfo& info) :
-      category(info.category),
-      advertiser(info.advertiser),
-      notification_text(info.notification_text),
-      notification_url(info.notification_url),
-      uuid(info.uuid) {}
+  AdInfo(const AdInfo& info) :
+    category(info.category),
+    advertiser(info.advertiser),
+    notification_text(info.notification_text),
+    notification_url(info.notification_url),
+    uuid(info.uuid) {}
 
-    ~AdInfo() {}
+  ~AdInfo() {}
 
-    std::string category;
-    std::string advertiser;
-    std::string notification_text;
-    std::string notification_url;
-    std::string uuid;
+  std::string category;
+  std::string advertiser;
+  std::string notification_text;
+  std::string notification_url;
+  std::string uuid;
 };
 
 }  // namespace ads

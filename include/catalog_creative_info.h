@@ -5,21 +5,19 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
-#include "../include/catalog_type_info.h"
-#include "../include/catalog_payload_info.h"
-#include "../include/export.h"
+#include "catalog_type_info.h"
+#include "catalog_payload_info.h"
 
 namespace catalog {
 
-ADS_EXPORT struct CreativeInfo {
+struct CreativeInfo {
   CreativeInfo() :
     creative_id(""),
     type(TypeInfo()),
     payload(PayloadInfo()) {}
 
-  CreativeInfo(const CreativeInfo& info) :
+  explicit CreativeInfo(const CreativeInfo& info) :
     creative_id(info.creative_id),
     type(info.type),
     payload(info.payload) {}

@@ -7,13 +7,12 @@
 #include <string>
 #include <vector>
 
-#include "../include/catalog_geo_target_info.h"
-#include "../include/catalog_creative_set_info.h"
-#include "../include/export.h"
+#include "catalog_geo_target_info.h"
+#include "catalog_creative_set_info.h"
 
 namespace catalog {
 
-ADS_EXPORT struct CampaignInfo {
+struct CampaignInfo {
   CampaignInfo() :
     campaign_id(""),
     name(""),
@@ -25,7 +24,7 @@ ADS_EXPORT struct CampaignInfo {
     geo_targets({}),
     creative_sets({}) {}
 
-  CampaignInfo(const std::string& campaign_id) :
+  explicit CampaignInfo(const std::string& campaign_id) :
     campaign_id(campaign_id),
     name(""),
     start_at(""),

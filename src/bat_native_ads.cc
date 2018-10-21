@@ -2,20 +2,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../include/bat_native_ads.h"
-#include "../include/mock_ads_client.h"
-#include "../include/ads.h"
+#include "bat_native_ads.h"
+#include "mock_ads_client.h"
+#include "ads.h"
 
 int main() {
-  ads::MockAdsClient *mock_ads_client = new ads::MockAdsClient();
+  auto *mock_ads_client = new ads::MockAdsClient();
   ads::Ads& ads = *mock_ads_client->ads_;
 
   ads.Initialize();
 
-  ads.ChangeNotificationsAllowed(true);
-  ads.ChangeNotificationsAvailable(true);
+  ads.SetNotificationsAvailable(true);
+  ads.SetNotificationsAllowed(true);
+  ads.SetNotificationsConfigured(true);
+  ads.SetNotificationsExpired(false);
 
-  ads.ChangeLocale("en");
+  ads.ChangeLocale("fr");
 
   ads.AppFocused(true);
 
@@ -33,19 +35,89 @@ int main() {
 
   ads.RecordMediaPlaying("Test Tab", true);
 
-  ads.CheckReadyAdServe(false);
+  ads.ClassifyPage("Jewellery (British English) or jewelry (American English)[1"
+    "] consists of small decorative items worn for personal adornment, such as "
+    "brooches, rings, necklaces, earrings, pendants, bracelets and cufflinks.");
+
+  ads.ChangeLocale("en_GB");
+
+  ads.CheckReadyAdServe();
   ads.CheckReadyAdServe(true);
 
-  ads.RecordMediaPlaying("Test Tab", false);
-  ads.RecordMediaPlaying("Invalid Test Tab", false);
+  ads.ServeSampleAd();
 
-  ads.CheckReadyAdServe(false);
+  ads.RecordMediaPlaying("Test Tab", false);
+  ads.RecordMediaPlaying("Non Existant Tab", false);
+
+  ads.ServeSampleAd();
+
+  ads.CheckReadyAdServe();
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+
+  ads.AppFocused(false);
+
+  ads.CheckReadyAdServe();
+  ads.CheckReadyAdServe();
+
+  ads.AppFocused(true);
+
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+
+  ads.ClassifyPage("Making ice cream at home requires no special equipment, giv"
+    "es you free rein in combining flavours and impresses the socks off dinner "
+    "guests. What's your favourite recipe?");
+
+  ads.ClassifyPage("Our collection of Fit Food recipes inspired by Gordon Ramsa"
+    "y’s recipe book Ultimate Fit Food, will provide you with healthy nutritiou"
+    "s dishes that are as delicious as they are good for you. ... Try this new "
+    "'Ultimate Fit Food' dish for yourself at Heddon Street Kitchen.");
+
+  ads.ClassifyPage("There are loads of main-course recipes here, as well as ide"
+    "as for starters, desserts, leftovers, easy meals, sides and sauces.");
+
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe();
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+
+  ads.ClassifyPage("WarGames is a 1983 American Cold War science fiction film w"
+    "ritten by Lawrence Lasker and Walter F. Parkes and directed by John Badham"
+    ". The film stars Matthew Broderick, Dabney Coleman, John Wood, and Ally Sh"
+    "eedy. The film was a box office success, costing $12 million and grossing "
+    "$79 million after five months in the United States and Canada. The film wa"
+    "s nominated for three Academy Awards. A sequel, WarGames: The Dead Code, w"
+    "as released direct to DVD in 2008.");
+
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
+  ads.CheckReadyAdServe(true);
 
   ads.ServeSampleAd();
 
   ads.SaveCachedInfo();
 
   ads.RemoveAllHistory();
+
+  ads.CheckReadyAdServe();
 
   delete mock_ads_client;
   mock_ads_client = nullptr;

@@ -7,18 +7,14 @@
 #include <string>
 #include <map>
 
-#include "../include/export.h"
-#include "../include/catalog_state.h"
+#include "export.h"
+#include "bundle_category_info.h"
 
 namespace ads {
 
 ADS_EXPORT enum Result {
-  ADS_OK,
-  ADS_ERROR,
-  NO_USER_MODEL_STATE,
-  INVALID_USER_MODEL_STATE,
-  TOO_MANY_RESULTS,
-  NOT_FOUND
+  SUCCESS,
+  FAILED
 };
 
 // CallbackHandler must not be destroyed if it has pending callbacks
@@ -26,32 +22,48 @@ ADS_EXPORT class CallbackHandler {
  public:
   virtual ~CallbackHandler() = default;
 
-  // Settings
-  virtual void OnSettingsStateLoaded(
-      const Result result,
-      const std::string& json) {}
+  // User model
+  virtual void OnUserModelLoaded(const Result result) {}
 
-  // User Model
-  virtual void OnUserModelStateSaved(
-      const Result result) {}
-  virtual void OnUserModelStateLoaded(
+  // Settings
+  virtual void OnSettingsLoaded(
       const Result result,
-      const std::string& json) {}
+      const std::string& json = "") {}
+
+  // Client
+  virtual void OnClientSaved(
+      const Result result) {}
+  virtual void OnClientLoaded(
+      const Result result,
+      const std::string& json = "") {}
 
   // Catalog
-  virtual void OnCatalogStateSaved(
+  virtual void OnCatalogSaved(
       const Result result) {}
-  virtual void OnCatalogStateLoaded(
+  virtual void OnCatalogLoaded(
       const Result result,
-      const std::string& json) {}
+      const std::string& json = "") {}
+
+  // Bundle
+  virtual void OnBundleSaved(
+      const Result result) {}
+  virtual void OnBundleLoaded(
+      const Result result,
+      const std::string& json = "") {}
+
+  // Ads
+  virtual void OnGetAds(
+      const Result result,
+      const std::string& category,
+      const std::vector<bundle::CategoryInfo>& ads) {}
 
   // URL Session
-  virtual void OnURLSessionReceivedResponse(
+  virtual bool OnURLSessionReceivedResponse(
       const uint64_t session_id,
       const std::string& url,
       const int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers) {}
+      const std::map<std::string, std::string>& headers) { return false; }
 };
 
 }  // namespace ads

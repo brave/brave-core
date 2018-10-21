@@ -6,18 +6,16 @@
 
 #include <string>
 
-#include "../include/export.h"
-
 namespace catalog {
 
-ADS_EXPORT struct TypeInfo {
+struct TypeInfo {
   TypeInfo() :
     code(""),
     name(""),
     platform(""),
     version(0) {}
 
-  TypeInfo(const TypeInfo& info) :
+  explicit TypeInfo(const TypeInfo& info) :
     code(info.code),
     name(info.name),
     platform(info.platform),

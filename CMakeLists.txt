@@ -2,20 +2,24 @@
 
 project(batnativeads)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wc++14-extensions")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wc++17-extensions")
 set(CMAKE_CXX_STANDARD_REQUIRED, on)
 find_package(CURL REQUIRED)
 include_directories(${CURL_INCLUDE_DIR})
 
 include_directories(include
+  deps
   deps/bat-native-rapidjson/include
   deps/bat-native-usermodel/include
   third_party/curl/include
+  third_party/uriparser/include
   third_party/sqlite_modern_cpp/hdr
-  third_party/sqlite
-  third_party/uriparser/include)
+  third_party/sqlite)
 
-file(GLOB SOURCES "src/*.cc"
+file(GLOB SOURCES
+  "src/*.cc"
+  "deps/bat-native-usermodel/src/*.cc"
+  "deps/bat-native-usermodel/src/*.c"
   "third_party/curl/src"
   "third_party/sqlite/*.c"
   "third_party/uriparser/src/*.c")

@@ -2,10 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../include/settings.h"
-#include "../include/ads_impl.h"
-#include "../include/settings_state.h"
-#include "../include/json_helper.h"
+#include "settings.h"
+#include "json_helper.h"
 
 namespace state {
 
@@ -17,9 +15,10 @@ Settings::Settings(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client) :
 
 Settings::~Settings() = default;
 
-bool Settings::LoadState(const std::string& json) {
+bool Settings::LoadJson(const std::string& json) {
   SETTINGS_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
+    ads_client_->Log(ads::LogLevel::ERROR, "Failed to parse settings json");
     return false;
   }
 

@@ -8,8 +8,8 @@
 #include <map>
 #include <memory>
 
-#include "../include/callback_handler.h"
-#include "../include/url_session.h"
+#include "callback_handler.h"
+#include "url_session.h"
 
 namespace ads {
 
@@ -35,7 +35,7 @@ class URLSessionCallbackHandler : public CallbackHandler {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  void OnURLSessionReceivedResponse(
+  bool OnURLSessionReceivedResponse(
       const uint64_t session_id,
       const std::string& url,
       const int response_status_code,

@@ -4,7 +4,7 @@
 
 #include <cinttypes>
 
-#include "../include/mock_url_session.h"
+#include "mock_url_session.h"
 
 namespace ads {
 

@@ -5,15 +5,14 @@
 #pragma once
 
 #include <string>
-#include <memory>
 
-#include "../include/ads_client.h"
-#include "../include/export.h"
+#include "ads_client.h"
+#include "export.h"
 
 namespace ads {
 
-extern bool is_production;
-extern bool is_verbose;
+extern bool _is_production;
+extern bool _is_verbose;
 
 ADS_EXPORT class Ads {
  public:
@@ -26,10 +25,11 @@ ADS_EXPORT class Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  Ads* ads_;  // NOT OWNED
-
   // Initialize
   virtual void Initialize() = 0;
+
+  // Initialize
+  virtual void InitializeUserModel(const std::string& json) = 0;
 
   // Called whenever the browser gains or loses focus (the active application)
   virtual void AppFocused(const bool focused) = 0;
@@ -44,7 +44,7 @@ ADS_EXPORT class Ads {
   virtual void RemoveAllHistory() = 0;
 
   // Called when the browser is about to exit, if Brave Ads
-  // is not enabled, then removes all userModelState
+  // is not enabled, then removes all client state
   virtual void SaveCachedInfo() = 0;
 
   // Called to schedule network activity for talking to the catalog
@@ -52,11 +52,11 @@ ADS_EXPORT class Ads {
   virtual void ConfirmAdUUIDIfAdEnabled() = 0;
 
   // Called to determine if a URL is a shopping site and
-  // update userModelState accordingly
+  // update the client state accordingly
   virtual void TestShoppingData(const std::string& url) = 0;
 
   // Called to determine if a URL is a search result and update
-  // userModelState accordingly
+  // client state accordingly
   virtual void TestSearchState(const std::string& url) = 0;
 
   // Called to record whenever a tab is playing (or has
@@ -65,15 +65,9 @@ ADS_EXPORT class Ads {
       const std::string& tabId,
       const bool active) = 0;
 
-  // Called when the user changes if notifications are available
-  virtual void ChangeNotificationsAvailable(const bool available) = 0;
-
-  // Called when the user changes if notifications are allowed
-  virtual void ChangeNotificationsAllowed(const bool allowed) = 0;
-
   // Called when a page is completely loaded and both the headers
   // and body are available for analysis
-  virtual void ClassifyPage(const std::string& page) = 0;
+  virtual void ClassifyPage(const std::string& html) = 0;
 
   // Called when the user changes their locale (e.g., "en", "fr", or "gb")
   virtual void ChangeLocale(const std::string& locale) = 0;
@@ -84,7 +78,7 @@ ADS_EXPORT class Ads {
 
   // Called when the catalog server has returned a result.
   // If the result is good, an upcall is made to save the catalog state
-  // and save the userModel state
+  // and save the client state
   virtual void ApplyCatalog() = 0;
 
   // Called to get the network SSID
@@ -92,34 +86,55 @@ ADS_EXPORT class Ads {
 
   // Frequently called to determine whether a notification should be
   // displayed; if so, the notification is sent
-  virtual void CheckReadyAdServe(const bool forced) = 0;
+  virtual void CheckReadyAdServe(const bool forced = false) = 0;
 
   // Called when the user invokes "Show Sample Ad"
   virtual void ServeSampleAd() = 0;
 
+  // Called to flag whether notifications are available
+  virtual void SetNotificationsAvailable(const bool available) = 0;
+
+  // Called to flag whether notifications are allowed
+  virtual void SetNotificationsAllowed(const bool allowed) = 0;
+
+  // Called to flag whether notifications are configured
+  virtual void SetNotificationsConfigured(const bool configured) = 0;
+
+  // Called to flag whether notifications have expired
+  virtual void SetNotificationsExpired(const bool expired) = 0;
+
   // Called when a timer is triggered
   virtual void OnTimer(const uint32_t timer_id) = 0;
 
-  // Called once settings state has loaded
-  virtual void OnSettingsStateLoaded(
+  // Called once the user model has loaded
+  virtual void OnUserModelLoaded(const Result result) = 0;
+
+  // Called once settings have loaded
+  virtual void OnSettingsLoaded(
       const Result result,
-      const std::string& json) = 0;
+      const std::string& json = "") = 0;
 
-  // Called once user model state has been saved
-  virtual void OnUserModelStateSaved(const Result result) = 0;
+  // Called once client has been saved
+  virtual void OnClientSaved(const Result result) = 0;
 
-  // Called once user model state has loaded
-  virtual void OnUserModelStateLoaded(
+  // Called once client has loaded
+  virtual void OnClientLoaded(
       const Result result,
-      const std::string& json) = 0;
+      const std::string& json = "") = 0;
 
-  // Called once catalog state has been saved
-  virtual void OnCatalogStateSaved(const Result result) = 0;
+  // Called once bundle has been saved
+  virtual void OnBundleSaved(const Result result) = 0;
 
-  // Called once catalog state has loaded
-  virtual void OnCatalogStateLoaded(
+  // Called once bundle has loaded
+  virtual void OnBundleLoaded(
       const Result result,
-      const std::string& json) = 0;
+      const std::string& json = "") = 0;
+
+  // Called after getting ads
+  virtual void OnGetAds(
+      const Result result,
+      const std::string& category,
+      const std::vector<bundle::CategoryInfo>& ads) = 0;
 };
 
 }  // namespace ads

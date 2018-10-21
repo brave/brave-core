@@ -7,8 +7,9 @@
 #include <string>
 #include <memory>
 
-#include "../include/ads_impl.h"
-#include "../include/catalog_state.h"
+#include "ads_client.h"
+#include "catalog_state.h"
+#include "callback_handler.h"
 
 namespace rewards_ads {
 class AdsImpl;
@@ -21,8 +22,9 @@ class Catalog: public ads::CallbackHandler {
   Catalog(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client);
   ~Catalog();
 
-  bool LoadState(const std::string &json);
-  void SaveState();
+  bool LoadJson(const std::string& json);  // Deserialize
+
+  std::shared_ptr<CATALOG_STATE> GetCatalogState() const;
 
   std::string GetCatalogId() const;
 
@@ -30,11 +32,7 @@ class Catalog: public ads::CallbackHandler {
 
   int64_t GetPing() const;
 
-  void Reset();
-
  private:
-  void OnCatalogStateSaved(const ads::Result result) override;
-
   rewards_ads::AdsImpl* ads_;  // NOT OWNED
   ads::AdsClient* ads_client_;  // NOT OWNED
 

@@ -1,0 +1,28 @@
+{
+  "adsShownHistory": [
+  ],
+  "adUUID": "",
+  "adsUUIDSeen": {
+  },
+  "available": false,
+  "allowed": false,
+  "configured": false,
+  "currentSSID": "",
+  "expired": false,
+  "lastSearchTime": 0,
+  "lastShopTime": 0,
+  "lastUserActivity": 0,
+  "lastUserIdleStopTime": 0,
+  "locale": "en",
+  "locales": [
+  ],
+  "pageScoreHistory": [
+  ],
+  "places": {},
+  "score": 0,
+  "searchActivity": false,
+  "searchUrl": "",
+  "shopActivity": false,
+  "shopUrl": "",
+  "status": ""
+}

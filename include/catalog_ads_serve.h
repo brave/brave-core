@@ -5,13 +5,14 @@
 #pragma once
 
 #include <string>
-#include <ctime>
 #include <map>
+#include <memory>
 
-#include "../include/catalog.h"
+#include "ads_impl.h"
+#include "ads_client.h"
 
 namespace state {
-class Catalog;
+class Bundle;
 }  // namespace state
 
 namespace rewards_ads {
@@ -25,34 +26,32 @@ class AdsServe: public ads::CallbackHandler {
   AdsServe(
       rewards_ads::AdsImpl* ads,
       ads::AdsClient* ads_client,
-      std::shared_ptr<state::Catalog> catalog);
+      std::shared_ptr<state::Bundle> bundle);
 
   ~AdsServe();
 
-  void BuildURL();
-
   void DownloadCatalog();
+
+  void ResetNextCatalogCheck();
+
+ private:
+  std::string url_;
+  void BuildUrl();
+
+  uint64_t next_catalog_check_;
+  void UpdateNextCatalogCheck();
 
   void OnCatalogDownloaded(
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  void ResetNextCatalogCheck();
-
-  void UpdateNextCatalogCheck();
-  uint64_t NextCatalogCheck() const;
-
- private:
-
-  std::string url_;
-
-  uint64_t next_catalog_check_;
+  void OnCatalogSaved(const ads::Result result);
 
   rewards_ads::AdsImpl* ads_;  // NOT OWNED
   ads::AdsClient* ads_client_;  // NOT OWNED
 
-  std::shared_ptr<state::Catalog> catalog_;
+  std::shared_ptr<state::Bundle> bundle_;
 };
 
 }  // namespace catalog

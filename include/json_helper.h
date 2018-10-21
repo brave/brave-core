@@ -4,13 +4,12 @@
 
 #pragma once
 
-#include "../include/platform_helper.h"
+#include "bat-native-rapidjson/include/rapidjson/document.h"
+#include "bat-native-rapidjson/include/rapidjson/error/en.h"
+#include "bat-native-rapidjson/include/rapidjson/stringbuffer.h"
+#include "bat-native-rapidjson/include/rapidjson/writer.h"
 
-#include "../deps/bat-native-rapidjson/include/rapidjson/document.h"
-#include "../deps/bat-native-rapidjson/include/rapidjson/error/en.h"
-#include "../deps/bat-native-rapidjson/include/rapidjson/stringbuffer.h"
-#include "../deps/bat-native-rapidjson/include/rapidjson/writer.h"
-
+// TODO(Terry Mancey): Decouple _rapidjson_member_types
 static const char* _rapidjson_member_types[] = {
   "Null",
   "Bool",  // False
@@ -22,16 +21,16 @@ static const char* _rapidjson_member_types[] = {
 
 namespace state {
 
-struct USER_MODEL_STATE;
-struct CATALOG_STATE;
+struct CLIENT_STATE;
+struct BUNDLE_STATE;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
-void SaveToJson(JsonWriter& writer, const USER_MODEL_STATE& state);
-void SaveToJson(JsonWriter& writer, const CATALOG_STATE& state);
+void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state);
+void SaveToJson(JsonWriter& writer, const BUNDLE_STATE& state);
 
 template <typename T>
-void SaveToJsonString(const T& t, std::string& json) {
+void SaveToJson(const T& t, std::string& json) {
   rapidjson::StringBuffer buffer;
   JsonWriter writer(buffer);
 
@@ -42,12 +41,7 @@ void SaveToJsonString(const T& t, std::string& json) {
 // return: parsing status: true = succeeded, false = failed
 template <typename T>
 bool LoadFromJson(T& t, const std::string& json) {
-  bool succeeded = t.LoadFromJson(json);
-  if (!succeeded) {
-    LOG(ERROR) << "Failed to load JSON: " << json << std::endl;
-  }
-
-  return succeeded;
+  return t.LoadFromJson(json);
 }
 
 }  // namespace state

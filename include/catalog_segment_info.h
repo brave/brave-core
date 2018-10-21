@@ -6,16 +6,14 @@
 
 #include <string>
 
-#include "../include/export.h"
-
 namespace catalog {
 
-ADS_EXPORT struct SegmentInfo {
+struct SegmentInfo {
   SegmentInfo() :
     code(""),
     name("") {}
 
-  SegmentInfo(const SegmentInfo& info) :
+  explicit SegmentInfo(const SegmentInfo& info) :
     code(info.code),
     name(info.name) {}
 

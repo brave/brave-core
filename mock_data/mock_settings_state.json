@@ -1,0 +1,6 @@
+{
+  "ads.enabled": true,
+  "ads.locale": "en_US.POSIX.1",
+  "ads.amount.day": "20",
+  "ads.amount.hour": "6"
+}

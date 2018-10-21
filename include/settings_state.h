@@ -10,7 +10,7 @@ namespace state {
 
 struct SETTINGS_STATE {
   SETTINGS_STATE();
-  SETTINGS_STATE(const SETTINGS_STATE& state);
+  explicit SETTINGS_STATE(const SETTINGS_STATE& state);
   ~SETTINGS_STATE();
 
   bool LoadFromJson(const std::string& json);

@@ -6,6 +6,8 @@
 
 #include <string>
 
+#include "export.h"
+
 namespace ads {
 
 ADS_EXPORT struct ClientInfo {

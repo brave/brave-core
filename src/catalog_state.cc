@@ -2,11 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
-#include <map>
 
-#include "../include/catalog_state.h"
-#include "../include/json_helper.h"
+#include "catalog_state.h"
+#include "string_helper.h"
 
 namespace state {
 
@@ -30,8 +28,6 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
   catalog.Parse(json.c_str());
 
   if (catalog.HasParseError()) {
-    LOG(ERROR) << "Failed to parse Catalog JSON" << std::endl;
-
     return false;
   }
 
@@ -42,8 +38,10 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
     {"campaigns", "Array"}
   };
 
-  // TODO(Terry Mancey): Refactor validateJson by moving to json_helper class
-  validateJson(catalog, members);
+  // TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
+  if (!validateJson(catalog, members)) {
+    return false;
+  }
 
   std::string new_catalog_id;
   uint64_t new_version;
@@ -58,7 +56,8 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
     new_version = catalog["version"].GetUint64();
 
     if (new_version != 1) {
-      // TODO(Terry Mancey): Implement User Model Log (#44)
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'patch invalid', { reason: 'unsupported version', version: version }
       return false;
     }
   }
@@ -68,19 +67,20 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
   }
 
   if (!catalog.HasMember("campaigns")) {
-    // TODO(Terry Mancey): Implement User Model Log (#44)
+    // TODO(Terry Mancey): Implement Log (#44)
     return false;
   }
 
-  for (auto& campaign : catalog["campaigns"].GetArray()) {
+  for (auto const& campaign : catalog["campaigns"].GetArray()) {
     if (!campaign.HasMember("campaignId")) {
-      LOG(WARNING) << "campaignId missing from Catalog JSON" << std::endl;
       continue;
     }
 
     catalog::CampaignInfo campaign_info;
 
     campaign_info.campaign_id = campaign["campaignId"].GetString();
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Catalog invalid', 'duplicated campaignId: ' + campaignId
 
     if (campaign.HasMember("name")) {
       campaign_info.name = campaign["name"].GetString();
@@ -89,10 +89,16 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
     if (campaign.HasMember("startAt")) {
       std::string start_at = campaign["startAt"].GetString();
       campaign_info.start_at = start_at;
+
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'Catalog invalid', 'invalid startAt for campaignId: ' + campaignId
     }
 
     if (campaign.HasMember("endAt")) {
       campaign_info.end_at = campaign["endAt"].GetString();
+
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'Catalog invalid', 'invalid endAt for campaignId: ' + campaignId
     }
 
     if (campaign.HasMember("dailyCap")) {
@@ -109,7 +115,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
 
     // Creative sets
     if (campaign.HasMember("creativeSets")) {
-      for (auto& creative_set : campaign["creativeSets"].GetArray()) {
+      for (auto const& creative_set : campaign["creativeSets"].GetArray()) {
         if (!creative_set.HasMember("creativeSetId")) {
           continue;
         }
@@ -119,11 +125,16 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
         creative_set_info.creative_set_id =
           creative_set["creativeSetId"].GetString();
 
+        // TODO(Terry Mancey): Implement Log (#44)
+        // 'Catalog invalid', 'duplicated creativeSetId: ' + creativeSetId
+
         if (creative_set.HasMember("execution")) {
           std::string execution = creative_set["execution"].GetString();
 
-          if (execution.compare("per_click") != 0) {
-            // TODO(Terry Mancey): Implement User Model Log (#44)
+          if (execution != "per_click") {
+            // TODO(Terry Mancey): Implement Log (#44)
+            // 'Catalog invalid', 'creativeSet with unknown execution: '
+            // + creativeSet.execution
             return false;
           }
 
@@ -140,10 +151,8 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
 
         // Creatives
         if (creative_set.HasMember("creatives")) {
-          for (auto& creative : creative_set["creatives"].GetArray()) {
+          for (auto const& creative : creative_set["creatives"].GetArray()) {
             if (!creative.HasMember("creativeId")) {
-              LOG(WARNING) << "creativeId missing from Catalog JSON"
-                << std::endl;
               continue;
             }
 
@@ -162,20 +171,22 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
               if (type.HasMember("name")) {
                 std::string name = type["name"].GetString();
 
-                if (name.compare("notification") != 0) {
-                // TODO(Terry Mancey): Implement User Model Log (#44)
+                if (name != "notification") {
+                  // TODO(Terry Mancey): Implement Log (#44)
+                  // 'Catalog invalid', 'creative with invalid type: '
+                  // + creative.creativeId + ' type=' + type
                   return false;
                 }
 
-                creative_info.type.code = name;
+                creative_info.type.name = name;
               }
 
               if (type.HasMember("platform")) {
-                creative_info.type.code = type["platform"].GetString();
+                creative_info.type.platform = type["platform"].GetString();
               }
 
               if (type.HasMember("version")) {
-                creative_info.type.code = type["version"].GetUint64();
+                creative_info.type.version = type["version"].GetUint64();
               }
             }
 
@@ -184,15 +195,16 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
               auto payload = creative["payload"].GetObject();
 
               if (payload.HasMember("body")) {
-                creative_info.type.code = payload["body"].GetString();
+                creative_info.payload.body = payload["body"].GetString();
               }
 
               if (payload.HasMember("title")) {
-                creative_info.type.code = payload["title"].GetString();
+                creative_info.payload.title = payload["title"].GetString();
               }
 
               if (payload.HasMember("targetUrl")) {
-                creative_info.type.code = payload["targetUrl"].GetString();
+                creative_info.payload.target_url =
+                  payload["targetUrl"].GetString();
               }
             }
 
@@ -204,11 +216,13 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
         if (creative_set.HasMember("segments")) {
           auto segments = creative_set["segments"].GetArray();
           if (segments.Size() == 0) {
-            // TODO(Terry Mancey): Implement User Model Log (#44)
+            // TODO(Terry Mancey): Implement Log (#44)
+            // 'Catalog invalid', 'creativeSet with no segments: '
+            // + creativeSetId
             return false;
           }
 
-          for (auto& segment : segments) {
+          for (auto const& segment : segments) {
             catalog::SegmentInfo segment_info;
 
             if (segment.HasMember("code")) {
@@ -229,7 +243,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
 
     // Geo targets
     if (campaign.HasMember("geoTargets")) {
-      for (auto& geo_target : campaign["geoTargets"].GetArray()) {
+      for (auto const& geo_target : campaign["geoTargets"].GetArray()) {
         catalog::GeoTargetInfo geo_target_info;
 
         if (geo_target.HasMember("code")) {
@@ -255,49 +269,27 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
   return true;
 }
 
-// TODO(Terry Mancey): Refactor validateJson by moving to json_helper class
+// TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
 bool CATALOG_STATE::validateJson(
     const rapidjson::Document& document,
     const std::map<std::string, std::string>& members) {
-  for (auto& member : document.GetObject()) {
+  for (auto const& member : document.GetObject()) {
     std::string member_name = member.name.GetString();
     std::string member_type = _rapidjson_member_types[member.value.GetType()];
 
     if (members.find(member_name) == members.end()) {
-      LOG(WARNING) "JSON " << member_name << " member not used" << std::endl;
+      // Member name not used
       continue;
     }
 
     std::string type = members.at(member_name);
-    if (type.compare(member_type) != 0) {
-      LOG(WARNING) << "Invalid type for JSON member "
-        << member_name << std::endl;
+    if (type != member_type) {
+      // Invalid member type
       return false;
     }
   }
 
-  return false;
-}
-
-void SaveToJson(JsonWriter& writer, const CATALOG_STATE& state) {
-  writer.StartObject();
-
-  writer.String("catalog_id");
-  writer.String(state.catalog_id.c_str());
-
-  writer.String("version");
-  writer.Uint64(state.version);
-
-  writer.String("ping");
-  writer.Uint64(state.ping);
-
-  writer.String("campaigns");
-  writer.StartArray();
-  for (auto& campaign : state.campaigns) {
-  }
-  writer.EndArray();
-
-  writer.EndObject();
+  return true;
 }
 
 }  // namespace state

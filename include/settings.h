@@ -7,8 +7,9 @@
 #include <string>
 #include <memory>
 
-#include "../include/ads_impl.h"
-#include "../include/settings_state.h"
+#include "ads_impl.h"
+#include "ads_client.h"
+#include "settings_state.h"
 
 namespace rewards_ads {
 class AdsImpl;
@@ -16,12 +17,12 @@ class AdsImpl;
 
 namespace state {
 
-class Settings: public ads::CallbackHandler {
+class Settings {
  public:
   Settings(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client);
   ~Settings();
 
-  bool LoadState(const std::string& json);
+  bool LoadJson(const std::string& json);  // Deserialize
 
   bool IsAdsEnabled() const;
   std::string GetAdsLocale() const;

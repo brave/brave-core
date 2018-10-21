@@ -2,30 +2,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../include/catalog_ads_serve.h"
-#include "../include/ads_impl.h"
-#include "../include/ads.h"
-#include "../include/static_values.h"
+#include "catalog_ads_serve.h"
+#include "static_values.h"
+#include "catalog.h"
+#include "bundle.h"
 
 namespace catalog {
 
 AdsServe::AdsServe(
     rewards_ads::AdsImpl* ads,
     ads::AdsClient* ads_client,
-    std::shared_ptr<state::Catalog> catalog) :
+    std::shared_ptr<state::Bundle> bundle) :
       ads_(ads),
       ads_client_(ads_client),
-      catalog_(catalog) {
-  BuildURL();
+      bundle_(bundle) {
+  BuildUrl();
 }
 
 AdsServe::~AdsServe() = default;
 
-void AdsServe::BuildURL() {
+void AdsServe::BuildUrl() {
   ads::ClientInfo client_info;
   ads_client_->GetClientInfo(client_info);
 
-  url_ = ads::is_production ? ADS_PRODUCTION_SERVER : ADS_STAGING_SERVER;
+  url_ = ads::_is_production ? ADS_PRODUCTION_SERVER : ADS_STAGING_SERVER;
 
   url_ += "?braveVersion=" + client_info.application_version;
   url_ += "&platform=" + client_info.platform;
@@ -51,22 +51,38 @@ void AdsServe::OnCatalogDownloaded(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  bool success = false;
+  if (response_status_code / 100 == 2) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
 
-  if (response_status_code / 100 == 2) {  // successful
-    success = catalog_->LoadState(response);
-  } else if (response_status_code == 304) {  // not modified
-    // TODO(Terry Mancey): Implement UserModelLog (#44)
-  } else {  // failed
-    // TODO(Terry Mancey): Implement UserModelLog (#44)
-  }
+    auto catalog = std::make_unique<state::Catalog>(ads_, ads_client_);
+    if (catalog->LoadJson(response)) {
+      auto catalog_state = catalog->GetCatalogState();
+      if (bundle_->GenerateFromCatalog(catalog_state)) {
+        ads_client_->SaveCatalog(response, this);
+        ads_->ApplyCatalog();
 
-  if (success) {
+        UpdateNextCatalogCheck();
+
+        // TODO(Terry Mancey): Implement Log (#44)
+        // 'Catalog parsed', underscore.extend(underscore.clone(header),
+        // { status: 'processed', campaigns: underscore.keys(campaigns).length,
+        // creativeSets: underscore.keys(creativeSets).length }
+
+        return;
+      }
+    }
+  } else if (response_status_code == 304) {
     UpdateNextCatalogCheck();
-  }
 
-  ads::Result result = success ? ads::Result::ADS_OK : ads::Result::ADS_ERROR;
-  ads_->OnCatalogStateLoaded(result, response);
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Catalog current', { method, server, path }
+  } else {  // failed, so retry
+    ads_->StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
+
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Catalog download failed', { error, method, server, path }
+  }
 }
 
 void AdsServe::ResetNextCatalogCheck() {
@@ -74,11 +90,14 @@ void AdsServe::ResetNextCatalogCheck() {
 }
 
 void AdsServe::UpdateNextCatalogCheck() {
-  next_catalog_check_ = catalog_->GetPing();
+  // TODO(Terry Mancey): GetPing can no longer come from temporary catalog_
+  // next_catalog_check_ = catalog_->GetPing();
+  ads_->StartCollectingActivity(next_catalog_check_);
 }
 
-uint64_t AdsServe::NextCatalogCheck() const {
-  return next_catalog_check_;
+//////////////////////////////////////////////////////////////////////////////
+
+void AdsServe::OnCatalogSaved(const ads::Result result) {
 }
 
 }  // namespace catalog

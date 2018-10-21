@@ -9,16 +9,20 @@
 #include <vector>
 #include <memory>
 
-#include "../include/ads.h"
-#include "../include/catalog_ads_serve.h"
-#include "../include/user_model.h"
-#include "../include/settings.h"
-#include "../include/catalog.h"
+#include "bat-native-usermodel/include/user_model.h"
+
+#include "ads.h"
+#include "catalog_ads_serve.h"
+#include "bundle_category_info.h"
+#include "client.h"
+#include "settings.h"
+#include "bundle.h"
 
 namespace state {
 class Settings;
-class UserModel;
+class Client;
 class Catalog;
+class Bundle;
 }  // namespace state
 
 namespace catalog {
@@ -37,6 +41,7 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   AdsImpl& operator=(const AdsImpl&) = delete;
 
   void Initialize() override;
+  void InitializeUserModel(const std::string& json) override;
   void AppFocused(bool focused) override;
   void TabUpdate() override;
   void RecordUnIdle() override;
@@ -46,33 +51,43 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   void TestShoppingData(const std::string& url) override;
   void TestSearchState(const std::string& url) override;
   void RecordMediaPlaying(const std::string& tabId, bool active) override;
-  void ChangeNotificationsAvailable(bool available) override;
-  void ChangeNotificationsAllowed(bool allowed) override;
-  void ClassifyPage(const std::string& page) override;
+  void ClassifyPage(const std::string& html) override;
   void ChangeLocale(const std::string& locale) override;
   void CollectActivity() override;
   void ApplyCatalog() override;
   void RetrieveSSID() override;
-  void CheckReadyAdServe(bool force) override;
+  void CheckReadyAdServe(const bool forced = false) override;
   void ServeSampleAd() override;
+
+  void SetNotificationsAvailable(bool available) override;
+  void SetNotificationsAllowed(bool allowed) override;
+  void SetNotificationsConfigured(bool configured) override;
+  void SetNotificationsExpired(bool expired) override;
+
+  void StartCollectingActivity(const uint64_t start_timer_in);
 
   void OnTimer(const uint32_t timer_id) override;
 
-  void OnSettingsStateLoaded(
-      const ads::Result result,
-      const std::string& json) override;
+  void OnUserModelLoaded(const ads::Result result) override;
 
-  void OnUserModelStateSaved(
-      const ads::Result result) override;
-  void OnUserModelStateLoaded(
+  void OnSettingsLoaded(
       const ads::Result result,
-      const std::string& json) override;
+      const std::string& json = "") override;
 
-  void OnCatalogStateSaved(
-      const ads::Result result) override;
-  void OnCatalogStateLoaded(
+  void OnClientSaved(const ads::Result result) override;
+  void OnClientLoaded(
       const ads::Result result,
-      const std::string& json) override;
+      const std::string& json = "") override;
+
+  void OnBundleSaved(const ads::Result result) override;
+  void OnBundleLoaded(
+      const ads::Result result,
+      const std::string& json = "") override;
+
+  void OnGetAds(
+      const ads::Result result,
+      const std::string& category,
+      const std::vector<bundle::CategoryInfo>& ads) override;
 
  private:
   bool initialized_;
@@ -80,22 +95,39 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
 
   bool app_focused_;
 
-  void StartCollectingActivity(const uint64_t start_timer_in);
+  bool IsInitialized();
+
+  void LoadUserModel();
+  std::string GetWinningCategory();
+
+  uint32_t collect_activity_timer_id_;
   bool IsCollectingActivity() const;
   void StopCollectingActivity();
-  uint32_t collect_activity_timer_id_;
 
-  bool IsMediaPlaying() const;
   std::map<std::string, bool> media_playing_;
+  bool IsMediaPlaying() const;
 
   void ProcessLocales(const std::vector<std::string>& locales);
 
+  void ServeAdFromCategory(
+      const std::string& category,
+      CallbackHandler* callback_handler);
+  void ServeAdFromAds(std::vector<bundle::CategoryInfo>& ads);
+  std::vector<bundle::CategoryInfo> GetUnseenAds(
+      const std::vector<bundle::CategoryInfo>& categories);
+  bool IsAllowedToShowAds();
+  bool AdsShownHistoryRespectsRollingTimeConstraint(
+      const std::deque<time_t> history,
+      const uint64_t seconds_window,
+      const uint64_t allowable_ad_count) const;
+
   ads::AdsClient* ads_client_;  // NOT OWNED
 
-  std::shared_ptr<state::Settings> settings_;
-  std::unique_ptr<state::UserModel> user_model_;
-  std::shared_ptr<state::Catalog> catalog_;
+  std::unique_ptr<state::Settings> settings_;
+  std::unique_ptr<state::Client> client_;
+  std::shared_ptr<state::Bundle> bundle_;
   std::unique_ptr<catalog::AdsServe> catalog_ads_serve_;
+  std::unique_ptr<usermodel::UserModel> user_model_;
 };
 
 }  // namespace rewards_ads
