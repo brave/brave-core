@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Page, PageWrapper } from '../../../../src/features/newTab'
+import { Page, PageWrapper } from '../../../../src/features/newTab/private'
 
 // Components group
 import PrivateWindow from './privateWindow'

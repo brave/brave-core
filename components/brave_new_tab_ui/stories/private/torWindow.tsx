@@ -20,7 +20,7 @@ import {
   Separator,
   FakeButton
   // Link
-} from '../../../../src/features/newTab'
+} from '../../../../src/features/newTab/private'
 
 import locale from './fakeLocale'
 const privateWindowImg = require('../../../assets/img/private-window-tor.svg')

@@ -19,7 +19,7 @@ import {
   FakeButton,
   Link
 
-} from '../../../../src/features/newTab'
+} from '../../../../src/features/newTab/private'
 import { Toggle } from '../../../../src/features/shields'
 
 import locale from './fakeLocale'

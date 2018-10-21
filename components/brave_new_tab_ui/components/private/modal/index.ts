@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ComponentType } from 'react'
-import styled from '../../../theme'
-import DefaultModal, { Props } from '../../../components/popupModals/modal'
-import Heading from '../../../components/text/heading'
+import styled from '../../../../theme'
+import DefaultModal, { Props } from '../../../../components/popupModals/modal'
+import Heading from '../../../../components/text/heading'
 
 export const Modal = styled(DefaultModal as ComponentType<Props>)`
   height: 100%;

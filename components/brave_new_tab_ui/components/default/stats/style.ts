@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from '../../../theme'
+import styled from '../../../../theme'
 
 export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   display: flex;
@@ -17,7 +17,6 @@ export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   & > li {
     display: inline-block;
     margin-right: 40px;
-    margin-bottom: 20px;
   }
 `
 
