@@ -71,6 +71,14 @@ TEST_F(BraveShieldsExceptionsTest, IsWhitelistedReferrer) {
       GURL("https://use.typekit.net/193")));
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.test.com"),
       GURL("https://cloud.typography.com/199")));
+  // geetest allowed everywhere
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://binance.com"),
+      GURL("https://api.geetest.com/ajax.php?")));
+  EXPECT_TRUE(IsWhitelistedReferrer(GURL("http://binance.com"),
+      GURL("https://api.geetest.com/")));
+  // not allowed with a different scheme
+  EXPECT_FALSE(IsWhitelistedReferrer(GURL("http://binance.com"),
+      GURL("http://api.geetest.com/")));
 }
 
 }  // namespace
