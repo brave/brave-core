@@ -37,6 +37,13 @@ enum BraveNetworkDelegateEventType {
   kUnknownEventType
 };
 
+enum BlockedBy {
+  kNotBlocked ,
+  kAdBlocked,
+  kTrackerBlocked,
+  kOtherBlocked
+};
+
 struct BraveRequestInfo {
   BraveRequestInfo();
   ~BraveRequestInfo();
@@ -57,6 +64,7 @@ struct BraveRequestInfo {
   GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   const base::ListValue* referral_headers_list = nullptr;
+  BlockedBy blocked_by = kNotBlocked;
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.
   content::ResourceType resource_type = content::RESOURCE_TYPE_LAST_TYPE;
