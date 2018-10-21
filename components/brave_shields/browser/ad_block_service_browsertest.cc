@@ -6,11 +6,13 @@
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test_utils.h"
 
 using extensions::ExtensionBrowserTest;
@@ -150,6 +152,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
       kDefaultAdBlockComponentTestId,
       kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
@@ -163,6 +166,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
       "addElement('ad_banner.png')",
       &img_loaded));
   EXPECT_FALSE(img_loaded);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with an image which is not an ad, and make sure it is NOT blocked.
@@ -171,6 +175,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByDefaultBlocker
       kDefaultAdBlockComponentTestId,
       kDefaultAdBlockComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
@@ -184,6 +189,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByDefaultBlocker
       "addElement('logo.png')",
       &img_loaded));
   EXPECT_TRUE(img_loaded);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Load a page with an ad image, and make sure it is blocked by the
@@ -193,6 +199,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
   ASSERT_TRUE(StartAdBlockRegionalService());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   SetRegionalComponentIdAndBase64PublicKeyForTest(
       kRegionalAdBlockComponentTestId,
@@ -211,6 +218,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
       "addElement('ad_fr.png')",
       &img_loaded));
   EXPECT_FALSE(img_loaded);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Load a page with an image which is not an ad, and make sure it is
@@ -220,6 +228,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByRegionalBlocke
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
   ASSERT_TRUE(StartAdBlockRegionalService());
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   SetRegionalComponentIdAndBase64PublicKeyForTest(
       kRegionalAdBlockComponentTestId,
@@ -238,6 +247,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByRegionalBlocke
       "addElement('logo.png')",
       &img_loaded));
   EXPECT_TRUE(img_loaded);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
 // Upgrade from v3 to v4 format data file and make sure v4-specific ad
@@ -257,6 +267,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedAfterDataFileVersionUpgr
   SetDATFileVersionForTest("4");
   ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v4", 0));
 
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
@@ -269,4 +281,5 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedAfterDataFileVersionUpgr
       "addElement('v4_specific_banner.png')",
       &img_loaded));
   EXPECT_FALSE(img_loaded);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
