@@ -106,7 +106,7 @@ void DispatchBlockedEventFromIO(const GURL &request_url, int render_frame_id,
     int render_process_id, int frame_tree_node_id,
     const std::string& block_type) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
+  base::PostTaskWithTraits(FROM_HERE, {BrowserThread::UI},
       base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
           block_type, request_url.spec(),
           render_process_id, render_frame_id, frame_tree_node_id));

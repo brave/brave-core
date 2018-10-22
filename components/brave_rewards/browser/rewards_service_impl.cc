@@ -40,6 +40,7 @@
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/grit/brave_components_resources.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content_site.h"
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
@@ -856,7 +857,7 @@ void RewardsServiceImpl::OnURLFetchComplete(
 void RunIOTaskCallback(
     base::WeakPtr<RewardsServiceImpl> rewards_service,
     std::function<void(void)> callback) {
-  content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+  base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&RewardsServiceImpl::OnIOTaskComplete,
                       rewards_service,
                       callback));

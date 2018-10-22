@@ -5,8 +5,10 @@
 #include "brave/browser/tor/tor_profile_service_impl.h"
 
 #include "base/bind.h"
+#include "base/task/post_task.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
@@ -72,12 +74,12 @@ void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
     storage_partition->GetURLRequestContext();
   DCHECK(url_request_context_getter);
 
-  BrowserThread::PostTaskAndReply(
-    BrowserThread::IO, FROM_HERE,
-    base::Bind(&TorProfileServiceImpl::SetNewTorCircuitOnIOThread,
-               base::Unretained(this),
-               base::WrapRefCounted(url_request_context_getter),
-               url.host()),
+  base::PostTaskWithTraitsAndReply(
+      FROM_HERE, {BrowserThread::IO},
+      base::Bind(&TorProfileServiceImpl::SetNewTorCircuitOnIOThread,
+                 base::Unretained(this),
+                 base::WrapRefCounted(url_request_context_getter),
+                 url.host()),
     callback);
 
 }
@@ -97,13 +99,10 @@ void TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
   GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
   if (url.host().empty() || tor_config.empty())
     return;
-  BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
-                          base::Bind(&TorProxyConfigService::TorSetProxy,
-                                     service,
-                                     tor_config.proxy_string(),
-                                     url.host(),
-                                     &tor_proxy_map_,
-                                     new_circuit));
+  base::PostTaskWithTraits(FROM_HERE, {BrowserThread::IO},
+      base::Bind(&TorProxyConfigService::TorSetProxy,
+      service, tor_config.proxy_string(),
+      url.host(), &tor_proxy_map_, new_circuit));
 }
 
 void TorProfileServiceImpl::KillTor() {
