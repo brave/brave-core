@@ -748,11 +748,8 @@ bool LedgerImpl::IsWalletCreated() const {
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(uint64_t windowId,
-                                             const std::string& baseDomain,
-                                             const std::string& path,
-                                             ledger::PUBLISHER_MONTH month,
-                                             int year) {
-  bat_publishers_->getPublisherActivityFromUrl(windowId, baseDomain, path, month, year);
+                                             const ledger::VisitData& visit_data) {
+  bat_publishers_->getPublisherActivityFromUrl(windowId, visit_data);
 }
 
 void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,

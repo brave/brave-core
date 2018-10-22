@@ -144,11 +144,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetPublisherExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) override;
   void RestorePublishers() override;
   bool IsWalletCreated() const override;
-  void GetPublisherActivityFromUrl(uint64_t windowId,
-                               const std::string& baseDomain,
-                               const std::string& path,
-                               ledger::PUBLISHER_MONTH month,
-                               int year) override;
+  void GetPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) override;
   void GetMediaActivityFromUrl(uint64_t windowId,
                                const std::string& url,
                                const std::string& providerType,
