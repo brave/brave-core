@@ -104,7 +104,7 @@ class RewardsServiceImpl : public RewardsService,
   std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() override;
   void GetCurrentBalanceReport() override;
   bool IsWalletCreated() override;
-  void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) override;
+  void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url, const std::string& favicon_url) override;
   double GetContributionAmount() override;
   brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
   void RemoveRecurring(const std::string& publisher_key) override;
