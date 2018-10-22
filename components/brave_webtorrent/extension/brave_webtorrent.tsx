@@ -21,11 +21,12 @@ const store: Store<TorrentsState> = new Store({
 })
 
 store.ready().then(
-  () => {
+  async () => {
+    const tab: any = await new Promise(resolve => chrome.tabs.getCurrent(resolve))
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
-          <App />
+          <App tabId={tab.id} />
         </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
