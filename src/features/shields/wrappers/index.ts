@@ -9,6 +9,7 @@ export const ShieldsPanel = styled<any, 'main'>('main')`
   box-sizing: border-box;
   background: linear-gradient(to bottom, #131526, #343546);
   height: 100%;
+  position: relative;
 `
 
 export const SiteCard = styled(Card)`

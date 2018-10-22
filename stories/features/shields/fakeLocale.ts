@@ -24,7 +24,10 @@ const locale = {
   block3partyFingerprinting: '3rd-party device recognition blocked',
   blockPishing: 'Phishing/malware attempts blocked',
   connectionsEncrypted: 'Connections encrypted',
-  editDefaults: 'Global shield defaults'
+  editDefaults: 'Global shield defaults',
+  javascriptBlocked: 'JavaScript blocked',
+  cookiesBlocked: 'Cookies blocked',
+  deviceRecognitionAttempts: 'Device recognition attempts'
 }
 
 export default locale

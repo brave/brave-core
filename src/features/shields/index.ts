@@ -4,14 +4,29 @@
 
 import { SelectBox } from './select'
 import { Grid, GridLabel } from './grid'
-import { LinkIcon, ShieldIcon } from './icons'
+import { EmptyButton, CloseButton } from './button'
+import { LinkIcon, ShieldIcon, ShowMoreIcon, ShowLessIcon, CloseIcon } from './icons'
 import { Toggle } from './toggle'
 import { Stat, Link, Label, Highlight, UnHighlight, Description } from './text'
 import { ShieldsPanel, SiteCard, EnabledText, DisabledText, HeaderToggle, Header } from './wrappers'
+import {
+  ResourcesLabelGrid,
+  ResourcesLabel,
+  ResourcesListText,
+  ResourcesHeader,
+  Resources,
+  ResourcesSiteInfo,
+  ResourcesList,
+  ResourcesListScroll,
+  ResourcesFooter
+} from './blockedResources'
 
 export {
+  CloseButton,
+  CloseIcon,
   Description,
   DisabledText,
+  EmptyButton,
   EnabledText,
   Grid,
   GridLabel,
@@ -21,6 +36,17 @@ export {
   Label,
   Link,
   LinkIcon,
+  Resources,
+  ResourcesFooter,
+  ResourcesHeader,
+  ResourcesLabel,
+  ResourcesLabelGrid,
+  ResourcesList,
+  ResourcesListScroll,
+  ResourcesListText,
+  ResourcesSiteInfo,
+  ShowLessIcon,
+  ShowMoreIcon,
   SelectBox,
   ShieldIcon,
   ShieldsPanel,

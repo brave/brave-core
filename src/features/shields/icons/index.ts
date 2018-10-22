@@ -5,7 +5,7 @@
 import styled from '../../../theme'
 
 import { ComponentType } from 'react'
-import { AlertShieldIcon, OpenNewIcon } from '../../../components/icons'
+import { AlertShieldIcon, OpenNewIcon, CaratDownIcon, CaratUpIcon, CloseStrokeIcon } from '../../../components/icons'
 import palette from '../../../theme/palette'
 
 export const LinkIcon = styled(OpenNewIcon as ComponentType)`
@@ -28,5 +28,50 @@ export const ShieldIcon = styled(AlertShieldIcon as ComponentType)`
 
   * {
     fill: ${palette.grey600};
+  }
+`
+
+export const ShowMoreIcon = styled(CaratDownIcon as ComponentType)`
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: auto;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+
+  * {
+    fill: ${palette.blue200};
+  }
+`
+
+export const ShowLessIcon = styled(CaratUpIcon as ComponentType)`
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: auto;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+
+  * {
+    fill: ${palette.blue200};
+  }
+`
+
+export const CloseIcon = styled(CloseStrokeIcon as ComponentType)`
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: auto;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+
+  * {
+    fill: ${palette.blue200};
   }
 `

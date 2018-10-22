@@ -13,7 +13,7 @@ export const Stat = styled<{}, 'span'>('span')`
   color: ${palette.grey200};
   font-size: 14px;
   font-weight: 600;
-  line-height: 21px;
+  line-height: 1;
   margin: 10px 0;
 `
 

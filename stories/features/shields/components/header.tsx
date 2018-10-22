@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+
+// Feature-specific components
 import {
   Header,
   HeaderToggle,
@@ -16,18 +18,21 @@ import {
   Toggle,
   ShieldIcon
 } from '../../../../src/features/shields'
+
+// Fake data
 import locale from '../fakeLocale'
 import data from '../fakeData'
-const favicon = require('../../../assets/img/fake_favicon.png')
 
 interface Props {
   enabled: boolean
+  sitename: string
+  favicon: string
   fakeOnChange: () => void
 }
 
 export default class ShieldsHeader extends React.PureComponent<Props, {}> {
   render () {
-    const { fakeOnChange, enabled } = this.props
+    const { fakeOnChange, enabled, sitename, favicon } = this.props
     return (
       <Header id='braveShieldsHeader' enabled={enabled}>
         <HeaderToggle enabled={enabled}>
@@ -46,7 +51,7 @@ export default class ShieldsHeader extends React.PureComponent<Props, {}> {
         <SiteCard>
           <EnabledText>
             <img src={favicon} />
-            <Label size='large'>{data.siteName}</Label></EnabledText>
+            <Label size='large'>{sitename}</Label></EnabledText>
             {
               enabled
               ? (

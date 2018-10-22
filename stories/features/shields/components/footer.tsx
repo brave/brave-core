@@ -3,7 +3,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+
+// Feature-specific components
 import { Link, LinkIcon } from '../../../../src/features/shields'
+
+// Fake data
 import locale from '../fakeLocale'
 
 export default class ShieldsFooter extends React.PureComponent<{}, {}> {
