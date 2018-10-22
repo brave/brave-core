@@ -43,12 +43,15 @@ enum Theme: String {
     /// - parameter tab: An object representing a Tab.
     /// - returns: A Tab theme.
     static func of(_ tab: Tab?) -> Theme {
-        switch TabType.of(tab) {
-        case .regular:
-            return .regular
-        case .private:
-            return .private
+        if let tab = tab {
+            switch TabType.of(tab) {
+            case .regular:
+                return .regular
+            case .private:
+                return .private
+            }
         }
+        return PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular
     }
     
 }

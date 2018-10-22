@@ -280,6 +280,8 @@ class TabTrayController: UIViewController, Themeable {
         super.init(nibName: nil, bundle: nil)
 
         tabManager.addDelegate(self)
+        
+        Preferences.Privacy.privateBrowsingOnly.observe(from: self)
     }
 
     convenience init(tabManager: TabManager, profile: Profile, tabTrayDelegate: TabTrayDelegate) {
@@ -320,6 +322,8 @@ class TabTrayController: UIViewController, Themeable {
 
         view.addSubview(collectionView)
         view.addSubview(toolbar)
+        
+        updatePrivateModeButtonVisibility()
 
         makeConstraints()
 
@@ -549,6 +553,18 @@ class TabTrayController: UIViewController, Themeable {
     func closeTabsForCurrentTray() {
         tabManager.removeTabsWithUndoToast(tabsToDisplay)
         self.collectionView.reloadData()
+    }
+    
+    func updatePrivateModeButtonVisibility() {
+        toolbar.privateModeButton.isHidden = Preferences.Privacy.privateBrowsingOnly.value
+    }
+}
+
+extension TabTrayController: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        if key == Preferences.Privacy.privateBrowsingOnly.key {
+            updatePrivateModeButtonVisibility()
+        }
     }
 }
 

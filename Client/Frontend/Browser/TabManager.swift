@@ -857,10 +857,12 @@ extension TabManager {
         }
         isRestoring = false
 
+        let isPrivateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly.value
+        
         // Always make sure there is a single normal tab.
-        let tabs = self.tabs(withType: .regular)
+        let tabs = self.tabs(withType: isPrivateBrowsingOnly ? .private : .regular)
         if tabs.isEmpty {
-            let tab = addTab()
+            let tab = addTab(isPrivate: isPrivateBrowsingOnly)
             if selectedTab == nil {
                 selectTab(tab)
             }

@@ -17,7 +17,7 @@ protocol TopSitesDelegate: class {
     func didTapDuckDuckGoCallout()
 }
 
-class FavoritesViewController: UIViewController {
+class FavoritesViewController: UIViewController, Themeable {
     private struct UI {
         static let statsHeight: CGFloat = 110.0
         static let statsBottomMargin: CGFloat = 5
@@ -198,14 +198,13 @@ class FavoritesViewController: UIViewController {
     
     // MARK: - Private browsing modde
     @objc func privateBrowsingModeChanged() {
-        let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
-        
-        // TODO: This entire blockshould be abstracted
-        //  to make code in this class DRY (duplicates from elsewhere)
-        view.backgroundColor = PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
-        braveShieldStatsView.timeStatView.color = isPrivateBrowsing ? UX.GreyA : UX.GreyJ
-        collection.reloadData()
         updateDuckDuckGoVisibility()
+    }
+    
+    func applyTheme(_ theme: Theme) {
+        let isPrivate = theme == .private
+        view.backgroundColor = isPrivate ? UX.HomePanel.BackgroundColorPBM : UX.HomePanel.BackgroundColor
+        braveShieldStatsView.timeStatView.color = isPrivate ? UX.GreyA : UX.GreyJ
     }
     
     @objc func showPrivateTabInfo() {
