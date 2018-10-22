@@ -60,17 +60,18 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
 
       state = { ...state }
-      chrome.braveRewards.getPublisherData(tab.windowId, tab.url)
+      chrome.braveRewards.getPublisherData(tab.windowId, tab.url, tab.favIconUrl || '')
       break
     case types.ON_PUBLISHER_DATA:
       {
-        let publisher = payload.publisher
+        const publisher = payload.publisher
         let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+        const id = `id_${payload.windowId}`
 
         if (publisher && !publisher.publisher_key) {
-          delete publishers[payload.windowId.toString()]
+          delete publishers[id]
         } else {
-          publishers[payload.windowId.toString()] = payload.publisher
+          publishers[id] = payload.publisher
         }
 
         state = {
