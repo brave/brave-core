@@ -28,6 +28,7 @@ export default class RewardsScreen extends React.PureComponent {
           size='large'
           customStyle={theme.mainButton}
           href='chrome://rewards'
+          target='_blank'
         >
           {getLocale('enableRewards')}
         </PushButtonLink>
