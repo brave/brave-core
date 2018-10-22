@@ -116,6 +116,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         // Add restoration class, the factory that will return the ViewController we
         // will restore with.
+        
+        // Make sure current private browsing flag respects the private browsing only user preference
+        PrivateBrowsingManager.shared.isPrivateBrowsing = Preferences.Privacy.privateBrowsingOnly.value
 
         browserViewController = BrowserViewController(profile: self.profile!, tabManager: self.tabManager)
         browserViewController.edgesForExtendedLayout = []

@@ -172,6 +172,7 @@ class BrowserViewController: UIViewController {
         downloadQueue.delegate = self
         
         // Observe some user preferences
+        Preferences.Privacy.privateBrowsingOnly.observe(from: self)
         Preferences.Privacy.cookieAcceptPolicy.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
         Preferences.Shields.fingerprintingProtection.observe(from: self)
@@ -2631,7 +2632,7 @@ extension BrowserViewController: TabTrayDelegate {
 extension BrowserViewController: Themeable {
 
     func applyTheme(_ theme: Theme) {
-        let ui: [Themeable?] = [urlBar, toolbar, readerModeBar, tabsBar]
+        let ui: [Themeable?] = [urlBar, toolbar, readerModeBar, tabsBar, favoritesViewController]
         ui.forEach { $0?.applyTheme(theme) }
         statusBarOverlay.backgroundColor = urlBar.backgroundColor
         setNeedsStatusBarAppearanceUpdate()
@@ -2755,10 +2756,15 @@ extension BrowserViewController: PreferencesObserver {
         case Preferences.General.tabBarVisibility.key:
             updateTabsBarVisibility()
         case Preferences.Privacy.privateBrowsingOnly.key:
-            if Preferences.Privacy.privateBrowsingOnly.value {
-                switchToPrivacyMode(isPrivate: true)
-                // TODO: Add more logic to `switchToPrivacyMode` once specific Brave Private Browsing logic is added back
+            let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+            switchToPrivacyMode(isPrivate: isPrivate)
+            PrivateBrowsingManager.shared.isPrivateBrowsing = isPrivate
+            if let firstTab = tabManager.tabs(withType: isPrivate ? .private : .regular).first {
+                tabManager.selectTab(firstTab)
+            } else {
+                tabManager.addTabAndSelect(nil, isPrivate: isPrivate)
             }
+            updateTabsBarVisibility()
         case Preferences.Shields.fingerprintingProtection.key:
             // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
             break
