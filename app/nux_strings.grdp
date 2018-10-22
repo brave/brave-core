@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- NUX email provider selection module -->
+  <message name="IDS_NUX_EMAIL_GET_STARTED" desc="Label for a confirmation button to finish adding a bookmark and get the user started with using the browser.">
+    Get started
+  </message>
+  <message name="IDS_NUX_EMAIL_PROMPT" desc="Text shown to prompt the users to select an email service to add as bookmark. This is the subheader for IDS_NUX_EMAIL_WELCOME_TITLE.">
+    Choose your email service for quick access
+  </message>
+  <message name="IDS_NUX_EMAIL_WELCOME_TITLE" desc="Text shown to welcome the users to chrome.">
+    Make Brave your own
+  </message>
+  <message name="IDS_NUX_EMAIL_BOOKMARK_ADDED" desc="String read for accessibility to inform the user a bookmark was added.">
+    Bookmark added
+  </message>
+  <message name="IDS_NUX_EMAIL_BOOKMARK_REMOVED" desc="String read for accessibility to inform the user a bookmark was removed.">
+    Bookmark removed
+  </message>
+  <message name="IDS_NUX_EMAIL_BOOKMARK_REPLACED" desc="String read for accessibility to inform the user a bookmark was replaced.">
+    Bookmark replaced
+  </message>
+
+  <!-- NUX Brave apps selection module -->
+  <message name="IDS_NUX_GOOGLE_APPS_GET_STARTED" desc="Message for a confirmation button that will add the selected apps from a list.">
+    Get started
+  </message>
+  <message name="IDS_NUX_GOOGLE_APPS_DESCRIPTION" desc="Description of what this section in the onboarding workflow does.">
+    Add bookmarks to your favorite Brave Apps
+  </message>
+  <message name="IDS_NUX_GOOGLE_APPS_DESCRIPTION_PROMO_BUBBLE" desc="Text shown when Brave Apps have been added to highlight where bookmarks have been placed.">
+    Open apps easily with bookmarks
+  </message>
+</grit-part>
