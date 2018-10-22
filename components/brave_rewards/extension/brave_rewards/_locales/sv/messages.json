@@ -12,11 +12,11 @@
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Tjäna polletter genom att titta på annonser och betala vidare till dina favorit-innehållskreatörer.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Du kan nu tjäna polletter genom att titta på reklam som respekterar din integritet.",
     "description": ""
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Vi har gett Brave-betalningar en stor uppgradering.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Förbered dig på att uppleva det nya internetet.",
     "description": ""
   },
   "yourWallet": {
@@ -52,19 +52,19 @@
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Observation",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Inkludera i automatiska bidrag",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Skicka en donation...",
     "description": ""
   },
   "enableTips": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Belöningssammanfattning",
     "description": ""
   },
   "monthApr": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Förtjänst från annonser",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,7 +140,7 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Engångsdonationer",
     "description": ""
   },
   "total": {
@@ -152,7 +152,7 @@
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Månatliga donationer",
     "description": ""
   },
   "off": {
@@ -164,15 +164,15 @@
     "description": ""
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Braveannonser",
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Bidra automatiskt",
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "Du har bidragit med $amount$BAT",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

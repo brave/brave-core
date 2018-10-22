@@ -1,162 +1,162 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Mga Reward ng Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Magsimulang Kumita Ngayon!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Sumali sa Mga Reward",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Mabayaran para sa panonood ng mga ad at magbigay ng tip upang suportahan ang iyong mga paboritong creator ng content.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Maaari ka na ngayong makakuha ng mga token sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Tingnan kung ano ang pinahusay",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Matuto Pa",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Nagbigay kami ng malaking upgrade sa Mga Pagbabayad sa Brave.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Maghandang maranasan ang susunod na Internet.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Ang iyong wallet",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Mga grant",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "naka-on",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Publisher na Na-verify ng Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Atensyon",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Isama sa Awtomatikong Pag-ambag",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Magpadala ng Tip…",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "I-enable ang Mga Tip",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "para sa",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Buod ng Mga Reward",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Abril",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Agosto",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Disyembre",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Pebrero",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Enero",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Hulyo",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Hunyo",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Marso",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Mayo",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Nobyembre",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Oktubre",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Setyembre",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Grant para sa Token",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Mga kita mula sa Mga Ad",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Awtomatikong Pag-ambag",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Isang Beses na Pagbibigay ng Mga Tip",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Kabuuan",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "mag-e-expire sa",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Mga Buwanang Tip",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Naka-off",
     "description": ""
   },
   "ok": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

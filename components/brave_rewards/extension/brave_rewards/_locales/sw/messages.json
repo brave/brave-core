@@ -52,11 +52,11 @@
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Umakini",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
@@ -140,7 +140,7 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Michango ya Mara Moja",
     "description": ""
   },
   "total": {
@@ -160,11 +160,11 @@
     "description": ""
   },
   "ok": {
-    "message": "ok",
+    "message": "sawa",
     "description": ""
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Matangazo ya Brave",
     "description": ""
   },
   "braveContributeTitle": {
@@ -172,7 +172,7 @@
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "Umechangia $amount$BAT",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

@@ -4,83 +4,83 @@
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Alustage teenimist kohe!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Liituge Brave Awardsiga",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Saage reklaamide vaatamise eest preemiaid ja edastage neid, et toetada oma lemmiksisuloojaid.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Nüüd saate privaatsust austavate reklaamide vaatamise eest tokeneid teenida.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Vaadake, mis on uus",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Lisateave",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Brave Payments on läbinud suure värskenduskuuri.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Kogege internetti uuel moel.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Teie rahakott",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Võimalused",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "sees",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave'i kinnitatud väljaandja",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Aktiivsus",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Kaasa automaatsesse panustamisse",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Saada preemia ...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Luba premeerimine",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": ":",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Preemiate kokkuvõte",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Aprill",
     "description": ""
   },
   "monthAug": {
@@ -88,31 +88,31 @@
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Detsember",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Veebruar",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Jaanuar",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Juuli",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Juuni",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Märts",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Mai",
     "description": ""
   },
   "monthNov": {
@@ -120,7 +120,7 @@
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Oktoober",
     "description": ""
   },
   "monthSep": {
@@ -128,35 +128,35 @@
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Tokenivõimalus",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Reklaamidest saadud tulu",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Automaatne panustamine",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Ühekordsed preemiad",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Kokku",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "aegub kuupäeval",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Igakuised preemiad",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Väljas",
     "description": ""
   },
   "ok": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

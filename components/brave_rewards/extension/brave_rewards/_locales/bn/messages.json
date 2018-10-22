@@ -1,162 +1,162 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Brave রিওয়ার্ডস",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "এখনি রোজগার করা শুরু করুন!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "রিওয়ার্ডসে যোগদান করুন",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "বিজ্ঞাপন দেখার জন্য টোকেন উপার্জন করুন এবং আপনার পছন্দের বিষয়বস্তু প্রস্তুতকারদের তা মূল্য হিসেবে প্রদান করুন|",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "আপনি এখন গোপনীয়তা কেন্দ্রিক Brave বিজ্ঞাপন দেখে টোকেন উপার্জন করতে পারেন| আপনার অবদান একই থাকে|",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "কি উন্নতি হয়েছে তা পরীক্ষা করুন",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "আরও জানুন",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "আমরা Brave পেমেন্টকে একটি বড় আপগ্রেড প্রদান করেছি|",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "পরবর্তী ইন্টার্নেটের অভিজ্ঞতা করতে প্রস্তুত হন|",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "আপনার ওয়ালেট",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "মঞ্জুরিসমূহ",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "চালু",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave দ্বারা যাচাই করা প্রকাশক",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "মনোযোগ দিন",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "পরামর্শ পাঠান...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "পরামর্শ সক্ষম করুন",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "এর জন্য",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "রিওয়ার্ডসের সংক্ষিপ্তসার",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "এপ্রিল",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "আগস্ট",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "ডিসেম্বর",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "ফেব্রুয়ারী",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "জানুয়ারী",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "জুলাই",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "জুন",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "মার্চ",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "মে",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "নভেম্বর",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "অক্টোবর",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "সেপ্টেম্বর",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "টোকেন মঞ্জুরি",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "বিজ্ঞাপন থেকে করা উপার্জন",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "স্বয়ংক্রিয়ভাবে অবদান রাখুন",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "একবারের দান/পরামর্শ",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "মোট",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "মেয়াদোত্তীর্ণ হচ্ছে এততে",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "মাসিক পরামর্শ",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "বন্ধ",
     "description": ""
   },
   "ok": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

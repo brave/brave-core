@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">סיום</translation>
 <translation id="5946611334574299206">אגרו Tokens על ידי צפייה בפרסומות ב-Brave. הפרסומות המוצגות לכם מבוססות על תחומי העניין שלכם, כפי שנגזרו מהתנהגות הגלישה שלכם. שום מידע אישי או היסטוריית גלישה לעולם לא יוצאים מהדפדפן.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
-<translation id="2463717412061968637">תקציב חודשי</translation>
 <translation id="2846354907189538">תאריך התרומה הבאה</translation>
 <translation id="8759716059844800317">אתרים נתמכים</translation>
 <translation id="1617202384704994799">מגיע בקרוב.</translation>
 <translation id="1847863811689960237">תגמלו יוצרים של התוכן שאתם אוהבים.</translation>
-<translation id="8647072638653845647">התקציב החודשי שלכם מחולק בין האתרים בהם אתה מבקרים.</translation>
 <translation id="1165667598801520610">הוספת כספים</translation>
 <translation id="5314648471460409933">ניהול כספים</translation>
 <translation id="2726674968268546964">אסימונים</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">כמעט שם</translation>
 <translation id="5254740304961202261">הוכיחו שאתם אנושיים!</translation>
 <translation id="5118651998291801746">המממ... לא בדיוק.</translation>
-<translation id="3988548751595192480">שרת התשלומים של Brave אינו מגיב. אנחנו נתקן זאת במהירות האפשרית.</translation>
 <translation id="2323069945529668668">אוי לא!</translation>
 <translation id="5094577350232361255">אודות</translation>
 <translation id="4918086044614829423">הרשה</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">על מנת להגן על הפרטיות שלכם, הצהרה זו של Brave Rewards לא נשמרת, רשומה או מתועדת בשום מקום פרט למכשיר שלך (מחשב זה). לא ניתן לשחזר אותה מ-Brave במקרה של אובדן נתונים במכשירכם.</translation>
 <translation id="1036277985068412734">הוסיפו כסף</translation>
 <translation id="4496990471549986619">שאלות ותשובות</translation>
-<translation id="7957192189831789977">תזכורת: ארנק Brave הוא חד-כיווני ו-BAT זורם לבעלי האתרים. לקבלת מידע נוסף על תשלומי Brave, אנא בקרו בכתובת</translation>
 <translation id="2790014973538267577">הצג קוד QR</translation>
 <translation id="3548138903799045620">Brave עושה את זה קל להעביר כספים ממטבע ההצפנה הקיים שלכם לארנק Brave BAT.</translation>
 <translation id="3832196416506129616">הוסיפו כספים לארנק Brave שלכם</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">הסר</translation>
 <translation id="3157931365184549694">שחזר</translation>
 <translation id="3626186271103896082">גבו את הארנק שלכם</translation>
-<translation id="5993107153564707598">תודה שקפצתם לבקר. הצטרפנו לחזון של Brave להגנה על פרטיותכם משום שאנו מאמינים שמעריצים כמוכם יתמכו בנו במאמצינו לשמור על האינטרנט מקום נקי ובטוח.</translation>
 <translation id="3074127054582480056">שימו לב</translation>
 <translation id="822513417008209372">אתם כרגע תומכים</translation>
-<translation id="3469762469298298902">Brave Rewards מאפשר לך לקבל בחזרה את השליטה.</translation>
-<translation id="3863981251715594911">איך זה עובד?</translation>
 <translation id="5830306739231399614">למרבה הצער, עדיין אין Tokens.</translation>
 <translation id="7359258898775969374">3 דרכים למלא את הארנק שלכם:</translation>
 <translation id="8087614920008846901">באפשרותכם להוסיף כספים.</translation>

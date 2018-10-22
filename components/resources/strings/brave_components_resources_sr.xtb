@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Urađeno</translation>
 <translation id="5946611334574299206">Zaradite tokene tako što ćete gledati oglase u Brave-u. Oglasi su prikazani na osnovu vaših interesa, kako je zaključeno iz vašeg ponašanja na pregledaču. Nijedna privatna informacija ili istorija pregledanja nikad ne napušta vaš pregledač.</translation>
 <translation id="6112368337882254910">Automatski prilog</translation>
-<translation id="2463717412061968637">Mesečni budžet</translation>
 <translation id="2846354907189538">Sledeći datum doprinosa</translation>
 <translation id="8759716059844800317">Podržane lokacije</translation>
 <translation id="1617202384704994799">Dolazi uskoro.</translation>
 <translation id="1847863811689960237">Nagradite kreatore za sadržaj koji vam se sviđa.</translation>
-<translation id="8647072638653845647">Vaš mesečni budžet se raspodeljuje na lokacije koje posećujete.</translation>
 <translation id="1165667598801520610">Dodaj sredstva</translation>
 <translation id="5314648471460409933">Upravljaj sredstvima</translation>
 <translation id="2726674968268546964">tokeni</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Skoro gotovo…</translation>
 <translation id="5254740304961202261">Dokažite da ste ljudsko biće!</translation>
 <translation id="5118651998291801746">Hmmm…ne baš.</translation>
-<translation id="3988548751595192480">Server Brave Payments se ne odaziva. Popravićemo ovo što je pre moguće.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Prihvati</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">Radi zaštite vaše privatnosti ovaj Brave Rewards izveštaj nije sačuvan, snimljen ili prijavljen nigde drugde izuzev na vašem uređaju (ovom računaru). Ne može se preuzeti sa Brave-a u slučaju da dođe do gubitka podataka na vašem uređaju.</translation>
 <translation id="1036277985068412734">dodaj sredstva</translation>
 <translation id="4496990471549986619">Najčešća pitanja</translation>
-<translation id="7957192189831789977">Podsetnik: Brave Wallet je jednosmeran BAT flows ka veb lokacijama izdavača. Za više informacija o Brave Payments posetite</translation>
 <translation id="2790014973538267577">Prikaži QR šifru</translation>
 <translation id="3548138903799045620">Brave vam olakšava prebacivanje sredstava iz vašeg postojećeg novčanika sa kriptovalutom u vaš Brave BAT novčanik.</translation>
 <translation id="3832196416506129616">Dodaj sredstva vašem Brave novčaniku</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">ukloniti</translation>
 <translation id="3157931365184549694">Povrati</translation>
 <translation id="3626186271103896082">Rezervna kopija vašeg novčanika</translation>
-<translation id="5993107153564707598">Hvala što ste svratili. Pridružili smo se Brave-ovoj’viziji zaštite vaše privatnosti zato što verujemo da će nas ljubitelji kao što ste vi podržati u našim nastojanjima da veb bude čisto i bezbedno mesto.</translation>
 <translation id="3074127054582480056">Pažnja</translation>
 <translation id="822513417008209372">Vi’trenutno podržavate</translation>
-<translation id="3469762469298298902">Brave Rewards Vam omogućava da povratite kontrolu.</translation>
-<translation id="3863981251715594911">Kako to funkcioniše?</translation>
 <translation id="5830306739231399614">Nažalost, još uvek nema tokena.</translation>
 <translation id="7359258898775969374">3 načina za popunjavanje Vašeg novčanika:</translation>
 <translation id="8087614920008846901">Možete dodati sredstva.</translation>

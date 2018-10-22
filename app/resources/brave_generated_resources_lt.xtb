@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lt">
+<translation id="3333887201479867589">„Brave Rewards“</translation>
+<translation id="7942180974165298215">„Brave Ad Block“</translation>
+<translation id="7450557937477381864">Užverti „Chrome“</translation>
+<translation id="7008934821596358692">Kad užbaigtumėte importuoti, užverkite visus „Chrome“ langus.</translation>
+<translation id="7753103220327065417">Užverti „Brave“</translation>
+<translation id="5588481533147090393">Kad baigtumėte importuoti, užverkite visus „Brave“ langus.</translation>
+<translation id="6447842834002726250">Slapukai</translation>
+<translation id="4983925687993168579">Statistika</translation>
+<translation id="9173846700806833701">„Widevine“ neįdiegta</translation>
+<translation id="2433569048491784801">„Widevine“ neįdiegta.</translation>
+<translation id="3699882589215410581">Įdiekite ir paleiskite „Widevine“</translation>
+<translation id="8410111618231938546">„Google Widevine“ yra skaitmeninio teisių valdymo (DRM) kodo elementas, kuris nepriklauso „Brave Software“ ir todėl negalime jo patikrinti. „Google Widevine“ kodas įkeliamas iš „Google“ serverių, o ne iš mūsų serverių. Jis įkeliamas tik tada, kai aktyvinate šią parinktį. Mes neskatiname naudoti DRM, bet gerbiame naudotojų pasirinkimą ir pripažįstame, kad kai kurie „Brave“ naudotojai nori naudotis paslaugomis, kurioms DRM yra reikalingas.
+
+Įdiegdami šį plėtinį sutinkate su „Google Widevine“ naudojimo sąlygomis. Sutinkate, kad „Brave“ nebus atsakinga už jokią žalą ar nuostolius, patirtus dėl naudojimosi „Google Widevine“.</translation>
+<translation id="939305735877869636">„Brave“</translation>
+<translation id="3198814717959506569">Importuota iš „Brave“</translation>
+<translation id="453977518730680921">Automatiškai leisti mediją</translation>
+<translation id="410351446219883937">Leisti automatiškai</translation>
+<translation id="2240268017737062801">Paklausti, kai svetainė nori automatiškai leisti mediją</translation>
+<translation id="3371702087847741961">Paklausti, kai svetainė nori automatiškai leisti mediją (rekomenduojama)</translation>
+<translation id="3218385319396786393">Šiame puslapyje automatinio leidimo funkcija buvo užblokuota</translation>
+<translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
+<translation id="2044383478723007273">„Brave“ spalvos</translation>
+<translation id="5341901626640816374">Naudoti plačią buvimo vietos juostą</translation>
+<translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
+<translation id="8784924142044142231">Išeiti iš „Tor“</translation>
+<translation id="5410152065859052603">„Tor“</translation>
+<translation id="3696187925156352769">Atverti „Tor“ langą</translation>
+<translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
+<translation id="7372129767729198111">„Brave“ numatytieji skydai</translation>
+<translation id="8029018702721078742">Reklamos kontrolė</translation>
+<translation id="3544462288910360084">Slapukų kontrolė</translation>
+<translation id="8919235146866304148">Kontrolinio kodo apsauga</translation>
+<translation id="520895744850022668">HTTPS visur</translation>
+<translation id="5259716416204774556">Scenarijų blokavimas</translation>
+<translation id="6067014455220527258">Blokuoti reklamas</translation>
+<translation id="6985711843506827936">Leisti reklamas ir sekimą</translation>
+<translation id="6132506775968708399">Blokuoti trečiųjų šalių slapukus</translation>
+<translation id="5657156137487675418">Leisti visus slapukus</translation>
+<translation id="6883611015375728278">Blokuoti visus slapukus</translation>
+<translation id="1442559343076146186">Blokuoti trečiųjų šalių kontrolinius kodus</translation>
+<translation id="8034285923190068220">Leisti kontrolinius kodus</translation>
+<translation id="4540198958192073185">Blokuoti visus kontrolinius kodus</translation>
+<translation id="8942080017911802454">„WebRTC“ IP tvarkymo politika</translation>
+<translation id="6165508094623778733">Sužinokite daugiau</translation>
+<translation id="8798099450830957504">Numatyta</translation>
+<translation id="1822560017823072927">Numatytosios viešos ir privačios sąsajos</translation>
+<translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
+<translation id="1689062823386843231">Išjungti neįgaliotąjį UDP</translation>
 </translationbundle>

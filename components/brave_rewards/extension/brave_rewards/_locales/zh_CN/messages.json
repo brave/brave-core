@@ -1,162 +1,162 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Brave 奖励",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "立即开始赚取赏金！",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "加入奖励",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "浏览广告获取收益并提前支付给您喜爱的内容创作者。",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "您可以通过观看尊重隐私的广告赚取代币。",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "查看改进的内容",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "了解更多",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "我们升级了 Brave 付款。",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "做好准备体验新一代网络。",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "您的钱包",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "授权",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "在",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave 经验证的发布者",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "注意力",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "包含在自动贡献中",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "发送赏金",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "启用打赏",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "给",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "奖励摘要",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "四月",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "八月",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "十二月",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "二月",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "一月",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "七月",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "六月",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "三月",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "三月",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "十一月",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "十月",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "九月",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "代币授权",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "从广告中赚取的收益",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "自动贡献",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "一次赏金",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "总额",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "过期日期",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "每月赏金",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "关闭",
     "description": ""
   },
   "ok": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

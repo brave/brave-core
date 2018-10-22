@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
+<translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
+<translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
+<translation id="7450557937477381864">Chrome বন্ধ করুন</translation>
+<translation id="7008934821596358692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Chrome উইন্ডোগুলি বন্ধ করুন</translation>
+<translation id="7753103220327065417">Brave বন্ধ করুন</translation>
+<translation id="5588481533147090393">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Brave উইন্ডোগুলি বন্ধ করুন</translation>
+<translation id="6447842834002726250">কুকিসমূহ</translation>
+<translation id="4983925687993168579">সাংখ্যিক তথ্য</translation>
+<translation id="9173846700806833701">Widevine ইনস্টল করা হয়নি</translation>
+<translation id="2433569048491784801">Widevine ইনস্টল করা হয়নি</translation>
+<translation id="3699882589215410581">Widevine ইনস্টল করুন এবং চালান</translation>
+<translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
+
+এই এক্সটেনশনটি ইনস্টল করে আপনি Google Widevine এর ব্যবহারের শর্তাবলীর সাথে সম্মত হচ্ছেন| আপনি সম্মত হচ্ছেন আপনার Google Widevine এর ব্যবহারের সাথে সম্পর্কিত কোনো ক্ষতি বা লোকসানের জন্য Brave দায়ী নয়|</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Brave থেকে আমদানি করা</translation>
+<translation id="453977518730680921">মিডিয়া অটোপ্লে করুন</translation>
+<translation id="410351446219883937">স্বয়ংক্রিয়ভাবে চালান</translation>
+<translation id="2240268017737062801">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন</translation>
+<translation id="3371702087847741961">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন (সুপারিশকৃত)</translation>
+<translation id="3218385319396786393">এই পৃষ্ঠাতে স্বয়ংক্রিয়ভাবে চালানো  ব্লক করা হয়েছে</translation>
+<translation id="4150684676757176434">অটোপ্লে ব্লক করা চালিয়ে যান</translation>
+<translation id="2044383478723007273">Brave রঙ</translation>
+<translation id="5341901626640816374">ওয়াইড লোকেশন বার ব্যবহার করুন</translation>
+<translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
+<translation id="8784924142044142231">টর থেকে প্রস্থান করুন</translation>
+<translation id="5410152065859052603">টর</translation>
+<translation id="3696187925156352769">টর উইন্ডো খোলা</translation>
+<translation id="3155170474926428993">টর লঞ্চার</translation>
+<translation id="7372129767729198111">Brave শিল্ডস ডিফল্ট</translation>
+<translation id="8029018702721078742">বিজ্ঞাপন নিয়ন্ত্রণ</translation>
+<translation id="3544462288910360084">কুকি নিয়ন্ত্রণ</translation>
+<translation id="8919235146866304148">আঙ্গুলের ছাপের নিরাপত্তা</translation>
+<translation id="520895744850022668">HTTPS সর্বত্র</translation>
+<translation id="5259716416204774556">স্ক্রিপ্ট অবরুদ্ধ করা</translation>
+<translation id="6067014455220527258">বিজ্ঞাপন অবরুদ্ধ করুন</translation>
+<translation id="6985711843506827936">বিজ্ঞাপন এবং ট্র্যাকিং এর অনুমতি দিন</translation>
+<translation id="6132506775968708399">3য় পক্ষের কুকিগুলি অবরুদ্ধ করুন</translation>
+<translation id="5657156137487675418">সমস্ত কুকির জন্য অনুমতি দিন</translation>
+<translation id="6883611015375728278">সমস্ত কুকি অবরুদ্ধ করুন</translation>
+<translation id="1442559343076146186">3য় পক্ষের আঙ্গুলের ছাপ নেওয়া অবরুদ্ধ করুন</translation>
+<translation id="8034285923190068220">আঙ্গুলের ছাপ নেওয়ার অনুমতি দিন</translation>
+<translation id="4540198958192073185">সমস্ত আঙ্গুলের ছাপ নেওয়া অবরুদ্ধ করুন</translation>
+<translation id="8942080017911802454">WebRTC IP পরিচালনার নীতি</translation>
+<translation id="6165508094623778733">আরো জানুন</translation>
+<translation id="8798099450830957504">ডিফল্ট</translation>
+<translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
+<translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
+<translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
 </translationbundle>

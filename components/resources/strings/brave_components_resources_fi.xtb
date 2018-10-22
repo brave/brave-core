@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="5946611334574299206">Ansaitse poletteja katsomalla mainoksia Bravessa. Näytetyt mainokset perustuvat mieltymyksiisi, jotka määritellään selainkäyttäytymisesi perusteella. Henkilökohtaisia tietojasi tai selaushistoriaasi ei koskaan lähetetä selaimesi ulkopuolelle.</translation>
 <translation id="6112368337882254910">Automaattinen lahjoitus</translation>
-<translation id="2463717412061968637">Kuukausibudjetti</translation>
 <translation id="2846354907189538">Seuraava lahjoituspäivämäärä</translation>
 <translation id="8759716059844800317">Tuetut sivustot</translation>
 <translation id="1617202384704994799">Tulossa pian.</translation>
 <translation id="1847863811689960237">Palkitse sisällöntuottajia, joista pidät.</translation>
-<translation id="8647072638653845647">Kuukausibudjettisi jaetaan vierailemiesi sivustojen kesken.</translation>
 <translation id="1165667598801520610">Lisää varoja</translation>
 <translation id="5314648471460409933">Hallitse varoja</translation>
 <translation id="2726674968268546964">poletit</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Melkein valmis…</translation>
 <translation id="5254740304961202261">Todista, että olet ihminen!</translation>
 <translation id="5118651998291801746">Hmmm…ei ihan.</translation>
-<translation id="3988548751595192480">Brave-maksupalvelin ei vastaa. Korjaamme vian mahdollisimman pian.</translation>
 <translation id="2323069945529668668">Voi ei!</translation>
 <translation id="5094577350232361255">tietoa</translation>
 <translation id="4918086044614829423">Hyväksy</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">Yksityisyytesi suojaamiseksi tätä Brave -palkinto-otetta ei tallenneta tai kirjata minnekään muualle kuin laitteeseesi (tähän tietokoneeseen). Sitä ei voi noutaa Bravesta, vaikka tiedot katoaisivat laitteestasi.</translation>
 <translation id="1036277985068412734">lisää varoja</translation>
 <translation id="4496990471549986619">UKK</translation>
-<translation id="7957192189831789977">Muistutus: Brave-lompakko on yksisuuntainen ja BAT-poletit virtaavat julkaisijan sivustoille. Saadaksesi lisää tietoa Brave-maksuista, vieraile sivustolla</translation>
 <translation id="2790014973538267577">Näytä QR-koodi</translation>
 <translation id="3548138903799045620">Braven avulla on helppoa siirtää varoja jo olemassa olevasta kryptovaluuttalompakostasi Braven BAT -lompakkoon.</translation>
 <translation id="3832196416506129616">Lisää varoja Brave-lompakkoosi</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">poista</translation>
 <translation id="3157931365184549694">Palauta</translation>
 <translation id="3626186271103896082">Varmuuskopioi lompakkosi</translation>
-<translation id="5993107153564707598">Kiitos vierailustasi. Me liityimme Brave’n visioon yksityisyytesi suojaamiseksi, sillä uskomme sinunlaistesi fanien tukevan meitä pyrkimyksessämme pitää netti puhtaana ja turvallisena paikkana.</translation>
 <translation id="3074127054582480056">Huomio</translation>
 <translation id="822513417008209372">Tuet’ tällä hetkellä kohdetta</translation>
-<translation id="3469762469298298902">Brave-palkintojen avulla voit ottaa ohjat takaisin omiin käsiisi.</translation>
-<translation id="3863981251715594911">Kuinka se toimii?</translation>
 <translation id="5830306739231399614">Harmi, ei vielä tokeneita.</translation>
 <translation id="7359258898775969374">3 tapaa täyttää lompakkosi:</translation>
 <translation id="8087614920008846901">Voit lisätä varoja.</translation>

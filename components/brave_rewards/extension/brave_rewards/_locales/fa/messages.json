@@ -1,162 +1,162 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "پاداش‌های Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "همین‌حالا پاداش گرفتن را شروع کنید!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "پیوستن به «پاداش‌ها»",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "با دیدن آگهی پاداش دریافت کنید و با بازارسال آن از پدیدآورندگان محتوایی که دوست دارید حمایت کنید.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "اکنون می‌توانید برای تماشای آگهی‌های رعایت‌کننده حریم خصوصی، توکن دریافت کنید.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "ببینید چه چیزی بهبود یافته است",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "بیشتر بیاموزید",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "«پرداخت با Brave» را ارتقای قابل توجهی داده‌ایم.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "آماده تجربه کردن اینترنت نسل بعد باشید.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "کیف پول شما",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "امتیازها",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "روشن",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "ناشر مورد تأیید Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "توجه",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "لحاظ کردن در کمک خودکار",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "ارسال انعام…",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "فعال کردن انعام",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "برای",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "خلاصه پاداش‌ها",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "آوریل",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "اوت",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "دسامبر",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "فوریه",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "ژانویه",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "ژوئیه",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "ژوئن",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "مارس",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "مه",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "نوامبر",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "اکتبر",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "سپتامبر",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "امتیاز توکن",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "درآمد از آگهی‌ها",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "کمک خودکار",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "انعام یک‌باره",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "مجموع",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "تاریخ انقضا",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "انعام ماهانه",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "خاموش",
     "description": ""
   },
   "ok": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

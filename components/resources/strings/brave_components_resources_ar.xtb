@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">تم</translation>
 <translation id="5946611334574299206">اربح الرموز المميزة عن طريق عرض الإعلانات في Brave. تعتمد الإعلانات المقدمة على اهتماماتك، كما هو مستخلص من سلوك التصفح الخاص بك. لا تخرج أي بيانات شخصية أو محفوظات تصفح على الإطلاق من المتصفح الخاص بك.</translation>
 <translation id="6112368337882254910">المساهمة التلقائية</translation>
-<translation id="2463717412061968637">الميزانية الشهرية</translation>
 <translation id="2846354907189538">تاريخ المساهمة التالية</translation>
 <translation id="8759716059844800317">المواقع المدعومة</translation>
 <translation id="1617202384704994799">قريباً.</translation>
 <translation id="1847863811689960237">مكافأة لمنشئي المحتوى الذي تفضله.</translation>
-<translation id="8647072638653845647">يتم توزيع ميزانيتك الشهرية على المواقع التي تزورها.</translation>
 <translation id="1165667598801520610">إضافة أموال</translation>
 <translation id="5314648471460409933">إدارة الأموال</translation>
 <translation id="2726674968268546964">الرموز المميزة</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">لقد أوشكت على الانتهاء…</translation>
 <translation id="5254740304961202261">أثبت أنك إنسان!</translation>
 <translation id="5118651998291801746">Hmmm…ليس تماماً.</translation>
-<translation id="3988548751595192480">لا يستجيب خادم Brave Payments. سنقوم بإصلاح هذا في أقرب وقت ممكن.</translation>
 <translation id="2323069945529668668">آه!</translation>
 <translation id="5094577350232361255">معلومات</translation>
 <translation id="4918086044614829423">قبول</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">لحماية خصوصيتك، لا يتم حفظ بيان مكافآت Brave أو تسجيله في أي مكان آخر بخلاف جهازك (هذا الكمبيوتر). لا يمكن استرداده من Brave في حالة فقدان البيانات من جهازك.</translation>
 <translation id="1036277985068412734">إضافة الأموال.</translation>
 <translation id="4496990471549986619">الأسئلة الشائعة</translation>
-<translation id="7957192189831789977">تذكير: محفظة Brave هي عبارة تدفقات أحادية الاتجاه وBAT إلى مواقع الناشرين. لمزيدٍ من المعلومات حول مدفوعات Brave، يرجى زيارة</translation>
 <translation id="2790014973538267577">عرض رمز الاستجابة السريعة (QR)</translation>
 <translation id="3548138903799045620">يسهل Brave تحويل الأموال من محفظة العملات المشفرة الحالية الخاصة بك إلى محفظة Brave BAT الخاصة بك.</translation>
 <translation id="3832196416506129616">أضف الأموال إلى محفظة Brave الخاصة بك</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">إزالة</translation>
 <translation id="3157931365184549694">استعادة</translation>
 <translation id="3626186271103896082">نسخ احتياطي للمحفظة</translation>
-<translation id="5993107153564707598">شكراً لزيارتكم. انضممنا إلى رؤية Brave لحماية خصوصيتك لأننا نؤمن بأن المعجبين من أمثالك سيدعموننا في جهدنا لإبقاء الإنترنت نظيفًا وآمنًا.</translation>
 <translation id="3074127054582480056">الانتباه</translation>
 <translation id="822513417008209372">أنت الآن تدعم</translation>
-<translation id="3469762469298298902">تتيح لك مكافآت Brave استعادة التحكم.</translation>
-<translation id="3863981251715594911">كيف يعمل؟</translation>
 <translation id="5830306739231399614">للأسف، لا توجد أية رموز حتى الآن.</translation>
 <translation id="7359258898775969374">3 طرق لشحن محفظتك:</translation>
 <translation id="8087614920008846901">يمكنك إضافة الأموال.</translation>

@@ -8,15 +8,15 @@
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Bergabung dengan Imbalan",
+    "message": "Bergabung dengan Rewards",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Dapatkan bayaran untuk melihat iklan dan menggunakannya untuk mendukung pembuat konten favorit Anda.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Sekarang Anda bisa mendapatkan token dengan melihat iklan yang menghargai privasi.",
     "description": ""
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Kami memberikan Brave Payments peningkatan besar.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Bersiap untuk merasakan Internet generasi berikutnya.",
     "description": ""
   },
   "yourWallet": {
@@ -52,23 +52,23 @@
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Atensi",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Sertakan di Konribusi Otomatis",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Kirim Tip...",
     "description": ""
   },
   "enableTips": {
-    "message": "Aktifkan Kiat",
+    "message": "Aktifkan Tip",
     "description": ""
   },
   "for": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Ringkasan Rewards",
     "description": ""
   },
   "monthApr": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Pendapatan dari Iklan",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,7 +140,7 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Tip Satu Kali",
     "description": ""
   },
   "total": {
@@ -152,7 +152,7 @@
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Tip Bulanan",
     "description": ""
   },
   "off": {
@@ -160,7 +160,7 @@
     "description": ""
   },
   "ok": {
-    "message": "ok",
+    "message": "oke",
     "description": ""
   },
   "braveAdsTitle": {
@@ -168,11 +168,11 @@
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Kontribusi Otomatis",
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "Anda berkontribusi $amount$ BAT",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

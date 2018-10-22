@@ -56,7 +56,7 @@
     "description": ""
   },
   "donateMonthly": {
-    "message": "ಮಾಸಿಕವಾಗಿ ಈ ಸೈಟ್ ಕುರಿತು ಸಲಹೆ ನೀಡಿ",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "ನಿಮ್ಮ ಅನುದಾನ ನಿಮಗಾಗಿ ಕಾಯುತ್ತಿದೆ.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   }
 }

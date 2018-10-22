@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="5946611334574299206">Získajte žetóny za sledovanie reklám v Brave. Tieto reklamy sú založené na Vašich záujmoch, ktoré vyplývajú z vášho surfovania. Vaše osobné údaje a história prehliadania nikdy neopustia váš prehliadač.</translation>
 <translation id="6112368337882254910">Automatický príspevok</translation>
-<translation id="2463717412061968637">Mesačný rozpočet</translation>
 <translation id="2846354907189538">Dátum ďalšieho príspevku</translation>
 <translation id="8759716059844800317">Podporované stránky</translation>
 <translation id="1617202384704994799">Už čoskoro.</translation>
 <translation id="1847863811689960237">Odmeňte autorov za obsah, ktorý máte radi.</translation>
-<translation id="8647072638653845647">Váš mesačný rozpočet sa rozdelí na stránky, ktoré navštívite.</translation>
 <translation id="1165667598801520610">Pridať finančný príspevok</translation>
 <translation id="5314648471460409933">Spravovať fondy</translation>
 <translation id="2726674968268546964">žetóny</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Takmer hotovo…</translation>
 <translation id="5254740304961202261">Dokážte, že ste človekom!</translation>
 <translation id="5118651998291801746">Hmmm… nie úplne.</translation>
-<translation id="3988548751595192480">Server platieb Brave neodpovedá. Čo najskôr to opravíme.</translation>
 <translation id="2323069945529668668">Ou!</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Prijať</translation>
@@ -80,7 +77,6 @@ Brave je registrovaná ochranná známka Brave software. Mená stránok môžu b
 <translation id="9026369588205476247">Pre ochranu Vášho súkromia nie je tento výpis odmien Brave uložený alebo zaznamenaný nikde, okrem vášho zariadenia (tento počítač). V prípade straty údajov vo vašom zariadení ho nebudete môcť získať z Brave.</translation>
 <translation id="1036277985068412734">pridať peniaze</translation>
 <translation id="4496990471549986619">často kladené otázky</translation>
-<translation id="7957192189831789977">Pripomienka: Peňaženka Brave je jednosmerná a BAT plynie na stránky vydavateľov. Pre viac informácií o platbách Brave, navštívte, prosím,</translation>
 <translation id="2790014973538267577">Zobraziť QR kód</translation>
 <translation id="3548138903799045620">S Brave je ľahké presunúť prostriedky z vašej existujúcej peňaženky s crypto-menou do vašej peňaženky Brave BAT.</translation>
 <translation id="3832196416506129616">Pridať peňažné prostriedky do svojej peňaženky</translation>
@@ -151,11 +147,8 @@ Brave je registrovaná ochranná známka Brave software. Mená stránok môžu b
 <translation id="1110535155349301542">odstrániť</translation>
 <translation id="3157931365184549694">Obnoviť</translation>
 <translation id="3626186271103896082">Navýšiť peňaženku</translation>
-<translation id="5993107153564707598">Vďaka za návštevu. Spojili sme sa s Brave kvôli ich vízii o ochrane súkromia používateľa a pretože veríme, že fanúšikovia ako Vy nás podporia v našej snahe udržať web čistý a bezpečný.</translation>
 <translation id="3074127054582480056">Pozornosť</translation>
 <translation id="822513417008209372">Práve podporujete</translation>
-<translation id="3469762469298298902">Odmeny Brave vám umožňujú prevziať kontrolu späť.</translation>
-<translation id="3863981251715594911">Ako to funguje?</translation>
 <translation id="5830306739231399614">Bohužiaľ zatiaľ nemáte žiadne žetóny.</translation>
 <translation id="7359258898775969374">3 spôsoby, ako naplniť svoju peňaženku:</translation>
 <translation id="8087614920008846901">Môžete pridať prostriedky.</translation>
