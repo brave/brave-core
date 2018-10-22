@@ -84,7 +84,7 @@ class Grant extends React.Component<Props, State> {
               title={grant.status === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
               text={getLocale('proveHuman')}
             >
-              <GrantCaptcha onSolution={this.onSolution} dropBgImage={grant.captcha} hint={grant.hint} />
+              <GrantCaptcha onSolution={this.onSolution} dropBgImage={grant.captcha} hint={grant.hint} isWindows={navigator.platform === 'Win32'} />
             </GrantWrapper>
             : null
         }
