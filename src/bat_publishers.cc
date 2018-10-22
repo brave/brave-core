@@ -109,7 +109,9 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       visit_data.local_month,
       visit_data.local_year,
-      !ignoreMinTime(publisher_id));
+      ledger::PUBLISHER_EXCLUDE::DEFAULT,
+      !ignoreMinTime(publisher_id),
+      ledger_->GetReconcileStamp());
 
   ledger::PublisherInfoCallback callbackSaveVisit = std::bind(&onVisitSavedDummy, _1, _2);
   ledger::PublisherInfoCallback callbackGetPublishers = std::bind(&BatPublishers::saveVisitInternal, this,
@@ -474,7 +476,10 @@ void BatPublishers::synopsisNormalizer(const ledger::PublisherInfo& info) {
   auto filter = CreatePublisherFilter("",
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       info.month,
-      info.year);
+      info.year,
+      ledger::PUBLISHER_EXCLUDE::DEFAULT,
+      true,
+      ledger_->GetReconcileStamp());
   // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
   // We need to limit it and iterate.
   ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::synopsisNormalizerInternal, this,
@@ -788,7 +793,10 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
         ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
         visit_data.local_month,
         visit_data.local_year,
-        false);
+        ledger::PUBLISHER_EXCLUDE::DEFAULT,
+        false,
+        ledger_->GetReconcileStamp());
+
     ledger_->GetPublisherInfo(filter,
         std::bind(&BatPublishers::onPublisherActivity, this, _1, _2, windowId, visit_data));
 }
