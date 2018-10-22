@@ -103,6 +103,9 @@ class BookmarkChangeProcessor : public ChangeProcessor,
                     const std::string& parent_order,
                     int64_t &node_id,
                     int *action);
+  // BookmarkModel::Remove will remove parent but put its children under
+  // "Other Bookmarks" so we need to explicitly delete children
+  void DeleteSelfAndChildren(const bookmarks::BookmarkNode* node);
 
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned

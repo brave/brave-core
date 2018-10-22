@@ -53,7 +53,7 @@ chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, plat
 });
 
 chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder, parentOrder) {
-  console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)}`);
+  console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)} parentOrder=${JSON.stringify(parentOrder)}`);
   try {
     callbackList["get-bookmark-order"](null, prevOrder, nextOrder, parentOrder);
   } catch (e) {
@@ -204,7 +204,7 @@ class InjectedObject {
         chrome.braveSync.saveBookmarksBaseOrder(arg1/*order*/);
         break;
       case "save-bookmark-order":
-        console.log(`"save-bookmark-order" order=${JSON.stringify(arg1)} prevOrder=${JSON.stringify(arg2)} nextOrder=${JSON.stringify(arg3)} parentOrder=${JSON.stringify(arg3)}`);
+        console.log(`"save-bookmark-order" order=${JSON.stringify(arg1)} prevOrder=${JSON.stringify(arg2)} nextOrder=${JSON.stringify(arg3)} parentOrder=${JSON.stringify(arg4)}`);
         chrome.braveSync.saveBookmarkOrder(arg1/*order*/, arg2/*prevOrder*/, arg3/*nextOrder*/, arg4/*parentOrder*/);
         break;
       default:
