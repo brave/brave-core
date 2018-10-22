@@ -2,18 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const getCurrentTabId = (state: TorrentsState) => {
-  return state.activeTabIds[state.currentWindowId]
+export const getTorrentState = (state: TorrentsState, tabId: number) => {
+  return state.torrentStateMap[tabId]
 }
 
-export const getTorrentState = (state: TorrentsState) => {
-  return state.torrentStateMap[getCurrentTabId(state)]
-}
-
-export const getTorrentObj = (state: TorrentsState) => {
+export const getTorrentObj = (state: TorrentsState, tabId: number) => {
   let torrent
 
-  const torrentState = getTorrentState(state)
+  const torrentState = getTorrentState(state, tabId)
   if (torrentState && torrentState.infoHash) {
     torrent = state.torrentObjMap[torrentState.infoHash]
   }
