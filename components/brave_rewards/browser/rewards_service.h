@@ -85,7 +85,7 @@ class RewardsService : public KeyedService {
   virtual std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() = 0;
   virtual void GetCurrentBalanceReport() = 0;
   virtual bool IsWalletCreated() = 0;
-  virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) = 0;
+  virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url, const std::string& favicon_url) = 0;
   virtual double GetContributionAmount() = 0;
   virtual brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) = 0;
   virtual void OnDonate(const std::string& publisher_key, int amount, bool recurring) = 0;

@@ -15,7 +15,7 @@ declare namespace chrome.dns {
 declare namespace chrome.braveRewards {
   const createWallet: () => {}
   const donateToSite: (tabId: number, publisherKey: string) => {}
-  const getPublisherData: (windowId: number, url: string) => {}
+  const getPublisherData: (windowId: number, url: string, faviconUrl: string) => {}
   const getWalletProperties: () => {}
   const getCurrentReport: () => {}
   const onWalletCreated: {

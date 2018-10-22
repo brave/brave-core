@@ -79,11 +79,13 @@ export class Panel extends React.Component<Props, State> {
   }
 
   getPublisher = () => {
-    const windowId = this.props.windowId
+    let windowId = this.props.windowId.toString()
 
     if (!windowId) {
       return undefined
     }
+
+    windowId = `id_${windowId}`
 
     return this.props.rewardsPanelData.publishers[windowId]
   }

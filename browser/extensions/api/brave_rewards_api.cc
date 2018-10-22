@@ -75,7 +75,9 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service_) {
-    rewards_service_->GetPublisherActivityFromUrl(params->window_id, params->url);
+    rewards_service_->GetPublisherActivityFromUrl(params->window_id,
+                                                  params->url,
+                                                  params->favicon_url);
   }
   return RespondNow(NoArguments());
 }
