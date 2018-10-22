@@ -199,7 +199,7 @@
 
       <!-- WebUI welcome page resources -->
       <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_TITLE" desc="Welcome message title">Welcome to Brave</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_DESC" desc="Welcome message description">Brave is so much more than a browser. Let's show you how to make the most of it</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_DESC" desc="Welcome message description">Brave is so much more than a browser. Let's show you how to make the most of it.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON" desc="Button that moves to the next welcome screen">Let's go</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE" desc="Welcome message title for Brave Rewards">Enable Brave Rewards</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC" desc="Explainer text about Brave Rewards">Brave Rewards is a new way of thinking about how the web works. Get rewarded for viewing privacy-respecting ads, and support your favorite content creators while you’re at it.</message>
@@ -208,7 +208,7 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC" desc="Explainer text about importing from another browser">Brave makes it easy to setup your usual environment by importing bookmarks and settings from other browsers installed on your computer.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON" desc="Button to import from another browser">Import Now</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE" desc="Welcome message title for shields">Manage your shield settings</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Explainer text about shields">Adjust and monitor your level of protection by clicking the Brave logo in the toolbar. Manage your global shield settings in the preferences panel</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Explainer text about shields">Adjust and monitor your level of protection by clicking the Brave logo in the toolbar. Manage your global shield settings in the preferences panel.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON" desc="Button to open shield settings">Shield Settings</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_PREFERENCES_TITLE" desc="Welcome message title for preferences">Customize your preferences</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_PREFERENCES_DESC" desc="Explainer text about features in Brave">Tabs, appearance, extensions and history setting can be configured in the preferences panel. You might even find a dark theme in there ;)</message>
@@ -268,7 +268,7 @@
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
       <message name="IDS_BRAVE_UI_ACCEPT" desc="">Accept</message>
-      <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc="">©2016 –2018 Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</message>
+      <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc="">©2016–2018 Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</message>
       <message name="IDS_BRAVE_UI_ACTIVITY_NOTE" desc="">To protect your privacy, this Brave Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Brave in the event of data loss on your device.</message>
       <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="">add funds</message>
       <message name="IDS_BRAVE_UI_ADD_FUNDS_FAQ" desc="">the FAQ</message>
@@ -428,7 +428,7 @@
       <message name="IDS_BRAVE_UI_WELCOME_HEADER_ONE" desc="">We’ve given Brave Payments a big upgrade.</message>
       <message name="IDS_BRAVE_UI_WELCOME_HEADER_TWO" desc="">Get ready to experience the next Internet.</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS" desc="">Why Brave Rewards?</message>
-      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1" desc="">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmited your valuable private data to advertisers — without your consent.</message>
+      <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1" desc="">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers — without your consent.</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2" desc="">Today, Brave welcomes you to the new Internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your wallet</message>
     </messages>
