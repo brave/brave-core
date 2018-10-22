@@ -213,6 +213,10 @@
           {
             "name": "url",
             "type": "string"
+          },
+          {
+            "name": "faviconUrl",
+            "type": "string"
           }
         ]
       },

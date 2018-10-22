@@ -1209,7 +1209,9 @@ bool RewardsServiceImpl::IsWalletCreated() {
   return ledger_->IsWalletCreated();
 }
 
-void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) {
+void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId,
+                                                     const std::string& url,
+                                                     const std::string& favicon_url) {
   GURL parsedUrl(url);
 
   if (!parsedUrl.is_valid()) {
@@ -1227,11 +1229,16 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const st
     return;
   }
 
-  ledger_->GetPublisherActivityFromUrl(windowId,
-      baseDomain,
-      parsedUrl.path(),
-      GetPublisherMonth(now),
-      GetPublisherYear(now));
+  ledger::VisitData visitData;
+  visitData.domain = baseDomain;
+  visitData.path = parsedUrl.path();
+  visitData.local_month = GetPublisherMonth(now);
+  visitData.local_year = GetPublisherYear(now);
+  visitData.name = baseDomain;
+  visitData.url = origin.spec();
+  visitData.favicon_url = favicon_url;
+
+  ledger_->GetPublisherActivityFromUrl(windowId, visitData);
 }
 
 void RewardsServiceImpl::OnExcludedSitesChanged() {
