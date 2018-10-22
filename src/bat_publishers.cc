@@ -93,6 +93,11 @@ bool BatPublishers::saveVisitAllowed() const {
   return (ledger_->GetRewardsMainEnabled() && ledger_->GetAutoContribute());
 }
 
+void onVisitSavedDummy(ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+  // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
+}
+
 void BatPublishers::saveVisit(const std::string& publisher_id,
                               const ledger::VisitData& visit_data,
                               const uint64_t& duration) {
@@ -105,9 +110,16 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
       visit_data.local_month,
       visit_data.local_year,
       !ignoreMinTime(publisher_id));
-  ledger_->GetPublisherInfo(filter,
-      std::bind(&BatPublishers::saveVisitInternal, this,
-          publisher_id, visit_data, duration, _1, _2));
+
+  ledger::PublisherInfoCallback callbackSaveVisit = std::bind(&onVisitSavedDummy, _1, _2);
+  ledger::PublisherInfoCallback callbackGetPublishers = std::bind(&BatPublishers::saveVisitInternal, this,
+                publisher_id,
+                visit_data,
+                duration,
+                callbackSaveVisit,
+                _1,
+                _2);
+  ledger_->GetPublisherInfo(filter, callbackGetPublishers);
 }
 
 ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
@@ -180,11 +192,6 @@ std::string BatPublishers::GetBalanceReportName(
   return std::to_string(year) + "_" + std::to_string(month);
 }
 
-void onVisitSavedDummy(ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
-  // onPublisherInfoUpdated will always be called by LedgerImpl so do nothing
-}
-
 void BatPublishers::setNumExcludedSitesInternal(ledger::PUBLISHER_EXCLUDE exclude) {
   unsigned int previousNum = getNumExcludedSites();
   setNumExcludedSites((exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED)
@@ -217,6 +224,7 @@ void BatPublishers::saveVisitInternal(
     std::string publisher_id,
     ledger::VisitData visit_data,
     uint64_t duration,
+    ledger::PublisherInfoCallback callback,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   DCHECK(result != ledger::Result::TOO_MANY_RESULTS);
@@ -245,8 +253,7 @@ void BatPublishers::saveVisitInternal(
   publisher_info->verified = isVerified(publisher_info->id);
   publisher_info->reconcile_stamp = ledger_->GetReconcileStamp();
 
-  ledger_->SetPublisherInfo(std::move(publisher_info),
-      std::bind(&onVisitSavedDummy, _1, _2));
+  ledger_->SetPublisherInfo(std::move(publisher_info), callback);
 }
 
 std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
@@ -764,36 +771,53 @@ bool BatPublishers::loadPublisherList(const std::string& data) {
   return success;
 }
 
-void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId,
-                                            const std::string& baseDomain,
-                                            const std::string& path,
-                                            ledger::PUBLISHER_MONTH month,
-                                            int year) {
-  if ((baseDomain == YOUTUBE_TLD || baseDomain == TWITCH_TLD) && path != "" && path != "/") {
+void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) {
+  if ((visit_data.domain == YOUTUBE_TLD || visit_data.domain == TWITCH_TLD) &&
+      visit_data.path != "" && visit_data.path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
-    if (baseDomain == TWITCH_TLD) {
+    if (visit_data.domain == TWITCH_TLD) {
       type = TWITCH_MEDIA_TYPE;
     }
 
     // TODO NZ add logic
-    // ledger_->GetMediaActivityFromUrl(windowId, (std::string)baseDomain + path, type, month, year);
+    // ledger_->GetMediaActivityFromUrl(windowId, (std::string)visit_data.domain + visit_data.path, type, month, year);
     return;
   }
 
-  auto filter = CreatePublisherFilter(baseDomain,
+  auto filter = CreatePublisherFilter(visit_data.domain,
         ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
-        month,
-        year,
+        visit_data.local_month,
+        visit_data.local_year,
         false);
     ledger_->GetPublisherInfo(filter,
-        std::bind(&BatPublishers::onPublisherActivity, this, _1, _2, windowId, baseDomain));
+        std::bind(&BatPublishers::onPublisherActivity, this, _1, _2, windowId, visit_data));
 }
 
 void BatPublishers::onPublisherActivity(ledger::Result result,
                                         std::unique_ptr<ledger::PublisherInfo> info,
                                         uint64_t windowId,
-                                        const std::string& publisherKey) {
-  ledger_->OnPublisherActivity(result, std::move(info), windowId);
+                                        const ledger::VisitData& visit_data) {
+  if (result == ledger::Result::LEDGER_OK) {
+    ledger_->OnPublisherActivity(result, std::move(info), windowId);
+  }
+
+  if (result == ledger::Result::NOT_FOUND) {
+    saveVisitInternal(visit_data.domain,
+                      visit_data,
+                      0,
+                      std::bind(&BatPublishers::onPublisherActivitySave, this, windowId, visit_data, _1, _2),
+                      result,
+                      std::move(info));
+  }
+}
+
+void BatPublishers::onPublisherActivitySave(uint64_t windowId,
+                                            const ledger::VisitData& visit_data,
+                                            ledger::Result result,
+                                            std::unique_ptr<ledger::PublisherInfo> info) {
+  if (result == ledger::Result::LEDGER_OK) {
+    onPublisherActivity(result, std::move(info), windowId, visit_data);
+  }
 }
 
 void BatPublishers::OnExcludedSitesChanged() {

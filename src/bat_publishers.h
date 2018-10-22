@@ -86,11 +86,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool loadPublisherList(const std::string& data);
 
-  void getPublisherActivityFromUrl(uint64_t windowId,
-                               const std::string& baseDomain,
-                               const std::string& path,
-                               ledger::PUBLISHER_MONTH month,
-                               int year);
+  void getPublisherActivityFromUrl(uint64_t windowId,const ledger::VisitData& visit_data);
   ledger::PublisherBanner getPublisherBanner(const std::string& publisher_id);
 
   void setBalanceReportItem(ledger::PUBLISHER_MONTH month,
@@ -129,6 +125,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
  private:
 
+  void onPublisherActivitySave(uint64_t windowId,
+                               const ledger::VisitData& visit_data,
+                               ledger::Result result,
+                               std::unique_ptr<ledger::PublisherInfo> info);
+
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
 
@@ -139,6 +140,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       std::string publisher_id,
       ledger::VisitData visit_data,
       uint64_t duration,
+      ledger::PublisherInfoCallback callback,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
@@ -173,7 +175,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void onPublisherActivity(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> publisher_info,
                            uint64_t windowId,
-                           const std::string& publisherKey);
+                           const ledger::VisitData& visit_data);
 
   void OnExcludedSitesChanged();
 
