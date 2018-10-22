@@ -11,7 +11,7 @@ import { BraveWebtorrentPage, mapStateToProps } from '../../../brave_webtorrent/
 describe('BraveWebtorrentPage component', () => {
   describe('mapStateToProps', () => {
     it('should map the default state', () => {
-      expect(mapStateToProps(applicationState)).toEqual({
+      expect(mapStateToProps(applicationState, { tabId: 0 })).toEqual({
         torrentState
       })
     })
