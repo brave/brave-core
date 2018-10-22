@@ -152,12 +152,6 @@ void UpdateNode(bookmarks::BookmarkModel* model,
   model->SetNodeMetaInfo(node,
       "sync_timestamp",
       std::to_string(record->syncTimestamp.ToJsTime()));
-  model->DeleteNodeMetaInfo(node, "last_send_time");
-
-  std::string last_updated_time;
-  node->GetMetaInfo("last_updated_time", &last_updated_time);
-  model->SetNodeMetaInfo(node, "last_updated_time",
-      std::to_string(record->syncTimestamp.ToJsTime()));
 }
 
 const bookmarks::BookmarkNode* FindParent(bookmarks::BookmarkModel* model,
@@ -273,6 +267,12 @@ void BookmarkChangeProcessor::CloneBookmarkNodeForDeleteImpl(
     cloned_node->set_type(bookmarks::BookmarkNode::FOLDER);
     for (int i = 0; i < static_cast<int>(element.children.size()); ++i)
       CloneBookmarkNodeForDeleteImpl(element.children[i], cloned_node.get(), i);
+  } else {
+    // default type is URL and we will hit
+    // [url_index.cc(122)] "Check failed: i != nodes_ordered_by_url_set_.end()."
+    // However, clone nodes should be dummy nodes which only need
+    // object_id meta info.
+    cloned_node->set_type(bookmarks::BookmarkNode::OTHER_NODE);
   }
   cloned_node->SetTitle(element.title);
 
@@ -390,6 +390,19 @@ void BookmarkChangeProcessor::Reset() {
   bookmark_model_->EndExtensiveChanges();
 }
 
+void BookmarkChangeProcessor::DeleteSelfAndChildren(
+    const bookmarks::BookmarkNode* node) {
+  DCHECK(node->is_folder());
+  for (int i = 0; i < node->child_count(); ++i) {
+    if (node->GetChild(i)->is_folder()) {
+      DeleteSelfAndChildren(node->GetChild(i));
+    } else {
+      bookmark_model_->Remove(node->GetChild(i));
+    }
+  }
+  bookmark_model_->Remove(node);
+}
+
 void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
     const RecordsList &records) {
   ScopedPauseObserver pause(this);
@@ -402,8 +415,6 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
     auto bookmark_record = sync_record->GetBookmark();
 
     if (node && sync_record->action == jslib::SyncRecord::Action::UPDATE) {
-      UpdateNode(bookmark_model_, node, sync_record.get());
-
       int64_t old_parent_local_id = node->parent()->id();
       const bookmarks::BookmarkNode* old_parent_node =
           bookmarks::GetBookmarkNodeByID(bookmark_model_, old_parent_local_id);
@@ -423,6 +434,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
         int64_t index = GetIndex(new_parent_node, bookmark_record);
         bookmark_model_->Move(node, new_parent_node, index);
       }
+      UpdateNode(bookmark_model_, node, sync_record.get());
     } else if (node &&
                sync_record->action == jslib::SyncRecord::Action::DELETE) {
       if (node->parent() == GetDeletedNodeRoot()) {
@@ -431,7 +443,11 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
         GetDeletedNodeRoot()->Remove(index);
       } else {
         // normal remove
-        bookmark_model_->Remove(node);
+        if (node->is_folder()) {
+          DeleteSelfAndChildren(node);
+        } else {
+          bookmark_model_->Remove(node);
+        }
       }
     } else if (!node) {
       // TODO(bridiver) (make sure there isn't an existing record for objectId)
@@ -580,11 +596,7 @@ void BookmarkChangeProcessor::GetAllSyncData(
     resolved_record->first = jslib::SyncRecord::Clone(*record);
     auto* node = FindByObjectId(bookmark_model_, record->objectId);
     if (node) {
-      // only match unsynced nodes so we don't accidentally overwrite
-      // changes from another client with our local changes
-      if (IsUnsynced(node)) {
-        resolved_record->second = BookmarkNodeToSyncBookmark(node);
-      }
+      resolved_record->second = BookmarkNodeToSyncBookmark(node);
     }
 
     records_and_existing_objects->push_back(std::move(resolved_record));
