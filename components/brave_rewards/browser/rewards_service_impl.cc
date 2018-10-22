@@ -727,6 +727,7 @@ void RewardsServiceImpl::LoadPublisherInfoList(
   auto now = base::Time::Now();
   filter.month = GetPublisherMonth(now);
   filter.year = GetPublisherYear(now);
+  filter.reconcile_stamp = ledger_->GetReconcileStamp();
 
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
