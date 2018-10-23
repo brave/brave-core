@@ -8,17 +8,15 @@ import * as React from 'react'
 import {
   Grid2Columns,
   Box,
-  Content,
   HeaderBox,
   Title,
   SubTitle,
   Text,
   TorImage,
-  TorLockImage,
   Separator,
   FakeButton
 } from 'brave-ui/features/newTab'
-
+import TorContent from './torContent'
 // Helpers
 import { getLocale } from '../../../common/locale'
 
@@ -40,12 +38,7 @@ export default class QwantTab extends React.PureComponent<{}, {}> {
           </div>
         </HeaderBox>
         <Box>
-          <Content>
-            <TorLockImage />
-            <SubTitle>{getLocale('boxTorLabel')}</SubTitle>
-            <Title>{getLocale('boxTorTitle')}</Title>
-            <Text>{getLocale('boxTorText2')}</Text>
-          </Content>
+          <TorContent />
           <Separator />
           <FakeButton
             href='https://support.brave.com/hc/en-us/articles/360018121491'
