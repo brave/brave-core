@@ -264,7 +264,6 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
     >
       MISSING: rewardsOffText1
        
-      <br />
       <b>
         MISSING: rewardsOffText2
       </b>

@@ -47,8 +47,7 @@ export default class MainToggle extends React.PureComponent<Props, {}> {
           ? <StyledContent>
             <StyleTitle>{getLocale('rewardsWhy')}</StyleTitle>
             <StyleText>
-              {getLocale('rewardsOffText1')} <br/>
-              <b>{getLocale('rewardsOffText2')}</b>
+              {getLocale('rewardsOffText1')} <b>{getLocale('rewardsOffText2')}</b>
             </StyleText>
             <StyleTitle>{getLocale('rewardsOffText3')}</StyleTitle>
             <StyleText>
