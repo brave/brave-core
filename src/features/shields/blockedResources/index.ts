@@ -264,6 +264,7 @@ export const ResourcesFooter = styled<{}, 'footer'>('footer')`
 `
 
 export const ResourcesFooterGrid = styled<{}, 'footer'>('footer')`
+  border-top: 1px solid rgba(255,255,255,0.15);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;

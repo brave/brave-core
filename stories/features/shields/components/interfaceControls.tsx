@@ -30,7 +30,9 @@ interface Props {
 
 interface State {
   blockAds: boolean
+  connectionsEncrypted: boolean
   openTotalAdsTrackersBlockedList: boolean
+  openConnectionsEncryptedList: boolean
 }
 
 export default class InterfaceControls extends React.PureComponent<Props, State> {
@@ -38,7 +40,9 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
     super(props)
     this.state = {
       blockAds: false,
-      openTotalAdsTrackersBlockedList: false
+      openTotalAdsTrackersBlockedList: false,
+      connectionsEncrypted: false,
+      openConnectionsEncryptedList: false
     }
   }
 
@@ -60,8 +64,38 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
     )
   }
 
+  get connectionsEncryptedList () {
+    const { favicon, sitename } = this.props
+    return (
+      <BlockedResources
+        favicon={favicon}
+        sitename={sitename}
+        title={locale.connectionsEncrypted}
+        onToggle={this.onToggleConnectionsEncrypted}
+        data={data.thirdPartyDeviceRecognitionBlocked}
+      >
+        <StaticList
+          onClickDismiss={this.onToggleConnectionsEncrypted}
+          list={data.blockedFakeResources}
+        />
+      </BlockedResources>
+    )
+  }
+
   onChangeBlockAds = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ blockAds: event.target.checked })
+  }
+
+  onChangeConnectionsEncrypted = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ connectionsEncrypted: event.target.checked })
+  }
+
+  onToggleTotalAdsTrackersBlocked = () => {
+    this.setState({ openTotalAdsTrackersBlockedList: !this.state.openTotalAdsTrackersBlockedList })
+  }
+
+  onToggleConnectionsEncrypted = () => {
+    this.setState({ openConnectionsEncryptedList: !this.state.openConnectionsEncryptedList })
   }
 
   // onChangeBlockPopups = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,13 +106,14 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
   //   this.setState({ blockImages: event.target.checked })
   // }
 
-  onToggleTotalAdsTrackersBlocked = () => {
-    this.setState({ openTotalAdsTrackersBlockedList: !this.state.openTotalAdsTrackersBlockedList })
-  }
-
   render () {
     const { enabled } = this.props
-    const { blockAds, openTotalAdsTrackersBlockedList /* blockPopups, blockImages */ } = this.state
+    const {
+      blockAds,
+      openTotalAdsTrackersBlockedList,
+      connectionsEncrypted,
+      openConnectionsEncryptedList /* blockPopups, blockImages */
+    } = this.state
 
     if (!enabled) {
       return null
@@ -94,6 +129,14 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
             <Toggle id='blockAds' checked={blockAds} onChange={this.onChangeBlockAds} />
           </GridLabel>
           {openTotalAdsTrackersBlockedList ? this.totalAdsTrackersBlockedList : null}
+        {/* connections encrypted toggle */}
+        <GridLabel>
+          <EmptyButton onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
+          <Stat>{data.connectionsEncrypted}</Stat>
+          <ResourcesLabel>{locale.connectionsEncrypted}</ResourcesLabel>
+          <Toggle id='connectionsEncrypted' checked={connectionsEncrypted} onChange={this.onChangeConnectionsEncrypted} />
+        </GridLabel>
+        {openConnectionsEncryptedList ? this.connectionsEncryptedList : null}
         {/* popups toggle
           <GridLabel>
             <Stat>{data.popupsBlocked}</Stat>

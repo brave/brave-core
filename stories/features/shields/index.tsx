@@ -11,7 +11,7 @@ import { ShieldsPanel } from '../../../src/features/shields'
 import BraveShieldsHeader from './components/header'
 import BraveShieldsInterfaceControls from './components/interfaceControls'
 import BraveShieldsPrivacyControls from './components/privacyControls'
-import BraveShieldsSecurityControls from './components/securityControls'
+// import BraveShieldsSecurityControls from './components/securityControls'
 import BraveShieldsFooter from './components/footer'
 
 interface BraveShieldsProps {
@@ -29,7 +29,7 @@ export default class Shields extends React.PureComponent<BraveShieldsProps, {}> 
         <BraveShieldsHeader enabled={enabled} fakeOnChange={fakeOnChange} sitename={sitename} favicon={favicon} />
         <BraveShieldsInterfaceControls enabled={enabled} sitename={sitename} favicon={favicon} />
         <BraveShieldsPrivacyControls enabled={enabled} sitename={sitename} favicon={favicon} />
-        <BraveShieldsSecurityControls enabled={enabled} sitename={sitename} favicon={favicon} />
+        {/* <BraveShieldsSecurityControls enabled={enabled} sitename={sitename} favicon={favicon} /> */}
         <BraveShieldsFooter />
       </ShieldsPanel>
     )

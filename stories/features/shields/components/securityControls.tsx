@@ -30,15 +30,13 @@ interface Props {
 
 interface State {
   openPishingMalwareBlockedList: boolean
-  openConnectionsEncryptedList: boolean
 }
 
 export default class SecurityControls extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      openPishingMalwareBlockedList: false,
-      openConnectionsEncryptedList: false
+      openPishingMalwareBlockedList: false
     }
   }
 
@@ -60,35 +58,13 @@ export default class SecurityControls extends React.PureComponent<Props, State> 
     )
   }
 
-  get connectionsEncryptedList () {
-    const { favicon, sitename } = this.props
-    return (
-      <BlockedResources
-        favicon={favicon}
-        sitename={sitename}
-        title={locale.connectionsEncrypted}
-        onToggle={this.onToggleConnectionsEncrypted}
-        data={data.thirdPartyDeviceRecognitionBlocked}
-      >
-        <StaticList
-          onClickDismiss={this.onToggleConnectionsEncrypted}
-          list={data.blockedFakeResources}
-        />
-      </BlockedResources>
-    )
-  }
-
   onTogglePishingMalwareBlocked = () => {
     this.setState({ openPishingMalwareBlockedList: !this.state.openPishingMalwareBlockedList })
   }
 
-  onToggleConnectionsEncrypted = () => {
-    this.setState({ openConnectionsEncryptedList: !this.state.openConnectionsEncryptedList })
-  }
-
   render () {
     const { enabled } = this.props
-    const { openPishingMalwareBlockedList, openConnectionsEncryptedList } = this.state
+    const { openPishingMalwareBlockedList } = this.state
 
     if (!enabled) {
       return null
@@ -104,14 +80,6 @@ export default class SecurityControls extends React.PureComponent<Props, State> 
           <Toggle checked={true} />
         </GridLabel>
         {openPishingMalwareBlockedList ? this.pishingMalwareBlockedList : null}
-        {/* connections encrypted toggle */}
-        <GridLabel>
-          <EmptyButton onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
-          <Stat>{data.connectionsEncrypted}</Stat>
-          <ResourcesLabel>{locale.connectionsEncrypted}</ResourcesLabel>
-          <Toggle checked={true} />
-        </GridLabel>
-        {openConnectionsEncryptedList ? this.connectionsEncryptedList : null}
       </>
     )
   }
