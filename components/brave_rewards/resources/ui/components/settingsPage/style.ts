@@ -7,7 +7,7 @@ import styled from 'styled-components'
 export const StyledWrapper = styled<{}, 'div'>('div')`
   background: #f2f4f7;
   min-height: 100vh;
-  width: 100%;
+  min-width: 1024px;
   font-family: "Poppins", sans-serif
 `
 

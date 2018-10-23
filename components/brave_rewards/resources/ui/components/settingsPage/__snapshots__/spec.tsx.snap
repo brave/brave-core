@@ -4,7 +4,7 @@ exports[`SettingsPage tests basic tests matches the snapshot 1`] = `
 .c0 {
   background: #f2f4f7;
   min-height: 100vh;
-  width: 100%;
+  min-width: 1024px;
   font-family: "Poppins",sans-serif;
 }
 
