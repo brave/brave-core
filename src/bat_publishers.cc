@@ -46,7 +46,7 @@ BatPublishers::~BatPublishers() {
 }
 
 void BatPublishers::calcScoreConsts() {
-  uint64_t min_duration_ms = state_->min_pubslisher_duration_ * 1000;
+  uint64_t min_duration_ms = state_->min_publisher_duration_ * 1000;
   //TODO: check Warning	C4244	'=': conversion from 'double' to 'unsigned int', possible loss of data
   a_ = 1.0 / (braveledger_ledger::_d * 2.0) - min_duration_ms;
   a2_ = a_ * 2;
@@ -133,7 +133,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
                                category,
                                month,
                                year,
-                               ledger::PUBLISHER_EXCLUDE::DEFAULT,
+                               ledger::PUBLISHER_EXCLUDE::ALL,
                                true,
                                0);
 }
@@ -163,7 +163,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
                                category,
                                month,
                                year,
-                               ledger::PUBLISHER_EXCLUDE::DEFAULT,
+                               ledger::PUBLISHER_EXCLUDE::ALL,
                                min_duration,
                                0);
 }
@@ -235,10 +235,13 @@ void BatPublishers::saveVisitInternal(
     return;
   }
 
-  if (!publisher_info.get())
+  bool new_visit = false;
+  if (!publisher_info.get()) {
+    new_visit = true;
     publisher_info.reset(new ledger::PublisherInfo(publisher_id,
                                                    visit_data.local_month,
                                                    visit_data.local_year));
+  }
 
   publisher_info->favicon_url = visit_data.favicon_url;
   publisher_info->name = visit_data.name;
@@ -249,7 +252,10 @@ void BatPublishers::saveVisitInternal(
   if (!isExcluded(publisher_info->id, publisher_info->excluded)) {
     publisher_info->duration += duration;
   } else {
-    publisher_info->duration = 0;
+    if (new_visit) {
+      new_visit = false;
+      publisher_info->duration = 0; // don't log auto-excluded
+    }
   }
   publisher_info->score += concaveScore(duration);
   publisher_info->verified = isVerified(publisher_info->id);
@@ -279,11 +285,21 @@ void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PU
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
       -1,
-      (exclude == ledger::PUBLISHER_EXCLUDE::DEFAULT)
-      ? ledger::PUBLISHER_EXCLUDE::EXCLUDED
-      : ledger::PUBLISHER_EXCLUDE::DEFAULT);
-  ledger_->GetPublisherInfo(filter, std::bind(&BatPublishers::onSetExcludeInternal,
+      ledger::PUBLISHER_EXCLUDE::ALL);
+    ledger_->GetPublisherInfo(filter, std::bind(&BatPublishers::onSetExcludeInternal,
                             this, exclude, _1, _2));
+}
+
+void BatPublishers::setPanelExclude(const std::string& publisher_id,
+  const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId) {
+  auto filter = CreatePublisherFilter(publisher_id,
+      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+      ledger::PUBLISHER_MONTH::ANY,
+      -1,
+      ledger::PUBLISHER_EXCLUDE::ALL);
+    ledger_->GetPublisherInfo(filter, std::bind(
+      &BatPublishers::onSetPanelExcludeInternal,
+      this, exclude, windowId, _1, _2));
 }
 
 void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
@@ -294,13 +310,54 @@ void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
     return;
   }
 
+  if (!publisher_info) {
+    // handle error
+    return;
+  }
+
   publisher_info->year = -1;
-  publisher_info->excluded = exclude;
+  if (publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::DEFAULT ||
+      publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED) {
+    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  } else {
+    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+  }
   publisher_info->month = ledger::PUBLISHER_MONTH::ANY;
   setNumExcludedSitesInternal(exclude);
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
       std::bind(&onVisitSavedDummy, _1, _2));
+  OnExcludedSitesChanged();
+}
+
+void BatPublishers::onSetPanelExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
+  uint64_t windowId,
+  ledger::Result result,
+  std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+  if (result != ledger::Result::LEDGER_OK &&
+      result != ledger::Result::NOT_FOUND) {
+    return;
+  }
+
+  if (!publisher_info) {
+    // handle error
+    return;
+  }
+
+  publisher_info->year = -1;
+  if (publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::DEFAULT ||
+      publisher_info->excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED) {
+    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  } else {
+    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+  }
+  publisher_info->month = ledger::PUBLISHER_MONTH::ANY;
+  setNumExcludedSitesInternal(exclude);
+
+  ledger::VisitData visit_data;
+  ledger_->SetPublisherInfo(std::move(publisher_info),
+      std::bind(&BatPublishers::onPublisherActivity, this, _1, _2,
+      windowId, visit_data));
   OnExcludedSitesChanged();
 }
 
@@ -327,7 +384,7 @@ void BatPublishers::onRestorePublishersInternal(const ledger::PublisherInfoList&
 }
 
 void BatPublishers::setPublisherMinVisitTime(const uint64_t& duration) { // In seconds
-  state_->min_pubslisher_duration_ = duration;
+  state_->min_publisher_duration_ = duration;
   saveState();
 }
 
@@ -357,7 +414,7 @@ void BatPublishers::setPublisherAllowVideos(const bool& allow) {
 }
 
 uint64_t BatPublishers::getPublisherMinVisitTime() const {
-  return state_->min_pubslisher_duration_;
+  return state_->min_publisher_duration_;
 }
 
 unsigned int BatPublishers::getPublisherMinVisits() const {
@@ -633,7 +690,7 @@ bool BatPublishers::isEligibleForContribution(const ledger::PublisherInfo& info)
     return false;
 
   return info.score > 0 &&
-    info.duration >= state_->min_pubslisher_duration_ &&
+    info.duration >= state_->min_publisher_duration_ &&
     info.visits >= state_->min_visits_;
 
 }
@@ -793,7 +850,7 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
         ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
         visit_data.local_month,
         visit_data.local_year,
-        ledger::PUBLISHER_EXCLUDE::DEFAULT,
+        ledger::PUBLISHER_EXCLUDE::ALL,
         false,
         ledger_->GetReconcileStamp());
 
@@ -809,7 +866,7 @@ void BatPublishers::onPublisherActivity(ledger::Result result,
     ledger_->OnPublisherActivity(result, std::move(info), windowId);
   }
 
-  if (result == ledger::Result::NOT_FOUND) {
+  if (result == ledger::Result::NOT_FOUND && !visit_data.domain.empty()) {
     saveVisitInternal(visit_data.domain,
                       visit_data,
                       0,

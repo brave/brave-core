@@ -53,6 +53,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void setNumExcludedSites(const unsigned int& amount);
 
   void setExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude);
+  void setPanelExclude(const std::string& publisher_id,
+    const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId);
+
   void restorePublishers();
 
   void setPublisherAllowNonVerified(const bool& allow);
@@ -153,6 +156,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void onSetExcludeInternal(
     ledger::PUBLISHER_EXCLUDE exclude,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info);
+  void onSetPanelExcludeInternal(
+    ledger::PUBLISHER_EXCLUDE exclude,
+    uint64_t windowId,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info);
 

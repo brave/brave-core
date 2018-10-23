@@ -62,7 +62,7 @@ class LedgerImpl : public ledger::Ledger,
   void GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
                             ledger::GetPublisherInfoListCallback callback) override;
-                     
+
   void DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
@@ -142,6 +142,9 @@ class LedgerImpl : public ledger::Ledger,
   std::string URIEncode(const std::string& value) override;
   void SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) override;
   void SetPublisherExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) override;
+  void SetPublisherPanelExclude(const std::string& publisher_id,
+    const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId) override;
+
   void RestorePublishers() override;
   bool IsWalletCreated() const override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) override;

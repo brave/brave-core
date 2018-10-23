@@ -67,11 +67,11 @@ void LedgerImpl::AddRecurringPayment(const std::string& publisher_id, const doub
 void LedgerImpl::MakePayment(const ledger::PaymentData& payment_data) {
   bat_publishers_->MakePayment(payment_data);
 }
-  
+
 braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(const std::string& viewingId) {
   return bat_client_->GetReconcileById(viewingId);
 }
-  
+
 void LedgerImpl::RemoveReconcileById(const std::string& viewingId) {
   bat_client_->removeReconcileById(viewingId);
 }
@@ -296,6 +296,11 @@ void LedgerImpl::SetPublisherExclude(const std::string& publisher_id, const ledg
   bat_publishers_->setExclude(publisher_id, exclude);
 }
 
+void LedgerImpl::SetPublisherPanelExclude(const std::string& publisher_id,
+  const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId) {
+  bat_publishers_->setPanelExclude(publisher_id, exclude, windowId);
+}
+
 void LedgerImpl::RestorePublishers() {
   bat_publishers_->restorePublishers();
 }
@@ -431,7 +436,7 @@ void LedgerImpl::Reconcile() {
   uint64_t now = std::time(nullptr);
   uint64_t nextReconcileTimestamp = GetReconcileStamp();
 
-  uint64_t time_to_next_reconcile = (nextReconcileTimestamp == 0 || nextReconcileTimestamp < now) ? 
+  uint64_t time_to_next_reconcile = (nextReconcileTimestamp == 0 || nextReconcileTimestamp < now) ?
     0 : nextReconcileTimestamp - now;
 
   ledger_client_->SetTimer(time_to_next_reconcile, last_reconcile_timer_id_);
@@ -628,7 +633,7 @@ void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
                                 const ledger::BalanceReportInfo& report_info) {
   bat_publishers_->setBalanceReport(month, year, report_info);
 }
-  
+
 void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) {
   if (publisher.id.empty()) {
     // TODO add error flow
