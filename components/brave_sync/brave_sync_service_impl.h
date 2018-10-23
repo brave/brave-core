@@ -17,6 +17,8 @@
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkDeleted);
 
+class BraveSyncServiceTest;
+
 namespace base {
 class RepeatingTimer;
 }
@@ -69,6 +71,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkDeleted);
+  friend class ::BraveSyncServiceTest;
+
   // SyncMessageHandler overrides
   void BackgroundSyncStarted(bool startup) override;
   void BackgroundSyncStopped(bool shutdown) override;

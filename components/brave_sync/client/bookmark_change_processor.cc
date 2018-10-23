@@ -193,7 +193,8 @@ BookmarkChangeProcessor::BookmarkChangeProcessor(
     : sync_client_(sync_client),
       sync_prefs_(sync_prefs),
       bookmark_model_(BookmarkModelFactory::GetForBrowserContext(
-          Profile::FromBrowserContext(profile))) {
+          Profile::FromBrowserContext(profile))),
+      deleted_node_root_(nullptr) {
   DCHECK(sync_client_);
   DCHECK(sync_prefs);
   DCHECK(bookmark_model_);
