@@ -11,7 +11,8 @@ import { Draggable } from 'react-beautiful-dnd'
 import { Tile, TileActionsContainer, TileAction } from '../../../../../src/features/newTab/default'
 
 // Icons
-import { AlertShieldIcon, SendIcon, CloseStrokeIcon } from '../../../../../src/components/icons'
+import { PinIcon, BookmarkOIcon, TrashIcon } from '../../../../../src/components/icons'
+// import { BookmarkIcon } from '../../../../../src/components/icons'
 
 interface Props {
   item: {
@@ -36,9 +37,10 @@ export default class TopSite extends React.PureComponent<Props, {}> {
             style={provided.draggableProps.style}
           >
             <TileActionsContainer>
-              <TileAction><AlertShieldIcon /></TileAction>
-              <TileAction><SendIcon /></TileAction>
-              <TileAction><CloseStrokeIcon /></TileAction>
+              <TileAction><PinIcon /></TileAction>
+              <TileAction><BookmarkOIcon /></TileAction>
+              {/* Hover is BookmarkIcon */}
+              <TileAction><TrashIcon /></TileAction>
             </TileActionsContainer>
             {item.content}
           </Tile>

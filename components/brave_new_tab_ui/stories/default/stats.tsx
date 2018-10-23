@@ -10,10 +10,9 @@ export default class Stats extends React.PureComponent<{}, {}> {
   render () {
     return (
       <StatsContainer>
-        <StatsItem counter='3' description='Trackers Blocked' />
-        <StatsItem counter='3' description='Ads Blocked' />
-        <StatsItem counter='3' description='HTTPS Upgrades' />
-        <StatsItem counter='3' text='minutes' description='Estimated Time Saved' />
+        <StatsItem counter='42' description='Trackers Blocked' />
+        <StatsItem counter='105' description='Ads Blocked' />
+        <StatsItem counter='5' text='minutes' description='Estimated Time Saved' />
       </StatsContainer>
     )
   }

@@ -16,7 +16,7 @@ export const Page = styled<{}, 'div'>('div')`
   justify-content: space-between;
   height: 100%;
   min-height: 100vh;
-  padding: 80px 60px 40px;
+  padding: 100px 100px;
 `
 
 interface DynamicBackgroundProps {
@@ -40,25 +40,26 @@ export const Gradient = styled<{}, 'div'>('div')`
   left: 0;
   width: 100%;
   background: linear-gradient(#000000, rgba(0, 0, 0, 0));
-  height: 400px;
+  height: 700px;
 `
 
 export const Link = styled<{}, 'a'>('a')`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  font-weight: 400;
-  color: #fff;
-  font-size: 13px;
-  text-transform: uppercase;
-  text-decoration: underline;
+  font-weight: 200;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  text-decoration: none;
+  font-family: Muli, sans-serif;
 `
 
 export const PhotoName = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  font-weight: 400;
+  font-weight: 600;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 23px;
+  font-size: 15px;
+  font-family: Muli, sans-serif;
 `
 
 export const Navigation = styled<{}, 'nav'>('nav')`
@@ -68,9 +69,9 @@ export const Navigation = styled<{}, 'nav'>('nav')`
 export const IconLink = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   display: flex;
-  width: 35px;
-  height: 35px;
-  margin: 15px 5px;
+  width: 32px;
+  height: 32px;
+  margin: 0px 10px;
   cursor: default;
   color: #fff;
 `

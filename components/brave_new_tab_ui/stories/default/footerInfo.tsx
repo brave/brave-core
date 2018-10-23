@@ -8,13 +8,14 @@ import * as React from 'react'
 import { Link, Navigation, IconLink, PhotoName } from '../../../../src/features/newTab/default'
 
 // Icons
-import { SettingsIcon, SendIcon, PaymentDueIcon } from '../../../../src/components/icons'
+import { SettingsIcon, FolderIcon, HistoryIcon } from '../../../../src/components/icons'
 
 export default class FooterInfo extends React.PureComponent<{}, {}> {
   render () {
     return (
       <>
       <div>
+        <PhotoName>Paris: The Roof</PhotoName>
         <Link
           href='https://www.photoserge.com/'
           rel='noopener'
@@ -22,12 +23,11 @@ export default class FooterInfo extends React.PureComponent<{}, {}> {
         >
           Serge Ramelli
         </Link>
-        <PhotoName>Paris: The Roof</PhotoName>
       </div>
         <Navigation>
           <IconLink><SettingsIcon /></IconLink>
-          <IconLink><SendIcon /></IconLink>
-          <IconLink><PaymentDueIcon /></IconLink>
+          <IconLink><FolderIcon /></IconLink>
+          <IconLink><HistoryIcon /></IconLink>
         </Navigation>
       </>
     )

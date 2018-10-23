@@ -6,6 +6,7 @@ import styled from '../../../../theme'
 
 export const Header = styled<{}, 'header'>('header')`
   box-sizing: border-box;
+  align-items: center;
   display: grid;
   height: 100%;
   grid-template-columns: 1fr auto auto;
@@ -51,7 +52,7 @@ export const Header = styled<{}, 'header'>('header')`
 
 export const Main = styled<{}, 'main'>('main')`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `
 
 export const Footer = styled<{}, 'footer'>('footer')`
@@ -59,6 +60,7 @@ export const Footer = styled<{}, 'footer'>('footer')`
   display: grid;
   height: 100%;
   margin-top: 60px;
+  align-items: center;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto;
   grid-gap: 0;
@@ -74,11 +76,10 @@ export const Footer = styled<{}, 'footer'>('footer')`
 
   @media screen and (max-width: 904px) {
     grid-template-areas:
-      "credits"
-      "actions";
+      "credits actions";
 
     > *:first-child {
-      text-align: right;
+      text-align: left;
     }
 
     > *:nth-child(2) {

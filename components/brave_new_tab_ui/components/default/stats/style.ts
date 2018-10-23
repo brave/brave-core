@@ -16,7 +16,13 @@ export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
 
   & > li {
     display: inline-block;
-    margin-right: 40px;
+    margin-right: 50px;
+  }
+
+  @media screen and (max-width: 904px) {
+    & > li {
+      margin: 20px;
+    }
   }
 `
 
@@ -51,9 +57,9 @@ export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
 
 export const StyledStatsItemText = styled<{}, 'span'>('span')`
   color: #FFF;
-  font-size: 20px;
-  margin-left: 4px;
-  font-family: ${p => p.theme.fontFamily.heading};
+  margin-left: 5px;
+  display: inline;
+  letter-spacing: 0;
 `
 
 export const StyledStatsItemDescription = styled<{}, 'div'>('div')`

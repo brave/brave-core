@@ -20,12 +20,12 @@ export const Tile = styled<TileProps, 'div'>('div')`
   background-color: ${p => p.isDragging ? 'lightgray' : '#fff'};
   position: relative;
   user-select: none;
-  margin: 0 6px 0 0;
+  margin: 0 12px 0 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
+  box-shadow: 1px 1px 6px 2px rgba(0,0,0,0.3);
+  border-radius: 8px;
   width: 80px;
   height: 80px;
   font-size: 38px;
@@ -34,22 +34,22 @@ export const Tile = styled<TileProps, 'div'>('div')`
 export const TileActionsContainer = styled<{}, 'nav'>('nav')`
   box-sizing: border-box;
   position: absolute;
-  font-size: 10px;
   top: 0;
   left: 0;
   right: 0;
   text-align: center;
   display: flex;
   justify-content: space-between;
-  padding: 4px 6px;
+  padding: 6px 8px;
 `
+// these needs hover, and active states for the icons. BookmarkIcon and PinIcon
 
 export const TileAction = styled<{}, 'a'>('a')`
   box-sizing: border-box;
   color: #000;
-  width: 16px;
-  height: 16px;
-  font-size: 16px;
+  width: 12px;
+  height: 12px;
+  font-size: 12px;
   padding: 0;
   margin: 0;
   text-decoration: none;

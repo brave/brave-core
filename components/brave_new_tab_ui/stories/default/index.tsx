@@ -13,7 +13,9 @@ import Stats from './stats'
 import FooterInfo from './footerInfo'
 
 // Assets
-const fakeBackground = require('../../../assets/img/newtab_bg.jpg')
+const fakeBackground = require('../../../assets/img/spacex_1.jpg')
+// Additional images are uploaded in img for randomizing functionality
+
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
 
