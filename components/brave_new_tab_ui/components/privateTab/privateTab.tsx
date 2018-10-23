@@ -17,7 +17,6 @@ import {
   Text,
   PrivateImage,
   DuckDuckGoImage,
-  TorLockImage,
   Separator,
   FakeButton,
   Link
@@ -25,6 +24,7 @@ import {
 
 // Components
 import { Toggle } from 'brave-ui/features/shields'
+import TorContent from './torContent'
 
 // Helpers
 import { getLocale } from '../../../common/locale'
@@ -74,12 +74,7 @@ export default class PrivateTab extends React.PureComponent<Props, {}> {
           </ButtonGroup>
         </Box>
         <Box>
-          <Content>
-            <TorLockImage />
-            <SubTitle>{getLocale('boxTorLabel')}</SubTitle>
-            <Title>{getLocale('boxTorTitle')}</Title>
-            <Text>{getLocale('boxTorText2')}</Text>
-          </Content>
+          <TorContent />
           <Separator />
           <FakeButton href='https://support.brave.com/hc/en-us/articles/360018121491' target='_blank'>
             {getLocale('boxTorButton')}
