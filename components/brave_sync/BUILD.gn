@@ -124,6 +124,8 @@ source_set("brave_sync_testutil") {
     ":brave_sync",
     "//base",
     "//content/public/browser",
+    "//chrome/test:test_support",
+    "//testing/gtest",
   ]
 
   sources = [

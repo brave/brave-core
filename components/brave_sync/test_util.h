@@ -8,12 +8,59 @@
 #include <memory>
 
 #include "base/files/file_path.h"
+#include "brave/components/brave_sync/client/brave_sync_client.h"
+#include "brave/components/brave_sync/jslib_messages.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
+class KeyedService;
 class Profile;
+
+namespace bookmarks {
+class BookmarkPermanentNode;
+}
+
+namespace content {
+class BrowserContext;
+}
 
 namespace brave_sync {
 
+class MockBraveSyncClient : public BraveSyncClient {
+ public:
+  MockBraveSyncClient();
+  ~MockBraveSyncClient() override;
+
+  MOCK_METHOD0(sync_message_handler, SyncMessageHandler*());
+  MOCK_METHOD4(SendGotInitData, void(const Uint8Array& seed,
+    const Uint8Array& device_id, const client_data::Config& config,
+    const std::string& sync_words));
+  MOCK_METHOD3(SendFetchSyncRecords, void(
+    const std::vector<std::string>& category_names, const base::Time& startAt,
+    const int max_records));
+  MOCK_METHOD0(SendFetchSyncDevices, void());
+  MOCK_METHOD2(SendResolveSyncRecords, void(const std::string& category_name,
+    std::unique_ptr<SyncRecordAndExistingList> list));
+  MOCK_METHOD2(SendSyncRecords, void (const std::string& category_name,
+    const RecordsList& records));
+  MOCK_METHOD0(SendDeleteSyncUser, void());
+  MOCK_METHOD1(SendDeleteSyncCategory, void(const std::string& category_name));
+  MOCK_METHOD2(SendGetBookmarksBaseOrder, void(const std::string& device_id,
+    const std::string& platform));
+  MOCK_METHOD3(SendGetBookmarkOrder, void(const std::string& prevOrder,
+    const std::string& nextOrder, const std::string& parent_order));
+  MOCK_METHOD1(NeedSyncWords, void(const std::string& seed));
+  MOCK_METHOD1(NeedBytesFromSyncWords, void(const std::string& words));
+  MOCK_METHOD0(OnExtensionInitialized, void());
+  MOCK_METHOD0(OnSyncEnabledChanged, void());
+};
+
 std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path);
+
+std::unique_ptr<KeyedService> BuildFakeBookmarkModelForTests(
+     content::BrowserContext* context);
+
+void InvalidateBookmarkChangeProcessor();
 
 }  // namespace brave_sync
 

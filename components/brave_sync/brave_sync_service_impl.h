@@ -14,6 +14,9 @@
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "components/prefs/pref_change_registrar.h"
 
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkDeleted);
+
 namespace base {
 class RepeatingTimer;
 }
@@ -64,6 +67,8 @@ class BraveSyncServiceImpl : public BraveSyncService,
   BraveSyncClient* GetSyncClient() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkDeleted);
   // SyncMessageHandler overrides
   void BackgroundSyncStarted(bool startup) override;
   void BackgroundSyncStopped(bool shutdown) override;
