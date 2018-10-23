@@ -21,7 +21,7 @@ import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
 import { getLocale } from '../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
-import WalletOff from '../../../../node_modules/brave-ui/features/rewards/walletOff'
+import WalletOff from 'brave-ui/features/rewards/walletOff'
 import ModalAddFunds from 'brave-ui/features/rewards/modalAddFunds'
 
 interface State {
