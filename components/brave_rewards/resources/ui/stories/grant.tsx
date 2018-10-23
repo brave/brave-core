@@ -9,6 +9,7 @@ import { withKnobs, text } from '@storybook/addon-knobs'
 import centered from '@storybook/addon-centered/dist'
 // Components
 import GrantClaim from '../../../src/features/rewards/grantClaim'
+import GrantError from '../../../src/features/rewards/grantError'
 import GrantWrapper from '../../../src/features/rewards/grantWrapper'
 import GrantCaptcha from '../../../src/features/rewards/grantCaptcha'
 import GrantComplete from '../../../src/features/rewards/grantComplete'
@@ -60,6 +61,17 @@ storiesOf('Feature Components/Rewards/Grant', module)
             onClose={dummyClick}
             amount={'30.0'}
             date={'8/15/2018'}
+          />
+        </div>
+      )
+    })
+    .add('Grant Error',() => {
+      return (
+        <div style={{ width: '373px', height: '250px', position: 'relative', background: '#fff' }}>
+          <GrantError
+            onClick={dummyClick}
+            buttonText={'ok'}
+            text={'The period for claiming this grant has ended'}
           />
         </div>
       )

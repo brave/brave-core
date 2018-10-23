@@ -211,6 +211,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
         <div style={{ width: '373px', minHeight: '446px' }}>
           <PanelWelcome
             optInAction={dummyClick}
+            optInErrorAction={dummyClick}
             variant={select('Variant', { one: 'One', two: 'Two' }, 'one')}
             moreLink={dummyClick}
           />
