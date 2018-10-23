@@ -60,6 +60,17 @@ class BraveRewardsGetCurrentReportFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsIncludeInAutoContributionFunction :
+  public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.includeInAutoContribution", UNKNOWN)
+
+ protected:
+  ~BraveRewardsIncludeInAutoContributionFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
