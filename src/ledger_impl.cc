@@ -246,7 +246,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
   initializing_ = false;
   ledger_client_->OnWalletInitialized(result);
 
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result == ledger::Result::LEDGER_OK || result == ledger::Result::WALLET_CREATED) {
     initialized_ = true;
     LoadPublisherList(this);
     Reconcile();

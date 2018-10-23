@@ -198,7 +198,7 @@ void BatClient::registerPersonaCallback(bool result,
 
   resetReconcileStamp();
 
-  ledger_->OnWalletInitialized(ledger::Result::LEDGER_OK);
+  ledger_->OnWalletInitialized(ledger::Result::WALLET_CREATED);
 }
 
 void BatClient::resetReconcileStamp() {
