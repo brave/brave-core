@@ -12,14 +12,13 @@ include_directories(include
   deps/bat-native-rapidjson/include
   deps/bat-native-usermodel/include
   third_party/curl/include
-  third_party/uriparser/include
-  third_party/sqlite_modern_cpp/hdr
-  third_party/sqlite)
+  third_party/uriparser/include)
 
 file(GLOB SOURCES
   "src/*.cc"
   "deps/bat-native-usermodel/src/*.cc"
   "deps/bat-native-usermodel/src/*.c"
+  "deps/bat-native-confirmations/src/*.cc"
   "third_party/curl/src"
   "third_party/sqlite/*.c"
   "third_party/uriparser/src/*.c")

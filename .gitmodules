@@ -13,3 +13,6 @@
 [submodule "third_party/uriparser"]
 	path = third_party/uriparser
 	url = git@github.com:uriparser/uriparser.git
+[submodule "deps/bat-native-confirmations"]
+	path = deps/bat-native-confirmations
+	url = git@github.com:brave-intl/bat-native-rapidjson.git
