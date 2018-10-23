@@ -14,10 +14,9 @@ const createWallet = (state: Rewards.State) => {
   state.enabledAds = true
   state.enabledContribute = true
   state.createdTimestamp = new Date().getTime()
+
   chrome.send('brave_rewards.getReconcileStamp', [])
   chrome.send('brave_rewards.getAddresses', [])
-  chrome.send('brave_rewards.saveSetting', ['enabledMain', 'true'])
-  chrome.send('brave_rewards.saveSetting', ['enabledContribute', 'true'])
   chrome.send('brave_rewards.getContributionAmount', [])
 
   return state
@@ -182,6 +181,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         }
         state = { ...state }
         state = createWallet(state)
+        state.firstLoad = false
         break
       }
     case types.ON_CONTRIBUTION_AMOUNT:
