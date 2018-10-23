@@ -20,7 +20,6 @@ file(GLOB SOURCES
   "deps/bat-native-usermodel/src/*.c"
   "deps/bat-native-confirmations/src/*.cc"
   "third_party/curl/src"
-  "third_party/sqlite/*.c"
   "third_party/uriparser/src/*.c")
 
 add_executable(batnativeads ${SOURCES})
