@@ -86,3 +86,11 @@ export const StyledTrademark = styled<{}, 'span'>('span')`
   font-weight: 500;
   opacity: 0.7;
 ` as any
+
+export const StyledErrorMessage = styled<{}, 'span'>('span')`
+  font-size: 16px;
+  display: block;
+  margin: 0px auto 20px;
+  line-height: 28px;
+  color: #FFF;
+`

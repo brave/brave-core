@@ -132,25 +132,39 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       </div>
     )
   }))
-  .add('Pre Opt-In', () => {
+  .add('Pre Opt-In', withState({ creatingOne: false, creatingTwo: false }, (store) => {
+    const creatingOne = () => {
+      store.set({ creatingOne: true })
+    }
+
+    const creatingTwo = () => {
+      store.set({ creatingTwo: true })
+    }
+
     return (
       <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
         <div style={{ position: 'absolute', top: '40px', left: '120px', width: '373px', minHeight: '446px', borderRadius: '8px', overflow: 'hidden' }}>
           <PanelWelcome
             variant={'one'}
-            optInAction={dummyOptInAction}
+            creating={store.state.creatingOne}
+            optInAction={creatingOne}
             moreLink={dummyOptInAction}
+            optInErrorAction={dummyOptInAction}
+            error={boolean('Wallet Creation Error', false)}
           />
         </div>
         <div style={{ position: 'absolute', top: '40px', left: '565px', width: '373px', minHeight: '446px', borderRadius: '8px', overflow: 'hidden' }}>
           <PanelWelcome
             variant={'two'}
-            optInAction={dummyOptInAction}
+            optInAction={creatingTwo}
+            creating={store.state.creatingTwo}
+            optInErrorAction={dummyOptInAction}
+            error={boolean('Wallet Creation Error', false)}
           />
         </div>
       </div>
     )
-  })
+  }))
   .add('Wallet Panel', withState({ showSummary: false, tipsEnabled: true, includeInAuto: true }, (store) => {
     const curveRgb = '233,235,255'
     const panelRgb = '249,251,252'

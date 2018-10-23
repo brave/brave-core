@@ -14,10 +14,11 @@ import {
   StyledDescText,
   StyledFooterText,
   StyledButtonWrapper,
-  StyledTrademark
+  StyledTrademark,
+  StyledErrorMessage
 } from './style'
 
-import { BatColorIcon } from '../../../components/icons'
+import { BatColorIcon, LoaderIcon } from '../../../components/icons'
 import Button from '../../../components/buttonsIndicators/button'
 
 export type Variant = 'one' | 'two'
@@ -25,8 +26,11 @@ export type Variant = 'one' | 'two'
 export interface Props {
   id?: string
   variant?: Variant
+  creating?: boolean
+  error?: boolean
   moreLink?: () => void
   optInAction: () => void
+  optInErrorAction: () => void
 }
 
 export default class PanelWelcome extends React.PureComponent<Props, {}> {
@@ -50,7 +54,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, optInAction, moreLink } = this.props
+    const { id, optInAction, optInErrorAction, moreLink } = this.props
 
     let props = {}
 
@@ -77,13 +81,42 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
             {getLocale(this.locale.desc)}
           </StyledDescText>
           <StyledButtonWrapper>
-            <Button
-              size='call-to-action'
-              type='subtle'
-              level='secondary'
-              onClick={optInAction}
-              text={getLocale(this.locale.button)}
-            />
+            {
+              this.props.creating && !this.props.error
+              ? <Button
+                level='secondary'
+                size='call-to-action'
+                type='subtle'
+                text={getLocale('braveRewardsCreatingText')}
+                disabled={true}
+                data-test-id='optInAction'
+                icon={{
+                  image: <LoaderIcon />,
+                  position: 'after'
+                }}
+              />
+              : this.props.error
+                ? <>
+                    <StyledErrorMessage>
+                      {getLocale('walletFailedTitle')}
+                    </StyledErrorMessage>
+                    <Button
+                      level='secondary'
+                      size='call-to-action'
+                      type='subtle'
+                      text={getLocale('walletFailedButton')}
+                      onClick={optInErrorAction}
+                      data-test-id='optInErrorAction'
+                    />
+                  </>
+                : <Button
+                  size='call-to-action'
+                  type='subtle'
+                  level='secondary'
+                  onClick={optInAction}
+                  text={getLocale(this.locale.button)}
+                />
+            }
           </StyledButtonWrapper>
           <StyledFooterText {...props}>
             {getLocale(this.locale.footer)}
