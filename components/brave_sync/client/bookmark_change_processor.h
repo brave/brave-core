@@ -115,6 +115,7 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   // access only in UI thread <prev_order, next_order> => <node_id, action>
   std::map<std::string, std::tuple<int64_t, int>> rr_map_;
 
+  bookmarks::BookmarkNode* deleted_node_root_;
 
   DISALLOW_COPY_AND_ASSIGN(BookmarkChangeProcessor);
 };

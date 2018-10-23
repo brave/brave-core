@@ -40,11 +40,9 @@ class ScopedPauseObserver {
 
 namespace brave_sync {
 
-int64_t deleted_node_id = -1;
-bookmarks::BookmarkNode* deleted_node_root;
-
 bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node) {
-  return node->id() == deleted_node_id;
+  return node->GetTitledUrlNodeTitle() ==
+      base::UTF8ToUTF16("Deleted Bookmarks");
 }
 
 bookmarks::BookmarkPermanentNodeList
@@ -56,8 +54,7 @@ LoadExtraNodes(bookmarks::LoadExtraCallback callback,
     extra_nodes = std::move(callback).Run(next_node_id);
 
   auto node = std::make_unique<bookmarks::BookmarkPermanentNode>(*next_node_id);
-  deleted_node_id = *next_node_id;
-  *next_node_id = deleted_node_id + 1;
+  (*next_node_id)++;
   node->set_type(bookmarks::BookmarkNode::FOLDER);
   node->set_visible(false);
   node->SetTitle(base::UTF8ToUTF16("Deleted Bookmarks"));
@@ -604,11 +601,21 @@ void BookmarkChangeProcessor::GetAllSyncData(
 }
 
 bookmarks::BookmarkNode* BookmarkChangeProcessor::GetDeletedNodeRoot() {
-  if (!deleted_node_root)
-    deleted_node_root = const_cast<bookmarks::BookmarkNode*>(
-        bookmarks::GetBookmarkNodeByID(bookmark_model_, deleted_node_id));
-
-  return deleted_node_root;
+  if (!deleted_node_root_) {
+    ui::TreeNodeIterator<const bookmarks::BookmarkNode>
+        iterator(bookmark_model_->root_node());
+    while (iterator.has_next()) {
+      const bookmarks::BookmarkNode* node = iterator.Next();
+      if (node->is_permanent_node() &&
+          IsSyncManagedNode(
+              static_cast<const bookmarks::BookmarkPermanentNode*>(node))) {
+        deleted_node_root_ = const_cast<bookmarks::BookmarkNode*>(node);
+        return deleted_node_root_;
+      }
+    }
+  }
+  DCHECK(deleted_node_root_);
+  return deleted_node_root_;
 }
 
 void BookmarkChangeProcessor::SendUnsynced(
