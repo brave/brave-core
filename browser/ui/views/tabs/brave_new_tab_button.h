@@ -18,11 +18,6 @@ class BraveNewTabButton : public NewTabButton {
     ~BraveNewTabButton() override;
   private:
     gfx::Size CalculatePreferredSize() const override;
-    void PaintPlusIcon(gfx::Canvas* canvas, int offset, int size) override;
-    SkPath GetNewerMaterialUiButtonPath(float button_y,
-                                        float scale,
-                                        bool extend_to_top,
-                                        bool for_fill) const override;
     DISALLOW_COPY_AND_ASSIGN(BraveNewTabButton);
 };
 

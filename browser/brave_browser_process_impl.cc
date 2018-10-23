@@ -31,8 +31,8 @@ using content::BrowserThread;
 BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
 }
 
-BraveBrowserProcessImpl::BraveBrowserProcessImpl(scoped_refptr<PersistentPrefStore> user_pref_store)
-    : BrowserProcessImpl(user_pref_store),
+BraveBrowserProcessImpl::BraveBrowserProcessImpl(ChromeFeatureListCreator* chrome_feature_list_creator)
+    : BrowserProcessImpl(chrome_feature_list_creator),
       profile_creation_monitor_(new ProfileCreationMonitor) {
   g_browser_process = this;
   g_brave_browser_process = this;

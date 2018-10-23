@@ -17,7 +17,7 @@
 class BraveDownloadItemModel {
  public:
   // Constructs a BraveDownloadItemModel that encapsulates DownloadItemModel.
-  explicit BraveDownloadItemModel(DownloadItemModel& model);
+  explicit BraveDownloadItemModel(DownloadUIModel& model);
   ~BraveDownloadItemModel();
 
   // Method that returns a string suitable for use as a tooltip. For
@@ -35,7 +35,7 @@ class BraveDownloadItemModel {
   base::string16 GetOriginURLText(bool& is_secure);
 
   // Reference to the encapsulated model.
-  DownloadItemModel& model_;
+  DownloadUIModel& model_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemModel);
 };

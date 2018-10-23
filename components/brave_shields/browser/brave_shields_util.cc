@@ -4,6 +4,7 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 
+#include "base/task/post_task.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -13,6 +14,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/common/referrer.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/resource_request_info.h"
 #include "content/public/browser/websocket_handshake_request_info.h"
 #include "extensions/browser/extension_api_frame_id_map.h"

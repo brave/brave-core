@@ -30,6 +30,7 @@ class BraveToolbarView : public ToolbarView {
     // These two functions call through to GetSizeInternal(), passing themselves
     // as the function pointer |View::*get_size|.
     gfx::Size GetSizeInternal(gfx::Size (View::*get_size)() const) const override;
+
     int SetLocationBarBounds(const int available_width,
                             const int location_bar_min_width,
                             const int next_element_x,

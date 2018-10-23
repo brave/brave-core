@@ -194,9 +194,6 @@ const char kSettingsSearchHelpURL[] =
     "https://support.brave.com/";
 #endif
 
-const char kSmartLockHelpPage[] =
-    "https://community.brave.com";
-
 const char kSyncAndGoogleServicesLearnMoreURL[] =
     "https://support.brave.com/";
 
