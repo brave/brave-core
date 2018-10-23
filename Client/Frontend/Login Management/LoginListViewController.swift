@@ -70,7 +70,7 @@ class LoginListViewController: UIViewController {
     fileprivate var selectedIndexPaths = [IndexPath]()
 
     fileprivate let tableView = UITableView()
-
+    
     weak var settingsDelegate: SettingsDelegate?
 
     init(profile: Profile) {
@@ -89,7 +89,8 @@ class LoginListViewController: UIViewController {
         notificationCenter.addObserver(self, selector: #selector(remoteLoginsDidChange), name: .DataRemoteLoginChangesWereApplied, object: nil)
         notificationCenter.addObserver(self, selector: #selector(dismissAlertController), name: .UIApplicationDidEnterBackground, object: nil)
 
-        automaticallyAdjustsScrollViewInsets = false
+        tableView.contentInsetAdjustmentBehavior = .never
+
         self.view.backgroundColor = UIColor.Photon.White100
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(beginEditing))
 

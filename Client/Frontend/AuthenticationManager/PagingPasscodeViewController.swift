@@ -13,6 +13,7 @@ class PagingPasscodeViewController: BasePasscodeViewController {
         scrollView.isUserInteractionEnabled = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.contentInsetAdjustmentBehavior = .never
         return scrollView
     }()
 
