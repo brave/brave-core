@@ -105,7 +105,7 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
 };
 
-TEST_F(BraveBookmarkChangeProcessorTest, /*DISABLED_*/BookmarkAdded) {
+TEST_F(BraveBookmarkChangeProcessorTest, BookmarkAdded) {
   change_processor()->Start();
 
   EXPECT_CALL(*sync_client(), SendGetBookmarkOrder(_,_,_))
@@ -142,6 +142,6 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkDeleted) {
   ASSERT_EQ(nodes.size(), 1u);
   ASSERT_NE(nodes.at(0), nullptr);
   EXPECT_CALL(*sync_client(), SendSyncRecords(_,_)).Times(1);
-  model()->Remove(nodes.at(0));  // Crashes for now here
+  model()->Remove(nodes.at(0));
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
