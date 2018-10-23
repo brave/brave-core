@@ -1,0 +1,12 @@
+diff --git a/components/gcm_driver/gcm_client_impl.cc b/components/gcm_driver/gcm_client_impl.cc
+index 168bef640e08..60ed5a554221 100644
+--- a/components/gcm_driver/gcm_client_impl.cc
++++ b/components/gcm_driver/gcm_client_impl.cc
+@@ -865,6 +865,7 @@ void GCMClientImpl::ResetCache() {
+ 
+ void GCMClientImpl::Register(
+     const linked_ptr<RegistrationInfo>& registration_info) {
++  return; // GCM disabled in Brave
+   DCHECK_EQ(state_, READY);
+ 
+   // Registrations should never pass as an app_id the special category used
