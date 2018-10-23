@@ -397,7 +397,7 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <!-- Also update IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP in google_chrome_strings.grd and chromium_strings.grd. -->
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in incognito window command">
-            Open link in &amp;private window
+            Open link in inco&amp;gnito window
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="The name of the open a link as a different user context menu">
             Open link as
@@ -609,7 +609,7 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <!-- Also update IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP in google_chrome_strings.grd and chromium_strings.grd. -->
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in incognito window command">
-            Open Link in &amp;Private Window
+            Open Link in Inco&amp;gnito Window
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="In Title Case: The name of the open a link as a different user context menu">
             Open Link as
@@ -827,7 +827,7 @@ are declared in tools/grit/grit_rule.gni.
             &amp;New window
           </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new incognito window">
-            New &amp;private window
+            New &amp;incognito window
           </message>
           <message name="IDS_PIN_TO_START_SCREEN" desc="The text label of the Pin to start screen menu item">
             Pin this page to Start screen...
@@ -898,7 +898,7 @@ are declared in tools/grit/grit_rule.gni.
             &amp;New Window
           </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new incognito window">
-            New &amp;Private Window
+            New &amp;Incognito Window
           </message>
           <message name="IDS_PIN_TO_START_SCREEN" desc="In Title Case: The text label of the Pin to start screen menu item">
             Pin this Page to Start Screen...
@@ -1531,7 +1531,7 @@ are declared in tools/grit/grit_rule.gni.
         Downloaded by &lt;a href="<ph name="URL">$1<ex>adblock.com</ex></ph>"&gt;<ph name="EXTENSION">$2<ex>The Best Brave Extension Ever</ex></ph>&lt;/a&gt;
       </message>
       <message name="IDS_DOWNLOAD_IN_INCOGNITO" desc="Indicates a download was started in Incognito mode.">
-        Downloaded in Private Window
+        Downloaded in Incognito
       </message>
 
       <!-- Download Alerts for Accessibility -->
@@ -1713,7 +1713,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
       <if expr="not is_macosx">
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last incognito window while one or more downloads are in progress. This string is shown on Windows, Brave OS, and Linux, which all use 'Exit' to refer to closing a browser.">
-          Exit private window mode anyway?
+          Exit incognito mode anyway?
         </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last incognito window while one or more downloads are in progress. When clicked, the button will abandon the download and exit. This string is shown on Windows, Brave OS, and Linux, which all use 'Exit' to refer to closing a browser.">
           Exit
@@ -1721,7 +1721,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
       <if expr="is_macosx">
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last incognito window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
-          Quit private window mode anyway?
+          Quit incognito mode anyway?
         </message>
         <message name="IDS_ABANDON_DOWNLOAD_DIALOG_EXIT_BUTTON" desc="Button text on a dialog shown when the user closes the browser or the last incognito window while one or more downloads are in progress. When clicked, the button will abandon the download and quit. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
           Quit
@@ -2961,19 +2961,19 @@ are declared in tools/grit/grit_rule.gni.
           Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager incognito extension row (may not be visible if incognito is not open)">
-          Private Window Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
+          Incognito Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_APP_PREFIX" desc="The prefix for a Task Manager app row (always visible if the app has a view)">
           App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager incognito app row (may not be visible if the app is not open in incognito)">
-          Private App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
+          Incognito App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_TAB_PREFIX" desc="The prefix for a Task Manager Tab row">
           Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager incognito Tab row (may not be visible if incognito is not open)">
-          Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
+          Incognito Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_BACKGROUND_APP_PREFIX" desc="The prefix for a Task Manager background app task representing a BackgroundContents">
           Background App: <ph name="BACKGROUND_APP_URL">$1<ex>http://www.google.com</ex></ph>
@@ -3015,7 +3015,7 @@ are declared in tools/grit/grit_rule.gni.
           Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for an Incognito out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in incognito mode)">
-          Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+          Incognito Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
           App: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
@@ -3033,7 +3033,7 @@ are declared in tools/grit/grit_rule.gni.
           Subframes for: <ph name="PARENT_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_ISOLATED_INCOGNITO_SUBFRAMES_PREFIX" desc="The prefix for an Incognito out-of-process-iframe row in the Task Manager for subframes that were isolated because of 'top document isolation' mode">
-          Private subframes for: <ph name="PARENT_SITE">$1<ex>https://youtube.com/</ex></ph>
+          Incognito subframes for: <ph name="PARENT_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
       </if>
 
@@ -4782,7 +4782,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!--Accessible name/action strings-->
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of an incognito window">
-        <ph name="WINDOW_TITLE">$1</ph> (Private)
+        <ph name="WINDOW_TITLE">$1</ph> (Incognito)
       </message>
       <message name="IDS_ACCESSIBLE_WINDOW_TITLE_WITH_PROFILE_FORMAT" desc="The format for describing the accessible window title when the window is associated with a particular named profile.">
         <ph name="WINDOW_TITLE">$1<ex>Wikipedia - Brave</ex></ph> - <ph name="PROFILE_NAME">$2<ex>John Smith</ex></ph>
@@ -4891,16 +4891,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Get back here fast by bookmarking this page
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        You can browse privately using a private window
+        You can browse privately using an incognito window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_1" desc="Variations option 2. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Use the web without saving your browsing history with a private window
+        Use the web without saving your browsing history with an incognito window
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_2" desc="Variations option 3. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        Using a shared computer? Try opening a private window.
+        Using a shared computer? Try opening an incognito window.
       </message>
       <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
-        To browse privately, click the dots icon menu to open a private window
+        To browse privately, click the dots icon menu to open an incognito window
       </message>
       <message name="IDS_NEWTAB_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the New Tab button, which encourages users to use it.">
         Open a new tab with one click
@@ -7266,7 +7266,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           New Window
         </message>
         <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new incognito window in the file menu.">
-          New Private Window
+          New Incognito Window
         </message>
         <message name="IDS_BACKGROUND_APPS_MAC" desc="The Mac submenu for opening Background Apps.">
           Background Apps
@@ -8116,7 +8116,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
             New window
           </message>
           <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New incognito window menu item">
-            New private window
+            New incognito window
           </message>
           <message name="IDS_APP_LIST_OEM_DEFAULT_FOLDER_NAME" desc="The default name for OEM folders in the App Launcher">
             OEM folder
@@ -8151,7 +8151,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
             New Window
           </message>
           <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New incognito window menu item">
-            New Private Window
+            New Incognito Window
           </message>
           <message name="IDS_APP_LIST_OEM_DEFAULT_FOLDER_NAME" desc="The default name for OEM folders in the App Launcher">
             OEM Folder
@@ -8542,10 +8542,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <!-- External Navigation Strings -->
       <if expr="is_android or chromeos">
         <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user (who is currently in incognito mode) that the site they are currently using is going to share data with an external application." formatter_data="android_java">
-          This site is about to share information with an app outside of private mode.
+          This site is about to share information with an app outside of incognito mode.
         </message>
         <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING_TITLE" desc="Title for dialog asking if the user wants to leave incognito mode. [CHAR-LIMIT=32]" formatter_data="android_java">
-          Leave private mode?
+          Leave incognito mode?
         </message>
         <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_STAY" desc="Label for the dialog button to stay in incognito mode. [CHAR-LIMIT=20]" formatter_data="android_java">
           Stay
