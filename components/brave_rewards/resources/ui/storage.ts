@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Utils
-import { debounce } from '../../common/debounce'
+import { debounce } from '../../../common/debounce'
 
 const keyName = 'rewards-data'
 

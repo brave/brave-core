@@ -1,7 +1,7 @@
 import("//tools/grit/grit_rule.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
-grit("brave_components_resources_grit") {
+grit("resources") {
   source = "brave_components_resources.grd"
 
   output_name = "brave_components_resources_new"
@@ -11,6 +11,7 @@ grit("brave_components_resources_grit") {
     "brave_components_resources.pak",
   ]
   deps = [
+    ":strings",
     "//brave/components/brave_adblock_ui",
     "//brave/components/brave_new_tab_ui",
     "//brave/components/brave_welcome_ui",
@@ -19,10 +20,11 @@ grit("brave_components_resources_grit") {
 
   if (brave_rewards_enabled) {
     deps += [
-      "//brave/components/brave_rewards/ui",
-      "//brave/components/brave_rewards/donate",
+      "//brave/components/brave_rewards/resources",
+      "//brave/components/brave_rewards/resources/extension:resources",
     ]
   }
+
   grit_flags = [
     "-E",
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
@@ -31,3 +33,13 @@ grit("brave_components_resources_grit") {
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
+grit("strings") {
+  source = "brave_components_strings.grd"
+
+  outputs = [
+    "grit/brave_components_strings.h",
+  ]
+
+  output_dir = "$root_gen_dir/components"
+  resource_ids = "//brave/browser/resources/resource_ids"
+}

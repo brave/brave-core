@@ -3,8 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
-#include "brave/components/brave_rewards/browser/balance_report.h"
 
 #include <functional>
 #include <limits.h>
@@ -28,18 +26,20 @@
 #include "bat/ledger/wallet_info.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/extensions/api/brave_rewards.h"
+#include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notifications_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notifications_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
-#include "components/grit/brave_components_resources.h"
 #include "content_site.h"
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
@@ -664,7 +664,7 @@ void RewardsServiceImpl::OnPublisherStateSaved(
 void RewardsServiceImpl::LoadNicewareList(
   ledger::GetNicewareListCallback callback) {
   std::string data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-  IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
+      IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
 
   if (data.empty()) {
     LOG(ERROR) << "Failed to read in niceware list";

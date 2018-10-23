@@ -3,10 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global chrome */
 
-import reducers from '../../../../brave_rewards/ui/reducers/index'
-import * as actions from '../../../../brave_rewards/ui/actions/rewards_actions'
-import { types } from '../../../../brave_rewards/ui/constants/rewards_types'
-import { defaultState } from '../../../../brave_rewards/ui/storage'
+import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
+import * as actions from '../../../../brave_rewards/resources/ui/actions/rewards_actions'
+import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
+import { defaultState } from '../../../../brave_rewards/resources/ui/storage'
 
 describe('wallet reducer', () => {
   const constantDate = new Date('2018-01-01T12:00:00')

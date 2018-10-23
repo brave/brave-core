@@ -18,7 +18,7 @@ import { WalletAddIcon } from 'brave-ui/components/icons'
 import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
 
 // Utils
-import { getLocale } from '../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import WalletOff from 'brave-ui/features/rewards/walletOff'
