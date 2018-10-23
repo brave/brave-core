@@ -174,6 +174,13 @@ const char kPasswordManagerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360018185951-How-do-I-use-the-built-in-password-manager-";
 #endif
 
+const char kPaymentMethodsLearnMoreURL[] =
+#if defined(OS_CHROMEOS)
+    "https://support.brave.com";
+#else
+    "https://support.brave.com";
+#endif
+
 const char kPrivacyLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
     "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-";
