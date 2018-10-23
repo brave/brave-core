@@ -10,6 +10,7 @@ import { SelectBox, Stat, Grid, EmptyButton, ShowMoreIcon } from '../../../../sr
 // Component groups
 import BlockedResources from './blockedReources/blockedResources'
 import StaticList from './blockedReources/staticList'
+import DynamicList from './blockedReources/dynamicList'
 
 // Fake data
 import locale from '../fakeLocale'
@@ -39,15 +40,16 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
     const { favicon, sitename } = this.props
     return (
       <BlockedResources
+        dynamic={true}
         favicon={favicon}
         sitename={sitename}
-        title={locale.javascriptBlocked}
+        title={locale.scriptsOnThisSite}
         onToggle={this.onToggleScriptsBlocked}
         data={data.thirdPartyScriptsBlocked}
       >
-        <StaticList
+        <DynamicList
           onClickDismiss={this.onToggleScriptsBlocked}
-          list={data.blockedFakeResources}
+          list={data.blockedScriptsResouces}
         />
       </BlockedResources>
     )

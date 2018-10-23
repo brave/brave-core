@@ -10,6 +10,9 @@ import { ResourcesListText, ResourcesListScroll, ResourcesFooter } from '../../.
 // Shared components
 import { Button } from '../../../../../src/components'
 
+// Fake data
+import locale from '../../fakeLocale';
+
 interface Props {
   list: any[]
   onClickDismiss: () => void
@@ -24,7 +27,7 @@ export default class StaticList extends React.PureComponent<Props, {}> {
           {list.map((item, index) => <ResourcesListText key={index}>{item}</ResourcesListText>)}
         </ResourcesListScroll>
         <ResourcesFooter>
-          <Button level='primary' type='accent' text='Go Back' onClick={onClickDismiss} />
+          <Button level='primary' type='accent' text={locale.goBack} onClick={onClickDismiss} />
         </ResourcesFooter>
       </>
     )

@@ -13,11 +13,12 @@ import {
   ResourcesList,
   CloseButton,
   CloseIcon,
-  ResourcesLabelGrid,
+  ResourcesLabelGridStatic,
+  ResourcesLabelGridDynamic,
   EmptyButton,
   Stat,
-  ResourcesLabel,
-  ShowLessIcon
+  ShowLessIcon,
+  ResourcesLabelDynamic,
 } from '../../../../../src/features/shields'
 
 interface Props {
@@ -26,11 +27,38 @@ interface Props {
   title: string
   favicon: string
   onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void
+  dynamic?: boolean
+}
+
+const dynamicHeader = (
+  title: string,
+  onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void
+) => {
+  return (
+    <ResourcesLabelGridDynamic>
+      <EmptyButton onClick={onToggle}><ShowLessIcon /></EmptyButton>
+      <ResourcesLabelDynamic>{title}</ResourcesLabelDynamic>
+    </ResourcesLabelGridDynamic>
+  )
+}
+
+const staticHeader = (
+  data: string | number,
+  title: string,
+  onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void
+) => {
+  return (
+    <ResourcesLabelGridStatic>
+      <EmptyButton onClick={onToggle}><ShowLessIcon /></EmptyButton>
+      <Stat>{data}</Stat>
+      <ResourcesLabelDynamic>{title}</ResourcesLabelDynamic>
+    </ResourcesLabelGridStatic>
+  )
 }
 
 export default class BlockedResources extends React.PureComponent<Props, {}> {
   render () {
-    const { sitename, data, title, favicon, onToggle, children } = this.props
+    const { sitename, data, title, favicon, onToggle, dynamic, children } = this.props
     return (
       <Resources>
         <ResourcesHeader>
@@ -40,11 +68,7 @@ export default class BlockedResources extends React.PureComponent<Props, {}> {
           </ResourcesSiteInfo>
           <CloseButton onClick={onToggle}><CloseIcon /></CloseButton>
         </ResourcesHeader>
-        <ResourcesLabelGrid>
-          <EmptyButton onClick={onToggle}><ShowLessIcon /></EmptyButton>
-          <Stat>{data}</Stat>
-          <ResourcesLabel>{title}</ResourcesLabel>
-        </ResourcesLabelGrid>
+        {dynamic ? dynamicHeader(title, onToggle) : staticHeader(data, title, onToggle)}
         <ResourcesList>{children}</ResourcesList>
       </Resources>
     )

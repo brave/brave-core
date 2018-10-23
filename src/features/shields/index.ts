@@ -5,23 +5,48 @@
 import { SelectBox } from './select'
 import { Grid, GridLabel } from './grid'
 import { EmptyButton, CloseButton } from './button'
-import { LinkIcon, ShieldIcon, ShowMoreIcon, ShowLessIcon, CloseIcon } from './icons'
 import { Toggle } from './toggle'
 import { Stat, Link, Label, Highlight, UnHighlight, Description } from './text'
 import { ShieldsPanel, SiteCard, EnabledText, DisabledText, HeaderToggle, Header } from './wrappers'
 import {
+  LinkIcon,
+  ShieldIcon,
+  ShowMoreIcon,
+  ShowLessIcon,
+  CloseIcon,
+  BlockedScriptsIcon,
+  AllowedScriptsIcon
+} from './icons'
+import {
+  ResourcesBlockedLabelGrid,
+  ResourcesBlockedLabelGrid2,
   ResourcesLabelGrid,
+  ResourcesLabelGridDynamic,
+  ResourcesLabelGridStatic,
   ResourcesLabel,
+  ResourcesBlockedLabel2,
+  ResourcesLabelScripts,
+  ResourcesLabelDynamic,
+  ResourcesLabelStatic,
   ResourcesListText,
   ResourcesHeader,
   Resources,
   ResourcesSiteInfo,
   ResourcesList,
   ResourcesListScroll,
-  ResourcesFooter
+  ResourcesFooter,
+  ResourcesFooterGrid,
+  ResourcesFooterGridColumn1,
+  ResourcesFooterGridColumn2,
+  ResourcesLink,
+  ResourcesLabelScriptsAllowed,
+  ResourcesLabelScriptsBlocked,
+  ResourcesLinkUndo
 } from './blockedResources'
 
 export {
+  AllowedScriptsIcon,
+  BlockedScriptsIcon,
   CloseButton,
   CloseIcon,
   Description,
@@ -37,10 +62,27 @@ export {
   Link,
   LinkIcon,
   Resources,
+  ResourcesBlockedLabel2,
+  ResourcesBlockedLabelGrid,
+  ResourcesBlockedLabelGrid2,
   ResourcesFooter,
+  ResourcesFooterGrid,
+  ResourcesFooterGridColumn1,
+  ResourcesFooterGridColumn2,
   ResourcesHeader,
   ResourcesLabel,
+  ResourcesLabelScripts,
   ResourcesLabelGrid,
+  ResourcesLabelGridDynamic,
+  ResourcesLabelGridStatic,
+  ResourcesLabelDynamic,
+  ResourcesLabelStatic,
+  ResourcesLink,
+
+  ResourcesLabelScriptsAllowed,
+  ResourcesLabelScriptsBlocked,
+  ResourcesLinkUndo,
+
   ResourcesList,
   ResourcesListScroll,
   ResourcesListText,

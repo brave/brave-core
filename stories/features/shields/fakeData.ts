@@ -14,18 +14,18 @@ const data = {
   imagesBlocked: '33',
   totalAdsTrackersBlocked: '100',
   blockedScriptsResouces: [
-    { name: 'https://aaaa/com, ', blocked: false },
-    { name: 'https://bbbb/com, ', blocked: false },
-    { name: 'https://cccc/com, ', blocked: false },
-    { name: 'https://dddd/com, ', blocked: false },
-    { name: 'https://eeee/com, ', blocked: false },
-    { name: 'https://ffff/com, ', blocked: false },
-    { name: 'https://gggg/com, ', blocked: false },
-    { name: 'https://hhhh/com, ', blocked: false },
-    { name: 'https://iiii/com, ', blocked: false },
-    { name: 'https://jjjj/com, ', blocked: false },
-    { name: 'https://kkkk/com, ', blocked: false },
-    { name: 'https://llll/com, ', blocked: false }
+    { name: 'https://aaaa/com/123456789123456789123456789, ', blocked: false },
+    { name: 'https://bbbb/com/123456789123456789123456789, ', blocked: false },
+    { name: 'https://cccc/com/123456789123456789123456789, ', blocked: false },
+    { name: 'https://dddd/com/123456789123456789123456789, ', blocked: false },
+    { name: 'https://eeee/com/123456789123456789123456789, ', blocked: false },
+    { name: 'https://ffff/com/123456789123456789123456789, ', blocked: false },
+    { name: 'https://gggg/com/123456789123456789123456789, ', blocked: true },
+    { name: 'https://hhhh/com/123456789123456789123456789, ', blocked: true },
+    { name: 'https://iiii/com/123456789123456789123456789, ', blocked: true },
+    { name: 'https://jjjj/com/123456789123456789123456789, ', blocked: true },
+    { name: 'https://kkkk/com/123456789123456789123456789, ', blocked: true },
+    { name: 'https://llll/com/123456789123456789123456789, ', blocked: true }
   ],
 
   blockedFakeResources: [
