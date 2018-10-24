@@ -38,6 +38,7 @@ grit("strings") {
 
   outputs = [
     "grit/brave_components_strings.h",
+    "brave_components_strings.pak",
   ]
 
   output_dir = "$root_gen_dir/components"

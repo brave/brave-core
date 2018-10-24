@@ -4,6 +4,7 @@
     <output filename="grit/brave_components_strings.h" type="rc_header">
       <emit emit_type='prepend'></emit>
     </output>
+    <output filename="brave_components_strings.pak" type="data_package" />
   </outputs>
   <translations>
     <file path="strings/brave_components_resources_am.xtb" lang="am" />
