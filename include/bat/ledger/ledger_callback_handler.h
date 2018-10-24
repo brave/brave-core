@@ -27,6 +27,7 @@ LEDGER_EXPORT enum Result {
   REGISTRATION_VERIFICATION_FAILED = 10,
   BAD_REGISTRATION_RESPONSE = 11,
   WALLET_CREATED = 12,
+  GRANT_NOT_FOUND = 13,
   // some more useful result codes should go here
 };
 
