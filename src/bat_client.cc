@@ -1188,8 +1188,10 @@ void BatClient::setGrantCallback(bool success,
   braveledger_bat_helper::getJSONResponse(response, statusCode, error);
 
   if (!success) {
-    if (statusCode == 422) {
+    if (statusCode == 403) {
       ledger_->OnGrantFinish(ledger::Result::CAPTCHA_FAILED, grant);
+    } else if (statusCode == 404 || statusCode == 410) {
+      ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
     } else {
       ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
     }
