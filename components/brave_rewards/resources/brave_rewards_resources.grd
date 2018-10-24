@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit latest_public_release="0" current_release="1" output_all_resource_defines="false">
+  <outputs>
+    <output filename="grit/brave_rewards_resources.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="brave_rewards_resources.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <!-- WebUI Brave Rewards resources -->
+      <include name="IDR_BRAVE_REWARDS_HTML" file="ui/brave_rewards.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_JS" file="${root_gen_dir}/brave/brave_rewards.bundle.js" type="BINDATA" use_base_dir="false" />
+      <include name="IDR_BRAVE_REWARDS_IMG_ADS_DISABLED" file="img/ads_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_CONTRIBUTE_DISABLED" file="img/contribute_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_DONATE_DISABLED" file="img/donate_disabled.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_WALLET_BG" file="img/wallet_bg.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="img/captcha_bat.png" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_WELCOME_BG" file="img/welcome_bg.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BART_TEMP" file="img/temp/bartBaker.jpeg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BAT" file="img/BAT.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_BTC" file="img/BTC.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_ETH" file="img/ETH.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_LTC" file="img/LTC.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_NICEWARE_LIST" file="../../../vendor/bat-native-ledger/niceware/wordlist" type="BINDATA" />
+
+      <!-- WebUI donate resources -->
+      <include name="IDR_BRAVE_DONATE_BG_1" file="img/donate_bg_1.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_DONATE_BG_2" file="img/donate_bg_2.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_DONATE_HTML" file="donate/brave_donate.html" type="BINDATA" />
+      <include name="IDR_BRAVE_DONATE_JS" file="${root_gen_dir}/brave/brave_donate.bundle.js" type="BINDATA" use_base_dir="false" />
+    </includes>
+  </release>
+</grit>

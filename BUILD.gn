@@ -47,11 +47,21 @@ group("brave") {
   ]
 }
 
+group("resources") {
+  public_deps = [
+    # TODO(bridiver)
+    # "//brave/browser:resources",
+    # "//brave/common:resources",
+    # "//brave/renderer:resources",
+    "//brave/components/resources",
+  ]
+}
+
 if (is_mac) {
   group("framework_bundle_data") {
     deps = [
       "vendor/brave-extension:brave_extension_framework_bundle_data",
-      "components/brave_rewards/extension:framework_bundle_data",
+      "components/brave_rewards/resources/extension:framework_bundle_data",
     ]
   }
 }

@@ -10,11 +10,11 @@ import { connect } from 'react-redux'
 import { Box, DisabledContent } from 'brave-ui/features/rewards'
 
 // Utils
-import { getLocale } from '../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 
 // Assets
-const adsDisabledIcon = require('../../../img/rewards/ads_disabled.svg')
+const adsDisabledIcon = require('../../img/ads_disabled.svg')
 
 class AdsBox extends React.Component {
   adsDisabled () {

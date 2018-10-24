@@ -12,13 +12,13 @@ import { DisabledContent, Box, TableDonation, List, Tokens, ModalDonation } from
 import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
-import { getLocale } from '../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import { DetailRow } from 'brave-ui/features/rewards/tableDonation'
 
 // Assets
-const donate = require('../../../img/rewards/donate_disabled.svg')
+const donate = require('../../img/donate_disabled.svg')
 
 interface Props extends Rewards.ComponentProps {
 }

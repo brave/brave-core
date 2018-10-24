@@ -1,0 +1,28 @@
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+
+grit("resources") {
+  source = "brave_rewards_resources.grd"
+
+  outputs = [
+    "grit/brave_rewards_resources.h",
+    "brave_rewards_resources.pak",
+  ]
+
+  deps = [
+    "ui",
+    "donate",
+  ]
+
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+
+  resource_ids = "//brave/browser/resources/resource_ids"
+
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+}
