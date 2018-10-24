@@ -34,21 +34,21 @@ declare namespace chrome.braveRewards {
 }
 
 declare namespace chrome.rewardsNotifications {
-  const addNotification: (type: number, args: string[]) => {}
-  const deleteNotification: (id: number) => {}
+  const addNotification: (type: number, args: string[], id: string) => {}
+  const deleteNotification: (id: string) => {}
   const deleteAllNotifications: () => {}
-  const getNotification: (id: number) => {}
+  const getNotification: (id: string) => {}
 
   const onNotificationAdded: {
-    addListener: (callback: (id: number, type: number, timestamp: number, args: string[]) => void) => void
+    addListener: (callback: (id: string, type: number, timestamp: number, args: string[]) => void) => void
   }
   const onNotificationDeleted: {
-    addListener: (callback: (id: number, type: number, timestamp: number) => void) => void
+    addListener: (callback: (id: string, type: number, timestamp: number) => void) => void
   }
   const onAllNotificationsDeleted: {
     addListener: (callback: () => void) => void
   }
   const onGetNotification: {
-    addListener: (callback: (id: number, type: number, timestamp: number) => void) => void
+    addListener: (callback: (id: string, type: number, timestamp: number) => void) => void
   }
 }

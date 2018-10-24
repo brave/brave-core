@@ -7,6 +7,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/rand_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/common/extensions/api/rewards_notifications.h"
@@ -36,8 +37,11 @@ void RewardsNotificationsServiceImpl::Shutdown() {
 
 void RewardsNotificationsServiceImpl::AddNotification(
     RewardsNotificationType type,
-    RewardsNotificationArgs args) {
-  RewardsNotificationID id = GenerateRewardsNotificationID();
+    RewardsNotificationArgs args,
+    RewardsNotificationID id) {
+  DCHECK(type != REWARDS_NOTIFICATION_INVALID);
+  if (id.empty())
+    id = GenerateRewardsNotificationID();
   RewardsNotification rewards_notification(
       id, type, GenerateRewardsNotificationTimestamp(), std::move(args));
   rewards_notifications_[id] = rewards_notification;
@@ -45,6 +49,7 @@ void RewardsNotificationsServiceImpl::AddNotification(
 }
 
 void RewardsNotificationsServiceImpl::DeleteNotification(RewardsNotificationID id) {
+  DCHECK(!id.empty());
   if (rewards_notifications_.find(id) == rewards_notifications_.end())
     return;
   RewardsNotification rewards_notification = rewards_notifications_[id];
@@ -58,6 +63,7 @@ void RewardsNotificationsServiceImpl::DeleteAllNotifications() {
 }
 
 void RewardsNotificationsServiceImpl::GetNotification(RewardsNotificationID id) {
+  DCHECK(!id.empty());
   if (rewards_notifications_.find(id) == rewards_notifications_.end())
     return;
   OnGetNotification(rewards_notifications_[id]);
@@ -73,7 +79,8 @@ void RewardsNotificationsServiceImpl::GetAllNotifications() {
 
 RewardsNotificationsServiceImpl::RewardsNotificationID
 RewardsNotificationsServiceImpl::GenerateRewardsNotificationID() const {
-  return base::RandInt(0, std::numeric_limits<int32_t>::max());
+  return base::StringPrintf(
+      "%d", base::RandInt(0, std::numeric_limits<int32_t>::max()));
 }
 
 RewardsNotificationsServiceImpl::RewardsNotificationTimestamp
@@ -97,11 +104,11 @@ void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {
     base::DictionaryValue* dict_value;
     if (!it->GetAsDictionary(&dict_value))
       continue;
-    int notification_id;
+    std::string notification_id;
     int notification_type;
     int notification_timestamp;
     RewardsNotificationArgs notification_args;
-    dict_value->GetInteger("id", &notification_id);
+    dict_value->GetString("id", &notification_id);
     dict_value->GetInteger("type", &notification_type);
     dict_value->GetInteger("timestamp", &notification_timestamp);
 
@@ -125,7 +132,7 @@ void RewardsNotificationsServiceImpl::StoreRewardsNotifications() {
 
   for (auto& item : rewards_notifications_) {
     auto dict = std::make_unique<base::DictionaryValue>();
-    dict->SetInteger("id", item.second.id_);
+    dict->SetString("id", item.second.id_);
     dict->SetInteger("type", item.second.type_);
     dict->SetInteger("timestamp", item.second.timestamp_);
     auto args = std::make_unique<base::ListValue>();
