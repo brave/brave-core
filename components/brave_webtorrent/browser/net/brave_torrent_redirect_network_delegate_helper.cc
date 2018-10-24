@@ -9,7 +9,9 @@
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "chrome/browser/profiles/profile_io_data.h"
 #include "content/public/browser/resource_request_info.h"
+#include "extensions/browser/info_map.h"
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"
@@ -82,6 +84,28 @@ bool IsTorProfile(net::URLRequest* request) {
   return ui_data->GetTorProfileService() ? true : false;
 }
 
+bool IsWebTorrentDisabled(net::URLRequest* request) {
+  const content::ResourceRequestInfo* resource_info =
+    content::ResourceRequestInfo::ForRequest(request);
+  if (!resource_info || !resource_info->GetContext()) {
+    return false;
+  }
+
+  const ProfileIOData* io_data =
+    ProfileIOData::FromResourceContext(resource_info->GetContext());
+  if (!io_data) {
+    return false;
+  }
+
+  const extensions::InfoMap* infoMap = io_data->GetExtensionInfoMap();
+  if (!infoMap) {
+    return false;
+  }
+
+  return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
+    infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
+}
+
 } // namespace
 
 namespace webtorrent {
@@ -96,6 +120,7 @@ int OnHeadersReceived_TorrentRedirectWork(
 
   if (!request || !original_response_headers ||
       IsTorProfile(request) ||
+      IsWebTorrentDisabled(request) ||
       IsWebtorrentInitiated(request) || // download .torrent, do not redirect
       !IsTorrentFile(request, original_response_headers)) {
     return net::OK;
