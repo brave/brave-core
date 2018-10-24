@@ -36,6 +36,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // appearance prefs
   (*s_brave_whitelist)[kLocationBarIsWide] =
     settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // WebTorrent pref
+  (*s_brave_whitelist)[kWebTorrentEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_whitelist;
 }
 

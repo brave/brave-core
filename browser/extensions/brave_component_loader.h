@@ -31,8 +31,9 @@ class BraveComponentLoader : public ComponentLoader {
     const std::string& manifest);
   void AddExtension(const std::string& id,
       const std::string& name, const std::string& public_key);
- 
+
  private:
+  PrefService* profile_prefs_;
   Profile* profile_;
   DISALLOW_COPY_AND_ASSIGN(BraveComponentLoader);
 };

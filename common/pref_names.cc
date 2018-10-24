@@ -33,3 +33,4 @@ const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
 const char kRewardsNotifications[] = "brave.rewards.notifications";
 const char kMigratedMuonProfile[] = "brave.muon.migrated_profile";
+const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
