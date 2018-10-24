@@ -264,6 +264,12 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE" desc="">Hmmm…not quite.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_SERVER_NOT_RESPONDING" desc="">The Brave Rewards server is not responding. We will fix this as soon as possible.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_UH_OH" desc="">Uh oh!</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_GONE_TITLE" desc="">Grant gone!</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_GONE_BUTTON" desc="">OK</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_GONE_TEXT" desc="">Sorry, but this grant is already expired.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TITLE" desc="">Ups, something is wrong!</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_BUTTON" desc="">Ok</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TEXT" desc="">We detect some problem, please try again later.</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
