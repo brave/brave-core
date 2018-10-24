@@ -77,6 +77,8 @@ source_set("ui") {
     "webui/settings/brave_privacy_handler.h",
     "webui/settings/default_brave_shields_handler.cc",
     "webui/settings/default_brave_shields_handler.h",
+    "webui/settings/brave_default_extensions_handler.cc",
+    "webui/settings/brave_default_extensions_handler.h",
   ]
 
   if (enable_widevine_cdm_component) {

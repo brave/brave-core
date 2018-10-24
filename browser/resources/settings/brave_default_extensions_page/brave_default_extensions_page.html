@@ -1,0 +1,29 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/cr_elements/cr_link_row/cr_link_row.html">
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="brave_default_extensions_browser_proxy.html">
+<link rel="import" href="../settings_page/settings_section.html">
+<link rel="import" href="../settings_shared_css.html">
+<link rel="import" href="../settings_vars_css.html">
+
+<dom-module id="settings-brave-default-extensions-page">
+  <template>
+  <settings-section page-title="$i18n{braveDefaultExtensions}" section="braveDefaultExtensions">
+    <style include="settings-shared iron-flex">
+    </style>
+    <settings-toggle-button id="webTorrentEnabled"
+        pref="{{prefs.brave.webtorrent_enabled}}"
+        label="WebTorrent"
+        sub-label="$i18n{webTorrentEnabledDesc}"
+        on-settings-boolean-control-change="onWebTorrentEnabledChange_">
+    </settings-toggle-button>
+    <div class="settings-row continuation" id="manageExtensionsRow">
+      <cr-link-row class="first" icon-class="icon-external"
+        label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
+      </cr-link-row>
+    </div>
+  </settings-section>
+  </template>
+  <script src="brave_default_extensions_page.js"></script>
+</dom-module>
