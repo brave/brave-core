@@ -69,7 +69,7 @@ storiesOf('Feature Components/Rewards/Grant', module)
       return (
         <div style={{ width: '373px', height: '250px', position: 'relative', background: '#fff' }}>
           <GrantError
-            onClick={dummyClick}
+            onButtonClick={dummyClick}
             buttonText={'ok'}
             text={'The period for claiming this grant has ended'}
           />

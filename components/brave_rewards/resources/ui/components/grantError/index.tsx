@@ -10,12 +10,12 @@ export interface Props {
   id?: string
   text?: string
   buttonText: string
-  onClick: () => void
+  onButtonClick: () => void
 }
 
 export default class GrantError extends React.PureComponent<Props, {}> {
   render () {
-    const { id, text, buttonText, onClick } = this.props
+    const { id, text, buttonText, onButtonClick } = this.props
 
     return (
       <StyledWrapper id={id}>
@@ -27,7 +27,7 @@ export default class GrantError extends React.PureComponent<Props, {}> {
             text={buttonText}
             size={'call-to-action'}
             type={'accent'}
-            onClick={onClick}
+            onClick={onButtonClick}
           />
         </StyledButton>
       </StyledWrapper>

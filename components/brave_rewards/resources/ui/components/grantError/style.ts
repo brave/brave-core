@@ -9,6 +9,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   width: 100%;
   padding: 20px 10px;
   font-family: Poppins, sans-serif;
+  min-height: 350px;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`
