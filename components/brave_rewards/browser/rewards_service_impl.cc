@@ -511,6 +511,13 @@ void RewardsServiceImpl::Shutdown() {
 void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
   if (!ready_.is_signaled())
     ready_.Signal();
+
+  if (result == ledger::Result::WALLET_CREATED) {
+    SetRewardsMainEnabled(true);
+    SetAutoContribute(true);
+    result = ledger::Result::LEDGER_OK;
+  }
+
   TriggerOnWalletInitialized(result);
 }
 
