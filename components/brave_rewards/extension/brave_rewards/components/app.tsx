@@ -32,10 +32,35 @@ export class RewardsPanel extends React.Component<Props, State> {
     chrome.windows.getCurrent({}, this.onWindowCallback)
   }
 
+  componentDidUpdate (prevProps: Props, prevState: State) {
+    if (
+      !prevProps.rewardsPanelData.walletCreated &&
+      this.props.rewardsPanelData.walletCreated
+    ) {
+      this.getTabData()
+    }
+  }
+
+  getTabData () {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, (tabs) => {
+      if (!tabs || !tabs.length) {
+        return
+      }
+      this.props.actions.onTabRetrieved(tabs[0])
+    })
+  }
+
   onWindowCallback = (window: chrome.windows.Window) => {
     this.setState({
       windowId: window.id
     })
+
+    if (this.props.rewardsPanelData.walletCreated) {
+      this.getTabData()
+    }
   }
 
   openRewards () {

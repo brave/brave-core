@@ -21,6 +21,14 @@ function setBadgeText (state: RewardsExtension.State): void {
   })
 }
 
+const getWindowId = (id: number) => {
+  return `id_${id}`
+}
+
+const getNotificationId = (id: number) => {
+  return `n_${id}`
+}
+
 export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, action: any) => {
   if (state === undefined) {
     state = storage.load()
@@ -59,14 +67,22 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         break
       }
 
-      state = { ...state }
       chrome.braveRewards.getPublisherData(tab.windowId, tab.url, tab.favIconUrl || '')
+      const id = getWindowId(tab.windowId)
+      let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+      if (publishers[id]) {
+        delete publishers[id]
+      }
+      state = {
+        ...state,
+        publishers
+      }
       break
     case types.ON_PUBLISHER_DATA:
       {
         const publisher = payload.publisher
         let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
-        const id = `id_${payload.windowId}`
+        const id = getWindowId(payload.windowId)
 
         if (publisher && !publisher.publisher_key) {
           delete publishers[id]
@@ -104,7 +120,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           return
         }
 
-        const id = `n_${payload.id}`
+        const id = getNotificationId(payload.id)
         let notifications: Record<number, RewardsExtension.Notification> = state.notifications
 
         if (!notifications) {
@@ -142,7 +158,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           return
         }
 
-        const id = `n_${payload.id}`
+        const id = getNotificationId(payload.id)
         let notifications: Record<number, RewardsExtension.Notification> = state.notifications
         delete notifications[id]
 
