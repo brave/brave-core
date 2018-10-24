@@ -7,13 +7,13 @@ module.exports = {
   entry: {
     brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
     brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
-    brave_rewards: path.join(__dirname, '../brave_rewards/ui/brave_rewards'),
+    brave_rewards: path.join(__dirname, '../brave_rewards/resources/ui/brave_rewards'),
     brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),
     brave_webtorrent: path.join(__dirname, '../brave_webtorrent/extension/brave_webtorrent'),
     brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background'),
-    brave_rewards_panel: path.join(__dirname, '../brave_rewards/extension/brave_rewards/brave_rewards_panel'),
-    brave_rewards_panel_background: path.join(__dirname, '../brave_rewards/extension/brave_rewards/background'),
-    brave_donate: path.join(__dirname, '../brave_rewards/donate/brave_donate'),
+    brave_rewards_panel: path.join(__dirname, '../brave_rewards/resources/extension/brave_rewards/brave_rewards_panel'),
+    brave_rewards_panel_background: path.join(__dirname, '../brave_rewards/resources/extension/brave_rewards/background'),
+    brave_donate: path.join(__dirname, '../brave_rewards/resources/donate/brave_donate'),
   },
   output: {
     path: process.env.TARGET_GEN_DIR,

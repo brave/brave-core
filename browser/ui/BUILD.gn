@@ -115,7 +115,7 @@ source_set("ui") {
     "//brave/components/brave_rewards/browser",
     "//brave/browser/tor",
     "//brave/browser/resources:brave_settings_resources",
-    "//brave/components/resources:brave_components_resources_grit",
+    "//brave/components/resources",
     "//chrome/app:command_ids",
     "//chrome/common",
     "//content/public/browser",

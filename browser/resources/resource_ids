@@ -6,7 +6,6 @@
   },
   "brave/components/resources/brave_components_resources.grd": {
     "includes": [33000],
-    "messages": [33500],
   },
   "brave/browser/resources/brave_extension.grd": {
     "includes": [34000],
@@ -26,5 +25,13 @@
     "includes": [36500],
   },
   # brave webtorrent 37500
-  # brave rewards 38000
+  "brave/components/brave_rewards/resources/extension/extension_resources.grd": {
+    "includes": [38000]
+  },
+  "brave/components/brave_rewards/resources/brave_rewards_resources.grd": {
+    "includes": [38500]
+  },
+  "brave/components/resources/brave_components_strings.grd": {
+    "messages": [39000]
+  },
 }
