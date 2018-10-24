@@ -69,7 +69,7 @@ if (is_mac) {
 group("unpacked_resources") {
   if (!is_mac) {
     deps = [
-      "//brave/components/brave_rewards/extension:locales",
+      "//brave/components/brave_rewards/resources/extension:locales",
     ]
   }
 }
