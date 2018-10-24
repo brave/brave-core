@@ -31,10 +31,9 @@ class BraveReferralsService {
   void Stop();
 
  private:
-  void PerformFirstRunTasks();
   void GetFirstRunTime();
   base::FilePath GetPromoCodeFileName() const;
-  bool ReadPromoCode();
+  void ReadPromoCode();
   void DeletePromoCodeFile() const;
   void MaybeCheckForReferralFinalization();
   void MaybeDeletePromoCodePref() const;
@@ -61,8 +60,8 @@ class BraveReferralsService {
   void OnReferralFinalizationCheckLoadComplete(
       std::unique_ptr<std::string> response_body);
 
-  // Invoked after first run tasks are complete.
-  void OnFirstRunTasksComplete();
+  // Invoked after reading contents of promo code file.
+  void OnReadPromoCodeComplete();
 
   bool initialized_;
   base::Time first_run_timestamp_;
