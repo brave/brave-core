@@ -16,7 +16,7 @@ import {
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
-import { getLocale } from '../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 import { convertProbiToFixed } from '../utils'
 import GrantError from 'brave-ui/features/rewards/grantError'
 

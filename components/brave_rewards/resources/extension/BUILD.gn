@@ -1,22 +1,25 @@
+import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
+assert(enable_extensions)
+
 grit("resources") {
-  source = "resources.grd"
+  source = "extension_resources.grd"
   outputs = [
-    "grit/brave_rewards_resources_map.cc",
-    "grit/brave_rewards_resources_map.h",
-    "grit/brave_rewards_resources.h",
-    "brave_rewards_resources.pak",
+    "grit/brave_rewards_extension_resources_map.cc",
+    "grit/brave_rewards_extension_resources_map.h",
+    "grit/brave_rewards_extension_resources.h",
+    "brave_rewards_extension_resources.pak",
   ]
 
   deps = [
-    "//brave/components/brave_rewards/extension/brave_rewards"
+    "//brave/components/brave_rewards/resources/extension/brave_rewards"
   ]
 
-  resource_ids = ""
+  resource_ids = "//brave/browser/resources/resource_ids"
 
-  output_dir = "$root_gen_dir/brave/components/brave_rewards/extension"
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources/extension"
 }
 
 if (is_mac) {

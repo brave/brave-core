@@ -118,7 +118,7 @@ source_set("browser") {
     "autoplay",
     "//base",
     "//brave/components/brave_shields/browser:brave_shields",
-    "//brave/components/resources:brave_components_resources_grit",
+    "//brave/components/resources",
     "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
     "download",

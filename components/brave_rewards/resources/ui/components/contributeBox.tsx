@@ -12,12 +12,12 @@ import { Box, TableContribute, DisabledContent, List, ModalContribute, Tokens, N
 import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
-import { getLocale } from '../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 
 // Assets
-const contributeDisabledIcon = require('../../../img/rewards/contribute_disabled.svg')
+const contributeDisabledIcon = require('../../img/contribute_disabled.svg')
 
 interface State {
   modalContribute: boolean
