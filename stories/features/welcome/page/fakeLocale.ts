@@ -17,14 +17,14 @@ const locale = {
   chooseSearchEngine: 'Choose the search engine you would like to use by default when searching the web from the URL bar.',
   // fourth screen
   chooseYourTheme: 'Choose your theme',
-  findToolbarTheme: 'Use the dropdown selection below to find your preferred toolbar theme. This can be changed later from the preferences panel.',
+  findToolbarTheme: 'Choose the color of your toolbar by selecting light or dark theme from the settings panel.',
   // fifth screen
   protectYourPrivacy: 'Protect your privacy',
   adjustProtectionLevel: 'Shield yourself from unwanted ads and trackers by adjusting your protection level from the shields panel in the toolbar. Welcome to faster, safer browsing.',
   showMeWhere: 'Show Shields',
   // sixth screen
   enableBraveRewards: 'Enable Brave Rewards',
-  setupBraveRewards: 'Brave Rewards is a new way of thinking about how the web works. Earn blockchain-based tokens for viewing malware free ads while you browse.',
+  setupBraveRewards: 'Your attention is valuable. Earn by viewing privacy-respecting ads while you browse, and pay it forward to support content creators you love.',
   getStarted: 'Setup Rewards',
   // footer
   skipWelcomeTour: 'Skip welcome tour',
@@ -32,7 +32,9 @@ const locale = {
   done: 'Done',
   // shared
   confirm: 'Confirm',
-  confirmed: 'Confirmed'
+  confirmed: 'Confirmed',
+  theme: 'Change theme',
+  search: 'Settings'
 }
 
 export default locale

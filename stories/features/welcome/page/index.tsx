@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import Button from '../../../../src/components/buttonsIndicators/button'
-import Select from '../../../../src/components/formControls/select'
+// import Select from '../../../../src/components/formControls/select'
 import { ArrowRightIcon } from '../../../../src/components/icons'
 import * as Welcome from '../../../../src/features/welcome/'
 
@@ -70,16 +70,6 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
         <Welcome.ImportImage src={importImage} />
         <Welcome.Title>{locale.importFromAnotherBrowser}</Welcome.Title>
         <Welcome.Paragraph>{locale.setupImport}</Welcome.Paragraph>
-        <Welcome.SelectGrid>
-          <Select
-            type='light'
-            value='chrome'
-          >
-            <div data-value='firefox'>Firefox</div>
-            <div data-value='safari'>Safari</div>
-            <div data-value='chrome'>Chrome</div>
-            <div data-value='html'>Bookmark HTML file</div>
-          </Select>
           <Button
             level='primary'
             type={this.state.fakeBookmarksImported ? 'accent' : 'accent'}
@@ -87,7 +77,6 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
             text={this.state.fakeBookmarksImported ? locale.imported : locale.import}
             onClick={this.onClickImport}
           />
-        </Welcome.SelectGrid>
       </Welcome.Content>
     )
   }
@@ -98,24 +87,13 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
         <Welcome.SearchImage src={searchImage} />
         <Welcome.Title>{locale.setDefaultSearchEngine}</Welcome.Title>
         <Welcome.Paragraph>{locale.chooseSearchEngine}</Welcome.Paragraph>
-        <Welcome.SelectGrid>
-          <Select id='searchEngine' type='light' value='duckduckgo'>
-            <div data-value='firefox'>Firefox</div>
-            <div data-value='google'>Google</div>
-            <div data-value='duckduckgo'>DuckDuckGo</div>
-            <div data-value='bing'>Bing</div>
-            <div data-value='yahoo'>Yahoo!</div>
-            <div data-value='ask'>Ask</div>
-            <div data-value='aol'>AOL</div>
-          </Select>
           <Button
             level='primary'
             type={this.state.fakeChangedSearchEngine ? 'default' : 'accent'}
             size='large'
-            text={this.state.fakeChangedSearchEngine ? locale.confirmed : locale.confirm}
+            text={this.state.fakeChangedSearchEngine ? locale.search : locale.search}
             onClick={this.onClickConfirmDefaultSearchEngine}
           />
-        </Welcome.SelectGrid>
       </Welcome.Content>
     )
   }
@@ -126,19 +104,13 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
         <Welcome.ThemeImage src={themeImage} />
         <Welcome.Title>{locale.chooseYourTheme}</Welcome.Title>
         <Welcome.Paragraph>{locale.findToolbarTheme}</Welcome.Paragraph>
-        <Welcome.SelectGrid>
-          <Select id='theme' type='light' value='default'>
-            <div data-value='default'>Default Theme</div>
-            <div data-value='dark'>Dark Theme</div>
-          </Select>
           <Button
             level='primary'
             type={this.state.fakeChangedDefaultTheme ? 'accent' : 'accent'}
             size='large'
-            text={this.state.fakeChangedDefaultTheme ? locale.confirmed : locale.confirm}
+            text={this.state.fakeChangedDefaultTheme ? locale.theme : locale.theme}
             onClick={this.onClickChooseYourTheme}
           />
-        </Welcome.SelectGrid>
       </Welcome.Content>
     )
   }
@@ -149,12 +121,6 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
         <Welcome.ShieldsImage src={shieldsImage} />
         <Welcome.Title>{locale.protectYourPrivacy}</Welcome.Title>
         <Welcome.Paragraph>{locale.adjustProtectionLevel}</Welcome.Paragraph>
-        <Button
-          level='primary'
-          type='accent'
-          size='large'
-          text={locale.showMeWhere}
-        />
       </Welcome.Content>
     )
   }
