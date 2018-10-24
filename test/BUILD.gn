@@ -175,8 +175,6 @@ static_library("browser_test_support") {
   sources = [
     "base/brave_test_launcher_delegate.cc",
     "base/brave_test_launcher_delegate.h",
-    "//brave/app/brave_main_delegate.cc",
-    "//brave/app/brave_main_delegate.h",
   ]
 }
 
