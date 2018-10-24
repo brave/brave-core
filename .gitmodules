@@ -4,9 +4,6 @@
 [submodule "deps/bat-native-usermodel"]
 	path = deps/bat-native-usermodel
 	url = git@github.com:brave-intl/bat-native-usermodel.git
-[submodule "third_party/curl"]
-	path = third_party/curl
-	url = git@github.com:curl/curl.git
 [submodule "third_party/uriparser"]
 	path = third_party/uriparser
 	url = git@github.com:uriparser/uriparser.git
