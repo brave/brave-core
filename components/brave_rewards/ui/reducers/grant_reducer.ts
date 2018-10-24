@@ -102,7 +102,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
             }
             chrome.send('brave_rewards.getWalletProperties', [])
           }
-        } else {
+        } else if (properties.status === 6) {
           state = { ...state }
           if (state.grant) {
             let grant = state.grant
@@ -114,6 +114,28 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
             }
           }
           chrome.send('brave_rewards.getGrantCaptcha', [])
+        } else if (properties.status === 13) {
+          state = { ...state }
+          if (state.grant) {
+            let grant = state.grant
+            grant.status = 'grantGone'
+
+            state = {
+              ...state,
+              grant
+            }
+          }
+        } else {
+          state = { ...state }
+          if (state.grant) {
+            let grant = state.grant
+            grant.status = 'generalError'
+
+            state = {
+              ...state,
+              grant
+            }
+          }
         }
         break
       }

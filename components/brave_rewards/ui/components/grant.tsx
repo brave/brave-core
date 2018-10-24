@@ -18,6 +18,7 @@ import {
 import * as rewardsActions from '../actions/rewards_actions'
 import { getLocale } from '../../../common/locale'
 import { convertProbiToFixed } from '../utils'
+import GrantError from 'brave-ui/features/rewards/grantError'
 
 interface State {
   grantShow: boolean
@@ -47,7 +48,7 @@ class Grant extends React.Component<Props, State> {
     this.actions.onResetGrant()
   }
 
-  onSuccess = () => {
+  onFinish = () => {
     this.setState({
       grantShow: false
     })
@@ -56,6 +57,65 @@ class Grant extends React.Component<Props, State> {
 
   onSolution = (x: number, y: number) => {
     this.actions.solveGrantCaptcha(x, y)
+  }
+
+  grantCaptcha = () => {
+    const { grant } = this.props.rewardsData
+
+    if (!grant) {
+      return
+    }
+
+    if (grant.status === 'grantGone') {
+      return (
+        <GrantWrapper
+          onClose={this.onFinish}
+          title={getLocale('grantGoneTitle')}
+          text={''}
+        >
+          <GrantError
+            buttonText={getLocale('grantGoneButton')}
+            text={getLocale('grantGoneText')}
+            onButtonClick={this.onFinish}
+          />
+        </GrantWrapper>
+      )
+    }
+
+    if (grant.status === 'generalError') {
+      return (
+        <GrantWrapper
+          onClose={this.onGrantHide}
+          title={getLocale('grantGeneralErrorTitle')}
+          text={''}
+        >
+          <GrantError
+            buttonText={getLocale('grantGeneralErrorButton')}
+            text={getLocale('grantGeneralErrorText')}
+            onButtonClick={this.onGrantHide}
+          />
+        </GrantWrapper>
+      )
+    }
+
+    if (!grant.captcha || !grant.hint) {
+      return
+    }
+
+    return (
+      <GrantWrapper
+        onClose={this.onGrantHide}
+        title={grant.status === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
+        text={getLocale('proveHuman')}
+      >
+        <GrantCaptcha
+          onSolution={this.onSolution}
+          dropBgImage={grant.captcha}
+          hint={grant.hint}
+          isWindows={navigator.platform === 'Win32'}
+        />
+      </GrantWrapper>
+    )
   }
 
   render () {
@@ -78,24 +138,18 @@ class Grant extends React.Component<Props, State> {
             : null
         }
         {
-          !grant.expiryTime && grant.captcha && grant.hint
-            ? <GrantWrapper
-              onClose={this.onGrantHide}
-              title={grant.status === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
-              text={getLocale('proveHuman')}
-            >
-              <GrantCaptcha onSolution={this.onSolution} dropBgImage={grant.captcha} hint={grant.hint} isWindows={navigator.platform === 'Win32'} />
-            </GrantWrapper>
+          !grant.expiryTime
+            ? this.grantCaptcha()
             : null
         }
         {
           grant.expiryTime
             ? <GrantWrapper
-              onClose={this.onSuccess}
+              onClose={this.onFinish}
               title={'It’s your lucky day!'}
               text={'Your token grant is on its way.'}
             >
-              <GrantComplete onClose={this.onSuccess} amount={tokens} date={new Date(grant.expiryTime).toLocaleDateString()} />
+              <GrantComplete onClose={this.onFinish} amount={tokens} date={new Date(grant.expiryTime).toLocaleDateString()} />
             </GrantWrapper>
             : null
         }
