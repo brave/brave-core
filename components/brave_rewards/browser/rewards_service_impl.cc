@@ -551,10 +551,13 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
                                        const ledger::Grant& grant) {
   ledger::BalanceReportInfo report_info;
   auto now = base::Time::Now();
-  ledger_->SetBalanceReportItem(GetPublisherMonth(now),
-                                GetPublisherYear(now),
-                                ledger::ReportType::GRANT,
-                                grant.probi);
+  if (result == ledger::Result::LEDGER_OK) {
+    ledger_->SetBalanceReportItem(GetPublisherMonth(now),
+                                  GetPublisherYear(now),
+                                  ledger::ReportType::GRANT,
+                                  grant.probi);
+  }
+
   TriggerOnGrantFinish(result, grant);
 }
 
