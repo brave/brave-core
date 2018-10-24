@@ -55,9 +55,14 @@
           "isFolder" : {"type": "boolean"},
           "parentFolderObjectId" : {"type" : "binary", "optional": true},
           "parentFolderObjectIdStr" : {"type" : "string", "optional": true},
+          "prevObjectId" : {"type" : "binary", "optional": true},
+          "prevObjectIdStr" : {"type" : "string", "optional": true},
           "fields" : { "type": "array", "items": {"type": "string" }, "optional": true },
           "hideInToolbar" : {"type": "boolean", "optional": true},
-          "order" : {"type": "string", "optional": true}
+          "order" : {"type": "string", "optional": true},
+          "prevOrder" : {"type": "string", "optional": true},
+          "nextOrder" : {"type": "string", "optional": true},
+          "parentOrder" : {"type": "string", "optional": true}
         }
       },
       {
@@ -268,25 +273,6 @@
         ]
       },
       {
-        "name": "onSendGetBookmarkOrder",
-        "type": "function",
-        "description": "Browser sends this to get a bookmark order based on prev and next bookmark orders.",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "prevOrder"
-          },
-          {
-            "type": "string",
-            "name": "nextOrder"
-          },
-          {
-            "type": "string",
-            "name": "parentOrder"
-          }
-        ]
-      },
-      {
         "name": "onNeedSyncWords",
         "type": "function",
         "description": "Browser informs js sync library it wants to receive sync words from the seed.",
@@ -424,29 +410,6 @@
           {
             "type": "string",
             "name": "order"
-          }
-        ]
-      },
-      {
-        "name": "saveBookmarkOrder",
-        "type": "function",
-        "description": "Sync library sends this to set a bookmark order based on prev and next bookmark orders",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "order"
-          },
-          {
-            "type": "string",
-            "name": "prevOrder"
-          },
-          {
-            "type": "string",
-            "name": "nextOrder"
-          },
-          {
-            "type": "string",
-            "name": "parentOrder"
           }
         ]
       },

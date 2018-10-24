@@ -41,7 +41,7 @@
 // SendDeleteSyncUser       | ?
 // SendDeleteSyncCategory   | ?
 // SendGetBookmarksBaseOrder|
-// SendGetBookmarkOrder     |
+// SendGetBookmarkOrder     | X
 // NeedSyncWords            | ?
 // NeedBytesFromSyncWords   | ?
 // OnExtensionInitialized   |
@@ -160,7 +160,6 @@ void BraveSyncServiceTest::BookmarkAddedImpl() {
   // BraveSyncService: real
   // BraveSyncClient: mock
   // Invoke BraveSyncService::BookmarkAdded
-  // Expect BraveSyncClient::SendGetBookmarkOrder invoked
   // Expect BraveSyncClient::SendSyncRecords invoked
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(AtLeast(1));
@@ -170,18 +169,9 @@ void BraveSyncServiceTest::BookmarkAddedImpl() {
 
   DLOG(INFO) << "[Brave Sync Test] fired start loop";
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(profile());
-  EXPECT_CALL(*sync_client(), SendGetBookmarkOrder(_,_,_))
-      .Times(AtLeast(1));
   bookmarks::AddIfNotBookmarked(bookmark_model,
                                  GURL("https://a.com"),
                                  base::ASCIIToUTF16("A.com - title"));
-  // Emulate answer from client, OnSaveBookmarkOrder - not sure, should it
-  // be here as test.
-  // BookmarkChangeProcessor::PopRRContext emulates response from the mock
-  // Seems wrong, I looked on `BookmarkChangeProcessor::PushRRContext`
-  // to catch values.
-  // parent order "0" is not quite expected, but enough to get further
-  sync_service()->OnSaveBookmarkOrder("1.0.4", "", "", "0");
   // Force service send bookmarks and fire the mock
   EXPECT_CALL(*sync_client(), SendSyncRecords(_,_)).Times(1);
   sync_service()->OnResolvedSyncRecords(brave_sync::jslib_const::kBookmarks,

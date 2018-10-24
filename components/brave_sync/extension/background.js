@@ -28,9 +28,13 @@ chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, record
     if ('localRecord' in cur_rec) {
       fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
       fixupSyncRecordBrowserToExt(cur_rec.localRecord);
+      getOrder(cur_rec.localRecord);
+      removeLocalMeta(cur_rec.serverRecord);
+      removeLocalMeta(cur_rec.localRecord);
       recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, cur_rec.localRecord]);
     } else {
       fixupSyncRecordBrowserToExt(cur_rec.serverRecord);
+      removeLocalMeta(cur_rec.serverRecord);
       recordsAndExistingObjectsArrArr.push([cur_rec.serverRecord, null]);
     }
   }
@@ -42,23 +46,21 @@ chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) 
   // Fixup ids
   for (var i = 0; i < records.length; ++i) {
     fixupSyncRecordBrowserToExt(records[i]);
+    getOrder(records[i]);
+    removeLocalMeta(records[i]);
   }
   console.log(`"send-sync-records" category_name=${JSON.stringify(category_name)} records=${JSON.stringify(records)}`);
   callbackList["send-sync-records"](null, category_name, records);
+  if (category_name == 'BOOKMARKS') {
+    fixupSyncRecordsArrayExtensionToBrowser(records);
+    chrome.braveSync.resolvedSyncRecords(category_name, records);
+    orderMap = {};
+  }
 });
 
 chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, platform) {
   console.log(`"get-bookmarks-base-order" deviceId=${JSON.stringify(deviceId)} platform=${JSON.stringify(platform)}`);
   callbackList["get-bookmarks-base-order"](null, deviceId, platform);
-});
-
-chrome.braveSync.onSendGetBookmarkOrder.addListener(function(prevOrder, nextOrder, parentOrder) {
-  console.log(`"get-bookmark-order" prevOrder=${JSON.stringify(prevOrder)} nextOrder=${JSON.stringify(nextOrder)} parentOrder=${JSON.stringify(parentOrder)}`);
-  try {
-    callbackList["get-bookmark-order"](null, prevOrder, nextOrder, parentOrder);
-  } catch (e) {
-    chrome.braveSync.saveBookmarkOrder("", prevOrder, nextOrder, parentOrder);
-  }
 });
 
 chrome.braveSync.onNeedSyncWords.addListener(function(seed) {
@@ -78,6 +80,47 @@ chrome.braveSync.extensionInitialized();
 console.log("chrome.braveSync.extensionInitialized");
 
 //-------------------------------------------------------------
+
+function getOrder(record) {
+  if ('bookmark' in record) {
+    if (!record.bookmark.order) {
+      getBookmarkOrderCallback = (order) => {
+        record.bookmark.order = order;
+        if (record.objectId)
+          orderMap[record.objectId] = order;
+        getBookmarkOrderCallback = null;
+      }
+      var prevOrder = record.bookmark.prevOrder;
+      var parentOrder = record.bookmark.parentOrder;
+      if (!prevOrder && orderMap[record.bookmark.prevObjectId])
+        prevOrder = orderMap[record.bookmark.prevObjectId];
+      if (!parentOrder && orderMap[record.bookmark.parentFolderObjectId])
+        parentOrder = orderMap[record.bookmark.parentFolderObjectId];
+      console.log(`"get-bookmark-order" prevOrder=${prevOrder}` +
+        ` nextOrder=${record.bookmark.nextOrder} parentOrder=${parentOrder}`);
+      callbackList["get-bookmark-order"](null, prevOrder,
+        record.bookmark.nextOrder, parentOrder);
+      while(getBookmarkOrderCallback);
+    }
+  }
+}
+
+function removeLocalMeta(record) {
+  if ('bookmark' in record) {
+    if ('prevObjectId' in record.bookmark) {
+      delete record.bookmark.prevObjectId;
+    }
+    if ('prevOrder' in record.bookmark) {
+      delete record.bookmark.prevOrder;
+    }
+    if ('nextOrder' in record.bookmark) {
+      delete record.bookmark.nextOrder;
+    }
+    if ('parentOrder' in record.bookmark) {
+      delete record.bookmark.parentOrder;
+    }
+  }
+}
 
 function fixupBookmarkParentFolderObjectId(category_name, records) {
   // records[0].bookmark.parentFolderObjectId can be either Uint8Array or Array[]
@@ -148,6 +191,21 @@ function fixupSyncRecordExtToBrowser(sync_record) {
       }
       delete sync_record.bookmark.parentFolderObjectIdStr;
     }
+    if ('prevObjectId' in sync_record.bookmark) {
+      if (Array.isArray(sync_record.bookmark.prevObjectId)) {
+        sync_record.bookmark.prevObjectId = new Uint8Array(sync_record.bookmark.prevObjectId);
+      } else if (sync_record.bookmark.prevObjectId == null || sync_record.bookmark.prevObjectId.length == 0) {
+        sync_record.bookmark.prevObjectId = new Uint8Array();
+      }
+    } else {
+      sync_record.bookmark.prevObjectId = new Uint8Array();
+    }
+    if ('prevObjectIdStr' in sync_record.bookmark) {
+      if (sync_record.bookmark.prevObjectIdStr) {
+        sync_record.bookmark.prevObjectId = new Uint8Array(IntArrayFromString(sync_record.bookmark.prevObjectIdStr));
+      }
+      delete sync_record.bookmark.prevObjectIdStr;
+    }
   }
 
 }
@@ -205,7 +263,9 @@ class InjectedObject {
         break;
       case "save-bookmark-order":
         console.log(`"save-bookmark-order" order=${JSON.stringify(arg1)} prevOrder=${JSON.stringify(arg2)} nextOrder=${JSON.stringify(arg3)} parentOrder=${JSON.stringify(arg4)}`);
-        chrome.braveSync.saveBookmarkOrder(arg1/*order*/, arg2/*prevOrder*/, arg3/*nextOrder*/, arg4/*parentOrder*/);
+        if (getBookmarkOrderCallback) {
+          getBookmarkOrderCallback(arg1);
+        }
         break;
       default:
         console.log('background.js TAGAB InjectedObject.handleMessage unknown message', message, arg1, arg2, arg3, arg4);
@@ -235,6 +295,9 @@ function LoadJsLibScript() {
 }
 
 var callbackList = {}; /* message name to callback function */
+
+var getBookmarkOrderCallback = null;
+var orderMap = {}
 
 if (!self.chrome) {
   self.chrome = {};

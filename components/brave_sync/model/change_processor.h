@@ -23,8 +23,8 @@ class ChangeProcessor {
   // reset all sync data, but do not delete local records
   virtual void Reset() = 0;
 
-  // send all syncable data
-  virtual uint64_t InitialSync() = 0;
+  // setup permanent nodes
+  virtual void InitialSync() = 0;
 
   // get all local sync data matching `records` and return the matched pair
   // in `records_and_existing_objects`

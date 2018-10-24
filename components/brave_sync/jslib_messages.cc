@@ -91,6 +91,7 @@ void Bookmark::FromValue(const base::Value *bookmark_value) {
   this->isFolder = is_folder_value->GetBool();
 
   this->parentFolderObjectId = ExtractIdFieldFromDictOrList(bookmark_value, "parentFolderObjectId");
+  this->prevObjectId = ExtractIdFieldFromDictOrList(bookmark_value, "prevObjectId");
 
   const base::Value *hide_in_toolbar_value = bookmark_value->FindKeyOfType("hideInToolbar", base::Value::Type::BOOLEAN);
   if (hide_in_toolbar_value) {
@@ -100,6 +101,21 @@ void Bookmark::FromValue(const base::Value *bookmark_value) {
   const base::Value *order_value = bookmark_value->FindKeyOfType("order", base::Value::Type::STRING);
   if (order_value) {
     this->order = order_value->GetString();
+  }
+
+  const base::Value *prev_order_value = bookmark_value->FindKeyOfType("prevOrder", base::Value::Type::STRING);
+  if (prev_order_value) {
+    this->prevOrder = prev_order_value->GetString();
+  }
+
+  const base::Value *next_order_value = bookmark_value->FindKeyOfType("nextOrder", base::Value::Type::STRING);
+  if (next_order_value) {
+    this->nextOrder = next_order_value->GetString();
+  }
+
+  const base::Value *parent_order_value = bookmark_value->FindKeyOfType("parentOrder", base::Value::Type::STRING);
+  if (parent_order_value) {
+    this->parentOrder = parent_order_value->GetString();
   }
 }
 

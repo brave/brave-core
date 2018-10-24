@@ -81,8 +81,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
         sync_client_.get(),
         sync_prefs_.get())),
     timer_(std::make_unique<base::RepeatingTimer>()),
-    unsynced_send_interval_(base::TimeDelta::FromMinutes(10)),
-    initial_sync_records_remaining_(0) {
+    unsynced_send_interval_(base::TimeDelta::FromMinutes(10)) {
 
   // Moniter syncs prefs required in GetSettingsAndDevices
   profile_pref_change_registrar_.Init(profile->GetPrefs());
@@ -407,11 +406,11 @@ void BraveSyncServiceImpl::OnResolvedSyncRecords(
     OnResolvedPreferences(*records.get());
   } else if (category_name == brave_sync::jslib_const::kBookmarks) {
     bookmark_change_processor_->ApplyChangesFromSyncModel(*records.get());
+    bookmark_change_processor_->SendUnsynced(unsynced_send_interval_);
   } else if (category_name == brave_sync::jslib_const::kHistorySites) {
     NOTIMPLEMENTED();
   }
 
-  bookmark_change_processor_->SendUnsynced(unsynced_send_interval_);
 }
 
 std::unique_ptr<SyncRecordAndExistingList>
@@ -486,26 +485,6 @@ void BraveSyncServiceImpl::OnSaveBookmarksBaseOrder(const std::string& order)  {
   OnSyncReady();
 }
 
-void BraveSyncServiceImpl::OnSaveBookmarkOrder(const std::string& order,
-                                              const std::string& prev_order,
-                                              const std::string& next_order,
-                                              const std::string& parent_order) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(!order.empty());
-
-  bookmark_change_processor_->OnGetBookmarkOrder(
-      order, prev_order, next_order, parent_order);
-
-  base::Time last_fetch_time = sync_prefs_->GetLastFetchTime();
-  if (tools::IsTimeEmpty(last_fetch_time)) {
-    --initial_sync_records_remaining_;
-    if (initial_sync_records_remaining_ == 0) {
-      sync_prefs_->SetLastFetchTime(base::Time::Now());
-      RequestSyncData();
-    }
-  }
-}
-
 void BraveSyncServiceImpl::OnSyncWordsPrepared(const std::string& words) {
   NotifyHaveSyncWords(words);
 }
@@ -513,10 +492,6 @@ void BraveSyncServiceImpl::OnSyncWordsPrepared(const std::string& words) {
 // Here we query sync lib for the records after initialization (or again later)
 void BraveSyncServiceImpl::RequestSyncData() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
-  // still sending sync records
-  if (initial_sync_records_remaining_ > 0)
-    return;
 
   const bool bookmarks = sync_prefs_->GetSyncBookmarksEnabled();
   const bool history = sync_prefs_->GetSyncHistoryEnabled();
@@ -530,10 +505,7 @@ void BraveSyncServiceImpl::RequestSyncData() {
   if (tools::IsTimeEmpty(last_fetch_time)) {
     SendCreateDevice();
 
-    initial_sync_records_remaining_ =
-        bookmark_change_processor_->InitialSync();
-    if (initial_sync_records_remaining_ > 0)
-      return;
+    bookmark_change_processor_->InitialSync();
   }
 
   FetchSyncRecords(bookmarks, history, preferences, 1000);

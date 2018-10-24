@@ -91,10 +91,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
   void OnDeletedSyncUser() override;
   void OnDeleteSyncSiteSettings() override;
   void OnSaveBookmarksBaseOrder(const std::string& order) override;
-  void OnSaveBookmarkOrder(const std::string& order,
-                           const std::string& prev_order,
-                           const std::string& next_order,
-                           const std::string& parent_order) override;
   void OnSyncWordsPrepared(const std::string& words) override;
 
   void OnResolvedHistorySites(const RecordsList &records);
@@ -163,7 +159,6 @@ class BraveSyncServiceImpl : public BraveSyncService,
 
   // send unsynced records in batches
   base::TimeDelta unsynced_send_interval_;
-  uint64_t initial_sync_records_remaining_;
 
   // Registrar used to monitor the profile prefs.
   PrefChangeRegistrar profile_pref_change_registrar_;

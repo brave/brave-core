@@ -37,12 +37,7 @@ class BookmarkChangeProcessor : public ChangeProcessor,
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
       SyncRecordAndExistingList* records_and_existing_objects) override;
   void SendUnsynced(base::TimeDelta unsynced_send_interval) override;
-  uint64_t InitialSync() override;
-
-  void OnGetBookmarkOrder(const std::string& order,
-                          const std::string& prev_order,
-                          const std::string& next_order,
-                          const std::string& parent_order);
+  void InitialSync() override;
 
  private:
   BookmarkChangeProcessor(Profile* profile,
@@ -93,16 +88,6 @@ class BookmarkChangeProcessor : public ChangeProcessor,
       const std::vector<bookmarks::BookmarkNodeData::Element>& elements,
       bookmarks::BookmarkNode* parent,
       int index);
-  void PushRRContext(const std::string& prev_order,
-                     const std::string& next_order,
-                     const std::string& parent_order,
-                     const int64_t &node_id,
-                     const int action);
-  void PopRRContext(const std::string& prev_order,
-                    const std::string& next_order,
-                    const std::string& parent_order,
-                    int64_t &node_id,
-                    int *action);
   // BookmarkModel::Remove will remove parent but put its children under
   // "Other Bookmarks" so we need to explicitly delete children
   void DeleteSelfAndChildren(const bookmarks::BookmarkNode* node);
@@ -110,10 +95,6 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned
   bookmarks::BookmarkModel* bookmark_model_;  // not owned
-
-  // Map to keep tracking between request and response on query bookmarks order,
-  // access only in UI thread <prev_order, next_order> => <node_id, action>
-  std::map<std::string, std::tuple<int64_t, int>> rr_map_;
 
   bookmarks::BookmarkNode* deleted_node_root_;
 

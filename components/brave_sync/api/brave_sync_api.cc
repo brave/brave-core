@@ -141,26 +141,6 @@ ExtensionFunction::ResponseAction BraveSyncSaveBookmarksBaseOrderFunction::Run()
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction BraveSyncSaveBookmarkOrderFunction::Run() {
-  std::unique_ptr<brave_sync::SaveBookmarkOrder::Params> params(
-      brave_sync::SaveBookmarkOrder::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  BraveSyncService* sync_service = GetBraveSyncService(browser_context());
-  DCHECK(sync_service);
-  sync_service->GetSyncClient()->sync_message_handler()->OnSaveBookmarkOrder(
-      params->order,
-      params->prev_order,
-      params->next_order,
-      params->parent_order);
-
-  // we have the order response so the client can continue syncing
-  sync_service->GetSyncClient()->sync_message_handler()->
-      BackgroundSyncStarted(false);
-
-  return RespondNow(NoArguments());
-}
-
 ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
   std::unique_ptr<brave_sync::SyncWordsPrepared::Params> params(
       brave_sync::SyncWordsPrepared::Params::Create(*args_));

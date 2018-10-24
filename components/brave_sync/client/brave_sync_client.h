@@ -64,11 +64,6 @@ class SyncMessageHandler {
   virtual void OnDeleteSyncSiteSettings() = 0;
   //SAVE_BOOKMARKS_BASE_ORDER
   virtual void OnSaveBookmarksBaseOrder(const std::string &order) = 0;
-  //SAVE_BOOKMARK_ORDER
-  virtual void OnSaveBookmarkOrder(const std::string &order,
-                                   const std::string &prev_order,
-                                   const std::string &next_order,
-                                   const std::string &parent_order) = 0;
   virtual void OnSyncWordsPrepared(const std::string &words) = 0;
 };
 
@@ -99,10 +94,6 @@ class BraveSyncClient {
   virtual void SendDeleteSyncCategory(const std::string &category_name) = 0;
   virtual void SendGetBookmarksBaseOrder(const std::string &device_id,
                                          const std::string &platform) = 0;
-  virtual void SendGetBookmarkOrder(const std::string& prev_rder,
-                                    const std::string& next_order,
-                                    const std::string& parent_order) = 0;
-
   virtual void NeedSyncWords(const std::string &seed) = 0;
 
   virtual void OnExtensionInitialized() = 0;

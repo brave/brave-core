@@ -118,20 +118,6 @@ void BraveSyncEventRouter::SendGetBookmarksBaseOrder(
   event_router_->BroadcastEvent(std::move(event));
 }
 
-void BraveSyncEventRouter::SendGetBookmarkOrder(const std::string& prev_order,
-                                              const std::string& next_order,
-                                              const std::string& parent_order) {
-  std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnSendGetBookmarkOrder::Create(
-        prev_order, next_order, parent_order).release());
-  std::unique_ptr<Event> event(
-     new Event(extensions::events::FOR_TEST,
-       extensions::api::brave_sync::OnSendGetBookmarkOrder::kEventName,
-       std::move(args)));
-
-  event_router_->BroadcastEvent(std::move(event));
-}
-
 void BraveSyncEventRouter::NeedSyncWords(const std::string& seed) {
   std::unique_ptr<base::ListValue> args(
      extensions::api::brave_sync::OnNeedSyncWords::Create(seed)

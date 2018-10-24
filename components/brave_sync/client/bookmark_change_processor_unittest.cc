@@ -129,13 +129,10 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
 void BraveBookmarkChangeProcessorTest::BookmarkAddedImpl() {
   change_processor()->Start();
 
-  EXPECT_CALL(*sync_client(), SendGetBookmarkOrder(_,_,_))
-      .Times(AtLeast(1));
   bookmarks::AddIfNotBookmarked(model(),
                                  GURL("https://a.com/"),
                                  base::ASCIIToUTF16("A.com - title"));
 
-  change_processor()->OnGetBookmarkOrder("1.0.4", "", "", "0");
   using brave_sync::jslib::SyncRecord;
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       ContainsRecord(SyncRecord::Action::CREATE, "https://a.com/"))).Times(1);
@@ -187,40 +184,20 @@ TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_MoveNodesBetweenDirs) {
   //      b.com
   // 2. Move b.com => Folder1
 
-  // EXPECT_CALL for SendGetBookmarkOrder are disabled because work with
-  // orders will go away from BraveBookmarkChangeProcessor
-
-  // DISABLED_ because for folder2 change_processor sends
-  // SendGetBookmarkOrder("1.0.4", "", "0") instead of
-  // SendGetBookmarkOrder("1.0.4", "", "1")
-
   change_processor()->Start();
 
-  //EXPECT_CALL(*sync_client(), SendGetBookmarkOrder("", "", "0")).Times(1);
   const auto* folder1 = model()->AddFolder(model()->other_node(), 0,
                                            base::ASCIIToUTF16("Folder1"));
-  // Emulate the answer from js lib about the order of folder1
-  change_processor()->OnGetBookmarkOrder("1.0.4", "", "", "0");
 
-  //EXPECT_CALL(*sync_client(), SendGetBookmarkOrder("", "", "1.0.4")).Times(1);
   [[maybe_unused]] const auto* node_a = model()->AddURL(folder1, 0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
-  // Emulate the answer from js lib about the order of node_a
-  change_processor()->OnGetBookmarkOrder("1.0.4.1", "", "", "1.0.4");
 
-  //EXPECT_CALL(*sync_client(), SendGetBookmarkOrder("1.0.4", "", "0")).Times(1);
   const auto* folder2 = model()->AddFolder(model()->other_node(), 1,
                                            base::ASCIIToUTF16("Folder2"));
-  // Emulate the answer from js lib about the order of folder1
-  change_processor()->OnGetBookmarkOrder("1.0.5", "1.0.4", "", "0");
-
-  // EXPECT_CALL(*sync_client(), SendGetBookmarkOrder("", "", "1.0.5")).Times(1);
   [[maybe_unused]] const auto* node_b = model()->AddURL(folder2, 0,
                                         base::ASCIIToUTF16("B.com - title"),
                                         GURL("https://b.com/"));
-  // Emulate the answer from js lib about the order of node_b
-  change_processor()->OnGetBookmarkOrder("1.0.5.1", "", "", "1.0.5");
 
   // Send all created objects
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
@@ -240,36 +217,20 @@ TEST_F(BraveBookmarkChangeProcessorTest, DeleteFolderWithNodes) {
 
   change_processor()->Start();
 
-  EXPECT_CALL(*sync_client(), SendGetBookmarkOrder("", "", "0")).Times(1);
   const auto* folder1 = model()->AddFolder(model()->other_node(), 0,
                                            base::ASCIIToUTF16("Folder1"));
-  // Emulate the answer from js lib about the order of folder1
-  change_processor()->OnGetBookmarkOrder("1.0.4", "", "", "0");
 
-  EXPECT_CALL(*sync_client(), SendGetBookmarkOrder("", "", "1.0.4")).Times(1);
   [[maybe_unused]] const auto* node_a = model()->AddURL(folder1, 0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
-  // Emulate the answer from js lib about the order of node_a
-  change_processor()->OnGetBookmarkOrder("1.0.4.1", "", "", "1.0.4");
 
-  EXPECT_CALL(*sync_client(), SendGetBookmarkOrder("1.0.4.1", "", "1.0.4"))
-                                                                      .Times(1);
   [[maybe_unused]] const auto* node_b = model()->AddURL(folder1, 1,
                                        base::ASCIIToUTF16("B.com - title"),
                                        GURL("https://b.com/"));
-  // Emulate the answer from js lib about the order of node_b,
-  // if it is inserted into index 1, after node_a
-  change_processor()->OnGetBookmarkOrder("1.0.4.2", "1.0.4.1", "", "1.0.4");
 
-  EXPECT_CALL(*sync_client(), SendGetBookmarkOrder("", "1.0.4.1", "1.0.4"))
-                                                                      .Times(1);
   [[maybe_unused]] const auto* node_c = model()->AddURL(folder1, 0,
                                        base::ASCIIToUTF16("B.com - title"),
                                        GURL("https://b.com/"));
-  // If node_c would be inserted before node_a, index=0, then expect
-  // another order
-  change_processor()->OnGetBookmarkOrder("1.0.4.1.1", "", "1.0.4.1", "1.0.4");
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       RecordsNumber(4))).Times(1);

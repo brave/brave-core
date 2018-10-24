@@ -47,8 +47,6 @@ class MockBraveSyncClient : public BraveSyncClient {
   MOCK_METHOD1(SendDeleteSyncCategory, void(const std::string& category_name));
   MOCK_METHOD2(SendGetBookmarksBaseOrder, void(const std::string& device_id,
     const std::string& platform));
-  MOCK_METHOD3(SendGetBookmarkOrder, void(const std::string& prevOrder,
-    const std::string& nextOrder, const std::string& parent_order));
   MOCK_METHOD1(NeedSyncWords, void(const std::string& seed));
   MOCK_METHOD1(NeedBytesFromSyncWords, void(const std::string& words));
   MOCK_METHOD0(OnExtensionInitialized, void());
