@@ -73,7 +73,7 @@ class TabManager: NSObject {
     lazy fileprivate var configuration: WKWebViewConfiguration = {
         let configuration = WKWebViewConfiguration()
         configuration.processPool = WKProcessPool()
-        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !(self.prefs.boolForKey("blockPopups") ?? true)
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
         return configuration
     }()
 
@@ -81,7 +81,7 @@ class TabManager: NSObject {
     lazy fileprivate var privateConfiguration: WKWebViewConfiguration = {
         let configuration = WKWebViewConfiguration()
         configuration.processPool = WKProcessPool()
-        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !(self.prefs.boolForKey("blockPopups") ?? true)
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
         return configuration
     }()
 
@@ -102,9 +102,8 @@ class TabManager: NSObject {
 
         addNavigationDelegate(self)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(prefsDidChange), name: UserDefaults.didChangeNotification, object: nil)
-        
         Preferences.Shields.blockImages.observe(from: self)
+        Preferences.General.blockPopups.observe(from: self)
     }
 
     func addNavigationDelegate(_ delegate: WKNavigationDelegate) {
@@ -697,19 +696,6 @@ class TabManager: NSObject {
         return tabs.filter { $0.webView?.url == url } .first
     }
 
-    @objc func prefsDidChange() {
-        DispatchQueue.main.async {
-            let allowPopups = !(self.prefs.boolForKey("blockPopups") ?? true)
-            // Each tab may have its own configuration, so we should tell each of them in turn.
-            for tab in self.tabs {
-                tab.webView?.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-            }
-            // The default tab configurations also need to change.
-            self.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-            self.privateConfiguration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
-        }
-    }
-
     func resetProcessPool() {
         assert(Thread.isMainThread)
 
@@ -1070,7 +1056,21 @@ extension TabManagerDelegate {
 
 extension TabManager: PreferencesObserver {
     func preferencesDidChange(for key: String) {
-        // Update Block images
-        tabs.forEach { $0.noImageMode = Preferences.Shields.blockImages.value }
+        switch key {
+        case Preferences.Shields.blockImages.key:
+            // Update Block images
+            tabs.forEach { $0.noImageMode = Preferences.Shields.blockImages.value }
+        case Preferences.General.blockPopups.key:
+            let allowPopups = !Preferences.General.blockPopups.value
+            // Each tab may have its own configuration, so we should tell each of them in turn.
+            tabs.forEach {
+                $0.webView?.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
+            }
+            // The default tab configurations also need to change.
+            configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
+            privateConfiguration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
+        default:
+            break
+        }
     }
 }
