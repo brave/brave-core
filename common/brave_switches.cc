@@ -38,4 +38,8 @@ const char kRewardsReconcileInterval[] = "rewards-reconcile-interval";
 // Valid values are: "dark" | "light".
 const char kUiMode[] = "ui-mode";
 
+// Triggers auto-import of profile data from Brave browser-laptop/Muon, if
+// available.
+const char kUpgradeFromMuon[] = "upgrade-from-muon";
+
 }  // namespace switches

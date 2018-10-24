@@ -31,5 +31,6 @@ extern const char kReferralCheckedForPromoCodeFile[];
 extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];
 extern const char kRewardsNotifications[];
+extern const char kMigratedMuonProfile[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

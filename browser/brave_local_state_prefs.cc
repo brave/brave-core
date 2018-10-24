@@ -8,6 +8,7 @@
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/referrals/brave_referrals_service.h"
 #include "brave/browser/tor/tor_profile_service.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
@@ -22,6 +23,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       base::Value(false));
 #endif
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
+  RegisterPrefsForMuonMigration(registry);
 }
 
 }  // namespace brave
