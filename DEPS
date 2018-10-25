@@ -27,11 +27,13 @@ hooks = [
     # Apply patches to chromium src
     'name': 'apply_patches',
     'pattern': '.',
+    'condition': 'not checkout_android',
     'action': ['python', 'src/brave/script/apply-patches.py'],
   },
   {
     # Run npm install for brave-extension
     'name': 'init',
+    'condition': 'not checkout_android',
     'pattern': '.',
     'action': ['python', 'src/brave/script/init-brave-extension.py'],
   }
