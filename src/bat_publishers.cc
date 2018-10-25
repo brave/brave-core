@@ -109,8 +109,8 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       visit_data.local_month,
       visit_data.local_year,
-      ledger::PUBLISHER_EXCLUDE::DEFAULT,
-      !ignoreMinTime(publisher_id),
+      ledger::PUBLISHER_EXCLUDE::ALL,
+      false,
       ledger_->GetReconcileStamp());
 
   ledger::PublisherInfoCallback callbackSaveVisit = std::bind(&onVisitSavedDummy, _1, _2);
@@ -243,6 +243,10 @@ void BatPublishers::saveVisitInternal(
                                                    visit_data.local_year));
   }
 
+  if (!ignoreMinTime(publisher_id) && duration < getPublisherMinVisitTime()) {
+    duration = 0;
+  }
+
   publisher_info->favicon_url = visit_data.favicon_url;
   publisher_info->name = visit_data.name;
   publisher_info->provider = visit_data.provider;
@@ -252,6 +256,7 @@ void BatPublishers::saveVisitInternal(
   if (!isExcluded(publisher_info->id, publisher_info->excluded)) {
     publisher_info->duration += duration;
   } else {
+    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
     if (new_visit) {
       new_visit = false;
       publisher_info->duration = 0; // don't log auto-excluded
@@ -281,22 +286,28 @@ std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
 }
 
 void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) {
+  uint64_t currentReconcileStamp = ledger_->GetReconcileStamp();
   auto filter = CreatePublisherFilter(publisher_id,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
       -1,
-      ledger::PUBLISHER_EXCLUDE::ALL);
+      ledger::PUBLISHER_EXCLUDE::ALL,
+      false,
+      currentReconcileStamp);
     ledger_->GetPublisherInfo(filter, std::bind(&BatPublishers::onSetExcludeInternal,
                             this, exclude, _1, _2));
 }
 
 void BatPublishers::setPanelExclude(const std::string& publisher_id,
   const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId) {
+  uint64_t currentReconcileStamp = ledger_->GetReconcileStamp();
   auto filter = CreatePublisherFilter(publisher_id,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
       -1,
-      ledger::PUBLISHER_EXCLUDE::ALL);
+      ledger::PUBLISHER_EXCLUDE::ALL,
+      false,
+      currentReconcileStamp);
     ledger_->GetPublisherInfo(filter, std::bind(
       &BatPublishers::onSetPanelExcludeInternal,
       this, exclude, windowId, _1, _2));
@@ -362,11 +373,14 @@ void BatPublishers::onSetPanelExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
 }
 
 void BatPublishers::restorePublishers() {
+  uint64_t currentReconcileStamp = ledger_->GetReconcileStamp();
   auto filter = CreatePublisherFilter("",
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
       -1,
-      ledger::PUBLISHER_EXCLUDE::EXCLUDED);
+      ledger::PUBLISHER_EXCLUDE::EXCLUDED,
+      false,
+      currentReconcileStamp);
   ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::onRestorePublishersInternal,
                                 this, _1, _2));
 }
