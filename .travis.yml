@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - "8.9"
+  - node
 
 branches:
   only:
@@ -16,6 +16,7 @@ cache:
 env:
   - CXX=g++-4.8 NODE_ENV=test ACTION=lint
   - CXX=g++-4.8 NODE_ENV=test ACTION=test-unit
+  - CXX=g++-4.8 NODE_ENV=test ACTION=test-security
 
 addons:
   apt:

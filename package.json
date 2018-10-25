@@ -11,6 +11,7 @@
     "lint": "tslint --project tsconfig.json '{app, test}/**/*.{ts,tsx}'",
     "test-e2e": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha ./test/setupApp.ts test/e2e/braveShieldsPanel.ts && mocha ./test/setupApp.ts",
     "test-unit": "cross-env NODE_ENV=test TS_NODE_TYPE_CHECK=true mocha -r ignore-styles ./test/setupApp.ts test/app/**/**/**/*.{ts,tsx}",
+    "test-security": "npm audit",
     "test-suite": "node ./scripts/tests.js"
   },
   "repository": {
