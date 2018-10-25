@@ -66,7 +66,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
 .c6 {
   height: 36px;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.27;
   -webkit-letter-spacing: normal;
   -moz-letter-spacing: normal;
@@ -93,7 +93,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: 0px;
   -ms-letter-spacing: 0px;
   letter-spacing: 0px;
-  font-weight: 200;
+  font-weight: 300;
   color: #7C7D8C;
   margin-top: -5px;
 }
