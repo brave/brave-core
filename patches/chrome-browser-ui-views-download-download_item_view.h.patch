@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index 148487d43102628d754eac08dd24d4ab219575dd..2ffc61fbb53e99c293f9b70dbb7d8f2ff575ecae 100644
+index 148487d43102628d754eac08dd24d4ab219575dd..271ba20514ba83cdd8ba34d3025eb61abdcc3ce1 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
 @@ -56,6 +56,8 @@ class MdTextButton;
@@ -15,7 +15,7 @@ index 148487d43102628d754eac08dd24d4ab219575dd..2ffc61fbb53e99c293f9b70dbb7d8f2f
                           public views::ContextMenuController,
                           public download::DownloadItem::Observer,
                           public gfx::AnimationDelegate {
-+  friend BraveDownloadItemView;
++  friend class BraveDownloadItemView;
   public:
    DownloadItemView(download::DownloadItem* download,
                     DownloadShelfView* parent,
