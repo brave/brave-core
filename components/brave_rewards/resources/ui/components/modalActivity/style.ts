@@ -39,9 +39,9 @@ export const StyledRight = styled<{}, 'div'>('div')`
 `
 
 export const StyledSelectOption = styled<{}, 'div'>('div')`
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 300;
-  color: #696fdc;
+  color: #4C54D2;
 `
 
 export const StyledIconWrap = styled<{}, 'div'>('div')`
