@@ -216,7 +216,6 @@ class TabManagerTests: XCTestCase {
         //setup
         let profile = TabManagerMockProfile()
         let manager = TabManager(prefs: profile.prefs, imageStore: nil)
-        profile.prefs.setBool(true, forKey: "settings.closePrivateTabs")
         
         // create one private and one normal tab
         let tab = manager.addTab()
@@ -241,18 +240,11 @@ class TabManagerTests: XCTestCase {
         manager.selectTab(manager.addTab())
         XCTAssertEqual(manager.tabs(withType: .private).count, 0, "But once we add a normal tab we've switched out of private mode. Private tabs should be deleted")
         XCTAssertEqual(manager.tabs(withType: .regular).count, 2, "The original normal tab and the new one should both still exist")
-        
-        profile.prefs.setBool(false, forKey: "settings.closePrivateTabs")
-        manager.selectTab(manager.addTab(isPrivate: true))
-        manager.selectTab(tab)
-        XCTAssertEqual(TabType.of(manager.selectedTab).isPrivate, false, "The selected tab should not be private")
-        XCTAssertEqual(manager.tabs(withType: .private).count, 1, "If the flag is false then private tabs should still exist")
     }
     
     func testTogglePBMDelete() {
         let profile = TabManagerMockProfile()
         let manager = TabManager(prefs: profile.prefs, imageStore: nil)
-        profile.prefs.setBool(true, forKey: "settings.closePrivateTabs")
         
         let tab = manager.addTab()
         manager.selectTab(tab)
@@ -355,7 +347,6 @@ class TabManagerTests: XCTestCase {
         let profile = TabManagerMockProfile()
         let delegate = MockTabManagerDelegate()
         let manager = TabManager(prefs: profile.prefs, imageStore: nil)
-        profile.prefs.setBool(true, forKey: "settings.closePrivateTabs")
         
         // create one private and one normal tab
         let tab = manager.addTab()
