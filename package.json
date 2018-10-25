@@ -63,7 +63,7 @@
     "babel-runtime": "^6.26.0",
     "chromedriver": "^2.33.2",
     "cross-env": "^5.1.1",
-    "crx": "^3.2.1",
+    "crx": "https://github.com/oncletom/crx.git#20df2e1363b54076e55067489cfed59bc4ee428c",
     "css-loader": "^0.28.7",
     "css-modules-require-hook": "^4.2.2",
     "extract-text-webpack-plugin": "^3.0.2",
@@ -85,7 +85,7 @@
     "tslint-react": "^3.2.0",
     "typescript": "^2.8.1",
     "webpack": "^4.16.1",
-    "webpack-cli": "^2.0.15",
+    "webpack-cli": "^3.1.2",
     "webpack-hot-middleware": "^2.22.3",
     "webpack-httpolyglot-server": "github:brave/webpack-httpolyglot-server"
   },
