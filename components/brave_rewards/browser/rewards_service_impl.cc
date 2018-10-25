@@ -533,7 +533,8 @@ void RewardsServiceImpl::OnGrant(ledger::Result result,
   if (result == ledger::Result::LEDGER_OK) {
     RewardsNotificationsService::RewardsNotificationArgs args;
     rewards_notifications_service_->AddNotification(
-        RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args);
+        RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args,
+        "rewards_notification_grant");
   }
 }
 
@@ -559,6 +560,8 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
   }
 
   TriggerOnGrantFinish(result, grant);
+  rewards_notifications_service_->DeleteNotification(
+      "rewards_notification_grant");
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
