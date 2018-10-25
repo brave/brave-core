@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var rootViewController: UIViewController!
     weak var profile: Profile?
     var tabManager: TabManager!
-    var adjustIntegration: AdjustIntegration?
 
     weak var application: UIApplication?
     var launchOptions: [AnyHashable: Any]?
@@ -139,8 +138,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         self.window!.rootViewController = rootViewController
 
-        adjustIntegration = AdjustIntegration(profile: profile)
-
         self.updateAuthenticationInfo()
         SystemUtils.onFirstRun()
 
@@ -181,8 +178,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         var shouldPerformAdditionalDelegateHandling = true
-
-        adjustIntegration?.triggerApplicationDidFinishLaunchingWithOptions(launchOptions)
 
         UIScrollView.doBadSwizzleStuff()
 
