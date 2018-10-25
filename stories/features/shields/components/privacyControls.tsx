@@ -5,7 +5,14 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { SelectBox, Stat, Grid, EmptyButton, ShowMoreIcon } from '../../../../src/features/shields'
+import {
+  SelectBox,
+  Stat,
+  EmptyButton,
+  ShowMoreIcon,
+
+  SelectGrid
+} from '../../../../src/features/shields'
 
 // Component groups
 import BlockedResources from './blockedReources/blockedResources'
@@ -91,7 +98,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
     return (
       <>
         {/* cookies select */}
-        <Grid>
+        <SelectGrid>
           <EmptyButton />
           <Stat /> {/* {data.thirdPartyCookiesBlocked}</Stat> */}
           <SelectBox>
@@ -99,9 +106,9 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
             <option value='block'>{locale.blockAllCookies}</option>
             <option value='allow'>{locale.allowAllCookies}</option>
           </SelectBox>
-        </Grid>
+        </SelectGrid>
         {/* scripts select */}
-        <Grid>
+        <SelectGrid>
           <EmptyButton onClick={this.onToggleScriptsBlocked}><ShowMoreIcon /></EmptyButton>
           <Stat>{data.thirdPartyScriptsBlocked}</Stat>
           <SelectBox>
@@ -110,9 +117,9 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
             <option value='allow'>{locale.allowAllScripts}</option>
           </SelectBox>
           {openScriptsBlockedList ? this.scriptsBlockedList : null}
-        </Grid>
+        </SelectGrid>
         {/* fingerprinting select */}
-        <Grid>
+        <SelectGrid>
           <EmptyButton onClick={this.onToggleDeviceRecognition}><ShowMoreIcon /></EmptyButton>
           <Stat>{data.thirdPartyDeviceRecognitionBlocked}</Stat>
           <SelectBox>
@@ -121,7 +128,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
             <option value='allow'>{locale.allowAllFingerprinting}</option>
           </SelectBox>
           {openDeviceRecognitionList ? this.deviceRecognitionList : null}
-        </Grid>
+        </SelectGrid>
       </>
     )
   }

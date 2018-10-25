@@ -7,18 +7,16 @@ import * as React from 'react'
 // Feature-specific components
 import {
   Label,
-  Resources,
-  ResourcesHeader,
-  ResourcesSiteInfo,
-  ResourcesList,
+  ResourcesGrid,
+  ResourcesSiteInfoGrid,
   CloseButton,
   CloseIcon,
-  ResourcesLabelGridStatic,
-  ResourcesLabelGridDynamic,
   EmptyButton,
   Stat,
   ShowLessIcon,
-  ResourcesLabelDynamic,
+  ResourcesStatusTitle,
+  ResourcesSiteInfoFlex,
+  ResourcesStatusGrid
 } from '../../../../../src/features/shields'
 
 interface Props {
@@ -35,10 +33,10 @@ const dynamicHeader = (
   onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void
 ) => {
   return (
-    <ResourcesLabelGridDynamic>
+    <ResourcesStatusGrid withStats={false}>
       <EmptyButton onClick={onToggle}><ShowLessIcon /></EmptyButton>
-      <ResourcesLabelDynamic>{title}</ResourcesLabelDynamic>
-    </ResourcesLabelGridDynamic>
+      <ResourcesStatusTitle>{title}</ResourcesStatusTitle>
+    </ResourcesStatusGrid>
   )
 }
 
@@ -48,11 +46,11 @@ const staticHeader = (
   onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void
 ) => {
   return (
-    <ResourcesLabelGridStatic>
+    <ResourcesStatusGrid withStats={true}>
       <EmptyButton onClick={onToggle}><ShowLessIcon /></EmptyButton>
       <Stat>{data}</Stat>
-      <ResourcesLabelDynamic>{title}</ResourcesLabelDynamic>
-    </ResourcesLabelGridStatic>
+      <ResourcesStatusTitle>{title}</ResourcesStatusTitle>
+    </ResourcesStatusGrid>
   )
 }
 
@@ -60,17 +58,17 @@ export default class BlockedResources extends React.PureComponent<Props, {}> {
   render () {
     const { sitename, data, title, favicon, onToggle, dynamic, children } = this.props
     return (
-      <Resources>
-        <ResourcesHeader>
-          <ResourcesSiteInfo>
+      <ResourcesGrid>
+        <ResourcesSiteInfoFlex>
+          <ResourcesSiteInfoGrid>
             <img src={favicon} />
             <Label size='large'>{sitename}</Label>
-          </ResourcesSiteInfo>
+          </ResourcesSiteInfoGrid>
           <CloseButton onClick={onToggle}><CloseIcon /></CloseButton>
-        </ResourcesHeader>
+        </ResourcesSiteInfoFlex>
         {dynamic ? dynamicHeader(title, onToggle) : staticHeader(data, title, onToggle)}
-        <ResourcesList>{children}</ResourcesList>
-      </Resources>
+        <div>{children}</div>
+      </ResourcesGrid>
     )
   }
 }

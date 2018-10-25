@@ -7,16 +7,16 @@ import * as React from 'react'
 // Feature-specific components
 import {
   Header,
-  HeaderToggle,
+  MainToggleFlex,
   Description,
-  SiteCard,
-  EnabledText,
-  DisabledText,
+  SiteInfoCard,
+  DisabledTextGrid,
   Label,
   Highlight,
   UnHighlight,
   Toggle,
-  ShieldIcon
+  ShieldIcon,
+  MainSiteInfoGrid
 } from '../../../../src/features/shields'
 
 // Fake data
@@ -35,39 +35,40 @@ export default class ShieldsHeader extends React.PureComponent<Props, {}> {
     const { fakeOnChange, enabled, sitename, favicon } = this.props
     return (
       <Header id='braveShieldsHeader' enabled={enabled}>
-        <HeaderToggle enabled={enabled}>
+        <MainToggleFlex enabled={enabled}>
           <Label size='medium'>
             {locale.shields} <Highlight enabled={enabled}> {enabled ? locale.up : locale.down}
             </Highlight>
             <UnHighlight> {locale.forThisSite}</UnHighlight>
           </Label>
           <Toggle id='mainToggle' checked={enabled} onChange={fakeOnChange} size='large' />
-        </HeaderToggle>
+        </MainToggleFlex>
         {
           enabled
             ? <Description enabled={true}>{locale.enabledMessage}</Description>
             : null
         }
-        <SiteCard>
-          <EnabledText>
+        <SiteInfoCard>
+          <MainSiteInfoGrid>
             <img src={favicon} />
-            <Label size='large'>{sitename}</Label></EnabledText>
+            <Label size='large'>{sitename}</Label>
+          </MainSiteInfoGrid>
             {
               enabled
               ? (
-                <EnabledText>
+                <MainSiteInfoGrid>
                   <Highlight enabled={true} size='large'>{data.totalBlocked}</Highlight>
                   <Label size='medium'>{locale.totalBlocked}</Label>
-                </EnabledText>
+                </MainSiteInfoGrid>
               )
               : (
-                <DisabledText>
+                <DisabledTextGrid>
                   <ShieldIcon />
                   <Description enabled={false}>{locale.disabledMessage}</Description>
-                </DisabledText>
+                </DisabledTextGrid>
               )
             }
-        </SiteCard>
+        </SiteInfoCard>
       </Header>
     )
   }

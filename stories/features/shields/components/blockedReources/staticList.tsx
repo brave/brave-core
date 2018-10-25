@@ -5,13 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { ResourcesListText, ResourcesListScroll, ResourcesFooter } from '../../../../../src/features/shields'
+import { ResourcesListText, ResourcesListScroll, ResourcesFooterFlex } from '../../../../../src/features/shields'
 
 // Shared components
 import { Button } from '../../../../../src/components'
 
 // Fake data
-import locale from '../../fakeLocale';
+import locale from '../../fakeLocale'
 
 interface Props {
   list: any[]
@@ -26,9 +26,9 @@ export default class StaticList extends React.PureComponent<Props, {}> {
         <ResourcesListScroll>
           {list.map((item, index) => <ResourcesListText key={index}>{item}</ResourcesListText>)}
         </ResourcesListScroll>
-        <ResourcesFooter>
+        <ResourcesFooterFlex>
           <Button level='primary' type='accent' text={locale.goBack} onClick={onClickDismiss} />
-        </ResourcesFooter>
+        </ResourcesFooterFlex>
       </>
     )
   }

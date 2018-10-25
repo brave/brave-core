@@ -12,45 +12,12 @@ export const ShieldsPanel = styled<any, 'main'>('main')`
   position: relative;
 `
 
-export const SiteCard = styled(Card)`
+export const SiteInfoCard = styled(Card)`
   background: #343546;
   margin: 0;
   width: auto;
   text-align: center;
   padding: 16px;
-`
-
-export const EnabledText = styled<{}, 'div'>('div')`
-  box-sizing: border-box;
-  display: grid;
-  height: 100%;
-  grid-template-columns: auto auto;
-  grid-template-rows: 1fr;
-  grid-gap: 5px;
-  justify-content: center;
-  align-items: center;
-
-  &:first-child {
-    margin: 0 0 5px;
-  }
-`
-
-export const DisabledText = styled(EnabledText)`
-  grid-template-columns: 2fr 4fr;
-  max-width: 90%;
-  margin: 10px auto 10px;
-`
-
-interface HeaderToggleProps {
-  enabled: boolean
-}
-
-export const HeaderToggle = styled<HeaderToggleProps, 'div'>('div')`
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: ${p => p.enabled ? '0' : '0 0 22px'};
 `
 
 interface HeaderProps {
@@ -61,4 +28,10 @@ export const Header = styled<HeaderProps, 'header'>('header')`
   box-sizing: border-box;
   border-bottom: ${p => p.enabled ? '1px solid rgba(255, 255, 255, 0.15)' : null};
   padding: ${p => p.enabled ? '28px 25px 10px' : '28px 25px 0'};
+`
+
+export const ResourcesListScroll = styled<{}, 'div'>('div')`
+  box-sizing: border-box;
+  overflow: auto;
+  height: 290px;
 `

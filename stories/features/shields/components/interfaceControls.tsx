@@ -9,9 +9,9 @@ import {
   ShowMoreIcon,
   Toggle,
   Stat,
-  GridLabel,
-  ResourcesLabel,
-  EmptyButton
+  ResourcesSwitchLabel,
+  EmptyButton,
+  ToggleGrid
 } from '../../../../src/features/shields'
 
 // Component groups
@@ -122,33 +122,33 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
     return (
       <>
         {/* ads toggle */}
-          <GridLabel>
+          <ToggleGrid>
             <EmptyButton onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
             <Stat>{data.totalAdsTrackersBlocked}</Stat>
-            <ResourcesLabel>{locale.blockAds}</ResourcesLabel>
+            <ResourcesSwitchLabel>{locale.blockAds}</ResourcesSwitchLabel>
             <Toggle id='blockAds' checked={blockAds} onChange={this.onChangeBlockAds} />
-          </GridLabel>
+          </ToggleGrid>
           {openTotalAdsTrackersBlockedList ? this.totalAdsTrackersBlockedList : null}
         {/* connections encrypted toggle */}
-        <GridLabel>
+        <ToggleGrid>
           <EmptyButton onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
           <Stat>{data.connectionsEncrypted}</Stat>
-          <ResourcesLabel>{locale.connectionsEncrypted}</ResourcesLabel>
+          <ResourcesSwitchLabel>{locale.connectionsEncrypted}</ResourcesSwitchLabel>
           <Toggle id='connectionsEncrypted' checked={connectionsEncrypted} onChange={this.onChangeConnectionsEncrypted} />
-        </GridLabel>
+        </ToggleGrid>
         {openConnectionsEncryptedList ? this.connectionsEncryptedList : null}
         {/* popups toggle
-          <GridLabel>
+          <ToggleGrid>
             <Stat>{data.popupsBlocked}</Stat>
             <span>{locale.blockPopups}</span>
             <Toggle id='blockPopups' checked={blockPopups} onChange={this.onChangeBlockPopups} />
-          </GridLabel> */}
+          </ToggleGrid> */}
         {/* image toggle
-          <GridLabel>
+          <ToggleGrid>
             <Stat>{data.imagesBlocked}</Stat>
             <span>{locale.blockImages}</span>
             <Toggle id='blockImages' checked={blockImages} onChange={this.onChangeBlockImages} />
-          </GridLabel> */}
+          </ToggleGrid> */}
       </>
     )
   }

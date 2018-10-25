@@ -99,7 +99,6 @@ export const BlockedScriptsIcon = styled(CloseCircleIcon as ComponentType)`
   }
 `
 
-
 export const AllowedScriptsIcon = styled(CheckCircleIcon as ComponentType)`
   box-sizing: border-box;
   width: 24px;

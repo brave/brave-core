@@ -3,46 +3,62 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { SelectBox } from './select'
-import { Grid, GridLabel } from './grid'
-import { EmptyButton, CloseButton } from './button'
+import { CloseButton, EmptyButton } from './button'
 import { Toggle } from './toggle'
-import { Stat, Link, Label, Highlight, UnHighlight, Description } from './text'
-import { ShieldsPanel, SiteCard, EnabledText, DisabledText, HeaderToggle, Header } from './wrappers'
+
 import {
+  DisabledTextGrid,
+  EnabledTextGrid,
+  MainFooterLinkFlex,
+  MainSiteInfoGrid,
+  MainToggleFlex,
+  ResourcesFooterFlex,
+  ResourcesFooterGrid,
+  ResourcesFooterGridColumnLeft,
+  ResourcesFooterGridColumnRight,
+  ResourcesGrid,
+  ResourcesListGrid,
+  ResourcesSiteInfoFlex,
+  ResourcesSiteInfoGrid,
+  ResourcesStatusGrid,
+  ResourcesSubTitleGrid,
+  SelectGrid,
+  ToggleGrid
+} from './container'
+
+import {
+  Description,
+  HiddenLink,
+  Highlight,
+  Label,
+  Link,
+  ResourcesListAllowedLink,
+  ResourcesListBlockedLink,
+  ResourcesListItem,
+  ResourcesListText,
+  ResourcesStatusTitle,
+  ResourcesSubTitle,
+  ResourcesSwitchLabel,
+  Stat,
+  UnHighlight
+} from './text'
+
+import {
+  Header,
+  ResourcesListScroll,
+  ShieldsPanel,
+  SiteInfoCard
+} from './display'
+
+import {
+  AllowedScriptsIcon,
+  BlockedScriptsIcon,
+  CloseIcon,
   LinkIcon,
   ShieldIcon,
-  ShowMoreIcon,
   ShowLessIcon,
-  CloseIcon,
-  BlockedScriptsIcon,
-  AllowedScriptsIcon
+  ShowMoreIcon
 } from './icons'
-import {
-  ResourcesBlockedLabelGrid,
-  ResourcesBlockedLabelGrid2,
-  ResourcesLabelGrid,
-  ResourcesLabelGridDynamic,
-  ResourcesLabelGridStatic,
-  ResourcesLabel,
-  ResourcesBlockedLabel2,
-  ResourcesLabelScripts,
-  ResourcesLabelDynamic,
-  ResourcesLabelStatic,
-  ResourcesListText,
-  ResourcesHeader,
-  Resources,
-  ResourcesSiteInfo,
-  ResourcesList,
-  ResourcesListScroll,
-  ResourcesFooter,
-  ResourcesFooterGrid,
-  ResourcesFooterGridColumn1,
-  ResourcesFooterGridColumn2,
-  ResourcesLink,
-  ResourcesLabelScriptsAllowed,
-  ResourcesLabelScriptsBlocked,
-  ResourcesLinkUndo
-} from './blockedResources'
 
 export {
   AllowedScriptsIcon,
@@ -50,50 +66,45 @@ export {
   CloseButton,
   CloseIcon,
   Description,
-  DisabledText,
+  DisabledTextGrid,
   EmptyButton,
-  EnabledText,
-  Grid,
-  GridLabel,
+  EnabledTextGrid,
   Header,
-  HeaderToggle,
+  HiddenLink,
   Highlight,
   Label,
   Link,
   LinkIcon,
-  Resources,
-  ResourcesBlockedLabel2,
-  ResourcesBlockedLabelGrid,
-  ResourcesBlockedLabelGrid2,
-  ResourcesFooter,
+  MainFooterLinkFlex,
+  MainSiteInfoGrid,
+  MainToggleFlex,
+  ResourcesFooterFlex,
   ResourcesFooterGrid,
-  ResourcesFooterGridColumn1,
-  ResourcesFooterGridColumn2,
-  ResourcesHeader,
-  ResourcesLabel,
-  ResourcesLabelScripts,
-  ResourcesLabelGrid,
-  ResourcesLabelGridDynamic,
-  ResourcesLabelGridStatic,
-  ResourcesLabelDynamic,
-  ResourcesLabelStatic,
-  ResourcesLink,
-
-  ResourcesLabelScriptsAllowed,
-  ResourcesLabelScriptsBlocked,
-  ResourcesLinkUndo,
-
-  ResourcesList,
+  ResourcesFooterGridColumnLeft,
+  ResourcesFooterGridColumnRight,
+  ResourcesGrid,
+  ResourcesListAllowedLink,
+  ResourcesListBlockedLink,
+  ResourcesListGrid,
+  ResourcesListItem,
   ResourcesListScroll,
   ResourcesListText,
-  ResourcesSiteInfo,
-  ShowLessIcon,
-  ShowMoreIcon,
+  ResourcesSiteInfoFlex,
+  ResourcesSiteInfoGrid,
+  ResourcesStatusGrid,
+  ResourcesStatusTitle,
+  ResourcesSubTitle,
+  ResourcesSubTitleGrid,
+  ResourcesSwitchLabel,
   SelectBox,
+  SelectGrid,
   ShieldIcon,
   ShieldsPanel,
-  SiteCard,
+  ShowLessIcon,
+  ShowMoreIcon,
+  SiteInfoCard,
   Stat,
   Toggle,
+  ToggleGrid,
   UnHighlight
 }

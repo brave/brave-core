@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Link, LinkIcon } from '../../../../src/features/shields'
+import { MainFooterLinkFlex, LinkIcon } from '../../../../src/features/shields'
 
 // Fake data
 import locale from '../fakeLocale'
@@ -13,10 +13,10 @@ import locale from '../fakeLocale'
 export default class ShieldsFooter extends React.PureComponent<{}, {}> {
   render () {
     return (
-      <Link href='chrome://settings' rel='noreferrer noopener' target='_blank'>
+      <MainFooterLinkFlex href='chrome://settings' rel='noreferrer noopener' target='_blank'>
         <span>{locale.editDefaults}</span>
         <LinkIcon />
-      </Link>
+      </MainFooterLinkFlex>
     )
   }
 }

@@ -7,11 +7,11 @@ import * as React from 'react'
 // Feature-specific components
 import {
   Stat,
-  GridLabel,
+  ToggleGrid,
   Toggle,
   EmptyButton,
   ShowMoreIcon,
-  ResourcesLabel
+  ResourcesSwitchLabel
 } from '../../../../src/features/shields'
 
 // Component groups
@@ -73,12 +73,12 @@ export default class SecurityControls extends React.PureComponent<Props, State> 
     return (
       <>
         {/* pishing toggle */}
-        <GridLabel>
+        <ToggleGrid>
           <EmptyButton onClick={this.onTogglePishingMalwareBlocked}><ShowMoreIcon /></EmptyButton>
           <Stat>{data.pishingMalwareBlocked}</Stat>
-          <ResourcesLabel>{locale.blockPishing}</ResourcesLabel>
+          <ResourcesSwitchLabel>{locale.blockPishing}</ResourcesSwitchLabel>
           <Toggle checked={true} />
-        </GridLabel>
+        </ToggleGrid>
         {openPishingMalwareBlockedList ? this.pishingMalwareBlockedList : null}
       </>
     )
