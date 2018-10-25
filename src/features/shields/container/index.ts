@@ -133,17 +133,19 @@ export const MainFooterLinkFlex = styled(Flex.withComponent('a'))`
 export const ResourcesFooterGrid = styled(Grid.withComponent('footer'))`
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid rgba(255,255,255,0.15);
-  padding: 0 20px;
 `
 
 export const ResourcesFooterGridColumnLeft = styled(Flex)`
   justify-content: flex-start;
   height: 65px;
+  padding-left: 20px;
 `
 
 export const ResourcesFooterGridColumnRight = styled(Flex)`
   justify-content: flex-end;
   height: 65px;
+  padding-right: 20px;
+  position: relative;
 `
 
 export const ResourcesFooterFlex = styled(Flex)`
@@ -190,7 +192,6 @@ export const ResourcesListGrid = styled(Grid as ComponentType<ResourcesListGridP
   background-color: ${p => p.hightlighted ? 'rgba(255, 255, 255, 0.15)' : null};
   &:hover {
     background-color: rgba(255, 255, 255, 0.15);
-    // grid-template-columns: auto 1fr auto;
   }
 `
 

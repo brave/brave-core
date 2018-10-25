@@ -8,6 +8,9 @@ import * as React from 'react'
 import {
   AllowedScriptsIcon,
   BlockedScriptsIcon,
+  DismissOverlay,
+  Option,
+  Options,
   ResourcesListScroll,
   ResourcesSubTitle,
   ResourcesFooterGrid,
@@ -33,13 +36,26 @@ interface Props {
   onClickDismiss: () => void
 }
 
-export default class StaticList extends React.PureComponent<Props, {}> {
+interface State {
+  showApplyOptions: boolean
+}
+
+export default class StaticList extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = { showApplyOptions: false }
+  }
+
   get blockedListSize () {
     return this.props.list.filter(item => item.blocked === false).length
   }
 
   get allowedListSize () {
     return this.props.list.filter(item => item.blocked === true).length
+  }
+
+  onClickOutsideBounds = () => {
+    this.setState({ showApplyOptions: false })
   }
 
   onClickBlockItem = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -54,6 +70,18 @@ export default class StaticList extends React.PureComponent<Props, {}> {
 
   onClickUndoAction = (event: React.MouseEvent<HTMLAnchorElement>) => {
     console.log('do something for', event.currentTarget.dataset.item)
+  }
+
+  onClickApplyOptions = () => {
+    this.setState({ showApplyOptions: !this.state.showApplyOptions })
+  }
+
+  applyScriptsOnce = () => {
+    console.log('do something')
+  }
+
+  applyScriptsAlways = () => {
+    console.log('do something')
   }
 
   enabledList = (list: any[]) => {
@@ -103,11 +131,12 @@ export default class StaticList extends React.PureComponent<Props, {}> {
   }
 
   render () {
+    const { showApplyOptions } = this.state
     const { list, onClickDismiss } = this.props
     return (
       <>
         <ResourcesListScroll>
-
+          {showApplyOptions ? <DismissOverlay onClick={this.onClickOutsideBounds} /> : null}
           {/* blocked scripts */}
           <ResourcesSubTitleGrid>
             <BlockedScriptsIcon />
@@ -138,9 +167,13 @@ export default class StaticList extends React.PureComponent<Props, {}> {
               level='primary'
               type='accent'
               text={locale.apply}
-              onClick={onClickDismiss}
+              onClick={this.onClickApplyOptions}
               icon={{ position: 'after', image: <CaratDownIcon /> }}
             />
+            <Options visible={showApplyOptions} position={{ bottom: '58px' }}>
+              <Option selected={true} onClick={this.applyScriptsOnce}>{locale.applyOnce}</Option>
+              <Option selected={false} onClick={this.applyScriptsAlways}>{locale.alwaysApply}</Option>
+            </Options>
           </ResourcesFooterGridColumnRight>
         </ResourcesFooterGrid>
       </>

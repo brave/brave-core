@@ -35,3 +35,13 @@ export const ResourcesListScroll = styled<{}, 'div'>('div')`
   overflow: auto;
   height: 290px;
 `
+
+export const DismissOverlay = styled<{}, 'div'>('div')`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+`

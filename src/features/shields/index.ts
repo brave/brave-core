@@ -5,6 +5,7 @@
 import { SelectBox } from './select'
 import { CloseButton, EmptyButton } from './button'
 import { Toggle } from './toggle'
+import { Option, Options } from './options'
 
 import {
   DisabledTextGrid,
@@ -44,6 +45,7 @@ import {
 } from './text'
 
 import {
+  DismissOverlay,
   Header,
   ResourcesListScroll,
   ShieldsPanel,
@@ -67,6 +69,7 @@ export {
   CloseIcon,
   Description,
   DisabledTextGrid,
+  DismissOverlay,
   EmptyButton,
   EnabledTextGrid,
   Header,
@@ -77,6 +80,8 @@ export {
   MainFooterLinkFlex,
   MainSiteInfoGrid,
   MainToggleFlex,
+  Option,
+  Options,
   ResourcesFooterFlex,
   ResourcesFooterGrid,
   ResourcesFooterGridColumnLeft,
