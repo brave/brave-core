@@ -1,5 +1,5 @@
 diff --git a/components/assist_ranker/ranker_url_fetcher.cc b/components/assist_ranker/ranker_url_fetcher.cc
-index 8d0f709499b5..92d14d11eaf3 100644
+index 8d0f709499b5faf070f32dabef3d70f937751a86..92d14d11eaf347aa1029affcc2aeae5c8e65bac7 100644
 --- a/components/assist_ranker/ranker_url_fetcher.cc
 +++ b/components/assist_ranker/ranker_url_fetcher.cc
 @@ -31,6 +31,7 @@ bool RankerURLFetcher::Request(
