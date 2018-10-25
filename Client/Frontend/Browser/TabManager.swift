@@ -195,7 +195,7 @@ class TabManager: NSObject {
         }
 
         // Make sure to wipe the private tabs if the user has the pref turned on
-        if shouldClearPrivateTabs() && !TabType.of(tab).isPrivate {
+        if !TabType.of(tab).isPrivate {
             removeAllPrivateTabs()
         }
 
@@ -232,15 +232,11 @@ class TabManager: NSObject {
         }
     }
 
-    func shouldClearPrivateTabs() -> Bool {
-        return prefs.boolForKey("settings.closePrivateTabs") ?? false
-    }
-
     //Called by other classes to signal that they are entering/exiting private mode
     //This is called by TabTrayVC when the private mode button is pressed and BEFORE we've switched to the new mode
     //we only want to remove all private tabs when leaving PBM and not when entering.
     func willSwitchTabMode(leavingPBM: Bool) {
-        if shouldClearPrivateTabs() && leavingPBM {
+        if leavingPBM {
             removeAllPrivateTabs()
         }
     }

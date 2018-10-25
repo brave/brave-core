@@ -465,17 +465,16 @@ class TabTrayController: UIViewController, Themeable {
             fromView = emptyPrivateTabsView
         }
 
-        tabManager.willSwitchTabMode(leavingPBM: privateMode)
-        privateMode = !privateMode
         // If we are exiting private mode and we have the close private tabs option selected, make sure
         // we clear out all of the private tabs
-        let exitingPrivateMode = !privateMode && tabManager.shouldClearPrivateTabs()
+        tabManager.willSwitchTabMode(leavingPBM: privateMode)
+        privateMode = !privateMode
 
         toolbar.privateModeButton.isSelected = privateMode
         collectionView.layoutSubviews()
 
         let toView: UIView
-        if !privateTabsAreEmpty(), let newSnapshot = collectionView.snapshotView(afterScreenUpdates: !exitingPrivateMode) {
+        if !privateTabsAreEmpty(), let newSnapshot = collectionView.snapshotView(afterScreenUpdates: true) {
             emptyPrivateTabsView.isHidden = true
             //when exiting private mode don't screenshot the collectionview (causes the UI to hang)
             newSnapshot.frame = collectionView.frame
