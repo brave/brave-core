@@ -67,7 +67,7 @@ export default class BlockedResources extends React.PureComponent<Props, {}> {
           <CloseButton onClick={onToggle}><CloseIcon /></CloseButton>
         </ResourcesSiteInfoFlex>
         {dynamic ? dynamicHeader(title, onToggle) : staticHeader(data, title, onToggle)}
-        <div>{children}</div>
+        {children}
       </ResourcesGrid>
     )
   }
