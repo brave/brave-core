@@ -64,3 +64,6 @@ build/
 
 # Ignore python compiled files
 *.pyc
+
+# Avoid committing private keys to github
+*.pem

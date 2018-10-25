@@ -15,6 +15,9 @@
    case 'test-unit':
      cmd.push('npm run test-unit')
      break
+   case 'test-security':
+     cmd.push('npm run test-security')
+     break
  }
 
  execute(cmd, process.env, (err) => {
