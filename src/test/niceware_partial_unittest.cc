@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/vendor/bat-native-ledger/src/bat_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "components/grit/brave_components_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 
 std::string getHexBytes(std::vector<uint8_t> seed) {
