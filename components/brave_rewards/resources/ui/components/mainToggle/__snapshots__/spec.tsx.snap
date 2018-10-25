@@ -26,18 +26,11 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  padding: 22px 34px 18px;
+  padding: 18px 34px;
   margin-bottom: 25px;
 }
 
 .c1 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-shrink: 1;
-  -ms-flex-negative: 1;
-  flex-shrink: 1;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -46,33 +39,36 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-}
-
-.c6 {
-  padding: 10px 0 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 66px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+  width: 100%;
 }
 
 .c4 {
+  margin: 0 0 0 11px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
   font-size: 28px;
   font-weight: 600;
+  line-height: 1;
   -webkit-letter-spacing: 0.2px;
   -moz-letter-spacing: 0.2px;
   -ms-letter-spacing: 0.2px;
   letter-spacing: 0.2px;
   color: #4b4c5c;
-  margin: 4px 0 0 11px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .c5 {
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
   font-size: 10px;
   font-weight: 300;
   -webkit-letter-spacing: 0.2px;
@@ -81,17 +77,16 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   letter-spacing: 0.2px;
   text-align: center;
   color: #222326;
-  vertical-align: text-top;
 }
 
-.c13 {
+.c12 {
+  margin-top: 18px;
   font-size: 22px;
   line-height: 1.27;
   color: #4b4c5c;
-  margin-top: 40px;
 }
 
-.c14 {
+.c13 {
   font-family: Muli,sans-serif;
   font-size: 16px;
   font-weight: 300;
@@ -99,7 +94,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   color: #838391;
 }
 
-.c12 {
+.c11 {
   -webkit-flex-basis: 100%;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
@@ -110,21 +105,21 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   height: 66px;
 }
 
-.c7 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.c9 {
+.c8 {
   position: relative;
   display: block;
   height: 24px;
   width: 40px;
 }
 
-.c10 {
+.c9 {
   background: #A7ACB2;
   height: 8px;
   margin-top: 8px;
@@ -132,7 +127,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   border-radius: 3px;
 }
 
-.c11 {
+.c10 {
   position: relative;
   border-radius: 50%;
   -webkit-transition: all .4s ease;
@@ -149,7 +144,7 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
   box-shadow: 0 3px 3px rgba(0,0,0,0.05);
 }
 
-.c8 {
+.c7 {
   color: #838391;
   font-size: 14px;
   font-family: Poppins,sans-serif;
@@ -221,30 +216,26 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
         TM
       </span>
     </div>
-  </div>
-  <div
-    className="c6"
-  >
     <div
-      className="c7"
+      className="c6"
     >
       <div
-        className="c8"
+        className="c7"
         size="large"
       >
         MISSING: off
       </div>
       <div
-        className="c9"
+        className="c8"
         data-test-id="toggle"
         size="large"
       >
         <div
-          className="c10"
+          className="c9"
           size="large"
         />
         <div
-          className="c11"
+          className="c10"
           size="large"
           type="dark"
         />
@@ -252,15 +243,15 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
     </div>
   </div>
   <div
-    className="c12"
+    className="c11"
   >
     <div
-      className="c13"
+      className="c12"
     >
       MISSING: rewardsWhy
     </div>
     <div
-      className="c14"
+      className="c13"
     >
       MISSING: rewardsOffText1
        
@@ -269,12 +260,12 @@ exports[`MainToggle tests basic tests matches the snapshot 1`] = `
       </b>
     </div>
     <div
-      className="c13"
+      className="c12"
     >
       MISSING: rewardsOffText3
     </div>
     <div
-      className="c14"
+      className="c13"
     >
       MISSING: rewardsOffText4
     </div>

@@ -4,11 +4,10 @@
 
 import * as React from 'react'
 import {
-  StyledWrapper,
+  MainToggleWrapper,
   StyledTitle,
   StyledTM,
-  StyledLeft,
-  StyledRight,
+  ToggleHeading,
   StyleTitle,
   StyleText,
   StyledContent,
@@ -30,18 +29,16 @@ export default class MainToggle extends React.PureComponent<Props, {}> {
     const { id, enabled, onToggle, testId } = this.props
 
     return (
-      <StyledWrapper id={id}>
-        <StyledLeft>
+      <MainToggleWrapper id={id}>
+        <ToggleHeading>
           <StyledLogoWrapper>
             <BatColorIcon />
           </StyledLogoWrapper>
           <StyledTitle>
             {getLocale('braveRewards')} <StyledTM>TM</StyledTM>
           </StyledTitle>
-        </StyledLeft>
-        <StyledRight>
           <Toggle checked={enabled} onToggle={onToggle} testId={testId} />
-        </StyledRight>
+        </ToggleHeading>
         {
           !enabled
           ? <StyledContent>
@@ -56,7 +53,7 @@ export default class MainToggle extends React.PureComponent<Props, {}> {
           </StyledContent>
           : null
         }
-      </StyledWrapper>
+      </MainToggleWrapper>
     )
   }
 }

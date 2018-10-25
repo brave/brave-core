@@ -4,7 +4,7 @@
 
 import styled from 'styled-components'
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const MainToggleWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
   position: relative;
   display: flex;
@@ -16,46 +16,42 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   align-items: flex-start;
   align-content: flex-start;
   flex-wrap: wrap;
-  padding: 22px 34px 18px;
+  padding: 18px 34px;
   margin-bottom: 25px;
 `
 
-export const StyledLeft = styled<{}, 'div'>('div')`
-  flex-grow: 1;
-  flex-shrink: 1;
+export const ToggleHeading = styled<{}, 'div'>('div')`
   display: flex;
   align-items: center;
-`
-
-export const StyledRight = styled<{}, 'div'>('div')`
-  padding: 10px 0 0;
-  display: flex;
-  height: 66px;
-  align-items: center;
+  width: 100%;
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
+  margin: 0 0 0 11px;
+  flex: 1;
   font-size: 28px;
   font-weight: 600;
+  line-height: 1;
   letter-spacing: 0.2px;
   color: #4b4c5c;
-  margin: 4px 0 0 11px;
+  display: flex;
+  align-items: center;
 `
 
 export const StyledTM = styled<{}, 'span'>('span')`
+  align-self: flex-start;
   font-size: 10px;
   font-weight: 300;
   letter-spacing: 0.2px;
   text-align: center;
   color: #222326;
-  vertical-align: text-top;
 `
 
 export const StyleTitle = styled<{}, 'div'>('div')`
+  margin-top: 18px;
   font-size: 22px;
   line-height: 1.27;
   color: #4b4c5c;
-  margin-top: 40px;
 `
 
 export const StyleText = styled<{}, 'div'>('div')`
