@@ -27,6 +27,7 @@ import PanelWelcome from './panelWelcome'
 import Profile from './profile'
 import SettingsPage from './settingsPage'
 import SiteBanner from './siteBanner'
+import Tab from './tab'
 import TableContribute from './tableContribute'
 import TableDonation from './tableDonation'
 import TableTransactions from './tableTransactions'
@@ -68,6 +69,7 @@ export {
   Profile,
   SettingsPage,
   SiteBanner,
+  Tab,
   TableContribute,
   TableDonation,
   TableTransactions,

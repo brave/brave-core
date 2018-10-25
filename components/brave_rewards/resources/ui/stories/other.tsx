@@ -23,7 +23,8 @@ import {
   PanelWelcome,
   ToggleTips,
   Tooltip,
-  DonationOverlay
+  DonationOverlay,
+  Tab
 } from '../../../src/features/rewards'
 import {
   BoxMobile,
@@ -295,6 +296,22 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
             />
             : null
           }
+        </div>
+      )
+    }))
+    .add('Tab', withState({ tabIndexSelected: 0 }, (store) => {
+      const onSwitch = () => {
+        const newIndex = store.state.tabIndexSelected === 0 ? 1 : 0
+        store.set({ tabIndexSelected: newIndex })
+      }
+
+      return (
+        <div style={{ width: '350px' }}>
+          <Tab
+            tabTitles={['Backup', 'Restore']}
+            onChange={onSwitch}
+            tabIndexSelected={store.state.tabIndexSelected}
+          />
         </div>
       )
     }))
