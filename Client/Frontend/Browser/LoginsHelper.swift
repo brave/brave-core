@@ -4,6 +4,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 import Storage
 import XCGLogger
 import WebKit
@@ -61,7 +62,7 @@ class LoginsHelper: TabContentScript {
                     requestLogins(login, requestId: requestId)
                 }
             } else if type == "submit" {
-                if self.profile.prefs.boolForKey("saveLogins") ?? true {
+                if Preferences.General.saveLogins.value {
                     if let login = Login.fromScript(url, script: res) {
                         setCredentials(login)
                     }
