@@ -11,6 +11,7 @@ import {
   Stat,
   ResourcesSwitchLabel,
   EmptyButton,
+  ToggleFlex,
   ToggleGrid
 } from '../../../../src/features/shields'
 
@@ -124,17 +125,17 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
         {/* ads toggle */}
           <ToggleGrid>
             <EmptyButton onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
-            <Stat>{data.totalAdsTrackersBlocked}</Stat>
-            <ResourcesSwitchLabel>{locale.blockAds}</ResourcesSwitchLabel>
-            <Toggle id='blockAds' checked={blockAds} onChange={this.onChangeBlockAds} />
+            <Stat onClick={this.onToggleTotalAdsTrackersBlocked}>{data.totalAdsTrackersBlocked}</Stat>
+            <ResourcesSwitchLabel onClick={this.onToggleTotalAdsTrackersBlocked}>{locale.blockAds}</ResourcesSwitchLabel>
+            <ToggleFlex><Toggle id='blockAds' checked={blockAds} onChange={this.onChangeBlockAds} /></ToggleFlex>
           </ToggleGrid>
           {openTotalAdsTrackersBlockedList ? this.totalAdsTrackersBlockedList : null}
         {/* connections encrypted toggle */}
         <ToggleGrid>
           <EmptyButton onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
-          <Stat>{data.connectionsEncrypted}</Stat>
-          <ResourcesSwitchLabel>{locale.connectionsEncrypted}</ResourcesSwitchLabel>
-          <Toggle id='connectionsEncrypted' checked={connectionsEncrypted} onChange={this.onChangeConnectionsEncrypted} />
+          <Stat onClick={this.onToggleConnectionsEncrypted}>{data.connectionsEncrypted}</Stat>
+          <ResourcesSwitchLabel onClick={this.onToggleConnectionsEncrypted}>{locale.connectionsEncrypted}</ResourcesSwitchLabel>
+          <ToggleFlex><Toggle id='connectionsEncrypted' checked={connectionsEncrypted} onChange={this.onChangeConnectionsEncrypted} /></ToggleFlex>
         </ToggleGrid>
         {openConnectionsEncryptedList ? this.connectionsEncryptedList : null}
         {/* popups toggle

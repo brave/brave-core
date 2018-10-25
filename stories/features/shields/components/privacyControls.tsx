@@ -112,7 +112,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
           <EmptyButton onClick={this.onToggleScriptsBlocked}><ShowMoreIcon /></EmptyButton>
           <Stat>{data.thirdPartyScriptsBlocked}</Stat>
           <SelectBox>
-            <option value='block_third_party'>{locale.block3partyScripts}</option>
+            <option value='block_third_party'>{locale.blockSomeScripts}</option>
             <option value='block'>{locale.blockAllScripts}</option>
             <option value='allow'>{locale.allowAllScripts}</option>
           </SelectBox>

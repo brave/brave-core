@@ -11,7 +11,8 @@ import {
   Toggle,
   EmptyButton,
   ShowMoreIcon,
-  ResourcesSwitchLabel
+  ResourcesSwitchLabel,
+  ToggleFlex
 } from '../../../../src/features/shields'
 
 // Component groups
@@ -75,9 +76,9 @@ export default class SecurityControls extends React.PureComponent<Props, State> 
         {/* pishing toggle */}
         <ToggleGrid>
           <EmptyButton onClick={this.onTogglePishingMalwareBlocked}><ShowMoreIcon /></EmptyButton>
-          <Stat>{data.pishingMalwareBlocked}</Stat>
-          <ResourcesSwitchLabel>{locale.blockPishing}</ResourcesSwitchLabel>
-          <Toggle checked={true} />
+          <Stat onClick={this.onTogglePishingMalwareBlocked}>{data.pishingMalwareBlocked}</Stat>
+          <ResourcesSwitchLabel onClick={this.onTogglePishingMalwareBlocked}>{locale.blockPishing}</ResourcesSwitchLabel>
+          <ToggleFlex><Toggle checked={true} /></ToggleFlex>
         </ToggleGrid>
         {openPishingMalwareBlockedList ? this.pishingMalwareBlockedList : null}
       </>

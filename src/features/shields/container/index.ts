@@ -86,6 +86,7 @@ export const DisabledTextGrid = styled(EnabledTextGrid)`
 
 interface ResourcesStatusGridProps {
   withStats: boolean
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export const ResourcesStatusGrid = styled(Grid as ComponentType<ResourcesStatusGridProps>)`
@@ -96,6 +97,8 @@ export const ResourcesStatusGrid = styled(Grid as ComponentType<ResourcesStatusG
   line-height: 18px;
   color: #E9E9F4;
   background-color: rgba(255, 255, 255, 0.15);
+  user-select: none;
+  cursor: pointer;
 `
 
 export const ResourcesSubTitleGrid = styled(Grid)`
@@ -155,16 +158,21 @@ export const ResourcesFooterFlex = styled(Flex)`
 export const ToggleGrid = styled(Grid)`
   grid-template-columns: 28px 28px 1fr auto;
   grid-auto-rows: 39px 0;
-  padding: 5px 25px 5px 20px;
+  padding: 5px 0 5px 20px;
   border-bottom: 1px solid rgba(255,255,255,0.15);
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
   color: #E9E9F4;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
 `
 
 export const SelectGrid = styled(ToggleGrid)`
   grid-auto-rows: 46px 0;
+  padding: 5px 25px 5px 20px;
 `
 
 export const ResourcesListGrid = styled(Grid)`
@@ -196,4 +204,10 @@ export const ResourcesListGrid = styled(Grid)`
       display: block;
     }
   }
+`
+
+export const ToggleFlex = styled(Flex.withComponent('label'))`
+  width: 100%;
+  height: 100%;
+  padding-right: 25px;
 `

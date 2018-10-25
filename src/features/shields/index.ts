@@ -23,6 +23,7 @@ import {
   ResourcesStatusGrid,
   ResourcesSubTitleGrid,
   SelectGrid,
+  ToggleFlex,
   ToggleGrid
 } from './container'
 
@@ -106,5 +107,6 @@ export {
   Stat,
   Toggle,
   ToggleGrid,
+  ToggleFlex,
   UnHighlight
 }

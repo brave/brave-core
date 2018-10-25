@@ -33,8 +33,8 @@ const dynamicHeader = (
   onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void
 ) => {
   return (
-    <ResourcesStatusGrid withStats={false}>
-      <EmptyButton onClick={onToggle}><ShowLessIcon /></EmptyButton>
+    <ResourcesStatusGrid withStats={false} onClick={onToggle}>
+      <EmptyButton><ShowLessIcon /></EmptyButton>
       <ResourcesStatusTitle>{title}</ResourcesStatusTitle>
     </ResourcesStatusGrid>
   )
@@ -46,8 +46,8 @@ const staticHeader = (
   onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void
 ) => {
   return (
-    <ResourcesStatusGrid withStats={true}>
-      <EmptyButton onClick={onToggle}><ShowLessIcon /></EmptyButton>
+    <ResourcesStatusGrid withStats={true} onClick={onToggle}>
+      <EmptyButton><ShowLessIcon /></EmptyButton>
       <Stat>{data}</Stat>
       <ResourcesStatusTitle>{title}</ResourcesStatusTitle>
     </ResourcesStatusGrid>

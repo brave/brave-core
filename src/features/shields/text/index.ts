@@ -13,6 +13,7 @@ export const Stat = styled<{}, 'span'>('span')`
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
+  user-select: none;
 `
 
 interface LabelProps {
@@ -102,7 +103,7 @@ export const Link = styled<{}, 'a'>('a')`
 
 export const ResourcesListItem = styled<{}, 'span'>('span')`
   white-space: nowrap;
-  overflow: hidden;
+  overflow-x: hidden;
   text-overflow: ellipsis;
   display: inline-block;
   margin: 0 10px;
@@ -118,6 +119,7 @@ export const ResourcesSwitchLabel = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   padding: 0 11px;
+  user-select: none;
 `
 
 export const ResourcesStatusTitle = styled<{}, 'span'>('span')`
@@ -130,14 +132,19 @@ export const ResourcesStatusTitle = styled<{}, 'span'>('span')`
 export const ResourcesListText = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  margin-bottom: 10px;
   line-height: 1;
   color: ${palette.grey500};
+  white-space: nowrap;
   overflow-x: hidden;
-  padding: 0 25px;
+  text-overflow: ellipsis;
+  padding: 9px 25px;
 
   &:first-of-type {
     margin-top: 10px;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
   }
 `
 
