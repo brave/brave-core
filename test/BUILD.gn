@@ -238,7 +238,7 @@ test("brave_browser_tests") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "//brave/components/brave_rewards/browser/rewards_notifications_service_browsertest.cc",
+      "//brave/components/brave_rewards/browser/rewards_notification_service_browsertest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
     ]
   }

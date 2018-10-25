@@ -18,6 +18,7 @@
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
+class Profile;
 
 namespace content {
 class NavigationHandle;
@@ -29,6 +30,7 @@ bool IsMediaLink(const GURL& url,
                  const GURL& first_party_url,
                  const GURL& referrer);
 
+class RewardsNotificationService;
 class RewardsServiceObserver;
 
 using GetContentSiteListCallback =
@@ -97,6 +99,8 @@ class RewardsService : public KeyedService {
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
+
+  RewardsNotificationService* notification_service(Profile* profile);
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
