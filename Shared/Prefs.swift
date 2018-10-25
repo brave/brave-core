@@ -5,39 +5,9 @@
 import Foundation
 
 public struct PrefsKeys {
-    public static let KeyLastRemoteTabSyncTime = "lastRemoteTabSyncTime"
-    public static let KeyLastSyncFinishTime = "lastSyncFinishTime"
-    public static let KeyDefaultHomePageURL = "KeyDefaultHomePageURL"
-    public static let KeyNoImageModeStatus = "NoImageModeStatus"
-    public static let KeyNightModeButtonIsInMenu = "NightModeButtonIsInMenuPrefKey"
-    public static let KeyNightModeStatus = "NightModeStatus"
-    public static let KeyMailToOption = "MailToOption"
-    public static let HasFocusInstalled = "HasFocusInstalled"
-    public static let IntroSeen = "IntroViewControllerSeen" // Currently unused, but for future use for any sort of on-boarding/intro screen
-
     //Activity Stream
     public static let KeyTopSitesCacheIsValid = "topSitesCacheIsValid"
     public static let KeyTopSitesCacheSize = "topSitesCacheSize"
-    public static let KeyNewTab = "NewTabPrefKey"
-    public static let ASRecentHighlightsVisible = "ASRecentHighlightsVisible"
-    public static let ASBookmarkHighlightsVisible = "ASBookmarkHighlightsVisible"
-    public static let ASLastInvalidation = "ASLastInvalidation"
-
-    public static let KeyUseCustomSyncService = "useCustomSyncService"
-    public static let KeyCustomSyncToken = "customSyncTokenServer"
-    public static let KeyCustomSyncProfile = "customSyncProfileServer"
-    public static let KeyCustomSyncOauth = "customSyncOauthServer"
-    public static let KeyCustomSyncAuth = "customSyncAuthServer"
-    public static let KeyCustomSyncWeb = "customSyncWebServer"
-    public static let UseStageServer = "useStageSyncService"
-
-    public static let AppExtensionTelemetryOpenUrl = "AppExtensionTelemetryOpenUrl"
-    public static let AppExtensionTelemetryEventArray = "AppExtensionTelemetryEvents"
-}
-
-public struct PrefsDefaults {
-    public static let ChineseHomePageURL = "http://mobile.firefoxchina.cn/"
-    public static let ChineseNewTabDefault = "HomePage"
 }
 
 public protocol Prefs {

@@ -241,10 +241,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             return false
         }
 
-        if let profile = profile, let _ = profile.prefs.boolForKey(PrefsKeys.AppExtensionTelemetryOpenUrl) {
-            profile.prefs.removeObjectForKey(PrefsKeys.AppExtensionTelemetryOpenUrl)
-        }
-
         DispatchQueue.main.async {
             NavigationPath.handle(nav: routerpath, with: self.browserViewController)
         }

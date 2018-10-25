@@ -34,6 +34,7 @@ extension Preferences {
         migrate(key: "saveLogins", to: Preferences.General.saveLogins)
         migrate(key: "blockPopups", to: Preferences.General.blockPopups)
         migrate(key: "kPrefKeyTabsBarShowPolicy", to: Preferences.General.tabBarVisibility)
+        migrate(key: "NightModeStatus", to: Preferences.General.nightMode)
         
         // Privacy
         migrate(key: "braveAcceptCookiesPref", to: Preferences.Privacy.cookieAcceptPolicy)

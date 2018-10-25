@@ -44,6 +44,8 @@ extension Preferences {
         static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
         /// Controls how the tab bar should be shown (or not shown)
         static let tabBarVisibility = Option<Int>(key: "general.tab-bar-visiblity", default: TabBarVisibility.always.rawValue)
+        /// Whether or not a user has enabled Night Mode
+        static let nightMode = Option<Bool>(key: "general.night-mode", default: false)
     }
     final class Search {
         /// Whether or not to show suggestions while the user types

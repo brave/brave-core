@@ -392,7 +392,7 @@ class TabManager: NSObject {
         if let request = request {
             tab.loadRequest(request)
         } else if !isPopup {
-            let newTabChoice = NewTabAccessors.getNewTabPage(prefs)
+            let newTabChoice = NewTabAccessors.getNewTabPage()
             switch newTabChoice {
             case .homePage:
                 // We definitely have a homepage if we've got here
@@ -893,10 +893,10 @@ extension TabManager: WKNavigationDelegate {
     // Do not excute JS at this point that requires running prior to DOM parsing.
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         guard let tab = self[webView] else { return }
-        let isNightMode = NightModeAccessors.isNightMode(self.prefs)
+        let isNightMode = Preferences.General.nightMode.value
         tab.setNightMode(isNightMode)
 
-        let isNoImageMode = self.prefs.boolForKey(PrefsKeys.KeyNoImageModeStatus) ?? false
+        let isNoImageMode = Preferences.Shields.blockImages.value
         tab.noImageMode = isNoImageMode
         
         if let tpHelper = tab.contentBlocker as? ContentBlockerHelper, !tpHelper.isEnabled {
