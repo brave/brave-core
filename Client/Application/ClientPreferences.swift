@@ -44,8 +44,15 @@ extension Preferences {
         static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
         /// Controls how the tab bar should be shown (or not shown)
         static let tabBarVisibility = Option<Int>(key: "general.tab-bar-visiblity", default: TabBarVisibility.always.rawValue)
-        /// Whether or not a user has enabled Night Mode
+        
+        /// Whether or not a user has enabled Night Mode.
+        ///
+        /// Currently unused
         static let nightMode = Option<Bool>(key: "general.night-mode", default: false)
+        /// Whether or not to show the clipboard bar when the user has a URL in their pasteboard on launch
+        ///
+        /// Currently unused.
+        static let showClipboardBar = Option<Bool>(key: "general.show-clipboard-bar", default: false)
     }
     final class Search {
         /// Whether or not to show suggestions while the user types
