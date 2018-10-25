@@ -10,7 +10,6 @@ private let log = Logger.browserLogger
 
 struct HomePageConstants {
     static let HomePageURLPrefKey = "HomePageURLPref"
-    static let DefaultHomePageURLPrefKey = PrefsKeys.KeyDefaultHomePageURL
 }
 
 class HomePageHelper {
@@ -28,10 +27,6 @@ class HomePageHelper {
                 prefs.removeObjectForKey(HomePageConstants.HomePageURLPrefKey)
             }
         }
-    }
-
-    var defaultURLString: String? {
-        return HomePageAccessors.getDefaultHomePageString(prefs)
     }
 
     var isHomePageAvailable: Bool { return currentURL != nil }
