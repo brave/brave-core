@@ -18,13 +18,13 @@ export const StyledContainer = styled<{}, 'div'>('div')`
 
 export const StyledAttentionScore = styled<{}, 'span'>('span')`
   margin-left: 30px;
-  font-weight: 300;
+  font-weight: 400;
   color: #4B4C5C;
   font-size: 14px;
 ` as any
 
 export const StyledAttentionScoreTitle = styled<{}, 'span'>('span')`
-  font-weight: 300;
+  font-weight: 400;
   color: #4B4C5C;
   font-size: 14px;
   letter-spacing: 0;

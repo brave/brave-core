@@ -110,7 +110,7 @@ export const StyledProviderWrap = styled<{}, 'div'>('div')`
 
 export const StyledVerifiedText = styled<{}, 'span'>('span')`
   font-size: 12px;
-  color: #9E9FAB;
+  color: #838391;
   font-weight: 400;
   letter-spacing: 0;
   margin-left: 4px;

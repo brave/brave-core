@@ -10,7 +10,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
 
 export const StyledTitle = styled<{}, 'div'>('div')`
   font-weight: 600;
-  color: #4b4c5c;
+  color: #1B1D2F;
   font-family: Poppins, sans-serif;
   font-size: 16px;
   line-height: 2;
@@ -39,7 +39,7 @@ export const StyledRight = styled<{}, 'div'>('div')`
 `
 
 export const StyledSelectOption = styled<{}, 'div'>('div')`
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 300;
   color: #696fdc;
 `
