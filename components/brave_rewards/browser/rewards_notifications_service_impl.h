@@ -26,7 +26,8 @@ class RewardsNotificationsServiceImpl
 
   void Init();
   void AddNotification(RewardsNotificationType type,
-                       RewardsNotificationArgs args) override;
+                       RewardsNotificationArgs args,
+                       RewardsNotificationID id = "") override;
   void DeleteNotification(RewardsNotificationID id) override;
   void DeleteAllNotifications() override;
   void GetNotification(RewardsNotificationID id) override;
