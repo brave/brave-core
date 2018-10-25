@@ -61,7 +61,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
   constructor (props: Props) {
     super(props)
     this.centerTextSection = null
-    this.isTouchScreen = 'ontouchstart' in document.documentElement!
+    this.isTouchScreen = 'ontouchstart' in document.documentElement
   }
 
   scrollToCenter = () => {
