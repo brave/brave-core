@@ -11,13 +11,13 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 
 .c13 {
   margin-left: 30px;
-  font-weight: 300;
+  font-weight: 400;
   color: #4B4C5C;
   font-size: 14px;
 }
 
 .c11 {
-  font-weight: 300;
+  font-weight: 400;
   color: #4B4C5C;
   font-size: 14px;
   -webkit-letter-spacing: 0;

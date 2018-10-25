@@ -24,14 +24,14 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 }
 
 .c3 {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 300;
   line-height: 0.79;
   -webkit-letter-spacing: 0.4px;
   -moz-letter-spacing: 0.4px;
   -ms-letter-spacing: 0.4px;
   letter-spacing: 0.4px;
-  color: #4c54d2;
+  color: #4C54D2;
   margin: 4px 0 26px;
   text-transform: uppercase;
 }
