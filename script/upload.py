@@ -204,10 +204,10 @@ def create_release_draft(repo, tag):
 
 These builds are an unpolished and unfinished early preview for the new version of Brave on the desktop. These builds show our work in progress and they aren't for the faint-of-heart. Features may be missing or broken in new and exciting ways; familiar functionality may have unfamiliar side-effects. These builds showcase the newest advances that we're bringing to your browser, but this is still a prototype, not a reliable daily driver. Try it out only if you're looking for a little extra spice and adventure in your browsing.'''
 
-  if channel in 'dev':
+  if release_channel() in 'dev':
     winstallers = dev_winstallers
     warning = dev_beta_warning
-  elif channel in 'beta':
+  elif release_channel() in 'beta':
     winstallers = beta_winstallers
     warning = dev_beta_warning
   else:
