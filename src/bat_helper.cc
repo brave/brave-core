@@ -1700,24 +1700,42 @@ static bool ignore_ = false;
     //has parser errors or wrong types
     bool error = d.HasParseError();
     if (false == error) {
-      error = !(d.HasMember("wallet") && d["wallet"].IsObject() &&
-        d.HasMember("payload") && d["payload"].IsObject() );
+      error = !(
+          ((d.HasMember("parameters") && d["parameters"].IsObject()) &&
+           (d.HasMember("addresses") && d["addresses"].IsObject())) ||
+          ((d.HasMember("payload") && d["payload"].IsObject()) &&
+           (d.HasMember("wallet") && d["wallet"].IsObject())));
     }
 
     if (false == error) {
-      walletInfo.paymentId_ = d["wallet"]["paymentId"].GetString();
-      walletInfo.addressBAT_ = d["wallet"]["addresses"]["BAT"].GetString();
-      walletInfo.addressBTC_ = d["wallet"]["addresses"]["BTC"].GetString();
-      walletInfo.addressCARD_ID_ = d["wallet"]["addresses"]["CARD_ID"].GetString();
-      walletInfo.addressETH_ = d["wallet"]["addresses"]["ETH"].GetString();
-      walletInfo.addressLTC_ = d["wallet"]["addresses"]["LTC"].GetString();
+      if (d.HasMember("payload") && d["payload"].IsObject()) {
+        walletInfo.paymentId_ = d["wallet"]["paymentId"].GetString();
+        walletInfo.addressBAT_ = d["wallet"]["addresses"]["BAT"].GetString();
+        walletInfo.addressBTC_ = d["wallet"]["addresses"]["BTC"].GetString();
+        walletInfo.addressCARD_ID_ = d["wallet"]["addresses"]["CARD_ID"].GetString();
+        walletInfo.addressETH_ = d["wallet"]["addresses"]["ETH"].GetString();
+        walletInfo.addressLTC_ = d["wallet"]["addresses"]["LTC"].GetString();
 
-      days = d["payload"]["adFree"]["days"].GetUint();
-      const auto & fee = d["payload"]["adFree"]["fee"].GetObject();
-      auto itr = fee.MemberBegin();
-      if (itr != fee.MemberEnd() ) {
-        fee_currency = itr->name.GetString();
-        fee_amount = itr->value.GetDouble();
+        days = d["payload"]["adFree"]["days"].GetUint();
+        const auto & fee = d["payload"]["adFree"]["fee"].GetObject();
+        auto itr = fee.MemberBegin();
+        if (itr != fee.MemberEnd() ) {
+          fee_currency = itr->name.GetString();
+          fee_amount = itr->value.GetDouble();
+        }
+      } else if (d.HasMember("parameters") && d["parameters"].IsObject()) {
+        walletInfo.addressBAT_ = d["addresses"]["BAT"].GetString();
+        walletInfo.addressBTC_ = d["addresses"]["BTC"].GetString();
+        walletInfo.addressCARD_ID_ = d["addresses"]["CARD_ID"].GetString();
+        walletInfo.addressETH_ = d["addresses"]["ETH"].GetString();
+        walletInfo.addressLTC_ = d["addresses"]["LTC"].GetString();
+        days = d["parameters"]["adFree"]["days"].GetUint();
+        const auto & fee = d["parameters"]["adFree"]["fee"].GetObject();
+        auto itr = fee.MemberBegin();
+        if (itr != fee.MemberEnd() ) {
+          fee_currency = itr->name.GetString();
+          fee_amount = itr->value.GetDouble();
+        }
       }
     }
     return !error;
