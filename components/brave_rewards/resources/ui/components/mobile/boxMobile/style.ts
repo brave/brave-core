@@ -70,7 +70,7 @@ export const StyledRight = styled<{}, 'div'>('div')`
 export const StyledTitle = styled<StyleProps, 'div'>('div')`
   height: 36px;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.27;
   letter-spacing: normal;
   display: inline-block;
@@ -94,7 +94,7 @@ export const StyledDescription = styled<StyleProps, 'div'>('div')`
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0px;
-  font-weight: 200;
+  font-weight: 300;
   color: ${p => p.theme.color.detailDescription};
   margin-top: ${p => p.contentShown ? 0 : -5}px;
 `
