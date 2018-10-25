@@ -65,14 +65,6 @@ SyncRecordPtr SimpleBookmarkSyncRecord(
     const std::string& title,
     const std::string& order,
     const std::string& parent_object_id) {
-  // Need:
-  // url
-  // title
-  // action
-  // order
-  // Generated:
-  // object id
-  // device id
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
   record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
     brave_sync::jslib::SyncRecord::Action::A_MIN,
@@ -129,6 +121,27 @@ SyncRecordPtr SimpleFolderSyncRecord(
   bookmark->site.title = title;
 
   record->SetBookmark(std::move(bookmark));
+
+  return record;
+}
+
+SyncRecordPtr SimpleDeviceRecord(
+    const int action,
+    const std::string& device_id,
+    const std::string& name) {
+  auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
+  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
+    brave_sync::jslib::SyncRecord::Action::A_MIN,
+    brave_sync::jslib::SyncRecord::Action::A_MAX,
+    brave_sync::jslib::SyncRecord::Action::A_INVALID);
+  record->deviceId = device_id;
+  record->objectId = tools::GenerateObjectId();
+  record->objectData = "device";
+  record->syncTimestamp = base::Time::Now();
+
+  auto device = std::make_unique<brave_sync::jslib::Device>();
+  device->name = name;
+  record->SetDevice(std::move(device));
 
   return record;
 }

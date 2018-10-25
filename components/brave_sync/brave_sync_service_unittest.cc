@@ -3,28 +3,28 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/client/bookmark_change_processor.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
 #include "brave/components/brave_sync/brave_sync_service_impl.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
+#include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
+#include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/test_util.h"
+#include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-      // Separated to easier move or remove
-      #include "base/strings/utf_string_conversions.h"
-      #include "brave/components/brave_sync/jslib_const.h"
-      #include "components/bookmarks/browser/bookmark_model.h"
-      #include "components/bookmarks/browser/bookmark_utils.h"
 
 // npm run test -- brave_unit_tests --filter=BraveSyncServiceTest.*
 
@@ -41,10 +41,27 @@
 // SendDeleteSyncUser       | ?
 // SendDeleteSyncCategory   | ?
 // SendGetBookmarksBaseOrder|
-// SendGetBookmarkOrder     | X
 // NeedSyncWords            | ?
 // NeedBytesFromSyncWords   | ?
 // OnExtensionInitialized   |
+
+// BraveSyncService::methods
+// Name                      | Covered
+//-------------------------------------
+// OnSetupSyncHaveCode       | +
+// OnSetupSyncNewToSync      | +
+// OnDeleteDevice            | +
+// OnResetSync               | +
+// GetSettingsAndDevices     | +
+// GetSyncWords              | +
+// GetSeed                   | +
+// OnSetSyncEnabled          | +
+// OnSetSyncBookmarks        | +
+// OnSetSyncBrowsingHistory  | +
+// OnSetSyncSavedSiteSettings| +
+// AddObserver               | + (in SetUp, is that enough?)
+// RemoveObserver            | + (in Teardown, is that enough?)
+// GetSyncClient             | + (in SetUp, is that enough?)
 
 using testing::_;
 using testing::AtLeast;
@@ -89,13 +106,10 @@ class BraveSyncServiceTest : public testing::Test {
 
     observer_.reset(new MockBraveSyncServiceObserver);
     sync_service_->AddObserver(observer_.get());
-
-    DLOG(INFO) << "[Brave Sync Test] service_=" << sync_service_;
     EXPECT_TRUE(sync_service_ != NULL);
   }
 
   void TearDown() override {
-    DLOG(INFO) << "[Brave Sync Test] TearDown()";
     sync_service_->RemoveObserver(observer_.get());
     // this will also trigger a shutdown of the brave sync service
     profile_.reset();
@@ -194,7 +208,7 @@ TEST_F(BraveSyncServiceTest, BookmarkDeleted) {
   bookmarks::GetMostRecentlyAddedEntries(bookmark_model, 1, &nodes);
   ASSERT_EQ(nodes.size(), 1u);
   ASSERT_NE(nodes.at(0), nullptr);
-  EXPECT_CALL(*sync_client(), SendSyncRecords(_,_)).Times(1); // AB: preciece with mock expect filter
+  EXPECT_CALL(*sync_client(), SendSyncRecords(_,_)).Times(1); // TODO, AB: preciece with mock expect filter
   bookmark_model->Remove(nodes.at(0));
   // record->action = jslib::SyncRecord::Action::DELETE;
   // <= BookmarkNodeToSyncBookmark <= BookmarkChangeProcessor::SendUnsynced
@@ -203,4 +217,242 @@ TEST_F(BraveSyncServiceTest, BookmarkDeleted) {
     std::make_unique<RecordsList>());
 
   DLOG(INFO) << "[Brave Sync Test] TEST_F BookmarkDeleted done";
+}
+
+TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
+  // Expecting sync state changed twice: for enabled state and for device name
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
+  sync_service()->OnSetupSyncHaveCode("word1 word2 word3", "test_device");
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, OnSetupSyncNewToSync) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
+  // Expecting sync state changed twice: for enabled state and for device name
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
+  sync_service()->OnSetupSyncNewToSync("test_device");
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, GetSettingsAndDevices) {
+  // The test absorbs OnSetupSyncNewToSync test
+  auto callback1 = base::BindRepeating(
+      [](std::unique_ptr<brave_sync::Settings> settings,
+         std::unique_ptr<brave_sync::SyncDevices> devices) {
+            EXPECT_TRUE(settings->this_device_name_.empty());
+            EXPECT_FALSE(settings->sync_configured_);
+            EXPECT_FALSE(settings->sync_this_device_);
+            EXPECT_FALSE(settings->sync_bookmarks_);
+            EXPECT_FALSE(settings->sync_settings_);
+            EXPECT_FALSE(settings->sync_history_);
+            EXPECT_EQ(devices->devices_.size(), 0u);
+        }
+  );
+  sync_service()->GetSettingsAndDevices(callback1);
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
+  // Expecting sync state changed twice: for enabled state and for device name
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
+  sync_service()->OnSetupSyncNewToSync("test_device");
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+  auto callback2 = base::BindRepeating(
+      [](std::unique_ptr<brave_sync::Settings> settings,
+         std::unique_ptr<brave_sync::SyncDevices> devices) {
+          // Other fields may be switched later
+          EXPECT_EQ(settings->this_device_name_, "test_device");
+          EXPECT_TRUE(settings->sync_this_device_);
+      }
+  );
+  sync_service()->GetSettingsAndDevices(callback2);
+}
+
+TEST_F(BraveSyncServiceTest, GetSyncWords) {
+  EXPECT_CALL(*sync_client(), NeedSyncWords);
+  sync_service()->GetSyncWords();
+  // The call should go to BraveSyncClient => BraveSyncEventRouter =>
+  // background.js onNeedSyncWords => api::BraveSyncSyncWordsPreparedFunction =>
+  // BraveSyncServiceImpl::OnSyncWordsPrepared
+  // but as we have a mock instead of BraveSyncClient, emulate the response
+  const std::string words = "word1 word2 word3";
+  EXPECT_CALL(*observer(), OnHaveSyncWords(sync_service(), words)).Times(1);
+  sync_service()->OnSyncWordsPrepared(words);
+}
+
+TEST_F(BraveSyncServiceTest, GetSeed) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(AtLeast(2));
+  sync_service()->OnSetupSyncNewToSync("test_device");
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+
+  // Service gets seed from client via BraveSyncServiceImpl::OnSaveInitData
+  const auto binary_seed = Uint8Array(16, 77);
+
+  sync_service()->OnSaveInitData(binary_seed, {0});
+  std::string expected_seed = StrFromUint8Array(binary_seed);
+  EXPECT_EQ(sync_service()->GetSeed(), expected_seed);
+}
+
+bool DevicesContains(SyncDevices* devices, const std::string& id,
+    const std::string& name) {
+  DCHECK(devices);
+  for (const SyncDevice &device : devices->devices_) {
+    if (device.device_id_ == id && device.name_ == name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+MATCHER_P2(ContainsDeviceRecord, action, name,
+    "contains device sync record with params") {
+  for (const auto& record : arg) {
+    if (record->has_device()) {
+      const auto& device = record->GetDevice();
+      if (record->action == action &&
+          device.name == name) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
+  RecordsList records;
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "1", "device1"));
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "2", "device2"));
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "3", "device3"));
+  sync_service()->OnResolvedPreferences(records);
+
+  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "3", "device3"));
+
+  using brave_sync::jslib::SyncRecord;
+  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
+      ContainsDeviceRecord(SyncRecord::Action::DELETE, "device3"))).Times(1);
+  sync_service()->OnDeleteDevice("3");
+  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
+      ContainsDeviceRecord(SyncRecord::Action::DELETE, "device2"))).Times(1);
+  sync_service()->OnDeleteDevice("2");
+
+  RecordsList resolved_records;
+  //auto resolved_record1 = records.at(2)->Clone();
+  auto resolved_record1 = SyncRecord::Clone(*records.at(2));
+  resolved_record1->action = jslib::SyncRecord::Action::DELETE;
+  resolved_records.push_back(std::move(resolved_record1));
+  //auto resolved_record2 = records.at(1)->Clone();
+  auto resolved_record2 = SyncRecord::Clone(*records.at(1));
+  resolved_record2->action = jslib::SyncRecord::Action::DELETE;
+  resolved_records.push_back(std::move(resolved_record2));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  sync_service()->OnResolvedPreferences(resolved_records);
+
+  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  EXPECT_TRUE(DevicesContains(devices_final.get(), "1", "device1"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "3", "device3"));
+}
+
+TEST_F(BraveSyncServiceTest, OnResetSync) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(AtLeast(2));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(AtLeast(3));
+  sync_service()->OnSetupSyncNewToSync("this_device");
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncEnabled));
+
+  RecordsList records;
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "0", "this_device"));
+  records.push_back(SimpleDeviceRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "1", "device1"));
+
+  sync_service()->OnResolvedPreferences(records);
+
+  auto devices = sync_service()->sync_prefs_->GetSyncDevices();
+
+  EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+
+  sync_service()->OnResetSync();
+
+  auto devices_final = sync_service()->sync_prefs_->GetSyncDevices();
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "this_device"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
+
+  EXPECT_TRUE(profile()->GetPrefs()->GetString(
+      brave_sync::prefs::kSyncDeviceId).empty());
+  EXPECT_TRUE(profile()->GetPrefs()->GetString(
+      brave_sync::prefs::kSyncSeed).empty());
+  EXPECT_TRUE(profile()->GetPrefs()->GetString(
+      brave_sync::prefs::kSyncDeviceName).empty());
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+      brave_sync::prefs::kSyncEnabled));
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+      brave_sync::prefs::kSyncBookmarksEnabled));
+  EXPECT_TRUE(profile()->GetPrefs()->GetString(
+      brave_sync::prefs::kSyncBookmarksBaseOrder).empty());
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+      brave_sync::prefs::kSyncSiteSettingsEnabled));
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+      brave_sync::prefs::kSyncHistoryEnabled));
+  EXPECT_TRUE(profile()->GetPrefs()->GetTime(
+      brave_sync::prefs::kSyncLatestRecordTime).is_null());
+  EXPECT_TRUE(profile()->GetPrefs()->GetTime(
+      brave_sync::prefs::kSyncLastFetchTime).is_null());
+  EXPECT_TRUE(profile()->GetPrefs()->GetString(
+      brave_sync::prefs::kSyncDeviceList).empty());
+DLOG(INFO) << "kSyncApiVersion=<" << profile()->GetPrefs()->GetString(brave_sync::prefs::kSyncApiVersion)<<">";
+  EXPECT_EQ(profile()->GetPrefs()->GetString(
+      brave_sync::prefs::kSyncApiVersion), "0");
+
+  EXPECT_FALSE(sync_service()->IsSyncInitialized());
+  EXPECT_FALSE(sync_service()->IsSyncConfigured());
+}
+
+TEST_F(BraveSyncServiceTest, OnSetSyncBookmarks) {
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncBookmarksEnabled));
+  sync_service()->OnSetSyncBookmarks(true);
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncBookmarksEnabled));
+  sync_service()->OnSetSyncBookmarks(false);
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+      brave_sync::prefs::kSyncBookmarksEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, OnSetSyncBrowsingHistory) {
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncHistoryEnabled));
+  sync_service()->OnSetSyncBrowsingHistory(true);
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncHistoryEnabled));
+  sync_service()->OnSetSyncBrowsingHistory(false);
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+      brave_sync::prefs::kSyncHistoryEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, OnSetSyncSavedSiteSettings) {
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncSiteSettingsEnabled));
+  sync_service()->OnSetSyncSavedSiteSettings(true);
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+       brave_sync::prefs::kSyncSiteSettingsEnabled));
+  sync_service()->OnSetSyncSavedSiteSettings(false);
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+      brave_sync::prefs::kSyncSiteSettingsEnabled));
 }

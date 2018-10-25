@@ -73,6 +73,11 @@ SyncRecordPtr SimpleFolderSyncRecord(
     const std::string& parent_object_id,
     const bool hide_in_toolbar);
 
+SyncRecordPtr SimpleDeviceRecord(
+    const int action,
+    const std::string& device_id,
+    const std::string& name);
+
 }  // namespace brave_sync
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SYNC_TEST_UTIL_H_

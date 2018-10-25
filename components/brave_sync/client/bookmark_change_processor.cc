@@ -621,14 +621,6 @@ void BookmarkChangeProcessor::SendUnsynced(
   }
 }
 
-void BookmarkChangeProcessor::InitialSync() {
-    auto* deleted_node = GetDeletedNodeRoot();
-    CHECK(deleted_node);
-    std::vector<const bookmarks::BookmarkNode*> root_nodes = {
-      bookmark_model_->other_node(),
-      bookmark_model_->bookmark_bar_node(),
-      deleted_node
-    };
-}
+void BookmarkChangeProcessor::InitialSync() {}
 
 }  // namespace brave_sync

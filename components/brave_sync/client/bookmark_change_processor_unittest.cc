@@ -111,6 +111,10 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
 
   void BookmarkAddedImpl();
   void BookmarkCreatedFromSyncImpl();
+  bool HasAnySyncMetaInfo(const BookmarkNode* node);
+  void AddSimpleHierarchy(
+      const BookmarkNode** folder1, const BookmarkNode** node_b,
+      const BookmarkNode** node_a, const BookmarkNode** node_c);
 
  private:
   // Need this as a very first member to run tests in UI thread
@@ -125,6 +129,113 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
   base::ScopedTempDir temp_dir_;
 };
+
+TEST_F(BraveBookmarkChangeProcessorTest, StartObserver) {
+  // The mark of observer processed: metainfo "last_updated_time" is set
+  const auto* node_a = model()->AddURL(model()->other_node(), 0,
+                                       base::ASCIIToUTF16("A.com - title"),
+                                       GURL("https://a.com/"));
+  model()->SetTitle(node_a, base::ASCIIToUTF16("A.com - title - upated"));
+  std::string last_updated_time_a;
+  node_a->GetMetaInfo("last_updated_time", &last_updated_time_a);
+  EXPECT_TRUE(last_updated_time_a.empty());
+
+  change_processor()->Start();
+
+  const auto* node_b = model()->AddURL(model()->other_node(), 0,
+                                       base::ASCIIToUTF16("B.com - title"),
+                                       GURL("https://b.com/"));
+  model()->SetTitle(node_b, base::ASCIIToUTF16("B.com - title - upated"));
+  std::string last_updated_time_b;
+  node_b->GetMetaInfo("last_updated_time", &last_updated_time_b);
+  EXPECT_TRUE(!last_updated_time_b.empty());
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, StopObserver) {
+  // The mark of observer processed: metainfo "last_updated_time" is set
+  change_processor()->Start();
+  const auto* node_a = model()->AddURL(model()->other_node(), 0,
+                                       base::ASCIIToUTF16("A.com - title"),
+                                       GURL("https://a.com/"));
+  model()->SetTitle(node_a, base::ASCIIToUTF16("A.com - title - upated"));
+  std::string last_updated_time_a;
+  node_a->GetMetaInfo("last_updated_time", &last_updated_time_a);
+  EXPECT_TRUE(!last_updated_time_a.empty());
+
+  change_processor()->Stop();
+
+  const auto* node_b = model()->AddURL(model()->other_node(), 0,
+                                       base::ASCIIToUTF16("B.com - title"),
+                                       GURL("https://b.com/"));
+  model()->SetTitle(node_b, base::ASCIIToUTF16("B.com - title - upated"));
+  std::string last_updated_time_b;
+  node_b->GetMetaInfo("last_updated_time", &last_updated_time_b);
+  EXPECT_TRUE(last_updated_time_b.empty());
+}
+
+bool BraveBookmarkChangeProcessorTest::HasAnySyncMetaInfo(
+                                                    const BookmarkNode* node) {
+  DCHECK(node);
+  const std::vector<std::string> keys = {"object_id", "order", "sync_timestamp", "last_send_time",
+                     "last_updated_time"};
+  for (const auto& key : keys ) {
+    std::string value;
+    if (node->GetMetaInfo(key, &value) && !value.empty()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void BraveBookmarkChangeProcessorTest::AddSimpleHierarchy(
+    const BookmarkNode** folder1, const BookmarkNode** node_b,
+    const BookmarkNode** node_a, const BookmarkNode** node_c) {
+  *folder1 = model()->AddFolder(model()->other_node(), 0,
+                               base::ASCIIToUTF16("Folder1"));
+
+  *node_a = model()->AddURL(*folder1, 0,
+                           base::ASCIIToUTF16("A.com - title"),
+                           GURL("https://a.com/"));
+
+  *node_b = model()->AddURL(*folder1, 1,
+                           base::ASCIIToUTF16("B.com - title"),
+                           GURL("https://b.com/"));
+
+  *node_c = model()->AddURL(*folder1, 2,
+                           base::ASCIIToUTF16("C.com - title"),
+                           GURL("https://c.com/"));
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, Reset) {
+  // Reset does clear of the metainfo, but
+  // to fillup the metainfo now need to send it to sync
+  change_processor()->Start();
+
+  const BookmarkNode* folder1;
+  const BookmarkNode* node_a;
+  const BookmarkNode* node_b;
+  const BookmarkNode* node_c;
+  AddSimpleHierarchy(&folder1, &node_a, &node_b, &node_c);
+
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+
+  EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_a));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_b));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_c));
+
+  change_processor()->Reset();
+
+  EXPECT_FALSE(HasAnySyncMetaInfo(folder1));
+  EXPECT_FALSE(HasAnySyncMetaInfo(node_a));
+  EXPECT_FALSE(HasAnySyncMetaInfo(node_b));
+  EXPECT_FALSE(HasAnySyncMetaInfo(node_c));
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_InitialSync) {
+  // BookmarkChangeProcessor::InitialSync does not do anything now
+  // All work for obtaining order is done in background.js
+}
 
 void BraveBookmarkChangeProcessorTest::BookmarkAddedImpl() {
   change_processor()->Start();
@@ -203,8 +314,6 @@ TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_MoveNodesBetweenDirs) {
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       RecordsNumber(4))).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
-
-
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, DeleteFolderWithNodes) {
@@ -213,24 +322,16 @@ TEST_F(BraveBookmarkChangeProcessorTest, DeleteFolderWithNodes) {
   //   Folder1
   //      a.com
   //      b.com
+  //      c.com
   // 2. Delete Folder1
 
   change_processor()->Start();
 
-  const auto* folder1 = model()->AddFolder(model()->other_node(), 0,
-                                           base::ASCIIToUTF16("Folder1"));
-
-  [[maybe_unused]] const auto* node_a = model()->AddURL(folder1, 0,
-                                       base::ASCIIToUTF16("A.com - title"),
-                                       GURL("https://a.com/"));
-
-  [[maybe_unused]] const auto* node_b = model()->AddURL(folder1, 1,
-                                       base::ASCIIToUTF16("B.com - title"),
-                                       GURL("https://b.com/"));
-
-  [[maybe_unused]] const auto* node_c = model()->AddURL(folder1, 0,
-                                       base::ASCIIToUTF16("B.com - title"),
-                                       GURL("https://b.com/"));
+  const BookmarkNode* folder1;
+  const BookmarkNode* node_a;
+  const BookmarkNode* node_b;
+  const BookmarkNode* node_c;
+  AddSimpleHierarchy(&folder1, &node_a, &node_b, &node_c);
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
       RecordsNumber(4))).Times(1);
@@ -459,4 +560,88 @@ TEST_F(BraveBookmarkChangeProcessorTest, Utf8FromSync) {
   change_processor()->ApplyChangesFromSyncModel(records);
   const auto* folder1 = model()->bookmark_bar_node()->GetChild(0);
   EXPECT_EQ(folder1->GetTitle(), title_utf16);
+}
+
+using brave_sync::jslib::SyncRecord;
+::testing::AssertionResult AssertSyncRecordsBookmarkEqual(const char* left_expr,
+                                                          const char* right_expr,
+                                                          SyncRecord& left,
+                                                          SyncRecord& right) {
+  DCHECK(left.has_bookmark());
+  DCHECK(right.has_bookmark());
+
+  #define FAIL_IF_FIELD_NOT_EQUAL(FIELD_NAME)       \
+  if (left.FIELD_NAME != right.FIELD_NAME) {    \
+    return ::testing::AssertionFailure() << left_expr << " and " << right_expr \
+        << " are not equal by " << #FIELD_NAME << " field ("               \
+        << left.FIELD_NAME << " vs " << right.FIELD_NAME << ")";    \
+  }
+
+  // Ignore action and device_id
+  FAIL_IF_FIELD_NOT_EQUAL(objectId);
+  FAIL_IF_FIELD_NOT_EQUAL(GetBookmark().site.location);
+  FAIL_IF_FIELD_NOT_EQUAL(GetBookmark().site.title);
+  FAIL_IF_FIELD_NOT_EQUAL(GetBookmark().isFolder);
+  FAIL_IF_FIELD_NOT_EQUAL(GetBookmark().parentFolderObjectId);
+  FAIL_IF_FIELD_NOT_EQUAL(GetBookmark().order);
+  #undef FAIL_IF_FIELD_NOT_EQUAL
+
+  return ::testing::AssertionSuccess();
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, GetAllSyncData) {
+  // This is a resolve operation in terms of sync js lib
+  // 1) ApplyChangesFromSyncModel
+  // 2) GetAllSyncData() => (must resolve) => SyncRecordAndExistingList
+  // 3) Verify all is good
+
+  change_processor()->Start();
+
+  RecordsList records;
+  records.push_back(SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "111, 111, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
+      "https://a.com/",
+      "A.com - title",
+      "1.1.1.1", ""));
+  records.push_back(SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "222, 222, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
+      "https://b.com/",
+      "B.com - title",
+      "1.1.1.2", ""));
+
+  change_processor()->ApplyChangesFromSyncModel(records);
+
+  RecordsList records_to_resolve;
+
+  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::UPDATE,
+      "222, 222, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
+      "https://b.com/",
+      "B.com - title - modified",
+      "1.1.1.2", ""));
+
+  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "333, 333, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
+      "https://c.com/",
+      "C.com - title",
+      "1.1.1.3", ""));
+
+  SyncRecordAndExistingList records_and_existing_objects;
+  change_processor()->GetAllSyncData(records_to_resolve,
+                                                &records_and_existing_objects);
+  ASSERT_EQ(records_and_existing_objects.size(), 2u);
+
+  const auto& pair_at_0 = records_and_existing_objects.at(0);
+  EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
+      *records_to_resolve.at(0), *pair_at_0->first);
+  EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
+      *records.at(1), *pair_at_0->second);
+
+  const auto& pair_at_1 = records_and_existing_objects.at(1);
+  EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
+      *records_to_resolve.at(1), *pair_at_1->first);
+  EXPECT_EQ(pair_at_1->second.get(), nullptr);
 }
