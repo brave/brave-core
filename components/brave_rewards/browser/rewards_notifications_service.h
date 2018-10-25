@@ -20,7 +20,7 @@ class RewardsNotificationsService : public KeyedService {
   RewardsNotificationsService();
   ~RewardsNotificationsService() override;
 
-  typedef uint32_t RewardsNotificationID;
+  typedef std::string RewardsNotificationID;
   typedef uint64_t RewardsNotificationTimestamp;
   typedef std::vector<std::string> RewardsNotificationArgs;
 
@@ -41,7 +41,7 @@ class RewardsNotificationsService : public KeyedService {
                         RewardsNotificationTimestamp timestamp,
                         RewardsNotificationArgs args);
     ~RewardsNotification();
-    RewardsNotificationID id_ = 0;
+    RewardsNotificationID id_;
     RewardsNotificationType type_ = RewardsNotificationsService::REWARDS_NOTIFICATION_INVALID;
     RewardsNotificationTimestamp timestamp_ = 0;
     RewardsNotificationArgs args_;
@@ -50,7 +50,8 @@ class RewardsNotificationsService : public KeyedService {
   typedef std::vector<RewardsNotification> RewardsNotificationsList;
 
   virtual void AddNotification(RewardsNotificationType type,
-                               RewardsNotificationArgs args) = 0;
+                               RewardsNotificationArgs args,
+                               RewardsNotificationID id = "") = 0;
   virtual void DeleteNotification(RewardsNotificationID id) = 0;
   virtual void DeleteAllNotifications() = 0;
   virtual void GetNotification(RewardsNotificationID id) = 0;

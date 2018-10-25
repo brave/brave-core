@@ -25,10 +25,6 @@ const getWindowId = (id: number) => {
   return `id_${id}`
 }
 
-const getNotificationId = (id: number) => {
-  return `n_${id}`
-}
-
 export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, action: any) => {
   if (state === undefined) {
     state = storage.load()
@@ -116,11 +112,11 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
     case types.ON_NOTIFICATION_ADDED:
       {
-        if (!payload || !payload.id) {
+        if (!payload || payload.id === '') {
           return
         }
 
-        const id = getNotificationId(payload.id)
+        const id = payload.id
         let notifications: Record<number, RewardsExtension.Notification> = state.notifications
 
         if (!notifications) {
@@ -148,17 +144,16 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
     case types.DELETE_NOTIFICATION:
       {
-        const id = payload.id.toString().replace('n_', '')
-        chrome.rewardsNotifications.deleteNotification(parseInt(id, 10))
+        chrome.rewardsNotifications.deleteNotification(payload.id)
         break
       }
     case types.ON_NOTIFICATION_DELETED:
       {
-        if (!payload || !payload.id) {
+        if (!payload || payload.id === '') {
           return
         }
 
-        const id = getNotificationId(payload.id)
+        const id = payload.id
         let notifications: Record<number, RewardsExtension.Notification> = state.notifications
         delete notifications[id]
 
