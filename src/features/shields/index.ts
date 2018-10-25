@@ -29,7 +29,6 @@ import {
 
 import {
   Description,
-  HiddenLink,
   Highlight,
   Label,
   Link,
@@ -71,7 +70,6 @@ export {
   EmptyButton,
   EnabledTextGrid,
   Header,
-  HiddenLink,
   Highlight,
   Label,
   Link,

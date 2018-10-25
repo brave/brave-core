@@ -175,34 +175,22 @@ export const SelectGrid = styled(ToggleGrid)`
   padding: 5px 25px 5px 20px;
 `
 
-export const ResourcesListGrid = styled(Grid)`
-  grid-template-columns: auto 1fr;
+interface ResourcesListGridProps {
+  hightlighted: boolean
+}
+
+export const ResourcesListGrid = styled(Grid as ComponentType<ResourcesListGridProps>)`
+  grid-template-columns: auto 1fr auto;
   grid-template-rows: auto;
   padding: 9px 25px 9px 20px;
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
   color: #E9E9F4;
-
+  background-color: ${p => p.hightlighted ? 'rgba(255, 255, 255, 0.15)' : null};
   &:hover {
     background-color: rgba(255, 255, 255, 0.15);
-    grid-template-columns: auto 1fr auto;
-
-    > *:first-child {
-      display: none;
-    }
-
-    > *:nth-child(2) {
-      display: inline-block;
-    }
-
-    > *:nth-child(3) {
-      max-width: 25ch;
-    }
-
-    > *:last-child {
-      display: block;
-    }
+    // grid-template-columns: auto 1fr auto;
   }
 `
 

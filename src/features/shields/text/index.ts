@@ -75,7 +75,6 @@ export const ResourcesListAllowedLink = styled<{}, 'span'>('span')`
   font-size: 13px;
   color: ${palette.green500};
   vertical-align: middle;
-  display: none;
   line-height: 1;
 `
 
@@ -109,10 +108,7 @@ export const ResourcesListItem = styled<{}, 'span'>('span')`
   margin: 0 10px;
   vertical-align: middle;
   line-height: 1;
-`
-
-export const HiddenLink = styled(Link)`
-  display: none;
+  pointer-events: none;
 `
 
 export const ResourcesSwitchLabel = styled<{}, 'span'>('span')`

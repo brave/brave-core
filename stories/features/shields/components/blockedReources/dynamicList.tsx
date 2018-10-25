@@ -17,8 +17,6 @@ import {
   Link,
   ResourcesListAllowedLink,
   ResourcesListBlockedLink,
-  HiddenLink,
-
   ResourcesSubTitleGrid,
   ResourcesListGrid
 } from '../../../../../src/features/shields'
@@ -44,16 +42,18 @@ export default class StaticList extends React.PureComponent<Props, {}> {
     return this.props.list.filter(item => item.blocked === true).length
   }
 
-  onClickBlockItem = () => {
+  onClickBlockItem = (event: React.MouseEvent<HTMLAnchorElement>) => {
     console.log('do something')
+    console.log('do something for', event.currentTarget.dataset.item)
   }
 
-  onClickAllowItem = () => {
-    console.log('do something')
+  onClickAllowItem = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    console.log('do something for', event.currentTarget.dataset.item)
   }
 
-  onClickUndoAction = () => {
-    console.log('do something')
+  onClickUndoAction = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    console.log('do something for', event.currentTarget.dataset.item)
   }
 
   enabledList = (list: any[]) => {
@@ -62,11 +62,18 @@ export default class StaticList extends React.PureComponent<Props, {}> {
         return null
       }
       return (
-        <ResourcesListGrid key={index}>
-          <Link onClick={this.onClickAllowItem}>{locale.allow}</Link>
-          <ResourcesListBlockedLink>{locale.blocked}</ResourcesListBlockedLink>
+        <ResourcesListGrid hightlighted={item.hasUserInput} key={index}>
+          {
+            item.hasUserInput
+            ? <ResourcesListBlockedLink>{locale.blocked}</ResourcesListBlockedLink>
+            : <Link data-item={item.index} onClick={this.onClickAllowItem}>{locale.allow}</Link>
+          }
           <ResourcesListItem>{item.name}</ResourcesListItem>
-          <HiddenLink onClick={this.onClickUndoAction}>{locale.undo}</HiddenLink>
+          {
+            item.hasUserInput
+            ? <Link onClick={this.onClickUndoAction}>{locale.undo}</Link>
+            : null
+          }
         </ResourcesListGrid>
       )
     })
@@ -78,11 +85,18 @@ export default class StaticList extends React.PureComponent<Props, {}> {
         return null
       }
       return (
-        <ResourcesListGrid key={index}>
-          <Link onClick={this.onClickBlockItem}>{locale.block}</Link>
-          <ResourcesListAllowedLink>{locale.allowed}</ResourcesListAllowedLink>
+        <ResourcesListGrid hightlighted={item.hasUserInput} key={index} >
+          {
+            item.hasUserInput
+            ? <ResourcesListAllowedLink>{locale.allowed}</ResourcesListAllowedLink>
+            : <Link onClick={this.onClickBlockItem}>{locale.block}</Link>
+          }
           <ResourcesListItem>{item.name}</ResourcesListItem>
-          <HiddenLink onClick={this.onClickUndoAction}>{locale.undo}</HiddenLink>
+          {
+            item.hasUserInput
+            ? <Link onClick={this.onClickUndoAction}>{locale.undo}</Link>
+            : null
+          }
         </ResourcesListGrid>
       )
     })
