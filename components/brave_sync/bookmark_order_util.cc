@@ -37,17 +37,4 @@ bool CompareOrder(const std::string& left, const std::string& right) {
     vec_right.begin(), vec_right.end());
 }
 
-bool IsOrdered(const std::vector<std::string> &vec) {
-  bool ret = std::is_sorted(std::begin(vec), std::end(vec), CompareOrder);
-  return ret;
-}
-
-int GetPositionToInsert(const std::vector<std::string>& vec,
-                        const std::string& order) {
-  DCHECK(IsOrdered(vec));
-  auto it = std::lower_bound(std::begin(vec), std::end(vec), order, CompareOrder);
-  int pos = std::distance(std::begin(vec), it);
-  return pos;
-}
-
 } // namespace brave_sync

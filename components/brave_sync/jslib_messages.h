@@ -9,10 +9,6 @@
 
 #include <base/time/time.h>
 
-namespace base {
-class Value;
-}
-
 namespace brave_sync {
 
 namespace jslib {
@@ -28,7 +24,6 @@ namespace jslib {
 class Site {
 public:
   Site();
-  Site(const base::Value *value);
   Site(const Site& site);
   ~Site();
   static std::unique_ptr<Site> Clone(const Site& site);
@@ -39,15 +34,11 @@ public:
   base::Time lastAccessedTime;
   base::Time creationTime;
   std::string favicon;
-private:
-  void FromValue(const base::Value *value);
-  friend class Bookmark;
 };
 
 class Bookmark {
 public:
   Bookmark();
-  Bookmark(const base::Value *value);
   Bookmark(const Bookmark& bookmark);
   ~Bookmark();
   static std::unique_ptr<Bookmark> Clone(const Bookmark& bookmark);
@@ -62,14 +53,11 @@ public:
   std::string prevOrder;
   std::string nextOrder;
   std::string parentOrder;
-private:
-  void FromValue(const base::Value *value);
 };
 
 class SiteSetting {
 public:
   SiteSetting();
-  SiteSetting(const base::Value *value);
   ~SiteSetting();
   static std::unique_ptr<SiteSetting> Clone(const SiteSetting& site_setting);
 
@@ -101,26 +89,20 @@ public:
   bool ledgerPayments;
   bool ledgerPaymentsShown;
   std::vector<std::string> fields;
-private:
-  void FromValue(const base::Value *value);
 };
 
 class Device {
 public:
   Device();
-  Device(const base::Value *value);
   ~Device();
   static std::unique_ptr<Device> Clone(const Device& device);
   std::string name;
-private:
-  void FromValue(const base::Value *value);
 };
 
 
 class SyncRecord {
 public:
   SyncRecord();
-  SyncRecord(const base::Value *sync_record_value);
   ~SyncRecord();
 
   static std::unique_ptr<SyncRecord> Clone(const SyncRecord& record);
@@ -160,16 +142,10 @@ private:
   std::unique_ptr<Site> history_site_;
   std::unique_ptr<SiteSetting> site_setting_;
   std::unique_ptr<Device> device_;
-
-  void FromValue(const base::Value *value);
 };
 
-// class SyncResolvedRecord {
-// public:
-// };
+}  // namespace jslib
 
-} // jslib
+}  // namespace brave_sync
 
-} // namespace brave_sync
-
-#endif // H_BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_JSLIB_MESSAGES_H
+#endif  // H_BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_JSLIB_MESSAGES_H

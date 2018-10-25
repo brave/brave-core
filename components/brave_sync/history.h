@@ -1,15 +1,15 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #ifndef H_BRAVE_COMPONENTS_BRAVE_SYNC_HISTORY_H
 #define H_BRAVE_COMPONENTS_BRAVE_SYNC_HISTORY_H
 
 #include "base/macros.h"
 #include "base/scoped_observer.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "brave/components/brave_sync/jslib_messages_fwd.h"
 #include "components/history/core/browser/history_service_observer.h"
-
-
 
 class Profile;
 
@@ -20,12 +20,8 @@ class Profile;
 namespace brave_sync {
 
 namespace jslib {
-  class SyncRecord;
   class Site;
 }
-// TODO, AB: move to fwd.h
-typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
-typedef std::vector<SyncRecordPtr> RecordsList;
 
 class CanSendSyncHistory;
 

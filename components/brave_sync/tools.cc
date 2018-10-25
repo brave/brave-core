@@ -28,7 +28,6 @@ std::string GenerateObjectId() {
       ss << ", ";
     }
   }
-  LOG(ERROR) << "TAGAB GenerateObjectId ss.str()="<<ss.str();
   return ss.str();
 }
 

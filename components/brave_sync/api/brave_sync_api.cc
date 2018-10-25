@@ -75,10 +75,8 @@ ExtensionFunction::ResponseAction BraveSyncSaveInitDataFunction::Run() {
   BraveSyncService* sync_service = GetBraveSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->GetSyncClient()->sync_message_handler()->OnSaveInitData(
-      ::brave_sync::Uint8ArrayFromUnsignedCharVec(
-          params->seed ? *params->seed : std::vector<uint8_t>()),
-      ::brave_sync::Uint8ArrayFromUnsignedCharVec(
-          params->device_id ? *params->device_id : std::vector<uint8_t>() )
+      params->seed ? *params->seed : std::vector<uint8_t>(),
+      params->device_id ? *params->device_id : std::vector<uint8_t>()
   );
 
   return RespondNow(NoArguments());

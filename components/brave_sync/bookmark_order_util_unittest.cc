@@ -60,18 +60,4 @@ TEST_F(BookmarkOrderUtilTest, CompareOrder) {
   EXPECT_FALSE(CompareOrder("1.7.0.2", "1.7.0.1"));
 }
 
-TEST_F(BookmarkOrderUtilTest, IsOrdered) {
-  EXPECT_TRUE(IsOrdered({}));
-  EXPECT_TRUE(IsOrdered({"1.0.1"}));
-  EXPECT_TRUE(IsOrdered({"1.0.1", "1.0.2", "1.0.3"}));
-  EXPECT_FALSE(IsOrdered({"1.0.1", "1.0.3", "1.0.2"}));
-  EXPECT_TRUE(IsOrdered({"1.0.0.1", "1.0.1", "1.0.2", "1.0.3"}));
-}
-
-TEST_F(BookmarkOrderUtilTest, GetPositionToInsert) {
-  EXPECT_EQ(GetPositionToInsert({}, "1.0.1"), 0);
-  EXPECT_EQ(GetPositionToInsert({"1.0.1", "1.0.2"}, "1.0.0.1"), 0);
-  EXPECT_EQ(GetPositionToInsert({"1.0.1", "1.0.2"}, "1.0.3"), 2);
-}
-
 } // namespace brave_sync

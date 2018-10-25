@@ -12,8 +12,6 @@ namespace brave_sync {
 
   std::vector<int> OrderToIntVect(const std::string& s);
   bool CompareOrder(const std::string& left, const std::string& right);
-  bool IsOrdered(const std::vector<std::string>& vec);
-  int GetPositionToInsert(const std::vector<std::string> &vec, const std::string& order);
 
 } // namespace brave_sync
 

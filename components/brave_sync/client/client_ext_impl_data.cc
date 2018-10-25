@@ -65,15 +65,6 @@ std::unique_ptr<brave_sync::jslib::SiteSetting> FromExtSiteSetting(
   return site_setting;
 }
 
-// void FromExtSite(jslib::Site &site, const extensions::api::brave_sync::Site &ext_site) {
-//   site.location = ext_site.location;
-//   site.title = ext_site.title;
-//   site.customTitle = ext_site.custom_title;
-//   site.lastAccessedTime = base::Time::FromJsTime(ext_site.last_accessed_time);
-//   site.creationTime = base::Time::FromJsTime(ext_site.creation_time);
-//   site.favicon = ext_site.favicon;
-// }
-
 std::unique_ptr<jslib::Bookmark> FromExtBookmark(
     const extensions::api::brave_sync::Bookmark &ext_bookmark) {
   auto bookmark = std::make_unique<jslib::Bookmark>();
@@ -316,6 +307,5 @@ void ConvertSyncRecordsFromLibToExt(
     records_extension.emplace_back(std::move(*dest));
   }
 }
-
 
 } // namespace brave_sync

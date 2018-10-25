@@ -11,29 +11,15 @@
 
 #include "components/keyed_service/core/keyed_service.h"
 #include "brave/components/brave_sync/client/client_data.h"
+#include "brave/components/brave_sync/jslib_messages_fwd.h"
 
 namespace base {
 class Time;
-class ListValue;
-class Value;
 }
 
 class Profile;
 
 namespace brave_sync {
-
-namespace jslib {
-class SyncRecord;
-}
-
-typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
-typedef std::vector<SyncRecordPtr> RecordsList;
-typedef std::unique_ptr<RecordsList> RecordsListPtr;
-typedef std::pair<SyncRecordPtr, SyncRecordPtr> SyncRecordAndExisting;
-typedef std::unique_ptr<SyncRecordAndExisting> SyncRecordAndExistingPtr;
-typedef std::vector<SyncRecordAndExistingPtr> SyncRecordAndExistingList;
-
-using Uint8Array = std::vector<unsigned char>;
 
 class SyncMessageHandler {
  public:

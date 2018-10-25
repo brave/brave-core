@@ -8,6 +8,8 @@
 #include <memory>
 #include <vector>
 
+#include "brave/components/brave_sync/jslib_messages_fwd.h"
+
 namespace extensions {
 namespace api {
 namespace brave_sync {
@@ -22,28 +24,21 @@ namespace brave_sync {
 namespace client_data {
   class Config;
 }
-namespace jslib {
-  class SyncRecord;
-}
-typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
-typedef std::pair<SyncRecordPtr, SyncRecordPtr> SyncRecordAndExisting;
-typedef std::unique_ptr<SyncRecordAndExisting> SyncRecordAndExistingPtr;
-typedef std::vector<SyncRecordAndExistingPtr> SyncRecordAndExistingList;
 }
 
 namespace brave_sync {
 
-  void ConvertConfig(const brave_sync::client_data::Config &config,
-    extensions::api::brave_sync::Config &config_extension);
+void ConvertConfig(const brave_sync::client_data::Config &config,
+  extensions::api::brave_sync::Config &config_extension);
 
-  void ConvertSyncRecords(const std::vector<extensions::api::brave_sync::SyncRecord> &records_extension,
-    std::vector<brave_sync::SyncRecordPtr> &records);
+void ConvertSyncRecords(const std::vector<extensions::api::brave_sync::SyncRecord> &records_extension,
+  std::vector<brave_sync::SyncRecordPtr> &records);
 
-  void ConvertResolvedPairs(const SyncRecordAndExistingList &records_and_existing_objects,
-    std::vector<extensions::api::brave_sync::RecordAndExistingObject> &records_and_existing_objects_ext);
+void ConvertResolvedPairs(const SyncRecordAndExistingList &records_and_existing_objects,
+  std::vector<extensions::api::brave_sync::RecordAndExistingObject> &records_and_existing_objects_ext);
 
-  void ConvertSyncRecordsFromLibToExt(const std::vector<brave_sync::SyncRecordPtr> &records,
-    std::vector<extensions::api::brave_sync::SyncRecord> &records_extension);
+void ConvertSyncRecordsFromLibToExt(const std::vector<brave_sync::SyncRecordPtr> &records,
+  std::vector<extensions::api::brave_sync::SyncRecord> &records_extension);
 
 } // namespace brave_sync
 
