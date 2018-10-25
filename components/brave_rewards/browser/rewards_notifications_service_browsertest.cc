@@ -33,7 +33,7 @@ class BraveRewardsNotificationsBrowserTest
     EXPECT_STREQ(notification.args_.at(0).c_str(), "foo");
     EXPECT_STREQ(notification.args_.at(1).c_str(), "bar");
 
-    EXPECT_TRUE(notification.id_ != 0);
+    EXPECT_STREQ(notification.id_.c_str(), "rewards_notification_grant");
     EXPECT_TRUE(notification.timestamp_ != 0);
 
     notification_id_ = notification.id_;
@@ -44,7 +44,7 @@ class BraveRewardsNotificationsBrowserTest
   void OnNotificationDeleted(
       RewardsNotificationsService* rewards_notifications_service,
       const RewardsNotificationsService::RewardsNotification& notification) override {
-    EXPECT_TRUE(notification.id_ != 0);
+    EXPECT_STREQ(notification.id_.c_str(), "rewards_notification_grant");
     EXPECT_TRUE(notification.timestamp_ != 0);
 
     delete_notification_callback_was_called_ = true;
@@ -75,7 +75,7 @@ class BraveRewardsNotificationsBrowserTest
 
   RewardsNotificationsService* rewards_notifications_service_;
 
-  RewardsNotificationsService::RewardsNotificationID notification_id_ = 0;
+  RewardsNotificationsService::RewardsNotificationID notification_id_;
 
   bool add_notification_callback_was_called_ = false;
   bool delete_notification_callback_was_called_ = false;
@@ -87,9 +87,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsNotificationsBrowserTest, AddGrantNotificatio
   RewardsNotificationsService::RewardsNotificationArgs args;
   args.push_back("foo");
   args.push_back("bar");
-  
+
   rewards_notifications_service_->AddNotification(
-      RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args);
+      RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args,
+      "rewards_notification_grant");
   WaitForAddNotificationCallback();
 
   rewards_notifications_service_->RemoveObserver(this);
@@ -101,12 +102,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsNotificationsBrowserTest, AddGrantNotificatio
   RewardsNotificationsService::RewardsNotificationArgs args;
   args.push_back("foo");
   args.push_back("bar");
-  
+
   rewards_notifications_service_->AddNotification(
-      RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args);
+      RewardsNotificationsService::REWARDS_NOTIFICATION_GRANT, args,
+      "rewards_notification_grant");
   WaitForAddNotificationCallback();
 
-  EXPECT_TRUE(notification_id_ != 0);
+  EXPECT_STREQ(notification_id_.c_str(), "rewards_notification_grant");
 
   rewards_notifications_service_->DeleteNotification(notification_id_);
   WaitForDeleteNotificationCallback();

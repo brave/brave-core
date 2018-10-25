@@ -38,20 +38,20 @@ export const onCurrentReport = (properties: RewardsExtension.Report) => action(t
   properties
 })
 
-export const onNotificationAdded = (id: number, type: number, timestamp: number, args: string[]) => action(types.ON_NOTIFICATION_ADDED, {
+export const onNotificationAdded = (id: string, type: number, timestamp: number, args: string[]) => action(types.ON_NOTIFICATION_ADDED, {
   id,
   type,
   timestamp,
   args
 })
 
-export const onNotificationDeleted = (id: number, type: number, timestamp: number) => action(types.ON_NOTIFICATION_DELETED, {
+export const onNotificationDeleted = (id: string, type: number, timestamp: number) => action(types.ON_NOTIFICATION_DELETED, {
   id,
   timestamp,
   type
 })
 
-export const deleteNotification = (id: number) => action(types.DELETE_NOTIFICATION, {
+export const deleteNotification = (id: string) => action(types.DELETE_NOTIFICATION, {
   id
 })
 
