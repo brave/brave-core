@@ -184,5 +184,9 @@
   "grantNotification": {
     "message": "ನಿಮ್ಮ ಅನುದಾನ ನಿಮಗಾಗಿ ಕಾಯುತ್ತಿದೆ.",
     "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
   }
 }
