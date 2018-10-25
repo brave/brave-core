@@ -184,5 +184,9 @@
   "grantNotification": {
     "message": "You have grant waiting for you.",
     "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
   }
 }
