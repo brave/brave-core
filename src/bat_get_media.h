@@ -84,7 +84,8 @@ class BatGetMedia {
     uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType,
-    const std::string& media_key);
+    const std::string& media_key,
+    const std::string& media_id);
 
   void onGetExternalIdFromUserPage(uint64_t windowId,
     const ledger::VisitData& visit_data,
@@ -158,13 +159,13 @@ class BatGetMedia {
 
   std::string parseChannelId(const std::string& data);
 
+  std::string getYoutubeMediaIdFromUrl(const ledger::VisitData& visit_data);
+
   std::string getYoutubeMediaKeyFromUrl(
     const std::string& provider_type,
-    const ledger::VisitData& visit_data);
+    const std::string& media_id);
 
-  std::string getYoutubePublisherKeyFromUrl(
-    const std::string& provider_type,
-    const ledger::VisitData& visit_data);
+  std::string getYoutubePublisherKeyFromUrl(const ledger::VisitData& visit_data);
 
   std::string parseHeadlineMediaKey(const std::string& data);
 
