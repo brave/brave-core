@@ -33,6 +33,12 @@ describe('wallet reducer', () => {
     })
   })
 
+  describe('ADD_FUNDS_TO_WALLET', () => {
+    it('calls addFundsToWallet', () => {
+      // TODO: mock chrome.send and use jest.spyOn()
+    })
+  })
+
   describe('WALLET_CREATED', () => {
     it('wallet created', () => {
       const assertion = reducers(undefined, {

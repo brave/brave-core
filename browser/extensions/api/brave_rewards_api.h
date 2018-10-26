@@ -20,14 +20,24 @@ class BraveRewardsCreateWalletFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsAddFundsToWalletFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.addFundsToWallet", UNKNOWN)
+
+ protected:
+  ~BraveRewardsAddFundsToWalletFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsDonateToSiteFunction : public UIThreadExtensionFunction {
-  public:
-    DECLARE_EXTENSION_FUNCTION("braveRewards.donateToSite", UNKNOWN)
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.donateToSite", UNKNOWN)
 
-  protected:
-    ~BraveRewardsDonateToSiteFunction() override;
+ protected:
+  ~BraveRewardsDonateToSiteFunction() override;
 
-    ResponseAction Run() override;
+  ResponseAction Run() override;
 };
 
 class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
@@ -40,7 +50,8 @@ class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetWalletPropertiesFunction : public UIThreadExtensionFunction {
+class BraveRewardsGetWalletPropertiesFunction
+    : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getWalletProperties", UNKNOWN)
 
@@ -60,8 +71,8 @@ class BraveRewardsGetCurrentReportFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsIncludeInAutoContributionFunction :
-  public UIThreadExtensionFunction {
+class BraveRewardsIncludeInAutoContributionFunction
+    : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.includeInAutoContribution", UNKNOWN)
 

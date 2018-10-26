@@ -187,6 +187,12 @@
         "parameters": []
       },
       {
+        "name": "addFundsToWallet",
+        "type": "function",
+        "description": "Allow the user to add funds to their wallet",
+        "parameters": []
+      },
+      {
         "name": "donateToSite",
         "type": "function",
         "description": "Allow the user to perform a donation to a tab's site",

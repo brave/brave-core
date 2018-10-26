@@ -13,6 +13,8 @@ export const onWalletCreated = () => action(types.ON_WALLET_CREATED, {})
 
 export const onWalletCreateFailed = () => action(types.ON_WALLET_CREATE_FAILED, {})
 
+export const addFundsToWallet = () => action(types.ADD_FUNDS_TO_WALLET, {})
+
 export const onTabId = (tabId: number | undefined) => action(types.ON_TAB_ID, {
   tabId
 })

@@ -54,6 +54,9 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       state = { ...state }
       state.walletCreateFailed = true
       break
+    case types.ADD_FUNDS_TO_WALLET:
+      chrome.braveRewards.addFundsToWallet()
+      break
     case types.ON_TAB_ID:
       if (payload.tabId) {
         getTabData(payload.tabId)
