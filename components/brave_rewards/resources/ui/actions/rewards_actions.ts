@@ -13,6 +13,10 @@ export const onWalletCreated = () => action(types.WALLET_CREATED)
 
 export const onWalletCreateFailed = () => action(types.WALLET_CREATE_FAILED)
 
+export const addFundsToWallet = () => action(types.ADD_FUNDS_TO_WALLET)
+
+export const onAddFundsPopupUnavailable = () => action(types.ADD_FUNDS_POPUP_UNAVAILABLE)
+
 export const onSettingSave = (key: string, value: any) => action(types.ON_SETTING_SAVE, {
   key,
   value

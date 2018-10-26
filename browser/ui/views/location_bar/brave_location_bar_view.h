@@ -21,19 +21,21 @@ class BraveLocationBarView : public LocationBarView {
   void Layout() override;
   void Update(const content::WebContents* contents) override;
   void OnChanged() override;
+  BraveLocationBarView* GetBraveLocationBarView() override;
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
   void ChildPreferredSizeChanged(views::View* child) override;
 
+  void HideBraveActionsContainer(bool hide = true);
   ContentSettingImageView* GetContentSettingsImageViewForTesting(size_t idx);
-
  private:
   friend class ::BraveActionsContainerTest;
   void UpdateBookmarkStarVisibility() override;
   OmniboxTint GetTint() override;
   BraveActionsContainer* brave_actions_ = nullptr;
+  bool hide_brave_actions_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
 };

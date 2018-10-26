@@ -26,6 +26,7 @@ declare global {
     }
     brave_rewards: {
       initialize: () => void
+      addFundsPopupUnavailable: chrome.events.Event<() => void>
       walletCreated: chrome.events.Event<() => void>
       walletCreateFailed: chrome.events.Event<() => void>
       walletProperties: chrome.events.Event<(properties: {status: number, wallet: Rewards.WalletProperties}) => void>

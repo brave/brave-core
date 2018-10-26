@@ -49,6 +49,7 @@ export const defaultState: Rewards.State = {
   recurringLoad: false,
   tipsLoad: false,
   excluded: [],
+  addFundsPopupUnavailable: false,
   adsData: {
     adsEnabled: false,
     adsPerHour: 0,
@@ -57,7 +58,11 @@ export const defaultState: Rewards.State = {
   pendingContributionTotal: 0
 }
 
-const cleanData = (state: Rewards.State) => state
+const cleanData = (state: Rewards.State): Rewards.State => {
+  state = { ...state }
+  state.addFundsPopupUnavailable = defaultState.addFundsPopupUnavailable
+  return state
+}
 
 export const load = (): Rewards.State => {
   const data = window.localStorage.getItem(keyName)

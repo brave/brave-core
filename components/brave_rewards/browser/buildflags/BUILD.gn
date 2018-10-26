@@ -5,5 +5,6 @@ buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
     "BRAVE_REWARDS_ENABLED=$brave_rewards_enabled",
+    "UPHOLD_WIDGET_ENABLED=$uphold_widget_enabled",
   ]
 }

@@ -47,7 +47,7 @@ void BraveLocationBarView::UpdateBookmarkStarVisibility() {
 }
 
 void BraveLocationBarView::OnChanged() {
-  if (brave_actions_) {
+  if (brave_actions_ && !hide_brave_actions_) {
     // Do not show actions whilst omnibar is open or url is being edited
     const bool should_hide = GetLocationBarModel()->input_in_progress() &&
                       !omnibox_view_->text().empty();
@@ -89,7 +89,6 @@ OmniboxTint BraveLocationBarView::GetTint() {
   }
 }
 
-
 void BraveLocationBarView::OnThemeChanged() {
   LocationBarView::OnThemeChanged();
 
@@ -113,6 +112,22 @@ ContentSettingImageView*
 BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
   DCHECK(idx < content_setting_views_.size());
   return content_setting_views_[idx];
+}
+
+void BraveLocationBarView::HideBraveActionsContainer(bool hide) {
+  hide_brave_actions_ = hide;
+  if (brave_actions_)
+    brave_actions_->SetShouldHide(hide_brave_actions_);
+}
+
+BraveLocationBarView* BraveLocationBarView::GetBraveLocationBarView() {
+  return this;
+}
+
+// Provide base class implementation for GetBraveLocationBarView that has been
+// added to the base class header via a patch.
+BraveLocationBarView* LocationBarView::GetBraveLocationBarView() {
+  return nullptr;
 }
 
 // Provide base class implementation for Update override that has been added to

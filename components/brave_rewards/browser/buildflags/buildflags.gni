@@ -1,5 +1,7 @@
 import("//build/config/features.gni")
+import("//brave/build/config.gni")
 
 declare_args() {
   brave_rewards_enabled = is_mac || is_linux || is_win || is_android
+  uphold_widget_enabled = !is_official_build || (brave_channel == "nightly")
 }

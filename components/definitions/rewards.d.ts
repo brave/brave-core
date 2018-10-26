@@ -65,6 +65,7 @@ declare namespace Rewards {
     walletCreated: boolean
     walletCreateFailed: boolean
     walletInfo: WalletProperties
+    addFundsPopupUnavailable: boolean
   }
 
   export interface ComponentProps {

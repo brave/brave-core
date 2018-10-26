@@ -68,6 +68,13 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = { ...state }
       state.walletCreateFailed = true
       break
+    case types.ADD_FUNDS_TO_WALLET:
+      chrome.send('brave_rewards.addFundsToWallet', [])
+      break
+    case types.ADD_FUNDS_POPUP_UNAVAILABLE:
+      state = { ...state }
+      state.addFundsPopupUnavailable = true
+      break
     case types.GET_WALLET_PROPERTIES:
       chrome.send('brave_rewards.getWalletProperties')
       break

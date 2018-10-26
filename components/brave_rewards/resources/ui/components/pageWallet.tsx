@@ -170,9 +170,13 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalAddFundsToggle = () => {
-    this.setState({
-      modalAddFunds: !this.state.modalAddFunds
-    })
+    if (this.props.rewardsData.addFundsPopupUnavailable) {
+      this.setState({
+        modalAddFunds: !this.state.modalAddFunds
+      })
+    } else {
+      this.actions.addFundsToWallet()
+    }
   }
 
   urlHashIs = (hash: string) => {
