@@ -179,6 +179,13 @@ class LedgerImpl : public ledger::Ledger,
   void GetRecurringDonations(ledger::RecurringDonationCallback callback);
   void RemoveRecurring(const std::string& publisher_key) override;
   void StartAutoContribute();
+  ledger::PublisherInfoFilter CreatePublisherFilter(const std::string& publisher_id,
+      ledger::PUBLISHER_CATEGORY category,
+      ledger::PUBLISHER_MONTH month,
+      int year,
+      ledger::PUBLISHER_EXCLUDE excluded,
+      bool min_duration,
+      const uint64_t& currentReconcileStamp);
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

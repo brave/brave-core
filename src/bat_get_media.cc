@@ -68,7 +68,6 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts, 
   if (type == YOUTUBE_MEDIA_TYPE) {
     duration = braveledger_bat_helper::getMediaDuration(parts, media_key, type);
   } else if (type == TWITCH_MEDIA_TYPE) {
-    twitch_media_key_ = media_key;
     std::map<std::string, std::string>::const_iterator iter = parts.find("event");
     if (iter != parts.end()) {
       twitchEventInfo.event_ = iter->second;
@@ -416,12 +415,10 @@ void BatGetMedia::getMediaActivityFromUrl(
   bool altPath) {
   if (providerType == YOUTUBE_MEDIA_TYPE) {
     processYoutubeMediaPanel(windowId, visit_data, providerType, altPath);
-
   } else if (providerType == TWITCH_MEDIA_TYPE) {
     processTwitchMediaPanel(windowId, visit_data, providerType);
   } else { // treat as regular page
-    ledger_->GetPublisherActivityFromUrl(
-      windowId, visit_data);
+    ledger_->GetPublisherActivityFromUrl(windowId, visit_data);
   }
 }
 
@@ -497,7 +494,7 @@ void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
   const std::string& publisher_key,
   bool altPath) {
   if (altPath) {
-    auto filter = createPublisherFilter(
+    auto filter = ledger_->CreatePublisherFilter(
       publisher_key, ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       visit_data.local_month, visit_data.local_year,
       ledger::PUBLISHER_EXCLUDE::ALL, false, 0);
@@ -827,26 +824,6 @@ std::string BatGetMedia::extractData(const std::string& data,
 
 std::string BatGetMedia::getPublisherKeyFromUrl(const std::string& data) {
   return extractData(data, "/channel/", "/");
-}
-
-ledger::PublisherInfoFilter BatGetMedia::createPublisherFilter(
-  const std::string& publisher_id,
-  ledger::PUBLISHER_CATEGORY category,
-  ledger::PUBLISHER_MONTH month,
-  int year,
-  ledger::PUBLISHER_EXCLUDE excluded,
-  bool min_duration,
-  const uint64_t& currentReconcileStamp) {
-  ledger::PublisherInfoFilter filter;
-  filter.id = publisher_id;
-  filter.category = category;
-  filter.month = month;
-  filter.year = year;
-  filter.excluded = excluded;
-  filter.min_duration = min_duration ? ledger_->GetPublisherMinVisitTime() : 0;
-  filter.reconcile_stamp = currentReconcileStamp;
-
-  return filter;
 }
 
 }  // namespace braveledger_bat_get_media

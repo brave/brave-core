@@ -852,4 +852,20 @@ void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
   }
 }
 
+ledger::PublisherInfoFilter LedgerImpl::CreatePublisherFilter(const std::string& publisher_id,
+                                                  ledger::PUBLISHER_CATEGORY category,
+                                                  ledger::PUBLISHER_MONTH month,
+                                                  int year,
+                                                  ledger::PUBLISHER_EXCLUDE excluded,
+                                                  bool min_duration,
+                                                  const uint64_t& currentReconcileStamp) {
+  return bat_publishers_->CreatePublisherFilter(publisher_id,
+                                        category,
+                                        month,
+                                        year,
+                                        excluded,
+                                        min_duration,
+                                        currentReconcileStamp);
+}
+
 }  // namespace bat_ledger
