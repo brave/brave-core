@@ -13,7 +13,7 @@
 
   <!-- Print Preview -->
   <message name="IDS_PRINT_INVALID_PRINTER_SETTINGS" desc="Message to display when selected printer is not reachable or its settings are invalid.">
-    The selected printer is not available or not installed correctly.  Check your printer or try selecting another printer.
+    The selected printer is not available or not installed correctly. <ph name="BR">&lt;br&gt;</ph> Check your printer or try selecting another printer.
   </message>
 
   <if expr="enable_print_preview">
@@ -27,7 +27,7 @@
       Print preview failed.
     </message>
     <message name="IDS_PRINT_PREVIEW_UNSUPPORTED_CLOUD_PRINTER" desc="Message to display when an unsupported cloud printer is selected.">
-      The selected Brave Cloud Print device is no longer supported. Try setting up the printer in your computer's system settings.
+      The selected Brave Cloud Print device is no longer supported. <ph name="BR">&lt;br&gt;</ph> Try setting up the printer in your computer's system settings.
     </message>
     <message name="IDS_PRINT_PREVIEW_PRINT_BUTTON" desc="Print button.">
       Print
@@ -43,6 +43,9 @@
     </message>
     <message name="IDS_PRINT_PREVIEW_OPTION_ALL_PAGES" desc="Option to print all pages.">
       All
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_CUSTOM_PAGES" desc="Option to print custom pages.">
+      Custom
     </message>
     <message name="IDS_PRINT_PREVIEW_DESTINATION_LABEL" desc="Destination option label. It is displayed right on top of the available printers list.">
       Destination
@@ -78,7 +81,7 @@
       Scale
     </message>
     <message name="IDS_PRINT_PREVIEW_PAGES_PER_SHEET_LABEL" desc="Pages per sheet option label.">
-      Pages Per Sheet
+      Pages per sheet
     </message>
     <message name="IDS_PRINT_PREVIEW_EXAMPLE_PAGE_RANGE_TEXT" desc="Example page range text.">
       e.g. 1-5, 8, 11-13
@@ -189,7 +192,7 @@
       <ph name="DPI">$1<ex>300</ex></ph> dpi
     </message>
     <message name="IDS_PRINT_PREVIEW_NATIVE_DIALOG" desc="Option offering the user to open the native print dialog, displayed when the PDF viewer is missing or when print preview fails.">
-      Print using system dialog…
+      Print using system dialog
     </message>
     <message name="IDS_PRINT_PREVIEW_DESTINATION_SEARCH_TITLE" desc="Title of the destination search UI component.">
       Select a destination
@@ -213,7 +216,7 @@
       Show All...
     </message>
     <message name="IDS_PRINT_PREVIEW_DESTINATION_COUNT" desc="Message to show how many print destinations the user has.">
-      (<ph name="COUNT">$1<ex>154</ex></ph> total)
+      (<ph name="COUNT">$1<ex>154</ex></ph>)
     </message>
     <message name="IDS_PRINT_PREVIEW_RECENT_DESTINATIONS_TITLE" desc="Title of the section in the Print Preview dialog that lists recently used printers that the user can print to. 'Destinations' is used because the list may include 'Saving as PDF' or other options that are not physical printers.">
       Recent Destinations
@@ -278,6 +281,9 @@
     <message name="IDS_PRINT_PREVIEW_SHOW_ADVANCED_OPTIONS" desc="The text for the button to open the printer's advanced settings dialog.">
       Change printer options...
     </message>
+    <message name="IDS_PRINT_PREVIEW_NEW_SHOW_ADVANCED_OPTIONS" desc="The text for the button to open the printer's advanced settings dialog in the new UI.">
+      Advanced printer options
+    </message>
     <message name="IDS_PRINT_PREVIEW_ACCEPT_INVITE" desc="Text for the button to accept the printer-sharing invitation.">
       Accept
     </message>
@@ -299,11 +305,17 @@
     <message name="IDS_PRINT_PREVIEW_BUTTON_GO_BACK" desc="Label for a button in a dialog asking a user to confirm selection of a printer in print preview UI. Clicking the button will cancel printer selection, close the dialog and go back to the list of printers available for selection.">
       Back
     </message>
+    <message name="IDS_PRINT_PREVIEW_RESOLVE_EXTENSION_USB_DIALOG_TITLE" desc="Title of the dialog used to resolve extension destination USB permissions.">
+      Extension printers
+    </message>
     <message name="IDS_PRINT_PREVIEW_RESOLVE_EXTENSION_USB_PERMISSION_MESSAGE" desc="Warning shown to the user when they attempt to select a USB printer supported by an extension, but for which the extension doesn't yet have access permission. The user is warned that selecting the printer would grant the extension access to the USB device and asked to confirm or cancel the selection. The extension name will be shown in the paragraph immediately bellow this message.">
       By selecting this printer, you are giving the following extension the permission to access your printer:
     </message>
     <message name="IDS_PRINT_PREVIEW_RESOLVE_EXTENSION_USB_ERROR_MESSAGE" desc="Message shown to the user when they attempt to select a USB pinter supported by an extension, but for which the extension does not yet have access permission. The message is shown if the user grants the extension access to the USB device (by confirming printer selection), but the extension is not able to retrieve information about the printer, and an error is reported. The message contains a placeholder for the name of the extension.">
       <ph name="EXTENSION_NAME">$1<ex>Print app</ex></ph> could not communicate with this printer. Make sure the printer is plugged in and try again.
+    </message>
+    <message name="IDS_PRINT_PREVIEW_MANAGED_OPTION_TEXT" desc="Text shown when hovering over managed setting icon">
+      This setting is managed
     </message>
     <if expr="chromeos">
       <message name="IDS_PRINT_CONFIGURING_IN_PROGRESS_TEXT" desc="Message shown to user while their printer is being setup in Brave OS.">
