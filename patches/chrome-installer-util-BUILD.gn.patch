@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index d2da51d71f51e8b3a8832ebc178a3272b023c564..f7f70d56849fd0f49324b9adcbf66ada5db0f917 100644
+index 44c9a8bcb541d6a60382d7f4f02378d9b0517767..87d224258df0e9132379f98ee44f3f482d5d5f53 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -243,9 +243,24 @@ action("generate_strings") {
+@@ -224,9 +224,24 @@ action("generate_strings") {
      "$target_gen_dir/installer_util_strings.rc",
    ]
  

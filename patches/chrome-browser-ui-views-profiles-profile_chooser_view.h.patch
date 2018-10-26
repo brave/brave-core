@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.h b/chrome/browser/ui/views/profiles/profile_chooser_view.h
-index 15aec59e78e93a8847cf1024069afebabd3031de..fa43886e84a06850c224abb112472e97aa8fab36 100644
+index 83709a31644e43fad0a3754a37db181d7ce7b9f6..e0bf4ca6d80713b5830fa0f0dd7d1080a849968f 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.h
-@@ -72,6 +72,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
+@@ -71,6 +71,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
    const Browser* browser() const { return browser_; }
  
   private:
@@ -10,7 +10,7 @@ index 15aec59e78e93a8847cf1024069afebabd3031de..fa43886e84a06850c224abb112472e97
    friend class ProfileChooserViewExtensionsTest;
  
    typedef std::vector<size_t> Indexes;
-@@ -121,7 +122,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
+@@ -120,7 +121,7 @@ class ProfileChooserView : public content::WebContentsDelegate,
    // Tests set this to "false" for more consistent operation.
    static bool close_on_deactivate_for_testing_;
  

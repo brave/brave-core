@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_text_content_element.cc b/third_party/blink/renderer/core/svg/svg_text_content_element.cc
-index c342f76ee7e07e7cf89fab4a7c6c81c430b54aa3..de4f3d725eb91492d2b322f07c51d13e81313149 100644
+index 99abac1b520a15124288e9605600ba197b92c141..4f4047fdfacd03aadfd2b0d95b5ff75e4eca7b29 100644
 --- a/third_party/blink/renderer/core/svg/svg_text_content_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_text_content_element.cc
 @@ -20,6 +20,7 @@
@@ -10,7 +10,7 @@ index c342f76ee7e07e7cf89fab4a7c6c81c430b54aa3..de4f3d725eb91492d2b322f07c51d13e
  #include "third_party/blink/renderer/core/css_property_names.h"
  #include "third_party/blink/renderer/core/css_value_keywords.h"
  #include "third_party/blink/renderer/core/editing/frame_selection.h"
-@@ -100,6 +101,9 @@ unsigned SVGTextContentElement::getNumberOfChars() {
+@@ -101,6 +102,9 @@ unsigned SVGTextContentElement::getNumberOfChars() {
  }
  
  float SVGTextContentElement::getComputedTextLength() {

@@ -1,43 +1,32 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index 148487d43102628d754eac08dd24d4ab219575dd..271ba20514ba83cdd8ba34d3025eb61abdcc3ce1 100644
+index ad214ffda34aa4c93a2c61a57d9890a0afb27f6a..1cab05353b1e459902884e64c8bf1683a1113ac1 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
-@@ -56,6 +56,8 @@ class MdTextButton;
- class ViewHierarchyChangedDetails;
- }
+@@ -135,6 +135,7 @@ class DownloadItemView : public views::InkDropHostView,
+   void OnThemeChanged() override;
  
-+class BraveDownloadItemView;
-+
- // Represents a single download item on the download shelf. Encompasses an icon,
- // text, malicious download warnings, etc.
- class DownloadItemView : public views::InkDropHostView,
-@@ -63,6 +65,7 @@ class DownloadItemView : public views::InkDropHostView,
-                          public views::ContextMenuController,
-                          public download::DownloadItem::Observer,
-                          public gfx::AnimationDelegate {
+  private:
 +  friend class BraveDownloadItemView;
-  public:
-   DownloadItemView(download::DownloadItem* download,
-                    DownloadShelfView* parent,
-@@ -201,10 +204,10 @@ class DownloadItemView : public views::InkDropHostView,
+   FRIEND_TEST_ALL_PREFIXES(DownloadItemViewDangerousDownloadLabelTest,
+                            AdjustTextAndGetSize);
+ 
+@@ -199,9 +200,11 @@ class DownloadItemView : public views::InkDropHostView,
  
    // This function calculates the vertical coordinate to draw the file name text
    // relative to local bounds.
--  int GetYForFilenameText() const;
-+  virtual int GetYForFilenameText() const;
++  virtual
+   int GetYForFilenameText() const;
  
    // Painting of various download item bits.
--  void DrawStatusText(gfx::Canvas* canvas);
-+  virtual void DrawStatusText(gfx::Canvas* canvas);
++  virtual
+   void DrawStatusText(gfx::Canvas* canvas);
    void DrawFilename(gfx::Canvas* canvas);
    void DrawIcon(gfx::Canvas* canvas);
- 
-@@ -278,7 +281,7 @@ class DownloadItemView : public views::InkDropHostView,
+@@ -276,6 +279,7 @@ class DownloadItemView : public views::InkDropHostView,
    // so that screenreaders can access the filename, status text, and
    // dangerous download warning message (if any). The name will be presented
    // when the download item receives focus.
--  void UpdateAccessibleName();
-+  virtual void UpdateAccessibleName();
++  virtual
+   void UpdateAccessibleName();
  
    // Update accessible status text.
-   // If |is_last_update| is false, then a timer is used to notify screen readers

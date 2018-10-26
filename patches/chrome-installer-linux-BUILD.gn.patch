@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 4ac4a301c73841290fac70097e379b786108f831..054b8f885497e760aa06ee9762e6acf1118dda83 100644
+index cec5121658106e305ef617906e539bfc10811041..6b75b049ccf7eebd58e3aa7914b4d81328817210 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -26,8 +26,8 @@ declare_args() {
+@@ -27,8 +27,8 @@ declare_args() {
  assert(is_linux)
  
  packaging_files_executables = [

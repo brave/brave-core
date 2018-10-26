@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/permissions/permission_uma_util.cc b/chrome/browser/permissions/permission_uma_util.cc
-index 14efe3ccb3906516ba5c13a1c1ba78fb2ccd2d7d..cf3ac17e8b5e3c59a4c880ddc3861875dda1c3c8 100644
+index e2c560d81b03a38790ac5af710d40e0e5375cafe..566fc30eff823c9df5e4fb4e4b5fb7153636a5e2 100644
 --- a/chrome/browser/permissions/permission_uma_util.cc
 +++ b/chrome/browser/permissions/permission_uma_util.cc
 @@ -64,7 +64,7 @@ namespace {
@@ -11,7 +11,7 @@ index 14efe3ccb3906516ba5c13a1c1ba78fb2ccd2d7d..cf3ac17e8b5e3c59a4c880ddc3861875
    switch (type) {
      case PermissionRequestType::MULTIPLE:
        return "AudioAndVideoCapture";
-@@ -401,6 +401,9 @@ void PermissionUmaUtil::RecordPermissionAction(
+@@ -402,6 +402,9 @@ void PermissionUmaUtil::RecordPermissionAction(
        UMA_HISTOGRAM_ENUMERATION("Permissions.Action.PaymentHandler", action,
                                  PermissionAction::NUM);
        break;
