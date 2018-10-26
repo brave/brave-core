@@ -1,27 +1,27 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
-<translation id="3333887201479867589">Nagrade Brave</translation>
+<translation id="3333887201479867589">Storitev Brave Rewards</translation>
 <translation id="7942180974165298215">Blokiranje oglasov Brave</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
 <translation id="7753103220327065417">Zapri Brave</translation>
-<translation id="5588481533147090393">Če želite končati uvoz, zaprite vsa okna Brave.</translation>
+<translation id="5588481533147090393">Če želite končati uvoz, zaprite vsa okna v brskalniku Brave.</translation>
 <translation id="6447842834002726250">Piškotki</translation>
 <translation id="4983925687993168579">Statistični podatki</translation>
 <translation id="9173846700806833701">Orodje Widevine ni nameščeno</translation>
-<translation id="2433569048491784801">Google Widevine.</translation>
+<translation id="2433569048491784801">Orodje Widevine ni nameščeno.</translation>
 <translation id="3699882589215410581">Namesti in zaženi Widevine</translation>
-<translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ga v Brave Software nimamo in ga ne moremo pregledati. Koda Google Widevine je naložena s strežnikov Google, in ne z naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in potrjujemo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
+<translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
 
-Če namestite to razširitev, se strinjate s pogoji uporabe Google Widevine. S tem soglašate, da podjetje Brave ni odgovorno za morebitno škodo ali izgubo v zvezi z vašo uporabo orodja Google Widevine.</translation>
+Če namestite to razširitev, se strinjate s pogoji uporabe Google Widevine. S tem soglašate, da družba Brave ni odgovorna za morebitno škodo ali izgube v zvezi z vašo uporabo orodja Google Widevine.</translation>
 <translation id="939305735877869636">Brave</translation>
-<translation id="3198814717959506569">Uvoženo s strani podjetja Brave</translation>
+<translation id="3198814717959506569">Uvoženo iz brskalnika Brave</translation>
 <translation id="453977518730680921">Samodejno predvajanje posnetkov</translation>
 <translation id="410351446219883937">Samodejno predvajanje</translation>
-<translation id="2240268017737062801">Vprašaj, ko spletna stran želi samodejno predvajati posnetek</translation>
-<translation id="3371702087847741961">Vprašaj, ko spletna stran želi samodejno predvajati posnetek (priporočljivo).</translation>
-<translation id="3218385319396786393">Samodejno predvajanje na tej strani je blokirano</translation>
+<translation id="2240268017737062801">Vprašaj, če želi spletno mesto samodejno predvajati posnetek</translation>
+<translation id="3371702087847741961">Vprašaj, če želi spletno mesto samodejno predvajati posnetek (priporočljivo).</translation>
+<translation id="3218385319396786393">Samodejno predvajanje je blokirano na tej strani</translation>
 <translation id="4150684676757176434">Nadaljuj z blokiranjem samodejnega predvajanja</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
 <translation id="5341901626640816374">Uporabi široko vrstico z lokacijo</translation>
@@ -33,7 +33,7 @@
 <translation id="7372129767729198111">Privzete nastavitve ščita brskalnika Brave</translation>
 <translation id="8029018702721078742">Upravljanje oglasov</translation>
 <translation id="3544462288910360084">Upravljanje piškotkov</translation>
-<translation id="8919235146866304148">Zaščita za ustvarjanje prstnega odtisa</translation>
+<translation id="8919235146866304148">Zaščita proti ustvarjanju prstnih odtisov</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Blokiranje skripta</translation>
 <translation id="6067014455220527258">Blokiraj oglase</translation>
@@ -41,12 +41,13 @@
 <translation id="6132506775968708399">Blokiraj piškotke tretjih oseb</translation>
 <translation id="5657156137487675418">Dovoli vse piškotke</translation>
 <translation id="6883611015375728278">Blokiraj vse piškotke</translation>
-<translation id="1442559343076146186">Blokiraj ustvarjanje prstnega odtisa tretjih oseb</translation>
+<translation id="1442559343076146186">Blokiraj ustvarjanje prstnih odtisov 3. oseb</translation>
 <translation id="8034285923190068220">Dovoli ustvarjanje prstnih odtisov</translation>
-<translation id="4540198958192073185">Blokiraj ustvarjanje prstnega odtisa vseh oseb</translation>
+<translation id="4540198958192073185">Blokiraj vsa ustvarjanja prstnih odtisov</translation>
 <translation id="8942080017911802454">Pravila za obravnavanje IP-naslova WebRTC</translation>
-<translation id="6165508094623778733">Več informacij</translation>
+<translation id="6165508094623778733">Več o tem</translation>
 <translation id="8798099450830957504">Privzeto</translation>
 <translation id="1822560017823072927">Privzeti javni in zasebni vmesniki</translation>
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
+<translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 </translationbundle>

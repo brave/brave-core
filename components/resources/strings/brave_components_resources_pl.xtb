@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Zrobione</translation>
 <translation id="5946611334574299206">Zarabiaj tokeny, oglądając reklamy w przeglądarce Brave. Reklamy są prezentowane w oparciu o zainteresowania wywnioskowywane z zachowania użytkownika przeglądarki. Żadne dane osobowe czy też historia przeglądania nie opuszczają nigdy przeglądarki.</translation>
 <translation id="6112368337882254910">Automatyczna pomoc</translation>
-<translation id="2463717412061968637">Miesięczny budżet</translation>
 <translation id="2846354907189538">Data kolejnego wkładu</translation>
 <translation id="8759716059844800317">Wspierane strony</translation>
 <translation id="1617202384704994799">Już wkrótce.</translation>
 <translation id="1847863811689960237">Nagradzaj twórców Twoich ulubionych treści.</translation>
-<translation id="8647072638653845647">Twój miesięczny budżet jest rozdzielany pomiędzy odwiedzane przez Ciebie strony.</translation>
 <translation id="1165667598801520610">Dodaj środki</translation>
 <translation id="5314648471460409933">Zarządzaj środkami</translation>
 <translation id="2726674968268546964">tokeny</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Prawie gotowe…</translation>
 <translation id="5254740304961202261">Dowiedź, że jesteś człowiekiem!</translation>
 <translation id="5118651998291801746">Hm… nie całkiem.</translation>
-<translation id="3988548751595192480">Serwer systemu Brave Payments nie odpowiada. Naprawimy ten błąd tak prędko, jak to będzie możliwe.</translation>
 <translation id="2323069945529668668">Oho!</translation>
 <translation id="5094577350232361255">informacje</translation>
 <translation id="4918086044614829423">Akceptuj</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">Aby chronić Twoją prywatność, to oświadczenie Brave Rewards nie jest zapisywane ani raportowane nigdzie indziej poza Twoim urządzeniem (tym komputerem). W razie utraty danych z urządzenia nie można odzyskać oświadczenia z przeglądarki Brave.</translation>
 <translation id="1036277985068412734">dodaj środki</translation>
 <translation id="4496990471549986619">Często zadawane pytania</translation>
-<translation id="7957192189831789977">Przypomnienie: portfel Brave jest jednokierunkowy i BAT płyną do stron wydawców. Więcej informacji na temat systemu Brave Payments podajemy na stronie</translation>
 <translation id="2790014973538267577">Pokaż kod QR</translation>
 <translation id="3548138903799045620">Brave ułatwia przekazywanie środków z istniejącego portfela kryptowaluty do portfela Brave BAT.</translation>
 <translation id="3832196416506129616">Dodaj środki do swojego portfela Brave</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">usuń</translation>
 <translation id="3157931365184549694">Przywróć</translation>
 <translation id="3626186271103896082">Stwórz kopię zapasową swojego portfela</translation>
-<translation id="5993107153564707598">Dziękujemy za zajrzenie do nas. Dołączyliśmy do wizji twórców przeglądarki Brave dotyczącej ochrony Twojej prywatności, ponieważ wierzymy, że fani tacy, jak Ty wspieraliby nas w staraniach o to, by Internet był dla nas czystym i bezpiecznym miejscem.</translation>
 <translation id="3074127054582480056">Uwaga</translation>
 <translation id="822513417008209372">Aktualnie wspierasz</translation>
-<translation id="3469762469298298902">Nagrody Brave pozwalają odzyskać kontrolę.</translation>
-<translation id="3863981251715594911">Jak to działa?</translation>
 <translation id="5830306739231399614">Niestety nie ma jeszcze żadnych tokenów.</translation>
 <translation id="7359258898775969374">3 sposoby na wypełnienie portfela:</translation>
 <translation id="8087614920008846901">Możesz dodać środki.</translation>

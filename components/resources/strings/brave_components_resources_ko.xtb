@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">완료</translation>
 <translation id="5946611334574299206">Brave에서 광고를 보고 토큰을 받으세요. 광고는 사용자의 검색 행위에서 추론한 관심사를 바탕으로 제공됩니다. 개인 데이터나 검색 기록은 유출되지 않습니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
-<translation id="2463717412061968637">월간 예산</translation>
 <translation id="2846354907189538">다음 기부 정보</translation>
 <translation id="8759716059844800317">지원 사이트</translation>
 <translation id="1617202384704994799">곧 찾아옵니다.</translation>
 <translation id="1847863811689960237">마음에 든 콘텐츠 제작자에게 보상하세요.</translation>
-<translation id="8647072638653845647">월 예산이 방문하는 사이트 전체에 배분됩니다.</translation>
 <translation id="1165667598801520610">자금 추가</translation>
 <translation id="5314648471460409933">자금 관리</translation>
 <translation id="2726674968268546964">토큰</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">거의 다 되었습니다</translation>
 <translation id="5254740304961202261">사람인지 증명해 보세요!</translation>
 <translation id="5118651998291801746">흠...다소 그렇지 않습니다.</translation>
-<translation id="3988548751595192480">Brave Payments 서버가 응답하지 않습니다. 최대한 빨리 문제를 해결하겠습니다.</translation>
 <translation id="2323069945529668668">이런!</translation>
 <translation id="5094577350232361255">대하여</translation>
 <translation id="4918086044614829423">수락하기</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">개인 정보를 보호하기 위해 이 Brave Rewards 내역은 귀하의 기기(컴퓨터) 외에 그 어느 곳에도 저장되거나, 기록되거나 로그되지 않습니다. 귀하의 기기에서 데이터 손실이 발생하는 경우 Brave에서는 복구 조치할 수 없습니다.</translation>
 <translation id="1036277985068412734">자금 추가히기</translation>
 <translation id="4496990471549986619">자주 묻는 질문</translation>
-<translation id="7957192189831789977">미리 알림: Brave Wallet은 단향성이고 BAT는 발행처 사이트로 들어갑니다. Brave Payments에 관해 자세히 알아보려면 방문해 주세요</translation>
 <translation id="2790014973538267577">QR 코드 표시</translation>
 <translation id="3548138903799045620">Brave는 귀하의 기존 가상 화폐 월렛에서 Brave BAT 월렛으로 쉽게 이체할 수 있게 합니다.</translation>
 <translation id="3832196416506129616">귀하의 Brave 지갑에 자금 추가</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">제거</translation>
 <translation id="3157931365184549694">복구하기</translation>
 <translation id="3626186271103896082">지갑 백업</translation>
-<translation id="5993107153564707598">방문해 주셔서 감사합니다. 우리는 귀하와 같은 팬 여러분이 웹 사이트를 깨끗하고 안전한 장소로 유지하려는 우리의 노력에 지원해 주시리라 믿기 때문에 귀하의 개인 정보를 보호하자는 Brave의 비전에 동참했습니다.</translation>
 <translation id="3074127054582480056">관심도</translation>
 <translation id="822513417008209372">귀하는 현재 지원하고 계십니다</translation>
-<translation id="3469762469298298902">Brave Rewards는 통제력을 되찾게 해줍니다.</translation>
-<translation id="3863981251715594911">원리가 무엇인가요?</translation>
 <translation id="5830306739231399614">토큰이 아직 없습니다.</translation>
 <translation id="7359258898775969374">지갑을 채울 3가지 방법:</translation>
 <translation id="8087614920008846901">자금을 추가할 수 있습니다.</translation>

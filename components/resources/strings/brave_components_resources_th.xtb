@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">เสร็จสิ้น</translation>
 <translation id="5946611334574299206">รับเหรียญด้วยการชมโฆษณาใน Brave โฆษณาที่นำเสนออิงมาจากความสนใจของคุณซึ่งอนุมานจากพฤติกรรมการท่องเว็บของคุณ ไม่มีข้อมูลส่วนตัวหรือประวัติการท่องเว็บหลุดออกมาจากเบราว์เซอร์ของคุณ</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
-<translation id="2463717412061968637">งบรายเดือน</translation>
 <translation id="2846354907189538">วันที่สนับสนุนครั้งต่อไป</translation>
 <translation id="8759716059844800317">เว็บที่ได้รับการสนับสนุน</translation>
 <translation id="1617202384704994799">เร็ว ๆ นี้</translation>
 <translation id="1847863811689960237">ให้รางวัลนักสร้างสำหรับคอนเทนท์ที่คุณรัก</translation>
-<translation id="8647072638653845647">งบรายเดือนของคุณได้ถูกกระจายไปทั่วเว็บที่คุณท่องไป</translation>
 <translation id="1165667598801520610">เพิ่มเงิน</translation>
 <translation id="5314648471460409933">บริหารจัดการเงินทุน</translation>
 <translation id="2726674968268546964">เหรียญ</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">เกือบถึงแล้ว</translation>
 <translation id="5254740304961202261">พิสูจน์ว่าคุณเป็นมนุษย์!</translation>
 <translation id="5118651998291801746">ฮึมมมม ไม่ใช่เสียทีเดียว</translation>
-<translation id="3988548751595192480">เซิร์ฟเวอร์ Brave Payments ไม่ตอบสนอง เราจะทำการแก้ไขให้เร็วที่สุดเท่าที่จะทำได้</translation>
 <translation id="2323069945529668668">โอ๊ะโอ!</translation>
 <translation id="5094577350232361255">เกี่ยวกับ</translation>
 <translation id="4918086044614829423">ยอมรับ</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">เพื่อป้องกันความเป็นส่วนตัวของคุณ  รายงาน Brave Rewards นี้จะไม่ถูกบันทึกหรือเข้าสู่ระบบทุกที่นอกเหนือจากอุปกรณ์ของคุณ (คอมพิวเตอร์นี้) มันไม่มีทางที่จะได้รับจากBrave ในกรณีที่มีข้อมูลสูญหายบนอุปกรณ์ของคุณ</translation>
 <translation id="1036277985068412734">เพิ่มเงินทุน</translation>
 <translation id="4496990471549986619">คำถามที่พบบ่อย</translation>
-<translation id="7957192189831789977">การแจ้งเตือน:  Brave Wallet บัญชีทางเดียวและ BAT ไหลไปยังเว็บไซต์สำนักพิมพ์ สำหรับข้อมูลเพิ่มเติมเกี่ยวกับ Brave Payments โปรดไปที่</translation>
 <translation id="2790014973538267577">แสดง QR Code</translation>
 <translation id="3548138903799045620">Brave ทำให้ง่ายในการส่งต่อเงินทุนจากกระเป๋าเงินคริปโตไปยัง Brave BAT Wallet ของคุณ</translation>
 <translation id="3832196416506129616">เพิ่มเงินเข้าไปยังกระเป๋าเงิน Brave ของคุณ</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">นำออก</translation>
 <translation id="3157931365184549694">กู้คืน</translation>
 <translation id="3626186271103896082">แบคอัพกระเป๋าเงินคุณ</translation>
-<translation id="5993107153564707598">ขอบคุณที่แวะหยุด เราเข้าร่วมกับทัศนคติของ Brave’s ในการปกป้องความเป็นส่วนตัวของคุณเพราะเราเชื่อว่าแฟนอย่างคุณจะช่วยสนับสนุนเราในความพยายามที่จะทำให้เว็บเป็นที่ ๆ สะอาดและปลอดภัย</translation>
 <translation id="3074127054582480056">ประกาศ</translation>
 <translation id="822513417008209372">คุณกำลังสนับสนุน</translation>
-<translation id="3469762469298298902">Brave Rewards อนุญาตให้คุณได้รับการควบคุมคืน</translation>
-<translation id="3863981251715594911">มันทำงานอย่างไร?</translation>
 <translation id="5830306739231399614">น่าเสียดาย ยังไม่มีเหรียญ</translation>
 <translation id="7359258898775969374">3 วิธิเติมเงินเข้ากระเป๋าเงินคุณ:</translation>
 <translation id="8087614920008846901">คุณสามารถเพิ่มเงินทุน</translation>
