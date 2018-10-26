@@ -345,35 +345,38 @@ extension PopoverController {
 extension PopoverController: BasicAnimationControllerDelegate {
     
     func animatePresentation(context: UIViewControllerContextTransitioning) {
-        guard let viewController = context.viewController(forKey: .from), let popoverContext = presentationContext else {
+        guard let popoverContext = presentationContext else {
             context.completeTransition(false)
             return
         }
         
         context.containerView.addSubview(view)
         
-        switch containerView.arrowDirection {
-        case .down:
-            containerView.bottomAnchor.constraint(equalTo: popoverContext.originView.topAnchor, constant: -arrowDistance).isActive = true
-        case .up:
-            containerView.topAnchor.constraint(equalTo: popoverContext.originView.bottomAnchor, constant: arrowDistance).isActive = true
+        let originViewFrame = view.convert(popoverContext.originView.frame, from: popoverContext.originView.superview)
+        let originLayoutGuide = UILayoutGuide()
+        context.containerView.addLayoutGuide(originLayoutGuide)
+        
+        originLayoutGuide.snp.makeConstraints {
+            $0.top.equalTo(self.view).offset(originViewFrame.minY)
+            $0.left.equalTo(self.view).offset(originViewFrame.minX)
+            $0.size.equalTo(originViewFrame.size)
         }
         
         contentController.view.frame = CGRect(origin: .zero, size: popoverContext.presentedSize)
         
         containerView.snp.makeConstraints {
-            $0.left.greaterThanOrEqualTo(viewController.view.safeArea.left).offset(outerMargins.left)
-            $0.right.lessThanOrEqualTo(viewController.view.safeArea.right).offset(-outerMargins.right)
+            switch containerView.arrowDirection {
+            case .down:
+                $0.bottom.equalTo(originLayoutGuide.snp.top).offset(-arrowDistance)
+            case .up:
+                $0.top.equalTo(originLayoutGuide.snp.bottom).offset(arrowDistance)
+            }
+            $0.top.greaterThanOrEqualTo(self.view.safeArea.top).offset(outerMargins.top)
+            $0.bottom.lessThanOrEqualTo(self.view.safeArea.bottom).offset(-outerMargins.bottom)
+            $0.left.greaterThanOrEqualTo(self.view.safeArea.left).offset(outerMargins.left)
+            $0.right.lessThanOrEqualTo(self.view.safeArea.right).offset(-outerMargins.right)
+            $0.centerX.equalTo(originLayoutGuide).priority(.high)
         }
-        
-        let centerX = containerView.centerXAnchor.constraint(equalTo: popoverContext.originView.centerXAnchor)
-        centerX.priority = .defaultHigh
-        centerX.isActive = true
-        
-        NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(greaterThanOrEqualTo: viewController.view.safeAreaLayoutGuide.topAnchor, constant: outerMargins.top),
-            containerView.bottomAnchor.constraint(lessThanOrEqualTo: viewController.view.safeAreaLayoutGuide.bottomAnchor, constant: -outerMargins.bottom)
-        ])
         
         backgroundOverlayView.alpha = 0.0
         backgroundOverlayView.basicAnimate(property: kPOPViewAlpha, key: "alpha") { animation, _ in
