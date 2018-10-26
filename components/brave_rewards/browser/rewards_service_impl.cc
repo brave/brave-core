@@ -1247,7 +1247,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId,
 
   ledger::VisitData visitData;
   visitData.domain = baseDomain;
-  visitData.path = parsedUrl.path();
+  visitData.path = parsedUrl.PathForRequest();
   visitData.local_month = GetPublisherMonth(now);
   visitData.local_year = GetPublisherYear(now);
   visitData.name = baseDomain;
