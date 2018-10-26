@@ -70,17 +70,7 @@ class BraveTorNetworkDelegateHelperTest: public testing::Test {
   DISALLOW_COPY_AND_ASSIGN(BraveTorNetworkDelegateHelperTest);
 };
 
-/*
-TODO: Anthony
-commit 64df410d0ca79a8522d329e75ce8c21a9db77038
-Author: Eric Roman <eroman@chromium.org>
-Date:   Thu Oct 4 21:29:27 2018 +0000
-
-    Remove unused ProxyResolutionService::TryResolveProxySynchronously().
-
-    Bug: 721403
-*/
-TEST_F(BraveTorNetworkDelegateHelperTest, DISABLED_NotTorProfile) {
+TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
   net::TestDelegate test_delegate;
   GURL url("https://check.torproject.org/");
   std::unique_ptr<net::URLRequest> request =
@@ -104,25 +94,16 @@ TEST_F(BraveTorNetworkDelegateHelperTest, DISABLED_NotTorProfile) {
   EXPECT_TRUE(before_url_context->new_url_spec.empty());
   auto* proxy_service = request->context()->proxy_resolution_service();
   net::ProxyInfo info;
-  //proxy_service->TryResolveProxySynchronously(url, std::string(), &info,
-  //                                            nullptr, net::NetLogWithSource());
+  std::unique_ptr<net::ProxyResolutionService::Request> proxy_request;
+  proxy_service->ResolveProxy(url, std::string(), &info, base::DoNothing(),
+                              &proxy_request, net::NetLogWithSource());
   EXPECT_EQ(info.ToPacString(), "DIRECT");
   ASSERT_TRUE(proxy_service->config());
   EXPECT_TRUE(proxy_service->config()->value().proxy_rules().empty());
   EXPECT_EQ(ret, net::OK);
 }
 
-/*
-TODO: Anthony
-commit 64df410d0ca79a8522d329e75ce8c21a9db77038
-Author: Eric Roman <eroman@chromium.org>
-Date:   Thu Oct 4 21:29:27 2018 +0000
-
-    Remove unused ProxyResolutionService::TryResolveProxySynchronously().
-
-    Bug: 721403
-*/
-TEST_F(BraveTorNetworkDelegateHelperTest, DISABLED_TorProfile) {
+TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
 
@@ -157,8 +138,8 @@ TEST_F(BraveTorNetworkDelegateHelperTest, DISABLED_TorProfile) {
   auto* proxy_service = request->context()->proxy_resolution_service();
   net::ProxyInfo info;
   std::unique_ptr<net::ProxyResolutionService::Request> proxy_request;
-  //proxy_service->TryResolveProxySynchronously(url, std::string(), &info,
-  //                                            nullptr, net::NetLogWithSource());
+  proxy_service->ResolveProxy(url, std::string(), &info, base::DoNothing(),
+                              &proxy_request, net::NetLogWithSource());
   EXPECT_EQ(info.ToPacString(), tor::kTestTorPacString);
   ASSERT_TRUE(proxy_service->config());
   ASSERT_FALSE(proxy_service->config()->value().proxy_rules().empty());
