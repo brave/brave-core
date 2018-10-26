@@ -4,6 +4,7 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 
+#include "base/task/post_task.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -13,6 +14,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/common/referrer.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/resource_request_info.h"
 #include "content/public/browser/websocket_handshake_request_info.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
@@ -106,7 +108,7 @@ void DispatchBlockedEventFromIO(const GURL &request_url, int render_frame_id,
     int render_process_id, int frame_tree_node_id,
     const std::string& block_type) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
+  base::PostTaskWithTraits(FROM_HERE, {BrowserThread::UI},
       base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
           block_type, request_url.spec(),
           render_process_id, render_frame_id, frame_tree_node_id));

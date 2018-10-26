@@ -4,10 +4,12 @@
 
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 
+#include "base/task/post_task.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/resource_request_info.h"
@@ -135,7 +137,7 @@ int OnBeforeURLRequest(
       int render_process_id, render_frame_id, frame_tree_node_id;
       GetRenderFrameInfo(ctx->request, &render_frame_id, &render_process_id,
           &frame_tree_node_id);
-      content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+      base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
           base::BindOnce(&DispatchOnUI,
               post_data,
               ctx->request_url, ctx->request->site_for_cookies(), ctx->request->referrer(),
