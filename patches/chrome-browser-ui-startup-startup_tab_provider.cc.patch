@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/startup_tab_provider.cc b/chrome/browser/ui/startup/startup_tab_provider.cc
-index 07969a7881fa3c05b624753554c323396cabfd0e..9f3fc73ca109f702863807cb1a14fdb2120dd447 100644
+index d0e80b81d87ad37f4e83a3715164a29b25bd0f28..1a77c2b23e12039592a503a3ce62b1bc973876a9 100644
 --- a/chrome/browser/ui/startup/startup_tab_provider.cc
 +++ b/chrome/browser/ui/startup/startup_tab_provider.cc
 @@ -214,7 +214,11 @@ StartupTabs StartupTabProviderImpl::GetPostCrashTabs(

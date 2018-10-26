@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/public/platform/modules/permissions/permission.mojom b/third_party/blink/public/platform/modules/permissions/permission.mojom
-index f16cf162bf2f7197addf0cc1ec6193cf35743e4a..e9581ce0006bc193f751860482b6ab0d7f80bc86 100644
+index 0ccecc19b9c96a9b6afa09c387323646f8fe3b4d..2b66b22ddabc9e3dc5dcc2b7a2d584c9501f4201 100644
 --- a/third_party/blink/public/platform/modules/permissions/permission.mojom
 +++ b/third_party/blink/public/platform/modules/permissions/permission.mojom
-@@ -20,6 +20,7 @@ enum PermissionName {
-   CLIPBOARD_READ,
+@@ -21,6 +21,7 @@ enum PermissionName {
    CLIPBOARD_WRITE,
    PAYMENT_HANDLER,
+   BACKGROUND_FETCH,
 +  AUTOPLAY,
  };
  

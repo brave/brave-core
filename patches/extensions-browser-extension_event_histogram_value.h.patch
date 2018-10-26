@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index ad2d4daae3cda93c68f78bb04a45b8fa18b7f3fa..f53646aa629d0e443353e0041b3bba57b17a8525 100644
+index cd8295f9c966d188fc58f3b37e1b4203c24e297d..f40357ea6b5ccb2fd4a6613234eb5b3017997b48 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -441,6 +441,17 @@ enum HistogramValue {
-   SYSTEM_POWER_SOURCE_ONPOWERCHANGED,
-   WEB_REQUEST_ON_ACTION_IGNORED,
-   ARC_APPS_PRIVATE_ON_INSTALLED,
+@@ -444,6 +444,17 @@ enum HistogramValue {
+   SYSTEM_POWER_SOURCE_ONPOWERCHANGED = 423,
+   WEB_REQUEST_ON_ACTION_IGNORED = 424,
+   ARC_APPS_PRIVATE_ON_INSTALLED = 425,
 +  BRAVE_START = 5000,
 +  BRAVE_AD_BLOCKED,
 +  BRAVE_WALLET_CREATED,
