@@ -4,6 +4,7 @@
 
 import UIKit
 import Shared
+import BraveShared
 import WebKit
 import Storage
 import SnapKit
@@ -229,7 +230,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
         cell.connectingForwards = indexPath.item != 0
 
         guard let url = urlString, !item.url.isAboutHomeURL else {
-            cell.site = Site(url: item.url.absoluteString, title: Strings.FirefoxHomePage)
+            cell.site = Site(url: item.url.absoluteString, title: Strings.Home)
             return cell
         }
 
