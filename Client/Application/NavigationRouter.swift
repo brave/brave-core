@@ -9,10 +9,7 @@ import Shared
 // To open a URL use /open-url or to open a blank tab use /open-url with no params
 enum DeepLink: Equatable {
     init?(urlString: String) {
-        let paths = urlString.split(separator: "/")
-        guard let component = paths[safe: 0], let componentPath = paths[safe: 1] else {
-            return nil
-        }
+        // Currently unused for now
         return nil
     }
 }
