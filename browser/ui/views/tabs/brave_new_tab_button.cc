@@ -36,24 +36,3 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   size.Enlarge(insets.width(), insets.height());
   return size;
 }
-
-void BraveNewTabButton::PaintPlusIcon(gfx::Canvas* canvas, int offset, int size) {
-  // Overriden as Chromium incorrectly uses border radius as the width of
-  // the button, which *happens* to be correct as the button is round (at the
-  // moment). So this passes the correct values in for offset.
-  const int fixed_offset = (GetContentsBounds().width() / 2) - (size / 2);
-  NewTabButton::PaintPlusIcon(canvas, fixed_offset, size);
-}
-
-SkPath BraveNewTabButton::GetNewerMaterialUiButtonPath(float button_y,
-                                                       float scale,
-                                                       bool extend_to_top,
-                                                       bool for_fill) const {
-  SkPath path;
-  const gfx::Rect contents_bounds = GetContentsBounds();
-  path.addRect(0, extend_to_top ? 0 : button_y,
-               contents_bounds.width() * scale,
-               button_y + contents_bounds.height() * scale);
-  path.close();
-  return path;
-}
