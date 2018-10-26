@@ -38,11 +38,12 @@ constexpr int kDownloadUnlockIconHeightDecr = 1;
 
 } // namespace
 
-BraveDownloadItemView::BraveDownloadItemView(DownloadItem* download,
-                                             DownloadShelfView* parent,
-                                             views::View* accessible_alert)
-    : DownloadItemView(download, parent, accessible_alert),
-      brave_model_(model_),
+BraveDownloadItemView::BraveDownloadItemView(
+    DownloadUIModel::DownloadUIModelPtr download,
+    DownloadShelfView* parent,
+    views::View* accessible_alert)
+    : DownloadItemView(std::move(download), parent, accessible_alert),
+      brave_model_(*model_),
       is_origin_url_secure_(false) {
   // Prepare origin url font.
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
@@ -77,19 +78,18 @@ void BraveDownloadItemView::OnPaint(gfx::Canvas* canvas) {
 
 // download::DownloadItem::Observer overrides.
 
-void BraveDownloadItemView::OnDownloadUpdated(
-  download::DownloadItem* download) {
+void BraveDownloadItemView::OnDownloadUpdated() {
   // Check for conditions that would disregard origin url change and fall back
   // onto base implementation to handle them.
-  if (!model_.ShouldShowInShelf() ||
-      (DownloadItemView::download()->GetState() == DownloadItem::COMPLETE &&
-       model_.ShouldRemoveFromShelfWhenComplete())) {
-    DownloadItemView::OnDownloadUpdated(download);
+  if (!model()->ShouldShowInShelf() ||
+      (model_->GetState() == DownloadItem::COMPLETE &&
+       model()->ShouldRemoveFromShelfWhenComplete())) {
+    DownloadItemView::OnDownloadUpdated();
     return;
   }
 
-  if (IsShowingWarningDialog() != model_.IsDangerous()) {
-    DownloadItemView::OnDownloadUpdated(download);
+  if (IsShowingWarningDialog() != model()->IsDangerous()) {
+    DownloadItemView::OnDownloadUpdated();
   } else {
     // Update origin url first so that if the base class triggers paint fast
     // enough the new origin url is used and UpdateAccessibleName can use it
@@ -104,7 +104,7 @@ void BraveDownloadItemView::OnDownloadUpdated(
       needs_repaint = true;
     }
 
-    DownloadItemView::OnDownloadUpdated(download);
+    DownloadItemView::OnDownloadUpdated();
 
     // Don't know if the base implementation triggered a repaint so trigger it
     // ourselves if we need to.

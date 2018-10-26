@@ -40,6 +40,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
+#include "components/grit/brave_components_resources.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content_site.h"
 #include "extensions/browser/event_router.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
