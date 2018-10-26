@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Færdig</translation>
 <translation id="5946611334574299206">Optjen tokens ved at se annoncer i Brave. Annoncer præsenteres på baggrund af dine interesser, udledt af din browseradfærd. Ingen personlige data eller browserhistorik forlader nogensinde din browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
-<translation id="2463717412061968637">Månedligt budget</translation>
 <translation id="2846354907189538">Næste bidragsdato</translation>
 <translation id="8759716059844800317">Understøttede sider</translation>
 <translation id="1617202384704994799">Kommer snart.</translation>
 <translation id="1847863811689960237">Beløn skaberne for det indhold du elsker.</translation>
-<translation id="8647072638653845647">Dit månedlige budget fordeles ud over de sider du besøger.</translation>
 <translation id="1165667598801520610">Tilføj Penge</translation>
 <translation id="5314648471460409933">Administrer Midler</translation>
 <translation id="2726674968268546964">poletter</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Er der næsten…</translation>
 <translation id="5254740304961202261">Bevis at du er et menneske</translation>
 <translation id="5118651998291801746">Hmmm…ikke helt.</translation>
-<translation id="3988548751595192480">Brave betalingsserveren svarer ikke. Vil vil udbedre dette så snart som muligt.</translation>
 <translation id="2323069945529668668">Åh åh!</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Accepter</translation>
@@ -81,8 +78,6 @@ Brave er et registreret varemærke fra Brave Software. Sidenavne kan være varem
 <translation id="9026369588205476247">For at beskytte din anonymitet bliver denne opgørelse over Brave Rewards ikke gemt, arkiveret eller logget nogen steder udover på denne enhed (denne computer). Den kan ikke hentes igen fra Brave i tilfælde af datatab på din enhed.</translation>
 <translation id="1036277985068412734">tilføj midler</translation>
 <translation id="4496990471549986619">De Ofte Stillede Spørgsmål</translation>
-<translation id="7957192189831789977">Husk: Brave-tegnebogen er ensrettet og BAT går til udgiversider.
-For mere information om Brave-betalinger besøg venligst</translation>
 <translation id="2790014973538267577">Vis QR Kode</translation>
 <translation id="3548138903799045620">Brave gør det nemt at overføre midler fra din eksisterende kryptotegnebog til din Brave BAT-tegnebog.</translation>
 <translation id="3832196416506129616">Læg penge i din Brave-tegnebog</translation>
@@ -153,11 +148,8 @@ For mere information om Brave-betalinger besøg venligst</translation>
 <translation id="1110535155349301542">fjern</translation>
 <translation id="3157931365184549694">Gendan</translation>
 <translation id="3626186271103896082">Sikkerhedskopier din tegnebog</translation>
-<translation id="5993107153564707598">Tak for at du kigger forbi. Vi har tilsluttet os Brave’s vision for beskyttelse af dit privatliv, fordi vi mener af fans som dig vil støtte os i vores kamp for at gøre nettet til et rent og sikkert sted at være.</translation>
 <translation id="3074127054582480056">Bemærk</translation>
 <translation id="822513417008209372">Du støtter i øjeblikket</translation>
-<translation id="3469762469298298902">Brave Rewards giver dig kontrollen tilbage.</translation>
-<translation id="3863981251715594911">Hvordan virker det?</translation>
 <translation id="5830306739231399614">Desværre er der endnu ingen poletter</translation>
 <translation id="7359258898775969374">3 måder at fylde din pung op på:</translation>
 <translation id="8087614920008846901">Du kan tilføje penge.</translation>

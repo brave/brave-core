@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">完了</translation>
 <translation id="5946611334574299206">Braveで広告を視聴してトークンを獲得しましょう。ご自身の閲覧状況から推測される関心に基づいて、広告が表示されます。個人データや閲覧履歴は一切ブラウザの外へ出ることはありません。</translation>
 <translation id="6112368337882254910">自動コントリビュート</translation>
-<translation id="2463717412061968637">毎月の予算</translation>
 <translation id="2846354907189538">次の報奨日</translation>
 <translation id="8759716059844800317">サポートされたサイト</translation>
 <translation id="1617202384704994799">近日公開。</translation>
 <translation id="1847863811689960237">お気に入りのコンテンツを作成したクリエイターにリワードを払う</translation>
-<translation id="8647072638653845647">お客様の月々の予算は訪問したサイトから配給されています。</translation>
 <translation id="1165667598801520610">資金を追加する</translation>
 <translation id="5314648471460409933">資金を管理する</translation>
 <translation id="2726674968268546964">トークン</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">もう少しです…</translation>
 <translation id="5254740304961202261">人であることを証明してください！</translation>
 <translation id="5118651998291801746">うーん、イマイチ。</translation>
-<translation id="3988548751595192480">Braveの決済サーバーが反応していません。できるだけ早急に復旧します。</translation>
 <translation id="2323069945529668668">おっと！</translation>
 <translation id="5094577350232361255">について</translation>
 <translation id="4918086044614829423">承諾</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">プライバシーの保護のため、このBrave Rewardsステートメントは保存、記録、またはあなたのデバイス（このコンピュータ）以外の場所に保管されません。万が一あなたのデバイスからデータが損なわれた場合、Brave側から再発行することはできません。</translation>
 <translation id="1036277985068412734">資金を追加する</translation>
 <translation id="4496990471549986619">よくある質問</translation>
-<translation id="7957192189831789977">注意 Braveウォレットは一方通行で、BATはパブリッシャーのサイトに循環します。Braveペイメントに関する詳細は、こちらをご覧ください</translation>
 <translation id="2790014973538267577">QRコードを表示する</translation>
 <translation id="3548138903799045620">Braveは既存の暗号通貨ウォレットからBrave Braveウォレットへの所持金の送金を容易にします。</translation>
 <translation id="3832196416506129616">Braveウォレットに資金を追加する</translation>
@@ -149,12 +145,8 @@
 <translation id="1110535155349301542">削除する</translation>
 <translation id="3157931365184549694">復帰</translation>
 <translation id="3626186271103896082">ウォレットをバックアップしましょう</translation>
-<translation id="5993107153564707598">来てくれてありがとう。
-皆さんのようなファンが、ウェブサイトを清潔で安全な場所に保つための努力に共感、支援してくれること信じているから、我々はBraveのプライバシー保護に関するビジョンに賛同します。</translation>
 <translation id="3074127054582480056">注目度</translation>
 <translation id="822513417008209372">現在サポート中</translation>
-<translation id="3469762469298298902">Braveリワード</translation>
-<translation id="3863981251715594911">その仕組みとは？</translation>
 <translation id="5830306739231399614">残念ながらトークンがまだありません。</translation>
 <translation id="7359258898775969374">ウォレットを満たす3つの方法：</translation>
 <translation id="8087614920008846901">資金を追加することができます。</translation>
