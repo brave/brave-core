@@ -3,7 +3,6 @@ import("//brave/build/config.gni")
 # Changing these will cause a full rebuild
 brave_include_dirs_ = [
   "//brave/chromium_src",
-  root_out_dir,
 ]
 
 if (brave_chromium_build) {
