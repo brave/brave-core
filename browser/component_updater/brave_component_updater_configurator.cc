@@ -53,7 +53,7 @@ class BraveConfigurator : public update_client::Configurator {
   std::string GetBrand() const override;
   std::string GetLang() const override;
   std::string GetOSLongName() const override;
-  std::string ExtraRequestParams() const override;
+  base::flat_map<std::string, std::string> ExtraRequestParams() const override;
   std::string GetDownloadPreference() const override;
   scoped_refptr<network::SharedURLLoaderFactory> URLLoaderFactory() const override;
   std::unique_ptr<service_manager::Connector> CreateServiceManagerConnector()
@@ -136,7 +136,7 @@ std::string BraveConfigurator::GetOSLongName() const {
   return configurator_impl_.GetOSLongName();
 }
 
-std::string BraveConfigurator::ExtraRequestParams() const {
+ base::flat_map<std::string, std::string> BraveConfigurator::ExtraRequestParams() const {
   return configurator_impl_.ExtraRequestParams();
 }
 

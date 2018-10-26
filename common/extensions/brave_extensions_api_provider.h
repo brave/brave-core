@@ -23,7 +23,7 @@ class BraveExtensionsAPIProvider : public ExtensionsAPIProvider {
   void AddAPIJSONSources(JSONFeatureProviderSource* json_source) override;
   bool IsAPISchemaGenerated(const std::string& name) override;
   base::StringPiece GetAPISchema(const std::string& name) override;
-  void AddPermissionsProviders(PermissionsInfo* permissions_info) override;
+  void RegisterPermissions(PermissionsInfo* permissions_info) override;
   void RegisterManifestHandlers() override;
 
  private:

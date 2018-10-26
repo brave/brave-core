@@ -11,7 +11,7 @@ namespace extensions {
 
 class BraveExtensionManagement : public ExtensionManagement {
  public:
-  BraveExtensionManagement(PrefService* pref_service, bool is_signin_profile);
+  BraveExtensionManagement(Profile* profile);
   ~BraveExtensionManagement() override;
 
  private:

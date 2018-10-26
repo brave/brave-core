@@ -6,13 +6,13 @@
 
 class BraveTranslateBubbleView : public TranslateBubbleView {
 public:
-  static views::Widget* ShowBubble(
-      views::View* anchor_view,
-      const gfx::Point& anchor_point,
-      content::WebContents* web_contents,
-      translate::TranslateStep step,
-      translate::TranslateErrors::Type error_type,
-      DisplayReason reason) {
+  static views::Widget* ShowBubble(views::View* anchor_view,
+                                   views::Button* highlighted_button,
+                                   const gfx::Point& anchor_point,
+                                   content::WebContents* web_contents,
+                                   translate::TranslateStep step,
+                                   translate::TranslateErrors::Type error_type,
+                                   DisplayReason reason) {
     return nullptr;
   }
   DISALLOW_COPY_AND_ASSIGN(BraveTranslateBubbleView);
