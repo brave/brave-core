@@ -113,12 +113,11 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
       false,
       ledger_->GetReconcileStamp());
 
-  ledger::PublisherInfoCallback callbackSaveVisit = std::bind(&onVisitSavedDummy, _1, _2);
   ledger::PublisherInfoCallback callbackGetPublishers = std::bind(&BatPublishers::saveVisitInternal, this,
                 publisher_id,
                 visit_data,
                 duration,
-                callbackSaveVisit,
+                0,
                 _1,
                 _2);
   ledger_->GetPublisherInfo(filter, callbackGetPublishers);
@@ -226,7 +225,7 @@ void BatPublishers::saveVisitInternal(
     std::string publisher_id,
     ledger::VisitData visit_data,
     uint64_t duration,
-    ledger::PublisherInfoCallback callback,
+    uint64_t window_id,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   DCHECK(result != ledger::Result::TOO_MANY_RESULTS);
@@ -258,7 +257,6 @@ void BatPublishers::saveVisitInternal(
   } else {
     publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
     if (new_visit) {
-      new_visit = false;
       publisher_info->duration = 0; // don't log auto-excluded
     }
   }
@@ -266,7 +264,13 @@ void BatPublishers::saveVisitInternal(
   publisher_info->verified = isVerified(publisher_info->id);
   publisher_info->reconcile_stamp = ledger_->GetReconcileStamp();
 
-  ledger_->SetPublisherInfo(std::move(publisher_info), callback);
+  auto media_info = std::make_unique<ledger::PublisherInfo>(*publisher_info);
+
+  ledger_->SetPublisherInfo(std::move(publisher_info), std::bind(&onVisitSavedDummy, _1, _2));
+
+  if (window_id > 0) {
+    onPublisherActivity(ledger::Result::LEDGER_OK, std::move(media_info), window_id, visit_data);
+  }
 }
 
 std::unique_ptr<ledger::PublisherInfo> BatPublishers::onPublisherInfoUpdated(
@@ -864,7 +868,17 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
       type = TWITCH_MEDIA_TYPE;
     }
 
-//    ledger_->GetMediaActivityFromUrl(windowId, visit_data, type);
+    LOG(ERROR) << "getPublisherActivityFromUrl";
+
+    ledger::VisitData new_visit_data(visit_data);
+
+    if (!new_visit_data.url.empty()) {
+      new_visit_data.url.pop_back();
+    }
+
+    new_visit_data.url = new_visit_data.url + new_visit_data.path;
+
+    ledger_->GetMediaActivityFromUrl(windowId, new_visit_data, type);
     return;
   }
 
@@ -901,18 +915,9 @@ void BatPublishers::onPublisherActivity(ledger::Result result,
     saveVisitInternal(visit_data.domain,
                       visit_data,
                       0,
-                      std::bind(&BatPublishers::onPublisherActivitySave, this, windowId, visit_data, _1, _2),
+                      windowId,
                       result,
                       std::move(info));
-  }
-}
-
-void BatPublishers::onPublisherActivitySave(uint64_t windowId,
-                                            const ledger::VisitData& visit_data,
-                                            ledger::Result result,
-                                            std::unique_ptr<ledger::PublisherInfo> info) {
-  if (result == ledger::Result::LEDGER_OK) {
-    onPublisherActivity(result, std::move(info), windowId, visit_data);
   }
 }
 
