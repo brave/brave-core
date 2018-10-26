@@ -1,162 +1,162 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "የብሬቭ ሽልማት",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "አሁን ማግኘቶን ይጀምሩ!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "ሽልማት ይቀላቀሉ",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "ማስታወቅያ በማየቶ ይከፈሎት እንዲሁም የሚፈልግቱን የይዘት ፈጣሪዎች ለመደገፍ ያስተላልፉት፡፡",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "ግላዊነት የሚያከብሩ ማስታወቅያዎችን በማየቶ ቶክን ማግኘት ይችላሉ፡፡",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "የተሻሻለውን ይመልከቱ",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "በተጨማሪ ይወቁ",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "የብሬቭ ክፍያዎች ትልቅ ማዘመኛ እንሰጣለን፡፡",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "ቀጣዩን ኢንተርኔት ለማየት ይዘጋጁ፡፡",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "የእርስዎ ዋሌት",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "ስጦታ",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "በርቷል",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "ብሬቭ አሳታሚውን አረጋግጧል",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "ያስተውሉ",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "አውቶ-አስተዋጽኦ ያካቱ",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "ምክሮች ይላኩ",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "ምክሮችን ያብሩ",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "ለ",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "የሽልማት ማጠቃለያ",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "የካቲት",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "ነሐሴ",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "ታህሳስ",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "የካቲት",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "ጥር",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "ሀምሌ",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "ሰኔ",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "መጋቢት",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "ግንቦት",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "ሕዳር",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "ጥቅምት",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "መስከረም",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "ቶክን ፍቃድ",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "ከማስታወቅያ ማትረፍ",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "አውቶ-አስተዋፅኦ",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "የአንድ ግዜ ምክሮች",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "አጠቃላይ",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "ቀኑ የሚያልፈው",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "ወርሀዊ ምክሮች",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "ጠፍቷል",
     "description": ""
   },
   "ok": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   },
   "braveRewardsCreatingText": {
