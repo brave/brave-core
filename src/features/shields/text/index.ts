@@ -6,16 +6,6 @@ import styled from '../../../theme'
 import palette from '../../../theme/palette'
 import { setValueBasedOnSize } from '../../../helpers'
 
-export const Stat = styled<{}, 'span'>('span')`
-  box-sizing: border-box;
-  font-family: ${p => p.theme.fontFamily.heading};
-  color: ${palette.grey200};
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1;
-  user-select: none;
-`
-
 interface LabelProps {
   size: 'large' | 'medium' | 'small'
   children: React.ReactNode
@@ -94,9 +84,6 @@ export const Link = styled<{}, 'a'>('a')`
 
   &:hover {
     color: ${palette.white};
-    * {
-      fill: ${palette.white};
-    }
   }
 `
 

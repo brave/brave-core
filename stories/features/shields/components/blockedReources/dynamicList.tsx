@@ -170,7 +170,7 @@ export default class StaticList extends React.PureComponent<Props, State> {
               onClick={this.onClickApplyOptions}
               icon={{ position: 'after', image: <CaratDownIcon /> }}
             />
-            <Options visible={showApplyOptions} position={{ bottom: '58px' }}>
+            <Options visible={showApplyOptions}>
               <Option selected={false} onClick={this.applyScriptsOnce}>{locale.applyOnce}</Option>
               <Option selected={false} onClick={this.applyScriptsAlways}>{locale.alwaysApply}</Option>
             </Options>

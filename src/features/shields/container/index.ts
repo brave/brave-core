@@ -99,6 +99,10 @@ export const ResourcesStatusGrid = styled(Grid as ComponentType<ResourcesStatusG
   background-color: rgba(255, 255, 255, 0.15);
   user-select: none;
   cursor: pointer;
+
+  > *:nth-child(2) {
+    padding: 0;
+  }
 `
 
 export const ResourcesSubTitleGrid = styled(Grid)`
@@ -106,13 +110,13 @@ export const ResourcesSubTitleGrid = styled(Grid)`
   top: 0;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto;
-  padding: 10px 25px 5px 20px;
+  padding: 5px 25px 5px 20px;
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
   color: #E9E9F4;
   height: auto;
-  background: #000;
+  background: ${palette.grey800};
 `
 
 // Footer
@@ -125,15 +129,8 @@ export const MainFooterLinkFlex = styled(Flex.withComponent('a'))`
   font-weight: 600;
   text-decoration: none;
 
-  * {
-    line-height: 1;
-  }
-
   &:hover {
     color: ${palette.white};
-    * {
-      fill: ${palette.white};
-    }
   }
 `
 
@@ -165,10 +162,23 @@ export const ResourcesFooterFlex = styled(Flex)`
 
 // Content
 // ..............................
+
+export const StatFlex = styled(Flex)`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  font-family: ${p => p.theme.fontFamily.heading};
+  color: ${palette.grey200};
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+  padding: 13px 0;
+`
+
 export const ToggleGrid = styled(Grid)`
-  grid-template-columns: 28px 28px 1fr auto;
-  grid-auto-rows: 39px 0;
-  padding: 5px 0 5px 20px;
+  grid-template-columns: 48px 28px 1fr auto;
+  padding: 0;
   border-bottom: 1px solid rgba(255,255,255,0.15);
   font-size: 12px;
   font-weight: 500;
@@ -179,28 +189,32 @@ export const ToggleGrid = styled(Grid)`
     background-color: rgba(255, 255, 255, 0.15);
   }
 
-  *:first-child {
+  > *:first-child {
     cursor: pointer;
+    padding-left: 20px;
   }
 
-  *:nth-child(2) {
+  > *:nth-child(2) {
     cursor: pointer;
+    height: 40px;
   }
 
-  *:nth-child(3) {
+  > *:nth-child(3) {
     cursor: pointer;
   }
 `
 
 interface SelectGridProps {
   hasUserInteraction: boolean
-  // onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
 }
 
 export const SelectGrid = styled(ToggleGrid as ComponentType<SelectGridProps>)`
-  grid-auto-rows: 46px 0;
-  padding: 5px 0 5px 20px;
+  padding: 0;
   cursor: pointer;
+
+  > *:nth-child(2) {
+    height: 46px;
+  }
 
   &:hover {
     cursor: ${p => p.hasUserInteraction ? 'pointer' : 'unset'};
@@ -230,4 +244,9 @@ export const ToggleFlex = styled(Flex.withComponent('label'))`
   width: 100%;
   height: 100%;
   padding-right: 25px;
+`
+
+export const ShieldIconFlex = styled(Flex)`
+  display: flex;
+  justify-content: center;
 `

@@ -6,7 +6,7 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
-  Stat,
+  StatFlex,
   ToggleGrid,
   Toggle,
   EmptyButton,
@@ -76,7 +76,7 @@ export default class SecurityControls extends React.PureComponent<Props, State> 
         {/* pishing toggle */}
         <ToggleGrid>
           <EmptyButton onClick={this.onTogglePishingMalwareBlocked}><ShowMoreIcon /></EmptyButton>
-          <Stat onClick={this.onTogglePishingMalwareBlocked}>{data.pishingMalwareBlocked}</Stat>
+          <StatFlex onClick={this.onTogglePishingMalwareBlocked}>{data.pishingMalwareBlocked}</StatFlex>
           <ResourcesSwitchLabel onClick={this.onTogglePishingMalwareBlocked}>{locale.blockPishing}</ResourcesSwitchLabel>
           <ToggleFlex><Toggle checked={true} /></ToggleFlex>
         </ToggleGrid>

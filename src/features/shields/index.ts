@@ -24,8 +24,10 @@ import {
   ResourcesStatusGrid,
   ResourcesSubTitleGrid,
   SelectGrid,
+  StatFlex,
   ToggleFlex,
-  ToggleGrid
+  ToggleGrid,
+  ShieldIconFlex
 } from './container'
 
 import {
@@ -40,7 +42,6 @@ import {
   ResourcesStatusTitle,
   ResourcesSubTitle,
   ResourcesSwitchLabel,
-  Stat,
   UnHighlight
 } from './text'
 
@@ -105,11 +106,12 @@ export {
   SelectBox,
   SelectGrid,
   ShieldIcon,
+  ShieldIconFlex,
   ShieldsPanel,
   ShowLessIcon,
   ShowMoreIcon,
   SiteInfoCard,
-  Stat,
+  StatFlex,
   Toggle,
   ToggleGrid,
   ToggleFlex,

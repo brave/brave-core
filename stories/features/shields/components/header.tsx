@@ -16,7 +16,8 @@ import {
   UnHighlight,
   Toggle,
   ShieldIcon,
-  MainSiteInfoGrid
+  MainSiteInfoGrid,
+  ShieldIconFlex
 } from '../../../../src/features/shields'
 
 // Fake data
@@ -63,7 +64,9 @@ export default class ShieldsHeader extends React.PureComponent<Props, {}> {
               )
               : (
                 <DisabledTextGrid>
-                  <ShieldIcon />
+                  <ShieldIconFlex>
+                    <ShieldIcon />
+                  </ShieldIconFlex>
                   <Description enabled={false}>{locale.disabledMessage}</Description>
                 </DisabledTextGrid>
               )

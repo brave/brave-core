@@ -12,7 +12,7 @@ import {
   CloseButton,
   CloseIcon,
   EmptyButton,
-  Stat,
+  StatFlex,
   ShowLessIcon,
   ResourcesStatusTitle,
   ResourcesSiteInfoFlex,
@@ -48,7 +48,7 @@ const staticHeader = (
   return (
     <ResourcesStatusGrid withStats={true} onClick={onToggle}>
       <EmptyButton><ShowLessIcon /></EmptyButton>
-      <Stat>{data}</Stat>
+      <StatFlex>{data}</StatFlex>
       <ResourcesStatusTitle>{title}</ResourcesStatusTitle>
     </ResourcesStatusGrid>
   )

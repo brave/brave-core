@@ -6,6 +6,7 @@ import styled from '../../../theme'
 
 export const EmptyButton = styled<{}, 'button'>('button')`
   box-sizing: border-box;
+  display: flex;
   background: transparent;
   border: 0;
   padding: 0;

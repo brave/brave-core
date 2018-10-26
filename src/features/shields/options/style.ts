@@ -8,10 +8,7 @@ import { OptionsProps, OptionProps } from './index'
 export const StyledOptions = styled<OptionsProps, 'div'>('div')`
   position: absolute;
   width: 100%;
-  top: ${p => p.position && p.position.top};
-  right: ${p => p.position && p.position.right};
-  bottom: ${p => p.position && p.position.bottom};
-  left: ${p => p.position && p.position.left};
+  bottom: 58px;
   border-radius: 3px;
   box-shadow: 0 2px 5px 0 rgba(223, 223, 232, 0.5);
   background-color: #fff;

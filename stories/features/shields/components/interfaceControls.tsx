@@ -8,7 +8,7 @@ import * as React from 'react'
 import {
   ShowMoreIcon,
   Toggle,
-  Stat,
+  StatFlex,
   ResourcesSwitchLabel,
   EmptyButton,
   ToggleFlex,
@@ -22,6 +22,34 @@ import StaticList from './blockedReources/staticList'
 // Fake data
 import locale from '../fakeLocale'
 import data from '../fakeData'
+
+const totalAdsTrackersBlockedList = (favicon: string, sitename: string, onToggle: () => void) => {
+  return (
+    <BlockedResources
+      favicon={favicon}
+      sitename={sitename}
+      title={locale.blockAds}
+      onToggle={onToggle}
+      data={data.totalAdsTrackersBlocked}
+    >
+      <StaticList onClickDismiss={onToggle} list={data.blockedFakeResources} />
+    </BlockedResources>
+  )
+}
+
+const connectionsEncryptedList = (favicon: string, sitename: string, onToggle: () => void) => {
+  return (
+    <BlockedResources
+      favicon={favicon}
+      sitename={sitename}
+      title={locale.connectionsEncrypted}
+      onToggle={onToggle}
+      data={data.thirdPartyDeviceRecognitionBlocked}
+    >
+      <StaticList onClickDismiss={onToggle} list={data.blockedFakeResources} />
+    </BlockedResources>
+  )
+}
 
 interface Props {
   enabled: boolean
@@ -47,42 +75,6 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
     }
   }
 
-  get totalAdsTrackersBlockedList () {
-    const { favicon, sitename } = this.props
-    return (
-      <BlockedResources
-        favicon={favicon}
-        sitename={sitename}
-        title={locale.blockAds}
-        onToggle={this.onToggleTotalAdsTrackersBlocked}
-        data={data.totalAdsTrackersBlocked}
-      >
-        <StaticList
-          onClickDismiss={this.onToggleTotalAdsTrackersBlocked}
-          list={data.blockedFakeResources}
-        />
-      </BlockedResources>
-    )
-  }
-
-  get connectionsEncryptedList () {
-    const { favicon, sitename } = this.props
-    return (
-      <BlockedResources
-        favicon={favicon}
-        sitename={sitename}
-        title={locale.connectionsEncrypted}
-        onToggle={this.onToggleConnectionsEncrypted}
-        data={data.thirdPartyDeviceRecognitionBlocked}
-      >
-        <StaticList
-          onClickDismiss={this.onToggleConnectionsEncrypted}
-          list={data.blockedFakeResources}
-        />
-      </BlockedResources>
-    )
-  }
-
   onChangeBlockAds = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ blockAds: event.target.checked })
   }
@@ -99,21 +91,13 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
     this.setState({ openConnectionsEncryptedList: !this.state.openConnectionsEncryptedList })
   }
 
-  // onChangeBlockPopups = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   this.setState({ blockPopups: event.target.checked })
-  // }
-
-  // onChangeBlockImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   this.setState({ blockImages: event.target.checked })
-  // }
-
   render () {
-    const { enabled } = this.props
+    const { enabled, favicon, sitename } = this.props
     const {
       blockAds,
       openTotalAdsTrackersBlockedList,
       connectionsEncrypted,
-      openConnectionsEncryptedList /* blockPopups, blockImages */
+      openConnectionsEncryptedList
     } = this.state
 
     if (!enabled) {
@@ -125,31 +109,19 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
         {/* ads toggle */}
           <ToggleGrid>
             <EmptyButton onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
-            <Stat onClick={this.onToggleTotalAdsTrackersBlocked}>{data.totalAdsTrackersBlocked}</Stat>
+            <StatFlex onClick={this.onToggleTotalAdsTrackersBlocked}>{data.totalAdsTrackersBlocked}</StatFlex>
             <ResourcesSwitchLabel onClick={this.onToggleTotalAdsTrackersBlocked}>{locale.blockAds}</ResourcesSwitchLabel>
             <ToggleFlex><Toggle id='blockAds' checked={blockAds} onChange={this.onChangeBlockAds} /></ToggleFlex>
           </ToggleGrid>
-          {openTotalAdsTrackersBlockedList ? this.totalAdsTrackersBlockedList : null}
+          {openTotalAdsTrackersBlockedList ? totalAdsTrackersBlockedList(favicon, sitename, this.onToggleTotalAdsTrackersBlocked) : null}
         {/* connections encrypted toggle */}
         <ToggleGrid>
           <EmptyButton onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
-          <Stat onClick={this.onToggleConnectionsEncrypted}>{data.connectionsEncrypted}</Stat>
+          <StatFlex onClick={this.onToggleConnectionsEncrypted}>{data.connectionsEncrypted}</StatFlex>
           <ResourcesSwitchLabel onClick={this.onToggleConnectionsEncrypted}>{locale.connectionsEncrypted}</ResourcesSwitchLabel>
           <ToggleFlex><Toggle id='connectionsEncrypted' checked={connectionsEncrypted} onChange={this.onChangeConnectionsEncrypted} /></ToggleFlex>
         </ToggleGrid>
-        {openConnectionsEncryptedList ? this.connectionsEncryptedList : null}
-        {/* popups toggle
-          <ToggleGrid>
-            <Stat>{data.popupsBlocked}</Stat>
-            <span>{locale.blockPopups}</span>
-            <Toggle id='blockPopups' checked={blockPopups} onChange={this.onChangeBlockPopups} />
-          </ToggleGrid> */}
-        {/* image toggle
-          <ToggleGrid>
-            <Stat>{data.imagesBlocked}</Stat>
-            <span>{locale.blockImages}</span>
-            <Toggle id='blockImages' checked={blockImages} onChange={this.onChangeBlockImages} />
-          </ToggleGrid> */}
+        {openConnectionsEncryptedList ? connectionsEncryptedList(favicon, sitename, this.onToggleConnectionsEncrypted) : null}
       </>
     )
   }

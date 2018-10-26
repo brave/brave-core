@@ -33,8 +33,7 @@ export const Header = styled<HeaderProps, 'header'>('header')`
 export const ResourcesListScroll = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   overflow: auto;
-  margin-top: -3px;
-  height: 290px;
+  height: 303px;
 `
 
 export const DismissOverlay = styled<{}, 'div'>('div')`

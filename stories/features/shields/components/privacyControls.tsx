@@ -7,7 +7,7 @@ import * as React from 'react'
 // Feature-specific components
 import {
   SelectBox,
-  Stat,
+  StatFlex,
   ClickableEmptySpace,
   EmptyButton,
   ShowMoreIcon,
@@ -22,6 +22,35 @@ import DynamicList from './blockedReources/dynamicList'
 // Fake data
 import locale from '../fakeLocale'
 import data from '../fakeData'
+
+const scriptsBlockedList = (favicon: string, sitename: string, onToggle: () => void) => {
+  return (
+    <BlockedResources
+      dynamic={true}
+      favicon={favicon}
+      sitename={sitename}
+      title={locale.scriptsOnThisSite}
+      onToggle={onToggle}
+      data={data.thirdPartyScriptsBlocked}
+    >
+      <DynamicList onClickDismiss={onToggle} list={data.blockedScriptsResouces} />
+    </BlockedResources>
+  )
+}
+
+const deviceRecognitionList = (favicon: string, sitename: string, onToggle: () => void) => {
+  return (
+    <BlockedResources
+      favicon={favicon}
+      sitename={sitename}
+      title={locale.deviceRecognitionAttempts}
+      onToggle={onToggle}
+      data={data.thirdPartyDeviceRecognitionBlocked}
+    >
+      <StaticList onClickDismiss={onToggle} list={data.blockedFakeResources} />
+    </BlockedResources>
+  )
+}
 
 interface Props {
   enabled: boolean
@@ -41,43 +70,6 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
       openScriptsBlockedList: false,
       openDeviceRecognitionList: false
     }
-  }
-
-  get scriptsBlockedList () {
-    const { favicon, sitename } = this.props
-    return (
-      <BlockedResources
-        dynamic={true}
-        favicon={favicon}
-        sitename={sitename}
-        title={locale.scriptsOnThisSite}
-        onToggle={this.onToggleScriptsBlocked}
-        data={data.thirdPartyScriptsBlocked}
-      >
-        <DynamicList
-          onClickDismiss={this.onToggleScriptsBlocked}
-          list={data.blockedScriptsResouces}
-        />
-      </BlockedResources>
-    )
-  }
-
-  get deviceRecognitionList () {
-    const { favicon, sitename } = this.props
-    return (
-      <BlockedResources
-        favicon={favicon}
-        sitename={sitename}
-        title={locale.deviceRecognitionAttempts}
-        onToggle={this.onToggleDeviceRecognition}
-        data={data.thirdPartyDeviceRecognitionBlocked}
-      >
-        <StaticList
-          onClickDismiss={this.onToggleDeviceRecognition}
-          list={data.blockedFakeResources}
-        />
-      </BlockedResources>
-    )
   }
 
   onToggleScriptsBlocked = () => {
@@ -101,7 +93,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { enabled } = this.props
+    const { enabled, sitename, favicon } = this.props
     const { openScriptsBlockedList, openDeviceRecognitionList } = this.state
 
     if (!enabled) {
@@ -112,7 +104,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
         {/* cookies select */}
         <SelectGrid hasUserInteraction={false}>
           <EmptyButton />
-          <Stat /> {/* {data.thirdPartyCookiesBlocked}</Stat> */}
+          <StatFlex />
           <SelectBox onChange={this.onChangeBlockCookies}>
             <option value='block_third_party'>{locale.block3partyCookies}</option>
             <option value='block'>{locale.blockAllCookies}</option>
@@ -123,26 +115,26 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
         {/* scripts select */}
         <SelectGrid hasUserInteraction={true}>
           <EmptyButton onClick={this.onToggleScriptsBlocked}><ShowMoreIcon /></EmptyButton>
-          <Stat onClick={this.onToggleScriptsBlocked}>{data.thirdPartyScriptsBlocked}</Stat>
+          <StatFlex onClick={this.onToggleScriptsBlocked}>{data.thirdPartyScriptsBlocked}</StatFlex>
           <SelectBox onChange={this.onChangeBlockScripts}>
             <option value='block_third_party'>{locale.blockSomeScripts}</option>
             <option value='block'>{locale.blockAllScripts}</option>
             <option value='allow'>{locale.allowAllScripts}</option>
           </SelectBox>
           <ClickableEmptySpace onClick={this.onToggleScriptsBlocked} />
-          {openScriptsBlockedList ? this.scriptsBlockedList : null}
+          {openScriptsBlockedList ? scriptsBlockedList(favicon, sitename, this.onToggleScriptsBlocked) : null}
         </SelectGrid>
         {/* fingerprinting select */}
         <SelectGrid hasUserInteraction={true}>
           <EmptyButton onClick={this.onToggleDeviceRecognition}><ShowMoreIcon /></EmptyButton>
-          <Stat onClick={this.onToggleDeviceRecognition}>{data.thirdPartyDeviceRecognitionBlocked}</Stat>
+          <StatFlex onClick={this.onToggleDeviceRecognition}>{data.thirdPartyDeviceRecognitionBlocked}</StatFlex>
           <SelectBox onChange={this.onChangeBlockDeviceRecognition}>
             <option value='block_third_party'>{locale.block3partyFingerprinting}</option>
             <option value='block'>{locale.blockAllFingerprinting}</option>
             <option value='allow'>{locale.allowAllFingerprinting}</option>
           </SelectBox>
           <ClickableEmptySpace onClick={this.onToggleDeviceRecognition} />
-          {openDeviceRecognitionList ? this.deviceRecognitionList : null}
+          {openDeviceRecognitionList ? deviceRecognitionList(favicon, sitename, this.onToggleDeviceRecognition) : null}
         </SelectGrid>
       </>
     )
