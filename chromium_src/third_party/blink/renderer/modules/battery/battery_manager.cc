@@ -16,7 +16,7 @@ namespace blink {
   BatteryManager::~BatteryManager() = default;
 
   BatteryManager::BatteryManager(ExecutionContext* context)
-  : PausableObject(context), PlatformEventController(ToDocument(context)) {}
+  : PausableObject(context), PlatformEventController(To<Document>(context)) {}
 
   BatteryManager* BatteryManager::Create(ExecutionContext* context) {
     BatteryManager* battery_manager = new BatteryManager(context);

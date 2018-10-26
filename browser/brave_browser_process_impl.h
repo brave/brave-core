@@ -27,7 +27,7 @@ class BraveTorClientUpdater;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
-  BraveBrowserProcessImpl(scoped_refptr<PersistentPrefStore> user_pref_store);
+  BraveBrowserProcessImpl(ChromeFeatureListCreator* chrome_feature_list_creator);
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.
