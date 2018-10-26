@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Nagrody Brave",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Zacznij zarabiać teraz!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Dołącz nagrody",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Sprawdź, co zostało poprawione",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Dowiedz się więcej",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Twój portfel",
+    "description": ""
+  },
+  "grants": {
+    "message": "Granty",
+    "description": ""
+  },
+  "on": {
+    "message": "wł.",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Zweryfikowany wydawca przeglądarki Brave",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Włącz napiwki",
+    "description": ""
+  },
+  "for": {
+    "message": "dla",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Kwiecień",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Sierpień",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Grudzień",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Luty",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Styczeń",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Lipiec",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Czerwiec",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Marzec",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Maj",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Listopad",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Październik",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Wrzesień",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Subwencja tokenów",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Dołóż się automatycznie",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Suma",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "wygasa dnia",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Wył.",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

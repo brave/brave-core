@@ -45,7 +45,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(scoped_refptr<PersistentPrefSto
             referrals_service->Start();
           },
           base::Unretained(brave_referrals_service_.get())),
-      base::TimeDelta::FromSeconds(30));
+      base::TimeDelta::FromSeconds(3));
 
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(

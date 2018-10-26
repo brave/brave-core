@@ -102,13 +102,15 @@ void BraveReferralsService::Start() {
 
   // On first run, read the promo code from user-data-dir and
   // initialize the referral.
+  bool checked_for_promo_code_file =
+      pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
-  if (download_id.empty() && first_run::IsChromeFirstRun())
+  if (!checked_for_promo_code_file && download_id.empty())
     task_runner_->PostTaskAndReply(
         FROM_HERE,
-        base::Bind(&BraveReferralsService::PerformFirstRunTasks,
+        base::Bind(&BraveReferralsService::ReadPromoCode,
                    base::Unretained(this)),
-        base::Bind(&BraveReferralsService::OnFirstRunTasksComplete,
+        base::Bind(&BraveReferralsService::OnReadPromoCodeComplete,
                    weak_factory_.GetWeakPtr()));
   else
     FetchReferralHeaders();
@@ -245,13 +247,10 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
   pref_service_->ClearPref(kReferralAttemptCount);
 }
 
-void BraveReferralsService::OnFirstRunTasksComplete() {
+void BraveReferralsService::OnReadPromoCodeComplete() {
+  pref_service_->SetBoolean(kReferralCheckedForPromoCodeFile, true);
   if (!promo_code_.empty())
     InitReferral();
-}
-
-void BraveReferralsService::PerformFirstRunTasks() {
-  ReadPromoCode();
 }
 
 void BraveReferralsService::GetFirstRunTime() {
@@ -278,23 +277,22 @@ base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
   return user_data_dir.AppendASCII("promoCode");
 }
 
-bool BraveReferralsService::ReadPromoCode() {
+void BraveReferralsService::ReadPromoCode() {
   base::FilePath promo_code_file = GetPromoCodeFileName();
   if (!base::PathExists(promo_code_file)) {
-    return false;
+    return;
   }
   if (!base::ReadFileToString(promo_code_file, &promo_code_)) {
     LOG(ERROR) << "Failed to read referral promo code from "
                << promo_code_file.value().c_str();
-    return false;
+    return;
   }
   base::TrimWhitespaceASCII(promo_code_, base::TRIM_ALL, &promo_code_);
   if (promo_code_.empty()) {
     LOG(ERROR) << "Promo code file " << promo_code_file.value().c_str()
                << " is empty";
-    return false;
+    return;
   }
-  return true;
 }
 
 void BraveReferralsService::DeletePromoCodeFile() const {
@@ -515,6 +513,7 @@ std::unique_ptr<BraveReferralsService> BraveReferralsServiceFactory(PrefService*
 }
 
 void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kReferralCheckedForPromoCodeFile, false);
   registry->RegisterStringPref(kReferralPromoCode, std::string());
   registry->RegisterStringPref(kReferralDownloadID, std::string());
   registry->RegisterStringPref(kReferralTimestamp, std::string());

@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "ब्रेव रिवार्ड्स ",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "अभी कमाना शुरू करें!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "रिवार्ड्स को जोड़ें",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "जानिये कि क्या बेहतर हुआ है",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "और जानें ",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "आपका वॉलेट ",
+    "description": ""
+  },
+  "grants": {
+    "message": "अनुदान",
+    "description": ""
+  },
+  "on": {
+    "message": "पर",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Brave द्वारा प्रमाणित प्रकाशक ",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "सुझावों को सक्षम करें ",
+    "description": ""
+  },
+  "for": {
+    "message": "के लिए ",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "अप्रैल",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "अगस्त ",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "दिसंबर ",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "फरवरी",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "जनवरी ",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "जुलाई",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "जून",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "मार्च ",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "मई ",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "नवंबर ",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "अक्टूबर",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "सितम्बर",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "टोकन अनुदान ",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "स्वतः योगदान ",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "संपूर्ण",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "को समाप्त ",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "बंद",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

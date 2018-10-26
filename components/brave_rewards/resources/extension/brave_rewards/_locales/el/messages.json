@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Επιβραβεύσεις Brave",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Ξεκινήστε να Κερδίζετε Τώρα!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Συμμετοχή σε Ανταμοιβές",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Δείτε τι έχει βελτιωθεί",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Μάθετε Περισσότερα ",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Το πορτοφόλι σας",
+    "description": ""
+  },
+  "grants": {
+    "message": "Επιχορηγήσεις ",
+    "description": ""
+  },
+  "on": {
+    "message": "ανοιχτό ",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Επαληθευμένος Εκδότης Brave",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Ενεργοποίηση Φιλοδωρημάτων",
+    "description": ""
+  },
+  "for": {
+    "message": "για",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Απρίλιος",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Αύγουστος",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Δεκέμβριος",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Φεβρουάριος ",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Ιανουάριος",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Ιούλιος",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Ιούνιος",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Μάρτιος",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Μάιος",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Νοέμβριος",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Οκτώβριος",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Σεπτέμβριος ",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Χορηγία Μάρκας",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Αυτόματη-Δωρεά",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Σύνολο",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "λήγει στις",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Κλειστό",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

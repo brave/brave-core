@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Ricompense Brave",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Inizia a Guadagnare Ora!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Partecipa alle Ricompense",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Scopri che cosa è migliorato",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Per saperne di più",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Il tuo portafoglio",
+    "description": ""
+  },
+  "grants": {
+    "message": "Sovvenzioni",
+    "description": ""
+  },
+  "on": {
+    "message": "attivo",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Editore Brave verificato",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Attiva le Mance",
+    "description": ""
+  },
+  "for": {
+    "message": "per",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Aprile",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Agosto",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Dicembre",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Febbraio",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Gennaio",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Luglio",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Giugni",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Marzo",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Maggio",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Novembre",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Ottobre",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Settembre",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Concessione di Token",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Contribuisci Automaticamente",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Totale",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "scade il",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Spento",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

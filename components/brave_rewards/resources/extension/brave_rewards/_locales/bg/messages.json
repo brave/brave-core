@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Brave награди",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Започнете да печелите сега!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Присъедини се към награди",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Вижте какво е подобрено",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Научете повече",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Вашето портмоне",
+    "description": ""
+  },
+  "grants": {
+    "message": "Дарения",
+    "description": ""
+  },
+  "on": {
+    "message": "на",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Brave проверен издател",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Активиране на съветите",
+    "description": ""
+  },
+  "for": {
+    "message": "за",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Април",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Август",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Декември",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Февруари",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Януари",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Юли",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Юни",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Март",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Май",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Ноември",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Октомври",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Септември",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Дарение с токени",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Автоматичен принос",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Общо",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "изтича на",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Изключено",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

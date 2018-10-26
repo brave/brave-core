@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Recompensas Brave",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Comece a ganhar agora!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Junte-se ao Rewards",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Confira o que foi aprimorado",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Saiba Mais",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Sua carteira",
+    "description": ""
+  },
+  "grants": {
+    "message": "Doações",
+    "description": ""
+  },
+  "on": {
+    "message": "ativado",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Autor verificado pelo Brave",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Habilitar Dicas",
+    "description": ""
+  },
+  "for": {
+    "message": "para",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Abril",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Agosto",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Dezembro",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Fevereiro",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Janeiro",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Julho",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Junho",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Março",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Maio",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Novembro",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Outubro",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Setembro",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Concessão de Token",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Auto Contribuir",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Total",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "expira em",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Desativada",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

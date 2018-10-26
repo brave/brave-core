@@ -11,7 +11,7 @@
 #include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/extension/grit/brave_rewards_resources.h"
+#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/browser/extension_prefs.h"

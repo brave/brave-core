@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Brave Ödülleri",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Şimdi Kazanmaya Başlayın!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Ödül'e Katılın",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Nelerin geliştirildiğini kontrol edin",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Daha Fazlasını Öğren",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Cüzdanınız",
+    "description": ""
+  },
+  "grants": {
+    "message": "Yardımlar",
+    "description": ""
+  },
+  "on": {
+    "message": "açık",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Brave Onaylı Yayıncı",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "İpuçlarını Etkinleştir",
+    "description": ""
+  },
+  "for": {
+    "message": "için",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Nisan",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Ağustos",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Aralık",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Şubat",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Ocak",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Temmuz",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Haziran",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Mart",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Mayıs",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Kasım",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Ekim",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Eylül",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Token Yardımı",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Otomatik Katkı",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Toplam",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "sona eriyor",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Kapalı",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

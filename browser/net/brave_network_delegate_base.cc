@@ -29,8 +29,10 @@ BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {
 }
 
 void BraveNetworkDelegateBase::GetReferralHeaders() {
-  referral_headers_list_ =
+  const base::ListValue* referral_headers =
       g_browser_process->local_state()->GetList(kReferralHeaders);
+  if (referral_headers)
+    referral_headers_list_ = referral_headers->CreateDeepCopy();
 }
 
 int BraveNetworkDelegateBase::OnBeforeURLRequest(net::URLRequest* request,
@@ -61,7 +63,7 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(net::URLRequest* request,
   brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
   ctx->event_type = brave::kOnBeforeStartTransaction;
   ctx->headers = headers;
-  ctx->referral_headers_list = referral_headers_list_;
+  ctx->referral_headers_list = referral_headers_list_.get();
   callbacks_[request->identifier()] = std::move(callback);
   RunNextCallback(request, ctx);
   return net::ERR_IO_PENDING;

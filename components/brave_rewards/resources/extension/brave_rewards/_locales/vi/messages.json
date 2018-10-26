@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Phần thưởng của Brave",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Bắt đầu kiếm tiền ngay!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Tham gia Nhận thưởng",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Xem có gì được cải thiện",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Tìm hiểu thêm",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Ví của bạn",
+    "description": ""
+  },
+  "grants": {
+    "message": "Cấp",
+    "description": ""
+  },
+  "on": {
+    "message": "trên",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Nhà xuất bản Chứng thực bởi Brave",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Kcish hoạt tiền boa",
+    "description": ""
+  },
+  "for": {
+    "message": "dành cho",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Tháng 4",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Tháng 8",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Tháng 12",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Tháng 2",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Tháng 1",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Tháng bảy",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Tháng 6",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Tháng ba",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Tháng năm",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Tháng 11",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Tháng 10",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Tháng 9",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Nguồn cấp Token",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Tự động-Đóng góp",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Tổng cộng",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "hết hạn vào",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Tắt",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

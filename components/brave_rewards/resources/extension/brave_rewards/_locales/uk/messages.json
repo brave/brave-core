@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Винагороди Brave ",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Почати заробляти зараз!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Приєднатись до нагород",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Перевірте, що вдосконалено",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Детальніше",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Ваш гаманець",
+    "description": ""
+  },
+  "grants": {
+    "message": "Пожертвування",
+    "description": ""
+  },
+  "on": {
+    "message": "увімкнути",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Перевірений дописувач Brave",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Увімкнути підказки",
+    "description": ""
+  },
+  "for": {
+    "message": "для",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Квітень",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Серпень",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Грудень",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Лютий",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Січень",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Липень",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Червень",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Березень",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Травень",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Листопад",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Жовтень",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Вересень",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Пожертвування з токенів",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Робити внески автоматично",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Усього",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "строк дії закінчується",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Вимкнути",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

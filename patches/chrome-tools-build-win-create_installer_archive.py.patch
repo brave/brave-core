@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 0e12f2a17d11bdde2470330b6437f3254e3d1be7..a40a86a1d5c9baf8d01afcdf10649e2779e17d8b 100755
+index 0e12f2a17d11bdde2470330b6437f3254e3d1be7..504b38c805c2fa4190a4d0088318374ba27dce69 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -109,6 +109,60 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
@@ -42,7 +42,7 @@ index 0e12f2a17d11bdde2470330b6437f3254e3d1be7..a40a86a1d5c9baf8d01afcdf10649e27
 +  """
 +  brave_extension_dir = os.path.realpath(os.path.dirname(os.path.realpath(__file__)) )
 +  brave_extension_dir = os.path.realpath(os.path.join(brave_extension_dir,
-+    os.pardir,  os.pardir, os.pardir, os.pardir, 'brave', 'components', 'brave_rewards', 'extension', 'brave_rewards'))
++    os.pardir,  os.pardir, os.pardir, os.pardir, 'brave', 'components', 'brave_rewards', 'resources', 'extension', 'brave_rewards'))
 +  locales_src_dir_path = os.path.join(brave_extension_dir, '_locales')
 +  locales_dest_path = staging_dir
 +  locales_dest_path = os.path.join(locales_dest_path, config.get('GENERAL', 'brave_resources.pak'),

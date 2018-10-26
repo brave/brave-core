@@ -195,18 +195,34 @@ def get_text_with_editor(name):
 def create_release_draft(repo, tag):
   name = '{0} {1}'.format(release_name(), tag)
   # TODO: Parse release notes from CHANGELOG.md
-  body = '''*This is not the released version of Brave. **Be careful** - things are unstable and might even be broken.*
 
-These builds are an unpolished and unfinished early preview for the new version of Brave on the desktop. These builds show our work in progress and they aren't for the faint-of-heart. Features may be missing or broken in new and exciting ways; familiar functionality may have unfamiliar side-effects. These builds showcase the newest advances that we're bringing to your browser, but this is still a prototype, not a reliable daily driver. Try it out only if you're looking for a little extra spice and adventure in your browsing.
+  dev_winstallers = '`BraveBrowserDevSetup.exe` and `BraveBrowserDevSetup32.exe`'
+  beta_winstallers = '`BraveBrowserBetaSetup.exe` and `BraveBrowserBetaSetup32.exe`'
+  release_winstallers = '`BraveBrowserSetup.exe` and `BraveBrowserSetup32.exe`'
+
+  dev_beta_warning = '''*This is not the released version of Brave. **Be careful** - things are unstable and might even be broken.*
+
+These builds are an unpolished and unfinished early preview for the new version of Brave on the desktop. These builds show our work in progress and they aren't for the faint-of-heart. Features may be missing or broken in new and exciting ways; familiar functionality may have unfamiliar side-effects. These builds showcase the newest advances that we're bringing to your browser, but this is still a prototype, not a reliable daily driver. Try it out only if you're looking for a little extra spice and adventure in your browsing.'''
+
+  if release_channel() in 'dev':
+    winstallers = dev_winstallers
+    warning = dev_beta_warning
+  elif release_channel() in 'beta':
+    winstallers = beta_winstallers
+    warning = dev_beta_warning
+  else:
+    winstallers = release_winstallers
+    warning = ""
+
+  body = '''{warning}
+  ### Mac installation
+  Install Brave-Browser.dmg on your system.
 
 ### Linux install instructions
 http://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux
 
 ### Windows
-`BraveBrowserDevSetup.exe` will fetch and install the latest available version.
-
-Until we have brave_installer.exe working without the need for adding cmd line
-args it is unlisted in favor of the stub installer above to avoid confusion.'''
+{win} will fetch and install the latest available version from our update server.'''.format(warning=warning, win=winstallers)
 
   data = dict(tag_name=tag, name=name, body=body, draft=True)
 

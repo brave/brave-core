@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Odměny Brave",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Začněte vydělávat nyní! ",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Přidat se k Rewards ",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Podívejte se, co jsme vylepšili ",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Zjistit více",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Vaše peněženka",
+    "description": ""
+  },
+  "grants": {
+    "message": "Granty",
+    "description": ""
+  },
+  "on": {
+    "message": "zapnuto ",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Vydavatel ověřený společností Brave ",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Povolit dary ",
+    "description": ""
+  },
+  "for": {
+    "message": "pro",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Duben ",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Srpen ",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Prosinec",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Únor",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Leden",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Červenec ",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Červen",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Březen",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Květen ",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Listopad",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Říjen",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Září",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Povolení tokenů ",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Automaticky přispívat ",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Celkem ",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "platnost vyprší ",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Vypnuto ",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Ganjaran Brave",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Mula Dapatkan Sekarang!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Ganjaran Penyertaan",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Lihat peningkatan yang telah dilakukan",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Ketahui lebih lanjut",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Dompet anda",
+    "description": ""
+  },
+  "grants": {
+    "message": "Geran",
+    "description": ""
+  },
+  "on": {
+    "message": "pada",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Penerbit Sah Brave",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Dayakan Tip",
+    "description": ""
+  },
+  "for": {
+    "message": "untuk",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "April",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Ogos",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Disember",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Februari",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Januari",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Julai",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Jun",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Mac",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Mei",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "November",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Oktober",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "September",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Pemberian Token",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Sumbangan Automatik",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Jumlah",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "luput pada",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Padam",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

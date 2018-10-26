@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Brave ಪುರಸ್ಕಾರಗಳು",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "ಈಗ ಗಳಿಕೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "ಪುರಸ್ಕಾರಗಳಿಗೆ ಸೇರಿ",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಹಣಗಳಿಸಿ ಮತ್ತು ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಲು ಅದನ್ನು ಮುಂದಕ್ಕೆ ಫಾರ್ವರ್ಡ್ ಮಾಡಿ.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "ಗೌಪ್ಯತೆಯನ್ನು-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನೀವು ಇದೀಗ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "ಏನೆಲ್ಲಾ ಸುಧಾರಣೆಗಳಾಗಿವೆ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಿ",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "ನಾವು Brave ಪಾವತಿಗಳಲ್ಲಿ ಅಧಿಕ ಪರಿಷ್ಕರಣೆಗಳನ್ನು ಮಾಡಿದ್ದೇವೆ.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "ಹೊಸ ಇಂಟರ್ನೆಟ್ ಅನುಭವವನ್ನು ಪಡೆಯಲು ಸಿದ್ಧರಾಗಿ.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "ನಿಮ್ಮ ವಾಲೆಟ್",
+    "description": ""
+  },
+  "grants": {
+    "message": "ಅನುದಾನಗಳು",
+    "description": ""
+  },
+  "on": {
+    "message": "ಆನ್",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Brave ಪರಿಶೀಲಿಸಿದ ಪ್ರಕಾಶಕರು",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "ಗಮನಿಸಿ",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "ಮಾಸಿಕವಾಗಿ ಈ ಸೈಟ್ ಕುರಿತು ಸಲಹೆ ನೀಡಿ",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿಕೊಳ್ಳಿ",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "ಸಲಹೆ ಕಳುಹಿಸಿ...",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "ಸಲಹೆಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
+    "description": ""
+  },
+  "for": {
+    "message": "ಇದಕ್ಕಾಗಿ",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "ಪುರಸ್ಕಾರಗಳ ಸಾರಾಂಶ",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "ಏಪ್ರಿಲ್",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "ಆಗಸ್ಟ್",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "ಡಿಸೆಂಬರ್",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "ಫೆಬ್ರವರಿ",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "ಜನವರಿ",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "ಜುಲೈ",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "ಜೂನ್",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "ಮಾರ್ಚ್",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "ಮೇ",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "ನವೆಂಬರ್",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "ಅಕ್ಟೋಬರ್",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "ಸೆಪ್ಟೆಂಬರ್",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "ಟೋಕನ್ ಅನುದಾನ",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "ಜಾಹೀರಾತುಗಳಿಂದ ಸಂಪಾದನೆಗಳು",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು",
+    "description": ""
+  },
+  "total": {
+    "message": "ಒಟ್ಟು",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "ಮಾಸಿಕ ಸಲಹೆಗಳು",
+    "description": ""
+  },
+  "off": {
+    "message": "ಆಫ್",
+    "description": ""
+  },
+  "ok": {
+    "message": "ಸರಿ",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave ಜಾಹೀರಾತುಗಳು",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "ಸ್ವಯಂ-ಕೊಡುಗೆ",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "ನೀವು $amount$BAT ಕೊಡುಗೆ ನೀಡಿರುವಿರಿ",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "ನಿಮ್ಮ ಅನುದಾನ ನಿಮಗಾಗಿ ಕಾಯುತ್ತಿದೆ.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}

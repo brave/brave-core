@@ -1,0 +1,192 @@
+{
+  "braveRewards": {
+    "message": "Brave Rewards",
+    "description": ""
+  },
+  "welcomeButtonTextOne": {
+    "message": "Aloita ansaitseminen nyt!",
+    "description": ""
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Liittymispalkinnot",
+    "description": ""
+  },
+  "welcomeDescOne": {
+    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "description": ""
+  },
+  "welcomeDescTwo": {
+    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "description": ""
+  },
+  "welcomeFooterTextOne": {
+    "message": "Katso, mitä on parannettu",
+    "description": ""
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Lue lisää",
+    "description": ""
+  },
+  "welcomeHeaderOne": {
+    "message": "We’ve given Brave Payments a big upgrade.",
+    "description": ""
+  },
+  "welcomeHeaderTwo": {
+    "message": "Get ready to experience the next Internet.",
+    "description": ""
+  },
+  "yourWallet": {
+    "message": "Lompakkosi",
+    "description": ""
+  },
+  "grants": {
+    "message": "Lahjoitukset",
+    "description": ""
+  },
+  "on": {
+    "message": "päällä",
+    "description": ""
+  },
+  "verifiedPublisher": {
+    "message": "Braven vahvistettu julkaisija",
+    "description": ""
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Attention",
+    "description": ""
+  },
+  "donateMonthly": {
+    "message": "Tip this site Monthly",
+    "description": ""
+  },
+  "includeInAuto": {
+    "message": "Include in Auto-Contribute",
+    "description": ""
+  },
+  "donateNow": {
+    "message": "Send a Tip…",
+    "description": ""
+  },
+  "enableTips": {
+    "message": "Salli vinkit",
+    "description": ""
+  },
+  "for": {
+    "message": "kohteelle",
+    "description": ""
+  },
+  "rewardsSummary": {
+    "message": "Rewards Summary",
+    "description": ""
+  },
+  "monthApr": {
+    "message": "Huhtikuu",
+    "description": ""
+  },
+  "monthAug": {
+    "message": "Elokuu",
+    "description": ""
+  },
+  "monthDec": {
+    "message": "Joulukuu",
+    "description": ""
+  },
+  "monthFeb": {
+    "message": "Helmikuu",
+    "description": ""
+  },
+  "monthJan": {
+    "message": "Tammikuu",
+    "description": ""
+  },
+  "monthJul": {
+    "message": "Heinäkuu",
+    "description": ""
+  },
+  "monthJun": {
+    "message": "Kesäkuu",
+    "description": ""
+  },
+  "monthMar": {
+    "message": "Maaliskuu",
+    "description": ""
+  },
+  "monthMay": {
+    "message": "Toukokuu",
+    "description": ""
+  },
+  "monthNov": {
+    "message": "Marraskuu",
+    "description": ""
+  },
+  "monthOct": {
+    "message": "Lokakuu",
+    "description": ""
+  },
+  "monthSep": {
+    "message": "Syyskuu",
+    "description": ""
+  },
+  "tokenGrant": {
+    "message": "Polettilahjoitus",
+    "description": ""
+  },
+  "earningsAds": {
+    "message": "Earnings from Ads",
+    "description": ""
+  },
+  "rewardsContribute": {
+    "message": "Automaattinen lahjoitus",
+    "description": ""
+  },
+  "oneTimeDonation": {
+    "message": "One-Time Tips",
+    "description": ""
+  },
+  "total": {
+    "message": "Yhteensä",
+    "description": ""
+  },
+  "expiresOn": {
+    "message": "voimassaolo päättyy",
+    "description": ""
+  },
+  "recurringDonations": {
+    "message": "Monthly Tips",
+    "description": ""
+  },
+  "off": {
+    "message": "Pois päältä ",
+    "description": ""
+  },
+  "ok": {
+    "message": "ok",
+    "description": ""
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": ""
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": ""
+  },
+  "contributeNotification": {
+    "message": "You've contributed $amount$BAT",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have grant waiting for you.",
+    "description": ""
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": ""
+  }
+}
