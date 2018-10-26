@@ -138,7 +138,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
 
       ledger::VisitData updated_visit_data(visit_data);
       updated_visit_data.favicon_url = "";
-      updated_visit_data.provider = TWITCH_PROVIDER_NAME;
+      updated_visit_data.provider = TWITCH_MEDIA_TYPE;
 
       if (mediaId.find("_vod_") != std::string::npos) {
         // VOD
@@ -186,7 +186,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId, const
       std::string id = publisher_info->id;
       ledger_->SaveMediaVisit(id, updated_visit_data, duration);
     } else if (providerName == TWITCH_MEDIA_TYPE) {
-      updated_visit_data.provider = TWITCH_PROVIDER_NAME;
+      updated_visit_data.provider = TWITCH_MEDIA_TYPE;
       updated_visit_data.favicon_url = publisher_info->favicon_url;
 
       ledger::TwitchEventInfo oldEvent;
@@ -361,19 +361,14 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration, const std::
 
     std::string publisher_id = providerName + "#channel:";
     if (channelId.empty()) {
+      LOG(ERROR) << "Channel id is missing for: " << media_key;
       return;
     }
     publisher_id += channelId;
 
-    if (!favIconURL.empty()) {
-      std::string favicon_key = "https://" + ledger_->GenerateGUID() + ".invalid";
-      ledger_->FetchFavIcon(favIconURL, favicon_key);
-      favIconURL = favicon_key;
-    }
-
     ledger::VisitData updated_visit_data(visit_data);
     updated_visit_data.favicon_url = favIconURL;
-    updated_visit_data.provider = providerName;
+    updated_visit_data.provider = YOUTUBE_MEDIA_TYPE;
     updated_visit_data.name = publisherName;
     updated_visit_data.url = publisherURL + "/videos";
 
@@ -765,7 +760,12 @@ std::string BatGetMedia::parseFavIconUrl(const std::string& data) {
 }
 
 std::string BatGetMedia::parseChannelId(const std::string& data) {
-  return extractData(data, "\"ucid\":\"", "\"");
+  std::string id = extractData(data, "\"ucid\":\"", "\"");
+  if(id.empty()) {
+    id = extractData(data, "<link rel=\"canonical\" href=\"https://www.youtube.com/channel/", "\">");
+  }
+
+  return id;
 }
 
 bool BatGetMedia::channelHasAuthor(const std::string& data) {
@@ -808,15 +808,15 @@ const std::string& provider_type) {
 std::string BatGetMedia::extractData(const std::string& data,
   const std::string& matchAfter, const std::string& matchUntil) {
   std::string match;
-  if (data.find(matchAfter) != std::string::npos) {
-    size_t startPos = data.find(matchAfter) + matchAfter.size();
-    if (startPos != std::string::npos) {
-      size_t endPos = data.find(matchUntil, startPos + matchAfter.size());
-      if (endPos != std::string::npos && endPos > startPos) {
-        match = data.substr(startPos, endPos - startPos);
-      } else {
-        match = data.substr(startPos, endPos);
-      }
+  size_t matchAfterSize = matchAfter.size();
+  size_t startPos = data.find(matchAfter);
+  if (startPos != std::string::npos) {
+    startPos += matchAfterSize;
+    size_t endPos = data.find(matchUntil, startPos + matchAfterSize);
+    if (endPos != std::string::npos && endPos > startPos) {
+      match = data.substr(startPos, endPos - startPos);
+    } else if (endPos != std::string::npos) {
+      match = data.substr(startPos, endPos);
     }
   }
   return match;

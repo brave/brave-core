@@ -62,10 +62,10 @@ double BatPublishers::concaveScore(const uint64_t& duration) {
 
 std::string getProviderName(const std::string& publisher_id) {
   // TODO - this is for the media stuff
-  if (publisher_id.find(YOUTUBE_PROVIDER_NAME) != std::string::npos) {
-    return YOUTUBE_PROVIDER_NAME;
-  } else if (publisher_id.find(TWITCH_PROVIDER_NAME) != std::string::npos) {
-    return TWITCH_PROVIDER_NAME;
+  if (publisher_id.find(YOUTUBE_MEDIA_TYPE) != std::string::npos) {
+    return YOUTUBE_MEDIA_TYPE;
+  } else if (publisher_id.find(TWITCH_MEDIA_TYPE) != std::string::npos) {
+    return TWITCH_MEDIA_TYPE;
   }
   return "";
 }
@@ -864,8 +864,7 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
       type = TWITCH_MEDIA_TYPE;
     }
 
-    ledger_->GetMediaActivityFromUrl(
-      windowId, visit_data, type);
+//    ledger_->GetMediaActivityFromUrl(windowId, visit_data, type);
     return;
   }
 
