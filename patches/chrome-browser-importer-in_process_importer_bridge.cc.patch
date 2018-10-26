@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/in_process_importer_bridge.cc b/chrome/browser/importer/in_process_importer_bridge.cc
-index 5832fa66c715fe82a3e865c7bde490ef6f6b14b6..acebdad31c6c1b53b8d51b37daa1a9373f4a9158 100644
+index 4604136463c577114d503d8973b2f82edd29666e..13a016d32faed7f1f75e02211b073eeea2dc4209 100644
 --- a/chrome/browser/importer/in_process_importer_bridge.cc
 +++ b/chrome/browser/importer/in_process_importer_bridge.cc
-@@ -59,6 +59,10 @@ history::VisitSource ConvertImporterVisitSourceToHistoryVisitSource(
+@@ -54,6 +54,10 @@ history::VisitSource ConvertImporterVisitSourceToHistoryVisitSource(
        return history::SOURCE_IE_IMPORTED;
      case importer::VISIT_SOURCE_SAFARI_IMPORTED:
        return history::SOURCE_SAFARI_IMPORTED;

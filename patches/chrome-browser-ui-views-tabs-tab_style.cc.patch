@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_style.cc b/chrome/browser/ui/views/tabs/tab_style.cc
+index 76b4beafc613ebe4246f0117cdf52f98792a1cde..4145644d6c9c464cb27390e09e032e422ec0bf94 100644
+--- a/chrome/browser/ui/views/tabs/tab_style.cc
++++ b/chrome/browser/ui/views/tabs/tab_style.cc
+@@ -127,7 +127,7 @@ class GM2TabStyle : public TabStyle {
+ 
+ // Thickness in DIPs of the separator painted on the left and right edges of
+ // the tab.
+-constexpr int kSeparatorThickness = 1;
++constexpr int kSeparatorThickness = 2;
+ 
+ // Returns the radius of the outer corners of the tab shape.
+ int GetCornerRadius() {
+@@ -143,7 +143,7 @@ int GetContentsHorizontalInsetSize() {
+ 
+ // Returns the height of the separator between tabs.
+ int GetSeparatorHeight() {
+-  constexpr int kTabSeparatorHeight = 20;
++  constexpr int kTabSeparatorHeight = 24;
+   constexpr int kTabSeparatorTouchHeight = 24;
+   return ui::MaterialDesignController::IsTouchOptimizedUiEnabled()
+              ? kTabSeparatorTouchHeight
+@@ -270,6 +270,7 @@ gfx::Path GM2TabStyle::GetPath(PathType path_type,
+   // When the radius shrinks, it leaves a gap between the bottom corners and the
+   // edge of the tab. Make sure we account for this - and for any adjustment we
+   // may have made to the location of the tab!
++  bottom_radius = 0;
+   const float corner_gap = (right - tab_right) - bottom_radius;
+ 
+   gfx::Path path;

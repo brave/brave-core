@@ -1,54 +1,43 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index ae7beb3e5f41f0a01aba682da17053c0c3ee62e4..fb1eb6fa756217f756437a6f62422a9993ad2e25 100644
+index a5d60a077ba2d4110d127edb95e45dc1187d5aca..936152265b4262b81e1779e0bedf59a40a245504 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
-@@ -42,6 +42,7 @@ class Browser;
- class HomeButton;
- class ReloadButton;
- class ToolbarButton;
-+class BraveToolbarView;
- 
- namespace bookmarks {
- class BookmarkBubbleObserver;
-@@ -63,6 +64,7 @@ class ToolbarView : public views::AccessiblePaneView,
-                     public UpgradeObserver,
-                     public ToolbarButtonProvider,
-                     public BrowserRootView::DropTarget {
-+ friend class BraveToolbarView;
-  public:
-   // The view class name.
-   static const char kViewClassName[];
-@@ -71,13 +73,13 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -74,12 +74,14 @@ class ToolbarView : public views::AccessiblePaneView,
    ~ToolbarView() override;
  
    // Create the contents of the Browser Toolbar.
--  void Init();
-+  virtual void Init();
++  virtual
+   void Init();
  
    // Forces the toolbar (and transitively the location bar) to update its
    // current state.  If |tab| is non-NULL, we're switching (back?) to this tab
    // and should restore any previous location bar state (such as user editing)
    // as well.
--  void Update(content::WebContents* tab);
-+  virtual void Update(content::WebContents* tab);
++  virtual
+   void Update(content::WebContents* tab);
  
    // Clears the current state for |tab|.
-   void ResetTabState(content::WebContents* tab);
-@@ -98,7 +100,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -101,6 +103,7 @@ class ToolbarView : public views::AccessiblePaneView,
  #endif  // defined(OS_CHROMEOS)
  
    // Shows a bookmark bubble and anchors it appropriately.
--  void ShowBookmarkBubble(const GURL& url,
-+  virtual void ShowBookmarkBubble(const GURL& url,
++  virtual
+   void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
+@@ -186,6 +189,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   }
  
-@@ -209,7 +211,7 @@ class ToolbarView : public views::AccessiblePaneView,
+  private:
++  friend class BraveToolbarView;
+   // Types of display mode this toolbar can have.
+   enum DisplayMode {
+     DISPLAYMODE_NORMAL,       // Normal toolbar with buttons, etc.
+@@ -215,6 +219,7 @@ class ToolbarView : public views::AccessiblePaneView,
    // ToolbarView::CalculatePreferredSize() and ToolbarView::GetMinimumSize().
    // These two functions call through to GetSizeInternal(), passing themselves
    // as the function pointer |View::*get_size|.
--  gfx::Size GetSizeInternal(gfx::Size (View::*get_size)() const) const;
-+  virtual gfx::Size GetSizeInternal(gfx::Size (View::*get_size)() const) const;
++  virtual
+   gfx::Size GetSizeInternal(gfx::Size (View::*get_size)() const) const;
  
    // Given toolbar contents of size |size|, returns the total toolbar size.
-   gfx::Size SizeForContentSize(gfx::Size size) const;

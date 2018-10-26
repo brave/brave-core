@@ -1,21 +1,12 @@
 diff --git a/chrome/browser/download/download_item_model.h b/chrome/browser/download/download_item_model.h
-index 86392993b2b5669b233db49cbf4c437b62736bd6..ca273d5ce355938cd55e9516a45aaee2fef9c876 100644
+index 7d3265521a05051bef0246e6968709238a38f646..95ca321ae3fe9ccde55afd9f5617d8614362bb2a 100644
 --- a/chrome/browser/download/download_item_model.h
 +++ b/chrome/browser/download/download_item_model.h
-@@ -23,6 +23,8 @@ namespace gfx {
- class FontList;
- }
+@@ -93,6 +93,7 @@ class DownloadItemModel : public DownloadUIModel,
+   void OnDownloadDestroyed(download::DownloadItem* download) override;
  
-+class BraveDownloadItemModel;
-+
- // This class is an abstraction for common UI tasks and properties associated
- // with a DownloadItem.
- //
-@@ -31,6 +33,7 @@ class FontList;
- // constructor outlives this |DownloadItemModel|. In addition, multiple
- // DownloadItemModel objects could be wrapping the same DownloadItem.
- class DownloadItemModel {
+  private:
 +  friend class BraveDownloadItemModel;
-  public:
-   // Constructs a DownloadItemModel. The caller must ensure that |download|
-   // outlives this object.
+   // DownloadUIModel implementation.
+   std::string GetMimeType() const override;
+   bool IsExtensionDownload() const override;
