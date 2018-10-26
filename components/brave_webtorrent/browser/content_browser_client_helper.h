@@ -4,9 +4,11 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_view_host.h"
@@ -112,7 +114,7 @@ static bool HandleMagnetProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture) {
   if (url.SchemeIs(kMagnetScheme)) {
-    content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+    base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
         base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
         page_transition, has_user_gesture));
     return true;

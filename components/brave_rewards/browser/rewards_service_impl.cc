@@ -870,7 +870,7 @@ void RewardsServiceImpl::OnURLFetchComplete(
 void RunIOTaskCallback(
     base::WeakPtr<RewardsServiceImpl> rewards_service,
     std::function<void(void)> callback) {
-  content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+  base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&RewardsServiceImpl::OnIOTaskComplete,
                       rewards_service,
                       callback));

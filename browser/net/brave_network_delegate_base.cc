@@ -6,10 +6,12 @@
 
 #include <algorithm>
 
+#include "base/task/post_task.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/url_request/url_request.h"
 
@@ -19,8 +21,8 @@ BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
     : ChromeNetworkDelegate(event_router), referral_headers_list_(nullptr) {
   // Retrieve the current referral headers, if any.
-  BrowserThread::PostTask(
-      BrowserThread::UI, FROM_HERE,
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::UI},
       base::Bind(&BraveNetworkDelegateBase::GetReferralHeaders,
                  base::Unretained(this)));
 }
@@ -93,7 +95,8 @@ int BraveNetworkDelegateBase::OnHeadersReceived(net::URLRequest* request,
   // URLRequestHttpJob::awaiting_callback_ will be set to true after we
   // return net::ERR_IO_PENDING here, callbacks need to be run later than this
   // to set awaiting_callback_ back to false.
-  BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::IO},
       base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
         base::Unretained(this), request, ctx));
   return net::ERR_IO_PENDING;
