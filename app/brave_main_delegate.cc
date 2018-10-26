@@ -120,7 +120,6 @@ void BraveMainDelegate::PreSandboxStartup() {
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  command_line.AppendSwitch(switches::kEnableTabAudioMuting);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
