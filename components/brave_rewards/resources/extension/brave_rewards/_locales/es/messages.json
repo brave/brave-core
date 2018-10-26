@@ -4,39 +4,39 @@
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "¡Empiece a ganar ya!",
+    "message": "¡Empieza a ganar ya!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Unirte a las recompensas",
+    "message": "Únete a las recompensas",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Recibe pagos por ver anuncios y dona para respaldar a tus creadores de contenido favoritos.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Ahora puedes ganar tokens por visualizar anuncios que respetan la privacidad",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Mira lo que se ha mejorado",
+    "message": "Echa un vistazo a las mejoras",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Obtenga más información",
+    "message": "Saber más",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Le hemos dado a Brave Payments una gran actualización.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Prepárate para la experiencia del nuevo Internet.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Su cartera",
+    "message": "Tu cartera",
     "description": ""
   },
   "grants": {
@@ -48,23 +48,23 @@
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Publicador web verificado por Brave",
+    "message": "Publicador verificado por Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Atención",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Incluir en Auto-Contribuir",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Enviar una propina...",
     "description": ""
   },
   "enableTips": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Resumen de Recompensas",
     "description": ""
   },
   "monthApr": {
@@ -132,15 +132,15 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Ganancias de anuncios",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Autocontribución",
+    "message": "Auto-Contribución",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Consejos",
     "description": ""
   },
   "total": {
@@ -152,7 +152,7 @@
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Consejos del Mes",
     "description": ""
   },
   "off": {
@@ -168,11 +168,11 @@
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Contribuir",
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "Has aportado $amount$BAT",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   },
   "braveRewardsCreatingText": {
