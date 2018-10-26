@@ -138,10 +138,6 @@ export const ResourcesListText = styled<{}, 'div'>('div')`
   &:first-of-type {
     margin-top: 10px;
   }
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
 `
 
 interface ResourcesLabelScriptsProps {

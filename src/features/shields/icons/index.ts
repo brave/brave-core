@@ -20,7 +20,6 @@ export const LinkIcon = styled(OpenNewIcon as ComponentType)`
   box-sizing: border-box;
   width: 24px;
   height: 24px;
-  padding: 4px;
 
   * {
     fill: ${palette.blue200};

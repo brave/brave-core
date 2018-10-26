@@ -102,6 +102,8 @@ export const ResourcesStatusGrid = styled(Grid as ComponentType<ResourcesStatusG
 `
 
 export const ResourcesSubTitleGrid = styled(Grid)`
+  position: sticky;
+  top: 0;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: auto;
   padding: 10px 25px 5px 20px;
@@ -110,6 +112,7 @@ export const ResourcesSubTitleGrid = styled(Grid)`
   line-height: 18px;
   color: #E9E9F4;
   height: auto;
+  background: #000;
 `
 
 // Footer
@@ -121,6 +124,10 @@ export const MainFooterLinkFlex = styled(Flex.withComponent('a'))`
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
+
+  * {
+    line-height: 1;
+  }
 
   &:hover {
     color: ${palette.white};
@@ -153,6 +160,7 @@ export const ResourcesFooterFlex = styled(Flex)`
   margin: auto;
   padding: 15px 0;
   border-top: 1px solid rgba(255,255,255,0.15);
+  width: 100%;
 `
 
 // Content
@@ -170,11 +178,34 @@ export const ToggleGrid = styled(Grid)`
   &:hover {
     background-color: rgba(255, 255, 255, 0.15);
   }
+
+  *:first-child {
+    cursor: pointer;
+  }
+
+  *:nth-child(2) {
+    cursor: pointer;
+  }
+
+  *:nth-child(3) {
+    cursor: pointer;
+  }
 `
 
-export const SelectGrid = styled(ToggleGrid)`
+interface SelectGridProps {
+  hasUserInteraction: boolean
+  // onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
+}
+
+export const SelectGrid = styled(ToggleGrid as ComponentType<SelectGridProps>)`
   grid-auto-rows: 46px 0;
-  padding: 5px 25px 5px 20px;
+  padding: 5px 0 5px 20px;
+  cursor: pointer;
+
+  &:hover {
+    cursor: ${p => p.hasUserInteraction ? 'pointer' : 'unset'};
+    background-color: ${p => p.hasUserInteraction ? 'rgba(255, 255, 255, 0.15)' : 'transparent'};
+  }
 `
 
 interface ResourcesListGridProps {

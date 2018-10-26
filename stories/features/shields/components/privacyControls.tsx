@@ -8,9 +8,9 @@ import * as React from 'react'
 import {
   SelectBox,
   Stat,
+  ClickableEmptySpace,
   EmptyButton,
   ShowMoreIcon,
-
   SelectGrid
 } from '../../../../src/features/shields'
 
@@ -88,6 +88,18 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
     this.setState({ openDeviceRecognitionList: !this.state.openDeviceRecognitionList })
   }
 
+  onChangeBlockScripts = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log('do something', event.currentTarget)
+  }
+
+  onChangeBlockDeviceRecognition = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log('do something', event.currentTarget)
+  }
+
+  onChangeBlockCookies = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log('do something', event.currentTarget)
+  }
+
   render () {
     const { enabled } = this.props
     const { openScriptsBlockedList, openDeviceRecognitionList } = this.state
@@ -98,35 +110,38 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
     return (
       <>
         {/* cookies select */}
-        <SelectGrid>
+        <SelectGrid hasUserInteraction={false}>
           <EmptyButton />
           <Stat /> {/* {data.thirdPartyCookiesBlocked}</Stat> */}
-          <SelectBox>
+          <SelectBox onChange={this.onChangeBlockCookies}>
             <option value='block_third_party'>{locale.block3partyCookies}</option>
             <option value='block'>{locale.blockAllCookies}</option>
             <option value='allow'>{locale.allowAllCookies}</option>
           </SelectBox>
+          <ClickableEmptySpace />
         </SelectGrid>
         {/* scripts select */}
-        <SelectGrid>
+        <SelectGrid hasUserInteraction={true}>
           <EmptyButton onClick={this.onToggleScriptsBlocked}><ShowMoreIcon /></EmptyButton>
-          <Stat>{data.thirdPartyScriptsBlocked}</Stat>
-          <SelectBox>
+          <Stat onClick={this.onToggleScriptsBlocked}>{data.thirdPartyScriptsBlocked}</Stat>
+          <SelectBox onChange={this.onChangeBlockScripts}>
             <option value='block_third_party'>{locale.blockSomeScripts}</option>
             <option value='block'>{locale.blockAllScripts}</option>
             <option value='allow'>{locale.allowAllScripts}</option>
           </SelectBox>
+          <ClickableEmptySpace onClick={this.onToggleScriptsBlocked} />
           {openScriptsBlockedList ? this.scriptsBlockedList : null}
         </SelectGrid>
         {/* fingerprinting select */}
-        <SelectGrid>
+        <SelectGrid hasUserInteraction={true}>
           <EmptyButton onClick={this.onToggleDeviceRecognition}><ShowMoreIcon /></EmptyButton>
-          <Stat>{data.thirdPartyDeviceRecognitionBlocked}</Stat>
-          <SelectBox>
+          <Stat onClick={this.onToggleDeviceRecognition}>{data.thirdPartyDeviceRecognitionBlocked}</Stat>
+          <SelectBox onChange={this.onChangeBlockDeviceRecognition}>
             <option value='block_third_party'>{locale.block3partyFingerprinting}</option>
             <option value='block'>{locale.blockAllFingerprinting}</option>
             <option value='allow'>{locale.allowAllFingerprinting}</option>
           </SelectBox>
+          <ClickableEmptySpace onClick={this.onToggleDeviceRecognition} />
           {openDeviceRecognitionList ? this.deviceRecognitionList : null}
         </SelectGrid>
       </>

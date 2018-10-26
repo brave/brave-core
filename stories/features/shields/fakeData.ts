@@ -20,9 +20,9 @@ const data = {
     { name: 'https://dddd.com/123456789123456789123456789, ', blocked: false, hasUserInput: false },
     { name: 'https://eeee.com/123456789123456789123456789, ', blocked: false, hasUserInput: false },
     { name: 'https://ffff.com/123456789123456789123456789, ', blocked: false, hasUserInput: false },
-    { name: 'https://gggg.com/123456789123456789123456789, ', blocked: true, hasUserInput: false },
-    { name: 'https://hhhh.com/123456789123456789123456789, ', blocked: true, hasUserInput: true },
-    { name: 'https://iiii.com/123456789123456789123456789, ', blocked: true, hasUserInput: false },
+    { name: 'https://gggg.com/123456789123456789123456789, ', blocked: false, hasUserInput: false },
+    { name: 'https://hhhh.com/123456789123456789123456789, ', blocked: false, hasUserInput: true },
+    { name: 'https://iiii.com/123456789123456789123456789, ', blocked: false, hasUserInput: false },
     { name: 'https://jjjj.com/123456789123456789123456789, ', blocked: true, hasUserInput: false },
     { name: 'https://kkkk.com/123456789123456789123456789, ', blocked: true, hasUserInput: false },
     { name: 'https://llll.com/123456789123456789123456789, ', blocked: true, hasUserInput: false }

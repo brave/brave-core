@@ -45,6 +45,7 @@ import {
 } from './text'
 
 import {
+  ClickableEmptySpace,
   DismissOverlay,
   Header,
   ResourcesListScroll,
@@ -65,6 +66,7 @@ import {
 export {
   AllowedScriptsIcon,
   BlockedScriptsIcon,
+  ClickableEmptySpace,
   CloseButton,
   CloseIcon,
   Description,

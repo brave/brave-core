@@ -33,6 +33,7 @@ export const Header = styled<HeaderProps, 'header'>('header')`
 export const ResourcesListScroll = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   overflow: auto;
+  margin-top: -3px;
   height: 290px;
 `
 
@@ -44,4 +45,9 @@ export const DismissOverlay = styled<{}, 'div'>('div')`
   position: absolute;
   top: 0;
   z-index: 1;
+`
+
+export const ClickableEmptySpace = styled<{}, 'div'>('div')`
+  width: 25px;
+  height: 100%;
 `
