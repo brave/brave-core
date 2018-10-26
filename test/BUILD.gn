@@ -178,8 +178,6 @@ static_library("browser_test_support") {
   sources = [
     "base/brave_test_launcher_delegate.cc",
     "base/brave_test_launcher_delegate.h",
-    "//brave/app/brave_main_delegate.cc",
-    "//brave/app/brave_main_delegate.h",
   ]
 }
 
@@ -211,7 +209,6 @@ test("brave_browser_tests") {
     "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
-    "//brave/browser/extensions/brave_webstore_inline_installer_browsertest.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
     "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
