@@ -29,9 +29,7 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsInfo::SINGLE_ORIGIN_WITH_EMBEDDED_EXCEPTIONS_SCOPE,
       WebsiteSettingsRegistry::DESKTOP,
       ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
-      base::FeatureList::IsEnabled(features::kEnableEphemeralFlashPermission)
-      ? ContentSettingsInfo::EPHEMERAL
-      : ContentSettingsInfo::PERSISTENT);
+      ContentSettingsInfo::EPHEMERAL);
 }
 
 } // namespace content_settings
