@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Xong</translation>
 <translation id="5946611334574299206">Kiếm token khi xem quảng cáo trên Brave. Quảng cáo trình bày dựa trên sở thích của bạn, theo như suy ra từ hành vi duyệt web của bạn. Không có bất kỳ dữ liệu cá nhân hay lịch sử duyệt nào rời khỏi trình duyệt của bạn.</translation>
 <translation id="6112368337882254910">Tự động Đóng góp</translation>
-<translation id="2463717412061968637">Ngân sách hàng tháng</translation>
 <translation id="2846354907189538">Ngày đóng góp tiếp theo</translation>
 <translation id="8759716059844800317">Trang web được hỗ trợ</translation>
 <translation id="1617202384704994799">Sắp có.</translation>
 <translation id="1847863811689960237">Thưởng cho nhà sáng tạo nội dung mà bạn thích.</translation>
-<translation id="8647072638653845647">Ngân sách hàng tháng của bạn đã được phân bổ trên các trang web bạn truy cập.</translation>
 <translation id="1165667598801520610">Thêm Nguồn tiền</translation>
 <translation id="5314648471460409933">Quản lý Quỹ</translation>
 <translation id="2726674968268546964">token</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Sắp hoàn tất…</translation>
 <translation id="5254740304961202261">Chứng minh bạn là con người!</translation>
 <translation id="5118651998291801746">Hmmm…không hẳn.</translation>
-<translation id="3988548751595192480">Máy chủ Brave Payments không phản hồi. Chúng tôi sẽ sửa lỗi này sớm nhất có thể.</translation>
 <translation id="2323069945529668668">Ối trời!</translation>
 <translation id="5094577350232361255">về</translation>
 <translation id="4918086044614829423">Chấp nhận</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">Để bảo vệ sự riêng tư của bạn, bản kê Phần thưởng Brave này không được lưu trữ hay ghi chép lại bất kỳ đâu ngoài thiết bị của bạn (máy tính này). Nó không thể được truy xuất từ Brave trong trường hợp thiết bị của bạn bị mất dữ liệu.</translation>
 <translation id="1036277985068412734">thêm tiền</translation>
 <translation id="4496990471549986619">Câu hỏi Thường gặp</translation>
-<translation id="7957192189831789977">Lời Nhắc: Ví Brave là đơn hướng và trút BAT đến các trang nhà xuất bản. Để xem thêm thông tin về Thanh toán Brave, vui lòng xem</translation>
 <translation id="2790014973538267577">Hiển thị mã QR</translation>
 <translation id="3548138903799045620">Brave khiến việc chuyển tiền từ ví tiền mã hóa hiện tại của bạn sang Ví Brave BAT trở nên dễ dàng.</translation>
 <translation id="3832196416506129616">Thêm nguồn tiền vào ví Brave của bạn</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">gỡ bỏ</translation>
 <translation id="3157931365184549694">Phục hồi</translation>
 <translation id="3626186271103896082">Sao lưu Ví của bạn</translation>
-<translation id="5993107153564707598">Cảm ơn bạn đã ghé thăm. Chúng tôi đã tham gia tầm nhìn của Brave để bảo vệ sự riêng tư của bạn vì chúng tôi tin rằng người hâm mộ như bạn sẽ ủng hộ chúng tôi trong nỗ lực giữ cho trang web trở thành nơi trong sạch và an toàn.</translation>
 <translation id="3074127054582480056">Chú ý</translation>
 <translation id="822513417008209372">Bạn hiện đang hỗ trợ</translation>
-<translation id="3469762469298298902">Phần thưởng của Brave cho phép bạn lấy lại quyền kiểm soát.</translation>
-<translation id="3863981251715594911">Nó hoạt động như thế nào?</translation>
 <translation id="5830306739231399614">Tiếc thay, chưa có token.</translation>
 <translation id="7359258898775969374">3 cách để làm đầy ví của bạn:</translation>
 <translation id="8087614920008846901">Bạn có thể thêm tiền đóng góp.</translation>

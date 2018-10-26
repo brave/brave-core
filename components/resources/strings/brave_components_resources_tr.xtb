@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Bitti</translation>
 <translation id="5946611334574299206">Brave\'de reklam izleyerek token kazanın. Gösterilen reklamlar, tarama alışkanlığınızdan esinlenilerek ilgi alanlarınıza göre temellendirilir. Hiçbir kişisel veri ya da tarama geçmişi tarayıcınızdan ayrılmaz.</translation>
 <translation id="6112368337882254910">Otomatik Katkı</translation>
-<translation id="2463717412061968637">Aylık bütçe</translation>
 <translation id="2846354907189538">Bir sonraki bağış tarihi</translation>
 <translation id="8759716059844800317">Desteklenen siteler</translation>
 <translation id="1617202384704994799">Yakında.</translation>
 <translation id="1847863811689960237">Sevdiğiniz içerik için içerik oluşturucularını ödüllendirin.</translation>
-<translation id="8647072638653845647">Aylık bütçeniz, ziyaret ettiğiniz siteler arasında dağıtılır.</translation>
 <translation id="1165667598801520610">Sermaye Ekle</translation>
 <translation id="5314648471460409933">Sermayeleri Yönet</translation>
 <translation id="2726674968268546964">tokenler</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Neredeyse bitti…</translation>
 <translation id="5254740304961202261">İnsan olduğunuzu kanıtlayın!</translation>
 <translation id="5118651998291801746">Hmmm…tam olarak değil.</translation>
-<translation id="3988548751595192480">Brave Ödeme sunucusu yanıt vermiyor. Bunu en kısa zamanda çözeceğiz.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="5094577350232361255">hakkında</translation>
 <translation id="4918086044614829423">Kabul</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">Gizliliğinizi korumak için bu Brave Ödülleri açıklaması cihazınızdan başka hiçbir yere (bu bilgisayar) kaydedilmedi, dosyalanmadı ya da listelenmedi. Cihazınızda veri kaybı yaşanması halinde Brave üzerinden geri getirilemez.</translation>
 <translation id="1036277985068412734">para ekle</translation>
 <translation id="4496990471549986619">SSS</translation>
-<translation id="7957192189831789977">Hatırlatma: Brave Cüzdan tek yönlüdür ve BAT yayıncı sitelerine akar. Brave Ödeme hakkında daha fazla bilgi için lütfen ziyaret edin</translation>
 <translation id="2790014973538267577">QR kodunu göster</translation>
 <translation id="3548138903799045620">Brave, mevcut kripto para cüzdanınızdaki sermayelerinizi Brave BAT Cüzdan\'ınıza transfer etmeyi kolay hale getirir.</translation>
 <translation id="3832196416506129616">Brave cüzdanınıza sermaye ekleyin</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">kaldır</translation>
 <translation id="3157931365184549694">Geri yükle</translation>
 <translation id="3626186271103896082">Cüzdanınızın yedeğini alın</translation>
-<translation id="5993107153564707598">Uğradığınız için teşekkürler. Brave’\'un gizliliğinizi koruma vizyonuna katıldık, çünkü sizin gibi hayranlarımızın interneti temiz ve güvenli bir yer olma çabamızda destekleyeceğine inanıyoruz.</translation>
 <translation id="3074127054582480056">Dikkat</translation>
 <translation id="822513417008209372">Şu anda destekliyorsunuz</translation>
-<translation id="3469762469298298902">Brave Ödülleri kontrolü geri almanızı sağlar.</translation>
-<translation id="3863981251715594911">Nasıl çalışır?</translation>
 <translation id="5830306739231399614">Üzgünüz. Henüz jeton yok.</translation>
 <translation id="7359258898775969374">Cüzdanınızı doldurmanın 3 yolu:</translation>
 <translation id="8087614920008846901">Para ekleyebilirsiniz.</translation>
