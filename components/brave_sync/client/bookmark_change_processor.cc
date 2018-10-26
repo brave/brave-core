@@ -333,6 +333,17 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
       const BookmarkNode* new_parent, int new_index) {
   auto* node = new_parent->GetChild(new_index);
   model->DeleteNodeMetaInfo(node, "order");
+  // TODO(darkdh): handle old_parent == new_parent to avoid duplicate order
+  // clearing. Also https://github.com/brave/sync/issues/231 blocks update to
+  // another devices
+  for (int i = old_index; i < old_parent->child_count(); ++i) {
+    auto* shifted_node = old_parent->GetChild(i);
+    model->DeleteNodeMetaInfo(shifted_node, "order");
+  }
+  for (int i = new_index; i < new_parent->child_count(); ++i) {
+    auto* shifted_node = new_parent->GetChild(i);
+    model->DeleteNodeMetaInfo(shifted_node, "order");
+  }
 }
 
 void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
