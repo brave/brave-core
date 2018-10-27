@@ -44,16 +44,16 @@ export const StyledTitle = styled<{}, 'div'>('div')`
 `
 
 export const StyledClose = styled<{}, 'button'>('button')`
-  top: 22px;
-  right: 22px;
+  top: 16px;
+  right: 16px;
   position: absolute;
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
   color: #B8B9C4;
-  width: 29px;
-  height: 29px;
+  width: 20px;
+  height: 20px;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`

@@ -75,8 +75,8 @@ export default class WalletSummarySlider extends React.PureComponent<Props, Stat
               <StyledArrowIcon show={showTitle}>
                 {
                   showTitle
-                  ? <CaratUpIcon />
-                  : <CaratDownIcon />
+                  ? <CaratDownIcon />
+                  : <CaratUpIcon />
                 }
               </StyledArrowIcon>
             </StyledColumn>

@@ -99,7 +99,7 @@ export const StyledContent = styled<StyledProps, 'div'>('div')`
 export const StyledAction = styled<{}, 'button'>('button')`
   display: flex;
   background: none;
-  padding: 0;
+  padding: 4px;
   border: none;
   cursor: pointer;
   align-items: center;
@@ -108,8 +108,8 @@ export const StyledAction = styled<{}, 'button'>('button')`
 
 export const StyledActionIcon = styled<{}, 'div'>('div')`
   display: inline-block;
-  width: 27px;
-  height: 27px;
+  width: 24px;
+  height: 24px;
   margin-right: 6px;
   vertical-align: text-bottom;
 `
@@ -143,8 +143,8 @@ export const StyledIconAction = styled<{}, 'button'>('button')`
   border: none;
   cursor: pointer;
   color: #A1A8F2;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 `
 
 export const StyledBalanceConverted = styled<{}, 'div'>('div')`
@@ -187,7 +187,7 @@ export const StyledActionWrapper = styled<{}, 'div'>('div')`
   font-size: 12px;
   color: #fff;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin: 20px 0 0;
   padding-bottom: 3px;
 `

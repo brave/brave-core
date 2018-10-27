@@ -19,10 +19,10 @@ export const StyledRemove = styled<{}, 'button'>('button')`
 export const StyledRemoveIcon = styled<{}, 'span'>('span')`
   vertical-align: middle;
   color: #DFDFE8;
-  width: 20px;
-  height: 20px;
+  width: 12px;
+  height: 12px;
   display: inline-block;
-  margin-left: -4px;
+  margin-right: 4px;
 `
 
 export const StyledType = styled<{}, 'div'>('div')`

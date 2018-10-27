@@ -196,10 +196,11 @@ export const StyledSettingsListTitle = styled<{}, 'span'>('span')`
 
 export const StyledArrow = styled<{}, 'span'>('span')`
   color: #4C54D2;
-  height: 28px;
-  width: 25px;
+  height: 16px;
+  width: 16px;
   display: inline-block;
-  vertical-align: bottom;
+  vertical-align: middle;
+  line-height: 16px;
 `
 
 export const StyledToggleHeader = styled<StyleProps, 'div'>('div')`

@@ -40,8 +40,8 @@ export const StyledSummaryText = styled<{}, 'span'>('span')`
 ` as any
 
 export const StyledArrowIcon = styled<StyleProps, 'span'>('span')`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   display: block;
   margin-left: 32px;
   margin-top: ${p => p.show ? '-2px' : '-22px'};
