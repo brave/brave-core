@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/new_tab_button.h b/chrome/browser/ui/views/tabs/new_tab_button.h
-index 9c729b9b79aec8edd1d7de4857772a60bfcc8c6e..82b765dbdc6a33e9cc062e6015700dd3125e1f41 100644
+index 9c729b9b79aec8edd1d7de4857772a60bfcc8c6e..932dd1874456ce3d25c349e4676f57a645c19523 100644
 --- a/chrome/browser/ui/views/tabs/new_tab_button.h
 +++ b/chrome/browser/ui/views/tabs/new_tab_button.h
 @@ -60,6 +60,7 @@ class NewTabButton : public views::ImageButton,
@@ -10,7 +10,7 @@ index 9c729b9b79aec8edd1d7de4857772a60bfcc8c6e..82b765dbdc6a33e9cc062e6015700dd3
  // views::ImageButton:
  #if defined(OS_WIN)
    void OnMouseReleased(const ui::MouseEvent& event) override;
-@@ -91,6 +92,7 @@ class NewTabButton : public views::ImageButton,
+@@ -91,12 +92,14 @@ class NewTabButton : public views::ImageButton,
    void PaintFill(gfx::Canvas* canvas) const;
  
    // Paints a properly sized plus (+) icon into the center of the button.
@@ -18,3 +18,10 @@ index 9c729b9b79aec8edd1d7de4857772a60bfcc8c6e..82b765dbdc6a33e9cc062e6015700dd3
    void PaintPlusIcon(gfx::Canvas* canvas) const;
  
    SkColor GetButtonFillColor() const;
+ 
+   // Returns the path for the given |origin| and |scale|.  If |extend_to_top| is
+   // true, the path is extended vertically to y = 0.
++  virtual
+   gfx::Path GetBorderPath(const gfx::Point& origin,
+                           float scale,
+                           bool extend_to_top) const;
