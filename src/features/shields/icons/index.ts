@@ -6,7 +6,7 @@ import styled from '../../../theme'
 
 import { ComponentType } from 'react'
 import {
-  AlertShieldIcon,
+  ShieldAlertIcon,
   OpenNewIcon,
   CaratDownIcon,
   CaratUpIcon,
@@ -22,38 +22,38 @@ export const LinkIcon = styled(OpenNewIcon as ComponentType)`
   color: ${palette.blue200};
 `
 
-export const ShieldIcon = styled(AlertShieldIcon as ComponentType)`
+export const ShieldIcon = styled(ShieldAlertIcon as ComponentType)`
   width: 48px;
   height: 48px;
   color: ${palette.grey600};
 `
 
 export const ShowMoreIcon = styled(CaratDownIcon as ComponentType)`
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   color: ${palette.blue200};
 `
 
 export const ShowLessIcon = styled(CaratUpIcon as ComponentType)`
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   color: ${palette.blue200};
 `
 
 export const CloseIcon = styled(CloseStrokeIcon as ComponentType)`
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   color: ${palette.blue200};
 `
 
 export const BlockedScriptsIcon = styled(CloseCircleIcon as ComponentType)`
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   color: ${palette.red500};
 `
 
 export const AllowedScriptsIcon = styled(CheckCircleIcon as ComponentType)`
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   color: ${palette.green500};
 `
