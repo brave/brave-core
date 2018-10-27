@@ -11,6 +11,7 @@
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/rand_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/sys_info.h"
 #include "base/task/post_task.h"
@@ -314,8 +315,15 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
 
   // Only check for referral finalization after 30 days have elapsed
   // since first run.
+  uint64_t check_time = 30 * 24 * 60 * 60;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  std::string check_time_str;
+  env->GetVar("BRAVE_REFERRALS_CHECK_TIME", &check_time_str);
+  if (!check_time_str.empty())
+    base::StringToUint64(check_time_str, &check_time);
+
   base::Time now = base::Time::Now();
-  if (now - first_run_timestamp_ < base::TimeDelta::FromDays(30))
+  if (now - first_run_timestamp_ < base::TimeDelta::FromSeconds(check_time))
     return;
 
   // Only check for referral finalization 30 times, with a 24-hour
@@ -340,8 +348,16 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
 
 void BraveReferralsService::MaybeDeletePromoCodePref() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  uint64_t delete_time = 90 * 24 * 60 * 60;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  std::string delete_time_str;
+  env->GetVar("BRAVE_REFERRALS_DELETE_TIME", &delete_time_str);
+  if (!delete_time_str.empty())
+    base::StringToUint64(delete_time_str, &delete_time);
+
   base::Time now = base::Time::Now();
-  if (now - first_run_timestamp_ >= base::TimeDelta::FromDays(90))
+  if (now - first_run_timestamp_ >= base::TimeDelta::FromSeconds(delete_time))
     pref_service_->ClearPref(kReferralPromoCode);
 }
 
