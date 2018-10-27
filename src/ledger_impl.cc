@@ -763,8 +763,7 @@ void LedgerImpl::GetPublisherActivityFromUrl(uint64_t windowId,
 void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,
                                          const ledger::VisitData& visit_data,
                                          const std::string& providerType) {
-  bat_get_media_->getMediaActivityFromUrl(
-    windowId, visit_data, providerType);
+  bat_get_media_->getMediaActivityFromUrl(windowId, visit_data, providerType);
 }
 
 void LedgerImpl::OnPublisherActivity(ledger::Result result,
@@ -783,8 +782,8 @@ void LedgerImpl::SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
   bat_publishers_->setBalanceReportItem(month, year, type, probi);
 }
 
-void LedgerImpl::FetchFavIcon(const std::string& url, const std::string& publisher_key) {
-  ledger_client_->FetchFavIcon(url, publisher_key);
+void LedgerImpl::FetchFavIcon(const std::string& url, const std::string& favicon_key) {
+  ledger_client_->FetchFavIcon(url, favicon_key);
 }
 
 ledger::PublisherBanner LedgerImpl::GetPublisherBanner(const std::string& publisher_id) {

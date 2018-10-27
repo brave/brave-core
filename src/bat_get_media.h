@@ -23,8 +23,6 @@ class DB;
 
 namespace braveledger_bat_get_media {
 
-using MediaPublisherInfoCallback = std::function<void(ledger::Result)>;
-
 class BatGetMedia {
  public:
   static std::string GetLinkType(const std::string& url, const std::string& first_party_url, const std::string& referrer);
@@ -36,8 +34,7 @@ class BatGetMedia {
 
   void getMediaActivityFromUrl(uint64_t windowId,
                                const ledger::VisitData& visit_data,
-                               const std::string& providerType,
-                               bool altPath = false);
+                               const std::string& providerType);
 
  private:
   std::string getMediaURL(const std::string& mediaId, const std::string& providerName);
@@ -61,6 +58,17 @@ class BatGetMedia {
                                 bool result,
                                 const std::string& response,
                                 const std::map<std::string, std::string>& headers);
+
+  void savePublisherInfo(const uint64_t& duration,
+                         const std::string& media_key,
+                         const std::string& providerName,
+                         const std::string& publisherURL,
+                         const std::string& publisherName,
+                         const ledger::VisitData& visit_data,
+                         const uint64_t window_id,
+                         const std::string& favIconURL,
+                         const std::string& channelId);
+
   uint64_t getTwitchDuration(const ledger::TwitchEventInfo& oldEventInfo, const ledger::TwitchEventInfo& newEventInfo);
   std::string getTwitchStatus(const ledger::TwitchEventInfo& oldEventInfo, const ledger::TwitchEventInfo& newEventInfo);
 
@@ -74,10 +82,9 @@ class BatGetMedia {
                                     ledger::Result result,
                                     std::unique_ptr<ledger::PublisherInfo> media_publisher_info);
 
-  void getMediaActivity(uint64_t windowId,
-    const ledger::VisitData& visit_data,
-    const std::string& providerType,
-    ledger::Result result);
+  void onMediaActivityError(const ledger::VisitData& visit_data,
+                            const std::string& providerType,
+                            uint64_t windowId);
 
   void onMediaPublisherActivity(ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info,
@@ -87,7 +94,7 @@ class BatGetMedia {
     const std::string& media_key,
     const std::string& media_id);
 
-  void onGetExternalIdFromUserPage(uint64_t windowId,
+  void onGetChannelIdFromUserPage(uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType,
     bool success, const std::string& response,
@@ -102,8 +109,7 @@ class BatGetMedia {
 
   void processYoutubeMediaPanel(uint64_t windowId,
     const ledger::VisitData& visit_data,
-    const std::string& providerType,
-    bool altPath);
+    const std::string& providerType);
 
   void processTwitchMediaPanel(uint64_t windowId,
     const ledger::VisitData& visit_data,
@@ -115,22 +121,17 @@ class BatGetMedia {
 
   void processYoutubeChannelPath(uint64_t windowId,
     const ledger::VisitData& visit_data,
-    const std::string& providerType,
-    bool altPath = false);
+    const std::string& providerType);
 
   void processYoutubeUserPath(uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType);
 
-  void processYoutubeAlternatePath(uint64_t windowId,
-    const ledger::VisitData& visit_data,
-    const std::string& providerType,
-    bool altPath);
-
   void onGetChannelHeadlineVideo(uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType,
-    bool altPath, bool success, const std::string& response,
+    bool success,
+    const std::string& response,
     const std::map<std::string, std::string>& headers);
 
   void onFetchPublisherFromDBResponse(
@@ -139,21 +140,13 @@ class BatGetMedia {
     uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType,
-    const std::string& publisher_key,
-    bool altPath = false);
-
-  void processYoutubeAsMediaType(
-    const std::string& data,
-    uint64_t windowId,
-    const ledger::VisitData& visit_data,
-    const std::string& providerType);
+    const std::string& publisher_key);
 
   void processYoutubeAsPublisherType(
     const std::string& data,
     uint64_t windowId,
     const ledger::VisitData& visit_data,
-    const std::string& providerType,
-    bool altPath = false);
+    const std::string& providerType);
 
   std::string parseFavIconUrl(const std::string& data);
 
@@ -167,32 +160,26 @@ class BatGetMedia {
 
   std::string getYoutubePublisherKeyFromUrl(const ledger::VisitData& visit_data);
 
-  std::string parseHeadlineMediaKey(const std::string& data);
-
   std::string extractData(const std::string& data,
     const std::string& matchAfter, const std::string& matchUntil);
-
-  std::string parsePublisherLink(const std::string& data);
 
   std::string getPublisherUrl(const std::string& publisher_key,
     const std::string& providerName);
 
-  bool channelHasAuthor(const std::string& data);
-
   void fetchPublisherDataFromDB(uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType,
-    const std::string& publisher_key,
-    bool altPath = false);
+    const std::string& publisher_key);
 
   void fetchPublisherDataFromUrl(uint64_t windowId,
     const ledger::VisitData& visit_data,
-    const std::string& providerType,
-    bool altPath = false);
+    const std::string& providerType);
 
   void fetchPublisherDataFromUserUrl(uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& providerType);
+
+  std::string getNameFromChannel(const std::string& data);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 

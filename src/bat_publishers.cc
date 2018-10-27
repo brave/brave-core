@@ -868,8 +868,6 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
       type = TWITCH_MEDIA_TYPE;
     }
 
-    LOG(ERROR) << "getPublisherActivityFromUrl";
-
     ledger::VisitData new_visit_data(visit_data);
 
     if (!new_visit_data.url.empty()) {
