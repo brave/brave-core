@@ -232,9 +232,11 @@ class LedgerImpl : public ledger::Ledger,
                            const std::string& data) override;
 
   void RefreshPublishersList(bool retryAfterError);
+  void RefreshGrant(bool retryAfterError);
 
   void OnPublisherListLoaded(ledger::Result result,
                              const std::string& data) override;
+  uint64_t retryRequestSetup(uint64_t min_time, uint64_t max_time);
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
@@ -253,6 +255,7 @@ class LedgerImpl : public ledger::Ledger,
   uint32_t last_reconcile_timer_id_;
   uint32_t last_prepare_vote_batch_timer_id_;
   uint32_t last_vote_batch_timer_id_;
+  uint32_t last_grant_check_timer_id_;
  };
 }  // namespace bat_ledger
 

@@ -929,7 +929,7 @@ static bool ignore_ = false;
   SURVEYOR_INFO_ST::SURVEYOR_INFO_ST() {}
 
   SURVEYOR_INFO_ST::~SURVEYOR_INFO_ST() {}
-  
+
   /////////////////////////////////////////////////////////////////////////////
   SURVEYOR_ST::SURVEYOR_ST() {}
 
@@ -1187,6 +1187,7 @@ static bool ignore_ = false;
   CLIENT_STATE_ST::CLIENT_STATE_ST():
     bootStamp_(0),
     reconcileStamp_(0),
+    last_grant_fetch_stamp_(0),
     settings_(AD_FREE_SETTINGS),
     fee_amount_(0),
     user_changed_fee_(false),
@@ -1198,6 +1199,7 @@ static bool ignore_ = false;
     walletInfo_ = other.walletInfo_;
     bootStamp_ = other.bootStamp_;
     reconcileStamp_ = other.reconcileStamp_;
+    last_grant_fetch_stamp_ = other.last_grant_fetch_stamp_;
     personaId_ = other.personaId_;
     userId_ = other.userId_;
     registrarVK_ = other.registrarVK_;
@@ -1230,6 +1232,8 @@ static bool ignore_ = false;
       error = !(d.HasMember("walletInfo") && d["walletInfo"].IsObject() &&
         d.HasMember("bootStamp") && d["bootStamp"].IsUint64() &&
         d.HasMember("reconcileStamp") && d["reconcileStamp"].IsUint64() &&
+        d.HasMember("last_grant_fetch_stamp") &&
+          d["last_grant_fetch_stamp"].IsUint64() &&
         d.HasMember("personaId") && d["personaId"].IsString() &&
         d.HasMember("userId") && d["userId"].IsString() &&
         d.HasMember("registrarVK") && d["registrarVK"].IsString() &&
@@ -1261,6 +1265,7 @@ static bool ignore_ = false;
 
       bootStamp_ = d["bootStamp"].GetUint64();
       reconcileStamp_ = d["reconcileStamp"].GetUint64();
+      last_grant_fetch_stamp_ = d["last_grant_fetch_stamp"].GetUint64();
       personaId_ = d["personaId"].GetString();
       userId_ = d["userId"].GetString();
       registrarVK_ = d["registrarVK"].GetString();
@@ -1334,6 +1339,9 @@ static bool ignore_ = false;
 
     writer.String("reconcileStamp");
     writer.Uint64(data.reconcileStamp_);
+
+    writer.String("last_grant_fetch_stamp");
+    writer.Uint64(data.last_grant_fetch_stamp_);
 
     writer.String("personaId");
     writer.String(data.personaId_.c_str());

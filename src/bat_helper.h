@@ -307,6 +307,7 @@ namespace braveledger_bat_helper {
     WALLET_PROPERTIES_ST walletProperties_;
     uint64_t bootStamp_ = 0u;
     uint64_t reconcileStamp_ = 0u;
+    uint64_t last_grant_fetch_stamp_ = 0u;
     std::string personaId_;
     std::string userId_;
     std::string registrarVK_;
