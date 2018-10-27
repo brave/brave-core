@@ -81,8 +81,8 @@ exports[`ModalAddFunds tests basic tests matches the snapshot 1`] = `
   top: 19px;
   right: 19px;
   cursor: pointer;
-  width: 27px;
-  height: 27px;
+  width: 16px;
+  height: 16px;
   color: #B8B9C4;
 }
 
