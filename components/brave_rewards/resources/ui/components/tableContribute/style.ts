@@ -13,12 +13,12 @@ export const StyledText = styled<{}, 'div'>('div')`
 `
 
 export const StyledRemove = styled<{}, 'button'>('button')`
-  margin: 0 5px;
+  margin: 0 8px;
   background: none;
   border: none;
   cursor: pointer;
-  width: 21px;
-  height: 21px;
+  width: 16px;
+  height: 16px;
   color: ${p => p.theme.color.subtleExclude};
   padding: 0;
 `
