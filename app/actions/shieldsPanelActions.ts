@@ -40,9 +40,10 @@ export const controlsToggled: actions.ControlsToggled = (setting = true) => {
   }
 }
 
-export const httpsEverywhereToggled: actions.HttpsEverywhereToggled = () => {
+export const httpsEverywhereToggled: actions.HttpsEverywhereToggled = (setting) => {
   return {
-    type: types.HTTPS_EVERYWHERE_TOGGLED
+    type: types.HTTPS_EVERYWHERE_TOGGLED,
+    setting
   }
 }
 

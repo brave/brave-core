@@ -162,7 +162,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
           break
         }
 
-        setAllowHTTPUpgradableResources(tabData.origin, toggleShieldsValue(tabData.httpUpgradableResources))
+        setAllowHTTPUpgradableResources(tabData.origin, toggleShieldsValue(action.setting))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
             reloadTab(tabData.id, true).catch(() => {

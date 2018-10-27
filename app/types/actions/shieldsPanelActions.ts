@@ -87,11 +87,12 @@ export interface ControlsToggled {
 }
 
 interface HttpsEverywhereToggledReturn {
-  type: types.HTTPS_EVERYWHERE_TOGGLED
+  type: types.HTTPS_EVERYWHERE_TOGGLED,
+  setting: BlockOptions
 }
 
 export interface HttpsEverywhereToggled {
-  (): HttpsEverywhereToggledReturn
+  (setting: BlockOptions): HttpsEverywhereToggledReturn
 }
 
 interface JavascriptToggledReturn {
