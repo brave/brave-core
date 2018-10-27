@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style.cc b/chrome/browser/ui/views/tabs/tab_style.cc
-index 76b4beafc613ebe4246f0117cdf52f98792a1cde..4145644d6c9c464cb27390e09e032e422ec0bf94 100644
+index 76b4beafc613ebe4246f0117cdf52f98792a1cde..a42862b9fd9c9289ce0a447cd5401d0f7fc6194f 100644
 --- a/chrome/browser/ui/views/tabs/tab_style.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style.cc
 @@ -127,7 +127,7 @@ class GM2TabStyle : public TabStyle {
@@ -28,3 +28,29 @@ index 76b4beafc613ebe4246f0117cdf52f98792a1cde..4145644d6c9c464cb27390e09e032e42
    const float corner_gap = (right - tab_right) - bottom_radius;
  
    gfx::Path path;
+@@ -376,7 +377,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
+   separator_bounds.leading =
+       gfx::RectF(aligned_bounds.x() + corner_radius,
+                  aligned_bounds.y() +
+-                     (aligned_bounds.height() - separator_size.height()) / 2,
++                     aligned_bounds.height() - separator_size.height(),
+                  separator_size.width(), separator_size.height());
+ 
+   separator_bounds.trailing = separator_bounds.leading;
+@@ -688,13 +689,13 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+                        gfx::Tween::IntValueBetween(opacity, SK_AlphaTRANSPARENT,
+                                                    SK_AlphaOPAQUE));
+   };
+-
++  const int separator_radius = separator_bounds.leading.width() / 2;
+   cc::PaintFlags flags;
+   flags.setAntiAlias(true);
+   flags.setColor(separator_color(separator_opacities.left));
+-  canvas->DrawRect(separator_bounds.leading, flags);
++  canvas->DrawRoundRect(separator_bounds.leading, separator_radius, flags);
+   flags.setColor(separator_color(separator_opacities.right));
+-  canvas->DrawRect(separator_bounds.trailing, flags);
++  canvas->DrawRoundRect(separator_bounds.trailing, separator_radius, flags);
+ }
+ 
+ // static
