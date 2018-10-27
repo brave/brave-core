@@ -14,7 +14,7 @@ import {
 import ListToken from '../listToken'
 import { Type } from '../tokens'
 import { getLocale } from '../../../helpers'
-import { WalletActivityIcon } from '../../../components/icons'
+import { WalletInfoIcon } from '../../../components/icons'
 
 type Token = {
   tokens: string
@@ -126,7 +126,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             onActivity
             ? <StyledActivity onClick={onActivity}>
               <StyledActivityIcon>
-                <WalletActivityIcon />
+                <WalletInfoIcon />
               </StyledActivityIcon>
               {getLocale('viewMonthly')}
             </StyledActivity>

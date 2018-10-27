@@ -31,7 +31,7 @@ import {
   StyledToggleWrapper
 } from './style'
 import {
-  ArrowIcon,
+  ArrowLeftIcon,
   CaratRightIcon,
   CloseStrokeIcon,
   SettingsIcon
@@ -112,7 +112,7 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
           {
             isDetailView
             ? <StyledBackArrow onClick={this.detailsClick}>
-                <ArrowIcon />
+                <ArrowLeftIcon />
               </StyledBackArrow>
             : null
           }
