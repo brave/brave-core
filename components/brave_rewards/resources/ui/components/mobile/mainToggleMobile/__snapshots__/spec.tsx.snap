@@ -182,27 +182,26 @@ exports[`MainToggleMobile tests basic tests matches the snapshot 1`] = `
         focusable="false"
         viewBox="0 0 32 32"
       >
-        <g
-          fill="none"
+        <path
+          d="M9.61 23.25h12.78L16 12 9.61 23.25z"
+          fill="#fff"
           fillRule="evenodd"
-        >
-          <path
-            d="M2.05 27.5l8.2-4.87 5.65-10V3c-.15 0-.3.1-.42.3L8.8 15.14 2.1 26.98c-.1.2-.12.38-.04.51"
-            fill="#FF4724"
-          />
-          <path
-            d="M15.9 3v9.64l5.65 10 8.2 4.85c.07-.13.06-.3-.06-.5L23 15.13 16.3 3.3c-.1-.2-.25-.3-.4-.3"
-            fill="#9E1F63"
-          />
-          <path
-            d="M29.74 27.5l-8.2-4.87h-11.3l-8.2 4.86c.08.14.24.22.47.22h26.78c.22 0 .38-.08.45-.22"
-            fill="#662D91"
-          />
-          <path
-            d="M10.24 22.63h11.31l-5.65-9.99z"
-            fill="#FFF"
-          />
-        </g>
+        />
+        <path
+          d="M3 26.8l7.67-4.52L16 13V4a.45.45 0 0 0-.38.28l-6.27 11-6.26 11a.48.48 0 0 0 0 .48"
+          fill="#ff4724"
+          fillRule="evenodd"
+        />
+        <path
+          d="M16 4v9l5.29 9.31L29 26.8a.48.48 0 0 0-.05-.48l-6.26-11-6.27-11A.45.45 0 0 0 16 4"
+          fill="#9e1f63"
+          fillRule="evenodd"
+        />
+        <path
+          d="M29 26.8l-7.67-4.52H10.71L3 26.8a.47.47 0 0 0 .43.2h25.1a.47.47 0 0 0 .43-.2"
+          fill="#662d91"
+          fillRule="evenodd"
+        />
       </svg>
     </div>
     <div
