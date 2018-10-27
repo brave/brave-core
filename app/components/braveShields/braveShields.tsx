@@ -3,79 +3,34 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-// import BraveShieldsHeader from './braveShieldsHeader'
-// import BraveShieldsStats from './braveShieldsStats'
-// import BraveShieldsControls from './braveShieldsControls'
-// import BraveShieldsFooter from './braveShieldsFooter'
+import { ShieldsPanel } from 'brave-ui/features/shields'
+import ShieldsHeader from './header'
+import ShieldsFooter from './footer'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { Tab } from '../../types/state/shieldsPannelState'
 
-interface BraveShieldsProps {
+interface Props {
   actions: {
     shieldsToggled: shieldActions.ShieldsToggled
-    blockAdsTrackers: shieldActions.BlockAdsTrackers
-    controlsToggled: shieldActions.ControlsToggled
-    httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
-    javascriptToggled: shieldActions.JavascriptToggled
-    blockFingerprinting: shieldActions.BlockFingerprinting
-    blockCookies: shieldActions.BlockCookies
-    allowScriptOriginsOnce: shieldActions.AllowScriptOriginsOnce
-    changeNoScriptSettings: shieldActions.ChangeNoScriptSettings
   }
   shieldsPanelTabData: Tab
 }
 
-export default class BraveShields extends React.Component<BraveShieldsProps, {}> {
+export default class BraveShields extends React.Component<Props, {}> {
   render () {
-    const { shieldsPanelTabData /*, actions */ } = this.props
-
+    const { shieldsPanelTabData , actions } = this.props
     if (!shieldsPanelTabData) {
       return null
     }
 
     return (
-      <div data-test-id='brave-shields-panel'>
-        to-do
-        {/* <BraveShieldsHeader
-          braveShields={shieldsPanelTabData.braveShields}
+      <ShieldsPanel data-test-id='brave-shields-panel'>
+        <ShieldsHeader
+          tabData={shieldsPanelTabData}
           shieldsToggled={actions.shieldsToggled}
-          hostname={shieldsPanelTabData.hostname}
-          origin={shieldsPanelTabData.origin}
         />
-        <BraveShieldsStats
-          braveShields={shieldsPanelTabData.braveShields}
-          adsBlocked={shieldsPanelTabData.adsBlocked}
-          trackersBlocked={shieldsPanelTabData.trackersBlocked}
-          httpsRedirected={shieldsPanelTabData.httpsRedirected}
-          javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
-          fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
-          adsBlockedResources={shieldsPanelTabData.adsBlockedResources}
-          trackersBlockedResources={shieldsPanelTabData.trackersBlockedResources}
-          httpsRedirectedResources={shieldsPanelTabData.httpsRedirectedResources}
-          javascriptBlockedResources={shieldsPanelTabData.javascriptBlockedResources}
-          fingerprintingBlockedResources={shieldsPanelTabData.fingerprintingBlockedResources}
-        />
-        <BraveShieldsControls
-          braveShields={shieldsPanelTabData.braveShields}
-          blockAdsTrackers={actions.blockAdsTrackers}
-          ads={shieldsPanelTabData.ads}
-          trackers={shieldsPanelTabData.trackers}
-          httpUpgradableResources={shieldsPanelTabData.httpUpgradableResources}
-          javascript={shieldsPanelTabData.javascript}
-          controlsToggled={actions.controlsToggled}
-          httpsEverywhereToggled={actions.httpsEverywhereToggled}
-          javascriptToggled={actions.javascriptToggled}
-          controlsOpen={shieldsPanelTabData.controlsOpen}
-          fingerprinting={shieldsPanelTabData.fingerprinting}
-          blockFingerprinting={actions.blockFingerprinting}
-          cookies={shieldsPanelTabData.cookies}
-          blockCookies={actions.blockCookies}
-          noScriptInfo={shieldsPanelTabData.noScriptInfo}
-          allowScriptOriginsOnce={actions.allowScriptOriginsOnce}
-          changeNoScriptSettings={actions.changeNoScriptSettings}
-        />
-        <BraveShieldsFooter tabId={shieldsPanelTabData.id} /> */}
-      </div>
+        <ShieldsFooter />
+      </ShieldsPanel>
     )
   }
 }

@@ -4,6 +4,10 @@
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
+
+import Theme from 'brave-ui/theme/brave-default'
+import { ThemeProvider } from 'brave-ui/theme'
+
 import { Provider } from 'react-redux'
 import { Store } from 'react-chrome-redux'
 import BraveShields from './containers/braveShields'
@@ -20,7 +24,9 @@ chrome.storage.local.get('state', (obj) => {
       const mountNode: HTMLElement | null = document.querySelector('#root')
       ReactDOM.render(
         <Provider store={store}>
-          <BraveShields />
+          <ThemeProvider theme={Theme}>
+            <BraveShields />
+          </ThemeProvider>
         </Provider>,
         mountNode
       )
