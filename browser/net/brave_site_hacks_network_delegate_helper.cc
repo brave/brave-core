@@ -54,8 +54,10 @@ int OnBeforeURLRequest_SiteHacksWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
 
-  if (ApplyPotentialReferrerBlock(ctx->request))
+  if (ApplyPotentialReferrerBlock(ctx->request)) {
     ctx->new_url_spec = ctx->request_url.spec();
+    ctx->referrer_changed = true;
+  }
 
   return net::OK;
 }
