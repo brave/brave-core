@@ -32,6 +32,40 @@
       ],
       "run_at": "document_start",
       "all_frames": true
+    }, {
+      "run_at": "document_start",
+      "all_frames": true,
+      "matches": [
+        "https://www.washingtonpost.com/*",
+        "https://www.youtube.com/*",
+        "https://www.yahoo.com/*"
+      ],
+      "css": [
+        "removeEmptyElements.css"
+      ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": true,
+      "matches": [
+        "https://coinmarketcap.com/*"
+      ],
+      "css": [
+        "siteHack-coinmarketcap.com.css"
+      ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": true,
+      "matches": ["https://www.marketwatch.com/*"],
+      "css": [
+        "siteHack-marketwatch.com.css"
+      ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": true,
+      "matches": ["https://www.glennbeck.com/*"],
+      "js": [
+        "siteHack-glennbeck.com.js"
+      ]
     }
   ],
   "permissions": [ "contentSettings", "management", "tabs", "storage", "webNavigation", "contextMenus", "cookies", "*://*/*" ],
