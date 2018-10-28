@@ -53,6 +53,7 @@ struct BraveRequestInfo {
   bool allow_brave_shields = true;
   bool allow_ads = false;
   bool allow_http_upgradable_resource = false;
+  bool referrer_changed = false;
   int render_process_id = 0;
   int render_frame_id = 0;
   int frame_tree_node_id = 0;
