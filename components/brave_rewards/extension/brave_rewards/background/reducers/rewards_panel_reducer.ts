@@ -153,7 +153,10 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           return
         }
 
-        const id = payload.id
+        let id = payload.id
+        if (id.startsWith('n_')) {
+          id = id.toString().replace('n_', '')
+        }
         let notifications: Record<number, RewardsExtension.Notification> = state.notifications
         delete notifications[id]
 
