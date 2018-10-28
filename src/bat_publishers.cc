@@ -109,7 +109,7 @@ void BatPublishers::saveVisit(const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       visit_data.local_month,
       visit_data.local_year,
-      ledger::PUBLISHER_EXCLUDE::ALL,
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
       ledger_->GetReconcileStamp());
 
@@ -133,7 +133,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
                                category,
                                month,
                                year,
-                               ledger::PUBLISHER_EXCLUDE::ALL,
+                               ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
                                true,
                                0);
 }
@@ -143,7 +143,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
     ledger::PUBLISHER_CATEGORY category,
     ledger::PUBLISHER_MONTH month,
     int year,
-    ledger::PUBLISHER_EXCLUDE excluded) {
+    ledger::PUBLISHER_EXCLUDE_FILTER excluded) {
   return CreatePublisherFilter(publisher_id,
                                category,
                                month,
@@ -163,7 +163,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
                                category,
                                month,
                                year,
-                               ledger::PUBLISHER_EXCLUDE::ALL,
+                               ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
                                min_duration,
                                0);
 }
@@ -173,7 +173,7 @@ ledger::PublisherInfoFilter BatPublishers::CreatePublisherFilter(
     ledger::PUBLISHER_CATEGORY category,
     ledger::PUBLISHER_MONTH month,
     int year,
-    ledger::PUBLISHER_EXCLUDE excluded,
+    ledger::PUBLISHER_EXCLUDE_FILTER excluded,
     bool min_duration,
     const uint64_t& currentReconcileStamp) {
   ledger::PublisherInfoFilter filter;
@@ -291,7 +291,7 @@ void BatPublishers::setExclude(const std::string& publisher_id, const ledger::PU
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
       -1,
-      ledger::PUBLISHER_EXCLUDE::ALL,
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
       currentReconcileStamp);
     ledger_->GetPublisherInfo(filter, std::bind(&BatPublishers::onSetExcludeInternal,
@@ -305,7 +305,7 @@ void BatPublishers::setPanelExclude(const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
       -1,
-      ledger::PUBLISHER_EXCLUDE::ALL,
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
       currentReconcileStamp);
     ledger_->GetPublisherInfo(filter, std::bind(
@@ -337,8 +337,17 @@ void BatPublishers::onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
   setNumExcludedSitesInternal(exclude);
 
   ledger_->SetPublisherInfo(std::move(publisher_info),
-      std::bind(&onVisitSavedDummy, _1, _2));
+    std::bind(&BatPublishers::onSetPublisherInfo, this, _1, _2));
+
   OnExcludedSitesChanged();
+}
+
+void BatPublishers::onSetPublisherInfo(ledger::Result result,
+  std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+  if (result != ledger::Result::LEDGER_OK) {
+    return;
+  }
+  synopsisNormalizer(*publisher_info);
 }
 
 void BatPublishers::onSetPanelExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
@@ -378,7 +387,7 @@ void BatPublishers::restorePublishers() {
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       ledger::PUBLISHER_MONTH::ANY,
       -1,
-      ledger::PUBLISHER_EXCLUDE::EXCLUDED,
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_EXCLUDED,
       false,
       currentReconcileStamp);
   ledger_->GetPublisherInfoList(0, 0, filter, std::bind(&BatPublishers::onRestorePublishersInternal,
@@ -548,7 +557,7 @@ void BatPublishers::synopsisNormalizer(const ledger::PublisherInfo& info) {
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       info.month,
       info.year,
-      ledger::PUBLISHER_EXCLUDE::DEFAULT,
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       ledger_->GetReconcileStamp());
   // TODO SZ: We pull the whole list currently, I don't think it consumes lots of RAM, but could.
@@ -864,7 +873,7 @@ void BatPublishers::getPublisherActivityFromUrl(uint64_t windowId, const ledger:
         ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
         visit_data.local_month,
         visit_data.local_year,
-        ledger::PUBLISHER_EXCLUDE::ALL,
+        ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
         false,
         ledger_->GetReconcileStamp());
 

@@ -44,6 +44,14 @@ LEDGER_EXPORT enum PUBLISHER_EXCLUDE {
   INCLUDED = 2 // user manually changed it to include and is overriding server flags
 };
 
+LEDGER_EXPORT enum PUBLISHER_EXCLUDE_FILTER {
+  FILTER_ALL = -1,
+  FILTER_DEFAULT = 0,
+  FILTER_EXCLUDED = 1,
+  FILTER_INCLUDED = 2,
+  FILTER_ALL_EXCEPT_EXCLUDED = 3
+};
+
 LEDGER_EXPORT struct PublisherInfoFilter {
   PublisherInfoFilter();
   PublisherInfoFilter(const PublisherInfoFilter& filter);
@@ -53,7 +61,7 @@ LEDGER_EXPORT struct PublisherInfoFilter {
   int category;
   PUBLISHER_MONTH month;
   int year;
-  PUBLISHER_EXCLUDE excluded;
+  PUBLISHER_EXCLUDE_FILTER excluded;
   std::vector<std::pair<std::string, bool>> order_by;
   unsigned int min_duration;
   uint64_t reconcile_stamp;
