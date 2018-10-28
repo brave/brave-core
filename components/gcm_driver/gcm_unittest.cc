@@ -37,6 +37,7 @@
 #include "net/url_request/url_fetcher_delegate.h"
 #include "net/url_request/url_request_test_util.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_network_connection_tracker.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest-spi.h"
@@ -168,7 +169,8 @@ class FakeGCMInternalsBuilder : public GCMInternalsBuilder {
       base::RepeatingCallback<
           void(network::mojom::ProxyResolvingSocketFactoryRequest)>
           get_socket_factory_callback,
-      GCMStatsRecorder* recorder) override;
+      GCMStatsRecorder* recorder,
+      network::NetworkConnectionTracker* network_connection_tracker) override;
 
  private:
   AutoAdvancingTestClock clock_;
@@ -199,8 +201,9 @@ FakeGCMInternalsBuilder::BuildConnectionFactory(
     const net::BackoffEntry::Policy& backoff_policy,
     base::RepeatingCallback<
         void(network::mojom::ProxyResolvingSocketFactoryRequest)>
-        get_socket_factory_callback,
-    GCMStatsRecorder* recorder) {
+            get_socket_factory_callback,
+    GCMStatsRecorder* recorder,
+    network::NetworkConnectionTracker* network_connection_tracker) {
   return base::WrapUnique<ConnectionFactory>(new FakeConnectionFactory());
 }
 
@@ -433,6 +436,7 @@ void GCMClientImplTest::InitializeGCMClient() {
       chrome_build_info, gcm_store_path(), task_runner_, base::DoNothing(),
       base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
           &test_url_loader_factory_),
+      network::TestNetworkConnectionTracker::GetInstance(),
       base::WrapUnique<Encryptor>(new FakeEncryptor), this);
 }
 
