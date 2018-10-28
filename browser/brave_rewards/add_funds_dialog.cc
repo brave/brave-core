@@ -11,10 +11,13 @@
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/views/extensions/extension_dialog.h"
 #include "chrome/browser/ui/webui/chrome_web_contents_handler.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/guest_view/browser/guest_view_base.h"
@@ -39,6 +42,30 @@ const std::map<std::string, std::string> kCurrencyToNetworkMap {
   {"ETH", "ethereum"},
   {"LTC", "litecoin"}
 };
+
+std::string GetAddressesAsJSON(
+  const std::map<std::string, std::string>& addresses) {
+  // Create a dictionary of addresses for serialization.
+  auto addresses_dictionary = std::make_unique<base::DictionaryValue>();
+  for (const auto& pair : addresses) {
+    auto address = std::make_unique<base::DictionaryValue>();
+    address->SetString("address", pair.second);
+    address->SetString("currency", pair.first);
+    DCHECK(kCurrencyToNetworkMap.count(pair.first));
+    address->SetString("network", kCurrencyToNetworkMap.at(pair.first));
+    addresses_dictionary->SetDictionary(pair.first, std::move(address));
+  }
+
+  std::string data;
+  base::JSONWriter::Write(*addresses_dictionary, &data);
+  return data;
+}
+
+std::string ToQueryString(const std::string& data) {
+  std::string query_string_value;
+  base::Base64Encode(data, &query_string_value);
+  return ("addresses=" + net::EscapeUrlEncodedData(query_string_value, false));
+}
 
 // A ui::WebDialogDelegate that specifies the AddFunds dialog appearance.
 class AddFundsDialogDelegate : public ui::WebDialogDelegate {
@@ -87,10 +114,8 @@ base::string16 AddFundsDialogDelegate::GetDialogTitle() const {
 }
 
 GURL AddFundsDialogDelegate::GetDialogContentURL() const {
-  std::string data = GetDialogArgs();
-  base::Base64Encode(data, &data);
-  return GURL("https://uphold-widget-uhocggaamg.now.sh/index.html?q=" +
-              net::EscapeUrlEncodedData(data, false));
+  return GURL("https://uphold-widget-uhocggaamg.now.sh/index.html?" +
+              ToQueryString(GetAddressesAsJSON(addresses_)));
 }
 
 void AddFundsDialogDelegate::GetWebUIMessageHandlers(
@@ -130,25 +155,7 @@ void AddFundsDialogDelegate::GetDialogSize(gfx::Size* size) const {
 }
 
 std::string AddFundsDialogDelegate::GetDialogArgs() const {
-  // Create a list of addresses for serialization.
-  auto addresses = std::make_unique<base::DictionaryValue>();
-  for (const auto& pair : addresses_) {
-    auto address = std::make_unique<base::DictionaryValue>();
-    address->SetString("address", pair.second);
-    address->SetString("currency", pair.first);
-    DCHECK(kCurrencyToNetworkMap.count(pair.first));
-    address->SetString("network", kCurrencyToNetworkMap.at(pair.first));
-    addresses->SetDictionary(pair.first, std::move(address));
-  }
-
-  // Add addresses to the args dictionary.
-  base::DictionaryValue dialog_args;
-  dialog_args.SetDictionary("addresses", std::move(addresses));
-
-  // Serialize args.
-  std::string data;
-  base::JSONWriter::Write(dialog_args, &data);
-  return data;
+  return GetAddressesAsJSON(addresses_);
 }
 
 void AddFundsDialogDelegate::OnDialogClosed(
@@ -169,15 +176,19 @@ bool AddFundsDialogDelegate::HandleContextMenu(
   return true;
 }
 
+gfx::Size GetHostSize(WebContents* web_contents) {
+  content::WebContents* outermost_web_contents =
+      guest_view::GuestViewBase::GetTopLevelWebContents(web_contents);
+  return outermost_web_contents->GetContainerBounds().size();
+}
+
 }  // namespace
 
 namespace brave_rewards {
 
 void OpenAddFundsDialog(WebContents* initiator,
                         const std::map<std::string, std::string>& addresses) {
-  content::WebContents* outermost_web_contents =
-      guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
-  gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();
+  gfx::Size host_size = GetHostSize(initiator);
   const int width = host_size.width() - kDialogMargin;
   gfx::Size min_size(width, kDialogMinHeight);
   gfx::Size max_size(width, kDialogMaxHeight);
@@ -186,6 +197,32 @@ void OpenAddFundsDialog(WebContents* initiator,
       initiator->GetBrowserContext(),
       new AddFundsDialogDelegate(initiator, addresses), initiator, min_size,
       max_size);
+}
+
+void OpenAddFundsExtensionDialog(
+  gfx::NativeWindow parent_window,
+  Profile* profile,
+  content::WebContents* initiator,
+  const std::map<std::string, std::string>& addresses) {
+  gfx::Size host_size = GetHostSize(initiator);
+  std::string url = std::string("chrome-extension://") +
+                    brave_rewards_extension_id +
+                    "/brave_rewards_add_funds.html?" +
+                    ToQueryString(GetAddressesAsJSON(addresses));
+  GURL gurl(url);
+  const int width = host_size.width() - kDialogMargin - 100;
+  const int height = host_size.height() - kDialogMargin - 100;
+  /*ExtensionDialog* dialog = */ ExtensionDialog::Show(
+      gurl,
+      parent_window,
+      profile,
+      initiator,
+      width,
+      height,
+      width,
+      kDialogMinHeight,
+      L"Bave Rewards",
+      NULL);
 }
 
 }  // namespace brave_rewards
