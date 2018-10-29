@@ -6,6 +6,7 @@
 
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
+#include "brave/browser/net/cookie_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
@@ -56,6 +57,14 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
       base::Bind(
           webtorrent::OnHeadersReceived_TorrentRedirectWork);
   headers_received_callbacks_.push_back(headers_received_callback);
+
+  brave::OnCanGetCookiesCallback get_cookies_callback =
+      base::Bind(brave::OnCanGetCookiesForBraveShields);
+  can_get_cookies_callbacks_.push_back(get_cookies_callback);
+
+  brave::OnCanSetCookiesCallback set_cookies_callback =
+      base::Bind(brave::OnCanSetCookiesForBraveShields);
+  can_set_cookies_callbacks_.push_back(set_cookies_callback);
 }
 
 BraveProfileNetworkDelegate::~BraveProfileNetworkDelegate() {

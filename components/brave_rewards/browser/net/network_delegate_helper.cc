@@ -51,7 +51,7 @@ bool GetPostData(const net::URLRequest* request, std::string* post_data) {
   return true;
 }
 
-void GetRenderFrameInfo(net::URLRequest* request,
+void GetRenderFrameInfo(const net::URLRequest* request,
                         int* render_frame_id,
                         int* render_process_id,
                         int* frame_tree_node_id) {

@@ -19,7 +19,7 @@ BraveRequestInfo::BraveRequestInfo() {
 BraveRequestInfo::~BraveRequestInfo() {
 }
 
-void BraveRequestInfo::FillCTXFromRequest(net::URLRequest* request,
+void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   ctx->request_identifier = request->identifier();
   ctx->request_url = request->url();
@@ -39,6 +39,12 @@ void BraveRequestInfo::FillCTXFromRequest(net::URLRequest* request,
   ctx->allow_http_upgradable_resource = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kHTTPUpgradableResources);
+  ctx->allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
+      request, ctx->tab_origin, GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kCookies);
+  ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingFromIO(
+      request, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kCookies);
   ctx->request = request;
 }
 
