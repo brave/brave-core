@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Otevřít složku stažených souborů</translation>
 <translation id="2902312830803030883">Další akce</translation>
 <translation id="3612673635130633812">Staženo pomocí rozšíření &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Staženo v anonymním režimu</translation>
+<translation id="6395403722585816044">Staženo v anonymním režimu</translation>
 <translation id="8028803902702117856">Stahování souboru <ph name="FILE_NAME"/> – <ph name="SIZE"/></translation>
 <translation id="4644818355646995778">Stahování: <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Stahování: <ph name="STATUS"/></translation>
@@ -607,7 +607,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5939518447894949180">Resetovat</translation>
 <translation id="5546865291508181392">Najít</translation>
 <translation id="833986336429795709">Chcete-li otevřít tento odkaz, vyberte aplikaci</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Anonymní režim)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Anonymní režim)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (K dispozici je aktualizace)</translation>
 <translation id="8525306231823319788">Celá obrazovka</translation>
@@ -635,10 +635,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3429275422858276529">Přidejte si tuto stránku do záložek, abyste ji později snáze našli</translation>
 <translation id="3603533104205588786">Stránku přidáte do záložek kliknutím na hvězdičku</translation>
 <translation id="6613452264606394692">Přidejte si stránku do záložek, abyste sem mohli rychle přejít</translation>
-<translation id="8286963743045814739">V anonymním okně můžete web procházet v soukromí.</translation>
-<translation id="1211364473545090084">Pomocí anonymního okna můžete web používat bez ukládání historie procházení</translation>
-<translation id="6080515710685820702">Používáte sdílený počítač? Zkuste si otevřít anonymní okno.</translation>
-<translation id="7059893117020417984">Chcete-li web procházet v soukromí, klikněte na ikonu se třemi tečkami a otevřete anonymní okno.</translation>
+<translation id="4369414322596874629">V anonymním okně můžete web procházet v soukromí.</translation>
+<translation id="3772947852642271642">Pomocí anonymního okna můžete web používat bez ukládání historie procházení</translation>
+<translation id="3871738366246972820">Používáte sdílený počítač? Zkuste si otevřít anonymní okno.</translation>
+<translation id="5808622652939943719">Chcete-li web procházet v soukromí, klikněte na ikonu se třemi tečkami a otevřete anonymní okno.</translation>
 <translation id="8803953437405899238">Otevírejte novou kartu jedním kliknutím</translation>
 <translation id="3071624960923923138">Kliknutím sem otevřete novou kartu</translation>
 <translation id="4908811072292128752">Otevřete novou kartu a prohlížejte dvě webové stránky naráz</translation>
@@ -1130,13 +1130,13 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2367972762794486313">Zobrazit aplikace</translation>
 <translation id="6466988389784393586">&amp;Otevřít všechny záložky</translation>
 <translation id="6804671422566312077">Otevřít všechny záložky v &amp;novém okně</translation>
-<translation id="3011362742078013760">Otevřít všechny záložky v &amp;anonymním okně</translation>
+<translation id="2692771564633877898">Otevřít všechny záložky v &amp;anonymním okně</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Otevřít vše}=1{&amp;Otevřít záložku}few{&amp;Otevřít vše (#)}many{&amp;Otevřít vše (#)}other{&amp;Otevřít vše (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Otevřít vše v &amp;novém okně}=1{Otevřít v &amp;novém okně}few{Otevřít vše (#) v &amp;novém okně}many{Otevřít vše (#) v &amp;novém okně}other{Otevřít vše (#) v &amp;novém okně}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Otevřít vše v &amp;anonymním okně}=1{Otevřít v &amp;anonymním okně}few{Otevřít vše (#) v &amp;anonymním okně}many{Otevřít vše (#) v &amp;anonymním okně}other{Otevřít vše (#) v &amp;anonymním okně}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Otevřít vše v &amp;anonymním okně}=1{Otevřít v &amp;anonymním okně}few{Otevřít vše (#) v &amp;anonymním okně}many{Otevřít vše (#) v &amp;anonymním okně}other{Otevřít vše (#) v &amp;anonymním okně}}</translation>
 <translation id="9024127637873500333">&amp;Otevřít v nové kartě</translation>
 <translation id="665061930738760572">Otevřít v &amp;novém okně</translation>
-<translation id="37613671848467444">Otevřít v &amp;anonymním okně</translation>
+<translation id="1985165269306590797">Otevřít v &amp;anonymním okně</translation>
 <translation id="6702639462873609204">&amp;Upravit...</translation>
 <translation id="3088325635286126843">&amp;Přejmenovat...</translation>
 <translation id="5329858601952122676">&amp;Smazat</translation>
@@ -1187,10 +1187,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8457451314607652708">Import záložek</translation>
 <translation id="5101042277149003567">Otevřít všechny záložky</translation>
 <translation id="7007648447224463482">Otevřít vše v novém okně</translation>
-<translation id="4508051413094283164">Otevřít vše v anonymním okně</translation>
+<translation id="642436385689435488">Otevřít vše v anonymním okně</translation>
 <translation id="4195643157523330669">Otevřít na nové kartě</translation>
 <translation id="2979639724566107830">Otevřít v novém okně</translation>
-<translation id="1134009406053225289">Otevřít v anonymním okně</translation>
+<translation id="5463021359602611602">Otevřít v anonymním okně</translation>
 <translation id="1173894706177603556">Přejmenovat</translation>
 <translation id="5170568018924773124">Zobrazit ve složce</translation>
 <translation id="6825184156888454064">Seřadit podle názvu</translation>
@@ -1278,7 +1278,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4159681666905192102">Toto je dětský účet spravovaný uživateli <ph name="CUSTODIAN_EMAIL"/> a <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Dozorovaný uživatel</translation>
 <translation id="5720705177508910913">Aktuální uživatel</translation>
-<translation id="7081952801286122383">Jste v anonymním režimu</translation>
+<translation id="5070556616376997776">Jste v anonymním režimu</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Synchronizace nefunguje</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: Synchronizace pozastavena</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (dozorovaný)</translation>
@@ -2539,9 +2539,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6782111308708962316">Zabránit webům třetích stran v ukládání a čtení dat souborů cookie</translation>
 <translation id="3378503599595235699">Uchovávat místní údaje jen do zavření prohlížeče</translation>
 <translation id="1274977772557788323">Nastavení úložiště přehrávače Adobe Flash Player</translation>
-<translation id="1698122934742150150">Pouze aktuální anonymní relace</translation>
-<translation id="5838456317242088717">Aktuální anonymní relace</translation>
-<translation id="2318923050469484167">Aktuální anonymní relace (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Pouze aktuální anonymní relace</translation>
+<translation id="3479035826743782247">Aktuální anonymní relace</translation>
+<translation id="4750220700975225">Aktuální anonymní relace (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Žádný web nemá nastaveno přiblížení či oddálení zobrazení</translation>
 <translation id="3566721612727112615">Nebyly přidány žádné weby</translation>
 <translation id="8098574385249290065">Nechat Brave zvolit, kdy weby mohou přehrávat zvuk (doporučeno)</translation>
@@ -2841,7 +2841,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="329838636886466101">Opravit</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Neaktivní)</translation>
-<translation id="1603914832182249871">(Anonymní režim)</translation>
+<translation id="3860292630623580294">(Anonymní režim)</translation>
 <translation id="6655190889273724601">Režim pro vývojáře</translation>
 <translation id="2868746137289129307">Toto rozšíření je zastaralé a je zakázáno podnikovou zásadou. Možná bude opět automaticky povoleno, až bude k dispozici novější verze.</translation>
 <translation id="6841186874966388268">Chyby</translation>
@@ -2862,7 +2862,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1805822111539868586">Zkontrolovat zobrazení</translation>
 <translation id="181577467034453336">Ještě <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">Žádná aktivní zobrazení</translation>
-<translation id="5488468185303821006">Povolit v anonymním režimu</translation>
+<translation id="4854477725773269949">Povolit v anonymním režimu</translation>
 <translation id="6124650939968185064">Na tomto rozšíření závisejí následující rozšíření:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Souvisí s: <ph name="NAME_PH"/></translation>
@@ -2956,10 +2956,8 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6041155700700864984">Ukončit režim celé obrazovky</translation>
 <translation id="6112294629795967147">Klepnutím změníte velikost</translation>
 <translation id="2453860139492968684">Dokončit</translation>
-<translation id="1853692000353488670">Nová anonymní karta</translation>
 <translation id="6336451774241870485">Nová soukromá karta</translation>
-<translation id="5530766185686772672">Zavřít anonymní karty</translation>
 <translation id="6610147964972079463">Zavřít soukromé karty</translation>
 <translation id="8076492880354921740">Karty</translation>
-<translation id="1049743911850919806">Anonymní režim</translation>
+<translation id="5186185447130319458">Anonymní režim</translation>
 </translationbundle>

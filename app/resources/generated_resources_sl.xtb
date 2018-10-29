@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Odpiranje mape s prenosi</translation>
 <translation id="2902312830803030883">Več dejanj</translation>
 <translation id="3612673635130633812">Prenesla razširitev &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Preneseno v načinu brez beleženja zgodovine</translation>
+<translation id="6395403722585816044">Preneseno v načinu brez beleženja zgodovine</translation>
 <translation id="8028803902702117856">Prenašanje <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Prenašanje, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Prenašanje, <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="5939518447894949180">Ponastavi</translation>
 <translation id="5546865291508181392">Iskanje</translation>
 <translation id="833986336429795709">Če želite odpreti to povezavo, izberite aplikacijo</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (način brez beleženja zgodovine)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (način brez beleženja zgodovine)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (posodobitev je na voljo)</translation>
 <translation id="8525306231823319788">Celozaslonsko</translation>
@@ -637,10 +637,10 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3429275422858276529">Dodajte to stran med zaznamke, da jo boste pozneje hitreje našli</translation>
 <translation id="3603533104205588786">Če želite dodati stran med zaznamke, lahko kliknete zvezdico</translation>
 <translation id="6613452264606394692">Hitro se vrnite na to stran tako, da jo dodate med zaznamke</translation>
-<translation id="8286963743045814739">Z oknom brez beleženja zgodovine lahko zasebno brskate</translation>
-<translation id="1211364473545090084">Uporabljajte splet brez shranjevanja zgodovine brskanja z oknom brez beleženja zgodovine</translation>
-<translation id="6080515710685820702">Uporabljate računalnik v skupni rabi? Poskusite odpreti okno brez beleženja zgodovine.</translation>
-<translation id="7059893117020417984">Če želite brskati zasebno, kliknite meni z ikono pik, da odprete okno brez beleženja zgodovine</translation>
+<translation id="4369414322596874629">Z oknom brez beleženja zgodovine lahko zasebno brskate</translation>
+<translation id="3772947852642271642">Uporabljajte splet brez shranjevanja zgodovine brskanja z oknom brez beleženja zgodovine</translation>
+<translation id="3871738366246972820">Uporabljate računalnik v skupni rabi? Poskusite odpreti okno brez beleženja zgodovine.</translation>
+<translation id="5808622652939943719">Če želite brskati zasebno, kliknite meni z ikono pik, da odprete okno brez beleženja zgodovine</translation>
 <translation id="8803953437405899238">Odpiranje novega zavihka z enim klikom</translation>
 <translation id="3071624960923923138">Če želite odpreti nov zavihek, lahko kliknete tukaj</translation>
 <translation id="4908811072292128752">Odprite nov zavihek, če želite brskati na dveh spletnih mestih hkrati</translation>
@@ -1132,13 +1132,13 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="2367972762794486313">Pokaži aplikacije</translation>
 <translation id="6466988389784393586">&amp;Odpri vse zaznamke</translation>
 <translation id="6804671422566312077">Vse zaznamke odpri v &amp;novem oknu</translation>
-<translation id="3011362742078013760">Vse zaznamke odpri v &amp;oknu brez beleženja zgodovine</translation>
+<translation id="2692771564633877898">Vse zaznamke odpri v &amp;oknu brez beleženja zgodovine</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Odpiranje vseh}=1{&amp;Odpiranje zaznamka}one{&amp;Odpiranje vseh (#)}two{&amp;Odpiranje vseh (#)}few{&amp;Odpiranje vseh (#)}other{&amp;Odpiranje vseh (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Odpiranje vseh v &amp;novem oknu}=1{Odpiranje v &amp;novem oknu}one{Odpiranje vseh (#) v &amp;novem oknu}two{Odpiranje vseh (#) v &amp;novem oknu}few{Odpiranje vseh (#) v &amp;novem oknu}other{Odpiranje vseh (#) v &amp;novem oknu}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Odpiranje vseh v &amp;oknu brez beleženja zgodovine}=1{Odpiranje v &amp;oknu brez beleženja zgodovine}one{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}two{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}few{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}other{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Odpiranje vseh v &amp;oknu brez beleženja zgodovine}=1{Odpiranje v &amp;oknu brez beleženja zgodovine}one{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}two{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}few{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}other{Odpiranje vseh (#) v &amp;oknu brez beleženja zgodovine}}</translation>
 <translation id="9024127637873500333">&amp;Odpri v novem zavihku</translation>
 <translation id="665061930738760572">Odpri v &amp;novem oknu</translation>
-<translation id="37613671848467444">Odpri v oknu &amp;brez beleženja zgodovine</translation>
+<translation id="1985165269306590797">Odpri v oknu &amp;brez beleženja zgodovine</translation>
 <translation id="6702639462873609204">&amp;Uredi ...</translation>
 <translation id="3088325635286126843">&amp;Preimenuj ...</translation>
 <translation id="5329858601952122676">&amp;Izbriši</translation>
@@ -1189,10 +1189,10 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="8457451314607652708">Uvozi zaznamke</translation>
 <translation id="5101042277149003567">Odpri vse zaznamke</translation>
 <translation id="7007648447224463482">Odpri vse v novem oknu</translation>
-<translation id="4508051413094283164">Odpiranje vseh v oknu brez beleženja zgodovine</translation>
+<translation id="642436385689435488">Odpiranje vseh v oknu brez beleženja zgodovine</translation>
 <translation id="4195643157523330669">Odpri v novem zavihku</translation>
 <translation id="2979639724566107830">Odpri v novem oknu</translation>
-<translation id="1134009406053225289">Odpri v oknu brez beleženja zgodovine</translation>
+<translation id="5463021359602611602">Odpri v oknu brez beleženja zgodovine</translation>
 <translation id="1173894706177603556">Preimenuj</translation>
 <translation id="5170568018924773124">Prikaži v mapi</translation>
 <translation id="6825184156888454064">Razvrščanje po imenu</translation>
@@ -1280,7 +1280,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="4159681666905192102">To je račun za otroke, ki ga upravljata <ph name="CUSTODIAN_EMAIL"/> in <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Zaščiteni uporabnik</translation>
 <translation id="5720705177508910913">Trenutni uporabnik</translation>
-<translation id="7081952801286122383">Ste v načinu brez beleženja zgodovine</translation>
+<translation id="5070556616376997776">Ste v načinu brez beleženja zgodovine</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: sinhronizacija ne deluje</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: sinhronizacija je zaustavljena</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (Zaščiten)</translation>
@@ -2542,9 +2542,9 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6782111308708962316">Drugim spletnim mestom prepreči shranjevanje in branje podatkov piškotkov</translation>
 <translation id="3378503599595235699">Ohrani lokalne podatke le do zaprtja brskalnika</translation>
 <translation id="1274977772557788323">Nastavitve shranjevanja za Adobe Flash Player</translation>
-<translation id="1698122934742150150">Samo za trenutno sejo brez beleženja zgodovine</translation>
-<translation id="5838456317242088717">Trenutna seja brez beleženja zgodovine</translation>
-<translation id="2318923050469484167">Trenutna seja brez beleženja zgodovine (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Samo za trenutno sejo brez beleženja zgodovine</translation>
+<translation id="3479035826743782247">Trenutna seja brez beleženja zgodovine</translation>
+<translation id="4750220700975225">Trenutna seja brez beleženja zgodovine (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nobeno spletno mesto ni povečano ali pomanjšano</translation>
 <translation id="3566721612727112615">Dodano ni bilo nobeno spletno mesto</translation>
 <translation id="8098574385249290065">Naj Brave izbere, kdaj lahko spletna mesta predvajajo zvok (priporočeno)</translation>
@@ -2844,7 +2844,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="329838636886466101">Popravi</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Neaktivno)</translation>
-<translation id="1603914832182249871">(Način brez beleženja zgodovine)</translation>
+<translation id="3860292630623580294">(Način brez beleženja zgodovine)</translation>
 <translation id="6655190889273724601">Način za razvijalce</translation>
 <translation id="2868746137289129307">Ta razširitev je zastarela in jo je onemogočil pravilnik podjetja. Ko bo na voljo novejša različica, bo morda samodejno omogočena.</translation>
 <translation id="6841186874966388268">Napake</translation>
@@ -2865,7 +2865,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="1805822111539868586">Pregled pogledov</translation>
 <translation id="181577467034453336">Še <ph name="NUMBER_OF_VIEWS"/> ...</translation>
 <translation id="2450849356604136918">Ni aktivnih pogledov</translation>
-<translation id="5488468185303821006">Omogoči v načinu brez beleženja zgodovine</translation>
+<translation id="4854477725773269949">Omogoči v načinu brez beleženja zgodovine</translation>
 <translation id="6124650939968185064">Od te razširitve so odvisne naslednje razširitve:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Sorodno z <ph name="NAME_PH"/></translation>
@@ -2959,10 +2959,8 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6041155700700864984">Zapri celozaslonski način</translation>
 <translation id="6112294629795967147">Dotaknite se za spreminjanje velikosti</translation>
 <translation id="2453860139492968684">Dokončaj</translation>
-<translation id="1853692000353488670">Nov zavihek brez beleženja zgodovine</translation>
 <translation id="6336451774241870485">Novi zasebni zavihek</translation>
-<translation id="5530766185686772672">Zapri zavih. brez bel. zgo.</translation>
 <translation id="6610147964972079463">Zapri zasebne zavihke</translation>
 <translation id="8076492880354921740">Zavihki</translation>
-<translation id="1049743911850919806">Način brez beleženja zgodovine</translation>
+<translation id="5186185447130319458">Način brez beleženja zgodovine</translation>
 </translationbundle>

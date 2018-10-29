@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Ava allalaaditud failide kaust</translation>
 <translation id="2902312830803030883">Veel toiminguid</translation>
 <translation id="3612673635130633812">Laadis alla &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Alla laaditud inkognito režiimis</translation>
+<translation id="6395403722585816044">Alla laaditud inkognito režiimis</translation>
 <translation id="8028803902702117856">Allalaadimine: <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Allalaadimine, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Allalaadimine, <ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="5939518447894949180">Lähtesta</translation>
 <translation id="5546865291508181392">Otsi</translation>
 <translation id="833986336429795709">Valige lingi avamiseks rakendus</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (värskendus on saadaval)</translation>
 <translation id="8525306231823319788">Täisekraan</translation>
@@ -636,10 +636,10 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="3429275422858276529">Lisage see leht järjehoidjatesse, et see hiljem hõlpsalt üles leida</translation>
 <translation id="3603533104205588786">Lehe järjehoidjatesse lisamiseks klõpsake tärnil</translation>
 <translation id="6613452264606394692">Naaske siia kiiresti, lisades selle lehe järjehoidjatesse</translation>
-<translation id="8286963743045814739">Inkognito aknas saab privaatselt sirvida</translation>
-<translation id="1211364473545090084">Inkognito aknas kasutate veebi ilma sirvimisajalugu salvestamata</translation>
-<translation id="6080515710685820702">Kas kasutate jagatud arvutit? Proovige avada inkognito aken.</translation>
-<translation id="7059893117020417984">Privaatselt sirvimiseks klõpsake punktidega menüüikoonil, et avada inkognito aken</translation>
+<translation id="4369414322596874629">Inkognito aknas saab privaatselt sirvida</translation>
+<translation id="3772947852642271642">Inkognito aknas kasutate veebi ilma sirvimisajalugu salvestamata</translation>
+<translation id="3871738366246972820">Kas kasutate jagatud arvutit? Proovige avada inkognito aken.</translation>
+<translation id="5808622652939943719">Privaatselt sirvimiseks klõpsake punktidega menüüikoonil, et avada inkognito aken</translation>
 <translation id="8803953437405899238">Avage uus vaheleht vaid ühe klikiga</translation>
 <translation id="3071624960923923138">Uue vahelehe avamiseks võite klõpsata siin</translation>
 <translation id="4908811072292128752">Avage uus vaheleht, et kahte saiti korraga sirvida</translation>
@@ -1131,13 +1131,13 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="2367972762794486313">Rakenduste kuvamine</translation>
 <translation id="6466988389784393586">&amp;Ava kõik järjehoidjad</translation>
 <translation id="6804671422566312077">Ava kõik järjehoidjad &amp;uues aknas</translation>
-<translation id="3011362742078013760">Ava kõik järjehoidjad &amp;inkognito aknas</translation>
+<translation id="2692771564633877898">Ava kõik järjehoidjad &amp;inkognito aknas</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Ava kõik}=1{&amp;Ava järjehoidja}other{&amp;Ava kõik (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Ava kõik &amp;uues aknas}=1{Ava &amp;uues aknas}other{Ava kõik (#) &amp;uues aknas}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Ava kõik &amp;inkognito aknas}=1{Ava &amp;inkognito aknas}other{Ava kõik (#) &amp;inkognito aknas}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Ava kõik &amp;inkognito aknas}=1{Ava &amp;inkognito aknas}other{Ava kõik (#) &amp;inkognito aknas}}</translation>
 <translation id="9024127637873500333">&amp;Ava uuel vahelehel</translation>
 <translation id="665061930738760572">Ava &amp;uues aknas</translation>
-<translation id="37613671848467444">&amp;Ava inkognito aknas</translation>
+<translation id="1985165269306590797">&amp;Ava inkognito aknas</translation>
 <translation id="6702639462873609204">&amp;Muuda ...</translation>
 <translation id="3088325635286126843">&amp;Nimeta ümber ...</translation>
 <translation id="5329858601952122676">&amp;Kustuta</translation>
@@ -1188,10 +1188,10 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="8457451314607652708">Impordi järjehoidjad</translation>
 <translation id="5101042277149003567">Ava kõik järjehoidjad</translation>
 <translation id="7007648447224463482">Ava kõik uues aknas</translation>
-<translation id="4508051413094283164">Kõik avatakse inkognito aknas</translation>
+<translation id="642436385689435488">Kõik avatakse inkognito aknas</translation>
 <translation id="4195643157523330669">Ava uuel &amp;vahelehel</translation>
 <translation id="2979639724566107830">Ava uues aknas</translation>
-<translation id="1134009406053225289">Ava inkogonito aknas</translation>
+<translation id="5463021359602611602">Ava inkogonito aknas</translation>
 <translation id="1173894706177603556">Muuda nime</translation>
 <translation id="5170568018924773124">Kuva kaustas</translation>
 <translation id="6825184156888454064">Nime alusel sortimine</translation>
@@ -1280,7 +1280,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="4159681666905192102">Seda lastekontot haldavad <ph name="CUSTODIAN_EMAIL"/> ja <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Valvatav kasutaja</translation>
 <translation id="5720705177508910913">Praegune kasutaja</translation>
-<translation id="7081952801286122383">Olete inkognito režiimis</translation>
+<translation id="5070556616376997776">Olete inkognito režiimis</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: sünkroonimine ei tööta</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: sünkroonimine on peatatud</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (jälgitav)</translation>
@@ -2542,9 +2542,9 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6782111308708962316">Keela kolmanda osapoole veebisaitidele küpsisefailide andmete salvestamine ja lugemine</translation>
 <translation id="3378503599595235699">Säilita kohalikud andmed vaid brauseri sulgemiseni</translation>
 <translation id="1274977772557788323">Adobe Flash Playeri salvestusruumi seaded</translation>
-<translation id="1698122934742150150">Ainult praegune inkognito seanss</translation>
-<translation id="5838456317242088717">Praegune inkognito seanss</translation>
-<translation id="2318923050469484167">Praegune inkognito seanss (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Ainult praegune inkognito seanss</translation>
+<translation id="3479035826743782247">Praegune inkognito seanss</translation>
+<translation id="4750220700975225">Praegune inkognito seanss (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Ühtegi saiti pole sisse ega välja suumitud</translation>
 <translation id="3566721612727112615">Ühtegi saiti ei lisatud</translation>
 <translation id="8098574385249290065">Luba Brave'il valida, millal saidid võivad heli esitada (soovitatav)</translation>
@@ -2844,7 +2844,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="329838636886466101">Paranda</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Passiivne)</translation>
-<translation id="1603914832182249871">(Inkognito)</translation>
+<translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="6655190889273724601">Arendaja režiim</translation>
 <translation id="2868746137289129307">See laiendus on aegunud ja ettevõtte reeglitega keelatud. Kui uuem versioon muutub kättesaadavaks, siis võidakse see automaatselt lubada.</translation>
 <translation id="6841186874966388268">Vead</translation>
@@ -2865,7 +2865,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="1805822111539868586">Uurige vaatamisi</translation>
 <translation id="181577467034453336">Veel <ph name="NUMBER_OF_VIEWS"/> …</translation>
 <translation id="2450849356604136918">Aktiivsed kuvad puuduvad</translation>
-<translation id="5488468185303821006">Luba inkognito-režiimis</translation>
+<translation id="4854477725773269949">Luba inkognito-režiimis</translation>
 <translation id="6124650939968185064">Sellest laiendusest sõltuvad järgmised laiendused:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Seotud üksusega <ph name="NAME_PH"/></translation>
@@ -2959,10 +2959,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6041155700700864984">Välju täisekraanilt</translation>
 <translation id="6112294629795967147">Puudutage suuruse muutmiseks</translation>
 <translation id="2453860139492968684">Valmis</translation>
-<translation id="1853692000353488670">Uus inkognito vaheleht</translation>
 <translation id="6336451774241870485">Uus privaatne vaheleht</translation>
-<translation id="5530766185686772672">Inkognito vahelehtede sulgemine</translation>
 <translation id="6610147964972079463">Sule privaatsed vahelehed</translation>
 <translation id="8076492880354921740">Vahelehed</translation>
-<translation id="1049743911850919806">Inkognito</translation>
+<translation id="5186185447130319458">Inkognito</translation>
 </translationbundle>

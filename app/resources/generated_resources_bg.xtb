@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Отваряне на папката за изтегляния</translation>
 <translation id="2902312830803030883">Още действия</translation>
 <translation id="3612673635130633812">Изтеглено от &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Изтеглено в режим „инкогнито“</translation>
+<translation id="6395403722585816044">Изтеглено в режим „инкогнито“</translation>
 <translation id="8028803902702117856">Изтеглят се <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Изтегля се, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Изтегля се, <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@
 <translation id="5939518447894949180">Нулиране</translation>
 <translation id="5546865291508181392">Търсене</translation>
 <translation id="833986336429795709">За да отворите тази връзка, изберете приложение</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Инкогнито)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Инкогнито)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Налице е актуализация)</translation>
 <translation id="8525306231823319788">На цял екран</translation>
@@ -637,10 +637,10 @@
 <translation id="3429275422858276529">Запазете отметка към тази страница, за да я намирате лесно по-късно</translation>
 <translation id="3603533104205588786">Можете да кликнете върху иконата на звезда, за да запазите отметка към страница</translation>
 <translation id="6613452264606394692">Връщайте се тук бързо, като запазите отметка към тази страница</translation>
-<translation id="8286963743045814739">Можете да сърфирате частно посредством прозорец в режим „инкогнито“</translation>
-<translation id="1211364473545090084">Отворете прозорец в режим „инкогнито“, за да използвате мрежата, без да се запазва история на сърфирането ви</translation>
-<translation id="6080515710685820702">Използвате общ компютър? Отворете прозорец в режим „инкогнито“.</translation>
-<translation id="7059893117020417984">За да сърфирате частно, кликнете върху иконата с точки и отворете прозорец в режим „инкогнито“ от менюто</translation>
+<translation id="4369414322596874629">Можете да сърфирате частно посредством прозорец в режим „инкогнито“</translation>
+<translation id="3772947852642271642">Отворете прозорец в режим „инкогнито“, за да използвате мрежата, без да се запазва история на сърфирането ви</translation>
+<translation id="3871738366246972820">Използвате общ компютър? Отворете прозорец в режим „инкогнито“.</translation>
+<translation id="5808622652939943719">За да сърфирате частно, кликнете върху иконата с точки и отворете прозорец в режим „инкогнито“ от менюто</translation>
 <translation id="8803953437405899238">Отворете нов раздел с едно кликване</translation>
 <translation id="3071624960923923138">Можете да кликнете тук, за да отворите нов раздел</translation>
 <translation id="4908811072292128752">Отворете нов раздел, за да сърфирате в два сайта едновременно</translation>
@@ -1132,13 +1132,13 @@
 <translation id="2367972762794486313">Показване на приложенията</translation>
 <translation id="6466988389784393586">&amp;Отваряне на всички отметки</translation>
 <translation id="6804671422566312077">Отваряне на всички отметки в &amp;нов прозорец</translation>
-<translation id="3011362742078013760">Отваряне на всички отметки в прозорец в режим „&amp;инкогнито“</translation>
+<translation id="2692771564633877898">Отваряне на всички отметки в прозорец в режим „&amp;инкогнито“</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Отваряне на всички}=1{&amp;Отваряне на отметката}other{&amp;Отваряне на всички (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Отваряне на всички в &amp;нов прозорец}=1{Отваряне в &amp;нов прозорец}other{Отваряне на всички (#) в &amp;нов прозорец}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Отваряне на всички в прозорец в режим „&amp;инкогнито“}=1{Отваряне в прозорец в режим „&amp;инкогнито“}other{Отваряне на всички (#) в прозорец в режим „&amp;инкогнито“}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Отваряне на всички в прозорец в режим „&amp;инкогнито“}=1{Отваряне в прозорец в режим „&amp;инкогнито“}other{Отваряне на всички (#) в прозорец в режим „&amp;инкогнито“}}</translation>
 <translation id="9024127637873500333">&amp;Отваряне в нов раздел</translation>
 <translation id="665061930738760572">Отваряне в &amp;нов прозорец</translation>
-<translation id="37613671848467444">Отваряне на прозорец в режим „&amp;инкогнито“</translation>
+<translation id="1985165269306590797">Отваряне на прозорец в режим „&amp;инкогнито“</translation>
 <translation id="6702639462873609204">&amp;Редактиране...</translation>
 <translation id="3088325635286126843">&amp;Преименуване...</translation>
 <translation id="5329858601952122676">&amp;Изтриване</translation>
@@ -1189,10 +1189,10 @@
 <translation id="8457451314607652708">Импортиране на отметки</translation>
 <translation id="5101042277149003567">Отваряне на всички отметки</translation>
 <translation id="7007648447224463482">Отваряне на всички в нов прозорец</translation>
-<translation id="4508051413094283164">Отваряне на всички в прозорец в режим „инкогнито“</translation>
+<translation id="642436385689435488">Отваряне на всички в прозорец в режим „инкогнито“</translation>
 <translation id="4195643157523330669">Отваряне в нов раздел</translation>
 <translation id="2979639724566107830">Отваряне в нов прозорец</translation>
-<translation id="1134009406053225289">Отваряне в прозорец в режим „инкогнито“</translation>
+<translation id="5463021359602611602">Отваряне в прозорец в режим „инкогнито“</translation>
 <translation id="1173894706177603556">Преименуване</translation>
 <translation id="5170568018924773124">Показване в папката</translation>
 <translation id="6825184156888454064">Сортиране по име</translation>
@@ -1280,7 +1280,7 @@
 <translation id="4159681666905192102">Това е профил за деца, управляван от <ph name="CUSTODIAN_EMAIL"/> и <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Контролиран потребител</translation>
 <translation id="5720705177508910913">Текущият потребител</translation>
-<translation id="7081952801286122383">Сърфирате в режим „инкогнито“</translation>
+<translation id="5070556616376997776">Сърфирате в режим „инкогнито“</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: синхронизирането не работи</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: синхронизирането е на пауза</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (контролиран потребител)</translation>
@@ -2543,9 +2543,9 @@
 <translation id="6782111308708962316">Забраняване на уебсайтовете на трети страни да запазват и четат данни в „бисквитки“</translation>
 <translation id="3378503599595235699">Съхраняване на локалните данни само докато излезете от браузъра</translation>
 <translation id="1274977772557788323">Настройки за хранилището на Adobe Flash Player</translation>
-<translation id="1698122934742150150">Само за текущата сесия в режим „инкогнито“</translation>
-<translation id="5838456317242088717">Текущата сесия в режим „инкогнито“</translation>
-<translation id="2318923050469484167">Текущата сесия в режим „инкогнито“ (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Само за текущата сесия в режим „инкогнито“</translation>
+<translation id="3479035826743782247">Текущата сесия в режим „инкогнито“</translation>
+<translation id="4750220700975225">Текущата сесия в режим „инкогнито“ (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Няма сайтове с увеличен или намален мащаб</translation>
 <translation id="3566721612727112615">Няма добавени сайтове</translation>
 <translation id="8098574385249290065">Нека Brave избира кога сайтовете да могат да възпроизвеждат звук (препоръчително)</translation>
@@ -2845,7 +2845,7 @@
 <translation id="329838636886466101">Поправяне</translation>
 <translation id="3012631534724231212">(вложена рамка)</translation>
 <translation id="1708338024780164500">(Неактивно)</translation>
-<translation id="1603914832182249871">(„Инкогнито“)</translation>
+<translation id="3860292630623580294">(„Инкогнито“)</translation>
 <translation id="6655190889273724601">Режим за програмисти</translation>
 <translation id="2868746137289129307">Това разширение не е актуално и е деактивирано от корпоративно правило. Може да бъде активирано автоматично, когато бъде налице по-нова версия.</translation>
 <translation id="6841186874966388268">Грешки</translation>
@@ -2866,7 +2866,7 @@
 <translation id="1805822111539868586">Инспектиране на изгледите</translation>
 <translation id="181577467034453336">Още <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">Няма активни изгледи</translation>
-<translation id="5488468185303821006">Да се разреши в режим инкогнито</translation>
+<translation id="4854477725773269949">Да се разреши в режим инкогнито</translation>
 <translation id="6124650939968185064">От това разширение зависят следните разширения:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (идент. №: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Свързано със <ph name="NAME_PH"/></translation>
@@ -2960,10 +2960,8 @@
 <translation id="6041155700700864984">Изход от цял екран</translation>
 <translation id="6112294629795967147">Докоснете за преоразмеряване</translation>
 <translation id="2453860139492968684">Край</translation>
-<translation id="1853692000353488670">Нов раздел „инкогнито“</translation>
 <translation id="6336451774241870485">Нов раздел в режим на частно сърфиране</translation>
-<translation id="5530766185686772672">Раздели „инкогнито“: Затв.</translation>
 <translation id="6610147964972079463">Частни раздели: Затваряне</translation>
 <translation id="8076492880354921740">Раздели</translation>
-<translation id="1049743911850919806">„Инкогнито“</translation>
+<translation id="5186185447130319458">„Инкогнито“</translation>
 </translationbundle>

@@ -163,7 +163,7 @@
 <translation id="750509436279396091">פתח את תיקיית ההורדות</translation>
 <translation id="2902312830803030883">פעולות נוספות</translation>
 <translation id="3612673635130633812">‏ההורדה בוצעה באמצעות &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">ההורדה בוצעה במצב גלישה בסתר</translation>
+<translation id="6395403722585816044">ההורדה בוצעה במצב גלישה בסתר</translation>
 <translation id="8028803902702117856">הקובץ <ph name="FILE_NAME"/> בהורדה, <ph name="SIZE"/></translation>
 <translation id="4644818355646995778">בהורדה, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">בהורדה, <ph name="STATUS"/></translation>
@@ -607,7 +607,7 @@
 <translation id="5939518447894949180">אפס</translation>
 <translation id="5546865291508181392">חפש</translation>
 <translation id="833986336429795709">צריך לבחור אפליקציה כדי לפתוח את הקישור הזה</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (גלישה בסתר)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (גלישה בסתר)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (עדכון זמין)</translation>
 <translation id="8525306231823319788">מסך מלא</translation>
@@ -635,10 +635,10 @@
 <translation id="3429275422858276529">כדאי לסמן את הדף עם סימניה כדי לגשת אליו בקלות בהמשך</translation>
 <translation id="3603533104205588786">בלחיצה על סימן הכוכב אפשר להוסיף דף לסימניות</translation>
 <translation id="6613452264606394692">הוספת הדף לסימניות תאפשר גישה מהירה אליו</translation>
-<translation id="8286963743045814739">אפשר לגלוש בפרטיות בעזרת חלון גלישה בסתר</translation>
-<translation id="1211364473545090084">חלון גלישה בסתר מאפשר לגלוש בלי לשמור את היסטוריית הגלישה</translation>
-<translation id="6080515710685820702">האם זהו מחשב משותף? כדאי לפתוח חלון גלישה בסתר.</translation>
-<translation id="7059893117020417984">כדי לגלוש באופן פרטי, יש ללחוץ על תפריט סמל הנקודות ולפתוח חלון גלישה בסתר</translation>
+<translation id="4369414322596874629">אפשר לגלוש בפרטיות בעזרת חלון גלישה בסתר</translation>
+<translation id="3772947852642271642">חלון גלישה בסתר מאפשר לגלוש בלי לשמור את היסטוריית הגלישה</translation>
+<translation id="3871738366246972820">האם זהו מחשב משותף? כדאי לפתוח חלון גלישה בסתר.</translation>
+<translation id="5808622652939943719">כדי לגלוש באופן פרטי, יש ללחוץ על תפריט סמל הנקודות ולפתוח חלון גלישה בסתר</translation>
 <translation id="8803953437405899238">פתח כרטיסייה חדשה בקליק אחד</translation>
 <translation id="3071624960923923138">אפשר ללחוץ כאן כדי לפתוח כרטיסייה חדשה</translation>
 <translation id="4908811072292128752">פתח כרטיסייה חדשה כדי לגלוש בשני אתרים בו-זמנית</translation>
@@ -1130,13 +1130,13 @@
 <translation id="2367972762794486313">הצג יישומים</translation>
 <translation id="6466988389784393586">&amp;פתח את כל הסימניות</translation>
 <translation id="6804671422566312077">פתח את כל הסימניות ב&amp;חלון חדש</translation>
-<translation id="3011362742078013760">פתח את כל הסימניות בחלון &amp;גלישה בסתר</translation>
+<translation id="2692771564633877898">פתח את כל הסימניות בחלון &amp;גלישה בסתר</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;פתח הכל}=1{&amp;פתח סימניה}two{&amp;פתח הכל (2)}many{&amp;פתח הכל (#)}other{&amp;פתח הכל (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{פתח הכל ב&amp;חלון חדש}=1{פתח ב&amp;חלון חדש}two{פתח הכל (2) ב&amp;חלון חדש}many{פתח הכל (#) ב&amp;חלון חדש}other{פתח הכל (#) ב&amp;חלון חדש}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{פתח הכל בחלון &amp;גלישה בסתר}=1{פתח בחלון &amp;גלישה בסתר}two{פתח הכל (2) בחלון &amp;גלישה בסתר}many{פתח הכל (#) בחלון &amp;גלישה בסתר}other{פתח הכל (#) בחלון &amp;גלישה בסתר}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{פתח הכל בחלון &amp;גלישה בסתר}=1{פתח בחלון &amp;גלישה בסתר}two{פתח הכל (2) בחלון &amp;גלישה בסתר}many{פתח הכל (#) בחלון &amp;גלישה בסתר}other{פתח הכל (#) בחלון &amp;גלישה בסתר}}</translation>
 <translation id="9024127637873500333">&amp;פתח בכרטיסייה חדשה</translation>
 <translation id="665061930738760572">פתח ב&amp;חלון חדש</translation>
-<translation id="37613671848467444">פתח בחלון &amp;גלישה בסתר</translation>
+<translation id="1985165269306590797">פתח בחלון &amp;גלישה בסתר</translation>
 <translation id="6702639462873609204">&amp;ערוך...</translation>
 <translation id="3088325635286126843">&amp;שנה שם...</translation>
 <translation id="5329858601952122676">&amp;מחק</translation>
@@ -1187,10 +1187,10 @@
 <translation id="8457451314607652708">יבא סימניות</translation>
 <translation id="5101042277149003567">פתח את כל הסימניות</translation>
 <translation id="7007648447224463482">פתח הכול בחלון חדש</translation>
-<translation id="4508051413094283164">פתח הכול בחלון גלישה בסתר</translation>
+<translation id="642436385689435488">פתח הכול בחלון גלישה בסתר</translation>
 <translation id="4195643157523330669">פתח בכרטיסייה חדשה</translation>
 <translation id="2979639724566107830">פתח בחלון חדש</translation>
-<translation id="1134009406053225289">פתח בחלון גלישה פרטית</translation>
+<translation id="5463021359602611602">פתח בחלון גלישה פרטית</translation>
 <translation id="1173894706177603556">שנה שם</translation>
 <translation id="5170568018924773124">הצג בתיקייה</translation>
 <translation id="6825184156888454064">מיון לפי שם</translation>
@@ -1278,7 +1278,7 @@
 <translation id="4159681666905192102">זהו חשבון לילדים המנוהל על-ידי <ph name="CUSTODIAN_EMAIL"/> ועל-ידי <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">משתמש בפיקוח</translation>
 <translation id="5720705177508910913">משתמש נוכחי:</translation>
-<translation id="7081952801286122383">עברת למצב גלישה בסתר</translation>
+<translation id="5070556616376997776">עברת למצב גלישה בסתר</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: הסינכרון לא פועל</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: הסינכרון הושהה</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (בפיקוח)</translation>
@@ -2541,9 +2541,9 @@
 <translation id="6782111308708962316">‏מנע מאתרים של צד שלישי לשמור ולקרוא נתונים של קובצי cookie</translation>
 <translation id="3378503599595235699">שמור נתונים מקומיים רק עד שתסגור את הדפדפן</translation>
 <translation id="1274977772557788323">‏הגדרות אחסון של Adobe Flash Player</translation>
-<translation id="1698122934742150150">הפעלה נוכחית בלבד במצב גלישה בסתר</translation>
-<translation id="5838456317242088717">הפעלה נוכחית במצב גלישה בסתר</translation>
-<translation id="2318923050469484167">הפעלה נוכחית במצב גלישה בסתר (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">הפעלה נוכחית בלבד במצב גלישה בסתר</translation>
+<translation id="3479035826743782247">הפעלה נוכחית במצב גלישה בסתר</translation>
+<translation id="4750220700975225">הפעלה נוכחית במצב גלישה בסתר (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">באף אתר לא השתנה המרחק מהתצוגה</translation>
 <translation id="3566721612727112615">לא נוספו אתרים</translation>
 <translation id="8098574385249290065">‏Brave יקבע מתי אתרים יכולים להפעיל צלילים (מומלץ)</translation>
@@ -2843,7 +2843,7 @@
 <translation id="329838636886466101">תיקון</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(לא פעיל)</translation>
-<translation id="1603914832182249871">(גלישה בסתר)</translation>
+<translation id="3860292630623580294">(גלישה בסתר)</translation>
 <translation id="6655190889273724601">מצב פיתוח</translation>
 <translation id="2868746137289129307">תוסף זה הוא מיושן והושבת בהתאם למדיניות הארגון. ייתכן שהוא יופעל באופן אוטומטי כשתצא גרסה חדשה יותר.</translation>
 <translation id="6841186874966388268">שגיאות</translation>
@@ -2864,7 +2864,7 @@
 <translation id="1805822111539868586">בדיקת תצוגות</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> נוספות...</translation>
 <translation id="2450849356604136918">אין תצוגות פעילות</translation>
-<translation id="5488468185303821006">אפשר במצב גלישה פרטית</translation>
+<translation id="4854477725773269949">אפשר במצב גלישה פרטית</translation>
 <translation id="6124650939968185064">התוספים הבאים תלויים בתוסף הזה:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (מזהה: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">קשור אל <ph name="NAME_PH"/></translation>
@@ -2958,10 +2958,8 @@
 <translation id="6041155700700864984">יציאה ממסך מלא</translation>
 <translation id="6112294629795967147">שינוי גודל באמצעות נגיעה</translation>
 <translation id="2453860139492968684">סיום</translation>
-<translation id="1853692000353488670">כרטיסייה חדשה לגלישה בסתר</translation>
 <translation id="6336451774241870485">כרטיסייה פרטית חדשה</translation>
-<translation id="5530766185686772672">סגור כרטיסיות גלישה בסתר</translation>
 <translation id="6610147964972079463">סגירת הכרטיסיות הפרטיות</translation>
 <translation id="8076492880354921740">כרטיסיות</translation>
-<translation id="1049743911850919806">גלישה פרטית</translation>
+<translation id="5186185447130319458">גלישה פרטית</translation>
 </translationbundle>

@@ -163,7 +163,7 @@
 <translation id="750509436279396091">ダウンロード フォルダを開く</translation>
 <translation id="2902312830803030883">その他の操作</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; によりダウンロードされました</translation>
-<translation id="7909969815743704077">シークレット モードでダウンロード</translation>
+<translation id="6395403722585816044">シークレット モードでダウンロード</translation>
 <translation id="8028803902702117856"><ph name="FILE_NAME"/> をダウンロードしています。<ph name="SIZE"/> 完了</translation>
 <translation id="4644818355646995778">ダウンロードしています。<ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">ダウンロードしています。<ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@
 <translation id="5939518447894949180">リセット</translation>
 <translation id="5546865291508181392">検索</translation>
 <translation id="833986336429795709">このリンクを開くにはアプリを選択します</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/>（シークレット モード）</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/>（シークレット モード）</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/>（アップデート利用可）</translation>
 <translation id="8525306231823319788">全画面表示</translation>
@@ -636,10 +636,10 @@
 <translation id="3429275422858276529">後で見つけやすいようにこのページをブックマークできます</translation>
 <translation id="3603533104205588786">ページをブックマークするにはスターアイコンをクリックします</translation>
 <translation id="6613452264606394692">このページをブックマークすると、すばやくこのページに戻ることができます</translation>
-<translation id="8286963743045814739">シークレット ウィンドウを使って、シークレット モードで閲覧できます</translation>
-<translation id="1211364473545090084">シークレット ウィンドウを使うと、閲覧履歴を残さずにウェブを閲覧できます</translation>
-<translation id="6080515710685820702">共有のパソコンをお使いの場合は、シークレット ウィンドウをご活用ください。</translation>
-<translation id="7059893117020417984">シークレット モードを使うには、その他アイコンのメニューからシークレット ウィンドウを開きます</translation>
+<translation id="4369414322596874629">シークレット ウィンドウを使って、シークレット モードで閲覧できます</translation>
+<translation id="3772947852642271642">シークレット ウィンドウを使うと、閲覧履歴を残さずにウェブを閲覧できます</translation>
+<translation id="3871738366246972820">共有のパソコンをお使いの場合は、シークレット ウィンドウをご活用ください。</translation>
+<translation id="5808622652939943719">シークレット モードを使うには、その他アイコンのメニューからシークレット ウィンドウを開きます</translation>
 <translation id="8803953437405899238">新しいタブをワンクリックで開くことができます</translation>
 <translation id="3071624960923923138">ここをクリックすると新しいタブが開きます</translation>
 <translation id="4908811072292128752">新しいタブを開いて 2 つのサイトを同時に閲覧できます</translation>
@@ -1131,13 +1131,13 @@
 <translation id="2367972762794486313">アプリを表示</translation>
 <translation id="6466988389784393586">すべてのブックマークを開く(&amp;O)</translation>
 <translation id="6804671422566312077">すべてのブックマークを新しいウィンドウで開く(&amp;N)</translation>
-<translation id="3011362742078013760">すべてのブックマークをシークレット ウィンドウで開く(&amp;I)</translation>
+<translation id="2692771564633877898">すべてのブックマークをシークレット ウィンドウで開く(&amp;I)</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{すべてを開く(&amp;O)}=1{ブックマークを開く(&amp;O)}other{すべて（# 件）を開く(&amp;O)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{すべてを新しいウィンドウで開く(&amp;N)}=1{新しいウィンドウで開く(&amp;N)}other{すべて（# 件）を新しいウィンドウで開く(&amp;N)}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{すべてをシークレット ウィンドウで開く(&amp;I)}=1{シークレット ウィンドウで開く(&amp;I)}other{すべて（# 件）をシークレット ウィンドウで開く(&amp;I)}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{すべてをシークレット ウィンドウで開く(&amp;I)}=1{シークレット ウィンドウで開く(&amp;I)}other{すべて（# 件）をシークレット ウィンドウで開く(&amp;I)}}</translation>
 <translation id="9024127637873500333">新しいタブで開く(&amp;O)</translation>
 <translation id="665061930738760572">新しいウィンドウで開く(&amp;N)</translation>
-<translation id="37613671848467444">シークレット ウィンドウで開く(&amp;I)</translation>
+<translation id="1985165269306590797">シークレット ウィンドウで開く(&amp;I)</translation>
 <translation id="6702639462873609204">編集(&amp;E)...</translation>
 <translation id="3088325635286126843">名前を変更(&amp;R)...</translation>
 <translation id="5329858601952122676">削除(&amp;D)</translation>
@@ -1188,10 +1188,10 @@
 <translation id="8457451314607652708">ブックマークをインポート</translation>
 <translation id="5101042277149003567">すべてのブックマークを開く</translation>
 <translation id="7007648447224463482">すべてを新しいウィンドウで開く</translation>
-<translation id="4508051413094283164">すべてをシークレット ウィンドウで開く</translation>
+<translation id="642436385689435488">すべてをシークレット ウィンドウで開く</translation>
 <translation id="4195643157523330669">新しいタブで開く</translation>
 <translation id="2979639724566107830">新しいウィンドウで開く</translation>
-<translation id="1134009406053225289">シークレット ウィンドウで開く</translation>
+<translation id="5463021359602611602">シークレット ウィンドウで開く</translation>
 <translation id="1173894706177603556">名前を変更</translation>
 <translation id="5170568018924773124">フォルダを開く</translation>
 <translation id="6825184156888454064">名前順</translation>
@@ -1279,7 +1279,7 @@
 <translation id="4159681666905192102">これは <ph name="CUSTODIAN_EMAIL"/> と <ph name="SECOND_CUSTODIAN_EMAIL"/> によって管理されている子供向けのアカウントです。</translation>
 <translation id="5958529069007801266">監視対象ユーザー</translation>
 <translation id="5720705177508910913">現在のユーザー</translation>
-<translation id="7081952801286122383">シークレット モード使用中</translation>
+<translation id="5070556616376997776">シークレット モード使用中</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: 同期が機能していません</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: 同期が一時停止されています</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/>（管理対象）</translation>
@@ -2541,9 +2541,9 @@
 <translation id="6782111308708962316">サードパーティのウェブサイトが Cookie データを保存したり読み取ったりできないようにします</translation>
 <translation id="3378503599595235699">ブラウザを終了するまでローカル データを保存する</translation>
 <translation id="1274977772557788323">Adobe Flash Player のストレージ設定</translation>
-<translation id="1698122934742150150">現在のシークレット モード セッションのみ</translation>
-<translation id="5838456317242088717">現在のシークレット モード セッション</translation>
-<translation id="2318923050469484167">現在のシークレット モード セッション（<ph name="EMBEDDING"/>）</translation>
+<translation id="1281501490173223206">現在のシークレット モード セッションのみ</translation>
+<translation id="3479035826743782247">現在のシークレット モード セッション</translation>
+<translation id="4750220700975225">現在のシークレット モード セッション（<ph name="EMBEDDING"/>）</translation>
 <translation id="383891835335927981">拡大縮小値を設定したサイトはありません</translation>
 <translation id="3566721612727112615">サイトが追加されていません</translation>
 <translation id="8098574385249290065">サイトで音声が再生される可能性がある場合、Brave で自動的に許可またはブロックする（推奨）</translation>
@@ -2843,7 +2843,7 @@
 <translation id="329838636886466101">修復</translation>
 <translation id="3012631534724231212">（iframe）</translation>
 <translation id="1708338024780164500">（無効）</translation>
-<translation id="1603914832182249871">（シークレット モード）</translation>
+<translation id="3860292630623580294">（シークレット モード）</translation>
 <translation id="6655190889273724601">デベロッパー モード</translation>
 <translation id="2868746137289129307">この拡張機能は古く、企業のポリシーによって無効にされました。新しいバージョンが利用可能になったときに自動的に有効になる可能性があります。</translation>
 <translation id="6841186874966388268">エラー</translation>
@@ -2864,7 +2864,7 @@
 <translation id="1805822111539868586">ビューを検証</translation>
 <translation id="181577467034453336">他 <ph name="NUMBER_OF_VIEWS"/> 件...</translation>
 <translation id="2450849356604136918">アクティブ ビューなし</translation>
-<translation id="5488468185303821006">シークレット モードでの実行を許可する</translation>
+<translation id="4854477725773269949">シークレット モードでの実行を許可する</translation>
 <translation id="6124650939968185064">次の拡張機能は、この拡張機能に依存しています:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/>（ID: <ph name="ID_PH"/>）</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> に関連しています</translation>
@@ -2958,10 +2958,8 @@
 <translation id="6041155700700864984">全画面表示を終了</translation>
 <translation id="6112294629795967147">タップしてサイズを変更</translation>
 <translation id="2453860139492968684">終了</translation>
-<translation id="1853692000353488670">新しいシークレット タブ</translation>
 <translation id="6336451774241870485">新しいプライベート タブ</translation>
-<translation id="5530766185686772672">シークレットタブを閉じる</translation>
 <translation id="6610147964972079463">プライベート タブを閉じる</translation>
 <translation id="8076492880354921740">タブ</translation>
-<translation id="1049743911850919806">シークレット モード</translation>
+<translation id="5186185447130319458">シークレット モード</translation>
 </translationbundle>

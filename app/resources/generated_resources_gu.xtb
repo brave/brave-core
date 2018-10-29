@@ -163,7 +163,7 @@
 <translation id="750509436279396091">ડાઉનલોડ્સ ફોલ્ડર ખોલો</translation>
 <translation id="2902312830803030883">વધુ ક્રિયાઓ</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; એ ડાઉનલોડ કરી</translation>
-<translation id="7909969815743704077">છૂપા મોડમાં ડાઉનલોડ કર્યું</translation>
+<translation id="6395403722585816044">છૂપા મોડમાં ડાઉનલોડ કર્યું</translation>
 <translation id="8028803902702117856"><ph name="SIZE"/>, <ph name="FILE_NAME"/> ડાઉનલોડ કરી રહ્યાં છીએ</translation>
 <translation id="4644818355646995778">ડાઉનલોડ કરી રહ્યાં છીએ, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">ડાઉનલોડ કરી રહ્યાં છીએ, <ph name="STATUS"/></translation>
@@ -602,7 +602,7 @@
 <translation id="5939518447894949180">રીસેટ કરો</translation>
 <translation id="5546865291508181392">શોધો</translation>
 <translation id="833986336429795709">આ લિંક ખોલવા માટે, એક ઍપ પસંદ કરો</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (છૂપી)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (છૂપી)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (અપડેટ ઉપલબ્ધ છે)</translation>
 <translation id="8525306231823319788">પૂર્ણ સ્ક્રીન</translation>
@@ -630,10 +630,10 @@
 <translation id="3429275422858276529">થોડા સમય પછી આ પેજને સરળતાથી શોધવા માટે તેને બુકમાર્ક કરો</translation>
 <translation id="3603533104205588786">એક પેજને બુકમાર્ક કરવા માટે તમે તારા પર ક્લિક કરી શકો છો</translation>
 <translation id="6613452264606394692">આ પેજને બુકમાર્ક કરીને તમે અહીંં ઝડપથી પાછા ફરી શકશો</translation>
-<translation id="8286963743045814739">તમે છુપી વિંડોનો ઉપયોગ કરીને ખાનગી રૂપે બ્રાઉઝ કરી શકો છો</translation>
-<translation id="1211364473545090084">છુપી વિંડો વડે, તમારો બ્રાઉઝિંગ ઇતિહાસ સાચવ્યા વિના વેબનો ઉપયોગ કરો</translation>
-<translation id="6080515710685820702">શેર કરેલા કમ્પ્યુટરનો ઉપયોગ કરી રહ્યા છો? છુપી વિંડો ખોલવાનો પ્રયાસ કરો.</translation>
-<translation id="7059893117020417984">ખાનગી રીતે બ્રાઉઝ કરવા માટે, છુપી વિંડો ખોલવા માટે બિંદુના આઇકનવાળા મેનૂ પર ક્લિક કરો</translation>
+<translation id="4369414322596874629">તમે છુપી વિંડોનો ઉપયોગ કરીને ખાનગી રૂપે બ્રાઉઝ કરી શકો છો</translation>
+<translation id="3772947852642271642">છુપી વિંડો વડે, તમારો બ્રાઉઝિંગ ઇતિહાસ સાચવ્યા વિના વેબનો ઉપયોગ કરો</translation>
+<translation id="3871738366246972820">શેર કરેલા કમ્પ્યુટરનો ઉપયોગ કરી રહ્યા છો? છુપી વિંડો ખોલવાનો પ્રયાસ કરો.</translation>
+<translation id="5808622652939943719">ખાનગી રીતે બ્રાઉઝ કરવા માટે, છુપી વિંડો ખોલવા માટે બિંદુના આઇકનવાળા મેનૂ પર ક્લિક કરો</translation>
 <translation id="8803953437405899238">એક નવી ટૅબ એક ક્લિકમાં ખોલો</translation>
 <translation id="3071624960923923138">એક નવું ટૅબ ખોલવા માટે તમે અહીં ક્લિક કરી શકો છો</translation>
 <translation id="4908811072292128752">બે સાઇટ એકસાથે બ્રાઉઝ કરવા માટે એક નવી ટૅબ ખોલો</translation>
@@ -1125,13 +1125,13 @@
 <translation id="2367972762794486313">ઍપ્લિકેશનો બતાવો</translation>
 <translation id="6466988389784393586">બધાં બુકમાર્ક્સ &amp;ખોલો</translation>
 <translation id="6804671422566312077">બધાં બુકમાર્ક્સને &amp;નવી વિંડોમાં ખોલો</translation>
-<translation id="3011362742078013760">બધા બુકમાર્ક્સને &amp;છુપી વિંડોમાં ખોલો</translation>
+<translation id="2692771564633877898">બધા બુકમાર્ક્સને &amp;છુપી વિંડોમાં ખોલો</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;તમામ URLને ખોલો}=1{&amp;બુકમાર્ક ખોલો}one{&amp;તમામ (#) URLને ખોલો}other{&amp;તમામ (#) URLને ખોલો}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{તમામ URLને &amp;નવી વિંડોમાં ખોલો}=1{URLને &amp;નવી વિંડોમાં ખોલો}one{તમામ (#) URLને &amp;નવી વિંડોમાં ખોલો}other{તમામ (#) URLને &amp;નવી વિંડોમાં ખોલો}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{તમામ URLને &amp;છુપી વિંડોમાં ખોલો}=1{&amp;છુપી વિંડોમાં ખોલો}one{તમામ (#) URLને &amp;છુપી વિંડોમાં ખોલો}other{તમામ (#) URLને &amp;છુપી વિંડોમાં ખોલો}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{તમામ URLને &amp;છુપી વિંડોમાં ખોલો}=1{&amp;છુપી વિંડોમાં ખોલો}one{તમામ (#) URLને &amp;છુપી વિંડોમાં ખોલો}other{તમામ (#) URLને &amp;છુપી વિંડોમાં ખોલો}}</translation>
 <translation id="9024127637873500333">નવા ટૅબમાં &amp;ખોલો</translation>
 <translation id="665061930738760572">&amp;નવી વિંડોમાં ખોલો</translation>
-<translation id="37613671848467444">&amp;છુપી વિંડોમાં ખોલો</translation>
+<translation id="1985165269306590797">&amp;છુપી વિંડોમાં ખોલો</translation>
 <translation id="6702639462873609204">&amp;સંપાદિત કરો...</translation>
 <translation id="3088325635286126843">&amp;નામ બદલો...</translation>
 <translation id="5329858601952122676">&amp;કાઢી નાખો</translation>
@@ -1182,10 +1182,10 @@
 <translation id="8457451314607652708">બુકમાર્ક્સ આયાત કરો</translation>
 <translation id="5101042277149003567">બધા બુકમાર્ક ખોલો</translation>
 <translation id="7007648447224463482">બધું નવી વિંડોમાં ખોલો</translation>
-<translation id="4508051413094283164">બધુ છુપી વિંડોમાં ખોલો</translation>
+<translation id="642436385689435488">બધુ છુપી વિંડોમાં ખોલો</translation>
 <translation id="4195643157523330669">નવા ટૅબમાં ખોલો</translation>
 <translation id="2979639724566107830">નવી વિંડોમાં ખોલો</translation>
-<translation id="1134009406053225289">છુપી વિંડોમાં ખોલો</translation>
+<translation id="5463021359602611602">છુપી વિંડોમાં ખોલો</translation>
 <translation id="1173894706177603556">નામ બદલો</translation>
 <translation id="5170568018924773124">ફોલ્ડરમાં બતાવો</translation>
 <translation id="6825184156888454064">નામ અનુસાર સૉર્ટ કરો</translation>
@@ -1273,7 +1273,7 @@
 <translation id="4159681666905192102">આ બાળકો માટેનું એકાઉન્ટ છે, જે <ph name="CUSTODIAN_EMAIL"/> અને <ph name="SECOND_CUSTODIAN_EMAIL"/> દ્વારા મેનેજ કરાય છે.</translation>
 <translation id="5958529069007801266">નિરીક્ષણ કરેલ વપરાશકર્તા</translation>
 <translation id="5720705177508910913">વર્તમાન વપરાશકર્તા</translation>
-<translation id="7081952801286122383">તમે છૂપા મોડમાં છો</translation>
+<translation id="5070556616376997776">તમે છૂપા મોડમાં છો</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: સિંક કાર્ય કરી રહ્યું નથી</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: સિંક થોભાવ્યું</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (નિરીક્ષિત)</translation>
@@ -2535,9 +2535,9 @@
 <translation id="6782111308708962316">તૃતીય-પક્ષ વેબસાઇટને કુકી ડેટા સાચવવા અને વાંચવાથી અટકાવો</translation>
 <translation id="3378503599595235699">જ્યાં સુધી તમે તમારા બ્રાઉઝરથી બહાર ન નીકળો ત્યાં સુધી સ્થાનિક ડેટા રાખો</translation>
 <translation id="1274977772557788323">Adobe Flash Player સ્ટોરેજ સેટિંગ્સ</translation>
-<translation id="1698122934742150150">ફક્ત વર્તમાન છૂપું સત્ર</translation>
-<translation id="5838456317242088717">વર્તમાન છૂપું સત્ર</translation>
-<translation id="2318923050469484167">વર્તમાન છૂપું સત્ર (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">ફક્ત વર્તમાન છૂપું સત્ર</translation>
+<translation id="3479035826743782247">વર્તમાન છૂપું સત્ર</translation>
+<translation id="4750220700975225">વર્તમાન છૂપું સત્ર (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">કોઈ સાઇટનું ઝૂમ વધારેલ અથવા તો ઘટાડેલ નથી</translation>
 <translation id="3566721612727112615">કોઈ સાઇટ્સ ઉમેરી નથી</translation>
 <translation id="8098574385249290065">સાઇટ સાઉન્ડ ક્યારે ચલાવી શકે તે Braveને પસંદ કરવા દો (સુઝાવ આપેલ)</translation>
@@ -2837,7 +2837,7 @@
 <translation id="329838636886466101">સુધારો</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(નિષ્ક્રિય)</translation>
-<translation id="1603914832182249871">(છૂપી)</translation>
+<translation id="3860292630623580294">(છૂપી)</translation>
 <translation id="6655190889273724601">વિકાસકર્તા મોડ</translation>
 <translation id="2868746137289129307">આ એક્સ્ટેંશન જૂનું થઈ ગયું છે અને એન્ટરપ્રાઇસ પોલિસી દ્વારા બંધ થયું છે. જ્યારે એક નવું વર્ઝન ઉપલબ્ધ થાય ત્યારે તે ઑટોમૅટિક રીતે ચાલુ થઈ શકે છે.</translation>
 <translation id="6841186874966388268">ભૂલો</translation>
@@ -2858,7 +2858,7 @@
 <translation id="1805822111539868586">દૃશ્યોની તપાસ કરો</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> વધુ...</translation>
 <translation id="2450849356604136918">કોઈ દૃશ્ય નથી</translation>
-<translation id="5488468185303821006">છૂપા મોડમાં મંજૂરી આપો</translation>
+<translation id="4854477725773269949">છૂપા મોડમાં મંજૂરી આપો</translation>
 <translation id="6124650939968185064">નીચેના એક્સ્ટેન્શન્સ આ એક્સ્ટેન્શન પર નિર્ભર કરે છે:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/>થી સંબંધિત</translation>
@@ -2952,10 +2952,8 @@
 <translation id="6041155700700864984">પૂર્ણસ્ક્રીનમાંથી બહાર નીકળો</translation>
 <translation id="6112294629795967147">કદ બદલવા માટે સ્પર્શ કરો</translation>
 <translation id="2453860139492968684">સમાપ્ત</translation>
-<translation id="1853692000353488670">નવી છુપી ટેબ</translation>
 <translation id="6336451774241870485">નવું ખાનગી ટૅબ</translation>
-<translation id="5530766185686772672">છુપા ટેબ્સ બંધ કરો</translation>
 <translation id="6610147964972079463">બધાં ખાનગી ટૅબ બંધ કરો</translation>
 <translation id="8076492880354921740">ટૅબ્સ</translation>
-<translation id="1049743911850919806">છૂપી</translation>
+<translation id="5186185447130319458">છૂપી</translation>
 </translationbundle>

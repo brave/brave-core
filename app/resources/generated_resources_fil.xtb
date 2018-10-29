@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Buksan ang folder ng mga download</translation>
 <translation id="2902312830803030883">Higit pang pagkilos</translation>
 <translation id="3612673635130633812">Na-download ng &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Na-download sa Incognito</translation>
+<translation id="6395403722585816044">Na-download sa Incognito</translation>
 <translation id="8028803902702117856">Dina-download ang <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Nagda-download, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Nagda-download, <ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5939518447894949180">I-reset</translation>
 <translation id="5546865291508181392">Find</translation>
 <translation id="833986336429795709">Para buksan ang link na ito, pumili ng app</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Available ang update)</translation>
 <translation id="8525306231823319788">Buong screen</translation>
@@ -636,10 +636,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3429275422858276529">I-bookmark ang page na ito upang madali itong mahanap sa ibang pagkakaton</translation>
 <translation id="3603533104205588786">Maaari mong i-click ang star upang mag-bookmark ng page</translation>
 <translation id="6613452264606394692">Makabalik dito nang mabilis sa pamamagitan ng pag-bookmark sa page na ito</translation>
-<translation id="8286963743045814739">Maaari kang mag-browse nang pribado gamit ang isang incognito window</translation>
-<translation id="1211364473545090084">Gamitin ang web nang hindi nase-save ang iyong history ng pag-browse gamit ang isang incognito window</translation>
-<translation id="6080515710685820702">Gumagamit ng nakabahaging computer? Subukang magbukas ng incognito window.</translation>
-<translation id="7059893117020417984">Upang mag-browse nang pribado, i-click ang menu ng icon na mga tuldok upang magbukas ng incognito window</translation>
+<translation id="4369414322596874629">Maaari kang mag-browse nang pribado gamit ang isang incognito window</translation>
+<translation id="3772947852642271642">Gamitin ang web nang hindi nase-save ang iyong history ng pag-browse gamit ang isang incognito window</translation>
+<translation id="3871738366246972820">Gumagamit ng nakabahaging computer? Subukang magbukas ng incognito window.</translation>
+<translation id="5808622652939943719">Upang mag-browse nang pribado, i-click ang menu ng icon na mga tuldok upang magbukas ng incognito window</translation>
 <translation id="8803953437405899238">Magbukas ng bagong tab sa isang pag-click</translation>
 <translation id="3071624960923923138">Maaari kang mag-click dito upang magbukas ng bagong tab</translation>
 <translation id="4908811072292128752">Magbukas ng bagong tab upang mag-browse ng dalawang site nang sabay</translation>
@@ -1131,13 +1131,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2367972762794486313">Ipakita ang apps</translation>
 <translation id="6466988389784393586">&amp;Buksan Ang Lahat ng Bookmark</translation>
 <translation id="6804671422566312077">Buksan ang Lahat ng Bookmark sa &amp;Bagong Window</translation>
-<translation id="3011362742078013760">Buksan ang Lahat ng Bookmark sa &amp;Incognito Window</translation>
+<translation id="2692771564633877898">Buksan ang Lahat ng Bookmark sa &amp;Incognito Window</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Buksan Lahat}=1{&amp;Buksan ang Bookmark}one{&amp;Buksan Lahat (#)}other{&amp;Buksan Lahat (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Buksan Lahat sa &amp;Bagong Window}=1{Buksan sa &amp;Bagong Window}one{Buksan Lahat (#) sa &amp;Bagong Window}other{Buksan Lahat (#) sa &amp;Bagong Window}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Buksan Lahat sa &amp;Incognito Window}=1{Buksan sa &amp;Incognito Window}one{Buksan Lahat (#) sa &amp;Incognito Window}other{Buksan Lahat (#) sa &amp;Incognito Window}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Buksan Lahat sa &amp;Incognito Window}=1{Buksan sa &amp;Incognito Window}one{Buksan Lahat (#) sa &amp;Incognito Window}other{Buksan Lahat (#) sa &amp;Incognito Window}}</translation>
 <translation id="9024127637873500333">&amp;Buksan sa Bagong Tab</translation>
 <translation id="665061930738760572">Buksan sa &amp;Bagong Window</translation>
-<translation id="37613671848467444">Buksan sa &amp;Incognito Window</translation>
+<translation id="1985165269306590797">Buksan sa &amp;Incognito Window</translation>
 <translation id="6702639462873609204">&amp;I-edit...</translation>
 <translation id="3088325635286126843">&amp;Palitan ang pangalan...</translation>
 <translation id="5329858601952122676">&amp;Tanggalin</translation>
@@ -1188,10 +1188,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8457451314607652708">Mag-import ng mga bookmark</translation>
 <translation id="5101042277149003567">Buksan lahat ng mga bookmark</translation>
 <translation id="7007648447224463482">Buksan ang lahat sa bagong window</translation>
-<translation id="4508051413094283164">Buksan ang lahat sa incognito window</translation>
+<translation id="642436385689435488">Buksan ang lahat sa incognito window</translation>
 <translation id="4195643157523330669">Buksan sa bagong tab</translation>
 <translation id="2979639724566107830">Buksan ng bagong window</translation>
-<translation id="1134009406053225289">Buksan sa incognito window</translation>
+<translation id="5463021359602611602">Buksan sa incognito window</translation>
 <translation id="1173894706177603556">Pangalanang muli</translation>
 <translation id="5170568018924773124">Ipinakita sa folder</translation>
 <translation id="6825184156888454064">Uriin ayon sa pangalan</translation>
@@ -1279,7 +1279,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4159681666905192102">Isa itong account para sa mga bata na pinamamahalaan nina <ph name="CUSTODIAN_EMAIL"/> at <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Pinangangasiwaang user</translation>
 <translation id="5720705177508910913">Kasalukuyang user</translation>
-<translation id="7081952801286122383">Incognito ka</translation>
+<translation id="5070556616376997776">Incognito ka</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Hindi gumagana ang pag-sync</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: Na-pause ang pag-sync</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (Pinangangasiwaan)</translation>
@@ -2541,9 +2541,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6782111308708962316">Pigilan ang mga third-party na website na mag-save at magbasa ng data ng cookie</translation>
 <translation id="3378503599595235699">Panatilihin lang ang lokal na data hanggang isara mo ang iyong browser</translation>
 <translation id="1274977772557788323">Mga setting ng Storage ng Adobe Flash Player</translation>
-<translation id="1698122934742150150">Kasalukuyang incognito na session lang</translation>
-<translation id="5838456317242088717">Kasalukuyang incognito na session</translation>
-<translation id="2318923050469484167">Kasalukuyang incognito na session (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Kasalukuyang incognito na session lang</translation>
+<translation id="3479035826743782247">Kasalukuyang incognito na session</translation>
+<translation id="4750220700975225">Kasalukuyang incognito na session (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Walang site na na-zoom in o na-zoom out</translation>
 <translation id="3566721612727112615">Walang naidagdag na site</translation>
 <translation id="8098574385249290065">Hayaan ang Brave na pumili kung kailan makakapag-play ng tunog ang mga site (inirerekomenda)</translation>
@@ -2843,7 +2843,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="329838636886466101">Ayusin</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Hindi aktibo)</translation>
-<translation id="1603914832182249871">(Incognito)</translation>
+<translation id="3860292630623580294">(Incognito)</translation>
 <translation id="6655190889273724601">Developer mode</translation>
 <translation id="2868746137289129307">Ang extension na ito ay luma na at na-disable ayon sa patakaran ng enterprise. Maaaring awtomatiko itong ma-enable kapag may available na bagong bersyon.</translation>
 <translation id="6841186874966388268">Mga error</translation>
@@ -2864,7 +2864,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1805822111539868586">Siyasatin ang mga view</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> pa...</translation>
 <translation id="2450849356604136918">Walang aktibong view</translation>
-<translation id="5488468185303821006">Payagan sa incognito</translation>
+<translation id="4854477725773269949">Payagan sa incognito</translation>
 <translation id="6124650939968185064">Nakadepende ang mga sumusunod na extension sa extension na ito:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Kaugnay ng <ph name="NAME_PH"/></translation>
@@ -2958,10 +2958,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6041155700700864984">Lumabas sa Fullscreen</translation>
 <translation id="6112294629795967147">Pindutin para i-resize</translation>
 <translation id="2453860139492968684">Tapos na</translation>
-<translation id="1853692000353488670">Bagong tab na incognito</translation>
 <translation id="6336451774241870485">Bagong pribadong tab</translation>
-<translation id="5530766185686772672">Isara ang mga tab na incognito</translation>
 <translation id="6610147964972079463">Isara ang mga pribadong tab</translation>
 <translation id="8076492880354921740">Mga Tab</translation>
-<translation id="1049743911850919806">Incognito</translation>
+<translation id="5186185447130319458">Incognito</translation>
 </translationbundle>

@@ -3,6 +3,7 @@
 <translationbundle lang="es">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Bloqueador de anuncios Brave</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
 <translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Brave.</translation>
 <translation id="7753103220327065417">Cerrar Brave</translation>
@@ -19,8 +20,8 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="3198814717959506569">Importado desde Brave</translation>
 <translation id="453977518730680921">Reproducir medios automáticamente</translation>
 <translation id="410351446219883937">Reproducción automática</translation>
-<translation id="2240268017737062801">Preguntar cuando un sitio desea reproducir automáticamente contenido multimedia</translation>
-<translation id="3371702087847741961">Preguntar cuando un sitio quiere reproducir automáticamente algún medio (recomendado)</translation>
+<translation id="2240268017737062801">Preguntar cuando un sitio web desea reproducir automáticamente contenido multimedia</translation>
+<translation id="3371702087847741961">Preguntar cuando un sitio web desea reproducir automáticamente contenido multimedia (recomendado)</translation>
 <translation id="3218385319396786393">La reproducción automática se ha bloqueado en esta página</translation>
 <translation id="4150684676757176434">Continuar bloqueando la reproducción automática</translation>
 <translation id="2044383478723007273">Modo Brave</translation>
