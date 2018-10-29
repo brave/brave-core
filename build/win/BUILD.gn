@@ -1,3 +1,5 @@
+import("//brave/build/config.gni")
+
 group("brave") {
   public_deps = [
     ":copy_exe",
@@ -40,10 +42,12 @@ action("create_signed_installer") {
   ]
   outputs = [
     "$root_out_dir/brave_installer.exe",
+    "$root_out_dir/$brave_installer_exe",
   ]
   out_dir = rebase_path(root_out_dir, "//")
   args = [
-    "--root_out_dir=$out_dir"
+    "--root_out_dir=$out_dir",
+    "--brave_installer_exe=$brave_installer_exe",
   ]
   deps = [
     "//chrome/installer/mini_installer"

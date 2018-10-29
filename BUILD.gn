@@ -115,6 +115,12 @@ group("create_dist") {
       "//chrome/installer/mini_installer",
       "build/win:create_signed_installer"
     ]
+
+    if (build_omaha) {
+      deps += [
+        "//brave/vendor/omaha",
+      ]
+    }
   }
   if (is_mac) {
     deps += [ "build/mac:create_dist_mac" ]
