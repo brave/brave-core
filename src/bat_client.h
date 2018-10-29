@@ -77,6 +77,7 @@ class BatClient {
                                 ledger::Result result,
                                 const std::string& data);
   double getBalance() const;
+  uint64_t getLastGrantLoadTimestamp() const;
 
  private:
   void saveState();

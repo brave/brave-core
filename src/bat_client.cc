@@ -336,7 +336,7 @@ void BatClient::reconcile(const std::string& viewingId,
     // TODO add error callback
     return;
   }
-  
+
   auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
 
   double fee = .0;
@@ -405,7 +405,7 @@ void BatClient::reconcile(const std::string& viewingId,
     }
 
   }
-  
+
   reconcile.viewingId_ = viewingId;
   reconcile.fee_ = fee;
   reconcile.directions_ = directions;
@@ -413,7 +413,7 @@ void BatClient::reconcile(const std::string& viewingId,
 
   state_->current_reconciles_.insert(std::make_pair(viewingId, reconcile));
   saveState();
-  
+
   auto request_id = ledger_->LoadURL(braveledger_bat_helper::buildURL((std::string)RECONCILE_CONTRIBUTION + state_->userId_, PREFIX_V2),
       std::vector<std::string>(), "", "",
       ledger::URL_METHOD::GET,
@@ -471,7 +471,7 @@ void BatClient::currentReconcile(const std::string& viewingId) {
                                        _2,
                                        _3));
 }
-  
+
 braveledger_bat_helper::CURRENT_RECONCILE BatClient::GetReconcileById(const std::string& viewingId) {
   if (state_->current_reconciles_.count(viewingId) == 0) {
     LOG(ERROR) << "Could not find any reconcile tasks with the id " << viewingId;
@@ -490,7 +490,7 @@ bool BatClient::SetReconcile(const braveledger_bat_helper::CURRENT_RECONCILE& re
   saveState();
   return true;
 }
-  
+
 void BatClient::removeReconcileById(const std::string& viewingId) {
   state_->current_reconciles_.erase(state_->current_reconciles_.find(viewingId));
   saveState();
@@ -505,7 +505,7 @@ void BatClient::currentReconcileCallback(const std::string& viewingId,
     // TODO errors handling
     return;
   }
-  
+
   auto reconcile = GetReconcileById(viewingId);
 
   braveledger_bat_helper::getJSONRates(response, reconcile.rates_);
@@ -570,9 +570,9 @@ void BatClient::reconcilePayloadCallback(const std::string& viewingId,
     // TODO errors handling
     return;
   }
-  
+
   const auto reconcile = GetReconcileById(viewingId);
-  
+
   braveledger_bat_helper::TRANSACTION_ST transaction;
   braveledger_bat_helper::getJSONTransaction(response, transaction);
   transaction.viewingId_ = reconcile.viewingId_;
@@ -608,7 +608,7 @@ void BatClient::registerViewingCallback(const std::string& viewingId,
     // TODO errors handling
     return;
   }
-  
+
   auto reconcile = GetReconcileById(viewingId);
 
   braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME, response, reconcile.registrarVK_);
@@ -653,7 +653,7 @@ void BatClient::viewingCredentialsCallback(const std::string& viewingId,
     // TODO errors handling
     return;
   }
-  
+
   auto reconcile = GetReconcileById(viewingId);
 
   std::string verification;
@@ -1149,8 +1149,15 @@ void BatClient::getGrantCallback(bool success,
     return;
   }
 
+  state_->last_grant_fetch_stamp_ = time(0);
+
   state_->grant_ = properties;
+  saveState();
   ledger_->OnGrant(ledger::Result::LEDGER_OK, properties);
+}
+
+uint64_t BatClient::getLastGrantLoadTimestamp() const {
+  return state_->last_grant_fetch_stamp_;
 }
 
 void BatClient::setGrant(const std::string& captchaResponse, const std::string& promotionId) {

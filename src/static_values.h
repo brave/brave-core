@@ -93,6 +93,7 @@ static const std::string _twitch_events[] = {"buffer-empty", "buffer-refill", "v
 
 static const uint64_t _publishers_list_load_interval = 48 * 60 * 60; // 48 hours in seconds
 static const uint64_t _reconcile_default_interval = 30 * 24 * 60 * 60; // 30 days in seconds
+static const uint64_t _grant_load_interval = 24 * 60 * 60; // 1 day in seconds
 
 }  // namespace braveledger_ledger
 

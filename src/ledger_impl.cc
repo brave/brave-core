@@ -35,7 +35,8 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     last_pub_load_timer_id_(0u),
     last_reconcile_timer_id_(0u),
     last_prepare_vote_batch_timer_id_(0u),
-    last_vote_batch_timer_id_(0u) {
+    last_vote_batch_timer_id_(0u),
+    last_grant_check_timer_id_(0u) {
 }
 
 LedgerImpl::~LedgerImpl() {
@@ -250,6 +251,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
     initialized_ = true;
     LoadPublisherList(this);
     Reconcile();
+    RefreshGrant(false);
   }
 }
 
@@ -565,7 +567,8 @@ void LedgerImpl::OnGrant(ledger::Result result, const braveledger_bat_helper::GR
   ledger::Grant grant;
 
   grant.promotionId = properties.promotionId;
-
+  last_grant_check_timer_id_ = 0;
+  RefreshGrant(result != ledger::Result::LEDGER_OK);
   ledger_client_->OnGrant(result, grant);
 }
 
@@ -684,6 +687,9 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   } else if (timer_id == last_vote_batch_timer_id_) {
     last_vote_batch_timer_id_ = 0;
     bat_client_->voteBatch();
+  } else if (timer_id == last_grant_check_timer_id_) {
+    last_grant_check_timer_id_ = 0;
+    GetGrant(std::string(), std::string());
   }
 }
 
@@ -711,11 +717,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
   }
 
   if (retryAfterError) {
-    std::random_device seeder;
-    const auto seed = seeder.entropy() ? seeder() : time(nullptr);
-    std::mt19937 eng(static_cast<std::mt19937::result_type> (seed));
-    std::uniform_int_distribution <> dist(300, 3600); //retry loading publishers list in 300-3600 seconds if failed
-    start_timer_in = dist(eng);
+    start_timer_in = retryRequestSetup(300, 3600);
   }
   else {
     uint64_t now = std::time(nullptr);
@@ -740,6 +742,42 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
 
   //start timer
   ledger_client_->SetTimer(start_timer_in, last_pub_load_timer_id_);
+}
+
+void LedgerImpl::RefreshGrant(bool retryAfterError) {
+  uint64_t start_timer_in{ 0ull };
+  if (last_grant_check_timer_id_ != 0) {
+    return;
+  }
+
+  if (retryAfterError) {
+    start_timer_in = retryRequestSetup(300, 600);
+  } else {
+    uint64_t now = std::time(nullptr);
+    uint64_t last_grant_stamp = bat_client_->getLastGrantLoadTimestamp();
+
+    uint64_t time_since_last_grant_check = (last_grant_stamp == 0ull ||
+      last_grant_stamp > now) ? 0ull : now - last_grant_stamp;
+    if (now == last_grant_stamp) {
+      start_timer_in = braveledger_ledger::_grant_load_interval;
+    } else if (time_since_last_grant_check > 0 &&
+      time_since_last_grant_check < braveledger_ledger::_grant_load_interval) {
+      start_timer_in =
+        braveledger_ledger::_grant_load_interval - time_since_last_grant_check;
+    } else {
+      start_timer_in = 0ull;
+    }
+  }
+  ledger_client_->SetTimer(start_timer_in, last_grant_check_timer_id_);
+}
+
+uint64_t LedgerImpl::retryRequestSetup(uint64_t min_time, uint64_t max_time) {
+  std::random_device seeder;
+  const auto seed = seeder.entropy() ? seeder() : time(nullptr);
+  std::mt19937 eng(static_cast<std::mt19937::result_type>(seed));
+  DCHECK(max_time > min_time);
+  std::uniform_int_distribution <> dist(min_time, max_time);
+  return dist(eng);
 }
 
 void LedgerImpl::OnPublishersListSaved(ledger::Result result) {
