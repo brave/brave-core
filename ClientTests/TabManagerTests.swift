@@ -8,7 +8,7 @@ import Storage
 import UIKit
 import WebKit
 import Deferred
-
+import Data
 import XCTest
 
 open class TabManagerMockProfile: MockProfile {
@@ -459,4 +459,136 @@ class TabManagerTests: XCTestCase {
         delegate.verify("Not all delegate methods were called")
     }
     
+    func testRemoveOnlyTab() {
+        let profile = TabManagerMockProfile()
+        let manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        let delegate = MockTabManagerDelegate()
+        
+        let tab = manager.addTab()
+        
+        manager.addDelegate(delegate)
+        delegate.expect([willRemove, didRemove, willAdd, didAdd, MethodSpy(functionName: "tabManager(_:didSelectedTabChange:previous:)")])
+        manager.removeTab(tab)
+        
+        delegate.verify("Not all delegate methods were called")
+        
+        XCTAssertFalse(manager.tabs.isEmpty, "Should create a new tab when all others are removed")
+        XCTAssertFalse(manager.tabs.first!.isPrivate, "The new tab should be a regular tab")
+    }
+    
+    func testRemoveAllTabs() {
+        let profile = TabManagerMockProfile()
+        let manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        
+        (0..<10).forEach { _ in manager.addTab() }
+        manager.removeAll()
+        
+        XCTAssertFalse(manager.tabs.isEmpty, "Should create a new tab when all others are removed")
+        XCTAssertFalse(manager.tabs.first!.isPrivate, "The new tab should be a regular tab")
+    }
+    
+    func testMoveTabToEnd() {
+        let profile = TabManagerMockProfile()
+        let manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        
+        let firstTab = manager.addTabAndSelect()
+        let secondTab = manager.addTab()
+        manager.addTab(isPrivate: true)
+        let thirdTab = manager.addTab()
+        
+        manager.moveTab(firstTab, toIndex: manager.tabs(withType: .regular).count - 1)
+        
+        let reorderedTabs = manager.tabs(withType: .regular)
+        XCTAssertEqual(firstTab, reorderedTabs.last, "First tab should now be the last tab")
+        XCTAssertEqual(manager.selectedTab, firstTab, "First tab should still be selected")
+        XCTAssertEqual([secondTab, thirdTab, firstTab], reorderedTabs, "Tabs should shift and the have the correct order ignoring the private tab")
+    }
+    
+    func testMoveTabToStart() {
+        let profile = TabManagerMockProfile()
+        let manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        
+        let firstTab = manager.addTabAndSelect()
+        let secondTab = manager.addTab()
+        manager.addTab(isPrivate: true)
+        let thirdTab = manager.addTab()
+        
+        manager.moveTab(thirdTab, toIndex: 0)
+        
+        let reorderedTabs = manager.tabs(withType: .regular)
+        XCTAssertEqual(thirdTab, reorderedTabs.first, "Last tab should now be the first tab")
+        XCTAssertEqual(manager.selectedTab, firstTab, "First tab should still be selected")
+        XCTAssertEqual([thirdTab, firstTab, secondTab], reorderedTabs, "Tabs should shift and the have the correct order ignoring the private tab")
+    }
+    
+    func testMoveTabToMiddle() {
+        let profile = TabManagerMockProfile()
+        let manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        
+        let firstTab = manager.addTab()
+        let secondTab = manager.addTab()
+        manager.addTab(isPrivate: true)
+        let thirdTab = manager.addTabAndSelect()
+        let forthTab = manager.addTab()
+        
+        manager.moveTab(forthTab, toIndex: 1)
+        
+        let reorderedTabs = manager.tabs(withType: .regular)
+        XCTAssertEqual(forthTab, reorderedTabs[1], "Last tab should now be at index 1")
+        XCTAssertEqual(manager.selectedTab, thirdTab, "Third tab should still be selected")
+        XCTAssertEqual([firstTab, forthTab, secondTab, thirdTab], reorderedTabs, "Tabs should shift and the have the correct order ignoring the private tab")
+    }
+    
+    func testQueryAddedTabs() {
+        TabMO.deleteAll()
+        
+        let profile = TabManagerMockProfile()
+        let manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        let delegate = MockTabManagerDelegate()
+        manager.addDelegate(delegate)
+        
+        delegate.expect([willAdd, didAdd])
+        let tab = manager.addTab()
+        delegate.verify("Not all delegate methods were called")
+        
+        let storedTabs = TabMO.getAll()
+        XCTAssertNotNil(storedTabs.first(where: { $0.syncUUID == tab.id }))
+        XCTAssertEqual(storedTabs.count, 1)
+    }
+    
+    func testQueryAddedPrivateTabs() {
+        TabMO.deleteAll()
+        
+        let profile = TabManagerMockProfile()
+        let manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        let delegate = MockTabManagerDelegate()
+        manager.addDelegate(delegate)
+        
+        delegate.expect([willAdd, didAdd])
+        manager.addTab(isPrivate: true)
+        delegate.verify("Not all delegate methods were called")
+        
+        let storedTabs = TabMO.getAll()
+        // Shouldn't be storing any private tabs
+        XCTAssertTrue(storedTabs.isEmpty)
+    }
+    
+    func testQueryAddedMixedTabs() {
+        TabMO.deleteAll()
+        
+        let profile = TabManagerMockProfile()
+        let manager = TabManager(prefs: profile.prefs, imageStore: nil)
+        let delegate = MockTabManagerDelegate()
+        manager.addDelegate(delegate)
+        
+        delegate.expect([willAdd, didAdd, willAdd, didAdd])
+        manager.addTab(isPrivate: true)
+        let tab = manager.addTab()
+        delegate.verify("Not all delegate methods were called")
+        
+        let storedTabs = TabMO.getAll()
+        XCTAssertNotNil(storedTabs.first(where: { $0.syncUUID == tab.id }))
+        // Shouldn't be storing any private tabs
+        XCTAssertEqual(storedTabs.count, 1)
+    }
 }
