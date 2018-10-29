@@ -470,8 +470,14 @@ std::string PublisherInfoDatabase::BuildClauses(int start,
   if (filter.min_duration > 0)
     clauses += " AND ai.duration >= ?";
 
-  if (filter.excluded != ledger::PUBLISHER_EXCLUDE::ALL)
+  if (filter.excluded != ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL &&
+      filter.excluded !=
+        ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED)
     clauses += " AND pi.excluded = ?";
+
+  if (filter.excluded ==
+    ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED)
+    clauses += " AND pi.excluded != ?";
 
   for (const auto& it : filter.order_by) {
     clauses += " ORDER BY " + it.first;
@@ -510,8 +516,14 @@ void PublisherInfoDatabase::BindFilter(sql::Statement& statement,
   if (filter.min_duration > 0)
     statement.BindInt(column++, filter.min_duration);
 
-  if (filter.excluded != ledger::PUBLISHER_EXCLUDE::ALL)
+  if (filter.excluded != ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL &&
+      filter.excluded !=
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED)
     statement.BindInt(column++, filter.excluded);
+
+  if (filter.excluded ==
+    ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED)
+    statement.BindInt(column++, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
 }
 
 bool PublisherInfoDatabase::InsertContributionInfo(const brave_rewards::ContributionInfo& info) {
