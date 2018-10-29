@@ -288,7 +288,10 @@ void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
   }
 }
 
-void LedgerImpl::SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) {
+void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
+                                const ledger::VisitData& visit_data,
+                                const uint64_t& duration,
+                                const uint64_t window_id) {
   if (bat_publishers_->getPublisherAllowVideos()) {
     bat_publishers_->saveVisit(publisher_id, visit_data, duration);
   }
@@ -796,11 +799,9 @@ void LedgerImpl::GetPublisherActivityFromUrl(uint64_t windowId,
 }
 
 void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,
-                                             const std::string& providerType,
-                                             const std::string& url,
-                                             ledger::PUBLISHER_MONTH month,
-                                             int year) {
-  bat_get_media_->getMediaActivityFromUrl(windowId, url, providerType, month, year);
+                                         const ledger::VisitData& visit_data,
+                                         const std::string& providerType) {
+  bat_get_media_->getMediaActivityFromUrl(windowId, visit_data, providerType);
 }
 
 void LedgerImpl::OnPublisherActivity(ledger::Result result,
@@ -819,8 +820,8 @@ void LedgerImpl::SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
   bat_publishers_->setBalanceReportItem(month, year, type, probi);
 }
 
-void LedgerImpl::FetchFavIcon(const std::string& url, const std::string& publisher_key) {
-  ledger_client_->FetchFavIcon(url, publisher_key);
+void LedgerImpl::FetchFavIcon(const std::string& url, const std::string& favicon_key) {
+  ledger_client_->FetchFavIcon(url, favicon_key);
 }
 
 ledger::PublisherBanner LedgerImpl::GetPublisherBanner(const std::string& publisher_id) {
@@ -889,6 +890,22 @@ void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
     // TODO add error callback
     return;
   }
+}
+
+ledger::PublisherInfoFilter LedgerImpl::CreatePublisherFilter(const std::string& publisher_id,
+                                                  ledger::PUBLISHER_CATEGORY category,
+                                                  ledger::PUBLISHER_MONTH month,
+                                                  int year,
+                                                  ledger::PUBLISHER_EXCLUDE_FILTER excluded,
+                                                  bool min_duration,
+                                                  const uint64_t& currentReconcileStamp) {
+  return bat_publishers_->CreatePublisherFilter(publisher_id,
+                                        category,
+                                        month,
+                                        year,
+                                        excluded,
+                                        min_duration,
+                                        currentReconcileStamp);
 }
 
 }  // namespace bat_ledger

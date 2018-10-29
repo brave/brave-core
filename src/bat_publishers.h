@@ -145,7 +145,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       std::string publisher_id,
       ledger::VisitData visit_data,
       uint64_t duration,
-      ledger::PublisherInfoCallback callback,
+      uint64_t window_id,
       ledger::Result result,
       std::unique_ptr<ledger::PublisherInfo> publisher_info);
 

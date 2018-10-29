@@ -140,7 +140,10 @@ class LedgerImpl : public ledger::Ledger,
                            const std::string& probi = "0");
   void RunIOTask(LedgerTaskRunnerImpl::Task task);
   std::string URIEncode(const std::string& value) override;
-  void SaveMediaVisit(const std::string& publisher_id, const ledger::VisitData& visit_data, const uint64_t& duration) override;
+  void SaveMediaVisit(const std::string& publisher_id,
+                      const ledger::VisitData& visit_data,
+                      const uint64_t& duration,
+                      const uint64_t window_id) override;
   void SetPublisherExclude(const std::string& publisher_id, const ledger::PUBLISHER_EXCLUDE& exclude) override;
   void SetPublisherPanelExclude(const std::string& publisher_id,
     const ledger::PUBLISHER_EXCLUDE& exclude, uint64_t windowId) override;
@@ -149,10 +152,8 @@ class LedgerImpl : public ledger::Ledger,
   bool IsWalletCreated() const override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const ledger::VisitData& visit_data) override;
   void GetMediaActivityFromUrl(uint64_t windowId,
-                               const std::string& url,
-                               const std::string& providerType,
-                               ledger::PUBLISHER_MONTH month,
-                               int year);
+                               const ledger::VisitData& visit_data,
+                               const std::string& providerType);
   void OnPublisherActivity(ledger::Result result,
                            std::unique_ptr<ledger::PublisherInfo> info,
                            uint64_t windowId);
@@ -169,7 +170,7 @@ class LedgerImpl : public ledger::Ledger,
     const std::string& viewing_id);
   void PrepareVoteBatchTimer();
   void VoteBatchTimer();
-  void FetchFavIcon(const std::string& url, const std::string& publisher_key);
+  void FetchFavIcon(const std::string& url, const std::string& favicon_key);
   ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
   double GetBalance() override;
   void OnReconcileCompleteSuccess(const std::string& viewing_id,
@@ -181,6 +182,13 @@ class LedgerImpl : public ledger::Ledger,
   void GetRecurringDonations(ledger::RecurringDonationCallback callback);
   void RemoveRecurring(const std::string& publisher_key) override;
   void StartAutoContribute();
+  ledger::PublisherInfoFilter CreatePublisherFilter(const std::string& publisher_id,
+      ledger::PUBLISHER_CATEGORY category,
+      ledger::PUBLISHER_MONTH month,
+      int year,
+      ledger::PUBLISHER_EXCLUDE_FILTER excluded,
+      bool min_duration,
+      const uint64_t& currentReconcileStamp);
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

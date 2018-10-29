@@ -91,7 +91,7 @@ class LEDGER_EXPORT LedgerClient {
                                    std::unique_ptr<ledger::PublisherInfo>,
                                    uint64_t windowId) = 0;
   virtual void OnExcludedSitesChanged() = 0;
-  virtual void FetchFavIcon(const std::string& url, const std::string& publisher_key) = 0;
+  virtual void FetchFavIcon(const std::string& url, const std::string& favicon_key) = 0;
   virtual void SaveContributionInfo(const std::string& probi,
                                     const int month,
                                     const int year,
