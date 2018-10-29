@@ -31,6 +31,14 @@ extension Preferences {
         static let weekOfInstallation = Option<String?>(key: "dau.week-of-installation", default: nil)
         static let firstPingSuccess = Option<Bool>(key: "dau.first-ping", default: false)
     }
+    final class URP {
+        static let nextCheckDate = Option<TimeInterval?>(key: "urp.next-check-date", default: nil)
+        static let retryCountdown = Option<Int?>(key: "urp.retry-countdown", default: nil)
+        static let customHeaderData = Option<Data?>(key: "urp.custom-header-data", default: nil)
+        static let downloadId = Option<String?>(key: "urp.referral.download-id", default: nil)
+        static let referralCode = Option<String?>(key: "urp.referral.code", default: nil)
+        static let referralCodeDeleteDate = Option<TimeInterval?>(key: "urp.referral.delete-date", default: nil)
+    }
 }
 
 extension Preferences {
@@ -129,6 +137,13 @@ extension Preferences {
         // DAU
         migrate(keyPrefix: keyPrefix, key: "dau_stat", to: Preferences.DAU.lastLaunchInfo)
         migrate(keyPrefix: keyPrefix, key: "week_of_installation", to: Preferences.DAU.weekOfInstallation)
+        
+        migrate(keyPrefix: keyPrefix, key: "urpDateCheckPrefsKey", to: Preferences.URP.nextCheckDate)
+        migrate(keyPrefix: keyPrefix, key: "urpRetryCountdownPrefsKey", to: Preferences.URP.retryCountdown)
+        migrate(keyPrefix: keyPrefix, key: "CustomHeaderDataPrefs", to: Preferences.URP.customHeaderData)
+        migrate(keyPrefix: keyPrefix, key: "downloadIdPrefsKey", to: Preferences.URP.downloadId)
+        migrate(keyPrefix: keyPrefix, key: "referralCodePrefsKey", to: Preferences.URP.referralCode)
+        migrate(keyPrefix: keyPrefix, key: "referralCodeDeleteTimePrefsKey", to: Preferences.URP.referralCodeDeleteDate)
     }
 }
 
