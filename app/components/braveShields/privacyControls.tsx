@@ -176,7 +176,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
           <EmptyButton disabled={javascriptBlocked === 0} onClick={this.onToggleScriptsBlocked}><ShowMoreIcon /></EmptyButton>
           <StatFlex id='blockScriptsStat' onClick={this.onToggleScriptsBlocked}>{javascriptBlocked}</StatFlex>
           <SelectBox id='blockScripts' value={javascript} onChange={this.onChangeBlockScripts}>
-            <option value='block'>{getMessage('changeAllNoScriptSettings')}</option>
+            <option value='block'>{getMessage('blockAllScriptsOrigins')}</option>
             <option value='allow'>{getMessage('allowAllScripts')}</option>
           </SelectBox>
           <ClickableEmptySpace onClick={this.onToggleScriptsBlocked} />
