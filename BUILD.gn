@@ -1,7 +1,7 @@
 action("brave-extension") {
   # Need this to fire re-pack if changed, nevertheless extension is repacked on each 2nd build
   inputs = [
-"app/actions/cosmeticFilterActions.ts",
+    "app/actions/cosmeticFilterActions.ts",
     "app/actions/runtimeActions.ts",
     "app/actions/shieldsPanelActions.ts",
     "app/actions/tabActions.ts",
@@ -39,7 +39,6 @@ action("brave-extension") {
     "app/components/braveShields/blockedResources/blockedResources.tsx",
     "app/components/braveShields/blockedResources/scriptsList.tsx",
     "app/components/braveShields/blockedResources/staticList.tsx",
-    "node_modules/brave-ui/features/shields/select/carat.svg",
     "app/constants/cosmeticFilterTypes.ts",
     "app/constants/resourceIdentifiers.ts",
     "app/constants/runtimeActionTypes.ts",

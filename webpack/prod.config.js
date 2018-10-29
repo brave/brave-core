@@ -63,11 +63,11 @@ module.exports = {
         ]
       },
       {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(woff(2)|svg)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'url-loader?limit=13000&minetype=application/font-woff'
       },
       {
-        test: /\.(ttf|eot|svg|ico|png|jpg|jpeg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(ttf|eot|ico|png|jpg|jpeg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
       }]
   }
