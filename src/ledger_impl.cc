@@ -473,7 +473,7 @@ void LedgerImpl::StartAutoContribute () {
      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
      ledger::PUBLISHER_MONTH::ANY,
      -1,
-     ledger::PUBLISHER_EXCLUDE::DEFAULT,
+     ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_DEFAULT,
      true,
      currentReconcileStamp
   );

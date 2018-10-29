@@ -108,7 +108,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::PUBLISHER_CATEGORY category,
       ledger::PUBLISHER_MONTH month,
       int year,
-      ledger::PUBLISHER_EXCLUDE excluded);
+      ledger::PUBLISHER_EXCLUDE_FILTER excluded);
 
   ledger::PublisherInfoFilter CreatePublisherFilter(
       const std::string& publisher_id,
@@ -122,7 +122,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::PUBLISHER_CATEGORY category,
       ledger::PUBLISHER_MONTH month,
       int year,
-      ledger::PUBLISHER_EXCLUDE excluded,
+      ledger::PUBLISHER_EXCLUDE_FILTER excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp);
 
@@ -135,6 +135,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   // LedgerCallbackHandler impl
   void OnPublisherStateSaved(ledger::Result result) override;
+  void onSetPublisherInfo(ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
   bool isEligibleForContribution(const ledger::PublisherInfo& info);
   bool isVerified(const std::string& publisher_id);
