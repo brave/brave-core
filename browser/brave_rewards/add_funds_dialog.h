@@ -12,6 +12,10 @@
 
 class Profile;
 
+namespace brave_rewards {
+  class RewardsService;
+}
+
 namespace content {
 class WebContents;
 }
@@ -19,12 +23,15 @@ class WebContents;
 namespace brave_rewards {
 
 void OpenAddFundsDialog(content::WebContents* initiator,
-                        const std::map<std::string, std::string>& addresses);
+                        const std::map<std::string, std::string>& addresses,
+                        brave_rewards::RewardsService* rewards_service);
 
-void OpenAddFundsExtensionDialog(gfx::NativeWindow parent_window,
-                                 Profile* profile,
-                                 content::WebContents* initiator,
-                                 const std::map<std::string, std::string>& addresses);
+void OpenAddFundsExtensionDialog(
+    gfx::NativeWindow parent_window,
+    Profile* profile,
+    content::WebContents* initiator,
+    const std::map<std::string, std::string>& addresses,
+    brave_rewards::RewardsService* rewards_service);
 }
 
 #endif  // BRAVE_BROWSER_REWARDS_ADD_FUNDS_DIALOG_H_

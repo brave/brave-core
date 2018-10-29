@@ -13,11 +13,13 @@
 #include "base/values.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/views/extensions/extension_dialog.h"
+#include "chrome/browser/ui/views/extensions/extension_dialog_observer.h"
 #include "chrome/browser/ui/webui/chrome_web_contents_handler.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/guest_view/browser/guest_view_base.h"
@@ -36,15 +38,14 @@ constexpr int kDialogMinHeight = 625;
 constexpr int kDialogMaxHeight = 700;
 constexpr int kDialogFallbackWidth = 750;
 
-const std::map<std::string, std::string> kCurrencyToNetworkMap {
-  {"BTC", "bitcoin"},
-  {"BAT", "ethereum"},
-  {"ETH", "ethereum"},
-  {"LTC", "litecoin"}
-};
+const std::map<std::string, std::string> kCurrencyToNetworkMap{
+    {"BTC", "bitcoin"},
+    {"BAT", "ethereum"},
+    {"ETH", "ethereum"},
+    {"LTC", "litecoin"}};
 
 std::string GetAddressesAsJSON(
-  const std::map<std::string, std::string>& addresses) {
+    const std::map<std::string, std::string>& addresses) {
   // Create a dictionary of addresses for serialization.
   auto addresses_dictionary = std::make_unique<base::DictionaryValue>();
   for (const auto& pair : addresses) {
@@ -72,7 +73,8 @@ class AddFundsDialogDelegate : public ui::WebDialogDelegate {
  public:
   explicit AddFundsDialogDelegate(
       WebContents* initiator,
-      const std::map<std::string, std::string>& addresses);
+      const std::map<std::string, std::string>& addresses,
+      brave_rewards::RewardsService* rewards_service);
   ~AddFundsDialogDelegate() override;
 
   // ui::WebDialogDelegate overrides.
@@ -91,14 +93,18 @@ class AddFundsDialogDelegate : public ui::WebDialogDelegate {
  private:
   WebContents* initiator_;
   const std::map<std::string, std::string> addresses_;
+  brave_rewards::RewardsService* rewards_service_;
 
   DISALLOW_COPY_AND_ASSIGN(AddFundsDialogDelegate);
 };
 
 AddFundsDialogDelegate::AddFundsDialogDelegate(
     WebContents* initiator,
-    const std::map<std::string, std::string>& addresses)
-    : initiator_(initiator), addresses_(addresses) {}
+    const std::map<std::string, std::string>& addresses,
+    brave_rewards::RewardsService* rewards_service)
+    : initiator_(initiator),
+      addresses_(addresses),
+      rewards_service_(rewards_service) {}
 
 AddFundsDialogDelegate::~AddFundsDialogDelegate() {}
 
@@ -119,8 +125,7 @@ GURL AddFundsDialogDelegate::GetDialogContentURL() const {
 }
 
 void AddFundsDialogDelegate::GetWebUIMessageHandlers(
-    std::vector<WebUIMessageHandler*>* /* handlers */) const {
-}
+    std::vector<WebUIMessageHandler*>* /* handlers */) const {}
 
 void AddFundsDialogDelegate::GetDialogSize(gfx::Size* size) const {
   DCHECK(size);
@@ -159,7 +164,9 @@ std::string AddFundsDialogDelegate::GetDialogArgs() const {
 }
 
 void AddFundsDialogDelegate::OnDialogClosed(
-    const std::string& /* json_retval */) {}
+    const std::string& /* json_retval */) {
+  rewards_service_->GetWalletProperties();
+}
 
 void AddFundsDialogDelegate::OnCloseContents(WebContents* /* source */,
                                              bool* out_close_dialog) {
@@ -176,6 +183,40 @@ bool AddFundsDialogDelegate::HandleContextMenu(
   return true;
 }
 
+class AddFundsExtensionDialogObserver : public ExtensionDialogObserver {
+ public:
+  explicit AddFundsExtensionDialogObserver(
+      brave_rewards::RewardsService* rewards_service);
+  ~AddFundsExtensionDialogObserver() override;
+
+  // ExtensionDialogObserver interface.
+  void ExtensionDialogClosing(ExtensionDialog* popup) override;
+  void ExtensionTerminated(ExtensionDialog* popup) override;
+
+ private:
+  brave_rewards::RewardsService* rewards_service_;
+
+  DISALLOW_COPY_AND_ASSIGN(AddFundsExtensionDialogObserver);
+};
+
+AddFundsExtensionDialogObserver::AddFundsExtensionDialogObserver(
+    brave_rewards::RewardsService* rewards_service)
+    : rewards_service_(rewards_service) {}
+
+AddFundsExtensionDialogObserver::~AddFundsExtensionDialogObserver() {}
+
+void AddFundsExtensionDialogObserver::ExtensionDialogClosing(
+    ExtensionDialog* popup) {
+  rewards_service_->GetWalletProperties();
+  popup->ObserverDestroyed();
+  delete this;
+}
+
+void AddFundsExtensionDialogObserver::ExtensionTerminated(
+    ExtensionDialog* popup) {
+  popup->Close();
+}
+
 gfx::Size GetHostSize(WebContents* web_contents) {
   content::WebContents* outermost_web_contents =
       guest_view::GuestViewBase::GetTopLevelWebContents(web_contents);
@@ -187,7 +228,8 @@ gfx::Size GetHostSize(WebContents* web_contents) {
 namespace brave_rewards {
 
 void OpenAddFundsDialog(WebContents* initiator,
-                        const std::map<std::string, std::string>& addresses) {
+                        const std::map<std::string, std::string>& addresses,
+                        brave_rewards::RewardsService* rewards_service) {
   gfx::Size host_size = GetHostSize(initiator);
   const int width = host_size.width() - kDialogMargin;
   gfx::Size min_size(width, kDialogMinHeight);
@@ -195,15 +237,17 @@ void OpenAddFundsDialog(WebContents* initiator,
   // TODO: adjust min and max when host size changes (e.g. window resize)
   ShowConstrainedWebDialogWithAutoResize(
       initiator->GetBrowserContext(),
-      new AddFundsDialogDelegate(initiator, addresses), initiator, min_size,
+      new AddFundsDialogDelegate(initiator, addresses, rewards_service),
+      initiator, min_size,
       max_size);
 }
 
 void OpenAddFundsExtensionDialog(
-  gfx::NativeWindow parent_window,
-  Profile* profile,
-  content::WebContents* initiator,
-  const std::map<std::string, std::string>& addresses) {
+    gfx::NativeWindow parent_window,
+    Profile* profile,
+    content::WebContents* initiator,
+    const std::map<std::string, std::string>& addresses,
+        brave_rewards::RewardsService* rewards_service) {
   gfx::Size host_size = GetHostSize(initiator);
   std::string url = std::string("chrome-extension://") +
                     brave_rewards_extension_id +
@@ -213,16 +257,9 @@ void OpenAddFundsExtensionDialog(
   const int width = host_size.width() - kDialogMargin - 100;
   const int height = host_size.height() - kDialogMargin - 100;
   /*ExtensionDialog* dialog = */ ExtensionDialog::Show(
-      gurl,
-      parent_window,
-      profile,
-      initiator,
-      width,
-      height,
-      width,
-      kDialogMinHeight,
-      L"Bave Rewards",
-      NULL);
+      gurl, parent_window, profile, initiator, width, height, width,
+      kDialogMinHeight, L"Bave Rewards",
+      new AddFundsExtensionDialogObserver(rewards_service));
 }
 
 }  // namespace brave_rewards

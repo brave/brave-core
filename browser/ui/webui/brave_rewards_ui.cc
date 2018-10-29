@@ -254,14 +254,15 @@ void RewardsDOMHandler::AddFundsToWallet(const base::ListValue* args) {
   if (!contents)
     return;
 
-#if 1
-  ::brave_rewards::OpenAddFundsDialog(contents, addresses);
+#if 0
+  ::brave_rewards::OpenAddFundsDialog(contents, addresses, rewards_service_);
 #else
   ::brave_rewards::OpenAddFundsExtensionDialog(
       contents->GetTopLevelNativeWindow(),
       Profile::FromWebUI(web_ui()),
       contents,
-      addresses);
+      addresses,
+      rewards_service_);
 #endif
 }
 

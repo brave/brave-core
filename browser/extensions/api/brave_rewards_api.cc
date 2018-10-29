@@ -59,7 +59,7 @@ ExtensionFunction::ResponseAction BraveRewardsAddFundsToWalletFunction::Run() {
     return RespondNow(Error("Cannot add funds to wallet: no rewards service."));
   }
 
-  ::brave_rewards::OpenAddFundsDialog(contents, addresses);
+  ::brave_rewards::OpenAddFundsDialog(contents, addresses, rewards_service_);
   return RespondNow(NoArguments());
 }
 
