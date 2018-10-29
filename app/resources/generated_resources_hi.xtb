@@ -163,7 +163,7 @@
 <translation id="750509436279396091">डाउनलोड फ़ोल्‍डर खोलें</translation>
 <translation id="2902312830803030883">और क्रियाएं</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; के द्वारा डाउनलोड किया गया</translation>
-<translation id="7909969815743704077">गुप्त मोड में डाउनलोड किया गया</translation>
+<translation id="6395403722585816044">गुप्त मोड में डाउनलोड किया गया</translation>
 <translation id="8028803902702117856">डाउनलोड हो रही है <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">फ़ाइल डाउनलोड हो रही है, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">फ़ाइल डाउनलोड हो रही है, <ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@
 <translation id="5939518447894949180">रीसेट करें</translation>
 <translation id="5546865291508181392">ढूंढें</translation>
 <translation id="833986336429795709">यह लिंक खोलने के लिए कोई ऐप्लिकेशन चुनें</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (गुप्त)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (गुप्त)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (अपडेट उपलब्‍ध है)</translation>
 <translation id="8525306231823319788">पूर्ण स्‍क्रीन</translation>
@@ -636,10 +636,10 @@
 <translation id="3429275422858276529">बाद में इस पेज को आसानी से पाने के लिए इसे बुकमार्क करें</translation>
 <translation id="3603533104205588786">पेज को बुकमार्क करने के लिए आप तारे पर क्लिक कर सकते हैं</translation>
 <translation id="6613452264606394692">इस पेज को बुकमार्क करके झटपट यहां वापस पहुंचें</translation>
-<translation id="8286963743045814739">आप गुप्त विंडो का उपयोग करके निजी रूप से ब्राउज़ कर सकते हैं</translation>
-<translation id="1211364473545090084">गुप्त विंडो के ज़रिए अपना ब्राउज़िंग इतिहास सेव किए बगैर वेब का उपयोग करें</translation>
-<translation id="6080515710685820702">शेयर किए गए कंप्यूटर का उपयोग कर रहे हैं? तो गुप्त विंडो खोलकर देखें.</translation>
-<translation id="7059893117020417984">निजी रूप से ब्राउज़ करने के लिए, 'डॉट आइकॉन मेन्यू' पर क्लिक करके 'गुप्त विंडो' खोलें</translation>
+<translation id="4369414322596874629">आप गुप्त विंडो का उपयोग करके निजी रूप से ब्राउज़ कर सकते हैं</translation>
+<translation id="3772947852642271642">गुप्त विंडो के ज़रिए अपना ब्राउज़िंग इतिहास सेव किए बगैर वेब का उपयोग करें</translation>
+<translation id="3871738366246972820">शेयर किए गए कंप्यूटर का उपयोग कर रहे हैं? तो गुप्त विंडो खोलकर देखें.</translation>
+<translation id="5808622652939943719">निजी रूप से ब्राउज़ करने के लिए, 'डॉट आइकॉन मेन्यू' पर क्लिक करके 'गुप्त विंडो' खोलें</translation>
 <translation id="8803953437405899238">एक क्लिक में नया टैब खोलें</translation>
 <translation id="3071624960923923138">नया टैब खोलने के लिए आप यहां क्लिक कर सकते हैं</translation>
 <translation id="4908811072292128752">एक बार में दो साइटें ब्राउज़ करने के लिए नया टैब खोलें</translation>
@@ -1131,13 +1131,13 @@
 <translation id="2367972762794486313">ऐप्स  दिखाएं</translation>
 <translation id="6466988389784393586">सभी बुकमार्क &amp;खोलें</translation>
 <translation id="6804671422566312077">सभी बुकमार्क &amp;नई विंडो में खोलें</translation>
-<translation id="3011362742078013760">सभी बुकमार्क &amp;गुप्त विंडो में खोलें</translation>
+<translation id="2692771564633877898">सभी बुकमार्क &amp;गुप्त विंडो में खोलें</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;सभी खोलें}=1{&amp;बुकमार्क खोलें}one{&amp;सभी (#) खोलें}other{&amp;सभी (#) खोलें}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{सभी को &amp;नई विंडो में खोलें}=1{&amp;नई विंडो में खोलें}one{सभी (#) को &amp;नई विंडो में खोलें}other{सभी (#) को &amp;नई विंडो में खोलें}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{सभी को &amp;गुप्त विंडो में खोलें}=1{&amp;गुप्त विंडों में खोलें}one{सभी (#) को &amp;गुप्त विंडो में खोलें}other{सभी (#) को &amp;गुप्त विंडो में खोलें}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{सभी को &amp;गुप्त विंडो में खोलें}=1{&amp;गुप्त विंडों में खोलें}one{सभी (#) को &amp;गुप्त विंडो में खोलें}other{सभी (#) को &amp;गुप्त विंडो में खोलें}}</translation>
 <translation id="9024127637873500333">नए टैब में &amp;खोलें</translation>
 <translation id="665061930738760572">&amp;नई विंडो में खोलें</translation>
-<translation id="37613671848467444">&amp;गुप्त विंडों में खोलें</translation>
+<translation id="1985165269306590797">&amp;गुप्त विंडों में खोलें</translation>
 <translation id="6702639462873609204">&amp;संपादित करें...</translation>
 <translation id="3088325635286126843">&amp;नाम बदलें...</translation>
 <translation id="5329858601952122676">&amp;हटाएं</translation>
@@ -1188,10 +1188,10 @@
 <translation id="8457451314607652708">बुकमार्क आयात करें</translation>
 <translation id="5101042277149003567">सभी बुकमार्क खोलें</translation>
 <translation id="7007648447224463482">सभी को नई विंडो में खोलें</translation>
-<translation id="4508051413094283164">सभी को गुप्त विंडो में खोलें</translation>
+<translation id="642436385689435488">सभी को गुप्त विंडो में खोलें</translation>
 <translation id="4195643157523330669">नए टैब में खोलें</translation>
 <translation id="2979639724566107830">नई विंडो में खोलें</translation>
-<translation id="1134009406053225289">गुप्त विंडो में खोलें</translation>
+<translation id="5463021359602611602">गुप्त विंडो में खोलें</translation>
 <translation id="1173894706177603556">नाम बदलें</translation>
 <translation id="5170568018924773124">फ़ोल्डर में दिखाएं</translation>
 <translation id="6825184156888454064">नाम के अनुसार क्रम से लगाएं</translation>
@@ -1279,7 +1279,7 @@
 <translation id="4159681666905192102">यह बच्‍चों के लिए बनाया गया खाता है जिसे <ph name="CUSTODIAN_EMAIL"/> और <ph name="SECOND_CUSTODIAN_EMAIL"/> द्वारा प्रबंधित किया जाता है.</translation>
 <translation id="5958529069007801266">निगरानी में रखा गया उपयोगकर्ता</translation>
 <translation id="5720705177508910913">वर्तमान उपयोगकर्ता</translation>
-<translation id="7081952801286122383">आप गुप्त मोड में हैं</translation>
+<translation id="5070556616376997776">आप गुप्त मोड में हैं</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: सिंक सुविधा काम नहीं कर रही है</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: सिंक करना रोका गया</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (पर्यवेक्षित)</translation>
@@ -2541,9 +2541,9 @@
 <translation id="6782111308708962316">तृतीय पक्ष वेबसाइट को कुकी डेटा सहेजने और पढ़ने से रोकें</translation>
 <translation id="3378503599595235699">स्थानीय डेटा केवल तब तक रखें जब तक कि आप अपने ब्राउज़र से बाहर न निकल जाएं</translation>
 <translation id="1274977772557788323">Adobe Flash Player जगह सेटिंग</translation>
-<translation id="1698122934742150150">केवल वर्तमान गुप्त सत्र</translation>
-<translation id="5838456317242088717">वर्तमान गुप्त सत्र</translation>
-<translation id="2318923050469484167">वर्तमान गुप्त सत्र (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">केवल वर्तमान गुप्त सत्र</translation>
+<translation id="3479035826743782247">वर्तमान गुप्त सत्र</translation>
+<translation id="4750220700975225">वर्तमान गुप्त सत्र (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">कोई भी साइट ज़ूम इन या ज़ूम आउट नहीं की गई है</translation>
 <translation id="3566721612727112615">कोई साइट नहीं जोड़ी गई</translation>
 <translation id="8098574385249290065">Brave को चुनने दें कि साइटें कब आवाज़ चला सकती हैं (सुझाव)</translation>
@@ -2843,7 +2843,7 @@
 <translation id="329838636886466101">ठीक करें</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(प्रयोग में नहीं)</translation>
-<translation id="1603914832182249871">(गुप्त)</translation>
+<translation id="3860292630623580294">(गुप्त)</translation>
 <translation id="6655190889273724601">डेवलपर मोड</translation>
 <translation id="2868746137289129307">यह एक्‍सटेंशन पुराना हो चुका है और एंटरप्राइज़ नीति द्वारा अक्षम कर दिया गया है. अधिक नया वर्शन उपलब्‍ध हो जाने पर वह अपने आप सक्षम हो सकता है.</translation>
 <translation id="6841186874966388268">त्रुटियां</translation>
@@ -2864,7 +2864,7 @@
 <translation id="1805822111539868586">व्यू का निरीक्षण करें</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> और...</translation>
 <translation id="2450849356604136918">कोई सक्रिय दृश्य नहीं</translation>
-<translation id="5488468185303821006">गुप्त विंडो में अनुमति दें</translation>
+<translation id="4854477725773269949">गुप्त विंडो में अनुमति दें</translation>
 <translation id="6124650939968185064">निम्न एक्सटेंशन इस एक्सटेंशन पर निर्भर हैं:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (आईडी: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> से संबंधित</translation>
@@ -2958,10 +2958,8 @@
 <translation id="6041155700700864984">पूर्णस्‍क्रीन से बाहर निकलें</translation>
 <translation id="6112294629795967147">आकार बदलने के लिए छुएं</translation>
 <translation id="2453860139492968684">समाप्त करें</translation>
-<translation id="1853692000353488670">नया गुप्त टैब</translation>
 <translation id="6336451774241870485">नया निजी टैब</translation>
-<translation id="5530766185686772672">गुप्त टैब बंद करें</translation>
 <translation id="6610147964972079463">निजी टैब बंद करें</translation>
 <translation id="8076492880354921740">टैब</translation>
-<translation id="1049743911850919806">गुप्त</translation>
+<translation id="5186185447130319458">गुप्त</translation>
 </translationbundle>

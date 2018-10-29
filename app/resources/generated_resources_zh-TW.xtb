@@ -163,7 +163,7 @@
 <translation id="750509436279396091">開啟下載內容資料夾</translation>
 <translation id="2902312830803030883">更多動作</translation>
 <translation id="3612673635130633812">「&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;」下載了這個檔案</translation>
-<translation id="7909969815743704077">已在無痕模式中下載</translation>
+<translation id="6395403722585816044">已在無痕模式中下載</translation>
 <translation id="8028803902702117856">正在下載 <ph name="FILE_NAME"/>，檔案大小為 <ph name="SIZE"/></translation>
 <translation id="4644818355646995778">下載中，<ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">下載中，<ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@
 <translation id="5939518447894949180">重設</translation>
 <translation id="5546865291508181392">尋找</translation>
 <translation id="833986336429795709">請選擇要用來開啟這個連結的應用程式</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (無痕模式)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (無痕模式)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (有可用的更新)</translation>
 <translation id="8525306231823319788">全螢幕</translation>
@@ -636,10 +636,10 @@
 <translation id="3429275422858276529">將這個網頁加入書籤，方便日後查看</translation>
 <translation id="3603533104205588786">按一下星號即可將網頁加入書籤</translation>
 <translation id="6613452264606394692">將此頁加入書籤，方便你快速返回</translation>
-<translation id="8286963743045814739">使用無痕式視窗，安心進行私密瀏覽</translation>
-<translation id="1211364473545090084">如果不希望系統在你使用網路時儲存你的瀏覽記錄，請使用無痕式視窗</translation>
-<translation id="6080515710685820702">你是與其他人共用電腦嗎？試試使用無痕式視窗。</translation>
-<translation id="7059893117020417984">如果想要進行私密瀏覽，請按一下三個圓點圖示的選單，然後開啟無痕式視窗</translation>
+<translation id="4369414322596874629">使用無痕式視窗，安心進行私密瀏覽</translation>
+<translation id="3772947852642271642">如果不希望系統在你使用網路時儲存你的瀏覽記錄，請使用無痕式視窗</translation>
+<translation id="3871738366246972820">你是與其他人共用電腦嗎？試試使用無痕式視窗。</translation>
+<translation id="5808622652939943719">如果想要進行私密瀏覽，請按一下三個圓點圖示的選單，然後開啟無痕式視窗</translation>
 <translation id="8803953437405899238">按一下即可開啟新分頁</translation>
 <translation id="3071624960923923138">按一下這裡即可開啟新分頁</translation>
 <translation id="4908811072292128752">開啟新分頁即可一次瀏覽兩個網站</translation>
@@ -1131,13 +1131,13 @@
 <translation id="2367972762794486313">顯示應用程式</translation>
 <translation id="6466988389784393586">開啟所有書籤(&amp;O)</translation>
 <translation id="6804671422566312077">在新視窗中開啟所有書籤(&amp;N)</translation>
-<translation id="3011362742078013760">在無痕式視窗中開啟所有書籤(&amp;I)</translation>
+<translation id="2692771564633877898">在無痕式視窗中開啟所有書籤(&amp;I)</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{開啟所有書籤(&amp;O)}=1{開啟書籤(&amp;O)}other{開啟全部 # 個書籤(&amp;O)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{在新視窗中開啟所有書籤(&amp;N)}=1{在新視窗中開啟(&amp;N)}other{在新視窗中開啟全部 # 個書籤(&amp;N)}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;I)}=1{在無痕式視窗中開啟(&amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;I)}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;I)}=1{在無痕式視窗中開啟(&amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;I)}}</translation>
 <translation id="9024127637873500333">在新分頁中開啟(&amp;O)</translation>
 <translation id="665061930738760572">在新視窗中開啟(&amp;N)</translation>
-<translation id="37613671848467444">在無痕式視窗中開啟(&amp;I)</translation>
+<translation id="1985165269306590797">在無痕式視窗中開啟(&amp;I)</translation>
 <translation id="6702639462873609204">編輯(&amp;E)...</translation>
 <translation id="3088325635286126843">重新命名(&amp;R)...</translation>
 <translation id="5329858601952122676">刪除(&amp;D)</translation>
@@ -1188,10 +1188,10 @@
 <translation id="8457451314607652708">匯入書籤</translation>
 <translation id="5101042277149003567">開啟所有書籤</translation>
 <translation id="7007648447224463482">在新視窗中開啟所有書籤</translation>
-<translation id="4508051413094283164">在無痕式視窗中開啟所有書籤</translation>
+<translation id="642436385689435488">在無痕式視窗中開啟所有書籤</translation>
 <translation id="4195643157523330669">在新分頁中開啟</translation>
 <translation id="2979639724566107830">於新視窗中開啟</translation>
-<translation id="1134009406053225289">在無痕式視窗中開啟</translation>
+<translation id="5463021359602611602">在無痕式視窗中開啟</translation>
 <translation id="1173894706177603556">重新命名</translation>
 <translation id="5170568018924773124">在資料夾中顯示</translation>
 <translation id="6825184156888454064">依名稱排序</translation>
@@ -1279,7 +1279,7 @@
 <translation id="4159681666905192102">這是由 <ph name="CUSTODIAN_EMAIL"/> 和 <ph name="SECOND_CUSTODIAN_EMAIL"/> 所管理的兒童專用帳戶。</translation>
 <translation id="5958529069007801266">受監管的使用者</translation>
 <translation id="5720705177508910913">目前使用者</translation>
-<translation id="7081952801286122383">目前為無痕模式</translation>
+<translation id="5070556616376997776">目前為無痕模式</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>：同步處理功能無法正常運作</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>：已暫停同步處理</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (受監管)</translation>
@@ -2541,9 +2541,9 @@
 <translation id="6782111308708962316">禁止第三方網站儲存及讀取 Cookie 資料</translation>
 <translation id="3378503599595235699">將本機資料保留到你關閉瀏覽器為止</translation>
 <translation id="1274977772557788323">Adobe Flash Player 儲存設定</translation>
-<translation id="1698122934742150150">僅適用於目前的無痕模式工作階段</translation>
-<translation id="5838456317242088717">目前的無痕模式工作階段</translation>
-<translation id="2318923050469484167">目前的無痕模式工作階段 (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">僅適用於目前的無痕模式工作階段</translation>
+<translation id="3479035826743782247">目前的無痕模式工作階段</translation>
+<translation id="4750220700975225">目前的無痕模式工作階段 (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">未針對任何網站設定縮放等級</translation>
 <translation id="3566721612727112615">未新增任何網站</translation>
 <translation id="8098574385249290065">讓 Brave 自行判斷何時允許網站播放音訊 (建議使用)</translation>
@@ -2843,7 +2843,7 @@
 <translation id="329838636886466101">修復</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(無法使用)</translation>
-<translation id="1603914832182249871">(無痕模式)</translation>
+<translation id="3860292630623580294">(無痕模式)</translation>
 <translation id="6655190889273724601">開發人員模式</translation>
 <translation id="2868746137289129307">這項過舊的擴充功能現已依企業政策停用。如有可用的新版本，則可能會自動重新啟用。</translation>
 <translation id="6841186874966388268">錯誤</translation>
@@ -2864,7 +2864,7 @@
 <translation id="1805822111539868586">查看檢視模式</translation>
 <translation id="181577467034453336">還有 <ph name="NUMBER_OF_VIEWS"/> 個畫面...</translation>
 <translation id="2450849356604136918">沒有運作中的檢視畫面</translation>
-<translation id="5488468185303821006">允許在無痕模式中執行</translation>
+<translation id="4854477725773269949">允許在無痕模式中執行</translation>
 <translation id="6124650939968185064">下列擴充功能與這個擴充功能之間有相依關係：</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID：<ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">與「<ph name="NAME_PH"/>」相關</translation>
@@ -2958,10 +2958,8 @@
 <translation id="6041155700700864984">結束全螢幕</translation>
 <translation id="6112294629795967147">輕觸即可調整大小</translation>
 <translation id="2453860139492968684">結束</translation>
-<translation id="1853692000353488670">新增無痕式分頁</translation>
 <translation id="6336451774241870485">新私密分頁</translation>
-<translation id="5530766185686772672">關閉無痕式分頁</translation>
 <translation id="6610147964972079463">關閉私密分頁</translation>
 <translation id="8076492880354921740">分頁</translation>
-<translation id="1049743911850919806">無痕模式</translation>
+<translation id="5186185447130319458">無痕模式</translation>
 </translationbundle>

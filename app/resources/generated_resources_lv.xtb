@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Atvērt lejupielāžu mapi</translation>
 <translation id="2902312830803030883">Citas darbības</translation>
 <translation id="3612673635130633812">Lejupielādēja paplašinājums &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Lejupielādēts inkognito režīmā</translation>
+<translation id="6395403722585816044">Lejupielādēts inkognito režīmā</translation>
 <translation id="8028803902702117856">Notiek lejupielāde: <ph name="FILE_NAME"/>, <ph name="SIZE"/></translation>
 <translation id="4644818355646995778">Notiek lejupielāde: <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Notiek lejupielāde: <ph name="STATUS"/></translation>
@@ -607,7 +607,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="5939518447894949180">Atiestatīt</translation>
 <translation id="5546865291508181392">Atrast</translation>
 <translation id="833986336429795709">Lai atvērtu šo saiti, izvēlieties lietotni.</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Inkognito režīms)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito režīms)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> — <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (ir pieejams atjauninājums)</translation>
 <translation id="8525306231823319788">Pilnekrāna režīms</translation>
@@ -635,10 +635,10 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="3429275422858276529">Saglabājiet šo lapu kā grāmatzīmi, lai vēlāk varētu to viegli atrast</translation>
 <translation id="3603533104205588786">Varat noklikšķināt uz zvaigznītes, lai saglabātu lapu kā grāmatzīmi</translation>
 <translation id="6613452264606394692">Saglabājiet šo lapu kā grāmatzīmi, lai vēlāk to vieglāk atrastu</translation>
-<translation id="8286963743045814739">Varat pārlūkot tīmekli privāti inkognito režīma logā.</translation>
-<translation id="1211364473545090084">Pārlūkojiet tīmekli inkognito režīma logā, nesaglabājot pārlūkošanas vēsturi.</translation>
-<translation id="6080515710685820702">Vai izmantojat koplietotu datoru? Atveriet inkognito režīma logu.</translation>
-<translation id="7059893117020417984">Lai pārlūkotu tīmekli privāti, atveriet inkognito režīma logu, noklikšķinot uz punktu ikonas izvēlnes.</translation>
+<translation id="4369414322596874629">Varat pārlūkot tīmekli privāti inkognito režīma logā.</translation>
+<translation id="3772947852642271642">Pārlūkojiet tīmekli inkognito režīma logā, nesaglabājot pārlūkošanas vēsturi.</translation>
+<translation id="3871738366246972820">Vai izmantojat koplietotu datoru? Atveriet inkognito režīma logu.</translation>
+<translation id="5808622652939943719">Lai pārlūkotu tīmekli privāti, atveriet inkognito režīma logu, noklikšķinot uz punktu ikonas izvēlnes.</translation>
 <translation id="8803953437405899238">Atveriet jaunu cilni tikai ar vienu klikšķi</translation>
 <translation id="3071624960923923138">Varat noklikšķināt šeit, lai atvērtu jaunu cilni.</translation>
 <translation id="4908811072292128752">Atveriet jaunu cilni, lai pārlūkotu divas vietnes vienlaikus.</translation>
@@ -1130,13 +1130,13 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="2367972762794486313">Rādīt lietotnes</translation>
 <translation id="6466988389784393586">&amp;Atvērt visas grāmatzīmes</translation>
 <translation id="6804671422566312077">Atvērt visas grāmatzīmes &amp;jaunā logā</translation>
-<translation id="3011362742078013760">Atvērt visas grāmatzīmes &amp;inkognito režīma logā</translation>
+<translation id="2692771564633877898">Atvērt visas grāmatzīmes &amp;inkognito režīma logā</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{Atvērt visas}=1{Atvērt grāmatzīmi}zero{Atvērt visas (#)}one{Atvērt visas (#)}other{Atvērt visas (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Atvērt visas jaunā logā}=1{Atvērt jaunā logā}zero{Atvērt visas (#) jaunā logā}one{Atvērt visas (#) jaunā logā}other{Atvērt visas (#) jaunā logā}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Atvērt visas inkognito režīma logā}=1{Atvērt inkognito režīma logā}zero{Atvērt visas (#) inkognito režīma logā}one{Atvērt visas (#) inkognito režīma logā}other{Atvērt visas (#) inkognito režīma logā}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Atvērt visas inkognito režīma logā}=1{Atvērt inkognito režīma logā}zero{Atvērt visas (#) inkognito režīma logā}one{Atvērt visas (#) inkognito režīma logā}other{Atvērt visas (#) inkognito režīma logā}}</translation>
 <translation id="9024127637873500333">&amp;Atvērt jaunā cilnē</translation>
 <translation id="665061930738760572">Atvērt &amp;jaunā logā</translation>
-<translation id="37613671848467444">Atvērt &amp;inkognito režīma logā</translation>
+<translation id="1985165269306590797">Atvērt &amp;inkognito režīma logā</translation>
 <translation id="6702639462873609204">&amp;Rediģēt...</translation>
 <translation id="3088325635286126843">&amp;Pārdēvēt...</translation>
 <translation id="5329858601952122676">Dzēst</translation>
@@ -1187,10 +1187,10 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="8457451314607652708">Importēt grāmatzīmes</translation>
 <translation id="5101042277149003567">Atvērt visas grāmatzīmes</translation>
 <translation id="7007648447224463482">Atvērt visu jaunā logā</translation>
-<translation id="4508051413094283164">Atvērt visu inkognito režīma logā</translation>
+<translation id="642436385689435488">Atvērt visu inkognito režīma logā</translation>
 <translation id="4195643157523330669">Atvērt jaunā cilnē</translation>
 <translation id="2979639724566107830">Atvērt jaunā logā</translation>
-<translation id="1134009406053225289">Atvērt inkognito logā</translation>
+<translation id="5463021359602611602">Atvērt inkognito logā</translation>
 <translation id="1173894706177603556">Pārdēvēt</translation>
 <translation id="5170568018924773124">Rādīt mapē</translation>
 <translation id="6825184156888454064">Kārtot pēc nosaukuma</translation>
@@ -1279,7 +1279,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4159681666905192102">Šis ir bērniem paredzēts konts, ko pārvalda <ph name="CUSTODIAN_EMAIL"/> un <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Uzraudzīts lietotājs</translation>
 <translation id="5720705177508910913">Pašreizējais lietotājs</translation>
-<translation id="7081952801286122383">Iespējots inkognito režīms</translation>
+<translation id="5070556616376997776">Iespējots inkognito režīms</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: sinhronizācija nedarbojas</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: sinhronizācija ir apturēta</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (uzraudzītais)</translation>
@@ -2541,9 +2541,9 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6782111308708962316">Neļaut trešo pušu vietnēm saglabāt un nolasīt sīkfailu datus</translation>
 <translation id="3378503599595235699">Saglabāt vietējos datus, līdz tiek aizvērts pārlūks</translation>
 <translation id="1274977772557788323">Adobe Flash Player krātuves iestatījumi</translation>
-<translation id="1698122934742150150">Tikai pašreizējā inkognito sesijā</translation>
-<translation id="5838456317242088717">Pašreizējā inkognito sesija</translation>
-<translation id="2318923050469484167">Pašreizējā inkognito sesija (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Tikai pašreizējā inkognito sesijā</translation>
+<translation id="3479035826743782247">Pašreizējā inkognito sesija</translation>
+<translation id="4750220700975225">Pašreizējā inkognito sesija (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nevienā vietnē nav veikta tālummaiņa.</translation>
 <translation id="3566721612727112615">Nav pievienota neviena vietne</translation>
 <translation id="8098574385249290065">Atļaut pārlūkam Brave izvēlēties, kad vietnēs var atskaņot skaņu (ieteicams)</translation>
@@ -2843,7 +2843,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="329838636886466101">Labot</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Neaktīva)</translation>
-<translation id="1603914832182249871">(Inkognito)</translation>
+<translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="6655190889273724601">Izstrādātāja režīms</translation>
 <translation id="2868746137289129307">Šis paplašinājums ir novecojis, un uzņēmuma politika to ir atspējojusi. Kad būs pieejama jaunāka versija, iespējams, paplašinājums tiks automātiski iespējots.</translation>
 <translation id="6841186874966388268">Kļūdas</translation>
@@ -2864,7 +2864,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1805822111539868586">Pārbaudīt skatījumus</translation>
 <translation id="181577467034453336">Vēl <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">Nav aktīvu skatījumu</translation>
-<translation id="5488468185303821006">Atļaut inkognito režīmā</translation>
+<translation id="4854477725773269949">Atļaut inkognito režīmā</translation>
 <translation id="6124650939968185064">Tālāk norādītie paplašinājumi ir atkarīgi no šī paplašinājuma:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Saistīts(-a) ar <ph name="NAME_PH"/></translation>
@@ -2958,10 +2958,8 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6041155700700864984">Aizvērt pilnekrāna režīmu</translation>
 <translation id="6112294629795967147">Pieskarties, lai mainītu lielumu</translation>
 <translation id="2453860139492968684">Pabeigt</translation>
-<translation id="1853692000353488670">Jauna inkognito cilne</translation>
 <translation id="6336451774241870485">Jauna privātā cilne</translation>
-<translation id="5530766185686772672">Aizvērt inkognito cilnes</translation>
 <translation id="6610147964972079463">Aizvērt privātās cilnes</translation>
 <translation id="8076492880354921740">Cilnes</translation>
-<translation id="1049743911850919806">Inkognito</translation>
+<translation id="5186185447130319458">Inkognito</translation>
 </translationbundle>

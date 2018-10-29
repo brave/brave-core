@@ -163,7 +163,7 @@
 <translation id="750509436279396091">다운로드 폴더 열기</translation>
 <translation id="2902312830803030883">추가 작업</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;에서 다운로드함</translation>
-<translation id="7909969815743704077">시크릿 모드에서 다운로드됨</translation>
+<translation id="6395403722585816044">시크릿 모드에서 다운로드됨</translation>
 <translation id="8028803902702117856"><ph name="SIZE"/> 다운로드 중, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">다운로드 중, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">다운로드 중, <ph name="STATUS"/></translation>
@@ -606,7 +606,7 @@
 <translation id="5939518447894949180">초기화</translation>
 <translation id="5546865291508181392">찾기</translation>
 <translation id="833986336429795709">이 링크를 열려면 앱을 선택하세요.</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (시크릿 모드)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (시크릿 모드)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/>(업데이트 사용 가능)</translation>
 <translation id="8525306231823319788">전체화면</translation>
@@ -634,10 +634,10 @@
 <translation id="3429275422858276529">이 페이지를 북마크에 추가하여 나중에 쉽게 찾으세요.</translation>
 <translation id="3603533104205588786">별표를 클릭하여 페이지를 북마크에 추가할 수 있습니다.</translation>
 <translation id="6613452264606394692">이 페이지를 북마크에 추가하여 빠르게 다시 방문하세요.</translation>
-<translation id="8286963743045814739">시크릿 창을 사용하면 비공개로 탐색할 수 있습니다.</translation>
-<translation id="1211364473545090084">시크릿 창에서는 인터넷 사용 기록을 저장하지 않고 웹을 사용할 수 있습니다.</translation>
-<translation id="6080515710685820702">공유 컴퓨터를 사용 중이신가요? 시크릿 창에서 열어보세요.</translation>
-<translation id="7059893117020417984">비공개로 탐색하려면 점 아이콘 메뉴를 클릭하여 시크릿 창을 여세요.</translation>
+<translation id="4369414322596874629">시크릿 창을 사용하면 비공개로 탐색할 수 있습니다.</translation>
+<translation id="3772947852642271642">시크릿 창에서는 인터넷 사용 기록을 저장하지 않고 웹을 사용할 수 있습니다.</translation>
+<translation id="3871738366246972820">공유 컴퓨터를 사용 중이신가요? 시크릿 창에서 열어보세요.</translation>
+<translation id="5808622652939943719">비공개로 탐색하려면 점 아이콘 메뉴를 클릭하여 시크릿 창을 여세요.</translation>
 <translation id="8803953437405899238">클릭 한 번으로 새 탭을 열 수 있습니다.</translation>
 <translation id="3071624960923923138">여기를 클릭하여 새 탭을 열 수 있습니다</translation>
 <translation id="4908811072292128752">새 탭을 열어 한 번에 두 개의 사이트를 탐색할 수 있습니다</translation>
@@ -1129,13 +1129,13 @@
 <translation id="2367972762794486313">앱 표시</translation>
 <translation id="6466988389784393586">모든 북마크 열기(&amp;O)</translation>
 <translation id="6804671422566312077">모든 북마크를 새 창에서 열기(&amp;N)</translation>
-<translation id="3011362742078013760">모든 북마크를 시크릿 창에서 열기(&amp;I)</translation>
+<translation id="2692771564633877898">모든 북마크를 시크릿 창에서 열기(&amp;I)</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{모두 열기(O)}=1{북마크 열기(O)}other{#개 모두 열기(O)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{모두 새 창에서 열기(N)}=1{새 창에서 열기(N)}other{#개 모두 새 창에서 열기(N)}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{시크릿 창에서 모두 열기(I)}=1{시크릿 창에서 열기(I)}other{시크릿 창에서 #개 모두 열기(I)}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{시크릿 창에서 모두 열기(I)}=1{시크릿 창에서 열기(I)}other{시크릿 창에서 #개 모두 열기(I)}}</translation>
 <translation id="9024127637873500333">새 탭에서 열기(&amp;O)</translation>
 <translation id="665061930738760572">새 창에서 열기(&amp;N)</translation>
-<translation id="37613671848467444">시크릿 창에서 열기(&amp;I)</translation>
+<translation id="1985165269306590797">시크릿 창에서 열기(&amp;I)</translation>
 <translation id="6702639462873609204">수정(&amp;E)...</translation>
 <translation id="3088325635286126843">이름 바꾸기(&amp;R)...</translation>
 <translation id="5329858601952122676">삭제(&amp;D)</translation>
@@ -1186,10 +1186,10 @@
 <translation id="8457451314607652708">북마크 가져오기</translation>
 <translation id="5101042277149003567">모든 북마크 열기</translation>
 <translation id="7007648447224463482">모두 새 창에서 열기</translation>
-<translation id="4508051413094283164">모두 시크릿 창에서 열기</translation>
+<translation id="642436385689435488">모두 시크릿 창에서 열기</translation>
 <translation id="4195643157523330669">새 탭에서 열기</translation>
 <translation id="2979639724566107830">새 창에서 열기</translation>
-<translation id="1134009406053225289">시크릿 창으로 열기</translation>
+<translation id="5463021359602611602">시크릿 창으로 열기</translation>
 <translation id="1173894706177603556">이름 바꾸기</translation>
 <translation id="5170568018924773124">폴더 열기</translation>
 <translation id="6825184156888454064">이름순 정렬</translation>
@@ -1277,7 +1277,7 @@
 <translation id="4159681666905192102"><ph name="CUSTODIAN_EMAIL"/>님과 <ph name="SECOND_CUSTODIAN_EMAIL"/>님이 관리하는 어린이용 계정입니다.</translation>
 <translation id="5958529069007801266">관리 대상 사용자</translation>
 <translation id="5720705177508910913">현재 사용자</translation>
-<translation id="7081952801286122383">시크릿 모드를 사용 중입니다.</translation>
+<translation id="5070556616376997776">시크릿 모드를 사용 중입니다.</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: 동기화가 작동하지 않음</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: 동기화 중지됨</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/>(관리 대상)</translation>
@@ -2539,9 +2539,9 @@
 <translation id="6782111308708962316">타사 웹사이트에서 쿠키 데이터를 저장하거나 읽을 수 없도록 방지합니다.</translation>
 <translation id="3378503599595235699">브라우저를 종료할 때까지만 로컬 데이터 유지</translation>
 <translation id="1274977772557788323">Adobe Flash Player 저장용량 설정</translation>
-<translation id="1698122934742150150">현재 시크릿 세션에만</translation>
-<translation id="5838456317242088717">현재 시크릿 세션</translation>
-<translation id="2318923050469484167">현재 시크릿 세션(<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">현재 시크릿 세션에만</translation>
+<translation id="3479035826743782247">현재 시크릿 세션</translation>
+<translation id="4750220700975225">현재 시크릿 세션(<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">확대 또는 축소된 사이트가 없음</translation>
 <translation id="3566721612727112615">추가된 사이트 없음</translation>
 <translation id="8098574385249290065">사이트의 소리 재생 여부를 Brave이 결정(권장)</translation>
@@ -2841,7 +2841,7 @@
 <translation id="329838636886466101">복구</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(비활성)</translation>
-<translation id="1603914832182249871">(시크릿 모드)</translation>
+<translation id="3860292630623580294">(시크릿 모드)</translation>
 <translation id="6655190889273724601">개발자 모드</translation>
 <translation id="2868746137289129307">이 확장 프로그램은 오래된 것이며 기업 정책에 의해 중지되었습니다. 새로운 버전이 있는 경우 자동으로 사용 설정될 수 있습니다.</translation>
 <translation id="6841186874966388268">오류</translation>
@@ -2862,7 +2862,7 @@
 <translation id="1805822111539868586">뷰 검사</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/>개 더보기...</translation>
 <translation id="2450849356604136918">활성화된 뷰 없음</translation>
-<translation id="5488468185303821006">시크릿 모드에서 허용</translation>
+<translation id="4854477725773269949">시크릿 모드에서 허용</translation>
 <translation id="6124650939968185064">이 확장 프로그램에 종속되는 확장 프로그램:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/>(ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> 관련</translation>
@@ -2956,10 +2956,8 @@
 <translation id="6041155700700864984">전체화면 종료</translation>
 <translation id="6112294629795967147">터치하여 크기 조정</translation>
 <translation id="2453860139492968684">완료</translation>
-<translation id="1853692000353488670">새 시크릿 탭</translation>
 <translation id="6336451774241870485">새 비공개 탭</translation>
-<translation id="5530766185686772672">시크릿 탭 닫기</translation>
 <translation id="6610147964972079463">비공개 탭 닫기</translation>
 <translation id="8076492880354921740">탭</translation>
-<translation id="1049743911850919806">시크릿</translation>
+<translation id="5186185447130319458">시크릿</translation>
 </translationbundle>

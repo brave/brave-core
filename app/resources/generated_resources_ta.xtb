@@ -163,7 +163,7 @@
 <translation id="750509436279396091">பதிவிறக்கங்கள் கோப்புறையைத் திற</translation>
 <translation id="2902312830803030883">மேலும் செயல்கள்</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; ஆல் பதிவிறக்கப்பட்டது</translation>
-<translation id="7909969815743704077">மறைநிலையில் பதிவிறக்கப்பட்டது</translation>
+<translation id="6395403722585816044">மறைநிலையில் பதிவிறக்கப்பட்டது</translation>
 <translation id="8028803902702117856"><ph name="SIZE"/>, <ph name="FILE_NAME"/>ஐப் பதிவிறக்குகிறது</translation>
 <translation id="4644818355646995778">பதிவிறக்குகிறது, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">பதிவிறக்குகிறது, <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@
 <translation id="5939518447894949180">மீட்டமை</translation>
 <translation id="5546865291508181392">கண்டுபிடி</translation>
 <translation id="833986336429795709">இந்த இணைப்பைத் திறக்க, பயன்பாட்டைத் தேர்வுசெய்யும்</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (மறைநிலை)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (மறைநிலை)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (புதுப்பித்தல் இருக்கிறது)</translation>
 <translation id="8525306231823319788">முழுத்திரை</translation>
@@ -637,10 +637,10 @@
 <translation id="3429275422858276529">இந்தப் பக்கத்தைப் பிறகு எளிதாகக் கண்டறிய, புத்தகக்குறியிடவும்</translation>
 <translation id="3603533104205588786">பக்கத்தைப் புத்தகக்குறியிட, நட்சத்திரத்தைக் கிளிக் செய்யலாம்</translation>
 <translation id="6613452264606394692">இந்தப் பக்கத்தைப் புத்தகக்குறியிடுவதன் மூலம், விரைவாக இதை அணுகலாம்</translation>
-<translation id="8286963743045814739">மறைநிலைச் சாளரத்தைப் பயன்படுத்தி, தனிப்பட்ட முறையில் உலாவலாம்</translation>
-<translation id="1211364473545090084">மறைநிலைச் சாளரம் மூலம் உங்கள் உலாவல் வரலாற்றைச் சேமிக்காமலே இணையத்தைப் பயன்படுத்தலாம்</translation>
-<translation id="6080515710685820702">பலரும் பயன்படுத்தும் கணினியைப் பயன்படுத்துகிறீர்களா? மறைநிலைச் சாளரத்தைப் பயன்படுத்திப் பார்க்கவும்.</translation>
-<translation id="7059893117020417984">தனிப்பட்ட முறையில் உலாவ, புள்ளி ஐகான் மெனுவைக் கிளிக் செய்து, மறைநிலைச் சாளரத்தைத் திறக்கவும்</translation>
+<translation id="4369414322596874629">மறைநிலைச் சாளரத்தைப் பயன்படுத்தி, தனிப்பட்ட முறையில் உலாவலாம்</translation>
+<translation id="3772947852642271642">மறைநிலைச் சாளரம் மூலம் உங்கள் உலாவல் வரலாற்றைச் சேமிக்காமலே இணையத்தைப் பயன்படுத்தலாம்</translation>
+<translation id="3871738366246972820">பலரும் பயன்படுத்தும் கணினியைப் பயன்படுத்துகிறீர்களா? மறைநிலைச் சாளரத்தைப் பயன்படுத்திப் பார்க்கவும்.</translation>
+<translation id="5808622652939943719">தனிப்பட்ட முறையில் உலாவ, புள்ளி ஐகான் மெனுவைக் கிளிக் செய்து, மறைநிலைச் சாளரத்தைத் திறக்கவும்</translation>
 <translation id="8803953437405899238">ஒரே கிளிக்கில் புதிய தாவலைத் திறக்கலாம்</translation>
 <translation id="3071624960923923138">புதிய தாவலைத் திறக்க, இங்கே கிளிக் செய்யவும்</translation>
 <translation id="4908811072292128752">ஒரே நேரத்தில் இரண்டு தளங்களைப் பார்வையிட, புதிய தாவலைத் திறக்கவும்</translation>
@@ -1132,13 +1132,13 @@
 <translation id="2367972762794486313">பயன்பாடுகளைக் காட்டு</translation>
 <translation id="6466988389784393586">புக்மார்க்ஸ் அனைத்தையும் &amp;திற</translation>
 <translation id="6804671422566312077">&amp;புதிய சாளரத்தில் எல்லா புக்மார்க்ஸையும் திற</translation>
-<translation id="3011362742078013760">&amp;மறைநிலை சாளரத்தில் எல்லா புக்மார்க்ஸையும் திற</translation>
+<translation id="2692771564633877898">&amp;மறைநிலை சாளரத்தில் எல்லா புக்மார்க்ஸையும் திற</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;எல்லாம் திற}=1{&amp;புத்தகக்குறியைத் திற}other{&amp;எல்லாப் புத்தகக்குறிகளையும் (#) திற}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{எல்லாவற்றையும் &amp;புதிய சாளரத்தில் திற}=1{&amp;புதிய சாளரத்தில் திற}other{எல்லாவற்றையும் (#) &amp;புதிய சாளரத்தில் திற}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{எல்லாவற்றையும் &amp;மறைநிலைச் சாளரத்தில் திற}=1{&amp;மறைநிலைச் சாளரத்தில் திற}other{எல்லாவற்றையும் (#) &amp;மறைநிலைச் சாளரத்தில் திற}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{எல்லாவற்றையும் &amp;மறைநிலைச் சாளரத்தில் திற}=1{&amp;மறைநிலைச் சாளரத்தில் திற}other{எல்லாவற்றையும் (#) &amp;மறைநிலைச் சாளரத்தில் திற}}</translation>
 <translation id="9024127637873500333">புதிய தாவலில் &amp;திற</translation>
 <translation id="665061930738760572">&amp;புதிய சாளரத்தில் திற</translation>
-<translation id="37613671848467444">&amp;மறைநிலை சாளரத்தில் திற</translation>
+<translation id="1985165269306590797">&amp;மறைநிலை சாளரத்தில் திற</translation>
 <translation id="6702639462873609204">&amp;திருத்து...</translation>
 <translation id="3088325635286126843">&amp;மறுபெயரிடுக...</translation>
 <translation id="5329858601952122676">&amp;நீக்கு</translation>
@@ -1189,10 +1189,10 @@
 <translation id="8457451314607652708">புத்தகக்குறிகளை இறக்குமதி செய்</translation>
 <translation id="5101042277149003567">புத்தகக்குறிகள் அனைத்தையும் திற</translation>
 <translation id="7007648447224463482">அனைத்தையும் புதிய சாளரத்தில் திற</translation>
-<translation id="4508051413094283164">அனைத்தையும் மறைநிலைச் சாளரத்தில் திறக்கும்</translation>
+<translation id="642436385689435488">அனைத்தையும் மறைநிலைச் சாளரத்தில் திறக்கும்</translation>
 <translation id="4195643157523330669">புதிய தாவலில் திற</translation>
 <translation id="2979639724566107830">புதிய சாளரத்தில் திற</translation>
-<translation id="1134009406053225289">மறைநிலை சாளரத்தில் திற</translation>
+<translation id="5463021359602611602">மறைநிலை சாளரத்தில் திற</translation>
 <translation id="1173894706177603556">மறுபெயரிடு</translation>
 <translation id="5170568018924773124">கோப்புறையில் காண்பி</translation>
 <translation id="6825184156888454064">பெயரின்படி வரிசைப்படுத்து</translation>
@@ -1280,7 +1280,7 @@
 <translation id="4159681666905192102">இது <ph name="CUSTODIAN_EMAIL"/> மற்றும் <ph name="SECOND_CUSTODIAN_EMAIL"/> ஆல் நிர்வகிக்கப்படும் குழந்தைகளுக்கான கணக்காகும்.</translation>
 <translation id="5958529069007801266">கண்காணிக்கப்படும் பயனர்</translation>
 <translation id="5720705177508910913">நடப்புப் பயனர்</translation>
-<translation id="7081952801286122383">மறைநிலையில் உள்ளீர்கள்</translation>
+<translation id="5070556616376997776">மறைநிலையில் உள்ளீர்கள்</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: ஒத்திசைவு வேலை செய்யவில்லை</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: ஒத்திசைவு இடைநிறுத்தப்பட்டுள்ளது</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (கண்காணிக்கப்படும் பயனர்)</translation>
@@ -2542,9 +2542,9 @@
 <translation id="6782111308708962316">குக்கீத் தரவைச் சேமிப்பதிலிருந்தும் படிப்பதிலிருந்தும் மூன்றாம் தரப்பு இணையதளங்களைத் தடு</translation>
 <translation id="3378503599595235699">நான் உலாவியிலிருந்து வெளியேறும்வரை அகத் தரவை மட்டுமே வைத்திரு</translation>
 <translation id="1274977772557788323">Adobe Flash Player இன் சேமிப்பக அமைப்புகள்</translation>
-<translation id="1698122934742150150">தற்போதைய மறைநிலை அமர்விற்கு மட்டும்</translation>
-<translation id="5838456317242088717">நடப்பு மறைநிலை அமர்வு</translation>
-<translation id="2318923050469484167">தற்போதைய மறைநிலை அமர்வு (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">தற்போதைய மறைநிலை அமர்விற்கு மட்டும்</translation>
+<translation id="3479035826743782247">நடப்பு மறைநிலை அமர்வு</translation>
+<translation id="4750220700975225">தற்போதைய மறைநிலை அமர்வு (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">எந்தத் தளங்களும் பெரிதாக்கப்படவோ சிறிதாக்கப்படவோ இல்லை</translation>
 <translation id="3566721612727112615">தளங்கள் எதுவும் சேர்க்கப்படவில்லை</translation>
 <translation id="8098574385249290065">தளங்கள் எப்போது ஒலியை இயக்கலாம் என்பதை Brave தேர்வு செய்ய அனுமதிக்கவும் (பரிந்துரைக்கப்படுவது)</translation>
@@ -2844,7 +2844,7 @@
 <translation id="329838636886466101">சரிசெய்</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(செயல்படா நிலையில்)</translation>
-<translation id="1603914832182249871">(மறைநிலை)</translation>
+<translation id="3860292630623580294">(மறைநிலை)</translation>
 <translation id="6655190889273724601">டெவெலப்பர் பயன்முறை</translation>
 <translation id="2868746137289129307">இந்த நீட்டிப்பு காலாவதியானது, நிறுவனக் கொள்கையால் முடக்கப்பட்டுள்ளது. புதிய பதிப்புக் கிடைக்கும் போது தானாகவே இயக்கப்பட வாய்ப்புள்ளது.</translation>
 <translation id="6841186874966388268">பிழைகள்</translation>
@@ -2865,7 +2865,7 @@
 <translation id="1805822111539868586">பார்வைகளை ஆய்வு செய்</translation>
 <translation id="181577467034453336">மேலும் <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">செயலிலுள்ள காட்சிகள் எதுவுமில்லை</translation>
-<translation id="5488468185303821006">மறைநிலையில் அனுமதி</translation>
+<translation id="4854477725773269949">மறைநிலையில் அனுமதி</translation>
 <translation id="6124650939968185064">பின்வரும் நீட்டிப்புகள் இந்த நீட்டிப்பைச் சார்ந்தவை:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ஐடி: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> உடன் தொடர்புடையது</translation>
@@ -2959,10 +2959,8 @@
 <translation id="6041155700700864984">முழுத்திரையிலிருந்து வெளியேறு</translation>
 <translation id="6112294629795967147">அளவை மாற்ற, தொடவும்</translation>
 <translation id="2453860139492968684">முடி</translation>
-<translation id="1853692000353488670">புதிய மறைநிலை தாவல்</translation>
 <translation id="6336451774241870485">புதிய மறைநிலைத் தாவல்</translation>
-<translation id="5530766185686772672">மறைநிலை தாவல்களை மூடு</translation>
 <translation id="6610147964972079463">மறைநிலைத் தாவல்களை மூடு</translation>
 <translation id="8076492880354921740">தாவல்கள்</translation>
-<translation id="1049743911850919806">மறைநிலை</translation>
+<translation id="5186185447130319458">மறைநிலை</translation>
 </translationbundle>

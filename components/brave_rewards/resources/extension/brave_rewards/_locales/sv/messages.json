@@ -1,192 +1,200 @@
 {
   "braveRewards": {
     "message": "Brave belöningar",
-    "description": ""
+    "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
     "message": "Börja tjäna nu!",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
     "message": "Gå med i Rewards",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
     "message": "Tjäna polletter genom att titta på annonser och betala vidare till dina favorit-innehållskreatörer.",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
     "message": "Du kan nu tjäna polletter genom att titta på reklam som respekterar din integritet.",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
     "message": "Kolla in vad som har förbättrats",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
     "message": "Läs mer",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
     "message": "Vi har gett Brave-betalningar en stor uppgradering.",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
     "message": "Förbered dig på att uppleva det nya internetet.",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
     "message": "Din plånbok",
-    "description": ""
+    "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
     "message": "Utgivningar",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "on": {
     "message": "på",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
     "message": "Brave verifierad utgivare",
-    "description": ""
+    "description": "Tells user that this particular publisher is verified publisher"
   },
   "rewardsContributeAttentionScore": {
     "message": "Observation",
-    "description": ""
+    "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
     "message": "Donera till denna webbplats månadsvis",
-    "description": ""
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
     "message": "Inkludera i automatiska bidrag",
-    "description": ""
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
     "message": "Skicka en donation...",
-    "description": ""
+    "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
     "message": "Sätt på dricks",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
     "message": "för",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
     "message": "Belöningssammanfattning",
-    "description": ""
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
     "message": "April",
-    "description": ""
+    "description": "Month"
   },
   "monthAug": {
     "message": "Augusti",
-    "description": ""
+    "description": "Month"
   },
   "monthDec": {
     "message": "December",
-    "description": ""
+    "description": "Month"
   },
   "monthFeb": {
     "message": "Februari",
-    "description": ""
+    "description": "Month"
   },
   "monthJan": {
     "message": "Januari",
-    "description": ""
+    "description": "Month"
   },
   "monthJul": {
     "message": "Juli",
-    "description": ""
+    "description": "Month"
   },
   "monthJun": {
     "message": "Juni",
-    "description": ""
+    "description": "Month"
   },
   "monthMar": {
     "message": "Mars",
-    "description": ""
+    "description": "Month"
   },
   "monthMay": {
     "message": "Maj",
-    "description": ""
+    "description": "Month"
   },
   "monthNov": {
     "message": "November",
-    "description": ""
+    "description": "Month"
   },
   "monthOct": {
     "message": "Oktober",
-    "description": ""
+    "description": "Month"
   },
   "monthSep": {
     "message": "September",
-    "description": ""
+    "description": "Month"
   },
   "tokenGrant": {
     "message": "Pollett-utgivning",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Förtjänst från annonser",
-    "description": ""
+    "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
     "message": "Auto-bidra",
-    "description": ""
+    "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
     "message": "Engångsdonationer",
-    "description": ""
-  },
-  "total": {
-    "message": "Totalt",
-    "description": ""
+    "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "Går ut den",
-    "description": ""
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
     "message": "Månatliga donationer",
-    "description": ""
+    "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
     "message": "Av",
-    "description": ""
+    "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
     "message": "ok",
-    "description": ""
+    "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
     "message": "Braveannonser",
-    "description": ""
+    "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
     "message": "Bidra automatiskt",
-    "description": ""
+    "description": "Notification title when we display info about auto contribution"
   },
-  "contributeNotification": {
-    "message": "Du har bidragit med $amount$BAT",
-    "description": "",
+  "contributeNotificationSuccess": {
+    "message": "You've contributed $amount$ BAT",
+    "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
-        "example": "10"
+        "example": "10.0"
       }
     }
   },
   "grantNotification": {
     "message": "Du har ett bidrag som väntar på dig.",
-    "description": ""
+    "description": "Description for new grant notification"
   },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
-    "description": ""
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "There was a problem processing your contribution.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "There was a problem processing your tip, please try again.",
+    "description": "We show this string in notification when tip fails"
   }
 }

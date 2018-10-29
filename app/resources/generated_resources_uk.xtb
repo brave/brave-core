@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Відкрити папку завантажень</translation>
 <translation id="2902312830803030883">Додаткові дії</translation>
 <translation id="3612673635130633812">Завантажило розширення &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Завантажено в режимі анонімного перегляду</translation>
+<translation id="6395403722585816044">Завантажено в режимі анонімного перегляду</translation>
 <translation id="8028803902702117856">Завантаження <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Завантаження, залишилося відсотків – <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Завантаження: <ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@
 <translation id="5939518447894949180">Скинути</translation>
 <translation id="5546865291508181392">Знайти</translation>
 <translation id="833986336429795709">Виберіть додаток, щоб відкрити посилання</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Анонімний перегляд)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Анонімний перегляд)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (оновлення доступне)</translation>
 <translation id="8525306231823319788">На весь екран</translation>
@@ -636,10 +636,10 @@
 <translation id="3429275422858276529">Створіть закладку цієї сторінки, щоб легко знайти її пізніше</translation>
 <translation id="3603533104205588786">Щоб створити закладку сторінки, натисніть значок зірочки</translation>
 <translation id="6613452264606394692">Створіть закладку цієї сторінки, щоб швидко повернутися на неї</translation>
-<translation id="8286963743045814739">Ви можете переглядати веб-сторінки конфіденційно в режимі анонімного перегляду</translation>
-<translation id="1211364473545090084">Відкрийте анонімне вікно й користуйтесь Інтернетом, не зберігаючи історію веб-перегляду</translation>
-<translation id="6080515710685820702">Користуєтеся комп’ютером спільно з іншими? Відкрийте вікно в режимі анонімного перегляду.</translation>
-<translation id="7059893117020417984">Щоб переглядати веб-сторінки конфіденційно, натисніть значок меню з трьома крапками й відкрийте вікно в режимі анонімного перегляду</translation>
+<translation id="4369414322596874629">Ви можете переглядати веб-сторінки конфіденційно в режимі анонімного перегляду</translation>
+<translation id="3772947852642271642">Відкрийте анонімне вікно й користуйтесь Інтернетом, не зберігаючи історію веб-перегляду</translation>
+<translation id="3871738366246972820">Користуєтеся комп’ютером спільно з іншими? Відкрийте вікно в режимі анонімного перегляду.</translation>
+<translation id="5808622652939943719">Щоб переглядати веб-сторінки конфіденційно, натисніть значок меню з трьома крапками й відкрийте вікно в режимі анонімного перегляду</translation>
 <translation id="8803953437405899238">Відкривайте нову вкладку одним кліком</translation>
 <translation id="3071624960923923138">Натисніть тут, щоб відкрити нову вкладку</translation>
 <translation id="4908811072292128752">Щоб одночасно переглядати два сайти, відкрийте нову вкладку</translation>
@@ -1131,13 +1131,13 @@
 <translation id="2367972762794486313">Показати програми</translation>
 <translation id="6466988389784393586">&amp;Відкрити всі закладки</translation>
 <translation id="6804671422566312077">Відкрити всі закладки в &amp;новому вікні</translation>
-<translation id="3011362742078013760">Відкрити всі закладки в &amp;анонімному вікні</translation>
+<translation id="2692771564633877898">Відкрити всі закладки в &amp;анонімному вікні</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Відкрити всі}=1{&amp;Відкрити закладку}one{&amp;Відкрити всі (#)}few{&amp;Відкрити всі (#)}many{&amp;Відкрити всі (#)}other{&amp;Відкрити всі (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Відкрити всі у &amp;новому вікні}=1{Відкрити в &amp;новому вікні}one{Відкрити всі (#) у &amp;новому вікні}few{Відкрити всі (#) у &amp;новому вікні}many{Відкрити всі (#) у &amp;новому вікні}other{Відкрити всі (#) у &amp;новому вікні}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Відкрити всі в &amp;анонімному вікні}=1{Відкрити в &amp;анонімному вікні}one{Відкрити всі (#) в &amp;анонімному вікні}few{Відкрити всі (#) в &amp;анонімному вікні}many{Відкрити всі (#) в &amp;анонімному вікні}other{Відкрити всі (#) в &amp;анонімному вікні}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Відкрити всі в &amp;анонімному вікні}=1{Відкрити в &amp;анонімному вікні}one{Відкрити всі (#) в &amp;анонімному вікні}few{Відкрити всі (#) в &amp;анонімному вікні}many{Відкрити всі (#) в &amp;анонімному вікні}other{Відкрити всі (#) в &amp;анонімному вікні}}</translation>
 <translation id="9024127637873500333">&amp;Відкрити в новій вкладці</translation>
 <translation id="665061930738760572">Відкрити в &amp;новому вікні</translation>
-<translation id="37613671848467444">Відкрити в &amp;анонімному вікні</translation>
+<translation id="1985165269306590797">Відкрити в &amp;анонімному вікні</translation>
 <translation id="6702639462873609204">&amp;Редагувати...</translation>
 <translation id="3088325635286126843">&amp;Перейменувати...</translation>
 <translation id="5329858601952122676">&amp;Видалити</translation>
@@ -1188,10 +1188,10 @@
 <translation id="8457451314607652708">Імпортувати закладки</translation>
 <translation id="5101042277149003567">Відкрити всі закладки</translation>
 <translation id="7007648447224463482">Відкривати в новому вікні</translation>
-<translation id="4508051413094283164">Відкривати все у вікні в режимі анонімного перегляду</translation>
+<translation id="642436385689435488">Відкривати все у вікні в режимі анонімного перегляду</translation>
 <translation id="4195643157523330669">Відкрити в новій вкладці</translation>
 <translation id="2979639724566107830">Відкрити в новому вікні</translation>
-<translation id="1134009406053225289">Відкрити в анонімному вікні</translation>
+<translation id="5463021359602611602">Відкрити в анонімному вікні</translation>
 <translation id="1173894706177603556">Перейменувати</translation>
 <translation id="5170568018924773124">Показати в папці</translation>
 <translation id="6825184156888454064">Сортувати за назвою</translation>
@@ -1279,7 +1279,7 @@
 <translation id="4159681666905192102"><ph name="CUSTODIAN_EMAIL"/> і <ph name="SECOND_CUSTODIAN_EMAIL"/> керують цим обліковим записом для дітей.</translation>
 <translation id="5958529069007801266">Контрольований користувач</translation>
 <translation id="5720705177508910913">Поточний користувач</translation>
-<translation id="7081952801286122383">Це режим анонімного перегляду</translation>
+<translation id="5070556616376997776">Це режим анонімного перегляду</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: синхронізація не працює</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: синхронізацію призупинено</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (контрольований користувач)</translation>
@@ -2541,9 +2541,9 @@
 <translation id="6782111308708962316">Забороняти стороннім веб-сайтам зберігати та переглядати дані файлів cookie</translation>
 <translation id="3378503599595235699">Зберігати локальні дані лише до виходу з веб-переглядача</translation>
 <translation id="1274977772557788323">Налаштування пам’яті Adobe Flash Player</translation>
-<translation id="1698122934742150150">Лише поточний сеанс анонімного перегляду</translation>
-<translation id="5838456317242088717">Поточний сеанс анонімного перегляду</translation>
-<translation id="2318923050469484167">Поточний сеанс анонімного перегляду (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Лише поточний сеанс анонімного перегляду</translation>
+<translation id="3479035826743782247">Поточний сеанс анонімного перегляду</translation>
+<translation id="4750220700975225">Поточний сеанс анонімного перегляду (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Масштабування сайтів не змінено</translation>
 <translation id="3566721612727112615">Немає сайтів</translation>
 <translation id="8098574385249290065">Дозволити Brave вибирати, коли відтворювати звук на сайтах (рекомендується)</translation>
@@ -2843,7 +2843,7 @@
 <translation id="329838636886466101">Відновити</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Неактивне)</translation>
-<translation id="1603914832182249871">(Анонімний перегляд)</translation>
+<translation id="3860292630623580294">(Анонімний перегляд)</translation>
 <translation id="6655190889273724601">Режим розробника</translation>
 <translation id="2868746137289129307">Це розширення застаріле; його вимкнено політикою підприємства. Якщо буде доступна нова версія, розширення ввімкнеться автоматично.</translation>
 <translation id="6841186874966388268">Помилки</translation>
@@ -2864,7 +2864,7 @@
 <translation id="1805822111539868586">Перевірити перегляди</translation>
 <translation id="181577467034453336">Ще <ph name="NUMBER_OF_VIEWS"/>…</translation>
 <translation id="2450849356604136918">Немає активних переглядів</translation>
-<translation id="5488468185303821006">Дозволити в режимі анонімного перегляду</translation>
+<translation id="4854477725773269949">Дозволити в режимі анонімного перегляду</translation>
 <translation id="6124650939968185064">Від цього розширення залежать такі розширення:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ідентифікатор: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Стосується <ph name="NAME_PH"/></translation>
@@ -2958,10 +2958,8 @@
 <translation id="6041155700700864984">Вийти з повноекранного режиму</translation>
 <translation id="6112294629795967147">Торкніться, щоб змінити розмір</translation>
 <translation id="2453860139492968684">Готово</translation>
-<translation id="1853692000353488670">Нова анонімна вкладка</translation>
 <translation id="6336451774241870485">Нова приватна вкладка</translation>
-<translation id="5530766185686772672">Закрити анонімні вкладки</translation>
 <translation id="6610147964972079463">Закрити приватні вкладки</translation>
 <translation id="8076492880354921740">Вкладки</translation>
-<translation id="1049743911850919806">Анонімний перегляд</translation>
+<translation id="5186185447130319458">Анонімний перегляд</translation>
 </translationbundle>

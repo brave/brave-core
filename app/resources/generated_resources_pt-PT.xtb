@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Abrir a pasta de transferências</translation>
 <translation id="2902312830803030883">Mais ações</translation>
 <translation id="3612673635130633812">Transferido por &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Transferido em modo de navegação anónima</translation>
+<translation id="6395403722585816044">Transferido em modo de navegação anónima</translation>
 <translation id="8028803902702117856">A transferir <ph name="SIZE"/>… <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">A transferir… <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">A transferir… <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="5939518447894949180">Repor</translation>
 <translation id="5546865291508181392">Localizar</translation>
 <translation id="833986336429795709">Para abrir este link, escolher uma aplicação</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Navegação anónima)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navegação anónima)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Atualização disponível)</translation>
 <translation id="8525306231823319788">Ecrã inteiro</translation>
@@ -637,10 +637,10 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3429275422858276529">Adicione esta página aos marcadores para encontrá-la facilmente mais tarde</translation>
 <translation id="3603533104205588786">Pode clicar na estrela para adicionar uma página aos marcadores</translation>
 <translation id="6613452264606394692">Volte aqui rapidamente ao adicionar esta página aos marcadores</translation>
-<translation id="8286963743045814739">Pode navegar em privado com uma janela de navegação anónima</translation>
-<translation id="1211364473545090084">Navegue na Web sem guardar o seu histórico de navegação com uma janela de navegação anónima</translation>
-<translation id="6080515710685820702">Está a utilizar um computador partilhado? Experimente abrir uma janela de navegação anónima.</translation>
-<translation id="7059893117020417984">Para navegar em privado, clique no menu dos três pontos de forma a abrir uma janela de navegação anónima</translation>
+<translation id="4369414322596874629">Pode navegar em privado com uma janela de navegação anónima</translation>
+<translation id="3772947852642271642">Navegue na Web sem guardar o seu histórico de navegação com uma janela de navegação anónima</translation>
+<translation id="3871738366246972820">Está a utilizar um computador partilhado? Experimente abrir uma janela de navegação anónima.</translation>
+<translation id="5808622652939943719">Para navegar em privado, clique no menu dos três pontos de forma a abrir uma janela de navegação anónima</translation>
 <translation id="8803953437405899238">Abra um novo separador com um clique.</translation>
 <translation id="3071624960923923138">Pode clicar aqui para abrir um novo separador</translation>
 <translation id="4908811072292128752">Abra um novo separador para navegar em dois sites em simultâneo</translation>
@@ -1132,13 +1132,13 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="2367972762794486313">Mostrar aplicações</translation>
 <translation id="6466988389784393586">&amp;Abrir Todos os Marcadores</translation>
 <translation id="6804671422566312077">Abrir Todos os Marcadores numa &amp;Nova Janela</translation>
-<translation id="3011362742078013760">Abrir Todos os Marcadores na Janela de &amp;Navegação Anónima</translation>
+<translation id="2692771564633877898">Abrir Todos os Marcadores na Janela de &amp;Navegação Anónima</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Abrir todos}=1{&amp;Abrir marcador}other{&amp;Abrir todos (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Abrir todos numa &amp;nova janela}=1{Abrir numa &amp;nova janela}other{Abrir todos (#) numa &amp;nova janela}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Abrir todos numa janela de &amp;navegação anónima}=1{Abrir numa janela de &amp;navegação anónima}other{Abrir todos (#) numa janela de &amp;navegação anónima}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Abrir todos numa janela de &amp;navegação anónima}=1{Abrir numa janela de &amp;navegação anónima}other{Abrir todos (#) numa janela de &amp;navegação anónima}}</translation>
 <translation id="9024127637873500333">&amp;Abrir num novo separador</translation>
 <translation id="665061930738760572">Abrir numa &amp;Nova Janela</translation>
-<translation id="37613671848467444">Abrir na Janela de &amp;Navegação Anónima</translation>
+<translation id="1985165269306590797">Abrir na Janela de &amp;Navegação Anónima</translation>
 <translation id="6702639462873609204">&amp;Editar...</translation>
 <translation id="3088325635286126843">&amp;Mudar o nome...</translation>
 <translation id="5329858601952122676">E&amp;liminar</translation>
@@ -1189,10 +1189,10 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8457451314607652708">Importar marcadores</translation>
 <translation id="5101042277149003567">Abrir todos os marcadores</translation>
 <translation id="7007648447224463482">Abrir tudo numa nova janela</translation>
-<translation id="4508051413094283164">Abrir tudo numa janela de navegação anónima</translation>
+<translation id="642436385689435488">Abrir tudo numa janela de navegação anónima</translation>
 <translation id="4195643157523330669">Abrir num novo separador</translation>
 <translation id="2979639724566107830">Abrir numa nova janela</translation>
-<translation id="1134009406053225289">Abrir na janela de navegação anónima</translation>
+<translation id="5463021359602611602">Abrir na janela de navegação anónima</translation>
 <translation id="1173894706177603556">Mudar nome</translation>
 <translation id="5170568018924773124">Mostrar numa pasta</translation>
 <translation id="6825184156888454064">Ordenar por nome</translation>
@@ -1280,7 +1280,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="4159681666905192102">Esta é uma conta para crianças gerida por <ph name="CUSTODIAN_EMAIL"/> e <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Utilizador supervisionado</translation>
 <translation id="5720705177508910913">Utilizador atual</translation>
-<translation id="7081952801286122383">Está em modo anónimo.</translation>
+<translation id="5070556616376997776">Está em modo anónimo.</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: a sincronização não está a funcionar</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: sincronização em pausa</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (supervisionado)</translation>
@@ -2542,9 +2542,9 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6782111308708962316">Impedir que os Sites de terceiros guardem e leiam dados de cookies</translation>
 <translation id="3378503599595235699">Manter os dados locais apenas até sair do seu navegador</translation>
 <translation id="1274977772557788323">Definições de armazenamento do Adobe Flash Player</translation>
-<translation id="1698122934742150150">Apenas para a sessão no modo de navegação anónima atual</translation>
-<translation id="5838456317242088717">Sessão no modo de navegação anónima atual</translation>
-<translation id="2318923050469484167">Sessão no modo de navegação anónima atual (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Apenas para a sessão no modo de navegação anónima atual</translation>
+<translation id="3479035826743782247">Sessão no modo de navegação anónima atual</translation>
+<translation id="4750220700975225">Sessão no modo de navegação anónima atual (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">O zoom dos sites não foi aumentado nem diminuído</translation>
 <translation id="3566721612727112615">Nenhum site adicionado</translation>
 <translation id="8098574385249290065">Permitir que o Brave escolha quando os sites podem reproduzir som (recomendado)</translation>
@@ -2844,7 +2844,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="329838636886466101">Reparar</translation>
 <translation id="3012631534724231212">(iFrame)</translation>
 <translation id="1708338024780164500">(Inativa)</translation>
-<translation id="1603914832182249871">(Navegação anónima)</translation>
+<translation id="3860292630623580294">(Navegação anónima)</translation>
 <translation id="6655190889273724601">Modo de programador</translation>
 <translation id="2868746137289129307">Esta extensão está desatualizada e foi desativada por uma política empresarial; pode ser ativada automaticamente quando estiver disponível uma versão mais recente.</translation>
 <translation id="6841186874966388268">Erros</translation>
@@ -2865,7 +2865,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="1805822111539868586">Inspecionar vistas</translation>
 <translation id="181577467034453336">Mais <ph name="NUMBER_OF_VIEWS"/>…</translation>
 <translation id="2450849356604136918">Sem vistas ativas</translation>
-<translation id="5488468185303821006">Permitir em modo de navegação anónima</translation>
+<translation id="4854477725773269949">Permitir em modo de navegação anónima</translation>
 <translation id="6124650939968185064">As seguintes extensões dependem desta extensão:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Relacionado com <ph name="NAME_PH"/>.</translation>
@@ -2959,10 +2959,8 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6041155700700864984">Sair do ecrã inteiro</translation>
 <translation id="6112294629795967147">Tocar para redimensionar</translation>
 <translation id="2453860139492968684">Concluir</translation>
-<translation id="1853692000353488670">Novo separador anónimo</translation>
 <translation id="6336451774241870485">Novo separador privado</translation>
-<translation id="5530766185686772672">Fechar sep. de naveg. anón.</translation>
 <translation id="6610147964972079463">Fechar separadores privados</translation>
 <translation id="8076492880354921740">Separadores</translation>
-<translation id="1049743911850919806">Navegação anónima</translation>
+<translation id="5186185447130319458">Navegação anónima</translation>
 </translationbundle>

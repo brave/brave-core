@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Åbn mappen med downloads</translation>
 <translation id="2902312830803030883">Flere handlinger</translation>
 <translation id="3612673635130633812">Downloadet af &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Downloadet i inkognitotilstand</translation>
+<translation id="6395403722585816044">Downloadet i inkognitotilstand</translation>
 <translation id="8028803902702117856">Downloader <ph name="SIZE"/> – <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Downloader – <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Downloader – <ph name="STATUS"/></translation>
@@ -607,7 +607,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5939518447894949180">Nulstil</translation>
 <translation id="5546865291508181392">Find</translation>
 <translation id="833986336429795709">Vælg en app for at åbne dette link</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (tilgængelig opdatering)</translation>
 <translation id="8525306231823319788">Fuld skærm</translation>
@@ -635,10 +635,10 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3429275422858276529">Tilføj denne side som bogmærke, så du nemt kan finde den igen</translation>
 <translation id="3603533104205588786">Du kan klikke på stjernen for at tilføje siden som bogmærke</translation>
 <translation id="6613452264606394692">Tilføj denne side som bogmærke, så du hurtigt kan vende tilbage hertil</translation>
-<translation id="8286963743045814739">Du kan bruge nettet privat ved hjælp af et inkognitovindue</translation>
-<translation id="1211364473545090084">Brug internettet uden at gemme din browserhistorik ved hjælp af et inkognitovindue</translation>
-<translation id="6080515710685820702">Bruger du en delt computer? Prøv at åbne et inkognitovindue.</translation>
-<translation id="7059893117020417984">Hvis du vil bruge nettet privat, skal du klikke på prikmenuen for at åbne et inkognitovindue</translation>
+<translation id="4369414322596874629">Du kan bruge nettet privat ved hjælp af et inkognitovindue</translation>
+<translation id="3772947852642271642">Brug internettet uden at gemme din browserhistorik ved hjælp af et inkognitovindue</translation>
+<translation id="3871738366246972820">Bruger du en delt computer? Prøv at åbne et inkognitovindue.</translation>
+<translation id="5808622652939943719">Hvis du vil bruge nettet privat, skal du klikke på prikmenuen for at åbne et inkognitovindue</translation>
 <translation id="8803953437405899238">Åbn en ny fane med et enkelt klik</translation>
 <translation id="3071624960923923138">Du kan klikke her for at åbne en ny fane</translation>
 <translation id="4908811072292128752">Åbn en ny fane for at se to websites på én gang</translation>
@@ -1130,13 +1130,13 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2367972762794486313">Vis apps</translation>
 <translation id="6466988389784393586">Åbn alle bogmærker</translation>
 <translation id="6804671422566312077">Åbn alle bogmærker i &amp;nyt vindue</translation>
-<translation id="3011362742078013760">Åbn alle bogmærker i &amp;inkognitovindue</translation>
+<translation id="2692771564633877898">Åbn alle bogmærker i &amp;inkognitovindue</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Åbn alle}=1{&amp;Åbn bogmærke}one{&amp;Åbn (#)}other{&amp;Åbn alle (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Åbn alle i &amp;nyt vindue}=1{Åbn i &amp;nyt vindue}one{Åbn (#) i &amp;nyt vindue}other{Åbn alle (#) i &amp;nyt vindue}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Åbn alle i &amp;inkognitovindue}=1{Åbn i &amp;inkognitovindue}one{Åbn (#) i &amp;inkognitovindue}other{Åbn alle (#) i &amp;inkognitovindue}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Åbn alle i &amp;inkognitovindue}=1{Åbn i &amp;inkognitovindue}one{Åbn (#) i &amp;inkognitovindue}other{Åbn alle (#) i &amp;inkognitovindue}}</translation>
 <translation id="9024127637873500333">&amp;Åbn på ny fane</translation>
 <translation id="665061930738760572">Åbn i &amp;nyt vindue</translation>
-<translation id="37613671848467444">Åbn i &amp;inkognitovindue</translation>
+<translation id="1985165269306590797">Åbn i &amp;inkognitovindue</translation>
 <translation id="6702639462873609204">&amp;Rediger...</translation>
 <translation id="3088325635286126843">&amp;Omdøb...</translation>
 <translation id="5329858601952122676">&amp;Slet</translation>
@@ -1187,10 +1187,10 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8457451314607652708">Importér bogmærker</translation>
 <translation id="5101042277149003567">Åbn alle bogmærker</translation>
 <translation id="7007648447224463482">Åbn alle i et nyt vindue</translation>
-<translation id="4508051413094283164">Åbn alle i et inkognitovindue</translation>
+<translation id="642436385689435488">Åbn alle i et inkognitovindue</translation>
 <translation id="4195643157523330669">Åbn på ny fane</translation>
 <translation id="2979639724566107830">Åbn i nyt vindue</translation>
-<translation id="1134009406053225289">Åbn i inkognitovindue</translation>
+<translation id="5463021359602611602">Åbn i inkognitovindue</translation>
 <translation id="1173894706177603556">Omdøb</translation>
 <translation id="5170568018924773124">Vis i mappe</translation>
 <translation id="6825184156888454064">Sorter efter navn</translation>
@@ -1278,7 +1278,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4159681666905192102">Dette er en børnekonto, der administreres af <ph name="CUSTODIAN_EMAIL"/> og <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Overvåget bruger</translation>
 <translation id="5720705177508910913">Aktuel bruger</translation>
-<translation id="7081952801286122383">Inkognitotilstand er aktiveret</translation>
+<translation id="5070556616376997776">Inkognitotilstand er aktiveret</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Synkronisering fungerer ikke</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: Synkronisering er sat på pause</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (administreret)</translation>
@@ -2540,9 +2540,9 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6782111308708962316">Undgå, at tredjepartswebsites gemmer og læser cookiedata</translation>
 <translation id="3378503599595235699">Gem kun lokale data, indtil du lukker browseren</translation>
 <translation id="1274977772557788323">Lagerindstillinger for Adobe Flash Player</translation>
-<translation id="1698122934742150150">Kun for den aktuelle inkognitosession</translation>
-<translation id="5838456317242088717">Aktuel inkognitosession</translation>
-<translation id="2318923050469484167">Aktuel inkognitosession (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Kun for den aktuelle inkognitosession</translation>
+<translation id="3479035826743782247">Aktuel inkognitosession</translation>
+<translation id="4750220700975225">Aktuel inkognitosession (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Der er ikke zoomet ind eller ud på nogen websites</translation>
 <translation id="3566721612727112615">Der er ikke tilføjet nogen websites</translation>
 <translation id="8098574385249290065">Lad Brave bestemme, hvornår websites må afspille lyd (anbefalet)</translation>
@@ -2842,7 +2842,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="329838636886466101">Reparer</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(inaktiv)</translation>
-<translation id="1603914832182249871">(Inkognito)</translation>
+<translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="6655190889273724601">Udviklertilstand</translation>
 <translation id="2868746137289129307">Denne udvidelse er forældet og deaktiveret af virksomhedspolitikken. Den kan aktiveres automatisk, når en nyere version er tilgængelig.</translation>
 <translation id="6841186874966388268">Fejl</translation>
@@ -2863,7 +2863,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1805822111539868586">Se visninger</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> mere...</translation>
 <translation id="2450849356604136918">Ingen aktive visninger</translation>
-<translation id="5488468185303821006">Tillad i inkognito</translation>
+<translation id="4854477725773269949">Tillad i inkognito</translation>
 <translation id="6124650939968185064">Følgende udvidelser er afhængige af denne udvidelse:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (id: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Relateret til <ph name="NAME_PH"/></translation>
@@ -2957,10 +2957,8 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6041155700700864984">Luk fuld skærm</translation>
 <translation id="6112294629795967147">Tryk for at vælge en anden størrelse</translation>
 <translation id="2453860139492968684">Udfør</translation>
-<translation id="1853692000353488670">Ny inkognitofane</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
-<translation id="5530766185686772672">Luk inkognitofaner</translation>
 <translation id="6610147964972079463">Luk private faner</translation>
 <translation id="8076492880354921740">Faner</translation>
-<translation id="1049743911850919806">Inkognito</translation>
+<translation id="5186185447130319458">Inkognito</translation>
 </translationbundle>
