@@ -348,7 +348,8 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
     return info;
 
   sql::Statement info_sql(
-      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon "
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
+                             "pi.provider, pi.verified, pi.excluded "
                              "FROM media_publisher_info as mpi "
                              "INNER JOIN publisher_info AS pi ON mpi.publisher_id = pi.publisher_id "
                              "WHERE mpi.media_key=?"));
@@ -361,6 +362,9 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
     info->name = info_sql.ColumnString(1);
     info->url = info_sql.ColumnString(2);
     info->favicon_url = info_sql.ColumnString(3);
+    info->provider = info_sql.ColumnString(4);
+    info->verified = info_sql.ColumnBool(5);
+    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
   }
   return info;
 }

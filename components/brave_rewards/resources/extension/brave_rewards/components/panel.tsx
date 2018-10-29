@@ -216,6 +216,13 @@ export class Panel extends React.Component<Props, State> {
     const converted = utils.convertBalance(balance.toString(), rates)
     const notification = this.getNotification()
 
+    let faviconUrl
+    if (publisher && publisher.url) {
+      faviconUrl = `chrome://favicon/size/48@1x/${publisher.url}`
+      if (publisher.favicon_url) {
+        faviconUrl = `chrome://favicon/size/48@1x/${publisher.favicon_url}`
+      }
+    }
     return (
       <WalletWrapper
         compact={true}
@@ -251,7 +258,7 @@ export class Panel extends React.Component<Props, State> {
               id={'wallet-panel'}
               platform={publisher.provider as Provider}
               publisherName={publisher.name}
-              publisherImg={publisher.favicon_url || `chrome://favicon/size/48@2x/${publisher.url}`}
+              publisherImg={faviconUrl}
               monthlyAmount={10}
               isVerified={publisher.verified}
               tipsEnabled={true}
