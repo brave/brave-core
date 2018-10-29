@@ -71,7 +71,7 @@ export const StyledDescription = styled<{}, 'div'>('div')`
   font-size: 14px;
   line-height: 1.29;
   letter-spacing: normal;
-  color: #a4aeb8;
+  color: #838391;
 `
 
 export const StyledSettingsIcon = styled<StyleProps, 'button'>('button')`
