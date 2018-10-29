@@ -23,6 +23,11 @@ class DB;
 
 namespace braveledger_bat_get_media {
 
+using FetchDataFromUrlCallback = std::function<void(
+    bool result,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers)>;
+
 class BatGetMedia {
  public:
   static std::string GetLinkType(const std::string& url, const std::string& first_party_url, const std::string& referrer);
@@ -171,13 +176,7 @@ class BatGetMedia {
     const std::string& providerType,
     const std::string& publisher_key);
 
-  void fetchPublisherDataFromUrl(uint64_t windowId,
-    const ledger::VisitData& visit_data,
-    const std::string& providerType);
-
-  void fetchPublisherDataFromUserUrl(uint64_t windowId,
-    const ledger::VisitData& visit_data,
-    const std::string& providerType);
+  void fetchDataFromUrl(const std::string& url, FetchDataFromUrlCallback callback);
 
   std::string getNameFromChannel(const std::string& data);
 

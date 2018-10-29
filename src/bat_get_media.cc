@@ -541,7 +541,14 @@ void BatGetMedia::processYoutubeChannelPath(uint64_t windowId,
 void BatGetMedia::processYoutubeUserPath(uint64_t windowId,
   const ledger::VisitData& visit_data,
   const std::string& providerType) {
-  fetchPublisherDataFromUserUrl(windowId, visit_data, providerType);
+  fetchDataFromUrl(visit_data.url, std::bind(&BatGetMedia::onGetChannelIdFromUserPage,
+                                        this,
+                                        windowId,
+                                        visit_data,
+                                        providerType,
+                                        _1,
+                                        _2,
+                                        _3));
 }
 
 void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
@@ -568,37 +575,25 @@ void BatGetMedia::onFetchPublisherFromDBResponse(ledger::Result result,
                                                  const std::string& providerType,
                                                  const std::string& publisher_key) {
   if (result == ledger::Result::NOT_FOUND) {
-    fetchPublisherDataFromUrl(windowId, visit_data, providerType);
+    fetchDataFromUrl(visit_data.url, std::bind(&BatGetMedia::onGetChannelHeadlineVideo,
+                                        this,
+                                        windowId,
+                                        visit_data,
+                                        providerType,
+                                        _1,
+                                        _2,
+                                        _3));
   } else {
     ledger_->OnPublisherActivity(result, std::move(info), windowId);
   }
 }
 
-// TODO merge fetchPublisherDataFromUrl and fetchPublisherDataFromUserUrl
-void BatGetMedia::fetchPublisherDataFromUrl(uint64_t windowId,
-                                            const ledger::VisitData& visit_data,
-                                            const std::string& providerType) {
-  auto request = ledger_->LoadURL(visit_data.url,
+void BatGetMedia::fetchDataFromUrl(const std::string& url, FetchDataFromUrlCallback callback) {
+  auto request = ledger_->LoadURL(url,
     std::vector<std::string>(), "", "",
     ledger::URL_METHOD::GET, &handler_);
 
-  handler_.AddRequestHandler(std::move(request),
-    std::bind(&BatGetMedia::onGetChannelHeadlineVideo,
-    this, windowId, visit_data, providerType, _1,
-    _2, _3));
-}
-
-// TODO merge fetchPublisherDataFromUrl and fetchPublisherDataFromUserUrl
-void BatGetMedia::fetchPublisherDataFromUserUrl(uint64_t windowId,
-                                                const ledger::VisitData& visit_data,
-                                                const std::string& providerType) {
-  auto request = ledger_->LoadURL(visit_data.url,
-    std::vector<std::string>(), "", "",
-    ledger::URL_METHOD::GET, &handler_);
-  handler_.AddRequestHandler(std::move(request),
-    std::bind(&BatGetMedia::onGetChannelIdFromUserPage,
-    this, windowId, visit_data, providerType, _1,
-    _2, _3));
+  handler_.AddRequestHandler(std::move(request), callback);
 }
 
 void BatGetMedia::onGetChannelIdFromUserPage(uint64_t windowId,
