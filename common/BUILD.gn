@@ -47,6 +47,7 @@ source_set("common") {
   ]
 
   deps = [
+    ":brave_cookie_blocking",
     "//brave/chromium_src:common",
   ]
 
@@ -74,6 +75,14 @@ source_set("common") {
       "importer/chrome_importer_utils_win.cc",
     ]
   }
+}
+
+
+source_set("brave_cookie_blocking") {
+  sources = [
+    "brave_cookie_blocking.cc",
+    "brave_cookie_blocking.h",
+  ]
 }
 
 config("constants_configs") {

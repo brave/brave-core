@@ -11,10 +11,13 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/common/brave_cookie_blocking.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/common/tor/switches.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -23,6 +26,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -33,7 +37,6 @@
 using content::BrowserThread;
 using content::RenderFrameHost;
 using content::WebContents;
-using content_settings::BraveCookieSettings;
 using brave_shields::BraveShieldsWebContentsObserver;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -73,12 +76,6 @@ bool HandleURLReverseRewrite(GURL* url,
   return false;
 }
 
-WebContents* GetWebContents(int render_process_id, int render_frame_id) {
-  RenderFrameHost* rfh =
-      RenderFrameHost::FromID(render_process_id, render_frame_id);
-  return WebContents::FromRenderFrameHost(rfh);
-}
-
 }
 
 BraveContentBrowserClient::BraveContentBrowserClient(std::unique_ptr<ui::DataPack> data_pack,
@@ -109,30 +106,51 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
 
-bool BraveContentBrowserClient::AllowGetCookie(
-    const GURL& url,
-    const GURL& first_party,
-    const net::CookieList& cookie_list,
-    content::ResourceContext* context,
-    int render_process_id,
+bool BraveContentBrowserClient::AllowAccessCookie(const GURL& url, const GURL& first_party,
+    content::ResourceContext* context, int render_process_id, int render_frame_id) {
+  GURL tab_origin =
+      BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
+          render_process_id, render_frame_id).GetOrigin();
+  ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
+  bool allow_brave_shields = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields);
+  bool allow_1p_cookies = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, tab_origin, GURL("https://firstParty/"),
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
+  bool allow_3p_cookies = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kCookies);
+  content_settings::BraveCookieSettings* cookie_settings =
+      (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
+  bool allow = !ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
+                   allow_3p_cookies, first_party, url) &&
+      cookie_settings->IsCookieAccessAllowed(url, first_party, tab_origin);
+  return allow;
+}
+
+bool BraveContentBrowserClient::AllowGetCookie(const GURL& url,
+    const GURL& first_party, const net::CookieList& cookie_list,
+    content::ResourceContext* context, int render_process_id,
     int render_frame_id) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
+  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
+                                 render_frame_id);
+  OnCookiesRead(render_process_id, render_frame_id, url, first_party,
+                cookie_list, !allow);
 
-  GURL tab_url = BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-      render_process_id, render_frame_id);
-  BraveCookieSettings* cookie_settings =
-      (BraveCookieSettings*)io_data->GetCookieSettings();
+  return allow;
+}
 
-  bool allow =
-      cookie_settings->IsCookieAccessAllowed(url, first_party, tab_url);
-
-  base::Callback<WebContents*(void)> wc_getter =
-      base::Bind(&GetWebContents, render_process_id, render_frame_id);
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
-      base::BindOnce(&TabSpecificContentSettings::CookiesRead, wc_getter, url,
-                     first_party, cookie_list, !allow));
+bool BraveContentBrowserClient::AllowSetCookie(const GURL& url,
+    const GURL& first_party, const net::CanonicalCookie& cookie,
+    content::ResourceContext* context, int render_process_id,
+    int render_frame_id) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
+                                 render_frame_id);
+  OnCookieChange(render_process_id, render_frame_id, url, first_party, cookie,
+                 !allow);
   return allow;
 }
 
@@ -161,34 +179,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, navigation_data, is_main_frame,
       page_transition, has_user_gesture);
-}
-
-bool BraveContentBrowserClient::AllowSetCookie(
-    const GURL& url,
-    const GURL& first_party,
-    const net::CanonicalCookie& cookie,
-    content::ResourceContext* context,
-    int render_process_id,
-    int render_frame_id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
-
-  BraveCookieSettings* cookie_settings =
-      (BraveCookieSettings*)io_data->GetCookieSettings();
-
-  GURL tab_url = BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-      render_process_id, render_frame_id);
-
-  bool allow =
-    cookie_settings->IsCookieAccessAllowed(url, first_party, tab_url);
-
-  base::Callback<WebContents*(void)> wc_getter =
-      base::Bind(&GetWebContents, render_process_id, render_frame_id);
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
-      base::BindOnce(&TabSpecificContentSettings::CookieChanged, wc_getter, url,
-                     first_party, cookie, !allow));
-  return allow;
 }
 
 void BraveContentBrowserClient::RegisterOutOfProcessServices(
