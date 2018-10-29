@@ -3116,14 +3116,14 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE" desc="A label for the action of removing (deleting) a certain handler.">
     Remove
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_ONLY" desc="A label for the checkbox to make the rule apply to the current incognito session only.">
-    Current incognito session only
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_ONLY" desc="A label for the checkbox to make the rule apply to the current private session only.">
+    Current private session only
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO" desc="A label for a site rule that only applies to the current incognito session.">
-    Current incognito session
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO" desc="A label for a site rule that only applies to the current private session.">
+    Current private session
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_EMBEDDED" desc="A label for a site rule that specifies an embedded origin and only applies to the current incognito session.">
-    Current incognito session (<ph name="EMBEDDING">$1<ex>embedded on google.com</ex></ph>)
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_EMBEDDED" desc="A label for a site rule that specifies an embedded origin and only applies to the current private session.">
+    Current private session (<ph name="EMBEDDING">$1<ex>embedded on google.com</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_NO_ZOOMED_SITES" desc="A label explaining that no sites have a configured zoom in/out value.">
     No sites have been zoomed in or out
