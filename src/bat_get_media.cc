@@ -531,24 +531,60 @@ void BatGetMedia::processYoutubeChannelPath(uint64_t windowId,
   std::string key = getYoutubePublisherKeyFromUrl(visit_data);
   if (!key.empty()) {
     publisher_key += key;
-    fetchPublisherDataFromDB(windowId, visit_data,
-      providerType, publisher_key);
+    fetchPublisherDataFromDB(windowId,
+                             visit_data,
+                             providerType,
+                             publisher_key);
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
+  }
+}
+
+
+
+void BatGetMedia::onMediaUserActivity(ledger::Result result,
+                                      std::unique_ptr<ledger::PublisherInfo> info,
+                                      uint64_t windowId,
+                                      const ledger::VisitData& visit_data,
+                                      const std::string& providerType,
+                                      const std::string& media_key) {
+  if (result != ledger::Result::LEDGER_OK  &&
+    result != ledger::Result::NOT_FOUND) {
+    onMediaActivityError(visit_data, providerType, windowId);
+    return;
+  }
+
+  if (result == ledger::Result::NOT_FOUND) {
+    fetchDataFromUrl(visit_data.url, std::bind(&BatGetMedia::onGetChannelIdFromUserPage,
+                                        this,
+                                        windowId,
+                                        visit_data,
+                                        providerType,
+                                        media_key,
+                                        _1,
+                                        _2,
+                                        _3));
+
+  } else {
+    fetchPublisherDataFromDB(windowId, visit_data, providerType, info->id);
   }
 }
 
 void BatGetMedia::processYoutubeUserPath(uint64_t windowId,
   const ledger::VisitData& visit_data,
   const std::string& providerType) {
-  fetchDataFromUrl(visit_data.url, std::bind(&BatGetMedia::onGetChannelIdFromUserPage,
-                                        this,
-                                        windowId,
-                                        visit_data,
-                                        providerType,
-                                        _1,
-                                        _2,
-                                        _3));
+
+  std::string user = getYoutubeUserFromUrl(visit_data);
+
+  if (user.empty()) {
+    onMediaActivityError(visit_data, providerType, windowId);
+  } else {
+    std::string media_key = providerType + "_user_" + user;
+    ledger_->GetMediaPublisherInfo(media_key,
+      std::bind(&BatGetMedia::onMediaUserActivity,
+      this, _1, _2, windowId, visit_data,
+      providerType, media_key));
+  }
 }
 
 void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
@@ -599,12 +635,16 @@ void BatGetMedia::fetchDataFromUrl(const std::string& url, FetchDataFromUrlCallb
 void BatGetMedia::onGetChannelIdFromUserPage(uint64_t windowId,
                                               const ledger::VisitData& visit_data,
                                               const std::string& providerType,
+                                              const std::string& media_key,
                                               bool success, const std::string& response,
                                               const std::map<std::string, std::string>& headers) {
   std::string channelId = parseChannelId(response);
   if (!channelId.empty()) {
     std::string path = "/channel/" + channelId;
     std::string url = getPublisherUrl(channelId, providerType);
+    std::string publisher_key = providerType + "#channel:" + channelId;
+
+    ledger_->SetMediaPublisherInfo(media_key, publisher_key);
 
     ledger::VisitData new_data(visit_data);
     new_data.path = path;
@@ -677,9 +717,7 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
                                  std::move(info));
 
   } else {
-    // TODO we need to load an actual publisher activity here,
-    // because now we don't have attention data
-    ledger_->OnPublisherActivity(result, std::move(info), windowId);
+    fetchPublisherDataFromDB(windowId, visit_data, providerType, info->id);
   }
 }
 
@@ -726,6 +764,10 @@ std::string BatGetMedia::getYoutubeMediaKeyFromUrl(
 
 std::string BatGetMedia::getYoutubePublisherKeyFromUrl(const ledger::VisitData& visit_data) {
   return extractData(visit_data.path + "/", "/channel/", "/");
+}
+
+std::string BatGetMedia::getYoutubeUserFromUrl(const ledger::VisitData& visit_data) {
+  return extractData(visit_data.path + "/", "/user/", "/");
 }
 
 std::string BatGetMedia::extractData(const std::string& data,
