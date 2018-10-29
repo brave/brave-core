@@ -25,19 +25,19 @@ class BraveShieldsExtensionApiTest : public ExtensionApiTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsExtensionApiTest, BraveExtensionHasAccess) {
+  ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveShields"));
   ASSERT_TRUE(extension);
-  ResultCatcher catcher;
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsExtensionApiTest, NotBraveExtensionHasNoAccess) {
   LOG(ERROR) << "======= This is an intentional fail:";
+  ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("notBraveShields"));
   ASSERT_TRUE(extension);
-  ResultCatcher catcher;
   ASSERT_FALSE(catcher.GetNextResult()) << message_;
 }
 
