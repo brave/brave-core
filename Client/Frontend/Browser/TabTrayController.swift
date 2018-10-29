@@ -870,7 +870,7 @@ extension TabManagerDataSource: UICollectionViewDropDelegate {
         isDragging = false
 
         let destinationIndex = destinationIndexPath.item
-        tabManager.moveTab(fromIndex: sourceIndex, toIndex: destinationIndex)
+        tabManager.moveTab(tab, toIndex: destinationIndex)
         tabs.insert(tabs.remove(at: sourceIndex), at: destinationIndex)
         collectionView.moveItem(at: IndexPath(item: sourceIndex, section: 0), to: destinationIndexPath)
     }

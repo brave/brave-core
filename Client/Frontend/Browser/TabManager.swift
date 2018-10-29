@@ -328,23 +328,24 @@ class TabManager: NSObject {
         return tab
     }
     
-    func moveTab(fromIndex visibleFromIndex: Int, toIndex visibleToIndex: Int) {
+    func moveTab(_ tab: Tab, toIndex visibleToIndex: Int) {
         assert(Thread.isMainThread)
         
-        let tabType: TabType = PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular
-        let currentTabs = tabs(withType: tabType)
+        let currentTabs = tabs(withType: tab.type)
 
-        let fromTab = currentTabs[visibleFromIndex]
         let toTab = currentTabs[visibleToIndex]
 
-        guard let fromIndex = tabs.index(of: fromTab), let toIndex = tabs.index(of: toTab) else {
+        guard let fromIndex = tabs.index(of: tab), let toIndex = tabs.index(of: toTab) else {
             return
         }
+        
+        // Make sure to save the selected tab before updating the tabs list
+        let previouslySelectedTab = selectedTab
 
         let tab = tabs.remove(at: fromIndex)
         tabs.insert(tab, at: toIndex)
 
-        if let previouslySelectedTab = selectedTab, let previousSelectedIndex = tabs.index(of: previouslySelectedTab) {
+        if let previouslySelectedTab = previouslySelectedTab, let previousSelectedIndex = tabs.index(of: previouslySelectedTab) {
             _selectedIndex = previousSelectedIndex
         }
 
