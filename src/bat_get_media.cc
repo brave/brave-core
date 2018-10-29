@@ -381,7 +381,6 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration,
                                            const std::string& response,
                                            const std::map<std::string, std::string>& headers) {
   if (success &&  providerName == YOUTUBE_MEDIA_TYPE) {
-    // TODO check if it's working correctly
     std::string favIconURL = parseFavIconUrl(response);
     std::string channelId = parseChannelId(response);
 
@@ -492,11 +491,11 @@ void BatGetMedia::getMediaActivityFromUrl(uint64_t windowId,
 void BatGetMedia::processYoutubeMediaPanel(uint64_t windowId,
                                            const ledger::VisitData& visit_data,
                                            const std::string& providerType) {
-  if (visit_data.path.find("/watch") != std::string::npos) {
+  if (visit_data.path.find("/watch?") != std::string::npos) {
     processYoutubeWatchPath(windowId, visit_data, providerType);
-  } else if (visit_data.path.find("/channel") != std::string::npos) {
+  } else if (visit_data.path.find("/channel/") != std::string::npos) {
     processYoutubeChannelPath(windowId, visit_data, providerType);
-  } else if (visit_data.path.find("/user") != std::string::npos) {
+  } else if (visit_data.path.find("/user/") != std::string::npos) {
     processYoutubeUserPath(windowId, visit_data, providerType);
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
@@ -596,7 +595,7 @@ void BatGetMedia::fetchPublisherDataFromDB(uint64_t windowId,
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
       visit_data.local_month,
       visit_data.local_year,
-      ledger::PUBLISHER_EXCLUDE::ALL,
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
       false,
       ledger_->GetReconcileStamp());
     ledger_->GetPublisherInfo(filter,
@@ -669,8 +668,7 @@ void BatGetMedia::onGetChannelHeadlineVideo(uint64_t windowId,
     return;
   }
 
-  if (visit_data.path.find("/channel") != std::string::npos) {
-    // TODO check if is correct
+  if (visit_data.path.find("/channel/") != std::string::npos) {
     std::string title = getNameFromChannel(response);
     std::string favicon = parseFavIconUrl(response);
     std::string channelId = getYoutubePublisherKeyFromUrl(visit_data);
@@ -734,9 +732,13 @@ std::string BatGetMedia::parseFavIconUrl(const std::string& data) {
 }
 
 std::string BatGetMedia::parseChannelId(const std::string& data) {
-  std::string id = extractData(data, "\"ucid\":\"", "\",\"tag_for");
-  if(id.empty()) {
+  std::string id = extractData(data, "\"ucid\":\"", "\"");
+  if (id.empty()) {
     id = extractData(data, "HeaderRenderer\":{\"channelId\":\"", "\"");
+  }
+
+  if (id.empty()) {
+    id = extractData(data, "<link rel=\"canonical\" href=\"https://www.youtube.com/channel/", "\">");
   }
 
   return id;
