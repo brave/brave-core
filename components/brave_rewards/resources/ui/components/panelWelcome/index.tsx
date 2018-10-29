@@ -87,7 +87,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
                 level='secondary'
                 size='call-to-action'
                 type='subtle'
-                text={getLocale('braveRewardsCreatingText')}
+                text={'Creating wallet'}
                 disabled={true}
                 data-test-id='optInAction'
                 icon={{
