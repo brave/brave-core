@@ -24,7 +24,7 @@ import { getFavicon } from '../../../helpers/shieldsUtils'
 
 interface Props {
   hostname: string
-  stats: number
+  stats: number | undefined
   title: string
   url: string
   onToggle: (event: React.MouseEvent<HTMLButtonElement>) => void

@@ -63,7 +63,7 @@
     "message": "All scripts allowed",
     "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "blockAllScripts": {
+  "blockAllScriptsOrigins": {
     "message": "Scripts blocked",
     "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
