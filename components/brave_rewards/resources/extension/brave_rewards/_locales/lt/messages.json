@@ -1,192 +1,200 @@
 {
   "braveRewards": {
     "message": "„Brave Rewards“",
-    "description": ""
+    "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
     "message": "Pradėkite uždirbti jau dabar!",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
     "message": "Prisijungti prie „Rewards“",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
     "message": "Gaukite užmokestį už peržiūrėtas reklamas ir perveskite šiuos pinigus, kad paremtumėte mėgstamo turinio kūrėjus.",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
     "message": "Dabar už privatumo nepažeidžiančių reklamų peržiūrą galite gauti žetonų",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
     "message": "Pamatykite, kas buvo patobulinta",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
     "message": "Sužinokite daugiau",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
     "message": "„Brave Payments“ gerokai naujovinome.",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
     "message": "Pasirenkite išbandyti naująjį internetą.",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
     "message": "Jūsų piniginė",
-    "description": ""
+    "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
     "message": "Išmokos",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "on": {
     "message": "–",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
     "message": "„Brave“ patvirtintas leidėjas",
-    "description": ""
+    "description": "Tells user that this particular publisher is verified publisher"
   },
   "rewardsContributeAttentionScore": {
     "message": "Dėmesys",
-    "description": ""
+    "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
     "message": "Tip this site monthly",
-    "description": ""
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
     "message": "Įtraukti į automatinį indėlį",
-    "description": ""
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
     "message": "Siųsti arbatpinigių...",
-    "description": ""
+    "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
     "message": "Aktyvinti arbatpinigius",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
     "message": "skirta",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
     "message": "„Rewards“ suvestinė",
-    "description": ""
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
     "message": "Balandis",
-    "description": ""
+    "description": "Month"
   },
   "monthAug": {
     "message": "Rugpjūtis",
-    "description": ""
+    "description": "Month"
   },
   "monthDec": {
     "message": "Gruodis",
-    "description": ""
+    "description": "Month"
   },
   "monthFeb": {
     "message": "Vasaris",
-    "description": ""
+    "description": "Month"
   },
   "monthJan": {
     "message": "Sausis",
-    "description": ""
+    "description": "Month"
   },
   "monthJul": {
     "message": "Liepa",
-    "description": ""
+    "description": "Month"
   },
   "monthJun": {
     "message": "Birželis",
-    "description": ""
+    "description": "Month"
   },
   "monthMar": {
     "message": "Kovas",
-    "description": ""
+    "description": "Month"
   },
   "monthMay": {
     "message": "Gegužė",
-    "description": ""
+    "description": "Month"
   },
   "monthNov": {
     "message": "Lapkritis",
-    "description": ""
+    "description": "Month"
   },
   "monthOct": {
     "message": "Spalis",
-    "description": ""
+    "description": "Month"
   },
   "monthSep": {
     "message": "Rugsėjis",
-    "description": ""
+    "description": "Month"
   },
   "tokenGrant": {
     "message": "Žetonų išmoka",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Uždarbis iš reklamos",
-    "description": ""
+    "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
     "message": "Automatinis indėlis",
-    "description": ""
+    "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
     "message": "Vienkartiniai arbatpinigiai",
-    "description": ""
-  },
-  "total": {
-    "message": "Iš viso",
-    "description": ""
+    "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "galiojimo laikas baigiasi",
-    "description": ""
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
     "message": "Mėnesiniai arbatpinigiai",
-    "description": ""
+    "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
     "message": "Išjungta",
-    "description": ""
+    "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
     "message": "ok",
-    "description": ""
+    "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
     "message": "Brave Ads",
-    "description": ""
+    "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
     "message": "Auto-Contribute",
-    "description": ""
+    "description": "Notification title when we display info about auto contribution"
   },
-  "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
-    "description": "",
+  "contributeNotificationSuccess": {
+    "message": "You've contributed $amount$ BAT",
+    "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
-        "example": "10"
+        "example": "10.0"
       }
     }
   },
   "grantNotification": {
     "message": "You have a grant waiting for you.",
-    "description": ""
+    "description": "Description for new grant notification"
   },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
-    "description": ""
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "There was a problem processing your contribution.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "There was a problem processing your tip, please try again.",
+    "description": "We show this string in notification when tip fails"
   }
 }

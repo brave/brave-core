@@ -163,7 +163,7 @@
 <translation id="750509436279396091">İndirilenler klasörünü aç</translation>
 <translation id="2902312830803030883">Diğer işlemler</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; tarafından indirildi</translation>
-<translation id="7909969815743704077">Gizli modda indirildi</translation>
+<translation id="6395403722585816044">Gizli modda indirildi</translation>
 <translation id="8028803902702117856">İndiriliyor <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">İndiriliyor, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">İndiriliyor, <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5939518447894949180">Sıfırla</translation>
 <translation id="5546865291508181392">Bul</translation>
 <translation id="833986336429795709">Bu bağlantıyı açmak için bir uygulama seçin</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Gizli mod)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Gizli mod)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Güncelleme mevcut)</translation>
 <translation id="8525306231823319788">Tam ekran</translation>
@@ -637,10 +637,10 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3429275422858276529">Bu sayfayı daha sonra kolayca bulmak için sayfaya yer işareti koyun</translation>
 <translation id="3603533104205588786">Sayfaya yer işareti koymak için yıldızı tıklayabilirsiniz</translation>
 <translation id="6613452264606394692">Bu sayfaya yer işareti koyarak buraya hızlıca geri dönün</translation>
-<translation id="8286963743045814739">Gizli pencere kullanarak gizli olarak göz atabilirsiniz</translation>
-<translation id="1211364473545090084">Gizli pencere sayesinde göz atma geçmişinizi kaydetmeden web'i kullanın</translation>
-<translation id="6080515710685820702">Paylaşılan bir bilgisayar mı kullanıyorsunuz? Gizli pencere açmayı deneyin.</translation>
-<translation id="7059893117020417984">Gizli olarak göz atmak için nokta simgeli menüyü tıklayarak gizli pencere açın</translation>
+<translation id="4369414322596874629">Gizli pencere kullanarak gizli olarak göz atabilirsiniz</translation>
+<translation id="3772947852642271642">Gizli pencere sayesinde göz atma geçmişinizi kaydetmeden web'i kullanın</translation>
+<translation id="3871738366246972820">Paylaşılan bir bilgisayar mı kullanıyorsunuz? Gizli pencere açmayı deneyin.</translation>
+<translation id="5808622652939943719">Gizli olarak göz atmak için nokta simgeli menüyü tıklayarak gizli pencere açın</translation>
 <translation id="8803953437405899238">Tek tıklamayla yeni sekme açın</translation>
 <translation id="3071624960923923138">Yeni sekme açmak için burayı tıklayabilirsiniz</translation>
 <translation id="4908811072292128752">İki siteye aynı anda göz atmak için yeni bir sekme açın</translation>
@@ -1132,13 +1132,13 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2367972762794486313">Uygulamaları göster</translation>
 <translation id="6466988389784393586">Tüm Yer İşaretlerini &amp;Aç</translation>
 <translation id="6804671422566312077">Tüm Yer İşaretlerini &amp;Yeni Pencerede Aç</translation>
-<translation id="3011362742078013760">Tüm Yer İşaretlerini &amp;Gizli Pencerede Aç</translation>
+<translation id="2692771564633877898">Tüm Yer İşaretlerini &amp;Gizli Pencerede Aç</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{Tümünü &amp;Aç}=1{Yer İşaretini &amp;Aç}other{Tümünü &amp;Aç (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Tümünü &amp;Yeni Pencerede Aç}=1{&amp;Yeni Pencerede Aç}other{Tümünü (#) &amp;Yeni Pencerede Aç}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Tümünü &amp;Gizli Pencerede Aç}=1{&amp;Gizli Pencerede Aç}other{Tümünü (#) &amp;Gizli Pencerede Aç}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Tümünü &amp;Gizli Pencerede Aç}=1{&amp;Gizli Pencerede Aç}other{Tümünü (#) &amp;Gizli Pencerede Aç}}</translation>
 <translation id="9024127637873500333">&amp;Yeni Sekmede Aç</translation>
 <translation id="665061930738760572">&amp;Yeni Pencerede Aç</translation>
-<translation id="37613671848467444">&amp;Gizli Pencerede Aç</translation>
+<translation id="1985165269306590797">&amp;Gizli Pencerede Aç</translation>
 <translation id="6702639462873609204">&amp;Düzenle...</translation>
 <translation id="3088325635286126843">&amp;Yeniden adlandır…</translation>
 <translation id="5329858601952122676">&amp;Sil</translation>
@@ -1189,10 +1189,10 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8457451314607652708">Yer işaretlerini içe aktar</translation>
 <translation id="5101042277149003567">Tüm yer işaretlerini aç</translation>
 <translation id="7007648447224463482">Tümünü yeni pencerede aç</translation>
-<translation id="4508051413094283164">Tümünü gizli pencerede aç</translation>
+<translation id="642436385689435488">Tümünü gizli pencerede aç</translation>
 <translation id="4195643157523330669">Yeni sekmede aç</translation>
 <translation id="2979639724566107830">Yeni pencerede aç</translation>
-<translation id="1134009406053225289">Gizli pencerede aç</translation>
+<translation id="5463021359602611602">Gizli pencerede aç</translation>
 <translation id="1173894706177603556">Yeniden adlandır</translation>
 <translation id="5170568018924773124">Klasörde göster</translation>
 <translation id="6825184156888454064">Ada göre sırala</translation>
@@ -1280,7 +1280,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="4159681666905192102">Bu hesap çocuklar içindir ve <ph name="CUSTODIAN_EMAIL"/> ile <ph name="SECOND_CUSTODIAN_EMAIL"/> tarafından yönetilmektedir</translation>
 <translation id="5958529069007801266">Denetlenen kullanıcı</translation>
 <translation id="5720705177508910913">Geçerli kullanıcı</translation>
-<translation id="7081952801286122383">Gizli moddasınız</translation>
+<translation id="5070556616376997776">Gizli moddasınız</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Senkronizasyon çalışmıyor</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: Senkronizasyon duraklatıldı</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (Denetlenen)</translation>
@@ -2542,9 +2542,9 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6782111308708962316">Üçüncü taraf web sitelerinin çerez verilerini kaydetmesini ve okumasını engelle</translation>
 <translation id="3378503599595235699">Yerel verileri sadece tarayıcımdan çıkana kadar koru</translation>
 <translation id="1274977772557788323">Adobe Flash Player Depolama ayarları</translation>
-<translation id="1698122934742150150">Yalnızca geçerli gizli oturum</translation>
-<translation id="5838456317242088717">Geçerli gizli oturum</translation>
-<translation id="2318923050469484167">Geçerli gizli oturum (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Yalnızca geçerli gizli oturum</translation>
+<translation id="3479035826743782247">Geçerli gizli oturum</translation>
+<translation id="4750220700975225">Geçerli gizli oturum (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Yakınlaştırılmış veya uzaklaştırılmış herhangi bir site yok</translation>
 <translation id="3566721612727112615">Site eklenmedi</translation>
 <translation id="8098574385249290065">Sitelerin ne zaman ses çalacağını Brave'un seçmesine izin verin (önerilir)</translation>
@@ -2844,7 +2844,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="329838636886466101">Onar</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Etkin değil)</translation>
-<translation id="1603914832182249871">(Gizli mod)</translation>
+<translation id="3860292630623580294">(Gizli mod)</translation>
 <translation id="6655190889273724601">Geliştirici modu</translation>
 <translation id="2868746137289129307">Bu uzantı, eski ve kurumsal politika tarafından devre dışı bırakıldı. Yeni bir sürüm kullanılabilir durumda olduğunda otomatik olarak etkin hale gelebilir.</translation>
 <translation id="6841186874966388268">Hatalar</translation>
@@ -2865,7 +2865,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1805822111539868586">Görünümleri incele</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> görüntüleme daha...</translation>
 <translation id="2450849356604136918">Etkin görünüm yok</translation>
-<translation id="5488468185303821006">Gizli modda izin ver</translation>
+<translation id="4854477725773269949">Gizli modda izin ver</translation>
 <translation id="6124650939968185064">Aşağıdaki uzantılar bu uzantıya bağımlıdır:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (Kimlik: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> ile ilgili</translation>
@@ -2959,10 +2959,8 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6041155700700864984">Tam Ekran modundan çık</translation>
 <translation id="6112294629795967147">Yeniden boyutlandırmak için dokunun</translation>
 <translation id="2453860139492968684">Tamamlandı</translation>
-<translation id="1853692000353488670">Yeni gizli sekme</translation>
 <translation id="6336451774241870485">Yeni gizli sekme</translation>
-<translation id="5530766185686772672">Gizli sekmeleri kapat</translation>
 <translation id="6610147964972079463">Gizli sekmeleri kapat</translation>
 <translation id="8076492880354921740">Sekmeler</translation>
-<translation id="1049743911850919806">Gizli mod</translation>
+<translation id="5186185447130319458">Gizli mod</translation>
 </translationbundle>

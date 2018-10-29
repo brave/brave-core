@@ -163,7 +163,7 @@
 <translation id="750509436279396091">የውርዶች አቃፊን ከፍት</translation>
 <translation id="2902312830803030883">ተጨማሪ እርምጃዎች</translation>
 <translation id="3612673635130633812">የወረደው በ&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; ነው</translation>
-<translation id="7909969815743704077">በIncognito ውስጥ የወረደ</translation>
+<translation id="6395403722585816044">በIncognito ውስጥ የወረደ</translation>
 <translation id="8028803902702117856"><ph name="SIZE"/>፣ <ph name="FILE_NAME"/> በማውረድ ላይ</translation>
 <translation id="4644818355646995778">በማውረድ ላይ፣ <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">በማውረድ ላይ፣ <ph name="STATUS"/></translation>
@@ -611,7 +611,7 @@ nil</translation>
 <translation id="5939518447894949180">ዳግም አስጀምር</translation>
 <translation id="5546865291508181392">አግኝ</translation>
 <translation id="833986336429795709">ይህን አገናኝ ለመክፈት አንድ መተግበሪያ ይምረጡ</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (ማንነትን የማያሳውቅ)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ማንነትን የማያሳውቅ)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (ዝማኔ ይገኛል)</translation>
 <translation id="8525306231823319788">ሙሉ ማያ ገጽ</translation>
@@ -639,10 +639,10 @@ nil</translation>
 <translation id="3429275422858276529">ይህን ገጽ በቀላሉ በኋላ እንዲያገኙ ዕልባት ያድርጉት</translation>
 <translation id="3603533104205588786">አንድ ገጽ ዕልባት ለማድረግ ኮከቡን ጠቅ ማድረግ ይችላሉ</translation>
 <translation id="6613452264606394692">ይህን ገጽ ዕልባት በማድረግ በፍጥነት ወደዚህ ተመልሰው ይምጡ</translation>
-<translation id="8286963743045814739">ማንነት የማያሳውቅ መስኮት ተጠቅመው በግል ማሰስ ይችላሉ</translation>
-<translation id="1211364473545090084">ማንነት በማያሳውቅ መስኮት አማካኝነት የአሰሳ ታሪክዎን ሳያስቀምጡ ድሩን ይጠቀሙ</translation>
-<translation id="6080515710685820702">የተጋራ ኮምፒውተር ነው እየተጠቀሙ ያሉት? ማንነት የማያሳውቅ መስኮት ለመክፈት ይሞክሩ።</translation>
-<translation id="7059893117020417984">በግል ለማሰስ የነጥቦች አዶ ምናሌውን ጠቅ አድርገው ማንነት የማያሳውቅ መስኮትን ይክፈቱ</translation>
+<translation id="4369414322596874629">ማንነት የማያሳውቅ መስኮት ተጠቅመው በግል ማሰስ ይችላሉ</translation>
+<translation id="3772947852642271642">ማንነት በማያሳውቅ መስኮት አማካኝነት የአሰሳ ታሪክዎን ሳያስቀምጡ ድሩን ይጠቀሙ</translation>
+<translation id="3871738366246972820">የተጋራ ኮምፒውተር ነው እየተጠቀሙ ያሉት? ማንነት የማያሳውቅ መስኮት ለመክፈት ይሞክሩ።</translation>
+<translation id="5808622652939943719">በግል ለማሰስ የነጥቦች አዶ ምናሌውን ጠቅ አድርገው ማንነት የማያሳውቅ መስኮትን ይክፈቱ</translation>
 <translation id="8803953437405899238">በአንድ ጠቅታ አዲስ ትር ይክፈቱ</translation>
 <translation id="3071624960923923138">አዲስ ትር ለመክፈት እዚህ ጠቅ ማድረግ ይችላሉ</translation>
 <translation id="4908811072292128752">በአንዴ ሁለት ጣቢያዎችን ለማሰስ አዲስ ትር ይክፈቱ</translation>
@@ -1134,13 +1134,13 @@ nil</translation>
 <translation id="2367972762794486313">መተግበሪያዎችን አሳይ</translation>
 <translation id="6466988389784393586">&amp;ሀሉንም እልባቶች ክፈት</translation>
 <translation id="6804671422566312077">&amp;ሁሉንም እልባቶች በአዲስ መስኮት ክፈት</translation>
-<translation id="3011362742078013760">&amp;ሁሉንም እልባቶች ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
+<translation id="2692771564633877898">&amp;ሁሉንም እልባቶች ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;ሁሉንም ክፈት}=1{&amp;ዕልባት ክፈት}one{&amp;ሁሉንም ክፈት (#)}other{&amp;ሁሉንም ክፈት (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{ሁሉንም በ&amp;አዲስ መስኮት ውስጥ ክፈት}=1{&amp;በአዲስ መስኮት ውስጥ ክፈት}one{ሁሉንም (#) በ&amp;አዲስ መስኮት ውስጥ ክፈት}other{ሁሉንም (#) በ&amp;አዲስ መስኮት ውስጥ ክፈት}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{ሁሉንም በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}=1{በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}one{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}other{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{ሁሉንም በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}=1{በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}one{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}other{ሁሉንም (#) በ&amp;ማንነት የማያሳውቅ መስኮት ውስጥ ክፈት}}</translation>
 <translation id="9024127637873500333">&amp;በአዲስ ትር ውስጥ ክፈት</translation>
 <translation id="665061930738760572">&amp;በአዲስ መስኮት ክፈት</translation>
-<translation id="37613671848467444">&amp;ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
+<translation id="1985165269306590797">&amp;ማንነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="6702639462873609204">&amp;አርትእ...</translation>
 <translation id="3088325635286126843">እንደገና &amp;ሰይም...</translation>
 <translation id="5329858601952122676">&amp;ሠርዝ</translation>
@@ -1191,10 +1191,10 @@ nil</translation>
 <translation id="8457451314607652708">ዕልባቶችን አስመጣ</translation>
 <translation id="5101042277149003567">ሀሉንም እልባቶች ክፈት</translation>
 <translation id="7007648447224463482">ሁሉንም በአዲስ መስኮት ውስጥ ክፈት</translation>
-<translation id="4508051413094283164">ሁሉንም ማንነት በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
+<translation id="642436385689435488">ሁሉንም ማንነት በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="4195643157523330669">በአዲስ ትር ክፈት</translation>
 <translation id="2979639724566107830">በአዲስ መስኮት ክፈት</translation>
-<translation id="1134009406053225289">ማንነትን በማያሳውቅ መስኮት ክፈት</translation>
+<translation id="5463021359602611602">ማንነትን በማያሳውቅ መስኮት ክፈት</translation>
 <translation id="1173894706177603556">ዳግም ሰይም</translation>
 <translation id="5170568018924773124">በአቃፊ አሳይ</translation>
 <translation id="6825184156888454064">በስም ደርድር</translation>
@@ -1282,7 +1282,7 @@ nil</translation>
 <translation id="4159681666905192102">ይህ የህጻናት መለያ በ<ph name="CUSTODIAN_EMAIL"/> እና <ph name="SECOND_CUSTODIAN_EMAIL"/> ነው የሚቀናበረው።</translation>
 <translation id="5958529069007801266">ክትትል የሚደረግበት ተጠቃሚ</translation>
 <translation id="5720705177508910913">የአሁኑ ተጠቃሚ</translation>
-<translation id="7081952801286122383">ማንነትን በማያሳውቅ ሁኔታ ላይ ነዎት</translation>
+<translation id="5070556616376997776">ማንነትን በማያሳውቅ ሁኔታ ላይ ነዎት</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>፦ ስምረት እየሠራ አይደለም</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>፦ ማሳመር ባለበት ቆሟል</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (ክትትል የሚደረግበት)</translation>
@@ -2543,9 +2543,9 @@ nil</translation>
 <translation id="6782111308708962316">የሦስተኛ ወገን ድር ጣቢያዎች የኩኪ ውሂብን እንዳያስቀምጡ እና እንዳያነብቡ ከልክል</translation>
 <translation id="3378503599595235699">ከአሳሽዎ እስኪወጡ ድረስ ብቻ አካባቢያዊ ውሂብ ያስቀምጡ</translation>
 <translation id="1274977772557788323">የAdobe Flash Player ማከማቻ ቅንብሮች</translation>
-<translation id="1698122934742150150">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ ብቻ</translation>
-<translation id="5838456317242088717">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ</translation>
-<translation id="2318923050469484167">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ ብቻ (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ ብቻ</translation>
+<translation id="3479035826743782247">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ</translation>
+<translation id="4750220700975225">የአሁኑ ማንነት የማያሳውቅ ክፍለ-ጊዜ ብቻ (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">ምንም ጣቢያዎች አልጎሉም ወይም አላነሱም</translation>
 <translation id="3566721612727112615">ምንም ጣቢያዎች አልታከሉም</translation>
 <translation id="8098574385249290065">Brave ጣቢያዎች መቼ ድምጽን ማጫወት እንደሚችሉ እንዲመርጥ ይፍቀዱ (የሚመከር)</translation>
@@ -2845,7 +2845,7 @@ nil</translation>
 <translation id="329838636886466101">ይጠግኑ</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(የቦዘነ)</translation>
-<translation id="1603914832182249871">(ስውር)</translation>
+<translation id="3860292630623580294">(ስውር)</translation>
 <translation id="6655190889273724601">የገንቢ ሁነት</translation>
 <translation id="2868746137289129307">ይህ ቅጥያ ጊዜው ያለፈበት እና በድርጅት መመሪያ የተሰናከለ ነው። ይበልጥ አዲስ የሆነ ስሪት ሲገኝ በራስ-ሰር ሊነቃ ይችላል።</translation>
 <translation id="6841186874966388268">ስህተቶች</translation>
@@ -2866,7 +2866,7 @@ nil</translation>
 <translation id="1805822111539868586">እይታዎችን ይመርምሩ</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> ተጨማሪ...</translation>
 <translation id="2450849356604136918">ምንም ገቢር እይታዎች የሉም</translation>
-<translation id="5488468185303821006">በማንነትን የማያሳውቅ ውስጥ ይፍቀዱ</translation>
+<translation id="4854477725773269949">በማንነትን የማያሳውቅ ውስጥ ይፍቀዱ</translation>
 <translation id="6124650939968185064">የሚከተሉት ቅጥያዎች በዚህ ቅጥያ ላይ ይወሰናሉ፦</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (መታወቂያ፦ <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">ከ<ph name="NAME_PH"/> ጋር የሚዛመድ</translation>
@@ -2960,10 +2960,8 @@ nil</translation>
 <translation id="6041155700700864984">ከሙሉ ማያ ገጽ ውጣ</translation>
 <translation id="6112294629795967147">መጠን ለመቀየር ይንኩ</translation>
 <translation id="2453860139492968684">ጨርስ</translation>
-<translation id="1853692000353488670">አዲስ ማንነት የማያሳውቅ ትር</translation>
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
-<translation id="5530766185686772672">ማንነት የማያሳውቁ ትሮችን ዝጋ</translation>
 <translation id="6610147964972079463">የግል ትሮችን ዝጋ</translation>
 <translation id="8076492880354921740">ትሮች</translation>
-<translation id="1049743911850919806">ማንነት የማያሳውቅ</translation>
+<translation id="5186185447130319458">ማንነት የማያሳውቅ</translation>
 </translationbundle>

@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Letöltések mappa megnyitása</translation>
 <translation id="2902312830803030883">További műveletek</translation>
 <translation id="3612673635130633812">Letöltötte: &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Letöltve inkognitó módban</translation>
+<translation id="6395403722585816044">Letöltve inkognitó módban</translation>
 <translation id="8028803902702117856"><ph name="FILE_NAME"/> (<ph name="SIZE"/>) letöltése</translation>
 <translation id="4644818355646995778">Letöltés folyamatban, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Letöltés folyamatban, <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5939518447894949180">Visszaállítás</translation>
 <translation id="5546865291508181392">Keresés</translation>
 <translation id="833986336429795709">Válassza ki, hogy melyik alkalmazással szeretné megnyitni ezt a linket</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Inkognitómód)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognitómód)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Frissítés érhető el)</translation>
 <translation id="8525306231823319788">Teljes képernyő</translation>
@@ -637,10 +637,10 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3429275422858276529">Adja hozzá az oldalt a könyvjelzőkhöz, hogy később könnyen megtalálja</translation>
 <translation id="3603533104205588786">Az oldalt úgy is hozzáadhatja a könyvjelzőkhöz, hogy a csillagra kattint</translation>
 <translation id="6613452264606394692">Gyorsan visszajuthat ide, ha hozzáadja az oldalt a könyvjelzőkhöz</translation>
-<translation id="8286963743045814739">Privát módban böngészhet, ha inkognitóablakot használ</translation>
-<translation id="1211364473545090084">Internetezzen a böngészési előzmények mentése nélkül inkognitóablakban</translation>
-<translation id="6080515710685820702">Közös használatú számítógépet használ? Nyisson inkognitóablakot.</translation>
-<translation id="7059893117020417984">Privát böngészéshez kattintson a három pontból álló („Továbbiak”) ikonra, és nyisson inkognitóablakot.</translation>
+<translation id="4369414322596874629">Privát módban böngészhet, ha inkognitóablakot használ</translation>
+<translation id="3772947852642271642">Internetezzen a böngészési előzmények mentése nélkül inkognitóablakban</translation>
+<translation id="3871738366246972820">Közös használatú számítógépet használ? Nyisson inkognitóablakot.</translation>
+<translation id="5808622652939943719">Privát böngészéshez kattintson a három pontból álló („Továbbiak”) ikonra, és nyisson inkognitóablakot.</translation>
 <translation id="8803953437405899238">Nyisson új lapot egy kattintással</translation>
 <translation id="3071624960923923138">Ide kattintva új lapot nyithat meg</translation>
 <translation id="4908811072292128752">Új lap megnyitása két webhely egyidejű böngészéséhez</translation>
@@ -1132,13 +1132,13 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="2367972762794486313">Alkalmazások megjelenítése</translation>
 <translation id="6466988389784393586">&amp;Az összes könyvjelző megnyitása</translation>
 <translation id="6804671422566312077">Összes könyvjelző megnyitása új &amp;ablakban</translation>
-<translation id="3011362742078013760">Az összes könyvjelző megnyitása &amp;inkognitóablakban</translation>
+<translation id="2692771564633877898">Az összes könyvjelző megnyitása &amp;inkognitóablakban</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{Összes &amp;megnyitása}=1{Könyvjelző &amp;megnyitása}other{Összes (#) &amp;megnyitása}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Összes meg&amp;nyitása új ablakban}=1{Meg&amp;nyitás új ablakban}other{Összes (#) meg&amp;nyitása új ablakban}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Összes megnyitása &amp;inkognitóablakban}=1{Megnyitás &amp;inkognitóablakban}other{Összes (#) megnyitása &amp;inkognitóablakban}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Összes megnyitása &amp;inkognitóablakban}=1{Megnyitás &amp;inkognitóablakban}other{Összes (#) megnyitása &amp;inkognitóablakban}}</translation>
 <translation id="9024127637873500333">&amp;Megnyitás új lapon</translation>
 <translation id="665061930738760572">Megnyitás új &amp;ablakban</translation>
-<translation id="37613671848467444">Megnyitás &amp;inkognitóablakban</translation>
+<translation id="1985165269306590797">Megnyitás &amp;inkognitóablakban</translation>
 <translation id="6702639462873609204">&amp;Szerkesztés...</translation>
 <translation id="3088325635286126843">Át&amp;nevezés...</translation>
 <translation id="5329858601952122676">&amp;Törlés</translation>
@@ -1189,10 +1189,10 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8457451314607652708">Könyvjelzők importálása</translation>
 <translation id="5101042277149003567">Az összes könyvjelző megnyitása</translation>
 <translation id="7007648447224463482">Összes megnyitása új ablakban</translation>
-<translation id="4508051413094283164">Összes megnyitása inkognitóablakban</translation>
+<translation id="642436385689435488">Összes megnyitása inkognitóablakban</translation>
 <translation id="4195643157523330669">Megnyitás új lapon</translation>
 <translation id="2979639724566107830">Megnyitás új ablakban</translation>
-<translation id="1134009406053225289">Megnyitás inkognitóablakban</translation>
+<translation id="5463021359602611602">Megnyitás inkognitóablakban</translation>
 <translation id="1173894706177603556">Átnevezés</translation>
 <translation id="5170568018924773124">Megjelenítés mappában</translation>
 <translation id="6825184156888454064">Rendezés név szerint</translation>
@@ -1280,7 +1280,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4159681666905192102">Ez a fiók gyerekeknek készült; <ph name="CUSTODIAN_EMAIL"/> és <ph name="SECOND_CUSTODIAN_EMAIL"/> felügyelete mellett.</translation>
 <translation id="5958529069007801266">Felügyelt felhasználó</translation>
 <translation id="5720705177508910913">Jelenlegi felhasználó</translation>
-<translation id="7081952801286122383">Inkognitómódban van</translation>
+<translation id="5070556616376997776">Inkognitómódban van</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: A szinkronizálás nem működik</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: a szinkronizálás szünetel</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (felügyelt)</translation>
@@ -2543,9 +2543,9 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6782111308708962316">Megakadályozza, hogy harmadik felek webhelyei mentsék és olvassák a cookie-adatokat.</translation>
 <translation id="3378503599595235699">Helyi adatok megőrzése kizárólag a böngészőből való kilépésig</translation>
 <translation id="1274977772557788323">Adobe Flash Player tárolási beállítások</translation>
-<translation id="1698122934742150150">Csak a jelenlegi inkognitó munkamenet</translation>
-<translation id="5838456317242088717">Jelenlegi inkognitó munkamenet</translation>
-<translation id="2318923050469484167">Jelenlegi inkognitó munkamenet (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Csak a jelenlegi inkognitó munkamenet</translation>
+<translation id="3479035826743782247">Jelenlegi inkognitó munkamenet</translation>
+<translation id="4750220700975225">Jelenlegi inkognitó munkamenet (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nincs nagyított vagy kicsinyített webhely</translation>
 <translation id="3566721612727112615">Nincsenek hozzáadva webhelyek</translation>
 <translation id="8098574385249290065">A Brave dönthet arról, hogy a webhelyek lejátszhatnak-e hangot (ajánlott)</translation>
@@ -2845,7 +2845,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="329838636886466101">Javítás</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Inaktív)</translation>
-<translation id="1603914832182249871">(Inkognitómód)</translation>
+<translation id="3860292630623580294">(Inkognitómód)</translation>
 <translation id="6655190889273724601">Fejlesztői mód</translation>
 <translation id="2868746137289129307">Ez a bővítmény elavult, így a vállalati házirend letiltotta. A bővítményt automatikusan ismét engedélyezheti a rendszer akkor, amikor egy újabb verzió elérhetővé válik.</translation>
 <translation id="6841186874966388268">Hibák</translation>
@@ -2866,7 +2866,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="1805822111539868586">Nézetek megvizsgálása</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> további…</translation>
 <translation id="2450849356604136918">Nincs aktív nézet</translation>
-<translation id="5488468185303821006">Engedélyezés inkognitó módban</translation>
+<translation id="4854477725773269949">Engedélyezés inkognitó módban</translation>
 <translation id="6124650939968185064">Ettől a bővítménytől a következő bővítmények függnek:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (azonosító: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Kapcsolódik a következőhöz: <ph name="NAME_PH"/></translation>
@@ -2960,10 +2960,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6041155700700864984">Kilépés a teljes képernyős módból</translation>
 <translation id="6112294629795967147">Érintse meg az átméretezéshez</translation>
 <translation id="2453860139492968684">Befejezés</translation>
-<translation id="1853692000353488670">Új inkognitólap</translation>
 <translation id="6336451774241870485">Új privát lap</translation>
-<translation id="5530766185686772672">Inkognitólapok bezárása</translation>
 <translation id="6610147964972079463">Privát lapok bezárása</translation>
 <translation id="8076492880354921740">Lapok</translation>
-<translation id="1049743911850919806">Inkognitómód</translation>
+<translation id="5186185447130319458">Inkognitómód</translation>
 </translationbundle>

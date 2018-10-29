@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Otwórz folder pobierania</translation>
 <translation id="2902312830803030883">Więcej czynności</translation>
 <translation id="3612673635130633812">Pobrane przez &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Pobrano w trybie incognito</translation>
+<translation id="6395403722585816044">Pobrano w trybie incognito</translation>
 <translation id="8028803902702117856">Pobieram <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Pobieram, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Pobieram, <ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5939518447894949180">Resetuj</translation>
 <translation id="5546865291508181392">Znajdź</translation>
 <translation id="833986336429795709">Aby otworzyć ten link, wybierz aplikację</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (dostępna aktualizacja)</translation>
 <translation id="8525306231823319788">Pełny ekran</translation>
@@ -636,10 +636,10 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3429275422858276529">Dodaj tę stronę do zakładek, by później łatwo ją znaleźć</translation>
 <translation id="3603533104205588786">Aby dodać stronę do zakładek, możesz kliknąć gwiazdkę</translation>
 <translation id="6613452264606394692">Dodaj tę stronę do zakładek, by szybko na nią wrócić</translation>
-<translation id="8286963743045814739">Możesz przeglądać prywatnie w oknie incognito</translation>
-<translation id="1211364473545090084">Korzystaj z internetu w oknie incognito, by nie zapisywać historii przeglądania</translation>
-<translation id="6080515710685820702">Korzystasz ze wspólnego komputera? Otwórz okno incognito.</translation>
-<translation id="7059893117020417984">Aby przeglądać prywatnie, kliknij ikonę menu z kropkami i otwórz okno incognito</translation>
+<translation id="4369414322596874629">Możesz przeglądać prywatnie w oknie incognito</translation>
+<translation id="3772947852642271642">Korzystaj z internetu w oknie incognito, by nie zapisywać historii przeglądania</translation>
+<translation id="3871738366246972820">Korzystasz ze wspólnego komputera? Otwórz okno incognito.</translation>
+<translation id="5808622652939943719">Aby przeglądać prywatnie, kliknij ikonę menu z kropkami i otwórz okno incognito</translation>
 <translation id="8803953437405899238">Otwórz nową kartę jednym kliknięciem</translation>
 <translation id="3071624960923923138">Kliknij tutaj, by otworzyć nową kartę</translation>
 <translation id="4908811072292128752">Otwórz nową kartę, by przeglądać dwie strony naraz</translation>
@@ -1131,13 +1131,13 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2367972762794486313">Pokaż aplikacje</translation>
 <translation id="6466988389784393586">&amp;Otwórz wszystkie zakładki</translation>
 <translation id="6804671422566312077">Otwórz wszystkie zakładki w &amp;nowym oknie</translation>
-<translation id="3011362742078013760">Otwórz wszystkie zakładki w oknie &amp;incognito</translation>
+<translation id="2692771564633877898">Otwórz wszystkie zakładki w oknie &amp;incognito</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Otwórz wszystkie}=1{&amp;Otwórz zakładkę}few{&amp;Otwórz wszystkie (#)}many{&amp;Otwórz wszystkie (#)}other{&amp;Otwórz wszystkie (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Otwórz wszystkie w &amp;nowym oknie}=1{Otwórz w &amp;nowym oknie}few{Otwórz wszystkie (#) w &amp;nowym oknie}many{Otwórz wszystkie (#) w &amp;nowym oknie}other{Otwórz wszystkie (#) w &amp;nowym oknie}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Otwórz wszystkie w oknie &amp;incognito}=1{Otwórz w oknie &amp;incognito}few{Otwórz wszystkie (#) w oknie &amp;incognito}many{Otwórz wszystkie (#) w oknie &amp;incognito}other{Otwórz wszystkie (#) w oknie &amp;incognito}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Otwórz wszystkie w oknie &amp;incognito}=1{Otwórz w oknie &amp;incognito}few{Otwórz wszystkie (#) w oknie &amp;incognito}many{Otwórz wszystkie (#) w oknie &amp;incognito}other{Otwórz wszystkie (#) w oknie &amp;incognito}}</translation>
 <translation id="9024127637873500333">&amp;Otwórz w nowej karcie</translation>
 <translation id="665061930738760572">Otwórz w &amp;nowym oknie</translation>
-<translation id="37613671848467444">Otwórz w oknie &amp;incognito</translation>
+<translation id="1985165269306590797">Otwórz w oknie &amp;incognito</translation>
 <translation id="6702639462873609204">&amp;Edytuj</translation>
 <translation id="3088325635286126843">&amp;Zmień nazwę</translation>
 <translation id="5329858601952122676">&amp;Usuń</translation>
@@ -1188,10 +1188,10 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8457451314607652708">Importuj zakładki</translation>
 <translation id="5101042277149003567">Otwórz wszystkie zakładki</translation>
 <translation id="7007648447224463482">Otwórz wszystkie w nowym oknie</translation>
-<translation id="4508051413094283164">Otwórz wszystkie w oknie incognito</translation>
+<translation id="642436385689435488">Otwórz wszystkie w oknie incognito</translation>
 <translation id="4195643157523330669">Otwórz w nowej karcie</translation>
 <translation id="2979639724566107830">Otwórz w nowym oknie</translation>
-<translation id="1134009406053225289">Otwórz w oknie incognito</translation>
+<translation id="5463021359602611602">Otwórz w oknie incognito</translation>
 <translation id="1173894706177603556">Zmień nazwę</translation>
 <translation id="5170568018924773124">Pokaż w folderze</translation>
 <translation id="6825184156888454064">Sortuj według nazwy</translation>
@@ -1280,7 +1280,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4159681666905192102">To jest konto dla dzieci, którym zarządzają <ph name="CUSTODIAN_EMAIL"/> i <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Użytkownik nadzorowany</translation>
 <translation id="5720705177508910913">Bieżący użytkownik</translation>
-<translation id="7081952801286122383">Korzystasz z trybu incognito</translation>
+<translation id="5070556616376997776">Korzystasz z trybu incognito</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: synchronizacja nie działa</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: synchronizacja wstrzymana</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (nadzorowany)</translation>
@@ -2543,9 +2543,9 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6782111308708962316">Nie pozwalaj witrynom innych firm zapisywać ani odczytywać danych z plików cookie</translation>
 <translation id="3378503599595235699">Zachowuj dane lokalne tylko do zamknięcia przeglądarki</translation>
 <translation id="1274977772557788323">Ustawienia pamięci Adobe Flash Playera</translation>
-<translation id="1698122934742150150">Tylko w bieżącej sesji incognito</translation>
-<translation id="5838456317242088717">Bieżąca sesja incognito</translation>
-<translation id="2318923050469484167">Bieżąca sesja incognito (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Tylko w bieżącej sesji incognito</translation>
+<translation id="3479035826743782247">Bieżąca sesja incognito</translation>
+<translation id="4750220700975225">Bieżąca sesja incognito (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Żadna strona nie jest powiększana ani pomniejszana</translation>
 <translation id="3566721612727112615">Nie dodano żadnych stron</translation>
 <translation id="8098574385249290065">Niech Brave decyduje, które strony mogą odtwarzać dźwięk (zalecane)</translation>
@@ -2845,7 +2845,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="329838636886466101">Napraw</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Nieaktywne)</translation>
-<translation id="1603914832182249871">(Incognito)</translation>
+<translation id="3860292630623580294">(Incognito)</translation>
 <translation id="6655190889273724601">Tryb programisty</translation>
 <translation id="2868746137289129307">To rozszerzenie jest nieaktualne i zostało wyłączone zgodnie z polityką firmy. Może zostać włączone automatycznie, gdy dostępna będzie nowa wersja.</translation>
 <translation id="6841186874966388268">Błędy</translation>
@@ -2866,7 +2866,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1805822111539868586">Zobacz widoki</translation>
 <translation id="181577467034453336">Jeszcze <ph name="NUMBER_OF_VIEWS"/>…</translation>
 <translation id="2450849356604136918">Brak aktywnych widoków</translation>
-<translation id="5488468185303821006">Zezwalaj w trybie incognito</translation>
+<translation id="4854477725773269949">Zezwalaj w trybie incognito</translation>
 <translation id="6124650939968185064">To rozszerzenie jest wymagane przez następujące rozszerzenia:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (identyfikator: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Powiązane z: <ph name="NAME_PH"/></translation>
@@ -2960,10 +2960,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6041155700700864984">Zamknij pełny ekran</translation>
 <translation id="6112294629795967147">Dotknij, by zmienić rozmiar</translation>
 <translation id="2453860139492968684">Zakończ</translation>
-<translation id="1853692000353488670">Nowa karta incognito</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
-<translation id="5530766185686772672">Zamknij karty incognito</translation>
 <translation id="6610147964972079463">Zamknij karty prywatne</translation>
 <translation id="8076492880354921740">Karty</translation>
-<translation id="1049743911850919806">Incognito</translation>
+<translation id="5186185447130319458">Incognito</translation>
 </translationbundle>

@@ -163,7 +163,7 @@
 <translation id="750509436279396091">ডাউনলোডগুলির ফোল্ডার খুলুন</translation>
 <translation id="2902312830803030883">আরও অ্যাকশন</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; এর দ্বারা ডাউনলোড হয়েছে</translation>
-<translation id="7909969815743704077">ছদ্মবেশী ভাবে ডাউনলোড হয়েছে</translation>
+<translation id="6395403722585816044">ছদ্মবেশী ভাবে ডাউনলোড হয়েছে</translation>
 <translation id="8028803902702117856">ডাউনলোড হচ্ছে <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">ডাউনলোড হচ্ছে: <ph name="PERCENT_REMAINING"/> বাকি</translation>
 <translation id="313963229645891001">ডাউনলোড হচ্ছে: <ph name="STATUS"/> বাকি</translation>
@@ -608,7 +608,7 @@
 <translation id="5939518447894949180">রিসেট করুন</translation>
 <translation id="5546865291508181392">খুঁজুন</translation>
 <translation id="833986336429795709">এই লিঙ্কটি খুলতে, একটি অ্যাপ বেছে নিন</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/>(ছদ্মবেশী)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/>(ছদ্মবেশী)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (আপডেট উপলব্ধ আছে)</translation>
 <translation id="8525306231823319788">পূর্ণ স্ক্রীণ</translation>
@@ -636,10 +636,10 @@
 <translation id="3429275422858276529">এই পৃষ্ঠা পরে সহজে খুঁজে পেতে বুকমার্ক করুন</translation>
 <translation id="3603533104205588786">একটি পৃষ্ঠাকে বুকমার্ক করতে তারকা আইকনটিতে ক্লিক করুন৷</translation>
 <translation id="6613452264606394692">এই পৃষ্ঠাটি বুকমার্ক করে দ্রুত এখানে ফিরে আসুন</translation>
-<translation id="8286963743045814739">আপনি ছদ্মবেশী উইন্ডো ব্যবহার করে গোপনে ব্রাউজ করতে পারেন</translation>
-<translation id="1211364473545090084">ব্রাউজিং এর ইতিহাস সেভ না করে ওয়েব ব্রাউজ করার জন্য ছদ্মবেশী উইন্ডো ব্যবহার করুন</translation>
-<translation id="6080515710685820702">শেয়ার করা কম্পিউটার ব্যবহার করছেন? তাহলে ছদ্মবেশী উইন্ডো ব্যবহার করুন।</translation>
-<translation id="7059893117020417984">গোপনে ব্রাউজ করার জন্য ছদ্মবেশী উইন্ডো খুলতে ডট আইকন মেনুতে ক্লিক করুন</translation>
+<translation id="4369414322596874629">আপনি ছদ্মবেশী উইন্ডো ব্যবহার করে গোপনে ব্রাউজ করতে পারেন</translation>
+<translation id="3772947852642271642">ব্রাউজিং এর ইতিহাস সেভ না করে ওয়েব ব্রাউজ করার জন্য ছদ্মবেশী উইন্ডো ব্যবহার করুন</translation>
+<translation id="3871738366246972820">শেয়ার করা কম্পিউটার ব্যবহার করছেন? তাহলে ছদ্মবেশী উইন্ডো ব্যবহার করুন।</translation>
+<translation id="5808622652939943719">গোপনে ব্রাউজ করার জন্য ছদ্মবেশী উইন্ডো খুলতে ডট আইকন মেনুতে ক্লিক করুন</translation>
 <translation id="8803953437405899238">এক ক্লিকেই একটি নতুন ট্যাব খুলুন</translation>
 <translation id="3071624960923923138">নতুন ট্যাব খুলতে এখানে ক্লিক করুন</translation>
 <translation id="4908811072292128752">একইসাথে দুটি সাইট ব্রাউজ করতে নতুন ট্যাব খুলুন</translation>
@@ -1132,13 +1132,13 @@
 <translation id="2367972762794486313">অ্যাপ্লিকেশানগুলি দেখান</translation>
 <translation id="6466988389784393586">&amp;সকল বুকমার্ক খুলুন</translation>
 <translation id="6804671422566312077">নতুন উইন্ডোতে স&amp;কল বুকমার্ক খুলুন</translation>
-<translation id="3011362742078013760">ছ্দ্মবেশী উইন্ডোতে সকল &amp;বুকমার্ক খুলুন</translation>
+<translation id="2692771564633877898">ছ্দ্মবেশী উইন্ডোতে সকল &amp;বুকমার্ক খুলুন</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{সবগুলি &amp;খুলুন}=1{বুকমার্ক &amp;খুলুন}one{সবগুলি (#টি) &amp;খুলুন}other{সবগুলি (#টি) &amp;খুলুন}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{সবগুলি &amp;নতুন উইন্ডোতে খুলুন}=1{&amp;নতুন উইন্ডোতে খুলুন}one{সবগুলি (#টি) &amp;নতুন উইন্ডোতে খুলুন}other{সবগুলি (#টি) &amp;নতুন উইন্ডোতে খুলুন}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{সবগুলি &amp;ছদ্মবেশী উইন্ডোতে খুলুন}=1{&amp;ছদ্মবেশী উইন্ডোতে খুলুন}one{সবগুলি (#টি) &amp;ছদ্মবেশী উইন্ডোতে খুলুন}other{সবগুলি (#টি) &amp;ছদ্মবেশী উইন্ডোতে খুলুন}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{সবগুলি &amp;ছদ্মবেশী উইন্ডোতে খুলুন}=1{&amp;ছদ্মবেশী উইন্ডোতে খুলুন}one{সবগুলি (#টি) &amp;ছদ্মবেশী উইন্ডোতে খুলুন}other{সবগুলি (#টি) &amp;ছদ্মবেশী উইন্ডোতে খুলুন}}</translation>
 <translation id="9024127637873500333">&amp;নতুন ট্যাবে খুলুন</translation>
 <translation id="665061930738760572">&amp;নতুন উইন্ডোতে খুলুন</translation>
-<translation id="37613671848467444">ছদ্মবেশী উইন্ডোতে খুলু&amp;ন</translation>
+<translation id="1985165269306590797">ছদ্মবেশী উইন্ডোতে খুলু&amp;ন</translation>
 <translation id="6702639462873609204">&amp;সম্পাদনা করুন...</translation>
 <translation id="3088325635286126843">&amp;পুনঃনামকরণ...</translation>
 <translation id="5329858601952122676">&amp;মুছুন</translation>
@@ -1189,10 +1189,10 @@
 <translation id="8457451314607652708">বুকমার্কগুলি আমদানি করুন</translation>
 <translation id="5101042277149003567">সকল বুকমার্ক খুলুন</translation>
 <translation id="7007648447224463482">সবগুলি নতুন উইন্ডোতে খুলুন</translation>
-<translation id="4508051413094283164">সবগুলি ছদ্মবেশী উইন্ডোতে খুলুন</translation>
+<translation id="642436385689435488">সবগুলি ছদ্মবেশী উইন্ডোতে খুলুন</translation>
 <translation id="4195643157523330669">নতুন ট্যাবে খুলুন</translation>
 <translation id="2979639724566107830">নতুন উইন্ডোতে খুলুন</translation>
-<translation id="1134009406053225289">ছদ্মবেশী উইন্ডোতে খুলুন</translation>
+<translation id="5463021359602611602">ছদ্মবেশী উইন্ডোতে খুলুন</translation>
 <translation id="1173894706177603556">পুনঃনামকরণ</translation>
 <translation id="5170568018924773124">ফোল্ডারে দেখান</translation>
 <translation id="6825184156888454064">নাম অনুসারে সাজান</translation>
@@ -1281,7 +1281,7 @@
 <translation id="4159681666905192102">এইটি হল বাচ্চাদের জন্য <ph name="CUSTODIAN_EMAIL"/> এবং <ph name="SECOND_CUSTODIAN_EMAIL"/> দ্বারা পরিচালিত একটি অ্যাকাউন্ট৷</translation>
 <translation id="5958529069007801266">তত্ত্বাবধানে থাকা ব্যবহারকারী</translation>
 <translation id="5720705177508910913">বর্তমান ব্যবহারকারী</translation>
-<translation id="7081952801286122383">আপনি ছদ্মবেশী মোডে আছেন</translation>
+<translation id="5070556616376997776">আপনি ছদ্মবেশী মোডে আছেন</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: সিঙ্ক কাজ করছে না</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: সিঙ্ক থামানো হয়েছে</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (তত্বাবধানে থাকা)</translation>
@@ -2542,9 +2542,9 @@
 <translation id="6782111308708962316">কুকি ডেটা সংরক্ষণ করা এবং পড়া থেকে তৃতীয় পক্ষের ওয়েবসাইটগুলিকে আটকান</translation>
 <translation id="3378503599595235699">আপনি আপনার ব্রাউজার ছেড়ে যাওয়া পর্যন্ত কেবল স্থানীয় ডেটা রাখুন</translation>
 <translation id="1274977772557788323">Adobe Flash Player সঞ্চয়স্থান সেটিংস...</translation>
-<translation id="1698122934742150150">শুধুমাত্র বর্তমান ছদ্মবেশী সেশন</translation>
-<translation id="5838456317242088717">বর্তমান ছদ্মবেশী সেশন</translation>
-<translation id="2318923050469484167">বর্তমান ছদ্মবেশী সেশন (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">শুধুমাত্র বর্তমান ছদ্মবেশী সেশন</translation>
+<translation id="3479035826743782247">বর্তমান ছদ্মবেশী সেশন</translation>
+<translation id="4750220700975225">বর্তমান ছদ্মবেশী সেশন (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">কোনো সাইটের জুম বাড়ানো বা কমানো হয়নি</translation>
 <translation id="3566721612727112615">কোনো সাইট যোগ করা হয়নি</translation>
 <translation id="8098574385249290065">সাইটটি কখন সাউন্ড চালাতে পারবে তা Brave-কে বেছে নিতে দিন (প্রস্তাবিত)</translation>
@@ -2844,7 +2844,7 @@
 <translation id="329838636886466101">মেরামত</translation>
 <translation id="3012631534724231212">(আইফ্রেম)</translation>
 <translation id="1708338024780164500">(নিষ্ক্রিয়)</translation>
-<translation id="1603914832182249871">(ছদ্মবেশী)</translation>
+<translation id="3860292630623580294">(ছদ্মবেশী)</translation>
 <translation id="6655190889273724601">ডেভেলপার মোড</translation>
 <translation id="2868746137289129307">এই এক্সটেনশনটির পুরনো ভার্সনের এবং এন্টারপ্রাইজ নীতি বন্ধ করা রয়েছে৷ যখনই নতুন ভার্সন উপলভ্য থাকবে তখন এটি নিজে থেকে চালু হবে৷</translation>
 <translation id="6841186874966388268">ত্রুটিগুলি</translation>
@@ -2865,7 +2865,7 @@
 <translation id="1805822111539868586">দৃশ্যগুলি দেখুন</translation>
 <translation id="181577467034453336">আরও <ph name="NUMBER_OF_VIEWS"/>টি...</translation>
 <translation id="2450849356604136918">কোনও সক্রিয় ভিউ নেই</translation>
-<translation id="5488468185303821006">ছদ্মবেশে মঞ্জুর করুন</translation>
+<translation id="4854477725773269949">ছদ্মবেশে মঞ্জুর করুন</translation>
 <translation id="6124650939968185064">নিম্নলিখিত এক্সটেনশনগুলি এই এক্সটেনশনটির উপর নির্ভর করে:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (আইডি: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> সম্পর্কিত</translation>
@@ -2959,10 +2959,8 @@
 <translation id="6041155700700864984">সম্পূর্ণ স্ক্রিন থেকে বেরিয়ে আসুন</translation>
 <translation id="6112294629795967147">সাইজ পরিবর্তন করতে টাচ করুন</translation>
 <translation id="2453860139492968684">সমাপ্ত করুন</translation>
-<translation id="1853692000353488670">নতুন ছদ্মবেশী ট্যাব</translation>
 <translation id="6336451774241870485">নতুন ব্যক্তিগত ট্যাব</translation>
-<translation id="5530766185686772672">ছদ্মবেশী ট্যাবগুলি বন্ধ করুন</translation>
 <translation id="6610147964972079463">ব্যক্তিগত ট্যাব বন্ধ করুন</translation>
 <translation id="8076492880354921740">ট্যাবগুলি</translation>
-<translation id="1049743911850919806">ছদ্মবেশী</translation>
+<translation id="5186185447130319458">ছদ্মবেশী</translation>
 </translationbundle>

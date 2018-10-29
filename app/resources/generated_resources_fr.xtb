@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Ouvrir le dossier des téléchargements</translation>
 <translation id="2902312830803030883">Autres actions</translation>
 <translation id="3612673635130633812">Téléchargé par &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Téléchargé en mode navigation privée</translation>
+<translation id="6395403722585816044">Téléchargé en mode navigation privée</translation>
 <translation id="8028803902702117856">Téléchargement en cours : <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Téléchargement en cours : <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Téléchargement en cours : <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="5939518447894949180">Réinitialiser</translation>
 <translation id="5546865291508181392">Rechercher</translation>
 <translation id="833986336429795709">Pour ouvrir ce lien, sélectionner une application</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Navigation privée)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navigation privée)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (mise à jour disponible)</translation>
 <translation id="8525306231823319788">Plein écran</translation>
@@ -637,10 +637,10 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3429275422858276529">Ajoutez cette page aux favoris pour la retrouver facilement</translation>
 <translation id="3603533104205588786">Vous pouvez cliquer sur l'étoile pour ajouter une page à vos favoris</translation>
 <translation id="6613452264606394692">Revenez facilement sur cette page en l'ajoutant à vos favoris</translation>
-<translation id="8286963743045814739">Vous pouvez parcourir le Web en mode privé à l'aide d'une fenêtre de navigation privée</translation>
-<translation id="1211364473545090084">Parcourez le Web sans enregistrer votre historique de navigation à l'aide d'une fenêtre de navigation privée</translation>
-<translation id="6080515710685820702">Vous utilisez un ordinateur partagé ? Essayez d'ouvrir une fenêtre de navigation privée.</translation>
-<translation id="7059893117020417984">Pour parcourir le Web en mode privé, cliquez sur l'icône représentant trois points afin d'ouvrir une fenêtre de navigation privée</translation>
+<translation id="4369414322596874629">Vous pouvez parcourir le Web en mode privé à l'aide d'une fenêtre de navigation privée</translation>
+<translation id="3772947852642271642">Parcourez le Web sans enregistrer votre historique de navigation à l'aide d'une fenêtre de navigation privée</translation>
+<translation id="3871738366246972820">Vous utilisez un ordinateur partagé ? Essayez d'ouvrir une fenêtre de navigation privée.</translation>
+<translation id="5808622652939943719">Pour parcourir le Web en mode privé, cliquez sur l'icône représentant trois points afin d'ouvrir une fenêtre de navigation privée</translation>
 <translation id="8803953437405899238">Ouvrez un nouvel onglet d'un simple clic</translation>
 <translation id="3071624960923923138">Vous pouvez cliquer ici pour ouvrir un nouvel onglet</translation>
 <translation id="4908811072292128752">Ouvrez un nouvel onglet pour naviguer sur deux sites Web en même temps</translation>
@@ -1132,13 +1132,13 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="2367972762794486313">Afficher les applications</translation>
 <translation id="6466988389784393586">&amp;Ouvrir tous les favoris</translation>
 <translation id="6804671422566312077">Ouvrir tous les favoris dans une &amp;nouvelle fenêtre</translation>
-<translation id="3011362742078013760">Ouvrir tous les favoris dans une fenêtre de &amp;navigation privée</translation>
+<translation id="2692771564633877898">Ouvrir tous les favoris dans une fenêtre de &amp;navigation privée</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{Tout &amp;ouvrir}=1{&amp;Ouvrir le favori}one{Tout &amp;ouvrir (#)}other{Tout &amp;ouvrir (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Tout ouvrir dans une &amp;nouvelle fenêtre}=1{Ouvrir dans une &amp;nouvelle fenêtre}one{Tout ouvrir (#) dans une &amp;nouvelle fenêtre}other{Tout ouvrir (#) dans une &amp;nouvelle fenêtre}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Tout ouvrir dans une fenêtre de navigation &amp;privée}=1{Ouvrir dans une fenêtre de navigation &amp;privée}one{Tout ouvrir (#) dans une fenêtre de navigation &amp;privée}other{Tout ouvrir (#) dans une fenêtre de navigation &amp;privée}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Tout ouvrir dans une fenêtre de navigation &amp;privée}=1{Ouvrir dans une fenêtre de navigation &amp;privée}one{Tout ouvrir (#) dans une fenêtre de navigation &amp;privée}other{Tout ouvrir (#) dans une fenêtre de navigation &amp;privée}}</translation>
 <translation id="9024127637873500333">&amp;Ouvrir dans un nouvel onglet</translation>
 <translation id="665061930738760572">Ouvrir dans une &amp;nouvelle fenêtre</translation>
-<translation id="37613671848467444">Ouvrir dans une fenêtre de &amp;navigation privée</translation>
+<translation id="1985165269306590797">Ouvrir dans une fenêtre de &amp;navigation privée</translation>
 <translation id="6702639462873609204">&amp;Modifier...</translation>
 <translation id="3088325635286126843">&amp;Renommer...</translation>
 <translation id="5329858601952122676">&amp;Supprimer</translation>
@@ -1189,10 +1189,10 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8457451314607652708">Importer les favoris</translation>
 <translation id="5101042277149003567">Ouvrir tous les favoris</translation>
 <translation id="7007648447224463482">Tout ouvrir dans une nouvelle fenêtre</translation>
-<translation id="4508051413094283164">Tout ouvrir dans une fenêtre de navigation privée</translation>
+<translation id="642436385689435488">Tout ouvrir dans une fenêtre de navigation privée</translation>
 <translation id="4195643157523330669">Ouvrir dans un nouvel onglet</translation>
 <translation id="2979639724566107830">Ouvrir dans une nouvelle fenêtre</translation>
-<translation id="1134009406053225289">Ouvrir dans une fenêtre de navigation privée</translation>
+<translation id="5463021359602611602">Ouvrir dans une fenêtre de navigation privée</translation>
 <translation id="1173894706177603556">Renommer</translation>
 <translation id="5170568018924773124">Afficher le dossier</translation>
 <translation id="6825184156888454064">Trier par nom</translation>
@@ -1280,7 +1280,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="4159681666905192102">Il s'agit d'un compte pour enfants géré par <ph name="CUSTODIAN_EMAIL"/> et <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Utilisateur supervisé</translation>
 <translation id="5720705177508910913">Utilisateur actuel</translation>
-<translation id="7081952801286122383">Mode navigation privée activé</translation>
+<translation id="5070556616376997776">Mode navigation privée activé</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/> : la synchronisation ne fonctionne pas</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/> : synchronisation désactivée</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (supervisé)</translation>
@@ -2542,9 +2542,9 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6782111308708962316">Empêcher les sites Web tiers d'enregistrer et de lire les données des cookies</translation>
 <translation id="3378503599595235699">Ne conserver les données locales que jusqu'à ce que je quitte ma session de navigation</translation>
 <translation id="1274977772557788323">Paramètres de stockage d'Adobe Flash Player</translation>
-<translation id="1698122934742150150">Session de navigation privée actuelle uniquement</translation>
-<translation id="5838456317242088717">Session de navigation privée actuelle</translation>
-<translation id="2318923050469484167">Session de navigation privée actuelle (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Session de navigation privée actuelle uniquement</translation>
+<translation id="3479035826743782247">Session de navigation privée actuelle</translation>
+<translation id="4750220700975225">Session de navigation privée actuelle (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Vous n'avez fait de zoom avant ou arrière sur aucun site</translation>
 <translation id="3566721612727112615">Aucun site ajouté</translation>
 <translation id="8098574385249290065">Brave détermine quand activer le son des sites (recommandé)</translation>
@@ -2844,7 +2844,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="329838636886466101">Réparer</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Inactive)</translation>
-<translation id="1603914832182249871">(Navigation privée)</translation>
+<translation id="3860292630623580294">(Navigation privée)</translation>
 <translation id="6655190889273724601">Mode développeur</translation>
 <translation id="2868746137289129307">Cette extension est obsolète et désactivée par une stratégie d'entreprise. Il se peut qu'elle soit activée automatiquement lors de la publication d'une version plus récente.</translation>
 <translation id="6841186874966388268">Erreurs</translation>
@@ -2865,7 +2865,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1805822111539868586">Examiner les vues</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> autres…</translation>
 <translation id="2450849356604136918">Aucune vue active</translation>
-<translation id="5488468185303821006">Autoriser en mode navigation privée</translation>
+<translation id="4854477725773269949">Autoriser en mode navigation privée</translation>
 <translation id="6124650939968185064">Les extensions suivantes dépendent de cette extension :</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID : <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">En rapport avec <ph name="NAME_PH"/></translation>
@@ -2959,10 +2959,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6041155700700864984">Quitter le mode plein écran</translation>
 <translation id="6112294629795967147">Appuyer pour redimensionner</translation>
 <translation id="2453860139492968684">Terminer</translation>
-<translation id="1853692000353488670">Nouvel onglet de navigation privée</translation>
 <translation id="6336451774241870485">Nouvel onglet privé</translation>
-<translation id="5530766185686772672">Fermer onglets navig. privée</translation>
 <translation id="6610147964972079463">Fermer les onglets privés</translation>
 <translation id="8076492880354921740">Onglets</translation>
-<translation id="1049743911850919806">Navigation privée</translation>
+<translation id="5186185447130319458">Navigation privée</translation>
 </translationbundle>

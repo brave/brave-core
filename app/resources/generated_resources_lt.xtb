@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Atidaryti atsisiuntimų aplanką</translation>
 <translation id="2902312830803030883">Daugiau veiksmų</translation>
 <translation id="3612673635130633812">Atsisiuntė &lt;a href="<ph name="URL"/>"&gt;„<ph name="EXTENSION"/>“&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Atsisiųsta inkognito režimu</translation>
+<translation id="6395403722585816044">Atsisiųsta inkognito režimu</translation>
 <translation id="8028803902702117856">Atsisiunčiama: <ph name="SIZE"/> (<ph name="FILE_NAME"/>)</translation>
 <translation id="4644818355646995778">Atsisiunčiama: <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Atsisiunčiama: <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5939518447894949180">Nustatyti iš naujo</translation>
 <translation id="5546865291508181392">Rasti</translation>
 <translation id="833986336429795709">Kad atidarytumėte šią nuorodą, pasirinkite programą</translation>
-<translation id="6751344591405861699">„<ph name="WINDOW_TITLE"/>“ (Inkognito)</translation>
+<translation id="6827869674836193263">„<ph name="WINDOW_TITLE"/>“ (Inkognito)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580">„<ph name="ACCNAME_APP"/>“ (pasiekiamas naujinys)</translation>
 <translation id="8525306231823319788">Viso ekrano režimas</translation>
@@ -637,10 +637,10 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3429275422858276529">Pažymėkite šį puslapį, kad galėtumėte lengvai jį rasti vėliau</translation>
 <translation id="3603533104205588786">Galite spustelėti žvaigždutę, kad pažymėtumėte puslapį</translation>
 <translation id="6613452264606394692">Grįžkite čia greičiau ir patogiau pasižymėję šį puslapį</translation>
-<translation id="8286963743045814739">Galite naršyti privačiai naudodami inkognito langą</translation>
-<translation id="1211364473545090084">Naršykite žiniatinklį neišsaugodami naršymo istorijos inkognito lange</translation>
-<translation id="6080515710685820702">Naudojate kompiuterį bendrai? Pabandykite atidaryti inkognito langą.</translation>
-<translation id="7059893117020417984">Kad galėtumėte naršyti privačiai, spustelėdami taškų piktogramos meniu atidarykite inkognito langą</translation>
+<translation id="4369414322596874629">Galite naršyti privačiai naudodami inkognito langą</translation>
+<translation id="3772947852642271642">Naršykite žiniatinklį neišsaugodami naršymo istorijos inkognito lange</translation>
+<translation id="3871738366246972820">Naudojate kompiuterį bendrai? Pabandykite atidaryti inkognito langą.</translation>
+<translation id="5808622652939943719">Kad galėtumėte naršyti privačiai, spustelėdami taškų piktogramos meniu atidarykite inkognito langą</translation>
 <translation id="8803953437405899238">Atidarykite naują skirtuką vienu paspaudimu</translation>
 <translation id="3071624960923923138">Galite spustelėti čia, kad atidarytumėte naują skirtuką</translation>
 <translation id="4908811072292128752">Jei norite naršyti iš karto dvi svetaines, atidarykite naują skirtuką</translation>
@@ -1132,13 +1132,13 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2367972762794486313">Rodyti programas</translation>
 <translation id="6466988389784393586">&amp;Atidaryti visas žymes</translation>
 <translation id="6804671422566312077">Atidaryti visas žymes &amp;naujame lange</translation>
-<translation id="3011362742078013760">Atidaryti visas žymes &amp;inkognito lange</translation>
+<translation id="2692771564633877898">Atidaryti visas žymes &amp;inkognito lange</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Atidaryti viską}=1{&amp;Atidaryti žymę}one{&amp;Atidaryti viską (#)}few{&amp;Atidaryti viską (#)}many{&amp;Atidaryti viską (#)}other{&amp;Atidaryti viską (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Atidaryti viską &amp;naujame lange}=1{Atidaryti &amp;naujame lange}one{Atidaryti viską (#) &amp;naujame lange}few{Atidaryti viską (#) &amp;naujame lange}many{Atidaryti viską (#) &amp;naujame lange}other{Atidaryti viską (#) &amp;naujame lange}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Atidaryti viską &amp;inkognito lange}=1{Atidaryti &amp;inkognito lange}one{Atidaryti viską (#) &amp;inkognito lange}few{Atidaryti viską (#) &amp;inkognito lange}many{Atidaryti viską (#) &amp;inkognito lange}other{Atidaryti viską (#) &amp;inkognito lange}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Atidaryti viską &amp;inkognito lange}=1{Atidaryti &amp;inkognito lange}one{Atidaryti viską (#) &amp;inkognito lange}few{Atidaryti viską (#) &amp;inkognito lange}many{Atidaryti viską (#) &amp;inkognito lange}other{Atidaryti viską (#) &amp;inkognito lange}}</translation>
 <translation id="9024127637873500333">&amp;Atidaryti naujo skirtuko lape</translation>
 <translation id="665061930738760572">Atidaryti &amp;naujame lange</translation>
-<translation id="37613671848467444">Atidaryti inkognito lange</translation>
+<translation id="1985165269306590797">Atidaryti inkognito lange</translation>
 <translation id="6702639462873609204">&amp;Redaguoti...</translation>
 <translation id="3088325635286126843">&amp;Pervardyti...</translation>
 <translation id="5329858601952122676">&amp;Pašalinti</translation>
@@ -1189,10 +1189,10 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8457451314607652708">Importuoti žymes</translation>
 <translation id="5101042277149003567">Atidaryti visas žymas</translation>
 <translation id="7007648447224463482">Atidaryti viską naujame lange</translation>
-<translation id="4508051413094283164">Atidaryti viską inkognito lange</translation>
+<translation id="642436385689435488">Atidaryti viską inkognito lange</translation>
 <translation id="4195643157523330669">Atidaryti naujame skirtuke</translation>
 <translation id="2979639724566107830">Atidaryti naujame lange</translation>
-<translation id="1134009406053225289">Atidaryti nežinomame lange</translation>
+<translation id="5463021359602611602">Atidaryti nežinomame lange</translation>
 <translation id="1173894706177603556">Pervadinti</translation>
 <translation id="5170568018924773124">Rodyti aplanke</translation>
 <translation id="6825184156888454064">Rūšiuoti pagal pavadinimą</translation>
@@ -1280,7 +1280,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4159681666905192102">Tai yra vaikų paskyra, kurią tvarko <ph name="CUSTODIAN_EMAIL"/> ir <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Prižiūrimas naudotojas</translation>
 <translation id="5720705177508910913">Dabartinis naudotojas</translation>
-<translation id="7081952801286122383">Veikia inkognito režimas</translation>
+<translation id="5070556616376997776">Veikia inkognito režimas</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: sinchronizavimas neveikia</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: sinchronizavimas pristabdytas</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (prižiūrimas)</translation>
@@ -2542,9 +2542,9 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6782111308708962316">Neleisti trečiosios šalies svetainėms išsaugoti ir skaityti slapukų duomenų</translation>
 <translation id="3378503599595235699">Išsaugoti vietinius duomenis tik iki to laiko, kai uždaroma naršyklė</translation>
 <translation id="1274977772557788323">„Adobe Flash Player“ saugyklos nustatymai</translation>
-<translation id="1698122934742150150">Tik dabartinė inkognito režimo sesija</translation>
-<translation id="5838456317242088717">Dabartinė inkognito sesija</translation>
-<translation id="2318923050469484167">Dabartinė inkognito režimo sesija (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Tik dabartinė inkognito režimo sesija</translation>
+<translation id="3479035826743782247">Dabartinė inkognito sesija</translation>
+<translation id="4750220700975225">Dabartinė inkognito režimo sesija (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nėra svetainių, kurių turinys priartintas arba atitolintas</translation>
 <translation id="3566721612727112615">Nepridėta jokių svetainių</translation>
 <translation id="8098574385249290065">Leisti „Brave“ pasirinkti, kada svetainės gali leisti garsą (rekomenduojama)</translation>
@@ -2844,7 +2844,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="329838636886466101">Pataisyti</translation>
 <translation id="3012631534724231212">(„iframe“)</translation>
 <translation id="1708338024780164500">(Neaktyvus)</translation>
-<translation id="1603914832182249871">(Inkognito)</translation>
+<translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="6655190889273724601">Kūrėjo režimas</translation>
 <translation id="2868746137289129307">Plėtinys pasenęs ir neleidžiamas pagal įmonės politiką. Atsiradus naujesnei versijai, jis gali būti įgalintas automatiškai.</translation>
 <translation id="6841186874966388268">Klaidos</translation>
@@ -2865,7 +2865,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="1805822111539868586">Tikrinti rodinius</translation>
 <translation id="181577467034453336">Dar <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">aktyvių rodinių nėra</translation>
-<translation id="5488468185303821006">Leisti „inkognito“ režimą</translation>
+<translation id="4854477725773269949">Leisti „inkognito“ režimą</translation>
 <translation id="6124650939968185064">Toliau pateikti plėtiniai priklauso nuo šio plėtinio:</translation>
 <translation id="1708713382908678956">„<ph name="NAME_PH"/>“ (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Susiję su „<ph name="NAME_PH"/>“</translation>
@@ -2959,10 +2959,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6041155700700864984">Išjungti viso ekrano režimą</translation>
 <translation id="6112294629795967147">Palieskite, kad pakeistumėte dydį</translation>
 <translation id="2453860139492968684">Užbaigti</translation>
-<translation id="1853692000353488670">Naujas inkognito skirtukas</translation>
 <translation id="6336451774241870485">Naujas privatus skirtukas</translation>
-<translation id="5530766185686772672">Užd. inkognito skirt. lapus</translation>
 <translation id="6610147964972079463">Uždaryti privačius skirtuk.</translation>
 <translation id="8076492880354921740">Skirtukai</translation>
-<translation id="1049743911850919806">Inkognito</translation>
+<translation id="5186185447130319458">Inkognito</translation>
 </translationbundle>

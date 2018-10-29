@@ -163,7 +163,7 @@
 <translation id="750509436279396091">فتح مجلد التنزيلات</translation>
 <translation id="2902312830803030883">مزيد من الإجراءات</translation>
 <translation id="3612673635130633812">‏تم تحميلها من قبل &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">تم التحميل في وضع التصفح المتخفي</translation>
+<translation id="6395403722585816044">تم التحميل في وضع التصفح المتخفي</translation>
 <translation id="8028803902702117856">جارٍ تنزيل <ph name="SIZE"/>، <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">جارٍ التنزيل، <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">جارٍ التنزيل، <ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@
 <translation id="5939518447894949180">إعادة</translation>
 <translation id="5546865291508181392">بحث</translation>
 <translation id="833986336429795709">لفتح هذا الرابط، اختر أحد التطبيقات.</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (التصفح المتخفي)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (التصفح المتخفي)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (هناك تحديث متاح)</translation>
 <translation id="8525306231823319788">ملء الشاشة</translation>
@@ -636,10 +636,10 @@
 <translation id="3429275422858276529">ضَع إشارة على هذه الصفحة لسهولة العثور عليها لاحقًا</translation>
 <translation id="3603533104205588786">يمكنك النقر على النجمة لوضع إشارة على إحدى الصفحات</translation>
 <translation id="6613452264606394692">يمكنك الرجوع إلى هنا بسرعة بوضع إشارة على هذه الصفحة</translation>
-<translation id="8286963743045814739">يمكنك التصفّح بخصوصية تامّة باستخدام نافذة للتصفُّح المتخفي</translation>
-<translation id="1211364473545090084">استخدِم الويب دون حفظ سجلّ التصفُّح باستخدام نافذة تصفُّح متخفٍ</translation>
-<translation id="6080515710685820702">هل تستخدم جهاز كمبيوتر مشتركًا؟ جرِّب فتح نافذة للتصفُّح المتخفي.</translation>
-<translation id="7059893117020417984">للتصفُّح بخصوصية تامّة، انقر على القائمة المشار إليها برمز النقاط لفتح نافذة للتصفُّح المتخفي</translation>
+<translation id="4369414322596874629">يمكنك التصفّح بخصوصية تامّة باستخدام نافذة للتصفُّح المتخفي</translation>
+<translation id="3772947852642271642">استخدِم الويب دون حفظ سجلّ التصفُّح باستخدام نافذة تصفُّح متخفٍ</translation>
+<translation id="3871738366246972820">هل تستخدم جهاز كمبيوتر مشتركًا؟ جرِّب فتح نافذة للتصفُّح المتخفي.</translation>
+<translation id="5808622652939943719">للتصفُّح بخصوصية تامّة، انقر على القائمة المشار إليها برمز النقاط لفتح نافذة للتصفُّح المتخفي</translation>
 <translation id="8803953437405899238">يمكنك فتح علامة تبويب جديدة بنقرة واحدة</translation>
 <translation id="3071624960923923138">يمكنك النقر هنا لفتح علامة تبويب جديدة</translation>
 <translation id="4908811072292128752">فتح علامة تبويب جديدة لتصفح موقعي ويب في وقت واحد</translation>
@@ -1131,13 +1131,13 @@
 <translation id="2367972762794486313">إظهار التطبيقات</translation>
 <translation id="6466988389784393586">ف&amp;تح كل الإشارات المرجعية</translation>
 <translation id="6804671422566312077">فتح كل الإشارات المرجعية في &amp;نافذة جديدة</translation>
-<translation id="3011362742078013760">فتح كل الإشارات المرجعية &amp;في نافذة التصفح المتخفي</translation>
+<translation id="2692771564633877898">فتح كل الإشارات المرجعية &amp;في نافذة التصفح المتخفي</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;فتح الكل}=1{&amp;فتح الإشارة المرجعية}two{&amp;فتح الكل (#)}few{&amp;فتح الكل (#)}many{&amp;فتح الكل (#)}other{&amp;فتح الكل (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{فتح الكل في &amp;نافذة جديدة}=1{فتح في &amp;نافذة جديدة}two{فتح كلا العنوانين (#) في &amp;نافذة جديدة}few{فتح كل الـ (#) عناوين في &amp;نافذة جديدة}many{فتح كل الـ (#) عنوانًا في &amp;نافذة جديدة}other{فتح كل الـ (#) عنوان في &amp;نافذة جديدة}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{فتح الكل في &amp;نافذة التصفح المتخفي}=1{فتح في &amp;نافذة التصفح المتخفي}two{فتح كلا العنوانين (#) في &amp;نافذة التصفح المتخفي}few{فتح كل الـ (#) عناوين في &amp;نافذة التصفح المتخفي}many{فتح كل الـ (#) عنوانًا في &amp;نافذة التصفح المتخفي}other{فتح كل الـ (#) عنوان في &amp;نافذة التصفح المتخفي}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{فتح الكل في &amp;نافذة التصفح المتخفي}=1{فتح في &amp;نافذة التصفح المتخفي}two{فتح كلا العنوانين (#) في &amp;نافذة التصفح المتخفي}few{فتح كل الـ (#) عناوين في &amp;نافذة التصفح المتخفي}many{فتح كل الـ (#) عنوانًا في &amp;نافذة التصفح المتخفي}other{فتح كل الـ (#) عنوان في &amp;نافذة التصفح المتخفي}}</translation>
 <translation id="9024127637873500333">&amp;فتح في علامة تبويب جديدة</translation>
 <translation id="665061930738760572">فتح في &amp;نافذة جديدة</translation>
-<translation id="37613671848467444">فتح في &amp;نافذة التصفح المتخفي</translation>
+<translation id="1985165269306590797">فتح في &amp;نافذة التصفح المتخفي</translation>
 <translation id="6702639462873609204">تعد&amp;يل...</translation>
 <translation id="3088325635286126843">إ&amp;عادة تسمية...</translation>
 <translation id="5329858601952122676">&amp;حذف</translation>
@@ -1188,10 +1188,10 @@
 <translation id="8457451314607652708">استيراد الإشارات المرجعية</translation>
 <translation id="5101042277149003567">فتح  جميع الإشارات المرجعية</translation>
 <translation id="7007648447224463482">فتح الكل في نافذة جديدة</translation>
-<translation id="4508051413094283164">فتح الكل في نافذة التصفح المتخفي</translation>
+<translation id="642436385689435488">فتح الكل في نافذة التصفح المتخفي</translation>
 <translation id="4195643157523330669">فتح الإشارة في علامة تبويب جديدة</translation>
 <translation id="2979639724566107830">فتح الإشارة في نافذة جديدة</translation>
-<translation id="1134009406053225289">فتح في نافذة للتصفح المتخفي</translation>
+<translation id="5463021359602611602">فتح في نافذة للتصفح المتخفي</translation>
 <translation id="1173894706177603556">إعادة تسمية</translation>
 <translation id="5170568018924773124">العرض في المجلد</translation>
 <translation id="6825184156888454064">تصنيف بحسب الاسم</translation>
@@ -1279,7 +1279,7 @@
 <translation id="4159681666905192102">هذا هو حساب للأطفال يتم إدارته من قبل <ph name="CUSTODIAN_EMAIL"/> و<ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">مستخدم يخضع للإدارة</translation>
 <translation id="5720705177508910913">المستخدم الحالي</translation>
-<translation id="7081952801286122383">أنت تستخدم وضع التصفُّح المُتخفِّي</translation>
+<translation id="5070556616376997776">أنت تستخدم وضع التصفُّح المُتخفِّي</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: المزامنة لا تعمل</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: تم إيقاف المزامنة مؤقتًا</translation>
 <translation id="140520891692800925">(خاضع للإدارة) <ph name="PROFILE_DISPLAY_NAME"/></translation>
@@ -2541,9 +2541,9 @@
 <translation id="6782111308708962316">منع مواقع الويب التابعة لجهات خارجية من حفظ بيانات ملفات تعريف الارتباط وقراءتها</translation>
 <translation id="3378503599595235699">الاحتفاظ بالبيانات المحلية حتى الخروج من المتصفح</translation>
 <translation id="1274977772557788323">‏إعدادات مساحة تخزين برنامج Adobe Flash Player</translation>
-<translation id="1698122934742150150">جلسة التصفح المتخفي الحالية فقط</translation>
-<translation id="5838456317242088717">جلسة التصفح المتخفي الحالية</translation>
-<translation id="2318923050469484167">جلسة التصفح المتخفي الحالية (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">جلسة التصفح المتخفي الحالية فقط</translation>
+<translation id="3479035826743782247">جلسة التصفح المتخفي الحالية</translation>
+<translation id="4750220700975225">جلسة التصفح المتخفي الحالية (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">لم يتم تكبير أو تصغير أي مواقع ويب</translation>
 <translation id="3566721612727112615">لم تتم إضافة أي مواقع</translation>
 <translation id="8098574385249290065">‏السماح لمتصفِّح Brave باختيار الوقت الذي يمكن للمواقع الإلكترونية تشغيل الصوت فيه (مُوصى به)</translation>
@@ -2843,7 +2843,7 @@
 <translation id="329838636886466101">الإصلاح</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(غير نشطة)</translation>
-<translation id="1603914832182249871">(التصفح المتخفي)</translation>
+<translation id="3860292630623580294">(التصفح المتخفي)</translation>
 <translation id="6655190889273724601">وضع مطوّر البرامج</translation>
 <translation id="2868746137289129307">تعتبر هذه الإضافة قديمة وغير مفعّلة بواسطة سياسة المؤسسة. وقد تصبح مفعّلة تلقائيًا عندما يتوفر إصدار أحدث.</translation>
 <translation id="6841186874966388268">أخطاء</translation>
@@ -2864,7 +2864,7 @@
 <translation id="1805822111539868586">فحص القراءات</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> أخرى...</translation>
 <translation id="2450849356604136918">ليس هناك أي عروض نشطة</translation>
-<translation id="5488468185303821006">السماح بالتشغيل في وضع التصفح المتخفي</translation>
+<translation id="4854477725773269949">السماح بالتشغيل في وضع التصفح المتخفي</translation>
 <translation id="6124650939968185064">تعتمد الإضافات التالية على هذه الإضافة:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (رقم التعريف: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">ذات صلة بـ <ph name="NAME_PH"/></translation>
@@ -2958,10 +2958,8 @@
 <translation id="6041155700700864984">الخروج من عرض ملء الشاشة</translation>
 <translation id="6112294629795967147">اللمس لتغيير الحجم</translation>
 <translation id="2453860139492968684">اكتمل</translation>
-<translation id="1853692000353488670">علامة تبويب جديدة للتصفح المتخفي</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
-<translation id="5530766185686772672">إغلاق علامات تبويب التصفح المتخفي</translation>
 <translation id="6610147964972079463">إغلاق علامات التبويب الخاصة</translation>
 <translation id="8076492880354921740">علامات التبويب</translation>
-<translation id="1049743911850919806">التصفح المتخفي</translation>
+<translation id="5186185447130319458">التصفح المتخفي</translation>
 </translationbundle>
