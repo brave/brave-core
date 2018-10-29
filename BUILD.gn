@@ -1,0 +1,93 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+config("external_config") {
+  include_dirs = [ "include" ]
+  # TODO(bridiver) - fix include dirs here and in deps to move things out of the top level
+  include_dirs += [ "../" ]
+}
+
+config("internal_config") {
+  include_dirs = [ "src" ]
+
+  # TODO(bridiver) - fix issues and remove these
+  if (is_clang || !is_win) {
+    cflags_cc = [
+      "-Wno-reorder",
+      "-Wno-c++17-extensions",
+      "-Wno-unused-private-field",
+    ]
+  }
+  if (is_win) {
+    cflags_cc = [
+      "/wd4101",  # unreferenced local variable
+    ]
+  }
+}
+
+group("bat-native-ads") {
+  public_deps = [
+    ":ads",
+  ]
+
+  data_deps = [
+    ":bat-native-ads-standalone",
+  ]
+}
+
+static_library("bat-native-ads-standalone") {
+  # TODO(bridiver) - only export symbols from `include`
+  complete_static_lib = true
+
+  output_dir = root_out_dir
+
+  configs -= [ "//build/config/compiler:thin_archive" ]
+
+  defines = [
+    "STANDALONE_BUILD",
+  ]
+
+  deps = [
+    ":ads"
+  ]
+}
+
+source_set("ads") {
+  public_configs = [ ":external_config" ]
+  configs += [ ":internal_config" ]
+
+  output_name = "bat_native_ads"
+
+  # TODO(bridiver) - fix chromium-style issues and remove these
+  configs -= [
+    "//build/config/compiler:chromium_code",
+    "//build/config/clang:find_bad_constructs",
+  ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+  ]
+
+  sources = [
+    "src/ads.cc",
+    "src/ads_impl.cc",
+    "src/bundle.cc",
+    "src/bundle_state.cc",
+    "src/catalog.cc",
+    "src/catalog_ads_serve.cc",
+    "src/catalog_state.cc",
+    "src/client.cc",
+    "src/client_state.cc",
+    "src/math_helper.cc",
+    "src/search_providers.cc",
+    "src/settings.cc",
+    "src/settings_state.cc",
+    "src/string_helper.cc",
+    "src/url_session_callback_handler.cc",
+  ]
+
+  deps = [
+    "//brave/vendor/bat-native-usermodel",
+    "//brave/vendor/bat-native-rapidjson",
+  ]
+}
