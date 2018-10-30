@@ -108,7 +108,7 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
       <>
         {/* ads toggle */}
           <ToggleGrid>
-            <EmptyButton onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
+            <EmptyButton disabled={true} onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
             <StatFlex onClick={this.onToggleTotalAdsTrackersBlocked}>{data.totalAdsTrackersBlocked}</StatFlex>
             <ResourcesSwitchLabel onClick={this.onToggleTotalAdsTrackersBlocked}>{locale.blockAds}</ResourcesSwitchLabel>
             <ToggleFlex><Toggle id='blockAds' checked={blockAds} onChange={this.onChangeBlockAds} /></ToggleFlex>

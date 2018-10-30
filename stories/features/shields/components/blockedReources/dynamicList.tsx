@@ -96,7 +96,7 @@ export default class StaticList extends React.PureComponent<Props, State> {
             ? <ResourcesListBlockedLink>{locale.blocked}</ResourcesListBlockedLink>
             : <Link data-item={item.index} onClick={this.onClickAllowItem}>{locale.allow}</Link>
           }
-          <ResourcesListItem>{item.name}</ResourcesListItem>
+          <ResourcesListItem title={item.name}>{item.name}</ResourcesListItem>
           {
             item.hasUserInput
             ? <Link onClick={this.onClickUndoAction}>{locale.undo}</Link>
@@ -119,7 +119,7 @@ export default class StaticList extends React.PureComponent<Props, State> {
             ? <ResourcesListAllowedLink>{locale.allowed}</ResourcesListAllowedLink>
             : <Link onClick={this.onClickBlockItem}>{locale.block}</Link>
           }
-          <ResourcesListItem>{item.name}</ResourcesListItem>
+          <ResourcesListItem title={item.name}>{item.name}</ResourcesListItem>
           {
             item.hasUserInput
             ? <Link onClick={this.onClickUndoAction}>{locale.undo}</Link>

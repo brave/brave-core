@@ -94,8 +94,7 @@ export const ResourcesListItem = styled<{}, 'span'>('span')`
   display: inline-block;
   margin: 0 10px;
   vertical-align: middle;
-  line-height: 1;
-  pointer-events: none;
+  line-height: 1.5;
 `
 
 export const ResourcesSwitchLabel = styled<{}, 'span'>('span')`

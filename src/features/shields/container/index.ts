@@ -191,7 +191,7 @@ export const ToggleGrid = styled(Grid)`
 
   > *:first-child {
     cursor: pointer;
-    padding-left: 20px;
+    margin-left: 20px;
   }
 
   > *:nth-child(2) {

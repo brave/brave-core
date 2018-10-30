@@ -12,6 +12,11 @@ export const EmptyButton = styled<{}, 'button'>('button')`
   padding: 0;
   margin: 0;
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.15;
+    pointer-events: none;
+  }
 `
 
 export const CloseButton = styled<{}, 'button'>('button')`

@@ -38,6 +38,10 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   -webkit-padding-start: 10px;
   -webkit-padding-end: 32px;
 
+  > option {
+    color: ${palette.black};
+  }
+
   ${(p: SelectBoxProps) => p.disabled
     ? css`
       user-select: none;

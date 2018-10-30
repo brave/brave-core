@@ -24,7 +24,7 @@ export default class StaticList extends React.PureComponent<Props, {}> {
     return (
       <>
         <ResourcesListScroll>
-          {list.map((item, index) => <ResourcesListText key={index}>{item}</ResourcesListText>)}
+          {list.map((item, index) => <ResourcesListText title={item} key={index}>{item}</ResourcesListText>)}
         </ResourcesListScroll>
         <ResourcesFooterFlex>
           <Button level='primary' type='accent' text={locale.goBack} onClick={onClickDismiss} />
