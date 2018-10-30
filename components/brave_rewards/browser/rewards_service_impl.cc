@@ -1304,7 +1304,9 @@ double RewardsServiceImpl::GetContributionAmount() {
   return ledger_->GetContributionAmount();
 }
 
-void RewardsServiceImpl::FetchFavIcon(const std::string& url, const std::string& favicon_key) {
+void RewardsServiceImpl::FetchFavIcon(const std::string& url,
+                                      const std::string& favicon_key,
+                                      ledger::FetchIconCallback callback) {
   GURL parsedUrl(url);
 
   if (!parsedUrl.is_valid()) {
@@ -1347,23 +1349,26 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url, const std::string&
           new RewardsFetcherServiceObserver(
               favicon_key,
               parsedUrl,
-              base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted, base::Unretained(this))),
+              base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted, base::Unretained(this), callback)),
           traffic_annotation));
   }
 }
 
-void RewardsServiceImpl::OnFetchFavIconCompleted(const std::string& favicon_key,
-                                            const GURL& url,
-                                            const BitmapFetcherService::RequestId& request_id,
-                                            const SkBitmap& image) {
-  GURL publisher_url(favicon_key);
+void RewardsServiceImpl::OnFetchFavIconCompleted(ledger::FetchIconCallback callback,
+                                                 const std::string& favicon_key,
+                                                 const GURL& url,
+                                                 const BitmapFetcherService::RequestId& request_id,
+                                                 const SkBitmap& image) {
+  GURL favicon_url(favicon_key);
   gfx::Image gfx_image = gfx::Image::CreateFrom1xBitmap(image);
   favicon::FaviconService* favicon_service =
           FaviconServiceFactory::GetForProfile(profile_, ServiceAccessType::EXPLICIT_ACCESS);
   favicon_service->SetOnDemandFavicons(
-      publisher_url,
-      url, favicon_base::IconType::kFavicon, gfx_image,
-      base::BindOnce(&RewardsServiceImpl::OnSetOnDemandFaviconComplete, AsWeakPtr()));
+      favicon_url,
+      url,
+      favicon_base::IconType::kFavicon,
+      gfx_image,
+      base::BindOnce(&RewardsServiceImpl::OnSetOnDemandFaviconComplete, AsWeakPtr(), favicon_url.spec(), callback));
 
   std::vector<std::string>::iterator it_url;
   it_url = find(current_media_fetchers_.begin(), current_media_fetchers_.end(), url.spec());
@@ -1378,10 +1383,10 @@ void RewardsServiceImpl::OnFetchFavIconCompleted(const std::string& favicon_key,
   }
 }
 
-void RewardsServiceImpl::OnSetOnDemandFaviconComplete(bool success) {
-  if (success) {
-    // TODO reload settings page brave/brave-browser#1521
-  }
+void RewardsServiceImpl::OnSetOnDemandFaviconComplete(const std::string& favicon_url,
+                                                      ledger::FetchIconCallback callback,
+                                                      bool success) {
+  callback(success, favicon_url);
 }
 
 brave_rewards::PublisherBanner RewardsServiceImpl::GetPublisherBanner(const std::string& publisher_id) {
