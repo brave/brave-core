@@ -3,13 +3,26 @@
 // found in the LICENSE file.
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
+#include "components/spellcheck/spellcheck_buildflags.h"
+#if !BUILDFLAG(USE_BROWSER_SPELLCHECKER)
+#include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#endif
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
 #undef RenderViewContextMenu
 #define RenderViewContextMenu RenderViewContextMenu_Chromium
 
+#if !defined(OS_MACOSX)
+// Use our subclass to initialize SpellingOptionsSubMenuObserver.
+#define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
+#endif
+
 #include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
+
+#if !defined(OS_MACOSX)
+#undef SpellingOptionsSubMenuObserver
+#endif
 
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
@@ -61,4 +74,20 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
+}
+
+void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
+  // Call our implementation, not the one in the base class.
+  // Assumption:
+  // Use of spelling service is disabled in Brave profile preferences.
+  DCHECK(!GetProfile()->GetPrefs()->GetBoolean(
+      spellcheck::prefs::kSpellCheckUseSpellingService));
+  AddSpellCheckServiceItem(&menu_model_, is_checked);
+}
+
+// static
+void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
+    ui::SimpleMenuModel* menu,
+    bool is_checked) {
+  // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
 }
