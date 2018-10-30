@@ -16,8 +16,13 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   BraveRenderViewContextMenu(content::RenderFrameHost* render_frame_host,
                              const content::ContextMenuParams& params);
   void AppendBraveLinkItems() override;
+  // RenderViewContextMenuBase:
   bool IsCommandIdEnabled(int command_id) const override;
   void ExecuteCommand(int id, int event_flags) override;
+  void AddSpellCheckServiceItem(bool is_checked) override;
+  // Hide base class implementation.
+  static void AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
+                                       bool is_checked);
 };
 
 // Use our own subclass as the real RenderViewContextMenu.
