@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/resources/settings/settings_icons_css.html b/chrome/browser/resources/settings/settings_icons_css.html
+index 7a4e72d47e8e79a89aacd2f84fa47575d122e0a8..5a4c8832a7b91499f19b4d08468639f1dc453383 100644
+--- a/chrome/browser/resources/settings/settings_icons_css.html
++++ b/chrome/browser/resources/settings/settings_icons_css.html
+@@ -4,14 +4,14 @@
+ <dom-module id="settings-icons">
+   <template>
+     <style>
+-<if expr="chromeos">
+-      paper-icon-button-light.icon-add-circle {
+-        background-image: url(./images/settings_icon_add_circle.svg);
+-      }
+-      paper-icon-button-light.icon-add-wifi {
+-        background-image: url(./images/settings_icon_add_wifi.svg);
+-      }
+-</if>
++      <if expr="chromeos">
++        paper-icon-button-light.icon-add-circle {
++          background-image: url(./images/settings_icon_add_circle.svg);
++        }
++        paper-icon-button-light.icon-add-wifi {
++          background-image: url(./images/settings_icon_add_wifi.svg);
++        }
++      </if>
+     </style>
+   </template>
+ </dom-module>

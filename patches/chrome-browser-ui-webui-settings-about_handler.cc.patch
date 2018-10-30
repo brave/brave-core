@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/webui/settings/about_handler.cc b/chrome/browser/ui/webui/settings/about_handler.cc
-index 06c2c95e34e6140e9e82667fcb093b8f2e0d3809..013428d9d24aa91d2bfb9c08c3af28d90659b6b6 100644
+index c372368a1e0abe7d9ee2af13208f328ea4416c1f..240de00ea312f01ea82028e8af3ed83bf82a22b3 100644
 --- a/chrome/browser/ui/webui/settings/about_handler.cc
 +++ b/chrome/browser/ui/webui/settings/about_handler.cc
-@@ -288,6 +288,16 @@ AboutHandler* AboutHandler::Create(content::WebUIDataSource* html_source,
-                                         ? IDS_VERSION_UI_64BIT
-                                         : IDS_VERSION_UI_32BIT)));
+@@ -282,6 +282,16 @@ AboutHandler::~AboutHandler() {
  
+ AboutHandler* AboutHandler::Create(content::WebUIDataSource* html_source,
+                                    Profile* profile) {
 +  std::string brave_product_version = version_info::GetVersionNumber();
 +  size_t chromium_index = brave_product_version.find("Chromium:");
 +  if (chromium_index != std::string::npos) {
@@ -17,5 +17,5 @@ index 06c2c95e34e6140e9e82667fcb093b8f2e0d3809..013428d9d24aa91d2bfb9c08c3af28d9
 +    base::UTF8ToUTF16(brave_product_version));
 +
    html_source->AddString(
-       "aboutProductCopyright",
-       base::i18n::MessageFormatter::FormatWithNumberedArgs(
+       "aboutBrowserVersion",
+       l10n_util::GetStringFUTF16(

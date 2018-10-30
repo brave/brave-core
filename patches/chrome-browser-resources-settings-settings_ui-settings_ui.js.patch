@@ -1,48 +1,45 @@
 diff --git a/chrome/browser/resources/settings/settings_ui/settings_ui.js b/chrome/browser/resources/settings/settings_ui/settings_ui.js
-index 37ebe94a48728893daf84613aab94be6ddf89df7..2318718b653cad4db62664044611aeef3ed956e1 100644
+index 8bd9c1091bb95d266fb35bea5a69e90f73f10f7a..14aa6c528d4e0bc1bb1ac17e1f1e546aa595953f 100644
 --- a/chrome/browser/resources/settings/settings_ui/settings_ui.js
 +++ b/chrome/browser/resources/settings/settings_ui/settings_ui.js
-@@ -92,13 +92,13 @@ Polymer({
+@@ -85,13 +85,13 @@ Polymer({
     */
    ready: function() {
      // Lazy-create the drawer the first time it is opened or swiped into view.
--    listenOnce(this.$.drawer, 'open-changed', () => {
+-    listenOnce(this.$.drawer, 'cr-drawer-opening', () => {
 -      this.$.drawerTemplate.if = true;
 -    });
-+    // listenOnce(this.$.drawer, 'open-changed', () => {
++    // listenOnce(this.$.drawer, 'cr-drawer-opening', () => {
 +    //   this.$.drawerTemplate.if = true;
 +    // });
  
 -    window.addEventListener('popstate', e => {
--      this.$.drawer.closeDrawer();
+-      this.$.drawer.cancel();
 -    });
 +    // window.addEventListener('popstate', e => {
-+    //   this.$.drawer.closeDrawer();
++    //   this.$.drawer.cancel();
 +    // });
  
      CrPolicyStrings = {
        controlledSettingExtension:
-@@ -273,16 +273,17 @@ Polymer({
+@@ -262,14 +262,14 @@ Polymer({
+    * Called when a section is selected.
     * @private
     */
-   onIronActivate_: function(event) {
--    if (event.detail.item.id != 'advancedSubmenu')
--      this.$.drawer.closeDrawer();
-+    // if (event.detail.item.id != 'advancedSubmenu')
-+    //   this.$.drawer.closeDrawer();
-   },
+-  onIronActivate_: function() {
+-    this.$.drawer.close();
+-  },
++  // onIronActivate_: function() {
++  //   this.$.drawer.close();
++  // },
  
    /** @private */
 -  onMenuButtonTap_: function() {
 -    this.$.drawer.toggle();
 -  },
 +  // onMenuButtonTap_: function() {
-+  //   console.log('BSC]] LOL TOGGLING')
 +  //   this.$.drawer.toggle();
 +  // },
  
--  /** @private */
-+  // /** @private */
-   onMenuClosed_: function() {
-     // Add tab index so that the container can be focused.
-     this.$.container.setAttribute('tabindex', '-1');
+   /**
+    * When this is called, The drawer animation is finished, and the dialog no

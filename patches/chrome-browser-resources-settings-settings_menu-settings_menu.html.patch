@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/settings_menu/settings_menu.html b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a0c8136be 100644
+index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..d116ae93881505cfc720fdeb6b334efb91fb17ec 100644
 --- a/chrome/browser/resources/settings/settings_menu/settings_menu.html
 +++ b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-@@ -10,23 +10,32 @@
+@@ -10,44 +10,69 @@
  <link rel="import" href="../route.html">
  <link rel="import" href="../settings_shared_css.html">
  
@@ -18,11 +18,11 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
 -        margin-top: 8px;
 +        display: inline-block;
 +        vertical-align: top;
-+        margin: 12px;
-+        padding: 12px 60px 20px 0;
++        margin: 30px 12px;
++        padding: 30px;
 +        background-color: #fff;
 +        border: 1px solid #e8e8ef;
-+        border-radius: 7px;
++        border-radius: 12px;
 +        font-family: Poppins, -apple-system, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
        }
  
@@ -37,12 +37,14 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
 +        color: #A0A1B2; /* brave: subtleInteracting */
          display: flex;
 -        font-weight: 500;
+-        margin-inline-end: 2px;  /* Margin so selected outline is visible. */
+-        margin-inline-start: 1px;
+-        min-height: 20px;
+-        padding-bottom: 10px;
+-        padding-inline-start: 23px;  /* 24px - 1px from margin for outline. */
+-        padding-top: 10px;
 +        font-weight: normal;
-         margin-inline-end: 2px;  /* Margin so selected outline is visible. */
-         margin-inline-start: 1px;
-         min-height: 20px;
-@@ -35,10 +44,32 @@
-         padding-top: 10px;
++        margin: 0 20px 20px 0;
        }
  
 -      a[href].iron-selected {
@@ -51,8 +53,8 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
        }
  
 +      a[href].iron-selected {
-+        color: #000;
-+        font-weight: bold;
++        color: #424242;
++        font-weight: 500;
 +      }
 +
 +      #settingsHeader,
@@ -62,20 +64,21 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
 +        };
 +        align-items: center;
 +        font-weight: normal;
-+        margin-inline-end: 2px;  /* Margin so selected outline is visible. */
-+        margin-inline-start: 1px;
-+        min-height: 20px;
-+        padding-bottom: 10px;
-+        padding-inline-start: 23px;  /* 24px - 1px from margin for outline. */
-+        padding-top: 10px;
 +        font-size: larger;
-+        color: #000;
++        color: #424242;
++        margin-bottom: 20px;
++        font-family: Poppins, -apple-system, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 +      }
 +
        iron-icon {
          --iron-icon-fill-color: var(--settings-nav-grey);
-         margin-inline-end: 24px;
-@@ -48,6 +79,7 @@
+-        margin-inline-end: 24px;
++        margin-inline-end: 16px;
+         pointer-events: none;
+         vertical-align: top;
++        width: 24px;
++        height: 24px;
+       }
  
        .iron-selected > iron-icon {
          fill: var(--google-blue-700);
@@ -83,15 +86,31 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
        }
  
        #advancedButton {
-@@ -77,7 +109,6 @@
-       #advancedButton > iron-icon,
-       #extensionsLink > iron-icon {
+@@ -55,9 +80,9 @@
+         border: none;
+         border-radius: initial;
+         height: unset;
+-        margin-top: 8px;
+-        padding-inline-end: 0;
++        padding: 0;
+         text-transform: none;
++        margin-top: 30px;
+       }
+ 
+       #advancedButton:focus {
+@@ -74,10 +99,8 @@
+         flex: 1;
+       }
+ 
+-      #advancedButton > iron-icon,
+-      #extensionsLink > iron-icon {
++      #advancedButton > iron-icon {
          @apply --cr-icon-height-width;
 -        margin-inline-end: 14px;  /* 16px - 2px from margin for outline. */
        }
  
        #menuSeparator {
-@@ -86,10 +117,19 @@
+@@ -86,10 +109,21 @@
          margin-bottom: 8px;
          margin-top: 8px;
        }
@@ -100,6 +119,8 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
 +        display: flex;
 +        flex-direction: column;
 +        color: #C5C5D3; /* brave: subtle */
++        font-size: 12px;
++        line-height: 16px;
 +      }
      </style>
      <iron-selector id="topMenu" selectable="a:not(#extensionsLink)"
@@ -111,7 +132,16 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
  <if expr="chromeos">
        <a href="/internet">
          <iron-icon icon="settings:network-wifi"></iron-icon>
-@@ -114,11 +150,12 @@
+@@ -106,7 +140,7 @@
+       </a>
+ </if>
+       <a id="people" href="/people" hidden="[[!pageVisibility.people]]">
+-        <iron-icon icon="cr:person"></iron-icon>
++        <iron-icon icon="brave_settings:logos-thumbs-up"></iron-icon>
+         $i18n{peoplePageTitle}
+       </a>
+       <a id="autofill" href="/autofill"
+@@ -114,10 +148,11 @@
          <iron-icon icon="settings:assignment"></iron-icon>
          $i18n{autofillPageTitle}
        </a>
@@ -119,26 +149,29 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
 -        hidden="[[!pageVisibility.appearance]]">
 -        <iron-icon icon="settings:palette"></iron-icon>
 -        $i18n{appearancePageTitle}
--      </a>
 +      <a id="extensionsLink" href="chrome://extensions" target="_blank"
 +          on-click="onExtensionsLinkClick_"
 +          title="$i18n{extensionsLinkTooltip}">
 +        <iron-icon icon="brave_settings:misc-extensions"></iron-icon>
 +        $i18n{extensionsPageTitle}
-+       </a>
+       </a>
  <if expr="chromeos">
        <a href="/device">
-         <iron-icon icon="settings:laptop-chromebook"></iron-icon>
-@@ -148,11 +185,20 @@
-         $i18n{defaultBrowser}
+@@ -125,8 +160,12 @@
+         $i18n{devicePageTitle}
        </a>
  </if>
-+      <a href="/braveSync" hidden="[[!pageVisibility.braveSync]]">
-+        <iron-icon icon="cr:sync"></iron-icon>
-+        $i18n{braveSync}
++      <a href="/shields">
++        <iron-icon icon="brave_settings:shields-success-o"></iron-icon>
++        Shields
 +      </a>
-       <a id="onStartup" href="/onStartup"
-         hidden="[[!pageVisibility.onStartup]]">
+       <a href="/search">
+-        <iron-icon icon="cr:search"></iron-icon>
++        <iron-icon icon="brave_settings:search"></iron-icon>
+         $i18n{searchPageTitle}
+       </a>
+ <if expr="chromeos">
+@@ -153,6 +192,11 @@
          <iron-icon icon="settings:power-settings-new"></iron-icon>
          $i18n{onStartup}
        </a>
@@ -150,20 +183,33 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
        <paper-button toggles id="advancedButton"
            aria-active-attribute="aria-expanded" active="{{advancedOpened}}"
            hidden="[[!pageVisibility.advancedSettings]]">
-@@ -185,10 +231,12 @@
-             <iron-icon icon="cr:print"></iron-icon>
+@@ -174,15 +218,15 @@
+             $i18n{privacyPageTitle}
+           </a>
+           <a href="/languages">
+-            <iron-icon icon="settings:language"></iron-icon>
++            <iron-icon icon="brave_settings:language"></iron-icon>
+             $i18n{languagesPageTitle}
+           </a>
+           <a href="/downloads">
+-            <iron-icon icon="cr:file-download"></iron-icon>
++            <iron-icon icon="brave_settings:arrows-download"></iron-icon>
+             $i18n{downloadsPageTitle}
+           </a>
+           <a href="/printing">
+-            <iron-icon icon="cr:print"></iron-icon>
++            <iron-icon icon="brave_settings:printer"></iron-icon>
              $i18n{printingPageTitle}
            </a>
-+<if expr="_google_chrome">
            <a href="/accessibility">
-             <iron-icon icon="settings:accessibility"></iron-icon>
-             $i18n{a11yPageTitle}
+@@ -196,19 +240,19 @@
            </a>
-+</if>
- <if expr="not chromeos">
-           <a href="/system">
-             <iron-icon icon="settings:build"></iron-icon>
-@@ -202,13 +250,13 @@
+ </if>
+           <a id="reset" href="/reset" hidden="[[!pageVisibility.reset]]">
+-            <iron-icon icon="settings:restore"></iron-icon>
++            <iron-icon icon="brave_settings:reset"></iron-icon>
+             $i18n{resetPageTitle}
+           </a>
          </iron-selector>
        </iron-collapse>
        <div id="menuSeparator"></div>
@@ -175,7 +221,7 @@ index 2fcea63a9bf9bf0400640d3ec8b6277087814bab..85ffd65837bc24455f444ab983dca45a
 -      </a>
 -      <a id="about-menu" href="/help">$i18n{aboutPageTitle}</a>
 +      <a id="about-menu" href="/help">
-+        <iron-icon icon="brave_settings:full-color-brave-lion"></iron-icon>
++        <iron-icon icon="brave_settings:logos-product"></iron-icon>
 +        <div id="aboutMenuText">
 +          <div>$i18n{aboutPageTitle}</div>
 +          <div>$i18n{braveProductVersion}</div>

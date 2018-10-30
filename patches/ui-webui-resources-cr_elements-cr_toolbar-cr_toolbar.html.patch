@@ -1,0 +1,22 @@
+diff --git a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.html b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.html
+index 8fb18010132c64a0ed6ff19357e43642ad9c2311..fcf7ae4023558853f62a8231c17db8620741726b 100644
+--- a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.html
++++ b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.html
+@@ -133,7 +133,7 @@
+     <div id="leftContent">
+       <div id="leftSpacer">
+         <!-- Note: showing #menuPromo relies on this dom-if being [restamp]. -->
+-        <template is="dom-if" if="[[showMenu]]" restamp>
++        <!-- <template is="dom-if" if="[[showMenu]]" restamp>
+           <paper-icon-button-light id="menuButtonContainer"
+               class="icon-menu-white no-overlap">
+             <button id="menuButton"
+@@ -149,7 +149,7 @@
+                   aria-label$="[[closeMenuPromo]]">&#x2715;</button>
+             </paper-tooltip>
+           </template>
+-        </template>
++        </template> -->
+         <h1>[[pageName]]</h1>
+       </div>
+     </div>
