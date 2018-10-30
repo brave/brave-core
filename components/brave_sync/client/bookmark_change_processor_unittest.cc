@@ -24,6 +24,31 @@
 
 // npm run test -- brave_unit_tests --filter=BraveBookmarkChangeProcessorTest.*
 
+// BraveSyncService::methods
+// Name                        | Covered
+//-------------------------------------
+// Create                      | + in SetUp
+// Start                       | +
+// Stop                        | +
+// Reset                       | +
+// ApplyChangesFromSyncModel   | +
+// GetAllSyncData              | +
+// SendUnsynced                | +
+// InitialSync                 | N/A
+
+// bookmarks::BookmarkModelObserver overrides:
+// Name                        | Covered
+// BookmarkModelLoaded         | N/A
+// BookmarkModelBeingDeleted   | N/A
+// BookmarkNodeMoved           | +
+// BookmarkNodeAdded           | N/A
+// OnWillRemoveBookmarks       | N/A
+// BookmarkNodeRemoved         | +
+// BookmarkAllUserNodesRemoved | N/A
+// BookmarkNodeChanged         | +
+// BookmarkMetaInfoChanged     | +
+// BookmarkNodeFaviconChanged  | +
+
 using testing::_;
 using testing::AtLeast;
 using namespace brave_sync;
@@ -113,8 +138,8 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
   void BookmarkCreatedFromSyncImpl();
   bool HasAnySyncMetaInfo(const BookmarkNode* node);
   void AddSimpleHierarchy(
-      const BookmarkNode** folder1, const BookmarkNode** node_b,
-      const BookmarkNode** node_a, const BookmarkNode** node_c);
+      const BookmarkNode** folder1, const BookmarkNode** node_a,
+      const BookmarkNode** node_b, const BookmarkNode** node_c);
 
  private:
   // Need this as a very first member to run tests in UI thread
@@ -188,8 +213,8 @@ bool BraveBookmarkChangeProcessorTest::HasAnySyncMetaInfo(
 }
 
 void BraveBookmarkChangeProcessorTest::AddSimpleHierarchy(
-    const BookmarkNode** folder1, const BookmarkNode** node_b,
-    const BookmarkNode** node_a, const BookmarkNode** node_c) {
+    const BookmarkNode** folder1, const BookmarkNode** node_a,
+    const BookmarkNode** node_b, const BookmarkNode** node_c) {
   *folder1 = model()->AddFolder(model()->other_node(), 0,
                                base::ASCIIToUTF16("Folder1"));
 
@@ -284,6 +309,49 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkModified) {
       ContainsRecord(SyncRecord::Action::UPDATE, "https://a-m.com/"))).Times(1);
   model()->SetURL(nodes.at(0), GURL("https://a-m.com/"));
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
+  change_processor()->Start();
+
+  const BookmarkNode* folder1;
+  const BookmarkNode* node_a;
+  const BookmarkNode* node_b;
+  const BookmarkNode* node_c;
+  AddSimpleHierarchy(&folder1, &node_a, &node_b, &node_c);
+
+  int intex_a = folder1->GetIndexOf(node_a);
+  EXPECT_EQ(intex_a, 0);
+  int intex_b = folder1->GetIndexOf(node_b);
+  EXPECT_EQ(intex_b, 1);
+  int intex_c = folder1->GetIndexOf(node_c);
+  EXPECT_EQ(intex_c, 2);
+
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+
+  EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_a));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_b));
+  EXPECT_TRUE(HasAnySyncMetaInfo(node_c));
+
+  model()->Move(node_a, folder1, 2);
+
+  intex_a = folder1->GetIndexOf(node_a);
+  EXPECT_EQ(intex_a, 1);
+  intex_b = folder1->GetIndexOf(node_b);
+  EXPECT_EQ(intex_b, 0);
+  intex_c = folder1->GetIndexOf(node_c);
+  EXPECT_EQ(intex_c, 2);
+
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+  // Sould see at least one syncRecord Modified
+  using brave_sync::jslib::SyncRecord;
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
+      AllRecordsHaveAction(SyncRecord::Action::UPDATE))).Times(1);
+  // BookmarkNodeMoved does not reset "last_send_time" so SendUnsynced
+  // ignores order change untill unsynced_send_interval passes,
+  // so here below unsynced_send_interval is 0
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(0));
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_MoveNodesBetweenDirs) {
@@ -565,16 +633,19 @@ TEST_F(BraveBookmarkChangeProcessorTest, Utf8FromSync) {
 using brave_sync::jslib::SyncRecord;
 ::testing::AssertionResult AssertSyncRecordsBookmarkEqual(const char* left_expr,
                                                           const char* right_expr,
-                                                          SyncRecord& left,
-                                                          SyncRecord& right) {
-  DCHECK(left.has_bookmark());
-  DCHECK(right.has_bookmark());
+                                                          SyncRecord* left,
+                                                          SyncRecord* right) {
+  DCHECK(left);
+  DCHECK(right);
+
+  DCHECK(left->has_bookmark());
+  DCHECK(right->has_bookmark());
 
   #define FAIL_IF_FIELD_NOT_EQUAL(FIELD_NAME)       \
-  if (left.FIELD_NAME != right.FIELD_NAME) {    \
+  if (left->FIELD_NAME != right->FIELD_NAME) {    \
     return ::testing::AssertionFailure() << left_expr << " and " << right_expr \
         << " are not equal by " << #FIELD_NAME << " field ("               \
-        << left.FIELD_NAME << " vs " << right.FIELD_NAME << ")";    \
+        << left->FIELD_NAME << " vs " << right->FIELD_NAME << ")";    \
   }
 
   // Ignore action and device_id
@@ -610,6 +681,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, GetAllSyncData) {
       "https://b.com/",
       "B.com - title",
       "1.1.1.2", ""));
+  records.push_back(SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "33, 33, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
+      "https://c.com/",
+      "C.com - title",
+      "1.1.1.3", ""));
 
   change_processor()->ApplyChangesFromSyncModel(records);
 
@@ -623,25 +700,39 @@ TEST_F(BraveBookmarkChangeProcessorTest, GetAllSyncData) {
       "1.1.1.2", ""));
 
   records_to_resolve.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
-      "333, 333, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
+      jslib::SyncRecord::Action::DELETE,
+      "33, 33, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://c.com/",
       "C.com - title",
       "1.1.1.3", ""));
 
+  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
+      jslib::SyncRecord::Action::CREATE,
+      "44, 44, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
+      "https://d.com/",
+      "D.com - title",
+      "1.1.1.4", ""));
+
   SyncRecordAndExistingList records_and_existing_objects;
   change_processor()->GetAllSyncData(records_to_resolve,
                                                 &records_and_existing_objects);
-  ASSERT_EQ(records_and_existing_objects.size(), 2u);
+  ASSERT_EQ(records_and_existing_objects.size(), 3u);
 
   const auto& pair_at_0 = records_and_existing_objects.at(0);
+
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
-      *records_to_resolve.at(0), *pair_at_0->first);
-  EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
-      *records.at(1), *pair_at_0->second);
+      records_to_resolve.at(0).get(), pair_at_0->first.get());
+  // UPDATE now can be resolved to nullptr in some cases
+  EXPECT_EQ(pair_at_0->second.get(), nullptr);
 
   const auto& pair_at_1 = records_and_existing_objects.at(1);
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
-      *records_to_resolve.at(1), *pair_at_1->first);
-  EXPECT_EQ(pair_at_1->second.get(), nullptr);
+      records_to_resolve.at(1).get(), pair_at_1->first.get());
+  EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
+       records.at(2).get(), pair_at_1->second.get());
+
+  const auto& pair_at_2 = records_and_existing_objects.at(2);
+  EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
+      records_to_resolve.at(2).get(), pair_at_2->first.get());
+  EXPECT_EQ(pair_at_2->second.get(), nullptr);
 }
