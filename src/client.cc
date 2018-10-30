@@ -66,12 +66,10 @@ std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
 
 void Client::ResetAdsUUIDSeenForAds(
     const std::vector<bundle::CategoryInfo>& categories) {
-
-  auto ads_seen = GetAdsUUIDSeen();
-  for (const auto& [uuid, seen] : ads_seen) {
-    auto iterator = client_state_->ads_uuid_seen.find(uuid);
-    if (iterator != ads_seen.end()) {
-      client_state_->ads_uuid_seen.erase(iterator);
+  for (const auto& category : categories) {
+    auto ad_uuid_seen = client_state_->ads_uuid_seen.find(category.uuid);
+    if (ad_uuid_seen != client_state_->ads_uuid_seen.end()) {
+      client_state_->ads_uuid_seen.erase(ad_uuid_seen);
     }
   }
 }

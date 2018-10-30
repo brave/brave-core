@@ -308,6 +308,8 @@ void MockAdsClient::GetAds(
       if (callback_handler) {
         callback_handler->OnGetAds(Result::SUCCESS,
           category, categories->second);
+
+        return;
       }
     }
 
