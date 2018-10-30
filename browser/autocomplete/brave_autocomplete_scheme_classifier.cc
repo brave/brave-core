@@ -6,9 +6,12 @@
 
 #include "base/strings/string_util.h"
 #include "brave/common/url_constants.h"
+#include "chrome/browser/profiles/profile.h"
 
+// See the BraveAutocompleteProviderClient why GetOriginalProfile() is fetched.
 BraveAutocompleteSchemeClassifier::BraveAutocompleteSchemeClassifier(
-    Profile* profile) : ChromeAutocompleteSchemeClassifier(profile) {
+    Profile* profile)
+    : ChromeAutocompleteSchemeClassifier(profile->GetOriginalProfile()) {
 }
 
 BraveAutocompleteSchemeClassifier::~BraveAutocompleteSchemeClassifier() {

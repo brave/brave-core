@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+index e3159144a0b7892e5580bfa910f2db97a81179a9..8ee42d9f6f7ac50c78a03e59aa2ba34e35dae725 100644
+--- a/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
++++ b/chrome/browser/autocomplete/autocomplete_classifier_factory.cc
+@@ -68,7 +68,12 @@ AutocompleteClassifierFactory::~AutocompleteClassifierFactory() {
+ 
+ content::BrowserContext* AutocompleteClassifierFactory::GetBrowserContextToUse(
+     content::BrowserContext* context) const {
++#if defined(BRAVE_CHROMIUM_BUILD)
++  // See BraveAutocompleteProviderClient about why separate services are used.
++  return chrome::GetBrowserContextOwnInstanceInIncognito(context);
++#else
+   return chrome::GetBrowserContextRedirectedInIncognito(context);
++#endif
+ }
+ 
+ bool AutocompleteClassifierFactory::ServiceIsNULLWhileTesting() const {
