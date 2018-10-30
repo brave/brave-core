@@ -27,6 +27,8 @@ extern const char kRewardsReconcileInterval[];
 
 extern const char kUiMode[];
 
+extern const char kUpgradeFromMuon[];
+
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_
