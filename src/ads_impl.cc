@@ -196,7 +196,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   }
 
   auto category = GetWinningCategory();
-  ServeAdFromCategory(category, this);
+  ServeAdFromCategory(category);
 }
 
 void AdsImpl::ServeSampleAd() {
@@ -206,7 +206,7 @@ void AdsImpl::ServeSampleAd() {
 
   auto category = ads_client_->GetSampleCategory(this);
   if (!category.empty()) {
-    ServeAdFromCategory(category, this);
+    ServeAdFromCategory(category);
   }
 }
 
@@ -420,9 +420,7 @@ void AdsImpl::ProcessLocales(const std::vector<std::string>& locales) {
   ads_client_->SetLocale(locale);
 }
 
-void AdsImpl::ServeAdFromCategory(
-    const std::string& category,
-    CallbackHandler* callback_handler) {
+void AdsImpl::ServeAdFromCategory(const std::string& category) {
   // TODO(Terry Mancey): Get catalog id from ads_client
   // if (catalog_->GetCatalogId().empty()) {
   //   // TODO(Terry Mancey): Implement Log (#44)

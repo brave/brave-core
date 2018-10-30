@@ -110,8 +110,7 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   void ProcessLocales(const std::vector<std::string>& locales);
 
   void ServeAdFromCategory(
-      const std::string& category,
-      CallbackHandler* callback_handler);
+      const std::string& category);
   std::vector<bundle::CategoryInfo> GetUnseenAds(
       const std::vector<bundle::CategoryInfo>& categories);
   bool IsAllowedToShowAds();
