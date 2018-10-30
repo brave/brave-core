@@ -13,7 +13,7 @@
 
 namespace brave_rewards {
   using OnImageChangedCallback = base::Callback<void(
-        const std::string& publisher_key_,
+        const std::string& favicon_key_,
         const GURL& url,
         const BitmapFetcherService::RequestId& request_id,
         const SkBitmap &answers_image)>;
