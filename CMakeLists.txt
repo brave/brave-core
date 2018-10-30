@@ -2,7 +2,7 @@
 
 project(batnativeads)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wc++17-extensions -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wc++17-extensions -Wall -Wextra")
 set(CMAKE_CXX_STANDARD_REQUIRED, on)
 
 include_directories(include

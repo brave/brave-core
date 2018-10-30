@@ -66,9 +66,9 @@ std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
 
 void Client::ResetAdsUUIDSeenForAds(
     const std::vector<bundle::CategoryInfo>& categories) {
-  auto ads_seen = GetAdsUUIDSeen();
 
-  for (auto const& [uuid, seen] : ads_seen) {
+  auto ads_seen = GetAdsUUIDSeen();
+  for (const auto& [uuid, seen] : ads_seen) {
     auto iterator = client_state_->ads_uuid_seen.find(uuid);
     if (iterator != ads_seen.end()) {
       client_state_->ads_uuid_seen.erase(iterator);
@@ -179,6 +179,9 @@ void Client::RemoveAllHistory() {
 //////////////////////////////////////////////////////////////////////////////
 
 void Client::OnClientSaved(const ads::Result result) {
+  if (result == ads::Result::FAILED) {
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client");
+  }
 }
 
 }  // namespace state

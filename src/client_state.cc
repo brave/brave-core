@@ -92,7 +92,7 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
   };
 
   // TODO(Terry Mancey): Decouple validateJson into json_helper class
-  for (auto const& member : client.GetObject()) {
+  for (const auto& member : client.GetObject()) {
     std::string member_name = member.name.GetString();
     auto member_type = _rapidjson_member_types[member.value.GetType()];
 
@@ -109,7 +109,7 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
   }
 
   if (client.HasMember("adsShownHistory")) {
-    for (auto const& ad_shown : client["adsShownHistory"].GetArray()) {
+    for (const auto& ad_shown : client["adsShownHistory"].GetArray()) {
       ads_shown_history.push_back(ad_shown.GetUint64());
     }
   }
@@ -119,7 +119,7 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
   }
 
   if (client.HasMember("adsUUIDSeen")) {
-    for (auto const& [uuid, seen] : client["adsUUIDSeen"].GetObject()) {
+    for (const auto& [uuid, seen] : client["adsUUIDSeen"].GetObject()) {
       ads_uuid_seen.insert({uuid.GetString(), seen.GetInt64()});
     }
   }
@@ -165,16 +165,16 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
   }
 
   if (client.HasMember("locales")) {
-    for (auto const& locale : client["locales"].GetArray()) {
+    for (const auto& locale : client["locales"].GetArray()) {
       locales.push_back(locale.GetString());
     }
   }
 
   if (client.HasMember("pageScoreHistory")) {
-    for (auto const& history : client["pageScoreHistory"].GetArray()) {
+    for (const auto& history : client["pageScoreHistory"].GetArray()) {
       std::vector<double> pageScores = {};
 
-      for (auto const& pageScore : history.GetArray()) {
+      for (const auto& pageScore : history.GetArray()) {
         pageScores.push_back(pageScore.GetDouble());
       }
 
@@ -183,7 +183,7 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
   }
 
   if (client.HasMember("places")) {
-    for (auto const& [place, ssid] : client["places"].GetObject()) {
+    for (const auto& [place, ssid] : client["places"].GetObject()) {
       places.insert({place.GetString(), ssid.GetString()});
     }
   }
@@ -220,7 +220,7 @@ void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state) {
 
   writer.String("adsShownHistory");
   writer.StartArray();
-  for (auto const& ad_shown : state.ads_shown_history) {
+  for (const auto& ad_shown : state.ads_shown_history) {
     writer.Uint64(ad_shown);
   }
   writer.EndArray();
@@ -230,7 +230,7 @@ void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state) {
 
   writer.String("adsUUIDSeen");
   writer.StartObject();
-  for (auto const& [uuid, seen] : state.ads_uuid_seen) {
+  for (const auto& [uuid, seen] : state.ads_uuid_seen) {
     writer.String(uuid.c_str());
     writer.Uint64(seen);
   }
@@ -268,16 +268,16 @@ void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state) {
 
   writer.String("locales");
   writer.StartArray();
-  for (auto const& locale : state.locales) {
+  for (const auto& locale : state.locales) {
     writer.String(locale.c_str());
   }
   writer.EndArray();
 
   writer.String("pageScoreHistory");
   writer.StartArray();
-  for (auto const& history : state.page_score_history) {
+  for (const auto& history : state.page_score_history) {
     writer.StartArray();
-    for (auto const& pageScore : history) {
+    for (const auto& pageScore : history) {
       writer.Double(pageScore);
     }
     writer.EndArray();
@@ -286,7 +286,7 @@ void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state) {
 
   writer.String("places");
   writer.StartObject();
-  for (auto const& [place, ssid] : state.places) {
+  for (const auto& [place, ssid] : state.places) {
     writer.String(place.c_str());
     writer.String(ssid.c_str());
   }

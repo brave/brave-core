@@ -204,10 +204,7 @@ void AdsImpl::ServeSampleAd() {
     return;
   }
 
-  auto category = ads_client_->GetSampleCategory(this);
-  if (!category.empty()) {
-    ServeAdFromCategory(category);
-  }
+  ads_client_->GetSampleCategory(this);
 }
 
 void AdsImpl::SetNotificationsAvailable(const bool available) {
@@ -247,12 +244,14 @@ void AdsImpl::OnSettingsLoaded(
     const ads::Result result,
     const std::string& json) {
   if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load settings state");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load settings: %s",
+      json.c_str());
     return;
   }
 
   if (!settings_->LoadJson(json)) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load settings state");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load settings: %s",
+      json.c_str());
     return;
   }
 
@@ -321,7 +320,8 @@ void AdsImpl::OnBundleLoaded(
     const ads::Result result,
     const std::string& json) {
   if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load bundle");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load bundle: %s",
+      json.c_str());
   }
 }
 
@@ -374,12 +374,12 @@ std::string AdsImpl::GetWinningCategory() {
   std::fill(winner_over_time_page_scores.begin(),
     winner_over_time_page_scores.end(), 0);
 
-  for (auto const& page_scores : page_score_history) {
+  for (const auto& page_scores : page_score_history) {
     if (page_scores.size() != count) {
       return "";
     }
 
-    for (int i = 0; i < page_scores.size(); i++) {
+    for (size_t i = 0; i < page_scores.size(); i++) {
       winner_over_time_page_scores[i] += page_scores[i];
     }
   }
@@ -436,6 +436,18 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
   }
 
   ads_client_->GetAds(category, this);
+}
+
+void AdsImpl::OnGetSampleCategory(
+    const ads::Result result,
+    const std::string& category) {
+  if (result == ads::Result::FAILED || category.empty()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'no ads for category', category }
+    return;
+  }
+
+  ServeAdFromCategory(category);
 }
 
 void AdsImpl::OnGetAds(
@@ -540,8 +552,8 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
     const std::deque<time_t> history,
     const uint64_t seconds_window,
     const uint64_t allowable_ad_count) const {
-  auto recent_count = 0;
-  auto now = std::time(nullptr);
+  uint64_t recent_count = 0;
+  uint64_t now = static_cast<uint64_t>(std::time(nullptr));
 
   for (auto i : history) {
     auto time_of_ad = i;

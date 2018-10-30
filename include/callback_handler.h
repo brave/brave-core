@@ -23,47 +23,52 @@ ADS_EXPORT class CallbackHandler {
   virtual ~CallbackHandler() = default;
 
   // User model
-  virtual void OnUserModelLoaded(const Result result) {}
+  virtual void OnUserModelLoaded(const Result /* result */) {}
 
   // Settings
   virtual void OnSettingsLoaded(
-      const Result result,
-      const std::string& json = "") {}
+      const Result /* result */,
+      const std::string& /* json */) {}
 
   // Client
   virtual void OnClientSaved(
-      const Result result) {}
+      const Result /* result */) {}
   virtual void OnClientLoaded(
-      const Result result,
-      const std::string& json = "") {}
+      const Result /* result */,
+      const std::string& /* json */) {}
 
   // Catalog
   virtual void OnCatalogSaved(
-      const Result result) {}
+      const Result /* result */) {}
   virtual void OnCatalogLoaded(
-      const Result result,
-      const std::string& json = "") {}
+      const Result /* result */,
+      const std::string& /* json */) {}
 
   // Bundle
   virtual void OnBundleSaved(
-      const Result result) {}
+      const Result /* result */) {}
   virtual void OnBundleLoaded(
-      const Result result,
-      const std::string& json = "") {}
+      const Result /* result */,
+      const std::string& /* json */) {}
+
+  // Category
+  virtual void OnGetSampleCategory(
+      const ads::Result /* result */,
+      const std::string& /* category */) {}
 
   // Ads
   virtual void OnGetAds(
-      const Result result,
-      const std::string& category,
-      const std::vector<bundle::CategoryInfo>& ads) {}
+      const Result /* result */,
+      const std::string& /* category */,
+      const std::vector<bundle::CategoryInfo>& /* ads */) {}
 
   // URL Session
   virtual bool OnURLSessionReceivedResponse(
-      const uint64_t session_id,
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers) { return false; }
+      const uint64_t /* session_id */,
+      const std::string& /* url */,
+      const int /* response_status_code */,
+      const std::string& /* response */,
+      const std::map<std::string, std::string>& /* headers */) { return false; }
 };
 
 }  // namespace ads

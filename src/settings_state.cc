@@ -41,7 +41,7 @@ bool SETTINGS_STATE::LoadFromJson(const std::string& json) {
   };
 
   // TODO(Terry Mancey): Decouple validateJson into json_helper class
-  for (auto const& member : settings.GetObject()) {
+  for (const auto& member : settings.GetObject()) {
     std::string member_name = member.name.GetString();
     auto member_type = _rapidjson_member_types[member.value.GetType()];
 

@@ -15,8 +15,9 @@ namespace ads {
 
 // TODO(Terry Mancey): Refactor URLSessionCallbackHandlerCallback
 // taking into consideration callback_handler.h
-using URLSessionCallbackHandlerCallback = std::function<void (const int,
-  const std::string&, const std::map<std::string, std::string>& headers)>;
+using URLSessionCallbackHandlerCallback = std::function<void (
+  const std::string&, const int, const std::string&,
+  const std::map<std::string, std::string>& headers)>;
 
 class URLSessionCallbackHandler : public CallbackHandler {
  public:
@@ -31,6 +32,7 @@ class URLSessionCallbackHandler : public CallbackHandler {
 
   bool RunCallbackHandler(
       const uint64_t session_id,
+      const std::string& url,
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);

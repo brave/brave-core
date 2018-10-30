@@ -42,13 +42,13 @@ bool Bundle::GenerateFromCatalog(
     const std::shared_ptr<CATALOG_STATE> catalog_state) {
   std::map<std::string, std::vector<bundle::CategoryInfo>> categories;
 
-  for (auto const& campaign : catalog_state->campaigns) {
+  for (const auto& campaign : catalog_state->campaigns) {
     std::vector<std::string> heirarchy = {};
 
-    for (auto const& creative_set : campaign.creative_sets) {
-      for (auto const& segment : creative_set.segments) {
+    for (const auto& creative_set : campaign.creative_sets) {
+      for (const auto& segment : creative_set.segments) {
         std::string name = "";
-        for (int i = 0; i < segment.name.size(); i++) {
+        for (size_t i = 0; i < segment.name.size(); i++) {
           name += tolower(segment.name[i]);
         }
 
@@ -68,7 +68,7 @@ bool Bundle::GenerateFromCatalog(
       std::string top_level = heirarchy.front();
       uint64_t entries = 0;
 
-      for (auto const& creative : creative_set.creatives) {
+      for (const auto& creative : creative_set.creatives) {
         bundle::CategoryInfo category_info;
         category_info.creative_set_id = creative_set.creative_set_id;
         category_info.advertiser = creative.payload.title;
@@ -111,6 +111,9 @@ void Bundle::Reset() {
 //////////////////////////////////////////////////////////////////////////////
 
 void Bundle::OnBundleSaved(const ads::Result result) {
+  if (result == ads::Result::FAILED) {
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save bundle");
+  }
 }
 
 }  // namespace state

@@ -71,7 +71,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
     return false;
   }
 
-  for (auto const& campaign : catalog["campaigns"].GetArray()) {
+  for (const auto& campaign : catalog["campaigns"].GetArray()) {
     if (!campaign.HasMember("campaignId")) {
       continue;
     }
@@ -115,7 +115,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
 
     // Creative sets
     if (campaign.HasMember("creativeSets")) {
-      for (auto const& creative_set : campaign["creativeSets"].GetArray()) {
+      for (const auto& creative_set : campaign["creativeSets"].GetArray()) {
         if (!creative_set.HasMember("creativeSetId")) {
           continue;
         }
@@ -151,7 +151,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
 
         // Creatives
         if (creative_set.HasMember("creatives")) {
-          for (auto const& creative : creative_set["creatives"].GetArray()) {
+          for (const auto& creative : creative_set["creatives"].GetArray()) {
             if (!creative.HasMember("creativeId")) {
               continue;
             }
@@ -222,7 +222,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
             return false;
           }
 
-          for (auto const& segment : segments) {
+          for (const auto& segment : segments) {
             catalog::SegmentInfo segment_info;
 
             if (segment.HasMember("code")) {
@@ -243,7 +243,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
 
     // Geo targets
     if (campaign.HasMember("geoTargets")) {
-      for (auto const& geo_target : campaign["geoTargets"].GetArray()) {
+      for (const auto& geo_target : campaign["geoTargets"].GetArray()) {
         catalog::GeoTargetInfo geo_target_info;
 
         if (geo_target.HasMember("code")) {
@@ -273,7 +273,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
 bool CATALOG_STATE::validateJson(
     const rapidjson::Document& document,
     const std::map<std::string, std::string>& members) {
-  for (auto const& member : document.GetObject()) {
+  for (const auto& member : document.GetObject()) {
     std::string member_name = member.name.GetString();
     std::string member_type = _rapidjson_member_types[member.value.GetType()];
 

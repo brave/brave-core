@@ -112,6 +112,9 @@ void MockAdsClient::ShowAd(const std::unique_ptr<AdInfo> info) {
 }
 
 void MockAdsClient::SetTimer(const uint64_t time_offset, uint32_t& timer_id) {
+  (void)time_offset;
+  (void)timer_id;
+
   static uint64_t mock_timer_id = 0;
   mock_timer_id++;
 
@@ -121,17 +124,21 @@ void MockAdsClient::SetTimer(const uint64_t time_offset, uint32_t& timer_id) {
 }
 
 void MockAdsClient::StopTimer(uint32_t& timer_id) {
-  int a = 0;
-  a++;
+  (void)timer_id;
 }
 
 std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
     const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
-    const std::string& contentType,
+    const std::string& content_type,
     const URLSession::Method& method,
     URLSessionCallbackHandlerCallback callback) {
+  (void)headers;
+  (void)content;
+  (void)content_type;
+  (void)method;
+
   auto mock_url_session = std::make_unique<MockURLSession>();
   auto callback_handler = std::make_unique<URLSessionCallbackHandler>();
   if (callback_handler) {
@@ -165,7 +172,7 @@ void MockAdsClient::LoadSettings(CallbackHandler* callback_handler) {
   std::ifstream ifs{"mock_data/mock_settings_state.json"};
   if (ifs.fail()) {
     if (callback_handler) {
-      callback_handler->OnSettingsLoaded(Result::FAILED);
+      callback_handler->OnSettingsLoaded(Result::FAILED, "");
     }
 
     return;
@@ -195,7 +202,7 @@ void MockAdsClient::LoadClient(CallbackHandler* callback_handler) {
   std::ifstream ifs{"mock_data/mock_client_state.json"};
   if (ifs.fail()) {
     if (callback_handler) {
-      callback_handler->OnClientLoaded(Result::FAILED);
+      callback_handler->OnClientLoaded(Result::FAILED, "");
     }
 
     return;
@@ -225,7 +232,7 @@ void MockAdsClient::LoadCatalog(CallbackHandler* callback_handler) {
   std::ifstream ifs{"build/catalog.json"};
   if (ifs.fail()) {
     if (callback_handler) {
-      callback_handler->OnCatalogLoaded(Result::FAILED);
+      callback_handler->OnCatalogLoaded(Result::FAILED, "");
     }
 
     return;
@@ -272,7 +279,7 @@ void MockAdsClient::LoadBundle(CallbackHandler* callback_handler) {
   std::ifstream ifs{"build/bundle.json"};
   if (ifs.fail()) {
     if (callback_handler) {
-      callback_handler->OnBundleLoaded(Result::FAILED);
+      callback_handler->OnBundleLoaded(Result::FAILED, "");
     }
 
     return;
@@ -312,20 +319,21 @@ void MockAdsClient::GetAds(
   }
 }
 
-std::string MockAdsClient::GetSampleCategory(
-    CallbackHandler* callback) {
+void MockAdsClient::GetSampleCategory(
+    CallbackHandler* callback_handler) {
   std::map<std::string, std::vector<bundle::CategoryInfo>>::iterator
     categories = sample_bundle_state_->categories.begin();
 
   auto categories_count = sample_bundle_state_->categories.size();
   if (categories_count == 0) {
-    return "";
+    callback_handler->OnGetSampleCategory(Result::FAILED, "");
+    return;
   }
 
   auto rand = helper::Math::Random() % categories_count;
   std::advance(categories, rand);
 
-  return categories->first;
+  callback_handler->OnGetSampleCategory(Result::SUCCESS, categories->first);
 }
 
 void MockAdsClient::GetUrlComponents(

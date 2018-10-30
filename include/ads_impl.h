@@ -72,17 +72,21 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
 
   void OnSettingsLoaded(
       const ads::Result result,
-      const std::string& json = "") override;
+      const std::string& json) override;
 
   void OnClientSaved(const ads::Result result) override;
   void OnClientLoaded(
       const ads::Result result,
-      const std::string& json = "") override;
+      const std::string& json) override;
 
   void OnBundleSaved(const ads::Result result) override;
   void OnBundleLoaded(
       const ads::Result result,
-      const std::string& json = "") override;
+      const std::string& json) override;
+
+  void OnGetSampleCategory(
+      const ads::Result result,
+      const std::string& category) override;
 
   void OnGetAds(
       const ads::Result result,

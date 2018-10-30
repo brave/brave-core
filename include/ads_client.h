@@ -63,7 +63,7 @@ ADS_EXPORT class AdsClient {
       const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
-      const std::string& contentType,
+      const std::string& content_type,
       const URLSession::Method& method,
       URLSessionCallbackHandlerCallback callback) = 0;
 
@@ -105,10 +105,10 @@ ADS_EXPORT class AdsClient {
   // Get ads based upon winning category
   virtual void GetAds(
       const std::string& winning_category,
-      CallbackHandler* callback) = 0;
+      CallbackHandler* callback_handler) = 0;
 
   // Get sample category
-  virtual std::string GetSampleCategory(CallbackHandler* callback) = 0;
+  virtual void GetSampleCategory(CallbackHandler* callback_handler) = 0;
 
   // Get components of a URL
   virtual void GetUrlComponents(

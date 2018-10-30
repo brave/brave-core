@@ -112,7 +112,7 @@ ADS_EXPORT class Ads {
   // Called once settings have loaded
   virtual void OnSettingsLoaded(
       const Result result,
-      const std::string& json = "") = 0;
+      const std::string& json) = 0;
 
   // Called once client has been saved
   virtual void OnClientSaved(const Result result) = 0;
@@ -120,7 +120,7 @@ ADS_EXPORT class Ads {
   // Called once client has loaded
   virtual void OnClientLoaded(
       const Result result,
-      const std::string& json = "") = 0;
+      const std::string& json) = 0;
 
   // Called once bundle has been saved
   virtual void OnBundleSaved(const Result result) = 0;
@@ -128,7 +128,11 @@ ADS_EXPORT class Ads {
   // Called once bundle has loaded
   virtual void OnBundleLoaded(
       const Result result,
-      const std::string& json = "") = 0;
+      const std::string& json) = 0;
+
+  virtual void OnGetSampleCategory(
+      const ads::Result result,
+      const std::string& category) = 0;
 
   // Called after getting ads
   virtual void OnGetAds(

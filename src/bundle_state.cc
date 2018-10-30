@@ -37,8 +37,8 @@ bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
   std::map<std::string, std::vector<bundle::CategoryInfo>> new_categories;
 
   if (bundle.HasMember("categories")) {
-    for (auto const& category : bundle["categories"].GetObject()) {
-      for (auto const& info : category.value.GetArray()) {
+    for (const auto& category : bundle["categories"].GetObject()) {
+      for (const auto& info : category.value.GetArray()) {
         if (!info.HasMember("advertiser") &&
             !info.HasMember("notificationText") &&
             !info.HasMember("notificationURL") &&
@@ -75,7 +75,7 @@ bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
 bool BUNDLE_STATE::validateJson(
     const rapidjson::Document& document,
     const std::map<std::string, std::string>& members) {
-  for (auto const& member : document.GetObject()) {
+  for (const auto& member : document.GetObject()) {
     std::string member_name = member.name.GetString();
     std::string member_type = _rapidjson_member_types[member.value.GetType()];
 
@@ -100,11 +100,11 @@ void SaveToJson(JsonWriter& writer, const BUNDLE_STATE& state) {
   writer.String("categories");
   writer.StartObject();
 
-  for (auto const& [category, categories] : state.categories) {
+  for (const auto& [category, categories] : state.categories) {
     writer.String(category.c_str());
     writer.StartArray();
 
-    for (auto const& category : categories) {
+    for (const auto& category : categories) {
       writer.StartObject();
 
       writer.String("advertiser");

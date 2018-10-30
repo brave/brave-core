@@ -34,6 +34,7 @@ bool URLSessionCallbackHandler::AddCallbackHandler(
 
 bool URLSessionCallbackHandler::RunCallbackHandler(
     const uint64_t session_id,
+    const std::string& url,
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -45,7 +46,7 @@ bool URLSessionCallbackHandler::RunCallbackHandler(
   auto callback = url_session_callback_handlers_[session_id];
   url_session_callback_handlers_.erase(session_id);
 
-  callback(response_status_code, response, headers);
+  callback(url, response_status_code, response, headers);
 
   return true;
 }
@@ -56,7 +57,7 @@ bool URLSessionCallbackHandler::OnURLSessionReceivedResponse(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  if (!RunCallbackHandler(session_id, response_status_code,
+  if (!RunCallbackHandler(session_id, url, response_status_code,
       response, headers)) {
     return false;
   }
