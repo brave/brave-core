@@ -58,10 +58,9 @@ extension ContentBlockerHelper {
     
     private static func updateWhitelist(completion: (() -> Void)?) {
         removeAllRulesInStore {
-            compileListsNotInStore {
+            compileListsNotInStore().uponQueue(.main) {
                 completion?()
                 NotificationCenter.default.post(name: .ContentBlockerTabSetupRequired, object: nil)
-
             }
         }
 

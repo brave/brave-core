@@ -83,6 +83,9 @@ class BrowserViewController: UIViewController {
     fileprivate weak var tabTrayController: TabTrayController!
     let profile: Profile
     let tabManager: TabManager
+    
+    /// Whether last session was a crash or not
+    fileprivate let crashedLastSession: Bool
 
     // These views wrap the urlbar and toolbar to provide background effects on them
     var header: UIStackView!
@@ -121,14 +124,14 @@ class BrowserViewController: UIViewController {
 
     let downloadQueue = DownloadQueue()
     
-    fileprivate let shieldBlockStats = ShieldBlockedStats().then { _ in
-        Domain.loadShieldsIntoMemory()
-    }
+    fileprivate let shieldBlockStats = ShieldBlockedStats()
+    fileprivate var contentBlockListDeferred: Deferred<()>?
 
-    init(profile: Profile, tabManager: TabManager) {
+    init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool) {
         self.profile = profile
         self.tabManager = tabManager
         self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
+        self.crashedLastSession = crashedLastSession
         super.init(nibName: nil, bundle: nil)
         didInit()
     }
@@ -176,6 +179,11 @@ class BrowserViewController: UIViewController {
         Preferences.Privacy.cookieAcceptPolicy.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
         Preferences.Shields.fingerprintingProtection.observe(from: self)
+        
+        // Domain shield need to be setup before compiling lists
+        Domain.loadShieldsIntoMemory()
+        // Lists need to be compiled before attempting tab restoration
+        contentBlockListDeferred = ContentBlockerHelper.compileListsNotInStore()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -267,7 +275,7 @@ class BrowserViewController: UIViewController {
         scrollController.showToolbars(animated: true)
     }
 
-   @objc  func appWillResignActiveNotification() {
+    @objc func appWillResignActiveNotification() {
         // Dismiss any popovers that might be visible
         displayedPopoverController?.dismiss(animated: false) {
             self.displayedPopoverController = nil
@@ -393,6 +401,13 @@ class BrowserViewController: UIViewController {
         let dropInteraction = UIDropInteraction(delegate: self)
         view.addInteraction(dropInteraction)
     }
+    
+    fileprivate func setupTabs() {
+        let tabToSelect = tabManager.restoreAllTabs()
+        contentBlockListDeferred?.uponQueue(.main) {
+            self.tabManager.selectTab(tabToSelect)
+        }
+    }
 
     fileprivate func setupConstraints() {
         header.snp.makeConstraints { make in
@@ -474,26 +489,24 @@ class BrowserViewController: UIViewController {
         }
     }
     
-    // Because crashedLastSession is sticky, it does not get reset, we need to remember its
-    // value so that we do not keep asking the user to restore their tabs.
-    var displayedRestoreTabsAlert = false
-    
-    var crashedLastSession = false
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if !displayedRestoreTabsAlert && crashedLastSession {
-            displayedRestoreTabsAlert = true
-            showRestoreTabsAlert()
-        } else {
-            tabManager.restoreTabs()
-        }
+        checkCrashRestoration()
         
         updateTabCountUsingTabManager(tabManager, animated: false)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
         favoritesViewController?.updateDuckDuckGoVisibility()
     }
+    
+    fileprivate lazy var checkCrashRestoration: () -> Void = {
+        if crashedLastSession {
+            showRestoreTabsAlert()
+        } else {
+            setupTabs()
+        }
+        return {}
+    }()
 
     fileprivate func showRestoreTabsAlert() {
         guard canRestoreTabs() else {
@@ -502,7 +515,7 @@ class BrowserViewController: UIViewController {
         }
         let alert = UIAlertController.restoreTabsAlert(
             okayCallback: { _ in
-                self.tabManager.restoreTabs()
+                self.setupTabs()
             },
             noCallback: { _ in
                 TabMO.deleteAll()
