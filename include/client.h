@@ -11,7 +11,6 @@
 #include <memory>
 #include <ctime>
 
-#include "ads_impl.h"
 #include "ads_client.h"
 #include "callback_handler.h"
 #include "client_state.h"
