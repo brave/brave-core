@@ -40,15 +40,17 @@ export const controlsToggled: actions.ControlsToggled = (setting = true) => {
   }
 }
 
-export const httpsEverywhereToggled: actions.HttpsEverywhereToggled = () => {
+export const httpsEverywhereToggled: actions.HttpsEverywhereToggled = (setting) => {
   return {
-    type: types.HTTPS_EVERYWHERE_TOGGLED
+    type: types.HTTPS_EVERYWHERE_TOGGLED,
+    setting
   }
 }
 
-export const javascriptToggled: actions.JavascriptToggled = () => {
+export const blockJavaScript: actions.BlockJavaScript = (setting) => {
   return {
-    type: types.JAVASCRIPT_TOGGLED
+    type: types.JAVASCRIPT_TOGGLED,
+    setting
   }
 }
 
@@ -77,5 +79,13 @@ export const changeNoScriptSettings: actions.ChangeNoScriptSettings = (origin) =
   return {
     type: types.CHANGE_NO_SCRIPT_SETTINGS,
     origin
+  }
+}
+
+export const changeAllNoScriptSettings: actions.ChangeAllNoScriptSettings = (origin, shouldBlock) => {
+  return {
+    type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
+    origin,
+    shouldBlock
   }
 }

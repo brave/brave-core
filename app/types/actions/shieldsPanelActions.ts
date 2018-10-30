@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/shieldsPanelTypes'
-import { BlockTypes, BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../other/blockTypes'
+import { BlockTypes, BlockOptions, BlockFPOptions, BlockJSOptions, BlockCookiesOptions } from '../other/blockTypes'
 
 export interface ShieldDetails {
   id: number
@@ -87,19 +87,21 @@ export interface ControlsToggled {
 }
 
 interface HttpsEverywhereToggledReturn {
-  type: types.HTTPS_EVERYWHERE_TOGGLED
+  type: types.HTTPS_EVERYWHERE_TOGGLED,
+  setting: BlockOptions
 }
 
 export interface HttpsEverywhereToggled {
-  (): HttpsEverywhereToggledReturn
+  (setting: BlockOptions): HttpsEverywhereToggledReturn
 }
 
-interface JavascriptToggledReturn {
-  type: types.JAVASCRIPT_TOGGLED
+interface BlockJavaScriptReturn {
+  type: types.JAVASCRIPT_TOGGLED,
+  setting: BlockJSOptions
 }
 
-export interface JavascriptToggled {
-  (): JavascriptToggledReturn
+export interface BlockJavaScript {
+  (setting: BlockJSOptions): BlockJavaScriptReturn
 }
 
 interface AllowScriptOriginsOnceReturn {
@@ -120,6 +122,16 @@ export interface ChangeNoScriptSettings {
   (origin: string): ChangeNoScriptSettingsReturn
 }
 
+interface ChangeAllNoScriptSettingsReturn {
+  type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
+  origin: string,
+  shouldBlock: boolean
+}
+
+export interface ChangeAllNoScriptSettings {
+  (origin: string, shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -127,8 +139,9 @@ export type shieldPanelActions =
   BlockAdsTrackersReturn |
   ControlsToggledReturn |
   HttpsEverywhereToggledReturn |
-  JavascriptToggledReturn |
+  BlockJavaScriptReturn |
   BlockFingerprintingReturn |
   BlockCookiesReturn |
   AllowScriptOriginsOnceReturn |
-  ChangeNoScriptSettingsReturn
+  ChangeNoScriptSettingsReturn |
+  ChangeAllNoScriptSettingsReturn

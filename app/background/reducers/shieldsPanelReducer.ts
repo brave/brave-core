@@ -23,12 +23,13 @@ import { reloadTab } from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
 import { State, Tab } from '../../types/state/shieldsPannelState'
 import { Actions } from '../../types/actions/index'
+import { getTotalResourcesBlocked } from '../../helpers/shieldsUtils'
 
 const updateShieldsIconBadgeText = (state: State) => {
   const tabId: number = shieldsPanelState.getActiveTabId(state)
   const tab: Tab = state.tabs[tabId]
   if (tab) {
-    const total = tab.adsBlocked + tab.trackersBlocked + tab.javascriptBlocked + tab.fingerprintingBlocked + tab.httpsRedirected
+    const total = getTotalResourcesBlocked(tab)
     // do not show any badge if there are no blocked items
     setBadgeText(tabId, total > 99 ? '99+' : total > 0 ? total.toString() : '')
   }
@@ -161,7 +162,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
           break
         }
 
-        setAllowHTTPUpgradableResources(tabData.origin, toggleShieldsValue(tabData.httpUpgradableResources))
+        setAllowHTTPUpgradableResources(tabData.origin, toggleShieldsValue(action.setting))
           .then(() => {
             requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
             reloadTab(tabData.id, true).catch(() => {
@@ -318,6 +319,12 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       {
         const tabId: number = shieldsPanelState.getActiveTabId(state)
         state = shieldsPanelState.changeNoScriptSettings(state, tabId, action.origin)
+        break
+      }
+    case shieldsPanelTypes.CHANGE_ALL_NO_SCRIPT_SETTINGS:
+      {
+        const tabId: number = shieldsPanelState.getActiveTabId(state)
+        state = shieldsPanelState.changeAllNoScriptSettings(state, tabId, action.origin, action.shouldBlock)
         break
       }
   }

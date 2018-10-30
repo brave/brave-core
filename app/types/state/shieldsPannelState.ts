@@ -88,3 +88,7 @@ export interface ChangeNoScriptSettings {
 export interface ResetNoScriptInfo {
   (state: State, tabId: number, newOrigin: string): State
 }
+
+export interface ChangeAllNoScriptSettings {
+  (state: State, tabId: number, newOrigin: string, shouldBlock: boolean): State
+}

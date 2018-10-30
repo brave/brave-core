@@ -8,7 +8,11 @@ import * as assert from 'assert'
 import * as types from '../../../app/constants/shieldsPanelTypes'
 import * as actions from '../../../app/actions/shieldsPanelActions'
 import { ShieldDetails, BlockDetails } from '../../../app/types/actions/shieldsPanelActions'
-import { BlockOptions, BlockFPOptions, BlockCookiesOptions } from '../../../app/types/other/blockTypes'
+import {
+  BlockOptions,
+  BlockFPOptions,
+  BlockCookiesOptions
+} from '../../../app/types/other/blockTypes'
 
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
@@ -38,14 +42,18 @@ describe('shieldsPanelActions', () => {
   })
 
   it('httpsEverywhereToggled action', () => {
-    assert.deepEqual(actions.httpsEverywhereToggled(), {
-      type: types.HTTPS_EVERYWHERE_TOGGLED
+    const setting: BlockOptions = 'allow'
+    assert.deepEqual(actions.httpsEverywhereToggled(setting), {
+      type: types.HTTPS_EVERYWHERE_TOGGLED,
+      setting
     })
   })
 
   it('javascriptToggled action', () => {
-    assert.deepEqual(actions.javascriptToggled(), {
-      type: types.JAVASCRIPT_TOGGLED
+    const setting: BlockOptions = 'allow'
+    assert.deepEqual(actions.blockJavaScript(setting), {
+      type: types.JAVASCRIPT_TOGGLED,
+      setting
     })
   })
 

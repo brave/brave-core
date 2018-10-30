@@ -3,78 +3,84 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import BraveShieldsHeader from './braveShieldsHeader'
-import BraveShieldsStats from './braveShieldsStats'
-import BraveShieldsControls from './braveShieldsControls'
-import BraveShieldsFooter from './braveShieldsFooter'
+
+// Components group
+import ShieldsHeader from './header'
+import ShieldsInterfaceControls from './interfaceControls'
+import ShieldsPrivacyControls from './privacyControls'
+import ShieldsFooter from './footer'
+
+// Utils
+import { ShieldsPanel } from 'brave-ui/features/shields'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { Tab } from '../../types/state/shieldsPannelState'
 
-interface BraveShieldsProps {
+interface Props {
   actions: {
     shieldsToggled: shieldActions.ShieldsToggled
     blockAdsTrackers: shieldActions.BlockAdsTrackers
-    controlsToggled: shieldActions.ControlsToggled
     httpsEverywhereToggled: shieldActions.HttpsEverywhereToggled
-    javascriptToggled: shieldActions.JavascriptToggled
+    blockJavaScript: shieldActions.BlockJavaScript
     blockFingerprinting: shieldActions.BlockFingerprinting
     blockCookies: shieldActions.BlockCookies
     allowScriptOriginsOnce: shieldActions.AllowScriptOriginsOnce
     changeNoScriptSettings: shieldActions.ChangeNoScriptSettings
+    changeAllNoScriptSettings: shieldActions.ChangeAllNoScriptSettings
   }
   shieldsPanelTabData: Tab
 }
 
-export default class BraveShields extends React.Component<BraveShieldsProps, {}> {
+export default class BraveShields extends React.Component<Props, {}> {
   render () {
     const { shieldsPanelTabData, actions } = this.props
-
     if (!shieldsPanelTabData) {
       return null
     }
 
     return (
-      <div data-test-id='brave-shields-panel'>
-        <BraveShieldsHeader
-          braveShields={shieldsPanelTabData.braveShields}
+      <ShieldsPanel data-test-id='brave-shields-panel'>
+        <ShieldsHeader
+          tabData={shieldsPanelTabData}
           shieldsToggled={actions.shieldsToggled}
+        />
+        <ShieldsInterfaceControls
+          url={shieldsPanelTabData.url}
+          hostname={shieldsPanelTabData.hostname}
+          braveShields={shieldsPanelTabData.braveShields}
+          ads={shieldsPanelTabData.ads}
+          adsBlocked={shieldsPanelTabData.adsBlocked}
+          adsBlockedResources={shieldsPanelTabData.adsBlockedResources}
+          blockAdsTrackers={actions.blockAdsTrackers}
+          trackers={shieldsPanelTabData.trackers}
+          trackersBlocked={shieldsPanelTabData.trackersBlocked}
+          trackersBlockedResources={shieldsPanelTabData.trackersBlockedResources}
+          httpsRedirected={shieldsPanelTabData.httpsRedirected}
+          httpUpgradableResources={shieldsPanelTabData.httpUpgradableResources}
+          httpsRedirectedResources={shieldsPanelTabData.httpsRedirectedResources}
+          httpsEverywhereToggled={actions.httpsEverywhereToggled}
+        />
+        <ShieldsPrivacyControls
+          url={shieldsPanelTabData.url}
           hostname={shieldsPanelTabData.hostname}
           origin={shieldsPanelTabData.origin}
-        />
-        <BraveShieldsStats
           braveShields={shieldsPanelTabData.braveShields}
-          adsBlocked={shieldsPanelTabData.adsBlocked}
-          trackersBlocked={shieldsPanelTabData.trackersBlocked}
-          httpsRedirected={shieldsPanelTabData.httpsRedirected}
-          javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
-          fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
-          adsBlockedResources={shieldsPanelTabData.adsBlockedResources}
-          trackersBlockedResources={shieldsPanelTabData.trackersBlockedResources}
-          httpsRedirectedResources={shieldsPanelTabData.httpsRedirectedResources}
-          javascriptBlockedResources={shieldsPanelTabData.javascriptBlockedResources}
-          fingerprintingBlockedResources={shieldsPanelTabData.fingerprintingBlockedResources}
-        />
-        <BraveShieldsControls
-          braveShields={shieldsPanelTabData.braveShields}
-          blockAdsTrackers={actions.blockAdsTrackers}
-          ads={shieldsPanelTabData.ads}
-          trackers={shieldsPanelTabData.trackers}
-          httpUpgradableResources={shieldsPanelTabData.httpUpgradableResources}
-          javascript={shieldsPanelTabData.javascript}
-          controlsToggled={actions.controlsToggled}
-          httpsEverywhereToggled={actions.httpsEverywhereToggled}
-          javascriptToggled={actions.javascriptToggled}
-          controlsOpen={shieldsPanelTabData.controlsOpen}
           fingerprinting={shieldsPanelTabData.fingerprinting}
+          fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
+          fingerprintingBlockedResources={shieldsPanelTabData.fingerprintingBlockedResources}
           blockFingerprinting={actions.blockFingerprinting}
-          cookies={shieldsPanelTabData.cookies}
-          blockCookies={actions.blockCookies}
+          javascript={shieldsPanelTabData.javascript}
+          javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
+          javascriptBlockedResources={shieldsPanelTabData.javascriptBlockedResources}
           noScriptInfo={shieldsPanelTabData.noScriptInfo}
+          changeAllNoScriptSettings={actions.changeAllNoScriptSettings}
           allowScriptOriginsOnce={actions.allowScriptOriginsOnce}
           changeNoScriptSettings={actions.changeNoScriptSettings}
+          blockJavaScript={actions.blockJavaScript}
+          blockCookies={actions.blockCookies}
+          cookies={shieldsPanelTabData.cookies}
         />
-        <BraveShieldsFooter tabId={shieldsPanelTabData.id} />
-      </div>
+        <ShieldsFooter />
+      </ShieldsPanel>
     )
   }
 }

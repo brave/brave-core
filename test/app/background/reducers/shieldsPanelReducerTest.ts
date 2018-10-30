@@ -378,7 +378,8 @@ describe('braveShieldsPanelReducer', () => {
     it('should call setAllowHTTPUpgradableResources', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
-          type: types.HTTPS_EVERYWHERE_TOGGLED
+          type: types.HTTPS_EVERYWHERE_TOGGLED,
+          setting: 'block'
         }), state)
       assert.equal(this.setAllowHTTPUpgradableResourcesSpy.withArgs(origin, 'allow').calledOnce, true)
     })
@@ -396,7 +397,8 @@ describe('braveShieldsPanelReducer', () => {
     it('should call setAllowJavaScript', function () {
       assert.deepEqual(
         shieldsPanelReducer(state, {
-          type: types.JAVASCRIPT_TOGGLED
+          type: types.JAVASCRIPT_TOGGLED,
+          setting: 'allow'
         }), state)
       assert.equal(this.setAllowJavaScriptSpy.withArgs(origin, 'allow').calledOnce, true)
     })

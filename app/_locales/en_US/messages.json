@@ -3,121 +3,164 @@
     "message": "The Brave Extension",
     "description": "The name of the the extension."
   },
-
-  "shieldsStatsAdsTrackersBlocked": {
-    "message": "Ads and Trackers Blocked",
-    "description": "Website ads and trackering elements such as pixels, images, scripts, etc."
-  },
-  "shieldsStatsHttpsUpgrades": {
-    "message": "HTTPS Upgrades",
-    "description": "Label for shields stats, HTTPS upgrades count"
-  },
-  "shieldsStatsScriptsBlocked": {
-    "message": "Scripts Blocked",
-    "description": "Label for shields stats, Scripts Blocked count"
-  },
-  "shieldsFingerPrintingBlocked": {
-    "message": "Fingerprinting Methods Blocked",
-    "description": "Label for shields stats, Fingerprinting Methods Blocked count"
-  },
-
-  "shieldsHeaderShieldsToggle": {
+  "shields": {
     "message": "Shields",
-    "description": "Label for top shields switch in shields header"
+    "description": "The Shields feature name"
   },
-  "shieldsHeaderToggleLeftPosition": {
-    "message": "Down",
-    "description": "Label for top shields switch in shields header turned off position"
+  "up": {
+    "message": "up",
+    "description": "Message for when shields is enabled"
   },
-  "shieldsHeaderToggleRightPosition": {
-    "message": "Up",
-    "description": "Label for top shields switch in shields header turned on position"
+  "down": {
+    "message": "down",
+    "description": "Message for when shields is disabled"
   },
-  "shieldsHeaderForSite": {
-    "message": "Site shield settings for",
-    "description": "Label for shields header near current site name"
+  "totalBlocked": {
+    "message": "Total blocked",
+    "description": "Message showing the amount of all blocked resources"
   },
-
-  "shieldsControlsAdvancedControls": {
-    "message": "Advanced Controls",
-    "description": "Label for advanced controls group"
+  "forThisSite": {
+    "message": "for this site",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
   },
-
-  "shieldsControlsAdControl": {
-    "message": "Ad Control",
-    "description": "Label for Advertisement Control dropdown box options "
+  "enabledMessage": {
+    "message": "If a site appears broken, try shields down",
+    "description": "Message telling the user to disable shields if a site appears broken"
   },
-  "shieldsControlsAdControlOptionBlockAds": {
-    "message": "Block Ads",
-    "description": "Ad Control dropdown box, option block ads"
+  "disabledMessage": {
+    "message": "You’re browsing this site without any privacy and security protections.",
+    "description": "Message telling the user that shields are disabled"
   },
-  "shieldsControlsAdControlOptionAllowAdsTracking": {
-    "message": "Allow Ads and Tracking",
-    "description": "Ad Control dropdown box, option allow ads and tracking"
+  "blockAds": {
+    "message": "Ads and trackers blocked",
+    "description": "Message indicating the number of ads and trackers blocked"
   },
-
-  "shieldsControlsCookieControl": {
-    "message": "Cookie Control",
-    "description": "Label Cookie Control dropdown options"
+  "blockPopups": {
+    "message": "Pop-ups blocked",
+    "description": "Message indicating the number of pop-ups blocked"
   },
-  "shieldsControlsCookieOptionBlock3p": {
-    "message": "Block 3rd Party Cookies",
-    "description": "Cookie control dropdown option Block 3rd Party Cookies"
+  "blockImages": {
+    "message": "Images blocked",
+    "description": "Message indicating the number of images blocked"
   },
-  "shieldsControlsCookieOptionAllowAll": {
-    "message": "Allow All Cookies",
-    "description": "Cookie control dropdown option Allow All Cookies"
+  "block3partyCookies": {
+    "message": "3rd-party cookies blocked",
+    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
   },
-  "shieldsControlsCookieOptionBlockAll": {
-    "message": "Block All Cookies",
-    "description": "Cookie control dropdown option Block All Cookies"
+  "allowAllCookies": {
+    "message": "All cookies allowed",
+    "description": "Message for the select option about cookies blocked, allowing all cookies"
   },
-
-  "shieldsControlsFingerprintingProtection": {
-    "message": "Fingerprinting Protection",
-    "description": "Label Fingerprinting Protection dropdown options"
+  "blockAllCookies": {
+    "message": "Cookies blocked",
+    "description": "Message for the select option about cookies blocked, blocking all cookies"
   },
-  "shieldsControlsFingerprintingOptionBlock3p": {
-    "message": "Block 3rd Party Fingerprinting",
-    "description": "Fingerprinting control dropdown option Block 3rd Party Fingerprinting"
+  "blockSomeScripts": {
+    "message": "Some scripts blocked",
+    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
   },
-  "shieldsControlsFingerprintingOptionAllowAll": {
-    "message": "Allow All Fingerprinting",
-    "description": "Fingerprinting control dropdown option Allow All Fingerprinting"
+  "allowAllScripts": {
+    "message": "All scripts allowed",
+    "description": "Message for the select option about scripts blocked, allowing all scripts"
   },
-  "shieldsControlsFingerprintingOptionBlockAll": {
-    "message": "Block All Fingerprinting",
-    "description": "Fingerprinting control dropdown option Block All Fingerprinting"
+  "blockAllScriptsOrigins": {
+    "message": "Scripts blocked",
+    "description": "Message for the select option about scripts blocked, blocking all scripts"
   },
-
-  "shieldsControlsHttpsEverywhereSwitch": {
-    "message": "HTTPS Everywhere",
-    "description": "Shields controls, switch for HTTPS Everywhere"
+  "block3partyFingerprinting": {
+    "message": "3rd-party device recognition blocked",
+    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
   },
-  "shieldsControlsBlockScriptsSwitch": {
-    "message": "Block Scripts",
-    "description": "Shields controls, switch for Block Scripts"
+  "allowAllFingerprinting": {
+    "message": "All device recognition allowed",
+    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
   },
-  "shieldsControlsBlockPhishingMalwareSwitch": {
-    "message": "Block Phishing/Malware",
-    "description": "Shields controls, switch for Block Phishing/Malware"
+  "blockAllFingerprinting": {
+    "message": "Device recognition blocked",
+    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
   },
-
-  "noScriptSwitches": {
-    "message": "Toggle switches to disable script blocking",
-    "description": "Instructions for per-origin noScript switches"
+  "blockPishing": {
+    "message": "Phishing/malware attempts blocked",
+    "description": "Message indicating the number of phishing/malware blocked"
   },
-  "noScriptApplyOnce": {
+  "connectionsEncrypted": {
+    "message": "Connections encrypted",
+    "description": "Message indicating the number of connections encrypted"
+  },
+  "editDefaults": {
+    "message": "Global shield defaults",
+    "description": "Message linking shields to the global shield settings"
+  },
+  "cookiesOnThisSite": {
+    "message": "Cookies on this site",
+    "description": "Message for the cookie resources blocked panel"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Device recognition attempts",
+    "description": "Message for the device recognition attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Scripts on this site",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blocked scripts",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Allowed scripts",
+    "description": "Message for the script resources allowed"
+  },
+  "allowAll": {
+    "message": "Allow all",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "allow": {
+    "message": "Allow",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "allowed": {
+    "message": "Allowed",
+    "description": "Message for the resources blocked *allowed* option"
+  },
+  "blockAll": {
+    "message": "Block all",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "block": {
+    "message": "Block",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "blocked": {
+    "message": "Blocked",
+    "description": "Message for the resources blocked *blocked* option"
+  },
+  "apply": {
     "message": "Apply",
-    "description": "Label for applying per-origin noScript settings"
+    "description": "Message for the button inside dynamic list of resources blocked"
   },
-
-  "shieldsFooterEditDefault":{
-    "message": "Edit default shield settings...",
-    "description": "Shields controls footer, link to edit default shields settings"
+  "applyOnce": {
+    "message": "Apply once",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
   },
-  "shieldsFooterReload":{
-    "message": "Reload...",
-    "description": "Shields controls footer, label for action reload page to apply current shields settings"
+  "applyUntilRestart": {
+    "message": "Apply until restart",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
+  },
+  "alwaysApply": {
+    "message": "Always apply",
+    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
+  },
+  "undo": {
+    "message": "Undo",
+    "description": "Message for the resources blocked *undo* option"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Go back",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   }
 }
