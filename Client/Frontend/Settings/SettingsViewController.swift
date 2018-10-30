@@ -8,6 +8,7 @@ import BraveShared
 import Static
 import SwiftKeychainWrapper
 import LocalAuthentication
+import SwiftyJSON
 
 extension TabBarVisibility: RepresentableOptionType {
     public var displayString: String {
@@ -57,6 +58,7 @@ extension DataSource {
 
 protocol SettingsDelegate: class {
     func settingsOpenURLInNewTab(_ url: URL)
+    func settingsOpenURLs(_ urls: [URL])
     func settingsDidFinish(_ settingsViewController: SettingsViewController)
 }
 
@@ -99,6 +101,10 @@ class SettingsViewController: TableViewController {
             supportSection,
             aboutSection
         ]
+        
+        if let debugSection = debugSection {
+            dataSource.sections.append(debugSection)
+        }
     }
     
     @objc private func tappedDone() {
@@ -281,6 +287,35 @@ class SettingsViewController: TableViewController {
                     actionSheet.addAction(UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil))
                     self.navigationController?.present(actionSheet, animated: true, completion: nil)
                 })
+            ]
+        )
+    }()
+    
+    private lazy var debugSection: Section? = {
+        if AppConstants.BuildChannel.isRelease { return nil }
+        
+        return Section(
+            rows: [
+                Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
+                Row(text: "View URP Logs", selection: {
+                    self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)
+                }, accessory: .disclosureIndicator),
+                Row(text: "URP Code: \(UserReferralProgram.getReferralCode(prefs: nil) ?? "--")"),
+                Row(text: "Load all QA Links", selection: {
+                    let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!
+                    let string = try? String(contentsOf: url)
+                    let urls = JSON(parseJSON: string!)["links"].arrayValue.compactMap { URL(string: $0.stringValue) }
+                    self.settingsDelegate?.settingsOpenURLs(urls)
+                    self.dismiss(animated: true)
+                }, cellClass: ButtonCell.self),
+                Row(text: "CRASH!!!", selection: {
+                    let alert = UIAlertController(title: "Force crash?", message: nil, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Crash app", style: .destructive) { _ in
+                        fatalError()
+                    })
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }, cellClass: ButtonCell.self)
             ]
         )
     }()
