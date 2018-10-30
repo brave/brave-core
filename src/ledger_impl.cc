@@ -820,8 +820,10 @@ void LedgerImpl::SetBalanceReportItem(ledger::PUBLISHER_MONTH month,
   bat_publishers_->setBalanceReportItem(month, year, type, probi);
 }
 
-void LedgerImpl::FetchFavIcon(const std::string& url, const std::string& favicon_key) {
-  ledger_client_->FetchFavIcon(url, favicon_key);
+void LedgerImpl::FetchFavIcon(const std::string& url,
+                              const std::string& favicon_key,
+                              ledger::FetchIconCallback callback) {
+  ledger_client_->FetchFavIcon(url, favicon_key, callback);
 }
 
 ledger::PublisherBanner LedgerImpl::GetPublisherBanner(const std::string& publisher_id) {
