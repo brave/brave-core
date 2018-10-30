@@ -63,7 +63,7 @@ class Client: public ads::CallbackHandler {
   rewards_ads::AdsImpl* ads_;  // NOT OWNED
   ads::AdsClient* ads_client_;  // NOT OWNED
 
-  std::shared_ptr<CLIENT_STATE> client_state_;
+  std::unique_ptr<CLIENT_STATE> client_state_;
 };
 
 }  // namespace state
