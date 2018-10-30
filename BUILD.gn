@@ -11,12 +11,6 @@ config("external_config") {
 config("internal_config") {
   include_dirs = [ "src" ]
 
-  # TODO(bridiver) - fix issues and remove these
-  if (is_clang || !is_win) {
-    cflags_cc = [
-      "-Wno-c++17-extensions",
-    ]
-  }
   if (is_win) {
     cflags_cc = [
       "/wd4101",  # unreferenced local variable
