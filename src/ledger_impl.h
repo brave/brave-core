@@ -170,7 +170,9 @@ class LedgerImpl : public ledger::Ledger,
     const std::string& viewing_id);
   void PrepareVoteBatchTimer();
   void VoteBatchTimer();
-  void FetchFavIcon(const std::string& url, const std::string& favicon_key);
+  void FetchFavIcon(const std::string& url,
+                    const std::string& favicon_key,
+                    ledger::FetchIconCallback callback);
   ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
   double GetBalance() override;
   void OnReconcileCompleteSuccess(const std::string& viewing_id,

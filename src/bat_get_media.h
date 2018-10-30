@@ -81,6 +81,14 @@ class BatGetMedia {
   uint64_t getTwitchDuration(const ledger::TwitchEventInfo& oldEventInfo,
                              const ledger::TwitchEventInfo& newEventInfo);
 
+  void onFetchFavIcon(const std::string& publisher_key,
+                      bool success,
+                      const std::string& favicon_url);
+
+  void onFetchFavIconDBResponse(ledger::Result result,
+                           std::unique_ptr<ledger::PublisherInfo> info,
+                           const std::string& favicon_url);
+
   std::string getTwitchStatus(const ledger::TwitchEventInfo& oldEventInfo,
                               const ledger::TwitchEventInfo& newEventInfo);
 

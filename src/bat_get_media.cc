@@ -308,6 +308,32 @@ uint64_t BatGetMedia::getTwitchDuration(const ledger::TwitchEventInfo& oldEventI
   return (uint64_t)std::round(time);
 }
 
+void BatGetMedia::onFetchFavIcon(const std::string& publisher_key,
+                                 bool success,
+                                 const std::string& favicon_url) {
+  uint64_t currentReconcileStamp = ledger_->GetReconcileStamp();
+  auto filter = ledger_->CreatePublisherFilter(publisher_key,
+      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+      ledger::PUBLISHER_MONTH::ANY,
+      -1,
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
+      false,
+      currentReconcileStamp);
+  ledger_->GetPublisherInfo(filter,
+      std::bind(&BatGetMedia::onFetchFavIconDBResponse,
+      this, _1, _2, favicon_url));
+}
+
+void BatGetMedia::onFetchFavIconDBResponse(ledger::Result result,
+                                           std::unique_ptr<ledger::PublisherInfo> info,
+                                           const std::string& favicon_url) {
+  if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
+    info->favicon_url = favicon_url;
+    ledger_->SetPublisherInfo(std::move(info),
+      std::bind(&onVisitSavedDummy, _1, _2));
+  }
+}
+
 void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration,
                                                      const std::string& media_key,
                                                      const std::string& providerName,
@@ -361,7 +387,9 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration,
     updated_visit_data.name = author_name;
 
     if (fav_icon.length() > 0) {
-      ledger_->FetchFavIcon(fav_icon, updated_visit_data.favicon_url);
+      ledger_->FetchFavIcon(fav_icon,
+                            updated_visit_data.favicon_url,
+                            std::bind(&BatGetMedia::onFetchFavIcon, this, id, _1, _2));
     }
 
     ledger_->SaveMediaVisit(id, updated_visit_data, duration, window_id);
@@ -405,23 +433,43 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
                                     const uint64_t window_id,
                                     const std::string& favIconURL,
                                     const std::string& channelId) {
-    std::string publisher_id = providerName + "#channel:";
+
+  std::string publisher_id;
+  std::string url;
+  if (providerName == YOUTUBE_MEDIA_TYPE) {
+    publisher_id = providerName + "#channel:";
     if (channelId.empty()) {
       LOG(ERROR) << "Channel id is missing for: " << media_key;
       return;
     }
+
     publisher_id += channelId;
+    url = publisherURL + "/videos";
+  }
 
-    ledger::VisitData updated_visit_data(visit_data);
-    updated_visit_data.favicon_url = favIconURL;
-    updated_visit_data.provider = YOUTUBE_MEDIA_TYPE;
-    updated_visit_data.name = publisherName;
-    updated_visit_data.url = publisherURL + "/videos";
+  if (publisher_id.empty()) {
+      LOG(ERROR) << "Publisher id is missing for: " << media_key;
+      return;
+  }
 
-    ledger_->SaveMediaVisit(publisher_id, updated_visit_data, duration, window_id);
-    if (!media_key.empty()) {
-      ledger_->SetMediaPublisherInfo(media_key, publisher_id);
-    }
+  if (favIconURL.length() > 0) {
+    std::string favicon_key = "https://" + ledger_->GenerateGUID() +
+      ".invalid";
+    ledger_->FetchFavIcon(favIconURL,
+                          favicon_key,
+                          std::bind(&BatGetMedia::onFetchFavIcon, this, publisher_id, _1, _2));
+  }
+
+  ledger::VisitData updated_visit_data(visit_data);
+  updated_visit_data.favicon_url = "";
+  updated_visit_data.provider = providerName;
+  updated_visit_data.name = publisherName;
+  updated_visit_data.url = url;
+
+  ledger_->SaveMediaVisit(publisher_id, updated_visit_data, duration, window_id);
+  if (!media_key.empty()) {
+    ledger_->SetMediaPublisherInfo(media_key, publisher_id);
+  }
 }
 
 std::string BatGetMedia::getMediaURL(const std::string& mediaId, const std::string& providerName) {
@@ -720,15 +768,7 @@ void BatGetMedia::onMediaPublisherActivity(ledger::Result result,
 }
 
 std::string BatGetMedia::parseFavIconUrl(const std::string& data) {
-  std::string favicon_url = extractData(data,
-    "\"avatar\":{\"thumbnails\":[{\"url\":\"", "\"");
-  if (favicon_url.length() > 0) {
-    std::string favicon_key = "https://" + ledger_->GenerateGUID() +
-      ".invalid";
-    ledger_->FetchFavIcon(favicon_url, favicon_key);
-    favicon_url = favicon_key;
-  }
-  return favicon_url;
+  return extractData(data, "\"avatar\":{\"thumbnails\":[{\"url\":\"", "\"");
 }
 
 std::string BatGetMedia::parseChannelId(const std::string& data) {

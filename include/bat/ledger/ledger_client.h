@@ -35,6 +35,7 @@ using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
 using RecurringDonationCallback = std::function<void(const PublisherInfoList&)>;
 using RecurringRemoveCallback = std::function<void(Result)>;
+using FetchIconCallback = std::function<void(bool, const std::string&)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -91,7 +92,9 @@ class LEDGER_EXPORT LedgerClient {
                                    std::unique_ptr<ledger::PublisherInfo>,
                                    uint64_t windowId) = 0;
   virtual void OnExcludedSitesChanged() = 0;
-  virtual void FetchFavIcon(const std::string& url, const std::string& favicon_key) = 0;
+  virtual void FetchFavIcon(const std::string& url,
+                            const std::string& favicon_key,
+                            FetchIconCallback callback) = 0;
   virtual void SaveContributionInfo(const std::string& probi,
                                     const int month,
                                     const int year,
