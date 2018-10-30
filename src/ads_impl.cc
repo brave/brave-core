@@ -16,16 +16,16 @@
 namespace rewards_ads {
 
 AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
+    initialized_(false),
+    app_focused_(false),
+    collect_activity_timer_id_(0),
+    media_playing_({}),
     ads_client_(ads_client),
     settings_(std::make_unique<state::Settings>(ads_client_)),
     client_(std::make_unique<state::Client>(this, ads_client_)),
     bundle_(std::make_shared<state::Bundle>(ads_client_)),
     catalog_ads_serve_(std::make_unique<catalog::AdsServe>
-      (this, ads_client_, bundle_)),
-    initialized_(false),
-    app_focused_(false),
-    media_playing_({}),
-    collect_activity_timer_id_(0) {
+      (this, ads_client_, bundle_)) {
 }
 
 AdsImpl::~AdsImpl() = default;
