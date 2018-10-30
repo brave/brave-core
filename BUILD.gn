@@ -14,9 +14,7 @@ config("internal_config") {
   # TODO(bridiver) - fix issues and remove these
   if (is_clang || !is_win) {
     cflags_cc = [
-      "-Wno-reorder",
       "-Wno-c++17-extensions",
-      "-Wno-unused-private-field",
     ]
   }
   if (is_win) {
