@@ -230,12 +230,17 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherActivity(ledger::Result result,
                           std::unique_ptr<ledger::PublisherInfo> info,
                           uint64_t windowId) override;
-  void FetchFavIcon(const std::string& url, const std::string& favicon_key) override;
-  void OnFetchFavIconCompleted(const std::string& favicon_key,
+  void FetchFavIcon(const std::string& url,
+                    const std::string& favicon_key,
+                    ledger::FetchIconCallback callback) override;
+  void OnFetchFavIconCompleted(ledger::FetchIconCallback callback,
+                          const std::string& favicon_key,
                           const GURL& url,
                           const BitmapFetcherService::RequestId& request_id,
                           const SkBitmap& image);
-  void OnSetOnDemandFaviconComplete(bool success);
+  void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
+                                    ledger::FetchIconCallback callback,
+                                    bool success);
   void SaveContributionInfo(const std::string& probi,
                             const int month,
                             const int year,
