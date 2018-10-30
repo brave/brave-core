@@ -65,7 +65,7 @@ export default class ShieldsInterfaceControls extends React.PureComponent<Props,
 
   get totalAdsTrackersBlockedList (): Array<string> {
     const { adsBlockedResources, trackersBlockedResources } = this.props
-    return Object.assign(adsBlockedResources, trackersBlockedResources)
+    return [...adsBlockedResources, ...trackersBlockedResources]
   }
 
   onChangeBlockAds = (event: React.ChangeEvent<HTMLInputElement>) => {
