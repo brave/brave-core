@@ -4,6 +4,7 @@
 
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 
+#include "base/task/post_task.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -13,6 +14,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/common/referrer.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/resource_request_info.h"
 #include "content/public/browser/websocket_handshake_request_info.h"
 #include "extensions/browser/extension_api_frame_id_map.h"
@@ -28,22 +30,25 @@ using namespace net::registry_controlled_domains;
 
 namespace brave_shields {
 
-bool GetDefaultFromResourceIdentifier(const std::string& resource_identifier) {
-  if (resource_identifier == "ads") {
+bool GetDefaultFromResourceIdentifier(const std::string& resource_identifier,
+    const GURL& primary_url, const GURL& secondary_url) {
+  if (resource_identifier == brave_shields::kAds) {
     return false;
-  } else if (resource_identifier == "trackers") {
+  } else if (resource_identifier == brave_shields::kTrackers) {
     return false;
-  } else if (resource_identifier == "httpUpgradableResources") {
+  } else if (resource_identifier == brave_shields::kHTTPUpgradableResources) {
     return false;
-  } else if (resource_identifier == "braveShields") {
+  } else if (resource_identifier == brave_shields::kBraveShields) {
     return true;
   } else if (resource_identifier == brave_shields::kReferrers) {
     return false;
+  } else if (resource_identifier == brave_shields::kCookies) {
+    return secondary_url == GURL("https://firstParty/");
   }
   return false;
 }
 
-bool IsAllowContentSettingFromIO(net::URLRequest* request,
+bool IsAllowContentSettingFromIO(const net::URLRequest* request,
     const GURL& primary_url, const GURL& secondary_url,
     ContentSettingsType setting_type,
     const std::string& resource_identifier) {
@@ -52,12 +57,23 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   const content::ResourceRequestInfo* resource_info =
       content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info) {
-    return GetDefaultFromResourceIdentifier(resource_identifier);
+    return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
+                                            secondary_url);
   }
   ProfileIOData* io_data =
       ProfileIOData::FromResourceContext(resource_info->GetContext());
+  return IsAllowContentSettingWithIOData(io_data, primary_url,
+      secondary_url, setting_type, resource_identifier);
+}
+
+bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
+    const GURL& primary_url, const GURL& secondary_url,
+    ContentSettingsType setting_type,
+    const std::string& resource_identifier) {
+
   if (!io_data) {
-    return GetDefaultFromResourceIdentifier(resource_identifier);
+    return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
+                                            secondary_url);
   }
   content_settings::SettingInfo setting_info;
   std::unique_ptr<base::Value> value =
@@ -71,12 +87,13 @@ bool IsAllowContentSettingFromIO(net::URLRequest* request,
   // TODO(bbondy): Add a static RegisterUserPrefs method for shields and use
   // prefs instead of simply returning true / false below.
   if (setting == CONTENT_SETTING_DEFAULT) {
-    return GetDefaultFromResourceIdentifier(resource_identifier);
+    return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
+                                            secondary_url);
   }
   return setting == CONTENT_SETTING_ALLOW;
 }
 
-void GetRenderFrameInfo(URLRequest* request,
+void GetRenderFrameInfo(const URLRequest* request,
     int* render_frame_id,
     int* render_process_id,
     int* frame_tree_node_id) {
@@ -106,7 +123,7 @@ void DispatchBlockedEventFromIO(const GURL &request_url, int render_frame_id,
     int render_process_id, int frame_tree_node_id,
     const std::string& block_type) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
+  base::PostTaskWithTraits(FROM_HERE, {BrowserThread::UI},
       base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
           block_type, request_url.spec(),
           render_process_id, render_frame_id, frame_tree_node_id));

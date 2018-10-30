@@ -12,151 +12,151 @@
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Gaukite užmokestį už peržiūrėtas reklamas ir perveskite šiuos pinigus, kad paremtumėte mėgstamo turinio kūrėjus.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Dabar už privatumo nepažeidžiančių reklamų peržiūrą galite gauti žetonų",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Pamatykite, kas buvo patobulinta",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Sužinokite daugiau",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "„Brave Payments“ gerokai naujovinome.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Pasirenkite išbandyti naująjį internetą.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Jūsų piniginė",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Išmokos",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "–",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "„Brave“ patvirtintas leidėjas",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Dėmesys",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Įtraukti į automatinį indėlį",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Siųsti arbatpinigių...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Aktyvinti arbatpinigius",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "skirta",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "„Rewards“ suvestinė",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Balandis",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Rugpjūtis",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Gruodis",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Vasaris",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Sausis",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Liepa",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Birželis",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Kovas",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Gegužė",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Lapkritis",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Spalis",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Rugsėjis",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Žetonų išmoka",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Uždarbis iš reklamos",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Automatinis indėlis",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Vienkartiniai arbatpinigiai",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Iš viso",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "galiojimo laikas baigiasi",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Mėnesiniai arbatpinigiai",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Išjungta",
     "description": ""
   },
   "ok": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   },
   "braveRewardsCreatingText": {

@@ -1,178 +1,178 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Sustav nagrada u pregledniku Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Počnite zarađivati odmah!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Pridružite se sustavu nagrada",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Budite plaćeni za gledanje oglasa i zarađenim tokenima platite svoje omiljene autore sadržaja.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Sada možete zarađivati tokene za gledanje oglasa kojima se poštuje privatnost.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Pogledajte što se poboljšalo",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Saznajte više",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Obavili smo veliku nadogradnju sustava plaćanja u pregledniku Brave.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Pripremite se za doživljaj novog interneta.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Vaš novčanik",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Dodjele",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "uključeno",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Provjereni izdavač u pregledniku Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Pažnja",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Uključi u sustav automatskih doprinosa",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Pošalji napojnicu...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Omogući napojnice",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "za",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Sažetak o nagradama",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "travanj",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "kolovoz",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "prosinac",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "veljača",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "siječanj",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "srpanj",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "lipanj",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "ožujak",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "svibanj",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "studeni",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "listopad",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "rujan",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Dodjela tokena",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Zarada od oglasa",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Automatski doprinosi",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Jednokratne napojnice",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Ukupno",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "istječe",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Mjesečne napojnice",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "isključeno",
     "description": ""
   },
   "ok": {
-    "message": "ok",
+    "message": "u redu",
     "description": ""
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Oglasi u pregledniku Brave",
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Automatski doprinos",
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "Dali ste doprinos od $amount$BAT",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   },
   "braveRewardsCreatingText": {

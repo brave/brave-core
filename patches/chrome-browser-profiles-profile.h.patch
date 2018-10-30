@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile.h b/chrome/browser/profiles/profile.h
-index f4d62acad775a16f223a06c1fd19089ad28e3450..09ab9058fef5c98d894169f4ab82dfd80be13107 100644
+index e52b848f3a2186fe5129c7dc277f5b10cbde2710..e5fd0e9ef39a693eb95900f0df24cf5794436ae6 100644
 --- a/chrome/browser/profiles/profile.h
 +++ b/chrome/browser/profiles/profile.h
-@@ -267,6 +267,8 @@ class Profile : public content::BrowserContext {
+@@ -261,6 +261,8 @@ class Profile : public content::BrowserContext {
    // Returns whether it is a guest session.
    virtual bool IsGuestSession() const;
  

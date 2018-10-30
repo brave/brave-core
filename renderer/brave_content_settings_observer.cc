@@ -19,11 +19,9 @@
 
 BraveContentSettingsObserver::BraveContentSettingsObserver(
     content::RenderFrame* render_frame,
-    extensions::Dispatcher* extension_dispatcher,
     bool should_whitelist,
     service_manager::BinderRegistry* registry)
-    : ContentSettingsObserver(render_frame, extension_dispatcher,
-          should_whitelist, registry) {
+    : ContentSettingsObserver(render_frame, should_whitelist, registry) {
 }
 
 BraveContentSettingsObserver::~BraveContentSettingsObserver() {
@@ -46,14 +44,14 @@ void BraveContentSettingsObserver::OnAllowScriptsOnce(
 }
 
 void BraveContentSettingsObserver::DidCommitProvisionalLoad(
-    bool is_new_navigation, bool is_same_document_navigation) {
+    bool is_same_document_navigation, ui::PageTransition transition) {
   if (!is_same_document_navigation) {
     temporarily_allowed_scripts_ =
       std::move(preloaded_temporarily_allowed_scripts_);
   }
 
   ContentSettingsObserver::DidCommitProvisionalLoad(
-      is_new_navigation, is_same_document_navigation);
+      is_same_document_navigation, transition);
 }
 
 bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
@@ -133,7 +131,7 @@ GURL BraveContentSettingsObserver::GetOriginOrURL(const blink::WebFrame* frame) 
   // TODO(alexmos): This is broken for --site-per-process, since top() can be a
   // WebRemoteFrame which does not have a document(), and the WebRemoteFrame's
   // URL is not replicated.  See https://crbug.com/628759.
-  if (top_origin.unique() && frame->Top()->IsWebLocalFrame())
+  if (top_origin.opaque() && frame->Top()->IsWebLocalFrame())
     return frame->Top()->ToWebLocalFrame()->GetDocument().Url();
   return top_origin.GetURL();
 }

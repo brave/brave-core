@@ -479,13 +479,12 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3016641847947582299">Komponentas atnaujintas</translation>
 <translation id="252219247728877310">Komponentas neatnaujintas</translation>
 <translation id="2707024448553392710">Komponentas atsisiunčiamas</translation>
-<translation id="1295794900245526845">Pasirinkite paskyrą, išsaugotą naudojant „<ph name="PASSWORD_MANAGER_BRAND"/>“, kad prisijungtumėte</translation>
-<translation id="8399276228600040370">Prisijungti su paskyra, išsaugota „<ph name="PASSWORD_MANAGER_BRAND"/>“</translation>
+<translation id="1879000426787380528">Prisijungti kaip</translation>
 <translation id="3190558889382726167">Slaptažodis išsaugotas</translation>
 <translation id="5079950360618752063">Naudoti siūlomą slaptažodį</translation>
 <translation id="8084114998886531721">Išsaugotas slaptažodis</translation>
 <translation id="5614553682702429503">Išsaugoti slaptažodį?</translation>
-<translation id="1405476660552109915">Ar norite, kad „<ph name="PASSWORD_MANAGER_BRAND"/>“ išsaugotų šios svetainės paskyrą?</translation>
+<translation id="5584088138253955452">Išsaugoti naudotojo vardą?</translation>
 <translation id="8756969031206844760">Atnaujinti slaptažodį?</translation>
 <translation id="8230134520748321204">Išsaugoti <ph name="ORIGIN"/> slaptažodį?</translation>
 <translation id="9040661932550800571">Atnaujinti <ph name="ORIGIN"/> slaptažodį?</translation>
@@ -505,6 +504,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="224940702122312781">Šiame puslapyje bus sunaudojama daug duomenų.</translation>
 <translation id="3861241522664181545">Puslapis pristabdytas.</translation>
 <translation id="6921709132208495314">Nebenaudoti duomenų šiame puslapyje</translation>
+<translation id="1683850629661177840">Dabar supaprastintas režimas padeda sparčiau naršyti visuose puslapiuose, įskaitant HTTPS.</translation>
 <translation id="2724841811573117416">„WebRTC“ žurnalai</translation>
 <translation id="1969654639948595766">„WebRTC“ teksto žurnalai (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">„WebRTC“ įvykių žurnalai (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -905,7 +905,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4756388243121344051">&amp;Istorija</translation>
 <translation id="9026731007018893674">atsisiųsti</translation>
 <translation id="9218430445555521422">Nustatyti kaip numatytąją</translation>
-<translation id="281133045296806353">Esamos naršyklės sesijos metu sukurtas naujas langas.</translation>
+<translation id="504561833207953641">Atidaroma esamoje naršyklės sesijoje.</translation>
 <translation id="1524563461097350801">Ačiū, ne</translation>
 <translation id="4070594088530463824">Nuo <ph name="TIME"/> duomenys užšifruoti naudojant „Brave Software“ slaptažodį. Įveskite jį, kad pradėtumėte sinchronizuoti.</translation>
 <translation id="276969039800130567">Prisijungta kaip <ph name="USER_EMAIL_ADDRESS"/>.</translation>
@@ -974,7 +974,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5311304534597152726">Prisijungiama kaip</translation>
 <translation id="5425863515030416387">Paprastas prisijungimas keliuose įrenginiuose</translation>
 <translation id="9114663181201435112">Lengvai prisijunkite</translation>
-<translation id="9072550133391925347">„<ph name="PASSWORD_MANAGER_BRAND"/>“ automatiškai prijungia jus tinkamose svetainėse ir programose naudodama išsaugotus slaptažodžius.</translation>
 <translation id="764017888128728">„<ph name="PASSWORD_MANAGER_BRAND"/>“ automatiškai prijungs jus tinkamose svetainėse naudodama išsaugotus slaptažodžius.</translation>
 <translation id="5869029295770560994">Gerai, supratau</translation>
 <translation id="8105368624971345109">Išjungti</translation>
@@ -1117,7 +1116,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8922013791253848639">Visada leisti skelbimus šioje svetainėje</translation>
 <translation id="7359588939039777303">Skelbimai užblokuoti.</translation>
 <translation id="5398772614898833570">Skelbimai užblokuoti</translation>
-<translation id="6722303473865663493">„Brave“ užblokavo skelbimus šioje svetainėje, nes joje bandoma rodyti nepageidaujamus skelbimus.</translation>
+<translation id="2859806420264540918">Šioje svetainėje rodomi nepageidaujami arba klaidinantys skelbimai.</translation>
 <translation id="4077917118009885966">Skelbimai užblokuoti šioje svetainėje</translation>
 <translation id="3737536731758327622">Čia rodomi jūsų atsisiuntimai</translation>
 <translation id="4782664866169793230">„Brave“ valdoma naudojant automatinę bandomąją programinę įrangą.</translation>
@@ -1216,6 +1215,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7710568461918838723">&amp;Perduoti...</translation>
 <translation id="8970203673128054105">Peržiūrėti perdavimo režimo sąrašą</translation>
 <translation id="1277908057200820621">Žiūrėti įrenginių sąrašą</translation>
+<translation id="6685083257944113180">Stabdyti, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
 <translation id="2847759467426165163">Perduoti į</translation>
 <translation id="6700480081846086223">Perduoti <ph name="HOST_NAME"/></translation>
 <translation id="682123305478866682">Darbalaukio perdavimas</translation>
@@ -1231,6 +1231,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="9011163749350026987">Visada rodyti piktogramą</translation>
 <translation id="9115487443206954631">„Cast“ įrenginių tvarkymas</translation>
 <translation id="1706586824377653884">Pridėjo jūsų administratorius</translation>
+<translation id="6467304607960172345">Viso ekrano režimu rodomų vaizdo įrašų optimizavimas</translation>
 <translation id="1597210476603167523">Įgalinti perdavimą debesyje veikiančioms paslaugoms, pvz., „Brave Software Hangout“.</translation>
 <translation id="5234764350956374838">Atsisakyti</translation>
 <translation id="4579581181964204535">Nepavyko perduoti <ph name="HOST_NAME"/>.</translation>
@@ -1301,7 +1302,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2329597144923131178">Pris. ir pas. žymių, ist., slapt. bei kitų nust. duom. visuose įreng.</translation>
 <translation id="7029809446516969842">Slaptažodžiai</translation>
 <translation id="984275831282074731">Mokėjimo metodai</translation>
-<translation id="2903493209154104877">Adresai</translation>
+<translation id="8473863474539038330">Adresai ir dar daugiau</translation>
 <translation id="8883847527783433352">Sinchronizuoti su kita paskyra</translation>
 <translation id="2761898608071930085">Naudoti kitą paskyrą</translation>
 <translation id="4235813040357936597">Pridėti paskyrą, skirtą <ph name="PROFILE_NAME"/></translation>
@@ -1373,6 +1374,378 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2684004000387153598">Jei norite tęsti, spustelėkite „Gerai“, tada – „Pridėti asmenį“, kad sukurtumėte naują profilį naudodami savo el. pašto adresą.</translation>
 <translation id="7683373461016844951">Jei norite tęsti, spustelėkite „Gerai“, tada – „Pridėti asmenį“, kad sukurtumėte naują profilį naudodami savo <ph name="DOMAIN"/> el. pašto adresą.</translation>
 <translation id="8650543407998814195">Nors nebegalite pasiekti seno profilio, vis tiek galite jį pašalinti.</translation>
+<translation id="5788127256798019331">„Play“ failai</translation>
+<translation id="174173592514158117">Rodyti visus „Play“ aplankus</translation>
+<translation id="5024856940085636730">Operacija trunka ilgiau nei tikėtasi. Ar norite ją nutraukti?</translation>
+<translation id="6205710420833115353">Kai kurios operacijos trunka ilgiau nei tikėtasi. Ar norite jas nutraukti?</translation>
+<translation id="4669606053856530811">„<ph name="SOURCE_NAME"/>“ nariai praras prieigą, nebent šie elementai bus bendrinami su jais.</translation>
+<translation id="9035012421917565900">Elementų negalima perkelti atgal į „<ph name="DESTINATION_NAME"/>“, todėl negalėsite anuliuoti šio veiksmo.</translation>
+<translation id="9130775360844693113">„<ph name="DESTINATION_NAME"/>“ nariai galės pasiekti šiuos elementus.</translation>
+<translation id="8834164572807951958">„<ph name="DESTINATION_NAME"/>“ nariai galės pasiekti šių elementų kopiją.</translation>
+<translation id="3236289833370040187">Nuosavybės teisė bus perkelta <ph name="DESTINATION_DOMAIN"/>.</translation>
+<translation id="6896758677409633944">Kopijuoti</translation>
+<translation id="8249296373107784235">Nutraukti</translation>
+<translation id="6268185425799226387">„Brave Software“ diskas</translation>
+<translation id="4425149324548788773">Mano Diskas</translation>
+<translation id="1786636458339910689">Komandos Diskai</translation>
+<translation id="8106045200081704138">Bendrinama su manimi</translation>
+<translation id="981121421437150478">Neprisijungus</translation>
+<translation id="9034924485347205037">„Linux“ failai</translation>
+<translation id="3188257591659621405">Mano failai</translation>
+<translation id="6146563240635539929">Vaizdo įrašai</translation>
+<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Perspėjimas:<ph name="END_BOLD"/> šie failai yra laikini ir gali būti automatiškai ištrinti, kad būtų atlaisvinta vietos diske. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
+<translation id="7361039089383199231">$1 B</translation>
+<translation id="4871210892959306034">$1 KB</translation>
+<translation id="641105183165925463">$1 MB</translation>
+<translation id="7221155467930685510">$1 GB</translation>
+<translation id="5039512255859636053">$1 TB</translation>
+<translation id="6840313690797192085">$1 PB</translation>
+<translation id="169515659049020177">Antrojo lygio klavišas</translation>
+<translation id="3924145049010392604">Meta</translation>
+<translation id="6129953537138746214">Tarpas</translation>
+<translation id="174937106936716857">Bendras failų skaičius</translation>
+<translation id="2425665904502185219">Bendras failų dydis</translation>
+<translation id="1942765061641586207">Vaizdo skyra</translation>
+<translation id="4002066346123236978">Pavadinimas</translation>
+<translation id="4631887759990505102">Atlikėjas</translation>
+<translation id="5145331109270917438">Pakeitimo data</translation>
+<translation id="8487700953926739672">Pasiekiama neprisijungus</translation>
+<translation id="2230062665678605299">Nepavyko sukurti aplanko „<ph name="FOLDER_NAME"/>“. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="4630590996962964935">Netinkamas simbolis: $1</translation>
+<translation id="642282551015776456">Šio pavadinimo negalima naudoti kaip aplanko pavadinimo</translation>
+<translation id="2070909990982335904">Tašku prasidedantys pavadinimai rezervuoti sistemai. Pasirinkite kitą pavadinimą.</translation>
+<translation id="8456681095658380701">Netinkamas pavadinimas</translation>
+<translation id="2943503720238418293">Naudokite trumpesnį pavadinimą</translation>
+<translation id="4973523518332075481">Naudokite pavadinimą, sudarytą iš <ph name="MAX_LENGTH"/> ar mažiau simbolių</translation>
+<translation id="1307931752636661898">Nepavyko peržiūrėti „Linux“ failų</translation>
+<translation id="5851063901794976166">Čia nieko nėra...</translation>
+<translation id="939736085109172342">Naujas aplankas</translation>
+<translation id="7339898014177206373">Naujas langas</translation>
+<translation id="3749289110408117711">Failo pavadinimas</translation>
+<translation id="3280431534455935878">Ruošiama</translation>
+<translation id="6607272825297743757">Failo informacija</translation>
+<translation id="3429599832623003132">Elementų: $1</translation>
+<translation id="532360961509278431">Nepavyksta atidaryti „$1“: $2</translation>
+<translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Dar nepašalinkite savo įrenginio!<ph name="END_BOLD"/>
+   <ph name="LINE_BREAKS"/>
+   Pašalinę dar naudojamą įrenginį galite prarasti duomenų. Palaukite, kol pasibaigs operacija, ir pašalinkite įrenginį naudodami programą „Failai“.</translation>
+<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>Negalima atsijungti nuo archyvo ar virtualiojo disko<ph name="END_BOLD"/>
+   <ph name="LINE_BREAKS"/>
+   Uždarykite visus failus archyve ar virtualiajame diske, tada bandykite dar kartą.</translation>
+<translation id="7794058097940213561">Formatuoti įrenginį</translation>
+<translation id="7928710562641958568">Išstumti įrenginį</translation>
+<translation id="7864662577698025113">Pridėti naują paslaugą</translation>
+<translation id="1943097386230153518">Naujos paslaugos diegimas</translation>
+<translation id="4850886885716139402">Žiūrėti</translation>
+<translation id="2562685439590298522">Dokumentai</translation>
+<translation id="2925966894897775835">Skaičiuoklės</translation>
+<translation id="2943400156390503548">Skaidrės</translation>
+<translation id="5649768706273821470">Klausyti</translation>
+<translation id="4582497162516204941">Diegimas sistemoje „Linux“ (beta vers.)</translation>
+<translation id="4195249722193633765">Programos diegimas sistemoje „Linux“ (beta vers.)</translation>
+<translation id="5678784840044122290">„Linux“ programa pasiekiama jūsų terminale ir piktograma taip pat gali būti rodoma Paleidimo priemonėje.</translation>
+<translation id="9213073329713032541">Diegimas sėkmingai pradėtas.</translation>
+<translation id="2782104745158847185">Įdiegiant „Linux“ programą įvyko klaida</translation>
+<translation id="5911887972742538906">Diegiant „Linux“ programą įvyko klaida.</translation>
+<translation id="942954117721265519">Šiame kataloge nėra vaizdų.</translation>
+<translation id="7100897339030255923">Pasirinkta elementų: <ph name="COUNT"/></translation>
+<translation id="5177526793333269655">Miniatiūros rodinys</translation>
+<translation id="1035094536595558507">Skaidrės rodinys</translation>
+<translation id="7508545000531937079">Skaidrių demonstracija</translation>
+<translation id="1430915738399379752">Spausdinti</translation>
+<translation id="38275787300541712">Paspauskite „Enter“, kai bus atlikta</translation>
+<translation id="4880520557730313061">Automatinis pataisymas</translation>
+<translation id="4924638091161556692">Pataisyta</translation>
+<translation id="6019169947004469866">Apkarpyti</translation>
+<translation id="4372884569765913867">1 x 1</translation>
+<translation id="7576032389798113292">6 x 4</translation>
+<translation id="8157939133946352716">7 x 5</translation>
+<translation id="2661146741306740526">16 x 9</translation>
+<translation id="2121825465123208577">Keisti dydį</translation>
+<translation id="3007214526293698309">Pataisyti rodiklį</translation>
+<translation id="7982283708762922719">Aukštis</translation>
+<translation id="4734518477988699048">Įvesties vertė netinkama.</translation>
+<translation id="3644896802912593514">Plotis</translation>
+<translation id="3626281679859535460">Šviesumas</translation>
+<translation id="5061708541166515394">Kontrastas</translation>
+<translation id="1467432559032391204">Kairė</translation>
+<translation id="1346748346194534595">Dešinė</translation>
+<translation id="6556866813142980365">Grąžinti</translation>
+<translation id="3144126448740580210">ATLIKTA</translation>
+<translation id="2453576648990281505">Failas jau yra</translation>
+<translation id="5158593464696388225">Nepavyko išsaugoti vaizdo.</translation>
+<translation id="2787047795752739979">Perrašyti originalą</translation>
+<translation id="8775404590947523323">Keitimai saugomi automatiškai.<ph name="BREAKS"/>Jei norite išsaugoti originalaus vaizdo kopiją, panaikinkite parinkties „Perrašyti originalą“ žymėjimą</translation>
+<translation id="6653525630739667879">Nepavyko išsaugoti naudojant „$1“. Visi pakeitimai bus išsaugoti naudojant „$2“ aplanke „Atsisiuntimai“.</translation>
+<translation id="3184560914950696195">Nepavyko išsaugoti aplanke „$1“. Redaguoti vaizdai bus išsaugoti atsisiuntimų aplanke.</translation>
+<translation id="6983991971286645866">Visi redagavimo veiksmai bus išsaugoti kaip $1.</translation>
+<translation id="8153607920959057464">Nepavyko pateikti šio failo.</translation>
+<translation id="6227235786875481728">Nepavyko paleisti šio failo.</translation>
+<translation id="9154418932169119429">Šis vaizdas nepasiekiamas neprisijungus.</translation>
+<translation id="1844692022597038441">Šis failas nepasiekiamas neprisijungus.</translation>
+<translation id="2929414043040740704">Atkurti failai iš „Brave Software“ disko</translation>
+<translation id="2085470240340828803">Failas pavadinimu „<ph name="FILENAME"/>“ jau yra. Ką norite daryti?</translation>
+<translation id="4801956050125744859">Palikti abu</translation>
+<translation id="1062407476771304334">Pakeisti</translation>
+<translation id="1556189134700913550">Taikyti visiems</translation>
+<translation id="3206175707080061730">Failas pavadinimu „$1“ jau yra. Ar norite jį pakeisti?</translation>
+<translation id="8059178146866384858">Failas pavadinimu „$1“ jau yra. Pasirinkite kitą pavadinimą.</translation>
+<translation id="5653140146600257126">Aplankas pav. „$1“ jau yra. Pasirinkite kitą pavadinimą.</translation>
+<translation id="1497522201463361063">Nepavyko pervardyti „<ph name="FILE_NAME"/>“. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="5330512191124428349">Gauti informacijos</translation>
+<translation id="3943857333388298514">Įklijuoti</translation>
+<translation id="8312871300878166382">Įklijuoti į aplanką</translation>
+<translation id="7724603315864178912">Iškirpti</translation>
+<translation id="7040138676081995583">Atidaryti naudojant...</translation>
+<translation id="6189412234224385711">Atidaryti naudojant „<ph name="EXTENSION_NAME"/>“</translation>
+<translation id="2547921442987553570">Pridėti prie „<ph name="EXTENSION_NAME"/>“</translation>
+<translation id="386548886866354912">Supakuoti naudojant <ph name="EXTENSION_NAME"/></translation>
+<translation id="3078461028045006476">Bendrinti su „<ph name="EXTENSION_NAME"/>“</translation>
+<translation id="4197674956721858839">„Zip“ archyvo failų pasirinkimas</translation>
+<translation id="9215934040295798075">Nustatyti ekrano foną</translation>
+<translation id="204914487372604757">Kurti spartųjį klavišą</translation>
+<translation id="799547531016638432">Pašalinti spartųjį klavišą</translation>
+<translation id="5494920125229734069">Pasirinkti viską</translation>
+<translation id="7295662345261934369">Bendrinti su kitais žmonėmis</translation>
+<translation id="2001796770603320721">Tvarkyti Diske</translation>
+<translation id="5318819489018851358">Bendrinimas su „Linux“</translation>
+<translation id="7505167922889582512">Rodyti paslėptus failus</translation>
+<translation id="7846076177841592234">Atšaukti pasirinkimą</translation>
+<translation id="2377319039870049694">Perjungti į sąrašo rodinį</translation>
+<translation id="3003633581067744647">Perjungti į miniatiūrų rodinį</translation>
+<translation id="604001903249547235">Atsarginis kopijavimas debesyje</translation>
+<translation id="505639225383557233">„Brave OS“ atsarginis kopijavimas debesyje</translation>
+<translation id="8656896237683963068">Kurkite atsargines medijos įrenginio nuotraukų ir vaizdo įrašų kopijas „Brave Software“ diske.</translation>
+<translation id="3057861065630527966">Kurkite atsargines nuotraukų ir vaizdo įrašų kopijas</translation>
+<translation id="7730494089396812859">Rodyti išsamią atsarginių kopijų kūrimo debesyje informaciją</translation>
+<translation id="2850124913210091882">Kurti atsarginę kopiją</translation>
+<translation id="5731409020711461763">1 nauj. nuotr.</translation>
+<translation id="5004584466530475658"><ph name="FILE_COUNT"/> nauj. nuotr.</translation>
+<translation id="6934241953272494177">Nuskaitomas medijos įrenginys...
+    <ph name="LINE_BREAK1"/>
+    Rasta: <ph name="FILE_COUNT"/></translation>
+<translation id="3466147780910026086">Nuskaitomas medijos įrenginys...</translation>
+<translation id="2611866923243604397">Visų failų atsarginės kopijos sukurtos <ph name="BEGIN_LINK"/>„Brave Software“ diske!<ph name="END_LINK"/></translation>
+<translation id="3620292326130836921">Atsarginis kopijavimas baigtas!</translation>
+<translation id="1536674585581593431">Rasta: <ph name="FILE_COUNT"/>.
+    <ph name="LINE_BREAK1"/>
+    „Brave Software“ disko kvota nepakankamai didelė. Papildomai reikia <ph name="FILE_SIZE"/>.
+    <ph name="LINE_BREAK2"/>
+    Bandykite pasirinkti mažiau nuotraukų.</translation>
+<translation id="2473109739642988997">„Brave Software“ disko kvota nepakankamai didelė.</translation>
+<translation id="1148097584170732637">Rasta: <ph name="FILE_COUNT"/>.
+    <ph name="LINE_BREAK1"/>
+    Nepakanka vietos vietinėje saugykloje. Papildomai reikia <ph name="FILE_SIZE"/>.
+    <ph name="LINE_BREAK2"/>
+    Bandykite pasirinkti mažiau nuotraukų.</translation>
+<translation id="2352947182261340447">Nepakanka vietos vietinėje saugykloje.</translation>
+<translation id="1127657192797926968">Rasta: <ph name="FILE_COUNT"/>
+    <ph name="LINE_BREAK1"/>
+    Paruošta kurti atsarginę kopiją <ph name="BEGIN_LINK"/>„Brave Software“ diske<ph name="END_LINK"/></translation>
+<translation id="4905417359854579806">Paruošta kurti atsargines kopijas: <ph name="FILE_COUNT"/></translation>
+<translation id="5029447434471675822">Kuriama <ph name="FILE_COUNT"/> atsarginė kopija <ph name="BEGIN_LINK"/>„Brave Software“ diske<ph name="END_LINK"/></translation>
+<translation id="4215448920900139318">Kuriama atsarginė kopija: <ph name="FILE_COUNT"/></translation>
+<translation id="2419376816263920133">Sukurta atsarginių nuotraukų kopijų <ph name="BEGIN_LINK"/>„Brave Software“ diske<ph name="END_LINK"/>: <ph name="FILE_COUNT"/></translation>
+<translation id="2994669386200004489">Nepavyko sukurti <ph name="FILE_NAME"/> atsarginės kopijos</translation>
+<translation id="4724850507808590449">Sukurta atsarginių nuotraukų kopijų: <ph name="FILE_COUNT"/></translation>
+<translation id="1351692861129622852">Importuojami failai (<ph name="FILE_COUNT"/>)...</translation>
+<translation id="117624967391683467">Kopijuojamas failas „<ph name="FILE_NAME"/>“...</translation>
+<translation id="8453482423012550001">Kopijuojama elementų: $1...</translation>
+<translation id="7627790789328695202">Oi, „<ph name="FILE_NAME"/>“ jau yra. Pervardykite jį ir bandykite dar kartą.</translation>
+<translation id="5691596662111998220">Oi, „<ph name="FILE_NAME"/>“ nebėra.</translation>
+<translation id="4336032328163998280">Nepavyko įvykdyti kopijavimo operacijos. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="1503914375822320413">Nepavyko įvykdyti kopijavimo operacijos; nenumatyta klaida: $1</translation>
+<translation id="6133173853026656527">Perkeliamas failas „<ph name="FILE_NAME"/>“...</translation>
+<translation id="3039828483675273919">Perkeliama elementų: 1 dol...</translation>
+<translation id="6007237601604674381">Nepavyko perkelti. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="8954952943849489823">Nepavyko perkelti; nenumatyta klaida: $1</translation>
+<translation id="3326821416087822643">Glaudinamas failas „<ph name="FILE_NAME"/>“...</translation>
+<translation id="5694501201003948907">Archyvuojama elementų: 1 dol...</translation>
+<translation id="7464490149090366184">Archyvuojant įvyko klaida, elementas yra: „$1“.</translation>
+<translation id="9133055936679483811">Archyvuojant įvyko klaida. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="1711973684025117106">Archyvuojant įvyko netikėta klaida: $1</translation>
+<translation id="653019979737152879">Sinchronizuojamas failas „<ph name="FILE_NAME"/>“...</translation>
+<translation id="8579285237314169903">Sinchronizuojama elementų: <ph name="NUMBER_OF_FILES"/>…</translation>
+<translation id="8137331602592933310">Su jumis buvo bendrintas failas „<ph name="FILENAME"/>“. Negalite jo ištrinti, nes jis jums nepriklauso.</translation>
+<translation id="6277279884155292049">„Brave Software“ diskas dabar nepasiekiamas. Įkėlimas bus iš naujo pradėtas automatiškai, kai „Brave Software“ diskas bus vėl pasiekiamas.</translation>
+<translation id="1114160088213746286">„Brave Software“ diskui dabar nepavyko sinchronizuoti failo „<ph name="FILENAME"/>“. „Brave Software“ diskas vėliau bandys dar kartą.</translation>
+<translation id="4893296294301184587">Failas „<ph name="FILENAME"/>“ neįkeltas. „Brave Software“ diske nepakanka vietos.</translation>
+<translation id="5163869187418756376">Nepavyko bendrinti. Patikrinkite ryšį ir vėliau bandykite dar kartą.</translation>
+<translation id="656398493051028875">Ištrinamas failas „<ph name="FILENAME"/>“...</translation>
+<translation id="1047956942837015229">Ištrinama elementų: <ph name="COUNT"/>...</translation>
+<translation id="6558280019477628686">Įvyko klaida. Kai kurie elementai galėjo nebūti ištrinti.</translation>
+<translation id="3470502288861289375">Kopijuojama...</translation>
+<translation id="8669949407341943408">Perkeliama...</translation>
+<translation id="6718273304615422081">Glaudinama...</translation>
+<translation id="1338950911836659113">Ištrinama...</translation>
+<translation id="9064939804718829769">Perkeliama...</translation>
+<translation id="3609785682760573515">Sinchronizuojama...</translation>
+<translation id="1464724975715666883">1 klaida.</translation>
+<translation id="3495304270784461826">Klaidų: <ph name="COUNT"/>.</translation>
+<translation id="4284105660453474798">Ar iš tikrųjų norite ištrinti „$1“?</translation>
+<translation id="4580526846085481512">Ar tikrai norite ištrinti $1 elementus?</translation>
+<translation id="7953739707111622108">Įrenginio negalima atidaryti, nes nepavyko atpažinti jo failų išdėstymo sistemos.</translation>
+<translation id="3726463242007121105">Įrenginio negalima atidaryti, nes nepalaikoma jo failų išdėstymo sistema.</translation>
+<translation id="3414856743105198592">Formatuojant keičiamąją mediją visi duomenys bus ištrinti. Ar norite tęsti?</translation>
+<translation id="6287852322318138013">Pasirinkite programą, kad atidarytumėte šį failą</translation>
+<translation id="7268659760406822741">Prieinamos paslaugos</translation>
+<translation id="5038625366300922036">Žr. daugiau...</translation>
+<translation id="7014174261166285193">Nepavyko įdiegti.</translation>
+<translation id="4823651846660089135">Įrenginys yra tik skaitomas</translation>
+<translation id="6346310558342052870">Prieiga apribota</translation>
+<translation id="3780536599611287598">Neturite leidimo perkelti failų į aplanką „<ph name="FOLDER_NAME"/>“.</translation>
+<translation id="1538729222189715449">Atidaromi „Linux“ failai...</translation>
+<translation id="1000498691615767391">Pasirinkite norimą atidaryti aplanką</translation>
+<translation id="3353984535370177728">Pasirinkite norimą įkelti aplanką</translation>
+<translation id="8569764466147087991">Pasirinkite norimą atidaryti failą</translation>
+<translation id="9131598836763251128">Pasirinkite bent vieną failą</translation>
+<translation id="7191454237977785534">Išsaugoti failą kaip</translation>
+<translation id="3811494700605067549">Pasirinktas 1 failas</translation>
+<translation id="6751256176799620176">Pasirinktas 1 aplankas</translation>
+<translation id="2378075407703503998">Pasirinkta failų: <ph name="SELCTED_FILE_COUNT"/></translation>
+<translation id="6998711733709403587">Pasirinkta aplankų: <ph name="SELCTED_FOLDERS_COUNT"/></translation>
+<translation id="4839847978919684242">Pasirinkta elementų: <ph name="SELCTED_FILES_COUNT"/></translation>
+<translation id="4969785127455456148">Albumas</translation>
+<translation id="5700087501958648444">Garso failo informacija</translation>
+<translation id="912419004897138677">Kodekas</translation>
+<translation id="5253070652067921974">Sukūrė</translation>
+<translation id="3437801641691368414">Sukūrimo laikas</translation>
+<translation id="8395901698320285466">Aspektai</translation>
+<translation id="8193175696669055101">Įrenginio modelis</translation>
+<translation id="2084108471225856927">Įrenginio nustatymai</translation>
+<translation id="303198083543495566">Geografija</translation>
+<translation id="5358764674931277">Kadrų dažnis</translation>
+<translation id="4309915981827077375">Bendroji informacija</translation>
+<translation id="1249250836236328755">Žanras</translation>
+<translation id="7711920809702896782">Vaizdo informacija</translation>
+<translation id="4568854179928172494">Keitimo laikas</translation>
+<translation id="943972244133411984">Pakeitė</translation>
+<translation id="9099674669267916096">Puslapių skaičius</translation>
+<translation id="1363028406613469049">Takelis</translation>
+<translation id="1775381402323441512">Vaizdo įrašo informacija</translation>
+<translation id="3335337277364016868">Įrašymo metai</translation>
+<translation id="5534520101572674276">Apskaičiuojamas dydis</translation>
+<translation id="3786301125658655746">Esate neprisijungę</translation>
+<translation id="6150853954427645995">Jei norite išsaugoti šį failą ir naudoti jį be interneto ryšio, vėl prisijunkite prie interneto, spustelėkite failą dešiniuoju pelės klavišu ir pasirinkite parinktį „<ph name="OFFLINE_CHECKBOX_NAME"/>“.</translation>
+<translation id="8223479393428528563">Jei norite išsaugoti šiuos failus ir naudoti juos be interneto ryšio, vėl prisijunkite prie interneto, spustelėkite failus dešiniuoju pelės klavišu ir pasirinkite parinktį „<ph name="OFFLINE_CHECKBOX_NAME"/>“.</translation>
+<translation id="3830674330436234648">Atkūrimas nepasiekiamas</translation>
+<translation id="1810764548349082891">Peržiūra negalima</translation>
+<translation id="421017592316736757">Jei norite pasiekti šį failą, turite prisijungti.</translation>
+<translation id="180035236176489073">Jei norite pasiekti šios failus, turite prisijungti.</translation>
+<translation id="1190144681599273207">Šiam failui gauti reikės apytiksliai <ph name="FILE_SIZE"/> duomenų mobiliesiems.</translation>
+<translation id="7839804798877833423">Šiems failams gauti reikės apytiksliai <ph name="FILE_SIZE"/> duomenų mobiliesiems.</translation>
+<translation id="6813005947820333339">„Brave Software“ disko sinchronizavimas pagal numatytuosius nustatymus yra išjungtas, kai naudojami mobiliojo ryšio duomenys.</translation>
+<translation id="696203921837389374">Įgalinti mobiliųjų duomenų sinchronizavimą</translation>
+<translation id="637062427944097960">Šis failas atidarytas kitame darbalaukyje. Perkelkite failus <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>), kad peržiūrėtumėte juos.</translation>
+<translation id="5330145655348521461">Šie failai atidaryti kitame darbalaukyje. Perkelkite failus <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>), kad peržiūrėtumėte juos.</translation>
+<translation id="8686213429977032554">Šis Disko failas dar nebendrinamas</translation>
+<translation id="7850851215703745691">Šie Disko failai dar nebendrinami</translation>
+<translation id="1839704667838141620">Keisti, kaip šis failas bendrinamas</translation>
+<translation id="1864676585353837027">Keiskite, kaip bendrinami šie failai</translation>
+<translation id="197560921582345123">Galima redaguoti</translation>
+<translation id="8671210955687109937">Galima komentuoti</translation>
+<translation id="799923393800005025">Galima peržiūrėti</translation>
+<translation id="7925686952655276919">Sinchronizuojant nenaudoti duomenų mobiliesiems</translation>
+<translation id="4649168043999963079">Rodyti „Brave Software“ dokumentų failus</translation>
+<translation id="7106346894903675391">Įsigyti daugiau atminties...</translation>
+<translation id="3549797760399244642">Eiti į drive.google.com...</translation>
+<translation id="3451154303153932176">Liko vietos „Brave Software“ diske: <ph name="SPACE_AVAILABLE"/>.</translation>
+<translation id="4552678318981539154">Įsigyti daugiau atminties</translation>
+<translation id="6990081529015358884">Nebėra laisvos vietos</translation>
+<translation id="5521447721624713749">„Brave Software“ diskas šiuo metu nepasiekiamas.</translation>
+<translation id="7788080748068240085">Jei norite išsaugoti „<ph name="FILE_NAME"/>“ neprisijungę, turite atlaisvinti papildomai <ph name="TOTAL_FILE_SIZE"/> vietos:<ph name="MARKUP_1"/>
+    <ph name="MARKUP_2"/>atsekite failus, kurių nebenorite pasiekti neprisijungę<ph name="MARKUP_3"/>
+    <ph name="MARKUP_4"/>ištrinkite failus iš atsisiuntimų aplanko<ph name="MARKUP_5"/></translation>
+<translation id="7606199793785990727">Nepavyko pasiekti „Brave Software“ disko. <ph name="BEGIN_LINK"/>Atsijunkite<ph name="END_LINK"/> ir vėl prisijunkite.</translation>
+<translation id="585883343689351092">Sveiki, tai – „Brave Software“ diskas!</translation>
+<translation id="1788440444874291920">Gaukite 100 GB nemokamai naudodami „Brave Software“ diską</translation>
+<translation id="5722262830411045381">Gaukite 1 TB nemokamai naudodami „Brave Software“ diską</translation>
+<translation id="6862635236584086457">Visų šiame aplanke saugomų failų kopija automatiškai kuriama internete</translation>
+<translation id="7220787572447472056"><ph name="MARKUP_1"/>Pasiekite failus iš visur, net neprisijungę.<ph name="MARKUP_2"/>
+    „Brave Software“ diske saugomi failai yra atnaujinami ir pasiekiami iš bet kurio įrenginio.<ph name="MARKUP_3"/>
+    <ph name="MARKUP_4"/>Apsaugokite savo failus.<ph name="MARKUP_5"/>
+    Kad ir kas nutiktų jūsų įrenginiui, failai patikimai saugomi „Brave Software“ diske.<ph name="MARKUP_6"/>
+    <ph name="MARKUP_7"/>Bendrinkite, kurkite ir naudokite<ph name="MARKUP_8"/>
+    failus su kitais vienoje vietoje.<ph name="MARKUP_9"/></translation>
+<translation id="7489605380874780575">Tikrinti tinkamumą</translation>
+<translation id="4997096511442832556">Šio tipo failas nepalaikomas. Apsilankykite <ph name="BEGIN_LINK"/>„Brave“ internetinėje parduotuvėje<ph name="END_LINK"/> ir raskite programą, kuria galima atidaryti šio tipo failą.
+    <ph name="BEGIN_LINK_HELP"/>Sužinokite daugiau<ph name="END_LINK_HELP"/></translation>
+<translation id="5097366979999786201">Šis failas skirtas asmeniniam kompiuteriui, kuriame naudojama „Windows“ programinė įranga. Jis nesuderinamas su jūsų įrenginiu, kuriame veikia „Brave“ OS. Tinkamos pakaitinės programos ieškokite <ph name="BEGIN_LINK"/>„Brave“ internetinėje parduotuvėje<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Sužinokite daugiau<ph name="END_LINK_HELP"/></translation>
+<translation id="6041399778584119390">Šis failas skirtas kompiuteriui, kuriame naudojama „Macintosh“ programinė įranga. Jis nesuderinamas su jūsų įrenginiu, kuriame veikia „Brave“ OS. Tinkamos pakaitinės programos ieškokite <ph name="BEGIN_LINK"/>„Brave“ internetinėje parduotuvėje<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Sužinokite daugiau<ph name="END_LINK_HELP"/></translation>
+<translation id="7589661784326793847">Luktelėkite sekundėlę</translation>
+<translation id="3096967955765855393">Nuolat stengiamės padaryti naršymą saugesnį. Anksčiau bet kurioje svetainėje buvo leidžiama raginti jus pridėti plėtinį prie naršyklės. Naudodami naujausių versijų „Brave Software Brave“, privalote aiškiai nurodyti „Brave“, kad norite įdiegti šiuos plėtinius, pridėję juos „Plėtinių“ puslapyje. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
+<translation id="2004663115385769400">Nepavyko atidaryti naudojant „$1“</translation>
+<translation id="639777613761517128">Norėdami atidaryti failus naudodami „$1“, pirmiausia nukopijuokite juos į „Linux“ failų aplanką.</translation>
+<translation id="5112009661904384591">Bendrinti failus su „Linux“</translation>
+<translation id="3186202398303525187">Leisti „Linux“ programoms atidaryti $1.</translation>
+<translation id="1603300902586586390">Leisti „Linux“ programoms atidaryti $1 failus.</translation>
+<translation id="4572815280350369984"><ph name="FILE_TYPE"/> failas</translation>
+<translation id="895586998699996576">$1 vaizdas</translation>
+<translation id="2853916256216444076">$1 vaizdo įrašas</translation>
+<translation id="7006844981395428048">$1 garso įrašas</translation>
+<translation id="7799329977874311193">HTML dokumentas</translation>
+<translation id="2208158072373999562">Talpusis archyvas</translation>
+<translation id="2028997212275086731">RAR archyvas</translation>
+<translation id="8466234950814670489">TAR archyvas</translation>
+<translation id="1119069657431255176">„Bzip2“ suglaudintas TAR archyvas</translation>
+<translation id="6820687829547641339">„Gzip“ suglaudintas TAR archyvas</translation>
+<translation id="8329978297633540474">Grynasis tekstas</translation>
+<translation id="2887525882758501333">PDF dokumentas</translation>
+<translation id="1049926623896334335">Rašyklės dokumentas</translation>
+<translation id="4784330909746505604">„PowerPoint“ pristatymas</translation>
+<translation id="8860454412039442620">„Excel“ skaičiuoklė</translation>
+<translation id="5383943761832211733">„Brave Software“ dokumentas</translation>
+<translation id="5924916971643100883">„Brave Software“ skaičiuoklė</translation>
+<translation id="3667369474859528036">„Brave Software“ pristatymas</translation>
+<translation id="3411013849623404696">„Brave Software“ piešinys</translation>
+<translation id="7481041283483972362">„Brave Software“ lentelė</translation>
+<translation id="784862457750027723">„Brave Software“ forma</translation>
+<translation id="3320425620177764157">„Brave Software“ žemėlapis</translation>
+<translation id="7452737073539387970">„Brave Software“ svetainė</translation>
+<translation id="4445959220475380548">„Brave Software“ disko nuoroda</translation>
+<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
+<translation id="2599249317139964094">Šio tipo failas nepalaikomas. Apsilankykite „Brave“ internetinėje parduotuvėje ir suraskite programą, kurią naudojant galima atidaryti šio tipo failą.</translation>
+<translation id="3495282670559481871">Šis failas skirtas kompiuteriui, kuriame naudojama „Macintosh“ programinė įranga. Jis nesuderinamas su jūsų įrenginiu, kuriame veikia „Brave“ OS. Ieškokite tinkamos pakaitinės programos „Brave“ internetinėje parduotuvėje.</translation>
+<translation id="3213197099265624265">Šis failas skirtas kompiuteriui, kuriame naudojama „Windows“ programinė įranga. Jis nesuderinamas su jūsų įrenginiu, kuriame veikia „Brave“ OS. Ieškokite tinkamos pakaitinės programos „Brave“ internetinėje parduotuvėje.</translation>
+<translation id="5833610766403489739">Šis failas kažkur perkeltas. Patikrinkite atsisiuntimo vietos nustatymą ir bandykite dar kartą.</translation>
+<translation id="3966388904776714213">Garso įrašų grotuvas</translation>
+<translation id="3245321423178950146">Nežinomas atlikėjas</translation>
+<translation id="509429900233858213">Įvyko klaida.</translation>
+<translation id="1864756863218646478">Nepavyko rasti failo.</translation>
+<translation id="1673103856845176271">Failo nepavyko pasiekti dėl saugumo.</translation>
+<translation id="5524517123096967210">Nepavyko nuskaityti failo.</translation>
+<translation id="1665611772925418501">Nepavyko pakeisti failo.</translation>
+<translation id="1358735829858566124">Failas arba katalogas nenaudojamas.</translation>
+<translation id="8342318071240498787">Failas ar katalogas tokiu pačiu pavadinimu jau yra.</translation>
+<translation id="8965697826696209160">Nepakanka vietos.</translation>
+<translation id="7126604456862387217">&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt; – &lt;em&gt;ieškoti Diske&lt;/em&gt;</translation>
+<translation id="2888807692577297075">Joks failas neatitinka &lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;</translation>
+<translation id="2843806747483486897">Keisti numatytąjį...</translation>
+<translation id="3254434849914415189">Keisti numatytąją <ph name="FILE_TYPE"/> failų programą:</translation>
+<translation id="8038111231936746805">(numatyt.)</translation>
+<translation id="5982621672636444458">Rūšiuoti parinktis</translation>
+<translation id="2984337792991268709">Šiandien <ph name="TODAY_DAYTIME"/></translation>
+<translation id="8336153091935557858">Vakar <ph name="YESTERDAY_DAYTIME"/></translation>
+<translation id="1807938677607439181">Visi failai</translation>
+<translation id="240770291734945588">Pasiekiama: <ph name="SPACE_AVAILABLE"/></translation>
+<translation id="6199801702437275229">Laukiama vietos informacijos...</translation>
+<translation id="6485131920355264772">Nepavyko nuskaityti vietos informacijos</translation>
+<translation id="7748626145866214022">Daugiau parinkčių pasiekiama veiksmų juostoje. Paspauskite „Alt“ + A, kad suaktyvintumėte veiksmų juostą.</translation>
+<translation id="6710213216561001401">Ankstesnis</translation>
+<translation id="1201402288615127009">Toliau</translation>
+<translation id="1395262318152388157">Paieškos šliaužiklis</translation>
+<translation id="4880214202172289027">Garsumo šliaužiklis</translation>
+<translation id="7544853251252956727">Maišyti</translation>
+<translation id="8079530767338315840">Kartoti</translation>
+<translation id="4158739975813877944">Atidaryti grojaraštį</translation>
+<translation id="4656293982926141856">Šis kompiuteris</translation>
+<translation id="2676946222714718093">Leidžiama</translation>
+<translation id="3930521966936686665">Leisti naudojant įrenginį</translation>
+<translation id="4732760563705710320">Apgailestaujame, perdavimo įrenginys šio vaizdo įrašo nepalaiko.</translation>
+<translation id="2672394958563893062">Įvyko klaida. Spustelėkite, kad paleistumėte iš naujo nuo pradžios.</translation>
+<translation id="6827236167376090743">Šis vaizdo įrašas bus grojamas neribotą laiką.</translation>
+<translation id="6248400709929739064">Įgalinti subtitrus</translation>
+<translation id="7881969471599061635">Išjungti subtitrus</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Kai kurie <ph name="PRIMARY_EMAIL"/> priklausantys nustatymai bendrinami su jumis. Šie nustatymai turi įtakos jūsų paskyrai, tik kai naudojate kelias paskyras.</translation>
 <translation id="5860491529813859533">Įjungti</translation>
@@ -1453,7 +1826,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="1800308196794859773">Balsas siunčiamas į sistemą „Brave Software“, kad bet kuriame teksto lauke būtų galima diktuoti tekstą.</translation>
 <translation id="8758418656925882523">Įgalinti diktavimą (sakomo teksto įvedimas)</translation>
 <translation id="7580671184200851182">Paleisti tą patį garso įrašą visuose garsiakalbiuose (monofoninio garso įrašas)</translation>
-<translation id="8186639008852027301">Paleidžiant įjungti garso indikatorių</translation>
+<translation id="1361872463926621533">Leisti garsą paleidžiant</translation>
 <translation id="1189418886587279221">Įgalinkite pasiekiamumo funkcijas, kad galėtumėte lengviau naudoti įrenginį.</translation>
 <translation id="48704129375571883">Pridėti papildomų funkcijų</translation>
 <translation id="7230787553283372882">Tinkinkite teksto dydį</translation>
@@ -1626,17 +1999,12 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6122875415561139701">Rašymo operacija neleidžiama įrenginyje „<ph name="DEVICE_NAME"/>“.</translation>
 <translation id="439266289085815679">„Bluetooth“ konfigūravimą valdo <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Laikotarpis</translation>
-<translation id="3958004920128806270">Norėdami išvalyti naršymo duomenis tik iš šio įrenginio ir palikti juos „Brave Software“ paskyroje, <ph name="BEGIN_LINK"/>atsijunkite<ph name="END_LINK"/>.</translation>
-<translation id="4445433576366924090">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>apsilankykite sinchronizavimo nustatymuose<ph name="END_LINK"/>.</translation>
-<translation id="563489167344291753">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>įveskite slaptafrazę<ph name="END_LINK"/>.</translation>
-<translation id="3895809404273995788">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>prisijunkite<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Naršymo istorija</translation>
 <translation id="8662811608048051533">Būsite atjungti nuo daugelio svetainių.</translation>
 <translation id="4650925988509114690">Būsite atjungti nuo daugelio svetainių. Liksite prisijungę prie „Brave Software“ paskyros, todėl sinchronizuoti duomenys gali būti išvalyti.</translation>
 <translation id="2017836877785168846">Išvaloma istorija ir automatiniai užbaigimai adreso juostoje.</translation>
 <translation id="8096327394278038498">Išvaloma istorija ir automatiniai užbaigimai adreso juostoje. „Brave Software“ paskyroje gali būti kito tipo naršymo istorijos, kuri pasiekiama adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Išvaloma visų įrenginių, prie kurių prisijungta, istorija. „Brave Software“ paskyroje gali būti kito tipo naršymo istorijos, kuri pasiekiama adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
-<translation id="6148716538476291841">Išvaloma istorija iš šio įrenginio.</translation>
 <translation id="7127980134843952133">Atsisiuntimų istorija</translation>
 <translation id="4699172675775169585">Talpykloje esantys vaizdai ir failai</translation>
 <translation id="1274997165432133392">Slapukai ir kiti svetainių duomenys</translation>
@@ -1705,6 +2073,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="2367199180085172140">Nustatyti failo bendrinimą</translation>
 <translation id="247051149076336810">Failo bendrinimo URL</translation>
 <translation id="5247051749037287028">Rodomas pavadinimas (neprivaloma)</translation>
+<translation id="3544879808695557954">Naudotojo vardas (nebūtinas)</translation>
+<translation id="6949434160682548041">Slaptažodis (nebūtinas)</translation>
 <translation id="6091761513005122595">Bendrinamas objektas įdėtas sėkmingai.</translation>
 <translation id="9024158959543687197">Klaida įdedant bendrinamą objektą. Patikrinkite failo bendrinamo objekto URL ir bandykite dar kartą.</translation>
 <translation id="1954813140452229842">Klaida įdedant bendrinamą objektą. Patikrinkite prisijungimo duomenis ir bandykite dar kartą.</translation>
@@ -1712,6 +2082,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7234406375359457793">Klaida įdedant bendrinamą objektą. Nurodytas bendrinamas objektas nepalaikomas.</translation>
 <translation id="706626672220389329">Klaida įdedant bendrinamą objektą. Nurodytas bendrinamas objektas jau įdėtas.</translation>
 <translation id="5985458664595100876">Netinkamas URL formatas. Palaikomi formatai yra „\\server\share“ ir „smb://server/share“.</translation>
+<translation id="9147304170847707004">Autentifikavimo metodas</translation>
+<translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Data ir laikas</translation>
 <translation id="2059913712424898428">Laiko juosta</translation>
 <translation id="4547672827276975204">Nustatyti automatiškai</translation>
@@ -2033,12 +2405,13 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6678717876183468697">Užklausos URL</translation>
 <translation id="1545786162090505744">URL su %s užklausos viet.</translation>
 <translation id="7136694880210472378">Padaryti numatytuoju</translation>
-<translation id="102272308210570439">Leisti Padėjėjui naudoti, kas rodoma ekrane</translation>
-<translation id="8624205858755890468">Padėjėjui leidžiama rodyti susijusią informaciją, programas ir veiksmus.</translation>
-<translation id="4737453247496280552">„Ok Brave Software“ aptikimas</translation>
-<translation id="6409553560184414680">Pasiekite Padėjėją bet kuriuo metu pasakę „Ok Brave Software“, kai ekranas įjungtas.</translation>
-<translation id="8669919703154928649">Leidimas Padėjėjui rodyti pranešimus</translation>
-<translation id="3430342160185525240">Padėjėjui leidžiama rodyti pranešimus.</translation>
+<translation id="6953878494808481632">Susijusi informacija</translation>
+<translation id="7258619945375359543">Leisti Padėjėjui teikti pasiūlymų pagal tai, kas rodoma ekrane</translation>
+<translation id="472896694312062378">„Ok Brave Software“</translation>
+<translation id="6236033368436682108">Pasiekite Padėjėją bet kuriuo metu pasakę „Ok Brave Software“, kai ekranas įjungtas.</translation>
+<translation id="5355099869024327351">Padėjėjui leidžiama rodyti pranešimus</translation>
+<translation id="1127216846847548354">Balso aktyvinimas</translation>
+<translation id="3506093155988721483">Paleidus Padėjėją vietoje klaviatūros naudoti kalbą</translation>
 <translation id="3908743412684152579">„Brave Software“ padėjėjo nustatymai</translation>
 <translation id="4933484234309072027">įdėtas į <ph name="URL"/></translation>
 <translation id="8427292751741042100">įterpta bet kurioje priegloboje</translation>
@@ -2108,8 +2481,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4994474651455208930">Leisti svetainėms pateikti pranešimus, kuriuose prašoma leisti tapti numatytosiomis protokolų apdorojimo programomis</translation>
 <translation id="1886996562706621347">Leisti svetainėms prašyti tapti numatytosiomis protokolų doroklėmis (rekomenduojama)</translation>
 <translation id="26224892172169984">Neleisti jokiai svetainei apdoroti protokolų</translation>
-<translation id="2948320633360386059">Užblokuota svetainėse, kuriose bandoma rodyti nepageidaujamus skelbimus</translation>
-<translation id="6583851739559471707">Užblokuota svetainėse, kuriose bandoma rodyti nepageidaujamus skelbimus (rekomenduojama)</translation>
+<translation id="4469477701382819144">Blokuojama svetainėse, kuriose rodomi nepageidaujami arba klaidinantys skelbimai</translation>
+<translation id="4451757071857432900">Blokuojama svetainėse, kuriose rodomi nepageidaujami arba klaidinantys skelbimai (rekomenduojama)</translation>
 <translation id="5390100381392048184">Leisti svetainėms leisti garsą</translation>
 <translation id="1660204651932907780">Leisti svetainėms leisti garsą (rekomenduojama)</translation>
 <translation id="3600792891314830896">Nutildyti svetaines, kurios leidžia garsą</translation>
@@ -2133,7 +2506,8 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5063480226653192405">Naudojimas</translation>
 <translation id="3006881078666935414">Nėra naudojimo duomenų</translation>
 <translation id="1300806585489372370">Jei norite pakeisti šį nustatymą, pirmiausia <ph name="BEGIN_LINK"/>įjunkite identifikatorius<ph name="END_LINK"/></translation>
-<translation id="184823282865851239">Blokuoti, jei svetainėje bandoma rodyti nepageidaujamus skelbimus</translation>
+<translation id="5932224571077948991">Svetainėje rodomi nepageidaujami arba klaidinantys skelbimai</translation>
+<translation id="6038929619733116134">Blokuoti, jei svetainėje rodomi nepageidaujami arba klaidinantys skelbimai</translation>
 <translation id="3083193146044397360">Laikinai užblokuota, siekiant užtikrinti jūsų saugumą</translation>
 <translation id="2500471369733289700">Užblokuota, siekiant apsaugoti jūsų privatumą</translation>
 <translation id="3008272652534848354">Iš naujo nustatyti leidimus</translation>
@@ -2203,6 +2577,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4068776064906523561">Išsaugoti kontroliniai kodai</translation>
 <translation id="4562155214028662640">Pridėti kontrolinį kodą</translation>
 <translation id="1719312230114180055">Pastaba: kontrolinis kodas gali būti ne toks saugus kaip sudėtingas slaptažodis ar PIN kodas.</translation>
+<translation id="6029292188939175871">ištrinti [<ph name="FINGERPRINT_NAME"/>], mygtukas</translation>
 <translation id="1927632033341042996"><ph name="NEW_FINGER_NUMBER"/> kontrolinis kodas</translation>
 <translation id="7665369617277396874">Pridėti paskyrą</translation>
 <translation id="3422989461909154470">Visas „Brave Software“ paskyras, prie kurių prisijungta iš programų ir svetainių, galite tvarkyti čia.</translation>
@@ -2211,6 +2586,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3297951628821704004">Pašalinti paskyrą iš šio įrenginio</translation>
 <translation id="1059855432287631118">Registruojamas kontrolinis kodas</translation>
 <translation id="878068003854005405">Pradėkime. Padėkite pirštą ant jutiklio.</translation>
+<translation id="176193854664720708">Piršto antspaudo jutiklis yra maitinimo mygtuko viduje. Lengvai jį palieskite bet kuriuo pirštu.</translation>
 <translation id="7189965711416741966">Kontrolinis kodas pridėtas.</translation>
 <translation id="9220820413868316583">Pakelkite ir bandykite dar kartą.</translation>
 <translation id="4534661889221639075">Bandykite dar kartą.</translation>
@@ -2265,7 +2641,6 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8135094938656535588">Sinchronizuotų duomenų tvarkymas „Brave Software“ informacijos suvestinėje</translation>
 <translation id="6596325263575161958">Šifravimo parinktys</translation>
 <translation id="2459230470861708651">Šifruokite sinchronizuotus slaptažodžius naudodami savo „Brave Software“ naudotojo vardą ir slaptažodį</translation>
-<translation id="6383051423892982287">Šifruokite sinchronizuojamus duomenis taikydami savo <ph name="BEGIN_LINK"/>sinchronizavimo slaptafrazę<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Tik jūsų slaptafrazę žinantis asmuo gali skaityti šifruotus duomenis. Slaptafrazė nesiunčiama į sistemą „Brave Software“ ir joje nesaugoma. Pamiršę slaptafrazę arba norėdami pakeisti šį nustatymą turėsite <ph name="BEGIN_LINK"/>iš naujo nustatyti sinchronizavimą<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>nustatykite sinchronizavimą iš naujo<ph name="END_LINK"/>, kad pašalintumėte sinchronizavimo slaptafrazę</translation>
 <translation id="3873315167136380065">Norėdami tai įjungti <ph name="BEGIN_LINK"/>nustatykite sinchronizavimą iš naujo<ph name="END_LINK"/>, kad pašalintumėte sinchronizavimo slaptafrazę</translation>
@@ -2424,25 +2799,26 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="727441411541283857"><ph name="PERCENTAGE"/> % – <ph name="TIME"/> iki visiško įkrovimo</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/> %</translation>
 <translation id="1940546824932169984">Prijungti įrenginiai</translation>
-<translation id="5235565664420173924">Better Together</translation>
-<translation id="5375767622559981303">„Bravebook“ veikia dar geriau susiejus su telefonu. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
-<translation id="6148052338549899048">Nėra tinkamų įrenginių. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
-<translation id="3465800511193611451">Laukiama patvirtinimo. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
-<translation id="2315821125498993513">Nepavyko prisijungti prie telefono. <ph name="LINK_BEGIN"/>Sužinokite daugiau.<ph name="LINK_END"/></translation>
-<translation id="5598551463564921617">„Better Together“ įjungta</translation>
-<translation id="3088402208262982892">„Better Together“ išjungta</translation>
+<translation id="3468999815377931311">„Android“ telefonas</translation>
+<translation id="2789927670850159391">Susiekite „Bravebook“ įrenginį su telefonu. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
+<translation id="1397500194120344683">Nėra tinkamų įrenginių. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
+<translation id="5739235828260127894">Laukiama patvirtinimo. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
 <translation id="7179187931092694802">Atrakinkite „Bravebook“ įrenginį telefonu. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Momentinis įrenginio kaip modemo naudojimas</translation>
+<translation id="6415900369006735853">Prisijunkite prie interneto per telefoną</translation>
 <translation id="4746351372139058112">Pranešimai</translation>
 <translation id="2248072377758660530">Siųskite ir gaukite teksto pranešimus naudodami „Bravebook“ įrenginį. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
-<translation id="3936335337858561470">Pamiršti šį įrenginį</translation>
-<translation id="3606712892509067288">Pašalinti iš „Better Together“</translation>
-<translation id="5078490485380754244">Pamiršti įrenginį</translation>
-<translation id="8072033737676488034">Pašalinkite telefoną ir išjunkite „Better Together“</translation>
+<translation id="5153234146675181447">Pamiršti telefoną</translation>
+<translation id="2307631131458143837">Telefonas atjungiamas nuo „Bravebook“</translation>
+<translation id="1146102139091738471">Atjunkite telefoną nuo „Bravebook“. Įrenginiai nebebus susiejami automatiškai.</translation>
 <translation id="7878562273885520351">Jūsų slaptažodis gali būti pažeistas</translation>
 <translation id="6582421931165117398">Kad apsaugotumėte savo asmens informaciją, pakeiskite slaptažodį dabar. Kad galėtumėte pakeisti slaptažodį, būsite paprašyti prisijungti.</translation>
 <translation id="1089439967362294234">Slaptažodžio keitimas</translation>
 <translation id="4635398712689569051">„<ph name="PAGE_NAME"/>“ nepasiekiamas svečiams.</translation>
+<translation id="4893522937062257019">Užrakinimo ekrane</translation>
+<translation id="2992931425024192067">Rodyti visą pranešimo turinį</translation>
+<translation id="8592141010104017453">Visiškai nerodyti pranešimų</translation>
+<translation id="7642778300616172920">Slėpti neskelbtiną turinį</translation>
 <translation id="3341703758641437857">Leisti pasiekti failo URL</translation>
 <translation id="9003647077635673607">Leisti visose svetainėse</translation>
 <translation id="1744108098763830590">foninis puslapis</translation>
@@ -2530,8 +2906,15 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="720110658997053098">Įgalinti nuolatinį šio įrenginio veikimą viešojo terminalo režimu</translation>
 <translation id="1909880997794698664">Ar tikrai norite šį įrenginį visam laikui nustatyti veikti viešojo terminalo režimu?</translation>
 <translation id="1512210426710821809">Vienintelis būdas tai anuliuoti yra iš naujo įdiegti „<ph name="IDS_SHORT_PRODUCT_OS_NAME"/>“</translation>
+<translation id="4472575034687746823">Pradėkite</translation>
+<translation id="6060991652695587932">Pasirinkite el. pašto paslaugą, kad užtikrintumėte sparčia prieigą</translation>
+<translation id="296137235951584143">Suasmeninkite „Brave“</translation>
+<translation id="7835178595033117206">Žymė pašalinta</translation>
+<translation id="2785008241190445880">Žymė pakeista</translation>
+<translation id="2950533317914339731">Pridėkite žymių prie mėgstamiausių „Brave Software“ programų</translation>
+<translation id="8846319957959474018">Lengvai atidarykite programas naudodamiesi žymėmis</translation>
 <translation id="5939847200023027600">PDF rengyklės paslauga</translation>
-<translation id="3396331542604645348">Pasirinktas spausdintuvas nepasiekiamas arba netinkamai įdiegtas. Patikrinkite spausdintuvą arba pabandykite pasirinkti kitą spausdintuvą.</translation>
+<translation id="5877584842898320529">Pasirinktas spausdintuvas nepasiekiamas arba netinkamai įdiegtas. <ph name="BR"/> Patikrinkite spausdintuvą arba pabandykite pasirinkti kitą spausdintuvą.</translation>
 <translation id="1526560967942511387">Dokumentas be pavadinimo</translation>
 <translation id="5269977353971873915">Spausdinant įvyko klaida</translation>
 <translation id="7385854874724088939">Bandant spausdinti atsirado triktis. Patikrinkite spausdintuvą ir bandykite dar kartą.</translation>

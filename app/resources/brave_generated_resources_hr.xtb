@@ -1,4 +1,56 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hr">
+<translation id="3333887201479867589">Sustav nagrada u pregledniku Brave</translation>
+<translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
+<translation id="7450557937477381864">Zatvori Chrome</translation>
+<translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
+<translation id="7753103220327065417">Zatvorite Brave</translation>
+<translation id="5588481533147090393">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Brave.</translation>
+<translation id="6447842834002726250">Kolačići</translation>
+<translation id="4983925687993168579">Statistički podaci</translation>
+<translation id="9173846700806833701">Widevine nije instaliran</translation>
+<translation id="2433569048491784801">Widevine nije instaliran.</translation>
+<translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
+<translation id="8410111618231938546">Widevine tvrtke Google dio je koda za upravljanje digitalnim pravima (DRM) koji tvrtka Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja tvrtke Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
+
+Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtke Google. Potvrđujete da Brave ne odgovora ni za kakvu štetu ni gubitke povezane s vašom uporabom Googleova rješenja Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Uvezeno iz preglednika Brave</translation>
+<translation id="453977518730680921">Automatski reproduciraj medije</translation>
+<translation id="410351446219883937">Automatska reprodukcija</translation>
+<translation id="2240268017737062801">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije</translation>
+<translation id="3371702087847741961">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije (preporučeno)</translation>
+<translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
+<translation id="4150684676757176434">Nastavi blokirati automatsku reprodukciju</translation>
+<translation id="2044383478723007273">Boje preglednika Brave</translation>
+<translation id="5341901626640816374">Upotrijebi široku traku mjesta</translation>
+<translation id="7965178729203412357">Novi identitet za Tor</translation>
+<translation id="8784924142044142231">Izađi iz funkcije Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Otvori prozor funkcije Tor</translation>
+<translation id="6313675821927505581">Novi privatni prozor s funkcijom Tor</translation>
+<translation id="2638041073279639246">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
+<translation id="3425600262621021599">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
+<translation id="3155170474926428993">Pokretač funkcije Tor</translation>
+<translation id="7372129767729198111">Zadane postavke štitova u pregledniku Brave</translation>
+<translation id="8029018702721078742">Upravljanje oglasima</translation>
+<translation id="3544462288910360084">Upravljanje kolačićima</translation>
+<translation id="8919235146866304148">Zaštita od izrade digitalnog otiska</translation>
+<translation id="520895744850022668">HTTPS svugdje</translation>
+<translation id="5259716416204774556">Blokiranje skripti</translation>
+<translation id="6067014455220527258">Blokiraj oglase</translation>
+<translation id="6985711843506827936">Dopusti oglase i praćenje</translation>
+<translation id="6132506775968708399">Blokiraj kolačiće trećih strana</translation>
+<translation id="5657156137487675418">Dopusti sve kolačiće</translation>
+<translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
+<translation id="1442559343076146186">Blokiraj izrade digitalnog otiska koje izvode treće strane</translation>
+<translation id="8034285923190068220">Dopusti izradu digitalnog otiska</translation>
+<translation id="4540198958192073185">Blokiraj sve izrade digitalnog otiska</translation>
+<translation id="8942080017911802454">Pravila obrade IP-a sučelja WebRTC</translation>
+<translation id="6165508094623778733">Saznajte više</translation>
+<translation id="8798099450830957504">Zadano</translation>
+<translation id="1822560017823072927">Zadana javna i privatna sučelja</translation>
+<translation id="5825943197137337319">Samo zadano javno sučelje</translation>
+<translation id="1689062823386843231">Onemogući UDP bez korištenja proxyja</translation>
 </translationbundle>

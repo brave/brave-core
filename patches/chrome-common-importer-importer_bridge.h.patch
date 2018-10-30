@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/importer_bridge.h b/chrome/common/importer/importer_bridge.h
-index 56d4259aba433df997802109cf5a8d28c03ebd13..26bb05d70c9674cab27112704b8957972ff2dab5 100644
+index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..5b1abbe639d2fd1f1f552d229cd32bc16efa2394 100644
 --- a/chrome/common/importer/importer_bridge.h
 +++ b/chrome/common/importer/importer_bridge.h
 @@ -15,10 +15,12 @@
@@ -15,7 +15,7 @@ index 56d4259aba433df997802109cf5a8d28c03ebd13..26bb05d70c9674cab27112704b895797
  
  namespace autofill {
  struct PasswordForm;
-@@ -66,6 +68,12 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
+@@ -58,6 +60,12 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
    virtual void SetAutofillFormData(
        const std::vector<ImporterAutofillFormDataEntry>& entries) = 0;
  

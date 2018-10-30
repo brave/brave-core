@@ -1,6 +1,7 @@
 import("//build/config/features.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("ui") {
   sources = [
@@ -26,10 +27,6 @@ source_set("ui") {
     "content_settings/brave_content_setting_bubble_model.h",
     "content_settings/brave_content_setting_image_models.cc",
     "content_settings/brave_content_setting_image_models.h",
-    "content_settings/brave_widevine_blocked_image_model.cc",
-    "content_settings/brave_widevine_blocked_image_model.h",
-    "content_settings/brave_widevine_content_setting_bubble_model.cc",
-    "content_settings/brave_widevine_content_setting_bubble_model.h",
     "omnibox/brave_omnibox_client.cc",
     "omnibox/brave_omnibox_client.h",
     "toolbar/brave_app_menu_model.cc",
@@ -54,8 +51,6 @@ source_set("ui") {
     "views/profiles/brave_profile_chooser_view.h",
     "views/tabs/brave_new_tab_button.cc",
     "views/tabs/brave_new_tab_button.h",
-    "views/tabs/brave_tab.cc",
-    "views/tabs/brave_tab.h",
     "views/toolbar/bookmark_button.cc",
     "views/toolbar/bookmark_button.h",
     "views/toolbar/brave_toolbar_view.cc",
@@ -84,6 +79,15 @@ source_set("ui") {
     "webui/settings/default_brave_shields_handler.h",
   ]
 
+  if (enable_widevine_cdm_component) {
+    sources += [
+      "content_settings/brave_widevine_blocked_image_model.cc",
+      "content_settings/brave_widevine_blocked_image_model.h",
+      "content_settings/brave_widevine_content_setting_bubble_model.cc",
+      "content_settings/brave_widevine_content_setting_bubble_model.h",
+    ]
+  }
+
   if (is_mac || is_win || is_chromeos) {
     sources += [
       "views/frame/brave_browser_frame.cc",
@@ -97,12 +101,6 @@ source_set("ui") {
       "views/brave_browser_main_extra_parts_views_linux.h",
       "views/brave_views_delegate_linux.cc",
       "views/brave_views_delegate_linux.h",
-    ]
-  }
-
-  if (is_mac && !mac_views_browser) {
-    sources += [
-      "cocoa/importer/brave_import_lock_dialog_cocoa.mm",
     ]
   }
 

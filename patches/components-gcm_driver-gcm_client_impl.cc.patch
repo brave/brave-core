@@ -1,8 +1,8 @@
 diff --git a/components/gcm_driver/gcm_client_impl.cc b/components/gcm_driver/gcm_client_impl.cc
-index 168bef640e0806624623f98b01c7a2b801cec168..60ed5a554221f62ac0ddbdab392834c5922622a8 100644
+index 7e12cd5fdad159e1a21fa7ef7324b8dba0dc7b9b..df490a2ad476fee3e19421dba2db93e5a46a5aa5 100644
 --- a/components/gcm_driver/gcm_client_impl.cc
 +++ b/components/gcm_driver/gcm_client_impl.cc
-@@ -355,6 +355,7 @@ void GCMClientImpl::Initialize(
+@@ -357,6 +357,7 @@ void GCMClientImpl::Initialize(
  }
  
  void GCMClientImpl::Start(StartMode start_mode) {
@@ -10,7 +10,7 @@ index 168bef640e0806624623f98b01c7a2b801cec168..60ed5a554221f62ac0ddbdab392834c5
    DCHECK_NE(UNINITIALIZED, state_);
  
    if (state_ == LOADED) {
-@@ -865,6 +866,7 @@ void GCMClientImpl::ResetCache() {
+@@ -864,6 +865,7 @@ void GCMClientImpl::ResetCache() {
  
  void GCMClientImpl::Register(
      const linked_ptr<RegistrationInfo>& registration_info) {

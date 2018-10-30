@@ -12,16 +12,15 @@
 // download item view (shown in the download shelf).
 class BraveDownloadItemView : public DownloadItemView {
  public:
-  BraveDownloadItemView(download::DownloadItem* download,
-                        DownloadShelfView* parent,
-                        views::View* accessible_alert);
+  BraveDownloadItemView(DownloadUIModel::DownloadUIModelPtr download,
+      DownloadShelfView* parent, views::View* accessible_alert);
   ~BraveDownloadItemView() override;
 
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
 
   // download::DownloadItem::Observer:
-  void OnDownloadUpdated(download::DownloadItem* download) override;
+  void OnDownloadUpdated() override;
 
  protected:
   // views::View:

@@ -56,7 +56,7 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
       return browser()->tab_strip_model()->GetActiveWebContents();
     }
 
-    scoped_refptr<extensions::Extension> extension() {
+    scoped_refptr<const extensions::Extension> extension() {
       return extension_;
     }
 
@@ -102,7 +102,7 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
 
   private:
     HostContentSettingsMap* content_settings_;
-    scoped_refptr<extensions::Extension> extension_;
+    scoped_refptr<const extensions::Extension> extension_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {

@@ -478,13 +478,12 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3016641847947582299">Składnik został zaktualizowany</translation>
 <translation id="252219247728877310">Składnik nie został zaktualizowany</translation>
 <translation id="2707024448553392710">Pobieram składnik</translation>
-<translation id="1295794900245526845">Wybierz konto zapisane w <ph name="PASSWORD_MANAGER_BRAND"/>, by się zalogować</translation>
-<translation id="8399276228600040370">Zaloguj się na konto zapisane w <ph name="PASSWORD_MANAGER_BRAND"/></translation>
+<translation id="1879000426787380528">Zaloguj jako</translation>
 <translation id="3190558889382726167">Hasło zostało zapisane</translation>
 <translation id="5079950360618752063">Użyj sugerowanego hasła</translation>
 <translation id="8084114998886531721">Zapisane hasło</translation>
 <translation id="5614553682702429503">Zapisać hasło?</translation>
-<translation id="1405476660552109915">Czy <ph name="PASSWORD_MANAGER_BRAND"/> ma zapisać konto dla tej strony?</translation>
+<translation id="5584088138253955452">Zapisać nazwę użytkownika?</translation>
 <translation id="8756969031206844760">Zaktualizować hasło?</translation>
 <translation id="8230134520748321204">Zapisać hasło do: <ph name="ORIGIN"/>?</translation>
 <translation id="9040661932550800571">Zaktualizować hasło do: <ph name="ORIGIN"/>?</translation>
@@ -504,6 +503,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="224940702122312781">Ta strona będzie przesyłać bardzo dużo danych.</translation>
 <translation id="3861241522664181545">Strona została wstrzymana.</translation>
 <translation id="6921709132208495314">Zatrzymaj przesyłanie danych na tej stronie</translation>
+<translation id="1683850629661177840">Wersja uproszczona przyspiesza teraz wszystkie strony, również te używające HTTPS.</translation>
 <translation id="2724841811573117416">Dzienniki WebRTC</translation>
 <translation id="1969654639948595766">Dzienniki tekstowe WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">Dzienniki zdarzeń WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -904,7 +904,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4756388243121344051">&amp;Historia</translation>
 <translation id="9026731007018893674">pobrane</translation>
 <translation id="9218430445555521422">Ustaw jako domyślną</translation>
-<translation id="281133045296806353">Utworzono nowe okno w istniejącej sesji przeglądarki.</translation>
+<translation id="504561833207953641">Otwieram w istniejącej sesji przeglądarki.</translation>
 <translation id="1524563461097350801">Nie, dziękuję</translation>
 <translation id="4070594088530463824">Twoje dane zostały zaszyfrowane z użyciem hasła Brave Software w dniu <ph name="TIME"/>. Wpisz je, by rozpocząć synchronizację.</translation>
 <translation id="276969039800130567">Zalogowano jako <ph name="USER_EMAIL_ADDRESS"/>.</translation>
@@ -973,7 +973,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5311304534597152726">Logowanie się jako</translation>
 <translation id="5425863515030416387">Łatwo loguj się na różnych urządzeniach</translation>
 <translation id="9114663181201435112">Łatwe logowanie</translation>
-<translation id="9072550133391925347"><ph name="PASSWORD_MANAGER_BRAND"/> automatycznie loguje Cię w odpowiednich witrynach i aplikacjach przy użyciu zapisanych wcześniej haseł.</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> automatycznie loguje Cię w odpowiednich witrynach przy użyciu zapisanych wcześniej haseł.</translation>
 <translation id="5869029295770560994">Rozumiem</translation>
 <translation id="8105368624971345109">Wyłącz</translation>
@@ -1116,7 +1115,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8922013791253848639">Zawsze zezwalaj na wyświetlanie reklam na tej stronie</translation>
 <translation id="7359588939039777303">Reklamy zostały zablokowane.</translation>
 <translation id="5398772614898833570">Reklamy zostały zablokowane</translation>
-<translation id="6722303473865663493">Brave blokuje reklamy, które wyświetla ta strona, ponieważ są one uciążliwe.</translation>
+<translation id="2859806420264540918">Na tej stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy.</translation>
 <translation id="4077917118009885966">Reklamy zostały zablokowane na tej stronie</translation>
 <translation id="3737536731758327622">Tutaj wyświetlają się pobrane pliki</translation>
 <translation id="4782664866169793230">Przeglądarką Brave steruje zautomatyzowane oprogramowanie testowe.</translation>
@@ -1215,6 +1214,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7710568461918838723">&amp;Przesyłaj…</translation>
 <translation id="8970203673128054105">Pokaż listę trybów przesyłania</translation>
 <translation id="1277908057200820621">Pokaż listę urządzeń</translation>
+<translation id="6685083257944113180">Zatrzymaj, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
 <translation id="2847759467426165163">Przesyłaj na</translation>
 <translation id="6700480081846086223">Prześlij <ph name="HOST_NAME"/></translation>
 <translation id="682123305478866682">Przesyłaj pulpit</translation>
@@ -1230,6 +1230,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="9011163749350026987">Zawsze pokazuj ikonę</translation>
 <translation id="9115487443206954631">Zarządzaj urządzeniami przesyłającymi</translation>
 <translation id="1706586824377653884">Dodane przez administratora</translation>
+<translation id="6467304607960172345">Zoptymalizuj filmy na pełnym ekranie</translation>
 <translation id="1597210476603167523">Włącz przesyłanie do usług w chmurze takich jak Brave Software Hangouts.</translation>
 <translation id="5234764350956374838">Zamknij</translation>
 <translation id="4579581181964204535">Nie udało się przesłać <ph name="HOST_NAME"/>.</translation>
@@ -1301,7 +1302,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="2329597144923131178">Zaloguj się, by korzystać z zakładek, historii, haseł i innych ustawień na wszystkich swoich urządzeniach.</translation>
 <translation id="7029809446516969842">Hasła</translation>
 <translation id="984275831282074731">Formy płatności</translation>
-<translation id="2903493209154104877">Adresy</translation>
+<translation id="8473863474539038330">Adresy i ustawienia</translation>
 <translation id="8883847527783433352">Synchronizuj z innym kontem</translation>
 <translation id="2761898608071930085">Użyj innego konta</translation>
 <translation id="4235813040357936597">Dodaj konto dla <ph name="PROFILE_NAME"/></translation>
@@ -1373,6 +1374,378 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="2684004000387153598">Aby kontynuować, kliknij OK, a potem kliknij Dodaj osobę, by utworzyć nowy profil dla swojego adresu e-mail.</translation>
 <translation id="7683373461016844951">Aby kontynuować, kliknij OK, a potem kliknij Dodaj osobę, by utworzyć nowy profil dla swojego adresu e-mail w domenie <ph name="DOMAIN"/>.</translation>
 <translation id="8650543407998814195">Chociaż nie możesz już używać swojego starego profilu, możesz go usunąć.</translation>
+<translation id="5788127256798019331">Pliki Play</translation>
+<translation id="174173592514158117">Pokaż wszystkie foldery Play</translation>
+<translation id="5024856940085636730">Operacja trwa dłużej niż powinna. Chcesz ją przerwać?</translation>
+<translation id="6205710420833115353">Niektóre operacje trwają dłużej niż powinny. Chcesz je przerwać?</translation>
+<translation id="4669606053856530811">Osoby z uprawnieniami do: „<ph name="SOURCE_NAME"/>” utracą dostęp do tych elementów, chyba że zostaną one im udostępnione.</translation>
+<translation id="9035012421917565900">Nie można przenieść elementów z powrotem do: „<ph name="DESTINATION_NAME"/>”, więc tej czynności nie da się cofnąć.</translation>
+<translation id="9130775360844693113">Osoby z uprawnieniami do: „<ph name="DESTINATION_NAME"/>” uzyskają dostęp do tych elementów.</translation>
+<translation id="8834164572807951958">Osoby z uprawnieniami do: „<ph name="DESTINATION_NAME"/>” uzyskają dostęp do kopii tych elementów.</translation>
+<translation id="3236289833370040187">Własność zostanie przeniesiona do domeny <ph name="DESTINATION_DOMAIN"/>.</translation>
+<translation id="6896758677409633944">Kopiuj</translation>
+<translation id="8249296373107784235">Przerwij</translation>
+<translation id="6268185425799226387">Dysk Brave Software</translation>
+<translation id="4425149324548788773">Mój dysk</translation>
+<translation id="1786636458339910689">Dyski zespołu</translation>
+<translation id="8106045200081704138">Udostępnione dla mnie</translation>
+<translation id="981121421437150478">Offline</translation>
+<translation id="9034924485347205037">Pliki Linuksa</translation>
+<translation id="3188257591659621405">Moje pliki</translation>
+<translation id="6146563240635539929">Filmy</translation>
+<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Przestroga:<ph name="END_BOLD"/> te pliki mają charakter tymczasowy i mogą zostać automatycznie usunięte w celu zwolnienia miejsca na dysku. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
+<translation id="7361039089383199231">$1 bajty(ów)</translation>
+<translation id="4871210892959306034">$1 KB</translation>
+<translation id="641105183165925463">$1 MB</translation>
+<translation id="7221155467930685510">$1 GB</translation>
+<translation id="5039512255859636053">$1 TB</translation>
+<translation id="6840313690797192085">$1 PB</translation>
+<translation id="169515659049020177">Shift</translation>
+<translation id="3924145049010392604">Meta</translation>
+<translation id="6129953537138746214">Spacja</translation>
+<translation id="174937106936716857">Łączna liczba plików</translation>
+<translation id="2425665904502185219">Łączny rozmiar plików</translation>
+<translation id="1942765061641586207">Rozdzielczość grafiki</translation>
+<translation id="4002066346123236978">Tytuł</translation>
+<translation id="4631887759990505102">Wykonawca</translation>
+<translation id="5145331109270917438">Data modyfikacji</translation>
+<translation id="8487700953926739672">Dostępny offline</translation>
+<translation id="2230062665678605299">Nie można utworzyć folderu „<ph name="FOLDER_NAME"/>”. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="4630590996962964935">Nieprawidłowy znak: $1</translation>
+<translation id="642282551015776456">Tej nazwy nie można używać jako nazwy pliku ani katalogu.</translation>
+<translation id="2070909990982335904">Nazwy zaczynające się od kropki są zarezerwowane dla systemu. Wybierz inną nazwę.</translation>
+<translation id="8456681095658380701">Nieprawidłowa nazwa</translation>
+<translation id="2943503720238418293">Użyj krótszej nazwy</translation>
+<translation id="4973523518332075481">Użyj nazwy, której długość nie przekracza <ph name="MAX_LENGTH"/> znaków</translation>
+<translation id="1307931752636661898">Nie można wyświetlić plików Linuksa</translation>
+<translation id="5851063901794976166">Niczego tu nie ma...</translation>
+<translation id="939736085109172342">Nowy folder</translation>
+<translation id="7339898014177206373">Nowe okno</translation>
+<translation id="3749289110408117711">Nazwa pliku</translation>
+<translation id="3280431534455935878">Przygotowywanie</translation>
+<translation id="6607272825297743757">Informacje o pliku</translation>
+<translation id="3429599832623003132">Elementy: $1</translation>
+<translation id="532360961509278431">Nie można otworzyć „$1”: $2</translation>
+<translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Jeszcze nie odłączaj urządzenia.<ph name="END_BOLD"/>
+       <ph name="LINE_BREAKS"/>
+       Jeśli to zrobisz w trakcie pracy, możesz spowodować utratę danych. Poczekaj na zakończenie operacji, a następnie odłącz urządzenie, używając aplikacji Pliki.</translation>
+<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>Nie można odłączyć archiwum lub dysku wirtualnego<ph name="END_BOLD"/>
+   <ph name="LINE_BREAKS"/>
+   Zamknij wszystkie pliki z archiwum lub dysku wirtualnego i spróbuj ponownie.</translation>
+<translation id="7794058097940213561">Formatuj urządzenie</translation>
+<translation id="7928710562641958568">Odłącz urządzenie</translation>
+<translation id="7864662577698025113">Dodaj nową usługę</translation>
+<translation id="1943097386230153518">Zainstaluj nową usługę</translation>
+<translation id="4850886885716139402">Widok</translation>
+<translation id="2562685439590298522">Dokumenty</translation>
+<translation id="2925966894897775835">Arkusze</translation>
+<translation id="2943400156390503548">Prezentacje</translation>
+<translation id="5649768706273821470">Posłuchaj</translation>
+<translation id="4582497162516204941">Zainstaluj za pomocą Linuksa (Beta)</translation>
+<translation id="4195249722193633765">Zainstaluj aplikację za pomocą Linuksa (Beta)</translation>
+<translation id="5678784840044122290">Aplikacja na Linuksa będzie dostępna na terminalu. Może mieć też ikonę w Menu z aplikacjami.</translation>
+<translation id="9213073329713032541">Instalacja rozpoczęła się.</translation>
+<translation id="2782104745158847185">Błąd podczas instalowania aplikacji na Linuksa</translation>
+<translation id="5911887972742538906">Podczas instalowania aplikacji na Linuksa wystąpił błąd.</translation>
+<translation id="942954117721265519">Brak zdjęć w tym katalogu.</translation>
+<translation id="7100897339030255923">Wybrane elementy: <ph name="COUNT"/></translation>
+<translation id="5177526793333269655">Widok miniatur</translation>
+<translation id="1035094536595558507">Widok slajdów</translation>
+<translation id="7508545000531937079">Pokaz slajdów</translation>
+<translation id="1430915738399379752">Drukuj</translation>
+<translation id="38275787300541712">Naciśnij Enter po zakończeniu.</translation>
+<translation id="4880520557730313061">Autokorekta</translation>
+<translation id="4924638091161556692">Poprawione</translation>
+<translation id="6019169947004469866">Przytnij</translation>
+<translation id="4372884569765913867">1 x 1</translation>
+<translation id="7576032389798113292">6 x 4</translation>
+<translation id="8157939133946352716">7 x 5</translation>
+<translation id="2661146741306740526">16 x 9</translation>
+<translation id="2121825465123208577">Zmień rozmiar</translation>
+<translation id="3007214526293698309">Stałe proporcje</translation>
+<translation id="7982283708762922719">Wysokość</translation>
+<translation id="4734518477988699048">Wpisana wartość jest nieprawidłowa.</translation>
+<translation id="3644896802912593514">Szerokość</translation>
+<translation id="3626281679859535460">Jasność</translation>
+<translation id="5061708541166515394">Kontrast</translation>
+<translation id="1467432559032391204">W lewo</translation>
+<translation id="1346748346194534595">W prawo</translation>
+<translation id="6556866813142980365">Ponów</translation>
+<translation id="3144126448740580210">GOTOWE</translation>
+<translation id="2453576648990281505">Plik już istnieje.</translation>
+<translation id="5158593464696388225">Nie udało się zapisać obrazu.</translation>
+<translation id="2787047795752739979">Zastąp oryginalny</translation>
+<translation id="8775404590947523323">Twoje zmiany są zapisywane automatycznie.<ph name="BREAKS"/>Aby zachować kopię oryginalnego obrazu, odznacz „Zastąp oryginalny”.</translation>
+<translation id="6653525630739667879">Nie można zapisać w katalogu $1. Wszystkie zmiany będą zapisywane w $2 w folderze Pobrane.</translation>
+<translation id="3184560914950696195">Nie można zapisać w katalogu $1. Edytowane obrazy będą zapisywane w folderze Pobrane.</translation>
+<translation id="6983991971286645866">Wszystkie zmiany zostaną zapisane w pliku $1.</translation>
+<translation id="8153607920959057464">Nie można wyświetlić tego pliku.</translation>
+<translation id="6227235786875481728">Nie można odtworzyć tego pliku.</translation>
+<translation id="9154418932169119429">Ten obraz nie jest dostępny offline.</translation>
+<translation id="1844692022597038441">Ten plik nie jest dostępny offline.</translation>
+<translation id="2929414043040740704">Pliki odzyskane z Dysku Brave Software</translation>
+<translation id="2085470240340828803">Plik o nazwie „<ph name="FILENAME"/>” już istnieje. Co chcesz zrobić?</translation>
+<translation id="4801956050125744859">Zachowaj obie pozycje</translation>
+<translation id="1062407476771304334">Zastąp</translation>
+<translation id="1556189134700913550">Zastosuj do wszystkich</translation>
+<translation id="3206175707080061730">Plik o nazwie „$1” już istnieje. Czy chcesz go zastąpić?</translation>
+<translation id="8059178146866384858">Plik o nazwie „$1” już istnieje. Wybierz inną nazwę.</translation>
+<translation id="5653140146600257126">Folder „$1” już istnieje. Wybierz inną nazwę.</translation>
+<translation id="1497522201463361063">Nie można zmienić nazwy pliku „<ph name="FILE_NAME"/>”. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="5330512191124428349">Więcej informacji</translation>
+<translation id="3943857333388298514">Wklej</translation>
+<translation id="8312871300878166382">Wklej do folderu</translation>
+<translation id="7724603315864178912">Wytnij</translation>
+<translation id="7040138676081995583">Otwórz za pomocą...</translation>
+<translation id="6189412234224385711">Otwórz w rozszerzeniu <ph name="EXTENSION_NAME"/></translation>
+<translation id="2547921442987553570">Dodaj do rozszerzenia <ph name="EXTENSION_NAME"/></translation>
+<translation id="386548886866354912">Spakuj, używając rozszerzenia <ph name="EXTENSION_NAME"/></translation>
+<translation id="3078461028045006476">Udostępnij w rozszerzeniu <ph name="EXTENSION_NAME"/></translation>
+<translation id="4197674956721858839">Spakuj wybrane do pliku ZIP</translation>
+<translation id="9215934040295798075">Ustaw tapetę</translation>
+<translation id="204914487372604757">Utwórz skrót</translation>
+<translation id="799547531016638432">Usuń skrót</translation>
+<translation id="5494920125229734069">Wybierz wszystko</translation>
+<translation id="7295662345261934369">Udostępnij innym</translation>
+<translation id="2001796770603320721">Zarządzaj na Dysku</translation>
+<translation id="5318819489018851358">Udostępnij Linuksowi</translation>
+<translation id="7505167922889582512">Pokaż ukryte pliki</translation>
+<translation id="7846076177841592234">Anuluj wybór</translation>
+<translation id="2377319039870049694">Przełącz na widok listy</translation>
+<translation id="3003633581067744647">Przełącz na widok miniatur</translation>
+<translation id="604001903249547235">Kopia zapasowa w chmurze</translation>
+<translation id="505639225383557233">Kopia zapasowa Brave OS w chmurze</translation>
+<translation id="8656896237683963068">Tworzy na Dysku Brave Software kopie zapasowe zdjęć i filmów z nośnika danych.</translation>
+<translation id="3057861065630527966">Utwórz kopię zapasową zdjęć i filmów</translation>
+<translation id="7730494089396812859">Pokaż szczegóły kopii zapasowej w chmurze</translation>
+<translation id="2850124913210091882">Utwórz kopię zapasową</translation>
+<translation id="5731409020711461763">jedno nowe zdjęcie</translation>
+<translation id="5004584466530475658">nowe zdjęcia: <ph name="FILE_COUNT"/></translation>
+<translation id="6934241953272494177">Skanuję urządzenie multimedialne…
+    <ph name="LINE_BREAK1"/>
+    Znaleziono <ph name="FILE_COUNT"/></translation>
+<translation id="3466147780910026086">Skanuję nośnik danych...</translation>
+<translation id="2611866923243604397">Kopie zapasowe wszystkich materiałów zostały utworzone na <ph name="BEGIN_LINK"/>Dysku Brave Software<ph name="END_LINK"/>.</translation>
+<translation id="3620292326130836921">Wszystko ma już kopię zapasową.</translation>
+<translation id="1536674585581593431">Znaleziono <ph name="FILE_COUNT"/>.
+    <ph name="LINE_BREAK1"/>
+    Twój limit na Dysku Brave Software nie jest wystarczająco duży. Potrzeba jeszcze <ph name="FILE_SIZE"/>.
+    <ph name="LINE_BREAK2"/>
+    Spróbuj wybrać mniej zdjęć.</translation>
+<translation id="2473109739642988997">Twój limit na Dysku Brave Software nie jest wystarczająco duży.</translation>
+<translation id="1148097584170732637">Znaleziono <ph name="FILE_COUNT"/>.
+    <ph name="LINE_BREAK1"/>
+    W pamięci lokalnej jest za mało miejsca. Potrzeba jeszcze <ph name="FILE_SIZE"/>.
+    <ph name="LINE_BREAK2"/>
+    Wybierz mniej zdjęć.</translation>
+<translation id="2352947182261340447">W pamięci lokalnej jest za mało miejsca.</translation>
+<translation id="1127657192797926968">Znaleziono <ph name="FILE_COUNT"/>
+    <ph name="LINE_BREAK1"/>
+    Wszystko gotowe do utworzenia kopii zapasowej na <ph name="BEGIN_LINK"/>Dysku Brave Software<ph name="END_LINK"/></translation>
+<translation id="4905417359854579806">Wszystko gotowe do utworzenia kopii zapasowych: <ph name="FILE_COUNT"/></translation>
+<translation id="5029447434471675822">Tworzą kopię zapasową (<ph name="FILE_COUNT"/>) na <ph name="BEGIN_LINK"/>Dysku Brave Software<ph name="END_LINK"/></translation>
+<translation id="4215448920900139318">Tworzę kopie zapasowe – <ph name="FILE_COUNT"/></translation>
+<translation id="2419376816263920133">Kopie zapasowe <ph name="FILE_COUNT"/> zdjęć zostały utworzone na <ph name="BEGIN_LINK"/>Dysku Brave Software<ph name="END_LINK"/></translation>
+<translation id="2994669386200004489">Nie udało się utworzyć kopii zapasowej pliku <ph name="FILE_NAME"/></translation>
+<translation id="4724850507808590449">Kopie zapasowe <ph name="FILE_COUNT"/> zdjęć zostały utworzone</translation>
+<translation id="1351692861129622852">Importuję <ph name="FILE_COUNT"/> pliki(ów)...</translation>
+<translation id="117624967391683467">Kopiuję <ph name="FILE_NAME"/>...</translation>
+<translation id="8453482423012550001">Kopiuję $1 elementy(ów)...</translation>
+<translation id="7627790789328695202">Ups, plik <ph name="FILE_NAME"/> już istnieje. Zmień jego nazwę i spróbuj ponownie.</translation>
+<translation id="5691596662111998220">Ups, pliku <ph name="FILE_NAME"/> już nie ma.</translation>
+<translation id="4336032328163998280">Kopiowanie nie powiodło się: <ph name="ERROR_MESSAGE"/></translation>
+<translation id="1503914375822320413">Kopiowanie nie powiodło się, nieoczekiwany błąd: $1</translation>
+<translation id="6133173853026656527">Przenoszę <ph name="FILE_NAME"/>...</translation>
+<translation id="3039828483675273919">Przenoszę $1 elementy(ów)...</translation>
+<translation id="6007237601604674381">Przenoszenie nie powiodło się. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="8954952943849489823">Przenoszenie nie powiodło się, nieoczekiwany błąd: $1</translation>
+<translation id="3326821416087822643">Pakuję <ph name="FILE_NAME"/>...</translation>
+<translation id="5694501201003948907">Pakuję $1 elementy(ów)...</translation>
+<translation id="7464490149090366184">Pakowanie nie powiodło się, element istnieje: „$1”</translation>
+<translation id="9133055936679483811">Pakowanie nie powiodło się. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="1711973684025117106">Pakowanie nie powiodło się, nieoczekiwany błąd: $1</translation>
+<translation id="653019979737152879">Synchronizuję <ph name="FILE_NAME"/>...</translation>
+<translation id="8579285237314169903">Synchronizuję elementy – <ph name="NUMBER_OF_FILES"/>...</translation>
+<translation id="8137331602592933310">Plik „<ph name="FILENAME"/>” został Ci udostępniony. Nie możesz go usunąć, ponieważ nie jesteś jego właścicielem.</translation>
+<translation id="6277279884155292049">Dysk Brave Software nie jest teraz dostępny. Gdy znów będzie można z niego korzystać, przesyłanie zostanie automatycznie wznowione.</translation>
+<translation id="1114160088213746286">Dysk Brave Software nie mógł zsynchronizować pliku „<ph name="FILENAME"/>”. Spróbujemy ponownie później.</translation>
+<translation id="4893296294301184587">Plik „<ph name="FILENAME"/>” nie został przesłany. Za mało wolnego miejsca na Dysku Brave Software.</translation>
+<translation id="5163869187418756376">Niepowodzenie udostępniania. Sprawdź połączenie i spróbuj ponownie później.</translation>
+<translation id="656398493051028875">Usuwam „<ph name="FILENAME"/>”...</translation>
+<translation id="1047956942837015229">Usuwam <ph name="COUNT"/> elementy(ów)...</translation>
+<translation id="6558280019477628686">Wystąpił błąd. Niektóre elementy mogły nie zostać usunięte.</translation>
+<translation id="3470502288861289375">Kopiuję...</translation>
+<translation id="8669949407341943408">Przenoszę...</translation>
+<translation id="6718273304615422081">Pakuję...</translation>
+<translation id="1338950911836659113">Usuwam...</translation>
+<translation id="9064939804718829769">Przetwarzam...</translation>
+<translation id="3609785682760573515">Synchronizuję...</translation>
+<translation id="1464724975715666883">1 błąd.</translation>
+<translation id="3495304270784461826">Błędy: <ph name="COUNT"/>.</translation>
+<translation id="4284105660453474798">Czy na pewno chcesz usunąć plik „$1”?</translation>
+<translation id="4580526846085481512">Czy na pewno chcesz usunąć następującą liczbę elementów: $1?</translation>
+<translation id="7953739707111622108">Nie można otworzyć urządzenia, ponieważ jego system plików nie został rozpoznany.</translation>
+<translation id="3726463242007121105">Nie można otworzyć urządzenia, ponieważ jego system plików nie jest obsługiwany.</translation>
+<translation id="3414856743105198592">Formatowanie nośnika wymiennego spowoduje usunięcie wszystkich danych. Czy chcesz kontynuować?</translation>
+<translation id="6287852322318138013">Wybierz aplikację, by otworzyć ten plik</translation>
+<translation id="7268659760406822741">Dostępne usługi</translation>
+<translation id="5038625366300922036">Zobacz więcej...</translation>
+<translation id="7014174261166285193">Instalacja nie powiodła się.</translation>
+<translation id="4823651846660089135">Urządzenie tylko do odczytu</translation>
+<translation id="6346310558342052870">Ograniczony dostęp</translation>
+<translation id="3780536599611287598">Nie masz uprawnień, by przenieść pliki do folderu „<ph name="FOLDER_NAME"/>”.</translation>
+<translation id="1538729222189715449">Otwieram pliki Linuksa…</translation>
+<translation id="1000498691615767391">Wybierz folder do otwarcia</translation>
+<translation id="3353984535370177728">Wybierz folder do przesłania</translation>
+<translation id="8569764466147087991">Wybierz plik do otwarcia</translation>
+<translation id="9131598836763251128">Wybierz jeden lub kilka plików</translation>
+<translation id="7191454237977785534">Zapisz plik jako</translation>
+<translation id="3811494700605067549">1 wybrany plik</translation>
+<translation id="6751256176799620176">Wybrano jeden folder</translation>
+<translation id="2378075407703503998">Wybrano <ph name="SELCTED_FILE_COUNT"/> pliki(ów)</translation>
+<translation id="6998711733709403587">Wybrano <ph name="SELCTED_FOLDERS_COUNT"/> foldery(ów)</translation>
+<translation id="4839847978919684242">Wybrano <ph name="SELCTED_FILES_COUNT"/> elementy(ów)</translation>
+<translation id="4969785127455456148">Album</translation>
+<translation id="5700087501958648444">Informacje o pliku dźwiękowym</translation>
+<translation id="912419004897138677">Kodek</translation>
+<translation id="5253070652067921974">Autor:</translation>
+<translation id="3437801641691368414">Godzina utworzenia</translation>
+<translation id="8395901698320285466">Wymiary</translation>
+<translation id="8193175696669055101">Model urządzenia</translation>
+<translation id="2084108471225856927">Ustawienia urządzenia</translation>
+<translation id="303198083543495566">Lokalizacja</translation>
+<translation id="5358764674931277">Liczba klatek</translation>
+<translation id="4309915981827077375">Informacje ogólne</translation>
+<translation id="1249250836236328755">Gatunek</translation>
+<translation id="7711920809702896782">Informacje o pliku graficznym</translation>
+<translation id="4568854179928172494">Czas modyfikacji</translation>
+<translation id="943972244133411984">Zmodyfikowany przez:</translation>
+<translation id="9099674669267916096">Liczba stron</translation>
+<translation id="1363028406613469049">Utwór</translation>
+<translation id="1775381402323441512">Informacje o pliku wideo</translation>
+<translation id="3335337277364016868">Rok nagrania</translation>
+<translation id="5534520101572674276">Obliczanie rozmiaru</translation>
+<translation id="3786301125658655746">Jesteś offline</translation>
+<translation id="6150853954427645995">Aby zapisać ten plik i używać go offline, przejdź do trybu online, kliknij plik prawym przyciskiem myszy i wybierz opcję <ph name="OFFLINE_CHECKBOX_NAME"/>.</translation>
+<translation id="8223479393428528563">Aby zapisać te pliki i używać ich offline, przejdź do trybu online, kliknij pliki prawym przyciskiem myszy i wybierz opcję <ph name="OFFLINE_CHECKBOX_NAME"/>.</translation>
+<translation id="3830674330436234648">Odtwarzanie jest niedostępne</translation>
+<translation id="1810764548349082891">Podgląd niedostępny</translation>
+<translation id="421017592316736757">Musisz być w trybie online, by uzyskać dostęp do tego pliku.</translation>
+<translation id="180035236176489073">Musisz być w trybie online, by uzyskać dostęp do tych plików.</translation>
+<translation id="1190144681599273207">Pobranie tego pliku spowoduje przesłanie <ph name="FILE_SIZE"/> przy użyciu komórkowej transmisji danych.</translation>
+<translation id="7839804798877833423">Pobranie tych plików spowoduje przesłanie <ph name="FILE_SIZE"/> przy użyciu komórkowej transmisji danych.</translation>
+<translation id="6813005947820333339">Gdy komórkowa transmisja danych jest włączona, synchronizacja z Dyskiem Brave Software jest domyślnie wyłączona.</translation>
+<translation id="696203921837389374">Włącz synchronizację przy użyciu komórkowej transmisji danych.</translation>
+<translation id="637062427944097960">Ten plik został otwarty na innym pulpicie. Przejdź do <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>), aby go zobaczyć.</translation>
+<translation id="5330145655348521461">Te pliki zostały otwarte na innym pulpicie. Przejdź do <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>), aby je zobaczyć.</translation>
+<translation id="8686213429977032554">Ten plik na Dysku nie jest jeszcze udostępniany</translation>
+<translation id="7850851215703745691">Te pliki na Dysku nie są jeszcze udostępniane</translation>
+<translation id="1839704667838141620">Zmień sposób udostępniania tego pliku</translation>
+<translation id="1864676585353837027">Zmień sposób udostępniania tych plików</translation>
+<translation id="197560921582345123">Może edytować</translation>
+<translation id="8671210955687109937">Może komentować</translation>
+<translation id="799923393800005025">Może wyświetlać</translation>
+<translation id="7925686952655276919">Nie synchronizuj przez połączenie komórkowe</translation>
+<translation id="4649168043999963079">Pokazuj pliki Dokumentów Brave Software</translation>
+<translation id="7106346894903675391">Kup więcej miejsca...</translation>
+<translation id="3549797760399244642">Wejdź na drive.google.com...</translation>
+<translation id="3451154303153932176">Na Dysku Brave Software pozostało <ph name="SPACE_AVAILABLE"/> wolnego miejsca.</translation>
+<translation id="4552678318981539154">Kup więcej miejsca</translation>
+<translation id="6990081529015358884">Nie masz już miejsca</translation>
+<translation id="5521447721624713749">Dysk Brave Software jest obecnie nieosiągalny.</translation>
+<translation id="7788080748068240085">Aby zapisać „<ph name="FILE_NAME"/>” offline, musisz zwolnić dodatkowe <ph name="TOTAL_FILE_SIZE"/> miejsca:<ph name="MARKUP_1"/>
+    <ph name="MARKUP_2"/>odepnij pliki, do których nie potrzebujesz już uzyskiwać dostępu offline<ph name="MARKUP_3"/>
+    <ph name="MARKUP_4"/>usuń pliki z folderu Pobrane pliki<ph name="MARKUP_5"/></translation>
+<translation id="7606199793785990727">Nie można uzyskać dostępu do Dysku Brave Software. <ph name="BEGIN_LINK"/>Wyloguj się<ph name="END_LINK"/> i ponownie zaloguj.</translation>
+<translation id="585883343689351092">Dysk Brave Software – witamy</translation>
+<translation id="1788440444874291920">Bezpłatne 100 GB miejsca na Dysku Brave Software</translation>
+<translation id="5722262830411045381">Uzyskaj 1 TB miejsca na Dysku Brave Software za darmo</translation>
+<translation id="6862635236584086457">Wszystkie pliki przechowywane w tym folderze są automatycznie zapisywane online</translation>
+<translation id="7220787572447472056"><ph name="MARKUP_1"/>Korzystaj z plików, gdziekolwiek jesteś – nawet offline.<ph name="MARKUP_2"/>
+    Pliki zapisane na Dysku Brave Software są zawsze aktualne i dostępne z dowolnego urządzenia.<ph name="MARKUP_3"/>
+    <ph name="MARKUP_4"/>Dbaj o bezpieczeństwo plików.<ph name="MARKUP_5"/>
+    Niezależnie od tego, co stanie się z Twoim urządzeniem, pliki będą bezpiecznie zapisane na Dysku Brave Software.<ph name="MARKUP_6"/>
+    <ph name="MARKUP_7"/>Udostępniaj i twórz pliki oraz edytuj<ph name="MARKUP_8"/>
+    je z innymi użytkownikami – wszystko w jednym miejscu.<ph name="MARKUP_9"/></translation>
+<translation id="7489605380874780575">Sprawdź uprawnienia</translation>
+<translation id="4997096511442832556">Ten typ plików nie jest obsługiwany. W <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> znajdziesz aplikację umożliwiającą otwieranie plików tego typu.
+    <ph name="BEGIN_LINK_HELP"/>Więcej informacji<ph name="END_LINK_HELP"/></translation>
+<translation id="5097366979999786201">Ten plik został opracowany z myślą o komputerach z Windows. Jest on niezgodny z Twoim urządzeniem z Brave OS. Spróbuj znaleźć aplikację zastępczą w <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Więcej informacji<ph name="END_LINK_HELP"/></translation>
+<translation id="6041399778584119390">Ten plik został opracowany z myślą o komputerach Mac. Jest on niezgodny z Twoim urządzeniem z Brave OS. Spróbuj znaleźć aplikację zastępczą w <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Więcej informacji<ph name="END_LINK_HELP"/></translation>
+<translation id="7589661784326793847">Chwileczkę</translation>
+<translation id="3096967955765855393">Stale szukamy rozwiązań, dzięki którym przeglądanie internetu będzie bezpieczniejsze. Wcześniej każda strona mogła poprosić o dodanie rozszerzenia do przeglądarki. W nowszych wersjach Brave Software Brave musisz dodać rozszerzenie na stronie Rozszerzenia, by wyraźnie poinformować przeglądarkę, że chcesz je zainstalować. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
+<translation id="2004663115385769400">Nie można otworzyć w: $1</translation>
+<translation id="639777613761517128">Aby otworzyć plik w aplikacji $1, najpierw skopiuj go do folderu Pliki Linuksa.</translation>
+<translation id="5112009661904384591">Udostępnij pliki Linuksowi</translation>
+<translation id="3186202398303525187">Otwórz plik $1 w aplikacji na Linuksa.</translation>
+<translation id="1603300902586586390">Otwórz pliki ($1) w aplikacjach na Linuksa.</translation>
+<translation id="4572815280350369984">Plik <ph name="FILE_TYPE"/></translation>
+<translation id="895586998699996576">Plik graficzny ($1)</translation>
+<translation id="2853916256216444076">Plik wideo ($1)</translation>
+<translation id="7006844981395428048">Plik dźwiękowy ($1)</translation>
+<translation id="7799329977874311193">Dokument HTML</translation>
+<translation id="2208158072373999562">Archiwum ZIP</translation>
+<translation id="2028997212275086731">Archiwum RAR</translation>
+<translation id="8466234950814670489">Archiwum Tar</translation>
+<translation id="1119069657431255176">Archiwum Tar po kompresji Bzip2</translation>
+<translation id="6820687829547641339">Archiwum Tar po kompresji Gzip</translation>
+<translation id="8329978297633540474">Zwykły tekst</translation>
+<translation id="2887525882758501333">Dokument PDF</translation>
+<translation id="1049926623896334335">Dokument Worda</translation>
+<translation id="4784330909746505604">Prezentacja PowerPoint</translation>
+<translation id="8860454412039442620">Arkusz kalkulacyjny Excela</translation>
+<translation id="5383943761832211733">Dokument Brave Software</translation>
+<translation id="5924916971643100883">Arkusz kalkulacyjny Brave Software</translation>
+<translation id="3667369474859528036">Prezentacja Brave Software</translation>
+<translation id="3411013849623404696">Rysunek Brave Software</translation>
+<translation id="7481041283483972362">Tabela Brave Software</translation>
+<translation id="784862457750027723">Formularz Brave Software</translation>
+<translation id="3320425620177764157">Mapa Brave Software</translation>
+<translation id="7452737073539387970">Witryna Brave Software</translation>
+<translation id="4445959220475380548">Link Dysku Brave Software</translation>
+<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
+<translation id="2599249317139964094">Ten typ plików jest nieobsługiwany. W Brave Web Store znajdziesz aplikację otwierającą pliki tego typu.</translation>
+<translation id="3495282670559481871">Ten plik został opracowany z myślą o komputerach Mac. Jest niezgodny z Twoim urządzeniem z Brave OS. Poszukaj odpowiedniej aplikacji zastępczej w Brave Web Store.</translation>
+<translation id="3213197099265624265">To jest plik na komputery z Windows. Jest niezgodny z Twoim urządzeniem z Brave OS. Poszukaj odpowiedniej aplikacji zastępczej w Brave Web Store.</translation>
+<translation id="5833610766403489739">Plik gdzieś się zawieruszył. Sprawdź ustawienie lokalizacji pobierania i spróbuj ponownie.</translation>
+<translation id="3966388904776714213">Odtwarzacze dźwięku</translation>
+<translation id="3245321423178950146">Nieznany wykonawca</translation>
+<translation id="509429900233858213">Wystąpił błąd.</translation>
+<translation id="1864756863218646478">Nie można znaleźć pliku.</translation>
+<translation id="1673103856845176271">Nie można uzyskać dostępu do pliku ze względów bezpieczeństwa.</translation>
+<translation id="5524517123096967210">Nie można odczytać pliku.</translation>
+<translation id="1665611772925418501">Nie można zmodyfikować pliku.</translation>
+<translation id="1358735829858566124">Plik lub katalog nie nadaje się do użycia.</translation>
+<translation id="8342318071240498787">Plik lub katalog o tej nazwie już istnieje.</translation>
+<translation id="8965697826696209160">Nie ma wystarczającej ilości miejsca.</translation>
+<translation id="7126604456862387217">„&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;” – &lt;em&gt;wyszukaj na Dysku&lt;/em&gt;</translation>
+<translation id="2888807692577297075">Żadne elementy nie pasują do zapytania &lt;b&gt;„<ph name="SEARCH_STRING"/>”&lt;/b&gt;</translation>
+<translation id="2843806747483486897">Zmień ustawienie domyślne...</translation>
+<translation id="3254434849914415189">Wybierz domyślną aplikację dla plików <ph name="FILE_TYPE"/>:</translation>
+<translation id="8038111231936746805">(domyślnie)</translation>
+<translation id="5982621672636444458">Opcje sortowania</translation>
+<translation id="2984337792991268709">Dzisiaj, <ph name="TODAY_DAYTIME"/></translation>
+<translation id="8336153091935557858">Wczoraj, <ph name="YESTERDAY_DAYTIME"/></translation>
+<translation id="1807938677607439181">Wszystkie pliki</translation>
+<translation id="240770291734945588">Dostępne <ph name="SPACE_AVAILABLE"/></translation>
+<translation id="6199801702437275229">Oczekuję na informacje o wolnym miejscu...</translation>
+<translation id="6485131920355264772">Pobieranie informacji o wolnym miejscu nie powiodło się</translation>
+<translation id="7748626145866214022">Na pasku działań jest dostępnych więcej opcji. Aby go zaznaczyć, naciśnij Alt + A.</translation>
+<translation id="6710213216561001401">Wstecz</translation>
+<translation id="1201402288615127009">Dalej</translation>
+<translation id="1395262318152388157">Suwak wyszukiwania</translation>
+<translation id="4880214202172289027">Suwak głośności</translation>
+<translation id="7544853251252956727">Odtwarzaj losowo</translation>
+<translation id="8079530767338315840">Powtórz</translation>
+<translation id="4158739975813877944">Otwórz listę odtwarzania</translation>
+<translation id="4656293982926141856">Ten komputer</translation>
+<translation id="2676946222714718093">Odtwarzane na</translation>
+<translation id="3930521966936686665">Odtwarzaj na</translation>
+<translation id="4732760563705710320">Twoje urządzenie przesyłające nie obsługuje tego filmu.</translation>
+<translation id="2672394958563893062">Wystąpił błąd. Kliknij, by odtworzyć od początku.</translation>
+<translation id="6827236167376090743">Ten film będzie odtwarzany bez końca.</translation>
+<translation id="6248400709929739064">Włącz napisy</translation>
+<translation id="7881969471599061635">Wyłącz napisy</translation>
 <translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Niektóre ustawienia należące do <ph name="PRIMARY_EMAIL"/> zostały Ci udostępnione. Mają one wpływ na Twoje konto, tylko jeśli korzystasz z wielokrotnego logowania.</translation>
 <translation id="5860491529813859533">Włącz</translation>
@@ -1453,7 +1826,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1800308196794859773">Wysyła Twój głos do Brave Software, by umożliwić dyktowanie w dowolnym polu tekstowym.</translation>
 <translation id="8758418656925882523">Włącz dyktowanie (mów, by pisać)</translation>
 <translation id="7580671184200851182">Odtwarzaj ten sam dźwięk na wszystkich głośnikach (dźwięk mono)</translation>
-<translation id="8186639008852027301">Odtwórz sygnał dźwiękowy podczas uruchamiania</translation>
+<translation id="1361872463926621533">Odtwórz dźwięk podczas uruchamiania</translation>
 <translation id="1189418886587279221">Włącz ułatwienia dostępu, aby uprościć obsługę urządzenia.</translation>
 <translation id="48704129375571883">Dodaj inne funkcje</translation>
 <translation id="7230787553283372882">Dostosuj rozmiar tekstu</translation>
@@ -1626,17 +1999,12 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6122875415561139701">Nie jest dozwolona operacja zapisu na: „<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="439266289085815679">Konfiguracją Bluetooth zarządza <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Zakres czasu</translation>
-<translation id="3958004920128806270">Aby wyczyścić dane przeglądania tylko z tego urządzenia, zachowując je na swoim koncie Brave Software, <ph name="BEGIN_LINK"/>wyloguj się<ph name="END_LINK"/>.</translation>
-<translation id="4445433576366924090">Aby wyczyścić dane przeglądania ze wszystkich swoich zsynchronizowanych urządzeń i z konta Brave Software, <ph name="BEGIN_LINK"/>otwórz ustawienia synchronizacji<ph name="END_LINK"/>.</translation>
-<translation id="563489167344291753">Aby wyczyścić dane przeglądania ze wszystkich swoich zsynchronizowanych urządzeń i z konta Brave Software, <ph name="BEGIN_LINK"/>wpisz hasło<ph name="END_LINK"/>.</translation>
-<translation id="3895809404273995788">Aby wyczyścić dane przeglądania ze wszystkich zsynchronizowanych urządzeń i z konta Brave Software, <ph name="BEGIN_LINK"/>zaloguj się<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historia przeglądania</translation>
 <translation id="8662811608048051533">Wylogowuje z większości stron internetowych.</translation>
 <translation id="4650925988509114690">Spowoduje wylogowanie Cię z większości stron internetowych. Nie nastąpi wylogowanie z konta Brave Software, więc będzie można wyczyścić zsynchronizowane dane.</translation>
 <translation id="2017836877785168846">Usuwa historię i wpisy autouzupełniania w pasku adresu.</translation>
 <translation id="8096327394278038498">Usuwa historię i pamięć autouzupełniania na pasku adresu. Inne rodzaje historii przeglądania mogą być nadal dostępne na Twoim koncie Brave Software na <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8122693181154564064">Usuwa historię ze wszystkich urządzeń, na których jesteś zalogowany. Inne rodzaje historii przeglądania mogą być nadal dostępne na Twoim koncie Brave Software na <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
-<translation id="6148716538476291841">Usuwa historię z tego urządzenia.</translation>
 <translation id="7127980134843952133">Historia pobierania</translation>
 <translation id="4699172675775169585">Obrazy i pliki zapisane w pamięci podręcznej</translation>
 <translation id="1274997165432133392">Pliki cookie i inne dane witryn</translation>
@@ -1705,6 +2073,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="2367199180085172140">Dodaj udział plików</translation>
 <translation id="247051149076336810">URL magazynu plików</translation>
 <translation id="5247051749037287028">Wyświetlana nazwa (opcjonalnie)</translation>
+<translation id="3544879808695557954">Nazwa użytkownika (opcjonalnie)</translation>
+<translation id="6949434160682548041">Hasło (opcjonalnie)</translation>
 <translation id="6091761513005122595">Udział został podłączony.</translation>
 <translation id="9024158959543687197">Błąd podczas podłączania udziału. Sprawdź URL udziału plików i spróbuj ponownie.</translation>
 <translation id="1954813140452229842">Błąd podczas podłączania udziału. Sprawdź dane logowania i spróbuj ponownie.</translation>
@@ -1712,6 +2082,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="7234406375359457793">Błąd podczas podłączania udziału. Ten udział nie jest obsługiwany.</translation>
 <translation id="706626672220389329">Błąd podczas podłączania udziału. Udział jest już podłączony.</translation>
 <translation id="5985458664595100876">Nieprawidłowy format adresu URL. Obsługiwane formaty to \\server\share i smb://server/share.</translation>
+<translation id="9147304170847707004">Metoda uwierzytelniania</translation>
+<translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Data i godzina</translation>
 <translation id="2059913712424898428">Strefa czasowa</translation>
 <translation id="4547672827276975204">Ustaw automatycznie</translation>
@@ -2033,12 +2405,13 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6678717876183468697">URL zapytania</translation>
 <translation id="1545786162090505744">URL z parametrem %s (zapytanie)</translation>
 <translation id="7136694880210472378">Ustaw jako domyślną</translation>
-<translation id="102272308210570439">Pozwól Asystentowi używać elementów na ekranie</translation>
-<translation id="8624205858755890468">Umożliwia Asystentowi wyświetlanie powiązanych informacji, aplikacji i działań.</translation>
-<translation id="4737453247496280552">Wykrywanie „OK Brave Software”</translation>
-<translation id="6409553560184414680">Uruchamiaj Asystenta, mówiąc „OK Brave Software”, gdy ekran jest włączony.</translation>
-<translation id="8669919703154928649">Pozwól Asystentowi wyświetlać powiadomienia</translation>
-<translation id="3430342160185525240">Umożliwia Asystentowi wyświetlanie powiadomień.</translation>
+<translation id="6953878494808481632">Powiązane informacje</translation>
+<translation id="7258619945375359543">Pozwól Asystentowi podawać sugestie na podstawie zawartości ekranu</translation>
+<translation id="472896694312062378">„OK Brave Software”</translation>
+<translation id="6236033368436682108">Uruchamiaj Asystenta, mówiąc „OK Brave Software”, gdy ekran jest włączony</translation>
+<translation id="5355099869024327351">Pozwól Asystentowi wyświetlać powiadomienia</translation>
+<translation id="1127216846847548354">Aktywacja głosu</translation>
+<translation id="3506093155988721483">Używaj mowy zamiast klawiatury po uruchomieniu Asystenta</translation>
 <translation id="3908743412684152579">Ustawienia Asystenta Brave Software</translation>
 <translation id="4933484234309072027">umieszczone w witrynie <ph name="URL"/></translation>
 <translation id="8427292751741042100">umieszczone na dowolnym hoście</translation>
@@ -2108,8 +2481,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4994474651455208930">Zezwól, by strony prosiły użytkownika o ustawienie ich jako domyślnego modułu obsługi protokołu</translation>
 <translation id="1886996562706621347">Zezwól, by strony prosiły użytkownika o ustawienie ich jako domyślnego modułu obsługi protokołu (zalecane)</translation>
 <translation id="26224892172169984">Nie zezwalaj żadnej witrynie na obsługę protokołów</translation>
-<translation id="2948320633360386059">Blokowane na stronach, które wyświetlają uciążliwe reklamy</translation>
-<translation id="6583851739559471707">Blokowane na stronach, które wyświetlają uciążliwe reklamy (zalecane)</translation>
+<translation id="4469477701382819144">Blokowane na stronach, które wyświetlają uciążliwe lub wprowadzające w błąd reklamy</translation>
+<translation id="4451757071857432900">Blokowane na stronach, które wyświetlają uciążliwe lub wprowadzające w błąd reklamy (zalecane)</translation>
 <translation id="5390100381392048184">Zezwalaj na odtwarzanie dźwięku na stronach internetowych</translation>
 <translation id="1660204651932907780">Zezwalaj na odtwarzanie dźwięku na stronach internetowych (zalecane)</translation>
 <translation id="3600792891314830896">Wycisz strony, które odtwarzają dźwięk</translation>
@@ -2133,7 +2506,8 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="5063480226653192405">Wykorzystanie</translation>
 <translation id="3006881078666935414">Brak danych o użytkowaniu</translation>
 <translation id="1300806585489372370">Aby zmienić to ustawienie, najpierw <ph name="BEGIN_LINK"/>włącz identyfikatory<ph name="END_LINK"/></translation>
-<translation id="184823282865851239">Blokuj, jeśli na stronie wyświetlają się uciążliwe reklamy</translation>
+<translation id="5932224571077948991">Na tej stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy</translation>
+<translation id="6038929619733116134">Blokuj, jeśli na stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy</translation>
 <translation id="3083193146044397360">Tymczasowo zablokowano, by chronić Twoje bezpieczeństwo</translation>
 <translation id="2500471369733289700">Zablokowano, by chronić Twoją prywatność</translation>
 <translation id="3008272652534848354">Zresetuj uprawnienia</translation>
@@ -2203,6 +2577,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4068776064906523561">Zapisane odciski palców</translation>
 <translation id="4562155214028662640">Dodaj odcisk palca</translation>
 <translation id="1719312230114180055">Uwaga: odcisk palca może być mniej bezpieczny niż silne hasło czy kod PIN.</translation>
+<translation id="6029292188939175871">usuń odcisk palca [<ph name="FINGERPRINT_NAME"/>], przycisk</translation>
 <translation id="1927632033341042996">Palec nr <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Dodaj konto</translation>
 <translation id="3422989461909154470">W tym miejscu możesz zarządzać wszystkimi kontami Brave Software, na które logujesz się na stronach i w aplikacjach.</translation>
@@ -2211,6 +2586,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="3297951628821704004">Usuń konto z tego urządzenia</translation>
 <translation id="1059855432287631118">Rejestrowanie odcisku palca</translation>
 <translation id="878068003854005405">Zaczynamy. Umieść palec na czujniku.</translation>
+<translation id="176193854664720708">Czytnik linii papilarnych znajduje się na przycisku zasilania. Przyłóż do niego dowolny palec.</translation>
 <translation id="7189965711416741966">Odcisk palca dodany.</translation>
 <translation id="9220820413868316583">Podnieś i spróbuj ponownie.</translation>
 <translation id="4534661889221639075">Spróbuj ponownie.</translation>
@@ -2265,7 +2641,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="8135094938656535588">Zarządzaj synchronizowanymi danymi w Panelu Brave Software</translation>
 <translation id="6596325263575161958">Opcje szyfrowania</translation>
 <translation id="2459230470861708651">Szyfruj synchronizowane hasła przy użyciu nazwy użytkownika i hasła Brave Software</translation>
-<translation id="6383051423892982287">Szyfruj synchronizowane dane za pomocą własnego <ph name="BEGIN_LINK"/>hasła synchronizacji<ph name="END_LINK"/></translation>
 <translation id="4817583816512767754">Twoje zaszyfrowane dane może odczytać tylko ktoś znający hasło. Brave Software nie otrzyma Twojego hasła ani nie będzie go przechowywać. Jeśli je zapomnisz lub zechcesz zmienić to ustawienie, musisz <ph name="BEGIN_LINK"/>zresetować synchronizację<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph name="END_LINK"/>, by usunąć hasło synchronizacji</translation>
 <translation id="3873315167136380065">Aby włączyć tę funkcję, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph name="END_LINK"/> w celu usunięcia hasła synchronizacji</translation>
@@ -2424,25 +2799,26 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% – pełne naładowanie za <ph name="TIME"/></translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="1940546824932169984">Połączone urządzenia</translation>
-<translation id="5235565664420173924">Razem lepiej</translation>
-<translation id="5375767622559981303">Bravebook będzie jeszcze lepszy, gdy połączysz go ze swoim telefonem. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
-<translation id="6148052338549899048">Brak odpowiednich urządzeń. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
-<translation id="3465800511193611451">Czekam na weryfikację. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
-<translation id="2315821125498993513">Nie udało się połączyć z telefonem. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
-<translation id="5598551463564921617">Funkcja Razem lepiej jest włączona</translation>
-<translation id="3088402208262982892">Funkcja Razem lepiej jest wyłączona</translation>
+<translation id="3468999815377931311">Telefon z Androidem</translation>
+<translation id="2789927670850159391">Połącz Bravebooka z telefonem. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
+<translation id="1397500194120344683">Brak odpowiednich urządzeń. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
+<translation id="5739235828260127894">Czekam na weryfikację. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="7179187931092694802">Swojego Bravebooka możesz odblokowywać telefonem. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
+<translation id="6415900369006735853">Łącz się z internetem przez telefon</translation>
 <translation id="4746351372139058112">Wiadomość tekstowa</translation>
 <translation id="2248072377758660530">Wysyłanie i odbieranie SMS-ów na Bravebooku. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
-<translation id="3936335337858561470">Zapomnij to urządzenie</translation>
-<translation id="3606712892509067288">Usuń z Razem lepiej</translation>
-<translation id="5078490485380754244">Zapominanie urządzenia</translation>
-<translation id="8072033737676488034">Usuń telefon i wyłącz Razem lepiej</translation>
+<translation id="5153234146675181447">Zapomnij telefon</translation>
+<translation id="2307631131458143837">Rozłącz swój telefon i Bravebooka</translation>
+<translation id="1146102139091738471">Odłącz telefon od Bravebooka. Te urządzenia nie będą już łączyć się ze sobą automatycznie.</translation>
 <translation id="7878562273885520351">Ktoś mógł poznać Twoje hasło</translation>
 <translation id="6582421931165117398">Aby chronić swoje dane osobowe, zmień teraz hasło. Najpierw zobaczysz prośbę, by się zalogować.</translation>
 <translation id="1089439967362294234">Zmień hasło</translation>
 <translation id="4635398712689569051">Strona <ph name="PAGE_NAME"/> jest niedostępna dla gości.</translation>
+<translation id="4893522937062257019">Na ekranie blokady</translation>
+<translation id="2992931425024192067">Pokazuj wszystkie powiadomienia</translation>
+<translation id="8592141010104017453">Nie pokazuj żadnych powiadomień</translation>
+<translation id="7642778300616172920">Ukryj informacje poufne</translation>
 <translation id="3341703758641437857">Zezwalaj na dostęp do adresów URL plików</translation>
 <translation id="9003647077635673607">Zezwól we wszystkich witrynach</translation>
 <translation id="1744108098763830590">strona w tle</translation>
@@ -2530,8 +2906,15 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="720110658997053098">Trwale utrzymuj to urządzenie w trybie kiosku</translation>
 <translation id="1909880997794698664">Czy na pewno chcesz trwale utrzymywać to urządzenie w trybie kiosku?</translation>
 <translation id="1512210426710821809">Jedynym sposobem cofnięcia tej czynności jest ponowna instalacja systemu <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
+<translation id="4472575034687746823">Rozpocznij</translation>
+<translation id="6060991652695587932">Wybierz swoją usługę e-mail, by mieć do niej szybki dostęp</translation>
+<translation id="296137235951584143">Dostosuj Brave do swoich potrzeb</translation>
+<translation id="7835178595033117206">Zakładka została usunięta</translation>
+<translation id="2785008241190445880">Zakładka została zastąpiona</translation>
+<translation id="2950533317914339731">Dodaj zakładki do swoich ulubionych aplikacji Brave Software</translation>
+<translation id="8846319957959474018">Łatwo otwieraj aplikacje dzięki zakładkom</translation>
 <translation id="5939847200023027600">Usługa PDF Compositor</translation>
-<translation id="3396331542604645348">Wybrana drukarka jest niedostępna lub nieprawidłowo zainstalowana. Sprawdź ją lub wybierz inną.</translation>
+<translation id="5877584842898320529">Wybrana drukarka jest niedostępna lub nieprawidłowo zainstalowana. <ph name="BR"/> Sprawdź ją lub wybierz inną.</translation>
 <translation id="1526560967942511387">Dokument bez tytułu</translation>
 <translation id="5269977353971873915">Niepowodzenie drukowania</translation>
 <translation id="7385854874724088939">Wystąpił błąd przy próbie drukowania. Sprawdź drukarkę i spróbuj ponownie.</translation>

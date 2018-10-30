@@ -1,162 +1,162 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Brave balvas",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Sāciet pelnīt tagad!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Pievienoties balvām",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Nopelniet par reklāmu aplūkošanu un maksājiet to tālāk, lai atbalstītu savus iecienītos satura veidotājus.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Jūs tagad varat nopelnīt marķierus par konfidencialitāti cienošu reklāmu skatīšanos.",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Apskatiet uzlabojumus",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Uzzināt vairāk",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Esam sagādājuši lielu jauninājumu Brave maksājumiem.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Esiet gatavi izbaudīt nākamo internetu.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "Jūsu maks",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Piešķīrumi",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "ieslēgts",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Brave apstiprināts publicētājs",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Uzmanību",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site Monthly",
+    "message": "Tip this site monthly",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Iekļaut automātiskajā ziedošanā",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Sūtīt dzeramnaudu...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Iespējot padomus",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "kam",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Balvu kopsavilkums",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Aprīlis",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Augusts",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Decembris",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Februāris",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Janvāris",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Jūlijs",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Jūnijs",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Marts",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Maijs",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Novembris",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Oktobris",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Septembris",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Marķiera piešķīrums",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Peļņa no reklāmām",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Automātiskā ziedošana",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Vienreizējās dzeramnaudas",
     "description": ""
   },
   "total": {
-    "message": "Total",
+    "message": "Kopā",
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "derīguma termiņš beidzas",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Ikmēneša dzeramnaudas",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Izsl.",
     "description": ""
   },
   "ok": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have grant waiting for you.",
+    "message": "You have a grant waiting for you.",
     "description": ""
   },
   "braveRewardsCreatingText": {

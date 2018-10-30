@@ -20,10 +20,16 @@ struct Referrer;
 }
 
 class GURL;
+class ProfileIOData;
 
 namespace brave_shields {
 
-bool IsAllowContentSettingFromIO(net::URLRequest* request,
+bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
+    const GURL& primary_url, const GURL& secondary_url,
+    ContentSettingsType setting_type,
+    const std::string& resource_identifier);
+
+bool IsAllowContentSettingFromIO(const net::URLRequest* request,
     const GURL& primary_url, const GURL& secondary_url,
     ContentSettingsType setting_type,
     const std::string& resource_identifier);
@@ -32,7 +38,7 @@ void DispatchBlockedEventFromIO(const GURL &request_url, int render_frame_id,
     int render_process_id, int frame_tree_node_id,
     const std::string& block_type);
 
-void GetRenderFrameInfo(net::URLRequest* request,
+void GetRenderFrameInfo(const net::URLRequest* request,
     int* render_frame_id,
     int* render_process_id,
     int* frame_tree_node_id);

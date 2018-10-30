@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.h b/chrome/browser/importer/external_process_importer_client.h
-index 864a6951115dda5ed74963f18b35692960397d50..ba056b13fbae07f151286f531e1a8d86e0eac2c5 100644
+index 9451b0917536e73b42c596527112d3119b2c4cc5..c835dea8c0e0f2c9c8cb1bd450700977677e6ecd 100644
 --- a/chrome/browser/importer/external_process_importer_client.h
 +++ b/chrome/browser/importer/external_process_importer_client.h
 @@ -24,10 +24,12 @@
@@ -15,13 +15,13 @@ index 864a6951115dda5ed74963f18b35692960397d50..ba056b13fbae07f151286f531e1a8d86
  
  namespace autofill {
  struct PasswordForm;
-@@ -88,6 +90,9 @@ class ExternalProcessImporterClient
+@@ -85,6 +87,9 @@ class ExternalProcessImporterClient
    void OnAutofillFormDataImportGroup(
        const std::vector<ImporterAutofillFormDataEntry>&
            autofill_form_data_entry_group) override;
 +  void OnCookiesImportStart(uint32_t total_cookies_count) override {};
 +  void OnCookiesImportGroup(const std::vector<net::CanonicalCookie>& cookies_group) override {};
 +  void OnStatsImportReady(const BraveStats& stats) override {};
-   void OnIE7PasswordReceived(
-       const importer::ImporterIE7PasswordInfo& importer_password_info) override;
  
+  protected:
+   ~ExternalProcessImporterClient() override;
