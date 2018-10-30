@@ -163,7 +163,8 @@ class ContentBlockerHelper {
 
         ContentBlockerHelper.removeOldListsByDateFromStore(prefs: prefs) {
             ContentBlockerHelper.removeOldListsByNameFromStore(prefs: prefs) {
-                ContentBlockerHelper.compileListsNotInStore {
+                let deferred = ContentBlockerHelper.compileListsNotInStore()
+                deferred.uponQueue(.main) {
                     ContentBlockerHelper.heavyInitHasRunOnce = true
                     NotificationCenter.default.post(name: .ContentBlockerTabSetupRequired, object: nil)
                 }
@@ -343,7 +344,8 @@ extension ContentBlockerHelper {
         }
     }
 
-    static func compileListsNotInStore(completion: @escaping () -> Void) {
+    static func compileListsNotInStore() -> Deferred<()> {
+        let masterDeferred = Deferred<()>()
         let blocklists = BlocklistName.all.map { $0.filename }
         let deferreds: [Deferred<Void>] = blocklists.map { filename in
             let result = Deferred<Void>()
@@ -369,9 +371,11 @@ extension ContentBlockerHelper {
             return result
         }
 
-        all(deferreds).uponQueue(.main) { _ in
-            completion()
+        all(deferreds).upon { _ in
+            masterDeferred.fill(())
         }
+        
+        return masterDeferred
     }
 }
 

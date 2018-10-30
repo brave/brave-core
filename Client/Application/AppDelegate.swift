@@ -70,7 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     @discardableResult fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
         log.info("startApplication begin")
         
-        let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value
         Preferences.AppState.backgroundedCleanly.value = false
         
         // Set the Firefox UA for browsing.
@@ -114,22 +113,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         self.tabManager = TabManager(prefs: profile.prefs, imageStore: imageStore)
         self.tabManager.stateDelegate = self
 
-        // Add restoration class, the factory that will return the ViewController we
-        // will restore with.
-        
         // Make sure current private browsing flag respects the private browsing only user preference
         PrivateBrowsingManager.shared.isPrivateBrowsing = Preferences.Privacy.privateBrowsingOnly.value
 
-        browserViewController = BrowserViewController(profile: self.profile!, tabManager: self.tabManager)
+        // Don't track crashes if we're building the development environment due to the fact that terminating/stopping
+        // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
+        let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.BuildChannel != .developer
+        browserViewController = BrowserViewController(profile: self.profile!, tabManager: self.tabManager, crashedLastSession: crashedLastSession)
         browserViewController.edgesForExtendedLayout = []
 
+        // Add restoration class, the factory that will return the ViewController we will restore with.
         browserViewController.restorationIdentifier = NSStringFromClass(BrowserViewController.self)
         browserViewController.restorationClass = AppDelegate.self
-        // Don't track crashes if we're building the local Fennec environment due to the fact that terminating/stopping
-        // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
-        #if !MOZ_CHANNEL_FENNEC
-            browserViewController.crashedLastSession = crashedLastSession
-        #endif
 
         let navigationController = UINavigationController(rootViewController: browserViewController)
         navigationController.delegate = self
