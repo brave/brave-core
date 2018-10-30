@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
+#include "brave/browser/ui/webui/brave_theme_handler.h"
 
 #include <string>
 
@@ -50,20 +50,20 @@ std::string GetStringFromBraveThemeType(
 }
 }  // namespace
 
-void BraveAppearanceHandler::RegisterMessages() {
+void BraveThemeHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
 
   web_ui()->RegisterMessageCallback(
       "getBraveThemeType",
-      base::BindRepeating(&BraveAppearanceHandler::GetBraveThemeType,
+      base::BindRepeating(&BraveThemeHandler::GetBraveThemeType,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setBraveThemeType",
-      base::BindRepeating(&BraveAppearanceHandler::SetBraveThemeType,
+      base::BindRepeating(&BraveThemeHandler::SetBraveThemeType,
                           base::Unretained(this)));
 }
 
-void BraveAppearanceHandler::SetBraveThemeType(const base::ListValue* args) {
+void BraveThemeHandler::SetBraveThemeType(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
@@ -72,7 +72,7 @@ void BraveAppearanceHandler::SetBraveThemeType(const base::ListValue* args) {
   SetBraveThemeTypePref(profile_, GetBraveThemeTypeFromString(theme));
 }
 
-void BraveAppearanceHandler::GetBraveThemeType(const base::ListValue* args) {
+void BraveThemeHandler::GetBraveThemeType(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
