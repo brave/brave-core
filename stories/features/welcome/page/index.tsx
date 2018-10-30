@@ -4,34 +4,34 @@
 
 import * as React from 'react'
 
-import Button from '../../../../src/components/buttonsIndicators/button'
-// import Select from '../../../../src/components/formControls/select'
-import { ArrowRightIcon } from '../../../../src/components/icons'
-import * as Welcome from '../../../../src/features/welcome/'
+// Feature-specific components
+import { Background, Page, Panel } from '../../../../src/features/welcome/'
 
-import locale from './fakeLocale'
+// Component groups
+import WelcomeBox from './screens/welcomeBox'
+import ImportBox from './screens/importBox'
+import ShieldsBox from './screens/shieldsBox'
+import SearchBox from './screens/searchBox'
+import RewardsBox from './screens/rewardsBox'
+import ThemeBox from './screens/themeBox'
+import FooterBox from './screens/footerBox'
 
 // Images
-const braveLogo = require('../../../assets/img/lion_logo.svg')
-const paymentsImage = require('../../../assets/img/welcome_rewards.svg')
-const importImage = require('../../../assets/img/welcome_import.svg')
-const shieldsImage = require('../../../assets/img/welcome_shields.svg')
-const themeImage = require('../../../assets/img/welcome_theme.svg')
-const searchImage = require('../../../assets/img/welcome_search.svg')
 const background = require('../../../assets/img/welcome_bg.svg')
 
 // Fonts
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
+// import FooterBox from './screens/footer';
 
-export interface WelcomePageState {
+export interface State {
   currentScreen: number
   fakeChangedSearchEngine: boolean
   fakeBookmarksImported: boolean
   fakeChangedDefaultTheme: boolean
 }
 
-class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
+export default class WelcomePage extends React.PureComponent<{}, State> {
   constructor (props: {}) {
     super(props)
     this.state = {
@@ -44,172 +44,6 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
 
   get totalScreensSize () {
     return 6
-  }
-
-  get firstScreen () {
-    return (
-      <Welcome.Content zIndex={1} active={this.state.currentScreen === 1}>
-        <Welcome.BraveImage src={braveLogo} />
-        <Welcome.Title>{locale.welcome}</Welcome.Title>
-        <Welcome.Paragraph>{locale.whatIsBrave}</Welcome.Paragraph>
-        <Button
-          level='primary'
-          type='accent'
-          size='large'
-          text={locale.letsGo}
-          onClick={this.onClickLetsGo}
-          icon={{ position: 'after', image: <ArrowRightIcon /> }}
-        />
-      </Welcome.Content>
-    )
-  }
-
-  get secondScreen () {
-    return (
-      <Welcome.Content zIndex={2} active={this.state.currentScreen === 2}>
-        <Welcome.ImportImage src={importImage} />
-        <Welcome.Title>{locale.importFromAnotherBrowser}</Welcome.Title>
-        <Welcome.Paragraph>{locale.setupImport}</Welcome.Paragraph>
-          <Button
-            level='primary'
-            type={this.state.fakeBookmarksImported ? 'accent' : 'accent'}
-            size='large'
-            text={this.state.fakeBookmarksImported ? locale.imported : locale.import}
-            onClick={this.onClickImport}
-          />
-      </Welcome.Content>
-    )
-  }
-
-  get thirdScreen () {
-    return (
-      <Welcome.Content zIndex={3} active={this.state.currentScreen === 3}>
-        <Welcome.SearchImage src={searchImage} />
-        <Welcome.Title>{locale.setDefaultSearchEngine}</Welcome.Title>
-        <Welcome.Paragraph>{locale.chooseSearchEngine}</Welcome.Paragraph>
-          <Button
-            level='primary'
-            type={this.state.fakeChangedSearchEngine ? 'default' : 'accent'}
-            size='large'
-            text={this.state.fakeChangedSearchEngine ? locale.search : locale.search}
-            onClick={this.onClickConfirmDefaultSearchEngine}
-          />
-      </Welcome.Content>
-    )
-  }
-
-  get fourthScreen () {
-    return (
-      <Welcome.Content zIndex={4} active={this.state.currentScreen === 4}>
-        <Welcome.ThemeImage src={themeImage} />
-        <Welcome.Title>{locale.chooseYourTheme}</Welcome.Title>
-        <Welcome.Paragraph>{locale.findToolbarTheme}</Welcome.Paragraph>
-          <Button
-            level='primary'
-            type={this.state.fakeChangedDefaultTheme ? 'accent' : 'accent'}
-            size='large'
-            text={this.state.fakeChangedDefaultTheme ? locale.theme : locale.theme}
-            onClick={this.onClickChooseYourTheme}
-          />
-      </Welcome.Content>
-    )
-  }
-
-  get fifthScreen () {
-    return (
-      <Welcome.Content zIndex={5} active={this.state.currentScreen === 5}>
-        <Welcome.ShieldsImage src={shieldsImage} />
-        <Welcome.Title>{locale.protectYourPrivacy}</Welcome.Title>
-        <Welcome.Paragraph>{locale.adjustProtectionLevel}</Welcome.Paragraph>
-      </Welcome.Content>
-    )
-  }
-
-  get sixthScreen () {
-    return (
-      <Welcome.Content zIndex={6} active={this.state.currentScreen === 6}>
-        <Welcome.PaymentsImage src={paymentsImage} />
-        <Welcome.Title>{locale.enableBraveRewards}</Welcome.Title>
-        <Welcome.Paragraph>{locale.setupBraveRewards}</Welcome.Paragraph>
-        <Button
-          level='primary'
-          type='accent'
-          size='large'
-          text={locale.getStarted}
-        />
-      </Welcome.Content>
-    )
-  }
-
-  get currentScreen () {
-    switch (this.state.currentScreen) {
-      case 1:
-        return this.firstScreen
-      case 2:
-        return this.secondScreen
-      case 3:
-        return this.thirdScreen
-      case 4:
-        return this.fourthScreen
-      case 5:
-        return this.fifthScreen
-      case 6:
-        return this.sixthScreen
-      default:
-        return this.firstScreen
-    }
-  }
-
-  get footer () {
-    return (
-      <Welcome.Footer>
-        <Welcome.FooterLeftColumn>
-          <Welcome.SkipButton onClick={this.onSkipWelcomeTour}>
-            {locale.skipWelcomeTour}
-          </Welcome.SkipButton>
-        </Welcome.FooterLeftColumn>
-        <Welcome.FooterMiddleColumn>
-          {
-            Array.from({ length: this.totalScreensSize }, (v: undefined, k: number) => {
-              return (
-                <Welcome.Bullet
-                  active={this.state.currentScreen === k + 1}
-                  key={k}
-                  onClick={this.onClickSlideBullet.bind(this, k + 1)}
-                >
-                  &bull;
-                </Welcome.Bullet>
-              )
-            })}
-        </Welcome.FooterMiddleColumn>
-        <Welcome.FooterRightColumn>
-          {
-            this.state.currentScreen !== this.totalScreensSize &&
-            // don't show the next button in the first screen
-            this.state.currentScreen !== 1
-              ? (
-                <Button
-                  level='secondary'
-                  type='default'
-                  size='medium'
-                  onClick={this.onClickNext}
-                  text={locale.next}
-                  icon={{ position: 'after', image: <ArrowRightIcon /> }}
-                />
-              )
-              : this.state.currentScreen !== 1 && (
-                <Button
-                  level='secondary'
-                  type='default'
-                  size='medium'
-                  onClick={this.onClickDone}
-                  text={locale.done}
-                />
-            )
-          }
-        </Welcome.FooterRightColumn>
-      </Welcome.Footer>
-    )
   }
 
   onClickLetsGo = () => {
@@ -229,14 +63,15 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
     // fades in to new tab page
   }
 
-  onSkipWelcomeTour = () => {
+  onClickSkip = () => {
     // fades out
     // fades in to new tab page
   }
 
   onClickImport = () => {
     this.setState({ fakeBookmarksImported: !this.state.fakeBookmarksImported })
-    // prob not the correct syntax for this behavior, but a reminder that clicking this button executes functionality and then auto proceed to next screen
+    // prob not the correct syntax for this behavior, but a reminder that
+    // clicking this button executes functionality and then auto proceed to next screen
     this.setState({ currentScreen: this.state.currentScreen + 1 })
     console.log('IMPORTED!')
   }
@@ -251,6 +86,10 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
     this.setState({ fakeChangedDefaultTheme: !this.state.fakeChangedDefaultTheme })
     this.setState({ currentScreen: this.state.currentScreen + 1 })
     console.log('NEW THEME CHOOSED')
+  }
+
+  onClickRewardsGetStarted = () => {
+    console.log('SENT TO REWARDS PAGE')
   }
 
   get backgroundPosition () {
@@ -273,16 +112,12 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
   }
 
   render () {
+    const { currentScreen } = this.state
     return (
       <>
-        <Welcome.Background
-          background={{
-            image: background,
-            position: this.backgroundPosition
-          }}
-        />
-        <Welcome.Page>
-          <Welcome.Panel>
+        <Background background={{ image: background, position: this.backgroundPosition }} />
+        <Page>
+          <Panel>
             <div
               style={{
                 maxWidth: 'inherit',
@@ -292,19 +127,24 @@ class WelcomePage extends React.PureComponent<{}, WelcomePageState> {
                 alignItems: 'center'
               }}
             >
-              {this.firstScreen}
-              {this.secondScreen}
-              {this.thirdScreen}
-              {this.fourthScreen}
-              {this.fifthScreen}
-              {this.sixthScreen}
+              <WelcomeBox index={1} currentScreen={currentScreen} onClick={this.onClickLetsGo} />
+              <ImportBox index={2} currentScreen={currentScreen} onClick={this.onClickImport} />
+              <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} />
+              <ThemeBox index={4} currentScreen={currentScreen} onClick={this.onClickChooseYourTheme} />
+              <ShieldsBox index={5} currentScreen={currentScreen} />
+              <RewardsBox index={6} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />
             </div>
-            {this.footer}
-          </Welcome.Panel>
-        </Welcome.Page>
+            <FooterBox
+              totalScreensSize={this.totalScreensSize}
+              currentScreen={currentScreen}
+              onClickSkip={this.onClickSkip}
+              onClickSlideBullet={this.onClickSlideBullet}
+              onClickNext={this.onClickNext}
+              onClickDone={this.onClickDone}
+            />
+          </Panel>
+        </Page>
       </>
     )
   }
 }
-
-export default WelcomePage

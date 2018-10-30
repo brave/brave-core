@@ -2,6 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { ComponentType } from 'react'
 import styled, { css } from 'styled-components'
 
 interface BaseButtonProps {
@@ -32,7 +33,7 @@ export const SkipButton = styled(BaseButton)`
   }
 `
 
-export const Bullet = styled(BaseButton)`
+export const Bullet = styled(BaseButton as ComponentType<any>)`
   padding: 0 7px;
   font-size: 36px;
   color: #7C7D8C;
