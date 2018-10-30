@@ -15,10 +15,8 @@
 
 namespace extensions {
 
-BraveExtensionManagement::BraveExtensionManagement(
-    PrefService* pref_service,
-    bool is_signin_profile)
-    : ExtensionManagement(pref_service, is_signin_profile) {
+BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
+    : ExtensionManagement(profile) {
   providers_.push_back(
       std::make_unique<BraveExtensionProvider>());
   RegisterBraveExtensions();

@@ -5,11 +5,12 @@ source_set("browser") {
     "brave_content_settings_pref_provider.cc",
     "brave_content_settings_pref_provider.h",
     "brave_cookie_settings.cc",
-    "brave_cookie_settings.h",
+    "brave_cookie_settings.h"
   ]
 
   deps = [
     "//base",
+    "//brave/common:brave_cookie_blocking",
     "//brave/common/tor:pref_names",
     "//components/content_settings/core/common",
     "//components/prefs",

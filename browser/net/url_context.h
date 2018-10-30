@@ -34,6 +34,8 @@ enum BraveNetworkDelegateEventType {
   kOnBeforeRequest,
   kOnBeforeStartTransaction,
   kOnHeadersReceived,
+  kOnCanGetCookies,
+  kOnCanSetCookies,
   kUnknownEventType
 };
 
@@ -53,6 +55,8 @@ struct BraveRequestInfo {
   bool allow_brave_shields = true;
   bool allow_ads = false;
   bool allow_http_upgradable_resource = false;
+  bool allow_1p_cookies = true;
+  bool allow_3p_cookies = false;
   bool referrer_changed = false;
   int render_process_id = 0;
   int render_frame_id = 0;
@@ -70,7 +74,7 @@ struct BraveRequestInfo {
   // can properly detect that the info couldn't be obtained.
   content::ResourceType resource_type = content::RESOURCE_TYPE_LAST_TYPE;
 
-  static void FillCTXFromRequest(net::URLRequest* request,
+  static void FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
 
  private:
@@ -89,7 +93,7 @@ struct BraveRequestInfo {
 
   // Don't use this directly after any dispatch
   // request is deprecated, do not use it.
-  net::URLRequest* request;
+  const net::URLRequest* request;
   GURL* new_url = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
@@ -111,6 +115,10 @@ using OnHeadersReceivedCallback =
         GURL* allowed_unsafe_redirect_url,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnCanGetCookiesCallback =
+    base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnCanSetCookiesCallback =
+    base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
 
 }  // namespace brave
 

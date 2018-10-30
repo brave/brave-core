@@ -4,8 +4,12 @@
 
 #include "brave/browser/ui/content_settings/brave_content_setting_image_models.h"
 
-#include "brave/browser/ui/content_settings/brave_widevine_blocked_image_model.h"
 #include "brave/browser/ui/content_settings/brave_autoplay_blocked_image_model.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#include "brave/browser/ui/content_settings/brave_widevine_blocked_image_model.h"
+#endif
 
 void BraveGenerateContentSettingImageModels(
     std::vector<std::unique_ptr<ContentSettingImageModel>>& result) {
@@ -19,9 +23,11 @@ void BraveGenerateContentSettingImageModels(
     }
   }
 
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   result.push_back(std::make_unique<BraveWidevineBlockedImageModel>(
       BraveWidevineBlockedImageModel::ImageType::PLUGINS,
       CONTENT_SETTINGS_TYPE_PLUGINS));
+#endif
 
   result.push_back(std::make_unique<BraveAutoplayBlockedImageModel>());
 }

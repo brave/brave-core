@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Terminé</translation>
 <translation id="5946611334574299206">Gagnez des jetons en voyant des publicités dans Brave. Les publicités présentées sont basées sur vos centres d\'intérêt, qui sont déduits en fonction de votre comportement de navigation. Aucune donnée personnelle et aucun historique de navigation ne sortent de votre navigateur.</translation>
 <translation id="6112368337882254910">Contribution automatique</translation>
-<translation id="2463717412061968637">Budget mensuel</translation>
 <translation id="2846354907189538">Prochaine date de cotisation</translation>
 <translation id="8759716059844800317">Sites soutenus</translation>
 <translation id="1617202384704994799">Bientôt disponible.</translation>
 <translation id="1847863811689960237">Récompensez les créateurs pour le contenu que vous aimez.</translation>
-<translation id="8647072638653845647">Votre budget mensuel est réparti en direction des sites que vous visitez.</translation>
 <translation id="1165667598801520610">Ajouter des fonds</translation>
 <translation id="5314648471460409933">Gérer les fonds</translation>
 <translation id="2726674968268546964">jetons</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Vous y êtes presque…</translation>
 <translation id="5254740304961202261">Prouvez que vous êtes humain !</translation>
 <translation id="5118651998291801746">Mmmm…pas tout à fait</translation>
-<translation id="3988548751595192480">Le serveur de paiement de Brave ne répond pas. Nous allons corriger ce problème aussi vite que possible.</translation>
 <translation id="2323069945529668668">Oh oh !</translation>
 <translation id="5094577350232361255">à propos</translation>
 <translation id="4918086044614829423">Accepter</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">Afin de protéger votre vie privée, ce relevé de Récompenses Brave n\'est pas sauvegardé, ni archivé ou enregistré ailleurs que sur votre appareil (cet ordinateur). Brave ne peut pas le récupérer en cas de perte de données sur votre appareil.</translation>
 <translation id="1036277985068412734">ajouter des fonds</translation>
 <translation id="4496990471549986619">la FAQ</translation>
-<translation id="7957192189831789977">Rappel : le porte-monnaie Brave ne fonctionne que dans une seule direction et les BAT sont versés sur les sites des éditeurs. Pour plus d\'information sur les Paiements Brave, veuillez visiter</translation>
 <translation id="2790014973538267577">Montrer le code QR</translation>
 <translation id="3548138903799045620">Brave facilite le transfert de fonds depuis votre porte-monnaie de monnaie virtuelle existant vers votre porte-monnaie BAT Brave.</translation>
 <translation id="3832196416506129616">Ajouter des fonds à votre porte-monnaie Brave</translation>
@@ -149,11 +145,8 @@
 <translation id="1110535155349301542">effacer</translation>
 <translation id="3157931365184549694">Restaurer</translation>
 <translation id="3626186271103896082">Faites une sauvegarde de votre portefeuille</translation>
-<translation id="5993107153564707598">Merci pour votre visite. Nous avons souscrit à la vision de Brave’s en termes de protection de la vie privée car nous pensons que les fans comme vous soutiendraient nos efforts pour faire que le web reste un endroit sain et sûr.</translation>
 <translation id="3074127054582480056">Attention</translation>
 <translation id="822513417008209372">Vous’ soutenez actuellement la cause de</translation>
-<translation id="3469762469298298902">Les Récompenses Brave vous permettent de reprendre le contrôle.</translation>
-<translation id="3863981251715594911">Comment ça marche?</translation>
 <translation id="5830306739231399614">Malheureusement, vous n\'avez pas encore de jeton.</translation>
 <translation id="7359258898775969374">3 manières de remplir votre porte-monnaie :</translation>
 <translation id="8087614920008846901">Vous pouvez ajouter des fonds.</translation>

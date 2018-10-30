@@ -120,7 +120,6 @@ void BraveMainDelegate::PreSandboxStartup() {
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  command_line.AppendSwitch(switches::kEnableTabAudioMuting);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
@@ -129,7 +128,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   enabled_features << features::kEnableEmojiContextMenu.name
     << "," << features::kDesktopPWAWindowing.name
     << "," << password_manager::features::kFillOnAccountSelect.name
-    << "," << extensions::features::kNewExtensionUpdaterService.name;
+    << "," << extensions_features::kNewExtensionUpdaterService.name;
 
   std::stringstream disabled_features;
   disabled_features << features::kSharedArrayBuffer.name

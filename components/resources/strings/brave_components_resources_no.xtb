@@ -41,12 +41,10 @@
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="5946611334574299206">Tjen tokener ved å se annonser i Brave. Annonser som presenteres er basert på dine interesser, som hentet fra dine nettleservaner. Ingen personlige data eller nettleserhistorikk forlater noensinne nettleseren din.</translation>
 <translation id="6112368337882254910">Auto-bidrag</translation>
-<translation id="2463717412061968637">Månedlig budsjett</translation>
 <translation id="2846354907189538">Neste bidragsdato</translation>
 <translation id="8759716059844800317">Støttede nettsider</translation>
 <translation id="1617202384704994799">Kommer snart.</translation>
 <translation id="1847863811689960237">Belønn skapere for innholdet du elsker.</translation>
-<translation id="8647072638653845647">Ditt månedlige budsjett blir delt ut til nettsidene du besøker.</translation>
 <translation id="1165667598801520610">Legg til penger</translation>
 <translation id="5314648471460409933">Administrer penger</translation>
 <translation id="2726674968268546964">tokener</translation>
@@ -70,7 +68,6 @@
 <translation id="2195074481553016770">Nesten der…</translation>
 <translation id="5254740304961202261">Bevis at du er et menneske!</translation>
 <translation id="5118651998291801746">Hmmm…ikke helt.</translation>
-<translation id="3988548751595192480">Betalingsserveren til Brave responderer ikke. Vi vil reparere dette så snart som mulig.</translation>
 <translation id="2323069945529668668">Å nei!</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Godta</translation>
@@ -78,7 +75,6 @@
 <translation id="9026369588205476247">For å beskytte ditt personvern, blir ikke denne Brave Rewards-utskriften lagret eller logget noen andre steder enn på din enhet (denne datamaskinen). Den kan ikke hentes opp igjen fra Brave i tilfelle datatap på din enhet.</translation>
 <translation id="1036277985068412734">legg til penger</translation>
 <translation id="4496990471549986619">Ofte stilte spørsmål</translation>
-<translation id="7957192189831789977">Påminnelse: Brave-lommeboken er enveis og BAT strømmer til utgivernettsteder. For mer informasjon om Brave-betalinger, vennligst besøk</translation>
 <translation id="2790014973538267577">Vis QR-kode</translation>
 <translation id="3548138903799045620">Brave gjør det enkelt å overføre midler fra den eksisterende kryptovaluta-lommeboken din til Brave BAT-lommeboken din.</translation>
 <translation id="3832196416506129616">Legg til penger i din Brave-lommebok</translation>
@@ -150,11 +146,8 @@ dag i hver måned.</translation>
 <translation id="1110535155349301542">fjern</translation>
 <translation id="3157931365184549694">Restaurere</translation>
 <translation id="3626186271103896082">Lag sikkerhetskopi av Lommeboken din</translation>
-<translation id="5993107153564707598">Takk for at du stopper innom. Vi ble med Brave’s visjon å beskytte ditt privatliv fordi vi tror på at fans som dere hadde støttet oss i vårt forsøk på å holde nettet en ren og trygg plass å være.</translation>
 <translation id="3074127054582480056">Oppmerksomhet</translation>
 <translation id="822513417008209372">Du støtter for øyeblikket</translation>
-<translation id="3469762469298298902">Brave-belønninger lar deg ta tilbake kontrollen.</translation>
-<translation id="3863981251715594911">Hvordan fungerer den?</translation>
 <translation id="5830306739231399614">Desverre, ingen tokens enda.</translation>
 <translation id="7359258898775969374">3 måter å fylle lommeboken din på:</translation>
 <translation id="8087614920008846901">Du kan legge til penger.</translation>

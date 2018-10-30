@@ -45,6 +45,15 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
       GURL* allowed_unsafe_redirect_url) override;
 
+  bool OnCanGetCookies(const net::URLRequest& request,
+                       const net::CookieList& cookie_list,
+                       bool allowed_from_caller) override;
+
+  bool OnCanSetCookie(const net::URLRequest& request,
+                      const net::CanonicalCookie& cookie,
+                      net::CookieOptions* options,
+                      bool allowed_from_caller) override;
+
   void OnURLRequestDestroyed(net::URLRequest* request) override;
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
@@ -58,6 +67,10 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       before_start_transaction_callbacks_;
   std::vector<brave::OnHeadersReceivedCallback>
       headers_received_callbacks_;
+  std::vector<brave::OnCanGetCookiesCallback>
+      can_get_cookies_callbacks_;
+  std::vector<brave::OnCanSetCookiesCallback>
+      can_set_cookies_callbacks_;
 
  private:
   void GetReferralHeaders();

@@ -195,7 +195,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByDefaultBlocker
 // Load a page with an ad image, and make sure it is blocked by the
 // regional blocker.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
-  g_browser_process->SetApplicationLocale("fr");
+  g_browser_process->SetApplicationLocale("fr", "fr");
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
   ASSERT_TRUE(StartAdBlockRegionalService());
@@ -224,7 +224,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
 // Load a page with an image which is not an ad, and make sure it is
 // NOT blocked by the regional blocker.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByRegionalBlocker) {
-  g_browser_process->SetApplicationLocale("fr");
+  g_browser_process->SetApplicationLocale("fr", "fr");
   ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
 
   ASSERT_TRUE(StartAdBlockRegionalService());

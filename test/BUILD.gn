@@ -1,6 +1,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//testing/test.gni")
+import("//third_party/widevine/cdm/widevine.gni")
 
 static_library("brave_test_support_unit") {
   testonly = true
@@ -178,8 +179,6 @@ static_library("browser_test_support") {
   sources = [
     "base/brave_test_launcher_delegate.cc",
     "base/brave_test_launcher_delegate.h",
-    "//brave/app/brave_main_delegate.cc",
-    "//brave/app/brave_main_delegate.h",
   ]
 }
 
@@ -211,13 +210,11 @@ test("brave_browser_tests") {
     "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
-    "//brave/browser/extensions/brave_webstore_inline_installer_browsertest.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
     "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
     "//brave/browser/search_engine_provider_controller_browsertest.cc",
     "//brave/browser/ui/content_settings/brave_autoplay_blocked_image_model_browsertest.cc",
-    "//brave/browser/ui/content_settings/brave_widevine_blocked_image_model_browsertest.cc",
     "//brave/browser/ui/webui/brave_new_tab_ui_browsertest.cc",
     "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
     "//brave/common/brave_channel_info_browsertest.cc",
@@ -238,6 +235,12 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/updater/extension_cache_fake.cc",
     "//chrome/browser/extensions/updater/extension_cache_fake.h",
   ]
+
+  if (enable_widevine_cdm_component) {
+    sources += [
+      "//brave/browser/ui/content_settings/brave_widevine_blocked_image_model_browsertest.cc",
+    ]
+  }
 
   if (brave_rewards_enabled) {
     sources += [

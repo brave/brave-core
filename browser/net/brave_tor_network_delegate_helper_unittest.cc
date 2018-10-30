@@ -94,8 +94,9 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
   EXPECT_TRUE(before_url_context->new_url_spec.empty());
   auto* proxy_service = request->context()->proxy_resolution_service();
   net::ProxyInfo info;
-  proxy_service->TryResolveProxySynchronously(url, std::string(), &info,
-                                              nullptr, net::NetLogWithSource());
+  std::unique_ptr<net::ProxyResolutionService::Request> proxy_request;
+  proxy_service->ResolveProxy(url, std::string(), &info, base::DoNothing(),
+                              &proxy_request, net::NetLogWithSource());
   EXPECT_EQ(info.ToPacString(), "DIRECT");
   ASSERT_TRUE(proxy_service->config());
   EXPECT_TRUE(proxy_service->config()->value().proxy_rules().empty());
@@ -137,8 +138,8 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
   auto* proxy_service = request->context()->proxy_resolution_service();
   net::ProxyInfo info;
   std::unique_ptr<net::ProxyResolutionService::Request> proxy_request;
-  proxy_service->TryResolveProxySynchronously(url, std::string(), &info,
-                                              nullptr, net::NetLogWithSource());
+  proxy_service->ResolveProxy(url, std::string(), &info, base::DoNothing(),
+                              &proxy_request, net::NetLogWithSource());
   EXPECT_EQ(info.ToPacString(), tor::kTestTorPacString);
   ASSERT_TRUE(proxy_service->config());
   ASSERT_FALSE(proxy_service->config()->value().proxy_rules().empty());

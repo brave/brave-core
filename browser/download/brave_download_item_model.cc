@@ -17,7 +17,7 @@
 
 using download::DownloadItem;
 
-BraveDownloadItemModel::BraveDownloadItemModel(DownloadItemModel& model)
+BraveDownloadItemModel::BraveDownloadItemModel(DownloadUIModel& model)
     : model_(model) {}
 
 BraveDownloadItemModel::~BraveDownloadItemModel() {}

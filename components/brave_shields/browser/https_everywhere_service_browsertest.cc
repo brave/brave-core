@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/task/post_task.h"
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
@@ -11,6 +12,7 @@
 #include "chrome/browser/net/url_request_mock_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
@@ -39,8 +41,7 @@ public:
 
   void SetUpOnMainThread() override {
     ExtensionBrowserTest::SetUpOnMainThread();
-    content::BrowserThread::PostTask(
-        content::BrowserThread::IO, FROM_HERE,
+    base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::IO},
         base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
     host_resolver()->AddRule("*", "127.0.0.1");
   }
