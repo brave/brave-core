@@ -112,7 +112,6 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   void ServeAdFromCategory(
       const std::string& category,
       CallbackHandler* callback_handler);
-  void ServeAdFromAds(std::vector<bundle::CategoryInfo>& ads);
   std::vector<bundle::CategoryInfo> GetUnseenAds(
       const std::vector<bundle::CategoryInfo>& categories);
   bool IsAllowedToShowAds();
