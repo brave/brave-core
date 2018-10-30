@@ -12,6 +12,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequenced_task_runner.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
+#include "url/gurl.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -30,6 +32,11 @@ class BraveReferralsService {
   void Start();
   void Stop();
 
+  static bool GetMatchingReferralHeaders(
+      const base::ListValue& referral_headers_list,
+      const base::DictionaryValue** request_headers_dict,
+      const GURL& url);
+
  private:
   void GetFirstRunTime();
   base::FilePath GetPromoCodeFileName() const;
@@ -42,6 +49,8 @@ class BraveReferralsService {
   std::string BuildReferralFinalizationCheckPayload() const;
   void FetchReferralHeaders();
   void CheckForReferralFinalization();
+  std::string FormatExtraHeaders(const base::Value* referral_headers,
+                                 const GURL& url);
 
   // Invoked from RepeatingTimer when referral headers timer fires.
   void OnFetchReferralHeadersTimerFired();

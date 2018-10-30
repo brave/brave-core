@@ -124,6 +124,41 @@ void BraveReferralsService::Stop() {
   initialized_ = false;
 }
 
+// static
+bool BraveReferralsService::GetMatchingReferralHeaders(
+    const base::ListValue& referral_headers_list,
+    const base::DictionaryValue** request_headers_dict,
+    const GURL& url) {
+  // If the domain for this request matches one of our target domains,
+  // set the associated custom headers.
+  for (const auto& headers_value : referral_headers_list) {
+    const base::Value* domains_list =
+        headers_value.FindKeyOfType("domains", base::Value::Type::LIST);
+    if (!domains_list) {
+      LOG(WARNING) << "Failed to retrieve 'domains' key from referral headers";
+      continue;
+    }
+    const base::Value* headers_dict =
+        headers_value.FindKeyOfType("headers", base::Value::Type::DICTIONARY);
+    if (!headers_dict) {
+      LOG(WARNING) << "Failed to retrieve 'headers' key from referral headers";
+      continue;
+    }
+    for (const auto& domain_value : domains_list->GetList()) {
+      URLPattern url_pattern(URLPattern::SCHEME_HTTPS |
+                             URLPattern::SCHEME_HTTP);
+      url_pattern.SetScheme("*");
+      url_pattern.SetHost(domain_value.GetString());
+      url_pattern.SetPath("/*");
+      url_pattern.SetMatchSubdomains(true);
+      if (!url_pattern.MatchesURL(url))
+        continue;
+      return headers_dict->GetAsDictionary(request_headers_dict);
+    }
+  }
+  return false;
+}
+
 void BraveReferralsService::OnFetchReferralHeadersTimerFired() {
   FetchReferralHeaders();
 }
@@ -185,18 +220,8 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     return;
   }
 
-  const base::Value* offer_page_url = root->FindKey("offer_page_url");
-  if (offer_page_url) {
-    chrome::ScopedTabbedBrowserDisplayer browser_displayer(
-        ProfileManager::GetLastUsedProfile());
-    browser_displayer.browser()->OpenURL(content::OpenURLParams(
-        GURL(offer_page_url->GetString()), content::Referrer(),
-        WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
-  }
-
-  if (root->FindKey("headers")) {
-    const base::Value* headers = root->FindKey("headers");
+  const base::Value* headers = root->FindKey("headers");
+  if (headers) {
     pref_service_->Set(kReferralHeaders, *headers);
   }
 
@@ -205,6 +230,18 @@ void BraveReferralsService::OnReferralInitLoadComplete(
 
   const base::Value* referral_code = root->FindKey("referral_code");
   pref_service_->SetString(kReferralPromoCode, referral_code->GetString());
+
+  const base::Value* offer_page_url = root->FindKey("offer_page_url");
+  if (offer_page_url) {
+    GURL gurl(offer_page_url->GetString());
+    chrome::ScopedTabbedBrowserDisplayer browser_displayer(
+        ProfileManager::GetLastUsedProfile());
+              content::OpenURLParams open_url_params(gurl, content::Referrer(),
+        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+    open_url_params.extra_headers = FormatExtraHeaders(headers, gurl);
+    browser_displayer.browser()->OpenURL(open_url_params);
+  }
 
   task_runner_->PostTask(FROM_HERE,
                          base::Bind(&BraveReferralsService::DeletePromoCodeFile,
@@ -520,6 +557,32 @@ void BraveReferralsService::CheckForReferralFinalization() {
           &BraveReferralsService::OnReferralFinalizationCheckLoadComplete,
           base::Unretained(this)),
       kMaxReferralServerResponseSizeBytes);
+}
+
+std::string BraveReferralsService::FormatExtraHeaders(
+    const base::Value* referral_headers,
+    const GURL& url) {
+  if (!referral_headers)
+    return std::string();
+
+  const base::ListValue* referral_headers_list = nullptr;
+  if (!referral_headers->GetAsList(&referral_headers_list))
+    return std::string();
+
+  const base::DictionaryValue* request_headers_dict = nullptr;
+  if (!GetMatchingReferralHeaders(*referral_headers_list, &request_headers_dict,
+                                  url))
+    return std::string();
+
+  std::string extra_headers;
+  for (const auto& it : request_headers_dict->DictItems()) {
+    extra_headers += base::StringPrintf("%s: %s\r\n", it.first.c_str(),
+                                        it.second.GetString().c_str());
+  }
+  if (!extra_headers.empty())
+    extra_headers += "\r\n";
+
+  return extra_headers;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
