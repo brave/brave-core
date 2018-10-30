@@ -349,7 +349,9 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
 void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
     BookmarkModel* model,
     const BookmarkNode* node) {
-  BookmarkNodeChanged(model, node);
+  // TODO(darkdh): This will be triggered right after apply sync CREATE records
+  // So the node applied from sync record will be put into unsync list
+  // BookmarkNodeChanged(model, node);
 }
 
 void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
@@ -512,6 +514,14 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
 
   auto* deleted_node = GetDeletedNodeRoot();
   CHECK(deleted_node);
+  std::string sync_timestamp;
+  node->GetMetaInfo("sync_timestamp", &sync_timestamp);
+
+  if (!sync_timestamp.empty()) {
+    record->syncTimestamp = base::Time::FromJsTime(std::stod(sync_timestamp));
+  } else {
+    record->syncTimestamp = base::Time::Now();
+  }
 
   if (record->objectId.empty()) {
     ScopedPauseObserver pause(this);
@@ -519,7 +529,7 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
     record->action = jslib::SyncRecord::Action::CREATE;
     bookmark_model_->SetNodeMetaInfo(node, "object_id", record->objectId);
   } else if (node->HasAncestor(deleted_node)) {
-   record->action = jslib::SyncRecord::Action::DELETE;
+    record->action = jslib::SyncRecord::Action::DELETE;
   } else {
     record->action = jslib::SyncRecord::Action::UPDATE;
     DCHECK(!record->objectId.empty());
@@ -553,7 +563,14 @@ void BookmarkChangeProcessor::GetAllSyncData(
     resolved_record->first = jslib::SyncRecord::Clone(*record);
     auto* node = FindByObjectId(bookmark_model_, record->objectId);
     if (node) {
+      // only match unsynced nodes so we don't accidentally overwrite
+      // changes from another client with our local changes
+      // TODO(darkdh): remove this hack once sync library can diffenrentiate
+      // records by syncTimstamp
+      if (IsUnsynced(node) ||
+          record->action != jslib::SyncRecord::Action::UPDATE) {
       resolved_record->second = BookmarkNodeToSyncBookmark(node);
+      }
     }
 
     records_and_existing_objects->push_back(std::move(resolved_record));

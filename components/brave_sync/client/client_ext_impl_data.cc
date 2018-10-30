@@ -198,7 +198,8 @@ std::unique_ptr<extensions::api::brave_sync::SyncRecord> FromLibSyncRecord(
   ext_record->object_id_str.reset(new std::string(lib_record->objectId));
 
   ext_record->object_data = lib_record->objectData;
-  //ext_record->sync_timestamp = 0;//lib_record->syncTimestamp.ToJsTime();
+  ext_record->sync_timestamp.reset(
+    new double(lib_record->syncTimestamp.ToJsTime()));
   if (lib_record->has_bookmark()) {
     ext_record->bookmark = FromLibBookmark(lib_record->GetBookmark());
   } else if (lib_record->has_historysite()) {
