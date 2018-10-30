@@ -119,8 +119,9 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
   }
 
   if (client.HasMember("adsUUIDSeen")) {
-    for (const auto& [uuid, seen] : client["adsUUIDSeen"].GetObject()) {
-      ads_uuid_seen.insert({uuid.GetString(), seen.GetInt64()});
+    for (const auto& ad_uuid_seen : client["adsUUIDSeen"].GetObject()) {
+      ads_uuid_seen.insert({ad_uuid_seen.name.GetString(),
+        ad_uuid_seen.value.GetInt64()});
     }
   }
 
@@ -183,8 +184,8 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
   }
 
   if (client.HasMember("places")) {
-    for (const auto& [place, ssid] : client["places"].GetObject()) {
-      places.insert({place.GetString(), ssid.GetString()});
+    for (const auto& place : client["places"].GetObject()) {
+      places.insert({place.name.GetString(), place.value.GetString()});
     }
   }
 
@@ -230,9 +231,9 @@ void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state) {
 
   writer.String("adsUUIDSeen");
   writer.StartObject();
-  for (const auto& [uuid, seen] : state.ads_uuid_seen) {
-    writer.String(uuid.c_str());
-    writer.Uint64(seen);
+  for (const auto& ad_uuid_seen : state.ads_uuid_seen) {
+    writer.String(ad_uuid_seen.first.c_str());
+    writer.Uint64(ad_uuid_seen.second);
   }
   writer.EndObject();
 
@@ -286,9 +287,9 @@ void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state) {
 
   writer.String("places");
   writer.StartObject();
-  for (const auto& [place, ssid] : state.places) {
-    writer.String(place.c_str());
-    writer.String(ssid.c_str());
+  for (const auto& place : state.places) {
+    writer.String(place.first.c_str());
+    writer.String(place.second.c_str());
   }
   writer.EndObject();
 

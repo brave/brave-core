@@ -100,11 +100,11 @@ void SaveToJson(JsonWriter& writer, const BUNDLE_STATE& state) {
   writer.String("categories");
   writer.StartObject();
 
-  for (const auto& [category, categories] : state.categories) {
-    writer.String(category.c_str());
+  for (const auto& category : state.categories) {
+    writer.String(category.first.c_str());
     writer.StartArray();
 
-    for (const auto& category : categories) {
+    for (const auto& category : category.second) {
       writer.StartObject();
 
       writer.String("advertiser");
