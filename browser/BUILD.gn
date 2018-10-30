@@ -127,6 +127,7 @@ source_set("browser") {
     "permissions",
     "profiles",
     "referrals",
+    "renderer_context_menu",
     "renderer_host",
     "tor",
     "ui",
