@@ -4,6 +4,7 @@
 
 #include "brave/components/brave_sync/brave_sync_service_impl.h"
 
+#include "base/task/post_task.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 
@@ -586,8 +588,8 @@ void BraveSyncServiceImpl::StopLoop() {
 }
 
 void BraveSyncServiceImpl::LoopProc() {
-  content::BrowserThread::GetTaskRunnerForThread(
-      content::BrowserThread::UI)->PostTask(
+  base::CreateSingleThreadTaskRunnerWithTraits(
+    {content::BrowserThread::UI})->PostTask(
           FROM_HERE,
           base::BindOnce(&BraveSyncServiceImpl::LoopProcThreadAligned,
               // the timer will always be destroyed before the service
