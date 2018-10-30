@@ -825,7 +825,7 @@ bool BatPublishers::loadState(const std::string& data) {
 
 void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    LOG(ERROR) << "Could not save publisher state";
+    ledger_client_->Log(ledger::LogLevel::ERROR, "Could not save publisher state");
     // TODO - error handling
     return;
   }

@@ -343,6 +343,8 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration,
                                                      bool success,
                                                      const std::string& response,
                                                      const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatGetMedia::getPublisherFromMediaPropsCallback Response: %s", response.c_str());
+
   if (!success) {
     // TODO add error handler
     return;
@@ -408,6 +410,9 @@ void BatGetMedia::getPublisherInfoCallback(const uint64_t& duration,
                                            bool success,
                                            const std::string& response,
                                            const std::map<std::string, std::string>& headers) {
+  if (!success) {
+    ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatGetMedia::getPublisherInfoCallback Response: %s", response.c_str());
+  }
   if (success &&  providerName == YOUTUBE_MEDIA_TYPE) {
     std::string favIconURL = parseFavIconUrl(response);
     std::string channelId = parseChannelId(response);

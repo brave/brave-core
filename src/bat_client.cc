@@ -32,8 +32,10 @@ BatClient::~BatClient() {
 
 bool BatClient::loadState(const std::string& data) {
   braveledger_bat_helper::CLIENT_STATE_ST state;
-  if (!braveledger_bat_helper::loadFromJson(state, data.c_str()))
+  if (!braveledger_bat_helper::loadFromJson(state, data.c_str())) {
+    ledger_client_->Log(ledger::LogLevel::ERROR, "Failed to load client state: %s", data.c_str());
     return false;
+  }
 
   state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST(state));
 
@@ -77,7 +79,7 @@ void BatClient::registerPersona() {
 }
 
 void BatClient::requestCredentialsCallback(bool result, const std::string& response, const std::map<std::string, std::string>& headers) {
-  //LOG(ERROR) << "!!!response == " << response;
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::requestCredentialsCallback Response: %s", response.c_str());
   if (!result) {
     ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
@@ -166,6 +168,7 @@ std::string BatClient::getAnonizeProof(const std::string& registrarVK, const std
 void BatClient::registerPersonaCallback(bool result,
                                        const std::string& response,
                                        const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::registerPersonaCallback Response: %s", response.c_str());
   if (!result) {
     ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
@@ -288,13 +291,15 @@ void BatClient::getWalletProperties() {
                                           const std::string& response,
                                           const std::map<std::string, std::string>& headers) {
    braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
+   ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::walletPropertiesCallback Response: %s", response.c_str());
    if (!success) {
-      ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
+     ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
      return;
    }
 
    bool ok = braveledger_bat_helper::loadFromJson(properties, response);
    if (!ok) {
+     ledger_client_->Log(ledger::LogLevel::ERROR, "Failed to load wallet properties state: %s", response.c_str());
      ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
      return;
    }
@@ -432,6 +437,8 @@ void BatClient::reconcileCallback(const std::string& viewingId,
                                   bool result,
                                   const std::string& response,
                                   const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::reconcileCallback Response: %s", response.c_str());
+
   auto reconcile = GetReconcileById(viewingId);
 
   if (!result || reconcile.viewingId_.empty()) {
@@ -500,6 +507,8 @@ void BatClient::currentReconcileCallback(const std::string& viewingId,
                                          bool result,
                                          const std::string& response,
                                          const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::currentReconcileCallback Response: %s", response.c_str());
+
   if (!result) {
     ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
     // TODO errors handling
@@ -565,6 +574,8 @@ void BatClient::reconcilePayloadCallback(const std::string& viewingId,
                                          bool result,
                                          const std::string& response,
                                          const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::reconcilePayloadCallback Response: %s", response.c_str());
+  
   if (!result) {
     ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
     // TODO errors handling
@@ -603,6 +614,8 @@ void BatClient::registerViewingCallback(const std::string& viewingId,
                                         bool result,
                                         const std::string& response,
                                         const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::registerViewingCallback Response: %s", response.c_str());
+
   if (!result) {
     ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
     // TODO errors handling
@@ -647,7 +660,8 @@ void BatClient::viewingCredentialsCallback(const std::string& viewingId,
                                            bool result,
                                            const std::string& response,
                                            const std::map<std::string, std::string>& headers) {
-  //LOG(ERROR) << "!!!response viewingCredentialsCallback == " << response;
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::viewingCredentialsCallback Response: %s", response.c_str());
+  
   if (!result) {
     ledger_->OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
     // TODO errors handling
@@ -775,7 +789,8 @@ void BatClient::prepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot, co
 void BatClient::prepareBatchCallback(bool result,
                                      const std::string& response,
                                      const std::map<std::string, std::string>& headers) {
-  //LOG(ERROR) << "!!!!prepareBatchCallback response == " << response;
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::prepareBatchCallback Response: %s", response.c_str());
+
   std::vector<std::string> surveyors;
   braveledger_bat_helper::getJSONBatchSurveyors(response, surveyors);
   std::vector<braveledger_bat_helper::BATCH_PROOF> batchProof;
@@ -813,7 +828,9 @@ void BatClient::proofBatch(
 
   for (size_t i = 0; i < batchProof.size(); i++) {
     braveledger_bat_helper::SURVEYOR_ST surveyor;
-    braveledger_bat_helper::loadFromJson(surveyor, batchProof[i].ballot_.prepareBallot_);
+    if (!braveledger_bat_helper::loadFromJson(surveyor, batchProof[i].ballot_.prepareBallot_)) {
+      ledger_client_->Log(ledger::LogLevel::ERROR, "Failed to load surveyor state: %s", batchProof[i].ballot_.prepareBallot_.c_str());
+    }
 
     std::string signatureToSend;
     size_t delimeterPos = surveyor.signature_.find(',');
@@ -941,7 +958,8 @@ void BatClient::voteBatchCallback(const std::string& publisher,
                                   bool result,
                                   const std::string& response,
                                   const std::map<std::string, std::string>& headers) {
-  //LOG(ERROR) << "!!!voteBatchCallback response == " << response;
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::voteBatchCallback Response: %s", response.c_str());
+
   std::vector<std::string> surveyors;
   braveledger_bat_helper::getJSONBatchSurveyors(response, surveyors);
   for (size_t i = 0; i < state_->batch_.size(); i++) {
@@ -1035,9 +1053,7 @@ void BatClient::OnNicewareListLoaded(const std::string& pass_phrase,
 }
 
 void BatClient::continueRecover(int result, size_t *written, std::vector<uint8_t>& newSeed) {
-  if (ledger::is_verbose) {
-    LOG(ERROR) << "!!!recoverWallet result == " << result << "!!!result size == " << written;
-  }
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!recoverWallet result == %d, !!!result size == %d", result, written);
   if (0 != result || 0 == *written) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::LEDGER_ERROR, 0, empty);
@@ -1067,6 +1083,8 @@ void BatClient::continueRecover(int result, size_t *written, std::vector<uint8_t
 void BatClient::recoverWalletPublicKeyCallback(bool result,
                                                const std::string& response,
                                                const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::recoverWalletPublicKeyCallback Response: %s", response.c_str());
+
   if (!result) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::LEDGER_ERROR, 0, empty);
@@ -1091,6 +1109,7 @@ void BatClient::recoverWalletCallback(bool result,
                                       const std::map<std::string, std::string>& headers,
                                       const std::string& recoveryId) {
   if (!result) {
+    ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::recoverWalletCallback Response: %s", response.c_str());
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::LEDGER_ERROR, 0, empty);
     return;
@@ -1136,6 +1155,8 @@ void BatClient::getGrantCallback(bool success,
                                  const std::string& response,
                                  const std::map<std::string, std::string>& headers) {
   braveledger_bat_helper::GRANT properties;
+
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::getGrantCallback Response: %s", response.c_str());
 
   if (!success) {
     ledger_->OnGrant(ledger::Result::LEDGER_ERROR, properties);
@@ -1194,6 +1215,8 @@ void BatClient::setGrantCallback(bool success,
   braveledger_bat_helper::GRANT grant;
   braveledger_bat_helper::getJSONResponse(response, statusCode, error);
 
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::setGrantCallback Response: %s", response.c_str());
+
   if (!success) {
     if (statusCode == 403) {
       ledger_->OnGrantFinish(ledger::Result::CAPTCHA_FAILED, grant);
@@ -1234,6 +1257,7 @@ void BatClient::getGrantCaptcha() {
 void BatClient::getGrantCaptchaCallback(bool success,
                                         const std::string& response,
                                         const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!BatClient::getGrantCaptchaCallback Response: %s", response.c_str());
 
   auto it = headers.find("captcha-hint");
   if (!success || it == headers.end()) {

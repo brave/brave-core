@@ -52,9 +52,6 @@ void saveToJsonString(const T& t, std::string& json) {
 template <typename T>
 bool loadFromJson(T& t, const std::string& json) {
   bool succeded = t.loadFromJson(json);
-  if (!succeded) {
-    LOG(ERROR) << "Failed to parse:" << json << std::endl;
-  }
   return succeded;
 }
 

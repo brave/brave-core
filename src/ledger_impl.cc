@@ -170,7 +170,7 @@ void LedgerImpl::OnPostData(
     return;
   }
   //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad url == " << url;
-  LOG(ERROR) << "!!!type == " << type;
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!type == %s", type.c_str());
   std::vector<std::map<std::string, std::string>> twitchParts;
   if (TWITCH_MEDIA_TYPE == type) {
     braveledger_bat_helper::getTwitchParts(post_data, twitchParts);
@@ -504,14 +504,14 @@ void LedgerImpl::VotePublishers(const std::vector<braveledger_bat_helper::WINNER
 void LedgerImpl::PrepareVoteBatchTimer() {
   uint64_t start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
 
-  LOG(ERROR) << "!!!PrepareVoteBatchTimer starts in " << start_timer_in;
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!PrepareVoteBatchTimer starts in %" PRIu64, start_timer_in);
   ledger_client_->SetTimer(start_timer_in, last_prepare_vote_batch_timer_id_);
 }
 
 void LedgerImpl::VoteBatchTimer() {
   uint64_t start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
 
-  LOG(ERROR) << "!!!VoteBatchTimer starts in " << start_timer_in;
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!VoteBatchTimer starts in %" PRIu64, start_timer_in);
 
   ledger_client_->SetTimer(start_timer_in, last_vote_batch_timer_id_);
 }
@@ -704,6 +704,8 @@ void LedgerImpl::GetRecurringDonations(ledger::RecurringDonationCallback callbac
 }
 
 void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response, const std::map<std::string, std::string>& headers) {
+  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!LedgerImpl::LoadPublishersListCallback Response: %s", response.c_str());
+
   if (result && !response.empty()) {
     //no error so far
     bat_publishers_->RefreshPublishersList(response);
