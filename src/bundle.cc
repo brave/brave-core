@@ -8,8 +8,7 @@
 
 namespace state {
 
-Bundle::Bundle(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client) :
-    ads_(ads),
+Bundle::Bundle(ads::AdsClient* ads_client) :
     ads_client_(ads_client),
     bundle_state_(new BUNDLE_STATE()) {
 }

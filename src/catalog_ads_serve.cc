@@ -55,7 +55,7 @@ void AdsServe::OnCatalogDownloaded(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
 
-    auto catalog = std::make_unique<state::Catalog>(ads_, ads_client_);
+    auto catalog = std::make_unique<state::Catalog>(ads_client_);
     if (catalog->LoadJson(response)) {
       auto catalog_state = catalog->GetCatalogState();
       if (bundle_->GenerateFromCatalog(catalog_state)) {

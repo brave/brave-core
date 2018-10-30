@@ -22,7 +22,7 @@ namespace state {
 
 class Bundle: public ads::CallbackHandler {
  public:
-  Bundle(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client);
+  explicit Bundle(ads::AdsClient* ads_client);
   ~Bundle();
 
   bool LoadJson(const std::string& json);  // Deserialize
@@ -36,7 +36,6 @@ class Bundle: public ads::CallbackHandler {
  private:
   void OnBundleSaved(const ads::Result result);
 
-  rewards_ads::AdsImpl* ads_;  // NOT OWNED
   ads::AdsClient* ads_client_;  // NOT OWNED
 
   std::shared_ptr<BUNDLE_STATE> bundle_state_;

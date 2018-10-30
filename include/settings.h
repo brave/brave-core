@@ -19,7 +19,7 @@ namespace state {
 
 class Settings {
  public:
-  Settings(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client);
+  explicit Settings(ads::AdsClient* ads_client);
   ~Settings();
 
   bool LoadJson(const std::string& json);  // Deserialize
@@ -30,7 +30,6 @@ class Settings {
   uint64_t GetAdsAmountPerDay() const;
 
  private:
-  rewards_ads::AdsImpl* ads_;  // NOT OWNED
   ads::AdsClient* ads_client_;  // NOT OWNED
 
   std::unique_ptr<SETTINGS_STATE> settings_state_;

@@ -17,9 +17,9 @@ namespace rewards_ads {
 
 AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
     ads_client_(ads_client),
-    settings_(std::make_unique<state::Settings>(this, ads_client_)),
+    settings_(std::make_unique<state::Settings>(ads_client_)),
     client_(std::make_unique<state::Client>(this, ads_client_)),
-    bundle_(std::make_shared<state::Bundle>(this, ads_client_)),
+    bundle_(std::make_shared<state::Bundle>(ads_client_)),
     catalog_ads_serve_(std::make_unique<catalog::AdsServe>
       (this, ads_client_, bundle_)),
     initialized_(false),

@@ -19,7 +19,7 @@ namespace state {
 
 class Catalog: public ads::CallbackHandler {
  public:
-  Catalog(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client);
+  explicit Catalog(ads::AdsClient* ads_client);
   ~Catalog();
 
   bool LoadJson(const std::string& json);  // Deserialize
@@ -33,7 +33,6 @@ class Catalog: public ads::CallbackHandler {
   int64_t GetPing() const;
 
  private:
-  rewards_ads::AdsImpl* ads_;  // NOT OWNED
   ads::AdsClient* ads_client_;  // NOT OWNED
 
   std::shared_ptr<CATALOG_STATE> catalog_state_;

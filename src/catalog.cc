@@ -8,8 +8,7 @@
 
 namespace state {
 
-Catalog::Catalog(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client) :
-    ads_(ads),
+Catalog::Catalog(ads::AdsClient* ads_client) :
     ads_client_(ads_client),
     catalog_state_(new CATALOG_STATE()) {
 }

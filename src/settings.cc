@@ -7,8 +7,7 @@
 
 namespace state {
 
-Settings::Settings(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client) :
-    ads_(ads),
+Settings::Settings(ads::AdsClient* ads_client) :
     ads_client_(ads_client),
     settings_state_(new SETTINGS_STATE()) {
 }
