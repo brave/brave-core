@@ -33,7 +33,7 @@ class NightModeHelper: TabContentScript {
     
     static func setNightMode(tabManager: TabManager, enabled: Bool) {
         Preferences.General.nightMode.value = enabled
-        for tab in tabManager.tabs {
+        for tab in tabManager.allTabs {
             tab.setNightMode(enabled)
         }
     }
