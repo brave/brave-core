@@ -21,12 +21,12 @@ cr.define('settings', function() {
   class BraveAppearanceBrowserProxyImpl {
     /** @override */
     getBraveThemeType() {
-      return cr.sendWithPromise('getBraveThemeType');
+      return new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
     }
 
     /** @override */
     setBraveThemeType(theme) {
-      chrome.send('setBraveThemeType', [theme]);
+      chrome.braveTheme.setBraveThemeType(theme);
     }
   }
 
