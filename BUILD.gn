@@ -5,11 +5,8 @@
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
-if (is_android) {
-  dep_base = rebase_path("./", "//")
-} else {
-  dep_base = rebase_path("../..", "//")
-}
+
+dep_base = rebase_path("../..", "//")
 
 config("external_config") {
   include_dirs = [ "include" ]
