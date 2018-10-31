@@ -48,7 +48,7 @@ export default class ImportBox extends React.PureComponent<Props, State> {
             level='primary'
             type='accent'
             size='large'
-            text={this.state.onClickFired ? locale.imported : locale.import}
+            text={this.state.onClickFired ? locale.import : locale.import}
             onClick={this.onClickImport}
           />
       </Content>
