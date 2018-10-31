@@ -8,7 +8,8 @@ import {
   StyledWrapper,
   StyledTooltip,
   StyledTooltipText,
-  StyledPointer
+  StyledPointer,
+  StyledChildWrapper
 } from './style'
 
 export interface Props {
@@ -42,18 +43,19 @@ export default class Tooltip extends React.PureComponent<Props, State> {
     const { id, content, children } = this.props
 
     return (
-      <StyledWrapper
-        id={id}
-        onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}
-      >
+      <StyledWrapper id={id}>
         <StyledTooltip displayed={this.state.displayed}>
           <StyledPointer/>
           <StyledTooltipText>
             {content}
           </StyledTooltipText>
         </StyledTooltip>
-        {children}
+        <StyledChildWrapper
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+        >
+          {children}
+        </StyledChildWrapper>
       </StyledWrapper>
     )
   }

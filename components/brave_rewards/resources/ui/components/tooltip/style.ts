@@ -45,3 +45,7 @@ export const StyledPointer = styled<{}, 'div'>('div')`
   border-width: 0 7px 8px 7px;
   border-color: transparent transparent #0C0D21 transparent;
 `
+
+export const StyledChildWrapper = styled<{}, 'div'>('div')`
+  cursor: pointer;
+`

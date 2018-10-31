@@ -216,6 +216,7 @@ class ContributeBox extends React.Component<{}, State> {
           rows={this.contributeRows}
           allSites={false}
           numSites={55}
+          showRemove={true}
           onShowAll={this.onContributeModalOpen.bind(self)}
           headerColor={true}
         >
