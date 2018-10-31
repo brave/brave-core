@@ -33,7 +33,7 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
         <Paragraph>{locale.chooseSearchEngine}</Paragraph>
           <Button
             level='primary'
-            type='default'
+            type='accent'
             size='large'
             text={locale.search}
             onClick={onClick}

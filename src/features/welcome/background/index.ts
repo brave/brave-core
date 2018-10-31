@@ -27,7 +27,7 @@ export const Background = styled<BackgroundProps, 'div'>('div')`
   /* animation stuff courtesy of ross */
   animation-delay: 0s;
   animation-name: ${topToBottom};
-  animation-duration: 3s;
+  animation-duration: 4s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
   /* end of animation stuff */

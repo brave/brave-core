@@ -16,19 +16,23 @@ const fadeIn = keyframes`
 
 const slideOut = keyframes`
   from {
-    transform: translateX(0);
+    transform: scale(1) translateX(0);
+    opacity: 1;
   }
   to {
-    transform: translateX(-150%);
+    transform: scale(.8) translateX(-150%);
+    opacity: 0;
   }
 `
 
 const slideIn = keyframes`
   from {
-    transform: translateX(150%);
+    transform: scale(.8)translateX(150%);
+    opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: scale(1) translateX(0);
+    opacity: 1;
   }
 `
 
@@ -126,9 +130,9 @@ export const Panel = styled(Card)`
   /* animation start state must be the same as "from" keyframe */
   opacity: 0;
   /* animation stuff courtesy of ross */
-  animation-delay: .5s;
+  animation-delay: 1s;
   animation-name: ${fadeIn};
-  animation-duration: 1s;
+  animation-duration: 2s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
   /* end of animation stuff */
