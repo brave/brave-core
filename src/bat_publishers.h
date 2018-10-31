@@ -126,6 +126,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       bool min_duration,
       const uint64_t& currentReconcileStamp);
 
+  void clearAllBalanceReports();
+
  private:
 
   void onPublisherActivitySave(uint64_t windowId,
