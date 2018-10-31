@@ -102,7 +102,6 @@ bool Bundle::GenerateFromCatalog(
   state.categories = categories;
 
   bundle_state_.reset(new BUNDLE_STATE(state));
-  Save();
 
   return true;
 }
