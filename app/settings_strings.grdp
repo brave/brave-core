@@ -1443,7 +1443,7 @@
       Error mounting share. The specified share was not found on the network.
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_UNSUPPORTED_DEVICE_MESSAGE" desc="The message shown when mounting a new SMB share fails because the specified device is not supported.">
-      Error mounting share. The specified share is not supported.
+      Error mounting share. Please check that the file server you are connecting to supports SMBv2 or later.
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_SHARE_ADDED_MOUNT_EXISTS_MESSAGE" desc="The message shown when mounting a new SMB share fails because the share is already mounted.">
       Error mounting share. The specified share is already mounted.
@@ -3917,8 +3917,14 @@
     <message name="IDS_SETTINGS_KEYBOARD_KEY_EXTERNAL_COMMAND" desc="In Device Settings, the dropdown list item for the external Command key on Apple keyboards.">
       External Command
     </message>
+    <message name="IDS_SETTINGS_KEYBOARD_KEY_COMMAND" desc="In Device Settings, the dropdown list item for the external Command key on Apple keyboards when there's no internal keyboard on the device.">
+      Command
+    </message>
     <message name="IDS_SETTINGS_KEYBOARD_KEY_EXTERNAL_META" desc="In Device Settings, the dropdown list item for the external Meta key (Search key on BraveOS keyboards, and Windows key on Windows keyboards).">
       External Meta
+    </message>
+    <message name="IDS_SETTINGS_KEYBOARD_KEY_META" desc="In Device Settings, the dropdown list item for the external Meta key (Search key on BraveOS keyboards, and Windows key on Windows keyboards) when there's no internal keyboard on the device.">
+      Meta
     </message>
     <message name="IDS_SETTINGS_KEYBOARD_SEND_FUNCTION_KEYS" desc="In Device Settings, the checkbox label for interpreting the top-row keys as function keys instead.">
       Treat top-row keys as function keys
