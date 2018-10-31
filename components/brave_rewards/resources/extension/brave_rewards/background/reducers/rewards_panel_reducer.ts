@@ -41,6 +41,14 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
     case types.ON_WALLET_CREATED:
       state = { ...state }
       state.walletCreated = true
+      chrome.storage.local.get(['is_dismissed'], function (result) {
+        if (result && result['is_dismissed'] === 'false') {
+          chrome.browserAction.setBadgeText({
+            text: ''
+          })
+          chrome.storage.local.remove(['is_dismissed'])
+        }
+      })
       break
     case types.ON_WALLET_CREATE_FAILED:
       state = { ...state }
