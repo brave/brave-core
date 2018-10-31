@@ -24,6 +24,9 @@ struct BUNDLE_STATE {
       const rapidjson::Document& document,
       const std::map<std::string, std::string>& members);
 
+  std::string catalog_id;
+  uint64_t catalog_version;
+  uint64_t catalog_ping;
   std::map<std::string, std::vector<bundle::CategoryInfo>> categories;
 };
 

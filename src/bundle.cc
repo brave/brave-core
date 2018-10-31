@@ -96,7 +96,11 @@ bool Bundle::GenerateFromCatalog(
   }
 
   BUNDLE_STATE state;
+  state.catalog_id = catalog_state->catalog_id;
+  state.catalog_version = catalog_state->version;
+  state.catalog_ping = catalog_state->ping;
   state.categories = categories;
+
   bundle_state_.reset(new BUNDLE_STATE(state));
   Save();
 
@@ -106,6 +110,18 @@ bool Bundle::GenerateFromCatalog(
 void Bundle::Reset() {
   bundle_state_.reset(new BUNDLE_STATE());
   Save();
+}
+
+std::string Bundle::GetCatalogId() const {
+  return bundle_state_->catalog_id;
+}
+
+uint64_t Bundle::GetCatalogVersion() const {
+  return bundle_state_->catalog_version;
+}
+
+uint64_t Bundle::GetCatalogPing() const {
+  return bundle_state_->catalog_ping / rewards_ads::_milliseconds_in_a_second;
 }
 
 //////////////////////////////////////////////////////////////////////////////

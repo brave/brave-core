@@ -117,8 +117,7 @@ void AdsServe::ResetNextCatalogCheck() {
 }
 
 void AdsServe::UpdateNextCatalogCheck() {
-  // TODO(Terry Mancey): GetPing can no longer come from temporary catalog_
-  // next_catalog_check_ = catalog_->GetPing();
+  next_catalog_check_ = bundle_->GetCatalogPing();
   ads_->StartCollectingActivity(next_catalog_check_);
 }
 

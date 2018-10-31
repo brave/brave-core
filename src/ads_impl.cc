@@ -421,12 +421,12 @@ void AdsImpl::ProcessLocales(const std::vector<std::string>& locales) {
 }
 
 void AdsImpl::ServeAdFromCategory(const std::string& category) {
-  // TODO(Terry Mancey): Get catalog id from ads_client
-  // if (catalog_->GetCatalogId().empty()) {
-  //   // TODO(Terry Mancey): Implement Log (#44)
-  //   // 'Notification not made', { reason: 'no ad catalog' }
-  //   return;
-  // }
+  std::string catalog_id = bundle_->GetCatalogId();
+  if (catalog_id.empty()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'no ad catalog' }
+    return;
+  }
 
   if (category.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)

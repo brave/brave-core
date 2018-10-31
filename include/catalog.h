@@ -26,12 +26,6 @@ class Catalog: public ads::CallbackHandler {
 
   std::shared_ptr<CATALOG_STATE> GetCatalogState() const;
 
-  std::string GetCatalogId() const;
-
-  int64_t GetVersion() const;
-
-  int64_t GetPing() const;
-
  private:
   ads::AdsClient* ads_client_;  // NOT OWNED
 

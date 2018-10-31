@@ -36,16 +36,4 @@ std::shared_ptr<CATALOG_STATE> Catalog::GetCatalogState() const {
   return catalog_state_;
 }
 
-std::string Catalog::GetCatalogId() const {
-  return catalog_state_->catalog_id;
-}
-
-int64_t Catalog::GetVersion() const {
-  return catalog_state_->version;
-}
-
-int64_t Catalog::GetPing() const {
-  return catalog_state_->ping / rewards_ads::_milliseconds_in_a_second;
-}
-
 }  // namespace state

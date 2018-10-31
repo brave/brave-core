@@ -33,6 +33,10 @@ class Bundle: public ads::CallbackHandler {
 
   void Reset();
 
+  std::string GetCatalogId() const;
+  uint64_t GetCatalogVersion() const;
+  uint64_t GetCatalogPing() const;
+
  private:
   void OnBundleSaved(const ads::Result result);
 

@@ -9,9 +9,15 @@
 namespace state {
 
 BUNDLE_STATE::BUNDLE_STATE() :
+    catalog_id(""),
+    catalog_version(0),
+    catalog_ping(0),
     categories({}) {}
 
 BUNDLE_STATE::BUNDLE_STATE(const BUNDLE_STATE& state) {
+    catalog_id = state.catalog_id;
+    catalog_version = state.catalog_version;
+    catalog_ping = state.catalog_ping;
     categories = state.categories;
 }
 
