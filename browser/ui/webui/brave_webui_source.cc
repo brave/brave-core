@@ -6,8 +6,12 @@
 
 #include <map>
 
+#if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "components/grit/brave_components_resources.h"
+#else
+#include "components/grit/components_resources.h"
+#endif
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_ui_data_source.h"
 
