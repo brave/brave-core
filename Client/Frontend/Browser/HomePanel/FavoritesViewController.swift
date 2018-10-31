@@ -207,15 +207,6 @@ class FavoritesViewController: UIViewController, Themeable {
         braveShieldStatsView.timeStatView.color = isPrivate ? UX.GreyA : UX.GreyJ
     }
     
-    @objc func showPrivateTabInfo() {
-        let url = URL(string: "https://github.com/brave/browser-laptop/wiki/What-a-Private-Tab-actually-does")!
-        DispatchQueue.main.async {
-            // BRAVE TODO:
-            // let t = getApp().tabManager
-            // _ = t?.addTabAndSelect(URLRequest(url: url))
-        }
-    }
-    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         

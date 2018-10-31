@@ -535,7 +535,7 @@ class TabTrayController: UIViewController, Themeable {
         }, completion: { finished in
             // The addTab delegate method will pop to the BVC no need to do anything here.
             self.toolbar.isUserInteractionEnabled = true
-            if finished, request == nil, NewTabAccessors.getNewTabPage(self.profile.prefs) == .blankPage,
+            if finished, request == nil, NewTabAccessors.getNewTabPage() == .blankPage,
                 let appDelegate = UIApplication.shared.delegate as? AppDelegate,
                 let bvc = appDelegate.browserViewController {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {

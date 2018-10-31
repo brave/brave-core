@@ -5,11 +5,7 @@
 import Foundation
 import WebKit
 import Shared
-
-struct NightModePrefsKey {
-    static let NightModeButtonIsInMenu = PrefsKeys.KeyNightModeButtonIsInMenu
-    static let NightModeStatus = PrefsKeys.KeyNightModeStatus
-}
+import BraveShared
 
 class NightModeHelper: TabContentScript {
     fileprivate weak var tab: Tab?
@@ -30,25 +26,19 @@ class NightModeHelper: TabContentScript {
         // Do nothing.
     }
 
-    static func toggle(_ prefs: Prefs, tabManager: TabManager) {
-        let isActive = prefs.boolForKey(NightModePrefsKey.NightModeStatus) ?? false
-        setNightMode(prefs, tabManager: tabManager, enabled: !isActive)
+    static func toggle(tabManager: TabManager) {
+        let isActive = Preferences.General.nightMode.value
+        setNightMode(tabManager: tabManager, enabled: !isActive)
     }
     
-    static func setNightMode(_ prefs: Prefs, tabManager: TabManager, enabled: Bool) {
-        prefs.setBool(enabled, forKey: NightModePrefsKey.NightModeStatus)
+    static func setNightMode(tabManager: TabManager, enabled: Bool) {
+        Preferences.General.nightMode.value = enabled
         for tab in tabManager.tabs {
             tab.setNightMode(enabled)
         }
     }
 
-    static func isActivated(_ prefs: Prefs) -> Bool {
-        return prefs.boolForKey(NightModePrefsKey.NightModeStatus) ?? false
-    }
-}
-
-class NightModeAccessors {
-    static func isNightMode(_ prefs: Prefs) -> Bool {
-        return prefs.boolForKey(NightModePrefsKey.NightModeStatus) ?? false
+    static func isActivated() -> Bool {
+        return Preferences.General.nightMode.value
     }
 }
