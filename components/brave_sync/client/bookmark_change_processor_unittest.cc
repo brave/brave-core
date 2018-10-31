@@ -24,7 +24,7 @@
 
 // npm run test -- brave_unit_tests --filter=BraveBookmarkChangeProcessorTest.*
 
-// BraveSyncService::methods
+// BookmarkChangeProcessor::methods
 // Name                        | Covered
 //-------------------------------------
 // Create                      | + in SetUp
@@ -242,6 +242,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, Reset) {
   const BookmarkNode* node_c;
   AddSimpleHierarchy(&folder1, &node_a, &node_b, &node_c);
 
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 
   EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
@@ -327,6 +328,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
   int intex_c = folder1->GetIndexOf(node_c);
   EXPECT_EQ(intex_c, 2);
 
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 
   EXPECT_TRUE(HasAnySyncMetaInfo(folder1));
@@ -343,7 +345,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
   intex_c = folder1->GetIndexOf(node_c);
   EXPECT_EQ(intex_c, 2);
 
-  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+
   // Sould see at least one syncRecord Modified
   using brave_sync::jslib::SyncRecord;
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",

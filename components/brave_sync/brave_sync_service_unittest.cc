@@ -33,16 +33,16 @@
 //------------------------------------
 // SetSyncToBrowserHandler  |
 // GetSyncToBrowserHandler  |
-// SendGotInitData          |
+// SendGotInitData          | OnGetInitData
 // SendFetchSyncRecords     |
 // SendFetchSyncDevices     |
 // SendResolveSyncRecords   |
 // SendSyncRecords          |
-// SendDeleteSyncUser       | ?
-// SendDeleteSyncCategory   | ?
+// SendDeleteSyncUser       |
+// SendDeleteSyncCategory   |
 // SendGetBookmarksBaseOrder|
-// NeedSyncWords            | ?
-// NeedBytesFromSyncWords   | ?
+// NeedSyncWords            |
+// NeedBytesFromSyncWords   |
 // OnExtensionInitialized   |
 
 // BraveSyncService::methods
@@ -59,9 +59,30 @@
 // OnSetSyncBookmarks        | +
 // OnSetSyncBrowsingHistory  | +
 // OnSetSyncSavedSiteSettings| +
-// AddObserver               | + (in SetUp, is that enough?)
-// RemoveObserver            | + (in Teardown, is that enough?)
-// GetSyncClient             | + (in SetUp, is that enough?)
+// AddObserver               | +, SetUp
+// RemoveObserver            | +, Teardown
+// GetSyncClient             | +, SetUp
+
+// BraveSyncService  SyncMessageHandler overrides
+// Name                      | Covered
+//-------------------------------------
+// BackgroundSyncStarted     | +, BraveSyncServiceTest.BookmarkAddedImpl
+// BackgroundSyncStopped     | +
+// OnSyncDebug               | +
+// OnSyncSetupError          | Need UI handler
+// OnGetInitData             | +
+// OnSaveInitData            | BraveSyncServiceTest.GetSeed
+// OnSyncReady               | +
+// OnGetExistingObjects      | +
+// OnResolvedSyncRecords     | BraveSyncServiceTest.BookmarkAddedImpl
+// OnDeletedSyncUser         | N/A
+// OnDeleteSyncSiteSettings  | N/A
+// OnSaveBookmarksBaseOrder  | +
+// OnSyncWordsPrepared       | BraveSyncServiceTest.GetSyncWords
+// OnResolvedHistorySites    | N/A
+// OnResolvedPreferences     | BraveSyncServiceTest.OnDeleteDevice,
+//                           | BraveSyncServiceTest.OnResetSync
+// OnSyncPrefsChanged        | +
 
 using testing::_;
 using testing::AtLeast;
@@ -149,6 +170,8 @@ TEST_F(BraveSyncServiceTest, SetSyncEnabled) {
 }
 
 TEST_F(BraveSyncServiceTest, SetSyncDisabled) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnSetSyncEnabled(true);
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
       brave_sync::prefs::kSyncEnabled));
@@ -178,10 +201,8 @@ void BraveSyncServiceTest::BookmarkAddedImpl() {
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(AtLeast(1));
   sync_service()->OnSetupSyncNewToSync("UnitTestBookmarkAdded");
-  DLOG(INFO) << "[Brave Sync Test] firing start loop";
   sync_service()->BackgroundSyncStarted(true/*startup*/);
 
-  DLOG(INFO) << "[Brave Sync Test] fired start loop";
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(profile());
   bookmarks::AddIfNotBookmarked(bookmark_model,
                                  GURL("https://a.com"),
@@ -193,13 +214,10 @@ void BraveSyncServiceTest::BookmarkAddedImpl() {
 }
 
 TEST_F(BraveSyncServiceTest, BookmarkAdded) {
-  DLOG(INFO) << "[Brave Sync Test] TEST_F BookmarkAdded start";
   BookmarkAddedImpl();
-  DLOG(INFO) << "[Brave Sync Test] TEST_F BookmarkAdded done";
 }
 
 TEST_F(BraveSyncServiceTest, BookmarkDeleted) {
-  DLOG(INFO) << "[Brave Sync Test] TEST_F BookmarkDeleted start";
   BookmarkAddedImpl();
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(profile());
 
@@ -215,8 +233,6 @@ TEST_F(BraveSyncServiceTest, BookmarkDeleted) {
   // <= BraveSyncServiceImpl::OnResolvedSyncRecords
   sync_service()->OnResolvedSyncRecords(brave_sync::jslib_const::kBookmarks,
     std::make_unique<RecordsList>());
-
-  DLOG(INFO) << "[Brave Sync Test] TEST_F BookmarkDeleted done";
 }
 
 TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode) {
@@ -332,6 +348,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   records.push_back(SimpleDeviceRecord(
       jslib::SyncRecord::Action::CREATE,
       "3", "device3"));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
   auto devices = sync_service()->sync_prefs_->GetSyncDevices();
@@ -349,11 +366,9 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   sync_service()->OnDeleteDevice("2");
 
   RecordsList resolved_records;
-  //auto resolved_record1 = records.at(2)->Clone();
   auto resolved_record1 = SyncRecord::Clone(*records.at(2));
   resolved_record1->action = jslib::SyncRecord::Action::DELETE;
   resolved_records.push_back(std::move(resolved_record1));
-  //auto resolved_record2 = records.at(1)->Clone();
   auto resolved_record2 = SyncRecord::Clone(*records.at(1));
   resolved_record2->action = jslib::SyncRecord::Action::DELETE;
   resolved_records.push_back(std::move(resolved_record2));
@@ -416,7 +431,6 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
       brave_sync::prefs::kSyncLastFetchTime).is_null());
   EXPECT_TRUE(profile()->GetPrefs()->GetString(
       brave_sync::prefs::kSyncDeviceList).empty());
-DLOG(INFO) << "kSyncApiVersion=<" << profile()->GetPrefs()->GetString(brave_sync::prefs::kSyncApiVersion)<<">";
   EXPECT_EQ(profile()->GetPrefs()->GetString(
       brave_sync::prefs::kSyncApiVersion), "0");
 
@@ -427,9 +441,11 @@ DLOG(INFO) << "kSyncApiVersion=<" << profile()->GetPrefs()->GetString(brave_sync
 TEST_F(BraveSyncServiceTest, OnSetSyncBookmarks) {
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncBookmarksEnabled));
+  EXPECT_CALL(*observer(), OnSyncStateChanged).Times(1);
   sync_service()->OnSetSyncBookmarks(true);
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncBookmarksEnabled));
+  EXPECT_CALL(*observer(), OnSyncStateChanged).Times(1);
   sync_service()->OnSetSyncBookmarks(false);
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
       brave_sync::prefs::kSyncBookmarksEnabled));
@@ -438,9 +454,11 @@ TEST_F(BraveSyncServiceTest, OnSetSyncBookmarks) {
 TEST_F(BraveSyncServiceTest, OnSetSyncBrowsingHistory) {
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncHistoryEnabled));
+  EXPECT_CALL(*observer(), OnSyncStateChanged).Times(1);
   sync_service()->OnSetSyncBrowsingHistory(true);
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncHistoryEnabled));
+  EXPECT_CALL(*observer(), OnSyncStateChanged).Times(1);
   sync_service()->OnSetSyncBrowsingHistory(false);
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
       brave_sync::prefs::kSyncHistoryEnabled));
@@ -449,10 +467,78 @@ TEST_F(BraveSyncServiceTest, OnSetSyncBrowsingHistory) {
 TEST_F(BraveSyncServiceTest, OnSetSyncSavedSiteSettings) {
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncSiteSettingsEnabled));
+  EXPECT_CALL(*observer(), OnSyncStateChanged).Times(1);
   sync_service()->OnSetSyncSavedSiteSettings(true);
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncSiteSettingsEnabled));
+  EXPECT_CALL(*observer(), OnSyncStateChanged).Times(1);
   sync_service()->OnSetSyncSavedSiteSettings(false);
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
       brave_sync::prefs::kSyncSiteSettingsEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, OnGetInitData) {
+  EXPECT_CALL(*sync_client(), SendGotInitData).Times(1);
+  sync_service()->OnGetInitData("v1.4.2");
+}
+
+TEST_F(BraveSyncServiceTest, OnSaveBookmarksBaseOrder) {
+  sync_service()->OnSaveBookmarksBaseOrder("1.1.");
+  EXPECT_EQ(profile()->GetPrefs()->GetString(
+       brave_sync::prefs::kSyncBookmarksBaseOrder), "1.1.");
+}
+
+TEST_F(BraveSyncServiceTest, OnSyncPrefsChanged) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged);
+  sync_service()->OnSyncPrefsChanged(brave_sync::prefs::kSyncEnabled);
+}
+
+TEST_F(BraveSyncServiceTest, OnSyncDebug) {
+  EXPECT_CALL(*observer(), OnLogMessage(sync_service(), "message")).Times(1);
+  sync_service()->OnSyncDebug("message");
+}
+
+TEST_F(BraveSyncServiceTest, OnSyncReadyAlreadyWithSync) {
+  EXPECT_FALSE(sync_service()->IsSyncInitialized());
+  profile()->GetPrefs()->SetString(
+                           brave_sync::prefs::kSyncBookmarksBaseOrder, "1.1.");
+  // OnSyncPrefsChanged => OnSyncStateChanged for kSyncSiteSettingsEnabled
+  EXPECT_CALL(*observer(), OnSyncStateChanged);
+  profile()->GetPrefs()->SetBoolean(
+                            brave_sync::prefs::kSyncSiteSettingsEnabled, true);
+  profile()->GetPrefs()->SetTime(
+                     brave_sync::prefs::kSyncLastFetchTime, base::Time::Now());
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncDevices).Times(1);
+  sync_service()->OnSyncReady();
+  EXPECT_TRUE(sync_service()->IsSyncInitialized());
+}
+
+TEST_F(BraveSyncServiceTest, OnSyncReadyNewToSync) {
+  EXPECT_CALL(*observer(), OnSyncStateChanged);
+  profile()->GetPrefs()->SetBoolean(
+                            brave_sync::prefs::kSyncSiteSettingsEnabled, true);
+  EXPECT_CALL(*sync_client(), SendGetBookmarksBaseOrder).Times(1);
+  sync_service()->OnSyncReady();
+}
+
+TEST_F(BraveSyncServiceTest, OnGetExistingObjects) {
+  EXPECT_CALL(*sync_client(), SendResolveSyncRecords).Times(1);
+
+  auto records = std::make_unique<RecordsList>();
+  sync_service()->OnGetExistingObjects(jslib_const::kBookmarks,
+      std::move(records),
+      base::Time(),
+      false);
+}
+
+TEST_F(BraveSyncServiceTest, BackgroundSyncStarted) {
+  sync_service()->BackgroundSyncStarted(false);
+  EXPECT_TRUE(sync_service()->timer_->IsRunning());
+}
+
+TEST_F(BraveSyncServiceTest, BackgroundSyncStopped) {
+  sync_service()->BackgroundSyncStopped(false);
+  EXPECT_FALSE(sync_service()->timer_->IsRunning());
 }

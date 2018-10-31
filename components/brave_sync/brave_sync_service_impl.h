@@ -20,6 +20,16 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetSyncWords);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetSeed);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDevice);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnResetSync);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, ClientOnGetInitData);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetInitData);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncPrefsChanged);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncDebug);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyAlreadyWithSync);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyNewToSync);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetExistingObjects);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStarted);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, BackgroundSyncStopped);
 
 class BraveSyncServiceTest;
 
@@ -79,6 +89,16 @@ class BraveSyncServiceImpl : public BraveSyncService,
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, GetSeed);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnDeleteDevice);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnResetSync);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ClientOnGetInitData);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetInitData);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncPrefsChanged);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncDebug);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncReadyAlreadyWithSync);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncReadyNewToSync);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetExistingObjects);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BackgroundSyncStarted);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BackgroundSyncStopped);
   friend class ::BraveSyncServiceTest;
 
   // SyncMessageHandler overrides
