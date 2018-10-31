@@ -93,6 +93,8 @@ BraveProfileManager::CreateProfileAsyncHelper(const base::FilePath& path,
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
                                                  bool go_off_the_record) {
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
+  // BraveSyncService need to be created when profile initialized, otherwise
+  // it will only be constructed only when we open chrome://bravesync
   brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
 }
 

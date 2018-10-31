@@ -4,9 +4,8 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
-#include "base/command_line.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/common/brave_switches.h"
+#include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,12 +44,10 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
         IDC_NEW_OFFTHERECORD_WINDOW_TOR,
         IDS_NEW_OFFTHERECORD_WINDOW_TOR);
   }
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  if (command_line.HasSwitch(switches::kEnableBraveSync)) {
+  if (brave_sync::BraveSyncService::is_enabled() &&
+      !browser_->profile()->IsOffTheRecord())
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
         IDC_SHOW_BRAVE_SYNC,
         IDS_SHOW_BRAVE_SYNC);
-  }
 }

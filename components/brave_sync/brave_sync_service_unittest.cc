@@ -2,8 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/brave_switches.h"
 #include "brave/components/brave_sync/client/bookmark_change_processor.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
@@ -254,6 +256,8 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncNewToSync) {
 }
 
 TEST_F(BraveSyncServiceTest, GetSettingsAndDevices) {
+  base::CommandLine::ForCurrentProcess()->AppendSwitch(
+        switches::kEnableBraveSync);
   // The test absorbs OnSetupSyncNewToSync test
   auto callback1 = base::BindRepeating(
       [](std::unique_ptr<brave_sync::Settings> settings,

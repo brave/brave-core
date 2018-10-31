@@ -4,15 +4,14 @@
 
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
-#include "base/command_line.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
-#include "brave/common/brave_switches.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_sync/brave_sync_service.h"
 #include "chrome/common/url_constants.h"
 #include "url/gurl.h"
 
@@ -40,10 +39,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 template<>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  if (host == kBraveUISyncHost &&
-                          command_line.HasSwitch(switches::kEnableBraveSync)) {
+  if (host == kBraveUISyncHost && brave_sync::BraveSyncService::is_enabled()) {
     return new SyncUI(web_ui, url.host());
   } else
   if (host == kAdblockHost) {
@@ -69,8 +65,6 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 // with it.
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
   if (url.host_piece() == kAdblockHost ||
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
       url.host_piece() == kRewardsHost ||
@@ -79,7 +73,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == kBraveUIWelcomeURL ||
       (url.host_piece() == kBraveUISyncHost &&
-          command_line.HasSwitch(switches::kEnableBraveSync)) ||
+          brave_sync::BraveSyncService::is_enabled()) ||
       url.host_piece() == chrome::kChromeUINewTabHost ||
       url.host_piece() == chrome::kChromeUISettingsHost) {
     return &NewWebUI<BasicUI>;

@@ -52,8 +52,6 @@ source_set("core") {
     "bookmark_order_util.h",
     "brave_sync_prefs.cc",
     "brave_sync_prefs.h",
-    # "history.h",
-    # "history.cc",
     "jslib_const.cc",
     "jslib_const.h",
     "jslib_messages.cc",
@@ -114,11 +112,16 @@ grit("resources") {
     "brave_sync_resources.pak",
   ]
 
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+
   # fix paths so we don't have to do this
   resource_ids = ""
 }
 
-source_set("brave_sync_testutil") {
+source_set("testutil") {
   testonly = true
 
   deps = [

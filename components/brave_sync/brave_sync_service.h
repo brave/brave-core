@@ -55,9 +55,12 @@ class BraveSyncService : public KeyedService {
   void AddObserver(BraveSyncServiceObserver* observer);
   void RemoveObserver(BraveSyncServiceObserver* observer);
 
+  static bool is_enabled();
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   virtual BraveSyncClient* GetSyncClient() = 0;
 #endif
+
 
  protected:
   base::ObserverList<BraveSyncServiceObserver> observers_;

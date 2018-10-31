@@ -9,13 +9,13 @@
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "components/grit/brave_components_resources.h"
 
 using content::WebUIMessageHandler;
 

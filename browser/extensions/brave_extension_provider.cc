@@ -37,6 +37,7 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
   static std::vector<std::string> vetted_extensions({
     brave_extension_id,
     brave_rewards_extension_id,
+    brave_sync_extension_id,
     brave_webtorrent_extension_id,
     pdfjs_extension_id,
     // 1Password
@@ -97,8 +98,6 @@ bool BraveExtensionProvider::IsVetted(const Extension* extension) {
     "bhlmpjhncoojbkemjkeppfahkglffilp",
     // Test ID: Brave Tor Client Updater
     "ngicbhhaldfdgmjhilmnleppfpmkgbbk",
-    // Test ID: Brave Sync Extension
-    brave_sync_extension_id,
   });
   return std::find(vetted_extensions.begin(), vetted_extensions.end(),
       extension->id()) != vetted_extensions.end();

@@ -108,7 +108,7 @@ test("brave_unit_tests") {
   }
 
   deps = [
-    "//brave/components/brave_sync:brave_sync_testutil",
+    "//brave/components/brave_sync:testutil",
     "//chrome:browser_dependencies",
     "//chrome:child_dependencies",
     "//chrome/test:test_support",

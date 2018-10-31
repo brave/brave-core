@@ -12,11 +12,13 @@
     <output filename="brave_sync_resources.pak" type="data_package" />
   </outputs>
   <release seq="1">
-    <includes first_id="37000">
+    <includes>
       <include name="IDR_BRAVE_SYNC_EXTENSION" file="brave_sync/extension/manifest.json" type="BINDATA" />
       <include name="IDR_BRAVE_SYNC_EXTENSION_BACKGROUND_JS" file="brave_sync/extension/background.js" type="BINDATA"/>
       <include name="IDR_BRAVE_SYNC_EXTENSION_BUNDLE_JS" file="brave_sync/extension/brave-sync/bundles/bundle.js" type="BINDATA" />
       <include name="IDR_BRAVE_SYNC_EXTENSION_CRYPTO_JS" file="brave_sync/extension/brave-crypto/browser/crypto.js" type="BINDATA" />
+      <include name="IDR_BRAVE_SYNC_HTML" file="brave_sync/ui/brave_sync.html" type="BINDATA" />
+      <include name="IDR_BRAVE_SYNC_JS" file="${root_gen_dir}/brave/brave_sync.bundle.js" type="BINDATA" use_base_dir="false" />
     </includes>
   </release>
 </grit>
