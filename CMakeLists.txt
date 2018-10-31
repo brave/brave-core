@@ -9,6 +9,7 @@ include_directories(include
   deps
   deps/bat-native-rapidjson/include
   deps/bat-native-usermodel/include
+  deps/bat-native-confirmations/include
   third_party/uriparser/include)
 
 file(GLOB SOURCES
