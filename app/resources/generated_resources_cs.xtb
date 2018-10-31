@@ -1256,6 +1256,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3766223500670287046">Vzdálená obrazovka</translation>
 <translation id="3930737994424905957">Vyhledávání zařízení</translation>
 <translation id="5209320130288484488">Nebyla nalezena žádná zařízení</translation>
+<translation id="4415245286584082850">Nebyla nalezena žádná zařízení. Otevřete článek centra nápovědy na nové kartě.</translation>
 <translation id="4363771538994847871">Nebyly nalezeny žádné cíle odesílání. Potřebujete pomoci?</translation>
 <translation id="8688672835843460752">Dostupné</translation>
 <translation id="4271396100647220620">Žádné shody</translation>
@@ -1872,6 +1873,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Spouštějte v Bravebooku nástroje, editory a prostředí IDE pro Linux. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Odstranit linuxové aplikace pro Bravebook</translation>
+<translation id="1529899284660134226">Spravovat sdílené soubory a složky</translation>
 <translation id="2295473777859797944">Obchod Brave Software Play</translation>
 <translation id="572155275267014074">Nastavení zařízení Android</translation>
 <translation id="4767209642168463274">Instalujte do svého Bravebooku aplikace a hry z Brave Software Play. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Další informace&lt;/a&gt;</translation>
@@ -1996,6 +1998,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6122875415561139701">Operace zápisu v zařízení <ph name="DEVICE_NAME"/> není povolena.</translation>
 <translation id="439266289085815679">Konfiguraci rozhraní Bluetooth spravuje <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Časové období</translation>
+<translation id="3958004920128806270">Chcete-li údaje o prohlížení vymazat jen z tohoto zařízení, ale v účtu Brave Software je ponechat, <ph name="BEGIN_LINK"/>odhlaste se<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Chcete-li vymazat údaje o prohlížení ze všech synchronizovaných zařízení i z účtu Brave Software, přejděte na <ph name="BEGIN_LINK"/>nastavení synchronizace<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Chcete-li vymazat údaje o prohlížení ze všech synchronizovaných zařízení i z účtu Brave Software, <ph name="BEGIN_LINK"/>zadejte heslovou frázi<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Chcete-li vymazat údaje o prohlížení ze všech synchronizovaných zařízení i z účtu Brave Software, <ph name="BEGIN_LINK"/>přihlaste se<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historie procházení</translation>
 <translation id="8662811608048051533">Odhlásí vás z většiny webů.</translation>
 <translation id="4650925988509114690">Budete odhlášeni z většiny webů. Zůstanete přihlášeni k účtu Brave Software, aby bylo možné vymazat synchronizovaná data.</translation>
@@ -2076,7 +2082,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="9024158959543687197">Při připojování sdílené složky došlo k chybě. Zkontrolujte adresu URL sdíleného úložiště a zkuste to znovu.</translation>
 <translation id="1954813140452229842">Při připojování sdílené složky došlo k chybě. Zkontrolujte identifikační údaje a zkuste to znovu.</translation>
 <translation id="2148219725039824548">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka v síti nebyla nalezena.</translation>
-<translation id="7234406375359457793">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka není podporována.</translation>
+<translation id="6923633482430812883">Při připojování sdíleného úložiště došlo k chybě. Zkontrolujte, zda souborový server, ke kterému se připojujete, podporuje protokol SMBv2 nebo novější.</translation>
 <translation id="706626672220389329">Při připojování sdílené složky došlo k chybě. Zadaná sdílená složka je už připojená.</translation>
 <translation id="5985458664595100876">Neplatný formát adresy URL. Podporované formáty jsou \\server\share a smb://server/share.</translation>
 <translation id="9147304170847707004">Metoda ověření</translation>
@@ -2537,6 +2543,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7366415735885268578">Přidání webu</translation>
 <translation id="5052499409147950210">Upravit web</translation>
 <translation id="2870560284913253234">Stránky</translation>
+<translation id="4610862967073369855">Povoluje Zprávám pro Android předávat zprávy SMS z telefonu do Bravebooku</translation>
 <translation id="6742339027238151589">Přístupné skriptu</translation>
 <translation id="361106536627977100">Data Flash</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2638,6 +2645,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8135094938656535588">Spravovat synchronizovaná data na Hlavním panelu Brave Software</translation>
 <translation id="6596325263575161958">Možnosti šifrování</translation>
 <translation id="2459230470861708651">Šifrovat synchronizovaná hesla pomocí vašeho uživatelského jména a hesla</translation>
+<translation id="5958351589333270173">Šifrovat synchronizovaná data pomocí vlastní <ph name="BEGIN_LINK"/>heslové fráze pro synchronizaci<ph name="END_LINK"/>. Toto šifrování se nevztahuje na platební metody a adresy z Brave Software Pay.</translation>
 <translation id="4817583816512767754">Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslovou frázi. Heslová fráze se neodesílá do Googlu a není na Googlu uložena. Pokud heslovou frázi zapomenete nebo toto nastavení budete chtít změnit, budete muset <ph name="BEGIN_LINK"/>synchronizaci resetovat<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Chcete-li toto nastavení změnit, <ph name="BEGIN_LINK"/>resetováním synchronizace<ph name="END_LINK"/> odstraňte svou heslovou frázi pro synchronizaci</translation>
 <translation id="3873315167136380065">Chcete-li tuto funkci zapnout, <ph name="BEGIN_LINK"/>resetováním synchronizace<ph name="END_LINK"/> odstraňte svou heslovou frázi pro synchronizaci</translation>
@@ -2701,6 +2709,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="89720367119469899">Escapovat</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Externí příkaz</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Externí klávesa Meta</translation>
 <translation id="4991420928586866460">Považovat klávesy v horní řadě za funkční klávesy</translation>
 <translation id="85486688517848470">Podržením vyhledávacího tlačítka přepnete chování tlačítek v horním řádku</translation>

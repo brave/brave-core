@@ -1257,6 +1257,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3766223500670287046">Fjärrskärm</translation>
 <translation id="3930737994424905957">Söker efter enheter</translation>
 <translation id="5209320130288484488">Det gick inte att hitta några enheter</translation>
+<translation id="4415245286584082850">Inga enheter hittades. Öppna en hjälpsida på en ny flik.</translation>
 <translation id="4363771538994847871">Ingen Cast-destination hittades. Behöver du hjälp?</translation>
 <translation id="8688672835843460752">Tillgängligt</translation>
 <translation id="4271396100647220620">Inga träffar</translation>
@@ -1874,6 +1875,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Kör verktyg, redigerare och IDE:er för Linux på Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Läs mer&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Ta bort Linux-appar för Bravebook</translation>
+<translation id="1529899284660134226">Hantera delade filer och mappar</translation>
 <translation id="2295473777859797944">Brave Software Play Butik</translation>
 <translation id="572155275267014074">Android-inställningar</translation>
 <translation id="4767209642168463274">Installera appar och spel från Brave Software Play på Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Läs mer&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6122875415561139701">Skrivbehörigheten för åtgärden saknas på: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679">Konfiguration av Bluetooth styrs av <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Tidsintervall</translation>
+<translation id="3958004920128806270"><ph name="BEGIN_LINK"/>Logga ut<ph name="END_LINK"/> om du vill rensa webbinformation från enheten utan att ta bort den från Brave Software-kontot.</translation>
+<translation id="4445433576366924090"><ph name="BEGIN_LINK"/>Besök inställningarna för synkronisering<ph name="END_LINK"/> om du vill rensa webbinformation från alla synkroniserade enheter och ditt Brave Software-konto.</translation>
+<translation id="563489167344291753"><ph name="BEGIN_LINK"/>Ange din lösenfras<ph name="END_LINK"/> om du vill rensa webbinformation från alla synkroniserade enheter och ditt Brave Software-konto.</translation>
+<translation id="3895809404273995788"><ph name="BEGIN_LINK"/>Logga in<ph name="END_LINK"/> om du vill rensa webbinformation från alla synkroniserade enheter och ditt Brave Software-konto.</translation>
 <translation id="2496180316473517155">Webbhistorik</translation>
 <translation id="8662811608048051533">Du loggas ut från de flesta webbplatser.</translation>
 <translation id="4650925988509114690">Du loggas ut från de flesta webbplatser. Du är fortfarande inloggad på Brave Software-kontot så att synkroniserad data kan rensas.</translation>
@@ -2079,7 +2085,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="9024158959543687197">Det gick inte att montera den delade resursen. Kontrollera filresursens webbadress och försök igen.</translation>
 <translation id="1954813140452229842">Det gick inte att montera den delade resursen. Kontrollera användaruppgifterna och försök igen.</translation>
 <translation id="2148219725039824548">Det gick inte att montera den delade resursen. Den angivna resursen hittades inte i nätverket.</translation>
-<translation id="7234406375359457793">Det gick inte att montera den delade resursen. Den angivna resursen stöds inte.</translation>
+<translation id="6923633482430812883">Ett fel uppstod när filresursen skulle delas. Kontrollera att filservern som du ansluter till har stöd för SMB v2 eller senare.</translation>
 <translation id="706626672220389329">Det gick inte att montera den delade resursen. Den angivna resursen har redan monterats.</translation>
 <translation id="5985458664595100876">Ogiltigt webbadressformat. Följande format stöds: \\server\share och smb://server/share.</translation>
 <translation id="9147304170847707004">Autentiseringsmetod</translation>
@@ -2541,6 +2547,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7366415735885268578">Lägg till en webbplats</translation>
 <translation id="5052499409147950210">Redigera webbplats</translation>
 <translation id="2870560284913253234">Webbplats</translation>
+<translation id="4610862967073369855">Tillåter Android Messages att dirigera sms från mobilen till Bravebook</translation>
 <translation id="6742339027238151589">Tillgänglig för skript</translation>
 <translation id="361106536627977100">Flash-data</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2642,6 +2649,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8135094938656535588">Hantera synkroniserad data via Brave Software Översikt</translation>
 <translation id="6596325263575161958">Krypteringsalternativ</translation>
 <translation id="2459230470861708651">Kryptera synkroniserade lösenord med ditt användarnamn och lösenord på Brave Software</translation>
+<translation id="5958351589333270173">Kryptera synkroniserad data med en egen <ph name="BEGIN_LINK"/>lösenfras för synkronisering<ph name="END_LINK"/>. Betalningsmetoder och adresser från Brave Software Pay omfattas inte.</translation>
 <translation id="4817583816512767754">Endast personer som har ditt lösenord kan läsa dina krypterade uppgifter. Lösenordet skickas inte till och sparas inte av Brave Software. Om du glömmer lösenordet måste du <ph name="BEGIN_LINK"/>återställa synkroniseringen<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> så att lösenfrasen för synkronisering tas bort om du vill ändra den här inställningen</translation>
 <translation id="3873315167136380065"><ph name="BEGIN_LINK"/>Återställ synkroniseringen<ph name="END_LINK"/> så att lösenfrasen för synkronisering tas bort om du vill aktivera detta</translation>
@@ -2705,6 +2713,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backsteg</translation>
 <translation id="1938351510777341717">Extern kommandotangent</translation>
+<translation id="7969046989155602842">Kommando</translation>
 <translation id="585979798156957858">Extern metatangent</translation>
 <translation id="4991420928586866460">Använd tangenterna på översta raden som funktionstangenter</translation>
 <translation id="85486688517848470">Håll ned söktangenten om du vill ändra funktionen för tangenterna på översta raden</translation>

@@ -1258,6 +1258,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="3766223500670287046">Oddaljeni zaslon</translation>
 <translation id="3930737994424905957">Iskanje naprav</translation>
 <translation id="5209320130288484488">Najti ni mogoče nobene naprave</translation>
+<translation id="4415245286584082850">Ni naprav. Odprite članek v centru za pomoč na novem zavihku.</translation>
 <translation id="4363771538994847871">Ni ciljev za predvajanje. Potrebujete pomoč?</translation>
 <translation id="8688672835843460752">Na voljo</translation>
 <translation id="4271396100647220620">Ni ujemanj</translation>
@@ -1875,6 +1876,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Izvajanje orodij, urejevalnikov in vdelanih orodij za razvoj programske opreme (IDE) za Linux v Bravebooku. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Odstranjevanje aplikacij za Linux za Bravebook</translation>
+<translation id="1529899284660134226">Upravljanje datotek in map v skupni rabi</translation>
 <translation id="2295473777859797944">Trgovina Brave Software Play</translation>
 <translation id="572155275267014074">Nastavitve za Android</translation>
 <translation id="4767209642168463274">Namestite aplikacije in igre iz Googla Play v Bravebooku. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Več o tem&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6122875415561139701">V tej napravi ni dovoljeno dejanje pisanja: »<ph name="DEVICE_NAME"/>«.</translation>
 <translation id="439266289085815679">Konfiguracijo Bluetootha nadzira <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Časovno obdobje</translation>
+<translation id="3958004920128806270">Če želite izbrisati podatke brskanja samo iz te naprave, v Brave Software Računu pa jih želite ohraniti, <ph name="BEGIN_LINK"/>se odjavite<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Če želite izbrisati podatke brskanja iz vseh sinhroniziranih naprav in Brave Software Računa, <ph name="BEGIN_LINK"/>odprite nastavitve sinhronizacije<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Če želite izbrisati podatke brskanja iz vseh sinhroniziranih naprav in Brave Software Računa, <ph name="BEGIN_LINK"/>vnesite geslo<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Če želite izbrisati podatke brskanja iz vseh sinhroniziranih naprav in Brave Software Računa, <ph name="BEGIN_LINK"/>se prijavite<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Zgodovina brskanja</translation>
 <translation id="8662811608048051533">Odjavi vas iz večine spletnih mest.</translation>
 <translation id="4650925988509114690">Odjavi vas iz večine spletnih mest. Ostali boste prijavljeni v Brave Software Račun, da bo mogoče izbrisati sinhronizirane podatke.</translation>
@@ -2079,7 +2085,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="9024158959543687197">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Preverite URL datotečnega sredstva v skupni rabi in poskusite znova.</translation>
 <translation id="1954813140452229842">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Preverite poverilnice in poskusite znova.</translation>
 <translation id="2148219725039824548">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Določeno datotečno sredstvo v skupni rabi ni bilo najdeno v omrežju.</translation>
-<translation id="7234406375359457793">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Določeno datotečno sredstvo v skupni rabi ni podprto.</translation>
+<translation id="6923633482430812883">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Preverite, ali datotečni strežnik, s katerim se povezujete, podpira protokol SMBv2 ali novejšega.</translation>
 <translation id="706626672220389329">Napaka pri vpenjanju datotečnega sredstva v skupni rabi. Določeno datotečno sredstvo v skupni rabi je že vpeto.</translation>
 <translation id="5985458664595100876">Neveljavna oblika URL-ja. Podprti obliki sta \\server\share in smb://server/share.</translation>
 <translation id="9147304170847707004">Način preverjanja</translation>
@@ -2540,6 +2546,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="7366415735885268578">Dodajanje spletnega mesta</translation>
 <translation id="5052499409147950210">Urejanje spletnega mesta</translation>
 <translation id="2870560284913253234">Spletno mesto</translation>
+<translation id="4610862967073369855">Aplikaciji Android Messages omogoča posredovanje sporočil SMS iz telefona v Bravebook</translation>
 <translation id="6742339027238151589">Dostopno skriptu</translation>
 <translation id="361106536627977100">Podatki Flash</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2641,6 +2648,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="8135094938656535588">Upravljanje sinhroniziranih podatkov na Brave Software Nadzorni plošči</translation>
 <translation id="6596325263575161958">Možnosti šifriranja</translation>
 <translation id="2459230470861708651">Šifriraj sinhronizirana gesla z uporabniškim imenom in geslom za Brave Software</translation>
+<translation id="5958351589333270173">Šifriranje sinhroniziranih podatkov z vašim <ph name="BEGIN_LINK"/>geslom za sinhronizacijo<ph name="END_LINK"/>. To ne vključuje plačilnih sredstev in naslovov iz Googla Pay.</translation>
 <translation id="4817583816512767754">Vaše šifrirane podatke lahko bere samo oseba z vašim geslom. Geslo ni poslano Googlu in ni shranjeno v Googlu. Če ga pozabite ali če želite spremeniti to nastavitev, boste morali <ph name="BEGIN_LINK"/>sinhronizacijo ponastaviti<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Če želite spremeniti to nastavitev, <ph name="BEGIN_LINK"/>ponastavite sinhronizacijo<ph name="END_LINK"/>, da odstranite geslo za sinhronizacijo</translation>
 <translation id="3873315167136380065">Če želite to vklopiti, <ph name="BEGIN_LINK"/>ponastavite sinhronizacijo<ph name="END_LINK"/>, da odstranite geslo za sinhronizacijo</translation>
@@ -2704,6 +2712,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Vračalka</translation>
 <translation id="1938351510777341717">Zunanji ukaz</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Zunanja meta-tipka</translation>
 <translation id="4991420928586866460">Obravnavaj tipke v zgornji vrstici kot funkcijske tipke</translation>
 <translation id="85486688517848470">Če želite spremeniti delovanje tipk v zgornji vrstici, pridržite tipko za iskanje</translation>

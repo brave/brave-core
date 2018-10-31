@@ -1257,6 +1257,7 @@
 <translation id="3766223500670287046">หน้าจอระยะไกล</translation>
 <translation id="3930737994424905957">กำลังค้นหาอุปกรณ์</translation>
 <translation id="5209320130288484488">ไม่พบอุปกรณ์</translation>
+<translation id="4415245286584082850">ไม่พบอุปกรณ์ โปรดเปิดบทความในศูนย์ช่วยเหลือในแท็บใหม่</translation>
 <translation id="4363771538994847871">ไม่พบปลายทางการแคสต์ ต้องการความช่วยเหลือไหม</translation>
 <translation id="8688672835843460752">มีอยู่</translation>
 <translation id="4271396100647220620">ไม่มีรายการที่ตรงกัน</translation>
@@ -1874,6 +1875,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">เรียกใช้เครื่องมือ ตัวแก้ไข และ IDE สำหรับ Linux ใน Bravebook &lt;a target="_blank" href="<ph name="URL"/>"&gt;ดูข้อมูลเพิ่มเติม&lt;/a&gt;</translation>
 <translation id="6869910261738842136">นำแอป Linux สำหรับ Bravebook ออก</translation>
+<translation id="1529899284660134226">จัดการไฟล์และโฟลเดอร์ที่แชร์</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">การตั้งค่า Android</translation>
 <translation id="4767209642168463274">ติดตั้งแอปและเกมจาก Brave Software Play ใน Bravebook &lt;a target="_blank" href="<ph name="URL"/>"&gt;ดูข้อมูลเพิ่มเติม&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@
 <translation id="6122875415561139701">ไม่อนุญาตให้เขียนใน "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="439266289085815679">การกำหนดค่าบลูทูธควบคุมโดย <ph name="USER_EMAIL"/></translation>
 <translation id="784934925303690534">ช่วงเวลา</translation>
+<translation id="3958004920128806270"><ph name="BEGIN_LINK"/>ออกจากระบบ<ph name="END_LINK"/>เพื่อล้างข้อมูลการท่องเว็บในอุปกรณ์นี้เท่านั้น แต่ยังเก็บข้อมูลดังกล่าวไว้ในบัญชี Brave Software</translation>
+<translation id="4445433576366924090"><ph name="BEGIN_LINK"/>ไปที่การตั้งค่าการซิงค์<ph name="END_LINK"/>เพื่อล้างข้อมูลการท่องเว็บในอุปกรณ์ทุกเครื่องที่ซิงค์และบัญชี Brave Software</translation>
+<translation id="563489167344291753"><ph name="BEGIN_LINK"/>ป้อนรหัสผ่าน<ph name="END_LINK"/>เพื่อล้างข้อมูลการท่องเว็บในอุปกรณ์ทุกเครื่องที่ซิงค์และบัญชี Brave Software</translation>
+<translation id="3895809404273995788"><ph name="BEGIN_LINK"/>ลงชื่อเข้าใช้<ph name="END_LINK"/>เพื่อล้างข้อมูลการท่องเว็บในอุปกรณ์ทุกเครื่องที่ซิงค์และบัญชี Brave Software</translation>
 <translation id="2496180316473517155">ประวัติการเข้าชมที่เรียกดู</translation>
 <translation id="8662811608048051533">นำคุณออกจากระบบของเว็บไซต์ส่วนใหญ่</translation>
 <translation id="4650925988509114690">นำคุณออกจากระบบของเว็บไซต์ส่วนใหญ่ แต่คุณจะยังลงชื่อเข้าใช้บัญชี Brave Software อยู่เพื่อให้ล้างข้อมูลที่ซิงค์ได้</translation>
@@ -2078,7 +2084,7 @@
 <translation id="9024158959543687197">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ ตรวจสอบ URL ของพื้นที่แชร์ไฟล์แล้วลองอีกครั้ง</translation>
 <translation id="1954813140452229842">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ โปรดตรวจสอบข้อมูลรับรองแล้วลองอีกครั้ง</translation>
 <translation id="2148219725039824548">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ ไม่พบพื้นที่แชร์ที่ระบุในเครือข่าย</translation>
-<translation id="7234406375359457793">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ ไม่รองรับพื้นที่แชร์ที่ระบุ</translation>
+<translation id="6923633482430812883">เกิดข้อผิดพลาดในการต่อเชื่อมพื้นที่แชร์ โปรดตรวจสอบว่าเซิร์ฟเวอร์ไฟล์ที่คุณกำลังเชื่อมต่ออยู่รองรับ SMBv2 หรือใหม่กว่า</translation>
 <translation id="706626672220389329">เกิดข้อผิดพลาดขณะต่อเชื่อมพื้นที่แชร์ ต่อเชื่อมพื้นที่แชร์ที่ระบุแล้ว</translation>
 <translation id="5985458664595100876">รูปแบบ URL ไม่ถูกต้อง รูปแบบที่รองรับคือ \\server\share และ smb://server/share</translation>
 <translation id="9147304170847707004">วิธีการตรวจสอบสิทธิ์</translation>
@@ -2539,6 +2545,7 @@
 <translation id="7366415735885268578">เพิ่มเว็บไซต์</translation>
 <translation id="5052499409147950210">แก้ไขเว็บไซต์</translation>
 <translation id="2870560284913253234">เว็บไซต์</translation>
+<translation id="4610862967073369855">อนุญาตให้ Android Messages นำส่งข้อความจากโทรศัพท์ไปยัง Bravebook ของคุณ</translation>
 <translation id="6742339027238151589">การเข้าถึงสคริปต์</translation>
 <translation id="361106536627977100">ข้อมูล Flash</translation>
 <translation id="8557930019681227453">ไฟล์ Manifest</translation>
@@ -2640,6 +2647,7 @@
 <translation id="8135094938656535588">จัดการข้อมูลที่ซิงค์ใน Brave Software แดชบอร์ด</translation>
 <translation id="6596325263575161958">ตัวเลือกการเข้ารหัส</translation>
 <translation id="2459230470861708651">เข้ารหัสลับรหัสผ่านที่ซิงค์ด้วยชื่อผู้ใช้และรหัสผ่าน Brave Software ของคุณ</translation>
+<translation id="5958351589333270173">เข้ารหัสลับข้อมูลที่ซิงค์ด้วย<ph name="BEGIN_LINK"/>รหัสผ่านการซิงค์<ph name="END_LINK"/>ของคุณเอง ข้อมูลนี้ไม่รวมถึงวิธีการชำระเงินและที่อยู่จาก Brave Software Pay</translation>
 <translation id="4817583816512767754">เฉพาะผู้ที่มีรหัสผ่านของคุณเท่านั้นจึงจะสามารถอ่านข้อมูลที่เข้ารหัสของคุณได้ Brave Software จะไม่ส่งหรือจัดเก็บรหัสผ่านนี้ หากคุณลืมรหัสผ่านหรือต้องการเปลี่ยนการตั้งค่านี้ คุณจะต้อง<ph name="BEGIN_LINK"/>รีเซ็ตการซิงค์<ph name="END_LINK"/></translation>
 <translation id="7441736921018636843">หากต้องการเปลี่ยนการตั้งค่านี้ ให้<ph name="BEGIN_LINK"/>รีเซ็ตการซิงค์<ph name="END_LINK"/>เพื่อนำรหัสผ่านการซิงค์ออก</translation>
 <translation id="3873315167136380065">หากต้องการเปิดการตั้งค่า ให้<ph name="BEGIN_LINK"/>รีเซ็ตการซิงค์<ph name="END_LINK"/>เพื่อนำรหัสผ่านการซิงค์ออก</translation>
@@ -2703,6 +2711,7 @@
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">แป้น Command ภายนอก</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">แป้นเมตาภายนอก</translation>
 <translation id="4991420928586866460">ใช้แป้นแถวบนสุดเป็นแป้นฟังก์ชัน</translation>
 <translation id="85486688517848470">กดแป้น "ค้นหา" ค้างไว้เพื่อเปลี่ยนการทำงานของแป้นแถวบนสุด</translation>

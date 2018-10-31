@@ -4,9 +4,9 @@
 <translation id="3333887201479867589">Les Récompenses Brave</translation>
 <translation id="7942180974165298215">Bloqueur de publicité Brave</translation>
 <translation id="7450557937477381864">Fermez Chrome</translation>
-<translation id="7008934821596358692">Pour finir d\'importer, fermez toutes les fenêtres Chrome.</translation>
+<translation id="7008934821596358692">Pour terminer l\'importation, fermez toutes les fenêtres Chrome.</translation>
 <translation id="7753103220327065417">Fermer Brave</translation>
-<translation id="5588481533147090393">Pour terminer l\'importation, fermez tous les fenêtres Brave.</translation>
+<translation id="5588481533147090393">Pour terminer l\'importation, fermez toutes les fenêtres Brave.</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="4983925687993168579">Statistiques</translation>
 <translation id="9173846700806833701">Widevine n\'est pas installé</translation>
@@ -19,7 +19,7 @@ En installant cette extension, vous acceptez les conditions d\'utilisation de Go
 <translation id="3198814717959506569">Importé depuis Brave</translation>
 <translation id="453977518730680921">Médias en lecture automatique</translation>
 <translation id="410351446219883937">Lecture automatique</translation>
-<translation id="2240268017737062801">Demandez quand un site veut lire automatiquement un média</translation>
+<translation id="2240268017737062801">Demander lorsqu\'un site veut lire automatiquement un média</translation>
 <translation id="3371702087847741961">Demander lorsqu\'un site souhaite lire automatiquement le contenu multimédia (recommandé)</translation>
 <translation id="3218385319396786393">La lecture automatique a été bloquée sur cette page</translation>
 <translation id="4150684676757176434">Continuer le blocage de la lecture automatique</translation>
@@ -39,10 +39,10 @@ En installant cette extension, vous acceptez les conditions d\'utilisation de Go
 <translation id="6067014455220527258">Bloquer les publicités</translation>
 <translation id="6985711843506827936">Autoriser les publicités et le suivi</translation>
 <translation id="6132506775968708399">Bloquer les cookies tiers</translation>
-<translation id="5657156137487675418">Autorisez tous les cookies</translation>
+<translation id="5657156137487675418">Autoriser tous les cookies</translation>
 <translation id="6883611015375728278">Bloquer tous les cookies</translation>
-<translation id="1442559343076146186">Bloquer la création d\'une empreinte numérique par les tierces parties</translation>
-<translation id="8034285923190068220">Autoriser la prise d\'empreintes</translation>
+<translation id="1442559343076146186">Bloquer la création d\'une empreinte numérique par des tiers</translation>
+<translation id="8034285923190068220">Autoriser la création d\'empreinte numérique</translation>
 <translation id="4540198958192073185">Bloquer toutes les créations d\'empreinte numérique</translation>
 <translation id="8942080017911802454">Politique de gestion des adresses IP WebRTC</translation>
 <translation id="6165508094623778733">En savoir plus</translation>

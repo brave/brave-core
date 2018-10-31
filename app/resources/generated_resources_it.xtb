@@ -1257,6 +1257,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3766223500670287046">Schermo remoto</translation>
 <translation id="3930737994424905957">Ricerca di dispositivi in corso</translation>
 <translation id="5209320130288484488">Nessun dispositivo trovato</translation>
+<translation id="4415245286584082850">Nessun dispositivo trovato. Apri un articolo del Centro assistenza in una nuova scheda.</translation>
 <translation id="4363771538994847871">Nessuna destinazione trovata per Cast. Hai bisogno di assistenza?</translation>
 <translation id="8688672835843460752">Disponibile</translation>
 <translation id="4271396100647220620">Nessuna corrispondenza</translation>
@@ -1873,6 +1874,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Esegui strumenti, editor e IDE di Linux sul Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Rimuovi app Linux per Bravebook</translation>
+<translation id="1529899284660134226">Gestisci cartelle e file condivisi</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Impostazioni di Android</translation>
 <translation id="4767209642168463274">Installa app e giochi di Brave Software Play sul Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ulteriori informazioni&lt;/a&gt;</translation>
@@ -1997,6 +1999,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6122875415561139701">Scrittura non consentita su: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Configurazione Bluetooth controllata da <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Intervallo di tempo</translation>
+<translation id="3958004920128806270"><ph name="BEGIN_LINK"/>Esci<ph name="END_LINK"/> per cancellare i dati di navigazione soltanto da questo dispositivo e non dal tuo Account Brave Software.</translation>
+<translation id="4445433576366924090"><ph name="BEGIN_LINK"/>Accedi alle impostazioni di sincronizzazione<ph name="END_LINK"/> per cancellare i dati di navigazione da tutti i dispositivi sincronizzati e dal tuo Account Brave Software.</translation>
+<translation id="563489167344291753"><ph name="BEGIN_LINK"/>Inserisci la passphrase<ph name="END_LINK"/> per cancellare i dati di navigazione da tutti i dispositivi sincronizzati e dal tuo Account Brave Software.</translation>
+<translation id="3895809404273995788"><ph name="BEGIN_LINK"/>Accedi<ph name="END_LINK"/> per cancellare i dati di navigazione da tutti i dispositivi sincronizzati e dal tuo Account Brave Software.</translation>
 <translation id="2496180316473517155">Cronologia di navigazione</translation>
 <translation id="8662811608048051533">Vieni scollegato dalla maggior parte dei siti.</translation>
 <translation id="4650925988509114690">Uscirai dalla maggior parte dei siti, ma non dal tuo Account Brave Software, quindi i dati sincronizzati possono essere cancellati.</translation>
@@ -2077,7 +2083,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="9024158959543687197">Errore durante il montaggio della condivisione. Verifica l'URL condivisione file e riprova.</translation>
 <translation id="1954813140452229842">Errore durante il montaggio della condivisione. Verifica le tue credenziali e riprova.</translation>
 <translation id="2148219725039824548">Errore durante il montaggio della condivisione. Impossibile trovare la condivisione specificata sulla rete.</translation>
-<translation id="7234406375359457793">Errore durante il montaggio della condivisione. La condivisione specificata non è supportata.</translation>
+<translation id="6923633482430812883">Errore durante il montaggio della condivisione. Verifica che il file server a cui vuoi collegarti supporti SMBv2 o versioni successive.</translation>
 <translation id="706626672220389329">Errore durante il montaggio della condivisione. La condivisione specificata è già montata.</translation>
 <translation id="5985458664595100876">Formato dell'URL non valido. I formati supportati sono \\server\share e smb://server/share.</translation>
 <translation id="9147304170847707004">Metodo di autenticazione</translation>
@@ -2538,6 +2544,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7366415735885268578">Aggiunta di un sito</translation>
 <translation id="5052499409147950210">Modifica del sito</translation>
 <translation id="2870560284913253234">Sito</translation>
+<translation id="4610862967073369855">Consenti ad Android Messaggi di trasmettere gli SMS dal telefono al Bravebook</translation>
 <translation id="6742339027238151589">Accessibile allo script</translation>
 <translation id="361106536627977100">Dati Flash</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2639,6 +2646,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8135094938656535588">Gestisci dati sincronizzati sulla Dashboard di Brave Software</translation>
 <translation id="6596325263575161958">Opzioni di crittografia</translation>
 <translation id="2459230470861708651">Cripta le password sincronizzate con la password e il nome utente del tuo account Brave Software</translation>
+<translation id="5958351589333270173">Cripta i dati sincronizzati con la tua <ph name="BEGIN_LINK"/>passphrase di sincronizzazione<ph name="END_LINK"/>. Non sono inclusi i metodi di pagamento e gli indirizzi di Brave Software Pay.</translation>
 <translation id="4817583816512767754">Soltanto chi conosce la tua passphrase può leggere i tuoi dati criptati. La passphrase non viene inviata a Brave Software né memorizzata. Se dimentichi la passphrase o vuoi modificare questa impostazione, dovrai <ph name="BEGIN_LINK"/>reimpostare la sincronizzazione<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Per modificare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizzazione<ph name="END_LINK"/> per rimuovere la passphrase di sincronizzazione.</translation>
 <translation id="3873315167136380065">Per attivare questa funzione, <ph name="BEGIN_LINK"/>reimposta la sincronizzazione<ph name="END_LINK"/> per rimuovere la passphrase di sincronizzazione</translation>
@@ -2702,6 +2710,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="89720367119469899">Esc</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Comando esterno</translation>
+<translation id="7969046989155602842">Comando</translation>
 <translation id="585979798156957858">Meta esterno</translation>
 <translation id="4991420928586866460">Considera i tasti della fila superiore come tasti funzione</translation>
 <translation id="85486688517848470">Tieni premuto il tasto per la ricerca per modificare la funzione dei tasti della fila superiore</translation>

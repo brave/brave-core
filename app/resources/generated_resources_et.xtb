@@ -1258,6 +1258,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="3766223500670287046">Kaugekraan</translation>
 <translation id="3930737994424905957">Seadmete otsimine</translation>
 <translation id="5209320130288484488">Seadmeid ei leitud</translation>
+<translation id="4415245286584082850">Seadmeid ei leitud. Avage abikeskuse artikkel uuel vahelehel.</translation>
 <translation id="4363771538994847871">Ülekande sihtkohti ei leitud. Kas vajate abi?</translation>
 <translation id="8688672835843460752">Saadaval</translation>
 <translation id="4271396100647220620">Vasted puuduvad</translation>
@@ -1875,6 +1876,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Käitage oma Bravebookis Linuxi tööriistu, redaktoreid ja IDE-sid. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lisateave&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Linuxi rakenduste eemaldamine Bravebookist</translation>
+<translation id="1529899284660134226">Halda jagatud faile ja kaustu</translation>
 <translation id="2295473777859797944">Brave Software Play pood</translation>
 <translation id="572155275267014074">Androidi seaded</translation>
 <translation id="4767209642168463274">Installige rakendused ja mängud Brave Software Playst oma Bravebooki. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Lisateave&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6122875415561139701">Kirjutamistoiming pole seadmes „<ph name="DEVICE_NAME"/>” lubatud.</translation>
 <translation id="439266289085815679">Bluetoothi seadistust juhib <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Ajavahemik</translation>
+<translation id="3958004920128806270">Sirvimisandmete kustutamiseks ainult sellest seadmest ja nende säilitamiseks teie Brave Software'i kontol <ph name="BEGIN_LINK"/>logige välja<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Sirvimisandmete kustutamiseks kõigist sünkroonitud seadmetest ja oma Brave Software'i kontolt <ph name="BEGIN_LINK"/>avage sünkroonimisseaded<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Sirvimisandmete kustutamiseks kõigist sünkroonitud seadmetest ja oma Brave Software'i kontolt <ph name="BEGIN_LINK"/>sisestage oma parool<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Sirvimisandmete kustutamiseks kõigist sünkroonitud seadmetest ja oma Brave Software'i kontolt <ph name="BEGIN_LINK"/>logige sisse<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Sirvimise ajalugu</translation>
 <translation id="8662811608048051533">Logib teid enamikult saitidelt välja.</translation>
 <translation id="4650925988509114690">Teid logitakse enamikult saitidelt välja. Jääte oma Brave Software'i kontole sisselogituks, et teie sünkroonitud andmed saaks kustutada.</translation>
@@ -2079,7 +2085,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="9024158959543687197">Viga jagatava üksuse ühendamisel. Kontrollige failide jagamise URL-i ja proovige uuesti.</translation>
 <translation id="1954813140452229842">Viga jagatava üksuse ühendamisel. Kontrollige oma mandaati ja proovige uuesti.</translation>
 <translation id="2148219725039824548">Viga jagatava üksuse ühendamisel. Jagatavat üksust võrgust ei leitud.</translation>
-<translation id="7234406375359457793">Viga jagatava üksuse ühendamisel. Määratud jagatavat üksust ei toetata.</translation>
+<translation id="6923633482430812883">Viga ühiskasutuse seadistamisel. Veenduge, et failiserver, millega ühenduse loote, toetaks SMBv2 või uuemat versiooni.</translation>
 <translation id="706626672220389329">Viga jagatava üksuse ühendamisel. Määratud jagatav üksus on juba ühendatud.</translation>
 <translation id="5985458664595100876">URL-i sobimatu vorming. Toetatud vormingud on \\server\share ja smb://server/share.</translation>
 <translation id="9147304170847707004">Autentimismeetod</translation>
@@ -2540,6 +2546,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="7366415735885268578">Saidi lisamine</translation>
 <translation id="5052499409147950210">Saidi muutmine</translation>
 <translation id="2870560284913253234">Sait</translation>
+<translation id="4610862967073369855">Lubab rakendusel Android Messages tekstisõnumeid telefonist Bravebooki edastada</translation>
 <translation id="6742339027238151589">Kättesaadav skripti jaoks</translation>
 <translation id="361106536627977100">Flashi andmed</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2641,6 +2648,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="8135094938656535588">Sünkroonitud andmete haldamine teenuses Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Krüpteerimise valikud</translation>
 <translation id="2459230470861708651">Krüpteeri sünkroonitud paroolid minu Brave Software'i kasutajanime ja parooliga</translation>
+<translation id="5958351589333270173">Krüpteerige sünkroonitud andmed <ph name="BEGIN_LINK"/>sünkroonimisparooliga<ph name="END_LINK"/>. See ei hõlma Brave Software Pay makseviise ja aadresse.</translation>
 <translation id="4817583816512767754">Teie krüpteeritud andmeid saavad lugeda vaid need, kes teavad teie parooli – seda ei saadeta Brave Software'ile ja Brave Software ei talleta seda. Kui unustate parooli või soovite seda seadet muuta, tuleb teil <ph name="BEGIN_LINK"/>sünkroonimine lähtestada<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Seade muutmiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_LINK"/>, et sünkroonimisparool eemaldada</translation>
 <translation id="3873315167136380065">Selle sisselülitamiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_LINK"/>, et eemaldada oma sünkroonimisparool</translation>
@@ -2704,6 +2712,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="89720367119469899">Klahv Escape</translation>
 <translation id="5583640892426849032">Tagasilükkeklahv</translation>
 <translation id="1938351510777341717">Väline Command-klahv</translation>
+<translation id="7969046989155602842">Käsuklahv</translation>
 <translation id="585979798156957858">Väline metaklahv</translation>
 <translation id="4991420928586866460">Kasuta ülarea klahve funktsiooniklahvidena</translation>
 <translation id="85486688517848470">Ülemise rea klahvide toimingu vahetamiseks hoidke all otsinguklahvi</translation>

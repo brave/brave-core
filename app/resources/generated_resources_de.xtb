@@ -478,10 +478,12 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="3016641847947582299">Komponente aktualisiert</translation>
 <translation id="252219247728877310">Komponente nicht aktualisiert</translation>
 <translation id="2707024448553392710">Komponente wird heruntergeladen.</translation>
+<translation id="1879000426787380528">Anmelden als</translation>
 <translation id="3190558889382726167">Passwort gespeichert</translation>
 <translation id="5079950360618752063">Vorgeschlagenes Passwort verwenden</translation>
 <translation id="8084114998886531721">Gespeichertes Passwort</translation>
 <translation id="5614553682702429503">Passwort speichern?</translation>
+<translation id="5584088138253955452">Nutzername speichern?</translation>
 <translation id="8756969031206844760">Passwort aktualisieren?</translation>
 <translation id="8230134520748321204">Passwort für <ph name="ORIGIN"/> speichern?</translation>
 <translation id="9040661932550800571">Passwort für <ph name="ORIGIN"/> aktualisieren?</translation>
@@ -501,6 +503,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="224940702122312781">Diese Seite verbraucht eine große Menge an Daten.</translation>
 <translation id="3861241522664181545">Seite pausiert.</translation>
 <translation id="6921709132208495314">Datenverbrauch auf dieser Seite stoppen</translation>
+<translation id="1683850629661177840">Mit dem Lite-Modus surfen Sie noch schneller im Internet – auch auf HTTPS-Seiten.</translation>
 <translation id="2724841811573117416">WebRTC-Protokolle</translation>
 <translation id="1969654639948595766">WebRTC-Textprotokolle (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC-Ereignisprotokolle (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -1112,6 +1115,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="8922013791253848639">Werbung auf dieser Website immer zulassen</translation>
 <translation id="7359588939039777303">Werbung blockiert.</translation>
 <translation id="5398772614898833570">Werbung blockiert</translation>
+<translation id="2859806420264540918">Diese Website zeigt aufdringliche oder irreführende Werbung an.</translation>
 <translation id="4077917118009885966">Werbung auf dieser Website blockiert</translation>
 <translation id="3737536731758327622">Hier werden Ihre Downloads angezeigt</translation>
 <translation id="4782664866169793230">Brave wird von automatisierter Testsoftware gesteuert.</translation>
@@ -1254,6 +1258,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3766223500670287046">Remote-Bildschirm</translation>
 <translation id="3930737994424905957">Suche nach Geräten läuft</translation>
 <translation id="5209320130288484488">Keine Geräte gefunden</translation>
+<translation id="4415245286584082850">Keine Geräte gefunden. Durch Klicken wird ein Hilfe-Artikel in einem neuen Tab geöffnet.</translation>
 <translation id="4363771538994847871">Kein Cast-Empfänger gefunden. Benötigen Sie Hilfe?</translation>
 <translation id="8688672835843460752">Verfügbar</translation>
 <translation id="4271396100647220620">Keine Übereinstimmungen</translation>
@@ -1672,6 +1677,9 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3096967955765855393">Wir arbeiten stets daran, das Surfen für Sie sicherer zu machen. Früher konnten Sie von jeder beliebigen Website aufgefordert werden, eine Erweiterung zu Ihrem Browser hinzuzufügen. In neueren Versionen von Brave Software Brave müssen Sie Brave ausdrücklich mitteilen, dass Sie diese Erweiterungen installieren möchten, indem Sie sie über die Seite "Erweiterungen" hinzufügen. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">Öffnen mit "$1" nicht möglich</translation>
 <translation id="639777613761517128">Um Dateien mit "$1" zu öffnen, kopieren Sie sie zuerst in den Ordner "Linux-Dateien".</translation>
+<translation id="5112009661904384591">Dateien mit Linux teilen</translation>
+<translation id="3186202398303525187">Zulassen, dass Linux Apps $1-Dateien öffnen.</translation>
+<translation id="1603300902586586390">Zulassen, dass Linux Apps $1-Dateien öffnen.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/>-Datei</translation>
 <translation id="895586998699996576">$1-Bild</translation>
 <translation id="2853916256216444076">$1-Video</translation>
@@ -1868,6 +1876,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Linux-Tools, -Editoren und -IDEs auf Ihrem Bravebook ausführen &lt;a target="_blank" href="<ph name="URL"/>"&gt;Weitere Informationen&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Linux-Apps für Bravebook entfernen</translation>
+<translation id="1529899284660134226">Freigegebene Dateien und Ordner verwalten</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android-Einstellungen</translation>
 <translation id="4767209642168463274">Installieren Sie Apps und Spiele aus Brave Software Play auf Ihrem Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Weitere Informationen&lt;/a&gt;</translation>
@@ -1992,6 +2001,10 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6122875415561139701">Der Schreibvorgang ist auf folgendem Gerät nicht erlaubt: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Die Bluetooth-Konfiguration wird von <ph name="USER_EMAIL"/> festgelegt.</translation>
 <translation id="784934925303690534">Zeitraum</translation>
+<translation id="3958004920128806270">Wenn Sie Browserdaten nur von diesem Gerät, aber nicht aus Ihrem Brave Software-Konto löschen möchten, <ph name="BEGIN_LINK"/>melden Sie sich ab<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Wenn Sie Browserdaten von all Ihren synchronisierten Geräten und aus Ihrem Brave Software-Konto löschen möchten, <ph name="BEGIN_LINK"/>rufen Sie die Synchronisierungseinstellungen auf<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Wenn Sie Browserdaten von all Ihren synchronisierten Geräten und aus Ihrem Brave Software-Konto löschen möchten, <ph name="BEGIN_LINK"/>geben Sie Ihre Passphrase ein<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Wenn Sie Browserdaten von all Ihren synchronisierten Geräten und aus Ihrem Brave Software-Konto löschen möchten, <ph name="BEGIN_LINK"/>melden Sie sich an<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Browserverlauf</translation>
 <translation id="8662811608048051533">Sie werden von den meisten Websites abgemeldet.</translation>
 <translation id="4650925988509114690">Hiermit werden Sie von den meisten Websites abgemeldet. Sie bleiben jedoch in Ihrem Brave Software-Konto angemeldet, sodass Ihre synchronisierten Daten gelöscht werden können.</translation>
@@ -2072,9 +2085,11 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="9024158959543687197">Fehler beim Bereitstellen der Freigabe. Überprüfen Sie die Dateifreigabe-URL und versuchen Sie es noch einmal.</translation>
 <translation id="1954813140452229842">Fehler beim Bereitstellen der Freigabe. Überprüfen Sie Ihre Anmeldedaten und versuchen Sie es noch einmal.</translation>
 <translation id="2148219725039824548">Fehler beim Bereitstellen der Freigabe. Die angegebene Freigabe wurde im Netzwerk nicht gefunden.</translation>
-<translation id="7234406375359457793">Fehler beim Bereitstellen der Freigabe. Die angegebene Freigabe wird nicht unterstützt.</translation>
+<translation id="6923633482430812883">Fehler beim Bereitstellen der Freigabe. Der Dateiserver, zu dem Sie eine Verbindung herstellen, muss SMBv2 oder höher unterstützen.</translation>
 <translation id="706626672220389329">Fehler beim Bereitstellen der Freigabe. Die angegebene Freigabe ist schon bereitgestellt.</translation>
 <translation id="5985458664595100876">Ungültiges URL-Format. Unterstützt werden \\server\share und smb://server/share.</translation>
+<translation id="9147304170847707004">Authentifizierungsmethode</translation>
+<translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Datum und Uhrzeit</translation>
 <translation id="2059913712424898428">Zeitzone</translation>
 <translation id="4547672827276975204">Automatisch festlegen</translation>
@@ -2396,6 +2411,13 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6678717876183468697">Abfrage-URL</translation>
 <translation id="1545786162090505744">URL mit %s statt der Suchanfrage</translation>
 <translation id="7136694880210472378">Als Standard festlegen</translation>
+<translation id="6953878494808481632">Weitere Informationen</translation>
+<translation id="7258619945375359543">Zulassen, dass Assistant Ihnen Vorschläge zu den Inhalten auf Ihrem Bildschirm anzeigt</translation>
+<translation id="472896694312062378">"Ok Brave Software"</translation>
+<translation id="6236033368436682108">Bei eingeschaltetem Bildschirm steht Ihnen Brave Software Assistant jederzeit zur Verfügung, wenn Sie "Ok Brave Software" sagen</translation>
+<translation id="5355099869024327351">Zulassen, dass Assistant Ihnen Benachrichtigungen anzeigt</translation>
+<translation id="1127216846847548354">Sprachaktivierung</translation>
+<translation id="3506093155988721483">Spracheingabe anstelle der Tastatur verwenden, wenn Assistant gestartet wird</translation>
 <translation id="3908743412684152579">Brave Software Assistant-Einstellungen</translation>
 <translation id="4933484234309072027">auf <ph name="URL"/> eingebettet</translation>
 <translation id="8427292751741042100">auf beliebigem Host eingebettet</translation>
@@ -2465,6 +2487,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4994474651455208930">Registrierung von Websites als Standard-Handler für Protokolle zulassen</translation>
 <translation id="1886996562706621347">Registrierung von Websites als Standard-Handler für Protokolle zulassen (empfohlen)</translation>
 <translation id="26224892172169984">Verarbeitung von Protokollen für keine Website zulassen</translation>
+<translation id="4469477701382819144">Auf Websites blockiert, die aufdringliche oder irreführende Werbung anzeigen</translation>
+<translation id="4451757071857432900">Auf Websites blockiert, die aufdringliche oder irreführende Werbung anzeigen (empfohlen)</translation>
 <translation id="5390100381392048184">Wiedergabe von Ton auf Websites zulassen</translation>
 <translation id="1660204651932907780">Wiedergabe von Ton auf Websites zulassen (empfohlen)</translation>
 <translation id="3600792891314830896">Websites stummschalten, die Ton wiedergeben</translation>
@@ -2488,6 +2512,8 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5063480226653192405">Verwendung</translation>
 <translation id="3006881078666935414">Keine Nutzungsdaten</translation>
 <translation id="1300806585489372370">Um diese Einstellung zu ändern, <ph name="BEGIN_LINK"/>aktivieren Sie zuerst die Kennzeichnungen<ph name="END_LINK"/></translation>
+<translation id="5932224571077948991">Website zeigt aufdringliche oder irreführende Werbung an</translation>
+<translation id="6038929619733116134">Blockieren, wenn Website aufdringliche oder irreführende Werbung anzeigt</translation>
 <translation id="3083193146044397360">Vorübergehend blockiert, um Ihre Privatsphäre zu schützen</translation>
 <translation id="2500471369733289700">Blockiert, um Ihre Privatsphäre zu schützen</translation>
 <translation id="3008272652534848354">Berechtigungen zurücksetzen</translation>
@@ -2520,6 +2546,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7366415735885268578">Website hinzufügen</translation>
 <translation id="5052499409147950210">Website bearbeiten</translation>
 <translation id="2870560284913253234">Website</translation>
+<translation id="4610862967073369855">Zulassen, dass Android Messages SMS von Ihrem Smartphone an Ihr Bravebook übermittelt</translation>
 <translation id="6742339027238151589">Zugänglich für Skript</translation>
 <translation id="361106536627977100">Flash-Daten</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2621,6 +2648,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8135094938656535588">Synchronisierte Daten im Brave Software Dashboard verwalten</translation>
 <translation id="6596325263575161958">Verschlüsselungsoptionen</translation>
 <translation id="2459230470861708651">Synchronisierte Passwörter mit meinem Brave Software-Nutzernamen und meinem Passwort verschlüsseln</translation>
+<translation id="5958351589333270173">Alle synchronisierten Daten mit eigener <ph name="BEGIN_LINK"/>Synchronisierungspassphrase<ph name="END_LINK"/> verschlüsseln (außer Zahlungsmethoden oder Adressen von Brave Software Pay)</translation>
 <translation id="4817583816512767754">Nur Personen mit Ihrer Passphrase können Ihre verschlüsselten Daten lesen. Die Passphrase wird nicht an Brave Software gesendet oder von Brave Software gespeichert. Falls Sie sie vergessen oder diese Einstellung ändern möchten, müssen Sie die <ph name="BEGIN_LINK"/>Synchronisierung zurücksetzen<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Wenn Sie diese Einstellung ändern möchten, müssen Sie die <ph name="BEGIN_LINK"/>Synchronisierung zurücksetzen<ph name="END_LINK"/>, um die Synchronisierungspassphrase zu entfernen</translation>
 <translation id="3873315167136380065">Wenn Sie diese Funktion aktivieren möchten, müssen Sie die <ph name="BEGIN_LINK"/>Synchronisierung zurücksetzen<ph name="END_LINK"/>, um die Synchronisierungspassphrase zu entfernen</translation>
@@ -2684,6 +2712,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="89720367119469899">Esc-Taste</translation>
 <translation id="5583640892426849032">Rücktaste</translation>
 <translation id="1938351510777341717">Externer Befehl</translation>
+<translation id="7969046989155602842">Befehl</translation>
 <translation id="585979798156957858">Externe Metataste</translation>
 <translation id="4991420928586866460">Tasten in der obersten Reihe als Funktionstasten behandeln</translation>
 <translation id="85486688517848470">Halten Sie die Suchtaste gedrückt, um die Funktion der Tasten in der obersten Reihe zu ändern</translation>
@@ -2779,12 +2808,18 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="727441411541283857"><ph name="PERCENTAGE"/> % – restliche Ladezeit: <ph name="TIME"/></translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/> %</translation>
 <translation id="1940546824932169984">Verbundene Geräte</translation>
+<translation id="3468999815377931311">Android-Smartphone</translation>
+<translation id="2789927670850159391">Sie können Ihr Bravebook mit Ihrem Smartphone verbinden. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Keine geeigneten Geräte vorhanden. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Bestätigung steht aus. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="7179187931092694802">Sie können Ihr Bravebook mit Ihrem Smartphone entsperren. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
+<translation id="6415900369006735853">Internetverbindung über Ihr Smartphone herstellen</translation>
 <translation id="4746351372139058112">Nachrichten</translation>
 <translation id="2248072377758660530">Sie können SMS auf Ihrem Bravebook senden und empfangen. <ph name="LINK_BEGIN"/>Weitere Informationen<ph name="LINK_END"/></translation>
+<translation id="5153234146675181447">Smartphone entfernen</translation>
+<translation id="2307631131458143837">Smartphone vom Bravebook trennen</translation>
+<translation id="1146102139091738471">Smartphone vom Bravebook trennen. Die Geräte werden nicht mehr automatisch miteinander verbunden.</translation>
 <translation id="7878562273885520351">Ihr Passwort könnte gefährdet sein</translation>
 <translation id="6582421931165117398">Ändern Sie jetzt Ihr Passwort, um Ihre persönlichen Informationen zu schützen. Bevor Sie Ihr Passwort ändern können, werden Sie aufgefordert, sich anzumelden.</translation>
 <translation id="1089439967362294234">Passwort ändern</translation>
@@ -2885,6 +2920,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="296137235951584143">Brave personalisieren</translation>
 <translation id="7835178595033117206">Lesezeichen entfernt</translation>
 <translation id="2785008241190445880">Lesezeichen ersetzt</translation>
+<translation id="2950533317914339731">Lesezeichen für Ihre Lieblings-Apps von Brave Software hinzufügen</translation>
 <translation id="8846319957959474018">Apps einfach über Lesezeichen öffnen</translation>
 <translation id="5939847200023027600">PDF-Kompositionsdienst</translation>
 <translation id="5877584842898320529">Der ausgewählte Drucker ist entweder nicht verfügbar oder nicht ordnungsgemäß installiert. <ph name="BR"/> Überprüfen Sie den Drucker oder wählen Sie einen anderen Drucker aus.</translation>

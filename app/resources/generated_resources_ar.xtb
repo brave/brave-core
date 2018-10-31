@@ -1257,6 +1257,7 @@
 <translation id="3766223500670287046">تشغيل الشاشة عن بُعد</translation>
 <translation id="3930737994424905957">جارٍ البحث عن أجهزة</translation>
 <translation id="5209320130288484488">لم يتم العثور على أي أجهزة</translation>
+<translation id="4415245286584082850">لم يتم العثور على أيّ أجهزة. يُرجى فتح مقالة مركز المساعدة في علامة تبويب جديدة.</translation>
 <translation id="4363771538994847871">لم يتم العثور على وجهات الإرسال. هل تريد المساعدة؟</translation>
 <translation id="8688672835843460752">متوفِّر</translation>
 <translation id="4271396100647220620">لا توجد أي مطابقات</translation>
@@ -1874,6 +1875,7 @@
 <translation id="7911118814695487383">‏نظام التشغيل Linux</translation>
 <translation id="1834538809763482401">‏يمكنك تشغيل أدوات Linux وأدوات التحرير وبرامج IDE على جهازBravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;مزيد من المعلومات&lt;/a&gt;</translation>
 <translation id="6869910261738842136">‏إزالة تطبيقات Linux لـ Bravebook</translation>
+<translation id="1529899284660134226">إدارة المجلدات والملفات التي تمت مشاركتها</translation>
 <translation id="2295473777859797944">‏متجر Brave Software Play</translation>
 <translation id="572155275267014074">‏إعدادات Android</translation>
 <translation id="4767209642168463274">‏يمكنك تثبيت التطبيقات والألعاب من Brave Software Play على جهاز Bravebook‏. &lt;a target="_blank" href="<ph name="URL"/>"&gt;مزيد من المعلومات&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@
 <translation id="6122875415561139701">لا يُسمح بعملية الكتابة على: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">يتم التحكّم في تهيئة البلوتوث من قِبل <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">النطاق الزمني</translation>
+<translation id="3958004920128806270">‏لمحو بيانات التصفُّح من هذا الجهاز فقط والاحتفاظ بها في حسابك على Brave Software، يُرجى <ph name="BEGIN_LINK"/>تسجيل الخروج<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">‏لمحو بيانات التصفُّح من جميع أجهزتك التي تمت مزامنتها ومن حسابك على Brave Software، يُرجى <ph name="BEGIN_LINK"/>الانتقال إلى إعدادات المزامنة<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">‏لمحو بيانات التصفُّح من جميع أجهزتك التي تمت مزامنتها ومن حسابك على Brave Software، يُرجى <ph name="BEGIN_LINK"/>إدخال عبارة المرور<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">‏لمحو بيانات التصفُّح من جميع أجهزتك التي تمت مزامنتها ومن حسابك على Brave Software، يُرجى <ph name="BEGIN_LINK"/>تسجيل الدخول<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">سجل التصفح</translation>
 <translation id="8662811608048051533">يخرجك من معظم مواقع الويب.</translation>
 <translation id="4650925988509114690">‏يؤدي هذا الخيار إلى تسجيل خروجك من معظم مواقع الويب. وسيستمر تسجيل دخولك إلى حسابك على Brave Software بحيث يمكن محو بياناتك التي تمت مزامنتها.</translation>
@@ -2078,7 +2084,7 @@
 <translation id="9024158959543687197">‏حدث خطأ في تحميل المشاركة. يُرجى التحقُّق من عنوان URL لخادم مشاركة الملفات وإعادة المحاولة.</translation>
 <translation id="1954813140452229842">حدث خطأ في تحميل المشاركة. يُرجى التحقُّق من بيانات الاعتماد وإعادة المحاولة.</translation>
 <translation id="2148219725039824548">حدث خطأ في تحميل المشاركة. لم يتم العثور على المشاركة المُحدَّدة في الشبكة.</translation>
-<translation id="7234406375359457793">حدث خطأ في تحميل المشاركة. المشاركة المُحدَّدة غير متاحة.</translation>
+<translation id="6923633482430812883">‏حدث خطأ أثناء تحميل المشاركة. لذا يُرجى التحقّق من أن خادم الملفات الذي تتصل به يدعم بروتوكول SMB الإصدار 2 أو الإصدارات الأحدث.</translation>
 <translation id="706626672220389329">حدث خطأ في تحميل المشاركة. تم تحميل المشاركة المُحدّدة من قبل.</translation>
 <translation id="5985458664595100876">‏تنسيق عنوان URL غير صالح. التنسيقات المدعومة هي \\server\share وsmb://server/share.</translation>
 <translation id="9147304170847707004">طريقة المصادقة</translation>
@@ -2539,6 +2545,7 @@
 <translation id="7366415735885268578">إضافة موقع ويب</translation>
 <translation id="5052499409147950210">تعديل موقع ويب</translation>
 <translation id="2870560284913253234">الموقع</translation>
+<translation id="4610862967073369855">‏للسماح لتطبيق "رسائل Android" بترحيل الرسائل النصية من هاتفك إلى جهاز Bravebook</translation>
 <translation id="6742339027238151589">يمكن الدخول إليه بواسطة النص البرمجي</translation>
 <translation id="361106536627977100">بيانات فلاش</translation>
 <translation id="8557930019681227453">البيان</translation>
@@ -2640,6 +2647,7 @@
 <translation id="8135094938656535588">‏إدارة البيانات المتزامنة على لوحة بيانات Brave Software</translation>
 <translation id="6596325263575161958">خيارات التشفير</translation>
 <translation id="2459230470861708651">‏تشفير كلمات المرور المتزامنة باستخدام اسم المستخدم وكلمة المرور لحساب Brave Software</translation>
+<translation id="5958351589333270173">‏تشفير البيانات المتزامنة باستخدام <ph name="BEGIN_LINK"/>عبارة مرور المزامنة<ph name="END_LINK"/> الخاصة بك. لا يتضمّن ذلك طرق الدفع والعناوين من Brave Software Pay.</translation>
 <translation id="4817583816512767754">‏لا يمكن لأحد قراءة بياناتك المشفرة سوى من لديه عبارة المرور التي تستخدمها. ولا يتم إرسال عبارة المرور إلى شركة Brave Software أو تخزينها لديها. إذا نسيت عبارة المرور أو رغبت في تغيير هذا الإعداد، فسيلزمك <ph name="BEGIN_LINK"/>إعادة تعيين المزامنة<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">لتغيير هذا الإعداد، يمكنك <ph name="BEGIN_LINK"/>إعادة ضبط المزامنة<ph name="END_LINK"/> لإزالة عبارة مرور المزامنة.</translation>
 <translation id="3873315167136380065">لتفعيل هذا الإعداد، يمكنك <ph name="BEGIN_LINK"/>إعادة ضبط المزامنة<ph name="END_LINK"/> لإزالة عبارة مرور المزامنة.</translation>
@@ -2703,6 +2711,7 @@
 <translation id="89720367119469899">خروج</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">‏مفتاح Command الخارجي</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">‏مفتاح Meta الخارجي</translation>
 <translation id="4991420928586866460">معالجة مفاتيح الصف العلوي باعتبارها مفاتيح الوظائف</translation>
 <translation id="85486688517848470">اضغط على مفتاح البحث باستمرار لتبديل سلوك مفاتيح الصف العلوي</translation>

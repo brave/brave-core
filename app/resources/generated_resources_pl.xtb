@@ -1258,6 +1258,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="3766223500670287046">Ekran zdalny</translation>
 <translation id="3930737994424905957">Szukam urządzeń</translation>
 <translation id="5209320130288484488">Nie znaleziono urządzeń</translation>
+<translation id="4415245286584082850">Nie znaleziono żadnego urządzenia. Otwórz artykuł w Centrum pomocy na nowej karcie.</translation>
 <translation id="4363771538994847871">Nie wykryto żadnego urządzenia Cast. Potrzebujesz pomocy?</translation>
 <translation id="8688672835843460752">Dostępne</translation>
 <translation id="4271396100647220620">Brak zgodnych wyników</translation>
@@ -1875,6 +1876,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Używaj na Bravebooku narzędzi, edytorów i IDE na Linuksa. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Więcej informacji&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Usuń aplikacje na Linuksa z Bravebooka</translation>
+<translation id="1529899284660134226">Zarządzaj udostępnionymi plikami i folderami</translation>
 <translation id="2295473777859797944">Sklep Brave Software Play</translation>
 <translation id="572155275267014074">Ustawienia Androida</translation>
 <translation id="4767209642168463274">Instaluj gry i aplikacje z Brave Software Play na Bravebooku. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Więcej informacji&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6122875415561139701">Nie jest dozwolona operacja zapisu na: „<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="439266289085815679">Konfiguracją Bluetooth zarządza <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Zakres czasu</translation>
+<translation id="3958004920128806270">Aby wyczyścić dane przeglądania tylko z tego urządzenia, zachowując je na swoim koncie Brave Software, <ph name="BEGIN_LINK"/>wyloguj się<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Aby wyczyścić dane przeglądania ze wszystkich swoich zsynchronizowanych urządzeń i z konta Brave Software, <ph name="BEGIN_LINK"/>otwórz ustawienia synchronizacji<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Aby wyczyścić dane przeglądania ze wszystkich swoich zsynchronizowanych urządzeń i z konta Brave Software, <ph name="BEGIN_LINK"/>wpisz hasło<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Aby wyczyścić dane przeglądania ze wszystkich zsynchronizowanych urządzeń i z konta Brave Software, <ph name="BEGIN_LINK"/>zaloguj się<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historia przeglądania</translation>
 <translation id="8662811608048051533">Wylogowuje z większości stron internetowych.</translation>
 <translation id="4650925988509114690">Spowoduje wylogowanie Cię z większości stron internetowych. Nie nastąpi wylogowanie z konta Brave Software, więc będzie można wyczyścić zsynchronizowane dane.</translation>
@@ -2079,7 +2085,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="9024158959543687197">Błąd podczas podłączania udziału. Sprawdź URL udziału plików i spróbuj ponownie.</translation>
 <translation id="1954813140452229842">Błąd podczas podłączania udziału. Sprawdź dane logowania i spróbuj ponownie.</translation>
 <translation id="2148219725039824548">Błąd podczas podłączania udziału. Udziału nie znaleziono w sieci.</translation>
-<translation id="7234406375359457793">Błąd podczas podłączania udziału. Ten udział nie jest obsługiwany.</translation>
+<translation id="6923633482430812883">Błąd podczas podłączania udziału. Sprawdź, czy serwer plików, z którym się łączysz, obsługuje SMB w wersji 2 lub nowszej.</translation>
 <translation id="706626672220389329">Błąd podczas podłączania udziału. Udział jest już podłączony.</translation>
 <translation id="5985458664595100876">Nieprawidłowy format adresu URL. Obsługiwane formaty to \\server\share i smb://server/share.</translation>
 <translation id="9147304170847707004">Metoda uwierzytelniania</translation>
@@ -2540,6 +2546,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="7366415735885268578">Dodawanie strony</translation>
 <translation id="5052499409147950210">Edytowanie strony internetowej</translation>
 <translation id="2870560284913253234">Witryna</translation>
+<translation id="4610862967073369855">Zezwala Wiadomościom na Androida przesyłać SMS-y z telefonu na Bravebooka</translation>
 <translation id="6742339027238151589">Dostępny dla skryptu</translation>
 <translation id="361106536627977100">Dane Flash</translation>
 <translation id="8557930019681227453">Plik manifestu</translation>
@@ -2641,6 +2648,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="8135094938656535588">Zarządzaj synchronizowanymi danymi w Panelu Brave Software</translation>
 <translation id="6596325263575161958">Opcje szyfrowania</translation>
 <translation id="2459230470861708651">Szyfruj synchronizowane hasła przy użyciu nazwy użytkownika i hasła Brave Software</translation>
+<translation id="5958351589333270173">Szyfruj synchronizowane dane własnym <ph name="BEGIN_LINK"/>hasłem synchronizacji<ph name="END_LINK"/>. Nie obejmuje to form płatności ani adresów w Brave Software Pay.</translation>
 <translation id="4817583816512767754">Twoje zaszyfrowane dane może odczytać tylko ktoś znający hasło. Brave Software nie otrzyma Twojego hasła ani nie będzie go przechowywać. Jeśli je zapomnisz lub zechcesz zmienić to ustawienie, musisz <ph name="BEGIN_LINK"/>zresetować synchronizację<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph name="END_LINK"/>, by usunąć hasło synchronizacji</translation>
 <translation id="3873315167136380065">Aby włączyć tę funkcję, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph name="END_LINK"/> w celu usunięcia hasła synchronizacji</translation>
@@ -2704,6 +2712,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="89720367119469899">Ucieczka</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Polecenie zewnętrzne</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Zewnętrzny klawisz Meta</translation>
 <translation id="4991420928586866460">Traktuj klawisze z górnego rzędu jak klawisze funkcyjne</translation>
 <translation id="85486688517848470">Przytrzymaj klawisz wyszukiwania, by zmienić działanie klawiszy z górnego rzędu</translation>

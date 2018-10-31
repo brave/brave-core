@@ -1256,6 +1256,7 @@
 <translation id="3766223500670287046">پخش ازراه‌دور صفحه‌نمایش</translation>
 <translation id="3930737994424905957">درحال جستجوی دستگاه‌ها</translation>
 <translation id="5209320130288484488">دستگاهی یافت نشد</translation>
+<translation id="4415245286584082850">دستگاهی پیدا نشد. در برگه جدیدی، یک مقاله مرکز راهنمایی باز کنید.</translation>
 <translation id="4363771538994847871">هیچ مقصدی برای ارسال محتوا پیدا نشد. نیاز به راهنمایی دارید؟</translation>
 <translation id="8688672835843460752">دردسترس</translation>
 <translation id="4271396100647220620">مورد منطبقی وجود ندارد</translation>
@@ -1873,6 +1874,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">‏اجرای ابزارها، ویرایشگرها و محیط‌های یکپارچه توسعه نرم‌افزار (IDEs) ‏Linux در Bravebook.‏ &lt;a target="_blank" href="<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
 <translation id="6869910261738842136">‏حذف برنامه‌های Linux برای Bravebook</translation>
+<translation id="1529899284660134226">مدیریت فایل‌ها و پوشه‌های هم‌رسانی‌شده</translation>
 <translation id="2295473777859797944">‏فروشگاه Brave Software Play</translation>
 <translation id="572155275267014074">‏تنظیمات Android</translation>
 <translation id="4767209642168463274">‏نصب برنامه‌ها و بازی‌‌ها از Brave Software Play در Bravebook‏. &lt;a target="_blank" href="‏<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
@@ -1997,6 +1999,10 @@
 <translation id="6122875415561139701">عملیات نوشتن در این دستگاه مجاز نیست: «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="439266289085815679">‏پیکربندی Bluetooth توسط <ph name="USER_EMAIL"/> کنترل می‌شود.</translation>
 <translation id="784934925303690534">محدوده زمانی</translation>
+<translation id="3958004920128806270">‏برای اینکه داده‌های محصول مرور را از فقط این دستگاه پاک کنید اما آن‌ها را در حساب Brave Software خود نگه‌دارید، <ph name="BEGIN_LINK"/>از سیستم خارج شوید<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">‏برای اینکه داده‌های محصول مرور را از همه دستگاه‌های همگام‌سازی‌شده و حساب Brave Software خود پاک کنید، <ph name="BEGIN_LINK"/>به تنظیمات همگام‌سازی بروید<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">‏برای اینکه داده‌های محصول مرور را از همه دستگاه‌های همگام‌سازی‌شده و حساب Brave Software خود پاک کنید، <ph name="BEGIN_LINK"/>عبارت عبورتان را وارد کنید<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">‏برای اینکه داده‌های محصول مرور را از همه دستگاه‌های همگام‌سازی‌شده و حساب Brave Software خود پاک کنید، <ph name="BEGIN_LINK"/>به سیستم وارد شوید<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">سابقه مرور</translation>
 <translation id="8662811608048051533">شما را از سیستم اکثر سایت‌ها خارج می‌کند.</translation>
 <translation id="4650925988509114690">‏شما از سیستم بیشتر سایت‌ها خارج می‌کند. از حساب Brave Software خارج نخواهید شد بنابراین می‌توانید داده‌های همگام‌سازی‌شده‌تان را پاک کنید.</translation>
@@ -2077,7 +2083,7 @@
 <translation id="9024158959543687197">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. لطفاً نشانی وب دستگاه ذخیره‌سازی متصل به شبکه را بررسی کنید و دوباره امتحان کنید.</translation>
 <translation id="1954813140452229842">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. لطفاً اطلاعات کاربری را بررسی کنید و دوباره امتحان کنید.</translation>
 <translation id="2148219725039824548">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. دستگاه ذخیره‌سازی مشخص‌شده در شبکه پیدا نشد.</translation>
-<translation id="7234406375359457793">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. دستگاه ذخیره‌سازی مشخص‌شده پشتیبانی نمی‌شود.</translation>
+<translation id="6923633482430812883">‏هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. لطفاً مطمئن شوید سرور فایلی که می‌خواهید به آن متصل شوید از SMB نسخه v2 یا بالاتر پشتیبانی می‌کند.</translation>
 <translation id="706626672220389329">هنگام نشاندن دستگاه ذخیره‌سازی متصل به شبکه خطایی روی داد. دستگاه ذخیره‌سازی مشخص‌شده قبلاً نشانده شده است.</translation>
 <translation id="5985458664595100876">‏قالب نشانی وب نامعتبر است. قالب‌های پشتیبانی‌شده عبارتند از: \\server\share و smb://server/share.</translation>
 <translation id="9147304170847707004">روش احراز هویت</translation>
@@ -2538,6 +2544,7 @@
 <translation id="7366415735885268578">افزودن سایت</translation>
 <translation id="5052499409147950210">ویرایش سایت</translation>
 <translation id="2870560284913253234">سایت</translation>
+<translation id="4610862967073369855">‏به «پیام‌های Android» اجازه دهید پیام‌های متنی را از تلفن در Bravebook بازپخش کند</translation>
 <translation id="6742339027238151589">قابل دسترسی به اسکریپت</translation>
 <translation id="361106536627977100">داده‌های فلاش</translation>
 <translation id="8557930019681227453">مانیفست</translation>
@@ -2639,6 +2646,7 @@
 <translation id="8135094938656535588">‏مدیریت داده‌های همگام‌سازی‌شده در داشبورد Brave Software</translation>
 <translation id="6596325263575161958">گزینه‌های رمزگذاری</translation>
 <translation id="2459230470861708651">‏رمزگذاری گذرواژه‌های همگام‌سازی‌شده با گذرواژه و نام کاربری Brave Software شما</translation>
+<translation id="5958351589333270173">‏رمزگذاری داده‌های همگام‌سازی‌شده با <ph name="BEGIN_LINK"/>عبارت عبور همگام‌سازی<ph name="END_LINK"/> خودتان. این کار شامل روش‌های پرداخت و نشانی‌های موجود در Brave Software Pay نمی‌شود.</translation>
 <translation id="4817583816512767754">‏فقط فردی که عبارت عبور شما را دارد می‌تواند اطلاعات رمزگذاری‌شده‌تان را بخواند. این عبارت عبور به Brave Software ارسال یا در سرورهای آن ذخیره نمی‌شود. اگر عبارت عبورتان را فراموش کنید، باید همگام‌سازی را بازنشانی کنید. <ph name="BEGIN_LINK"/>بازنشانی همگام‌سازی<ph name="END_LINK"/></translation>
 <translation id="7441736921018636843">برای تغییر این تنظیم، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/> تا عبارت عبور همگام‌سازی حذف شود</translation>
 <translation id="3873315167136380065">برای روشن کردن این گزینه، <ph name="BEGIN_LINK"/>همگام‌سازی را بازنشانی کنید<ph name="END_LINK"/> تا عبارت عبور همگام‌سازی حذف شود</translation>
@@ -2702,6 +2710,7 @@
 <translation id="89720367119469899">فرار</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">فرمان خارجی</translation>
+<translation id="7969046989155602842">فرمان</translation>
 <translation id="585979798156957858">فراداده خارجی</translation>
 <translation id="4991420928586866460">در نظر گرفتن کلیدهای ردیف بالا به عنوان کلیدهای عملکرد</translation>
 <translation id="85486688517848470">برای جابه‌جایی بین رفتار کلیدهای ردیف بالا، کلید جستجو را نگه‌دارید</translation>

@@ -16,13 +16,20 @@
 <translation id="8344569602005188545">horas</translation>
 <translation id="7100907433458266664">día</translation>
 <translation id="4971389353431353387">días</translation>
+<translation id="8427933533533814946">Foto por</translation>
+<translation id="7115515527894388910">Editar preferencias</translation>
 <translation id="6165508094623778733">Más información</translation>
+<translation id="8730621377337864115">OK</translation>
+<translation id="6248988683584659830">Ajustes de búsqueda</translation>
+<translation id="2055363275850890030">Ventana privada</translation>
+<translation id="3135655280958284640">DuckDuckGo</translation>
+<translation id="4371533307685765155">Buscar con DuckDuckGo</translation>
 <translation id="1869685517625607604">Total de Publicidades Bloqueadas:</translation>
 <translation id="6200814343085745765">Bloqueo de Publicidad Regional:</translation>
 <translation id="59174027418879706">Activado</translation>
 <translation id="4176463684765177261">Desactivado</translation>
 <translation id="7207456302801184289">Bienvenido a Brave</translation>
-<translation id="2391823593986423328">Brave es mucho más que un navegador. Déjanos mostrarte cómo sacar el mejor provecho de él</translation>
+<translation id="764012553571385542">Brave es mucho más que un navegador. Déjanos mostrarte cómo sacar el mejor provecho de él</translation>
 <translation id="6001839398155993679">Vamos</translation>
 <translation id="8050847734948770789">Activar las Recompensas Brave</translation>
 <translation id="2710310654441838823">Las Recompensas Brave son una nueva forma de pensar acerca de cómo funciona la web. Obtén recompensas por ver publicidades que respetan la privacidad y apoya a tus creadores de contenido preferidos mientras lo usas.</translation>
@@ -31,14 +38,13 @@
 <translation id="5521187896304743452">Brave te hace fácil configurar tu entorno habitual al importar bookmarks y configuraciones de otros navegadores instalados en tu computadora.</translation>
 <translation id="4138981897709579987">Importar ahora</translation>
 <translation id="9152220852742774324">Manejar las configuraciones de tu escudo</translation>
-<translation id="2043261199283617849">Ajusta y monitorea tu nivel de protección al hacer click en el logo de Brave en la barra de herramientas. Maneja la configuración de tus escudos globales en el panel de preferencias.</translation>
+<translation id="110988439043625224">Ajusta y monitorea tu nivel de protección al hacer click en el logo de Brave en la barra de herramientas. Maneja la configuración de tus escudos globales en el panel de preferencias.</translation>
 <translation id="3366308997091824722">Configuración de Escudo</translation>
 <translation id="7024124499777560832">Personalizar tus Preferencias</translation>
 <translation id="2498783234010887316">Las pestañas, apariencia, extensiones y la configuración del historal pueden ser configuradas desde el panel de preferencias. Incluso podrías encontrar un tema oscuro ahí ;)</translation>
 <translation id="5801568494490449797">Preferencias</translation>
 <translation id="3829010735958850433">Salter el tour de bienvenida</translation>
 <translation id="1201402288615127009">Siguiente</translation>
-<translation id="8730621377337864115">Hecho</translation>
 <translation id="1919345977826869612">Publicidades</translation>
 <translation id="5946611334574299206">Obtén tokens mirando publicidades en Brave. Las publicidades presentadas se basan en tus intereses, según lo inferido a partir del comportamiento de tu navegador. Ningún dato personal ni historial de navegación jamás saldrá de tu navegador.</translation>
 <translation id="6112368337882254910">Autocontribuir</translation>
@@ -74,11 +80,11 @@
 <translation id="7841456038054167122">Vuelve a ingresar las claves o prueba claves diferentes.</translation>
 <translation id="2195074481553016770">Casi listo</translation>
 <translation id="5254740304961202261">¡Demuestra que eres humano!</translation>
-<translation id="5118651998291801746">Mmmm, no tanto.</translation>
+<translation id="1387881035954376289">Mmmm, no tanto.</translation>
 <translation id="2323069945529668668">¡Uy!</translation>
 <translation id="5094577350232361255">acerca de</translation>
 <translation id="4918086044614829423">Aceptar</translation>
-<translation id="7856172182738102743">©2016 –2018 Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas del titular del sitio.</translation>
+<translation id="6832986780040139899">©2016 –2018 Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas del titular del sitio.</translation>
 <translation id="9026369588205476247">Para proteger tu privacidad, esta declaración de las Recompensas Brave no se guarda, graba ni registra en ningún lado más que en tu dispositivo (esta computadora). No se puede recuperar de Brave en caso de que pierdas los datos de tu dispositivo.</translation>
 <translation id="1036277985068412734">agregar fondos</translation>
 <translation id="4496990471549986619">las preguntas frecuentes</translation>
@@ -167,6 +173,7 @@
 <translation id="221640477682677473">Guarda esta clave de recuperación en un lugar seguro. Siempre puedes usar esta clave para recuperar tu billetera si algo le sucede a tu navegador o a tu computadora. Pero asegúrate de protegerla; cualquier persona que sepa esta clave podría robar tu billetera. Probablemente, lo más seguro sea escribirla en un papel o donde guardes información importante.</translation>
 <translation id="3074127054582480056">Atención</translation>
 <translation id="822513417008209372">Actualmente, estás apoyando a</translation>
+<translation id="5010112177773747965">sin tu consentimiento.</translation>
 <translation id="5830306739231399614">Lamentablemente, aún no tienes tokens.</translation>
 <translation id="7359258898775969374">Tres formas de llenar tu billetera:</translation>
 <translation id="8087614920008846901">Puedes agregar fondos.</translation>
@@ -189,6 +196,7 @@
 <translation id="8428213095426709021">Configuración</translation>
 <translation id="1792148354504719133">sitio</translation>
 <translation id="5944430251223015324">sitios</translation>
+<translation id="8826007068782654809">Gracias</translation>
 <translation id="6432779622695508363">Dar propina como</translation>
 <translation id="8424370624815730676">Basic Attention Token (BAT)</translation>
 <translation id="5808753495166759239">BitCoin (BTC)</translation>
@@ -214,7 +222,7 @@
 <translation id="8446884382197647889">Más información</translation>
 <translation id="4083384190339959182">Hemos mejorado Brave Payments en gran medida.</translation>
 <translation id="5395851053710553429">Prepárate para experimentar la próxima Internet.</translation>
-<translation id="1658717423774740031">Con tu antiguo navegador, pagabas para navegar por la web mirando publicidades con tu valiosa atención. Pasabas tu valioso tiempo descargando tecnología contra publicidades invasivas que transmitían tus valiosos datos privados a los publicistas sin tu consentimiento.</translation>
+<translation id="880341991877949255">Con tu antiguo navegador, pagabas para navegar por la web mirando publicidades con tu valiosa atención. Pasabas tu valioso tiempo descargando tecnología contra publicidades invasivas que transmitían tus valiosos datos privados a los publicistas sin tu consentimiento.</translation>
 <translation id="2549982302631665116">Hoy Brave te da la bienvenida a la nueva Internet; una en la que tu tiempo es valioso, tus datos personales se mantienen resguardados y donde realmente te pagan por tu atención.</translation>
 <translation id="3780605330121608425">Tu billetera</translation>
 </translationbundle>

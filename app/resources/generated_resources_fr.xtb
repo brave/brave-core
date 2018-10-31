@@ -1258,6 +1258,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3766223500670287046">Écran distant</translation>
 <translation id="3930737994424905957">Recherche d'appareils</translation>
 <translation id="5209320130288484488">Aucun appareil trouvé.</translation>
+<translation id="4415245286584082850">Aucun appareil détecté. Ouvrir un article du centre d'aide dans un nouvel onglet.</translation>
 <translation id="4363771538994847871">Aucune destination Cast trouvée. Besoin d'aide?</translation>
 <translation id="8688672835843460752">Disponible</translation>
 <translation id="4271396100647220620">Aucune correspondance</translation>
@@ -1875,6 +1876,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Exécutez des outils, des éditeurs et des IDE Linux sur votre Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Supprimer les applications Linux pour Bravebook</translation>
+<translation id="1529899284660134226">Gérer les fichiers et dossiers partagés</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Paramètres Android</translation>
 <translation id="4767209642168463274">Installez des applications et des jeux sur votre Bravebook depuis Brave Software Play. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6122875415561139701">L'opération d'écriture n'est pas autorisée sur l'appareil <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679">La configuration Bluetooth est contrôlée par <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Période</translation>
+<translation id="3958004920128806270">Pour effacer les données de navigation sur cet appareil uniquement, tout en les conservant dans votre compte Brave Software, <ph name="BEGIN_LINK"/>déconnectez-vous<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Pour effacer les données de navigation sur tous vos appareils synchronisés et dans votre compte Brave Software, <ph name="BEGIN_LINK"/>accédez aux paramètres de synchronisation<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Pour effacer les données de navigation sur tous vos appareils synchronisés et dans votre compte Brave Software, <ph name="BEGIN_LINK"/>saisissez votre phrase secrète<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Pour effacer les données de navigation sur tous vos appareils synchronisés et dans votre compte Brave Software, <ph name="BEGIN_LINK"/>connectez-vous<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historique de navigation</translation>
 <translation id="8662811608048051533">Vous déconnecte de la plupart des sites.</translation>
 <translation id="4650925988509114690">Cette option vous déconnecte de la plupart des sites. Vous restez cependant connecté à votre compte Brave Software afin que vos données synchronisées puissent être effacées.</translation>
@@ -2079,7 +2085,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="9024158959543687197">Erreur lors de l'installation du partage. Vérifiez l'URL de partage de fichiers, puis réessayez.</translation>
 <translation id="1954813140452229842">Erreur lors de l'installation du partage. Veuillez vérifier vos identifiants, puis réessayer.</translation>
 <translation id="2148219725039824548">Erreur lors de l'installation du partage. Le partage indiqué est introuvable sur le réseau.</translation>
-<translation id="7234406375359457793">Erreur lors de l'installation du partage. Le partage indiqué n'est pas accepté.</translation>
+<translation id="6923633482430812883">Erreur lors de l'installation du partage. Veuillez vérifier que le serveur de fichiers auquel vous vous connectez est compatible avec le protocole SMB (version 2 ou ultérieure).</translation>
 <translation id="706626672220389329">Erreur lors de l'installation du partage. Le partage indiqué est déjà installé.</translation>
 <translation id="5985458664595100876">Le format de l'URL n'est pas valide. Les formats acceptés sont \\server\share et smb://server/share.</translation>
 <translation id="9147304170847707004">Méthode d'authentification</translation>
@@ -2540,6 +2546,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7366415735885268578">Ajouter un site</translation>
 <translation id="5052499409147950210">Modifier le site</translation>
 <translation id="2870560284913253234">Site</translation>
+<translation id="4610862967073369855">Autorise Android Messages à transmettre les SMS de votre téléphone à votre Bravebook</translation>
 <translation id="6742339027238151589">Accessible aux scripts</translation>
 <translation id="361106536627977100">Données Flash</translation>
 <translation id="8557930019681227453">Manifeste</translation>
@@ -2641,6 +2648,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8135094938656535588">Gérer les données synchronisées dans Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Options de chiffrement</translation>
 <translation id="2459230470861708651">Chiffrer les mots de passe synchronisés avec votre nom d'utilisateur et votre mot de passe Brave Software</translation>
+<translation id="5958351589333270173">Chiffrer les données synchronisées avec votre propre <ph name="BEGIN_LINK"/>phrase secrète de synchronisation<ph name="END_LINK"/>. Ceci ne s'applique pas aux modes de paiement et adresses Brave Software Pay.</translation>
 <translation id="4817583816512767754">Seule une personne connaissant votre phrase secrète peut lire vos données chiffrées. La phrase secrète ne nous est pas envoyée et nous ne la stockons pas. Si vous l'oubliez ou si vous voulez modifier ce paramètre, vous devrez <ph name="BEGIN_LINK"/>réinitialiser la synchronisation<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronisation<ph name="END_LINK"/> pour supprimer votre phrase secrète de synchronisation</translation>
 <translation id="3873315167136380065">Pour activer cette fonctionnalité, <ph name="BEGIN_LINK"/>réinitialisez la synchronisation<ph name="END_LINK"/> pour supprimer votre phrase secrète de synchronisation</translation>
@@ -2704,6 +2712,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="89720367119469899">Échap</translation>
 <translation id="5583640892426849032">Retour</translation>
 <translation id="1938351510777341717">Commande externe</translation>
+<translation id="7969046989155602842">Commande</translation>
 <translation id="585979798156957858">Métadonnées externes</translation>
 <translation id="4991420928586866460">Considérer les touches de la rangée supérieure comme des touches de fonction</translation>
 <translation id="85486688517848470">Maintenir la touche de recherche enfoncée pour modifier la fonction des touches de la rangée supérieure</translation>

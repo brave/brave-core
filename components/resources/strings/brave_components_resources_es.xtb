@@ -25,7 +25,7 @@
 <translation id="6248988683584659830">Ajustes de búsqueda</translation>
 <translation id="730042046912793465">Esto es</translation>
 <translation id="2055363275850890030">Ventana Privada</translation>
-<translation id="5845750335588647333">Brave no almacena tu actividad cuando usas una Ventana Privada. Los sitios que visites no aparecerán en tu historial y las cookies se eliminarán cuando termines. Sin embargo, una Ventana Privada no te hace completamente anónimo en la red.</translation>
+<translation id="9133213713928851646">Brave no almacena tu actividad cuando usas una Ventana Privada. Los sitios que visites no aparecerán en tu historial y las cookies se eliminarán cuando termines. Sin embargo, una Ventana Privada no te hace completamente anónimo en la red.</translation>
 <translation id="8760415064721320867">Ventana Privada con Tor</translation>
 <translation id="778096729652828897">Saber más sobre Ventanas Privadas con Tor</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
@@ -40,7 +40,7 @@
 <translation id="59174027418879706">Habilitado</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
 <translation id="7207456302801184289">Bienvenido a Brave</translation>
-<translation id="2391823593986423328">Brave es mucho más que un navegador. Permítanos mostrarle cómo exprimirlo al máximo</translation>
+<translation id="764012553571385542">Brave es mucho más que un navegador. Permítanos mostrarle cómo exprimirlo al máximo</translation>
 <translation id="6001839398155993679">Vamos</translation>
 <translation id="8050847734948770789">Habilitar Brave Rewards</translation>
 <translation id="2710310654441838823">Brave Rewards es una nueva forma de entender cómo funciona la web. Sea recompensado por visualizar anuncios que respetan la privacidad y apoya a tus creadores de contenido favoritos mientras lo haces.</translation>
@@ -49,7 +49,7 @@
 <translation id="5521187896304743452">Brave es fácil de configurar y le permite importar marcadores y configuraciones de otros navegadores que ya tenga instalados en su ordenador.</translation>
 <translation id="4138981897709579987">Importar ahora</translation>
 <translation id="9152220852742774324">Gestionar su configuración del escudo</translation>
-<translation id="2043261199283617849">Ajuste y supervise su nivel de protección al hacer clic en el logotipo de Brave de la barra de herramientas. Gestione la configuración global de sus escudos en el panel de preferencias.</translation>
+<translation id="110988439043625224">Ajuste y supervise su nivel de protección al hacer clic en el logotipo de Brave de la barra de herramientas. Gestione la configuración global de sus escudos en el panel de preferencias.</translation>
 <translation id="3366308997091824722">Configuración del escudo</translation>
 <translation id="7024124499777560832">Personalice sus preferencias</translation>
 <translation id="2498783234010887316">La configuración de pestañas, apariencia, extensiones e historial se puede ajustar en el panel de preferencias. Podría incluso encontrar algún que otro secreto oscuro allí dentro;)</translation>
@@ -89,11 +89,11 @@
 <translation id="7841456038054167122">Vuelva a introducir las claves o pruebe otras diferentes.</translation>
 <translation id="2195074481553016770">Muy cerca…</translation>
 <translation id="5254740304961202261">¡Pruebe que es humano!</translation>
-<translation id="5118651998291801746">Hmmm…no mucho.</translation>
+<translation id="1387881035954376289">Hmmm…no mucho.</translation>
 <translation id="2323069945529668668">¡Oh, oh!</translation>
 <translation id="5094577350232361255">acerca de</translation>
 <translation id="4918086044614829423">Aceptar</translation>
-<translation id="7856172182738102743">©2016 –Brave Software 2018. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas del propietario del sitio.</translation>
+<translation id="6832986780040139899">©2016 –Brave Software 2018. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas del propietario del sitio.</translation>
 <translation id="9026369588205476247">Para proteger su privacidad, esta declaración de Brave Rewards no se guarda, graba ni registra en ningún otro lugar aparte de su dispositivo (este equipo). No se puede recuperar desde Brave en caso de perder los datos en su dispositivo.</translation>
 <translation id="1036277985068412734">añadir fondos</translation>
 <translation id="4496990471549986619">Las preguntas más frecuentes</translation>
@@ -107,7 +107,7 @@
 <translation id="7530570094705720669">Crear Wallet</translation>
 <translation id="2105596359439030979">Tu atención es valiosa. Gana por visualizar anuncios relacionados con la privacidad y paga directamente a tus creadores de contenido favoritos.</translation>
 <translation id="516395624550019162">¡Sí, me apunto!</translation>
-<translation id="529572070778367192">¡Sea recompensado por navegar!</translation>
+<translation id="529572070778367192">¡Sé recompensado por navegar!</translation>
 <translation id="128450776206759934">Cómo funciona...</translation>
 <translation id="3825698830825612308">Editores verificados por Brave</translation>
 <translation id="7658239707568436148">Cancelar</translation>
