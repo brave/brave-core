@@ -21,7 +21,6 @@
 namespace state {
 class Settings;
 class Client;
-class Catalog;
 class Bundle;
 }  // namespace state
 
