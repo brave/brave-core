@@ -40,7 +40,7 @@ export default class ImportBox extends React.PureComponent<Props, State> {
   render () {
     const { index, currentScreen } = this.props
     return (
-      <Content zIndex={index} active={index === currentScreen}>
+      <Content zIndex={index} active={index === currentScreen} isPrevious={index > currentScreen}>
         <ImportImage src={importImage} />
         <Title>{locale.importFromAnotherBrowser}</Title>
         <Paragraph>{locale.setupImport}</Paragraph>

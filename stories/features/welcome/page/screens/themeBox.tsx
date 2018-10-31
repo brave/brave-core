@@ -26,7 +26,7 @@ export default class ThemingBox extends React.PureComponent<Props, {}> {
   render () {
     const { index, currentScreen, onClick } = this.props
     return (
-      <Content zIndex={index} active={index === currentScreen}>
+      <Content zIndex={index} active={index === currentScreen} isPrevious={index > currentScreen}>
         <ThemeImage src={themeImage} />
         <Title>{locale.chooseYourTheme}</Title>
         <Paragraph>{locale.findToolbarTheme}</Paragraph>

@@ -14,20 +14,20 @@ const fadeIn = keyframes`
   }
 `
 
-const slideOut = keyframes`
+const slideOut = (props: {}) => keyframes`
   from {
     transform: scale(1) translateX(0);
     opacity: 1;
   }
   to {
-    transform: scale(.8) translateX(-150%);
+    transform: scale(.8) translateX(${props});
     opacity: 0;
   }
 `
 
-const slideIn = keyframes`
+const slideIn = (props: {}) => keyframes`
   from {
-    transform: scale(.8)translateX(150%);
+    transform: scale(.8) translateX(${props});
     opacity: 0;
   }
   to {
@@ -81,14 +81,17 @@ export const FooterRightColumn = styled(BaseColumn)`
 interface ContentProps {
   active: boolean
   zIndex: number
+  isPrevious: boolean
 }
+
+const applyPositioning = (p: ContentProps) => p.isPrevious ? '1' + p.zIndex + '0%' : '-1' + p.zIndex + '0%'
 
 export const Content = styled<ContentProps, 'section'>('section')`
   /* animation start state must be the same as "from" keyframe */
-  transform: translateX(0);
+  transform: translateX(${p => applyPositioning(p)});
   /* animation stuff courtesy of ross */
   animation-delay: 0;
-  animation-name: ${slideOut};
+  animation-name: ${slideOut((p: ContentProps) => applyPositioning(p))};
   animation-duration: 1.5s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
@@ -104,10 +107,10 @@ export const Content = styled<ContentProps, 'section'>('section')`
 
   ${p => p.active && css`
     /* animation start state must be the same as "from" keyframe */
-    transform: translateX(150%);
+    transform: translateX(${p => applyPositioning(p)});
     /* animation stuff courtesy of ross */
-    animation-delay: 0;
-    animation-name: ${slideIn};
+    animation-delay: 0.5s;
+    animation-name: ${slideIn((p: ContentProps) => applyPositioning(p))};
     animation-duration: 1.5s;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
