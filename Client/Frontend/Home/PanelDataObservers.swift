@@ -56,35 +56,7 @@ class ActivityStreamDataObserver: DataObserver {
      By default this will only refresh topSites if KeyTopSitesCacheIsValid is false
      */
     func refreshIfNeeded(forceHighlights highlights: Bool, forceTopSites topSites: Bool) {
-        guard !profile.isShutdown else {
-            return
-        }
-
-        // Highlights are cached for 15 mins
-        let userEnabledHighlights = profile.prefs.boolForKey(PrefsKeys.ASRecentHighlightsVisible) ?? true
-        let lastInvalidationTime = UInt64(profile.prefs.unsignedLongForKey(PrefsKeys.ASLastInvalidation) ?? 0)
-        let shouldInvalidateHighlights = (highlights || (Date.now() - lastInvalidationTime > invalidationTime)) && userEnabledHighlights
-        
-        // KeyTopSitesCacheIsValid is false when we want to invalidate. Thats why this logic is so backwards
-        let shouldInvalidateTopSites = topSites || !(profile.prefs.boolForKey(PrefsKeys.KeyTopSitesCacheIsValid) ?? false)
-        if !shouldInvalidateTopSites && !shouldInvalidateHighlights {
-            // There is nothing to refresh. Bye
-            return
-        }
-
-        self.delegate?.willInvalidateDataSources(forceHighlights: highlights, forceTopSites: topSites)
-        self.profile.recommendations.repopulate(invalidateTopSites: shouldInvalidateTopSites, invalidateHighlights: shouldInvalidateHighlights).uponQueue(.main) { _ in
-            if shouldInvalidateTopSites {
-                self.profile.prefs.setBool(true, forKey: PrefsKeys.KeyTopSitesCacheIsValid)
-            }
-            
-            if shouldInvalidateHighlights {
-                let newInvalidationTime = shouldInvalidateHighlights ? Date.now() : lastInvalidationTime
-                self.profile.prefs.setLong(newInvalidationTime, forKey: PrefsKeys.ASLastInvalidation)
-            }
-            
-            self.delegate?.didInvalidateDataSources(refresh: highlights || topSites, highlightsRefreshed: shouldInvalidateHighlights, topSitesRefreshed: shouldInvalidateTopSites)
-        }
+        return
     }
 
     @objc func notificationReceived(_ notification: Notification) {

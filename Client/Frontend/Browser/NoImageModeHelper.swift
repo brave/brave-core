@@ -7,10 +7,6 @@ import WebKit
 import Shared
 import BraveShared
 
-struct NoImageModePrefsKey {
-    static let NoImageModeStatus = PrefsKeys.KeyNoImageModeStatus
-}
-
 class NoImageModeHelper: TabContentScript {
     fileprivate weak var tab: Tab?
 
