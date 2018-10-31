@@ -14,15 +14,26 @@ interface StyleProps {
   type?: Type
 }
 
+interface CardStyleProps extends CardProps {
+  hasAlert?: boolean
+}
+
 const colors: Record<Type, string> = {
   ads: '#C12D7C',
   contribute: '#9F22A1',
   donation: '#696FDC'
 }
 
-export const StyledCard = styled(Card as ComponentType<CardProps>)`
+export const StyledWrapper = styled<StyleProps, 'div'>('div')`
+  display: block;
+  width: 100%;
   margin-bottom: 28px;
+`
+
+export const StyledCard = styled(Card as ComponentType<CardStyleProps>)`
   font-family: Poppins, sans-serif;
+  border-bottom-left-radius: ${p => p.hasAlert ? 0 : 6}px;
+  border-bottom-right-radius: ${p => p.hasAlert ? 0 : 6}px;
 `
 
 export const StyledFlip = styled<StyleProps, 'div'>('div')`

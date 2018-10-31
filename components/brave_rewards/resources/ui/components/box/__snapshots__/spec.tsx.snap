@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Box tests basic tests matches the snapshot 1`] = `
-.c1 {
+.c2 {
   max-width: 100%;
   width: 100%;
   min-height: auto;
@@ -16,15 +16,22 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
 }
 
 .c0 {
+  display: block;
+  width: 100%;
   margin-bottom: 28px;
-  font-family: Poppins,sans-serif;
 }
 
-.c2 {
-  display: block;
+.c1 {
+  font-family: Poppins,sans-serif;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 .c3 {
+  display: block;
+}
+
+.c4 {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
@@ -34,7 +41,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   display: flex;
 }
 
-.c4 {
+.c5 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -47,7 +54,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   flex-basis: 50%;
 }
 
-.c6 {
+.c7 {
   -webkit-flex-basis: 40px;
   -ms-flex-preferred-size: 40px;
   flex-basis: 40px;
@@ -62,7 +69,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   max-height: 30px;
 }
 
-.c5 {
+.c6 {
   height: 36px;
   font-size: 22px;
   font-weight: 600;
@@ -74,12 +81,12 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #4b4c5c;
 }
 
-.c7 {
+.c8 {
   width: 100%;
   display: block;
 }
 
-.c8 {
+.c9 {
   width: 100%;
   padding-right: 20px;
   font-family: Muli,sans-serif;
@@ -92,7 +99,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #838391;
 }
 
-.c14 {
+.c15 {
   width: 27px;
   border: none;
   background: none;
@@ -101,7 +108,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #A1A8F2;
 }
 
-.c9 {
+.c10 {
   -webkit-flex-basis: 100%;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
@@ -112,13 +119,13 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   margin-top: 25px;
 }
 
-.c10 {
+.c11 {
   background: #fff;
   overflow: hidden;
   display: none;
 }
 
-.c11 {
+.c12 {
   display: none;
   position: absolute;
   right: 29px;
@@ -132,7 +139,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #DFDFE8;
 }
 
-.c13 {
+.c14 {
   margin-bottom: 15px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -148,7 +155,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   justify-content: center;
 }
 
-.c16 {
+.c17 {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
@@ -156,100 +163,104 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   margin-left: 20px;
 }
 
-.c12 {
+.c13 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c15 {
+.c16 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
 <div
-  className="c0 c1"
-  data-test-id="box"
+  className="c0"
 >
   <div
-    className="c2"
+    className="c1 c2"
+    data-test-id="box"
   >
     <div
       className="c3"
-      open={true}
     >
       <div
         className="c4"
+        open={true}
       >
         <div
           className="c5"
         >
-          test
+          <div
+            className="c6"
+          >
+            test
+          </div>
         </div>
-      </div>
-      <div
-        className="c6"
-      />
-      <div
-        className="c7"
-      />
-      <div
-        className="c4"
-      >
+        <div
+          className="c7"
+        />
         <div
           className="c8"
         />
+        <div
+          className="c5"
+        >
+          <div
+            className="c9"
+          />
+        </div>
+        <div
+          className="c7"
+        />
+        <div
+          className="c10"
+        />
       </div>
       <div
-        className="c6"
-      />
-      <div
-        className="c9"
-      />
-    </div>
-    <div
-      className="c10"
-      open={false}
-    >
-      <button
         className="c11"
-        onClick={[Function]}
         open={false}
       >
-        <svg
-          aria-hidden="true"
-          className="c12"
-          focusable="false"
-          viewBox="0 0 32 32"
-        >
-          <path
-            d="M15.77817 14.36396l7.07107-7.07107c.39053-.39052 1.0237-.39052 1.41422 0 .39052.39053.39052 1.0237 0 1.41422l-7.07107 7.07106 7.07107 7.07107c.39052.39053.39052 1.0237 0 1.41422-.39053.39052-1.0237.39052-1.41422 0l-7.07107-7.07107-7.07106 7.07107c-.39053.39052-1.0237.39052-1.41422 0-.39052-.39053-.39052-1.0237 0-1.41422l7.07107-7.07107L7.2929 8.70711c-.39052-.39053-.39052-1.0237 0-1.41422.39053-.39052 1.0237-.39052 1.41422 0l7.07106 7.07107z"
-          />
-        </svg>
-      </button>
-      <div
-        className="c13"
-      >
         <button
-          className="c14"
+          className="c12"
+          onClick={[Function]}
+          open={false}
         >
           <svg
             aria-hidden="true"
-            className="c15"
+            className="c13"
             focusable="false"
             viewBox="0 0 32 32"
           >
             <path
-              d="M21.1997 17c-.551 0-1-.448-1-1s.449-1 1-1c.551 0 1 .448 1 1s-.449 1-1 1m5.8-2h-2.984c-.414-1.162-1.514-2-2.816-2-1.302 0-2.402.838-2.816 2H4.9997c-.552 0-1 .448-1 1s.448 1 1 1h13.384c.415 1.162 1.514 2 2.816 2 1.302 0 2.402-.838 2.816-2h2.984c.553 0 1-.448 1-1s-.447-1-1-1m-16 11c-.551 0-1-.448-1-1s.449-1 1-1c.552 0 1 .448 1 1s-.448 1-1 1m16-2h-13.184c-.414-1.162-1.514-2-2.816-2-1.301 0-2.401.838-2.816 2h-3.184c-.552 0-1 .448-1 1s.448 1 1 1h3.185c.414 1.162 1.514 2 2.815 2 1.302 0 2.402-.838 2.816-2h13.184c.553 0 1-.448 1-1s-.447-1-1-1m-12.8-18c.551 0 1 .448 1 1s-.449 1-1 1c-.551 0-1-.448-1-1s.449-1 1-1m-9.2 2h6.384c.415 1.162 1.514 2 2.816 2 1.302 0 2.402-.838 2.816-2h9.984c.553 0 1-.448 1-1s-.447-1-1-1h-9.984c-.414-1.162-1.514-2-2.816-2-1.302 0-2.402.838-2.816 2h-6.384c-.552 0-1 .448-1 1s.448 1 1 1"
-              fillRule="evenodd"
+              d="M15.77817 14.36396l7.07107-7.07107c.39053-.39052 1.0237-.39052 1.41422 0 .39052.39053.39052 1.0237 0 1.41422l-7.07107 7.07106 7.07107 7.07107c.39052.39053.39052 1.0237 0 1.41422-.39053.39052-1.0237.39052-1.41422 0l-7.07107-7.07107-7.07106 7.07107c-.39053.39052-1.0237.39052-1.41422 0-.39052-.39053-.39052-1.0237 0-1.41422l7.07107-7.07107L7.2929 8.70711c-.39052-.39053-.39052-1.0237 0-1.41422.39053-.39052 1.0237-.39052 1.41422 0l7.07106 7.07107z"
             />
           </svg>
         </button>
         <div
-          className="c16"
+          className="c14"
         >
-          test MISSING: settings
+          <button
+            className="c15"
+          >
+            <svg
+              aria-hidden="true"
+              className="c16"
+              focusable="false"
+              viewBox="0 0 32 32"
+            >
+              <path
+                d="M21.1997 17c-.551 0-1-.448-1-1s.449-1 1-1c.551 0 1 .448 1 1s-.449 1-1 1m5.8-2h-2.984c-.414-1.162-1.514-2-2.816-2-1.302 0-2.402.838-2.816 2H4.9997c-.552 0-1 .448-1 1s.448 1 1 1h13.384c.415 1.162 1.514 2 2.816 2 1.302 0 2.402-.838 2.816-2h2.984c.553 0 1-.448 1-1s-.447-1-1-1m-16 11c-.551 0-1-.448-1-1s.449-1 1-1c.552 0 1 .448 1 1s-.448 1-1 1m16-2h-13.184c-.414-1.162-1.514-2-2.816-2-1.301 0-2.401.838-2.816 2h-3.184c-.552 0-1 .448-1 1s.448 1 1 1h3.185c.414 1.162 1.514 2 2.815 2 1.302 0 2.402-.838 2.816-2h13.184c.553 0 1-.448 1-1s-.447-1-1-1m-12.8-18c.551 0 1 .448 1 1s-.449 1-1 1c-.551 0-1-.448-1-1s.449-1 1-1m-9.2 2h6.384c.415 1.162 1.514 2 2.816 2 1.302 0 2.402-.838 2.816-2h9.984c.553 0 1-.448 1-1s-.447-1-1-1h-9.984c-.414-1.162-1.514-2-2.816-2-1.302 0-2.402.838-2.816 2h-6.384c-.552 0-1 .448-1 1s.448 1 1 1"
+                fillRule="evenodd"
+              />
+            </svg>
+          </button>
+          <div
+            className="c17"
+          >
+            test MISSING: settings
+          </div>
         </div>
       </div>
     </div>

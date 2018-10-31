@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
+.c0 {
+  width: 100%;
+  display: block;
+  background: #E9F0FF;
+  padding: 5px 30px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.c1 {
+  width: 57px;
+  height: 57px;
+  color: #15A4FA;
+  display: inline-block;
+}
+
+.c3 {
+  font-size: 14px;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 18px;
+  padding: 12px 15px 0px 11px;
+  vertical-align: top;
+  display: inline-block;
+  max-width: 387px;
+}
+
+.c4 {
+  color: #000;
+  font-weight: 400;
+  margin-right: 3px;
+}
+
+.c5 {
+  color: #696FDC;
+  font-weight: 400;
+  display: inline-block;
+}
+
+.c6 {
+  display: inline-block;
+  vertical-align: top;
+  margin: 20px 0 0 7px;
+}
+
+.c7 {
+  color: #15A4FA;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 18px;
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <svg
+      aria-hidden="true"
+      className="c2"
+      focusable="false"
+      viewBox="0 0 32 32"
+    >
+      <path
+        d="M16 28C9.37258 28 4 22.62742 4 16S9.37258 4 16 4s12 5.37258 12 12-5.37258 12-12 12zm0-2c5.52285 0 10-4.47715 10-10S21.52285 6 16 6 6 10.47715 6 16s4.47715 10 10 10zm0-4c-.55228 0-1-.44772-1-1s.44772-1 1-1 1 .44772 1 1-.44772 1-1 1zm-1-11c0-.55228.44772-1 1-1s1 .44772 1 1v6.07107c0 .55228-.44772 1-1 1s-1-.44772-1-1V11z"
+      />
+    </svg>
+  </div>
+  <div
+    className="c3"
+  >
+    <span
+      className="c4"
+    >
+      MISSING: reviewSitesMsg
+    </span>
+    <span
+      className="c5"
+    >
+      MISSING: monthlyTips
+    </span>
+  </div>
+  <div
+    className="c6"
+  >
+    <span
+      className="c7"
+    >
+      MISSING: learnMore
+    </span>
+  </div>
+</div>
+`;

@@ -4,6 +4,7 @@
 
 import * as React from 'react'
 import {
+  StyledWrapper,
   StyledCard,
   StyledLeft,
   StyledRight,
@@ -32,6 +33,7 @@ export interface Props {
   description?: string
   toggle?: boolean
   checked?: boolean
+  attachedAlert?: React.ReactNode
   onToggle?: () => void
   settingsChild?: React.ReactNode
   disabledContent?: React.ReactNode
@@ -70,6 +72,7 @@ export default class Box extends React.PureComponent<Props, State> {
       title,
       toggle,
       checked,
+      attachedAlert,
       onToggle,
       settingsChild,
       disabledContent,
@@ -82,61 +85,67 @@ export default class Box extends React.PureComponent<Props, State> {
     const isDisabled = (toggle && !checked) || (!toggle && disabledContent)
 
     return (
-      <StyledCard testId={id}>
-        <StyledFlip>
-          <StyledContentWrapper open={!this.state.settingsOpened}>
-            <StyledLeft>
-              <StyledTitle type={type} checked={checked}>{title}</StyledTitle>
-            </StyledLeft>
-            <StyledRight>
-              {
-                toggle ?
-                <Toggle onToggle={onToggle} checked={checked} testId={testId} />
-                : null
-              }
-            </StyledRight>
-            <StyledBreak />
-            <StyledLeft>
-              <StyledDescription>
-              {description}
-              </StyledDescription>
-            </StyledLeft>
-            <StyledRight>
-              {
-                settingsChild && ((toggle && checked) || !toggle) ?
-                <Tooltip
-                  id={'brave-ads-tip'}
-                  content={this.getSettingsTitle(title)}
-                >
-                  <StyledSettingsIcon float={'right'} onClick={this.settingsClick}>
-                    <SettingsIcon />
-                  </StyledSettingsIcon>
-                </Tooltip>
-                : null
-              }
-            </StyledRight>
-            <StyledContent>
-              {
-                isDisabled
-                ? disabledContent
-                : children
-              }
-            </StyledContent>
-          </StyledContentWrapper>
-          <StyledSettingsWrapper open={this.state.settingsOpened}>
-            <StyledSettingsClose onClick={this.settingsClick} open={this.state.settingsOpened}>
-              <CloseStrokeIcon />
-            </StyledSettingsClose>
-            <StyledSettingsTitle>
-              <StyledSettingsIcon>
-                <SettingsIcon />
-              </StyledSettingsIcon>
-              <StyledSettingsText>{this.getSettingsTitle(title)}</StyledSettingsText>
-            </StyledSettingsTitle>
-            {settingsChild}
-          </StyledSettingsWrapper>
-        </StyledFlip>
-      </StyledCard>
+      <StyledWrapper>
+        <StyledCard
+          testId={id}
+          hasAlert={!!attachedAlert}
+        >
+          <StyledFlip>
+            <StyledContentWrapper open={!this.state.settingsOpened}>
+              <StyledLeft>
+                <StyledTitle type={type} checked={checked}>{title}</StyledTitle>
+              </StyledLeft>
+              <StyledRight>
+                {
+                  toggle ?
+                  <Toggle onToggle={onToggle} checked={checked} testId={testId} />
+                  : null
+                }
+              </StyledRight>
+              <StyledBreak />
+              <StyledLeft>
+                <StyledDescription>
+                {description}
+                </StyledDescription>
+              </StyledLeft>
+              <StyledRight>
+                {
+                  settingsChild && ((toggle && checked) || !toggle) ?
+                  <Tooltip
+                    id={'brave-ads-tip'}
+                    content={this.getSettingsTitle(title)}
+                  >
+                    <StyledSettingsIcon float={'right'} onClick={this.settingsClick}>
+                      <SettingsIcon />
+                    </StyledSettingsIcon>
+                  </Tooltip>
+                  : null
+                }
+              </StyledRight>
+              <StyledContent>
+                {
+                  isDisabled
+                  ? disabledContent
+                  : children
+                }
+              </StyledContent>
+            </StyledContentWrapper>
+            <StyledSettingsWrapper open={this.state.settingsOpened}>
+              <StyledSettingsClose onClick={this.settingsClick} open={this.state.settingsOpened}>
+                <CloseStrokeIcon />
+              </StyledSettingsClose>
+              <StyledSettingsTitle>
+                <StyledSettingsIcon>
+                  <SettingsIcon />
+                </StyledSettingsIcon>
+                <StyledSettingsText>{this.getSettingsTitle(title)}</StyledSettingsText>
+              </StyledSettingsTitle>
+              {settingsChild}
+            </StyledSettingsWrapper>
+          </StyledFlip>
+        </StyledCard>
+        {attachedAlert}
+      </StyledWrapper>
     )
   }
 }

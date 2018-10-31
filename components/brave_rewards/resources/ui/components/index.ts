@@ -32,6 +32,7 @@ import TableContribute from './tableContribute'
 import TableDonation from './tableDonation'
 import TableTransactions from './tableTransactions'
 import Tip from './tip'
+import TipsMigrationAlert from './tipsMigrationAlert'
 import ToggleTips from './toggleTips'
 import Tokens from './tokens'
 import Tooltip from './tooltip'
@@ -74,6 +75,7 @@ export {
   TableDonation,
   TableTransactions,
   Tip,
+  TipsMigrationAlert,
   ToggleTips,
   Tokens,
   Tooltip,
