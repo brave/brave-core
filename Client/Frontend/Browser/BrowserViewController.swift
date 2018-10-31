@@ -532,7 +532,7 @@ class BrowserViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         screenshotHelper.viewIsVisible = true
-        screenshotHelper.takePendingScreenshots(tabManager.tabs)
+        screenshotHelper.takePendingScreenshots(tabManager.allTabs)
 
         super.viewDidAppear(animated)
 
@@ -766,7 +766,7 @@ class BrowserViewController: UIViewController {
         }
         
         func shouldShowTabBar() -> Bool {
-            let tabCount = tabManager.tabs(withType: TabType.of(tabManager.selectedTab)).count
+            let tabCount = tabManager.tabsForCurrentMode.count
             guard let tabBarVisibility = TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value) else {
                 // This should never happen
                 assertionFailure("Invalid tab bar visibility preference: \(Preferences.General.tabBarVisibility.value).")
@@ -1654,9 +1654,11 @@ extension BrowserViewController: TabToolbarDelegate {
             return
         }
         let controller = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        controller.addAction(UIAlertAction(title: String(format: Strings.CloseAllTabsTitle, tabManager.tabs.count), style: .destructive, handler: { _ in
-            self.tabManager.removeAll()
-        }), accessibilityIdentifier: "toolbarTabButtonLongPress.closeTab")
+        if tabManager.tabsForCurrentMode.count > 1 {
+            controller.addAction(UIAlertAction(title: String(format: Strings.CloseAllTabsTitle, tabManager.tabsForCurrentMode.count), style: .destructive, handler: { _ in
+                self.tabManager.removeAll()
+            }), accessibilityIdentifier: "toolbarTabButtonLongPress.closeTab")
+        }
         controller.addAction(UIAlertAction(title: Strings.CloseTabTitle, style: .destructive, handler: { _ in
             if let tab = self.tabManager.selectedTab {
                 self.tabManager.removeTab(tab)
@@ -1962,7 +1964,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     fileprivate func updateTabCountUsingTabManager(_ tabManager: TabManager, animated: Bool = true) {
-        let count = tabManager.displayedTabsForCurrentPrivateMode.count
+        let count = tabManager.tabsForCurrentMode.count
         toolbar?.updateTabCount(count, animated: animated)
         urlBar.updateTabCount(count, animated: !urlBar.inOverlayMode)
     }
@@ -2075,7 +2077,7 @@ extension BrowserViewController: WKUIDelegate {
             // We rely on loading that page to get the restore callback to reset the restoring
             // flag, so if we fail to load that page, reset it here.
             if url.aboutComponent == "sessionrestore" {
-                tabManager.tabs.filter { $0.webView == webView }.first?.restoring = false
+                tabManager.allTabs.filter { $0.webView == webView }.first?.restoring = false
             }
         }
     }
@@ -2773,7 +2775,7 @@ extension BrowserViewController: PreferencesObserver {
             let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
             switchToPrivacyMode(isPrivate: isPrivate)
             PrivateBrowsingManager.shared.isPrivateBrowsing = isPrivate
-            if let firstTab = tabManager.tabs(withType: isPrivate ? .private : .regular).first {
+            if let firstTab = tabManager.tabsForCurrentMode.first {
                 tabManager.selectTab(firstTab)
             } else {
                 tabManager.addTabAndSelect(nil, isPrivate: isPrivate)

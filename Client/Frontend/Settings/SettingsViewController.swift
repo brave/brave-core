@@ -300,7 +300,7 @@ class SettingsViewController: TableViewController {
                 Row(text: "View URP Logs", selection: {
                     self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)
                 }, accessory: .disclosureIndicator),
-                Row(text: "URP Code: \(UserReferralProgram.getReferralCode(prefs: nil) ?? "--")"),
+                Row(text: "URP Code: \(UserReferralProgram.getReferralCode() ?? "--")"),
                 Row(text: "Load all QA Links", selection: {
                     let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!
                     let string = try? String(contentsOf: url)

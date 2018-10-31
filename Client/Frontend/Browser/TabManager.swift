@@ -64,7 +64,7 @@ class TabManager: NSObject {
         }
     }
 
-    fileprivate(set) var tabs = [Tab]()
+    fileprivate(set) var allTabs = [Tab]()
     fileprivate var _selectedIndex = -1
     fileprivate let navDelegate: TabManagerNavDelegate
     fileprivate(set) var isRestoring = false
@@ -115,7 +115,7 @@ class TabManager: NSObject {
     var count: Int {
         assert(Thread.isMainThread)
 
-        return tabs.count
+        return allTabs.count
     }
 
     var selectedTab: Tab? {
@@ -124,22 +124,22 @@ class TabManager: NSObject {
             return nil
         }
 
-        return tabs[_selectedIndex]
+        return allTabs[_selectedIndex]
     }
 
     subscript(index: Int) -> Tab? {
         assert(Thread.isMainThread)
 
-        if index >= tabs.count {
+        if index >= allTabs.count {
             return nil
         }
-        return tabs[index]
+        return allTabs[index]
     }
 
     subscript(webView: WKWebView) -> Tab? {
         assert(Thread.isMainThread)
 
-        for tab in tabs where tab.webView === webView {
+        for tab in allTabs where tab.webView === webView {
             return tab
         }
 
@@ -153,24 +153,24 @@ class TabManager: NSObject {
             return nil
         }
         
-        return displayedTabsForCurrentPrivateMode.index(of: selectedTab)
+        return tabsForCurrentMode.index(of: selectedTab)
     }
     
     // What the users sees displayed based on current private browsing mode
-    var displayedTabsForCurrentPrivateMode: [Tab] {
+    var tabsForCurrentMode: [Tab] {
         let tabType: TabType = PrivateBrowsingManager.shared.isPrivateBrowsing ? .private : .regular
         return tabs(withType: tabType)
     }
 
-    func tabs(withType type: TabType) -> [Tab] {
+    private func tabs(withType type: TabType) -> [Tab] {
         assert(Thread.isMainThread)
-        return tabs.filter { $0.type == type }
+        return allTabs.filter { $0.type == type }
     }
 
     func getTabFor(_ url: URL) -> Tab? {
         assert(Thread.isMainThread)
 
-        for tab in tabs {
+        for tab in allTabs {
             if tab.webView?.url == url {
                 return tab
             }
@@ -200,7 +200,7 @@ class TabManager: NSObject {
         }
 
         if let tab = tab {
-            _selectedIndex = tabs.index(of: tab) ?? -1
+            _selectedIndex = allTabs.index(of: tab) ?? -1
         } else {
             _selectedIndex = -1
         }
@@ -244,7 +244,7 @@ class TabManager: NSObject {
     func expireSnackbars() {
         assert(Thread.isMainThread)
 
-        for tab in tabs {
+        for tab in allTabs {
             tab.expireSnackbars()
         }
     }
@@ -335,17 +335,17 @@ class TabManager: NSObject {
 
         let toTab = currentTabs[visibleToIndex]
 
-        guard let fromIndex = tabs.index(of: tab), let toIndex = tabs.index(of: toTab) else {
+        guard let fromIndex = allTabs.index(of: tab), let toIndex = allTabs.index(of: toTab) else {
             return
         }
         
         // Make sure to save the selected tab before updating the tabs list
         let previouslySelectedTab = selectedTab
 
-        let tab = tabs.remove(at: fromIndex)
-        tabs.insert(tab, at: toIndex)
+        let tab = allTabs.remove(at: fromIndex)
+        allTabs.insert(tab, at: toIndex)
 
-        if let previouslySelectedTab = previouslySelectedTab, let previousSelectedIndex = tabs.index(of: previouslySelectedTab) {
+        if let previouslySelectedTab = previouslySelectedTab, let previousSelectedIndex = allTabs.index(of: previouslySelectedTab) {
             _selectedIndex = previousSelectedIndex
         }
 
@@ -355,7 +355,7 @@ class TabManager: NSObject {
     private func saveTabOrder() {
         let context = DataController.newBackgroundContext()
         context.perform {
-            for (i, tab) in self.tabs.enumerated() {
+            for (i, tab) in self.allTabs.enumerated() {
                 guard let managedObject = TabMO.get(fromId: tab.id, context: context) else { 
                     log.error("Error: Tab missing managed object")
                     continue
@@ -373,14 +373,14 @@ class TabManager: NSObject {
         delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
 
         if parent == nil || parent?.type != tab.type {
-            tabs.append(tab)
-        } else if let parent = parent, var insertIndex = tabs.index(of: parent) {
+            allTabs.append(tab)
+        } else if let parent = parent, var insertIndex = allTabs.index(of: parent) {
             insertIndex += 1
-            while insertIndex < tabs.count && tabs[insertIndex].isDescendentOf(parent) {
+            while insertIndex < allTabs.count && allTabs[insertIndex].isDescendentOf(parent) {
                 insertIndex += 1
             }
             tab.parent = parent
-            tabs.insert(tab, at: insertIndex)
+            allTabs.insert(tab, at: insertIndex)
         }
 
         delegates.forEach { $0.get()?.tabManager(self, didAddTab: tab) }
@@ -424,7 +424,7 @@ class TabManager: NSObject {
         objc_sync_enter(self); defer { objc_sync_exit(self) }
         
         var count = UInt(0)
-        for tab in tabs {
+        for tab in allTabs {
             if tab.webView === webView {
                 return count
             }
@@ -492,7 +492,7 @@ class TabManager: NSObject {
         
         hideNetworkActivitySpinner()
 
-        guard let removalIndex = tabs.index(where: { $0 === tab }) else {
+        guard let removalIndex = allTabs.index(where: { $0 === tab }) else {
             log.debug("Could not find index of tab to remove")
             return
         }
@@ -514,7 +514,7 @@ class TabManager: NSObject {
         }
 
         let prevCount = count
-        tabs.remove(at: removalIndex)
+        allTabs.remove(at: removalIndex)
         
         let context = DataController.viewContext
         if let tab = TabMO.get(fromId: tab.id, context: context) {
@@ -527,7 +527,7 @@ class TabManager: NSObject {
         if let oldTab = oldSelectedTab, tab !== oldTab {
             // If it wasn't the selected tab we removed, then keep it like that.
             // It might have changed index, so we look it up again.
-            _selectedIndex = tabs.index(of: oldTab) ?? -1
+            _selectedIndex = allTabs.index(of: oldTab) ?? -1
         } else if let parentTab = tab.parent,
             let newTab = currentTabs.reduce(currentTabs.first, { currentBestTab, tab2 in
             if let tab1 = currentBestTab, let time1 = tab1.lastExecutedTime {
@@ -540,7 +540,7 @@ class TabManager: NSObject {
             }
         }), parentTab == newTab, tab !== newTab, newTab.lastExecutedTime != nil {
             // We select the most recently visited tab, only if it is also the parent tab of the closed tab.
-            _selectedIndex = tabs.index(of: newTab) ?? -1
+            _selectedIndex = allTabs.index(of: newTab) ?? -1
         } else {
             // By now, we've just removed the selected one, and no previously loaded
             // tabs. So let's load the final one in the tab tray.
@@ -549,7 +549,7 @@ class TabManager: NSObject {
             }
 
             if let currentTab = currentTabs[safe: tabIndex] {
-                _selectedIndex = tabs.index(of: currentTab) ?? -1
+                _selectedIndex = allTabs.index(of: currentTab) ?? -1
             } else {
                 _selectedIndex = -1
             }
@@ -571,7 +571,7 @@ class TabManager: NSObject {
         if selectedTab != nil {
             selectTab(selectedTab, previous: oldSelectedTab)
         } else {
-            selectTab(tabs.last, previous: oldSelectedTab)
+            selectTab(allTabs.last, previous: oldSelectedTab)
         }
     }
 
@@ -582,14 +582,14 @@ class TabManager: NSObject {
             _selectedIndex = -1
         }
 
-        tabs.forEach { tab in
+        allTabs.forEach { tab in
             if tab.isPrivate {
                 tab.webView?.removeFromSuperview()
                 removeAllBrowsingDataForTab(tab)
             }
         }
 
-        tabs = tabs(withType: .regular)
+        allTabs = tabs(withType: .regular)
     }
 
     func removeAllBrowsingDataForTab(_ tab: Tab, completionHandler: @escaping () -> Void = {}) {
@@ -659,7 +659,7 @@ class TabManager: NSObject {
         self.isRestoring = false
         delegates.forEach { $0.get()?.tabManagerDidRestoreTabs(self) }
         self.tempTabs?.removeAll()
-        tabs.first?.createWebview()
+        allTabs.first?.createWebview()
     }
     
     func eraseUndoCache() {
@@ -673,13 +673,13 @@ class TabManager: NSObject {
     }
     
     func removeAll() {
-        removeTabs(self.tabs)
+        removeTabs(self.allTabs)
     }
 
     func getIndex(_ tab: Tab) -> Int? {
         assert(Thread.isMainThread)
 
-        for i in 0..<count where tabs[i] === tab {
+        for i in 0..<count where allTabs[i] === tab {
             return i
         }
 
@@ -690,7 +690,7 @@ class TabManager: NSObject {
     func getTabForURL(_ url: URL) -> Tab? {
         assert(Thread.isMainThread)
 
-        return tabs.filter { $0.webView?.url == url } .first
+        return allTabs.filter { $0.webView?.url == url } .first
     }
 
     func resetProcessPool() {
@@ -749,7 +749,7 @@ class TabManager: NSObject {
         
         var savedUUIDs = Set<String>()
         
-        for tab in tabs { 
+        for tab in allTabs {
             guard let screenshot = tab.screenshot, let screenshotUUID = tab.screenshotUUID  else { continue }
             savedUUIDs.insert(screenshotUUID.uuidString)
             imageStore?.put(screenshotUUID.uuidString, image: screenshot)
@@ -802,7 +802,7 @@ class TabManager: NSObject {
             tab.lastTitle = savedTab.title
         }
 
-        if let tabToSelect = tabToSelect ?? tabs.first {
+        if let tabToSelect = tabToSelect ?? allTabs.first {
             // Only tell our delegates that we restored tabs if we actually restored something
             delegates.forEach {
                 $0.get()?.tabManagerDidRestoreTabs(self)
@@ -842,7 +842,7 @@ class TabManager: NSObject {
     func restoreDeletedTabs(_ savedTabs: [Tab]) {
         isRestoring = true
         for tab in savedTabs {
-            tabs.append(tab)
+            allTabs.append(tab)
             tab.navigationDelegate = self.navDelegate
             for delegate in delegates {
                 delegate.get()?.tabManager(self, didAddTab: tab)
@@ -892,7 +892,7 @@ extension TabManager: WKNavigationDelegate {
     func tabForWebView(_ webView: WKWebView) -> Tab? {
         objc_sync_enter(self); defer { objc_sync_exit(self) }
         
-        return tabs.first(where: { $0.webView === webView })
+        return allTabs.first(where: { $0.webView === webView })
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -900,7 +900,7 @@ extension TabManager: WKNavigationDelegate {
     }
 
     func hideNetworkActivitySpinner() {
-        for tab in tabs {
+        for tab in allTabs {
             if let tabWebView = tab.webView {
                 // If we find one tab loading, we don't hide the spinner
                 if tabWebView.isLoading {
@@ -1031,11 +1031,11 @@ extension TabManager: PreferencesObserver {
         switch key {
         case Preferences.Shields.blockImages.key:
             // Update Block images
-            tabs.forEach { $0.noImageMode = Preferences.Shields.blockImages.value }
+            allTabs.forEach { $0.noImageMode = Preferences.Shields.blockImages.value }
         case Preferences.General.blockPopups.key:
             let allowPopups = !Preferences.General.blockPopups.value
             // Each tab may have its own configuration, so we should tell each of them in turn.
-            tabs.forEach {
+            allTabs.forEach {
                 $0.webView?.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
             }
             // The default tab configurations also need to change.

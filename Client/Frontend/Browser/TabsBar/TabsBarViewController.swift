@@ -135,7 +135,7 @@ class TabsBarViewController: UIViewController {
     func updateData() {
         tabList = WeakList<Tab>()
         
-        tabManager?.displayedTabsForCurrentPrivateMode.forEach {
+        tabManager?.tabsForCurrentMode.forEach {
             tabList.insert($0)
         }
         
@@ -290,7 +290,7 @@ extension TabsBarViewController: UICollectionViewDataSource {
             let toTab = tabList[destinationIndexPath.row] else { return }
         
         // Find original from/to index... we need to target the full list not partial.
-        let tabs = manager.tabs(withType: fromTab.type)
+        let tabs = manager.tabsForCurrentMode
         guard let to = tabs.index(where: {$0 === toTab}) else { return }
         
         manager.moveTab(fromTab, toIndex: to)

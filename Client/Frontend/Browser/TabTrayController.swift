@@ -237,16 +237,11 @@ class TabTrayController: UIViewController, Themeable {
         didSet {
             PrivateBrowsingManager.shared.isPrivateBrowsing = privateMode
             
-            tabDataSource.tabs = tabsToDisplay
+            tabDataSource.tabs = tabManager.tabsForCurrentMode
             applyTheme(privateMode ? .private : .regular)
             collectionView?.reloadData()
             setNeedsStatusBarAppearanceUpdate()
         }
-    }
-
-    fileprivate var tabsToDisplay: [Tab] {
-        let tabType: TabType = privateMode ? .private : .regular
-        return tabManager.tabs(withType: tabType)
     }
 
     fileprivate lazy var emptyPrivateTabsView: EmptyPrivateTabsView = {
@@ -256,7 +251,7 @@ class TabTrayController: UIViewController, Themeable {
     }()
 
     fileprivate lazy var tabDataSource: TabManagerDataSource = {
-        return TabManagerDataSource(tabs: self.tabsToDisplay, cellDelegate: self, tabManager: self.tabManager)
+        return TabManagerDataSource(tabs: tabManager.tabsForCurrentMode, cellDelegate: self, tabManager: self.tabManager)
     }()
 
     fileprivate lazy var tabLayoutDelegate: TabLayoutDelegate = {
@@ -505,8 +500,8 @@ class TabTrayController: UIViewController, Themeable {
     }
 
     fileprivate func privateTabsAreEmpty() -> Bool {
-        let tabs = tabManager.tabs(withType: .private)
-        return privateMode && tabs.isEmpty
+        let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
+        return isPrivate && tabManager.tabsForCurrentMode.isEmpty
     }
 
     func changePrivacyMode(_ isPrivate: Bool) {
@@ -550,7 +545,7 @@ class TabTrayController: UIViewController, Themeable {
     }
 
     func closeTabsForCurrentTray() {
-        tabManager.removeTabsWithUndoToast(tabsToDisplay)
+        tabManager.removeTabsWithUndoToast(tabManager.tabsForCurrentMode)
         self.collectionView.reloadData()
     }
     
@@ -587,7 +582,7 @@ extension TabTrayController {
 
 extension TabTrayController: TabSelectionDelegate {
     func didSelectTabAtIndex(_ index: Int) {
-        let tab = tabsToDisplay[index]
+        let tab = tabManager.tabsForCurrentMode[index]
         tabManager.selectTab(tab)
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -636,7 +631,7 @@ extension TabTrayController: TabManagerDelegate {
 
     func tabManager(_ tabManager: TabManager, didAddTab tab: Tab) {
         // Get the index of the added tab from it's set (private or normal)
-        guard let index = tabsToDisplay.index(of: tab) else { return }
+        guard let index = tabManager.tabsForCurrentMode.index(of: tab) else { return }
         if !privateTabsAreEmpty() {
             emptyPrivateTabsView.isHidden = true
         }
@@ -728,7 +723,7 @@ extension TabTrayController: SwipeAnimatorDelegate {
     func swipeAnimator(_ animator: SwipeAnimator, viewWillExitContainerBounds: UIView) {
         guard let tabCell = animator.animatingView as? TabCell, let indexPath = collectionView.indexPath(for: tabCell) else { return }
 
-        let tab = tabsToDisplay[indexPath.item]
+        let tab = tabManager.tabsForCurrentMode[indexPath.item]
         tabManager.removeTab(tab)
         UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, NSLocalizedString("Closing tab", comment: "Accessibility label (used by assistive technology) notifying the user that the tab is being closed."))
     }
@@ -737,7 +732,7 @@ extension TabTrayController: SwipeAnimatorDelegate {
 extension TabTrayController: TabCellDelegate {
     func tabCellDidClose(_ cell: TabCell) {
         let indexPath = collectionView.indexPath(for: cell)!
-        let tab = tabsToDisplay[indexPath.item]
+        let tab = tabManager.tabsForCurrentMode[indexPath.item]
         tabManager.removeTab(tab)
     }
 }

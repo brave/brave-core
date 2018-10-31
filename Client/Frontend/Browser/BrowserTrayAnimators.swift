@@ -24,7 +24,7 @@ private extension TrayToBrowserAnimator {
         guard let selectedTab = bvc.tabManager.selectedTab else { return }
 
         let tabManager = bvc.tabManager
-        let displayedTabs = tabManager.tabs(withType: selectedTab.type)
+        let displayedTabs = tabManager.tabsForCurrentMode
         guard let expandFromIndex = displayedTabs.index(of: selectedTab) else { return }
 
         bvc.view.frame = transitionContext.finalFrame(for: bvc)
@@ -117,7 +117,7 @@ private extension BrowserToTrayAnimator {
         guard let selectedTab = bvc.tabManager.selectedTab else { return }
 
         let tabManager = bvc.tabManager
-        let displayedTabs = tabManager.tabs(withType: selectedTab.type)
+        let displayedTabs = tabManager.tabsForCurrentMode
         guard let scrollToIndex = displayedTabs.index(of: selectedTab) else { return }
 
         tabTray.view.frame = transitionContext.finalFrame(for: tabTray)
