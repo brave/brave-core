@@ -50,7 +50,7 @@ class Profile;
 namespace brave_rewards {
 
 class PublisherInfoDatabase;
-class RewardsNotificationsService;
+class RewardsNotificationService;
 
 class RewardsServiceImpl : public RewardsService,
                             public ledger::LedgerClient,
@@ -254,9 +254,10 @@ class RewardsServiceImpl : public RewardsService,
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
 
+  RewardsNotificationService* notification_service();
+
   Profile* profile_;  // NOT OWNED
   std::unique_ptr<ledger::Ledger> ledger_;
-  RewardsNotificationsService* rewards_notifications_service_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;

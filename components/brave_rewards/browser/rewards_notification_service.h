@@ -2,23 +2,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATIONS_SERVICE_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATIONS_SERVICE_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_
 
 #include <memory>
 
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "components/keyed_service/core/keyed_service.h"
 
 namespace brave_rewards {
 
-class RewardsNotificationsServiceObserver;
+class RewardsNotificationServiceObserver;
 
-class RewardsNotificationsService : public KeyedService {
+class RewardsNotificationService {
  public:
-  RewardsNotificationsService();
-  ~RewardsNotificationsService() override;
+  RewardsNotificationService();
+  virtual ~RewardsNotificationService();
 
   typedef std::string RewardsNotificationID;
   typedef uint64_t RewardsNotificationTimestamp;
@@ -42,7 +41,7 @@ class RewardsNotificationsService : public KeyedService {
                         RewardsNotificationArgs args);
     ~RewardsNotification();
     RewardsNotificationID id_;
-    RewardsNotificationType type_ = RewardsNotificationsService::REWARDS_NOTIFICATION_INVALID;
+    RewardsNotificationType type_ = REWARDS_NOTIFICATION_INVALID;
     RewardsNotificationTimestamp timestamp_ = 0;
     RewardsNotificationArgs args_;
   };
@@ -57,16 +56,19 @@ class RewardsNotificationsService : public KeyedService {
   virtual void GetNotification(RewardsNotificationID id) = 0;
   virtual void GetAllNotifications() = 0;
 
-  void AddObserver(RewardsNotificationsServiceObserver* observer);
-  void RemoveObserver(RewardsNotificationsServiceObserver* observer);
+  virtual void ReadRewardsNotifications() = 0;
+  virtual void StoreRewardsNotifications() = 0;
+
+  void AddObserver(RewardsNotificationServiceObserver* observer);
+  void RemoveObserver(RewardsNotificationServiceObserver* observer);
 
  protected:
-  base::ObserverList<RewardsNotificationsServiceObserver> observers_;
+  base::ObserverList<RewardsNotificationServiceObserver> observers_;
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(RewardsNotificationsService);
+  DISALLOW_COPY_AND_ASSIGN(RewardsNotificationService);
 };
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATIONS_SERVICE_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_

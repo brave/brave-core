@@ -5,12 +5,13 @@
 #include "brave/browser/extensions/api/rewards_notifications_api.h"
 
 #include "brave/common/extensions/api/rewards_notifications.h"
-#include "brave/components/brave_rewards/browser/rewards_notifications_service.h"
-#include "brave/components/brave_rewards/browser/rewards_notifications_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 
-using brave_rewards::RewardsNotificationsService;
-using brave_rewards::RewardsNotificationsServiceFactory;
+using brave_rewards::RewardsNotificationService;
+using brave_rewards::RewardsServiceFactory;
 
 namespace extensions {
 namespace api {
@@ -22,11 +23,12 @@ ExtensionFunction::ResponseAction RewardsNotificationsAddNotificationFunction::R
   std::unique_ptr<rewards_notifications::AddNotification::Params> params(
       rewards_notifications::AddNotification::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsNotificationsService* rewards_notifications_service =
-      RewardsNotificationsServiceFactory::GetForProfile(profile);
-  if (rewards_notifications_service) {
-    rewards_notifications_service->AddNotification(
-        static_cast<RewardsNotificationsService::RewardsNotificationType>(
+  RewardsNotificationService* rewards_notification_service =
+      RewardsServiceFactory::GetForProfile(profile)->notification_service(
+          profile);
+  if (rewards_notification_service) {
+    rewards_notification_service->AddNotification(
+        static_cast<RewardsNotificationService::RewardsNotificationType>(
             params->type),
         params->args, params->id);
   }
@@ -40,10 +42,11 @@ ExtensionFunction::ResponseAction RewardsNotificationsDeleteNotificationFunction
   std::unique_ptr<rewards_notifications::DeleteNotification::Params> params(
       rewards_notifications::DeleteNotification::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsNotificationsService* rewards_notifications_service =
-      RewardsNotificationsServiceFactory::GetForProfile(profile);
-  if (rewards_notifications_service) {
-    rewards_notifications_service->DeleteNotification(params->id);
+  RewardsNotificationService* rewards_notification_service =
+      RewardsServiceFactory::GetForProfile(profile)->notification_service(
+          profile);
+  if (rewards_notification_service) {
+    rewards_notification_service->DeleteNotification(params->id);
   }
   return RespondNow(NoArguments());
 }
@@ -53,10 +56,11 @@ RewardsNotificationsDeleteAllNotificationsFunction::~RewardsNotificationsDeleteA
 
 ExtensionFunction::ResponseAction RewardsNotificationsDeleteAllNotificationsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsNotificationsService* rewards_notifications_service =
-      RewardsNotificationsServiceFactory::GetForProfile(profile);
-  if (rewards_notifications_service) {
-    rewards_notifications_service->DeleteAllNotifications();
+  RewardsNotificationService* rewards_notification_service =
+      RewardsServiceFactory::GetForProfile(profile)->notification_service(
+          profile);
+  if (rewards_notification_service) {
+    rewards_notification_service->DeleteAllNotifications();
   }
   return RespondNow(NoArguments());
 }
@@ -68,10 +72,11 @@ ExtensionFunction::ResponseAction RewardsNotificationsGetNotificationFunction::R
   std::unique_ptr<rewards_notifications::GetNotification::Params> params(
       rewards_notifications::GetNotification::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsNotificationsService* rewards_notifications_service =
-      RewardsNotificationsServiceFactory::GetForProfile(profile);
-  if (rewards_notifications_service) {
-    rewards_notifications_service->GetNotification(params->id);
+  RewardsNotificationService* rewards_notification_service =
+      RewardsServiceFactory::GetForProfile(profile)->notification_service(
+          profile);
+  if (rewards_notification_service) {
+    rewards_notification_service->GetNotification(params->id);
   }
   return RespondNow(NoArguments());
 }
@@ -81,10 +86,11 @@ RewardsNotificationsGetAllNotificationsFunction::~RewardsNotificationsGetAllNoti
 
 ExtensionFunction::ResponseAction RewardsNotificationsGetAllNotificationsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsNotificationsService* rewards_notifications_service =
-      RewardsNotificationsServiceFactory::GetForProfile(profile);
-  if (rewards_notifications_service) {
-    rewards_notifications_service->GetAllNotifications();
+  RewardsNotificationService* rewards_notification_service =
+      RewardsServiceFactory::GetForProfile(profile)->notification_service(
+          profile);
+  if (rewards_notification_service) {
+    rewards_notification_service->GetAllNotifications();
   }
   return RespondNow(NoArguments());
 }

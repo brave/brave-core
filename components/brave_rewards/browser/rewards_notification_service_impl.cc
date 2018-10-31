@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/rewards_notifications_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -12,30 +12,23 @@
 #include "base/values.h"
 #include "brave/common/extensions/api/rewards_notifications.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/rewards_notifications_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/event_router.h"
 
 namespace brave_rewards {
 
-RewardsNotificationsServiceImpl::RewardsNotificationsServiceImpl(Profile* profile)
+RewardsNotificationServiceImpl::RewardsNotificationServiceImpl(Profile* profile)
     : profile_(profile) {
-}
-
-RewardsNotificationsServiceImpl::~RewardsNotificationsServiceImpl() {
-}
-
-void RewardsNotificationsServiceImpl::Init() {
   ReadRewardsNotifications();
 }
 
-void RewardsNotificationsServiceImpl::Shutdown() {
+RewardsNotificationServiceImpl::~RewardsNotificationServiceImpl() {
   StoreRewardsNotifications();
-  RewardsNotificationsService::Shutdown();
 }
 
-void RewardsNotificationsServiceImpl::AddNotification(
+void RewardsNotificationServiceImpl::AddNotification(
     RewardsNotificationType type,
     RewardsNotificationArgs args,
     RewardsNotificationID id) {
@@ -48,7 +41,7 @@ void RewardsNotificationsServiceImpl::AddNotification(
   OnNotificationAdded(rewards_notification);
 }
 
-void RewardsNotificationsServiceImpl::DeleteNotification(RewardsNotificationID id) {
+void RewardsNotificationServiceImpl::DeleteNotification(RewardsNotificationID id) {
   DCHECK(!id.empty());
   if (rewards_notifications_.find(id) == rewards_notifications_.end())
     return;
@@ -57,19 +50,19 @@ void RewardsNotificationsServiceImpl::DeleteNotification(RewardsNotificationID i
   OnNotificationDeleted(rewards_notification);
 }
 
-void RewardsNotificationsServiceImpl::DeleteAllNotifications() {
+void RewardsNotificationServiceImpl::DeleteAllNotifications() {
   rewards_notifications_.clear();
   OnAllNotificationsDeleted();
 }
 
-void RewardsNotificationsServiceImpl::GetNotification(RewardsNotificationID id) {
+void RewardsNotificationServiceImpl::GetNotification(RewardsNotificationID id) {
   DCHECK(!id.empty());
   if (rewards_notifications_.find(id) == rewards_notifications_.end())
     return;
   OnGetNotification(rewards_notifications_[id]);
 }
 
-void RewardsNotificationsServiceImpl::GetAllNotifications() {
+void RewardsNotificationServiceImpl::GetAllNotifications() {
   RewardsNotificationsList rewards_notifications_list;
   for (auto& item : rewards_notifications_) {
     rewards_notifications_list.push_back(item.second);
@@ -77,18 +70,18 @@ void RewardsNotificationsServiceImpl::GetAllNotifications() {
   OnGetAllNotifications(rewards_notifications_list);
 }
 
-RewardsNotificationsServiceImpl::RewardsNotificationID
-RewardsNotificationsServiceImpl::GenerateRewardsNotificationID() const {
+RewardsNotificationServiceImpl::RewardsNotificationID
+RewardsNotificationServiceImpl::GenerateRewardsNotificationID() const {
   return base::StringPrintf(
       "%d", base::RandInt(0, std::numeric_limits<int32_t>::max()));
 }
 
-RewardsNotificationsServiceImpl::RewardsNotificationTimestamp
-RewardsNotificationsServiceImpl::GenerateRewardsNotificationTimestamp() const {
+RewardsNotificationServiceImpl::RewardsNotificationTimestamp
+RewardsNotificationServiceImpl::GenerateRewardsNotificationTimestamp() const {
   return base::Time::NowFromSystemTime().ToTimeT();
 }
 
-void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {
+void RewardsNotificationServiceImpl::ReadRewardsNotifications() {
   std::string json = profile_->GetPrefs()->GetString(kRewardsNotifications);
   if (json.empty())
     return;
@@ -134,7 +127,7 @@ void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {
   }
 }
 
-void RewardsNotificationsServiceImpl::StoreRewardsNotifications() {
+void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
   base::ListValue root;
 
   for (auto& item : rewards_notifications_) {
@@ -159,7 +152,7 @@ void RewardsNotificationsServiceImpl::StoreRewardsNotifications() {
   profile_->GetPrefs()->SetString(kRewardsNotifications, result);
 }
 
-void RewardsNotificationsServiceImpl::TriggerOnNotificationAdded(
+void RewardsNotificationServiceImpl::TriggerOnNotificationAdded(
     const RewardsNotification& rewards_notification) {
   for (auto& observer : observers_)
     observer.OnNotificationAdded(this, rewards_notification);
@@ -180,7 +173,7 @@ void RewardsNotificationsServiceImpl::TriggerOnNotificationAdded(
   }
 }
 
-void RewardsNotificationsServiceImpl::TriggerOnNotificationDeleted(
+void RewardsNotificationServiceImpl::TriggerOnNotificationDeleted(
     const RewardsNotification& rewards_notification) {
   for (auto& observer : observers_)
     observer.OnNotificationDeleted(this, rewards_notification);
@@ -201,7 +194,7 @@ void RewardsNotificationsServiceImpl::TriggerOnNotificationDeleted(
   }
 }
 
-void RewardsNotificationsServiceImpl::TriggerOnAllNotificationsDeleted() {
+void RewardsNotificationServiceImpl::TriggerOnAllNotificationsDeleted() {
   for (auto& observer : observers_)
     observer.OnAllNotificationsDeleted(this);
 
@@ -220,7 +213,7 @@ void RewardsNotificationsServiceImpl::TriggerOnAllNotificationsDeleted() {
   }
 }
 
-void RewardsNotificationsServiceImpl::TriggerOnGetNotification(
+void RewardsNotificationServiceImpl::TriggerOnGetNotification(
     const RewardsNotification& rewards_notification) {
   for (auto& observer : observers_)
     observer.OnGetNotification(this, rewards_notification);
@@ -241,7 +234,7 @@ void RewardsNotificationsServiceImpl::TriggerOnGetNotification(
   }
 }
 
-void RewardsNotificationsServiceImpl::TriggerOnGetAllNotifications(
+void RewardsNotificationServiceImpl::TriggerOnGetAllNotifications(
     const RewardsNotificationsList& rewards_notifications_list) {
   for (auto& observer : observers_)
     observer.OnGetAllNotifications(this, rewards_notifications_list);
@@ -274,26 +267,26 @@ void RewardsNotificationsServiceImpl::TriggerOnGetAllNotifications(
   }
 }
 
-void RewardsNotificationsServiceImpl::OnNotificationAdded(
+void RewardsNotificationServiceImpl::OnNotificationAdded(
     const RewardsNotification& rewards_notification) {
   TriggerOnNotificationAdded(rewards_notification);
 }
 
-void RewardsNotificationsServiceImpl::OnNotificationDeleted(
+void RewardsNotificationServiceImpl::OnNotificationDeleted(
     const RewardsNotification& rewards_notification) {
   TriggerOnNotificationDeleted(rewards_notification);
 }
 
-void RewardsNotificationsServiceImpl::OnAllNotificationsDeleted() {
+void RewardsNotificationServiceImpl::OnAllNotificationsDeleted() {
   TriggerOnAllNotificationsDeleted();
 }
 
-void RewardsNotificationsServiceImpl::OnGetNotification(
+void RewardsNotificationServiceImpl::OnGetNotification(
     const RewardsNotification& rewards_notification) {
   TriggerOnGetNotification(rewards_notification);
 }
 
-void RewardsNotificationsServiceImpl::OnGetAllNotifications(
+void RewardsNotificationServiceImpl::OnGetAllNotifications(
     const RewardsNotificationsList& rewards_notifications_list) {
   TriggerOnGetAllNotifications(rewards_notifications_list);
 }
