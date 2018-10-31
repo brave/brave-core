@@ -34,12 +34,12 @@ std::string Settings::GetAdsLocale() const {
   return settings_state_->ads_locale;
 }
 
-uint64_t Settings::GetAdsAmountPerHour() const {
-  return std::atoll(settings_state_->ads_amount_hour.c_str());
+uint64_t Settings::GetAdsPerHour() const {
+  return std::atoll(settings_state_->ads_per_hour.c_str());
 }
 
-uint64_t Settings::GetAdsAmountPerDay() const {
-  return std::atoll(settings_state_->ads_amount_day.c_str());
+uint64_t Settings::GetAdsPerDay() const {
+  return std::atoll(settings_state_->ads_per_day.c_str());
 }
 
 }  // namespace state

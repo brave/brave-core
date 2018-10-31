@@ -7,20 +7,21 @@
 
 #include "settings_state.h"
 #include "json_helper.h"
+#include "static_values.h"
 
 namespace state {
 
 SETTINGS_STATE::SETTINGS_STATE() :
     ads_enabled(false),
     ads_locale("en"),
-    ads_amount_day(""),
-    ads_amount_hour("") {}
+    ads_per_hour(""),
+    ads_per_day("") {}
 
 SETTINGS_STATE::SETTINGS_STATE(const SETTINGS_STATE& state) {
   ads_enabled = state.ads_enabled;
   ads_locale = state.ads_locale;
-  ads_amount_day = state.ads_amount_day;
-  ads_amount_hour = state.ads_amount_hour;
+  ads_per_hour = state.ads_per_hour;
+  ads_per_day = state.ads_per_day;
 }
 
 SETTINGS_STATE::~SETTINGS_STATE() = default;
@@ -36,8 +37,8 @@ bool SETTINGS_STATE::LoadFromJson(const std::string& json) {
   const std::map<std::string, std::string> members = {
     {"ads.enabled", "Bool"},
     {"ads.locale", "String"},
-    {"ads.amount.day", "String"},
-    {"ads.amount.hour", "String"}
+    {"ads.amount.hour", "String"},
+    {"ads.amount.day", "String"}
   };
 
   // TODO(Terry Mancey): Decouple validateJson into json_helper class
@@ -65,12 +66,16 @@ bool SETTINGS_STATE::LoadFromJson(const std::string& json) {
     ads_locale = settings["ads.locale"].GetString();
   }
 
-  if (settings.HasMember("ads.amount.day")) {
-    ads_amount_day = settings["ads.amount.day"].GetString();
+  if (settings.HasMember("ads.amount.hour")) {
+    ads_per_hour = settings["ads.amount.hour"].GetString();
+  } else {
+    ads_per_hour = rewards_ads::_default_ads_per_hour;
   }
 
-  if (settings.HasMember("ads.amount.hour")) {
-    ads_amount_hour = settings["ads.amount.hour"].GetString();
+  if (settings.HasMember("ads.amount.day")) {
+    ads_per_day = settings["ads.amount.day"].GetString();
+  } else {
+    ads_per_day = rewards_ads::_default_ads_per_day;
   }
 
   return true;

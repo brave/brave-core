@@ -269,7 +269,7 @@ void AdsImpl::OnSettingsLoaded(
 
 void AdsImpl::OnClientSaved(const ads::Result result) {
   if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client state");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client");
   }
 }
 
@@ -277,12 +277,12 @@ void AdsImpl::OnClientLoaded(
     const ads::Result result,
     const std::string& json) {
   if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load client state");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load client");
     return;
   }
 
   if (!client_->LoadJson(json)) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load client state");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load client");
     return;
   }
 
@@ -529,12 +529,12 @@ bool AdsImpl::IsAllowedToShowAds() {
   std::deque<std::time_t> ads_shown_history = client_->GetAdsShownHistory();
 
   auto hour_window = rewards_ads::_one_hour_in_seconds;
-  auto hour_allowed = settings_->GetAdsAmountPerHour();
+  auto hour_allowed = settings_->GetAdsPerHour();
   auto respects_hour_limit = AdsShownHistoryRespectsRollingTimeConstraint(
     ads_shown_history, hour_window, hour_allowed);
 
   auto day_window = rewards_ads::_one_hour_in_seconds;
-  auto day_allowed = settings_->GetAdsAmountPerDay();
+  auto day_allowed = settings_->GetAdsPerDay();
   auto respects_day_limit = AdsShownHistoryRespectsRollingTimeConstraint(
     ads_shown_history, day_window, day_allowed);
 

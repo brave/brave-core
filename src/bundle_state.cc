@@ -3,8 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bundle_state.h"
-#include "string_helper.h"
-#include <iostream>
 
 namespace state {
 

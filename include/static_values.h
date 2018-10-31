@@ -15,4 +15,7 @@ static const uint64_t _milliseconds_in_a_second = 1000;
 
 static const uint64_t _one_hour_in_seconds = 60 * 60;
 
+static const uint64_t _default_ads_per_day = 20;
+static const uint64_t _default_ads_per_hour = 6;
+
 }  // namespace rewards_ads

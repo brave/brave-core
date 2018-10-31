@@ -26,8 +26,8 @@ class Settings {
 
   bool IsAdsEnabled() const;
   std::string GetAdsLocale() const;
-  uint64_t GetAdsAmountPerHour() const;
-  uint64_t GetAdsAmountPerDay() const;
+  uint64_t GetAdsPerHour() const;
+  uint64_t GetAdsPerDay() const;
 
  private:
   ads::AdsClient* ads_client_;  // NOT OWNED

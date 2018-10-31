@@ -17,8 +17,8 @@ struct SETTINGS_STATE {
 
   bool ads_enabled;
   std::string ads_locale;
-  std::string ads_amount_day;
-  std::string ads_amount_hour;
+  std::string ads_per_hour;
+  std::string ads_per_day;
 };
 
 }  // namespace state
