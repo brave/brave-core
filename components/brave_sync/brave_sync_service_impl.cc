@@ -321,11 +321,10 @@ void BraveSyncServiceImpl::OnGetInitData(const std::string& sync_version) {
 
   brave_sync::client_data::Config config;
   config.api_version = sync_prefs_->GetApiVersion();
-#if defined(OFFICIAL_BUILD)
-  config.server_url = "https://sync.brave.com";
-#else
+  // server_url should be switched to "https://sync.brave.com" once
+  // DEPS for "components/brave_sync/extension/brave-sync" will be
+  // switched to master
   config.server_url = "https://sync-staging.brave.com";
-#endif
   config.debug = true;
   sync_client_->SendGotInitData(seed, device_id, config, sync_words_);
 }

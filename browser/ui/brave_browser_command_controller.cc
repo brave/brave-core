@@ -4,8 +4,10 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
+#include "base/command_line.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/common/brave_switches.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser.h"
@@ -78,7 +80,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandForBraveAdblock();
   UpdateCommandForTor();
-  UpdateCommandForBraveSync();
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (command_line.HasSwitch(switches::kEnableBraveSync)) {
+    UpdateCommandForBraveSync();
+  }
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {

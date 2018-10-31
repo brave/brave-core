@@ -26,6 +26,10 @@ const char kDisablePDFJSExtension[] = "disable-pdfjs-extension";
 // Allows disabling the Tor client updater extension.
 const char kDisableTorClientUpdaterExtension[] = "disable-tor-client-updater-extension";
 
+// Enables Brave Sync. For now it is targeted to staging for QA tests, so
+// is disabled by default for a while.
+const char kEnableBraveSync[] = "enable-brave-sync";
+
 // Specifies which server should we use for rewards
 // Valid values are: "stag" | "prod".
 const char kRewardsEnv[] = "rewards-env";

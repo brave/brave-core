@@ -21,6 +21,8 @@ extern const char kDisablePDFJSExtension[];
 
 extern const char kDisableTorClientUpdaterExtension[];
 
+extern const char kEnableBraveSync[];
+
 extern const char kRewardsEnv[];
 
 extern const char kRewardsReconcileInterval[];
@@ -32,4 +34,3 @@ extern const char kUpgradeFromMuon[];
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_
-
