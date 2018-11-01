@@ -28,6 +28,14 @@
 #include "net/base/escape.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 
+// For window
+
+#include "content/public/browser/page_navigator.h"
+#include "content/public/browser/web_contents_delegate.h"
+#include "content/public/common/referrer.h"
+#include "third_party/blink/public/platform/web_referrer_policy.h"
+#include "ui/base/page_transition_types.h"
+
 using content::WebContents;
 using content::WebUIMessageHandler;
 
@@ -260,6 +268,29 @@ void OpenAddFundsExtensionDialog(
       gurl, parent_window, profile, initiator, width, height, width,
       kDialogMinHeight, L"Bave Rewards",
       new AddFundsExtensionDialogObserver(rewards_service));
+}
+
+content::WebContents* OpenAddFundsWindow(content::WebContents* initiator,
+    const std::map<std::string, std::string>& addresses) {
+  DCHECK(initiator);
+  if (!initiator)
+    return nullptr;
+
+  content::WebContentsDelegate* wc_delegate = initiator->GetDelegate();
+  if (!wc_delegate)
+    return nullptr;
+
+  const GURL gurl("https://uphold-widget-uhocggaamg.now.sh/index.html");
+  const content::Referrer referrer(GURL("brave://rewards"),
+                                   blink::kWebReferrerPolicyAlways);
+  content::OpenURLParams params(gurl, referrer,
+                                WindowOpenDisposition::NEW_POPUP/*SINGLETON_TAB*/,
+                                ui::PAGE_TRANSITION_LINK, true);
+  params.uses_post = true;
+  const std::string data = ToQueryString(GetAddressesAsJSON(addresses));
+  params.post_data = network::ResourceRequestBody::CreateFromBytes(data.data(),
+    data.size());
+  return wc_delegate->OpenURLFromTab(initiator, params);
 }
 
 }  // namespace brave_rewards

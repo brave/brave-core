@@ -32,6 +32,10 @@ void OpenAddFundsExtensionDialog(
     content::WebContents* initiator,
     const std::map<std::string, std::string>& addresses,
     brave_rewards::RewardsService* rewards_service);
+
+content::WebContents* OpenAddFundsWindow(content::WebContents* initiator,
+    const std::map<std::string, std::string>& addresses);
+
 }
 
 #endif  // BRAVE_BROWSER_REWARDS_ADD_FUNDS_DIALOG_H_

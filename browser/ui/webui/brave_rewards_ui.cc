@@ -24,6 +24,9 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
 
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
+
 using content::WebUIMessageHandler;
 
 namespace {
@@ -114,6 +117,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
           notifications_list) override;
 
+  bool ValidateAddFundsContents();
+
+  content::WebContents* add_funds_contents_;
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
 
@@ -125,6 +131,8 @@ RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 RewardsDOMHandler::~RewardsDOMHandler() {
   if (rewards_service_)
     rewards_service_->RemoveObserver(this);
+  if (ValidateAddFundsContents())
+    add_funds_contents_->ClosePage();
 }
 
 void RewardsDOMHandler::RegisterMessages() {
@@ -241,6 +249,32 @@ void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
   rewards_service_->GetWalletProperties();
 }
 
+bool RewardsDOMHandler::ValidateAddFundsContents() {
+  if (!add_funds_contents_)
+    return false;
+
+  Profile* profile = Profile::FromWebUI(web_ui());
+  DCHECK(profile);
+  for (auto browser_it = BrowserList::GetInstance()->begin_last_active();
+       browser_it != BrowserList::GetInstance()->end_last_active();
+       ++browser_it) {
+    Browser* browser = *browser_it;
+    if (browser->profile()->IsSameProfile(profile) &&
+        browser->profile()->GetProfileType() == profile->GetProfileType()) {
+      int tab_count = browser->tab_strip_model()->count();
+      for (int i = 0; i < tab_count; ++i) {
+        content::WebContents* tab =
+            browser->tab_strip_model()->GetWebContentsAt(i);
+        if (tab == add_funds_contents_)
+          return true;
+      }
+    }
+  }
+
+  add_funds_contents_ = nullptr;
+  return false;
+}
+
 void RewardsDOMHandler::AddFundsToWallet(const base::ListValue* args) {
   if (!rewards_service_)
     return;
@@ -254,15 +288,18 @@ void RewardsDOMHandler::AddFundsToWallet(const base::ListValue* args) {
   if (!contents)
     return;
 
-#if 0
+#if 1
+  if (ValidateAddFundsContents()) {
+    add_funds_contents_->Focus();
+  } else
+    add_funds_contents_ = ::brave_rewards::OpenAddFundsWindow(contents, addresses);
+
+#elif USE_WEBUI_DIALOG
   ::brave_rewards::OpenAddFundsDialog(contents, addresses, rewards_service_);
-#else
+#elif USE_EXTENSION_DIALOG
   ::brave_rewards::OpenAddFundsExtensionDialog(
-      contents->GetTopLevelNativeWindow(),
-      Profile::FromWebUI(web_ui()),
-      contents,
-      addresses,
-      rewards_service_);
+      contents->GetTopLevelNativeWindow(), Profile::FromWebUI(web_ui()),
+      contents, addresses, rewards_service_);
 #endif
 }
 
