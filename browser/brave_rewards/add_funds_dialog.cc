@@ -31,10 +31,14 @@
 // For window
 
 #include "content/public/browser/page_navigator.h"
+#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/common/referrer.h"
 #include "third_party/blink/public/platform/web_referrer_policy.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/display/display.h"
+#include "ui/display/screen.h"
+#include "ui/views/widget/widget.h"
 
 using content::WebContents;
 using content::WebUIMessageHandler;
@@ -42,9 +46,9 @@ using content::WebUIMessageHandler;
 namespace {
 
 constexpr int kDialogMargin = 25;
-constexpr int kDialogMinHeight = 625;
+constexpr int kDialogMinHeight = 800;
 constexpr int kDialogMaxHeight = 700;
-constexpr int kDialogFallbackWidth = 750;
+constexpr int kDialogFallbackWidth = 900;
 
 const std::map<std::string, std::string> kCurrencyToNetworkMap{
     {"BTC", "bitcoin"},
@@ -231,10 +235,47 @@ gfx::Size GetHostSize(WebContents* web_contents) {
   return outermost_web_contents->GetContainerBounds().size();
 }
 
+gfx::Rect CalculatePopupWindowBounds(WebContents* initiator) {
+  // Get bounds of the initiator content to see if they would exceed the minimum
+  // size of our popup.
+  content::WebContents* outermost_web_contents =
+      guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
+  gfx::Rect popup_bounds = outermost_web_contents->GetContainerBounds();
+  gfx::Size popup_size = popup_bounds.size();
+  popup_size.Enlarge(-kDialogMargin, -kDialogMargin);
+
+  // If the initiator is too small, adjust bounds to the minitmum size.
+  if (popup_size.width() < kDialogFallbackWidth) {
+    popup_bounds.set_x(popup_bounds.x() -
+                       (kDialogFallbackWidth - popup_size.width()) / 2);
+    popup_bounds.set_width(kDialogFallbackWidth);
+  }
+  if (popup_size.height() < kDialogMinHeight) {
+    popup_bounds.set_y(popup_bounds.y() -
+                       (kDialogMinHeight - popup_size.height()) / 2);
+    popup_bounds.set_height(kDialogMinHeight);
+  }
+
+  // Check if we should move the popup to the center of the screen if it ended
+  // up off screen. If the initiator is split between multiple displays this
+  // will show the popup on the display that contains the largest chunk of the
+  // initiator window.
+  display::Display display =
+      display::Screen::GetScreen()->GetDisplayNearestView(
+          outermost_web_contents->GetNativeView());
+  if (!display.bounds().IsEmpty() && !display.bounds().Contains(popup_bounds)) {
+    popup_bounds = display.bounds();
+    popup_bounds.ClampToCenteredSize(popup_size);
+  }
+
+  return popup_bounds;
+}
+
 }  // namespace
 
 namespace brave_rewards {
 
+// Open Add Funds as a WebUI dialog.
 void OpenAddFundsDialog(WebContents* initiator,
                         const std::map<std::string, std::string>& addresses,
                         brave_rewards::RewardsService* rewards_service) {
@@ -250,6 +291,7 @@ void OpenAddFundsDialog(WebContents* initiator,
       max_size);
 }
 
+// Open Add Funds as an extension dialog.
 void OpenAddFundsExtensionDialog(
     gfx::NativeWindow parent_window,
     Profile* profile,
@@ -270,6 +312,7 @@ void OpenAddFundsExtensionDialog(
       new AddFundsExtensionDialogObserver(rewards_service));
 }
 
+// Open Add Funds as a popup window.
 content::WebContents* OpenAddFundsWindow(content::WebContents* initiator,
     const std::map<std::string, std::string>& addresses) {
   DCHECK(initiator);
@@ -284,13 +327,30 @@ content::WebContents* OpenAddFundsWindow(content::WebContents* initiator,
   const content::Referrer referrer(GURL("brave://rewards"),
                                    blink::kWebReferrerPolicyAlways);
   content::OpenURLParams params(gurl, referrer,
-                                WindowOpenDisposition::NEW_POPUP/*SINGLETON_TAB*/,
+                                WindowOpenDisposition::NEW_POPUP,
                                 ui::PAGE_TRANSITION_LINK, true);
+
+  // Supply addresses via post data. The data is currently in the query string
+  // format: addresses=Base64EncodedUrlEscapedJSON.
   params.uses_post = true;
   const std::string data = ToQueryString(GetAddressesAsJSON(addresses));
   params.post_data = network::ResourceRequestBody::CreateFromBytes(data.data(),
     data.size());
-  return wc_delegate->OpenURLFromTab(initiator, params);
+
+  content::WebContents* newWebContents =
+      wc_delegate->OpenURLFromTab(initiator, params);
+  if (!newWebContents)
+    return nullptr;
+
+  // Reposition/resize the new popup.
+  gfx::Rect popup_bounds = CalculatePopupWindowBounds(initiator);
+  views::Widget* topLevelWidget =
+    views::Widget::GetTopLevelWidgetForNativeView(
+      newWebContents->GetNativeView());
+  if (topLevelWidget)
+    topLevelWidget->SetBounds(popup_bounds);
+
+  return newWebContents;
 }
 
 }  // namespace brave_rewards

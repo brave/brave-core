@@ -26,6 +26,8 @@
 
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_observer.h"
 
 using content::WebUIMessageHandler;
 
@@ -34,7 +36,8 @@ namespace {
 // The handler for Javascript messages for Brave about: pages
 class RewardsDOMHandler : public WebUIMessageHandler,
                           public brave_rewards::RewardsNotificationServiceObserver,
-                          public brave_rewards::RewardsServiceObserver {
+                          public brave_rewards::RewardsServiceObserver,
+                          public views::WidgetObserver {
  public:
   RewardsDOMHandler();
   ~RewardsDOMHandler() override;
@@ -43,6 +46,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
+
+  // content::WidgetObserver implementation.
+  void OnWidgetClosing(views::Widget* widget) override;
 
  private:
   void GetAllBalanceReports();
@@ -117,8 +123,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
           notifications_list) override;
 
-  bool ValidateAddFundsContents();
-
   content::WebContents* add_funds_contents_;
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
@@ -126,13 +130,23 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
 };
 
-RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
+RewardsDOMHandler::RewardsDOMHandler()
+  : add_funds_contents_(nullptr), weak_factory_(this) {}
 
 RewardsDOMHandler::~RewardsDOMHandler() {
   if (rewards_service_)
     rewards_service_->RemoveObserver(this);
-  if (ValidateAddFundsContents())
+
+  // If Add Funds popup is open, close it since it's a part of the rewards UI.
+  if (add_funds_contents_) {
+    views::Widget* widget = views::Widget::GetTopLevelWidgetForNativeView(
+      add_funds_contents_->GetNativeView());
+    if (widget)
+      widget->RemoveObserver(this);
+    
     add_funds_contents_->ClosePage();
+    add_funds_contents_ = nullptr;
+  }
 }
 
 void RewardsDOMHandler::RegisterMessages() {
@@ -198,6 +212,12 @@ void RewardsDOMHandler::RegisterMessages() {
                                                         base::Unretained(this)));
 }
 
+// content::WidgetObserver implementation.
+void RewardsDOMHandler::OnWidgetClosing(views::Widget* widget) {
+  widget->RemoveObserver(this);
+  add_funds_contents_ = nullptr;
+}
+
 void RewardsDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
   rewards_service_ =
@@ -249,32 +269,6 @@ void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
   rewards_service_->GetWalletProperties();
 }
 
-bool RewardsDOMHandler::ValidateAddFundsContents() {
-  if (!add_funds_contents_)
-    return false;
-
-  Profile* profile = Profile::FromWebUI(web_ui());
-  DCHECK(profile);
-  for (auto browser_it = BrowserList::GetInstance()->begin_last_active();
-       browser_it != BrowserList::GetInstance()->end_last_active();
-       ++browser_it) {
-    Browser* browser = *browser_it;
-    if (browser->profile()->IsSameProfile(profile) &&
-        browser->profile()->GetProfileType() == profile->GetProfileType()) {
-      int tab_count = browser->tab_strip_model()->count();
-      for (int i = 0; i < tab_count; ++i) {
-        content::WebContents* tab =
-            browser->tab_strip_model()->GetWebContentsAt(i);
-        if (tab == add_funds_contents_)
-          return true;
-      }
-    }
-  }
-
-  add_funds_contents_ = nullptr;
-  return false;
-}
-
 void RewardsDOMHandler::AddFundsToWallet(const base::ListValue* args) {
   if (!rewards_service_)
     return;
@@ -289,10 +283,19 @@ void RewardsDOMHandler::AddFundsToWallet(const base::ListValue* args) {
     return;
 
 #if 1
-  if (ValidateAddFundsContents()) {
-    add_funds_contents_->Focus();
-  } else
-    add_funds_contents_ = ::brave_rewards::OpenAddFundsWindow(contents, addresses);
+  // If we already have a popup open, then bring it up front. Otherwise, create
+  // a new popup and set ourselves to watch for its closing.
+  if (add_funds_contents_) {
+      add_funds_contents_->Focus();
+  } else {
+    add_funds_contents_ = ::brave_rewards::OpenAddFundsWindow(contents,
+      addresses);
+    views::Widget* topLevelWidget =
+      views::Widget::GetTopLevelWidgetForNativeView(
+        add_funds_contents_->GetNativeView());
+    if (topLevelWidget)
+      topLevelWidget->AddObserver(this);
+  }
 
 #elif USE_WEBUI_DIALOG
   ::brave_rewards::OpenAddFundsDialog(contents, addresses, rewards_service_);
