@@ -112,16 +112,16 @@ void AdsImpl::TestSearchState(const std::string& url) {
   }
 }
 
-void AdsImpl::RecordMediaPlaying(const std::string& tabId, const bool active) {
-  auto tab = media_playing_.find(tabId);
+void AdsImpl::RecordMediaPlaying(const std::string& tab_id, const bool active) {
+  auto tab = media_playing_.find(tab_id);
 
   if (active) {
     if (tab == media_playing_.end()) {
-      media_playing_.insert({tabId, active});
+      media_playing_.insert({tab_id, active});
     }
   } else {
     if (tab != media_playing_.end()) {
-      media_playing_.erase(tabId);
+      media_playing_.erase(tab_id);
     }
   }
 }
@@ -133,6 +133,9 @@ void AdsImpl::ClassifyPage(const std::string& html) {
 
   auto page_scores = user_model_->classifyPage(html);
   client_->AppendPageScoreToPageScoreHistory(page_scores);
+
+  // TODO(Terry Mancey): Implement Log (#44)
+  // 'Site visited', { url, immediateWinner, winnerOverTime }
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -250,8 +253,8 @@ void AdsImpl::OnSettingsLoaded(
   }
 
   if (!settings_->LoadJson(json)) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load settings: %s",
-      json.c_str());
+    ads_client_->Log(ads::LogLevel::WARNING,
+      "Failed to parse settings JSON: %s", json.c_str());
     return;
   }
 
@@ -269,7 +272,7 @@ void AdsImpl::OnSettingsLoaded(
 
 void AdsImpl::OnClientSaved(const ads::Result result) {
   if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client state");
   }
 }
 
@@ -277,12 +280,13 @@ void AdsImpl::OnClientLoaded(
     const ads::Result result,
     const std::string& json) {
   if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load client");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load client state");
     return;
   }
 
   if (!client_->LoadJson(json)) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load client");
+    ads_client_->Log(ads::LogLevel::WARNING,
+      "Failed to parse client JSON: %s", json.c_str());
     return;
   }
 
@@ -567,7 +571,7 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
     const uint64_t seconds_window,
     const uint64_t allowable_ad_count) const {
   uint64_t recent_count = 0;
-  uint64_t now = static_cast<uint64_t>(std::time(nullptr));
+  auto now = static_cast<uint64_t>(std::time(nullptr));
 
   for (auto i : history) {
     auto time_of_ad = i;

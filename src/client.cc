@@ -203,7 +203,7 @@ void Client::RemoveAllHistory() {
 
 void Client::OnClientSaved(const ads::Result result) {
   if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client");
+    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client state");
   }
 }
 

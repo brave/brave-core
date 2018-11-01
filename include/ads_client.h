@@ -21,7 +21,7 @@
 namespace ads {
 
 ADS_EXPORT enum LogLevel {
-  INFORMATION,
+  INFO,
   WARNING,
   ERROR
 };

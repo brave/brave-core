@@ -31,6 +31,7 @@ class AdsServe: public ads::CallbackHandler {
   ~AdsServe();
 
   void DownloadCatalog();
+  void RetryDownloadingCatalog();
 
   void ResetNextCatalogCheck();
 

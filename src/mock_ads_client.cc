@@ -387,7 +387,7 @@ void MockAdsClient::Log(const LogLevel log_level, const char* fmt, ...) const {
   std::string level;
 
   switch (log_level) {
-    case LogLevel::INFORMATION: {
+    case LogLevel::INFO: {
       level = "INFO";
     }
     case LogLevel::WARNING: {

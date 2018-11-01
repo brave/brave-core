@@ -58,35 +58,46 @@ void AdsServe::OnCatalogDownloaded(
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
 
     auto catalog = std::make_unique<state::Catalog>(ads_client_);
-    if (catalog->LoadJson(response)) {
-      // TODO(Terry Mancey): Implement Log (#44)
-      // 'Catalog parsed', underscore.extend(underscore.clone(header),
-      // { status: 'processed', campaigns: underscore.keys(campaigns).length,
-      // creativeSets: underscore.keys(creativeSets).length
-
-      auto catalog_state = catalog->GetCatalogState();
-      if (bundle_->GenerateFromCatalog(catalog_state)) {
-        // TODO(Terry Mancey): Implement Log (#44)
-        // 'Generated bundle'
-
-        ads_client_->SaveCatalog(response, this);
-        ads_->ApplyCatalog();
-
-        UpdateNextCatalogCheck();
-
-        return;
-      } else {
-        // TODO(Terry Mancey): Implement Log (#44)
-        // 'Failed to generate bundle'
-
-        ads_->StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
-      }
-    } else {
+    if (!catalog->LoadJson(response)) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Failed to parse catalog'
 
-      ads_->StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
+      RetryDownloadingCatalog();
+      return;
     }
+
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Catalog parsed', underscore.extend(underscore.clone(header),
+    // { status: 'processed', campaigns: underscore.keys(campaigns).length,
+    // creativeSets: underscore.keys(creativeSets).length
+
+    auto catalog_state = catalog->GetCatalogState();
+
+    auto current_catalog_version = bundle_->GetCatalogVersion();
+    if (current_catalog_version != 0 &&
+        current_catalog_version <= catalog_state->version) {
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'Current catalog is the same or a newer version'
+
+      RetryDownloadingCatalog();
+      return;
+    }
+
+    if (!bundle_->GenerateFromCatalog(catalog_state)) {
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'Failed to generate bundle'
+
+      RetryDownloadingCatalog();
+      return;
+    }
+
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Generated bundle'
+
+    ads_client_->SaveCatalog(response, this);
+    ads_->ApplyCatalog();
+
+    UpdateNextCatalogCheck();
   } else if (response_status_code == 304) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog current', { method, server, path }
@@ -108,8 +119,12 @@ void AdsServe::OnCatalogDownloaded(
       "Failed to download catalog from %s (%d): %s %s", url.c_str(),
       response_status_code, response.c_str(), formatted_headers.c_str());
 
-    ads_->StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
+    RetryDownloadingCatalog();
   }
+}
+
+void AdsServe::RetryDownloadingCatalog() {
+  ads_->StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
 }
 
 void AdsServe::ResetNextCatalogCheck() {

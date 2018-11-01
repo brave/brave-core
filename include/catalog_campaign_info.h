@@ -52,23 +52,11 @@ struct CampaignInfo {
   std::string name;
   std::string start_at;
   std::string end_at;
-  int64_t daily_cap;
-  int64_t budget;
+  uint64_t daily_cap;
+  uint64_t budget;
   std::string advertiser_id;
   std::vector<GeoTargetInfo> geo_targets;
   std::vector<CreativeSetInfo> creative_sets;
-};
-
-struct CampaignInfoFilter {
-  CampaignInfoFilter() :
-      campaign_id("") {}
-
-  CampaignInfoFilter(const CampaignInfoFilter& filter) :
-      campaign_id(filter.campaign_id) {}
-
-  ~CampaignInfoFilter() {}
-
-  std::string campaign_id;
 };
 
 }  // namespace catalog

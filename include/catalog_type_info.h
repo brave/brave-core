@@ -26,7 +26,7 @@ struct TypeInfo {
   std::string code;
   std::string name;
   std::string platform;
-  int64_t version;
+  uint64_t version;
 };
 
 }  // namespace catalog

@@ -41,22 +41,10 @@ struct CreativeSetInfo {
 
   std::string creative_set_id;
   std::string execution;
-  int64_t per_day;
-  int64_t total_max;
+  uint64_t per_day;
+  uint64_t total_max;
   std::vector<SegmentInfo> segments;
   std::vector<CreativeInfo> creatives;
-};
-
-struct CreativeSetInfoFilter {
-  CreativeSetInfoFilter() :
-    creative_set_id("") {}
-
-  CreativeSetInfoFilter(const CreativeSetInfoFilter& filter) :
-    creative_set_id(filter.creative_set_id) {}
-
-  ~CreativeSetInfoFilter() {}
-
-  std::string creative_set_id;
 };
 
 }  // namespace catalog
