@@ -25,7 +25,7 @@
 <translation id="6248988683584659830">Postavke pretraživanja</translation>
 <translation id="730042046912793465">Ovo je</translation>
 <translation id="2055363275850890030">privatni prozor</translation>
-<translation id="5845750335588647333">Brave ne pamti što radite u privatnom prozoru. Mrežna mjesta koja posjetite neće se prikazati u vašoj povijesti, a kolačići nestaju kad završite s radom. Međutim, privatni prozori ne osiguravaju vam potpunu anonimnost na internetu.</translation>
+<translation id="9133213713928851646">Brave ne pamti što radite u privatnom prozoru. Mrežna mjesta koja posjetite neće se prikazati u vašoj povijesti, a kolačići nestaju kad završite s radom. Međutim, privatni prozori ne osiguravaju vam potpunu anonimnost na internetu.</translation>
 <translation id="8760415064721320867">Privatni prozor s funkcijom Tor</translation>
 <translation id="4844209912525464363">Brave nikada ne pamti što radite u privatnom prozoru. Uz Tor, vaše je pregledavanje skriveno i od vašeg pružatelja internetskih usluga i poslodavca, a IP adresa skrivena je od mrežnih mjesta koja posjećujete.</translation>
 <translation id="778096729652828897">Saznajte više o privatnim prozorima s funkcijom Tor</translation>
@@ -38,14 +38,14 @@
 <translation id="1129265576134014816">Ovaj privatni prozor je mnogo privatniji</translation>
 <translation id="805807983419360524">uz Tor</translation>
 <translation id="8958799246752641148">Tor skriva vašu IP adresu od mrežnih mjesta koja posjećujete usmjeravanjem vašeg pregledavanja preko nekoliko poslužitelja Tor prije nego što dođe do vašeg odredišta. Te su veze kriptirane, pa ni vaš pružatelj internetskih usluga ni poslodavac ne može vidjeti koja mrežna mjesta posjećujete. Tor može usporiti pregledavanje, a neka mrežna mjesta možda uopće neće raditi.</translation>
-<translation id="1967681112904945200">Uporabom privatnih kartica mijenja se samo ono što Brave radi na vašem uređaju — ne mijenja se ponašanje drugih. Tor skriva vašu IP adresu od mjesta koja posjećujete, a ta mjesta skriva od vašeg pružatelja internetskih usluga ili poslodavca. Otvorite privatni prozor s funkcijom Tor iz izbornika ili pritiskom na Alt+Shift+N ili Option+Shift+N.</translation>
+<translation id="520608572871993342">Uporabom privatnih kartica mijenja se samo ono što Brave radi na vašem uređaju — ne mijenja se ponašanje drugih. Tor skriva vašu IP adresu od mjesta koja posjećujete, a ta mjesta skriva od vašeg pružatelja internetskih usluga ili poslodavca. Otvorite privatni prozor s funkcijom Tor iz izbornika ili pritiskom na Alt+Shift+N ili Option+Shift+N.</translation>
 <translation id="6975708438781948564">Saznajte više o funkciji Tor u pregledniku Brave</translation>
 <translation id="1869685517625607604">Ukupno blokiranih oglasa:</translation>
 <translation id="6200814343085745765">Regionalno blokiranje oglasa:</translation>
 <translation id="59174027418879706">Omogućeno</translation>
 <translation id="4176463684765177261">Onemogućeno</translation>
 <translation id="7207456302801184289">Dobro došli u preglednik Brave</translation>
-<translation id="2391823593986423328">Brave je mnogo više od preglednika. Pokazat ćemo vam kako možete iskoristiti njegove prednosti</translation>
+<translation id="764012553571385542">Brave je mnogo više od preglednika. Pokazat ćemo vam kako možete iskoristiti njegove prednosti</translation>
 <translation id="6001839398155993679">Počnimo</translation>
 <translation id="8050847734948770789">Omogućite sustav nagrada u pregledniku Brave</translation>
 <translation id="2710310654441838823">Sustav nagrada u pregledniku Brave novo je viđenje načina na koji funkcionira internet. Budite nagrađeni za gledanje oglasa kojima se poštuje privatnost i pritom podržite svoje omiljene autore sadržaja.</translation>
@@ -54,7 +54,7 @@
 <translation id="5521187896304743452">Brave omogućuje jednostavno postavljanje vašeg uobičajenog okruženja uvozom knjižnih oznaka i postavki iz drugih preglednika instaliranih na vašem računalu.</translation>
 <translation id="4138981897709579987">Uvezi sada</translation>
 <translation id="9152220852742774324">Upravljajte postavkama štita</translation>
-<translation id="2043261199283617849">Prilagodite i nadzirite razinu zaštite klikom na logotip tvrtke Brave u alatnoj traci. Upravljajte globalnim postavkama štita na ploči s postavkama</translation>
+<translation id="110988439043625224">Prilagodite i nadzirite razinu zaštite klikom na logotip tvrtke Brave u alatnoj traci. Upravljajte globalnim postavkama štita na ploči s postavkama</translation>
 <translation id="3366308997091824722">Postavke štita</translation>
 <translation id="7024124499777560832">Prilagodite postavke</translation>
 <translation id="2498783234010887316">Postavke kartica, izgleda, ekstenzija i povijesti mogu se konfigurirati na ploči s postavkama. Tamo čak možete pronaći i tamnu temu ;)</translation>
@@ -96,11 +96,11 @@
 <translation id="7841456038054167122">Ponovno unesite ključeve ili pokušajte s drugim ključevima.</translation>
 <translation id="2195074481553016770">Uskoro smo gotovi…</translation>
 <translation id="5254740304961202261">Dokažite da ste čovjek!</translation>
-<translation id="5118651998291801746">Hm,…baš i ne ide.</translation>
+<translation id="1387881035954376289">Hm,…baš i ne ide.</translation>
 <translation id="2323069945529668668">Joj, ne!</translation>
 <translation id="5094577350232361255">opis</translation>
 <translation id="4918086044614829423">Prihvati</translation>
-<translation id="7856172182738102743">©2016 –2018 Brave Software. Brave je registrirani zaštitni znak tvrtke Brave Software. Nazivi mrežnih mjesta mogu biti zaštitni znakovi ili registrirani zaštitni znakovi vlasnika tih mjesta.</translation>
+<translation id="6832986780040139899">©2016 –2018 Brave Software. Brave je registrirani zaštitni znak tvrtke Brave Software. Nazivi mrežnih mjesta mogu biti zaštitni znakovi ili registrirani zaštitni znakovi vlasnika tih mjesta.</translation>
 <translation id="9026369588205476247">Radi zaštite vaše privatnosti ova izjava o sustavu nagrada u pregledniku Brave ne sprema se, ne zapisuje niti evidentira nigdje osim na vašem uređaju (ovo računalo). Ne može se dohvatiti iz preglednika Brave u slučaju gubitka podataka s vašeg uređaja.</translation>
 <translation id="1036277985068412734">dodaj sredstva</translation>
 <translation id="4496990471549986619">Česta pitanja</translation>
@@ -237,7 +237,7 @@
 <translation id="8446884382197647889">Saznajte više</translation>
 <translation id="4083384190339959182">Obavili smo veliku nadogradnju sustava plaćanja u pregledniku Brave.</translation>
 <translation id="5395851053710553429">Pripremite se za doživljaj novog interneta.</translation>
-<translation id="1658717423774740031">Dok ste se služili svojim starim preglednikom, pretraživanje interneta plaćali ste gledanjem oglasa s vašom vrijednom pažnjom. Trošili ste vrijeme preuzimajući invazivnu tehnologiju oglasa koja je vaše privatne podatke prenosila oglašivačima — bez vaše privole.</translation>
+<translation id="880341991877949255">Dok ste se služili svojim starim preglednikom, pretraživanje interneta plaćali ste gledanjem oglasa s vašom vrijednom pažnjom. Trošili ste vrijeme preuzimajući invazivnu tehnologiju oglasa koja je vaše privatne podatke prenosila oglašivačima — bez vaše privole.</translation>
 <translation id="2549982302631665116">Brave vam danas predstavlja novi internet. Internet na kojem se cijeni vaše vrijeme, štiti privatnost vaših podataka te vam se zapravo plaća za pridanu pažnju.</translation>
 <translation id="3780605330121608425">Vaš novčanik</translation>
 </translationbundle>

@@ -5403,6 +5403,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PICTURE_IN_PICTURE_CLOSE_CONTROL_TEXT" desc="Text label of the close control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Close
       </message>
+      <message name="IDS_PICTURE_IN_PICTURE_RESIZE_HANDLE_TEXT" desc="Text label of the resize handle. The button appears when the user hovers over the Picture-in-Picture window.">
+        Resize
+      </message>
       <message name="IDS_PICTURE_IN_PICTURE_PLAY_PAUSE_CONTROL_ACCESSIBLE_TEXT" desc="Accessible text label used for the controls button in the Picture-in-Picture window. The button toggles between play and pause controls.">
         Toggle video to play or pause
       </message>

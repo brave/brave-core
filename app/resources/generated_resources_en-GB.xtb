@@ -1257,6 +1257,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3766223500670287046">Remote screen</translation>
 <translation id="3930737994424905957">Looking for devices</translation>
 <translation id="5209320130288484488">No devices found</translation>
+<translation id="4415245286584082850">No devices found. Open a help centre article in a new tab.</translation>
 <translation id="4363771538994847871">No Cast destinations found. Need help?</translation>
 <translation id="8688672835843460752">Available</translation>
 <translation id="4271396100647220620">No matches</translation>
@@ -1874,6 +1875,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Run Linux tools, editors and IDEs on your Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Learn more&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Remove Linux Apps for Bravebook</translation>
+<translation id="1529899284660134226">Manage shared files and folders</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android settings</translation>
 <translation id="4767209642168463274">Install apps and games from Brave Software Play on your Bravebook. &lt;a target='_blank' href='<ph name="URL"/>'&gt;Learn more&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6122875415561139701">Write operation is not permitted on: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Bluetooth configuration is controlled by <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Time range</translation>
+<translation id="3958004920128806270">To clear browsing data from this device only, while keeping it in your Brave Software Account, <ph name="BEGIN_LINK"/>sign out<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">To clear browsing data from all of your synced devices and your Brave Software Account, <ph name="BEGIN_LINK"/>visit sync settings<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">To clear browsing data from all of your synced devices and your Brave Software Account, <ph name="BEGIN_LINK"/>enter your passphrase<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">To clear browsing data from all of your synced devices and your Brave Software Account, <ph name="BEGIN_LINK"/>sign in<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Browsing history</translation>
 <translation id="8662811608048051533">Signs you out of most sites.</translation>
 <translation id="4650925988509114690">Signs you out of most sites. You'll stay signed in to your Brave Software Account so that your synced data can be cleared.</translation>
@@ -2078,7 +2084,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="9024158959543687197">Error mounting share. Check the file share URL and try again.</translation>
 <translation id="1954813140452229842">Error mounting share. Please check your credentials and try again.</translation>
 <translation id="2148219725039824548">Error mounting share. The specified share was not found on the network.</translation>
-<translation id="7234406375359457793">Error mounting share. The specified share is not supported.</translation>
+<translation id="6923633482430812883">Error mounting share. Please check that the file server that you are connecting to supports SMBv2 or later.</translation>
 <translation id="706626672220389329">Error mounting share. The specified share is already mounted.</translation>
 <translation id="5985458664595100876">Invalid URL format. Supported formats are \\server\share and smb://server/share.</translation>
 <translation id="9147304170847707004">Authentication Method</translation>
@@ -2539,6 +2545,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7366415735885268578">Add a site</translation>
 <translation id="5052499409147950210">Edit site</translation>
 <translation id="2870560284913253234">Site</translation>
+<translation id="4610862967073369855">Allows Android Messages to relay texts from your phone to your Bravebook</translation>
 <translation id="6742339027238151589">Accessible to script</translation>
 <translation id="361106536627977100">Flash data</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2640,6 +2647,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8135094938656535588">Manage synced data on Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Encryption options</translation>
 <translation id="2459230470861708651">Encrypt synced passwords with your Brave Software username and password</translation>
+<translation id="5958351589333270173">Encrypt synced data with your own <ph name="BEGIN_LINK"/>sync passphrase<ph name="END_LINK"/>. This doesn't include payment methods and addresses from Brave Software Pay.</translation>
 <translation id="4817583816512767754">Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave Software. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/> to remove your sync passphrase</translation>
 <translation id="3873315167136380065">To turn this on, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/> to remove your sync passphrase</translation>
@@ -2703,6 +2711,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">External Command</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">External Meta</translation>
 <translation id="4991420928586866460">Treat top-row keys as function keys</translation>
 <translation id="85486688517848470">Hold the Search key to switch the behaviour of the top-row keys</translation>

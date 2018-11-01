@@ -1252,6 +1252,7 @@
 <translation id="3766223500670287046">रिमोट स्क्रीन</translation>
 <translation id="3930737994424905957">डिव्हाइस शोधत आहे</translation>
 <translation id="5209320130288484488">कोणतीही डिव्हाइसेस आढळली नाहीत</translation>
+<translation id="4415245286584082850">कोणतीही डिव्हाइस सापडली नाहीत. नवीन टॅबमध्ये मदत केंद्र लेख उघडा.</translation>
 <translation id="4363771538994847871">कोणतीही कास्ट गंतव्यस्थाने सापडली नाहीत. मदत हवी आहे?</translation>
 <translation id="8688672835843460752">उपलब्ध</translation>
 <translation id="4271396100647220620">कोणत्याही जुळण्या नाहीत</translation>
@@ -1869,6 +1870,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">तुमच्या Bravebook वर Linux टूल, संपादक आणि IDEs रन करा &lt;a target="_blank" href="<ph name="URL"/>"&gt;अधिक जाणून घ्या&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Bravebook साठी Linux अॅप्स काढा</translation>
+<translation id="1529899284660134226">शेअर केलेल्या फायली आणि फोल्डर व्यवस्थापित करा</translation>
 <translation id="2295473777859797944">Brave Software Play स्टोअर</translation>
 <translation id="572155275267014074">Android सेटिंग्ज</translation>
 <translation id="4767209642168463274">तुमच्या Bravebook वर Brave Software Play मधून अॅप आणि गेम इंस्टॉल करा. &lt;a target="_blank" href="<ph name="URL"/>"&gt;अधिक जाणून घ्या&lt;/a&gt;</translation>
@@ -1993,6 +1995,10 @@
 <translation id="6122875415561139701">लिहा ऑपरेशनला यावर परवानगी नाही: " <ph name="DEVICE_NAME"/> ".</translation>
 <translation id="439266289085815679">ब्लूटूथ कॉन्फिगरेशन <ph name="USER_EMAIL"/> नियंत्रित करते.</translation>
 <translation id="784934925303690534">वेळ वर्गवारी</translation>
+<translation id="3958004920128806270">तुमच्या Brave Software खात्यामध्ये डेटा तसाच ठेवून फक्त या डिव्हाइसमधून ब्राउझ केलेला डेटा साफ करण्यासाठी, <ph name="BEGIN_LINK"/>साइन आउट करा<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">तुमच्या सिंक केलेल्या सर्व डिव्हाइसमधून आणि तुमच्या Brave Software खात्यामधून ब्राउझ केलेला डेटा साफ करण्यासाठी, <ph name="BEGIN_LINK"/>सिंक सेटिंग्जला भेट द्या<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">तुमच्या सिंक केलेल्या सर्व डिव्हाइसमधून आणि तुमच्या Brave Software खात्यामधून ब्राउझ केलेला डेटा साफ करण्यासाठी, <ph name="BEGIN_LINK"/>तुमचा पासफ्रेझ एंटर करा<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">तुमच्या सिंक केलेल्या सर्व डिव्हाइसमधून आणि तुमच्या Brave Software खात्यामधून ब्राउझ केलेला डेटा साफ करण्यासाठी, <ph name="BEGIN_LINK"/>साइन इन करा<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">ब्राउझिंग इतिहास</translation>
 <translation id="8662811608048051533">तुम्हाला बहुतांश साइटवरून साइन आउट करते.</translation>
 <translation id="4650925988509114690">बऱ्याच सायटींवरून तुम्हाला साइन आउट करते. तुम्ही तुमच्या Brave Software खात्यामध्ये साइन इन रहाल जेणेकरून तुमचा सिंक केलेला डेटा साफ केला जाऊ शकतो.</translation>
@@ -2073,7 +2079,7 @@
 <translation id="9024158959543687197">शेअर माउंट करताना एरर आली. फाइल शेअर URL तपासा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="1954813140452229842">शेअर माउंट करताना एरर आली. कृपया तुमची क्रेडेंशियल तपासा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="2148219725039824548">शेअर माउंट करताना एरर आली. नेटवर्कमध्ये निर्दिष्ट केलेला शेअर आढळला नाही.</translation>
-<translation id="7234406375359457793">शेअर माउंट करताना एरर आली. निर्दिष्ट शेअरला सपोर्ट नाही.</translation>
+<translation id="6923633482430812883">शेअर माउंट करताना एरर आली. कृपया तुम्ही कनेक्ट करत असलेला फाइल सर्व्हर SMBv2 किंवा त्यानंतरच्या आवृत्तीला सपोर्ट करतो की नाही हे तपासा.</translation>
 <translation id="706626672220389329">शेअर माउंट करताना एरर आली. निर्दिष्ट केलेला शेअर आधीच माउंट केलेला आहे.</translation>
 <translation id="5985458664595100876">चुकीचा URL फॉरमॅट. सपोर्ट केले जाणारे फॉरमॅट \\server\share आणि smb://server/share आहेत.</translation>
 <translation id="9147304170847707004">ऑथेंटिकेशन पद्धत</translation>
@@ -2535,6 +2541,7 @@
 <translation id="7366415735885268578">एक साइट जोडा</translation>
 <translation id="5052499409147950210">साइट संपादित करा</translation>
 <translation id="2870560284913253234">साइट</translation>
+<translation id="4610862967073369855">Android Messages ला तुमच्या फोनवरून तुमच्या Bravebook मध्ये एसएमएस रीले करण्याची अनुमती देते</translation>
 <translation id="6742339027238151589">स्क्रिप्‍टसाठी प्रवेशयोग्य</translation>
 <translation id="361106536627977100">फ्लॅश डेटा</translation>
 <translation id="8557930019681227453">मॅनिफेस्ट</translation>
@@ -2636,6 +2643,7 @@
 <translation id="8135094938656535588">Brave Software डॅशबोर्डवरील संकालित डेटा व्यवस्थापित करा</translation>
 <translation id="6596325263575161958">कूटबद्धता पर्याय</translation>
 <translation id="2459230470861708651">आपल्या Brave Software वापरकर्तानाव आणि पासवर्डासह संंकालित केलेले पासवर्ड कूटबद्ध करा</translation>
+<translation id="5958351589333270173">तुमच्या स्वतःच्या <ph name="BEGIN_LINK"/>सिंक पासफ्रेजसह<ph name="END_LINK"/> सिंक केलेला डेटा एंक्रिप्ट करा. यामध्ये Brave Software Pay वरील पेमेंट पद्धतींचा आणि पत्त्यांचा समावेश नसतो.</translation>
 <translation id="4817583816512767754">फक्त आपला सांकेतिक वाक्यांश असलेली एखादी व्यक्ती आपला कूटबद्ध डेटा वाचू शकते. सांकेतिक वाक्यांश Brave Software कडे पाठविला किंवा त्याद्वारे संचयित केला जात नाही. आपण आपला सांकेतिक वाक्यांश विसरल्यास किंवा हे सेटिंग बदलू इच्छित असल्यास, आपल्याला <ph name="BEGIN_LINK"/>संकालन रीसेट करण्याची आवश्यकता असेल<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">हे सेटिंग बदलण्यासाठी, तुमची सिंक पासफ्रेझ काढून टाकण्यासाठी <ph name="BEGIN_LINK"/>सिंक रीसेट करा<ph name="END_LINK"/></translation>
 <translation id="3873315167136380065">हे सुरू करण्यासाठी, तुमची सिंक पासफ्रेझ काढून टाकण्यासाठी <ph name="BEGIN_LINK"/>सिंक रीसेट करा<ph name="END_LINK"/></translation>
@@ -2699,6 +2707,7 @@
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">बाह्य कमांड</translation>
+<translation id="7969046989155602842">कमांड</translation>
 <translation id="585979798156957858">बाह्य मेटा</translation>
 <translation id="4991420928586866460">कार्य की म्हणून शीर्ष-पंक्ती की हाताळा</translation>
 <translation id="85486688517848470">शीर्ष-पंक्ती की चे वर्तन बदलण्यासाठी शोध की दाबून ठेवा</translation>

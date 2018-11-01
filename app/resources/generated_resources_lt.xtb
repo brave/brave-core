@@ -1258,6 +1258,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3766223500670287046">Nuotolinio valdymo ekranas</translation>
 <translation id="3930737994424905957">Ieškoma įrenginių</translation>
 <translation id="5209320130288484488">Įrenginių nerasta</translation>
+<translation id="4415245286584082850">Įrenginių nerasta. Atidarykite pagalbos centro straipsnį naujame skirtuke.</translation>
 <translation id="4363771538994847871">Nerasta jokių „Cast“ paskirties vietų. Reikia pagalbos?</translation>
 <translation id="8688672835843460752">Galima</translation>
 <translation id="4271396100647220620">Nėra atitikčių</translation>
@@ -1875,6 +1876,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Paleiskite „Linux“ įrankius, redagavimo priemones ir IDE savo „Bravebook“ įrenginyje. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Sužinokite daugiau&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Pašalinti „Linux“ programas iš „Bravebook“</translation>
+<translation id="1529899284660134226">Tvarkyti bendrinamus failus ir aplankus</translation>
 <translation id="2295473777859797944">„Brave Software Play“ parduotuvė</translation>
 <translation id="572155275267014074">„Android“ nustatymai</translation>
 <translation id="4767209642168463274">Diekite programas ir žaidimus iš „Brave Software Play“ savo „Bravebook“ įrenginyje. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Sužinokite daugiau&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6122875415561139701">Rašymo operacija neleidžiama įrenginyje „<ph name="DEVICE_NAME"/>“.</translation>
 <translation id="439266289085815679">„Bluetooth“ konfigūravimą valdo <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Laikotarpis</translation>
+<translation id="3958004920128806270">Norėdami išvalyti naršymo duomenis tik iš šio įrenginio ir palikti juos „Brave Software“ paskyroje, <ph name="BEGIN_LINK"/>atsijunkite<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>apsilankykite sinchronizavimo nustatymuose<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>įveskite slaptafrazę<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Norėdami išvalyti naršymo duomenis iš sinchronizuotų įrenginių ir „Brave Software“ paskyros, <ph name="BEGIN_LINK"/>prisijunkite<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Naršymo istorija</translation>
 <translation id="8662811608048051533">Būsite atjungti nuo daugelio svetainių.</translation>
 <translation id="4650925988509114690">Būsite atjungti nuo daugelio svetainių. Liksite prisijungę prie „Brave Software“ paskyros, todėl sinchronizuoti duomenys gali būti išvalyti.</translation>
@@ -2079,7 +2085,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="9024158959543687197">Klaida įdedant bendrinamą objektą. Patikrinkite failo bendrinamo objekto URL ir bandykite dar kartą.</translation>
 <translation id="1954813140452229842">Klaida įdedant bendrinamą objektą. Patikrinkite prisijungimo duomenis ir bandykite dar kartą.</translation>
 <translation id="2148219725039824548">Klaida įdedant bendrinamą objektą. Nurodytas bendrinamas objektas nerastas tinkle.</translation>
-<translation id="7234406375359457793">Klaida įdedant bendrinamą objektą. Nurodytas bendrinamas objektas nepalaikomas.</translation>
+<translation id="6923633482430812883">Klaida įdedant bendrinamą objektą. Patikrinkite, ar failo serveris, prie kurio prisijungiate, palaiko SMBv2 arba naujesnę versiją.</translation>
 <translation id="706626672220389329">Klaida įdedant bendrinamą objektą. Nurodytas bendrinamas objektas jau įdėtas.</translation>
 <translation id="5985458664595100876">Netinkamas URL formatas. Palaikomi formatai yra „\\server\share“ ir „smb://server/share“.</translation>
 <translation id="9147304170847707004">Autentifikavimo metodas</translation>
@@ -2540,6 +2546,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7366415735885268578">Svetainės pridėjimas</translation>
 <translation id="5052499409147950210">Svetainės redagavimas</translation>
 <translation id="2870560284913253234">Svetainė</translation>
+<translation id="4610862967073369855">Leidžiama „Android Messages“ perduoti tekstus iš telefono į „Bravebook“</translation>
 <translation id="6742339027238151589">Pasiekiama scenarijaus</translation>
 <translation id="361106536627977100">„Flash“ duomenys</translation>
 <translation id="8557930019681227453">Aprašas</translation>
@@ -2641,6 +2648,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8135094938656535588">Sinchronizuotų duomenų tvarkymas „Brave Software“ informacijos suvestinėje</translation>
 <translation id="6596325263575161958">Šifravimo parinktys</translation>
 <translation id="2459230470861708651">Šifruokite sinchronizuotus slaptažodžius naudodami savo „Brave Software“ naudotojo vardą ir slaptažodį</translation>
+<translation id="5958351589333270173">Šifruokite sinchronizuojamus duomenis taikydami savo <ph name="BEGIN_LINK"/>sinchronizavimo slaptafrazę<ph name="END_LINK"/>. Neįtraukiami mokėjimo metodai ir adresai iš „Brave Software Pay“.</translation>
 <translation id="4817583816512767754">Tik jūsų slaptafrazę žinantis asmuo gali skaityti šifruotus duomenis. Slaptafrazė nesiunčiama į sistemą „Brave Software“ ir joje nesaugoma. Pamiršę slaptafrazę arba norėdami pakeisti šį nustatymą turėsite <ph name="BEGIN_LINK"/>iš naujo nustatyti sinchronizavimą<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>nustatykite sinchronizavimą iš naujo<ph name="END_LINK"/>, kad pašalintumėte sinchronizavimo slaptafrazę</translation>
 <translation id="3873315167136380065">Norėdami tai įjungti <ph name="BEGIN_LINK"/>nustatykite sinchronizavimą iš naujo<ph name="END_LINK"/>, kad pašalintumėte sinchronizavimo slaptafrazę</translation>
@@ -2704,6 +2712,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="89720367119469899">Grįžimo klavišas</translation>
 <translation id="5583640892426849032">Grįžties klavišas</translation>
 <translation id="1938351510777341717">Išorinė komanda</translation>
+<translation id="7969046989155602842">Komanda</translation>
 <translation id="585979798156957858">Išorinis metaduomenų klavišas</translation>
 <translation id="4991420928586866460">Viršutinės eilutės klavišus naudoti kaip funkcijų klavišus</translation>
 <translation id="85486688517848470">Laikykite paspaustą paieškos klavišą, kad perjungtumėte viršutinės eilutės klavišų veikimą</translation>

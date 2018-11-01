@@ -1258,6 +1258,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3766223500670287046">Távoli képernyő</translation>
 <translation id="3930737994424905957">Eszközök keresése…</translation>
 <translation id="5209320130288484488">Nem találhatók eszközök</translation>
+<translation id="4415245286584082850">Nem található eszköz. Súgócikk megnyitása új ablakban.</translation>
 <translation id="4363771538994847871">Nem található átküldési cél. Segítségre van szüksége?</translation>
 <translation id="8688672835843460752">Rendelkezésre áll</translation>
 <translation id="4271396100647220620">Nincs találat</translation>
@@ -1875,6 +1876,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Linuxos eszközök, szerkesztők és IDE-szoftverek futtatása a Bravebookon. &lt;a target="_blank" href="<ph name="URL"/>"&gt;További információ&lt;/a&gt;.</translation>
 <translation id="6869910261738842136">A Bravebookra telepített linuxos alkalmazások eltávolítása</translation>
+<translation id="1529899284660134226">Megosztott fájlok és mappák kezelése</translation>
 <translation id="2295473777859797944">Brave Software Play Áruház</translation>
 <translation id="572155275267014074">Android-beállítások</translation>
 <translation id="4767209642168463274">Alkalmazásokat és játékokat telepíthet a Bravebookra a Brave Software Playről. &lt;a target="_blank" href="<ph name="URL"/>"&gt;További információ.&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6122875415561139701">Az írási művelet nem engedélyezett a következőn: „<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="439266289085815679">A Bluetooth-konfigurációt <ph name="USER_EMAIL"/> szabályozza.</translation>
 <translation id="784934925303690534">Időszak</translation>
+<translation id="3958004920128806270">Ha csak erről az eszközről szeretné törölni böngészési adatait, Brave Software-fiókjából azonban nem, <ph name="BEGIN_LINK"/>jelentkezzen ki<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Ha az összes szinkronizált eszközéről és a Brave Software-fiókjából is törölni szeretné böngészési adatait, <ph name="BEGIN_LINK"/>keresse fel a szinkronizálási beállításokat<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Ha az összes szinkronizált eszközéről és a Brave Software-fiókjából is törölni szeretné böngészési adatait, <ph name="BEGIN_LINK"/>adja meg összetett jelszavát<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Ha az összes szinkronizált eszközéről és a Brave Software-fiókjából is törölni szeretné böngészési adatait, <ph name="BEGIN_LINK"/>jelentkezzen be<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Böngészés előzményei</translation>
 <translation id="8662811608048051533">A rendszer a legtöbb webhelyről kijelentkezteti Önt.</translation>
 <translation id="4650925988509114690">A rendszer kijelentkezteti a legtöbb webhelyről. Brave Software-fiókjába bejelentkezve marad, hogy lehetséges legyen a szinkronizált adatok törlése.</translation>
@@ -2079,7 +2085,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="9024158959543687197">Hiba történt a megosztott tároló csatlakoztatása során. Ellenőrizze a fájlmegosztási URL-t, és próbálkozzon újra.</translation>
 <translation id="1954813140452229842">Hiba történt a megosztott tároló csatlakoztatása során. Ellenőrizze hitelesítő adatait, majd próbálkozzon újra.</translation>
 <translation id="2148219725039824548">Hiba történt a megosztott tároló csatlakoztatása során. A megadott megosztott tároló nem található a hálózaton.</translation>
-<translation id="7234406375359457793">Hiba történt a megosztott tároló csatlakoztatása során. A megadott megosztott tárolót nem támogatja a rendszer.</translation>
+<translation id="6923633482430812883">Hiba történt a megosztás csatolásakor. Ellenőrizze, hogy a fájlszerver, amelyhez kapcsolódni szeretne, támogatja-e az SMBv2 vagy újabb protokollt.</translation>
 <translation id="706626672220389329">Hiba történt a megosztott tároló csatlakoztatása során. Az adott megosztott tároló már csatlakoztatva van.</translation>
 <translation id="5985458664595100876">Érvénytelen URL-formátum. A támogatott formátumok: \\server\share és smb://server/share.</translation>
 <translation id="9147304170847707004">Hitelesítési mód</translation>
@@ -2541,6 +2547,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="7366415735885268578">Webhely hozzáadása</translation>
 <translation id="5052499409147950210">Webhely szerkesztése</translation>
 <translation id="2870560284913253234">Webhely</translation>
+<translation id="4610862967073369855">Lehetővé teszi az Android Messages számára, hogy SMS-eket küldjön át a telefonról a Bravebookra</translation>
 <translation id="6742339027238151589">Szkript számára elérhető</translation>
 <translation id="361106536627977100">Flash-adatok</translation>
 <translation id="8557930019681227453">Jegyzék</translation>
@@ -2642,6 +2649,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="8135094938656535588">Szinkronizált adatok kezelése a Brave Software Irányítópulton</translation>
 <translation id="6596325263575161958">Titkosítási lehetőségek</translation>
 <translation id="2459230470861708651">Szinkronizált jelszavak titkosítása Brave Software-felhasználónevével és -jelszavával</translation>
+<translation id="5958351589333270173">A szinkronizált adatok titkosítása saját <ph name="BEGIN_LINK"/>összetett szinkronizálási jelszóval<ph name="END_LINK"/>. Ez nem tartalmazza a Brave Software Payben megadott fizetési módokat és címeket.</translation>
 <translation id="4817583816512767754">Titkosított adatait csak az olvashatja el, aki rendelkezik összetett jelszavával. Az összetett jelszót a Brave Software nem kapja meg, és nem is tárolja. Ha elfelejtette összetett jelszavát, vagy módosítani szeretné ezt a beállítást, <ph name="BEGIN_LINK"/>alaphelyzetbe kell állítania a szinkronizálást<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa alaphelyzetbe a szinkronizálást<ph name="END_LINK"/>, hogy eltávolíthassa összetett szinkronizálási jelszavát.</translation>
 <translation id="3873315167136380065">Ennek bekapcsolásához <ph name="BEGIN_LINK"/>állítsa alaphelyzetbe a szinkronizálást<ph name="END_LINK"/>, hogy eltávolíthassa az összetett szinkronizálási jelszót</translation>
@@ -2705,6 +2713,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="89720367119469899">Vezérlő</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Külső parancs</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Külső meta</translation>
 <translation id="4991420928586866460">A legfelső sor billentyűi legyenek funkcióbillentyűk</translation>
 <translation id="85486688517848470">A legfelső billentyűsor viselkedésének módosításához tartsa lenyomva a keresőgombot</translation>

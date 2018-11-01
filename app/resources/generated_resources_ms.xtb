@@ -1258,6 +1258,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3766223500670287046">Skrin jauh</translation>
 <translation id="3930737994424905957">Mencari peranti</translation>
 <translation id="5209320130288484488">Tiada peranti ditemui</translation>
+<translation id="4415245286584082850">Tiada peranti ditemui. Buka artikel pusat bantuan dalam tab baharu.</translation>
 <translation id="4363771538994847871">Tiada destinasi Cast ditemui. Perlukan bantuan?</translation>
 <translation id="8688672835843460752">Tersedia</translation>
 <translation id="4271396100647220620">Tiada padanan</translation>
@@ -1875,6 +1876,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Jalankan alatan, editor dan IDE Linux pada Bravebook anda. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Alih keluar Apl Linux untuk Bravebook</translation>
+<translation id="1529899284660134226">Urus fail &amp; folder kongsi</translation>
 <translation id="2295473777859797944">Gedung Brave Software Play</translation>
 <translation id="572155275267014074">Tetapan Android</translation>
 <translation id="4767209642168463274">Pasang apl dan permainan daripada Brave Software Play pada Bravebook anda. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ketahui lebih lanjut&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6122875415561139701">Pengendalian tulis tidak dibenarkan pada: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Konfigurasi Blueooth dikawal oleh <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Julat masa</translation>
+<translation id="3958004920128806270">Untuk mengosongkan data semakan imbas daripada peranti ini sahaja dan menyimpannya dalam Akaun Brave Software anda, <ph name="BEGIN_LINK"/>log keluar<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Untuk mengosongkan data semakan imbas daripada semua peranti tersegerak dan Akaun Brave Software anda, <ph name="BEGIN_LINK"/>lawati tetapan penyegerakan<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Untuk mengosongkan data semakan imbas daripada semua peranti tersegerak dan Akaun Brave Software anda, <ph name="BEGIN_LINK"/>masukkan frasa laluan anda<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Untuk mengosongkan data semakan imbas daripada semua peranti tersegerak dan Akaun Brave Software anda, <ph name="BEGIN_LINK"/>log masuk<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Sejarah penyemakan imbas</translation>
 <translation id="8662811608048051533">Mengelog anda keluar daripada kebanyakan tapak.</translation>
 <translation id="4650925988509114690">Mengelog anda keluar daripada kebanyakan tapak. Anda akan kekal dilog masuk ke Akaun Brave Software supaya data tersegerak anda dapat dikosongkan.</translation>
@@ -2079,7 +2085,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="9024158959543687197">Ralat melekapkan perkongsian. Semak URL perkongsian fail dan cuba lagi.</translation>
 <translation id="1954813140452229842">Ralat melekapkan perkongsian. Sila semak bukti kelayakan anda dan cuba lagi.</translation>
 <translation id="2148219725039824548">Ralat melekapkan perkongsian. Perkongsian yang dinyatakan tidak ditemui pada rangkaian.</translation>
-<translation id="7234406375359457793">Ralat melekapkan perkongsian. Perkongsian yang dinyatakan tidak disokong.</translation>
+<translation id="6923633482430812883">Ralat semasa melekapkan kongsi. Sila pastikan bahawa pelayan fail yang bersambung dengan anda itu menyokong SMBv2 atau yang lebih baharu.</translation>
 <translation id="706626672220389329">Ralat melekapkan perkongsian. Perkongsian yang dinyatakan sudah dilekapkan.</translation>
 <translation id="5985458664595100876">Format URL tidak sah. Format yang disokong ialah \\server\share dan smb://server/share.</translation>
 <translation id="9147304170847707004">Kaedah Pengesahan</translation>
@@ -2540,6 +2546,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7366415735885268578">Tambahkan tapak</translation>
 <translation id="5052499409147950210">Edit tapak</translation>
 <translation id="2870560284913253234">Tapak</translation>
+<translation id="4610862967073369855">Membenarkan Android Messages menyampaikan teks daripada telefon ke Bravebook anda</translation>
 <translation id="6742339027238151589">Boleh diakses untuk skrip</translation>
 <translation id="361106536627977100">Data Flash</translation>
 <translation id="8557930019681227453">Manifes</translation>
@@ -2641,6 +2648,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8135094938656535588">Urus data disegerak pada Papan Pemuka Brave Software</translation>
 <translation id="6596325263575161958">Pilihan penyulitan</translation>
 <translation id="2459230470861708651">Sulitkan kata laluan yang disegerakkan dengan nama pengguna dan kata laluan Brave Software anda</translation>
+<translation id="5958351589333270173">Sulitkan data yang disegerakkan dengan <ph name="BEGIN_LINK"/>ungkapan laluan penyegerakan<ph name="END_LINK"/> anda sendiri. Penyulitan ini tidak termasuk kaedah pembayaran dan alamat daripada Brave Software Pay.</translation>
 <translation id="4817583816512767754">Hanya orang yang tahu ungkapan laluan anda boleh membaca data anda yang disulitkan. Ungkapan laluan tidak dihantar atau disimpan oleh Brave Software. Jika anda terlupa ungkapan laluan atau ingin menukar tetapan ini, anda perlu <ph name="BEGIN_LINK"/>menetapkan semula penyegerakan<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<ph name="END_LINK"/> untuk mengalih keluar ungkapan laluan penyegerakan anda</translation>
 <translation id="3873315167136380065">Untuk menghidupkan ciri ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<ph name="END_LINK"/> untuk mengalih keluar ungkapan laluan penyegerakan anda</translation>
@@ -2704,6 +2712,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="89720367119469899">Lepas</translation>
 <translation id="5583640892426849032">Undur ruang</translation>
 <translation id="1938351510777341717">Perintah Luaran</translation>
+<translation id="7969046989155602842">Perintah</translation>
 <translation id="585979798156957858">Meta Luaran</translation>
 <translation id="4991420928586866460">Kendalikan kekunci baris atas sebagai kekunci fungsi</translation>
 <translation id="85486688517848470">Tahan kekunci Cari untuk menukar gelagat kekunci di baris atas</translation>

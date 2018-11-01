@@ -1258,6 +1258,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3766223500670287046">Ecrã remoto</translation>
 <translation id="3930737994424905957">A procurar dispositivos…</translation>
 <translation id="5209320130288484488">Não foram encontrados aparelhos</translation>
+<translation id="4415245286584082850">Não foram encontrados dispositivos. Abra um artigo do Centro de Ajuda num novo separador.</translation>
 <translation id="4363771538994847871">Não foi encontrado nenhum destino do Cast. Precisa de ajuda?</translation>
 <translation id="8688672835843460752">Disponível</translation>
 <translation id="4271396100647220620">Sem correspondências</translation>
@@ -1875,6 +1876,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Execute ferramentas, editores e IDEs de Linux no seu Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Remover aplicações do Linux do Bravebook</translation>
+<translation id="1529899284660134226">Gerir pastas e ficheiros partilhados</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Definições do Android</translation>
 <translation id="4767209642168463274">Instale aplicações e jogos do Brave Software Play no Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6122875415561139701">A operação de escrita não é permitida em: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">A configuração do Bluetooth é controlada por <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Intervalo de tempo</translation>
+<translation id="3958004920128806270">Para limpar os dados de navegação apenas deste dispositivo e mantê-los na sua Conta Brave Software, <ph name="BEGIN_LINK"/>termine a sessão<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Para limpar os dados de navegação de todos os seus dispositivos sincronizados e da sua Conta Brave Software, <ph name="BEGIN_LINK"/>aceda às definições de sincronização<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Para limpar os dados de navegação de todos os seus dispositivos sincronizados e da sua Conta Brave Software, <ph name="BEGIN_LINK"/>introduza a sua frase de acesso<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Para limpar os dados de navegação de todos os seus dispositivos sincronizados e da sua Conta Brave Software, <ph name="BEGIN_LINK"/>inicie a sessão<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Histórico de navegação</translation>
 <translation id="8662811608048051533">A sua sessão é terminada na maioria dos sites.</translation>
 <translation id="4650925988509114690">A sua sessão é terminada na maioria dos sites. Continua com sessão iniciada na sua Conta Brave Software para poder limpar os dados sincronizados.</translation>
@@ -2079,7 +2085,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="9024158959543687197">Erro ao montar a partilha. Verifique o URL de partilha de ficheiros e tente novamente.</translation>
 <translation id="1954813140452229842">Erro ao montar a partilha. Verifique as suas credenciais e tente novamente.</translation>
 <translation id="2148219725039824548">Erro ao montar a partilha. A partilha especificada não foi encontrada na rede.</translation>
-<translation id="7234406375359457793">Erro ao montar a partilha. A partilha especificada não é suportada.</translation>
+<translation id="6923633482430812883">Erro ao montar a partilha. Verifique se o servidor de ficheiros ao qual está a ligar suporta o SMBv2 ou posterior.</translation>
 <translation id="706626672220389329">Erro ao montar a partilha. A partilha especificada já está montada.</translation>
 <translation id="5985458664595100876">Formato de URL inválido. Os formatos suportados são \\server\share e smb://server/share.</translation>
 <translation id="9147304170847707004">Método de autenticação</translation>
@@ -2540,6 +2546,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7366415735885268578">Adicionar um site</translation>
 <translation id="5052499409147950210">Editar site</translation>
 <translation id="2870560284913253234">Site</translation>
+<translation id="4610862967073369855">Permite às Mensagens Android retransmitir as mensagens de texto do telemóvel para o Bravebook.</translation>
 <translation id="6742339027238151589">Acessível ao script</translation>
 <translation id="361106536627977100">Dados do Flash</translation>
 <translation id="8557930019681227453">Manifesto</translation>
@@ -2641,6 +2648,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8135094938656535588">Gerir dados sincronizados no Painel de Controlo Brave Software</translation>
 <translation id="6596325263575161958">Opções de encriptação</translation>
 <translation id="2459230470861708651">Encriptar as palavras-passe sincronizadas com o seu nome de utilizador e palavra-passe Brave Software</translation>
+<translation id="5958351589333270173">Encriptar dados sincronizados com a sua própria <ph name="BEGIN_LINK"/>frase de acesso de sincronização<ph name="END_LINK"/>. Não estão incluídos métodos de pagamento e endereços do Brave Software Pay.</translation>
 <translation id="4817583816512767754">Apenas alguém que conheça a sua frase de acesso pode ler os seus dados encriptados. A frase de acesso não é enviada para a Brave Software nem armazenada pela mesma. Se se esquecer da frase de acesso ou pretender alterar esta definição, tem de <ph name="BEGIN_LINK"/>repor a sincronização<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Para alterar esta definição, <ph name="BEGIN_LINK"/>reponha a sincronização<ph name="END_LINK"/> para remover a sua frase de acesso de sincronização</translation>
 <translation id="3873315167136380065">Para ativar isto, <ph name="BEGIN_LINK"/>reponha a sincronização<ph name="END_LINK"/> para remover a frase de acesso de sincronização.</translation>
@@ -2704,6 +2712,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Retrocesso</translation>
 <translation id="1938351510777341717">Comando externo</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Meta externo</translation>
 <translation id="4991420928586866460">Tratar as teclas da linha superior como teclas de função</translation>
 <translation id="85486688517848470">Mantenha premida a tecla Pesquisar para alterar o comportamento das teclas da linha superior</translation>

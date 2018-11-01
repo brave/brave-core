@@ -1257,6 +1257,7 @@ Huenda watu wengine wenye miunganisho ya polepole hawataona maudhui yako.</trans
 <translation id="3766223500670287046">Skrini iliyo mbali</translation>
 <translation id="3930737994424905957">Inatafuta vifaa</translation>
 <translation id="5209320130288484488">Hakuna vifaa vilivyopatikana</translation>
+<translation id="4415245286584082850">Haikupata kifaa chochote. Fungua makala kutoka kituo cha usaidizi katika kichupo kipya.</translation>
 <translation id="4363771538994847871">Hakuna sehemu za Kutuma zilizopatikana. Unahitaji usaidizi?</translation>
 <translation id="8688672835843460752">Inapatikana</translation>
 <translation id="4271396100647220620">Hakuna matokeo yanayolingana</translation>
@@ -1874,6 +1875,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Tumia zana za Linux, vihariri na IDE kwenye Bravebook yako. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Pata maelezo zaidi&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Ondoa Programu za Linux za Bravebook</translation>
+<translation id="1529899284660134226">Dhibiti folda na faili zinazoshirikiwa</translation>
 <translation id="2295473777859797944">Duka la Brave Software Play</translation>
 <translation id="572155275267014074">Mipangilio ya Android</translation>
 <translation id="4767209642168463274">Sakinisha programu na michezo kutoka Brave Software Play kwenye Bravebook yako. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Pata maelezo zaidi&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6122875415561139701">Shughuli za kuandika haziruhusiwi kwenye: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Mipangilio ya Bluetooth inadhibitiwa na <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Muda</translation>
+<translation id="3958004920128806270">Ili ufute data ya kuvinjari kwenye kifaa hiki pekee, bila kuiondoa katika Akaunti yako ya Brave Software, <ph name="BEGIN_LINK"/>ondoka katika akaunti<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Ili ufute data ya kuvinjari kwenye vifaa vyako vyote vilivyosawazishwa na Akaunti yako ya Brave Software <ph name="BEGIN_LINK"/>tembelea mipangilio ya usawazishaji<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Ili ufute data ya kuvinjari kwenye vifaa vyako vyote vilivyosawazishwa na Akaunti yako ya Brave Software, <ph name="BEGIN_LINK"/>weka kauli yako ya siri<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Ili ufute data ya kuvinjari kwenye vifaa vyako vyote vilivyosawazishwa na Akaunti yako ya Brave Software, <ph name="BEGIN_LINK"/>ingia katika akaunti<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Historia ya kuvinjari</translation>
 <translation id="8662811608048051533">Hukuondoa kwenye tovuti nyingi.</translation>
 <translation id="4650925988509114690">Hukuondoa kwenye akaunti za tovuti nyingi. Hutaondolewa kwenye Akaunti yako ya Brave Software kwa hivyo data yako iliyosawazishwa inaweza kufutwa.</translation>
@@ -2079,7 +2085,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="9024158959543687197">Hitilafu imetokea wakati wa kupachika faili ya kushiriki. Angalia URL ya faili ya kushiriki kisha ujaribu tena.</translation>
 <translation id="1954813140452229842">Hitilafu imetokea wakati wa kupachika faili ya kushiriki. Tafadhali angalia kitambulisho chako kisha ujaribu tena.</translation>
 <translation id="2148219725039824548">Hitilafu imetokea wakati wa kupachika faili ya kushiriki. Imeshindwa kupata faili iliyobainishwa ya kushiriki katika mtandao.</translation>
-<translation id="7234406375359457793">Hitilafu imetokea wakati wa kupachika faili ya kushiriki. Faili iliyobainishwa haitumiki.</translation>
+<translation id="6923633482430812883">Hitilafu imetokea wakati wa kupachika faili ya kushiriki. Tafadhali hakikisha kuwa seva ya faili ambako unaunganisha inatumia toleo la SMBv2 au jipya zaidi.</translation>
 <translation id="706626672220389329">Hitilafu imetokea wakati wa kupachika faili ya kushiriki. Tayari faili iliyobainishwa imepachikwa.</translation>
 <translation id="5985458664595100876">Mfumo wa URL si sahihi. Mifumo inayotumika ni \\server\share na smb://server/share.</translation>
 <translation id="9147304170847707004">Njia ya Kuthibitisha</translation>
@@ -2541,6 +2547,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="7366415735885268578">Ongeza tovuti</translation>
 <translation id="5052499409147950210">Badilisha tovuti</translation>
 <translation id="2870560284913253234">Tovuti</translation>
+<translation id="4610862967073369855">Huruhusu programu ya Android Messages itume SMS kutoka simu yako kwenda Bravebook</translation>
 <translation id="6742339027238151589">Kinaweza kufikiwa na hati</translation>
 <translation id="361106536627977100">Data ya Flash</translation>
 <translation id="8557930019681227453">Faili ya maelezo</translation>
@@ -2642,6 +2649,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="8135094938656535588">Dhibiti data iliyosawazishwa kwenye Dashibodi ya Brave Software</translation>
 <translation id="6596325263575161958">Chaguo za usimbaji fiche</translation>
 <translation id="2459230470861708651">Simba kwa njia fiche manenosiri yaliyosawazishwa kwa jina la mtumiaji na nenosiri lako la Brave Software</translation>
+<translation id="5958351589333270173">Simba data iliyosawazishwa kwa njia fiche ukitumia <ph name="BEGIN_LINK"/>kauli yako ya siri ya usawazishaji<ph name="END_LINK"/>. Hali hii haijumuishi njia za kulipa na anwani kutoka Brave Software Pay.</translation>
 <translation id="4817583816512767754">Ni mtu mwenye kauli yako ya siri tu anaweza kusoma data yako iliyosimbwa kwa njia fiche. Kauli ya siri haitumwi au kuhifadhiwa na Brave Software. Ukisahau kauli yako ya siri, au unataka kubadilisha mipangilio hii, utahitaji <ph name="BEGIN_LINK"/>kuweka upya usawazishaji<ph name="END_LINK"/></translation>
 <translation id="7441736921018636843">Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>weka upya kipengele cha usawazishaji<ph name="END_LINK"/> ili kuondoa kauli yako ya siri ya usawazishaji</translation>
 <translation id="3873315167136380065">Ili kuwasha kipengele hiki, <ph name="BEGIN_LINK"/>weka upya kipengele cha usawazishaji<ph name="END_LINK"/> ili kuondoa kauli yako ya siri ya usawazishaji</translation>
@@ -2705,6 +2713,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="89720367119469899">Ondoka</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Amri ya Nje</translation>
+<translation id="7969046989155602842">Amri</translation>
 <translation id="585979798156957858">Meta ya Nje</translation>
 <translation id="4991420928586866460">Chukulia vitufe vya safu mlalo ya juu kama vitufe vya chaguo za kukokotoa</translation>
 <translation id="85486688517848470">Shikilia kitufe cha Utafutaji ili ubadilishe tabia ya vitufe vya juu vya safu mlalo</translation>

@@ -22,7 +22,7 @@
 <translation id="59174027418879706">Lubatud</translation>
 <translation id="4176463684765177261">Keelatud</translation>
 <translation id="7207456302801184289">Tere tulemast Brave\'i</translation>
-<translation id="2391823593986423328">Brave on enam kui lihtsalt brauser. Vaadake, kuidas saate sellest maksimumi võtta</translation>
+<translation id="764012553571385542">Brave on enam kui lihtsalt brauser. Vaadake, kuidas saate sellest maksimumi võtta</translation>
 <translation id="6001839398155993679">Alustame</translation>
 <translation id="8050847734948770789">Luba Brave Rewards</translation>
 <translation id="2710310654441838823">Brave Rewards avab veebi täiesti uuest vaatenurgast. Saate preemiaid selle eest, kui vaatate privaatsust austavaid reklaame, toetades samal ajal ka oma lemmiksisuloojaid.</translation>
@@ -31,7 +31,7 @@
 <translation id="5521187896304743452">Brave annab võimaluse taasluua oma tavalist keskkonda, importides teistes brauserites olevad järjehoidjad ja seadistused.</translation>
 <translation id="4138981897709579987">Impordi nüüd</translation>
 <translation id="9152220852742774324">Hallake oma kaitse seadeid</translation>
-<translation id="2043261199283617849">Kohandage ja jälgige oma kaitsetaset, klõpsates tööriistaribal oleval Brave\'i logol. Ülemaailmse kaitse seadeid saate hallata eelistuste paneelis</translation>
+<translation id="110988439043625224">Kohandage ja jälgige oma kaitsetaset, klõpsates tööriistaribal oleval Brave\'i logol. Ülemaailmse kaitse seadeid saate hallata eelistuste paneelis</translation>
 <translation id="3366308997091824722">Kaitse seaded</translation>
 <translation id="7024124499777560832">Kohandage oma eelistusi</translation>
 <translation id="2498783234010887316">Eelistuste paneelis saate konfigureerida vahelehti, laiendusi ja ajaloo seadeid. Sealt leiate ka tumeda teema :)</translation>
@@ -74,11 +74,11 @@
 <translation id="7841456038054167122">Sisestage võti uuesti või proovige teisi võtmeid.</translation>
 <translation id="2195074481553016770">Peaaegu valmis</translation>
 <translation id="5254740304961202261">Kinnitage, et olete inimene!</translation>
-<translation id="5118651998291801746">Hmm, miite päris.</translation>
+<translation id="1387881035954376289">Hmm, miite päris.</translation>
 <translation id="2323069945529668668">Oh, ei!</translation>
 <translation id="5094577350232361255">teave</translation>
 <translation id="4918086044614829423">Nõustu</translation>
-<translation id="7856172182738102743">©2018 Brave Software. Brave on ettevõttele Brave Software kuuluv registreeritud kaubamärk. Veebisaidi nimed võivad olla veebisaidi omanikule kuuluvad kaubamärgid või registreeritud kaubamärgid.</translation>
+<translation id="6832986780040139899">©2018 Brave Software. Brave on ettevõttele Brave Software kuuluv registreeritud kaubamärk. Veebisaidi nimed võivad olla veebisaidi omanikule kuuluvad kaubamärgid või registreeritud kaubamärgid.</translation>
 <translation id="9026369588205476247">Teie privaatsuse kaitseks ei salvestata, säilitata ega logita Brave Rewardsiga seotud andmeid väljaspol teie seadet (seda arvutit). Neid andmeid ei saa pärast andmekadu Brave\'is taastada.</translation>
 <translation id="1036277985068412734">lisa vahendeid</translation>
 <translation id="4496990471549986619">KKK</translation>
@@ -214,7 +214,7 @@
 <translation id="8446884382197647889">Lisateave</translation>
 <translation id="4083384190339959182">Brave Payments on läbinud suure värskenduskuuri.</translation>
 <translation id="5395851053710553429">Kogege internetti uuel moel.</translation>
-<translation id="1658717423774740031">Oma eelmise brauseriga maksite sirvimise eest sellega, et vaatasite reklaame. Panustasite palju aega selleks, et laadida alla reklaamidega seotud tehnoloogiat, mis omakorda edastas teie privaatseid andmeid ilma loata reklaamitegijatele.</translation>
+<translation id="880341991877949255">Oma eelmise brauseriga maksite sirvimise eest sellega, et vaatasite reklaame. Panustasite palju aega selleks, et laadida alla reklaamidega seotud tehnoloogiat, mis omakorda edastas teie privaatseid andmeid ilma loata reklaamitegijatele.</translation>
 <translation id="2549982302631665116">Nüüd kutsub Brave teid uude veebiruumi. Ruumi, kus teie aega hinnatakse, teie isikuandmeid hoitakse privaatsena ja reklaamide vaatamise eest antakse preemiat.</translation>
 <translation id="3780605330121608425">Teie rahakott</translation>
 </translationbundle>

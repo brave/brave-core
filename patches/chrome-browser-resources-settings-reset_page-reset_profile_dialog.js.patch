@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/reset_page/reset_profile_dialog.js b/chrome/browser/resources/settings/reset_page/reset_profile_dialog.js
-index 0291bfffdcd5..62b9f8bc662b 100644
+index 0291bfffdcd5abd7c2e1934854123dd1454cd599..62b9f8bc662b77220fffca320bf4cfdcad9f010f 100644
 --- a/chrome/browser/resources/settings/reset_page/reset_profile_dialog.js
 +++ b/chrome/browser/resources/settings/reset_page/reset_profile_dialog.js
 @@ -75,9 +75,6 @@ Polymer({

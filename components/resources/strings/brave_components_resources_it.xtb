@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="it">
-<translation id="689261804992965033">Annunci pubblicitari</translation>
+<translation id="689261804992965033">Annunci pubblicitari bloccati</translation>
 <translation id="1663506596135222606">Tracker bloccati</translation>
 <translation id="2313532038420432247">Aggiornamenti</translation>
 <translation id="7679428712334662192">Tempo stimato salvato</translation>
@@ -22,7 +22,7 @@
 <translation id="59174027418879706">Abilitato</translation>
 <translation id="4176463684765177261">Disabilitato</translation>
 <translation id="7207456302801184289">Benvenuto su Brave</translation>
-<translation id="2391823593986423328">Brave è molto più di un browser. Lascia che ti mostriamo come sfruttarlo al meglio</translation>
+<translation id="764012553571385542">Brave è molto più di un browser. Lascia che ti mostriamo come sfruttarlo al meglio</translation>
 <translation id="6001839398155993679">Iniziamo</translation>
 <translation id="8050847734948770789">Abilita Ricompense Brave</translation>
 <translation id="2710310654441838823">Le Ricompense Brave sono un nuovo modo di pensare a come funziona il web. Ricevi premi per la visualizzazione di annunci pubblicitari che rispettano la privacy e sostieni i tuoi autori di contenuti preferiti mentre li fruisci.</translation>
@@ -31,7 +31,7 @@
 <translation id="5521187896304743452">Brave rende facile configurare il tuo ambiente abituale importando segnalibri e impostazioni da altri browser installati sul tuo computer.</translation>
 <translation id="4138981897709579987">Importa Ora</translation>
 <translation id="9152220852742774324">Gestisci le tue impostazioni di protezione</translation>
-<translation id="2043261199283617849">Regola e monitora il tuo livello di protezione facendo clic sul logo Brave nella barra degli strumenti. Gestisci le tue impostazioni di protezione globali nel pannello delle preferenze</translation>
+<translation id="110988439043625224">Regola e monitora il tuo livello di protezione facendo clic sul logo Brave nella barra degli strumenti. Gestisci le tue impostazioni di protezione globali nel pannello delle preferenze</translation>
 <translation id="3366308997091824722">Impostazioni di Protezione</translation>
 <translation id="7024124499777560832">Personalizza le tue preferenze</translation>
 <translation id="2498783234010887316">Le impostazioni di schede, aspetto, estensioni e cronologia possono essere configurate nel pannello delle preferenze. Lì puoi trovare anche un tema scuro ;)</translation>
@@ -67,11 +67,11 @@
 <translation id="7841456038054167122">Si prega di reinserire le chiavi o provare chiavi diverse.</translation>
 <translation id="2195074481553016770">Ci sei quasi</translation>
 <translation id="5254740304961202261">Dimostra di essere umano!</translation>
-<translation id="5118651998291801746">Hmmm... non proprio.</translation>
+<translation id="1387881035954376289">Hmmm... non proprio.</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="5094577350232361255">su</translation>
 <translation id="4918086044614829423">Accetto</translation>
-<translation id="7856172182738102743">©2016 –2018 Brave Software. Brave è un marchio registrato di Brave Software. I nomi dei siti potrebbero essere marchi registrati o non del proprietario del sito.</translation>
+<translation id="6832986780040139899">©2016 –2018 Brave Software. Brave è un marchio registrato di Brave Software. I nomi dei siti potrebbero essere marchi registrati o non del proprietario del sito.</translation>
 <translation id="9026369588205476247">Per proteggere la tua privacy, questo estratto conto delle Ricompense Brave non viene salvato né registrato da nessun\'altra parte eccetto il tuo dispositivo (questo computer). Non può essere recuperato da Brave in caso di perdita di dati sul dispositivo.</translation>
 <translation id="1036277985068412734">aggiungi fondi</translation>
 <translation id="4496990471549986619">le Domande Frequenti</translation>
@@ -81,6 +81,7 @@
 <translation id="2827387977307390755">Consenti mance su</translation>
 <translation id="3671566813999349838">Importo</translation>
 <translation id="1312977698678162065">Fatti pagare per visualizzare pubblicità pertinente che rispetta la tua privacy.</translation>
+<translation id="1919345977826869612">Pubblicità</translation>
 <translation id="3333887201479867589">Ricompense Brave</translation>
 <translation id="7530570094705720669">Creazione di portafogli</translation>
 <translation id="2105596359439030979">La tua attenzione è preziosa. Guadagna guardando annunci pubblicitari che rispettano la tua privacy e pagali per supportare gli autori dei contenuti che ami.</translation>
@@ -147,11 +148,14 @@
 <translation id="3626186271103896082">Effettua il backup del tuo portafoglio</translation>
 <translation id="3074127054582480056">Attenzione</translation>
 <translation id="822513417008209372">Attualmente supporti</translation>
+<translation id="5010112177773747965">senza il tuo consenso</translation>
 <translation id="5830306739231399614">Purtroppo, ancora nessun token.</translation>
 <translation id="7359258898775969374">3 modi per ricaricare il tuo portafoglio:</translation>
 <translation id="8087614920008846901">Puoi aggiungere fondi.</translation>
+<translation id="996024295464837691">Puoi guadagnare dei token visualizzando le pubblicità</translation>
 <translation id="1370034647041840967">Guadagna gettoni per prestare attenzione agli annunci pubblicitari e pagali in anticipo per supportare i creatori di contenuti che apprezzi!</translation>
 <translation id="3905359437915971466">Aggiungi, preleva e gestisci i fondi su</translation>
+<translation id="5866139915213160210">Il tuo Brave wallet è gestito da</translation>
 <translation id="6401272292123354754">Le Ricompense di Brave si basano sui Token di Attenzione  di Base. Scopri di più sui BAT</translation>
 <translation id="7823359893981882407">qui</translation>
 <translation id="4483635855837696643">Ripristina il tuo Portafoglio</translation>
@@ -178,6 +182,9 @@
 <translation id="8615803647903750175">Attività del Portafoglio</translation>
 <translation id="2620624773940447728">Indirizzo del portafoglio</translation>
 <translation id="4989277977420164514">bilancio del portafoglio</translation>
+<translation id="8725066075913043281">Riprova</translation>
+<translation id="1083771727630442739">Creazione wallet fallita</translation>
+<translation id="9146039192200831719">Controlla la tua connessione internet</translation>
 <translation id="1910721550319506122">Benvenuto!</translation>
 <translation id="4452279058754488731">Inizia a guadagnare subito!</translation>
 <translation id="5595664624688492034">Iscriviti per ricevere Ricompense</translation>

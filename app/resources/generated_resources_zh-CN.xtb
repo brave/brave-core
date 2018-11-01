@@ -478,10 +478,12 @@
 <translation id="3016641847947582299">组件已更新</translation>
 <translation id="252219247728877310">组件未更新</translation>
 <translation id="2707024448553392710">正在下载组件</translation>
+<translation id="1879000426787380528">登录身份</translation>
 <translation id="3190558889382726167">密码已保存</translation>
 <translation id="5079950360618752063">使用建议的密码</translation>
 <translation id="8084114998886531721">保存的密码</translation>
 <translation id="5614553682702429503">要保存密码吗？</translation>
+<translation id="5584088138253955452">保存用户名？</translation>
 <translation id="8756969031206844760">要更新密码吗？</translation>
 <translation id="8230134520748321204">要保存 <ph name="ORIGIN"/> 的密码吗？</translation>
 <translation id="9040661932550800571">要更新 <ph name="ORIGIN"/> 的密码吗？</translation>
@@ -501,6 +503,7 @@
 <translation id="224940702122312781">此网页会消耗很多网络数据流量。</translation>
 <translation id="3861241522664181545">已暂停加载网页资源。</translation>
 <translation id="6921709132208495314">停止在此网页上消耗数据流量</translation>
+<translation id="1683850629661177840">现在，精简模式可使所有网页（包括 HTTPS 网页）以更快的速度加载。</translation>
 <translation id="2724841811573117416">WebRTC日志</translation>
 <translation id="1969654639948595766">WebRTC 文本日志 (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC 事件日志 (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -1112,6 +1115,7 @@
 <translation id="8922013791253848639">在此网站上始终允许显示广告</translation>
 <translation id="7359588939039777303">广告已被拦截。</translation>
 <translation id="5398772614898833570">广告已被拦截</translation>
+<translation id="2859806420264540918">此网站展示过侵扰性或误导性广告。</translation>
 <translation id="4077917118009885966">已拦截此网站上的广告</translation>
 <translation id="3737536731758327622">您的下载内容会显示在此处</translation>
 <translation id="4782664866169793230">Brave 正受到自动测试软件的控制。</translation>
@@ -1253,6 +1257,7 @@
 <translation id="3766223500670287046">远程屏幕</translation>
 <translation id="3930737994424905957">正在搜索设备</translation>
 <translation id="5209320130288484488">未找到任何设备</translation>
+<translation id="4415245286584082850">找不到设备。请在新的标签页中打开帮助中心文章。</translation>
 <translation id="4363771538994847871">找不到投射目标。需要帮助吗？</translation>
 <translation id="8688672835843460752">可用</translation>
 <translation id="4271396100647220620">找不到相符的结果</translation>
@@ -1666,6 +1671,9 @@
 <translation id="3096967955765855393">我们在不断寻找各种方式来提高上网安全。之前，任何网站都可以提示您在浏览器中添加扩展程序；而在最新版本的Brave Software Brave中，您必须明确告诉Brave您想要安装这些扩展程序（即：在“扩展程序”页添加它们）后才可以。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">无法使用$1打开</translation>
 <translation id="639777613761517128">要使用 $1 打开文件，请先将文件复制到“Linux 文件”文件夹。</translation>
+<translation id="5112009661904384591">与 Linux 共享文件</translation>
+<translation id="3186202398303525187">让 Linux 应用打开 $1。</translation>
+<translation id="1603300902586586390">让 Linux 应用打开 $1 个文件。</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> 文件</translation>
 <translation id="895586998699996576">$1 图片</translation>
 <translation id="2853916256216444076">$1 视频</translation>
@@ -1862,6 +1870,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">在 Bravebook 上运行 Linux 工具、编辑器和 IDE。&lt;a target="_blank" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
 <translation id="6869910261738842136">从 Bravebook 中移除 Linux 应用</translation>
+<translation id="1529899284660134226">管理共享文件和文件夹</translation>
 <translation id="2295473777859797944">Brave Software Play 商店</translation>
 <translation id="572155275267014074">Android 设置</translation>
 <translation id="4767209642168463274">在 Bravebook 上安装从 Brave Software Play 下载的应用和游戏。&lt;a target="_blank" href="<ph name="URL"/>"&gt;了解详情&lt;/a&gt;</translation>
@@ -1986,6 +1995,10 @@
 <translation id="6122875415561139701">禁止在“<ph name="DEVICE_NAME"/>”上执行写入操作。</translation>
 <translation id="439266289085815679">蓝牙配置由 <ph name="USER_EMAIL"/> 控制。</translation>
 <translation id="784934925303690534">时间范围</translation>
+<translation id="3958004920128806270">要想仅清除此设备中的浏览数据而保留您的 Brave Software 帐号中的浏览数据，请<ph name="BEGIN_LINK"/>退出<ph name="END_LINK"/>。</translation>
+<translation id="4445433576366924090">要想清除您的所有已同步设备中的浏览数据以及您的 Brave Software 帐号中的浏览数据，请<ph name="BEGIN_LINK"/>访问同步设置<ph name="END_LINK"/>。</translation>
+<translation id="563489167344291753">要想清除您的所有已同步设备中的浏览数据以及您的 Brave Software 帐号中的浏览数据，请<ph name="BEGIN_LINK"/>输入您的密码<ph name="END_LINK"/>。</translation>
+<translation id="3895809404273995788">要想清除您的所有已同步设备中的浏览数据以及您的 Brave Software 帐号中的浏览数据，请<ph name="BEGIN_LINK"/>登录<ph name="END_LINK"/>。</translation>
 <translation id="2496180316473517155">浏览记录</translation>
 <translation id="8662811608048051533">您会从大多数网站退出。</translation>
 <translation id="4650925988509114690">会致使您从大多数网站退出。但您的 Brave Software 帐号仍会保持登录状态，以便清除您的已同步数据。</translation>
@@ -2066,9 +2079,11 @@
 <translation id="9024158959543687197">装载共享资源时出错。请检查文件共享网址，然后重试。</translation>
 <translation id="1954813140452229842">装载共享资源时出错。请检查您的凭据，然后重试。</translation>
 <translation id="2148219725039824548">装载共享资源时出错。在网络上找不到所指定的共享资源。</translation>
-<translation id="7234406375359457793">装载共享资源时出错。所指定的共享资源不受支持。</translation>
+<translation id="6923633482430812883">装载共享时出错。请检查您要连接的文件服务器是否支持 SMBv2 或更高版本。</translation>
 <translation id="706626672220389329">装载共享资源时出错。所指定的共享资源此前就已装载完毕。</translation>
 <translation id="5985458664595100876">网址格式无效。支持的格式为 \\server\share 和 smb://server/share。</translation>
+<translation id="9147304170847707004">身份验证方法</translation>
+<translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">日期和时间</translation>
 <translation id="2059913712424898428">时区</translation>
 <translation id="4547672827276975204">自动设置</translation>
@@ -2390,6 +2405,13 @@
 <translation id="6678717876183468697">查询网址</translation>
 <translation id="1545786162090505744">网址（用“%s”代替搜索字词）</translation>
 <translation id="7136694880210472378">设为默认搜索引擎</translation>
+<translation id="6953878494808481632">相关信息</translation>
+<translation id="7258619945375359543">让 Brave Software 助理根据您屏幕上的内容提供建议</translation>
+<translation id="472896694312062378">“Ok Brave Software”</translation>
+<translation id="6236033368436682108">当屏幕处于开启状态时，您可以随时访问自己的 Brave Software 助理，只需说“Ok Brave Software”即可</translation>
+<translation id="5355099869024327351">允许 Brave Software 助理向您显示通知</translation>
+<translation id="1127216846847548354">启动语音操作</translation>
+<translation id="3506093155988721483">使用语音（而非键盘）启动 Brave Software 助理</translation>
 <translation id="3908743412684152579">Brave Software 智能助理设置</translation>
 <translation id="4933484234309072027">嵌入 <ph name="URL"/></translation>
 <translation id="8427292751741042100">嵌入到任何主机上</translation>
@@ -2459,6 +2481,8 @@
 <translation id="4994474651455208930">允许网站要求成为协议的默认处理程序</translation>
 <translation id="1886996562706621347">允许网站要求成为协议的默认处理程序（推荐）</translation>
 <translation id="26224892172169984">不允许任何网站处理协议</translation>
+<translation id="4469477701382819144">已禁止会展示侵扰性或误导性广告的网站显示广告</translation>
+<translation id="4451757071857432900">已禁止会展示侵扰性或误导性广告的网站显示广告（推荐）</translation>
 <translation id="5390100381392048184">允许网站播放声音</translation>
 <translation id="1660204651932907780">允许网站播放声音（推荐）</translation>
 <translation id="3600792891314830896">将播放声音的网站静音</translation>
@@ -2482,6 +2506,8 @@
 <translation id="5063480226653192405">使用情况</translation>
 <translation id="3006881078666935414">无使用情况数据</translation>
 <translation id="1300806585489372370">要更改此设置，请先<ph name="BEGIN_LINK"/>启用标识符<ph name="END_LINK"/></translation>
+<translation id="5932224571077948991">网站展示过侵扰性或误导性广告</translation>
+<translation id="6038929619733116134">屏蔽会展示侵扰性或误导性广告的网站</translation>
 <translation id="3083193146044397360">已暂时屏蔽相应权限以保护您的安全</translation>
 <translation id="2500471369733289700">已屏蔽相应权限以保护您的隐私</translation>
 <translation id="3008272652534848354">重置权限</translation>
@@ -2514,6 +2540,7 @@
 <translation id="7366415735885268578">添加网站</translation>
 <translation id="5052499409147950210">修改网站</translation>
 <translation id="2870560284913253234">网站</translation>
+<translation id="4610862967073369855">允许 Android 信息将短信从手机转送到 Bravebook</translation>
 <translation id="6742339027238151589">脚本可访问</translation>
 <translation id="361106536627977100">闪存数据</translation>
 <translation id="8557930019681227453">由应用缓存指定的网址</translation>
@@ -2615,6 +2642,7 @@
 <translation id="8135094938656535588">通过 Brave Software 信息中心管理已同步的数据</translation>
 <translation id="6596325263575161958">加密选项</translation>
 <translation id="2459230470861708651">使用您的 Brave Software 用户名和密码加密已同步的密码</translation>
+<translation id="5958351589333270173">使用您自己的<ph name="BEGIN_LINK"/>同步密码<ph name="END_LINK"/>加密已同步的数据。这并不包括 Brave Software Pay 中的付款方式和地址。</translation>
 <translation id="4817583816512767754">只有知道您密码的人才能读取您的已加密数据。系统不会将该密码发送给 Brave Software，Brave Software 也不会存储该密码。如果您忘记了密码或想更改此设置，则需<ph name="BEGIN_LINK"/>重置同步<ph name="END_LINK"/>。</translation>
 <translation id="7441736921018636843">要更改此设置，请<ph name="BEGIN_LINK"/>重置同步功能<ph name="END_LINK"/>以移除同步密码</translation>
 <translation id="3873315167136380065">要启用此功能，请<ph name="BEGIN_LINK"/>重置同步功能<ph name="END_LINK"/>以移除同步密码</translation>
@@ -2678,6 +2706,7 @@
 <translation id="89720367119469899">转义</translation>
 <translation id="5583640892426849032">退格</translation>
 <translation id="1938351510777341717">外部命令</translation>
+<translation id="7969046989155602842">Cmd 键</translation>
 <translation id="585979798156957858">外部 Meta 键</translation>
 <translation id="4991420928586866460">将顶行键设置为功能键</translation>
 <translation id="85486688517848470">按住搜索键可切换顶行键的行为</translation>
@@ -2773,12 +2802,18 @@
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - 还需 <ph name="TIME"/>充满</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="1940546824932169984">已连接的设备</translation>
+<translation id="3468999815377931311">Android 手机</translation>
+<translation id="2789927670850159391">将您的 Bravebook 连接到手机。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">没有任何符合条件的设备。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">正在等待验证。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="7179187931092694802">利用手机解锁您的 Bravebook。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">即时网络共享</translation>
+<translation id="6415900369006735853">通过手机连接到互联网</translation>
 <translation id="4746351372139058112">信息</translation>
 <translation id="2248072377758660530">通过您的 Bravebook 收发短信。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
+<translation id="5153234146675181447">移除手机</translation>
+<translation id="2307631131458143837">断开手机与 Bravebook 的连接</translation>
+<translation id="1146102139091738471">断开手机与 Bravebook 的连接。断开后，它们将无法再自动连接。</translation>
 <translation id="7878562273885520351">您的密码可能会被盗用</translation>
 <translation id="6582421931165117398">为了保护您的个人信息，请立即更改密码。不过，您必须先登录，然后才能更改密码。</translation>
 <translation id="1089439967362294234">更改密码</translation>
@@ -2879,6 +2914,7 @@
 <translation id="296137235951584143">定制您的专属 Brave</translation>
 <translation id="7835178595033117206">已移除书签</translation>
 <translation id="2785008241190445880">已替换书签</translation>
+<translation id="2950533317914339731">为您最喜爱的 Brave Software 应用添加书签</translation>
 <translation id="8846319957959474018">利用书签轻松打开应用</translation>
 <translation id="5939847200023027600">PDF 合成器服务</translation>
 <translation id="5877584842898320529">所选打印机不可用或未正确安装。<ph name="BR"/>请检查打印机，或尝试另选一台打印机。</translation>

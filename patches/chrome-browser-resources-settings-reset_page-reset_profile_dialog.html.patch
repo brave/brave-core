@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html b/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html
-index 64a6823036ba..e29c828edc69 100644
+index 64a6823036bac014e4b1a1f3736d2c082b00a304..e29c828edc6936c97e99afb7a024b9be789b6058 100644
 --- a/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html
 +++ b/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html
 @@ -44,10 +44,12 @@

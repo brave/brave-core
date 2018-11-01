@@ -474,10 +474,12 @@
 <translation id="3016641847947582299">అంశం నవీకరించబడింది</translation>
 <translation id="252219247728877310">అంశం నవీకరించబడలేదు</translation>
 <translation id="2707024448553392710">అంశాన్ని డౌన్‌లోడ్ చేస్తోంది</translation>
+<translation id="1879000426787380528">ఇలా సైన్ ఇన్ చేయండి</translation>
 <translation id="3190558889382726167">పాస్‌వర్డ్ సేవ్ చేయబడింది</translation>
 <translation id="5079950360618752063">సూచించిన పాస్‌వర్డ్‌ని ఉపయోగించండి</translation>
 <translation id="8084114998886531721">సేవ్ చేసిన పాస్‌వర్డ్</translation>
 <translation id="5614553682702429503">పాస్‌వర్డ్‌ను సేవ్ చేయాలా?</translation>
+<translation id="5584088138253955452">వినియోగదారు పేరుని సేవ్ చేయాలా?</translation>
 <translation id="8756969031206844760">పాస్‌వర్డ్‌ను అప్‌డేట్ చేయాలా?</translation>
 <translation id="8230134520748321204"><ph name="ORIGIN"/> కోసం పాస్‌వర్డ్‌ని సేవ్ చేయాలా?</translation>
 <translation id="9040661932550800571"><ph name="ORIGIN"/> కోసం పాస్‌వర్డ్‌ను అప్‌డేట్ చేయాలా?</translation>
@@ -497,6 +499,7 @@
 <translation id="224940702122312781">ఈ పేజీ చాలా డేటాను ఉపయోగిస్తుంది.</translation>
 <translation id="3861241522664181545">పేజీ పాజ్ చేయబడింది.</translation>
 <translation id="6921709132208495314">ఈ పేజీలో డేటాను ఉపయోగించడం ఆపివేయండి</translation>
+<translation id="1683850629661177840">లైట్ మోడ్ ఇప్పుడు HTTPSతో సహా అన్ని పేజీలలో బ్రౌజింగ్‌ని మరింత వేగవంతం చేస్తుంది.</translation>
 <translation id="2724841811573117416">WebRTC లాగ్‌లు</translation>
 <translation id="1969654639948595766">WebRTC వచన లాగ్ లు( <ph name="WEBRTC_TEXT_LOG_COUNT"/> )</translation>
 <translation id="6865708901122695652">WebRTC ఈవెంట్ లాగ్‌లు (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -1108,6 +1111,7 @@
 <translation id="8922013791253848639">ఎల్లప్పుడూ ఈ సైట్‌లోని ప్రకటనలను అనుమతించు</translation>
 <translation id="7359588939039777303">ప్రకటనలు బ్లాక్ చేయబడ్డాయి.</translation>
 <translation id="5398772614898833570">ప్రకటనలు బ్లాక్ చేయబడ్డాయి</translation>
+<translation id="2859806420264540918">ఈ సైట్ అనుచితమైన లేదా తప్పుదారి పట్టించే ప్రకటనలను చూపుతుంది.</translation>
 <translation id="4077917118009885966">ఈ సైట్‌లో ప్రకటనలు బ్లాక్ చేయబడ్డాయి</translation>
 <translation id="3737536731758327622">మీ డౌన్‌లోడ్‌లు ఇక్కడ కనిపిస్తాయి</translation>
 <translation id="4782664866169793230">Brave స్వయంచాలక పరీక్ష సాఫ్ట్‌వేర్ ద్వారా నియంత్రించబడుతోంది.</translation>
@@ -1250,6 +1254,7 @@
 <translation id="3766223500670287046">రిమోట్ స్క్రీన్</translation>
 <translation id="3930737994424905957">పరికరాల కోసం వెతుకుతోంది</translation>
 <translation id="5209320130288484488">పరికరాలు కనుగొనబడలేదు</translation>
+<translation id="4415245286584082850">పరికరాలు కనుగొనబడలేదు. సహాయ కేంద్రం కథనాన్ని కొత్త ట్యాబ్‌లో తెరవండి.</translation>
 <translation id="4363771538994847871">Cast గమ్యస్థానాలు ఏవీ కనుగొనబడలేదు. సహాయం కావాలా?</translation>
 <translation id="8688672835843460752">అందుబాటులో ఉంది</translation>
 <translation id="4271396100647220620">సరిపోలికలు లేవు</translation>
@@ -1668,6 +1673,9 @@
 <translation id="3096967955765855393">మేము మీ బ్రౌజింగ్‌ను సురక్షితం చేసే మార్గాల కోసం నిరంతరం వెతుకుతున్నాము. గతంలో, ఏ వెబ్‌సైట్ అయినా మీ బ్రౌజర్‌కు ఎక్స్‌టెన్షన్‌ని జోడించడానికి మిమ్మల్ని ప్రాంప్ట్ చేయవచ్చు. Brave Software Brave తాజా వెర్షన్‌లలో, మీరు తప్పనిసరిగా ఎక్స్‌టెన్షన్‌ల పేజీలో వాటిని జోడించడం ద్వారా ఈ ఎక్స్‌టెన్షన్‌లను ఇన్‌స్టాల్ చేయాలనుకుంటున్నట్లు Braveకి ప్రత్యేకించి తెలియజేయాలి. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">$1తో తెరవడం సాధ్యపడదు</translation>
 <translation id="639777613761517128">$1తో ఫైల్‌లను తెరవడానికి, ముందుగా Linux ఫైల్‌ల ఫోల్డర్‌లకు కాపీ చేయాలి.</translation>
+<translation id="5112009661904384591">Linuxతో ఫైల్‌లను షేర్ చేయండి</translation>
+<translation id="3186202398303525187">$1ని తెరవడానికి Linux యాప్‌లను అనుమతించండి.</translation>
+<translation id="1603300902586586390">$1 ఫైల్‌లను తెరవడానికి Linux యాప్‌లను అనుమతించండి.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> ఫైల్</translation>
 <translation id="895586998699996576">$1 చిత్రం</translation>
 <translation id="2853916256216444076">$1 వీడియో</translation>
@@ -1864,6 +1872,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">మీ Bravebookలో Linux సాధనాలు, ఎడిటర్‌లు మరియు IDEలను అమలు చేయండి. &lt;a target = "_ blank" href = " <ph name="URL"/> "&gt;మరింత తెలుసుకోండి&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Bravebook కోసం Linux యాప్‌లను తీసివేయండి</translation>
+<translation id="1529899284660134226">షేర్ చేసిన ఫైల్‌లు &amp; ఫోల్డర్‌లను నిర్వహించండి</translation>
 <translation id="2295473777859797944">Brave Software Play స్టోర్</translation>
 <translation id="572155275267014074">Android సెట్టింగ్‌లు</translation>
 <translation id="4767209642168463274">మీ Bravebookలో Brave Software Play నుండి అనువర్తనాలు మరియు గేమ్‌లను ఇన్‌స్టాల్ చేసుకోండి. &lt;a target="_blank" href="<ph name="URL"/>"&gt;మరింత తెలుసుకోండి&lt;/a&gt;</translation>
@@ -1988,6 +1997,10 @@
 <translation id="6122875415561139701">దీనిలో వ్రాసే చర్యకు అనుమతి లేదు: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">బ్లూటూత్ కాన్ఫిగరేషన్ <ph name="USER_EMAIL"/> ద్వారా నియంత్రించబడుతుంది.</translation>
 <translation id="784934925303690534">సమయ పరిధి</translation>
+<translation id="3958004920128806270">బ్రౌజింగ్ డేటాను మీ Brave Software ఖాతాలో అలాగే ఉంచి, కేవలం ఈ పరికరం నుండి మాత్రమే తీసివేయడానికి <ph name="BEGIN_LINK"/>సైన్ అవుట్ చేయండి<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">మీ అన్ని సమకాలీకరించబడుతున్న పరికరాలతో సహా, మీ Brave Software ఖాతా నుండి బ్రౌజింగ్ డేటాను తీసివేయడానికి, <ph name="BEGIN_LINK"/>సమకాలీకరణ సెట్టింగ్‌లను సందర్శించండి<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">మీ అన్ని సమకాలీకరించబడుతున్న పరికరాలతో సహా, మీ Brave Software ఖాతా నుండి బ్రౌజింగ్ డేటాను తీసివేయడానికి, <ph name="BEGIN_LINK"/>మీ రహస్య పదబంధాన్ని నమోదు చేయండి<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">మీ అన్ని సమకాలీకరించబడుతున్న పరికరాలతో సహా, మీ Brave Software ఖాతా నుండి బ్రౌజింగ్ డేటాను తీసివేయడానికి, <ph name="BEGIN_LINK"/>సైన్ ఇన్ చేయండి<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">బ్రౌజింగ్ చరిత్ర</translation>
 <translation id="8662811608048051533">చాలా సైట్‌ల నుండి మిమ్మల్ని సైన్ అవుట్ చేస్తుంది.</translation>
 <translation id="4650925988509114690">చాలా సైట్‌ల నుండి మిమ్మల్ని సైన్ అవుట్ చేస్తుంది. మీరు మీ Brave Software ఖాతాలో అలాగే సైన్ ఇన్ చేసి ఉంటారు, కనుక మీ సమకాలీకరించిన డేటాను తీసివేయవచ్చు.</translation>
@@ -2068,9 +2081,11 @@
 <translation id="9024158959543687197">షేర్‌ను మౌంట్ చేయడంలో లోపం ఏర్పడింది. ఫైల్ షేర్ URLని తనిఖీ చేసి, ఆపై మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="1954813140452229842">షేర్‌ను మౌంట్ చేయడంలో ఎర్రర్ ఏర్పడింది. దయచేసి మీ ఆధారాలను సరిచూసుకుని, మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="2148219725039824548">షేర్‌ను మౌంట్ చేయడంలో ఎర్రర్ ఏర్పడింది. పేర్కొన్న షేర్ నెట్‌వర్క్‌లో కనుగొనబడలేదు.</translation>
-<translation id="7234406375359457793">షేర్‌ను మౌంట్ చేయడంలో ఎర్రర్ ఏర్పడింది. పేర్కొన్న షేర్‌కు మద్దుత లేదు.</translation>
+<translation id="6923633482430812883">షేర్‌ని మౌంట్ చేస్తున్నప్పుడు ఎర్రర్ ఏర్పడింది. దయచేసి మీరు కనెక్ట్ చేస్తున్న ఫైల్ సర్వర్‌లో SMBv2 లేదా అంతకంటే తాజా వెర్షన్‌కు మద్దతు ఉందో లేదో తనిఖీ చేయండి.</translation>
 <translation id="706626672220389329">షేర్‌ను మౌంట్ చేయడంలో ఎర్రర్ ఏర్పడింది. పేర్కొన్న షేర్ ఇప్పటికే మౌంట్ చేయబడింది.</translation>
 <translation id="5985458664595100876">URL ఫార్మాట్ చెల్లదు. మద్దతు ఉన్న ఫార్మాట్‌లు \\server\share మరియు smb://server/share.</translation>
+<translation id="9147304170847707004">ప్రమాణీకరణ పద్ధతి</translation>
+<translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">తేదీ మరియు సమయం</translation>
 <translation id="2059913712424898428">సమయ మండలి</translation>
 <translation id="4547672827276975204">స్వయంచాలకంగా సెట్ చేయి</translation>
@@ -2392,6 +2407,13 @@
 <translation id="6678717876183468697">ప్రశ్న URL</translation>
 <translation id="1545786162090505744">ప్రశ్న యొక్క ప్రదేశంలో %sతో URL</translation>
 <translation id="7136694880210472378">డిఫాల్ట్‌గా చెయ్యి</translation>
+<translation id="6953878494808481632">సంబంధిత సమాచారం</translation>
+<translation id="7258619945375359543">మీ స్క్రీన్‌లో ఉన్న వాటి ఆధారంగా సూచనలను అందించడానికి అసిస్టెంట్‌ని అనుమతించండి</translation>
+<translation id="472896694312062378">"Ok Brave Software"</translation>
+<translation id="6236033368436682108">మీ స్క్రీన్ ఆన్‌లో ఉన్నప్పుడు మీరు ఎప్పుడైనా "Ok Brave Software" అని చెప్పి మీ అసిస్టెంట్‌ను యాక్సెస్ చేయండి</translation>
+<translation id="5355099869024327351">మీకు నోటిఫికేషన్‌లను చూపించడానికి అసిస్టెంట్‌ను అనుమతించండి</translation>
+<translation id="1127216846847548354">వాయిస్ యాక్టివేషన్</translation>
+<translation id="3506093155988721483">మీరు మీ అసిస్టెంట్‌ని ప్రారంభించినప్పుడు మీ కీబోర్డ్‌కి బదులుగా ప్రసంగాన్ని ఉపయోగించండి</translation>
 <translation id="3908743412684152579">Brave Software సహాయకం సెట్టింగ్‌లు</translation>
 <translation id="4933484234309072027"><ph name="URL"/>లో పొందుపరచబడింది</translation>
 <translation id="8427292751741042100">ఏదైనా హోస్ట్‌లో పొందుపరచబడింది</translation>
@@ -2461,6 +2483,8 @@
 <translation id="4994474651455208930">ప్రోటోకాల్స్‌కు డిఫాల్ట్ హ్యాండ్లర్‌లుగా కావడం కోసం అడగటానికి సైట్‌లను అనుమతించండి</translation>
 <translation id="1886996562706621347">ప్రోటోకాల్స్‌కు డిఫాల్ట్ హ్యాండ్లర్‌లుగా కావడం కోసం అడగటానికి సైట్‌లను అనుమతించండి (సిఫార్సు చేయబడింది)</translation>
 <translation id="26224892172169984">ప్రోటోకాల్స్ నిర్వహించడానికి ఏ సైట్‌ని అనుమతించవద్దు</translation>
+<translation id="4469477701382819144">అనుచితమైన లేదా తప్పుదారి పట్టించే ప్రకటనలను చూపించే సైట్‌లలో బ్లాక్ చేయబడింది</translation>
+<translation id="4451757071857432900">అనుచితమైన లేదా తప్పుదారి పట్టించే ప్రకటనలను చూపించే సైట్‌లలో బ్లాక్ చేయబడింది (సిఫార్సు చేయబడింది)</translation>
 <translation id="5390100381392048184">ధ్వనిని ప్లే చేయడానికి సైట్‌లను అనుమతించండి</translation>
 <translation id="1660204651932907780">ధ్వనిని ప్లే చేయడానికి సైట్‌లను అనుమతించండి (సిఫార్సు చేయబడింది)</translation>
 <translation id="3600792891314830896">ధ్వనిని ప్లే చేసే సైట్‌లను మ్యూట్ చేయండి</translation>
@@ -2484,6 +2508,8 @@
 <translation id="5063480226653192405">ఉపయోగం</translation>
 <translation id="3006881078666935414">వినియోగ డేటా లేదు</translation>
 <translation id="1300806585489372370">ఈ సెట్టింగ్‌ని మార్చాలంటే, ముందుగా <ph name="BEGIN_LINK"/>ఐడెంటిఫైయర్‌లను ఆన్ చేయండి<ph name="END_LINK"/></translation>
+<translation id="5932224571077948991">సైట్ అనుచితమైన లేదా తప్పుదారి పట్టించే ప్రకటనలను చూపుతుంది</translation>
+<translation id="6038929619733116134">సైట్ అనుచితమైన లేదా తప్పుదారి పట్టించే ప్రకటనలను చూపినట్లయితే బ్లాక్ చేయండి</translation>
 <translation id="3083193146044397360">మీ భద్రత నిమిత్తం తాత్కాలికంగా బ్లాక్ చేయబడింది</translation>
 <translation id="2500471369733289700">మీ గోప్యతను రక్షించడానికి బ్లాక్ చేయబడింది</translation>
 <translation id="3008272652534848354">అనుమతులను రీసెట్ చేయి</translation>
@@ -2516,6 +2542,7 @@
 <translation id="7366415735885268578">సైట్‌ను జోడించండి</translation>
 <translation id="5052499409147950210">సైట్‌ను సవరించండి</translation>
 <translation id="2870560284913253234">సైట్</translation>
+<translation id="4610862967073369855">మీ ఫోన్‌లో ఉన్న వచనాన్ని మీ Bravebookలో చూపడానికి Android సందేశాలుని అనుమతిస్తుంది</translation>
 <translation id="6742339027238151589">స్క్రిప్ట్‌కి ప్రాప్యత చేయదగినది</translation>
 <translation id="361106536627977100">ఫ్లాష్ డేటా</translation>
 <translation id="8557930019681227453">మానిఫెస్ట్</translation>
@@ -2617,6 +2644,7 @@
 <translation id="8135094938656535588">Brave Software డాష్‌బోర్డ్‌లో సమకాలీకరించబడిన డేటాని నిర్వహించండి</translation>
 <translation id="6596325263575161958">గుప్తీకరణ ఎంపికలు</translation>
 <translation id="2459230470861708651">మీ Brave Software వినియోగదారు పేరు మరియు పాస్‌వర్డ్‌తో సమకాలీకరించిన పాస్‌వర్డ్‌లను గుప్తీకరించండి</translation>
+<translation id="5958351589333270173">సమకాలీకరించిన డేటాని మీ స్వంత <ph name="BEGIN_LINK"/>సమకాలీకరణ రహస్య పదబంధం<ph name="END_LINK"/>తో ఎన్‌క్రిప్ట్ చేయండి. Brave Software Payకి చెందిన చెల్లింపు పద్ధతులు మరియు చిరునామాలు ఇందులో ఉండవు.</translation>
 <translation id="4817583816512767754">మీ రహస్య పదబంధాన్ని కలిగి ఉన్నవారు మాత్రమే మీ గుప్తీకరించిన డేటాను చదవగలరు. రహస్య పదబంధం ఎవరికీ పంపబడదు లేదా Brave Softwareలో నిల్వ చేయబడదు. మీరు మీ రహస్య పదబంధాన్ని మర్చిపోతే లేదా ఈ సెట్టింగ్‌ను మార్చాలనుకుంటే, సమకాలీకరణను రీసెట్ చేయాల్సి ఉంటుంది. <ph name="BEGIN_LINK"/>సమకాలీకరణను రీసెట్ చేయండి<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">ఈ సెట్టింగ్‌ని మార్చడానికి, మీ సమకాలీకరణ రహస్య పదబంధాన్ని తీసివేయడానికి <ph name="BEGIN_LINK"/>సమకాలీకరణను రీసెట్ చేయండి<ph name="END_LINK"/></translation>
 <translation id="3873315167136380065">దీన్ని ఆన్ చేయడానికి, మీ సమకాలీకరణ రహస్య పదబంధాన్ని తీసివేయడానికి <ph name="BEGIN_LINK"/>సమకాలీకరణను రీసెట్ చేయండి<ph name="END_LINK"/></translation>
@@ -2680,6 +2708,7 @@
 <translation id="89720367119469899">ఎస్కేప్</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">బాహ్య ఆదేశం</translation>
+<translation id="7969046989155602842">ఆదేశం</translation>
 <translation id="585979798156957858">బాహ్య మెటా</translation>
 <translation id="4991420928586866460">ఎగువ-అడ్డు వరుస కీలను ఫంక్షన్ కీల వలె పరిగణించు</translation>
 <translation id="85486688517848470">ఎగువ-అడ్డు వరుసలోని కీల ప్రవర్తనను మార్చడానికి శోధన కీని నొక్కి ఉంచండి</translation>
@@ -2775,12 +2804,18 @@
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/>లో పూర్తి ఛార్జ్ అవుతుంది</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="1940546824932169984">కనెక్ట్ చేయబడిన పరికరాలు</translation>
+<translation id="3468999815377931311">Android ఫోన్</translation>
+<translation id="2789927670850159391">మీ ఫోన్‌కి మీ Bravebookను కనెక్ట్ చేయండి. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి.<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">అర్హత గల పరికరాలు లేవు. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">ధృవీకరణ కోసం వేచి ఉంది. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
 <translation id="7179187931092694802">మీ ఫోన్‌తో మీ Bravebookను అన్‌లాక్ చేయండి. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి.<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">తక్షణ టీథరింగ్</translation>
+<translation id="6415900369006735853">మీ ఫోన్ ద్వారా ఇంటర్నెట్‌కు కనెక్ట్ అవ్వండి</translation>
 <translation id="4746351372139058112">సందేశాలు</translation>
 <translation id="2248072377758660530">మీ Bravebook నుండి వచన సందేశాలను పంపండి లేదా స్వీకరించండి. <ph name="LINK_BEGIN"/>మరింత తెలుసుకోండి<ph name="LINK_END"/></translation>
+<translation id="5153234146675181447">ఫోన్‌ని మర్చిపో</translation>
+<translation id="2307631131458143837">మీ Bravebook నుండి మీ ఫోన్‌ని డిస్‌కనెక్ట్ చేయండి</translation>
+<translation id="1146102139091738471">మీ Bravebook నుండి మీ ఫోన్‌ని డిస్‌కనెక్ట్ చేయండి. అవి ఇకపై ఆటోమేటిక్‌గా కనెక్ట్ కావు.</translation>
 <translation id="7878562273885520351">మీ పాస్‌వర్డ్ ఎవరికైనా తెలిసిపోయి ఉండవచ్చు</translation>
 <translation id="6582421931165117398">మీ వ్యక్తిగత సమాచారాన్ని రక్షించుకోవడానికి, ఇప్పుడే మీ పాస్‌వర్డ్‌ను మార్చండి. మీరు మీ పాస్‌వర్డ్‌ను మార్చబోయే ముందు, మీరు సైన్ ఇన్ చేయాల్సిందిగా ఆదేశించబడతారు.</translation>
 <translation id="1089439967362294234">పాస్‌వర్డ్‌ని మార్చు</translation>
@@ -2881,6 +2916,7 @@
 <translation id="296137235951584143">Braveని మీకు నచ్చినట్లు తయారు చేసుకోండి</translation>
 <translation id="7835178595033117206">బుక్‌మార్క్ తీసివేయబడింది</translation>
 <translation id="2785008241190445880">బుక్‌మార్క్ భర్తీ చేయబడింది</translation>
+<translation id="2950533317914339731">మీకు ఇష్టమైన Brave Software యాప్‌లకు బుక్‌మార్క్‌లను జోడించండి</translation>
 <translation id="8846319957959474018">బుక్‌మార్క్‌లతో సులభంగా యాప్‌లను తెరవండి</translation>
 <translation id="5939847200023027600">PDF కంపోజిటర్ సేవ</translation>
 <translation id="5877584842898320529">ఎంచుకున్న ప్రింటర్ అందుబాటులో లేదు లేదా సరిగ్గా ఇన్‌స్టాల్ చేయబడలేదు. <ph name="BR"/> మీ ప్రింటర్‌ను తనిఖీ చేయండి లేదా మరొక ప్రింటర్‌ను ఎంచుకోవడాన్ని ప్రయత్నించండి.</translation>

@@ -12,11 +12,11 @@
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Gagnez de l'argent en visionnant des annonces, et utilisez-en pour soutenir vos créateurs de contenu préférés.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Vous pouvez désormais gagner des jetons en regardant des annonces respectueuses de votre vie privée.",
     "description": ""
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Nous avons apporté de grandes améliorations à Brave Payments.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Apprêtez-vous à vivre Internet d'une nouvelle façon",
     "description": ""
   },
   "yourWallet": {
@@ -44,7 +44,7 @@
     "description": ""
   },
   "on": {
-    "message": "allumé",
+    "message": "sur",
     "description": ""
   },
   "verifiedPublisher": {
@@ -56,19 +56,19 @@
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site monthly",
+    "message": "Subventionner ce site chaque mois",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Ajouter aux Contributions Automatiques",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Envoyer une Contribution…",
     "description": ""
   },
   "enableTips": {
-    "message": "Activer les contributions",
+    "message": "Activer les Contributions",
     "description": ""
   },
   "for": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Bilan des Récompenses",
     "description": ""
   },
   "monthApr": {
@@ -128,19 +128,19 @@
     "description": ""
   },
   "tokenGrant": {
-    "message": "Allocation de Jetons",
+    "message": "Don de Jetons",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Rémunération grâce aux Annonces",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Contribution automatique",
+    "message": "Contribution Automatique",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Contributions Ponctuelles",
     "description": ""
   },
   "total": {
@@ -152,7 +152,7 @@
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Contributions Mensuelles",
     "description": ""
   },
   "off": {
@@ -160,19 +160,19 @@
     "description": ""
   },
   "ok": {
-    "message": "ok",
+    "message": "OK",
     "description": ""
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Annonces Brave",
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Contribuer",
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "Vous avez contribué $amount$ BAT",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have a grant waiting for you.",
+    "message": "Un don de jetons vous attend.",
     "description": ""
   },
   "braveRewardsCreatingText": {
