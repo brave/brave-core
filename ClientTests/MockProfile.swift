@@ -109,7 +109,7 @@ open class MockProfile: Profile {
     }()
 
     lazy public var searchEngines: SearchEngines = {
-        return SearchEngines(prefs: self.prefs, files: self.files)
+        return SearchEngines(files: self.files)
     }()
 
     lazy public var prefs: Prefs = {

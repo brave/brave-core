@@ -4,21 +4,25 @@
 
 import Foundation
 import Shared
+import BraveShared
 import Storage
 import XCGLogger
 
 private let log = Logger.browserLogger
 
-private let OrderedEngineNames = "search.orderedEngineNames"
-private let DisabledEngineNames = "search.disabledEngineNames"
-private let ShowSearchSuggestionsOptIn = "search.suggestions.showOptIn"
-private let ShowSearchSuggestions = "search.suggestions.show"
 private let customSearchEnginesFileName = "customEngines.plist"
 
 // BRAVE TODO: Move to newer Preferences class(#259)
 enum DefaultEngineType: String {
     case standard = "search.default.name"
     case privateMode = "search.defaultprivate.name"
+    
+    var option: Preferences.Option<String?> {
+        switch self {
+        case .standard: return Preferences.Search.defaultEngineName
+        case .privateMode: return Preferences.Search.defaultPrivateEngineName
+        }
+    }
 }
 
 /**
@@ -42,7 +46,6 @@ enum DefaultEngineType: String {
  * is not thread-safe -- you should only access it on a single thread (usually, the main thread)!
  */
 class SearchEngines {
-    fileprivate let prefs: Prefs
     fileprivate let fileAccessor: FileAccessor
 
     static let defaultRegionSearchEngines = [
@@ -50,10 +53,9 @@ class SearchEngines {
         "FR": OpenSearchEngine.EngineNames.qwant
     ]
     
-    init(prefs: Prefs, files: FileAccessor) {
-        self.prefs = prefs
+    init(files: FileAccessor) {
         // By default, show search suggestions
-        self.shouldShowSearchSuggestions = prefs.boolForKey(ShowSearchSuggestions) ?? true
+        self.shouldShowSearchSuggestions = Preferences.Search.showSuggestions.value
         self.fileAccessor = files
         self.disabledEngineNames = getDisabledEngineNames()
         self.orderedEngines = getOrderedEngines()
@@ -71,7 +73,7 @@ class SearchEngines {
     func defaultEngine(forType type: DefaultEngineType? = nil) -> OpenSearchEngine {
         let engineType = type ?? (PrivateBrowsingManager.shared.isPrivateBrowsing ? .privateMode : .standard)
             
-        if let name = prefs.stringForKey(engineType.rawValue),
+        if let name = engineType.option.value,
             let defaultEngine = self.orderedEngines.first(where: { $0.shortName == name }) {
             return defaultEngine
         } else {
@@ -87,7 +89,7 @@ class SearchEngines {
     }
 
     func setDefaultEngine(_ engine: String, forType type: DefaultEngineType) {
-        prefs.setString(engine, forKey: type.rawValue)
+        type.option.value = engine
         
         // The default engine is always enabled.
         enableEngine(defaultEngine(forType: type))
@@ -110,13 +112,13 @@ class SearchEngines {
     // The keys of this dictionary are used as a set.
     fileprivate var disabledEngineNames: [String: Bool]! {
         didSet {
-            self.prefs.setObject(Array(self.disabledEngineNames.keys), forKey: DisabledEngineNames)
+            Preferences.Search.disabledEngines.value = Array(self.disabledEngineNames.keys)
         }
     }
 
     var orderedEngines: [OpenSearchEngine]! {
         didSet {
-            self.prefs.setObject(self.orderedEngines.map { $0.shortName }, forKey: OrderedEngineNames)
+            Preferences.Search.orderedEngines.value = self.orderedEngines.map { $0.shortName }
         }
     }
 
@@ -128,7 +130,7 @@ class SearchEngines {
 
     var shouldShowSearchSuggestions: Bool {
         didSet {
-            self.prefs.setObject(shouldShowSearchSuggestions, forKey: ShowSearchSuggestions)
+            Preferences.Search.showSuggestions.value = shouldShowSearchSuggestions
         }
     }
 
@@ -175,7 +177,7 @@ class SearchEngines {
     }
 
     fileprivate func getDisabledEngineNames() -> [String: Bool] {
-        if let disabledEngineNames = self.prefs.stringArrayForKey(DisabledEngineNames) {
+        if let disabledEngineNames = Preferences.Search.disabledEngines.value {
             var disabledEngineDict = [String: Bool]()
             for engineName in disabledEngineNames {
                 disabledEngineDict[engineName] = true
@@ -259,7 +261,7 @@ class SearchEngines {
         let unorderedEngines = customEngines + SearchEngines.getUnorderedBundledEnginesFor(locale: locale)
 
         // might not work to change the default.
-        guard let orderedEngineNames = prefs.stringArrayForKey(OrderedEngineNames) else {
+        guard let orderedEngineNames = Preferences.Search.orderedEngines.value else {
             // We haven't persisted the engine order, so return whatever order we got from disk.
             return unorderedEngines
         }

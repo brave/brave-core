@@ -286,7 +286,7 @@ open class BrowserProfile: Profile {
     }()
 
     lazy var searchEngines: SearchEngines = {
-        return SearchEngines(prefs: self.prefs, files: self.files)
+        return SearchEngines(files: self.files)
     }()
 
     func makePrefs() -> Prefs {

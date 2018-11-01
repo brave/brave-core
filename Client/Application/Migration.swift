@@ -30,11 +30,17 @@ extension Preferences {
         }
         
         // General
-        // TODO: Search engine migration
         migrate(key: "saveLogins", to: Preferences.General.saveLogins)
         migrate(key: "blockPopups", to: Preferences.General.blockPopups)
         migrate(key: "kPrefKeyTabsBarShowPolicy", to: Preferences.General.tabBarVisibility)
         migrate(key: "NightModeStatus", to: Preferences.General.nightMode)
+        
+        // Search
+        migrate(key: "search.orderedEngineNames", to: Preferences.Search.orderedEngines)
+        migrate(key: "search.disabledEngineNames", to: Preferences.Search.disabledEngines)
+        migrate(key: "search.suggestions.show", to: Preferences.Search.showSuggestions)
+        migrate(key: "search.default.name", to: Preferences.Search.defaultEngineName)
+        migrate(key: "search.defaultprivate.name", to: Preferences.Search.defaultPrivateEngineName)
         
         // Privacy
         migrate(key: "braveAcceptCookiesPref", to: Preferences.Privacy.cookieAcceptPolicy)
