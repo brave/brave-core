@@ -7,11 +7,14 @@
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -138,4 +141,59 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, ReverseRewriteTorrentURL) 
   content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
       torrent_extension_url().spec().c_str()) << "Real URL should be extension URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, PRE_NoRewriteMagnetURLURLBarPrefOff) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, NoRewriteMagnetURLURLBarPrefOff) {
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+      magnet_url().spec().c_str()) << "URL visible to users should stay as the magnet URL";
+  content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(),
+      magnet_url().spec().c_str()) << "Real URL should stay as the magnet URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, PRE_NoRewriteMagnetURLLinkPrefOff) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, NoRewriteMagnetURLLinkPrefOff) {
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ui_test_utils::NavigateToURL(browser(), magnet_html_url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+  bool value;
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents, "clickMagnetLink();",
+        &value));
+  EXPECT_TRUE(value);
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+      magnet_url().spec().c_str()) << "URL visible to users should stay as the magnet URL";
+  content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(),
+      magnet_url().spec().c_str()) << "Real URL should stay as the magnet URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, PRE_NoReverseRewriteTorrentURLPrefOff) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebTorrentEnabled, false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, NoReverseRewriteTorrentURLPrefOff) {
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ui_test_utils::NavigateToURL(browser(), torrent_url());
+  WaitForLoadStop(contents);
+
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+      torrent_url().spec().c_str()) << "URL visible to users should stay as the torrent URL";
+  content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(),
+      torrent_url().spec().c_str()) << "Real URL should stay as the torrent URL";
 }

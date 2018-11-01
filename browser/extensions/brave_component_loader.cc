@@ -87,6 +87,8 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
     Add(IDR_BRAVE_REWARDS, brave_rewards_path);
   }
 #endif
+
+  LOG(ERROR) << "enabled: " << profile_prefs_->GetBoolean(kWebTorrentEnabled);
   if (!(profile_prefs_->FindPreference(kWebTorrentEnabled) &&
         !profile_prefs_->GetBoolean(kWebTorrentEnabled))) {
     base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
