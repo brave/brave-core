@@ -63,7 +63,8 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
                 style={{ cursor: 'pointer' /* TODO: cezar make this a component */ }}
                 data-id={device.id}
                 data-name={device.name}
-                onClick={this.onRemoveDevice}>
+                onClick={this.onRemoveDevice}
+              >
                   &times;
               </span>
             ),

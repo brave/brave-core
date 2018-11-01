@@ -83,7 +83,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_REMOVE_DEVICE:
-      if (typeof payload.id === undefined || typeof payload.deviceName === undefined) {
+      if (typeof payload.id === 'undefined' || typeof payload.deviceName === 'undefined') {
         break
       }
 
@@ -102,28 +102,28 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_SYNC_THIS_DEVICE:
-      if (typeof payload.shouldSyncThisDevice === undefined) {
+      if (typeof payload.shouldSyncThisDevice === 'undefined') {
         break
       }
       chrome.send('syncThisDevice', [payload.shouldSyncThisDevice])
       break
 
     case types.SYNC_BOOKMARKS:
-      if (typeof payload.shouldEnable === undefined) {
+      if (typeof payload.shouldEnable === 'undefined') {
         break
       }
       chrome.send('syncBookmarks', [payload.shouldEnable])
       break
 
     case types.SYNC_SAVED_SITE_SETTINGS:
-      if (typeof payload.shouldEnable === undefined) {
+      if (typeof payload.shouldEnable === 'undefined') {
         break
       }
       chrome.send('syncSavedSiteSettings', [payload.shouldEnable])
       break
 
     case types.SYNC_BROWSING_HISTORY:
-      if (typeof payload.shouldEnable === undefined) {
+      if (typeof payload.shouldEnable === 'undefined') {
         break
       }
       chrome.send('syncBrowsingHistory', [payload.shouldEnable])
