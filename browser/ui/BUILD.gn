@@ -77,6 +77,8 @@ source_set("ui") {
     "webui/settings/brave_privacy_handler.h",
     "webui/settings/default_brave_shields_handler.cc",
     "webui/settings/default_brave_shields_handler.h",
+    "webui/sync/sync_ui.cc",
+    "webui/sync/sync_ui.h",
   ]
 
   if (enable_widevine_cdm_component) {
@@ -110,7 +112,10 @@ source_set("ui") {
     "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/theme:brave_theme_resources",
     "//brave/app/vector_icons:vector_icons",
+    "//brave/common",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_sync",
+    "//brave/components/brave_sync:resources",
     "//brave/browser/tor",
     "//brave/browser/resources:brave_settings_resources",
     "//brave/components/resources",

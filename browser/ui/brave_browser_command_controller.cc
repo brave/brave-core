@@ -7,7 +7,9 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
@@ -78,6 +80,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandForBraveAdblock();
   UpdateCommandForTor();
+  if (brave_sync::BraveSyncService::is_enabled() &&
+      !browser_->profile()->IsOffTheRecord())
+    UpdateCommandForBraveSync();
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -91,6 +96,10 @@ void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
 void BraveBrowserCommandController::UpdateCommandForTor() {
   UpdateCommandEnabled(IDC_NEW_TOR_IDENTITY, true);
   UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, true);
+}
+
+void BraveBrowserCommandController::UpdateCommandForBraveSync() {
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_SYNC, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -116,6 +125,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_NEW_TOR_IDENTITY:
       brave::NewTorIdentity(browser_);
+      break;
+    case IDC_SHOW_BRAVE_SYNC:
+      brave::ShowBraveSync(browser_);
       break;
 
     default:
