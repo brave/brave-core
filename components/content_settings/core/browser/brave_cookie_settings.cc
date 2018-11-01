@@ -49,6 +49,11 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
   GURL primary_brave_url = tab_url == GURL("about:blank") ?
       first_party_url : tab_url;
 
+  if (primary_brave_url.SchemeIs("chrome-extension")) {
+    *cookie_setting = CONTENT_SETTING_ALLOW;
+    return;
+  }
+
   // Check the Brave shields setting, if it is off, just return without
   // blocking anything.
   ContentSetting brave_shields_setting =
