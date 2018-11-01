@@ -96,7 +96,6 @@ class MockBraveSyncServiceObserver : public BraveSyncServiceObserver {
 
   MOCK_METHOD1(OnSyncStateChanged, void(BraveSyncService*));
   MOCK_METHOD2(OnHaveSyncWords, void(BraveSyncService*, const std::string&));
-  MOCK_METHOD2(OnLogMessage, void(BraveSyncService*, const std::string&));
 };
 
 class BraveSyncServiceTest : public testing::Test {
@@ -496,11 +495,6 @@ TEST_F(BraveSyncServiceTest, OnSyncPrefsChanged) {
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   EXPECT_CALL(*observer(), OnSyncStateChanged);
   sync_service()->OnSyncPrefsChanged(brave_sync::prefs::kSyncEnabled);
-}
-
-TEST_F(BraveSyncServiceTest, OnSyncDebug) {
-  EXPECT_CALL(*observer(), OnLogMessage(sync_service(), "message")).Times(1);
-  sync_service()->OnSyncDebug("message");
 }
 
 TEST_F(BraveSyncServiceTest, OnSyncReadyAlreadyWithSync) {

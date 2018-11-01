@@ -54,6 +54,7 @@ window.cr.define('sync_ui_exports', function () {
     getActions().onHaveSeedForQrCode(seed)
   }
 
+  // TODO, AB: should be removed
   // for testing purposes
   function logMessage (message: string) {
     getActions().onLogMessage(message)

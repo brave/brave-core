@@ -605,9 +605,7 @@ void BraveSyncServiceImpl::LoopProcThreadAligned() {
 }
 
 void BraveSyncServiceImpl::NotifyLogMessage(const std::string& message) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  for (auto& observer : observers_)
-    observer.OnLogMessage(this, message);
+  DLOG(INFO) << message;
 }
 
 void BraveSyncServiceImpl::NotifySyncStateChanged() {

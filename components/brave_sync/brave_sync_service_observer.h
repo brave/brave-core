@@ -16,8 +16,6 @@ class BraveSyncServiceObserver : public base::CheckedObserver {
   virtual void OnSyncStateChanged(BraveSyncService* sync_service) {}
   virtual void OnHaveSyncWords(BraveSyncService* sync_service,
                                const std::string& sync_words) {}
-  virtual void OnLogMessage(BraveSyncService* sync_service,
-                            const std::string& message) {}
 };
 
 } // namespace brave_sync

@@ -49,8 +49,6 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
   void OnSyncStateChanged(brave_sync::BraveSyncService *sync_service) override;
   void OnHaveSyncWords(brave_sync::BraveSyncService *sync_service,
                        const std::string& sync_words) override;
-  void OnLogMessage(brave_sync::BraveSyncService* sync_service,
-                    const std::string& message) override;
 
   // this should grab actual data from controller and update the page
   void LoadSyncSettingsView();
@@ -207,13 +205,6 @@ void SyncUIDOMHandler::DeleteDevice(const base::ListValue* args) {
 
 void SyncUIDOMHandler::ResetSync(const base::ListValue* args) {
   sync_service_->OnResetSync();
-}
-
-void SyncUIDOMHandler::OnLogMessage(
-    brave_sync::BraveSyncService *sync_service,
-    const std::string& message) {
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "sync_ui_exports.logMessage", base::Value(message));
 }
 
 void SyncUIDOMHandler::OnSyncStateChanged(
