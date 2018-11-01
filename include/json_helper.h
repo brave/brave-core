@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "bat-native-rapidjson/include/rapidjson/document.h"
-#include "bat-native-rapidjson/include/rapidjson/error/en.h"
-#include "bat-native-rapidjson/include/rapidjson/stringbuffer.h"
-#include "bat-native-rapidjson/include/rapidjson/writer.h"
+#include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
 
 // TODO(Terry Mancey): Decouple _rapidjson_member_types
 static const char* _rapidjson_member_types[] = {
