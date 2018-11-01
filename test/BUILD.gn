@@ -60,6 +60,9 @@ test("brave_unit_tests") {
     "//brave/common/tor/tor_test_constants.h",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
     "//brave/components/brave_shields/browser/ad_block_regional_service_unittest.cc",
+    "//brave/components/brave_sync/bookmark_order_util_unittest.cc",
+    "//brave/components/brave_sync/brave_sync_service_unittest.cc",
+    "//brave/components/brave_sync/client/bookmark_change_processor_unittest.cc",
     "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
     "//brave/components/gcm_driver/gcm_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
@@ -105,6 +108,7 @@ test("brave_unit_tests") {
   }
 
   deps = [
+    "//brave/components/brave_sync:testutil",
     "//chrome:browser_dependencies",
     "//chrome:child_dependencies",
     "//chrome/test:test_support",

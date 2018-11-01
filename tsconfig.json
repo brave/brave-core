@@ -6,7 +6,8 @@
     "lib": [
       "es6",
       "dom",
-      "es7"
+      "es7",
+      "es2017"
     ],
     "target": "es5",
     "allowJs": true,
@@ -27,6 +28,7 @@
     "./components/**/*"
   ],
   "exclude": [
-    "./components/test/**/*"
+    "./components/test/**/*",
+    "./components/brave_sync/extension"
   ]
 }

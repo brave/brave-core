@@ -1,0 +1,24 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("ui") {
+  inputs = [
+    "actions/sync_actions.ts",
+    "components/modals/existingSyncCode.tsx",
+    "components/modals/newToSync.tsx",
+    "components/modals/resetSync.tsx",
+    "components/modals/syncNewDevice.tsx",
+    "components/app.tsx",
+    "components/disabledContent.tsx",
+    "components/enabledContent.tsx",
+    "constants/sync_types.ts",
+    "reducers/index.ts",
+    "reducers/sync_reducer.ts",
+    "brave_sync.html",
+    "brave_sync.tsx",
+    "helpers.ts",
+    "storage.ts",
+    "store.ts"
+  ]
+
+  bundle_names = ["brave_sync.bundle.js"]
+}

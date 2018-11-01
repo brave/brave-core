@@ -1,0 +1,139 @@
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+source_set("api") {
+  sources = [
+    "api/brave_sync_api.cc",
+    "api/brave_sync_api.h",
+    "api/brave_sync_event_router.cc",
+    "api/brave_sync_event_router.h",
+  ]
+
+  deps = [
+    "//extensions/browser",
+  ]
+}
+
+source_set("js_sync_lib_impl") {
+  sources = [
+    "brave_sync_service_impl.cc",
+    "brave_sync_service_impl.h",
+    "client/brave_sync_client.h",
+    "client/brave_sync_client_impl.cc",
+    "client/brave_sync_client_impl.h",
+    "client/bookmark_change_processor.cc",
+    "client/bookmark_change_processor.h",
+    "client/client_ext_impl_data.cc",
+    "client/client_ext_impl_data.h",
+    "client/client_data.cc",
+    "client/client_data.h",
+  ]
+
+  deps = [
+    ":api",
+    "//base",
+    "//components/prefs",
+    "//components/bookmarks/browser",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/pref_registry",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//ui/base",
+  ]
+}
+
+source_set("core") {
+  sources = [
+    "bookmark_order_util.cc",
+    "bookmark_order_util.h",
+    "brave_sync_prefs.cc",
+    "brave_sync_prefs.h",
+    "jslib_const.cc",
+    "jslib_const.h",
+    "jslib_messages.cc",
+    "jslib_messages.h",
+    "jslib_messages_fwd.h",
+    "model/change_processor.h",
+    "settings.cc",
+    "settings.h",
+    "sync_devices.cc",
+    "sync_devices.h",
+    "tools.cc",
+    "tools.h",
+    "values_conv.cc",
+    "values_conv.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/prefs",
+    "//crypto",
+    # "//components/history/content/browser",
+    # "//components/history/core/browser",
+  ]
+
+  if (enable_extensions) {
+    deps += [
+      ":js_sync_lib_impl",
+    ]
+  }
+}
+
+source_set("brave_sync") {
+  sources = [
+    "brave_sync_service.cc",
+    "brave_sync_service.h",
+    "brave_sync_service_factory.h",
+    "brave_sync_service_factory.cc",
+    "brave_sync_service_observer.h",
+  ]
+
+  deps = [
+    ":core",
+    "//base",
+    "//components/bookmarks/browser",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//content/public/browser",
+  ]
+}
+
+grit("resources") {
+  source = "resources.grd"
+  outputs = [
+    "grit/brave_sync_resources_map.cc",
+    "grit/brave_sync_resources_map.h",
+    "grit/brave_sync_resources.h",
+    "brave_sync_resources.pak",
+  ]
+
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+
+  # fix paths so we don't have to do this
+  resource_ids = ""
+}
+
+source_set("testutil") {
+  testonly = true
+
+  deps = [
+    ":brave_sync",
+    "//base",
+    "//content/public/browser",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+
+  sources = [
+    "test_util.cc",
+    "test_util.h",
+  ]
+}
