@@ -42,6 +42,18 @@ TEST(BraveToolbarModelImplTest,
   // suffix.
   EXPECT_EQ(base::ASCIIToUTF16("brave://page"),
             model->GetURLForDisplay());
+
+  delegate.SetURL(GURL("chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/http://localhost/test.pdf"));
+
+  // Verify that the PDFjs prefix isn't present in the display URL.
+  EXPECT_EQ(base::ASCIIToUTF16("http://localhost/test.pdf"),
+            model->GetURLForDisplay());
+
+  delegate.SetURL(GURL("chrome-extension://foobar/http://localhost/test.pdf"));
+
+  // Verify that other extension prefixes are preserved.
+  EXPECT_EQ(base::ASCIIToUTF16("chrome-extension://foobar/http://localhost/test.pdf"),
+            model->GetURLForDisplay());
 }
 
 }  // namespace

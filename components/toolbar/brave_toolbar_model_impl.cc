@@ -4,6 +4,7 @@
 
 #include "brave/components/toolbar/brave_toolbar_model_impl.h"
 
+#include "brave/common/extensions/extension_constants.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/toolbar/constants.h"
@@ -18,6 +19,10 @@ const base::string16 original_scheme_part =
 const base::string16 replacement_scheme_part =
                                   base::ASCIIToUTF16(kInternalUIScheme);
 
+const base::string16 pdfjs_url_prefix =
+                                  base::ASCIIToUTF16("chrome-extension://") +
+                                  base::ASCIIToUTF16(pdfjs_extension_id) +
+                                  base::ASCIIToUTF16("/");
 }
 
 base::string16 BraveToolbarModelImpl::GetURLForDisplay() const {
@@ -31,6 +36,10 @@ base::string16 BraveToolbarModelImpl::GetURLForDisplay() const {
                       base::CompareCase::INSENSITIVE_ASCII)) {
     formatted_text.replace(0, original_scheme_part.length(),
                             replacement_scheme_part);
+  }
+  else if (base::StartsWith(formatted_text, pdfjs_url_prefix,
+                       base::CompareCase::SENSITIVE)) {
+    formatted_text.erase(0, pdfjs_url_prefix.length());
   }
   return formatted_text;
 }
