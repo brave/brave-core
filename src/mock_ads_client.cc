@@ -378,7 +378,7 @@ void MockAdsClient::EventLog(const std::string& json) {
   std::string time_stamp;
   helper::Time::TimeStamp(time_stamp);
 
-  std::cerr << "Event logged (" << time_stamp <<  "): " << json << std::endl;
+  std::cout << "Event logged (" << time_stamp <<  "): " << json << std::endl;
 }
 
 void MockAdsClient::Log(const LogLevel log_level, const char* fmt, ...) const {
