@@ -58,9 +58,13 @@ extension Preferences {
         /// Whether or not to show suggestions while the user types
         static let showSuggestions = Option<Bool>(key: "search.show-suggestions", default: false)
         /// A list of disabled search engines
-        static let disabledEngines = Option<[String]>(key: "search.disabled-engines", default: [])
+        static let disabledEngines = Option<[String]?>(key: "search.disabled-engines", default: nil)
         /// A list of ordered search engines or nil if they have not been set up yet
         static let orderedEngines = Option<[String]?>(key: "search.ordered-engines", default: nil)
+        /// The default selected search engine in regular mode
+        static let defaultEngineName = Option<String?>(key: "search.default.name", default: nil)
+        /// The default selected search engine in private mode
+        static let defaultPrivateEngineName = Option<String?>(key: "search.defaultprivate.name", default: nil)
     }
     final class Privacy {
         /// Forces all private tabs
