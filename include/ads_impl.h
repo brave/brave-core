@@ -101,7 +101,8 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   bool IsInitialized();
 
   void LoadUserModel();
-  std::string GetWinningCategory();
+  std::string GetImmediateWinningCategory();
+  std::string GetWinnerOverTimeCategory();
 
   uint32_t collect_activity_timer_id_;
   bool IsCollectingActivity() const;

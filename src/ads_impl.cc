@@ -195,7 +195,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
     }
   }
 
-  auto category = GetWinningCategory();
+  auto category = GetWinnerOverTimeCategory();
   ServeAdFromCategory(category);
 }
 
@@ -362,7 +362,21 @@ void AdsImpl::LoadUserModel() {
   ads_client_->LoadUserModel(this);
 }
 
-std::string AdsImpl::GetWinningCategory() {
+std::string AdsImpl::GetImmediateWinningCategory() {
+  auto page_score_history = client_->GetPageScoreHistory();
+  if (page_score_history.size() == 0) {
+    return "";
+  }
+
+  auto immediate_winning_page_score = page_score_history.front();
+
+  auto category = usermodel::UserModel::winningCategory(
+    immediate_winning_page_score, user_model_->page_classifier.Classes());
+
+  return category;
+}
+
+std::string AdsImpl::GetWinnerOverTimeCategory() {
   auto page_score_history = client_->GetPageScoreHistory();
   if (page_score_history.size() == 0) {
     return "";
