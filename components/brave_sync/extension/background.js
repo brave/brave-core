@@ -5,7 +5,13 @@ chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config, syn
     seed = null;
   }
   if (sync_words) {
-    seed = module.exports.passphrase.toBytes32(sync_words)
+    try {
+      seed = module.exports.passphrase.toBytes32(sync_words)
+    } catch(err) {
+      console.log(`"onGotInitData" sync_words=${JSON.stringify(sync_words)} err.message=${err.message}`);
+      chrome.braveSync.syncSetupError('wrong code words')
+      return;
+    }
   }
   console.log(`"got-init-data" seed=${JSON.stringify(seed)} device_id=${JSON.stringify(device_id)} config=${JSON.stringify(config)}`);
   callbackList["got-init-data"](null, seed, device_id, config);

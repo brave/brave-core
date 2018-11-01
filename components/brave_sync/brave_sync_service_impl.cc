@@ -334,6 +334,10 @@ void BraveSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   DCHECK(!sync_initialized_);
+  // If we are here and initializing_ is false, we have came
+  // not from OnSetupSyncNewToSync or OnSetupSyncHaveCode.
+  // One case is we put wrong code words and then restarted before cleared
+  // kSyncEnabled pref. This should not happen.
   DCHECK(initializing_);
 
   std::string seed_str = StrFromUint8Array(seed);
