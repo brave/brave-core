@@ -7,10 +7,14 @@
 #include <string>
 
 #include "ads_client.h"
+#include "event_type_notification_shown_info.h"
+#include "event_type_notification_result_info.h"
+#include "event_type_sustain_info.h"
 #include "export.h"
 
 namespace ads {
 
+extern bool _is_testing;
 extern bool _is_production;
 extern bool _is_verbose;
 
@@ -25,6 +29,15 @@ ADS_EXPORT class Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
+  virtual void GenerateAdReportingNotificationShownEvent(
+      const event_type::NotificationShownInfo& info) = 0;
+
+  virtual void GenerateAdReportingNotificationResultEvent(
+      const event_type::NotificationResultInfo& info) = 0;
+
+  virtual void GenerateAdReportingSustainEvent(
+      const event_type::SustainInfo& info) = 0;
+
   // Initialize
   virtual void Initialize() = 0;
 
@@ -35,7 +48,20 @@ ADS_EXPORT class Ads {
   virtual void AppFocused(const bool focused) = 0;
 
   // Called to record user activity on a tab
-  virtual void TabUpdate() = 0;
+  virtual void TabUpdated(
+      const std::string& tab_id,
+      const std::string& url,
+      const bool active,
+      const bool incognito) = 0;
+
+  // Called to record when a user switches tab
+  virtual void TabSwitched(
+      const std::string& tab_id,
+      const std::string& url,
+      const bool incognito) = 0;
+
+  // Called to record when a user closes a tab
+  virtual void TabClosed(const std::string& tab_id) = 0;
 
   // Called to record when a user is no longer idle
   virtual void RecordUnIdle() = 0;
@@ -62,7 +88,7 @@ ADS_EXPORT class Ads {
   // Called to record whenever a tab is playing (or has
   // stopped playing) media (A/V)
   virtual void RecordMediaPlaying(
-      const std::string& tabId,
+      const std::string& tab_id,
       const bool active) = 0;
 
   // Called when a page is completely loaded and both the headers

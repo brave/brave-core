@@ -4,12 +4,19 @@
 
 #include <fstream>
 
+#include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
+
 #include "ads_impl.h"
 #include "ads_client.h"
 #include "bundle_category_info.h"
 #include "ad_info.h"
 #include "search_providers.h"
 #include "math_helper.h"
+#include "string_helper.h"
+#include "time_helper.h"
 #include "url_components.h"
 #include "static_values.h"
 
@@ -17,8 +24,11 @@ namespace rewards_ads {
 
 AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
     initialized_(false),
+    boot_(false),
     app_focused_(false),
+    last_page_classification_(""),
     collect_activity_timer_id_(0),
+    next_easter_egg_(0),
     media_playing_({}),
     ads_client_(ads_client),
     settings_(std::make_unique<state::Settings>(ads_client_)),
@@ -29,6 +39,159 @@ AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
 }
 
 AdsImpl::~AdsImpl() = default;
+
+void AdsImpl::GenerateAdReportingNotificationShownEvent(
+    const event_type::NotificationShownInfo& info) {
+  if (!boot_) {
+    boot_ = true;
+
+    GenerateAdReportingRestartEvent();
+  }
+
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("notify");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("notificationType");
+  writer.String("generated");
+
+  writer.String("notificationClassification");
+  writer.StartArray();
+  std::vector<std::string> classifications;
+  helper::String::Split(info.classification,
+    '-', classifications);
+  for (const auto& classification : classifications) {
+    writer.String(classification.c_str());
+  }
+  writer.EndArray();
+
+  writer.String("notificationCatalog");
+  if (info.catalog.empty()) {
+    writer.String("sample-catalog");
+  } else {
+    writer.String(info.catalog.c_str());
+  }
+
+  writer.String("notificationUrl");
+  writer.String(info.url.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingNotificationResultEvent(
+    const event_type::NotificationResultInfo& info) {
+  if (!boot_) {
+    boot_ = true;
+
+    GenerateAdReportingRestartEvent();
+  }
+
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("notify");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("notificationType");
+  switch (info.result_type) {
+    case event_type::NotificationResultInfoResultType::CLICKED: {
+      writer.String("clicked");
+      client_->UpdateAdsUUIDSeen(info.id, 1);
+      break;
+    }
+
+    case event_type::NotificationResultInfoResultType::DISMISSED: {
+      writer.String("dismissed");
+      client_->UpdateAdsUUIDSeen(info.id, 1);
+      break;
+    }
+
+    case event_type::NotificationResultInfoResultType::TIMEOUT: {
+      writer.String("timeout");
+      break;
+    }
+  }
+
+  writer.String("notificationClassification");
+  writer.StartArray();
+  std::vector<std::string> classifications;
+  helper::String::Split(info.classification,
+    '-', classifications);
+  for (const auto& classification : classifications) {
+    writer.String(classification.c_str());
+  }
+  writer.EndArray();
+
+  writer.String("notificationCatalog");
+  if (info.catalog.empty()) {
+    writer.String("sample-catalog");
+  } else {
+    writer.String(info.catalog.c_str());
+  }
+
+  writer.String("notificationUrl");
+  writer.String(info.url.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingSustainEvent(
+    const event_type::SustainInfo& info) {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("sustain");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("notificationId");
+  writer.String(info.notification_id.c_str());
+
+  writer.String("notificationType");
+  writer.String("viewed");
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
 
 void AdsImpl::Initialize() {
   if (initialized_) {
@@ -45,10 +208,58 @@ void AdsImpl::InitializeUserModel(const std::string& json) {
 
 void AdsImpl::AppFocused(const bool focused) {
   app_focused_ = focused;
+
+  if (app_focused_) {
+    GenerateAdReportingForegroundEvent();
+  } else {
+    GenerateAdReportingBackgroundEvent();
+  }
 }
 
-void AdsImpl::TabUpdate() {
+void AdsImpl::TabUpdated(
+    const std::string& tab_id,
+      const std::string& url,
+    const bool active,
+    const bool incognito) {
+  if (incognito) {
+    return;
+  }
+
   client_->UpdateLastUserActivity();
+
+  event_type::LoadInfo load_info;
+  load_info.tab_id = tab_id;
+  load_info.tab_url = url;
+  GenerateAdReportingLoadEvent(load_info);
+
+  if (!active) {
+    event_type::BlurInfo blur_info;
+    blur_info.tab_id = tab_id;
+    GenerateAdReportingBlurEvent(blur_info);
+  }
+}
+
+void AdsImpl::TabSwitched(
+    const std::string& tab_id,
+    const std::string& url,
+    const bool incognito) {
+  if (incognito) {
+    return;
+  }
+
+  TabUpdated(tab_id, url, true, incognito);
+  TestShoppingData(url);
+  TestSearchState(url);
+
+  event_type::FocusInfo focus_info;
+  focus_info.tab_id = tab_id;
+  GenerateAdReportingFocusEvent(focus_info);
+}
+
+void AdsImpl::TabClosed(const std::string& tab_id) {
+  event_type::DestroyInfo destroy_info;
+  destroy_info.tab_id = tab_id;
+  GenerateAdReportingDestroyEvent(destroy_info);
 }
 
 void AdsImpl::RecordUnIdle() {
@@ -131,11 +342,25 @@ void AdsImpl::ClassifyPage(const std::string& html) {
     return;
   }
 
-  auto page_scores = user_model_->classifyPage(html);
-  client_->AppendPageScoreToPageScoreHistory(page_scores);
+  auto page_score = user_model_->classifyPage(html);
+  client_->AppendPageScoreToPageScoreHistory(page_score);
+
+  last_page_classification_ = GetWinningCategory(page_score);
 
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Site visited', { url, immediateWinner, winnerOverTime }
+}
+
+void AdsImpl::CachePageScore(
+    const std::string& url,
+    const std::vector<double>& page_score) {
+  auto cached_page_score = page_score_cache_.find(url);
+
+  if (cached_page_score == page_score_cache_.end()) {
+    page_score_cache_.insert({url, page_score});
+  } else {
+    cached_page_score->second = page_score;
+  }
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -258,6 +483,8 @@ void AdsImpl::OnSettingsLoaded(
     return;
   }
 
+  GenerateAdReportingSettingsEvent();
+
   if (!settings_->IsAdsEnabled()) {
     Deinitialize();
     return;
@@ -343,10 +570,16 @@ void AdsImpl::Deinitialize() {
 
   RemoveAllHistory();
 
+  last_page_classification_ = "";
+
   ads_client_->ResetCatalog();
   bundle_->Reset();
 
   user_model_.reset();
+
+  app_focused_ = false;
+
+  boot_ = false;
 
   initialized_ = false;
 }
@@ -366,16 +599,9 @@ void AdsImpl::LoadUserModel() {
   ads_client_->LoadUserModel(this);
 }
 
-std::string AdsImpl::GetImmediateWinningCategory() {
-  auto page_score_history = client_->GetPageScoreHistory();
-  if (page_score_history.size() == 0) {
-    return "";
-  }
-
-  auto immediate_winning_page_score = page_score_history.front();
-
+std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {
   auto category = usermodel::UserModel::winningCategory(
-    immediate_winning_page_score, user_model_->page_classifier.Classes());
+    page_score, user_model_->page_classifier.Classes());
 
   return category;
 }
@@ -506,10 +732,6 @@ void AdsImpl::OnGetAds(
     return;
   }
 
-  // TODO(Terry Mancey): UpdatedAdsUUIDSeen should only be called from
-  // GenerateAdReportingEvent once implemented (#37)
-  client_->UpdateAdsUUIDSeen(ad.uuid, 1);
-
   auto ad_info = std::make_unique<ads::AdInfo>();
   ad_info->advertiser = ad.advertiser;
   ad_info->category = category;
@@ -586,6 +808,296 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
   }
 
   return false;
+}
+
+void AdsImpl::GenerateAdReportingLoadEvent(
+    const event_type::LoadInfo info) {
+  if (strncmp(info.tab_url.c_str(), "http://", strlen("http://")) != 0 &&
+      strncmp(info.tab_url.c_str(), "https://", strlen("https://")) != 0) {
+    return;
+  }
+
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("load");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("tabId");
+  writer.String(info.tab_id.c_str());
+
+  writer.String("tabType");
+  if (client_->GetSearchState()) {
+    writer.String("search");
+  } else {
+    writer.String("click");
+  }
+
+  writer.String("tabUrl");
+  writer.String(info.tab_url.c_str());
+
+  writer.String("tabClassification");
+  writer.StartArray();
+  std::vector<std::string> classifications;
+  helper::String::Split(last_page_classification_, '-', classifications);
+  for (const auto& classification : classifications) {
+    writer.String(classification.c_str());
+  }
+  writer.EndArray();
+
+  // TODO(Terry Mancey): cachedValue.url from JavaScript
+  auto cached_page_score = page_score_cache_.find(info.tab_url);
+  if (cached_page_score != page_score_cache_.end()) {
+    writer.String("pageScore");
+    writer.StartArray();
+    for (const auto& score : cached_page_score->second) {
+      writer.Double(score);
+    }
+    writer.EndArray();
+  }
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+
+  auto now = static_cast<uint64_t>(std::time(nullptr));
+  if (ads::_is_testing && info.tab_url == "https://www.iab.com/"
+      && next_easter_egg_ < now) {
+    next_easter_egg_ = now + (30 * 1000);
+
+    CheckReadyAdServe(true);
+  }
+}
+
+void AdsImpl::GenerateAdReportingBackgroundEvent() {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("background");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("place");
+  auto place = client_->GetCurrentPlace();
+  writer.String(place.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingForegroundEvent() {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("foreground");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("place");
+  auto place = client_->GetCurrentPlace();
+  writer.String(place.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingBlurEvent(
+    const event_type::BlurInfo& info) {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("blur");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("tabId");
+  writer.String(info.tab_id.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingDestroyEvent(
+    const event_type::DestroyInfo& info) {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("focus");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("tabId");
+  writer.String(info.tab_id.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingFocusEvent(
+    const event_type::FocusInfo& info) {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("focus");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("tabId");
+  writer.String(info.tab_id.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingRestartEvent() {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("restart");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("place");
+  auto place = client_->GetCurrentPlace();
+  writer.String(place.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingSettingsEvent() {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("settings");
+
+  writer.String("stamp");
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+  writer.String(time_stamp.c_str());
+
+  writer.String("settings");
+  writer.StartObject();
+
+  writer.String("notifications");
+  writer.StartObject();
+
+  writer.String("configured");
+  auto configured = client_->GetConfigured();
+  writer.Bool(configured);
+
+  writer.String("allowed");
+  auto allowed = client_->GetAllowed();
+  writer.Bool(allowed);
+
+  writer.EndObject();
+
+  // TODO(Terry Mancey): Confirm logic as GetCurrentPlace() does not seem right
+  writer.String("place");
+  auto place = client_->GetCurrentPlace();
+  writer.String(place.c_str());
+
+  writer.String("locale");
+  auto locale = settings_->GetAdsLocale();
+  writer.String(locale.c_str());
+
+  writer.String("adsPerDay");
+  auto ads_per_day = settings_->GetAdsPerDay();
+  writer.Uint64(ads_per_day);
+
+  writer.String("adsPerHour");
+  auto ads_per_hour = settings_->GetAdsPerHour();
+  writer.Uint64(ads_per_hour);
+
+  writer.EndObject();
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
 }
 
 }  // namespace rewards_ads

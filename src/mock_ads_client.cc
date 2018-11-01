@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -15,6 +16,7 @@
 #include "ad_info.h"
 #include "math_helper.h"
 #include "string_helper.h"
+#include "time_helper.h"
 
 namespace ads {
 
@@ -370,6 +372,13 @@ void MockAdsClient::GetUrlComponents(
   }
 
   uriFreeUriMembersA(&uri);
+}
+
+void MockAdsClient::EventLog(const std::string& json) {
+  std::string time_stamp;
+  helper::Time::TimeStamp(time_stamp);
+
+  std::cerr << "Event logged (" << time_stamp <<  "): " << json << std::endl;
 }
 
 void MockAdsClient::Log(const LogLevel log_level, const char* fmt, ...) const {

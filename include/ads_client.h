@@ -115,6 +115,9 @@ ADS_EXPORT class AdsClient {
       const std::string& url,
       UrlComponents& components) const = 0;
 
+  // Log event
+  virtual void EventLog(const std::string& json) = 0;
+
   // Log debug information
   virtual void Log(const LogLevel log_level, const char *fmt, ...) const = 0;
 };

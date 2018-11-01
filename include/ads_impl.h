@@ -14,6 +14,13 @@
 #include "ads.h"
 #include "catalog_ads_serve.h"
 #include "bundle_category_info.h"
+#include "event_type_blur_info.h"
+#include "event_type_destroy_info.h"
+#include "event_type_focus_info.h"
+#include "event_type_load_info.h"
+#include "event_type_notification_shown_info.h"
+#include "event_type_notification_result_info.h"
+#include "event_type_sustain_info.h"
 #include "client.h"
 #include "settings.h"
 #include "bundle.h"
@@ -39,17 +46,34 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
 
+  void GenerateAdReportingNotificationShownEvent(
+      const event_type::NotificationShownInfo& info) override;
+  void GenerateAdReportingNotificationResultEvent(
+      const event_type::NotificationResultInfo& info) override;
+  void GenerateAdReportingSustainEvent(
+      const event_type::SustainInfo& info) override;
   void Initialize() override;
   void InitializeUserModel(const std::string& json) override;
-  void AppFocused(bool focused) override;
-  void TabUpdate() override;
+  void AppFocused(const bool focused) override;
+  void TabUpdated(
+      const std::string& tab_id,
+      const std::string& url,
+      const bool active,
+      const bool incognito) override;
+  void TabSwitched(
+      const std::string& tab_id,
+      const std::string& url,
+      const bool incognito) override;
+  void TabClosed(const std::string& tab_id) override;
   void RecordUnIdle() override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
   void ConfirmAdUUIDIfAdEnabled() override;
   void TestShoppingData(const std::string& url) override;
   void TestSearchState(const std::string& url) override;
-  void RecordMediaPlaying(const std::string& tabId, bool active) override;
+  void RecordMediaPlaying(
+      const std::string& tab_id,
+      const bool active) override;
   void ClassifyPage(const std::string& html) override;
   void ChangeLocale(const std::string& locale) override;
   void CollectActivity() override;
@@ -58,10 +82,10 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   void CheckReadyAdServe(const bool forced = false) override;
   void ServeSampleAd() override;
 
-  void SetNotificationsAvailable(bool available) override;
-  void SetNotificationsAllowed(bool allowed) override;
-  void SetNotificationsConfigured(bool configured) override;
-  void SetNotificationsExpired(bool expired) override;
+  void SetNotificationsAvailable(const bool available) override;
+  void SetNotificationsAllowed(const bool allowed) override;
+  void SetNotificationsConfigured(const bool configured) override;
+  void SetNotificationsExpired(const bool expired) override;
 
   void StartCollectingActivity(const uint64_t start_timer_in);
 
@@ -96,17 +120,27 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   bool initialized_;
   void Deinitialize();
 
+  bool boot_;
+
   bool app_focused_;
 
   bool IsInitialized();
 
+  std::string last_page_classification_;
   void LoadUserModel();
-  std::string GetImmediateWinningCategory();
+  std::string GetWinningCategory(const std::vector<double>& page_score);
   std::string GetWinnerOverTimeCategory();
+
+  std::map<std::string, std::vector<double>> page_score_cache_;
+  void CachePageScore(
+      const std::string& url,
+      const std::vector<double>& page_score);
 
   uint32_t collect_activity_timer_id_;
   bool IsCollectingActivity() const;
   void StopCollectingActivity();
+
+  uint64_t next_easter_egg_;
 
   std::map<std::string, bool> media_playing_;
   bool IsMediaPlaying() const;
@@ -122,6 +156,15 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
       const std::deque<time_t> history,
       const uint64_t seconds_window,
       const uint64_t allowable_ad_count) const;
+
+  void GenerateAdReportingLoadEvent(const event_type::LoadInfo info);
+  void GenerateAdReportingBackgroundEvent();
+  void GenerateAdReportingForegroundEvent();
+  void GenerateAdReportingBlurEvent(const event_type::BlurInfo& info);
+  void GenerateAdReportingDestroyEvent(const event_type::DestroyInfo& info);
+  void GenerateAdReportingFocusEvent(const event_type::FocusInfo& info);
+  void GenerateAdReportingRestartEvent();
+  void GenerateAdReportingSettingsEvent();
 
   ads::AdsClient* ads_client_;  // NOT OWNED
 
