@@ -57,6 +57,8 @@ extension Preferences {
     final class Search {
         /// Whether or not to show suggestions while the user types
         static let showSuggestions = Option<Bool>(key: "search.show-suggestions", default: false)
+        /// If the user should see the show suggetsions opt-in
+        static let shouldShowSuggestionsOptIn = Option<Bool>(key: "search.show-suggestions-opt-in", default: true)
         /// A list of disabled search engines
         static let disabledEngines = Option<[String]?>(key: "search.disabled-engines", default: nil)
         /// A list of ordered search engines or nil if they have not been set up yet

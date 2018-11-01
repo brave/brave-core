@@ -39,6 +39,7 @@ extension Preferences {
         migrate(key: "search.orderedEngineNames", to: Preferences.Search.orderedEngines)
         migrate(key: "search.disabledEngineNames", to: Preferences.Search.disabledEngines)
         migrate(key: "search.suggestions.show", to: Preferences.Search.showSuggestions)
+        migrate(key: "search.suggestions.showOptIn", to: Preferences.Search.shouldShowSuggestionsOptIn)
         migrate(key: "search.default.name", to: Preferences.Search.defaultEngineName)
         migrate(key: "search.defaultprivate.name", to: Preferences.Search.defaultPrivateEngineName)
         
