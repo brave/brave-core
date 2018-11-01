@@ -122,7 +122,8 @@ void MockAdsClient::SetTimer(const uint64_t time_offset, uint32_t& timer_id) {
 
   timer_id = mock_timer_id;
 
-  // Call the ads_->OnTimer(timer_id) function when the timer is fired
+  // Client should call the ads_->OnTimer(timer_id) function when the timer
+  // is fired. This mock is synchronous so OnTimer should not be fired!
 }
 
 void MockAdsClient::StopTimer(uint32_t& timer_id) {
