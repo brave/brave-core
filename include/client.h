@@ -39,13 +39,17 @@ class Client: public ads::CallbackHandler {
       const std::vector<bundle::CategoryInfo>& categories);
   void SetAvailable(const bool available);
   void SetAllowed(const bool allowed);
+  bool GetAllowed();
   void SetConfigured(const bool configured);
+  bool GetConfigured();
   void SetCurrentSSID(const std::string& ssid);
   void SetExpired(const bool expired);
   void FlagShoppingState(const std::string& url, const uint64_t score);
   void UnflagShoppingState();
+  bool GetShoppingState();
   void FlagSearchState(const std::string& url, const uint64_t score);
   void UnflagSearchState(const std::string &url);
+  bool GetSearchState();
   void UpdateLastUserActivity();
   void UpdateLastUserIdleStopTime();
   void SetLocale(const std::string& locale);
@@ -55,6 +59,8 @@ class Client: public ads::CallbackHandler {
   void AppendPageScoreToPageScoreHistory(
       const std::vector<double>& page_scores);
   std::deque<std::vector<double>> GetPageScoreHistory();
+  std::string GetCurrentPlace();
+
   void RemoveAllHistory();
 
  private:

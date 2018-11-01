@@ -82,8 +82,16 @@ void Client::SetAllowed(const bool allowed) {
   client_state_->allowed = allowed;
 }
 
+bool Client::GetAllowed() {
+  return client_state_->allowed;
+}
+
 void Client::SetConfigured(const bool configured) {
   client_state_->configured = configured;
+}
+
+bool Client::GetConfigured() {
+  return client_state_->configured;
 }
 
 void Client::SetCurrentSSID(const std::string& ssid) {
@@ -109,6 +117,10 @@ void Client::UnflagShoppingState() {
   client_state_->shop_activity = false;
 }
 
+bool Client::GetShoppingState() {
+  return client_state_->shop_activity;
+}
+
 void Client::FlagSearchState(
     const std::string& url,
     const uint64_t score) {
@@ -129,6 +141,10 @@ void Client::UnflagSearchState(const std::string &url) {
 
   auto now = std::time(nullptr);
   client_state_->last_search_time = now;
+}
+
+bool Client::GetSearchState() {
+  return client_state_->search_activity;
 }
 
 void Client::UpdateLastUserActivity() {
@@ -168,6 +184,15 @@ void Client::AppendPageScoreToPageScoreHistory(
 
 std::deque<std::vector<double>> Client::GetPageScoreHistory() {
   return client_state_->page_score_history;
+}
+
+std::string Client::GetCurrentPlace() {
+  auto place = client_state_->places.find(client_state_->current_ssid);
+  if (place != client_state_->places.end()) {
+    return place->second;
+  } else {
+    return "UNDISCLOSED";
+  }
 }
 
 void Client::RemoveAllHistory() {
