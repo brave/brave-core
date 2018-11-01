@@ -73,18 +73,6 @@ ADS_EXPORT class Ads {
   // is not enabled, then removes all client state
   virtual void SaveCachedInfo() = 0;
 
-  // Called to schedule network activity for talking to the catalog
-  // and/or redemption servers
-  virtual void ConfirmAdUUIDIfAdEnabled() = 0;
-
-  // Called to determine if a URL is a shopping site and
-  // update the client state accordingly
-  virtual void TestShoppingData(const std::string& url) = 0;
-
-  // Called to determine if a URL is a search result and update
-  // client state accordingly
-  virtual void TestSearchState(const std::string& url) = 0;
-
   // Called to record whenever a tab is playing (or has
   // stopped playing) media (A/V)
   virtual void RecordMediaPlaying(
@@ -93,7 +81,9 @@ ADS_EXPORT class Ads {
 
   // Called when a page is completely loaded and both the headers
   // and body are available for analysis
-  virtual void ClassifyPage(const std::string& html) = 0;
+  virtual void ClassifyPage(
+      const std::string& url,
+      const std::string& html) = 0;
 
   // Called when the user changes their locale (e.g., "en", "fr", or "gb")
   virtual void ChangeLocale(const std::string& locale) = 0;
@@ -101,14 +91,6 @@ ADS_EXPORT class Ads {
   // Frequently called when it may be time to talk to
   // the catalog and/or redemption server
   virtual void CollectActivity() = 0;
-
-  // Called when the catalog server has returned a result.
-  // If the result is good, an upcall is made to save the catalog state
-  // and save the client state
-  virtual void ApplyCatalog() = 0;
-
-  // Called to get the network SSID
-  virtual void RetrieveSSID() = 0;
 
   // Frequently called to determine whether a notification should be
   // displayed; if so, the notification is sent

@@ -28,8 +28,8 @@ AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
     app_focused_(false),
     last_page_classification_(""),
     collect_activity_timer_id_(0),
-    next_easter_egg_(0),
     media_playing_({}),
+    next_easter_egg_(0),
     ads_client_(ads_client),
     settings_(std::make_unique<state::Settings>(ads_client_)),
     client_(std::make_unique<state::Client>(this, ads_client_)),
@@ -282,45 +282,7 @@ void AdsImpl::SaveCachedInfo() {
   }
 
   client_->SaveJson();
-}
-
-void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
-  if (!settings_->IsAdsEnabled()) {
-    StopCollectingActivity();
-    return;
-  }
-
-  client_->UpdateAdUUID();
-
-  StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
-}
-
-void AdsImpl::TestShoppingData(const std::string& url) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  ads::UrlComponents components;
-  ads_client_->GetUrlComponents(url, components);
-  if (components.hostname == "www.amazon.com") {
-    client_->FlagShoppingState(url, 1.0);
-  } else {
-    client_->UnflagShoppingState();
-  }
-}
-
-void AdsImpl::TestSearchState(const std::string& url) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  ads::UrlComponents components;
-  ads_client_->GetUrlComponents(url, components);
-  if (ads::SearchProviders::IsSearchEngine(components)) {
-    client_->FlagSearchState(url, 1.0);
-  } else {
-    client_->UnflagSearchState(url);
-  }
+  bundle_->Save();
 }
 
 void AdsImpl::RecordMediaPlaying(const std::string& tab_id, const bool active) {
@@ -337,10 +299,13 @@ void AdsImpl::RecordMediaPlaying(const std::string& tab_id, const bool active) {
   }
 }
 
-void AdsImpl::ClassifyPage(const std::string& html) {
+void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   if (!IsInitialized()) {
     return;
   }
+
+  TestShoppingData(url);
+  TestSearchState(url);
 
   auto page_score = user_model_->classifyPage(html);
   client_->AppendPageScoreToPageScoreHistory(page_score);
@@ -349,18 +314,6 @@ void AdsImpl::ClassifyPage(const std::string& html) {
 
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Site visited', { url, immediateWinner, winnerOverTime }
-}
-
-void AdsImpl::CachePageScore(
-    const std::string& url,
-    const std::vector<double>& page_score) {
-  auto cached_page_score = page_score_cache_.find(url);
-
-  if (cached_page_score == page_score_cache_.end()) {
-    page_score_cache_.insert({url, page_score});
-  } else {
-    cached_page_score->second = page_score;
-  }
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -380,22 +333,6 @@ void AdsImpl::CollectActivity() {
   }
 
   catalog_ads_serve_->DownloadCatalog();
-}
-
-void AdsImpl::ApplyCatalog() {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  client_->SaveJson();
-  bundle_->Save();
-}
-
-void AdsImpl::RetrieveSSID() {
-  std::string ssid;
-  ads_client_->GetSSID(ssid);
-
-  client_->SetCurrentSSID(ssid);
 }
 
 void AdsImpl::CheckReadyAdServe(const bool forced) {
@@ -558,6 +495,16 @@ void AdsImpl::OnBundleLoaded(
 
 //////////////////////////////////////////////////////////////////////////////
 
+bool AdsImpl::IsInitialized() {
+  if (!initialized_ ||
+      !settings_->IsAdsEnabled() ||
+      !user_model_->IsInitialized()) {
+    return false;
+  }
+
+  return true;
+}
+
 void AdsImpl::Deinitialize() {
   if (!initialized_) {
     ads_client_->Log(ads::LogLevel::WARNING, "Not initialized");
@@ -582,16 +529,6 @@ void AdsImpl::Deinitialize() {
   boot_ = false;
 
   initialized_ = false;
-}
-
-bool AdsImpl::IsInitialized() {
-  if (!initialized_ ||
-      !settings_->IsAdsEnabled() ||
-      !user_model_->IsInitialized()) {
-    return false;
-  }
-
-  return true;
 }
 
 void AdsImpl::LoadUserModel() {
@@ -636,6 +573,18 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
   return category;
 }
 
+void AdsImpl::CachePageScore(
+    const std::string& url,
+    const std::vector<double>& page_score) {
+  auto cached_page_score = page_score_cache_.find(url);
+
+  if (cached_page_score == page_score_cache_.end()) {
+    page_score_cache_.insert({url, page_score});
+  } else {
+    cached_page_score->second = page_score;
+  }
+}
+
 bool AdsImpl::IsCollectingActivity() const {
   return collect_activity_timer_id_ != 0 ? true : false;
 }
@@ -647,6 +596,52 @@ void AdsImpl::StopCollectingActivity() {
 
   ads_client_->StopTimer(collect_activity_timer_id_);
   collect_activity_timer_id_ = 0;
+}
+
+void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
+  if (!settings_->IsAdsEnabled()) {
+    StopCollectingActivity();
+    return;
+  }
+
+  client_->UpdateAdUUID();
+
+  StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
+}
+
+void AdsImpl::RetrieveSSID() {
+  std::string ssid;
+  ads_client_->GetSSID(ssid);
+
+  client_->SetCurrentSSID(ssid);
+}
+
+void AdsImpl::TestShoppingData(const std::string& url) {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  ads::UrlComponents components;
+  ads_client_->GetUrlComponents(url, components);
+  if (components.hostname == "www.amazon.com") {
+    client_->FlagShoppingState(url, 1.0);
+  } else {
+    client_->UnflagShoppingState();
+  }
+}
+
+void AdsImpl::TestSearchState(const std::string& url) {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  ads::UrlComponents components;
+  ads_client_->GetUrlComponents(url, components);
+  if (ads::SearchProviders::IsSearchEngine(components)) {
+    client_->FlagSearchState(url, 1.0);
+  } else {
+    client_->UnflagSearchState(url);
+  }
 }
 
 bool AdsImpl::IsMediaPlaying() const {
@@ -812,8 +807,9 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
 
 void AdsImpl::GenerateAdReportingLoadEvent(
     const event_type::LoadInfo info) {
-  if (strncmp(info.tab_url.c_str(), "http://", strlen("http://")) != 0 &&
-      strncmp(info.tab_url.c_str(), "https://", strlen("https://")) != 0) {
+  ads::UrlComponents components;
+  ads_client_->GetUrlComponents(info.tab_url, components);
+  if (components.scheme != "http" && components.scheme != "https") {
     return;
   }
 

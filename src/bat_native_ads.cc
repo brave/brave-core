@@ -25,19 +25,12 @@ int main() {
 
   ads.RecordUnIdle();
 
-  ads.TestSearchState("https://www.google.com/search?source=hp&ei=zeLJW76cLKvQr"
-    "gT3s4C4Bw&q=brave&oq=brave&gs_l=psy-ab.3...4258.5100.0.5303.8.6.0.0.0.0.0."
-    "0..1.0....0...1c.1.64.psy-ab..7.0.0.0...1424.CBtU1Ete7Bk");
-  ads.TestSearchState("https://brave.com");
-
-  ads.TestShoppingData("https://www.amazon.com/dp/B077SXWSRP/ref=fs_ods_bp");
-  ads.TestShoppingData("https://brave.com");
-
   ads.RecordMediaPlaying("Test Tab", true);
 
-  ads.ClassifyPage("Jewellery (British English) or jewelry (American English)[1"
-    "] consists of small decorative items worn for personal adornment, such as "
-    "brooches, rings, necklaces, earrings, pendants, bracelets and cufflinks.");
+  ads.ClassifyPage("https://www.jewelry.com",
+    "Jewellery (British English) or jewelry (American English)[1] consists of s"
+    "mall decorative items worn for personal adornment, such as brooches, rings"
+    ", necklaces, earrings, pendants, bracelets and cufflinks.");
 
   ads.ChangeLocale("en_GB");
 
@@ -74,17 +67,20 @@ int main() {
   ads.CheckReadyAdServe(true);
   ads.CheckReadyAdServe(true);
 
-  ads.ClassifyPage("Making ice cream at home requires no special equipment, giv"
-    "es you free rein in combining flavours and impresses the socks off dinner "
-    "guests. What's your favourite recipe?");
+  ads.ClassifyPage("https://www.google.com/search?source=hp&ei=zeLJW76cLKvQr",
+    "Making ice cream at home requires no special equipment, gives you free rei"
+    "n in combining flavours and impresses the socks off dinner guests. What's "
+    "your favourite recipe?");
 
-  ads.ClassifyPage("Our collection of Fit Food recipes inspired by Gordon Ramsa"
-    "y’s recipe book Ultimate Fit Food, will provide you with healthy nutritiou"
-    "s dishes that are as delicious as they are good for you. ... Try this new "
-    "'Ultimate Fit Food' dish for yourself at Heddon Street Kitchen.");
+  ads.ClassifyPage("https://www.amazon.com/dp/B077SXWSRP/ref=fs_ods_bp",
+    "Our collection of Fit Food recipes inspired by Gordon Ramsay’s recipe book"
+    " Ultimate Fit Food, will provide you with healthy nutritious dishes that a"
+    "re as delicious as they are good for you. ... Try this new 'Ultimate Fit F"
+    "ood' dish for yourself at Heddon Street Kitchen.");
 
-  ads.ClassifyPage("There are loads of main-course recipes here, as well as ide"
-    "as for starters, desserts, leftovers, easy meals, sides and sauces.");
+  ads.ClassifyPage("recipes.com",
+    "There are loads of main-course recipes here, as well as ideas for starters"
+    ", desserts, leftovers, easy meals, sides and sauces.");
 
   ads.CheckReadyAdServe(true);
   ads.CheckReadyAdServe(true);
@@ -98,13 +94,14 @@ int main() {
   ads.CheckReadyAdServe(true);
   ads.CheckReadyAdServe(true);
 
-  ads.ClassifyPage("WarGames is a 1983 American Cold War science fiction film w"
-    "ritten by Lawrence Lasker and Walter F. Parkes and directed by John Badham"
-    ". The film stars Matthew Broderick, Dabney Coleman, John Wood, and Ally Sh"
-    "eedy. The film was a box office success, costing $12 million and grossing "
-    "$79 million after five months in the United States and Canada. The film wa"
-    "s nominated for three Academy Awards. A sequel, WarGames: The Dead Code, w"
-    "as released direct to DVD in 2008.");
+  ads.ClassifyPage("https://imdb.com",
+    "WarGames is a 1983 American Cold War science fiction film written by Lawre"
+    "nce Lasker and Walter F. Parkes and directed by John Badham. The film star"
+    "s Matthew Broderick, Dabney Coleman, John Wood, and Ally Sheedy. The film "
+    "was a box office success, costing $12 million and grossing $79 million aft"
+    "er five months in the United States and Canada. The film was nominated for"
+    " three Academy Awards. A sequel, WarGames: The Dead Code, was released dir"
+    "ect to DVD in 2008.");
 
   ads.CheckReadyAdServe(true);
   ads.CheckReadyAdServe(true);

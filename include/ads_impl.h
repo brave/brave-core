@@ -68,17 +68,12 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   void RecordUnIdle() override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
-  void ConfirmAdUUIDIfAdEnabled() override;
-  void TestShoppingData(const std::string& url) override;
-  void TestSearchState(const std::string& url) override;
   void RecordMediaPlaying(
       const std::string& tab_id,
       const bool active) override;
-  void ClassifyPage(const std::string& html) override;
+  void ClassifyPage(const std::string& url, const std::string& html) override;
   void ChangeLocale(const std::string& locale) override;
   void CollectActivity() override;
-  void ApplyCatalog() override;
-  void RetrieveSSID() override;
   void CheckReadyAdServe(const bool forced = false) override;
   void ServeSampleAd() override;
 
@@ -118,13 +113,12 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
 
  private:
   bool initialized_;
+  bool IsInitialized();
   void Deinitialize();
 
   bool boot_;
 
   bool app_focused_;
-
-  bool IsInitialized();
 
   std::string last_page_classification_;
   void LoadUserModel();
@@ -140,7 +134,12 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   bool IsCollectingActivity() const;
   void StopCollectingActivity();
 
-  uint64_t next_easter_egg_;
+  void ConfirmAdUUIDIfAdEnabled();
+
+  void RetrieveSSID();
+
+  void TestShoppingData(const std::string& url);
+  void TestSearchState(const std::string& url);
 
   std::map<std::string, bool> media_playing_;
   bool IsMediaPlaying() const;
@@ -157,6 +156,7 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
       const uint64_t seconds_window,
       const uint64_t allowable_ad_count) const;
 
+  uint64_t next_easter_egg_;
   void GenerateAdReportingLoadEvent(const event_type::LoadInfo info);
   void GenerateAdReportingBackgroundEvent();
   void GenerateAdReportingForegroundEvent();

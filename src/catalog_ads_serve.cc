@@ -95,7 +95,8 @@ void AdsServe::OnCatalogDownloaded(
     // 'Generated bundle'
 
     ads_client_->SaveCatalog(response, this);
-    ads_->ApplyCatalog();
+
+    ads_->SaveCachedInfo();
 
     UpdateNextCatalogCheck();
   } else if (response_status_code == 304) {
