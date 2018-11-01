@@ -331,11 +331,16 @@ content::WebContents* OpenAddFundsWindow(content::WebContents* initiator,
                                 ui::PAGE_TRANSITION_LINK, true);
 
   // Supply addresses via post data. The data is currently in the query string
-  // format: addresses=Base64EncodedUrlEscapedJSON.
+  // format (application/x-www-form-urlencoded):
+  // addresses=UrlEscapedBase64EncodedStringifiedJSON.
   params.uses_post = true;
   const std::string data = ToQueryString(GetAddressesAsJSON(addresses));
   params.post_data = network::ResourceRequestBody::CreateFromBytes(data.data(),
     data.size());
+
+  params.extra_headers = 
+    std::string("Content-Type: application/x-www-form-urlencoded\r\n") +
+    "Content-Length: " + std::to_string(data.size()) + "\r\n\r\n";
 
   content::WebContents* newWebContents =
       wc_delegate->OpenURLFromTab(initiator, params);
