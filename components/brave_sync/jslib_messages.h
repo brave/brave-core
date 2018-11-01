@@ -5,6 +5,7 @@
 #define H_BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_JSLIB_MESSAGES_H
 
 #include <string>
+#include <memory>
 #include <vector>
 
 #include <base/time/time.h>
@@ -109,11 +110,11 @@ public:
 
   enum Action {
     A_INVALID = -1,
-    CREATE = 0,
-    UPDATE = 1,
-    DELETE = 2,
-    A_MIN = CREATE,
-    A_MAX = DELETE,
+    A_CREATE = 0,
+    A_UPDATE = 1,
+    A_DELETE = 2,
+    A_MIN = A_CREATE,
+    A_MAX = A_DELETE,
   };
 
   Action action;

@@ -406,7 +406,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
     auto* node = FindByObjectId(bookmark_model_, sync_record->objectId);
     auto bookmark_record = sync_record->GetBookmark();
 
-    if (node && sync_record->action == jslib::SyncRecord::Action::UPDATE) {
+    if (node && sync_record->action == jslib::SyncRecord::Action::A_UPDATE) {
       int64_t old_parent_local_id = node->parent()->id();
       const bookmarks::BookmarkNode* old_parent_node =
           bookmarks::GetBookmarkNodeByID(bookmark_model_, old_parent_local_id);
@@ -428,7 +428,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
       }
       UpdateNode(bookmark_model_, node, sync_record.get());
     } else if (node &&
-               sync_record->action == jslib::SyncRecord::Action::DELETE) {
+               sync_record->action == jslib::SyncRecord::Action::A_DELETE) {
       if (node->parent() == GetDeletedNodeRoot()) {
         // this is a deleted node so remove without firing events
         int index = GetDeletedNodeRoot()->GetIndexOf(node);
@@ -441,7 +441,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
           bookmark_model_->Remove(node);
         }
       }
-    } else if (sync_record->action == jslib::SyncRecord::Action::CREATE) {
+    } else if (sync_record->action == jslib::SyncRecord::Action::A_CREATE) {
       if (!node) {
         // TODO(bridiver) make sure there isn't an existing record for objectId
         const bookmarks::BookmarkNode* parent_node =
@@ -526,12 +526,12 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
   if (record->objectId.empty()) {
     ScopedPauseObserver pause(this);
     record->objectId = tools::GenerateObjectId();
-    record->action = jslib::SyncRecord::Action::CREATE;
+    record->action = jslib::SyncRecord::Action::A_CREATE;
     bookmark_model_->SetNodeMetaInfo(node, "object_id", record->objectId);
   } else if (node->HasAncestor(deleted_node)) {
-    record->action = jslib::SyncRecord::Action::DELETE;
+    record->action = jslib::SyncRecord::Action::A_DELETE;
   } else {
-    record->action = jslib::SyncRecord::Action::UPDATE;
+    record->action = jslib::SyncRecord::Action::A_UPDATE;
     DCHECK(!record->objectId.empty());
   }
 
@@ -568,7 +568,7 @@ void BookmarkChangeProcessor::GetAllSyncData(
       // TODO(darkdh): remove this hack once sync library can diffenrentiate
       // records by syncTimstamp
       if (IsUnsynced(node) ||
-          record->action != jslib::SyncRecord::Action::UPDATE) {
+          record->action != jslib::SyncRecord::Action::A_UPDATE) {
       resolved_record->second = BookmarkNodeToSyncBookmark(node);
       }
     }

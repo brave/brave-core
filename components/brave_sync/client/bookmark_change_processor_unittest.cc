@@ -272,7 +272,7 @@ void BraveBookmarkChangeProcessorTest::BookmarkAddedImpl() {
 
   using brave_sync::jslib::SyncRecord;
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      ContainsRecord(SyncRecord::Action::CREATE, "https://a.com/"))).Times(1);
+      ContainsRecord(SyncRecord::Action::A_CREATE, "https://a.com/"))).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
 
@@ -291,7 +291,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkDeleted) {
   ASSERT_EQ(nodes.size(), 1u);
   ASSERT_NE(nodes.at(0), nullptr);
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      ContainsRecord(SyncRecord::Action::DELETE, "https://a.com/"))).Times(1);
+      ContainsRecord(SyncRecord::Action::A_DELETE, "https://a.com/"))).Times(1);
   model()->Remove(nodes.at(0));
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
@@ -307,7 +307,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkModified) {
   ASSERT_EQ(nodes.size(), 1u);
   ASSERT_NE(nodes.at(0), nullptr);
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      ContainsRecord(SyncRecord::Action::UPDATE, "https://a-m.com/"))).Times(1);
+      ContainsRecord(SyncRecord::Action::A_UPDATE, "https://a-m.com/"))).Times(1);
   model()->SetURL(nodes.at(0), GURL("https://a-m.com/"));
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
@@ -349,7 +349,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
   // Sould see at least one syncRecord Modified
   using brave_sync::jslib::SyncRecord;
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      AllRecordsHaveAction(SyncRecord::Action::UPDATE))).Times(1);
+      AllRecordsHaveAction(SyncRecord::Action::A_UPDATE))).Times(1);
   // BookmarkNodeMoved does not reset "last_send_time" so SendUnsynced
   // ignores order change untill unsynced_send_interval passes,
   // so here below unsynced_send_interval is 0
@@ -421,13 +421,13 @@ void BraveBookmarkChangeProcessorTest::BookmarkCreatedFromSyncImpl() {
 
   RecordsList records;
   records.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "121, 194, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://a.com/",
       "A.com - title",
       "1.1.1.1", ""));
   records.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "",
       "https://b.com/",
       "B.com - title",
@@ -468,7 +468,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkRemovedFromSync) {
 
   RecordsList records;
   records.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::DELETE,
+      jslib::SyncRecord::Action::A_DELETE,
       "121, 194, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://a.com/",
       "A.com - title",
@@ -500,27 +500,27 @@ TEST_F(BraveBookmarkChangeProcessorTest, NestedFoldersCreatedFromSync) {
 
   RecordsList records;
   records.push_back(SimpleFolderSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "Folder1",
       "1.1.1.1",
       "", true));
 
   records.push_back(SimpleFolderSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "Folder2",
       "1.1.1.1.1",
       records.at(0)->objectId,
       true));
 
   records.push_back(SimpleFolderSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "Folder3",
       "1.1.1.1.1.1",
       records.at(1)->objectId,
       true));
 
   records.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "",
       "https://a.com/",
       "A.com - title",
@@ -528,7 +528,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, NestedFoldersCreatedFromSync) {
       records.at(2)->objectId));
 
   records.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "",
       "https://b.com/",
       "B.com - title",
@@ -568,7 +568,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
 
   RecordsList records;
   records.push_back(SimpleFolderSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "Folder1",
       "1.1.1",
       "", false));
@@ -581,7 +581,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
 
   records.clear();
   records.push_back(SimpleFolderSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "Folder2",
       "2.1.1",
       "", false));
@@ -593,7 +593,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
 
   records.clear();
   records.push_back(SimpleFolderSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "Folder3",
       "1.1.1",
       "", true));
@@ -621,7 +621,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, Utf8FromSync) {
 
   RecordsList records;
   records.push_back(SimpleFolderSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       title_utf8,
       "1.1.1",
       "", false));
@@ -672,19 +672,19 @@ TEST_F(BraveBookmarkChangeProcessorTest, GetAllSyncData) {
 
   RecordsList records;
   records.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "111, 111, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://a.com/",
       "A.com - title",
       "1.1.1.1", ""));
   records.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "222, 222, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://b.com/",
       "B.com - title",
       "1.1.1.2", ""));
   records.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "33, 33, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://c.com/",
       "C.com - title",
@@ -695,21 +695,21 @@ TEST_F(BraveBookmarkChangeProcessorTest, GetAllSyncData) {
   RecordsList records_to_resolve;
 
   records_to_resolve.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::UPDATE,
+      jslib::SyncRecord::Action::A_UPDATE,
       "222, 222, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://b.com/",
       "B.com - title - modified",
       "1.1.1.2", ""));
 
   records_to_resolve.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::DELETE,
+      jslib::SyncRecord::Action::A_DELETE,
       "33, 33, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://c.com/",
       "C.com - title",
       "1.1.1.3", ""));
 
   records_to_resolve.push_back(SimpleBookmarkSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "44, 44, 37, 61, 199, 11, 166, 234, 214, 197, 45, 215, 241, 206, 219, 130",
       "https://d.com/",
       "D.com - title",

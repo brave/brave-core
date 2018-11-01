@@ -5,11 +5,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_JSLIB_MESSAGES_FWD_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_JSLIB_MESSAGES_FWD_H_
 
-namespace brave_sync {
+#include "build/build_config.h"
 
+// TODO(darkdh): forward declaration with unique_ptr on Windows
+#if defined(OS_WIN)
+#include "brave/components/brave_sync/jslib_messages.h"
+#else
+namespace brave_sync {
 namespace jslib {
 class SyncRecord;
 }
+}
+#endif
+
+namespace brave_sync {
 
 typedef std::unique_ptr<jslib::SyncRecord> SyncRecordPtr;
 typedef std::vector<SyncRecordPtr> RecordsList;

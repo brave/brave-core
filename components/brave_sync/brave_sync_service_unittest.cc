@@ -229,7 +229,7 @@ TEST_F(BraveSyncServiceTest, BookmarkDeleted) {
   ASSERT_NE(nodes.at(0), nullptr);
   EXPECT_CALL(*sync_client(), SendSyncRecords(_,_)).Times(1); // TODO, AB: preciece with mock expect filter
   bookmark_model->Remove(nodes.at(0));
-  // record->action = jslib::SyncRecord::Action::DELETE;
+  // record->action = jslib::SyncRecord::Action::A_DELETE;
   // <= BookmarkNodeToSyncBookmark <= BookmarkChangeProcessor::SendUnsynced
   // <= BraveSyncServiceImpl::OnResolvedSyncRecords
   sync_service()->OnResolvedSyncRecords(brave_sync::jslib_const::kBookmarks,
@@ -343,13 +343,13 @@ MATCHER_P2(ContainsDeviceRecord, action, name,
 TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   RecordsList records;
   records.push_back(SimpleDeviceRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "1", "device1"));
   records.push_back(SimpleDeviceRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "2", "device2"));
   records.push_back(SimpleDeviceRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "3", "device3"));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
@@ -362,18 +362,18 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
 
   using brave_sync::jslib::SyncRecord;
   EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
-      ContainsDeviceRecord(SyncRecord::Action::DELETE, "device3"))).Times(1);
+      ContainsDeviceRecord(SyncRecord::Action::A_DELETE, "device3"))).Times(1);
   sync_service()->OnDeleteDevice("3");
   EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES",
-      ContainsDeviceRecord(SyncRecord::Action::DELETE, "device2"))).Times(1);
+      ContainsDeviceRecord(SyncRecord::Action::A_DELETE, "device2"))).Times(1);
   sync_service()->OnDeleteDevice("2");
 
   RecordsList resolved_records;
   auto resolved_record1 = SyncRecord::Clone(*records.at(2));
-  resolved_record1->action = jslib::SyncRecord::Action::DELETE;
+  resolved_record1->action = jslib::SyncRecord::Action::A_DELETE;
   resolved_records.push_back(std::move(resolved_record1));
   auto resolved_record2 = SyncRecord::Clone(*records.at(1));
-  resolved_record2->action = jslib::SyncRecord::Action::DELETE;
+  resolved_record2->action = jslib::SyncRecord::Action::A_DELETE;
   resolved_records.push_back(std::move(resolved_record2));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(resolved_records);
@@ -393,10 +393,10 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
 
   RecordsList records;
   records.push_back(SimpleDeviceRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "0", "this_device"));
   records.push_back(SimpleDeviceRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       "1", "device1"));
 
   sync_service()->OnResolvedPreferences(records);

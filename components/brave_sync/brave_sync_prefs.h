@@ -5,6 +5,7 @@
 #define BRAVE_COMPONENT_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 
 #include <string>
+#include <memory>
 
 #include "base/macros.h"
 

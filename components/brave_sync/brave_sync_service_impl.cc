@@ -198,7 +198,7 @@ void BraveSyncServiceImpl::OnDeleteDevice(const std::string& device_id) {
     const std::string device_name = device->name_;
     const std::string object_id = device->object_id_;
     SendDeviceSyncRecord(
-        jslib::SyncRecord::Action::DELETE, device_name, device_id, object_id);
+        jslib::SyncRecord::Action::A_DELETE, device_name, device_id, object_id);
   }
 }
 
@@ -451,7 +451,7 @@ void BraveSyncServiceImpl::OnResolvedPreferences(const RecordsList& records) {
           &actually_merged);
       this_device_deleted = this_device_deleted ||
         (record->deviceId == this_device_id &&
-          record->action == jslib::SyncRecord::Action::DELETE &&
+          record->action == jslib::SyncRecord::Action::A_DELETE &&
           actually_merged);
     }
   } // for each device
@@ -552,7 +552,7 @@ void BraveSyncServiceImpl::SendCreateDevice() {
   CHECK(!device_id.empty());
 
   SendDeviceSyncRecord(
-      jslib::SyncRecord::Action::CREATE,
+      jslib::SyncRecord::Action::A_CREATE,
       device_name,
       device_id,
       object_id);
