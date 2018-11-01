@@ -14,7 +14,7 @@ import { getMessage } from '../../background/api/localeAPI'
 export default class ShieldsFooter extends React.PureComponent<{}, {}> {
   openSettings = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
-    tabsAPI.createTab({ url: 'chrome://settings' })
+    tabsAPI.createTab({ url: 'chrome://settings/shields' })
       .catch((err) => console.log(err))
   }
   render () {
