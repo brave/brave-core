@@ -56,7 +56,7 @@
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site monthly",
+    "message": "Donera till denna webbplats månadsvis",
     "description": ""
   },
   "includeInAuto": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have a grant waiting for you.",
+    "message": "Du har ett bidrag som väntar på dig.",
     "description": ""
   },
   "braveRewardsCreatingText": {

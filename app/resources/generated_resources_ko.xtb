@@ -476,10 +476,12 @@
 <translation id="3016641847947582299">구성요소가 업데이트됨</translation>
 <translation id="252219247728877310">구성요소가 업데이트되지 않음</translation>
 <translation id="2707024448553392710">구성요소 다운로드 중</translation>
+<translation id="1879000426787380528">다음 사용자로 로그인</translation>
 <translation id="3190558889382726167">비밀번호 저장됨</translation>
 <translation id="5079950360618752063">추천 비밀번호 사용</translation>
 <translation id="8084114998886531721">저장된 비밀번호</translation>
 <translation id="5614553682702429503">비밀번호를 저장하시겠습니까?</translation>
+<translation id="5584088138253955452">사용자 이름을 저장하시겠습니까?</translation>
 <translation id="8756969031206844760">비밀번호를 업데이트하시겠습니까?</translation>
 <translation id="8230134520748321204"><ph name="ORIGIN"/> 비밀번호를 저장하시겠습니까?</translation>
 <translation id="9040661932550800571"><ph name="ORIGIN"/> 비밀번호를 업데이트하시겠습니까?</translation>
@@ -499,6 +501,7 @@
 <translation id="224940702122312781">이 페이지는 많은 양의 데이터를 사용합니다.</translation>
 <translation id="3861241522664181545">페이지가 일시중지되었습니다.</translation>
 <translation id="6921709132208495314">이 페이지에서 데이터 사용 중지</translation>
+<translation id="1683850629661177840">이제 라이트 모드를 사용하면 HTTPS를 포함한 모든 페이지에서 더욱 빨리 탐색할 수 있습니다.</translation>
 <translation id="2724841811573117416">WebRTC 로그</translation>
 <translation id="1969654639948595766">WebRTC 텍스트 로그(<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC 이벤트 로그(<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -1110,6 +1113,7 @@
 <translation id="8922013791253848639">이 사이트의 광고 항상 허용</translation>
 <translation id="7359588939039777303">광고가 차단되었습니다.</translation>
 <translation id="5398772614898833570">광고 차단됨</translation>
+<translation id="2859806420264540918">이 사이트에서는 방해가 되거나 사용자를 현혹하는 광고를 표시합니다.</translation>
 <translation id="4077917118009885966">이 사이트의 광고가 차단됨</translation>
 <translation id="3737536731758327622">다운로드 항목이 여기에 표시됩니다.</translation>
 <translation id="4782664866169793230">Brave이 자동화된 테스트 소프트웨어에 의해 제어되고 있습니다.</translation>
@@ -1251,6 +1255,7 @@
 <translation id="3766223500670287046">원격 화면</translation>
 <translation id="3930737994424905957">기기 검색 중</translation>
 <translation id="5209320130288484488">기기를 찾을 수 없음</translation>
+<translation id="4415245286584082850">발견된 기기가 없습니다. 새 탭에서 고객센터 도움말을 엽니다.</translation>
 <translation id="4363771538994847871">전송 대상을 찾을 수 없습니다. 도움이 필요하세요?</translation>
 <translation id="8688672835843460752">사용 가능</translation>
 <translation id="4271396100647220620">일치하는 항목이 없습니다.</translation>
@@ -1669,6 +1674,9 @@
 <translation id="3096967955765855393">Brave Software은 더 안전한 인터넷 사용 방법을 끊임없이 모색하고 있습니다. 이전에는 브라우저에 확장 프로그램을 추가하라는 메시지가 어느 웹사이트에서나 표시되었습니다. 하지만 Brave의 최신 버전에서는 확장 프로그램 페이지를 통해 확장 프로그램을 추가함으로써 설치를 원한다는 사실을 Brave에 명시적으로 알려야 합니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">$1(으)로 열 수 없음</translation>
 <translation id="639777613761517128">$1을(를) 사용하여 파일을 열려면 먼저 파일을 Linux 파일 폴더로 복사하세요.</translation>
+<translation id="5112009661904384591">Linux와 파일 공유</translation>
+<translation id="3186202398303525187">Linux 앱에서 $1을(를) 열 수 있도록 허용합니다.</translation>
+<translation id="1603300902586586390">Linux 앱에서 $1개의 파일을 열 수 있도록 허용합니다.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> 파일</translation>
 <translation id="895586998699996576">$1 이미지</translation>
 <translation id="2853916256216444076">$1 동영상</translation>
@@ -1865,6 +1873,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Bravebook에서 Linux 도구, 편집기, IDE를 실행하세요. &lt;a target="_blank" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Bravebook용 Linux 앱 삭제</translation>
+<translation id="1529899284660134226">공유 파일 및 폴더 관리</translation>
 <translation id="2295473777859797944">Brave Software Play 스토어</translation>
 <translation id="572155275267014074">Android 설정</translation>
 <translation id="4767209642168463274">Bravebook에 Brave Software Play의 앱 및 게임을 설치합니다. &lt;a target="_blank" href="<ph name="URL"/>"&gt;자세히 알아보기&lt;/a&gt;</translation>
@@ -1989,6 +1998,10 @@
 <translation id="6122875415561139701">기기(<ph name="DEVICE_NAME"/>)에서 쓰기 작업이 허용되지 않습니다.</translation>
 <translation id="439266289085815679">블루투스 구성은 <ph name="USER_EMAIL"/>님이 관리합니다.</translation>
 <translation id="784934925303690534">기간</translation>
+<translation id="3958004920128806270">이 기기에서만 인터넷 사용 기록을 삭제하고 Brave Software 계정에서는 유지하려면 <ph name="BEGIN_LINK"/>로그아웃<ph name="END_LINK"/>하세요.</translation>
+<translation id="4445433576366924090">동기화된 모든 기기 및 Brave Software 계정에서 인터넷 사용 기록을 삭제하려면 <ph name="BEGIN_LINK"/>동기화 설정을 방문<ph name="END_LINK"/>하세요.</translation>
+<translation id="563489167344291753">동기화된 모든 기기 및 Brave Software 계정에서 인터넷 사용 기록을 삭제하려면 <ph name="BEGIN_LINK"/>암호를 입력<ph name="END_LINK"/>하세요.</translation>
+<translation id="3895809404273995788">동기화된 모든 기기 및 Brave Software 계정에서 인터넷 사용 기록을 삭제하려면 <ph name="BEGIN_LINK"/>로그인<ph name="END_LINK"/>하세요.</translation>
 <translation id="2496180316473517155">인터넷 사용 기록</translation>
 <translation id="8662811608048051533">대부분의 사이트에서 로그아웃됩니다.</translation>
 <translation id="4650925988509114690">대부분의 사이트에서 로그아웃됩니다. 동기화된 데이터를 삭제할 수 있도록 Brave Software 계정에서는 로그아웃되지 않습니다.</translation>
@@ -2069,9 +2082,11 @@
 <translation id="9024158959543687197">공유를 마운트하는 중에 오류가 발생했습니다. 파일 공유 URL을 확인한 후 다시 시도해 주세요.</translation>
 <translation id="1954813140452229842">공유를 마운트하는 중에 오류가 발생했습니다. 사용자 인증 정보를 확인한 후 다시 시도해 주세요.</translation>
 <translation id="2148219725039824548">공유를 마운트하는 중에 오류가 발생했습니다. 네트워크에서 지정된 공유를 찾을 수 없습니다.</translation>
-<translation id="7234406375359457793">공유를 마운트하는 중에 오류가 발생했습니다. 지정된 공유가 지원되지 않습니다.</translation>
+<translation id="6923633482430812883">공유를 마운트하는 중 오류가 발생했습니다. 연결하려는 파일 서버가 SMBv2 이상을 지원하는지 확인하세요.</translation>
 <translation id="706626672220389329">공유를 마운트하는 중에 오류가 발생했습니다. 지정된 공유가 이미 마운트되었습니다.</translation>
 <translation id="5985458664595100876">URL 형식이 잘못되었습니다. \\server\share 및 smb://server/share 형식이 지원됩니다.</translation>
+<translation id="9147304170847707004">인증 방법</translation>
+<translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">날짜 및 시간</translation>
 <translation id="2059913712424898428">시간대</translation>
 <translation id="4547672827276975204">자동 설정</translation>
@@ -2393,6 +2408,13 @@
 <translation id="6678717876183468697">쿼리 URL</translation>
 <translation id="1545786162090505744">URL(검색어 자리에 % 입력)</translation>
 <translation id="7136694880210472378">기본으로 설정</translation>
+<translation id="6953878494808481632">관련 정보</translation>
+<translation id="7258619945375359543">어시스턴트가 화면에 표시된 내용을 기반으로 항목을 추천하도록 허용합니다.</translation>
+<translation id="472896694312062378">"Ok Brave Software"</translation>
+<translation id="6236033368436682108">화면이 켜져 있을 때 "Ok Brave Software"이라고 말하면 어시스턴트를 사용할 수 있습니다.</translation>
+<translation id="5355099869024327351">어시스턴트에서 알림을 표시할 수 있도록 허용</translation>
+<translation id="1127216846847548354">음성 활성화</translation>
+<translation id="3506093155988721483">어시스턴트를 시작할 때 키보드 대신 음성을 사용합니다.</translation>
 <translation id="3908743412684152579">Brave Software 어시스턴트 설정</translation>
 <translation id="4933484234309072027"><ph name="URL"/>에 삽입</translation>
 <translation id="8427292751741042100">모든 호스트에 삽입됨</translation>
@@ -2462,6 +2484,8 @@
 <translation id="4994474651455208930">사이트에서 프로토콜에 대한 기본 핸들러가 될지 여부를 묻도록 허용</translation>
 <translation id="1886996562706621347">사이트에서 프로토콜 기본 핸들러로 사용할지 여부를 묻도록 허용(권장)</translation>
 <translation id="26224892172169984">모든 사이트에서 프로토콜 처리 허용 안함</translation>
+<translation id="4469477701382819144">방해가 되거나 사용자를 현혹하는 광고를 표시하는 사이트에서 광고가 차단됩니다.</translation>
+<translation id="4451757071857432900">방해가 되거나 사용자를 현혹하는 광고를 표시하는 사이트에서 광고가 차단됨(권장)</translation>
 <translation id="5390100381392048184">사이트에서 소리를 재생하도록 허용</translation>
 <translation id="1660204651932907780">사이트에서 소리를 재생하도록 허용(권장)</translation>
 <translation id="3600792891314830896">소리를 재생하는 사이트 음소거</translation>
@@ -2485,6 +2509,8 @@
 <translation id="5063480226653192405">사용</translation>
 <translation id="3006881078666935414">사용 데이터 없음</translation>
 <translation id="1300806585489372370">이 설정을 변경하려면 우선 <ph name="BEGIN_LINK"/>식별자를 사용 설정<ph name="END_LINK"/>하세요</translation>
+<translation id="5932224571077948991">사이트에서 방해가 되거나 사용자를 현혹하는 광고를 표시함</translation>
+<translation id="6038929619733116134">사이트에서 방해가 되거나 사용자를 현혹하는 광고를 표시하는 경우 광고를 차단합니다.</translation>
 <translation id="3083193146044397360">보안을 위해 일시적으로 차단됨</translation>
 <translation id="2500471369733289700">개인정보 보호를 위해 차단됨</translation>
 <translation id="3008272652534848354">권한 재설정</translation>
@@ -2517,6 +2543,7 @@
 <translation id="7366415735885268578">사이트 추가</translation>
 <translation id="5052499409147950210">사이트 수정</translation>
 <translation id="2870560284913253234">사이트</translation>
+<translation id="4610862967073369855">Android 메시지가 휴대전화의 문자 메시지를 Bravebook으로 전달하도록 허용합니다.</translation>
 <translation id="6742339027238151589">스크립트에 액세스 가능</translation>
 <translation id="361106536627977100">Flash 데이터</translation>
 <translation id="8557930019681227453">매니페스트</translation>
@@ -2618,6 +2645,7 @@
 <translation id="8135094938656535588">Brave Software 대시보드에서 동기화된 데이터 관리</translation>
 <translation id="6596325263575161958">암호화 옵션</translation>
 <translation id="2459230470861708651">Brave Software 사용자 이름과 비밀번호로 동기화 데이터 암호화</translation>
+<translation id="5958351589333270173">나만의 <ph name="BEGIN_LINK"/>동기화 암호<ph name="END_LINK"/>로 동기화된 데이터를 암호화합니다. Brave Software Pay의 결제 수단 및 주소는 암호화되지 않습니다.</translation>
 <translation id="4817583816512767754">암호를 아는 사람만 암호화된 데이터를 읽을 수 있습니다. 암호는 Brave Software로 전송되거나 Brave Software에 저장되지 않습니다. 암호가 기억나지 않거나 이 설정을 변경하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>해야 합니다.</translation>
 <translation id="7441736921018636843">이 설정을 변경하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>하여 동기화 암호를 삭제하세요.</translation>
 <translation id="3873315167136380065">사용하려면 <ph name="BEGIN_LINK"/>동기화를 재설정<ph name="END_LINK"/>하여 동기화 암호를 삭제하세요.</translation>
@@ -2681,6 +2709,7 @@
 <translation id="89720367119469899">Esc</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">외부 명령어</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">외부 메타</translation>
 <translation id="4991420928586866460">맨 위 키를 기능 키로 사용</translation>
 <translation id="85486688517848470">맨 위 키의 동작을 전환하려면 검색 키를 길게 누름</translation>
@@ -2776,12 +2805,18 @@
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - 충전 완료까지 <ph name="TIME"/> 남음</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="1940546824932169984">연결된 기기</translation>
+<translation id="3468999815377931311">Android 휴대전화</translation>
+<translation id="2789927670850159391">Bravebook에 휴대전화를 연결하세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">사용 가능한 기기가 없습니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">확인을 기다리는 중입니다. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="7179187931092694802">휴대전화로 Bravebook을 잠금 해제하세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">인스턴트 테더링</translation>
+<translation id="6415900369006735853">휴대전화를 통해 인터넷에 연결합니다.</translation>
 <translation id="4746351372139058112">메시지</translation>
 <translation id="2248072377758660530">Bravebook으로 SMS를 보내고 받으세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
+<translation id="5153234146675181447">휴대전화 지우기</translation>
+<translation id="2307631131458143837">Bravebook에서 휴대전화를 연결 해제합니다.</translation>
+<translation id="1146102139091738471">Bravebook에서 휴대전화를 연결 해제합니다. 더 이상 자동으로 연결되지 않습니다.</translation>
 <translation id="7878562273885520351">비밀번호가 도용될 수도 있음</translation>
 <translation id="6582421931165117398">개인정보 보호를 위해 지금 비밀번호를 변경하세요. 비밀번호를 변경하려면 먼저 로그인해야 합니다.</translation>
 <translation id="1089439967362294234">비밀번호 변경</translation>
@@ -2882,6 +2917,7 @@
 <translation id="296137235951584143">나만의 Brave 만들기</translation>
 <translation id="7835178595033117206">북마크가 삭제됨</translation>
 <translation id="2785008241190445880">북마크가 변경됨</translation>
+<translation id="2950533317914339731">즐겨찾는 Brave Software 앱에 책갈피를 추가합니다.</translation>
 <translation id="8846319957959474018">북마크로 쉽게 앱 열기</translation>
 <translation id="5939847200023027600">PDF 합성 서비스</translation>
 <translation id="5877584842898320529">선택한 프린터가 사용할 수 없거나 제대로 설치되어 있지 않습니다. <ph name="BR"/> 프린터를 확인하거나 다른 프린터를 선택해 보세요.</translation>

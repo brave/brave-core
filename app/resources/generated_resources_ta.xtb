@@ -479,10 +479,12 @@
 <translation id="3016641847947582299">உறுப்பு மேம்படுத்தப்பட்டது</translation>
 <translation id="252219247728877310">உறுப்பு புதுப்பிக்கப்படவில்லை</translation>
 <translation id="2707024448553392710">உறுப்பு பதிவிறக்கப்படுகிறது</translation>
+<translation id="1879000426787380528">உள்நுழையும் கணக்கு</translation>
 <translation id="3190558889382726167">கடவுச்சொல் சேமிக்கப்பட்டது</translation>
 <translation id="5079950360618752063">பரிந்துரைக்கப்படும் கடவுச்சொல்லைப் பயன்படுத்து</translation>
 <translation id="8084114998886531721">சேமித்த கடவுச்சொல்</translation>
 <translation id="5614553682702429503">கடவுச்சொல்லைச் சேமிக்கவா?</translation>
+<translation id="5584088138253955452">பயனர்பெயரைச் சேமிக்கவா?</translation>
 <translation id="8756969031206844760">கடவுச்சொல்லைப் புதுப்பிக்கவா?</translation>
 <translation id="8230134520748321204"><ph name="ORIGIN"/>க்கான கடவுச்சொல்லைச் சேமிக்கவா?</translation>
 <translation id="9040661932550800571"><ph name="ORIGIN"/>க்கான கடவுச்சொல்லைப் புதுப்பிக்கவா?</translation>
@@ -502,6 +504,7 @@
 <translation id="224940702122312781">இந்தப் பக்கம் அதிகமான டேட்டாவைப் பயன்படுத்தும்.</translation>
 <translation id="3861241522664181545">பக்கம் இடைநிறுத்தப்பட்டுள்ளது.</translation>
 <translation id="6921709132208495314">இந்தப் பக்கத்தில் டேட்டா உபயோகத்தை நிறுத்து</translation>
+<translation id="1683850629661177840">'லைட்' பயன்முறை மூலம் இப்போது HTTPS உட்பட அனைத்துப் பக்கங்களிலும் வேகமாக உலாவலாம்.</translation>
 <translation id="2724841811573117416">WebRTC பதிவுகள்</translation>
 <translation id="1969654639948595766">WebRTC உரைப் பதிவுகள் (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC நிகழ்வுப் பதிவுகள் (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -1113,6 +1116,7 @@
 <translation id="8922013791253848639">இந்தத் தளத்தில் எப்போதும் விளம்பரங்களை அனுமதி</translation>
 <translation id="7359588939039777303">விளம்பரங்கள் தடுக்கப்பட்டன.</translation>
 <translation id="5398772614898833570">விளம்பரங்கள் தடுக்கப்பட்டன</translation>
+<translation id="2859806420264540918">குறுக்கிடும் அல்லது தவறாக வழிநடத்தும் விளம்பரங்களை இந்தத் தளம் காண்பிக்கிறது.</translation>
 <translation id="4077917118009885966">இந்தத் தளத்தில் விளம்பரங்கள் தடுக்கப்பட்டன</translation>
 <translation id="3737536731758327622">உங்கள் பதிவிறக்கங்கள் இங்கே தோன்றும்</translation>
 <translation id="4782664866169793230">Braveஐத் தானியங்கிச் சோதனை மென்பொருள் கட்டுப்படுத்துகிறது.</translation>
@@ -1254,6 +1258,7 @@
 <translation id="3766223500670287046">தொலைநிலைத் திரை</translation>
 <translation id="3930737994424905957">சாதனங்களைத் தேடுகிறது</translation>
 <translation id="5209320130288484488">சாதனங்கள் காணப்படவில்லை</translation>
+<translation id="4415245286584082850">சாதனங்கள் எதுவுமில்லை. புதிய தாவலில் உதவி மையக் கட்டுரையைத் திறக்கவும்.</translation>
 <translation id="4363771538994847871">அனுப்புவதற்கான சாதனங்கள் இல்லை. உதவி வேண்டுமா?</translation>
 <translation id="8688672835843460752">மீதமுள்ளது:</translation>
 <translation id="4271396100647220620">பொருத்தங்கள் இல்லை</translation>
@@ -1672,6 +1677,9 @@
 <translation id="3096967955765855393">உங்கள் உலாவலைத் பாதுகாப்பாக்கும் வழிகளைத் தொடர்ந்து தேடுகிறோம். முன்னர், எந்த இணையதளமும் நீட்டிப்பை உங்கள் உலாவியில் சேர்க்கக் கேட்கலாம். சமீபத்திய Brave Software Brave பதிப்புகளில், நீட்டிப்புகள் பக்கம் வழியாக அவற்றைச் சேர்ப்பதன் மூலம், இந்த நீட்டிப்புகளை நிறுவ விரும்புகிறீர்களா என்பதை வெளிப்படையாக Braveக்குக் கூற வேண்டும். <ph name="BEGIN_LINK"/>மேலும் அறிக<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">$1 இல் திறக்க இயலவில்லை</translation>
 <translation id="639777613761517128">$1 இல் கோப்புகளைத் திறப்பதற்கு, அவற்றை முதலில் “Linux கோப்புகள்” கோப்புறைக்கு நகலெடுக்கவும்.</translation>
+<translation id="5112009661904384591">Linuxஸுடன் கோப்புகளைப் பகிரவும்</translation>
+<translation id="3186202398303525187">$1 கோப்பைத் திறக்க Linux ஆப்ஸை அனுமதிக்கவும்.</translation>
+<translation id="1603300902586586390">$1 கோப்புகளை Linux ஆப்ஸ் திறக்க அனுமதிக்கவும்.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> கோப்பு</translation>
 <translation id="895586998699996576">$1 படம்</translation>
 <translation id="2853916256216444076">$1 வீடியோ</translation>
@@ -1868,6 +1876,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">உங்கள் Bravebookகில் Linux கருவிகள், திருத்திகள், IDEகள் போன்றவற்றை இயக்கலாம். &lt;a target="_blank" href="<ph name="URL"/>"&gt;மேலும் அறிக&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Bravebook இல் Linux பயன்பாடுகளை அகற்று</translation>
+<translation id="1529899284660134226">பகிரப்பட்ட கோப்புகளையும் கோப்புறைகளையும் நிர்வகி</translation>
 <translation id="2295473777859797944">Brave Software Play ஸ்டோர்</translation>
 <translation id="572155275267014074">Android அமைப்புகள்</translation>
 <translation id="4767209642168463274">Bravebook இல் Brave Software Play இலிருந்து பயன்பாடுகளையும் கேம்களையும் நிறுவவும். &lt;a target="_blank" href="<ph name="URL"/>"&gt;மேலும் அறிக&lt;/a&gt;</translation>
@@ -1992,6 +2001,10 @@
 <translation id="6122875415561139701">எழுதுதல் செயல்பாடு இந்தச் சாதனத்தில் அனுமதிக்கப்படவில்லை: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">புளூடூத் உள்ளமைவைக் கட்டுப்படுத்துபவர்: <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">நேர வரம்பு</translation>
+<translation id="3958004920128806270">உலாவல் தரவை உங்கள் Brave Software கணக்கில் தக்கவைத்துக்கொண்டு, அதை இந்தச் சாதனத்திலிருந்து மட்டும் அழிக்க, <ph name="BEGIN_LINK"/>வெளியேறவும்<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">உங்கள் ஒத்திசைக்கப்பட்ட சாதனங்கள் அனைத்திலிருந்தும் Brave Software கணக்கிலிருந்தும் உலாவல் தரவை முழுமையாக அழிக்க, <ph name="BEGIN_LINK"/>ஒத்திசைவு அமைப்புகளைப் பார்க்கவும்<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">உங்கள் ஒத்திசைக்கப்பட்ட சாதனங்கள் அனைத்திலிருந்தும் Brave Software கணக்கிலிருந்தும் உலாவல் தரவை முழுமையாக அழிக்க, <ph name="BEGIN_LINK"/>உங்கள் கடவுச்சொற்றொடரை உள்ளிடவும்<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">உங்கள் ஒத்திசைக்கப்பட்ட சாதனங்கள் அனைத்திலிருந்தும் Brave Software கணக்கிலிருந்தும் உலாவல் தரவை முழுமையாக அழிக்க, <ph name="BEGIN_LINK"/>உள்நுழையவும்<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">உலாவல் வரலாறு</translation>
 <translation id="8662811608048051533">பெரும்பாலான தளங்களிலிருந்து உங்களை வெளியேற்றும்.</translation>
 <translation id="4650925988509114690">இது உங்களைப் பெரும்பாலான தளங்களிலிருந்து வெளியேற்றும். எனினும் உங்கள் Brave Software கணக்கிலிருந்து வெளியேற்றப்பட மாட்டீர்கள் என்பதால் உங்கள் ஒத்திசைக்கப்பட்ட தரவை அழிக்கலாம்.</translation>
@@ -2072,9 +2085,11 @@
 <translation id="9024158959543687197">பகிர்வை ஏற்றுவதில் பிழை. கோப்புப் பகிர்வு URLஐச் சரிபார்த்து, மீண்டும் முயலவும்.</translation>
 <translation id="1954813140452229842">பகிர்வை ஏற்றுவதில் பிழை. உங்கள் அனுமதிச் சான்றுகளைச் சரிபார்த்து, மீண்டும் முயலவும்.</translation>
 <translation id="2148219725039824548">பகிர்வை ஏற்றுவதில் பிழை. குறிப்பிட்ட பகிர்வானது நெட்வொர்க்கில் இல்லை.</translation>
-<translation id="7234406375359457793">பகிர்வை ஏற்றுவதில் பிழை. குறிப்பிட்ட பகிர்வானது ஆதரிக்கப்படவில்லை.</translation>
+<translation id="6923633482430812883">பகிர்வை ஏற்றுவதில் பிழை. நீங்கள் இணைக்கின்ற கோப்புச் சேவையகம் SMBv2 அல்லது அதற்குப் பிந்தைய பதிப்பை ஆதரிக்கிறதா எனச் சரிபார்க்கவும்.</translation>
 <translation id="706626672220389329">பகிர்வை ஏற்றுவதில் பிழை. குறிப்பிட்ட பகிர்வானது ஏற்கனவே ஏற்றப்பட்டுள்ளது.</translation>
 <translation id="5985458664595100876">தவறான URL வடிவமைப்பு. ஆதரிக்கப்படும் வடிவமைப்புகள்: \\server\share, smb://server/share.</translation>
+<translation id="9147304170847707004">அங்கீகார முறை</translation>
+<translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">தேதி மற்றும் நேரம்</translation>
 <translation id="2059913712424898428">நேர மண்டலம்</translation>
 <translation id="4547672827276975204">தானாக அமை</translation>
@@ -2396,6 +2411,13 @@
 <translation id="6678717876183468697">வினவல் URL</translation>
 <translation id="1545786162090505744">வினவலுக்கான இடத்தில் %s ஐக் கொண்ட URL</translation>
 <translation id="7136694880210472378">இயல்புநிலையாக மாற்று</translation>
+<translation id="6953878494808481632">தொடர்புடைய தகவல்</translation>
+<translation id="7258619945375359543">உங்கள் திரையில் இருக்கும் உள்ளடக்கத்தின் அடிப்படையில் பரிந்துரைகளை வழங்க அசிஸ்டண்ட்டை அனுமதிக்கவும்</translation>
+<translation id="472896694312062378">"Ok Brave Software"</translation>
+<translation id="6236033368436682108">திரை இயக்கத்தில் இருக்கும்போது எந்த நேரத்திலும் "Ok Brave Software" என்று சொல்லி அசிஸ்டண்ட்டை அணுகலாம்</translation>
+<translation id="5355099869024327351">அறிவிப்புகளைக் காண்பிக்க அசிஸ்டண்ட்டுக்கு அனுமதியளிக்கவும்</translation>
+<translation id="1127216846847548354">குரல் மூலம் இயக்குதல்</translation>
+<translation id="3506093155988721483">உங்கள் அசிஸ்டண்ட்டைத் தொடங்கும்போது, கீபோர்டுக்குப் பதிலாகப் பேச்சைப் பயன்படுத்தவும்</translation>
 <translation id="3908743412684152579">Brave Software அசிஸ்டண்ட் அமைப்புகள்</translation>
 <translation id="4933484234309072027"><ph name="URL"/> இல் உட்பொதியப்பட்டது</translation>
 <translation id="8427292751741042100">ஏதேனும் ஹோஸ்ட்டில் உட்பொதிக்கப்பட்டது</translation>
@@ -2465,6 +2487,8 @@
 <translation id="4994474651455208930">நெறிமுறைகளுக்கு இயல்புநிலை ஹேண்ட்லர்களாக இருக்கும்படி கேட்க தளங்களை அனுமதி</translation>
 <translation id="1886996562706621347">நெறிமுறைகளுக்கு இயல்புநிலை ஹேண்ட்லர்களாக இருக்கும்படி கேட்க தளங்களை அனுமதி (பரிந்துரைத்தது)</translation>
 <translation id="26224892172169984">நெறிமுறைகளைக் கையாள எந்த தளத்தையும் அனுமதிக்காதே</translation>
+<translation id="4469477701382819144">குறுக்கிடும் அல்லது தவறாக வழிநடத்தும் விளம்பரங்களைக் காட்டும் தளங்களில் தடுக்கப்படும்</translation>
+<translation id="4451757071857432900">குறுக்கிடும் அல்லது தவறாக வழிநடத்தும் விளம்பரங்களைக் காட்டும் தளங்களில் தடுக்கப்படும் (பரிந்துரைக்கப்படுவது)</translation>
 <translation id="5390100381392048184">ஒலியை இயக்க, தளங்களை அனுமதி</translation>
 <translation id="1660204651932907780">ஒலியை இயக்க, தளங்களை அனுமதிக்கும் (பரிந்துரைக்கப்படுவது)</translation>
 <translation id="3600792891314830896">ஒலியை இயக்கும் தளங்களில் ஒலியடக்கு</translation>
@@ -2488,6 +2512,8 @@
 <translation id="5063480226653192405">பயன்பாடு</translation>
 <translation id="3006881078666935414">பயன்பாட்டுத் தரவு இல்லை</translation>
 <translation id="1300806585489372370">இந்த அமைப்பை மாற்ற, முதலில் <ph name="BEGIN_LINK"/>அடையாளங்காட்டிகளை இயக்கவும்<ph name="END_LINK"/></translation>
+<translation id="5932224571077948991">குறுக்கிடும் அல்லது தவறாக வழிநடத்தும் விளம்பரங்களை தளம் காண்பிக்கிறது</translation>
+<translation id="6038929619733116134">குறுக்கிடும் அல்லது தவறாக வழிநடத்தும் விளம்பரங்களை தளம் காட்டினால், அவற்றைத் தடுக்கும்</translation>
 <translation id="3083193146044397360">உங்கள் பாதுகாப்பை உறுதிசெய்ய, தற்காலிகமாகத் தடுக்கப்பட்டது</translation>
 <translation id="2500471369733289700">உங்கள் தனியுரிமையைப் பாதுகாக்க, தடுக்கப்பட்டது</translation>
 <translation id="3008272652534848354">அனுமதிகளை மீட்டமை</translation>
@@ -2520,6 +2546,7 @@
 <translation id="7366415735885268578">தளத்தைச் சேர்</translation>
 <translation id="5052499409147950210">தளத்தைத் திருத்து</translation>
 <translation id="2870560284913253234">தளம்</translation>
+<translation id="4610862967073369855">உங்கள் மொபைலில் இருந்து Bravebookகுக்கு மெசேஜ்களை ரிலே செய்ய Android மெசேஜஸை அனுமதிக்கும்</translation>
 <translation id="6742339027238151589">ஸ்கிரிப்ட் அணுகலாம்</translation>
 <translation id="361106536627977100">ஃப்ளாஷ் தரவு</translation>
 <translation id="8557930019681227453">மேனிஃபெஸ்ட்</translation>
@@ -2621,6 +2648,7 @@
 <translation id="8135094938656535588">ஒத்திசைத்த தரவை Brave Software டாஷ்போர்டில் நிர்வகி</translation>
 <translation id="6596325263575161958">குறியாக்க விருப்பங்கள்</translation>
 <translation id="2459230470861708651">ஒத்திசைக்கப்பட்ட கடவுச்சொற்களை எனது Brave Software பயனர்பெயர் மற்றும் கடவுச்சொல் மூலம் என்கிரிப்ட் செய்</translation>
+<translation id="5958351589333270173">ஒத்திசைக்கப்பட்ட தரவை உங்கள் <ph name="BEGIN_LINK"/>ஒத்திசைவுக் கடவுச்சொற்றொடர்<ph name="END_LINK"/> மூலம் என்கிரிப்ட் செய்யவும். இதில் Brave Software Payயிலுள்ள கட்டண முறைகளும் முகவரிகளும் சேர்க்கப்படாது.</translation>
 <translation id="4817583816512767754">உங்கள் கடவுச்சொற்றொடரை அறிந்தவரால் மட்டுமே என்கிரிப்ட் செய்யப்பட்ட உங்கள் தரவைப் படிக்க முடியும். கடவுச்சொற்றொடரானது Brave Softwareக்கு அனுப்பப்படுவதில்லை அல்லது Brave Software அதைச் சேமிப்பதில்லை. கடவுச்சொற்றொடரை மறந்துவிட்டால் அல்லது இந்த அமைப்பை மாற்ற விரும்பினால், நீங்கள் <ph name="BEGIN_LINK"/>ஒத்திசைவை மீட்டமைக்க வேண்டும்<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">இந்த அமைப்பை மாற்ற, <ph name="BEGIN_LINK"/>ஒத்திசைவை மீட்டமைத்து<ph name="END_LINK"/> உங்கள் ஒத்திசைவுக் கடவுச்சொற்றொடரை அகற்றவும்</translation>
 <translation id="3873315167136380065">இதை இயக்குவதற்கு, <ph name="BEGIN_LINK"/>ஒத்திசைவை மீட்டமைத்து<ph name="END_LINK"/> உங்கள் ஒத்திசைவுக் கடவுச்சொற்றொடரை அகற்றவும்.</translation>
@@ -2684,6 +2712,7 @@
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">வெளிக் கட்டளை</translation>
+<translation id="7969046989155602842">கமாண்ட்</translation>
 <translation id="585979798156957858">வெளி மீத்தரவு விசை</translation>
 <translation id="4991420928586866460">முதன்மை வரிசை விசைகளைச் செயல்பாட்டு விசைகளாக பயன்படுத்து</translation>
 <translation id="85486688517848470">மேல் வரிசையில் உள்ள விசைகளின் செயல்பாட்டை மாற்ற, தேடல் விசையைப் பிடித்திருக்கவும்</translation>
@@ -2779,12 +2808,18 @@
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - முழுமையாக சார்ஜ் ஏற்றப்பட்டு <ph name="TIME"/> ஆகிறது</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="1940546824932169984">இணைத்துள்ள சாதனங்கள்</translation>
+<translation id="3468999815377931311">Android ஃபோன்</translation>
+<translation id="2789927670850159391">Bravebook உடன் உங்கள் ஃபோனை இணைக்கவும். <ph name="LINK_BEGIN"/>மேலும் அறிக<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">தகுதியான சாதனங்கள் இல்லை. <ph name="LINK_BEGIN"/>மேலும் அறிக<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">சரிபார்ப்புக்காகக் காத்திருக்கிறது. <ph name="LINK_BEGIN"/>மேலும் அறிக<ph name="LINK_END"/></translation>
 <translation id="7179187931092694802">உங்கள் ஃபோன் மூலம் Bravebookகைத் திறக்கலாம். <ph name="LINK_BEGIN"/>மேலும் அறிக<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">உடனடி இணைப்பு முறை</translation>
+<translation id="6415900369006735853">உங்கள் ஃபோனைப் பயன்படுத்தி இணையத்துடன் இணைக்கலாம்</translation>
 <translation id="4746351372139058112">செய்திகள்</translation>
 <translation id="2248072377758660530">உங்கள் Bravebookகில் இருந்து மெசேஜ்களை அனுப்பலாம், பெறலாம். <ph name="LINK_BEGIN"/>மேலும் அறிக<ph name="LINK_END"/></translation>
+<translation id="5153234146675181447">ஃபோனை அகற்றும்</translation>
+<translation id="2307631131458143837">Bravebookகிலிருந்து உங்கள் ஃபோனின் இணைப்பைத் துண்டிக்கும்</translation>
+<translation id="1146102139091738471">Bravebookகிலிருந்து உங்கள் ஃபோனின் இணைப்பை துண்டிக்கவும். அவை இனி தானாக இணைக்கப்படாது.</translation>
 <translation id="7878562273885520351">உங்கள் கடவுச்சொல் திருடப்பட்டிருக்கலாம்</translation>
 <translation id="6582421931165117398">உங்கள் தனிப்பட்ட தகவலைப் பாதுகாக்க, இப்போதே கடவுச்சொல்லை மாற்றவும். கடவுச்சொல்லை மாற்றும் முன், உள்நுழையும்படி கேட்கப்படுவீர்கள்.</translation>
 <translation id="1089439967362294234">கடவுச்சொல்லை மாற்று</translation>
@@ -2885,6 +2920,7 @@
 <translation id="296137235951584143">Braveமை உங்களுடையதாக்குங்கள்</translation>
 <translation id="7835178595033117206">புக்மார்க் அகற்றப்பட்டது</translation>
 <translation id="2785008241190445880">புக்மார்க் மாற்றப்பட்டது</translation>
+<translation id="2950533317914339731">உங்களுக்குப் பிடித்த Brave Software ஆப்ஸில் புக்மார்க்குகளைச் சேர்க்கலாம்</translation>
 <translation id="8846319957959474018">புக்மார்க்குகளைப் பயன்படுத்தி ஆப்ஸை எளிதாகத் திறக்கலாம்</translation>
 <translation id="5939847200023027600">PDF தொகுப்பான் சேவை</translation>
 <translation id="5877584842898320529">தேர்ந்தெடுத்த பிரிண்டர் இல்லை அல்லது சரியாக நிறுவப்படவில்லை.<ph name="BR"/> பிரிண்டரைச் சரிபார்க்கவும் அல்லது மற்றொரு பிரிண்டரைத் தேர்ந்தெடுக்கவும்.</translation>

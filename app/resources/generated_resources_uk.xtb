@@ -1257,6 +1257,7 @@
 <translation id="3766223500670287046">Віддалений екран</translation>
 <translation id="3930737994424905957">Пошук пристроїв</translation>
 <translation id="5209320130288484488">Пристрої не знайдено.</translation>
+<translation id="4415245286584082850">Пристроїв не знайдено. Відкрийте довідкову статтю в новій вкладці.</translation>
 <translation id="4363771538994847871">Немає пристроїв для трансляції. Потрібна допомога?</translation>
 <translation id="8688672835843460752">Доступно</translation>
 <translation id="4271396100647220620">Немає збігів</translation>
@@ -1874,6 +1875,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Користуйтесь інструментами, редакторами й ІСР Linux на Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Докладніше&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Видалити додатки Linux для Bravebook</translation>
+<translation id="1529899284660134226">Керувати спільними файлами й папками</translation>
 <translation id="2295473777859797944">Магазин Brave Software Play</translation>
 <translation id="572155275267014074">Налаштування Android</translation>
 <translation id="4767209642168463274">Установлюйте додатки й ігри з Brave Software Play на Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Докладніше&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@
 <translation id="6122875415561139701">Операцію внесення змін заборонено на пристрої <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679"><ph name="USER_EMAIL"/> керує налаштуваннями Bluetooth.</translation>
 <translation id="784934925303690534">Період часу</translation>
+<translation id="3958004920128806270">Щоб очистити дані веб-перегляду лише на цьому пристрої, але зберегти їх в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>вийдіть з облікового запису<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Щоб очистити дані веб-перегляду на всіх синхронізованих пристроях і в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>перейдіть у налаштування синхронізації<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Щоб очистити дані веб-перегляду на всіх синхронізованих пристроях і в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>введіть парольну фразу<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Щоб очистити дані веб-перегляду на всіх синхронізованих пристроях і в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>увійдіть в обліковий запис<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Історія переглядів</translation>
 <translation id="8662811608048051533">Ви вийдете з більшості сайтів.</translation>
 <translation id="4650925988509114690">Ви вийдете з більшості сайтів, але не з облікового запису Brave Software. Тому синхронізовані дані можуть бути очищені.</translation>
@@ -2078,7 +2084,7 @@
 <translation id="9024158959543687197">Помилка підключення спільного доступу. Перевірте URL-адресу файлу та повторіть спробу.</translation>
 <translation id="1954813140452229842">Помилка підключення спільного доступу. Перевірте облікові дані та повторіть спробу.</translation>
 <translation id="2148219725039824548">Помилка підключення спільного доступу. Указаний пристрій не знайдено в мережі.</translation>
-<translation id="7234406375359457793">Помилка підключення спільного доступу. Указаний пристрій не підтримується.</translation>
+<translation id="6923633482430812883">Помилка підключення спільного доступу. Перевірте, чи файловий сервер, до якого ви підключаєтеся, підтримує SMBv2 або новіших версій.</translation>
 <translation id="706626672220389329">Помилка підключення спільного доступу. Указаний пристрій уже підключено.</translation>
 <translation id="5985458664595100876">Недійсний формат URL-адреси. Підтримувані формати: \\server\share і smb://server/share.</translation>
 <translation id="9147304170847707004">Спосіб автентифікації</translation>
@@ -2539,6 +2545,7 @@
 <translation id="7366415735885268578">Додати сайт</translation>
 <translation id="5052499409147950210">Редагувати сайт</translation>
 <translation id="2870560284913253234">Сайт</translation>
+<translation id="4610862967073369855">Дозволяє сервісу Android Повідомлення передавати SMS із телефона на Bravebook</translation>
 <translation id="6742339027238151589">Доступний для сценарію</translation>
 <translation id="361106536627977100">Дані флеш</translation>
 <translation id="8557930019681227453">Маніфест</translation>
@@ -2640,6 +2647,7 @@
 <translation id="8135094938656535588">Керувати синхронізованими даними на інформаційній панелі Brave Software</translation>
 <translation id="6596325263575161958">Параметри шифрування</translation>
 <translation id="2459230470861708651">Шифрувати синхронізовані паролі з іменем користувача та паролем Brave Software</translation>
+<translation id="5958351589333270173">Шифрувати синхронізовані дані за допомогою <ph name="BEGIN_LINK"/>парольної фрази<ph name="END_LINK"/>. Це не стосується способів оплати й адрес із Brave Software Pay.</translation>
 <translation id="4817583816512767754">Ваші зашифровані дані можуть переглядати лише користувачі, які знають вашу парольну фразу. Парольна фраза не надсилається й не зберігається в Brave Software. Якщо ви забули її або хочете змінити це налаштування, <ph name="BEGIN_LINK"/>скиньте синхронізацію<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Щоб змінити це налаштування, видаліть парольну фразу для синхронізації, <ph name="BEGIN_LINK"/>скинувши параметри синхронізації<ph name="END_LINK"/></translation>
 <translation id="3873315167136380065">Щоб увімкнути цю функцію, видаліть парольну фразу синхронізації, <ph name="BEGIN_LINK"/>скинувши синхронізацію<ph name="END_LINK"/>.</translation>
@@ -2703,6 +2711,7 @@
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Зовнішня клавіша Command</translation>
+<translation id="7969046989155602842">Клавіша Command</translation>
 <translation id="585979798156957858">Зовнішня мета-клавіша</translation>
 <translation id="4991420928586866460">Використовувати клавіші вгорі клавіатури як функціональні клавіші</translation>
 <translation id="85486688517848470">Утримуйте клавішу пошуку, щоб змінити функції клавіш угорі клавіатури</translation>

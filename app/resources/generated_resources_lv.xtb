@@ -1257,6 +1257,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3766223500670287046">Attālais ekrāns</translation>
 <translation id="3930737994424905957">Notiek ierīču meklēšana</translation>
 <translation id="5209320130288484488">Ierīces nav atrastas</translation>
+<translation id="4415245286584082850">Netika atrasta neviena ierīce. Atveriet palīdzības centra rakstu jaunā cilnē.</translation>
 <translation id="4363771538994847871">Netika atrasta neviens Cast galamērķis. Vai jums ir nepieciešama palīdzība?</translation>
 <translation id="8688672835843460752">Pieejams</translation>
 <translation id="4271396100647220620">Nav atbilstību</translation>
@@ -1874,6 +1875,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Palaidiet Linux rīkus, redaktorus un IDE savā Bravebook datorā. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Uzziniet vairāk&lt;/a&gt;.</translation>
 <translation id="6869910261738842136">Noņemt Linux lietotnes no Bravebook datora</translation>
+<translation id="1529899284660134226">Pārvaldīt kopīgotos failus un mapes</translation>
 <translation id="2295473777859797944">Brave Software Play veikals</translation>
 <translation id="572155275267014074">Android iestatījumi</translation>
 <translation id="4767209642168463274">Instalējiet lietotnes un spēles no pakalpojuma Brave Software Play savā Bravebook datorā. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Uzziniet vairāk&lt;/a&gt;.</translation>
@@ -1998,6 +2000,10 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6122875415561139701">Rakstīšanas darbība nav atļauta šajā ierīcē: “<ph name="DEVICE_NAME"/>”.</translation>
 <translation id="439266289085815679">Bluetooth konfigurāciju kontrolē <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Laika periods</translation>
+<translation id="3958004920128806270">Lai notīrītu pārlūkošanas datus tikai no šīs ierīces un paturētu tos savā Brave Software kontā, <ph name="BEGIN_LINK"/>izrakstieties<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Lai notīrītu pārlūkošanas datus no visām savām sinhronizētajām ierīcēm un Brave Software konta, <ph name="BEGIN_LINK"/>pārejiet uz sinhronizācijas iestatījumiem<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Lai notīrītu pārlūkošanas datus no visām savām sinhronizētajām ierīcēm un Brave Software konta, <ph name="BEGIN_LINK"/>ievadiet ieejas frāzi<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Lai notīrītu pārlūkošanas datus no visām savām sinhronizētajām ierīcēm un Brave Software konta, <ph name="BEGIN_LINK"/>pierakstieties<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Pārlūkošanas vēsture</translation>
 <translation id="8662811608048051533">Jūs tiksiet izrakstīts no lielākās daļas vietņu.</translation>
 <translation id="4650925988509114690">Jūs tiksiet izrakstīts no lielākās daļas vietņu. Jūs paliksiet pierakstījies Brave Software kontā, lai varētu notīrīt sinhronizētos datus.</translation>
@@ -2078,7 +2084,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="9024158959543687197">Iekļaujot kopīgošanu, radās kļūda. Pārbaudiet failu kopīgošanas URL un mēģiniet vēlreiz.</translation>
 <translation id="1954813140452229842">Iekļaujot kopīgošanu, radās kļūda. Lūdzu, pārbaudiet akreditācijas datus un mēģiniet vēlreiz.</translation>
 <translation id="2148219725039824548">Iekļaujot kopīgošanu, radās kļūda. Norādītais kopīgošanas vienums netika atrasts tīklā.</translation>
-<translation id="7234406375359457793">Iekļaujot kopīgošanu, radās kļūda. Norādītais kopīgošanas vienums netiek atbalstīts.</translation>
+<translation id="6923633482430812883">Iekļaujot kopīgošanu, radās kļūda. Pārbaudiet, vai failu serveris, ar kuru veidojat savienojumu, atbalsta failu kopīgošanu SMBv2 vai jaunāku versiju.</translation>
 <translation id="706626672220389329">Iekļaujot kopīgošanu, radās kļūda. Norādītais kopīgošanas vienums jau ir iekļauts.</translation>
 <translation id="5985458664595100876">Nederīgs vietrāža URL formāts. Atbalstītie formāti ir \\server\share un smb://server/share.</translation>
 <translation id="9147304170847707004">Autentifikācijas metode</translation>
@@ -2539,6 +2545,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7366415735885268578">Vietnes pievienošana</translation>
 <translation id="5052499409147950210">Vietnes rediģēšana</translation>
 <translation id="2870560284913253234">Vietne</translation>
+<translation id="4610862967073369855">Ļauj lietotnei Android ziņojumi pārraidīt īsziņas no jūsu tālruņa uz Bravebook datoru</translation>
 <translation id="6742339027238151589">Pieejams skriptam</translation>
 <translation id="361106536627977100">Flash dati</translation>
 <translation id="8557930019681227453">Manifests</translation>
@@ -2640,6 +2647,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="8135094938656535588">Pārvaldīt sinhronizētos datus Brave Software informācijas panelī</translation>
 <translation id="6596325263575161958">Šifrēšanas opcijas</translation>
 <translation id="2459230470861708651">Šifrēt sinhronizētās paroles, izmantojot savu Brave Software lietotājvārdu un paroli</translation>
+<translation id="5958351589333270173">Šifrējiet sinhronizētos datus, izmantojot savu <ph name="BEGIN_LINK"/>sinhronizācijas ieejas frāzi<ph name="END_LINK"/>. Tajā nav iekļauti maksājumu veidi un adreses no pakalpojuma Brave Software Pay.</translation>
 <translation id="4817583816512767754">Jūsu šifrētos datus var lasīt tikai personas, kurām ir zināma jūsu ieejas frāze. Ieejas frāze netiek sūtīta Brave Software serveriem un netiek tajos glabāta. Ja aizmirsīsiet ieejas frāzi vai vēlēsieties mainīt šo iestatījumu, jums būs <ph name="BEGIN_LINK"/>jāatiestata sinhronizācija<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizāciju<ph name="END_LINK"/>, lai noņemtu sinhronizācijas ieejas frāzi.</translation>
 <translation id="3873315167136380065">Lai ieslēgtu šo funkciju un noņemtu sinhronizēšanas ieejas frāzi, <ph name="BEGIN_LINK"/>atiestatiet sinhronizāciju<ph name="END_LINK"/>.</translation>
@@ -2703,6 +2711,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Atkāpšanās taustiņš</translation>
 <translation id="1938351510777341717">Ārējais komandtaustiņš</translation>
+<translation id="7969046989155602842">Komandtaustiņš</translation>
 <translation id="585979798156957858">Ārējais Meta taustiņš</translation>
 <translation id="4991420928586866460">Uzskatīt augšējās rindas taustiņus par funkciju taustiņiem</translation>
 <translation id="85486688517848470">Turiet meklēšanas taustiņu, lai pārslēgtu augšējās rindas taustiņu funkcijas.</translation>

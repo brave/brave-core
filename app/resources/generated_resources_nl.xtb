@@ -1256,6 +1256,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3766223500670287046">Extern scherm</translation>
 <translation id="3930737994424905957">Apparaten zoeken</translation>
 <translation id="5209320130288484488">Geen apparaten gevonden</translation>
+<translation id="4415245286584082850">Geen apparaten gevonden. Open een Helpcentrum-artikel op een nieuw tabblad.</translation>
 <translation id="4363771538994847871">Er zijn geen Cast-bestemmingen gevonden. Hulp nodig?</translation>
 <translation id="8688672835843460752">Beschikbaar</translation>
 <translation id="4271396100647220620">Geen overeenkomsten</translation>
@@ -1874,6 +1875,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Gebruik Linux-tools, editors en IDE's op je Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Meer informatie&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Linux-apps voor Bravebook verwijderen</translation>
+<translation id="1529899284660134226">Gedeelde bestanden en mappen beheren</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android-instellingen</translation>
 <translation id="4767209642168463274">Apps en games van Brave Software Play installeren op je Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Meer informatie&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="6122875415561139701">Schrijfbewerking is niet toegestaan op: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679">Bluetooth-configuratie wordt beheerd door <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Periode</translation>
+<translation id="3958004920128806270">Als je browsergegevens alleen van dit apparaat wilt wissen, maar ze wilt behouden in je Brave Software-account, <ph name="BEGIN_LINK"/>log je uit<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Als je browsergegevens wilt wissen van al je gesynchroniseerde apparaten en je Brave Software-account, <ph name="BEGIN_LINK"/>ga je naar synchronisatie-instellingen<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Als je browsergegevens wilt wissen van al je gesynchroniseerde apparaten en je Brave Software-account, <ph name="BEGIN_LINK"/>geef je je wachtwoordzin op<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Als je browsergegevens wilt wissen van al je gesynchroniseerde apparaten en je Brave Software-account, <ph name="BEGIN_LINK"/>log je in<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Browsegeschiedenis</translation>
 <translation id="8662811608048051533">Hiermee word je uitgelogd van de meeste sites.</translation>
 <translation id="4650925988509114690">Hiermee word je uitgelogd bij de meeste sites. Je blijft ingelogd op je Brave Software-account zodat je gesynchroniseerde gegevens kunnen worden gewist.</translation>
@@ -2079,7 +2085,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="9024158959543687197">Fout bij het activeren van de fileshare. Controleer de fileshare-URL en probeer het opnieuw.</translation>
 <translation id="1954813140452229842">Fout bij het activeren van de fileshare. Controleer je inloggegevens en probeer het opnieuw.</translation>
 <translation id="2148219725039824548">Fout bij het activeren van de fileshare. De opgegeven fileshare kan niet in het netwerk worden gevonden.</translation>
-<translation id="7234406375359457793">Fout bij het activeren van de fileshare. De opgegeven fileshare wordt niet ondersteund.</translation>
+<translation id="6923633482430812883">Fout bij het activeren van de fileshare. Controleer of de bestandsserver waarmee je verbinding maakt, SMBv2 of hoger ondersteunt.</translation>
 <translation id="706626672220389329">Fout bij het activeren van de fileshare. De opgegeven fileshare is al geactiveerd.</translation>
 <translation id="5985458664595100876">Ongeldige URL-indeling. Ondersteunde formaten zijn \\server\share en smb://server/share.</translation>
 <translation id="9147304170847707004">Verificatiemethode</translation>
@@ -2541,6 +2547,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="7366415735885268578">Een site toevoegen</translation>
 <translation id="5052499409147950210">Site bewerken</translation>
 <translation id="2870560284913253234">Site</translation>
+<translation id="4610862967073369855">Hiermee kan Android Berichten sms'jes van je telefoon naar je Bravebook doorsturen</translation>
 <translation id="6742339027238151589">Toegankelijk voor script</translation>
 <translation id="361106536627977100">Flash-gegevens</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2642,6 +2649,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8135094938656535588">Gesynchroniseerde gegevens beheren in Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Opties voor encryptie</translation>
 <translation id="2459230470861708651">Gesynchroniseerde wachtwoorden versleutelen met je Brave Software-gebruikersnaam en -wachtwoord</translation>
+<translation id="5958351589333270173">Gesynchroniseerde gegevens versleutelen met je eigen <ph name="BEGIN_LINK"/>wachtwoordzin voor synchronisatie<ph name="END_LINK"/>. Hieronder vallen geen betaalmethoden en adressen van Brave Software Pay.</translation>
 <translation id="4817583816512767754">Alleen iemand met je wachtwoordzin kan je versleutelde gegevens lezen. De wachtwoordzin wordt niet verzonden naar of opgeslagen door Brave Software. Als je je wachtwoordzin vergeet of deze instelling wilt wijzigen, moet je de <ph name="BEGIN_LINK"/>synchronisatie resetten<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Als je deze instelling wilt wijzigen, moet je de <ph name="BEGIN_LINK"/>synchronisatie resetten<ph name="END_LINK"/> om de wachtwoordzin voor synchronisatie te verwijderen</translation>
 <translation id="3873315167136380065">Als je dit wilt inschakelen, <ph name="BEGIN_LINK"/>reset je de synchronisatie<ph name="END_LINK"/> om de wachtwoordzin voor synchronisatie te verwijderen</translation>
@@ -2705,6 +2713,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Externe opdracht</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Externe meta</translation>
 <translation id="4991420928586866460">Toetsen op de bovenste rij behandelen als functietoetsen</translation>
 <translation id="85486688517848470">Houd de zoektoets ingedrukt om het gedrag van de toetsen in de bovenste rij om te schakelen</translation>

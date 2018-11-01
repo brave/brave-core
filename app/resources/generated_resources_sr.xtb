@@ -1258,6 +1258,7 @@
 <translation id="3766223500670287046">Удаљени екран</translation>
 <translation id="3930737994424905957">Траже се уређаји</translation>
 <translation id="5209320130288484488">Није пронађен ниједан уређај</translation>
+<translation id="4415245286584082850">Није пронађен ниједан уређај. Отворите чланак центра за помоћ на новој картици.</translation>
 <translation id="4363771538994847871">Нема пронађених одредишта за пребацивање. Да ли вам треба помоћ?</translation>
 <translation id="8688672835843460752">Доступно</translation>
 <translation id="4271396100647220620">Нема подударања</translation>
@@ -1875,6 +1876,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Покрените Linux алатке, уређиваче и IDE-ове на Bravebook-у. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Сазнајте више&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Уклоните Linux апликације за Bravebook</translation>
+<translation id="1529899284660134226">Управљајте дељеним датотекама и директоријумима</translation>
 <translation id="2295473777859797944">Brave Software Play продавница</translation>
 <translation id="572155275267014074">Android подешавања</translation>
 <translation id="4767209642168463274">Инсталирајте апликације и игре са Brave Software Play-а на Bravebook-у. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Сазнајте више&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@
 <translation id="6122875415561139701">Операција писања није дозвољена на: „<ph name="DEVICE_NAME"/>“.</translation>
 <translation id="439266289085815679">Конфигурацију Bluetooth-а контролише <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Временски опсег</translation>
+<translation id="3958004920128806270">Да бисте обрисали податке прегледања само са овог уређаја, али не и са Brave Software налога, <ph name="BEGIN_LINK"/>одјавите се<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Да бисте обрисали податке прегледања са свих синхронизованих уређаја и са Brave Software налога, <ph name="BEGIN_LINK"/>идите у подешавања синхронизације<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Да бисте обрисали податке прегледања са свих синхронизованих уређаја и са Brave Software налога, <ph name="BEGIN_LINK"/>унесите приступну фразу<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Да бисте обрисали податке прегледања са свих синхронизованих уређаја и са Brave Software налога, <ph name="BEGIN_LINK"/>пријавите се<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Историја прегледања</translation>
 <translation id="8662811608048051533">Одјавиће вас са већине сајтова.</translation>
 <translation id="4650925988509114690">Одјављује вас са већине сајтова. Не одјављује вас са Brave Software налога, па синхронизовани подаци могу да се обришу.</translation>
@@ -2079,7 +2085,7 @@
 <translation id="9024158959543687197">Грешка при учитавању дељене датотеке. Проверите URL дељења датотека и пробајте поново.</translation>
 <translation id="1954813140452229842">Грешка при учитавању дељене датотеке. Проверите акредитиве и пробајте поново.</translation>
 <translation id="2148219725039824548">Грешка при учитавању дељене датотеке. Наведена дељена датотека није пронађена на мрежи.</translation>
-<translation id="7234406375359457793">Грешка при учитавању дељене датотеке. Наведена дељена датотека није подржана.</translation>
+<translation id="6923633482430812883">Грешка при учитавању дељене датотеке. Проверите да ли сервер датотека са којим се повезујете подржава SMBv2 или новију верзију.</translation>
 <translation id="706626672220389329">Грешка при учитавању дељене датотеке. Наведена дељена датотека је већ учитана.</translation>
 <translation id="5985458664595100876">Неважећи формат URL-а. Подржани формати су \\server\share и smb://server/share.</translation>
 <translation id="9147304170847707004">Метод за потврду идентитета</translation>
@@ -2540,6 +2546,7 @@
 <translation id="7366415735885268578">Додајте сајт</translation>
 <translation id="5052499409147950210">Измените сајт</translation>
 <translation id="2870560284913253234">Сајт</translation>
+<translation id="4610862967073369855">Дозвољава да Android Messages преноси SMS-ове са телефона на Bravebook</translation>
 <translation id="6742339027238151589">Приступачно за скрипту</translation>
 <translation id="361106536627977100">Подаци Flash-а</translation>
 <translation id="8557930019681227453">Манифест</translation>
@@ -2641,6 +2648,7 @@
 <translation id="8135094938656535588">Управљајте синхронизованим подацима на Brave Software контролној табли</translation>
 <translation id="6596325263575161958">Опције шифровања</translation>
 <translation id="2459230470861708651">Шифруј синхронизоване лозинке помоћу Brave Software корисничког имена и лозинке</translation>
+<translation id="5958351589333270173">Шифрујте синхронизоване податке помоћу сопствене <ph name="BEGIN_LINK"/>приступне фразе за синхронизацију<ph name="END_LINK"/>. То не обухвата начине плаћања и адресе из Brave Software Pay-а.</translation>
 <translation id="4817583816512767754">Само неко ко има приступну фразу може да чита шифроване податке. Brave Software не шаље нити чува приступну фразу. Ако заборавите приступну фразу или желите да промените ово подешавање, мораћете да <ph name="BEGIN_LINK"/>ресетујете синхронизацију<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Да бисте променили ово подешавање, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/> да бисте уклонили приступну фразу за синхронизацију</translation>
 <translation id="3873315167136380065">Да бисте укључили ово, <ph name="BEGIN_LINK"/>ресетујте синхронизацију<ph name="END_LINK"/> да бисте уклонили приступну фразу за синхронизацију</translation>
@@ -2704,6 +2712,7 @@
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Спољна команда</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Спољни мета тастер</translation>
 <translation id="4991420928586866460">Третирај тастере из горњег реда као функцијске тастере</translation>
 <translation id="85486688517848470">Задржите тастер за претрагу да бисте променили понашање тастера у горњем реду</translation>

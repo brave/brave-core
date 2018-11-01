@@ -1257,6 +1257,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3766223500670287046">Vzdialená obrazovka</translation>
 <translation id="3930737994424905957">Vyhľadávajú sa zariadenia</translation>
 <translation id="5209320130288484488">Nenašli sa žiadne zariadenia</translation>
+<translation id="4415245286584082850">Nenašli sa žiadne zariadenia. Otvorte článok centra pomoci na novej karte.</translation>
 <translation id="4363771538994847871">Nenašli sa žiadne ciele prenášania. Potrebujete pomoc?</translation>
 <translation id="8688672835843460752">K dispozícii</translation>
 <translation id="4271396100647220620">Žiadne zhody</translation>
@@ -1874,6 +1875,7 @@ s ostatnými, a to všetko na jednom mieste.<ph name="MARKUP_9"/></translation
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Spúšťajte v Bravebooku nástroje, editory a prostredia IDE pre Linux. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ďalšie informácie&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Odstrániť aplikácie Linux pre Bravebook</translation>
+<translation id="1529899284660134226">Spravovať zdieľané súbory a priečinky</translation>
 <translation id="2295473777859797944">Obchod Brave Software Play</translation>
 <translation id="572155275267014074">Nastavenia Androidu</translation>
 <translation id="4767209642168463274">Nainštalujte si aplikácie a hry zo služby Brave Software Play na Bravebooku. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Ďalšie informácie&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@ s ostatnými, a to všetko na jednom mieste.<ph name="MARKUP_9"/></translation
 <translation id="6122875415561139701">Operácia zápisu je na zariadení <ph name="DEVICE_NAME"/> zakázaná.</translation>
 <translation id="439266289085815679">Konfiguráciu rozhrania Bluetooth spravuje <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Časové obdobie</translation>
+<translation id="3958004920128806270">Ak chcete vymazať dáta prehliadania iba z tohto zariadenia a ponechať ich v účte Brave Software, <ph name="BEGIN_LINK"/>odhláste sa<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Ak chcete vymazať dáta prehliadania zo všetkých synchronizovaných zariadení a účtu Brave Software, <ph name="BEGIN_LINK"/>prejdite do nastavení synchronizácie<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Ak chcete vymazať dáta prehliadania zo všetkých synchronizovaných zariadení a účtu Brave Software, <ph name="BEGIN_LINK"/>zadajte prístupovú frázu<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Ak chcete vymazať dáta prehliadania zo všetkých synchronizovaných zariadení a účtu Brave Software, <ph name="BEGIN_LINK"/>prihláste sa<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">História prehliadania</translation>
 <translation id="8662811608048051533">Odhlási vás z väčšiny webov.</translation>
 <translation id="4650925988509114690">Odhlási vás z väčšiny webov, ale nie z účtu Brave Software, takže sa synchronizované dáta budú dať vymazať.</translation>
@@ -2078,7 +2084,7 @@ s ostatnými, a to všetko na jednom mieste.<ph name="MARKUP_9"/></translation
 <translation id="9024158959543687197">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Skontrolujte jeho webovú adresu a skúste to znova.</translation>
 <translation id="1954813140452229842">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Skontrolujte poverenia a skúste to znova.</translation>
 <translation id="2148219725039824548">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Uvedené úložisko sa v sieti nenašlo.</translation>
-<translation id="7234406375359457793">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Dané úložisko nie je podporované.</translation>
+<translation id="6923633482430812883">Pri pripájaní zdieľaného súboru sa vyskytla chyba. Skontrolujte, či server, ku ktorému sa pripájate, podporuje protokol SMBv2 alebo novší.</translation>
 <translation id="706626672220389329">Pri pripájaní zdieľaného úložiska sa vyskytla chyba. Dané úložisko je už pripojené.</translation>
 <translation id="5985458664595100876">Neplatný formát webovej adresy. Podporované formáty sú \\server\share a smb://server/share.</translation>
 <translation id="9147304170847707004">Spôsob overenia</translation>
@@ -2539,6 +2545,7 @@ s ostatnými, a to všetko na jednom mieste.<ph name="MARKUP_9"/></translation
 <translation id="7366415735885268578">Pridanie webu</translation>
 <translation id="5052499409147950210">Úprava webu</translation>
 <translation id="2870560284913253234">Webové stránky</translation>
+<translation id="4610862967073369855">Umožňuje Správam pre Android prenášať textové správy z vášho telefónu do Bravebooku</translation>
 <translation id="6742339027238151589">Prístupné pre skript</translation>
 <translation id="361106536627977100">Údaje Flash</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2640,6 +2647,7 @@ s ostatnými, a to všetko na jednom mieste.<ph name="MARKUP_9"/></translation
 <translation id="8135094938656535588">Spravovať synchronizované dáta v službe Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Možnosti šifrovania</translation>
 <translation id="2459230470861708651">Šifrovať synchronizované heslá pomocou používateľského mena a hesla Brave Software</translation>
+<translation id="5958351589333270173">Šifrovať synchronizované údaje pomocou vlastnej <ph name="BEGIN_LINK"/>prístupovej frázy synchronizácie<ph name="END_LINK"/>. Nezahŕňa to spôsoby platby ani adresy zo služby Brave Software Pay.</translation>
 <translation id="4817583816512767754">Šifrované údaje môže čítať iba používateľ s prístupovou frázou. Prístupová fráza sa do Googlu neodosiela a Brave Software ju ani neukladá. Ak zabudnete prístupovú frázu alebo budete chcieť zmeniť toto nastavenie zmeniť, musíte <ph name="BEGIN_LINK"/>resetovať synchronizáciu<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Ak chcete zmeniť toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/> a odstráňte tak prístupovú frázu synchronizácie</translation>
 <translation id="3873315167136380065">Zapnite toto nastavenie, <ph name="BEGIN_LINK"/>resetujte synchronizáciu<ph name="END_LINK"/> a odstráňte tak prístupovú frázu synchronizácie</translation>
@@ -2703,6 +2711,7 @@ s ostatnými, a to všetko na jednom mieste.<ph name="MARKUP_9"/></translation
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Externý príkaz</translation>
+<translation id="7969046989155602842">Príkaz</translation>
 <translation id="585979798156957858">Externý metakláves</translation>
 <translation id="4991420928586866460">Považovať klávesy v hornom riadku za funkčné klávesy</translation>
 <translation id="85486688517848470">Podržaním klávesa vyhľadávania prepnete správanie klávesov v hornom riadku</translation>

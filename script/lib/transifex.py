@@ -16,8 +16,8 @@ base_url = 'https://www.transifex.com/api/2/'
 
 def transifex_name_from_filename(source_file_path, filename):
   ext = os.path.splitext(source_file_path)[1]
-  if filename == 'brave_components_strings.grd':
-    return 'brave_components_resources.grd'
+  if 'brave_components_strings' in source_file_path:
+    return 'brave_components_resources'
   elif ext == '.grd':
     return filename
   elif 'brave_rewards' in source_file_path:

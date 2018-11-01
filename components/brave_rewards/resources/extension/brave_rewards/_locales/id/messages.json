@@ -48,7 +48,7 @@
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Penerbit Terverifikasi Brave",
+    "message": "Penerbit Brave Terverifikasi",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
@@ -56,7 +56,7 @@
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site monthly",
+    "message": "Beri tip bulanan untuk situs ini",
     "description": ""
   },
   "includeInAuto": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have a grant waiting for you.",
+    "message": "Ada hibah yang menanti Anda.",
     "description": ""
   },
   "braveRewardsCreatingText": {

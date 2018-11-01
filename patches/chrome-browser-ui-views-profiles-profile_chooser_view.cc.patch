@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index a74452371016de0de6adbfacd001a122515d8476..5d9c78cd89d376caf0b2d0a95b9556bea095273f 100644
+index d433d4d5ed52e2d1c2063a4be839922b597573b3..34a89ffb857a94b7ad9d951b94f2193f0a6a2a55 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 @@ -332,7 +332,7 @@ void ProfileChooserView::ShowBubble(

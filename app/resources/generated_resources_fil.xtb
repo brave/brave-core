@@ -1257,6 +1257,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3766223500670287046">Malayong screen</translation>
 <translation id="3930737994424905957">Naghahanap ng mga device</translation>
 <translation id="5209320130288484488">Walang nahanap na mga device</translation>
+<translation id="4415245286584082850">Walang nakitang device. Magbukas ng artikulo sa help center sa isang bagong tab.</translation>
 <translation id="4363771538994847871">Walang nakitang mga patutunguhan ng Pag-cast. Kailangan mo ba ng tulong?</translation>
 <translation id="8688672835843460752">Available</translation>
 <translation id="4271396100647220620">Walang mga pagtutugma</translation>
@@ -1874,6 +1875,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Magpatakbo ng mga Linux tool, editor, at IDE sa iyong Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Matuto pa&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Alisin ang mga App ng Linux sa Bravebook</translation>
+<translation id="1529899284660134226">Pamahalaan ang mga nakabahaging file at folder</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Mga setting ng Android</translation>
 <translation id="4767209642168463274">Mag-install ng mga app at laro mula sa Brave Software Play sa iyong Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Matuto pa&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6122875415561139701">Hindi pinapahintulutan ang write na operation sa: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">Ang configuration ng bluetooth ay kinokontrol ni <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Sakop na oras</translation>
+<translation id="3958004920128806270">Para i-clear ang data mula sa pag-browse sa device lang na ito, habang pinapanatili ito sa iyong Brave Software Account, <ph name="BEGIN_LINK"/>mag-sign out<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Para i-clear ang data mula sa pag-browse sa lahat ng iyong naka-sync na device at sa Brave Software Account mo, <ph name="BEGIN_LINK"/>bisitahin ang mga setting ng pag-sync<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Para i-clear ang data mula sa pag-browse sa lahat ng iyong naka-sync na device at sa Brave Software Account mo, <ph name="BEGIN_LINK"/>ilagay ang iyong passphrase<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Para i-clear ang data mula sa pag-browse sa lahat ng iyong naka-sync na device at sa Brave Software Account mo, <ph name="BEGIN_LINK"/>mag-sign in<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">History ng Pagba-browse</translation>
 <translation id="8662811608048051533">Nagsa-sign out sa iyo sa karamihan ng site.</translation>
 <translation id="4650925988509114690">Sina-sign out ka sa karamihan ng mga site. Hindi ka masa-sign out sa iyong Brave Software Account kaya maki-clear ang naka-sync mong data.</translation>
@@ -2078,7 +2084,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="9024158959543687197">Nagka-error sa pag-mount ng share. Tingnan ang URL ng file share at subukang muli.</translation>
 <translation id="1954813140452229842">Nagka-error sa pag-mount ng share. Pakitingnan ang iyong mga kredensyal at subukang muli.</translation>
 <translation id="2148219725039824548">Nagka-error sa pag-mount ng share. Hindi nakita ang isinaad na share sa network.</translation>
-<translation id="7234406375359457793">Nagka-error sa pag-mount ng share. Hindi sinusuportahan ang isinaad na share.</translation>
+<translation id="6923633482430812883">Nagkaroon ng error sa pag-mount ng pagbabahagi. Pakitingnan kung sumusuporta sa SMBv2 o mas bago ang file server kung saan ka kumokonekta.</translation>
 <translation id="706626672220389329">Nagka-error sa pag-mount ng share. Naka-mount na ang isinaad na share.</translation>
 <translation id="5985458664595100876">Invalid ang format ng URL. Ang mga sinusuportahang format ay \\server\share at smb://server/share.</translation>
 <translation id="9147304170847707004">Paraan ng Pag-authenticate</translation>
@@ -2539,6 +2545,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7366415735885268578">Magdagdag ng site</translation>
 <translation id="5052499409147950210">I-edit ang site</translation>
 <translation id="2870560284913253234">Site</translation>
+<translation id="4610862967073369855">Binibigyang-daan ang Android Messages na mag-relay ng mga text mula sa iyong telepono papunta sa Bravebook mo</translation>
 <translation id="6742339027238151589">Naa-access sa script</translation>
 <translation id="361106536627977100">Data sa flash</translation>
 <translation id="8557930019681227453">Manifest</translation>
@@ -2640,6 +2647,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8135094938656535588">Pamahalaan ang naka-sync na data sa Brave Software Dashboard</translation>
 <translation id="6596325263575161958">Mga pagpipilian sa pag-encrypt</translation>
 <translation id="2459230470861708651">I-encrypt ang mga naka-sync na password sa iyong username at password sa Brave Software</translation>
+<translation id="5958351589333270173">I-encrypt ang naka-sync na data gamit ang iyong sariling <ph name="BEGIN_LINK"/>passphrase sa pag-sync<ph name="END_LINK"/>. Hindi kasama rito ang mga paraan ng pagbabayad at address mula sa Brave Software Pay.</translation>
 <translation id="4817583816512767754">Ang taong may alam ng passphrase mo lang ang makakabasa sa iyong naka-encrypt na data. Hindi ipinapadala sa o iniimbak ng Brave Software ang passphrase. Kung makalimutan mo ang iyong passphrase o gusto mong baguhin ang setting na ito, kakailanganin mong <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/> para alisin ang iyong passphrase sa pag-sync</translation>
 <translation id="3873315167136380065">Para i-on ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph name="END_LINK"/> para alisin ang iyong passphrase sa pag-sync</translation>
@@ -2703,6 +2711,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">External na Command</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">External na Meta</translation>
 <translation id="4991420928586866460">Ituring ang mga top-row key bilang mga function key</translation>
 <translation id="85486688517848470">Pindutin nang matagal ang Key sa paghahanap upang palitan ang gawi ng mga key sa itaas na row</translation>

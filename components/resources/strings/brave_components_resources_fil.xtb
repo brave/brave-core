@@ -22,7 +22,7 @@
 <translation id="59174027418879706">Naka-enable</translation>
 <translation id="4176463684765177261">Naka-disable</translation>
 <translation id="7207456302801184289">Welcome sa Brave</translation>
-<translation id="2391823593986423328">Ang Brave ay hindi lang isang browser. Hayaan kaming ipakita sa iyong kung paano ito masusulit</translation>
+<translation id="764012553571385542">Ang Brave ay hindi lang isang browser. Hayaan kaming ipakita sa iyong kung paano ito masusulit</translation>
 <translation id="6001839398155993679">Tara na</translation>
 <translation id="8050847734948770789">I-enable ang Mga Reward ng Brave</translation>
 <translation id="2710310654441838823">Ang Mga Reward ng Brave ay isang bagong paraan ng pag-iisip kung paano gumagana ang web. Makatanggap ng reward para sa panonood ng mga ad na nagpapahalaga sa privacy at suportahan ang iyong mga paboritong creator ng content habang ginagawa mo ito.</translation>
@@ -31,7 +31,7 @@
 <translation id="5521187896304743452">Pinapadali ng Brave ang pag-set up ng iyong karaniwang environment sa pamamagitan ng pag-import ng mga bookmark at setting mula sa iba pang browser na naka-install sa iyong computer.</translation>
 <translation id="4138981897709579987">I-import Ngayon</translation>
 <translation id="9152220852742774324">Pamahalaan ang mga setting ng iyong shield</translation>
-<translation id="2043261199283617849">Isaayos at subaybayan ang level ng proteksyon mo sa pamamagitan ng pag-click sa logo ng Brave sa toolbar. Pamahalaan ang iyong pangkalahatang mga setting ng shield sa panel ng mga kagustuhan</translation>
+<translation id="110988439043625224">Isaayos at subaybayan ang level ng proteksyon mo sa pamamagitan ng pag-click sa logo ng Brave sa toolbar. Pamahalaan ang iyong pangkalahatang mga setting ng shield sa panel ng mga kagustuhan</translation>
 <translation id="3366308997091824722">Mga Setting ng Shield</translation>
 <translation id="7024124499777560832">I-customize ang iyong mga kagustuhan</translation>
 <translation id="2498783234010887316">Maaaring i-configure sa panel ng mga kagustuhan ang mga tab, hitsura, mga extension, at setting ng history. Maaari ka pang makahanap doon ng madilim na tema ;)</translation>
@@ -74,11 +74,11 @@
 <translation id="7841456038054167122">Pakilagay muli ang mga key o sumubok ng ibang mga key.</translation>
 <translation id="2195074481553016770">Malapit na…</translation>
 <translation id="5254740304961202261">Patunayan na tao ka!</translation>
-<translation id="5118651998291801746">Hmmm…may mali.</translation>
+<translation id="1387881035954376289">Hmmm…may mali.</translation>
 <translation id="2323069945529668668">Naku!</translation>
 <translation id="5094577350232361255">tungkol sa</translation>
 <translation id="4918086044614829423">Tanggapin</translation>
-<translation id="7856172182738102743">©2016 –2018 Brave Software. Ang Brave ay isang nakarehistrong trademark ng Brave Software. Maaaring mga trademark o nakarehistrong trademark ng may-ari ng site ang mga pangalan ng site.</translation>
+<translation id="6832986780040139899">©2016 –2018 Brave Software. Ang Brave ay isang nakarehistrong trademark ng Brave Software. Maaaring mga trademark o nakarehistrong trademark ng may-ari ng site ang mga pangalan ng site.</translation>
 <translation id="9026369588205476247">Upang maprotektahan ang iyong privacy, ang statement ay hindi sine-save, itinatala, o nila-log saanman maliban sa iyong device (ang computer na ito). Hindi ito makukuha mula sa Brave kung sakaling mawala ang data sa iyong device.</translation>
 <translation id="1036277985068412734">magdagdag ng mga pondo</translation>
 <translation id="4496990471549986619">ang FAQ</translation>
@@ -214,7 +214,7 @@
 <translation id="8446884382197647889">Matuto Pa</translation>
 <translation id="4083384190339959182">Nagbigay kami ng malaking upgrade sa Mga Pagbabayad sa Brave.</translation>
 <translation id="5395851053710553429">Maghandang maranasan ang susunod na Internet.</translation>
-<translation id="1658717423774740031">Gamit ang iyong lumang browser, nagbayad ka para mag-browse sa web sa pamamagitan ng panonood ng mga ad sa pamamagitan ng iyong mahalagang atensyon. Inilaan mo ang iyong mahalagang oras sa pag-download ng nanghihimasok na teknolohiya ng ad na ipinadala ang iyong mahalagang pribadong data sa mga advertiser — nang walang pahintulot mo.</translation>
+<translation id="880341991877949255">Gamit ang iyong lumang browser, nagbayad ka para mag-browse sa web sa pamamagitan ng panonood ng mga ad sa pamamagitan ng iyong mahalagang atensyon. Inilaan mo ang iyong mahalagang oras sa pag-download ng nanghihimasok na teknolohiya ng ad na ipinadala ang iyong mahalagang pribadong data sa mga advertiser — nang walang pahintulot mo.</translation>
 <translation id="2549982302631665116">Ngayon, ipinapakilala sa iyo ng Brave ang bagong Internet. Isang lugar kung saan pinapahalagahan ang iyong oras, pinapanatiling pribado ang iyong personal na data, at talagang binabayaran ka para sa iyong atensyon.</translation>
 <translation id="3780605330121608425">Ang iyong wallet</translation>
 </translationbundle>

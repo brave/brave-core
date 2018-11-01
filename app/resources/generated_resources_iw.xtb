@@ -1256,6 +1256,7 @@
 <translation id="3766223500670287046">מסך מרוחק</translation>
 <translation id="3930737994424905957">חיפוש מכשירים</translation>
 <translation id="5209320130288484488">לא נמצאו מכשירים</translation>
+<translation id="4415245286584082850">לא נמצאו מכשירים. אפשר לפתוח מאמר מרכז עזרה בכרטיסייה חדשה.</translation>
 <translation id="4363771538994847871">לא נמצא יעד להעברה. זקוק לעזרה?</translation>
 <translation id="8688672835843460752">פנוי</translation>
 <translation id="4271396100647220620">אין התאמות</translation>
@@ -1874,6 +1875,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">‏הפעלת כלים, עורכים וסביבות פיתוח משולבות (IDE) של Linux ב-Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;מידע נוסף&lt;/a&gt;</translation>
 <translation id="6869910261738842136">‏הסרת אפליקציות Linux מה-Bravebook</translation>
+<translation id="1529899284660134226">ניהול תיקיות וקבצים משותפים</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">‏הגדרות Android</translation>
 <translation id="4767209642168463274">‏התקן במכשיר ה-Bravebook שלך אפליקציות ומשחקים מ-Brave Software Play. &lt;a target="_blank" href="<ph name="URL"/>"&gt;מידע נוסף&lt;/a&gt;</translation>
@@ -1998,6 +2000,10 @@
 <translation id="6122875415561139701">פעולת כתיבה אסורה במכשיר: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">‏הגדרת ה-Bluetooth היא בשליטת <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">טווח זמן</translation>
+<translation id="3958004920128806270">‏כדי לנקות את נתוני הגלישה ממכשיר זה בלבד ועדיין לשמור אותם בחשבון Brave Software שלך, <ph name="BEGIN_LINK"/>יש לבצע יציאה<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">‏כדי לנקות את נתוני הגלישה מכל המכשירים המסונכרנים ומחשבון Brave Software שלך, <ph name="BEGIN_LINK"/>יש להיכנס להגדרות הסנכרון<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">‏כדי לנקות את נתוני הגלישה מכל המכשירים המסונכרנים ומחשבון Brave Software שלך, <ph name="BEGIN_LINK"/>יש להזין את ביטוי הסיסמה<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">‏כדי לנקות את נתוני הגלישה מכל המכשירים המסונכרנים ומחשבון Brave Software שלך, <ph name="BEGIN_LINK"/>יש לבצע כניסה<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">היסטוריית גלישה</translation>
 <translation id="8662811608048051533">תבוצע יציאה שלך מרוב האתרים.</translation>
 <translation id="4650925988509114690">‏תבוצע יציאה שלך מרוב האתרים. לא תבוצע יציאה מחשבון Brave Software, כדי שניתן יהיה לנקות את הנתונים המסונכרנים.</translation>
@@ -2078,7 +2084,7 @@
 <translation id="9024158959543687197">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. יש לבדוק את כתובת האתר של ההתקן ולנסות שוב.</translation>
 <translation id="1954813140452229842">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. יש לבדוק את פרטי הכניסה ולנסות שוב.</translation>
 <translation id="2148219725039824548">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. ההתקן שצוין לא נמצא ברשת.</translation>
-<translation id="7234406375359457793">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. ההתקן שצוין אינו נתמך.</translation>
+<translation id="6923633482430812883">‏קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. יש לוודא ששרת הקבצים שאליו ניסית להתחבר תומך ב-SMBv2 ואילך.</translation>
 <translation id="706626672220389329">קרתה שגיאה בטעינת התקן הרשת לשיתוף קבצים. ההתקן שצוין כבר נטען.</translation>
 <translation id="5985458664595100876">‏פורמט כתובת האתר לא חוקי. הפורמטים הנתמכים הם ‎\\server\share ו-smb://server/share.</translation>
 <translation id="9147304170847707004">שיטת אימות</translation>
@@ -2539,6 +2545,7 @@
 <translation id="7366415735885268578">הוספת אתר</translation>
 <translation id="5052499409147950210">עריכת אתר</translation>
 <translation id="2870560284913253234">אתר</translation>
+<translation id="4610862967073369855">‏מאפשר ל-Android Messages להעביר הודעות טקסט מהטלפון אל ה-Bravebook</translation>
 <translation id="6742339027238151589">נגיש לסקריפט</translation>
 <translation id="361106536627977100">‏נתוני Flash</translation>
 <translation id="8557930019681227453">מניפסט</translation>
@@ -2640,6 +2647,7 @@
 <translation id="8135094938656535588">‏ניהול נתונים מסוכרנים במרכז השליטה של Brave Software</translation>
 <translation id="6596325263575161958">אפשרויות הצפנה</translation>
 <translation id="2459230470861708651">‏הצפן סיסמאות מסונכרנות עם שם המשתמש והסיסמה שלך ב-Brave Software</translation>
+<translation id="5958351589333270173">‏הצפנת נתונים מסונכרנים בעזרת <ph name="BEGIN_LINK"/>ביטוי סיסמה אישי לסנכרון<ph name="END_LINK"/>. ההצפנה לא כוללת אמצעי תשלום וכתובות מ-Brave Software Pay.</translation>
 <translation id="4817583816512767754">‏רק מי שיודע את ביטוי הסיסמה יכול לקרוא את הנתונים המוצפנים. ביטוי הסיסמה לא נשלח אל Brave Software והיא אינה מאחסנת אותו. אם תשכח את ביטוי הסיסמה או אם תרצה לשנות את ההגדרה הזו, יהיה עליך <ph name="BEGIN_LINK"/>לאפס את הסנכרון<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">כדי לשנות את ההגדרה הזאת, צריך להסיר את ביטוי הסיסמה של הסנכרון על ידי <ph name="BEGIN_LINK"/>איפוס הסנכרון<ph name="END_LINK"/></translation>
 <translation id="3873315167136380065">כדי להפעיל את האפשרות הזאת, צריך <ph name="BEGIN_LINK"/>לאפס את הסנכרון<ph name="END_LINK"/> כדי להסיר את ביטוי הסיסמה של הסנכרון</translation>
@@ -2703,6 +2711,7 @@
 <translation id="89720367119469899">Esc</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">‏מקש Command חיצוני</translation>
+<translation id="7969046989155602842">פקודה</translation>
 <translation id="585979798156957858">‏מקש Meta חיצוני</translation>
 <translation id="4991420928586866460">התייחס למקשים בשורה העליונה כאל מקשי פונקציה</translation>
 <translation id="85486688517848470">החזק את מקש החיפוש כדי לשנות את ההתנהגות של מקשי השורה העליונה</translation>

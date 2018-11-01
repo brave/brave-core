@@ -1258,6 +1258,7 @@
 <translation id="3766223500670287046">на отдалечения екран</translation>
 <translation id="3930737994424905957">Търсят се устройства</translation>
 <translation id="5209320130288484488">Няма намерени устройства</translation>
+<translation id="4415245286584082850">Няма намерени устройства. Отваряне на статия в Помощния център в нов раздел.</translation>
 <translation id="4363771538994847871">Няма намерени местоназначения за Cast. Нуждаете ли се от помощ?</translation>
 <translation id="8688672835843460752">Свободно място</translation>
 <translation id="4271396100647220620">Няма съответствия</translation>
@@ -1875,6 +1876,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Изпълнявайте инструменти, редактори и интегрирани среди за програмиране за Linux на своя Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Научете повече&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Премахване на приложенията за Linux за Bravebook</translation>
+<translation id="1529899284660134226">Управление на споделените файлове и папки</translation>
 <translation id="2295473777859797944">Brave Software Play Магазин</translation>
 <translation id="572155275267014074">Настройки на Android</translation>
 <translation id="4767209642168463274">Инсталирайте приложения и игри от Brave Software Play на своя Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Научете повече&lt;/a&gt;</translation>
@@ -1999,6 +2001,10 @@
 <translation id="6122875415561139701">Операцията за запис не е разрешена на: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="439266289085815679">Конфигурацията на Bluetooth се управлява от <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Период от време</translation>
+<translation id="3958004920128806270">За да изчистите данните за сърфирането само от това устройство, но да ги запазите в профила си в Brave Software, <ph name="BEGIN_LINK"/>излезте от профила си<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">За да изчистите данните за сърфирането от всичките си синхронизирани устройства и от профила си в Brave Software, <ph name="BEGIN_LINK"/>посетете настройките за синхронизиране<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">За да изчистите данните за сърфирането от всичките си синхронизирани устройства и от профила си в Brave Software, <ph name="BEGIN_LINK"/>въведете пропуска си<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">За да изчистите данните за сърфирането от всичките си синхронизирани устройства и от профила си в Brave Software, <ph name="BEGIN_LINK"/>влезте в него<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">История на сърфирането</translation>
 <translation id="8662811608048051533">Ще излезете от повечето сайтове.</translation>
 <translation id="4650925988509114690">Ще излезете от повечето сайтове, но не и от профила си в Brave Software, за да могат да бъдат изчистени синхронизираните ви данни.</translation>
@@ -2079,7 +2085,7 @@
 <translation id="9024158959543687197">Възникна грешка при свързването на дяла. Проверете URL адреса за споделяне на файлове и опитайте отново.</translation>
 <translation id="1954813140452229842">Възникна грешка при свързването на дяла. Моля, проверете идентификационните си данни и опитайте отново.</translation>
 <translation id="2148219725039824548">Възникна грешка при свързването на посочения дял. Той не бе намерен в мрежата.</translation>
-<translation id="7234406375359457793">Възникна грешка при свързването на посочения дял. Той не се поддържа.</translation>
+<translation id="6923633482430812883">Грешка при свързването на хранилището. Моля, уверете се, че файловият сървър, с който установявате връзка, поддържа SMBv2 или по-нова версия.</translation>
 <translation id="706626672220389329">Възникна грешка при свързването на посочения дял. Той вече е свързан.</translation>
 <translation id="5985458664595100876">Форматът на URL адреса е невалиден. поддържаните формати са \\сървър\дял и smb://сървър/дял.</translation>
 <translation id="9147304170847707004">Метод за удостоверяване</translation>
@@ -2541,6 +2547,7 @@
 <translation id="7366415735885268578">Добавяне на сайт</translation>
 <translation id="5052499409147950210">Редактиране на сайта</translation>
 <translation id="2870560284913253234">Сайт</translation>
+<translation id="4610862967073369855">Позволява на Android Messages да предава SMS съобщенията от телефона ви към вашия Bravebook</translation>
 <translation id="6742339027238151589">Достъпно за скрипт</translation>
 <translation id="361106536627977100">Данни на Flash</translation>
 <translation id="8557930019681227453">Манифест</translation>
@@ -2642,6 +2649,7 @@
 <translation id="8135094938656535588">Управление на синхронизираните данни чрез Brave Software Табло за управление</translation>
 <translation id="6596325263575161958">Опции за шифроване</translation>
 <translation id="2459230470861708651">Шифроване на синхронизираните пароли с потребителското име и паролата ви в Brave Software</translation>
+<translation id="5958351589333270173">Шифроване на синхронизираните данни със собствения ви <ph name="BEGIN_LINK"/>пропуск за синхронизиране<ph name="END_LINK"/>. Това не включва начините на плащане и адресите от Brave Software Pay.</translation>
 <translation id="4817583816512767754">Само някой с пропуска ви може да прочете шифрованите ви данни – той не се изпраща до Brave Software, нито се съхранява от нас. Ако го забравите или искате да промените тази настройка, ще се наложи <ph name="BEGIN_LINK"/>да нулирате синхронизирането<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">За да промените тази настройка, <ph name="BEGIN_LINK"/>нулирайте синхронизирането<ph name="END_LINK"/>, така че да премахнете съответния си пропуск</translation>
 <translation id="3873315167136380065">За да включите тази настройка, <ph name="BEGIN_LINK"/>нулирайте синхронизирането<ph name="END_LINK"/>, така че да премахнете съответния си пропуск</translation>
@@ -2705,6 +2713,7 @@
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Външен клавиш Command</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Външен клавиш Meta</translation>
 <translation id="4991420928586866460">Третиране на клавишите от най-горния ред като функционални</translation>
 <translation id="85486688517848470">Задръжте клавиша „търсене“, за да промените поведението на клавишите от най-горния ред</translation>

@@ -1259,6 +1259,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="3766223500670287046">Tela remota</translation>
 <translation id="3930737994424905957">Procurando dispositivos</translation>
 <translation id="5209320130288484488">Nenhum dispositivo foi encontrado</translation>
+<translation id="4415245286584082850">Nenhum dispositivo encontrado. Abrir um artigo da Central de Ajuda em uma nova guia.</translation>
 <translation id="4363771538994847871">Nenhum destino do Brave Software Cast encontrado. Precisa de ajuda?</translation>
 <translation id="8688672835843460752">Disponível</translation>
 <translation id="4271396100647220620">Nenhuma correspondência</translation>
@@ -1876,6 +1877,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Execute ferramentas, editores e ambientes de desenvolvimento integrado do Linux no seu Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saiba mais&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Remover apps do Linux para Bravebook</translation>
+<translation id="1529899284660134226">Gerenciar arquivos e pastas compartilhados</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Configurações do Android</translation>
 <translation id="4767209642168463274">Instalar apps e jogos do Brave Software Play no Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Saber mais&lt;/a&gt;</translation>
@@ -2000,6 +2002,10 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="6122875415561139701">A operação de escrita não é permitida em: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="439266289085815679">A configuração do Bluetooth é controlada por <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Intervalo de tempo</translation>
+<translation id="3958004920128806270">Para limpar os dados de navegação apenas deste dispositivo e mantê-los na sua Conta do Brave Software, <ph name="BEGIN_LINK"/>saia da sua conta<ph name="END_LINK"/>.</translation>
+<translation id="4445433576366924090">Para limpar os dados de navegação de todos os dispositivos sincronizados e da sua Conta do Brave Software, <ph name="BEGIN_LINK"/>acesse as configurações de sincronização<ph name="END_LINK"/>.</translation>
+<translation id="563489167344291753">Para limpar os dados de navegação de todos os dispositivos sincronizados e da sua Conta do Brave Software, <ph name="BEGIN_LINK"/>digite sua senha longa<ph name="END_LINK"/>.</translation>
+<translation id="3895809404273995788">Para limpar os dados de navegação de todos os dispositivos sincronizados e da sua Conta do Brave Software, <ph name="BEGIN_LINK"/>faça login<ph name="END_LINK"/>.</translation>
 <translation id="2496180316473517155">Histórico de navegação</translation>
 <translation id="8662811608048051533">Desconecta você da maioria dos sites.</translation>
 <translation id="4650925988509114690">Desconecta você da maioria dos sites. Você permanecerá conectado à sua Conta do Brave Software, então seus dados sincronizados poderão ser excluídos.</translation>
@@ -2080,7 +2086,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="9024158959543687197">Erro ao ativar o compartilhamento. Verifique o URL de compartilhamento de arquivos e tente novamente.</translation>
 <translation id="1954813140452229842">Erro ao ativar o compartilhamento. Verifique suas credenciais e tente novamente.</translation>
 <translation id="2148219725039824548">Erro ao ativar o compartilhamento. O compartilhamento especificado não foi encontrado na rede.</translation>
-<translation id="7234406375359457793">Erro ao ativar o compartilhamento. O compartilhamento especificado não é compatível.</translation>
+<translation id="6923633482430812883">Erro ao ativar o compartilhamento. Verifique se o servidor de arquivos ao qual você está se conectando tem compatibilidade com SMBv2 ou versões posteriores.</translation>
 <translation id="706626672220389329">Erro ao ativar o compartilhamento. O compartilhamento especificado já está ativado.</translation>
 <translation id="5985458664595100876">Formato de URL inválido. Os formatos compatíveis são \\server\share e smb://server/share.</translation>
 <translation id="9147304170847707004">Método de autenticação</translation>
@@ -2541,6 +2547,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="7366415735885268578">Adicionar um site</translation>
 <translation id="5052499409147950210">Editar site</translation>
 <translation id="2870560284913253234">Site</translation>
+<translation id="4610862967073369855">Permite que o Android Mensagens transmita mensagens de texto do smartphone para o Bravebook</translation>
 <translation id="6742339027238151589">Acessível ao script</translation>
 <translation id="361106536627977100">Dados do Flash</translation>
 <translation id="8557930019681227453">Manifesto</translation>
@@ -2642,6 +2649,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="8135094938656535588">Gerenciar dados sincronizados no Painel de controle do Brave Software</translation>
 <translation id="6596325263575161958">Opções de criptografia</translation>
 <translation id="2459230470861708651">Criptografar senhas sincronizadas com seu nome de usuário e senha do Brave Software</translation>
+<translation id="5958351589333270173">Criptografar dados sincronizados com sua <ph name="BEGIN_LINK"/>senha longa de sincronização<ph name="END_LINK"/>. Isso não inclui formas de pagamento e endereços do Brave Software Pay.</translation>
 <translation id="4817583816512767754">Somente uma pessoa que tenha sua senha longa pode ler seus dados criptografados. A senha longa não é enviada para o Brave Software ou armazenada por ele. Se você esquecer sua senha longa ou quiser alterar essa configuração, será necessário <ph name="BEGIN_LINK"/>redefinir a sincronização<ph name="END_LINK"/>.</translation>
 <translation id="7441736921018636843">Para mudar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronização<ph name="END_LINK"/> e remova sua senha longa de sincronização</translation>
 <translation id="3873315167136380065">Para ativar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronização<ph name="END_LINK"/> e remova sua senha longa de sincronização</translation>
@@ -2705,6 +2713,7 @@ Pessoas com conexões mais lentas talvez não vejam seu conteúdo.</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Comando externo</translation>
+<translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Meta externa</translation>
 <translation id="4991420928586866460">Tratar teclas de linha superior como teclas de função</translation>
 <translation id="85486688517848470">Mantenha pressionada a tecla "Pesquisar" para alternar o comportamento das teclas de função</translation>

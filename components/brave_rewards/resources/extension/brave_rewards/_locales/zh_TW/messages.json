@@ -1,22 +1,22 @@
 {
   "braveRewards": {
-    "message": "Brave 報酬",
+    "message": "Brave Rewards",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "現在就開始賺取金額！",
+    "message": "現在就開始賺取！",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "參加獎勵制度",
+    "message": "加入 Rewards",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "透過檢視廣告來賺取代幣並將它們付給您喜愛的內容創作者。",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "您現在可以透過觀看尊重隱私的廣告來賺取代幣。",
     "description": ""
   },
   "welcomeFooterTextOne": {
@@ -28,11 +28,11 @@
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "我們對 Brave 支付進行了一次大升級。",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "準備好體驗網路的未來。",
     "description": ""
   },
   "yourWallet": {
@@ -48,23 +48,23 @@
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave 驗證發行者",
+    "message": "Brave 驗證出版者",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "注意",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site monthly",
+    "message": "每月給此網站小費",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "包含在自動捐獻中",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "傳送小費……",
     "description": ""
   },
   "enableTips": {
@@ -76,7 +76,7 @@
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Rewards 摘要",
     "description": ""
   },
   "monthApr": {
@@ -84,7 +84,7 @@
     "description": ""
   },
   "monthAug": {
-    "message": "8 月",
+    "message": "八月",
     "description": ""
   },
   "monthDec": {
@@ -96,7 +96,7 @@
     "description": ""
   },
   "monthJan": {
-    "message": "1 月",
+    "message": "一月",
     "description": ""
   },
   "monthJul": {
@@ -108,15 +108,15 @@
     "description": ""
   },
   "monthMar": {
-    "message": "3 月",
+    "message": "三月",
     "description": ""
   },
   "monthMay": {
-    "message": "5 月",
+    "message": "五月",
     "description": ""
   },
   "monthNov": {
-    "message": "11 月",
+    "message": "十一月",
     "description": ""
   },
   "monthOct": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "自廣告而來的收益",
     "description": ""
   },
   "rewardsContribute": {
@@ -140,19 +140,19 @@
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "一次性小費",
     "description": ""
   },
   "total": {
-    "message": "合計",
+    "message": "總計",
     "description": ""
   },
   "expiresOn": {
-    "message": "過期",
+    "message": "到期時間",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "每月小費",
     "description": ""
   },
   "off": {
@@ -160,19 +160,19 @@
     "description": ""
   },
   "ok": {
-    "message": "ok",
+    "message": "確定",
     "description": ""
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Brave 廣告",
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "自動捐獻",
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "您已捐獻 $amount$BAT",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have a grant waiting for you.",
+    "message": "您有一筆資助正在等您。",
     "description": ""
   },
   "braveRewardsCreatingText": {

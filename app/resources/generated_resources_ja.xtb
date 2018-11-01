@@ -478,10 +478,12 @@
 <translation id="3016641847947582299">コンポーネント更新完了</translation>
 <translation id="252219247728877310">コンポーネント未更新</translation>
 <translation id="2707024448553392710">コンポーネントのダウンロード中</translation>
+<translation id="1879000426787380528">次のアカウントでログイン</translation>
 <translation id="3190558889382726167">パスワードを保存しました</translation>
 <translation id="5079950360618752063">提案されたパスワードを使用</translation>
 <translation id="8084114998886531721">保存したパスワード</translation>
 <translation id="5614553682702429503">パスワードを保存しますか？</translation>
+<translation id="5584088138253955452">ユーザー名を保存しますか？</translation>
 <translation id="8756969031206844760">パスワードを更新しますか？</translation>
 <translation id="8230134520748321204"><ph name="ORIGIN"/> のパスワードを保存しますか？</translation>
 <translation id="9040661932550800571"><ph name="ORIGIN"/> のパスワードを更新しますか？</translation>
@@ -501,6 +503,7 @@
 <translation id="224940702122312781">このページでは大量のデータが使用されます。</translation>
 <translation id="3861241522664181545">ページの読み込みが一時停止されました。</translation>
 <translation id="6921709132208495314">このページでデータの使用を停止する</translation>
+<translation id="1683850629661177840">ライトモードが HTTPS に対応し、すべてのページをより高速に閲覧できるようになりました。</translation>
 <translation id="2724841811573117416">WebRTC ログ</translation>
 <translation id="1969654639948595766">WebRTC テキストログ（<ph name="WEBRTC_TEXT_LOG_COUNT"/>）</translation>
 <translation id="6865708901122695652">WebRTC イベントログ（<ph name="WEBRTC_EVENT_LOG_COUNT"/>）</translation>
@@ -1112,6 +1115,7 @@
 <translation id="8922013791253848639">このサイトで常に広告を許可します</translation>
 <translation id="7359588939039777303">広告がブロックされました。</translation>
 <translation id="5398772614898833570">広告がブロックされました</translation>
+<translation id="2859806420264540918">このサイトでは煩わしい広告または誤解を招く広告が表示されます。</translation>
 <translation id="4077917118009885966">このサイトで広告がブロックされました</translation>
 <translation id="3737536731758327622">ダウンロードがここに表示されます</translation>
 <translation id="4782664866169793230">Brave は自動テスト ソフトウェアによって制御されています。</translation>
@@ -1253,6 +1257,7 @@
 <translation id="3766223500670287046">リモートの画面</translation>
 <translation id="3930737994424905957">デバイスを検索しています</translation>
 <translation id="5209320130288484488">デバイスが見つかりませんでした</translation>
+<translation id="4415245286584082850">デバイスが見つかりませんでした。新しいタブでヘルプセンター記事を開いてください。</translation>
 <translation id="4363771538994847871">キャスト先が見つかりません。ヘルプを表示しますか？</translation>
 <translation id="8688672835843460752">使用可能</translation>
 <translation id="4271396100647220620">一致する結果は見つかりませんでした</translation>
@@ -1671,6 +1676,9 @@
 <translation id="3096967955765855393">Brave Software では、より安全にウェブを閲覧できる方法を常に追求しています。以前は、どのウェブサイトでも、ブラウザに拡張機能を追加するように指示することができました。Brave Software Brave の最新バージョンでは、ユーザーのインストールの意思をより明確に確認するため、拡張機能の追加は拡張機能ページで行うこととなりました。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="2004663115385769400">「$1」で開くことができません</translation>
 <translation id="639777613761517128">$1 でファイルを開くには、まず [Linux ファイル] フォルダにコピーします。</translation>
+<translation id="5112009661904384591">Linux とファイルを共有します</translation>
+<translation id="3186202398303525187">Linux アプリで $1 を開きます。</translation>
+<translation id="1603300902586586390">Linux アプリで $1 件のファイルを開きます。</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> ファイル</translation>
 <translation id="895586998699996576">$1 画像</translation>
 <translation id="2853916256216444076">$1 動画</translation>
@@ -1867,6 +1875,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1834538809763482401">Bravebook で Linux のツール、エディタ、IDE を実行します。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
 <translation id="6869910261738842136">Bravebook から Linux アプリを削除する</translation>
+<translation id="1529899284660134226">共有のファイルとフォルダを管理する</translation>
 <translation id="2295473777859797944">Brave Software Play ストア</translation>
 <translation id="572155275267014074">Android 設定</translation>
 <translation id="4767209642168463274">Brave Software Play のアプリとゲームを Bravebook にインストールします。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
@@ -1991,6 +2000,10 @@
 <translation id="6122875415561139701">「<ph name="DEVICE_NAME"/>」での書き込み操作は許可されていません。</translation>
 <translation id="439266289085815679">Bluetooth 設定は <ph name="USER_EMAIL"/> によって管理されています。</translation>
 <translation id="784934925303690534">期間</translation>
+<translation id="3958004920128806270">この端末からのみ閲覧データを削除して Brave Software アカウントにはデータを残しておく場合は、<ph name="BEGIN_LINK"/>ログアウト<ph name="END_LINK"/>してください。</translation>
+<translation id="4445433576366924090">同期しているすべての端末と Brave Software アカウントから閲覧データを削除するには、<ph name="BEGIN_LINK"/>同期設定に移動<ph name="END_LINK"/>してください。</translation>
+<translation id="563489167344291753">同期しているすべての端末と Brave Software アカウントから閲覧データを削除するには、<ph name="BEGIN_LINK"/>パスフレーズを入力<ph name="END_LINK"/>してください。</translation>
+<translation id="3895809404273995788">同期しているすべての端末と Brave Software アカウントから閲覧データを削除するには、<ph name="BEGIN_LINK"/>ログイン<ph name="END_LINK"/>してください。</translation>
 <translation id="2496180316473517155">閲覧履歴</translation>
 <translation id="8662811608048051533">ほとんどのサイトからログアウトします。</translation>
 <translation id="4650925988509114690">ほとんどのサイトからログアウトします。ただし、同期データを削除できるように Brave Software アカウントへのログイン状態は維持されます。</translation>
@@ -2071,9 +2084,11 @@
 <translation id="9024158959543687197">共有フォルダのマウントエラー。ファイルの共有 URL を確認してもう一度お試しください。</translation>
 <translation id="1954813140452229842">共有フォルダのマウントエラー。認証情報を確認してもう一度お試しください。</translation>
 <translation id="2148219725039824548">共有フォルダのマウントエラー。指定された共有フォルダがネットワークで見つかりませんでした。</translation>
-<translation id="7234406375359457793">共有フォルダのマウントエラー。指定された共有フォルダはサポートされていません。</translation>
+<translation id="6923633482430812883">共有フォルダのマウントエラー。接続先のファイル サーバーが SMBv2 以降に対応しているか確認してください。</translation>
 <translation id="706626672220389329">共有フォルダのマウントエラー。指定された共有フォルダはすでにマウントされています。</translation>
 <translation id="5985458664595100876">URL の形式が無効です。サポートされている形式は \\server\share と smb://server/share です。</translation>
+<translation id="9147304170847707004">認証方法</translation>
+<translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">日時</translation>
 <translation id="2059913712424898428">タイムゾーン</translation>
 <translation id="4547672827276975204">自動的に設定する</translation>
@@ -2395,6 +2410,13 @@
 <translation id="6678717876183468697">クエリ URL</translation>
 <translation id="1545786162090505744">URL（%s=検索語句）</translation>
 <translation id="7136694880210472378">デフォルトに設定</translation>
+<translation id="6953878494808481632">関連情報</translation>
+<translation id="7258619945375359543">画面に表示されているコンテンツに基づくおすすめの情報をアシスタントから取得します</translation>
+<translation id="472896694312062378">「OK Brave Software」</translation>
+<translation id="6236033368436682108">画面がオンの状態で「OK Brave Software」と話すといつでもアシスタントにアクセスできます</translation>
+<translation id="5355099869024327351">アシスタントによる通知の表示を許可する</translation>
+<translation id="1127216846847548354">音声認識</translation>
+<translation id="3506093155988721483">キーボードの代わりに音声入力でアシスタントを起動する</translation>
 <translation id="3908743412684152579">Brave Software アシスタントの設定</translation>
 <translation id="4933484234309072027"><ph name="URL"/> に埋め込まれたページ</translation>
 <translation id="8427292751741042100">ホストに埋め込まれたページ</translation>
@@ -2464,6 +2486,8 @@
 <translation id="4994474651455208930">プロトコルのデフォルト ハンドラへのサイトの登録要求を許可する</translation>
 <translation id="1886996562706621347">サイトからのプロトコルのデフォルト ハンドラとしての登録要求を許可する（推奨）</translation>
 <translation id="26224892172169984">すべてのサイトに対してプロトコルの処理を許可しない</translation>
+<translation id="4469477701382819144">煩わしい広告や誤解を招く広告が表示されるサイトでブロックされています</translation>
+<translation id="4451757071857432900">煩わしい広告や誤解を招く広告が表示されるサイトでブロック（推奨）</translation>
 <translation id="5390100381392048184">音声の再生をサイトに許可する</translation>
 <translation id="1660204651932907780">音声の再生をサイトに許可する（推奨）</translation>
 <translation id="3600792891314830896">音声が再生されるサイトをミュートする</translation>
@@ -2487,6 +2511,8 @@
 <translation id="5063480226653192405">使用状況</translation>
 <translation id="3006881078666935414">使用状況データはありません</translation>
 <translation id="1300806585489372370">この設定を変更するには、最初に<ph name="BEGIN_LINK"/>識別子の使用を有効<ph name="END_LINK"/>にします</translation>
+<translation id="5932224571077948991">このサイトでは煩わしい広告や誤解を招く広告が表示されます</translation>
+<translation id="6038929619733116134">煩わしい広告や誤解を招く広告が表示されるサイトの場合にブロックします</translation>
 <translation id="3083193146044397360">セキュリティ保護のために一時的にブロックされています</translation>
 <translation id="2500471369733289700">プライバシー保護のためにブロックされています</translation>
 <translation id="3008272652534848354">権限をリセット</translation>
@@ -2519,6 +2545,7 @@
 <translation id="7366415735885268578">サイトの追加</translation>
 <translation id="5052499409147950210">サイトの編集</translation>
 <translation id="2870560284913253234">サイト</translation>
+<translation id="4610862967073369855">スマートフォンから Bravebook へのテキストの伝達を Android メッセージに許可します</translation>
 <translation id="6742339027238151589">スクリプトにアクセス可能</translation>
 <translation id="361106536627977100">Flash データ</translation>
 <translation id="8557930019681227453">マニフェスト</translation>
@@ -2620,6 +2647,7 @@
 <translation id="8135094938656535588">Brave Software ダッシュボードで同期データを管理</translation>
 <translation id="6596325263575161958">暗号化オプション</translation>
 <translation id="2459230470861708651">Brave Software のユーザー名とパスワードを使用して同期パスワードを暗号化する</translation>
+<translation id="5958351589333270173">同期データを<ph name="BEGIN_LINK"/>同期パスフレーズ<ph name="END_LINK"/>で暗号化します。なお、Brave Software Pay のお支払い方法と住所はこれには含まれません。</translation>
 <translation id="4817583816512767754">パスフレーズを知っているユーザーだけが暗号化データを読み取ることができます。パスフレーズが Brave Software に送信されたり Brave Software で保存されたりすることはありません。パスフレーズを忘れた場合や、この設定を変更する場合は、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>する必要があります。</translation>
 <translation id="7441736921018636843">この設定を変更するには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>して同期パスフレーズを削除します</translation>
 <translation id="3873315167136380065">この設定をオンにするには、<ph name="BEGIN_LINK"/>同期をリセット<ph name="END_LINK"/>して同期パスフレーズを削除します</translation>
@@ -2683,6 +2711,7 @@
 <translation id="89720367119469899">エスケープ</translation>
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">外部コマンド</translation>
+<translation id="7969046989155602842">コマンド</translation>
 <translation id="585979798156957858">外部メタキー</translation>
 <translation id="4991420928586866460">キーボードの最上段のキーをファンクション キーとして使用する</translation>
 <translation id="85486688517848470">キーボードの最上段にあるキーの動作を切り替えるには、検索キーを押したままにします</translation>
@@ -2778,12 +2807,18 @@
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - あと <ph name="TIME"/>で充電完了</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="1940546824932169984">接続済みの端末</translation>
+<translation id="3468999815377931311">Android スマートフォン</translation>
+<translation id="2789927670850159391">Bravebook をスマートフォンと接続します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">対象となる端末はありません。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">確認を待っています。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="7179187931092694802">スマートフォンで Bravebook のロックを解除します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">インスタント テザリング</translation>
+<translation id="6415900369006735853">スマートフォンを使用してインターネットに接続します</translation>
 <translation id="4746351372139058112">メッセージ</translation>
 <translation id="2248072377758660530">Bravebook でテキスト メッセージを送受信します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
+<translation id="5153234146675181447">スマートフォンを削除</translation>
+<translation id="2307631131458143837">Bravebook からスマートフォンを切断します</translation>
+<translation id="1146102139091738471">Bravebook からスマートフォンを切断します。以降、自動接続は行われなくなります。</translation>
 <translation id="7878562273885520351">パスワードが不正使用される可能性があります</translation>
 <translation id="6582421931165117398">個人情報を保護するために、今すぐパスワードを変更してください。パスワードを変更する際は、まずログインが求められます。</translation>
 <translation id="1089439967362294234">パスワードを変更</translation>
@@ -2884,6 +2919,7 @@
 <translation id="296137235951584143">Brave を独自にカスタマイズ</translation>
 <translation id="7835178595033117206">ブックマークを削除しました</translation>
 <translation id="2785008241190445880">ブックマークを置き換えました</translation>
+<translation id="2950533317914339731">お気に入りの Brave Software アプリへのブックマークを追加します</translation>
 <translation id="8846319957959474018">ブックマークを使って簡単にアプリを開くことができます</translation>
 <translation id="5939847200023027600">PDF コンポジター サービス</translation>
 <translation id="5877584842898320529">選択したプリンタは利用できないか、正しくインストールされていません。<ph name="BR"/>プリンタを確認するか、別のプリンタを選択してみてください。</translation>

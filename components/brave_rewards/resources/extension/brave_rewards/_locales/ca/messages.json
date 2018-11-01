@@ -1,146 +1,146 @@
 {
   "braveRewards": {
-    "message": "Brave Rewards",
+    "message": "Premis de Brave",
     "description": ""
   },
   "welcomeButtonTextOne": {
-    "message": "Start Earning Now!",
+    "message": "Comença a guanyar ara!",
     "description": ""
   },
   "welcomeButtonTextTwo": {
-    "message": "Join Rewards",
+    "message": "Connecta't a premis",
     "description": ""
   },
   "welcomeDescOne": {
-    "message": "Get paid for viewing ads and pay it forward to support your favorite content creators.",
+    "message": "Cobra per mirar anuncis i paga'ls als teus creadors de continguts favorits.",
     "description": ""
   },
   "welcomeDescTwo": {
-    "message": "You can now earn tokens for watching privacy-respecting ads.",
+    "message": "Ara pots obtenir tokens per mirar anuncis respectuosos amb la intimitat. ",
     "description": ""
   },
   "welcomeFooterTextOne": {
-    "message": "Check out what’s improved",
+    "message": "Comprova el que ha millorat",
     "description": ""
   },
   "welcomeFooterTextTwo": {
-    "message": "Learn More",
+    "message": "Més informació",
     "description": ""
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Payments a big upgrade.",
+    "message": "Hem actualitzat Pagaments de Brave.",
     "description": ""
   },
   "welcomeHeaderTwo": {
-    "message": "Get ready to experience the next Internet.",
+    "message": "Prepara't per experimentar la nova Internet.",
     "description": ""
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "La teva cartera",
     "description": ""
   },
   "grants": {
-    "message": "Grants",
+    "message": "Ajuts",
     "description": ""
   },
   "on": {
-    "message": "on",
+    "message": "connectat",
     "description": ""
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Publisher",
+    "message": "Editor verificat per Brave",
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Atenció",
     "description": ""
   },
   "donateMonthly": {
-    "message": "Tip this site monthly",
+    "message": "Dona propines en aquest lloc mensualment",
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "Inclou a Auto-Contribució",
     "description": ""
   },
   "donateNow": {
-    "message": "Send a Tip…",
+    "message": "Envia una propina...",
     "description": ""
   },
   "enableTips": {
-    "message": "Enable Tips",
+    "message": "Activa propines",
     "description": ""
   },
   "for": {
-    "message": "for",
+    "message": "per a",
     "description": ""
   },
   "rewardsSummary": {
-    "message": "Rewards Summary",
+    "message": "Resum de recompenses",
     "description": ""
   },
   "monthApr": {
-    "message": "April",
+    "message": "Abril",
     "description": ""
   },
   "monthAug": {
-    "message": "August",
+    "message": "Agost",
     "description": ""
   },
   "monthDec": {
-    "message": "December",
+    "message": "Desembre",
     "description": ""
   },
   "monthFeb": {
-    "message": "February",
+    "message": "Febrer",
     "description": ""
   },
   "monthJan": {
-    "message": "January",
+    "message": "Gener",
     "description": ""
   },
   "monthJul": {
-    "message": "July",
+    "message": "Juliol",
     "description": ""
   },
   "monthJun": {
-    "message": "June",
+    "message": "Juny",
     "description": ""
   },
   "monthMar": {
-    "message": "March",
+    "message": "Març",
     "description": ""
   },
   "monthMay": {
-    "message": "May",
+    "message": "Maig",
     "description": ""
   },
   "monthNov": {
-    "message": "November",
+    "message": "Novembre",
     "description": ""
   },
   "monthOct": {
-    "message": "October",
+    "message": "Octubre",
     "description": ""
   },
   "monthSep": {
-    "message": "September",
+    "message": "Setembre",
     "description": ""
   },
   "tokenGrant": {
-    "message": "Token Grant",
+    "message": "Ajut de token",
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Guanys dels anuncis",
     "description": ""
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "Auto-contribueix",
     "description": ""
   },
   "oneTimeDonation": {
-    "message": "One-Time Tips",
+    "message": "Propines d'una sola vegada",
     "description": ""
   },
   "total": {
@@ -148,15 +148,15 @@
     "description": ""
   },
   "expiresOn": {
-    "message": "expires on",
+    "message": "caduca el",
     "description": ""
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
+    "message": "Propines Mensuals",
     "description": ""
   },
   "off": {
-    "message": "Off",
+    "message": "Desactivat",
     "description": ""
   },
   "ok": {
@@ -164,15 +164,15 @@
     "description": ""
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Anuncis de Brave",
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Contribució",
     "description": ""
   },
   "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
+    "message": "Has contribuït $amount$BAT ",
     "description": "",
     "placeholders": {
       "amount": {
@@ -182,7 +182,7 @@
     }
   },
   "grantNotification": {
-    "message": "You have a grant waiting for you.",
+    "message": "T'espera una gratificació",
     "description": ""
   },
   "braveRewardsCreatingText": {
