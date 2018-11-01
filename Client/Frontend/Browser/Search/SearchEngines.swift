@@ -54,8 +54,6 @@ class SearchEngines {
     ]
     
     init(files: FileAccessor) {
-        // By default, show search suggestions
-        self.shouldShowSearchSuggestions = Preferences.Search.showSuggestions.value
         self.fileAccessor = files
         self.disabledEngineNames = getDisabledEngineNames()
         self.orderedEngines = getOrderedEngines()
@@ -128,10 +126,14 @@ class SearchEngines {
         }
     }
 
+    var shouldShowSearchSuggestionsOptIn: Bool {
+        get { return Preferences.Search.shouldShowSuggestionsOptIn.value }
+        set { Preferences.Search.shouldShowSuggestionsOptIn.value = newValue }
+    }
+    
     var shouldShowSearchSuggestions: Bool {
-        didSet {
-            Preferences.Search.showSuggestions.value = shouldShowSearchSuggestions
-        }
+        get { return Preferences.Search.showSuggestions.value }
+        set { Preferences.Search.showSuggestions.value = newValue }
     }
 
     func isEngineEnabled(_ engine: OpenSearchEngine) -> Bool {
