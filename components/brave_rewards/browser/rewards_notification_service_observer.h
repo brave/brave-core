@@ -5,6 +5,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_OBSERVER_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_NOTIFICATION_SERVICE_OBSERVER_
 
+#include "base/observer_list_types.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+
 namespace brave_rewards {
 
 class RewardsNotificationService;

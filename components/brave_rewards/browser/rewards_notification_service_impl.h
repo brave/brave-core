@@ -9,10 +9,13 @@
 #include <string>
 
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "extensions/buildflags/buildflags.h"
 
 class Profile;
 
 namespace brave_rewards {
+
+class ExtensionRewardsNotificationServiceObserver;
 
 class RewardsNotificationServiceImpl
     : public RewardsNotificationService,
@@ -55,6 +58,10 @@ class RewardsNotificationServiceImpl
 
   Profile* profile_;
   std::map<RewardsNotificationID, RewardsNotification> rewards_notifications_;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  std::unique_ptr<ExtensionRewardsNotificationServiceObserver>
+      extension_rewards_notification_service_observer_;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(RewardsNotificationServiceImpl);
 };

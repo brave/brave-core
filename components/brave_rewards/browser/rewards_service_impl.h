@@ -20,12 +20,17 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
+#include "extensions/buildflags/buildflags.h"
 #include "extensions/common/one_shot_event.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
+#endif
 
 namespace base {
 class SequencedTaskRunner;
@@ -169,6 +174,11 @@ class RewardsServiceImpl : public RewardsService,
   void TipsUpdated();
   void OnRemovedRecurring(ledger::RecurringRemoveCallback callback, bool success);
   void OnRemoveRecurring(const std::string& publisher_key, ledger::RecurringRemoveCallback callback) override;
+  void TriggerOnGetCurrentBalanceReport(const ledger::BalanceReportInfo& report);
+  void TriggerOnGetPublisherActivityFromUrl(
+      ledger::Result result,
+      std::unique_ptr<ledger::PublisherInfo> info,
+      uint64_t windowId);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -259,6 +269,10 @@ class RewardsServiceImpl : public RewardsService,
 
   Profile* profile_;  // NOT OWNED
   std::unique_ptr<ledger::Ledger> ledger_;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  std::unique_ptr<ExtensionRewardsServiceObserver>
+      extension_rewards_service_observer_;
+#endif
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
@@ -266,6 +280,10 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_list_path_;
   std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
   std::unique_ptr<RewardsNotificationService> notification_service_;
+  base::ObserverList<RewardsServicePrivateObserver> private_observers_;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  std::unique_ptr<ExtensionRewardsServiceObserver> private_observer_;
+#endif
 
   extensions::OneShotEvent ready_;
   std::map<const net::URLFetcher*, FetchCallback> fetchers_;

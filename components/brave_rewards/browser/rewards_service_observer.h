@@ -5,8 +5,11 @@
 #ifndef BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "base/observer_list_types.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/grant.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
 
 namespace brave_rewards {
 
