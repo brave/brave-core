@@ -102,7 +102,6 @@ export const StyledContent = styled<{}, 'div'>('div')`
 
 export const StyledSettingsWrapper = styled<StyleProps, 'div'>('div')`
   background: #fff;
-  overflow: hidden;
   display: ${p => p.open ? 'block' : 'none'};
 `
 

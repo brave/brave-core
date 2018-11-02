@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   width: 100%;
-  display: block;
+  display: flex;
   background: #E9F0FF;
   padding: 5px 30px;
   border-bottom-left-radius: 6px;
@@ -18,7 +18,6 @@ export const StyledAlertIcon = styled<{}, 'div'>('div')`
   width: 57px;
   height: 57px;
   color: #15A4FA;
-  display: inline-block;
 `
 
 export const StyledInfo = styled<{}, 'div'>('div')`
@@ -27,7 +26,6 @@ export const StyledInfo = styled<{}, 'div'>('div')`
   line-height: 18px;
   padding: 12px 15px 0px 11px;
   vertical-align: top;
-  display: inline-block;
   max-width: 387px;
 `
 
@@ -44,7 +42,6 @@ export const StyledMonthlyTips = styled<{}, 'span'>('span')`
 `
 
 export const StyledReviewWrapper = styled<{}, 'div'>('div')`
-  display: inline-block;
   vertical-align: top;
   margin: 20px 0 0 7px;
 `

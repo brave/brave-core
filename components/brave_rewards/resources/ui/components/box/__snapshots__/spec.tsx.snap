@@ -121,7 +121,6 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
 
 .c11 {
   background: #fff;
-  overflow: hidden;
   display: none;
 }
 

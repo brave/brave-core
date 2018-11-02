@@ -3,7 +3,10 @@
 exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
 .c0 {
   width: 100%;
-  display: block;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   background: #E9F0FF;
   padding: 5px 30px;
   border-bottom-left-radius: 6px;
@@ -14,7 +17,6 @@ exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
   width: 57px;
   height: 57px;
   color: #15A4FA;
-  display: inline-block;
 }
 
 .c3 {
@@ -26,7 +28,6 @@ exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
   line-height: 18px;
   padding: 12px 15px 0px 11px;
   vertical-align: top;
-  display: inline-block;
   max-width: 387px;
 }
 
@@ -43,7 +44,6 @@ exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  display: inline-block;
   vertical-align: top;
   margin: 20px 0 0 7px;
 }
