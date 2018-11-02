@@ -722,6 +722,14 @@ bool BatPublishers::isEligibleForContribution(const ledger::PublisherInfo& info)
 
 }
 
+void BatPublishers::clearAllBalanceReports() {
+  if (state_->monthly_balances_.empty()) {
+    return;
+  }
+  state_->monthly_balances_.clear();
+  saveState();
+}
+
 void BatPublishers::setBalanceReport(ledger::PUBLISHER_MONTH month,
                                 int year,
                                 const ledger::BalanceReportInfo& report_info) {

@@ -603,6 +603,9 @@ void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance, const st
 
     ledgerGrants.push_back(tempGrant);
   }
+  if (result == ledger::Result::LEDGER_OK) {
+    bat_publishers_->clearAllBalanceReports();
+  }
 
   ledger_client_->OnRecoverWallet(result ? ledger::Result::LEDGER_ERROR :
                                           ledger::Result::LEDGER_OK,
