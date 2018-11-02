@@ -1,12 +1,12 @@
-[submodule "deps/bat-native-rapidjson"]
-	path = deps/bat-native-rapidjson
-	url = git@github.com:brave-intl/bat-native-rapidjson.git
-[submodule "deps/bat-native-usermodel"]
-	path = deps/bat-native-usermodel
-	url = git@github.com:brave-intl/bat-native-usermodel.git
 [submodule "third_party/uriparser"]
 	path = third_party/uriparser
 	url = git@github.com:uriparser/uriparser.git
-[submodule "deps/bat-native-confirmations"]
-	path = deps/bat-native-confirmations
+[submodule "deps/bat/rapidjson"]
+	path = deps/bat/rapidjson
+	url = git@github.com:brave-intl/bat-native-rapidjson.git
+[submodule "deps/bat/usermodel"]
+	path = deps/bat/usermodel
+	url = git@github.com:brave-intl/bat-native-usermodel.git
+[submodule "deps/bat/confirmations"]
+	path = deps/bat/confirmations
 	url = git@github.com:brave-intl/bat-native-confirmations.git
