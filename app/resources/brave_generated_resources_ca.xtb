@@ -2,7 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ca">
 <translation id="3333887201479867589">Premis de Brave</translation>
-<translation id="7942180974165298215">Blocatge d\'anuncis de Brave</translation>
+<translation id="7942180974165298215">Blocatge d'anuncis de Brave</translation>
 <translation id="7450557937477381864">Tanqueu Chrome</translation>
 <translation id="7008934821596358692">Per a finalitzar la importació tanqueu totes les finestres de Chrome</translation>
 <translation id="7753103220327065417">Tanqueu Brave</translation>
@@ -12,9 +12,9 @@
 <translation id="9173846700806833701">Widevine no està instal·lat</translation>
 <translation id="2433569048491784801">Widevine no està instal·lat</translation>
 <translation id="3699882589215410581">Instal·la i executa Widevine</translation>
-<translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l\'elecció de l\'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen. 
+<translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen. 
 
-En instal·lar aquesta extensió, accepteu les Condicions d\'ús de Google Widevine. Accepteu que Brave no es fa responsable dels danys o pèrdues relacionats amb el vostre ús de Google Widevine.</translation>
+En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevine. Accepteu que Brave no es fa responsable dels danys o pèrdues relacionats amb el vostre ús de Google Widevine.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="3198814717959506569">Importat de Brave</translation>
 <translation id="453977518730680921">Reproducció automàtica multimèdia</translation>
@@ -25,16 +25,16 @@ En instal·lar aquesta extensió, accepteu les Condicions d\'ús de Google Widev
 <translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
 <translation id="2044383478723007273">Colors de Brave</translation>
-<translation id="5341901626640816374">Utilitza la barra d\'ubicació àmplia</translation>
+<translation id="5341901626640816374">Utilitza la barra d'ubicació àmplia</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
 <translation id="8784924142044142231">Surt de Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Obre una finestra de Tor</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="7372129767729198111">Paràmetres per defecte dels escuts de Brave</translation>
-<translation id="8029018702721078742">Control d\'anuncis</translation>
+<translation id="8029018702721078742">Control d'anuncis</translation>
 <translation id="3544462288910360084">Control de galetes</translation>
-<translation id="8919235146866304148">Protecció d\'empremta digital</translation>
+<translation id="8919235146866304148">Protecció d'empremta digital</translation>
 <translation id="520895744850022668">HTTPS per tot arreu</translation>
 <translation id="5259716416204774556">Bloqueig de scripts</translation>
 <translation id="6067014455220527258">Bloqueja anuncis</translation>
@@ -42,9 +42,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d\'ús de Google Widev
 <translation id="6132506775968708399">Bloqueja les galetes de tercers</translation>
 <translation id="5657156137487675418">Permet totes les galetes</translation>
 <translation id="6883611015375728278">Bloqueja totes les galetes</translation>
-<translation id="1442559343076146186">Bloqueja l\'empremta digital de tercers</translation>
+<translation id="1442559343076146186">Bloqueja l'empremta digital de tercers</translation>
 <translation id="8034285923190068220">Permet empremta digital</translation>
-<translation id="4540198958192073185">Bloqueja tot el sistema d\'empremta digital</translation>
+<translation id="4540198958192073185">Bloqueja tot el sistema d'empremta digital</translation>
 <translation id="8942080017911802454">Política de gestió del WebRTC IP</translation>
 <translation id="6165508094623778733">Més informació</translation>
 <translation id="8798099450830957504">Per defecte</translation>

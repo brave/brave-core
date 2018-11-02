@@ -52,7 +52,7 @@
     "description": ""
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "Aufmerksamkeit",
     "description": ""
   },
   "donateMonthly": {
@@ -60,7 +60,7 @@
     "description": ""
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "In Auto-Beitrag aufnehmen",
     "description": ""
   },
   "donateNow": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "Einnahmen aus Werbung",
     "description": ""
   },
   "rewardsContribute": {
@@ -164,11 +164,11 @@
     "description": ""
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Brave-Werbung",
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Auto-Beitrag",
     "description": ""
   },
   "contributeNotification": {

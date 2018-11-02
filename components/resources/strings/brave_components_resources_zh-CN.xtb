@@ -22,7 +22,6 @@
 <translation id="59174027418879706">已启用</translation>
 <translation id="4176463684765177261">已禁用</translation>
 <translation id="7207456302801184289">欢迎来到 Brave</translation>
-<translation id="764012553571385542">Brave 不仅是一款浏览器。我们会告诉您如何使用它</translation>
 <translation id="6001839398155993679">开始吧</translation>
 <translation id="8050847734948770789">启用 Brave 奖励</translation>
 <translation id="2710310654441838823">Brave Rewards 是一种思考网络运作方式的新方式。通过观看尊重隐私的广告获得奖励​​，并在观看的时候支持您喜爱的内容创作者。</translation>
@@ -31,7 +30,6 @@
 <translation id="5521187896304743452">通过从计算机上安装的其他浏览器导入书签和设置，Brave 可以轻松设置您的常用环境。</translation>
 <translation id="4138981897709579987">立即导入</translation>
 <translation id="9152220852742774324">管理 Shield 设置</translation>
-<translation id="110988439043625224">点击工具栏的 Brave 标志，调整和监督您的保护级别。在偏好面板中管理全局屏蔽设置</translation>
 <translation id="3366308997091824722">Shield 设置</translation>
 <translation id="7024124499777560832">自定义偏好</translation>
 <translation id="2498783234010887316">可在偏好面板中配置选项卡、外观、扩展名和历史记录。您甚至可以在此处找到黑暗系主题</translation>
@@ -74,11 +72,9 @@
 <translation id="7841456038054167122">请重新输入密钥或尝试不同密钥。</translation>
 <translation id="2195074481553016770">大约…</translation>
 <translation id="5254740304961202261">证明您是人类！</translation>
-<translation id="1387881035954376289">不完全。</translation>
 <translation id="2323069945529668668">糟糕！</translation>
 <translation id="5094577350232361255">关于</translation>
 <translation id="4918086044614829423">接受</translation>
-<translation id="6832986780040139899">©2016 –2018 Brave Software。Brave 是 Brave Software 的注册商标。网站名称可能是网站所有者的商标或注册商标。</translation>
 <translation id="9026369588205476247">为保护您的隐私，Brave Rewards 声明不会在您设备（此计算机）以外的地方保存、记录或计入日志。如果您设备上的数据丢失，则无法从 Brave 中进行检索。</translation>
 <translation id="1036277985068412734">添加资金</translation>
 <translation id="4496990471549986619">FAQ</translation>
@@ -214,7 +210,6 @@
 <translation id="8446884382197647889">了解更多</translation>
 <translation id="4083384190339959182">我们升级了 Brave 付款。</translation>
 <translation id="5395851053710553429">做好准备体验新一代网络。</translation>
-<translation id="880341991877949255">使用旧版浏览器，您需要使用宝贵的注意力查看广告，付费浏览网页。您花费了宝贵的时间下载侵入式广告技术，该技术在未经您同意的情况下将您宝贵的私人数据传输给广告客户。</translation>
 <translation id="2549982302631665116">欢迎您今天使用新网络。在这里，您的时间十分宝贵，个人资料将保密，您的注意力获得收益。</translation>
 <translation id="3780605330121608425">您的钱包</translation>
 </translationbundle>

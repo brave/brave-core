@@ -22,7 +22,6 @@
 <translation id="59174027418879706">Iespējots</translation>
 <translation id="4176463684765177261">Atspējots</translation>
 <translation id="7207456302801184289">Sveicināti Brave!</translation>
-<translation id="764012553571385542">Brave ir daudz vairāk nekā tikai pārlūks. Ļaujiet mums parādīt, kā no tā iegūt maksimumu</translation>
 <translation id="6001839398155993679">Uz priekšu!</translation>
 <translation id="8050847734948770789">Iespējot Brave balvas</translation>
 <translation id="2710310654441838823">Brave balvas ir jauna domāšanas metode, par to kā darbojas tīmeklis. Iegūstiet balvas par privātumu cienošu reklāmu skatīšanos un atbalstiet savus iecienītos satura veidotājus.</translation>
@@ -31,7 +30,6 @@
 <translation id="5521187896304743452">Brave atvieglo Jūsu ierastās vides uzstādīšanu, importējot grāmatzīmes un iestatījumus no citiem pārlūkiem, kas instalēti Jūsu datorā.</translation>
 <translation id="4138981897709579987">Importēt tagad</translation>
 <translation id="9152220852742774324">Pārvaldiet sava aizsarga iestatījumus</translation>
-<translation id="110988439043625224">Pielāgojiet un sekojiet savam aizsardzības līmenim, noklikšķinot uz Brave logotipa rīkjoslā. Pārvaldiet savus globālos aizsarga iestatījumus preferenču panelī</translation>
 <translation id="3366308997091824722">Aizsarga iestatījumi</translation>
 <translation id="7024124499777560832">Pielāgojiet savas preferences</translation>
 <translation id="2498783234010887316">Cilņu izskata, paplašinājumu un vēstures iestatījumus var konfigurēt preferenču panelī. Varbūt tur atradīsiet pat tumšu dizainu ;)</translation>
@@ -64,21 +62,19 @@
 <translation id="1199044745726588100">5 sekundes</translation>
 <translation id="4045581694057451126">8 sekundes</translation>
 <translation id="8610523985422563960">1 minūte</translation>
-<translation id="7521774480426463961">Iespējojiet iespēju dod dzeramnaudu ziņām, kas Jums \"Patīk\"</translation>
+<translation id="7521774480426463961">Iespējojiet iespēju dod dzeramnaudu ziņām, kas Jums "Patīk"</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Iedodiet dzeramnaudu, tiklīdz atrodat dārgakmeņus.</translation>
-<translation id="1638706606242137268">Sūtiet dzeramnaudu vietnēs Twitter, Youtube un citur, atalgojot ziņas, kas jums \"Patīk\".</translation>
+<translation id="1638706606242137268">Sūtiet dzeramnaudu vietnēs Twitter, Youtube un citur, atalgojot ziņas, kas jums "Patīk".</translation>
 <translation id="2788596505277705686">{{balance}} BAT tika atkopti. Jūsu maka atslēga ir verificēta un ielādēta veiksmīgi.</translation>
 <translation id="1083279119532577005">Maks ir atjaunots!</translation>
 <translation id="7841456038054167122">Lūdzu, ievadiet atslēgas vēlreiz vai mēģiniet citas atslēgas.</translation>
 <translation id="2195074481553016770">Gandrīz pabeigts...</translation>
 <translation id="5254740304961202261">Pierādiet, ka esat cilvēks!</translation>
-<translation id="1387881035954376289">Hmm... ne gluži.</translation>
 <translation id="2323069945529668668">Ak vai!</translation>
 <translation id="5094577350232361255">par</translation>
 <translation id="4918086044614829423">Piekrist</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software. Brave ir Brave Software reģistrēta preču zīme. Vietņu nosaukumi var būt vietnes īpašnieka preču zīmes vai reģistrētas preču zīmes.</translation>
 <translation id="9026369588205476247">Lai aizsargātu Jūsu konfidencialitāti, šis Brave balvu paziņojums netiek saglabāts, ierakstīts vai reģistrēts nekur citur, kā tikai Jūsu ierīcē (šajā datorā). Jūsu ierīces datu zuduma gadījumā, to nevar atgūt no Brave.</translation>
 <translation id="1036277985068412734">pievienot līdzekļus</translation>
 <translation id="4496990471549986619">BUJ</translation>
@@ -214,7 +210,6 @@
 <translation id="8446884382197647889">Uzziniet vairāk</translation>
 <translation id="4083384190339959182">Esam sagādājuši lielu jauninājumu Brave maksājumiem.</translation>
 <translation id="5395851053710553429">Gatavojieties izbaudīt nākamo internetu!</translation>
-<translation id="880341991877949255">Ar Jūsu veco pārlūku Jūs maksājāt, lai pārlūkotu tīmekli, veltot reklāmām savu vērtīgo uzmanību. Jūs iztērējāt savu vērtīgo laiku, lejupielādējot agresīvas reklāmu tehnoloģijas, kas pārraida Jūsu vērtīgos konfidenciālos datus reklāmu ievietotājiem — bez Jūsu piekrišanas.</translation>
 <translation id="2549982302631665116">Šodien Brave Jūs ielūdz uz jauno internetu. Un tādu internetu, kur Jūsu laiks tiek novērtēts, tiek ievērota Jūsu personas datu konfidencialitāte un Jūs pat nopelnat par savu veltīto uzmanību.</translation>
 <translation id="3780605330121608425">Jūsu maks</translation>
 </translationbundle>

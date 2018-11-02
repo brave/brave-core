@@ -22,7 +22,6 @@
 <translation id="59174027418879706">Omogočeno</translation>
 <translation id="4176463684765177261">Onemogočeno</translation>
 <translation id="7207456302801184289">Dobrodošli v brskalniku Brave</translation>
-<translation id="764012553571385542">Brave je veliko več kot le brskalnik. Naj vam pokažemo, kako ga lahko čim bolje izkoristite.</translation>
 <translation id="6001839398155993679">Pa začnimo</translation>
 <translation id="8050847734948770789">Omogoči storitev Brave Rewards</translation>
 <translation id="2710310654441838823">Storitev nagrad Brave Rewards je nov način razmišljanja o tem, kako deluje splet. Bodite nagrajeni za ogled oglasov, ki spoštujejo zasebnost, in podprite svoje najljubše ustvarjalce vsebine, medtem ko si ogledujete njihovo stran.</translation>
@@ -31,7 +30,6 @@
 <translation id="5521187896304743452">Brave omogoča enostavno nastavitev običajnega okolja, saj lahko uvozite zaznamke in nastavitve iz drugih brskalnikov, nameščenih na vašem računalniku.</translation>
 <translation id="4138981897709579987">Uvozi zdaj</translation>
 <translation id="9152220852742774324">Upravljajte svoje nastavitve ščita</translation>
-<translation id="110988439043625224">Za prilagajanje in spremljanje svoje stopnje zaščite kliknite logotip Brave v orodni vrstici. Upravljajte svoje globalne nastavitve ščita na plošči s prednostnimi nastavitvami.</translation>
 <translation id="3366308997091824722">Nastavitve ščita</translation>
 <translation id="7024124499777560832">Prilagodite svoje prednostne nastavitve</translation>
 <translation id="2498783234010887316">Zavihke, videz, razširitve in nastavitve zgodovine lahko nastavite na plošči s prednostnimi nastavitvami. Morda boste tam našli celo kakšno temačno temo ;)</translation>
@@ -74,12 +72,10 @@
 <translation id="7841456038054167122">Ponovno vnesite ključ ali poskusite z drugim.</translation>
 <translation id="2195074481553016770">Skoraj ste končali…</translation>
 <translation id="5254740304961202261">Dokažite, da niste robot.</translation>
-<translation id="1387881035954376289">Hmm, ne ravno.</translation>
 <translation id="7510166204621526816">Strežnik Brave Rewards se ne odziva. Težavo bomo rešili takoj, ko bo mogoče.</translation>
 <translation id="2323069945529668668">Ojoj!</translation>
 <translation id="5094577350232361255">o</translation>
 <translation id="4918086044614829423">Sprejmi</translation>
-<translation id="6832986780040139899">©2016 –2018 Brave Software. Brave je zaščitena blagovna znamka družbe Brave Software. Imena spletnih strani so lahko blagovne znamke ali registrirane blagovne znamke lastnikov spletne strani.</translation>
 <translation id="9026369588205476247">Za varstvo vaše zasebnosti poročilo storitve Brave Rewards ni shranjeno, posneto ali zabeleženo drugje kot na vaši napravi (ta računalnik). V primeru izgube podatkov na napravi ga ni mogoče pridobiti pri družbi Brave.</translation>
 <translation id="1036277985068412734">dodaj sredstva</translation>
 <translation id="4496990471549986619">Pogosta vprašanja</translation>
@@ -218,7 +214,6 @@
 <translation id="8446884382197647889">Več o tem</translation>
 <translation id="4083384190339959182">Storitev za plačevanje Brave Payments je bila deležna pomembne posodobitve.</translation>
 <translation id="5395851053710553429">Pripravite se na dobo novega interneta.</translation>
-<translation id="880341991877949255">Pri svojem starem brskalniku ste plačali za brskanje po spletu tako, da ste si ogledali oglase in jim namenili svojo dragoceno pozornost. Pri tem ste svoj čas porabili za prenos invazivne tehnologije oglasov, ki je vaše dragocene zasebne podatke posredovala oglaševalcem — in to brez vašega soglasja.</translation>
 <translation id="2549982302631665116">Brskalnik Brave vam izreka dobrodošlico v dobi novega interneta – takšnega, v katerem je vaš čas cenjen, vaši osebni podatki ostanejo zasebni, vi pa za pozornost, ki jo namenite oglasom, prejmete plačilo.</translation>
 <translation id="3780605330121608425">Vaša denarnica</translation>
 </translationbundle>

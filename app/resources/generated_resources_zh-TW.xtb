@@ -682,6 +682,7 @@
 <translation id="7837776265184002579">你的首頁已變更為 <ph name="URL"/>。</translation>
 <translation id="5442550868130618860">開啟自動更新功能</translation>
 <translation id="6790428901817661496">播放</translation>
+<translation id="2121825465123208577">調整大小</translation>
 <translation id="4514610446763173167">在播放和暫停影片之間切換</translation>
 <translation id="2631120081682787498">你確定要關閉這個分頁嗎？</translation>
 <translation id="111844081046043029">你確定要離開此網頁嗎?</translation>
@@ -1472,7 +1473,6 @@
 <translation id="7576032389798113292">6x4</translation>
 <translation id="8157939133946352716">7x5</translation>
 <translation id="2661146741306740526">16x9</translation>
-<translation id="2121825465123208577">調整大小</translation>
 <translation id="3007214526293698309">修正比例</translation>
 <translation id="7982283708762922719">高度</translation>
 <translation id="4734518477988699048">輸入值無效。</translation>
@@ -1484,7 +1484,6 @@
 <translation id="6556866813142980365">重做</translation>
 <translation id="3144126448740580210">完成</translation>
 <translation id="2453576648990281505">檔案已存在</translation>
-<translation id="2631006050119455616">已儲存</translation>
 <translation id="5158593464696388225">無法儲存圖片。</translation>
 <translation id="2787047795752739979">覆寫原始檔案</translation>
 <translation id="8775404590947523323">你的編輯已自動儲存。<ph name="BREAKS"/>如要保留原始圖片複本，請取消勾選 [覆寫原始檔案]</translation>
@@ -1761,7 +1760,6 @@
 <translation id="6827236167376090743">這部影片會持續播放到地老天荒。</translation>
 <translation id="6248400709929739064">啟用字幕</translation>
 <translation id="7881969471599061635">停用字幕</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605"><ph name="PRIMARY_EMAIL"/> 的部分設定已與你共用。不過只有使用多重登入時，這些設定才會影響你的帳戶。</translation>
 <translation id="5860491529813859533">啟用</translation>
 <translation id="1485141095922496924">版本 <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -2081,7 +2079,6 @@
 <translation id="4972129977812092092">編輯印表機資訊</translation>
 <translation id="5696679855467848181">目前使用中的 PPD：<ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software 雲端列印</translation>
-<translation id="5646376287012673985">位置</translation>
 <translation id="7754704193130578113">下載每個檔案前先詢問儲存位置</translation>
 <translation id="5713072761819014678">取消連結 Brave Software 雲端硬碟帳戶</translation>
 <translation id="486635084936119914">下載特定類型的檔案後自動開啟</translation>
@@ -2398,7 +2395,6 @@
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">如需更多與隱私權、安全性和資料收集相關的設定，請參閱<ph name="BEGIN_LINK"/>同步處理和個人化<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">如需更多隱私權、安全性和資料收集的相關設定，請參閱<ph name="BEGIN_LINK"/>同步處理和 Brave Software 服務<ph name="END_LINK"/></translation>
-<translation id="6438234780621650381">重設設定</translation>
 <translation id="5293170712604732402">將設定還原成原始預設值</translation>
 <translation id="892706138619340876">部分設定已重設</translation>
 <translation id="2334029754052191847">Brave 偵測到另一個程式竄改了部分瀏覽器設定，現已將這些設定重設為原始預設值。</translation>
