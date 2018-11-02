@@ -1,0 +1,28 @@
+import("//services/service_manager/public/service_manifest.gni")
+
+# Per-profile services.
+service_manifest("brave_content_browser_manifest_overlay") {
+  source = "brave_content_browser_manifest_overlay.json"
+}
+
+service_manifest("brave_content_packaged_services_manifest_overlay") {
+  source =
+      "//brave/components/services/brave_content_packaged_services_manifest_overlay.json"
+
+  packaged_services = [
+    "//brave/components/services/bat_ads:manifest",
+  ]
+
+  if (!is_android) {
+    packaged_services += [
+      "//brave/utility/tor:tor_launcher_manifest",
+    ]
+  }
+}
+
+group("brave_content_manifest_overlays") {
+  deps = [
+    ":brave_content_browser_manifest_overlay",
+    ":brave_content_packaged_services_manifest_overlay",
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "content_browser",
+  "display_name": "Brave",
+  "interface_provider_specs": {
+    "service_manager:connector": {
+      "requires": {
+        "bat_ads": [ "bat_ads" ],
+        "tor_launcher": [ "tor_launcher" ]
+      }
+    }
+  }
+}

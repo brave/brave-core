@@ -18,6 +18,8 @@ deps = {
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
   "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@91241498f9b4ed9e40f79d250e5067a2b71c1ff7",
   "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@7e391cec6975106fa9f686016f494cb8a782afcd",
+  "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@1b1b3e01a8ba9724283f3c15fde675f6fec216ed",
+  "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@3eb3883b0d30cbe4d6f1d907d6c76f28728eb17c",
 }
 
 hooks = [

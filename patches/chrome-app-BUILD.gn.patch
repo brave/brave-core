@@ -1,5 +1,5 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index 0f6308ea44ec5c8f8a76f9fd96e5387c79174db4..e6248fd731aa4c6f8155fecae94b37fc483f4509 100644
+index 0f6308ea44ec5c8f8a76f9fd96e5387c79174db4..596a4a67ca71b5271ad8e57e77fad148c9d16da8 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
 @@ -251,7 +251,7 @@ grit("google_chrome_strings") {
@@ -19,11 +19,3 @@ index 0f6308ea44ec5c8f8a76f9fd96e5387c79174db4..e6248fd731aa4c6f8155fecae94b37fc
      "//content/public/app:both",
      "//content/public/common",
      "//content/public/common:service_names",
-@@ -465,6 +466,7 @@ service_manifest("chrome_content_packaged_services_manifest_overlay") {
-       "//ui/accessibility:manifest",
-     ]
-   }
-+  packaged_services += [ "//brave/utility/tor:tor_launcher_manifest" ]
- }
- 
- # Per-profile services.
