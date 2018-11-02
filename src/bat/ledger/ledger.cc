@@ -13,7 +13,6 @@
 namespace ledger {
 
 bool is_production = true;
-bool is_verbose = true;
 int reconcile_time = 0; // minutes
 
 VisitData::VisitData():

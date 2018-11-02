@@ -22,9 +22,11 @@
 namespace ledger {
 
 LEDGER_EXPORT enum LogLevel {
-  INFO,
-  WARNING,
-  ERROR
+  ERROR = 1,
+  WARNING = 2,
+  INFO = 3,
+  REQUEST = 4,
+  RESPONSE = 5
 };
 
 LEDGER_EXPORT enum URL_METHOD {
@@ -131,7 +133,7 @@ class LEDGER_EXPORT LedgerClient {
                                           uint64_t windowId) = 0;
 
   // Log debug information
-  virtual void Log(const LogLevel log_level, const char *fmt, ...) const = 0;
+  virtual void Log(ledger::LogLevel level, const std::string& text) = 0;
 };
 
 }  // namespace ledger

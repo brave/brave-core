@@ -4,6 +4,7 @@
 
 #include <ctime>
 #include <random>
+#include <sstream>
 
 #include "ledger_impl.h"
 #include "ledger_task_runner_impl.h"
@@ -94,7 +95,6 @@ void LedgerImpl::OnLoad(const ledger::VisitData& visit_data, const uint64_t& cur
 }
 
 void LedgerImpl::OnUnload(uint32_t tab_id, const uint64_t& current_time) {
-  //LOG(ERROR) << "!!!LedgerImpl::OnUnload tab_id == " << tab_id;
   OnHide(tab_id, current_time);
   visit_data_iter iter = current_pages_.find(tab_id);
   if (iter != current_pages_.end()) {
@@ -103,7 +103,6 @@ void LedgerImpl::OnUnload(uint32_t tab_id, const uint64_t& current_time) {
 }
 
 void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
-  //LOG(ERROR) << "!!!LedgerImpl::OnShow tab_id == " << tab_id;
   last_tab_active_time_ = current_time;
   last_shown_tab_id_ = tab_id;
 }
@@ -116,7 +115,6 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   if (iter == current_pages_.end() || 0 == last_tab_active_time_) {
     return;
   }
-  //LOG(ERROR) << "!!!LedgerImpl::OnHide tab_id == " << tab_id << ", time == " << (current_time - last_tab_active_time_);
   DCHECK(last_tab_active_time_);
   bat_publishers_->saveVisit(iter->second.tld, iter->second, current_time - last_tab_active_time_);
   last_tab_active_time_ = 0;
@@ -169,8 +167,6 @@ void LedgerImpl::OnPostData(
     // It is not a media supported type
     return;
   }
-  //LOG(ERROR) << "!!!LedgerImpl::OnXHRLoad url == " << url;
-  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!type == %s", type.c_str());
   std::vector<std::map<std::string, std::string>> twitchParts;
   if (TWITCH_MEDIA_TYPE == type) {
     braveledger_bat_helper::getTwitchParts(post_data, twitchParts);
@@ -504,14 +500,15 @@ void LedgerImpl::VotePublishers(const std::vector<braveledger_bat_helper::WINNER
 void LedgerImpl::PrepareVoteBatchTimer() {
   uint64_t start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
 
-  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!PrepareVoteBatchTimer starts in %" PRIu64, start_timer_in);
+  Log(__func__, ledger::LogLevel::ERROR, {"Starts in ", std::to_string(start_timer_in)});
+
   ledger_client_->SetTimer(start_timer_in, last_prepare_vote_batch_timer_id_);
 }
 
 void LedgerImpl::VoteBatchTimer() {
   uint64_t start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
 
-  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!VoteBatchTimer starts in %" PRIu64, start_timer_in);
+  Log(__func__, ledger::LogLevel::ERROR, {"Starts in ", std::to_string(start_timer_in)});
 
   ledger_client_->SetTimer(start_timer_in, last_vote_batch_timer_id_);
 }
@@ -704,13 +701,11 @@ void LedgerImpl::GetRecurringDonations(ledger::RecurringDonationCallback callbac
 }
 
 void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& response, const std::map<std::string, std::string>& headers) {
-  ledger_client_->Log(ledger::LogLevel::ERROR, "!!!LedgerImpl::LoadPublishersListCallback Response: %s", response.c_str());
-
   if (result && !response.empty()) {
-    //no error so far
     bat_publishers_->RefreshPublishersList(response);
   }
   else {
+    Log(__func__, ledger::LogLevel::ERROR, {"Can't fetch publisher list."});
     //error: retry downloading again
     RefreshPublishersList(true);
   }
@@ -734,7 +729,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
     //check if lastLoadTimestamp doesn't exist or have erroneous value.
     //(start_timer_in == 0) is expected to call callback function immediately.
 
-    //time since last succesfull download
+    //time since last successful download
     uint64_t  time_since_last_download = (lastLoadTimestamp == 0ull || lastLoadTimestamp > now) ? 0ull : now - lastLoadTimestamp;
 
     if (now == lastLoadTimestamp) {
@@ -913,6 +908,34 @@ ledger::PublisherInfoFilter LedgerImpl::CreatePublisherFilter(const std::string&
                                         excluded,
                                         min_duration,
                                         currentReconcileStamp);
+}
+
+void LedgerImpl::Log(const std::string& func_name, const ledger::LogLevel log_level, std::vector<std::string> data) {
+  const char* delimiter = " ";
+  std::stringstream imploded;
+  std::copy(data.begin(), data.end(),
+             std::ostream_iterator<std::string>(imploded, delimiter));
+  ledger_client_->Log(log_level, "[ LOG - " + func_name + " ]");
+  ledger_client_->Log(log_level, "> time: " + std::to_string(time(0)));
+  ledger_client_->Log(log_level, imploded.str());
+  ledger_client_->Log(log_level, "[ END LOG ]");
+}
+
+void LedgerImpl::LogResponse(const std::string& func_name,
+                             bool result,
+                             const std::string& response,
+                             const std::map<std::string, std::string>& headers) {
+  std::string stat = result ? "success" : "failure";
+  ledger_client_->Log(ledger::LogLevel::RESPONSE, "[ RESPONSE - " + func_name + " ]");
+  ledger_client_->Log(ledger::LogLevel::RESPONSE, "> time: " + std::to_string(time(0)));
+  ledger_client_->Log(ledger::LogLevel::RESPONSE, "> result: " + stat);
+  ledger_client_->Log(ledger::LogLevel::RESPONSE, "> response: " + response);
+
+  for(std::pair<std::string, std::string> const& value: headers) {
+    ledger_client_->Log(ledger::LogLevel::RESPONSE, "> header: " + value.first + " | " + value.second);
+  }
+
+  ledger_client_->Log(ledger::LogLevel::RESPONSE, "[ END RESPONSE ]");
 }
 
 }  // namespace bat_ledger
