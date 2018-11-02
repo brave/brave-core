@@ -13,6 +13,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 
+using BTS = BraveThemeService;
+
 namespace {
 void SetBraveThemeTypePref(Profile* profile,
                            BraveThemeType type) {
@@ -34,19 +36,6 @@ BraveThemeType GetBraveThemeTypeFromString(
   return BraveThemeType::BRAVE_THEME_TYPE_DEFAULT;
 }
 
-std::string GetStringFromBraveThemeType(
-    BraveThemeType theme) {
-  switch (theme) {
-    case BraveThemeType::BRAVE_THEME_TYPE_DEFAULT:
-      return "Default";
-    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
-      return "Light";
-    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
-      return "Dark";
-    default:
-      NOTREACHED();
-  }
-}
 }  // namespace
 
 namespace extensions {
@@ -65,8 +54,8 @@ ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  const std::string theme_type = GetStringFromBraveThemeType(
-      BraveThemeService::GetUserPreferredBraveThemeType(profile));
+  const std::string theme_type = BTS::GetStringFromBraveThemeType(
+      BTS::GetUserPreferredBraveThemeType(profile));
   return RespondNow(OneArgument(std::make_unique<base::Value>(theme_type)));
 }
 

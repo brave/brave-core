@@ -9,6 +9,20 @@
     "compiler_options": {
       "implemented_in": "brave/browser/extensions/api/brave_theme_api.h"
     },
+    "events": [
+      {
+        "name": "onBraveThemeTypeChanged",
+        "type": "function",
+        "description": "Fired when brave theme is changed",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string",
+            "description": "new active theme type(ex, Dark or Light)"
+          }
+        ]
+      }
+    ],
     "functions": [
       {
         "name": "setBraveThemeType",

@@ -4,13 +4,12 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 
-#include <string>
-
-#include "brave/common/brave_switches.h"
-#include "brave/browser/themes/theme_properties.h"
-#include "brave/common/pref_names.h"
 #include "base/command_line.h"
 #include "base/strings/string_util.h"
+#include "brave/browser/extensions/brave_theme_event_router.h"
+#include "brave/browser/themes/theme_properties.h"
+#include "brave/common/brave_switches.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/common/channel_info.h"
@@ -31,16 +30,33 @@ BraveThemeType BraveThemeService::GetUserPreferredBraveThemeType(
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kUiMode)) {
-    std::string requested_theme_value = command_line.GetSwitchValueASCII(switches::kUiMode);
-    std::string requested_theme_value_lower = base::ToLowerASCII(requested_theme_value);
+    std::string requested_theme_value =
+        command_line.GetSwitchValueASCII(switches::kUiMode);
+    std::string requested_theme_value_lower =
+        base::ToLowerASCII(requested_theme_value);
     if (requested_theme_value_lower == "light")
       return BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
-    if (requested_theme_value_lower == "light")
+    if (requested_theme_value_lower == "dark")
       return BraveThemeType::BRAVE_THEME_TYPE_DARK;
   }
   // get value from preferences
   return static_cast<BraveThemeType>(
       profile->GetPrefs()->GetInteger(kBraveThemeType));
+}
+
+// static
+std::string BraveThemeService::GetStringFromBraveThemeType(
+    BraveThemeType type) {
+  switch (type) {
+    case BraveThemeType::BRAVE_THEME_TYPE_DEFAULT:
+      return "Default";
+    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
+      return "Light";
+    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
+      return "Dark";
+    default:
+      NOTREACHED();
+  }
 }
 
 // static
@@ -81,14 +97,13 @@ void BraveThemeService::Init(Profile* profile) {
   ThemeService::Init(profile);
 }
 
-
-
 SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
   // Brave Tor profiles are always 'incognito' (for now)
   if (!incognito && profile()->IsTorProfile())
     incognito = true;
   const BraveThemeType theme = GetActiveBraveThemeType(profile());
-  const base::Optional<SkColor> braveColor = MaybeGetDefaultColorForBraveUi(id, incognito, theme);
+  const base::Optional<SkColor> braveColor =
+      MaybeGetDefaultColorForBraveUi(id, incognito, theme);
   if (braveColor)
       return braveColor.value();
   // make sure we fallback to chrome's dark theme (incognito) for our dark theme
@@ -100,4 +115,15 @@ SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
 void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
   DCHECK(pref_name == kBraveThemeType);
   NotifyThemeChanged();
+
+  if (!brave_theme_event_router_)
+    brave_theme_event_router_ = extensions::BraveThemeEventRouter::Create();
+
+  brave_theme_event_router_->OnBraveThemeTypeChanged(profile());
+}
+
+
+void BraveThemeService::SetBraveThemeEventRouterForTesting(
+    extensions::BraveThemeEventRouter* mock_router) {
+  brave_theme_event_router_.reset(mock_router);
 }

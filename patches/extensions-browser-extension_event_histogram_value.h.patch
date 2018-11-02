@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index cd8295f9c966d188fc58f3b37e1b4203c24e297d..f40357ea6b5ccb2fd4a6613234eb5b3017997b48 100644
+index cd8295f9c966d188fc58f3b37e1b4203c24e297d..519fbbed3c03d92906bc0f212ac9ca93fc564d6f 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -444,6 +444,17 @@ enum HistogramValue {
+@@ -444,6 +444,18 @@ enum HistogramValue {
    SYSTEM_POWER_SOURCE_ONPOWERCHANGED = 423,
    WEB_REQUEST_ON_ACTION_IGNORED = 424,
    ARC_APPS_PRIVATE_ON_INSTALLED = 425,
@@ -12,6 +12,7 @@ index cd8295f9c966d188fc58f3b37e1b4203c24e297d..f40357ea6b5ccb2fd4a6613234eb5b30
 +  BRAVE_ON_WALLET_PROPERTIES,
 +  BRAVE_ON_PUBLISHER_DATA,
 +  BRAVE_ON_CURRENT_REPORT,
++  BRAVE_ON_BRAVE_THEME_TYPE_CHANGED,
 +  BRAVE_REWARDS_NOTIFICATION_ADDED,
 +  BRAVE_REWARDS_NOTIFICATION_DELETED,
 +  BRAVE_REWARDS_ALL_NOTIFICATIONS_DELETED,

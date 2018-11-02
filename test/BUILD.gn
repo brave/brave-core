@@ -291,6 +291,7 @@ test("brave_browser_tests") {
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
     ":browser_tests_runner",
+    "//testing/gmock",
   ]
   data_deps = [
     "//ppapi:ppapi_tests",
