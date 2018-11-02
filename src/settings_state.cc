@@ -9,7 +9,7 @@
 #include "json_helper.h"
 #include "static_values.h"
 
-namespace state {
+namespace ads {
 
 SETTINGS_STATE::SETTINGS_STATE() :
     ads_enabled(false),
@@ -69,16 +69,16 @@ bool SETTINGS_STATE::LoadFromJson(const std::string& json) {
   if (settings.HasMember("ads.amount.hour")) {
     ads_per_hour = settings["ads.amount.hour"].GetString();
   } else {
-    ads_per_hour = rewards_ads::_default_ads_per_hour;
+    ads_per_hour = ads::kDefaultAdsPerHour;
   }
 
   if (settings.HasMember("ads.amount.day")) {
     ads_per_day = settings["ads.amount.day"].GetString();
   } else {
-    ads_per_day = rewards_ads::_default_ads_per_day;
+    ads_per_day = ads::kDefaultAdsPerDay;
   }
 
   return true;
 }
 
-}  // namespace state
+}  // namespace ads

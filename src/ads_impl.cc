@@ -10,17 +10,17 @@
 #include "rapidjson/writer.h"
 
 #include "ads_impl.h"
-#include "ads_client.h"
-#include "bundle_category_info.h"
-#include "ad_info.h"
+#include "bat/ads/ads_client.h"
+#include "bat/ads/bundle_category_info.h"
+#include "bat/ads/ad_info.h"
 #include "search_providers.h"
 #include "math_helper.h"
 #include "string_helper.h"
 #include "time_helper.h"
-#include "url_components.h"
+#include "bat/ads/url_components.h"
 #include "static_values.h"
 
-namespace rewards_ads {
+namespace ads {
 
 AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
     initialized_(false),
@@ -31,10 +31,10 @@ AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
     media_playing_({}),
     next_easter_egg_(0),
     ads_client_(ads_client),
-    settings_(std::make_unique<state::Settings>(ads_client_)),
-    client_(std::make_unique<state::Client>(this, ads_client_)),
-    bundle_(std::make_shared<state::Bundle>(ads_client_)),
-    catalog_ads_serve_(std::make_unique<catalog::AdsServe>
+    settings_(std::make_unique<Settings>(ads_client_)),
+    client_(std::make_unique<Client>(this, ads_client_)),
+    bundle_(std::make_shared<Bundle>(ads_client_)),
+    catalog_ads_serve_(std::make_unique<AdsServe>
       (this, ads_client_, bundle_)) {
 }
 
@@ -61,7 +61,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
@@ -114,7 +114,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
@@ -178,7 +178,7 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("notificationId");
@@ -532,14 +532,12 @@ void AdsImpl::Deinitialize() {
 }
 
 void AdsImpl::LoadUserModel() {
-  user_model_ = std::make_unique<usermodel::UserModel>();
+  user_model_.reset(usermodel::UserModel::CreateInstance());
   ads_client_->LoadUserModel(this);
 }
 
 std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {
-  auto category = usermodel::UserModel::winningCategory(
-    page_score, user_model_->page_classifier.Classes());
-
+  auto category = user_model_->winningCategory(page_score);
   return category;
 }
 
@@ -565,8 +563,7 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
     }
   }
 
-  auto category = usermodel::UserModel::winningCategory(
-    winner_over_time_page_scores, user_model_->page_classifier.Classes());
+  auto category = user_model_->winningCategory(winner_over_time_page_scores);
 
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Site visited', { url, immediateWinner, winnerOverTime }
@@ -606,7 +603,7 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
 
   client_->UpdateAdUUID();
 
-  StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
+  StartCollectingActivity(kOneHourInSeconds);
 }
 
 void AdsImpl::RetrieveSSID() {
@@ -763,12 +760,12 @@ std::vector<bundle::CategoryInfo> AdsImpl::GetUnseenAds(
 bool AdsImpl::IsAllowedToShowAds() {
   std::deque<std::time_t> ads_shown_history = client_->GetAdsShownHistory();
 
-  auto hour_window = rewards_ads::_one_hour_in_seconds;
+  auto hour_window = kOneHourInSeconds;
   auto hour_allowed = settings_->GetAdsPerHour();
   auto respects_hour_limit = AdsShownHistoryRespectsRollingTimeConstraint(
     ads_shown_history, hour_window, hour_allowed);
 
-  auto day_window = rewards_ads::_one_hour_in_seconds;
+  auto day_window = kOneHourInSeconds;
   auto day_allowed = settings_->GetAdsPerDay();
   auto respects_day_limit = AdsShownHistoryRespectsRollingTimeConstraint(
     ads_shown_history, day_window, day_allowed);
@@ -826,7 +823,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -890,7 +887,7 @@ void AdsImpl::GenerateAdReportingBackgroundEvent() {
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("place");
@@ -917,7 +914,7 @@ void AdsImpl::GenerateAdReportingForegroundEvent() {
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("place");
@@ -945,7 +942,7 @@ void AdsImpl::GenerateAdReportingBlurEvent(
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -972,7 +969,7 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -999,7 +996,7 @@ void AdsImpl::GenerateAdReportingFocusEvent(
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1025,7 +1022,7 @@ void AdsImpl::GenerateAdReportingRestartEvent() {
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("place");
@@ -1052,7 +1049,7 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
 
   writer.String("stamp");
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
   writer.String(time_stamp.c_str());
 
   writer.String("settings");
@@ -1096,4 +1093,4 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   ads_client_->EventLog(json);
 }
 
-}  // namespace rewards_ads
+}  // namespace ads

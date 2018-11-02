@@ -5,7 +5,7 @@
 #include "client_state.h"
 #include "json_helper.h"
 
-namespace state {
+namespace ads {
 
 CLIENT_STATE::CLIENT_STATE() :
     ads_shown_history({}),
@@ -314,4 +314,4 @@ void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state) {
   writer.EndObject();
 }
 
-}  // namespace state
+}  // namespace ads

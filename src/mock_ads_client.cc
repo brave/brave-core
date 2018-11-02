@@ -12,8 +12,8 @@
 
 #include "mock_ads_client.h"
 #include "mock_url_session.h"
-#include "callback_handler.h"
-#include "ad_info.h"
+#include "bat/ads/callback_handler.h"
+#include "bat/ads/ad_info.h"
 #include "math_helper.h"
 #include "string_helper.h"
 #include "time_helper.h"
@@ -23,17 +23,17 @@ namespace ads {
 MockAdsClient::MockAdsClient() :
   ads_(Ads::CreateInstance(this)),
   locale_("en"),
-  bundle_state_(std::make_unique<state::BUNDLE_STATE>()) {
+  bundle_state_(std::make_unique<BUNDLE_STATE>()) {
     std::ifstream ifs{"mock_data/mock_sample_bundle.json"};
 
     std::stringstream stream;
     stream << ifs.rdbuf();
     std::string json = stream.str();
 
-    state::BUNDLE_STATE bundle_state;
+    BUNDLE_STATE bundle_state;
     bundle_state.LoadFromJson(json);
 
-    sample_bundle_state_ = std::make_unique<state::BUNDLE_STATE>(bundle_state);
+    sample_bundle_state_ = std::make_unique<BUNDLE_STATE>(bundle_state);
 }
 
 MockAdsClient::~MockAdsClient() = default;
@@ -259,9 +259,9 @@ void MockAdsClient::ResetCatalog() {
 }
 
 void MockAdsClient::SaveBundle(
-    const state::BUNDLE_STATE& bundle_state,
+    const BUNDLE_STATE& bundle_state,
     CallbackHandler* callback_handler) {
-  bundle_state_ = std::make_unique<state::BUNDLE_STATE>(bundle_state);
+  bundle_state_ = std::make_unique<BUNDLE_STATE>(bundle_state);
   if (callback_handler) {
     callback_handler->OnBundleSaved(Result::SUCCESS);
   }
@@ -377,7 +377,7 @@ void MockAdsClient::GetUrlComponents(
 
 void MockAdsClient::EventLog(const std::string& json) {
   std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  Time::TimeStamp(time_stamp);
 
   std::cout << "Event logged (" << time_stamp <<  "): " << json << std::endl;
 }

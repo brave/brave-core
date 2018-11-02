@@ -5,7 +5,7 @@
 #include "settings.h"
 #include "json_helper.h"
 
-namespace state {
+namespace ads {
 
 Settings::Settings(ads::AdsClient* ads_client) :
     ads_client_(ads_client),
@@ -42,4 +42,4 @@ uint64_t Settings::GetAdsPerDay() const {
   return std::atoll(settings_state_->ads_per_day.c_str());
 }
 
-}  // namespace state
+}  // namespace ads

@@ -4,7 +4,7 @@
 
 #include "bat_native_ads.h"
 #include "mock_ads_client.h"
-#include "ads.h"
+#include "bat/ads/ads.h"
 
 int main() {
   auto *mock_ads_client = new ads::MockAdsClient();

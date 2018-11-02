@@ -75,6 +75,7 @@ source_set("ads") {
     "src/settings.cc",
     "src/settings_state.cc",
     "src/string_helper.cc",
+    "src/time_helper.cc",
     "src/url_session_callback_handler.cc",
   ]
 

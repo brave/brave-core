@@ -5,9 +5,9 @@
 #include "client.h"
 #include "static_values.h"
 
-namespace state {
+namespace ads {
 
-Client::Client(rewards_ads::AdsImpl* ads, ads::AdsClient* ads_client) :
+Client::Client(ads::AdsImpl* ads, ads::AdsClient* ads_client) :
     ads_(ads),
     ads_client_(ads_client),
     client_state_(new CLIENT_STATE()) {
@@ -37,7 +37,7 @@ void Client::AppendCurrentTimeToAdsShownHistory() {
   auto now = std::time(nullptr);
   client_state_->ads_shown_history.push_front(now);
   if (client_state_->ads_shown_history.size() >
-      rewards_ads::_maximum_entries_in_ads_shown_history) {
+      kMaximumEntriesInAdsShownHistory) {
     client_state_->ads_shown_history.pop_back();
   }
 }
@@ -177,7 +177,7 @@ void Client::AppendPageScoreToPageScoreHistory(
     const std::vector<double>& page_scores) {
   client_state_->page_score_history.push_front(page_scores);
   if (client_state_->page_score_history.size() >
-      rewards_ads::_maximum_entries_in_page_score_history) {
+      kMaximumEntriesInPageScoreHistory) {
     client_state_->page_score_history.pop_back();
   }
 }
@@ -207,4 +207,4 @@ void Client::OnClientSaved(const ads::Result result) {
   }
 }
 
-}  // namespace state
+}  // namespace ads

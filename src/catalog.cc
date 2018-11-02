@@ -6,7 +6,7 @@
 #include "json_helper.h"
 #include "static_values.h"
 
-namespace state {
+namespace ads {
 
 Catalog::Catalog(ads::AdsClient* ads_client) :
     ads_client_(ads_client),
@@ -36,4 +36,4 @@ std::shared_ptr<CATALOG_STATE> Catalog::GetCatalogState() const {
   return catalog_state_;
 }
 
-}  // namespace state
+}  // namespace ads

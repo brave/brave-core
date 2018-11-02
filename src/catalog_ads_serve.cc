@@ -7,12 +7,12 @@
 #include "catalog.h"
 #include "bundle.h"
 
-namespace catalog {
+namespace ads {
 
 AdsServe::AdsServe(
-    rewards_ads::AdsImpl* ads,
+    ads::AdsImpl* ads,
     ads::AdsClient* ads_client,
-    std::shared_ptr<state::Bundle> bundle) :
+    std::shared_ptr<Bundle> bundle) :
       ads_(ads),
       ads_client_(ads_client),
       bundle_(bundle) {
@@ -57,7 +57,7 @@ void AdsServe::OnCatalogDownloaded(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
 
-    auto catalog = std::make_unique<state::Catalog>(ads_client_);
+    auto catalog = std::make_unique<Catalog>(ads_client_);
     if (!catalog->LoadJson(response)) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Failed to parse catalog'
@@ -125,7 +125,7 @@ void AdsServe::OnCatalogDownloaded(
 }
 
 void AdsServe::RetryDownloadingCatalog() {
-  ads_->StartCollectingActivity(rewards_ads::_one_hour_in_seconds);
+  ads_->StartCollectingActivity(ads::kOneHourInSeconds);
 }
 
 void AdsServe::ResetNextCatalogCheck() {
@@ -145,4 +145,4 @@ void AdsServe::OnCatalogSaved(const ads::Result result) {
   }
 }
 
-}  // namespace catalog
+}  // namespace ads

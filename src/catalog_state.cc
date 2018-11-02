@@ -6,7 +6,7 @@
 #include "catalog_state.h"
 #include "string_helper.h"
 
-namespace state {
+namespace ads {
 
 CATALOG_STATE::CATALOG_STATE() :
     catalog_id(""),
@@ -46,7 +46,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
   std::string new_catalog_id;
   uint64_t new_version;
   uint64_t new_ping;
-  std::vector<catalog::CampaignInfo> new_campaigns;
+  std::vector<CampaignInfo> new_campaigns;
 
   if (catalog.HasMember("catalogId")) {
     new_catalog_id = catalog["catalogId"].GetString();
@@ -76,7 +76,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
       continue;
     }
 
-    catalog::CampaignInfo campaign_info;
+    CampaignInfo campaign_info;
 
     campaign_info.campaign_id = campaign["campaignId"].GetString();
     // TODO(Terry Mancey): Implement Log (#44)
@@ -120,7 +120,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
           continue;
         }
 
-        catalog::CreativeSetInfo creative_set_info;
+        CreativeSetInfo creative_set_info;
 
         creative_set_info.creative_set_id =
           creative_set["creativeSetId"].GetString();
@@ -156,7 +156,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
               continue;
             }
 
-            catalog::CreativeInfo creative_info;
+            CreativeInfo creative_info;
 
             creative_info.creative_id = creative["creativeId"].GetString();
 
@@ -223,7 +223,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
           }
 
           for (const auto& segment : segments) {
-            catalog::SegmentInfo segment_info;
+            SegmentInfo segment_info;
 
             if (segment.HasMember("code")) {
               segment_info.code = segment["code"].GetString();
@@ -244,7 +244,7 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
     // Geo targets
     if (campaign.HasMember("geoTargets")) {
       for (const auto& geo_target : campaign["geoTargets"].GetArray()) {
-        catalog::GeoTargetInfo geo_target_info;
+        GeoTargetInfo geo_target_info;
 
         if (geo_target.HasMember("code")) {
           geo_target_info.code = geo_target["code"].GetString();
@@ -292,4 +292,4 @@ bool CATALOG_STATE::validateJson(
   return true;
 }
 
-}  // namespace state
+}  // namespace ads

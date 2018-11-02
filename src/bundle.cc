@@ -6,7 +6,7 @@
 #include "string_helper.h"
 #include "static_values.h"
 
-namespace state {
+namespace ads {
 
 Bundle::Bundle(ads::AdsClient* ads_client) :
     ads_client_(ads_client),
@@ -120,7 +120,7 @@ uint64_t Bundle::GetCatalogVersion() const {
 }
 
 uint64_t Bundle::GetCatalogPing() const {
-  return bundle_state_->catalog_ping / rewards_ads::_milliseconds_in_a_second;
+  return bundle_state_->catalog_ping / kMillisecondsInASecond;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -131,4 +131,4 @@ void Bundle::OnBundleSaved(const ads::Result result) {
   }
 }
 
-}  // namespace state
+}  // namespace ads

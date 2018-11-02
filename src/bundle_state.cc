@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bundle_state.h"
+#include "bat/ads/bundle_state.h"
 
-namespace state {
+namespace ads {
 
 BUNDLE_STATE::BUNDLE_STATE() :
     catalog_id(""),
@@ -137,4 +137,4 @@ void SaveToJson(JsonWriter& writer, const BUNDLE_STATE& state) {
   writer.EndObject();
 }
 
-}  // namespace state
+}  // namespace ads

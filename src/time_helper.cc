@@ -7,7 +7,7 @@
 
 #include "time_helper.h"
 
-namespace helper {
+namespace ads {
 
 void Time::TimeStamp(std::string& str) {
   time_t rawtime;
@@ -19,4 +19,4 @@ void Time::TimeStamp(std::string& str) {
   str = std::string(buffer);
 }
 
-}  // namespace helper
+}  // namespace ads

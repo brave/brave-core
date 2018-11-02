@@ -2,18 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/ads.h"
-#include "ads_impl.h"
+#pragma once
+
+#include <string>
+
+#include "bat/ads/export.h"
 
 namespace ads {
 
-bool _is_testing = false;
-bool _is_production = false;
-bool _is_verbose = true;
+ADS_EXPORT struct ClientInfo {
+  std::string application_version;
 
-// static
-Ads* Ads::CreateInstance(AdsClient* ads_client) {
-  return new AdsImpl(ads_client);
-}
+  std::string platform;
+  std::string platform_version;
+};
 
 }  // namespace ads
