@@ -7,7 +7,7 @@
     "namespace": "braveSync",
     "description": "Use the <code>chrome.braveSync</code> API to provide the interaction .",
     "compiler_options": {
-      "implemented_in": "brave/components/brave_sync/api/brave_sync_api.h"
+      "implemented_in": "brave/browser/extensions/api/brave_sync_api.h"
     },
     "types": [
       {
