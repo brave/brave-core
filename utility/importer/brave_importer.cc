@@ -359,20 +359,32 @@ std::vector<uint8_t> ParseWalletSeed(const base::Value& ledger_state_json) {
   return wallet_seed;
 }
 
-void BraveImporter::ImportLedger() {
-  std::unique_ptr<base::Value> ledger_state_json = ParseBraveStateFile(
-      "ledger-state.json");
-  if (!ledger_state_json)
-    return;
-
-  auto wallet_seed = ParseWalletSeed(*ledger_state_json);
-  if (wallet_seed.empty()) {
-    LOG(ERROR) << "Failed parsing wallet seed";
-    return;
+std::string ParseWalletPassphrase(const base::Value& session_store_json) {
+  const base::Value* wallet_passphrase_value = session_store_json.FindPathOfType(
+      {"ledger", "info", "passphrase"},
+      base::Value::Type::STRING);
+  if (!wallet_passphrase_value) {
+    LOG(ERROR) << "Wallet passphrase not found in session-store-1";
+    return {};
   }
 
+  return wallet_passphrase_value->GetString();
+}
+
+void BraveImporter::ImportLedger() {
+  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+      "session-store-1");
+  std::unique_ptr<base::Value> ledger_state_json = ParseBraveStateFile(
+      "ledger-state.json");
+  if (!(session_store_json && ledger_state_json))
+    return;
+
+  auto passphrase = ParseWalletPassphrase(*session_store_json);
+  if (passphrase.empty())
+    return;
+
   BraveLedger ledger;
-  ledger.wallet_seed = wallet_seed;
+  ledger.passphrase = passphrase;
 
   bridge_->UpdateLedger(ledger);
 }

@@ -5,6 +5,7 @@
 #ifndef BRAVE_COMMON_IMPORTER_BRAVE_LEDGER_H_
 #define BRAVE_COMMON_IMPORTER_BRAVE_LEDGER_H_
 
+#include <string>
 #include <vector>
 
 struct BraveLedger {
@@ -13,6 +14,7 @@ struct BraveLedger {
   ~BraveLedger();
 
   std::vector<uint8_t> wallet_seed;
+  std::string passphrase;
 };
 
 #endif  // BRAVE_COMMON_IMPORTER_BRAVE_LEDGER_H_

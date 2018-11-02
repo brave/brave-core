@@ -6,6 +6,8 @@
 #include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_stats.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/utility/importer/brave_importer.h"
 
 #include "base/time/time.h"
@@ -66,9 +68,19 @@ void BraveProfileWriter::UpdateStats(const BraveStats& stats) {
 }
 
 void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
-  LOG(ERROR) << "Reached BraveProfileWriter::UpdateLedger stub";
-  // DEBUG verify successful IPC
-  for (const auto v : ledger.wallet_seed) {
-    LOG(ERROR) << (int)v;
+  brave_rewards::RewardsService* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
+  if (!rewards_service) {
+    LOG(ERROR) << "Failed to get RewardsService for profile.";
+    return;
   }
+
+  // Avoid overwriting Brave Rewards wallet if one already exists.
+  if (rewards_service->IsWalletCreated()) {
+    LOG(ERROR) << "Brave Rewards wallet already exists, canceling Brave Payments import.";
+    // TODO communicate this failure mode to the user
+    return;
+  }
+
+  LOG(INFO) << "ledger passphrase: " << ledger.passphrase;
 }
