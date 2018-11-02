@@ -1887,10 +1887,7 @@ extension BrowserViewController: TabManagerDelegate {
         urlBar.locationView.loading = selected?.loading ?? false
         navigationToolbar.updateBackStatus(selected?.canGoBack ?? false)
         navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
-        if !(selected?.webView?.url?.isLocalUtility ?? false) {
-            self.urlBar.updateProgressBar(Float(selected?.estimatedProgress ?? 0))
-        }
-
+        
         if let readerMode = selected?.getContentScript(name: ReaderMode.name()) as? ReaderMode {
             urlBar.updateReaderModeState(readerMode.state)
             if readerMode.state == .active {
