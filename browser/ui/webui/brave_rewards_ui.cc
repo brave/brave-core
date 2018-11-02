@@ -311,11 +311,11 @@ void RewardsDOMHandler::OnGrant(
     unsigned int result,
     brave_rewards::Grant grant) {
   if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue* newGrant = new base::DictionaryValue();
-    newGrant->SetInteger("status", result);
-    newGrant->SetString("promotionId", grant.promotionId);
+    base::DictionaryValue newGrant;
+    newGrant.SetInteger("status", result);
+    newGrant.SetString("promotionId", grant.promotionId);
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grant", *newGrant);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grant", newGrant);
   }
 }
 
@@ -373,9 +373,9 @@ void RewardsDOMHandler::OnRecoverWallet(
     double balance,
     std::vector<brave_rewards::Grant> grants) {
   if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue* recover = new base::DictionaryValue();
-    recover->SetInteger("result", result);
-    recover->SetDouble("balance", balance);
+    base::DictionaryValue recover;
+    recover.SetInteger("result", result);
+    recover.SetDouble("balance", balance);
 
     auto newGrants = std::make_unique<base::ListValue>();
     for (auto const& item : grants) {
@@ -384,9 +384,9 @@ void RewardsDOMHandler::OnRecoverWallet(
       grant->SetInteger("expiryTime", item.expiryTime);
       newGrants->Append(std::move(grant));
     }
-    recover->SetList("grants", std::move(newGrants));
+    recover.SetList("grants", std::move(newGrants));
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recoverWalletData", *recover);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.recoverWalletData", recover);
   }
 }
 
@@ -403,12 +403,12 @@ void RewardsDOMHandler::OnGrantFinish(
     unsigned int result,
     brave_rewards::Grant grant) {
   if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue* finish = new base::DictionaryValue();
-    finish->SetInteger("status", result);
-    finish->SetInteger("expiryTime", grant.expiryTime);
-    finish->SetString("probi", grant.probi);
+    base::DictionaryValue finish;
+    finish.SetInteger("status", result);
+    finish.SetInteger("expiryTime", grant.expiryTime);
+    finish.SetString("probi", grant.probi);
 
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", *finish);
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", finish);
     GetAllBalanceReports();
   }
 }
