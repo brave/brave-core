@@ -2,7 +2,6 @@
 
 exports[`Amount tests basic tests matches the snapshot 1`] = `
 .c0 {
-  margin-bottom: 8px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -20,6 +19,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  margin: 0 0 8px 0;
 }
 
 .c1 {
@@ -47,6 +47,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  margin-bottom: 0px;
 }
 
 .c5 {
@@ -68,6 +69,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
   opacity: 0.4;
   font-size: 10px;
   color: #ffffff;
+  display: inline-block;
   font-weight: 500;
 }
 

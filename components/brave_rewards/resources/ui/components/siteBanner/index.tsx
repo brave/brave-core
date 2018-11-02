@@ -26,7 +26,8 @@ import {
   StyledLogoText,
   StyledSocialWrapper,
   StyledEmptyBox,
-  StyledLogoImage
+  StyledLogoImage,
+  StyledCheckbox
 } from './style'
 
 import Donate from '../donate/index'
@@ -59,6 +60,7 @@ export interface Props {
   children?: React.ReactNode
   onDonate: (amount: number, monthly: boolean) => void
   onClose?: () => void
+  isMobile?: boolean
   logoBgColor?: CSS.Color
 }
 
@@ -76,7 +78,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
 
   getLogo (logo: string | undefined, domain: string) {
     return !logo
-      ? <StyledLogoText>{(domain && domain.substring(0,1)) || ''}</StyledLogoText>
+      ? <StyledLogoText isMobile={this.props.isMobile}>{(domain && domain.substring(0,1)) || ''}</StyledLogoText>
       : <StyledLogoImage bg={logo} />
   }
 
@@ -172,38 +174,59 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       onAmountSelection,
       logoBgColor,
       currentAmount,
-      name
+      name,
+      isMobile
     } = this.props
 
     return (
-      <StyledWrapper id={id} onKeyUp={this.onKeyUp} tabIndex={0}>
-        <StyledBanner>
+      <StyledWrapper
+        id={id}
+        isMobile={isMobile}
+        onKeyUp={this.onKeyUp}
+        tabIndex={0}
+      >
+        <StyledBanner isMobile={isMobile}>
           <StyledClose onClick={onClose}>
             <CloseStrokeIcon />
           </StyledClose>
           <StyledBannerImage bgImage={bgImage}>
-            <StyledCenter>
-              {name || domain}
-            </StyledCenter>
+            {
+              !isMobile
+              ? <StyledCenter>
+                  {name || domain}
+                </StyledCenter>
+              : null
+            }
           </StyledBannerImage>
-          <StyledContentWrapper>
+          <StyledContentWrapper isMobile={isMobile}>
             <StyledContent>
-              <StyledLogoWrapper>
-                <StyledLogoBorder padding={!logo} bg={logoBgColor}>
+              <StyledLogoWrapper isMobile={isMobile}>
+                <StyledLogoBorder
+                  isMobile={isMobile}
+                  padding={!logo}
+                  bg={logoBgColor}
+                >
                   {this.getLogo(logo, domain)}
                 </StyledLogoBorder>
               </StyledLogoWrapper>
-              <StyledTextWrapper>
-                <StyledSocialWrapper>{this.getSocial(social)}</StyledSocialWrapper>
-                <StyledTitle>{this.getTitle(title)}</StyledTitle>
-                <StyledText>{this.getText(children)}</StyledText>
+              <StyledTextWrapper isMobile={isMobile}>
+                <StyledSocialWrapper isMobile={isMobile}>
+                  {this.getSocial(social)}
+                </StyledSocialWrapper>
+                <StyledTitle isMobile={isMobile}>
+                  {this.getTitle(title)}
+                </StyledTitle>
+                <StyledText isMobile={isMobile}>
+                  {this.getText(children)}
+                </StyledText>
               </StyledTextWrapper>
             </StyledContent>
-            <StyledDonation>
-              <StyledWallet>
+            <StyledDonation isMobile={isMobile}>
+              <StyledWallet isMobile={isMobile}>
                 {getLocale('walletBalance')} <StyledTokens>{balance} BAT</StyledTokens>
               </StyledWallet>
               <Donate
+                isMobile={isMobile}
                 balance={parseFloat(balance)}
                 donationAmounts={donationAmounts}
                 title={getLocale('donationAmount')}
@@ -215,18 +238,19 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
               >
                 {
                   !recurringDonation
-                  ? <Checkbox
-                    value={{ make: this.state.monthly }}
-                    onChange={this.onMonthlyChange}
-                    type={'dark'}
-                  >
-                    <div data-key='make'>
-                      <StyledOption>{getLocale('makeMonthly')}</StyledOption>
-                    </div>
-                  </Checkbox>
+                  ? <StyledCheckbox isMobile={isMobile}>
+                      <Checkbox
+                        value={{ make: this.state.monthly }}
+                        onChange={this.onMonthlyChange}
+                        type={'dark'}
+                      >
+                        <div data-key='make'>
+                          <StyledOption>{getLocale('makeMonthly')}</StyledOption>
+                        </div>
+                      </Checkbox>
+                    </StyledCheckbox>
                   : <StyledEmptyBox />
                 }
-
               </Donate>
             </StyledDonation>
           </StyledContentWrapper>

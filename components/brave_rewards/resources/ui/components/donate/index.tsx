@@ -11,7 +11,10 @@ import {
   StyledIconSend,
   StyledIconFace,
   StyledFunds,
-  StyledFundsText
+  StyledFundsText,
+  StyledAmountsWrapper,
+  StyledSendButton,
+  StyledButtonWrapper
 } from './style'
 
 import Amount from '../amount/index'
@@ -36,6 +39,7 @@ export interface Props {
   id?: string
   donateType: DonateType
   children?: React.ReactNode
+  isMobile?: boolean
 }
 
 interface State {
@@ -89,32 +93,40 @@ export default class Donate extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, donationAmounts, actionText, children, title, currentAmount, donateType } = this.props
+    const { id, donationAmounts, actionText, children, title, currentAmount, donateType, isMobile } = this.props
     const disabled = currentAmount === 0
 
     return (
-      <StyledWrapper donateType={donateType} disabled={disabled}>
-        <StyledContent id={id} >
-          <StyledDonationTitle>{title}</StyledDonationTitle>
-          {
-            donationAmounts && donationAmounts.map((donation: Donation) => {
-              return <div key={`${id}-donate-${donation.tokens}`}>
-                <Amount
-                  amount={donation.tokens}
-                  selected={donation.tokens === currentAmount.toString()}
-                  onSelect={this.onAmountChange}
-                  converted={donation.converted}
-                  type={donateType}
-                />
-              </div>
-            })
-          }
+      <StyledWrapper donateType={donateType} disabled={disabled} isMobile={isMobile}>
+        <StyledContent id={id} isMobile={isMobile}>
+          <StyledDonationTitle isMobile={isMobile}>{title}</StyledDonationTitle>
+            <StyledAmountsWrapper isMobile={isMobile}>
+              {
+                donationAmounts && donationAmounts.map((donation: Donation) => {
+                  return <div key={`${id}-donate-${donation.tokens}`}>
+                    <Amount
+                      isMobile={isMobile}
+                      amount={donation.tokens}
+                      selected={donation.tokens === currentAmount.toString()}
+                      onSelect={this.onAmountChange}
+                      converted={donation.converted}
+                      type={donateType}
+                    />
+                  </div>
+                })
+              }
+            </StyledAmountsWrapper>
           {children}
         </StyledContent>
+
         <StyledSend onClick={this.validateDonation}>
-          <StyledIconSend disabled={disabled} donateType={donateType}>
-            <SendIcon />
-          </StyledIconSend>{actionText}
+          <StyledButtonWrapper isMobile={isMobile}>
+            <StyledSendButton>
+              <StyledIconSend disabled={disabled} donateType={donateType}>
+                <SendIcon />
+              </StyledIconSend>{actionText}
+            </StyledSendButton>
+          </StyledButtonWrapper>
         </StyledSend>
         {
           this.state.missingFunds

@@ -5,16 +5,16 @@
 import styled from 'styled-components'
 import { Props } from './index'
 
-export const StyledWrapper = styled<{}, 'button'>('button')`
-  margin-bottom: 8px;
+export const StyledWrapper = styled<Partial<Props>, 'button'>('button')`
   user-select: none;
   font-family: Poppins, sans-serif;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
-  display: flex;
+  display: ${p => p.isMobile ? 'block' : 'flex'};
   align-items: center;
+  margin: ${p => p.isMobile ? '0 auto 8px auto' : '0 0 8px 0'};
 `
 
 export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
@@ -26,13 +26,14 @@ export const StyledAmount = styled<Partial<Props>, 'div'>('div')`
   vertical-align: baseline;
   padding: ${p => p.type === 'big' ? '0 16px' : '0 12px'};
   min-height: ${p => p.type === 'big' ? 40 : 32}px;
-  min-width: ${p => p.type === 'big' ? '118px' : '82px'};
+  min-width: ${p => p.isMobile ? '100px' : p.type === 'big' ? '118px' : '82px'};
   font-size: 13px;
   font-weight: 600;
-  margin-right: 12px;
+  margin-right: ${p => p.isMobile ? 0 : 12}px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: ${p => p.isMobile ? 5 : 0}px;
 `
 
 export const StyledTokens = styled<{}, 'div'>('div')`
@@ -44,9 +45,9 @@ export const StyledNumber = styled.span`
   font-weight: 400;
 `
 
-export const StyledLogo = styled<{}, 'div'>('div')`
+export const StyledLogo = styled<Partial<Props>, 'div'>('div')`
   margin-right: 6px;
-  width: 23px;
+  width: ${p => p.isMobile ? 20 : 23}px;
 `
 
 export const StyledConverted = styled<Partial<Props>, 'div'>('div')`
@@ -54,5 +55,6 @@ export const StyledConverted = styled<Partial<Props>, 'div'>('div')`
   opacity: ${p => p.selected ? 1 : 0.4};
   font-size: ${p => p.type === 'big' ? '12px' : '10px'};
   color: #ffffff;
+  display: ${p => p.isMobile ? 'block' : 'inline-block'};
   font-weight: 500;
 `

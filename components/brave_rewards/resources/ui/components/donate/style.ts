@@ -15,8 +15,9 @@ interface Theme {
 }
 
 interface StyleProps {
-  disabled: boolean
-  donateType: DonateType
+  disabled?: boolean
+  donateType?: DonateType
+  isMobile?: boolean
 }
 
 const customStyle: Record<DonateType, Theme> = {
@@ -24,7 +25,7 @@ const customStyle: Record<DonateType, Theme> = {
     paddingBox: '0 19px 0 55px',
     sendBgColor: '#4c54d2',
     disabledSendColor: '#3e45b2',
-    paddingSend: '14px 19px 13px 51px',
+    paddingSend: '14px 0px 13px 0px',
     paddingFunds: '13px 12px 13px 24px'
   },
   small: {
@@ -37,7 +38,7 @@ const customStyle: Record<DonateType, Theme> = {
 }
 
 const getStyle = (p: StyleProps) => {
-  const style = customStyle[p.donateType]
+  const style = customStyle[p.donateType || 'small']
 
   return css`
     --donate-content-padding: ${style.paddingBox};
@@ -48,29 +49,47 @@ const getStyle = (p: StyleProps) => {
   `
 }
 
+const getAmountStyle = (isMobile?: boolean) => {
+  if (!isMobile) {
+    return null
+  }
+
+  return css`
+    display: grid;
+    grid-gap: 0px;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 10px;
+  `
+}
+
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   position: relative;
   font-family: Poppins, sans-serif;
+  margin: ${p => p.isMobile ? '0 auto 8px auto' : 0}px
   ${getStyle}
 `
 
-export const StyledContent = styled<{}, 'div'>('div')`
-  padding: var(--donate-content-padding);
+export const StyledContent = styled<StyleProps, 'div'>('div')`
+  margin-top: ${p => p.isMobile ? -30 : 0}px;
+  padding: ${p => p.isMobile ? '0px' : 'var(--donate-content-padding)'};
 `
 
-export const StyledDonationTitle = styled<{}, 'div'>('div')`
+export const StyledDonationTitle = styled<StyleProps, 'div'>('div')`
   font-size: 16px;
   font-weight: 600;
   line-height: 1.75;
   color: #fff;
-  margin-bottom: 14px;
+  margin-bottom: ${p => p.isMobile ? 20 : 14}px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 167px;
+  padding-left: ${p => p.isMobile ? 20 : 0}px;
 `
 
-export const StyledSend = styled<{}, 'button'>('button')`
+export const StyledSend = styled<{}, 'div'>('div')`
   background: var(--donate-send-bg);
   font-size: 13px;
   font-weight: 600;
@@ -84,13 +103,28 @@ export const StyledSend = styled<{}, 'button'>('button')`
   cursor: pointer;
 `
 
+export const StyledSendButton = styled<{}, 'button'>('button')`
+  display: block;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--donate-send-bg);
+`
+
+export const StyledButtonWrapper = styled<StyleProps, 'div'>('div')`
+  display: block;
+  width: ${p => p.isMobile ? 190 : 245}px;
+  margin: 0 auto;
+`
+
 export const StyledIconSend = styled<StyleProps, 'span'>('span')`
   vertical-align: middle;
   display: inline-block;
   margin-right: 15px;
   color: ${p => p.disabled ? p.donateType === 'small' ? '#1A22A8' : '#3e45b2' : '#a1a8f2'};
-  width: 29px;
-  height: 29px;
+  width: 27px;
+  height: 27px;
 `
 
 export const StyledFunds = styled<{}, 'div'>('div')`
@@ -122,4 +156,10 @@ export const StyledIconFace = styled<{}, 'div'>('div')`
 export const StyledFundsText = styled<{}, 'div'>('div')`
   flex: 1;
   margin-right: 9px;
+`
+
+export const StyledAmountsWrapper = styled<StyleProps, 'div'>('div')`
+  width: 100%;
+  display: block;
+  ${p => getAmountStyle(p.isMobile)}
 `

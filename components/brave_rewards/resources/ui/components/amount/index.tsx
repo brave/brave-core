@@ -15,6 +15,7 @@ export interface Props {
   selected?: boolean
   type?: 'big' | 'small'
   currency?: string
+  isMobile?: boolean
 }
 
 export default class Amount extends React.PureComponent<Props, {}> {
@@ -24,16 +25,20 @@ export default class Amount extends React.PureComponent<Props, {}> {
     converted: 0
   }
 
+  getAboutText = (isMobile?: boolean) => {
+    return isMobile ? '' : getLocale('about')
+  }
+
   render () {
-    const { id, onSelect, amount, selected, type, converted, currency } = this.props
+    const { id, onSelect, amount, selected, type, converted, currency, isMobile } = this.props
 
     return (
-      <StyledWrapper id={id} onClick={onSelect.bind(this, amount)}>
-        <StyledAmount selected={selected} type={type}>
-          <StyledLogo><BatColorIcon /></StyledLogo><StyledNumber>{amount}</StyledNumber> <StyledTokens>{type === 'big' ? 'BAT' : null}</StyledTokens>
+      <StyledWrapper id={id} onClick={onSelect.bind(this, amount)} isMobile={isMobile}>
+        <StyledAmount selected={selected} type={type} isMobile={isMobile}>
+          <StyledLogo isMobile={isMobile}><BatColorIcon /></StyledLogo><StyledNumber>{amount}</StyledNumber> <StyledTokens>{type === 'big' ? 'BAT' : null}</StyledTokens>
         </StyledAmount>
-        <StyledConverted selected={selected} type={type}>
-          {getLocale('about')} {converted} {currency}
+        <StyledConverted selected={selected} type={type} isMobile={isMobile}>
+          {this.getAboutText(isMobile)} {converted} {currency}
         </StyledConverted>
       </StyledWrapper>
     )

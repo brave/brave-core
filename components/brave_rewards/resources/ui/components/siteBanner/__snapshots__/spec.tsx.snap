@@ -2,6 +2,9 @@
 
 exports[`List tests basic tests matches the snapshot 1`] = `
 .c0 {
+  overflow-y: scroll;
+  height: auto;
+  padding: 0px;
   font-family: Poppins,sans-serif;
 }
 
@@ -128,6 +131,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  margin-top: 0px;
 }
 
 .c9 {
@@ -160,6 +164,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   line-height: 1;
   color: #4b4c5c;
   margin: 10px 0 0;
+  padding-left: 0px;
 }
 
 .c14 {
@@ -168,6 +173,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   line-height: 1.5;
   color: #686978;
   padding-right: 37px;
+  padding-left: 0px;
 }
 
 .c16 {
@@ -182,7 +188,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   color: #fff;
 }
 
-.c24 {
+.c26 {
   color: rgba(255,255,255,0.65);
 }
 
@@ -202,17 +208,25 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   margin-top: 15px;
 }
 
+.c22 {
+  width: 180px;
+  margin: 15px auto 5px auto;
+  padding-left: 0px;
+}
+
 .c18 {
   position: relative;
   font-family: Poppins,sans-serif;
+  margin: 0px;
   --donate-content-padding: 0 19px 0 55px;
   --donate-send-bg: #4c54d2;
   --donate-send-color: #fff;
-  --donate-send-padding: 14px 19px 13px 51px;
+  --donate-send-padding: 14px 0px 13px 0px;
   --donate-funds-padding: 13px 12px 13px 24px;
 }
 
 .c19 {
+  margin-top: 0px;
   padding: var(--donate-content-padding);
 }
 
@@ -226,9 +240,10 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 167px;
+  padding-left: 0px;
 }
 
-.c25 {
+.c27 {
   background: var(--donate-send-bg);
   font-size: 13px;
   font-weight: 600;
@@ -245,13 +260,33 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c26 {
+.c29 {
+  display: block;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--donate-send-bg);
+}
+
+.c28 {
+  display: block;
+  width: 245px;
+  margin: 0 auto;
+}
+
+.c30 {
   vertical-align: middle;
   display: inline-block;
   margin-right: 15px;
   color: #a1a8f2;
-  width: 29px;
-  height: 29px;
+  width: 27px;
+  height: 27px;
+}
+
+.c21 {
+  width: 100%;
+  display: block;
 }
 
 .c3 {
@@ -260,13 +295,13 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c27 {
+.c31 {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.c21 {
+.c23 {
   font-family: Poppins,sans-serif;
   line-height: 1.3;
   display: -webkit-box;
@@ -281,7 +316,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c22 {
+.c24 {
   border-radius: 2px;
   text-align: center;
   display: -webkit-box;
@@ -311,7 +346,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   margin-right: var(--checkbox-box-spacing);
 }
 
-.c23 {
+.c25 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
@@ -424,55 +459,70 @@ exports[`List tests basic tests matches the snapshot 1`] = `
             >
               MISSING: donationAmount
             </div>
-            <div>
-              <div
-                className="c21"
-                onClick={[Function]}
-                size="small"
-                type="dark"
-              >
-                <span
-                  className="c22"
-                  disabled={false}
-                  selected={false}
+            <div
+              className="c21"
+            />
+            <div
+              className="c22"
+            >
+              <div>
+                <div
+                  className="c23"
+                  onClick={[Function]}
                   size="small"
                   type="dark"
-                />
-                <span
-                  className="c23"
-                  disabled={false}
-                  size="small"
                 >
                   <span
                     className="c24"
+                    disabled={false}
+                    selected={false}
+                    size="small"
+                    type="dark"
+                  />
+                  <span
+                    className="c25"
+                    disabled={false}
+                    size="small"
                   >
-                    MISSING: makeMonthly
+                    <span
+                      className="c26"
+                    >
+                      MISSING: makeMonthly
+                    </span>
                   </span>
-                </span>
+                </div>
               </div>
             </div>
           </div>
-          <button
-            className="c25"
+          <div
+            className="c27"
             onClick={[Function]}
           >
-            <span
-              className="c26"
-              disabled={false}
+            <div
+              className="c28"
             >
-              <svg
-                aria-hidden="true"
-                className="c27"
-                focusable="false"
-                viewBox="0 0 32 32"
+              <button
+                className="c29"
               >
-                <path
-                  d="M29 4v-.07a1 1 0 0 0 0-.24.42.42 0 0 0 0-.1.84.84 0 0 0-.18-.28.84.84 0 0 0-.29-.2h-.1a1 1 0 0 0-.37-.11H28a.87.87 0 0 0-.28.05h-.07L3.6 13.66a1 1 0 0 0-.12 1.77l8.17 4.94 5.14 8.16a1 1 0 0 0 .84.47h.08a1 1 0 0 0 .84-.6l10.37-24A1 1 0 0 0 29 4zm-5.47 3L12.21 18.38l-6.05-3.67zm-6.06 18.86l-3.83-6.08L25 8.41z"
-                />
-              </svg>
-            </span>
-            MISSING: sendDonation
-          </button>
+                <span
+                  className="c30"
+                  disabled={false}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="c31"
+                    focusable="false"
+                    viewBox="0 0 32 32"
+                  >
+                    <path
+                      d="M29 4v-.07a1 1 0 0 0 0-.24.42.42 0 0 0 0-.1.84.84 0 0 0-.18-.28.84.84 0 0 0-.29-.2h-.1a1 1 0 0 0-.37-.11H28a.87.87 0 0 0-.28.05h-.07L3.6 13.66a1 1 0 0 0-.12 1.77l8.17 4.94 5.14 8.16a1 1 0 0 0 .84.47h.08a1 1 0 0 0 .84-.6l10.37-24A1 1 0 0 0 29 4zm-5.47 3L12.21 18.38l-6.05-3.67zm-6.06 18.86l-3.83-6.08L25 8.41z"
+                    />
+                  </svg>
+                </span>
+                MISSING: sendDonation
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
