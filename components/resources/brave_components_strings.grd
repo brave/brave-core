@@ -390,6 +390,7 @@
       <message name="IDS_BRAVE_SYNC_RESET_SYNC_SECOND_BULLET" desc="The Brave Sync second bullet of the Reset Sync Modal">You will keep any bookmarks, history and other browsing data currently on this device.</message>
       <message name="IDS_BRAVE_SYNC_RESET_SYNC_THIRD_BULLET" desc="The Brave Sync third bullet of the Reset Sync Modal">If you've synced other devices, they will continue to sync their future browsing data. If you don't want that, you should reset Sync on those devices as well</message>
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
     </messages>
   </release>
 </grit>
