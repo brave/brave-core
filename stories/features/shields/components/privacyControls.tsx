@@ -103,8 +103,8 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
       <>
         {/* cookies select */}
         <SelectGrid hasUserInteraction={false}>
-          <EmptyButton />
-          <StatFlex />
+          <EmptyButton disabled={true} />
+          <StatFlex disabled={true} />
           <SelectBox onChange={this.onChangeBlockCookies}>
             <option value='block_third_party'>{locale.block3partyCookies}</option>
             <option value='block'>{locale.blockAllCookies}</option>
@@ -125,15 +125,15 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
           {openScriptsBlockedList ? scriptsBlockedList(favicon, sitename, this.onToggleScriptsBlocked) : null}
         </SelectGrid>
         {/* fingerprinting select */}
-        <SelectGrid hasUserInteraction={true}>
-          <EmptyButton onClick={this.onToggleDeviceRecognition}><ShowMoreIcon /></EmptyButton>
-          <StatFlex onClick={this.onToggleDeviceRecognition}>{data.thirdPartyDeviceRecognitionBlocked}</StatFlex>
+        <SelectGrid hasUserInteraction={false}>
+          <EmptyButton disabled={true} onClick={this.onToggleDeviceRecognition}><ShowMoreIcon /></EmptyButton>
+          <StatFlex disabled={true} onClick={this.onToggleDeviceRecognition}>0</StatFlex>
           <SelectBox onChange={this.onChangeBlockDeviceRecognition}>
             <option value='block_third_party'>{locale.block3partyFingerprinting}</option>
             <option value='block'>{locale.blockAllFingerprinting}</option>
             <option value='allow'>{locale.allowAllFingerprinting}</option>
           </SelectBox>
-          <ClickableEmptySpace onClick={this.onToggleDeviceRecognition} />
+          <ClickableEmptySpace disabled={true} onClick={this.onToggleDeviceRecognition} />
           {openDeviceRecognitionList ? deviceRecognitionList(favicon, sitename, this.onToggleDeviceRecognition) : null}
         </SelectGrid>
       </>

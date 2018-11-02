@@ -41,6 +41,7 @@ export const ResourcesGrid = styled(Grid)`
   height: 100%;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto 1fr;
+  cursor: initial;
 `
 
 // Header
@@ -67,6 +68,10 @@ export const ResourcesSiteInfoFlex = styled(Flex)`
 export const ResourcesSiteInfoGrid = styled(Grid)`
   grid-template-columns: auto 1fr;
   grid-gap: 5px;
+
+  > * {
+    line-height: 1;
+  }
 `
 
 export const EnabledTextGrid = styled(Grid)`
@@ -128,6 +133,7 @@ export const MainFooterLinkFlex = styled(Flex.withComponent('a'))`
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
+  line-height: 1;
 
   &:hover {
     color: ${palette.white};
@@ -168,13 +174,14 @@ export const StatFlex = styled(Flex)`
   width: 100%;
   height: 100%;
   font-family: ${p => p.theme.fontFamily.heading};
-  color: ${palette.grey200};
+  color: ${p => p.disabled ? palette.grey500 : palette.grey200};
+  pointer-events: ${p => p.disabled ? 'none' : null};
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
   user-select: none;
   padding: 13px 0;
-`
+  `
 
 export const ToggleGrid = styled(Grid)`
   grid-template-columns: 48px 28px 1fr auto;
@@ -210,7 +217,6 @@ interface SelectGridProps {
 
 export const SelectGrid = styled(ToggleGrid as ComponentType<SelectGridProps>)`
   padding: 0;
-  cursor: pointer;
 
   > *:nth-child(2) {
     height: 46px;

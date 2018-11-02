@@ -108,7 +108,7 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
       <>
         {/* ads toggle */}
           <ToggleGrid>
-            <EmptyButton disabled={true} onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
+            <EmptyButton onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
             <StatFlex onClick={this.onToggleTotalAdsTrackersBlocked}>{data.totalAdsTrackersBlocked}</StatFlex>
             <ResourcesSwitchLabel onClick={this.onToggleTotalAdsTrackersBlocked}>{locale.blockAds}</ResourcesSwitchLabel>
             <ToggleFlex><Toggle id='blockAds' checked={blockAds} onChange={this.onChangeBlockAds} /></ToggleFlex>
@@ -116,9 +116,9 @@ export default class InterfaceControls extends React.PureComponent<Props, State>
           {openTotalAdsTrackersBlockedList ? totalAdsTrackersBlockedList(favicon, sitename, this.onToggleTotalAdsTrackersBlocked) : null}
         {/* connections encrypted toggle */}
         <ToggleGrid>
-          <EmptyButton onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
-          <StatFlex onClick={this.onToggleConnectionsEncrypted}>{data.connectionsEncrypted}</StatFlex>
-          <ResourcesSwitchLabel onClick={this.onToggleConnectionsEncrypted}>{locale.connectionsEncrypted}</ResourcesSwitchLabel>
+          <EmptyButton disabled={true} onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
+          <StatFlex disabled={true} onClick={this.onToggleConnectionsEncrypted}>0</StatFlex>
+          <ResourcesSwitchLabel disabled={true} onClick={this.onToggleConnectionsEncrypted}>{locale.connectionsEncrypted}</ResourcesSwitchLabel>
           <ToggleFlex><Toggle id='connectionsEncrypted' checked={connectionsEncrypted} onChange={this.onChangeConnectionsEncrypted} /></ToggleFlex>
         </ToggleGrid>
         {openConnectionsEncryptedList ? connectionsEncryptedList(favicon, sitename, this.onToggleConnectionsEncrypted) : null}

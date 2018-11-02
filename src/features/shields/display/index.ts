@@ -46,7 +46,12 @@ export const DismissOverlay = styled<{}, 'div'>('div')`
   z-index: 1;
 `
 
-export const ClickableEmptySpace = styled<{}, 'div'>('div')`
+interface ClickableEmptySpaceProps {
+  disabled?: boolean
+}
+
+export const ClickableEmptySpace = styled<ClickableEmptySpaceProps, 'div'>('div')`
   width: 25px;
   height: 100%;
+  pointer-events: ${p => p.disabled ? 'none' : null};
 `

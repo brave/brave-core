@@ -97,11 +97,16 @@ export const ResourcesListItem = styled<{}, 'span'>('span')`
   line-height: 1.5;
 `
 
-export const ResourcesSwitchLabel = styled<{}, 'span'>('span')`
+interface ResourcesSwitchLabelProps {
+  disabled?: boolean
+}
+
+export const ResourcesSwitchLabel = styled<ResourcesSwitchLabelProps, 'span'>('span')`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   padding: 0 11px;
   user-select: none;
+  pointer-events: ${p => p.disabled ? 'none' : null};
 `
 
 export const ResourcesStatusTitle = styled<{}, 'span'>('span')`
