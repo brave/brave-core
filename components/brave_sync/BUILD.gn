@@ -119,6 +119,8 @@ grit("resources") {
 
   # fix paths so we don't have to do this
   resource_ids = ""
+
+  deps=[ "ui" ]
 }
 
 source_set("testutil") {
