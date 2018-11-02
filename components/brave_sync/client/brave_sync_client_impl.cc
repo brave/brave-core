@@ -5,7 +5,7 @@
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 
 #include "base/logging.h"
-#include "brave/components/brave_sync/api/brave_sync_event_router.h"
+#include "brave/browser/extensions/api/brave_sync_event_router.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"

@@ -77,7 +77,6 @@ function_registration("generated_api_registration") {
 
   deps = [
     "//extensions/common",
-    "//brave/components/brave_sync:api"
   ]
 
   visibility = [ ":api" ]

@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVESYNC_BRAVESYNC_API_H
-#define BRAVE_BROWSER_EXTENSIONS_API_BRAVESYNC_BRAVESYNC_API_H
+#ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_API_H_
+#define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_API_H_
 
 #include "extensions/browser/extension_function.h"
 
@@ -73,4 +73,4 @@ class BraveSyncExtensionInitializedFunction : public UIThreadExtensionFunction {
 } // namespace api
 } // namespace extensions
 
-#endif // BRAVE_BROWSER_EXTENSIONS_API_BRAVESYNC_BRAVESYNC_API_H
+#endif // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_API_H_

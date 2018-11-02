@@ -3,19 +3,6 @@ import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
-source_set("api") {
-  sources = [
-    "api/brave_sync_api.cc",
-    "api/brave_sync_api.h",
-    "api/brave_sync_event_router.cc",
-    "api/brave_sync_event_router.h",
-  ]
-
-  deps = [
-    "//extensions/browser",
-  ]
-}
-
 source_set("js_sync_lib_impl") {
   sources = [
     "brave_sync_service_impl.cc",
@@ -32,7 +19,6 @@ source_set("js_sync_lib_impl") {
   ]
 
   deps = [
-    ":api",
     "//base",
     "//components/prefs",
     "//components/bookmarks/browser",
@@ -72,8 +58,6 @@ source_set("core") {
     "//base",
     "//components/prefs",
     "//crypto",
-    # "//components/history/content/browser",
-    # "//components/history/core/browser",
   ]
 
   if (enable_extensions) {
