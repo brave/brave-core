@@ -56,7 +56,7 @@ def main():
   chromedriver = get_zip_name('chromedriver', get_chromedriver_version())
   upload_brave(repo, release, os.path.join(dist_dir(), chromedriver), force=args.force)
 
-  pkgs = yield_brave_packages(output_dir(), release_channel(), get_raw_version())
+  pkgs = get_brave_packages(output_dir(), release_channel(), get_raw_version())
 
   if PLATFORM == 'darwin':
     for pkg in pkgs:
@@ -86,46 +86,52 @@ def main():
   print('[INFO] Finished upload')
 
 
-def yield_brave_packages(dir, channel, version):
-  def rename_and_get_desired_path(file_path, file_desired):
-    file_desired_path = os.path.join(dir, file_desired)
-    if os.path.isfile(file_path):
-      print('[INFO] Renaming' + file_path + ' to ' + file_desired_path)
-      os.rename(file_path, file_desired_path)
-    return file_desired_path
+def get_brave_packages(dir, channel, version):
+    pkgs = []
 
-  channel_capitalized = channel.capitalize()
-  for _, _, files in os.walk(dir):
-    for file in files:
-      file_path = os.path.join(dir, file)
-      if PLATFORM == 'darwin':
-        if channel_capitalized == 'Release':
-          file_desired = 'Brave-Browser.dmg'
-          file_desired_pkg = 'Brave-Browser.pkg'
-          if file == 'Brave Browser.dmg':
-            if os.path.isfile(rename_and_get_desired_path(file_path, file_desired)):
-              yield file_desired
-          elif file == 'Brave Browser.pkg':
-            if os.path.isfile(rename_and_get_desired_path(file_path, file_desired_pkg)):
-              yield file_desired_pkg
-        else:
-          file_desired = 'Brave-Browser-' + channel_capitalized + '.dmg'
-          if re.match(r'Brave Browser ' + channel_capitalized + r'.*\.dmg$', file):
-            if os.path.isfile(rename_and_get_desired_path(file_path, file_desired)):
-              yield file_desired
-        if file == file_desired and os.path.isfile(file_path):
-          yield file
-      elif PLATFORM == 'linux':
-        if channel == 'release':
-          if re.match(r'brave-browser' + '_' + version + r'.*\.deb$', file) \
-          or re.match(r'brave-browser' + '-' + version + r'.*\.rpm$', file):
-            if os.path.isfile(file_path):
-              yield file
-        else:
-          if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
-          or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
-            if os.path.isfile(file_path):
-              yield file
+    def rename(file_path, file_desired):
+        file_desired_path = os.path.join(dir, file_desired)
+        if os.path.isfile(file_path):
+            print('[INFO] Renaming' + file_path + ' to ' + file_desired_path)
+            os.rename(file_path, file_desired_path)
+        return file_desired_path
+
+    channel_capitalized = channel.capitalize()
+    for _, _, files in os.walk(dir):
+      for file in files:
+        file_path = os.path.join(dir, file)
+        if PLATFORM == 'darwin':
+          if channel_capitalized == 'Release':
+            file_desired = 'Brave-Browser.dmg'
+            file_desired_pkg = 'Brave-Browser.pkg'
+            if file == 'Brave Browser.dmg':
+              rename(file_path, file_desired)
+              pkgs.append(file_desired)
+            elif file == 'Brave Browser.pkg':
+              rename(file_path, file_desired_pkg)
+              pkgs.append(file_desired)
+            elif file == file_desired:
+              pkgs.append(file_desired)
+            elif file == file_desired_pkg:
+              pkgs.append(file_desired_pkg)
+          else:
+            file_desired = 'Brave-Browser-' + channel_capitalized + '.dmg'
+            if re.match(r'Brave Browser ' + channel_capitalized + r'.*\.dmg$', file):
+              rename(file_path, file_desired)
+              pkgs.append(file_desired)
+            elif file == file_desired:
+              pkgs.append(file_desired)
+        elif PLATFORM == 'linux':
+          if channel == 'release':
+            if re.match(r'brave-browser' + '_' + version + r'.*\.deb$', file) \
+              or re.match(r'brave-browser' + '-' + version + r'.*\.rpm$', file):
+                pkgs.append(file)
+          else:
+            if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
+              or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
+                pkgs.append(file)
+
+    return pkgs
 
 
 def get_draft(repo, tag):
