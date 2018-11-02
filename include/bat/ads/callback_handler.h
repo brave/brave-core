@@ -12,13 +12,13 @@
 
 namespace ads {
 
-ADS_EXPORT enum Result {
+enum ADS_EXPORT Result {
   SUCCESS,
   FAILED
 };
 
 // CallbackHandler must not be destroyed if it has pending callbacks
-ADS_EXPORT class CallbackHandler {
+class ADS_EXPORT CallbackHandler {
  public:
   virtual ~CallbackHandler() = default;
 
@@ -60,7 +60,7 @@ ADS_EXPORT class CallbackHandler {
   virtual void OnGetAds(
       const Result /* result */,
       const std::string& /* category */,
-      const std::vector<bundle::CategoryInfo>& /* ads */) {}
+      const std::vector<CategoryInfo>& /* ads */) {}
 
   // URL Session
   virtual bool OnURLSessionReceivedResponse(

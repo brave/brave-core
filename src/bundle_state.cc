@@ -4,7 +4,36 @@
 
 #include "bat/ads/bundle_state.h"
 
+#include "json_helper.h"
+
 namespace ads {
+
+namespace {
+
+// TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
+bool ValidateJson(
+    const rapidjson::Document& document,
+    const std::map<std::string, std::string>& members) {
+  for (const auto& member : document.GetObject()) {
+    std::string member_name = member.name.GetString();
+    std::string member_type = _rapidjson_member_types[member.value.GetType()];
+
+    if (members.find(member_name) == members.end()) {
+      // Member name not used
+      continue;
+    }
+
+    std::string type = members.at(member_name);
+    if (type != member_type) {
+      // Invalid member type
+      return false;
+    }
+  }
+
+  return true;
+}
+
+}
 
 BUNDLE_STATE::BUNDLE_STATE() :
     catalog_id(""),
@@ -34,11 +63,11 @@ bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
   };
 
   // TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
-  if (!validateJson(bundle, members)) {
+  if (!ValidateJson(bundle, members)) {
     return false;
   }
 
-  std::map<std::string, std::vector<bundle::CategoryInfo>> new_categories;
+  std::map<std::string, std::vector<CategoryInfo>> new_categories;
 
   if (bundle.HasMember("categories")) {
     for (const auto& category : bundle["categories"].GetObject()) {
@@ -50,7 +79,7 @@ bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
           continue;
         }
 
-        bundle::CategoryInfo category_info;
+        CategoryInfo category_info;
 
         if (info.HasMember("creativeSetId")) {
           category_info.creative_set_id = info["creativeSetId"].GetString();
@@ -71,29 +100,6 @@ bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
   }
 
   categories = new_categories;
-
-  return true;
-}
-
-// TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
-bool BUNDLE_STATE::validateJson(
-    const rapidjson::Document& document,
-    const std::map<std::string, std::string>& members) {
-  for (const auto& member : document.GetObject()) {
-    std::string member_name = member.name.GetString();
-    std::string member_type = _rapidjson_member_types[member.value.GetType()];
-
-    if (members.find(member_name) == members.end()) {
-      // Member name not used
-      continue;
-    }
-
-    std::string type = members.at(member_name);
-    if (type != member_type) {
-      // Invalid member type
-      return false;
-    }
-  }
 
   return true;
 }

@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "client.h"
+
+#include "json_helper.h"
 #include "static_values.h"
 
 namespace ads {
@@ -65,7 +67,7 @@ std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
 }
 
 void Client::ResetAdsUUIDSeenForAds(
-    const std::vector<bundle::CategoryInfo>& categories) {
+    const std::vector<CategoryInfo>& categories) {
   for (const auto& category : categories) {
     auto ad_uuid_seen = client_state_->ads_uuid_seen.find(category.uuid);
     if (ad_uuid_seen != client_state_->ads_uuid_seen.end()) {

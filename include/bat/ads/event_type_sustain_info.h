@@ -10,7 +10,7 @@
 
 namespace event_type {
 
-ADS_EXPORT struct SustainInfo {
+struct ADS_EXPORT SustainInfo {
   std::string notification_id;
 };
 

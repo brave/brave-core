@@ -9,7 +9,6 @@
 #include <map>
 
 #include "bat/ads/bundle_category_info.h"
-#include "json_helper.h"
 
 namespace ads {
 
@@ -20,14 +19,10 @@ struct BUNDLE_STATE {
 
   bool LoadFromJson(const std::string& json);
 
-  bool validateJson(
-      const rapidjson::Document& document,
-      const std::map<std::string, std::string>& members);
-
   std::string catalog_id;
   uint64_t catalog_version;
   uint64_t catalog_ping;
-  std::map<std::string, std::vector<bundle::CategoryInfo>> categories;
+  std::map<std::string, std::vector<CategoryInfo>> categories;
 };
 
 }  // namespace ads

@@ -10,13 +10,13 @@
 
 namespace event_type {
 
-ADS_EXPORT enum NotificationResultInfoResultType {
+enum ADS_EXPORT NotificationResultInfoResultType {
   CLICKED,
   DISMISSED,
   TIMEOUT
 };
 
-ADS_EXPORT struct NotificationResultInfo {
+struct ADS_EXPORT NotificationResultInfo {
   std::string id;
   NotificationResultInfoResultType result_type;
   std::string catalog;

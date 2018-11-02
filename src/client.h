@@ -36,7 +36,7 @@ class Client: public ads::CallbackHandler {
   void UpdateAdsUUIDSeen(const std::string& uuid, uint64_t value);
   std::map<std::string, uint64_t> GetAdsUUIDSeen();
   void ResetAdsUUIDSeenForAds(
-      const std::vector<bundle::CategoryInfo>& categories);
+      const std::vector<CategoryInfo>& categories);
   void SetAvailable(const bool available);
   void SetAllowed(const bool allowed);
   bool GetAllowed();

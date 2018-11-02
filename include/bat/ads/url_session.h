@@ -8,7 +8,7 @@
 
 namespace ads {
 
-ADS_EXPORT class URLSession {
+class ADS_EXPORT URLSession {
  public:
   enum Method {
     GET = 0,

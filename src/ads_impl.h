@@ -109,7 +109,7 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   void OnGetAds(
       const ads::Result result,
       const std::string& category,
-      const std::vector<bundle::CategoryInfo>& ads) override;
+      const std::vector<CategoryInfo>& ads) override;
 
  private:
   bool initialized_;
@@ -148,8 +148,8 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
 
   void ServeAdFromCategory(
       const std::string& category);
-  std::vector<bundle::CategoryInfo> GetUnseenAds(
-      const std::vector<bundle::CategoryInfo>& categories);
+  std::vector<CategoryInfo> GetUnseenAds(
+      const std::vector<CategoryInfo>& categories);
   bool IsAllowedToShowAds();
   bool AdsShownHistoryRespectsRollingTimeConstraint(
       const std::deque<time_t> history,

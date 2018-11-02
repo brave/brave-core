@@ -10,7 +10,7 @@
 
 namespace ads {
 
-ADS_EXPORT struct UrlComponents {
+struct ADS_EXPORT UrlComponents {
   UrlComponents() :
     url(""),
     scheme(""),

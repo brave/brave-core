@@ -326,7 +326,7 @@ void MockAdsClient::GetAds(
 
 void MockAdsClient::GetSampleCategory(
     CallbackHandler* callback_handler) {
-  std::map<std::string, std::vector<bundle::CategoryInfo>>::iterator
+  std::map<std::string, std::vector<CategoryInfo>>::iterator
     categories = sample_bundle_state_->categories.begin();
 
   auto categories_count = sample_bundle_state_->categories.size();

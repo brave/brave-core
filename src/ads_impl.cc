@@ -689,7 +689,7 @@ void AdsImpl::OnGetSampleCategory(
 void AdsImpl::OnGetAds(
     const ads::Result result,
     const std::string& category,
-    const std::vector<bundle::CategoryInfo>& ads) {
+    const std::vector<CategoryInfo>& ads) {
   if (result == ads::Result::FAILED || ads.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
@@ -740,15 +740,15 @@ void AdsImpl::OnGetAds(
   client_->AppendCurrentTimeToAdsShownHistory();
 }
 
-std::vector<bundle::CategoryInfo> AdsImpl::GetUnseenAds(
-    const std::vector<bundle::CategoryInfo>& categories) {
+std::vector<CategoryInfo> AdsImpl::GetUnseenAds(
+    const std::vector<CategoryInfo>& categories) {
   auto ads_unseen = categories;
   auto ads_seen = client_->GetAdsUUIDSeen();
 
   auto iterator = std::remove_if(
     ads_unseen.begin(),
     ads_unseen.end(),
-    [&](bundle::CategoryInfo &info) {
+    [&](CategoryInfo &info) {
       return ads_seen.find(info.uuid) != ads_seen.end();
     });
 

@@ -146,7 +146,7 @@ class ADS_EXPORT Ads {
   virtual void OnGetAds(
       const Result result,
       const std::string& category,
-      const std::vector<bundle::CategoryInfo>& ads) = 0;
+      const std::vector<CategoryInfo>& ads) = 0;
 };
 
 }  // namespace ads

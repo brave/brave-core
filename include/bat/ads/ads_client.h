@@ -11,8 +11,6 @@
 #include "bat/ads/bundle_category_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/callback_handler.h"
-// #include "catalog_campaign_info.h"
-// #include "catalog_state.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/url_components.h"
@@ -21,13 +19,13 @@
 
 namespace ads {
 
-ADS_EXPORT enum LogLevel {
+enum ADS_EXPORT LogLevel {
   INFO,
   WARNING,
   ERROR
 };
 
-ADS_EXPORT class AdsClient {
+class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
 

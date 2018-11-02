@@ -40,7 +40,7 @@ void Bundle::Save() {
 
 bool Bundle::GenerateFromCatalog(
     const std::shared_ptr<CATALOG_STATE> catalog_state) {
-  std::map<std::string, std::vector<bundle::CategoryInfo>> categories;
+  std::map<std::string, std::vector<CategoryInfo>> categories;
 
   for (const auto& campaign : catalog_state->campaigns) {
     std::vector<std::string> heirarchy = {};
@@ -69,7 +69,7 @@ bool Bundle::GenerateFromCatalog(
       uint64_t entries = 0;
 
       for (const auto& creative : creative_set.creatives) {
-        bundle::CategoryInfo category_info;
+        CategoryInfo category_info;
         category_info.creative_set_id = creative_set.creative_set_id;
         category_info.advertiser = creative.payload.title;
         category_info.notification_text = creative.payload.body;

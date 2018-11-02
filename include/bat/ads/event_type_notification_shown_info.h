@@ -10,7 +10,7 @@
 
 namespace event_type {
 
-ADS_EXPORT struct NotificationShownInfo {
+struct ADS_EXPORT NotificationShownInfo {
   std::string catalog;
   std::string classification;
   std::string url;

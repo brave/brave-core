@@ -10,7 +10,7 @@
 
 namespace ads {
 
-ADS_EXPORT struct AdInfo {
+struct ADS_EXPORT AdInfo {
   AdInfo() :
     category(""),
     advertiser(""),

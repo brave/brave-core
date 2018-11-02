@@ -8,9 +8,9 @@
 
 #include "bat/ads/export.h"
 
-namespace bundle {
+namespace ads {
 
-ADS_EXPORT struct CategoryInfo {
+struct ADS_EXPORT CategoryInfo {
   CategoryInfo() :
     creative_set_id(""),
     advertiser(""),
@@ -34,4 +34,4 @@ ADS_EXPORT struct CategoryInfo {
   std::string uuid;
 };
 
-}  // namespace bundle
+}  // namespace ads
