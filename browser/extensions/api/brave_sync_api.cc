@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/api/brave_sync_api.h"
+#include "brave/browser/extensions/api/brave_sync_api.h"
 
 #include "brave/common/extensions/api/brave_sync.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
