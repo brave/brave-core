@@ -1,0 +1,22 @@
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+
+source_set("browser") {
+  public_deps = [
+    "buildflags",
+  ]
+
+  sources = [
+  ]
+
+  deps = [
+  ]
+
+  if (brave_ads_enabled) {
+    sources += [
+    ]
+
+    deps += [
+      "//brave/vendor/bat-native-ads",
+    ]
+  }
+}
