@@ -16,7 +16,6 @@ import {
   StyledScoreWrapper,
   StyledControlsWrapper,
   StyledDonateText,
-  StyledIcon,
   StyledDonateWrapper,
   StyledToggleWrapper,
   StyledSelectWrapper,
@@ -35,7 +34,6 @@ import {
 import { Tokens } from '../'
 import ToggleTips from '../toggleTips/index'
 import Profile, { Provider } from '../profile/index'
-import { RefreshIcon } from '../../../components/icons'
 
 export type Token = {
   tokens: string
@@ -123,9 +121,6 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
               <StyledDonateText>
                 {getLocale('donateMonthly')}
               </StyledDonateText>
-              <StyledIcon>
-                <RefreshIcon color={'#4C54D2'}/>
-              </StyledIcon>
             </StyledColumn>
             <StyledColumn size={'1'}>
               {this.donationDropDown()}

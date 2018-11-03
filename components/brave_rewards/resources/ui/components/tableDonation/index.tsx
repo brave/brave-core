@@ -9,7 +9,6 @@ import {
   StyledRemove,
   StyledRemoveIcon,
   StyledToggle,
-  StyledRecurringIcon,
   StyledToggleWrap,
   StyledLink
 } from './style'
@@ -17,7 +16,7 @@ import Table, { Cell, Row } from '../../../components/dataTables/table/index'
 import Profile, { Provider } from '../profile/index'
 import Tokens from '../tokens/index'
 import { getLocale } from '../../../helpers'
-import { CloseStrokeIcon, RefreshIcon } from '../../../components/icons'
+import { CloseStrokeIcon } from '../../../components/icons'
 
 interface ProfileCell {
   verified: boolean
@@ -57,7 +56,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
         return {
           content: (
             <>
-              <StyledType>{getLocale('recurring')} <StyledRecurringIcon><RefreshIcon /></StyledRecurringIcon></StyledType>
+              <StyledType>{getLocale('recurring')}</StyledType>
               <StyledRemove onClick={row.onRemove}>
                 <StyledRemoveIcon><CloseStrokeIcon /></StyledRemoveIcon>{getLocale('remove')}
               </StyledRemove>

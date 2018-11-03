@@ -51,13 +51,6 @@ export const StyledDonateText = styled<{}, 'span'>('span')`
   margin-left: 10px;
 ` as any
 
-export const StyledIcon = styled<{}, 'span'>('span')`
-  width: 15px;
-  margin-left: 5px;
-  display: inline-block;
-  vertical-align: middle;
-` as any
-
 export const StyledDonateWrapper = styled<{}, 'div'>('div')`
   text-align: center;
   padding: 15px 0 0;

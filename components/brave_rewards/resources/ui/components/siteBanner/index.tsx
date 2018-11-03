@@ -23,7 +23,6 @@ import {
   StyledSocialItem,
   StyledSocialIcon,
   StyledOption,
-  StyledIconRecurring,
   StyledLogoText,
   StyledSocialWrapper,
   StyledEmptyBox
@@ -33,7 +32,6 @@ import Donate from '../donate/index'
 import Checkbox from '../../../components/formControls/checkbox/index'
 import { getLocale } from '../../../helpers'
 import {
-  RefreshIcon,
   CloseStrokeIcon,
   TwitterColorIcon,
   YoutubeColorIcon,
@@ -220,7 +218,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                     type={'dark'}
                   >
                     <div data-key='make'>
-                      <StyledOption>{getLocale('makeMonthly')}</StyledOption> <StyledIconRecurring><RefreshIcon /></StyledIconRecurring>
+                      <StyledOption>{getLocale('makeMonthly')}</StyledOption>
                     </div>
                   </Checkbox>
                   : <StyledEmptyBox />

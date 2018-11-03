@@ -52,15 +52,6 @@ export const StyledToggle = styled<{}, 'button'>('button')`
   cursor: pointer;
 `
 
-export const StyledRecurringIcon = styled<{}, 'span'>('span')`
-  display: inline-block;
-  margin-left: 3px;
-  vertical-align: middle;
-  color: #696FDC;
-  width: 17px;
-  height: 17px;
-`
-
 export const StyledToggleWrap = styled<{}, 'div'>('div')`
   text-align: right;
 `

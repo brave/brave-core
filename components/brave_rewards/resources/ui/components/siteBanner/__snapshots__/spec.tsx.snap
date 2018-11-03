@@ -182,14 +182,6 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   color: #fff;
 }
 
-.c25 {
-  display: inline-block;
-  margin-left: 6px;
-  color: #A1A8F2;
-  width: 17px;
-  height: 17px;
-}
-
 .c24 {
   color: rgba(255,255,255,0.65);
 }
@@ -236,7 +228,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   max-width: 167px;
 }
 
-.c27 {
+.c25 {
   background: var(--donate-send-bg);
   font-size: 13px;
   font-weight: 600;
@@ -253,7 +245,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   cursor: pointer;
 }
 
-.c28 {
+.c26 {
   vertical-align: middle;
   display: inline-block;
   margin-right: 15px;
@@ -268,13 +260,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c26 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c29 {
+.c27 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -462,36 +448,21 @@ exports[`List tests basic tests matches the snapshot 1`] = `
                   >
                     MISSING: makeMonthly
                   </span>
-                   
-                  <span
-                    className="c25"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      className="c26"
-                      focusable="false"
-                      viewBox="0 0 32 32"
-                    >
-                      <path
-                        d="M23.68134 11.30439C22.08752 8.70199 19.21782 7 16 7c-4.97056 0-9 4.02944-9 9s4.02944 9 9 9c2.50086 0 4.83581-1.02378 6.52498-2.8012.38046-.40034 1.01342-.41646 1.41375-.036.40034.38046.41645 1.01342.036 1.41376C21.91179 25.74727 19.05469 27 16 27 9.92487 27 5 22.07513 5 16S9.92487 5 16 5c4.27936 0 8.05419 2.46205 9.86553 6.12678C27.10091 11.49832 28 12.64424 28 14c0 1.65667-1.34247 3-3.00056 3C23.34247 17 22 15.65667 22 14c0-1.1838.68547-2.2076 1.68134-2.69561z"
-                      />
-                    </svg>
-                  </span>
                 </span>
               </div>
             </div>
           </div>
           <button
-            className="c27"
+            className="c25"
             onClick={[Function]}
           >
             <span
-              className="c28"
+              className="c26"
               disabled={false}
             >
               <svg
                 aria-hidden="true"
-                className="c29"
+                className="c27"
                 focusable="false"
                 viewBox="0 0 32 32"
               >

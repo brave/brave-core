@@ -141,14 +141,6 @@ export const StyledTokens = styled<{}, 'span'>('span')`
   color: #fff;
 `
 
-export const StyledIconRecurring = styled<{}, 'span'>('span')`
-  display: inline-block;
-  margin-left: 6px;
-  color: #A1A8F2;
-  width: 17px;
-  height: 17px;
-`
-
 export const StyledOption = styled<{}, 'span'>('span')`
   color: rgba(255, 255, 255, 0.65);
 `
