@@ -15,7 +15,9 @@ namespace brave_rewards {
     ~PublisherBanner();
     PublisherBanner(const PublisherBanner& properties);
 
+    std::string publisher_key;
     std::string title;
+    std::string name;
     std::string description;
     std::string background;
     std::string logo;

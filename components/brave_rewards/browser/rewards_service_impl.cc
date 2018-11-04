@@ -49,6 +49,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/url_request/url_fetcher.h"
+#include "publisher_banner.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
@@ -1385,19 +1386,29 @@ void RewardsServiceImpl::OnSetOnDemandFaviconComplete(const std::string& favicon
   callback(success, favicon_url);
 }
 
-brave_rewards::PublisherBanner RewardsServiceImpl::GetPublisherBanner(const std::string& publisher_id) {
-  ledger::PublisherBanner banner = ledger_->GetPublisherBanner(publisher_id);
+void RewardsServiceImpl::GetPublisherBanner(const std::string& publisher_id) {
+  ledger_->GetPublisherBanner(publisher_id,
+      std::bind(&RewardsServiceImpl::OnPublisherBanner, this, _1));
+}
 
+void RewardsServiceImpl::OnPublisherBanner(std::unique_ptr<ledger::PublisherBanner> banner) {
   brave_rewards::PublisherBanner new_banner;
 
-  new_banner.title = banner.title;
-  new_banner.description = banner.description;
-  new_banner.background = banner.background;
-  new_banner.logo = banner.logo;
-  new_banner.amounts = banner.amounts;
-  new_banner.social = banner.social;
+  if (!banner) {
+    return;
+  }
 
-  return new_banner;
+  new_banner.publisher_key = banner->publisher_key;
+  new_banner.title = banner->title;
+  new_banner.name = banner->name;
+  new_banner.description = banner->description;
+  new_banner.background = banner->background;
+  new_banner.logo = banner->logo;
+  new_banner.amounts = banner->amounts;
+  new_banner.social = banner->social;
+
+  for (auto& observer : observers_)
+    observer.OnPublisherBanner(this, new_banner);
 }
 
 void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount, bool recurring) {
