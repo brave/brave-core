@@ -7,7 +7,6 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Column, Grid, ControlWrapper } from 'brave-ui/components'
 import { DisabledContent, Box, TableDonation, List, Tokens, ModalDonation } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
 
@@ -37,42 +36,6 @@ class DonationBox extends React.Component<Props, State> {
 
   get actions () {
     return this.props.actions
-  }
-
-  onCheckSettingChange = (key: string, selected: boolean) => {
-    this.actions.onSettingSave(key, selected)
-  }
-
-  donationSettings = () => {
-    const {
-      donationAbilityYT,
-      donationAbilityTwitter,
-      enabledMain
-    } = this.props.rewardsData
-
-    if (!enabledMain) {
-      return null
-    }
-
-    return (
-      <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
-        <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-          <ControlWrapper text={getLocale('donationAbility')}>
-            <Checkbox
-              value={{
-                donationAbilityYT,
-                donationAbilityTwitter
-              }}
-              multiple={true}
-              onChange={this.onCheckSettingChange}
-            >
-              <div data-key='donationAbilityYT'>{getLocale('donationAbilityYT')}</div>
-              <div data-key='donationAbilityTwitter'>{getLocale('donationAbilityTwitter')}</div>
-            </Checkbox>
-          </ControlWrapper>
-        </Column>
-      </Grid>
-    )
   }
 
   disabledContent = () => {
@@ -195,7 +158,6 @@ class DonationBox extends React.Component<Props, State> {
         title={getLocale('donationTitle')}
         type={'donation'}
         description={getLocale('donationDesc')}
-        settingsChild={this.donationSettings()}
         disabledContent={showDisabled ? this.disabledContent() : null}
       >
         {
