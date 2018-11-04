@@ -247,8 +247,6 @@ std::string BatGetMedia::getTwitchStatus(const ledger::TwitchEventInfo& oldEvent
     status = "playing";
   }
 
-  //LOG(ERROR) << "!!!video status == " << status;
-
   return status;
 }
 
@@ -343,6 +341,8 @@ void BatGetMedia::getPublisherFromMediaPropsCallback(const uint64_t& duration,
                                                      bool success,
                                                      const std::string& response,
                                                      const std::map<std::string, std::string>& headers) {
+  ledger_->LogResponse(__func__, success, response, headers);
+
   if (!success) {
     // TODO add error handler
     return;
@@ -439,7 +439,7 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   if (providerName == YOUTUBE_MEDIA_TYPE) {
     publisher_id = providerName + "#channel:";
     if (channelId.empty()) {
-      LOG(ERROR) << "Channel id is missing for: " << media_key;
+      ledger_->Log(__func__, ledger::LogLevel::ERROR, {"Channel id is missing for: ", media_key});
       return;
     }
 
@@ -448,7 +448,7 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   }
 
   if (publisher_id.empty()) {
-      LOG(ERROR) << "Publisher id is missing for: " << media_key;
+      ledger_->Log(__func__, ledger::LogLevel::ERROR, {"Publisher id is missing for: ", media_key});
       return;
   }
 

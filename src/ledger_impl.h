@@ -191,6 +191,14 @@ class LedgerImpl : public ledger::Ledger,
       ledger::PUBLISHER_EXCLUDE_FILTER excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp);
+  void Log(const std::string& func_name,
+           const ledger::LogLevel log_level,
+           std::vector<std::string> data);
+  void LogResponse(const std::string& func_name,
+                   bool result,
+                   const std::string& response,
+                   const std::map<std::string,
+                   std::string>& headers);
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

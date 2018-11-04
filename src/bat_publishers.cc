@@ -488,7 +488,6 @@ void BatPublishers::synopsisNormalizerInternal(ledger::PublisherInfoList* newLis
     const ledger::PublisherInfoList& oldList, uint32_t /* next_record */) {
   // TODO SZ: We can pass non const value here to avoid copying
   ledger::PublisherInfoList list = oldList;
-  //LOG(ERROR) << "!!!list.size() == " << list.size();
   if (list.size() == 0) {
     return;
   }
@@ -540,9 +539,6 @@ void BatPublishers::synopsisNormalizerInternal(ledger::PublisherInfoList* newLis
   for (size_t i = 0; i < list.size(); i++) {
     list[i].percent = percents[currentValue];
     list[i].weight = weights[currentValue];
-    //LOG(ERROR) << "!!!publisher_id == " << list[i].id;
-    //LOG(ERROR) << "!!!new percent == " << list[i].percent;
-    //LOG(ERROR) << "!!!new weight == " << list[i].weight;
     currentValue++;
     if (saveData) {
       std::unique_ptr<ledger::PublisherInfo> publisher_info;
@@ -825,7 +821,7 @@ bool BatPublishers::loadState(const std::string& data) {
 
 void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    LOG(ERROR) << "Could not save publisher state";
+    ledger_->Log(__func__, ledger::LogLevel::ERROR, {"Could not save publisher state"});
     // TODO - error handling
     return;
   }

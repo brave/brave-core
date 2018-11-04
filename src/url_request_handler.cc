@@ -27,16 +27,6 @@ void URLRequestHandler::OnURLRequestResponse(uint64_t request_id,
     LOG(ERROR) << "no request handler found for " << request_id;
     return;
   }
-
-  if (ledger::is_verbose) {
-    LOG(ERROR) << "[ RESPONSE ]";
-    LOG(ERROR) << "> url: " << url;
-    LOG(ERROR) << "> response: " << response;
-    for(std::pair<std::string, std::string> const& value: headers) {
-      LOG(ERROR) << "> header: " << value.first << " | " << value.second;
-    }
-    LOG(ERROR) << "[ END RESPONSE ]";
-  }
 }
 
 bool URLRequestHandler::AddRequestHandler(
