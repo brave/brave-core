@@ -64,6 +64,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
           ? <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%', backgroundColor: 'rgba(12,13,33,0.85)' }}>
             <SiteBanner
               domain={text('Domain', 'duckduckgo.com')}
+              name={text('Name', 'duckduckgo.com')}
               title={text('Title', '')}
               recurringDonation={boolean('Current recurring donation', true)}
               balance={text('Balance ', '5.0')}

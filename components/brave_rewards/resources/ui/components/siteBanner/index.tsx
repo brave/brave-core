@@ -49,6 +49,7 @@ export interface Props {
   onAmountSelection: (tokens: number) => void
   id?: string
   title?: string
+  name?: string
   domain: string
   bgImage?: string
   logo?: string
@@ -169,7 +170,8 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       domain,
       onAmountSelection,
       logoBgColor,
-      currentAmount
+      currentAmount,
+      name
     } = this.props
 
     return (
@@ -180,7 +182,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
           </StyledClose>
           <StyledBannerImage bgImage={bgImage}>
             <StyledCenter>
-              {domain}
+              {name || domain}
             </StyledCenter>
           </StyledBannerImage>
           <StyledContentWrapper>
