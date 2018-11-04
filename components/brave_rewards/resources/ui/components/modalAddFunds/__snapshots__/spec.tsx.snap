@@ -6,13 +6,14 @@ exports[`ModalAddFunds tests basic tests matches the snapshot 1`] = `
 }
 
 .c6 {
-  font-size: 20px;
+  font-size: 32px;
   font-weight: 500;
   color: #4b4c5c;
-  margin-bottom: 48px;
+  margin-bottom: 10px;
+  line-height: 1.3;
 }
 
-.c8 {
+.c9 {
   max-width: 508px;
   font-family: Muli,sans-serif;
   font-size: 12px;
@@ -21,7 +22,7 @@ exports[`ModalAddFunds tests basic tests matches the snapshot 1`] = `
   color: #686978;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -36,15 +37,22 @@ exports[`ModalAddFunds tests basic tests matches the snapshot 1`] = `
   align-items: stretch;
 }
 
-.c9 {
+.c10 {
   color: #4c54d2;
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.c9:hover {
+.c10:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
+}
+
+.c7 {
+  margin-bottom: 30px;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.4;
 }
 
 .c0 {
@@ -124,16 +132,21 @@ exports[`ModalAddFunds tests basic tests matches the snapshot 1`] = `
         >
           MISSING: addFundsTitle
         </div>
-        <div
+        <p
           className="c7"
-        />
+        >
+          MISSING: addFundsText
+        </p>
         <div
           className="c8"
+        />
+        <div
+          className="c9"
         >
           MISSING: addFundsNote
            
           <a
-            className="c9"
+            className="c10"
             href="https://brave.com/faq-payments/#brave-payments"
             target="_blank"
           >

@@ -18,7 +18,8 @@ import {
   StyledLink,
   StyledHeader,
   StyledWalletAddress,
-  StyledQRButton
+  StyledQRButton,
+  StyledText
 } from './style'
 import Modal from '../../../components/popupModals/modal/index'
 import { getLocale } from '../../../helpers'
@@ -119,6 +120,9 @@ export default class ModalAddFunds extends React.PureComponent<Props, State> {
       <Modal id={id} onClose={onClose}>
         <StyledWrapper>
           <StyledTitle>{getLocale('addFundsTitle')}</StyledTitle>
+          <StyledText>
+            {getLocale('addFundsText')}
+          </StyledText>
           <StyledAddresses>
             {
               addresses && addresses.map((address: Address) => this.getAddress(address))

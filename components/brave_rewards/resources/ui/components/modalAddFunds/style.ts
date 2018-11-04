@@ -15,10 +15,11 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
-  font-size: 20px;
+  font-size: 32px;
   font-weight: 500;
   color: #4b4c5c;
-  margin-bottom: 48px;
+  margin-bottom: 10px;
+  line-height: 1.3;
 `
 
 export const StyledNote = styled<{}, 'div'>('div') `
@@ -117,4 +118,11 @@ export const StyledWalletAddress = styled<{}, 'div'>('div') `
   color: #4b4c5c;
   text-align: left;
   margin-bottom: 4px;
+`
+
+export const StyledText = styled<{}, 'p'>('p') `
+  margin-bottom: 30px;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.4;
 `
