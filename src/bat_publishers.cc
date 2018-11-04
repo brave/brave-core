@@ -958,29 +958,65 @@ void BatPublishers::setBalanceReportItem(ledger::PUBLISHER_MONTH month,
   setBalanceReport(month, year, report_info);
 }
 
-ledger::PublisherBanner BatPublishers::getPublisherBanner(const std::string& publisher_id) {
+void BatPublishers::getPublisherBanner(const std::string& publisher_id,
+                                       ledger::PublisherBannerCallback callback) {
   ledger::PublisherBanner banner;
+  banner.publisher_key = publisher_id;
 
-  if (server_list_.empty()) {
-    return banner;
+  if (!server_list_.empty()) {
+    auto result = server_list_.find(publisher_id);
+
+    if (result != server_list_.end()) {
+      const braveledger_bat_helper::SERVER_LIST values = result->second;
+
+      banner.title = values.banner.title_;
+      banner.description = values.banner.description_;
+      banner.background = values.banner.background_;
+      banner.logo = values.banner.logo_;
+      banner.amounts = values.banner.amounts_;
+      banner.social = values.banner.social_;
+    }
   }
 
-  auto result = server_list_.find(publisher_id);
+  uint64_t currentReconcileStamp = ledger_->GetReconcileStamp();
+  auto filter = CreatePublisherFilter(publisher_id,
+      ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
+      ledger::PUBLISHER_MONTH::ANY,
+      -1,
+      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL,
+      false,
+      currentReconcileStamp);
 
-  if (result == server_list_.end()) {
-    return banner;
+  ledger::PublisherInfoCallback callbackGetPublisher = std::bind(&BatPublishers::onPublisherBanner,
+                                      this,
+                                      callback,
+                                      banner,
+                                      _1,
+                                      _2);
+
+  ledger_->GetPublisherInfo(filter, callbackGetPublisher);
+
+}
+
+void BatPublishers::onPublisherBanner(ledger::PublisherBannerCallback callback,
+                                      ledger::PublisherBanner banner,
+                                      ledger::Result result,
+                                      std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+
+  auto new_banner = std::make_unique<ledger::PublisherBanner>(banner);
+
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(std::move(new_banner));
+    return;
   }
 
-  const braveledger_bat_helper::SERVER_LIST values = result->second;
+  new_banner->name = publisher_info->name;
 
-  banner.title = values.banner.title_;
-  banner.description = values.banner.description_;
-  banner.background = values.banner.background_;
-  banner.logo = values.banner.logo_;
-  banner.amounts = values.banner.amounts_;
-  banner.social = values.banner.social_;
+  if (new_banner->logo.empty()) {
+    new_banner->logo = publisher_info->favicon_url;
+  }
 
-  return banner;
+  callback(std::move(new_banner));
 }
 
 }  // namespace braveledger_bat_publisher

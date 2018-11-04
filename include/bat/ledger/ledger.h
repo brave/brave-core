@@ -67,6 +67,8 @@ LEDGER_EXPORT struct PaymentData {
 };
 
 
+using PublisherBannerCallback = std::function<void(std::unique_ptr<ledger::PublisherBanner> banner)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(const std::string& url, const std::string& first_party_url, const std::string& referrer);
@@ -181,7 +183,7 @@ class LEDGER_EXPORT Ledger {
                                     int year,
                                     ledger::ReportType type,
                                     const std::string& probi) = 0;
-  virtual ledger::PublisherBanner GetPublisherBanner(const std::string& publisher_id) = 0;
+  virtual void GetPublisherBanner(const std::string& publisher_id, ledger::PublisherBannerCallback callback) = 0;
   virtual double GetBalance() = 0;
   virtual void OnReconcileCompleteSuccess(const std::string& viewing_id,
                                           const ledger::PUBLISHER_CATEGORY category,

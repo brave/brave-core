@@ -83,7 +83,9 @@ LEDGER_EXPORT struct PublisherBanner {
   PublisherBanner(const PublisherBanner& info);
   ~PublisherBanner();
 
+  std::string publisher_key;
   std::string title;
+  std::string name;
   std::string description;
   std::string background;
   std::string logo;
