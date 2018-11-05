@@ -9,7 +9,7 @@ deps = {
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/svn2github/python-patch@a336a458016ced89aba90dfc3f4c8222ae3b1403",
-  "vendor/omaha":  "https://github.com/brave/omaha.git@5c633e867efafb9013c57ca830212d1ff6ea5076",
+  "vendor/omaha":  "https://github.com/brave/omaha.git@b0b593b5751ef42e23974f33c65b7ad70f84b660",
   "vendor/sparkle": "https://github.com/brave/Sparkle.git@c0759cce415d7c0feae45005c8a013b1898711f0",
   "vendor/bat-native-ledger": "https://github.com/brave-intl/bat-native-ledger@a8550e6bf36eba0d62b3f24409d1cf4edb20827b",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@86aafe2ef89835ae71c9ed7c2527e3bb3000930e",
