@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/media/webrtc/webrtc_log_uploader.cc b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
+index cd618497a48d..a17f017923b8 100644
+--- a/chrome/browser/media/webrtc/webrtc_log_uploader.cc
++++ b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
+@@ -469,6 +469,7 @@ void WebRtcLogUploader::ResizeForNextOutput(std::string* compressed_log,
+ void WebRtcLogUploader::UploadCompressedLog(
+     const WebRtcLogUploadDoneData& upload_done_data,
+     std::unique_ptr<std::string> post_data) {
++  return; // feature disabled in Brave
+   DCHECK_CURRENTLY_ON(BrowserThread::IO);
+ 
+   DecreaseLogCount();
