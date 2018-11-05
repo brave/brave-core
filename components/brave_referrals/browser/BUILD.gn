@@ -2,7 +2,7 @@ declare_args() {
   brave_referrals_api_key = ""
 }
 
-source_set("referrals") {
+source_set("browser") {
   sources = [
     "brave_referrals_service.cc",
     "brave_referrals_service.h",
