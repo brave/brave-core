@@ -8,7 +8,7 @@
 #include <vector>
 #include <map>
 
-#include "bat/ads/bundle_category_info.h"
+#include "bat/ads/category_info.h"
 
 namespace ads {
 

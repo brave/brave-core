@@ -11,21 +11,10 @@
 namespace ads {
 
 struct ADS_EXPORT AdInfo {
-  AdInfo() :
-    category(""),
-    advertiser(""),
-    notification_text(""),
-    notification_url(""),
-    uuid("") {}
+  AdInfo();
+  AdInfo(const AdInfo& info);
 
-  AdInfo(const AdInfo& info) :
-    category(info.category),
-    advertiser(info.advertiser),
-    notification_text(info.notification_text),
-    notification_url(info.notification_url),
-    uuid(info.uuid) {}
-
-  ~AdInfo() {}
+  ~AdInfo();
 
   std::string category;
   std::string advertiser;

@@ -8,9 +8,9 @@
 #include <memory>
 
 #include "bat/ads/ad_info.h"
-#include "bat/ads/bundle_category_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/callback_handler.h"
+#include "bat/ads/category_info.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/url_components.h"

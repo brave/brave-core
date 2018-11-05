@@ -7,8 +7,8 @@
 #include <string>
 #include <map>
 
+#include "bat/ads/category_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/bundle_category_info.h"
 
 namespace ads {
 
@@ -68,7 +68,7 @@ class ADS_EXPORT CallbackHandler {
       const std::string& /* url */,
       const int /* response_status_code */,
       const std::string& /* response */,
-      const std::map<std::string, std::string>& /* headers */) { return false; }
+      const std::map<std::string, std::string>& /* headers */);
 };
 
 }  // namespace ads

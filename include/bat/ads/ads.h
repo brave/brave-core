@@ -8,9 +8,9 @@
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/event_type_notification_shown_info.h"
-#include "bat/ads/event_type_notification_result_info.h"
 #include "bat/ads/event_type_sustain_info.h"
 #include "bat/ads/export.h"
+#include "bat/ads/notification_result_info.h"
 
 namespace ads {
 

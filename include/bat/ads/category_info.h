@@ -11,21 +11,9 @@
 namespace ads {
 
 struct ADS_EXPORT CategoryInfo {
-  CategoryInfo() :
-    creative_set_id(""),
-    advertiser(""),
-    notification_text(""),
-    notification_url(""),
-    uuid("") {}
-
-  CategoryInfo(const CategoryInfo& info) :
-    creative_set_id(info.creative_set_id),
-    advertiser(info.advertiser),
-    notification_text(info.notification_text),
-    notification_url(info.notification_url),
-    uuid(info.uuid) {}
-
-  ~CategoryInfo() {}
+  CategoryInfo();
+  CategoryInfo(const CategoryInfo& info);
+  ~CategoryInfo();
 
   std::string creative_set_id;
   std::string advertiser;

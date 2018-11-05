@@ -11,8 +11,8 @@
 
 #include "ads_impl.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/bundle_category_info.h"
 #include "bat/ads/ad_info.h"
+#include "bat/ads/category_info.h"
 #include "search_providers.h"
 #include "math_helper.h"
 #include "string_helper.h"
