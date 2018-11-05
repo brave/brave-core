@@ -328,14 +328,6 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   LoadUserModel();
 }
 
-void AdsImpl::CollectActivity() {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  catalog_ads_serve_->DownloadCatalog();
-}
-
 void AdsImpl::CheckReadyAdServe(const bool forced) {
   if (!IsInitialized()) {
     return;
@@ -581,6 +573,14 @@ void AdsImpl::CachePageScore(
   } else {
     cached_page_score->second = page_score;
   }
+}
+
+void AdsImpl::CollectActivity() {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  catalog_ads_serve_->DownloadCatalog();
 }
 
 bool AdsImpl::IsCollectingActivity() const {

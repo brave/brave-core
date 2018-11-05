@@ -73,7 +73,6 @@ class AdsImpl : public Ads, CallbackHandler {
       const bool is_playing) override;
   void ClassifyPage(const std::string& url, const std::string& html) override;
   void ChangeLocale(const std::string& locale) override;
-  void CollectActivity() override;
   void CheckReadyAdServe(const bool forced = false) override;
   void ServeSampleAd() override;
 
@@ -131,6 +130,7 @@ class AdsImpl : public Ads, CallbackHandler {
       const std::vector<double>& page_score);
 
   uint32_t collect_activity_timer_id_;
+  void CollectActivity();
   bool IsCollectingActivity() const;
   void StopCollectingActivity();
 

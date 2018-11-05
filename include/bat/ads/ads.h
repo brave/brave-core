@@ -89,9 +89,6 @@ class ADS_EXPORT Ads {
   // Called when the user changes their locale (e.g., "en", "fr", or "gb")
   virtual void ChangeLocale(const std::string& locale) = 0;
 
-  // Frequently called when it may be time to talk to
-  // the catalog and/or redemption server
-  virtual void CollectActivity() = 0;
 
   // Frequently called to determine whether a notification should be
   // displayed; if so, the notification is sent
