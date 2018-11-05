@@ -586,7 +586,8 @@ void PublisherInfoDatabase::GetRecurringDonations(ledger::PublisherInfoList* lis
     return;
 
   sql::Statement info_sql(
-      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, rd.amount, rd.added_date, pi.verified "
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
+                             "rd.amount, rd.added_date, pi.verified, pi.provider "
                              "FROM recurring_donation as rd "
                              "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
 
@@ -601,6 +602,7 @@ void PublisherInfoDatabase::GetRecurringDonations(ledger::PublisherInfoList* lis
     publisher.weight = info_sql.ColumnDouble(4);
     publisher.reconcile_stamp = info_sql.ColumnInt64(5);
     publisher.verified = info_sql.ColumnBool(6);
+    publisher.provider = info_sql.ColumnString(7);
 
     list->push_back(publisher);
   }
@@ -616,7 +618,8 @@ void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list, ledger::PUB
     return;
 
   sql::Statement info_sql(
-      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, ci.probi, ci.date, pi.verified "
+      db_.GetUniqueStatement("SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
+                             "ci.probi, ci.date, pi.verified, pi.provider "
                              "FROM contribution_info as ci "
                              "INNER JOIN publisher_info AS pi ON ci.publisher_id = pi.publisher_id "
                              "AND ci.month = ? AND ci.year = ? "
@@ -638,6 +641,7 @@ void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list, ledger::PUB
     publisher.weight = info_sql.ColumnDouble(4);
     publisher.reconcile_stamp = info_sql.ColumnInt64(5);
     publisher.verified = info_sql.ColumnBool(6);
+    publisher.provider = info_sql.ColumnString(7);
 
     list->push_back(publisher);
   }
