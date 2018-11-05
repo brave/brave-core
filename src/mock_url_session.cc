@@ -15,7 +15,7 @@ MockURLSession::~MockURLSession() = default;
 void MockURLSession::Start() {
 }
 
-uint64_t MockURLSession::GetSessionId() {
+uint64_t MockURLSession::GetSessionId() const {
   return 0;
 }
 

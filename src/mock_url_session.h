@@ -15,7 +15,7 @@ class MockURLSession : public URLSession {
 
  protected:
   void Start() override;
-  uint64_t GetSessionId() override;
+  uint64_t GetSessionId() const override;
 };
 
 }  // namespace ads

@@ -19,7 +19,7 @@ class ADS_EXPORT URLSession {
   virtual ~URLSession() = default;
 
   virtual void Start() = 0;
-  virtual uint64_t GetSessionId() = 0;
+  virtual uint64_t GetSessionId() const = 0;
 };
 
 }  // namespace ads
