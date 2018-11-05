@@ -156,7 +156,7 @@ class RewardsServiceImpl : public RewardsService,
                              std::unique_ptr<ledger::PublisherInfo> info);
   void OnPublisherInfoListLoaded(uint32_t start,
                                  uint32_t limit,
-                                 ledger::GetPublisherInfoListCallback callback,
+                                 ledger::PublisherInfoListCallback callback,
                                  const ledger::PublisherInfoList& list);
   void OnPublishersListSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
@@ -168,7 +168,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnContributionInfoSaved(const ledger::PUBLISHER_CATEGORY category, bool success);
   void OnRecurringDonationSaved(bool success);
   void SaveRecurringDonation(const std::string& publisher_key, const int amount);
-  void OnRecurringDonationsData(const ledger::RecurringDonationCallback callback,
+  void OnRecurringDonationsData(const ledger::PublisherInfoListCallback callback,
                                 const ledger::PublisherInfoList list);
   void OnRecurringDonationUpdated(const ledger::PublisherInfoList& list);
   void OnTipsUpdatedData(const ledger::PublisherInfoList list);
@@ -212,12 +212,12 @@ class RewardsServiceImpl : public RewardsService,
       uint32_t start,
       uint32_t limit,
       ledger::PublisherInfoFilter filter,
-      ledger::GetPublisherInfoListCallback callback) override;
+      ledger::PublisherInfoListCallback callback) override;
   void LoadCurrentPublisherInfoList(
       uint32_t start,
       uint32_t limit,
       ledger::PublisherInfoFilter filter,
-      ledger::GetPublisherInfoListCallback callback) override;
+      ledger::PublisherInfoListCallback callback) override;
   void SavePublishersList(const std::string& publishers_list,
                           ledger::LedgerCallbackHandler* handler) override;
   void SetTimer(uint64_t time_offset, uint32_t& timer_id) override;
@@ -260,7 +260,7 @@ class RewardsServiceImpl : public RewardsService,
                             const uint32_t date,
                             const std::string& publisher_key,
                             const ledger::PUBLISHER_CATEGORY category) override;
-  void GetRecurringDonations(ledger::RecurringDonationCallback callback) override;
+  void GetRecurringDonations(ledger::PublisherInfoListCallback callback) override;
   void Log(ledger::LogLevel level, const std::string& text) override;
 
   void OnIOTaskComplete(std::function<void(void)> callback);
