@@ -157,8 +157,8 @@ class LEDGER_EXPORT Ledger {
   virtual bool GetPublisherAllowVideos() const = 0;
   virtual double GetContributionAmount() const = 0;
   virtual bool GetAutoContribute() const = 0;
-  virtual void GetWalletProperties() const = 0;
-  virtual void GetGrant(const std::string& lang, const std::string& paymentId) const = 0;
+  virtual void FetchWalletProperties() const = 0;
+  virtual void FetchGrant(const std::string& lang, const std::string& paymentId) const = 0;
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual void GetGrantCaptcha() const = 0;
   virtual std::string GetWalletPassphrase() const = 0;

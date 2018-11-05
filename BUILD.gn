@@ -65,6 +65,8 @@ source_set("ledger") {
     "src/bat_helper_platform.h",
     "src/bat_publishers.cc",
     "src/bat_publishers.h",
+    "src/bat_state.cc",
+    "src/bat_state.h",
     "src/bignum.cc",
     "src/bignum.h",
     "src/ledger_impl.cc",

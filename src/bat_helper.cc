@@ -122,7 +122,11 @@ static bool ignore_ = false;
     writer.String(data.addressLTC_.c_str());
 
     writer.String("keyInfoSeed");
-    writer.String(getBase64(data.keyInfoSeed_).c_str());
+    if (data.keyInfoSeed_.size() == 0) {
+      writer.String("");
+    } else {
+      writer.String(getBase64(data.keyInfoSeed_).c_str());
+    }
 
     writer.EndObject();
   }
@@ -1636,7 +1640,13 @@ static bool ignore_ = false;
 
     if (false == error) {
       for (auto & i : d["rates"].GetObject()) {
-        rates.insert(std::make_pair(i.name.GetString(), i.value.GetDouble()));
+        double value = 0.0;
+        if (i.value.IsDouble()) {
+          value = i.value.GetDouble();
+        } else if (i.value.IsString()) {
+          value = std::stod(i.value.GetString());
+        }
+        rates.insert(std::make_pair(i.name.GetString(), value));
       }
     }
     return !error;
