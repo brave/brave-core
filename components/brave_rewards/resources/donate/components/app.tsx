@@ -26,6 +26,19 @@ export class App extends React.Component<Props, {}> {
     this.actions.onCloseDialog()
   }
 
+  generateDonationOverlay = (publisher: RewardsDonate.Publisher | undefined) => {
+    setTimeout(() => {
+      this.onClose()
+    }, 3000)
+    return (
+      <DonationOverlay
+        onClose={this.onClose}
+        success={true}
+        domain={publisher && publisher.publisherKey}
+      />
+    )
+  }
+
   render () {
     const { finished, error, publisher } = this.props.rewardsDonateData
     return (
@@ -37,11 +50,7 @@ export class App extends React.Component<Props, {}> {
         }
         {
           finished
-          ? <DonationOverlay
-              onClose={this.onClose}
-              success={true}
-              domain={publisher && publisher.publisherKey}
-          />
+          ? this.generateDonationOverlay(publisher)
           : null
         }
       </>
