@@ -9,7 +9,7 @@ const bg1 = require('./assets/bg_bats.svg')
 const bg2 = require('./assets/bg_hearts.svg')
 
 interface StyleProps {
-  padding: boolean
+  padding?: boolean
   bg?: string
 }
 
@@ -179,4 +179,11 @@ export const StyledSocialWrapper = styled<{}, 'div'>('div')`
 export const StyledEmptyBox = styled<{}, 'div'>('div')`
   width: 100%;
   height: 39px;
+`
+
+export const StyledLogoImage = styled<StyleProps, 'div'>('div')`
+  width: 148px;
+  height: 148px;
+  background: url(${p => p.bg}) no-repeat;
+  background-size: cover;
 `

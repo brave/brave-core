@@ -25,7 +25,8 @@ import {
   StyledOption,
   StyledLogoText,
   StyledSocialWrapper,
-  StyledEmptyBox
+  StyledEmptyBox,
+  StyledLogoImage
 } from './style'
 
 import Donate from '../donate/index'
@@ -76,7 +77,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
   getLogo (logo: string | undefined, domain: string) {
     return !logo
       ? <StyledLogoText>{(domain && domain.substring(0,1)) || ''}</StyledLogoText>
-      : <img src={logo} />
+      : <StyledLogoImage bg={logo} />
   }
 
   getSocialData (item: Social) {
