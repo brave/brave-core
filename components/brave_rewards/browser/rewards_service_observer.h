@@ -44,7 +44,9 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnRecurringDonationUpdated(RewardsService* rewards_service,
                                           brave_rewards::ContentSiteList) {};
   virtual void OnCurrentTips(RewardsService* rewards_service,
-                                          brave_rewards::ContentSiteList) {};
+                             brave_rewards::ContentSiteList) {};
+  virtual void OnPublisherBanner(brave_rewards::RewardsService* rewards_service,
+                                 const brave_rewards::PublisherBanner banner) {};
 };
 
 }  // namespace brave_rewards
