@@ -20,6 +20,7 @@ deps = {
   "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@c07866c3b9c8264195756a81112bb74b8fa90858",
   "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@3dffeb6eab77ae530865628a7c5a6550dc8fe613",
   "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@657b01814f2dc017b40d303bd468fa4938e825c4",
+  "vendor/bat-native-confirmations": "https://github.com/brave-intl/bat-native-confirmations.git@0fc3a55e3a9bac4da636c0695e1bb1f93c6abe62",
 }
 
 hooks = [
