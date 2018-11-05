@@ -3,9 +3,11 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
+// Utils
 import * as React from 'react'
 import { getLocale } from '../../../helpers'
 
+// Components
 import {
   StyledWrapper,
   StyledAlertIcon,
@@ -13,18 +15,97 @@ import {
   StyledMessage,
   StyledMonthlyTips,
   StyledReviewWrapper,
-  StyledReviewList
+  StyledReviewList,
+  StyledModalContent,
+  StyledModalInfo,
+  StyledListMessage,
+  StyledList,
+  StyledListItem,
+  StyledTipsIcon,
+  StyledButton
 } from './style'
-import { AlertCircleIcon } from '../../../components/icons'
+import { Modal } from '../../../components'
+import { AlertCircleIcon, SendTipsIcon } from '../../../components/icons'
+import Button from '../../../components/buttonsIndicators/button'
 
 export interface Props {
   testId?: string
   onReview: () => void
 }
 
-export default class TipsMigrationAlert extends React.PureComponent<Props, {}> {
+interface State {
+  modalShown: boolean
+}
+
+export default class TipsMigrationAlert extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      modalShown: false
+    }
+  }
+
+  toggleModalDisplay = () => {
+    this.setState({
+      modalShown: !this.state.modalShown
+    })
+
+    if (this.state.modalShown && this.props.onReview) {
+      this.props.onReview()
+    }
+  }
+
+  pinnedSitesModal = () => {
+    return (
+      <Modal
+        size={'small'}
+        outsideClose={false}
+        onClose={this.toggleModalDisplay}
+      >
+        <StyledModalContent>
+          <StyledTipsIcon>
+            <SendTipsIcon />
+          </StyledTipsIcon>
+          <StyledModalInfo>
+            <StyledMessage modal={true}>
+              {getLocale('pinnedSitesHeader')}
+            </StyledMessage>
+            <StyledMonthlyTips modal={true}>
+              {getLocale('monthlyTips')}
+            </StyledMonthlyTips>
+            <StyledListMessage>
+              {getLocale('pinnedSitesMsg')}
+            </StyledListMessage>
+            <StyledList>
+              <StyledListItem>
+                {getLocale('pinnedSitesOne')}
+              </StyledListItem>
+              <StyledListItem>
+                {getLocale('pinnedSitesTwo')}
+              </StyledListItem>
+              <StyledListItem>
+                {getLocale('pinnedSitesThree')}
+              </StyledListItem>
+              <StyledListItem>
+                {getLocale('pinnedSitesFour')}
+              </StyledListItem>
+            </StyledList>
+            <StyledButton>
+              <Button
+                text={getLocale('ok')}
+                size={'call-to-action'}
+                type={'accent'}
+                onClick={this.toggleModalDisplay}
+              />
+            </StyledButton>
+          </StyledModalInfo>
+        </StyledModalContent>
+      </Modal>
+    )
+  }
+
   render () {
-    const { testId, onReview } = this.props
+    const { testId } = this.props
 
     return (
       <StyledWrapper data-test-id={testId}>
@@ -40,10 +121,15 @@ export default class TipsMigrationAlert extends React.PureComponent<Props, {}> {
           </StyledMonthlyTips>
         </StyledInfo>
         <StyledReviewWrapper>
-          <StyledReviewList onClick={onReview}>
+          <StyledReviewList onClick={this.toggleModalDisplay}>
             {getLocale('learnMore')}
           </StyledReviewList>
         </StyledReviewWrapper>
+        {
+          this.state.modalShown
+          ? this.pinnedSitesModal()
+          : null
+        }
       </StyledWrapper>
     )
   }

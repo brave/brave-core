@@ -5,6 +5,10 @@
 
 import styled from 'styled-components'
 
+interface StyleProps {
+  modal?: boolean
+}
+
 export const StyledWrapper = styled<{}, 'div'>('div')`
   width: 100%;
   display: flex;
@@ -29,16 +33,18 @@ export const StyledInfo = styled<{}, 'div'>('div')`
   max-width: 387px;
 `
 
-export const StyledMessage = styled<{}, 'span'>('span')`
+export const StyledMessage = styled<StyleProps, 'span'>('span')`
   color: #000;
-  font-weight: 400;
-  margin-right: 3px;
+  margin-right: ${p => p.modal ? 5 : 3}px;
+  font-weight: ${p => p.modal ? 500 : 400};
+  font-size: ${p => p.modal ? '22px' : 'inherit'};
 `
 
-export const StyledMonthlyTips = styled<{}, 'span'>('span')`
+export const StyledMonthlyTips = styled<StyleProps, 'span'>('span')`
   color: #696FDC;
-  font-weight: 400;
+  font-weight: ${p => p.modal ? 500 : 400};
   display: inline-block;
+  font-size: ${p => p.modal ? '22px' : 'inherit'};
 `
 
 export const StyledReviewWrapper = styled<{}, 'div'>('div')`
@@ -53,4 +59,47 @@ export const StyledReviewList = styled<{}, 'span'>('span')`
   font-weight: 500;
   letter-spacing: 0;
   line-height: 18px;
+`
+
+export const StyledModalContent = styled<{}, 'div'>('div')`
+  display: block;
+`
+
+export const StyledTipsIcon = styled<{}, 'div'>('div')`
+  width: 20%;
+  vertical-align: top;
+  margin-top: -33px;
+  display: inline-block;
+`
+
+export const StyledModalInfo = styled<{}, 'div'>('div')`
+  width: 80%;
+  padding-left: 20px;
+  display: inline-block;
+`
+
+export const StyledListMessage = styled<{}, 'div'>('div')`
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 30px;
+`
+
+export const StyledList = styled<{}, 'ul'>('ul')`
+  display: block;
+  font-size: 14px;
+  font-weight: 300;
+  padding-left: 20px;
+`
+
+export const StyledListItem = styled<{}, 'li'>('li')`
+  display: block;
+  display: list-item;
+  line-height: 28px;
+  list-style-type: disc;
+`
+
+export const StyledButton = styled<{}, 'div'>('div')`
+  width: 90px;
+  margin: 40px 0 0 100px;
 `

@@ -33,14 +33,16 @@ exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
 
 .c4 {
   color: #000;
-  font-weight: 400;
   margin-right: 3px;
+  font-weight: 400;
+  font-size: inherit;
 }
 
 .c5 {
   color: #696FDC;
   font-weight: 400;
   display: inline-block;
+  font-size: inherit;
 }
 
 .c6 {
@@ -102,6 +104,7 @@ exports[`TipsMigrationAlert tests basic tests matches the snapshot 1`] = `
   >
     <span
       className="c7"
+      onClick={[Function]}
     >
       MISSING: learnMore
     </span>
