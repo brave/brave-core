@@ -205,8 +205,8 @@ void AdsImpl::InitializeUserModel(const std::string& json) {
   user_model_->initializePageClassifier(json);
 }
 
-void AdsImpl::AppFocused(const bool focused) {
-  app_focused_ = focused;
+void AdsImpl::AppFocused(const bool is_focused) {
+  app_focused_ = is_focused;
 
   if (app_focused_) {
     GenerateAdReportingForegroundEvent();
@@ -218,9 +218,9 @@ void AdsImpl::AppFocused(const bool focused) {
 void AdsImpl::TabUpdated(
     const std::string& tab_id,
       const std::string& url,
-    const bool active,
-    const bool incognito) {
-  if (incognito) {
+    const bool is_active,
+    const bool is_incognito) {
+  if (is_incognito) {
     return;
   }
 
@@ -231,7 +231,7 @@ void AdsImpl::TabUpdated(
   load_info.tab_url = url;
   GenerateAdReportingLoadEvent(load_info);
 
-  if (!active) {
+  if (!is_active) {
     BlurInfo blur_info;
     blur_info.tab_id = tab_id;
     GenerateAdReportingBlurEvent(blur_info);
@@ -241,12 +241,12 @@ void AdsImpl::TabUpdated(
 void AdsImpl::TabSwitched(
     const std::string& tab_id,
     const std::string& url,
-    const bool incognito) {
-  if (incognito) {
+    const bool is_incognito) {
+  if (is_incognito) {
     return;
   }
 
-  TabUpdated(tab_id, url, true, incognito);
+  TabUpdated(tab_id, url, true, is_incognito);
   TestShoppingData(url);
   TestSearchState(url);
 
@@ -284,12 +284,14 @@ void AdsImpl::SaveCachedInfo() {
   bundle_->Save();
 }
 
-void AdsImpl::RecordMediaPlaying(const std::string& tab_id, const bool active) {
+void AdsImpl::RecordMediaPlaying(
+    const std::string& tab_id,
+    const bool is_playing) {
   auto tab = media_playing_.find(tab_id);
 
-  if (active) {
+  if (is_playing) {
     if (tab == media_playing_.end()) {
-      media_playing_.insert({tab_id, active});
+      media_playing_.insert({tab_id, is_playing});
     }
   } else {
     if (tab != media_playing_.end()) {

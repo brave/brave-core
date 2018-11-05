@@ -46,20 +46,20 @@ class ADS_EXPORT Ads {
   virtual void InitializeUserModel(const std::string& json) = 0;
 
   // Called whenever the browser gains or loses focus (the active application)
-  virtual void AppFocused(const bool focused) = 0;
+  virtual void AppFocused(const bool is_focused) = 0;
 
   // Called to record user activity on a tab
   virtual void TabUpdated(
       const std::string& tab_id,
       const std::string& url,
-      const bool active,
-      const bool incognito) = 0;
+      const bool is_active,
+      const bool is_incognito) = 0;
 
   // Called to record when a user switches tab
   virtual void TabSwitched(
       const std::string& tab_id,
       const std::string& url,
-      const bool incognito) = 0;
+      const bool is_incognito) = 0;
 
   // Called to record when a user closes a tab
   virtual void TabClosed(const std::string& tab_id) = 0;
@@ -78,7 +78,7 @@ class ADS_EXPORT Ads {
   // stopped playing) media (A/V)
   virtual void RecordMediaPlaying(
       const std::string& tab_id,
-      const bool active) = 0;
+      const bool is_playing) = 0;
 
   // Called when a page is completely loaded and both the headers
   // and body are available for analysis

@@ -54,23 +54,23 @@ class AdsImpl : public Ads, CallbackHandler {
       const SustainInfo& info) override;
   void Initialize() override;
   void InitializeUserModel(const std::string& json) override;
-  void AppFocused(const bool focused) override;
+  void AppFocused(const bool is_focused) override;
   void TabUpdated(
       const std::string& tab_id,
       const std::string& url,
-      const bool active,
-      const bool incognito) override;
+      const bool is_active,
+      const bool is_incognito) override;
   void TabSwitched(
       const std::string& tab_id,
       const std::string& url,
-      const bool incognito) override;
+      const bool is_incognito) override;
   void TabClosed(const std::string& tab_id) override;
   void RecordUnIdle() override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
   void RecordMediaPlaying(
       const std::string& tab_id,
-      const bool active) override;
+      const bool is_playing) override;
   void ClassifyPage(const std::string& url, const std::string& html) override;
   void ChangeLocale(const std::string& locale) override;
   void CollectActivity() override;
