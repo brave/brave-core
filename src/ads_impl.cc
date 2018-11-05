@@ -40,7 +40,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
 AdsImpl::~AdsImpl() = default;
 
 void AdsImpl::GenerateAdReportingNotificationShownEvent(
-    const event_type::NotificationShownInfo& info) {
+    const NotificationShownInfo& info) {
   if (!boot_) {
     boot_ = true;
 
@@ -93,7 +93,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 }
 
 void AdsImpl::GenerateAdReportingNotificationResultEvent(
-    const event_type::NotificationResultInfo& info) {
+    const NotificationResultInfo& info) {
   if (!boot_) {
     boot_ = true;
 
@@ -118,19 +118,19 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   writer.String("notificationType");
   switch (info.result_type) {
-    case event_type::NotificationResultInfoResultType::CLICKED: {
+    case NotificationResultInfoResultType::CLICKED: {
       writer.String("clicked");
       client_->UpdateAdsUUIDSeen(info.id, 1);
       break;
     }
 
-    case event_type::NotificationResultInfoResultType::DISMISSED: {
+    case NotificationResultInfoResultType::DISMISSED: {
       writer.String("dismissed");
       client_->UpdateAdsUUIDSeen(info.id, 1);
       break;
     }
 
-    case event_type::NotificationResultInfoResultType::TIMEOUT: {
+    case NotificationResultInfoResultType::TIMEOUT: {
       writer.String("timeout");
       break;
     }
@@ -163,7 +163,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 }
 
 void AdsImpl::GenerateAdReportingSustainEvent(
-    const event_type::SustainInfo& info) {
+    const SustainInfo& info) {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
@@ -226,13 +226,13 @@ void AdsImpl::TabUpdated(
 
   client_->UpdateLastUserActivity();
 
-  event_type::LoadInfo load_info;
+  LoadInfo load_info;
   load_info.tab_id = tab_id;
   load_info.tab_url = url;
   GenerateAdReportingLoadEvent(load_info);
 
   if (!active) {
-    event_type::BlurInfo blur_info;
+    BlurInfo blur_info;
     blur_info.tab_id = tab_id;
     GenerateAdReportingBlurEvent(blur_info);
   }
@@ -250,13 +250,13 @@ void AdsImpl::TabSwitched(
   TestShoppingData(url);
   TestSearchState(url);
 
-  event_type::FocusInfo focus_info;
+  FocusInfo focus_info;
   focus_info.tab_id = tab_id;
   GenerateAdReportingFocusEvent(focus_info);
 }
 
 void AdsImpl::TabClosed(const std::string& tab_id) {
-  event_type::DestroyInfo destroy_info;
+  DestroyInfo destroy_info;
   destroy_info.tab_id = tab_id;
   GenerateAdReportingDestroyEvent(destroy_info);
 }
@@ -802,7 +802,7 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
 }
 
 void AdsImpl::GenerateAdReportingLoadEvent(
-    const event_type::LoadInfo info) {
+    const LoadInfo info) {
   UrlComponents components;
   ads_client_->GetUrlComponents(info.tab_url, components);
   if (components.scheme != "http" && components.scheme != "https") {
@@ -927,7 +927,7 @@ void AdsImpl::GenerateAdReportingForegroundEvent() {
 }
 
 void AdsImpl::GenerateAdReportingBlurEvent(
-    const event_type::BlurInfo& info) {
+    const BlurInfo& info) {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
@@ -954,7 +954,7 @@ void AdsImpl::GenerateAdReportingBlurEvent(
 }
 
 void AdsImpl::GenerateAdReportingDestroyEvent(
-    const event_type::DestroyInfo& info) {
+    const DestroyInfo& info) {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
@@ -981,7 +981,7 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
 }
 
 void AdsImpl::GenerateAdReportingFocusEvent(
-    const event_type::FocusInfo& info) {
+    const FocusInfo& info) {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 

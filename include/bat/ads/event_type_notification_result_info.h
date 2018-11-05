@@ -8,7 +8,7 @@
 
 #include "bat/ads/export.h"
 
-namespace event_type {
+namespace ads {
 
 enum ADS_EXPORT NotificationResultInfoResultType {
   CLICKED,
@@ -24,4 +24,4 @@ struct ADS_EXPORT NotificationResultInfo {
   std::string classification;
 };
 
-}  // namespace event_type
+}  // namespace ads

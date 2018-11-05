@@ -6,10 +6,10 @@
 
 #include <string>
 
-namespace event_type {
+namespace ads {
 
 struct FocusInfo {
   std::string tab_id;
 };
 
-}  // namespace event_type
+}  // namespace ads

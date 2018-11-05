@@ -8,7 +8,7 @@
 
 #include "bat/ads/export.h"
 
-namespace event_type {
+namespace ads {
 
 struct ADS_EXPORT NotificationShownInfo {
   std::string catalog;
@@ -16,4 +16,4 @@ struct ADS_EXPORT NotificationShownInfo {
   std::string url;
 };
 
-}  // namespace event_type
+}  // namespace ads

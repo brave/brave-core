@@ -6,11 +6,11 @@
 
 #include <string>
 
-namespace event_type {
+namespace ads {
 
 struct LoadInfo {
   std::string tab_id;
   std::string tab_url;
 };
 
-}  // namespace event_type
+}  // namespace ads

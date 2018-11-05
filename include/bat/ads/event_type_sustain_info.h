@@ -8,10 +8,10 @@
 
 #include "bat/ads/export.h"
 
-namespace event_type {
+namespace ads {
 
 struct ADS_EXPORT SustainInfo {
   std::string notification_id;
 };
 
-}  // namespace event_type
+}  // namespace ads

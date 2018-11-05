@@ -119,22 +119,22 @@ int main() {
   ads.TabSwitched("1", "https://brave.com", false);
   ads.TabClosed("1");
 
-  event_type::NotificationShownInfo notification_shown_info;
+  ads::NotificationShownInfo notification_shown_info;
   notification_shown_info.catalog = "sample-catalog";
   notification_shown_info.url = "https://brave.com/features";
   notification_shown_info.classification = "technology & computing-software";
   ads.GenerateAdReportingNotificationShownEvent(notification_shown_info);
 
-  event_type::NotificationResultInfo notification_result_info;
+  ads::NotificationResultInfo notification_result_info;
   notification_result_info.id = "7f4ec8a6-3535-4f92-9ec5-e7de7ab631d2";
   notification_result_info.result_type =
-    event_type::NotificationResultInfoResultType::CLICKED;
+    ads::NotificationResultInfoResultType::CLICKED;
   notification_result_info.catalog = "sample-catalog";
   notification_result_info.url = "https://brave.com/features";
   notification_result_info.classification = "technology & computing-software";
   ads.GenerateAdReportingNotificationResultEvent(notification_result_info);
 
-  event_type::SustainInfo sustain_info;
+  ads::SustainInfo sustain_info;
   sustain_info.notification_id = "7f4ec8a6-3535-4f92-9ec5-e7de7ab631d2";
   ads.GenerateAdReportingSustainEvent(sustain_info);
 

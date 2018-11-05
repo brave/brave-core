@@ -29,15 +29,15 @@ class ADS_EXPORT Ads {
   static Ads* CreateInstance(AdsClient* ads_client);
 
   virtual void GenerateAdReportingNotificationShownEvent(
-      const event_type::NotificationShownInfo& info) = 0;
+      const NotificationShownInfo& info) = 0;
 
   // Should be called when a notification has been clicked, dismissed or times
   // out
   virtual void GenerateAdReportingNotificationResultEvent(
-      const event_type::NotificationResultInfo& info) = 0;
+      const NotificationResultInfo& info) = 0;
 
   virtual void GenerateAdReportingSustainEvent(
-      const event_type::SustainInfo& info) = 0;
+      const SustainInfo& info) = 0;
 
   // Initialize
   virtual void Initialize() = 0;

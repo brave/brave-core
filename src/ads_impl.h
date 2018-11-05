@@ -47,11 +47,11 @@ class AdsImpl : public Ads, CallbackHandler {
   AdsImpl& operator=(const AdsImpl&) = delete;
 
   void GenerateAdReportingNotificationShownEvent(
-      const event_type::NotificationShownInfo& info) override;
+      const NotificationShownInfo& info) override;
   void GenerateAdReportingNotificationResultEvent(
-      const event_type::NotificationResultInfo& info) override;
+      const NotificationResultInfo& info) override;
   void GenerateAdReportingSustainEvent(
-      const event_type::SustainInfo& info) override;
+      const SustainInfo& info) override;
   void Initialize() override;
   void InitializeUserModel(const std::string& json) override;
   void AppFocused(const bool focused) override;
@@ -157,12 +157,12 @@ class AdsImpl : public Ads, CallbackHandler {
       const uint64_t allowable_ad_count) const;
 
   uint64_t next_easter_egg_;
-  void GenerateAdReportingLoadEvent(const event_type::LoadInfo info);
+  void GenerateAdReportingLoadEvent(const LoadInfo info);
   void GenerateAdReportingBackgroundEvent();
   void GenerateAdReportingForegroundEvent();
-  void GenerateAdReportingBlurEvent(const event_type::BlurInfo& info);
-  void GenerateAdReportingDestroyEvent(const event_type::DestroyInfo& info);
-  void GenerateAdReportingFocusEvent(const event_type::FocusInfo& info);
+  void GenerateAdReportingBlurEvent(const BlurInfo& info);
+  void GenerateAdReportingDestroyEvent(const DestroyInfo& info);
+  void GenerateAdReportingFocusEvent(const FocusInfo& info);
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
 
