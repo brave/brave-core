@@ -799,7 +799,7 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
   if (!content.empty())
     fetcher->SetUploadData(contentType, content);
 
-  if (VLOG_IS_ON(ledger::LogLevel::REQUEST)) {
+  if (VLOG_IS_ON(ledger::LogLevel::LOG_REQUEST)) {
     std::string printMethod;
     switch (method) {
       case ledger::URL_METHOD::POST:
@@ -812,15 +812,15 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
         printMethod = "GET";
         break;
     }
-    VLOG(ledger::LogLevel::REQUEST) << "[ REQUEST ]";
-    VLOG(ledger::LogLevel::REQUEST) << "> url: " << url;
-    VLOG(ledger::LogLevel::REQUEST) << "> method: " << printMethod;
-    VLOG(ledger::LogLevel::REQUEST) << "> content: " << content;
-    VLOG(ledger::LogLevel::REQUEST) << "> contentType: " << contentType;
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "[ REQUEST ]";
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "> url: " << url;
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "> method: " << printMethod;
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "> content: " << content;
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "> contentType: " << contentType;
     for (size_t i = 0; i < headers.size(); i++) {
-      VLOG(ledger::LogLevel::REQUEST) << "> headers: " << headers[i];
+      VLOG(ledger::LogLevel::LOG_REQUEST) << "> headers: " << headers[i];
     }
-    VLOG(ledger::LogLevel::REQUEST) << "[ END REQUEST ]";
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "[ END REQUEST ]";
   }
 
   FetchCallback callback = base::Bind(
@@ -1612,17 +1612,17 @@ RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
 }
 
 void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
-  if (level == ledger::LogLevel::ERROR) {
+  if (level == ledger::LogLevel::LOG_ERROR) {
     LOG(ERROR) << text;
     return;
   }
 
-  if (level == ledger::LogLevel::WARNING) {
+  if (level == ledger::LogLevel::LOG_WARNING) {
     LOG(WARNING) << text;
     return;
   }
 
-  if (level == ledger::LogLevel::INFO) {
+  if (level == ledger::LogLevel::LOG_INFO) {
     LOG(INFO) << text;
     return;
   }
