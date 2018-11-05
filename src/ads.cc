@@ -9,7 +9,6 @@ namespace ads {
 
 bool _is_testing = false;
 bool _is_production = false;
-bool _is_verbose = true;
 
 // static
 Ads* Ads::CreateInstance(AdsClient* ads_client) {

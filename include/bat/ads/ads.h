@@ -16,7 +16,6 @@ namespace ads {
 
 extern bool _is_testing;
 extern bool _is_production;
-extern bool _is_verbose;
 
 class ADS_EXPORT Ads {
  public:

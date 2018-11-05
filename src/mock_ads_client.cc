@@ -383,10 +383,6 @@ void MockAdsClient::EventLog(const std::string& json) {
 }
 
 void MockAdsClient::Log(const LogLevel log_level, const char* fmt, ...) const {
-  if (!_is_verbose) {
-    return;
-  }
-
   va_list arg;
   va_start(arg, fmt);
   size_t sz = snprintf(NULL, 0, fmt, arg);
