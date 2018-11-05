@@ -60,3 +60,5 @@ export const includeInAutoContribution = (publisherKey: string, excluded: boolea
   excluded,
   windowId
 })
+
+export const getGrant = () => action(types.GET_GRANT, {})
