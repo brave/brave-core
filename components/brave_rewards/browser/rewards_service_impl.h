@@ -106,7 +106,8 @@ class RewardsServiceImpl : public RewardsService,
   bool IsWalletCreated() override;
   void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url, const std::string& favicon_url) override;
   double GetContributionAmount() override;
-  brave_rewards::PublisherBanner GetPublisherBanner(const std::string& publisher_id) override;
+  void GetPublisherBanner(const std::string& publisher_id) override;
+  void OnPublisherBanner(std::unique_ptr<ledger::PublisherBanner> banner);
   void RemoveRecurring(const std::string& publisher_key) override;
   void UpdateRecurringDonationsList() override;
   void UpdateTipsList() override;

@@ -18,6 +18,7 @@ declare namespace RewardsDonate {
 
   interface Publisher {
     publisherKey: string
+    name: string
     title: string
     description: string
     background: string

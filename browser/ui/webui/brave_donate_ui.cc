@@ -52,6 +52,8 @@ private:
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
   void OnRecurringDonationUpdated(brave_rewards::RewardsService* rewards_service,
                                   brave_rewards::ContentSiteList) override;
+  void OnPublisherBanner(brave_rewards::RewardsService* rewards_service,
+                         const brave_rewards::PublisherBanner banner) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
@@ -87,34 +89,9 @@ void RewardsDonateDOMHandler::RegisterMessages() {
 }
 
 void RewardsDonateDOMHandler::GetPublisherDonateData(const base::ListValue* args) {
-  if (!web_ui()->CanCallJavascript()) {
-    return;
-  }
-
   std::string publisher_key;
   args->GetString(0, &publisher_key);
-  brave_rewards::PublisherBanner banner = rewards_service_->GetPublisherBanner(publisher_key);
-
-  base::DictionaryValue result;
-  result.SetString("publisherKey", publisher_key);
-  result.SetString("title", banner.title);
-  result.SetString("description", banner.description);
-  result.SetString("background", banner.background);
-  result.SetString("logo", banner.logo);
-
-  auto amounts = std::make_unique<base::ListValue>();
-  for (int const& value : banner.amounts) {
-    amounts->AppendInteger(value);
-  }
-  result.SetList("amounts", std::move(amounts));
-
-  auto social = std::make_unique<base::DictionaryValue>();
-  for (auto const& item : banner.social) {
-    social->SetString(item.first, item.second);
-  }
-  result.SetDictionary("social", std::move(social));
-
-  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_donate.publisherBanner", result);
+  rewards_service_->GetPublisherBanner(publisher_key);
 }
 
 void RewardsDonateDOMHandler::GetWalletProperties(const base::ListValue* args) {
@@ -209,6 +186,35 @@ void RewardsDonateDOMHandler::OnRecurringDonationUpdated(brave_rewards::RewardsS
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_donate.recurringDonations", *publishers);
   }
+}
+
+void RewardsDonateDOMHandler::OnPublisherBanner(brave_rewards::RewardsService* rewards_service,
+                                                const brave_rewards::PublisherBanner banner) {
+  if (!web_ui()->CanCallJavascript()) {
+     return;
+  }
+
+  base::DictionaryValue result;
+  result.SetString("publisherKey", banner.publisher_key);
+  result.SetString("title", banner.title);
+  result.SetString("name", banner.name);
+  result.SetString("description", banner.description);
+  result.SetString("background", banner.background);
+  result.SetString("logo", banner.logo);
+
+  auto amounts = std::make_unique<base::ListValue>();
+  for (int const& value : banner.amounts) {
+    amounts->AppendInteger(value);
+  }
+  result.SetList("amounts", std::move(amounts));
+
+  auto social = std::make_unique<base::DictionaryValue>();
+  for (auto const& item : banner.social) {
+    social->SetString(item.first, item.second);
+  }
+  result.SetDictionary("social", std::move(social));
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_donate.publisherBanner", result);
 }
 
 }  // namespace

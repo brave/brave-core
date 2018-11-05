@@ -109,6 +109,7 @@ class Banner extends React.Component<Props, State> {
     let logo = ''
     let publisherKey = ''
     let description = ''
+    let name = ''
 
     if (publisher) {
       title = publisher.title
@@ -117,6 +118,12 @@ class Banner extends React.Component<Props, State> {
       // logo = publisher.logo
       publisherKey = publisher.publisherKey
       description = publisher.description
+      name = publisher.name
+
+      const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
+      if (internalFavicon.test(publisher.logo)) {
+        logo = `chrome://favicon/size/160@2x/${publisher.logo}`
+      }
     }
 
     // TODO we need to use title and not publisherKey for domain for media publishers
@@ -125,6 +132,7 @@ class Banner extends React.Component<Props, State> {
       <SiteBanner
         domain={publisherKey}
         title={title}
+        name={name}
         recurringDonation={recurringList && recurringList.includes(publisherKey)}
         balance={balance.toString() || '0'}
         bgImage={background}

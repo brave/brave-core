@@ -10,7 +10,9 @@
 namespace brave_rewards {
 
   PublisherBanner::PublisherBanner() :
+    publisher_key(""),
     title(""),
+    name(""),
     description(""),
     background(""),
     logo(""),
@@ -20,7 +22,9 @@ namespace brave_rewards {
   PublisherBanner::~PublisherBanner() { }
 
   PublisherBanner::PublisherBanner(const PublisherBanner &properties) {
+    publisher_key = properties.publisher_key;
     title = properties.title;
+    name = properties.name;
     description = properties.description;
     background = properties.background;
     logo = properties.logo;
