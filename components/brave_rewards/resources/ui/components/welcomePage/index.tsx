@@ -43,9 +43,9 @@ import {
   StyledAlertContent
 } from './style'
 
-const turnOnRewardsImage = require('./assets/turnOnRewards')
-const braveAdsImage = require('./assets/braveAds')
-const braveContributeImage = require('./assets/braveContribute')
+import turnOnRewardsImage from './assets/turnOnRewards'
+import braveAdsImage from './assets/braveAds'
+import braveContributeImage from './assets/braveContribute'
 
 export interface Props {
   id?: string

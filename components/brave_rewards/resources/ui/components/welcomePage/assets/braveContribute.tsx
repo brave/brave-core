@@ -4,7 +4,7 @@
 */
 import * as React from 'react'
 
-module.exports = (
+export default (
   <svg width='92' height='69' xmlns='http://www.w3.org/2000/svg' xmlnsXlink='http://www.w3.org/1999/xlink'>
     <defs>
       <path id='a' d='M0 0h91.966v25.796H0z'/>

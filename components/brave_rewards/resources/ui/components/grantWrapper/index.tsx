@@ -6,7 +6,7 @@ import * as React from 'react'
 import { StyledWrapper, StyledHeader, StyledTitle, StyledClose, StyledText } from './style'
 import { CloseStrokeIcon } from '../../../components/icons'
 
-const header = require('./assets/header')
+import header from './assets/header'
 
 export interface Props {
   id?: string

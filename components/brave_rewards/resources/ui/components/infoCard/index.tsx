@@ -16,7 +16,7 @@ import {
 export interface CardProps {
   title?: string
   description?: string
-  icon?: string
+  icon?: string | JSX.Element
 }
 
 export interface Props {

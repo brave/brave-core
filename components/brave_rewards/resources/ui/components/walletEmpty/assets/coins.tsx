@@ -4,7 +4,7 @@
 */
 import * as React from 'react'
 
-module.exports = (
+export default (
   <svg
     width='119'
     height='85'
