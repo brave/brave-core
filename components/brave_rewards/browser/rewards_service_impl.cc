@@ -281,13 +281,6 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       ledger::reconcile_time = defined_reconcile_int;
     }
   }
-
-  // Verbose mode
-  #if defined(NDEBUG)
-    ledger::is_verbose = false;
-  #else
-    ledger::is_verbose = true;
-  #endif
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -489,7 +482,7 @@ void RewardsServiceImpl::RestorePublishers() {
 
 void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
   if (!success) {
-    VLOG(1) << "Error in OnMediaPublisherInfoSaved";
+    LOG(ERROR) << "Error in OnMediaPublisherInfoSaved";
   }
 }
 
@@ -807,7 +800,7 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
   if (!content.empty())
     fetcher->SetUploadData(contentType, content);
 
-  if (VLOG_IS_ON(2)) {
+  if (VLOG_IS_ON(ledger::LogLevel::REQUEST)) {
     std::string printMethod;
     switch (method) {
       case ledger::URL_METHOD::POST:
@@ -820,15 +813,15 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
         printMethod = "GET";
         break;
     }
-    VLOG(2) << "[ REQUEST ]";
-    VLOG(2) << "> url: " << url;
-    VLOG(2) << "> method: " << printMethod;
-    VLOG(2) << "> content: " << content;
-    VLOG(2) << "> contentType: " << contentType;
+    VLOG(ledger::LogLevel::REQUEST) << "[ REQUEST ]";
+    VLOG(ledger::LogLevel::REQUEST) << "> url: " << url;
+    VLOG(ledger::LogLevel::REQUEST) << "> method: " << printMethod;
+    VLOG(ledger::LogLevel::REQUEST) << "> content: " << content;
+    VLOG(ledger::LogLevel::REQUEST) << "> contentType: " << contentType;
     for (size_t i = 0; i < headers.size(); i++) {
-      VLOG(2) << "> headers: " << headers[i];
+      VLOG(ledger::LogLevel::REQUEST) << "> headers: " << headers[i];
     }
-    VLOG(2) << "[ END REQUEST ]";
+    VLOG(ledger::LogLevel::REQUEST) << "[ END REQUEST ]";
   }
 
   FetchCallback callback = base::Bind(
@@ -1319,7 +1312,7 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
   std::vector<std::string>::iterator it;
   it = find (current_media_fetchers_.begin(), current_media_fetchers_.end(), url);
   if (it != current_media_fetchers_.end()) {
-    VLOG(1) << "Already fetching favicon: " << url;
+    LOG(WARNING) << "Already fetching favicon: " << url;
     return;
   }
 
@@ -1603,6 +1596,25 @@ void RewardsServiceImpl::SetContributionAutoInclude(std::string publisher_key,
   ledger_->SetPublisherPanelExclude(publisher_key, excluded ?
     ledger::PUBLISHER_EXCLUDE::EXCLUDED : ledger::PUBLISHER_EXCLUDE::INCLUDED,
     windowId);
+}
+
+void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
+  if (level == ledger::LogLevel::ERROR) {
+    LOG(ERROR) << text;
+    return;
+  }
+
+  if (level == ledger::LogLevel::WARNING) {
+    LOG(WARNING) << text;
+    return;
+  }
+
+  if (level == ledger::LogLevel::INFO) {
+    LOG(INFO) << text;
+    return;
+  }
+
+  VLOG(level) << text;
 }
 
 }  // namespace brave_rewards

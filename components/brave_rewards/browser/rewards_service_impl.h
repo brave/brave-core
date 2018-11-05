@@ -248,6 +248,7 @@ class RewardsServiceImpl : public RewardsService,
                             const std::string& publisher_key,
                             const ledger::PUBLISHER_CATEGORY category) override;
   void GetRecurringDonations(ledger::RecurringDonationCallback callback) override;
+  void Log(ledger::LogLevel level, const std::string& text) override;
 
   void OnIOTaskComplete(std::function<void(void)> callback);
 
