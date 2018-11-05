@@ -68,15 +68,15 @@ class ADS_EXPORT AdsClient {
   // Loads settings
   virtual void LoadSettings(CallbackHandler* callback_handler) = 0;
 
-  // Saves the client
+  // Saves the client as JSON
   virtual void SaveClient(
       const std::string& json,
       CallbackHandler* callback_handler) = 0;
 
-  // Loads the client state
+  // Loads the client
   virtual void LoadClient(CallbackHandler* callback_handler) = 0;
 
-  // Serializes the catalog
+  // Saves the catalog as JSON
   virtual void SaveCatalog(
       const std::string& json,
       CallbackHandler* callback_handler) = 0;
@@ -92,7 +92,7 @@ class ADS_EXPORT AdsClient {
       const BUNDLE_STATE& bundle_state,
       CallbackHandler* callback_handler) = 0;
 
-  // Serializes the bundle
+  // Saves the bundle as JSON
   virtual void SaveBundle(
       const std::string& json,
       CallbackHandler* callback_handler) = 0;
@@ -105,7 +105,7 @@ class ADS_EXPORT AdsClient {
       const std::string& winning_category,
       CallbackHandler* callback_handler) = 0;
 
-  // Gets a random sample category
+  // Gets a sample category
   virtual void GetSampleCategory(CallbackHandler* callback_handler) = 0;
 
   // Gets the components of a URL
@@ -113,11 +113,13 @@ class ADS_EXPORT AdsClient {
       const std::string& url,
       UrlComponents& components) const = 0;
 
-  // Log an event
+  // Logs an event
   virtual void EventLog(const std::string& json) = 0;
 
-  // Log debug information
-  virtual void DebugLog(const LogLevel log_level, const char *fmt, ...) const = 0;
+  // Logs debug information
+  virtual void DebugLog(
+      const LogLevel log_level,
+      const char *fmt, ...) const = 0;
 };
 
 }  // namespace ads
