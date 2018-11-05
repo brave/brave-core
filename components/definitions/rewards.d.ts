@@ -39,6 +39,7 @@ declare namespace Rewards {
     enabledAds: boolean
     enabledContribute: boolean
     enabledMain: boolean
+    excluded: string[]
     firstLoad: boolean | null
     grant?: Grant
     numExcludedSites: number
