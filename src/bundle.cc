@@ -18,7 +18,7 @@ Bundle::~Bundle() = default;
 bool Bundle::LoadJson(const std::string& json) {
   BUNDLE_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->Log(LogLevel::ERROR, "Failed to parse bundle json");
+    ads_client_->Log(LogLevel::ERROR, "Failed to parse bundle JSON");
     return false;
   }
 

@@ -17,7 +17,7 @@ Settings::~Settings() = default;
 bool Settings::LoadJson(const std::string& json) {
   SETTINGS_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->Log(LogLevel::ERROR, "Failed to parse settings json");
+    ads_client_->Log(LogLevel::ERROR, "Failed to parse settings JSON");
     return false;
   }
 

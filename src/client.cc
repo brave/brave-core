@@ -20,7 +20,7 @@ Client::~Client() = default;
 bool Client::LoadJson(const std::string& json) {
   CLIENT_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->Log(LogLevel::ERROR, "Failed to parse client json");
+    ads_client_->Log(LogLevel::ERROR, "Failed to parse client JSON");
     return false;
   }
 
