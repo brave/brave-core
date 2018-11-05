@@ -500,7 +500,7 @@ void LedgerImpl::VotePublishers(const std::vector<braveledger_bat_helper::WINNER
 void LedgerImpl::PrepareVoteBatchTimer() {
   uint64_t start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
 
-  Log(__func__, ledger::LogLevel::ERROR, {"Starts in ", std::to_string(start_timer_in)});
+  Log(__func__, ledger::LogLevel::LOG_ERROR, {"Starts in ", std::to_string(start_timer_in)});
 
   ledger_client_->SetTimer(start_timer_in, last_prepare_vote_batch_timer_id_);
 }
@@ -508,7 +508,7 @@ void LedgerImpl::PrepareVoteBatchTimer() {
 void LedgerImpl::VoteBatchTimer() {
   uint64_t start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
 
-  Log(__func__, ledger::LogLevel::ERROR, {"Starts in ", std::to_string(start_timer_in)});
+  Log(__func__, ledger::LogLevel::LOG_ERROR, {"Starts in ", std::to_string(start_timer_in)});
 
   ledger_client_->SetTimer(start_timer_in, last_vote_batch_timer_id_);
 }
@@ -705,7 +705,7 @@ void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& resp
     bat_publishers_->RefreshPublishersList(response);
   }
   else {
-    Log(__func__, ledger::LogLevel::ERROR, {"Can't fetch publisher list."});
+    Log(__func__, ledger::LogLevel::LOG_ERROR, {"Can't fetch publisher list."});
     //error: retry downloading again
     RefreshPublishersList(true);
   }
@@ -927,16 +927,16 @@ void LedgerImpl::LogResponse(const std::string& func_name,
                              const std::string& response,
                              const std::map<std::string, std::string>& headers) {
   std::string stat = result ? "success" : "failure";
-  ledger_client_->Log(ledger::LogLevel::RESPONSE, "[ RESPONSE - " + func_name + " ]");
-  ledger_client_->Log(ledger::LogLevel::RESPONSE, "> time: " + std::to_string(time(0)));
-  ledger_client_->Log(ledger::LogLevel::RESPONSE, "> result: " + stat);
-  ledger_client_->Log(ledger::LogLevel::RESPONSE, "> response: " + response);
+  ledger_client_->Log(ledger::LogLevel::LOG_RESPONSE, "[ RESPONSE - " + func_name + " ]");
+  ledger_client_->Log(ledger::LogLevel::LOG_RESPONSE, "> time: " + std::to_string(time(0)));
+  ledger_client_->Log(ledger::LogLevel::LOG_RESPONSE, "> result: " + stat);
+  ledger_client_->Log(ledger::LogLevel::LOG_RESPONSE, "> response: " + response);
 
   for(std::pair<std::string, std::string> const& value: headers) {
-    ledger_client_->Log(ledger::LogLevel::RESPONSE, "> header: " + value.first + " | " + value.second);
+    ledger_client_->Log(ledger::LogLevel::LOG_RESPONSE, "> header: " + value.first + " | " + value.second);
   }
 
-  ledger_client_->Log(ledger::LogLevel::RESPONSE, "[ END RESPONSE ]");
+  ledger_client_->Log(ledger::LogLevel::LOG_RESPONSE, "[ END RESPONSE ]");
 }
 
 }  // namespace bat_ledger

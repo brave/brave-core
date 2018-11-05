@@ -22,11 +22,11 @@
 namespace ledger {
 
 LEDGER_EXPORT enum LogLevel {
-  ERROR = 1,
-  WARNING = 2,
-  INFO = 3,
-  REQUEST = 4,
-  RESPONSE = 5
+  LOG_ERROR = 1,
+  LOG_WARNING = 2,
+  LOG_INFO = 3,
+  LOG_REQUEST = 4,
+  LOG_RESPONSE = 5
 };
 
 LEDGER_EXPORT enum URL_METHOD {
