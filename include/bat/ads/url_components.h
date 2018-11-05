@@ -19,7 +19,7 @@ struct ADS_EXPORT UrlComponents {
     port(""),
     query(""),
     fragment(""),
-    absolutePath(false) {}
+    absolute_path(false) {}
 
   explicit UrlComponents(const UrlComponents& components) :
     url(components.url),
@@ -29,7 +29,7 @@ struct ADS_EXPORT UrlComponents {
     port(components.port),
     query(components.query),
     fragment(components.fragment),
-    absolutePath(components.absolutePath) {}
+    absolute_path(components.absolute_path) {}
 
   ~UrlComponents() {}
 
@@ -40,7 +40,7 @@ struct ADS_EXPORT UrlComponents {
   std::string port;
   std::string query;
   std::string fragment;
-  bool absolutePath;
+  bool absolute_path;
 };
 
 }  // namespace ads

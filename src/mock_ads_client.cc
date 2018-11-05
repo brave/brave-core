@@ -369,7 +369,7 @@ void MockAdsClient::GetUrlComponents(
     std::string fragment(uri.fragment.first, uri.fragment.afterLast);
     components.fragment = fragment;
 
-    components.absolutePath = uri.absolutePath;
+    components.absolute_path = uri.absolutePath;
   }
 
   uriFreeUriMembersA(&uri);
