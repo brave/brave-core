@@ -22,7 +22,7 @@
 
 namespace ads {
 
-AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
+AdsImpl::AdsImpl(AdsClient* ads_client) :
     initialized_(false),
     boot_(false),
     app_focused_(false),
@@ -34,8 +34,7 @@ AdsImpl::AdsImpl(ads::AdsClient* ads_client) :
     settings_(std::make_unique<Settings>(ads_client_)),
     client_(std::make_unique<Client>(this, ads_client_)),
     bundle_(std::make_shared<Bundle>(ads_client_)),
-    catalog_ads_serve_(std::make_unique<AdsServe>
-      (this, ads_client_, bundle_)) {
+    catalog_ads_serve_(std::make_unique<AdsServe>(this, ads_client_, bundle_)) {
 }
 
 AdsImpl::~AdsImpl() = default;
@@ -195,7 +194,7 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
 void AdsImpl::Initialize() {
   if (initialized_) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Already initialized");
+    ads_client_->Log(LogLevel::WARNING, "Already initialized");
     return;
   }
 
@@ -394,7 +393,7 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
   ads_client_->SetTimer(start_timer_in, collect_activity_timer_id_);
 
   if (collect_activity_timer_id_ == 0) {
-    ads_client_->Log(ads::LogLevel::ERROR,
+    ads_client_->Log(LogLevel::ERROR,
       "Failed to start collect_activity_timer_id_ timer");
   }
 }
@@ -406,16 +405,16 @@ void AdsImpl::OnTimer(const uint32_t timer_id) {
 }
 
 void AdsImpl::OnSettingsLoaded(
-    const ads::Result result,
+    const Result result,
     const std::string& json) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load settings: %s",
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to load settings: %s",
       json.c_str());
     return;
   }
 
   if (!settings_->LoadJson(json)) {
-    ads_client_->Log(ads::LogLevel::WARNING,
+    ads_client_->Log(LogLevel::WARNING,
       "Failed to parse settings JSON: %s", json.c_str());
     return;
   }
@@ -434,22 +433,22 @@ void AdsImpl::OnSettingsLoaded(
   ads_client_->LoadClient(this);
 }
 
-void AdsImpl::OnClientSaved(const ads::Result result) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client state");
+void AdsImpl::OnClientSaved(const Result result) {
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to save client state");
   }
 }
 
 void AdsImpl::OnClientLoaded(
-    const ads::Result result,
+    const Result result,
     const std::string& json) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load client state");
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to load client state");
     return;
   }
 
   if (!client_->LoadJson(json)) {
-    ads_client_->Log(ads::LogLevel::WARNING,
+    ads_client_->Log(LogLevel::WARNING,
       "Failed to parse client JSON: %s", json.c_str());
     return;
   }
@@ -461,9 +460,9 @@ void AdsImpl::OnClientLoaded(
   LoadUserModel();
 }
 
-void AdsImpl::OnUserModelLoaded(const ads::Result result) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load user model");
+void AdsImpl::OnUserModelLoaded(const Result result) {
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to load user model");
     return;
   }
 
@@ -478,17 +477,17 @@ void AdsImpl::OnUserModelLoaded(const ads::Result result) {
   }
 }
 
-void AdsImpl::OnBundleSaved(const ads::Result result) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save bundle");
+void AdsImpl::OnBundleSaved(const Result result) {
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to save bundle");
   }
 }
 
 void AdsImpl::OnBundleLoaded(
-    const ads::Result result,
+    const Result result,
     const std::string& json) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to load bundle: %s",
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to load bundle: %s",
       json.c_str());
   }
 }
@@ -507,7 +506,7 @@ bool AdsImpl::IsInitialized() {
 
 void AdsImpl::Deinitialize() {
   if (!initialized_) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Not initialized");
+    ads_client_->Log(LogLevel::WARNING, "Not initialized");
     return;
   }
 
@@ -618,7 +617,7 @@ void AdsImpl::TestShoppingData(const std::string& url) {
     return;
   }
 
-  ads::UrlComponents components;
+  UrlComponents components;
   ads_client_->GetUrlComponents(url, components);
   if (components.hostname == "www.amazon.com") {
     client_->FlagShoppingState(url, 1.0);
@@ -632,9 +631,9 @@ void AdsImpl::TestSearchState(const std::string& url) {
     return;
   }
 
-  ads::UrlComponents components;
+  UrlComponents components;
   ads_client_->GetUrlComponents(url, components);
-  if (ads::SearchProviders::IsSearchEngine(components)) {
+  if (SearchProviders::IsSearchEngine(components)) {
     client_->FlagSearchState(url, 1.0);
   } else {
     client_->UnflagSearchState(url);
@@ -675,9 +674,9 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
 }
 
 void AdsImpl::OnGetSampleCategory(
-    const ads::Result result,
+    const Result result,
     const std::string& category) {
-  if (result == ads::Result::FAILED || category.empty()) {
+  if (result == Result::FAILED || category.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
     return;
@@ -687,10 +686,10 @@ void AdsImpl::OnGetSampleCategory(
 }
 
 void AdsImpl::OnGetAds(
-    const ads::Result result,
+    const Result result,
     const std::string& category,
     const std::vector<CategoryInfo>& ads) {
-  if (result == ads::Result::FAILED || ads.empty()) {
+  if (result == Result::FAILED || ads.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
     return;
@@ -724,7 +723,7 @@ void AdsImpl::OnGetAds(
     return;
   }
 
-  auto ad_info = std::make_unique<ads::AdInfo>();
+  auto ad_info = std::make_unique<AdInfo>();
   ad_info->advertiser = ad.advertiser;
   ad_info->category = category;
   ad_info->notification_text = ad.notification_text;
@@ -804,7 +803,7 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
 
 void AdsImpl::GenerateAdReportingLoadEvent(
     const event_type::LoadInfo info) {
-  ads::UrlComponents components;
+  UrlComponents components;
   ads_client_->GetUrlComponents(info.tab_url, components);
   if (components.scheme != "http" && components.scheme != "https") {
     return;
@@ -865,7 +864,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   ads_client_->EventLog(json);
 
   auto now = static_cast<uint64_t>(std::time(nullptr));
-  if (ads::_is_testing && info.tab_url == "https://www.iab.com/"
+  if (_is_testing && info.tab_url == "https://www.iab.com/"
       && next_easter_egg_ < now) {
     next_easter_egg_ = now + (30 * 1000);
 

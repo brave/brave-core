@@ -8,7 +8,7 @@
 
 namespace ads {
 
-Bundle::Bundle(ads::AdsClient* ads_client) :
+Bundle::Bundle(AdsClient* ads_client) :
     ads_client_(ads_client),
     bundle_state_(new BUNDLE_STATE()) {
 }
@@ -18,7 +18,7 @@ Bundle::~Bundle() = default;
 bool Bundle::LoadJson(const std::string& json) {
   BUNDLE_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->Log(ads::LogLevel::ERROR, "Failed to parse bundle json");
+    ads_client_->Log(LogLevel::ERROR, "Failed to parse bundle json");
     return false;
   }
 
@@ -125,9 +125,9 @@ uint64_t Bundle::GetCatalogPing() const {
 
 //////////////////////////////////////////////////////////////////////////////
 
-void Bundle::OnBundleSaved(const ads::Result result) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save bundle");
+void Bundle::OnBundleSaved(const Result result) {
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to save bundle");
   }
 }
 

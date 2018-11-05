@@ -37,9 +37,9 @@ class AdsServe;
 
 namespace ads {
 
-class AdsImpl : public ads::Ads, ads::CallbackHandler {
+class AdsImpl : public Ads, CallbackHandler {
  public:
-  explicit AdsImpl(ads::AdsClient* ads_client);
+  explicit AdsImpl(AdsClient* ads_client);
   ~AdsImpl() override;
 
   // Not copyable, not assignable
@@ -86,28 +86,28 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
 
   void OnTimer(const uint32_t timer_id) override;
 
-  void OnUserModelLoaded(const ads::Result result) override;
+  void OnUserModelLoaded(const Result result) override;
 
   void OnSettingsLoaded(
-      const ads::Result result,
+      const Result result,
       const std::string& json) override;
 
-  void OnClientSaved(const ads::Result result) override;
+  void OnClientSaved(const Result result) override;
   void OnClientLoaded(
-      const ads::Result result,
+      const Result result,
       const std::string& json) override;
 
-  void OnBundleSaved(const ads::Result result) override;
+  void OnBundleSaved(const Result result) override;
   void OnBundleLoaded(
-      const ads::Result result,
+      const Result result,
       const std::string& json) override;
 
   void OnGetSampleCategory(
-      const ads::Result result,
+      const Result result,
       const std::string& category) override;
 
   void OnGetAds(
-      const ads::Result result,
+      const Result result,
       const std::string& category,
       const std::vector<CategoryInfo>& ads) override;
 
@@ -166,7 +166,7 @@ class AdsImpl : public ads::Ads, ads::CallbackHandler {
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
 
-  ads::AdsClient* ads_client_;  // NOT OWNED
+  AdsClient* ads_client_;  // NOT OWNED
 
   std::unique_ptr<Settings> settings_;
   std::unique_ptr<Client> client_;

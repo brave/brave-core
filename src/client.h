@@ -21,9 +21,9 @@ class AdsImpl;
 
 namespace ads {
 
-class Client: public ads::CallbackHandler {
+class Client: public CallbackHandler {
  public:
-  Client(ads::AdsImpl* ads, ads::AdsClient* ads_client);
+  Client(AdsImpl* ads, AdsClient* ads_client);
   ~Client();
 
   bool LoadJson(const std::string& json);  // Deserialize
@@ -64,10 +64,10 @@ class Client: public ads::CallbackHandler {
   void RemoveAllHistory();
 
  private:
-  void OnClientSaved(const ads::Result result);
+  void OnClientSaved(const Result result);
 
-  ads::AdsImpl* ads_;  // NOT OWNED
-  ads::AdsClient* ads_client_;  // NOT OWNED
+  AdsImpl* ads_;  // NOT OWNED
+  AdsClient* ads_client_;  // NOT OWNED
 
   std::unique_ptr<CLIENT_STATE> client_state_;
 };

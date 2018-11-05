@@ -14,9 +14,9 @@
 
 namespace ads {
 
-class Bundle: public ads::CallbackHandler {
+class Bundle: public CallbackHandler {
  public:
-  explicit Bundle(ads::AdsClient* ads_client);
+  explicit Bundle(AdsClient* ads_client);
   ~Bundle();
 
   bool LoadJson(const std::string& json);  // Deserialize
@@ -32,9 +32,9 @@ class Bundle: public ads::CallbackHandler {
   uint64_t GetCatalogPing() const;
 
  private:
-  void OnBundleSaved(const ads::Result result);
+  void OnBundleSaved(const Result result);
 
-  ads::AdsClient* ads_client_;  // NOT OWNED
+  AdsClient* ads_client_;  // NOT OWNED
 
   std::shared_ptr<BUNDLE_STATE> bundle_state_;
 };

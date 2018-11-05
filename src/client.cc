@@ -9,7 +9,7 @@
 
 namespace ads {
 
-Client::Client(ads::AdsImpl* ads, ads::AdsClient* ads_client) :
+Client::Client(AdsImpl* ads, AdsClient* ads_client) :
     ads_(ads),
     ads_client_(ads_client),
     client_state_(new CLIENT_STATE()) {
@@ -20,7 +20,7 @@ Client::~Client() = default;
 bool Client::LoadJson(const std::string& json) {
   CLIENT_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->Log(ads::LogLevel::ERROR, "Failed to parse client json");
+    ads_client_->Log(LogLevel::ERROR, "Failed to parse client json");
     return false;
   }
 
@@ -203,9 +203,9 @@ void Client::RemoveAllHistory() {
 
 //////////////////////////////////////////////////////////////////////////////
 
-void Client::OnClientSaved(const ads::Result result) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save client state");
+void Client::OnClientSaved(const Result result) {
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to save client state");
   }
 }
 

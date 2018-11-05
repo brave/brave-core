@@ -19,7 +19,7 @@ namespace ads {
 
 class Settings {
  public:
-  explicit Settings(ads::AdsClient* ads_client);
+  explicit Settings(AdsClient* ads_client);
   ~Settings();
 
   bool LoadJson(const std::string& json);  // Deserialize
@@ -30,7 +30,7 @@ class Settings {
   uint64_t GetAdsPerDay() const;
 
  private:
-  ads::AdsClient* ads_client_;  // NOT OWNED
+  AdsClient* ads_client_;  // NOT OWNED
 
   std::unique_ptr<SETTINGS_STATE> settings_state_;
 };

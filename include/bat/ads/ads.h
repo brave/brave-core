@@ -31,6 +31,8 @@ class ADS_EXPORT Ads {
   virtual void GenerateAdReportingNotificationShownEvent(
       const event_type::NotificationShownInfo& info) = 0;
 
+  // Should be called when a notification has been clicked, dismissed or times
+  // out
   virtual void GenerateAdReportingNotificationResultEvent(
       const event_type::NotificationResultInfo& info) = 0;
 
@@ -40,7 +42,7 @@ class ADS_EXPORT Ads {
   // Initialize
   virtual void Initialize() = 0;
 
-  // Initialize
+  // Initialize user model
   virtual void InitializeUserModel(const std::string& json) = 0;
 
   // Called whenever the browser gains or loses focus (the active application)
@@ -138,7 +140,7 @@ class ADS_EXPORT Ads {
       const std::string& json) = 0;
 
   virtual void OnGetSampleCategory(
-      const ads::Result result,
+      const Result result,
       const std::string& category) = 0;
 
   // Called after getting ads

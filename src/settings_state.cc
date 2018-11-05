@@ -69,13 +69,13 @@ bool SETTINGS_STATE::LoadFromJson(const std::string& json) {
   if (settings.HasMember("ads.amount.hour")) {
     ads_per_hour = settings["ads.amount.hour"].GetString();
   } else {
-    ads_per_hour = ads::kDefaultAdsPerHour;
+    ads_per_hour = kDefaultAdsPerHour;
   }
 
   if (settings.HasMember("ads.amount.day")) {
     ads_per_day = settings["ads.amount.day"].GetString();
   } else {
-    ads_per_day = ads::kDefaultAdsPerDay;
+    ads_per_day = kDefaultAdsPerDay;
   }
 
   return true;

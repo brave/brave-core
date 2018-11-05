@@ -17,9 +17,9 @@ class AdsImpl;
 
 namespace ads {
 
-class Catalog: public ads::CallbackHandler {
+class Catalog: public CallbackHandler {
  public:
-  explicit Catalog(ads::AdsClient* ads_client);
+  explicit Catalog(AdsClient* ads_client);
   ~Catalog();
 
   bool LoadJson(const std::string& json);  // Deserialize
@@ -27,7 +27,7 @@ class Catalog: public ads::CallbackHandler {
   std::shared_ptr<CATALOG_STATE> GetCatalogState() const;
 
  private:
-  ads::AdsClient* ads_client_;  // NOT OWNED
+  AdsClient* ads_client_;  // NOT OWNED
 
   std::shared_ptr<CATALOG_STATE> catalog_state_;
 };

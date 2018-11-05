@@ -10,8 +10,8 @@
 namespace ads {
 
 AdsServe::AdsServe(
-    ads::AdsImpl* ads,
-    ads::AdsClient* ads_client,
+    AdsImpl* ads,
+    AdsClient* ads_client,
     std::shared_ptr<Bundle> bundle) :
       ads_(ads),
       ads_client_(ads_client),
@@ -22,10 +22,10 @@ AdsServe::AdsServe(
 AdsServe::~AdsServe() = default;
 
 void AdsServe::BuildUrl() {
-  ads::ClientInfo client_info;
+  ClientInfo client_info;
   ads_client_->GetClientInfo(client_info);
 
-  url_ = ads::_is_production ? ADS_PRODUCTION_SERVER : ADS_STAGING_SERVER;
+  url_ = _is_production ? ADS_PRODUCTION_SERVER : ADS_STAGING_SERVER;
 
   url_ += "?braveVersion=" + client_info.application_version;
   url_ += "&platform=" + client_info.platform;
@@ -38,7 +38,7 @@ void AdsServe::DownloadCatalog() {
     {},
     "",
     "",
-    ads::URLSession::Method::GET,
+    URLSession::Method::GET,
     std::bind(
       &AdsServe::OnCatalogDownloaded,
       this,
@@ -116,7 +116,7 @@ void AdsServe::OnCatalogDownloaded(
       }
     }
 
-    ads_client_->Log(ads::LogLevel::WARNING,
+    ads_client_->Log(LogLevel::WARNING,
       "Failed to download catalog from %s (%d): %s %s", url.c_str(),
       response_status_code, response.c_str(), formatted_headers.c_str());
 
@@ -125,7 +125,7 @@ void AdsServe::OnCatalogDownloaded(
 }
 
 void AdsServe::RetryDownloadingCatalog() {
-  ads_->StartCollectingActivity(ads::kOneHourInSeconds);
+  ads_->StartCollectingActivity(kOneHourInSeconds);
 }
 
 void AdsServe::ResetNextCatalogCheck() {
@@ -139,9 +139,9 @@ void AdsServe::UpdateNextCatalogCheck() {
 
 //////////////////////////////////////////////////////////////////////////////
 
-void AdsServe::OnCatalogSaved(const ads::Result result) {
-  if (result == ads::Result::FAILED) {
-    ads_client_->Log(ads::LogLevel::WARNING, "Failed to save catalog");
+void AdsServe::OnCatalogSaved(const Result result) {
+  if (result == Result::FAILED) {
+    ads_client_->Log(LogLevel::WARNING, "Failed to save catalog");
   }
 }
 

@@ -53,7 +53,7 @@ class ADS_EXPORT CallbackHandler {
 
   // Category
   virtual void OnGetSampleCategory(
-      const ads::Result /* result */,
+      const Result /* result */,
       const std::string& /* category */) {}
 
   // Ads
