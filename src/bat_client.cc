@@ -1096,6 +1096,16 @@ void BatClient::getGrantCallback(bool success,
 
   ledger_->LogResponse(__func__, success, response, headers);
 
+  unsigned int statusCode;
+  std::string error;
+  bool hasResponseError = braveledger_bat_helper::getJSONResponse(
+    response, statusCode, error);
+  if (hasResponseError && statusCode == 404) {
+    ledger_->SetLastGrantLoadTimestamp(time(0));
+    ledger_->OnGrant(ledger::Result::GRANT_NOT_FOUND, properties);
+    return;
+  }
+
   if (!success) {
     ledger_->OnGrant(ledger::Result::LEDGER_ERROR, properties);
     return;

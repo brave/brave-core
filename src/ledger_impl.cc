@@ -573,7 +573,8 @@ void LedgerImpl::OnGrant(ledger::Result result, const braveledger_bat_helper::GR
 
   grant.promotionId = properties.promotionId;
   last_grant_check_timer_id_ = 0;
-  RefreshGrant(result != ledger::Result::LEDGER_OK);
+  RefreshGrant(result != ledger::Result::LEDGER_OK &&
+    result != ledger::Result::GRANT_NOT_FOUND);
   ledger_client_->OnGrant(result, grant);
 }
 
