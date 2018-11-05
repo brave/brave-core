@@ -761,7 +761,6 @@ sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
 
   // Migration from version 1 to version 2
   if (old_version == 1 && cur_version == 2) {
-    LOG(ERROR) << "I am in DB!";
     if (!MigrateV1toV2()) {
       LOG(ERROR) << "DB: Error with MigrateV1toV2";
     }
