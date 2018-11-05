@@ -6,13 +6,25 @@ source_set("browser") {
   ]
 
   sources = [
+    "ads_service.h",
+    "ads_service_factory.cc",
+    "ads_service_factory.h",
   ]
 
   deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    # for profile.h
+    "//components/domain_reliability",
+    "//content/public/browser",
+    "//content/public/common",
   ]
 
   if (brave_ads_enabled) {
     sources += [
+      "ads_service_impl.cc",
+      "ads_service_impl.h",
     ]
 
     deps += [

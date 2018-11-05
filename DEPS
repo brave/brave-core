@@ -18,8 +18,8 @@ deps = {
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
   "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@ff9c7f3bdea37e8cc1cb08eff48123fd9add6da9",
   "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@c07866c3b9c8264195756a81112bb74b8fa90858",
-  "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@3dffeb6eab77ae530865628a7c5a6550dc8fe613",
-  "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@657b01814f2dc017b40d303bd468fa4938e825c4",
+  "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@4d9a38ac5ff41d9a8aad4c4a89538922c5f77716",
+  "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@3af5717fb4e9b993557048a570325a6c8e4a176b",
   "vendor/bat-native-confirmations": "https://github.com/brave-intl/bat-native-confirmations.git@9410bd8306aacf11cadddde4bb17e9a79cf29d4e",
 }
 
