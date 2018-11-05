@@ -826,8 +826,9 @@ void LedgerImpl::FetchFavIcon(const std::string& url,
   ledger_client_->FetchFavIcon(url, favicon_key, callback);
 }
 
-ledger::PublisherBanner LedgerImpl::GetPublisherBanner(const std::string& publisher_id) {
-  return bat_publishers_->getPublisherBanner(publisher_id);
+void LedgerImpl::GetPublisherBanner(const std::string& publisher_id,
+                                    ledger::PublisherBannerCallback callback) {
+  bat_publishers_->getPublisherBanner(publisher_id, callback);
 }
 
 double LedgerImpl::GetBalance() {

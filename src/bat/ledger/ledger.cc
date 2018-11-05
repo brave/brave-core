@@ -103,7 +103,9 @@ PublisherInfoFilter::~PublisherInfoFilter() {}
 PublisherBanner::PublisherBanner() {}
 
 PublisherBanner::PublisherBanner(const PublisherBanner& info) :
+    publisher_key(info.publisher_key),
     title(info.title),
+    name(info.name),
     description(info.description),
     background(info.background),
     logo(info.logo),

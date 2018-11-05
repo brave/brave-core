@@ -90,7 +90,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool loadPublisherList(const std::string& data);
 
   void getPublisherActivityFromUrl(uint64_t windowId,const ledger::VisitData& visit_data);
-  ledger::PublisherBanner getPublisherBanner(const std::string& publisher_id);
+  void getPublisherBanner(const std::string& publisher_id,
+                          ledger::PublisherBannerCallback callback);
 
   void setBalanceReportItem(ledger::PUBLISHER_MONTH month,
                                int year,
@@ -190,6 +191,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                            const ledger::VisitData& visit_data);
 
   void OnExcludedSitesChanged();
+
+  void onPublisherBanner(ledger::PublisherBannerCallback callback,
+                         ledger::PublisherBanner banner,
+                         ledger::Result result,
+                         std::unique_ptr<ledger::PublisherInfo> publisher_info);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 
