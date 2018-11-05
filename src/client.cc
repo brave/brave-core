@@ -20,7 +20,7 @@ Client::~Client() = default;
 bool Client::LoadJson(const std::string& json) {
   CLIENT_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->Log(LogLevel::ERROR, "Failed to parse client JSON");
+    ads_client_->DebugLog(LogLevel::ERROR, "Failed to parse client JSON");
     return false;
   }
 
@@ -205,7 +205,7 @@ void Client::RemoveAllHistory() {
 
 void Client::OnClientSaved(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to save client state");
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save client state");
   }
 }
 

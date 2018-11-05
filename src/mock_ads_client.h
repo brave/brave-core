@@ -45,7 +45,7 @@ class MockAdsClient : public AdsClient, CallbackHandler {
   void ShowAd(const std::unique_ptr<AdInfo> info) override;
 
   void SetTimer(const uint64_t time_offset, uint32_t& timer_id) override;
-  void StopTimer(uint32_t& timer_id) override;
+  void KillTimer(uint32_t& timer_id) override;
 
   std::unique_ptr<URLSession> URLSessionTask(
       const std::string& url,
@@ -88,7 +88,7 @@ class MockAdsClient : public AdsClient, CallbackHandler {
 
   void EventLog(const std::string& json) override;
 
-  void Log(const LogLevel log_level, const char* fmt, ...) const override;
+  void DebugLog(const LogLevel log_level, const char* fmt, ...) const override;
 
   std::string locale_;
 

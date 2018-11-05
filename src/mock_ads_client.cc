@@ -126,7 +126,7 @@ void MockAdsClient::SetTimer(const uint64_t time_offset, uint32_t& timer_id) {
   // is fired. This mock is synchronous so OnTimer should not be fired!
 }
 
-void MockAdsClient::StopTimer(uint32_t& timer_id) {
+void MockAdsClient::KillTimer(uint32_t& timer_id) {
   (void)timer_id;
 }
 
@@ -164,7 +164,7 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
   if (callback_handler) {
     if (!callback_handler->OnURLSessionReceivedResponse(0, url,
         response_status_code, response, {})) {
-      Log(LogLevel::ERROR, "URL session callback handler not found");
+      DebugLog(LogLevel::ERROR, "URL session callback handler not found");
     }
   }
 
@@ -382,7 +382,7 @@ void MockAdsClient::EventLog(const std::string& json) {
   std::cout << "Event logged (" << time_stamp <<  "): " << json << std::endl;
 }
 
-void MockAdsClient::Log(const LogLevel log_level, const char* fmt, ...) const {
+void MockAdsClient::DebugLog(const LogLevel log_level, const char* fmt, ...) const {
   va_list arg;
   va_start(arg, fmt);
   size_t sz = snprintf(NULL, 0, fmt, arg);

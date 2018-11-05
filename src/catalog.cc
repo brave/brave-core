@@ -18,7 +18,7 @@ Catalog::~Catalog() = default;
 bool Catalog::LoadJson(const std::string& json) {
   CATALOG_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->Log(LogLevel::ERROR, "Failed to parse catalog JSON");
+    ads_client_->DebugLog(LogLevel::ERROR, "Failed to parse catalog JSON");
     return false;
   }
 

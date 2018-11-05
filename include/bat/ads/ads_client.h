@@ -29,35 +29,34 @@ class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
 
-  // Get client info
+  // Gets information about the client
   virtual void GetClientInfo(ClientInfo& client_info) const = 0;
 
-  // Load user model
+  // Loads the user model
   virtual void LoadUserModel(CallbackHandler* callback_handler) = 0;
 
   // Set locale
   virtual std::string SetLocale(const std::string& locale) = 0;
 
-  // Get locales
+  // Gets available locales
   virtual void GetLocales(std::vector<std::string>& locales) const = 0;
 
-  // Generate Ad UUID
+  // Generates an Ad UUID
   virtual void GenerateAdUUID(std::string& ad_uuid) const = 0;
 
-  // Get network SSID
+  // Gets the network SSID or "Unknown" if not available
   virtual void GetSSID(std::string& ssid) const = 0;
 
-  // Show ad
+  // Shows the specified ad
   virtual void ShowAd(const std::unique_ptr<AdInfo> info) = 0;
 
-  // uint64_t time_offset (input): timer offset in seconds
-  // uint32_t timer_id (output): 0 in case of failure
+  // Creates a timer with the specified id and time-offset
   virtual void SetTimer(const uint64_t time_offset, uint32_t& timer_id) = 0;
 
-  // uint32_t timer_id (output): 0 in case of failure
-  virtual void StopTimer(uint32_t& timer_id) = 0;
+  // Destroys the specified timer
+  virtual void KillTimer(uint32_t& timer_id) = 0;
 
-  // Start a URL session task
+  // Starts a URL session task
   virtual std::unique_ptr<URLSession> URLSessionTask(
       const std::string& url,
       const std::vector<std::string>& headers,
@@ -66,59 +65,59 @@ class ADS_EXPORT AdsClient {
       const URLSession::Method& method,
       URLSessionCallbackHandlerCallback callback) = 0;
 
-  // Load settings
+  // Loads settings
   virtual void LoadSettings(CallbackHandler* callback_handler) = 0;
 
-  // Save client
+  // Saves the client
   virtual void SaveClient(
       const std::string& json,
       CallbackHandler* callback_handler) = 0;
 
-  // Load client
+  // Loads the client state
   virtual void LoadClient(CallbackHandler* callback_handler) = 0;
 
-  // Save catalog
+  // Serializes the catalog
   virtual void SaveCatalog(
       const std::string& json,
       CallbackHandler* callback_handler) = 0;
 
-  // Load catalog
+  // Loads the catalog
   virtual void LoadCatalog(CallbackHandler* callback_handler) = 0;
 
-  // Reset catalog
+  // Resets the catalog
   virtual void ResetCatalog() = 0;
 
-  // Save bundle
+  // Saves the bundle
   virtual void SaveBundle(
       const BUNDLE_STATE& bundle_state,
       CallbackHandler* callback_handler) = 0;
 
-  // Save bundle
+  // Serializes the bundle
   virtual void SaveBundle(
       const std::string& json,
       CallbackHandler* callback_handler) = 0;
 
-  // Load bundle
+  // Loads the bundle
   virtual void LoadBundle(CallbackHandler* callback_handler) = 0;
 
-  // Get ads based upon winning category
+  // Gets available ads based upon the winning category
   virtual void GetAds(
       const std::string& winning_category,
       CallbackHandler* callback_handler) = 0;
 
-  // Get sample category
+  // Gets a random sample category
   virtual void GetSampleCategory(CallbackHandler* callback_handler) = 0;
 
-  // Get components of a URL
+  // Gets the components of a URL
   virtual void GetUrlComponents(
       const std::string& url,
       UrlComponents& components) const = 0;
 
-  // Log event
+  // Log an event
   virtual void EventLog(const std::string& json) = 0;
 
   // Log debug information
-  virtual void Log(const LogLevel log_level, const char *fmt, ...) const = 0;
+  virtual void DebugLog(const LogLevel log_level, const char *fmt, ...) const = 0;
 };
 
 }  // namespace ads

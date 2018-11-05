@@ -18,7 +18,7 @@ Bundle::~Bundle() = default;
 bool Bundle::LoadJson(const std::string& json) {
   BUNDLE_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->Log(LogLevel::ERROR, "Failed to parse bundle JSON");
+    ads_client_->DebugLog(LogLevel::ERROR, "Failed to parse bundle JSON");
     return false;
   }
 
@@ -127,7 +127,7 @@ uint64_t Bundle::GetCatalogPing() const {
 
 void Bundle::OnBundleSaved(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to save bundle");
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save bundle");
   }
 }
 

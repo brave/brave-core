@@ -116,7 +116,7 @@ void AdsServe::OnCatalogDownloaded(
       }
     }
 
-    ads_client_->Log(LogLevel::WARNING,
+    ads_client_->DebugLog(LogLevel::WARNING,
       "Failed to download catalog from %s (%d): %s %s", url.c_str(),
       response_status_code, response.c_str(), formatted_headers.c_str());
 
@@ -141,7 +141,7 @@ void AdsServe::UpdateNextCatalogCheck() {
 
 void AdsServe::OnCatalogSaved(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to save catalog");
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save catalog");
   }
 }
 

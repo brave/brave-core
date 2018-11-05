@@ -194,7 +194,7 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
 void AdsImpl::Initialize() {
   if (initialized_) {
-    ads_client_->Log(LogLevel::WARNING, "Already initialized");
+    ads_client_->DebugLog(LogLevel::WARNING, "Already initialized");
     return;
   }
 
@@ -387,7 +387,7 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
   ads_client_->SetTimer(start_timer_in, collect_activity_timer_id_);
 
   if (collect_activity_timer_id_ == 0) {
-    ads_client_->Log(LogLevel::ERROR,
+    ads_client_->DebugLog(LogLevel::ERROR,
       "Failed to start collect_activity_timer_id_ timer");
   }
 }
@@ -402,13 +402,13 @@ void AdsImpl::OnSettingsLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to load settings: %s",
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to load settings: %s",
       json.c_str());
     return;
   }
 
   if (!settings_->LoadJson(json)) {
-    ads_client_->Log(LogLevel::WARNING,
+    ads_client_->DebugLog(LogLevel::WARNING,
       "Failed to parse settings JSON: %s", json.c_str());
     return;
   }
@@ -429,7 +429,7 @@ void AdsImpl::OnSettingsLoaded(
 
 void AdsImpl::OnClientSaved(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to save client state");
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save client state");
   }
 }
 
@@ -437,12 +437,12 @@ void AdsImpl::OnClientLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to load client state");
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to load client state");
     return;
   }
 
   if (!client_->LoadJson(json)) {
-    ads_client_->Log(LogLevel::WARNING,
+    ads_client_->DebugLog(LogLevel::WARNING,
       "Failed to parse client JSON: %s", json.c_str());
     return;
   }
@@ -456,7 +456,7 @@ void AdsImpl::OnClientLoaded(
 
 void AdsImpl::OnUserModelLoaded(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to load user model");
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to load user model");
     return;
   }
 
@@ -473,7 +473,7 @@ void AdsImpl::OnUserModelLoaded(const Result result) {
 
 void AdsImpl::OnBundleSaved(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to save bundle");
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save bundle");
   }
 }
 
@@ -481,7 +481,7 @@ void AdsImpl::OnBundleLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    ads_client_->Log(LogLevel::WARNING, "Failed to load bundle: %s",
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to load bundle: %s",
       json.c_str());
   }
 }
@@ -500,7 +500,7 @@ bool AdsImpl::IsInitialized() {
 
 void AdsImpl::Deinitialize() {
   if (!initialized_) {
-    ads_client_->Log(LogLevel::WARNING, "Not initialized");
+    ads_client_->DebugLog(LogLevel::WARNING, "Not initialized");
     return;
   }
 
@@ -592,7 +592,7 @@ void AdsImpl::StopCollectingActivity() {
     return;
   }
 
-  ads_client_->StopTimer(collect_activity_timer_id_);
+  ads_client_->KillTimer(collect_activity_timer_id_);
   collect_activity_timer_id_ = 0;
 }
 
