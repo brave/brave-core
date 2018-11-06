@@ -55,10 +55,10 @@ class ADS_EXPORT AdsClient {
   virtual void ShowAd(const std::unique_ptr<AdInfo> info) = 0;
 
   // Creates a timer with the specified id and time-offset
-  virtual void SetTimer(const uint64_t time_offset, uint32_t& timer_id) = 0;
+  virtual uint32_t SetTimer(const uint64_t& time_offset) = 0;
 
   // Destroys the specified timer
-  virtual void KillTimer(uint32_t& timer_id) = 0;
+  virtual void KillTimer(uint32_t timer_id) = 0;
 
   // Starts a URL session task
   virtual std::unique_ptr<URLSession> URLSessionTask(

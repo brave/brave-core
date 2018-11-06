@@ -391,7 +391,7 @@ void AdsImpl::SetNotificationsExpired(const bool expired) {
 void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
   StopCollectingActivity();
 
-  ads_client_->SetTimer(start_timer_in, collect_activity_timer_id_);
+  collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
 
   if (collect_activity_timer_id_ == 0) {
     LOG(ads_client_, LogLevel::ERROR) <<
