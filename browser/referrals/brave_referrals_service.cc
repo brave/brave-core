@@ -268,7 +268,7 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
   }
 
   std::unique_ptr<base::Value> root = base::JSONReader().ReadToValue(*response_body);
-  if (!root || !root->is_list()) {
+  if (!root) {
     LOG(ERROR) << "Failed to parse referral finalization check response";
     return;
   }
