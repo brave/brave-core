@@ -504,6 +504,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="3861241522664181545">Seite pausiert.</translation>
 <translation id="6921709132208495314">Datenverbrauch auf dieser Seite stoppen</translation>
 <translation id="1683850629661177840">Mit dem Lite-Modus surfen Sie noch schneller im Internet – auch auf HTTPS-Seiten.</translation>
+<translation id="8428213095426709021">Einstellungen</translation>
 <translation id="2724841811573117416">WebRTC-Protokolle</translation>
 <translation id="1969654639948595766">WebRTC-Textprotokolle (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC-Ereignisprotokolle (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -681,6 +682,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="7837776265184002579">Ihre Startseite wurde in <ph name="URL"/> geändert.</translation>
 <translation id="5442550868130618860">Automatische Updates aktivieren</translation>
 <translation id="6790428901817661496">Wiedergabe</translation>
+<translation id="2121825465123208577">Größe anpassen</translation>
 <translation id="4514610446763173167">Video wiedergeben oder pausieren</translation>
 <translation id="2631120081682787498">Möchten Sie diesen Tab wirklich schließen?</translation>
 <translation id="111844081046043029">Möchten Sie diese Seite wirklich verlassen?</translation>
@@ -862,7 +864,6 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="2668128414154024727">Sie können die von Brave Software erfassten Informationen jederzeit in den <ph name="BEGIN_LINK"/>Einstellungen<ph name="END_LINK"/> anpassen.</translation>
 <translation id="6035247993547372482">Brave Software kann die Inhalte der von Ihnen besuchten Websites, Browseraktivitäten und Ihre anderen Interaktionen nutzen, um Brave und andere Brave Software-Dienste wie Übersetzer, die Brave Software-Suche und Werbung zu personalisieren. Dies lässt sich in den Einstellungen ändern.</translation>
 <translation id="741204030948306876">Ja, bitte</translation>
-<translation id="8428213095426709021">Einstellungen</translation>
 <translation id="2497852260688568942">Die Synchronisierung wurde von Ihrem Administrator deaktiviert</translation>
 <translation id="562935524653278697">Ihr Administrator hat die Synchronisierung Ihres Verlaufs sowie Ihrer Lesezeichen, Passwörter und sonstigen Einstellungen deaktiviert.</translation>
 <translation id="2169062631698640254">Trotzdem anmelden</translation>
@@ -1212,6 +1213,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="6005695835120147974">Media Router</translation>
 <translation id="7787308148023287649">Anzeige auf einem anderen Display</translation>
 <translation id="7710568461918838723">&amp;Streamen...</translation>
+<translation id="5537725057119320332">Übertragen</translation>
 <translation id="8970203673128054105">Übertragungsmodusliste aufrufen</translation>
 <translation id="1277908057200820621">Geräteliste aufrufen</translation>
 <translation id="6685083257944113180">Stopp, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
@@ -1241,7 +1243,6 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="4081242589061676262">Datei kann nicht gestreamt werden.</translation>
 <translation id="4075639477629295004"><ph name="FILE_NAME"/> kann nicht gestreamt werden.</translation>
 <translation id="7255220508626648026">Wird gestreamt: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">Übertragen</translation>
 <translation id="1272079795634619415">Stopp</translation>
 <translation id="57838592816432529">Stummschalten</translation>
 <translation id="4992066212339426712">Stummschaltung aufheben</translation>
@@ -1385,6 +1386,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8834164572807951958">Mitglieder von "<ph name="DESTINATION_NAME"/>" erhalten Zugriff auf die Kopie dieser Elemente.</translation>
 <translation id="3236289833370040187">Die Inhaberschaft wird übertragen an <ph name="DESTINATION_DOMAIN"/>.</translation>
 <translation id="6896758677409633944">Kopieren</translation>
+<translation id="7765158879357617694">Verschieben</translation>
 <translation id="8249296373107784235">Abbrechen</translation>
 <translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="4425149324548788773">Meine Ablage</translation>
@@ -1393,7 +1395,9 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="981121421437150478">Offline</translation>
 <translation id="9034924485347205037">Linux-Dateien</translation>
 <translation id="3188257591659621405">Meine Dateien</translation>
+<translation id="9219103736887031265">Bilder</translation>
 <translation id="6146563240635539929">Videos</translation>
+<translation id="3616113530831147358">Audio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Vorsicht:<ph name="END_BOLD"/>Hierbei handelt es sich um Temporärdateien, die möglicherweise automatisch gelöscht werden, um Speicherplatz freizugeben. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1 Byte</translation>
 <translation id="4871210892959306034">$1 KB</translation>
@@ -1401,14 +1405,19 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7221155467930685510">$1 GB</translation>
 <translation id="5039512255859636053">$1 TB</translation>
 <translation id="6840313690797192085">$1 PB</translation>
+<translation id="3126026824346185272">Strg</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Umschalttaste</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">Leerzeichen</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="5583640892426849032">Rücktaste</translation>
 <translation id="174937106936716857">Gesamtanzahl der Dateien</translation>
 <translation id="2425665904502185219">Gesamtdateigröße</translation>
 <translation id="1942765061641586207">Bildauflösung</translation>
 <translation id="4002066346123236978">Titel</translation>
 <translation id="4631887759990505102">Musiker</translation>
+<translation id="2448312741937722512">Art</translation>
 <translation id="5145331109270917438">Änderungsdatum</translation>
 <translation id="8487700953926739672">Offline verfügbar</translation>
 <translation id="2230062665678605299">Ordner "<ph name="FOLDER_NAME"/>" kann nicht erstellt werden. <ph name="ERROR_MESSAGE"/></translation>
@@ -1434,6 +1443,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
    <ph name="LINE_BREAKS"/>
    Schließen Sie alle Dateien in dem Archiv bzw. auf dem virtuellen Datenträger und probieren Sie es dann noch einmal.</translation>
 <translation id="7794058097940213561">Gerät formatieren</translation>
+<translation id="8151638057146502721">Konfigurieren</translation>
 <translation id="7928710562641958568">Gerät auswerfen</translation>
 <translation id="7864662577698025113">Neuen Dienst hinzufügen</translation>
 <translation id="1943097386230153518">Neuen Dienst installieren</translation>
@@ -1453,7 +1463,9 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5177526793333269655">Miniaturbildansicht</translation>
 <translation id="1035094536595558507">Präsentationsansicht</translation>
 <translation id="7508545000531937079">Diashow</translation>
+<translation id="9065203028668620118">Bearbeiten</translation>
 <translation id="1430915738399379752">Drucken</translation>
+<translation id="9148058034647219655">Beenden</translation>
 <translation id="38275787300541712">Drücken Sie die Eingabetaste, wenn Sie fertig sind.</translation>
 <translation id="4880520557730313061">Autom. Korrektur</translation>
 <translation id="4924638091161556692">Korrigiert</translation>
@@ -1462,7 +1474,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7576032389798113292">6 x 4</translation>
 <translation id="8157939133946352716">7 x 5</translation>
 <translation id="2661146741306740526">16 x 9</translation>
-<translation id="2121825465123208577">Größe anpassen</translation>
 <translation id="3007214526293698309">Verhältnis korrigieren</translation>
 <translation id="7982283708762922719">Größe</translation>
 <translation id="4734518477988699048">Der Eingabewert ist ungültig.</translation>
@@ -1583,6 +1594,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3609785682760573515">Synchronisieren...</translation>
 <translation id="1464724975715666883">1 Fehler</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> Fehler</translation>
+<translation id="5317780077021120954">Speichern</translation>
 <translation id="4284105660453474798">Möchten Sie "$1" wirklich löschen?</translation>
 <translation id="4580526846085481512">Möchten Sie wirklich $1 Elemente löschen?</translation>
 <translation id="7953739707111622108">Dieses Gerät kann nicht geöffnet werden, da das Dateisystem nicht erkannt wurde.</translation>
@@ -1622,6 +1634,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4568854179928172494">Änderungszeitpunkt</translation>
 <translation id="943972244133411984">Geändert von</translation>
 <translation id="9099674669267916096">Seitenzahl</translation>
+<translation id="8294431847097064396">Quelle</translation>
 <translation id="1363028406613469049">Titel</translation>
 <translation id="1775381402323441512">Videoinformationen</translation>
 <translation id="3335337277364016868">Aufnahmejahr</translation>
@@ -1681,6 +1694,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3186202398303525187">Zulassen, dass Linux Apps $1-Dateien öffnen.</translation>
 <translation id="1603300902586586390">Zulassen, dass Linux Apps $1-Dateien öffnen.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/>-Datei</translation>
+<translation id="803771048473350947">Datei</translation>
 <translation id="895586998699996576">$1-Bild</translation>
 <translation id="2853916256216444076">$1-Video</translation>
 <translation id="7006844981395428048">$1-Audio</translation>
@@ -1747,7 +1761,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6827236167376090743">Dieses Video läuft immer weiter und weiter...</translation>
 <translation id="6248400709929739064">Untertitel aktivieren</translation>
 <translation id="7881969471599061635">Untertitel deaktivieren</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Einige Einstellungen, die <ph name="PRIMARY_EMAIL"/> gehören, werden mit Ihnen geteilt. Diese Einstellungen wirken sich nur dann auf Ihr Konto aus, wenn die Mehrfachanmeldung verwendet wird.</translation>
 <translation id="5860491529813859533">Aktivieren</translation>
 <translation id="1485141095922496924">Version <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1832,7 +1845,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="48704129375571883">Zusätzliche Funktionen hinzufügen</translation>
 <translation id="7230787553283372882">Textgröße anpassen</translation>
 <translation id="214169863967063661">Darstellungseinstellungen öffnen</translation>
-<translation id="3616113530831147358">Audio</translation>
 <translation id="6793604637258913070">Textcursor hervorheben, wenn er erscheint oder sich bewegt</translation>
 <translation id="7376553024552204454">Mauszeiger bei Bewegung hervorheben</translation>
 <translation id="4150201353443180367">Ansicht</translation>
@@ -1909,7 +1921,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5916664084637901428">An</translation>
 <translation id="1378613616312864539">Diese Einstellung wird von <ph name="NAME"/> gesteuert</translation>
 <translation id="6643016212128521049">Löschen</translation>
-<translation id="9065203028668620118">Bearbeiten</translation>
 <translation id="8465252176946159372">Ungültig</translation>
 <translation id="8647834505253004544">Keine gültige Webadresse</translation>
 <translation id="2149850907588596975">Passwörter und Formulare</translation>
@@ -1921,7 +1932,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5659593005791499971">E-Mail-Adresse</translation>
 <translation id="5762172915276660232">Einstellungen für Kreditkarten</translation>
 <translation id="4499718683476608392">AutoFill für Kreditkarten aktivieren, um Formulare mit nur einem Klick auszufüllen</translation>
-<translation id="2448312741937722512">Art</translation>
 <translation id="9064275926664971810">AutoFill aktivieren, um Webformulare mit nur einem Klick auszufüllen</translation>
 <translation id="5029568752722684782">Kopie löschen</translation>
 <translation id="2154484045852737596">Karte bearbeiten</translation>
@@ -2068,7 +2078,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="5816434091619127343">Die angeforderten Änderungen würden den Drucker unbrauchbar machen.</translation>
 <translation id="6504611359718185067">Internetverbindung herstellen, um einen Drucker hinzuzufügen</translation>
 <translation id="4972129977812092092">Druckerinformationen bearbeiten</translation>
-<translation id="5317780077021120954">Speichern</translation>
 <translation id="5696679855467848181">Aktuelle PPD-Datei in Verwendung: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="7754704193130578113">Vor dem Download von Dateien nach dem Speicherort fragen</translation>
@@ -2089,6 +2098,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="706626672220389329">Fehler beim Bereitstellen der Freigabe. Die angegebene Freigabe ist schon bereitgestellt.</translation>
 <translation id="5985458664595100876">Ungültiges URL-Format. Unterstützt werden \\server\share und smb://server/share.</translation>
 <translation id="9147304170847707004">Authentifizierungsmethode</translation>
+<translation id="7740996059027112821">Standard</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Datum und Uhrzeit</translation>
 <translation id="2059913712424898428">Zeitzone</translation>
@@ -2187,7 +2197,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8452135315243592079">Keine SIM-Karte vorhanden</translation>
 <translation id="2617342710774726426">SIM-Karte ist gesperrt</translation>
 <translation id="4848518990323155912">Sperren der SIM-Karte aktivieren (PIN zum Zugriff auf Mobilfunknetz erforderlich)</translation>
-<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">SIM-PIN eingeben</translation>
 <translation id="8431909052837336408">PIN der SIM-Karte ändern</translation>
 <translation id="289644616180464099">SIM-Karte ist gesperrt</translation>
@@ -2204,7 +2213,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8986362086234534611">Entfernen</translation>
 <translation id="7881483672146086348">Konto anzeigen</translation>
 <translation id="2392369802118427583">Aktivieren</translation>
-<translation id="8151638057146502721">Konfigurieren</translation>
 <translation id="5920543303088087579">Die Möglichkeit einer Verbindung zu diesem Netzwerk wurde von Ihrem Administrator deaktiviert</translation>
 <translation id="1235458158152011030">Bekannte Netzwerke</translation>
 <translation id="3003144360685731741">Bevorzugte Netzwerke</translation>
@@ -2349,7 +2357,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="3691231116639905343">Tastatur-Apps</translation>
 <translation id="3161522574479303604">Alle Sprachen</translation>
 <translation id="3312424061798279731">Aktivierte Sprachen</translation>
-<translation id="9042893549633094279">Sicherheit und Datenschutz</translation>
+<translation id="9042893549633094279">Datenschutz und Sicherheit</translation>
 <translation id="654233263479157500">Navigationsfehler mithilfe eines Webdienstes beheben</translation>
 <translation id="6697492270171225480">Vorschläge für ähnliche Seiten anzeigen, wenn eine Seite nicht gefunden werden kann</translation>
 <translation id="4534361985432360439">Die Webadresse der Seite, die Sie aufrufen möchten, wird an Brave Software gesendet</translation>
@@ -2415,6 +2423,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="7258619945375359543">Zulassen, dass Assistant Ihnen Vorschläge zu den Inhalten auf Ihrem Bildschirm anzeigt</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">Bei eingeschaltetem Bildschirm steht Ihnen Brave Software Assistant jederzeit zur Verfügung, wenn Sie "Ok Brave Software" sagen</translation>
+<translation id="2482878487686419369">Benachrichtigungen</translation>
 <translation id="5355099869024327351">Zulassen, dass Assistant Ihnen Benachrichtigungen anzeigt</translation>
 <translation id="1127216846847548354">Sprachaktivierung</translation>
 <translation id="3506093155988721483">Spracheingabe anstelle der Tastatur verwenden, wenn Assistant gestartet wird</translation>
@@ -2438,8 +2447,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="16815041330799488">Websites keinen Zugriff auf Texte und Bilder gewähren, die sich in der Zwischenablage befinden</translation>
 <translation id="3668823961463113931">Handler</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
-<translation id="2482878487686419369">Benachrichtigungen</translation>
-<translation id="9219103736887031265">Bilder</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Zahlungs-Handler</translation>
@@ -2705,12 +2712,9 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6586451623538375658">Primäre Maustaste tauschen</translation>
 <translation id="221872881068107022">Gegenläufiges Scrollen</translation>
 <translation id="1510238584712386396">Übersicht</translation>
-<translation id="3126026824346185272">Strg</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Feststelltaste</translation>
 <translation id="1114202307280046356">Raute</translation>
 <translation id="89720367119469899">Esc-Taste</translation>
-<translation id="5583640892426849032">Rücktaste</translation>
 <translation id="1938351510777341717">Externer Befehl</translation>
 <translation id="7969046989155602842">Befehl</translation>
 <translation id="585979798156957858">Externe Metataste</translation>
@@ -2767,13 +2771,11 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4863769717153320198">Auflösung <ph name="WIDTH"/> x <ph name="HEIGHT"/> (Standard)</translation>
 <translation id="1125550662859510761">Auflösung <ph name="WIDTH"/> x <ph name="HEIGHT"/> (nativ)</translation>
 <translation id="3151786313568798007">Ausrichtung</translation>
-<translation id="7740996059027112821">Standard</translation>
 <translation id="55601339223879446">Desktopbegrenzungen auf dem Bildschirm anpassen</translation>
 <translation id="7974936243149753750">Overscan</translation>
 <translation id="7758450972308449809">Bildschirmbegrenzungen anpassen</translation>
 <translation id="5608580678041221894">Tippen Sie auf die folgenden Tasten, um den Zuschnittbereich anzupassen oder zu verschieben</translation>
 <translation id="2822634587701817431">Reduzieren bzw. erweitern</translation>
-<translation id="7765158879357617694">Verschieben</translation>
 <translation id="6801435275744557998">Touchscreen kalibrieren</translation>
 <translation id="6856623341093082836">Touchscreen einrichten und Genauigkeit anpassen</translation>
 <translation id="4598556348158889687">Speicherplatzverwaltung</translation>
@@ -2876,13 +2878,11 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="8158441856257599022">Im Brave Web Store ansehen</translation>
 <translation id="4617270414136722281">Erweiterungsoptionen</translation>
 <translation id="7152478047064750137">Diese Erweiterung erfordert keine speziellen Berechtigungen</translation>
-<translation id="8294431847097064396">Quelle</translation>
 <translation id="8523849605371521713">Von Richtlinie hinzugefügt</translation>
 <translation id="5087249366037322692">Von einem Drittanbieter hinzugefügt</translation>
 <translation id="6788210894632713004">Entpackte Erweiterung</translation>
 <translation id="3798449238516105146">Version</translation>
 <translation id="3838085852053358637">Fehler beim Laden der Erweiterung</translation>
-<translation id="803771048473350947">Datei</translation>
 <translation id="6370021412472292592">Manifest konnte nicht geladen werden.</translation>
 <translation id="2152198799932802652">Im <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> nach Erweiterungen und Designs suchen</translation>
 <translation id="7272674038937250585">Keine Beschreibung vorhanden</translation>
@@ -2954,7 +2954,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="6313641880021325787">VR BEENDEN</translation>
 <translation id="2670429602441959756">Diese Seite enthält Funktionen, die noch nicht in VR unterstützt werden. Modus wird beendet…</translation>
 <translation id="1802687198411089702">Die Seite reagiert nicht. Sie können warten, bis sie wieder reagiert, oder sie schließen.</translation>
-<translation id="9148058034647219655">Beenden</translation>
 <translation id="3987938432087324095">Dies wurde nicht verstanden.</translation>
 <translation id="6923132443355966645">Scrollen/Klicken</translation>
 <translation id="6041155700700864984">Vollbildmodus beenden</translation>

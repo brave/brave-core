@@ -504,6 +504,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3861241522664181545">Na-pause ang page.</translation>
 <translation id="6921709132208495314">Ihinto ang paggamit ng data sa page na ito</translation>
 <translation id="1683850629661177840">Sa pamamagitan ng Lite Mode, mas mabilis na makakapag-browse sa lahat ng page, kabilang ang HTTPS.</translation>
+<translation id="8428213095426709021">Mga Setting</translation>
 <translation id="2724841811573117416">Mga log ng WebRTC</translation>
 <translation id="1969654639948595766">Mga log ng text sa WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">Mga log ng event ng WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -681,6 +682,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7837776265184002579">Ginawang <ph name="URL"/> ang iyong homepage.</translation>
 <translation id="5442550868130618860">I-on ang autoupdate</translation>
 <translation id="6790428901817661496">I-play</translation>
+<translation id="2121825465123208577">Baguhin ang laki</translation>
 <translation id="4514610446763173167">I-toggle ang video para mag-play o mag-pause</translation>
 <translation id="2631120081682787498">Sigurado ka bang gusto mong isara ang tab na ito?</translation>
 <translation id="111844081046043029">Sigurado ka ba na nais mong iwanan ang pahinang ito?</translation>
@@ -862,7 +864,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2668128414154024727">Maaari mong i-customize kung anong impormasyon ang kinokolekta ng Brave Software sa <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/> anumang oras.</translation>
 <translation id="6035247993547372482">Maaaring gamitin ng Brave Software ang content sa mga site na binibisita mo at ang aktibidad at mga pakikipag-ugnayan sa browser para i-personalize ang Brave at ang iba pang serbisyo ng Brave Software tulad ng Translate, Search, at mga ad. Maaari mo itong i-customize sa Mga Setting.</translation>
 <translation id="741204030948306876">Oo, sali ako</translation>
-<translation id="8428213095426709021">Mga Setting</translation>
 <translation id="2497852260688568942">Na-disable ng iyong administrator ang pag-sync</translation>
 <translation id="562935524653278697">Na-disable ng administrator mo ang pag-sync ng iyong mga bookmark, history, password at iba pang mga setting.</translation>
 <translation id="2169062631698640254">Mag-sign in pa rin</translation>
@@ -1212,6 +1213,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6005695835120147974">Router para sa Media</translation>
 <translation id="7787308148023287649">Ipakita sa isa pang screen</translation>
 <translation id="7710568461918838723">&amp;Cast...</translation>
+<translation id="5537725057119320332">I-cast</translation>
 <translation id="8970203673128054105">Tingnan ang listahan ng cast mode</translation>
 <translation id="1277908057200820621">Tingnan ang listahan ng device</translation>
 <translation id="6685083257944113180">Ihinto, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
@@ -1241,7 +1243,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4081242589061676262">Hindi ma-cast ang file.</translation>
 <translation id="4075639477629295004">Hindi ma-cast ang <ph name="FILE_NAME"/>.</translation>
 <translation id="7255220508626648026">Nagka-cast: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">I-cast</translation>
 <translation id="1272079795634619415">Stop</translation>
 <translation id="57838592816432529">I-mute</translation>
 <translation id="4992066212339426712">I-unmute</translation>
@@ -1384,6 +1385,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8834164572807951958">Magkakaroon ng access ang mga miyembro ng '<ph name="DESTINATION_NAME"/>' sa mga kopya ng mga item na ito.</translation>
 <translation id="3236289833370040187">Ililipat ang pagmamay-ari sa <ph name="DESTINATION_DOMAIN"/>.</translation>
 <translation id="6896758677409633944">Copy</translation>
+<translation id="7765158879357617694">Ilipat</translation>
 <translation id="8249296373107784235">I-abort</translation>
 <translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="4425149324548788773">Aking Drive</translation>
@@ -1392,7 +1394,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="981121421437150478">Offline</translation>
 <translation id="9034924485347205037">Mga Linux file</translation>
 <translation id="3188257591659621405">Aking mga file</translation>
+<translation id="9219103736887031265">Mga Larawan</translation>
 <translation id="6146563240635539929">Mga Video</translation>
+<translation id="3616113530831147358">Audio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Mag-ingat:<ph name="END_BOLD"/> Ang mga file na ito ay pansamantala at maaaring awtomatikong tanggalin upang magbakante ng espasyo sa disk.  <ph name="BEGIN_LINK"/>Matuto nang Higit Pa<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1 bytes</translation>
 <translation id="4871210892959306034">$1 KB</translation>
@@ -1400,14 +1404,19 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7221155467930685510">$1 GB</translation>
 <translation id="5039512255859636053">$1 TB</translation>
 <translation id="6840313690797192085">$1 PB</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">Puwang</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="174937106936716857">Kabuuang bilang ng file</translation>
 <translation id="2425665904502185219">Kabuuang laki ng file</translation>
 <translation id="1942765061641586207">Resolution ng larawan</translation>
 <translation id="4002066346123236978">Pamagat</translation>
 <translation id="4631887759990505102">Artist</translation>
+<translation id="2448312741937722512">Uri</translation>
 <translation id="5145331109270917438">Petsa ng pagbabago</translation>
 <translation id="8487700953926739672">Available sa offline</translation>
 <translation id="2230062665678605299">Hindi malikha ang folder na "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
@@ -1433,6 +1442,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
    <ph name="LINE_BREAKS"/>
    Isara ang lahat ng file sa archive o virtual disk, pagkatapos ay subukang muli.</translation>
 <translation id="7794058097940213561">I-format ang device</translation>
+<translation id="8151638057146502721">I-configure</translation>
 <translation id="7928710562641958568">I-eject ang device</translation>
 <translation id="7864662577698025113">Magdagdag ng bagong serbisyo</translation>
 <translation id="1943097386230153518">Mag-install ng bagong serbisyo</translation>
@@ -1452,7 +1462,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5177526793333269655">View na thumbnail</translation>
 <translation id="1035094536595558507">Slide na view</translation>
 <translation id="7508545000531937079">Slideshow</translation>
+<translation id="9065203028668620118">I-edit</translation>
 <translation id="1430915738399379752">I-print</translation>
+<translation id="9148058034647219655">Lumabas</translation>
 <translation id="38275787300541712">Pindutin ang Enter kapag tapos na</translation>
 <translation id="4880520557730313061">Auto-fix</translation>
 <translation id="4924638091161556692">Naayos</translation>
@@ -1461,7 +1473,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7576032389798113292">6x4</translation>
 <translation id="8157939133946352716">7x5</translation>
 <translation id="2661146741306740526">16x9</translation>
-<translation id="2121825465123208577">Baguhin ang laki</translation>
 <translation id="3007214526293698309">Itakda ang ratio</translation>
 <translation id="7982283708762922719">Taas</translation>
 <translation id="4734518477988699048">Di-wasto ang value ng input.</translation>
@@ -1582,6 +1593,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3609785682760573515">Nagsi-sync...</translation>
 <translation id="1464724975715666883">1 error.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> (na) error.</translation>
+<translation id="5317780077021120954">I-save</translation>
 <translation id="4284105660453474798">Sigurado ka bang gusto mong tanggalin ang "$1"?</translation>
 <translation id="4580526846085481512">Sigurado ka bang gusto mong tanggalin ang $1 (na) item?</translation>
 <translation id="7953739707111622108">Hindi mabuksan ang device na ito dahil hindi nakilala ang filesystem nito.</translation>
@@ -1621,6 +1633,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4568854179928172494">Oras ng pagbago</translation>
 <translation id="943972244133411984">Binago ni</translation>
 <translation id="9099674669267916096">Bilang ng page</translation>
+<translation id="8294431847097064396">Pinagmulan</translation>
 <translation id="1363028406613469049">Track</translation>
 <translation id="1775381402323441512">Impormasyon ng video</translation>
 <translation id="3335337277364016868">Taon kung kailan na-record</translation>
@@ -1680,6 +1693,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3186202398303525187">Payagan ang mga Linux app na buksan ang $1.</translation>
 <translation id="1603300902586586390">Payagan ang mga Linux app na buksan ang $1 file.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> na file</translation>
+<translation id="803771048473350947">File</translation>
 <translation id="895586998699996576">Larawan na $1</translation>
 <translation id="2853916256216444076">Video na $1</translation>
 <translation id="7006844981395428048">Audio na $1</translation>
@@ -1746,7 +1760,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6827236167376090743">Magpe-play ang video na ito nang paulit-ulit sa napakahabang panahon.</translation>
 <translation id="6248400709929739064">I-enable ang mga subtitle</translation>
 <translation id="7881969471599061635">I-disable ang mga subtitle</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Ang ilang setting ni <ph name="PRIMARY_EMAIL"/> ay ibinabahagi sa iyo. Naaapektuhan lang ng mga setting na ito ang iyong account kapag gumagamit ng multiple na pag-sign in.</translation>
 <translation id="5860491529813859533">I-on</translation>
 <translation id="1485141095922496924">Bersyon <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1831,7 +1844,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="48704129375571883">Magdagdag ng mga karagdagang feature</translation>
 <translation id="7230787553283372882">I-customize ang laki ng iyong text</translation>
 <translation id="214169863967063661">Buksan ang mga setting ng hitsura</translation>
-<translation id="3616113530831147358">Audio</translation>
 <translation id="6793604637258913070">I-highlight ang text caret kapag lumabas o gumalaw ito</translation>
 <translation id="7376553024552204454">I-highlight ang cursor ng mouse kapag gumagalaw ito</translation>
 <translation id="4150201353443180367">Display</translation>
@@ -1908,7 +1920,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5916664084637901428">Naka-on</translation>
 <translation id="1378613616312864539">Kinokontrol ng <ph name="NAME"/> ang setting na ito</translation>
 <translation id="6643016212128521049">I-clear</translation>
-<translation id="9065203028668620118">I-edit</translation>
 <translation id="8465252176946159372">Hindi wasto</translation>
 <translation id="8647834505253004544">Di-wastong email address</translation>
 <translation id="2149850907588596975">Mga password at form</translation>
@@ -1920,7 +1931,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5659593005791499971">Email</translation>
 <translation id="5762172915276660232">Mga setting ng credit card</translation>
 <translation id="4499718683476608392">Ine-enable ang Autofill ng credit card para mapunan ang mga form sa isang pag-click</translation>
-<translation id="2448312741937722512">Uri</translation>
 <translation id="9064275926664971810">I-enable ang Autofill upang punan ang mga form sa isahang pag-click</translation>
 <translation id="5029568752722684782">I-clear ang kopya</translation>
 <translation id="2154484045852737596">I-edit ang card</translation>
@@ -2067,7 +2077,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5816434091619127343">Magiging hindi magagamit ang printer dahil sa mga hiniling na pagbabago sa printer.</translation>
 <translation id="6504611359718185067">Kumonekta sa internet upang magdagdag ng printer</translation>
 <translation id="4972129977812092092">I-edit ang printer</translation>
-<translation id="5317780077021120954">I-save</translation>
 <translation id="5696679855467848181">Kasalukuyang ginagamit na PPD file: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="7754704193130578113">Magtanong kung saan ise-save ang bawat file bago ang pagda-download</translation>
@@ -2088,6 +2097,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="706626672220389329">Nagka-error sa pag-mount ng share. Naka-mount na ang isinaad na share.</translation>
 <translation id="5985458664595100876">Invalid ang format ng URL. Ang mga sinusuportahang format ay \\server\share at smb://server/share.</translation>
 <translation id="9147304170847707004">Paraan ng Pag-authenticate</translation>
+<translation id="7740996059027112821">Karaniwan</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Petsa at oras</translation>
 <translation id="2059913712424898428">Time zone</translation>
@@ -2186,7 +2196,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8452135315243592079">Walang nakalagay na SIM card</translation>
 <translation id="2617342710774726426">Naka-lock ang SIM card</translation>
 <translation id="4848518990323155912">I-enable ang pagla-lock ng SIM card (kailangan ang PIN upang magamit ang mobile data)</translation>
-<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">Ilagay ang PIN ng SIM</translation>
 <translation id="8431909052837336408">Palitan ang PIN ng SIM</translation>
 <translation id="289644616180464099">Naka-lock ang SIM Card</translation>
@@ -2203,7 +2212,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8986362086234534611">Kalimutan</translation>
 <translation id="7881483672146086348">Tingnan ang Account</translation>
 <translation id="2392369802118427583">I-activate</translation>
-<translation id="8151638057146502721">I-configure</translation>
 <translation id="5920543303088087579">Na-disable ng iyong administrator ang pagkonekta sa network na ito</translation>
 <translation id="1235458158152011030">Mga kilalang network</translation>
 <translation id="3003144360685731741">Mga gustong network</translation>
@@ -2414,6 +2422,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7258619945375359543">Payagan ang iyong Assistant na magbigay ng mga suhestyon batay sa kung ano ang nasa screen mo</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">I-access ang iyong Assistant anumang oras na sabihin mo ang "Ok Brave Software" kapag naka-on ang screen mo</translation>
+<translation id="2482878487686419369">Mga Abiso</translation>
 <translation id="5355099869024327351">Payagan ang Assistant na magpakita sa iyo ng mga notification</translation>
 <translation id="1127216846847548354">Pag-activate gamit ang boses</translation>
 <translation id="3506093155988721483">Gumamit ng boses sa halip na keyboard kapag sisimulan mo ang iyong Assistant</translation>
@@ -2437,8 +2446,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="16815041330799488">Huwag payagan ang mga site na makita ang text at mga larawang kinopya sa clipboard</translation>
 <translation id="3668823961463113931">Mga Handler</translation>
 <translation id="3227137524299004712">Mikropono</translation>
-<translation id="2482878487686419369">Mga Abiso</translation>
-<translation id="9219103736887031265">Mga Larawan</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Mga Tagapangasiwa ng Pagbabayad</translation>
@@ -2704,12 +2711,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6586451623538375658">Palitan ang pangunahing button ng mouse</translation>
 <translation id="221872881068107022">Reverse na pag-scroll</translation>
 <translation id="1510238584712386396">Launcher</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Diamond</translation>
 <translation id="89720367119469899">Escape</translation>
-<translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">External na Command</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">External na Meta</translation>
@@ -2766,13 +2770,11 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4863769717153320198">Mukhang <ph name="WIDTH"/> x <ph name="HEIGHT"/> (Default)</translation>
 <translation id="1125550662859510761">Mukhang <ph name="WIDTH"/> x <ph name="HEIGHT"/> (Native)</translation>
 <translation id="3151786313568798007">Oryentasyon</translation>
-<translation id="7740996059027112821">Karaniwan</translation>
 <translation id="55601339223879446">Isaayos ang mga hangganan ng iyong desktop sa display</translation>
 <translation id="7974936243149753750">Overscan</translation>
 <translation id="7758450972308449809">Isaayos ang mga hangganan ng iyong display</translation>
 <translation id="5608580678041221894">I-tap ang mga sumusunod na key upang isaayos o ilipat ang lugar ng pag-crop</translation>
 <translation id="2822634587701817431">Paliitin / Palawakin</translation>
-<translation id="7765158879357617694">Ilipat</translation>
 <translation id="6801435275744557998">I-calibrate ang touchscreen</translation>
 <translation id="6856623341093082836">I-set up at isaayos ang katumpakan ng iyong touchscreen</translation>
 <translation id="4598556348158889687">Pamamahala sa storage</translation>
@@ -2875,13 +2877,11 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8158441856257599022">Tingnan sa Brave Web Store</translation>
 <translation id="4617270414136722281">Mga opsyon ng extension</translation>
 <translation id="7152478047064750137">Hindi nangangailangan ang extension na ito ng mga espesyal na pahintulot</translation>
-<translation id="8294431847097064396">Pinagmulan</translation>
 <translation id="8523849605371521713">Idinagdag ng patakaran</translation>
 <translation id="5087249366037322692">Idinagdag ng isang third-party</translation>
 <translation id="6788210894632713004">Hindi naka-pack na extension</translation>
 <translation id="3798449238516105146">Bersyon</translation>
 <translation id="3838085852053358637">Hindi na-load ang extension</translation>
-<translation id="803771048473350947">File</translation>
 <translation id="6370021412472292592">Hindi mai-load ang manifest.</translation>
 <translation id="2152198799932802652">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Walang ibinigay na paglalarawan</translation>
@@ -2953,7 +2953,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6313641880021325787">LUMABAS SA VR</translation>
 <translation id="2670429602441959756">Naglalaman ang page na ito ng mga feature na hindi pa sinusuportahan sa VR. Lumalabas...</translation>
 <translation id="1802687198411089702">Hindi tumutugon ang page. Maaari mo itong hintayin o maaari kang lumabas.</translation>
-<translation id="9148058034647219655">Lumabas</translation>
 <translation id="3987938432087324095">Paumanhin, hindi ko naunawaan iyon.</translation>
 <translation id="6923132443355966645">Mag-scroll / Mag-click</translation>
 <translation id="6041155700700864984">Lumabas sa Fullscreen</translation>

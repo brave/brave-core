@@ -29,7 +29,6 @@
 <translation id="59174027418879706">Activado</translation>
 <translation id="4176463684765177261">Desactivado</translation>
 <translation id="7207456302801184289">Bienvenido a Brave</translation>
-<translation id="764012553571385542">Brave es mucho más que un navegador. Déjanos mostrarte cómo sacar el mejor provecho de él</translation>
 <translation id="6001839398155993679">Vamos</translation>
 <translation id="8050847734948770789">Activar las Recompensas Brave</translation>
 <translation id="2710310654441838823">Las Recompensas Brave son una nueva forma de pensar acerca de cómo funciona la web. Obtén recompensas por ver publicidades que respetan la privacidad y apoya a tus creadores de contenido preferidos mientras lo usas.</translation>
@@ -38,7 +37,6 @@
 <translation id="5521187896304743452">Brave te hace fácil configurar tu entorno habitual al importar bookmarks y configuraciones de otros navegadores instalados en tu computadora.</translation>
 <translation id="4138981897709579987">Importar ahora</translation>
 <translation id="9152220852742774324">Manejar las configuraciones de tu escudo</translation>
-<translation id="110988439043625224">Ajusta y monitorea tu nivel de protección al hacer click en el logo de Brave en la barra de herramientas. Maneja la configuración de tus escudos globales en el panel de preferencias.</translation>
 <translation id="3366308997091824722">Configuración de Escudo</translation>
 <translation id="7024124499777560832">Personalizar tus Preferencias</translation>
 <translation id="2498783234010887316">Las pestañas, apariencia, extensiones y la configuración del historal pueden ser configuradas desde el panel de preferencias. Incluso podrías encontrar un tema oscuro ahí ;)</translation>
@@ -70,7 +68,7 @@
 <translation id="1199044745726588100">5 segundos</translation>
 <translation id="4045581694057451126">8 segundos</translation>
 <translation id="8610523985422563960">1 minuto</translation>
-<translation id="7521774480426463961">Activar función para dar propinas en las publicaciones que tienen \"Me gusta\"</translation>
+<translation id="7521774480426463961">Activar función para dar propinas en las publicaciones que tienen "Me gusta"</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Deja propinas en el acto a medida que encuentras contenido de lujo.</translation>
@@ -80,11 +78,9 @@
 <translation id="7841456038054167122">Vuelve a ingresar las claves o prueba claves diferentes.</translation>
 <translation id="2195074481553016770">Casi listo</translation>
 <translation id="5254740304961202261">¡Demuestra que eres humano!</translation>
-<translation id="1387881035954376289">Mmmm, no tanto.</translation>
 <translation id="2323069945529668668">¡Uy!</translation>
 <translation id="5094577350232361255">acerca de</translation>
 <translation id="4918086044614829423">Aceptar</translation>
-<translation id="6832986780040139899">©2016 –2018 Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas del titular del sitio.</translation>
 <translation id="9026369588205476247">Para proteger tu privacidad, esta declaración de las Recompensas Brave no se guarda, graba ni registra en ningún lado más que en tu dispositivo (esta computadora). No se puede recuperar de Brave en caso de que pierdas los datos de tu dispositivo.</translation>
 <translation id="1036277985068412734">agregar fondos</translation>
 <translation id="4496990471549986619">las preguntas frecuentes</translation>
@@ -222,7 +218,6 @@
 <translation id="8446884382197647889">Más información</translation>
 <translation id="4083384190339959182">Hemos mejorado Brave Payments en gran medida.</translation>
 <translation id="5395851053710553429">Prepárate para experimentar la próxima Internet.</translation>
-<translation id="880341991877949255">Con tu antiguo navegador, pagabas para navegar por la web mirando publicidades con tu valiosa atención. Pasabas tu valioso tiempo descargando tecnología contra publicidades invasivas que transmitían tus valiosos datos privados a los publicistas sin tu consentimiento.</translation>
 <translation id="2549982302631665116">Hoy Brave te da la bienvenida a la nueva Internet; una en la que tu tiempo es valioso, tus datos personales se mantienen resguardados y donde realmente te pagan por tu atención.</translation>
 <translation id="3780605330121608425">Tu billetera</translation>
 </translationbundle>

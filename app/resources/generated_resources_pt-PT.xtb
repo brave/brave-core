@@ -497,7 +497,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3987348946546879621">Poupou dados.</translation>
 <translation id="6228516488918914827">Página carregada mais rapidamente.</translation>
 <translation id="9137013805542155359">Mostrar original</translation>
-<translation id="71243390042171582">Atualizada há <ph name="MINUTES"/> min.</translation>
+<translation id="71243390042171582">Atualizada há <ph name="MINUTES"/> min</translation>
 <translation id="8743864605301774756">Atualizada há 1 hora</translation>
 <translation id="5638497698949808140">Atualizada há <ph name="HOURS"/> horas</translation>
 <translation id="1329584516321524826">Atualizado mesmo agora</translation>
@@ -505,6 +505,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3861241522664181545">Página em pausa.</translation>
 <translation id="6921709132208495314">Parar de utilizar dados nesta página</translation>
 <translation id="1683850629661177840">Agora, o modo lite torna a navegação mais rápida em todas as páginas, incluindo HTTPS.</translation>
+<translation id="8428213095426709021">Definições</translation>
 <translation id="2724841811573117416">Registos de WebRTC</translation>
 <translation id="1969654639948595766">Registos de texto WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">Registos de eventos WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -541,7 +542,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3589766037099229847">Conteúdo inseguro bloqueado</translation>
 <translation id="4842976633412754305">Esta página está a tentar carregar scripts de origens não autenticadas.</translation>
 <translation id="1422159345171879700">Carregar scripts não seguros</translation>
-<translation id="3630995161997703415">Adicione este site à prateleira para o utilizar a qualquer momento.</translation>
+<translation id="3630995161997703415">Adicione este site à prateleira para o utilizar em qualquer altura.</translation>
 <translation id="3011284594919057757">Acerca do Flash</translation>
 <translation id="1962233722219655970">Esta página utiliza uma aplicação Native Client que não funciona no computador.</translation>
 <translation id="4453946976636652378">Procurar no <ph name="SEARCH_ENGINE_NAME"/> ou introduzir um URL</translation>
@@ -597,7 +598,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7221869452894271364">Recarregar esta página</translation>
 <translation id="5639549361331209298">Atualizar esta página, premir sem soltar para ver mais opções</translation>
 <translation id="2814489978934728345">Parar de carregar esta página</translation>
-<translation id="813082847718468539">Ver informações do Web site</translation>
+<translation id="813082847718468539">Ver informações do Website</translation>
 <translation id="7554791636758816595">Novo separador</translation>
 <translation id="3915280005470252504">Pesquisar por voz</translation>
 <translation id="3153862085237805241">Guardar cartão</translation>
@@ -682,6 +683,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7837776265184002579">A sua página inicial foi alterada para <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Ativar atualização automática</translation>
 <translation id="6790428901817661496">Reproduzir</translation>
+<translation id="2121825465123208577">Redimensionar</translation>
 <translation id="4514610446763173167">Ativar/desativar vídeo para reprodução ou pausa.</translation>
 <translation id="2631120081682787498">Tem a certeza de que pretende fechar este separador?</translation>
 <translation id="111844081046043029">Tem a certeza de que pretende sair desta página?</translation>
@@ -860,10 +862,9 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3070156078150543526">A Brave Software pode utilizar o seu histórico de navegação para personalizar a Pesquisa Brave Software e outros serviços Brave Software</translation>
 <translation id="2532167245710864499">Melhore o Brave e a sua segurança ao enviar informações do sistema e de utilização para a Brave Software.</translation>
 <translation id="2709453993673701466">Pretende gerir a sincronização e a personalização antes de serem ativadas? Aceda às <ph name="BEGIN_LINK"/>Definições<ph name="END_LINK"/>.</translation>
-<translation id="2668128414154024727">Pode personalizar a qualquer momento as informações que a Brave Software recolhe nas <ph name="BEGIN_LINK"/>Definições<ph name="END_LINK"/>.</translation>
+<translation id="2668128414154024727">Pode personalizar em qualquer altura as informações que a Brave Software recolhe nas <ph name="BEGIN_LINK"/>Definições<ph name="END_LINK"/>.</translation>
 <translation id="6035247993547372482">A Brave Software pode utilizar o conteúdo nos sites que visita, a atividade do navegador e as interações para personalizar o Brave e outros serviços Brave Software, como o Tradutor, a Pesquisa e os anúncios. Pode personalizar esta opção nas Definições.</translation>
 <translation id="741204030948306876">Sim, aceito</translation>
-<translation id="8428213095426709021">Definições</translation>
 <translation id="2497852260688568942">A sincronização foi desativada pelo gestor</translation>
 <translation id="562935524653278697">O seu gestor desativou a sincronização dos seus marcadores, histórico, palavras-passe e outras definições.</translation>
 <translation id="2169062631698640254">Continuar com o início de sessão</translation>
@@ -1213,6 +1214,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6005695835120147974">Media Router</translation>
 <translation id="7787308148023287649">Apresentar noutro ecrã</translation>
 <translation id="7710568461918838723">&amp;Transmitir…</translation>
+<translation id="5537725057119320332">Transmitir</translation>
 <translation id="8970203673128054105">Ver lista do modo de transmissão</translation>
 <translation id="1277908057200820621">Ver lista de dispositivos</translation>
 <translation id="6685083257944113180">Parar, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
@@ -1242,7 +1244,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="4081242589061676262">Não é possível transmitir o ficheiro.</translation>
 <translation id="4075639477629295004">Não é possível transmitir <ph name="FILE_NAME"/>.</translation>
 <translation id="7255220508626648026">Transmissão: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">Transmitir</translation>
 <translation id="1272079795634619415">Parar</translation>
 <translation id="57838592816432529">Desativar som</translation>
 <translation id="4992066212339426712">Reativar o som</translation>
@@ -1385,6 +1386,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8834164572807951958">Os membros de "<ph name="DESTINATION_NAME"/>" obterão acesso à cópia destes itens.</translation>
 <translation id="3236289833370040187">A propriedade será transferida para <ph name="DESTINATION_DOMAIN"/>.</translation>
 <translation id="6896758677409633944">Copiar</translation>
+<translation id="7765158879357617694">Mover</translation>
 <translation id="8249296373107784235">Abortar</translation>
 <translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="4425149324548788773">O meu disco</translation>
@@ -1393,7 +1395,9 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="981121421437150478">Offline</translation>
 <translation id="9034924485347205037">Ficheiros Linux</translation>
 <translation id="3188257591659621405">Os meus ficheiros</translation>
+<translation id="9219103736887031265">Imagens</translation>
 <translation id="6146563240635539929">Vídeos</translation>
+<translation id="3616113530831147358">Áudio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Atenção:<ph name="END_BOLD"/> Estes arquivos são temporários e podem ser automaticamente eliminados para libertar espaço em disco. <ph name="BEGIN_LINK"/>Saiba Mais<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1 bytes</translation>
 <translation id="4871210892959306034">$1 KB</translation>
@@ -1401,14 +1405,19 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7221155467930685510">$1 GB</translation>
 <translation id="5039512255859636053">$1 TB</translation>
 <translation id="6840313690797192085">$1 PB</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">Espaço</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="5583640892426849032">Retrocesso</translation>
 <translation id="174937106936716857">Contagem total de ficheiros</translation>
 <translation id="2425665904502185219">Tamanho total do ficheiro</translation>
 <translation id="1942765061641586207">Resolução da imagem</translation>
 <translation id="4002066346123236978">Título</translation>
 <translation id="4631887759990505102">Artista</translation>
+<translation id="2448312741937722512">Tipo</translation>
 <translation id="5145331109270917438">Data de modificação</translation>
 <translation id="8487700953926739672">Disponível offline</translation>
 <translation id="2230062665678605299">Não é possível criar a pasta "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
@@ -1434,6 +1443,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
    <ph name="LINE_BREAKS"/>
    Feche todos os ficheiros do arquivo ou disco virtual e tente novamente.</translation>
 <translation id="7794058097940213561">Formatar aparelho</translation>
+<translation id="8151638057146502721">Configurar</translation>
 <translation id="7928710562641958568">Ejetar aparelho</translation>
 <translation id="7864662577698025113">Adicionar novo serviço</translation>
 <translation id="1943097386230153518">Instalar novo serviço</translation>
@@ -1453,7 +1463,9 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="5177526793333269655">Vista de miniatura</translation>
 <translation id="1035094536595558507">Vista de diapositivos</translation>
 <translation id="7508545000531937079">Apresentação de diapositivos</translation>
+<translation id="9065203028668620118">Editar</translation>
 <translation id="1430915738399379752">Imprimir</translation>
+<translation id="9148058034647219655">Sair</translation>
 <translation id="38275787300541712">Prima Enter quando terminar</translation>
 <translation id="4880520557730313061">Correção automática</translation>
 <translation id="4924638091161556692">Corrigida</translation>
@@ -1462,7 +1474,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7576032389798113292">6 x 4</translation>
 <translation id="8157939133946352716">7 x 5</translation>
 <translation id="2661146741306740526">16 x 9</translation>
-<translation id="2121825465123208577">Redimensionar</translation>
 <translation id="3007214526293698309">Corrigir proporção</translation>
 <translation id="7982283708762922719">Altura</translation>
 <translation id="4734518477988699048">O valor de entrada é inválido.</translation>
@@ -1583,6 +1594,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3609785682760573515">A sincronizar…</translation>
 <translation id="1464724975715666883">1 erro.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> erros.</translation>
+<translation id="5317780077021120954">Guardar</translation>
 <translation id="4284105660453474798">Tem a certeza de que pretende eliminar "$1"?</translation>
 <translation id="4580526846085481512">Tem a certeza de que pretende eliminar $1 itens?</translation>
 <translation id="7953739707111622108">Não é possível abrir este aparelho porque o sistema de ficheiros não foi reconhecido.</translation>
@@ -1622,6 +1634,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="4568854179928172494">Hora da modificação</translation>
 <translation id="943972244133411984">Modificado por</translation>
 <translation id="9099674669267916096">Contagem de páginas</translation>
+<translation id="8294431847097064396">Origem</translation>
 <translation id="1363028406613469049">Faixa</translation>
 <translation id="1775381402323441512">Informações do vídeo</translation>
 <translation id="3335337277364016868">Ano de gravação</translation>
@@ -1678,9 +1691,10 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="2004663115385769400">Não é possível abrir com o $1</translation>
 <translation id="639777613761517128">Para abrir ficheiros com o $1, copie primeiro para a pasta Ficheiros Linux.</translation>
 <translation id="5112009661904384591">Partilhar ficheiros com o Linux</translation>
-<translation id="3186202398303525187">Permita que as aplicações do Linux abram $1.</translation>
-<translation id="1603300902586586390">Permita que as aplicações do Linux abram ficheiros $1.</translation>
+<translation id="3186202398303525187">Permita que as aplicações do Linux abram $1 ficheiro.</translation>
+<translation id="1603300902586586390">Permita que as aplicações do Linux abram $1 ficheiros.</translation>
 <translation id="4572815280350369984">Ficheiro <ph name="FILE_TYPE"/></translation>
+<translation id="803771048473350947">Ficheiro</translation>
 <translation id="895586998699996576">Imagem $1</translation>
 <translation id="2853916256216444076">Vídeo $1</translation>
 <translation id="7006844981395428048">Áudio $1</translation>
@@ -1747,7 +1761,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6827236167376090743">Este vídeo continuará a ser reproduzido durante um tempo indefinido.</translation>
 <translation id="6248400709929739064">Ativar legendas</translation>
 <translation id="7881969471599061635">Desativar legendas</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Algumas definições pertencentes a <ph name="PRIMARY_EMAIL"/> estão a ser partilhadas consigo. Estas definições afetam apenas a sua conta quando utilizar o início de sessão integrado.</translation>
 <translation id="5860491529813859533">Ativar</translation>
 <translation id="1485141095922496924">Versão <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1832,7 +1845,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="48704129375571883">Adicionar mais funcionalidades</translation>
 <translation id="7230787553283372882">Personalizar o tamanho do texto</translation>
 <translation id="214169863967063661">Abrir definições de aspeto</translation>
-<translation id="3616113530831147358">Áudio</translation>
 <translation id="6793604637258913070">Realçar o cursor do texto quando este aparece ou se move</translation>
 <translation id="7376553024552204454">Realçar o cursor do rato ao ser movido</translation>
 <translation id="4150201353443180367">Visualização</translation>
@@ -1909,7 +1921,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="5916664084637901428">Ativado</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> está a controlar esta definição</translation>
 <translation id="6643016212128521049">Limpar</translation>
-<translation id="9065203028668620118">Editar</translation>
 <translation id="8465252176946159372">Não é válido</translation>
 <translation id="8647834505253004544">Não é um endereço Web válido</translation>
 <translation id="2149850907588596975">Palavras-passe e formulários</translation>
@@ -1921,7 +1932,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="5659593005791499971">Email</translation>
 <translation id="5762172915276660232">Definições de cartões de crédito</translation>
 <translation id="4499718683476608392">Ativar o Preenchimento automático de cartões de crédito para preencher formulários com um único clique</translation>
-<translation id="2448312741937722512">Tipo</translation>
 <translation id="9064275926664971810">Ativar a funcionalidade de Preenchimento Automático para preencher formulários Web com um único clique</translation>
 <translation id="5029568752722684782">Limpar cópia</translation>
 <translation id="2154484045852737596">Editar cartão</translation>
@@ -2068,7 +2078,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="5816434091619127343">As alterações solicitadas à impressora deixariam-na inutilizável.</translation>
 <translation id="6504611359718185067">Estabeleça ligação à Internet para adicionar uma impressora</translation>
 <translation id="4972129977812092092">Editar impressora</translation>
-<translation id="5317780077021120954">Guardar</translation>
 <translation id="5696679855467848181">Ficheiro PPD atualmente em utilização: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="7754704193130578113">Perguntar onde guardar cada ficheiro antes da transferência</translation>
@@ -2089,6 +2098,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="706626672220389329">Erro ao montar a partilha. A partilha especificada já está montada.</translation>
 <translation id="5985458664595100876">Formato de URL inválido. Os formatos suportados são \\server\share e smb://server/share.</translation>
 <translation id="9147304170847707004">Método de autenticação</translation>
+<translation id="7740996059027112821">Padrão</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Data e hora</translation>
 <translation id="2059913712424898428">Fuso horário</translation>
@@ -2187,7 +2197,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8452135315243592079">Cartão SIM em falta</translation>
 <translation id="2617342710774726426">O cartão SIM está bloqueado</translation>
 <translation id="4848518990323155912">Ativar o bloqueio do cartão SIM (requer o PIN para utilizar dados móveis)</translation>
-<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">Introduzir PIN do cartão SIM</translation>
 <translation id="8431909052837336408">Alterar o PIN do cartão SIM</translation>
 <translation id="289644616180464099">O cartão SIM está bloqueado</translation>
@@ -2204,7 +2213,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8986362086234534611">Esquecer</translation>
 <translation id="7881483672146086348">Ver Conta</translation>
 <translation id="2392369802118427583">Activar</translation>
-<translation id="8151638057146502721">Configurar</translation>
 <translation id="5920543303088087579">O gestor desativou a ligação a esta rede</translation>
 <translation id="1235458158152011030">Redes conhecidas</translation>
 <translation id="3003144360685731741">Redes preferidas</translation>
@@ -2415,6 +2423,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="7258619945375359543">Permita que o Assistente dê sugestões com base no que está a ser apresentado no seu ecrã.</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">Aceda ao Assistente sempre que disser "Ok Brave Software" quando o ecrã estiver ligado.</translation>
+<translation id="2482878487686419369">Notificações</translation>
 <translation id="5355099869024327351">Permita que o Assistente lhe mostre notificações.</translation>
 <translation id="1127216846847548354">Ativação por voz</translation>
 <translation id="3506093155988721483">Utilize a voz em vez do teclado ao iniciar o Assistente.</translation>
@@ -2438,8 +2447,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="16815041330799488">Não permitir que os sites vejam o texto e as imagens copiados para a área de transferência</translation>
 <translation id="3668823961463113931">Processadores</translation>
 <translation id="3227137524299004712">Microfone</translation>
-<translation id="2482878487686419369">Notificações</translation>
-<translation id="9219103736887031265">Imagens</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Controladores de pagamentos</translation>
@@ -2705,12 +2712,9 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6586451623538375658">Trocar botão principal do rato</translation>
 <translation id="221872881068107022">Deslocamento inverso</translation>
 <translation id="1510238584712386396">Iniciador</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Diamante</translation>
 <translation id="89720367119469899">Escape</translation>
-<translation id="5583640892426849032">Retrocesso</translation>
 <translation id="1938351510777341717">Comando externo</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Meta externo</translation>
@@ -2767,13 +2771,11 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="4863769717153320198">Parece ter <ph name="WIDTH"/> x <ph name="HEIGHT"/> (predefinição)</translation>
 <translation id="1125550662859510761">Parece ter <ph name="WIDTH"/> x <ph name="HEIGHT"/> (nativo)</translation>
 <translation id="3151786313568798007">Orientação</translation>
-<translation id="7740996059027112821">Padrão</translation>
 <translation id="55601339223879446">Ajustar os limites do seu ambiente de trabalho no ecrã</translation>
 <translation id="7974936243149753750">Overscan</translation>
 <translation id="7758450972308449809">Ajustar os limites do ecrã</translation>
 <translation id="5608580678041221894">Toque nas teclas seguintes para ajustar ou mover a área de recorte</translation>
 <translation id="2822634587701817431">Reduzir/expandir</translation>
-<translation id="7765158879357617694">Mover</translation>
 <translation id="6801435275744557998">Calibrar ecrã tátil</translation>
 <translation id="6856623341093082836">Configurar e ajustar a precisão do ecrã tátil</translation>
 <translation id="4598556348158889687">Gestão de armazenamento</translation>
@@ -2819,7 +2821,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="2248072377758660530">Envie e receba mensagens de texto com o Bravebook. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 <translation id="5153234146675181447">Esquecer telemóvel</translation>
 <translation id="2307631131458143837">Desassociar o telemóvel do Bravebook</translation>
-<translation id="1146102139091738471">Desassocie o seu telemóvel do Bravebook. Deixarão de se associar automaticamente.</translation>
+<translation id="1146102139091738471">Desassocie o seu telemóvel do Bravebook. Deixarão de se ligar um ao outro automaticamente.</translation>
 <translation id="7878562273885520351">A palavra-passe pode estar comprometida</translation>
 <translation id="6582421931165117398">Para proteger as suas informações pessoais, altere a palavra-passe agora. Antes de poder alterar a palavra-passe, é-lhe pedido para iniciar sessão.</translation>
 <translation id="1089439967362294234">Alterar palavra-passe</translation>
@@ -2876,13 +2878,11 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8158441856257599022">Ver na Web Store do Brave</translation>
 <translation id="4617270414136722281">Opções de extensão</translation>
 <translation id="7152478047064750137">Esta extensão não requer autorizações especiais.</translation>
-<translation id="8294431847097064396">Origem</translation>
 <translation id="8523849605371521713">Adicionada pela política</translation>
 <translation id="5087249366037322692">Adicionada por terceiros</translation>
 <translation id="6788210894632713004">Extensão expandida</translation>
 <translation id="3798449238516105146">Versão</translation>
 <translation id="3838085852053358637">Falha ao carregar a extensão</translation>
-<translation id="803771048473350947">Ficheiro</translation>
 <translation id="6370021412472292592">Não foi possível carregar manifesto.</translation>
 <translation id="2152198799932802652">Encontre extensões e temas na <ph name="BEGIN_LINK"/>Web Store do Brave<ph name="END_LINK"/>.</translation>
 <translation id="7272674038937250585">Nenhuma descrição fornecida</translation>
@@ -2954,7 +2954,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6313641880021325787">SAIR DA RV</translation>
 <translation id="2670429602441959756">Esta página contém funcionalidades que ainda não são suportadas no modo de RV e será agora fechada.</translation>
 <translation id="1802687198411089702">A página não responde. Pode esperar pela resposta ou sair.</translation>
-<translation id="9148058034647219655">Sair</translation>
 <translation id="3987938432087324095">Lamento, mas não compreendi.</translation>
 <translation id="6923132443355966645">Deslocar/clicar</translation>
 <translation id="6041155700700864984">Sair do ecrã inteiro</translation>

@@ -505,6 +505,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3861241522664181545">Az oldal szüneteltetve.</translation>
 <translation id="6921709132208495314">Adathasználat leállítása ennél az oldalnál</translation>
 <translation id="1683850629661177840">Az Egyszerűsített mód mostantól minden oldalon gyorsabb böngészést nyújt (HTTPS esetében is).</translation>
+<translation id="8428213095426709021">Beállítások</translation>
 <translation id="2724841811573117416">WebRTC-naplók</translation>
 <translation id="1969654639948595766">Szöveges WebRTC-naplók (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC-eseménynaplók (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -682,6 +683,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="7837776265184002579">Kezdőlapja a következőre módosult: <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Automatikus frissítés bekapcsolása</translation>
 <translation id="6790428901817661496">Játék</translation>
+<translation id="2121825465123208577">Átméretezés</translation>
 <translation id="4514610446763173167">Váltás a videó lejátszása és szüneteltetése között</translation>
 <translation id="2631120081682787498">Biztosan bezárja ezt a lapot?</translation>
 <translation id="111844081046043029">Biztos, hogy el szeretné hagyni ezt az oldalt?</translation>
@@ -863,7 +865,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="2668128414154024727">A <ph name="BEGIN_LINK"/>Beállításokban<ph name="END_LINK"/> bármikor személyre szabhatja, hogy milyen adatokat gyűjthet a Brave Software.</translation>
 <translation id="6035247993547372482">A Brave Software felhasználhatja az Ön által felkeresett webhelyeken lévő tartalmakat, a böngészési tevékenységeket és interakciókat a Brave és az egyéb Brave Software-szolgáltatások (például a Fordító, a Keresés és a megjelenő hirdetések) személyre szabásához. Ezt módosíthatja a Beállításokban.</translation>
 <translation id="741204030948306876">Igen, folytatom</translation>
-<translation id="8428213095426709021">Beállítások</translation>
 <translation id="2497852260688568942">A szinkronizálást letiltotta a rendszergazda</translation>
 <translation id="562935524653278697">A rendszergazda letiltotta a könyvjelzőinek, előzményeinek, jelszavainak és más beállításainak szinkronizálását.</translation>
 <translation id="2169062631698640254">Bejelentkezés mindenképp</translation>
@@ -1213,6 +1214,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6005695835120147974">Adathordozó router</translation>
 <translation id="7787308148023287649">Megjelenítés másik képernyőn</translation>
 <translation id="7710568461918838723">&amp;Átküldés…</translation>
+<translation id="5537725057119320332">Küldés</translation>
 <translation id="8970203673128054105">Átküldési módok listájának megtekintése</translation>
 <translation id="1277908057200820621">Eszközlista megtekintése</translation>
 <translation id="6685083257944113180">Leállítás, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
@@ -1242,7 +1244,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4081242589061676262">Nem sikerült a fájl átküldése.</translation>
 <translation id="4075639477629295004">Nem lehet átküldeni a következőt: <ph name="FILE_NAME"/>.</translation>
 <translation id="7255220508626648026">Átküldés: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">Küldés</translation>
 <translation id="1272079795634619415">Leállítás</translation>
 <translation id="57838592816432529">Némítás</translation>
 <translation id="4992066212339426712">Némítás feloldása</translation>
@@ -1385,6 +1386,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8834164572807951958">A(z) „<ph name="DESTINATION_NAME"/>” tagjai hozzá fognak férni ezen elemek másolatához.</translation>
 <translation id="3236289833370040187">A tulajdonjogot átruházza a következőre: <ph name="DESTINATION_DOMAIN"/>.</translation>
 <translation id="6896758677409633944">Másolás</translation>
+<translation id="7765158879357617694">Áthelyezés</translation>
 <translation id="8249296373107784235">Megszakítás</translation>
 <translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="4425149324548788773">Saját meghajtó</translation>
@@ -1393,7 +1395,9 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="981121421437150478">Offline</translation>
 <translation id="9034924485347205037">Linux-fájlok</translation>
 <translation id="3188257591659621405">Saját fájlok</translation>
+<translation id="9219103736887031265">Képek</translation>
 <translation id="6146563240635539929">Videók</translation>
+<translation id="3616113530831147358">Audio</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Figyelem:<ph name="END_BOLD"/> Ezek ideiglenes fájlok, és automatikusan törlésre kerülnek azért, hogy tárhely szabaduljon fel. <ph name="BEGIN_LINK"/>További információ<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1 bájt</translation>
 <translation id="4871210892959306034">$1 kB</translation>
@@ -1401,14 +1405,19 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="7221155467930685510">$1 GB</translation>
 <translation id="5039512255859636053">$1 TB</translation>
 <translation id="6840313690797192085">$1 PB</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">Szóköz</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="174937106936716857">Fájlok száma összesen</translation>
 <translation id="2425665904502185219">Teljes fájlméret</translation>
 <translation id="1942765061641586207">Képfelbontás</translation>
 <translation id="4002066346123236978">Cím</translation>
 <translation id="4631887759990505102">Előadó</translation>
+<translation id="2448312741937722512">Típus</translation>
 <translation id="5145331109270917438">Módosítás dátuma</translation>
 <translation id="8487700953926739672">Offline elérhető</translation>
 <translation id="2230062665678605299">Nem sikerült létrehozni a(z) "<ph name="FOLDER_NAME"/>" könyvtárat. <ph name="ERROR_MESSAGE"/></translation>
@@ -1434,6 +1443,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
    <ph name="LINE_BREAKS"/>
    Zárjon be minden fájlt az archívumban vagy a virtuális lemezen, majd próbálja újra.</translation>
 <translation id="7794058097940213561">Eszköz formázása</translation>
+<translation id="8151638057146502721">Konfigurálás</translation>
 <translation id="7928710562641958568">Eszköz kiadása</translation>
 <translation id="7864662577698025113">Új szolgáltatás hozzáadása</translation>
 <translation id="1943097386230153518">Új szolgáltatás telepítése</translation>
@@ -1453,7 +1463,9 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5177526793333269655">Indexképnézet</translation>
 <translation id="1035094536595558507">Dia nézet</translation>
 <translation id="7508545000531937079">Diavetítés</translation>
+<translation id="9065203028668620118">Szerkesztés</translation>
 <translation id="1430915738399379752">Nyomtatás</translation>
+<translation id="9148058034647219655">Kilépés</translation>
 <translation id="38275787300541712">Nyomja meg az Enter gombot, ha végzett</translation>
 <translation id="4880520557730313061">Automatikus javítás</translation>
 <translation id="4924638091161556692">Javított</translation>
@@ -1462,7 +1474,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="7576032389798113292">6×4</translation>
 <translation id="8157939133946352716">7×5</translation>
 <translation id="2661146741306740526">16×9</translation>
-<translation id="2121825465123208577">Átméretezés</translation>
 <translation id="3007214526293698309">Arány rögzítése</translation>
 <translation id="7982283708762922719">Magasság</translation>
 <translation id="4734518477988699048">A beviteli érték érvénytelen.</translation>
@@ -1583,6 +1594,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3609785682760573515">Szinkronizálás...</translation>
 <translation id="1464724975715666883">1 hiba.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> hiba.</translation>
+<translation id="5317780077021120954">Mentés</translation>
 <translation id="4284105660453474798">Biztos, hogy törölni szeretné ezt: "$1"?</translation>
 <translation id="4580526846085481512">Biztos, hogy törölni szeretné ezt az elemet: $1?</translation>
 <translation id="7953739707111622108">Ezt az eszközt nem lehet megnyitni, mert a fájlrendszer nem ismerhető fel.</translation>
@@ -1622,6 +1634,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4568854179928172494">Módosítás ideje</translation>
 <translation id="943972244133411984">Módosította</translation>
 <translation id="9099674669267916096">Oldalak száma</translation>
+<translation id="8294431847097064396">Forrás</translation>
 <translation id="1363028406613469049">Szám</translation>
 <translation id="1775381402323441512">Videófájl adatai</translation>
 <translation id="3335337277364016868">Felvétel éve</translation>
@@ -1681,6 +1694,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="3186202398303525187">Engedélyezze, hogy a Linux-alkalmazások megnyithassák a következőt: $1.</translation>
 <translation id="1603300902586586390">Engedélyezze, hogy a Linux-alkalmazások megnyithassanak $1 fájlt.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> fájl</translation>
+<translation id="803771048473350947">Fájl</translation>
 <translation id="895586998699996576">$1 kép</translation>
 <translation id="2853916256216444076">$1 videó</translation>
 <translation id="7006844981395428048">$1 hangfájl</translation>
@@ -1747,7 +1761,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="6827236167376090743">A videó lejátszása a végtelenségig folytatódik.</translation>
 <translation id="6248400709929739064">Feliratok engedélyezése</translation>
 <translation id="7881969471599061635">Feliratok letiltása</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">A(z) <ph name="PRIMARY_EMAIL"/> fiókhoz tartozó egyes beállítások meg vannak osztva Önnel. E beállítások csak a többfiókos bejelentkezés használata során érintik az Ön fiókját.</translation>
 <translation id="5860491529813859533">Bekapcsolás</translation>
 <translation id="1485141095922496924">Verzió: <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1832,7 +1845,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="48704129375571883">További funkciók hozzáadása</translation>
 <translation id="7230787553283372882">Szövegméret személyre szabása</translation>
 <translation id="214169863967063661">Megjelenítési beállítások megnyitása</translation>
-<translation id="3616113530831147358">Audio</translation>
 <translation id="6793604637258913070">Szövegbeszúrási pont kiemelése, amikor megjelenik vagy mozog</translation>
 <translation id="7376553024552204454">Az egérmutató kiemelése mozgás közben</translation>
 <translation id="4150201353443180367">Megjelenítés</translation>
@@ -1909,7 +1921,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5916664084637901428">Be</translation>
 <translation id="1378613616312864539">A(z) <ph name="NAME"/> szabályozza ezt a beállítást</translation>
 <translation id="6643016212128521049">Törlés</translation>
-<translation id="9065203028668620118">Szerkesztés</translation>
 <translation id="8465252176946159372">Érvénytelen</translation>
 <translation id="8647834505253004544">Érvénytelen internetcím</translation>
 <translation id="2149850907588596975">Jelszavak és űrlapok</translation>
@@ -1921,7 +1932,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5659593005791499971">E-mail</translation>
 <translation id="5762172915276660232">A hitelkártyához tartozó beállítások</translation>
 <translation id="4499718683476608392">Használja a hitelkártyaadatokra vonatkozó automatikus kitöltés funkciót, amellyel az űrlapokat egyetlen kattintással kitöltheti</translation>
-<translation id="2448312741937722512">Típus</translation>
 <translation id="9064275926664971810">Használja az Automatikus kitöltést, amellyel az űrlapokat egyetlen kattintással kitöltheti</translation>
 <translation id="5029568752722684782">Példány törlése</translation>
 <translation id="2154484045852737596">Kártya szerkesztése</translation>
@@ -2068,7 +2078,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5816434091619127343">A kívánt nyomtatómódosítások használhatatlanná tehetik a nyomtatót.</translation>
 <translation id="6504611359718185067">Ha nyomtatót szeretne hozzáadni, csatlakozzon az internethez</translation>
 <translation id="4972129977812092092">Nyomtató szerkesztése</translation>
-<translation id="5317780077021120954">Mentés</translation>
 <translation id="5696679855467848181">A jelenleg használt PPD-fájl: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="7754704193130578113">A letöltés előtt kérdezze meg, hová mentse az adott fájlokat</translation>
@@ -2089,6 +2098,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="706626672220389329">Hiba történt a megosztott tároló csatlakoztatása során. Az adott megosztott tároló már csatlakoztatva van.</translation>
 <translation id="5985458664595100876">Érvénytelen URL-formátum. A támogatott formátumok: \\server\share és smb://server/share.</translation>
 <translation id="9147304170847707004">Hitelesítési mód</translation>
+<translation id="7740996059027112821">Szokásos</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Dátum és idő</translation>
 <translation id="2059913712424898428">Időzóna</translation>
@@ -2187,7 +2197,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8452135315243592079">Hiányzó SIM-kártya</translation>
 <translation id="2617342710774726426">A SIM-kártya zárolva van</translation>
 <translation id="4848518990323155912">SIM-kártya zárolásának engedélyezése (PIN-kód bekérése mobiladatok használatához)</translation>
-<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">Adja meg a SIM-kártya PIN-kódját</translation>
 <translation id="8431909052837336408">SIM-kártya PIN-kódjának módosítása</translation>
 <translation id="289644616180464099">A SIM-kártya zárolva van</translation>
@@ -2204,7 +2213,6 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="8986362086234534611">Elfelejt</translation>
 <translation id="7881483672146086348">Fiók megtekintése</translation>
 <translation id="2392369802118427583">Aktiválás</translation>
-<translation id="8151638057146502721">Konfigurálás</translation>
 <translation id="5920543303088087579">A hálózathoz való csatlakozást letiltotta a rendszergazda</translation>
 <translation id="1235458158152011030">Ismert hálózatok</translation>
 <translation id="3003144360685731741">Előnyben részesített hálózatok</translation>
@@ -2416,6 +2424,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="7258619945375359543">A Segéd javaslatokat tehet a képernyő tartalma alapján.</translation>
 <translation id="472896694312062378">„Ok Brave Software”</translation>
 <translation id="6236033368436682108">Bármikor hozzáférhet Segédjéhez, ha bekapcsolt képernyő mellett kimondja, hogy „Ok Brave Software”</translation>
+<translation id="2482878487686419369">Értesítések</translation>
 <translation id="5355099869024327351">Engedély a Segédnek értesítések megjelenítésére</translation>
 <translation id="1127216846847548354">Hangalapú hozzáférés aktiválása</translation>
 <translation id="3506093155988721483">Beszéd használata billentyűzet helyett a Segéd indításakor</translation>
@@ -2439,8 +2448,6 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="16815041330799488">Annak tiltása a webhelyek számára, hogy lássák a vágólapra másolt szövegeket és képeket</translation>
 <translation id="3668823961463113931">Kezelők</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
-<translation id="2482878487686419369">Értesítések</translation>
-<translation id="9219103736887031265">Képek</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Fizetéskezelők</translation>
@@ -2706,12 +2713,9 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6586451623538375658">Az elsődleges egérgomb cseréje</translation>
 <translation id="221872881068107022">Fordított görgetés</translation>
 <translation id="1510238584712386396">Indító</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Gyémánt</translation>
 <translation id="89720367119469899">Vezérlő</translation>
-<translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Külső parancs</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Külső meta</translation>
@@ -2768,13 +2772,11 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="4863769717153320198">Megjelenés: <ph name="WIDTH"/> × <ph name="HEIGHT"/> (alapértelmezett)</translation>
 <translation id="1125550662859510761">Megjelenés: <ph name="WIDTH"/> × <ph name="HEIGHT"/> (natív)</translation>
 <translation id="3151786313568798007">Tájolás</translation>
-<translation id="7740996059027112821">Szokásos</translation>
 <translation id="55601339223879446">Beállíthatja az asztal határait a kijelzőn</translation>
 <translation id="7974936243149753750">Túlpásztázás</translation>
 <translation id="7758450972308449809">Állítsa be a kijelző határait</translation>
 <translation id="5608580678041221894">Az alábbi kulcsokra koppintva módosítható vagy mozgatható a körbevágás területe</translation>
 <translation id="2822634587701817431">Méretcsökkentés/kibontás</translation>
-<translation id="7765158879357617694">Áthelyezés</translation>
 <translation id="6801435275744557998">Érintőképernyő kalibrálása</translation>
 <translation id="6856623341093082836">Az érintőképernyő pontosságának beállítása és módosítása</translation>
 <translation id="4598556348158889687">Tárhelykezelés</translation>
@@ -2877,13 +2879,11 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="8158441856257599022">Megtekintés a Brave Internetes áruházban</translation>
 <translation id="4617270414136722281">Bővítménybeállítások</translation>
 <translation id="7152478047064750137">A bővítmény nem igényel különleges engedélyeket</translation>
-<translation id="8294431847097064396">Forrás</translation>
 <translation id="8523849605371521713">Házirend adta hozzá</translation>
 <translation id="5087249366037322692">Harmadik fél adta hozzá</translation>
 <translation id="6788210894632713004">Kicsomagolt bővítmény</translation>
 <translation id="3798449238516105146">Verzió</translation>
 <translation id="3838085852053358637">Nem sikerült betölteni a bővítményt</translation>
-<translation id="803771048473350947">Fájl</translation>
 <translation id="6370021412472292592">Nem sikerült a jegyzék betöltése.</translation>
 <translation id="2152198799932802652">Bővítményeket és témákat a <ph name="BEGIN_LINK"/>Brave Internetes áruházban<ph name="END_LINK"/> kereshet</translation>
 <translation id="7272674038937250585">Nincs leírás</translation>
@@ -2955,7 +2955,6 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6313641880021325787">KILÉPÉS A VIRTUÁLIS VALÓSÁGBÓL</translation>
 <translation id="2670429602441959756">Ez az oldal olyan funkciókat tartalmaz, amelyeket a virtuális valóság még nem támogat. Kilépés a virtuális valóság módból…</translation>
 <translation id="1802687198411089702">Az oldal nem válaszol. Várakozhat tovább, vagy bezárhatja.</translation>
-<translation id="9148058034647219655">Kilépés</translation>
 <translation id="3987938432087324095">Elnézést, de nem értettem.</translation>
 <translation id="6923132443355966645">Görgetés / Kattintás</translation>
 <translation id="6041155700700864984">Kilépés a teljes képernyős módból</translation>
