@@ -22,7 +22,6 @@ struct ADS_EXPORT UrlComponents {
   std::string port;
   std::string query;
   std::string fragment;
-  bool absolute_path;
 };
 
 }  // namespace ads

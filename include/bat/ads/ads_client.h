@@ -5,8 +5,10 @@
 #pragma once
 
 #include <functional>
+#include <sstream>
 #include <string>
 #include <memory>
+#include <string>
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/bundle_state.h"
@@ -84,17 +86,17 @@ class ADS_EXPORT AdsClient {
   virtual void GetSampleCategory(CallbackHandler* callback_handler) = 0;
 
   // Gets the components of a URL
-  virtual void GetUrlComponents(
+  virtual bool GetUrlComponents(
       const std::string& url,
-      UrlComponents& components) const = 0;
+      UrlComponents* components) const = 0;
 
   // Logs an event
   virtual void EventLog(const std::string& json) = 0;
 
   // Logs debug information
-  virtual void DebugLog(
-      const LogLevel log_level,
-      const char *fmt, ...) const = 0;
+  virtual std::ostream& Log(const char* file,
+                            int line,
+                            const ads::LogLevel log_level) const = 0;
 };
 
 }  // namespace ads

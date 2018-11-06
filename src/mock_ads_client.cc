@@ -143,7 +143,8 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
   if (callback_handler) {
     if (!callback_handler->OnURLSessionReceivedResponse(0, url,
         response_status_code, response, {})) {
-      DebugLog(LogLevel::ERROR, "URL session callback handler not found");
+      Log(__FILE__, __LINE__, LogLevel::ERROR) <<
+          "URL session callback handler not found";
     }
   }
 
@@ -228,38 +229,42 @@ void MockAdsClient::GetSampleCategory(
   callback_handler->OnGetSampleCategory(Result::SUCCESS, categories->first);
 }
 
-void MockAdsClient::GetUrlComponents(
+bool MockAdsClient::GetUrlComponents(
     const std::string& url,
-    UrlComponents& components) const {
-  components.url = url;
+    UrlComponents* components) const {
+  bool is_valid = false;
+
+  components->url = url;
 
   UriParserStateA parser_state;
 
   UriUriA uri;
   parser_state.uri = &uri;
   if (uriParseUriA(&parser_state, url.c_str()) == URI_SUCCESS) {
+    is_valid = true;
+
     std::string scheme(uri.scheme.first, uri.scheme.afterLast);
-    components.scheme = scheme;
+    components->scheme = scheme;
 
     std::string user(uri.userInfo.first, uri.userInfo.afterLast);
-    components.user = user;
+    components->user = user;
 
     std::string hostname(uri.hostText.first, uri.hostText.afterLast);
-    components.hostname = hostname;
+    components->hostname = hostname;
 
     std::string port(uri.portText.first, uri.portText.afterLast);
-    components.port = port;
+    components->port = port;
 
     std::string query(uri.query.first, uri.query.afterLast);
-    components.query = query;
+    components->query = query;
 
     std::string fragment(uri.fragment.first, uri.fragment.afterLast);
-    components.fragment = fragment;
-
-    components.absolute_path = uri.absolutePath;
+    components->fragment = fragment;
   }
 
   uriFreeUriMembersA(&uri);
+
+  return is_valid;
 }
 
 void MockAdsClient::EventLog(const std::string& json) {
@@ -269,14 +274,9 @@ void MockAdsClient::EventLog(const std::string& json) {
   std::cout << "Event logged (" << time_stamp <<  "): " << json << std::endl;
 }
 
-void MockAdsClient::DebugLog(const LogLevel log_level, const char* fmt, ...) const {
-  va_list arg;
-  va_start(arg, fmt);
-  size_t sz = snprintf(NULL, 0, fmt, arg);
-  char* buf = reinterpret_cast<char*>(malloc(sz + 1));
-  vsprintf(buf, fmt, arg);
-  va_end(arg);
-
+std::ostream& MockAdsClient::Log(const char* file,
+                        int line,
+                        const ads::LogLevel log_level) const {
   std::string level;
 
   switch (log_level) {
@@ -291,7 +291,9 @@ void MockAdsClient::DebugLog(const LogLevel log_level, const char* fmt, ...) con
     }
   }
 
-  std::cerr << level << ": " << buf << std::endl;
+  std::cerr << std::endl << level << ": ";
+
+  return std::cerr;
 }
 
 bool MockAdsClient::WriteJsonToDisk(

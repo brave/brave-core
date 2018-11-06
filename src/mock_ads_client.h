@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <sstream>
 #include <string>
 #include <memory>
 
@@ -65,13 +66,15 @@ class MockAdsClient : public AdsClient, CallbackHandler {
 
   void GetSampleCategory(CallbackHandler* callback_handler) override;
 
-  void GetUrlComponents(
+  bool GetUrlComponents(
       const std::string& url,
-      UrlComponents& components) const override;
+      UrlComponents* components) const override;
 
   void EventLog(const std::string& json) override;
 
-  void DebugLog(const LogLevel log_level, const char* fmt, ...) const override;
+  std::ostream& Log(const char* file,
+                int line,
+                const LogLevel log_level) const override;
 
   std::string locale_;
 

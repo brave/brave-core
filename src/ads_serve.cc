@@ -5,6 +5,7 @@
 #include "ads_serve.h"
 #include "static_values.h"
 #include "bundle.h"
+#include "logging.h"
 
 using namespace std::placeholders;
 
@@ -117,9 +118,10 @@ void AdsServe::OnCatalogDownloaded(
       }
     }
 
-    ads_client_->DebugLog(LogLevel::WARNING,
-      "Failed to download catalog from %s (%d): %s %s", url.c_str(),
-      response_status_code, response.c_str(), formatted_headers.c_str());
+    LOG(ads_client_, LogLevel::WARNING) <<
+        "Failed to download catalog from " << url <<
+        " (" << response_status_code << "): " <<
+        response << " " << formatted_headers;
 
     RetryDownloadingCatalog();
   }
@@ -144,13 +146,13 @@ void AdsServe::UpdateNextCatalogCheck() {
 
 void AdsServe::OnCatalogSaved(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save catalog");
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to save catalog";
   }
 }
 
 void AdsServe::OnCatalogReset(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to reset catalog");
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to reset catalog";
   }
 }
 

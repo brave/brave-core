@@ -9,11 +9,10 @@
 #include <vector>
 #include <memory>
 
-#include "bat/usermodel/user_model.h"
-
 #include "ads_serve.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/category_info.h"
+#include "bat/usermodel/user_model.h"
 #include "event_type_blur_info.h"
 #include "event_type_destroy_info.h"
 #include "event_type_focus_info.h"

@@ -13,6 +13,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/category_info.h"
+#include "logging.h"
 #include "search_providers.h"
 #include "math_helper.h"
 #include "string_helper.h"
@@ -196,7 +197,7 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
 void AdsImpl::Initialize() {
   if (initialized_) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Already initialized");
+    LOG(ads_client_, LogLevel::WARNING) << "Already initialized";
     return;
   }
 
@@ -393,8 +394,8 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
   ads_client_->SetTimer(start_timer_in, collect_activity_timer_id_);
 
   if (collect_activity_timer_id_ == 0) {
-    ads_client_->DebugLog(LogLevel::ERROR,
-      "Failed to start collect_activity_timer_id_ timer");
+    LOG(ads_client_, LogLevel::ERROR) <<
+      "Failed to start collect_activity_timer_id_ timer";
   }
 }
 
@@ -408,14 +409,13 @@ void AdsImpl::OnSettingsLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to load settings: %s",
-      json.c_str());
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to load settings: " << json;
     return;
   }
 
   if (!settings_->FromJson(json)) {
-    ads_client_->DebugLog(LogLevel::WARNING,
-      "Failed to parse settings JSON: %s", json.c_str());
+    LOG(ads_client_, LogLevel::WARNING) <<
+        "Failed to parse settings JSON: " << json;
     return;
   }
 
@@ -436,7 +436,7 @@ void AdsImpl::OnSettingsLoaded(
 
 void AdsImpl::OnClientSaved(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save client state");
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to save client state";
   }
 }
 
@@ -444,13 +444,13 @@ void AdsImpl::OnClientLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to load client state");
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to load client state";
     return;
   }
 
   if (!client_->FromJson(json)) {
-    ads_client_->DebugLog(LogLevel::WARNING,
-      "Failed to parse client JSON: %s", json.c_str());
+    LOG(ads_client_, LogLevel::WARNING) <<
+      "Failed to parse client JSON: " << json;
     return;
   }
 
@@ -461,7 +461,7 @@ void AdsImpl::OnClientLoaded(
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to load user model");
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to load user model";
     return;
   }
 
@@ -480,13 +480,13 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
 
 void AdsImpl::OnBundleSaved(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save bundle");
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to save bundle";
   }
 }
 
 void AdsImpl::OnBundleReset(const Result result) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to reset bundle");
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to reset bundle";
   }
 }
 
@@ -494,8 +494,7 @@ void AdsImpl::OnBundleLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to load bundle: %s",
-      json.c_str());
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to load bundle: " << json;
   }
 }
 
@@ -513,7 +512,7 @@ bool AdsImpl::IsInitialized() {
 
 void AdsImpl::Deinitialize() {
   if (!initialized_) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Not initialized");
+    LOG(ads_client_, LogLevel::WARNING) << "Not initialized";
     return;
   }
 
@@ -631,9 +630,9 @@ void AdsImpl::TestShoppingData(const std::string& url) {
   }
 
   UrlComponents components;
-  ads_client_->GetUrlComponents(url, components);
-  if (components.hostname == "www.amazon.com") {
-    client_->FlagShoppingState(url, 1.0);
+  if (ads_client_->GetUrlComponents(url, &components) &&
+      components.hostname == "www.amazon.com") {
+      client_->FlagShoppingState(url, 1.0);
   } else {
     client_->UnflagShoppingState();
   }
@@ -645,9 +644,9 @@ void AdsImpl::TestSearchState(const std::string& url) {
   }
 
   UrlComponents components;
-  ads_client_->GetUrlComponents(url, components);
-  if (SearchProviders::IsSearchEngine(components)) {
-    client_->FlagSearchState(url, 1.0);
+  if (ads_client_->GetUrlComponents(url, &components) &&
+      SearchProviders::IsSearchEngine(components)) {
+      client_->FlagSearchState(url, 1.0);
   } else {
     client_->UnflagSearchState(url);
   }
@@ -817,8 +816,9 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
 void AdsImpl::GenerateAdReportingLoadEvent(
     const LoadInfo info) {
   UrlComponents components;
-  ads_client_->GetUrlComponents(info.tab_url, components);
-  if (components.scheme != "http" && components.scheme != "https") {
+
+  if (ads_client_->GetUrlComponents(info.tab_url, &components) ||
+      (components.scheme != "http" && components.scheme != "https")) {
     return;
   }
 

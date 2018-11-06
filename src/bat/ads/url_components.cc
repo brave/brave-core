@@ -13,8 +13,7 @@ UrlComponents::UrlComponents() :
     hostname(""),
     port(""),
     query(""),
-    fragment(""),
-    absolute_path(false) {}
+    fragment("") {}
 
 UrlComponents::UrlComponents(const UrlComponents& components) :
     url(components.url),
@@ -23,8 +22,7 @@ UrlComponents::UrlComponents(const UrlComponents& components) :
     hostname(components.hostname),
     port(components.port),
     query(components.query),
-    fragment(components.fragment),
-    absolute_path(components.absolute_path) {}
+    fragment(components.fragment) {}
 
 UrlComponents::~UrlComponents() {}
 
