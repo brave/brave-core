@@ -7,7 +7,6 @@
 #include <string>
 #include <memory>
 
-#include "ads_impl.h"
 #include "bat/ads/ads_client.h"
 #include "settings_state.h"
 
