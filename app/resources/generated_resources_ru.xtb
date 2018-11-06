@@ -493,7 +493,7 @@
 <translation id="9135262959729602463">Чтобы получить доступ к паролям на всех своих устройствах, войдите в Brave.</translation>
 <translation id="8919275547519617350">Чтобы получить доступ к паролям на всех своих устройствах, войдите в аккаунт и включите синхронизацию.</translation>
 <translation id="8470028084415844044">Чтобы получить доступ к паролям на всех своих устройствах, включите синхронизацию.</translation>
-<translation id="3987348946546879621">Показана версия для предпросмотра</translation>
+<translation id="3987348946546879621">Версия для предпросмотра</translation>
 <translation id="6228516488918914827">Загружена версия страницы для предпросмотра</translation>
 <translation id="9137013805542155359">Показать оригинал</translation>
 <translation id="71243390042171582">Обновлено <ph name="MINUTES"/> мин. назад</translation>
@@ -504,6 +504,7 @@
 <translation id="3861241522664181545">Загрузка страницы приостановлена</translation>
 <translation id="6921709132208495314">Остановить загрузку страницы</translation>
 <translation id="1683850629661177840">В упрощенном режиме все сайты будут загружаться быстрее (в том числе по протоколу HTTPS).</translation>
+<translation id="8428213095426709021">Настройки</translation>
 <translation id="2724841811573117416">Журналы WebRTC</translation>
 <translation id="1969654639948595766">Текстовые журналы WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">Журналы событий WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -681,6 +682,7 @@
 <translation id="7837776265184002579">Стартовая страница изменена на <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Включить автообновление</translation>
 <translation id="6790428901817661496">Воспроизвести</translation>
+<translation id="2121825465123208577">Изменить размер</translation>
 <translation id="4514610446763173167">Запустить или приостановить видео</translation>
 <translation id="2631120081682787498">Закрыть эту вкладку?</translation>
 <translation id="111844081046043029">Вы действительно хотите покинуть эту страницу?</translation>
@@ -862,7 +864,6 @@
 <translation id="2668128414154024727">Вы можете выбрать, какие данные передавать Brave Software, в <ph name="BEGIN_LINK"/>настройках<ph name="END_LINK"/>.</translation>
 <translation id="6035247993547372482">Для персонализации рекламы, а также Brave и других сервисов Brave Software, таких как Переводчик и Поиск, могут использоваться данные с сайтов, которые вы посещаете, а также история просмотров и действий в браузере. Изменить эти параметры можно в настройках.</translation>
 <translation id="741204030948306876">ОК</translation>
-<translation id="8428213095426709021">Настройки</translation>
 <translation id="2497852260688568942">Ваш администратор отключил синхронизацию</translation>
 <translation id="562935524653278697">Ваш администратор отключил синхронизацию закладок, истории, паролей и настроек.</translation>
 <translation id="2169062631698640254">Выполнить вход</translation>
@@ -1212,6 +1213,7 @@
 <translation id="6005695835120147974">Медиамаршрутизатор</translation>
 <translation id="7787308148023287649">Показывать на другом экране</translation>
 <translation id="7710568461918838723">&amp;Трансляция...</translation>
+<translation id="5537725057119320332">Cast</translation>
 <translation id="8970203673128054105">Просмотреть список режимов трансляции</translation>
 <translation id="1277908057200820621">Просмотреть список устройств</translation>
 <translation id="6685083257944113180">Остановить устройство "<ph name="SINK_NAME"/>", текущий статус: <ph name="SINK_STATUS"/></translation>
@@ -1241,7 +1243,6 @@
 <translation id="4081242589061676262">Ошибка трансляции файла.</translation>
 <translation id="4075639477629295004">Невозможно транслировать файл "<ph name="FILE_NAME"/>"</translation>
 <translation id="7255220508626648026">Трансляция: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">Cast</translation>
 <translation id="1272079795634619415">Остановить</translation>
 <translation id="57838592816432529">Отключить звук</translation>
 <translation id="4992066212339426712">Включить звук</translation>
@@ -1384,6 +1385,7 @@
 <translation id="8834164572807951958">Пользователи общего диска "<ph name="DESTINATION_NAME"/>" получат доступ к копиям этих объектов.</translation>
 <translation id="3236289833370040187">Право собственности будет передано домену <ph name="DESTINATION_DOMAIN"/>.</translation>
 <translation id="6896758677409633944">Копировать</translation>
+<translation id="7765158879357617694">Переместить</translation>
 <translation id="8249296373107784235">Отмена</translation>
 <translation id="6268185425799226387">Brave Software Диск</translation>
 <translation id="4425149324548788773">Мой диск</translation>
@@ -1392,7 +1394,9 @@
 <translation id="981121421437150478">Офлайн</translation>
 <translation id="9034924485347205037">Файлы Linux</translation>
 <translation id="3188257591659621405">Мои файлы</translation>
+<translation id="9219103736887031265">Картинки</translation>
 <translation id="6146563240635539929">Видео</translation>
+<translation id="3616113530831147358">Аудио</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Внимание!<ph name="END_BOLD"/> Эти файлы являются временными и могут быть автоматически удалены, чтобы освободить место на диске. <ph name="BEGIN_LINK"/>Подробнее...<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1 Б</translation>
 <translation id="4871210892959306034">$1 кБ</translation>
@@ -1400,14 +1404,19 @@
 <translation id="7221155467930685510">$1 ГБ</translation>
 <translation id="5039512255859636053">$1 ТБ</translation>
 <translation id="6840313690797192085">$1 ПБ</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">Пробел</translation>
+<translation id="8179976553408161302">ВВОД</translation>
+<translation id="5583640892426849032">Клавиша возврата (Backspace)</translation>
 <translation id="174937106936716857">Общее количество файлов</translation>
 <translation id="2425665904502185219">Общий размер файлов</translation>
 <translation id="1942765061641586207">Разрешение изображения</translation>
 <translation id="4002066346123236978">Название</translation>
 <translation id="4631887759990505102">Исполнитель</translation>
+<translation id="2448312741937722512">Тип</translation>
 <translation id="5145331109270917438">Дата изменения</translation>
 <translation id="8487700953926739672">Доступно в автономном режиме</translation>
 <translation id="2230062665678605299">Не удалось создать папку "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
@@ -1433,6 +1442,7 @@
    <ph name="LINE_BREAKS"/>
    Закройте все файлы в архиве или на электронном диске и повторите попытку.</translation>
 <translation id="7794058097940213561">Форматировать устройство</translation>
+<translation id="8151638057146502721">Настроить</translation>
 <translation id="7928710562641958568">Извлечь устройство</translation>
 <translation id="7864662577698025113">Добавить новый сервис</translation>
 <translation id="1943097386230153518">Установить новый сервис</translation>
@@ -1452,7 +1462,9 @@
 <translation id="5177526793333269655">Уменьшенные изображения</translation>
 <translation id="1035094536595558507">Просмотр в виде слайдов</translation>
 <translation id="7508545000531937079">Слайд-шоу</translation>
+<translation id="9065203028668620118">Изменить</translation>
 <translation id="1430915738399379752">Печать</translation>
+<translation id="9148058034647219655">Выйти</translation>
 <translation id="38275787300541712">После завершения нажмите клавишу Enter</translation>
 <translation id="4880520557730313061">Автокоррекция</translation>
 <translation id="4924638091161556692">Исправлено</translation>
@@ -1461,7 +1473,6 @@
 <translation id="7576032389798113292">6x4</translation>
 <translation id="8157939133946352716">7x5</translation>
 <translation id="2661146741306740526">16x9</translation>
-<translation id="2121825465123208577">Изменить размер</translation>
 <translation id="3007214526293698309">Фикс. соотношение сторон</translation>
 <translation id="7982283708762922719">Высота</translation>
 <translation id="4734518477988699048">Введено недопустимое значение.</translation>
@@ -1582,6 +1593,7 @@
 <translation id="3609785682760573515">Cинхронизация…</translation>
 <translation id="1464724975715666883">1 ошибка.</translation>
 <translation id="3495304270784461826">Ошибок: <ph name="COUNT"/>.</translation>
+<translation id="5317780077021120954">Сохранить</translation>
 <translation id="4284105660453474798">Действительно удалить "$1"?</translation>
 <translation id="4580526846085481512">Действительно удалить объекты ($1)?</translation>
 <translation id="7953739707111622108">Невозможно получить доступ к устройству, так как его файловая система не опознана.</translation>
@@ -1621,6 +1633,7 @@
 <translation id="4568854179928172494">Время изменения</translation>
 <translation id="943972244133411984">Кем изменено</translation>
 <translation id="9099674669267916096">Количество страниц</translation>
+<translation id="8294431847097064396">Источник</translation>
 <translation id="1363028406613469049">Трек</translation>
 <translation id="1775381402323441512">Информация о видео</translation>
 <translation id="3335337277364016868">Год записи</translation>
@@ -1678,8 +1691,9 @@
 <translation id="639777613761517128">Чтобы открыть файлы с помощью приложения "$1", сначала скопируйте их в папку Linux Files (Файлы Linux).</translation>
 <translation id="5112009661904384591">Предоставление доступа к файлам для Linux</translation>
 <translation id="3186202398303525187">Разрешить Linux-приложениям открывать файл $1.</translation>
-<translation id="1603300902586586390">Разрешить Linux открывать файлы $1.</translation>
+<translation id="1603300902586586390">Разрешить Linux-приложениям открывать несколько ($1) файлов.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/>-файл</translation>
+<translation id="803771048473350947">Файл</translation>
 <translation id="895586998699996576">Изображение $1</translation>
 <translation id="2853916256216444076">Видео $1</translation>
 <translation id="7006844981395428048">Аудио $1</translation>
@@ -1746,7 +1760,6 @@
 <translation id="6827236167376090743">Видео будет воспроизводиться в режиме повтора.</translation>
 <translation id="6248400709929739064">Включить субтитры</translation>
 <translation id="7881969471599061635">Отключить субтитры</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Некоторые настройки пользователя <ph name="PRIMARY_EMAIL"/> влияют на ваш аккаунт, когда используется система множественного входа.</translation>
 <translation id="5860491529813859533">Включить</translation>
 <translation id="1485141095922496924">Версия <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>), <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1831,7 +1844,6 @@
 <translation id="48704129375571883">Добавить ещё функции</translation>
 <translation id="7230787553283372882">Позволяет настроить размер текста</translation>
 <translation id="214169863967063661">Открыть настройки внешнего вида</translation>
-<translation id="3616113530831147358">Аудио</translation>
 <translation id="6793604637258913070">Выделять курсор при его появлении или перемещении</translation>
 <translation id="7376553024552204454">Выделять курсор, когда он движется</translation>
 <translation id="4150201353443180367">Экран</translation>
@@ -1908,7 +1920,6 @@
 <translation id="5916664084637901428">ВКЛ</translation>
 <translation id="1378613616312864539">Этим параметром управляет расширение "<ph name="NAME"/>"</translation>
 <translation id="6643016212128521049">Очистить</translation>
-<translation id="9065203028668620118">Изменить</translation>
 <translation id="8465252176946159372">Недопустимо</translation>
 <translation id="8647834505253004544">Недопустимый веб-адрес</translation>
 <translation id="2149850907588596975">Пароли и формы</translation>
@@ -1920,7 +1931,6 @@
 <translation id="5659593005791499971">Электронная почта</translation>
 <translation id="5762172915276660232">Настройки банковских карт</translation>
 <translation id="4499718683476608392">Включить автозаполнение данных банковской карты</translation>
-<translation id="2448312741937722512">Тип</translation>
 <translation id="9064275926664971810">Включить автозаполнение для быстрого добавления данных в веб-формы</translation>
 <translation id="5029568752722684782">Удалить данные</translation>
 <translation id="2154484045852737596">Изменение данных карты</translation>
@@ -2067,7 +2077,6 @@
 <translation id="5816434091619127343">Если применить запрошенные изменения, принтер станет непригодным для использования.</translation>
 <translation id="6504611359718185067">Чтобы добавить принтер, подключитесь к Интернету</translation>
 <translation id="4972129977812092092">Настройка принтера</translation>
-<translation id="5317780077021120954">Сохранить</translation>
 <translation id="5696679855467848181">PPD-файл, используемый сейчас: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Виртуальный принтер Brave Software</translation>
 <translation id="7754704193130578113">Всегда указывать место для скачивания</translation>
@@ -2088,6 +2097,7 @@
 <translation id="706626672220389329">Ошибка. Указанный ресурс уже подключен.</translation>
 <translation id="5985458664595100876">Произошла ошибка. Необходимо использовать допустимые форматы URL: \\server\share или smb://server/share.</translation>
 <translation id="9147304170847707004">Метод аутентификации</translation>
+<translation id="7740996059027112821">Стандартный</translation>
 <translation id="5115338116365931134">Система единого входа</translation>
 <translation id="3101709781009526431">Дата и время</translation>
 <translation id="2059913712424898428">Часовой пояс</translation>
@@ -2186,7 +2196,6 @@
 <translation id="8452135315243592079">SIM-карта не обнаружена</translation>
 <translation id="2617342710774726426">SIM-карта заблокирована</translation>
 <translation id="4848518990323155912">Разрешить блокировку SIM-карты (для использования мобильной передачи данных потребуется PIN-код)</translation>
-<translation id="8179976553408161302">ВВОД</translation>
 <translation id="5075131525758602494">Введите PIN-код SIM-карты</translation>
 <translation id="8431909052837336408">Изменение PIN-кода SIM-карты</translation>
 <translation id="289644616180464099">SIM-карта заблокирована</translation>
@@ -2203,7 +2212,6 @@
 <translation id="8986362086234534611">Удалить</translation>
 <translation id="7881483672146086348">Просмотреть аккаунт</translation>
 <translation id="2392369802118427583">Активировать</translation>
-<translation id="8151638057146502721">Настроить</translation>
 <translation id="5920543303088087579">Администратор запретил подключаться к этой сети</translation>
 <translation id="1235458158152011030">Сохраненные сети</translation>
 <translation id="3003144360685731741">Предпочитаемые сети</translation>
@@ -2414,6 +2422,7 @@
 <translation id="7258619945375359543">Разрешите Ассистенту озвучивать рекомендации в зависимости от того, что находится на экране.</translation>
 <translation id="472896694312062378">"Окей, Brave Software"</translation>
 <translation id="6236033368436682108">Чтобы обратиться к Ассистенту, включите экран и скажите "Окей, Brave Software".</translation>
+<translation id="2482878487686419369">Уведомления</translation>
 <translation id="5355099869024327351">Разрешите Ассистенту показывать вам уведомления</translation>
 <translation id="1127216846847548354">Активация голосом</translation>
 <translation id="3506093155988721483">Запускайте Ассистента с помощью голоса вместо клавиатуры</translation>
@@ -2437,8 +2446,6 @@
 <translation id="16815041330799488">Не предоставлять сайтам доступ к тексту и изображениям, скопированным в буфер обмена</translation>
 <translation id="3668823961463113931">Обработчики</translation>
 <translation id="3227137524299004712">Микрофон</translation>
-<translation id="2482878487686419369">Уведомления</translation>
-<translation id="9219103736887031265">Картинки</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Обработчики платежей</translation>
@@ -2704,12 +2711,9 @@
 <translation id="6586451623538375658">Поменять местами кнопки мыши</translation>
 <translation id="221872881068107022">Прокрутка в обратную сторону</translation>
 <translation id="1510238584712386396">Панель запуска</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Diamond</translation>
 <translation id="89720367119469899">Отключить</translation>
-<translation id="5583640892426849032">Клавиша возврата (Backspace)</translation>
 <translation id="1938351510777341717">Внешняя клавиша Command</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Внешняя клавиша Meta</translation>
@@ -2766,13 +2770,11 @@
 <translation id="4863769717153320198">Выглядит как <ph name="WIDTH"/> x <ph name="HEIGHT"/> (разрешение по умолчанию)</translation>
 <translation id="1125550662859510761">Выглядит как <ph name="WIDTH"/> x <ph name="HEIGHT"/> (аппаратное разрешение)</translation>
 <translation id="3151786313568798007">Ориентация</translation>
-<translation id="7740996059027112821">Стандартный</translation>
 <translation id="55601339223879446">Подогнать границы рабочего стола под размер экрана</translation>
 <translation id="7974936243149753750">Каемка экрана</translation>
 <translation id="7758450972308449809">Настройте границы экрана</translation>
 <translation id="5608580678041221894">Чтобы двигать рамку кадрирования, нажимайте на следующие кнопки</translation>
 <translation id="2822634587701817431">Свернуть или развернуть</translation>
-<translation id="7765158879357617694">Переместить</translation>
 <translation id="6801435275744557998">Откалибровать сенсорный экран</translation>
 <translation id="6856623341093082836">Настроить точность сенсорного экрана</translation>
 <translation id="4598556348158889687">Управление хранилищем</translation>
@@ -2875,13 +2877,11 @@
 <translation id="8158441856257599022">Перейти в Интернет-магазин Brave</translation>
 <translation id="4617270414136722281">Параметры расширений</translation>
 <translation id="7152478047064750137">Расширению не требуются особые разрешения</translation>
-<translation id="8294431847097064396">Источник</translation>
 <translation id="8523849605371521713">Добавлено по правилу</translation>
 <translation id="5087249366037322692">Добавлено сторонней программой</translation>
 <translation id="6788210894632713004">Распакованное расширение</translation>
 <translation id="3798449238516105146">Версия</translation>
 <translation id="3838085852053358637">Ошибка загрузки</translation>
-<translation id="803771048473350947">Файл</translation>
 <translation id="6370021412472292592">Не удалось загрузить манифест.</translation>
 <translation id="2152198799932802652">Найдите полезные расширения и приложения в <ph name="BEGIN_LINK"/>Интернет-магазине Brave<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Описания нет</translation>
@@ -2953,7 +2953,6 @@
 <translation id="6313641880021325787">ВЫЙТИ ИЗ VR</translation>
 <translation id="2670429602441959756">На этой странице есть элементы, которые пока не поддерживаются в VR. Выход из VR-режима…</translation>
 <translation id="1802687198411089702">Страница не отвечает. Вы можете закрыть ее или дождаться ответа сервера.</translation>
-<translation id="9148058034647219655">Выйти</translation>
 <translation id="3987938432087324095">Извините, не слышно.</translation>
 <translation id="6923132443355966645">Прокрутить/нажать</translation>
 <translation id="6041155700700864984">Обычный режим</translation>

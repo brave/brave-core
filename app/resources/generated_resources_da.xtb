@@ -414,7 +414,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2327492829706409234">Aktivér app</translation>
 <translation id="93766956588638423">Reparer udvidelsen</translation>
 <translation id="3905761538810670789">Reparer appen</translation>
-<translation id="7246778686271518284">Braves netbutik</translation>
+<translation id="7246778686271518284">Brave Webshop</translation>
 <translation id="8808478386290700967">Webshop</translation>
 <translation id="488785315393301722">Vis detaljer</translation>
 <translation id="8962083179518285172">Skjul detaljer</translation>
@@ -492,7 +492,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="9135262959729602463">Log ind på Brave for at få dine adgangskoder på alle dine enheder.</translation>
 <translation id="8919275547519617350">Log ind, og aktivér synkronisering for at få alle dine adgangskoder på alle dine enheder.</translation>
 <translation id="8470028084415844044">Aktivér synkronisering for at få alle dine adgangskoder på alle dine enheder.</translation>
-<translation id="3987348946546879621">Gemte data</translation>
+<translation id="3987348946546879621">Sparede data</translation>
 <translation id="6228516488918914827">Hurtigere sideindlæsning</translation>
 <translation id="9137013805542155359">Vis oprindelig</translation>
 <translation id="71243390042171582">Opdateret for <ph name="MINUTES"/> min. siden</translation>
@@ -503,6 +503,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3861241522664181545">Siden er sat på pause.</translation>
 <translation id="6921709132208495314">Stop med at bruge data på denne side</translation>
 <translation id="1683850629661177840">Lite-tilstand gør nu browsing hurtigere på alle sider, herunder HTTPS.</translation>
+<translation id="8428213095426709021">Indstillinger</translation>
 <translation id="2724841811573117416">WebRTC-logfiler</translation>
 <translation id="1969654639948595766">WebRTC-tekstlogfiler (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC-hændelseslogfiler (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -553,7 +554,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5436510242972373446">Søg på <ph name="SITE_NAME"/>:</translation>
 <translation id="223106756035922488">Klik for at se dagens doodle</translation>
 <translation id="8676374126336081632">Ryd indtastning</translation>
-<translation id="2129873093718581193">Søg på Brave Software, eller indtast webadressen</translation>
+<translation id="2129873093718581193">Søg på Brave Software, eller angiv webadressen</translation>
 <translation id="6363797201514053536">Søg på Brave Software, eller angiv en webadresse</translation>
 <translation id="6078323886959318429">Tilføj genvej</translation>
 <translation id="6324916366299863871">Rediger genvej</translation>
@@ -680,6 +681,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7837776265184002579">Din startside blev ændret til <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Aktivér automatisk opdatering</translation>
 <translation id="6790428901817661496">Afspil</translation>
+<translation id="2121825465123208577">Tilpas størrelse</translation>
 <translation id="4514610446763173167">Afspil eller sæt video på pause</translation>
 <translation id="2631120081682787498">Er du sikker på, at du vil lukke denne fane?</translation>
 <translation id="111844081046043029">Er du sikker på, at du vil forlade denne side?</translation>
@@ -861,7 +863,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="2668128414154024727">Du kan til enhver tid tilpasse, hvilke oplysninger Brave Software indsamler, i <ph name="BEGIN_LINK"/>Indstillinger<ph name="END_LINK"/>.</translation>
 <translation id="6035247993547372482">Brave Software kan bruge indhold på de websites, du besøger, samt browseraktivitet og -interaktioner til at tilpasse Brave og andre Brave Software-tjenester som f.eks. Oversæt, Søgning og annoncer. Du kan tilpasse dette i Indstillinger.</translation>
 <translation id="741204030948306876">Ja tak</translation>
-<translation id="8428213095426709021">Indstillinger</translation>
 <translation id="2497852260688568942">Synkronisering er deaktiveret af din administrator.</translation>
 <translation id="562935524653278697">Din administrator har deaktiveret synkroniseringen af bogmærker, historik, adgangskoder og andre indstillinger.</translation>
 <translation id="2169062631698640254">Log ind alligevel</translation>
@@ -1211,6 +1212,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6005695835120147974">Medierouter</translation>
 <translation id="7787308148023287649">Vis på en anden skærm</translation>
 <translation id="7710568461918838723">&amp;Cast...</translation>
+<translation id="5537725057119320332">Cast</translation>
 <translation id="8970203673128054105">Se listen over cast-tilstande</translation>
 <translation id="1277908057200820621">Se listen over enheder</translation>
 <translation id="6685083257944113180">Stop, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
@@ -1240,7 +1242,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4081242589061676262">Filen kunne ikke castes.</translation>
 <translation id="4075639477629295004"><ph name="FILE_NAME"/> kunne ikke castes.</translation>
 <translation id="7255220508626648026">Caster: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">Cast</translation>
 <translation id="1272079795634619415">Stop</translation>
 <translation id="57838592816432529">Slå lyden fra</translation>
 <translation id="4992066212339426712">Slå lyden til</translation>
@@ -1383,6 +1384,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8834164572807951958">Medlemmer af "<ph name="DESTINATION_NAME"/>" får adgang til kopien af disse elementer.</translation>
 <translation id="3236289833370040187">Ejerskabet overføres til <ph name="DESTINATION_DOMAIN"/>.</translation>
 <translation id="6896758677409633944">Kopiér</translation>
+<translation id="7765158879357617694">Flyt</translation>
 <translation id="8249296373107784235">Annuller</translation>
 <translation id="6268185425799226387">Brave Software Drev</translation>
 <translation id="4425149324548788773">Mit drev</translation>
@@ -1391,7 +1393,9 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="981121421437150478">Offline</translation>
 <translation id="9034924485347205037">Linux-filer</translation>
 <translation id="3188257591659621405">Mine filer</translation>
+<translation id="9219103736887031265">Billeder</translation>
 <translation id="6146563240635539929">Videoer</translation>
+<translation id="3616113530831147358">Lyd</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Advarsel!<ph name="END_BOLD"/> Disse filer er midlertidige og kan slettes automatisk for at frigøre diskplads. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1 bytes</translation>
 <translation id="4871210892959306034">$1 KB</translation>
@@ -1399,14 +1403,19 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7221155467930685510">$1 GB</translation>
 <translation id="5039512255859636053">$1 TB</translation>
 <translation id="6840313690797192085">$1 PB</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">Mellemrum</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="5583640892426849032">Returtast</translation>
 <translation id="174937106936716857">Samlet antal filer</translation>
 <translation id="2425665904502185219">Samlet filstørrelse</translation>
 <translation id="1942765061641586207">Billedopløsning</translation>
 <translation id="4002066346123236978">Titel</translation>
 <translation id="4631887759990505102">Kunstner</translation>
+<translation id="2448312741937722512">Type</translation>
 <translation id="5145331109270917438">Dato for ændring</translation>
 <translation id="8487700953926739672">Tilgængelig offline</translation>
 <translation id="2230062665678605299">Mappen "<ph name="FOLDER_NAME"/>" kunne ikke oprettes. <ph name="ERROR_MESSAGE"/></translation>
@@ -1432,6 +1441,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
    <ph name="LINE_BREAKS"/>
    Luk alle filer i arkivet eller på den virtuelle disk, og prøv igen.</translation>
 <translation id="7794058097940213561">Formater enhed</translation>
+<translation id="8151638057146502721">Konfigurer</translation>
 <translation id="7928710562641958568">Skub enheden ud</translation>
 <translation id="7864662577698025113">Tilføj ny tjeneste</translation>
 <translation id="1943097386230153518">Installer ny tjeneste</translation>
@@ -1451,7 +1461,9 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5177526793333269655">Miniaturevisning</translation>
 <translation id="1035094536595558507">Diasvisning</translation>
 <translation id="7508545000531937079">Diasshow</translation>
+<translation id="9065203028668620118">Rediger</translation>
 <translation id="1430915738399379752">Udskriv</translation>
+<translation id="9148058034647219655">Afslut</translation>
 <translation id="38275787300541712">Tryk på Enter, når du er færdig</translation>
 <translation id="4880520557730313061">Automatisk justering</translation>
 <translation id="4924638091161556692">Justeret</translation>
@@ -1460,7 +1472,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7576032389798113292">6 x 4</translation>
 <translation id="8157939133946352716">7 x 5</translation>
 <translation id="2661146741306740526">16 x 9</translation>
-<translation id="2121825465123208577">Tilpas størrelse</translation>
 <translation id="3007214526293698309">Korriger formatforhold</translation>
 <translation id="7982283708762922719">Højde</translation>
 <translation id="4734518477988699048">Den indtastede værdi er ugyldig.</translation>
@@ -1581,6 +1592,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3609785682760573515">Synkroniserer…</translation>
 <translation id="1464724975715666883">1 fejl.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> fejl.</translation>
+<translation id="5317780077021120954">Gem</translation>
 <translation id="4284105660453474798">Er du sikker på, at du vil slette "$1"?</translation>
 <translation id="4580526846085481512">Er du sikker på, at du vil slette $1 elementer?</translation>
 <translation id="7953739707111622108">Denne enhed kan ikke åbnes, fordi dens filsystem ikke blev genkendt.</translation>
@@ -1620,6 +1632,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4568854179928172494">Ændringstidspunkt</translation>
 <translation id="943972244133411984">Ændret af</translation>
 <translation id="9099674669267916096">Sideantal</translation>
+<translation id="8294431847097064396">Kilde</translation>
 <translation id="1363028406613469049">Spor</translation>
 <translation id="1775381402323441512">Videooplysninger</translation>
 <translation id="3335337277364016868">År, det blev optaget</translation>
@@ -1679,6 +1692,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="3186202398303525187">Tillad, at Linux-apps åbner $1.</translation>
 <translation id="1603300902586586390">Tillad, at Linux-apps åbner $1-filer.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/>-fil</translation>
+<translation id="803771048473350947">Fil</translation>
 <translation id="895586998699996576">$1 billede</translation>
 <translation id="2853916256216444076">$1 video</translation>
 <translation id="7006844981395428048">$1 lyd</translation>
@@ -1745,7 +1759,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6827236167376090743">Denne video vil spille lige til juleaften.</translation>
 <translation id="6248400709929739064">Aktivér undertekster</translation>
 <translation id="7881969471599061635">Deaktiver undertekster</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Nogle af de indstillinger, der tilhører <ph name="PRIMARY_EMAIL"/>, deles med dig. Disse indstillinger påvirker kun din konto ved brug af samlet login fra flere konti.</translation>
 <translation id="5860491529813859533">Aktivér</translation>
 <translation id="1485141095922496924">Version <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1830,7 +1843,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="48704129375571883">Tilføj yderligere funktioner</translation>
 <translation id="7230787553283372882">Tilpas din tekststørrelse</translation>
 <translation id="214169863967063661">Åbn indstillingerne for udseende</translation>
-<translation id="3616113530831147358">Lyd</translation>
 <translation id="6793604637258913070">Fremhæv tekstmarkøren, når den vises eller flyttes</translation>
 <translation id="7376553024552204454">Fremhæv musemarkøren, når den bevæger sig</translation>
 <translation id="4150201353443180367">Skærm</translation>
@@ -1907,7 +1919,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5916664084637901428">Til</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> kontrollerer denne indstilling</translation>
 <translation id="6643016212128521049">Ryd</translation>
-<translation id="9065203028668620118">Rediger</translation>
 <translation id="8465252176946159372">Ikke gyldig</translation>
 <translation id="8647834505253004544">Ikke en gyldig webadresse</translation>
 <translation id="2149850907588596975">Adgangskoder og formularer</translation>
@@ -1919,7 +1930,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5659593005791499971">Mail</translation>
 <translation id="5762172915276660232">Indstillinger for kreditkort</translation>
 <translation id="4499718683476608392">Aktivér AutoFyld for kreditkort for at udfylde formularer med et enkelt klik</translation>
-<translation id="2448312741937722512">Type</translation>
 <translation id="9064275926664971810">Aktivér AutoFyld for at udfylde formularer med et enkelt klik</translation>
 <translation id="5029568752722684782">Slet kopi</translation>
 <translation id="2154484045852737596">Rediger kort</translation>
@@ -2066,7 +2076,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="5816434091619127343">De printerændringer, du har anmodet om, vil gøre printeren ubrugelig.</translation>
 <translation id="6504611359718185067">Opret forbindelse til internettet for at tilføje en printer</translation>
 <translation id="4972129977812092092">Rediger printer</translation>
-<translation id="5317780077021120954">Gem</translation>
 <translation id="5696679855467848181">Aktuel PPD-fil er i brug: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloudprinter</translation>
 <translation id="7754704193130578113">Spørg, hvor hver enkelt fil skal gemmes, inden download begynder</translation>
@@ -2087,6 +2096,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="706626672220389329">Der opstod en fejl ved anvendelse af deling. Den angivne deling anvendes allerede.</translation>
 <translation id="5985458664595100876">Ugyldigt webadresseformat. De understøttede formater er \\server\share og smb://server/share.</translation>
 <translation id="9147304170847707004">Godkendelsesmetode</translation>
+<translation id="7740996059027112821">Standard</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Dato og klokkeslæt</translation>
 <translation id="2059913712424898428">Tidszone</translation>
@@ -2185,7 +2195,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8452135315243592079">SIM-kort mangler</translation>
 <translation id="2617342710774726426">SIM-kortet er låst</translation>
 <translation id="4848518990323155912">Aktivér låsning af Sim-kort (det kræver pinkode at bruge mobildata)</translation>
-<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">Angiv pinkode til SIM-kort</translation>
 <translation id="8431909052837336408">Skift pinkode til SIM-kort</translation>
 <translation id="289644616180464099">SIM-kortet er låst.</translation>
@@ -2202,7 +2211,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8986362086234534611">Glem</translation>
 <translation id="7881483672146086348">Vis konto</translation>
 <translation id="2392369802118427583">Aktivér</translation>
-<translation id="8151638057146502721">Konfigurer</translation>
 <translation id="5920543303088087579">Din administrator har deaktiveret tilslutning til dette netværk</translation>
 <translation id="1235458158152011030">Kendte netværk</translation>
 <translation id="3003144360685731741">Foretrukne netværk</translation>
@@ -2413,6 +2421,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="7258619945375359543">Tillad, at Brave Software-assistenten giver forslag baseret på indholdet på skærmen</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">Få adgang til Brave Software-assistenten, hver gang du siger "Ok Brave Software", når skærmen er tændt</translation>
+<translation id="2482878487686419369">Underretninger</translation>
 <translation id="5355099869024327351">Tillad, at Brave Software Assistent viser dig underretninger</translation>
 <translation id="1127216846847548354">Stemmeaktivering</translation>
 <translation id="3506093155988721483">Brug tale i stedet for tastatur, når du starter Brave Software-assistenten</translation>
@@ -2436,8 +2445,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="16815041330799488">Tillad ikke, at websites kan se tekst og billeder, der er kopieret til udklipsholderen</translation>
 <translation id="3668823961463113931">Håndtering</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
-<translation id="2482878487686419369">Underretninger</translation>
-<translation id="9219103736887031265">Billeder</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Betalingshandlere</translation>
@@ -2592,7 +2599,7 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="1059855432287631118">Registrering af fingeraftryk</translation>
 <translation id="878068003854005405">Lad os komme i gang. Placer fingeren på sensoren.</translation>
 <translation id="176193854664720708">Fingeraftrykslæseren sidder i afbryderknappen. Tryk let på den med en finger.</translation>
-<translation id="7189965711416741966">Fingeraftryk er tilføjet.</translation>
+<translation id="7189965711416741966">Fingeraftrykket er tilføjet.</translation>
 <translation id="9220820413868316583">Løft fingeren, og prøv igen.</translation>
 <translation id="4534661889221639075">Prøv igen.</translation>
 <translation id="3645372836428131288">Flyt fingeren en smule for at registrere en anden del af fingeraftrykket.</translation>
@@ -2703,12 +2710,9 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6586451623538375658">Skift primær museknap</translation>
 <translation id="221872881068107022">Omvendt rulning</translation>
 <translation id="1510238584712386396">Appliste</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Diamant</translation>
 <translation id="89720367119469899">Escape</translation>
-<translation id="5583640892426849032">Returtast</translation>
 <translation id="1938351510777341717">Ekstern kommando</translation>
 <translation id="7969046989155602842">Kommando</translation>
 <translation id="585979798156957858">Ekstern metatast</translation>
@@ -2765,13 +2769,11 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="4863769717153320198">Ligner <ph name="WIDTH"/> x <ph name="HEIGHT"/> (standard)</translation>
 <translation id="1125550662859510761">Ligner <ph name="WIDTH"/> x <ph name="HEIGHT"/> (oprindelig)</translation>
 <translation id="3151786313568798007">Retning</translation>
-<translation id="7740996059027112821">Standard</translation>
 <translation id="55601339223879446">Tilpas grænserne for dit skrivebord inden for skærmvisningen</translation>
 <translation id="7974936243149753750">Overscan</translation>
 <translation id="7758450972308449809">Tilpas grænserne for din skærm</translation>
 <translation id="5608580678041221894">Tryk på følgende taster for at tilpasse eller flytte beskæringsområdet</translation>
 <translation id="2822634587701817431">Formindsk/udvid</translation>
-<translation id="7765158879357617694">Flyt</translation>
 <translation id="6801435275744557998">Kalibrer touchskærm</translation>
 <translation id="6856623341093082836">Konfigurer og juster nøjagtigheden af din touchskærm</translation>
 <translation id="4598556348158889687">Administration af lagerplads</translation>
@@ -2874,13 +2876,11 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="8158441856257599022">Se i Brave Webshop</translation>
 <translation id="4617270414136722281">Valgmuligheder for udvidelser</translation>
 <translation id="7152478047064750137">Denne udvidelse kræver ikke nogen særlige tilladelser</translation>
-<translation id="8294431847097064396">Kilde</translation>
 <translation id="8523849605371521713">Tilføjet af politik</translation>
 <translation id="5087249366037322692">Tilføjet af en tredjepart</translation>
 <translation id="6788210894632713004">Upakket udvidelse</translation>
 <translation id="3798449238516105146">Version</translation>
 <translation id="3838085852053358637">Udvidelsen kunne ikke indlæses</translation>
-<translation id="803771048473350947">Fil</translation>
 <translation id="6370021412472292592">Manifestet kunne ikke indlæses.</translation>
 <translation id="2152198799932802652">Find udvidelser og temaer i <ph name="BEGIN_LINK"/>Brave Webshop<ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Der er ingen beskrivelse</translation>
@@ -2952,7 +2952,6 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6313641880021325787">LUK VR</translation>
 <translation id="2670429602441959756">Denne side indeholder funktioner, der endnu ikke understøttes i VR. Afslutter...</translation>
 <translation id="1802687198411089702">Siden svarer ikke. Du kan vente på den eller afslutte.</translation>
-<translation id="9148058034647219655">Afslut</translation>
 <translation id="3987938432087324095">Det forstod jeg ikke.</translation>
 <translation id="6923132443355966645">Rul/klik</translation>
 <translation id="6041155700700864984">Luk fuld skærm</translation>

@@ -502,6 +502,7 @@
 <translation id="3861241522664181545">페이지가 일시중지되었습니다.</translation>
 <translation id="6921709132208495314">이 페이지에서 데이터 사용 중지</translation>
 <translation id="1683850629661177840">이제 라이트 모드를 사용하면 HTTPS를 포함한 모든 페이지에서 더욱 빨리 탐색할 수 있습니다.</translation>
+<translation id="8428213095426709021">설정</translation>
 <translation id="2724841811573117416">WebRTC 로그</translation>
 <translation id="1969654639948595766">WebRTC 텍스트 로그(<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">WebRTC 이벤트 로그(<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -679,6 +680,7 @@
 <translation id="7837776265184002579">홈페이지가 <ph name="URL"/>(으)로 변경되었습니다.</translation>
 <translation id="5442550868130618860">자동 업데이트 사용</translation>
 <translation id="6790428901817661496">재생</translation>
+<translation id="2121825465123208577">크기 조정</translation>
 <translation id="4514610446763173167">동영상 재생 또는 일시중지 전환</translation>
 <translation id="2631120081682787498">이 탭을 닫으시겠습니까?</translation>
 <translation id="111844081046043029">이 페이지에서 벗어나시겠습니까?</translation>
@@ -860,7 +862,6 @@
 <translation id="2668128414154024727"><ph name="BEGIN_LINK"/>설정<ph name="END_LINK"/>에서 언제든지 Brave Software에서 수집하는 정보를 맞춤설정할 수 있습니다.</translation>
 <translation id="6035247993547372482">Brave Software에서 Brave을 비롯한 번역, Brave Software 검색과 같은 기타 Brave Software 서비스 및 광고를 맞춤설정하기 위해 사용자가 방문한 사이트의 콘텐츠, 브라우저 활동 및 상호작용 기록을 사용할 수 있습니다. 이는 설정에서 변경할 수 있습니다.</translation>
 <translation id="741204030948306876">사용</translation>
-<translation id="8428213095426709021">설정</translation>
 <translation id="2497852260688568942">관리자가 동기화를 사용 중지했습니다.</translation>
 <translation id="562935524653278697">관리자가 북마크, 방문 기록, 비밀번호 및 기타 설정의 동기화를 사용 중지했습니다.</translation>
 <translation id="2169062631698640254">로그인</translation>
@@ -1210,6 +1211,7 @@
 <translation id="6005695835120147974">미디어 라우터</translation>
 <translation id="7787308148023287649">다른 화면에 표시</translation>
 <translation id="7710568461918838723">전송(&amp;C)...</translation>
+<translation id="5537725057119320332">전송</translation>
 <translation id="8970203673128054105">전송 모드 목록 보기</translation>
 <translation id="1277908057200820621">기기 목록 보기</translation>
 <translation id="6685083257944113180">중지, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
@@ -1239,7 +1241,6 @@
 <translation id="4081242589061676262">파일을 전송할 수 없음</translation>
 <translation id="4075639477629295004"><ph name="FILE_NAME"/>을(를) 전송할 수 없습니다.</translation>
 <translation id="7255220508626648026">전송: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">전송</translation>
 <translation id="1272079795634619415">중지</translation>
 <translation id="57838592816432529">음소거</translation>
 <translation id="4992066212339426712">음소거 해제</translation>
@@ -1311,7 +1312,7 @@
 <translation id="5869948122057593679">모든 창 닫기</translation>
 <translation id="7652808307838961528">사용자 수정, <ph name="PROFILE_NAME"/></translation>
 <translation id="6112952769866305444">사용자 수정, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
-<translation id="3294437725009624529">손님</translation>
+<translation id="3294437725009624529">게스트</translation>
 <translation id="475088594373173692">첫 번째 사용자</translation>
 <translation id="4535127706710932914">기본 프로필</translation>
 <translation id="4389091756366370506">사용자 <ph name="VALUE"/></translation>
@@ -1382,6 +1383,7 @@
 <translation id="8834164572807951958">'<ph name="DESTINATION_NAME"/>' 멤버에게 이 항목의 사본에 액세스할 수 있는 권한이 부여됩니다.</translation>
 <translation id="3236289833370040187">소유권이 <ph name="DESTINATION_DOMAIN"/>(으)로 이전됩니다.</translation>
 <translation id="6896758677409633944">복사</translation>
+<translation id="7765158879357617694">이동</translation>
 <translation id="8249296373107784235">중단</translation>
 <translation id="6268185425799226387">Brave Software 드라이브</translation>
 <translation id="4425149324548788773">내 드라이브</translation>
@@ -1390,7 +1392,9 @@
 <translation id="981121421437150478">오프라인</translation>
 <translation id="9034924485347205037">Linux 파일</translation>
 <translation id="3188257591659621405">내 파일</translation>
+<translation id="9219103736887031265">이미지</translation>
 <translation id="6146563240635539929">동영상</translation>
+<translation id="3616113530831147358">오디오</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>주의:<ph name="END_BOLD"/> 이 파일은 임시 파일이며 디스크 여유 공간을 확보하기 위해 자동으로 삭제될 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1바이트</translation>
 <translation id="4871210892959306034">$1KB</translation>
@@ -1398,14 +1402,19 @@
 <translation id="7221155467930685510">$1GB</translation>
 <translation id="5039512255859636053">$1TB</translation>
 <translation id="6840313690797192085">$1PB</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">공백</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="174937106936716857">전체 파일 수</translation>
 <translation id="2425665904502185219">전체 파일 크기</translation>
 <translation id="1942765061641586207">이미지 해상도</translation>
 <translation id="4002066346123236978">제목</translation>
 <translation id="4631887759990505102">아티스트</translation>
+<translation id="2448312741937722512">유형</translation>
 <translation id="5145331109270917438">수정된 날짜</translation>
 <translation id="8487700953926739672">오프라인으로 사용 가능</translation>
 <translation id="2230062665678605299">'<ph name="FOLDER_NAME"/>' 폴더를 생성할 수 없습니다. <ph name="ERROR_MESSAGE"/></translation>
@@ -1431,6 +1440,7 @@
    <ph name="LINE_BREAKS"/>
    아카이브 또는 가상 디스크에 있는 모든 파일을 닫은 다음 다시 시도해 보세요.</translation>
 <translation id="7794058097940213561">기기 포맷</translation>
+<translation id="8151638057146502721">구성</translation>
 <translation id="7928710562641958568">기기 꺼내기</translation>
 <translation id="7864662577698025113">새 서비스 추가</translation>
 <translation id="1943097386230153518">새 서비스 설치</translation>
@@ -1450,7 +1460,9 @@
 <translation id="5177526793333269655">미리보기 이미지 보기</translation>
 <translation id="1035094536595558507">슬라이드 보기</translation>
 <translation id="7508545000531937079">슬라이드쇼</translation>
+<translation id="9065203028668620118">수정</translation>
 <translation id="1430915738399379752">인쇄</translation>
+<translation id="9148058034647219655">나가기</translation>
 <translation id="38275787300541712">완료되면 Enter 키를 누르세요.</translation>
 <translation id="4880520557730313061">자동 보정</translation>
 <translation id="4924638091161556692">보정 완료</translation>
@@ -1459,7 +1471,6 @@
 <translation id="7576032389798113292">6x4</translation>
 <translation id="8157939133946352716">7x5</translation>
 <translation id="2661146741306740526">16x9</translation>
-<translation id="2121825465123208577">크기 조정</translation>
 <translation id="3007214526293698309">비율 고정</translation>
 <translation id="7982283708762922719">높이</translation>
 <translation id="4734518477988699048">입력 값이 올바르지 않습니다.</translation>
@@ -1580,6 +1591,7 @@
 <translation id="3609785682760573515">동기화 중...</translation>
 <translation id="1464724975715666883">오류가 1개 있습니다.</translation>
 <translation id="3495304270784461826">오류가 <ph name="COUNT"/>개 있습니다.</translation>
+<translation id="5317780077021120954">저장</translation>
 <translation id="4284105660453474798">'$1'을(를) 삭제하시겠습니까?</translation>
 <translation id="4580526846085481512">선택한 $1개의 항목을 삭제하시겠습니까?</translation>
 <translation id="7953739707111622108">파일 시스템이 인식되지 않아 이 기기를 열 수 없습니다.</translation>
@@ -1619,6 +1631,7 @@
 <translation id="4568854179928172494">수정한 시간</translation>
 <translation id="943972244133411984">수정한 사용자</translation>
 <translation id="9099674669267916096">페이지 수</translation>
+<translation id="8294431847097064396">출처</translation>
 <translation id="1363028406613469049">트랙</translation>
 <translation id="1775381402323441512">동영상 정보</translation>
 <translation id="3335337277364016868">녹음된 연도</translation>
@@ -1678,6 +1691,7 @@
 <translation id="3186202398303525187">Linux 앱에서 $1을(를) 열 수 있도록 허용합니다.</translation>
 <translation id="1603300902586586390">Linux 앱에서 $1개의 파일을 열 수 있도록 허용합니다.</translation>
 <translation id="4572815280350369984"><ph name="FILE_TYPE"/> 파일</translation>
+<translation id="803771048473350947">파일</translation>
 <translation id="895586998699996576">$1 이미지</translation>
 <translation id="2853916256216444076">$1 동영상</translation>
 <translation id="7006844981395428048">$1 오디오</translation>
@@ -1744,7 +1758,6 @@
 <translation id="6827236167376090743">이 동영상이 계속 반복 재생됩니다.</translation>
 <translation id="6248400709929739064">자막 사용</translation>
 <translation id="7881969471599061635">자막 사용 중지</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605"><ph name="PRIMARY_EMAIL"/>의 설정 중 일부가 나와 공유됩니다. 이러한 설정은 멀티 로그인을 사용하는 경우에만 계정에 적용됩니다.</translation>
 <translation id="5860491529813859533">사용</translation>
 <translation id="1485141095922496924">버전 <ph name="PRODUCT_VERSION"/>(<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1829,7 +1842,6 @@
 <translation id="48704129375571883">추가 기능 추가</translation>
 <translation id="7230787553283372882">텍스트 크기 맞춤설정</translation>
 <translation id="214169863967063661">표시 설정 열기</translation>
-<translation id="3616113530831147358">오디오</translation>
 <translation id="6793604637258913070">텍스트 캐럿이 나타나거나 이동할 때 이를 강조표시합니다.</translation>
 <translation id="7376553024552204454">이동 시 마우스 커서 강조표시</translation>
 <translation id="4150201353443180367">디스플레이</translation>
@@ -1906,7 +1918,6 @@
 <translation id="5916664084637901428">사용</translation>
 <translation id="1378613616312864539"><ph name="NAME"/>이(가) 이 설정을 제어함</translation>
 <translation id="6643016212128521049">삭제</translation>
-<translation id="9065203028668620118">수정</translation>
 <translation id="8465252176946159372">잘못된 값입니다.</translation>
 <translation id="8647834505253004544">올바른 웹 주소가 아닙니다.</translation>
 <translation id="2149850907588596975">비밀번호 및 양식</translation>
@@ -1918,7 +1929,6 @@
 <translation id="5659593005791499971">이메일</translation>
 <translation id="5762172915276660232">신용카드 설정</translation>
 <translation id="4499718683476608392">신용카드 자동 완성을 사용하여 클릭 한 번으로 양식을 작성합니다.</translation>
-<translation id="2448312741937722512">유형</translation>
 <translation id="9064275926664971810">클릭 한 번으로 양식을 작성하는 자동 완성 사용</translation>
 <translation id="5029568752722684782">사본 지우기</translation>
 <translation id="2154484045852737596">카드 수정</translation>
@@ -2065,7 +2075,6 @@
 <translation id="5816434091619127343">프린터 변경을 요청하면 프린터를 사용할 수 없게 됩니다.</translation>
 <translation id="6504611359718185067">프린터를 추가하려면 인터넷에 연결하세요.</translation>
 <translation id="4972129977812092092">프린터 수정</translation>
-<translation id="5317780077021120954">저장</translation>
 <translation id="5696679855467848181">현재 사용 중인 PPD 파일: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software 클라우드 프린트</translation>
 <translation id="7754704193130578113">다운로드 전에 각 파일의 저장 위치 확인</translation>
@@ -2086,6 +2095,7 @@
 <translation id="706626672220389329">공유를 마운트하는 중에 오류가 발생했습니다. 지정된 공유가 이미 마운트되었습니다.</translation>
 <translation id="5985458664595100876">URL 형식이 잘못되었습니다. \\server\share 및 smb://server/share 형식이 지원됩니다.</translation>
 <translation id="9147304170847707004">인증 방법</translation>
+<translation id="7740996059027112821">표준</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">날짜 및 시간</translation>
 <translation id="2059913712424898428">시간대</translation>
@@ -2184,7 +2194,6 @@
 <translation id="8452135315243592079">SIM 카드 없음</translation>
 <translation id="2617342710774726426">SIM 카드가 잠겨 있습니다.</translation>
 <translation id="4848518990323155912">SIM 카드 잠금 사용(모바일 데이터를 사용하려면 PIN 필요)</translation>
-<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">SIM PIN 입력</translation>
 <translation id="8431909052837336408">SIM PIN 변경</translation>
 <translation id="289644616180464099">SIM 카드가 잠겨 있습니다.</translation>
@@ -2201,7 +2210,6 @@
 <translation id="8986362086234534611">저장 안함</translation>
 <translation id="7881483672146086348">계정 보기</translation>
 <translation id="2392369802118427583">활성화</translation>
-<translation id="8151638057146502721">구성</translation>
 <translation id="5920543303088087579">관리자가 이 네트워크에 연결할 수 없도록 설정했습니다.</translation>
 <translation id="1235458158152011030">알려진 네트워크</translation>
 <translation id="3003144360685731741">기본 설정된 네트워크</translation>
@@ -2412,6 +2420,7 @@
 <translation id="7258619945375359543">어시스턴트가 화면에 표시된 내용을 기반으로 항목을 추천하도록 허용합니다.</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">화면이 켜져 있을 때 "Ok Brave Software"이라고 말하면 어시스턴트를 사용할 수 있습니다.</translation>
+<translation id="2482878487686419369">알림</translation>
 <translation id="5355099869024327351">어시스턴트에서 알림을 표시할 수 있도록 허용</translation>
 <translation id="1127216846847548354">음성 활성화</translation>
 <translation id="3506093155988721483">어시스턴트를 시작할 때 키보드 대신 음성을 사용합니다.</translation>
@@ -2435,8 +2444,6 @@
 <translation id="16815041330799488">사이트에서 클립보드에 복사된 텍스트 및 이미지를 확인하도록 허용하지 않음</translation>
 <translation id="3668823961463113931">핸들러</translation>
 <translation id="3227137524299004712">마이크</translation>
-<translation id="2482878487686419369">알림</translation>
-<translation id="9219103736887031265">이미지</translation>
 <translation id="7521387064766892559">자바스크립트</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">결제 핸들러</translation>
@@ -2702,12 +2709,9 @@
 <translation id="6586451623538375658">기본 마우스 버튼 전환</translation>
 <translation id="221872881068107022">역방향 스크롤</translation>
 <translation id="1510238584712386396">런처</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">다이아몬드</translation>
 <translation id="89720367119469899">Esc</translation>
-<translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">외부 명령어</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">외부 메타</translation>
@@ -2764,13 +2768,11 @@
 <translation id="4863769717153320198"><ph name="WIDTH"/>x<ph name="HEIGHT"/>(권장)처럼 보입니다.</translation>
 <translation id="1125550662859510761"><ph name="WIDTH"/>x<ph name="HEIGHT"/>(기본)처럼 보입니다.</translation>
 <translation id="3151786313568798007">방향</translation>
-<translation id="7740996059027112821">표준</translation>
 <translation id="55601339223879446">디스플레이에서 바탕화면 경계를 조정합니다.</translation>
 <translation id="7974936243149753750">오버스캔</translation>
 <translation id="7758450972308449809">디스플레이 경계를 조정합니다.</translation>
 <translation id="5608580678041221894">다음 키를 탭하여 자르기 영역을 조정하거나 이동하세요.</translation>
 <translation id="2822634587701817431">축소 / 확대</translation>
-<translation id="7765158879357617694">이동</translation>
 <translation id="6801435275744557998">터치스크린 보정</translation>
 <translation id="6856623341093082836">터치스크린 설정 및 정확도 조정</translation>
 <translation id="4598556348158889687">저장용량 관리</translation>
@@ -2873,13 +2875,11 @@
 <translation id="8158441856257599022">Brave 웹 스토어에서 보기</translation>
 <translation id="4617270414136722281">확장 프로그램 옵션</translation>
 <translation id="7152478047064750137">이 확장 프로그램에는 특별한 권한이 필요하지 않습니다</translation>
-<translation id="8294431847097064396">출처</translation>
 <translation id="8523849605371521713">정책에 의해 추가</translation>
 <translation id="5087249366037322692">타사 프로그램에서 추가</translation>
 <translation id="6788210894632713004">압축해제된 확장 프로그램</translation>
 <translation id="3798449238516105146">버전</translation>
 <translation id="3838085852053358637">확장 프로그램을 로드하지 못함</translation>
-<translation id="803771048473350947">파일</translation>
 <translation id="6370021412472292592">매니페스트를 로드할 수 없습니다.</translation>
 <translation id="2152198799932802652"><ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>에서 확장 프로그램과 테마를 찾아보세요</translation>
 <translation id="7272674038937250585">제공된 설명이 없음</translation>
@@ -2951,7 +2951,6 @@
 <translation id="6313641880021325787">VR 종료</translation>
 <translation id="2670429602441959756">이 페이지에는 아직 VR에서 지원되지 않는 기능이 있습니다. 종료합니다...</translation>
 <translation id="1802687198411089702">페이지가 응답하지 않습니다. 페이지가 응답할 때까지 기다리거나 종료할 수 있습니다.</translation>
-<translation id="9148058034647219655">나가기</translation>
 <translation id="3987938432087324095">죄송합니다. 인식하지 못했습니다.</translation>
 <translation id="6923132443355966645">스크롤/클릭</translation>
 <translation id="6041155700700864984">전체화면 종료</translation>
