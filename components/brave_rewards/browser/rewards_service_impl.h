@@ -65,8 +65,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void Init();
   void CreateWallet() override;
-  void GetWalletProperties() override;
-  void GetGrant(const std::string& lang, const std::string& paymentId) override;
+  void FetchWalletProperties() override;
+  void FetchGrant(const std::string& lang, const std::string& paymentId) override;
   void GetGrantCaptcha() override;
   void SolveGrantCaptcha(const std::string& solution) const override;
   std::string GetWalletPassphrase() const override;

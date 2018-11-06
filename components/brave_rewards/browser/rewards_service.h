@@ -43,11 +43,11 @@ class RewardsService : public KeyedService {
   ~RewardsService() override;
 
   virtual void CreateWallet() = 0;
-  virtual void GetWalletProperties() = 0;
+  virtual void FetchWalletProperties() = 0;
   virtual void GetContentSiteList(uint32_t start,
                                   uint32_t limit,
                                 const GetContentSiteListCallback& callback) = 0;
-  virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
   virtual void GetGrantCaptcha() = 0;
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
