@@ -25,7 +25,6 @@
 <translation id="6248988683584659830">Pengaturan pencarian</translation>
 <translation id="730042046912793465">Ini adalah</translation>
 <translation id="2055363275850890030">Jendela Pribadi</translation>
-<translation id="9133213713928851646">Brave tidak mengingat yang Anda lakukan di Jendela Pribadi. Situs yang Anda kunjungi tidak akan muncul di riwayat Anda dan kuki akan menghilang saat Anda selesai. Jendela Pribadi tidak membuat Anda sepenuhnya anonim saat daring.</translation>
 <translation id="8760415064721320867">Jendela Pribadi dengan Tor</translation>
 <translation id="4844209912525464363">Brave tidak pernah mengingat yang Anda lakukan di Jendela Pribadi. Dengan Tor, penjelajahan Anda juga tersembunyi dari ISP atau bos Anda, dan alamat IP Anda tersembunyi dari situs yang Anda kunjungi.</translation>
 <translation id="778096729652828897">Pelajari lebih lanjut tentang Jendela Pribadi dengan Tor</translation>
@@ -38,14 +37,12 @@
 <translation id="1129265576134014816">Jendela Pribadi ini lebih pribadi</translation>
 <translation id="805807983419360524">dengan Tor</translation>
 <translation id="8958799246752641148">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi dengan mengirim rute penjelajahan Anda melalui beberapa peladen Tor sebelum mencapai tujuan Anda. Sambungan ini dienkripsi, jadi penyedia layanan Internet atau bos Anda tidak dapat melihat situs yang Anda kunjungi. Tor dapat memperlambat penjelajahan dan beberapa situs mungkin tidak bekerja sama sekali.</translation>
-<translation id="520608572871993342">Menggunakan Tab Pribadi hanya mengubah yang Brave lakukan pada perangkat Anda — ini tidak mengubah perilaku pihak lain. Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi, dan menyembunyikan situs yang Anda kunjungi dari penyedia layanan Internet atau bos Anda. Buka Jendela Pribadi dengan Tor dari menu atau dengan pintasan Alt+Shift+N atau Option+Shift+N.</translation>
 <translation id="6975708438781948564">Pelajari lebih lanjut tentang Tor di Brave</translation>
 <translation id="1869685517625607604">Total Iklan Diblokir:</translation>
 <translation id="6200814343085745765">Pemblokir Iklan Regional:</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
-<translation id="764012553571385542">Brave lebih dari sekadar peramban. Mari kami tunjukkan cara memaksimalkannya</translation>
 <translation id="6001839398155993679">Mulai</translation>
 <translation id="8050847734948770789">Aktifkan Brave Rewards</translation>
 <translation id="2710310654441838823">Brave Rewards adalah sebuah cara berpikir yang baru mengenai cara kerja web. Dapatkan hadiah untuk menonton iklan yang disesuaikan dengan privasi Anda, dan dukung pembuat konten favorit Anda selagi menonton.</translation>
@@ -54,7 +51,6 @@
 <translation id="5521187896304743452">Brave membuatnya mudah untuk menyiapkan peramban Anda dengan mengimpor markah dan setelan dari peramban lain yang terpasang di komputer Anda.</translation>
 <translation id="4138981897709579987">Impor Sekarang</translation>
 <translation id="9152220852742774324">Kelola setelan perisai Anda</translation>
-<translation id="110988439043625224">Sesuaikan dan pantau tingkatan perlindungan Anda dengan mengklik logo Brave di bilah alat. Kelola setelan perisai global Anda di panel preferensi</translation>
 <translation id="3366308997091824722">Setelan Perisai</translation>
 <translation id="7024124499777560832">Ubahsuai pengaturan Anda</translation>
 <translation id="2498783234010887316">Setelan tab, tampilan, ekstensi, dan riwayat dapat diatur di panel preferensi. Anda mungkin menemukan tema gelap di sana ;)</translation>
@@ -100,12 +96,10 @@
 <translation id="7841456038054167122">Masukkan ulang kunci atau coba kunci lain.</translation>
 <translation id="2195074481553016770">Sedikit lagi…</translation>
 <translation id="5254740304961202261">Buktikan bahwa Anda manusia!</translation>
-<translation id="1387881035954376289">Hmmm…belum.</translation>
 <translation id="7510166204621526816">Peladen Brave Rewards tidak merespon. Kami akan memperbaiki ini secepat mungkin.</translation>
 <translation id="2323069945529668668">Aduh!</translation>
 <translation id="5094577350232361255">tentang</translation>
 <translation id="4918086044614829423">Terima</translation>
-<translation id="6832986780040139899">©2016 –2018 Brave Software. Brave adalah merek dagang terdaftar dari Brave Software. Nama situs dapat berupa merek dagang atau merek dagang terdaftar dari pemilik situs.</translation>
 <translation id="9026369588205476247">Untuk melindungi privasi Anda, laporan Brave Rewards ini tidak simpan, direkam, atau dicatat di mana pun selain di perangkat Anda (komputer ini). Ini tidak dapat diambil kembali dari Brave saat ada kehilangan data di perangkat Anda.</translation>
 <translation id="1036277985068412734">tambah dana</translation>
 <translation id="4496990471549986619">Pertanyaan Umum</translation>
@@ -253,7 +247,6 @@
 <translation id="8446884382197647889">Pelajari Lebih Lanjut</translation>
 <translation id="4083384190339959182">Kami memberikan Brave Payments peningkatan besar.</translation>
 <translation id="5395851053710553429">Bersiap untuk merasakan Internet generasi berikutnya.</translation>
-<translation id="880341991877949255">Dengan peramban lama Anda, Anda membayar untuk menjelajah web dengan melihat iklan dengan atensi Anda yang berharga. Anda menghabiskan waktu berharga Anda mengunduh teknologi iklan yang menyerbu dan mengirim data pribadi Anda ke pengiklan — tanpa persetujuan Anda.</translation>
 <translation id="2549982302631665116">Hari ini Brave menyambut Anda ke Internet yang baru. Salah satu yang menghargai waktu Anda, menjaga data personal Anda tetap pribadi, dan Anda sungguh mendapatkan bayaran untuk atensi Anda.</translation>
 <translation id="3780605330121608425">Dompet Anda</translation>
 </translationbundle>

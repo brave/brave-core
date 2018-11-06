@@ -504,7 +504,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3861241522664181545">Se pausó la página.</translation>
 <translation id="6921709132208495314">Dejar de usar datos en esta página</translation>
 <translation id="1683850629661177840">El modo básico ahora permite navegar de forma más rápida por todas las páginas, incluidas las que tienen el protocolo HTTPS.</translation>
-<translation id="8428213095426709021">Ajustes</translation>
+<translation id="8428213095426709021">Configuración</translation>
 <translation id="2724841811573117416">Registros de WebRTC</translation>
 <translation id="1969654639948595766">Registros de texto de WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">Registros de acontecimientos de WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -515,8 +515,8 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6458701200018867744">No se pudo realizar la descarga (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="5946591249682680882">ID de informe: <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
 <translation id="1737968601308870607">Incluir error</translation>
-<translation id="3650845953328929506">Subida de Bitácora (Log) pendiente.</translation>
-<translation id="1818913467757368489">Subida de registro en camino.</translation>
+<translation id="3650845953328929506">La carga del registro está pendiente.</translation>
+<translation id="1818913467757368489">La carga del registro está en curso.</translation>
 <translation id="1188807932851744811">No se cargó el registro.</translation>
 <translation id="4688036121858134881">ID de registro local: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
 <translation id="7497981768003291373">No capturaste ningún registro de texto de WebRTC recientemente.</translation>
@@ -565,7 +565,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="4416582610654027550">Escribe una URL válida</translation>
 <translation id="2806891468525657116">El acceso directo ya existe</translation>
 <translation id="394183848452296464">No se puede crear el acceso directo</translation>
-<translation id="329703603001918157">No se puede editar el atajo</translation>
+<translation id="329703603001918157">No se puede editar el acceso directo</translation>
 <translation id="6732900235521116609">No se puede quitar el acceso directo</translation>
 <translation id="7109543803214225826">Se quitó el acceso directo</translation>
 <translation id="8017679124341497925">Se editó el acceso directo</translation>
@@ -682,6 +682,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="7837776265184002579">Tu página principal se cambió a <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Activar la actualización automática</translation>
 <translation id="6790428901817661496">Reproducir</translation>
+<translation id="2121825465123208577">Ajustar tamaño</translation>
 <translation id="4514610446763173167">Reproduce o pausa el video</translation>
 <translation id="2631120081682787498">¿Realmente quieres cerrar esta pestaña?</translation>
 <translation id="111844081046043029">¿Estás seguro de que deseas abandonar esta página?</translation>
@@ -1212,6 +1213,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6005695835120147974">Router multimedia</translation>
 <translation id="7787308148023287649">Mostrar en otra pantalla</translation>
 <translation id="7710568461918838723">&amp;Transmitir…</translation>
+<translation id="5537725057119320332">Transmitir</translation>
 <translation id="8970203673128054105">Ver la lista de modos de transmisión</translation>
 <translation id="1277908057200820621">Ver lista de dispositivos</translation>
 <translation id="6685083257944113180">Detener, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
@@ -1241,7 +1243,6 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="4081242589061676262">No se puede transmitir el archivo</translation>
 <translation id="4075639477629295004">No se puede transmitir <ph name="FILE_NAME"/>.</translation>
 <translation id="7255220508626648026">Transmitiendo: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">Transmitir</translation>
 <translation id="1272079795634619415">Interrumpir</translation>
 <translation id="57838592816432529">Silenciar</translation>
 <translation id="4992066212339426712">Dejar de silenciar</translation>
@@ -1404,14 +1405,19 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7221155467930685510">$1 GB</translation>
 <translation id="5039512255859636053">$1 TB</translation>
 <translation id="6840313690797192085">$1 PB</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">Brave Software Space</translation>
+<translation id="8179976553408161302">Intro</translation>
+<translation id="5583640892426849032">Tecla de retroceso</translation>
 <translation id="174937106936716857">Cantidad total de archivos</translation>
 <translation id="2425665904502185219">Tamaño total de archivos</translation>
 <translation id="1942765061641586207">Resolución de imagen</translation>
 <translation id="4002066346123236978">Título</translation>
 <translation id="4631887759990505102">Artista</translation>
+<translation id="2448312741937722512">Tipo</translation>
 <translation id="5145331109270917438">Fecha de modificación</translation>
 <translation id="8487700953926739672">Disponible sin conexión</translation>
 <translation id="2230062665678605299">No se puede crear la carpeta "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
@@ -1468,7 +1474,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="7576032389798113292">6 x 4</translation>
 <translation id="8157939133946352716">7 x 5</translation>
 <translation id="2661146741306740526">16 x 9</translation>
-<translation id="2121825465123208577">Ajustar tamaño</translation>
 <translation id="3007214526293698309">Fijar proporción</translation>
 <translation id="7982283708762922719">Altura</translation>
 <translation id="4734518477988699048">El valor de entrada no es válido.</translation>
@@ -1480,7 +1485,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6556866813142980365">Rehacer</translation>
 <translation id="3144126448740580210">LISTO</translation>
 <translation id="2453576648990281505">Ya existe el archivo.</translation>
-<translation id="2631006050119455616">Guardado</translation>
 <translation id="5158593464696388225">Se produjo un error al guardar la imagen.</translation>
 <translation id="2787047795752739979">Sobrescribir en el original</translation>
 <translation id="8775404590947523323">Los cambios se guardan automáticamente.<ph name="BREAKS"/>Para mantener una copia de la imagen original, desactiva la opción Sobrescribir en el original.</translation>
@@ -1757,7 +1761,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6827236167376090743">Este video seguirá reproduciéndose sin parar.</translation>
 <translation id="6248400709929739064">Habilitar subtítulos</translation>
 <translation id="7881969471599061635">Inhabilitar subtítulos</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Algunas opciones de configuración que pertenecen a <ph name="PRIMARY_EMAIL"/> están compartidas contigo. Estas opciones solo se aplican a tu cuenta cuando se utiliza el acceso múltiple.</translation>
 <translation id="5860491529813859533">Activar</translation>
 <translation id="1485141095922496924">Versión <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1929,13 +1932,12 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="5659593005791499971">Correo electrónico</translation>
 <translation id="5762172915276660232">Configuración de tarjetas de crédito</translation>
 <translation id="4499718683476608392">Habilita Autocompletar datos de tarjetas de crédito para llenar formularios con un solo clic</translation>
-<translation id="2448312741937722512">Tipo</translation>
 <translation id="9064275926664971810">Habilita Autocompletar para llenar formularios con un solo clic</translation>
 <translation id="5029568752722684782">Borrar la copia</translation>
 <translation id="2154484045852737596">Editar tarjeta</translation>
 <translation id="5087580092889165836">Agregar tarjeta</translation>
-<translation id="7284555534810614828">Grabar la tarjeta para utilizar Brave Pay</translation>
-<translation id="6281511959351052816">Guardar tarjetas para usar en Brave Pay</translation>
+<translation id="7284555534810614828">Guardar tarjeta para usar en Brave Software Pay</translation>
+<translation id="6281511959351052816">Guardar las tarjetas para usar en Brave Software Pay</translation>
 <translation id="1904518222538904133">1 de tus tarjetas solo se puede usar en este dispositivo</translation>
 <translation id="8065485338434000013">Algunas de tus tarjetas solo se pueden usar en este dispositivo</translation>
 <translation id="4807098396393229769">Nombre en la tarjeta</translation>
@@ -2078,12 +2080,11 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4972129977812092092">Editar impresora</translation>
 <translation id="5696679855467848181">Archivo PPD actualmente en uso: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
-<translation id="5646376287012673985">Ubicación</translation>
 <translation id="7754704193130578113">Pedir ubicación antes de la descarga</translation>
 <translation id="5713072761819014678">Desconectar la cuenta de Brave Software Drive</translation>
 <translation id="486635084936119914">Abre determinados tipos de archivo después de descargarlos</translation>
-<translation id="3653160965917900914">Network File Shares</translation>
-<translation id="5763315388120433852">Configura o administra "Network File Shares".</translation>
+<translation id="3653160965917900914">Archivos compartidos de red</translation>
+<translation id="5763315388120433852">Configura o administra archivos compartidos de red.</translation>
 <translation id="2367199180085172140">Agregar uso compartido del archivo</translation>
 <translation id="247051149076336810">URL de archivos compartidos</translation>
 <translation id="5247051749037287028">Nombre comercial (opcional)</translation>
@@ -2097,6 +2098,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="706626672220389329">Se produjo un error al activar el recurso compartido porque ya está activado.</translation>
 <translation id="5985458664595100876">El formato de la URL no es válido. Los formatos compatibles son \\server\share y smb://server/share.</translation>
 <translation id="9147304170847707004">Método de autenticación</translation>
+<translation id="7740996059027112821">Estándar</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="3101709781009526431">Fecha y hora</translation>
 <translation id="2059913712424898428">Zona horaria</translation>
@@ -2195,7 +2197,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8452135315243592079">Falta la tarjeta SIM</translation>
 <translation id="2617342710774726426">La tarjeta SIM está bloqueada</translation>
 <translation id="4848518990323155912">Habilitar el bloqueo de la tarjeta SIM (se requiere el PIN para usar los datos móviles)</translation>
-<translation id="8179976553408161302">Intro</translation>
 <translation id="5075131525758602494">Ingresar el PIN de la tarjeta SIM</translation>
 <translation id="8431909052837336408">Cambiar el PIN de la tarjeta SIM</translation>
 <translation id="289644616180464099">La tarjeta SIM está bloqueada</translation>
@@ -2395,7 +2396,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
 <translation id="3407837288045706722">Para obtener más opciones de configuración relacionadas con la privacidad, la seguridad y la recopilación de datos, visita <ph name="BEGIN_LINK"/>Sincronización y personalización<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Para obtener más opciones de configuración relacionadas con la privacidad, la seguridad y la recopilación de datos, visita <ph name="BEGIN_LINK"/>Sincronización y servicios<ph name="END_LINK"/></translation>
-<translation id="6438234780621650381">Reestablecer parámetros</translation>
 <translation id="5293170712604732402">Permite restaurar la configuración a los valores predeterminados originales</translation>
 <translation id="892706138619340876">Algunas opciones de configuración se restablecieron</translation>
 <translation id="2334029754052191847">Brave detectó que otro programa dañó algunas opciones de configuración, por lo que la restableció a los valores predeterminados.</translation>
@@ -2712,12 +2712,9 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="6586451623538375658">Cambiar el botón principal del mouse</translation>
 <translation id="221872881068107022">Invertir desplazamiento</translation>
 <translation id="1510238584712386396">Selector</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Bloq Mayús</translation>
 <translation id="1114202307280046356">Diamante</translation>
 <translation id="89720367119469899">Esc</translation>
-<translation id="5583640892426849032">Tecla de retroceso</translation>
 <translation id="1938351510777341717">Tecla externa Comando</translation>
 <translation id="7969046989155602842">Comando</translation>
 <translation id="585979798156957858">Tecla externa Meta</translation>
@@ -2774,7 +2771,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4863769717153320198">Resolución: <ph name="WIDTH"/> × <ph name="HEIGHT"/> (predeterminada)</translation>
 <translation id="1125550662859510761">Resolución: <ph name="WIDTH"/> × <ph name="HEIGHT"/> (nativa)</translation>
 <translation id="3151786313568798007">Orientación</translation>
-<translation id="7740996059027112821">Estándar</translation>
 <translation id="55601339223879446">Ajustar los límites de tu escritorio en la pantalla</translation>
 <translation id="7974936243149753750">Desajuste de dimensiones</translation>
 <translation id="7758450972308449809">Ajusta los límites de la pantalla</translation>

@@ -22,7 +22,6 @@
 <translation id="59174027418879706">מאופשר</translation>
 <translation id="4176463684765177261">מושבת</translation>
 <translation id="7207456302801184289">ברוכים הבאים ל-Brave</translation>
-<translation id="764012553571385542">Brave הוא הרבה יותר מאשר דפדפן. בוא נראה לכם איך להפיק ממנו את המיטב</translation>
 <translation id="6001839398155993679">בואו נתחיל</translation>
 <translation id="8050847734948770789">הפעל תגמולי גלישה</translation>
 <translation id="2710310654441838823">Brave Rewards היא דרך חדשה לתפוס איך האינטרנט פועל. קבלו תגמולים עבור צפייה בפרסומות מכבדות פרטיות, ותמכו ביוצרי התוכן המועדפים עליכם תוך כדי.</translation>
@@ -31,7 +30,6 @@
 <translation id="5521187896304743452">Brave מקל על הגדרת הסביבה הרגילה שלך על ידי ייבוא סימניות והגדרות מדפדפנים אחרים המותקנים במחשב שלכם.</translation>
 <translation id="4138981897709579987">לייבא עכשיו</translation>
 <translation id="9152220852742774324">נהלו את הגדרות המגן שלכם</translation>
-<translation id="110988439043625224">התאימו ועקבו אחר רמת ההגנה שלכם על ידי לחיצה על הלוגו של Brave בסרגל הכלים. נהלו את הגדרות ה-Global Shield שלכם בפאנל ההגדרות</translation>
 <translation id="3366308997091824722">הגדרות מגן:</translation>
 <translation id="7024124499777560832">התאמה אישית של ההעדפות</translation>
 <translation id="2498783234010887316">ניתן להגדיר כרטיסיות, מראה, הרחבות והיסטוריה בלוח ההעדפות. אולי אפילו  תמצאו תצוגה כהה שם ;)</translation>
@@ -59,7 +57,7 @@
 <translation id="1199044745726588100">5 שניות</translation>
 <translation id="4045581694057451126">8 שניות</translation>
 <translation id="8610523985422563960">דקה</translation>
-<translation id="7521774480426463961">אפשרו קבלת טיפים על פוסטים שעשיתם להם \'לייק\'</translation>
+<translation id="7521774480426463961">אפשרו קבלת טיפים על פוסטים שעשיתם להם 'לייק'</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">טוויטר</translation>
 <translation id="2788596505277705686">{{balance}} BAT שוחזרו. מפתח הארנק שלכם אומת ונטען בהצלחה.</translation>
@@ -67,11 +65,9 @@
 <translation id="7841456038054167122">אנא הכניסו מחדש את המפתחות או נסו מפתחות שונים.</translation>
 <translation id="2195074481553016770">כמעט שם</translation>
 <translation id="5254740304961202261">הוכיחו שאתם אנושיים!</translation>
-<translation id="1387881035954376289">המממ... לא בדיוק.</translation>
 <translation id="2323069945529668668">אוי לא!</translation>
 <translation id="5094577350232361255">אודות</translation>
 <translation id="4918086044614829423">הרשה</translation>
-<translation id="6832986780040139899">תוכנת Brave. Brave הוא סימן מסחרי רשום של Brave Software. שמות אתרים עשויים להיות סימנים מסחריים או סימנים מסחריים רשומים של בעל האתר.</translation>
 <translation id="9026369588205476247">על מנת להגן על הפרטיות שלכם, הצהרה זו של Brave Rewards לא נשמרת, רשומה או מתועדת בשום מקום פרט למכשיר שלך (מחשב זה). לא ניתן לשחזר אותה מ-Brave במקרה של אובדן נתונים במכשירכם.</translation>
 <translation id="1036277985068412734">הוסיפו כסף</translation>
 <translation id="4496990471549986619">שאלות ותשובות</translation>
@@ -103,7 +99,7 @@
 <translation id="8003573781961874199">הורידו כקובץ PDF</translation>
 <translation id="8764029012618014430">הפעל טיפים</translation>
 <translation id="3412655388715513818">מלבד אתר זה</translation>
-<translation id="418343137736963579">המספר הכולל של האתרים שאין באפשרותכם \"לתרום להם אוטומטית\":</translation>
+<translation id="418343137736963579">המספר הכולל של האתרים שאין באפשרותכם "לתרום להם אוטומטית":</translation>
 <translation id="1759104587873258696">פג תוקף ב-</translation>
 <translation id="6149218349077925111">עבור</translation>
 <translation id="7314491422865740556">Tokens שפג תוקפם לפני השימוש יוחזרו באופן אוטומטי למאגר גידול המשתמשים של Brave.</translation>

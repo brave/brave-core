@@ -22,7 +22,6 @@
 <translation id="59174027418879706">有効化済み</translation>
 <translation id="4176463684765177261">無効</translation>
 <translation id="7207456302801184289">Braveへようこそ</translation>
-<translation id="764012553571385542">Braveはただのブラウザではありません。最大限に活躍するためにも、その機能をご紹介しましょう。</translation>
 <translation id="6001839398155993679">さあ始めましょう</translation>
 <translation id="8050847734948770789">Brave Rewardsを有効にする</translation>
 <translation id="2710310654441838823">Braveリワードは、ウェブサイトの仕組みに関する新発想です。プライバシー重視型の広告から報酬を得て、お気に入りのコンテンツクリエイターを支援します。</translation>
@@ -31,7 +30,6 @@
 <translation id="5521187896304743452">Braveでは、インストール済みの他ブラウザからブックマークや設定をインポートできるため、使い慣れた使用環境が簡単に再現できます。</translation>
 <translation id="4138981897709579987">今すぐインポート</translation>
 <translation id="9152220852742774324">シールド機能の設定</translation>
-<translation id="110988439043625224">ツールバーのBraveロゴをクリックして保護レベルを調整、追跡しましょう。設定パネルでグローバルシールドの設定を管理</translation>
 <translation id="3366308997091824722">シールド設定</translation>
 <translation id="7024124499777560832">設定を変更</translation>
 <translation id="2498783234010887316">プリファレンスパネルで、タブ、見た目、拡張、履歴の設定を構成できます。そこでは、暗いテーマも見つかります ;)</translation>
@@ -67,11 +65,9 @@
 <translation id="7841456038054167122">キーを再入力または別のキーを入力してください。</translation>
 <translation id="2195074481553016770">もう少しです…</translation>
 <translation id="5254740304961202261">人であることを証明してください！</translation>
-<translation id="1387881035954376289">うーん、イマイチ。</translation>
 <translation id="2323069945529668668">おっと！</translation>
 <translation id="5094577350232361255">について</translation>
 <translation id="4918086044614829423">承諾</translation>
-<translation id="6832986780040139899">©2016 –2018 Brave ソフトウェア。BraveはBrave Softwareの登録商標です。サイト名は、サイト所有者の商標または登録商標です。</translation>
 <translation id="9026369588205476247">プライバシーの保護のため、このBrave Rewardsステートメントは保存、記録、またはあなたのデバイス（このコンピュータ）以外の場所に保管されません。万が一あなたのデバイスからデータが損なわれた場合、Brave側から再発行することはできません。</translation>
 <translation id="1036277985068412734">資金を追加する</translation>
 <translation id="4496990471549986619">よくある質問</translation>

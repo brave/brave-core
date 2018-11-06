@@ -504,6 +504,7 @@
 <translation id="3861241522664181545">تم إيقاف تحميل الصفحة مؤقتًا.</translation>
 <translation id="6921709132208495314">إيقاف استخدام البيانات في هذه الصفحة</translation>
 <translation id="1683850629661177840">‏يؤدي الوضع البسيط إلى التصفُّح بشكلٍ أسرع في جميع الصفحات، بما فيها HTTPS.</translation>
+<translation id="8428213095426709021">الإعدادات</translation>
 <translation id="2724841811573117416">‏سجلات WebRTC</translation>
 <translation id="1969654639948595766">‏سجلّات WebRTC النصية (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">‏سجلّات أحداث WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -681,6 +682,7 @@
 <translation id="7837776265184002579">تم تغيير صفحتك الرئيسية إلى <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">تفعيل التحديث التلقائي</translation>
 <translation id="6790428901817661496">التشغيل</translation>
+<translation id="2121825465123208577">تغيير الحجم</translation>
 <translation id="4514610446763173167">تبديل الفيديو لتشغيله أو إيقافه مؤقتًا</translation>
 <translation id="2631120081682787498">هل تريد حقًا إغلاق علامة التبويب هذه؟</translation>
 <translation id="111844081046043029">هل تريد فعلًا مغادرة هذه الصفحة؟</translation>
@@ -798,7 +800,7 @@
 <translation id="5774515636230743468">البيان:</translation>
 <translation id="7003339318920871147">قواعد بيانات الويب</translation>
 <translation id="5338503421962489998">تخزين محلي</translation>
-<translation id="7773726648746946405">سعة تخزين الجلسة</translation>
+<translation id="7773726648746946405">مساحة تخزين الجلسة</translation>
 <translation id="5390284375844109566">قاعدة بيانات مفهرسة</translation>
 <translation id="3009779501245596802">قواعد بيانات مفهرسة</translation>
 <translation id="6509207748479174212">ترخيص الوسائط</translation>
@@ -811,7 +813,7 @@
 <translation id="6135622770221372891">معرّفات القنوات</translation>
 <translation id="1234808891666923653">عمال الخدمة</translation>
 <translation id="3432762828853624962">العمال المشتركون</translation>
-<translation id="2927017729816812676">سعة التخزين لذاكرة التخزين المؤقت</translation>
+<translation id="2927017729816812676">مساحة التخزين لذاكرة التخزين المؤقت</translation>
 <translation id="747459581954555080">استرداد الكل</translation>
 <translation id="5298219193514155779">مظهر أنشأه</translation>
 <translation id="8251578425305135684">تمت إزالة الصورة المصغّرة.</translation>
@@ -844,10 +846,10 @@
 <translation id="7988117629517051942">‏الحصول على مزيد من ميزات Brave Software الذكية</translation>
 <translation id="5596627076506792578">خيارات إضافية</translation>
 <translation id="4419556793104466535">التحكُّم في المزامنة والتخصيص والمزيد</translation>
-<translation id="184568702928428857">‏تم تغيير الإعدادات التي تتحكَّم في المزامنة والتخصيص وخدمات Brave Software الأخرى في Brave. قد يؤثر هذا في إعداداتك الحالية.</translation>
+<translation id="184568702928428857">‏تم تغيير الإعدادات التي تتحكَّم في المزامنة والتخصيص وخدمات Brave Software الأخرى في Brave. قد تطال هذه التغييرات إعداداتك الحالية.</translation>
 <translation id="4192273449750167573">مراجعة الإعدادات في الشاشة التالية</translation>
 <translation id="685040365210406336">عدم إجراء أي تغييرات</translation>
-<translation id="6418273007044911016">‏لن تتغير البيانات التي تزامنها مع Brave Software والميزات التي تستخدمها.</translation>
+<translation id="6418273007044911016">‏لن تتغيّر الميزات التي تستخدمها والبيانات التي تزامنها مع Brave Software.</translation>
 <translation id="8372733498235009300">‏تفعيل المزامنة والتخصيص وخدمات Brave Software الأخرى</translation>
 <translation id="8340964510643644301">‏يمكنك تخصيص هذا في أي وقت في إعدادات Brave.</translation>
 <translation id="3149880132460839085">‏مزامنة Brave</translation>
@@ -862,7 +864,6 @@
 <translation id="2668128414154024727">‏يمكنك تخصيص المعلومات التي تجمعها Brave Software في <ph name="BEGIN_LINK"/>الإعدادات<ph name="END_LINK"/> في أي وقت.</translation>
 <translation id="6035247993547372482">‏قد تستخدم Brave Software محتوى المواقع الإلكترونية التي تزورها، بالإضافة إلى نشاط المتصفِّح وتفاعلاته لتخصيص Brave وخدمات Brave Software الأخرى، مثل "ترجمة" و"بحث" والإعلانات. ويمكنك تخصيص هذه الميزة في "الإعدادات".</translation>
 <translation id="741204030948306876">نعم، موافق</translation>
-<translation id="8428213095426709021">الإعدادات</translation>
 <translation id="2497852260688568942">تم إيقاف المزامنة من قِبل المشرف</translation>
 <translation id="562935524653278697">لقد أوقف مشرفك مزامنة الإشارات المرجعية والسجل وكلمات المرور والإعدادات الأخرى.</translation>
 <translation id="2169062631698640254">تسجيل الدخول على أيّ حال</translation>
@@ -1115,7 +1116,7 @@
 <translation id="8922013791253848639">السماح دائمًا بالإعلانات على هذا الموقع</translation>
 <translation id="7359588939039777303">تم حظر الإعلانات.</translation>
 <translation id="5398772614898833570">تم حظر الإعلانات</translation>
-<translation id="2859806420264540918">يعرض هذا الموقع الإلكتروني إعلانات متداخلة أو مضلِّلة.</translation>
+<translation id="2859806420264540918">يعرض هذا الموقع الإلكتروني إعلانات مضلِّلة أو غير مرغوب فيها.</translation>
 <translation id="4077917118009885966">حظر الإعلانات على هذا الموقع</translation>
 <translation id="3737536731758327622">تظهر تنزيلاتك هنا</translation>
 <translation id="4782664866169793230">‏يتم التحكم في Brave من خلال برامج اختبار تلقائية.</translation>
@@ -1212,6 +1213,7 @@
 <translation id="6005695835120147974">موجّه الوسائط</translation>
 <translation id="7787308148023287649">عرض على شاشة أخرى</translation>
 <translation id="7710568461918838723">&amp;إرسال...</translation>
+<translation id="5537725057119320332">إرسال</translation>
 <translation id="8970203673128054105">عرض قائمة وضع الإرسال</translation>
 <translation id="1277908057200820621">عرض قائمة الأجهزة</translation>
 <translation id="6685083257944113180">إيقاف، <ph name="SINK_NAME"/>، <ph name="SINK_STATUS"/></translation>
@@ -1241,7 +1243,6 @@
 <translation id="4081242589061676262">يتعذَّر إرسال الملف.</translation>
 <translation id="4075639477629295004">يتعذَر إرسال <ph name="FILE_NAME"/>.</translation>
 <translation id="7255220508626648026">إرسال: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">إرسال</translation>
 <translation id="1272079795634619415">إيقاف</translation>
 <translation id="57838592816432529">كتم الصوت</translation>
 <translation id="4992066212339426712">إعادة الصوت</translation>
@@ -1384,6 +1385,7 @@
 <translation id="8834164572807951958">سيحصل أعضاء '<ph name="DESTINATION_NAME"/>' على إمكانية الوصول إلى نسخة من هذه العناصر.</translation>
 <translation id="3236289833370040187">سيتم نقل الملكية إلى <ph name="DESTINATION_DOMAIN"/>.</translation>
 <translation id="6896758677409633944">نسخ</translation>
+<translation id="7765158879357617694">نقل</translation>
 <translation id="8249296373107784235">إلغاء</translation>
 <translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="4425149324548788773">ملفاتي</translation>
@@ -1392,7 +1394,9 @@
 <translation id="981121421437150478">بلا اتصال</translation>
 <translation id="9034924485347205037">‏ملفات نظام التشغيل Linux</translation>
 <translation id="3188257591659621405">ملفاتي</translation>
+<translation id="9219103736887031265">صور</translation>
 <translation id="6146563240635539929">فيديوهات</translation>
+<translation id="3616113530831147358">الصوت</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>تنبيه:<ph name="END_BOLD"/>  هذه الملفات مؤقتة وقد يتم حذفها تلقائيًا لتوفير مساحة على القرص.  <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1 بايت</translation>
 <translation id="4871210892959306034">$1 كيلوبايت</translation>
@@ -1400,14 +1404,19 @@
 <translation id="7221155467930685510">$1 غيغابايت</translation>
 <translation id="5039512255859636053">$1 تيرابايت</translation>
 <translation id="6840313690797192085">$1 بيتابايت</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">مسافة</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="174937106936716857">إجمالي عدد الملفات</translation>
 <translation id="2425665904502185219">إجمالي حجم الملف</translation>
 <translation id="1942765061641586207">دقة الصورة</translation>
 <translation id="4002066346123236978">العنوان</translation>
 <translation id="4631887759990505102">الفنان</translation>
+<translation id="2448312741937722512">النوع</translation>
 <translation id="5145331109270917438">تاريخ التعديل</translation>
 <translation id="8487700953926739672">التوفر بلا إنترنت</translation>
 <translation id="2230062665678605299">تعذر إنشاء المجلد "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
@@ -1433,6 +1442,7 @@
    <ph name="LINE_BREAKS"/>
    يُرجى إغلاق جميع الملفات في الأرشيف أو القرص الافتراضي، ثم إعادة المحاولة.</translation>
 <translation id="7794058097940213561">تنسيق الجهاز</translation>
+<translation id="8151638057146502721">تهيئة</translation>
 <translation id="7928710562641958568">إخراج الجهاز</translation>
 <translation id="7864662577698025113">إضافة خدمة جديدة</translation>
 <translation id="1943097386230153518">تثبيت خدمة جديدة</translation>
@@ -1452,7 +1462,9 @@
 <translation id="5177526793333269655">عرض الصور المصغرة</translation>
 <translation id="1035094536595558507">تحريك الشرائح</translation>
 <translation id="7508545000531937079">عرض الشرائح</translation>
+<translation id="9065203028668620118">تحرير</translation>
 <translation id="1430915738399379752">طباعة</translation>
+<translation id="9148058034647219655">إنهاء</translation>
 <translation id="38275787300541712">‏اضغط على Enter عند الانتهاء</translation>
 <translation id="4880520557730313061">إصلاح تلقائي</translation>
 <translation id="4924638091161556692">تم الإصلاح</translation>
@@ -1461,7 +1473,6 @@
 <translation id="7576032389798113292">6x4</translation>
 <translation id="8157939133946352716">7x5</translation>
 <translation id="2661146741306740526">16x9</translation>
-<translation id="2121825465123208577">تغيير الحجم</translation>
 <translation id="3007214526293698309">إصلاح النسبة</translation>
 <translation id="7982283708762922719">الارتفاع</translation>
 <translation id="4734518477988699048">قيمة الإدخال غير صالحة.</translation>
@@ -1535,10 +1546,10 @@
 <translation id="2473109739642988997">‏حصة Brave Software Drive ليست كبيرة بشكلٍ كافٍ.</translation>
 <translation id="1148097584170732637">تم العثور على <ph name="FILE_COUNT"/>.
     <ph name="LINE_BREAK1"/>
-    لا توجد مساحة كافية في سعة التخزين المحلية. ويتطلب وجود <ph name="FILE_SIZE"/> إضافي.
+    لا توجد مساحة كافية في مساحة التخزين المحلية. ويتطلب وجود <ph name="FILE_SIZE"/> إضافي.
     <ph name="LINE_BREAK2"/>
     حاول تحديد عدد صور أقل.</translation>
-<translation id="2352947182261340447">لا تتوفر مساحة كافية في سعة التخزين المحلية.</translation>
+<translation id="2352947182261340447">لا تتوفر مساحة كافية في مساحة التخزين المحلية.</translation>
 <translation id="1127657192797926968">‏تم العثور على <ph name="FILE_COUNT"/>
     <ph name="LINE_BREAK1"/>
     جاهز للاحتفاظ بنسخة احتياطية في <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
@@ -1582,6 +1593,7 @@
 <translation id="3609785682760573515">جارٍ المزامنة...</translation>
 <translation id="1464724975715666883">خطأ واحد.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> من الأخطاء.</translation>
+<translation id="5317780077021120954">حفظ</translation>
 <translation id="4284105660453474798">هل تريد فعلًا حذف "$1"؟</translation>
 <translation id="4580526846085481512">هل تريد فعلًا حذف عناصر $1؟</translation>
 <translation id="7953739707111622108">لا يمكن فتح الجهاز لعدم التعرف على نظام الملفات.</translation>
@@ -1621,6 +1633,7 @@
 <translation id="4568854179928172494">الوقت المُعدل</translation>
 <translation id="943972244133411984">تم التعديل بواسطة</translation>
 <translation id="9099674669267916096">عدد الصفحات</translation>
+<translation id="8294431847097064396">المصدر</translation>
 <translation id="1363028406613469049">مقطع صوتي</translation>
 <translation id="1775381402323441512">معلومات الفيديو</translation>
 <translation id="3335337277364016868">عام التسجيل</translation>
@@ -1647,10 +1660,10 @@
 <translation id="799923393800005025">يمكن العرض</translation>
 <translation id="7925686952655276919">عدم استخدام بيانات الجوال للمزامنة</translation>
 <translation id="4649168043999963079">‏عرض ملفات مستندات Brave Software</translation>
-<translation id="7106346894903675391">شراء المزيد من سعة التخزين...</translation>
+<translation id="7106346894903675391">شراء المزيد من مساحة التخزين...</translation>
 <translation id="3549797760399244642">‏جارٍالانتقال إلى drive.google.com...</translation>
 <translation id="3451154303153932176">‏المساحة المتبقية في Brave Software Drive: <ph name="SPACE_AVAILABLE"/>.</translation>
-<translation id="4552678318981539154">شراء المزيد من سعة التخزين</translation>
+<translation id="4552678318981539154">شراء المزيد من مساحة التخزين</translation>
 <translation id="6990081529015358884">لقد نفدت المساحة</translation>
 <translation id="5521447721624713749">‏لا يمكن الوصول إلى Brave Software Drive في الوقت الحالي.</translation>
 <translation id="7788080748068240085">لحفظ "<ph name="FILE_NAME"/>" بلا إنترنت، يجب توفير مساحة إضافية تبلغ <ph name="TOTAL_FILE_SIZE"/>:<ph name="MARKUP_1"/>
@@ -1680,6 +1693,7 @@
 <translation id="3186202398303525187">‏السماح لتطبيقات Linux بفتح ملف $1.</translation>
 <translation id="1603300902586586390">‏السماح لتطبيقات Linux بفتح ملفات $1.</translation>
 <translation id="4572815280350369984">ملف <ph name="FILE_TYPE"/></translation>
+<translation id="803771048473350947">ملف</translation>
 <translation id="895586998699996576">صورة $1</translation>
 <translation id="2853916256216444076">فيديو $1</translation>
 <translation id="7006844981395428048">ملف صوت $1</translation>
@@ -1727,7 +1741,7 @@
 <translation id="2984337792991268709">اليوم <ph name="TODAY_DAYTIME"/></translation>
 <translation id="8336153091935557858">الأمس <ph name="YESTERDAY_DAYTIME"/></translation>
 <translation id="1807938677607439181">كل الملفات</translation>
-<translation id="240770291734945588">سعة التخزين المتاحة هي <ph name="SPACE_AVAILABLE"/></translation>
+<translation id="240770291734945588">مساحة التخزين المتاحة هي <ph name="SPACE_AVAILABLE"/></translation>
 <translation id="6199801702437275229">في انتظار معلومات المساحة...</translation>
 <translation id="6485131920355264772">تعذّر جلب معلومات المساحة</translation>
 <translation id="7748626145866214022">‏تتوفر مزيد من الخيارات على شريط الإجراءات. يُرجى الضغط على "Alt + A" لتركيز هذا الشريط.</translation>
@@ -1746,7 +1760,6 @@
 <translation id="6827236167376090743">سيستمر تشغيل هذا الفيديو إلى نهاية الفيلم.</translation>
 <translation id="6248400709929739064">تفعيل الترجمات المصاحبة</translation>
 <translation id="7881969471599061635">إيقاف الترجمات المصاحبة</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">تتم مشاركة بعض الإعدادات التي تنتمي إلى <ph name="PRIMARY_EMAIL"/> معك. لن تؤثر هذه الإعدادات في حسابك إلا عند استخدامك الدخول المتعدد.</translation>
 <translation id="5860491529813859533">تشغيل</translation>
 <translation id="1485141095922496924">الإصدار <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1831,7 +1844,6 @@
 <translation id="48704129375571883">إضافة ميزات إضافية</translation>
 <translation id="7230787553283372882">تخصيص حجم النَّص</translation>
 <translation id="214169863967063661">فتح إعدادات المظهر</translation>
-<translation id="3616113530831147358">الصوت</translation>
 <translation id="6793604637258913070">تمييز علامة إقحام النص عندما تظهر أو تتحرك</translation>
 <translation id="7376553024552204454">تمييز مؤشر الماوس عندما يتحرك</translation>
 <translation id="4150201353443180367">عرض</translation>
@@ -1845,11 +1857,11 @@
 <translation id="2218019600945559112">الماوس ولوحة اللمس</translation>
 <translation id="1530838837447122178">فتح إعدادات الجهاز للماوس ولوحة اللمس</translation>
 <translation id="2075959085554270910">تتيح لك تفعيل ميزة الضغط للنقر وميزة السحب بالنقر أو إيقافهما.</translation>
-<translation id="3060379269883947824">تفعيل سماع الاختيار</translation>
+<translation id="3060379269883947824">تفعيل الاختيار والاستماع</translation>
 <translation id="9066773882585798925">سماع النص بصوت عالٍ</translation>
-<translation id="7844553762889824470">‏حدّد النص الذي تريد سماعه، ثم اضغط على زر "البحث + S". كما يمكنك الضغط مع الاستمرار على مفتاح "البحث" أو النقر على رمز "سماع الاختيار" بالقرب من صورة ملفك الشخصي لتحديد النص.</translation>
-<translation id="5957987129450536192">يمكنك النقر على رمز"سماع الاختيار" بالقرب من الملف الشخصي، ثم اختيار ما ترغب بسماعه.</translation>
-<translation id="8902667442496790482">فتح إعدادات سماع الاختيار</translation>
+<translation id="7844553762889824470">‏حدّد النص الذي تريد سماعه، ثم اضغط على زر "البحث + S". كما يمكنك الضغط مع الاستمرار على مفتاح "البحث" أو النقر على رمز "الاختيار والاستماع" بالقرب من صورة ملفك الشخصي لتحديد النص.</translation>
+<translation id="5957987129450536192">يمكنك النقر على رمز"الاختيار والاستماع" بالقرب من الملف الشخصي، ثم اختيار ما ترغب بسماعه.</translation>
+<translation id="8902667442496790482">فتح إعدادات الاختيار والاستماع</translation>
 <translation id="3819752733757735746">الوصول عبر مفتاح التحويل (التحكم في جهاز الكمبيوتر بمفتاح واحد فقط أو مفتاحين)</translation>
 <translation id="1932026958134051332">خيارات الوصول عبر مفتاح التحويل</translation>
 <translation id="9066782832737749352">تحويل النَّص إلى الكلام</translation>
@@ -1908,7 +1920,6 @@
 <translation id="5916664084637901428">تشغيل</translation>
 <translation id="1378613616312864539">يتحكم <ph name="NAME"/> في هذا الإعداد</translation>
 <translation id="6643016212128521049">محو</translation>
-<translation id="9065203028668620118">تحرير</translation>
 <translation id="8465252176946159372">غير صالح</translation>
 <translation id="8647834505253004544">ليس عنوان ويب صالحًا</translation>
 <translation id="2149850907588596975">كلمات المرور والنماذج</translation>
@@ -1920,7 +1931,6 @@
 <translation id="5659593005791499971">البريد الإلكتروني</translation>
 <translation id="5762172915276660232">إعدادات بطاقة الائتمان</translation>
 <translation id="4499718683476608392">تفعيل الملء التلقائي لبطاقة الائتمان لملء النماذج بنقرة واحدة</translation>
-<translation id="2448312741937722512">النوع</translation>
 <translation id="9064275926664971810">تفعيل الملء التلقائي لملء النماذج بنقرة واحدة</translation>
 <translation id="5029568752722684782">محو النسخة</translation>
 <translation id="2154484045852737596">تعديل البطاقة</translation>
@@ -2067,7 +2077,6 @@
 <translation id="5816434091619127343">تغييرات الطابعة المطلوبة تجعل الطابعة غير قابلة للاستخدام.</translation>
 <translation id="6504611359718185067">الاتصال بالإنترنت لإضافة طابعة</translation>
 <translation id="4972129977812092092">تعديل الطابعة</translation>
-<translation id="5317780077021120954">حفظ</translation>
 <translation id="5696679855467848181">‏الملف الحالي بتنسيق PPD قيد الاستخدام: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">‏الطباعة السحابية من Brave Software</translation>
 <translation id="7754704193130578113">السؤال عن مكان حفظ الملفّات قبل التحميل</translation>
@@ -2088,6 +2097,7 @@
 <translation id="706626672220389329">حدث خطأ في تحميل المشاركة. تم تحميل المشاركة المُحدّدة من قبل.</translation>
 <translation id="5985458664595100876">‏تنسيق عنوان URL غير صالح. التنسيقات المدعومة هي \\server\share وsmb://server/share.</translation>
 <translation id="9147304170847707004">طريقة المصادقة</translation>
+<translation id="7740996059027112821">قياسي</translation>
 <translation id="5115338116365931134">‏الدخول المُوحَّد (SSO)</translation>
 <translation id="3101709781009526431">التاريخ والوقت</translation>
 <translation id="2059913712424898428">المنطقة الزمنية</translation>
@@ -2168,7 +2178,7 @@
 <translation id="6499681088828539489">عدم السماح بالخوادم الوكيلة للشبكات المشتركة</translation>
 <translation id="3727148787322499904">سيؤثر تغيير هذا الإعداد في جميع الشبكات المشتركة</translation>
 <translation id="1254593899333212300">اتصال مباشر بالإنترنت</translation>
-<translation id="2143778271340628265">تهيئة يدوية للخادم الوكيل</translation>
+<translation id="2143778271340628265">إعداد الخادم الوكيل يدويًّا</translation>
 <translation id="1313405956111467313">تهيئة تلقائية للخادم الوكيل</translation>
 <translation id="6327785803543103246">اكتشاف الخادم الوكيل للويب تلقائيًا</translation>
 <translation id="5158983316805876233">استخدام نفس الخادم الوكيل مع جميع البروتوكولات</translation>
@@ -2186,7 +2196,6 @@
 <translation id="8452135315243592079">‏شريحة SIM مفقودة</translation>
 <translation id="2617342710774726426">‏تم قفل شريحة SIM</translation>
 <translation id="4848518990323155912">‏تفعيل قفل شريحة SIM (مطلوب رقم التعريف الشخصي لاستخدام بيانات الجوّال)</translation>
-<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">‏أدخل رمز PIN لشريحة SIM</translation>
 <translation id="8431909052837336408">‏تغيير رمز PIN لشريحة SIM</translation>
 <translation id="289644616180464099">‏تم قفل شريحة SIM</translation>
@@ -2203,7 +2212,6 @@
 <translation id="8986362086234534611">حذف</translation>
 <translation id="7881483672146086348">عرض حساب</translation>
 <translation id="2392369802118427583">تفعيل</translation>
-<translation id="8151638057146502721">تهيئة</translation>
 <translation id="5920543303088087579">تم إيقاف الربط بهذه الشبكة بواسطة المشرف</translation>
 <translation id="1235458158152011030">الشبكات المعروفة</translation>
 <translation id="3003144360685731741">الشبكات المُفضلة</translation>
@@ -2414,6 +2422,7 @@
 <translation id="7258619945375359543">‏السماح "لمساعد Brave Software" بتقديم الاقتراحات استنادًا إلى المحتوى المعروض على شاشتك</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">‏يمكنك الوصول إلى "مساعد Brave Software" في أي وقت تقول فيه "OK Brave Software" عندما تكون شاشتك في وضع التشغيل.</translation>
+<translation id="2482878487686419369">الاشعارات</translation>
 <translation id="5355099869024327351">‏السماح "لمساعد Brave Software" بعرض الإشعارات</translation>
 <translation id="1127216846847548354">تفعيل الصوت</translation>
 <translation id="3506093155988721483">‏استخدام الكلام بدلاً من لوحة المفاتيح عند بدء "مساعد Brave Software"</translation>
@@ -2437,8 +2446,6 @@
 <translation id="16815041330799488">عدم السماح لمواقع الويب بالاطلاع على النصوص والصور التي تم نسخها إلى الحافظة</translation>
 <translation id="3668823961463113931">المعالجات</translation>
 <translation id="3227137524299004712">الميكروفون</translation>
-<translation id="2482878487686419369">الاشعارات</translation>
-<translation id="9219103736887031265">صور</translation>
 <translation id="7521387064766892559">جافا سكريبت</translation>
 <translation id="4552089082226364758">الفلاش</translation>
 <translation id="6951153907720526401">معالجات الدفع</translation>
@@ -2486,8 +2493,8 @@
 <translation id="4994474651455208930">السماح للمواقع بأن تطلب أن تصبح معالجات تلقائية للبروتوكولات</translation>
 <translation id="1886996562706621347">السماح للمواقع بأن تطلب أن تصبح معالجات تلقائية للبروتوكولات (مستحسن)</translation>
 <translation id="26224892172169984">عدم السماح لأي موقع ويب بمعالجة البروتوكولات</translation>
-<translation id="4469477701382819144">تم الحظر على المواقع الإلكترونية التي تعرض إعلانات متداخلة أو مضلِّلة</translation>
-<translation id="4451757071857432900">تم الحظر على المواقع الإلكترونية التي تعرض إعلانات متداخلة أو مضلِّلة (مُقترح)</translation>
+<translation id="4469477701382819144">تم حظر الإعلانات على المواقع الإلكترونية التي تعرض إعلانات مضلِّلة أو غير مرغوب فيها</translation>
+<translation id="4451757071857432900">تم حظر الإعلانات على المواقع الإلكترونية التي تعرض إعلانات مضلِّلة أو غير مرغوب فيها (مُستحسَن)</translation>
 <translation id="5390100381392048184">السماح للمواقع بتشغيل الصوت</translation>
 <translation id="1660204651932907780">السماح للمواقع بتشغيل الصوت (مُقترح)</translation>
 <translation id="3600792891314830896">كتم صوت المواقع التي تُشغّل الصوت</translation>
@@ -2511,8 +2518,8 @@
 <translation id="5063480226653192405">الاستخدام</translation>
 <translation id="3006881078666935414">لا تتوفر بيانات استخدام</translation>
 <translation id="1300806585489372370">لتغيير هذا الإعداد، عليك أولاً <ph name="BEGIN_LINK"/>تشغيل المُعرّفات<ph name="END_LINK"/></translation>
-<translation id="5932224571077948991">عرض موقع الويب لإعلانات متداخلة أو مضلِّلة</translation>
-<translation id="6038929619733116134">الحظر في حال كان موقع الويب يعرض إعلانات متداخلة أو مضلِّلة</translation>
+<translation id="5932224571077948991">يعرض موقع الويب إعلانات مضلِّلة أو غير مرغوب فيها</translation>
+<translation id="6038929619733116134">الحظر في حال كان موقع الويب يعرض إعلانات مضلِّلة أو غير مرغوب فيها</translation>
 <translation id="3083193146044397360">تم الحظر مؤقتًا لحماية أمانك</translation>
 <translation id="2500471369733289700">تم الحظر لحماية خصوصيتك</translation>
 <translation id="3008272652534848354">إعادة ضبط الأذونات</translation>
@@ -2533,7 +2540,7 @@
 <translation id="6196640612572343990">حظر ملفات تعريف الارتباط للجهات الخارجية</translation>
 <translation id="6782111308708962316">منع مواقع الويب التابعة لجهات خارجية من حفظ بيانات ملفات تعريف الارتباط وقراءتها</translation>
 <translation id="3378503599595235699">الاحتفاظ بالبيانات المحلية حتى الخروج من المتصفح</translation>
-<translation id="1274977772557788323">‏إعدادات سعة تخزين برنامج Adobe Flash Player</translation>
+<translation id="1274977772557788323">‏إعدادات مساحة تخزين برنامج Adobe Flash Player</translation>
 <translation id="1698122934742150150">جلسة التصفح المتخفي الحالية فقط</translation>
 <translation id="5838456317242088717">جلسة التصفح المتخفي الحالية</translation>
 <translation id="2318923050469484167">جلسة التصفح المتخفي الحالية (<ph name="EMBEDDING"/>)</translation>
@@ -2596,7 +2603,7 @@
 <translation id="7189965711416741966">تمت إضافة بصمة إصبع.</translation>
 <translation id="9220820413868316583">ارفع إصبعك ثم أعد المحاولة.</translation>
 <translation id="4534661889221639075">يُرجى إعادة المحاولة.</translation>
-<translation id="3645372836428131288">تحرّك قليلاً لالتقاط جزء مختلف من بصمة الإصبع.</translation>
+<translation id="3645372836428131288">حرّك إصبعك قليلاً لالتقاط جزء مختلف من بصمة الإصبع.</translation>
 <translation id="7345706641791090287">تأكيد كلمة المرور</translation>
 <translation id="381202950560906753">إضافة بصمة إصبع أخرى</translation>
 <translation id="6968288415730398122">أدخل كلمة المرور لتهيئة قفل الشاشة</translation>
@@ -2704,12 +2711,9 @@
 <translation id="6586451623538375658">تبديل زر الماوس الرئيسي</translation>
 <translation id="221872881068107022">عكس التمرير</translation>
 <translation id="1510238584712386396">المشغّل</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">معيّن</translation>
 <translation id="89720367119469899">خروج</translation>
-<translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">‏مفتاح Command الخارجي</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">‏مفتاح Meta الخارجي</translation>
@@ -2766,27 +2770,25 @@
 <translation id="4863769717153320198">‏تبدو كـ <ph name="WIDTH"/> x <ph name="HEIGHT"/> (تلقائية)</translation>
 <translation id="1125550662859510761">‏تبدو كـ <ph name="WIDTH"/> x <ph name="HEIGHT"/> (أصلية)</translation>
 <translation id="3151786313568798007">الاتجاه</translation>
-<translation id="7740996059027112821">قياسي</translation>
 <translation id="55601339223879446">ضبط الحدود لسطح المكتب ضمن الشاشة</translation>
 <translation id="7974936243149753750">الخروج عن إطار الشاشة</translation>
 <translation id="7758450972308449809">ضبط حدود شاشتك</translation>
 <translation id="5608580678041221894">انقر على المفاتيح التالية لضبط منطقة الاقتصاص أو تحريكها</translation>
 <translation id="2822634587701817431">تقليص/توسيع</translation>
-<translation id="7765158879357617694">نقل</translation>
 <translation id="6801435275744557998">معايرة الشاشة التي تعمل باللمس</translation>
 <translation id="6856623341093082836">إعداد دقة الشاشة التي تعمل باللمس وضبطها</translation>
-<translation id="4598556348158889687">إدارة سعة التخزين</translation>
+<translation id="4598556348158889687">إدارة مساحة التخزين</translation>
 <translation id="8868626022555786497">قيد الاستخدام</translation>
 <translation id="1082725763867769612">ملفات في وضع عدم اتصال</translation>
 <translation id="7366909168761621528">بيانات التصفح</translation>
-<translation id="5568144734023334204">‏سعة تخزين Android</translation>
-<translation id="938339467127511841">‏سعة تخزين نظام التشغيل Linux (نسخة تجريبية)</translation>
+<translation id="5568144734023334204">‏مساحة تخزين Android</translation>
+<translation id="938339467127511841">‏مساحة تخزين نظام التشغيل Linux (نسخة تجريبية)</translation>
 <translation id="7441830548568730290">المستخدمون الآخرون</translation>
 <translation id="8546186510985480118">المساحة الموجودة على الجهاز منخفضة</translation>
-<translation id="9109122242323516435">لتفريغ مساحة، احذف الملفات من سعة تخزين الجهاز.</translation>
+<translation id="9109122242323516435">لتفريغ مساحة، احذف الملفات من مساحة تخزين الجهاز.</translation>
 <translation id="4444512841222467874">إذا لم تتوفر مساحة، فقد تتم إزالة المستخدمين والبيانات تلقائيًا.</translation>
 <translation id="4100733287846229632">المساحة على الجهاز منخفضة للغاية</translation>
-<translation id="6547354035488017500">احرص على تفريغ مساحة قدرها 512 ميغابايت على الأقل أو سيصبح جهازك غير مستجيب. لتفريغ مساحة، يمكنك حذف الملفات من سعة تخزين الجهاز.</translation>
+<translation id="6547354035488017500">احرص على تفريغ مساحة قدرها 512 ميغابايت على الأقل أو سيصبح جهازك غير مستجيب. لتفريغ مساحة، يمكنك حذف الملفات من مساحة تخزين الجهاز.</translation>
 <translation id="6097480669505687979">إذا لم تفرّغ مساحة، فقد تتم إزالة المستخدمين والبيانات تلقائيا.</translation>
 <translation id="5438224778284622050">هل تريد حذف الملفات بلا إنترنت؟</translation>
 <translation id="9196021349904508454">‏سيتم حذف ملفات Brave Software Drive المؤقتة بلا إنترنت. ولن يتم حذف الملفات التي قد عيّنتها كمتاحة بلا إنترنت من هذا الجهاز.</translation>
@@ -2875,13 +2877,11 @@
 <translation id="8158441856257599022">‏العرض في سوق Brave الإلكتروني</translation>
 <translation id="4617270414136722281">خيارات الإضافات</translation>
 <translation id="7152478047064750137">لا تتطلب هذه الإضافة أذونات خاصة</translation>
-<translation id="8294431847097064396">المصدر</translation>
 <translation id="8523849605371521713">تمت الإضافة من قبل السياسة</translation>
 <translation id="5087249366037322692">تمت الإضافة من قبل جهة خارجية</translation>
 <translation id="6788210894632713004">إضافة تم فك حزمتها</translation>
 <translation id="3798449238516105146">الإصدار</translation>
 <translation id="3838085852053358637">فشل تحميل الإضافة</translation>
-<translation id="803771048473350947">ملف</translation>
 <translation id="6370021412472292592">تعذر تحميل البيان.</translation>
 <translation id="2152198799932802652">‏يمكنك العثور على الإضافات والمظاهر في <ph name="BEGIN_LINK"/>سوق Brave الإلكتروني<ph name="END_LINK"/>.</translation>
 <translation id="7272674038937250585">لم يتم تقديم أي وصف</translation>
@@ -2953,7 +2953,6 @@
 <translation id="6313641880021325787">‏الخروج من VR</translation>
 <translation id="2670429602441959756">‏تحتوي هذه الصفحة على ميزات لم يتم دعمها بعد في الواقع الافتراضي (VR). جارٍ الخروج...</translation>
 <translation id="1802687198411089702">الصفحة لا تستجيب. يمكنك الانتظار أو الخروج منها.</translation>
-<translation id="9148058034647219655">إنهاء</translation>
 <translation id="3987938432087324095">عذرًا، لم يتم التعرف على ذلك.</translation>
 <translation id="6923132443355966645">التمرير / النقر على</translation>
 <translation id="6041155700700864984">الخروج من عرض ملء الشاشة</translation>

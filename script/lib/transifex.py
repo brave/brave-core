@@ -43,8 +43,7 @@ def create_xtb_format_translation_tag(fingerprint, string_value):
   string_tag = lxml.etree.Element('translation')
   string_tag.set('id', str(fingerprint))
   if string_value.count('<') != string_value.count('>'):
-    print 'Warning: Unmatched < character, consider fixing on Trasifex, force encoding the following string:' + string_value
-    string_value = string_value.replace('<', '&lt;').replace('>', '&gt;')
+    assert False, 'Warning: Unmatched < character, consider fixing on Trasifex, force encoding the following string:' + string_value
   string_tag.text = string_value
   string_tag.tail = '\n'
   return string_tag
@@ -91,13 +90,16 @@ def get_transifex_translation_file_content(source_file_path, filename, lang_code
   url = base_url + url_part
   r = requests.get(url, auth=get_auth())
   assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
-  return r.json()['content']
-
+  content = r.json()['content'].encode('utf-8')
+  ext = os.path.splitext(source_file_path)[1]
+  # For .grd files, for some reason Transifex puts a \\" and \'
+  if ext == '.grd':
+    return content.replace('\\"', '"').replace("\\'", "'")
+  return content
 
 def get_strings_dict_from_xml_content(xml_content):
   """Obtains a dictionary mapping the string name to text from Android xml content"""
-  encoded_xml_content = xml_content.encode('utf-8')
-  strings = lxml.etree.fromstring(encoded_xml_content).findall('string')
+  strings = lxml.etree.fromstring(xml_content).findall('string')
   return { string_tag.get('name'): textify(string_tag) for string_tag in strings }
 
 
@@ -254,7 +256,8 @@ def generate_xtb_content(lang_code, grd_strings, translations):
         continue
       all_string_fps.add(fingerprint)
       translation = translations[string[0]]
-      translationbundle_tag.append(create_xtb_format_translation_tag(fingerprint, translation))
+      if len(translation) != 0:
+        translationbundle_tag.append(create_xtb_format_translation_tag(fingerprint, translation))
 
   xml_string = lxml.etree.tostring(translationbundle_tag)
   xml_string = HTMLParser.HTMLParser().unescape(xml_string.encode('utf-8')).encode('utf-8')
@@ -402,7 +405,7 @@ def get_transifex_source_resource_strings(grd_file_path):
   url = base_url + url_part
   r = requests.get(url, auth=get_auth())
   assert r.status_code >= 200 and r.status_code <= 299, 'Aborting. Status code %d: %s' % (r.status_code, r.content)
-  return get_strings_dict_from_xml_content(r.json()['content'])
+  return get_strings_dict_from_xml_content(r.json()['content'].encode('utf-8'))
 
 
 def check_missing_source_grd_strings_to_transifex(grd_file_path):
@@ -471,4 +474,4 @@ def pull_source_files_from_transifex(source_file_path, filename):
       content = get_transifex_translation_file_content(source_file_path, filename, lang_code)
       localized_translation_path = os.path.join(langs_dir_path, lang_code, 'messages.json')
       with open(localized_translation_path, mode='w') as f:
-        f.write(content.encode('utf-8'))
+        f.write(content)

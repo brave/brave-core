@@ -25,7 +25,6 @@
 <translation id="6248988683584659830">Sök i inställningar</translation>
 <translation id="730042046912793465">Detta är en</translation>
 <translation id="2055363275850890030">Privat fönster</translation>
-<translation id="9133213713928851646">Brave kommer inte ihåg vad du gör i ett privat fönster. Sidor som du besöker kommer inte synas i den webbhistorik och kakorna försvinner när du är färdig. Privata flikar gör dig dock inte helt anonym online.</translation>
 <translation id="8760415064721320867">Privat fönster med Tor</translation>
 <translation id="4844209912525464363">Brave kommer aldrig ihåg vad du gör i ett privat fönster. Med Tor döljs även din webbtrafik från din internetleverantör eller arbetsgivare, samtidigt som din IP-adress är dold för sidorna du är på.</translation>
 <translation id="778096729652828897">Läs mer om privata fönster med Tor</translation>
@@ -38,14 +37,12 @@
 <translation id="1129265576134014816">Detta privata fönster är mycket mer anonymt</translation>
 <translation id="805807983419360524">med Tor</translation>
 <translation id="8958799246752641148">Tor döljer din IP-adress från de webbplatser du besöker, genom att dirigera din surfning genom flera Tor-servrar innan den når din destination. Dessa anslutningar är krypterade, så din internetleverantör eller arbetsgivare kan inte se vilka webbplatser du besöker heller. Tor kan sakta ner surfningen och vissa webbplatser kanske inte fungerar alls.</translation>
-<translation id="520608572871993342">Användning av privata flikar ändrar bara vad Brave gör på din enhet, det ändrar inte någon annans beteende. Tor döljer din IP-adress från de webbplatser du besöker, och döljer de webbplatser du besöker från din Internetleverantör eller din arbetsgivare. Öppna ett privat fönster med Tor från menyn eller med Alt + Skift + N eller Alternativ + Skift + N.</translation>
 <translation id="6975708438781948564">Läs mer om Tor i Brave</translation>
 <translation id="1869685517625607604">Totalt antal annonser blockerade:</translation>
 <translation id="6200814343085745765">Lokal annonsblockerare:</translation>
 <translation id="59174027418879706">Aktiverad</translation>
 <translation id="4176463684765177261">Inaktiverad</translation>
 <translation id="7207456302801184289">Välkommen till Brave</translation>
-<translation id="764012553571385542">Brave är så mycket mer än en webbläsare. Låt oss visa dig hur du får ut mest möjligt av den</translation>
 <translation id="6001839398155993679">Nu kör vi</translation>
 <translation id="8050847734948770789">Sätt på Brave Belöningar</translation>
 <translation id="2710310654441838823">Brave Belöningar är ett nytt sätt att tänka på hur webben fungerar. Bli belönad för att se annonser som respekterar integritet och stöd dina favorit-innehållskreatörer medan du håller på.</translation>
@@ -54,7 +51,6 @@
 <translation id="5521187896304743452">Brave gör den enkelt att ställa in din vanliga miljö genom att importera bokmärken och inställningar från andra webbläsare installerade på din dator.</translation>
 <translation id="4138981897709579987">Importera nu</translation>
 <translation id="9152220852742774324">Hantera din skyddsinställningar</translation>
-<translation id="110988439043625224">Justera och kontrollera din skyddsnivå genom att klicka på Brave-logon i verktygsfältet. Hantera din globala skyddsinställning i preferenspanelen</translation>
 <translation id="3366308997091824722">Skyddsinställningar</translation>
 <translation id="7024124499777560832">Skräddarsy dina preferenser</translation>
 <translation id="2498783234010887316">Flikar, utseende, tillägg och historikinställning kan konfigureras i inställningar. Du kanske till och med hittar ett mörkt tema där ;)</translation>
@@ -99,12 +95,10 @@
 <translation id="7841456038054167122">Vänligen skriv in nycklarna igen eller prova andra nycklar</translation>
 <translation id="2195074481553016770">Nästan där…</translation>
 <translation id="5254740304961202261">Bevisa att du är en människa!</translation>
-<translation id="1387881035954376289">Hmmm…inte riktigt.</translation>
 <translation id="7510166204621526816">Servern för Brave-betalningar svarar inte. Vi åtgärdar detta så snart som möjligt.</translation>
 <translation id="2323069945529668668">Hoppsan!</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Acceptera</translation>
-<translation id="6832986780040139899">©2016 –2018 Brave Software. Brave är ett registrerat varumärke som tillhör Brave Software. Webbplatsnamn kan vara varumärken eller registrerade varumärken som tillhör webbplatsägaren.</translation>
 <translation id="9026369588205476247">För att skydda din integritet kommer detta Brave Rewards-kontoutdrag inte sparas, spelas in eller loggas någon annanstans än på din enhet (den här datorn). Det kan inte hämtas från Brave i händelse av att din enhet förlorar data.</translation>
 <translation id="1036277985068412734">Sätt in pengar</translation>
 <translation id="4496990471549986619">FAQ:n</translation>
@@ -168,7 +162,7 @@
 <translation id="5502713021410870035">September</translation>
 <translation id="606865182719489911">Ett nytt gratisbidrag av polletter är tillgängligt.</translation>
 <translation id="3453206261112715431">Gratisbidrag av polletter</translation>
-<translation id="5736183007277264868">För närvarande finns inget \"token grant\" tillgängligt.</translation>
+<translation id="5736183007277264868">För närvarande finns inget "token grant" tillgängligt.</translation>
 <translation id="8589748782214271192">Nej tack</translation>
 <translation id="8051372105644249165">Inte tillräckligt många polletter. Vänligen</translation>
 <translation id="3630697955794050612">av</translation>
@@ -247,7 +241,6 @@
 <translation id="8446884382197647889">Ta reda på mer</translation>
 <translation id="4083384190339959182">Vi har gett Brave-betalningar en stor uppgradering.</translation>
 <translation id="5395851053710553429">Förbered dig på att uppleva det nya internetet.</translation>
-<translation id="880341991877949255">Med vanliga webbläsare betalar du för att surfa på nätet genom att titta på och ge annonser din värdefulla uppmärksamhet, spendera din värdefulla tid på att ladda ned invasiv annonsteknologi som skickar dina värdefulla privata uppgifter till annonsörer — utan ditt medgivande.</translation>
 <translation id="2549982302631665116">Brave välkomnar dig till ett nytt internet. Ett där tid värdesätts, din personliga data hålls privat och du faktiskt får betalt för din uppmärksamhet.</translation>
 <translation id="3780605330121608425">Din plånbok</translation>
 </translationbundle>

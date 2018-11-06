@@ -504,6 +504,7 @@
 <translation id="3861241522664181545">Сторінку призупинено.</translation>
 <translation id="6921709132208495314">Припинити використання даних на цій сторінці</translation>
 <translation id="1683850629661177840">Завдяки спрощеному режиму тепер можна швидше переглядати всі сторінки, зокрема HTTPS.</translation>
+<translation id="8428213095426709021">Налаштування</translation>
 <translation id="2724841811573117416">Журнали WebRTC</translation>
 <translation id="1969654639948595766">Текстові журнали WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="6865708901122695652">Журнали подій WebRTC (<ph name="WEBRTC_EVENT_LOG_COUNT"/>)</translation>
@@ -681,6 +682,7 @@
 <translation id="7837776265184002579">Домашню сторінку змінено на <ph name="URL"/>.</translation>
 <translation id="5442550868130618860">Увімкнути автооновлення</translation>
 <translation id="6790428901817661496">Відтворити</translation>
+<translation id="2121825465123208577">Змінити розмір</translation>
 <translation id="4514610446763173167">Відтворити або призупинити відео</translation>
 <translation id="2631120081682787498">Закрити цю вкладку?</translation>
 <translation id="111844081046043029">Дійсно залишити цю сторінку?</translation>
@@ -862,7 +864,6 @@
 <translation id="2668128414154024727">У <ph name="BEGIN_LINK"/>Налаштуваннях<ph name="END_LINK"/> можна будь-коли вибрати, яку інформацію збирає Brave Software.</translation>
 <translation id="6035247993547372482">Brave Software може використовувати вміст відвіданих сайтів, дані веб-перегляду й взаємодії, щоб персоналізувати Brave та інші служби Brave Software, як-от Перекладач, Пошук і оголошення. Ви можете змінити це в налаштуваннях.</translation>
 <translation id="741204030948306876">Увімкнути</translation>
-<translation id="8428213095426709021">Налаштування</translation>
 <translation id="2497852260688568942">Ваш адміністратор вимкнув синхронізацію</translation>
 <translation id="562935524653278697">Адміністратор вимкнув синхронізацію закладок, історії, паролів та інших налаштувань.</translation>
 <translation id="2169062631698640254">Усе одно ввійти</translation>
@@ -1212,6 +1213,7 @@
 <translation id="6005695835120147974">Маршрутизатор медіавмісту</translation>
 <translation id="7787308148023287649">Показати на іншому екрані</translation>
 <translation id="7710568461918838723">&amp;Транслювати…</translation>
+<translation id="5537725057119320332">Акторський склад</translation>
 <translation id="8970203673128054105">Переглянути список режиму трансляції</translation>
 <translation id="1277908057200820621">Переглянути список пристроїв</translation>
 <translation id="6685083257944113180">Зупинити: <ph name="SINK_STATUS"/> (<ph name="SINK_NAME"/>)</translation>
@@ -1241,7 +1243,6 @@
 <translation id="4081242589061676262">Не вдається транслювати файл.</translation>
 <translation id="4075639477629295004">Не вдається транслювати файл <ph name="FILE_NAME"/>.</translation>
 <translation id="7255220508626648026">Транслюється: <ph name="ROUTETITLE"/></translation>
-<translation id="5537725057119320332">Акторський склад</translation>
 <translation id="1272079795634619415">Зупинити</translation>
 <translation id="57838592816432529">Вимкнути звук</translation>
 <translation id="4992066212339426712">Увімкнути звук</translation>
@@ -1384,6 +1385,7 @@
 <translation id="8834164572807951958">Учасники, які мають доступ до розташування "<ph name="DESTINATION_NAME"/>", отримають доступ до копій цих елементів.</translation>
 <translation id="3236289833370040187">Право власності буде передано в домен <ph name="DESTINATION_DOMAIN"/>.</translation>
 <translation id="6896758677409633944">Копіювати</translation>
+<translation id="7765158879357617694">Перемістити</translation>
 <translation id="8249296373107784235">Скасувати</translation>
 <translation id="6268185425799226387">Диск Brave Software</translation>
 <translation id="4425149324548788773">Мій диск</translation>
@@ -1392,7 +1394,9 @@
 <translation id="981121421437150478">Офлайн</translation>
 <translation id="9034924485347205037">Файли Linux</translation>
 <translation id="3188257591659621405">Мої файли</translation>
+<translation id="9219103736887031265">Зображення</translation>
 <translation id="6146563240635539929">Відео</translation>
+<translation id="3616113530831147358">Звук</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Увага:<ph name="END_BOLD"/> ці файли тимчасові, і можуть автоматично видалятися, щоб звільнити місце на диску. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
 <translation id="7361039089383199231">$1 б</translation>
 <translation id="4871210892959306034">$1 КБ</translation>
@@ -1400,14 +1404,19 @@
 <translation id="7221155467930685510">$1 ГБ</translation>
 <translation id="5039512255859636053">$1 ТБ</translation>
 <translation id="6840313690797192085">$1 Пб</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="6129953537138746214">Пробіл</translation>
+<translation id="8179976553408161302">Enter</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="174937106936716857">Усього файлів</translation>
 <translation id="2425665904502185219">Загальний розмір файлу</translation>
 <translation id="1942765061641586207">Роздільна здатність зображення</translation>
 <translation id="4002066346123236978">Назва</translation>
 <translation id="4631887759990505102">Виконавець</translation>
+<translation id="2448312741937722512">Тип</translation>
 <translation id="5145331109270917438">Дата змінення</translation>
 <translation id="8487700953926739672">Доступ у режимі офлайн</translation>
 <translation id="2230062665678605299">Не вдається створити папку "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
@@ -1433,6 +1442,7 @@
    <ph name="LINE_BREAKS"/>
    Закрийте всі файли в архіві або на віртуальному диску та повторіть спробу.</translation>
 <translation id="7794058097940213561">Форматувати пристрій</translation>
+<translation id="8151638057146502721">Налаштувати</translation>
 <translation id="7928710562641958568">Витягнути пристрій</translation>
 <translation id="7864662577698025113">Додати нові сервіси</translation>
 <translation id="1943097386230153518">Установити новий сервіс</translation>
@@ -1452,7 +1462,9 @@
 <translation id="5177526793333269655">Перегляд ескізів</translation>
 <translation id="1035094536595558507">Режим слайдів</translation>
 <translation id="7508545000531937079">Слайд-шоу</translation>
+<translation id="9065203028668620118">Редагувати</translation>
 <translation id="1430915738399379752">Друк</translation>
+<translation id="9148058034647219655">Вийти</translation>
 <translation id="38275787300541712">Закінчивши, натисніть клавішу Enter</translation>
 <translation id="4880520557730313061">Автовиправлення</translation>
 <translation id="4924638091161556692">Виправлено</translation>
@@ -1461,7 +1473,6 @@
 <translation id="7576032389798113292">6x4</translation>
 <translation id="8157939133946352716">7x5</translation>
 <translation id="2661146741306740526">16x9</translation>
-<translation id="2121825465123208577">Змінити розмір</translation>
 <translation id="3007214526293698309">Виправити формат</translation>
 <translation id="7982283708762922719">Висота</translation>
 <translation id="4734518477988699048">Введено недійсне значення.</translation>
@@ -1582,6 +1593,7 @@
 <translation id="3609785682760573515">Синхронізація…</translation>
 <translation id="1464724975715666883">1 помилка.</translation>
 <translation id="3495304270784461826">Помилок: <ph name="COUNT"/>.</translation>
+<translation id="5317780077021120954">Зберегти</translation>
 <translation id="4284105660453474798">Дійсно видалити "$1"?</translation>
 <translation id="4580526846085481512">Дійсно видалити елементи $1?</translation>
 <translation id="7953739707111622108">Не вдається відкрити пристрій, оскільки його файлову систему не розпізнано.</translation>
@@ -1621,6 +1633,7 @@
 <translation id="4568854179928172494">Змінений час</translation>
 <translation id="943972244133411984">Змінено користувачем</translation>
 <translation id="9099674669267916096">Кількість сторінок</translation>
+<translation id="8294431847097064396">Джерело</translation>
 <translation id="1363028406613469049">Композиція</translation>
 <translation id="1775381402323441512">Інформація про відео</translation>
 <translation id="3335337277364016868">Рік запису</translation>
@@ -1680,6 +1693,7 @@
 <translation id="3186202398303525187">Дозвольте додаткам Linux відкривати файл $1.</translation>
 <translation id="1603300902586586390">Дозвольте додаткам Linux відкривати файли $1.</translation>
 <translation id="4572815280350369984">Файл <ph name="FILE_TYPE"/></translation>
+<translation id="803771048473350947">Файл</translation>
 <translation id="895586998699996576">Зображення у форматі $1</translation>
 <translation id="2853916256216444076">Відео у форматі $1</translation>
 <translation id="7006844981395428048">Звук у форматі $1</translation>
@@ -1746,7 +1760,6 @@
 <translation id="6827236167376090743">Це відео буде відтворюватися, доки рак на горі не свисне.</translation>
 <translation id="6248400709929739064">Увімкнути субтитри</translation>
 <translation id="7881969471599061635">Вимкнути субтитри</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="4168015872538332605">Деякі налаштування, які встановив користувач <ph name="PRIMARY_EMAIL"/>, доступні для вас. Ці налаштування впливають на ваш обліковий запис, лише коли використовується паралельний вхід.</translation>
 <translation id="5860491529813859533">Увімкнути</translation>
 <translation id="1485141095922496924">Версія <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -1831,7 +1844,6 @@
 <translation id="48704129375571883">Додати більше функцій</translation>
 <translation id="7230787553283372882">Налаштувати розмір тексту</translation>
 <translation id="214169863967063661">Відкрити налаштування зовнішнього вигляду</translation>
-<translation id="3616113530831147358">Звук</translation>
 <translation id="6793604637258913070">Виділяти місце введення тексту, коли воно з’являється або рухається</translation>
 <translation id="7376553024552204454">Підсвічувати курсор миші під час руху</translation>
 <translation id="4150201353443180367">Екран</translation>
@@ -1908,7 +1920,6 @@
 <translation id="5916664084637901428">Увімкнути</translation>
 <translation id="1378613616312864539">Цим налаштуванням керує <ph name="NAME"/></translation>
 <translation id="6643016212128521049">Очистити</translation>
-<translation id="9065203028668620118">Редагувати</translation>
 <translation id="8465252176946159372">Недійсний</translation>
 <translation id="8647834505253004544">Недійсна веб-адреса</translation>
 <translation id="2149850907588596975">Паролі та форми</translation>
@@ -1920,7 +1931,6 @@
 <translation id="5659593005791499971">Електронна пошта</translation>
 <translation id="5762172915276660232">Налаштування кредитних карток</translation>
 <translation id="4499718683476608392">Вмикає "Автозаповнення" для кредитних карток, щоб вводити дані у форми одним кліком</translation>
-<translation id="2448312741937722512">Тип</translation>
 <translation id="9064275926664971810">Увімкнути "Автозаповнення", щоб заповнювати форми одним кліком</translation>
 <translation id="5029568752722684782">Видалити копію</translation>
 <translation id="2154484045852737596">Редагувати картку</translation>
@@ -1998,7 +2008,7 @@
 <translation id="577322787686508614">Операцію перегляду заборонено на пристрої <ph name="DEVICE_NAME"/>.</translation>
 <translation id="3141917231319778873">Цей запит не підтримується на пристрої <ph name="DEVICE_NAME"/>.</translation>
 <translation id="6122875415561139701">Операцію внесення змін заборонено на пристрої <ph name="DEVICE_NAME"/>.</translation>
-<translation id="439266289085815679"><ph name="USER_EMAIL"/> керує налаштуваннями Bluetooth.</translation>
+<translation id="439266289085815679">Налаштуваннями Bluetooth керує <ph name="USER_EMAIL"/>.</translation>
 <translation id="784934925303690534">Період часу</translation>
 <translation id="3958004920128806270">Щоб очистити дані веб-перегляду лише на цьому пристрої, але зберегти їх в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>вийдіть з облікового запису<ph name="END_LINK"/>.</translation>
 <translation id="4445433576366924090">Щоб очистити дані веб-перегляду на всіх синхронізованих пристроях і в обліковому записі Brave Software, <ph name="BEGIN_LINK"/>перейдіть у налаштування синхронізації<ph name="END_LINK"/>.</translation>
@@ -2067,7 +2077,6 @@
 <translation id="5816434091619127343">Після цих змін принтер стане непридатним для використання.</translation>
 <translation id="6504611359718185067">Під’єднайтеся до Інтернету, щоб додати принтер</translation>
 <translation id="4972129977812092092">Змінити принтер</translation>
-<translation id="5317780077021120954">Зберегти</translation>
 <translation id="5696679855467848181">Поточний файл PPD: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
 <translation id="7754704193130578113">Запитувати, де зберігати кожен файл перед завантаженням</translation>
@@ -2088,6 +2097,7 @@
 <translation id="706626672220389329">Помилка підключення спільного доступу. Указаний пристрій уже підключено.</translation>
 <translation id="5985458664595100876">Недійсний формат URL-адреси. Підтримувані формати: \\server\share і smb://server/share.</translation>
 <translation id="9147304170847707004">Спосіб автентифікації</translation>
+<translation id="7740996059027112821">Стандартно</translation>
 <translation id="5115338116365931134">Система єдиного входу (SSO)</translation>
 <translation id="3101709781009526431">Дата та час</translation>
 <translation id="2059913712424898428">Часовий пояс</translation>
@@ -2186,7 +2196,6 @@
 <translation id="8452135315243592079">Немає SIM-карти</translation>
 <translation id="2617342710774726426">SIM-карту заблоковано</translation>
 <translation id="4848518990323155912">Увімкнути блокування SIM-карти (потрібен PIN-код для використання мобільного трафіку)</translation>
-<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">Введіть PIN-код SIM-карти</translation>
 <translation id="8431909052837336408">Змінити PIN-код SIM-карти</translation>
 <translation id="289644616180464099">SIM-карту заблоковано</translation>
@@ -2203,7 +2212,6 @@
 <translation id="8986362086234534611">Видалити</translation>
 <translation id="7881483672146086348">Переглянути обліковий запис</translation>
 <translation id="2392369802118427583">Активувати</translation>
-<translation id="8151638057146502721">Налаштувати</translation>
 <translation id="5920543303088087579">Ваш адміністратор заборонив під’єднуватися до цієї мережі</translation>
 <translation id="1235458158152011030">Відомі мережі</translation>
 <translation id="3003144360685731741">Рекомендовані мережі</translation>
@@ -2414,6 +2422,7 @@
 <translation id="7258619945375359543">Дозвольте Асистенту робити пропозиції на основі вмісту на екрані</translation>
 <translation id="472896694312062378">"Ok Brave Software"</translation>
 <translation id="6236033368436682108">Відкривайте Асистент командою "Ok Brave Software", коли екран увімкнено</translation>
+<translation id="2482878487686419369">Сповіщення</translation>
 <translation id="5355099869024327351">Дозволити Асистенту показувати сповіщення</translation>
 <translation id="1127216846847548354">Активація голосом</translation>
 <translation id="3506093155988721483">Запускайте Асистент за допомогою голосу, а не клавіатури</translation>
@@ -2437,8 +2446,6 @@
 <translation id="16815041330799488">Не дозволяти сайтам переглядати тексти й зображення в буфері обміну</translation>
 <translation id="3668823961463113931">Обробники</translation>
 <translation id="3227137524299004712">Мікрофон</translation>
-<translation id="2482878487686419369">Сповіщення</translation>
-<translation id="9219103736887031265">Зображення</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Обробники платежів</translation>
@@ -2596,7 +2603,7 @@
 <translation id="7189965711416741966">Відбиток додано.</translation>
 <translation id="9220820413868316583">Підніміть палець, а потім повторіть спробу.</translation>
 <translation id="4534661889221639075">Повторіть спробу.</translation>
-<translation id="3645372836428131288">Трохи перемістіть палець, щоб зісканувати весь відбиток.</translation>
+<translation id="3645372836428131288">Трохи перемістіть палець, щоб зісканувати іншу частину відбитка.</translation>
 <translation id="7345706641791090287">Підтвердьте пароль</translation>
 <translation id="381202950560906753">Додати ще</translation>
 <translation id="6968288415730398122">Введіть пароль, щоб налаштувати блокування екрана</translation>
@@ -2704,12 +2711,9 @@
 <translation id="6586451623538375658">Змінити основну кнопку миші</translation>
 <translation id="221872881068107022">Зворотне прокручування</translation>
 <translation id="1510238584712386396">Панель запуску</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Ромб</translation>
 <translation id="89720367119469899">Escape</translation>
-<translation id="5583640892426849032">Backspace</translation>
 <translation id="1938351510777341717">Зовнішня клавіша Command</translation>
 <translation id="7969046989155602842">Клавіша Command</translation>
 <translation id="585979798156957858">Зовнішня мета-клавіша</translation>
@@ -2766,13 +2770,11 @@
 <translation id="4863769717153320198"><ph name="WIDTH"/>x<ph name="HEIGHT"/> (за умовчанням)</translation>
 <translation id="1125550662859510761"><ph name="WIDTH"/>x<ph name="HEIGHT"/> (оригінальна)</translation>
 <translation id="3151786313568798007">Орієнтація</translation>
-<translation id="7740996059027112821">Стандартно</translation>
 <translation id="55601339223879446">Налаштуйте межі робочого столу на дисплеї</translation>
 <translation id="7974936243149753750">Облямівка екрана</translation>
 <translation id="7758450972308449809">Налаштуйте межі дисплея</translation>
 <translation id="5608580678041221894">Торкніться наведених нижче клавіш, щоб змінити чи перемістити область обрізування</translation>
 <translation id="2822634587701817431">Зменшити/збільшити</translation>
-<translation id="7765158879357617694">Перемістити</translation>
 <translation id="6801435275744557998">Калібрувати сенсорний екран</translation>
 <translation id="6856623341093082836">Налаштуйте й відкоригуйте точність сенсорного екрана</translation>
 <translation id="4598556348158889687">Керування пам’яттю</translation>
@@ -2875,13 +2877,11 @@
 <translation id="8158441856257599022">Переглянути у Веб-магазині Brave</translation>
 <translation id="4617270414136722281">Параметри розширень</translation>
 <translation id="7152478047064750137">Для цього розширення не потрібні спеціальні дозволи</translation>
-<translation id="8294431847097064396">Джерело</translation>
 <translation id="8523849605371521713">Додано політикою</translation>
 <translation id="5087249366037322692">Додано сторонньою програмою</translation>
 <translation id="6788210894632713004">розширення</translation>
 <translation id="3798449238516105146">Версія</translation>
 <translation id="3838085852053358637">Не вдалося завантажити розширення</translation>
-<translation id="803771048473350947">Файл</translation>
 <translation id="6370021412472292592">Не вдалося завантажити маніфест.</translation>
 <translation id="2152198799932802652">Шукайте розширення й теми у <ph name="BEGIN_LINK"/>Веб-магазині Brave <ph name="END_LINK"/></translation>
 <translation id="7272674038937250585">Немає опису</translation>
@@ -2953,7 +2953,6 @@
 <translation id="6313641880021325787">Вийти з VR-режиму</translation>
 <translation id="2670429602441959756">Ця сторінка містить функції, які не підтримуються в режимі віртуальної реальності. Вихід…</translation>
 <translation id="1802687198411089702">Сторінка не відповідає. Зачекайте або закрийте її.</translation>
-<translation id="9148058034647219655">Вийти</translation>
 <translation id="3987938432087324095">Незрозуміло.</translation>
 <translation id="6923132443355966645">Прокрутіть або натисніть</translation>
 <translation id="6041155700700864984">Вийти з повноекранного режиму</translation>
