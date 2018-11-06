@@ -19,7 +19,7 @@ class Bundle {
   ~Bundle();
 
   bool FromJson(const std::string& json);  // Deserialize
-  const std::string ToJson();
+  const std::string ToJson();  // Serialize
 
   bool GenerateFromCatalog(const CATALOG_STATE& catalog_state);
 

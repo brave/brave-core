@@ -119,9 +119,9 @@ void AdsServe::OnCatalogDownloaded(
     }
 
     LOG(ads_client_, LogLevel::WARNING) <<
-        "Failed to download catalog from " << url <<
-        " (" << response_status_code << "): " <<
-        response << " " << formatted_headers;
+      "Failed to download catalog from " << url <<
+      " (" << response_status_code << "): " <<
+      response << " " << formatted_headers;
 
     RetryDownloadingCatalog();
   }
@@ -134,7 +134,7 @@ void AdsServe::RetryDownloadingCatalog() {
 void AdsServe::Reset() {
   next_catalog_check_ = 0;
   ads_client_->Reset("catalog.json",
-      std::bind(&AdsServe::OnCatalogReset, this, _1));
+    std::bind(&AdsServe::OnCatalogReset, this, _1));
 }
 
 void AdsServe::UpdateNextCatalogCheck() {
