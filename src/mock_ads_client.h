@@ -43,13 +43,13 @@ class MockAdsClient : public AdsClient, CallbackHandler {
   std::string SetLocale(const std::string& locale) override;
   void GetLocales(std::vector<std::string>& locales) const override;
 
-  void const std::string GenerateUUID() const override;
+  const std::string GenerateUUID() const override;
 
   const std::string GetSSID() const override;
 
   void ShowNotification(const std::unique_ptr<NotificationInfo> info) override;
 
-  uint32_t SetTimer(const uint64_t time_offset) override;
+  uint32_t SetTimer(const uint64_t& time_offset) override;
   void KillTimer(const uint32_t timer_id) override;
 
   std::unique_ptr<URLSession> URLSessionTask(

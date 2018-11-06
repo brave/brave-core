@@ -291,7 +291,7 @@ std::ostream& MockAdsClient::Log(
     }
   }
 
-  std::cerr << std::endl << level << ": ";
+  std::cerr << std::endl << level << ": in " << file << " on line " << line;
 
   return std::cerr;
 }

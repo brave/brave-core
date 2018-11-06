@@ -624,7 +624,7 @@ void AdsImpl::RetrieveSSID() {
   if (ssid.empty()) {
     ssid = "Unknown";
   }
-  client_->SetCurrentSSID();
+  client_->SetCurrentSSID(ssid);
 }
 
 void AdsImpl::TestShoppingData(const std::string& url) {

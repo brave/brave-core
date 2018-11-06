@@ -44,7 +44,7 @@ class ADS_EXPORT AdsClient {
   // Gets available locales
   virtual const std::vector<std::string>& GetLocales() const = 0;
 
-  // Generates an Ad UUID
+  // Generate a v4 UUID
   virtual const std::string GenerateUUID() const = 0;
 
   // Gets the network SSID or an empty string if not available
