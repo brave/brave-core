@@ -572,7 +572,7 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   if (result == ledger::Result::LEDGER_OK) {
     // TODO add notification service when implemented
     auto now = base::Time::Now();
-    GetWalletProperties();
+    FetchWalletProperties();
     ledger_->OnReconcileCompleteSuccess(viewing_id,
         category,
         probi,
@@ -968,19 +968,19 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
   }
 }
 
-void RewardsServiceImpl::GetWalletProperties() {
+void RewardsServiceImpl::FetchWalletProperties() {
   if (ready().is_signaled()) {
-    ledger_->GetWalletProperties();
+    ledger_->FetchWalletProperties();
   } else {
     ready().Post(FROM_HERE,
-        base::Bind(&brave_rewards::RewardsService::GetWalletProperties,
+        base::Bind(&brave_rewards::RewardsService::FetchWalletProperties,
             base::Unretained(this)));
   }
 }
 
-void RewardsServiceImpl::GetGrant(const std::string& lang,
+void RewardsServiceImpl::FetchGrant(const std::string& lang,
     const std::string& payment_id) {
-  ledger_->GetGrant(lang, payment_id);
+  ledger_->FetchGrant(lang, payment_id);
 }
 
 void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,

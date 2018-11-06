@@ -231,7 +231,7 @@ void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
   if (!rewards_service_)
     return;
 
-  rewards_service_->GetWalletProperties();
+  rewards_service_->FetchWalletProperties();
 }
 
 void RewardsDOMHandler::OnWalletInitialized(
@@ -313,7 +313,7 @@ void RewardsDOMHandler::GetGrant(const base::ListValue* args) {
     std::string paymentId;
     args->GetString(0, &lang);
     args->GetString(1, &paymentId);
-    rewards_service_->GetGrant(lang, paymentId);
+    rewards_service_->FetchGrant(lang, paymentId);
   }
 }
 
