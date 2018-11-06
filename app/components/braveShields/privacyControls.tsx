@@ -162,8 +162,8 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
       <div id='braveShieldsPrivacyControls'>
         {/* cookies select */}
         <SelectGrid hasUserInteraction={false}>
-          <EmptyButton />
-          <StatFlex />
+          <EmptyButton disabled={true} />
+          <StatFlex disabled={true} />
           <SelectBox id='blockCookies' value={cookies} onChange={this.onChangeBlockCookies}>
             <option value='block_third_party'>{getMessage('block3partyCookies')}</option>
             <option value='block'>{getMessage('blockAllCookies')}</option>
@@ -173,14 +173,14 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
         </SelectGrid>
 
         {/* scripts select */}
-        <SelectGrid hasUserInteraction={true}>
+        <SelectGrid hasUserInteraction={javascriptBlocked !== 0}>
           <EmptyButton disabled={javascriptBlocked === 0} onClick={this.onToggleScriptsBlocked}><ShowMoreIcon /></EmptyButton>
-          <StatFlex id='blockScriptsStat' onClick={this.onToggleScriptsBlocked}>{blockedResourcesSize(javascriptBlocked)}</StatFlex>
+          <StatFlex disabled={javascriptBlocked === 0} id='blockScriptsStat' onClick={this.onToggleScriptsBlocked}>{blockedResourcesSize(javascriptBlocked)}</StatFlex>
           <SelectBox id='blockScripts' value={javascript} onChange={this.onChangeBlockScripts}>
             <option value='block'>{getMessage('blockAllScriptsOrigins')}</option>
             <option value='allow'>{getMessage('allowAllScripts')}</option>
           </SelectBox>
-          <ClickableEmptySpace onClick={this.onToggleScriptsBlocked} />
+          <ClickableEmptySpace disabled={javascriptBlocked === 0} onClick={this.onToggleScriptsBlocked} />
           {
             openScriptsBlockedList
               ? this.renderScriptsBlockedList()
@@ -189,15 +189,15 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
         </SelectGrid>
 
         {/* fingerprinting select */}
-        <SelectGrid hasUserInteraction={true}>
+        <SelectGrid hasUserInteraction={fingerprintingBlocked !== 0}>
           <EmptyButton disabled={fingerprintingBlocked === 0} onClick={this.onToggleDeviceRecognition}><ShowMoreIcon /></EmptyButton>
-          <StatFlex id='blockFingerprintingStat' onClick={this.onToggleDeviceRecognition}>{blockedResourcesSize(fingerprintingBlocked)}</StatFlex>
+          <StatFlex disabled={fingerprintingBlocked === 0} id='blockFingerprintingStat' onClick={this.onToggleDeviceRecognition}>{blockedResourcesSize(fingerprintingBlocked)}</StatFlex>
           <SelectBox id='blockFingerprinting' value={fingerprinting} onChange={this.onChangeBlockDeviceRecognition}>
             <option value='block_third_party'>{getMessage('block3partyFingerprinting')}</option>
             <option value='block'>{getMessage('blockAllFingerprinting')}</option>
             <option value='allow'>{getMessage('allowAllFingerprinting')}</option>
           </SelectBox>
-          <ClickableEmptySpace onClick={this.onToggleDeviceRecognition} />
+          <ClickableEmptySpace disabled={fingerprintingBlocked === 0} onClick={this.onToggleDeviceRecognition} />
           {
             openDeviceRecognitionList
               ? this.renderDeviceRecognitionList()

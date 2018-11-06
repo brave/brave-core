@@ -138,8 +138,8 @@ export default class ShieldsInterfaceControls extends React.PureComponent<Props,
         {/* ads toggle */}
         <ToggleGrid>
           <EmptyButton disabled={this.totalAdsTrackersBlocked === 0} onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
-          <StatFlex id='blockAdsStat' onClick={this.onToggleTotalAdsTrackersBlocked}>{blockedResourcesSize(this.totalAdsTrackersBlocked)}</StatFlex>
-          <ResourcesSwitchLabel onClick={this.onToggleTotalAdsTrackersBlocked}>{getMessage('blockAds')}</ResourcesSwitchLabel>
+          <StatFlex disabled={this.totalAdsTrackersBlocked === 0} id='blockAdsStat' onClick={this.onToggleTotalAdsTrackersBlocked}>{blockedResourcesSize(this.totalAdsTrackersBlocked)}</StatFlex>
+          <ResourcesSwitchLabel disabled={this.totalAdsTrackersBlocked === 0} onClick={this.onToggleTotalAdsTrackersBlocked}>{getMessage('blockAds')}</ResourcesSwitchLabel>
           <ToggleFlex><Toggle id='blockAds' checked={blockAdsOption} onChange={this.onChangeBlockAds} /></ToggleFlex>
         </ToggleGrid>
         {
@@ -150,8 +150,8 @@ export default class ShieldsInterfaceControls extends React.PureComponent<Props,
         {/* connections encrypted toggle */}
         <ToggleGrid>
           <EmptyButton disabled={httpsRedirected === 0} onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
-          <StatFlex id='connectionsEncryptedStat' onClick={this.onToggleConnectionsEncrypted}>{blockedResourcesSize(httpsRedirected)}</StatFlex>
-          <ResourcesSwitchLabel onClick={this.onToggleConnectionsEncrypted}>{getMessage('connectionsEncrypted')}</ResourcesSwitchLabel>
+          <StatFlex disabled={httpsRedirected === 0} id='connectionsEncryptedStat' onClick={this.onToggleConnectionsEncrypted}>{blockedResourcesSize(httpsRedirected)}</StatFlex>
+          <ResourcesSwitchLabel disabled={httpsRedirected === 0} onClick={this.onToggleConnectionsEncrypted}>{getMessage('connectionsEncrypted')}</ResourcesSwitchLabel>
           <ToggleFlex><Toggle id='connectionsEncrypted' checked={connectionsEncrypted} onChange={this.onChangeConnectionsEncrypted} /></ToggleFlex>
         </ToggleGrid>
         {
