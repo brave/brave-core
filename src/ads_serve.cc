@@ -60,6 +60,12 @@ void AdsServe::OnCatalogDownloaded(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
 
+    // TODO(Brian Johnson): I have added the catalog class back to the project
+    // can you please change the code below to instantiate a catalog which
+    // should be responsible for the catalog state as there is custom logic
+    // in the catalog class concerning catalog_id's and I am sure further logic
+    // will be added in the future, the catalog class does have a shared_ptr
+    // which will also need changing
     CATALOG_STATE catalog_state;
     if (!catalog_state.LoadFromJson(response)) {
       // TODO(Terry Mancey): Implement Log (#44)
@@ -133,6 +139,10 @@ void AdsServe::RetryDownloadingCatalog() {
 
 void AdsServe::Reset() {
   next_catalog_check_ = 0;
+
+  // TODO(Brian Johnson): See the other TODO I created as this function should
+  // only reset the next_catalog_check_ and should be renamed back to its
+  // original name
   ads_client_->Reset("catalog.json",
     std::bind(&AdsServe::OnCatalogReset, this, _1));
 }

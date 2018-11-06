@@ -284,8 +284,15 @@ void AdsImpl::SaveCachedInfo() {
     client_->RemoveAllHistory();
   }
 
+  // TODO(Brian Johnson): The following should be abstracted back to the client_
+  // class
   ads_client_->Save("client.json", client_->ToJson(),
     std::bind(&AdsImpl::OnClientSaved, this, _1));
+
+  // TODO(Brian Johnson): The following change breaks the code as the bundle
+  // should not be saved as json and should be passed as a data structure and
+  // stored in a database so that fetching of results is optimized for both
+  // memory consumption and performance
   ads_client_->Save("bundle.json", bundle_->ToJson(),
     std::bind(&AdsImpl::OnBundleSaved, this, _1));
 }
@@ -523,7 +530,13 @@ void AdsImpl::Deinitialize() {
 
   last_page_classification_ = "";
 
+  // TODO(Brian Johnson): ads_client_->ResetCatalog(); was moved from here to
+  // ads_serve::Reset however ads serve is only responsible for downloading
+  // catalogs, so this should be re-implemented please
+
   bundle_->Reset();
+  // TODO(Brian Johnson): ads_client_->Reset call below should be moved to
+  // bundle::Reset (i.e. inside the above bundle_->Reset() function call)
   ads_client_->Reset("bundle.json",
       std::bind(&AdsImpl::OnBundleSaved, this, _1));
 

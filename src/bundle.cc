@@ -102,6 +102,9 @@ bool Bundle::GenerateFromCatalog(
 
 void Bundle::Reset() {
   bundle_state_.reset(new BUNDLE_STATE());
+  // TODO(Brian Johnson): Save() was removed from here, this is important
+  // otherwise the client will have a previous bundle, see commit #e82bda44
+  // where Save() was removed
 }
 
 std::string Bundle::GetCatalogId() const {
