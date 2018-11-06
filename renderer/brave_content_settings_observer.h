@@ -42,7 +42,7 @@ class BraveContentSettingsObserver
  private:
   GURL GetOriginOrURL(const blink::WebFrame* frame);
 
-  ContentSetting GetContentSettingFromRules(
+  ContentSetting GetFPContentSettingFromRules(
       const ContentSettingsForOneType& rules,
       const blink::WebFrame* frame,
       const GURL& secondary_url);

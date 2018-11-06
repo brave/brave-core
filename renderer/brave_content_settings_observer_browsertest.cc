@@ -640,3 +640,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShie
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
   EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
 }
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShieldsDownInOtherTab) {
+  // Turn off shields in a.com.
+  ShieldsDown();
+  // Block scripts in b.com.
+  content_settings()->SetContentSettingCustomScope(
+      iframe_pattern(),
+      ContentSettingsPattern::Wildcard(),
+      CONTENT_SETTINGS_TYPE_JAVASCRIPT,
+      "",
+      CONTENT_SETTING_BLOCK);
+
+  EXPECT_TRUE(
+      NavigateToURLUntilLoadStop("b.com", "/load_js_from_origins.html"));
+  EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
+}
