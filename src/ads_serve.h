@@ -31,7 +31,6 @@ class AdsServe {
   ~AdsServe();
 
   void DownloadCatalog();
-  void RetryDownloadingCatalog();
 
   void Reset();
 
@@ -42,6 +41,7 @@ class AdsServe {
   uint64_t next_catalog_check_;
   void UpdateNextCatalogCheck();
 
+  void RetryDownloadingCatalog();
   void OnCatalogDownloaded(
       const std::string& url,
       const int response_status_code,
