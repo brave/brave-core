@@ -8,7 +8,6 @@
 #include <sstream>
 #include <string>
 #include <memory>
-#include <string>
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/bundle_state.h"
