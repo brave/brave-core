@@ -66,6 +66,7 @@ source_set("ads") {
     "src/ads_serve.cc",
     "src/bundle.cc",
     "src/bundle_state.cc",
+    "src/catalog.cc",
     "src/catalog_state.cc",
     "src/client.cc",
     "src/client_state.cc",
