@@ -108,7 +108,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetWalletPropertiesFunction::Run()
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service_) {
-    rewards_service_->GetWalletProperties();
+    rewards_service_->FetchWalletProperties();
   }
   return RespondNow(NoArguments());
 }
