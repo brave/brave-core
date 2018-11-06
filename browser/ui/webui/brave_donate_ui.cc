@@ -98,7 +98,7 @@ void RewardsDonateDOMHandler::GetWalletProperties(const base::ListValue* args) {
   if (!rewards_service_)
     return;
 
-  rewards_service_->GetWalletProperties();
+  rewards_service_->FetchWalletProperties();
 }
 
 void RewardsDonateDOMHandler::OnWalletProperties(
