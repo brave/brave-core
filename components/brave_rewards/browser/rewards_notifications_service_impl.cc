@@ -109,15 +109,17 @@ void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {
     int notification_timestamp;
     RewardsNotificationArgs notification_args;
     dict_value->GetString("id", &notification_id);
+    dict_value->GetInteger("type", &notification_type);
+    dict_value->GetInteger("timestamp", &notification_timestamp);
 
     if (notification_id.empty()) {
       int old_id;
       dict_value->GetInteger("id", &old_id);
-      notification_id = std::to_string(old_id);
+      if (old_id == 0 && notification_type == 2)
+        notification_id = "rewards_notification_grant";
+      else
+        notification_id = std::to_string(old_id);
     }
-
-    dict_value->GetInteger("type", &notification_type);
-    dict_value->GetInteger("timestamp", &notification_timestamp);
 
     base::ListValue* args;
     dict_value->GetList("args", &args);
