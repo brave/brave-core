@@ -9,10 +9,16 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 
 class Profile;
+
+namespace base {
+class SequencedTaskRunner;
+}
 
 namespace ads {
 class Ads;
@@ -20,7 +26,9 @@ class Ads;
 
 namespace brave_ads {
 
-class AdsServiceImpl : public AdsService, ads::AdsClient {
+class AdsServiceImpl : public AdsService,
+                       public ads::AdsClient,
+                       public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
   explicit AdsServiceImpl(Profile* profile);
   ~AdsServiceImpl() override;
@@ -28,12 +36,17 @@ class AdsServiceImpl : public AdsService, ads::AdsClient {
   bool is_enabled() override;
 
  private:
-  void GetClientInfo(ads::ClientInfo& client_info) const override {}
-  void LoadUserModel(ads::CallbackHandler* callback_handler) override {}
+  void Init();
+  void OnUserModelLoaded(const ads::LoadUserModelCallback& callback,
+                         const std::string& user_model);
+
+  // AdsClient implementation
+  const ads::ClientInfo GetClientInfo() const override;
+  void LoadUserModel(ads::LoadUserModelCallback callback) override;
   std::string SetLocale(const std::string& locale) override;
-  void GetLocales(std::vector<std::string>& locales) const override {}
-  void GenerateAdUUID(std::string& ad_uuid) const override {}
-  void GetSSID(std::string& ssid) const override {}
+  const std::vector<std::string>& GetLocales() const override;
+  const std::string GenerateUUID() const override;
+  const std::string GetSSID() const override;
   void ShowAd(const std::unique_ptr<ads::AdInfo> info) override {}
   void SetTimer(const uint64_t time_offset, uint32_t& timer_id) override {}
   void KillTimer(uint32_t& timer_id) override {};
@@ -72,6 +85,9 @@ class AdsServiceImpl : public AdsService, ads::AdsClient {
   void DebugLog(const ads::LogLevel log_level, const char *fmt, ...) const override {}
 
   Profile* profile_;  // NOT OWNED
+  const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  const base::FilePath user_model_path_;
+
   std::unique_ptr<ads::Ads> ads_;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceImpl);

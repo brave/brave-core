@@ -29,6 +29,7 @@ source_set("browser") {
 
     deps += [
       "//brave/vendor/bat-native-ads",
+      "//ui/base",
     ]
   }
 }
