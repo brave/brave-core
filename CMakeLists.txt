@@ -14,6 +14,7 @@ include_directories(
 
 file(GLOB SOURCES
   "src/*.cc"
+  "src/bat/ads/*.cc"
   "deps/bat/usermodel/src/*.c*"
   "deps/bat/confirmations/src/*.cc"
   "third_party/uriparser/src/*.c")

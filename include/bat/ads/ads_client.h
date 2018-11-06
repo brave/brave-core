@@ -39,10 +39,10 @@ class ADS_EXPORT AdsClient {
   virtual const ClientInfo GetClientInfo() const = 0;
 
   // Set locale
-  virtual std::string SetLocale(const std::string& locale) = 0;
+  virtual const std::string SetLocale(const std::string& locale) = 0;
 
   // Gets available locales
-  virtual const std::vector<std::string>& GetLocales() const = 0;
+  virtual const std::vector<std::string> GetLocales() const = 0;
 
   // Generate a v4 UUID
   virtual const std::string GenerateUUID() const = 0;

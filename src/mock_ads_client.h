@@ -40,8 +40,8 @@ class MockAdsClient : public AdsClient, CallbackHandler {
   void Load(const std::string& name, OnLoadCallback callback) override;
   void Reset(const std::string& name, OnResetCallback callback) override;
 
-  std::string SetLocale(const std::string& locale) override;
-  void GetLocales(std::vector<std::string>& locales) const override;
+  const std::string SetLocale(const std::string& locale) override;
+  const std::vector<std::string> GetLocales() const override;
 
   const std::string GenerateUUID() const override;
 

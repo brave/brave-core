@@ -44,9 +44,8 @@ const ClientInfo MockAdsClient::GetClientInfo() const {
   return client_info;
 }
 
-std::string MockAdsClient::SetLocale(const std::string& locale) {
-  std::vector<std::string> locales;
-  GetLocales(locales);
+const std::string MockAdsClient::SetLocale(const std::string& locale) {
+  auto locales = GetLocales();
 
   if (std::find(locales.begin(), locales.end(), locale) != locales.end()) {
     locale_ = locale;
@@ -66,8 +65,9 @@ std::string MockAdsClient::SetLocale(const std::string& locale) {
   return locale_;
 }
 
-void MockAdsClient::GetLocales(std::vector<std::string>& locales) const {
-  locales = { "en", "fr", "de" };
+const std::vector<std::string> MockAdsClient::GetLocales() const {
+  std::vector<std::string> locales = { "en", "fr", "de" };
+  return locales;
 }
 
 const std::string MockAdsClient::GenerateUUID() const {

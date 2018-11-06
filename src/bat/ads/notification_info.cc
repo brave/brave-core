@@ -6,7 +6,7 @@
 
 namespace ads {
 
-NotificationInfo::AdINotificationInfonfo() :
+NotificationInfo::NotificationInfo() :
     category(""),
     advertiser(""),
     text(""),
