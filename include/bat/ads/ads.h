@@ -45,9 +45,6 @@ class ADS_EXPORT Ads {
   // Should be called to initialize ads
   virtual void Initialize() = 0;
 
-  // Should be called to initialize the user model
-  virtual void InitializeUserModel(const std::string& json) = 0;
-
   // Should be called whenever the browser gains or loses focus
   virtual void AppFocused(const bool is_focused) = 0;
 
