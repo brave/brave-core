@@ -65,12 +65,17 @@ export class RewardsPanel extends React.Component<Props, State> {
     })
   }
 
+  getGrant () {
+    this.props.actions.getGrant()
+  }
+
   onWindowCallback = (window: chrome.windows.Window) => {
     this.setState({
       windowId: window.id
     })
 
     if (this.props.rewardsPanelData.walletCreated) {
+      this.getGrant()
       this.getTabData()
     }
   }

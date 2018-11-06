@@ -250,6 +250,12 @@
             "type": "integer"
           }
         ]
+      },
+      {
+        "name": "getGrant",
+        "type": "function",
+        "description": "Retrieves grant when panel is mounted",
+        "parameters": []
       }
     ]
   }

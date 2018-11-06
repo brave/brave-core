@@ -31,6 +31,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: RewardsExtension.Report) => void) => void
   }
   const includeInAutoContribution: (publisherKey: string, excluded: boolean, windowId: number) => {}
+  const getGrant: () => {}
 }
 
 declare namespace chrome.rewardsNotifications {

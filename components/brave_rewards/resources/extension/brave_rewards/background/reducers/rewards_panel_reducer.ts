@@ -207,6 +207,11 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           windowId)
         break
       }
+    case types.GET_GRANT:
+      {
+        chrome.braveRewards.getGrant()
+        break
+      }
   }
 
   if (state !== startingState) {
