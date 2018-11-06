@@ -4,7 +4,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 
 #include "base/logging.h"
-#include "base/no_destructor.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
@@ -37,11 +36,6 @@ void RewardsService::AddObserver(RewardsServiceObserver* observer) {
 
 void RewardsService::RemoveObserver(RewardsServiceObserver* observer) {
   observers_.RemoveObserver(observer);
-}
-
-RewardsNotificationService* RewardsService::notification_service(Profile* profile) {
-  static base::NoDestructor<RewardsNotificationServiceImpl> instance(profile);
-  return instance.get();
 }
 
 // static

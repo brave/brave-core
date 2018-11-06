@@ -112,6 +112,7 @@ class RewardsServiceImpl : public RewardsService,
   void UpdateTipsList() override;
   void SetContributionAutoInclude(
     std::string publisher_key, bool excluded, uint64_t windowId) override;
+  RewardsNotificationService* GetNotificationService() const override;
 
  private:
   friend void RunIOTaskCallback(
@@ -254,8 +255,6 @@ class RewardsServiceImpl : public RewardsService,
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
 
-  RewardsNotificationService* notification_service();
-
   Profile* profile_;  // NOT OWNED
   std::unique_ptr<ledger::Ledger> ledger_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
@@ -264,6 +263,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_info_db_path_;
   const base::FilePath publisher_list_path_;
   std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
+  std::unique_ptr<RewardsNotificationService> notification_service_;
 
   extensions::OneShotEvent ready_;
   std::map<const net::URLFetcher*, FetchCallback> fetchers_;

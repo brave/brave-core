@@ -96,11 +96,10 @@ class RewardsService : public KeyedService {
   virtual void UpdateTipsList() = 0;
   virtual void SetContributionAutoInclude(
     std::string publisher_key, bool excluded, uint64_t windowId) = 0;
+  virtual RewardsNotificationService* GetNotificationService() const = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
-
-  RewardsNotificationService* notification_service(Profile* profile);
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
