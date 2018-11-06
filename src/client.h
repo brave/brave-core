@@ -16,10 +16,8 @@
 #include "client_state.h"
 
 namespace ads {
-class AdsImpl;
-}  // namespace ads
 
-namespace ads {
+class AdsImpl;
 
 class Client: public CallbackHandler {
  public:

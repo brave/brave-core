@@ -25,16 +25,11 @@
 #include "bundle.h"
 
 namespace ads {
+
 class Settings;
 class Client;
 class Bundle;
-}  // namespace ads
-
-namespace ads {
 class AdsServe;
-}  // namespace ads
-
-namespace ads {
 
 class AdsImpl : public Ads, CallbackHandler {
  public:

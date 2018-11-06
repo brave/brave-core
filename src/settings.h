@@ -12,10 +12,6 @@
 #include "settings_state.h"
 
 namespace ads {
-class AdsImpl;
-}  // namespace ads
-
-namespace ads {
 
 class Settings {
  public:

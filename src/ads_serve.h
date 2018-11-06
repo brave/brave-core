@@ -12,14 +12,9 @@
 #include "bat/ads/ads_client.h"
 
 namespace ads {
-class Bundle;
-}  // namespace ads
 
-namespace ads {
 class AdsImpl;
-}  // namespace ads
-
-namespace ads {
+class Bundle;
 
 class AdsServe {
  public:
