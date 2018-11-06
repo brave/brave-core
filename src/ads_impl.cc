@@ -200,6 +200,7 @@ void AdsImpl::Initialize() {
     return;
   }
 
+  // TODO(Brian Johnson): This should be abstracted back to the settings class
   ads_client_->Load("settings.json",
       std::bind(&AdsImpl::OnSettingsLoaded, this, _1, _2));
 }
@@ -436,6 +437,7 @@ void AdsImpl::OnSettingsLoaded(
     return;
   }
 
+  // TODO(Brian Johnson): This should be abstracted back to the client class
   ads_client_->Load("client.json",
       std::bind(&AdsImpl::OnClientLoaded, this, _1, _2));
 }
