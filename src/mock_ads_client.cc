@@ -20,7 +20,7 @@ MockAdsClient::MockAdsClient() :
   ads_(Ads::CreateInstance(this)),
   locale_("en"),
   bundle_state_(std::make_unique<BUNDLE_STATE>()) {
-    std::ifstream ifs{"mock_data/mock_sample_bundle.json"};
+    std::ifstream ifs{"mock_data/sample_bundle.json"};
 
     std::stringstream stream;
     stream << ifs.rdbuf();
@@ -126,7 +126,7 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
   auto response_status_code = 200;
   std::string response = "";
 
-  std::ifstream ifs{"mock_data/mock_catalog.json"};
+  std::ifstream ifs{"mock_data/catalog.json"};
   if (ifs.fail()) {
     response_status_code = 404;
   } else {
@@ -155,9 +155,10 @@ void MockAdsClient::Save(
   callback(success ? Result::SUCCESS : Result::FAILED);
 }
 
-void MockAdsClient::Load(const std::string& name,
-                        OnLoadCallback callback) {
-  std::ifstream ifs{"build/" + name};
+void MockAdsClient::Load(
+    const std::string& name,
+    OnLoadCallback callback) {
+  std::ifstream ifs{"mock_data/" + name};
   if (ifs.fail()) {
     callback(Result::FAILED, "");
     return;
@@ -170,11 +171,13 @@ void MockAdsClient::Load(const std::string& name,
   callback(Result::SUCCESS, json);
 }
 
-void MockAdsClient::Reset(const std::string& name,
-                          OnResetCallback callback) {
+void MockAdsClient::Reset(
+    const std::string& name,
+    OnResetCallback callback) {
   std::ifstream ifs(name.c_str());
   if (ifs.good()) {
     std::remove(name.c_str());
+
     callback(Result::SUCCESS);
   } else {
     callback(Result::FAILED);
@@ -291,7 +294,8 @@ std::ostream& MockAdsClient::Log(
     }
   }
 
-  std::cerr << std::endl << level << ": in " << file << " on line " << line;
+  std::cerr << level << ": in " << file << " on line "
+    << line << " " << std::endl;
 
   return std::cerr;
 }

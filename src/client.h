@@ -30,11 +30,11 @@ class Client: public CallbackHandler {
   const std::string ToJson();
 
   void AppendCurrentTimeToAdsShownHistory();
-  std::deque<std::time_t> GetAdsShownHistory();
+  const std::deque<std::time_t> GetAdsShownHistory();
   void GetAdsShownHistory(const std::deque<std::time_t>& history);
   void UpdateAdUUID();
   void UpdateAdsUUIDSeen(const std::string& uuid, uint64_t value);
-  std::map<std::string, uint64_t> GetAdsUUIDSeen();
+  const std::map<std::string, uint64_t> GetAdsUUIDSeen();
   void ResetAdsUUIDSeen(const std::vector<AdInfo>& ads);
   void SetAvailable(const bool available);
   void SetAllowed(const bool allowed);
@@ -52,13 +52,13 @@ class Client: public CallbackHandler {
   void UpdateLastUserActivity();
   void UpdateLastUserIdleStopTime();
   void SetLocale(const std::string& locale);
-  std::string GetLocale();
+  const std::string GetLocale();
   void SetLocales(const std::vector<std::string>& locales);
-  std::vector<std::string> GetLocales();
+  const std::vector<std::string> GetLocales();
   void AppendPageScoreToPageScoreHistory(
       const std::vector<double>& page_scores);
-  std::deque<std::vector<double>> GetPageScoreHistory();
-  std::string GetCurrentPlace();
+  const std::deque<std::vector<double>> GetPageScoreHistory();
+  const std::string GetCurrentPlace();
 
   void RemoveAllHistory();
 

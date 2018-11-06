@@ -43,7 +43,7 @@ void Client::AppendCurrentTimeToAdsShownHistory() {
   }
 }
 
-std::deque<std::time_t> Client::GetAdsShownHistory() {
+const std::deque<std::time_t> Client::GetAdsShownHistory() {
   return client_state_->ads_shown_history;
 }
 
@@ -61,7 +61,7 @@ void Client::UpdateAdsUUIDSeen(
   client_state_->ads_uuid_seen.insert({uuid, value});
 }
 
-std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
+const std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
   return client_state_->ads_uuid_seen;
 }
 
@@ -162,7 +162,7 @@ void Client::SetLocale(const std::string& locale) {
   client_state_->locale = locale;
 }
 
-std::string Client::GetLocale() {
+const std::string Client::GetLocale() {
   return client_state_->locale;
 }
 
@@ -170,7 +170,7 @@ void Client::SetLocales(const std::vector<std::string>& locales) {
   client_state_->locales = locales;
 }
 
-std::vector<std::string> Client::GetLocales() {
+const std::vector<std::string> Client::GetLocales() {
   return client_state_->locales;
 }
 
@@ -183,11 +183,11 @@ void Client::AppendPageScoreToPageScoreHistory(
   }
 }
 
-std::deque<std::vector<double>> Client::GetPageScoreHistory() {
+const std::deque<std::vector<double>> Client::GetPageScoreHistory() {
   return client_state_->page_score_history;
 }
 
-std::string Client::GetCurrentPlace() {
+const std::string Client::GetCurrentPlace() {
   auto place = client_state_->places.find(client_state_->current_ssid);
   if (place != client_state_->places.end()) {
     return place->second;

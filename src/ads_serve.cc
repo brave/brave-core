@@ -96,7 +96,7 @@ void AdsServe::OnCatalogDownloaded(
     // 'Generated bundle'
 
     ads_client_->Save("catalog.json", response,
-        std::bind(&AdsServe::OnCatalogSaved, this, _1));
+      std::bind(&AdsServe::OnCatalogSaved, this, _1));
 
     ads_->SaveCachedInfo();
 

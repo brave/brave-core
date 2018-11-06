@@ -285,9 +285,9 @@ void AdsImpl::SaveCachedInfo() {
   }
 
   ads_client_->Save("client.json", client_->ToJson(),
-      std::bind(&AdsImpl::OnClientSaved, this, _1));
+    std::bind(&AdsImpl::OnClientSaved, this, _1));
   ads_client_->Save("bundle.json", bundle_->ToJson(),
-      std::bind(&AdsImpl::OnBundleSaved, this, _1));
+    std::bind(&AdsImpl::OnBundleSaved, this, _1));
 }
 
 void AdsImpl::RecordMediaPlaying(
@@ -537,8 +537,11 @@ void AdsImpl::Deinitialize() {
 }
 
 void AdsImpl::LoadUserModel() {
-  ads_client_->Load("user_model.json",
-      std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2));
+  std::stringstream path;
+  path << "locales/" << client_->GetLocale() << "/user_model.json";
+
+  ads_client_->Load(path.str(),
+    std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2));
 }
 
 std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {

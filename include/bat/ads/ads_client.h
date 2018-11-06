@@ -69,13 +69,16 @@ class ADS_EXPORT AdsClient {
       const URLSession::Method& method,
       URLSessionCallbackHandlerCallback callback) = 0;
 
-  virtual void Save(const std::string& name,
-                    const std::string& value,
-                    OnSaveCallback callback) = 0;
-  virtual void Load(const std::string& name,
-                    OnLoadCallback callback) = 0;
-  virtual void Reset(const std::string& name,
-                     OnResetCallback callback) = 0;
+  virtual void Save(
+      const std::string& name,
+      const std::string& value,
+      OnSaveCallback callback) = 0;
+  virtual void Load(
+      const std::string& name,
+      OnLoadCallback callback) = 0;
+  virtual void Reset(
+      const std::string& name,
+      OnResetCallback callback) = 0;
 
   // Gets available ads based upon the winning category
   virtual void GetCategory(
@@ -94,9 +97,10 @@ class ADS_EXPORT AdsClient {
   virtual void EventLog(const std::string& json) = 0;
 
   // Logs debug information
-  virtual std::ostream& Log(const char* file,
-                            int line,
-                            const ads::LogLevel log_level) const = 0;
+  virtual std::ostream& Log(
+      const char* file,
+      int line,
+      const ads::LogLevel log_level) const = 0;
 };
 
 }  // namespace ads
