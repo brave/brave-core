@@ -71,10 +71,17 @@ describe('PrivacyControls component', () => {
     })
 
     it('shows number of scripts blocked', () => {
-      const newProps = Object.assign(fakeProps, { javascriptBlocked: 1337 })
+      const newProps = Object.assign(fakeProps, { javascriptBlocked: 13 })
       const wrapper = shallow(baseComponent(newProps))
       const assertion = wrapper.find('#blockScriptsStat').props().children
-      assert.equal(assertion, 1337)
+      assert.equal(assertion, 13)
+    })
+
+    it('trim number of scripts blocked to 99+ if number is higher', () => {
+      const newProps = Object.assign(fakeProps, { javascriptBlocked: 123123123 })
+      const wrapper = shallow(baseComponent(newProps))
+      const assertion = wrapper.find('#blockScriptsStat').props().children
+      assert.equal(assertion, '99+')
     })
   })
 
@@ -92,10 +99,17 @@ describe('PrivacyControls component', () => {
     })
 
     it('shows number of fingerprinting attempts blocked', () => {
-      const newProps = Object.assign(fakeProps, { fingerprintingBlocked: 1337 })
+      const newProps = Object.assign(fakeProps, { fingerprintingBlocked: 13 })
       const wrapper = shallow(baseComponent(newProps))
       const assertion = wrapper.find('#blockFingerprintingStat').props().children
-      assert.equal(assertion, 1337)
+      assert.equal(assertion, 13)
+    })
+
+    it('trim number of fingerprinting to 99+ if number is higher', () => {
+      const newProps = Object.assign(fakeProps, { fingerprintingBlocked: 123123123 })
+      const wrapper = shallow(baseComponent(newProps))
+      const assertion = wrapper.find('#blockFingerprintingStat').props().children
+      assert.equal(assertion, '99+')
     })
   })
 })

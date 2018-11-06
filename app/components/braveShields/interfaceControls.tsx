@@ -25,7 +25,7 @@ import { BlockOptions } from '../../types/other/blockTypes'
 // Utils
 import { getMessage } from '../../background/api/localeAPI'
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
-import { totalAdsTrackersBlocked } from '../../helpers/shieldsUtils'
+import { totalAdsTrackersBlocked, blockedResourcesSize } from '../../helpers/shieldsUtils'
 
 export interface Props {
   braveShields: BlockOptions
@@ -138,7 +138,7 @@ export default class ShieldsInterfaceControls extends React.PureComponent<Props,
         {/* ads toggle */}
         <ToggleGrid>
           <EmptyButton disabled={this.totalAdsTrackersBlocked === 0} onClick={this.onToggleTotalAdsTrackersBlocked}><ShowMoreIcon /></EmptyButton>
-          <StatFlex id='blockAdsStat' onClick={this.onToggleTotalAdsTrackersBlocked}>{this.totalAdsTrackersBlocked}</StatFlex>
+          <StatFlex id='blockAdsStat' onClick={this.onToggleTotalAdsTrackersBlocked}>{blockedResourcesSize(this.totalAdsTrackersBlocked)}</StatFlex>
           <ResourcesSwitchLabel onClick={this.onToggleTotalAdsTrackersBlocked}>{getMessage('blockAds')}</ResourcesSwitchLabel>
           <ToggleFlex><Toggle id='blockAds' checked={blockAdsOption} onChange={this.onChangeBlockAds} /></ToggleFlex>
         </ToggleGrid>
@@ -150,7 +150,7 @@ export default class ShieldsInterfaceControls extends React.PureComponent<Props,
         {/* connections encrypted toggle */}
         <ToggleGrid>
           <EmptyButton disabled={httpsRedirected === 0} onClick={this.onToggleConnectionsEncrypted}><ShowMoreIcon /></EmptyButton>
-          <StatFlex id='connectionsEncryptedStat' onClick={this.onToggleConnectionsEncrypted}>{httpsRedirected}</StatFlex>
+          <StatFlex id='connectionsEncryptedStat' onClick={this.onToggleConnectionsEncrypted}>{blockedResourcesSize(httpsRedirected)}</StatFlex>
           <ResourcesSwitchLabel onClick={this.onToggleConnectionsEncrypted}>{getMessage('connectionsEncrypted')}</ResourcesSwitchLabel>
           <ToggleFlex><Toggle id='connectionsEncrypted' checked={connectionsEncrypted} onChange={this.onChangeConnectionsEncrypted} /></ToggleFlex>
         </ToggleGrid>

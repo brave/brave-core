@@ -67,10 +67,17 @@ describe('InterfaceControls component', () => {
     })
 
     it('shows number of ads blocked', () => {
-      const newProps = Object.assign(fakeProps, { adsBlocked: 1337 })
+      const newProps = Object.assign(fakeProps, { adsBlocked: 13 })
       const wrapper = shallow(baseComponent(newProps))
       const assertion = wrapper.find('#blockAdsStat').props().children
-      assert.equal(assertion, 1337)
+      assert.equal(assertion, 13)
+    })
+
+    it('trim ads blocked to 99+ if number is higher', () => {
+      const newProps = Object.assign(fakeProps, { adsBlocked: 123123123123123 })
+      const wrapper = shallow(baseComponent(newProps))
+      const assertion = wrapper.find('#blockAdsStat').props().children
+      assert.equal(assertion, '99+')
     })
   })
 
@@ -102,10 +109,17 @@ describe('InterfaceControls component', () => {
     })
 
     it('shows number of https redirected', () => {
-      const newProps = Object.assign(fakeProps, { httpsRedirected: 1337 })
+      const newProps = Object.assign(fakeProps, { httpsRedirected: 13 })
       const wrapper = shallow(baseComponent(newProps))
       const assertion = wrapper.find('#connectionsEncryptedStat').props().children
-      assert.equal(assertion, 1337)
+      assert.equal(assertion, 13)
+    })
+
+    it('trim https redirected to 99+ if number is higher', () => {
+      const newProps = Object.assign(fakeProps, { httpsRedirected: 123123123 })
+      const wrapper = shallow(baseComponent(newProps))
+      const assertion = wrapper.find('#connectionsEncryptedStat').props().children
+      assert.equal(assertion, '99+')
     })
   })
 })

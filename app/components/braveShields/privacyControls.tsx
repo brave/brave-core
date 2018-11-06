@@ -26,6 +26,7 @@ import { NoScriptInfo } from '../../types/other/noScriptInfo'
 // Utils
 import * as shieldActions from '../../types/actions/shieldsPanelActions'
 import { getMessage } from '../../background/api/localeAPI'
+import { blockedResourcesSize } from '../../helpers/shieldsUtils'
 
 export interface Props {
   url: string
@@ -174,7 +175,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
         {/* scripts select */}
         <SelectGrid hasUserInteraction={true}>
           <EmptyButton disabled={javascriptBlocked === 0} onClick={this.onToggleScriptsBlocked}><ShowMoreIcon /></EmptyButton>
-          <StatFlex id='blockScriptsStat' onClick={this.onToggleScriptsBlocked}>{javascriptBlocked}</StatFlex>
+          <StatFlex id='blockScriptsStat' onClick={this.onToggleScriptsBlocked}>{blockedResourcesSize(javascriptBlocked)}</StatFlex>
           <SelectBox id='blockScripts' value={javascript} onChange={this.onChangeBlockScripts}>
             <option value='block'>{getMessage('blockAllScriptsOrigins')}</option>
             <option value='allow'>{getMessage('allowAllScripts')}</option>
@@ -190,7 +191,7 @@ export default class PrivacyControls extends React.PureComponent<Props, State> {
         {/* fingerprinting select */}
         <SelectGrid hasUserInteraction={true}>
           <EmptyButton disabled={fingerprintingBlocked === 0} onClick={this.onToggleDeviceRecognition}><ShowMoreIcon /></EmptyButton>
-          <StatFlex id='blockFingerprintingStat' onClick={this.onToggleDeviceRecognition}>{fingerprintingBlocked}</StatFlex>
+          <StatFlex id='blockFingerprintingStat' onClick={this.onToggleDeviceRecognition}>{blockedResourcesSize(fingerprintingBlocked)}</StatFlex>
           <SelectBox id='blockFingerprinting' value={fingerprinting} onChange={this.onChangeBlockDeviceRecognition}>
             <option value='block_third_party'>{getMessage('block3partyFingerprinting')}</option>
             <option value='block'>{getMessage('blockAllFingerprinting')}</option>
