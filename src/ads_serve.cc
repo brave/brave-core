@@ -145,7 +145,8 @@ void AdsServe::Reset() {
 
   // TODO(Brian Johnson): See the other TODO I created as this function should
   // only reset the next_catalog_check_ and should be renamed back to its
-  // original name
+  // original name, resetting of the catalog file should be moved to the
+  // catalog class and then called from the Deinitialize function
   ads_client_->Reset("catalog.json",
     std::bind(&AdsServe::OnCatalogReset, this, _1));
 }
