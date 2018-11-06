@@ -30,6 +30,7 @@
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
@@ -251,6 +252,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
       publisher_info_backend_(
           new PublisherInfoDatabase(publisher_info_db_path_)),
+      notification_service_(new RewardsNotificationServiceImpl(profile)),
       next_timer_id_(0) {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -288,13 +290,9 @@ RewardsServiceImpl::~RewardsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, publisher_info_backend_.release());
 }
 
-RewardsNotificationService* RewardsServiceImpl::notification_service() {
-  return static_cast<RewardsService*>(this)->notification_service(profile_);
-}
-
 void RewardsServiceImpl::Init() {
   ledger_->Initialize();
-  notification_service()->ReadRewardsNotifications();
+  notification_service_->ReadRewardsNotifications();
 }
 
 void RewardsServiceImpl::CreateWallet() {
@@ -506,7 +504,7 @@ void RewardsServiceImpl::Shutdown() {
 
   fetchers_.clear();
   ledger_.reset();
-  notification_service()->StoreRewardsNotifications();
+  notification_service_->StoreRewardsNotifications();
   RewardsService::Shutdown();
 }
 
@@ -534,7 +532,7 @@ void RewardsServiceImpl::OnGrant(ledger::Result result,
 
   if (result == ledger::Result::LEDGER_OK) {
     RewardsNotificationService::RewardsNotificationArgs args;
-    notification_service()->AddNotification(
+    notification_service_->AddNotification(
         RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
         "rewards_notification_grant");
   }
@@ -562,7 +560,7 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
   }
 
   TriggerOnGrantFinish(result, grant);
-  notification_service()->DeleteNotification("rewards_notification_grant");
+  notification_service_->DeleteNotification("rewards_notification_grant");
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
@@ -1607,6 +1605,10 @@ void RewardsServiceImpl::SetContributionAutoInclude(std::string publisher_key,
   ledger_->SetPublisherPanelExclude(publisher_key, excluded ?
     ledger::PUBLISHER_EXCLUDE::EXCLUDED : ledger::PUBLISHER_EXCLUDE::INCLUDED,
     windowId);
+}
+
+RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
+  return notification_service_.get();
 }
 
 void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {

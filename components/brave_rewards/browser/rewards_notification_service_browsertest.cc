@@ -22,8 +22,7 @@ class BraveRewardsNotificationBrowserTest
     InProcessBrowserTest::SetUpOnMainThread();
     rewards_service_ =
         RewardsServiceFactory::GetForProfile(browser()->profile());
-    rewards_notification_service_ =
-        rewards_service_->notification_service(browser()->profile());
+    rewards_notification_service_ = rewards_service_->GetNotificationService();
   }
 
   void TearDown() override {
