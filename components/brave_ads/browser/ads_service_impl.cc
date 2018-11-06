@@ -6,6 +6,7 @@
 
 #include "base/files/file_util.h"
 #include "base/guid.h"
+#include "base/logging.h"
 #include "base/sequenced_task_runner.h"
 #include "base/task_runner_util.h"
 #include "base/task/post_task.h"
@@ -132,6 +133,51 @@ std::unique_ptr<ads::URLSession> AdsServiceImpl::URLSessionTask(
       const ads::URLSession::Method& method,
       ads::URLSessionCallbackHandlerCallback callback) {
   return nullptr;
+}
+
+bool AdsServiceImpl::GetUrlComponents(
+      const std::string& url,
+      ads::UrlComponents* components) const {
+  GURL gurl(url);
+
+  if (!gurl.is_valid())
+    return false;
+
+  components->url = gurl.spec();
+  if (gurl.has_scheme())
+    components->scheme = gurl.scheme();
+
+  if (gurl.has_username())
+    components->user = gurl.username();
+
+  if (gurl.has_host())
+    components->hostname = gurl.host();
+
+  if (gurl.has_port())
+    components->port = gurl.port();
+
+  if (gurl.has_query())
+    components->query = gurl.query();
+
+  if (gurl.has_ref())
+    components->fragment = gurl.ref();
+
+  return true;
+}
+
+std::ostream& AdsServiceImpl::Log(const char* file,
+                                  int line,
+                                  const ads::LogLevel log_level) const {
+  switch(log_level) {
+    case ads::LogLevel::INFO:
+      return logging::LogMessage(file, line, logging::LOG_INFO).stream();
+      break;
+    case ads::LogLevel::WARNING:
+      return logging::LogMessage(file, line, logging::LOG_WARNING).stream();
+      break;
+    default:
+      return logging::LogMessage(file, line, logging::LOG_ERROR).stream();
+  }
 }
 
 }  // namespace brave_ads
