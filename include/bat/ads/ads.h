@@ -115,9 +115,6 @@ class ADS_EXPORT Ads {
   // Should be called when a timer is triggered
   virtual void OnTimer(const uint32_t timer_id) = 0;
 
-  // Should be called once the user model has loaded
-  virtual void OnUserModelLoaded(const Result result) = 0;
-
   // Should be called once settings have loaded
   virtual void OnSettingsLoaded(
       const Result result,

@@ -20,6 +20,8 @@
 #include "bat/ads/url_components.h"
 #include "static_values.h"
 
+using namespace std::placeholders;
+
 namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client) :
@@ -202,6 +204,7 @@ void AdsImpl::Initialize() {
 }
 
 void AdsImpl::InitializeUserModel(const std::string& json) {
+  user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->initializePageClassifier(json);
 }
 
@@ -447,18 +450,18 @@ void AdsImpl::OnClientLoaded(
     return;
   }
 
-  std::vector<std::string> locales;
-  ads_client_->GetLocales(locales);
-  ProcessLocales(locales);
+  ProcessLocales(ads_client_->GetLocales());
 
   LoadUserModel();
 }
 
-void AdsImpl::OnUserModelLoaded(const Result result) {
+void AdsImpl::OnUserModelLoaded(const Result result, const std::string json) {
   if (result == Result::FAILED) {
     ads_client_->DebugLog(LogLevel::WARNING, "Failed to load user model");
     return;
   }
+
+  InitializeUserModel(json);
 
   if (!initialized_) {
     initialized_ = true;
@@ -525,8 +528,8 @@ void AdsImpl::Deinitialize() {
 }
 
 void AdsImpl::LoadUserModel() {
-  user_model_.reset(usermodel::UserModel::CreateInstance());
-  ads_client_->LoadUserModel(this);
+  ads_client_->LoadUserModel(
+      std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2));
 }
 
 std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {
@@ -608,10 +611,7 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
 }
 
 void AdsImpl::RetrieveSSID() {
-  std::string ssid;
-  ads_client_->GetSSID(ssid);
-
-  client_->SetCurrentSSID(ssid);
+  client_->SetCurrentSSID(ads_client_->GetSSID());
 }
 
 void AdsImpl::TestShoppingData(const std::string& url) {

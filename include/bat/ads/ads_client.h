@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <functional>
 #include <string>
 #include <memory>
 
@@ -25,27 +26,29 @@ enum ADS_EXPORT LogLevel {
   ERROR
 };
 
+using LoadUserModelCallback = std::function<void(Result, const std::string)>;
+
 class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
 
   // Gets information about the client
-  virtual void GetClientInfo(ClientInfo& client_info) const = 0;
+  virtual const ClientInfo GetClientInfo() const = 0;
 
   // Loads the user model
-  virtual void LoadUserModel(CallbackHandler* callback_handler) = 0;
+  virtual void LoadUserModel(LoadUserModelCallback callback) = 0;
 
   // Set locale
   virtual std::string SetLocale(const std::string& locale) = 0;
 
   // Gets available locales
-  virtual void GetLocales(std::vector<std::string>& locales) const = 0;
+  virtual const std::vector<std::string>& GetLocales() const = 0;
 
   // Generates an Ad UUID
-  virtual void GenerateAdUUID(std::string& ad_uuid) const = 0;
+  virtual const std::string GenerateUUID() const = 0;
 
   // Gets the network SSID or "Unknown" if not available
-  virtual void GetSSID(std::string& ssid) const = 0;
+  virtual const std::string GetSSID() const = 0;
 
   // Shows the specified ad
   virtual void ShowAd(const std::unique_ptr<AdInfo> info) = 0;

@@ -22,8 +22,9 @@ AdsServe::AdsServe(
 AdsServe::~AdsServe() = default;
 
 void AdsServe::BuildUrl() {
-  ClientInfo client_info;
-  ads_client_->GetClientInfo(client_info);
+  // TODO(bridiver) - why are we calling to get this every time? I'm not sure
+  // that we should even be passing this info in the first place
+  ClientInfo client_info = ads_client_->GetClientInfo();
 
   url_ = _is_production ? ADS_PRODUCTION_SERVER : ADS_STAGING_SERVER;
 

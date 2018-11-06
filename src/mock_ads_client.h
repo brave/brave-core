@@ -31,16 +31,16 @@ class MockAdsClient : public AdsClient, CallbackHandler {
 
  protected:
   // AdsClient
-  void GetClientInfo(ClientInfo& client_info) const override;
+  const ClientInfo GetClientInfo() const override;
 
-  void LoadUserModel(CallbackHandler* callback_handler) override;
+  void LoadUserModel(LoadUserModelCallback callback) override;
 
   std::string SetLocale(const std::string& locale) override;
   void GetLocales(std::vector<std::string>& locales) const override;
 
-  void GenerateAdUUID(std::string& ad_uuid) const override;
+  void const std::string GenerateUUID() const override;
 
-  void GetSSID(std::string& ssid) const override;
+  const std::string GetSSID() const override;
 
   void ShowAd(const std::unique_ptr<AdInfo> info) override;
 

@@ -53,7 +53,7 @@ void Client::UpdateAdUUID() {
     return;
   }
 
-  ads_client_->GenerateAdUUID(client_state_->ad_uuid);
+  client_state_->ad_uuid = ads_client_->GenerateUUID();
 }
 
 void Client::UpdateAdsUUIDSeen(

@@ -22,9 +22,6 @@ class ADS_EXPORT CallbackHandler {
  public:
   virtual ~CallbackHandler() = default;
 
-  // User model
-  virtual void OnUserModelLoaded(const Result /* result */) {}
-
   // Settings
   virtual void OnSettingsLoaded(
       const Result /* result */,

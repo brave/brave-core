@@ -38,23 +38,23 @@ MockAdsClient::MockAdsClient() :
 
 MockAdsClient::~MockAdsClient() = default;
 
-void MockAdsClient::GetClientInfo(ClientInfo& client_info) const {
+const ClientInfo MockAdsClient::GetClientInfo() const {
+  ClientInfo client_info;
   client_info.application_version = "1.0";
 
   client_info.platform = "all";
   client_info.platform_version = "1.0";
+
+  return client_info;
 }
 
-void MockAdsClient::LoadUserModel(CallbackHandler* callback_handler) {
+void MockAdsClient::LoadUserModel(LoadUserModelCallback callback) {
   std::stringstream path;
   path << "mock_data/locales/" << locale_ << "/user_model.json";
 
   std::ifstream ifs{path.str()};
   if (ifs.fail()) {
-    if (callback_handler) {
-      callback_handler->OnUserModelLoaded(Result::FAILED);
-    }
-
+    callback(Result::FAILED, "");
     return;
   }
 
@@ -62,11 +62,7 @@ void MockAdsClient::LoadUserModel(CallbackHandler* callback_handler) {
   stream << ifs.rdbuf();
   auto json = stream.str();
 
-  ads_->InitializeUserModel(json);
-
-  if (callback_handler) {
-    callback_handler->OnUserModelLoaded(Result::SUCCESS);
-  }
+  callback(Result::SUCCESS, json);
 }
 
 std::string MockAdsClient::SetLocale(const std::string& locale) {
@@ -95,12 +91,12 @@ void MockAdsClient::GetLocales(std::vector<std::string>& locales) const {
   locales = { "en", "fr", "de" };
 }
 
-void MockAdsClient::GenerateAdUUID(std::string& ad_uuid) const {
-  ad_uuid = "298b76ac-dcd9-47d8-aa29-f799ea8e7e02";
+const std::string MockAdsClient::GenerateUUID() const {
+  return "298b76ac-dcd9-47d8-aa29-f799ea8e7e02";
 }
 
-void MockAdsClient::GetSSID(std::string& ssid) const {
-  ssid = "My WiFi Network";
+const std::string MockAdsClient::GetSSID() const {
+  return "My WiFi Network";
 }
 
 void MockAdsClient::ShowAd(const std::unique_ptr<AdInfo> info) {

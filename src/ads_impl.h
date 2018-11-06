@@ -85,8 +85,6 @@ class AdsImpl : public Ads, CallbackHandler {
 
   void OnTimer(const uint32_t timer_id) override;
 
-  void OnUserModelLoaded(const Result result) override;
-
   void OnSettingsLoaded(
       const Result result,
       const std::string& json) override;
@@ -114,6 +112,8 @@ class AdsImpl : public Ads, CallbackHandler {
   bool initialized_;
   bool IsInitialized();
   void Deinitialize();
+
+  void OnUserModelLoaded(const Result result, const std::string json);
 
   bool boot_;
 
