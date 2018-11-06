@@ -24,6 +24,8 @@ import * as utils from '../utils'
 import WalletOff from 'brave-ui/features/rewards/walletOff'
 import ModalAddFunds from 'brave-ui/features/rewards/modalAddFunds'
 
+import clipboardCopy = require('clipboard-copy');
+
 interface State {
   modalBackup: boolean,
   modalBackupActive: 'backup' | 'restore'
@@ -65,6 +67,19 @@ class PageWallet extends React.Component<Props, State> {
     this.setState({
       modalBackupActive: tabId
     })
+  }
+
+  onModalBackupOnCopy = (backupKey: string) => {
+    clipboardCopy(backupKey)
+  }
+
+  onModalBackupOnPrint = () => {
+    // TODO NZ implement
+    console.log('onModalBackupOnPrint')
+  }
+
+  onModalBackupOnSaveFile = (backupKey: string) => {
+    console.log('onModalBackupOnPrint')
   }
 
   onModalBackupOnRestore = (key: string | MouseEvent) => {
@@ -229,6 +244,9 @@ class PageWallet extends React.Component<Props, State> {
               backupKey={recoveryKey}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
+              onCopy={this.onModalBackupOnCopy}
+              onPrint={this.onModalBackupOnPrint}
+              onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
               error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
             />
