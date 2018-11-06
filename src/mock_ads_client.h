@@ -60,7 +60,7 @@ class MockAdsClient : public AdsClient, CallbackHandler {
       const URLSession::Method& method,
       URLSessionCallbackHandlerCallback callback) override;
 
-  void GetAds(
+  void GetCategory(
       const std::string& winning_category,
       CallbackHandler* callback_handler) override;
 

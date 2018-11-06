@@ -183,7 +183,7 @@ void MockAdsClient::Reset(const std::string& name,
   }
 }
 
-void MockAdsClient::GetAds(
+void MockAdsClient::GetCategory(
     const std::string& winning_category,
     CallbackHandler* callback_handler) {
   std::string category;
@@ -195,7 +195,7 @@ void MockAdsClient::GetAds(
     auto categories = bundle_state_->categories.find(category);
     if (categories != bundle_state_->categories.end()) {
       if (callback_handler) {
-        callback_handler->OnGetAds(Result::SUCCESS,
+        callback_handler->OnGetCategory(Result::SUCCESS,
           category, categories->second);
 
         return;
@@ -206,7 +206,7 @@ void MockAdsClient::GetAds(
   } while (pos != std::string::npos);
 
   if (callback_handler) {
-    callback_handler->OnGetAds(Result::FAILED, category, {});
+    callback_handler->OnGetCategory(Result::FAILED, category, {});
   }
 }
 

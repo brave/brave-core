@@ -84,14 +84,14 @@ class AdsImpl : public Ads, CallbackHandler {
 
   void OnTimer(const uint32_t timer_id) override;
 
-  void OnGetSampleCategory(
-      const Result result,
-      const std::string& category) override;
-
-  void OnGetAds(
+  void OnGetCategory(
       const Result result,
       const std::string& category,
       const std::vector<CategoryInfo>& ads) override;
+
+  void OnGetSampleCategory(
+      const Result result,
+      const std::string& category) override;
 
  private:
   bool initialized_;

@@ -77,7 +77,7 @@ class ADS_EXPORT AdsClient {
                      OnResetCallback callback) = 0;
 
   // Gets available ads based upon the winning category
-  virtual void GetAds(
+  virtual void GetCategory(
       const std::string& winning_category,
       CallbackHandler* callback_handler) = 0;
 

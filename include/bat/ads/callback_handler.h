@@ -23,15 +23,14 @@ class ADS_EXPORT CallbackHandler {
   virtual ~CallbackHandler() = default;
 
   // Category
-  virtual void OnGetSampleCategory(
-      const Result /* result */,
-      const std::string& /* category */) {}
-
-  // Ads
-  virtual void OnGetAds(
+  virtual void OnGetCategory(
       const Result /* result */,
       const std::string& /* category */,
       const std::vector<CategoryInfo>& /* ads */) {}
+
+  virtual void OnGetSampleCategory(
+      const Result /* result */,
+      const std::string& /* category */) {}
 
   // URL Session
   virtual bool OnURLSessionReceivedResponse(
