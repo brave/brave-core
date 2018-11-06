@@ -24,7 +24,7 @@ import * as utils from '../utils'
 import WalletOff from 'brave-ui/features/rewards/walletOff'
 import ModalAddFunds from 'brave-ui/features/rewards/modalAddFunds'
 
-import clipboardCopy = require('clipboard-copy');
+import clipboardCopy = require('clipboard-copy')
 
 interface State {
   modalBackup: boolean,
@@ -70,7 +70,9 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalBackupOnCopy = (backupKey: string) => {
-    clipboardCopy(backupKey)
+    const success = clipboardCopy(backupKey)
+    // TODO(jsadler) possibly flash a message that copy was completed
+    console.log(success ? 'Copy successful' : 'Copy failed')
   }
 
   onModalBackupOnPrint = () => {
@@ -78,8 +80,26 @@ class PageWallet extends React.Component<Props, State> {
     console.log('onModalBackupOnPrint')
   }
 
+  constructBackup = (backupKey: string) => {
+    const backupString = getLocale('backupFileText1') + '\n' +
+      getLocale('backupFileText2') + Date.now() + '\n\n' +
+      getLocale('backupFileText3') + backupKey + '\n\n' +
+      getLocale('backupFileText4')
+    return backupString
+  }
+
   onModalBackupOnSaveFile = (backupKey: string) => {
-    console.log('onModalBackupOnPrint')
+    const backupString = this.constructBackup(backupKey)
+    const backupFileText = 'brave_wallet_recovery.txt'
+    const a = document.createElement('a')
+    document.body.appendChild(a)
+    a.style.display = 'display: none'
+    const blob = new Blob([backupString], { type : 'plain/text' })
+    const url = window.URL.createObjectURL(blob)
+    a.href = url
+    a.download = backupFileText
+    a.click()
+    window.URL.revokeObjectURL(url)
   }
 
   onModalBackupOnRestore = (key: string | MouseEvent) => {
