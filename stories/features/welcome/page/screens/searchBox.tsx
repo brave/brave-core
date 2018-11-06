@@ -27,7 +27,12 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
   render () {
     const { index, currentScreen, onClick } = this.props
     return (
-      <Content zIndex={index} active={index === currentScreen} isPrevious={index > currentScreen}>
+      <Content
+        zIndex={index}
+        active={index === currentScreen}
+        screenPosition={'1' + (index + 1) + '0%'}
+        isPrevious={index <= currentScreen}
+      >
         <SearchImage src={searchImage} />
         <Title>{locale.setDefaultSearchEngine}</Title>
         <Paragraph>{locale.chooseSearchEngine}</Paragraph>

@@ -22,7 +22,12 @@ export default class ShieldsBox extends React.PureComponent<Props> {
   render () {
     const { index, currentScreen } = this.props
     return (
-      <Content zIndex={index} active={index === currentScreen} isPrevious={index > currentScreen}>
+      <Content
+        zIndex={index}
+        active={index === currentScreen}
+        screenPosition={'1' + (index + 1) + '0%'}
+        isPrevious={index <= currentScreen}
+      >
         <ShieldsImage src={shieldsImage} />
         <Title>{locale.protectYourPrivacy}</Title>
         <Paragraph>{locale.adjustProtectionLevel}</Paragraph>

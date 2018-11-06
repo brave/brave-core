@@ -25,10 +25,13 @@ interface Props {
 export default class PaymentsBox extends React.PureComponent<Props, {}> {
   render () {
     const { index, currentScreen, onClick } = this.props
-    console.log('index', index)
-    console.log('current', currentScreen)
     return (
-      <Content zIndex={index} active={index === currentScreen} isPrevious={index > currentScreen}>
+      <Content
+        zIndex={index}
+        active={index === currentScreen}
+        screenPosition={'1' + (index + 1) + '0%'}
+        isPrevious={index <= currentScreen}
+      >
         <PaymentsImage src={paymentsImage} />
         <Title>{locale.enableBraveRewards}</Title>
         <Paragraph>{locale.setupBraveRewards}</Paragraph>

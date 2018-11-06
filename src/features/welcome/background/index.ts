@@ -11,7 +11,7 @@ interface BackgroundProps {
   }
 }
 
-const topToBottom = keyframes`
+export const topToBottom = keyframes`
   from {
     transform: translateY(-100%);
   }
@@ -21,22 +21,28 @@ const topToBottom = keyframes`
   }
 `
 
-export const Background = styled<BackgroundProps, 'div'>('div')`
-  /* animation start state must be the same as "from" keyframe */
-  transform: translateY(-100%);
-  /* animation stuff courtesy of ross */
-  animation-delay: 0s;
-  animation-name: ${topToBottom};
-  animation-duration: 4s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards;
-  /* end of animation stuff */
+export const BackgroundContainer = styled<{}, 'div'>('div')`
   box-sizing: border-box;
-  font-family: ${p => p.theme.fontFamily.heading};
   width: inherit;
   height: inherit;
-  background-repeat: repeat-x;
-  background-image: url('${p => p.background.image}');
-  background-position-x: ${p => p.background.position};
-  transition: 2.5s ease-in-out;
+  position: relative;
+  animation-delay: 0s;
+  animation-name: ${topToBottom};
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+`
+
+export const Background = styled<BackgroundProps, 'div'>('div')`
+  box-sizing: border-box;
+  background: url('${p => p.background.image}') repeat-x;
+  width: 500%;
+  height: inherit;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  transform: translateX(${p => p.background.position});
+  transition: transform ease-in-out 1.5s;
 `

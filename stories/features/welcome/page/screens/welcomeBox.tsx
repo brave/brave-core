@@ -27,7 +27,12 @@ export default class ThemingBox extends React.PureComponent<Props, {}> {
   render () {
     const { index, currentScreen, onClick } = this.props
     return (
-      <Content zIndex={index} active={currentScreen === index} isPrevious={index > currentScreen}>
+      <Content
+        zIndex={index}
+        active={currentScreen === index}
+        screenPosition={'1' + (index + 1) + '0%'}
+        isPrevious={index <= currentScreen}
+      >
         <BraveImage src={braveLogo} />
         <Title>{locale.welcome}</Title>
         <Paragraph>{locale.whatIsBrave}</Paragraph>

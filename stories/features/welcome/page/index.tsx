@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Background, Page, Panel } from '../../../../src/features/welcome/'
+import { Background, Page, Panel, BackgroundContainer } from '../../../../src/features/welcome/'
 
 // Component groups
 import WelcomeBox from './screens/welcomeBox'
@@ -115,7 +115,9 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
     const { currentScreen } = this.state
     return (
       <>
-        <Background background={{ image: background, position: this.backgroundPosition }} />
+        <BackgroundContainer>
+          <Background background={{ image: background, position: `-${currentScreen}0%` }} />
+        </BackgroundContainer>
         <Page>
           <Panel>
             <div

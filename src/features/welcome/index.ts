@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Background } from './background'
+import { Background, BackgroundContainer } from './background'
 import { SkipButton, Bullet } from './button'
 import {
   BraveImage,
@@ -26,6 +26,7 @@ import {
 
 export {
   Background,
+  BackgroundContainer,
   SkipButton,
   Bullet,
   BraveImage,

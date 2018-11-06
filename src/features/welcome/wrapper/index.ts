@@ -14,28 +14,6 @@ const fadeIn = keyframes`
   }
 `
 
-const slideOut = (props: {}) => keyframes`
-  from {
-    transform: scale(1) translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: scale(.8) translateX(${props});
-    opacity: 0;
-  }
-`
-
-const slideIn = (props: {}) => keyframes`
-  from {
-    transform: scale(.8) translateX(${props});
-    opacity: 0;
-  }
-  to {
-    transform: scale(1) translateX(0);
-    opacity: 1;
-  }
-`
-
 const BaseGrid = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   display: grid;
@@ -78,24 +56,18 @@ export const FooterRightColumn = styled(BaseColumn)`
   align-items: center;
   justify-content: flex-end;
 `
+
 interface ContentProps {
   active: boolean
   zIndex: number
+  screenPosition: string
   isPrevious: boolean
 }
 
-const applyPositioning = (p: ContentProps) => p.isPrevious ? '1' + p.zIndex + '0%' : '-1' + p.zIndex + '0%'
-
 export const Content = styled<ContentProps, 'section'>('section')`
-  /* animation start state must be the same as "from" keyframe */
-  transform: translateX(${p => applyPositioning(p)});
-  /* animation stuff courtesy of ross */
-  animation-delay: 0;
-  animation-name: ${slideOut((p: ContentProps) => applyPositioning(p))};
-  animation-duration: 1.5s;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: forwards;
-  /* end of animation stuff */
+  opacity: 0;
+  transform: translateX(${p => p.isPrevious ? '-' + p.screenPosition : p.screenPosition}) scale(0.8);
+  transition: opacity 1.5s, transform 1.5s;
   position: absolute;
   z-index: ${p => p.zIndex};
   display: flex;
@@ -106,15 +78,8 @@ export const Content = styled<ContentProps, 'section'>('section')`
   padding: 0 60px;
 
   ${p => p.active && css`
-    /* animation start state must be the same as "from" keyframe */
-    transform: translateX(${p => applyPositioning(p)});
-    /* animation stuff courtesy of ross */
-    animation-delay: 0.5s;
-    animation-name: ${slideIn((p: ContentProps) => applyPositioning(p))};
-    animation-duration: 1.5s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-    /* end of animation stuff */
+    opacity: 1;
+    transform: translateX(0) scale(1);
   `}
 `
 
