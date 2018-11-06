@@ -138,7 +138,7 @@ GURL BraveContentSettingsObserver::GetOriginOrURL(const blink::WebFrame* frame) 
   return top_origin.GetURL();
 }
 
-ContentSetting BraveContentSettingsObserver::GetContentSettingFromRules(
+ContentSetting BraveContentSettingsObserver::GetFPContentSettingFromRules(
     const ContentSettingsForOneType& rules,
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
@@ -172,9 +172,16 @@ bool BraveContentSettingsObserver::IsBraveShieldsDown(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  const GURL& primary_url = GetOriginOrURL(frame);
+
   if (content_setting_rules_) {
-    setting = GetContentSettingFromRules(
-        content_setting_rules_->brave_shields_rules, frame, secondary_url);
+    for (const auto& rule : content_setting_rules_->brave_shields_rules) {
+      if (rule.primary_pattern.Matches(primary_url) &&
+          rule.secondary_pattern.Matches(secondary_url)) {
+        setting = rule.GetContentSetting();
+        break;
+      }
+    }
   }
 
   return setting == CONTENT_SETTING_BLOCK;
@@ -201,7 +208,7 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
                                   std::string(),
                                   false);
   rules.push_back(default_rule);
-  ContentSetting setting = GetContentSettingFromRules(rules, frame, secondary_url);
+  ContentSetting setting = GetFPContentSettingFromRules(rules, frame, secondary_url);
   rules.pop_back();
   bool allow = setting != CONTENT_SETTING_BLOCK;
   allow = allow || IsWhitelistedForContentSettings();
