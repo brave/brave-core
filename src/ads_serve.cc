@@ -45,10 +45,10 @@ void AdsServe::DownloadCatalog() {
     std::bind(
       &AdsServe::OnCatalogDownloaded,
       this,
-      std::placeholders::_1,
-      std::placeholders::_2,
-      std::placeholders::_3,
-      std::placeholders::_4));
+      _1,
+      _2,
+      _3,
+      _4));
 }
 
 void AdsServe::OnCatalogDownloaded(
