@@ -17,13 +17,14 @@
 
 class Profile;
 
-namespace base {
-class SequencedTaskRunner;
-}
-
 namespace ads {
 class Ads;
 }
+
+namespace base {
+class OneShotTimer;
+class SequencedTaskRunner;
+}  // namespace base
 
 namespace brave_ads {
 
@@ -46,8 +47,8 @@ class AdsServiceImpl : public AdsService,
   const std::string GenerateUUID() const override;
   const std::string GetSSID() const override;
   void ShowAd(const std::unique_ptr<ads::AdInfo> info) override {}
-  void SetTimer(const uint64_t time_offset, uint32_t& timer_id) override {}
-  void KillTimer(uint32_t& timer_id) override {};
+  uint32_t SetTimer(const uint64_t& time_offset) override;
+  void KillTimer(uint32_t timer_id) override;
   std::unique_ptr<ads::URLSession> URLSessionTask(
       const std::string& url,
       const std::vector<std::string>& headers,
@@ -76,10 +77,15 @@ class AdsServiceImpl : public AdsService,
 
   void OnLoaded(const ads::OnLoadCallback& callback,
                 const std::string& value);
+  void OnTimer(uint32_t timer_id);
+
 
   Profile* profile_;  // NOT OWNED
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const base::FilePath base_path_;
+
+  std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
+  uint32_t next_timer_id_;
 
   std::unique_ptr<ads::Ads> ads_;
 

@@ -41,7 +41,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-    base_path_(profile_->GetPath().AppendASCII("ads_service")) {
+    base_path_(profile_->GetPath().AppendASCII("ads_service")),
+    next_timer_id_(0) {
   DCHECK(!profile_->IsOffTheRecord());
 
   if (is_enabled())
@@ -163,6 +164,34 @@ bool AdsServiceImpl::GetUrlComponents(
     components->fragment = gurl.ref();
 
   return true;
+}
+
+uint32_t AdsServiceImpl::SetTimer(const uint64_t& time_offset) {
+  if (next_timer_id_ == std::numeric_limits<uint32_t>::max())
+    next_timer_id_ = 1;
+  else
+    ++next_timer_id_;
+
+  timers_[next_timer_id_] = std::make_unique<base::OneShotTimer>();
+  timers_[next_timer_id_]->Start(FROM_HERE,
+      base::TimeDelta::FromSeconds(time_offset),
+      base::BindOnce(
+          &AdsServiceImpl::OnTimer, AsWeakPtr(), next_timer_id_));
+
+  return next_timer_id_;
+}
+
+void AdsServiceImpl::KillTimer(uint32_t timer_id) {
+  if (timers_.find(timer_id) == timers_.end())
+    return;
+
+  timers_[timer_id]->Stop();
+  timers_.erase(timer_id);
+}
+
+void AdsServiceImpl::OnTimer(uint32_t timer_id) {
+  timers_.erase(timer_id);
+  ads_->OnTimer(timer_id);
 }
 
 std::ostream& AdsServiceImpl::Log(const char* file,
