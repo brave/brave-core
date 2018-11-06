@@ -15,7 +15,7 @@ namespace ads {
 
 class Bundle {
  public:
-  explicit Bundle();
+  Bundle();
   ~Bundle();
 
   bool FromJson(const std::string& json);  // Deserialize

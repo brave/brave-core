@@ -19,7 +19,7 @@ namespace ads {
 
 class Settings {
  public:
-  explicit Settings();
+  Settings();
   ~Settings();
 
   bool FromJson(const std::string& json);  // Deserialize
