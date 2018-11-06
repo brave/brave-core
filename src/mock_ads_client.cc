@@ -152,7 +152,12 @@ void MockAdsClient::Save(
     const std::string& value,
     OnSaveCallback callback) {
   auto success = WriteJsonToDisk("build/" + name, value);
-  callback(success ? Result::SUCCESS : Result::FAILED);
+  if (!success) {
+    callback(Result::FAILED);
+    return;
+  }
+
+  callback(Result::SUCCESS);
 }
 
 void MockAdsClient::Load(
@@ -175,13 +180,18 @@ void MockAdsClient::Reset(
     const std::string& name,
     OnResetCallback callback) {
   std::ifstream ifs(name.c_str());
-  if (ifs.good()) {
-    std::remove(name.c_str());
-
-    callback(Result::SUCCESS);
-  } else {
+  if (ifs.fail()) {
     callback(Result::FAILED);
+    return;
   }
+
+  auto success = std::remove(name.c_str());
+  if (!success) {
+    callback(Result::FAILED);
+    return;
+  }
+
+  callback(Result::SUCCESS);
 }
 
 void MockAdsClient::GetCategory(
