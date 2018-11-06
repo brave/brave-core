@@ -6,6 +6,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_IMPL_
 
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -61,19 +62,20 @@ class AdsServiceImpl : public AdsService,
             ads::OnLoadCallback callback) override;
   void Reset(const std::string& name,
              ads::OnResetCallback callback) override;
-
-  void OnLoaded(const ads::OnLoadCallback& callback,
-                const std::string& value);
-
   void GetAds(
       const std::string& winning_category,
       ads::CallbackHandler* callback_handler) override {}
   void GetSampleCategory(ads::CallbackHandler* callback_handler) override {}
-  void GetUrlComponents(
+  bool GetUrlComponents(
       const std::string& url,
-      ads::UrlComponents& components) const override {}
+      ads::UrlComponents* components) const override;
   void EventLog(const std::string& json) override {}
-  void DebugLog(const ads::LogLevel log_level, const char *fmt, ...) const override {}
+  std::ostream& Log(const char* file,
+                    int line,
+                    const ads::LogLevel log_level) const override;
+
+  void OnLoaded(const ads::OnLoadCallback& callback,
+                const std::string& value);
 
   Profile* profile_;  // NOT OWNED
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
