@@ -64,8 +64,10 @@ def main():
   elif PLATFORM == 'win32':
     if get_target_arch() == 'x64':
       upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'), 'brave_installer-x64.exe', force=args.force)
+      upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
     else:
       upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'), 'brave_installer-ia32.exe', force=args.force)
+      upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
   else:
     if get_target_arch() == 'x64':
       for pkg in pkgs:
@@ -130,6 +132,54 @@ def get_brave_packages(dir, channel, version):
             if re.match(r'brave-browser-' + channel + '_' + version + r'.*\.deb$', file) \
               or re.match(r'brave-browser-' + channel + '-' + version + r'.*\.rpm$', file):
                 pkgs.append(file)
+        elif PLATFORM == 'win32':
+          # print("Comparing file: {}".format(file))
+          # print("Channel: {}".format(channel_capitalized))
+          # print("Target Arch: {}".format(os.environ['TARGET_ARCH']))
+          if get_target_arch() == 'x64':
+            if channel_capitalized == 'Release':
+              file_desired_standalone = 'BraveBrowserStandaloneSetup.exe'
+              file_desired_stub = 'BraveBrowserSetup.exe'
+              if re.match(r'BraveBrowserSetup_.*\.exe', file):
+                rename(file_path, file_desired_stub)
+                pkgs.append(file_desired_stub)
+              elif re.match(r'BraveBrowserStandaloneSetup_.*\.exe', file):
+                rename(file_path, file_desired_standalone)
+                pkgs.append(file_desired_standalone)
+            elif channel_capitalized == 'Beta':
+              file_desired_standalone = 'BraveBrowserStandaloneBetaSetup.exe'
+              file_desired_stub = 'BraveBrowserBetaSetup.exe'
+            elif channel_capitalized == 'Dev':
+              file_desired_standalone = 'BraveBrowserStandaloneDevSetup.exe'
+              file_desired_stub = 'BraveBrowserDevSetup.exe'
+            if re.match(r'BraveBrowser' + channel_capitalized + r'Setup_.*\.exe', file):
+              rename(file_path, file_desired_stub)
+              pkgs.append(file_desired_stub)
+            elif re.match(r'BraveBrowserStandalone' + channel_capitalized + r'Setup_.*\.exe', file):
+              rename(file_path, file_desired_standalone)
+              pkgs.append(file_desired_standalone)
+          else:
+            if channel_capitalized == 'Release':
+              file_desired_standalone = 'BraveBrowserStandaloneSetup32.exe'
+              file_desired_stub = 'BraveBrowserSetup32.exe'
+              if re.match(r'BraveBrowserSetup32_.*\.exe', file):
+                rename(file_path, file_desired_stub)
+                pkgs.append(file_desired_stub)
+              elif re.match(r'BraveBrowserStandaloneSetup32_.*\.exe', file):
+                rename(file_path, file_desired_standalone)
+                pkgs.append(file_desired_standalone)
+            elif channel_capitalized == 'Beta':
+              file_desired_standalone = 'BraveBrowserStandaloneBetaSetup32.exe'
+              file_desired_stub = 'BraveBrowserBetaSetup32.exe'
+            elif channel_capitalized == 'Dev':
+              file_desired_standalone = 'BraveBrowserStandaloneDevSetup32.exe'
+              file_desired_stub = 'BraveBrowserDevSetup32.exe'
+            if re.match(r'BraveBrowser' + channel_capitalized + r'Setup32_.*\.exe', file):
+              rename(file_path, file_desired_stub)
+              pkgs.append(file_desired_stub)
+            elif re.match(r'BraveBrowserStandalone' + channel_capitalized + r'Setup32_.*\.exe', file):
+              rename(file_path, file_desired_standalone)
+              pkgs.append(file_desired_standalone)
 
     return pkgs
 
