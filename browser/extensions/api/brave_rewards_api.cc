@@ -125,5 +125,18 @@ ExtensionFunction::ResponseAction BraveRewardsGetCurrentReportFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsGetGrantFunction::~BraveRewardsGetGrantFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsGetGrantFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service_ =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_) {
+    rewards_service_->FetchGrant(std::string(), std::string());
+  }
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions
