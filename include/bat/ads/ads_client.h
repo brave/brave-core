@@ -12,7 +12,7 @@
 #include "bat/ads/ad_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/callback_handler.h"
-#include "bat/ads/category_info.h"
+#include "bat/ads/notification_info.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
 #include "bat/ads/url_components.h"
@@ -47,11 +47,12 @@ class ADS_EXPORT AdsClient {
   // Generates an Ad UUID
   virtual const std::string GenerateUUID() const = 0;
 
-  // Gets the network SSID or "Unknown" if not available
+  // Gets the network SSID or an empty string if not available
   virtual const std::string GetSSID() const = 0;
 
-  // Shows the specified ad
-  virtual void ShowAd(const std::unique_ptr<AdInfo> info) = 0;
+  // Shows the notification
+  virtual void ShowNotification(
+      const std::unique_ptr<NotificationInfo> info) = 0;
 
   // Creates a timer with the specified id and time-offset
   virtual uint32_t SetTimer(const uint64_t& time_offset) = 0;

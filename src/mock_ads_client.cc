@@ -2,16 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 
 #include <uriparser/Uri.h>
 
 #include "mock_ads_client.h"
 #include "mock_url_session.h"
-#include "bat/ads/callback_handler.h"
 #include "bat/ads/ad_info.h"
 #include "math_helper.h"
 #include "string_helper.h"
@@ -81,13 +78,14 @@ const std::string MockAdsClient::GetSSID() const {
   return "My WiFi Network";
 }
 
-void MockAdsClient::ShowAd(const std::unique_ptr<AdInfo> info) {
+void MockAdsClient::ShowNotification(
+    const std::unique_ptr<NotificationInfo> info) {
   std::cout << "------------------------------------------------" << std::endl;
   std::cout << "Advertisement:" << std::endl;
   std::cout << info->advertiser << std::endl;
   std::cout << info->category << std::endl;
-  std::cout << info->notification_text << std::endl;
-  std::cout << info->notification_url << std::endl;
+  std::cout << info->text << std::endl;
+  std::cout << info->url << std::endl;
   std::cout << info->uuid << std::endl;
 }
 
@@ -212,7 +210,7 @@ void MockAdsClient::GetCategory(
 
 void MockAdsClient::GetSampleCategory(
     CallbackHandler* callback_handler) {
-  std::map<std::string, std::vector<CategoryInfo>>::iterator
+  std::map<std::string, std::vector<AdInfo>>::iterator
     categories = sample_bundle_state_->categories.begin();
 
   auto categories_count = sample_bundle_state_->categories.size();

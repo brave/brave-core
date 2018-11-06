@@ -8,8 +8,6 @@
 
 namespace ads {
 
-namespace {
-
 // TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
 bool ValidateJson(
     const rapidjson::Document& document,
@@ -31,8 +29,6 @@ bool ValidateJson(
   }
 
   return true;
-}
-
 }
 
 BUNDLE_STATE::BUNDLE_STATE() :
@@ -67,7 +63,7 @@ bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
     return false;
   }
 
-  std::map<std::string, std::vector<CategoryInfo>> new_categories;
+  std::map<std::string, std::vector<AdInfo>> new_categories;
 
   if (bundle.HasMember("categories")) {
     for (const auto& category : bundle["categories"].GetObject()) {
@@ -79,22 +75,22 @@ bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
           continue;
         }
 
-        CategoryInfo category_info;
+        AdInfo ad_info;
 
         if (info.HasMember("creativeSetId")) {
-          category_info.creative_set_id = info["creativeSetId"].GetString();
+          ad_info.creative_set_id = info["creativeSetId"].GetString();
         }
 
-        category_info.advertiser = info["advertiser"].GetString();
-        category_info.notification_text = info["notificationText"].GetString();
-        category_info.notification_url = info["notificationURL"].GetString();
-        category_info.uuid = info["uuid"].GetString();
+        ad_info.advertiser = info["advertiser"].GetString();
+        ad_info.notification_text = info["notificationText"].GetString();
+        ad_info.notification_url = info["notificationURL"].GetString();
+        ad_info.uuid = info["uuid"].GetString();
 
         if (new_categories.find(category.name.GetString()) ==
             new_categories.end()) {
           new_categories.insert({category.name.GetString(), {}});
         }
-        new_categories.at(category.name.GetString()).push_back(category_info);
+        new_categories.at(category.name.GetString()).push_back(ad_info);
       }
     }
   }

@@ -8,7 +8,7 @@
 #include <vector>
 #include <map>
 
-#include "bat/ads/category_info.h"
+#include "bat/ads/ad_info.h"
 
 namespace ads {
 
@@ -22,7 +22,7 @@ struct BUNDLE_STATE {
   std::string catalog_id;
   uint64_t catalog_version;
   uint64_t catalog_ping;
-  std::map<std::string, std::vector<CategoryInfo>> categories;
+  std::map<std::string, std::vector<AdInfo>> categories;
 };
 
 }  // namespace ads

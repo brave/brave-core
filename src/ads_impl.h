@@ -11,7 +11,7 @@
 
 #include "ads_serve.h"
 #include "bat/ads/ads.h"
-#include "bat/ads/category_info.h"
+#include "bat/ads/ad_info.h"
 #include "bat/usermodel/user_model.h"
 #include "event_type_blur_info.h"
 #include "event_type_destroy_info.h"
@@ -87,7 +87,7 @@ class AdsImpl : public Ads, CallbackHandler {
   void OnGetCategory(
       const Result result,
       const std::string& category,
-      const std::vector<CategoryInfo>& ads) override;
+      const std::vector<AdInfo>& ads) override;
 
   void OnGetSampleCategory(
       const Result result,
@@ -147,8 +147,8 @@ class AdsImpl : public Ads, CallbackHandler {
 
   void ServeAdFromCategory(
       const std::string& category);
-  std::vector<CategoryInfo> GetUnseenAds(
-      const std::vector<CategoryInfo>& categories);
+  std::vector<AdInfo> GetUnseenAds(
+      const std::vector<AdInfo>& ads);
   bool IsAllowedToShowAds();
   bool AdsShownHistoryRespectsRollingTimeConstraint(
       const std::deque<time_t> history,

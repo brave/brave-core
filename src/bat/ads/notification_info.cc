@@ -2,24 +2,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/notification_info.h"
 
 namespace ads {
 
-AdInfo::AdInfo() :
-    creative_set_id(""),
+NotificationInfo::AdINotificationInfonfo() :
+    category(""),
     advertiser(""),
-    notification_text(""),
-    notification_url(""),
+    text(""),
+    url(""),
     uuid("") {}
 
-AdInfo::AdInfo(const AdInfo& info) :
-    creative_set_id(info.creative_set_id),
+NotificationInfo::NotificationInfo(const NotificationInfo& info) :
+    category(info.category),
     advertiser(info.advertiser),
-    notification_text(info.notification_text),
-    notification_url(info.notification_url),
+    text(info.text),
+    url(info.url),
     uuid(info.uuid) {}
 
-AdInfo::~AdInfo() {}
+NotificationInfo::~NotificationInfo() {}
 
 }  // namespace ads

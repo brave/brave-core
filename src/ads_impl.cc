@@ -11,8 +11,7 @@
 
 #include "ads_impl.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/ad_info.h"
-#include "bat/ads/category_info.h"
+#include "bat/ads/notification_info.h"
 #include "logging.h"
 #include "search_providers.h"
 #include "math_helper.h"
@@ -621,7 +620,11 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
 }
 
 void AdsImpl::RetrieveSSID() {
-  client_->SetCurrentSSID(ads_client_->GetSSID());
+  std::string ssid = ads_client_->GetSSID();
+  if (ssid.empty()) {
+    ssid = "Unknown";
+  }
+  client_->SetCurrentSSID();
 }
 
 void AdsImpl::TestShoppingData(const std::string& url) {
@@ -682,7 +685,7 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
     return;
   }
 
-  ads_client_->GetAds(category, this);
+  ads_client_->GetCategory(category, this);
 }
 
 void AdsImpl::OnGetSampleCategory(
@@ -697,10 +700,10 @@ void AdsImpl::OnGetSampleCategory(
   ServeAdFromCategory(category);
 }
 
-void AdsImpl::OnGetAds(
+void AdsImpl::OnGetCategory(
     const Result result,
     const std::string& category,
-    const std::vector<CategoryInfo>& ads) {
+    const std::vector<AdInfo>& ads) {
   if (result == Result::FAILED || ads.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
@@ -712,7 +715,7 @@ void AdsImpl::OnGetAds(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Ad round-robin', { category, adsSeen, adsNotSeen }
 
-    client_->ResetAdsUUIDSeenForAds(ads);
+    client_->ResetAdsUUIDSeen(ads);
 
     ads_unseen = GetUnseenAds(ads);
     if (ads_unseen.empty()) {
@@ -735,14 +738,14 @@ void AdsImpl::OnGetAds(
     return;
   }
 
-  auto ad_info = std::make_unique<AdInfo>();
-  ad_info->advertiser = ad.advertiser;
-  ad_info->category = category;
-  ad_info->notification_text = ad.notification_text;
-  ad_info->notification_url = ad.notification_url;
-  ad_info->uuid = ad.uuid;
+  auto notification_info = std::make_unique<NotificationInfo>();
+  notification_info->advertiser = ad.advertiser;
+  notification_info->category = category;
+  notification_info->text = ad.notification_text;
+  notification_info->url = ad.notification_url;
+  notification_info->uuid = ad.uuid;
 
-  ads_client_->ShowAd(std::move(ad_info));
+  ads_client_->ShowNotification(std::move(notification_info));
 
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Notification shown', {category, winnerOverTime, arbitraryKey,
@@ -751,15 +754,15 @@ void AdsImpl::OnGetAds(
   client_->AppendCurrentTimeToAdsShownHistory();
 }
 
-std::vector<CategoryInfo> AdsImpl::GetUnseenAds(
-    const std::vector<CategoryInfo>& categories) {
-  auto ads_unseen = categories;
+std::vector<AdInfo> AdsImpl::GetUnseenAds(
+    const std::vector<AdInfo>& ads) {
+  auto ads_unseen = ads;
   auto ads_seen = client_->GetAdsUUIDSeen();
 
   auto iterator = std::remove_if(
     ads_unseen.begin(),
     ads_unseen.end(),
-    [&](CategoryInfo &info) {
+    [&](AdInfo &info) {
       return ads_seen.find(info.uuid) != ads_seen.end();
     });
 

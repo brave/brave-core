@@ -34,7 +34,7 @@ const std::string Bundle::ToJson() {
 
 bool Bundle::GenerateFromCatalog(
     const CATALOG_STATE& catalog_state) {
-  std::map<std::string, std::vector<CategoryInfo>> categories;
+  std::map<std::string, std::vector<AdInfo>> categories;
 
   for (const auto& campaign : catalog_state.campaigns) {
     std::vector<std::string> heirarchy = {};
@@ -63,23 +63,23 @@ bool Bundle::GenerateFromCatalog(
       uint64_t entries = 0;
 
       for (const auto& creative : creative_set.creatives) {
-        CategoryInfo category_info;
-        category_info.creative_set_id = creative_set.creative_set_id;
-        category_info.advertiser = creative.payload.title;
-        category_info.notification_text = creative.payload.body;
-        category_info.notification_url = creative.payload.target_url;
-        category_info.uuid = creative.creative_id;
+        AdInfo ad_info;
+        ad_info.creative_set_id = creative_set.creative_set_id;
+        ad_info.advertiser = creative.payload.title;
+        ad_info.notification_text = creative.payload.body;
+        ad_info.notification_url = creative.payload.target_url;
+        ad_info.uuid = creative.creative_id;
 
         if (categories.find(category) == categories.end()) {
           categories.insert({category, {}});
         }
-        categories.at(category).push_back(category_info);
+        categories.at(category).push_back(ad_info);
         entries++;
 
         if (categories.find(top_level) == categories.end()) {
           categories.insert({top_level, {}});
         }
-        categories.at(top_level).push_back(category_info);
+        categories.at(top_level).push_back(ad_info);
         entries++;
       }
 

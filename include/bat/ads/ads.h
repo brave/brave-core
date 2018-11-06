@@ -119,7 +119,7 @@ class ADS_EXPORT Ads {
   virtual void OnGetCategory(
       const Result result,
       const std::string& category,
-      const std::vector<CategoryInfo>& ads) = 0;
+      const std::vector<AdInfo>& ads) = 0;
 
   // Should be Called after getting the sample category
   virtual void OnGetSampleCategory(

@@ -7,7 +7,7 @@
 #include <string>
 #include <map>
 
-#include "bat/ads/category_info.h"
+#include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 
 namespace ads {
@@ -26,7 +26,7 @@ class ADS_EXPORT CallbackHandler {
   virtual void OnGetCategory(
       const Result /* result */,
       const std::string& /* category */,
-      const std::vector<CategoryInfo>& /* ads */) {}
+      const std::vector<AdInfo>& /* ads */) {}
 
   virtual void OnGetSampleCategory(
       const Result /* result */,
