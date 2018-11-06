@@ -27,11 +27,13 @@ RewardsNotificationService::RewardsNotification::RewardsNotification(
 
 RewardsNotificationService::RewardsNotification::~RewardsNotification() {}
 
-void RewardsNotificationService::AddObserver(RewardsNotificationServiceObserver* observer) {
+void RewardsNotificationService::AddObserver(
+    RewardsNotificationServiceObserver* observer) {
   observers_.AddObserver(observer);
 }
 
-void RewardsNotificationService::RemoveObserver(RewardsNotificationServiceObserver* observer) {
+void RewardsNotificationService::RemoveObserver(
+    RewardsNotificationServiceObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 

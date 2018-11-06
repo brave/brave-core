@@ -1,4 +1,5 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 source_set("browser") {
   public_deps = [
@@ -31,6 +32,15 @@ source_set("browser") {
     "recurring_donation.cc",
     "recurring_donation.h",
   ]
+
+  if (enable_extensions) {
+    sources += [
+      "extension_rewards_notification_service_observer.cc",
+      "extension_rewards_notification_service_observer.h",
+      "extension_rewards_service_observer.cc",
+      "extension_rewards_service_observer.h",
+    ]
+  }
 
   deps = [
     "//base",
