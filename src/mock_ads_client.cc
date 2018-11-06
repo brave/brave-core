@@ -93,6 +93,8 @@ void MockAdsClient::ShowAd(const std::unique_ptr<AdInfo> info) {
 }
 
 uint32_t MockAdsClient::SetTimer(const uint64_t& time_offset) {
+  (void)time_offset;
+
   static uint64_t mock_timer_id = 0;
   mock_timer_id++;
 
@@ -102,7 +104,9 @@ uint32_t MockAdsClient::SetTimer(const uint64_t& time_offset) {
   // is fired. This mock is synchronous so OnTimer should not be fired!
 }
 
-void MockAdsClient::KillTimer(uint32_t timer_id) {}
+void MockAdsClient::KillTimer(uint32_t timer_id) {
+  (void)timer_id;
+}
 
 std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
     const std::string& url,
