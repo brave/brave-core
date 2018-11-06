@@ -67,7 +67,7 @@ interface ContentProps {
 export const Content = styled<ContentProps, 'section'>('section')`
   opacity: 0;
   transform: translateX(${p => p.isPrevious ? '-' + p.screenPosition : p.screenPosition}) scale(0.8);
-  transition: opacity 1.5s, transform 1.5s;
+  transition: opacity 1.5s, transform 1.5s ease-out;
   position: absolute;
   z-index: ${p => p.zIndex};
   display: flex;
@@ -100,8 +100,8 @@ export const Panel = styled(Card)`
   /* animation stuff courtesy of ross */
   animation-delay: 1s;
   animation-name: ${fadeIn};
-  animation-duration: 2s;
-  animation-timing-function: ease-in-out;
+  animation-duration: 2.5s;
+  animation-timing-function: ease-out;
   animation-fill-mode: forwards;
   /* end of animation stuff */
   position: relative;

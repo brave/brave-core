@@ -28,7 +28,7 @@ export const BackgroundContainer = styled<{}, 'div'>('div')`
   position: relative;
   animation-delay: 0s;
   animation-name: ${topToBottom};
-  animation-duration: 1.5s;
+  animation-duration: 3s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
@@ -44,5 +44,5 @@ export const Background = styled<BackgroundProps, 'div'>('div')`
   left: 0;
   position: absolute;
   transform: translateX(${p => p.background.position});
-  transition: transform ease-in-out 1.5s;
+  transition: transform ease-out 3s;
 `
