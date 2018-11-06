@@ -277,12 +277,15 @@ std::ostream& MockAdsClient::Log(const char* file,
   switch (log_level) {
     case LogLevel::INFO: {
       level = "INFO";
+      break;
     }
     case LogLevel::WARNING: {
       level = "WARNING";
+      break;
     }
     case LogLevel::ERROR: {
       level = "ERROR";
+      break;
     }
   }
 
