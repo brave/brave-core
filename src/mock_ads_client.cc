@@ -179,7 +179,7 @@ void MockAdsClient::Reset(const std::string& name,
     std::remove(name.c_str());
     callback(Result::SUCCESS);
   } else {
-    callback(Result::FAILURE);
+    callback(Result::FAILED);
   }
 }
 
