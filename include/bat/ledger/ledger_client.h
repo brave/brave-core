@@ -52,7 +52,7 @@ class LEDGER_EXPORT LedgerClient {
   // called when the wallet creation has completed
   virtual std::string GenerateGUID() const = 0;
   virtual void OnWalletInitialized(Result result) = 0;
-  virtual void GetWalletProperties() = 0;
+  virtual void FetchWalletProperties() = 0;
   virtual void OnWalletProperties(Result result,
                                   std::unique_ptr<ledger::WalletInfo>) = 0;
   virtual void OnReconcileComplete(Result result,
@@ -90,7 +90,8 @@ class LEDGER_EXPORT LedgerClient {
                                     PublisherInfoFilter filter,
                                     GetPublisherInfoListCallback callback) = 0;
 
-  virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;
+  // TODO this can be removed
+  virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
   virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
   virtual void GetGrantCaptcha() = 0;
   virtual void OnGrantCaptcha(const std::string& image, const std::string& hint) = 0;

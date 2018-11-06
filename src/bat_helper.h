@@ -295,6 +295,10 @@ namespace braveledger_bat_helper {
     std::vector<PUBLISHER_ST> list_;
   };
 
+  typedef std::vector<TRANSACTION_ST> Transactions;
+  typedef std::vector<BALLOT_ST> Ballots;
+  typedef std::vector<BATCH_VOTES_ST> BatchVotes;
+
   struct CLIENT_STATE_ST {
     CLIENT_STATE_ST();
     CLIENT_STATE_ST(const CLIENT_STATE_ST&);
@@ -318,11 +322,11 @@ namespace braveledger_bat_helper {
     double fee_amount_ = .0;
     bool user_changed_fee_ = false;
     unsigned int days_ = 0u;
-    std::vector<TRANSACTION_ST> transactions_;
-    std::vector<BALLOT_ST> ballots_;
+    Transactions transactions_;
+    Ballots ballots_;
     std::string ruleset_;
     std::string rulesetV2_;
-    std::vector<BATCH_VOTES_ST> batch_;
+    BatchVotes batch_;
     GRANT grant_;
     std::map<std::string, CURRENT_RECONCILE> current_reconciles_;
     bool auto_contribute_ = false;

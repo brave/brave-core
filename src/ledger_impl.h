@@ -29,6 +29,10 @@ namespace braveledger_bat_publishers {
 class BatPublishers;
 }
 
+namespace braveledger_bat_state {
+class BatState;
+}
+
 namespace bat_ledger {
 
 class LedgerImpl : public ledger::Ledger,
@@ -109,9 +113,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnWalletProperties(ledger::Result result,
                           const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
-  void GetWalletProperties() const override;
+  void FetchWalletProperties() const override;
 
-  void GetGrant(const std::string& lang, const std::string& paymentId) const override;
+  void FetchGrant(const std::string& lang, const std::string& paymentId) const override;
   void OnGrant(ledger::Result result, const braveledger_bat_helper::GRANT& grant);
 
   void GetGrantCaptcha() const override;
@@ -200,6 +204,60 @@ class LedgerImpl : public ledger::Ledger,
                    const std::string& response,
                    const std::map<std::string,
                    std::string>& headers);
+  void ResetReconcileStamp();
+  bool UpdateReconcile(
+    const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
+  void AddReconcile(
+      const std::string& viewing_id,
+      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
+
+  const std::string& GetPaymentId() const;
+  void SetPaymentId(const std::string& payment_id);
+  const braveledger_bat_helper::GRANT& GetGrant() const;
+  void SetGrant(braveledger_bat_helper::GRANT grant);
+  const std::string& GetPersonaId() const;
+  void SetPersonaId(const std::string& persona_id);
+  const std::string& GetUserId() const;
+  void SetUserId(const std::string& user_id);
+  const std::string& GetRegistrarVK() const;
+  void SetRegistrarVK(const std::string& registrar_vk);
+  const std::string& GetPreFlight() const;
+  void SetPreFlight(const std::string& pre_flight);
+  const braveledger_bat_helper::WALLET_INFO_ST& GetWalletInfo() const;
+  void SetWalletInfo(const braveledger_bat_helper::WALLET_INFO_ST& info);
+
+  const braveledger_bat_helper::WALLET_PROPERTIES_ST&
+  GetWalletProperties() const;
+
+  void SetWalletProperties(
+      const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
+  unsigned int GetDays() const;
+  void SetDays(unsigned int days);
+
+  const braveledger_bat_helper::Transactions& GetTransactions() const;
+  void SetTransactions(
+      const braveledger_bat_helper::Transactions& transactions);
+
+  const braveledger_bat_helper::Ballots& GetBallots() const;
+  void SetBallots(
+      const braveledger_bat_helper::Ballots& ballots);
+
+  const braveledger_bat_helper::BatchVotes& GetBatch() const;
+  void SetBatch(
+      const braveledger_bat_helper::BatchVotes& votes);
+
+  const std::string& GetCurrency() const;
+  void SetCurrency(const std::string& currency);
+
+  void SetLastGrantLoadTimestamp(uint64_t stamp);
+
+  void SetBootStamp(uint64_t stamp);
+
+  const std::string& GetMasterUserToken() const;
+
+  void SetMasterUserToken(const std::string& token);
+
+  bool ReconcileExists(const std::string& viewingId);
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
@@ -261,6 +319,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
   std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
+  std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   bool initialized_;
   bool initializing_;
 
