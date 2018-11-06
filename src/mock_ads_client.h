@@ -72,9 +72,10 @@ class MockAdsClient : public AdsClient, CallbackHandler {
 
   void EventLog(const std::string& json) override;
 
-  std::ostream& Log(const char* file,
-                int line,
-                const LogLevel log_level) const override;
+  std::ostream& Log(
+      const char* file,
+      int line,
+      const LogLevel log_level) const override;
 
   std::string locale_;
 

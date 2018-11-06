@@ -273,9 +273,10 @@ void MockAdsClient::EventLog(const std::string& json) {
   std::cout << "Event logged (" << time_stamp <<  "): " << json << std::endl;
 }
 
-std::ostream& MockAdsClient::Log(const char* file,
-                        int line,
-                        const ads::LogLevel log_level) const {
+std::ostream& MockAdsClient::Log(
+    const char* file,
+    int line,
+    const ads::LogLevel log_level) const {
   std::string level;
 
   switch (log_level) {
