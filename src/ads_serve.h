@@ -21,19 +21,19 @@ class AdsImpl;
 
 namespace ads {
 
-class AdsServe: public CallbackHandler {
+class AdsServe {
  public:
   AdsServe(
       AdsImpl* ads,
       AdsClient* ads_client,
-      std::shared_ptr<Bundle> bundle);
+      Bundle* bundle);
 
   ~AdsServe();
 
   void DownloadCatalog();
   void RetryDownloadingCatalog();
 
-  void ResetNextCatalogCheck();
+  void Reset();
 
  private:
   std::string url_;
@@ -49,11 +49,11 @@ class AdsServe: public CallbackHandler {
       const std::map<std::string, std::string>& headers);
 
   void OnCatalogSaved(const Result result);
+  void OnCatalogReset(const Result result);
 
   AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
-
-  std::shared_ptr<Bundle> bundle_;
+  Bundle* bundle_;  // NOT OWNED
 };
 
 }  // namespace ads

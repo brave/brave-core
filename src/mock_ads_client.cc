@@ -48,23 +48,6 @@ const ClientInfo MockAdsClient::GetClientInfo() const {
   return client_info;
 }
 
-void MockAdsClient::LoadUserModel(LoadUserModelCallback callback) {
-  std::stringstream path;
-  path << "mock_data/locales/" << locale_ << "/user_model.json";
-
-  std::ifstream ifs{path.str()};
-  if (ifs.fail()) {
-    callback(Result::FAILED, "");
-    return;
-  }
-
-  std::stringstream stream;
-  stream << ifs.rdbuf();
-  auto json = stream.str();
-
-  callback(Result::SUCCESS, json);
-}
-
 std::string MockAdsClient::SetLocale(const std::string& locale) {
   std::vector<std::string> locales;
   GetLocales(locales);
@@ -167,13 +150,19 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
   return mock_url_session;
 }
 
-void MockAdsClient::LoadSettings(CallbackHandler* callback_handler) {
-  std::ifstream ifs{"mock_data/mock_settings_state.json"};
-  if (ifs.fail()) {
-    if (callback_handler) {
-      callback_handler->OnSettingsLoaded(Result::FAILED, "");
-    }
+void MockAdsClient::Save(
+    const std::string& name,
+    const std::string& value,
+    OnSaveCallback callback) {
+  auto success = WriteJsonToDisk("build/" + name, value);
+  callback(success ? Result::SUCCESS : Result::FAILED);
+}
 
+void MockAdsClient::Load(const std::string& name,
+                        OnLoadCallback callback) {
+  std::ifstream ifs{"build/" + name};
+  if (ifs.fail()) {
+    callback(Result::FAILED, "");
     return;
   }
 
@@ -181,115 +170,17 @@ void MockAdsClient::LoadSettings(CallbackHandler* callback_handler) {
   stream << ifs.rdbuf();
   std::string json = stream.str();
 
-  if (callback_handler) {
-    callback_handler->OnSettingsLoaded(Result::SUCCESS, json);
-  }
+  callback(Result::SUCCESS, json);
 }
 
-void MockAdsClient::SaveClient(
-    const std::string& json,
-    CallbackHandler* callback_handler) {
-  auto success = WriteJsonToDisk("build/client_state.json", json);
-
-  if (callback_handler) {
-    auto result = success ? Result::SUCCESS : Result::FAILED;
-    callback_handler->OnClientSaved(result);
-  }
-}
-
-void MockAdsClient::LoadClient(CallbackHandler* callback_handler) {
-  std::ifstream ifs{"mock_data/mock_client_state.json"};
-  if (ifs.fail()) {
-    if (callback_handler) {
-      callback_handler->OnClientLoaded(Result::FAILED, "");
-    }
-
-    return;
-  }
-
-  std::stringstream stream;
-  stream << ifs.rdbuf();
-  std::string json = stream.str();
-
-  if (callback_handler) {
-    callback_handler->OnClientLoaded(Result::SUCCESS, json);
-  }
-}
-
-void MockAdsClient::SaveCatalog(
-    const std::string& json,
-    CallbackHandler* callback_handler) {
-  auto success = WriteJsonToDisk("build/catalog.json", json);
-
-  if (callback_handler) {
-    auto result = success ? Result::SUCCESS : Result::FAILED;
-    callback_handler->OnCatalogSaved(result);
-  }
-}
-
-void MockAdsClient::LoadCatalog(CallbackHandler* callback_handler) {
-  std::ifstream ifs{"build/catalog.json"};
-  if (ifs.fail()) {
-    if (callback_handler) {
-      callback_handler->OnCatalogLoaded(Result::FAILED, "");
-    }
-
-    return;
-  }
-
-  std::stringstream stream;
-  stream << ifs.rdbuf();
-  std::string json = stream.str();
-
-  if (callback_handler) {
-    callback_handler->OnCatalogLoaded(Result::SUCCESS, json);
-  }
-}
-
-void MockAdsClient::ResetCatalog() {
-  std::string path = "build/catalog.json";
-  std::ifstream ifs(path.c_str());
+void MockAdsClient::Reset(const std::string& name,
+                          OnResetCallback callback) {
+  std::ifstream ifs(name.c_str());
   if (ifs.good()) {
-    std::remove(path.c_str());
-  }
-}
-
-void MockAdsClient::SaveBundle(
-    const BUNDLE_STATE& bundle_state,
-    CallbackHandler* callback_handler) {
-  bundle_state_ = std::make_unique<BUNDLE_STATE>(bundle_state);
-  if (callback_handler) {
-    callback_handler->OnBundleSaved(Result::SUCCESS);
-  }
-}
-
-void MockAdsClient::SaveBundle(
-    const std::string& json,
-    CallbackHandler* callback_handler) {
-  auto success = WriteJsonToDisk("build/bundle.json", json);
-
-  if (callback_handler) {
-    auto result = success ? Result::SUCCESS : Result::FAILED;
-    callback_handler->OnBundleSaved(result);
-  }
-}
-
-void MockAdsClient::LoadBundle(CallbackHandler* callback_handler) {
-  std::ifstream ifs{"build/bundle.json"};
-  if (ifs.fail()) {
-    if (callback_handler) {
-      callback_handler->OnBundleLoaded(Result::FAILED, "");
-    }
-
-    return;
-  }
-
-  std::stringstream stream;
-  stream << ifs.rdbuf();
-  std::string json = stream.str();
-
-  if (callback_handler) {
-    callback_handler->OnBundleLoaded(Result::SUCCESS, json);
+    std::remove(name.c_str());
+    callback(Result::SUCCESS);
+  } else {
+    callback(Result::FAILURE);
   }
 }
 

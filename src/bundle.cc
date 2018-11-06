@@ -6,43 +6,37 @@
 #include "string_helper.h"
 #include "static_values.h"
 
+using namespace std::placeholders;
+
 namespace ads {
 
-Bundle::Bundle(AdsClient* ads_client) :
-    ads_client_(ads_client),
+Bundle::Bundle() :
     bundle_state_(new BUNDLE_STATE()) {
 }
 
 Bundle::~Bundle() = default;
 
-bool Bundle::LoadJson(const std::string& json) {
+bool Bundle::FromJson(const std::string& json) {
   BUNDLE_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->DebugLog(LogLevel::ERROR, "Failed to parse bundle JSON");
     return false;
   }
 
   bundle_state_.reset(new BUNDLE_STATE(state));
-  Save();
-
   return true;
 }
 
-void Bundle::SaveJson() {
+const std::string Bundle::ToJson() {
   std::string json;
   SaveToJson(*bundle_state_, json);
-  ads_client_->SaveBundle(json, this);
-}
-
-void Bundle::Save() {
-  ads_client_->SaveBundle(*bundle_state_, this);
+  return json;
 }
 
 bool Bundle::GenerateFromCatalog(
-    const std::shared_ptr<CATALOG_STATE> catalog_state) {
+    const CATALOG_STATE& catalog_state) {
   std::map<std::string, std::vector<CategoryInfo>> categories;
 
-  for (const auto& campaign : catalog_state->campaigns) {
+  for (const auto& campaign : catalog_state.campaigns) {
     std::vector<std::string> heirarchy = {};
 
     for (const auto& creative_set : campaign.creative_sets) {
@@ -96,9 +90,9 @@ bool Bundle::GenerateFromCatalog(
   }
 
   BUNDLE_STATE state;
-  state.catalog_id = catalog_state->catalog_id;
-  state.catalog_version = catalog_state->version;
-  state.catalog_ping = catalog_state->ping;
+  state.catalog_id = catalog_state.catalog_id;
+  state.catalog_version = catalog_state.version;
+  state.catalog_ping = catalog_state.ping;
   state.categories = categories;
 
   bundle_state_.reset(new BUNDLE_STATE(state));
@@ -108,7 +102,6 @@ bool Bundle::GenerateFromCatalog(
 
 void Bundle::Reset() {
   bundle_state_.reset(new BUNDLE_STATE());
-  Save();
 }
 
 std::string Bundle::GetCatalogId() const {
@@ -121,14 +114,6 @@ uint64_t Bundle::GetCatalogVersion() const {
 
 uint64_t Bundle::GetCatalogPing() const {
   return bundle_state_->catalog_ping / kMillisecondsInASecond;
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
-void Bundle::OnBundleSaved(const Result result) {
-  if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save bundle");
-  }
 }
 
 }  // namespace ads

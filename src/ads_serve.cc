@@ -2,17 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "catalog_ads_serve.h"
+#include "ads_serve.h"
 #include "static_values.h"
-#include "catalog.h"
 #include "bundle.h"
+
+using namespace std::placeholders;
 
 namespace ads {
 
 AdsServe::AdsServe(
     AdsImpl* ads,
     AdsClient* ads_client,
-    std::shared_ptr<Bundle> bundle) :
+    Bundle* bundle) :
       ads_(ads),
       ads_client_(ads_client),
       bundle_(bundle) {
@@ -58,8 +59,8 @@ void AdsServe::OnCatalogDownloaded(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
 
-    auto catalog = std::make_unique<Catalog>(ads_client_);
-    if (!catalog->LoadJson(response)) {
+    CATALOG_STATE catalog_state;
+    if (!catalog_state.LoadFromJson(response)) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Failed to parse catalog'
 
@@ -72,11 +73,9 @@ void AdsServe::OnCatalogDownloaded(
     // { status: 'processed', campaigns: underscore.keys(campaigns).length,
     // creativeSets: underscore.keys(creativeSets).length
 
-    auto catalog_state = catalog->GetCatalogState();
-
     auto current_catalog_version = bundle_->GetCatalogVersion();
     if (current_catalog_version != 0 &&
-        current_catalog_version <= catalog_state->version) {
+        current_catalog_version <= catalog_state.version) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Current catalog is the same or a newer version'
 
@@ -95,7 +94,8 @@ void AdsServe::OnCatalogDownloaded(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Generated bundle'
 
-    ads_client_->SaveCatalog(response, this);
+    ads_client_->Save("catalog.json", response,
+        std::bind(&AdsServe::OnCatalogSaved, this, _1));
 
     ads_->SaveCachedInfo();
 
@@ -129,8 +129,10 @@ void AdsServe::RetryDownloadingCatalog() {
   ads_->StartCollectingActivity(kOneHourInSeconds);
 }
 
-void AdsServe::ResetNextCatalogCheck() {
+void AdsServe::Reset() {
   next_catalog_check_ = 0;
+  ads_client_->Reset("catalog.json",
+      std::bind(&AdsServe::OnCatalogReset, this, _1));
 }
 
 void AdsServe::UpdateNextCatalogCheck() {
@@ -143,6 +145,12 @@ void AdsServe::UpdateNextCatalogCheck() {
 void AdsServe::OnCatalogSaved(const Result result) {
   if (result == Result::FAILED) {
     ads_client_->DebugLog(LogLevel::WARNING, "Failed to save catalog");
+  }
+}
+
+void AdsServe::OnCatalogReset(const Result result) {
+  if (result == Result::FAILED) {
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to reset catalog");
   }
 }
 

@@ -8,22 +8,20 @@
 #include <memory>
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/callback_handler.h"
 #include "bat/ads/bundle_state.h"
 #include "catalog_state.h"
 
 namespace ads {
 
-class Bundle: public CallbackHandler {
+class Bundle {
  public:
-  explicit Bundle(AdsClient* ads_client);
+  explicit Bundle();
   ~Bundle();
 
-  bool LoadJson(const std::string& json);  // Deserialize
-  void SaveJson();  // Serialize
-  void Save();
+  bool FromJson(const std::string& json);  // Deserialize
+  const std::string ToJson();
 
-  bool GenerateFromCatalog(const std::shared_ptr<CATALOG_STATE> catalog_state);
+  bool GenerateFromCatalog(const CATALOG_STATE& catalog_state);
 
   void Reset();
 
@@ -32,11 +30,7 @@ class Bundle: public CallbackHandler {
   uint64_t GetCatalogPing() const;
 
  private:
-  void OnBundleSaved(const Result result);
-
-  AdsClient* ads_client_;  // NOT OWNED
-
-  std::shared_ptr<BUNDLE_STATE> bundle_state_;
+  std::unique_ptr<BUNDLE_STATE> bundle_state_;
 };
 
 }  // namespace ads

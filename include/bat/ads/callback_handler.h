@@ -22,32 +22,6 @@ class ADS_EXPORT CallbackHandler {
  public:
   virtual ~CallbackHandler() = default;
 
-  // Settings
-  virtual void OnSettingsLoaded(
-      const Result /* result */,
-      const std::string& /* json */) {}
-
-  // Client
-  virtual void OnClientSaved(
-      const Result /* result */) {}
-  virtual void OnClientLoaded(
-      const Result /* result */,
-      const std::string& /* json */) {}
-
-  // Catalog
-  virtual void OnCatalogSaved(
-      const Result /* result */) {}
-  virtual void OnCatalogLoaded(
-      const Result /* result */,
-      const std::string& /* json */) {}
-
-  // Bundle
-  virtual void OnBundleSaved(
-      const Result /* result */) {}
-  virtual void OnBundleLoaded(
-      const Result /* result */,
-      const std::string& /* json */) {}
-
   // Category
   virtual void OnGetSampleCategory(
       const Result /* result */,

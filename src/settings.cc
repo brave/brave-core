@@ -7,17 +7,13 @@
 
 namespace ads {
 
-Settings::Settings(AdsClient* ads_client) :
-    ads_client_(ads_client),
-    settings_state_(new SETTINGS_STATE()) {
-}
+Settings::Settings() : settings_state_(new SETTINGS_STATE()) {}
 
 Settings::~Settings() = default;
 
-bool Settings::LoadJson(const std::string& json) {
+bool Settings::FromJson(const std::string& json) {
   SETTINGS_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->DebugLog(LogLevel::ERROR, "Failed to parse settings JSON");
     return false;
   }
 

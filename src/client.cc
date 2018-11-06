@@ -17,10 +17,9 @@ Client::Client(AdsImpl* ads, AdsClient* ads_client) :
 
 Client::~Client() = default;
 
-bool Client::LoadJson(const std::string& json) {
+bool Client::FromJson(const std::string& json) {
   CLIENT_STATE state;
   if (!LoadFromJson(state, json.c_str())) {
-    ads_client_->DebugLog(LogLevel::ERROR, "Failed to parse client JSON");
     return false;
   }
 
@@ -29,10 +28,10 @@ bool Client::LoadJson(const std::string& json) {
   return true;
 }
 
-void Client::SaveJson() {
+const std::string Client::ToJson() {
   std::string json;
   SaveToJson(*client_state_, json);
-  ads_client_->SaveClient(json, this);
+  return json;
 }
 
 void Client::AppendCurrentTimeToAdsShownHistory() {
@@ -199,14 +198,6 @@ std::string Client::GetCurrentPlace() {
 
 void Client::RemoveAllHistory() {
   client_state_.reset(new CLIENT_STATE());
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
-void Client::OnClientSaved(const Result result) {
-  if (result == Result::FAILED) {
-    ads_client_->DebugLog(LogLevel::WARNING, "Failed to save client state");
-  }
 }
 
 }  // namespace ads

@@ -26,7 +26,9 @@ enum ADS_EXPORT LogLevel {
   ERROR
 };
 
-using LoadUserModelCallback = std::function<void(Result, const std::string)>;
+using OnSaveCallback = std::function<void(Result)>;
+using OnLoadCallback = std::function<void(Result, const std::string&)>;
+using OnResetCallback = std::function<void(Result)>;
 
 class ADS_EXPORT AdsClient {
  public:
@@ -34,9 +36,6 @@ class ADS_EXPORT AdsClient {
 
   // Gets information about the client
   virtual const ClientInfo GetClientInfo() const = 0;
-
-  // Loads the user model
-  virtual void LoadUserModel(LoadUserModelCallback callback) = 0;
 
   // Set locale
   virtual std::string SetLocale(const std::string& locale) = 0;
@@ -68,40 +67,13 @@ class ADS_EXPORT AdsClient {
       const URLSession::Method& method,
       URLSessionCallbackHandlerCallback callback) = 0;
 
-  // Loads settings
-  virtual void LoadSettings(CallbackHandler* callback_handler) = 0;
-
-  // Saves the client as JSON
-  virtual void SaveClient(
-      const std::string& json,
-      CallbackHandler* callback_handler) = 0;
-
-  // Loads the client
-  virtual void LoadClient(CallbackHandler* callback_handler) = 0;
-
-  // Saves the catalog as JSON
-  virtual void SaveCatalog(
-      const std::string& json,
-      CallbackHandler* callback_handler) = 0;
-
-  // Loads the catalog
-  virtual void LoadCatalog(CallbackHandler* callback_handler) = 0;
-
-  // Resets the catalog
-  virtual void ResetCatalog() = 0;
-
-  // Saves the bundle
-  virtual void SaveBundle(
-      const BUNDLE_STATE& bundle_state,
-      CallbackHandler* callback_handler) = 0;
-
-  // Saves the bundle as JSON
-  virtual void SaveBundle(
-      const std::string& json,
-      CallbackHandler* callback_handler) = 0;
-
-  // Loads the bundle
-  virtual void LoadBundle(CallbackHandler* callback_handler) = 0;
+  virtual void Save(const std::string& name,
+                    const std::string& value,
+                    OnSaveCallback callback) = 0;
+  virtual void Load(const std::string& name,
+                    OnLoadCallback callback) = 0;
+  virtual void Reset(const std::string& name,
+                     OnResetCallback callback) = 0;
 
   // Gets available ads based upon the winning category
   virtual void GetAds(

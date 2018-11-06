@@ -11,9 +11,9 @@
 
 #include "bat/usermodel/user_model.h"
 
+#include "ads_serve.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/category_info.h"
-#include "catalog_ads_serve.h"
 #include "event_type_blur_info.h"
 #include "event_type_destroy_info.h"
 #include "event_type_focus_info.h"
@@ -85,20 +85,6 @@ class AdsImpl : public Ads, CallbackHandler {
 
   void OnTimer(const uint32_t timer_id) override;
 
-  void OnSettingsLoaded(
-      const Result result,
-      const std::string& json) override;
-
-  void OnClientSaved(const Result result) override;
-  void OnClientLoaded(
-      const Result result,
-      const std::string& json) override;
-
-  void OnBundleSaved(const Result result) override;
-  void OnBundleLoaded(
-      const Result result,
-      const std::string& json) override;
-
   void OnGetSampleCategory(
       const Result result,
       const std::string& category) override;
@@ -113,7 +99,21 @@ class AdsImpl : public Ads, CallbackHandler {
   bool IsInitialized();
   void Deinitialize();
 
-  void OnUserModelLoaded(const Result result, const std::string json);
+  void OnUserModelLoaded(const Result result, const std::string& json);
+  void OnSettingsLoaded(
+      const Result result,
+      const std::string& json);
+
+  void OnClientSaved(const Result result);
+  void OnClientLoaded(
+      const Result result,
+      const std::string& json);
+
+  void OnBundleSaved(const Result result);
+  void OnBundleLoaded(
+      const Result result,
+      const std::string& json);
+  void OnBundleReset(const Result result);
 
   bool boot_;
 
@@ -170,8 +170,8 @@ class AdsImpl : public Ads, CallbackHandler {
 
   std::unique_ptr<Settings> settings_;
   std::unique_ptr<Client> client_;
-  std::shared_ptr<Bundle> bundle_;
-  std::unique_ptr<AdsServe> catalog_ads_serve_;
+  std::unique_ptr<Bundle> bundle_;
+  std::unique_ptr<AdsServe> ads_serve_;
   std::unique_ptr<usermodel::UserModel> user_model_;
 };
 

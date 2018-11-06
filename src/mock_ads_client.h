@@ -33,7 +33,11 @@ class MockAdsClient : public AdsClient, CallbackHandler {
   // AdsClient
   const ClientInfo GetClientInfo() const override;
 
-  void LoadUserModel(LoadUserModelCallback callback) override;
+  void Save(const std::string& name,
+            const std::string& value,
+            OnSaveCallback callback) override;
+  void Load(const std::string& name, OnLoadCallback callback) override;
+  void Reset(const std::string& name, OnResetCallback callback) override;
 
   std::string SetLocale(const std::string& locale) override;
   void GetLocales(std::vector<std::string>& locales) const override;
@@ -54,27 +58,6 @@ class MockAdsClient : public AdsClient, CallbackHandler {
       const std::string& content_type,
       const URLSession::Method& method,
       URLSessionCallbackHandlerCallback callback) override;
-
-  void LoadSettings(CallbackHandler* callback_handler) override;
-
-  void SaveClient(
-      const std::string& json,
-      CallbackHandler* callback_handler) override;
-  void LoadClient(CallbackHandler* callback_handler) override;
-
-  void SaveCatalog(
-      const std::string& json,
-      CallbackHandler* callback_handler) override;
-  void LoadCatalog(CallbackHandler* callback_handler) override;
-  void ResetCatalog() override;
-
-  void SaveBundle(
-      const BUNDLE_STATE& bundle_state,
-      CallbackHandler* callback_handler) override;
-  void SaveBundle(
-      const std::string& json,
-      CallbackHandler* callback_handler) override;
-  void LoadBundle(CallbackHandler* callback_handler) override;
 
   void GetAds(
       const std::string& winning_category,

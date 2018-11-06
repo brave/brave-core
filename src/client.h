@@ -26,8 +26,8 @@ class Client: public CallbackHandler {
   Client(AdsImpl* ads, AdsClient* ads_client);
   ~Client();
 
-  bool LoadJson(const std::string& json);  // Deserialize
-  void SaveJson();  // Serialize
+  bool FromJson(const std::string& json);
+  const std::string ToJson();
 
   void AppendCurrentTimeToAdsShownHistory();
   std::deque<std::time_t> GetAdsShownHistory();
@@ -64,8 +64,6 @@ class Client: public CallbackHandler {
   void RemoveAllHistory();
 
  private:
-  void OnClientSaved(const Result result);
-
   AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
 

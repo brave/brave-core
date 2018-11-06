@@ -33,10 +33,10 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     media_playing_({}),
     next_easter_egg_(0),
     ads_client_(ads_client),
-    settings_(std::make_unique<Settings>(ads_client_)),
+    settings_(std::make_unique<Settings>()),
     client_(std::make_unique<Client>(this, ads_client_)),
-    bundle_(std::make_shared<Bundle>(ads_client_)),
-    catalog_ads_serve_(std::make_unique<AdsServe>(this, ads_client_, bundle_)) {
+    bundle_(std::make_unique<Bundle>()),
+    ads_serve_(std::make_unique<AdsServe>(this, ads_client_, bundle_.get())) {
 }
 
 AdsImpl::~AdsImpl() = default;
@@ -200,7 +200,8 @@ void AdsImpl::Initialize() {
     return;
   }
 
-  ads_client_->LoadSettings(this);
+  ads_client_->Load("settings.json",
+      std::bind(&AdsImpl::OnSettingsLoaded, this, _1, _2));
 }
 
 void AdsImpl::InitializeUserModel(const std::string& json) {
@@ -283,8 +284,10 @@ void AdsImpl::SaveCachedInfo() {
     client_->RemoveAllHistory();
   }
 
-  client_->SaveJson();
-  bundle_->Save();
+  ads_client_->Save("client.json", client_->ToJson(),
+      std::bind(&AdsImpl::OnClientSaved, this, _1));
+  ads_client_->Save("bundle.json", bundle_->ToJson(),
+      std::bind(&AdsImpl::OnBundleSaved, this, _1));
 }
 
 void AdsImpl::RecordMediaPlaying(
@@ -410,7 +413,7 @@ void AdsImpl::OnSettingsLoaded(
     return;
   }
 
-  if (!settings_->LoadJson(json)) {
+  if (!settings_->FromJson(json)) {
     ads_client_->DebugLog(LogLevel::WARNING,
       "Failed to parse settings JSON: %s", json.c_str());
     return;
@@ -427,7 +430,8 @@ void AdsImpl::OnSettingsLoaded(
     return;
   }
 
-  ads_client_->LoadClient(this);
+  ads_client_->Load("client.json",
+      std::bind(&AdsImpl::OnClientLoaded, this, _1, _2));
 }
 
 void AdsImpl::OnClientSaved(const Result result) {
@@ -444,7 +448,7 @@ void AdsImpl::OnClientLoaded(
     return;
   }
 
-  if (!client_->LoadJson(json)) {
+  if (!client_->FromJson(json)) {
     ads_client_->DebugLog(LogLevel::WARNING,
       "Failed to parse client JSON: %s", json.c_str());
     return;
@@ -455,7 +459,7 @@ void AdsImpl::OnClientLoaded(
   LoadUserModel();
 }
 
-void AdsImpl::OnUserModelLoaded(const Result result, const std::string json) {
+void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
     ads_client_->DebugLog(LogLevel::WARNING, "Failed to load user model");
     return;
@@ -470,13 +474,19 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string json) {
 
     ConfirmAdUUIDIfAdEnabled();
 
-    catalog_ads_serve_->DownloadCatalog();
+    ads_serve_->DownloadCatalog();
   }
 }
 
 void AdsImpl::OnBundleSaved(const Result result) {
   if (result == Result::FAILED) {
     ads_client_->DebugLog(LogLevel::WARNING, "Failed to save bundle");
+  }
+}
+
+void AdsImpl::OnBundleReset(const Result result) {
+  if (result == Result::FAILED) {
+    ads_client_->DebugLog(LogLevel::WARNING, "Failed to reset bundle");
   }
 }
 
@@ -509,14 +519,15 @@ void AdsImpl::Deinitialize() {
 
   StopCollectingActivity();
 
-  catalog_ads_serve_->ResetNextCatalogCheck();
+  ads_serve_->Reset();
 
   RemoveAllHistory();
 
   last_page_classification_ = "";
 
-  ads_client_->ResetCatalog();
   bundle_->Reset();
+  ads_client_->Reset("bundle.json",
+      std::bind(&AdsImpl::OnBundleSaved, this, _1));
 
   user_model_.reset();
 
@@ -528,7 +539,7 @@ void AdsImpl::Deinitialize() {
 }
 
 void AdsImpl::LoadUserModel() {
-  ads_client_->LoadUserModel(
+  ads_client_->Load("user_model.json",
       std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2));
 }
 
@@ -583,7 +594,7 @@ void AdsImpl::CollectActivity() {
     return;
   }
 
-  catalog_ads_serve_->DownloadCatalog();
+  ads_serve_->DownloadCatalog();
 }
 
 bool AdsImpl::IsCollectingActivity() const {

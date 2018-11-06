@@ -115,27 +115,6 @@ class ADS_EXPORT Ads {
   // Should be called when a timer is triggered
   virtual void OnTimer(const uint32_t timer_id) = 0;
 
-  // Should be called once settings have loaded
-  virtual void OnSettingsLoaded(
-      const Result result,
-      const std::string& json) = 0;
-
-  // Should be called once the client has been saved
-  virtual void OnClientSaved(const Result result) = 0;
-
-  // Should be called once the client has loaded
-  virtual void OnClientLoaded(
-      const Result result,
-      const std::string& json) = 0;
-
-  // Should be called once the bundle has been saved
-  virtual void OnBundleSaved(const Result result) = 0;
-
-  // Should be called once the bundle has loaded
-  virtual void OnBundleLoaded(
-      const Result result,
-      const std::string& json) = 0;
-
   // Should be Called after getting a sample category
   virtual void OnGetSampleCategory(
       const Result result,
