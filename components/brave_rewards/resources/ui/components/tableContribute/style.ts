@@ -49,3 +49,8 @@ export const StyledToggle = styled<{}, 'button'>('button')`
 export const StyledLink = styled<{}, 'a'>('a')`
   text-decoration: none;
 `
+
+export const StyledRestoreSites = styled<{}, 'div'>('div')`
+  padding-top: 15px;
+  margin-bottom: -20px;
+`

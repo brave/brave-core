@@ -7,10 +7,9 @@ import {
   StyledWrapper,
   StyledTitle,
   StyledContent,
-  StyledNum,
-  StyledRestore,
-  StyledExcludedText
+  StyledNum
 } from './style'
+import RestoreSites from '../restoreSites'
 import Modal from '../../../components/popupModals/modal/index'
 import TableContribute, { DetailRow } from '../tableContribute/index'
 import { getLocale } from '../../../helpers'
@@ -32,14 +31,6 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
     ]
   }
 
-  getRestoreText () {
-    return `(${getLocale('restoreAll')})`
-  }
-
-  getExclusionText (numSites: number) {
-    return `${getLocale('excludedSitesText')} ${numSites}`
-  }
-
   render () {
     const { id, onClose, onRestore, rows, numExcludedSites } = this.props
     const numSites = rows && rows.length || 0
@@ -53,12 +44,10 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
           </StyledContent>
           {
             numExcludedSites && numExcludedSites > 0
-            ? <StyledExcludedText>
-                {this.getExclusionText(numExcludedSites)}
-                <StyledRestore onClick={onRestore}>
-                  {this.getRestoreText()}
-                </StyledRestore>
-              </StyledExcludedText>
+            ? <RestoreSites
+                onRestore={onRestore}
+                numExcludedSites={numExcludedSites}
+            />
             : null
           }
           <TableContribute

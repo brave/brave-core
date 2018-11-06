@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RestoreSites tests basic tests matches the snapshot 1`] = `
+.c0 {
+  color: #4B4C5C;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: left;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  margin-top: -20px;
+  margin-bottom: 33px;
+}
+
+.c1 {
+  color: #696fdc;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+<div
+  className="c0"
+>
+  MISSING: excludedSitesText undefined
+  <a
+    className="c1"
+  >
+    (MISSING: restoreAll)
+  </a>
+</div>
+`;

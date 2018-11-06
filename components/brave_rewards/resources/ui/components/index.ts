@@ -25,6 +25,7 @@ import ModalDonation from './modalDonation'
 import NextContribution from './nextContribution'
 import PanelWelcome from './panelWelcome'
 import Profile from './profile'
+import RestoreSites from './restoreSites'
 import SettingsPage from './settingsPage'
 import SiteBanner from './siteBanner'
 import Tab from './tab'
@@ -68,6 +69,7 @@ export {
   NextContribution,
   PanelWelcome,
   Profile,
+  RestoreSites,
   SettingsPage,
   SiteBanner,
   Tab,

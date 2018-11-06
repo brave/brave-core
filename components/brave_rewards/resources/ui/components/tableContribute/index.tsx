@@ -10,12 +10,13 @@ import {
   StyledTHOther,
   StyledTHLast,
   StyledToggleWrap,
-  StyledLink
+  StyledLink,
+  StyledRestoreSites
 } from './style'
 import Table, { Row } from '../../../components/dataTables/table'
 import Profile, { Provider } from '../profile'
 import { getLocale } from '../../../helpers'
-import { Tokens, Tooltip } from '../'
+import { RestoreSites, Tokens, Tooltip } from '../'
 import { CloseStrokeIcon } from '../../../components/icons'
 
 interface ProfileCell {
@@ -44,6 +45,8 @@ export interface Props {
   numSites?: number
   allSites?: boolean
   onShowAll?: () => void
+  onRestore?: () => void
+  numExcludedSites?: number
 }
 
 export default class TableContribute extends React.PureComponent<Props, {}> {
@@ -168,7 +171,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, header, children, rows, allSites, onShowAll } = this.props
+    const { id, header, children, rows, allSites, onShowAll, onRestore, numExcludedSites } = this.props
     const numSites = this.props.numSites || 0
 
     return (
@@ -183,6 +186,16 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
           ? <StyledToggleWrap>
               <StyledToggle onClick={onShowAll}>{getLocale('seeAllSites', { numSites })}</StyledToggle>
             </StyledToggleWrap>
+          : null
+        }
+        {
+          allSites && numExcludedSites && numExcludedSites > 0
+          ? <StyledRestoreSites>
+              <RestoreSites
+                onRestore={onRestore}
+                numExcludedSites={numExcludedSites}
+              />
+            </StyledRestoreSites>
           : null
         }
       </div>
