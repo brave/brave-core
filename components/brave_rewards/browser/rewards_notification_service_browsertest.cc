@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
