@@ -20,14 +20,7 @@ namespace brave_ads {
 
 namespace {
 
-//read comment about file pathes at src\base\files\file_path.h
-#if defined(OS_WIN)
-const base::FilePath::StringType kUserModelPath(L"user_model");
-#else
-const base::FilePath::StringType kUserModelPath("user_model");
-#endif
-
-std::string LoadUserModelOnFileTaskRunner(
+std::string LoadOnFileTaskRunner(
     const base::FilePath& path) {
   std::string data;
   bool success = base::ReadFileToString(path, &data);
@@ -47,7 +40,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-    user_model_path_(profile_->GetPath().Append(kUserModelPath)) {
+    base_path_(profile_->GetPath().AppendASCII("ads_service")) {
   DCHECK(!profile_->IsOffTheRecord());
 
   if (is_enabled())
@@ -66,21 +59,33 @@ bool AdsServiceImpl::is_enabled() {
   return true;
 }
 
-void AdsServiceImpl::LoadUserModel(ads::LoadUserModelCallback callback) {
+void AdsServiceImpl::Save(const std::string& name,
+                          const std::string& value,
+                          ads::OnSaveCallback callback) {
+
+}
+
+void AdsServiceImpl::Load(const std::string& name,
+                          ads::OnLoadCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&LoadUserModelOnFileTaskRunner, user_model_path_),
-      base::BindOnce(&AdsServiceImpl::OnUserModelLoaded,
+      base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
+      base::BindOnce(&AdsServiceImpl::OnLoaded,
                      AsWeakPtr(),
                      std::move(callback)));
 }
 
-void AdsServiceImpl::OnUserModelLoaded(
-    const ads::LoadUserModelCallback& callback,
-    const std::string& user_model) {
-  if (user_model.empty())
-    callback(ads::Result::FAILED, user_model);
+void AdsServiceImpl::OnLoaded(
+    const ads::OnLoadCallback& callback,
+    const std::string& value) {
+  if (value.empty())
+    callback(ads::Result::FAILED, value);
   else
-    callback(ads::Result::SUCCESS, user_model);
+    callback(ads::Result::SUCCESS, value);
+}
+
+void AdsServiceImpl::Reset(const std::string& name,
+            ads::OnResetCallback callback) {
+
 }
 
 const ads::ClientInfo AdsServiceImpl::GetClientInfo() const {

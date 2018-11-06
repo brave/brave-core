@@ -37,12 +37,9 @@ class AdsServiceImpl : public AdsService,
 
  private:
   void Init();
-  void OnUserModelLoaded(const ads::LoadUserModelCallback& callback,
-                         const std::string& user_model);
 
   // AdsClient implementation
   const ads::ClientInfo GetClientInfo() const override;
-  void LoadUserModel(ads::LoadUserModelCallback callback) override;
   std::string SetLocale(const std::string& locale) override;
   const std::vector<std::string>& GetLocales() const override;
   const std::string GenerateUUID() const override;
@@ -57,23 +54,17 @@ class AdsServiceImpl : public AdsService,
       const std::string& content_type,
       const ads::URLSession::Method& method,
       ads::URLSessionCallbackHandlerCallback callback) override;
-  void LoadSettings(ads::CallbackHandler* callback_handler) override {};
-  void SaveClient(
-      const std::string& json,
-      ads::CallbackHandler* callback_handler) override {}
-  void LoadClient(ads::CallbackHandler* callback_handler) override {}
-  void SaveCatalog(
-      const std::string& json,
-      ads::CallbackHandler* callback_handler) override {}
-  void LoadCatalog(ads::CallbackHandler* callback_handler) override {};
-  void ResetCatalog() override {};
-  void SaveBundle(
-      const ads::BUNDLE_STATE& bundle_state,
-      ads::CallbackHandler* callback_handler) override {}
-  void SaveBundle(
-      const std::string& json,
-      ads::CallbackHandler* callback_handler) override {}
-  void LoadBundle(ads::CallbackHandler* callback_handler) override {}
+  void Save(const std::string& name,
+            const std::string& value,
+            ads::OnSaveCallback callback) override;
+  void Load(const std::string& name,
+            ads::OnLoadCallback callback) override;
+  void Reset(const std::string& name,
+             ads::OnResetCallback callback) override;
+
+  void OnLoaded(const ads::OnLoadCallback& callback,
+                const std::string& value);
+
   void GetAds(
       const std::string& winning_category,
       ads::CallbackHandler* callback_handler) override {}
@@ -86,7 +77,7 @@ class AdsServiceImpl : public AdsService,
 
   Profile* profile_;  // NOT OWNED
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
-  const base::FilePath user_model_path_;
+  const base::FilePath base_path_;
 
   std::unique_ptr<ads::Ads> ads_;
 
