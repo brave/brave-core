@@ -6,6 +6,7 @@
 
 #include "json_helper.h"
 #include "static_values.h"
+#include "logging.h"
 
 namespace ads {
 
@@ -67,6 +68,8 @@ const std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
 
 void Client::ResetAdsUUIDSeen(
     const std::vector<AdInfo>& ads) {
+  LOG(ads_client_, LogLevel::INFO) << "Resetting seen ads";
+
   for (const auto& ad : ads) {
     auto ad_uuid_seen = client_state_->ads_uuid_seen.find(ad.uuid);
     if (ad_uuid_seen != client_state_->ads_uuid_seen.end()) {

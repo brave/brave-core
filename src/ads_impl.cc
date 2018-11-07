@@ -200,6 +200,8 @@ void AdsImpl::Initialize() {
     return;
   }
 
+  LOG(ads_client_, LogLevel::INFO) << "Successfully initialized";
+
   // TODO(Brian Johnson): This should be abstracted back to the settings class
   ads_client_->Load("settings.json",
       std::bind(&AdsImpl::OnSettingsLoaded, this, _1, _2));
@@ -403,7 +405,11 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
   if (collect_activity_timer_id_ == 0) {
     LOG(ads_client_, LogLevel::ERROR) <<
       "Failed to start collect_activity_timer_id_ timer";
+    return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) <<
+    "Start collecting activity in " << start_timer_in << " seconds";
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
@@ -416,19 +422,24 @@ void AdsImpl::OnSettingsLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to load settings: " << json;
+    LOG(ads_client_, LogLevel::ERROR) <<
+      "Failed to load settings state: " << json;
     return;
   }
 
   if (!settings_->FromJson(json)) {
-    LOG(ads_client_, LogLevel::WARNING) <<
-        "Failed to parse settings JSON: " << json;
+    LOG(ads_client_, LogLevel::ERROR) <<
+        "Failed to parse settings state: " << json;
     return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded settings state";
 
   GenerateAdReportingSettingsEvent();
 
   if (!settings_->IsAdsEnabled()) {
+    LOG(ads_client_, LogLevel::INFO) << "Deinitialize as Ads are disabled";
+
     Deinitialize();
     return;
   }
@@ -444,23 +455,29 @@ void AdsImpl::OnSettingsLoaded(
 
 void AdsImpl::OnClientSaved(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to save client state";
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to save client state";
+    return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully saved client state";
 }
 
 void AdsImpl::OnClientLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to load client state";
+    LOG(ads_client_, LogLevel::ERROR) <<
+      "Failed to load client state: " << json;
     return;
   }
 
   if (!client_->FromJson(json)) {
-    LOG(ads_client_, LogLevel::WARNING) <<
-      "Failed to parse client JSON: " << json;
+    LOG(ads_client_, LogLevel::ERROR) <<
+      "Failed to parse client state: " << json;
     return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded client state";
 
   ProcessLocales(ads_client_->GetLocales());
 
@@ -469,9 +486,12 @@ void AdsImpl::OnClientLoaded(
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to load user model";
+    LOG(ads_client_, LogLevel::ERROR) <<
+      "Failed to load user model: " << json;
     return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded user model";
 
   InitializeUserModel(json);
 
@@ -488,22 +508,29 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
 
 void AdsImpl::OnBundleSaved(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to save bundle";
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to save bundle";
+    return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully saved bundle";
 }
 
 void AdsImpl::OnBundleReset(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to reset bundle";
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to reset bundle";
+    return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully reset bundle";
 }
 
-void AdsImpl::OnBundleLoaded(
-    const Result result,
-    const std::string& json) {
+void AdsImpl::OnBundleLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to load bundle: " << json;
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to load bundle: " << json;
+    return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded bundle";
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -519,6 +546,8 @@ bool AdsImpl::IsInitialized() {
 }
 
 void AdsImpl::Deinitialize() {
+  LOG(ads_client_, LogLevel::INFO) << "Deinitialize";
+
   if (!initialized_) {
     LOG(ads_client_, LogLevel::WARNING) << "Not initialized";
     return;
@@ -611,6 +640,8 @@ void AdsImpl::CollectActivity() {
     return;
   }
 
+  LOG(ads_client_, LogLevel::INFO) << "Collect activity";
+
   ads_serve_->DownloadCatalog();
 }
 
@@ -622,6 +653,8 @@ void AdsImpl::StopCollectingActivity() {
   if (!IsCollectingActivity()) {
     return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Stopped collecting activity";
 
   ads_client_->KillTimer(collect_activity_timer_id_);
   collect_activity_timer_id_ = 0;
@@ -643,6 +676,7 @@ void AdsImpl::RetrieveSSID() {
   if (ssid.empty()) {
     ssid = "Unknown";
   }
+
   client_->SetCurrentSSID(ssid);
 }
 
@@ -726,6 +760,8 @@ void AdsImpl::OnGetCategory(
   if (result == Result::FAILED || ads.empty()) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
+
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to get a category";
     return;
   }
 
@@ -740,6 +776,7 @@ void AdsImpl::OnGetCategory(
     if (ads_unseen.empty()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'no ads for category', category }
+
       return;
     }
   }

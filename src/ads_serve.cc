@@ -59,11 +59,14 @@ void AdsServe::OnCatalogDownloaded(
   if (response_status_code / 100 == 2) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
+    LOG(ads_client_, LogLevel::INFO) << "Successfully downloaded catalog";
 
     ProcessCatalog(response);
   } else if (response_status_code == 304) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog current', { method, server, path }
+
+    LOG(ads_client_, LogLevel::INFO) << "Catalog is already up to date";
 
     UpdateNextCatalogCheck();
   } else {
@@ -78,7 +81,7 @@ void AdsServe::OnCatalogDownloaded(
       }
     }
 
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to download catalog from "
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to download catalog from "
       << url << " (" << response_status_code << "): " << response << " " <<
       formatted_headers;
 
@@ -164,14 +167,20 @@ void AdsServe::RetryDownloadingCatalog() {
 
 void AdsServe::OnCatalogSaved(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to save catalog";
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to save catalog";
+    return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully saved catalog";
 }
 
 void AdsServe::OnCatalogReset(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to reset catalog";
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to reset catalog";
+    return;
   }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully reset catalog";
 }
 
 }  // namespace ads

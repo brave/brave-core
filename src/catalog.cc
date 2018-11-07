@@ -20,17 +20,21 @@ bool Catalog::FromJson(const std::string& json) {
   CATALOG_STATE state;
   auto jsonSchema = ads_client_->Load("catalog-schema.json");
   if (!LoadFromJson(state, json.c_str(), jsonSchema)) {
-    LOG(ads_client_, LogLevel::WARNING) << "Failed to parse catalog JSON";
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to parse catalog: " << json;
     return false;
   }
 
   if (!catalog_state_->catalog_id.empty() &&
       state.catalog_id != catalog_state_->catalog_id) {
-    LOG(ads_client_, LogLevel::WARNING) << "Invalid catalog Id";
+    LOG(ads_client_, LogLevel::ERROR) << "Current catalog id " <<
+      catalog_state_->catalog_id << " does not match catalog id " <<
+      state.catalog_id;
     return false;
   }
 
   catalog_state_.reset(new CATALOG_STATE(state));
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded catalog";
 
   return true;
 }
