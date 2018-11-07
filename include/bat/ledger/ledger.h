@@ -84,7 +84,6 @@ class LEDGER_EXPORT Ledger {
   virtual void Initialize() = 0;
   // returns false if wallet initialization is already in progress
   virtual bool CreateWallet() = 0;
-  virtual void Reconcile() = 0;
 
   virtual void MakePayment(const PaymentData& payment_data) = 0;
   virtual void AddRecurringPayment(const std::string& publisher_id, const double& value) = 0;
@@ -127,10 +126,10 @@ class LEDGER_EXPORT Ledger {
   virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
   virtual void GetPublisherInfoList(uint32_t start, uint32_t limit,
                                     const ledger::PublisherInfoFilter& filter,
-                                    GetPublisherInfoListCallback callback) = 0;
+                                    PublisherInfoListCallback callback) = 0;
   virtual void GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
-                            ledger::GetPublisherInfoListCallback callback) = 0;
+                            ledger::PublisherInfoListCallback callback) = 0;
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) = 0;
