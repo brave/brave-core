@@ -158,7 +158,8 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
 
             CreativeInfo creative_info;
 
-            creative_info.creative_id = creative["creativeId"].GetString();
+            creative_info.creative_instance_id =
+              creative["creativeInstanceId"].GetString();
 
             // Type
             if (creative.HasMember("type")) {

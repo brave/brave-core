@@ -68,7 +68,7 @@ bool Bundle::GenerateFromCatalog(
         ad_info.advertiser = creative.payload.title;
         ad_info.notification_text = creative.payload.body;
         ad_info.notification_url = creative.payload.target_url;
-        ad_info.uuid = creative.creative_id;
+        ad_info.uuid = creative.creative_instance_id;
 
         if (categories.find(category) == categories.end()) {
           categories.insert({category, {}});

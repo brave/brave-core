@@ -13,18 +13,18 @@ namespace ads {
 
 struct CreativeInfo {
   CreativeInfo() :
-    creative_id(""),
+    creative_instance_id(""),
     type(TypeInfo()),
     payload(PayloadInfo()) {}
 
   explicit CreativeInfo(const CreativeInfo& info) :
-    creative_id(info.creative_id),
+    creative_instance_id(info.creative_instance_id),
     type(info.type),
     payload(info.payload) {}
 
   ~CreativeInfo() {}
 
-  std::string creative_id;
+  std::string creative_instance_id;
   TypeInfo type;
   PayloadInfo payload;
 };
