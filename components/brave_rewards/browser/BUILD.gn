@@ -42,18 +42,6 @@ source_set("browser") {
     ]
   }
 
-  if (is_android) {
-    sources += [
-      "//extensions/common/one_shot_event.h",
-      "//extensions/common/one_shot_event.cc",
-    ]
-  } else {
-    deps += [
-      # for one shot event
-      "//extensions/common",
-    ]
-  }
-
   deps = [
     "//base",
     "//components/keyed_service/content",
@@ -66,6 +54,18 @@ source_set("browser") {
     "//services/network/public/mojom",
     "//third_party/leveldatabase",
   ]
+
+  if (is_android) {
+    sources += [
+      "//extensions/common/one_shot_event.h",
+      "//extensions/common/one_shot_event.cc",
+    ]
+  } else {
+    deps += [
+      # for one shot event
+      "//extensions/common",
+    ]
+  }
 
   if (brave_rewards_enabled) {
     sources += [
