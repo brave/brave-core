@@ -297,9 +297,6 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& post_data,
       const ledger::VisitData& visit_data) override;
 
-  void ReconcileRecurringList(const ledger::PUBLISHER_CATEGORY category,
-                              const ledger::PublisherInfoList& list);
-
   void OnTimer(uint32_t timer_id) override;
 
   void OnSetPublisherInfo(ledger::PublisherInfoCallback callback,

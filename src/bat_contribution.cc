@@ -32,7 +32,7 @@ BatContribution::~BatContribution() {
 }
 
 // TODO(nejczdovc) we have the same function in bat-client
-// Maybe create anonize helper?
+// Maybe create anon helper?
 std::string BatContribution::GetAnonizeProof(
     const std::string& registrar_VK,
     const std::string& id,
@@ -44,12 +44,12 @@ std::string BatContribution::GetAnonizeProof(
   } else {
     return "";
   }
-  const char* proofTemp = registerUserMessage(pre_flight.c_str(),
+  const char* proof_temp = registerUserMessage(pre_flight.c_str(),
                                               registrar_VK.c_str());
   std::string proof;
-  if (nullptr != proofTemp) {
-    proof = proofTemp;
-    free((void*)proofTemp);
+  if (nullptr != proof_temp) {
+    proof = proof_temp;
+    free((void*)proof_temp);
   } else {
     return "";
   }
@@ -61,7 +61,7 @@ void BatContribution::ReconcilePublisherList(
     ledger::PUBLISHER_CATEGORY category,
     const ledger::PublisherInfoList& list,
     uint32_t next_record) {
-  braveledger_bat_helper::PublisherList newList;
+  braveledger_bat_helper::PublisherList new_list;
   for (const auto &publisher : list) {
     braveledger_bat_helper::PUBLISHER_ST new_publisher;
     new_publisher.id_ = publisher.id;
@@ -70,10 +70,10 @@ void BatContribution::ReconcilePublisherList(
     new_publisher.duration_ = publisher.duration;
     new_publisher.score_ = publisher.score;
     new_publisher.visits_ = publisher.visits;
-    newList.push_back(new_publisher);
+    new_list.push_back(new_publisher);
   }
 
-  Reconcile(ledger_->GenerateGUID(), category, newList);
+  Reconcile(ledger_->GenerateGUID(), category, new_list);
 }
 
 void BatContribution::OnTimerReconcile() {
@@ -86,7 +86,7 @@ void BatContribution::OnTimerReconcile() {
 }
 
 void BatContribution::StartAutoContribute() {
-  uint64_t currentReconcileStamp = ledger_->GetReconcileStamp();
+  uint64_t current_reconcile_stamp = ledger_->GetReconcileStamp();
   ledger::PublisherInfoFilter filter = ledger_->CreatePublisherFilter(
       "",
       ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE,
@@ -94,7 +94,7 @@ void BatContribution::StartAutoContribute() {
       -1,
       ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_DEFAULT,
       true,
-      currentReconcileStamp);
+      current_reconcile_stamp);
   ledger_->GetCurrentPublisherInfoList(
       0,
       0,
@@ -107,11 +107,11 @@ void BatContribution::StartAutoContribute() {
 }
 
 void BatContribution::Reconcile(
-    const std::string& viewingId,
+    const std::string& viewing_id,
     const ledger::PUBLISHER_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions) {
-  if (ledger_->ReconcileExists(viewingId)) {
+  if (ledger_->ReconcileExists(viewing_id)) {
     ledger_->Log(__func__,
                  ledger::LogLevel::LOG_ERROR,
                  {"unable to reconcile with the same viewing id"});
@@ -216,12 +216,12 @@ void BatContribution::Reconcile(
     }
   }
 
-  reconcile.viewingId_ = viewingId;
+  reconcile.viewingId_ = viewing_id;
   reconcile.fee_ = fee;
   reconcile.directions_ = directions;
   reconcile.category_ = category;
 
-  ledger_->AddReconcile(viewingId, reconcile);
+  ledger_->AddReconcile(viewing_id, reconcile);
 
   std::string url = braveledger_bat_helper::buildURL(
       (std::string)RECONCILE_CONTRIBUTION + ledger_->GetUserId(), PREFIX_V2);
@@ -235,20 +235,20 @@ void BatContribution::Reconcile(
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatContribution::ReconcileCallback,
                                        this,
-                                       viewingId,
+                                       viewing_id,
                                        std::placeholders::_1,
                                        std::placeholders::_2,
                                        std::placeholders::_3));
 }
 
 void BatContribution::ReconcileCallback(
-    const std::string& viewingId,
+    const std::string& viewing_id,
     bool result,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, result, response, headers);
 
-  auto reconcile = ledger_->GetReconcileById(viewingId);
+  auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   if (!result || reconcile.viewingId_.empty()) {
     // TODO(nejczdovc) errors handling
@@ -264,12 +264,12 @@ void BatContribution::ReconcileCallback(
     return;
   }
 
-  CurrentReconcile(viewingId);
+  CurrentReconcile(viewing_id);
 }
 
-void BatContribution::CurrentReconcile(const std::string& viewingId) {
+void BatContribution::CurrentReconcile(const std::string& viewing_id) {
   std::ostringstream amount;
-  auto reconcile = ledger_->GetReconcileById(viewingId);
+  auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
     amount << ledger_->GetContributionAmount();
@@ -297,43 +297,42 @@ void BatContribution::CurrentReconcile(const std::string& viewingId) {
                              std::bind(
                                  &BatContribution::CurrentReconcileCallback,
                                  this,
-                                 viewingId,
+                                 viewing_id,
                                  std::placeholders::_1,
                                  std::placeholders::_2,
                                  std::placeholders::_3));
 }
 
 void BatContribution::CurrentReconcileCallback(
-    const std::string& viewingId,
+    const std::string& viewing_id,
     bool result,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, result, response, headers);
 
   if (!result) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
     // TODO(nejczdovc) errors handling
     return;
   }
 
-  auto reconcile = ledger_->GetReconcileById(viewingId);
+  auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   braveledger_bat_helper::getJSONRates(response, reconcile.rates_);
-  braveledger_bat_helper::UNSIGNED_TX unsignedTx;
-  braveledger_bat_helper::getJSONUnsignedTx(response, unsignedTx);
+  braveledger_bat_helper::UNSIGNED_TX unsigned_tx;
+  braveledger_bat_helper::getJSONUnsignedTx(response, unsigned_tx);
 
-  if (unsignedTx.amount_.empty() &&
-      unsignedTx.currency_.empty() &&
-      unsignedTx.destination_.empty()) {
-    OnReconcileComplete(
-        ledger::Result::LEDGER_ERROR, reconcile.viewingId_);
+  if (unsigned_tx.amount_.empty() &&
+      unsigned_tx.currency_.empty() &&
+      unsigned_tx.destination_.empty()) {
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR, reconcile.viewingId_);
     // We don't have any unsigned transactions
     // TODO(nejczdovc) error handling
     return;
   }
 
-  reconcile.amount_ = unsignedTx.amount_;
-  reconcile.currency_ = unsignedTx.currency_;
+  reconcile.amount_ = unsigned_tx.amount_;
+  reconcile.currency_ = unsigned_tx.currency_;
   bool success = ledger_->UpdateReconcile(reconcile);
 
   if (!success) {
@@ -342,47 +341,47 @@ void BatContribution::CurrentReconcileCallback(
   }
 
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
-  std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsignedTx);
+  std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsigned_tx);
 
-  std::string headerDigest = "SHA-256=" +
+  std::string header_digest = "SHA-256=" +
       braveledger_bat_helper::getBase64(
           braveledger_bat_helper::getSHA256(octets));
 
-  std::string headerKeys[1] = {"digest"};
-  std::string headerValues[1] = {headerDigest};
+  std::string header_keys[1] = {"digest"};
+  std::string header_values[1] = {header_digest};
 
-  std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(
+  std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(
       wallet_info.keyInfoSeed_);
-  std::vector<uint8_t> publicKey;
-  std::vector<uint8_t> newSecretKey;
-  braveledger_bat_helper::getPublicKeyFromSeed(secretKey,
-                                               publicKey,
-                                               newSecretKey);
-  std::string headerSignature = braveledger_bat_helper::sign(headerKeys,
-                                                             headerValues,
+  std::vector<uint8_t> public_key;
+  std::vector<uint8_t> new_secret_key;
+  braveledger_bat_helper::getPublicKeyFromSeed(secret_key,
+                                               public_key,
+                                               new_secret_key);
+  std::string headerSignature = braveledger_bat_helper::sign(header_keys,
+                                                             header_values,
                                                              1,
                                                              "primary",
-                                                             newSecretKey);
+                                                             new_secret_key);
 
-  braveledger_bat_helper::RECONCILE_PAYLOAD_ST reconcilePayload;
-  reconcilePayload.requestType_ = "httpSignature";
-  reconcilePayload.request_signedtx_headers_digest_ = headerDigest;
-  reconcilePayload.request_signedtx_headers_signature_ = headerSignature;
-  reconcilePayload.request_signedtx_body_ = unsignedTx;
-  reconcilePayload.request_signedtx_octets_ = octets;
-  reconcilePayload.request_viewingId_ = reconcile.viewingId_;
-  reconcilePayload.request_surveyorId_ = reconcile.surveyorInfo_.surveyorId_;
-  std::string payloadStringify =
-      braveledger_bat_helper::stringifyReconcilePayloadSt(reconcilePayload);
+  braveledger_bat_helper::RECONCILE_PAYLOAD_ST reconcile_payload;
+  reconcile_payload.requestType_ = "httpSignature";
+  reconcile_payload.request_signedtx_headers_digest_ = header_digest;
+  reconcile_payload.request_signedtx_headers_signature_ = headerSignature;
+  reconcile_payload.request_signedtx_body_ = unsigned_tx;
+  reconcile_payload.request_signedtx_octets_ = octets;
+  reconcile_payload.request_viewingId_ = reconcile.viewingId_;
+  reconcile_payload.request_surveyorId_ = reconcile.surveyorInfo_.surveyorId_;
+  std::string payload_stringify =
+      braveledger_bat_helper::stringifyReconcilePayloadSt(reconcile_payload);
 
-  std::vector<std::string> walletHeader;
-  walletHeader.push_back("Content-Type: application/json; charset=UTF-8");
+  std::vector<std::string> wallet_header;
+  wallet_header.push_back("Content-Type: application/json; charset=UTF-8");
   std::string path = (std::string)WALLET_PROPERTIES + ledger_->GetPaymentId();
 
   auto request_id = ledger_->LoadURL(
       braveledger_bat_helper::buildURL(path, PREFIX_V2),
-      walletHeader,
-      payloadStringify,
+      wallet_header,
+      payload_stringify,
       "application/json; charset=utf-8",
       ledger::URL_METHOD::PUT,
       &handler_);
@@ -390,26 +389,26 @@ void BatContribution::CurrentReconcileCallback(
       std::move(request_id),
       std::bind(&BatContribution::ReconcilePayloadCallback,
                this,
-               viewingId,
+               viewing_id,
                std::placeholders::_1,
                std::placeholders::_2,
                std::placeholders::_3));
 }
 
 void BatContribution::ReconcilePayloadCallback(
-    const std::string& viewingId,
+    const std::string& viewing_id,
     bool result,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, result, response, headers);
 
   if (!result) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
     // TODO(nejczdovc) errors handling
     return;
   }
 
-  const auto reconcile = ledger_->GetReconcileById(viewingId);
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   braveledger_bat_helper::TRANSACTION_ST transaction;
   braveledger_bat_helper::getJSONTransaction(response, transaction);
@@ -423,10 +422,10 @@ void BatContribution::ReconcilePayloadCallback(
       ledger_->GetTransactions();
   transactions.push_back(transaction);
   ledger_->SetTransactions(transactions);
-  RegisterViewing(viewingId);
+  RegisterViewing(viewing_id);
 }
 
-void BatContribution::RegisterViewing(const std::string& viewingId) {
+void BatContribution::RegisterViewing(const std::string& viewing_id) {
   auto request_id = ledger_->LoadURL(
       braveledger_bat_helper::buildURL(
           (std::string)REGISTER_VIEWING, PREFIX_V2),
@@ -439,26 +438,26 @@ void BatContribution::RegisterViewing(const std::string& viewingId) {
                              std::bind(
                                  &BatContribution::RegisterViewingCallback,
                                  this,
-                                 viewingId,
+                                 viewing_id,
                                  std::placeholders::_1,
                                  std::placeholders::_2,
                                  std::placeholders::_3));
 }
 
 void BatContribution::RegisterViewingCallback(
-    const std::string& viewingId,
+    const std::string& viewing_id,
     bool result,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, result, response, headers);
 
   if (!result) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
     // TODO(nejczdovc) errors handling
     return;
   }
 
-  auto reconcile = ledger_->GetReconcileById(viewingId);
+  auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME,
                                        response,
@@ -484,23 +483,23 @@ void BatContribution::RegisterViewingCallback(
 
   std::string keys[1] = {"proof"};
   std::string values[1] = {proof};
-  std::string proofStringified = braveledger_bat_helper::stringify(keys,
+  std::string proof_stringified = braveledger_bat_helper::stringify(keys,
                                                                    values,
                                                                    1);
-  ViewingCredentials(viewingId, proofStringified, reconcile.anonizeViewingId_);
+  ViewingCredentials(viewing_id, proof_stringified, reconcile.anonizeViewingId_);
 }
 
-void BatContribution::ViewingCredentials(const std::string& viewingId,
-                                         const std::string& proofStringified,
-                                         const std::string& anonizeViewingId) {
+void BatContribution::ViewingCredentials(const std::string& viewing_id,
+                                         const std::string& proof_stringified,
+                                         const std::string& anonize_viewing_id) {
   std::string url = braveledger_bat_helper::buildURL(
       (std::string)REGISTER_VIEWING +
       "/" +
-      anonizeViewingId, PREFIX_V2);
+      anonize_viewing_id, PREFIX_V2);
 
   auto request_id = ledger_->LoadURL(url,
                                      std::vector<std::string>(),
-                                     proofStringified,
+                                     proof_stringified,
                                      "application/json; charset=utf-8",
                                      ledger::URL_METHOD::POST,
                                      &handler_);
@@ -508,40 +507,40 @@ void BatContribution::ViewingCredentials(const std::string& viewingId,
                              std::bind(
                                  &BatContribution::ViewingCredentialsCallback,
                                  this,
-                                 viewingId,
+                                 viewing_id,
                                  std::placeholders::_1,
                                  std::placeholders::_2,
                                  std::placeholders::_3));
 }
 
 void BatContribution::ViewingCredentialsCallback(
-    const std::string& viewingId,
+    const std::string& viewing_id,
     bool result,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, result, response, headers);
 
   if (!result) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewingId);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
     // TODO(nejczdovc) errors handling
     return;
   }
 
-  auto reconcile = ledger_->GetReconcileById(viewingId);
+  auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   std::string verification;
   braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME,
                                        response,
                                        verification);
-  const char* masterUserToken = registerUserFinal(
+  const char* master_user_token = registerUserFinal(
       reconcile.anonizeViewingId_.c_str(),
       verification.c_str(),
       reconcile.preFlight_.c_str(),
       reconcile.registrarVK_.c_str());
 
-  if (nullptr != masterUserToken) {
-    reconcile.masterUserToken_ = masterUserToken;
-    free((void*)masterUserToken);
+  if (nullptr != master_user_token) {
+    reconcile.masterUserToken_ = master_user_token;
+    free((void*)master_user_token);
   }
 
   bool success = ledger_->UpdateReconcile(reconcile);
@@ -599,17 +598,17 @@ void BatContribution::OnReconcileComplete(ledger::Result result,
     return;
   }
 
-  unsigned int ballotsCount = GetBallotsCount(viewing_id);
-  GetReconcileWinners(ballotsCount, viewing_id);
+  unsigned int ballost_count = GetBallotsCount(viewing_id);
+  GetReconcileWinners(ballost_count, viewing_id);
 }
 
-unsigned int BatContribution::GetBallotsCount(const std::string& viewingId) {
+unsigned int BatContribution::GetBallotsCount(const std::string& viewing_id) {
   unsigned int count = 0;
   braveledger_bat_helper::Transactions transactions =
       ledger_->GetTransactions();
   for (size_t i = 0; i < transactions.size(); i++) {
     if (transactions[i].votes_ < transactions[i].surveyorIds_.size()
-        && transactions[i].viewingId_ == viewingId) {
+        && transactions[i].viewingId_ == viewing_id) {
       count += transactions[i].surveyorIds_.size() - transactions[i].votes_;
     }
   }
@@ -651,15 +650,15 @@ void BatContribution::GetContributeWinners(
     const unsigned int& ballots,
     const std::string& viewing_id,
     const braveledger_bat_helper::PublisherList& list) {
-  ledger::PublisherInfoList newList;
-  ledger_->NormalizeContributeWinners(&newList, false, list, 0);
-  std::sort(newList.begin(), newList.end());
+  ledger::PublisherInfoList new_list;
+  ledger_->NormalizeContributeWinners(&new_list, false, list, 0);
+  std::sort(new_list.begin(), new_list.end());
 
-  unsigned int totalVotes = 0;
+  unsigned int total_votes = 0;
   std::vector<unsigned int> votes;
   braveledger_bat_helper::Winners res;
   // TODO there is underscore.shuffle
-  for (auto &item : newList) {
+  for (auto &item : new_list) {
     if (item.percent <= 0) {
       continue;
     }
@@ -668,7 +667,7 @@ void BatContribution::GetContributeWinners(
     winner.votes_ = (unsigned int)std::lround(
         (double) item.percent * (double)ballots / 100.0);
 
-    totalVotes += winner.votes_;
+    total_votes += winner.votes_;
     winner.publisher_data_.id_ = item.id;
     winner.publisher_data_.duration_ = item.duration;
     winner.publisher_data_.score_ = item.score;
@@ -678,11 +677,11 @@ void BatContribution::GetContributeWinners(
     res.push_back(winner);
   }
   if (res.size()) {
-    while (totalVotes > ballots) {
+    while (total_votes > ballots) {
       braveledger_bat_helper::Winners::iterator max =
           std::max_element(res.begin(), res.end(), winners_votes_compare);
       (max->votes_)--;
-      totalVotes--;
+      total_votes--;
     }
   }
 
@@ -694,7 +693,7 @@ void BatContribution::GetDonationWinners(
     const std::string& viewing_id,
     const braveledger_bat_helper::PublisherList& list) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
-  unsigned int totalVotes = 0;
+  unsigned int total_votes = 0;
   std::vector<unsigned int> votes;
   braveledger_bat_helper::Winners res;
 
@@ -706,7 +705,7 @@ void BatContribution::GetDonationWinners(
     braveledger_bat_helper::WINNERS_ST winner;
     double percent = item.weight_ / reconcile.fee_;
     winner.votes_ = (unsigned int)std::lround(percent * (double)ballots);
-    totalVotes += winner.votes_;
+    total_votes += winner.votes_;
     winner.publisher_data_.id_ = item.id_;
     winner.publisher_data_.duration_ = 0;
     winner.publisher_data_.score_ = 0;
@@ -717,11 +716,11 @@ void BatContribution::GetDonationWinners(
   }
 
   if (res.size()) {
-    while (totalVotes > ballots) {
+    while (total_votes > ballots) {
       braveledger_bat_helper::Winners::iterator max =
           std::max_element(res.begin(), res.end(), winners_votes_compare);
       (max->votes_)--;
-      totalVotes--;
+      total_votes--;
     }
   }
 
@@ -746,7 +745,7 @@ void BatContribution::VotePublishers(
 }
 
 void BatContribution::VotePublisher(const std::string& publisher,
-                                    const std::string& viewingId) {
+                                    const std::string& viewing_id) {
   DCHECK(!publisher.empty());
   if (publisher.empty()) {
     return;
@@ -762,7 +761,7 @@ void BatContribution::VotePublisher(const std::string& publisher,
       continue;
     }
 
-    if (transactions[i].viewingId_ == viewingId || viewingId.empty()) {
+    if (transactions[i].viewingId_ == viewing_id || viewing_id.empty()) {
       break;
     }
   }
@@ -790,13 +789,13 @@ void BatContribution::PrepareBallots() {
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
   for (int i = ballots.size() - 1; i >= 0; i--) {
-    bool breakTheLoop = false;
+    bool break_the_loop = false;
 
     for (size_t j = 0; j < transactions.size(); j++) {
       if (transactions[j].viewingId_ == ballots[i].viewingId_) {
         if (ballots[i].prepareBallot_.empty()) {
           PrepareBatch(ballots[i], transactions[j]);
-          breakTheLoop = true;
+          break_the_loop = true;
           break;
         } else {
           // TODO check on ballot.prepareBallot and
@@ -805,7 +804,7 @@ void BatContribution::PrepareBallots() {
       }
     }
 
-    if (breakTheLoop) {
+    if (break_the_loop) {
       break;
     }
   }
@@ -842,7 +841,7 @@ void BatContribution::PrepareBatchCallback(
 
   std::vector<std::string> surveyors;
   braveledger_bat_helper::getJSONBatchSurveyors(response, surveyors);
-  braveledger_bat_helper::BathProofs batchProof;
+  braveledger_bat_helper::BathProofs batch_proof;
 
   braveledger_bat_helper::Transactions transactions =
     ledger_->GetTransactions();
@@ -866,10 +865,10 @@ void BatContribution::PrepareBatchCallback(
         for (size_t k = 0; k < transactions.size(); k++) {
           if (transactions[k].viewingId_ == ballots[i].viewingId_) {
             ballots[i].prepareBallot_ = surveyors[j];
-            braveledger_bat_helper::BATCH_PROOF batchProofEl;
-            batchProofEl.transaction_ = transactions[k];
-            batchProofEl.ballot_ = ballots[i];
-            batchProof.push_back(batchProofEl);
+            braveledger_bat_helper::BATCH_PROOF batch_proof_el;
+            batch_proof_el.transaction_ = transactions[k];
+            batch_proof_el.ballot_ = ballots[i];
+            batch_proof.push_back(batch_proof_el);
           }
         }
       }
@@ -879,71 +878,71 @@ void BatContribution::PrepareBatchCallback(
   ledger_->SetBallots(ballots);
   ledger_->RunIOTask(std::bind(&BatContribution::ProofBatch,
                                this,
-                               batchProof,
+                               batch_proof,
                                std::placeholders::_1));
 }
 
 void BatContribution::ProofBatch(
-    const braveledger_bat_helper::BathProofs& batchProof,
+    const braveledger_bat_helper::BathProofs& batch_proof,
     ledger::LedgerTaskRunner::CallerThreadCallback callback) {
   std::vector<std::string> proofs;
 
-  for (size_t i = 0; i < batchProof.size(); i++) {
+  for (size_t i = 0; i < batch_proof.size(); i++) {
     braveledger_bat_helper::SURVEYOR_ST surveyor;
     bool success = braveledger_bat_helper::loadFromJson(
         surveyor,
-        batchProof[i].ballot_.prepareBallot_);
+        batch_proof[i].ballot_.prepareBallot_);
 
     if (!success) {
       ledger_->Log(__func__,
                    ledger::LogLevel::LOG_ERROR,
                    {"Failed to load surveyor state: ",
-                    batchProof[i].ballot_.prepareBallot_});
+                    batch_proof[i].ballot_.prepareBallot_});
     }
 
-    std::string signatureToSend;
-    size_t delimeterPos = surveyor.signature_.find(',');
-    if (std::string::npos != delimeterPos &&
-        delimeterPos + 1 <= surveyor.signature_.length()) {
-      signatureToSend = surveyor.signature_.substr(delimeterPos + 1);
+    std::string signature_to_send;
+    size_t delimeter_pos = surveyor.signature_.find(',');
+    if (std::string::npos != delimeter_pos &&
+        delimeter_pos + 1 <= surveyor.signature_.length()) {
+      signature_to_send = surveyor.signature_.substr(delimeter_pos + 1);
 
-      if (signatureToSend.length() > 1 && signatureToSend[0] == ' ') {
-        signatureToSend.erase(0, 1);
+      if (signature_to_send.length() > 1 && signature_to_send[0] == ' ') {
+        signature_to_send.erase(0, 1);
       }
     }
 
-    std::string keysMsg[1] = {"publisher"};
-    std::string valuesMsg[1] = {batchProof[i].ballot_.publisher_};
-    std::string msg = braveledger_bat_helper::stringify(keysMsg, valuesMsg, 1);
+    std::string msg_key[1] = {"publisher"};
+    std::string msg_value[1] = {batch_proof[i].ballot_.publisher_};
+    std::string msg = braveledger_bat_helper::stringify(msg_key, msg_value, 1);
 
     const char* proof = submitMessage(
         msg.c_str(),
-        batchProof[i].transaction_.masterUserToken_.c_str(),
-        batchProof[i].transaction_.registrarVK_.c_str(),
-        signatureToSend.c_str(),
+        batch_proof[i].transaction_.masterUserToken_.c_str(),
+        batch_proof[i].transaction_.registrarVK_.c_str(),
+        signature_to_send.c_str(),
         surveyor.surveyorId_.c_str(),
         surveyor.surveyVK_.c_str());
 
-    std::string anonProof;
+    std::string annon_proof;
     if (nullptr != proof) {
-      anonProof = proof;
+      annon_proof = proof;
       free((void*)proof);
     }
 
-    proofs.push_back(anonProof);
+    proofs.push_back(annon_proof);
   }
 
-  callback(std::bind(&BatContribution::ProofBatchCallback, this, batchProof, proofs));
+  callback(std::bind(&BatContribution::ProofBatchCallback, this, batch_proof, proofs));
 }
 
 void BatContribution::ProofBatchCallback(
-    const braveledger_bat_helper::BathProofs& batchProof,
+    const braveledger_bat_helper::BathProofs& batch_proof,
     const std::vector<std::string>& proofs) {
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
-  for (size_t i = 0; i < batchProof.size(); i++) {
+  for (size_t i = 0; i < batch_proof.size(); i++) {
     for (size_t j = 0; j < ballots.size(); j++) {
-      if (ballots[j].surveyorId_ == batchProof[i].ballot_.surveyorId_) {
+      if (ballots[j].surveyorId_ == batch_proof[i].ballot_.surveyorId_) {
         ballots[j].proofBallot_ = proofs[i];
       }
     }
@@ -965,45 +964,45 @@ void BatContribution::PrepareVoteBatch() {
       continue;
     }
 
-    bool transactionExist = false;
+    bool transaction_exit = false;
     for (size_t k = 0; k < transactions.size(); k++) {
       if (transactions[k].viewingId_ == ballots[i].viewingId_) {
-        bool existBallot = false;
+        bool ballot_exit = false;
         for (size_t j = 0; j < transactions[k].ballots_.size(); j++) {
           if (transactions[k].ballots_[j].publisher_ == ballots[i].publisher_) {
             transactions[k].ballots_[j].offset_++;
-            existBallot = true;
+            ballot_exit = true;
             break;
           }
         }
-        if (!existBallot) {
+        if (!ballot_exit) {
           braveledger_bat_helper::TRANSACTION_BALLOT_ST transactionBallot;
           transactionBallot.publisher_ = ballots[i].publisher_;
           transactionBallot.offset_++;
           transactions[k].ballots_.push_back(transactionBallot);
         }
-        transactionExist = true;
+        transaction_exit = true;
         break;
       }
     }
 
-    if (!transactionExist) {
+    if (!transaction_exit) {
       continue;
     }
 
-    bool existBatch = false;
+    bool exist_batch = false;
     braveledger_bat_helper::BATCH_VOTES_INFO_ST batchVotesInfoSt;
     batchVotesInfoSt.surveyorId_ = ballots[i].surveyorId_;
     batchVotesInfoSt.proof_ = ballots[i].proofBallot_;
 
     for (size_t k = 0; k < batch.size(); k++) {
       if (batch[k].publisher_ == ballots[i].publisher_) {
-        existBatch = true;
+        exist_batch = true;
         batch[k].batchVotesInfo_.push_back(batchVotesInfoSt);
       }
     }
 
-    if (!existBatch) {
+    if (!exist_batch) {
       braveledger_bat_helper::BATCH_VOTES_ST batchVotesSt;
       batchVotesSt.publisher_ = ballots[i].publisher_;
       batchVotesSt.batchVotesInfo_.push_back(batchVotesInfoSt);
@@ -1024,17 +1023,17 @@ void BatContribution::VoteBatch() {
     return;
   }
 
-  braveledger_bat_helper::BATCH_VOTES_ST batchVotes = batch[0];
-  std::vector<braveledger_bat_helper::BATCH_VOTES_INFO_ST> voteBatch;
+  braveledger_bat_helper::BATCH_VOTES_ST batch_votes = batch[0];
+  std::vector<braveledger_bat_helper::BATCH_VOTES_INFO_ST> vote_batch;
 
-  if (batchVotes.batchVotesInfo_.size() > VOTE_BATCH_SIZE) {
-    voteBatch.assign(batchVotes.batchVotesInfo_.begin(),
-                     batchVotes.batchVotesInfo_.begin() + VOTE_BATCH_SIZE);
+  if (batch_votes.batchVotesInfo_.size() > VOTE_BATCH_SIZE) {
+    vote_batch.assign(batch_votes.batchVotesInfo_.begin(),
+                     batch_votes.batchVotesInfo_.begin() + VOTE_BATCH_SIZE);
   } else {
-    voteBatch = batchVotes.batchVotesInfo_;
+    vote_batch = batch_votes.batchVotesInfo_;
   }
 
-  std::string payload = braveledger_bat_helper::stringifyBatch(voteBatch);
+  std::string payload = braveledger_bat_helper::stringifyBatch(vote_batch);
 
   std::string url = braveledger_bat_helper::buildURL(
       (std::string)SURVEYOR_BATCH_VOTING ,
@@ -1049,7 +1048,7 @@ void BatContribution::VoteBatch() {
   handler_.AddRequestHandler(std::move(request_id),
                              std::bind(&BatContribution::VoteBatchCallback,
                                        this,
-                                       batchVotes.publisher_,
+                                       batch_votes.publisher_,
                                        std::placeholders::_1,
                                        std::placeholders::_2,
                                        std::placeholders::_3));
@@ -1075,11 +1074,11 @@ void BatContribution::VoteBatchCallback(
 
       for (int j = sizeToCheck - 1; j >= 0; j--) {
         for (size_t k = 0; k < surveyors.size(); k++) {
-          std::string surveyorId;
+          std::string surveyor_id;
           braveledger_bat_helper::getJSONValue("surveyorId",
                                                surveyors[k],
-                                               surveyorId);
-          if (surveyorId == batch[i].batchVotesInfo_[j].surveyorId_) {
+                                               surveyor_id);
+          if (surveyor_id == batch[i].batchVotesInfo_[j].surveyorId_) {
             batch[i].batchVotesInfo_.erase(
                 batch[i].batchVotesInfo_.begin() + j);
             break;
@@ -1116,16 +1115,16 @@ void BatContribution::SetReconcileTimer() {
   }
 
   uint64_t now = std::time(nullptr);
-  uint64_t nextReconcileTimestamp = ledger_->GetReconcileStamp();
+  uint64_t next_reconcile_stamp = ledger_->GetReconcileStamp();
 
   uint64_t time_to_next_reconcile =
-      (nextReconcileTimestamp == 0 || nextReconcileTimestamp < now) ?
-        0 : nextReconcileTimestamp - now;
+      (next_reconcile_stamp == 0 || next_reconcile_stamp < now) ?
+        0 : next_reconcile_stamp - now;
 
   SetTimer(last_reconcile_timer_id_, time_to_next_reconcile);
 }
 
-void BatContribution::SetTimer(uint32_t timer_id, uint64_t start_timer_in) {
+void BatContribution::SetTimer(uint32_t& timer_id, uint64_t start_timer_in) {
   if (start_timer_in == 0) {
     start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
   }

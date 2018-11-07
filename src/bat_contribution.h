@@ -11,12 +11,6 @@
 #include "bat_helper.h"
 #include "url_request_handler.h"
 
-
-// TODO checklist
-// - check if some public can be moved into private
-// - do clang tidy improvements
-// - rename variables from CamelCase
-
 namespace bat_ledger {
   class LedgerImpl;
 }
@@ -29,76 +23,11 @@ class BatContribution {
 
   ~BatContribution();
 
-  // Entry point for contribution where we have publisher info list
-  void ReconcilePublisherList(ledger::PUBLISHER_CATEGORY category,
-                              const ledger::PublisherInfoList& list,
-                              uint32_t next_record);
-
-  // Triggers contribution process for auto contribute table
-  void StartAutoContribute();
-
   void Reconcile(
-      const std::string &viewingId,
+      const std::string &viewing_id,
       const ledger::PUBLISHER_CATEGORY category,
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions = {});
-
-  void ReconcileCallback(const std::string& viewingId,
-                         bool result,
-                         const std::string& response,
-                         const std::map<std::string, std::string>& headers);
-
-  void CurrentReconcile(const std::string& viewingId);
-
-  void CurrentReconcileCallback(
-      const std::string& viewingId,
-      bool result,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void ReconcilePayloadCallback(
-      const std::string& viewingId,
-      bool result,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-
-  void RegisterViewing(const std::string& viewingId);
-
-  void RegisterViewingCallback(
-      const std::string& viewingId,
-      bool result,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-
-  void ViewingCredentials(const std::string& viewingId,
-                          const std::string& proofStringified,
-                          const std::string& anonizeViewingId);
-
-  void ViewingCredentialsCallback(
-      const std::string& viewingId,
-      bool result,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void OnReconcileComplete(ledger::Result result,
-                           const std::string& viewing_id,
-                           const std::string& probi = "0");
-
-  unsigned int GetBallotsCount(const std::string& viewingId);
-
-  void GetReconcileWinners(const unsigned int& ballots,
-                           const std::string& viewing_id);
-
-  void GetContributeWinners(const unsigned int& ballots,
-                            const std::string& viewing_id,
-                            const braveledger_bat_helper::PublisherList& list);
-
-  void GetDonationWinners(const unsigned int& ballots,
-                          const std::string& viewing_id,
-                          const braveledger_bat_helper::PublisherList& list);
-
 
   void OnTimer(uint32_t timer_id);
 
@@ -118,15 +47,77 @@ class BatContribution {
                               const std::string& id,
                               std::string& pre_flight);
 
+  // Entry point for contribution where we have publisher info list
+  void ReconcilePublisherList(ledger::PUBLISHER_CATEGORY category,
+                              const ledger::PublisherInfoList& list,
+                              uint32_t next_record);
+
   // Fetches recurring donations that will be then used for the contribution.
   // This is called from global timer in impl.
   void OnTimerReconcile();
+
+  // Triggers contribution process for auto contribute table
+  void StartAutoContribute();
+
+  void ReconcileCallback(const std::string& viewing_id,
+                         bool result,
+                         const std::string& response,
+                         const std::map<std::string, std::string>& headers);
+
+  void CurrentReconcile(const std::string& viewing_id);
+
+  void CurrentReconcileCallback(
+      const std::string& viewing_id,
+      bool result,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+  void ReconcilePayloadCallback(
+      const std::string& viewing_id,
+      bool result,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+  void RegisterViewing(const std::string& viewing_id);
+
+  void RegisterViewingCallback(
+      const std::string& viewing_id,
+      bool result,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+  void ViewingCredentials(const std::string& viewing_id,
+                          const std::string& proof_stringified,
+                          const std::string& anonize_viewing_id);
+
+  void ViewingCredentialsCallback(
+      const std::string& viewing_id,
+      bool result,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
+
+  void OnReconcileComplete(ledger::Result result,
+                           const std::string& viewing_id,
+                           const std::string& probi = "0");
+
+  unsigned int GetBallotsCount(const std::string& viewing_id);
+
+  void GetReconcileWinners(const unsigned int& ballots,
+                           const std::string& viewing_id);
+
+  void GetContributeWinners(const unsigned int& ballots,
+                            const std::string& viewing_id,
+                            const braveledger_bat_helper::PublisherList& list);
+
+  void GetDonationWinners(const unsigned int& ballots,
+                          const std::string& viewing_id,
+                          const braveledger_bat_helper::PublisherList& list);
 
   void VotePublishers(const braveledger_bat_helper::Winners& winners,
                       const std::string& viewing_id);
 
   void VotePublisher(const std::string& publisher,
-                     const std::string& viewingId);
+                     const std::string& viewing_id);
 
   void PrepareBallots();
 
@@ -139,15 +130,15 @@ class BatContribution {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  void PrepareVoteBatch();
-
   void ProofBatch(
-      const braveledger_bat_helper::BathProofs& batchProof,
+      const braveledger_bat_helper::BathProofs& batch_proof,
       ledger::LedgerTaskRunner::CallerThreadCallback callback);
 
   void ProofBatchCallback(
-      const braveledger_bat_helper::BathProofs& batchProof,
+      const braveledger_bat_helper::BathProofs& batch_proof,
       const std::vector<std::string>& proofs);
+
+  void PrepareVoteBatch();
 
   void VoteBatch();
 
@@ -157,7 +148,7 @@ class BatContribution {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  void SetTimer(uint32_t timer_id, uint64_t start_timer_in = 0);
+  void SetTimer(uint32_t& timer_id, uint64_t start_timer_in = 0);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   bat_ledger::URLRequestHandler handler_;
