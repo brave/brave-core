@@ -78,15 +78,20 @@ class MockAdsClient : public AdsClient, CallbackHandler {
       int line,
       const LogLevel log_level) const override;
 
-  std::string locale_;
-
-  std::unique_ptr<BUNDLE_STATE> sample_bundle_state_;
+ private:
+  void LoadBundleState();
+  void OnBundleStateLoaded(const Result result, const std::string& json);
   std::unique_ptr<BUNDLE_STATE> bundle_state_;
 
- private:
+  void LoadSampleBundleState();
+  void OnSampleBundleStateLoaded(const Result result, const std::string& json);
+  std::unique_ptr<BUNDLE_STATE> sample_bundle_state_;
+
   bool WriteJsonToDisk(
     const std::string& path,
     const std::string& json) const;
+
+  std::string locale_;
 };
 
 }  // namespace ads

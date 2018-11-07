@@ -14,23 +14,15 @@
 #include "string_helper.h"
 #include "time_helper.h"
 
+using namespace std::placeholders;
+
 namespace ads {
 
 MockAdsClient::MockAdsClient() :
-  ads_(Ads::CreateInstance(this)),
-  locale_("en"),
-  bundle_state_(std::make_unique<BUNDLE_STATE>()) {
-    // TODO(Terry Mancey): Refactor to use Load()
-    std::ifstream ifs{"mock_data/sample_bundle.json"};
-
-    std::stringstream stream;
-    stream << ifs.rdbuf();
-    std::string json = stream.str();
-
-    BUNDLE_STATE bundle_state;
-    bundle_state.LoadFromJson(json);
-
-    sample_bundle_state_ = std::make_unique<BUNDLE_STATE>(bundle_state);
+    ads_(Ads::CreateInstance(this)),
+    locale_("en") {
+  LoadBundleState();
+  LoadSampleBundleState();
 }
 
 MockAdsClient::~MockAdsClient() = default;
@@ -141,7 +133,6 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
   if (callback_handler) {
     if (!callback_handler->OnURLSessionReceivedResponse(0, url,
         response_status_code, response, {})) {
-      // TODO(Terry Mancey): Change Log to use the LOG macro
       Log(__FILE__, __LINE__, LogLevel::ERROR) <<
           "URL session callback handler not found";
     }
@@ -324,6 +315,60 @@ std::ostream& MockAdsClient::Log(
     << line << " " << std::endl;
 
   return std::cerr;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+void MockAdsClient::LoadBundleState() {
+  Load("bundle.json",
+    std::bind(&MockAdsClient::OnBundleStateLoaded, this, _1, _2));
+}
+
+void MockAdsClient::OnBundleStateLoaded(
+    const Result result,
+    const std::string& json) {
+  if (result == Result::FAILED) {
+    Log(__FILE__, __LINE__, LogLevel::WARNING) <<
+        "Failed to load bundle";
+
+    return;
+  }
+
+  BUNDLE_STATE state;
+  if (!state.LoadFromJson(json)) {
+    Log(__FILE__, __LINE__, LogLevel::WARNING) <<
+        "Failed to parse bundle JSON";
+
+    return;
+  }
+
+  bundle_state_.reset(new BUNDLE_STATE(state));
+}
+
+void MockAdsClient::LoadSampleBundleState() {
+  Load("sample_bundle.json",
+    std::bind(&MockAdsClient::OnSampleBundleStateLoaded, this, _1, _2));
+}
+
+void MockAdsClient::OnSampleBundleStateLoaded(
+    const Result result,
+    const std::string& json) {
+  if (result == Result::FAILED) {
+    Log(__FILE__, __LINE__, LogLevel::WARNING) <<
+        "Failed to load sample bundle";
+
+    return;
+  }
+
+  BUNDLE_STATE state;
+  if (!state.LoadFromJson(json)) {
+    Log(__FILE__, __LINE__, LogLevel::WARNING) <<
+        "Failed to parse sample bundle JSON";
+
+    return;
+  }
+
+  sample_bundle_state_.reset(new BUNDLE_STATE(state));
 }
 
 bool MockAdsClient::WriteJsonToDisk(
