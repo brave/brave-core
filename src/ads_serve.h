@@ -42,6 +42,7 @@ class AdsServe {
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
+  void ProcessCatalog(const std::string& json);
 
   void OnCatalogSaved(const Result result);
   void OnCatalogReset(const Result result);

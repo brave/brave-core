@@ -8,6 +8,7 @@
 #include "rapidjson/error/en.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
+#include "rapidjson/schema.h"
 
 // TODO(Terry Mancey): Decouple _rapidjson_member_types
 static const char* _rapidjson_member_types[] = {
@@ -38,10 +39,17 @@ void SaveToJson(const T& t, std::string& json) {
   json = buffer.GetString();
 }
 
-// return: parsing status: true = succeeded, false = failed
 template <typename T>
 bool LoadFromJson(T& t, const std::string& json) {
   return t.LoadFromJson(json);
+}
+
+template <typename T>
+bool LoadFromJson(
+    T& t,
+    const std::string& json,
+    const std::string& jsonSchema) {
+  return t.LoadFromJson(json, jsonSchema);
 }
 
 }  // namespace ads

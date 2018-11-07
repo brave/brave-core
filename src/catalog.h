@@ -20,7 +20,7 @@ class Catalog: public CallbackHandler {
   explicit Catalog(AdsClient* ads_client);
   ~Catalog();
 
-  bool LoadJson(const std::string& json);  // Deserialize
+  bool FromJson(const std::string& json);  // Deserialize
 
   const std::shared_ptr<CATALOG_STATE> GetCatalogState() const;
 

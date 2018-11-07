@@ -1,0 +1,214 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "ping",
+    "campaigns",
+    "issuers",
+    "catalogId"
+  ],
+  "properties": {
+    "version": {
+      "type": "number"
+    },
+    "ping": {
+      "type": "number"
+    },
+    "catalogId": {
+      "type": "string"
+    },
+    "issuers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "publicKey"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "publicKey": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "campaigns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "campaignId",
+          "advertiserId",
+          "name",
+          "startAt",
+          "endAt",
+          "dailyCap",
+          "budget",
+          "geoTargets",
+          "creativeSets"
+        ],
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "advertiserId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "string"
+          },
+          "endAt": {
+            "type": "string"
+          },
+          "dailyCap": {
+            "type": "number"
+          },
+          "budget": {
+            "type": "number"
+          },
+          "geoTargets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "code",
+                "name"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "creativeSets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "creativeSetId",
+                "execution",
+                "perDay",
+                "totalMax",
+                "segments",
+                "creatives"
+              ],
+              "properties": {
+                "creativeSetId": {
+                  "type": "string"
+                },
+                "execution": {
+                  "type": "string"
+                },
+                "perDay": {
+                  "type": "number"
+                },
+                "totalMax": {
+                  "type": "number"
+                },
+                "segments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "code",
+                      "name"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "parentCode": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "creatives": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "creativeInstanceId",
+                      "type",
+                      "payload"
+                    ],
+                    "properties": {
+                      "creativeInstanceId": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "code",
+                          "name",
+                          "platform",
+                          "version"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "platform": {
+                            "type": "string"
+                          },
+                          "version": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "payload": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "targetUrl",
+                          "body",
+                          "title"
+                        ],
+                        "properties": {
+                          "targetUrl": {
+                            "type": "string"
+                          },
+                          "body": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

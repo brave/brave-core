@@ -38,6 +38,7 @@ class MockAdsClient : public AdsClient, CallbackHandler {
             const std::string& value,
             OnSaveCallback callback) override;
   void Load(const std::string& name, OnLoadCallback callback) override;
+  const std::string Load(const std::string& name) override;
   void Reset(const std::string& name, OnResetCallback callback) override;
 
   const std::string SetLocale(const std::string& locale) override;

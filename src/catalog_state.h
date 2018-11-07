@@ -18,7 +18,7 @@ struct CATALOG_STATE {
   explicit CATALOG_STATE(const CATALOG_STATE& state);
   ~CATALOG_STATE();
 
-  bool LoadFromJson(const std::string& json);
+  bool LoadFromJson(const std::string& json, const std::string& jsonSchema);
 
   bool validateJson(
       const rapidjson::Document& document,

@@ -23,7 +23,16 @@ CATALOG_STATE::CATALOG_STATE(const CATALOG_STATE& state) {
 
 CATALOG_STATE::~CATALOG_STATE() = default;
 
-bool CATALOG_STATE::LoadFromJson(const std::string& json) {
+bool CATALOG_STATE::LoadFromJson(
+    const std::string& json,
+    const std::string& jsonSchema) {
+  rapidjson::Document catalog_schema;
+  catalog_schema.Parse(jsonSchema.c_str());
+
+  if (catalog_schema.HasParseError()) {
+    return false;
+  }
+
   rapidjson::Document catalog;
   catalog.Parse(json.c_str());
 
@@ -31,15 +40,9 @@ bool CATALOG_STATE::LoadFromJson(const std::string& json) {
     return false;
   }
 
-  const std::map<std::string, std::string> members = {
-    {"catalogId", "String"},
-    {"version", "Number"},
-    {"ping", "Number"},
-    {"campaigns", "Array"}
-  };
-
-  // TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
-  if (!validateJson(catalog, members)) {
+  rapidjson::SchemaDocument schema(catalog_schema);
+  rapidjson::SchemaValidator validator(schema);
+  if (!catalog.Accept(validator)) {
     return false;
   }
 

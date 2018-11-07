@@ -73,9 +73,8 @@ class ADS_EXPORT AdsClient {
       const std::string& name,
       const std::string& value,
       OnSaveCallback callback) = 0;
-  virtual void Load(
-      const std::string& name,
-      OnLoadCallback callback) = 0;
+  virtual void Load(const std::string& name, OnLoadCallback callback) = 0;
+  virtual const std::string Load(const std::string& name) = 0;
   virtual void Reset(
       const std::string& name,
       OnResetCallback callback) = 0;

@@ -174,9 +174,21 @@ void MockAdsClient::Load(
 
   std::stringstream stream;
   stream << ifs.rdbuf();
-  std::string json = stream.str();
+  std::string value = stream.str();
 
-  callback(Result::SUCCESS, json);
+  callback(Result::SUCCESS, value);
+}
+
+const std::string MockAdsClient::Load(
+    const std::string& name) {
+  std::ifstream ifs{"mock_data/" + name};
+  if (ifs.fail()) {
+    return "";
+  }
+
+  std::stringstream stream;
+  stream << ifs.rdbuf();
+  return stream.str();
 }
 
 void MockAdsClient::Reset(

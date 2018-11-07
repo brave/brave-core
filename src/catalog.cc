@@ -16,9 +16,10 @@ Catalog::Catalog(AdsClient* ads_client) :
 
 Catalog::~Catalog() = default;
 
-bool Catalog::LoadJson(const std::string& json) {
+bool Catalog::FromJson(const std::string& json) {
   CATALOG_STATE state;
-  if (!LoadFromJson(state, json.c_str())) {
+  auto jsonSchema = ads_client_->Load("catalog-schema.json");
+  if (!LoadFromJson(state, json.c_str(), jsonSchema)) {
     LOG(ads_client_, LogLevel::WARNING) << "Failed to parse catalog JSON";
     return false;
   }
