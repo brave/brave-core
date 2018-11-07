@@ -39,7 +39,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
-#include "components/grit/brave_components_resources.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content_site.h"
 #include "extensions/buildflags/buildflags.h"
@@ -55,6 +54,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "components/grit/brave_components_resources.h"
 #else
 #include "components/grit/components_resources.h"
 #endif
