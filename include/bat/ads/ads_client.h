@@ -4,9 +4,8 @@
 
 #pragma once
 
-#include <functional>
-#include <sstream>
 #include <string>
+#include <sstream>
 #include <memory>
 
 #include "bat/ads/ad_info.h"
