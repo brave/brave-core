@@ -20,10 +20,6 @@ struct CATALOG_STATE {
 
   bool LoadFromJson(const std::string& json, const std::string& jsonSchema);
 
-  bool validateJson(
-      const rapidjson::Document& document,
-      const std::map<std::string, std::string>& members);
-
   std::string catalog_id;
   uint64_t version;
   uint64_t ping;
