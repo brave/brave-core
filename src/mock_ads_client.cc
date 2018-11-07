@@ -301,7 +301,7 @@ void MockAdsClient::EventLog(const std::string& json) {
   std::string time_stamp;
   helper::Time::TimeStamp(time_stamp);
 
-  std::cout << "Event logged (" << time_stamp <<  "): " << json << std::endl;
+  std::cout << std::endl << "Event logged (" << time_stamp <<  "): " << json;
 }
 
 std::ostream& MockAdsClient::Log(
@@ -326,9 +326,9 @@ std::ostream& MockAdsClient::Log(
   }
 
   std::cerr << std::endl << level << ": in " << file <<
-    " on line " << line << ":";
+    " on line " << line << ": " << std::endl << "  ";
 
-  return std::cerr << std::endl << std::endl;
+  return std::cerr;
 }
 
 //////////////////////////////////////////////////////////////////////////////
