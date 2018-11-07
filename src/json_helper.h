@@ -10,16 +10,6 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/schema.h"
 
-// TODO(Terry Mancey): Decouple _rapidjson_member_types
-static const char* _rapidjson_member_types[] = {
-  "Null",
-  "Bool",  // False
-  "Bool",  // True
-  "Object",
-  "Array",
-  "String",
-  "Number"};
-
 namespace ads {
 
 struct CLIENT_STATE;
@@ -53,3 +43,14 @@ bool LoadFromJson(
 }
 
 }  // namespace ads
+
+namespace helper {
+
+class JSON {
+ public:
+  static bool Validate(
+      rapidjson::Document *document,
+      const std::string& jsonSchema);
+};
+
+}  // namespace helper

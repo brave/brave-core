@@ -76,6 +76,7 @@ source_set("ads") {
     "src/settings_state.cc",
     "src/string_helper.cc",
     "src/time_helper.cc",
+    "src/json_helper.cc",
     "src/url_session_callback_handler.cc",
     "src/bat/ads/ad_info.cc",
     "src/bat/ads/callback_handler.cc",
