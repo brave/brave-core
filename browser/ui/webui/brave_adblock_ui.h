@@ -16,7 +16,9 @@ class BraveAdblockUI : public BasicUI {
   ~BraveAdblockUI() override;
 
  private:
-  void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
+  // BasicUI overrides:
+  void UpdateWebUIProperties() override;
+
   void CustomizeWebUIProperties(content::RenderViewHost* render_view_host);
   void OnPreferenceChanged();
 

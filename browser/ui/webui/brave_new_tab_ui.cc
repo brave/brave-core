@@ -77,6 +77,7 @@ BraveNewTabUI::~BraveNewTabUI() {
 }
 
 void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
   if (render_view_host) {
@@ -106,15 +107,13 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
   }
 }
 
-void BraveNewTabUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
-  if (IsSafeToSetWebUIProperties()) {
-    CustomizeNewTabWebUIProperties(render_frame_host->GetRenderViewHost());
-  }
-}
-
-void BraveNewTabUI::OnPreferenceChanged() {
+void BraveNewTabUI::UpdateWebUIProperties() {
   if (IsSafeToSetWebUIProperties()) {
     CustomizeNewTabWebUIProperties(GetRenderViewHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
   }
+}
+
+void BraveNewTabUI::OnPreferenceChanged() {
+  UpdateWebUIProperties();
 }
