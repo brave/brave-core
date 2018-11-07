@@ -7,7 +7,7 @@
 #include <string>
 #include <ctime>
 
-namespace ads {
+namespace helper {
 
 class Time {
  public:

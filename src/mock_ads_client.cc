@@ -294,7 +294,7 @@ bool MockAdsClient::GetUrlComponents(
 
 void MockAdsClient::EventLog(const std::string& json) {
   std::string time_stamp;
-  Time::TimeStamp(time_stamp);
+  helper::Time::TimeStamp(time_stamp);
 
   std::cout << "Event logged (" << time_stamp <<  "): " << json << std::endl;
 }
