@@ -7,6 +7,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
 
@@ -24,12 +25,38 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
   return source;
 }
 
+// This is used to know proper timing for setting webui properties.
+// So far, content::WebUIController::RenderFrameCreated() is used.
+// However, it doesn't get called sometimes when reloading, or called when
+// RenderFrameHost is not prepared during renderer process is in changing.
+class BasicUI::BasicUIWebContentsObserver
+    : public content::WebContentsObserver {
+ public:
+  BasicUIWebContentsObserver(BasicUI* host, content::WebContents* web_contents)
+      : WebContentsObserver(web_contents),
+        host_(host) {
+  }
+  ~BasicUIWebContentsObserver() override {}
+
+  // content::WebContentsObserver overrides:
+  void RenderViewReady() override {
+    host_->UpdateWebUIProperties();
+  }
+
+ private:
+  BasicUI* host_;
+
+  DISALLOW_COPY_AND_ASSIGN(BasicUIWebContentsObserver);
+};
+
 BasicUI::BasicUI(content::WebUI* web_ui,
     const std::string& name,
     const std::string& js_file,
     int js_resource_id,
     int html_resource_id)
     : WebUIController(web_ui) {
+  observer_.reset(
+      new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
   Profile* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
       js_file, js_resource_id, html_resource_id);

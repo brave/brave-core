@@ -6,6 +6,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEW_TAB_UI_H_
 
 #include <memory>
+
 #include "brave/browser/ui/webui/basic_ui.h"
 
 class PrefChangeRegistrar;
@@ -16,7 +17,9 @@ class BraveNewTabUI : public BasicUI {
   ~BraveNewTabUI() override;
 
  private:
-  void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
+  // BasicUI overrides
+  void UpdateWebUIProperties() override;
+
   void CustomizeNewTabWebUIProperties(content::RenderViewHost* render_view_host);
   void OnPreferenceChanged();
 
