@@ -112,6 +112,9 @@ void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {
     dict_value->GetInteger("type", &notification_type);
     dict_value->GetInteger("timestamp", &notification_timestamp);
 
+    // The notification ID was originally an integer, but now it's a
+    // string. For backwards compatibility, we need to handle the
+    // case where the ID contains an invalid string or integer
     if (notification_id.empty()) {
       int old_id;
       dict_value->GetInteger("id", &old_id);
@@ -119,6 +122,8 @@ void RewardsNotificationsServiceImpl::ReadRewardsNotifications() {
         notification_id = "rewards_notification_grant";
       else
         notification_id = std::to_string(old_id);
+    } else if (notification_id == "0" && notification_type == 2) {
+      notification_id = "rewards_notification_grant";
     }
 
     base::ListValue* args;
