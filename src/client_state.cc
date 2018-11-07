@@ -66,48 +66,6 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
     return false;
   }
 
-  const std::map<std::string, std::string> members = {
-    {"adsShownHistory", "Array"},
-    {"adUUID", "String"},
-    {"adsUUIDSeen", "Object"},
-    {"available", "Bool"},
-    {"allowed", "Bool"},
-    {"configured", "Bool"},
-    {"currentSSID", "String"},
-    {"expired", "Bool"},
-    {"lastSearchTime", "Number"},
-    {"lastShopTime", "Number"},
-    {"lastUserActivity", "Number"},
-    {"lastUserIdleStopTime", "Number"},
-    {"locale", "String"},
-    {"locales", "Array"},
-    {"pageScoreHistory", "Array"},
-    {"places", "Object"},
-    {"score", "Number"},
-    {"searchActivity", "Bool"},
-    {"searchUrl", "String"},
-    {"shopActivity", "Bool"},
-    {"shopUrl", "String"},
-    {"status", "String"}
-  };
-
-  // TODO(Terry Mancey): Decouple validateJson into json_helper class
-  for (const auto& member : client.GetObject()) {
-    std::string member_name = member.name.GetString();
-    auto member_type = _rapidjson_member_types[member.value.GetType()];
-
-    if (members.find(member_name) == members.end()) {
-      // Member name not used
-      continue;
-    }
-
-    std::string type = members.at(member_name);
-    if (type != member_type) {
-      // Invalid member type
-      return false;
-    }
-  }
-
   if (client.HasMember("adsShownHistory")) {
     for (const auto& ad_shown : client["adsShownHistory"].GetArray()) {
       ads_shown_history.push_back(ad_shown.GetUint64());

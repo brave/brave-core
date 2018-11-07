@@ -34,30 +34,6 @@ bool SETTINGS_STATE::LoadFromJson(const std::string& json) {
     return false;
   }
 
-  const std::map<std::string, std::string> members = {
-    {"ads.enabled", "Bool"},
-    {"ads.locale", "String"},
-    {"ads.amount.hour", "String"},
-    {"ads.amount.day", "String"}
-  };
-
-  // TODO(Terry Mancey): Decouple validateJson into json_helper class
-  for (const auto& member : settings.GetObject()) {
-    std::string member_name = member.name.GetString();
-    auto member_type = _rapidjson_member_types[member.value.GetType()];
-
-    if (members.find(member_name) == members.end()) {
-      // Member name not used
-      continue;
-    }
-
-    std::string type = members.at(member_name);
-    if (type != member_type) {
-      // Invalid member type
-      return false;
-    }
-  }
-
   if (settings.HasMember("ads.enabled")) {
     ads_enabled = settings["ads.enabled"].GetBool();
   }

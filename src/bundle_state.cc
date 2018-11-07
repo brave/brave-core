@@ -8,29 +8,6 @@
 
 namespace ads {
 
-// TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
-bool ValidateJson(
-    const rapidjson::Document& document,
-    const std::map<std::string, std::string>& members) {
-  for (const auto& member : document.GetObject()) {
-    std::string member_name = member.name.GetString();
-    std::string member_type = _rapidjson_member_types[member.value.GetType()];
-
-    if (members.find(member_name) == members.end()) {
-      // Member name not used
-      continue;
-    }
-
-    std::string type = members.at(member_name);
-    if (type != member_type) {
-      // Invalid member type
-      return false;
-    }
-  }
-
-  return true;
-}
-
 BUNDLE_STATE::BUNDLE_STATE() :
     catalog_id(""),
     catalog_version(0),
@@ -51,15 +28,6 @@ bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
   bundle.Parse(json.c_str());
 
   if (bundle.HasParseError()) {
-    return false;
-  }
-
-  const std::map<std::string, std::string> members = {
-    {"categories", "Object"}
-  };
-
-  // TODO(Terry Mancey): Decouple validateJson by moving to json_helper class
-  if (!ValidateJson(bundle, members)) {
     return false;
   }
 
