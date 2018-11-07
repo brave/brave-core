@@ -439,7 +439,7 @@ void AdsImpl::OnSettingsLoaded(
 
   // TODO(Brian Johnson): This should be abstracted back to the client class
   ads_client_->Load("client.json",
-      std::bind(&AdsImpl::OnClientLoaded, this, _1, _2));
+    std::bind(&AdsImpl::OnClientLoaded, this, _1, _2));
 }
 
 void AdsImpl::OnClientSaved(const Result result) {
@@ -538,9 +538,10 @@ void AdsImpl::Deinitialize() {
 
   bundle_->Reset();
   // TODO(Brian Johnson): ads_client_->Reset call below should be moved to
-  // bundle::Reset (i.e. inside the above bundle_->Reset() function call)
+  // bundle::Reset (i.e. inside the above bundle_->Reset() function call),
+  // could also be moved into bundle_->Reset() function
   ads_client_->Reset("bundle.json",
-      std::bind(&AdsImpl::OnBundleSaved, this, _1));
+    std::bind(&AdsImpl::OnBundleSaved, this, _1));
 
   user_model_.reset();
 

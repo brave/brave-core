@@ -101,7 +101,7 @@ void AdsServe::OnCatalogDownloaded(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Generated bundle'
 
-    // TODO(Brian Johnston): Saving of the catalog should be changed back to
+    // TODO(Brian Johnson): Saving of the catalog should be changed back to
     // saving in the catalog class as it is not the responsibility of the ads
     // serve class
     ads_client_->Save("catalog.json", response,

@@ -20,6 +20,7 @@ MockAdsClient::MockAdsClient() :
   ads_(Ads::CreateInstance(this)),
   locale_("en"),
   bundle_state_(std::make_unique<BUNDLE_STATE>()) {
+    // TODO(Terry Mancey): Refactor to use Load()
     std::ifstream ifs{"mock_data/sample_bundle.json"};
 
     std::stringstream stream;
@@ -45,6 +46,7 @@ const ClientInfo MockAdsClient::GetClientInfo() const {
 }
 
 const std::string MockAdsClient::SetLocale(const std::string& locale) {
+  // TODO(Terry Mancey): Look at again to see if can be moved to native-ads
   auto locales = GetLocales();
 
   if (std::find(locales.begin(), locales.end(), locale) != locales.end()) {
@@ -139,6 +141,7 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
   if (callback_handler) {
     if (!callback_handler->OnURLSessionReceivedResponse(0, url,
         response_status_code, response, {})) {
+      // TODO(Terry Mancey): Change Log to use the LOG macro
       Log(__FILE__, __LINE__, LogLevel::ERROR) <<
           "URL session callback handler not found";
     }
@@ -197,6 +200,7 @@ void MockAdsClient::Reset(
 void MockAdsClient::GetCategory(
     const std::string& winning_category,
     CallbackHandler* callback_handler) {
+  // TODO(Terry Mancey): Refactor
   std::string category;
   uint64_t pos = winning_category.length();
 
