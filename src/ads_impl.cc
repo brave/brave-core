@@ -35,7 +35,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     ads_client_(ads_client),
     settings_(std::make_unique<Settings>()),
     client_(std::make_unique<Client>(this, ads_client_)),
-    bundle_(std::make_unique<Bundle>()),
+    bundle_(std::make_unique<Bundle>(ads_client_)),
     ads_serve_(std::make_unique<AdsServe>(this, ads_client_, bundle_.get())) {
 }
 

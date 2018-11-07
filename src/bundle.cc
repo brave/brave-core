@@ -10,7 +10,8 @@ using namespace std::placeholders;
 
 namespace ads {
 
-Bundle::Bundle() :
+Bundle::Bundle(AdsClient* ads_client) :
+    ads_client_(ads_client),
     bundle_state_(new BUNDLE_STATE()) {
 }
 
@@ -18,7 +19,8 @@ Bundle::~Bundle() = default;
 
 bool Bundle::FromJson(const std::string& json) {
   BUNDLE_STATE state;
-  if (!LoadFromJson(state, json.c_str())) {
+  auto jsonSchema = ads_client_->Load("bundle-schema.json");
+  if (!LoadFromJson(state, json.c_str(), jsonSchema)) {
     return false;
   }
 

@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "categories": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "advertiser",
+              "notificationText",
+              "notificationURL",
+              "uuid"
+            ],
+            "properties": {
+              "advertiser": {
+                "type": "string"
+              },
+              "notificationText": {
+                "type": "string"
+              },
+              "notificationURL": {
+                "type": "string"
+              },
+              "uuid": {
+                "type": "string"
+              },
+              "creativeSetId": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "categories"
+  ],
+  "additionalProperties": false
+}

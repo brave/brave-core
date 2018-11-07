@@ -17,7 +17,7 @@ struct BUNDLE_STATE {
   explicit BUNDLE_STATE(const BUNDLE_STATE& state);
   ~BUNDLE_STATE();
 
-  bool LoadFromJson(const std::string& json);
+  bool LoadFromJson(const std::string& json, const std::string& jsonSchema);
 
   std::string catalog_id;
   uint64_t catalog_version;

@@ -15,7 +15,7 @@ namespace ads {
 
 class Bundle {
  public:
-  Bundle();
+  explicit Bundle(AdsClient* ads_client);
   ~Bundle();
 
   bool FromJson(const std::string& json);  // Deserialize
@@ -30,6 +30,8 @@ class Bundle {
   uint64_t GetCatalogPing() const;
 
  private:
+  AdsClient* ads_client_;  // NOT OWNED
+
   std::unique_ptr<BUNDLE_STATE> bundle_state_;
 };
 

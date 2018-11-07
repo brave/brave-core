@@ -23,11 +23,13 @@ BUNDLE_STATE::BUNDLE_STATE(const BUNDLE_STATE& state) {
 
 BUNDLE_STATE::~BUNDLE_STATE() = default;
 
-bool BUNDLE_STATE::LoadFromJson(const std::string& json) {
+bool BUNDLE_STATE::LoadFromJson(
+    const std::string& json,
+    const std::string& jsonSchema) {
   rapidjson::Document bundle;
   bundle.Parse(json.c_str());
 
-  if (bundle.HasParseError()) {
+  if (!helper::JSON::Validate(&bundle, jsonSchema)) {
     return false;
   }
 
