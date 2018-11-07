@@ -95,6 +95,7 @@ export const Page = styled<{}, 'div'>('div')`
 `
 
 export const Panel = styled(Card)`
+  user-select: none;
   /* animation start state must be the same as "from" keyframe */
   opacity: 0;
   /* animation stuff courtesy of ross */
