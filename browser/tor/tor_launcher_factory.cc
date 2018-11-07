@@ -11,6 +11,10 @@
 
 using content::BrowserThread;
 
+namespace {
+bool g_prevent_tor_launch_for_tests = false;
+}
+
 // static
 TorLauncherFactory* TorLauncherFactory::GetInstance() {
   return base::Singleton<TorLauncherFactory>::get();
@@ -18,6 +22,11 @@ TorLauncherFactory* TorLauncherFactory::GetInstance() {
 
 TorLauncherFactory::TorLauncherFactory()
     : tor_pid_(-1) {
+  if (g_prevent_tor_launch_for_tests) {
+    VLOG(1) << "Skipping the tor process launch in tests.";
+    return;
+  }
+
   content::ServiceManagerConnection::GetForProcess()->GetConnector()
     ->BindInterface(tor::mojom::kTorLauncherServiceName,
                     &tor_launcher_);
@@ -42,6 +51,11 @@ bool TorLauncherFactory::SetConfig(const tor::TorConfig& config) {
 
 void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (g_prevent_tor_launch_for_tests) {
+    VLOG(1) << "Skipping the tor process launch in tests.";
+    return;
+  }
+
   if (tor_pid_ >= 0) {
     LOG(WARNING) << "tor process(" << tor_pid_ << ") is running";
     return;
@@ -57,6 +71,11 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
 
 void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DLOG_IF(ERROR, g_prevent_tor_launch_for_tests)
+      << "The tor process launch was suppressed for testing. Feel free to "
+         "replace this logging with a condition if you want to prevent "
+         "relaunch as well";
+
   if (tor_pid_ < 0) {
     LOG(WARNING) << "No currently running tor process. \
       Did you call LaunchTorProcess?";
@@ -102,4 +121,12 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
     LOG(ERROR) << "Tor Launching Failed(" << pid <<")";
   for (auto& observer : observers_)
     observer.NotifyTorLaunched(result, pid);
+}
+
+ScopedTorLaunchPreventerForTest::ScopedTorLaunchPreventerForTest() {
+  g_prevent_tor_launch_for_tests = true;
+}
+
+ScopedTorLaunchPreventerForTest::~ScopedTorLaunchPreventerForTest() {
+  g_prevent_tor_launch_for_tests = false;
 }

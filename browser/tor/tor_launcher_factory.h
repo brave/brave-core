@@ -51,4 +51,11 @@ class TorLauncherFactory {
   DISALLOW_COPY_AND_ASSIGN(TorLauncherFactory);
 };
 
+// Use this in tests to avoid the actual launch of the Tor process.
+class ScopedTorLaunchPreventerForTest {
+ public:
+  ScopedTorLaunchPreventerForTest();
+  ~ScopedTorLaunchPreventerForTest();
+};
+
 #endif  // BRAVE_BROWSER_TOR_TOR_LAUNCHER_FACTORY_H_
