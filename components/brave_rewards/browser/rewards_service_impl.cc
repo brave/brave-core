@@ -33,12 +33,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
-#if !defined(OS_ANDROID)
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "extensions/buildflags/buildflags.h"
-#else
-#include "components/grit/components_resources.h"
-#endif
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
@@ -48,6 +42,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content_site.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
@@ -57,6 +52,12 @@
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
+
+#if !defined(OS_ANDROID)
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#else
+#include "components/grit/components_resources.h"
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"

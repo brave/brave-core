@@ -14,12 +14,6 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#if !defined(OS_ANDROID)
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#else
-#include "components/grit/components_resources.h"
-#include "components/grit/components_scaled_resources.h"
-#endif
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -28,6 +22,13 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/bindings_policy.h"
+
+#if !defined(OS_ANDROID)
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#else
+#include "components/grit/components_resources.h"
+#include "components/grit/components_scaled_resources.h"
+#endif
 
 
 using content::WebUIMessageHandler;

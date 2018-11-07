@@ -24,13 +24,11 @@ namespace brave_rewards {
 
 RewardsNotificationServiceImpl::RewardsNotificationServiceImpl(Profile* profile)
     : profile_(profile)
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-      , extension_rewards_notification_service_observer_(
-          std::make_unique<ExtensionRewardsNotificationServiceObserver>(
-              profile))
-#endif
 {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+  extension_rewards_notification_service_observer_ = 
+          std::make_unique<ExtensionRewardsNotificationServiceObserver>(
+              profile);
   AddObserver(extension_rewards_notification_service_observer_.get());
 #endif
   ReadRewardsNotifications();
