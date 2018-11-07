@@ -1,37 +1,39 @@
 import("//tools/grit/grit_rule.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
-grit("resources") {
-  source = "brave_components_resources.grd"
+if (!is_android) {
+  grit("resources") {
+    source = "brave_components_resources.grd"
 
-  output_name = "brave_components_resources_new"
+    output_name = "brave_components_resources_new"
 
-  outputs = [
-    "grit/brave_components_resources.h",
-    "brave_components_resources.pak",
-  ]
-  deps = [
-    ":strings",
-    "//brave/components/brave_adblock_ui",
-    "//brave/components/brave_new_tab_ui",
-    "//brave/components/brave_welcome_ui",
-    "//brave/vendor/brave-extension",
-    "//brave/components/brave_sync/ui",
-  ]
-
-  if (brave_rewards_enabled) {
-    deps += [
-      "//brave/components/brave_rewards/resources",
-      "//brave/components/brave_rewards/resources/extension:resources",
+    outputs = [
+      "grit/brave_components_resources.h",
+      "brave_components_resources.pak",
     ]
-  }
+    deps = [
+      ":strings",
+      "//brave/components/brave_adblock_ui",
+      "//brave/components/brave_new_tab_ui",
+      "//brave/components/brave_welcome_ui",
+      "//brave/vendor/brave-extension",
+      "//brave/components/brave_sync/ui",
+    ]
 
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
-  output_dir = "$root_gen_dir/components"
-  resource_ids = "//brave/browser/resources/resource_ids"
+    if (brave_rewards_enabled) {
+      deps += [
+        "//brave/components/brave_rewards/resources",
+        "//brave/components/brave_rewards/resources/extension:resources",
+      ]
+    }
+
+    grit_flags = [
+      "-E",
+      "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+    ]
+    output_dir = "$root_gen_dir/components"
+    resource_ids = "//brave/browser/resources/resource_ids"
+  }
 }
 
 grit("strings") {

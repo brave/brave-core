@@ -27,6 +27,7 @@
 #include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
