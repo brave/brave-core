@@ -2166,7 +2166,7 @@ static bool ignore_ = false;
     if (!EVP_EncodedLength(&size, in.size())) {
       DCHECK(false);
       LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-        "EVP_EncodedLength failure in getBase64"
+        "EVP_EncodedLength failure in getBase64";
 
       return "";
     }
@@ -2183,7 +2183,7 @@ static bool ignore_ = false;
     if (!EVP_DecodedLength(&size, in.length())) {
       DCHECK(false);
       LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-        "EVP_DecodedLength failure in getFromBase64"
+        "EVP_DecodedLength failure in getFromBase64";
       succeded = false;
     }
 
@@ -2246,7 +2246,7 @@ static bool ignore_ = false;
       }
       else{
         LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-          "getTwitchParts failed in getFromBase64"
+          "getTwitchParts failed in getFromBase64";
       }
     }
   }

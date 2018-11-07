@@ -59,10 +59,18 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts, 
     return;
   }
   std::string mediaId = braveledger_bat_helper::getMediaId(parts, type);
+  LOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+    "Media request (" << type << "):";
+  for (std::pair<std::string, std::string> const& value: headers) {
+    LOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
+      ">> part " << value.first << " | " << value.second;
+  }
+  LOG(ledger_, ledger::LogLevel::LOG_INFO) << "Media Id: " << mediaId;
   if (mediaId.empty()) {
     return;
   }
   std::string media_key = braveledger_bat_helper::getMediaKey(mediaId, type);
+  LOG(ledger_, ledger::LogLevel::LOG_INFO) << "Media key: " << media_key;
   uint64_t duration = 0;
   ledger::TwitchEventInfo twitchEventInfo;
   if (type == YOUTUBE_MEDIA_TYPE) {
@@ -77,6 +85,7 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts, 
       twitchEventInfo.time_ = iter->second;
     }
   }
+  LOG(ledger_, ledger::LogLevel::LOG_INFO) << "Media duration: " << duration;
 
   ledger_->GetMediaPublisherInfo(media_key,
       std::bind(&BatGetMedia::getPublisherInfoDataCallback,
@@ -102,6 +111,7 @@ void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher_info) {
   if (result != ledger::Result::LEDGER_OK && result != ledger::Result::NOT_FOUND) {
+    LOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Failed to get publisher info";
     // TODO error handling
     return;
   }
@@ -327,8 +337,12 @@ void BatGetMedia::onFetchFavIconDBResponse(ledger::Result result,
                                            const std::string& favicon_url) {
   if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
     info->favicon_url = favicon_url;
+
     ledger_->SetPublisherInfo(std::move(info),
       std::bind(&onVisitSavedDummy, _1, _2));
+  } else {
+    LOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
+      "Missing or corrupted favicon file";
   }
 }
 
@@ -439,7 +453,8 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   if (providerName == YOUTUBE_MEDIA_TYPE) {
     publisher_id = providerName + "#channel:";
     if (channelId.empty()) {
-      LOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Channel id is missing for: " << media_key;
+      LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "Channel id is missing for: " << media_key;
       return;
     }
 
@@ -448,7 +463,8 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   }
 
   if (publisher_id.empty()) {
-    LOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher id is missing for: " << media_key;
+    LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Publisher id is missing for: " << media_key;
     return;
   }
 
@@ -510,6 +526,9 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
     url = TWITCH_TLD;
     name = TWITCH_MEDIA_TYPE;
   }
+
+  LOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Media activity error for " <<
+    providerType << " (name: " << name << ", url: " << url << ")";
 
   if (!url.empty()) {
     ledger::VisitData new_data;

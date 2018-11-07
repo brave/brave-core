@@ -285,6 +285,7 @@ void BatClient::OnNicewareListLoaded(const std::string& pass_phrase,
       data, DICTIONARY_DELIMITER));
     continueRecover(nwResult, &written, seed);
   } else {
+    LOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Failed to load niceware list";
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(result, 0, empty);
     return;

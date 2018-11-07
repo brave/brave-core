@@ -171,7 +171,8 @@ void LedgerImpl::OnPostData(
       const ledger::VisitData& visit_data) {
   std::string type = bat_get_media_->GetLinkType(url, first_party_url, referrer);
   if (type.empty()) {
-    // It is not a media supported type
+    LOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
+      "It is not a media support device";
     return;
   }
   std::vector<std::map<std::string, std::string>> twitchParts;
