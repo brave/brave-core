@@ -5,24 +5,27 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/search_engine_provider_util.h"
+#include "brave/browser/tor/tor_launcher_factory.h"
+#include "brave/browser/ui/browser_commands.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
+#include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
 #include "content/public/test/test_utils.h"
 
 using SearchEngineProviderControllerTest = InProcessBrowserTest;
 
-class TorSearchEngineProviderControllerTest : public InProcessBrowserTest {
- public:
-  void SetUp() override {
-    disable_io_checks();
-    InProcessBrowserTest::SetUp();
-  }
-};
+bool IsRegionForQwant(Profile* profile) {
+  return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
+      profile->GetPrefs())->prepopulate_id ==
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
+}
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
@@ -85,20 +88,23 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
   brave::ToggleUseAlternativeSearchEngineProvider(private_window_2->profile());
 }
 
-// This test crashes with below. I don't know how to deal with now.
-// [FATAL:brave_content_browser_client.cc(217)] Check failed: !path.empty().
-// TODO(simonhong): Enable this later.
-IN_PROC_BROWSER_TEST_F(TorSearchEngineProviderControllerTest,
-                       DISABLED_CheckTorProfileSearchProviderTest) {
-  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  Profile* tor_profile = profile_manager->GetProfile(tor_path);
+// Checks the default search engine of the tor profile.
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+                       CheckDefaultTorProfileSearchProviderTest) {
+  ScopedTorLaunchPreventerForTest prevent_tor_process;
+
+  brave::NewOffTheRecordWindowTor(browser());
+  content::RunAllTasksUntilIdle();
+
+  Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(tor_profile->IsTorProfile());
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
+
+  std::string default_provider = IsRegionForQwant(tor_profile) ? "Qwant"
+                                                               : "DuckDuckGo";
+
   //Check tor profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
-            base::ASCIIToUTF16("DuckDuckGo"));
-
-  content::RunAllTasksUntilIdle();
+            base::ASCIIToUTF16(default_provider));
 }
