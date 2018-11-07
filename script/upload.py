@@ -64,10 +64,12 @@ def main():
   elif PLATFORM == 'win32':
     if get_target_arch() == 'x64':
       upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'), 'brave_installer-x64.exe', force=args.force)
-      upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
+      for pkg in pkgs:
+        upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
     else:
       upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'), 'brave_installer-ia32.exe', force=args.force)
-      upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
+      for pkg in pkgs:
+        upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
   else:
     if get_target_arch() == 'x64':
       for pkg in pkgs:
