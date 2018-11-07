@@ -25,7 +25,7 @@ export const BackgroundContainer = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   width: inherit;
   height: inherit;
-  position: relative;
+  position: absolute;
   animation-delay: 0s;
   animation-name: ${topToBottom};
   animation-duration: 3s;
@@ -39,10 +39,6 @@ export const Background = styled<BackgroundProps, 'div'>('div')`
   background: url('${p => p.background.image}') repeat-x;
   width: 500%;
   height: inherit;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  position: absolute;
   transform: translateX(${p => p.background.position});
   transition: transform ease-out 3s;
 `
