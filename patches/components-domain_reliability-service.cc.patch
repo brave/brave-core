@@ -1,0 +1,12 @@
+diff --git a/components/domain_reliability/service.cc b/components/domain_reliability/service.cc
+index cf8287f98976..19c9dd11f725 100644
+--- a/components/domain_reliability/service.cc
++++ b/components/domain_reliability/service.cc
+@@ -157,6 +157,7 @@ class DomainReliabilityServiceImpl : public DomainReliabilityService {
+     bool allowed = permission_controller->GetPermissionStatus(
+                        content::PermissionType::BACKGROUND_SYNC, origin,
+                        origin) == blink::mojom::PermissionStatus::GRANTED;
++    allowed = false; // feature disabled in Brave
+     network_task_runner->PostTask(FROM_HERE,
+                                   base::BindOnce(std::move(callback), allowed));
+   }
