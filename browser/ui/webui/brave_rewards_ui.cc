@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#ifndef OS_ANDROID
+#if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #else
 #include "components/grit/components_resources.h"
