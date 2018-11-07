@@ -47,7 +47,6 @@ class AdsImpl : public Ads, CallbackHandler {
   void GenerateAdReportingSustainEvent(
       const SustainInfo& info) override;
   void Initialize() override;
-  void InitializeUserModel(const std::string& json) override;
   void AppFocused(const bool is_focused) override;
   void TabUpdated(
       const std::string& tab_id,
