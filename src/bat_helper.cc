@@ -1236,8 +1236,6 @@ static bool ignore_ = false;
       error = !(d.HasMember("walletInfo") && d["walletInfo"].IsObject() &&
         d.HasMember("bootStamp") && d["bootStamp"].IsUint64() &&
         d.HasMember("reconcileStamp") && d["reconcileStamp"].IsUint64() &&
-        d.HasMember("last_grant_fetch_stamp") &&
-          d["last_grant_fetch_stamp"].IsUint64() &&
         d.HasMember("personaId") && d["personaId"].IsString() &&
         d.HasMember("userId") && d["userId"].IsString() &&
         d.HasMember("registrarVK") && d["registrarVK"].IsString() &&
@@ -1269,7 +1267,14 @@ static bool ignore_ = false;
 
       bootStamp_ = d["bootStamp"].GetUint64();
       reconcileStamp_ = d["reconcileStamp"].GetUint64();
-      last_grant_fetch_stamp_ = d["last_grant_fetch_stamp"].GetUint64();
+
+      if (d.HasMember("last_grant_fetch_stamp") &&
+          d["last_grant_fetch_stamp"].IsUint64()) {
+        last_grant_fetch_stamp_ = d["last_grant_fetch_stamp"].GetUint64();
+      } else {
+        last_grant_fetch_stamp_ = 0u;
+      }
+
       personaId_ = d["personaId"].GetString();
       userId_ = d["userId"].GetString();
       registrarVK_ = d["registrarVK"].GetString();
