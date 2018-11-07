@@ -32,6 +32,8 @@ BraveAdblockUI::~BraveAdblockUI() {
 }
 
 void BraveAdblockUI::CustomizeWebUIProperties(content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
+
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
   if (render_view_host) {
@@ -44,15 +46,13 @@ void BraveAdblockUI::CustomizeWebUIProperties(content::RenderViewHost* render_vi
   }
 }
 
-void BraveAdblockUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
-  if (IsSafeToSetWebUIProperties()) {
-    CustomizeWebUIProperties(render_frame_host->GetRenderViewHost());
-  }
-}
-
-void BraveAdblockUI::OnPreferenceChanged() {
+void BraveAdblockUI::UpdateWebUIProperties() {
   if (IsSafeToSetWebUIProperties()) {
     CustomizeWebUIProperties(GetRenderViewHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.statsUpdated");
   }
+}
+
+void BraveAdblockUI::OnPreferenceChanged() {
+  UpdateWebUIProperties();
 }
