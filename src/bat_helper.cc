@@ -2165,7 +2165,8 @@ static bool ignore_ = false;
     size_t size = 0;
     if (!EVP_EncodedLength(&size, in.size())) {
       DCHECK(false);
-      LOG(ERROR) << "EVP_EncodedLength failure in getBase64";
+      LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "EVP_EncodedLength failure in getBase64"
 
       return "";
     }
@@ -2181,7 +2182,8 @@ static bool ignore_ = false;
     size_t size = 0;
     if (!EVP_DecodedLength(&size, in.length())) {
       DCHECK(false);
-      LOG(ERROR) << "EVP_DecodedLength failure in getFromBase64";
+      LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "EVP_DecodedLength failure in getFromBase64"
       succeded = false;
     }
 
@@ -2243,7 +2245,8 @@ static bool ignore_ = false;
         braveledger_bat_helper::getJSONTwitchProperties((char*)&decoded.front(), parts);
       }
       else{
-        LOG(ERROR) << "getTwitchParts failed in getFromBase64";
+        LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+          "getTwitchParts failed in getFromBase64"
       }
     }
   }

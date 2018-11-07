@@ -7,15 +7,12 @@
 
 #include <string>
 #if defined(CHROMIUM_BUILD) && !defined(STANDALONE_BUILD)
-#include "base/logging.h"
 #else
 // Chromium debug macros redefined
 //TODO: implement!
-#include <iostream>
 #include <cassert>
 
 #define DCHECK assert
-#define LOG(LEVEL) std::cerr<< std::endl<< #LEVEL << ": "
 #endif
 
 #endif  //BRAVELEDGER_BAT_HELPER_PLATFORM_H_

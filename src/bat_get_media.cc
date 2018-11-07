@@ -439,7 +439,7 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   if (providerName == YOUTUBE_MEDIA_TYPE) {
     publisher_id = providerName + "#channel:";
     if (channelId.empty()) {
-      ledger_->Log(__func__, ledger::LogLevel::LOG_ERROR, {"Channel id is missing for: ", media_key});
+      LOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Channel id is missing for: " << media_key;
       return;
     }
 
@@ -448,8 +448,8 @@ void BatGetMedia::savePublisherInfo(const uint64_t& duration,
   }
 
   if (publisher_id.empty()) {
-      ledger_->Log(__func__, ledger::LogLevel::LOG_ERROR, {"Publisher id is missing for: ", media_key});
-      return;
+    LOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher id is missing for: " << media_key;
+    return;
   }
 
   if (favIconURL.length() > 0) {

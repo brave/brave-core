@@ -8,6 +8,8 @@
 #include <functional>
 #include <memory>
 #include <vector>
+#include <sstream>
+#include <fstream>
 
 #include "bat/ledger/balance_report_info.h"
 #include "bat/ledger/export.h"
@@ -135,8 +137,11 @@ class LEDGER_EXPORT LedgerClient {
                                           bool excluded,
                                           uint64_t windowId) = 0;
 
-  // Log debug information
-  virtual void Log(ledger::LogLevel level, const std::string& text) = 0;
+  // Logs debug information
+  virtual std::ostream& Log(
+      const char* file,
+      int line,
+      const ledger::LogLevel log_level) const = 0;
 };
 
 }  // namespace ledger

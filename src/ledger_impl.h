@@ -8,6 +8,7 @@
 #include <memory>
 #include <map>
 #include <string>
+#include <fstream>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
@@ -16,6 +17,7 @@
 #include "bat_helper.h"
 #include "ledger_task_runner_impl.h"
 #include "url_request_handler.h"
+#include "logging.h"
 
 namespace braveledger_bat_client {
 class BatClient;
@@ -194,9 +196,10 @@ class LedgerImpl : public ledger::Ledger,
       ledger::PUBLISHER_EXCLUDE_FILTER excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp);
-  void Log(const std::string& func_name,
-           const ledger::LogLevel log_level,
-           std::vector<std::string> data);
+  std::ostream& Log(
+      const char* file,
+      int line,
+      const ledger::LogLevel log_level) const;
   void LogResponse(const std::string& func_name,
                    bool result,
                    const std::string& response,

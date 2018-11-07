@@ -19,9 +19,8 @@ BatState::~BatState() {
 bool BatState::LoadState(const std::string& data) {
   braveledger_bat_helper::CLIENT_STATE_ST state;
   if (!braveledger_bat_helper::loadFromJson(state, data.c_str())) {
-    ledger_->Log(__func__,
-                 ledger::LogLevel::LOG_ERROR,
-                 {"Failed to load client state: ", data});
+    LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Failed to load client state: " << data;
     return false;
   }
 
@@ -74,10 +73,8 @@ bool BatState::UpdateReconcile(
 braveledger_bat_helper::CURRENT_RECONCILE BatState::GetReconcileById(
     const std::string& viewingId) const {
   if (state_->current_reconciles_.count(viewingId) == 0) {
-    ledger_->Log(__func__,
-                ledger::LogLevel::LOG_ERROR,
-                {"Could not find any reconcile tasks with the id ",
-                 viewingId});
+    LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Could not find any reconcile tasks with the id " << viewingId;
     return braveledger_bat_helper::CURRENT_RECONCILE();
   }
 

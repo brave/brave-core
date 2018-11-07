@@ -24,7 +24,7 @@ void URLRequestHandler::OnURLRequestResponse(uint64_t request_id,
                                             const std::string& response,
                                             const std::map<std::string, std::string>& headers) {
   if (!RunRequestHandler(request_id, response_code == 200, response, headers)) {
-    LOG(ERROR) << "no request handler found for " << request_id;
+    // LOG(ERROR) << "no request handler found for " << request_id;
     return;
   }
 }

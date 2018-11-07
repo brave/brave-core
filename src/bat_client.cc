@@ -223,7 +223,8 @@ void BatClient::getWalletProperties() {
 
    bool ok = braveledger_bat_helper::loadFromJson(properties, response);
    if (!ok) {
-     ledger_->Log(__func__, ledger::LogLevel::LOG_ERROR, {"Failed to load wallet properties state."});
+     LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+       "Failed to load wallet properties state: " << properties;
      ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
      return;
    }
@@ -292,7 +293,8 @@ void BatClient::OnNicewareListLoaded(const std::string& pass_phrase,
 
 void BatClient::continueRecover(int result, size_t *written, std::vector<uint8_t>& newSeed) {
   if (0 != result || 0 == *written) {
-    ledger_->Log(__func__, ledger::LogLevel::LOG_ERROR, {"Result: ", std::to_string(result), " Size: ", std::to_string(*written)});
+    LOG(ledger_, ledger::LogLevel::LOG_INFO) << "Result: " <<
+      result << " Size: " << *written;
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::LEDGER_ERROR, 0, empty);
     return;

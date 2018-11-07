@@ -133,9 +133,8 @@ void BatContribution::StartReconcile(
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions) {
   if (ledger_->ReconcileExists(viewing_id)) {
-    ledger_->Log(__func__,
-                 ledger::LogLevel::LOG_ERROR,
-                 {"unable to reconcile with the same viewing id"});
+    LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Unable to reconcile with the same viewing id: " << viewing_id;
     // TODO(nejczdovc) what should we do in this scenario?
     return;
   }
@@ -149,18 +148,16 @@ void BatContribution::StartReconcile(
 
     if (list.size() == 0 || ac_amount > balance) {
       if (list.size() == 0) {
-        ledger_->Log(__func__,
-                     ledger::LogLevel::LOG_INFO,
-                     {"AC table is empty"});
+        LOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+          "Auto contribution table is empty";
         OnReconcileComplete(ledger::Result::AC_TABLE_EMPTY,
                             viewing_id,
                             category);
       }
 
       if (ac_amount > balance) {
-        ledger_->Log(__func__,
-                     ledger::LogLevel::LOG_INFO,
-                     {"You don't have enough funds for AC contribution"});
+        LOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+          "You do not have enough funds for auto contribution";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
                             category);
@@ -174,18 +171,16 @@ void BatContribution::StartReconcile(
   if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
     double ac_amount = ledger_->GetContributionAmount();
     if (list.size() == 0) {
-      ledger_->Log(__func__,
-                   ledger::LogLevel::LOG_INFO,
-                   {"recurring donation list is empty"});
+      LOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+        "Recurring donation list is empty";
       StartAutoContribute();
       return;
     }
 
     for (const auto& publisher : list) {
       if (publisher.id_.empty()) {
-        ledger_->Log(__func__,
-                     ledger::LogLevel::LOG_ERROR,
-                     {"recurring donation is missing publisher"});
+        LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+          "Recurring donation is missing publisher";
         StartAutoContribute();
         // TODO(nejczdovc) what should we do in this case?
         return;
@@ -195,10 +190,8 @@ void BatContribution::StartReconcile(
     }
 
     if (fee + ac_amount > balance) {
-        ledger_->Log(__func__,
-                     ledger::LogLevel::LOG_ERROR,
-                     {"You don't have enough funds to "
-                      "do recurring and AC contribution"});
+      LOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+        "You do not have enough funds to do recurring and auto contribution";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
                             ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE);
@@ -211,9 +204,8 @@ void BatContribution::StartReconcile(
   if (category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
     for (const auto& direction : directions) {
       if (direction.publisher_key_.empty()) {
-        ledger_->Log(__func__,
-                     ledger::LogLevel::LOG_ERROR,
-                     {"reconcile direction missing publisher"});
+        LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+          "Reconcile direction missing publisher";
         OnReconcileComplete(ledger::Result::TIP_ERROR,
                             viewing_id,
                             category);
@@ -221,10 +213,9 @@ void BatContribution::StartReconcile(
       }
 
       if (direction.currency_ != CURRENCY) {
-        ledger_->Log(__func__,
-                     ledger::LogLevel::LOG_ERROR,
-                     {"reconcile direction currency invalid for ",
-                      direction.publisher_key_});
+        LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+          "Reconcile direction currency invalid for " <<
+          direction.publisher_key_;
         OnReconcileComplete(ledger::Result::TIP_ERROR,
                             viewing_id,
                             category);
@@ -235,9 +226,8 @@ void BatContribution::StartReconcile(
     }
 
     if (fee > balance) {
-      ledger_->Log(__func__,
-                   ledger::LogLevel::LOG_ERROR,
-                   {"You don't have enough funds to do a tip"});
+      LOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+        "You do not have enough funds to do a tip";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
                             category);
@@ -1063,9 +1053,9 @@ void BatContribution::ProofBatch(
         batch_proof[i].ballot_.prepareBallot_);
 
     if (!success) {
-      ledger_->Log(__func__,
-                   ledger::LogLevel::LOG_ERROR,
-                   {"Failed to load surveyor"});
+      LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+        "Failed to load surveyor state: " <<
+        batchProof[i].ballot_.prepareBallot_;
       continue;
     }
 
@@ -1351,9 +1341,8 @@ void BatContribution::SetTimer(uint32_t& timer_id, uint64_t start_timer_in) {
     start_timer_in = braveledger_bat_helper::getRandomValue(10, 60);
   }
 
-  ledger_->Log(__func__,
-               ledger::LogLevel::LOG_INFO,
-               {"Starts in ", std::to_string(start_timer_in)});
+  LOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+    "Starts in " << start_timer_in;
 
   ledger_->SetTimer(start_timer_in, timer_id);
 }
