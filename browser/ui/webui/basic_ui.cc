@@ -8,10 +8,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
-
-using content::WebUIMessageHandler;
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
@@ -27,28 +24,6 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
   return source;
 }
 
-// The handler for Javascript messages for Brave about: pages
-class BasicDOMHandler : public WebUIMessageHandler {
- public:
-  BasicDOMHandler() {
-  }
-  ~BasicDOMHandler() override {}
-
-  void Init();
-
-  // WebUIMessageHandler implementation.
-  void RegisterMessages() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BasicDOMHandler);
-};
-
-void BasicDOMHandler::RegisterMessages() {
-}
-
-void BasicDOMHandler::Init() {
-}
-
 BasicUI::BasicUI(content::WebUI* web_ui,
     const std::string& name,
     const std::string& js_file,
@@ -56,10 +31,6 @@ BasicUI::BasicUI(content::WebUI* web_ui,
     int html_resource_id)
     : WebUIController(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
-  auto handler_owner = std::make_unique<BasicDOMHandler>();
-  BasicDOMHandler* handler = handler_owner.get();
-  web_ui->AddMessageHandler(std::move(handler_owner));
-  handler->Init();
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
       js_file, js_resource_id, html_resource_id);
   content::WebUIDataSource::Add(profile, source);
