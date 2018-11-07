@@ -4,6 +4,7 @@
 
 #include "catalog_state.h"
 #include "string_helper.h"
+#include "json_helper.h"
 
 namespace ads {
 
@@ -25,23 +26,10 @@ CATALOG_STATE::~CATALOG_STATE() = default;
 bool CATALOG_STATE::LoadFromJson(
     const std::string& json,
     const std::string& jsonSchema) {
-  rapidjson::Document catalog_schema;
-  catalog_schema.Parse(jsonSchema.c_str());
-
-  if (catalog_schema.HasParseError()) {
-    return false;
-  }
-
   rapidjson::Document catalog;
   catalog.Parse(json.c_str());
 
-  if (catalog.HasParseError()) {
-    return false;
-  }
-
-  rapidjson::SchemaDocument schema(catalog_schema);
-  rapidjson::SchemaValidator validator(schema);
-  if (!catalog.Accept(validator)) {
+  if (!helper::JSON::Validate(&catalog, jsonSchema)) {
     return false;
   }
 
