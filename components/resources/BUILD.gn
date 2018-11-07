@@ -1,5 +1,6 @@
-import("//tools/grit/grit_rule.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//build/config/locales.gni")
+import("//tools/grit/grit_rule.gni")
 
 if (!is_android) {
   grit("resources") {
@@ -41,8 +42,11 @@ grit("strings") {
 
   outputs = [
     "grit/brave_components_strings.h",
-    "brave_components_strings.pak",
   ]
+
+  foreach(locale, locales_with_fake_bidi) {
+    outputs += [ "brave_components_strings_$locale.pak" ]
+  }
 
   output_dir = "$root_gen_dir/components"
   resource_ids = "//brave/browser/resources/resource_ids"

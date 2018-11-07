@@ -1,0 +1,28 @@
+diff --git a/chrome/chrome_repack_locales.gni b/chrome/chrome_repack_locales.gni
+index dd37d98b467ec9bcf5ac5fd59ac56e43412a19fa..5a200e64670e4004041934eec9a23675de6d7e4d 100644
+--- a/chrome/chrome_repack_locales.gni
++++ b/chrome/chrome_repack_locales.gni
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/brave_repack_locales.gni")
+ import("//build/config/chrome_build.gni")
+ import("//build/config/features.gni")
+ import("//build/config/ui.gni")
+@@ -35,6 +36,7 @@ template("chrome_repack_locales") {
+       "${root_gen_dir}/ui/strings/app_locale_settings_",
+       "${root_gen_dir}/ui/strings/ui_strings_",
+     ]
++    source_patterns += brave_locale_source_patterns
+     if (!defined(deps)) {
+       deps = []
+     }
+@@ -51,6 +53,7 @@ template("chrome_repack_locales") {
+       "//ui/strings:app_locale_settings",
+       "//ui/strings:ui_strings",
+     ]
++    deps += brave_locale_deps
+     if (defined(invoker.deps)) {
+       deps += invoker.deps
+     }
