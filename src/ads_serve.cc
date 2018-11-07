@@ -78,17 +78,12 @@ void AdsServe::OnCatalogDownloaded(
       }
     }
 
-    LOG(ads_client_, LogLevel::WARNING) <<
-      "Failed to download catalog from " << url <<
-      " (" << response_status_code << "): " <<
-      response << " " << formatted_headers;
+    LOG(ads_client_, LogLevel::WARNING) << "Failed to download catalog from "
+      << url << " (" << response_status_code << "): " << response << " " <<
+      formatted_headers;
 
     RetryDownloadingCatalog();
   }
-}
-
-void AdsServe::RetryDownloadingCatalog() {
-  ads_->StartCollectingActivity(kOneHourInSeconds);
 }
 
 void AdsServe::Reset() {
@@ -161,6 +156,10 @@ void AdsServe::ProcessCatalog(const std::string& json) {
   ads_->SaveCachedInfo();
 
   UpdateNextCatalogCheck();
+}
+
+void AdsServe::RetryDownloadingCatalog() {
+  ads_->StartCollectingActivity(kOneHourInSeconds);
 }
 
 void AdsServe::OnCatalogSaved(const Result result) {

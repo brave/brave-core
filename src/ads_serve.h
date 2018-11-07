@@ -36,13 +36,13 @@ class AdsServe {
   uint64_t next_catalog_check_;
   void UpdateNextCatalogCheck();
 
-  void RetryDownloadingCatalog();
   void OnCatalogDownloaded(
       const std::string& url,
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
   void ProcessCatalog(const std::string& json);
+  void RetryDownloadingCatalog();
 
   void OnCatalogSaved(const Result result);
   void OnCatalogReset(const Result result);

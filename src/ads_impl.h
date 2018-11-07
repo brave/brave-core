@@ -92,6 +92,7 @@ class AdsImpl : public Ads, CallbackHandler {
   bool IsInitialized();
   void Deinitialize();
 
+  void InitializeUserModel(const std::string& json);
   void OnUserModelLoaded(const Result result, const std::string& json);
   void OnSettingsLoaded(
       const Result result,
