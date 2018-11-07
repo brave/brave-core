@@ -75,21 +75,19 @@ class PageWallet extends React.Component<Props, State> {
     console.log(success ? 'Copy successful' : 'Copy failed')
   }
 
-  onModalBackupOnPrint = () => {
-    // TODO NZ implement
-    console.log('onModalBackupOnPrint')
-  }
-
-  constructBackup = (backupKey: string) => {
-    const backupString = getLocale('backupFileText1') + '\n' +
-      getLocale('backupFileText2') + Date.now() + '\n\n' +
-      getLocale('backupFileText3') + backupKey + '\n\n' +
-      getLocale('backupFileText4')
-    return backupString
+  onModalBackupOnPrint = (backupKey: string) => {
+    if (document.location) {
+      const win = window.open(document.location.href)
+      if (win) {
+        win.document.body.innerText = utils.constructBackupString(backupKey) // this should be text, not HTML
+        win.print()
+        win.close()
+      }
+    }
   }
 
   onModalBackupOnSaveFile = (backupKey: string) => {
-    const backupString = this.constructBackup(backupKey)
+    const backupString = utils.constructBackupString(backupKey)
     const backupFileText = 'brave_wallet_recovery.txt'
     const a = document.createElement('a')
     document.body.appendChild(a)

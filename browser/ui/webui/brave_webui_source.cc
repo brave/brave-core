@@ -408,11 +408,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "whyBraveRewards", IDS_BRAVE_UI_WHY_BRAVE_REWARDS },
         { "whyBraveRewardsDesc1", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1 },
         { "whyBraveRewardsDesc2", IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2 },
-        { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET },
-        { "backupFileText1", IDS_BRAVE_UI_BACKUP_FILE_TEXT_1},
-        { "backupFileText2", IDS_BRAVE_UI_BACKUP_FILE_TEXT_2},
-        { "backupFileText3", IDS_BRAVE_UI_BACKUP_FILE_TEXT_3},
-        { "backupFileText4", IDS_BRAVE_UI_BACKUP_FILE_TEXT_4}
+        { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET }
       }
     }, {
       std::string("bravesync"), {
