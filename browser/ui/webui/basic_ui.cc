@@ -7,11 +7,9 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
-
-using content::WebUIMessageHandler;
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
@@ -27,27 +25,29 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
   return source;
 }
 
-// The handler for Javascript messages for Brave about: pages
-class BasicDOMHandler : public WebUIMessageHandler {
+// This is used to know proper timing for setting webui properties.
+// So far, content::WebUIController::RenderFrameCreated() is used.
+// However, it doesn't get called sometimes when reloading, or called when
+// RenderFrameHost is not prepared during renderer process is in changing.
+class BasicUI::BasicUIWebContentsObserver
+    : public content::WebContentsObserver {
  public:
-  BasicDOMHandler() {
+  BasicUIWebContentsObserver(BasicUI* host, content::WebContents* web_contents)
+      : WebContentsObserver(web_contents),
+        host_(host) {
   }
-  ~BasicDOMHandler() override {}
+  ~BasicUIWebContentsObserver() override {}
 
-  void Init();
-
-  // WebUIMessageHandler implementation.
-  void RegisterMessages() override;
+  // content::WebContentsObserver overrides:
+  void RenderViewReady() override {
+    host_->UpdateWebUIProperties();
+  }
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(BasicDOMHandler);
+  BasicUI* host_;
+
+  DISALLOW_COPY_AND_ASSIGN(BasicUIWebContentsObserver);
 };
-
-void BasicDOMHandler::RegisterMessages() {
-}
-
-void BasicDOMHandler::Init() {
-}
 
 BasicUI::BasicUI(content::WebUI* web_ui,
     const std::string& name,
@@ -55,11 +55,9 @@ BasicUI::BasicUI(content::WebUI* web_ui,
     int js_resource_id,
     int html_resource_id)
     : WebUIController(web_ui) {
+  observer_.reset(
+      new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
   Profile* profile = Profile::FromWebUI(web_ui);
-  auto handler_owner = std::make_unique<BasicDOMHandler>();
-  BasicDOMHandler* handler = handler_owner.get();
-  web_ui->AddMessageHandler(std::move(handler_owner));
-  handler->Init();
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
       js_file, js_resource_id, html_resource_id);
   content::WebUIDataSource::Add(profile, source);
