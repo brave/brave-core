@@ -145,9 +145,11 @@ void MockAdsClient::Save(
     const std::string& name,
     const std::string& value,
     OnSaveCallback callback) {
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Saving " << name;
+  std::string path = "build/" + name;
 
-  auto success = WriteJsonToDisk("build/" + name, value);
+  Log(__FILE__, __LINE__, LogLevel::INFO) << "Saving " << path;
+
+  auto success = WriteJsonToDisk(path, value);
   if (!success) {
     callback(Result::FAILED);
     return;
@@ -159,9 +161,11 @@ void MockAdsClient::Save(
 void MockAdsClient::Load(
     const std::string& name,
     OnLoadCallback callback) {
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Loading " << name;
+  std::string path = "mock_data/" + name;
 
-  std::ifstream ifs{"mock_data/" + name};
+  Log(__FILE__, __LINE__, LogLevel::INFO) << "Loading " << path;
+
+  std::ifstream ifs{path};
   if (ifs.fail()) {
     callback(Result::FAILED, "");
     return;
@@ -176,11 +180,13 @@ void MockAdsClient::Load(
 
 const std::string MockAdsClient::Load(
     const std::string& name) {
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Loading " << name;
+  std::string path = "mock_data/" + name;
 
-  std::ifstream ifs{"mock_data/" + name};
+  Log(__FILE__, __LINE__, LogLevel::INFO) << "Loading " << path;
+
+  std::ifstream ifs{path};
   if (ifs.fail()) {
-    Log(__FILE__, __LINE__, LogLevel::ERROR) << "Failed to load " << name;
+    Log(__FILE__, __LINE__, LogLevel::ERROR) << "Failed to load " << path;
 
     return "";
   }
@@ -189,7 +195,7 @@ const std::string MockAdsClient::Load(
   stream << ifs.rdbuf();
   auto value = stream.str();
 
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Successfully loaded " << name;
+  Log(__FILE__, __LINE__, LogLevel::INFO) << "Successfully loaded " << path;
 
   return value;
 }
@@ -197,15 +203,17 @@ const std::string MockAdsClient::Load(
 void MockAdsClient::Reset(
     const std::string& name,
     OnResetCallback callback) {
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Resetting " << name;
+  std::string path = "build/" + name;
 
-  std::ifstream ifs(name.c_str());
+  Log(__FILE__, __LINE__, LogLevel::INFO) << "Resetting " << path;
+
+  std::ifstream ifs(path);
   if (ifs.fail()) {
     callback(Result::FAILED);
     return;
   }
 
-  auto success = std::remove(name.c_str());
+  auto success = std::remove(path.c_str());
   if (!success) {
     callback(Result::FAILED);
     return;
