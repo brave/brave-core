@@ -142,7 +142,7 @@ bool CATALOG_STATE::LoadFromJson(
         // Creatives
         if (creative_set.HasMember("creatives")) {
           for (const auto& creative : creative_set["creatives"].GetArray()) {
-            if (!creative.HasMember("creativeId")) {
+            if (!creative.HasMember("creativeInstanceId")) {
               continue;
             }
 
