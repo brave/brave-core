@@ -149,6 +149,12 @@ export class Panel extends React.Component<Props, State> {
     })
   }
 
+  openRewardsAddFundsPage () {
+    chrome.tabs.create({
+      url: 'brave://rewards/#add-funds'
+    })
+  }
+
   showDonateToSiteDetail = () => {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     // TODO: why do we store windowId instead of active tab id in state?
@@ -233,7 +239,7 @@ export class Panel extends React.Component<Props, State> {
         actions={[
           {
             name: 'Add funds',
-            action: this.openRewardsPage,
+            action: this.openRewardsAddFundsPage,
             icon: <WalletAddIcon />
           },
           {
