@@ -82,7 +82,8 @@ TEST_F(SpellcheckTest, DictionaryFilenames) {
     {"vi", "vi-VN-3-0.bdic"}
   };
   for (const auto& lang_file : kExpectedSpellCheckerFilenames) {
-      base::FilePath dict_dir = base::FilePath(lang_file.filename);
+      base::FilePath::StringType filename(lang_file.filename);
+      base::FilePath dict_dir = base::FilePath(filename);
       EXPECT_EQ(spellcheck::GetVersionedFileName(
                     lang_file.language, base::FilePath()), dict_dir);
   }
