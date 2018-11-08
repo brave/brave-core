@@ -291,13 +291,6 @@ void AdsImpl::SaveCachedInfo() {
   // class
   ads_client_->Save("client.json", client_->ToJson(),
     std::bind(&AdsImpl::OnClientSaved, this, _1));
-
-  // TODO(Brian Johnson): The following change breaks the code as the bundle
-  // should not be saved as json and should be passed as a data structure and
-  // stored in a database so that fetching of results is optimized for both
-  // memory consumption and performance
-  ads_client_->Save("bundle.json", bundle_->ToJson(),
-    std::bind(&AdsImpl::OnBundleSaved, this, _1));
 }
 
 void AdsImpl::RecordMediaPlaying(
@@ -506,15 +499,6 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   }
 }
 
-void AdsImpl::OnBundleSaved(const Result result) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to save bundle";
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully saved bundle";
-}
-
 void AdsImpl::OnBundleReset(const Result result) {
   if (result == Result::FAILED) {
     LOG(ads_client_, LogLevel::ERROR) << "Failed to reset bundle";
@@ -561,16 +545,7 @@ void AdsImpl::Deinitialize() {
 
   last_page_classification_ = "";
 
-  // TODO(Brian Johnson): ads_client_->ResetCatalog(); was moved from here to
-  // ads_serve::Reset however ads serve is only responsible for downloading
-  // catalogs, so this should be re-implemented please
-
   bundle_->Reset();
-  // TODO(Brian Johnson): ads_client_->Reset call below should be moved to
-  // bundle::Reset (i.e. inside the above bundle_->Reset() function call),
-  // could also be moved into bundle_->Reset() function
-  ads_client_->Reset("bundle.json",
-    std::bind(&AdsImpl::OnBundleSaved, this, _1));
 
   user_model_.reset();
 

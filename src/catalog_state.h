@@ -8,7 +8,7 @@
 #include <vector>
 #include <map>
 
-#include "catalog_campaign_info.h"
+#include "campaign_info.h"
 #include "json_helper.h"
 
 namespace ads {

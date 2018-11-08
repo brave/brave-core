@@ -6,25 +6,32 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 #include "bat/ads/ads_client.h"
-#include "catalog_state.h"
-#include "bat/ads/callback_handler.h"
+#include "campaign_info.h"
 
 namespace ads {
 
-class AdsImpl;
+class Bundle;
+struct CATALOG_STATE;
 
-class Catalog: public CallbackHandler {
+class Catalog {
  public:
-  explicit Catalog(AdsClient* ads_client);
+  explicit Catalog(Bundle* bundle, AdsClient* ads_client);
   ~Catalog();
 
   bool FromJson(const std::string& json);  // Deserialize
 
-  const std::shared_ptr<CATALOG_STATE> GetCatalogState() const;
+  const std::string GetId() const;
+  uint64_t GetVersion() const;
+  uint64_t GetPing() const;
+  const std::vector<CampaignInfo>& GetCampaigns() const;
 
  private:
+  void OnCatalogSaved(Result result);
+
+  Bundle* bundle_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
 
   std::shared_ptr<CATALOG_STATE> catalog_state_;

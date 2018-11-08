@@ -78,6 +78,10 @@ class ADS_EXPORT AdsClient {
       const std::string& name,
       OnResetCallback callback) = 0;
 
+  virtual void SaveBundleState(
+      std::unique_ptr<BUNDLE_STATE> bundle_state,
+      OnSaveCallback callback) = 0;
+
   // Gets available ads based upon the winning category
   virtual void GetCategory(
       const std::string& winning_category,
