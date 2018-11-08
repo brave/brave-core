@@ -1,0 +1,13 @@
+diff --git a/build/toolchain/mac/linker_driver.py b/build/toolchain/mac/linker_driver.py
+index 35de9d128783ed7d86c0b0b6f971c782e05023d7..6735f627c6e5fcdef48e8e7851443ad24115106c 100755
+--- a/build/toolchain/mac/linker_driver.py
++++ b/build/toolchain/mac/linker_driver.py
+@@ -142,7 +142,7 @@ def RunDsymUtil(dsym_path_prefix, full_args):
+ 
+   # Remove old dSYMs before invoking dsymutil.
+   _RemovePath(dsym_out)
+-  subprocess.check_call(['xcrun', 'dsymutil', '-o', dsym_out, linker_out])
++  subprocess.check_call(['xcrun', 'dsymutil', '-v', '-o', dsym_out, linker_out])
+   return [dsym_out]
+ 
+ 
