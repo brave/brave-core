@@ -7,13 +7,18 @@
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
+#include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_system.h"
 #include "net/dns/mock_host_resolver.h"
 
 class BraveContentBrowserClientTest : public InProcessBrowserTest {
@@ -46,6 +51,13 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
     void TearDown() override {
       browser_content_client_.reset();
       content_client_.reset();
+    }
+
+    void DisableWebTorrent() {
+      extensions::ExtensionService* service = extensions::ExtensionSystem::Get(
+          browser()->profile())->extension_service();
+      service->DisableExtension(brave_webtorrent_extension_id,
+          extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
     }
 
     const GURL& magnet_html_url() { return magnet_html_url_; }
@@ -138,4 +150,69 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, ReverseRewriteTorrentURL) 
   content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
       torrent_extension_url().spec().c_str()) << "Real URL should be extension URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    NoRewriteMagnetURLURLBarWebTorrentDisabled) {
+  DisableWebTorrent();
+  extensions::ExtensionRegistry* registry =
+    extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_TRUE(registry->disabled_extensions().Contains(
+        brave_webtorrent_extension_id));
+
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(), "about:blank");
+  content::NavigationEntry* entry =
+    contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(), "about:blank");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    NoRewriteMagnetURLLinkWebTorrentDisabled) {
+  DisableWebTorrent();
+  extensions::ExtensionRegistry* registry =
+    extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_TRUE(registry->disabled_extensions().Contains(
+        brave_webtorrent_extension_id));
+
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+  ui_test_utils::NavigateToURL(browser(), magnet_html_url());
+  ASSERT_TRUE(WaitForLoadStop(contents));
+  bool value;
+  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents, "clickMagnetLink();",
+        &value));
+  EXPECT_TRUE(value);
+  ASSERT_TRUE(WaitForLoadStop(contents));
+
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+      magnet_html_url().spec().c_str());
+  content::NavigationEntry* entry =
+    contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(),
+      magnet_html_url().spec().c_str());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+    NoReverseRewriteTorrentURLWebTorrentDisabled) {
+  DisableWebTorrent();
+  extensions::ExtensionRegistry* registry =
+    extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_TRUE(registry->disabled_extensions().Contains(
+        brave_webtorrent_extension_id));
+
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+  ui_test_utils::NavigateToURL(browser(), torrent_extension_url());
+  WaitForLoadStop(contents);
+
+  EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
+      torrent_extension_url().spec().c_str()) << "No changes on the visible URL";
+  content::NavigationEntry* entry =
+    contents->GetController().GetLastCommittedEntry();
+  EXPECT_STREQ(entry->GetURL().spec().c_str(),
+      torrent_extension_url().spec().c_str()) << "No changes on the real URL";
 }
