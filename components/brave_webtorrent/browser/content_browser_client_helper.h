@@ -52,8 +52,19 @@ static bool HandleTorrentURLReverseRewrite(GURL* url,
   return false;
 }
 
+static bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
+  bool isTorProfile =
+    Profile::FromBrowserContext(browser_context)->IsTorProfile();
+  extensions::ExtensionRegistry* registry =
+    extensions::ExtensionRegistry::Get(browser_context);
+  return !isTorProfile &&
+    registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
+}
+
 static bool HandleTorrentURLRewrite(GURL* url,
     content::BrowserContext* browser_context) {
+  if (!IsWebtorrentEnabled(browser_context)) return false;
+
   // The HTTP/HTTPS URL could be modified later by the network delegate if the
   // mime type matches or .torrent is in the path.
   // Handle http and https here for making reverse_on_redirect to be true in
@@ -67,15 +78,6 @@ static bool HandleTorrentURLRewrite(GURL* url,
   }
 
   return false;
-}
-
-static bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
-  bool isTorProfile =
-    Profile::FromBrowserContext(browser_context)->IsTorProfile();
-  extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser_context);
-  return !isTorProfile &&
-    registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
 static void LoadOrLaunchMagnetURL(
