@@ -392,7 +392,7 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
 
   if (collect_activity_timer_id_ == 0) {
     LOG(ads_client_, LogLevel::ERROR) <<
-      "Failed to start collect_activity_timer_id_ timer";
+      "Failed to start collecting activity due to invalid timer";
     return;
   }
 
@@ -410,23 +410,24 @@ void AdsImpl::OnSettingsLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) <<
-      "Failed to load settings state: " << json;
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to load settings JSON";
+
     return;
   }
 
   if (!settings_->FromJson(json)) {
     LOG(ads_client_, LogLevel::ERROR) <<
-        "Failed to parse settings state: " << json;
+        "Failed to parse settings JSON: " << json;
+
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded settings state";
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded settings JSON";
 
   GenerateAdReportingSettingsEvent();
 
   if (!settings_->IsAdsEnabled()) {
-    LOG(ads_client_, LogLevel::INFO) << "Deinitialize as Ads are disabled";
+    LOG(ads_client_, LogLevel::INFO) << "Deinitializing as Ads are disabled";
 
     Deinitialize();
     return;
@@ -443,29 +444,31 @@ void AdsImpl::OnSettingsLoaded(
 
 void AdsImpl::OnClientSaved(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to save client state";
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to save client JSON";
+
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully saved client state";
+  LOG(ads_client_, LogLevel::INFO) << "Successfully saved client JSON";
 }
 
 void AdsImpl::OnClientLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) <<
-      "Failed to load client state: " << json;
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to load client JSON";
+
     return;
   }
 
   if (!client_->FromJson(json)) {
     LOG(ads_client_, LogLevel::ERROR) <<
-      "Failed to parse client state: " << json;
+      "Failed to parse client JSON: " << json;
+
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded client state";
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded client JSON";
 
   ProcessLocales(ads_client_->GetLocales());
 
@@ -474,8 +477,8 @@ void AdsImpl::OnClientLoaded(
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) <<
-      "Failed to load user model: " << json;
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to load user model JSON";
+
     return;
   }
 
@@ -525,10 +528,9 @@ bool AdsImpl::IsInitialized() {
 }
 
 void AdsImpl::Deinitialize() {
-  LOG(ads_client_, LogLevel::INFO) << "Deinitialize";
-
   if (!initialized_) {
-    LOG(ads_client_, LogLevel::WARNING) << "Not initialized";
+    LOG(ads_client_, LogLevel::WARNING) <<
+      "Failed to deinitialize as already initialized";
     return;
   }
 

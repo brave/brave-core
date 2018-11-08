@@ -21,9 +21,9 @@
 namespace ads {
 
 enum ADS_EXPORT LogLevel {
-  INFO,
+  ERROR = 1,
   WARNING,
-  ERROR
+  INFO
 };
 
 using OnSaveCallback = std::function<void(Result)>;

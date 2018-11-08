@@ -333,7 +333,7 @@ std::ostream& MockAdsClient::Log(
   }
 
   std::cerr << std::endl << level << ": in " << file <<
-    " on line " << line << ": " << std::endl << "  ";
+    " on line " << line << ": " << std::endl << " ";
 
   return std::cerr;
 }

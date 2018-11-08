@@ -182,6 +182,7 @@ bool Bundle::FromJsonForTesting(const std::string& json) {
 
   InitializeFromBundleState(std::move(state));
   return true;
+  LOG(ads_client_, LogLevel::INFO) << "Successfully saved bundle state";
 }
 
 }  // namespace ads
