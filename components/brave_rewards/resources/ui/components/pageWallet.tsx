@@ -24,6 +24,8 @@ import * as utils from '../utils'
 import WalletOff from 'brave-ui/features/rewards/walletOff'
 import ModalAddFunds from 'brave-ui/features/rewards/modalAddFunds'
 
+import clipboardCopy = require('clipboard-copy')
+
 interface State {
   modalBackup: boolean,
   modalBackupActive: 'backup' | 'restore'
@@ -65,6 +67,37 @@ class PageWallet extends React.Component<Props, State> {
     this.setState({
       modalBackupActive: tabId
     })
+  }
+
+  onModalBackupOnCopy = (backupKey: string) => {
+    const success = clipboardCopy(backupKey)
+    // TODO(jsadler) possibly flash a message that copy was completed
+    console.log(success ? 'Copy successful' : 'Copy failed')
+  }
+
+  onModalBackupOnPrint = (backupKey: string) => {
+    if (document.location) {
+      const win = window.open(document.location.href)
+      if (win) {
+        win.document.body.innerText = utils.constructBackupString(backupKey) // this should be text, not HTML
+        win.print()
+        win.close()
+      }
+    }
+  }
+
+  onModalBackupOnSaveFile = (backupKey: string) => {
+    const backupString = utils.constructBackupString(backupKey)
+    const backupFileText = 'brave_wallet_recovery.txt'
+    const a = document.createElement('a')
+    document.body.appendChild(a)
+    a.style.display = 'display: none'
+    const blob = new Blob([backupString], { type : 'plain/text' })
+    const url = window.URL.createObjectURL(blob)
+    a.href = url
+    a.download = backupFileText
+    a.click()
+    window.URL.revokeObjectURL(url)
   }
 
   onModalBackupOnRestore = (key: string | MouseEvent) => {
@@ -229,6 +262,9 @@ class PageWallet extends React.Component<Props, State> {
               backupKey={recoveryKey}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
+              onCopy={this.onModalBackupOnCopy}
+              onPrint={this.onModalBackupOnPrint}
+              onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
               error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
             />
