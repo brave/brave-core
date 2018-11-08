@@ -68,16 +68,22 @@ class ADS_EXPORT AdsClient {
       const URLSession::Method& method,
       URLSessionCallbackHandlerCallback callback) = 0;
 
+  // Saves a value
   virtual void Save(
       const std::string& name,
       const std::string& value,
       OnSaveCallback callback) = 0;
+
+  // Loads a value
   virtual void Load(const std::string& name, OnLoadCallback callback) = 0;
   virtual const std::string Load(const std::string& name) = 0;
+
+  // Resets a value
   virtual void Reset(
       const std::string& name,
       OnResetCallback callback) = 0;
 
+  // Saves the bundle state
   virtual void SaveBundleState(
       std::unique_ptr<BUNDLE_STATE> bundle_state,
       OnSaveCallback callback) = 0;
