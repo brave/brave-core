@@ -86,10 +86,12 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   }
 #endif
 
-  base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
-  brave_webtorrent_path =
-    brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
-  Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
+  if (!command_line.HasSwitch(switches::kDisableWebTorrentExtension)) {
+    base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
+    brave_webtorrent_path =
+      brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
+    Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
+  }
 }
 
 }  // namespace extensions

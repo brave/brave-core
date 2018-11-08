@@ -21,6 +21,8 @@ extern const char kDisablePDFJSExtension[];
 
 extern const char kDisableTorClientUpdaterExtension[];
 
+extern const char kDisableWebTorrentExtension[];
+
 extern const char kEnableBraveSync[];
 
 extern const char kRewardsEnv[];
