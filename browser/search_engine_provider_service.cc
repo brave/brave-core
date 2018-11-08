@@ -2,21 +2,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/profile_creation_monitor.h"
+#include "brave/browser/search_engine_provider_service.h"
 
 #include "brave/browser/search_engine_provider_util.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/notification_service.h"
 
-ProfileCreationMonitor::ProfileCreationMonitor() {
+SearchEngineProviderService::SearchEngineProviderService() {
   registrar_.Add(this, chrome::NOTIFICATION_PROFILE_CREATED,
                  content::NotificationService::AllSources());
 }
 
-ProfileCreationMonitor::~ProfileCreationMonitor() {}
+SearchEngineProviderService::~SearchEngineProviderService() {}
 
-void ProfileCreationMonitor::Observe(
+void SearchEngineProviderService::Observe(
     int type,
     const content::NotificationSource& source,
     const content::NotificationDetails& details) {

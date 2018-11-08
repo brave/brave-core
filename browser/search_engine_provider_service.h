@@ -2,16 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_PROFILE_CREATION_MONITOR_H_
-#define BRAVE_BROWSER_PROFILE_CREATION_MONITOR_H_
+#ifndef BRAVE_BROWSER_SEARCH_ENGINE_PROVIDER_SERVICE_H_
+#define BRAVE_BROWSER_SEARCH_ENGINE_PROVIDER_SERVICE_H_
 
 #include "content/public/browser/notification_observer.h"
 #include "content/public/browser/notification_registrar.h"
 
-class ProfileCreationMonitor : public content::NotificationObserver {
+// The purpose of this class is to configure proper search engine provider to
+// private/guest/tor profile before it is referenced.
+// TODO(simonhong): Migrate to KeyedService.
+class SearchEngineProviderService : public content::NotificationObserver {
  public:
-  ProfileCreationMonitor();
-  ~ProfileCreationMonitor() override;
+  SearchEngineProviderService();
+  ~SearchEngineProviderService() override;
 
  private:
   // content::NotificationObserver overrides:
@@ -21,7 +24,7 @@ class ProfileCreationMonitor : public content::NotificationObserver {
 
   content::NotificationRegistrar registrar_;
 
-  DISALLOW_COPY_AND_ASSIGN(ProfileCreationMonitor);
+  DISALLOW_COPY_AND_ASSIGN(SearchEngineProviderService);
 };
 
-#endif  // BRAVE_BROWSER_PROFILE_CREATION_MONITOR_H_
+#endif  // BRAVE_BROWSER_SEARCH_ENGINE_PROVIDER_SERVICE_H_
