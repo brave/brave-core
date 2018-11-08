@@ -1,4 +1,5 @@
 import("//build/config/features.gni")
+import("//build/config/locales.gni")
 import("//tools/grit/grit_rule.gni")
 
 source_set("command_ids") {
@@ -12,8 +13,14 @@ grit("brave_generated_resources_grit") {
   output_dir = "$root_gen_dir/brave"
   outputs = [
     "grit/brave_generated_resources.h",
+    # This is needed for the includes and not the localized messages
     "brave_generated_resources.pak",
   ]
+
+  foreach(locale, locales_with_fake_bidi) {
+    outputs += [ "brave_generated_resources_$locale.pak" ]
+  }
+
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
