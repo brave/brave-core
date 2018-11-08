@@ -10,7 +10,7 @@
 class GuestWindowSearchEngineProviderController
     : public SearchEngineProviderControllerBase {
  public:
-  explicit GuestWindowSearchEngineProviderController(Profile* profile);
+  explicit GuestWindowSearchEngineProviderController(Profile* otr_profile);
   ~GuestWindowSearchEngineProviderController() override;
 
  private:

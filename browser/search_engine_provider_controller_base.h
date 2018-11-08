@@ -18,7 +18,7 @@ class TemplateURLService;
 
 class SearchEngineProviderControllerBase : public TemplateURLServiceObserver {
  public:
-  explicit SearchEngineProviderControllerBase(Profile* profile);
+  explicit SearchEngineProviderControllerBase(Profile* otr_profile);
   ~SearchEngineProviderControllerBase() override;
 
  protected:

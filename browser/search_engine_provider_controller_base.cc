@@ -40,8 +40,8 @@ class SearchEngineProviderControllerBase::Destroyer
 };
 
 SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
-    Profile* profile)
-    : otr_profile_(profile),
+    Profile* otr_profile)
+    : otr_profile_(otr_profile),
       original_template_url_service_(
           TemplateURLServiceFactory::GetForProfile(
               otr_profile_->GetOriginalProfile())),
@@ -58,7 +58,7 @@ SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
   destroyer_ = new Destroyer(this, otr_template_url_service_);
 
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      profile->GetPrefs(),
+      otr_profile->GetPrefs(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   alternative_search_engine_url_.reset(new TemplateURL(*data));
 }

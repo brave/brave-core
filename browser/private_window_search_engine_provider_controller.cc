@@ -8,9 +8,9 @@
 #include "components/search_engines/template_url_service.h"
 
 PrivateWindowSearchEngineProviderController::
-PrivateWindowSearchEngineProviderController(Profile* profile)
-    : SearchEngineProviderControllerBase(profile) {
-  DCHECK_EQ(profile->GetProfileType(), Profile::INCOGNITO_PROFILE);
+PrivateWindowSearchEngineProviderController(Profile* otr_profile)
+    : SearchEngineProviderControllerBase(otr_profile) {
+  DCHECK_EQ(otr_profile->GetProfileType(), Profile::INCOGNITO_PROFILE);
 
   // Monitor normal profile's search engine changing because private window
   // should that search engine provider when alternative search engine isn't
