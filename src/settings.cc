@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <stdlib.h>
+
 #include "settings.h"
 #include "json_helper.h"
 
@@ -31,11 +33,11 @@ const std::string Settings::GetAdsLocale() const {
 }
 
 uint64_t Settings::GetAdsPerHour() const {
-  return std::atoll(settings_state_->ads_per_hour.c_str());
+  return std::strtoull(settings_state_->ads_per_hour.c_str(), nullptr, 10);
 }
 
 uint64_t Settings::GetAdsPerDay() const {
-  return std::atoll(settings_state_->ads_per_day.c_str());
+  return std::strtoull(settings_state_->ads_per_day.c_str(), nullptr, 10);
 }
 
 }  // namespace ads
