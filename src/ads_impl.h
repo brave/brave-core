@@ -21,7 +21,6 @@
 #include "bat/ads/event_type_sustain_info.h"
 #include "bat/ads/notification_result_info.h"
 #include "client.h"
-#include "settings.h"
 #include "bundle.h"
 
 namespace ads {
@@ -47,6 +46,8 @@ class AdsImpl : public Ads, CallbackHandler {
   void GenerateAdReportingSustainEvent(
       const SustainInfo& info) override;
   void Initialize() override;
+  void InitializeStep2();
+  void InitializeStep3();
   void AppFocused(const bool is_focused) override;
   void TabUpdated(
       const std::string& tab_id,
@@ -75,58 +76,43 @@ class AdsImpl : public Ads, CallbackHandler {
   void SetNotificationsExpired(const bool expired) override;
 
   void StartCollectingActivity(const uint64_t start_timer_in);
+  void StopCollectingActivity();
 
   void OnTimer(const uint32_t timer_id) override;
 
-  void OnGetCategory(
-      const Result result,
-      const std::string& category,
-      const std::vector<AdInfo>& ads) override;
-
-  void OnGetSampleCategory(
-      const Result result,
-      const std::string& category) override;
-
  private:
-  bool initialized_;
-  bool IsInitialized();
-  void Deinitialize();
-
-  void InitializeUserModel(const std::string& json);
-  void OnUserModelLoaded(const Result result, const std::string& json);
-  void OnSettingsLoaded(
-      const Result result,
-      const std::string& json);
-
-  void OnClientSaved(const Result result);
-  void OnClientLoaded(
-      const Result result,
-      const std::string& json);
-
-  void OnBundleSaved(const Result result);
-  void OnBundleLoaded(
-      const Result result,
-      const std::string& json);
-  void OnBundleReset(const Result result);
-
   bool boot_;
 
   bool app_focused_;
 
-  std::string last_page_classification_;
+  bool initialized_;
+  bool IsInitialized();
+  void Deinitialize();
+
   void LoadUserModel();
+  void OnUserModelLoaded(const Result result, const std::string& json);
+  void InitializeUserModel(const std::string& json);
+
+  std::string last_page_classification_;
   std::string GetWinningCategory(const std::vector<double>& page_score);
   std::string GetWinnerOverTimeCategory();
-
   std::map<std::string, std::vector<double>> page_score_cache_;
   void CachePageScore(
       const std::string& url,
       const std::vector<double>& page_score);
 
+  void OnGetAdsForCategory(
+      const Result result,
+      const std::string& category,
+      const std::vector<AdInfo>& ads);
+  void OnGetAdsForSampleCategory(
+      const Result result,
+      const std::string& category,
+      const std::vector<AdInfo>& ads);
+
   uint32_t collect_activity_timer_id_;
   void CollectActivity();
   bool IsCollectingActivity() const;
-  void StopCollectingActivity();
 
   void ConfirmAdUUIDIfAdEnabled();
 
@@ -139,12 +125,13 @@ class AdsImpl : public Ads, CallbackHandler {
   bool IsMediaPlaying() const;
 
   void ProcessLocales(const std::vector<std::string>& locales);
-
   void ServeAdFromCategory(
       const std::string& category);
   std::vector<AdInfo> GetUnseenAds(
       const std::vector<AdInfo>& ads);
   bool IsAllowedToShowAds();
+  bool IsAdValid(const AdInfo& ad_info);
+  bool ShowAd(const AdInfo& ad_info, const std::string& category);
   bool AdsShownHistoryRespectsRollingTimeConstraint(
       const std::deque<time_t> history,
       const uint64_t seconds_window,
@@ -162,7 +149,6 @@ class AdsImpl : public Ads, CallbackHandler {
 
   AdsClient* ads_client_;  // NOT OWNED
 
-  std::unique_ptr<Settings> settings_;
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;

@@ -7,7 +7,6 @@
 #include <string>
 #include <map>
 
-#include "bat/ads/ad_info.h"
 #include "bat/ads/export.h"
 
 namespace ads {
@@ -21,16 +20,6 @@ enum ADS_EXPORT Result {
 class ADS_EXPORT CallbackHandler {
  public:
   virtual ~CallbackHandler() = default;
-
-  // Category
-  virtual void OnGetCategory(
-      const Result /* result */,
-      const std::string& /* category */,
-      const std::vector<AdInfo>& /* ads */) {}
-
-  virtual void OnGetSampleCategory(
-      const Result /* result */,
-      const std::string& /* category */) {}
 
   // URL Session
   virtual bool OnURLSessionReceivedResponse(

@@ -41,11 +41,9 @@ class AdsServe {
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
-  void ProcessCatalog(const std::string& json);
+  bool ProcessCatalog(const std::string& json);
   void RetryDownloadingCatalog();
-
-  void OnCatalogSaved(const Result result);
-  void OnCatalogReset(const Result result);
+  void ResetCatalog();
 
   AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED

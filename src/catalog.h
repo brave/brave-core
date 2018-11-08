@@ -18,7 +18,7 @@ struct CATALOG_STATE;
 
 class Catalog {
  public:
-  explicit Catalog(Bundle* bundle, AdsClient* ads_client);
+  Catalog(AdsClient* ads_client, Bundle* bundle);
   ~Catalog();
 
   bool FromJson(const std::string& json);  // Deserialize
@@ -26,13 +26,20 @@ class Catalog {
   const std::string GetId() const;
   uint64_t GetVersion() const;
   uint64_t GetPing() const;
+
   const std::vector<CampaignInfo>& GetCampaigns() const;
 
- private:
-  void OnCatalogSaved(Result result);
+  void Save(const std::string& json);
+  void Reset();
 
-  Bundle* bundle_;  // NOT OWNED
+ private:
+  bool IsIdValid(const CATALOG_STATE& catalog_state);
+
+  void OnCatalogSaved(const Result result);
+  void OnCatalogReset(const Result result);
+
   AdsClient* ads_client_;  // NOT OWNED
+  Bundle* bundle_;  // NOT OWNED
 
   std::shared_ptr<CATALOG_STATE> catalog_state_;
 };

@@ -13,8 +13,6 @@
 
 namespace ads {
 
-// TODO(Terry Mancey): Refactor URLSessionCallbackHandlerCallback
-// taking into consideration callback_handler.h
 using URLSessionCallbackHandlerCallback = std::function<void (
   const std::string&, const int, const std::string&,
   const std::map<std::string, std::string>& headers)>;

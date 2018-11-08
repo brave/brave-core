@@ -13,7 +13,6 @@
 #include "bat/ads/client_info.h"
 #include "bat/ads/bundle_state.h"
 #include "catalog_state.h"
-#include "bat/ads/callback_handler.h"
 #include "bat/ads/url_session_callback_handler.h"
 #include "bat/ads/url_session.h"
 #include "bat/ads/url_components.h"
@@ -32,16 +31,13 @@ class MockAdsClient : public AdsClient, CallbackHandler {
 
  protected:
   // AdsClient
+  bool IsAdsEnabled() const override;
+  const std::string GetAdsLocale() const override;
+  uint64_t GetAdsPerHour() const override;
+  uint64_t GetAdsPerDay() const override;
+
   const ClientInfo GetClientInfo() const override;
 
-  void Save(const std::string& name,
-            const std::string& value,
-            OnSaveCallback callback) override;
-  void Load(const std::string& name, OnLoadCallback callback) override;
-  const std::string Load(const std::string& name) override;
-  void Reset(const std::string& name, OnResetCallback callback) override;
-
-  const std::string SetLocale(const std::string& locale) override;
   const std::vector<std::string> GetLocales() const override;
 
   const std::string GenerateUUID() const override;
@@ -61,11 +57,25 @@ class MockAdsClient : public AdsClient, CallbackHandler {
       const URLSession::Method& method,
       URLSessionCallbackHandlerCallback callback) override;
 
-  void GetCategory(
-      const std::string& winning_category,
-      CallbackHandler* callback_handler) override;
+  void Save(
+      const std::string& name,
+      const std::string& value,
+      OnSaveCallback callback) override;
+  void SaveBundleState(
+      const BUNDLE_STATE& state,
+      OnSaveCallback callback) override;
 
-  void GetSampleCategory(CallbackHandler* callback_handler) override;
+  void Load(const std::string& name, OnLoadCallback callback) override;
+  const std::string Load(const std::string& name) override;
+
+  void Reset(const std::string& name, OnResetCallback callback) override;
+
+  void GetAdsForCategory(
+      const std::string& category,
+      OnGetAdsForCategoryCallback callback) override;
+
+  void GetAdsForSampleCategory(
+      OnGetAdsForCategoryCallback callbaack) override;
 
   bool GetUrlComponents(
       const std::string& url,
@@ -90,8 +100,6 @@ class MockAdsClient : public AdsClient, CallbackHandler {
   bool WriteJsonToDisk(
     const std::string& path,
     const std::string& json) const;
-
-  std::string locale_;
 };
 
 }  // namespace ads

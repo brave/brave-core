@@ -24,8 +24,6 @@ AdsServe::AdsServe(
 AdsServe::~AdsServe() = default;
 
 void AdsServe::BuildUrl() {
-  // TODO(bridiver) - why are we calling to get this every time? I'm not sure
-  // that we should even be passing this info in the first place
   ClientInfo client_info = ads_client_->GetClientInfo();
 
   url_ = _is_production ? PRODUCTION_SERVER : STAGING_SERVER;
@@ -57,19 +55,21 @@ void AdsServe::OnCatalogDownloaded(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
+  auto should_retry = false;
+
   if (response_status_code / 100 == 2) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
     LOG(ads_client_, LogLevel::INFO) << "Successfully downloaded catalog";
 
-    ProcessCatalog(response);
+    if (!ProcessCatalog(response)) {
+      should_retry = true;
+    }
   } else if (response_status_code == 304) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog current', { method, server, path }
 
     LOG(ads_client_, LogLevel::INFO) << "Catalog is already up to date";
-
-    UpdateNextCatalogCheck();
   } else {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog download failed', { error, method, server, path }
@@ -86,19 +86,23 @@ void AdsServe::OnCatalogDownloaded(
       << url << " (" << response_status_code << "): " << response << " " <<
       formatted_headers;
 
-    RetryDownloadingCatalog();
+    should_retry = true;
   }
+
+  if (should_retry) {
+    RetryDownloadingCatalog();
+    return;
+  }
+
+  UpdateNextCatalogCheck();
 }
 
 void AdsServe::Reset() {
+  ads_->StopCollectingActivity();
+
   next_catalog_check_ = 0;
 
-  // TODO(Brian Johnson): See the other TODO I created as this function should
-  // only reset the next_catalog_check_ and should be renamed back to its
-  // original name, resetting of the catalog file should be moved to the
-  // catalog class and then called from the Deinitialize function
-  ads_client_->Reset("catalog.json",
-    std::bind(&AdsServe::OnCatalogReset, this, _1));
+  ResetCatalog();
 }
 
 void AdsServe::UpdateNextCatalogCheck() {
@@ -108,15 +112,14 @@ void AdsServe::UpdateNextCatalogCheck() {
 
 //////////////////////////////////////////////////////////////////////////////
 
-void AdsServe::ProcessCatalog(const std::string& json) {
-  Catalog catalog(bundle_, ads_client_);
+bool AdsServe::ProcessCatalog(const std::string& json) {
+  Catalog catalog(ads_client_, bundle_);
 
   if (!catalog.FromJson(json)) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Failed to parse catalog'
 
-    RetryDownloadingCatalog();
-    return;
+    return false;
   }
 
   // TODO(Terry Mancey): Implement Log (#44)
@@ -128,38 +131,21 @@ void AdsServe::ProcessCatalog(const std::string& json) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Failed to generate bundle'
 
-    RetryDownloadingCatalog();
-    return;
+    return false;
   }
 
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Generated bundle'
+  catalog.Save(json);
 
-  ads_->SaveCachedInfo();
-
-  UpdateNextCatalogCheck();
+  return true;
 }
 
 void AdsServe::RetryDownloadingCatalog() {
   ads_->StartCollectingActivity(kOneHourInSeconds);
 }
 
-void AdsServe::OnCatalogSaved(const Result result) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to save catalog";
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully saved catalog";
-}
-
-void AdsServe::OnCatalogReset(const Result result) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to reset catalog";
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully reset catalog";
+void AdsServe::ResetCatalog() {
+  Catalog catalog(ads_client_, bundle_);
+  catalog.Reset();
 }
 
 }  // namespace ads

@@ -4,11 +4,13 @@
 
 #include <iostream>
 #include <fstream>
+#include <memory>
 
 #include <uriparser/Uri.h>
 
 #include "mock_ads_client.h"
 #include "mock_url_session.h"
+#include "bat/ads/bundle_state.h"
 #include "bat/ads/ad_info.h"
 #include "math_helper.h"
 #include "string_helper.h"
@@ -19,13 +21,28 @@ using namespace std::placeholders;
 namespace ads {
 
 MockAdsClient::MockAdsClient() :
-    ads_(Ads::CreateInstance(this)),
-    locale_("en") {
+    ads_(Ads::CreateInstance(this)) {
   LoadBundleState();
   LoadSampleBundleState();
 }
 
 MockAdsClient::~MockAdsClient() = default;
+
+bool MockAdsClient::IsAdsEnabled() const {
+  return true;
+}
+
+const std::string MockAdsClient::GetAdsLocale() const {
+  return "en_US";
+}
+
+uint64_t MockAdsClient::GetAdsPerHour() const {
+  return 6;
+}
+
+uint64_t MockAdsClient::GetAdsPerDay() const {
+  return 20;
+}
 
 const ClientInfo MockAdsClient::GetClientInfo() const {
   ClientInfo client_info;
@@ -35,28 +52,6 @@ const ClientInfo MockAdsClient::GetClientInfo() const {
   client_info.platform_version = "1.0";
 
   return client_info;
-}
-
-const std::string MockAdsClient::SetLocale(const std::string& locale) {
-  // TODO(Terry Mancey): Look at again to see if can be moved to native-ads
-  auto locales = GetLocales();
-
-  if (std::find(locales.begin(), locales.end(), locale) != locales.end()) {
-    locale_ = locale;
-  } else {
-    std::vector<std::string> locale_components;
-    helper::String::Split(locale, '_', &locale_components);
-
-    auto language_code = locale_components.front();
-    if (std::find(locales.begin(), locales.end(),
-        language_code) != locales.end()) {
-      locale_ = language_code;
-    } else {
-      locale_ = "en";
-    }
-  }
-
-  return locale_;
 }
 
 const std::vector<std::string> MockAdsClient::GetLocales() const {
@@ -74,13 +69,13 @@ const std::string MockAdsClient::GetSSID() const {
 
 void MockAdsClient::ShowNotification(
     const std::unique_ptr<NotificationInfo> info) {
-  std::cout << "------------------------------------------------" << std::endl;
-  std::cout << "Advertisement:" << std::endl;
-  std::cout << info->advertiser << std::endl;
-  std::cout << info->category << std::endl;
-  std::cout << info->text << std::endl;
-  std::cout << info->url << std::endl;
-  std::cout << info->uuid << std::endl;
+  std::cout << std::endl << "------------------------------------------------";
+  std::cout << std::endl << "Notification:";
+  std::cout << std::endl << info->advertiser;
+  std::cout << std::endl << info->category;
+  std::cout << std::endl << info->text;
+  std::cout << std::endl << info->url;
+  std::cout << std::endl << info->uuid;
 }
 
 uint32_t MockAdsClient::SetTimer(const uint64_t& time_offset) {
@@ -158,6 +153,16 @@ void MockAdsClient::Save(
   callback(Result::SUCCESS);
 }
 
+void MockAdsClient::SaveBundleState(
+    const BUNDLE_STATE& state,
+    OnSaveCallback callback) {
+  Log(__FILE__, __LINE__, LogLevel::INFO) << "Saving bundle state";
+
+  bundle_state_.reset(new BUNDLE_STATE(state));
+
+  callback(Result::SUCCESS);
+}
+
 void MockAdsClient::Load(
     const std::string& name,
     OnLoadCallback callback) {
@@ -222,49 +227,33 @@ void MockAdsClient::Reset(
   callback(Result::SUCCESS);
 }
 
-void MockAdsClient::GetCategory(
-    const std::string& winning_category,
-    CallbackHandler* callback_handler) {
-  // TODO(Terry Mancey): Refactor
-  std::string category;
-  uint64_t pos = winning_category.length();
-
-  do {
-    category = winning_category.substr(0, pos);
-
-    auto categories = bundle_state_->categories.find(category);
-    if (categories != bundle_state_->categories.end()) {
-      if (callback_handler) {
-        callback_handler->OnGetCategory(Result::SUCCESS,
-          category, categories->second);
-
-        return;
-      }
-    }
-
-    pos = category.find_last_of('-');
-  } while (pos != std::string::npos);
-
-  if (callback_handler) {
-    callback_handler->OnGetCategory(Result::FAILED, category, {});
+void MockAdsClient::GetAdsForCategory(
+    const std::string& category,
+    OnGetAdsForCategoryCallback callback) {
+  auto categories = bundle_state_->categories.find(category);
+  if (categories == bundle_state_->categories.end()) {
+    callback(Result::FAILED, category, {});
+    return;
   }
+
+  callback(Result::SUCCESS, category, categories->second);
 }
 
-void MockAdsClient::GetSampleCategory(
-    CallbackHandler* callback_handler) {
+void MockAdsClient::GetAdsForSampleCategory(
+    OnGetAdsForCategoryCallback callback) {
   std::map<std::string, std::vector<AdInfo>>::iterator
     categories = sample_bundle_state_->categories.begin();
 
   auto categories_count = sample_bundle_state_->categories.size();
   if (categories_count == 0) {
-    callback_handler->OnGetSampleCategory(Result::FAILED, "");
+    callback(Result::FAILED, "", {});
     return;
   }
 
   auto rand = helper::Math::Random() % categories_count;
   std::advance(categories, rand);
 
-  callback_handler->OnGetSampleCategory(Result::SUCCESS, categories->first);
+  callback(Result::SUCCESS, categories->first, categories->second);
 }
 
 bool MockAdsClient::GetUrlComponents(
@@ -355,14 +344,19 @@ void MockAdsClient::OnBundleStateLoaded(
     return;
   }
 
-  BUNDLE_STATE state;
   auto jsonSchema = Load("bundle-schema.json");
+
+  BUNDLE_STATE state;
   if (!state.LoadFromJson(json, jsonSchema)) {
     Log(__FILE__, __LINE__, LogLevel::ERROR) <<
       "Failed to parse bundle: " << json;
 
     return;
   }
+
+  state.catalog_id = "a3cd25e99647957ca54c18cb52e0784e1dd6584d";
+  state.catalog_ping = 7200000;
+  state.catalog_version = 1;
 
   bundle_state_.reset(new BUNDLE_STATE(state));
 
@@ -384,8 +378,9 @@ void MockAdsClient::OnSampleBundleStateLoaded(
     return;
   }
 
-  BUNDLE_STATE state;
   auto jsonSchema = Load("bundle-schema.json");
+
+  BUNDLE_STATE state;
   if (!state.LoadFromJson(json, jsonSchema)) {
     Log(__FILE__, __LINE__, LogLevel::ERROR) <<
         "Failed to parse sample bundle: " << json;

@@ -11,8 +11,8 @@
 #include <memory>
 #include <ctime>
 
+#include "ads_impl.h"
 #include "bat/ads/ads_client.h"
-#include "bat/ads/callback_handler.h"
 #include "client_state.h"
 
 namespace ads {
@@ -24,8 +24,8 @@ class Client: public CallbackHandler {
   Client(AdsImpl* ads, AdsClient* ads_client);
   ~Client();
 
-  bool FromJson(const std::string& json);
-  const std::string ToJson();
+  void SaveState();
+  void LoadState();
 
   void AppendCurrentTimeToAdsShownHistory();
   const std::deque<std::time_t> GetAdsShownHistory();
@@ -61,6 +61,12 @@ class Client: public CallbackHandler {
   void RemoveAllHistory();
 
  private:
+  void OnStateSaved(const Result result);
+  void OnStateLoaded(const Result result, const std::string& json);
+
+  bool FromJson(const std::string& json);
+  const std::string ToJson();
+
   AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
 

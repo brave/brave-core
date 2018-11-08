@@ -20,32 +20,35 @@ class Bundle {
   ~Bundle();
 
   bool UpdateFromCatalog(const Catalog& catalog);
-
   void Reset();
 
   const std::string GetCatalogId() const;
   uint64_t GetCatalogVersion() const;
   uint64_t GetCatalogPing() const;
 
-  bool FromJsonForTesting(const std::string& json);  // Deserialize
-
  private:
   void InitializeFromBundleState(std::unique_ptr<BUNDLE_STATE> state);
-  void OnBundleStateSaved(const std::string& catalog_id,
-                          const uint64_t& catalog_version,
-                          const uint64_t& catalog_ping,
-                          Result result);
-  void OnBundleStateReset(Result result);
-  void ToJsonForTesting(const BUNDLE_STATE& state);
-  void OnBundleSavedForTesting(Result result);
 
-  AdsClient* ads_client_;  // NOT OWNED
+  std::unique_ptr<BUNDLE_STATE> GenerateFromCatalog(const Catalog& catalog);
+
+  void SaveState();
+  void OnStateSaved(
+      const std::string& catalog_id,
+      const uint64_t& catalog_version,
+      const uint64_t& catalog_ping,
+      const Result result);
+
+  void OnStateReset(
+      const std::string& catalog_id,
+      const uint64_t& catalog_version,
+      const uint64_t& catalog_ping,
+      const Result result);
 
   std::string catalog_id_;
   uint64_t catalog_version_;
   uint64_t catalog_ping_;
 
-  std::unique_ptr<BUNDLE_STATE> bundle_state_;
+  AdsClient* ads_client_;  // NOT OWNED
 };
 
 }  // namespace ads

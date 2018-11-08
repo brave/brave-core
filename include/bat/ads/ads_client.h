@@ -5,12 +5,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <map>
 #include <sstream>
 #include <memory>
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/bundle_state.h"
-#include "bat/ads/callback_handler.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
@@ -28,17 +29,30 @@ enum ADS_EXPORT LogLevel {
 
 using OnSaveCallback = std::function<void(Result)>;
 using OnLoadCallback = std::function<void(Result, const std::string&)>;
+
 using OnResetCallback = std::function<void(Result)>;
+
+using OnGetAdsForCategoryCallback = std::function<void(Result,
+  const std::string&, const std::vector<AdInfo>&)>;
 
 class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
 
+  // Gets the status of ads whether enabled or disabled
+  virtual bool IsAdsEnabled() const = 0;
+
+  // Gets the locale for ads
+  virtual const std::string GetAdsLocale() const = 0;
+
+  // Gets maximum amount of ads that can be shown per hour
+  virtual uint64_t GetAdsPerHour() const = 0;
+
+  // Gets maximum amount of ads that can be shown per day
+  virtual uint64_t GetAdsPerDay() const = 0;
+
   // Gets information about the client
   virtual const ClientInfo GetClientInfo() const = 0;
-
-  // Set locale
-  virtual const std::string SetLocale(const std::string& locale) = 0;
 
   // Gets available locales
   virtual const std::vector<std::string> GetLocales() const = 0;
@@ -74,27 +88,28 @@ class ADS_EXPORT AdsClient {
       const std::string& value,
       OnSaveCallback callback) = 0;
 
+  // Saves the bundle state
+  virtual void SaveBundleState(
+    const BUNDLE_STATE& state,
+    OnSaveCallback callback) = 0;
+
   // Loads a value
   virtual void Load(const std::string& name, OnLoadCallback callback) = 0;
   virtual const std::string Load(const std::string& name) = 0;
 
-  // Resets a value
+  // Reset a previously saved value
   virtual void Reset(
       const std::string& name,
       OnResetCallback callback) = 0;
 
-  // Saves the bundle state
-  virtual void SaveBundleState(
-      std::unique_ptr<BUNDLE_STATE> bundle_state,
-      OnSaveCallback callback) = 0;
+  // Gets ads for specified category
+  virtual void GetAdsForCategory(
+      const std::string& category,
+      OnGetAdsForCategoryCallback callback) = 0;
 
-  // Gets available ads based upon the winning category
-  virtual void GetCategory(
-      const std::string& winning_category,
-      CallbackHandler* callback_handler) = 0;
-
-  // Gets a sample category
-  virtual void GetSampleCategory(CallbackHandler* callback_handler) = 0;
+  // Gets ads from sample category
+  virtual void GetAdsForSampleCategory(
+      OnGetAdsForCategoryCallback callback) = 0;
 
   // Gets the components of a URL
   virtual bool GetUrlComponents(

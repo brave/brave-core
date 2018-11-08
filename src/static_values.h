@@ -19,10 +19,9 @@ static const uint64_t kMillisecondsInASecond = 1000;
 
 static const uint64_t kOneHourInSeconds = 60 * 60;
 
-static const uint64_t kDefaultAdsPerDay = 20;
-static const uint64_t kDefaultAdsPerHour = 6;
-
 static char kUnknownSSID[] = "UNKNOWN";
 static char kUndisclosedPlace[] = "UNDISCLOSED";
+
+static char kDefaultLanguage[] = "en";
 
 }  // namespace ads

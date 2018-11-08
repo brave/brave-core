@@ -8,6 +8,8 @@
 #include "static_values.h"
 #include "logging.h"
 
+using namespace std::placeholders;
+
 namespace ads {
 
 Client::Client(AdsImpl* ads, AdsClient* ads_client) :
@@ -18,21 +20,14 @@ Client::Client(AdsImpl* ads, AdsClient* ads_client) :
 
 Client::~Client() = default;
 
-bool Client::FromJson(const std::string& json) {
-  CLIENT_STATE state;
-  if (!LoadFromJson(state, json.c_str())) {
-    return false;
-  }
-
-  client_state_.reset(new CLIENT_STATE(state));
-
-  return true;
+void Client::SaveState() {
+  ads_client_->Save("client.json", ToJson(),
+    std::bind(&Client::OnStateSaved, this, _1));
 }
 
-const std::string Client::ToJson() {
-  std::string json;
-  SaveToJson(*client_state_, json);
-  return json;
+void Client::LoadState() {
+  ads_client_->Load("client.json",
+    std::bind(&Client::OnStateLoaded, this, _1, _2));
 }
 
 void Client::AppendCurrentTimeToAdsShownHistory() {
@@ -201,6 +196,60 @@ const std::string Client::GetCurrentPlace() {
 
 void Client::RemoveAllHistory() {
   client_state_.reset(new CLIENT_STATE());
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void Client::OnStateSaved(const Result result) {
+  if (result == Result::FAILED) {
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to save client state";
+
+    // TODO(Terry Mancey): If the client state fails to save, we need to notify
+    // the Client to decide what action to take otherwise the client state will
+    // be lost when the browser exits
+    return;
+  }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully saved client state";
+}
+
+void Client::OnStateLoaded(const Result result, const std::string& json) {
+  if (result == Result::FAILED) {
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to load client state";
+
+    // TODO(Terry Mancey): If the client state fails to load, we need to
+    // notify the Client to decide what action to take otherwise ads will not
+    // work or a business decision could be made to reset the client state
+    return;
+  }
+
+  if (!FromJson(json)) {
+    LOG(ads_client_, LogLevel::ERROR) <<
+      "Failed to parse client state: " << json;
+
+    return;
+  }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded client state";
+
+  ads_->InitializeStep2();
+}
+
+bool Client::FromJson(const std::string& json) {
+  CLIENT_STATE state;
+  if (!LoadFromJson(state, json)) {
+    return false;
+  }
+
+  client_state_.reset(new CLIENT_STATE(state));
+
+  return true;
+}
+
+const std::string Client::ToJson() {
+  std::string json;
+  SaveToJson(*client_state_, json);
+  return json;
 }
 
 }  // namespace ads

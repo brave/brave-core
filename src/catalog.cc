@@ -14,44 +14,30 @@ using namespace std::placeholders;
 
 namespace ads {
 
-Catalog::Catalog(Bundle* bundle, AdsClient* ads_client) :
-    bundle_(bundle),
-    ads_client_(ads_client) {}
+Catalog::Catalog(AdsClient* ads_client, Bundle* bundle) :
+    ads_client_(ads_client),
+    bundle_(bundle) {}
 
 Catalog::~Catalog() {}
 
 bool Catalog::FromJson(const std::string& json) {
-  auto state = std::make_unique<CATALOG_STATE>();
+  auto catalog_state = std::make_unique<CATALOG_STATE>();
 
   auto jsonSchema = ads_client_->Load("catalog-schema.json");
-  if (!LoadFromJson(*state, json.c_str(), jsonSchema)) {
+  if (!LoadFromJson(*catalog_state, json, jsonSchema)) {
     LOG(ads_client_, LogLevel::ERROR) << "Failed to parse catalog: " << json;
     return false;
   }
 
-  auto current_catalog_id = bundle_->GetCatalogId();
-  if (!current_catalog_id.empty() &&
-      current_catalog_id != catalog_state_->catalog_id) {
-    // TODO is this check right? Should the id be the same every time?
+  if (!IsIdValid(*catalog_state)) {
     LOG(ads_client_, LogLevel::ERROR) << "New catalog id " <<
-        catalog_state_->catalog_id << " does not match current catalog id " <<
-        current_catalog_id;
+      catalog_state_->catalog_id << " does not match current catalog id " <<
+      bundle_->GetCatalogId();
+
     return false;
   }
 
-  auto current_catalog_version = bundle_->GetCatalogVersion();
-  if (current_catalog_version != 0 &&
-      current_catalog_version <= state->version) {
-    // TODO this might also potentially be incorrect
-    LOG(ads_client_, LogLevel::ERROR) << "New catalog version " <<
-        state->version << " is not greater than current version " <<
-        current_catalog_version;
-    return false;
-  }
-
-  catalog_state_.reset(state.release());
-  ads_client_->Save("catalog.json", json,
-    std::bind(&Catalog::OnCatalogSaved, this, _1));
+  catalog_state_.reset(catalog_state.release());
 
   LOG(ads_client_, LogLevel::INFO) << "Successfully loaded catalog";
 
@@ -74,12 +60,57 @@ const std::vector<CampaignInfo>& Catalog::GetCampaigns() const {
   return catalog_state_->campaigns;
 }
 
-void Catalog::OnCatalogSaved(Result result) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Could not save catalog.json";
-  } else {
-    LOG(ads_client_, LogLevel::INFO) << "Saved catalog.json";
+void Catalog::Save(const std::string& json) {
+  ads_client_->Save("catalog.json", json,
+    std::bind(&Catalog::OnCatalogSaved, this, _1));
+}
+
+void Catalog::Reset() {
+  ads_client_->Reset("catalog.json",
+    std::bind(&Catalog::OnCatalogReset, this, _1));
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool Catalog::IsIdValid(const CATALOG_STATE& catalog_state) {
+  auto current_catalog_id = bundle_->GetCatalogId();
+  auto new_catalog_id = catalog_state.catalog_id;
+
+  if (current_catalog_id.empty()) {
+    // First time the catalog has been downloaded
+    return true;
   }
+
+  // Catalog id should not change as it is used to download a catalog diff
+  if (current_catalog_id != new_catalog_id) {
+    return false;
+  }
+
+  return true;
+}
+
+void Catalog::OnCatalogSaved(const Result result) {
+  if (result == Result::FAILED) {
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to save catalog";
+
+    // If the catalog fails to save, we will retry the next time a we collect
+    // activity
+    return;
+  }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully saved catalog";
+}
+
+void Catalog::OnCatalogReset(const Result result) {
+  if (result == Result::FAILED) {
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to reset catalog";
+
+    // TODO(Terry Mancey): If the catalog fails to reset we need to decide what
+    // action to take
+    return;
+  }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully reset catalog";
 }
 
 }  // namespace ads

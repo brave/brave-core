@@ -111,17 +111,6 @@ class ADS_EXPORT Ads {
 
   // Should be called when a timer is triggered
   virtual void OnTimer(const uint32_t timer_id) = 0;
-
-  // Should be called after getting the category
-  virtual void OnGetCategory(
-      const Result result,
-      const std::string& category,
-      const std::vector<AdInfo>& ads) = 0;
-
-  // Should be Called after getting the sample category
-  virtual void OnGetSampleCategory(
-      const Result result,
-      const std::string& category) = 0;
 };
 
 }  // namespace ads

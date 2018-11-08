@@ -25,15 +25,14 @@ using namespace std::placeholders;
 namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client) :
-    initialized_(false),
     boot_(false),
     app_focused_(false),
+    initialized_(false),
     last_page_classification_(""),
     collect_activity_timer_id_(0),
     media_playing_({}),
     next_easter_egg_(0),
     ads_client_(ads_client),
-    settings_(std::make_unique<Settings>()),
     client_(std::make_unique<Client>(this, ads_client_)),
     bundle_(std::make_unique<Bundle>(ads_client_)),
     ads_serve_(std::make_unique<AdsServe>(this, ads_client_, bundle_.get())) {
@@ -195,16 +194,42 @@ void AdsImpl::Initialize() {
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully initialized";
+  GenerateAdReportingSettingsEvent();
 
-  // TODO(Brian Johnson): This should be abstracted back to the settings class
-  ads_client_->Load("settings.json",
-      std::bind(&AdsImpl::OnSettingsLoaded, this, _1, _2));
+  if (!ads_client_->IsAdsEnabled()) {
+    LOG(ads_client_, LogLevel::INFO) << "Deinitializing as Ads are disabled";
+
+    Deinitialize();
+    return;
+  }
+
+  if (initialized_) {
+    return;
+  }
+
+  client_->LoadState();
 }
 
-void AdsImpl::InitializeUserModel(const std::string& json) {
-  user_model_.reset(usermodel::UserModel::CreateInstance());
-  user_model_->initializePageClassifier(json);
+void AdsImpl::InitializeStep2() {
+  assert(!initialized_);
+
+  ProcessLocales(ads_client_->GetLocales());
+
+  LoadUserModel();
+}
+
+void AdsImpl::InitializeStep3() {
+  assert(!initialized_);
+
+  initialized_ = true;
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully initialized";
+
+  RetrieveSSID();
+
+  ConfirmAdUUIDIfAdEnabled();
+
+  ads_serve_->DownloadCatalog();
 }
 
 void AdsImpl::AppFocused(const bool is_focused) {
@@ -268,24 +293,17 @@ void AdsImpl::RecordUnIdle() {
 }
 
 void AdsImpl::RemoveAllHistory() {
-  auto locales = client_->GetLocales();
-
   client_->RemoveAllHistory();
-
-  ProcessLocales(locales);
 
   ConfirmAdUUIDIfAdEnabled();
 }
 
 void AdsImpl::SaveCachedInfo() {
-  if (!settings_->IsAdsEnabled()) {
+  if (!ads_client_->IsAdsEnabled()) {
     client_->RemoveAllHistory();
   }
 
-  // TODO(Brian Johnson): The following should be abstracted back to the client_
-  // class
-  ads_client_->Save("client.json", client_->ToJson(),
-    std::bind(&AdsImpl::OnClientSaved, this, _1));
+  client_->SaveState();
 }
 
 void AdsImpl::RecordMediaPlaying(
@@ -326,8 +344,26 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
     return;
   }
 
-  auto closest_match_for_locale = ads_client_->SetLocale(locale);
-  client_->SetLocale(closest_match_for_locale);
+  auto locales = ads_client_->GetLocales();
+
+  if (std::find(locales.begin(), locales.end(), locale) != locales.end()) {
+    client_->SetLocale(locale);
+  } else {
+    std::string closest_match_for_locale = "";
+
+    std::vector<std::string> locale_components;
+    helper::String::Split(locale, '_', &locale_components);
+
+    auto language_code = locale_components.front();
+    if (std::find(locales.begin(), locales.end(),
+        language_code) != locales.end()) {
+      closest_match_for_locale = language_code;
+    } else {
+      closest_match_for_locale = kDefaultLanguage;
+    }
+
+    client_->SetLocale(closest_match_for_locale);
+  }
 
   LoadUserModel();
 }
@@ -366,7 +402,8 @@ void AdsImpl::ServeSampleAd() {
     return;
   }
 
-  ads_client_->GetSampleCategory(this);
+  ads_client_->GetAdsForSampleCategory(
+    std::bind(&AdsImpl::OnGetAdsForSampleCategory, this, _1, _2, _3));
 }
 
 void AdsImpl::SetNotificationsAvailable(const bool available) {
@@ -392,12 +429,23 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
 
   if (collect_activity_timer_id_ == 0) {
     LOG(ads_client_, LogLevel::ERROR) <<
-      "Failed to start collecting activity due to invalid timer";
+      "Failed to start collecting activity due to an invalid timer";
     return;
   }
 
   LOG(ads_client_, LogLevel::INFO) <<
     "Start collecting activity in " << start_timer_in << " seconds";
+}
+
+void AdsImpl::StopCollectingActivity() {
+  if (!IsCollectingActivity()) {
+    return;
+  }
+
+  LOG(ads_client_, LogLevel::INFO) << "Stopped collecting activity";
+
+  ads_client_->KillTimer(collect_activity_timer_id_);
+  collect_activity_timer_id_ = 0;
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
@@ -406,120 +454,11 @@ void AdsImpl::OnTimer(const uint32_t timer_id) {
   }
 }
 
-void AdsImpl::OnSettingsLoaded(
-    const Result result,
-    const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to load settings JSON";
-
-    return;
-  }
-
-  if (!settings_->FromJson(json)) {
-    LOG(ads_client_, LogLevel::ERROR) <<
-        "Failed to parse settings JSON: " << json;
-
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded settings JSON";
-
-  GenerateAdReportingSettingsEvent();
-
-  if (!settings_->IsAdsEnabled()) {
-    LOG(ads_client_, LogLevel::INFO) << "Deinitializing as Ads are disabled";
-
-    Deinitialize();
-    return;
-  }
-
-  if (initialized_) {
-    return;
-  }
-
-  // TODO(Brian Johnson): This should be abstracted back to the client class
-  ads_client_->Load("client.json",
-    std::bind(&AdsImpl::OnClientLoaded, this, _1, _2));
-}
-
-void AdsImpl::OnClientSaved(const Result result) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to save client JSON";
-
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully saved client JSON";
-}
-
-void AdsImpl::OnClientLoaded(
-    const Result result,
-    const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to load client JSON";
-
-    return;
-  }
-
-  if (!client_->FromJson(json)) {
-    LOG(ads_client_, LogLevel::ERROR) <<
-      "Failed to parse client JSON: " << json;
-
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded client JSON";
-
-  ProcessLocales(ads_client_->GetLocales());
-
-  LoadUserModel();
-}
-
-void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to load user model JSON";
-
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded user model";
-
-  InitializeUserModel(json);
-
-  if (!initialized_) {
-    initialized_ = true;
-
-    RetrieveSSID();
-
-    ConfirmAdUUIDIfAdEnabled();
-
-    ads_serve_->DownloadCatalog();
-  }
-}
-
-void AdsImpl::OnBundleReset(const Result result) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to reset bundle";
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully reset bundle";
-}
-
-void AdsImpl::OnBundleLoaded(const Result result, const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to load bundle: " << json;
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded bundle";
-}
-
 //////////////////////////////////////////////////////////////////////////////
 
 bool AdsImpl::IsInitialized() {
   if (!initialized_ ||
-      !settings_->IsAdsEnabled() ||
+      !ads_client_->IsAdsEnabled() ||
       !user_model_->IsInitialized()) {
     return false;
   }
@@ -530,11 +469,9 @@ bool AdsImpl::IsInitialized() {
 void AdsImpl::Deinitialize() {
   if (!initialized_) {
     LOG(ads_client_, LogLevel::WARNING) <<
-      "Failed to deinitialize as already initialized";
+      "Failed to deinitialize as not initialized";
     return;
   }
-
-  StopCollectingActivity();
 
   ads_serve_->Reset();
 
@@ -559,6 +496,31 @@ void AdsImpl::LoadUserModel() {
 
   ads_client_->Load(path.str(),
     std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2));
+}
+
+void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
+  if (result == Result::FAILED) {
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to load user model";
+
+    // TODO(Terry Mancey): If the user model fails to load, we need to notify
+    // the Client to decide what action to take otherwise ads will not work
+    return;
+  }
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded user model";
+
+  InitializeUserModel(json);
+
+  if (!initialized_) {
+    InitializeStep3();
+  }
+}
+
+void AdsImpl::InitializeUserModel(const std::string& json) {
+  LOG(ads_client_, LogLevel::INFO) << "Initializing user model";
+
+  user_model_.reset(usermodel::UserModel::CreateInstance());
+  user_model_->initializePageClassifier(json);
 }
 
 std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {
@@ -607,6 +569,76 @@ void AdsImpl::CachePageScore(
   }
 }
 
+void AdsImpl::OnGetAdsForCategory(
+    const Result result,
+    const std::string& category,
+    const std::vector<AdInfo>& ads) {
+  if (result == Result::FAILED) {
+    auto pos = category.find_last_of('-');
+    if (pos != std::string::npos) {
+      std::string new_category = category.substr(0, pos);
+
+      LOG(ads_client_, LogLevel::WARNING) << "No ads found for \""
+        << category << "\" category, trying again with \"" << new_category <<
+        "\" category";
+
+      ads_client_->GetAdsForCategory(new_category,
+        std::bind(&AdsImpl::OnGetAdsForCategory, this, _1, _2, _3));
+
+      return;
+    }
+
+    if (ads.empty()) {
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'Notification not made', { reason: 'no ads for category', category }
+
+      LOG(ads_client_, LogLevel::WARNING) << "No ads found for \""
+        << category << "\" category";
+
+      return;
+    }
+  }
+
+  auto ads_unseen = GetUnseenAds(ads);
+  if (ads_unseen.empty()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Ad round-robin', { category, adsSeen, adsNotSeen }
+
+    client_->ResetAdsUUIDSeen(ads);
+
+    ads_unseen = GetUnseenAds(ads);
+    if (ads_unseen.empty()) {
+      // TODO(Terry Mancey): Implement Log (#44)
+      // 'Notification not made', { reason: 'no ads for category', category }
+
+      return;
+    }
+  }
+
+  auto rand = helper::Math::Random() % ads_unseen.size();
+  auto ad = ads_unseen[rand];
+  ShowAd(ad, category);
+}
+
+void AdsImpl::OnGetAdsForSampleCategory(
+    const Result result,
+    const std::string& category,
+    const std::vector<AdInfo>& ads) {
+  if (result == Result::FAILED || ads.empty()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'no ads for category', category }
+
+    LOG(ads_client_, LogLevel::WARNING) << "No ads found for \""
+      << category << "\" sample category";
+
+    return;
+  }
+
+  auto rand = helper::Math::Random() % ads.size();
+  auto ad = ads.at(rand);
+  ShowAd(ad, category);
+}
+
 void AdsImpl::CollectActivity() {
   if (!IsInitialized()) {
     return;
@@ -618,22 +650,15 @@ void AdsImpl::CollectActivity() {
 }
 
 bool AdsImpl::IsCollectingActivity() const {
-  return collect_activity_timer_id_ != 0 ? true : false;
-}
-
-void AdsImpl::StopCollectingActivity() {
-  if (!IsCollectingActivity()) {
-    return;
+  if (collect_activity_timer_id_ == 0) {
+    return false;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Stopped collecting activity";
-
-  ads_client_->KillTimer(collect_activity_timer_id_);
-  collect_activity_timer_id_ = 0;
+  return true;
 }
 
 void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
-  if (!settings_->IsAdsEnabled()) {
+  if (!ads_client_->IsAdsEnabled()) {
     StopCollectingActivity();
     return;
   }
@@ -657,10 +682,16 @@ void AdsImpl::TestShoppingData(const std::string& url) {
     return;
   }
 
+
   UrlComponents components;
-  if (ads_client_->GetUrlComponents(url, &components) &&
-      components.hostname == "www.amazon.com") {
-      client_->FlagShoppingState(url, 1.0);
+  if (!ads_client_->GetUrlComponents(url, &components)) {
+    return;
+  }
+
+  // TODO(Terry Mancey): Confirm with business if this list should be expanded
+  // to include amazon.co.uk and other territories
+  if (components.hostname == "www.amazon.com") {
+    client_->FlagShoppingState(url, 1.0);
   } else {
     client_->UnflagShoppingState();
   }
@@ -672,16 +703,23 @@ void AdsImpl::TestSearchState(const std::string& url) {
   }
 
   UrlComponents components;
-  if (ads_client_->GetUrlComponents(url, &components) &&
-      SearchProviders::IsSearchEngine(components)) {
-      client_->FlagSearchState(url, 1.0);
+  if (!ads_client_->GetUrlComponents(url, &components)) {
+    return;
+  }
+
+  if (SearchProviders::IsSearchEngine(components)) {
+    client_->FlagSearchState(url, 1.0);
   } else {
     client_->UnflagSearchState(url);
   }
 }
 
 bool AdsImpl::IsMediaPlaying() const {
-  return media_playing_.empty() ? false : true;
+  if (media_playing_.empty()) {
+    return false;
+  }
+
+  return true;
 }
 
 void AdsImpl::ProcessLocales(const std::vector<std::string>& locales) {
@@ -690,9 +728,6 @@ void AdsImpl::ProcessLocales(const std::vector<std::string>& locales) {
   }
 
   client_->SetLocales(locales);
-
-  auto locale = settings_->GetAdsLocale();
-  ads_client_->SetLocale(locale);
 }
 
 void AdsImpl::ServeAdFromCategory(const std::string& category) {
@@ -710,76 +745,8 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
     return;
   }
 
-  ads_client_->GetCategory(category, this);
-}
-
-void AdsImpl::OnGetSampleCategory(
-    const Result result,
-    const std::string& category) {
-  if (result == Result::FAILED || category.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ads for category', category }
-    return;
-  }
-
-  ServeAdFromCategory(category);
-}
-
-void AdsImpl::OnGetCategory(
-    const Result result,
-    const std::string& category,
-    const std::vector<AdInfo>& ads) {
-  if (result == Result::FAILED || ads.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ads for category', category }
-
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to get a category";
-    return;
-  }
-
-  auto ads_unseen = GetUnseenAds(ads);
-  if (ads_unseen.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Ad round-robin', { category, adsSeen, adsNotSeen }
-
-    client_->ResetAdsUUIDSeen(ads);
-
-    ads_unseen = GetUnseenAds(ads);
-    if (ads_unseen.empty()) {
-      // TODO(Terry Mancey): Implement Log (#44)
-      // 'Notification not made', { reason: 'no ads for category', category }
-
-      return;
-    }
-  }
-
-  auto rand = helper::Math::Random() % ads_unseen.size();
-  auto ad = ads_unseen[rand];
-
-  if (ad.advertiser.empty() ||
-      ad.notification_text.empty() ||
-      ad.notification_url.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'incomplete ad information',
-    // category, winnerOverTime, arbitraryKey, notificationUrl,
-    // notificationText, advertiser
-    return;
-  }
-
-  auto notification_info = std::make_unique<NotificationInfo>();
-  notification_info->advertiser = ad.advertiser;
-  notification_info->category = category;
-  notification_info->text = ad.notification_text;
-  notification_info->url = ad.notification_url;
-  notification_info->uuid = ad.uuid;
-
-  ads_client_->ShowNotification(std::move(notification_info));
-
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Notification shown', {category, winnerOverTime, arbitraryKey,
-  // notificationUrl, notificationText, advertiser, uuid, hierarchy}
-
-  client_->AppendCurrentTimeToAdsShownHistory();
+  ads_client_->GetAdsForCategory(category,
+    std::bind(&AdsImpl::OnGetAdsForCategory, this, _1, _2, _3));
 }
 
 std::vector<AdInfo> AdsImpl::GetUnseenAds(
@@ -803,12 +770,12 @@ bool AdsImpl::IsAllowedToShowAds() {
   std::deque<std::time_t> ads_shown_history = client_->GetAdsShownHistory();
 
   auto hour_window = kOneHourInSeconds;
-  auto hour_allowed = settings_->GetAdsPerHour();
+  auto hour_allowed = ads_client_->GetAdsPerHour();
   auto respects_hour_limit = AdsShownHistoryRespectsRollingTimeConstraint(
     ads_shown_history, hour_window, hour_allowed);
 
   auto day_window = kOneHourInSeconds;
-  auto day_allowed = settings_->GetAdsPerDay();
+  auto day_allowed = ads_client_->GetAdsPerDay();
   auto respects_day_limit = AdsShownHistoryRespectsRollingTimeConstraint(
     ads_shown_history, day_window, day_allowed);
 
@@ -820,6 +787,45 @@ bool AdsImpl::IsAllowedToShowAds() {
   return respects_hour_limit &&
     respects_day_limit &&
     respects_minimum_wait_time;
+}
+
+bool AdsImpl::IsAdValid(const AdInfo& ad_info) {
+  if (ad_info.advertiser.empty() ||
+      ad_info.notification_text.empty() ||
+      ad_info.notification_url.empty()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'incomplete ad information',
+    // category, winnerOverTime, arbitraryKey, notificationUrl,
+    // notificationText, advertiser
+    return false;
+  }
+
+  return true;
+}
+
+bool AdsImpl::ShowAd(
+    const AdInfo& ad_info,
+    const std::string& category) {
+  if (!IsAdValid(ad_info)) {
+    return false;
+  }
+
+  auto notification_info = std::make_unique<NotificationInfo>();
+  notification_info->advertiser = ad_info.advertiser;
+  notification_info->category = category;
+  notification_info->text = ad_info.notification_text;
+  notification_info->url = ad_info.notification_url;
+  notification_info->uuid = ad_info.uuid;
+
+  ads_client_->ShowNotification(std::move(notification_info));
+
+  // TODO(Terry Mancey): Implement Log (#44)
+  // 'Notification shown', {category, winnerOverTime, arbitraryKey,
+  // notificationUrl, notificationText, advertiser, uuid, hierarchy}
+
+  client_->AppendCurrentTimeToAdsShownHistory();
+
+  return true;
 }
 
 bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
@@ -1109,15 +1115,15 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String(place.c_str());
 
   writer.String("locale");
-  auto locale = settings_->GetAdsLocale();
+  auto locale = client_->GetLocale();
   writer.String(locale.c_str());
 
   writer.String("adsPerDay");
-  auto ads_per_day = settings_->GetAdsPerDay();
+  auto ads_per_day = ads_client_->GetAdsPerDay();
   writer.Uint64(ads_per_day);
 
   writer.String("adsPerHour");
-  auto ads_per_hour = settings_->GetAdsPerHour();
+  auto ads_per_hour = ads_client_->GetAdsPerHour();
   writer.Uint64(ads_per_hour);
 
   writer.EndObject();

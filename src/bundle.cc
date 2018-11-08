@@ -15,17 +15,58 @@ using namespace std::placeholders;
 namespace ads {
 
 Bundle::Bundle(AdsClient* ads_client) :
-    ads_client_(ads_client),
     catalog_id_(""),
     catalog_version_(0),
-    catalog_ping_(0) {
+    catalog_ping_(0),
+    ads_client_(ads_client) {
 }
 
 Bundle::~Bundle() = default;
 
-bool Bundle::UpdateFromCatalog(
+bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
+  // TODO(Brian Johnson): Add callback for this function
+  auto bundle_state = GenerateFromCatalog(catalog);
+  if (!bundle_state) {
+    return false;
+  }
+
+  ads_client_->SaveBundleState(*bundle_state, std::bind(&Bundle::OnStateSaved,
+    this, bundle_state->catalog_id, bundle_state->catalog_version,
+    bundle_state->catalog_ping, _1));
+
+  // TODO(Terry Mancey): Implement Log (#44)
+  // 'Generated bundle'
+
+  return true;
+}
+
+void Bundle::Reset() {
+  auto bundle_state = std::make_unique<BUNDLE_STATE>();
+
+  ads_client_->SaveBundleState(*bundle_state, std::bind(&Bundle::OnStateReset,
+    this, bundle_state->catalog_id, bundle_state->catalog_version,
+    bundle_state->catalog_ping, _1));
+}
+
+const std::string Bundle::GetCatalogId() const {
+  return catalog_id_;
+}
+
+uint64_t Bundle::GetCatalogVersion() const {
+  return catalog_version_;
+}
+
+uint64_t Bundle::GetCatalogPing() const {
+  return catalog_ping_ / kMillisecondsInASecond;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+// TODO(Terry Mancey): We should consider optimizing memory consumption when
+// generating the bundle by saving each campaign individually on the Client
+std::unique_ptr<BUNDLE_STATE> Bundle::GenerateFromCatalog(
     const Catalog& catalog) {
-  // TODO(bridiver) - add callback for this method
+  // TODO(Brian Johnson): Add callback for this function
   std::map<std::string, std::vector<AdInfo>> categories;
 
   for (const auto& campaign : catalog.GetCampaigns()) {
@@ -45,13 +86,13 @@ bool Bundle::UpdateFromCatalog(
       }
 
       if (heirarchy.empty()) {
-        return false;
+        return nullptr;
       }
 
       std::string category;
       helper::String::Join(heirarchy, '-', &category);
 
-      std::string top_level = heirarchy.front();
+      auto top_level = heirarchy.front();
       uint64_t entries = 0;
 
       for (const auto& creative : creative_set.creatives) {
@@ -76,7 +117,7 @@ bool Bundle::UpdateFromCatalog(
       }
 
       if (entries == 0) {
-        return false;
+        return nullptr;
       }
     }
   }
@@ -87,53 +128,19 @@ bool Bundle::UpdateFromCatalog(
   state->catalog_ping = catalog.GetPing();
   state->categories = categories;
 
-  InitializeFromBundleState(std::move(state));
-
-  return true;
+  return state;
 }
 
-void Bundle::Reset() {
-  // TODO(bridiver) - should we set to null here instead?
-  InitializeFromBundleState(nullptr);
-}
-
-const std::string Bundle::GetCatalogId() const {
-  return catalog_id_;
-}
-
-uint64_t Bundle::GetCatalogVersion() const {
-  return catalog_version_;
-}
-
-uint64_t Bundle::GetCatalogPing() const {
-  return catalog_ping_ / kMillisecondsInASecond;
-}
-
-void Bundle::InitializeFromBundleState(std::unique_ptr<BUNDLE_STATE> state) {
-  if (!state) {
-    // ads_client_->ResetBundleState(
-    //     std::bind(&Bundle::OnBundleStateReset, this, _1));
-    ads_client_->Reset("bundle.json",
-        std::bind(&Bundle::OnBundleSavedForTesting, this, _1));
-    return;
-  }
-
-  // TODO(bridiver) - this is for debugging only so maybe we should just
-  // do a VLOG or something instead of saving to disk?
-  ToJsonForTesting(*state);
-
-  ads_client_->SaveBundleState(std::move(state),
-      std::bind(&Bundle::OnBundleStateSaved, this,
-          state->catalog_id, state->catalog_version, state->catalog_ping, _1));
-}
-
-void Bundle::OnBundleStateSaved(const std::string& catalog_id,
-                                const uint64_t& catalog_version,
-                                const uint64_t& catalog_ping,
-                                Result result) {
+void Bundle::OnStateSaved(
+    const std::string& catalog_id,
+    const uint64_t& catalog_version,
+    const uint64_t& catalog_ping,
+    const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to save bundle";
-    // TODO(bridiver) - seems like we should do more than just log here?
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to save bundle state";
+
+    // If the bundle fails to save, we will retry the next time a bundle is
+    // downloaded from the Ads Serve
     return;
   }
 
@@ -141,48 +148,27 @@ void Bundle::OnBundleStateSaved(const std::string& catalog_id,
   catalog_version_ = catalog_version;
   catalog_ping_ = catalog_ping;
 
-  LOG(ads_client_, LogLevel::INFO) << "Bundle saved";
-}
-
-void Bundle::OnBundleStateReset(Result result) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Bundle reset failed";
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::ERROR) << "Bundle reset";
-  catalog_id_ = "";
-  catalog_version_ = 0;
-  catalog_ping_ = 0;
-}
-
-void Bundle::ToJsonForTesting(const BUNDLE_STATE& state) {
-  std::string json;
-  SaveToJson(state, json);
-  ads_client_->Save("bundle.json", json,
-    std::bind(&Bundle::OnBundleSavedForTesting, this, _1));
-}
-
-void Bundle::OnBundleSavedForTesting(const Result result) {
-  if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Save json bundle failed";
-    return;
-  }
-
-  LOG(ads_client_, LogLevel::INFO) << "Bundle json saved";
-}
-
-// see comment above about VLOG vs saving to disk
-bool Bundle::FromJsonForTesting(const std::string& json) {
-  auto state = std::make_unique<BUNDLE_STATE>();
-  auto jsonSchema = ads_client_->Load("bundle-schema.json");
-  if (!LoadFromJson(*state, json.c_str(), jsonSchema)) {
-    return false;
-  }
-
-  InitializeFromBundleState(std::move(state));
-  return true;
   LOG(ads_client_, LogLevel::INFO) << "Successfully saved bundle state";
+}
+
+void Bundle::OnStateReset(
+    const std::string& catalog_id,
+    const uint64_t& catalog_version,
+    const uint64_t& catalog_ping,
+    const Result result) {
+  if (result == Result::FAILED) {
+    LOG(ads_client_, LogLevel::ERROR) << "Failed to reset bundle state";
+
+    // TODO(Terry Mancey): If the bundle fails to reset we need to decide what
+    // action to take
+    return;
+  }
+
+  catalog_id_ = catalog_id;
+  catalog_version_ = catalog_version;
+  catalog_ping_ = catalog_ping;
+
+  LOG(ads_client_, LogLevel::INFO) << "Successfully reset bundle state";
 }
 
 }  // namespace ads
