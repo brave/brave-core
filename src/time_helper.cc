@@ -9,14 +9,14 @@
 
 namespace helper {
 
-void Time::TimeStamp(std::string& str) {
+std::string Time::TimeStamp() {
   time_t rawtime;
   std::time(&rawtime);
 
   char buffer[24];
   struct tm* timeinfo = std::localtime(&rawtime);
   strftime(buffer, 24, "%FT%TZ", timeinfo);
-  str = std::string(buffer);
+  return std::string(buffer);
 }
 
 }  // namespace helper

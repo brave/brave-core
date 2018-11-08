@@ -11,7 +11,7 @@ namespace helper {
 
 class Time {
  public:
-  static void TimeStamp(std::string& str);
+  static std::string TimeStamp();
 };
 
 }  // namespace helper

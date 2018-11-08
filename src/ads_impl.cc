@@ -61,8 +61,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
   writer.String("notify");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
@@ -114,8 +113,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   writer.String("notify");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
@@ -178,8 +176,7 @@ void AdsImpl::GenerateAdReportingSustainEvent(
   writer.String("sustain");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("notificationId");
@@ -868,8 +865,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   writer.String("load");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -932,8 +928,7 @@ void AdsImpl::GenerateAdReportingBackgroundEvent() {
   writer.String("background");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("place");
@@ -959,8 +954,7 @@ void AdsImpl::GenerateAdReportingForegroundEvent() {
   writer.String("foreground");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("place");
@@ -987,8 +981,7 @@ void AdsImpl::GenerateAdReportingBlurEvent(
   writer.String("blur");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1014,8 +1007,7 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
   writer.String("focus");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1041,8 +1033,7 @@ void AdsImpl::GenerateAdReportingFocusEvent(
   writer.String("focus");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
@@ -1067,8 +1058,7 @@ void AdsImpl::GenerateAdReportingRestartEvent() {
   writer.String("restart");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("place");
@@ -1094,8 +1084,7 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String("settings");
 
   writer.String("stamp");
-  std::string time_stamp;
-  helper::Time::TimeStamp(time_stamp);
+  std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("settings");
