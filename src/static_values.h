@@ -4,11 +4,14 @@
 
 #pragma once
 
-#define ADS_STAGING_SERVER "https://ads-serve-staging.brave.com/v1/catalog"
-#define ADS_PRODUCTION_SERVER "https://ads-serve.mercury.basicattentiontoken.org/v1/catalog"
 #include <string>
 
 namespace ads {
+
+#define STAGING_SERVER "https://ads-serve-staging.brave.com/"
+#define PRODUCTION_SERVER "https://ads-serve.mercury.basicattentiontoken.org/"
+
+#define CATALOG_PATH "v1/catalog"
 
 static const uint64_t kMaximumEntriesInPageScoreHistory = 5;
 static const uint64_t kMaximumEntriesInAdsShownHistory = 99;

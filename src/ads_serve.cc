@@ -28,7 +28,8 @@ void AdsServe::BuildUrl() {
   // that we should even be passing this info in the first place
   ClientInfo client_info = ads_client_->GetClientInfo();
 
-  url_ = _is_production ? ADS_PRODUCTION_SERVER : ADS_STAGING_SERVER;
+  url_ = _is_production ? PRODUCTION_SERVER : STAGING_SERVER;
+  url_ += CATALOG_PATH;
 
   url_ += "?braveVersion=" + client_info.application_version;
   url_ += "&platform=" + client_info.platform;
