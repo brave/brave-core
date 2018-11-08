@@ -58,7 +58,6 @@ template("brave_extra_paks") {
       "$root_gen_dir/brave/brave_unscaled_resources.pak",
       "$root_gen_dir/brave/browser/resources/brave_settings_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
-      "$root_gen_dir/components/brave_components_strings.pak",
       "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
       "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak",
       "$target_gen_dir/browser/resources/brave_extension.pak",
