@@ -31,7 +31,7 @@ platform :ios do
 
   desc "Creates a Brave Beta Release build for TestFlight."
   lane :beta do |options|
-    set_build_number()
+    set_build_number(options)
 
     # TODO: make name dynamic
     # build_name = "Brave#{get_client_version_number}(#{get_build_number})"
@@ -80,26 +80,11 @@ platform :ios do
   end
 
   desc "Updates the project's build number to be the next number acceptable by TestFlight. Takes the following arguments:"
-  lane :set_build_number do
-    latest_build_number = latest_testflight_build_number(
-      version: get_client_version_number,
-      initial_build_number: 0,
-      username: sh("cat", "#{LOCAL_PATH}/AppleId"),
-      app_identifier: "com.brave.ios.BrowserBeta",
-    )
-
+  lane :set_build_number do |options|
     dateFormat = "%y.%m.%d.%H"
-
-    time = Time.now.getutc
-    formattedBuildNumber = time.strftime(dateFormat)
-
-    if formattedBuildNumber == latest_build_number
-      UI.message "Same build number, adding minute modifier."
-      # Add the minute as a differentiator
-      dateFormat += ".%m"
-      formattedBuildNumber = time.strftime(dateFormat) 
-    end
-
+    # Allows minute override in case two betas within same hour are required
+    dateFormat += ".%M" if options[:minutes_in_build_number]
+    formattedBuildNumber = Time.now.getutc.strftime(dateFormat)
     sh("echo GENERATED_BUILD_ID=#{formattedBuildNumber} > #{LOCAL_PATH}/BuildId.xcconfig")
   end
 
