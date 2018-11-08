@@ -28,6 +28,8 @@ class SequencedTaskRunner;
 
 namespace brave_ads {
 
+class BundleStateDatabase;
+
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
@@ -42,11 +44,12 @@ class AdsServiceImpl : public AdsService,
 
   // AdsClient implementation
   const ads::ClientInfo GetClientInfo() const override;
-  std::string SetLocale(const std::string& locale) override;
-  const std::vector<std::string>& GetLocales() const override;
+  const std::string SetLocale(const std::string& locale) override;
+  const std::vector<std::string> GetLocales() const override;
   const std::string GenerateUUID() const override;
   const std::string GetSSID() const override;
-  void ShowAd(const std::unique_ptr<ads::AdInfo> info) override {}
+  void ShowNotification(
+      const std::unique_ptr<ads::NotificationInfo> info) override {}
   uint32_t SetTimer(const uint64_t& time_offset) override;
   void KillTimer(uint32_t timer_id) override;
   std::unique_ptr<ads::URLSession> URLSessionTask(
@@ -61,12 +64,16 @@ class AdsServiceImpl : public AdsService,
             ads::OnSaveCallback callback) override;
   void Load(const std::string& name,
             ads::OnLoadCallback callback) override;
+  void SaveBundleState(
+      std::unique_ptr<ads::BUNDLE_STATE> bundle_state,
+      ads::OnSaveCallback callback) override;
+  const std::string Load(const std::string& name) override;
   void Reset(const std::string& name,
              ads::OnResetCallback callback) override;
-  void GetAds(
+  void GetCategory(
       const std::string& winning_category,
-      ads::CallbackHandler* callback_handler) override {}
-  void GetSampleCategory(ads::CallbackHandler* callback_handler) override {}
+      ads::CallbackHandler* callback_handler) override;
+  void GetSampleCategory(ads::CallbackHandler* callback_handler) override;
   bool GetUrlComponents(
       const std::string& url,
       ads::UrlComponents* components) const override;
@@ -75,6 +82,10 @@ class AdsServiceImpl : public AdsService,
                     int line,
                     const ads::LogLevel log_level) const override;
 
+  void OnGetCategory(ads::CallbackHandler* callback_handler,
+                     const std::string& category,
+                     const std::vector<ads::AdInfo>& ads);
+  void OnSaveBundleState(const ads::OnSaveCallback& callback, bool success);
   void OnLoaded(const ads::OnLoadCallback& callback,
                 const std::string& value);
   void OnTimer(uint32_t timer_id);
@@ -86,6 +97,7 @@ class AdsServiceImpl : public AdsService,
 
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   uint32_t next_timer_id_;
+  std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
 
   std::unique_ptr<ads::Ads> ads_;
 
