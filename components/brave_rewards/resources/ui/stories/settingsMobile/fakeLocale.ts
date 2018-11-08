@@ -30,9 +30,9 @@ const locale = {
   contributionVisit10: '10 visits',
   contributionVisit1: '1 visit',
   contributionVisit5: '5 visits',
-  donationDesc: 'Donate to sites as you browse or give tips to posts when you ‘Like’ them. You can also make the donation recurring monthly so you can support the site continuously. All accessed from the address bar.',
-  donationTitle: 'Direct Donations',
-  donationTotal: 'Total donations this month',
+  donationDesc: 'Tip content creators directly as you browse or give tips to videos and tweets that you ‘like’. You can also set up recurring monthly tips so you can support sites continuously.',
+  donationTitle: 'Tips',
+  donationTotal: 'Total tips this month',
   rewardsDisabledDescOne: 'With conventional browsers, you pay to browse the web by viewing ads with your valuable attention, spending your valuable time downloading invasive ad technology, that transmits your valuable private data to advertisers — without your consent.',
   rewardsDisabledDescTwo: 'Today, Brave welcomes you to the new internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.',
   whyBraveRewards: 'Why Brave Rewards?'
