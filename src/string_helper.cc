@@ -8,30 +8,42 @@
 
 namespace helper {
 
-void String::Split(
+bool String::Split(
     const std::string& str,
     const char delimiter,
-    std::vector<std::string>& v) {
+    std::vector<std::string>* v) {
+  if (!v) {
+    return false;
+  }
+
   std::stringstream ss(str);
   std::string token;
 
   while (std::getline(ss, token, delimiter)) {
-    v.push_back(token);
+    v->push_back(token);
   }
+
+  return true;
 }
 
-void String::Join(
+bool String::Join(
     const std::vector<std::string>& v,
     const char delimiter,
-    std::string& str) {
-  str.clear();
+    std::string* str) {
+  if (!str) {
+    return false;
+  }
+
+  str->clear();
 
   for (auto p = v.begin(); p != v.end(); ++p) {
-    str += *p;
+    *str += *p;
     if (p != v.end() - 1) {
-      str += delimiter;
+      *str += delimiter;
     }
   }
+
+  return true;
 }
 
 }  // namespace helper

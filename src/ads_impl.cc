@@ -70,8 +70,7 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
   writer.String("notificationClassification");
   writer.StartArray();
   std::vector<std::string> classifications;
-  helper::String::Split(info.classification,
-    '-', classifications);
+  helper::String::Split(info.classification, '-', &classifications);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -139,8 +138,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   writer.String("notificationClassification");
   writer.StartArray();
   std::vector<std::string> classifications;
-  helper::String::Split(info.classification,
-    '-', classifications);
+  helper::String::Split(info.classification, '-', &classifications);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -884,7 +882,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   writer.String("tabClassification");
   writer.StartArray();
   std::vector<std::string> classifications;
-  helper::String::Split(last_page_classification_, '-', classifications);
+  helper::String::Split(last_page_classification_, '-', &classifications);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }

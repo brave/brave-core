@@ -44,10 +44,10 @@ const std::string MockAdsClient::SetLocale(const std::string& locale) {
   if (std::find(locales.begin(), locales.end(), locale) != locales.end()) {
     locale_ = locale;
   } else {
-    std::vector<std::string> locale_info;
-    helper::String::Split(locale, '_', locale_info);
+    std::vector<std::string> locale_components;
+    helper::String::Split(locale, '_', &locale_components);
 
-    auto language_code = locale_info.front();
+    auto language_code = locale_components.front();
     if (std::find(locales.begin(), locales.end(),
         language_code) != locales.end()) {
       locale_ = language_code;

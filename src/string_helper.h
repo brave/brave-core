@@ -11,15 +11,15 @@ namespace helper {
 
 class String {
  public:
-  static void Split(
+  static bool Split(
       const std::string& str,
       const char delimiter,
-      std::vector<std::string>& v);
+      std::vector<std::string>* v);
 
-  static void Join(
+  static bool Join(
       const std::vector<std::string>& v,
       const char delimiter,
-      std::string& str);
+      std::string* str);
 };
 
 }  // namespace helper

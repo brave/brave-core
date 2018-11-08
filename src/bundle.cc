@@ -49,7 +49,7 @@ bool Bundle::UpdateFromCatalog(
       }
 
       std::string category;
-      helper::String::Join(heirarchy, '-', category);
+      helper::String::Join(heirarchy, '-', &category);
 
       std::string top_level = heirarchy.front();
       uint64_t entries = 0;
