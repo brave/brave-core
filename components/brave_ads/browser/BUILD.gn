@@ -25,6 +25,8 @@ source_set("browser") {
     sources += [
       "ads_service_impl.cc",
       "ads_service_impl.h",
+      "bundle_state_database.cc",
+      "bundle_state_database.h",
     ]
 
     deps += [

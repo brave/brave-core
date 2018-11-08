@@ -12,8 +12,10 @@
 #include "base/task/post_task.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/url_session.h"
+#include "brave/components/brave_ads/browser/bundle_state_database.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_constants.h"
+#include "content/public/browser/browser_thread.h"
 #include "ui/base/l10n/l10n_util.h"
 
 
@@ -34,6 +36,27 @@ std::string LoadOnFileTaskRunner(
   return data;
 }
 
+std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
+    const std::string category,
+    BundleStateDatabase* backend) {
+  std::vector<ads::AdInfo> ads;
+  if (!backend)
+    return ads;
+
+  backend->GetAdsForCategory(category, ads);
+
+  return ads;
+}
+
+bool SaveBundleStateOnFileTaskRunner(
+    std::unique_ptr<ads::BUNDLE_STATE> bundle_state,
+    BundleStateDatabase* backend) {
+  if (backend && backend->SaveBundleState(*bundle_state))
+    return true;
+
+  return false;
+}
+
 }
 
 AdsServiceImpl::AdsServiceImpl(Profile* profile) :
@@ -42,14 +65,18 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     base_path_(profile_->GetPath().AppendASCII("ads_service")),
-    next_timer_id_(0) {
+    next_timer_id_(0),
+    bundle_state_backend_(
+        new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))) {
   DCHECK(!profile_->IsOffTheRecord());
 
   if (is_enabled())
     Init();
 }
 
-AdsServiceImpl::~AdsServiceImpl() {}
+AdsServiceImpl::~AdsServiceImpl() {
+  file_task_runner_->DeleteSoon(FROM_HERE, bundle_state_backend_.release());
+}
 
 void AdsServiceImpl::Init() {
   DCHECK(is_enabled());
@@ -64,7 +91,7 @@ bool AdsServiceImpl::is_enabled() {
 void AdsServiceImpl::Save(const std::string& name,
                           const std::string& value,
                           ads::OnSaveCallback callback) {
-
+  // TODO(bridiver) - implement
 }
 
 void AdsServiceImpl::Load(const std::string& name,
@@ -74,6 +101,30 @@ void AdsServiceImpl::Load(const std::string& name,
       base::BindOnce(&AdsServiceImpl::OnLoaded,
                      AsWeakPtr(),
                      std::move(callback)));
+}
+
+const std::string AdsServiceImpl::Load(const std::string& name) {
+  // TODO(bridiver) - this Load method needs to be refactored in bat-native-ads
+  // because we can't have synchronous IO operations
+  NOTREACHED();
+  return "{}";
+}
+
+void AdsServiceImpl::SaveBundleState(
+    std::unique_ptr<ads::BUNDLE_STATE> bundle_state,
+    ads::OnSaveCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&SaveBundleStateOnFileTaskRunner,
+                    base::Passed(std::move(bundle_state)),
+                    bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnSaveBundleState,
+                     AsWeakPtr(),
+                     callback));
+}
+
+void AdsServiceImpl::OnSaveBundleState(const ads::OnSaveCallback& callback,
+                                       bool success) {
+  callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
 void AdsServiceImpl::OnLoaded(
@@ -86,7 +137,32 @@ void AdsServiceImpl::OnLoaded(
 }
 
 void AdsServiceImpl::Reset(const std::string& name,
-            ads::OnResetCallback callback) {
+                           ads::OnResetCallback callback) {
+  // TODO(bridiver) - implement
+}
+
+void AdsServiceImpl::GetCategory(const std::string& category,
+                                 ads::CallbackHandler* callback_handler) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&GetAdsForCategoryOnFileTaskRunner,
+                    category,
+                    bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnGetCategory,
+                     AsWeakPtr(),
+                     callback_handler,
+                     category));
+}
+
+void AdsServiceImpl::OnGetCategory(ads::CallbackHandler* callback_handler,
+                                   const std::string& category,
+                                   const std::vector<ads::AdInfo>& ads) {
+  callback_handler->OnGetCategory(
+      ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS,
+      category,
+      ads);
+}
+
+void AdsServiceImpl::GetSampleCategory(ads::CallbackHandler* callback_handler) {
 
 }
 
@@ -118,11 +194,13 @@ const std::string AdsServiceImpl::GetSSID() const {
   return "";
 }
 
-const std::vector<std::string>& AdsServiceImpl::GetLocales() const {
+const std::vector<std::string> AdsServiceImpl::GetLocales() const {
+  // TODO(bridiver) - re-implement this
   return l10n_util::GetAvailableLocales();
 }
 
-std::string AdsServiceImpl::SetLocale(const std::string& locale) {
+const std::string AdsServiceImpl::SetLocale(const std::string& locale) {
+  // TODO(bridiver) - implement this
   return locale;
 }
 
