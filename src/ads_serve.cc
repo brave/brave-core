@@ -108,15 +108,9 @@ void AdsServe::UpdateNextCatalogCheck() {
 //////////////////////////////////////////////////////////////////////////////
 
 void AdsServe::ProcessCatalog(const std::string& json) {
-  // TODO(Brian Johnson): I have added the catalog class back to the project
-  // can you please change the code below to instantiate a catalog which
-  // should be responsible for the catalog state as there is custom logic
-  // in the catalog class concerning catalog_id's and I am sure further logic
-  // will be added in the future, the catalog class does have a shared_ptr
-  // which will also need changing
-  CATALOG_STATE catalog_state;
-  auto jsonSchema = ads_client_->Load("catalog-schema.json");
-  if (!catalog_state.LoadFromJson(json, jsonSchema)) {
+  Catalog catalog(bundle_, ads_client_);
+
+  if (!catalog.FromJson(json)) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Failed to parse catalog'
 
@@ -129,17 +123,7 @@ void AdsServe::ProcessCatalog(const std::string& json) {
   // { status: 'processed', campaigns: underscore.keys(campaigns).length,
   // creativeSets: underscore.keys(creativeSets).length
 
-  auto current_catalog_version = bundle_->GetCatalogVersion();
-  if (current_catalog_version != 0 &&
-      current_catalog_version <= catalog_state.version) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Current catalog is the same or a newer version'
-
-    RetryDownloadingCatalog();
-    return;
-  }
-
-  if (!bundle_->GenerateFromCatalog(catalog_state)) {
+  if (!bundle_->UpdateFromCatalog(catalog)) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Failed to generate bundle'
 
@@ -149,12 +133,6 @@ void AdsServe::ProcessCatalog(const std::string& json) {
 
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Generated bundle'
-
-  // TODO(Brian Johnson): Saving of the catalog should be changed back to
-  // saving in the catalog class as it is not the responsibility of the ads
-  // serve class
-  ads_client_->Save("catalog.json", json,
-    std::bind(&AdsServe::OnCatalogSaved, this, _1));
 
   ads_->SaveCachedInfo();
 

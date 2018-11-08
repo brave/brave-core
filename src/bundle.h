@@ -8,29 +8,42 @@
 #include <memory>
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/bundle_state.h"
-#include "catalog_state.h"
+#include "catalog.h"
 
 namespace ads {
+
+struct BUNDLE_STATE;
 
 class Bundle {
  public:
   explicit Bundle(AdsClient* ads_client);
   ~Bundle();
 
-  bool FromJson(const std::string& json);  // Deserialize
-  const std::string ToJson();  // Serialize
-
-  bool GenerateFromCatalog(const CATALOG_STATE& catalog_state);
+  bool UpdateFromCatalog(const Catalog& catalog);
 
   void Reset();
 
-  std::string GetCatalogId() const;
+  const std::string GetCatalogId() const;
   uint64_t GetCatalogVersion() const;
   uint64_t GetCatalogPing() const;
 
+  bool FromJsonForTesting(const std::string& json);  // Deserialize
+
  private:
+  void InitializeFromBundleState(std::unique_ptr<BUNDLE_STATE> state);
+  void OnBundleStateSaved(const std::string& catalog_id,
+                          const uint64_t& catalog_version,
+                          const uint64_t& catalog_ping,
+                          Result result);
+  void OnBundleStateReset(Result result);
+  void ToJsonForTesting(const BUNDLE_STATE& state);
+  void OnBundleSavedForTesting(Result result);
+
   AdsClient* ads_client_;  // NOT OWNED
+
+  std::string catalog_id_;
+  uint64_t catalog_version_;
+  uint64_t catalog_ping_;
 
   std::unique_ptr<BUNDLE_STATE> bundle_state_;
 };
