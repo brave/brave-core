@@ -582,7 +582,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const 
   auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher.id, amount, currency);
   auto direction_list = std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
   braveledger_bat_helper::PublisherList list;
-  bat_contribution_->Reconcile(GenerateGUID(),
+  bat_contribution_->StartReconcile(GenerateGUID(),
                          ledger::PUBLISHER_CATEGORY::DIRECT_DONATION,
                          list,
                          direction_list);

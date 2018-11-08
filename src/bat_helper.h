@@ -433,7 +433,7 @@ namespace braveledger_bat_helper {
 
   std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
 
-  void getPublicKeyFromSeed(const std::vector<uint8_t>& seed, std::vector<uint8_t>& publicKey, std::vector<uint8_t>& secretKey);
+  bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed, std::vector<uint8_t>& publicKey, std::vector<uint8_t>& secretKey);
 
   std::string uint8ToHex(const std::vector<uint8_t>& in);
 

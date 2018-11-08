@@ -1931,9 +1931,12 @@ static bool ignore_ = false;
     return out;
   }
 
-  void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
+  bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
         std::vector<uint8_t>& publicKey, std::vector<uint8_t>& secretKey) {
     DCHECK(!seed.empty());
+    if (seed.empty()) {
+      return false;
+    }
     publicKey.resize(crypto_sign_PUBLICKEYBYTES);
     secretKey = seed;
     secretKey.resize(crypto_sign_SECRETKEYBYTES);
@@ -1941,6 +1944,11 @@ static bool ignore_ = false;
     crypto_sign_keypair(&publicKey.front(), &secretKey.front(), 1);
 
     DCHECK(!publicKey.empty() && !secretKey.empty());
+    if (publicKey.empty() && secretKey.empty()) {
+      return false;
+    }
+
+    return true;
   }
 
   std::string uint8ToHex(const std::vector<uint8_t>& in) {

@@ -41,17 +41,18 @@
 // Contribution process
 
 // PHASE 1 (reconcile)
-// 1. Reconcile
-// 2. ReconcileCallback
-// 3. CurrentReconcile
-// 4. CurrentReconcileCallback
-// 5. ReconcilePayload
-// 6. ReconcilePayloadCallback
-// 7. RegisterViewing
-// 8. RegisterViewingCallback
-// 9. ViewingCredentials
-// 10. ViewingCredentialsCallback
-// 11. OnReconcileComplete
+// 1. StartReconcile
+// 2. Reconcile
+// 3. ReconcileCallback
+// 4. CurrentReconcile
+// 5. CurrentReconcileCallback
+// 6. ReconcilePayload
+// 7. ReconcilePayloadCallback
+// 8. RegisterViewing
+// 9. RegisterViewingCallback
+// 10. ViewingCredentials
+// 11. ViewingCredentialsCallback
+// 12. OnReconcileComplete
 
 // PHASE 2 (voting)
 // 1. GetReconcileWinners
@@ -83,7 +84,7 @@ class BatContribution {
 
   // Starting point for contribution
   // We determinate which contribution we want to do and do appropriate actions
-  void Reconcile(
+  void StartReconcile(
       const std::string &viewing_id,
       const ledger::PUBLISHER_CATEGORY category,
       const braveledger_bat_helper::PublisherList& list,
@@ -120,6 +121,8 @@ class BatContribution {
 
   // Triggers contribution process for auto contribute table
   void StartAutoContribute();
+
+  void Reconcile(const std::string &viewing_id);
 
   void ReconcileCallback(const std::string& viewing_id,
                          bool result,
