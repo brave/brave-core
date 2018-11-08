@@ -341,6 +341,13 @@ void BatContribution::CurrentReconcileCallback(
     return;
   }
 
+  ReconcilePayload(viewing_id, unsigned_tx);
+}
+
+void BatContribution::ReconcilePayload(
+    const std::string& viewing_id,
+    const braveledger_bat_helper::UNSIGNED_TX& unsigned_tx) {
+  auto reconcile = ledger_->GetReconcileById(viewing_id);
   braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
   std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsigned_tx);
 
@@ -1093,20 +1100,24 @@ void BatContribution::VoteBatchCallback(
       break;
     }
   }
+
   ledger_->SetBatch(batch);
-  SetTimer(last_vote_batch_timer_id_);
+
+  if (batch.size() > 0) {
+    SetTimer(last_vote_batch_timer_id_);
+  }
 }
 
 void BatContribution::OnTimer(uint32_t timer_id) {
   if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
     OnTimerReconcile();
-  } else if (timer_id == last_vote_batch_timer_id_) {
-    last_vote_batch_timer_id_ = 0;
-    VoteBatch();
   } else if (timer_id == last_prepare_vote_batch_timer_id_) {
     last_prepare_vote_batch_timer_id_ = 0;
     PrepareVoteBatch();
+  } else if (timer_id == last_vote_batch_timer_id_) {
+    last_vote_batch_timer_id_ = 0;
+    VoteBatch();
   }
 }
 

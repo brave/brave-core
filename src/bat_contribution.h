@@ -11,6 +11,64 @@
 #include "bat_helper.h"
 #include "url_request_handler.h"
 
+// Contribution has two big phases. PHASE 1 is starting the contribution,
+// getting surveyors and transferring BAT from the wallet.
+// PHASE 2 uses surveyors from the phase 1 and client generates votes/ballots
+// and send them to the server so that server knows to
+// which publisher sends the money.
+
+// For every phase we are doing retries, so that we try our best to process
+// contribution successfully. In Phase 1 we notify users about the failure after
+// we do the whole interval of retries. In Phase 2 we have shorter interval
+// but we will try indefinitely, because we just need to send data to the server
+// and we don't need anything from the server.
+
+// Re-try interval for Phase 1:
+// 1 hour
+// 6 hours
+// 12 hours
+// 24 hours
+// 48 hours
+// stop contribution and report error to the user
+
+// Re-try interval for Phase 2:
+// 1 hour
+// 6 hours
+// 24 hours
+// repeat 24 hours interval
+
+
+// Contribution process
+
+// PHASE 1 (reconcile)
+// 1. Reconcile
+// 2. ReconcileCallback
+// 3. CurrentReconcile
+// 4. CurrentReconcileCallback
+// 5. ReconcilePayload
+// 6. ReconcilePayloadCallback
+// 7. RegisterViewing
+// 8. RegisterViewingCallback
+// 9. ViewingCredentials
+// 10. ViewingCredentialsCallback
+// 11. OnReconcileComplete
+
+// PHASE 2 (voting)
+// 1. GetReconcileWinners
+// 2. VotePublishers
+// 3. VotePublisher
+// 4. PrepareBallots
+// 5. PrepareBatch
+// 6. PrepareBatchCallback
+// 7. ProofBatch
+// 8. ProofBatchCallback
+// 9. SetTimer
+// 10. PrepareVoteBatch
+// 11. SetTimer
+// 12. VoteBatch
+// 13. VoteBatchCallback
+// 14. SetTimer - we set timer until the whole batch is processed
+
 namespace bat_ledger {
   class LedgerImpl;
 }
@@ -23,14 +81,18 @@ class BatContribution {
 
   ~BatContribution();
 
+  // Starting point for contribution
+  // We determinate which contribution we want to do and do appropriate actions
   void Reconcile(
       const std::string &viewing_id,
       const ledger::PUBLISHER_CATEGORY category,
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions = {});
 
+  // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
 
+  // Sets new reconcile timer for monthly contribution in 30 days
   void SetReconcileTimer();
 
   // Does final stage in contribution
@@ -71,6 +133,10 @@ class BatContribution {
       bool result,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
+
+  void ReconcilePayload(
+    const std::string& viewing_id,
+    const braveledger_bat_helper::UNSIGNED_TX& unsigned_tx);
 
   void ReconcilePayloadCallback(
       const std::string& viewing_id,
