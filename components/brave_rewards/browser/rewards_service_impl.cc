@@ -733,7 +733,7 @@ void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
-    ledger::GetPublisherInfoListCallback callback) {
+    ledger::PublisherInfoListCallback callback) {
   auto now = base::Time::Now();
   filter.month = GetPublisherMonth(now);
   filter.year = GetPublisherYear(now);
@@ -754,7 +754,7 @@ void RewardsServiceImpl::LoadCurrentPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
-    ledger::GetPublisherInfoListCallback callback) {
+    ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
@@ -769,7 +769,7 @@ void RewardsServiceImpl::LoadCurrentPublisherInfoList(
 void RewardsServiceImpl::OnPublisherInfoListLoaded(
     uint32_t start,
     uint32_t limit,
-    ledger::GetPublisherInfoListCallback callback,
+    ledger::PublisherInfoListCallback callback,
     const ledger::PublisherInfoList& list) {
   uint32_t next_record = 0;
   if (list.size() == limit)
@@ -1489,12 +1489,12 @@ ledger::PublisherInfoList GetRecurringDonationsOnFileTaskRunner(PublisherInfoDat
   return list;
 }
 
-void RewardsServiceImpl::OnRecurringDonationsData(const ledger::RecurringDonationCallback callback,
+void RewardsServiceImpl::OnRecurringDonationsData(const ledger::PublisherInfoListCallback callback,
                                                   const ledger::PublisherInfoList list) {
-  callback(list);
+  callback(list, 0);
 }
 
-void RewardsServiceImpl::GetRecurringDonations(ledger::RecurringDonationCallback callback) {
+void RewardsServiceImpl::GetRecurringDonations(ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&GetRecurringDonationsOnFileTaskRunner,
                     publisher_info_backend_.get()),
