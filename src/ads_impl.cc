@@ -644,7 +644,7 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
 void AdsImpl::RetrieveSSID() {
   std::string ssid = ads_client_->GetSSID();
   if (ssid.empty()) {
-    ssid = "Unknown";
+    ssid = kUnknownSSID;
   }
 
   client_->SetCurrentSSID(ssid);

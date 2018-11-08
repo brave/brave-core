@@ -195,7 +195,7 @@ const std::string Client::GetCurrentPlace() {
   if (place != client_state_->places.end()) {
     return place->second;
   } else {
-    return "UNDISCLOSED";
+    return kUndisclosedPlace;
   }
 }
 

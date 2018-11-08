@@ -6,6 +6,7 @@
 
 #define ADS_STAGING_SERVER "https://ads-serve-staging.brave.com/v1/catalog"
 #define ADS_PRODUCTION_SERVER "https://ads-serve.mercury.basicattentiontoken.org/v1/catalog"
+#include <string>
 
 namespace ads {
 
@@ -17,5 +18,8 @@ static const uint64_t kOneHourInSeconds = 60 * 60;
 
 static const uint64_t kDefaultAdsPerDay = 20;
 static const uint64_t kDefaultAdsPerHour = 6;
+
+static char kUnknownSSID[] = "UNKNOWN";
+static char kUndisclosedPlace[] = "UNDISCLOSED";
 
 }  // namespace ads
