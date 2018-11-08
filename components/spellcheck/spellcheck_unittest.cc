@@ -7,7 +7,7 @@
 namespace {
 struct LanguageFilename {
   const char* language;  // The language input.
-  const char* filename;  // The corresponding filename.
+  base::FilePath::StringType filename;  // The corresponding filename.
 };
 }
 
@@ -31,7 +31,7 @@ TEST_F(SpellcheckTest, DictionaryFilenames) {
   // should show the expected filename, or check GetVersionedFilename() in
   // components/spellcheck/spellcheck_common.cc to determine the new filename,
   // then add the updated dictionary file to the download server.
-  static constexpr LanguageFilename kExpectedSpellCheckerFilenames[] = {
+  LanguageFilename kExpectedSpellCheckerFilenames[] = {
     {"af", "af-ZA-3-0.bdic"},
     {"bg", "bg-BG-3-0.bdic"},
     {"ca", "ca-ES-3-0.bdic"},
@@ -82,8 +82,7 @@ TEST_F(SpellcheckTest, DictionaryFilenames) {
     {"vi", "vi-VN-3-0.bdic"}
   };
   for (const auto& lang_file : kExpectedSpellCheckerFilenames) {
-      base::FilePath::StringType filename(lang_file.filename);
-      base::FilePath dict_dir = base::FilePath(filename);
+      base::FilePath dict_dir = base::FilePath(lang_file.filename);
       EXPECT_EQ(spellcheck::GetVersionedFileName(
                     lang_file.language, base::FilePath()), dict_dir);
   }
