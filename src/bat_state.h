@@ -7,6 +7,7 @@
 
 #include "bat_helper.h"
 
+#include <memory>
 #include <string>
 
 namespace bat_ledger {
