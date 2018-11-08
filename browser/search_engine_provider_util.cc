@@ -12,6 +12,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/search_engines/template_url_data.h"
+#include "components/search_engines/template_url_prepopulate_data.h"
 
 namespace brave {
 
@@ -53,6 +55,13 @@ void InitializeSearchEngineProviderIfNeeded(Profile* profile) {
     new GuestWindowSearchEngineProviderController(profile);
     return;
   }
+
+}
+
+bool IsRegionForQwant(Profile* profile) {
+  return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
+      profile->GetPrefs())->prepopulate_id ==
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
 }
 
 }  // namespace brave

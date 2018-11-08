@@ -21,12 +21,6 @@
 
 using SearchEngineProviderControllerTest = InProcessBrowserTest;
 
-bool IsRegionForQwant(Profile* profile) {
-  return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-      profile->GetPrefs())->prepopulate_id ==
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
-}
-
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
   result.SetShortName(base::ASCIIToUTF16("test1"));
@@ -101,7 +95,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
-  int default_provider_id = IsRegionForQwant(tor_profile) ?
+  int default_provider_id = brave::IsRegionForQwant(tor_profile) ?
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT :
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
 
