@@ -26,7 +26,7 @@ bool Settings::IsAdsEnabled() const {
   return settings_state_->ads_enabled;
 }
 
-std::string Settings::GetAdsLocale() const {
+const std::string Settings::GetAdsLocale() const {
   return settings_state_->ads_locale;
 }
 

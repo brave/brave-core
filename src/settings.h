@@ -20,7 +20,7 @@ class Settings {
   bool FromJson(const std::string& json);  // Deserialize
 
   bool IsAdsEnabled() const;
-  std::string GetAdsLocale() const;
+  const std::string GetAdsLocale() const;
   uint64_t GetAdsPerHour() const;
   uint64_t GetAdsPerDay() const;
 
