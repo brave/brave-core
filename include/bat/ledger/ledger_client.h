@@ -37,7 +37,8 @@ LEDGER_EXPORT enum URL_METHOD {
 
 using PublisherInfoCallback = std::function<void(Result,
     std::unique_ptr<PublisherInfo>)>;
-using GetPublisherInfoListCallback =
+// TODO(nejczdovc) we should be providing result back as well
+using PublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
@@ -85,10 +86,10 @@ class LEDGER_EXPORT LedgerClient {
                                 const std::string& publisher_id) = 0;
   virtual void LoadPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
-                                    GetPublisherInfoListCallback callback) = 0;
+                                    PublisherInfoListCallback callback) = 0;
   virtual void LoadCurrentPublisherInfoList(uint32_t start, uint32_t limit,
                                     PublisherInfoFilter filter,
-                                    GetPublisherInfoListCallback callback) = 0;
+                                    PublisherInfoListCallback callback) = 0;
 
   // TODO this can be removed
   virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
@@ -110,7 +111,7 @@ class LEDGER_EXPORT LedgerClient {
                                     const uint32_t date,
                                     const std::string& publisher_key,
                                     const ledger::PUBLISHER_CATEGORY category) = 0;
-  virtual void GetRecurringDonations(ledger::RecurringDonationCallback callback) = 0;
+  virtual void GetRecurringDonations(ledger::PublisherInfoListCallback callback) = 0;
   virtual void OnRemoveRecurring(const std::string& publisher_key,
                                  ledger::RecurringRemoveCallback callback) = 0;
 
