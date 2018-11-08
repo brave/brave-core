@@ -10,10 +10,10 @@
 #include "components/search_engines/template_url_service.h"
 
 GuestWindowSearchEngineProviderController::
-GuestWindowSearchEngineProviderController(Profile* profile)
-    : SearchEngineProviderControllerBase(profile) {
-  DCHECK_EQ(profile->GetProfileType(), Profile::GUEST_PROFILE);
-  DCHECK(!profile->IsTorProfile());
+GuestWindowSearchEngineProviderController(Profile* otr_profile)
+    : SearchEngineProviderControllerBase(otr_profile) {
+  DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
+  DCHECK(!otr_profile->IsTorProfile());
 
   // Monitor otr(off the record) profile's search engine changing to tracking
   // user's default search engine provider.

@@ -11,7 +11,7 @@
 class TorWindowSearchEngineProviderController
     : public SearchEngineProviderControllerBase {
  public:
-  explicit TorWindowSearchEngineProviderController(Profile* profile);
+  explicit TorWindowSearchEngineProviderController(Profile* otr_profile);
   ~TorWindowSearchEngineProviderController() override;
 
  private:
