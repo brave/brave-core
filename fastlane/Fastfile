@@ -21,6 +21,12 @@ platform :ios do
   after_all do |lane, options|
     # If no uncommitted changes existed before running `lane`, reset any potential fastlane changes
     reset_git_repo(skip_clean: true) unless options[:ignore_git_status]
+
+    clean_icons()
+  end
+
+  error do
+    clean_icons()
   end
 
   desc "Creates a Brave Beta Release build for TestFlight."
@@ -111,6 +117,11 @@ platform :ios do
   private_lane :get_client_build_number do
     buildIdFile = Xcodeproj::Config.new("#{LOCAL_PATH}/BuildId.xcconfig")
     buildId = buildIdFile.attributes['GENERATED_BUILD_ID']
+  end
+
+  private_lane :clean_icons do
+    # Regardless of git flags, always want to forcefully reset icon changes
+    reset_git_repo(files: ["Client/Assets/Images.xcassets/AppIcon*"], force: true)
   end
 
   override_lane :get_build_number do
