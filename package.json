@@ -221,7 +221,7 @@
       "json"
     ],
     "transform": {
-      ".(ts|tsx)": "ts-jest"
+      ".(jsx|js|ts|tsx)": "ts-jest"
     },
     "resetMocks": true,
     "resetModules": true,
@@ -239,8 +239,8 @@
     "testMatch": [
       "<rootDir>/components/test/**/**/?(*_)(test).{ts,tsx}"
     ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/"
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!(brave-ui)/)"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/components/test/testSetup.ts",
     "setupFiles": [
@@ -271,7 +271,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.24.1",
-    "brave-ui": "^0.30.8",
+    "brave-ui": "^0.33.0",
     "css-loader": "^0.28.9",
     "csstype": "^2.5.5",
     "emptykit.css": "^1.0.1",
