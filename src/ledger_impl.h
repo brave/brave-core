@@ -33,6 +33,10 @@ namespace braveledger_bat_state {
 class BatState;
 }
 
+namespace braveledger_bat_contribution {
+class BatContribution;
+}
+
 namespace bat_ledger {
 
 class LedgerImpl : public ledger::Ledger,
@@ -62,10 +66,10 @@ class LedgerImpl : public ledger::Ledger,
   std::vector<ledger::ContributionInfo> GetRecurringDonationPublisherInfo() override;
   void GetPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
-                            ledger::GetPublisherInfoListCallback callback) override;
+                            ledger::PublisherInfoListCallback callback) override;
   void GetCurrentPublisherInfoList(uint32_t start, uint32_t limit,
                             const ledger::PublisherInfoFilter& filter,
-                            ledger::GetPublisherInfoListCallback callback) override;
+                            ledger::PublisherInfoListCallback callback) override;
 
   void DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) override;
 
@@ -169,11 +173,6 @@ class LedgerImpl : public ledger::Ledger,
 
   braveledger_bat_helper::CURRENT_RECONCILE GetReconcileById(const std::string& viewingId);
   void RemoveReconcileById(const std::string& viewingId);
-  void Reconcile() override;
-  void VotePublishers(const std::vector<braveledger_bat_helper::WINNERS_ST>& winners,
-    const std::string& viewing_id);
-  void PrepareVoteBatchTimer();
-  void VoteBatchTimer();
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
                     ledger::FetchIconCallback callback);
@@ -186,9 +185,8 @@ class LedgerImpl : public ledger::Ledger,
                                   const ledger::PUBLISHER_MONTH month,
                                   const int year,
                                   const uint32_t date) override;
-  void GetRecurringDonations(ledger::RecurringDonationCallback callback);
+  void GetRecurringDonations(ledger::PublisherInfoListCallback callback);
   void RemoveRecurring(const std::string& publisher_key) override;
-  void StartAutoContribute();
   ledger::PublisherInfoFilter CreatePublisherFilter(const std::string& publisher_id,
       ledger::PUBLISHER_CATEGORY category,
       ledger::PUBLISHER_MONTH month,
@@ -259,6 +257,21 @@ class LedgerImpl : public ledger::Ledger,
 
   bool ReconcileExists(const std::string& viewingId);
 
+  void SaveContributionInfo(const std::string& probi,
+                            const int month,
+                            const int year,
+                            const uint32_t date,
+                            const std::string& publisher_key,
+                            const ledger::PUBLISHER_CATEGORY category);
+
+  void NormalizeContributeWinners(
+      ledger::PublisherInfoList* newList,
+      bool saveData,
+      const braveledger_bat_helper::PublisherList& list,
+      uint32_t /* next_record */);
+
+  void SetTimer(uint64_t time_offset, uint32_t& timer_id) const;
+
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;
   void AddRecurringPayment(const std::string& publisher_id, const double& value) override;
@@ -283,13 +296,6 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& referrer,
       const std::string& post_data,
       const ledger::VisitData& visit_data) override;
-
-  void ReconcileContributeList(const ledger::PUBLISHER_CATEGORY category,
-                               const ledger::PublisherInfoList& list,
-                               uint32_t  next_record);
-
-  void ReconcileRecurringList(const ledger::PUBLISHER_CATEGORY category,
-                              const ledger::PublisherInfoList& list);
 
   void OnTimer(uint32_t timer_id) override;
 
@@ -320,6 +326,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
   std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
+  std::unique_ptr<braveledger_bat_contribution::BatContribution> bat_contribution_;
   bool initialized_;
   bool initializing_;
 
@@ -330,9 +337,6 @@ class LedgerImpl : public ledger::Ledger,
   uint64_t last_tab_active_time_;
   uint32_t last_shown_tab_id_;
   uint32_t last_pub_load_timer_id_;
-  uint32_t last_reconcile_timer_id_;
-  uint32_t last_prepare_vote_batch_timer_id_;
-  uint32_t last_vote_batch_timer_id_;
   uint32_t last_grant_check_timer_id_;
  };
 }  // namespace bat_ledger
