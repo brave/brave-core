@@ -32,6 +32,7 @@ export const BackgroundContainer = styled<{}, 'div'>('div')`
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
+  overflow: hidden;
 `
 
 export const Background = styled<BackgroundProps, 'div'>('div')`
@@ -39,6 +40,7 @@ export const Background = styled<BackgroundProps, 'div'>('div')`
   background: url('${p => p.background.image}') repeat-x;
   width: 500%;
   height: inherit;
+  will-change: transform;
   transform: translateX(${p => p.background.position});
   transition: transform ease-out 3s;
 `

@@ -66,6 +66,7 @@ interface ContentProps {
 
 export const Content = styled<ContentProps, 'section'>('section')`
   opacity: 0;
+  will-change: transform;
   transform: translateX(${p => p.isPrevious ? '-' + p.screenPosition : p.screenPosition}) scale(0.8);
   transition: opacity 1.5s, transform 1.5s ease-out;
   position: absolute;
