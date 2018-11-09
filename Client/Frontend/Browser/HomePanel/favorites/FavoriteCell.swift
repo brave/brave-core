@@ -4,6 +4,7 @@
 
 import UIKit
 import Shared
+import BraveShared
 
 @objc protocol FavoriteCellDelegate {
     func editFavorite(_ favoriteCell: FavoriteCell)
@@ -16,8 +17,6 @@ class FavoriteCell: UICollectionViewCell {
     
     private struct UI {
         /// Ratio of width:height of the thumbnail image.
-        static let borderColor = UX.GreyJ
-        static let borderWidth: CGFloat = 0
         static let cornerRadius: CGFloat = 8
         
         static let labelColor = UIAccessibilityDarkerSystemColorsEnabled() ? UX.GreyJ : UX.GreyH
@@ -33,35 +32,6 @@ class FavoriteCell: UICollectionViewCell {
     var imageInsets: UIEdgeInsets = UIEdgeInsets.zero
     var cellInsets: UIEdgeInsets = UIEdgeInsets.zero
     
-    var image: UIImage? = nil {
-        didSet {
-            struct ContainerSize {
-                static var size: CGSize = CGSize.zero
-                static func scaledDown() -> CGSize {
-                    return CGSize(width: size.width * 0.75, height: size.height * 0.75)
-                }
-            }
-            
-            if imageView.frame.size.width > 0 {
-                ContainerSize.size = imageView.frame.size
-            }
-            
-            if var image = image {
-                if image.size.width <= 32 && ContainerSize.size != CGSize.zero {                    
-                    image = image.scale(toSize: ContainerSize.scaledDown())
-                    
-                    imageView.contentMode = .center
-                } else if image.size.width > 32 {
-                    imageView.contentMode = .scaleAspectFit
-                }
-                imageView.image = image
-            } else {
-                imageView.image = FavoriteCell.placeholderImage
-                imageView.contentMode = .center
-            }
-        }
-    }
-    
     let textLabel = UILabel().then {
         $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
         $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
@@ -75,8 +45,8 @@ class FavoriteCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         $0.layer.cornerRadius = UI.cornerRadius
-        $0.layer.borderColor = UI.borderColor.cgColor
-        $0.layer.borderWidth = UI.borderWidth
+        $0.layer.borderColor = BraveUX.faviconBorderColor.cgColor
+        $0.layer.borderWidth = BraveUX.faviconBorderWidth
         $0.layer.minificationFilter = kCAFilterTrilinear
         $0.layer.magnificationFilter = kCAFilterNearest
     }
@@ -159,7 +129,6 @@ class FavoriteCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         editButton.isHidden = true
-        showBorder(false)
         backgroundColor = UIColor.clear
         textLabel.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
         textLabel.textColor = 
@@ -204,9 +173,5 @@ class FavoriteCell: UICollectionViewCell {
                 self.editButton.isHidden = true
             }
         })
-    }
-    
-    func showBorder(_ show: Bool) {
-        imageView.layer.borderWidth = show ? UI.borderWidth : 0
     }
 }
