@@ -72,8 +72,6 @@ source_set("ads") {
     "src/client_state.cc",
     "src/math_helper.cc",
     "src/search_providers.cc",
-    "src/settings.cc",
-    "src/settings_state.cc",
     "src/string_helper.cc",
     "src/time_helper.cc",
     "src/json_helper.cc",
