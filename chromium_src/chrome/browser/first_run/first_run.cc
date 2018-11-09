@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/importer/brave_external_process_importer_host.h"
+#include "brave/browser/importer/brave_profile_writer.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
 
@@ -18,7 +20,37 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
+#define ImportFromSourceProfile ImportFromSourceProfile_ChromiumImpl
 #include "../../../../../chrome/browser/first_run/first_run.cc"
+#undef ImportFromSourceProfile
+
+namespace {
+
+void ImportFromSourceProfile(const importer::SourceProfile& source_profile,
+                             Profile* target_profile,
+                             uint16_t items_to_import) {
+  // Deletes itself.
+  BraveExternalProcessImporterHost* importer_host =
+      new BraveExternalProcessImporterHost;
+  // Don't show the warning dialog if import fails.
+  importer_host->set_headless();
+
+  ImportEndedObserver observer;
+  importer_host->set_observer(&observer);
+  importer_host->StartImportSettings(source_profile,
+                                     target_profile,
+                                     items_to_import,
+                                     new BraveProfileWriter(target_profile));
+  // If the import process has not errored out, block on it.
+  if (!observer.ended()) {
+    base::RunLoop loop;
+    observer.set_callback_for_import_end(loop.QuitClosure());
+    loop.Run();
+    observer.set_callback_for_import_end(base::Closure());
+  }
+}
+
+}
 
 namespace brave {
 
