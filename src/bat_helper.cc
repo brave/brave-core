@@ -1035,7 +1035,9 @@ static bool ignore_ = false;
   /////////////////////////////////////////////////////////////////////////////
   CURRENT_RECONCILE::CURRENT_RECONCILE() :
     timestamp_(0),
-    fee_(.0) {}
+    fee_(.0),
+    retry_step_(ledger::ContributionRetry::STEP_NO),
+    retry_level_(0) {}
 
   CURRENT_RECONCILE::CURRENT_RECONCILE(const CURRENT_RECONCILE& data):
     viewingId_(data.viewingId_),
@@ -1051,7 +1053,11 @@ static bool ignore_ = false;
     fee_(data.fee_),
     directions_(data.directions_),
     category_(data.category_),
-    list_(data.list_) {}
+    list_(data.list_),
+    retry_step_(data.retry_step_),
+    retry_level_(data.retry_level_),
+    destination_(data.destination_),
+    proof_(data.proof_) {}
 
   CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
 
@@ -1078,6 +1084,7 @@ static bool ignore_ = false;
       currency_ = d["currency"].GetString();
       fee_ = d["fee"].GetDouble();
       category_ = d["category"].GetInt();
+      destination_ = d["destination"].GetString();
 
       if (d.HasMember("surveyorInfo") && d["surveyorInfo"].IsObject()) {
         auto obj = d["surveyorInfo"].GetObject();
@@ -1117,6 +1124,27 @@ static bool ignore_ = false;
 
           list_.push_back(publisher_st);
         }
+      }
+
+      if (d.HasMember("retry_step") && d["retry_step"].IsInt()) {
+        retry_step_ = static_cast<ledger::ContributionRetry>(
+            d["retry_step"].GetInt());
+      } else {
+        retry_step_ = ledger::ContributionRetry::STEP_NO;
+      }
+
+      if (d.HasMember("retry_level") && d["retry_level"].IsInt()) {
+        retry_level_ = d["retry_level"].GetInt();
+      } else {
+        retry_level_ = 0;
+      }
+
+      if (d.HasMember("destination") && d["destination"].IsString()) {
+        destination_ = d["destination"].GetString();
+      }
+
+      if (d.HasMember("proof") && d["proof"].IsString()) {
+        proof_ = d["proof"].GetString();
       }
     }
 
@@ -1183,6 +1211,18 @@ static bool ignore_ = false;
       saveToJson(writer, i);
     }
     writer.EndArray();
+
+    writer.String("retry_step");
+    writer.Int(data.retry_step_);
+
+    writer.String("retry_level");
+    writer.Int(data.retry_level_);
+
+    writer.String("destination");
+    writer.String(data.destination_.c_str());
+
+    writer.String("proof");
+    writer.String(data.proof_.c_str());
 
     writer.EndObject();
   }
