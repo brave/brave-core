@@ -9,6 +9,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -170,4 +171,49 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             expected_provider_id);
+}
+
+// Check ddg toggle button state is changed by user's settings change.
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+                       GuestWindowControllerTest) {
+  profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
+  content::RunAllTasksUntilIdle();
+
+  Profile* guest_profile =
+      BrowserList::GetInstance()->GetLastActive()->profile();
+  EXPECT_TRUE(guest_profile->IsGuestSession());
+
+  // Guest window controller is only used in non Qwant region.
+  if (brave::IsRegionForQwant(guest_profile))
+    return;
+
+  auto* service = TemplateURLServiceFactory::GetForProfile(guest_profile);
+
+  // alternative pref is initially disabled.
+  EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
+
+  brave::ToggleUseAlternativeSearchEngineProvider(guest_profile);
+  EXPECT_TRUE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
+  int provider_id =
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
+
+  //Check tor profile's search provider is set to ddg.
+  EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
+            provider_id);
+
+  auto bing_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      guest_profile->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
+  TemplateURL bing_url(*bing_data);
+  service->SetUserSelectedDefaultSearchProvider(&bing_url);
+  // Check alternative pref is turned off.
+  EXPECT_FALSE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
+
+  auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      guest_profile->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
+  TemplateURL ddg_url(*ddg_data);
+
+  service->SetUserSelectedDefaultSearchProvider(&ddg_url);
+  EXPECT_TRUE(brave::UseAlternativeSearchEngineProviderEnabled(guest_profile));
 }
