@@ -12,8 +12,7 @@ namespace ads {
 
 struct ADS_EXPORT NotificationInfo {
   NotificationInfo();
-  NotificationInfo(const NotificationInfo& info);
-
+  explicit NotificationInfo(const NotificationInfo& info);
   ~NotificationInfo();
 
   std::string category;

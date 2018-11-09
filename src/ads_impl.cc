@@ -616,7 +616,7 @@ void AdsImpl::OnGetAdsForCategory(
   }
 
   auto rand = helper::Math::Random() % ads_unseen.size();
-  auto ad = ads_unseen[rand];
+  auto ad = ads_unseen.at(rand);
   ShowAd(ad, category);
 }
 
