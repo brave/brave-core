@@ -5,7 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Background, Page, Panel, BackgroundContainer } from '../../../../src/features/welcome/'
+import {
+  Background,
+  Page,
+  Panel,
+  BackgroundContainer,
+  SlideContent
+} from '../../../../src/features/welcome/'
 
 // Component groups
 import WelcomeBox from './screens/welcomeBox'
@@ -22,7 +28,6 @@ const background = require('../../../assets/img/welcome_bg.svg')
 // Fonts
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
-// import FooterBox from './screens/footer';
 
 export interface State {
   currentScreen: number
@@ -120,22 +125,14 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
         </BackgroundContainer>
         <Page>
           <Panel>
-            <div
-              style={{
-                maxWidth: 'inherit',
-                minHeight: '540px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
+            <SlideContent>
               <WelcomeBox index={1} currentScreen={currentScreen} onClick={this.onClickLetsGo} />
               <ImportBox index={2} currentScreen={currentScreen} onClick={this.onClickImport} />
               <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} />
               <ThemeBox index={4} currentScreen={currentScreen} onClick={this.onClickChooseYourTheme} />
               <ShieldsBox index={5} currentScreen={currentScreen} />
               <RewardsBox index={6} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />
-            </div>
+            </SlideContent>
             <FooterBox
               totalScreensSize={this.totalScreensSize}
               currentScreen={currentScreen}

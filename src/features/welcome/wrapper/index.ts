@@ -115,3 +115,11 @@ export const Panel = styled(Card)`
   justify-content: space-between;
   padding: 0;
 `
+
+export const SlideContent = styled<{}, 'div'>('div')`
+  max-width: inherit;
+  min-height: 540px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`

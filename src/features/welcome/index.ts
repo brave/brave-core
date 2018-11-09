@@ -21,7 +21,8 @@ import {
   Content,
   Page,
   Panel,
-  SelectGrid
+  SelectGrid,
+  SlideContent
 } from './wrapper'
 
 export {
@@ -44,5 +45,6 @@ export {
   Content,
   Page,
   Panel,
-  SelectGrid
+  SelectGrid,
+  SlideContent
 }
