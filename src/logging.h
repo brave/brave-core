@@ -5,7 +5,7 @@
 #ifndef BAT_REWARDS_LOGGING_H_
 #define BAT_REWARDS_LOGGING_H_
 
-#define LOG(client, severity) \
+#define BLOG(client, severity) \
   client->Log(__FILE__, __LINE__, severity)
 
 #endif  // BAT_REWARDS_LOGGING_H_

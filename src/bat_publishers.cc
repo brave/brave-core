@@ -717,15 +717,10 @@ bool BatPublishers::loadState(const std::string& data) {
 
 void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    LOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Could not save publisher state";
     // TODO - error handling
     return;
-  } else {
-    std::string json;
-    saveToJson(*state_, json);
-    LOG(ledger_, ledger::LogLevel::LOG_INFO) <<
-      "Saved publisher state: " << json;
   }
   // SZ: We don't need to normalize on state save, all normalizing is done on AUTO_CONTRIBUTE publishers
   // save visit

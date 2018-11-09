@@ -85,7 +85,7 @@ void LedgerImpl::RemoveReconcileById(const std::string& viewingId) {
 
 void LedgerImpl::OnLoad(const ledger::VisitData& visit_data, const uint64_t& current_time) {
   if (visit_data.domain.empty()) {
-    LOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
       "Skipped the same domain";
     return;
   }
@@ -156,7 +156,7 @@ void LedgerImpl::OnXHRLoad(
     const ledger::VisitData& visit_data) {
   std::string type = bat_get_media_->GetLinkType(url, first_party_url, referrer);
   if (type.empty()) {
-    LOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
       "It is not a media support device";
     return;
   }
@@ -171,7 +171,7 @@ void LedgerImpl::OnPostData(
       const ledger::VisitData& visit_data) {
   std::string type = bat_get_media_->GetLinkType(url, first_party_url, referrer);
   if (type.empty()) {
-    LOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
       "It is not a media support device";
     return;
   }
@@ -192,19 +192,19 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
                                         const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_state_->LoadState(data)) {
-      LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+      BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
         "Successfully loaded but failed to parse ledger state: " << data;
 
       OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
     } else {
-      LOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
+      BLOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
         "Successfully loaded ledger state: " << data;
 
       LoadPublisherState(this);
       bat_contribution_->OnStartUp();
     }
   } else {
-    LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load ledger state";
 
     OnWalletInitialized(result);
@@ -219,16 +219,16 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
                                         const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publishers_->loadState(data)) {
-      LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+      BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
         "Successfully loaded but failed to parse ledger state: " << data;
 
       result = ledger::Result::INVALID_PUBLISHER_STATE;
     } else {
-      LOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
+      BLOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
         "Successfully loaded publisher state: " << data;
     }
   } else {
-    LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load publisher state";
   }
 
@@ -257,14 +257,14 @@ void LedgerImpl::OnPublisherListLoaded(ledger::Result result,
                                        const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publishers_->loadPublisherList(data)) {
-      LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+      BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
         "Successfully loaded but failed to parse publish list: " << data;
     } else {
-      LOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
+      BLOG(ledger_client_, ledger::LogLevel::LOG_INFO) <<
         "Successfully loaded publisher list: " << data;
     }
   } else {
-    LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load publisher list";
   }
 
@@ -285,7 +285,7 @@ void LedgerImpl::OnWalletInitialized(ledger::Result result) {
     bat_contribution_->SetReconcileTimer();
     RefreshGrant(false);
   } else {
-    LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to initialize wallet";
   }
 }
@@ -557,7 +557,7 @@ void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
 
 void LedgerImpl::OnRecoverWallet(ledger::Result result, double balance, const std::vector<braveledger_bat_helper::GRANT>& grants) {
   if (result != ledger::Result::LEDGER_OK) {
-    LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) << "Failed to recover wallet";
+    BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) << "Failed to recover wallet";
   }
 
   std::vector<ledger::Grant> ledgerGrants;
@@ -613,7 +613,7 @@ void LedgerImpl::SetBalanceReport(ledger::PUBLISHER_MONTH month,
 
 void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const int amount, const std::string& currency) {
   if (publisher.id.empty()) {
-    LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
       "Failed direct donation due to missing publisher id";
 
     // TODO add error flow
@@ -654,7 +654,7 @@ void LedgerImpl::LoadPublishersListCallback(bool result, const std::string& resp
   if (result && !response.empty()) {
     bat_publishers_->RefreshPublishersList(response);
   } else {
-    LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
       "Can't fetch publisher list";
     //error: retry downloading again
     RefreshPublishersList(true);
@@ -672,7 +672,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError) {
   if (retryAfterError) {
     start_timer_in = retryRequestSetup(300, 3600);
 
-    LOG(ledger_client_, ledger::LogLevel::LOG_WARNING) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_WARNING) <<
       "Failed to refresh publishesr list, will try again in " << start_timer_in;
   }
   else {
@@ -709,7 +709,7 @@ void LedgerImpl::RefreshGrant(bool retryAfterError) {
   if (retryAfterError) {
     start_timer_in = retryRequestSetup(300, 600);
 
-    LOG(ledger_client_, ledger::LogLevel::LOG_WARNING) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_WARNING) <<
       "Failed to refresh grant, will try again in " << start_timer_in;
   } else {
     uint64_t now = std::time(nullptr);
@@ -814,7 +814,7 @@ void LedgerImpl::RemoveRecurring(const std::string& publisher_key) {
 
 void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    LOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to remove recurring";
 
     // TODO add error callback
@@ -847,7 +847,7 @@ std::ostream& LedgerImpl::Log(
   // TODO(Terry Mancey): bat-native-ledger architecture does not expose the
   // client however the ledger impl is exposed so for now we will proxy logging
   // via from the ledger impl to the client
-  return ledger_client->Log(file, line, log_level);
+  return ledger_client_->Log(file, line, log_level);
 }
 
 void LedgerImpl::LogResponse(const std::string& func_name,
@@ -856,18 +856,18 @@ void LedgerImpl::LogResponse(const std::string& func_name,
                              const std::map<std::string, std::string>& headers) {
   std::string stat = result ? "Success" : "Failure";
 
-  LOG(ledger_client_, ledger::LogLevel::LOG_RESPONSE) <<
-    "[ RESPONSE - " << func_name << " ]" << std::end <<
+  BLOG(ledger_client_, ledger::LogLevel::LOG_RESPONSE) <<
+    "[ RESPONSE - " << func_name << " ]" << std::endl <<
     "> time: " << std::time(nullptr) << std::endl <<
     "> result: " << stat << std::endl <<
     "> response: " << response;
 
   for (std::pair<std::string, std::string> const& value: headers) {
-    LOG(ledger_client_, ledger::LogLevel::LOG_RESPONSE) <<
+    BLOG(ledger_client_, ledger::LogLevel::LOG_RESPONSE) <<
       "> headers " << value.first << " | " << value.second;
   }
 
-  LOG(ledger_client_, ledger::LogLevel::LOG_RESPONSE) << "[ END RESPONSE ]";
+  BLOG(ledger_client_, ledger::LogLevel::LOG_RESPONSE) << "[ END RESPONSE ]";
 }
 
 void LedgerImpl::ResetReconcileStamp() {

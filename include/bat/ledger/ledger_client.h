@@ -10,6 +10,7 @@
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <string>
 
 #include "bat/ledger/balance_report_info.h"
 #include "bat/ledger/export.h"
@@ -138,10 +139,9 @@ class LEDGER_EXPORT LedgerClient {
                                           uint64_t windowId) = 0;
 
   // Logs debug information
-  virtual std::ostream& Log(
-      const char* file,
-      int line,
-      const ledger::LogLevel log_level) const = 0;
+  virtual std::ostream& Log(const char* file,
+                            int line,
+                            const ledger::LogLevel log_level) const = 0;
 };
 
 }  // namespace ledger

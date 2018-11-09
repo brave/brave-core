@@ -6,12 +6,11 @@
 #define BRAVELEDGER_BAT_HELPER_PLATFORM_H_
 
 #include <string>
-#if defined(CHROMIUM_BUILD) && !defined(STANDALONE_BUILD)
-#else
-// Chromium debug macros redefined
-//TODO: implement!
-#include <cassert>
 
+#if defined(CHROMIUM_BUILD) && !defined(STANDALONE_BUILD)
+#include "base/logging.h"
+#else
+#include <cassert>
 #define DCHECK assert
 #endif
 
