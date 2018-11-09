@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
+#include "base/logging.h"
 #include "base/i18n/time_formatting.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
@@ -1562,23 +1563,25 @@ RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
   return notification_service_.get();
 }
 
-void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
-  if (level == ledger::LogLevel::LOG_ERROR) {
-    LOG(ERROR) << text;
-    return;
+std::ostream& RewardsServiceImpl::Log(const char* file,
+                                  int line,
+                                  const ledger::LogLevel log_level) const {
+  switch (log_level) {
+    case ledger::LogLevel::LOG_INFO:
+      return logging::LogMessage(file, line, logging::LOG_INFO).stream();
+      break;
+    case ledger::LogLevel::LOG_WARNING:
+      return logging::LogMessage(file, line, logging::LOG_WARNING).stream();
+      break;
+    case ledger::LogLevel::LOG_ERROR:
+      return logging::LogMessage(file, line, logging::LOG_ERROR).stream();
+    default:
+      return logging::LogMessage(file, line, logging::LOG_ERROR).stream();
   }
 
-  if (level == ledger::LogLevel::LOG_WARNING) {
-    LOG(WARNING) << text;
-    return;
-  }
-
-  if (level == ledger::LogLevel::LOG_INFO) {
-    LOG(INFO) << text;
-    return;
-  }
-
-  VLOG(level) << text;
+  //VLOG(log_level) << "[ LOG - " + std::to_string(file) + "/" + line + " ]";
+  // VLOG(log_level) << text;
+  //VLOG(log_level) << "[ END LOG ]";
 }
 
 }  // namespace brave_rewards

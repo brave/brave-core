@@ -8,6 +8,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <sstream>
 #include <string>
 
 #include "bat/ledger/ledger.h"
@@ -261,7 +262,9 @@ class RewardsServiceImpl : public RewardsService,
                             const std::string& publisher_key,
                             const ledger::PUBLISHER_CATEGORY category) override;
   void GetRecurringDonations(ledger::PublisherInfoListCallback callback) override;
-  void Log(ledger::LogLevel level, const std::string& text) override;
+  std::ostream& Log(const char* file,
+                    int line,
+                    const ledger::LogLevel log_level) const override;
 
   void OnIOTaskComplete(std::function<void(void)> callback);
 
