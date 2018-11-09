@@ -53,9 +53,9 @@ platform :ios do
       output_name: "#{build_name}.ipa",
       sdk: "iphoneos",
       clean: true,
-      export_method: "app-store",
+      export_method: "development",
       include_symbols: true,
-      include_bitcode: false,
+      include_bitcode: true,
       xcargs: "-allowProvisioningUpdates",
     )
 
