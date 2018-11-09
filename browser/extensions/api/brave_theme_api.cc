@@ -55,7 +55,7 @@ ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   const std::string theme_type = BTS::GetStringFromBraveThemeType(
-      BTS::GetUserPreferredBraveThemeType(profile));
+      BTS::GetActiveBraveThemeType(profile));
   return RespondNow(OneArgument(std::make_unique<base::Value>(theme_type)));
 }
 
