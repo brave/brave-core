@@ -62,7 +62,7 @@ class MockAdsClient : public AdsClient, CallbackHandler {
       const std::string& value,
       OnSaveCallback callback) override;
   void SaveBundleState(
-      const BUNDLE_STATE& state,
+      std::unique_ptr<BUNDLE_STATE> state,
       OnSaveCallback callback) override;
 
   void Load(const std::string& name, OnLoadCallback callback) override;

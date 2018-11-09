@@ -154,11 +154,11 @@ void MockAdsClient::Save(
 }
 
 void MockAdsClient::SaveBundleState(
-    const BUNDLE_STATE& state,
+    std::unique_ptr<BUNDLE_STATE> state,
     OnSaveCallback callback) {
   Log(__FILE__, __LINE__, LogLevel::INFO) << "Saving bundle state";
 
-  bundle_state_.reset(new BUNDLE_STATE(state));
+  bundle_state_.reset(state.release());
 
   callback(Result::SUCCESS);
 }
