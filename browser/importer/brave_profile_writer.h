@@ -15,6 +15,7 @@ struct BraveStats;
 struct BraveLedger;
 
 class BraveProfileWriter : public ProfileWriter {
+  //BSC: implement observer interface!!
  public:
   explicit BraveProfileWriter(Profile* profile);
 

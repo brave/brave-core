@@ -34,6 +34,8 @@
 #include "sql/statement.h"
 #include "url/gurl.h"
 
+#include "brave/vendor/bat-native-ledger/src/static_values.h"
+
 #if defined(OS_LINUX)
 #include "components/os_crypt/key_storage_config_linux.h"
 #endif
@@ -328,6 +330,7 @@ void BraveImporter::ImportStats() {
   bridge_->UpdateStats(stats);
 }
 
+// TODO: not used
 std::vector<uint8_t> ParseWalletSeed(const base::Value& ledger_state_json) {
   const base::Value* wallet_seed_json = ledger_state_json.FindPathOfType(
       {"properties", "wallet", "keyinfo", "seed"},
@@ -359,19 +362,172 @@ std::vector<uint8_t> ParseWalletSeed(const base::Value& ledger_state_json) {
   return wallet_seed;
 }
 
-std::string ParseWalletPassphrase(const base::Value& session_store_json) {
+bool ParseWalletPassphrase(BraveLedger& ledger, const base::Value& session_store_json) {
   const base::Value* wallet_passphrase_value = session_store_json.FindPathOfType(
       {"ledger", "info", "passphrase"},
       base::Value::Type::STRING);
   if (!wallet_passphrase_value) {
     LOG(ERROR) << "Wallet passphrase not found in session-store-1";
-    return {};
+    return false;
   }
 
-  return wallet_passphrase_value->GetString();
+  ledger.passphrase = wallet_passphrase_value->GetString();
+  return !ledger.passphrase.empty();
 }
 
-void BraveImporter::ImportLedger() {
+bool TryFindBoolKey(const base::Value* dict, const std::string key, bool& value_to_set) {
+  auto* value_read = dict->FindKeyOfType(key, base::Value::Type::BOOLEAN);
+  if (value_read) {
+    value_to_set = value_read->GetBool();
+    return true;
+  }
+  return false;
+}
+
+bool TryFindStringKey(const base::Value* dict, const std::string key, std::string& value_to_set) {
+  auto* value_read = dict->FindKeyOfType(key, base::Value::Type::STRING);
+  if (value_read) {
+    value_to_set = value_read->GetString();
+    return true;
+  }
+  return false;
+}
+
+bool TryFindIntKey(const base::Value* dict, const std::string key, int& value_to_set) {
+  auto* value_read = dict->FindKeyOfType(key, base::Value::Type::INTEGER);
+  if (value_read) {
+    value_to_set = value_read->GetInt();
+    return true;
+  }
+  return false;
+}
+
+bool ParsePaymentsPreferences(BraveLedger& ledger, const base::Value& session_store_json) {
+  const base::Value* settings = session_store_json.FindKeyOfType(
+    "settings",
+    base::Value::Type::DICTIONARY);
+  if (!settings) {
+    LOG(ERROR) << "No entry \"settings\" found in session-store-1";
+    return false;
+  }
+
+  auto* payments = &ledger.settings.payments;
+
+  TryFindBoolKey(settings, "payments.enabled", payments->enabled);
+  TryFindBoolKey(settings, "payments.allow-non-verified-publishers", payments->allow_non_verified);
+  TryFindBoolKey(settings, "payments.allow-media-publishers", payments->allow_media_publishers);
+
+  std::string contribution_amount = "";
+  TryFindStringKey(settings, "payments.contribution-amount", contribution_amount);
+  if (!contribution_amount.empty()) {
+    if (!base::StringToDouble(contribution_amount, &payments->contribution_amount)) {
+      LOG(ERROR) << "StringToDouble failed when converting \"settings.payments.contribution-amount\"; unable to convert value \"" << contribution_amount << "\"; defaulting value.";
+    }
+  }
+
+  std::string minimum_visits = "";
+  TryFindStringKey(settings, "payments.minimum-visits", minimum_visits);
+  if (!minimum_visits.empty()) {
+    if (!base::StringToUint(minimum_visits, &payments->min_visits)) {
+      LOG(ERROR) << "StringToUint failed when converting \"settings.payments.minimum-visits\"; unable to convert value \"" << minimum_visits << "\"; defaulting value.";
+    }
+  }
+  switch (payments->min_visits) {
+    // allowed values
+    case 1:
+    case 5:
+    case 10:
+    break;
+
+    default:
+      payments->min_visits = 1u;
+  }
+
+  std::string minumum_visit_time = "";
+  TryFindStringKey(settings, "payments.minimum-visit-time", minumum_visit_time);
+  if (!minumum_visit_time.empty()) {
+    if (!base::StringToUint64(minumum_visit_time, &payments->min_visit_time)) {
+      LOG(ERROR) << "StringToUint64 failed when converting \"settings.payments.minimum-visit-time\"; unable to convert value \"" << minumum_visit_time << "\"; defaulting value.";
+    }
+  }
+  switch (payments->min_visit_time) {
+    // allowed values
+    case 5000: payments->min_visit_time = 5; break;
+    case 8000: payments->min_visit_time = 8; break;
+    case 60000: payments->min_visit_time = 60; break;
+
+    default:
+      payments->min_visit_time = braveledger_ledger::_default_min_publisher_duration;
+  }
+
+  return true;
+}
+
+bool ParseExcludedSites(BraveLedger& ledger, const base::Value& session_store_json) {
+  const base::Value* site_settings = session_store_json.FindKeyOfType(
+    "siteSettings",
+    base::Value::Type::DICTIONARY);
+  if (!site_settings) {
+    LOG(ERROR) << "No entry \"siteSettings\" found in session-store-1";
+    return false;
+  }
+
+  ledger.excluded_publishers = std::list<std::string>();
+  bool host_pattern_included;
+
+  for (const auto& item : site_settings->DictItems()) {
+    const auto& host_pattern = item.first;
+    const auto& settings = item.second;
+
+    if (!settings.is_dict())
+      continue;
+
+    if (TryFindBoolKey(&settings, "ledgerPayments", host_pattern_included)) {
+      if (!host_pattern_included) {
+        // host pattern is in a format like: `https?://travis-ci.org`
+        // The protocol part can be removed (to get publisher key)
+        size_t protocol_index = host_pattern.find("//");
+        if (protocol_index != std::string::npos) {
+          ledger.excluded_publishers.push_back(host_pattern.substr(protocol_index + 2));
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+bool ParsePinnedSites(BraveLedger& ledger, const base::Value& session_store_json) {
+  const base::Value* publishers = session_store_json.FindPathOfType(
+      {"ledger", "synopsis", "publishers"},
+      base::Value::Type::DICTIONARY);
+  if (!publishers) {
+    LOG(ERROR) << "\"ledger\".\"synopsis\".\"publishers\" not found in session-store-1";
+    return false;
+  }
+
+  ledger.pinned_publishers = std::map<std::string, unsigned int>();
+  int pin_percentage;
+
+  for (const auto& item : publishers->DictItems()) {
+    const auto& domain = item.first;
+    const auto& settings = item.second;
+
+    if (!settings.is_dict())
+      continue;
+
+    if (TryFindIntKey(&settings, "pinPercentage", pin_percentage)) {
+      if (pin_percentage > 0) {
+        ledger.pinned_publishers.insert(
+          std::pair<std::string, unsigned int>(domain, pin_percentage));
+      }
+    }
+  }
+
+  return true;
+}
+
+void BraveImporter::ImportLedger(bool clobber_wallet) {
   std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   std::unique_ptr<base::Value> ledger_state_json = ParseBraveStateFile(
@@ -379,12 +535,27 @@ void BraveImporter::ImportLedger() {
   if (!(session_store_json && ledger_state_json))
     return;
 
-  auto passphrase = ParseWalletPassphrase(*session_store_json);
-  if (passphrase.empty())
-    return;
-
   BraveLedger ledger;
-  ledger.passphrase = passphrase;
+  ledger.clobber_wallet = clobber_wallet;
+
+  // TODO: this processing might take a while;
+  // is this happening in the browser process?
+
+  if (!ParseWalletPassphrase(ledger, *session_store_json)) {
+    // TODO: ...
+  }
+
+  if (!ParsePaymentsPreferences(ledger, *session_store_json)) {
+    // TODO: ...
+  }
+
+  if (!ParseExcludedSites(ledger, *session_store_json)) {
+    // TODO: ...
+  }
+
+  if (!ParsePinnedSites(ledger, *session_store_json)) {
+    // TODO: ...
+  }
 
   bridge_->UpdateLedger(ledger);
 }

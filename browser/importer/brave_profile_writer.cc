@@ -67,6 +67,10 @@ void BraveProfileWriter::UpdateStats(const BraveStats& stats) {
   }
 }
 
+void StuffThatHappensAfterRecover () {
+  // TODO: ...
+}
+
 void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
   brave_rewards::RewardsService* rewards_service =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
@@ -76,11 +80,48 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
   }
 
   // Avoid overwriting Brave Rewards wallet if one already exists.
-  if (rewards_service->IsWalletCreated()) {
+  if (!ledger.clobber_wallet && rewards_service->IsWalletCreated()) {
+    // TODO: check if there are funds?
+
     LOG(ERROR) << "Brave Rewards wallet already exists, canceling Brave Payments import.";
     // TODO communicate this failure mode to the user
     return;
   }
 
-  LOG(INFO) << "ledger passphrase: " << ledger.passphrase;
+  // Set the preferences read from session-store-1
+  auto* payments = &ledger.settings.payments;
+  rewards_service->SetPublisherAllowVideos(payments->allow_media_publishers);
+  rewards_service->SetPublisherAllowNonVerified(payments->allow_non_verified);
+  rewards_service->SetAutoContribute(payments->enabled);
+  rewards_service->SetContributionAmount(payments->contribution_amount);
+  rewards_service->SetPublisherMinVisitTime(payments->min_visit_time);
+  rewards_service->SetPublisherMinVisits(payments->min_visits);
+
+  // Set the excluded sites
+  for (const auto& publisher_key : ledger.excluded_publishers) {
+    rewards_service->ExcludePublisher(publisher_key);
+  }
+
+  // Set the recurring sites (formerly known as pinned sites)
+  for (const auto& item : ledger.pinned_publishers) {
+    const auto& publisher_key = item.first;
+    const auto& pin_percentage = item.second;
+    const int amount_in_bat = (int)((pin_percentage / 100.0) *
+      ledger.settings.payments.contribution_amount);
+
+    // TODO: revisit this logic
+    // Mandar will help find the appropriate way to handle
+
+    if (amount_in_bat > 0) {
+      rewards_service->OnDonate(publisher_key, amount_in_bat, true);
+    }
+  }
+
+  // TODO: register observer which can handle the work
+  // that needs to happen AFTER RecoverWallet (StuffThatHappensAfterRecover)
+  // see comment in components/brave_rewards/browser/rewards_service_impl.cc
+  // ...
+
+  // Start the wallet recovery
+  rewards_service->RecoverWallet(ledger.passphrase);
 }
