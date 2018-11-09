@@ -117,63 +117,12 @@ class HistoryViewController: SiteTableViewController {
     
     cell.imageView?.contentMode = .scaleAspectFit
     cell.imageView?.image = FaviconFetcher.defaultFavicon
+    cell.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
+    cell.imageView?.layer.borderWidth = BraveUX.faviconBorderWidth
     cell.imageView?.layer.cornerRadius = 6
     cell.imageView?.layer.masksToBounds = true
     
-    if let faviconMO = site.domain?.favicon, let urlString = faviconMO.url, let url = URL(string: urlString), let siteUrlString = site.url, let siteUrl = URL(string: siteUrlString) {
-      setCellImage(cell, iconUrl: url, cacheWithUrl: siteUrl)
-    } else if let urlString = site.url, let siteUrl = URL(string: urlString) {
-      if ImageCache.shared.hasImage(siteUrl, type: .square) {
-        // no relationship - check cache for icon which may have been stored recently for url.
-        ImageCache.shared.image(siteUrl, type: .square, callback: { (image) in
-          DispatchQueue.main.async {
-            cell.imageView?.image = image
-          }
-        })
-      } else {
-        // no relationship - attempt to resolove domain problem
-        let context = DataController.viewContext
-        let domain = Domain.getOrCreateForUrl(siteUrl, context: context)
-        if let urlString = domain.favicon?.url, let url = URL(string: urlString) {
-          DispatchQueue.main.async {
-            self.setCellImage(cell, iconUrl: url, cacheWithUrl: siteUrl)
-          }
-        } else {
-          // last resort - download the icon
-          downloadFaviconsAndUpdateForUrl(siteUrl, indexPath: indexPath)
-        }
-      }
-    }
-  }
-  
-  fileprivate func downloadFaviconsAndUpdateForUrl(_ url: URL, indexPath: IndexPath) {
-    weak var weakSelf = self
-    FaviconFetcher.getForURL(url, profile: profile).uponQueue(DispatchQueue.main) { result in
-      guard let favicons = result.successValue, favicons.count > 0, let foundIconUrl = favicons.first?.url.asURL, let cell = weakSelf?.tableView.cellForRow(at: indexPath) else { return }
-      self.setCellImage(cell, iconUrl: foundIconUrl, cacheWithUrl: url)
-    }
-  }
-  
-  fileprivate func setCellImage(_ cell: UITableViewCell, iconUrl: URL, cacheWithUrl: URL) {
-    ImageCache.shared.image(cacheWithUrl, type: .square, callback: { (image) in
-      if image != nil {
-        DispatchQueue.main.async {
-          cell.imageView?.image = image
-        }
-      } else {
-        DispatchQueue.main.async {
-          cell.imageView?.sd_setImage(with: iconUrl, completed: { (img, err, type, url) in
-            guard let img = img else {
-              // avoid retrying to find an icon when none can be found, hack skips FaviconFetch
-              ImageCache.shared.cache(FaviconFetcher.defaultFavicon, url: cacheWithUrl, type: .square, callback: nil)
-              cell.imageView?.image = FaviconFetcher.defaultFavicon
-              return
-            }
-            ImageCache.shared.cache(img, url: cacheWithUrl, type: .square, callback: nil)
-          })
-        }
-      }
-    })
+    cell.imageView?.setIcon(site.domain?.favicon, forURL: URL(string: site.url ?? ""))
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

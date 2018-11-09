@@ -44,7 +44,6 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     static let multiRegionDomains = ["craigslist", "google", "amazon"]
 
     class func getDefaultIconForURL(url: URL) -> (color: UIColor, url: String)? {
-        
         // Problem: Sites like amazon exist with .ca/.de and many other tlds.
         // Solution: They are stored in the default icons list as "amazon" instead of "amazon.com" this allows us to have favicons for every tld."
         // Here, If the site is in the multiRegionDomain array look it up via its second level domain (amazon) instead of its baseDomain (amazon.com)
@@ -58,12 +57,12 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
         return nil
     }
 
-    class func getForURL(_ url: URL, profile: Profile) -> Deferred<Maybe<[Favicon]>> {
+    class func getForURL(_ url: URL) -> Deferred<Maybe<[Favicon]>> {
         let f = FaviconFetcher()
-        return f.loadFavicons(url, profile: profile)
+        return f.loadFavicons(url)
     }
 
-    fileprivate func loadFavicons(_ url: URL, profile: Profile, oldIcons: [Favicon] = [Favicon]()) -> Deferred<Maybe<[Favicon]>> {
+    fileprivate func loadFavicons(_ url: URL, oldIcons: [Favicon] = [Favicon]()) -> Deferred<Maybe<[Favicon]>> {
         if isIgnoredURL(url) {
             return deferMaybe(FaviconFetcherErrorType(description: "Not fetching ignored URL to find favicons."))
         }
@@ -76,7 +75,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
             self.parseHTMLForFavicons(url).bind({ (result: Maybe<[Favicon]>) -> Deferred<[Maybe<Favicon>]> in
                 var deferreds = [Deferred<Maybe<Favicon>>]()
                 if let icons = result.successValue {
-                    deferreds = icons.map { self.getFavicon(url, icon: $0, profile: profile) }
+                    deferreds = icons.map { self.getFavicon(url, icon: $0) }
                 }
                 return all(deferreds)
             }).bind({ (results: [Maybe<Favicon>]) -> Deferred<Maybe<[Favicon]>> in
@@ -170,7 +169,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
         })
     }
 
-    func getFavicon(_ siteUrl: URL, icon: Favicon, profile: Profile) -> Deferred<Maybe<Favicon>> {
+    func getFavicon(_ siteUrl: URL, icon: Favicon) -> Deferred<Maybe<Favicon>> {
         let deferred = Deferred<Maybe<Favicon>>()
         let url = icon.url
 
@@ -210,7 +209,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     // Returns a single Favicon UIImage for a given URL
     class func fetchFavImageForURL(forURL url: URL, profile: Profile) -> Deferred<Maybe<UIImage>> {
         let deferred = Deferred<Maybe<UIImage>>()
-        FaviconFetcher.getForURL(url.domainURL, profile: profile).uponQueue(.main) { result in
+        FaviconFetcher.getForURL(url.domainURL).uponQueue(.main) { result in
             guard let favicons = result.successValue, let favicon = favicons.first, let faviconURL = favicon.url.asURL else {
                 return deferred.fill(Maybe(failure: FaviconError()))
             }
@@ -243,7 +242,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
         let faviconLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         faviconLabel.text = faviconLetter
         faviconLabel.textAlignment = .center
-        faviconLabel.font = UIFont.systemFont(ofSize: 40, weight: UIFont.Weight.medium)
+        faviconLabel.font = UIFont.systemFont(ofSize: 40, weight: .regular)
         faviconLabel.textColor = UIColor.Photon.White100
         UIGraphicsBeginImageContextWithOptions(faviconLabel.bounds.size, false, 0.0)
         faviconLabel.layer.render(in: UIGraphicsGetCurrentContext()!)

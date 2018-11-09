@@ -136,5 +136,8 @@ public struct BraveUX {
     /** Determines how fast the swipe needs to be to trigger navigation action(go back/go forward).
      To determine its value, see `UIPanGestureRecognizer.velocity()` */
     public static let fastSwipeVelocity: CGFloat = 300
+    
+    public static let faviconBorderColor = UIColor(white: 0, alpha: 0.2)
+    public static let faviconBorderWidth = 1.0 / UIScreen.main.scale
 }
 
