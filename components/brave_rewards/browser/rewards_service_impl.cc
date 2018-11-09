@@ -12,6 +12,7 @@
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
+#include "base/logging.h"
 #include "base/i18n/time_formatting.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
@@ -67,6 +68,36 @@ using namespace net::registry_controlled_domains;
 using namespace std::placeholders;
 
 namespace brave_rewards {
+
+class LogStreamImpl : public ledger::LogStream {
+ public:
+  LogStreamImpl(const char* file,
+                int line,
+                const ledger::LogLevel log_level) {
+    switch(log_level) {
+      case ledger::LogLevel::LOG_INFO:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
+        break;
+      case ledger::LogLevel::LOG_WARNING:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
+        break;
+      case ledger::LogLevel::LOG_ERROR:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
+        break;
+      default:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_VERBOSE);
+        break;
+    }
+  }
+
+  std::ostream& stream() override {
+    return log_message_->stream();
+  }
+
+ private:
+  std::unique_ptr<logging::LogMessage> log_message_;
+  DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
+};
 
 namespace {
 
@@ -847,15 +878,20 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
         printMethod = "GET";
         break;
     }
-    VLOG(ledger::LogLevel::LOG_REQUEST) << "[ REQUEST ]";
-    VLOG(ledger::LogLevel::LOG_REQUEST) << "> url: " << url;
-    VLOG(ledger::LogLevel::LOG_REQUEST) << "> method: " << printMethod;
-    VLOG(ledger::LogLevel::LOG_REQUEST) << "> content: " << content;
-    VLOG(ledger::LogLevel::LOG_REQUEST) << "> contentType: " << contentType;
-    for (size_t i = 0; i < headers.size(); i++) {
-      VLOG(ledger::LogLevel::LOG_REQUEST) << "> headers: " << headers[i];
+
+    std::string headers_log = "";
+    for(auto const& header: headers) {
+      headers_log += "> headers: " + header + "\n";
     }
-    VLOG(ledger::LogLevel::LOG_REQUEST) << "[ END REQUEST ]";
+
+    VLOG(ledger::LogLevel::LOG_REQUEST) << std::endl
+      << "[ REQUEST ]" << std::endl
+      << "> url: " << url << std::endl
+      << "> method: " << printMethod << std::endl
+      << "> content: " << content << std::endl
+      << "> contentType: " << contentType << std::endl
+      << headers_log
+      << "[ END REQUEST ]";
   }
 
   FetchCallback callback = base::Bind(
@@ -1579,23 +1615,11 @@ RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
   return notification_service_.get();
 }
 
-void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
-  if (level == ledger::LogLevel::LOG_ERROR) {
-    LOG(ERROR) << text;
-    return;
-  }
-
-  if (level == ledger::LogLevel::LOG_WARNING) {
-    LOG(WARNING) << text;
-    return;
-  }
-
-  if (level == ledger::LogLevel::LOG_INFO) {
-    LOG(INFO) << text;
-    return;
-  }
-
-  VLOG(level) << text;
+std::unique_ptr<ledger::LogStream> RewardsServiceImpl::Log(
+    const char* file,
+    int line,
+    const ledger::LogLevel log_level) const {
+  return std::make_unique<LogStreamImpl>(file, line, log_level);
 }
 
 }  // namespace brave_rewards
