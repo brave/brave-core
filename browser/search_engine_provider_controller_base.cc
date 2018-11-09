@@ -4,6 +4,7 @@
 
 #include "brave/browser/search_engine_provider_controller_base.h"
 
+#include "brave/browser/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
@@ -69,6 +70,7 @@ SearchEngineProviderControllerBase::~SearchEngineProviderControllerBase() {
 void SearchEngineProviderControllerBase::OnPreferenceChanged(
     const std::string& pref_name) {
   DCHECK(pref_name == kUseAlternativeSearchEngineProvider);
+  DCHECK(!brave::IsRegionForQwant(otr_profile_));
 
   ConfigureSearchEngineProvider();
 }

@@ -14,6 +14,7 @@ GuestWindowSearchEngineProviderController(Profile* otr_profile)
     : SearchEngineProviderControllerBase(otr_profile) {
   DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
   DCHECK(!otr_profile->IsTorProfile());
+  DCHECK(!brave::IsRegionForQwant(otr_profile));
 
   // Monitor otr(off the record) profile's search engine changing to tracking
   // user's default search engine provider.
