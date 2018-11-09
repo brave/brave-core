@@ -23,6 +23,9 @@ bool UseAlternativeSearchEngineProviderEnabled(Profile* profile) {
 }
 
 void ToggleUseAlternativeSearchEngineProvider(Profile* profile) {
+  if (brave::IsRegionForQwant(profile))
+    return;
+
   profile->GetOriginalProfile()->GetPrefs()->SetBoolean(
       kUseAlternativeSearchEngineProvider,
       !UseAlternativeSearchEngineProviderEnabled(profile));
@@ -40,22 +43,35 @@ void InitializeSearchEngineProviderIfNeeded(Profile* profile) {
   // These search engine provider will be destroyed when observing template url
   // service is terminated.
   // TODO(simonhong): Refactor these controller with KeyedService.
+
+  // In non qwant region, controller is also needed for private profile.
+  // We uses separate TemplateURLService for normal and off the recored profile.
+  // That means changing normal profile's provider doesn't affect otr profile's.
+  // This controller monitor's normal profile's service and apply it's change to
+  // otr profile to use same provider.
+  // Private profile's setting is shared with normal profile's setting.
   if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE) {
     new PrivateWindowSearchEngineProviderController(profile);
     return;
   }
 
+  // Regardless of qwant region, tor profile needs controller to store
+  // previously set search engine provider.
   if (profile->IsTorProfile() &&
       profile->GetProfileType() == Profile::GUEST_PROFILE) {
     new TorWindowSearchEngineProviderController(profile);
     return;
   }
 
+  // Guest profile in qwant region doesn't need special handling of search
+  // engine provider because its newtab doesn't have ddg toggle button.
+  if (brave::IsRegionForQwant(profile))
+    return;
+
   if (profile->GetProfileType() == Profile::GUEST_PROFILE) {
     new GuestWindowSearchEngineProviderController(profile);
     return;
   }
-
 }
 
 bool IsRegionForQwant(Profile* profile) {
