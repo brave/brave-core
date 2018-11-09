@@ -15,7 +15,7 @@ class AdsService : public KeyedService {
  public:
   AdsService() = default;
 
-  virtual bool is_enabled() = 0;
+  virtual bool is_enabled() const = 0;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);

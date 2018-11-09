@@ -37,14 +37,18 @@ class AdsServiceImpl : public AdsService,
   explicit AdsServiceImpl(Profile* profile);
   ~AdsServiceImpl() override;
 
-  bool is_enabled() override;
+  bool is_enabled() const override;
 
  private:
   void Init();
 
+
   // AdsClient implementation
+  bool IsAdsEnabled() const override;
+  const std::string GetAdsLocale() const override;
+  uint64_t GetAdsPerHour() const override;
+  uint64_t GetAdsPerDay() const override;
   const ads::ClientInfo GetClientInfo() const override;
-  const std::string SetLocale(const std::string& locale) override;
   const std::vector<std::string> GetLocales() const override;
   const std::string GenerateUUID() const override;
   const std::string GetSSID() const override;
@@ -70,10 +74,11 @@ class AdsServiceImpl : public AdsService,
   const std::string Load(const std::string& name) override;
   void Reset(const std::string& name,
              ads::OnResetCallback callback) override;
-  void GetCategory(
-      const std::string& winning_category,
-      ads::CallbackHandler* callback_handler) override;
-  void GetSampleCategory(ads::CallbackHandler* callback_handler) override;
+  void GetAdsForCategory(
+      const std::string& category,
+      ads::OnGetAdsForCategoryCallback callback) override;
+  void GetAdsForSampleCategory(
+      ads::OnGetAdsForCategoryCallback callback) override;
   bool GetUrlComponents(
       const std::string& url,
       ads::UrlComponents* components) const override;
@@ -82,7 +87,7 @@ class AdsServiceImpl : public AdsService,
                     int line,
                     const ads::LogLevel log_level) const override;
 
-  void OnGetCategory(ads::CallbackHandler* callback_handler,
+  void OnGetAdsForCategory(const ads::OnGetAdsForCategoryCallback& callback,
                      const std::string& category,
                      const std::vector<ads::AdInfo>& ads);
   void OnSaveBundleState(const ads::OnSaveCallback& callback, bool success);

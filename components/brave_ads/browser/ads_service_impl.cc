@@ -84,8 +84,22 @@ void AdsServiceImpl::Init() {
   ads_.reset(ads::Ads::CreateInstance(this));
 }
 
-bool AdsServiceImpl::is_enabled() {
+bool AdsServiceImpl::is_enabled() const {
   return true;
+}
+
+bool AdsServiceImpl::IsAdsEnabled() const {
+  return is_enabled();
+}
+
+uint64_t AdsServiceImpl::GetAdsPerHour() const {
+  // TODO(bridiver) - implement this
+  return 100;
+}
+
+uint64_t AdsServiceImpl::GetAdsPerDay() const {
+  // TODO(bridiver) - implement this
+  return 100;
 }
 
 void AdsServiceImpl::Save(const std::string& name,
@@ -141,29 +155,31 @@ void AdsServiceImpl::Reset(const std::string& name,
   // TODO(bridiver) - implement
 }
 
-void AdsServiceImpl::GetCategory(const std::string& category,
-                                 ads::CallbackHandler* callback_handler) {
+void AdsServiceImpl::GetAdsForCategory(
+      const std::string& category,
+      ads::OnGetAdsForCategoryCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&GetAdsForCategoryOnFileTaskRunner,
                     category,
                     bundle_state_backend_.get()),
-      base::BindOnce(&AdsServiceImpl::OnGetCategory,
+      base::BindOnce(&AdsServiceImpl::OnGetAdsForCategory,
                      AsWeakPtr(),
-                     callback_handler,
+                     std::move(callback),
                      category));
 }
 
-void AdsServiceImpl::OnGetCategory(ads::CallbackHandler* callback_handler,
-                                   const std::string& category,
-                                   const std::vector<ads::AdInfo>& ads) {
-  callback_handler->OnGetCategory(
-      ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS,
+void AdsServiceImpl::OnGetAdsForCategory(
+    const ads::OnGetAdsForCategoryCallback& callback,
+    const std::string& category,
+    const std::vector<ads::AdInfo>& ads) {
+  callback(ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS,
       category,
       ads);
 }
 
-void AdsServiceImpl::GetSampleCategory(ads::CallbackHandler* callback_handler) {
 
+void AdsServiceImpl::GetAdsForSampleCategory(
+    ads::OnGetAdsForCategoryCallback callback) {
 }
 
 const ads::ClientInfo AdsServiceImpl::GetClientInfo() const {
@@ -199,9 +215,9 @@ const std::vector<std::string> AdsServiceImpl::GetLocales() const {
   return l10n_util::GetAvailableLocales();
 }
 
-const std::string AdsServiceImpl::SetLocale(const std::string& locale) {
+const std::string AdsServiceImpl::GetAdsLocale() const {
   // TODO(bridiver) - implement this
-  return locale;
+  return "";
 }
 
 std::unique_ptr<ads::URLSession> AdsServiceImpl::URLSessionTask(
