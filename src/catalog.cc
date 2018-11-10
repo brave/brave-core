@@ -61,13 +61,13 @@ const std::vector<CampaignInfo>& Catalog::GetCampaigns() const {
 }
 
 void Catalog::Save(const std::string& json) {
-  ads_client_->Save("catalog.json", json,
-    std::bind(&Catalog::OnCatalogSaved, this, _1));
+  auto callback = std::bind(&Catalog::OnCatalogSaved, this, _1);
+  ads_client_->Save("catalog.json", json, callback);
 }
 
 void Catalog::Reset() {
-  ads_client_->Reset("catalog.json",
-    std::bind(&Catalog::OnCatalogReset, this, _1));
+  auto callback = std::bind(&Catalog::OnCatalogReset, this, _1);
+  ads_client_->Reset("catalog.json", callback);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

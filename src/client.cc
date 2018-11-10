@@ -21,13 +21,13 @@ Client::Client(AdsImpl* ads, AdsClient* ads_client) :
 Client::~Client() = default;
 
 void Client::SaveState() {
-  ads_client_->Save("client.json", ToJson(),
-    std::bind(&Client::OnStateSaved, this, _1));
+  auto callback = std::bind(&Client::OnStateSaved, this, _1);
+  ads_client_->Save("client.json", ToJson(), callback);
 }
 
 void Client::LoadState() {
-  ads_client_->Load("client.json",
-    std::bind(&Client::OnStateLoaded, this, _1, _2));
+  auto callback = std::bind(&Client::OnStateLoaded, this, _1, _2);
+  ads_client_->Load("client.json", callback);
 }
 
 void Client::AppendCurrentTimeToAdsShownHistory() {

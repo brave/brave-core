@@ -330,8 +330,8 @@ std::ostream& MockAdsClient::Log(
 //////////////////////////////////////////////////////////////////////////////
 
 void MockAdsClient::LoadBundleState() {
-  Load("bundle.json",
-    std::bind(&MockAdsClient::OnBundleStateLoaded, this, _1, _2));
+  auto callback = std::bind(&MockAdsClient::OnBundleStateLoaded, this, _1, _2);
+  Load("bundle.json", callback);
 }
 
 void MockAdsClient::OnBundleStateLoaded(
@@ -364,8 +364,9 @@ void MockAdsClient::OnBundleStateLoaded(
 }
 
 void MockAdsClient::LoadSampleBundleState() {
-  Load("sample_bundle.json",
-    std::bind(&MockAdsClient::OnSampleBundleStateLoaded, this, _1, _2));
+  auto callback = std::bind(&MockAdsClient::OnSampleBundleStateLoaded,
+    this, _1, _2);
+  Load("sample_bundle.json", callback);
 }
 
 void MockAdsClient::OnSampleBundleStateLoaded(

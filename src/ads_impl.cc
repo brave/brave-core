@@ -402,8 +402,9 @@ void AdsImpl::ServeSampleAd() {
     return;
   }
 
-  ads_client_->GetAdsForSampleCategory(
-    std::bind(&AdsImpl::OnGetAdsForSampleCategory, this, _1, _2, _3));
+  auto callback = std::bind(&AdsImpl::OnGetAdsForSampleCategory,
+    this, _1, _2, _3);
+  ads_client_->GetAdsForSampleCategory(callback);
 }
 
 void AdsImpl::SetNotificationsAvailable(const bool available) {
@@ -494,8 +495,8 @@ void AdsImpl::LoadUserModel() {
   std::stringstream path;
   path << "locales/" << client_->GetLocale() << "/user_model.json";
 
-  ads_client_->Load(path.str(),
-    std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2));
+  auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
+  ads_client_->Load(path.str(), callback);
 }
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
@@ -582,8 +583,9 @@ void AdsImpl::OnGetAdsForCategory(
         << category << "\" category, trying again with \"" << new_category <<
         "\" category";
 
-      ads_client_->GetAdsForCategory(new_category,
-        std::bind(&AdsImpl::OnGetAdsForCategory, this, _1, _2, _3));
+      auto callback = std::bind(&AdsImpl::OnGetAdsForCategory,
+        this, _1, _2, _3);
+      ads_client_->GetAdsForCategory(new_category, callback);
 
       return;
     }
@@ -745,8 +747,8 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
     return;
   }
 
-  ads_client_->GetAdsForCategory(category,
-    std::bind(&AdsImpl::OnGetAdsForCategory, this, _1, _2, _3));
+  auto callback = std::bind(&AdsImpl::OnGetAdsForCategory, this, _1, _2, _3);
+  ads_client_->GetAdsForCategory(category, callback);
 }
 
 std::vector<AdInfo> AdsImpl::GetUnseenAds(
