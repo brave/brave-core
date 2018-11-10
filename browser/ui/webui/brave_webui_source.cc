@@ -80,12 +80,13 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
     }, {
       std::string("welcome"), {
       { "ecaefa14dcf65df518730a336430727e.ico", IDR_BRAVE_WELCOME_FAVICON },
-      { "51a13e5e543f312a990d4fd7e741d427.png", IDR_BRAVE_WELCOME_SLIDE_1_IMAGE },
-      { "a6abd363c58f91a260f94f5beb32b172.png", IDR_BRAVE_WELCOME_SLIDE_2_IMAGE },
-      { "fc31b8d3f7f3d32eec78365212f3002b.png", IDR_BRAVE_WELCOME_SLIDE_3_IMAGE },
-      { "59ec9e5cdea1df1630f8c6e2b7a27ede.png", IDR_BRAVE_WELCOME_SLIDE_4_IMAGE },
-      { "c2217e15737be3c82f5fef818d3fd26c.png", IDR_BRAVE_WELCOME_SLIDE_5_IMAGE },
-      { "e9d936c617aad55fe1bc7a001f2defb4.svg", IDR_BRAVE_WELCOME_BACKGROUND_IMAGE }
+      { "9e31ed86a2f12b6d4a22041f62ed412e.svg", IDR_BRAVE_WELCOME_SLIDE_1_IMAGE },
+      { "ac2b8d624fc8d38befa2f11a6a2fb9c5.svg", IDR_BRAVE_WELCOME_SLIDE_2_IMAGE },
+      { "cbe80e6513991e418602a34203b4af59.svg", IDR_BRAVE_WELCOME_SLIDE_3_IMAGE },
+      { "0a477204ff18db887fc4437703c0e4bd.svg", IDR_BRAVE_WELCOME_SLIDE_4_IMAGE },
+      { "bf695b698df5d0b62a427428bea0f65b.svg", IDR_BRAVE_WELCOME_SLIDE_5_IMAGE },
+      { "2b3672c9ca8abe137052ac917cd1a0c2.svg", IDR_BRAVE_WELCOME_SLIDE_6_IMAGE },
+      { "076d678fe0f8196976d06c246c57e62a.svg", IDR_BRAVE_WELCOME_BACKGROUND_IMAGE }
       }
     }, {
       std::string("rewards"), {
@@ -186,9 +187,12 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "manageShields", IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE },
         { "adjustProtectionLevel", IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC },
         { "shieldSettings", IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON },
-        { "customizePreferences", IDS_BRAVE_WELCOME_PAGE_PREFERENCES_TITLE },
-        { "configure", IDS_BRAVE_WELCOME_PAGE_PREFERENCES_DESC },
-        { "preferences", IDS_BRAVE_WELCOME_PAGE_PREFERENCES_BUTTON },
+        { "setDefaultSearchEngine", IDS_BRAVE_WELCOME_PAGE_SEARCH_TITLE },
+        { "chooseSearchEngine", IDS_BRAVE_WELCOME_PAGE_SEARCH_DESC },
+        { "search", IDS_BRAVE_WELCOME_PAGE_SEARCH_BUTTON },
+        { "findToolbarTheme", IDS_BRAVE_WELCOME_PAGE_THEME_TITLE },
+        { "chooseTheme", IDS_BRAVE_WELCOME_PAGE_THEME_DESC },
+        { "theme", IDS_BRAVE_WELCOME_PAGE_THEME_BUTTON },
         { "skipWelcomeTour", IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON },
         { "next", IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON },
         { "done", IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON }

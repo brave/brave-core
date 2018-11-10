@@ -27,12 +27,13 @@
       <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
       <include name="IDR_BRAVE_WELCOME_FAVICON" file="../img/welcome/favicon.ico" type="BINDATA" />
 
-      <include name="IDR_BRAVE_WELCOME_SLIDE_1_IMAGE" file="../img/welcome/brave_logo.png" type="BINDATA" />
-      <include name="IDR_BRAVE_WELCOME_SLIDE_2_IMAGE" file="../img/welcome/features.png" type="BINDATA" />
-      <include name="IDR_BRAVE_WELCOME_SLIDE_3_IMAGE" file="../img/welcome/import.png" type="BINDATA" />
-      <include name="IDR_BRAVE_WELCOME_SLIDE_4_IMAGE" file="../img/welcome/rewards.png" type="BINDATA" />
-      <include name="IDR_BRAVE_WELCOME_SLIDE_5_IMAGE" file="../img/welcome/shields.png" type="BINDATA" />
-      <include name="IDR_BRAVE_WELCOME_BACKGROUND_IMAGE" file="../img/welcome/welcomebg.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_1_IMAGE" file="../img/welcome/lion_logo.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_2_IMAGE" file="../img/welcome/welcome_import.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_3_IMAGE" file="../img/welcome/welcome_search.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_4_IMAGE" file="../img/welcome/welcome_theme.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_5_IMAGE" file="../img/welcome/welcome_rewards.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_SLIDE_6_IMAGE" file="../img/welcome/welcome_shields.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_WELCOME_BACKGROUND_IMAGE" file="../img/welcome/welcome_bg.svg" type="BINDATA" />
 
       <!-- WebUI newtab resources -->
       <!-- TODO: move to brave_new_tab_ui component -->
