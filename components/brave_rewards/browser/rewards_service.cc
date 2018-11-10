@@ -35,6 +35,7 @@ void RewardsService::AddObserver(RewardsServiceObserver* observer) {
 }
 
 void RewardsService::RemoveObserver(RewardsServiceObserver* observer) {
+  LOG(INFO) << "RewardsService::RemoveObserver: " << observer;
   observers_.RemoveObserver(observer);
 }
 

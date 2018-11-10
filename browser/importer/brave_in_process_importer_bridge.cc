@@ -22,7 +22,15 @@ void BraveInProcessImporterBridge::UpdateStats(const BraveStats& stats) {
 
 void BraveInProcessImporterBridge::UpdateLedger(
     const BraveLedger& ledger) {
+  LOG(INFO) << "About to call BraveProfileWriter::UpdateLedger";
+  writer_->SetBridge(this);
   writer_->UpdateLedger(ledger);
+  LOG(INFO) << "Returned from BraveProfileWriter::UpdateLedger";
+}
+
+void BraveInProcessImporterBridge::FinishLedgerImport () {
+  NotifyItemEnded(importer::LEDGER);
+  NotifyEnded();
 }
 
 BraveInProcessImporterBridge::~BraveInProcessImporterBridge() {}

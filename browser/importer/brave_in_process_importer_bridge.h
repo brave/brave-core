@@ -27,6 +27,8 @@ class BraveInProcessImporterBridge : public InProcessImporterBridge {
   void UpdateStats(const BraveStats& stats) override;
   void UpdateLedger(const BraveLedger& ledger) override;
 
+  void FinishLedgerImport();
+
  private:
   ~BraveInProcessImporterBridge() override;
 
