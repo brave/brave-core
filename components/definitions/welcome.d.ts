@@ -3,7 +3,5 @@ declare namespace Welcome {
     welcomeData: State | undefined
   }
 
-  export interface State {
-    pageIndex: number
-  }
+  export interface State {}
 }

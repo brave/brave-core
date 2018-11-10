@@ -183,7 +183,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "enableRewards", IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON },
         { "importFromAnotherBrowser", IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE },
         { "setupImport", IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC },
-        { "importNow", IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON },
+        { "import", IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON },
         { "manageShields", IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE },
         { "adjustProtectionLevel", IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC },
         { "shieldSettings", IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON },

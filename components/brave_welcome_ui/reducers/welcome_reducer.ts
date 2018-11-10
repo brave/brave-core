@@ -1,6 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* global window */
 
 import { Reducer } from 'redux'
 
@@ -21,9 +22,11 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
     case types.IMPORT_NOW_REQUESTED:
       chrome.send('importNowRequested', [])
       break
-    case types.GO_TO_PAGE_REQUESTED:
-      state = { ...state }
-      state.pageIndex = payload.pageIndex
+    case types.GO_TO_TAB_REQUESTED:
+      window.open(payload.url, payload.target)
+      break
+    case types.CLOSE_TAB_REQUESTED:
+      window.close()
       break
   }
 
