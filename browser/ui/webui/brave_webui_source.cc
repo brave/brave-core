@@ -78,17 +78,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "dbdc336ccc651b8a7c925b3482d6e65a.svg", IDR_BRAVE_PRIVATE_TAB_IMG }
       }
     }, {
-      std::string("welcome"), {
-      { "ecaefa14dcf65df518730a336430727e.ico", IDR_BRAVE_WELCOME_FAVICON },
-      { "9e31ed86a2f12b6d4a22041f62ed412e.svg", IDR_BRAVE_WELCOME_SLIDE_1_IMAGE },
-      { "ac2b8d624fc8d38befa2f11a6a2fb9c5.svg", IDR_BRAVE_WELCOME_SLIDE_2_IMAGE },
-      { "cbe80e6513991e418602a34203b4af59.svg", IDR_BRAVE_WELCOME_SLIDE_3_IMAGE },
-      { "0a477204ff18db887fc4437703c0e4bd.svg", IDR_BRAVE_WELCOME_SLIDE_4_IMAGE },
-      { "bf695b698df5d0b62a427428bea0f65b.svg", IDR_BRAVE_WELCOME_SLIDE_5_IMAGE },
-      { "2b3672c9ca8abe137052ac917cd1a0c2.svg", IDR_BRAVE_WELCOME_SLIDE_6_IMAGE },
-      { "076d678fe0f8196976d06c246c57e62a.svg", IDR_BRAVE_WELCOME_BACKGROUND_IMAGE }
-      }
-    }, {
       std::string("rewards"), {
         { "favicon.ico", IDR_BRAVE_REWARDS_FAVICON },
         { "878e89ddb547d70019456c4792ce1a23.svg", IDR_BRAVE_REWARDS_IMG_ADS_DISABLED },
