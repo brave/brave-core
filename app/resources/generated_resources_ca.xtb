@@ -1485,6 +1485,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6556866813142980365">Refés</translation>
 <translation id="3144126448740580210">FET</translation>
 <translation id="2453576648990281505">El fitxer ja existeix</translation>
+<translation id="2631006050119455616">Desat</translation>
 <translation id="5158593464696388225">No s'ha pogut desar la imatge.</translation>
 <translation id="2787047795752739979">Sobreescriu l'original</translation>
 <translation id="8775404590947523323">Els canvis es desen automàticament.<ph name="BREAKS"/>Per conservar una còpia de la imatge original, desmarqueu "Sobreescriu l'original"</translation>
@@ -2080,6 +2081,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4972129977812092092">Edita la impressora</translation>
 <translation id="5696679855467848181">Fitxer PPD en ús: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">Ubicació</translation>
 <translation id="7754704193130578113">Pregunta on es desarà cada fitxer abans de baixar-lo</translation>
 <translation id="5713072761819014678">Desconnecta el compte de Brave Software Drive</translation>
 <translation id="486635084936119914">Obre alguns tipus de fitxer automàticament després de baixar-los</translation>
@@ -2396,6 +2398,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
 <translation id="3407837288045706722">Per trobar més opcions relacionades amb la privadesa, la seguretat i la recollida de dades, consulta <ph name="BEGIN_LINK"/>Sincronització i personalització<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Per trobar més opcions relacionades amb la privadesa, la seguretat i la recollida de dades, consulta <ph name="BEGIN_LINK"/>Sincronització i serveis de Brave Software<ph name="END_LINK"/></translation>
+<translation id="6438234780621650381">Restaura la configuració</translation>
 <translation id="5293170712604732402">Restableix la configuració als valors predeterminats originals</translation>
 <translation id="892706138619340876">S'han restablert algunes opcions de configuració</translation>
 <translation id="2334029754052191847">Brave ha detectat que un altre programa ha malmès alguns dels paràmetres de configuració i els ha restablert als valors predeterminats originals.</translation>
