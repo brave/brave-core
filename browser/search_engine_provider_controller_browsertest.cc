@@ -197,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
   int provider_id =
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
 
-  //Check tor profile's search provider is set to ddg.
+  //Check guest profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             provider_id);
 

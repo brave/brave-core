@@ -10,7 +10,7 @@
 // This controller is only used by non Qwant region.
 // This class manage's newtab's ddg toggle button state.
 // Toggle button state should be reflected setting value.
-// Ex, when user changeds from ddg to others, toggle button shouldbe off and
+// Ex, when user changes from ddg to others, toggle button should be off and
 // vice versa.
 class GuestWindowSearchEngineProviderController
     : public SearchEngineProviderControllerBase {
