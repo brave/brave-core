@@ -1035,7 +1035,9 @@ static bool ignore_ = false;
   /////////////////////////////////////////////////////////////////////////////
   CURRENT_RECONCILE::CURRENT_RECONCILE() :
     timestamp_(0),
-    fee_(.0) {}
+    fee_(.0),
+    retry_step_(braveledger_bat_helper::ContributionRetry::STEP_NO),
+    retry_level_(0) {}
 
   CURRENT_RECONCILE::CURRENT_RECONCILE(const CURRENT_RECONCILE& data):
     viewingId_(data.viewingId_),
@@ -1051,7 +1053,11 @@ static bool ignore_ = false;
     fee_(data.fee_),
     directions_(data.directions_),
     category_(data.category_),
-    list_(data.list_) {}
+    list_(data.list_),
+    retry_step_(data.retry_step_),
+    retry_level_(data.retry_level_),
+    destination_(data.destination_),
+    proof_(data.proof_) {}
 
   CURRENT_RECONCILE::~CURRENT_RECONCILE() {}
 
@@ -1118,6 +1124,27 @@ static bool ignore_ = false;
           list_.push_back(publisher_st);
         }
       }
+
+      if (d.HasMember("retry_step") && d["retry_step"].IsInt()) {
+        retry_step_ = static_cast<braveledger_bat_helper::ContributionRetry>(
+            d["retry_step"].GetInt());
+      } else {
+        retry_step_ = braveledger_bat_helper::ContributionRetry::STEP_NO;
+      }
+
+      if (d.HasMember("retry_level") && d["retry_level"].IsInt()) {
+        retry_level_ = d["retry_level"].GetInt();
+      } else {
+        retry_level_ = 0;
+      }
+
+      if (d.HasMember("destination") && d["destination"].IsString()) {
+        destination_ = d["destination"].GetString();
+      }
+
+      if (d.HasMember("proof") && d["proof"].IsString()) {
+        proof_ = d["proof"].GetString();
+      }
     }
 
     return !error;
@@ -1183,6 +1210,18 @@ static bool ignore_ = false;
       saveToJson(writer, i);
     }
     writer.EndArray();
+
+    writer.String("retry_step");
+    writer.Int(data.retry_step_);
+
+    writer.String("retry_level");
+    writer.Int(data.retry_level_);
+
+    writer.String("destination");
+    writer.String(data.destination_.c_str());
+
+    writer.String("proof");
+    writer.String(data.proof_.c_str());
 
     writer.EndObject();
   }
@@ -1931,9 +1970,12 @@ static bool ignore_ = false;
     return out;
   }
 
-  void getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
+  bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
         std::vector<uint8_t>& publicKey, std::vector<uint8_t>& secretKey) {
     DCHECK(!seed.empty());
+    if (seed.empty()) {
+      return false;
+    }
     publicKey.resize(crypto_sign_PUBLICKEYBYTES);
     secretKey = seed;
     secretKey.resize(crypto_sign_SECRETKEYBYTES);
@@ -1941,6 +1983,11 @@ static bool ignore_ = false;
     crypto_sign_keypair(&publicKey.front(), &secretKey.front(), 1);
 
     DCHECK(!publicKey.empty() && !secretKey.empty());
+    if (publicKey.empty() && secretKey.empty()) {
+      return false;
+    }
+
+    return true;
   }
 
   std::string uint8ToHex(const std::vector<uint8_t>& in) {

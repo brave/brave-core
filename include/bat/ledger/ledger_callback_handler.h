@@ -28,6 +28,10 @@ LEDGER_EXPORT enum Result {
   BAD_REGISTRATION_RESPONSE = 11,
   WALLET_CREATED = 12,
   GRANT_NOT_FOUND = 13,
+
+  AC_TABLE_EMPTY = 14,
+  NOT_ENOUGH_FUNDS = 15,
+  TIP_ERROR = 16,
   // some more useful result codes should go here
 };
 

@@ -192,6 +192,7 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
       OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
     } else {
       LoadPublisherState(this);
+      bat_contribution_->OnStartUp();
     }
   } else {
     OnWalletInitialized(result);
@@ -582,7 +583,7 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher, const 
   auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher.id, amount, currency);
   auto direction_list = std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
   braveledger_bat_helper::PublisherList list;
-  bat_contribution_->Reconcile(GenerateGUID(),
+  bat_contribution_->StartReconcile(GenerateGUID(),
                          ledger::PUBLISHER_CATEGORY::DIRECT_DONATION,
                          list,
                          direction_list);
@@ -984,6 +985,22 @@ void LedgerImpl::NormalizeContributeWinners(
 
 void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t& timer_id) const {
   ledger_client_->SetTimer(time_offset, timer_id);
+}
+
+bool LedgerImpl::AddReconcileStep(const std::string& viewing_id,
+                                  braveledger_bat_helper::ContributionRetry step,
+                                  int level) {
+
+  Log(__func__, ledger::LogLevel::LOG_DEBUG, {"Contribution step",
+                                              std::to_string(step),
+                                              "for",
+                                              viewing_id});
+  return bat_state_->AddReconcileStep(viewing_id, step, level);
+}
+
+const braveledger_bat_helper::CurrentReconciles&
+LedgerImpl::GetCurrentReconciles() const {
+  return bat_state_->GetCurrentReconciles();
 }
 
 }  // namespace bat_ledger
