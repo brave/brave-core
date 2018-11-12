@@ -56,6 +56,10 @@ class BundleStateDatabase {
   bool CreateAdInfoCategoryTable();
   bool CreateAdInfoCategoryNameIndex();
 
+  bool TruncateCategoryTable();
+  bool TruncateAdInfoTable();
+  bool TruncateAdInfoCategoryTable();
+
   bool InsertOrUpdateCategory(const std::string& category);
   bool InsertOrUpdateAdInfo(const ads::AdInfo& info);
   bool InsertOrUpdateAdInfoCategory(const ads::AdInfo& ad_info,

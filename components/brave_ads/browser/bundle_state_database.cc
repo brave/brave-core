@@ -87,6 +87,21 @@ bool BundleStateDatabase::CreateCategoryTable() {
   return GetDB().Execute(sql.c_str());
 }
 
+bool BundleStateDatabase::TruncateCategoryTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement sql(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, "DELETE FROM category"));
+  return sql.Run();
+}
+
+
 bool BundleStateDatabase::CreateAdInfoTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -108,6 +123,20 @@ bool BundleStateDatabase::CreateAdInfoTable() {
   return GetDB().Execute(sql.c_str());
 }
 
+bool BundleStateDatabase::TruncateAdInfoTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement sql(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, "DELETE FROM ad_info"));
+  return sql.Run();
+}
+
 bool BundleStateDatabase::CreateAdInfoCategoryTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -122,6 +151,7 @@ bool BundleStateDatabase::CreateAdInfoCategoryTable() {
       "("
       "ad_info_uuid LONGVARCHAR NOT NULL,"
       "category_name LONGVARCHAR NOT NULL,"
+      "UNIQUE(ad_info_uuid, category_name) ON CONFLICT REPLACE,"
       "CONSTRAINT fk_ad_info_uuid"
       "    FOREIGN KEY (ad_info_uuid)"
       "    REFERENCES ad_info (uuid)"
@@ -131,6 +161,20 @@ bool BundleStateDatabase::CreateAdInfoCategoryTable() {
       "    REFERENCES category (name)"
       "    ON DELETE CASCADE)");
   return GetDB().Execute(sql.c_str());
+}
+
+bool BundleStateDatabase::TruncateAdInfoCategoryTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement sql(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "DELETE FROM ad_info_category"));
+  return sql.Run();
 }
 
 bool BundleStateDatabase::CreateAdInfoCategoryNameIndex() {
@@ -151,7 +195,39 @@ bool BundleStateDatabase::SaveBundleState(
   if (!initialized)
     return false;
 
-  // update everything inside a transaction
+  GetDB().BeginTransaction();
+
+  // we are completely replacing here so first truncate all the tables
+  if (!TruncateAdInfoCategoryTable() ||
+      !TruncateAdInfoTable() ||
+      !TruncateCategoryTable()) {
+    GetDB().RollbackTransaction();
+    return false;
+  }
+
+  auto categories = bundle_state.categories;
+  for (std::map<std::string, std::vector<ads::AdInfo>>::iterator it =
+      categories.begin();  it != categories.end(); ++it) {
+    auto category = it->first;
+    if (!InsertOrUpdateCategory(category)) {
+      GetDB().RollbackTransaction();
+      return false;
+    }
+
+    auto ads = it->second;
+    for (std::vector<ads::AdInfo>::iterator ad_it = ads.begin();
+        ad_it != ads.end(); ++ad_it) {
+      auto ad_info = *ad_it;
+      if (!InsertOrUpdateAdInfo(ad_info) ||
+          !InsertOrUpdateAdInfoCategory(ad_info, category)) {
+        GetDB().RollbackTransaction();
+        return false;
+      }
+    }
+  }
+
+  db_.CommitTransaction();
+  Vacuum();
   return true;
 }
 
