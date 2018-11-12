@@ -5,6 +5,7 @@
 import Shared
 import SnapKit
 import BraveShared
+import Data
 
 private struct URLBarViewUX {
     static let LocationLeftPadding: CGFloat = 8
@@ -170,12 +171,15 @@ class URLBarView: UIView {
     
     /// Update the shields icon based on whether or not shields are enabled for this site
     func refreshShieldsStatus() {
-        if let domain = currentURL?.normalizedHost, let state = BraveShieldState.getStateForDomain(domain),
-            let shieldsAllOffOverride = state.isShieldOverrideEnabled(.AllOff), shieldsAllOffOverride {
-            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-off-menu-icon"), for: .normal)
-        } else {
-            shieldsButton.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
+        // Default on
+        var shieldIcon = "shields-menu-icon"
+        if let currentURL = currentURL {
+            let domain = Domain.getOrCreateForUrl(currentURL, context: DataController.viewContext)
+            if domain.shield_allOff == 1 {
+                shieldIcon = "shields-off-menu-icon"
+            }
         }
+        shieldsButton.setImage(UIImage(imageLiteralResourceName: shieldIcon), for: .normal)
     }
     
     var contentIsSecure: Bool {

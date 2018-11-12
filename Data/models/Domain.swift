@@ -84,31 +84,18 @@ public final class Domain: NSManagedObject, CRUD {
         }
         
         DataController.save(context: context)
-        
-        // After save update app state
-        BraveShieldState.set(forUrl: url, state: (shield, isOn))
     }
-
-    // If `static` nature here is removed, this logic can be placed inside ShieldState's init
-    public class func loadShieldsIntoMemory() {
-        BraveShieldState.clearAllInMemoryDomainStates()
-
-        // Should consider fetching Domains and passing list to shield states to flush themselves.
-        //  Or just place all of this directly on shield states, (reset memory states)
-        for domain in Domain.all() ?? [] {
-            guard let urlString = domain.url, let url = URL(string: urlString) else { continue }
-            
-            let shieldOptions: [(BraveShieldState.Shield, NSNumber?)] = [
-                (.AllOff, domain.shield_allOff),
-                (.AdblockAndTp, domain.shield_adblockAndTp),
-                (.SafeBrowsing, domain.shield_safeBrowsing),
-                (.HTTPSE, domain.shield_httpse),
-                (.FpProtection, domain.shield_fpProtection),
-                (.NoScript, domain.shield_noScript)
-            ]
-            shieldOptions.forEach { (shield, isOn) in
-                BraveShieldState.set(forUrl: url, state: (shield, isOn?.boolValue))
-            }
+    
+    public class func getBraveShield(forUrl url: URL, shield: BraveShieldState.Shield) -> NSNumber? {
+        let context = DataController.newBackgroundContext()
+        let domain = Domain.getOrCreateForUrl(url, context: context)
+        switch shield {
+            case .AllOff: return domain.shield_allOff
+            case .AdblockAndTp: return domain.shield_adblockAndTp
+            case .HTTPSE: return domain.shield_httpse
+            case .SafeBrowsing: return domain.shield_safeBrowsing
+            case .FpProtection: return domain.shield_fpProtection
+            case .NoScript: return domain.shield_noScript
         }
     }
 
