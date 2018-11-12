@@ -6,12 +6,16 @@
 
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/common/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
+#include "chrome/browser/notifications/notification_display_service_factory.h"
 #endif
 
 namespace brave_ads {
@@ -35,6 +39,10 @@ AdsServiceFactory::AdsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "AdsService",
           BrowserContextDependencyManager::GetInstance()) {
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  DependsOn(NotificationDisplayServiceFactory::GetInstance());
+  DependsOn(dom_distiller::DomDistillerServiceFactory::GetInstance());
+#endif
 }
 
 AdsServiceFactory::~AdsServiceFactory() {
@@ -62,6 +70,14 @@ content::BrowserContext* AdsServiceFactory::GetBrowserContextToUse(
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
+}
+
+void AdsServiceFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(prefs::kBraveAdsEnabled, false);
+  registry->RegisterUint64Pref(prefs::kBraveAdsPerHour, 2);
+  registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 6);
+  registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 20);
 }
 
 }  // namespace brave_ads

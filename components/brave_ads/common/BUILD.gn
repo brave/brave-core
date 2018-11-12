@@ -1,0 +1,6 @@
+source_set("common") {
+  sources = [
+    "pref_names.h",
+    "pref_names.cc",
+  ]
+}

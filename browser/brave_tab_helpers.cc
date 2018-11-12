@@ -4,6 +4,7 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
+#include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "content/public/browser/web_contents.h"
@@ -20,6 +21,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   brave_rewards::RewardsHelper::CreateForWebContents(web_contents);
 #endif
+  brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
 }
 
 }  // namespace brave

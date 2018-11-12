@@ -119,7 +119,11 @@ bool BundleStateDatabase::CreateAdInfoTable() {
       "advertiser LONGVARCHAR,"
       "notification_text TEXT,"
       "notification_url LONGVARCHAR,"
-      "uuid LONGVARCHAR PRIMARY KEY)");
+      "start_timestamp DATETIME,"
+      "end_timestamp DATETIME,"
+      "uuid LONGVARCHAR,"
+      "region VARCHAR,"
+      "PRIMARY KEY(region, uuid))");
   return GetDB().Execute(sql.c_str());
 }
 
@@ -186,7 +190,7 @@ bool BundleStateDatabase::CreateAdInfoCategoryNameIndex() {
 }
 
 bool BundleStateDatabase::SaveBundleState(
-    const ads::BUNDLE_STATE& bundle_state) {
+    const ads::BundleState& bundle_state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -195,7 +199,8 @@ bool BundleStateDatabase::SaveBundleState(
   if (!initialized)
     return false;
 
-  GetDB().BeginTransaction();
+  if (!GetDB().BeginTransaction())
+    return false;
 
   // we are completely replacing here so first truncate all the tables
   if (!TruncateAdInfoCategoryTable() ||
@@ -226,9 +231,12 @@ bool BundleStateDatabase::SaveBundleState(
     }
   }
 
-  db_.CommitTransaction();
-  Vacuum();
-  return true;
+  if (GetDB().CommitTransaction()) {
+    Vacuum();
+    return true;
+  }
+
+  return false;
 }
 
 bool BundleStateDatabase::InsertOrUpdateCategory(const std::string& category) {
@@ -260,20 +268,29 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
   if (!initialized)
     return false;
 
-  sql::Statement ad_info_statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "INSERT OR REPLACE INTO ad_info "
-          "(creative_set_id, advertiser, notification_text, "
-          "notification_url, uuid) "
-          "VALUES (?, ?, ?, ?, ?)"));
+  for (auto it = info.regions.begin(); it != info.regions.end(); ++it) {
 
-  ad_info_statement.BindString(0, info.creative_set_id);
-  ad_info_statement.BindString(1, info.advertiser);
-  ad_info_statement.BindString(2, info.notification_text);
-  ad_info_statement.BindString(3, info.notification_url);
-  ad_info_statement.BindString(4, info.uuid);
+    sql::Statement ad_info_statement(
+        GetDB().GetCachedStatement(SQL_FROM_HERE,
+            "INSERT OR REPLACE INTO ad_info "
+            "(creative_set_id, advertiser, notification_text, "
+            "notification_url, start_timestamp, end_timestamp, uuid, region) "
+            "VALUES (?, ?, ?, ?, datetime(?), datetime(?), ?, ?)"));
 
-  return ad_info_statement.Run();
+    ad_info_statement.BindString(0, info.creative_set_id);
+    ad_info_statement.BindString(1, info.advertiser);
+    ad_info_statement.BindString(2, info.notification_text);
+    ad_info_statement.BindString(3, info.notification_url);
+    ad_info_statement.BindString(4, info.start_timestamp);
+    ad_info_statement.BindString(5, info.end_timestamp);
+    ad_info_statement.BindString(6, info.uuid);
+    ad_info_statement.BindString(7, *it);
+    if (!ad_info_statement.Run()) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(

@@ -8,6 +8,8 @@
 #include "base/macros.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/sessions/core/session_id.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -16,6 +18,16 @@ class AdsService : public KeyedService {
   AdsService() = default;
 
   virtual bool is_enabled() const = 0;
+
+  // ads::Ads proxy
+  virtual void TabUpdated(
+      SessionID tab_id,
+      const GURL& url,
+      const bool is_active) = 0;
+  virtual void TabClosed(SessionID tab_id) = 0;
+  virtual void OnMediaStart(SessionID tab_id) = 0;
+  virtual void OnMediaStop(SessionID tab_id) = 0;
+  virtual void ClassifyPage(const std::string& url, const std::string& page) = 0;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);

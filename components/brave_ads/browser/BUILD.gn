@@ -9,12 +9,21 @@ source_set("browser") {
     "ads_service.h",
     "ads_service_factory.cc",
     "ads_service_factory.h",
+    "ads_tab_helper.cc",
+    "ads_tab_helper.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_ads/common",
+    "//components/dom_distiller/content/browser",
+    "//components/dom_distiller/core",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/pref_registry",
+    "//components/sessions",
+    "//url",
     # for profile.h
     "//components/domain_reliability",
     "//content/public/browser",
@@ -23,6 +32,8 @@ source_set("browser") {
 
   if (brave_ads_enabled) {
     sources += [
+      "ad_notification.cc",
+      "ad_notification.h",
       "ads_service_impl.cc",
       "ads_service_impl.h",
       "bundle_state_database.cc",
@@ -31,7 +42,13 @@ source_set("browser") {
 
     deps += [
       "//brave/vendor/bat-native-ads",
+      "//brave/components/brave_ads/resources",
+      "//components/history/core/browser",
+      "//components/history/core/common",
+      "//components/wifi",
+      "//net",
       "//ui/base",
+      "//ui/message_center/public/cpp",
     ]
   }
 }

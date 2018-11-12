@@ -33,7 +33,7 @@ class BundleStateDatabase {
     db_.set_error_callback(error_callback);
   }
 
-  bool SaveBundleState(const ads::BUNDLE_STATE& bundle_state);
+  bool SaveBundleState(const ads::BundleState& bundle_state);
   bool GetAdsForCategory(const std::string& category,
                          std::vector<ads::AdInfo>& ads);
 

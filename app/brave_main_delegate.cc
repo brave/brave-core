@@ -21,6 +21,7 @@
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
+#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/viz/common/features.h"
 #include "components/unified_consent/feature.h"
@@ -118,6 +119,7 @@ void BraveMainDelegate::PreSandboxStartup() {
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
+  command_line.AppendSwitch(switches::kEnableDomDistiller);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
