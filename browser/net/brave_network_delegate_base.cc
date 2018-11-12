@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -40,6 +41,11 @@ namespace {
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
     : ChromeNetworkDelegate(event_router), referral_headers_list_(nullptr) {
+  // Initialize the preference change registrar.
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::UI},
+      base::Bind(&BraveNetworkDelegateBase::InitPrefChangeRegistrar,
+                 base::Unretained(this)));
   // Retrieve the current referral headers, if any.
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::UI},
@@ -50,7 +56,27 @@ BraveNetworkDelegateBase::BraveNetworkDelegateBase(
 BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {
 }
 
+void BraveNetworkDelegateBase::InitPrefChangeRegistrar() {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  PrefService* prefs = g_browser_process->local_state();
+  pref_change_registrar_.reset(new PrefChangeRegistrar());
+  pref_change_registrar_->Init(prefs);
+  pref_change_registrar_->Add(
+      kReferralHeaders,
+      base::Bind(&BraveNetworkDelegateBase::OnReferralHeadersChanged,
+                 base::Unretained(this)));
+}
+
+void BraveNetworkDelegateBase::OnReferralHeadersChanged() {
+  // Retrieve the current referral headers, if any.
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::UI},
+      base::Bind(&BraveNetworkDelegateBase::GetReferralHeaders,
+                 base::Unretained(this)));
+}
+
 void BraveNetworkDelegateBase::GetReferralHeaders() {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   const base::ListValue* referral_headers =
       g_browser_process->local_state()->GetList(kReferralHeaders);
   if (referral_headers)
