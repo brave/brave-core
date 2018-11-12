@@ -988,7 +988,7 @@ void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t& timer_id) const {
 }
 
 bool LedgerImpl::AddReconcileStep(const std::string& viewing_id,
-                                  ledger::ContributionRetry step,
+                                  braveledger_bat_helper::ContributionRetry step,
                                   int level) {
 
   Log(__func__, ledger::LogLevel::LOG_DEBUG, {"Contribution step",

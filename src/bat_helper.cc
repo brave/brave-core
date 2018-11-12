@@ -1036,7 +1036,7 @@ static bool ignore_ = false;
   CURRENT_RECONCILE::CURRENT_RECONCILE() :
     timestamp_(0),
     fee_(.0),
-    retry_step_(ledger::ContributionRetry::STEP_NO),
+    retry_step_(braveledger_bat_helper::ContributionRetry::STEP_NO),
     retry_level_(0) {}
 
   CURRENT_RECONCILE::CURRENT_RECONCILE(const CURRENT_RECONCILE& data):
@@ -1126,10 +1126,10 @@ static bool ignore_ = false;
       }
 
       if (d.HasMember("retry_step") && d["retry_step"].IsInt()) {
-        retry_step_ = static_cast<ledger::ContributionRetry>(
+        retry_step_ = static_cast<braveledger_bat_helper::ContributionRetry>(
             d["retry_step"].GetInt());
       } else {
-        retry_step_ = ledger::ContributionRetry::STEP_NO;
+        retry_step_ = braveledger_bat_helper::ContributionRetry::STEP_NO;
       }
 
       if (d.HasMember("retry_level") && d["retry_level"].IsInt()) {

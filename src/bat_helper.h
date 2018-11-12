@@ -9,13 +9,26 @@
 #include <vector>
 #include <map>
 #include <functional>
-#include <bat/ledger/ledger.h>
 
 #include "bat_helper_platform.h"
 #include "static_values.h"
 
 namespace braveledger_bat_helper {
   bool isProbiValid(const std::string& number);
+
+  enum ContributionRetry {
+    STEP_NO = 0,
+    STEP_RECONCILE = 1, // Phase 1
+    STEP_CURRENT = 2, // Phase 1
+    STEP_PAYLOAD = 3, // Phase 1
+    STEP_REGISTER = 4, // Phase 1
+    STEP_VIEWING = 5, // Phase 1
+    STEP_WINNERS = 6, // Phase 1
+    STEP_PREPARE = 7, // Phase 2
+    STEP_PROOF = 8, // Phase 2
+    STEP_VOTE = 9, // Phase 2
+    STEP_FINAL = 10 // Phase 2
+  };
 
   struct REQUEST_CREDENTIALS_ST {
     REQUEST_CREDENTIALS_ST();
@@ -299,7 +312,7 @@ namespace braveledger_bat_helper {
     Directions directions_;
     int category_;
     PublisherList list_;
-    ledger::ContributionRetry retry_step_;
+    ContributionRetry retry_step_;
     int retry_level_;
     std::string destination_;
     std::string proof_;
