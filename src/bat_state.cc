@@ -29,12 +29,6 @@ bool BatState::LoadState(const std::string& data) {
 
   bool stateChanged = false;
 
-  // clear old reconciles
-  if (state_->batch_.size() == 0) {
-    state_->current_reconciles_ = {};
-    stateChanged = true;
-  }
-
   // fix timestamp ms to s conversion
   if (std::to_string(state_->reconcileStamp_).length() > 10) {
     state_->reconcileStamp_ = state_->reconcileStamp_ / 1000;
@@ -95,9 +89,12 @@ bool BatState::ReconcileExists(const std::string& viewingId) const {
 }
 
 void BatState::RemoveReconcileById(const std::string& viewingId) {
-  state_->current_reconciles_.erase(
-      state_->current_reconciles_.find(viewingId));
-  SaveState();
+  braveledger_bat_helper::CurrentReconciles::iterator it =
+      state_->current_reconciles_.find(viewingId);
+  if (it != state_->current_reconciles_.end()){
+    state_->current_reconciles_.erase(it);
+    SaveState();
+  }
 }
 
 void BatState::SetRewardsMainEnabled(bool enabled) {
@@ -317,6 +314,32 @@ const std::string& BatState::GetMasterUserToken() const {
 void BatState::SetMasterUserToken(const std::string &token) {
   state_->masterUserToken_ = token;
   SaveState();
+}
+
+bool BatState::AddReconcileStep(const std::string& viewing_id,
+                                braveledger_bat_helper::ContributionRetry step,
+                                int level) {
+  braveledger_bat_helper::CURRENT_RECONCILE reconcile =
+      GetReconcileById(viewing_id);
+
+  if (reconcile.viewingId_.empty()) {
+    return false;
+  }
+
+  // don't save step when you are already in the same step
+  if (reconcile.retry_step_ == step && level == -1) {
+    return true;
+  }
+
+  reconcile.retry_step_ = step;
+  reconcile.retry_level_ = level;
+
+  return UpdateReconcile(reconcile);
+}
+
+const braveledger_bat_helper::CurrentReconciles&
+BatState::GetCurrentReconciles() const {
+  return state_->current_reconciles_;
 }
 
 }  // namespace braveledger_bat_state
