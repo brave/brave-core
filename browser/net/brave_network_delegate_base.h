@@ -7,7 +7,10 @@
 
 #include "brave/browser/net/url_context.h"
 #include "chrome/browser/net/chrome_network_delegate.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/completion_callback.h"
+
+class PrefChangeRegistrar;
 
 namespace extensions {
 class EventRouterForwarder;
@@ -73,9 +76,13 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       can_set_cookies_callbacks_;
 
  private:
+  void InitPrefChangeRegistrar();
   void GetReferralHeaders();
+  void OnReferralHeadersChanged();
   std::unique_ptr<base::ListValue> referral_headers_list_;
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
+  std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
+      pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);
 };
