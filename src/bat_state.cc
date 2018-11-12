@@ -89,9 +89,12 @@ bool BatState::ReconcileExists(const std::string& viewingId) const {
 }
 
 void BatState::RemoveReconcileById(const std::string& viewingId) {
-  state_->current_reconciles_.erase(
-      state_->current_reconciles_.find(viewingId));
-  SaveState();
+  braveledger_bat_helper::CurrentReconciles::iterator it =
+      state_->current_reconciles_.find(viewingId);
+  if (it != state_->current_reconciles_.end()){
+    state_->current_reconciles_.erase(it);
+    SaveState();
+  }
 }
 
 void BatState::SetRewardsMainEnabled(bool enabled) {
