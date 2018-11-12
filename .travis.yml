@@ -1,11 +1,14 @@
 language: swift
 osx_image: xcode10.1
-node_js: 
-  - "node"
-
 cache:
   directories:
     - Carthage
+
+branches:
+   only:
+     - "development"
+
+install: true
 
 before_install:
   - brew install carthage || true
