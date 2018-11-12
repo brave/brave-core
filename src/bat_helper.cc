@@ -1084,7 +1084,6 @@ static bool ignore_ = false;
       currency_ = d["currency"].GetString();
       fee_ = d["fee"].GetDouble();
       category_ = d["category"].GetInt();
-      destination_ = d["destination"].GetString();
 
       if (d.HasMember("surveyorInfo") && d["surveyorInfo"].IsObject()) {
         auto obj = d["surveyorInfo"].GetObject();

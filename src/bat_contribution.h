@@ -76,33 +76,37 @@ namespace bat_ledger {
 
 namespace braveledger_bat_contribution {
 
-//static const uint64_t phase_one_timers[] = {
-//    1 * 60 * 60,  // 1h
-//    2 * 60 * 60,  // 2h
-//    12 * 60 * 60,  // 12h
-//    24 * 60 * 60,  // 24h
-//    48 * 60 * 60};  // 48h
-
-//static const uint64_t phase_two_timers[] = {
-//    1 * 60 * 60,  // 1h
-//    6 * 60 * 60,  // 6h
-//    24 * 60 * 60};  // 24h
-
 static const uint64_t phase_one_timers[] = {
-    1 * 60,  // 1min
-    2 * 60,  //  2min
-    3 * 60};  // 3min
+    1 * 60 * 60,  // 1h
+    2 * 60 * 60,  // 2h
+    12 * 60 * 60,  // 12h
+    24 * 60 * 60,  // 24h
+    48 * 60 * 60};  // 48h
 
 static const uint64_t phase_two_timers[] = {
-    1 * 60,  // 1min
-    2 * 60,  //  2min
-    3 * 60};  // 3min
+    1 * 60 * 60,  // 1h
+    6 * 60 * 60,  // 6h
+    24 * 60 * 60};  // 24h
+
+//static const uint64_t phase_one_timers[] = {
+//    0.5 * 60,  // 30
+//    1 * 60,  //  1min
+//    2 * 60,  //  2min
+//    3 * 60,  // 3min
+//    4 * 60};  // 4min
+//
+//static const uint64_t phase_two_timers[] = {
+//    1 * 60,  // 1min
+//    2 * 60,  //  2min
+//    3 * 60};  // 3min
 
 class BatContribution {
  public:
   explicit BatContribution(bat_ledger::LedgerImpl* ledger);
 
   ~BatContribution();
+
+  void OnStartUp();
 
   // Starting point for contribution
   // We determinate which contribution we want to do and do appropriate actions
@@ -189,8 +193,7 @@ class BatContribution {
 
   unsigned int GetBallotsCount(const std::string& viewing_id);
 
-  void GetReconcileWinners(const unsigned int& ballots,
-                           const std::string& viewing_id);
+  void GetReconcileWinners(const std::string& viewing_id);
 
   void GetContributeWinners(const unsigned int& ballots,
                             const std::string& viewing_id,
@@ -216,6 +219,8 @@ class BatContribution {
       bool result,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
+
+  void Proof();
 
   void ProofBatch(
       const braveledger_bat_helper::BathProofs& batch_proof,
