@@ -3,7 +3,7 @@
   "name": "Brave Rewards",
   "manifest_version": 2,
   "description": "Brave Rewards Extension",
-  "default_locale": "en",
+  "default_locale": "en_US",
   "background" : {
     "scripts": ["out/brave_rewards_panel_background.bundle.js"],
     "persistent": true
