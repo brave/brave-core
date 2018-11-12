@@ -1,0 +1,1 @@
+[{"trigger":{"url-filter":"no-real-filter", "if-domain": ["ignore.all.domains"]},"action":{"type":"make-https"}}]

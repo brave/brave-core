@@ -63,15 +63,13 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
             
             // Domain specific overrides after defaults have already been setup
             
-            if let host = url?.domainURL.absoluteString, let shieldState = BraveShieldState.getStateForDomain(host) {
-                // Sets the site-specific setting
-                if var shieldOverrideEnabled = shieldState.isShieldOverrideEnabled(shield) {
-                    if shield == .AllOff {
-                        // Reversed...
-                        shieldOverrideEnabled = !shieldOverrideEnabled
-                        // TODO: Switch ^ to `isEnabled.toggle()` when we support Swift 4.2+
-                    }
-                    view.toggleSwitch.isOn = shieldOverrideEnabled
+            if let url = url, let shieldState = Domain.getBraveShield(forUrl: url, shield: shield) {
+                // site-specific shield has been overridden, update
+                
+                view.toggleSwitch.isOn = Bool(truncating: shieldState)
+                if shield == .AllOff {
+                    // Reverse, as logic is inverted
+                    view.toggleSwitch.isOn.toggle()
                 }
             }
         }

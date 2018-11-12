@@ -5,6 +5,7 @@
 import Foundation
 import WebKit
 import Shared
+import Data
 
 private let log = Logger.browserLogger
 
@@ -130,6 +131,16 @@ extension BrowserViewController: WKNavigationDelegate {
             }
 
             pendingRequests[url.absoluteString] = navigationAction.request
+
+            // Identify specific block lists that need to be applied to the requesting domain
+            let domainForShields = Domain.getOrCreateForUrl(url, context: DataController.viewContext)
+            let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
+            let controller = webView.configuration.userContentController
+            
+            // Grab all lists that have valid rules and add/remove them as necessary
+            on.compactMap { $0.rule }.forEach(controller.add)
+            off.compactMap { $0.rule }.forEach(controller.remove)
+            
             decisionHandler(.allow)
             return
         }

@@ -5,7 +5,6 @@ import SwiftyJSON
 
 // These override the setting in the prefs
 public struct BraveShieldState {
-
     public enum Shield: String {
         case AllOff = "all_off"
         case AdblockAndTp = "adblock_and_tp"
@@ -13,73 +12,6 @@ public struct BraveShieldState {
         case SafeBrowsing = "safebrowsing"
         case FpProtection = "fp_protection"
         case NoScript = "noscript"
-    }
-
-    fileprivate var state = [Shield: Bool]()
-
-    typealias DomainKey = String
-    private static var inMemoryDomainShieldSettings = [DomainKey: BraveShieldState]()
-
-    public static func clearAllInMemoryDomainStates() {
-        inMemoryDomainShieldSettings.removeAll()
-    }
-    
-    public static func set(forUrl url: URL, state: (BraveShieldState.Shield, Bool?)) {
-        let domain = url.domainURL.absoluteString
-        var shields = inMemoryDomainShieldSettings[domain] ?? BraveShieldState()
-        shields.set(shield: state.0, toOn: state.1)
-        inMemoryDomainShieldSettings[domain] = shields
-    }
-
-    public static func getStateForDomain(_ domain: String) -> BraveShieldState? {
-        return inMemoryDomainShieldSettings[domain]
-    }
-
-    public init(jsonStateFromDbRow: String) {
-        let js = JSON(parseJSON: jsonStateFromDbRow)
-        for (k, v) in (js.dictionary ?? [:]) {
-            if let key = Shield(rawValue: k) {
-                set(shield: key, toOn: v.bool)
-            } else {
-                assert(false, "db has bad brave shield state")
-            }
-        }
-    }
-
-    public init() {}
-
-    public init(orig: BraveShieldState) {
-        self.state = orig.state // Dict value type is copied
-    }
-
-    func toJsonString() -> String? {
-        var _state = [String: Bool]()
-        for (k, v) in state {
-            _state[k.rawValue] = v
-        }
-        return JSON(_state).rawString()
-    }
-
-    mutating func set(shield: Shield, toOn on: Bool?) {
-        if let on = on {
-            state[shield] = on
-        } else {
-            state.removeValue(forKey: shield)
-        }
-    }
-
-    /// Gets whether or not the a site-specific shield override is enabled, or returns nil if it hasn't been set
-    public func isShieldOverrideEnabled(_ shield: Shield) -> Bool? {
-        return state[shield]
-    }
-
-    mutating func setStateFromPerPageShield(_ pageState: BraveShieldState?) {
-        // BRAVE TODO:
-//        setState(.NoScript, on: pageState?.isOnScriptBlocking() ?? (BraveApp.getPrefs()?.boolForKey(kPrefKeyNoScriptOn) ?? false))
-//        setState(.AdblockAndTp, on: pageState?.isOnAdBlockAndTp() ?? AdBlocker.singleton.isNSPrefEnabled)
-//        setState(.SafeBrowsing, on: pageState?.isOnSafeBrowsing() ?? SafeBrowsing.singleton.isNSPrefEnabled)
-//        setState(.HTTPSE, on: pageState?.isOnHTTPSE() ?? HttpsEverywhere.singleton.isNSPrefEnabled)
-//        setState(.FpProtection, on: pageState?.isOnFingerprintProtection() ?? (BraveApp.getPrefs()?.boolForKey(kPrefKeyFingerprintProtection) ?? false))
     }
 }
 
