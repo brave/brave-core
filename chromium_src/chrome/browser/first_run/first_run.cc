@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/importer/brave_external_process_importer_host.h"
+#include "brave/browser/importer/brave_profile_writer.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
 
@@ -18,6 +20,8 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
+#define ExternalProcessImporterHost BraveExternalProcessImporterHost
+#define ProfileWriter BraveProfileWriter
 #include "../../../../../chrome/browser/first_run/first_run.cc"
 
 namespace brave {
