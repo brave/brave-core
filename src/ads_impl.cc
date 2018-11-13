@@ -902,7 +902,6 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   }
   writer.EndArray();
 
-  // TODO(Terry Mancey): cachedValue.url from JavaScript
   auto cached_page_score = page_score_cache_.find(info.tab_url);
   if (cached_page_score != page_score_cache_.end()) {
     writer.String("pageScore");
