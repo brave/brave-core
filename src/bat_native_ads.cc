@@ -129,7 +129,7 @@ int main() {
   notification_result_info.id = "7f4ec8a6-3535-4f92-9ec5-e7de7ab631d2";
   notification_result_info.result_type =
     ads::NotificationResultInfoResultType::CLICKED;
-  notification_result_info.catalog = "sample-catalog";
+  notification_result_info.catalog = "a3cd25e99647957ca54c18cb52e0784e1dd6584d";
   notification_result_info.url = "https://brave.com/features";
   notification_result_info.classification = "technology & computing-software";
   ads.GenerateAdReportingNotificationResultEvent(notification_result_info);
