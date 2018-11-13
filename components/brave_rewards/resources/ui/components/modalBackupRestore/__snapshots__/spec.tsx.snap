@@ -1,55 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
-.c18 {
-  --button-main-color: #A0A1B2;
-  --button-main-color-hover: #7C7D8C;
-  --button-main-color-active: #585968;
-  --button-state-color: var(--button-main-color);
-  --icon-size: 14px;
-  --icon-spacing: 6px;
-  --webkit-appearance: none;
-  box-sizing: border-box;
-  background: none;
-  border: none;
-  outline: none;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row-reverse;
-  -ms-flex-direction: row-reverse;
-  flex-direction: row-reverse;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Poppins,sans-serif;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-size: 11px;
-  border-radius: 16px;
-  width: auto;
-  min-width: 88px;
-  padding: 7px 10px;
-}
-
-.c18:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c18:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c22 {
+.c26 {
   --button-main-color: #FB542B;
   --button-main-color-hover: #F43405;
   --button-main-color-active: #FDBBAA;
@@ -89,25 +41,25 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   padding: 11px 10px;
 }
 
-.c22:hover:enabled {
+.c26:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c22:active:enabled {
+.c26:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c21 {
+.c28 {
   color: #fff;
   background: var(--button-state-color);
 }
 
-.c17 {
+.c25 {
   border: 1px solid;
   color: var(--button-state-color);
 }
 
-.c19 {
+.c27 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -127,44 +79,67 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   line-height: 1;
 }
 
+.c18 {
+  color: #4c54d2;
+  cursor: pointer;
+}
+
+.c23 {
+  margin-top: 40px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c24 {
+  margin: 0 8px;
+}
+
 .c5 {
-  margin-top: 33px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.c10 {
-  font-family: Muli,sans-serif;
+.c6 {
+  font-size: 22px;
+  font-weight: normal;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 40px;
+  font-family: Poppins,sans-serif;
+}
+
+.c8 {
+  margin: 0 auto;
+  max-width: 400px;
+}
+
+.c7 {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.c22 {
   font-size: 16px;
-  font-weight: 300;
-  line-height: 1.63;
-  color: #686978;
-  margin-bottom: 39px;
+  font-weight: 200;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  line-height: 26px;
+  font-family: Muli,sans-serif;
 }
 
-.c15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.c16 {
-  margin: 0 4px;
-}
-
-.c20 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  margin-top: 59px;
+.c21 {
+  margin-bottom: 25px;
 }
 
 .c3 {
@@ -173,12 +148,12 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   fill: currentColor;
 }
 
-.c11 {
+.c16 {
   width: 100%;
   margin-bottom: 12px;
 }
 
-.c12 {
+.c17 {
   width: 100%;
   font-family: Poppins,sans-serif;
   line-height: normal;
@@ -231,82 +206,95 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   max-height: calc(100vh - 100px);
 }
 
-.c6 {
-  border-bottom: 1px solid #DFDFE8;
-  text-align: center;
-  font-family: Poppins,sans-serif;
-}
-
-.c7 {
-  border-radius: 6px 6px 0 0;
-  border: 1px solid #DFDFE8;
-  border-bottom: 1px solid #FFF;
-  color: #FB542B;
-  font-size: 16px;
-  font-weight: 500;
-  -webkit-letter-spacing: -0.29px;
-  -moz-letter-spacing: -0.29px;
-  -ms-letter-spacing: -0.29px;
-  letter-spacing: -0.29px;
-  line-height: 44px;
-  display: inline-block;
-  cursor: pointer;
-  min-width: 230px;
-  padding: 0 10px;
-  margin: 0 2px;
-  position: relative;
-  top: 1px;
-}
-
-.c8 {
-  border-radius: 6px 6px 0 0;
-  border: 1px solid #DFDFE8;
-  border-bottom: 1px solid #DFDFE8;
-  color: #686978;
-  font-size: 16px;
-  font-weight: 500;
-  -webkit-letter-spacing: -0.29px;
-  -moz-letter-spacing: -0.29px;
-  -ms-letter-spacing: -0.29px;
-  letter-spacing: -0.29px;
-  line-height: 44px;
-  display: inline-block;
-  cursor: pointer;
-  min-width: 230px;
-  padding: 0 10px;
-  margin: 0 2px;
-  position: relative;
-  top: 1px;
-}
-
-.c9 {
-  padding: 34px 56px 20px;
-}
-
-.c13 {
+.c19 {
   width: 100%;
 }
 
-.c14 {
+.c20 {
   min-height: 140px;
   box-sizing: border-box;
   width: 100%;
   font-family: Muli,sans-serif;
-  border: 1px solid #E5E5EA;
-  color: #D1D1DB;
+  border: 1px solid #DFDFE8;
+  color: #686978;
   border-radius: 6px;
   padding: 15px 20px;
   font-size: 16px;
   line-height: 26px;
 }
 
-.c14:disabled {
+.c20:disabled {
   background: #fff;
 }
 
-.c14:focus {
+.c20:focus {
   border-color: #A1A8F2;
   outline: none;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: Poppins,sans-serif;
+}
+
+.c10 {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 43px;
+}
+
+.c11 {
+  width: 100%;
+  height: 100%;
+  background: #DFDFE8;
+  border-radius: 21.5px 21.5px 21.5px 21.5px;
+}
+
+.c15 {
+  top: -17px;
+  width: 50%;
+  height: 37px;
+  background: #FFF;
+  border-radius: 21.5px 21.5px 21.5px 21.5px;
+  position: relative;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  -webkit-transform: translate(calc(97%),calc(-50% - 4px));
+  -ms-transform: translate(calc(97%),calc(-50% - 4px));
+  transform: translate(calc(97%),calc(-50% - 4px));
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+}
+
+.c12 {
+  width: 50%;
+  display: block;
+  height: 100%;
+  float: left;
+}
+
+.c14 {
+  width: 50%;
+  display: block;
+  height: 100%;
+  float: right;
+}
+
+.c13 {
+  z-index: 9;
+  position: relative;
+  font-size: 14px;
+  width: 70%;
+  margin: 13px auto 0 auto;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  text-align: center;
+  color: #585968;
+  font-weight: normal;
 }
 
 <div
@@ -339,118 +327,134 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
       <div
         className="c5"
       >
-        <div>
-          <div
-            className="c6"
-          >
-            <div
-              className="c7"
-              onClick={[Function]}
-              selected={true}
-            >
-              MISSING: rewardsBackupText1
-            </div>
-            <div
-              className="c8"
-              onClick={[Function]}
-              selected={false}
-            >
-              MISSING: rewardsRestoreText1
-            </div>
-          </div>
+        <span
+          className="c6"
+        >
+          MISSING: manageWallet
+        </span>
+      </div>
+      <div
+        className="c7"
+      >
+        <div
+          className="c8"
+        >
           <div
             className="c9"
           >
             <div
               className="c10"
-            >
-              MISSING: rewardsBackupText2
-            </div>
-            <div
-              className="c11"
+              onClick={[Function]}
             >
               <div
-                className="c12"
-                disabled={false}
-                type="light"
+                className="c11"
               >
-                MISSING: recoveryKeys
-              </div>
-              <div
-                className="c13"
-              >
-                <textarea
+                <div
+                  className="c12"
+                >
+                  <div
+                    className="c13"
+                    selected={false}
+                  >
+                    MISSING: backup
+                  </div>
+                </div>
+                <div
                   className="c14"
-                  disabled={true}
-                />
+                >
+                  <div
+                    className="c13"
+                    selected={false}
+                  >
+                    MISSING: restore
+                  </div>
+                </div>
               </div>
-            </div>
-            <div
-              className="c15"
-            >
-              <button
-                className="c16 c17 c18"
-                onClick={[Function]}
-                size="small"
-                type="subtle"
-              >
-                <div
-                  className="c19"
-                  size="small"
-                  type="subtle"
-                >
-                  MISSING: copy
-                </div>
-              </button>
-              <button
-                className="c16 c17 c18"
-                onClick={[Function]}
-                size="small"
-                type="subtle"
-              >
-                <div
-                  className="c19"
-                  size="small"
-                  type="subtle"
-                >
-                  MISSING: print
-                </div>
-              </button>
-              <button
-                className="c16 c17 c18"
-                onClick={[Function]}
-                size="small"
-                type="subtle"
-              >
-                <div
-                  className="c19"
-                  size="small"
-                  type="subtle"
-                >
-                  MISSING: saveAsFile
-                </div>
-              </button>
-            </div>
-            <div
-              className="c20"
-            >
-              <button
-                className="c21 c22"
-                onClick={[Function]}
-                size="medium"
-                type="accent"
-              >
-                <div
-                  className="c19"
-                  size="medium"
-                  type="accent"
-                >
-                  MISSING: done
-                </div>
-              </button>
+              <div
+                className="c15"
+              />
             </div>
           </div>
         </div>
+      </div>
+      <div
+        className="c16"
+      >
+        <div
+          className="c17"
+          disabled={false}
+          type="light"
+        >
+          MISSING: rewardsRestoreText4
+           
+          <label
+            className="c18"
+            htmlFor="recoverFile"
+          >
+            MISSING: import
+          </label>
+          <input
+            id="recoverFile"
+            name="recoverFile"
+            onChange={[Function]}
+            style={
+              Object {
+                "display": "none",
+              }
+            }
+            type="file"
+          />
+        </div>
+        <div
+          className="c19"
+        >
+          <textarea
+            className="c20"
+            onChange={[Function]}
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        className="c21"
+      >
+        <p
+          className="c22"
+        >
+          MISSING: rewardsRestoreText3
+        </p>
+      </div>
+      <div
+        className="c23"
+      >
+        <button
+          className="c24 c25 c26"
+          onClick={[Function]}
+          size="medium"
+          type="accent"
+        >
+          <div
+            className="c27"
+            size="medium"
+            type="accent"
+          >
+            MISSING: cancel
+          </div>
+        </button>
+        <button
+          className="c24 c28 c26"
+          onClick={[Function]}
+          size="medium"
+          type="accent"
+        >
+          <div
+            className="c27"
+            size="medium"
+            type="accent"
+          >
+            MISSING: restore
+          </div>
+        </button>
       </div>
     </div>
   </div>

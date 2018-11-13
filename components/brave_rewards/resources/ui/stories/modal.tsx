@@ -8,7 +8,6 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 
 // Components
-import { TabsType } from '../../../src/features/rewards/modalBackupRestore'
 import { DetailRow as ContributeRow } from '../../../src/features/rewards/tableContribute'
 import { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
 import { DetailRow as TransactionsRow } from '../../../src/features/rewards/tableTransactions'
@@ -28,15 +27,17 @@ const doNothing = () => {
 
 storiesOf('Feature Components/Rewards/Modal', module)
   .addDecorator(withKnobs)
-  .add('Backup/Restore', withState({ tabId: 'backup' }, (store) => {
-    const onTabChange = (tabId: string) => {
-      store.set({ tabId })
+  .add('Backup/Restore', withState({ activeTabId: 0 }, (store) => {
+    const onTabChange = () => {
+      const newId = store.state.activeTabId === 0 ? 1 : 0
+      store.set({ activeTabId: newId })
     }
 
     return (
       <div style={{ maxWidth: '900px', background: '#fff', padding: '30px' }}>
         <ModalBackupRestore
-          activeTabId={store.state.tabId as TabsType}
+          funds={'55 BAT'}
+          activeTabId={store.state.activeTabId}
           backupKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
           error={text('Error', '')}
           onTabChange={onTabChange}

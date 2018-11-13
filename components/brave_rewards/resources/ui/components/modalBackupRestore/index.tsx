@@ -4,7 +4,6 @@
 
 import * as React from 'react'
 import {
-  StyledWrapper,
   StyledContent,
   StyledImport,
   StyleButtonWrapper,
@@ -12,19 +11,24 @@ import {
   StyledDoneWrapper,
   StyledStatus,
   GroupedButton,
-  ActionButton
+  ActionButton,
+  StyledTitle,
+  StyledTitleWrapper,
+  StyledSafe,
+  StyledTabWrapper,
+  StyledControlWrapper,
+  StyledText,
+  StyledTextWrapper
 } from './style'
-import { TextArea, Tabs, Modal, Button } from '../../../components'
+import { TextArea, Modal, Button } from '../../../components'
 import { getLocale } from '../../../helpers'
-import Alert from '../alert'
+import { Alert, Tab } from '../'
 import ControlWrapper from '../../../components/formControls/controlWrapper'
-
-export type TabsType = 'backup' | 'restore'
 
 export interface Props {
   backupKey: string
-  activeTabId: TabsType
-  onTabChange: (tab: TabsType) => void
+  activeTabId: number
+  onTabChange: () => void
   onClose: () => void
   onCopy?: (key: string) => void
   onPrint?: (key: string) => void
@@ -33,10 +37,12 @@ export interface Props {
   error?: React.ReactNode
   id?: string
   testId?: string
+  funds?: string
 }
 
 interface State {
   recoveryKey: string
+  errorShown: boolean
 }
 
 /*
@@ -48,7 +54,8 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
   constructor (props: Props) {
     super(props)
     this.state = {
-      recoveryKey: ''
+      recoveryKey: '',
+      errorShown: false
     }
   }
   onFileUpload = (inputFile: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,145 +84,200 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
 
   setRecoveryKey = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({
+      errorShown: false,
       recoveryKey: event.target.value
     })
   }
 
   onRestore = (key?: string) => {
     key = typeof key === 'string' ? key : this.state.recoveryKey
-    this.setState({
-      recoveryKey: ''
-    })
     this.props.onRestore(key)
+  }
+
+  componentWillReceiveProps (nextProps: Props) {
+    if (nextProps.error) {
+      this.setState({
+        errorShown: true
+      })
+    }
+  }
+
+  getBackup = () => {
+    const {
+      backupKey,
+      onClose,
+      onCopy,
+      onPrint,
+      onSaveFile
+    } = this.props
+
+    return (
+      <>
+        <ControlWrapper text={getLocale('recoveryKeys')}>
+          <TextArea
+            value={backupKey}
+            disabled={true}
+          />
+        </ControlWrapper>
+        <StyleButtonWrapper>
+          {
+            onCopy
+            ? <GroupedButton
+              text={getLocale('copy')}
+              level={'secondary'}
+              size={'small'}
+              type={'subtle'}
+              onClick={onCopy.bind(this, backupKey)}
+            />
+            : null
+          }
+          {
+            onPrint
+            ? <GroupedButton
+              text={getLocale('print')}
+              level={'secondary'}
+              size={'small'}
+              type={'subtle'}
+              onClick={onPrint.bind(this, backupKey)}
+            />
+            : null
+          }
+          {
+            onSaveFile
+            ? <GroupedButton
+              text={getLocale('saveAsFile')}
+              level={'secondary'}
+              size={'small'}
+              type={'subtle'}
+              onClick={onSaveFile.bind(this, backupKey)}
+            />
+            : null
+          }
+        </StyleButtonWrapper>
+        <StyledContent>
+          <StyledSafe>
+            {getLocale('rewardsBackupText2')}
+          </StyledSafe>
+          {getLocale('rewardsBackupText3')}
+        </StyledContent>
+        <StyledDoneWrapper>
+          <Button
+            text={getLocale('done')}
+            size={'medium'}
+            type={'accent'}
+            onClick={onClose}
+          />
+        </StyledDoneWrapper>
+      </>
+    )
+  }
+
+  getRestore = () => {
+    const { error, onClose, funds } = this.props
+    const errorShown = error && this.state.errorShown
+
+    return (
+      <>
+        {
+          funds
+          ? <StyledStatus>
+              <Alert type={'warning'} colored={true} bg={true}>
+                {`Backup your wallet before replacing. Or you will lose the fund, ${funds}, in your current wallet.`}
+              </Alert>
+            </StyledStatus>
+          : null
+        }
+        <ControlWrapper
+          text={
+            <>
+              {getLocale('rewardsRestoreText4')} <StyledImport
+                htmlFor={'recoverFile'}
+              >
+                {getLocale('import')}
+              </StyledImport>
+              <input
+                type='file'
+                id='recoverFile'
+                name='recoverFile'
+                style={{ display: 'none' }}
+                onChange={this.onFileUpload}
+              />
+            </>
+          }
+        >
+          <TextArea
+            fieldError={!!errorShown}
+            value={this.state.recoveryKey}
+            onChange={this.setRecoveryKey}
+          />
+        </ControlWrapper>
+        {
+          errorShown
+          ? <StyledStatus isError={true}>
+              <Alert type={'error'} colored={true} bg={true}>
+                {error}
+              </Alert>
+            </StyledStatus>
+          : null
+        }
+        <StyledTextWrapper>
+          <StyledText>
+            {getLocale('rewardsRestoreText3')}
+          </StyledText>
+        </StyledTextWrapper>
+        <StyledActionsWrapper>
+          <ActionButton
+            level={'secondary'}
+            text={getLocale('cancel')}
+            size={'medium'}
+            type={'accent'}
+            onClick={onClose}
+          />
+          <ActionButton
+            level={'primary'}
+            type={'accent'}
+            text={getLocale('restore')}
+            size={'medium'}
+            onClick={this.onRestore}
+          />
+        </StyledActionsWrapper>
+      </>
+    )
   }
 
   render () {
     const {
       id,
-      backupKey,
       activeTabId,
       onClose,
       onTabChange,
-      onCopy,
-      onPrint,
-      onSaveFile,
-      error,
       testId
     } = this.props
 
     return (
       <Modal id={id} onClose={onClose} size={'small'} testId={testId}>
-        <StyledWrapper>
-          <Tabs activeTabId={activeTabId} onChange={onTabChange}>
-          <div id={`${id}-backup`} data-key={'backup'} data-title={getLocale('rewardsBackupText1')}>
-            <StyledContent>
-              {getLocale('rewardsBackupText2')}
-            </StyledContent>
-            <ControlWrapper text={getLocale('recoveryKeys')}>
-              <TextArea
-                value={backupKey}
-                disabled={true}
-              />
-            </ControlWrapper>
-            <StyleButtonWrapper>
-              {
-                onCopy
-                ? <GroupedButton
-                  text={getLocale('copy')}
-                  level={'secondary'}
-                  size={'small'}
-                  type={'subtle'}
-                  onClick={onCopy.bind(this, backupKey)}
-                />
-                : null
-              }
-              {
-                onPrint
-                ? <GroupedButton
-                  text={getLocale('print')}
-                  level={'secondary'}
-                  size={'small'}
-                  type={'subtle'}
-                  onClick={onPrint.bind(this, backupKey)}
-                />
-                : null
-              }
-              {
-                onSaveFile
-                ? <GroupedButton
-                  text={getLocale('saveAsFile')}
-                  level={'secondary'}
-                  size={'small'}
-                  type={'subtle'}
-                  onClick={onSaveFile.bind(this, backupKey)}
-                />
-                : null
-              }
-            </StyleButtonWrapper>
-            <StyledDoneWrapper>
-              <Button
-                text={getLocale('done')}
-                size={'medium'}
-                type={'accent'}
-                onClick={onClose}
-              />
-            </StyledDoneWrapper>
-          </div>
-          <div id={`${id}-restore`} data-key={'restore'} data-title={getLocale('rewardsRestoreText1')}>
-            <StyledContent>
-              {getLocale('rewardsRestoreText2')}
-            </StyledContent>
-            <StyledStatus error={error}>
-              {
-                error
-                ? <Alert type={'error'} colored={true} bg={true}>
-                    {error}
-                </Alert>
-                : null
-              }
-            </StyledStatus>
-            <ControlWrapper
-              text={
-                <>
-                  {getLocale('rewardsRestoreText3')} <StyledImport
-                    htmlFor={'recoverFile'}
-                  >
-                    {getLocale('import')}
-                  </StyledImport>
-                  <input
-                    type='file'
-                    id='recoverFile'
-                    name='recoverFile'
-                    style={{ display: 'none' }}
-                    onChange={this.onFileUpload}
-                  />
-                </>
-              }
-            >
-              <TextArea
-                value={this.state.recoveryKey}
-                onChange={this.setRecoveryKey}
-              />
-            </ControlWrapper>
-            <StyledActionsWrapper>
-              <ActionButton
-                level={'secondary'}
-                text={getLocale('cancel')}
-                size={'medium'}
-                type={'accent'}
-                onClick={onClose}
-              />
-              <ActionButton
-                level={'primary'}
-                type={'accent'}
-                text={getLocale('restore')}
-                size={'medium'}
-                onClick={this.onRestore}
-              />
-            </StyledActionsWrapper>
-          </div>
-        </Tabs>
-        </StyledWrapper>
+        <StyledTitleWrapper>
+          <StyledTitle>
+            {getLocale('manageWallet')}
+          </StyledTitle>
+        </StyledTitleWrapper>
+        <StyledControlWrapper>
+          <StyledTabWrapper>
+            <Tab
+              onChange={onTabChange}
+              tabIndexSelected={activeTabId}
+              tabTitles={[
+                getLocale('backup'),
+                getLocale('restore')
+              ]}
+            />
+          </StyledTabWrapper>
+        </StyledControlWrapper>
+        {
+          activeTabId === 0
+          ? this.getBackup()
+          : this.getRestore()
+        }
       </Modal>
     )
   }

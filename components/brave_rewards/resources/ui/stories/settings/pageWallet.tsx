@@ -6,7 +6,6 @@ import * as React from 'react'
 import { boolean, object, select } from '@storybook/addon-knobs'
 
 // Components
-import { TabsType } from '../../../../src/features/rewards/modalBackupRestore'
 import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
 import { DetailRow as TransactionsRow } from '../../../../src/features/rewards/tableTransactions'
 
@@ -28,8 +27,8 @@ const guardian = require('../../../assets/img/guardian.jpg')
 const wiki = require('../../../assets/img/wiki.jpg')
 
 interface State {
+  activeTabId: number
   modalBackup: boolean
-  modalBackupActive: TabsType
   modalActivity: boolean
 }
 
@@ -41,8 +40,8 @@ class PageWallet extends React.Component<{}, State> {
   constructor (props: {}) {
     super(props)
     this.state = {
+      activeTabId: 0,
       modalBackup: false,
-      modalBackupActive: 'backup',
       modalActivity: false
     }
   }
@@ -211,8 +210,9 @@ class PageWallet extends React.Component<{}, State> {
     ]
   }
 
-  onBackupTabChange = (tabId: TabsType) => {
-    this.setState({ modalBackupActive: tabId })
+  onBackupTabChange = () => {
+    const newId = this.state.activeTabId === 0 ? 1 : 0
+    this.setState({ activeTabId: newId })
   }
 
   onBackupModalClose = () => {
@@ -307,7 +307,7 @@ class PageWallet extends React.Component<{}, State> {
         {
           this.state.modalBackup
           ? <ModalBackupRestore
-            activeTabId={this.state.modalBackupActive}
+            activeTabId={this.state.activeTabId}
             backupKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
             onTabChange={this.onBackupTabChange.bind(self)}
             onClose={this.onBackupModalClose.bind(self)}
