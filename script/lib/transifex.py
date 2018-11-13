@@ -467,7 +467,6 @@ def pull_source_files_from_transifex(source_file_path, filename):
     langs_dir_path = os.path.dirname(os.path.dirname(source_file_path))
     lang_codes = set(os.listdir(langs_dir_path))
     lang_codes.discard('en_US')
-    lang_codes.discard('en')
     lang_codes.discard('.DS_Store')
     for lang_code in lang_codes:
       print 'getting filename %s for lang_code %s' % (filename, lang_code)

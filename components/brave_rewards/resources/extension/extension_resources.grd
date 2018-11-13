@@ -11,7 +11,7 @@
   <release seq="1">
     <includes>
       <include name="IDR_BRAVE_REWARDS" file="brave_rewards/manifest.json" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_LOCALES_EN" file="brave_rewards/_locales/en/messages.json" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_LOCALES_EN_US" file="brave_rewards/_locales/en_US/messages.json" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_PANEL_HTML" file="brave_rewards/brave_rewards_panel.html" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_PANEL_BUNDLE_JS" file="brave_rewards/out/brave_rewards_panel.bundle.js" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_PANEL_BACKGROUND_JS" file="brave_rewards/out/brave_rewards_panel_background.bundle.js" type="BINDATA" />
