@@ -24,7 +24,7 @@ Bundle::Bundle(AdsClient* ads_client) :
 Bundle::~Bundle() = default;
 
 bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
-  // TODO(Terry Mancey): Add callback for this function
+  // TODO(Terry Mancey): Refactor function to use callbacks
   auto bundle_state = GenerateFromCatalog(catalog);
   if (!bundle_state) {
     return false;
@@ -68,7 +68,7 @@ uint64_t Bundle::GetCatalogPing() const {
 // generating the bundle by saving each campaign individually on the Client
 std::unique_ptr<BUNDLE_STATE> Bundle::GenerateFromCatalog(
     const Catalog& catalog) {
-  // TODO(Terry Mancey): Add callback for this function
+  // TODO(Terry Mancey): Refactor function to use callbacks
   std::map<std::string, std::vector<AdInfo>> categories;
 
   for (const auto& campaign : catalog.GetCampaigns()) {
