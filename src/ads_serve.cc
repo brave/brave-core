@@ -29,9 +29,14 @@ void AdsServe::BuildUrl() {
   url_ = _is_production ? PRODUCTION_SERVER : STAGING_SERVER;
   url_ += CATALOG_PATH;
 
-  url_ += "?braveVersion=" + client_info.application_version;
-  url_ += "&platform=" + client_info.platform;
-  url_ += "&platformVersion=" + client_info.platform_version;
+  url_ += "?braveVersion=";
+  url_ += client_info.application_version;
+
+  url_ += "&platform=";
+  url_ += client_info.platform;
+
+  url_ += "&platformVersion=";
+  url_ += client_info.platform_version;
 }
 
 void AdsServe::DownloadCatalog() {
