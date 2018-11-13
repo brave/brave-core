@@ -25,7 +25,8 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
     return metrics::OmniboxInputType::INVALID;
   }
   if (base::IsStringASCII(scheme) &&
-       base::LowerCaseEqualsASCII(scheme, kBraveUIScheme)) {
+      (base::LowerCaseEqualsASCII(scheme, kBraveUIScheme) ||
+       base::LowerCaseEqualsASCII(scheme, kMagnetScheme))) {
     return metrics::OmniboxInputType::URL;
   }
 
