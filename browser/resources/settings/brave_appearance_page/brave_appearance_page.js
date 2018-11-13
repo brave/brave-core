@@ -13,7 +13,6 @@ Polymer({
       readOnly: true,
       type: Array,
       value: [
-        'Default',
         'Light',
         'Dark',
       ],

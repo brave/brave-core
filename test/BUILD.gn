@@ -222,6 +222,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
+    "//brave/browser/extensions/api/brave_theme_api_browsertest.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
     "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
@@ -290,6 +291,7 @@ test("brave_browser_tests") {
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
     ":browser_tests_runner",
+    "//testing/gmock",
   ]
   data_deps = [
     "//ppapi:ppapi_tests",

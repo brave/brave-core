@@ -1,7 +1,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
-// Command to get whitelist ID: echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1
+// Command to get whitelist ID: echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1 | tr '[:lower:]' '[:upper:]'
 // Same for sync api:           echo -n nomlkjnggnifocmealianaaiobmebgil | openssl sha1
 
 {
@@ -88,5 +88,20 @@
     "whitelist": [
       "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"
     ]
-  }
+  },
+  "braveTheme": [{
+    "channel": "stable",
+    "contexts": ["blessed_extension"],
+    "whitelist": [
+      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD",  // braveShields
+      "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"   // braveRewards
+    ]
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://welcome/*",
+      "chrome://settings/*"
+    ]
+  }]
 }
