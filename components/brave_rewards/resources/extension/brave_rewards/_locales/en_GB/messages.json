@@ -168,10 +168,10 @@
     "description": ""
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Contribute",
     "description": ""
   },
-  "contributeNotification": {
+  "contributeNotificationSuccess": {
     "message": "You've contributed $amount$BAT",
     "description": "",
     "placeholders": {
@@ -187,6 +187,10 @@
   },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
+    "description": ""
+  },
+  "contributeNotificationError": {
+    "message": "There was a problem processing your contribution.",
     "description": ""
   }
 }
