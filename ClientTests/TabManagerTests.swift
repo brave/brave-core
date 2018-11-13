@@ -509,7 +509,7 @@ class TabManagerTests: XCTestCase {
     }
     
     func testQueryAddedTabs() {
-        TabMO.deleteAll()
+        DataController.shared = DataController()
         
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
@@ -524,7 +524,7 @@ class TabManagerTests: XCTestCase {
     }
     
     func testQueryAddedPrivateTabs() {
-        TabMO.deleteAll()
+        DataController.shared = DataController()
         
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
@@ -539,7 +539,7 @@ class TabManagerTests: XCTestCase {
     }
     
     func testQueryAddedMixedTabs() {
-        TabMO.deleteAll()
+        DataController.shared = DataController()
         
         let delegate = MockTabManagerDelegate()
         manager.addDelegate(delegate)
@@ -550,7 +550,7 @@ class TabManagerTests: XCTestCase {
         delegate.verify("Not all delegate methods were called")
         
         let storedTabs = TabMO.getAll()
-        XCTAssertNotNil(storedTabs.first(where: { $0.syncUUID == tab.id }))
+        XCTAssertNotNil(storedTabs.first(where: { $0.syncUUID == tab.id }), "Couldn't find added tab: \(tab) in stored tabs: \(storedTabs)")
         // Shouldn't be storing any private tabs
         XCTAssertEqual(storedTabs.count, 1)
     }
