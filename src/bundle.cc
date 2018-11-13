@@ -76,11 +76,7 @@ std::unique_ptr<BUNDLE_STATE> Bundle::GenerateFromCatalog(
 
     for (const auto& creative_set : campaign.creative_sets) {
       for (const auto& segment : creative_set.segments) {
-        std::string name = "";
-        for (size_t i = 0; i < segment.name.size(); i++) {
-          name += tolower(segment.name[i]);
-        }
-
+        auto name = helper::String::ToLower(segment.name);
         if (std::find(heirarchy.begin(), heirarchy.end(), name)
             == heirarchy.end()) {
           heirarchy.push_back(name);

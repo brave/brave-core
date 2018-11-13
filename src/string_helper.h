@@ -20,6 +20,9 @@ class String {
       const std::vector<std::string>& v,
       const char delimiter,
       std::string* str);
+
+  static std::string ToLower(
+      const std::string& str);
 };
 
 }  // namespace helper

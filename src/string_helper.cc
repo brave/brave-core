@@ -46,4 +46,14 @@ bool String::Join(
   return true;
 }
 
+std::string String::ToLower(
+    const std::string& str) {
+  std::string lowercase_string = "";
+  for (size_t i = 0; i < str.size(); i++) {
+    lowercase_string += tolower(str[i]);
+  }
+
+  return lowercase_string;
+}
+
 }  // namespace helper
