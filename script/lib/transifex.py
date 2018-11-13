@@ -3,6 +3,7 @@ from lib.config import get_env_var
 from xml.sax.saxutils import escape, unescape
 import HTMLParser
 import io
+import json
 import os
 import requests
 import sys
@@ -246,6 +247,7 @@ def get_grd_strings(grd_file_path):
     all_message_tags = get_grd_message_string_tags(grd_file_path)
     for message_tag in all_message_tags:
         message_name = message_tag.get('name')
+        message_desc = message_tag.get('desc') or ''
         message_value = textify(message_tag)
         translateable = message_tag.get('translateable')
         if translateable == 'false':
@@ -255,7 +257,20 @@ def get_grd_strings(grd_file_path):
             'Invalid message ID: %s' % message_name)
         string_name = message_name[4:].lower()
         string_fp = get_fingerprint_for_xtb(message_tag)
-        string_tuple = (string_name, message_value, string_fp)
+        string_tuple = (string_name, message_value, string_fp, message_desc)
+        strings.append(string_tuple)
+    return strings
+
+
+def get_json_strings(json_file_path):
+    with open(json_file_path) as f:
+        data = json.load(f)
+    strings = []
+    for key in data:
+        string_name = key + '.message'
+        string_value = data[key]["message"]
+        string_desc = data[key]["description"]
+        string_tuple = (string_name, string_value, string_desc)
         strings.append(string_tuple)
     return strings
 
@@ -265,7 +280,7 @@ def generate_source_strings_xml_from_grd(output_xml_file_handle,
     """Generates a source string xml file from a GRD file"""
     resources_tag = create_android_format_resources_tag()
     all_strings = get_grd_strings(grd_file_path)
-    for (string_name, string_value, fp) in all_strings:
+    for (string_name, string_value, fp, desc) in all_strings:
         resources_tag.append(
             create_android_format_string_tag(string_name, string_value))
     print 'Generating %d strings for GRD: %s' % (
@@ -357,9 +372,9 @@ def check_for_chromium_missing_grd_strings(src_root, grd_file_path):
     grd_strings = get_grd_strings(grd_file_path)
     chromium_grd_strings = get_grd_strings(chromium_grd_file_path)
     brave_strings = {string_name for (
-        string_name, message_value, string_fp) in grd_strings}
+        string_name, message_value, string_fp, desc) in grd_strings}
     chromium_strings = {string_name for (
-        string_name, message_value, string_fp) in chromium_grd_strings}
+        string_name, message_value, string_fp, desc) in chromium_grd_strings}
     x_brave_extra_strings = brave_strings - chromium_strings
     assert len(x_brave_extra_strings) == 0, (
         'Brave GRD %s has extra strings %s over Chromium GRD %s' % (
@@ -417,7 +432,8 @@ def upload_missing_translations_to_transifex(source_string_path, lang_code,
                                              chromium_xtb_strings):
     """For each chromium translation that we don't know about, upload it."""
     lang_code = lang_code.replace('-', '_')
-    for idx, (string_name, string_value, string_fp) in enumerate(grd_strings):
+    for idx, (string_name, string_value,
+              string_fp, desc) in enumerate(grd_strings):
         string_fp = str(string_fp)
         chromium_string_fp = str(chromium_grd_strings[idx][2])
         if chromium_string_fp in chromium_xtb_strings and (
@@ -498,7 +514,7 @@ def check_missing_source_grd_strings_to_transifex(grd_file_path):
     transifex_string_ids = set(strings_dict.keys())
     grd_strings_tuple = get_grd_strings(grd_file_path)
     grd_string_names = {string_name for (string_name, message_value,
-                                         string_fp) in grd_strings_tuple}
+                                         string_fp, desc) in grd_strings_tuple}
     filename = os.path.basename(grd_file_path).split('.')[0]
     x_grd_extra_strings = grd_string_names - transifex_string_ids
     assert len(x_grd_extra_strings) == 0, (
@@ -571,3 +587,40 @@ def pull_source_files_from_transifex(source_file_path, filename):
                                                       'messages.json')
             with open(localized_translation_path, mode='w') as f:
                 f.write(content)
+
+
+def upload_string_desc(source_file_path, filename, string_name, string_desc):
+    """Uploads descriptions for strings"""
+    url_part = 'project/%s/resource/%s/source/%s' % (
+        transifex_project_name,
+        transifex_name_from_filename(source_file_path, filename),
+        get_transifex_string_hash(string_name))
+    url = base_url + url_part
+    payload = {
+        'comment': string_desc,
+    }
+    print 'uploading string for url: ', url
+    headers = {'Content-Type': 'application/json'}
+    r = requests.put(url, json=payload, auth=get_auth(), headers=headers)
+    if r.status_code == 400 and 'Source string does not exist' in r.content:
+        print 'Warning: Source string does not exist for: ', string_name
+        return
+    assert r.status_code >= 200 and r.status_code <= 299, (
+        'Aborting. Status code %d: %s' % (r.status_code, r.content))
+
+
+def upload_source_strings_desc(source_file_path, filename):
+    ext = os.path.splitext(source_file_path)[1]
+    print 'Uploading string descriptions for ', source_file_path
+    if ext == '.json':
+        json_strings = get_json_strings(source_file_path)
+        for (string_name, string_value, string_desc) in json_strings:
+            if len(string_desc) > 0:
+                upload_string_desc(source_file_path, filename, string_name,
+                                   string_desc)
+    else:
+        grd_strings = get_grd_strings(source_file_path)
+        for (string_name, string_value, string_fp, string_desc) in grd_strings:
+            if len(string_desc) > 0:
+                upload_string_desc(source_file_path, filename, string_name,
+                                   string_desc)
