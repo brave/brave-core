@@ -185,19 +185,28 @@ export class Panel extends React.Component<Props, State> {
 
     const notification: RewardsExtension.Notification = notifications[currentNotification]
 
-    let type: NotificationType
+    let type: NotificationType = ''
     let text = ''
     switch (notification.type) {
       case 1:
-        type = 'contribute'
-        text = getMessage('contributeNotification')
-        break
+        {
+          if (!notification.args ||
+            !Array.isArray(notification.args) ||
+            notification.args.length < 3) {
+            break
+          }
+
+          if (notification.args[1] === '0') {
+            text = getMessage('contributeNotificationSuccess')
+          } else {
+            text = getMessage('contributeNotificationError')
+          }
+          type = 'contribute'
+          break
+        }
       case 2:
         type = 'grant'
         text = getMessage('grantNotification')
-        break
-      default:
-        type = ''
         break
     }
 
