@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <fstream>
+#include <algorithm>
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"

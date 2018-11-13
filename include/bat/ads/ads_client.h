@@ -9,6 +9,7 @@
 #include <map>
 #include <sstream>
 #include <memory>
+#include <functional>
 
 #include "bat/ads/ad_info.h"
 #include "bat/ads/bundle_state.h"

@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <memory>
+#include <functional>
 
 #include "bat/ads/callback_handler.h"
 #include "bat/ads/url_session.h"
