@@ -14,16 +14,17 @@ namespace brave {
 // Update server checks happen from the profile context for admin policy installed extensions.
 // Update server checks happen from the system context for normal update operations.
 bool IsUpdaterURL(const GURL& gurl) {
-  static std::vector<URLPattern> updater_patterns({
-      URLPattern(URLPattern::SCHEME_HTTPS, std::string(component_updater::kUpdaterDefaultUrl) + "*"),
-      URLPattern(URLPattern::SCHEME_HTTP, std::string(component_updater::kUpdaterFallbackUrl) + "*"),
-      URLPattern(URLPattern::SCHEME_HTTPS, std::string(extension_urls::kChromeWebstoreUpdateURL) + "*")
-  });
-  bool braveRedirect = gurl.query().find("braveRedirect=true") != std::string::npos;
-  return std::any_of(updater_patterns.begin(), updater_patterns.end(),
-      [&gurl, braveRedirect](URLPattern pattern) {
-        return !braveRedirect && pattern.MatchesURL(gurl);
-      });
+  static std::vector<URLPattern> updater_patterns(
+      {URLPattern(URLPattern::SCHEME_HTTPS,
+                  std::string(component_updater::kUpdaterDefaultUrl) + "*"),
+       URLPattern(URLPattern::SCHEME_HTTP,
+                  std::string(component_updater::kUpdaterFallbackUrl) + "*"),
+       URLPattern(
+           URLPattern::SCHEME_HTTPS,
+           std::string(extension_urls::kChromeWebstoreUpdateURL) + "*")});
+  return std::any_of(
+      updater_patterns.begin(), updater_patterns.end(),
+      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
 int OnBeforeURLRequest_CommonStaticRedirectWork(

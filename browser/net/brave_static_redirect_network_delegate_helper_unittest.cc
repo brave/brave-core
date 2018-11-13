@@ -68,6 +68,95 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGeoURL) {
   EXPECT_EQ(ret, net::OK);
 }
 
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1) {
+  net::TestDelegate test_delegate;
+  GURL url(
+      "https://dl.google.com/release2/chrome_component/AJ4r388iQSJq_4819/"
+      "4819_all_crl-set-5934829738003798040.data.crx3");
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+      new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
+  brave::ResponseCallback callback;
+  GURL expected_url(
+      "https://crlsets.brave.com/release2/chrome_component/"
+      "AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
+  int ret = OnBeforeURLRequest_StaticRedirectWork(callback, before_url_context);
+  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2) {
+  net::TestDelegate test_delegate;
+  GURL url(
+      "https://r2---sn-8xgp1vo-qxoe.gvt1.com/edgedl/release2/"
+      "chrome_component/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040"
+      ".data.crx3");
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+      new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
+  brave::ResponseCallback callback;
+  GURL expected_url(
+      "https://crlsets.brave.com/edgedl/release2/chrome_compone"
+      "nt/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
+  int ret = OnBeforeURLRequest_StaticRedirectWork(callback, before_url_context);
+  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3) {
+  net::TestDelegate test_delegate;
+  GURL url(
+      "https://www.google.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "4988_all_crl-set-6296993568184466307.data.crx3");
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+      new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
+  brave::ResponseCallback callback;
+  GURL expected_url(
+      "https://crlsets.brave.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "4988_all_crl-set-6296993568184466307.data.crx3");
+  int ret = OnBeforeURLRequest_StaticRedirectWork(callback, before_url_context);
+  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRXDownload) {
+  net::TestDelegate test_delegate;
+  GURL url(
+      "https://clients2.googleusercontent.com/crx/blobs/QgAAAC6zw0qH2DJtn"
+      "Xe8Z7rUJP1RM6lX7kVcwkQ56ujmG3AWYOAkxoNnIdnEBUz_"
+      "3z4keVhjzzAF10srsaL7lrntfB"
+      "IflcYIrTziwX3SUS9i_P-CAMZSmuV5tdQl-Roo6cnVC_GRzKsnZSKm1Q/"
+      "extension_2_0_67"
+      "3_0.crx");
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+      new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
+  brave::ResponseCallback callback;
+  GURL expected_url(
+      "https://crxdownload.brave.com/crx/blobs/QgAAAC6"
+      "zw0qH2DJtnXe8Z7rUJP1RM6lX7kVcwkQ56ujmG3AWYOAkxoNnIdnEBUz_"
+      "3z4keVhjzzAF10sr"
+      "saL7lrntfBIflcYIrTziwX3SUS9i_P-CAMZSmuV5tdQl-Roo6cnVC_GRzKsnZSKm1Q/"
+      "extens"
+      "ion_2_0_673_0.crx");
+  int ret = OnBeforeURLRequest_StaticRedirectWork(callback, before_url_context);
+  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
 TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV4) {
   net::TestDelegate test_delegate;
   GURL url("https://safebrowsing.googleapis.com/v4/threatListUpdates:fetch?$req=ChkKCGNocm9taXVtEg02Ni");

@@ -16,6 +16,8 @@
 
 namespace {
 
+const char kComponentUpdaterProxy[] = "https://componentupdater.brave.com";
+
 class BraveCommonStaticRedirectNetworkDelegateHelperTest: public testing::Test {
  public:
   BraveCommonStaticRedirectNetworkDelegateHelperTest()
@@ -33,7 +35,8 @@ class BraveCommonStaticRedirectNetworkDelegateHelperTest: public testing::Test {
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, ModifyComponentUpdaterURL) {
+TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+       ModifyComponentUpdaterURL) {
   net::TestDelegate test_delegate;
   std::string query_string("?foo=bar");
   GURL url(std::string(component_updater::kUpdaterDefaultUrl) + query_string);
@@ -51,16 +54,16 @@ TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, ModifyComponentUpdate
   EXPECT_EQ(ret, net::OK);
 }
 
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest, NoModifyComponentUpdaterURL) {
+TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+       NoModifyComponentUpdaterURL) {
   net::TestDelegate test_delegate;
-  std::string query_string("?braveRedirect=true");
-  GURL url(std::string(component_updater::kUpdaterDefaultUrl) + query_string);
-  std::unique_ptr<net::URLRequest> request =
-      context()->CreateRequest(url, net::IDLE, &test_delegate,
-                             TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo>
-      before_url_context(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
+  GURL url(kComponentUpdaterProxy);
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+      new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
   brave::ResponseCallback callback;
   GURL expected_url;
   int ret =
