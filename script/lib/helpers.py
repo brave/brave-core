@@ -9,45 +9,56 @@ from .config import get_raw_version
 
 BRAVE_REPO = "brave/brave-browser"
 
+
 def get_channel_display_name():
-  d = {'beta': 'Beta', 'canary': 'Canary', 'dev': 'Developer', 'release': 'Release'}
-  return d[release_channel()]
+    d = {'beta': 'Beta', 'canary': 'Canary', 'dev': 'Developer',
+         'release': 'Release'}
+    return d[release_channel()]
+
 
 def get_releases_by_tag(repo, tag_name, include_drafts=False):
-  if include_drafts:
-    return [r for r in repo.releases.get() if r['tag_name'] == tag_name]
-  else:
-    
-    return [r for r in repo.releases.get() if r['tag_name'] == tag_name and not r['draft']]
+    if include_drafts:
+        return [r for r in repo.releases.get() if
+                r['tag_name'] == tag_name]
+    else:
+        return [r for r in repo.releases.get() if
+                r['tag_name'] == tag_name and not r['draft']]
+
 
 def release_channel():
-  channel = os.environ['CHANNEL']
-  message = ('Error: Please set the $CHANNEL '
-              'environment variable, which is your release channel')
-  assert channel, message
-  return channel
+    channel = os.environ['CHANNEL']
+    message = ('Error: Please set the $CHANNEL '
+               'environment variable, which is your release channel')
+    assert channel, message
+    return channel
+
 
 def get_tag():
-  return 'v' + get_raw_version() + release_channel()
+    return 'v' + get_raw_version() + release_channel()
+
 
 def release_name():
-  return '{0} Channel'.format(get_channel_display_name())
+    return '{0} Channel'.format(get_channel_display_name())
+
 
 def get_releases_by_tag(repo, tag_name, include_drafts=False):
-  if include_drafts:
-    return [r for r in repo.releases.get() if r['tag_name'] == tag_name]
-  else:
-    return [r for r in repo.releases.get() if r['tag_name'] == tag_name and not r['draft']]
+    if include_drafts:
+        return [r for r in repo.releases.get() if r['tag_name'] == tag_name]
+    else:
+        return [r for r in repo.releases.get() if
+                r['tag_name'] == tag_name and not r['draft']]
+
 
 def retry_func(try_func, catch, retries, catch_func=None):
-  for count in range(0, retries + 1):
-    try:
-      ret = try_func(count)
-      break
-    except catch as e:
-      print('[ERROR] Caught exception {}, {} retries left. {}'.format(catch, count, e.message))
-      if catch_func:
-        catch_func(count)
-      if count >= retries:
-        raise e
-  return ret
+    for count in range(0, retries + 1):
+        try:
+            ret = try_func(count)
+            break
+        except catch as e:
+            print('[ERROR] Caught exception {}, {} retries left. {}'.format(
+                catch, count, e.message))
+            if catch_func:
+                catch_func(count)
+            if count >= retries:
+                raise e
+    return ret
