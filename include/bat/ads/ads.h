@@ -14,6 +14,7 @@
 
 namespace ads {
 
+extern bool _is_debug;
 extern bool _is_testing;
 extern bool _is_production;
 

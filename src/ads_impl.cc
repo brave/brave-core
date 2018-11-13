@@ -667,7 +667,7 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
 
   client_->UpdateAdUUID();
 
-  StartCollectingActivity(kOneHourInSeconds);
+  StartCollectingActivity(ads::_is_debug ? kDebugOneHourInSeconds : kOneHourInSeconds);
 }
 
 void AdsImpl::RetrieveSSID() {

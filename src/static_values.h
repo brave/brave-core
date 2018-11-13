@@ -15,9 +15,11 @@ namespace ads {
 
 static const uint64_t kMaximumEntriesInPageScoreHistory = 5;
 static const uint64_t kMaximumEntriesInAdsShownHistory = 99;
+
 static const uint64_t kMillisecondsInASecond = 1000;
 
 static const uint64_t kOneHourInSeconds = 60 * 60;
+static const uint64_t kDebugOneHourInSeconds = 25;
 
 static char kUnknownSSID[] = "UNKNOWN";
 static char kUndisclosedPlace[] = "UNDISCLOSED";

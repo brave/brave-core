@@ -7,6 +7,7 @@
 
 namespace ads {
 
+bool _is_debug = false;
 bool _is_testing = false;
 bool _is_production = false;
 
