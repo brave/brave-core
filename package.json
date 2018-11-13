@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint --project tsconfig.json 'components/**/*.{ts,tsx}'",
-    "pep8": "pycodestyle script/**/*.py",
+    "pep8": "pycodestyle -r script",
     "web-ui": "webpack --config components/webpack/prod.config.js --progress --profile --colors",
     "web-ui-dev": "webpack --config components/webpack/dev.config.js --progress --profile --colors",
     "test-unit": "jest -t",
