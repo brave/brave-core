@@ -219,7 +219,7 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
 
     // TODO(Terry Mancey): If the client state fails to load, we need to
     // notify the Client to decide what action to take otherwise ads will not
-    // work or a business decision could be made to reset the client state
+    // work or a product decision could be made to reset the client state
     return;
   }
 

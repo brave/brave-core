@@ -694,7 +694,7 @@ void AdsImpl::TestShoppingData(const std::string& url) {
     return;
   }
 
-  // TODO(Terry Mancey): Confirm with business if this list should be expanded
+  // TODO(Terry Mancey): Confirm with product if this list should be expanded
   // to include amazon.co.uk and other territories
   if (components.hostname == "www.amazon.com") {
     client_->FlagShoppingState(url, 1.0);
