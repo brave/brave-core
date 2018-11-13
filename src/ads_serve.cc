@@ -140,7 +140,11 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
 }
 
 void AdsServe::RetryDownloadingCatalog() {
-  ads_->StartCollectingActivity(ads::_is_debug ? kDebugOneHourInSeconds : kOneHourInSeconds);
+  if (_is_debug) {
+    ads_->StartCollectingActivity(kDebugOneHourInSeconds);
+  } else {
+    ads_->StartCollectingActivity(kOneHourInSeconds);
+  }
 }
 
 void AdsServe::ResetCatalog() {
