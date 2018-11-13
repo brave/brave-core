@@ -5,6 +5,7 @@
 #include "catalog_state.h"
 #include "string_helper.h"
 #include "json_helper.h"
+#include "static_values.h"
 
 namespace ads {
 
@@ -33,9 +34,9 @@ bool CATALOG_STATE::LoadFromJson(
     return false;
   }
 
-  std::string new_catalog_id;
-  uint64_t new_version;
-  uint64_t new_ping;
+  std::string new_catalog_id = "";
+  uint64_t new_version = 0;
+  uint64_t new_ping = kDefaultCatalogPing;
   std::vector<CampaignInfo> new_campaigns;
 
   if (catalog.HasMember("catalogId")) {

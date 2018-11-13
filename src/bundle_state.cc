@@ -80,23 +80,23 @@ void SaveToJson(JsonWriter& writer, const BUNDLE_STATE& state) {
     writer.String(category.first.c_str());
     writer.StartArray();
 
-    for (const auto& category : category.second) {
+    for (const auto& ad : category.second) {
       writer.StartObject();
 
       writer.String("advertiser");
-      writer.String(category.advertiser.c_str());
+      writer.String(ad.advertiser.c_str());
 
       writer.String("notificationText");
-      writer.String(category.notification_text.c_str());
+      writer.String(ad.notification_text.c_str());
 
       writer.String("notificationURL");
-      writer.String(category.notification_url.c_str());
+      writer.String(ad.notification_url.c_str());
 
       writer.String("uuid");
-      writer.String(category.uuid.c_str());
+      writer.String(ad.uuid.c_str());
 
       writer.String("creativeSetId");
-      writer.String(category.creative_set_id.c_str());
+      writer.String(ad.creative_set_id.c_str());
 
       writer.EndObject();
     }
