@@ -47,6 +47,7 @@ export interface Props {
   onShowAll?: () => void
   onRestore?: () => void
   numExcludedSites?: number
+  isMobile?: boolean
 }
 
 export default class TableContribute extends React.PureComponent<Props, {}> {
@@ -99,6 +100,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
                   provider={row.profile.provider}
                   verified={row.profile.verified}
                   src={row.profile.src}
+                  tableCell={this.props.isMobile}
                 />
               </StyledLink>
             )

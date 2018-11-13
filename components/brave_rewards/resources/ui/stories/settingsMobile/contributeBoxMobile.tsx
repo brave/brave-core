@@ -264,6 +264,7 @@ class ContributeBoxMobile extends React.Component<Props, State> {
             headerColor={true}
             showRowAmount={true}
             showRemove={true}
+            isMobile={true}
           />
         </StyledListContent>
         <StyledSitesNum>

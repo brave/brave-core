@@ -3,7 +3,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledWrapper, StyledBox, StyledTitle, StyledValue, StyledText } from './style'
+import {
+  StyledWrapper,
+  StyledBox,
+  StyledTitle,
+  StyledValue,
+  StyledText,
+  StyledButtonWrapper
+} from './style'
 import { getLocale } from '../../../helpers'
 import Button from '../../../components/buttonsIndicators/button'
 
@@ -11,12 +18,13 @@ export interface Props {
   id?: string
   onClose: () => void
   amount: string
-  date: string
+  date: string,
+  isMobile?: boolean
 }
 
 export default class GrantComplete extends React.PureComponent<Props, {}> {
   render () {
-    const { id, onClose, amount, date } = this.props
+    const { id, onClose, amount, date, isMobile } = this.props
 
     return (
       <StyledWrapper id={id}>
@@ -26,13 +34,21 @@ export default class GrantComplete extends React.PureComponent<Props, {}> {
           <StyledTitle>{getLocale('grantExpire')}</StyledTitle>
           <StyledValue>{date}</StyledValue>
         </StyledBox>
-        <StyledText>{getLocale('grantDisclaimer')}</StyledText>
-        <Button
-          text={getLocale('ok')}
-          size={'call-to-action'}
-          type={'accent'}
-          onClick={onClose}
-        />
+        {
+          !isMobile
+          ? <StyledText>
+              {getLocale('grantDisclaimer')}
+            </StyledText>
+          : null
+        }
+        <StyledButtonWrapper isMobile={isMobile}>
+          <Button
+            text={getLocale('ok')}
+            size={'call-to-action'}
+            type={'accent'}
+            onClick={onClose}
+          />
+        </StyledButtonWrapper>
       </StyledWrapper>
     )
   }

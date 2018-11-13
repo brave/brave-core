@@ -4,6 +4,10 @@
 
 import styled from 'styled-components'
 
+interface StyleProps {
+  isMobile?: boolean
+}
+
 export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
   width: 100%;
@@ -38,4 +42,8 @@ export const StyledText = styled<{}, 'div'>('div')`
   line-height: 1.29;
   color: #838391;
   margin: 44px 0 32px;
+`
+
+export const StyledButtonWrapper = styled<StyleProps, 'div'>('div')`
+  margin-top: ${p => p.isMobile ? 40 : 0}px;
 `

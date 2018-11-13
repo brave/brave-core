@@ -398,6 +398,11 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
   color: #bf9fe3;
   height: 38px;
   overflow: hidden;
+  outline: none;
+}
+
+.c22:focus {
+  outline: 0;
 }
 
 @media (max-width:475px) {

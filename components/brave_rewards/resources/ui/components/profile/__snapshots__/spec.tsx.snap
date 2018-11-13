@@ -53,8 +53,11 @@ exports[`Profile tests basic tests matches the snapshot 1`] = `
 }
 
 .c4 {
-  width: 280px;
-  margin-top: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 260px;
+  margin-top: 0px;
   margin-left: 10px;
 }
 

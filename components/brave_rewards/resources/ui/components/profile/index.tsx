@@ -28,6 +28,7 @@ export interface Props {
   type?: 'big' | 'small'
   provider?: Provider
   verified?: boolean
+  tableCell?: boolean
 }
 
 /*
@@ -55,7 +56,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, type, provider, src, title, verified } = this.props
+    const { id, type, provider, src, title, verified, tableCell } = this.props
 
     return (
       <StyledWrapper id={id}>
@@ -68,7 +69,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
           }
         </StyledImageWrapper>
         <StyledContent type={type}>
-          <StyledTitleWrap type={type}>
+          <StyledTitleWrap type={type} tableCell={tableCell} provider={provider}>
             <StyledTitle type={type}>{title}</StyledTitle>
             {
               provider

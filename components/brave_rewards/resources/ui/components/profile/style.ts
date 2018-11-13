@@ -3,7 +3,19 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled, { css } from 'styled-components'
-import { Props } from './index'
+import { Props, Provider } from './index'
+
+const getOverflowRules = (provider?: Provider) => {
+  if (provider) {
+    return null
+  }
+
+  return css`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  `
+}
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   position: relative;
@@ -57,9 +69,10 @@ export const StyledContent = styled<Partial<Props>, 'div'>('div')`
 `
 
 export const StyledTitleWrap = styled<Partial<Props>, 'div'>('div')`
-  width: 280px;
-  margin-top: ${p => p.type === 'big' ? '2px' : 0};
-  margin-left: ${p => p.type !== 'big' ? '10px' : 0};
+  ${p => getOverflowRules(p.provider)}
+  max-width: ${p => p.tableCell ? 235 : 260}px;
+  margin-top: ${p => p.type === 'big' ? 2 : 0}px;
+  margin-left: ${p => p.type !== 'big' ? 10 : 0}px;
 `
 
 export const StyledTitle = styled<Partial<Props>, 'span'>('span')`

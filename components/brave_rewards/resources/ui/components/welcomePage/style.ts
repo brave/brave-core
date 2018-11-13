@@ -164,6 +164,11 @@ export const StyledAnchor = styled<{}, 'button'>('button')`
   color: #bf9fe3;
   height: 38px;
   overflow: hidden;
+  outline: none;
+
+  &:focus {
+    outline: 0;
+  }
 `
 
 export const StyledHeroInfo = styled<{}, 'div'>('div')`
