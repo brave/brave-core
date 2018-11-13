@@ -1115,7 +1115,6 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
 
   writer.EndObject();
 
-  // TODO(Terry Mancey): Confirm logic as GetCurrentPlace() does not seem right
   writer.String("place");
   auto place = client_->GetCurrentPlace();
   writer.String(place.c_str());
