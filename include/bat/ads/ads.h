@@ -29,17 +29,17 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  // Should be called when a notification has been shown
+  // Should be called when a notification has been shown on the Client
   virtual void GenerateAdReportingNotificationShownEvent(
       const NotificationShownInfo& info) = 0;
 
   // Should be called when a notification has been clicked, dismissed or times
-  // out
+  // out on the Client
   virtual void GenerateAdReportingNotificationResultEvent(
       const NotificationResultInfo& info) = 0;
 
   // Should be called when a notification has been viewed for an extended period
-  // without interruption
+  // without interruption on the Client
   virtual void GenerateAdReportingSustainEvent(
       const SustainInfo& info) = 0;
 
@@ -71,12 +71,12 @@ class ADS_EXPORT Ads {
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;
 
-  // Should be called when the browser is about to exit, if ads is not enabled,
-  // then removes all client state
+  // Should be called when the browser is about to exit; if ads are disabled
+  // the client state is reset to default values
   virtual void SaveCachedInfo() = 0;
 
-  // Should be called to record whenever a tab is playing (or has stopped
-  // playing) media (A/V)
+  // Should be called to record when a tab has stopped, paused or started
+  // playing media (A/V)
   virtual void RecordMediaPlaying(
       const std::string& tab_id,
       const bool is_playing) = 0;
@@ -88,14 +88,15 @@ class ADS_EXPORT Ads {
       const std::string& html) = 0;
 
   // Should be called when the user changes their locale (e.g., "en_US", "fr",
-  // or "gb")
+  // or "en" etc.)
   virtual void ChangeLocale(const std::string& locale) = 0;
 
   // Frequently called to determine whether a notification should be displayed;
-  // if so, the notification is sent
+  // if so, the notification is sent to the Client for processing
   virtual void CheckReadyAdServe(const bool forced = false) = 0;
 
-  // Should be called when the user invokes "Show Sample Ad"
+  // Should be called when the user invokes "Show Sample Ad"; a notification is
+  // sent to the client for processing
   virtual void ServeSampleAd() = 0;
 
   // Should be called to flag whether notifications are available
