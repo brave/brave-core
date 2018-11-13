@@ -1465,7 +1465,12 @@ uint64_t BatContribution::GetRetryTimer(
   if (phase == 1) {
     // TODO get size from the list
     if (reconcile.retry_level_ < 5) {
-      return phase_one_timers[reconcile.retry_level_];
+      if (ledger::short_retries) {
+        return phase_one_debug_timers[reconcile.retry_level_];
+      } else {
+        return phase_one_timers[reconcile.retry_level_];
+      }
+
     } else {
       return 0;
     }
@@ -1474,9 +1479,18 @@ uint64_t BatContribution::GetRetryTimer(
   if (phase == 2) {
     // TODO get size from the list
     if (reconcile.retry_level_ > 2) {
-      return phase_one_timers[2];
+      if (ledger::short_retries) {
+        return phase_two_debug_timers[2];
+      } else {
+        return phase_two_timers[2];
+      }
     } else {
-      return phase_one_timers[reconcile.retry_level_];
+      if (ledger::short_retries) {
+        return phase_two_debug_timers[reconcile.retry_level_];
+      } else {
+        return phase_two_timers[reconcile.retry_level_];
+      }
+
     }
   }
 
