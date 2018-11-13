@@ -263,6 +263,8 @@ class RewardsServiceImpl : public RewardsService,
   void GetRecurringDonations(ledger::PublisherInfoListCallback callback) override;
   void Log(ledger::LogLevel level, const std::string& text) override;
 
+  void HandleFlags() const;
+
   void OnIOTaskComplete(std::function<void(void)> callback);
 
   // URLFetcherDelegate impl

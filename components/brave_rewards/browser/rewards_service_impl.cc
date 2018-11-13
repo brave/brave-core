@@ -266,9 +266,6 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
       next_timer_id_(0) {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-
   // Environment
   #if defined(OFFICIAL_BUILD)
     ledger::is_production = true;
@@ -276,26 +273,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     ledger::is_production = false;
   #endif
 
-  if (command_line.HasSwitch(switches::kRewardsEnv)) {
-    std::string defined_env = command_line.GetSwitchValueASCII(switches::kRewardsEnv);
-    std::string defined_env_lower = base::ToLowerASCII(defined_env);
-
-    if (defined_env_lower == "stag") {
-      ledger::is_production = false;
-    } else if (defined_env_lower == "prod") {
-      ledger::is_production = true;
-    }
-  }
-
-  // Reconcile interval
-  if (command_line.HasSwitch(switches::kRewardsReconcileInterval)) {
-    std::string defined_reconcile = command_line.GetSwitchValueASCII(switches::kRewardsReconcileInterval);
-    int defined_reconcile_int;
-    bool success = base::StringToInt(defined_reconcile, &defined_reconcile_int);
-    if (success && defined_reconcile_int > 0) {
-      ledger::reconcile_time = defined_reconcile_int;
-    }
-  }
+  HandleFlags();
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -1596,6 +1574,61 @@ void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
   }
 
   VLOG(level) << text;
+}
+
+void RewardsServiceImpl::HandleFlags() const {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+
+  if (command_line.HasSwitch(switches::kRewards)) {
+    std::string command = command_line.GetSwitchValueASCII(switches::kRewards);
+
+    if (command.empty()) {
+      return;
+    }
+
+    std::vector<std::string> flags = base::SplitString(
+        command, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+    for (const auto& flag : flags) {
+      if (flag.empty()) {
+        continue;
+      }
+
+      std::vector<std::string> values = base::SplitString(
+        flag, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+      if (values.size() != 2) {
+        continue;
+      }
+
+      std::string name = base::ToLowerASCII(values[0]);
+      std::string value = values[1];
+
+      if (value.empty()) {
+        continue;
+      }
+
+      if (name == "env") {
+        std::string env_lower = base::ToLowerASCII(value);
+        if (env_lower == "stag") {
+          ledger::is_production = false;
+        } else if (env_lower == "prod") {
+          ledger::is_production = true;
+        }
+        continue;
+      }
+
+      if (name == "reconcile-interval") {
+        int reconcile_int;
+        bool success = base::StringToInt(value, &reconcile_int);
+        if (success && reconcile_int > 0) {
+          ledger::reconcile_time = reconcile_int;
+        }
+        continue;
+      }
+    }
+  }
 }
 
 }  // namespace brave_rewards

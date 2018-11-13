@@ -32,13 +32,8 @@ const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
 // Allows disabling Brave Sync.
 const char kDisableBraveSync[] = "disable-brave-sync";
 
-// Specifies which server should we use for rewards
-// Valid values are: "stag" | "prod".
-const char kRewardsEnv[] = "rewards-env";
-
-// Specifies how big is contribution interval in minutes
-// Valid value should be int.
-const char kRewardsReconcileInterval[] = "rewards-reconcile-interval";
+// Contains all flags that we use for rewards
+const char kRewards[] = "rewards";
 
 // Specifies overriding the built-in theme setting.
 // Valid values are: "dark" | "light".

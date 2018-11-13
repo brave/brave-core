@@ -25,9 +25,7 @@ extern const char kDisableWebTorrentExtension[];
 
 extern const char kDisableBraveSync[];
 
-extern const char kRewardsEnv[];
-
-extern const char kRewardsReconcileInterval[];
+extern const char kRewards[];
 
 extern const char kUiMode[];
 
