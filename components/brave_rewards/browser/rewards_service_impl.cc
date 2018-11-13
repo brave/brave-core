@@ -1610,10 +1610,10 @@ void RewardsServiceImpl::HandleFlags() const {
       }
 
       if (name == "env") {
-        std::string env_lower = base::ToLowerASCII(value);
-        if (env_lower == "stag") {
+        std::string lower = base::ToLowerASCII(value);
+        if (lower == "stag") {
           ledger::is_production = false;
-        } else if (env_lower == "prod") {
+        } else if (lower == "prod") {
           ledger::is_production = true;
         }
         continue;
@@ -1626,6 +1626,13 @@ void RewardsServiceImpl::HandleFlags() const {
           ledger::reconcile_time = reconcile_int;
         }
         continue;
+      }
+
+      if (name == "short-retries") {
+        std::string lower = base::ToLowerASCII(value);
+        if (lower == "true") {
+          ledger::short_retries = true;
+        }
       }
     }
   }
