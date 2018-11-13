@@ -7,6 +7,7 @@
 #include "base/command_line.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/extensions/brave_theme_event_router.h"
+#include "brave/browser/themes/brave_theme_util.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
@@ -16,6 +17,23 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
+
+namespace {
+
+BraveThemeType GetDefaultThemeForChannel(version_info::Channel channel) {
+  switch (channel) {
+    case version_info::Channel::STABLE:
+    case version_info::Channel::BETA:
+      return BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+    case version_info::Channel::DEV:
+    case version_info::Channel::CANARY:
+    case version_info::Channel::UNKNOWN:
+    default:
+      return BraveThemeType::BRAVE_THEME_TYPE_DARK;
+  }
+}
+
+}  // namespace
 
 // static
 void BraveThemeService::RegisterProfilePrefs(
@@ -60,22 +78,17 @@ std::string BraveThemeService::GetStringFromBraveThemeType(
 }
 
 // static
-BraveThemeType BraveThemeService::GetActiveBraveThemeType(
-                                                    Profile* profile) {
+BraveThemeType BraveThemeService::GetActiveBraveThemeType(Profile* profile) {
   const BraveThemeType preferred_theme =
-                                        GetUserPreferredBraveThemeType(profile);
+      GetUserPreferredBraveThemeType(profile);
   switch (preferred_theme) {
-    case BraveThemeType::BRAVE_THEME_TYPE_DEFAULT:
-      switch (chrome::GetChannel()) {
-        case version_info::Channel::STABLE:
-        case version_info::Channel::BETA:
-          return BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
-        case version_info::Channel::DEV:
-        case version_info::Channel::CANARY:
-        case version_info::Channel::UNKNOWN:
-        default:
-          return BraveThemeType::BRAVE_THEME_TYPE_DARK;
-      }
+    case BraveThemeType::BRAVE_THEME_TYPE_DEFAULT: {
+      BraveThemeType platform_theme;
+      if (brave::GetPlatformThemeType(&platform_theme))
+        return platform_theme;
+      return GetDefaultThemeForChannel(chrome::GetChannel());
+
+    }
     default:
       return preferred_theme;
   }
