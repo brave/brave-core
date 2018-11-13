@@ -88,17 +88,17 @@ static const uint64_t phase_two_timers[] = {
     6 * 60 * 60,  // 6h
     24 * 60 * 60};  // 24h
 
-//static const uint64_t phase_one_timers[] = {
-//    0.5 * 60,  // 30
-//    1 * 60,  //  1min
-//    2 * 60,  //  2min
-//    3 * 60,  // 3min
-//    4 * 60};  // 4min
-//
-//static const uint64_t phase_two_timers[] = {
-//    1 * 60,  // 1min
-//    2 * 60,  //  2min
-//    3 * 60};  // 3min
+static const uint64_t phase_one_debug_timers[] = {
+    0.5 * 60,  // 30sec
+    1 * 60,  //  1min
+    2 * 60,  //  2min
+    3 * 60,  // 3min
+    4 * 60};  // 4min
+
+static const uint64_t phase_two_debug_timers[] = {
+    1 * 60,  // 1min
+    2 * 60,  //  2min
+    3 * 60};  // 3min
 
 class BatContribution {
  public:
