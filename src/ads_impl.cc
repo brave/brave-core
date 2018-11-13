@@ -190,14 +190,14 @@ void AdsImpl::GenerateAdReportingSustainEvent(
 
 void AdsImpl::Initialize() {
   if (initialized_) {
-    LOG(ads_client_, LogLevel::WARNING) << "Already initialized";
+    LOG(LogLevel::WARNING) << "Already initialized";
     return;
   }
 
   GenerateAdReportingSettingsEvent();
 
   if (!ads_client_->IsAdsEnabled()) {
-    LOG(ads_client_, LogLevel::INFO) << "Deinitializing as Ads are disabled";
+    LOG(LogLevel::INFO) << "Deinitializing as Ads are disabled";
 
     Deinitialize();
     return;
@@ -223,7 +223,7 @@ void AdsImpl::InitializeStep3() {
 
   initialized_ = true;
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully initialized";
+  LOG(LogLevel::INFO) << "Successfully initialized";
 
   RetrieveSSID();
 
@@ -429,12 +429,12 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
   collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
 
   if (collect_activity_timer_id_ == 0) {
-    LOG(ads_client_, LogLevel::ERROR) <<
+    LOG(LogLevel::ERROR) <<
       "Failed to start collecting activity due to an invalid timer";
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) <<
+  LOG(LogLevel::INFO) <<
     "Start collecting activity in " << start_timer_in << " seconds";
 }
 
@@ -443,7 +443,7 @@ void AdsImpl::StopCollectingActivity() {
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Stopped collecting activity";
+  LOG(LogLevel::INFO) << "Stopped collecting activity";
 
   ads_client_->KillTimer(collect_activity_timer_id_);
   collect_activity_timer_id_ = 0;
@@ -469,7 +469,7 @@ bool AdsImpl::IsInitialized() {
 
 void AdsImpl::Deinitialize() {
   if (!initialized_) {
-    LOG(ads_client_, LogLevel::WARNING) <<
+    LOG(LogLevel::WARNING) <<
       "Failed to deinitialize as not initialized";
     return;
   }
@@ -501,14 +501,14 @@ void AdsImpl::LoadUserModel() {
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to load user model";
+    LOG(LogLevel::ERROR) << "Failed to load user model";
 
     // TODO(Terry Mancey): If the user model fails to load, we need to notify
     // the Client to decide what action to take otherwise ads will not work
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded user model";
+  LOG(LogLevel::INFO) << "Successfully loaded user model";
 
   InitializeUserModel(json);
 
@@ -518,7 +518,7 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
 }
 
 void AdsImpl::InitializeUserModel(const std::string& json) {
-  LOG(ads_client_, LogLevel::INFO) << "Initializing user model";
+  LOG(LogLevel::INFO) << "Initializing user model";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->initializePageClassifier(json);
@@ -579,7 +579,7 @@ void AdsImpl::OnGetAdsForCategory(
     if (pos != std::string::npos) {
       std::string new_category = category.substr(0, pos);
 
-      LOG(ads_client_, LogLevel::WARNING) << "No ads found for \""
+      LOG(LogLevel::WARNING) << "No ads found for \""
         << category << "\" category, trying again with \"" << new_category <<
         "\" category";
 
@@ -594,7 +594,7 @@ void AdsImpl::OnGetAdsForCategory(
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'no ads for category', category }
 
-      LOG(ads_client_, LogLevel::WARNING) << "No ads found for \""
+      LOG(LogLevel::WARNING) << "No ads found for \""
         << category << "\" category";
 
       return;
@@ -630,7 +630,7 @@ void AdsImpl::OnGetAdsForSampleCategory(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
 
-    LOG(ads_client_, LogLevel::WARNING) << "No ads found for \""
+    LOG(LogLevel::WARNING) << "No ads found for \""
       << category << "\" sample category";
 
     return;
@@ -646,7 +646,7 @@ void AdsImpl::CollectActivity() {
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Collect activity";
+  LOG(LogLevel::INFO) << "Collect activity";
 
   ads_serve_->DownloadCatalog();
 }

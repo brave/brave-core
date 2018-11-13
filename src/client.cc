@@ -63,7 +63,7 @@ const std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
 
 void Client::ResetAdsUUIDSeen(
     const std::vector<AdInfo>& ads) {
-  LOG(ads_client_, LogLevel::INFO) << "Resetting seen ads";
+  LOG(LogLevel::INFO) << "Resetting seen ads";
 
   for (const auto& ad : ads) {
     auto ad_uuid_seen = client_state_->ads_uuid_seen.find(ad.uuid);
@@ -202,7 +202,7 @@ void Client::RemoveAllHistory() {
 
 void Client::OnStateSaved(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to save client state";
+    LOG(LogLevel::ERROR) << "Failed to save client state";
 
     // TODO(Terry Mancey): If the client state fails to save, we need to notify
     // the Client to decide what action to take otherwise the client state will
@@ -210,12 +210,12 @@ void Client::OnStateSaved(const Result result) {
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully saved client state";
+  LOG(LogLevel::INFO) << "Successfully saved client state";
 }
 
 void Client::OnStateLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to load client state";
+    LOG(LogLevel::ERROR) << "Failed to load client state";
 
     // TODO(Terry Mancey): If the client state fails to load, we need to
     // notify the Client to decide what action to take otherwise ads will not
@@ -224,13 +224,13 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
   }
 
   if (!FromJson(json)) {
-    LOG(ads_client_, LogLevel::ERROR) <<
+    LOG(LogLevel::ERROR) <<
       "Failed to parse client state: " << json;
 
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded client state";
+  LOG(LogLevel::INFO) << "Successfully loaded client state";
 
   ads_->InitializeStep2();
 }

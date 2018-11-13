@@ -25,12 +25,12 @@ bool Catalog::FromJson(const std::string& json) {
 
   auto jsonSchema = ads_client_->Load("catalog-schema.json");
   if (!LoadFromJson(*catalog_state, json, jsonSchema)) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to parse catalog: " << json;
+    LOG(LogLevel::ERROR) << "Failed to parse catalog: " << json;
     return false;
   }
 
   if (!IsIdValid(*catalog_state)) {
-    LOG(ads_client_, LogLevel::ERROR) << "New catalog id " <<
+    LOG(LogLevel::ERROR) << "New catalog id " <<
       catalog_state_->catalog_id << " does not match current catalog id " <<
       bundle_->GetCatalogId();
 
@@ -39,7 +39,7 @@ bool Catalog::FromJson(const std::string& json) {
 
   catalog_state_.reset(catalog_state.release());
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully loaded catalog";
+  LOG(LogLevel::INFO) << "Successfully loaded catalog";
 
   return true;
 }
@@ -91,26 +91,26 @@ bool Catalog::IsIdValid(const CATALOG_STATE& catalog_state) {
 
 void Catalog::OnCatalogSaved(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to save catalog";
+    LOG(LogLevel::ERROR) << "Failed to save catalog";
 
     // If the catalog fails to save, we will retry the next time a we collect
     // activity
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully saved catalog";
+  LOG(LogLevel::INFO) << "Successfully saved catalog";
 }
 
 void Catalog::OnCatalogReset(const Result result) {
   if (result == Result::FAILED) {
-    LOG(ads_client_, LogLevel::ERROR) << "Failed to reset catalog";
+    LOG(LogLevel::ERROR) << "Failed to reset catalog";
 
     // TODO(Terry Mancey): If the catalog fails to reset we need to decide what
     // action to take
     return;
   }
 
-  LOG(ads_client_, LogLevel::INFO) << "Successfully reset catalog";
+  LOG(LogLevel::INFO) << "Successfully reset catalog";
 }
 
 }  // namespace ads
