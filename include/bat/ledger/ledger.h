@@ -18,6 +18,7 @@ namespace ledger {
 
 extern bool is_production;
 extern int reconcile_time; // minutes
+extern bool short_retries;
 
 LEDGER_EXPORT struct VisitData {
   VisitData();

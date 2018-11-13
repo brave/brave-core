@@ -14,6 +14,7 @@ namespace ledger {
 
 bool is_production = true;
 int reconcile_time = 0; // minutes
+bool short_retries = false;
 
 VisitData::VisitData():
     tab_id(-1) {}
