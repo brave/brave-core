@@ -23,6 +23,7 @@ export const getMessage = (message: string, substitutions?: string[]): string =>
 export const getUIMessages = (): Record<string, string> => {
   const strings = [
     'braveAdsTitle',
+    'braveContributeTitle',
     'braveRewards',
     'braveRewardsCreatingText',
     'donateMonthly',

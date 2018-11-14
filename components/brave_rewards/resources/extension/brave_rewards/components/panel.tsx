@@ -9,6 +9,7 @@ import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
 import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
 import { NotificationType } from 'brave-ui/features/rewards/walletWrapper'
+import { Type as AlertType } from 'brave-ui/features/rewards/alert'
 
 // Utils
 import * as rewardsPanelActions from '../actions/rewards_panel_actions'
@@ -193,6 +194,7 @@ export class Panel extends React.Component<Props, State> {
 
     let type: NotificationType = ''
     let text = ''
+    let isAlert = ''
     switch (notification.type) {
       case 1:
         {
@@ -202,10 +204,26 @@ export class Panel extends React.Component<Props, State> {
             break
           }
 
-          if (notification.args[1] === '0') {
-            text = getMessage('contributeNotificationSuccess')
+          const result = notification.args[1]
+
+          // Results
+          // 0 - success
+          // 1 - general error
+          // 15 - not enough funds
+          // 16 - error while tipping
+
+          if (result === '0') {
+            const fixed = utils.convertProbiToFixed(notification.args[3])
+            text = getMessage('contributeNotificationSuccess', [fixed])
+          } else if (result === '15') {
+            text = getMessage('contributeNotificationNotEnoughFunds')
+            isAlert = 'warning'
+          } else if (result === '16') {
+            text = getMessage('contributeNotificationTipError')
+            isAlert = 'error'
           } else {
             text = getMessage('contributeNotificationError')
+            isAlert = 'error'
           }
           type = 'contribute'
           break
@@ -216,12 +234,24 @@ export class Panel extends React.Component<Props, State> {
         break
     }
 
+    if (isAlert) {
+      return {
+        alert: {
+          node: text,
+          type: isAlert as AlertType,
+          onAlertClose: this.onCloseNotification.bind(this, notification.id)
+        }
+      }
+    }
+
     return {
-      id: notification.id,
-      date: new Date(notification.timestamp * 1000).toLocaleDateString(),
-      type: type,
-      text: text,
-      onCloseNotification: this.onCloseNotification
+      notification: {
+        id: notification.id,
+        date: new Date(notification.timestamp * 1000).toLocaleDateString(),
+        type: type,
+        text: text,
+        onCloseNotification: this.onCloseNotification
+      }
     }
   }
 
@@ -261,7 +291,7 @@ export class Panel extends React.Component<Props, State> {
         showSecActions={false}
         connectedWallet={false}
         grants={this.getGrants(grants)}
-        notification={notification}
+        {...notification}
       >
         <WalletSummarySlider
           id={'panel-slider'}
