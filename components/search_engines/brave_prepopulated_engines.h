@@ -33,7 +33,7 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_AMAZON = 500,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
   PREPOPULATED_ENGINE_ID_ECOSIA,
-  PREPOPULATED_ENGINE_ID_FINDX,
+  PREPOPULATED_ENGINE_ID_FINDX, // No longer in use (11/2018).
   PREPOPULATED_ENGINE_ID_GITHUB,
   PREPOPULATED_ENGINE_ID_INFOGALACTIC,
   PREPOPULATED_ENGINE_ID_MDNWEBDOCS,
@@ -51,7 +51,6 @@ enum BravePrepopulatedEngineID : unsigned int {
 extern const PrepopulatedEngine amazon;
 extern const PrepopulatedEngine duckduckgo;
 extern const PrepopulatedEngine ecosia;
-extern const PrepopulatedEngine findx;
 extern const PrepopulatedEngine github;
 extern const PrepopulatedEngine infogalactic;
 extern const PrepopulatedEngine mdnwebdocs;

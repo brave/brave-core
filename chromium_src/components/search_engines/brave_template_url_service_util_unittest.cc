@@ -51,7 +51,7 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   local_turls.push_back(*CreatePrepopulateTemplateURLData(15, ":ya", 3));
   local_turls.push_back(
       *CreatePrepopulateTemplateURLData(511, ":sp", 4));
-  local_turls.push_back(*CreatePrepopulateTemplateURLData(503, ":fx", 5));
+  local_turls.push_back(*CreatePrepopulateTemplateURLData(505, ":i", 5));
   local_turls.push_back(*CreatePrepopulateTemplateURLData(3, ":b", 6));
   local_turls.push_back(*CreatePrepopulateTemplateURLData(507, ":q", 7));
   local_turls.push_back(
@@ -87,7 +87,7 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   EXPECT_EQ(template_urls[2]->keyword(), base::ASCIIToUTF16(":q"));
   EXPECT_EQ(template_urls[3]->keyword(), base::ASCIIToUTF16(":b"));
   EXPECT_EQ(template_urls[4]->keyword(), base::ASCIIToUTF16(":e"));
-  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":fx"));
+  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":i"));
   EXPECT_EQ(template_urls[6]->keyword(), base::ASCIIToUTF16(":x"));
   EXPECT_EQ(template_urls[7]->keyword(), base::ASCIIToUTF16(":sp"));
   EXPECT_EQ(template_urls[8]->keyword(), base::ASCIIToUTF16(":ya"));
@@ -113,7 +113,7 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   EXPECT_EQ(template_urls[2]->keyword(), base::ASCIIToUTF16(":d"));
   EXPECT_EQ(template_urls[3]->keyword(), base::ASCIIToUTF16(":b"));
   EXPECT_EQ(template_urls[4]->keyword(), base::ASCIIToUTF16(":e"));
-  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":fx"));
+  EXPECT_EQ(template_urls[5]->keyword(), base::ASCIIToUTF16(":i"));
   EXPECT_EQ(template_urls[6]->keyword(), base::ASCIIToUTF16(":x"));
   EXPECT_EQ(template_urls[7]->keyword(), base::ASCIIToUTF16(":sp"));
   EXPECT_EQ(template_urls[8]->keyword(), base::ASCIIToUTF16(":ya"));
