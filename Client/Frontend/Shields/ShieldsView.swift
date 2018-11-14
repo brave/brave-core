@@ -129,7 +129,6 @@ extension ShieldsViewController {
         // Stats
         let statsHeaderLabel = headerLabel(title: Strings.Blocking_Monitor)
         let adsTrackersStatView = StatView(title: Strings.Ads_and_Trackers, valueColor: BraveUX.BraveOrange)
-        let httpsUpgradesStatView = StatView(title: Strings.HTTPS_Upgrades, valueColor: BraveUX.Green)
         let scriptsBlockedStatView = StatView(title: Strings.Scripts_Blocked, valueColor: BraveUX.Purple)
         let fingerprintingStatView = StatView(title: Strings.Fingerprinting_Methods, valueColor: BraveUX.GreyG)
         
@@ -150,7 +149,7 @@ extension ShieldsViewController {
             addArrangedSubview(hostLabel)
             addArrangedSubview(statsHeaderLabel)
             setCustomSpacing(15.0, after: statsHeaderLabel)
-            let statViews = [adsTrackersStatView, httpsUpgradesStatView, scriptsBlockedStatView, fingerprintingStatView]
+            let statViews = [adsTrackersStatView, scriptsBlockedStatView, fingerprintingStatView]
             statViews.forEach {
                 addArrangedSubview($0)
                 if $0 !== statViews.last {
