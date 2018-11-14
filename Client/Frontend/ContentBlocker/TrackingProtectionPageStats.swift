@@ -7,6 +7,7 @@
 
 import Shared
 import Deferred
+import Data
 
 struct TPPageStats {
     let adCount: Int
@@ -33,31 +34,61 @@ struct TPPageStats {
     }
 }
 
-@available(iOS 11, *)
+enum TPStatsResourceType: String {
+    case script
+    case image
+}
+
 class TPStatsBlocklistChecker {
     static let shared = TPStatsBlocklistChecker()
 
     private var blockLists: TPStatsBlocklists?
 
-    // TODO: 161, if this is called regardless of whitelist conditions then it will need `mainFrameURL`
-    // to know if the main frame is blocked (as opposed to solely the requested URL)
-    func isBlocked(url: URL) -> Deferred<BlocklistName?> {
+    func isBlocked(url: URL, domain: Domain, resourceType: TPStatsResourceType? = nil) -> Deferred<BlocklistName?> {
         let deferred = Deferred<BlocklistName?>()
-
-        // TODO: 161, use `urlIsInList` to identify if `url` is inside a blocklist
         
-        deferred.fill(nil)
+        guard let blockLists = blockLists, let host = url.host, !host.isEmpty else {
+            // TP Stats init isn't complete yet
+            deferred.fill(nil)
+            return deferred
+        }
+        
+        DispatchQueue.global().async {
+            let enabledLists = BlocklistName.blocklists(forDomain: domain).on
+            if let resourceType = resourceType {
+                switch resourceType {
+                case .script:
+                    if enabledLists.contains(.script) {
+                        deferred.fill(.script)
+                        return
+                    }
+                case .image:
+                    if enabledLists.contains(.image) {
+                        deferred.fill(.image)
+                        return
+                    }
+                }
+            }
+            if let blocklist = blockLists.blocklistForURL(url), enabledLists.contains(blocklist) {
+                deferred.fill(blocklist)
+            } else {
+                deferred.fill(nil)
+            }
+        }
         return deferred
     }
 
-    func startup() {
+    func startup() -> Deferred<()> {
+        let deferred = Deferred<()>()
         DispatchQueue.global().async {
             let parser = TPStatsBlocklists()
             parser.load()
             DispatchQueue.main.async {
                 self.blockLists = parser
+                deferred.fill(())
             }
         }
+        return deferred
     }
 }
 
@@ -84,7 +115,6 @@ func wildcardContentBlockerDomainToRegex(domain: String) -> NSRegularExpression?
     }
 }
 
-@available(iOS 11, *)
 fileprivate class TPStatsBlocklists {
     class Rule {
         let regex: NSRegularExpression
@@ -146,8 +176,7 @@ fileprivate class TPStatsBlocklists {
                 }
 
                 guard let loc = filter.range(of: standardPrefix) else {
-                    assert(false, "url-filter code needs updating for new list format")
-                    return
+                    continue
                 }
                 let baseDomain = String(filter.suffix(from: loc.upperBound)).replacingOccurrences(of: "\\.", with: ".")
                 assert(!baseDomain.isEmpty)
@@ -176,7 +205,7 @@ fileprivate class TPStatsBlocklists {
         }
     }
 
-    func urlIsInList(_ url: URL, whitelistedDomains: [NSRegularExpression]) -> BlocklistName? {
+    func blocklistForURL(_ url: URL) -> BlocklistName? {
         let resourceString = url.absoluteString
         let resourceRange = NSRange(location: 0, length: resourceString.count)
 
@@ -193,17 +222,6 @@ fileprivate class TPStatsBlocklists {
                         continue domainSearch
                     }
                 }
-
-                // Check the whitelist.
-                if let baseDomain = url.baseDomain, !whitelistedDomains.isEmpty {
-                    let range = NSRange(location: 0, length: baseDomain.count)
-                    for ignoreDomain in whitelistedDomains {
-                        if ignoreDomain.firstMatch(in: baseDomain, options: [], range: range) != nil {
-                            return nil
-                        }
-                    }
-                }
-
                 return rule.list
             }
         }

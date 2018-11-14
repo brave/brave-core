@@ -41,6 +41,15 @@ extension Preferences {
         static let referralCode = Option<String?>(key: "urp.referral.code", default: nil)
         static let referralCodeDeleteDate = Option<TimeInterval?>(key: "urp.referral.delete-date", default: nil)
     }
+    final class BlockStats {
+        static let adsCount = Option<Int>(key: "stats.adblock", default: 0)
+        static let trackersCount = Option<Int>(key: "stats.tracking", default: 0)
+        static let scriptsCount = Option<Int>(key: "stats.scripts", default: 0)
+        static let imagesCount = Option<Int>(key: "stats.images", default: 0)
+        static let phishingCount = Option<Int>(key: "stats.phishing", default: 0)
+        static let httpsUpgradeCount = Option<Int>(key: "stats.http-upgrade", default: 0)
+        static let fingerprintingCount = Option<Int>(key: "stats.fingerprinting", default: 0)
+    }
 }
 
 extension Preferences {
@@ -148,6 +157,13 @@ extension Preferences {
         migrate(keyPrefix: keyPrefix, key: "downloadIdPrefsKey", to: Preferences.URP.downloadId)
         migrate(keyPrefix: keyPrefix, key: "referralCodePrefsKey", to: Preferences.URP.referralCode)
         migrate(keyPrefix: keyPrefix, key: "referralCodeDeleteTimePrefsKey", to: Preferences.URP.referralCodeDeleteDate)
+        
+        // Block Stats
+        migrate(keyPrefix: keyPrefix, key: "adblock", to: Preferences.BlockStats.adsCount)
+        migrate(keyPrefix: keyPrefix, key: "tracking_protection", to: Preferences.BlockStats.trackersCount)
+        migrate(keyPrefix: keyPrefix, key: "httpse", to: Preferences.BlockStats.httpsUpgradeCount)
+        migrate(keyPrefix: keyPrefix, key: "fp_protection", to: Preferences.BlockStats.fingerprintingCount)
+        migrate(keyPrefix: keyPrefix, key: "safebrowsing", to: Preferences.BlockStats.phishingCount)
     }
 }
 

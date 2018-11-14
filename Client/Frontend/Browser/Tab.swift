@@ -98,7 +98,6 @@ class Tab: NSObject {
     }
 
     // Use computed property so @available can be used to guard `noImageMode`.
-    @available(iOS 11, *)
     var noImageMode: Bool {
         get { return _noImageMode }
         set {
@@ -106,13 +105,12 @@ class Tab: NSObject {
                 return
             }
             _noImageMode = newValue
-            let helper = (contentBlocker as? ContentBlockerHelper)
-            helper?.noImageMode(enabled: _noImageMode)
+            contentBlocker.noImageMode(enabled: _noImageMode)
         }
     }
 
     // There is no 'available macro' on props, we currently just need to store ownership.
-    var contentBlocker: AnyObject?
+    lazy var contentBlocker = ContentBlockerHelper(tab: self)
 
     /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
     var lastTitle: String?
@@ -149,10 +147,6 @@ class Tab: NSObject {
         self.configuration = configuration
         super.init()
         self.type = type
-
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let profile = appDelegate.profile {
-            contentBlocker = ContentBlockerHelper(tab: self, profile: profile)
-        }
     }
 
     class func toTab(_ tab: Tab) -> RemoteTab? {
