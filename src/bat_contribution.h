@@ -189,6 +189,7 @@ class BatContribution {
 
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
+                           int category,
                            const std::string& probi = "0");
 
   unsigned int GetBallotsCount(const std::string& viewing_id);
