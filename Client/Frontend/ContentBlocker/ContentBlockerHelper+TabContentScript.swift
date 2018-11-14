@@ -4,9 +4,10 @@
 
 import WebKit
 import Shared
+import Data
 import Deferred
+import BraveShared
 
-@available(iOS 11, *)
 extension ContentBlockerHelper: TabContentScript {
     class func name() -> String {
         return "TrackingProtectionStats"
@@ -28,15 +29,35 @@ extension ContentBlockerHelper: TabContentScript {
             return
         }
         
-        // TODO: 161, if domain is "all_off", can just skip
-        
+        let domain = Domain.getOrCreateForUrl(mainDocumentUrl, context: DataController.viewContext)
+        if let shieldsAllOff = domain.shield_allOff, Bool(truncating: shieldsAllOff) {
+            // if domain is "all_off", can just skip
+            return
+        }
+    
         guard var components = URLComponents(string: urlString) else { return }
         components.scheme = "http"
         guard let url = components.url else { return }
+        
+        let resourceType = TPStatsResourceType(rawValue: body["resourceType"] ?? "")
 
-        TPStatsBlocklistChecker.shared.isBlocked(url: url).uponQueue(.main) { listItem in
+        TPStatsBlocklistChecker.shared.isBlocked(url: url, domain: domain, resourceType: resourceType).uponQueue(.main) { listItem in
             if let listItem = listItem {
                 self.stats = self.stats.create(byAddingListItem: listItem)
+                
+                // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
+                // in BraveShared)
+                let stats = BraveGlobalShieldStats.shared
+                switch listItem {
+                case .ad: stats.adblock += 1
+                case .https: stats.httpse += 1
+                case .tracker: stats.trackingProtection += 1
+                case .script: stats.scripts += 1
+                case .image: stats.images += 1
+                default:
+                    // TODO: #97 Add fingerprinting count here when it is integrated
+                    break
+                }
             }
         }
     }

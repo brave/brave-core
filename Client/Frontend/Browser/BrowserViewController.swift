@@ -124,8 +124,7 @@ class BrowserViewController: UIViewController {
 
     let downloadQueue = DownloadQueue()
     
-    fileprivate let shieldBlockStats = ShieldBlockedStats()
-    fileprivate var contentBlockListDeferred: Deferred<()>?
+    fileprivate var contentBlockListDeferred: Deferred<((), ())>?
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool) {
         self.profile = profile
@@ -402,7 +401,7 @@ class BrowserViewController: UIViewController {
     
     fileprivate func setupTabs() {
         let tabToSelect = tabManager.restoreAllTabs()
-        contentBlockListDeferred?.uponQueue(.main) {
+        contentBlockListDeferred?.uponQueue(.main) { _ in
             self.tabManager.selectTab(tabToSelect)
         }
     }
@@ -1547,7 +1546,8 @@ extension BrowserViewController: URLBarDelegate {
     
     func urlBarDidTapBraveShieldsButton(_ urlBar: URLBarView) {
         // BRAVE TODO: Use actual instance
-        let shields = ShieldsViewController(url: tabManager.selectedTab?.url, shieldBlockStats: shieldBlockStats)
+        guard let selectedTab = tabManager.selectedTab else { return }
+        let shields = ShieldsViewController(tab: selectedTab)
         shields.shieldsSettingsChanged = { [unowned self] _ in
             // Reload this tab. This will also trigger an update of the brave icon in `TabLocationView` if
             // the setting changed is the global `.AllOff` shield
@@ -1749,10 +1749,8 @@ extension BrowserViewController: TabDelegate {
         historyStateHelper.delegate = self
         tab.addContentScript(historyStateHelper, name: HistoryStateHelper.name())
 
-        if let blocker = tab.contentBlocker as? ContentBlockerHelper {
-            blocker.setupTabTrackingProtection()
-            tab.addContentScript(blocker, name: ContentBlockerHelper.name())
-        }
+        tab.contentBlocker.setupTabTrackingProtection()
+        tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name())
 
         tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
     }

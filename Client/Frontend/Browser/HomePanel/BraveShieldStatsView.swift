@@ -4,13 +4,14 @@
 
 import Foundation
 import Shared
+import BraveShared
 
 class BraveShieldStatsView: UIView, Themeable {
     func applyTheme(_ theme: Theme) {
         // BRAVE TODO:
     }
     
-    fileprivate let millisecondsPerItem: Int32 = 50
+    fileprivate let millisecondsPerItem: Int = 50
     
     lazy var adsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
@@ -53,8 +54,7 @@ class BraveShieldStatsView: UIView, Themeable {
         
         update()
         
-        // BRAVE TODO:
-//        NotificationCenter.default.addObserver(self, selector: #selector(update), name: NSNotification.Name(rawValue: BraveGlobalShieldStats.DidUpdateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(update), name: NSNotification.Name(rawValue: BraveGlobalShieldStats.DidUpdateNotification), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -77,18 +77,11 @@ class BraveShieldStatsView: UIView, Themeable {
         }
     }
     
-    func update() {
-        // BRAVE TODO:
-        /*
-        adsStatView.stat = BraveGlobalShieldStats.singleton.adblock.abbreviation
-        trackersStatView.stat = BraveGlobalShieldStats.singleton.trackingProtection.abbreviation
-        httpsStatView.stat = BraveGlobalShieldStats.singleton.httpse.abbreviation
+    @objc private func update() {
+        adsStatView.stat = "\(BraveGlobalShieldStats.shared.adblock)"
+        trackersStatView.stat = "\(BraveGlobalShieldStats.shared.trackingProtection)"
+        httpsStatView.stat = "\(BraveGlobalShieldStats.shared.httpse)"
         timeStatView.stat = timeSaved
-        */
-        adsStatView.stat = "0"
-        trackersStatView.stat = "0"
-        httpsStatView.stat = "0"
-        timeStatView.stat = "0"
     }
     
     func applyTheme(_ themeName: String) {
@@ -97,9 +90,7 @@ class BraveShieldStatsView: UIView, Themeable {
     
     var timeSaved: String {
         get {
-            return "0"
-            /*
-            let estimatedMillisecondsSaved = (BraveGlobalShieldStats.singleton.adblock + BraveGlobalShieldStats.singleton.trackingProtection) * millisecondsPerItem
+            let estimatedMillisecondsSaved = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection) * millisecondsPerItem
             let hours = estimatedMillisecondsSaved < 1000 * 60 * 60 * 24
             let minutes = estimatedMillisecondsSaved < 1000 * 60 * 60
             let seconds = estimatedMillisecondsSaved < 1000 * 60
@@ -109,22 +100,18 @@ class BraveShieldStatsView: UIView, Themeable {
             if seconds {
                 counter = ceil(Double(estimatedMillisecondsSaved / 1000))
                 text = Strings.ShieldsTimeStatsSeconds
-            }
-            else if minutes {
+            } else if minutes {
                 counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60))
                 text = Strings.ShieldsTimeStatsMinutes
-            }
-            else if hours {
+            } else if hours {
                 counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60))
                 text = Strings.ShieldsTimeStatsHour
-            }
-            else {
+            } else {
                 counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60 / 24))
                 text = Strings.ShieldsTimeStatsDays
             }
             
             return "\(Int(counter))\(text)"
-            */
         }
     }
 }

@@ -35,20 +35,20 @@ function install() {
     }
   })
 
-  function sendMessage(url) {
+  function sendMessage(url, resourceType) {
     if (url) {
-      webkit.messageHandlers.trackingProtectionStats.postMessage({ url: url });
+      webkit.messageHandlers.trackingProtectionStats.postMessage({ url: url, resourceType: resourceType === undefined ? null : resourceType });
     }
   }
 
   function onLoadNativeCallback() {
     // Send back the sources of every script and image in the DOM back to the host application.
-    [].slice.apply(document.scripts).forEach(function(el) { sendMessage(el.src); });
+    [].slice.apply(document.scripts).forEach(function(el) { sendMessage(el.src, "script"); });
     [].slice.apply(document.images).forEach(function(el) {
       // If the image's natural width is zero, then it has not loaded so we
       // can assume that it may have been blocked.
       if (el.naturalWidth === 0) {
-        sendMessage(el.src);
+        sendMessage(el.src, "image");
       }
     });
   }
@@ -125,7 +125,7 @@ function install() {
           // If this `Image` instance fails to load, we can assume
           // it has been blocked.
           this._tpErrorHandler = function() {
-            sendMessage(this.src);
+            sendMessage(this.src, "image");
           };
           this.addEventListener("error", this._tpErrorHandler);
         }
@@ -146,7 +146,7 @@ function install() {
             // If the `<script>`  fails to load, we can assume
             // it has been blocked.
             node.addEventListener("error", function() {
-              sendMessage(node.src);
+              sendMessage(node.src, "script");
             });
           }
         });

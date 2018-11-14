@@ -8,41 +8,29 @@ import Shared
 import BraveShared
 import Data
 
-class ShieldBlockedStats: NSObject {
-    var adsAndTrackers = 0
-    var httpsUpgrades = 0
-    var blockedScripts = 0
-    var fingerprintingProtection = 0
-}
-
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {
-    /// The url loaded currently. Update this as the pages url changes
-    var url: URL? {
-        didSet {
-            updateToggleStatus()
-        }
-    }
-    /// The blocked stats. Update this as the pages block stats change
-    var shieldBlockStats: ShieldBlockedStats {
-        didSet {
-            updateShieldBlockStats()
-        }
-    }
+    let tab: Tab
     
     var shieldsSettingsChanged: ((ShieldsViewController) -> Void)?
     
+    private var statsUpdateObservable: AnyObject?
+    
     /// Create with an initial URL and block stats (or nil if you are not on any web page)
-    init(url: URL?, shieldBlockStats: ShieldBlockedStats) {
-        self.url = url
-        self.shieldBlockStats = shieldBlockStats
+    init(tab: Tab) {
+        self.tab = tab
         
         super.init(nibName: nil, bundle: nil)
         
-        shieldsView.shieldsContainerStackView.hostLabel.text = url?.normalizedHost
+        shieldsView.shieldsContainerStackView.hostLabel.text = tab.url?.normalizedHost
         
         updateToggleStatus()
         updateShieldBlockStats()
+        
+        let name = Notification.Name(rawValue: BraveGlobalShieldStats.DidUpdateNotification)
+        self.statsUpdateObservable = NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
+            self?.updateShieldBlockStats()
+        }
     }
     
     // MARK: - State
@@ -63,7 +51,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
             
             // Domain specific overrides after defaults have already been setup
             
-            if let url = url, let shieldState = Domain.getBraveShield(forUrl: url, shield: shield) {
+            if let url = tab.url, let shieldState = Domain.getBraveShield(forUrl: url, shield: shield) {
                 // site-specific shield has been overridden, update
                 
                 view.toggleSwitch.isOn = Bool(truncating: shieldState)
@@ -77,14 +65,13 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     }
     
     private func updateShieldBlockStats() {
-        shieldsView.shieldsContainerStackView.adsTrackersStatView.valueLabel.text = String(shieldBlockStats.adsAndTrackers)
-        shieldsView.shieldsContainerStackView.httpsUpgradesStatView.valueLabel.text = String(shieldBlockStats.httpsUpgrades)
-        shieldsView.shieldsContainerStackView.scriptsBlockedStatView.valueLabel.text = String(shieldBlockStats.blockedScripts)
-        shieldsView.shieldsContainerStackView.fingerprintingStatView.valueLabel.text = String(shieldBlockStats.fingerprintingProtection)
+        shieldsView.shieldsContainerStackView.adsTrackersStatView.valueLabel.text = String(tab.contentBlocker.stats.adCount)
+        shieldsView.shieldsContainerStackView.scriptsBlockedStatView.valueLabel.text = String(tab.contentBlocker.stats.scriptCount)
+//        shieldsView.shieldsContainerStackView.fingerprintingStatView.valueLabel.text = String(shieldBlockStats.fingerprintCount)
     }
     
     private func updateBraveShieldState(shield: BraveShieldState.Shield, on: Bool) {
-        guard let url = url else { return }
+        guard let url = tab.url else { return }
         let allOff = shield == .AllOff
         // `.AllOff` uses inverse logic
         // Technically we set "all off" when the switch is OFF, unlike all the others
@@ -94,7 +81,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     
     private func updateGlobalShieldState(_ on: Bool, animated: Bool = false) {
         // Whether or not shields are available for this URL.
-        let isShieldsAvailable = url?.isLocal == false
+        let isShieldsAvailable = tab.url?.isLocal == false
         // If shields aren't available, we don't show the switch and show the "off" state
         let shieldsEnabled = isShieldsAvailable ? on : false
         let updateBlock = {
