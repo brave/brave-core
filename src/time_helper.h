@@ -11,6 +11,7 @@ namespace helper {
 
 class Time {
  public:
+  static uint64_t Now();
   static std::string TimeStamp();
 };
 

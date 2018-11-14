@@ -91,7 +91,7 @@ class ADS_EXPORT AdsClient {
 
   // Saves the bundle state
   virtual void SaveBundleState(
-    std::unique_ptr<BUNDLE_STATE> state,
+    std::unique_ptr<BundleState> state,
     OnSaveCallback callback) = 0;
 
   // Loads a value

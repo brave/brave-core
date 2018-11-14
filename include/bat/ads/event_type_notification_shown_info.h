@@ -11,6 +11,8 @@
 namespace ads {
 
 struct ADS_EXPORT NotificationShownInfo {
+  NotificationShownInfo();
+
   std::string catalog;
   std::string classification;
   std::string url;

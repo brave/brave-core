@@ -9,6 +9,9 @@
 namespace ads {
 
 struct FocusInfo {
+  FocusInfo() :
+      tab_id("") {}
+
   std::string tab_id;
 };
 

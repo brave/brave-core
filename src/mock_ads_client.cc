@@ -81,7 +81,7 @@ void MockAdsClient::ShowNotification(
 uint32_t MockAdsClient::SetTimer(const uint64_t& time_offset) {
   (void)time_offset;
 
-  static uint64_t mock_timer_id = 0;
+  static uint32_t mock_timer_id = 0;
   mock_timer_id++;
 
   return mock_timer_id;
@@ -154,7 +154,7 @@ void MockAdsClient::Save(
 }
 
 void MockAdsClient::SaveBundleState(
-    std::unique_ptr<BUNDLE_STATE> state,
+    std::unique_ptr<BundleState> state,
     OnSaveCallback callback) {
   Log(__FILE__, __LINE__, LogLevel::INFO) << "Saving bundle state";
 
@@ -250,8 +250,8 @@ void MockAdsClient::GetAdsForSampleCategory(
     return;
   }
 
-  auto rand = helper::Math::Random() % categories_count;
-  std::advance(categories, rand);
+  auto rand = helper::Math::Random(categories_count - 1);
+  std::advance(categories, static_cast<long>(rand));
 
   callback(Result::SUCCESS, categories->first, categories->second);
 }
@@ -346,7 +346,7 @@ void MockAdsClient::OnBundleStateLoaded(
 
   auto jsonSchema = Load("bundle-schema.json");
 
-  BUNDLE_STATE state;
+  BundleState state;
   if (!state.LoadFromJson(json, jsonSchema)) {
     Log(__FILE__, __LINE__, LogLevel::ERROR) <<
       "Failed to parse bundle: " << json;
@@ -358,7 +358,7 @@ void MockAdsClient::OnBundleStateLoaded(
   state.catalog_ping = 7200000;
   state.catalog_version = 1;
 
-  bundle_state_.reset(new BUNDLE_STATE(state));
+  bundle_state_.reset(new BundleState(state));
 
   Log(__FILE__, __LINE__, LogLevel::INFO) << "Successfully loaded bundle";
 }
@@ -381,7 +381,7 @@ void MockAdsClient::OnSampleBundleStateLoaded(
 
   auto jsonSchema = Load("bundle-schema.json");
 
-  BUNDLE_STATE state;
+  BundleState state;
   if (!state.LoadFromJson(json, jsonSchema)) {
     Log(__FILE__, __LINE__, LogLevel::ERROR) <<
         "Failed to parse sample bundle: " << json;
@@ -389,7 +389,7 @@ void MockAdsClient::OnSampleBundleStateLoaded(
     return;
   }
 
-  sample_bundle_state_.reset(new BUNDLE_STATE(state));
+  sample_bundle_state_.reset(new BundleState(state));
 
   Log(__FILE__, __LINE__, LogLevel::INFO) <<
     "Successfully loaded sample bundle";

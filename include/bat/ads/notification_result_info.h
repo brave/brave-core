@@ -18,7 +18,6 @@ enum ADS_EXPORT NotificationResultInfoResultType {
 
 struct ADS_EXPORT NotificationResultInfo {
   NotificationResultInfo();
-  ~NotificationResultInfo();
 
   std::string id;
   NotificationResultInfoResultType result_type;

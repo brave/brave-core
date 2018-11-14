@@ -11,6 +11,8 @@
 namespace ads {
 
 struct ADS_EXPORT SustainInfo {
+  SustainInfo();
+
   std::string notification_id;
 };
 

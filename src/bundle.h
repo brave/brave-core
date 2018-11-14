@@ -12,7 +12,7 @@
 
 namespace ads {
 
-struct BUNDLE_STATE;
+struct BundleState;
 
 class Bundle {
  public:
@@ -27,9 +27,9 @@ class Bundle {
   uint64_t GetCatalogPing() const;
 
  private:
-  void InitializeFromBundleState(std::unique_ptr<BUNDLE_STATE> state);
+  void InitializeFromBundleState(std::unique_ptr<BundleState> state);
 
-  std::unique_ptr<BUNDLE_STATE> GenerateFromCatalog(const Catalog& catalog);
+  std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
 
   void SaveState();
   void OnStateSaved(

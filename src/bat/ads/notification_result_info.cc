@@ -7,12 +7,10 @@
 namespace ads {
 
 NotificationResultInfo::NotificationResultInfo() :
-  id(""),
-  result_type(NotificationResultInfoResultType::DISMISSED),
-  catalog(""),
-  url(""),
-  classification("") {}
-
-NotificationResultInfo::~NotificationResultInfo() {}
+    id(""),
+    result_type(NotificationResultInfoResultType::DISMISSED),
+    catalog(""),
+    url(""),
+    classification("") {}
 
 }  // namespace ads

@@ -9,7 +9,6 @@
 #include <map>
 #include <deque>
 #include <memory>
-#include <ctime>
 
 #include "ads_impl.h"
 #include "bat/ads/ads_client.h"
@@ -28,8 +27,8 @@ class Client: public CallbackHandler {
   void LoadState();
 
   void AppendCurrentTimeToAdsShownHistory();
-  const std::deque<std::time_t> GetAdsShownHistory();
-  void GetAdsShownHistory(const std::deque<std::time_t>& history);
+  const std::deque<uint64_t> GetAdsShownHistory();
+  void GetAdsShownHistory(const std::deque<uint64_t>& history);
   void UpdateAdUUID();
   void UpdateAdsUUIDSeen(const std::string& uuid, uint64_t value);
   const std::map<std::string, uint64_t> GetAdsUUIDSeen();
@@ -70,7 +69,7 @@ class Client: public CallbackHandler {
   AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
 
-  std::unique_ptr<CLIENT_STATE> client_state_;
+  std::unique_ptr<ClientState> client_state_;
 };
 
 }  // namespace ads

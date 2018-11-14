@@ -133,7 +133,6 @@ class AdsImpl : public Ads, CallbackHandler {
   bool IsAdValid(const AdInfo& ad_info);
   bool ShowAd(const AdInfo& ad_info, const std::string& category);
   bool AdsShownHistoryRespectsRollingTimeConstraint(
-      const std::deque<time_t> history,
       const uint64_t seconds_window,
       const uint64_t allowable_ad_count) const;
 

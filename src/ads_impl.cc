@@ -618,7 +618,7 @@ void AdsImpl::OnGetAdsForCategory(
     }
   }
 
-  auto rand = helper::Math::Random() % ads_unseen.size();
+  auto rand = helper::Math::Random(ads_unseen.size() - 1);
   auto ad = ads_unseen.at(rand);
   ShowAd(ad, category);
 }
@@ -637,7 +637,7 @@ void AdsImpl::OnGetAdsForSampleCategory(
     return;
   }
 
-  auto rand = helper::Math::Random() % ads.size();
+  auto rand = helper::Math::Random(ads.size() - 1);
   auto ad = ads.at(rand);
   ShowAd(ad, category);
 }
@@ -774,22 +774,20 @@ std::vector<AdInfo> AdsImpl::GetUnseenAds(
 }
 
 bool AdsImpl::IsAllowedToShowAds() {
-  std::deque<std::time_t> ads_shown_history = client_->GetAdsShownHistory();
-
   auto hour_window = kOneHourInSeconds;
   auto hour_allowed = ads_client_->GetAdsPerHour();
   auto respects_hour_limit = AdsShownHistoryRespectsRollingTimeConstraint(
-    ads_shown_history, hour_window, hour_allowed);
+    hour_window, hour_allowed);
 
   auto day_window = kOneHourInSeconds;
   auto day_allowed = ads_client_->GetAdsPerDay();
   auto respects_day_limit = AdsShownHistoryRespectsRollingTimeConstraint(
-    ads_shown_history, day_window, day_allowed);
+    day_window, day_allowed);
 
   auto minimum_wait_time = hour_window / hour_allowed;
   bool respects_minimum_wait_time =
     AdsShownHistoryRespectsRollingTimeConstraint(
-    ads_shown_history, minimum_wait_time, 0);
+    minimum_wait_time, 0);
 
   return respects_hour_limit &&
     respects_day_limit &&
@@ -836,16 +834,15 @@ bool AdsImpl::ShowAd(
 }
 
 bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
-    const std::deque<time_t> history,
     const uint64_t seconds_window,
     const uint64_t allowable_ad_count) const {
+  auto ads_shown_history = client_->GetAdsShownHistory();
+
   uint64_t recent_count = 0;
-  auto now = static_cast<uint64_t>(std::time(nullptr));
+  auto now = helper::Time::Now();
 
-  for (auto i : history) {
-    auto time_of_ad = i;
-
-    if (now - time_of_ad < seconds_window) {
+  for (auto ad_shown : ads_shown_history) {
+    if (now - ad_shown < seconds_window) {
       recent_count++;
     }
   }
@@ -918,7 +915,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   auto json = buffer.GetString();
   ads_client_->EventLog(json);
 
-  auto now = static_cast<uint64_t>(std::time(nullptr));
+  auto now = helper::Time::Now();
   if (_is_testing && info.tab_url == "https://www.iab.com/"
       && next_easter_egg_ < now) {
     next_easter_egg_ = now + (30 * 1000);

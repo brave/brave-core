@@ -13,13 +13,4 @@ NotificationInfo::NotificationInfo() :
     url(""),
     uuid("") {}
 
-NotificationInfo::NotificationInfo(const NotificationInfo& info) :
-    category(info.category),
-    advertiser(info.advertiser),
-    text(info.text),
-    url(info.url),
-    uuid(info.uuid) {}
-
-NotificationInfo::~NotificationInfo() {}
-
 }  // namespace ads

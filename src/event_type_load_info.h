@@ -9,6 +9,10 @@
 namespace ads {
 
 struct LoadInfo {
+  LoadInfo() :
+      tab_id(""),
+      tab_url("") {}
+
   std::string tab_id;
   std::string tab_url;
 };

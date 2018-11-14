@@ -42,7 +42,7 @@ bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
 }
 
 void Bundle::Reset() {
-  auto bundle_state = std::make_unique<BUNDLE_STATE>();
+  auto bundle_state = std::make_unique<BundleState>();
 
   auto callback = std::bind(&Bundle::OnStateReset,
     this, bundle_state->catalog_id, bundle_state->catalog_version,
@@ -66,7 +66,7 @@ uint64_t Bundle::GetCatalogPing() const {
 
 // TODO(Terry Mancey): We should consider optimizing memory consumption when
 // generating the bundle by saving each campaign individually on the Client
-std::unique_ptr<BUNDLE_STATE> Bundle::GenerateFromCatalog(
+std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
     const Catalog& catalog) {
   // TODO(Terry Mancey): Refactor function to use callbacks
   std::map<std::string, std::vector<AdInfo>> categories;
@@ -120,7 +120,7 @@ std::unique_ptr<BUNDLE_STATE> Bundle::GenerateFromCatalog(
     }
   }
 
-  auto state = std::make_unique<BUNDLE_STATE>();
+  auto state = std::make_unique<BundleState>();
   state->catalog_id = catalog.GetId();
   state->catalog_version = catalog.GetVersion();
   state->catalog_ping = catalog.GetPing();

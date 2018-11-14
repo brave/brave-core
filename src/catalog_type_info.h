@@ -10,18 +10,10 @@ namespace ads {
 
 struct TypeInfo {
   TypeInfo() :
-    code(""),
-    name(""),
-    platform(""),
-    version(0) {}
-
-  explicit TypeInfo(const TypeInfo& info) :
-    code(info.code),
-    name(info.name),
-    platform(info.platform),
-    version(info.version) {}
-
-  ~TypeInfo() {}
+      code(""),
+      name(""),
+      platform(""),
+      version(0) {}
 
   std::string code;
   std::string name;

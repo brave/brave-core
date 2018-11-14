@@ -8,22 +8,13 @@
 
 namespace ads {
 
-BUNDLE_STATE::BUNDLE_STATE() :
+BundleState::BundleState() :
     catalog_id(""),
     catalog_version(0),
     catalog_ping(0),
     categories({}) {}
 
-BUNDLE_STATE::BUNDLE_STATE(const BUNDLE_STATE& state) {
-    catalog_id = state.catalog_id;
-    catalog_version = state.catalog_version;
-    catalog_ping = state.catalog_ping;
-    categories = state.categories;
-}
-
-BUNDLE_STATE::~BUNDLE_STATE() = default;
-
-bool BUNDLE_STATE::LoadFromJson(
+bool BundleState::LoadFromJson(
     const std::string& json,
     const std::string& jsonSchema) {
   rapidjson::Document bundle;
@@ -70,7 +61,7 @@ bool BUNDLE_STATE::LoadFromJson(
   return true;
 }
 
-void SaveToJson(JsonWriter& writer, const BUNDLE_STATE& state) {
+void SaveToJson(JsonWriter& writer, const BundleState& state) {
   writer.StartObject();
 
   writer.String("categories");

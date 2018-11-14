@@ -12,13 +12,13 @@
 
 namespace ads {
 
-struct CLIENT_STATE;
-struct BUNDLE_STATE;
+struct ClientState;
+struct BundleState;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
-void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state);
-void SaveToJson(JsonWriter& writer, const BUNDLE_STATE& state);
+void SaveToJson(JsonWriter& writer, const ClientState& state);
+void SaveToJson(JsonWriter& writer, const BundleState& state);
 
 template <typename T>
 void SaveToJson(const T& t, std::string& json) {

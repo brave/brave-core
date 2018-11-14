@@ -11,6 +11,8 @@
 namespace ads {
 
 struct ADS_EXPORT ClientInfo {
+  ClientInfo();
+
   std::string application_version;
 
   std::string platform;

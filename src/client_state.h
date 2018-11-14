@@ -8,18 +8,15 @@
 #include <vector>
 #include <map>
 #include <deque>
-#include <ctime>
 
 namespace ads {
 
-struct CLIENT_STATE {
-  CLIENT_STATE();
-  explicit CLIENT_STATE(const CLIENT_STATE& state);
-  ~CLIENT_STATE();
+struct ClientState {
+  ClientState();
 
   bool LoadFromJson(const std::string& json);
 
-  std::deque<std::time_t> ads_shown_history;
+  std::deque<uint64_t> ads_shown_history;
   std::string ad_uuid;
   std::map<std::string, uint64_t> ads_uuid_seen;
   bool available;
@@ -27,10 +24,10 @@ struct CLIENT_STATE {
   bool configured;
   std::string current_ssid;
   bool expired;
-  std::time_t last_search_time;
-  std::time_t last_shop_time;
-  std::time_t last_user_activity;
-  std::time_t last_user_idle_stop_time;
+  uint64_t last_search_time;
+  uint64_t last_shop_time;
+  uint64_t last_user_activity;
+  uint64_t last_user_idle_stop_time;
   std::string locale;
   std::vector<std::string> locales;
   std::deque<std::vector<double>> page_score_history;

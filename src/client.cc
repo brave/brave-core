@@ -5,6 +5,7 @@
 #include "client.h"
 
 #include "json_helper.h"
+#include "time_helper.h"
 #include "static_values.h"
 #include "logging.h"
 
@@ -15,7 +16,7 @@ namespace ads {
 Client::Client(AdsImpl* ads, AdsClient* ads_client) :
     ads_(ads),
     ads_client_(ads_client),
-    client_state_(new CLIENT_STATE()) {
+    client_state_(new ClientState()) {
 }
 
 Client::~Client() = default;
@@ -31,7 +32,7 @@ void Client::LoadState() {
 }
 
 void Client::AppendCurrentTimeToAdsShownHistory() {
-  auto now = std::time(nullptr);
+  auto now = helper::Time::Now();
   client_state_->ads_shown_history.push_front(now);
   if (client_state_->ads_shown_history.size() >
       kMaximumEntriesInAdsShownHistory) {
@@ -39,7 +40,7 @@ void Client::AppendCurrentTimeToAdsShownHistory() {
   }
 }
 
-const std::deque<std::time_t> Client::GetAdsShownHistory() {
+const std::deque<uint64_t> Client::GetAdsShownHistory() {
   return client_state_->ads_shown_history;
 }
 
@@ -108,8 +109,7 @@ void Client::FlagShoppingState(
   client_state_->shop_url = url;
   client_state_->score = score;
 
-  auto now = std::time(nullptr);
-  client_state_->last_shop_time = now;
+  client_state_->last_shop_time = helper::Time::Now();
 }
 
 void Client::UnflagShoppingState() {
@@ -127,8 +127,7 @@ void Client::FlagSearchState(
   client_state_->search_url = url;
   client_state_->score = score;
 
-  auto now = std::time(nullptr);
-  client_state_->last_search_time = now;
+  client_state_->last_search_time = helper::Time::Now();
 }
 
 void Client::UnflagSearchState(const std::string &url) {
@@ -138,8 +137,7 @@ void Client::UnflagSearchState(const std::string &url) {
 
   client_state_->search_activity = false;
 
-  auto now = std::time(nullptr);
-  client_state_->last_search_time = now;
+  client_state_->last_search_time = helper::Time::Now();
 }
 
 bool Client::GetSearchState() {
@@ -147,13 +145,11 @@ bool Client::GetSearchState() {
 }
 
 void Client::UpdateLastUserActivity() {
-  auto now = std::time(nullptr);
-  client_state_->last_user_activity = now;
+  client_state_->last_user_activity = helper::Time::Now();
 }
 
 void Client::UpdateLastUserIdleStopTime() {
-  auto now = std::time(nullptr);
-  client_state_->last_user_idle_stop_time = now;
+  client_state_->last_user_idle_stop_time = helper::Time::Now();
 }
 
 void Client::SetLocale(const std::string& locale) {
@@ -195,7 +191,7 @@ const std::string Client::GetCurrentPlace() {
 }
 
 void Client::RemoveAllHistory() {
-  client_state_.reset(new CLIENT_STATE());
+  client_state_.reset(new ClientState());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -236,12 +232,12 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
 }
 
 bool Client::FromJson(const std::string& json) {
-  CLIENT_STATE state;
+  ClientState state;
   if (!LoadFromJson(state, json)) {
     return false;
   }
 
-  client_state_.reset(new CLIENT_STATE(state));
+  client_state_.reset(new ClientState(state));
 
   return true;
 }

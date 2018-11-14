@@ -62,7 +62,7 @@ class MockAdsClient : public AdsClient, CallbackHandler {
       const std::string& value,
       OnSaveCallback callback) override;
   void SaveBundleState(
-      std::unique_ptr<BUNDLE_STATE> state,
+      std::unique_ptr<BundleState> state,
       OnSaveCallback callback) override;
 
   void Load(const std::string& name, OnLoadCallback callback) override;
@@ -91,11 +91,11 @@ class MockAdsClient : public AdsClient, CallbackHandler {
  private:
   void LoadBundleState();
   void OnBundleStateLoaded(const Result result, const std::string& json);
-  std::unique_ptr<BUNDLE_STATE> bundle_state_;
+  std::unique_ptr<BundleState> bundle_state_;
 
   void LoadSampleBundleState();
   void OnSampleBundleStateLoaded(const Result result, const std::string& json);
-  std::unique_ptr<BUNDLE_STATE> sample_bundle_state_;
+  std::unique_ptr<BundleState> sample_bundle_state_;
 
   bool WriteJsonToDisk(
     const std::string& path,

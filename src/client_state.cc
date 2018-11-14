@@ -4,10 +4,11 @@
 
 #include "client_state.h"
 #include "json_helper.h"
+#include "static_values.h"
 
 namespace ads {
 
-CLIENT_STATE::CLIENT_STATE() :
+ClientState::ClientState() :
     ads_shown_history({}),
     ad_uuid(""),
     ads_uuid_seen({}),
@@ -16,11 +17,11 @@ CLIENT_STATE::CLIENT_STATE() :
     configured(false),
     current_ssid(""),
     expired(false),
-    last_search_time(std::time(nullptr)),
-    last_shop_time(std::time(nullptr)),
-    last_user_activity(std::time(nullptr)),
-    last_user_idle_stop_time(std::time(nullptr)),
-    locale("en"),
+    last_search_time(0),
+    last_shop_time(0),
+    last_user_activity(0),
+    last_user_idle_stop_time(0),
+    locale(kDefaultLanguage),
     locales({}),
     page_score_history({}),
     places({}),
@@ -31,34 +32,7 @@ CLIENT_STATE::CLIENT_STATE() :
     shop_url(""),
     status("") {}
 
-CLIENT_STATE::CLIENT_STATE(const CLIENT_STATE& state) {
-  ads_shown_history = state.ads_shown_history;
-  ad_uuid = state.ad_uuid;
-  ads_uuid_seen = state.ads_uuid_seen;
-  available = state.available;
-  allowed = state.allowed;
-  configured = state.configured;
-  current_ssid = state.current_ssid;
-  expired = state.expired;
-  last_search_time = state.last_search_time;
-  last_shop_time = state.last_shop_time;
-  last_user_activity = state.last_user_activity;
-  last_user_idle_stop_time = state.last_user_idle_stop_time;
-  locale = state.locale;
-  locales = state.locales;
-  page_score_history = state.page_score_history;
-  places = state.places;
-  score = state.score;
-  search_activity = state.search_activity;
-  search_url = state.search_url;
-  shop_activity = state.shop_activity;
-  shop_url = state.shop_url;
-  status = state.status;
-}
-
-CLIENT_STATE::~CLIENT_STATE() = default;
-
-bool CLIENT_STATE::LoadFromJson(const std::string& json) {
+bool ClientState::LoadFromJson(const std::string& json) {
   rapidjson::Document client;
   client.Parse(json.c_str());
 
@@ -174,7 +148,7 @@ bool CLIENT_STATE::LoadFromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter& writer, const CLIENT_STATE& state) {
+void SaveToJson(JsonWriter& writer, const ClientState& state) {
   writer.StartObject();
 
   writer.String("adsShownHistory");

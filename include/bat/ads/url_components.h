@@ -12,8 +12,6 @@ namespace ads {
 
 struct ADS_EXPORT UrlComponents {
   UrlComponents();
-  explicit UrlComponents(const UrlComponents& components);
-  ~UrlComponents();
 
   std::string url;
   std::string scheme;

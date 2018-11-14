@@ -8,11 +8,10 @@
 
 namespace helper {
 
-int Math::Random() {
+size_t Math::Random(size_t maximum_value) {
   std::random_device device;
   std::mt19937_64 generator(device());
-  auto max = std::numeric_limits<int>::max();
-  std::uniform_int_distribution<int> distribution(0, max);
+  std::uniform_int_distribution<size_t> distribution(0, maximum_value);
   return distribution(generator);
 }
 

@@ -15,15 +15,4 @@ UrlComponents::UrlComponents() :
     query(""),
     fragment("") {}
 
-UrlComponents::UrlComponents(const UrlComponents& components) :
-    url(components.url),
-    scheme(components.scheme),
-    user(components.user),
-    hostname(components.hostname),
-    port(components.port),
-    query(components.query),
-    fragment(components.fragment) {}
-
-UrlComponents::~UrlComponents() {}
-
 }  // namespace ads

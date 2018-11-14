@@ -15,15 +15,6 @@ CATALOG_STATE::CATALOG_STATE() :
     ping(0),
     campaigns({}) {}
 
-CATALOG_STATE::CATALOG_STATE(const CATALOG_STATE& state) {
-    catalog_id = state.catalog_id;
-    version = state.version;
-    ping = state.ping;
-    campaigns = state.campaigns;
-}
-
-CATALOG_STATE::~CATALOG_STATE() = default;
-
 bool CATALOG_STATE::LoadFromJson(
     const std::string& json,
     const std::string& jsonSchema) {

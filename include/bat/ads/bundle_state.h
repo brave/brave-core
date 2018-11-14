@@ -12,10 +12,8 @@
 
 namespace ads {
 
-struct BUNDLE_STATE {
-  BUNDLE_STATE();
-  explicit BUNDLE_STATE(const BUNDLE_STATE& state);
-  ~BUNDLE_STATE();
+struct BundleState {
+  BundleState();
 
   bool LoadFromJson(const std::string& json, const std::string& jsonSchema);
 

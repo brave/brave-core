@@ -9,6 +9,9 @@
 namespace ads {
 
 struct BlurInfo {
+  BlurInfo() :
+      tab_id("") {}
+
   std::string tab_id;
 };
 

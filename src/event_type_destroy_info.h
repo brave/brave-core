@@ -9,6 +9,9 @@
 namespace ads {
 
 struct DestroyInfo {
+  DestroyInfo() :
+      tab_id("") {}
+
   std::string tab_id;
 };
 

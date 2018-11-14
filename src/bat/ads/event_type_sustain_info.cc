@@ -2,14 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#pragma once
+#include "bat/ads/event_type_sustain_info.h"
 
-namespace helper {
+namespace ads {
 
-class Math {
- public:
+SustainInfo::SustainInfo() :
+    notification_id("") {}
 
-  static size_t Random(size_t maximum_value);
-};
-
-}  // namespace helper
+}  // namespace ads

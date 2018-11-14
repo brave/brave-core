@@ -7,11 +7,11 @@
 namespace ads {
 
 bool CallbackHandler::OnURLSessionReceivedResponse(
-      const uint64_t /* session_id */,
-      const std::string& /* url */,
-      const int /* response_status_code */,
-      const std::string& /* response */,
-      const std::map<std::string, std::string>& /* headers */) {
+    const uint64_t /* session_id */,
+    const std::string& /* url */,
+    const int /* response_status_code */,
+    const std::string& /* response */,
+    const std::map<std::string, std::string>& /* headers */) {
   return false;
 }
 
