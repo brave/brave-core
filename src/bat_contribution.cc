@@ -144,7 +144,7 @@ void BatContribution::StartReconcile(
   double fee = .0;
   double balance = ledger_->GetBalance();
 
-  if (category == ledger::PUBLISHER_CATEGORY ::AUTO_CONTRIBUTE) {
+  if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
     double ac_amount = ledger_->GetContributionAmount();
 
     if (list.size() == 0 || ac_amount > balance) {
@@ -152,14 +152,18 @@ void BatContribution::StartReconcile(
         ledger_->Log(__func__,
                      ledger::LogLevel::LOG_INFO,
                      {"AC table is empty"});
-        OnReconcileComplete(ledger::Result::AC_TABLE_EMPTY, viewing_id);
+        OnReconcileComplete(ledger::Result::AC_TABLE_EMPTY,
+                            viewing_id,
+                            category);
       }
 
       if (ac_amount > balance) {
         ledger_->Log(__func__,
                      ledger::LogLevel::LOG_INFO,
                      {"You don't have enough funds for AC contribution"});
-        OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS, viewing_id);
+        OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
+                            viewing_id,
+                            category);
       }
       return;
     }
@@ -195,7 +199,9 @@ void BatContribution::StartReconcile(
                      ledger::LogLevel::LOG_ERROR,
                      {"You don't have enough funds to "
                       "do recurring and AC contribution"});
-        OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS, viewing_id);
+        OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
+                            viewing_id,
+                            ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE);
       return;
     }
 
@@ -208,7 +214,9 @@ void BatContribution::StartReconcile(
         ledger_->Log(__func__,
                      ledger::LogLevel::LOG_ERROR,
                      {"reconcile direction missing publisher"});
-        OnReconcileComplete(ledger::Result::TIP_ERROR, viewing_id);
+        OnReconcileComplete(ledger::Result::TIP_ERROR,
+                            viewing_id,
+                            category);
         return;
       }
 
@@ -217,7 +225,9 @@ void BatContribution::StartReconcile(
                      ledger::LogLevel::LOG_ERROR,
                      {"reconcile direction currency invalid for ",
                       direction.publisher_key_});
-        OnReconcileComplete(ledger::Result::TIP_ERROR, viewing_id);
+        OnReconcileComplete(ledger::Result::TIP_ERROR,
+                            viewing_id,
+                            category);
         return;
       }
 
@@ -228,7 +238,9 @@ void BatContribution::StartReconcile(
       ledger_->Log(__func__,
                    ledger::LogLevel::LOG_ERROR,
                    {"You don't have enough funds to do a tip"});
-        OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS, viewing_id);
+        OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
+                            viewing_id,
+                            category);
       return;
     }
   }
@@ -288,7 +300,9 @@ void BatContribution::ReconcileCallback(
 
   success = ledger_->UpdateReconcile(reconcile);
   if (!success) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR,
+                        viewing_id,
+                        reconcile.category_);
     return;
   }
 
@@ -375,7 +389,9 @@ void BatContribution::CurrentReconcileCallback(
   success = ledger_->UpdateReconcile(reconcile);
 
   if (!success) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR,
+                        viewing_id,
+                        reconcile.category_);
     return;
   }
 
@@ -544,7 +560,9 @@ void BatContribution::RegisterViewingCallback(
 
   success = ledger_->UpdateReconcile(reconcile);
   if (!success) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR,
+                        viewing_id,
+                        reconcile.category_);
     return;
   }
 
@@ -620,7 +638,9 @@ void BatContribution::ViewingCredentialsCallback(
 
   success = ledger_->UpdateReconcile(reconcile);
   if (!success) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR,
+                        viewing_id,
+                        reconcile.category_);
     return;
   }
 
@@ -653,21 +673,22 @@ void BatContribution::ViewingCredentialsCallback(
   ledger_->SetTransactions(transactions);
   OnReconcileComplete(ledger::Result::LEDGER_OK,
                       reconcile.viewingId_,
+                      reconcile.category_,
                       probi);
 }
 
 void BatContribution::OnReconcileComplete(ledger::Result result,
                                           const std::string& viewing_id,
+                                          int category,
                                           const std::string& probi) {
   // Start the timer again if it wasn't a direct donation
-  auto reconcile = ledger_->GetReconcileById(viewing_id);
-  if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
+  if (category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) {
     ledger_->ResetReconcileStamp();
     SetReconcileTimer();
   }
 
   // Trigger auto contribute after recurring donation
-  if (reconcile.category_ == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
+  if (category == ledger::PUBLISHER_CATEGORY::RECURRING_DONATION) {
     StartAutoContribute();
   }
 
@@ -678,8 +699,9 @@ void BatContribution::OnReconcileComplete(ledger::Result result,
     return;
   }
 
-  ledger_->AddReconcileStep(viewing_id,
-                            braveledger_bat_helper::ContributionRetry::STEP_WINNERS);
+  ledger_->AddReconcileStep(
+      viewing_id,
+      braveledger_bat_helper::ContributionRetry::STEP_WINNERS);
   GetReconcileWinners(viewing_id);
 }
 
@@ -1414,7 +1436,9 @@ void BatContribution::AddRetry(
                                            reconcile.retry_step_,
                                            reconcile.retry_level_);
   if (!success || start_timer_in == 0) {
-    OnReconcileComplete(ledger::Result::LEDGER_ERROR, viewing_id);
+    OnReconcileComplete(ledger::Result::LEDGER_ERROR,
+                        viewing_id,
+                        reconcile.category_);
     return;
   }
 
