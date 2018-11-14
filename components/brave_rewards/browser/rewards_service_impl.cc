@@ -566,16 +566,22 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   ledger::PUBLISHER_CATEGORY category,
   const std::string& probi) {
 
-  RewardsNotificationsService::RewardsNotificationArgs args;
-  args.push_back(viewing_id);
-  args.push_back(std::to_string(result));
-  args.push_back(std::to_string(category));
-  args.push_back(probi);
+  if ((result == ledger::Result::LEDGER_OK &&
+       category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) ||
+      result == ledger::Result::LEDGER_ERROR ||
+      result == ledger::Result::NOT_ENOUGH_FUNDS ||
+      result == ledger::Result::TIP_ERROR) {
+    RewardsNotificationsService::RewardsNotificationArgs args;
+    args.push_back(viewing_id);
+    args.push_back(std::to_string(result));
+    args.push_back(std::to_string(category));
+    args.push_back(probi);
 
-  rewards_notifications_service_->AddNotification(
-      RewardsNotificationsService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
-      args,
-      "contribution_" + viewing_id);
+    rewards_notifications_service_->AddNotification(
+        RewardsNotificationsService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
+        args,
+        "contribution_" + viewing_id);
+  }
 
   if (result == ledger::Result::LEDGER_OK) {
     auto now = base::Time::Now();
