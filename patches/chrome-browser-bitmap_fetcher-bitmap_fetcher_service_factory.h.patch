@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h b/chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h
+index 87cd13b70e0e6b9f1a10b85eb26121c7a1169924..cd8a3f3d5a2d207a45b2f46f2ed54246b9074969 100644
+--- a/chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h
++++ b/chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h
+@@ -11,7 +11,7 @@
+ 
+ class BitmapFetcherService;
+ 
+-class BitmapFetcherServiceFactory : BrowserContextKeyedServiceFactory {
++class BitmapFetcherServiceFactory : public BrowserContextKeyedServiceFactory {
+  public:
+   // TODO(groby): Maybe make this GetForProfile?
+   static BitmapFetcherService* GetForBrowserContext(

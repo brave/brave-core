@@ -12,6 +12,7 @@ class PrefRegistrySyncable;
 namespace brave {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+void OverrideDefaultProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
 }  // namespace brave
 

@@ -6,6 +6,7 @@
 
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -35,6 +36,7 @@ RewardsServiceFactory::RewardsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "RewardsService",
           BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(BitmapFetcherServiceFactory::GetInstance());
 }
 
 RewardsServiceFactory::~RewardsServiceFactory() {

@@ -1,0 +1,25 @@
+diff --git a/chrome/test/base/testing_profile.cc b/chrome/test/base/testing_profile.cc
+index 83974b28dd687012834a593464fe48a05d03c8bd..19742175491a0322876122d0a2588f1b3dfae788 100644
+--- a/chrome/test/base/testing_profile.cc
++++ b/chrome/test/base/testing_profile.cc
+@@ -143,6 +143,10 @@
+ #include "components/offline_pages/core/stub_offline_page_model.h"
+ #endif
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++#include "brave/browser/brave_profile_prefs.h"
++#endif
++
+ using base::Time;
+ using bookmarks::BookmarkModel;
+ using content::BrowserThread;
+@@ -742,6 +746,9 @@ void TestingProfile::CreateTestingPrefService() {
+   prefs_.reset(testing_prefs_);
+   user_prefs::UserPrefs::Set(this, prefs_.get());
+   RegisterUserProfilePrefs(testing_prefs_->registry());
++#if defined(BRAVE_CHROMIUM_BUILD)
++  brave::RegisterProfilePrefs(testing_prefs_->registry());
++#endif
+ }
+ 
+ void TestingProfile::CreatePrefServiceForSupervisedUser() {

@@ -39,7 +39,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Default Brave shields
   registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
   registry->RegisterBooleanPref(kNoScriptControlType, false);
+}
 
+void OverrideDefaultProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // No sign into Brave functionality
   registry->SetDefaultPrefValue(prefs::kSigninAllowed, base::Value(false));
 
