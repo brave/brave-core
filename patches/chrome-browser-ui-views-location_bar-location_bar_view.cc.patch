@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 52a2ced3bff52d7e55ce47cd9afe93a61322cde5..bf2649fc79f5f689ed698087b66756fd89bad9fc 100644
+index 37a251c9a63e93e7620b16e139fce7b6eb16b993..028ca93b0a1d8d7e660f8f8cb2fdca438653dd5b 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -486,7 +486,7 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
+@@ -461,7 +461,7 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
    return min_size;
  }
  
@@ -11,14 +11,14 @@ index 52a2ced3bff52d7e55ce47cd9afe93a61322cde5..bf2649fc79f5f689ed698087b66756fd
    if (!IsInitialized())
      return;
  
-@@ -589,6 +589,11 @@ void LocationBarView::Layout() {
+@@ -558,6 +558,11 @@ void LocationBarView::Layout() {
      }
    };
  
 +  if (right_most && right_most->visible())
 +    trailing_decorations.AddDecoration(0,
 +                              height(),
-+                              false, 0, edge_padding, edge_padding, right_most);
++                              false, 0, edge_padding, right_most);
 +
    if (star_view_)
      add_trailing_decoration(star_view_);
