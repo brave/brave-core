@@ -474,7 +474,7 @@ bool ParseExcludedSites(BraveLedger& ledger, const base::Value& session_store_js
     return false;
   }
 
-  ledger.excluded_publishers = std::list<std::string>();
+  ledger.excluded_publishers = std::vector<std::string>();
   bool host_pattern_included;
 
   for (const auto& item : site_settings->DictItems()) {
@@ -540,23 +540,24 @@ void BraveImporter::ImportLedger(bool clobber_wallet) {
   BraveLedger ledger;
   ledger.clobber_wallet = clobber_wallet;
 
-  // TODO: this processing might take a while;
-  // is this happening in the browser process?
-
   if (!ParseWalletPassphrase(ledger, *session_store_json)) {
     // TODO: ...
+    LOG(ERROR) << "Failed to parse wallet passphrase";
   }
 
   if (!ParsePaymentsPreferences(ledger, *session_store_json)) {
     // TODO: ...
+    LOG(ERROR) << "Failed to parse Brave Payment preferences";
   }
 
   if (!ParseExcludedSites(ledger, *session_store_json)) {
     // TODO: ...
+    LOG(ERROR) << "Failed to parse list of excluded sites for Brave Payments";
   }
 
   if (!ParsePinnedSites(ledger, *session_store_json)) {
     // TODO: ...
+    LOG(ERROR) << "Failed to parse list of pinned sites for Brave Payments";
   }
 
   bridge_->UpdateLedger(ledger);

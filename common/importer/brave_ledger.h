@@ -7,7 +7,6 @@
 
 #include <string>
 #include <vector>
-#include <list>
 #include <map>
 
 struct BraveLedger {
@@ -18,7 +17,7 @@ struct BraveLedger {
   std::vector<uint8_t> wallet_seed;
   std::string passphrase;
   bool clobber_wallet;
-  std::list<std::string> excluded_publishers;
+  std::vector<std::string> excluded_publishers;
   std::map<std::string, unsigned int> pinned_publishers;
 
   // NOTE: if we need to read more data from session-store-1,

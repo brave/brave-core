@@ -84,6 +84,9 @@ void BraveProfileWriter::OnRecoverWallet(
 
   // TODO: check result
   LOG(INFO) << "In RewardsServiceObserver::OnRecoverWallet, result: " << result << ", balance: " << balance;
+  if (!result) {
+    // TODO: ...
+  }
 
   // TODO: create pref - ready to show pin migrate interface
   //       or "rewards imported" (similar to how Muon has the flag)
@@ -128,7 +131,7 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
     rewards_service_->ExcludePublisher(publisher_key);
   }
 
-  // Set the recurring sites (formerly known as pinned sites)
+  // Set the recurring tip sites (formerly known as pinned sites)
   for (const auto& item : ledger.pinned_publishers) {
     const auto& publisher_key = item.first;
     const auto& pin_percentage = item.second;
@@ -137,15 +140,12 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
       ledger.settings.payments.contribution_amount);
 
     // TODO: revisit this logic
-    // Mandar will help find the appropriate way to handle
-
+    // see notes in https://github.com/brave/brave-browser/issues/1910#issuecomment-438069189
     if (amount_in_bat > 0) {
       rewards_service_->OnDonate(publisher_key, amount_in_bat, true);
     }
   }
 
-  // Start the wallet recovery
   LOG(INFO) << "Starting wallet recovery...";
-  LOG(INFO) << "ledger.passphrase: " << ledger.passphrase;
   rewards_service_->RecoverWallet(ledger.passphrase);
 }

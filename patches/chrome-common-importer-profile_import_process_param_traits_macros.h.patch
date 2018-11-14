@@ -1,8 +1,13 @@
 diff --git a/chrome/common/importer/profile_import_process_param_traits_macros.h b/chrome/common/importer/profile_import_process_param_traits_macros.h
-index dd005641f4349c017bc65d843d8fe49ec6122f64..6b6f2e38d887bd9b36c34c135174d428c5912aac 100644
+index dd005641f4349c017bc65d843d8fe49ec6122f64..d5075202032081d78bb57d33f618a1ed33db8bfd 100644
 --- a/chrome/common/importer/profile_import_process_param_traits_macros.h
 +++ b/chrome/common/importer/profile_import_process_param_traits_macros.h
-@@ -14,6 +14,8 @@
+@@ -10,10 +10,13 @@
+ 
+ #include <string>
+ #include <vector>
++#include <map>
+ 
  #include "base/strings/string16.h"
  #include "base/values.h"
  #include "build/build_config.h"
@@ -11,7 +16,7 @@ index dd005641f4349c017bc65d843d8fe49ec6122f64..6b6f2e38d887bd9b36c34c135174d428
  #include "chrome/common/common_param_traits_macros.h"
  #include "chrome/common/importer/imported_bookmark_entry.h"
  #include "chrome/common/importer/importer_autofill_form_data_entry.h"
-@@ -91,4 +93,15 @@ IPC_STRUCT_TRAITS_BEGIN(importer::ImporterIE7PasswordInfo)
+@@ -91,4 +94,32 @@ IPC_STRUCT_TRAITS_BEGIN(importer::ImporterIE7PasswordInfo)
    IPC_STRUCT_TRAITS_MEMBER(date_created)
  IPC_STRUCT_TRAITS_END()
  
@@ -21,9 +26,26 @@ index dd005641f4349c017bc65d843d8fe49ec6122f64..6b6f2e38d887bd9b36c34c135174d428
 +  IPC_STRUCT_TRAITS_MEMBER(httpsEverywhere_count)
 +IPC_STRUCT_TRAITS_END()
 +
++IPC_STRUCT_TRAITS_BEGIN(BraveLedger::SessionStoreSettings::PaymentSettings)
++  IPC_STRUCT_TRAITS_MEMBER(allow_media_publishers)
++  IPC_STRUCT_TRAITS_MEMBER(allow_non_verified)
++  IPC_STRUCT_TRAITS_MEMBER(enabled)
++  IPC_STRUCT_TRAITS_MEMBER(contribution_amount)
++  IPC_STRUCT_TRAITS_MEMBER(min_visit_time)
++  IPC_STRUCT_TRAITS_MEMBER(min_visits)
++IPC_STRUCT_TRAITS_END()
++
++IPC_STRUCT_TRAITS_BEGIN(BraveLedger::SessionStoreSettings)
++  IPC_STRUCT_TRAITS_MEMBER(payments)
++IPC_STRUCT_TRAITS_END()
++
 +IPC_STRUCT_TRAITS_BEGIN(BraveLedger)
 +  IPC_STRUCT_TRAITS_MEMBER(wallet_seed)
 +  IPC_STRUCT_TRAITS_MEMBER(passphrase)
++  IPC_STRUCT_TRAITS_MEMBER(clobber_wallet)
++  IPC_STRUCT_TRAITS_MEMBER(excluded_publishers)
++  IPC_STRUCT_TRAITS_MEMBER(pinned_publishers)
++  IPC_STRUCT_TRAITS_MEMBER(settings)
 +IPC_STRUCT_TRAITS_END()
 +
  #endif  // CHROME_COMMON_IMPORTER_PROFILE_IMPORT_PROCESS_PARAM_TRAITS_MACROS_H_
