@@ -120,6 +120,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAutoInclude(
     std::string publisher_key, bool excluded, uint64_t windowId) override;
   RewardsNotificationService* GetNotificationService() const override;
+  // TODO move to private again
+  void HandleFlags(const std::string& options) const;
 
  private:
   friend void RunIOTaskCallback(
@@ -262,8 +264,6 @@ class RewardsServiceImpl : public RewardsService,
                             const ledger::PUBLISHER_CATEGORY category) override;
   void GetRecurringDonations(ledger::PublisherInfoListCallback callback) override;
   void Log(ledger::LogLevel level, const std::string& text) override;
-
-  void HandleFlags() const;
 
   void OnIOTaskComplete(std::function<void(void)> callback);
 

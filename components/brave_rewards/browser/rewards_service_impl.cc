@@ -6,6 +6,7 @@
 
 #include <functional>
 #include <limits.h>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -273,7 +274,16 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     ledger::is_production = false;
   #endif
 
-  HandleFlags();
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+
+  if (command_line.HasSwitch(switches::kRewards)) {
+    std::string options = command_line.GetSwitchValueASCII(switches::kRewards);
+
+    if (!options.empty()) {
+      HandleFlags(options);
+    }
+  }
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -1576,63 +1586,54 @@ void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
   VLOG(level) << text;
 }
 
-void RewardsServiceImpl::HandleFlags() const {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
+void RewardsServiceImpl::HandleFlags(const std::string& options) const {
+  std::vector<std::string> flags = base::SplitString(
+      options, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-  if (command_line.HasSwitch(switches::kRewards)) {
-    std::string command = command_line.GetSwitchValueASCII(switches::kRewards);
-
-    if (command.empty()) {
-      return;
+  for (const auto& flag : flags) {
+    if (flag.empty()) {
+      continue;
     }
 
-    std::vector<std::string> flags = base::SplitString(
-        command, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+    std::vector<std::string> values = base::SplitString(
+      flag, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-    for (const auto& flag : flags) {
-      if (flag.empty()) {
-        continue;
+    if (values.size() != 2) {
+      continue;
+    }
+
+    std::string name = base::ToLowerASCII(values[0]);
+    std::string value = values[1];
+
+    if (value.empty()) {
+      continue;
+    }
+
+    if (name == "staging") {
+      std::string lower = base::ToLowerASCII(value);
+      if (lower == "true" || lower == "1") {
+        ledger::is_production = false;
+      } else {
+        ledger::is_production = true;
       }
+      continue;
+    }
 
-      std::vector<std::string> values = base::SplitString(
-        flag, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-      if (values.size() != 2) {
-        continue;
+    if (name == "reconcile-interval") {
+      int reconcile_int;
+      bool success = base::StringToInt(value, &reconcile_int);
+      if (success && reconcile_int > 0) {
+        ledger::reconcile_time = reconcile_int;
       }
+      continue;
+    }
 
-      std::string name = base::ToLowerASCII(values[0]);
-      std::string value = values[1];
-
-      if (value.empty()) {
-        continue;
-      }
-
-      if (name == "env") {
-        std::string lower = base::ToLowerASCII(value);
-        if (lower == "stag") {
-          ledger::is_production = false;
-        } else if (lower == "prod") {
-          ledger::is_production = true;
-        }
-        continue;
-      }
-
-      if (name == "reconcile-interval") {
-        int reconcile_int;
-        bool success = base::StringToInt(value, &reconcile_int);
-        if (success && reconcile_int > 0) {
-          ledger::reconcile_time = reconcile_int;
-        }
-        continue;
-      }
-
-      if (name == "short-retries") {
-        std::string lower = base::ToLowerASCII(value);
-        if (lower == "true") {
-          ledger::short_retries = true;
-        }
+    if (name == "short-retries") {
+      std::string lower = base::ToLowerASCII(value);
+      if (lower == "true" || lower == "1") {
+        ledger::short_retries = true;
+      } else {
+        ledger::short_retries = false;
       }
     }
   }
