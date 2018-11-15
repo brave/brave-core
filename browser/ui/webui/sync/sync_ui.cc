@@ -39,7 +39,6 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
   void PageLoaded(const base::ListValue* args);
   void NeedSyncWords(const base::ListValue* args);
   void NeedSyncQRcode(const base::ListValue* args);
-  void SyncThisDevice(const base::ListValue* args);
   void SyncBookmarks(const base::ListValue* args);
   void SyncBrowsingHistory(const base::ListValue* args);
   void SyncSavedSiteSettings(const base::ListValue* args);
@@ -91,10 +90,6 @@ void SyncUIDOMHandler::RegisterMessages() {
 
   this->web_ui()->RegisterMessageCallback("needSyncQRcode",
      base::Bind(&SyncUIDOMHandler::NeedSyncQRcode,
-                base::Unretained(this)));
-
-  this->web_ui()->RegisterMessageCallback("syncThisDevice",
-     base::Bind(&SyncUIDOMHandler::SyncThisDevice,
                 base::Unretained(this)));
 
   this->web_ui()->RegisterMessageCallback("syncBookmarks",
@@ -155,15 +150,6 @@ void SyncUIDOMHandler::NeedSyncQRcode(const base::ListValue* args) {
   std::string seed = sync_service_->GetSeed();
   web_ui()->CallJavascriptFunctionUnsafe(
       "sync_ui_exports.haveSeedForQrCode", base::Value(seed));
-}
-
-void SyncUIDOMHandler::SyncThisDevice(const base::ListValue* args) {
-  bool new_value;
-  if (!args->GetBoolean(0, &new_value))
-    // TODO(bridiver) - does this need to report an error?
-    return;
-
-  sync_service_->OnSetSyncEnabled(new_value);
 }
 
 void SyncUIDOMHandler::SyncBookmarks(const base::ListValue* args) {
