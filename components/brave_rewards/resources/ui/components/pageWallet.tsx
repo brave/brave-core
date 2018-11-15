@@ -27,8 +27,8 @@ import ModalAddFunds from 'brave-ui/features/rewards/modalAddFunds'
 import clipboardCopy = require('clipboard-copy')
 
 interface State {
-  modalBackup: boolean,
-  modalBackupActive: 'backup' | 'restore'
+  activeTabId: number
+  modalBackup: boolean
   modalActivity: boolean
   modalAddFunds: boolean
 }
@@ -40,8 +40,8 @@ class PageWallet extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
+      activeTabId: 0,
       modalBackup: false,
-      modalBackupActive: 'backup',
       modalActivity: false,
       modalAddFunds: false
     }
@@ -67,9 +67,10 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.onModalBackupOpen()
   }
 
-  onModalBackupTabChange = (tabId: 'backup' | 'restore') => {
+  onModalBackupTabChange = () => {
+    const newTabId = this.state.activeTabId === 0 ? 1 : 0
     this.setState({
-      modalBackupActive: tabId
+      activeTabId: newTabId
     })
   }
 
@@ -281,7 +282,7 @@ class PageWallet extends React.Component<Props, State> {
         {
           modalBackup
             ? <ModalBackupRestore
-              activeTabId={this.state.modalBackupActive}
+              activeTabId={this.state.activeTabId}
               backupKey={recoveryKey}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
