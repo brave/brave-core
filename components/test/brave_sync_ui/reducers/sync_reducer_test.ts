@@ -47,10 +47,6 @@ describe.skip('syncReducer', () => {
     // TODO
   })
 
-  describe('SYNC_ON_SYNC_THIS_DEVICE', () => {
-    // TODO
-  })
-
   describe('SYNC_BOOKMARKS', () => {
     // TODO
   })

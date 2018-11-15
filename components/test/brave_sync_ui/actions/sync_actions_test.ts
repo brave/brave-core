@@ -90,14 +90,6 @@ describe('sync_actions', () => {
     })
   })
 
-  it('onToggleSyncThisDevice', () => {
-    expect(actions.onToggleSyncThisDevice(true)).toEqual({
-      type: types.SYNC_ON_SYNC_THIS_DEVICE,
-      meta: undefined,
-      payload: { shouldSyncThisDevice: true }
-    })
-  })
-
   it('onSyncBookmarks', () => {
     expect(actions.onSyncBookmarks(true)).toEqual({
       type: types.SYNC_BOOKMARKS,
