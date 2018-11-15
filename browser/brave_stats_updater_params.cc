@@ -14,6 +14,8 @@
 
 namespace brave {
 
+base::Time BraveStatsUpdaterParams::g_current_time(base::Time::Now());
+
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
     : BraveStatsUpdaterParams(pref_service,
                               GetCurrentDateAsYMD(),
@@ -89,11 +91,11 @@ std::string BraveStatsUpdaterParams::GetDateAsYMD(const base::Time& time) const 
 }
 
 std::string BraveStatsUpdaterParams::GetCurrentDateAsYMD() const {
-  return GetDateAsYMD(base::Time::Now());
+  return GetDateAsYMD(g_current_time);
 }
 
 std::string BraveStatsUpdaterParams::GetLastMondayAsYMD() const {
-  base::Time now = base::Time::Now();
+  base::Time now = g_current_time;
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
 
@@ -106,14 +108,14 @@ std::string BraveStatsUpdaterParams::GetLastMondayAsYMD() const {
 }
 
 int BraveStatsUpdaterParams::GetCurrentMonth() const {
-  base::Time now = base::Time::Now();
+  base::Time now = g_current_time;
   base::Time::Exploded exploded;
   now.LocalExplode(&exploded);
   return exploded.month;
 }
 
 int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
-  base::Time now = base::Time::Now();
+  base::Time now = g_current_time;
   base::Time::Exploded now_exploded;
   now.LocalExplode(&now_exploded);
   now_exploded.hour = 0;
@@ -145,6 +147,11 @@ int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
                  ((now_adjusted.ToJsTime() - jan4_time.ToJsTime()) / 86400000 -
                   3 + (jan4_exploded.day_of_month + 6) % 7) /
                  7);
+}
+
+// static
+void BraveStatsUpdaterParams::SetCurrentTimeForTest(const base::Time& current_time) {
+  g_current_time = current_time;
 }
 
 }  // namespace brave

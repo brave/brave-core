@@ -9,6 +9,7 @@
 
 #include "base/macros.h"
 
+class BraveStatsUpdaterTest;
 class PrefService;
 
 namespace base {
@@ -36,6 +37,7 @@ class BraveStatsUpdaterParams {
   void SavePrefs();
 
 private:
+  friend class ::BraveStatsUpdaterTest;
   PrefService* pref_service_;
   std::string ymd_;
   int woy_;
@@ -46,6 +48,7 @@ private:
   bool first_check_made_;
   std::string week_of_installation_;
   std::string referral_promo_code_;
+  static base::Time g_current_time;
 
   void LoadPrefs();
 
@@ -56,6 +59,8 @@ private:
   std::string GetLastMondayAsYMD() const;
   int GetCurrentMonth() const;
   int GetCurrentISOWeekNumber() const;
+
+  static void SetCurrentTimeForTest(const base::Time& current_time);
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdaterParams);
 };

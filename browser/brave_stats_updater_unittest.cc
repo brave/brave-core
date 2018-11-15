@@ -4,14 +4,13 @@
 
 #include "brave/browser/brave_stats_updater.h"
 
+#include "base/time/time.h"
 #include "brave/browser/brave_stats_updater_params.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace {
 
 const char kYesterday[] = "2018-06-21";
 const char kToday[] = "2018-06-22";
@@ -30,12 +29,18 @@ class BraveStatsUpdaterTest: public testing::Test {
   BraveStatsUpdaterTest() {
   }
   ~BraveStatsUpdaterTest() override {}
+
   void SetUp() override {
     brave::RegisterPrefsForBraveStatsUpdater(testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(testing_local_state_.registry());
+    brave::BraveStatsUpdaterParams::SetCurrentTimeForTest(base::Time::Now());
   }
 
   PrefService* GetLocalState() { return &testing_local_state_; }
+
+  void SetCurrentTimeForTest(const base::Time& current_time) {
+    brave::BraveStatsUpdaterParams::SetCurrentTimeForTest(current_time);
+  }
 
  private:
   TestingPrefServiceSimple testing_local_state_;
@@ -141,4 +146,75 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedNextMonth) {
   ASSERT_EQ(GetLocalState()->GetInteger(kLastCheckMonth), kThisMonth);
 }
 
-}  // namespace
+// This test ensures that our weekly stats cut over on Monday
+TEST_F(BraveStatsUpdaterTest, IsWeeklyUpdateNeededOnMondayLastCheckedOnSunday) {
+  base::Time::Exploded exploded;
+  base::Time current_time;
+
+  {
+    // Set our local state to indicate that the last weekly check was
+    // performed during ISO week #43
+    GetLocalState()->SetInteger(kLastCheckWOY, 43);
+
+    // Set date to 2018-11-04 (ISO week #44)
+    exploded.hour = 0;
+    exploded.minute = 0;
+    exploded.second = 0;
+    exploded.millisecond = 0;
+    exploded.day_of_week = 0;
+    exploded.year = 2018;
+    exploded.month = 11;
+    exploded.day_of_month = 4;
+
+    ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+
+    SetCurrentTimeForTest(current_time);
+    brave::BraveStatsUpdaterParams brave_stats_updater_params(GetLocalState());
+
+    // Make sure that the weekly param was set to true, since this is
+    // a new ISO week (#44)
+    ASSERT_EQ(brave_stats_updater_params.GetWeeklyParam(), "true");
+    brave_stats_updater_params.SavePrefs();
+
+    // Make sure that local state was updated to reflect this as well
+    ASSERT_EQ(GetLocalState()->GetInteger(kLastCheckWOY), 44);
+  }
+
+  {
+    // Now it's the next day (Monday)
+    exploded.day_of_week = 1;
+    exploded.day_of_month = 5;
+
+    ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+
+    SetCurrentTimeForTest(current_time);
+    brave::BraveStatsUpdaterParams brave_stats_updater_params(GetLocalState());
+
+    // Make sure that the weekly param was set to true, since this is
+    // a new ISO week (#45)
+    ASSERT_EQ(brave_stats_updater_params.GetWeeklyParam(), "true");
+    brave_stats_updater_params.SavePrefs();
+
+    // Make sure that local state was updated to reflect this as well
+    ASSERT_EQ(GetLocalState()->GetInteger(kLastCheckWOY), 45);
+  }
+
+  {
+    // Now it's the next day (Tuesday)
+    exploded.day_of_week = 2;
+    exploded.day_of_month = 6;
+
+    ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+
+    SetCurrentTimeForTest(current_time);
+    brave::BraveStatsUpdaterParams brave_stats_updater_params(GetLocalState());
+
+    // Make sure that the weekly param was set to false, since this is
+    // still the same ISO week (#45)
+    ASSERT_EQ(brave_stats_updater_params.GetWeeklyParam(), "false");
+    brave_stats_updater_params.SavePrefs();
+
+    // Make sure that local state also didn't change
+    ASSERT_EQ(GetLocalState()->GetInteger(kLastCheckWOY), 45);
+  }
+}
