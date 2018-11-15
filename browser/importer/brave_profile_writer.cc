@@ -82,15 +82,18 @@ void BraveProfileWriter::OnRecoverWallet(
   rewards_service_->RemoveObserver(this);
 
   if (result) {
+    // Cancel the import if wallet restore failed
     LOG(ERROR) << "An error occurred while trying to restore the wallet (result=" << result << ")";
-  } else {
-    LOG(INFO) << "Wallet restore successful";
-    rewards_service_->SetContributionAmount(new_contribution_amount_);
-
-    // Set the pinned item count (rewards can detect and take action)
-    PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
-    prefs->SetUint64(kBravePaymentsPinnedItemCount, pinned_item_count_);
+    bridge_ptr_->Cancel();
+    return;
   }
+
+  LOG(INFO) << "Wallet restore successful";
+  rewards_service_->SetContributionAmount(new_contribution_amount_);
+
+  // Set the pinned item count (rewards can detect and take action)
+  PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
+  prefs->SetUint64(kBravePaymentsPinnedItemCount, pinned_item_count_);
 
   // Notify the caller that import is complete
   bridge_ptr_->FinishLedgerImport();
@@ -101,17 +104,18 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
   if (!rewards_service_) {
     LOG(ERROR) << "Failed to get RewardsService for profile.";
+    bridge_ptr_->Cancel();
     return;
   }
-  rewards_service_->AddObserver(this);
 
-  // TODO: uncomment me
-  // // Avoid overwriting Brave Rewards wallet if one already exists.
-  // if (!ledger.clobber_wallet && rewards_service_->IsWalletCreated()) {
-  //   LOG(ERROR) << "Brave Rewards wallet already exists; skipping Brave Payments import.";
-  //   // TODO communicate this failure mode to the user
-  //   return;
-  // }
+  // Avoid overwriting Brave Rewards wallet if one already exists.
+  if (!ledger.clobber_wallet && rewards_service_->IsWalletCreated()) {
+    LOG(ERROR) << "Brave Rewards wallet already exists; skipping Brave Payments import.";
+    bridge_ptr_->Cancel();
+    return;
+  }
+
+  rewards_service_->AddObserver(this);
 
   // Set the preferences read from session-store-1
   auto* payments = &ledger.settings.payments;

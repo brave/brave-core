@@ -506,27 +506,24 @@ void BraveImporter::ImportLedger(bool clobber_wallet) {
     return;
 
   BraveLedger ledger;
-  // TODO: when initiated from the UI, it should be true.
-  // when done via CLI, it should be false.
+  // TODO: when initiated from the UI, user should be prompted
+  // "Are you sure you want to restore? You'll lose your wallet"
+  // If they choose yes, then caller should set `clobber_wallet` to true
   ledger.clobber_wallet = clobber_wallet;
 
   if (!ParseWalletPassphrase(ledger, *session_store_json)) {
-    // TODO: ...
     LOG(ERROR) << "Failed to parse wallet passphrase";
   }
 
   if (!ParsePaymentsPreferences(ledger, *session_store_json)) {
-    // TODO: ...
-    LOG(ERROR) << "Failed to parse Brave Payment preferences";
+    LOG(ERROR) << "Failed to parse preferences for Brave Payments";
   }
 
   if (!ParseExcludedSites(ledger, *session_store_json)) {
-    // TODO: ...
     LOG(ERROR) << "Failed to parse list of excluded sites for Brave Payments";
   }
 
   if (!ParsePinnedSites(ledger, *session_store_json)) {
-    // TODO: ...
     LOG(ERROR) << "Failed to parse list of pinned sites for Brave Payments";
   }
 
