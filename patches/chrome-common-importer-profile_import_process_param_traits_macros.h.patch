@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/profile_import_process_param_traits_macros.h b/chrome/common/importer/profile_import_process_param_traits_macros.h
-index dd005641f4349c017bc65d843d8fe49ec6122f64..d5075202032081d78bb57d33f618a1ed33db8bfd 100644
+index dd005641f4349c017bc65d843d8fe49ec6122f64..49b2284a739776e7436a5adc5e9d1f9a9ce81635 100644
 --- a/chrome/common/importer/profile_import_process_param_traits_macros.h
 +++ b/chrome/common/importer/profile_import_process_param_traits_macros.h
 @@ -10,10 +10,13 @@
@@ -16,7 +16,7 @@ index dd005641f4349c017bc65d843d8fe49ec6122f64..d5075202032081d78bb57d33f618a1ed
  #include "chrome/common/common_param_traits_macros.h"
  #include "chrome/common/importer/imported_bookmark_entry.h"
  #include "chrome/common/importer/importer_autofill_form_data_entry.h"
-@@ -91,4 +94,32 @@ IPC_STRUCT_TRAITS_BEGIN(importer::ImporterIE7PasswordInfo)
+@@ -91,4 +94,31 @@ IPC_STRUCT_TRAITS_BEGIN(importer::ImporterIE7PasswordInfo)
    IPC_STRUCT_TRAITS_MEMBER(date_created)
  IPC_STRUCT_TRAITS_END()
  
@@ -40,7 +40,6 @@ index dd005641f4349c017bc65d843d8fe49ec6122f64..d5075202032081d78bb57d33f618a1ed
 +IPC_STRUCT_TRAITS_END()
 +
 +IPC_STRUCT_TRAITS_BEGIN(BraveLedger)
-+  IPC_STRUCT_TRAITS_MEMBER(wallet_seed)
 +  IPC_STRUCT_TRAITS_MEMBER(passphrase)
 +  IPC_STRUCT_TRAITS_MEMBER(clobber_wallet)
 +  IPC_STRUCT_TRAITS_MEMBER(excluded_publishers)

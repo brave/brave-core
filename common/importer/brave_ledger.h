@@ -14,7 +14,6 @@ struct BraveLedger {
   BraveLedger(const BraveLedger& other);
   ~BraveLedger();
 
-  std::vector<uint8_t> wallet_seed;
   std::string passphrase;
   bool clobber_wallet;
   std::vector<std::string> excluded_publishers;

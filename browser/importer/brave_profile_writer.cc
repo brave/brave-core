@@ -9,7 +9,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/utility/importer/brave_importer.h"
-
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
 
 #include "base/time/time.h"
@@ -82,23 +81,22 @@ void BraveProfileWriter::OnRecoverWallet(
     std::vector<brave_rewards::Grant> grants) {
   rewards_service_->RemoveObserver(this);
 
-  // TODO: check result
-  LOG(INFO) << "In RewardsServiceObserver::OnRecoverWallet, result: " << result << ", balance: " << balance;
-  if (!result) {
-    // TODO: ...
-  }
+  if (result) {
+    LOG(ERROR) << "An error occurred while trying to restore the wallet (result=" << result << ")";
+  } else {
+    LOG(INFO) << "Wallet restore successful";
+    rewards_service_->SetContributionAmount(new_contribution_amount_);
 
-  // TODO: create pref - ready to show pin migrate interface
-  //       or "rewards imported" (similar to how Muon has the flag)
-  // ...
+    // Set the pinned item count (rewards can detect and take action)
+    PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
+    prefs->SetUint64(kBravePaymentsPinnedItemCount, pinned_item_count_);
+  }
 
   // Notify the caller that import is complete
   bridge_ptr_->FinishLedgerImport();
 }
 
 void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
   if (!rewards_service_) {
@@ -108,11 +106,9 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
   rewards_service_->AddObserver(this);
 
   // TODO: uncomment me
-  // Avoid overwriting Brave Rewards wallet if one already exists.
+  // // Avoid overwriting Brave Rewards wallet if one already exists.
   // if (!ledger.clobber_wallet && rewards_service_->IsWalletCreated()) {
-  //   // TODO: check if there are funds?
-
-  //   LOG(ERROR) << "Brave Rewards wallet already exists, canceling Brave Payments import.";
+  //   LOG(ERROR) << "Brave Rewards wallet already exists; skipping Brave Payments import.";
   //   // TODO communicate this failure mode to the user
   //   return;
   // }
@@ -121,8 +117,6 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
   auto* payments = &ledger.settings.payments;
   rewards_service_->SetPublisherAllowVideos(payments->allow_media_publishers);
   rewards_service_->SetPublisherAllowNonVerified(payments->allow_non_verified);
-  rewards_service_->SetAutoContribute(payments->enabled);
-  rewards_service_->SetContributionAmount(payments->contribution_amount);
   rewards_service_->SetPublisherMinVisitTime(payments->min_visit_time);
   rewards_service_->SetPublisherMinVisits(payments->min_visits);
 
@@ -131,20 +125,42 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
     rewards_service_->ExcludePublisher(publisher_key);
   }
 
-  // Set the recurring tip sites (formerly known as pinned sites)
+  // Set the recurring tips (formerly known as pinned sites)
+  int sum_of_monthly_tips = 0;
+  pinned_item_count_ = 0;
   for (const auto& item : ledger.pinned_publishers) {
     const auto& publisher_key = item.first;
     const auto& pin_percentage = item.second;
-    // TODO: verify this is truncating and not rounding
+    // NOTE: this will truncate (ex: 0.90 would be 0, not 1)
     const int amount_in_bat = (int)((pin_percentage / 100.0) *
       ledger.settings.payments.contribution_amount);
-
-    // TODO: revisit this logic
-    // see notes in https://github.com/brave/brave-browser/issues/1910#issuecomment-438069189
     if (amount_in_bat > 0) {
+      pinned_item_count_++;
+      sum_of_monthly_tips += amount_in_bat;
       rewards_service_->OnDonate(publisher_key, amount_in_bat, true);
     }
   }
+
+  // Adjust monthly contribution budget
+  // Some may have been allocated for recurring tips
+  bool auto_contribute_enabled = payments->enabled;
+  const int minimum_monthly_contribution = 15;
+  new_contribution_amount_ = payments->contribution_amount;
+  if (sum_of_monthly_tips > 0) {
+    new_contribution_amount_ -= sum_of_monthly_tips;
+    // If left over budget is too low, turn off auto-contribute
+    if (new_contribution_amount_ < minimum_monthly_contribution) {
+      LOG(INFO) << "Setting auto-contribute to false.\n"
+        << "Recurring contributions take up " << sum_of_monthly_tips << " of the monthly "
+        << payments->contribution_amount << " budget.\nThis leaves " << new_contribution_amount_
+        << " which is less than the minimum monthly auto-contribute amount ("
+        << minimum_monthly_contribution << ").";
+      auto_contribute_enabled = false;
+      new_contribution_amount_ = minimum_monthly_contribution;
+    }
+  }
+  rewards_service_->SetContributionAmount(new_contribution_amount_);
+  rewards_service_->SetAutoContribute(auto_contribute_enabled);
 
   LOG(INFO) << "Starting wallet recovery...";
   rewards_service_->RecoverWallet(ledger.passphrase);

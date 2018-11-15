@@ -40,6 +40,8 @@ class BraveProfileWriter : public ProfileWriter,
  private:
   brave_rewards::RewardsService* rewards_service_;
   BraveInProcessImporterBridge* bridge_ptr_;
+  double new_contribution_amount_;
+  unsigned int pinned_item_count_;
 };
 
 #endif  // BRAVE_BROWSER_IMPORTER_BRAVE_PROFILE_WRITER_H_

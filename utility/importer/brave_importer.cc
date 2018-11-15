@@ -332,38 +332,6 @@ void BraveImporter::ImportStats() {
   bridge_->UpdateStats(stats);
 }
 
-// TODO: not used
-std::vector<uint8_t> ParseWalletSeed(const base::Value& ledger_state_json) {
-  const base::Value* wallet_seed_json = ledger_state_json.FindPathOfType(
-      {"properties", "wallet", "keyinfo", "seed"},
-      base::Value::Type::DICTIONARY);
-  if (!wallet_seed_json) {
-    LOG(ERROR) << "Failed to parse wallet seed from ledger state";
-    return std::vector<uint8_t>();
-  }
-
-  // The wallet seed is a 32-byte Uint8Array, encoded in JSON as a
-  // dictionary of integers.
-  std::vector<uint8_t> wallet_seed;
-  for (int i = 0; i < 32; i++) {
-    const base::Value* value_json = wallet_seed_json->FindKey(std::to_string(i));
-    if (!value_json) {
-      LOG(ERROR) << "Expected seed byte not found: " << i;
-      return std::vector<uint8_t>();
-    }
-
-    int value = value_json->GetInt();
-    if (value < 0 || value > 255) {
-      LOG(ERROR) << "Seed byte at index " << i << " out of range: " << value;
-      return std::vector<uint8_t>();;
-    }
-
-    wallet_seed.push_back(static_cast<uint8_t>(value));
-  }
-
-  return wallet_seed;
-}
-
 bool ParseWalletPassphrase(BraveLedger& ledger, const base::Value& session_store_json) {
   const base::Value* wallet_passphrase_value = session_store_json.FindPathOfType(
       {"ledger", "info", "passphrase"},
@@ -538,6 +506,8 @@ void BraveImporter::ImportLedger(bool clobber_wallet) {
     return;
 
   BraveLedger ledger;
+  // TODO: when initiated from the UI, it should be true.
+  // when done via CLI, it should be false.
   ledger.clobber_wallet = clobber_wallet;
 
   if (!ParseWalletPassphrase(ledger, *session_store_json)) {
