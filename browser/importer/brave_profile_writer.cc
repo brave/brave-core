@@ -5,6 +5,7 @@
 #include "brave/browser/importer/brave_profile_writer.h"
 #include "brave/common/importer/brave_stats.h"
 #include "brave/common/importer/brave_referral.h"
+#include "brave/common/importer/imported_browser_window.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
@@ -19,6 +20,12 @@
 
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_navigator.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
@@ -28,6 +35,7 @@
 #include "net/url_request/url_request_context.h"
 #include "net/url_request/url_request_context_getter.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
+#include "ui/base/ui_base_types.h"
 
 #include <sstream>
 
@@ -81,7 +89,6 @@ void BraveProfileWriter::UpdateStats(const BraveStats& stats) {
                      https_upgrades + stats.httpsEverywhere_count);
   }
 }
-
 void BraveProfileWriter::SetBridge(BraveInProcessImporterBridge* bridge) {
   bridge_ptr_ = bridge;
 }
@@ -315,4 +322,88 @@ void BraveProfileWriter::UpdateReferral(const BraveReferral& referral) {
   } else {
     local_state->ClearPref(kReferralTimestamp);
   }
+}
+
+Browser* OpenImportedBrowserWindow(
+    const ImportedBrowserWindow& window,
+    Profile* profile) {
+  Browser::CreateParams params(Browser::TYPE_TABBED, profile, false);
+
+  params.initial_bounds = gfx::Rect(window.top, window.left,
+      window.width, window.height);
+
+  ui::WindowShowState show_state = ui::SHOW_STATE_DEFAULT;
+  if (window.state == "normal") {
+    show_state = ui::SHOW_STATE_NORMAL;
+  } else if (window.state == "minimized") {
+    show_state = ui::SHOW_STATE_MINIMIZED;
+  } else if (window.state == "maximized") {
+    show_state = ui::SHOW_STATE_MAXIMIZED;
+  } else if (window.state == "fullscreen") {
+    show_state = ui::SHOW_STATE_FULLSCREEN;
+  }
+  params.initial_show_state = show_state;
+
+  return new Browser(params);
+}
+
+void OpenImportedBrowserTabs(Browser* browser,
+    const std::vector<ImportedBrowserTab>& tabs,
+    bool pinned) {
+  for (const auto tab : tabs) {
+    NavigateParams params(browser, tab.location,
+                          ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
+    params.disposition = WindowOpenDisposition::NEW_BACKGROUND_TAB;
+    params.tabstrip_add_types = pinned ? TabStripModel::ADD_PINNED
+                                       : TabStripModel::ADD_FORCE_INDEX;
+    Navigate(&params);
+  }
+}
+
+int GetSelectedTabIndex(const ImportedBrowserWindow& window) {
+  // The window has an activeFrameKey, which may be equal to the key for one of
+  // its tabs. Find the matching tab, if one exists, and return its index in
+  // the tabs vector.
+  for (int i = 0; i < (int)window.tabs.size(); i++) {
+    if (window.activeFrameKey == window.tabs[i].key)
+      return i;
+  }
+
+  // If there was no matching tab, default to returning the index of the
+  // right-most tab.
+  return window.tabs.size() - 1;
+}
+
+void ShowBrowser(Browser* browser, int selected_tab_index) {
+  DCHECK(browser);
+  DCHECK(browser->tab_strip_model()->count());
+  browser->tab_strip_model()->ActivateTabAt(selected_tab_index, true);
+  browser->window()->Show();
+  browser->tab_strip_model()->GetActiveWebContents()->SetInitialFocus();
+}
+
+void PrependPinnedTabs(Browser* browser,
+    const std::vector<ImportedBrowserTab>& tabs) {
+  OpenImportedBrowserTabs(browser, tabs, true);
+}
+
+void BraveProfileWriter::UpdateWindows(
+    const ImportedWindowState& windowState) {
+  Browser* active = chrome::FindBrowserWithActiveWindow();
+  Browser* first = nullptr;
+
+  for (const auto window : windowState.windows) {
+    Browser* browser = OpenImportedBrowserWindow(window, profile_);
+    OpenImportedBrowserTabs(browser, window.tabs, false);
+    ShowBrowser(browser, GetSelectedTabIndex(window));
+
+    if (!first)
+      first = browser;
+  }
+
+  PrependPinnedTabs(first, windowState.pinnedTabs);
+
+  // Re-focus the window that was originally focused before import.
+  if (active)
+    active->window()->Show();
 }

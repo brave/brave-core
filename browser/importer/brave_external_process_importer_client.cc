@@ -69,4 +69,12 @@ void BraveExternalProcessImporterClient::OnReferralImportReady(
   bridge_->UpdateReferral(referral);
 }
 
+void BraveExternalProcessImporterClient::OnWindowsImportReady(
+    const ImportedWindowState& windowState) {
+  if (cancelled_)
+    return;
+
+  bridge_->UpdateWindows(windowState);
+}
+
 BraveExternalProcessImporterClient::~BraveExternalProcessImporterClient() {}

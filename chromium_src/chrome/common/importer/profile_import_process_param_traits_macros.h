@@ -3,6 +3,7 @@
 #include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_referral.h"
 #include "brave/common/importer/brave_stats.h"
+#include "brave/common/importer/imported_browser_window.h"
 
 IPC_STRUCT_TRAITS_BEGIN(BraveStats)
   IPC_STRUCT_TRAITS_MEMBER(adblock_count)
@@ -44,4 +45,25 @@ IPC_STRUCT_TRAITS_BEGIN(BraveReferral)
   IPC_STRUCT_TRAITS_MEMBER(download_id)
   IPC_STRUCT_TRAITS_MEMBER(finalize_timestamp)
   IPC_STRUCT_TRAITS_MEMBER(week_of_installation)
+IPC_STRUCT_TRAITS_END()
+
+IPC_STRUCT_TRAITS_BEGIN(ImportedBrowserTab)
+  IPC_STRUCT_TRAITS_MEMBER(key)
+  IPC_STRUCT_TRAITS_MEMBER(location)
+IPC_STRUCT_TRAITS_END()
+
+IPC_STRUCT_TRAITS_BEGIN(ImportedBrowserWindow)
+  IPC_STRUCT_TRAITS_MEMBER(top)
+  IPC_STRUCT_TRAITS_MEMBER(left)
+  IPC_STRUCT_TRAITS_MEMBER(width)
+  IPC_STRUCT_TRAITS_MEMBER(height)
+  IPC_STRUCT_TRAITS_MEMBER(focused)
+  IPC_STRUCT_TRAITS_MEMBER(state)
+  IPC_STRUCT_TRAITS_MEMBER(activeFrameKey)
+  IPC_STRUCT_TRAITS_MEMBER(tabs)
+IPC_STRUCT_TRAITS_END()
+
+IPC_STRUCT_TRAITS_BEGIN(ImportedWindowState)
+  IPC_STRUCT_TRAITS_MEMBER(windows)
+  IPC_STRUCT_TRAITS_MEMBER(pinnedTabs)
 IPC_STRUCT_TRAITS_END()
