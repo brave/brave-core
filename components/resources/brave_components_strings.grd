@@ -425,25 +425,25 @@
       <message name="IDS_BRAVE_SYNC_DEVICE_NAME" desc="The Brave Sync `Device Name` label">Device Name</message>
       <message name="IDS_BRAVE_SYNC_ID" desc="The Brave Sync `ID` table row">ID</message>
       <message name="IDS_BRAVE_SYNC_LAST_ACTIVE" desc="The Brave Sync `last active` table row">Last active</message>
-      <message name="IDS_BRAVE_SYNC_NEW_DEVICE" desc="The Brave Sync `Sync a new device...` button">Sync a new device...</message>
+      <message name="IDS_BRAVE_SYNC_NEW_DEVICE" desc="The Brave Sync `Sync a new device` button">Sync a new device</message>
       <message name="IDS_BRAVE_SYNC_DATA" desc="The Brave Sync `Sync Data` title">Sync Data</message>
       <message name="IDS_BRAVE_SYNC_DATA_INFO" desc="The Brave Sync `Sync the following data from this device` title">Sync the following data from this device:</message>
       <message name="IDS_BRAVE_SYNC_BOOKMARKS" desc="The Brave Sync `Bookmarks` toggle label">Bookmarks</message>
       <message name="IDS_BRAVE_SYNC_SAVED_SITE_SETTINGS" desc="The Brave Sync `Saved Site Settings` toggle label">Saved Site Settings</message>
       <message name="IDS_BRAVE_SYNC_BROWSING_HISTORY" desc="The Brave Sync `Browsing History` toggle label">Browsing History</message>
       <message name="IDS_BRAVE_SYNC_CLEAR_DATA" desc="The Brave Sync `Clear Data` title">Clear Data</message>
-      <message name="IDS_BRAVE_SYNC_RESET_SYNC" desc="The Brave Sync `Reset Sync...` button">Reset Sync...</message>
+      <message name="IDS_BRAVE_SYNC_RESET_SYNC" desc="The Brave Sync `Reset Sync` button">Reset Sync</message>
       <message name="IDS_BRAVE_SYNC_SET_UP_SYNC" desc="The Brave Sync `Set up Sync` button">Set up Sync</message>
       <message name="IDS_BRAVE_SYNC_ENTER_SYNC_CODE_WORDS" desc="The Brave Sync `Enter your Sync code words:` label">Enter your Sync code words:</message>
-      <message name="IDS_BRAVE_SYNC_ENTER_OPTIONAL_NAME_FOR_THIS_DEVICE" desc="The Brave Sync `Enter an optional name for this device` label">Enter an optional name for this device:</message>
-      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_FIRST_BULLET" desc="The Brave Sync instructions on how to set up a new device">Open Brave on your new device and go to Preferences > Sync > "I have an existing synced device."</message>
-      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_SECOND_BULLET" desc="The Brave Sync instructions about QR code">If it asks you to scan a QR code, click the button below and point your camera at the QR code.</message>
-      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_THIRD_BULLET" desc="The Brave Sync instructions about code words ">If asks you to enter code words, type in the words below.</message>
-      <message name="IDS_BRAVE_SYNC_SHOW_QR_CODE" desc="The Brave Sync `Show secret QR code` label">Show secret QR code. (Do not share!)</message>
-      <message name="IDS_BRAVE_SYNC_SHOW_SECRET_CODE_WORDS" desc="The Brave Sync `Show secret code words` label">Show secret code words. (Do not share!)</message>
+      <message name="IDS_BRAVE_SYNC_ENTER_OPTIONAL_NAME_FOR_THIS_DEVICE" desc="The Brave Sync `Enter a name for this device` label">Enter a name for this device:</message>
+      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_FIRST_BULLET" desc="The Brave Sync instructions on how to set up a new device">Open Brave on your target device and go to Preferences > Sync > I have an existing synced device.</message>
+      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_SECOND_BULLET" desc="The Brave Sync instructions about QR code">If asked to scan a QR code, click the button below and scan the code using the device's camera.</message>
+      <message name="IDS_BRAVE_SYNC_SYNC_NEW_DEVICE_THIRD_BULLET" desc="The Brave Sync instructions about code words ">If prompted for security codes, type in the words below.</message>
+      <message name="IDS_BRAVE_SYNC_SHOW_QR_CODE" desc="The Brave Sync `Show secret QR code` label">Show Sync QR Code</message>
+      <message name="IDS_BRAVE_SYNC_SHOW_SECRET_CODE_WORDS" desc="The Brave Sync `Show secret code words` label">Show Sync Code Words</message>
       <message name="IDS_BRAVE_SYNC_RESET_SYNC_FIRST_BULLET" desc="The Brave Sync first bullet of the Reset Sync Modal">Resetting Sync clears data stored on the Sync server and resets this device's Sync settings.</message>
       <message name="IDS_BRAVE_SYNC_RESET_SYNC_SECOND_BULLET" desc="The Brave Sync second bullet of the Reset Sync Modal">You will keep any bookmarks, history and other browsing data currently on this device.</message>
-      <message name="IDS_BRAVE_SYNC_RESET_SYNC_THIRD_BULLET" desc="The Brave Sync third bullet of the Reset Sync Modal">If you've synced other devices, they will continue to sync their future browsing data. If you don't want that, you should reset Sync on those devices as well</message>
+      <message name="IDS_BRAVE_SYNC_RESET_SYNC_THIRD_BULLET" desc="The Brave Sync third bullet of the Reset Sync Modal">If you've synced other devices, they will continue to sync their future browsing data. If you don't want that, you should reset Sync on those devices as well.</message>
     </messages>
   </release>
 </grit>
