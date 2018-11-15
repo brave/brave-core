@@ -6,8 +6,11 @@
 
 #include "brave/browser/resources/grit/brave_extension_resources_map.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources_map.h"
+#include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_panel_generated_map.h"
+#include "brave/components/brave_sync/grit/brave_sync_generated_map.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources_map.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
+#include "brave/components/brave_webtorrent/grit/brave_webtorrent_generated_map.h"
 
 namespace extensions {
 
@@ -22,12 +25,24 @@ BraveComponentExtensionResourceManager() {
       kBraveRewardsExtensionResourcesSize);
 
   AddComponentResourceEntries(
+      kBraveRewardsPanelGenerated,
+      kBraveRewardsPanelGeneratedSize);
+
+  AddComponentResourceEntries(
       kBraveSyncResources,
       kBraveSyncResourcesSize);
 
   AddComponentResourceEntries(
+      kBraveSyncGenerated,
+      kBraveSyncGeneratedSize);
+
+  AddComponentResourceEntries(
       kBraveWebtorrentResources,
       kBraveWebtorrentResourcesSize);
+
+  AddComponentResourceEntries(
+      kBraveWebtorrentGenerated,
+      kBraveWebtorrentGeneratedSize);
 }
 
 BraveComponentExtensionResourceManager::

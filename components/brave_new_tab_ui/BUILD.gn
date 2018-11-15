@@ -24,5 +24,17 @@ transpile_web_ui("brave_new_tab_ui") {
     "reducers/new_tab_reducer.tsx",
   ]
 
-  bundle_names = ["brave_new_tab.bundle.js"]
+  entry_points = [
+    ["brave_new_tab", rebase_path("brave_new_tab.tsx")]
+  ]
+
+  resource_name = "brave_new_tab"
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_new_tab"
+  output_dir = "$root_gen_dir/brave/components/brave_new_tab/resources"
+  deps = [
+    ":brave_new_tab_ui"
+  ]
 }

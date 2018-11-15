@@ -25,6 +25,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
 #else
 #include "components/grit/components_resources.h"
 #include "components/grit/components_scaled_resources.h"
@@ -645,8 +646,8 @@ void RewardsDOMHandler::GetContributionList(const base::ListValue *args) {
 }  // namespace
 
 BraveRewardsUI::BraveRewardsUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kRewardsJS,
-        IDR_BRAVE_REWARDS_JS, IDR_BRAVE_REWARDS_HTML) {
+    : BasicUI(web_ui, name, kBraveRewardsGenerated,
+        kBraveRewardsGeneratedSize, IDR_BRAVE_REWARDS_HTML) {
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler * handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
