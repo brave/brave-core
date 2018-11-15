@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index cd9ed3179baa3c132823d8f712d7b3176a9acb1b..df06385d9dbafde12466ac141d78f90125d5bb59 100644
+index 945bd9c654469ec114e91ee5998ccc5e247b6a60..852a646d41ff732bfe7273f995f794455d4d26e8 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -103,6 +103,7 @@ class BrowserView : public BrowserWindow,
+@@ -104,6 +104,7 @@ class BrowserView : public BrowserWindow,
                      public extensions::ExtensionKeybindingRegistry::Delegate,
                      public ImmersiveModeController::Observer {
   public:

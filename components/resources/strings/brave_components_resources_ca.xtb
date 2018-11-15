@@ -25,7 +25,6 @@
 <translation id="6248988683584659830">Configuració de la cerca</translation>
 <translation id="730042046912793465">Això és un/una</translation>
 <translation id="2055363275850890030">Finestra privada</translation>
-<translation id="9133213713928851646">Brave no recorda el que fas en una finestra privada. Els llocs que visites no es mostraran al teu historial i les galetes s'esborraran quan hagis acabat. Les Finestres Privades no et fan completament anònim en línia.</translation>
 <translation id="8760415064721320867">Finestra Privada amb Tor</translation>
 <translation id="4844209912525464363">Brave mai no recorda el que fas en una finestra privada. Amb Tor, la teva navegació també està amagada del teu ISP o de l'empresari, i la teva adreça IP està oculta als llocs que visiteu.</translation>
 <translation id="778096729652828897">Aprèn més sobre Finestres Privades amb Tor</translation>
@@ -100,7 +99,6 @@
 <translation id="7841456038054167122">Tornar a posar les claus o prova claus diferents per favor.</translation>
 <translation id="2195074481553016770">Ja quasi hem arribat…</translation>
 <translation id="5254740304961202261">Prova que ets humà!</translation>
-<translation id="1387881035954376289">Hmmm… encara no.</translation>
 <translation id="7510166204621526816">El servidor Brave Rewards no respon. Ho arreglarem tan aviat com sigui possible.</translation>
 <translation id="2323069945529668668">Ah oh!</translation>
 <translation id="4929019589540826496">Aquest premi ja no està disponible.</translation>
@@ -116,8 +114,6 @@
 <translation id="4496990471549986619">el FAQ, preguntes freqüents</translation>
 <translation id="1688876543043079268">Recorda: La Brave Wallet és unidireccional i BAT flueix cap a llocs de continguts. Per més informació sobre Brave Rewards visita per favor</translation>
 <translation id="2790014973538267577">Mostra el codi QR</translation>
-<translation id="3548138903799045620">Brave facilita la transferència de fons des de la teva cartera de criptomoneda a la cartera BAT de Brave.</translation>
-<translation id="3832196416506129616">Afegeix fons a la teva cartera Brave</translation>
 <translation id="2827387977307390755">Permet Propines</translation>
 <translation id="3671566813999349838">Quantitat</translation>
 <translation id="1312977698678162065">Cobra per veure anuncis rellevants que respecten la teva intimitat.</translation>

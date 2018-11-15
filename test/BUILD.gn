@@ -48,6 +48,7 @@ test("brave_unit_tests") {
     "//brave/browser/profiles/tor_unittest_profile_manager.h",
     "//brave/browser/profiles/brave_profile_manager_unittest.cc",
     "//brave/browser/resources/settings/reset_report_uploader_unittest.cc",
+    "//brave/chromium_src/chrome/browser/external_protocol/external_protocol_handler_unittest.cc",
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
     "//brave\chromium_src/chrome/browser/ui/bookmarks/brave_bookmark_context_menu_controller_unittest.cc",
     "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
@@ -65,7 +66,10 @@ test("brave_unit_tests") {
     "//brave/components/brave_sync/client/bookmark_change_processor_unittest.cc",
     "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
     "//brave/components/domain_reliability/domain_reliability_unittest.cc",
+    "//brave/components/invalidation/fcm_unittest.cc",
     "//brave/components/gcm_driver/gcm_unittest.cc",
+    "//brave/components/invalidation/push_client_channel_unittest.cc",
+    "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
     "//brave/components/spellcheck/spellcheck_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",
@@ -88,6 +92,12 @@ test("brave_unit_tests") {
   if (is_mac || is_linux) {
     sources += [
       "//brave/common/brave_channel_info_unittest.cc",
+    ]
+  }
+
+  if (is_win || is_mac) {
+    sources += [
+      "//brave/chromium_src/chrome/browser/component_updater/widevine_cdm_component_installer_unittest.cc",
     ]
   }
 
@@ -218,6 +228,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_resources_browsertest.cc",
     "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
+    "//brave/browser/extensions/api/brave_theme_api_browsertest.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
     "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
@@ -286,6 +297,7 @@ test("brave_browser_tests") {
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
     ":browser_tests_runner",
+    "//testing/gmock",
   ]
   data_deps = [
     "//ppapi:ppapi_tests",

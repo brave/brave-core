@@ -125,3 +125,11 @@ export const donationTotal = (report: Rewards.Report) => {
   const tips = new BigNumber(report.tips)
   return new BigNumber(report.donation).plus(tips).dividedBy('1e18').toFixed(1, BigNumber.ROUND_DOWN)
 }
+
+export const constructBackupString = (backupKey: string) => {
+  return `Brave Wallet Recovery Key\nDate created: ${new Date(Date.now()).toLocaleDateString()} \n\nRecovery Key: ${backupKey}` +
+    '\n\nNote: This key is not stored on Brave servers. ' +
+    'This key is your only method of recovering your Brave wallet. ' +
+    'Save this key in a safe place, separate from your Brave browser. ' +
+    'Make sure you keep this key private, or else your wallet will be compromised.'
+}

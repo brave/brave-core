@@ -12,6 +12,8 @@ source_set("extensions") {
     "api/brave_sync_api.h",
     "api/brave_sync_event_router.cc",
     "api/brave_sync_event_router.h",
+    "api/brave_theme_api.cc",
+    "api/brave_theme_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
     "brave_component_extension.cc",
@@ -30,6 +32,8 @@ source_set("extensions") {
     "brave_extension_provider.h",
     "brave_extension_service.cc",
     "brave_extension_service.h",
+    "brave_theme_event_router.cc",
+    "brave_theme_event_router.h",
     "brave_tor_client_updater.cc",
     "brave_tor_client_updater.h",
   ]

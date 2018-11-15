@@ -163,7 +163,7 @@
 <translation id="750509436279396091">ഡൗൺലോഡുകൾ ഫോൾഡർ തുറക്കുക</translation>
 <translation id="2902312830803030883">കൂടുതൽ‍ പ്രവര്‍ത്തനങ്ങള്‍</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;, ഡൗൺലോഡുചെയ്‌തു</translation>
-<translation id="7909969815743704077">ആൾമാറാട്ട മോഡിൽ ഡൗൺലോഡുചെയ്‌തു</translation>
+<translation id="6395403722585816044">ആൾമാറാട്ട മോഡിൽ ഡൗൺലോഡുചെയ്‌തു</translation>
 <translation id="8028803902702117856"><ph name="SIZE"/> ഡൗൺലോഡ് ചെയ്യുന്നു, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">ഡൗൺലോഡ് ചെയ്യുന്നു, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">ഡൗൺലോഡ് ചെയ്യുന്നു, <ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@
 <translation id="5939518447894949180">വീണ്ടും സജ്ജീകരിക്കുക</translation>
 <translation id="5546865291508181392">കണ്ടെത്തുക</translation>
 <translation id="833986336429795709">ഈ ലിങ്ക് തുറക്കാൻ ഒരു ആപ്പ് തിരഞ്ഞെടുക്കുക</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (ആള്‍മാറാട്ടം)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ആള്‍മാറാട്ടം)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (അപ്‌ഡേറ്റ് ലഭ്യമാണ്)</translation>
 <translation id="8525306231823319788">പൂര്‍ണ്ണ സ്ക്രീന്‍</translation>
@@ -636,10 +636,10 @@
 <translation id="3429275422858276529">പിന്നീട് ഈ പേജ് എളുപ്പത്തിൽ കണ്ടെത്താൻ ബുക്ക്‌മാർക്ക് ചെയ്യുക</translation>
 <translation id="3603533104205588786">ഒരു പേജ് ബുക്ക്‌മാർക്ക് ചെയ്യാൻ നക്ഷത്ര ചിഹ്നത്തിൽ ക്ലിക്ക് ചെയ്യുക</translation>
 <translation id="6613452264606394692">ഈ പേജ് ബുക്ക്‌മാർക്ക് ചെയ്താൽ വേഗത്തിൽ ഇവിടെ മടങ്ങിയെത്താൻ കഴിയും</translation>
-<translation id="8286963743045814739">അദൃശ്യ വിൻഡോ ഉപയോഗിച്ച് നിങ്ങൾക്ക് സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാനാകും</translation>
-<translation id="1211364473545090084">അദൃശ്യ വിൻഡോ ഉപയോഗിച്ച്, നിങ്ങളുടെ ബ്രൗസിംഗ് ചരിത്രം സംരക്ഷിക്കാതെ, വെബ് ഉപയോഗിക്കുക</translation>
-<translation id="6080515710685820702">പങ്കിട്ട കമ്പ്യൂട്ടറാണോ ഉപയോഗിക്കുന്നത്? അദൃശ്യ വിൻഡോ പരീക്ഷിച്ചുനോക്കൂ.</translation>
-<translation id="7059893117020417984">സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ, അദൃശ്യ വിൻഡോ തുറക്കാൻ, ഡോട്ട് ഐക്കൺ ‌മെനുവിൽ ക്ലിക്ക് ചെയ്യുക</translation>
+<translation id="4369414322596874629">അദൃശ്യ വിൻഡോ ഉപയോഗിച്ച് നിങ്ങൾക്ക് സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാനാകും</translation>
+<translation id="3772947852642271642">അദൃശ്യ വിൻഡോ ഉപയോഗിച്ച്, നിങ്ങളുടെ ബ്രൗസിംഗ് ചരിത്രം സംരക്ഷിക്കാതെ, വെബ് ഉപയോഗിക്കുക</translation>
+<translation id="3871738366246972820">പങ്കിട്ട കമ്പ്യൂട്ടറാണോ ഉപയോഗിക്കുന്നത്? അദൃശ്യ വിൻഡോ പരീക്ഷിച്ചുനോക്കൂ.</translation>
+<translation id="5808622652939943719">സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ, അദൃശ്യ വിൻഡോ തുറക്കാൻ, ഡോട്ട് ഐക്കൺ ‌മെനുവിൽ ക്ലിക്ക് ചെയ്യുക</translation>
 <translation id="8803953437405899238">ഒറ്റ ക്ലിക്കിലൂടെ ഒരു പുതിയ ടാബ് തുറക്കുക</translation>
 <translation id="3071624960923923138">ഒരു പുതിയ ടാബ് തുറക്കാൻ നിങ്ങൾക്ക് ഇവിടെ ക്ലിക്കുചെയ്യാം</translation>
 <translation id="4908811072292128752">ഒരേസമയം രണ്ട് സൈറ്റുകൾ ബ്രൗസുചെയ്യാൻ ഒരു പുതിയ ടാബ് തുറക്കുക</translation>
@@ -1131,13 +1131,13 @@
 <translation id="2367972762794486313">അപ്ലിക്കേഷനുകൾ കാണിക്കുക</translation>
 <translation id="6466988389784393586">&amp;എല്ലാ ബുക്ക്‍മാര്‍ക്കുകളും തുറക്കുക</translation>
 <translation id="6804671422566312077">എല്ലാ ബുക്ക്‌മാര്‍ക്കുകളും &amp;പുതിയ വിന്‍‌ഡോയില്‍‌ തുറക്കുക</translation>
-<translation id="3011362742078013760">എല്ലാ ബുക്ക്‌മാര്‍ക്കുകളും &amp;വേഷ പ്രച്ഛന്ന വിന്‍ഡോയില്‍‌ തുറക്കുക</translation>
+<translation id="2692771564633877898">എല്ലാ ബുക്ക്‌മാര്‍ക്കുകളും &amp;വേഷ പ്രച്ഛന്ന വിന്‍ഡോയില്‍‌ തുറക്കുക</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{എല്ലാം &amp;തുറക്കുക}=1{ബുക്ക്‌മാർക്ക് &amp;തുറക്കുക}other{എല്ലാം (#) &amp;തുറക്കുക}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{എല്ലാം &amp;പുതിയ വിൻഡോയിൽ തുറക്കുക}=1{&amp;പുതിയ വിന്‍‌ഡോയില്‍‌ തുറക്കുക}other{എല്ലാം (#) &amp;പുതിയ വിൻഡോയിൽ തുറക്കുക}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{എല്ലാം &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}=1{&amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}other{എല്ലാം (#) &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{എല്ലാം &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}=1{&amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}other{എല്ലാം (#) &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}}</translation>
 <translation id="9024127637873500333">&amp;പുതിയ ടാബില്‍ തുറക്കുക</translation>
 <translation id="665061930738760572">&amp;പുതിയ വിൻഡോയിൽ തുറക്കുക</translation>
-<translation id="37613671848467444">&amp;വേഷ പ്രച്ഛന്ന വിന്‍ഡോയില്‍ തുറക്കുക</translation>
+<translation id="1985165269306590797">&amp;വേഷ പ്രച്ഛന്ന വിന്‍ഡോയില്‍ തുറക്കുക</translation>
 <translation id="6702639462873609204">&amp;എഡിറ്റുചെയ്യുക...</translation>
 <translation id="3088325635286126843">&amp;പേരുമാറ്റുക...</translation>
 <translation id="5329858601952122676">&amp;ഇല്ലാതാക്കൂ</translation>
@@ -1188,10 +1188,10 @@
 <translation id="8457451314607652708">ബുക്ക്‌മാർക്കുകൾ ഇമ്പോർട്ടുചെയ്യുക</translation>
 <translation id="5101042277149003567">എല്ലാ ബുക്‌മാര്‍ക്കുകളും തുറക്കുക</translation>
 <translation id="7007648447224463482">എല്ലാം പുതിയ വിൻഡോയിൽ തുറക്കുക</translation>
-<translation id="4508051413094283164">എല്ലാം അദൃശ്യ വിൻഡോയിൽ തുറക്കുക</translation>
+<translation id="642436385689435488">എല്ലാം അദൃശ്യ വിൻഡോയിൽ തുറക്കുക</translation>
 <translation id="4195643157523330669">പുതിയ ടാബില്‍ തുറക്കുക</translation>
 <translation id="2979639724566107830">പുതിയ വിന്‍ഡോയില്‍ തുറക്കുക</translation>
-<translation id="1134009406053225289">അദൃശ്യ വിന്‍ഡോയില്‍ തുറക്കുക</translation>
+<translation id="5463021359602611602">അദൃശ്യ വിന്‍ഡോയില്‍ തുറക്കുക</translation>
 <translation id="1173894706177603556">പേരുമാറ്റുക</translation>
 <translation id="5170568018924773124">ഫോള്‍ഡറില്‍ കാണിക്കുക</translation>
 <translation id="6825184156888454064">പേര് പ്രകാരം അടുക്കുക</translation>
@@ -1279,7 +1279,7 @@
 <translation id="4159681666905192102">ഇത് <ph name="CUSTODIAN_EMAIL"/>, <ph name="SECOND_CUSTODIAN_EMAIL"/> എന്നിവർ നിയന്ത്രിക്കുന്ന കുട്ടികൾക്കുള്ള അക്കൗണ്ടാണ്.</translation>
 <translation id="5958529069007801266">സൂപ്പർവൈസുചെയ്‌ത ഉപയോക്താവ്</translation>
 <translation id="5720705177508910913">നിലവിലെ ഉപയോക്താവ്</translation>
-<translation id="7081952801286122383">നിങ്ങൾ അദൃശ്യ മോഡിലാണ്</translation>
+<translation id="5070556616376997776">നിങ്ങൾ അദൃശ്യ മോഡിലാണ്</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: സമന്വയം പ്രവർത്തിക്കുന്നില്ല</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: സമന്വയം താൽക്കാലികമായി നിർത്തി</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (സൂപ്പർവൈസുചെയ്‌തു)</translation>
@@ -2541,9 +2541,9 @@
 <translation id="6782111308708962316">കുക്കി വിവരം സംരക്ഷിക്കുകയും വായിക്കുകയും ചെയ്യുന്നതിൽ നിന്ന് മൂന്നാംകക്ഷി വെബ്‌സൈറ്റുകളെ തടയുക</translation>
 <translation id="3378503599595235699">നിങ്ങൾ ബ്രൗസറിൽ നിന്ന് പുറത്തുകടക്കും വരെ മാത്രം പ്രാദേശിക ഡാറ്റ സൂക്ഷിക്കുക</translation>
 <translation id="1274977772557788323">Adobe Flash Player സ്റ്റോറേജ് ക്രമീകരണം</translation>
-<translation id="1698122934742150150">നിലവിലെ അദൃശ്യ സെഷന് മാത്രം</translation>
-<translation id="5838456317242088717">നിലവിലെ അദൃശ്യ സെഷൻ</translation>
-<translation id="2318923050469484167">നിലവിലെ അദൃശ്യ സെഷൻ (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">നിലവിലെ അദൃശ്യ സെഷന് മാത്രം</translation>
+<translation id="3479035826743782247">നിലവിലെ അദൃശ്യ സെഷൻ</translation>
+<translation id="4750220700975225">നിലവിലെ അദൃശ്യ സെഷൻ (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">സൈറ്റുകളൊന്നും സൂം ഇൻ അല്ലെങ്കിൽ സൂം ഔട്ട് ചെയ്‌തിട്ടില്ല</translation>
 <translation id="3566721612727112615">സൈറ്റുകൾ ചേർത്തിട്ടില്ല</translation>
 <translation id="8098574385249290065">സൈറ്റുകൾക്ക് എപ്പോൾ ശബ്‌ദം പ്ലേ ചെയ്യാനാവും എന്നത് (ശുപാർശ ചെയ്‌തത്) തിരഞ്ഞെടുക്കാൻ Brave-നെ അനുവദിക്കുക</translation>
@@ -2843,7 +2843,7 @@
 <translation id="329838636886466101">റിപ്പയർ ചെയ്യുക</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(നിഷ്‌ക്രിയം)</translation>
-<translation id="1603914832182249871">(ആള്‍മാറാട്ടം)</translation>
+<translation id="3860292630623580294">(ആള്‍മാറാട്ടം)</translation>
 <translation id="6655190889273724601">ഡെവലപ്പര്‍ മോഡ്</translation>
 <translation id="2868746137289129307">ഈ വിപുലീകരണം എന്റർപ്രൈസ്‌ നയം ഉപയോഗിച്ച് കാലഹരണപ്പെടുത്തുകയും പ്രവർത്തനരഹിതമാക്കുകയും ചെയ്‌തു. ഒരു പുതിയ പതിപ്പ് ലഭ്യമാകുമ്പോൾ അത് സ്വയമേ പ്രവർത്തനക്ഷമമായേക്കാം.</translation>
 <translation id="6841186874966388268">പിശകുകൾ</translation>
@@ -2864,7 +2864,7 @@
 <translation id="1805822111539868586">കാഴ്‌ചകൾ പരിശോധിക്കുക</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> കൂടി...</translation>
 <translation id="2450849356604136918">വിവരങ്ങളുടെ പ്രദർശമൊന്നും ഇപ്പോൾ സജീവമല്ല</translation>
-<translation id="5488468185303821006">ആള്‍‌മാറാട്ടത്തില്‍‌ അനുവദിക്കുക</translation>
+<translation id="4854477725773269949">ആള്‍‌മാറാട്ടത്തില്‍‌ അനുവദിക്കുക</translation>
 <translation id="6124650939968185064">ഇനിപ്പറയുന്ന വിപുലീകരണങ്ങൾ ഈ വിപുലീകരണത്തെ ആശ്രയിച്ചിരിക്കുന്നു:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ഐഡി: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> എന്നതുമായി ബന്ധപ്പെട്ടത്</translation>
@@ -2958,10 +2958,8 @@
 <translation id="6041155700700864984">മുഴുവൻസ്‌ക്രീനിൽ നിന്നും നിർഗമിക്കുക</translation>
 <translation id="6112294629795967147">വലുപ്പം മാറ്റാൻ സ്പർശിക്കുക</translation>
 <translation id="2453860139492968684">പൂര്‍ത്തിയാക്കുക</translation>
-<translation id="1853692000353488670">പുതിയ ആൾമാറാട്ട ടാബ്</translation>
 <translation id="6336451774241870485">പുതിയ സ്വകാര്യ ടാബ്</translation>
-<translation id="5530766185686772672">ആൾമാറാട്ട ടാബുകൾ അടയ്‌ക്കുക</translation>
 <translation id="6610147964972079463">സ്വകാര്യ ടാബുകൾ അടയ്ക്കുക</translation>
 <translation id="8076492880354921740">ടാബുകള്‍‌</translation>
-<translation id="1049743911850919806">ആള്‍‌മാറാട്ടം</translation>
+<translation id="5186185447130319458">ആള്‍‌മാറാട്ടം</translation>
 </translationbundle>

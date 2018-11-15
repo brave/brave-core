@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Apri cartella dei download</translation>
 <translation id="2902312830803030883">Altre azioni</translation>
 <translation id="3612673635130633812">Scaricato da &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Scaricato in modalità in incognito</translation>
+<translation id="6395403722585816044">Scaricato in modalità in incognito</translation>
 <translation id="8028803902702117856">Download in corso di <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Download in corso, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Download in corso, <ph name="STATUS"/></translation>
@@ -608,7 +608,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5939518447894949180">Ripristina</translation>
 <translation id="5546865291508181392">Trova</translation>
 <translation id="833986336429795709">Scegli un'app per aprire il link</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (In incognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (In incognito)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (aggiornamento disponibile)</translation>
 <translation id="8525306231823319788">Schermo intero</translation>
@@ -636,10 +636,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="3429275422858276529">Aggiungi questa pagina ai preferiti per trovarla facilmente in seguito</translation>
 <translation id="3603533104205588786">Puoi fare clic sulla stella per aggiungere una pagina ai preferiti</translation>
 <translation id="6613452264606394692">Aggiungi questa pagina ai preferiti per ritrovarla rapidamente</translation>
-<translation id="8286963743045814739">Puoi navigare in privato usando una finestra di navigazione in incognito</translation>
-<translation id="1211364473545090084">Apri una finestra di navigazione in incognito per esplorare il Web senza salvare la tua cronologia di navigazione</translation>
-<translation id="6080515710685820702">Condividi il computer con altre persone? Prova ad aprire una finestra di navigazione in incognito.</translation>
-<translation id="7059893117020417984">Per navigare in privato, fai clic sul menu con un'icona con tre puntini per aprire una finestra di navigazione in incognito</translation>
+<translation id="4369414322596874629">Puoi navigare in privato usando una finestra di navigazione in incognito</translation>
+<translation id="3772947852642271642">Apri una finestra di navigazione in incognito per esplorare il Web senza salvare la tua cronologia di navigazione</translation>
+<translation id="3871738366246972820">Condividi il computer con altre persone? Prova ad aprire una finestra di navigazione in incognito.</translation>
+<translation id="5808622652939943719">Per navigare in privato, fai clic sul menu con un'icona con tre puntini per aprire una finestra di navigazione in incognito</translation>
 <translation id="8803953437405899238">Apri una nuova scheda con un clic</translation>
 <translation id="3071624960923923138">Puoi fare clic qui per aprire una nuova scheda</translation>
 <translation id="4908811072292128752">Apri una nuova scheda per visitare due siti contemporaneamente</translation>
@@ -1131,13 +1131,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2367972762794486313">Mostra app</translation>
 <translation id="6466988389784393586">&amp;Apri tutti i Preferiti</translation>
 <translation id="6804671422566312077">Apri tutti i Preferiti in &amp;un'altra finestra</translation>
-<translation id="3011362742078013760">Apri tutti i Preferiti nella finestra di navigazione in &amp;incognito</translation>
+<translation id="2692771564633877898">Apri tutti i Preferiti nella finestra di navigazione in &amp;incognito</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Apri tutti}=1{&amp;Apri preferito}other{&amp;Apri tutti (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Apri tutti in &amp;un'altra finestra}=1{Apri in &amp;un'altra finestra}other{Apri tutti (#) in &amp;un'altra finestra}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Apri tutti in finestra di navigazione in &amp;incognito}=1{Apri in finestra di navigazione in &amp;incognito}other{Apri tutti (#) in finestra di navigazione in &amp;incognito}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Apri tutti in finestra di navigazione in &amp;incognito}=1{Apri in finestra di navigazione in &amp;incognito}other{Apri tutti (#) in finestra di navigazione in &amp;incognito}}</translation>
 <translation id="9024127637873500333">&amp;Apri in un'altra scheda</translation>
 <translation id="665061930738760572">Apri in &amp;un'altra finestra</translation>
-<translation id="37613671848467444">Apri in finestra di navigazione in &amp;incognito</translation>
+<translation id="1985165269306590797">Apri in finestra di navigazione in &amp;incognito</translation>
 <translation id="6702639462873609204">&amp;Modifica...</translation>
 <translation id="3088325635286126843">&amp;Rinomina...</translation>
 <translation id="5329858601952122676">&amp;Elimina</translation>
@@ -1188,10 +1188,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8457451314607652708">Importa Preferiti</translation>
 <translation id="5101042277149003567">Apri tutti i Preferiti</translation>
 <translation id="7007648447224463482">Apri tutto in una nuova finestra</translation>
-<translation id="4508051413094283164">Apri tutto nella finestra di navigazione in incognito</translation>
+<translation id="642436385689435488">Apri tutto nella finestra di navigazione in incognito</translation>
 <translation id="4195643157523330669">Apri in un'altra scheda</translation>
 <translation id="2979639724566107830">Apri in un'altra finestra</translation>
-<translation id="1134009406053225289">Apri nella finestra di navigazione in incognito</translation>
+<translation id="5463021359602611602">Apri nella finestra di navigazione in incognito</translation>
 <translation id="1173894706177603556">Rinomina</translation>
 <translation id="5170568018924773124">Mostra nella cartella</translation>
 <translation id="6825184156888454064">Ordina per nome</translation>
@@ -1279,7 +1279,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4159681666905192102">Si tratta di un account di minori gestito da <ph name="CUSTODIAN_EMAIL"/> e <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Utente supervisionato</translation>
 <translation id="5720705177508910913">Utente corrente</translation>
-<translation id="7081952801286122383">Stai navigando in incognito</translation>
+<translation id="5070556616376997776">Stai navigando in incognito</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: la sincronizzazione non funziona</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: sincronizzazione in pausa</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (supervisionato)</translation>
@@ -2540,9 +2540,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6782111308708962316">Impedisci ai siti web di terze parti di salvare e leggere i dati dei cookie</translation>
 <translation id="3378503599595235699">Memorizza dati locali solo fino a chiusura del browser</translation>
 <translation id="1274977772557788323">Impostazioni di archiviazione Adobe Flash Player</translation>
-<translation id="1698122934742150150">Solo per la sessione di navigazione in incognito corrente</translation>
-<translation id="5838456317242088717">Sessione di navigazione in incognito corrente</translation>
-<translation id="2318923050469484167">Sessione di navigazione in incognito corrente (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Solo per la sessione di navigazione in incognito corrente</translation>
+<translation id="3479035826743782247">Sessione di navigazione in incognito corrente</translation>
+<translation id="4750220700975225">Sessione di navigazione in incognito corrente (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Non è stato aumentato o diminuito lo zoom di alcun sito</translation>
 <translation id="3566721612727112615">Nessun sito aggiunto</translation>
 <translation id="8098574385249290065">Consenti a Brave di scegliere quando i siti possono riprodurre audio (opzione consigliata)</translation>
@@ -2842,7 +2842,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="329838636886466101">Ripara</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Non attiva)</translation>
-<translation id="1603914832182249871">(In incognito)</translation>
+<translation id="3860292630623580294">(In incognito)</translation>
 <translation id="6655190889273724601">Modalità sviluppatore</translation>
 <translation id="2868746137289129307">Questa estensione è obsoleta e disattivata in base ai criteri aziendali. Potrebbe essere attivata automaticamente quando sarà disponibile una nuova versione.</translation>
 <translation id="6841186874966388268">Errori</translation>
@@ -2863,7 +2863,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1805822111539868586">Esamina visualizzazioni</translation>
 <translation id="181577467034453336">Altre <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">Nessuna visualizzazione attiva</translation>
-<translation id="5488468185303821006">Consenti modalità in incognito</translation>
+<translation id="4854477725773269949">Consenti modalità in incognito</translation>
 <translation id="6124650939968185064">Le seguenti estensioni dipendono da questa estensione:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Correlata a <ph name="NAME_PH"/></translation>
@@ -2957,10 +2957,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6041155700700864984">Chiudi schermo intero</translation>
 <translation id="6112294629795967147">Tocca per ridimensionare</translation>
 <translation id="2453860139492968684">Termina</translation>
-<translation id="1853692000353488670">Nuova scheda in incognito</translation>
 <translation id="6336451774241870485">Nuova scheda privata</translation>
-<translation id="5530766185686772672">Chiudi schede in incognito</translation>
 <translation id="6610147964972079463">Chiudi schede private</translation>
 <translation id="8076492880354921740">Schede</translation>
-<translation id="1049743911850919806">In incognito</translation>
+<translation id="5186185447130319458">In incognito</translation>
 </translationbundle>

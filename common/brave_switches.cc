@@ -26,6 +26,9 @@ const char kDisablePDFJSExtension[] = "disable-pdfjs-extension";
 // Allows disabling the Tor client updater extension.
 const char kDisableTorClientUpdaterExtension[] = "disable-tor-client-updater-extension";
 
+// Allows disabling the WebTorrent extension.
+const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
+
 // Enables Brave Sync. For now it is targeted to staging for QA tests, so
 // is disabled by default for a while.
 const char kEnableBraveSync[] = "enable-brave-sync";

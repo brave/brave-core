@@ -1,0 +1,65 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "braveTheme",
+    "description": "Use the <code>chrome.braveTheme</code> API to get/set brave theme",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/brave_theme_api.h"
+    },
+    "events": [
+      {
+        "name": "onBraveThemeTypeChanged",
+        "type": "function",
+        "description": "Fired when brave theme is changed",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string",
+            "description": "new active theme type(ex, Dark or Light)"
+          }
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "setBraveThemeType",
+        "type": "function",
+        "description": "Set brave theme",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "optional": true,
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "getBraveThemeType",
+        "type": "function",
+        "description": "Get brave theme",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when current theme type is fetched",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "string",
+                "description": "current theme type(ex, Dark or Light)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

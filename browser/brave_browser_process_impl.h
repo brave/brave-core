@@ -7,7 +7,7 @@
 
 #include "chrome/browser/browser_process_impl.h"
 
-class ProfileCreationMonitor;
+class SearchEngineProviderService;
 
 namespace brave {
 class BraveReferralsService;
@@ -54,7 +54,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
   std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
-  std::unique_ptr<ProfileCreationMonitor> profile_creation_monitor_;
+  std::unique_ptr<SearchEngineProviderService> search_engine_provider_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

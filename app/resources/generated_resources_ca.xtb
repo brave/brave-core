@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Obre la carpeta de baixades</translation>
 <translation id="2902312830803030883">Més accions</translation>
 <translation id="3612673635130633812">Baixat per &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">S'ha baixat en mode d'incògnit</translation>
+<translation id="6395403722585816044">S'ha baixat en mode d'incògnit</translation>
 <translation id="8028803902702117856">S'està baixant <ph name="FILE_NAME"/> (<ph name="SIZE"/>)</translation>
 <translation id="4644818355646995778">S'està baixant, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">S'està baixant, <ph name="STATUS"/></translation>
@@ -609,7 +609,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5939518447894949180">Restableix</translation>
 <translation id="5546865291508181392">Cerca</translation>
 <translation id="833986336429795709">Tria una aplicació per obrir aquest enllaç</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Incògnit)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incògnit)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/>: <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (l'actualització està disponible)</translation>
 <translation id="8525306231823319788">Pantalla completa</translation>
@@ -637,10 +637,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3429275422858276529">Afegeix aquesta pàgina a les adreces d'interès per trobar-la fàcilment més endavant</translation>
 <translation id="3603533104205588786">Pots fer clic a l'estrella per afegir la pàgina a les adreces d'interès</translation>
 <translation id="6613452264606394692">Afegeix aquesta pàgina a les adreces d'interès per poder-hi tornar ràpidament</translation>
-<translation id="8286963743045814739">Pots navegar de manera privada utilitzant una finestra d'incògnit</translation>
-<translation id="1211364473545090084">Utilitza el web sense desar l'historial de navegació amb una finestra d'incògnit</translation>
-<translation id="6080515710685820702">Utilitzes un ordinador compartit? Prova d'obrir una finestra d'incògnit.</translation>
-<translation id="7059893117020417984">Per navegar de manera privada, fes clic a la icona dels tres punts per obrir una finestra d'incògnit</translation>
+<translation id="4369414322596874629">Pots navegar de manera privada utilitzant una finestra d'incògnit</translation>
+<translation id="3772947852642271642">Utilitza el web sense desar l'historial de navegació amb una finestra d'incògnit</translation>
+<translation id="3871738366246972820">Utilitzes un ordinador compartit? Prova d'obrir una finestra d'incògnit.</translation>
+<translation id="5808622652939943719">Per navegar de manera privada, fes clic a la icona dels tres punts per obrir una finestra d'incògnit</translation>
 <translation id="8803953437405899238">Obre una pestanya nova amb un sol clic</translation>
 <translation id="3071624960923923138">Pots fer clic aquí per obrir una pestanya nova</translation>
 <translation id="4908811072292128752">Obre una pestanya nova per navegar per dos llocs web a la vegada</translation>
@@ -1132,13 +1132,13 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2367972762794486313">Mostra les aplicacions</translation>
 <translation id="6466988389784393586">&amp;Obre totes les adreces d'interès</translation>
 <translation id="6804671422566312077">Obre totes les adreces d'interès en una &amp;finestra nova</translation>
-<translation id="3011362742078013760">Obre totes les adreces d'interès en una &amp;finestra d'incògnit</translation>
+<translation id="2692771564633877898">Obre totes les adreces d'interès en una &amp;finestra d'incògnit</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Obre-les totes}=1{&amp;Obre l'adreça d'interès}other{&amp;Obre-les totes (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Obre-les totes en una &amp;finestra nova}=1{Obre en una &amp;finestra nova}other{Obre-les totes (#) en una &amp;finestra nova}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Obre-les totes en una &amp;finestra d'incògnit}=1{Obre en una &amp;finestra d'incògnit}other{Obre-les totes (#) en una &amp;finestra d'incògnit}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Obre-les totes en una &amp;finestra d'incògnit}=1{Obre en una &amp;finestra d'incògnit}other{Obre-les totes (#) en una &amp;finestra d'incògnit}}</translation>
 <translation id="9024127637873500333">&amp;Obre en una pestanya nova</translation>
 <translation id="665061930738760572">Obre en una &amp;finestra nova</translation>
-<translation id="37613671848467444">Obre en una &amp;finestra d'incògnit</translation>
+<translation id="1985165269306590797">Obre en una &amp;finestra d'incògnit</translation>
 <translation id="6702639462873609204">&amp;Edita...</translation>
 <translation id="3088325635286126843">&amp;Canvia el nom...</translation>
 <translation id="5329858601952122676">&amp;Suprimeix</translation>
@@ -1189,10 +1189,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8457451314607652708">Importa les adreces d'interès</translation>
 <translation id="5101042277149003567">Obre totes les adreces d'interès</translation>
 <translation id="7007648447224463482">Obre-ho tot en una finestra nova</translation>
-<translation id="4508051413094283164">Obre-ho tot en una finestra d'incògnit</translation>
+<translation id="642436385689435488">Obre-ho tot en una finestra d'incògnit</translation>
 <translation id="4195643157523330669">Obre en una pestanya nova</translation>
 <translation id="2979639724566107830">Obre-ho en una finestra nova</translation>
-<translation id="1134009406053225289">Obre-ho en una finestra d'incògnit</translation>
+<translation id="5463021359602611602">Obre-ho en una finestra d'incògnit</translation>
 <translation id="1173894706177603556">Canvia el nom</translation>
 <translation id="5170568018924773124">Mostra a la carpeta</translation>
 <translation id="6825184156888454064">Ordena per nom</translation>
@@ -1280,7 +1280,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4159681666905192102">Aquest és un compte infantil gestionat per <ph name="CUSTODIAN_EMAIL"/> i per <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Usuari supervisat</translation>
 <translation id="5720705177508910913">Usuari actual</translation>
-<translation id="7081952801286122383">Estàs en mode d'incògnit</translation>
+<translation id="5070556616376997776">Estàs en mode d'incògnit</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: la sincronització no funciona</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: la sincronització s'ha posat en pausa</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (supervisat)</translation>
@@ -1485,6 +1485,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6556866813142980365">Refés</translation>
 <translation id="3144126448740580210">FET</translation>
 <translation id="2453576648990281505">El fitxer ja existeix</translation>
+<translation id="2631006050119455616">Desat</translation>
 <translation id="5158593464696388225">No s'ha pogut desar la imatge.</translation>
 <translation id="2787047795752739979">Sobreescriu l'original</translation>
 <translation id="8775404590947523323">Els canvis es desen automàticament.<ph name="BREAKS"/>Per conservar una còpia de la imatge original, desmarqueu "Sobreescriu l'original"</translation>
@@ -2080,6 +2081,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4972129977812092092">Edita la impressora</translation>
 <translation id="5696679855467848181">Fitxer PPD en ús: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">Ubicació</translation>
 <translation id="7754704193130578113">Pregunta on es desarà cada fitxer abans de baixar-lo</translation>
 <translation id="5713072761819014678">Desconnecta el compte de Brave Software Drive</translation>
 <translation id="486635084936119914">Obre alguns tipus de fitxer automàticament després de baixar-los</translation>
@@ -2396,6 +2398,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8356197132883132838"><ph name="TITLE"/> (<ph name="COUNT"/>)</translation>
 <translation id="3407837288045706722">Per trobar més opcions relacionades amb la privadesa, la seguretat i la recollida de dades, consulta <ph name="BEGIN_LINK"/>Sincronització i personalització<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Per trobar més opcions relacionades amb la privadesa, la seguretat i la recollida de dades, consulta <ph name="BEGIN_LINK"/>Sincronització i serveis de Brave Software<ph name="END_LINK"/></translation>
+<translation id="6438234780621650381">Restaura la configuració</translation>
 <translation id="5293170712604732402">Restableix la configuració als valors predeterminats originals</translation>
 <translation id="892706138619340876">S'han restablert algunes opcions de configuració</translation>
 <translation id="2334029754052191847">Brave ha detectat que un altre programa ha malmès alguns dels paràmetres de configuració i els ha restablert als valors predeterminats originals.</translation>
@@ -2542,9 +2545,9 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6782111308708962316">Impedeix que els llocs web de tercers desin i llegeixin les dades de les galetes</translation>
 <translation id="3378503599595235699">Desa les dades locals només fins que surtis del navegador</translation>
 <translation id="1274977772557788323">Configuració d'emmagatzematge d'Adobe Flash Player</translation>
-<translation id="1698122934742150150">Només la sessió d'incògnit actual</translation>
-<translation id="5838456317242088717">Sessió d'incògnit actual</translation>
-<translation id="2318923050469484167">Sessió d'incògnit actual (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Només la sessió d'incògnit actual</translation>
+<translation id="3479035826743782247">Sessió d'incògnit actual</translation>
+<translation id="4750220700975225">Sessió d'incògnit actual (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">No s'ha ampliat ni reduït cap lloc</translation>
 <translation id="3566721612727112615">No s'ha afegit cap lloc</translation>
 <translation id="8098574385249290065">Deixa que Brave triï quan poden reproduir so els llocs web (opció recomanada)</translation>
@@ -2844,7 +2847,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="329838636886466101">Repara</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Inactiva)</translation>
-<translation id="1603914832182249871">(Incògnit)</translation>
+<translation id="3860292630623580294">(Incògnit)</translation>
 <translation id="6655190889273724601">Mode de desenvolupador</translation>
 <translation id="2868746137289129307">Aquesta extensió no està actualitzada i està desactivada per a la política d'empresa. És possible que s'activi de manera automàtica quan estigui disponible una versió nova.</translation>
 <translation id="6841186874966388268">Errors</translation>
@@ -2865,7 +2868,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1805822111539868586">Inspecciona les visualitzacions</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> més...</translation>
 <translation id="2450849356604136918">No hi ha cap visualització activa</translation>
-<translation id="5488468185303821006">Permet en mode d'incògnit</translation>
+<translation id="4854477725773269949">Permet en mode d'incògnit</translation>
 <translation id="6124650939968185064">D'aquesta extensió en depenen les extensions següents:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (identificador: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Relacionada amb <ph name="NAME_PH"/></translation>
@@ -2959,10 +2962,8 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6041155700700864984">Surt de la pantalla completa</translation>
 <translation id="6112294629795967147">Toca la finestra per canviar-ne la mida</translation>
 <translation id="2453860139492968684">Finalitza</translation>
-<translation id="1853692000353488670">Pestanya d'incògnit nova</translation>
 <translation id="6336451774241870485">Pestanya privada nova</translation>
-<translation id="5530766185686772672">Tanca pestanyes d'incògnit</translation>
 <translation id="6610147964972079463">Tanca les pestanyes privades</translation>
 <translation id="8076492880354921740">Pestanyes</translation>
-<translation id="1049743911850919806">Incògnit</translation>
+<translation id="5186185447130319458">Incògnit</translation>
 </translationbundle>

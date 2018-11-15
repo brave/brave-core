@@ -1,192 +1,200 @@
 {
   "braveRewards": {
     "message": "Sustav nagrada u pregledniku Brave",
-    "description": ""
+    "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
     "message": "Počnite zarađivati odmah!",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
     "message": "Pridružite se sustavu nagrada",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
     "message": "Budite plaćeni za gledanje oglasa i zarađenim tokenima platite svoje omiljene autore sadržaja.",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
     "message": "Sada možete zarađivati tokene za gledanje oglasa kojima se poštuje privatnost.",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
     "message": "Pogledajte što se poboljšalo",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
     "message": "Saznajte više",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
     "message": "Obavili smo veliku nadogradnju sustava plaćanja u pregledniku Brave.",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
     "message": "Pripremite se za doživljaj novog interneta.",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
     "message": "Vaš novčanik",
-    "description": ""
+    "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
     "message": "Dodjele",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "on": {
     "message": "uključeno",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
     "message": "Provjereni izdavač u pregledniku Brave",
-    "description": ""
+    "description": "Tells user that this particular publisher is verified publisher"
   },
   "rewardsContributeAttentionScore": {
     "message": "Pažnja",
-    "description": ""
+    "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
     "message": "Tip this site monthly",
-    "description": ""
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
     "message": "Uključi u sustav automatskih doprinosa",
-    "description": ""
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
     "message": "Pošalji napojnicu...",
-    "description": ""
+    "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
     "message": "Omogući napojnice",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
     "message": "za",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
     "message": "Sažetak o nagradama",
-    "description": ""
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
     "message": "travanj",
-    "description": ""
+    "description": "Month"
   },
   "monthAug": {
     "message": "kolovoz",
-    "description": ""
+    "description": "Month"
   },
   "monthDec": {
     "message": "prosinac",
-    "description": ""
+    "description": "Month"
   },
   "monthFeb": {
     "message": "veljača",
-    "description": ""
+    "description": "Month"
   },
   "monthJan": {
     "message": "siječanj",
-    "description": ""
+    "description": "Month"
   },
   "monthJul": {
     "message": "srpanj",
-    "description": ""
+    "description": "Month"
   },
   "monthJun": {
     "message": "lipanj",
-    "description": ""
+    "description": "Month"
   },
   "monthMar": {
     "message": "ožujak",
-    "description": ""
+    "description": "Month"
   },
   "monthMay": {
     "message": "svibanj",
-    "description": ""
+    "description": "Month"
   },
   "monthNov": {
     "message": "studeni",
-    "description": ""
+    "description": "Month"
   },
   "monthOct": {
     "message": "listopad",
-    "description": ""
+    "description": "Month"
   },
   "monthSep": {
     "message": "rujan",
-    "description": ""
+    "description": "Month"
   },
   "tokenGrant": {
     "message": "Dodjela tokena",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Zarada od oglasa",
-    "description": ""
+    "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
     "message": "Automatski doprinosi",
-    "description": ""
+    "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
     "message": "Jednokratne napojnice",
-    "description": ""
-  },
-  "total": {
-    "message": "Ukupno",
-    "description": ""
+    "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "istječe",
-    "description": ""
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
     "message": "Mjesečne napojnice",
-    "description": ""
+    "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
     "message": "isključeno",
-    "description": ""
+    "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
     "message": "u redu",
-    "description": ""
+    "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
     "message": "Oglasi u pregledniku Brave",
-    "description": ""
+    "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
     "message": "Automatski doprinos",
-    "description": ""
+    "description": "Notification title when we display info about auto contribution"
   },
-  "contributeNotification": {
-    "message": "Dali ste doprinos od $amount$BAT",
-    "description": "",
+  "contributeNotificationSuccess": {
+    "message": "You've contributed $amount$ BAT",
+    "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
-        "example": "10"
+        "example": "10.0"
       }
     }
   },
   "grantNotification": {
     "message": "You have a grant waiting for you.",
-    "description": ""
+    "description": "Description for new grant notification"
   },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
-    "description": ""
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "There was a problem processing your contribution.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "There was a problem processing your tip, please try again.",
+    "description": "We show this string in notification when tip fails"
   }
 }

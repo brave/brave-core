@@ -5,8 +5,15 @@
 #ifndef BRAVE_BROWSER_THEMES_BRAVE_THEME_SERVICE_H_
 #define BRAVE_BROWSER_THEMES_BRAVE_THEME_SERVICE_H_
 
+#include <memory>
+#include <string>
+
 #include "chrome/browser/themes/theme_service.h"
 #include "components/prefs/pref_member.h"
+
+namespace extensions {
+class BraveThemeEventRouter;
+}
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -22,6 +29,7 @@ class BraveThemeService : public ThemeService {
  public:
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
   static BraveThemeType GetUserPreferredBraveThemeType(Profile* profile);
+  static std::string GetStringFromBraveThemeType(BraveThemeType type);
   static BraveThemeType GetActiveBraveThemeType(Profile* profile);
 
   BraveThemeService();
@@ -35,9 +43,16 @@ class BraveThemeService : public ThemeService {
   SkColor GetDefaultColor(int id, bool incognito) const override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveThemeAPIBrowserTest, BraveThemeEventRouterTest);
+  // Own |mock_router|.
+  void SetBraveThemeEventRouterForTesting(
+      extensions::BraveThemeEventRouter* mock_router);
+
   void OnPreferenceChanged(const std::string& pref_name);
 
   IntegerPrefMember brave_theme_type_pref_;
+
+  std::unique_ptr<extensions::BraveThemeEventRouter> brave_theme_event_router_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveThemeService);
 };

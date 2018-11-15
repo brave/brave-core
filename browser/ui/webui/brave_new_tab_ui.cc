@@ -7,13 +7,10 @@
 #include "brave/browser/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/template_url_data.h"
-#include "components/search_engines/template_url_prepopulate_data.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -44,12 +41,6 @@ class NewTabDOMHandler : public content::WebUIMessageHandler {
   DISALLOW_COPY_AND_ASSIGN(NewTabDOMHandler);
 };
 
-bool IsRegionForQwant(Profile* profile) {
-  return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-      profile->GetPrefs())->prepopulate_id ==
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
-}
-
 }  // namespace
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
@@ -77,6 +68,7 @@ BraveNewTabUI::~BraveNewTabUI() {
 }
 
 void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
   if (render_view_host) {
@@ -102,19 +94,17 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
     render_view_host->SetWebUIProperty(
         "isTor", profile->IsTorProfile() ? "true" : "false");
     render_view_host->SetWebUIProperty(
-        "isQwant", IsRegionForQwant(profile) ? "true" : "false");
+        "isQwant", brave::IsRegionForQwant(profile) ? "true" : "false");
   }
 }
 
-void BraveNewTabUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
-  if (IsSafeToSetWebUIProperties()) {
-    CustomizeNewTabWebUIProperties(render_frame_host->GetRenderViewHost());
-  }
-}
-
-void BraveNewTabUI::OnPreferenceChanged() {
+void BraveNewTabUI::UpdateWebUIProperties() {
   if (IsSafeToSetWebUIProperties()) {
     CustomizeNewTabWebUIProperties(GetRenderViewHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
   }
+}
+
+void BraveNewTabUI::OnPreferenceChanged() {
+  UpdateWebUIProperties();
 }

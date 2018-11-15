@@ -163,7 +163,7 @@
 <translation id="750509436279396091">Fungua folda ya vipakuliwa</translation>
 <translation id="2902312830803030883">Vitendo zaidi</translation>
 <translation id="3612673635130633812">Imepakuliwa na &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="7909969815743704077">Ilipakuliwa katika Hali Fiche</translation>
+<translation id="6395403722585816044">Ilipakuliwa katika Hali Fiche</translation>
 <translation id="8028803902702117856">Inapakua <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="4644818355646995778">Inapakua, <ph name="PERCENT_REMAINING"/></translation>
 <translation id="313963229645891001">Inapakua, <ph name="STATUS"/></translation>
@@ -607,7 +607,7 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="5939518447894949180">Weka upya</translation>
 <translation id="5546865291508181392">Pata</translation>
 <translation id="833986336429795709">Ili ufungue kiungo hiki, chagua programu</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Hali fiche)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Hali fiche)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Usasishaji inapatikana)</translation>
 <translation id="8525306231823319788">Skrini nzima</translation>
@@ -635,10 +635,10 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="3429275422858276529">Alamisha ukurasa huu ili uupate kwa urahisi baadaye</translation>
 <translation id="3603533104205588786">Unaweza kubofya nyota ili ualamishe ukurasa</translation>
 <translation id="6613452264606394692">Rejea hapa kwa haraka kwa kualamisha ukurasa huu</translation>
-<translation id="8286963743045814739">Unaweza kuvinjari kwa faragha ukitumia dirisha fiche</translation>
-<translation id="1211364473545090084">Tumia wavuti bila kuhifadhi historia yako ya kuvinjari kwa kutumia dirisha fiche</translation>
-<translation id="6080515710685820702">Je, unatumia kompyuta na wengine? Jaribu kufungua dirisha fiche.</translation>
-<translation id="7059893117020417984">Ili kuvinjari kwa faragha, bofya menyu ya aikoni ya vitone ili ufungue dirisha fiche</translation>
+<translation id="4369414322596874629">Unaweza kuvinjari kwa faragha ukitumia dirisha fiche</translation>
+<translation id="3772947852642271642">Tumia wavuti bila kuhifadhi historia yako ya kuvinjari kwa kutumia dirisha fiche</translation>
+<translation id="3871738366246972820">Je, unatumia kompyuta na wengine? Jaribu kufungua dirisha fiche.</translation>
+<translation id="5808622652939943719">Ili kuvinjari kwa faragha, bofya menyu ya aikoni ya vitone ili ufungue dirisha fiche</translation>
 <translation id="8803953437405899238">Fungua kichupo kipya kwa mbofyo mmoja</translation>
 <translation id="3071624960923923138">Unaweza kubofya hapa ili ufungue kichupo kipya</translation>
 <translation id="4908811072292128752">Fungua kichupo kipya ili uvinjari tovuti mbili kwa wakati mmoja</translation>
@@ -1130,13 +1130,13 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="2367972762794486313">Onyesha programu</translation>
 <translation id="6466988389784393586">&amp;Fungua Alamisho Zote</translation>
 <translation id="6804671422566312077">Fungua Alamisho Zote katika &amp;Dirisha Jipya</translation>
-<translation id="3011362742078013760">Fungua Alamisho Zote katika Dirisha Fiche</translation>
+<translation id="2692771564633877898">Fungua Alamisho Zote katika Dirisha Fiche</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Fungua Zote}=1{&amp;Fungua Alamisho}other{&amp;Fungua Zote (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Fungua Zote katika &amp;Dirisha Jipya}=1{Fungua katika &amp;Dirisha Jipya}other{Fungua Zote (#) katika Dirisha Jipya}}</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Fungua Zote katika &amp;Dirisha Fiche}=1{Fungua katika &amp;Dirisha Fiche}other{Fungua Zote (#) katika &amp;Dirisha Fiche}}</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Fungua Zote katika &amp;Dirisha Fiche}=1{Fungua katika &amp;Dirisha Fiche}other{Fungua Zote (#) katika &amp;Dirisha Fiche}}</translation>
 <translation id="9024127637873500333">&amp;Fungua katika Kichupo Kipya</translation>
 <translation id="665061930738760572">Fungua katika &amp;Dirisha Jipya</translation>
-<translation id="37613671848467444">Fungua katika &amp;Dirisha Chini kwa chini</translation>
+<translation id="1985165269306590797">Fungua katika &amp;Dirisha Chini kwa chini</translation>
 <translation id="6702639462873609204">&amp;Hariri...</translation>
 <translation id="3088325635286126843">&amp;Badilisha jina...</translation>
 <translation id="5329858601952122676">&amp;Futa</translation>
@@ -1187,10 +1187,10 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="8457451314607652708">Leta alamisho</translation>
 <translation id="5101042277149003567">Fungua alamisho zote</translation>
 <translation id="7007648447224463482">Fungua url zote katika dirisha jipya</translation>
-<translation id="4508051413094283164">Fungua url zote katika dirisha fiche</translation>
+<translation id="642436385689435488">Fungua url zote katika dirisha fiche</translation>
 <translation id="4195643157523330669">Fungua katika kichupo kipya</translation>
 <translation id="2979639724566107830">Fungua katika dirisha jipya</translation>
-<translation id="1134009406053225289">Fungua katika dirisha fiche</translation>
+<translation id="5463021359602611602">Fungua katika dirisha fiche</translation>
 <translation id="1173894706177603556">Ipe jina jipya</translation>
 <translation id="5170568018924773124">Onyesha katika folda</translation>
 <translation id="6825184156888454064">Panga kulingana na jina</translation>
@@ -1279,7 +1279,7 @@ Huenda watu wengine wenye miunganisho ya polepole hawataona maudhui yako.</trans
 <translation id="4159681666905192102">Hii ni akaunti ya watoto inayodhibitiwa na <ph name="CUSTODIAN_EMAIL"/> na <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Mtumiaji anayesimamiwa</translation>
 <translation id="5720705177508910913">Mtumiaji wa sasa</translation>
-<translation id="7081952801286122383">Unatumia hali fiche</translation>
+<translation id="5070556616376997776">Unatumia hali fiche</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Kipengele cha kusawazisha hakifanyi kazi</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: Umesitisha usawazishaji</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (Mtumiaji anayesimamiwa)</translation>
@@ -2541,9 +2541,9 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6782111308708962316">Zuia tovuti nyingine kuhifadhi na kusoma data ya vidakuzi</translation>
 <translation id="3378503599595235699">Weka data ya karibu hadi unapofunga kivinjari chako tu</translation>
 <translation id="1274977772557788323">Mipangilio ya Hifadhi ya Adobe Flash Player</translation>
-<translation id="1698122934742150150">Kipindi cha sasa cha hali fiche pekee</translation>
-<translation id="5838456317242088717">Kipindi cha sasa cha hali fiche</translation>
-<translation id="2318923050469484167">Kipindi cha sasa cha hali fiche (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Kipindi cha sasa cha hali fiche pekee</translation>
+<translation id="3479035826743782247">Kipindi cha sasa cha hali fiche</translation>
+<translation id="4750220700975225">Kipindi cha sasa cha hali fiche (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Hakuna tovuti zilizovutwa karibu wala kusogezwa mbali</translation>
 <translation id="3566721612727112615">Hakuna tovuti zilizoongezwa</translation>
 <translation id="8098574385249290065">Ruhusu Brave ichague wakati ambapo tovuti zitacheza sauti (inapendekezwa)</translation>
@@ -2843,7 +2843,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="329838636886466101">Kukarabati</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Sio amilifu)</translation>
-<translation id="1603914832182249871">(Hali fiche)</translation>
+<translation id="3860292630623580294">(Hali fiche)</translation>
 <translation id="6655190889273724601">Hali ya Wasanidi Programu</translation>
 <translation id="2868746137289129307">Kiendelezi hiki kimekwisha muda na kuzimwa na sera ya biashara. Kinaweza kuwashwa kiotomatiki toleo jipya zaidi likipatikana.</translation>
 <translation id="6841186874966388268">Hitilafu</translation>
@@ -2864,7 +2864,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="1805822111539868586">Kagua maoni</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> zaidi...</translation>
 <translation id="2450849356604136918">Haijatazamwa</translation>
-<translation id="5488468185303821006">Ruhusu katika hali fiche</translation>
+<translation id="4854477725773269949">Ruhusu katika hali fiche</translation>
 <translation id="6124650939968185064">Viendelezi vinavyofuata vinategemea kiendelezi hiki:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (Kitambulisho: <ph name="ID_PH"/>)</translation>
 <translation id="6508248480704296122">Inahusiana na <ph name="NAME_PH"/></translation>
@@ -2958,10 +2958,8 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6041155700700864984">Ondoka kwenye Skrini Nzima</translation>
 <translation id="6112294629795967147">Gusa ili ubadilishe ukubwa</translation>
 <translation id="2453860139492968684">Maliza</translation>
-<translation id="1853692000353488670">Kichupo fiche kipya</translation>
 <translation id="6336451774241870485">Kichupo kipya cha faragha</translation>
-<translation id="5530766185686772672">Funga vichupo fiche</translation>
 <translation id="6610147964972079463">Funga vichupo vya faragha</translation>
 <translation id="8076492880354921740">Vichupo</translation>
-<translation id="1049743911850919806">Kichupo fiche</translation>
+<translation id="5186185447130319458">Kichupo fiche</translation>
 </translationbundle>

@@ -1,192 +1,200 @@
 {
   "braveRewards": {
     "message": "የብሬቭ ሽልማት",
-    "description": ""
+    "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
     "message": "አሁን ማግኘቶን ይጀምሩ!",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
     "message": "ሽልማት ይቀላቀሉ",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
     "message": "ማስታወቅያ በማየቶ ይከፈሎት እንዲሁም የሚፈልግቱን የይዘት ፈጣሪዎች ለመደገፍ ያስተላልፉት፡፡",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
     "message": "ግላዊነት የሚያከብሩ ማስታወቅያዎችን በማየቶ ቶክን ማግኘት ይችላሉ፡፡",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
     "message": "የተሻሻለውን ይመልከቱ",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
     "message": "በተጨማሪ ይወቁ",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
     "message": "የብሬቭ ክፍያዎች ትልቅ ማዘመኛ እንሰጣለን፡፡",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
     "message": "ቀጣዩን ኢንተርኔት ለማየት ይዘጋጁ፡፡",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
     "message": "የእርስዎ ዋሌት",
-    "description": ""
+    "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
     "message": "ስጦታ",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "on": {
     "message": "በርቷል",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
     "message": "ብሬቭ አሳታሚውን አረጋግጧል",
-    "description": ""
+    "description": "Tells user that this particular publisher is verified publisher"
   },
   "rewardsContributeAttentionScore": {
     "message": "ያስተውሉ",
-    "description": ""
+    "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
     "message": "ይህን ገፅ በወር ምክር ይስጡ",
-    "description": ""
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
     "message": "አውቶ-አስተዋጽኦ ያካቱ",
-    "description": ""
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
     "message": "ምክሮች ይላኩ",
-    "description": ""
+    "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
     "message": "ምክሮችን ያብሩ",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
     "message": "ለ",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
     "message": "የሽልማት ማጠቃለያ",
-    "description": ""
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
     "message": "የካቲት",
-    "description": ""
+    "description": "Month"
   },
   "monthAug": {
     "message": "ነሐሴ",
-    "description": ""
+    "description": "Month"
   },
   "monthDec": {
     "message": "ታህሳስ",
-    "description": ""
+    "description": "Month"
   },
   "monthFeb": {
     "message": "የካቲት",
-    "description": ""
+    "description": "Month"
   },
   "monthJan": {
     "message": "ጥር",
-    "description": ""
+    "description": "Month"
   },
   "monthJul": {
     "message": "ሀምሌ",
-    "description": ""
+    "description": "Month"
   },
   "monthJun": {
     "message": "ሰኔ",
-    "description": ""
+    "description": "Month"
   },
   "monthMar": {
     "message": "መጋቢት",
-    "description": ""
+    "description": "Month"
   },
   "monthMay": {
     "message": "ግንቦት",
-    "description": ""
+    "description": "Month"
   },
   "monthNov": {
     "message": "ሕዳር",
-    "description": ""
+    "description": "Month"
   },
   "monthOct": {
     "message": "ጥቅምት",
-    "description": ""
+    "description": "Month"
   },
   "monthSep": {
     "message": "መስከረም",
-    "description": ""
+    "description": "Month"
   },
   "tokenGrant": {
     "message": "ቶክን ፍቃድ",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
     "message": "ከማስታወቅያ ማትረፍ",
-    "description": ""
+    "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
     "message": "አውቶ-አስተዋፅኦ",
-    "description": ""
+    "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
     "message": "የአንድ ግዜ ምክሮች",
-    "description": ""
-  },
-  "total": {
-    "message": "አጠቃላይ",
-    "description": ""
+    "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "ቀኑ የሚያልፈው",
-    "description": ""
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
     "message": "ወርሀዊ ምክሮች",
-    "description": ""
+    "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
     "message": "ጠፍቷል",
-    "description": ""
+    "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
     "message": "ok",
-    "description": ""
+    "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
     "message": "Brave Ads",
-    "description": ""
+    "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
     "message": "Auto-Contribute",
-    "description": ""
+    "description": "Notification title when we display info about auto contribution"
   },
-  "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
-    "description": "",
+  "contributeNotificationSuccess": {
+    "message": "You've contributed $amount$ BAT",
+    "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
-        "example": "10"
+        "example": "10.0"
       }
     }
   },
   "grantNotification": {
     "message": "You have a grant waiting for you.",
-    "description": ""
+    "description": "Description for new grant notification"
   },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
-    "description": ""
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "There was a problem processing your contribution.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "There was a problem processing your tip, please try again.",
+    "description": "We show this string in notification when tip fails"
   }
 }

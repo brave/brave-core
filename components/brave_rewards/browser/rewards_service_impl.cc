@@ -585,8 +585,25 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
   const std::string& viewing_id,
   ledger::PUBLISHER_CATEGORY category,
   const std::string& probi) {
+
+  if ((result == ledger::Result::LEDGER_OK &&
+       category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) ||
+      result == ledger::Result::LEDGER_ERROR ||
+      result == ledger::Result::NOT_ENOUGH_FUNDS ||
+      result == ledger::Result::TIP_ERROR) {
+    RewardsNotificationService::RewardsNotificationArgs args;
+    args.push_back(viewing_id);
+    args.push_back(std::to_string(result));
+    args.push_back(std::to_string(category));
+    args.push_back(probi);
+
+    notification_service_->AddNotification(
+        RewardsNotificationService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
+        args,
+        "contribution_" + viewing_id);
+  }
+
   if (result == ledger::Result::LEDGER_OK) {
-    // TODO add notification service when implemented
     auto now = base::Time::Now();
     FetchWalletProperties();
     ledger_->OnReconcileCompleteSuccess(viewing_id,
@@ -753,7 +770,7 @@ void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
-    ledger::GetPublisherInfoListCallback callback) {
+    ledger::PublisherInfoListCallback callback) {
   auto now = base::Time::Now();
   filter.month = GetPublisherMonth(now);
   filter.year = GetPublisherYear(now);
@@ -774,7 +791,7 @@ void RewardsServiceImpl::LoadCurrentPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
-    ledger::GetPublisherInfoListCallback callback) {
+    ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
@@ -789,7 +806,7 @@ void RewardsServiceImpl::LoadCurrentPublisherInfoList(
 void RewardsServiceImpl::OnPublisherInfoListLoaded(
     uint32_t start,
     uint32_t limit,
-    ledger::GetPublisherInfoListCallback callback,
+    ledger::PublisherInfoListCallback callback,
     const ledger::PublisherInfoList& list) {
   uint32_t next_record = 0;
   if (list.size() == limit)
@@ -937,7 +954,7 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     }
 
     // webui
-    observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
+    observer.OnWalletProperties(this, error_code, wallet_properties.get());
   }
 }
 
@@ -1425,12 +1442,12 @@ ledger::PublisherInfoList GetRecurringDonationsOnFileTaskRunner(PublisherInfoDat
   return list;
 }
 
-void RewardsServiceImpl::OnRecurringDonationsData(const ledger::RecurringDonationCallback callback,
+void RewardsServiceImpl::OnRecurringDonationsData(const ledger::PublisherInfoListCallback callback,
                                                   const ledger::PublisherInfoList list) {
-  callback(list);
+  callback(list, 0);
 }
 
-void RewardsServiceImpl::GetRecurringDonations(ledger::RecurringDonationCallback callback) {
+void RewardsServiceImpl::GetRecurringDonations(ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&GetRecurringDonationsOnFileTaskRunner,
                     publisher_info_backend_.get()),
@@ -1543,9 +1560,12 @@ void RewardsServiceImpl::TriggerOnGetPublisherActivityFromUrl(
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info,
     uint64_t windowId) {
-  for (auto& observer : private_observers_)
-    observer.OnGetPublisherActivityFromUrl(this, result, std::move(info),
-                                           windowId);
+  if (!info) {
+    info.reset(new ledger::PublisherInfo());
+    info->id = "";
+  }
+  for (auto& observer : observers_)
+    observer.OnGetPublisherActivityFromUrl(this, result, info.get(), windowId);
 }
 
 void RewardsServiceImpl::SetContributionAutoInclude(std::string publisher_key,

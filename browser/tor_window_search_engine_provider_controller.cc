@@ -12,20 +12,20 @@
 #include "components/search_engines/template_url_service.h"
 
 TorWindowSearchEngineProviderController::
-TorWindowSearchEngineProviderController(Profile* profile)
-    : SearchEngineProviderControllerBase(profile) {
-  DCHECK(profile->IsTorProfile());
-  DCHECK_EQ(profile->GetProfileType(), Profile::GUEST_PROFILE);
+TorWindowSearchEngineProviderController(Profile* otr_profile)
+    : SearchEngineProviderControllerBase(otr_profile) {
+  DCHECK(otr_profile->IsTorProfile());
+  DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
 
   alternative_search_engine_provider_in_tor_.Init(
       kAlternativeSearchEngineProviderInTor,
-      profile->GetOriginalProfile()->GetPrefs());
+      otr_profile->GetOriginalProfile()->GetPrefs());
 
   // Configure previously used provider because effective tor profile is
   // off the recored profile.
   auto provider_data =
       TemplateURLPrepopulateData::GetPrepopulatedEngine(
-          profile->GetPrefs(), GetInitialSearchEngineProvider());
+          otr_profile->GetPrefs(), GetInitialSearchEngineProvider());
   TemplateURL provider_url(*provider_data);
   otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
       &provider_url);

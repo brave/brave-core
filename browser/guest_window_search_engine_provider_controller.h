@@ -7,10 +7,15 @@
 
 #include "brave/browser/search_engine_provider_controller_base.h"
 
+// This controller is only used by non Qwant region.
+// This class manage's newtab's ddg toggle button state.
+// Toggle button state should be reflected setting value.
+// Ex, when user changes from ddg to others, toggle button should be off and
+// vice versa.
 class GuestWindowSearchEngineProviderController
     : public SearchEngineProviderControllerBase {
  public:
-  explicit GuestWindowSearchEngineProviderController(Profile* profile);
+  explicit GuestWindowSearchEngineProviderController(Profile* otr_profile);
   ~GuestWindowSearchEngineProviderController() override;
 
  private:

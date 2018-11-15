@@ -22,6 +22,8 @@ void ToggleUseAlternativeSearchEngineProvider(Profile* profile);
 
 void InitializeSearchEngineProviderIfNeeded(Profile* profile);
 
+bool IsRegionForQwant(Profile* profile);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_SEARCH_ENGINE_PROVIDER_UTIL_H_

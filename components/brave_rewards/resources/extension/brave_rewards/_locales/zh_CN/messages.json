@@ -1,192 +1,200 @@
 {
   "braveRewards": {
     "message": "Brave 奖励",
-    "description": ""
+    "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
     "message": "立即开始赚取赏金！",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
     "message": "加入奖励",
-    "description": ""
+    "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
     "message": "浏览广告获取收益并提前支付给您喜爱的内容创作者。",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
     "message": "您可以通过观看尊重隐私的广告赚取代币。",
-    "description": ""
+    "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
     "message": "查看改进的内容",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
     "message": "了解更多",
-    "description": ""
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
     "message": "我们升级了 Brave 付款。",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
     "message": "做好准备体验新一代网络。",
-    "description": ""
+    "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
     "message": "您的钱包",
-    "description": ""
+    "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
     "message": "授权",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "on": {
     "message": "在",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
     "message": "Brave 经验证的发布者",
-    "description": ""
+    "description": "Tells user that this particular publisher is verified publisher"
   },
   "rewardsContributeAttentionScore": {
     "message": "注意力",
-    "description": ""
+    "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
     "message": "Tip this site monthly",
-    "description": ""
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
     "message": "包含在自动贡献中",
-    "description": ""
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
     "message": "发送赏金",
-    "description": ""
+    "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
     "message": "启用打赏",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
     "message": "给",
-    "description": ""
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
     "message": "奖励摘要",
-    "description": ""
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
     "message": "四月",
-    "description": ""
+    "description": "Month"
   },
   "monthAug": {
     "message": "八月",
-    "description": ""
+    "description": "Month"
   },
   "monthDec": {
     "message": "十二月",
-    "description": ""
+    "description": "Month"
   },
   "monthFeb": {
     "message": "二月",
-    "description": ""
+    "description": "Month"
   },
   "monthJan": {
     "message": "一月",
-    "description": ""
+    "description": "Month"
   },
   "monthJul": {
     "message": "七月",
-    "description": ""
+    "description": "Month"
   },
   "monthJun": {
     "message": "六月",
-    "description": ""
+    "description": "Month"
   },
   "monthMar": {
     "message": "三月",
-    "description": ""
+    "description": "Month"
   },
   "monthMay": {
     "message": "三月",
-    "description": ""
+    "description": "Month"
   },
   "monthNov": {
     "message": "十一月",
-    "description": ""
+    "description": "Month"
   },
   "monthOct": {
     "message": "十月",
-    "description": ""
+    "description": "Month"
   },
   "monthSep": {
     "message": "九月",
-    "description": ""
+    "description": "Month"
   },
   "tokenGrant": {
     "message": "代币授权",
-    "description": ""
+    "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
     "message": "从广告中赚取的收益",
-    "description": ""
+    "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
     "message": "自动贡献",
-    "description": ""
+    "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
     "message": "一次赏金",
-    "description": ""
-  },
-  "total": {
-    "message": "总额",
-    "description": ""
+    "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
     "message": "过期日期",
-    "description": ""
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
     "message": "每月赏金",
-    "description": ""
+    "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
     "message": "关闭",
-    "description": ""
+    "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
     "message": "ok",
-    "description": ""
+    "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
     "message": "Brave Ads",
-    "description": ""
+    "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
     "message": "Auto-Contribute",
-    "description": ""
+    "description": "Notification title when we display info about auto contribution"
   },
-  "contributeNotification": {
-    "message": "You've contributed $amount$BAT",
-    "description": "",
+  "contributeNotificationSuccess": {
+    "message": "You've contributed $amount$ BAT",
+    "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
-        "example": "10"
+        "example": "10.0"
       }
     }
   },
   "grantNotification": {
     "message": "You have a grant waiting for you.",
-    "description": ""
+    "description": "Description for new grant notification"
   },
   "braveRewardsCreatingText": {
     "message": "Creating wallet",
-    "description": ""
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "There was a problem processing your contribution.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "There was a problem processing your tip, please try again.",
+    "description": "We show this string in notification when tip fails"
   }
 }

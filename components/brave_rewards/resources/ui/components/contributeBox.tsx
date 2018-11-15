@@ -245,6 +245,8 @@ class ContributeBox extends React.Component<Props, State> {
           rows={topRows}
           allSites={allSites}
           numSites={numRows}
+          numExcludedSites={numExcludedSites}
+          onRestore={this.onRestore}
           onShowAll={this.onModalContributeToggle}
           headerColor={true}
           showRemove={true}

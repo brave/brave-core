@@ -4,6 +4,7 @@
 
 #include "brave/browser/search_engine_provider_controller_base.h"
 
+#include "brave/browser/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
@@ -40,8 +41,8 @@ class SearchEngineProviderControllerBase::Destroyer
 };
 
 SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
-    Profile* profile)
-    : otr_profile_(profile),
+    Profile* otr_profile)
+    : otr_profile_(otr_profile),
       original_template_url_service_(
           TemplateURLServiceFactory::GetForProfile(
               otr_profile_->GetOriginalProfile())),
@@ -58,7 +59,7 @@ SearchEngineProviderControllerBase::SearchEngineProviderControllerBase(
   destroyer_ = new Destroyer(this, otr_template_url_service_);
 
   auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      profile->GetPrefs(),
+      otr_profile->GetPrefs(),
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   alternative_search_engine_url_.reset(new TemplateURL(*data));
 }
@@ -69,6 +70,7 @@ SearchEngineProviderControllerBase::~SearchEngineProviderControllerBase() {
 void SearchEngineProviderControllerBase::OnPreferenceChanged(
     const std::string& pref_name) {
   DCHECK(pref_name == kUseAlternativeSearchEngineProvider);
+  DCHECK(!brave::IsRegionForQwant(otr_profile_));
 
   ConfigureSearchEngineProvider();
 }
