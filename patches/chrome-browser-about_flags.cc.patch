@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
+index 62f4b41a2ac4..4f63fa202bca 100644
+--- a/chrome/browser/about_flags.cc
++++ b/chrome/browser/about_flags.cc
+@@ -264,14 +264,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
+ const FeatureEntry::Choice kTraceUploadURL[] = {
+     {flags_ui::kGenericExperimentChoiceDisabled, "", ""},
+     {flag_descriptions::kTraceUploadUrlChoiceOther, switches::kTraceUploadURL,
+-     "https://performance-insights.appspot.com/upload?tags=flags,Other"},
++     "https://no-thanks.invalid"},
+     {flag_descriptions::kTraceUploadUrlChoiceEmloading,
+      switches::kTraceUploadURL,
+-     "https://performance-insights.appspot.com/upload?tags=flags,emloading"},
++     "https://no-thanks.invalid"},
+     {flag_descriptions::kTraceUploadUrlChoiceQa, switches::kTraceUploadURL,
+-     "https://performance-insights.appspot.com/upload?tags=flags,QA"},
++     "https://no-thanks.invalid"},
+     {flag_descriptions::kTraceUploadUrlChoiceTesting, switches::kTraceUploadURL,
+-     "https://performance-insights.appspot.com/upload?tags=flags,TestingTeam"}};
++     "https://no-thanks.invalid"}};
+ 
+ #if BUILDFLAG(ENABLE_NACL)
+ const FeatureEntry::Choice kNaClDebugMaskChoices[] = {
