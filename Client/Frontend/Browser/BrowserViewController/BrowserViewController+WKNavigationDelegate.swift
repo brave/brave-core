@@ -132,14 +132,27 @@ extension BrowserViewController: WKNavigationDelegate {
 
             pendingRequests[url.absoluteString] = navigationAction.request
 
-            // Identify specific block lists that need to be applied to the requesting domain
-            let domainForShields = Domain.getOrCreateForUrl(url, context: DataController.viewContext)
-            let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
-            let controller = webView.configuration.userContentController
+            // Adblock logic,
+            // Only use main document URL, not the request URL
+            // If an iFrame is loaded, shields depending on the main frame, not the iFrame request
             
-            // Grab all lists that have valid rules and add/remove them as necessary
-            on.compactMap { $0.rule }.forEach(controller.add)
-            off.compactMap { $0.rule }.forEach(controller.remove)
+            // Weird behavior here with `targetFram` and `sourceFrame`, on refreshing page `sourceFrame` is not nil (it is non-optional)
+            //  however, it is still an uninitialized object, making it an unreliable source to compare `isMainFrame` against.
+            //  Rather than using `sourceFrame.isMainFrame` or even comparing `sourceFrame == targetFrame`, a simple URL check is used.
+            if
+                let mainDocumentURL = navigationAction.request.mainDocumentURL,
+                mainDocumentURL == url,
+                navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
+                
+                // Identify specific block lists that need to be applied to the requesting domain
+                let domainForShields = Domain.getOrCreateForUrl(mainDocumentURL, context: DataController.viewContext)
+                let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
+                let controller = webView.configuration.userContentController
+                
+                // Grab all lists that have valid rules and add/remove them as necessary
+                on.compactMap { $0.rule }.forEach(controller.add)
+                off.compactMap { $0.rule }.forEach(controller.remove)
+            }
             
             decisionHandler(.allow)
             return

@@ -37,11 +37,17 @@ public final class Domain: NSManagedObject, CRUD {
         if let domain = Domain.first(where: NSPredicate(format: "url == %@", domainString), context: context) {
             return domain
         }
-            
+        
+        // See #409:
+        //  A larger refactor is probably wanted here.
+        //  This can easily lead to a Domain being created on the `viewContext`
+        //  A solution to consider is creating a new background context here, creating, saving, and then re-fetching
+        //   that object in the requested context (regardless if it is `viewContext` or not)
         var newDomain: Domain!
         context.performAndWait {
             newDomain = Domain(entity: Domain.entity(context), insertInto: context)
             newDomain.url = domainString
+            DataController.save(context: context)
         }
         return newDomain
     }
