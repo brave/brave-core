@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Main, QRCode } from './misc'
+import { Main, QRCode, TableRowId, TableRowDevice, TableRowRemove, TableRowRemoveButton } from './misc'
 import { SectionBlock, Grid, FlexColumn } from './grid'
 import {
   Title,
@@ -34,5 +34,9 @@ export {
   SwitchLabel,
   List,
   ListOrdered,
-  ListBullet
+  ListBullet,
+  TableRowId,
+  TableRowDevice,
+  TableRowRemove,
+  TableRowRemoveButton
 }

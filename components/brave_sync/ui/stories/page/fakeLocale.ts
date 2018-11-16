@@ -27,6 +27,7 @@ const locale = {
   browsingHistory: 'Browsing History',
   clearData: 'Clear Data',
   resetSync: 'Reset Sync',
+  removeDevice: 'Remove',
   // i am new to sync modal
   enterAnOptionalName: 'Enter a name for this device',
   setUpSync: 'Set up Sync',

@@ -18,7 +18,11 @@ import {
   Label,
   Paragraph,
   SectionBlock,
-  SubTitle
+  SubTitle,
+  TableRowId,
+  TableRowDevice,
+  TableRowRemove,
+  TableRowRemoveButton
 } from '../../../src/features/sync'
 
 // Modals
@@ -27,6 +31,7 @@ import ResetSyncModal from './modals/resetSync'
 
 // Utils
 import locale from './page/fakeLocale'
+import data from './page/fakeData'
 
 interface SyncEnabledContentState {
   syncANewDevice: boolean
@@ -46,16 +51,30 @@ class SyncEnabledContent extends React.PureComponent<{}, SyncEnabledContentState
     return [
       {
         content: [
-          { content: 1 },
-          { content: 'MacOS without the ESC key' },
-          { content: '6/12/2018, 12:10:16 PM' }
+          { content: <TableRowId>{data.device1.id}</TableRowId> },
+          { content: <TableRowDevice>{data.device1.name}</TableRowDevice> },
+          { content: data.device1.lastActive },
+          {
+            content: (
+              <TableRowRemoveButton data-id={''} data-name={''}>
+                &times;
+              </TableRowRemoveButton>
+            )
+          }
         ]
       },
       {
         content: [
-          { content: 2 },
-          { content: 'Windowz machineh' },
-          { content: '8/1/2018, 7:12:32 PM' }
+          { content: <TableRowId>{data.device2.id}</TableRowId> },
+          { content: <TableRowDevice>{data.device2.name}</TableRowDevice> },
+          { content: data.device2.lastActive },
+          {
+            content: (
+              <TableRowRemoveButton data-id={''} data-name={''}>
+                &times;
+              </TableRowRemoveButton>
+            )
+          }
         ]
       }
     ]
@@ -63,9 +82,10 @@ class SyncEnabledContent extends React.PureComponent<{}, SyncEnabledContentState
 
   get header (): Cell[] {
     return [
-      { content: locale.id },
-      { content: locale.deviceName },
-      { content: locale.lastActive }
+      { content: <TableRowId>{locale.id}</TableRowId> },
+      { content: <TableRowDevice>{locale.deviceName}</TableRowDevice> },
+      { content: locale.lastActive },
+      { content: <TableRowRemove>{locale.removeDevice}</TableRowRemove> }
     ]
   }
 

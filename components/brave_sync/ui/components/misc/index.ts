@@ -16,3 +16,32 @@ export const QRCode = styled<{}, 'img'>('img')`
   display: block;
   max-width: 180px;
 `
+
+export const TableRowId = styled<{}, 'span'>('span')`
+  width: 5ch;
+  text-align: center;
+  display: block;
+`
+
+export const TableRowDevice = styled<{}, 'span'>('span')`
+  max-width: 15ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+`
+
+export const TableRowRemove = styled<{}, 'span'>('span')`
+  display: block;
+  text-align: center;
+`
+
+export const TableRowRemoveButton = styled<{}, 'button'>('button')`
+  text-align: center;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+  margin: auto;
+`
