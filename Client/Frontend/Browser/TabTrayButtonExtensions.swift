@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import Shared
 
 class PrivateModeButton: InsetButton, Themeable {
     var light: Bool = false
@@ -15,8 +16,8 @@ class PrivateModeButton: InsetButton, Themeable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        accessibilityLabel = PrivateModeStrings.toggleAccessibilityLabel
-        accessibilityHint = PrivateModeStrings.toggleAccessibilityHint
+        accessibilityLabel = Strings.TabPrivateModeToggleAccessibilityLabel
+        accessibilityHint = Strings.TabPrivateModeToggleAccessibilityHint
         
         titleEdgeInsets = UIEdgeInsets(top: -3, left: 6, bottom: -3, right: 6)
         layer.cornerRadius = 4.0
@@ -30,7 +31,7 @@ class PrivateModeButton: InsetButton, Themeable {
         setTitleColor(UIColor.TabTray.ToolbarButtonTint.colorFor(theme), for: .normal)
         imageView?.tintColor = tintColor
         isSelected = theme.isPrivate
-        accessibilityValue = isSelected ? PrivateModeStrings.toggleAccessibilityValueOn : PrivateModeStrings.toggleAccessibilityValueOff
+        accessibilityValue = isSelected ? Strings.TabPrivateModeToggleAccessibilityValueOn : Strings.TabPrivateModeToggleAccessibilityValueOff
     }
 }
 
@@ -38,7 +39,7 @@ extension UIButton {
     static func newTabButton() -> UIButton {
         let newTab = UIButton()
         newTab.setImage(#imageLiteral(resourceName: "quick_action_new_tab").template, for: .normal)
-        newTab.accessibilityLabel = NSLocalizedString("New Tab", comment: "Accessibility label for the New Tab button in the tab toolbar.")
+        newTab.accessibilityLabel = Strings.TabTrayNewTabButtonAccessibilityLabel
         return newTab
     }
 }
@@ -47,7 +48,7 @@ extension TabsButton {
     static func tabTrayButton() -> TabsButton {
         let tabsButton = TabsButton()
         tabsButton.countLabel.text = "0"
-        tabsButton.accessibilityLabel = NSLocalizedString("Toolbar.Show.Tabs.Button.Accessibility.Label", value: "Show Tabs", comment: "Accessibility Label for the tabs button in the tab toolbar")
+        tabsButton.accessibilityLabel = Strings.Show_Tabs
         return tabsButton
     }
 }

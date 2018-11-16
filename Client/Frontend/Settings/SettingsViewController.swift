@@ -201,12 +201,12 @@ class SettingsViewController: TableViewController {
             if localAuthContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
                 let title: String
                 if localAuthContext.biometryType == .faceID {
-                    return AuthenticationStrings.faceIDPasscodeSetting
+                    return Strings.AuthenticationFaceIDPasscodeSetting
                 } else {
-                    return AuthenticationStrings.touchIDPasscodeSetting
+                    return Strings.AuthenticationTouchIDPasscodeSetting
                 }
             } else {
-                return AuthenticationStrings.passcode
+                return Strings.AuthenticationPasscode
             }
         }()
         
@@ -282,7 +282,7 @@ class SettingsViewController: TableViewController {
                     }
                     
                     actionSheet.addAction(copyDebugInfoAction)
-                    actionSheet.addAction(UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil))
+                    actionSheet.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
                     self.navigationController?.present(actionSheet, animated: true, completion: nil)
                 })
             ]

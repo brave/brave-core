@@ -198,7 +198,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
             })
         }
         actionSheet.addAction(clearAction)
-        actionSheet.addAction(.init(title: Strings.Cancel, style: .cancel, handler: nil))
+        actionSheet.addAction(.init(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
         present(actionSheet, animated: true, completion: nil)
     }
     

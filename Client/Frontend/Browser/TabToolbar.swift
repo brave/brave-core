@@ -47,13 +47,13 @@ open class TabToolbarHelper: NSObject {
         super.init()
 
         toolbar.backButton.setImage(#imageLiteral(resourceName: "nav-back").template, for: .normal)
-        toolbar.backButton.accessibilityLabel = NSLocalizedString("Back", comment: "Accessibility label for the Back button in the tab toolbar.")
+        toolbar.backButton.accessibilityLabel = Strings.TabToolbarBackButtonAccessibilityLabel
         let longPressGestureBackButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBack))
         toolbar.backButton.addGestureRecognizer(longPressGestureBackButton)
         toolbar.backButton.addTarget(self, action: #selector(didClickBack), for: .touchUpInside)
 
         toolbar.forwardButton.setImage(#imageLiteral(resourceName: "nav-forward").template, for: .normal)
-        toolbar.forwardButton.accessibilityLabel = NSLocalizedString("Forward", comment: "Accessibility Label for the tab toolbar Forward button")
+        toolbar.forwardButton.accessibilityLabel = Strings.TabToolbarForwardButtonAccessibilityLabel
         let longPressGestureForwardButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressForward))
         toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)
         toolbar.forwardButton.addTarget(self, action: #selector(didClickForward), for: .touchUpInside)
@@ -63,11 +63,11 @@ open class TabToolbarHelper: NSObject {
         toolbar.tabsButton.addGestureRecognizer(longPressGestureTabsButton)
         
         toolbar.shareButton.setImage(#imageLiteral(resourceName: "nav-share").template, for: .normal)
-        toolbar.shareButton.accessibilityLabel = Strings.Share
+        toolbar.shareButton.accessibilityLabel = Strings.TabToolbarShareButtonAccessibilityLabel
         toolbar.shareButton.addTarget(self, action: #selector(didClickShare), for: UIControlEvents.touchUpInside)
         
         toolbar.addTabButton.setImage(#imageLiteral(resourceName: "add_tab"), for: .normal)
-        toolbar.addTabButton.accessibilityLabel = Strings.Add_Tab
+        toolbar.addTabButton.accessibilityLabel = Strings.TabToolbarAddTabButtonAccessibilityLabel
         toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControlEvents.touchUpInside)
         toolbar.addTabButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:))))
 
@@ -205,7 +205,7 @@ class TabToolbar: UIView {
         shareButton.accessibilityIdentifier = "TabToolbar.shareButton"
         addTabButton.accessibilityIdentifier = "TabToolbar.addTabButton"
         accessibilityNavigationStyle = .combined
-        accessibilityLabel = NSLocalizedString("Navigation Toolbar", comment: "Accessibility label for the navigation toolbar displayed at the bottom of the screen.")
+        accessibilityLabel = Strings.TabToolbarAccessibilityLabel
     }
 
     required init(coder aDecoder: NSCoder) {

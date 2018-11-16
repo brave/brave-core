@@ -38,7 +38,7 @@ class PasscodeSettingsViewController: TableViewController {
             // Passcode
             dataSource.sections = [
                 Section(rows: [
-                    Row(text: AuthenticationStrings.turnOffPasscode,
+                    Row(text: Strings.AuthenticationTurnOffPasscode,
                         selection: { [unowned self] in
                             let setupPasscodeController = RemovePasscodeViewController()
                             let container = UINavigationController(rootViewController: setupPasscodeController)
@@ -46,7 +46,7 @@ class PasscodeSettingsViewController: TableViewController {
                         },
                         cellClass: ButtonCell.self
                     ),
-                    Row(text: AuthenticationStrings.changePasscode,
+                    Row(text: Strings.AuthenticationChangePasscode,
                         selection: { [unowned self] in
                             let changePasscodeController = ChangePasscodeViewController()
                             let container = UINavigationController(rootViewController: changePasscodeController)
@@ -77,7 +77,7 @@ class PasscodeSettingsViewController: TableViewController {
             // No Passcode
             dataSource.sections = [
                 Section(rows: [
-                    Row(text: AuthenticationStrings.turnOnPasscode,
+                    Row(text: Strings.AuthenticationTurnOnPasscode,
                         selection: { [unowned self] in
                             let setupPasscodeController = SetupPasscodeViewController()
                             let container = UINavigationController(rootViewController: setupPasscodeController)
@@ -85,7 +85,7 @@ class PasscodeSettingsViewController: TableViewController {
                         },
                         cellClass: ButtonCell.self
                     ),
-                    Row(text: AuthenticationStrings.changePasscode, cellClass: DisabledCell.self)
+                    Row(text: Strings.AuthenticationChangePasscode, cellClass: DisabledCell.self)
                 ]),
                 Section(rows: [
                     // TODO: Need localized copy of this
@@ -106,11 +106,11 @@ class PasscodeSettingsViewController: TableViewController {
     func updateTitleForTouchIDState() {
         switch deviceBiometryType {
         case .faceID:
-            navigationItem.title = AuthenticationStrings.faceIDPasscodeSetting
+            navigationItem.title = Strings.AuthenticationFaceIDPasscodeSetting
         case .touchID:
-            navigationItem.title = AuthenticationStrings.touchIDPasscodeSetting
+            navigationItem.title = Strings.AuthenticationTouchIDPasscodeSetting
         case .none:
-            navigationItem.title = AuthenticationStrings.passcode
+            navigationItem.title = Strings.AuthenticationPasscode
         }
     }
 }

@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import Shared
 
 protocol FindInPageBarDelegate: class {
     func findInPage(_ findInPage: FindInPageBar, didTextChange text: String)
@@ -85,14 +86,14 @@ class FindInPageBar: UIView {
 
         previousButton.setImage(#imageLiteral(resourceName: "find_previous"), for: [])
         previousButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
-        previousButton.accessibilityLabel = NSLocalizedString("Previous in-page result", tableName: "FindInPage", comment: "Accessibility label for previous result button in Find in Page Toolbar.")
+        previousButton.accessibilityLabel = Strings.FindInPagePreviousResultButtonAccessibilityLabel
         previousButton.addTarget(self, action: #selector(didFindPrevious), for: .touchUpInside)
         previousButton.accessibilityIdentifier = "FindInPage.find_previous"
         addSubview(previousButton)
 
         nextButton.setImage(#imageLiteral(resourceName: "find_next"), for: [])
         nextButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
-        nextButton.accessibilityLabel = NSLocalizedString("Next in-page result", tableName: "FindInPage", comment: "Accessibility label for next result button in Find in Page Toolbar.")
+        nextButton.accessibilityLabel = Strings.FindInPageNextResultButtonAccessibilityLabel
         nextButton.addTarget(self, action: #selector(didFindNext), for: .touchUpInside)
         nextButton.accessibilityIdentifier = "FindInPage.find_next"
         addSubview(nextButton)
@@ -100,7 +101,7 @@ class FindInPageBar: UIView {
         let closeButton = UIButton()
         closeButton.setImage(#imageLiteral(resourceName: "find_close"), for: [])
         closeButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
-        closeButton.accessibilityLabel = NSLocalizedString("Done", tableName: "FindInPage", comment: "Done button in Find in Page Toolbar.")
+        closeButton.accessibilityLabel = Strings.FindInPageDoneButtonAccessibilityLabel
         closeButton.addTarget(self, action: #selector(didPressClose), for: .touchUpInside)
         closeButton.accessibilityIdentifier = "FindInPage.close"
         addSubview(closeButton)

@@ -4,6 +4,7 @@
 
 import Foundation
 import SnapKit
+import Shared
 
 private struct SearchInputViewUX {
 
@@ -41,7 +42,7 @@ class SearchInputView: UIView {
         textField.textColor = SearchInputViewUX.inputColor
         textField.tintColor = SearchInputViewUX.inputColor
         textField.addTarget(self, action: #selector(inputTextDidChange), for: .editingChanged)
-        textField.accessibilityLabel = NSLocalizedString("Search Input Field", tableName: "LoginManager", comment: "Accessibility label for the search input field in the Logins list")
+        textField.accessibilityLabel = Strings.SearchInputViewTextFieldAccessibilityLabel
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         return textField
@@ -49,7 +50,7 @@ class SearchInputView: UIView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Search.Field.Title", tableName: "LoginManager", value: "Search", comment: "Title for the search field at the top of the Logins list screen")
+        label.text = Strings.SearchInputViewTitle
         label.font = SearchInputViewUX.titleFont
         label.textColor = SearchInputViewUX.titleColor
         return label
@@ -63,8 +64,7 @@ class SearchInputView: UIView {
         let button = UIButton()
         button.addTarget(self, action: #selector(tappedClose), for: .touchUpInside)
         button.setImage(#imageLiteral(resourceName: "clear"), for: [])
-        button.accessibilityLabel = NSLocalizedString("Clear Search", tableName: "LoginManager",
-            comment: "Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode")
+        button.accessibilityLabel = Strings.SearchInputViewClearButtonTitle
         return button
     }()
 
@@ -82,7 +82,7 @@ class SearchInputView: UIView {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedSearch)))
 
         view.isAccessibilityElement = true
-        view.accessibilityLabel =  NSLocalizedString("Enter Search Mode", tableName: "LoginManager", comment: "Accessibility label for entering search mode for logins")
+        view.accessibilityLabel = Strings.SearchInputViewOverlayAccessibilityLabel
         return view
     }()
 

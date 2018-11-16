@@ -51,15 +51,10 @@ class LoginListViewController: UIViewController {
 
     fileprivate var deleteAlert: UIAlertController?
 
-    // Titles for selection/deselect/delete buttons
-    fileprivate let deselectAllTitle = NSLocalizedString("Deselect All", tableName: "LoginManager", comment: "Label for the button used to deselect all logins.")
-    fileprivate let selectAllTitle = NSLocalizedString("Select All", tableName: "LoginManager", comment: "Label for the button used to select all logins.")
-    fileprivate let deleteLoginTitle = NSLocalizedString("Delete", tableName: "LoginManager", comment: "Label for the button used to delete the current login.")
-
     fileprivate lazy var selectionButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = LoginListUX.selectionButtonFont
-        button.setTitle(self.selectAllTitle, for: [])
+        button.setTitle(Strings.LoginListSelectAllButtonTitle, for: [])
         button.setTitleColor(LoginListUX.selectionButtonTextColor, for: [])
         button.backgroundColor = LoginListUX.selectionButtonBackground
         button.addTarget(self, action: #selector(tappedSelectionButton), for: .touchUpInside)
@@ -94,7 +89,7 @@ class LoginListViewController: UIViewController {
         self.view.backgroundColor = UIColor.Photon.White100
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(beginEditing))
 
-        self.title = NSLocalizedString("Logins", tableName: "LoginManager", comment: "Title for Logins List View screen.")
+        self.title = Strings.LoginListScreenTitle
 
         searchView.delegate = self
         tableView.register(LoginTableViewCell.self, forCellReuseIdentifier: LoginCellIdentifier)
@@ -157,7 +152,7 @@ class LoginListViewController: UIViewController {
         // Show delete bar button item if we have selected any items
         if loginSelectionController.selectedCount > 0 {
             if navigationItem.rightBarButtonItem == nil {
-                navigationItem.rightBarButtonItem = UIBarButtonItem(title: deleteLoginTitle, style: .plain, target: self, action: #selector(tappedDelete))
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.DeleteLoginButtonTitle, style: .plain, target: self, action: #selector(tappedDelete))
                 navigationItem.rightBarButtonItem?.tintColor = UIColor.Photon.Red50
             }
         } else {
@@ -167,9 +162,9 @@ class LoginListViewController: UIViewController {
 
     fileprivate func toggleSelectionTitle() {
         if loginSelectionController.selectedCount == loginDataSource.count {
-            selectionButton.setTitle(deselectAllTitle, for: [])
+            selectionButton.setTitle(Strings.LoginListDeselectAllButtonTitle, for: [])
         } else {
-            selectionButton.setTitle(selectAllTitle, for: [])
+            selectionButton.setTitle(Strings.LoginListSelectAllButtonTitle, for: [])
         }
     }
 
@@ -578,7 +573,7 @@ fileprivate class NoLoginsView: UIView {
         let label = UILabel()
         label.font = LoginListUX.NoResultsFont
         label.textColor = LoginListUX.NoResultsTextColor
-        label.text = NSLocalizedString("No logins found", tableName: "LoginManager", comment: "Label displayed when no logins are found after searching.")
+        label.text = Strings.LoginListNoLoginTitle
         return label
     }()
 

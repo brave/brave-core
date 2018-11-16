@@ -197,7 +197,7 @@ class TabsButton: UIButton {
                     self.insideButton.layer.opacity = 1
                     self.insideButton.layer.transform = CATransform3DIdentity
                 }
-                self.accessibilityLabel = NSLocalizedString("Browser.Toolbar.Show.Tabs.Button.Accessibility.Label", value: "Show Tabs", comment: "Accessibility label for the tabs button in the (top) tab toolbar")
+                self.accessibilityLabel = Strings.Show_Tabs
                 self.countLabel.text = countToBe
                 self.accessibilityValue = countToBe
             }
