@@ -33,6 +33,8 @@ class BraveExternalProcessImporterClient : public ExternalProcessImporterClient 
        const BraveStats& stats) override;
   void OnLedgerImportReady(
        const BraveLedger& ledger) override;
+  void OnReferralImportReady(
+       const BraveReferral& referral) override;
 
  private:
   ~BraveExternalProcessImporterClient() override;

@@ -61,4 +61,12 @@ void BraveExternalProcessImporterClient::OnLedgerImportReady(
   bridge_->UpdateLedger(ledger);
 }
 
+void BraveExternalProcessImporterClient::OnReferralImportReady(
+    const BraveReferral& referral) {
+  if (cancelled_)
+    return;
+
+  bridge_->UpdateReferral(referral);
+}
+
 BraveExternalProcessImporterClient::~BraveExternalProcessImporterClient() {}
