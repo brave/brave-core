@@ -20,9 +20,10 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
 
 export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
 
-export const onWalletProperties = (properties: {status: number, wallet: Rewards.WalletProperties}) => action(types.ON_WALLET_PROPERTIES, {
-  properties
-})
+export const onWalletProperties = (properties: {status: number, wallet: Rewards.WalletProperties, monthlyAmount: number}) =>
+  action(types.ON_WALLET_PROPERTIES, {
+    properties
+  })
 
 export const getGrant = () => action(types.GET_GRANT)
 
