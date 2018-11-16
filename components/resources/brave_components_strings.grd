@@ -414,7 +414,6 @@
       <message name="IDS_BRAVE_SYNC_TITLE_BETA" desc="The Brave Sync beta label">beta</message>
       <message name="IDS_BRAVE_SYNC_INFO_1" desc="">Sync encrypted browser data between your devices securely and privately using Brave Sync</message>
       <message name="IDS_BRAVE_SYNC_INFO_2" desc="The Brave Sync decription about usage on mobile devices">Note: Sync for iOS and Android is still being completed and will be released soon.</message>
-      <message name="IDS_BRAVE_SYNC_DEVICE_SYNC" desc="">Sync this device</message>
 
       <message name="IDS_BRAVE_SYNC_DONE" desc="The Brave Sync `Done` button">Done</message>
       <message name="IDS_BRAVE_SYNC_CANCEL" desc="The Brave Sync `Cancel` button">Cancel</message>

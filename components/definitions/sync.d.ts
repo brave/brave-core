@@ -25,7 +25,6 @@ declare namespace Sync {
     thisDeviceName: string
     devices: Devices[]
     isSyncConfigured: boolean
-    shouldSyncThisDevice: boolean
     seedQRImageSource: string
     syncWords: string
     syncBookmarks: boolean
