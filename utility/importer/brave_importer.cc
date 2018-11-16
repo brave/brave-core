@@ -147,7 +147,8 @@ void BraveImporter::ImportHistory() {
     row.visit_count = count->GetInt();
     // Only visible URLs are stored in historySites
     row.hidden = false;
-    // Brave browser-laptop doesn't store the typed count anywhere, so default to 0.
+    // Brave browser-laptop doesn't store the typed count anywhere
+    // so default to 0.
     row.typed_count = 0;
 
     rows.push_back(row);
@@ -216,14 +217,18 @@ void BraveImporter::RecursiveReadBookmarksFolder(
     return;
 
   for (const auto& entry : bookmark_order->GetList()) {
-    auto& type = entry.FindKeyOfType("type", base::Value::Type::STRING)->GetString();
-    auto& key = entry.FindKeyOfType("key", base::Value::Type::STRING)->GetString();
+    auto& type = entry.FindKeyOfType("type",
+      base::Value::Type::STRING)->GetString();
+    auto& key = entry.FindKeyOfType("key",
+      base::Value::Type::STRING)->GetString();
 
      if (type == "bookmark-folder") {
       base::Value* bookmark_folder =
-        bookmark_folders_dict->FindKeyOfType(key, base::Value::Type::DICTIONARY);
+        bookmark_folders_dict->FindKeyOfType(key,
+          base::Value::Type::DICTIONARY);
       auto& title =
-        bookmark_folder->FindKeyOfType("title", base::Value::Type::STRING)->GetString();
+        bookmark_folder->FindKeyOfType("title",
+          base::Value::Type::STRING)->GetString();
 
       // Empty folders don't have a corresponding entry in bookmark_order_dict,
       // which provides an easy way to test whether a folder is empty.
@@ -256,9 +261,11 @@ void BraveImporter::RecursiveReadBookmarksFolder(
       base::Value* bookmark =
         bookmarks_dict->FindKeyOfType(key, base::Value::Type::DICTIONARY);
       auto& title =
-        bookmark->FindKeyOfType("title", base::Value::Type::STRING)->GetString();
+        bookmark->FindKeyOfType("title",
+          base::Value::Type::STRING)->GetString();
       auto& location =
-        bookmark->FindKeyOfType("location", base::Value::Type::STRING)->GetString();
+        bookmark->FindKeyOfType("location",
+          base::Value::Type::STRING)->GetString();
 
       ImportedBookmarkEntry imported_bookmark;
       imported_bookmark.is_folder = false;
@@ -332,10 +339,13 @@ void BraveImporter::ImportStats() {
   bridge_->UpdateStats(stats);
 }
 
-bool ParseWalletPassphrase(BraveLedger& ledger, const base::Value& session_store_json) {
-  const base::Value* wallet_passphrase_value = session_store_json.FindPathOfType(
+bool ParseWalletPassphrase(BraveLedger& ledger,
+  const base::Value& session_store_json) {
+  const base::Value* wallet_passphrase_value =
+    session_store_json.FindPathOfType(
       {"ledger", "info", "passphrase"},
-      base::Value::Type::STRING);
+      base::Value::Type::STRING
+    );
   if (!wallet_passphrase_value) {
     LOG(ERROR) << "Wallet passphrase not found in session-store-1";
     return false;
@@ -345,7 +355,8 @@ bool ParseWalletPassphrase(BraveLedger& ledger, const base::Value& session_store
   return !ledger.passphrase.empty();
 }
 
-bool TryFindBoolKey(const base::Value* dict, const std::string key, bool& value_to_set) {
+bool TryFindBoolKey(const base::Value* dict,
+  const std::string key, bool& value_to_set) {
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::BOOLEAN);
   if (value_read) {
     value_to_set = value_read->GetBool();
@@ -354,7 +365,8 @@ bool TryFindBoolKey(const base::Value* dict, const std::string key, bool& value_
   return false;
 }
 
-bool TryFindStringKey(const base::Value* dict, const std::string key, std::string& value_to_set) {
+bool TryFindStringKey(const base::Value* dict,
+  const std::string key, std::string& value_to_set) {
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::STRING);
   if (value_read) {
     value_to_set = value_read->GetString();
@@ -363,7 +375,8 @@ bool TryFindStringKey(const base::Value* dict, const std::string key, std::strin
   return false;
 }
 
-bool TryFindIntKey(const base::Value* dict, const std::string key, int& value_to_set) {
+bool TryFindIntKey(const base::Value* dict, const std::string key,
+  int& value_to_set) {
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::INTEGER);
   if (value_read) {
     value_to_set = value_read->GetInt();
@@ -372,7 +385,8 @@ bool TryFindIntKey(const base::Value* dict, const std::string key, int& value_to
   return false;
 }
 
-bool ParsePaymentsPreferences(BraveLedger& ledger, const base::Value& session_store_json) {
+bool ParsePaymentsPreferences(BraveLedger& ledger,
+  const base::Value& session_store_json) {
   const base::Value* settings = session_store_json.FindKeyOfType(
     "settings",
     base::Value::Type::DICTIONARY);
@@ -384,56 +398,78 @@ bool ParsePaymentsPreferences(BraveLedger& ledger, const base::Value& session_st
   auto* payments = &ledger.settings.payments;
 
   TryFindBoolKey(settings, "payments.enabled", payments->enabled);
-  TryFindBoolKey(settings, "payments.allow-non-verified-publishers", payments->allow_non_verified);
-  TryFindBoolKey(settings, "payments.allow-media-publishers", payments->allow_media_publishers);
+  TryFindBoolKey(settings, "payments.allow-non-verified-publishers",
+    payments->allow_non_verified);
+  TryFindBoolKey(settings, "payments.allow-media-publishers",
+    payments->allow_media_publishers);
 
+  // TODO: get default amount from rewards service
+  const int default_monthly_contribution = 20;
   std::string contribution_amount = "";
-  TryFindStringKey(settings, "payments.contribution-amount", contribution_amount);
+  payments->contribution_amount = -1;
+  TryFindStringKey(settings, "payments.contribution-amount",
+    contribution_amount);
   if (!contribution_amount.empty()) {
-    if (!base::StringToDouble(contribution_amount, &payments->contribution_amount)) {
-      LOG(ERROR) << "StringToDouble failed when converting \"settings.payments.contribution-amount\"; unable to convert value \"" << contribution_amount << "\"; defaulting value.";
+    if (!base::StringToDouble(contribution_amount,
+      &payments->contribution_amount)) {
+      LOG(ERROR) << "StringToDouble failed when converting "
+        << "\"settings.payments.contribution-amount\"; unable to convert "
+        << "value \"" << contribution_amount << "\"; defaulting value.";
     }
+  }
+
+  // Fall back to default value if contribution amount is missing/out of range.
+  // If user never modified (using the UI) the contribution amount, it won't
+  // be present in the session-store-1. This was intended so that we can change
+  // the default amount. Once user changes it, value was then locked in.
+  if (payments->contribution_amount < 1 ||
+    payments->contribution_amount > 500) {
+    payments->contribution_amount = default_monthly_contribution;
   }
 
   std::string minimum_visits = "";
   TryFindStringKey(settings, "payments.minimum-visits", minimum_visits);
   if (!minimum_visits.empty()) {
     if (!base::StringToUint(minimum_visits, &payments->min_visits)) {
-      LOG(ERROR) << "StringToUint failed when converting \"settings.payments.minimum-visits\"; unable to convert value \"" << minimum_visits << "\"; defaulting value.";
+      LOG(ERROR) << "StringToUint failed when converting "
+        << "\"settings.payments.minimum-visits\"; unable to convert "
+        << "value \"" << minimum_visits << "\"; defaulting value.";
     }
   }
-  switch (payments->min_visits) {
-    // allowed values
-    case 1:
-    case 5:
-    case 10:
-    break;
 
-    default:
-      payments->min_visits = 1u;
+  if (payments->min_visits != 1 &&
+      payments->min_visits != 5 &&
+      payments->min_visits != 10) {
+    payments->min_visits = 1u;
   }
 
   std::string minumum_visit_time = "";
   TryFindStringKey(settings, "payments.minimum-visit-time", minumum_visit_time);
   if (!minumum_visit_time.empty()) {
     if (!base::StringToUint64(minumum_visit_time, &payments->min_visit_time)) {
-      LOG(ERROR) << "StringToUint64 failed when converting \"settings.payments.minimum-visit-time\"; unable to convert value \"" << minumum_visit_time << "\"; defaulting value.";
+      LOG(ERROR) << "StringToUint64 failed when converting "
+        << "\"settings.payments.minimum-visit-time\"; unable to convert "
+        << "value \"" << minumum_visit_time << "\"; defaulting value.";
     }
   }
   switch (payments->min_visit_time) {
     // allowed values
-    case 5000: payments->min_visit_time = 5; break;
-    case 8000: payments->min_visit_time = 8; break;
-    case 60000: payments->min_visit_time = 60; break;
+    case 5000:
+    case 8000:
+    case 60000:
+      payments->min_visit_time /= 1000;
+      break;
 
     default:
-      payments->min_visit_time = braveledger_ledger::_default_min_publisher_duration;
+      payments->min_visit_time =
+        braveledger_ledger::_default_min_publisher_duration;
   }
 
   return true;
 }
 
-bool ParseExcludedSites(BraveLedger& ledger, const base::Value& session_store_json) {
+bool ParseExcludedSites(BraveLedger& ledger,
+  const base::Value& session_store_json) {
   const base::Value* site_settings = session_store_json.FindKeyOfType(
     "siteSettings",
     base::Value::Type::DICTIONARY);
@@ -458,7 +494,8 @@ bool ParseExcludedSites(BraveLedger& ledger, const base::Value& session_store_js
         // The protocol part can be removed (to get publisher key)
         size_t protocol_index = host_pattern.find("//");
         if (protocol_index != std::string::npos) {
-          ledger.excluded_publishers.push_back(host_pattern.substr(protocol_index + 2));
+          ledger.excluded_publishers.push_back(
+            host_pattern.substr(protocol_index + 2));
         }
       }
     }
@@ -467,12 +504,14 @@ bool ParseExcludedSites(BraveLedger& ledger, const base::Value& session_store_js
   return true;
 }
 
-bool ParsePinnedSites(BraveLedger& ledger, const base::Value& session_store_json) {
+bool ParsePinnedSites(BraveLedger& ledger,
+  const base::Value& session_store_json) {
   const base::Value* publishers = session_store_json.FindPathOfType(
       {"ledger", "synopsis", "publishers"},
       base::Value::Type::DICTIONARY);
   if (!publishers) {
-    LOG(ERROR) << "\"ledger\".\"synopsis\".\"publishers\" not found in session-store-1";
+    LOG(ERROR)
+      << "\"ledger\".\"synopsis\".\"publishers\" not found in session-store-1";
     return false;
   }
 
