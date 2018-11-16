@@ -110,6 +110,7 @@ source_set("browser") {
     "//base",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_shields/browser:brave_shields",
+    "//brave/components/brave_webtorrent/browser",
     "//brave/components/resources",
     "//brave/browser/resources:brave_extension_grit",
     "//chrome/browser",
