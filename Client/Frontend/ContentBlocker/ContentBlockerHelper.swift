@@ -11,7 +11,8 @@ import BraveShared
 private let log = Logger.browserLogger
 
 // Rename to BlockList
-class BlocklistName: Equatable, Hashable {
+class BlocklistName: Hashable, CustomStringConvertible {
+    
     static let ad = BlocklistName(filename: "block-ads")
     static let tracker = BlocklistName(filename: "block-trackers")
     static let https = BlocklistName(filename: "upgrade-http")
@@ -25,6 +26,10 @@ class BlocklistName: Equatable, Hashable {
     
     init(filename: String) {
         self.filename = filename
+    }
+    
+    var description: String {
+        return "<\(type(of: self)): \(self.filename)>"
     }
     
     static func blocklists(forDomain domain: Domain) -> (on: Set<BlocklistName>, off: Set<BlocklistName>) {
@@ -46,6 +51,8 @@ class BlocklistName: Equatable, Hashable {
         if include(domainSetting: domain.shield_noScript, globalValue: Preferences.Shields.blockScripts) {
             onList.insert(.script)
         }
+        
+        // For lists not implemented, always return exclude from `onList` to prevent accidental execution
         
         // TODO #159: Setup image shield
         // TODO #269: Setup HTTPS shield
