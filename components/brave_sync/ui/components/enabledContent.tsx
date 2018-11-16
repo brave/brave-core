@@ -99,7 +99,9 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
   }
 
   onSyncReset = () => {
-    this.props.actions.onSyncReset()
+    if (window.confirm(getLocale('areYouSure'))) {
+      this.props.actions.onSyncReset()
+    }
   }
 
   onToggleSyncThisDevice = (event: React.ChangeEvent<HTMLInputElement>) => {
