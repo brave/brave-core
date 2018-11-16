@@ -42,7 +42,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
 AdsImpl::~AdsImpl() = default;
 
 void AdsImpl::GenerateAdReportingNotificationShownEvent(
-    const NotificationShownInfo& info) {
+    const NotificationInfo& info) {
   if (!boot_) {
     boot_ = true;
 
@@ -70,17 +70,17 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
   writer.String("notificationClassification");
   writer.StartArray();
   std::vector<std::string> classifications;
-  helper::String::Split(info.classification, '-', &classifications);
+  helper::String::Split(info.category, '-', &classifications);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
   writer.EndArray();
 
   writer.String("notificationCatalog");
-  if (info.catalog.empty()) {
+  if (info.creative_set_id.empty()) {
     writer.String("sample-catalog");
   } else {
-    writer.String(info.catalog.c_str());
+    writer.String(info.creative_set_id.c_str());
   }
 
   writer.String("notificationUrl");
@@ -93,7 +93,8 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 }
 
 void AdsImpl::GenerateAdReportingNotificationResultEvent(
-    const NotificationResultInfo& info) {
+    const NotificationInfo& info,
+    const NotificationResultInfoResultType type) {
   if (!boot_) {
     boot_ = true;
 
@@ -116,16 +117,16 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("notificationType");
-  switch (info.result_type) {
+  switch (type) {
     case NotificationResultInfoResultType::CLICKED: {
       writer.String("clicked");
-      client_->UpdateAdsUUIDSeen(info.id, 1);
+      client_->UpdateAdsUUIDSeen(info.uuid, 1);
       break;
     }
 
     case NotificationResultInfoResultType::DISMISSED: {
       writer.String("dismissed");
-      client_->UpdateAdsUUIDSeen(info.id, 1);
+      client_->UpdateAdsUUIDSeen(info.uuid, 1);
       break;
     }
 
@@ -138,17 +139,17 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   writer.String("notificationClassification");
   writer.StartArray();
   std::vector<std::string> classifications;
-  helper::String::Split(info.classification, '-', &classifications);
+  helper::String::Split(info.category, '-', &classifications);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
   writer.EndArray();
 
   writer.String("notificationCatalog");
-  if (info.catalog.empty()) {
+  if (info.creative_set_id.empty()) {
     writer.String("sample-catalog");
   } else {
-    writer.String(info.catalog.c_str());
+    writer.String(info.creative_set_id.c_str());
   }
 
   writer.String("notificationUrl");
@@ -161,7 +162,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 }
 
 void AdsImpl::GenerateAdReportingSustainEvent(
-    const SustainInfo& info) {
+    const NotificationInfo& info) {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
@@ -178,7 +179,7 @@ void AdsImpl::GenerateAdReportingSustainEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("notificationId");
-  writer.String(info.notification_id.c_str());
+  writer.String(info.uuid.c_str());
 
   writer.String("notificationType");
   writer.String("viewed");
@@ -233,6 +234,16 @@ void AdsImpl::InitializeStep3() {
   ads_serve_->DownloadCatalog();
 }
 
+bool AdsImpl::IsInitialized() {
+  if (!initialized_ ||
+      !ads_client_->IsAdsEnabled() ||
+      !user_model_->IsInitialized()) {
+    return false;
+  }
+
+  return true;
+}
+
 void AdsImpl::AppFocused(const bool is_focused) {
   app_focused_ = is_focused;
 
@@ -243,9 +254,13 @@ void AdsImpl::AppFocused(const bool is_focused) {
   }
 }
 
+bool AdsImpl::IsAppFocused() const {
+  return app_focused_;
+}
+
 void AdsImpl::TabUpdated(
-    const std::string& tab_id,
-      const std::string& url,
+    const uint32_t tab_id,
+    const std::string& url,
     const bool is_active,
     const bool is_incognito) {
   if (is_incognito) {
@@ -259,38 +274,40 @@ void AdsImpl::TabUpdated(
   load_info.tab_url = url;
   GenerateAdReportingLoadEvent(load_info);
 
-  if (!is_active) {
+  if (is_active) {
+    TestShoppingData(url);
+    TestSearchState(url);
+
+    FocusInfo focus_info;
+    focus_info.tab_id = tab_id;
+    GenerateAdReportingFocusEvent(focus_info);
+  } else {
     BlurInfo blur_info;
     blur_info.tab_id = tab_id;
     GenerateAdReportingBlurEvent(blur_info);
   }
 }
 
-void AdsImpl::TabSwitched(
-    const std::string& tab_id,
-    const std::string& url,
-    const bool is_incognito) {
-  if (is_incognito) {
-    return;
-  }
+void AdsImpl::TabClosed(const uint32_t tab_id) {
+  RecordMediaPlaying(tab_id, false);
 
-  TabUpdated(tab_id, url, true, is_incognito);
-  TestShoppingData(url);
-  TestSearchState(url);
-
-  FocusInfo focus_info;
-  focus_info.tab_id = tab_id;
-  GenerateAdReportingFocusEvent(focus_info);
-}
-
-void AdsImpl::TabClosed(const std::string& tab_id) {
   DestroyInfo destroy_info;
   destroy_info.tab_id = tab_id;
   GenerateAdReportingDestroyEvent(destroy_info);
 }
 
-void AdsImpl::RecordUnIdle() {
+void AdsImpl::RecordUnIdle(const bool unidle) {
+  // TODO(Terry Mancey): Implement Log (#44)
+  // 'Idle state changed', { idleState: action.get('idleState') }
+
+  if (unidle == false) {
+    return;
+  }
+
   client_->UpdateLastUserIdleStopTime();
+  if (client_->GetAllowed()) {
+    CheckReadyAdServe();
+  }
 }
 
 void AdsImpl::RemoveAllHistory() {
@@ -308,7 +325,7 @@ void AdsImpl::SaveCachedInfo() {
 }
 
 void AdsImpl::RecordMediaPlaying(
-    const std::string& tab_id,
+    const uint32_t tab_id,
     const bool is_playing) {
   auto tab = media_playing_.find(tab_id);
 
@@ -321,6 +338,14 @@ void AdsImpl::RecordMediaPlaying(
       media_playing_.erase(tab_id);
     }
   }
+}
+
+bool AdsImpl::IsMediaPlaying() const {
+  if (media_playing_.empty()) {
+    return false;
+  }
+
+  return true;
 }
 
 void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
@@ -375,7 +400,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   }
 
   if (!forced) {
-    if (!app_focused_) {
+    if (!IsAppFocused()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not in foreground' }
       return;
@@ -457,16 +482,6 @@ void AdsImpl::OnTimer(const uint32_t timer_id) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-
-bool AdsImpl::IsInitialized() {
-  if (!initialized_ ||
-      !ads_client_->IsAdsEnabled() ||
-      !user_model_->IsInitialized()) {
-    return false;
-  }
-
-  return true;
-}
 
 void AdsImpl::Deinitialize() {
   if (!initialized_) {
@@ -721,14 +736,6 @@ void AdsImpl::TestSearchState(const std::string& url) {
   }
 }
 
-bool AdsImpl::IsMediaPlaying() const {
-  if (media_playing_.empty()) {
-    return false;
-  }
-
-  return true;
-}
-
 void AdsImpl::ProcessLocales(const std::vector<std::string>& locales) {
   if (locales.empty()) {
     return;
@@ -820,6 +827,7 @@ bool AdsImpl::ShowAd(
   notification_info->category = category;
   notification_info->text = ad_info.notification_text;
   notification_info->url = ad_info.notification_url;
+  notification_info->creative_set_id = ad_info.creative_set_id;
   notification_info->uuid = ad_info.uuid;
 
   ads_client_->ShowNotification(std::move(notification_info));
@@ -855,7 +863,7 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
 }
 
 void AdsImpl::GenerateAdReportingLoadEvent(
-    const LoadInfo info) {
+    const LoadInfo& info) {
   UrlComponents components;
 
   if (ads_client_->GetUrlComponents(info.tab_url, &components) ||
@@ -879,7 +887,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
-  writer.String(info.tab_id.c_str());
+  writer.Uint(info.tab_id);
 
   writer.String("tabType");
   if (client_->GetSearchState()) {
@@ -994,7 +1002,7 @@ void AdsImpl::GenerateAdReportingBlurEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
-  writer.String(info.tab_id.c_str());
+  writer.Uint(info.tab_id);
 
   writer.EndObject();
 
@@ -1013,14 +1021,14 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
   writer.StartObject();
 
   writer.String("type");
-  writer.String("focus");
+  writer.String("destroy");
 
   writer.String("stamp");
   std::string time_stamp = helper::Time::TimeStamp();
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
-  writer.String(info.tab_id.c_str());
+  writer.Uint(info.tab_id);
 
   writer.EndObject();
 
@@ -1046,7 +1054,7 @@ void AdsImpl::GenerateAdReportingFocusEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
-  writer.String(info.tab_id.c_str());
+  writer.Uint(info.tab_id);
 
   writer.EndObject();
 

@@ -79,10 +79,7 @@ source_set("ads") {
     "src/bat/ads/ad_info.cc",
     "src/bat/ads/callback_handler.cc",
     "src/bat/ads/notification_info.cc",
-    "src/bat/ads/notification_result_info.cc",
-    "src/bat/ads/event_type_sustain_info.cc",
     "src/bat/ads/client_info.cc",
-    "src/bat/ads/event_type_notification_shown_info.cc",
     "src/bat/ads/url_components.cc",
   ]
 

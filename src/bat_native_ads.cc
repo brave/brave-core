@@ -4,6 +4,7 @@
 
 #include "bat_native_ads.h"
 #include "mock_ads_client.h"
+#include "bat/ads/notification_info.h"
 #include "bat/ads/ads.h"
 
 int main() {
@@ -19,13 +20,15 @@ int main() {
 
   ads.ChangeLocale("fr");
 
+  ads.RecordUnIdle(false);
+
   ads.AppFocused(true);
 
-  ads.TabUpdated("1", "https://brave.com", true, false);
+  ads.TabUpdated(1, "https://brave.com", true, false);
 
-  ads.RecordUnIdle();
+  ads.RecordUnIdle(true);
 
-  ads.RecordMediaPlaying("Test Tab", true);
+  ads.RecordMediaPlaying(1, true);
 
   ads.ClassifyPage("https://www.jewelry.com",
     "Jewellery (British English) or jewelry (American English)[1] consists of s"
@@ -39,8 +42,8 @@ int main() {
 
   ads.ServeSampleAd();
 
-  ads.RecordMediaPlaying("Test Tab", false);
-  ads.RecordMediaPlaying("Non Existant Tab", false);
+  ads.RecordMediaPlaying(1, false);
+  ads.RecordMediaPlaying(2, false);
 
   ads.ServeSampleAd();
 
@@ -116,27 +119,22 @@ int main() {
 
   ads.CheckReadyAdServe();
 
-  ads.TabSwitched("1", "https://brave.com", false);
-  ads.TabClosed("1");
+  ads.TabClosed(1);
 
-  ads::NotificationShownInfo notification_shown_info;
-  notification_shown_info.catalog = "sample-catalog";
-  notification_shown_info.url = "https://brave.com/features";
-  notification_shown_info.classification = "technology & computing-software";
-  ads.GenerateAdReportingNotificationShownEvent(notification_shown_info);
+  ads::NotificationInfo notification_info;
+  notification_info.category = "technology & computing-software";
+  notification_info.advertiser = "Brave";
+  notification_info.text = "You are not a product";
+  notification_info.url = "https://brave.com";
+  notification_info.creative_set_id = "3d1552ef-bc0d-4818-8d57-37a22b480916";
+  notification_info.uuid = "17fa8724-9f09-4731-9b87-1a18a2bf62e8";
 
-  ads::NotificationResultInfo notification_result_info;
-  notification_result_info.id = "7f4ec8a6-3535-4f92-9ec5-e7de7ab631d2";
-  notification_result_info.result_type =
-    ads::NotificationResultInfoResultType::CLICKED;
-  notification_result_info.catalog = "a3cd25e99647957ca54c18cb52e0784e1dd6584d";
-  notification_result_info.url = "https://brave.com/features";
-  notification_result_info.classification = "technology & computing-software";
-  ads.GenerateAdReportingNotificationResultEvent(notification_result_info);
+  ads.GenerateAdReportingNotificationShownEvent(notification_info);
 
-  ads::SustainInfo sustain_info;
-  sustain_info.notification_id = "7f4ec8a6-3535-4f92-9ec5-e7de7ab631d2";
-  ads.GenerateAdReportingSustainEvent(sustain_info);
+  auto type = ads::NotificationResultInfoResultType::CLICKED;
+  ads.GenerateAdReportingNotificationResultEvent(notification_info, type);
+
+  ads.GenerateAdReportingSustainEvent(notification_info);
 
   delete mock_ads_client;
   mock_ads_client = nullptr;

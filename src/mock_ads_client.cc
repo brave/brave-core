@@ -44,14 +44,11 @@ uint64_t MockAdsClient::GetAdsPerDay() const {
   return 20;
 }
 
-const ClientInfo MockAdsClient::GetClientInfo() const {
-  ClientInfo client_info;
-  client_info.application_version = "1.0";
+void MockAdsClient::GetClientInfo(ClientInfo* info) const {
+  info->application_version = "1.0";
 
-  client_info.platform = "all";
-  client_info.platform_version = "1.0";
-
-  return client_info;
+  info->platform = "all";
+  info->platform_version = "1.0";
 }
 
 const std::vector<std::string> MockAdsClient::GetLocales() const {
@@ -68,7 +65,7 @@ const std::string MockAdsClient::GetSSID() const {
 }
 
 void MockAdsClient::ShowNotification(
-    const std::unique_ptr<NotificationInfo> info) {
+    std::unique_ptr<NotificationInfo> info) {
   std::cout << std::endl << "------------------------------------------------";
   std::cout << std::endl << "Notification:";
   std::cout << std::endl << info->advertiser;

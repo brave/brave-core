@@ -7,10 +7,9 @@
 #include <string>
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/event_type_notification_shown_info.h"
-#include "bat/ads/event_type_sustain_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/notification_result_info.h"
+#include "bat/ads/notification_result_type.h"
+#include "bat/ads/notification_info.h"
 
 namespace ads {
 
@@ -31,17 +30,18 @@ class ADS_EXPORT Ads {
 
   // Should be called when a notification has been shown on the Client
   virtual void GenerateAdReportingNotificationShownEvent(
-      const NotificationShownInfo& info) = 0;
+      const NotificationInfo& info) = 0;
 
   // Should be called when a notification has been clicked, dismissed or times
   // out on the Client
   virtual void GenerateAdReportingNotificationResultEvent(
-      const NotificationResultInfo& info) = 0;
+      const NotificationInfo& info,
+      const NotificationResultInfoResultType type) = 0;
 
   // Should be called when a notification has been viewed for an extended period
   // without interruption on the Client
   virtual void GenerateAdReportingSustainEvent(
-      const SustainInfo& info) = 0;
+      const NotificationInfo& info) = 0;
 
   // Should be called to initialize ads
   virtual void Initialize() = 0;
@@ -51,22 +51,16 @@ class ADS_EXPORT Ads {
 
   // Should be called to record user activity on a tab
   virtual void TabUpdated(
-      const std::string& tab_id,
+      const uint32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) = 0;
 
-  // Should be called to record when a user switches tab
-  virtual void TabSwitched(
-      const std::string& tab_id,
-      const std::string& url,
-      const bool is_incognito) = 0;
-
   // Should be called to record when a user closes a tab
-  virtual void TabClosed(const std::string& tab_id) = 0;
+  virtual void TabClosed(const uint32_t tab_id) = 0;
 
-  // Should be called to record when a user is no longer idle
-  virtual void RecordUnIdle() = 0;
+  // Should be called to record when idle state changes
+  virtual void RecordUnIdle(const bool unidle) = 0;
 
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;
@@ -78,7 +72,7 @@ class ADS_EXPORT Ads {
   // Should be called to record when a tab has stopped, paused or started
   // playing media (A/V)
   virtual void RecordMediaPlaying(
-      const std::string& tab_id,
+      const uint32_t tab_id,
       const bool is_playing) = 0;
 
   // Should be called when a page is completely loaded and the body is available

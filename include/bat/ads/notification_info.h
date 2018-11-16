@@ -17,6 +17,7 @@ struct ADS_EXPORT NotificationInfo {
   std::string advertiser;
   std::string text;
   std::string url;
+  std::string creative_set_id;
   std::string uuid;
 };
 

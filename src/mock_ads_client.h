@@ -20,9 +20,8 @@
 namespace ads {
 
 class Ads;
-class CallbackHandler;
 
-class MockAdsClient : public AdsClient, CallbackHandler {
+class MockAdsClient : public AdsClient {
  public:
   MockAdsClient();
   ~MockAdsClient() override;
@@ -36,7 +35,7 @@ class MockAdsClient : public AdsClient, CallbackHandler {
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
 
-  const ClientInfo GetClientInfo() const override;
+  void GetClientInfo(ClientInfo *client_info) const override;
 
   const std::vector<std::string> GetLocales() const override;
 
@@ -44,7 +43,7 @@ class MockAdsClient : public AdsClient, CallbackHandler {
 
   const std::string GetSSID() const override;
 
-  void ShowNotification(const std::unique_ptr<NotificationInfo> info) override;
+  void ShowNotification(std::unique_ptr<NotificationInfo> info) override;
 
   uint32_t SetTimer(const uint64_t& time_offset) override;
   void KillTimer(const uint32_t timer_id) override;

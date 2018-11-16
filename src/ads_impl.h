@@ -17,9 +17,8 @@
 #include "event_type_destroy_info.h"
 #include "event_type_focus_info.h"
 #include "event_type_load_info.h"
-#include "bat/ads/event_type_notification_shown_info.h"
-#include "bat/ads/event_type_sustain_info.h"
-#include "bat/ads/notification_result_info.h"
+#include "bat/ads/notification_result_type.h"
+#include "bat/ads/notification_info.h"
 #include "client.h"
 #include "bundle.h"
 
@@ -30,7 +29,7 @@ class Client;
 class Bundle;
 class AdsServe;
 
-class AdsImpl : public Ads, CallbackHandler {
+class AdsImpl : public Ads {
  public:
   explicit AdsImpl(AdsClient* ads_client);
   ~AdsImpl() override;
@@ -40,31 +39,31 @@ class AdsImpl : public Ads, CallbackHandler {
   AdsImpl& operator=(const AdsImpl&) = delete;
 
   void GenerateAdReportingNotificationShownEvent(
-      const NotificationShownInfo& info) override;
+      const NotificationInfo& info) override;
   void GenerateAdReportingNotificationResultEvent(
-      const NotificationResultInfo& info) override;
+      const NotificationInfo& info,
+      const NotificationResultInfoResultType type) override;
   void GenerateAdReportingSustainEvent(
-      const SustainInfo& info) override;
+      const NotificationInfo& info) override;
   void Initialize() override;
   void InitializeStep2();
   void InitializeStep3();
+  bool IsInitialized();
   void AppFocused(const bool is_focused) override;
+  bool IsAppFocused() const;
   void TabUpdated(
-      const std::string& tab_id,
+      const uint32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-  void TabSwitched(
-      const std::string& tab_id,
-      const std::string& url,
-      const bool is_incognito) override;
-  void TabClosed(const std::string& tab_id) override;
-  void RecordUnIdle() override;
+  void TabClosed(const uint32_t tab_id) override;
+  void RecordUnIdle(const bool undle) override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
   void RecordMediaPlaying(
-      const std::string& tab_id,
+      const uint32_t tab_id,
       const bool is_playing) override;
+  bool IsMediaPlaying() const;
   void ClassifyPage(const std::string& url, const std::string& html) override;
   void ChangeLocale(const std::string& locale) override;
   void CheckReadyAdServe(const bool forced = false) override;
@@ -80,14 +79,14 @@ class AdsImpl : public Ads, CallbackHandler {
 
   void OnTimer(const uint32_t timer_id) override;
 
- private:
+///////////////////////////////////////////////////////////////////////////////
+
   bool boot_;
 
-  bool app_focused_;
-
   bool initialized_;
-  bool IsInitialized();
   void Deinitialize();
+
+  bool app_focused_;
 
   void LoadUserModel();
   void OnUserModelLoaded(const Result result, const std::string& json);
@@ -121,8 +120,7 @@ class AdsImpl : public Ads, CallbackHandler {
   void TestShoppingData(const std::string& url);
   void TestSearchState(const std::string& url);
 
-  std::map<std::string, bool> media_playing_;
-  bool IsMediaPlaying() const;
+  std::map<uint32_t, bool> media_playing_;
 
   void ProcessLocales(const std::vector<std::string>& locales);
   void ServeAdFromCategory(
@@ -137,7 +135,7 @@ class AdsImpl : public Ads, CallbackHandler {
       const uint64_t allowable_ad_count) const;
 
   uint64_t next_easter_egg_;
-  void GenerateAdReportingLoadEvent(const LoadInfo info);
+  void GenerateAdReportingLoadEvent(const LoadInfo& info);
   void GenerateAdReportingBackgroundEvent();
   void GenerateAdReportingForegroundEvent();
   void GenerateAdReportingBlurEvent(const BlurInfo& info);

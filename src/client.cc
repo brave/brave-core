@@ -148,6 +148,10 @@ void Client::UpdateLastUserActivity() {
   client_state_->last_user_activity = helper::Time::Now();
 }
 
+uint64_t Client::GetLastUserActivity() {
+  return client_state_->last_user_activity;
+}
+
 void Client::UpdateLastUserIdleStopTime() {
   client_state_->last_user_idle_stop_time = helper::Time::Now();
 }

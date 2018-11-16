@@ -2,11 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/event_type_sustain_info.h"
+#pragma once
+
+#include <string>
+
+#include "bat/ads/export.h"
 
 namespace ads {
 
-SustainInfo::SustainInfo() :
-    notification_id("") {}
+enum ADS_EXPORT NotificationResultInfoResultType {
+  CLICKED,
+  DISMISSED,
+  TIMEOUT
+};
 
 }  // namespace ads

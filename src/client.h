@@ -47,6 +47,7 @@ class Client: public CallbackHandler {
   void UnflagSearchState(const std::string &url);
   bool GetSearchState();
   void UpdateLastUserActivity();
+  uint64_t GetLastUserActivity();
   void UpdateLastUserIdleStopTime();
   void SetLocale(const std::string& locale);
   const std::string GetLocale();

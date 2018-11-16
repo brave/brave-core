@@ -53,7 +53,7 @@ class ADS_EXPORT AdsClient {
   virtual uint64_t GetAdsPerDay() const = 0;
 
   // Gets information about the client
-  virtual const ClientInfo GetClientInfo() const = 0;
+  virtual void GetClientInfo(ClientInfo* info) const = 0;
 
   // Gets available locales
   virtual const std::vector<std::string> GetLocales() const = 0;
@@ -66,7 +66,7 @@ class ADS_EXPORT AdsClient {
 
   // Shows the notification
   virtual void ShowNotification(
-      const std::unique_ptr<NotificationInfo> info) = 0;
+      std::unique_ptr<NotificationInfo> info) = 0;
 
   // Creates a timer with the specified id and time-offset
   virtual uint32_t SetTimer(const uint64_t& time_offset) = 0;

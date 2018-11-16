@@ -24,7 +24,8 @@ AdsServe::AdsServe(
 AdsServe::~AdsServe() = default;
 
 void AdsServe::BuildUrl() {
-  ClientInfo client_info = ads_client_->GetClientInfo();
+  ClientInfo client_info;
+  ads_client_->GetClientInfo(&client_info);
 
   url_ = _is_production ? PRODUCTION_SERVER : STAGING_SERVER;
   url_ += CATALOG_PATH;
