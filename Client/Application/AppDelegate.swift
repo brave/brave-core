@@ -69,7 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     @discardableResult fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
         log.info("startApplication begin")
         
-        Preferences.AppState.backgroundedCleanly.value = false
         
         // Set the Firefox UA for browsing.
         setUserAgent()
@@ -114,10 +113,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
         // Make sure current private browsing flag respects the private browsing only user preference
         PrivateBrowsingManager.shared.isPrivateBrowsing = Preferences.Privacy.privateBrowsingOnly.value
-
+        
         // Don't track crashes if we're building the development environment due to the fact that terminating/stopping
         // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
         let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.BuildChannel != .developer
+        Preferences.AppState.backgroundedCleanly.value = false
         browserViewController = BrowserViewController(profile: self.profile!, tabManager: self.tabManager, crashedLastSession: crashedLastSession)
         browserViewController.edgesForExtendedLayout = []
 
