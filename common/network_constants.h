@@ -8,6 +8,7 @@ extern const char kBraveReferralsHeadersPath[];
 extern const char kBraveReferralsInitPath[];
 extern const char kBraveReferralsActivityPath[];
 
+extern const char kCRXDownloadPrefix[];
 extern const char kEmptyDataURI[];
 extern const char kEmptyImageDataURI[];
 extern const char kJSDataURLPrefix[];
@@ -17,6 +18,8 @@ extern const char kGoogleTagServicesPattern[];
 extern const char kForbesPattern[];
 extern const char kForbesExtraCookies[];
 extern const char kSafeBrowsingPrefix[];
+extern const char kCRLSetPrefix1[];
+extern const char kCRLSetPrefix2[];
 extern const char kTwitterPattern[];
 extern const char kTwitterReferrer[];
 extern const char kTwitterRedirectURL[];
