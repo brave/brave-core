@@ -189,8 +189,11 @@ class ContentBlockerHelper {
             if stats.total <= 1 {
                 TabEvent.post(.didChangeContentBlocking, for: tab)
             }
+            statsDidChange?(stats)
         }
     }
+    
+    var statsDidChange: ((TPPageStats) -> Void)?
 
     static private var blockImagesRule: WKContentRuleList?
     static var heavyInitHasRunOnce = false
