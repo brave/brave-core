@@ -21,12 +21,6 @@ extension Strings {
     public static let ThirdPartySearchFailedTitle = NSLocalizedString("ThirdPartySearchFailedTitle", value: "Failed", comment: "A title explaining that we failed to add a search engine")
 }
 
-//  PhotonActionSheet Strings
-extension Strings {
-    public static let CloseButtonTitle = NSLocalizedString("CloseButtonTitle", value: "Close", comment: "Button for closing the menu action sheet")
-
-}
-
 // Settings.
 extension Strings {
     public static let SettingsGeneralSectionTitle = NSLocalizedString("SettingsGeneralSectionTitle", value: "General", comment: "General settings section title")
@@ -42,11 +36,6 @@ extension Strings {
     public static let LoginsHelperDontSaveButtonTitle = NSLocalizedString("LoginsHelperDontSaveButtonTitle", value: "Don’t Save", comment: "Button to not save the user's password")
     public static let LoginsHelperUpdateButtonTitle = NSLocalizedString("LoginsHelperUpdateButtonTitle", value: "Update", comment: "Button to update the user's password")
     public static let LoginsHelperDontUpdateButtonTitle = NSLocalizedString("LoginsHelperDontUpdateButtonTitle", value: "Don’t Update", comment: "Button to not update the user's password")
-}
-
-// History Panel
-extension Strings {
-    public static let HistoryBackButtonTitle = NSLocalizedString("HistoryBackButtonTitle", value: "History", comment: "Title for the Back to History button in the History Panel")
 }
 
 // Firefox Logins
@@ -162,7 +151,7 @@ extension Strings {
 // errors
 extension Strings {
     public static let UnableToAddPassErrorTitle = NSLocalizedString("UnableToAddPassErrorTitle", value: "Failed to Add Pass", comment: "Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet.")
-    public static let UnableToAddPassErrorMessage = NSLocalizedString("UnableToAddPassErrorMessage", value: "An error occured while adding the pass to Wallet. Please try again later.", comment: "Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet.")
+    public static let UnableToAddPassErrorMessage = NSLocalizedString("UnableToAddPassErrorMessage", value: "An error occurred while adding the pass to Wallet. Please try again later.", comment: "Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet.")
     public static let UnableToAddPassErrorDismiss = NSLocalizedString("UnableToAddPassErrorDismiss", value: "OK", comment: "Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet.")
     public static let UnableToOpenURLError = NSLocalizedString("UnableToOpenURLError", value: "Firefox cannot open the page because it has an invalid address.", comment: "The message displayed to a user when they try to open a URL that cannot be handled by Firefox, or any external app.")
     public static let UnableToOpenURLErrorTitle = NSLocalizedString("UnableToOpenURLErrorTitle", value: "Cannot Open Page", comment: "Title of the message shown when the user attempts to navigate to an invalid link.")
@@ -230,7 +219,6 @@ extension Strings {
     public static let CloseAllTabsFromTabTrayKeyCodeTitle = NSLocalizedString("CloseAllTabsFromTabTrayKeyCodeTitle", value: "Close All Tabs", comment: "Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
     public static let OpenSelectedTabFromTabTrayKeyCodeTitle = NSLocalizedString("OpenSelectedTabFromTabTrayKeyCodeTitle", value: "Open Selected Tab", comment: "Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
     public static let OpenNewTabFromTabTrayKeyCodeTitle = NSLocalizedString("OpenNewTabFromTabTrayKeyCodeTitle", value: "Open New Tab", comment: "Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
-    public static let ReopenClosedTabKeyCodeTitle = NSLocalizedString("ReopenClosedTabKeyCodeTitle", value: "Reopen Closed Tab", comment: "Hardware shortcut to reopen the last closed tab, from the tab or the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
     public static let SwitchToPBMKeyCodeTitle = NSLocalizedString("SwitchToPBMKeyCodeTitle", value: "Private Browsing Mode", comment: "Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down.")
     public static let SwitchToNonPBMKeyCodeTitle = NSLocalizedString("SwitchToNonPBMKeyCodeTitle", value: "Normal Browsing Mode", comment: "Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down.")
 }

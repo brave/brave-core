@@ -266,16 +266,6 @@ public extension Strings {
     
     public static let AuthenticationImmediately = NSLocalizedString("AuthenticationImmediately", tableName: "BraveShared", value: "Immediately", comment: "Immediately' interval item for selecting when to require passcode")
     
-    public static let AuthenticationOneMinute = NSLocalizedString("AuthenticationOneMinute", tableName: "BraveShared", value: "After 1 minute", comment: "After 1 minute' interval item for selecting when to require passcode")
-    
-    public static let AuthenticationFiveMinutes = NSLocalizedString("AuthenticationFiveMinutes", tableName: "BraveShared", value: "After 5 minutes", comment: "After 5 minutes' interval item for selecting when to require passcode")
-    
-    public static let AuthenticationTenMinutes = NSLocalizedString("AuthenticationTenMinutes", tableName: "BraveShared", value: "After 10 minutes", comment: "After 10 minutes' interval item for selecting when to require passcode")
-    
-    public static let AuthenticationFifteenMinutes = NSLocalizedString("AuthenticationFifteenMinutes", tableName: "BraveShared", value: "After 15 minutes", comment: "After 15 minutes' interval item for selecting when to require passcode")
-    
-    public static let AuthenticationOneHour = NSLocalizedString("AuthenticationOneHour", tableName: "BraveShared", value: "After 1 hour", comment: "After 1 hour' interval item for selecting when to require passcode")
-    
     public static let AuthenticationLoginsTouchReason = NSLocalizedString("AuthenticationLoginsTouchReason", tableName: "BraveShared", value: "Use your fingerprint to access Logins now.", comment: "Touch ID prompt subtitle when accessing logins")
     
     public static let AuthenticationRequirePasscodeTouchReason = NSLocalizedString("AuthenticationRequirePasscodeTouchReason", tableName: "BraveShared", value: "Use your fingerprint to access configuring your required passcode interval.", comment: "Touch ID prompt subtitle when accessing the require passcode setting")
