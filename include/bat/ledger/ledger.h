@@ -191,6 +191,7 @@ class LEDGER_EXPORT Ledger {
                                           const int year,
                                           const uint32_t date) = 0;
   virtual void RemoveRecurring(const std::string& publisher_key) = 0;
+  virtual double GetDefaultContributionAmount() = 0;
 };
 
 }  // namespace ledger
