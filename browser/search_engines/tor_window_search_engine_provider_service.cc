@@ -2,18 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/tor_window_search_engine_provider_controller.h"
+#include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 
-#include "brave/browser/search_engine_provider_util.h"
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
-TorWindowSearchEngineProviderController::
-TorWindowSearchEngineProviderController(Profile* otr_profile)
-    : SearchEngineProviderControllerBase(otr_profile) {
+TorWindowSearchEngineProviderService::
+TorWindowSearchEngineProviderService(Profile* otr_profile)
+    : SearchEngineProviderService(otr_profile) {
   DCHECK(otr_profile->IsTorProfile());
   DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
 
@@ -35,18 +35,18 @@ TorWindowSearchEngineProviderController(Profile* otr_profile)
   otr_template_url_service_->AddObserver(this);
 }
 
-TorWindowSearchEngineProviderController::
-~TorWindowSearchEngineProviderController() {
+TorWindowSearchEngineProviderService::
+~TorWindowSearchEngineProviderService() {
   otr_template_url_service_->RemoveObserver(this);
 }
 
-void TorWindowSearchEngineProviderController::OnTemplateURLServiceChanged() {
+void TorWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   alternative_search_engine_provider_in_tor_.SetValue(
      otr_template_url_service_->GetDefaultSearchProvider()->
          data().prepopulate_id);
 }
 
-int TorWindowSearchEngineProviderController::
+int TorWindowSearchEngineProviderService::
 GetInitialSearchEngineProvider() const {
   int initial_id = alternative_search_engine_provider_in_tor_.GetValue();
 

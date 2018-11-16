@@ -2,14 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/private_window_search_engine_provider_controller.h"
+#include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 
 #include "chrome/browser/profiles/profile.h"
 #include "components/search_engines/template_url_service.h"
 
-PrivateWindowSearchEngineProviderController::
-PrivateWindowSearchEngineProviderController(Profile* otr_profile)
-    : SearchEngineProviderControllerBase(otr_profile) {
+PrivateWindowSearchEngineProviderService::
+PrivateWindowSearchEngineProviderService(Profile* otr_profile)
+    : SearchEngineProviderService(otr_profile) {
   DCHECK_EQ(otr_profile->GetProfileType(), Profile::INCOGNITO_PROFILE);
 
   // Monitor normal profile's search engine changing because private window
@@ -19,12 +19,12 @@ PrivateWindowSearchEngineProviderController(Profile* otr_profile)
   ConfigureSearchEngineProvider();
 }
 
-PrivateWindowSearchEngineProviderController::
-~PrivateWindowSearchEngineProviderController() {
+PrivateWindowSearchEngineProviderService::
+~PrivateWindowSearchEngineProviderService() {
   original_template_url_service_->RemoveObserver(this);
 }
 
-void PrivateWindowSearchEngineProviderController::
+void PrivateWindowSearchEngineProviderService::
 ConfigureSearchEngineProvider() {
   UseAlternativeSearchEngineProvider()
       ? ChangeToAlternativeSearchEngineProvider()
@@ -32,7 +32,7 @@ ConfigureSearchEngineProvider() {
 }
 
 void
-PrivateWindowSearchEngineProviderController::OnTemplateURLServiceChanged() {
+PrivateWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   // If private window uses alternative, search provider changing of normal
   // profile should not affect private window's provider.
   if (UseAlternativeSearchEngineProvider())

@@ -4,7 +4,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/search_engine_provider_util.h"
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -20,7 +20,7 @@
 #include "components/search_engines/template_url_service_observer.h"
 #include "content/public/test/test_utils.h"
 
-using SearchEngineProviderControllerTest = InProcessBrowserTest;
+using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
@@ -31,7 +31,7 @@ TemplateURLData CreateTestSearchEngine() {
 }
 
 // In Qwant region, alternative search engine prefs isn't used.
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowPrefTestWithNonQwantRegion) {
   Profile* profile = browser()->profile();
   Profile* incognito_profile = profile->GetOffTheRecordProfile();
@@ -80,7 +80,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
 }
 
 // For qwant region, just check that both profile uses same provider.
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateWindowTestWithQwantRegion) {
   Profile* profile = browser()->profile();
   Profile* incognito_profile = profile->GetOffTheRecordProfile();
@@ -117,7 +117,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
 
 // Check crash isn't happened with multiple private window is used.
 // https://github.com/brave/brave-browser/issues/1452
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        MultiplePrivateWindowTest) {
   Browser* private_window_1 = CreateIncognitoBrowser();
   CloseBrowserSynchronously(private_window_1);
@@ -127,7 +127,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
 }
 
 // Checks the default search engine of the tor profile.
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_CheckDefaultTorProfileSearchProviderTest) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
 
@@ -156,7 +156,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
 }
 
 // Check changed provider in tor profile is retained across the sessions.
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        CheckDefaultTorProfileSearchProviderTest) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;
 
@@ -174,7 +174,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
 }
 
 // Check ddg toggle button state is changed by user's settings change.
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderControllerTest,
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        GuestWindowControllerTest) {
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
   content::RunAllTasksUntilIdle();

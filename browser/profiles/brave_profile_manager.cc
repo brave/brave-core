@@ -112,7 +112,7 @@ void BraveProfileManager::LaunchTorProcess(Profile* profile) {
 }
 
 // This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.
-// W/o this, prefs set by GuestWindowSearchEngineProviderController is cleared
+// W/o this, prefs set by TorWindowSearchEngineProviderService is cleared
 // during the initialization.
 void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
   PrefService* prefs = profile->GetPrefs();

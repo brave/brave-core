@@ -4,6 +4,7 @@
 
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
+#include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
@@ -14,6 +15,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_rewards::RewardsServiceFactory::GetInstance();
   brave_sync::BraveSyncServiceFactory::GetInstance();
   TorProfileServiceFactory::GetInstance();
+  SearchEngineProviderServiceFactory::GetInstance();
 }
 
 }  // namespace brave

@@ -12,7 +12,6 @@
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/search_engine_provider_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
@@ -32,8 +31,7 @@ BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
 }
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(ChromeFeatureListCreator* chrome_feature_list_creator)
-    : BrowserProcessImpl(chrome_feature_list_creator),
-      search_engine_provider_service_(new SearchEngineProviderService) {
+    : BrowserProcessImpl(chrome_feature_list_creator) {
   g_browser_process = this;
   g_brave_browser_process = this;
 
