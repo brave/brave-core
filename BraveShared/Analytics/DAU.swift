@@ -17,18 +17,28 @@ public class DAU {
     /// Number of seconds that determins when a user is "active"
     private let activeUserDuration = 10.0
     
+    /// We always use gregorian calendar for DAU pings. This also adds more anonymity to the server call.
+    fileprivate static var calendar: NSCalendar { return Calendar(identifier: .gregorian) as NSCalendar }
+    
     private var launchTimer: Timer?
     private let today: Date
     private var todayComponents: DateComponents {
-        return (Calendar.current as NSCalendar).components([.day, .month, .year, .weekday], from: today)
+        return DAU.calendar.components([.day, .month, .year, .weekday], from: today)
     }
     
     public init(date: Date = Date()) {
         today = date
     }
     
-    public func sendPingToServer() {
-        if launchTimer != nil { return }
+    /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
+    /// A user needs to be active for a certain amount of time before we ping the server.
+    @discardableResult public func sendPingToServer() -> Bool {
+        if AppConstants.BuildChannel == .developer {
+            log.info("Development build detected, no server ping.")
+            return false
+        }
+        
+        if launchTimer != nil { return false }
         launchTimer =
             Timer.scheduledTimer(
                 timeInterval: activeUserDuration,
@@ -36,6 +46,8 @@ public class DAU {
                 selector: #selector(sendPingToServerInternal),
                 userInfo: nil,
                 repeats: false)
+        
+        return true
     }
     
     @objc public func sendPingToServerInternal() {
@@ -72,8 +84,10 @@ public class DAU {
     func paramsAndPrefsSetup() -> [URLQueryItem]? {
         var params = [channelParam(), versionParam()]
         
-        /// This is not the same as `firstLaunch` concept, due to DAU delay, this may var be `true` on a subsequent launch, if server ping failed
+        /// First ping preference is set after first successful ping to the server.
         let firstPing = Preferences.DAU.firstPingSuccess.value
+        // First launch ping should be send only if first ping was not successful yet.
+        let firstLaunch = !firstPing
         
         // All installs prior to this key existing (e.g. intallWeek == unknown) were set to `defaultWoiDate`
         // Enough time has passed where accounting for installs prior to this DAU improvement is unnecessary
@@ -81,18 +95,18 @@ public class DAU {
         // See `woi` logic elsewhere to see fallback is handled
         
         // This could lead to an upgraded device having no `woi`, and that's fine
-        if firstPing {
+        if firstLaunch {
             Preferences.DAU.weekOfInstallation.value = todayComponents.weeksMonday
         }
         
-        guard let dauStatParams = dauStatParams(firstPing: firstPing) else {
+        guard let dauStatParams = dauStatParams(firstPing: firstLaunch) else {
             log.debug("dau, no changes detected, no server ping")
             return nil
         }
         
         params += dauStatParams
         params += [
-            firstLaunchParam(for: firstPing),
+            firstLaunchParam(for: firstLaunch),
             // Must be after setting up the preferences
             weekOfInstallationParam()
         ]
@@ -102,8 +116,15 @@ public class DAU {
             UrpLog.log("DAU ping with added ref, params: \(params)")
         }
         
+        // This preference is used to calculate wheter user used the app in this month and/or day.
         let secsMonthYear = [Int(today.timeIntervalSince1970), todayComponents.month, todayComponents.year]
         Preferences.DAU.lastLaunchInfo.value = secsMonthYear
+        
+        // Using `secsMonthYear` with week component for weekly usage check is not robust enough and fails on edge cases.
+        // To calculate weekly usage we store first monday of week to and then compare it with the
+        // current first monday of week to see if a user used the app on new week.
+        let lastPingFirstMonday = todayComponents.weeksMonday
+        Preferences.DAU.lastPingFirstMonday.value = lastPingFirstMonday
         
         return params
     }
@@ -151,10 +172,9 @@ public class DAU {
     }
     
     /// Returns nil if no dau changes detected.
-    func dauStatParams(
-        _ dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
-        firstPing: Bool,
-        channel: AppBuildChannel = AppConstants.BuildChannel) -> [URLQueryItem]? {
+    func dauStatParams(_ dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
+                       firstPing: Bool,
+                       channel: AppBuildChannel = AppConstants.BuildChannel) -> [URLQueryItem]? {
         
         func dauParams(_ daily: Bool, _ weekly: Bool, _ monthly: Bool) -> [URLQueryItem] {
             return ["daily": daily, "weekly": weekly, "monthly": monthly].map {
@@ -162,7 +182,7 @@ public class DAU {
             }
         }
         
-        if firstPing || channel == .developer {
+        if firstPing {
             return dauParams(true, true, true)
         }
         
@@ -183,11 +203,15 @@ public class DAU {
         let _month = stat[1]
         let _year = stat[2]
         let SECONDS_IN_A_DAY = 86400
-        let SECONDS_IN_A_WEEK = 7 * 86400
         
         // On first ping, the user is all three of these
         let daily = dSecs >= SECONDS_IN_A_DAY
-        let weekly = dSecs >= SECONDS_IN_A_WEEK
+                
+        let weeksMonday = Preferences.DAU.lastPingFirstMonday.value
+        // There is no lastPingFirstMondayKey preference set at first launch, meaning the week param should be set to true.
+        let isFirstLaunchWeeksMonday = weeksMonday == nil
+        let weekly = todayComponents.weeksMonday != weeksMonday || isFirstLaunchWeeksMonday
+        
         let monthly = month != _month || year != _year
         log.debug("Dau stat params, daily: \(daily), weekly: \(weekly), monthly:\(monthly), dSecs: \(dSecs)")
         if !daily && !weekly && !monthly {
@@ -199,7 +223,7 @@ public class DAU {
     }
 }
 
-private extension DateComponents {
+extension DateComponents {
     /// Returns date of current week's monday in YYYY-MM-DD format
     var weeksMonday: String {
         var isSunday: Bool {
@@ -216,7 +240,7 @@ private extension DateComponents {
             return ""
         }
         
-        guard let today = Calendar.current.date(from: self) else {
+        guard let today = DAU.calendar.date(from: self) else {
             log.error("Cannot create date from date components")
             return ""
         }
@@ -227,7 +251,7 @@ private extension DateComponents {
         let dayDifference = isSunday ? sundayToMondayDayDifference : weekday - 2 // -2 because monday is second weekday
         
         let monday = Date(timeInterval: -TimeInterval(dayDifference * dayInSeconds), since: today)
-        let mondayComponents = (Calendar.current as NSCalendar).components([.day, .month, .year], from: monday)
+        let mondayComponents = DAU.calendar.components([.day, .month, .year], from: monday)
         
         guard let mYear = mondayComponents.year, let mMonth = mondayComponents.month, let mDay = mondayComponents.day else {
             log.error("First monday of the week components are nil")

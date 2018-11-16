@@ -30,6 +30,8 @@ extension Preferences {
         static let lastLaunchInfo = Option<[Int?]?>(key: "dau.last-launch-info", default: nil)
         static let weekOfInstallation = Option<String?>(key: "dau.week-of-installation", default: nil)
         static let firstPingSuccess = Option<Bool>(key: "dau.first-ping", default: false)
+        /// We use this to properly calculate `week` parameter of the DAU ping.
+        static let lastPingFirstMonday = Option<String?>(key: "dau.last-ping-first-monday", default: nil)
     }
     final class URP {
         static let nextCheckDate = Option<TimeInterval?>(key: "urp.next-check-date", default: nil)
@@ -137,7 +139,9 @@ extension Preferences {
         // DAU
         migrate(keyPrefix: keyPrefix, key: "dau_stat", to: Preferences.DAU.lastLaunchInfo)
         migrate(keyPrefix: keyPrefix, key: "week_of_installation", to: Preferences.DAU.weekOfInstallation)
+        migrate(keyPrefix: keyPrefix, key: "lastPingFirstMondayKey", to: Preferences.DAU.lastPingFirstMonday)
         
+        // URP
         migrate(keyPrefix: keyPrefix, key: "urpDateCheckPrefsKey", to: Preferences.URP.nextCheckDate)
         migrate(keyPrefix: keyPrefix, key: "urpRetryCountdownPrefsKey", to: Preferences.URP.retryCountdown)
         migrate(keyPrefix: keyPrefix, key: "CustomHeaderDataPrefs", to: Preferences.URP.customHeaderData)

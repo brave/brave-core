@@ -8,6 +8,15 @@ import Shared
 
 class DAUTests: XCTestCase {
     
+    override func setUp() {
+        super.setUp()
+        
+        Preferences.DAU.weekOfInstallation.reset()
+        Preferences.DAU.lastPingFirstMonday.reset()
+        Preferences.DAU.lastLaunchInfo.reset()
+        Preferences.DAU.firstPingSuccess.reset()
+    }
+    
     // 7-7-07 at 12noon GMT
     private let dau = DAU(date: Date(timeIntervalSince1970: 1183809600))
     
@@ -31,8 +40,14 @@ class DAUTests: XCTestCase {
     }
     
     func testShouldAppend0() {
-        XCTAssertTrue(DAU.shouldAppend0(toVersion: "1.1"))
-        XCTAssertFalse(DAU.shouldAppend0(toVersion: "1.1.1"))
+        XCTAssertFalse(DAU.shouldAppend0(toVersion: "1.5.2"))
+        XCTAssertFalse(DAU.shouldAppend0(toVersion: "1.52.2"))
+        XCTAssertFalse(DAU.shouldAppend0(toVersion: "11.5.23"))
+        XCTAssertFalse(DAU.shouldAppend0(toVersion: "11.55.23"))
+        
+        XCTAssertTrue(DAU.shouldAppend0(toVersion: "1.5"))
+        XCTAssertTrue(DAU.shouldAppend0(toVersion: "11.5"))
+        XCTAssertTrue(DAU.shouldAppend0(toVersion: "1.10"))
     }
     
     func testFirstLaunchParam() {
@@ -64,23 +79,185 @@ class DAUTests: XCTestCase {
         XCTAssertNil(dau.dauStatParams([1, 2, 3, 4], firstPing: false, channel: .beta))
     }
     
-    func testStatParamsValidInputs() {
-        var expected: [URLQueryItem]!
+    func testFirstLaunch() {
+        XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+        XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
+        XCTAssertFalse(Preferences.DAU.firstPingSuccess.value)
         
-        func daily(_ v: Bool) -> URLQueryItem { return .init(name: "daily", value: v.description) }
-        func weekly(_ v: Bool) -> URLQueryItem { return .init(name: "weekly", value: v.description) }
-        func monthly(_ v: Bool) -> URLQueryItem { return .init(name: "monthly", value: v.description) }
+        let firstLaunch = pingWithDateAndCompare(daily: true, weekly: true, monthly: true, first: true,
+                                                 woi: "2017-11-20")
+
+        XCTAssertNotNil(firstLaunch)
+        XCTAssertNotNil(Preferences.DAU.lastLaunchInfo.value)
+        XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
+        XCTAssert(Preferences.DAU.firstPingSuccess.value)
+    }
+    
+    func testFirstLaunchUnsuccesfulPing() {
+        XCTAssertFalse(Preferences.DAU.firstPingSuccess.value)
         
-        expected = [ daily(true), weekly(true), monthly(true) ]
+        // First - failed attempt
+        pingWithDateAndCompare(daily: true, weekly: true, monthly: true, first: true, successPing: false)
         
-        func functionallyEquivalent(_ first: [URLQueryItem], _ second: [URLQueryItem]) -> Bool {
-            if first.count != second.count { return false }
-            for item in first {
-                if !second.contains(item) { return false }
-            }
-            return true
+        // First ping is still false
+        XCTAssertFalse(Preferences.DAU.firstPingSuccess.value)
+        
+        // Second - succesful attempt
+        // Make sure second ping after first failed has `first` param equal true
+        pingWithDateAndCompare(daily: true, weekly: true, monthly: true, first: true)
+        
+        // Should be true after second successful attempt
+        XCTAssert(Preferences.DAU.firstPingSuccess.value)
+        
+        // Third - succesful attempt
+        // Finally a non first server ping
+        pingWithDateAndCompare(dateString: "2020-03-04", daily: true, weekly: true, monthly: true, first: false)
+    }
+    
+    func testTwoPingsSameDay() {
+        let date = dateFrom(string: "2017-11-20")
+        
+        XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+        XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
+        
+        // Acting like a first launch so preferences are going to be set up
+        let dauFirstLaunch = DAU(date: date)
+        _ = dauFirstLaunch.paramsAndPrefsSetup()
+        Preferences.DAU.firstPingSuccess.value = true
+        
+        let dauSecondLaunch = DAU(date: date)
+        
+        XCTAssertNotNil(Preferences.DAU.lastLaunchInfo.value)
+        XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
+        
+        // Second launch on the same day
+        let params = dauSecondLaunch.paramsAndPrefsSetup()
+        XCTAssertNil(params)
+    }
+    
+    func testNotFirstLaunchSetDau() {
+        let date = dateFrom(string: "2017-11-20")
+        
+        XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+        XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
+        
+        // Acting like a first launch so preferences are going to be set up
+        let dauFirstLaunch = DAU(date: date)
+        _ = dauFirstLaunch.paramsAndPrefsSetup()
+        Preferences.DAU.firstPingSuccess.value = true
+        
+        // Daily check
+        pingWithDateAndCompare(dateString: "2017-11-22", daily: true, weekly: false, monthly: false, woi: woiPrefs)
+        // Weekly check
+        pingWithDateAndCompare(dateString: "2017-11-30", daily: true, weekly: true, monthly: false, woi: woiPrefs)
+        // Monthly check
+        pingWithDateAndCompare(dateString: "2017-12-20", daily: true, weekly: true, monthly: true, woi: woiPrefs)
+    }
+    
+    // Tests dau pings at various points of time
+    func testLongUseCase() {
+        pingWithDateAndCompare(dateString: "2018-03-04", daily: true, weekly: true, monthly: true, first: true)
+        pingWithDateAndCompare(dateString: "2018-03-05", daily: true, weekly: true, monthly: false)
+        pingWithDateAndCompare(dateString: "2018-03-07", daily: true, weekly: false, monthly: false)
+        pingWithDateAndCompare(dateString: "2018-03-11", daily: true, weekly: false, monthly: false)
+        pingWithDateAndCompare(dateString: "2018-03-13", daily: true, weekly: true, monthly: false)
+        pingWithDateAndCompare(dateString: "2018-03-29", daily: true, weekly: true, monthly: false)
+        pingWithDateAndCompare(dateString: "2018-04-29", daily: true, weekly: true, monthly: true)
+        pingWithDateAndCompare(dateString: "2019-04-29", daily: true, weekly: true, monthly: true)
+        pingWithDateAndCompare(dateString: "2019-04-29", daily: false, weekly: false, monthly: false)
+        pingWithDateAndCompare(dateString: "2019-04-29", daily: false, weekly: false, monthly: false)
+        pingWithDateAndCompare(dateString: "2019-05-05", daily: true, weekly: false, monthly: true)
+        pingWithDateAndCompare(dateString: "2019-05-06", daily: true, weekly: true, monthly: false)
+    }
+    
+    func testMondayOfWeek() {
+        let monday = componentsOfDate("2017-11-20")
+        XCTAssertEqual(monday.weeksMonday, "2017-11-20")
+        
+        let tuesday = componentsOfDate("2017-11-21")
+        XCTAssertEqual(tuesday.weeksMonday, "2017-11-20")
+        
+        let wednesday = componentsOfDate("2017-11-22")
+        XCTAssertEqual(wednesday.weeksMonday, "2017-11-20")
+        
+        let thursday = componentsOfDate("2017-11-22")
+        XCTAssertEqual(thursday.weeksMonday, "2017-11-20")
+        
+        let friday = componentsOfDate("2017-12-01")
+        XCTAssertEqual(friday.weeksMonday, "2017-11-27")
+        
+        let saturday = componentsOfDate("2017-12-02")
+        XCTAssertEqual(saturday.weeksMonday, "2017-11-27")
+        
+        let sunday = componentsOfDate("2017-12-03")
+        XCTAssertEqual(sunday.weeksMonday, "2017-11-27")
+    }
+    
+    func testNoPingOnDevelopmentBuild() {
+        XCTAssertTrue(AppConstants.BuildChannel == .developer)
+        
+        let dau = DAU()
+        XCTAssertFalse(dau.sendPingToServer())
+    }
+    
+    // MARK: Helpers
+    
+    private func dateFrom(string: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        return dateFormatter.date(from: string)!
+    }
+    
+    private func firstLaunchParam(for isFirst: Bool) -> URLQueryItem {
+        return URLQueryItem(name: "first", value: isFirst.description)
+    }
+    
+    private var woiPrefs: String {
+        return Preferences.DAU.weekOfInstallation.value!
+        
+    }
+    
+    @discardableResult
+    private func pingWithDateAndCompare(dateString: String = "2017-11-20", daily: Bool, weekly: Bool,
+                                        monthly: Bool, first: Bool = false, woi: String? = nil,
+                                        successPing: Bool = true) -> [URLQueryItem]? {
+        
+        let date = dateFrom(string: dateString)
+        let dau = DAU(date: date)
+        let params = dau.paramsAndPrefsSetup()
+        
+        // All dau stats equal false means no ping is send to server
+        if daily == false && weekly == false && monthly == false {
+            XCTAssertNil(params)
+            return params
         }
-        XCTAssertTrue(functionallyEquivalent(dau.dauStatParams(firstPing: true)!, expected))
-        XCTAssertTrue(functionallyEquivalent(dau.dauStatParams(firstPing: false, channel: .developer)!, expected))
+        
+        XCTAssert(params!.contains(URLQueryItem(name: "daily", value: daily.description)))
+        XCTAssert(params!.contains(URLQueryItem(name: "weekly", value: weekly.description)))
+        XCTAssert(params!.contains(URLQueryItem(name: "monthly", value: monthly.description)))
+        XCTAssert(params!.contains(URLQueryItem(name: "first", value: first.description)))
+        
+        if let woi = woi {
+            XCTAssert(params!.contains(URLQueryItem(name: "woi", value: woi)))
+        }
+        
+        Preferences.DAU.firstPingSuccess.value = successPing
+        
+        return params
+    }
+    
+    private var appVersion: String {
+        let version = AppInfo.appVersion
+        return DAU.shouldAppend0(toVersion: AppInfo.appVersion) ? version + ".0" : version
+    }
+    
+    private func componentsOfDate(_ dateString: String) -> DateComponents {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let date = dateFormatter.date(from: dateString)!
+        
+        return (Calendar(identifier: .gregorian) as NSCalendar).components([.day, .month , .year, .weekday], from: date)
     }
 }
