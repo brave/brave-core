@@ -27,8 +27,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         updateToggleStatus()
         updateShieldBlockStats()
         
-        let name = Notification.Name(rawValue: BraveGlobalShieldStats.DidUpdateNotification)
-        self.statsUpdateObservable = NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
+        tab.contentBlocker.statsDidChange = { [weak self] _ in
             self?.updateShieldBlockStats()
         }
     }
@@ -67,7 +66,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     private func updateShieldBlockStats() {
         shieldsView.shieldsContainerStackView.adsTrackersStatView.valueLabel.text = String(tab.contentBlocker.stats.adCount)
         shieldsView.shieldsContainerStackView.scriptsBlockedStatView.valueLabel.text = String(tab.contentBlocker.stats.scriptCount)
-//        shieldsView.shieldsContainerStackView.fingerprintingStatView.valueLabel.text = String(shieldBlockStats.fingerprintCount)
+        shieldsView.shieldsContainerStackView.fingerprintingStatView.valueLabel.text = String(tab.contentBlocker.stats.fingerprintingCount)
     }
     
     private func updateBraveShieldState(shield: BraveShieldState.Shield, on: Bool, option: Preferences.Option<Bool>?) {

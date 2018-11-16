@@ -177,7 +177,7 @@ class BrowserViewController: UIViewController {
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
         Preferences.Privacy.cookieAcceptPolicy.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
-        Preferences.Shields.fingerprintingProtection.observe(from: self)
+        Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         
         // Lists need to be compiled before attempting tab restoration
         contentBlockListDeferred = ContentBlockerHelper.compileLists()
@@ -1774,6 +1774,8 @@ extension BrowserViewController: TabDelegate {
         tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name())
 
         tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
+        
+        tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name())
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -2788,9 +2790,13 @@ extension BrowserViewController: PreferencesObserver {
                 tabManager.addTabAndSelect(nil, isPrivate: isPrivate)
             }
             updateTabsBarVisibility()
-        case Preferences.Shields.fingerprintingProtection.key:
-            // TODO: Update fingerprinting protection based on `Preferences.Shields.fingerprintingProtection` once fingerprinting protection is added back
-            break
+        case Preferences.Shields.blockAdsAndTracking.key,
+             Preferences.Shields.httpsEverywhere.key,
+             Preferences.Shields.blockScripts.key,
+             Preferences.Shields.blockPhishingAndMalware.key,
+             Preferences.Shields.blockImages.key,
+             Preferences.Shields.fingerprintingProtection.key:
+            tabManager.allTabs.forEach { $0.webView?.reload() }
         default:
             log.debug("Received a preference change for an unknown key: \(key) on \(type(of: self))")
             break

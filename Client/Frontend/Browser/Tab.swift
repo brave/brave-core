@@ -6,6 +6,7 @@ import Foundation
 import WebKit
 import Storage
 import Shared
+import BraveShared
 import SwiftyJSON
 import XCGLogger
 import Data
@@ -208,7 +209,7 @@ class Tab: NSObject {
 
             self.webView = webView
             self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
-            self.userScriptManager = UserScriptManager(tab: self)
+            self.userScriptManager = UserScriptManager(tab: self, isFingerprintingProtectionEnabled: Preferences.Shields.fingerprintingProtection.value)
             tabDelegate?.tab?(self, didCreateWebView: webView)
         }
     }
