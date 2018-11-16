@@ -2,12 +2,13 @@
 
 exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 .c0 {
+  height: 100%;
   padding: 0px;
   background: inherit;
 }
 
 .c1 {
-  padding: 14px;
+  padding: 25px 14px 14px;
   font-family: Poppins,sans-serif;
 }
 

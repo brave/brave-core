@@ -2,7 +2,7 @@
 
 exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
 .c0 {
-  background: #F6F6FC;
+  background: #F5F5F9;
   display: block;
   width: 100%;
   padding: 10px 30px;
@@ -17,6 +17,7 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0;
   letter-spacing: 0;
   line-height: 28px;
+  position: relative;
 }
 
 .c2 {
@@ -38,8 +39,9 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
 .c4 {
   margin-right: 5px;
   vertical-align: middle;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
+  margin-top: -3px;
   display: inline-block;
 }
 
@@ -53,18 +55,20 @@ exports[`ToggleTips tests basic tests matches the snapshot 1`] = `
   vertical-align: middle;
   margin-top: 3px;
   text-align: right;
+  position: absolute;
+  right: 0px;
 }
 
 .c10 {
   float: right;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .c7 {
   width: 20px;
   height: 20px;
   display: inline-block;
-  margin-top: 5px;
+  margin-top: 3px;
   vertical-align: top;
 }
 

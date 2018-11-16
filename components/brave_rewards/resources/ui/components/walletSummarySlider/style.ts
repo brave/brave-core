@@ -12,6 +12,7 @@ interface StyleProps {
 export const StyledWrapper = styled<{}, 'div'>('div')`
   display: block;
   width: 100%;
+  height: 100%;
   position: relative;
 ` as any
 
@@ -24,7 +25,8 @@ export const StyledTransitionWrapper = styled<StyleProps, 'div'>('div')`
 export const StyledToggleWrapper = styled<StyleProps, 'div'>('div')`
   width: 100%;
   display: block;
-  padding: ${p => p.show ? '20px 30px' : '20px'};
+  max-height: 56px;
+  padding: ${p => p.show ? '18px 30px 20px 30px' : '20px'};
   top: ${p => p.show ? 'unset' : '12px'};
   position: ${p => p.show ? 'static' : 'absolute'};
   background: ${p => p.show ? '#E9EBFF' : 'inherit'};
@@ -40,11 +42,12 @@ export const StyledSummaryText = styled<{}, 'span'>('span')`
 ` as any
 
 export const StyledArrowIcon = styled<StyleProps, 'span'>('span')`
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   display: block;
   margin-left: 32px;
-  margin-top: ${p => p.show ? '-2px' : '-22px'};
+  margin-right: -6px;
+  margin-top: ${p => p.show ? 1 : -2}px;
   color: #696FDC;
 ` as any
 

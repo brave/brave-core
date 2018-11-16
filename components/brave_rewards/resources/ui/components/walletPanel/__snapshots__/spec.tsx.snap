@@ -6,12 +6,12 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
-  padding: 25px 30px 15px 30px;
+  padding: 25px 30px 25px 30px;
 }
 
 .c13 {
   margin-left: 30px;
-  font-weight: 400;
+  font-weight: 500;
   color: #4B4C5C;
   font-size: 14px;
 }
@@ -24,7 +24,7 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
   letter-spacing: 0;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 2px;
 }
 
 .c8 {
@@ -39,15 +39,15 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
 
 .c15 {
   display: inline-block;
-  color: #838391;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: normal;
   -webkit-letter-spacing: 0;
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
   letter-spacing: 0;
   line-height: 26px;
-  margin-left: 10px;
+  margin-left: 2px;
+  color: #7C7D8C;
 }
 
 .c22 {
@@ -82,81 +82,8 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   flex: 1 0 0;
 }
 
-.c26 {
-  display: none;
-}
-
-.c24 {
-  --button-main-color: #4C54D2;
-  --button-main-color-hover: #392DD1;
-  --button-main-color-active: #AAAFEF;
-  --button-state-color: var(--button-main-color);
-  --icon-size: 18px;
-  --icon-spacing: 6px;
-  --webkit-appearance: none;
-  box-sizing: border-box;
-  background: none;
-  border: none;
-  outline: none;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row-reverse;
-  -ms-flex-direction: row-reverse;
-  flex-direction: row-reverse;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-family: Poppins,sans-serif;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-size: 14px;
-  border-radius: 28px;
-  width: 100%;
-  min-width: 235px;
-  padding: 19px 15px;
-}
-
-.c24:hover:enabled {
-  --button-state-color: var(--button-main-color-hover);
-}
-
-.c24:active:enabled {
-  --button-state-color: var(--button-main-color-active);
-}
-
-.c23 {
-  border: 1px solid;
-  color: var(--button-state-color);
-}
-
 .c25 {
-  min-height: var(--icon-size);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: center;
-  -webkit-letter-spacing: 0;
-  -moz-letter-spacing: 0;
-  -ms-letter-spacing: 0;
-  letter-spacing: 0;
-  font-weight: 500;
-  text-transform: uppercase;
-  line-height: 1;
+  display: none;
 }
 
 .c17 {
@@ -283,6 +210,35 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: -0.2px;
   letter-spacing: -0.2px;
   color: #4B4C5C;
+}
+
+.c23 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: white;
+  font-size: 14px;
+  border-radius: 28px;
+  background: inherit;
+  cursor: pointer;
+  height: 40px;
+  color: #4C54D2;
+  border-radius: 20px;
+  font-size: 12px;
+  border: 1px solid #A1A8F2;
+}
+
+.c24 {
+  font-family: Poppins,sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 0.39px;
+  -moz-letter-spacing: 0.39px;
+  -ms-letter-spacing: 0.39px;
+  letter-spacing: 0.39px;
+  margin: 0 auto;
 }
 
 <div
@@ -413,22 +369,19 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
       className="c22"
     >
       <button
-        className="c23 c24"
-        size="call-to-action"
-        type="accent"
+        className="c23"
+        type="tip"
       >
-        <div
-          className="c25"
-          size="call-to-action"
-          type="accent"
+        <span
+          className="c24"
         >
           MISSING: donateNow
-        </div>
+        </span>
       </button>
     </div>
   </div>
   <div
-    className="c26"
+    className="c25"
   />
 </div>
 `;

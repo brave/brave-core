@@ -9,7 +9,9 @@ import {
   StyledTitle,
   StyledSummary,
   StyledActivity,
-  StyledActivityIcon
+  StyledActivityIcon,
+  StyledNoActivity,
+  StyledNoActivityWrapper
 } from './style'
 import ListToken from '../listToken'
 import { Type } from '../tokens'
@@ -97,6 +99,16 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
         ))
       }
     })
+
+    if (result.length === 0) {
+      return (
+        <StyledNoActivityWrapper>
+          <StyledNoActivity>
+            {getLocale('noActivity')}
+          </StyledNoActivity>
+        </StyledNoActivityWrapper>
+      )
+    }
 
     return result
   }

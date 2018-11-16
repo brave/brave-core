@@ -17,9 +17,9 @@ export const StyledRemove = styled<{}, 'button'>('button')`
   background: none;
   border: none;
   cursor: pointer;
-  width: 16px;
-  height: 16px;
-  color: ${p => p.theme.color.subtleExclude};
+  width: 12px;
+  height: 12px;
+  color: #B8B9C4;
   padding: 0;
 `
 

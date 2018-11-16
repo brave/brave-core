@@ -9,16 +9,17 @@ interface StyleProps {
 }
 
 const getGradientRule = (gradient: string) => {
-  return `linear-gradient(-180deg, rgba(${gradient},1) 0%, rgba(255,255,255,1) 70%)`
+  return `linear-gradient(-180deg, rgba(${gradient},1) 0%, rgba(255,255,255,1) 60%)`
 }
 
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
+  height: 100%;
   padding: ${p => p.compact ? '0px 7px 0px' : '0px'};
   background: ${p => p.compact ? getGradientRule('233, 235, 255') : 'inherit'};
 `
 
 export const StyledInner = styled<StyleProps, 'div'>('div')`
-  padding: 14px;
+  padding: 25px 14px 14px;
   font-family: Poppins, sans-serif;
 `
 export const StyledSummary = styled<{}, 'div'>('div')`
@@ -59,4 +60,16 @@ export const StyledActivityIcon = styled<{}, 'span'>('span')`
   height: 24px;
   color: #A1A8F2;
   display: inline-block;
+`
+
+export const StyledNoActivityWrapper = styled<{}, 'div'>('div')`
+  width: 100%;
+  margin-top: 80px;
+  text-align: center;
+`
+
+export const StyledNoActivity = styled<{}, 'span'>('span')`
+  font-weight: 400;
+  color: #B8B9C4;
+  font-size: 18px;
 `

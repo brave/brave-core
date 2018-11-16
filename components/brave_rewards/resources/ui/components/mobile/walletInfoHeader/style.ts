@@ -14,6 +14,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   background: url(${panelBgUrl}) no-repeat top left,
   linear-gradient(to bottom right, #392dd1 0%, #5813a6 100%) 100% no-repeat;
   flex-direction: column;
+  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
 `
 
 export const StyledHeader = styled<{}, 'div'>('div')`

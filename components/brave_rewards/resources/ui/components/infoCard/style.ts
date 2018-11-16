@@ -25,13 +25,13 @@ export const StyledTitle = styled<{}, 'strong'>('strong')`
 `
 
 export const StyledDesc = styled<{}, 'p'>('p')`
-  color: #484B4E;
+  color: #686978;
   font-size: 16px;
-  font-weight: 300;
   line-height: 22px;
   font-family: Muli, sans-serif;
   letter-spacing: 0.16px;
   margin: 10px 0 8px;
+  font-weight: 400;
 `
 
 export const StyledFigure = styled<{}, 'figure'>('figure')`

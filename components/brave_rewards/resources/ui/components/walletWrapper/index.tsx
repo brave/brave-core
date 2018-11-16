@@ -45,11 +45,12 @@ import {
   CloseStrokeIcon,
   SettingsAdvancedIcon,
   UpholdColorIcon,
-  UpholdSystemIcon,
-  LoveIcon,
-  GiftIcon,
-  MegaphoneIcon
+  UpholdSystemIcon
 } from '../../../components/icons'
+
+import giftIconUrl from './assets/gift.svg'
+import loveIconUrl from './assets/love.svg'
+import megaphoneIconUrl from './assets/megaphone.svg'
 
 type Grant = {
   tokens: string,
@@ -163,13 +164,13 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     switch (notification.type) {
       case 'ads':
-        icon = <MegaphoneIcon />
+        icon = megaphoneIconUrl
         break
       case 'contribute':
-        icon = <LoveIcon />
+        icon = loveIconUrl
         break
       case 'grant':
-        icon = <GiftIcon />
+        icon = giftIconUrl
         break
       default:
         icon = ''
@@ -181,9 +182,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     }
 
     return (
-      <StyledNotificationIcon notification={notification}>
-        {icon}
-      </StyledNotificationIcon>
+      <StyledNotificationIcon src={icon} />
     )
   }
 
@@ -208,7 +207,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     return (
       <StyledNotificationMessage>
         <StyledTypeText>{typeText}</StyledTypeText> <StyledPipe>|</StyledPipe>
-        <StyledMessageText>{notification.text}</StyledMessageText> <StyledPipe>|</StyledPipe>
+        <StyledMessageText>{notification.text}</StyledMessageText>
         <StyledDateText>{notification.date}</StyledDateText>
       </StyledNotificationMessage>
     )

@@ -16,6 +16,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   padding: 5px 30px;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
+  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
 `
 
 export const StyledAlertIcon = styled<{}, 'div'>('div')`

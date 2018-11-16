@@ -27,11 +27,10 @@ import {
 // Components
 import {
   Select,
-  Toggle,
-  Button
+  Toggle
 } from '../../../components'
 
-import { Tokens } from '../'
+import { RewardsButton, Tokens } from '../'
 import ToggleTips from '../toggleTips/index'
 import Profile, { Provider } from '../profile/index'
 
@@ -51,6 +50,7 @@ export interface Props {
   includeInAuto: boolean
   monthlyAmount: number
   donationAmounts?: Token[]
+  toggleTips?: boolean
   donationAction: () => void
   onToggleTips: () => void
   onAmountChange: () => void
@@ -114,20 +114,6 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
     const { donationAmounts } = this.props
     return (
       <StyledWrapper>
-        {
-          donationAmounts
-          ? <StyledGrid>
-            <StyledColumn size={'5'}>
-              <StyledDonateText>
-                {getLocale('donateMonthly')}
-              </StyledDonateText>
-            </StyledColumn>
-            <StyledColumn size={'1'}>
-              {this.donationDropDown()}
-            </StyledColumn>
-          </StyledGrid>
-          : null
-        }
         <StyledGrid>
           <StyledColumn size={'5'}>
             <StyledDonateText>
@@ -144,6 +130,20 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             </StyledToggleWrapper>
           </StyledColumn>
         </StyledGrid>
+        {
+          donationAmounts
+          ? <StyledGrid>
+            <StyledColumn size={'5'}>
+              <StyledDonateText>
+                {getLocale('donateMonthly')}
+              </StyledDonateText>
+            </StyledColumn>
+            <StyledColumn size={'1'}>
+              {this.donationDropDown()}
+            </StyledColumn>
+          </StyledGrid>
+          : null
+        }
       </StyledWrapper>
     )
   }
@@ -155,7 +155,8 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
       onToggleTips,
       attentionScore,
       tipsEnabled,
-      donationAction
+      donationAction,
+      toggleTips
     } = this.props
 
     return (
@@ -180,17 +181,14 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
             {this.donationControls()}
           </StyledControlsWrapper>
           <StyledDonateWrapper>
-            <Button
-              size={'call-to-action'}
-              type={'accent'}
-              level={'secondary'}
-              brand={'rewards'}
+            <RewardsButton
+              type={'tip'}
               onClick={donationAction}
               text={getLocale('donateNow')}
             />
           </StyledDonateWrapper>
         </StyledContainer>
-        <StyleToggleTips>
+        <StyleToggleTips toggleTips={toggleTips}>
           <ToggleTips
             id={'toggle-tips'}
             provider={platform}

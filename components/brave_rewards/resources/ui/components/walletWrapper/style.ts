@@ -20,23 +20,6 @@ const getRGB = (rgbColor: string) => {
   return `rgb(${rgbColor})`
 }
 
-const getIconColor = (notification: Notification | undefined) => {
-  if (!notification) {
-    return '#FFBBAA'
-  }
-
-  switch (notification.type) {
-    case 'ads':
-      return '#D666A2'
-    case 'contribute':
-      return '#9F22A1'
-    case 'grant':
-      return '#FFBBAA'
-    default:
-      return '#FFBBAA'
-  }
-}
-
 const wrapperBackgroundRules = (notification: Notification | undefined) => {
   if (!notification) {
     return `url(${panelBg}) no-repeat top left,
@@ -44,12 +27,12 @@ const wrapperBackgroundRules = (notification: Notification | undefined) => {
     linear-gradient(#7d7bdc, #7d7bdc)`
   }
 
-  return 'linear-gradient(-180deg, rgba(255,255,255,1) 0%, rgba(215,236,255,1) 30%)'
+  return 'linear-gradient(-180deg, rgba(255,255,255,1) 0%, rgba(228,242,255,1) 40%)'
 }
 
 export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   overflow: hidden;
-  box-shadow: 0 0 8px 0 rgba(99, 105, 110, 0.12);
+  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
   font-family: Poppins, sans-serif;
   width: ${p => p.isMobile ? '100%' : '373px'};
   background: ${p => wrapperBackgroundRules(p.notification)};
@@ -87,6 +70,7 @@ export const StyledBalanceTokens = styled<{}, 'div'>('div')`
   letter-spacing: -0.4px;
   color: #fff;
   margin-top: 10px;
+  font-weight: 300;
 `
 
 export const StyledContent = styled<StyledProps, 'div'>('div')`
@@ -94,6 +78,7 @@ export const StyledContent = styled<StyledProps, 'div'>('div')`
   position: relative;
   background: #f9fbfc;
   flex: 1;
+  height: 361px;
 `
 
 export const StyledAction = styled<{}, 'button'>('button')`
@@ -116,6 +101,8 @@ export const StyledActionIcon = styled<{}, 'div'>('div')`
 
 export const StyledActionText = styled<{}, 'div'>('div')`
   color: #fff;
+  font-size: 14px;
+  opacity: 0.65;
 `
 
 export const StyledCopy = styled<StyledProps, 'div'>('div')`
@@ -154,6 +141,7 @@ export const StyledBalanceConverted = styled<{}, 'div'>('div')`
   text-align: center;
   color: rgba(255, 255, 255, 0.65);
   margin: 8px 0;
+  font-weight: 300;
 `
 
 export const StyledGrantWrapper = styled<{}, 'div'>('div')`
@@ -188,7 +176,7 @@ export const StyledActionWrapper = styled<{}, 'div'>('div')`
   color: #fff;
   display: flex;
   justify-content: space-evenly;
-  margin: 20px 0 0;
+  margin: 15px 0 5px 0;
   padding-bottom: 3px;
 `
 
@@ -259,19 +247,18 @@ export const StyledBAT = styled<{}, 'div'>('div')`
   }
 `
 
-export const StyledNotificationIcon = styled<StyledProps, 'div'>('div')`
+export const StyledNotificationIcon = styled<StyledProps, 'img'>('img')`
   height: 53px;
   width: 53px;
   margin: 8px auto 0px;
-  color: ${p => getIconColor(p.notification)};
 `
 
 export const StyledNotificationCloseIcon = styled<StyledProps, 'div'>('div')`
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
   float: right;
   margin-right: -6px;
-  color: #B8B9C4;
+  color: #9E9FAB;
   cursor: pointer;
 `
 
@@ -283,7 +270,7 @@ export const StyledNotificationContent = styled<StyledProps, 'div'>('div')`
 export const StyledNotificationMessage = styled<StyledProps, 'div'>('div')`
   max-width: 285px;
   color: #4B4C5C;
-  padding: 5px 0px;
+  padding-bottom: 5px;
   margin: 0 auto;
 `
 
@@ -295,14 +282,17 @@ export const StyledTypeText = styled<StyledProps, 'span'>('span')`
 
 export const StyledMessageText = styled<StyledProps, 'span'>('span')`
   line-height: 20px;
-  font-weight: 300;
+  font-weight: 400;
   margin: 0px 5px;
+  font-family: Muli, sans-serif;
 `
 
 export const StyledDateText = styled<StyledProps, 'span'>('span')`
-  font-weight: 200;
+  font-weight: 400;
   margin-left: 5px;
   display: inline-block;
+  color: #838391;
+  font-family: Muli, sans-serif;
 `
 
 export const StyledButton = styled<StyledProps, 'div'>('div')`

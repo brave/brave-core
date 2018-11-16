@@ -200,8 +200,6 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
           <WalletWrapper
             compact={true}
             contentPadding={false}
-            gradientTop={getGradientColor()}
-            balance={text('Tokens', '30.0')}
             notification={{
               id: '001',
               type: 'ads',
@@ -209,6 +207,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
               onCloseNotification: onCloseNotification,
               text: <span>You've earned 10 BAT from Brave Ads</span>
             }}
+            gradientTop={getGradientColor()}
+            balance={text('Tokens', '30.0')}
             converted={text('Converted', '15.50 USD')}
             actions={[
               {
@@ -217,7 +217,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                 icon: <WalletAddIcon />
               },
               {
-                name: 'Rewards Settings',
+                name: 'Settings',
                 action: doNothing,
                 icon: <BatColorIcon />
               }
@@ -246,6 +246,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             >
               <WalletPanel
                 id={'wallet-panel'}
+                toggleTips={true}
                 platform={'youtube'}
                 publisherImg={bartBaker}
                 publisherName={'Bart Baker'}

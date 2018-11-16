@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 interface StyleProps {
   size?: string
+  toggleTips?: boolean
 }
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
@@ -13,12 +14,12 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
 ` as any
 
 export const StyledContainer = styled<{}, 'div'>('div')`
-  padding: 25px 30px 15px 30px;
+  padding: 25px 30px 25px 30px;
 ` as any
 
 export const StyledAttentionScore = styled<{}, 'span'>('span')`
   margin-left: 30px;
-  font-weight: 400;
+  font-weight: 500;
   color: #4B4C5C;
   font-size: 14px;
 ` as any
@@ -28,7 +29,7 @@ export const StyledAttentionScoreTitle = styled<{}, 'span'>('span')`
   color: #4B4C5C;
   font-size: 14px;
   letter-spacing: 0;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 2px;
 ` as any
 
 export const StyledScoreWrapper = styled<{}, 'section'>('section')`
@@ -43,12 +44,12 @@ export const StyledControlsWrapper = styled<{}, 'section'>('section')`
 
 export const StyledDonateText = styled<{}, 'span'>('span')`
   display: inline-block;
-  color: #838391;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: normal;
   letter-spacing: 0;
   line-height: 26px;
-  margin-left: 10px;
+  margin-left: 2px;
+  color: ${p => p.theme.color.subtleInteracting};
 ` as any
 
 export const StyledDonateWrapper = styled<{}, 'div'>('div')`
@@ -76,5 +77,5 @@ export const StyledColumn = styled<StyleProps, 'div'>('div')`
 `
 
 export const StyleToggleTips = styled<StyleProps, 'div'>('div')`
-  display: none;
+  display: ${p => p.toggleTips ? 'flex' : 'none'};
 `

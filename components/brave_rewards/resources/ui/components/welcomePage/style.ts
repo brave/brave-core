@@ -148,11 +148,12 @@ export const StyledTeaserParagraph = styled<{}, 'p'>('p')`
 export const StyledCenterParagraph = styled<{}, 'p'>('p')`
   font-size: 16px;
   line-height: 28px;
-  color: #484B4E;
-  font-weight: 300;
+  color: #686978;
   letter-spacing: 0.16px;
   max-width: 475px;
   margin: 0 0 15px;
+  font-weight: 400;
+  font-family: Muli,sans-serif;
 `
 
 export const StyledAnchor = styled<{}, 'button'>('button')`
@@ -161,7 +162,7 @@ export const StyledAnchor = styled<{}, 'button'>('button')`
   background: none;
   cursor: pointer;
   color: #bf9fe3;
-  height: 38px;
+  height: 30px;
   overflow: hidden;
   outline: none;
 

@@ -26,6 +26,7 @@ import NextContribution from './nextContribution'
 import PanelWelcome from './panelWelcome'
 import Profile from './profile'
 import RestoreSites from './restoreSites'
+import RewardsButton from './rewardsButton'
 import SettingsPage from './settingsPage'
 import SiteBanner from './siteBanner'
 import Tab from './tab'
@@ -70,6 +71,7 @@ export {
   PanelWelcome,
   Profile,
   RestoreSites,
+  RewardsButton,
   SettingsPage,
   SiteBanner,
   Tab,

@@ -14,19 +14,20 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   -ms-flex-wrap: nowrap;
   flex-wrap: nowrap;
   font-family: Poppins,sans-serif;
-  border-radius: 6px;
+  border-radius: 8px;
   background-color: #fff;
   overflow: hidden;
   padding-left: 20px;
   margin-bottom: 19px;
   width: 100%;
+  box-shadow: 0 1px 12px 0 rgba(99,105,110,0.18);
 }
 
 .c1 {
-  -webkit-flex-basis: 52px;
-  -ms-flex-preferred-size: 52px;
-  flex-basis: 52px;
-  height: 52px;
+  -webkit-flex-basis: 42px;
+  -ms-flex-preferred-size: 42px;
+  flex-basis: 42px;
+  height: 42px;
   width: 52px;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
@@ -45,10 +46,10 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   -webkit-flex-basis: 70%;
   -ms-flex-preferred-size: 70%;
   flex-basis: 70%;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 1.25;
-  color: #fb542b;
+  color: #686978;
   padding: 0 10px;
 }
 
@@ -58,17 +59,17 @@ exports[`Grant claim tests basic tests matches the snapshot 1`] = `
   flex-basis: 90px;
   height: 64px;
   background-color: #fb542b;
-  font-family: Muli,sans-serif;
   font-size: 12px;
   line-height: 1.83;
-  -webkit-letter-spacing: 0.4px;
-  -moz-letter-spacing: 0.4px;
-  -ms-letter-spacing: 0.4px;
-  letter-spacing: 0.4px;
+  -webkit-letter-spacing: 0.8px;
+  -moz-letter-spacing: 0.8px;
+  -ms-letter-spacing: 0.8px;
+  letter-spacing: 0.8px;
   color: #fff;
   border: none;
   text-transform: uppercase;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .c2 {

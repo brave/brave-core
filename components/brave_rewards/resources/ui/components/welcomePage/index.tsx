@@ -6,11 +6,10 @@ import * as React from 'react'
 
 // Components
 import Hero from '../hero'
-import SettingsPage from '../settingsPage'
 import Button from '../../../components/buttonsIndicators/button'
 import InfoCard, { CardProps } from '../infoCard'
-import { ArrowDownIcon, BatColorIcon, LoaderIcon } from '../../../components/icons'
-import Alert from '../alert'
+import { ArrowAnchorIcon, BatColorIcon, LoaderIcon } from '../../../components/icons'
+import { Alert, RewardsButton, SettingsPage } from '../'
 
 // Utils
 import { getLocale } from '../../../helpers'
@@ -112,25 +111,16 @@ class WelcomePage extends React.PureComponent<Props, {}> {
         <StyledOptInSection>
           {
             this.props.creating
-            ? <Button
-              level='secondary'
-              size='call-to-action'
-              type='subtle'
-              text={getLocale('braveRewardsCreatingText')}
+            ? <RewardsButton
+              type={'opt-in'}
               disabled={true}
-              data-test-id='optInAction'
-              icon={{
-                image: <LoaderIcon />,
-                position: 'after'
-              }}
+              text={getLocale('braveRewardsCreatingText')}
+              icon={<LoaderIcon/>}
             />
-            : <Button
-              level='secondary'
-              size='call-to-action'
-              type='subtle'
-              text={getLocale('braveRewardsOptInText')}
+            : <RewardsButton
+              type={'opt-in'}
               onClick={this.optInAction}
-              data-test-id='optInAction'
+              text={getLocale('braveRewardsOptInText')}
             />
           }
         </StyledOptInSection>
@@ -139,7 +129,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             {getLocale('braveRewardsTeaser')}
           </StyledTeaserParagraph>
           <StyledAnchor onClick={this.scrollToCenter}>
-            <ArrowDownIcon />
+            <ArrowAnchorIcon />
           </StyledAnchor>
         </StyledSection>
       </Hero>
@@ -173,23 +163,16 @@ class WelcomePage extends React.PureComponent<Props, {}> {
         <StyledOptInSecond>
           {
             this.props.creating
-            ? <Button
-              level={'primary'}
-              size={'call-to-action'}
-              type={'accent'}
-              text={getLocale('braveRewardsCreatingText')}
+            ? <RewardsButton
+              type={'cta-opt-in'}
               disabled={true}
-              icon={{
-                image: <LoaderIcon />,
-                position: 'after'
-              }}
+              text={getLocale('braveRewardsCreatingText')}
+              icon={<LoaderIcon/>}
             />
-            : <Button
-              level={'primary'}
-              size={'call-to-action'}
-              type={'accent'}
-              text={getLocale('readyToTakePartOptInText')}
+            : <RewardsButton
+              type={'cta-opt-in'}
               onClick={this.optInAction}
+              text={getLocale('readyToTakePartOptInText')}
             />
           }
         </StyledOptInSecond>
