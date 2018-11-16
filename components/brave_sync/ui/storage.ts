@@ -11,7 +11,6 @@ export const defaultState = {
   thisDeviceName: '',
   devices: [],
   isSyncConfigured: false,
-  shouldSyncThisDevice: true,
   seedQRImageSource: '',
   syncWords: '',
   syncBookmarks: true,

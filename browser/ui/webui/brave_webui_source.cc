@@ -416,7 +416,6 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "beta", IDS_BRAVE_SYNC_TITLE_BETA },
         { "syncInfo1", IDS_BRAVE_SYNC_INFO_1 },
         { "syncInfo2", IDS_BRAVE_SYNC_INFO_2 },
-        { "syncThisDevice", IDS_BRAVE_SYNC_DEVICE_SYNC },
         { "done", IDS_BRAVE_SYNC_DONE },
         { "cancel", IDS_BRAVE_SYNC_CANCEL },
         { "areYouSure", IDS_BRAVE_SYNC_ARE_YOU_SURE },

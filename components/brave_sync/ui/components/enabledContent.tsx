@@ -5,16 +5,14 @@
 import * as React from 'react'
 
 // Components
-import { Card, Button } from 'brave-ui'
+import { Button } from 'brave-ui'
 import SwitchButton from 'brave-ui/old/switchButton'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
 
 // Feature-specific components
 import {
   Grid,
-  FlexColumn,
   SwitchLabel,
-  Label,
   Paragraph,
   SectionBlock,
   SubTitle
@@ -104,10 +102,6 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
     }
   }
 
-  onToggleSyncThisDevice = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.actions.onToggleSyncThisDevice(event.target.checked)
-  }
-
   onSyncBookmarks = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.actions.onSyncBookmarks(event.target.checked)
   }
@@ -141,23 +135,6 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
             ? <ResetSyncModal actions={actions} onClose={this.resetSyncModal} />
             : null
         }
-        <Card>
-          <Grid columns='1fr 1fr'>
-            <FlexColumn items='center'>
-              <SwitchButton
-                id='syncThisDevice'
-                size='large'
-                checked={syncData.shouldSyncThisDevice}
-                onChange={this.onToggleSyncThisDevice}
-              />
-              <SwitchLabel htmlFor='syncThisDevice'>{getLocale('syncThisDevice')}</SwitchLabel>
-            </FlexColumn>
-            <FlexColumn direction='column'>
-              <Label>{getLocale('deviceName')}</Label>
-              <Paragraph>{syncData.thisDeviceName}</Paragraph>
-            </FlexColumn>
-          </Grid>
-        </Card>
         <SectionBlock>
           <SubTitle level={2}>{getLocale('devices')}</SubTitle>
           <Table header={this.header} rows={this.getRows(syncData.devices)}>

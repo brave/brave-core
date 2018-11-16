@@ -84,14 +84,6 @@ export const onSyncReset = () => {
 }
 
 /**
- * Dispatches a message telling the back-end whether or not this device should be synced
- * @param {boolean} shouldSyncThisDevice - Whether or not it should keep syncing the current device
- */
-export const onToggleSyncThisDevice = (shouldSyncThisDevice: boolean) => {
-  return action(types.SYNC_ON_SYNC_THIS_DEVICE, { shouldSyncThisDevice })
-}
-
-/**
  * Dispatches a message telling the back-end that user toggled the bookmarks sync
  * @param {boolean} shouldEnable - Whether or not it should sync the bookmarks
  */
