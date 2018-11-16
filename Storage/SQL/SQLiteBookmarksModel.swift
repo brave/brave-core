@@ -7,7 +7,7 @@ import Foundation
 import Shared
 
 private let log = Logger.syncLogger
-private let desktopBookmarksLabel: String = NSLocalizedString("Desktop Bookmarks", tableName: "BookmarkPanel", comment: "The folder name for the virtual folder that contains all desktop bookmarks.")
+
 
 public enum Direction {
     case buffer
@@ -126,7 +126,7 @@ open class SQLiteBookmarksModelFactory: BookmarksModelFactory {
 
     open func modelForRoot() -> Deferred<Maybe<BookmarksModel>> {
         log.debug("Getting model for root.")
-        let getFolder = self.folderForGUID(BookmarkRoots.MobileFolderGUID, title: BookmarksFolderTitleMobile)
+        let getFolder = self.folderForGUID(BookmarkRoots.MobileFolderGUID, title: Strings.BookmarksFolderTitleMobile)
         if self.direction == .buffer {
             return getFolder >>== self.modelWithRoot
         }
@@ -242,7 +242,7 @@ open class SQLiteBookmarksModelFactory: BookmarksModelFactory {
     }
 
     fileprivate func folderForDesktopBookmarksCursor(_ cursor: Cursor<BookmarkNode>) -> SQLiteBookmarkFolder {
-        return SQLiteBookmarkFolder(guid: BookmarkRoots.FakeDesktopFolderGUID, title: desktopBookmarksLabel, children: cursor)
+        return SQLiteBookmarkFolder(guid: BookmarkRoots.FakeDesktopFolderGUID, title: Strings.SQLLiteBookmarkDesktopBookmarksLabel, children: cursor)
     }
 }
 
@@ -610,7 +610,7 @@ class BookmarkFactory {
         log.warning("Creating a BookmarkItem from a query. This is almost certainly unexpected.")
         let id = row["id"] as? Int
         let guid = row["guid"] as! String
-        let title = row["title"] as? String ?? SQLiteBookmarks.defaultItemTitle
+        let title = row["title"] as? String ?? Strings.SQLLiteBookmarkDefaultItemTitle
         let isEditable = row.getBoolean("isEditable")           // Defaults to false.
         let bookmark = BookmarkItem(guid: guid, title: title, url: "about:blank", isEditable: isEditable)
         bookmark.id = id
@@ -648,7 +648,7 @@ class BookmarkFactory {
         let isEditable = row.getBoolean("isEditable")           // Defaults to false.
         let title = titleForSpecialGUID(guid) ??
                     row["title"] as? String ??
-                    SQLiteBookmarks.defaultFolderTitle
+                    Strings.SQLLiteBookmarkDefaultFolderTitle
 
         let folder = BookmarkFolder(guid: guid, title: title, isEditable: isEditable)
         folder.id = id
@@ -869,11 +869,11 @@ open class UnsyncedBookmarksFallbackModelFactory: BookmarksModelFactory {
     open func modelForRoot() -> Deferred<Maybe<BookmarksModel>> {
         log.debug("Getting model for fallback root.")
         // Return a virtual model containing "Desktop bookmarks" prepended to the local mobile bookmarks.
-        return self.localFactory.folderForGUID(BookmarkRoots.MobileFolderGUID, title: BookmarksFolderTitleMobile)
+        return self.localFactory.folderForGUID(BookmarkRoots.MobileFolderGUID, title: Strings.BookmarksFolderTitleMobile)
             >>== {
                 localMobileFolder in
                 
-                self.bufferFactory.folderForGUID(BookmarkRoots.MobileFolderGUID, title: BookmarksFolderTitleMobile) >>== {
+                self.bufferFactory.folderForGUID(BookmarkRoots.MobileFolderGUID, title: Strings.BookmarksFolderTitleMobile) >>== {
                     bufferMobileFolder in
 
                     let bufferAndLocalMobile = ConcatenatedBookmarkFolder(main: bufferMobileFolder, append: localMobileFolder)
@@ -939,4 +939,10 @@ open class MergedSQLiteBookmarks: BookmarksModelFactorySource, KeywordSearchSour
     open func getURLForKeywordSearch(_ keyword: String) -> Deferred<Maybe<String>> {
         return self.local.getURLForKeywordSearch(keyword)
     }
+}
+
+extension Strings {
+    public static let SQLLiteBookmarkDesktopBookmarksLabel = NSLocalizedString("SQLLiteBookmarkDesktopBookmarksLabel", tableName: "Storage", value: "Desktop Bookmarks", comment: "The folder name for the virtual folder that contains all desktop bookmarks.")
+    public static let SQLLiteBookmarkDefaultFolderTitle = NSLocalizedString("SQLLiteBookmarkDefaultFolderTitle", tableName: "Storage", value: "Untitled", comment: "The default name for bookmark folders without titles.")
+    public static let SQLLiteBookmarkDefaultItemTitle = NSLocalizedString("SQLLiteBookmarkDefaultItemTitle", tableName: "Storage", value: "Untitled", comment: "The default name for bookmark nodes without titles.")
 }

@@ -75,7 +75,7 @@ struct ConfirmPanelAlert: JSAlertInfo {
         alertController.addAction(UIAlertAction(title: Strings.OKString, style: .default) { _ in
             self.completionHandler(true)
         })
-        alertController.addAction(UIAlertAction(title: Strings.CancelString, style: .cancel) { _ in
+        alertController.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel) { _ in
             self.cancel()
         })
         alertController.alertInfo = self
@@ -112,7 +112,7 @@ struct TextInputAlert: JSAlertInfo {
         alertController.addAction(UIAlertAction(title: Strings.OKString, style: .default) { _ in
             self.completionHandler(input.text)
         })
-        alertController.addAction(UIAlertAction(title: Strings.CancelString, style: .cancel) { _ in
+        alertController.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel) { _ in
             self.cancel()
         })
         alertController.alertInfo = self

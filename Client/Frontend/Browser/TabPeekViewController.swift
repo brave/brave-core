@@ -15,10 +15,6 @@ protocol TabPeekDelegate: class {
 
 class TabPeekViewController: UIViewController, WKNavigationDelegate {
 
-    fileprivate static let PreviewActionAddToBookmarks = NSLocalizedString("Add to Bookmarks", tableName: "3DTouchActions", comment: "Label for preview action on Tab Tray Tab to add current tab to Bookmarks")
-    fileprivate static let PreviewActionCopyURL = NSLocalizedString("Copy URL", tableName: "3DTouchActions", comment: "Label for preview action on Tab Tray Tab to copy the URL of the current tab to clipboard")
-    fileprivate static let PreviewActionCloseTab = NSLocalizedString("Close Tab", tableName: "3DTouchActions", comment: "Label for preview action on Tab Tray Tab to close the current tab")
-
     weak var tab: Tab?
 
     fileprivate weak var delegate: TabPeekDelegate?
@@ -36,7 +32,7 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
         let urlIsTooLongToSave = self.tab?.urlIsTooLong ?? false
         if !self.ignoreURL && !urlIsTooLongToSave {
             if !self.isBookmarked {
-                actions.append(UIPreviewAction(title: TabPeekViewController.PreviewActionAddToBookmarks, style: .default) { previewAction, viewController in
+                actions.append(UIPreviewAction(title: Strings.PreviewActionAddToBookmarksActionTitle, style: .default) { previewAction, viewController in
                     guard let tab = self.tab else { return }
                     self.delegate?.tabPeekDidAddBookmark(tab)
                     })
@@ -44,14 +40,14 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
             // only add the copy URL action if we don't already have 3 items in our list
             // as we are only allowed 4 in total and we always want to display close tab
             if actions.count < 3 {
-                actions.append(UIPreviewAction(title: TabPeekViewController.PreviewActionCopyURL, style: .default) { previewAction, viewController in
+                actions.append(UIPreviewAction(title: Strings.PreviewActionCopyURLActionTitle, style: .default) { previewAction, viewController in
                     guard let url = self.tab?.canonicalURL else { return }
                     UIPasteboard.general.url = url
                     SimpleToast().showAlertWithText(Strings.AppMenuCopyURLConfirmMessage, bottomContainer: self.view)
                 })
             }
         }
-        actions.append(UIPreviewAction(title: TabPeekViewController.PreviewActionCloseTab, style: .destructive) { previewAction, viewController in
+        actions.append(UIPreviewAction(title: Strings.PreviewActionCloseTabActionTitle, style: .destructive) { previewAction, viewController in
             guard let tab = self.tab else { return }
             self.delegate?.tabPeekDidCloseTab(tab)
             })
@@ -72,7 +68,7 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let webViewAccessibilityLabel = tab?.webView?.accessibilityLabel {
-            previewAccessibilityLabel = String(format: NSLocalizedString("Preview of %@", tableName: "3DTouchActions", comment: "Accessibility label, associated to the 3D Touch action on the current tab in the tab tray, used to display a larger preview of the tab."), webViewAccessibilityLabel)
+            previewAccessibilityLabel = String(format: Strings.PreviewFormatAccessibilityLabel, webViewAccessibilityLabel)
         }
         // if there is no screenshot, load the URL in a web page
         // otherwise just show the screenshot

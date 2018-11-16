@@ -146,7 +146,7 @@ extension LoginDetailViewController: UITableViewDataSource {
         case .usernameItem:
             let loginCell = dequeueLoginCellForIndexPath(indexPath)
             loginCell.style = .noIconAndBothLabels
-            loginCell.highlightedLabelTitle = NSLocalizedString("username", tableName: "LoginManager", comment: "Label displayed above the username row in Login Detail View.")
+            loginCell.highlightedLabelTitle = Strings.LoginDetailUsernameCellTitle
             loginCell.descriptionLabel.text = login.username
             loginCell.descriptionLabel.keyboardType = .emailAddress
             loginCell.descriptionLabel.returnKeyType = .next
@@ -158,7 +158,7 @@ extension LoginDetailViewController: UITableViewDataSource {
         case .passwordItem:
             let loginCell = dequeueLoginCellForIndexPath(indexPath)
             loginCell.style = .noIconAndBothLabels
-            loginCell.highlightedLabelTitle = NSLocalizedString("password", tableName: "LoginManager", comment: "Label displayed above the password row in Login Detail View.")
+            loginCell.highlightedLabelTitle = Strings.LoginDetailPasswordCellTitle
             loginCell.descriptionLabel.text = login.password
             loginCell.descriptionLabel.returnKeyType = .default
             loginCell.displayDescriptionAsPassword = true
@@ -170,7 +170,7 @@ extension LoginDetailViewController: UITableViewDataSource {
         case .websiteItem:
             let loginCell = dequeueLoginCellForIndexPath(indexPath)
             loginCell.style = .noIconAndBothLabels
-            loginCell.highlightedLabelTitle = NSLocalizedString("website", tableName: "LoginManager", comment: "Label displayed above the website row in Login Detail View.")
+            loginCell.highlightedLabelTitle = Strings.LoginDetailWebsiteCellTitle
             loginCell.descriptionLabel.text = login.hostname
             websiteField = loginCell.descriptionLabel
             websiteField?.accessibilityIdentifier = "websiteField"
@@ -180,7 +180,7 @@ extension LoginDetailViewController: UITableViewDataSource {
             // swiftlint:disable:next force_cast
             let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: SeparatorIdentifier) as! SettingsTableSectionHeaderFooterView
             footer.titleAlignment = .top
-            let lastModified = NSLocalizedString("Last modified %@", tableName: "LoginManager", comment: "Footer label describing when the current login was last modified with the timestamp as the parameter.")
+            let lastModified = Strings.LoginDetailLastModifiedCellFormatTitle
             let formattedLabel = String(format: lastModified, Date.fromMicrosecondTimestamp(login.timePasswordChanged).toRelativeTimeString())
             footer.titleLabel.text = formattedLabel
             let cell = wrapFooter(footer, withCellFromTableView: tableView, atIndexPath: indexPath)
@@ -188,7 +188,7 @@ extension LoginDetailViewController: UITableViewDataSource {
 
         case .deleteItem:
             let deleteCell = tableView.dequeueReusableCell(withIdentifier: DefaultCellIdentifier, for: indexPath)
-            deleteCell.textLabel?.text = NSLocalizedString("Delete", tableName: "LoginManager", comment: "Label for the button used to delete the current login.")
+            deleteCell.textLabel?.text = Strings.DeleteLoginButtonTitle
             deleteCell.textLabel?.textAlignment = .center
             deleteCell.textLabel?.textColor = UIConstants.DestructiveRed
             deleteCell.accessibilityTraits = UIAccessibilityTraitButton

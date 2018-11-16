@@ -324,7 +324,7 @@ extension FavoritesViewController: FavoriteCellDelegate {
             self.present(editPopup, animated: true)
         }
         
-        let cancelAction = UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
         
         actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)

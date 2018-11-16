@@ -222,7 +222,7 @@ class TimerSnackBar: SnackBar {
             tab.removeSnackbar(bar)
             UIApplication.shared.open(appStoreURL)
         }
-        let cancelButton = SnackButton(title: Strings.CancelString, accessibilityIdentifier: "CancelOpenInAppStore") { bar in
+        let cancelButton = SnackButton(title: Strings.CancelButtonTitle, accessibilityIdentifier: "CancelOpenInAppStore") { bar in
             tab.removeSnackbar(bar)
         }
         bar.addButton(openAppStore)

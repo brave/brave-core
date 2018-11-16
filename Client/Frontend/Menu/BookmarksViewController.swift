@@ -611,7 +611,7 @@ extension BookmarksViewController {
       actionsForBookmark(bookmark, currentTabIsPrivate: tabState.type.isPrivate).forEach { alert.addAction($0) }
     }
     
-    let cancelAction = UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil)
+    let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
     alert.addAction(cancelAction)
     
     // If we're showing an arrow popup, set the anchor to the long press location.
@@ -654,18 +654,18 @@ extension BookmarksViewController {
     }))
     if !currentTabIsPrivate {
       // New Private Tab
-      items.append(UIAlertAction(title: Strings.Open_In_New_Private_Tab, style: .default, handler: { [weak self] _ in
+      items.append(UIAlertAction(title: Strings.OpenNewPrivateTabButtonTitle, style: .default, handler: { [weak self] _ in
         guard let `self` = self else { return }
         self.linkNavigationDelegate?.linkNavigatorDidRequestToOpenInNewTab(url, isPrivate: true)
       }))
     }
     // Copy
-    items.append(UIAlertAction(title: Strings.Copy_Link, style: .default, handler: { [weak self] _ in
+    items.append(UIAlertAction(title: Strings.CopyLinkActionTitle, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
       self.linkNavigationDelegate?.linkNavigatorDidRequestToCopyURL(url)
     }))
     // Share
-    items.append(UIAlertAction(title: Strings.Share_Link, style: .default, handler: { [weak self] _ in
+    items.append(UIAlertAction(title: Strings.ShareLinkActionTitle, style: .default, handler: { [weak self] _ in
       guard let `self` = self else { return }
       self.linkNavigationDelegate?.linkNavigatorDidRequestToShareURL(url)
     }))

@@ -38,7 +38,7 @@ class SearchSettingsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Settings.Search.Navigation.Title", value: "Search", comment: "Navigation title for search settings.")
+        navigationItem.title = Strings.SearchSettingNavTitle
 
         // To allow re-ordering the list of search engines at all times.
         tableView.isEditing = true
@@ -90,7 +90,7 @@ class SearchSettingsTableViewController: UITableViewController {
                 cell = configureSearchEngineCell(type: .privateMode, engineName: engine.shortName)
             case ItemDefaultSuggestions:
                 cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-                cell.textLabel?.text = NSLocalizedString("Show Search Suggestions", comment: "Label for show search suggestions setting.")
+                cell.textLabel?.text = Strings.SearchSettingSuggestionCellTitle
                 let toggle = UISwitch()
                 toggle.onTintColor = UIConstants.ControlTintColor
                 toggle.addTarget(self, action: #selector(didToggleSearchSuggestions), for: .valueChanged)

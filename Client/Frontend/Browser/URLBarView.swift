@@ -101,7 +101,7 @@ class URLBarView: UIView {
     
     fileprivate lazy var cancelButton: UIButton = {
         let cancelButton = InsetButton()
-        cancelButton.setTitle(Strings.Cancel, for: .normal)
+        cancelButton.setTitle(Strings.CancelButtonTitle, for: .normal)
         cancelButton.setTitleColor(BraveUX.CancelTextColor, for: .normal)
         cancelButton.accessibilityIdentifier = "urlBar-cancel"
         cancelButton.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
@@ -363,7 +363,7 @@ class URLBarView: UIView {
         locationTextField.textAlignment = .left
         locationTextField.font = UIConstants.DefaultChromeFont
         locationTextField.accessibilityIdentifier = "address"
-        locationTextField.accessibilityLabel = NSLocalizedString("Address and Search", comment: "Accessibility label for address and search field, both words (Address, Search) are therefore nouns.")
+        locationTextField.accessibilityLabel = Strings.URLBarViewLocationTextViewAccessibilityLabel
         locationTextField.attributedPlaceholder = self.locationView.placeholder
         locationContainer.addSubview(locationTextField)
         locationTextField.snp.remakeConstraints { make in

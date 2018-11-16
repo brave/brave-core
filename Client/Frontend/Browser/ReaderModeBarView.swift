@@ -14,7 +14,7 @@ enum ReaderModeBarButtonType {
 
     fileprivate var localizedDescription: String {
         switch self {
-        case .settings: return NSLocalizedString("Display Settings", comment: "Name for display settings button in reader mode. Display in the meaning of presentation, not monitor.")
+        case .settings: return Strings.ReaderModeDisplaySettingsButtonTitle
         }
     }
 

@@ -10,13 +10,13 @@ public func titleForSpecialGUID(_ guid: GUID) -> String? {
     case BookmarkRoots.RootGUID:
         return "<Root>"
     case BookmarkRoots.MobileFolderGUID:
-        return BookmarksFolderTitleMobile
+        return Strings.BookmarksFolderTitleMobile
     case BookmarkRoots.ToolbarFolderGUID:
-        return BookmarksFolderTitleToolbar
+        return Strings.BookmarksFolderTitleToolbar
     case BookmarkRoots.MenuFolderGUID:
-        return BookmarksFolderTitleMenu
+        return Strings.BookmarksFolderTitleMenu
     case BookmarkRoots.UnfiledFolderGUID:
-        return BookmarksFolderTitleUnsorted
+        return Strings.BookmarksFolderTitleUnsorted
     default:
         return nil
     }
@@ -60,7 +60,7 @@ extension SQLiteBookmarks: ShareToDestination {
                 guard !yes else { return succeed() }
                 return self.insertBookmark(url, title: title, favicon: favicon,
                                            intoFolder: BookmarkRoots.MobileFolderGUID,
-                                           withTitle: BookmarksFolderTitleMobile)
+                                           withTitle: Strings.BookmarksFolderTitleMobile)
         }
     }
 
@@ -72,4 +72,11 @@ extension SQLiteBookmarks: ShareToDestination {
         }
         return succeed()
     }
+}
+
+extension Strings {
+    public static let BookmarksFolderTitleMobile = NSLocalizedString("BookmarksFolderTitleMobile", tableName: "Storage", value: "Mobile Bookmarks", comment: "The title of the folder that contains mobile bookmarks. This should match bookmarks.folder.mobile.label on Android.")
+    public static let BookmarksFolderTitleMenu = NSLocalizedString("BookmarksFolderTitleMenu", tableName: "Storage", value: "Bookmarks Menu", comment: "The name of the folder that contains desktop bookmarks in the menu. This should match bookmarks.folder.menu.label on Android.")
+    public static let BookmarksFolderTitleToolbar = NSLocalizedString("BookmarksFolderTitleToolbar", tableName: "Storage", value: "Bookmarks Toolbar", comment: "The name of the folder that contains desktop bookmarks in the toolbar. This should match bookmarks.folder.toolbar.label on Android.")
+    public static let BookmarksFolderTitleUnsorted = NSLocalizedString("BookmarksFolderTitleUnsorted", tableName: "Storage", value: "Unsorted Bookmarks", comment: "The name of the folder that contains unsorted desktop bookmarks. This should match bookmarks.folder.unfiled.label on Android.")
 }

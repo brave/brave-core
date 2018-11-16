@@ -63,7 +63,7 @@ extension Date {
         }
 
         if components.month == 1 {
-            return String(format: NSLocalizedString("more than a month ago", comment: "Relative date for dates older than a month and less than two months."))
+            return String(format: Strings.TimeConstantMoreThanMonthAgoText)
         }
 
         if components.month! > 1 {
@@ -71,24 +71,23 @@ extension Date {
         }
 
         if components.weekOfYear! > 0 {
-            return String(format: NSLocalizedString("more than a week ago", comment: "Description for a date more than a week ago, but less than a month ago."))
+            return String(format: Strings.TimeConstantMoreThanWeekAgoText)
         }
 
         if components.day == 1 {
-            return String(format: NSLocalizedString("yesterday", comment: "Relative date for yesterday."))
+            return String(format: Strings.TimeConstantYesterdayText)
         }
 
         if components.day! > 1 {
-            return String(format: NSLocalizedString("this week", comment: "Relative date for date in past week."), String(describing: components.day))
+            return String(format: Strings.TimeConstantThisWeekText, String(describing: components.day))
         }
 
         if components.hour! > 0 || components.minute! > 0 {
             let absoluteTime = DateFormatter.localizedString(from: self, dateStyle: .none, timeStyle: .short)
-            let format = NSLocalizedString("today at %@", comment: "Relative date for date older than a minute.")
-            return String(format: format, absoluteTime)
+            return String(format: Strings.TimeConstantTodayAtFormat, absoluteTime)
         }
 
-        return String(format: NSLocalizedString("just now", comment: "Relative time for a tab that was visited within the last few moments."))
+        return String(format: Strings.TimeConstantJustNowText)
     }
 
     public func toRFC822String() -> String {
@@ -165,4 +164,14 @@ public func decimalSecondsStringToTimestamp(_ input: String) -> Timestamp? {
 public func millisecondsToDecimalSeconds(_ input: Timestamp) -> String {
     let val: Double = Double(input) / 1000
     return String(format: "%.2F", val)
+}
+
+// PRAGMA MARK: TimeConstants.swift
+extension Strings {
+    public static let TimeConstantMoreThanMonthAgoText = NSLocalizedString("TimeConstantMoreThanMonthAgoText", tableName: "Shared", value: "more than a month ago", comment: "Relative date for dates older than a month and less than two months.")
+    public static let TimeConstantMoreThanWeekAgoText = NSLocalizedString("TimeConstantMoreThanWeekAgoText", tableName: "Shared", value: "more than a week ago", comment: "Description for a date more than a week ago, but less than a month ago.")
+    public static let TimeConstantYesterdayText = NSLocalizedString("TimeConstantYesterdayText", tableName: "Shared", value: "yesterday", comment: "Relative date for yesterday.")
+    public static let TimeConstantThisWeekText = NSLocalizedString("TimeConstantThisWeekText", tableName: "Shared", value: "this week", comment: "Relative date for date in past week.")
+    public static let TimeConstantTodayAtFormat = NSLocalizedString("TimeConstantTodayAtFormat", tableName: "Shared", value: "today at %@", comment: "Relative date for date older than a minute.")
+    public static let TimeConstantJustNowText = NSLocalizedString("TimeConstantJustNowText", tableName: "Shared", value: "just now", comment: "Relative time for a tab that was visited within the last few moments.")
 }

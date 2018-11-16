@@ -4,6 +4,7 @@
 
 import Foundation
 import GCDWebServers
+import Shared
 
 struct ReaderModeHandlers {
     static let ReaderModeStyleHash = "sha256-L2W8+0446ay9/L1oMrgucknQXag570zwgQrHwE68qbQ="
@@ -62,11 +63,11 @@ struct ReaderModeHandlers {
                                 let readerViewLoading = try NSMutableString(contentsOfFile: readerViewLoadingPath, encoding: String.Encoding.utf8.rawValue)
                                 readerViewLoading.replaceOccurrences(of: "%ORIGINAL-URL%", with: url.absoluteString, 
                                     options: .literal, range: NSRange(location: 0, length: readerViewLoading.length))
-                                readerViewLoading.replaceOccurrences(of: "%LOADING-TEXT%", with: NSLocalizedString("Loading content…", comment: "Message displayed when the reader mode page is loading. This message will appear only when sharing to Firefox reader mode from another app."), 
+                                readerViewLoading.replaceOccurrences(of: "%LOADING-TEXT%", with: Strings.ReaderModeLoadingContentDisplayText,
                                     options: .literal, range: NSRange(location: 0, length: readerViewLoading.length))
-                                readerViewLoading.replaceOccurrences(of: "%LOADING-FAILED-TEXT%", with: NSLocalizedString("The page could not be displayed in Reader View.", comment: "Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Firefox reader mode from another app."),
+                                readerViewLoading.replaceOccurrences(of: "%LOADING-FAILED-TEXT%", with: Strings.ReaderModePageCantShowDisplayText,
                                     options: .literal, range: NSRange(location: 0, length: readerViewLoading.length))
-                                readerViewLoading.replaceOccurrences(of: "%LOAD-ORIGINAL-TEXT%", with: NSLocalizedString("Load original page", comment: "Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Firefox reader mode from another app."),
+                                readerViewLoading.replaceOccurrences(of: "%LOAD-ORIGINAL-TEXT%", with: Strings.ReaderModeLoadOriginalLinkText,
                                     options: .literal, range: NSRange(location: 0, length: readerViewLoading.length))
                                 return GCDWebServerDataResponse(html: readerViewLoading as String)
                             } catch _ {
@@ -76,8 +77,7 @@ struct ReaderModeHandlers {
                 }
             }
 
-            let errorString = NSLocalizedString("There was an error converting the page", comment: "Error displayed when reader mode cannot be enabled")
-            return GCDWebServerDataResponse(html: errorString) // TODO Needs a proper error page
+            return GCDWebServerDataResponse(html: Strings.ReaderModeErrorConvertDisplayText) // TODO Needs a proper error page
         }
     }
 }
