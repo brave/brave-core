@@ -433,6 +433,7 @@
       <message name="IDS_BRAVE_SYNC_BROWSING_HISTORY" desc="The Brave Sync `Browsing History` toggle label">Browsing History</message>
       <message name="IDS_BRAVE_SYNC_CLEAR_DATA" desc="The Brave Sync `Clear Data` title">Clear Data</message>
       <message name="IDS_BRAVE_SYNC_RESET_SYNC" desc="The Brave Sync `Reset Sync` button">Reset Sync</message>
+      <message name="IDS_BRAVE_SYNC_REMOVE_DEVICE" desc="The Brave Sync `Remove` table header">Remove</message>
       <message name="IDS_BRAVE_SYNC_SET_UP_SYNC" desc="The Brave Sync `Set up Sync` button">Set up Sync</message>
       <message name="IDS_BRAVE_SYNC_ENTER_SYNC_CODE_WORDS" desc="The Brave Sync `Enter your Sync code words:` label">Enter your Sync code words:</message>
       <message name="IDS_BRAVE_SYNC_ENTER_OPTIONAL_NAME_FOR_THIS_DEVICE" desc="The Brave Sync `Enter a name for this device` label">Enter a name for this device:</message>

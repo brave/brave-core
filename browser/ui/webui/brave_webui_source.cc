@@ -436,6 +436,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "browsingHistory", IDS_BRAVE_SYNC_BROWSING_HISTORY },
         { "clearData", IDS_BRAVE_SYNC_CLEAR_DATA },
         { "resetSync", IDS_BRAVE_SYNC_RESET_SYNC },
+        { "removeDevice", IDS_BRAVE_SYNC_REMOVE_DEVICE },
 
         { "setUpSync", IDS_BRAVE_SYNC_SET_UP_SYNC },
 

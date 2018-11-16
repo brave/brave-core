@@ -81,7 +81,7 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
       { content: getLocale('id') },
       { content: getLocale('deviceName') },
       { content: getLocale('lastActive') },
-      { content: getLocale('remove'), customStyle: { 'text-align': 'center' } }
+      { content: getLocale('removeDevice'), customStyle: { 'text-align': 'center' } }
     ]
   }
 
