@@ -40,7 +40,7 @@ class NewToSyncModal extends React.PureComponent<NewToSyncModalProps, NewToSyncM
   }
 
   onSetupNewToSync = () => {
-    this.props.actions.onSetupNewToSync(this.state.deviceName)
+    this.props.actions.onSetupNewToSync(this.deviceName)
   }
 
   render () {
