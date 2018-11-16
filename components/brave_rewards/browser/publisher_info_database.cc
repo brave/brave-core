@@ -22,7 +22,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 3;
+const int kCurrentVersionNumber = 4;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -154,10 +154,10 @@ bool PublisherInfoDatabase::CreateActivityInfoTable() {
       "("
       "publisher_id LONGVARCHAR NOT NULL,"
       "duration INTEGER DEFAULT 0 NOT NULL,"
+      "visits INTEGER DEFAULT 0 NOT NULL,"
       "score DOUBLE DEFAULT 0 NOT NULL,"
       "percent INTEGER DEFAULT 0 NOT NULL,"
       "weight DOUBLE DEFAULT 0 NOT NULL,"
-      "category INTEGER NOT NULL,"
       "month INTEGER NOT NULL,"
       "year INTEGER NOT NULL,"
       "reconcile_stamp INTEGER DEFAULT 0 NOT NULL,"
@@ -265,14 +265,13 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
 
   sql::Statement activity_get(
       db_.GetUniqueStatement("SELECT publisher_id FROM activity_info WHERE "
-                             "publisher_id=? AND category=? "
-                             "AND month=? AND year=? AND reconcile_stamp=?"));
+                             "publisher_id=? AND month=? "
+                             "AND year=? AND reconcile_stamp=?"));
 
   activity_get.BindString(0, info.id);
-  activity_get.BindInt(1, info.category);
-  activity_get.BindInt(2, info.month);
-  activity_get.BindInt(3, info.year);
-  activity_get.BindInt64(4, info.reconcile_stamp);
+  activity_get.BindInt(1, info.month);
+  activity_get.BindInt(2, info.year);
+  activity_get.BindInt64(3, info.reconcile_stamp);
 
   if (activity_get.Step()) {
     sql::Statement activity_info_update(
@@ -280,18 +279,17 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
           "UPDATE activity_info SET "
           "duration=?, score=?, percent=?, "
           "weight=? WHERE "
-          "publisher_id=? AND category=? "
-          "AND month=? AND year=? AND reconcile_stamp=?"));
+          "publisher_id=? AND month=? "
+          "AND year=? AND reconcile_stamp=?"));
 
     activity_info_update.BindInt64(0, (int)info.duration);
     activity_info_update.BindDouble(1, info.score);
     activity_info_update.BindInt64(2, (int)info.percent);
     activity_info_update.BindDouble(3, info.weight);
     activity_info_update.BindString(4, info.id);
-    activity_info_update.BindInt(5, info.category);
-    activity_info_update.BindInt(6, info.month);
-    activity_info_update.BindInt(7, info.year);
-    activity_info_update.BindInt64(8, info.reconcile_stamp);
+    activity_info_update.BindInt(5, info.month);
+    activity_info_update.BindInt(6, info.year);
+    activity_info_update.BindInt64(7, info.reconcile_stamp);
 
     return activity_info_update.Run();
   }
@@ -300,7 +298,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     GetDB().GetCachedStatement(SQL_FROM_HERE,
         "INSERT INTO activity_info "
         "(publisher_id, duration, score, percent, "
-        "weight, category, month, year, reconcile_stamp) "
+        "weight, month, year, reconcile_stamp) "
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"));
 
   activity_info_insert.BindString(0, info.id);
@@ -308,10 +306,9 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   activity_info_insert.BindDouble(2, info.score);
   activity_info_insert.BindInt64(3, (int)info.percent);
   activity_info_insert.BindDouble(4, info.weight);
-  activity_info_insert.BindInt(5, info.category);
-  activity_info_insert.BindInt(6, info.month);
-  activity_info_insert.BindInt(7, info.year);
-  activity_info_insert.BindInt64(8, info.reconcile_stamp);
+  activity_info_insert.BindInt(5, info.month);
+  activity_info_insert.BindInt(6, info.year);
+  activity_info_insert.BindInt64(7, info.reconcile_stamp);
 
   return activity_info_insert.Run();
 }
@@ -386,7 +383,7 @@ bool PublisherInfoDatabase::Find(int start,
     return false;
 
   std::string query = "SELECT ai.publisher_id, ai.duration, ai.score, ai.percent, "
-      "ai.weight, pi.verified, pi.excluded, ai.category, ai.month, ai.year, pi.name, "
+      "ai.weight, pi.verified, pi.excluded, ai.month, ai.year, pi.name, "
       "pi.url, pi.provider, pi.favIcon, ai.reconcile_stamp "
       "FROM activity_info AS ai "
       "INNER JOIN publisher_info AS pi ON ai.publisher_id = pi.publisher_id "
@@ -401,8 +398,8 @@ bool PublisherInfoDatabase::Find(int start,
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
     ledger::PUBLISHER_MONTH month(
-        static_cast<ledger::PUBLISHER_MONTH>(info_sql.ColumnInt(8)));
-    int year(info_sql.ColumnInt(9));
+        static_cast<ledger::PUBLISHER_MONTH>(info_sql.ColumnInt(7)));
+    int year(info_sql.ColumnInt(8));
 
     ledger::PublisherInfo info(id, month, year);
     info.duration = info_sql.ColumnInt64(1);
@@ -411,15 +408,13 @@ bool PublisherInfoDatabase::Find(int start,
     info.percent = info_sql.ColumnInt64(3);
     info.weight = info_sql.ColumnDouble(4);
     info.verified = info_sql.ColumnBool(5);
-    info.name = info_sql.ColumnString(10);
-    info.url = info_sql.ColumnString(11);
-    info.provider = info_sql.ColumnString(12);
-    info.favicon_url = info_sql.ColumnString(13);
-    info.reconcile_stamp = info_sql.ColumnInt64(14);
+    info.name = info_sql.ColumnString(9);
+    info.url = info_sql.ColumnString(10);
+    info.provider = info_sql.ColumnString(11);
+    info.favicon_url = info_sql.ColumnString(12);
+    info.reconcile_stamp = info_sql.ColumnInt64(13);
 
     info.excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
-    info.category =
-        static_cast<ledger::PUBLISHER_CATEGORY>(info_sql.ColumnInt(7));
 
     list->push_back(info);
   }
@@ -460,9 +455,6 @@ std::string PublisherInfoDatabase::BuildClauses(int start,
 
   if (!filter.id.empty())
     clauses += " AND ai.publisher_id = ?";
-
-  if (filter.category != ledger::PUBLISHER_CATEGORY::ALL_CATEGORIES)
-    clauses += " AND ai.category = ?";
 
   if (filter.month != ledger::PUBLISHER_MONTH::ANY)
     clauses += " AND ai.month = ?";
@@ -514,9 +506,6 @@ void PublisherInfoDatabase::BindFilter(sql::Statement& statement,
   int column = 0;
   if (!filter.id.empty())
     statement.BindString(column++, filter.id);
-
-  if (filter.category != ledger::PUBLISHER_CATEGORY::ALL_CATEGORIES)
-    statement.BindInt(column++, filter.category);
 
   if (filter.month != ledger::PUBLISHER_MONTH::ANY)
     statement.BindInt(column++, filter.month);
@@ -865,6 +854,49 @@ bool PublisherInfoDatabase::MigrateV2toV3() {
   return CreatePendingContributionsIndex();
 }
 
+bool PublisherInfoDatabase::MigrateV3toV4() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // Activity info
+  const char* activity = "activity_info";
+  if (GetDB().DoesTableExist(activity)) {
+    std::string sql = "ALTER TABLE activity_info RENAME TO activity_info_old;";
+
+    if (!GetDB().Execute(sql.c_str())) {
+      return false;
+    }
+
+    if (!CreateActivityInfoTable()) {
+      return false;
+    }
+
+    if (!CreateActivityInfoIndex()) {
+      return false;
+    }
+
+    std::string columns = "publisher_id, "
+                          "duration, "
+                          "score, "
+                          "percent, "
+                          "weight, "
+                          "month, "
+                          "year, "
+                          "reconcile_stamp";
+
+    sql = "PRAGMA foreign_keys=off;";
+    sql.append("INSERT INTO activity_info (" + columns + ") "
+               "SELECT " + columns + " "
+               "FROM activity_info_old;");
+    sql.append("UPDATE activity_info SET visits=5;");
+    sql.append("DROP TABLE activity_info_old;");
+    sql.append("PRAGMA foreign_keys=on;");
+
+    return GetDB().Execute(sql.c_str());
+  }
+
+  return false;
+}
+
 sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -888,6 +920,13 @@ sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
   if (old_version < 3 && cur_version < 4) {
     if (!MigrateV2toV3()) {
       LOG(ERROR) << "DB: Error with MigrateV2toV3";
+    }
+  }
+
+  // to version 4
+  if (old_version < 4 && cur_version < 5) {
+    if (!MigrateV2toV3()) {
+      LOG(ERROR) << "DB: Error with MigrateV3toV4";
     }
   }
 
