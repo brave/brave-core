@@ -20,13 +20,13 @@ int main() {
 
   ads.ChangeLocale("fr");
 
-  ads.RecordUnIdle(false);
+  ads.RecordIdle();
 
   ads.AppFocused(true);
 
   ads.TabUpdated(1, "https://brave.com", true, false);
 
-  ads.RecordUnIdle(true);
+  ads.RecordUnIdle();
 
   ads.RecordMediaPlaying(1, true);
 

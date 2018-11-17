@@ -59,8 +59,11 @@ class ADS_EXPORT Ads {
   // Should be called to record when a user closes a tab
   virtual void TabClosed(const uint32_t tab_id) = 0;
 
-  // Should be called to record when idle state changes
-  virtual void RecordUnIdle(const bool unidle) = 0;
+  // Should be called to record when the browser is idle
+  virtual void RecordIdle() = 0;
+
+  // Should be called to record when the browser is no longer idle
+  virtual void RecordUnIdle() = 0;
 
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;

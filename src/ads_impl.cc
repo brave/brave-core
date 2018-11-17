@@ -296,13 +296,14 @@ void AdsImpl::TabClosed(const uint32_t tab_id) {
   GenerateAdReportingDestroyEvent(destroy_info);
 }
 
-void AdsImpl::RecordUnIdle(const bool unidle) {
+void AdsImpl::RecordIdle() {
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Idle state changed', { idleState: action.get('idleState') }
+}
 
-  if (unidle == false) {
-    return;
-  }
+void AdsImpl::RecordUnIdle() {
+  // TODO(Terry Mancey): Implement Log (#44)
+  // 'Idle state changed', { idleState: action.get('idleState') }
 
   client_->UpdateLastUserIdleStopTime();
   if (client_->GetAllowed()) {

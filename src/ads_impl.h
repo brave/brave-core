@@ -57,7 +57,8 @@ class AdsImpl : public Ads {
       const bool is_active,
       const bool is_incognito) override;
   void TabClosed(const uint32_t tab_id) override;
-  void RecordUnIdle(const bool undle) override;
+  void RecordIdle() override;
+  void RecordUnIdle() override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
   void RecordMediaPlaying(
