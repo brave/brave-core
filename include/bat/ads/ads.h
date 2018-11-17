@@ -46,13 +46,13 @@ class ADS_EXPORT Ads {
 
   // Should be called to record user activity on a tab
   virtual void TabUpdated(
-      const uint32_t tab_id,
+      const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) = 0;
 
   // Should be called to record when a user closes a tab
-  virtual void TabClosed(const uint32_t tab_id) = 0;
+  virtual void TabClosed(const int32_t tab_id) = 0;
 
   // Should be called to record when the browser is idle
   virtual void RecordIdle() = 0;
@@ -70,7 +70,7 @@ class ADS_EXPORT Ads {
   // Should be called to record when a tab has stopped, paused or started
   // playing media (A/V)
   virtual void RecordMediaPlaying(
-      const uint32_t tab_id,
+      const int32_t tab_id,
       const bool is_playing) = 0;
 
   // Should be called when a page is completely loaded and the body is available

@@ -10,14 +10,14 @@ namespace ads {
 
 struct DestroyInfo {
   DestroyInfo() :
-      tab_id(0) {}
+      tab_id(-1) {}
 
   explicit DestroyInfo(const DestroyInfo& info) :
       tab_id(info.tab_id) {}
 
   ~DestroyInfo() {}
 
-  uint32_t tab_id;
+  int32_t tab_id;
 };
 
 }  // namespace ads

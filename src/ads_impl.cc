@@ -230,7 +230,7 @@ bool AdsImpl::IsAppFocused() const {
 }
 
 void AdsImpl::TabUpdated(
-    const uint32_t tab_id,
+    const int32_t tab_id,
     const std::string& url,
     const bool is_active,
     const bool is_incognito) {
@@ -259,7 +259,7 @@ void AdsImpl::TabUpdated(
   }
 }
 
-void AdsImpl::TabClosed(const uint32_t tab_id) {
+void AdsImpl::TabClosed(const int32_t tab_id) {
   RecordMediaPlaying(tab_id, false);
 
   DestroyInfo destroy_info;
@@ -297,7 +297,7 @@ void AdsImpl::SaveCachedInfo() {
 }
 
 void AdsImpl::RecordMediaPlaying(
-    const uint32_t tab_id,
+    const int32_t tab_id,
     const bool is_playing) {
   auto tab = media_playing_.find(tab_id);
 

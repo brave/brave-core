@@ -50,17 +50,17 @@ class AdsImpl : public Ads {
   void AppFocused(const bool is_focused) override;
   bool IsAppFocused() const;
   void TabUpdated(
-      const uint32_t tab_id,
+      const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-  void TabClosed(const uint32_t tab_id) override;
+  void TabClosed(const int32_t tab_id) override;
   void RecordIdle() override;
   void RecordUnIdle() override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
   void RecordMediaPlaying(
-      const uint32_t tab_id,
+      const int32_t tab_id,
       const bool is_playing) override;
   bool IsMediaPlaying() const;
   void ClassifyPage(const std::string& url, const std::string& html) override;
