@@ -27,8 +27,8 @@ namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client) :
     boot_(false),
-    app_focused_(false),
     initialized_(false),
+    app_focused_(false),
     last_page_classification_(""),
     collect_activity_timer_id_(0),
     media_playing_({}),
