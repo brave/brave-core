@@ -13,6 +13,12 @@ struct LoadInfo {
       tab_id(0),
       tab_url("") {}
 
+  explicit LoadInfo(const LoadInfo& info) :
+      tab_id(info.tab_id),
+      tab_url(info.tab_url) {}
+
+  ~LoadInfo() {}
+
   uint32_t tab_id;
   std::string tab_url;
 };

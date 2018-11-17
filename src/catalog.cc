@@ -21,7 +21,7 @@ Catalog::Catalog(AdsClient* ads_client, Bundle* bundle) :
 Catalog::~Catalog() {}
 
 bool Catalog::FromJson(const std::string& json) {
-  auto catalog_state = std::make_unique<CATALOG_STATE>();
+  auto catalog_state = std::make_unique<CatalogState>();
 
   auto jsonSchema = ads_client_->Load("catalog-schema.json");
   if (!LoadFromJson(*catalog_state, json, jsonSchema)) {
@@ -72,7 +72,7 @@ void Catalog::Reset() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool Catalog::IsIdValid(const CATALOG_STATE& catalog_state) {
+bool Catalog::IsIdValid(const CatalogState& catalog_state) {
   auto current_catalog_id = bundle_->GetCatalogId();
   auto new_catalog_id = catalog_state.catalog_id;
 

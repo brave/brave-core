@@ -26,6 +26,14 @@ struct SearchProviderInfo {
     search_template(search_template),
     is_always_classed_as_a_search(is_always_classed_as_a_search) {}
 
+  SearchProviderInfo(const SearchProviderInfo& info) :
+    name(info.name),
+    hostname(info.hostname),
+    search_template(info.search_template),
+    is_always_classed_as_a_search(info.is_always_classed_as_a_search) {}
+
+  ~SearchProviderInfo() {}
+
   std::string name;
   std::string hostname;
   std::string search_template;

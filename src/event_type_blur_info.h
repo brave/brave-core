@@ -12,6 +12,11 @@ struct BlurInfo {
   BlurInfo() :
       tab_id(0) {}
 
+  explicit BlurInfo(const BlurInfo& info) :
+      tab_id(info.tab_id) {}
+
+  ~BlurInfo() {}
+
   uint32_t tab_id;
 };
 

@@ -15,6 +15,14 @@ struct TypeInfo {
       platform(""),
       version(0) {}
 
+  explicit TypeInfo(const TypeInfo& info) :
+      code(info.code),
+      name(info.name),
+      platform(info.platform),
+      version(info.version) {}
+
+  ~TypeInfo() {}
+
   std::string code;
   std::string name;
   std::string platform;

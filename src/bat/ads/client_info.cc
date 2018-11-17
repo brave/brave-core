@@ -11,4 +11,11 @@ ClientInfo::ClientInfo() :
     platform(""),
     platform_version("") {}
 
+ClientInfo::ClientInfo(const ClientInfo& info) :
+    application_version(info.application_version),
+    platform(info.platform),
+    platform_version(info.platform_version) {}
+
+ClientInfo::~ClientInfo() = default;
+
 }  // namespace ads

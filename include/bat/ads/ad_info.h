@@ -12,6 +12,8 @@ namespace ads {
 
 struct ADS_EXPORT AdInfo {
   AdInfo();
+  AdInfo(const AdInfo& info);
+  ~AdInfo();
 
   std::string creative_set_id;
   std::string advertiser;

@@ -9,13 +9,22 @@
 
 namespace ads {
 
-CATALOG_STATE::CATALOG_STATE() :
+CatalogState::CatalogState() :
     catalog_id(""),
     version(0),
     ping(0),
     campaigns({}) {}
 
-bool CATALOG_STATE::LoadFromJson(
+CatalogState::CatalogState(const CatalogState& state) {
+    catalog_id = state.catalog_id;
+    version = state.version;
+    ping = state.ping;
+    campaigns = state.campaigns;
+}
+
+CatalogState::~CatalogState() = default;
+
+bool CatalogState::LoadFromJson(
     const std::string& json,
     const std::string& jsonSchema) {
   rapidjson::Document catalog;

@@ -13,6 +13,12 @@ struct GeoTargetInfo {
       code(""),
       name("") {}
 
+  explicit GeoTargetInfo(const GeoTargetInfo& info) :
+      code(info.code),
+      name(info.name) {}
+
+  ~GeoTargetInfo() {}
+
   std::string code;
   std::string name;
 };

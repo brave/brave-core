@@ -13,4 +13,13 @@ AdInfo::AdInfo() :
     notification_url(""),
     uuid("") {}
 
+AdInfo::AdInfo(const AdInfo& info) :
+    creative_set_id(info.creative_set_id),
+    advertiser(info.advertiser),
+    notification_text(info.notification_text),
+    notification_url(info.notification_url),
+    uuid(info.uuid) {}
+
+AdInfo::~AdInfo() = default;
+
 }  // namespace ads

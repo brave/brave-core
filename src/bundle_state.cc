@@ -14,6 +14,15 @@ BundleState::BundleState() :
     catalog_ping(0),
     categories({}) {}
 
+BundleState::BundleState(const BundleState& state) {
+    catalog_id = state.catalog_id;
+    catalog_version = state.catalog_version;
+    catalog_ping = state.catalog_ping;
+    categories = state.categories;
+}
+
+BundleState::~BundleState() = default;
+
 bool BundleState::LoadFromJson(
     const std::string& json,
     const std::string& jsonSchema) {

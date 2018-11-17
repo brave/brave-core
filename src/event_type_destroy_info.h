@@ -12,6 +12,11 @@ struct DestroyInfo {
   DestroyInfo() :
       tab_id(0) {}
 
+  explicit DestroyInfo(const DestroyInfo& info) :
+      tab_id(info.tab_id) {}
+
+  ~DestroyInfo() {}
+
   uint32_t tab_id;
 };
 

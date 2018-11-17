@@ -13,8 +13,10 @@
 
 namespace ads {
 
-struct CATALOG_STATE {
-  CATALOG_STATE();
+struct CatalogState {
+  CatalogState();
+  explicit CatalogState(const CatalogState& state);
+  ~CatalogState();
 
   bool LoadFromJson(const std::string& json, const std::string& jsonSchema);
 

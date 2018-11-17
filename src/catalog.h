@@ -14,7 +14,7 @@
 namespace ads {
 
 class Bundle;
-struct CATALOG_STATE;
+struct CatalogState;
 
 class Catalog {
  public:
@@ -33,7 +33,7 @@ class Catalog {
   void Reset();
 
  private:
-  bool IsIdValid(const CATALOG_STATE& catalog_state);
+  bool IsIdValid(const CatalogState& catalog_state);
 
   void OnCatalogSaved(const Result result);
   void OnCatalogReset(const Result result);
@@ -41,7 +41,7 @@ class Catalog {
   AdsClient* ads_client_;  // NOT OWNED
   Bundle* bundle_;  // NOT OWNED
 
-  std::shared_ptr<CATALOG_STATE> catalog_state_;
+  std::shared_ptr<CatalogState> catalog_state_;
 };
 
 }  // namespace ads

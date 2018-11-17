@@ -32,6 +32,33 @@ ClientState::ClientState() :
     shop_url(""),
     status("") {}
 
+ClientState::ClientState(const ClientState& state) {
+  ads_shown_history = state.ads_shown_history;
+  ad_uuid = state.ad_uuid;
+  ads_uuid_seen = state.ads_uuid_seen;
+  available = state.available;
+  allowed = state.allowed;
+  configured = state.configured;
+  current_ssid = state.current_ssid;
+  expired = state.expired;
+  last_search_time = state.last_search_time;
+  last_shop_time = state.last_shop_time;
+  last_user_activity = state.last_user_activity;
+  last_user_idle_stop_time = state.last_user_idle_stop_time;
+  locale = state.locale;
+  locales = state.locales;
+  page_score_history = state.page_score_history;
+  places = state.places;
+  score = state.score;
+  search_activity = state.search_activity;
+  search_url = state.search_url;
+  shop_activity = state.shop_activity;
+  shop_url = state.shop_url;
+  status = state.status;
+}
+
+ClientState::~ClientState() = default;
+
 bool ClientState::LoadFromJson(const std::string& json) {
   rapidjson::Document client;
   client.Parse(json.c_str());

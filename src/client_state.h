@@ -13,6 +13,8 @@ namespace ads {
 
 struct ClientState {
   ClientState();
+  explicit ClientState(const ClientState& state);
+  ~ClientState();
 
   bool LoadFromJson(const std::string& json);
 

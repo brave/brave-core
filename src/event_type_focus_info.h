@@ -12,6 +12,11 @@ struct FocusInfo {
   FocusInfo() :
       tab_id(0) {}
 
+  explicit FocusInfo(const FocusInfo& info) :
+      tab_id(info.tab_id) {}
+
+  ~FocusInfo() {}
+
   uint32_t tab_id;
 };
 
