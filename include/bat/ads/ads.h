@@ -91,18 +91,6 @@ class ADS_EXPORT Ads {
   // sent to the client for processing
   virtual void ServeSampleAd() = 0;
 
-  // Should be called to flag whether notifications are available
-  virtual void SetNotificationsAvailable(const bool available) = 0;
-
-  // Should be called to flag whether notifications are allowed
-  virtual void SetNotificationsAllowed(const bool allowed) = 0;
-
-  // Should be called to flag whether notifications are configured
-  virtual void SetNotificationsConfigured(const bool configured) = 0;
-
-  // Should be called to flag whether notifications have expired
-  virtual void SetNotificationsExpired(const bool expired) = 0;
-
   // Should be called when a timer is triggered
   virtual void OnTimer(const uint32_t timer_id) = 0;
 };

@@ -68,11 +68,6 @@ class AdsImpl : public Ads {
   void CheckReadyAdServe(const bool forced = false) override;
   void ServeSampleAd() override;
 
-  void SetNotificationsAvailable(const bool available) override;
-  void SetNotificationsAllowed(const bool allowed) override;
-  void SetNotificationsConfigured(const bool configured) override;
-  void SetNotificationsExpired(const bool expired) override;
-
   void StartCollectingActivity(const uint64_t start_timer_in);
   void StopCollectingActivity();
 

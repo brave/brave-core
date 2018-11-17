@@ -13,11 +13,6 @@ int main() {
 
   ads.Initialize();
 
-  ads.SetNotificationsAvailable(true);
-  ads.SetNotificationsAllowed(true);
-  ads.SetNotificationsConfigured(true);
-  ads.SetNotificationsExpired(false);
-
   ads.ChangeLocale("fr");
 
   ads.RecordIdle();

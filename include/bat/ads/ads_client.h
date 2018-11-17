@@ -64,6 +64,18 @@ class ADS_EXPORT AdsClient {
   // Gets the network SSID or an empty string if not available
   virtual const std::string GetSSID() const = 0;
 
+  // Gets whether notifications are available
+  virtual bool IsNotificationsAvailable() const = 0;
+
+  // Gets whether notifications are allowed
+  virtual bool IsNotificationsAllowed() const = 0;
+
+  // Gets whether notifications are configured
+  virtual bool IsNotificationsConfigured() const = 0;
+
+  // Gets whether notifications have expired
+  virtual bool IsNotificationsExpired() const = 0;
+
   // Shows the notification
   virtual void ShowNotification(
       std::unique_ptr<NotificationInfo> info) = 0;

@@ -277,7 +277,7 @@ void AdsImpl::RecordUnIdle() {
   // 'Idle state changed', { idleState: action.get('idleState') }
 
   client_->UpdateLastUserIdleStopTime();
-  if (client_->GetAllowed()) {
+  if (ads_client_->IsNotificationsAllowed()) {
     CheckReadyAdServe();
   }
 }
@@ -403,22 +403,6 @@ void AdsImpl::ServeSampleAd() {
   auto callback = std::bind(&AdsImpl::OnGetAdsForSampleCategory,
     this, _1, _2, _3);
   ads_client_->GetAdsForSampleCategory(callback);
-}
-
-void AdsImpl::SetNotificationsAvailable(const bool available) {
-  client_->SetAvailable(available);
-}
-
-void AdsImpl::SetNotificationsAllowed(const bool allowed) {
-  client_->SetAllowed(allowed);
-}
-
-void AdsImpl::SetNotificationsConfigured(const bool configured) {
-  client_->SetConfigured(configured);
-}
-
-void AdsImpl::SetNotificationsExpired(const bool expired) {
-  client_->SetExpired(expired);
 }
 
 void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
@@ -1112,11 +1096,11 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.StartObject();
 
   writer.String("configured");
-  auto configured = client_->GetConfigured();
+  auto configured = ads_client_->IsNotificationsConfigured();
   writer.Bool(configured);
 
   writer.String("allowed");
-  auto allowed = client_->GetAllowed();
+  auto allowed = ads_client_->IsNotificationsAllowed();
   writer.Bool(allowed);
 
   writer.EndObject();

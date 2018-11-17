@@ -64,6 +64,22 @@ const std::string MockAdsClient::GetSSID() const {
   return "My WiFi Network";
 }
 
+bool MockAdsClient::IsNotificationsAvailable() const {
+  return true;
+}
+
+bool MockAdsClient::IsNotificationsAllowed() const {
+  return true;
+}
+
+bool MockAdsClient::IsNotificationsConfigured() const {
+  return true;
+}
+
+bool MockAdsClient::IsNotificationsExpired() const {
+  return false;
+}
+
 void MockAdsClient::ShowNotification(
     std::unique_ptr<NotificationInfo> info) {
   std::cout << std::endl << "------------------------------------------------";
