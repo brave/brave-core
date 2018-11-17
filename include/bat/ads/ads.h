@@ -38,11 +38,18 @@ class ADS_EXPORT Ads {
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) = 0;
 
-  // Should be called to initialize ads
+  // Should be called to initialize ads, and when ads have been disabled on the
+  // Client
   virtual void Initialize() = 0;
 
   // Should be called whenever the browser gains or loses focus
   virtual void AppFocused(const bool is_focused) = 0;
+
+  // Should be called to record when the browser is idle
+  virtual void OnIdle() = 0;
+
+  // Should be called to record when the browser is no longer idle
+  virtual void OnUnIdle() = 0;
 
   // Should be called to record user activity on a tab
   virtual void TabUpdated(
@@ -52,13 +59,7 @@ class ADS_EXPORT Ads {
       const bool is_incognito) = 0;
 
   // Should be called to record when a user closes a tab
-  virtual void TabClosed(const int32_t tab_id) = 0;
-
-  // Should be called to record when the browser is idle
-  virtual void RecordIdle() = 0;
-
-  // Should be called to record when the browser is no longer idle
-  virtual void RecordUnIdle() = 0;
+  virtual void TabClosed(const int32_t& tab_id) = 0;
 
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;

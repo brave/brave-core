@@ -229,6 +229,21 @@ bool AdsImpl::IsAppFocused() const {
   return app_focused_;
 }
 
+void AdsImpl::OnIdle() {
+  // TODO(Terry Mancey): Implement Log (#44)
+  // 'Idle state changed', { idleState: action.get('idleState') }
+}
+
+void AdsImpl::OnUnIdle() {
+  // TODO(Terry Mancey): Implement Log (#44)
+  // 'Idle state changed', { idleState: action.get('idleState') }
+
+  client_->UpdateLastUserIdleStopTime();
+  if (ads_client_->IsNotificationsAllowed()) {
+    CheckReadyAdServe();
+  }
+}
+
 void AdsImpl::TabUpdated(
     const int32_t tab_id,
     const std::string& url,
@@ -259,27 +274,12 @@ void AdsImpl::TabUpdated(
   }
 }
 
-void AdsImpl::TabClosed(const int32_t tab_id) {
+void AdsImpl::TabClosed(const int32_t& tab_id) {
   RecordMediaPlaying(tab_id, false);
 
   DestroyInfo destroy_info;
   destroy_info.tab_id = tab_id;
   GenerateAdReportingDestroyEvent(destroy_info);
-}
-
-void AdsImpl::RecordIdle() {
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Idle state changed', { idleState: action.get('idleState') }
-}
-
-void AdsImpl::RecordUnIdle() {
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Idle state changed', { idleState: action.get('idleState') }
-
-  client_->UpdateLastUserIdleStopTime();
-  if (ads_client_->IsNotificationsAllowed()) {
-    CheckReadyAdServe();
-  }
 }
 
 void AdsImpl::RemoveAllHistory() {

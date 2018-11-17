@@ -49,14 +49,14 @@ class AdsImpl : public Ads {
   bool IsInitialized();
   void AppFocused(const bool is_focused) override;
   bool IsAppFocused() const;
+  void OnIdle() override;
+  void OnUnIdle() override;
   void TabUpdated(
       const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-  void TabClosed(const int32_t tab_id) override;
-  void RecordIdle() override;
-  void RecordUnIdle() override;
+  void TabClosed(const int32_t& tab_id) override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
   void RecordMediaPlaying(
