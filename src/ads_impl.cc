@@ -161,35 +161,6 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
   ads_client_->EventLog(json);
 }
 
-void AdsImpl::GenerateAdReportingSustainEvent(
-    const NotificationInfo& info) {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("sustain");
-
-  writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
-  writer.String(time_stamp.c_str());
-
-  writer.String("notificationId");
-  writer.String(info.uuid.c_str());
-
-  writer.String("notificationType");
-  writer.String("viewed");
-
-  writer.EndObject();
-
-  auto json = buffer.GetString();
-  ads_client_->EventLog(json);
-}
-
 void AdsImpl::Initialize() {
   if (initialized_) {
     LOG(LogLevel::WARNING) << "Already initialized";
@@ -861,6 +832,35 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
   }
 
   return false;
+}
+
+void AdsImpl::GenerateAdReportingSustainEvent(
+    const NotificationInfo& info) {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("sustain");
+
+  writer.String("stamp");
+  std::string time_stamp = helper::Time::TimeStamp();
+  writer.String(time_stamp.c_str());
+
+  writer.String("notificationId");
+  writer.String(info.uuid.c_str());
+
+  writer.String("notificationType");
+  writer.String("viewed");
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
 }
 
 void AdsImpl::GenerateAdReportingLoadEvent(

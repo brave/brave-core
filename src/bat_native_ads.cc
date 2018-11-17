@@ -134,8 +134,6 @@ int main() {
   auto type = ads::NotificationResultInfoResultType::CLICKED;
   ads.GenerateAdReportingNotificationResultEvent(notification_info, type);
 
-  ads.GenerateAdReportingSustainEvent(notification_info);
-
   delete mock_ads_client;
   mock_ads_client = nullptr;
 

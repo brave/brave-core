@@ -38,11 +38,6 @@ class ADS_EXPORT Ads {
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) = 0;
 
-  // Should be called when a notification has been viewed for an extended period
-  // without interruption on the Client
-  virtual void GenerateAdReportingSustainEvent(
-      const NotificationInfo& info) = 0;
-
   // Should be called to initialize ads
   virtual void Initialize() = 0;
 

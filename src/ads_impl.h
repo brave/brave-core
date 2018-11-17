@@ -43,8 +43,6 @@ class AdsImpl : public Ads {
   void GenerateAdReportingNotificationResultEvent(
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) override;
-  void GenerateAdReportingSustainEvent(
-      const NotificationInfo& info) override;
   void Initialize() override;
   void InitializeStep2();
   void InitializeStep3();
@@ -136,6 +134,7 @@ class AdsImpl : public Ads {
       const uint64_t allowable_ad_count) const;
 
   uint64_t next_easter_egg_;
+  void GenerateAdReportingSustainEvent(const NotificationInfo& info);
   void GenerateAdReportingLoadEvent(const LoadInfo& info);
   void GenerateAdReportingBackgroundEvent();
   void GenerateAdReportingForegroundEvent();
