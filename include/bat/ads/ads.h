@@ -38,8 +38,7 @@ class ADS_EXPORT Ads {
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) = 0;
 
-  // Should be called to initialize ads, and when ads have been disabled on the
-  // Client
+  // Should be called when ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
 
   // Should be called whenever the browser gains or loses focus
@@ -80,8 +79,8 @@ class ADS_EXPORT Ads {
       const std::string& url,
       const std::string& html) = 0;
 
-  // Should be called when the user changes their locale (e.g., "en_US", "fr",
-  // or "en" etc.)
+  // Should be called when the user changes their device locale (e.g., "en_US",
+  // "fr", or "en" etc.)
   virtual void ChangeLocale(const std::string& locale) = 0;
 
   // Frequently called to determine whether a notification should be displayed;
