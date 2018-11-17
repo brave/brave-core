@@ -15,6 +15,9 @@ template("transpile_web_ui") {
 
     # make sure rebuilds when common files change
     inputs = brave_common_typescript_includes
+    inputs += [
+      "//brave/components/webpack/webpack.config.js",
+    ]
     if (defined(invoker.inputs)) {
       inputs += invoker.inputs
     }

@@ -46,10 +46,12 @@ def transpile_web_uis(production, target_gen_dir, entry_points, env=None):
     if env is None:
         env = os.environ.copy()
 
+    args = [NPM, 'run', 'web-ui', '--']
+
     if production:
-        args = [NPM, 'run', 'web-ui', '--']
+        args.append("--mode=production")
     else:
-        args = [NPM, 'run', 'web-ui-dev', '--']
+        args.append("--mode=development")
 
     # entrypoints
     for entry in entry_points:

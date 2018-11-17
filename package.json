@@ -8,8 +8,7 @@
     "lint": "tslint --project tsconfig.json 'components/**/*.{ts,tsx}'",
     "pep8": "pycodestyle -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
-    "web-ui": "webpack --config components/webpack/prod.config.js --progress --profile --colors",
-    "web-ui-dev": "webpack --config components/webpack/dev.config.js --progress --profile --colors",
+    "web-ui": "webpack --config components/webpack/webpack.config.js --progress --colors",
     "test-unit": "jest -t",
     "test-security": "npm audit"
   },
