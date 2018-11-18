@@ -149,5 +149,10 @@ source_set("ui") {
     deps += [
       "//brave/components/brave_rewards/browser",
     ]
+    if (is_android) {
+      deps += [
+        "//components/brave_rewards_ui:settings_generated_resources",
+      ]
+    }
   }
 }
