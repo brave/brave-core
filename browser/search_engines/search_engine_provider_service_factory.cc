@@ -8,10 +8,13 @@
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
+#include "brave/common/pref_names.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 
 namespace {
 // Factory owns service object.
@@ -83,4 +86,12 @@ SearchEngineProviderServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   // Service should be initialized when profile is created to set proper
   // provider to TemplateURLService.
   return true;
+}
+
+void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
+  registry->RegisterIntegerPref(
+      kAlternativeSearchEngineProviderInTor,
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
 }

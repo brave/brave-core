@@ -28,14 +28,6 @@ void ToggleUseAlternativeSearchEngineProvider(Profile* profile) {
       !UseAlternativeSearchEngineProviderEnabled(profile));
 }
 
-void RegisterAlternativeSearchEngineProviderProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
-  registry->RegisterIntegerPref(
-      kAlternativeSearchEngineProviderInTor,
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
-}
-
 bool IsRegionForQwant(Profile* profile) {
   return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
       profile->GetPrefs())->prepopulate_id ==

@@ -15,9 +15,6 @@ namespace brave {
 
 bool UseAlternativeSearchEngineProviderEnabled(Profile* profile);
 
-void RegisterAlternativeSearchEngineProviderProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry);
-
 void ToggleUseAlternativeSearchEngineProvider(Profile* profile);
 
 bool IsRegionForQwant(Profile* profile);
