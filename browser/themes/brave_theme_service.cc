@@ -16,6 +16,8 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
+#include "ui/native_theme/native_theme.h"
+#include "ui/native_theme/native_theme_dark_aura.h"
 
 // static
 void BraveThemeService::RegisterProfilePrefs(
@@ -114,6 +116,12 @@ SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
 
 void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
   DCHECK(pref_name == kBraveThemeType);
+
+  // Notify dark (cross-platform) and light (platform-specific) variants
+  GetActiveBraveThemeType(profile()) == BraveThemeType::BRAVE_THEME_TYPE_LIGHT
+      ? ui::NativeThemeDarkAura::instance()->NotifyObservers()
+      : ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
+
   NotifyThemeChanged();
 
   if (!brave_theme_event_router_)
