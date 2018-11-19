@@ -57,7 +57,7 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
       const cell: Row = {
         content: [
           { content: <TableRowId>{device.id}</TableRowId> },
-          { content: <TableRowDevice>{device.name}</TableRowDevice> },
+          { content: <TableRowDevice title={device.name}>{device.name}</TableRowDevice> },
           { content: device.lastActive },
           {
             content: (
