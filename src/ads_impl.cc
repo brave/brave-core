@@ -911,7 +911,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   auto now = helper::Time::Now();
   if (_is_testing && info.tab_url == "https://www.iab.com/"
       && next_easter_egg_ < now) {
-    next_easter_egg_ = now + (30 * 1000);
+    next_easter_egg_ = now + kNextEasterEggStartsInSeconds;
 
     CheckReadyAdServe(true);
   }
