@@ -195,7 +195,11 @@ class PageWallet extends React.Component<Props, State> {
 
   walletAlerts = (): AlertWallet | null => {
     const { balance } = this.props.rewardsData.walletInfo
-    const { walletRecoverySuccess, walletServerProblem } = this.props.rewardsData.ui
+    const {
+      walletRecoverySuccess,
+      walletServerProblem,
+      walletCorrupted
+    } = this.props.rewardsData.ui
 
     if (walletServerProblem) {
       return {
@@ -211,6 +215,19 @@ class PageWallet extends React.Component<Props, State> {
         onAlertClose: () => {
           this.actions.onClearAlert('walletRecoverySuccess')
         }
+      }
+    }
+
+    if (walletCorrupted) {
+      return {
+        node: (
+          <>
+            <b>{getLocale('uhOh')}</b> {getLocale('walletCorrupted')} <a href={'#'} style={{ 'color': '#838391' }} onClick={this.onModalBackupOpen}>
+               {getLocale('walletCorruptedNow')}
+             </a>
+          </>
+        ),
+        type: 'error'
       }
     }
 
