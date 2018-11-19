@@ -33,6 +33,7 @@ bool MockAdsClient::IsAdsEnabled() const {
 }
 
 const std::string MockAdsClient::GetAdsLocale() const {
+  // Should return the system locale
   return "en_US";
 }
 
@@ -56,6 +57,19 @@ void MockAdsClient::GetClientInfo(ClientInfo* info) const {
 }
 
 const std::vector<std::string> MockAdsClient::GetLocales() const {
+  // User models are a dependency of the application and should be bundled
+  // accordingly, the following file structure should be used:
+  //
+  // locales/
+  // ├── de/
+  // │   └── user_model.json
+  // ├── en/
+  // │   └── user_model.json
+  // ├── fr/
+  // │   └── user_model.json
+  //
+  // The directory structure should be traversed to get the available locales
+
   std::vector<std::string> locales = { "en", "fr", "de" };
   return locales;
 }
@@ -90,7 +104,7 @@ bool MockAdsClient::IsNotificationsEnabled() const {
   // See "const enabled = (appID, callback)" in "browser-laptop/node_modules/
   // brave-ads-notifier/index.js" repo for business logic
 
-  if (!IsNotificationsAvailable() || !IsNotificationsConfigured()) {
+  if (!IsNotificationsConfigured()) {
     return false;
   }
 
@@ -328,6 +342,16 @@ bool MockAdsClient::GetUrlComponents(
 }
 
 void MockAdsClient::EventLog(const std::string& json) {
+  // Should be logged to a file however as events may be queued they need an
+  // event name and timestamp adding as follows, replacing ... with the value of
+  // the json parameter:
+  //
+  // {
+  //   "time": "2018-11-19T15:47:43.634Z",
+  //   "eventName": "Event logged",
+  //   ...
+  // }
+
   std::string time_stamp = helper::Time::TimeStamp();
 
   std::cout << std::endl << "Event logged (" << time_stamp <<  "): " << json;
