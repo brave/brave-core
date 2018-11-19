@@ -8,10 +8,15 @@
 #include <memory>
 
 #include "base/macros.h"
-#include "base/timer/timer.h"
+#include "base/memory/scoped_refptr.h"
 
 class PrefRegistrySimple;
 class PrefService;
+
+namespace base {
+class OneShotTimer;
+class RepeatingTimer;
+}
 
 namespace net {
 class HttpResponseHeaders;
@@ -44,7 +49,8 @@ class BraveStatsUpdater {
 
   PrefService* pref_service_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
-  std::unique_ptr<base::RepeatingTimer> server_ping_timer_;
+  std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;
+  std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdater);
 };

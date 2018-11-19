@@ -22,8 +22,11 @@
 
 const char kBaseUpdateURL[] = "https://laptop-updates.brave.com/1/usage/brave-core";
 
-// Ping the update server once an hour.
-const int kUpdateServerPingFrequency = 60 * 60;
+// Ping the update server shortly after startup (units are seconds).
+const int kUpdateServerStartupPingDelay = 3;
+
+// Ping the update server once an hour (units are seconds).
+const int kUpdateServerPeriodicPingFrequency = 60 * 60;
 
 namespace {
 
@@ -84,16 +87,27 @@ BraveStatsUpdater::~BraveStatsUpdater() {
 }
 
 void BraveStatsUpdater::Start() {
-  DCHECK(!server_ping_timer_);
-  server_ping_timer_ = std::make_unique<base::RepeatingTimer>();
-  server_ping_timer_->Start(
-      FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerPingFrequency), this,
+  // Startup check.
+  DCHECK(!server_ping_startup_timer_);
+  server_ping_startup_timer_ = std::make_unique<base::OneShotTimer>();
+  server_ping_startup_timer_->Start(
+      FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelay),
+      this, &BraveStatsUpdater::OnServerPingTimerFired);
+  DCHECK(server_ping_startup_timer_->IsRunning());
+
+  // Periodic check.
+  DCHECK(!server_ping_periodic_timer_);
+  server_ping_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
+  server_ping_periodic_timer_->Start(
+      FROM_HERE,
+      base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequency), this,
       &BraveStatsUpdater::OnServerPingTimerFired);
-  DCHECK(server_ping_timer_->IsRunning());
+  DCHECK(server_ping_periodic_timer_->IsRunning());
 }
 
 void BraveStatsUpdater::Stop() {
-  return server_ping_timer_.reset();
+  server_ping_startup_timer_.reset();
+  server_ping_periodic_timer_.reset();
 }
 
 void BraveStatsUpdater::OnSimpleLoaderComplete(
@@ -115,6 +129,10 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
   // The request to the update server succeeded, so it's safe to save
   // the usage preferences now.
   stats_updater_params->SavePrefs();
+
+  // Log the full URL of the stats ping.
+  VLOG(1) << "Brave stats ping, url: "
+          << simple_url_loader_->GetFinalURL().spec();
 }
 
 void BraveStatsUpdater::OnServerPingTimerFired() {
