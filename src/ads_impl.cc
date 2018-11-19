@@ -32,6 +32,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     last_shown_tab_url_(""),
     last_shown_notification_info_(NotificationInfo()),
     last_page_classification_(""),
+    page_score_cache_({}),
     collect_activity_timer_id_(0),
     sustained_ad_interaction_timer_id_(0),
     media_playing_({}),
