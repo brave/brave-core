@@ -17,6 +17,7 @@
 
 #include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_stats.h"
+#include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/autofill/core/common/password_form.h"
@@ -336,7 +337,8 @@ void BraveImporter::ImportStats() {
     stats.httpsEverywhere_count = httpsEverywhere_count->GetInt();
   }
 
-  bridge_->UpdateStats(stats);
+  static_cast<BraveExternalProcessImporterBridge*>(bridge_.get())->
+      UpdateStats(stats);
 }
 
 bool ParseWalletPassphrase(BraveLedger& ledger,
@@ -566,5 +568,6 @@ void BraveImporter::ImportLedger(bool clobber_wallet) {
     LOG(ERROR) << "Failed to parse list of pinned sites for Brave Payments";
   }
 
-  bridge_->UpdateLedger(ledger);
+  static_cast<BraveExternalProcessImporterBridge*>(bridge_.get())
+      ->UpdateLedger(ledger);
 }

@@ -101,9 +101,9 @@ void FirefoxImporter::ImportCookies() {
     }
   }
 
-  if (!cookies.empty() && !cancelled()) {
-    bridge_->SetCookies(cookies);
-  }
+  if (!cookies.empty() && !cancelled())
+    static_cast<BraveExternalProcessImporterBridge*>(bridge_.get())->
+        SetCookies(cookies);
 }
 
 }  // namespace brave

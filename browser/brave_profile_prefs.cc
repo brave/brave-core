@@ -78,6 +78,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kCloudPrintProxyEnabled, base::Value(false));
   // Cloud Print: Don't allow jobs to be submitted
   registry->SetDefaultPrefValue(prefs::kCloudPrintSubmitEnabled, base::Value(false));
+
+  // Importer selected data types
+  registry->RegisterBooleanPref(prefs::kImportDialogCookies, true);
+  registry->RegisterBooleanPref(prefs::kImportDialogStats, true);
+  registry->RegisterBooleanPref(prefs::kImportDialogLedger, true);
 }
 
 }  // namespace brave

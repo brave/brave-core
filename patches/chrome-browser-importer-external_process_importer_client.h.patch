@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.h b/chrome/browser/importer/external_process_importer_client.h
-index 9451b0917536e73b42c596527112d3119b2c4cc5..63ca4957684b5c15fa76a6c53197376633e9e096 100644
+index 9451b0917536e73b42c596527112d3119b2c4cc5..839f905b403a8103ecf22aba16dd03f52f7cf796 100644
 --- a/chrome/browser/importer/external_process_importer_client.h
 +++ b/chrome/browser/importer/external_process_importer_client.h
-@@ -24,10 +24,13 @@
+@@ -24,6 +24,7 @@
  #include "components/favicon_base/favicon_usage_data.h"
  #include "components/history/core/browser/history_types.h"
  #include "mojo/public/cpp/bindings/binding.h"
@@ -10,13 +10,7 @@ index 9451b0917536e73b42c596527112d3119b2c4cc5..63ca4957684b5c15fa76a6c531973766
  
  class ExternalProcessImporterHost;
  struct ImportedBookmarkEntry;
- class InProcessImporterBridge;
-+struct BraveStats;
-+struct BraveLedger;
- 
- namespace autofill {
- struct PasswordForm;
-@@ -85,6 +88,10 @@ class ExternalProcessImporterClient
+@@ -85,6 +86,10 @@ class ExternalProcessImporterClient
    void OnAutofillFormDataImportGroup(
        const std::vector<ImporterAutofillFormDataEntry>&
            autofill_form_data_entry_group) override;
