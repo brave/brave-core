@@ -13,6 +13,8 @@ namespace ads {
 
 #define CATALOG_PATH "v1/catalog"
 
+static const int kIdleThresholdInSeconds = 20;
+
 static const uint64_t kMaximumEntriesInPageScoreHistory = 5;
 static const uint64_t kMaximumEntriesInAdsShownHistory = 99;
 

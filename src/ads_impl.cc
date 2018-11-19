@@ -198,6 +198,8 @@ void AdsImpl::InitializeStep3() {
 
   LOG(LogLevel::INFO) << "Successfully initialized";
 
+  ads_client_->SetIdleThreshold(kIdleThresholdInSeconds);
+
   NotificationConfigurationCheck();
   NotificationAllowedCheck(false);
 
