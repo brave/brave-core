@@ -10,6 +10,9 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
+// TODO: The following is being included purely to get the generated
+//        GritResourceMap definition. Replace with a better solution.
+#include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,

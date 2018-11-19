@@ -21,13 +21,7 @@ class WebUI;
 
 class Profile;
 
-#ifndef GRIT_RESOURCE_MAP_STRUCT_
-#define GRIT_RESOURCE_MAP_STRUCT_
-struct GritResourceMap {
-  const char* name;
-  int value;
-};
-#endif // GRIT_RESOURCE_MAP_STRUCT_
+struct GritResourceMap;
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
