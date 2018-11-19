@@ -41,6 +41,8 @@ int OnBeforeURLRequest_StaticRedirectWork(
     URLPattern(URLPattern::SCHEME_HTTPS, "https://laptop-updates-staging.herokuapp.com/*"),
     // CRX file download
     URLPattern(URLPattern::SCHEME_HTTPS, "https://brave-core-ext.s3.brave.com/release/*"),
+    // Safe Browsing and other files
+    URLPattern(URLPattern::SCHEME_HTTPS, "https://static.brave.com/*"),
     // We do allow redirects to the Google update server for extensions we don't support
     URLPattern(URLPattern::SCHEME_HTTPS, "https://update.googleapis.com/service/update2"),
 
