@@ -46,10 +46,10 @@ def parse_args():
 
 def clean_target_dir(target_dir, env=None):
     try:
-        shutil.rmtree(target_dir)
+        if os.path.exists(target_dir):
+            shutil.rmtree(target_dir)
     except Exception as e:
-        raise Exception(
-            "Error removing previous webpack target dir: {0} - {1}".format(e.filename, e.strerror), e)
+        raise Exception("Error removing previous webpack target dir", e)
 
 
 def transpile_web_uis(production, target_gen_dir, entry_points, env=None):
