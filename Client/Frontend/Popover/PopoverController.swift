@@ -83,8 +83,6 @@ class PopoverController: UIViewController {
         
         self.modalPresentationStyle = .overFullScreen
         self.transitioningDelegate = self
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: .UIDeviceOrientationDidChange, object: nil)
     }
     
     deinit {
@@ -242,7 +240,9 @@ class PopoverController: UIViewController {
         viewController.present(self, animated: true)
     }
     
-    @objc private func orientationChanged() {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
         if dismissesOnOrientationChanged {
             dismiss(animated: true)
         }
