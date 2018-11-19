@@ -35,6 +35,8 @@ class MockAdsClient : public AdsClient {
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
 
+  void SetIdleThreshold(const int threshold) override;
+
   void GetClientInfo(ClientInfo *client_info) const override;
 
   const std::vector<std::string> GetLocales() const override;

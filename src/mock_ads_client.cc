@@ -44,6 +44,10 @@ uint64_t MockAdsClient::GetAdsPerDay() const {
   return 20;
 }
 
+void MockAdsClient::SetIdleThreshold(const int threshold) {
+  (void)threshold;
+}
+
 void MockAdsClient::GetClientInfo(ClientInfo* info) const {
   info->application_version = "1.0";
 

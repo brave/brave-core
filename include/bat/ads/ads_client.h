@@ -52,6 +52,9 @@ class ADS_EXPORT AdsClient {
   // Gets maximum amount of ads that can be shown per day
   virtual uint64_t GetAdsPerDay() const = 0;
 
+  // Sets the idle threshold
+  virtual void SetIdleThreshold(const int threshold) = 0;
+
   // Gets information about the client
   virtual void GetClientInfo(ClientInfo* info) const = 0;
 
