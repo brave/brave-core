@@ -1,23 +1,20 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
 
-grit("resources") {
+grit("static_resources") {
   source = "brave_components_resources.grd"
 
   output_name = "brave_components_resources_new"
 
   outputs = [
     "grit/brave_components_resources.h",
-    "brave_components_resources.pak",
+    "brave_components_static.pak",
   ]
   deps = [
     ":strings",
-    "//brave/components/brave_adblock_ui",
-    "//brave/components/brave_new_tab_ui",
-    "//brave/components/brave_welcome_ui",
     "//brave/vendor/brave-extension",
-    "//brave/components/brave_sync/ui",
   ]
 
   if (brave_rewards_enabled) {
@@ -33,6 +30,24 @@ grit("resources") {
   ]
   output_dir = "$root_gen_dir/components"
   resource_ids = "//brave/browser/resources/resource_ids"
+  }
+
+  repack("resources") {
+    deps = [
+      ":static_resources",
+      "//brave/components/brave_adblock_ui:generated_resources",
+      "//brave/components/brave_new_tab_ui:generated_resources",
+      "//brave/components/brave_welcome_ui:generated_resources",
+    ]
+
+    sources = [
+      "$root_gen_dir/components/brave_components_static.pak",
+      "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
+      "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
+      "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
+    ]
+
+    output = "$root_gen_dir/components/brave_components_resources.pak"
 }
 
 grit("strings") {

@@ -8,6 +8,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -53,8 +54,8 @@ bool IsRegionForQwant(Profile* profile) {
 }  // namespace
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kBraveNewTabJS,
-        IDR_BRAVE_NEW_TAB_JS, IDR_BRAVE_NEW_TAB_HTML) {
+    : BasicUI(web_ui, name, kBraveNewTabGenerated,
+        kBraveNewTabGeneratedSize, IDR_BRAVE_NEW_TAB_HTML) {
   Profile* profile = Profile::FromWebUI(web_ui);
   PrefService* prefs = profile->GetPrefs();
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();

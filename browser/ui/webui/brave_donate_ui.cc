@@ -9,6 +9,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_rewards/resources/grit/brave_donate_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -228,8 +229,8 @@ BraveDonateUI::BraveDonateUI(content::WebUI* web_ui, const std::string& name)
   }
   content::WebUIDataSource* data_source = CreateBasicUIHTMLSource(profile,
                                               name,
-                                              kDonateJS,
-                                              IDR_BRAVE_DONATE_JS,
+                                              kBraveDonateGenerated,
+                                              kBraveDonateGeneratedSize,
                                               IDR_BRAVE_DONATE_HTML);
   content::WebUIDataSource::Add(profile, data_source);
 

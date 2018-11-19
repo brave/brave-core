@@ -1,20 +1,36 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
+pack_web_resources("ui_generated_resources") {
+  resource_name = "brave_rewards"
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+  # need wepack and GRD generation first
+  deps = [
+    "ui"
+  ]
+}
 
-grit("resources") {
-  source = "brave_rewards_resources.grd"
+pack_web_resources("donate_generated_resources") {
+  resource_name = "brave_donate"
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+  # need wepack and GRD generation first
+  deps = [
+    "donate"
+  ]
+}
+
+grit("static_resources") {
+  source = "brave_rewards_static_resources.grd"
 
   outputs = [
     "grit/brave_rewards_resources.h",
-    "brave_rewards_resources.pak",
+    "brave_rewards_static.pak",
   ]
 
   deps = [
-    "ui",
-    "donate",
   ]
 
   grit_flags = [
@@ -25,4 +41,20 @@ grit("resources") {
   resource_ids = "//brave/browser/resources/resource_ids"
 
   output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+}
+
+repack("resources") {
+  deps = [
+    ":ui_generated_resources",
+    ":donate_generated_resources",
+    ":static_resources",
+  ]
+
+  sources = [
+    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_generated.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/brave_donate_generated.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_static.pak",
+  ]
+
+  output = "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak"
 }

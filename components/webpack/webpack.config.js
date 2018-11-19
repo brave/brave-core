@@ -1,30 +1,12 @@
 const path = require('path')
-const webpack = require('webpack')
 
-module.exports = {
-  mode: 'development',
-  devtool: '#inline-source-map',
-  entry: {
-    brave_adblock: path.join(__dirname, '../brave_adblock_ui/brave_adblock'),
-    brave_new_tab: path.join(__dirname, '../brave_new_tab_ui/brave_new_tab'),
-    brave_rewards: path.join(__dirname, '../brave_rewards/resources/ui/brave_rewards'),
-    brave_sync: path.join(__dirname, '../brave_sync/ui/brave_sync'),
-    brave_welcome: path.join(__dirname, '../brave_welcome_ui/brave_welcome'),
-    brave_webtorrent: path.join(__dirname, '../brave_webtorrent/extension/brave_webtorrent'),
-    brave_webtorrent_background: path.join(__dirname, '../brave_webtorrent/extension/background'),
-    brave_rewards_panel: path.join(__dirname, '../brave_rewards/resources/extension/brave_rewards/brave_rewards_panel'),
-    brave_rewards_panel_background: path.join(__dirname, '../brave_rewards/resources/extension/brave_rewards/background'),
-    brave_donate: path.join(__dirname, '../brave_rewards/resources/donate/brave_donate'),
-  },
+module.exports = (env, argv) => ({
+  devtool: argv.mode === 'development' ? '#inline-source-map' : false,
   output: {
     path: process.env.TARGET_GEN_DIR,
     filename: '[name].bundle.js',
     chunkFilename: '[id].chunk.js'
   },
-  plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.IgnorePlugin(/[^/]+\/[\S]+.dev$/)
-  ],
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
@@ -63,11 +45,11 @@ module.exports = {
         loader: 'url-loader?limit=13000&minetype=application/font-woff'
       },
       {
-        test: /\.(ttf|eot|svg|ico|png|jpg|jpeg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        test: /\.(ttf|eot|ico|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
       }]
   },
   node: {
     fs: 'empty'
   }
-}
+})

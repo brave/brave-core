@@ -10,17 +10,23 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
+// TODO: The following is being included purely to get the generated
+//        GritResourceMap definition. Replace with a better solution.
+#include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
-                                                  const std::string& js_file,
-                                                  int js_resource_id,
+                                                  const GritResourceMap* resource_map,
+                                                  size_t resource_map_size,
                                                   int html_resource_id) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
   source->SetJsonPath("strings.js");
   source->SetDefaultResource(html_resource_id);
-  source->AddResourcePath(js_file, js_resource_id);
+  // Add generated resource paths
+  for (size_t i = 0; i < resource_map_size; ++i) {
+    source->AddResourcePath(resource_map[i].name,  resource_map[i].value);
+  }
   CustomizeWebUIHTMLSource(name, source);
   return source;
 }
@@ -51,15 +57,15 @@ class BasicUI::BasicUIWebContentsObserver
 
 BasicUI::BasicUI(content::WebUI* web_ui,
     const std::string& name,
-    const std::string& js_file,
-    int js_resource_id,
+    const GritResourceMap* resource_map,
+    size_t resource_map_size,
     int html_resource_id)
     : WebUIController(web_ui) {
   observer_.reset(
       new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
   Profile* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
-      js_file, js_resource_id, html_resource_id);
+      resource_map, resource_map_size, html_resource_id);
   content::WebUIDataSource::Add(profile, source);
 }
 

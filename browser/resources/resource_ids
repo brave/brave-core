@@ -7,6 +7,18 @@
   "brave/components/resources/brave_components_resources.grd": {
     "includes": [33000],
   },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_adblock/brave_adblock.grd": {
+    "includes": [33070],
+  },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_new_tab/brave_new_tab.grd": {
+    "includes": [33140],
+  },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
+    "includes": [33240],
+  },
   "brave/browser/resources/brave_extension.grd": {
     "includes": [34000],
   },
@@ -27,12 +39,32 @@
   "brave/components/brave_sync/resources.grd": {
     "includes": [37000]
   },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_sync/brave_sync.grd": {
+    "includes": [37100],
+  },
   # brave webtorrent 37500
-  "brave/components/brave_rewards/resources/extension/extension_resources.grd": {
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_webtorrent/brave_webtorrent.grd": {
+    "includes": [37520],
+  },
+  "brave/components/brave_rewards/resources/extension/extension_static_resources.grd": {
     "includes": [38000]
   },
-  "brave/components/brave_rewards/resources/brave_rewards_resources.grd": {
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards_panel/brave_rewards_panel.grd": {
+    "includes": [38020],
+  },
+  "brave/components/brave_rewards/resources/brave_rewards_static_resources.grd": {
     "includes": [38500]
+  },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_rewards/brave_rewards.grd": {
+    "includes": [38520],
+  },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_donate/brave_donate.grd": {
+    "includes": [38620],
   },
   "brave/components/resources/brave_components_strings.grd": {
     "messages": [39000]

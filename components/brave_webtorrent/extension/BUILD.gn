@@ -1,6 +1,6 @@
 import("//brave/components/common/typescript.gni")
 
-transpile_web_ui("brave_webtorrent") {
+transpile_web_ui("generate_brave_webtorrent") {
   inputs = [
     "background.ts",
     "brave_webtorrent.html",
@@ -35,11 +35,14 @@ transpile_web_ui("brave_webtorrent") {
     "constants/window_types.ts"
   ]
 
-  bundle_names = [
-    "brave_webtorrent.bundle.js",
-    "brave_webtorrent_background.bundle.js"
+  entry_points = [
+    ["brave_webtorrent", rebase_path("brave_webtorrent.tsx")],
+    ["brave_webtorrent_background", rebase_path("background.ts")]
   ]
 
-  output_dir =
-    "$root_gen_dir/../../../brave/components/brave_webtorrent/extension/out"
+  resource_name = "brave_webtorrent"
+
+  # Must match the relative path from the static GRD to the manifest.json
+  # plus any other relative path we want these files to live in the extension
+  extra_relative_path = "/brave_webtorrent/extension/out"
 }

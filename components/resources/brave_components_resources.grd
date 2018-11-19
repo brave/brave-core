@@ -4,13 +4,15 @@
     <output filename="grit/brave_components_resources.h" type="rc_header">
       <emit emit_type='prepend'></emit>
     </output>
-    <output filename="brave_components_resources.pak" type="data_package" />
+    <output filename="brave_components_static.pak" type="data_package" />
   </outputs>
   <release seq="1">
     <includes>
       <!-- DO NOT PUT RESOURCES FOR SPECIFIC COMPONENTS IN THIS FILE
            create a new grd file in components/component_name/resources/ -->
       <!-- Common resources -->
+      <!-- TODO: Define only where needed, via webpack generated output,
+                  or use common chrome://resources DataSource -->
       <include name="IDR_BRAVE_COMMON_FONT_AWESOME_1" file="${root_gen_dir}/brave/af7ae505a9eed503f8b8e6982036873e.woff2" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_COMMON_FONT_AWESOME_2" file="${root_gen_dir}/brave/fee66e712a8a08eef5805a46892932ad.woff" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_COMMON_FONT_AWESOME_3" file="${root_gen_dir}/brave/b06871f281fee6b241d60582ae9369b9.ttf" type="BINDATA" use_base_dir="false" />
@@ -20,12 +22,12 @@
       <include name="IDR_BRAVE_EXTENSON" file="${root_gen_dir}/brave_extension/manifest.json" type="BINDATA" use_base_dir="false"/>
 
       <!-- WebUI adblock resources -->
+      <!-- TODO: move to brave_adblock_ui component -->
       <include name="IDR_BRAVE_ADBLOCK_HTML" file="../brave_adblock_ui/brave_adblock.html" type="BINDATA" />
-      <include name="IDR_BRAVE_ADBLOCK_JS" file="${root_gen_dir}/brave/brave_adblock.bundle.js" type="BINDATA" use_base_dir="false" />
 
       <!-- WebUI welcome page resources -->
+      <!-- TODO: move to brave_welcome_ui component -->
       <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
-      <include name="IDR_BRAVE_WELCOME_JS" file="${root_gen_dir}/brave/brave_welcome.bundle.js" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_WELCOME_FAVICON" file="../img/welcome/favicon.ico" type="BINDATA" />
 
       <include name="IDR_BRAVE_WELCOME_SLIDE_1_IMAGE" file="../img/welcome/brave_logo.png" type="BINDATA" />
@@ -36,8 +38,8 @@
       <include name="IDR_BRAVE_WELCOME_BACKGROUND_IMAGE" file="../img/welcome/welcomebg.svg" type="BINDATA" />
 
       <!-- WebUI newtab resources -->
+      <!-- TODO: move to brave_new_tab_ui component -->
       <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_JS" file="${root_gen_dir}/brave/brave_new_tab.bundle.js" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
@@ -64,6 +66,7 @@
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND20" file="../img/newtab/Phoyoserge_Yosemite.jpg" type="BINDATA" />
 
       <!-- WebUI private new tab resources -->
+      <!-- TODO: move to brave_new_tab_ui component -->
       <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />
       <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
     </includes>

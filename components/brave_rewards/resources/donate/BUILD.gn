@@ -14,5 +14,9 @@ transpile_web_ui("donate") {
     "utils.ts",
   ]
 
-  bundle_names = ["brave_donate.bundle.js"]
+  entry_points = [
+    ["brave_donate", rebase_path("brave_donate.tsx")]
+  ]
+
+  resource_name = "brave_donate"
 }

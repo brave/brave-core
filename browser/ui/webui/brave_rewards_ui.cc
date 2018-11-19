@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -23,7 +24,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/bindings_policy.h"
-
 
 using content::WebUIMessageHandler;
 
@@ -638,9 +638,13 @@ void RewardsDOMHandler::GetContributionList(const base::ListValue *args) {
 }  // namespace
 
 BraveRewardsUI::BraveRewardsUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kRewardsJS,
-        IDR_BRAVE_REWARDS_JS, IDR_BRAVE_REWARDS_HTML) {
-
+    : BasicUI(web_ui, name,
+#if !defined(OS_ANDROID)
+    kBraveRewardsGenerated, kBraveRewardsGeneratedSize,
+#else
+    kBraveRewardsSettingsGenerated, kBraveRewardsSettingsGeneratedSize,
+#endif
+    IDR_BRAVE_REWARDS_HTML) {
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler * handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));

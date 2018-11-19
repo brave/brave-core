@@ -10,6 +10,7 @@
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
+#include "brave/components/brave_sync/grit/brave_sync_generated_map.h"
 #include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/values_conv.h"
@@ -237,8 +238,8 @@ void SyncUIDOMHandler::OnHaveSyncWords(
 
 SyncUI::SyncUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name,
-              kBraveSyncJS,
-              IDR_BRAVE_SYNC_JS,
+              kBraveSyncGenerated,
+              kBraveSyncGeneratedSize,
               IDR_BRAVE_SYNC_HTML) {
   auto handler_owner = std::make_unique<SyncUIDOMHandler>();
   SyncUIDOMHandler* handler = handler_owner.get();
