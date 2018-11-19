@@ -81,6 +81,8 @@ class AdsImpl : public Ads {
   void Deinitialize();
 
   bool app_focused_;
+  std::string last_shown_tab_url_;
+  NotificationInfo last_shown_notification_info_;
 
   void LoadUserModel();
   void OnUserModelLoaded(const Result result, const std::string& json);
@@ -106,6 +108,12 @@ class AdsImpl : public Ads {
   uint32_t collect_activity_timer_id_;
   void CollectActivity();
   bool IsCollectingActivity() const;
+
+  uint32_t sustained_ad_interaction_timer_id_;
+  void StartSustainingAdInteraction(const uint64_t start_timer_in);
+  void SustainAdInteraction();
+  void StopSustainingAdInteraction();
+  bool IsSustainingAdInteraction() const;
 
   void ConfirmAdUUIDIfAdEnabled();
 

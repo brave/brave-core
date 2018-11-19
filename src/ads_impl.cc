@@ -29,8 +29,11 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     boot_(false),
     initialized_(false),
     app_focused_(false),
+    last_shown_tab_url_(""),
+    last_shown_notification_info_(NotificationInfo()),
     last_page_classification_(""),
     collect_activity_timer_id_(0),
+    sustained_ad_interaction_timer_id_(0),
     media_playing_({}),
     next_easter_egg_(0),
     ads_client_(ads_client),
@@ -121,6 +124,8 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
     case NotificationResultInfoResultType::CLICKED: {
       writer.String("clicked");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
+
+      StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
       break;
     }
 
@@ -261,6 +266,8 @@ void AdsImpl::TabUpdated(
   GenerateAdReportingLoadEvent(load_info);
 
   if (is_active) {
+    last_shown_tab_url_ = url;
+
     TestShoppingData(url);
     TestSearchState(url);
 
@@ -434,6 +441,8 @@ void AdsImpl::StopCollectingActivity() {
 void AdsImpl::OnTimer(const uint32_t timer_id) {
   if (timer_id == collect_activity_timer_id_) {
     CollectActivity();
+  } else if (timer_id == sustained_ad_interaction_timer_id_) {
+    SustainAdInteraction();
   }
 }
 
@@ -449,6 +458,7 @@ void AdsImpl::Deinitialize() {
   ads_serve_->Reset();
 
   RemoveAllHistory();
+  StopSustainingAdInteraction();
 
   last_page_classification_ = "";
 
@@ -457,6 +467,7 @@ void AdsImpl::Deinitialize() {
   user_model_.reset();
 
   app_focused_ = false;
+  last_shown_notification_info_ = NotificationInfo();
 
   boot_ = false;
 
@@ -631,6 +642,43 @@ bool AdsImpl::IsCollectingActivity() const {
   return true;
 }
 
+void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
+  StopSustainingAdInteraction();
+
+  sustained_ad_interaction_timer_id_ = ads_client_->SetTimer(start_timer_in);
+  if (sustained_ad_interaction_timer_id_ == 0) {
+    LOG(LogLevel::ERROR) <<
+      "Failed to start sustaining ad interaction due to an invalid timer";
+    return;
+  }
+
+  LOG(LogLevel::INFO) <<
+    "Start sustaining ad interaction in " << start_timer_in << " seconds";
+}
+
+void AdsImpl::SustainAdInteraction() {
+  GenerateAdReportingSustainEvent(last_shown_notification_info_);
+}
+
+void AdsImpl::StopSustainingAdInteraction() {
+  if (!IsSustainingAdInteraction()) {
+    return;
+  }
+
+  LOG(LogLevel::INFO) << "Stopped sustaining ad interaction";
+
+  ads_client_->KillTimer(sustained_ad_interaction_timer_id_);
+  sustained_ad_interaction_timer_id_ = 0;
+}
+
+bool AdsImpl::IsSustainingAdInteraction() const {
+  if (sustained_ad_interaction_timer_id_ == 0) {
+    return false;
+  }
+
+  return true;
+}
+
 void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
   if (!ads_client_->IsAdsEnabled()) {
     StopCollectingActivity();
@@ -785,6 +833,8 @@ bool AdsImpl::ShowAd(
   notification_info->url = ad_info.notification_url;
   notification_info->creative_set_id = ad_info.creative_set_id;
   notification_info->uuid = ad_info.uuid;
+
+  last_shown_notification_info_ = NotificationInfo(*notification_info);
 
   ads_client_->ShowNotification(std::move(notification_info));
 
