@@ -14,7 +14,7 @@ class DAUTests: XCTestCase {
         Preferences.DAU.weekOfInstallation.reset()
         Preferences.DAU.lastPingFirstMonday.reset()
         Preferences.DAU.lastLaunchInfo.reset()
-        Preferences.DAU.firstPingSuccess.reset()
+        Preferences.DAU.firstPingParam.reset()
     }
     
     // 7-7-07 at 12noon GMT
@@ -82,7 +82,7 @@ class DAUTests: XCTestCase {
     func testFirstLaunch() {
         XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
         XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
-        XCTAssertFalse(Preferences.DAU.firstPingSuccess.value)
+        XCTAssert(Preferences.DAU.firstPingParam.value)
         
         let firstLaunch = pingWithDateAndCompare(daily: true, weekly: true, monthly: true, first: true,
                                                  woi: "2017-11-20")
@@ -90,24 +90,24 @@ class DAUTests: XCTestCase {
         XCTAssertNotNil(firstLaunch)
         XCTAssertNotNil(Preferences.DAU.lastLaunchInfo.value)
         XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
-        XCTAssert(Preferences.DAU.firstPingSuccess.value)
+        XCTAssertFalse(Preferences.DAU.firstPingParam.value)
     }
     
     func testFirstLaunchUnsuccesfulPing() {
-        XCTAssertFalse(Preferences.DAU.firstPingSuccess.value)
+        XCTAssert(Preferences.DAU.firstPingParam.value)
         
         // First - failed attempt
-        pingWithDateAndCompare(daily: true, weekly: true, monthly: true, first: true, successPing: false)
+        pingWithDateAndCompare(daily: true, weekly: true, monthly: true, first: true, firstPingPref: true)
         
-        // First ping is still false
-        XCTAssertFalse(Preferences.DAU.firstPingSuccess.value)
+        // First ping is still true
+        XCTAssert(Preferences.DAU.firstPingParam.value)
         
         // Second - succesful attempt
         // Make sure second ping after first failed has `first` param equal true
         pingWithDateAndCompare(daily: true, weekly: true, monthly: true, first: true)
         
-        // Should be true after second successful attempt
-        XCTAssert(Preferences.DAU.firstPingSuccess.value)
+        // Should be false after second successful attempt
+        XCTAssertFalse(Preferences.DAU.firstPingParam.value)
         
         // Third - succesful attempt
         // Finally a non first server ping
@@ -123,7 +123,7 @@ class DAUTests: XCTestCase {
         // Acting like a first launch so preferences are going to be set up
         let dauFirstLaunch = DAU(date: date)
         _ = dauFirstLaunch.paramsAndPrefsSetup()
-        Preferences.DAU.firstPingSuccess.value = true
+        Preferences.DAU.firstPingParam.value = false
         
         let dauSecondLaunch = DAU(date: date)
         
@@ -144,7 +144,7 @@ class DAUTests: XCTestCase {
         // Acting like a first launch so preferences are going to be set up
         let dauFirstLaunch = DAU(date: date)
         _ = dauFirstLaunch.paramsAndPrefsSetup()
-        Preferences.DAU.firstPingSuccess.value = true
+        Preferences.DAU.firstPingParam.value = false
         
         // Daily check
         pingWithDateAndCompare(dateString: "2017-11-22", daily: true, weekly: false, monthly: false, woi: woiPrefs)
@@ -221,7 +221,7 @@ class DAUTests: XCTestCase {
     @discardableResult
     private func pingWithDateAndCompare(dateString: String = "2017-11-20", daily: Bool, weekly: Bool,
                                         monthly: Bool, first: Bool = false, woi: String? = nil,
-                                        successPing: Bool = true) -> [URLQueryItem]? {
+                                        firstPingPref: Bool = false) -> [URLQueryItem]? {
         
         let date = dateFrom(string: dateString)
         let dau = DAU(date: date)
@@ -242,7 +242,7 @@ class DAUTests: XCTestCase {
             XCTAssert(params!.contains(URLQueryItem(name: "woi", value: woi)))
         }
         
-        Preferences.DAU.firstPingSuccess.value = successPing
+        Preferences.DAU.firstPingParam.value = firstPingPref
         
         return params
     }
