@@ -190,16 +190,12 @@ void AdsImpl::Initialize() {
 }
 
 void AdsImpl::InitializeStep2() {
-  assert(!initialized_);
-
   ProcessLocales(ads_client_->GetLocales());
 
   LoadUserModel();
 }
 
 void AdsImpl::InitializeStep3() {
-  assert(!initialized_);
-
   is_initialized_ = true;
 
   LOG(LogLevel::INFO) << "Successfully initialized";
@@ -421,7 +417,6 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
   StopCollectingActivity();
 
   collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
-
   if (collect_activity_timer_id_ == 0) {
     LOG(LogLevel::ERROR) <<
       "Failed to start collecting activity due to an invalid timer";
@@ -614,7 +609,9 @@ void AdsImpl::OnGetAdsForSampleCategory(
     const Result result,
     const std::string& category,
     const std::vector<AdInfo>& ads) {
-  if (result == Result::FAILED || ads.empty()) {
+  auto ads_count = ads.size();
+
+  if (result == Result::FAILED || ads_count == 0) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
 
@@ -624,7 +621,7 @@ void AdsImpl::OnGetAdsForSampleCategory(
     return;
   }
 
-  auto rand = helper::Math::Random(ads.size() - 1);
+  auto rand = helper::Math::Random(ads_count - 1);
   auto ad = ads.at(rand);
   ShowAd(ad, category);
 }
@@ -952,8 +949,8 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   if (cached_page_score != page_score_cache_.end()) {
     writer.String("pageScore");
     writer.StartArray();
-    for (const auto& score : cached_page_score->second) {
-      writer.Double(score);
+    for (const auto& page_score : cached_page_score->second) {
+      writer.Double(page_score);
     }
     writer.EndArray();
   }

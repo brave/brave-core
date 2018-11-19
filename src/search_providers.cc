@@ -14,7 +14,7 @@ bool SearchProviders::IsSearchEngine(const UrlComponents& components) {
     return false;
   }
 
-  bool is_a_search = false;
+  auto is_a_search = false;
 
   for (const auto& search_provider : _search_providers) {
     if (search_provider.hostname.empty()) {

@@ -40,9 +40,11 @@ class AdsImpl : public Ads {
 
   void GenerateAdReportingNotificationShownEvent(
       const NotificationInfo& info) override;
+
   void GenerateAdReportingNotificationResultEvent(
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) override;
+
   void Initialize() override;
   void InitializeStep2();
   void InitializeStep3();
@@ -64,11 +66,16 @@ class AdsImpl : public Ads {
       const std::string& url,
       const bool is_active,
       const bool is_incognito) override;
-  void TabClosed(const int32_t& tab_id) override;
+  void TabClosed(const int32_t tab_id) override;
+
   void RemoveAllHistory() override;
+
   void SaveCachedInfo() override;
+
   void ClassifyPage(const std::string& url, const std::string& html) override;
+
   void ChangeLocale(const std::string& locale) override;
+
   void CheckReadyAdServe(const bool forced = false) override;
   void ServeSampleAd() override;
 

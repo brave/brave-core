@@ -254,8 +254,7 @@ void MockAdsClient::GetAdsForCategory(
 
 void MockAdsClient::GetAdsForSampleCategory(
     OnGetAdsForCategoryCallback callback) {
-  std::map<std::string, std::vector<AdInfo>>::iterator
-    categories = sample_bundle_state_->categories.begin();
+  auto categories = sample_bundle_state_->categories.begin();
 
   auto categories_count = sample_bundle_state_->categories.size();
   if (categories_count == 0) {
@@ -272,7 +271,7 @@ void MockAdsClient::GetAdsForSampleCategory(
 bool MockAdsClient::GetUrlComponents(
     const std::string& url,
     UrlComponents* components) const {
-  bool is_valid = false;
+  auto is_valid = false;
 
   components->url = url;
 

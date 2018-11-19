@@ -80,7 +80,7 @@ class ADS_EXPORT AdsClient {
   virtual void ShowNotification(
       std::unique_ptr<NotificationInfo> info) = 0;
 
-  // Creates a timer with the specified id and time-offset
+  // Creates a timer with the specified id and time offset
   virtual uint32_t SetTimer(const uint64_t& time_offset) = 0;
 
   // Destroys the specified timer
@@ -120,7 +120,7 @@ class ADS_EXPORT AdsClient {
       const std::string& category,
       OnGetAdsForCategoryCallback callback) = 0;
 
-  // Gets ads from sample category
+  // Gets ads for sample category
   virtual void GetAdsForSampleCategory(
       OnGetAdsForCategoryCallback callback) = 0;
 
@@ -129,7 +129,7 @@ class ADS_EXPORT AdsClient {
       const std::string& url,
       UrlComponents* components) const = 0;
 
-  // Logs an event
+  // Log an event
   virtual void EventLog(const std::string& json) = 0;
 
   // Logs debug information

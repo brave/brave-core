@@ -67,7 +67,7 @@ class ADS_EXPORT Ads {
       const bool is_incognito) = 0;
 
   // Should be called to record when a user closes a tab
-  virtual void TabClosed(const int32_t& tab_id) = 0;
+  virtual void TabClosed(const int32_t tab_id) = 0;
 
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;

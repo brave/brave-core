@@ -38,7 +38,7 @@ class Client: public CallbackHandler {
   void UnflagShoppingState();
   bool GetShoppingState();
   void FlagSearchState(const std::string& url, const uint64_t score);
-  void UnflagSearchState(const std::string &url);
+  void UnflagSearchState(const std::string& url);
   bool GetSearchState();
   void UpdateLastUserActivity();
   uint64_t GetLastUserActivity();

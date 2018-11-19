@@ -106,7 +106,7 @@ void Client::FlagSearchState(
   client_state_->last_search_time = helper::Time::Now();
 }
 
-void Client::UnflagSearchState(const std::string &url) {
+void Client::UnflagSearchState(const std::string& url) {
   if (client_state_->search_url == url) {
     return;
   }
