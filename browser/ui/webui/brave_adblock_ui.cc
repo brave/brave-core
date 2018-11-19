@@ -7,6 +7,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
@@ -18,8 +19,8 @@
 #include "content/public/browser/web_ui_message_handler.h"
 
 BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kAdblockJS,
-        IDR_BRAVE_ADBLOCK_JS, IDR_BRAVE_ADBLOCK_HTML) {
+    : BasicUI(web_ui, name, kBraveAdblockGenerated,
+        kBraveAdblockGeneratedSize, IDR_BRAVE_ADBLOCK_HTML) {
   Profile* profile = Profile::FromWebUI(web_ui);
   PrefService* prefs = profile->GetPrefs();
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();

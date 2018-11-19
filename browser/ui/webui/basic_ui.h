@@ -21,16 +21,19 @@ class WebUI;
 
 class Profile;
 
+struct GritResourceMap;
+
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
-                                                  const std::string& js_file,
-                                                  int js_resource_id,
+                                                  const GritResourceMap* resource_map,
+                                                  size_t resouece_map_size,
                                                   int html_resource_id);
 
 class BasicUI : public content::WebUIController {
  public:
   BasicUI(content::WebUI* web_ui, const std::string& host,
-      const std::string& js_file, int js_resource_id, int html_resource_id);
+      const GritResourceMap* resource_map, size_t resouece_map_size,
+      int html_resource_id);
   ~BasicUI() override;
 
   // Called when subclass can set its webui properties.

@@ -20,5 +20,9 @@ transpile_web_ui("ui") {
     "store.ts"
   ]
 
-  bundle_names = ["brave_sync.bundle.js"]
+  entry_points = [
+    ["brave_sync", rebase_path("brave_sync.tsx")]
+  ]
+
+  resource_name = "brave_sync"
 }

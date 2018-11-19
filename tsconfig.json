@@ -25,10 +25,6 @@
     "noUnusedLocals": true
   },
   "include": [
-    "./components/**/*"
-  ],
-  "exclude": [
-    "./components/test/**/*",
-    "./components/brave_sync/extension"
+    "./components/definitions/*"
   ]
 }

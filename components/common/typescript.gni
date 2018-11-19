@@ -1,3 +1,5 @@
+import("//tools/grit/grit_rule.gni")
+
 brave_common_typescript_includes = [
   rebase_path("classSet.ts"),
   rebase_path("dns.ts"),
@@ -5,30 +7,59 @@ brave_common_typescript_includes = [
   rebase_path("locale.ts"),
 ]
 
+# Runs webpack for the specified entry point(s) and outputs a GRD file
+# which includes all the generated files.
 template("transpile_web_ui") {
   action(target_name) {
     script = "//brave/script/transpile-web-ui.py"
 
+    # make sure rebuilds when common files change
     inputs = brave_common_typescript_includes
+    inputs += [
+      "//brave/components/webpack/webpack.config.js",
+    ]
     if (defined(invoker.inputs)) {
       inputs += invoker.inputs
     }
 
+    # where to put webpack output files
+    resource_name = invoker.resource_name
+
     if (defined(invoker.output_dir)) {
       output_dir = invoker.output_dir
     } else {
-      output_dir = "$root_gen_dir/brave"
+      output_dir = "$root_gen_dir/brave/web-ui-$resource_name"
     }
-
-    outputs = []
-    foreach(bundle_name, invoker.bundle_names) {
-      outputs += ["$output_dir/$bundle_name"]
-    }
-
     gen_dir = rebase_path(output_dir)
-    args = [
-      "--target_gen_dir=$gen_dir"
+
+    # sole output is a GRD that includes all the resources
+    outputs = [
+      "$output_dir/$resource_name.grd"
     ]
+
+    args = [ ]
+
+    # support multiple entry points and named bundle JS filename
+    foreach(entry_point, invoker.entry_points) {
+      args += [
+        "--entry=" + entry_point[0] + "=" + entry_point[1]
+      ]
+    }
+
+    # Extension resources need to have the same relative path prefix
+    # in their GRD as the manifest.json in its GRD file
+    # So we offer an option to put a folder structure in front of the GRD
+    if (defined(invoker.extra_relative_path)) {
+      args += [
+        "--extra_relative_path=" + invoker.extra_relative_path
+      ]
+    }
+
+    args += [
+      "--target_gen_dir=$gen_dir",
+      "--resource_name=$resource_name"
+    ]
+
     if (is_official_build) {
       args += [
         "--production",
@@ -42,5 +73,49 @@ template("transpile_web_ui") {
                              "testonly",
                              "visibility",
                            ])
+  }
+}
+
+# Runs grit for a specified GRD file generated from
+# a :transpile_web_ui target
+template("pack_web_resources") {
+  grit(target_name) {
+    resource_name = invoker.resource_name
+
+    if (defined(invoker.generated_dir)) {
+      generated_dir = invoker.generated_dir
+    } else {
+      generated_dir = "$root_gen_dir/brave/web-ui-$resource_name"
+    }
+    source = "$generated_dir/$resource_name.grd"
+    source_is_generated = true
+
+    outputs = [
+      "grit/$resource_name" + "_generated.h",
+      "grit/$resource_name" + "_generated_map.cc",
+      "grit/$resource_name" + "_generated_map.h",
+      resource_name + "_generated.pak"
+    ]
+
+    grit_flags = [
+      "-E",
+      "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+    ]
+
+    defines = [
+      "ROOT_GEN_DIR=" + rebase_path(root_gen_dir, root_build_dir)
+    ]
+
+    output_dir = invoker.output_dir
+
+    resource_ids = "//brave/browser/resources/resource_ids"
+
+    forward_variables_from(invoker,
+                          [
+                            "deps",
+                            "public_deps",
+                            "testonly",
+                            "visibility",
+                          ])
   }
 }

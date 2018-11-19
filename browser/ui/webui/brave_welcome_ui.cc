@@ -7,6 +7,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
@@ -60,8 +61,8 @@ void WelcomeDOMHandler::HandleImportNowRequested(const base::ListValue* args) {
 }  // namespace
 
 BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kWelcomeJS,
-        IDR_BRAVE_WELCOME_JS, IDR_BRAVE_WELCOME_HTML) {
+    : BasicUI(web_ui, name, kBraveWelcomeGenerated,
+        kBraveWelcomeGeneratedSize, IDR_BRAVE_WELCOME_HTML) {
 
   auto handler_owner = std::make_unique<WelcomeDOMHandler>();
   WelcomeDOMHandler* handler = handler_owner.get();
