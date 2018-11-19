@@ -79,7 +79,7 @@ class AdsImpl : public Ads {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  bool boot_;
+  bool is_first_run_;
 
   bool initialized_;
   void Deinitialize();

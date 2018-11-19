@@ -26,8 +26,8 @@ using namespace std::placeholders;
 namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client) :
-    boot_(false),
     initialized_(false),
+    is_first_run_(true),
     is_foreground_(false),
     last_shown_tab_url_(""),
     last_shown_notification_info_(NotificationInfo()),
@@ -47,8 +47,8 @@ AdsImpl::~AdsImpl() = default;
 
 void AdsImpl::GenerateAdReportingNotificationShownEvent(
     const NotificationInfo& info) {
-  if (!boot_) {
-    boot_ = true;
+  if (is_first_run_) {
+    is_first_run_ = false;
 
     GenerateAdReportingRestartEvent();
   }
@@ -99,8 +99,8 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 void AdsImpl::GenerateAdReportingNotificationResultEvent(
     const NotificationInfo& info,
     const NotificationResultInfoResultType type) {
-  if (!boot_) {
-    boot_ = true;
+  if (is_first_run_) {
+    is_first_run_ = false;
 
     GenerateAdReportingRestartEvent();
   }
@@ -473,9 +473,9 @@ void AdsImpl::Deinitialize() {
 
   last_shown_notification_info_ = NotificationInfo();
 
-  boot_ = false;
 
   initialized_ = false;
+  is_first_run_ = true;
   is_foreground_ = false;
 }
 
