@@ -47,8 +47,11 @@ class AdsImpl : public Ads {
   void InitializeStep2();
   void InitializeStep3();
   bool IsInitialized();
-  void AppFocused(const bool is_focused) override;
-  bool IsAppFocused() const;
+
+  void OnForeground() override;
+  void OnBackground() override;
+  bool IsForeground() const;
+
   void OnIdle() override;
   void OnUnIdle() override;
   void TabUpdated(
@@ -80,7 +83,8 @@ class AdsImpl : public Ads {
   bool initialized_;
   void Deinitialize();
 
-  bool app_focused_;
+  bool is_foreground_;
+
   std::string last_shown_tab_url_;
   NotificationInfo last_shown_notification_info_;
 

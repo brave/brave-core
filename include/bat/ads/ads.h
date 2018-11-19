@@ -41,8 +41,11 @@ class ADS_EXPORT Ads {
   // Should be called when ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
 
-  // Should be called whenever the browser gains or loses focus
-  virtual void AppFocused(const bool is_focused) = 0;
+  // Should be called whenever the browser enters the foreground
+  virtual void OnForeground() = 0;
+
+  // Should be called whenever the browser enters the background
+  virtual void OnBackground() = 0;
 
   // Should be called to record when the browser is idle
   virtual void OnIdle() = 0;

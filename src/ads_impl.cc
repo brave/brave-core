@@ -28,7 +28,7 @@ namespace ads {
 AdsImpl::AdsImpl(AdsClient* ads_client) :
     boot_(false),
     initialized_(false),
-    app_focused_(false),
+    is_foreground_(false),
     last_shown_tab_url_(""),
     last_shown_notification_info_(NotificationInfo()),
     last_page_classification_(""),
@@ -220,18 +220,18 @@ bool AdsImpl::IsInitialized() {
   return true;
 }
 
-void AdsImpl::AppFocused(const bool is_focused) {
-  app_focused_ = is_focused;
-
-  if (app_focused_) {
-    GenerateAdReportingForegroundEvent();
-  } else {
-    GenerateAdReportingBackgroundEvent();
-  }
+void AdsImpl::OnForeground() {
+  is_foreground_ = true;
+  GenerateAdReportingForegroundEvent();
 }
 
-bool AdsImpl::IsAppFocused() const {
-  return app_focused_;
+void AdsImpl::OnBackground() {
+  is_foreground_ = false;
+  GenerateAdReportingBackgroundEvent();
+}
+
+bool AdsImpl::IsForeground() const {
+  return is_foreground_;
 }
 
 void AdsImpl::OnIdle() {
@@ -379,7 +379,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   }
 
   if (!forced) {
-    if (!IsAppFocused()) {
+    if (!IsForeground()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not in foreground' }
       return;
@@ -466,12 +466,12 @@ void AdsImpl::Deinitialize() {
 
   user_model_.reset();
 
-  app_focused_ = false;
   last_shown_notification_info_ = NotificationInfo();
 
   boot_ = false;
 
   initialized_ = false;
+  is_foreground_ = false;
 }
 
 void AdsImpl::LoadUserModel() {
