@@ -27,6 +27,7 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
 #include "brave/common/brave_switches.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
@@ -41,6 +42,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content_site.h"
 #include "extensions/buildflags/buildflags.h"
@@ -1695,6 +1697,15 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       }
     }
   }
+}
+
+bool RewardsServiceImpl::CheckImported() {
+//  PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
+//  const uint64_t pinned_item_count = prefs->GetUint64(kBravePaymentsPinnedItemCount);
+//  prefs->SetUint64(kBravePaymentsPinnedItemCount, 0);
+//
+//  return pinned_item_count > 0;
+  return true;
 }
 
 }  // namespace brave_rewards

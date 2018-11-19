@@ -88,6 +88,21 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         chrome.send('brave_rewards.getContributionList')
         break
       }
+    case types.CHECK_IMPORTED:
+      {
+        chrome.send('brave_rewards.checkImported')
+        break
+      }
+    case types.ON_IMPORTED_CHECK:
+      {
+        let ui = state.ui
+        ui.walletImported = action.payload.imported
+        state = {
+          ...state,
+          ui
+        }
+        break
+      }
   }
 
   return state

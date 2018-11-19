@@ -37,6 +37,7 @@ export const defaultState: Rewards.State = {
     walletServerProblem: false,
     modalBackup: false,
     walletCorrupted: false
+    walletImported: false
   },
   autoContributeList: [],
   reports: {},

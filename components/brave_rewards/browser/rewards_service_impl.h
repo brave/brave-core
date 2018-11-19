@@ -125,6 +125,7 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAutoInclude(
     std::string publisher_key, bool excluded, uint64_t windowId) override;
   RewardsNotificationService* GetNotificationService() const override;
+  bool CheckImported() override;
 
   static void HandleFlags(const std::string& options);
   void OnWalletProperties(ledger::Result result,
