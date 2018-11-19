@@ -70,12 +70,14 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 //        shieldsView.shieldsContainerStackView.fingerprintingStatView.valueLabel.text = String(shieldBlockStats.fingerprintCount)
     }
     
-    private func updateBraveShieldState(shield: BraveShieldState.Shield, on: Bool) {
+    private func updateBraveShieldState(shield: BraveShieldState.Shield, on: Bool, option: Preferences.Option<Bool>?) {
         guard let url = tab.url else { return }
         let allOff = shield == .AllOff
-        // `.AllOff` uses inverse logic
-        // Technically we set "all off" when the switch is OFF, unlike all the others
-        let isOn = allOff ? !on : on
+        // `.AllOff` uses inverse logic. Technically we set "all off" when the switch is OFF, unlike all the others
+        // If the new state is the same as the global preference, reset it to nil so future shield state queries
+        // respect the global preference rather than the overridden value. (Prevents toggling domain state from
+        // affecting future changes to the global pref)
+        let isOn = allOff ? !on : (on == option?.value ? nil : on)
         Domain.setBraveShield(forUrl: url, shield: shield, isOn: isOn)
     }
     
@@ -125,14 +127,14 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        shieldControlMapping.forEach { shield, toggle, _ in
+        shieldControlMapping.forEach { shield, toggle, option in
             toggle.valueToggled = { [unowned self] on in
                 if shield == .AllOff {
                     // Update the content size
                     self.updateGlobalShieldState(on, animated: true)
                 }
                 // Localized / per domain toggles triggered here
-                self.updateBraveShieldState(shield: shield, on: on)
+                self.updateBraveShieldState(shield: shield, on: on, option: option)
                 self.shieldsSettingsChanged?(self)
             }
         }
