@@ -81,7 +81,7 @@ class AdsImpl : public Ads {
 
   bool is_first_run_;
 
-  bool initialized_;
+  bool is_initialized_;
   void Deinitialize();
 
   bool is_foreground_;

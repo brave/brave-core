@@ -26,8 +26,8 @@ using namespace std::placeholders;
 namespace ads {
 
 AdsImpl::AdsImpl(AdsClient* ads_client) :
-    initialized_(false),
     is_first_run_(true),
+    is_initialized_(false),
     is_foreground_(false),
     last_shown_tab_url_(""),
     last_shown_notification_info_(NotificationInfo()),
@@ -168,7 +168,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 }
 
 void AdsImpl::Initialize() {
-  if (initialized_) {
+  if (IsInitialized()) {
     LOG(LogLevel::WARNING) << "Already initialized";
     return;
   }
@@ -182,7 +182,7 @@ void AdsImpl::Initialize() {
     return;
   }
 
-  if (initialized_) {
+  if (IsInitialized()) {
     return;
   }
 
@@ -200,7 +200,7 @@ void AdsImpl::InitializeStep2() {
 void AdsImpl::InitializeStep3() {
   assert(!initialized_);
 
-  initialized_ = true;
+  is_initialized_ = true;
 
   LOG(LogLevel::INFO) << "Successfully initialized";
 
@@ -212,7 +212,7 @@ void AdsImpl::InitializeStep3() {
 }
 
 bool AdsImpl::IsInitialized() {
-  if (!initialized_ ||
+  if (!is_initialized_ ||
       !ads_client_->IsAdsEnabled() ||
       !user_model_->IsInitialized()) {
     return false;
@@ -454,7 +454,7 @@ void AdsImpl::OnTimer(const uint32_t timer_id) {
 //////////////////////////////////////////////////////////////////////////////
 
 void AdsImpl::Deinitialize() {
-  if (!initialized_) {
+  if (!IsInitialized()) {
     LOG(LogLevel::WARNING) <<
       "Failed to deinitialize as not initialized";
     return;
@@ -462,20 +462,20 @@ void AdsImpl::Deinitialize() {
 
   ads_serve_->Reset();
 
-  RemoveAllHistory();
   StopSustainingAdInteraction();
 
-  last_page_classification_ = "";
+  RemoveAllHistory();
 
   bundle_->Reset();
-
   user_model_.reset();
 
   last_shown_notification_info_ = NotificationInfo();
 
+  last_page_classification_ = "";
+  page_score_cache_.clear();
 
-  initialized_ = false;
   is_first_run_ = true;
+  is_initialized_ = false;
   is_foreground_ = false;
 }
 
@@ -500,7 +500,7 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
 
   InitializeUserModel(json);
 
-  if (!initialized_) {
+  if (!IsInitialized()) {
     InitializeStep3();
   }
 }
