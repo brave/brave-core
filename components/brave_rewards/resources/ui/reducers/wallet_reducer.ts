@@ -49,10 +49,12 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         // TODO NZ check why enum can't be used inside Rewards namespace
         if (action.payload.properties.status === 1) {
           ui.walletServerProblem = true
+        } else if (action.payload.properties.status === 17) {
+          ui.walletCorrupted = true
         } else {
-          // TODO NZ don't just assign directly
           state.walletInfo = action.payload.properties.wallet
           ui.walletServerProblem = false
+          ui.walletCorrupted = false
         }
 
         state = {
@@ -104,6 +106,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
           chrome.send('brave_rewards.getAddresses', [])
           ui.emptyWallet = balance <= 0
           ui.modalBackup = false
+          ui.walletCorrupted = false
         }
 
         state = {
