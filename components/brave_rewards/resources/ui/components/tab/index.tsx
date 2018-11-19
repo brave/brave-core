@@ -30,6 +30,7 @@ export default class Tab extends React.PureComponent<Props, {}> {
         <StyledTab
           left={i === 0}
           key={`tab-${i}`}
+          onClick={this.onSwitchChange.bind(this, i)}
         >
           <StyledText selected={i === this.props.tabIndexSelected}>
             {title}
@@ -40,11 +41,20 @@ export default class Tab extends React.PureComponent<Props, {}> {
     return tabs
   }
 
+  onSwitchChange = (index: number, event: React.MouseEvent<HTMLDivElement>) => {
+    if (index === this.props.tabIndexSelected) {
+      return
+    }
+
+    if (this.props.onChange) {
+      this.props.onChange(event)
+    }
+  }
+
   render () {
     const {
       testId,
       tabTitles,
-      onChange,
       tabIndexSelected
     } = this.props
 
@@ -55,7 +65,7 @@ export default class Tab extends React.PureComponent<Props, {}> {
 
     return (
       <RewardsTabWrapper>
-        <StyledSwitch onClick={onChange}>
+        <StyledSwitch>
           <StyledSlider data-test-id={testId}>
             {this.getTabs(tabTitles)}
           </StyledSlider>

@@ -20,6 +20,7 @@ export const StyledSwitch = styled<{}, 'div'>('div')`
   display: block;
   width: 100%;
   height: 43px;
+  cursor: pointer;
 `
 
 export const StyledSlider = styled<{}, 'div'>('div')`
@@ -58,6 +59,7 @@ export const StyledText = styled<StyleProps, 'div'>('div')`
   display: block;
   overflow: hidden;
   text-align: center;
+  user-select: none;
   color: ${p => p.selected ? p.theme.color.brandBrave : p.theme.color.subtleActive};
   font-weight: ${p => p.selected ? '500' : 'normal'};
 `

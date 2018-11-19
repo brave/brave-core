@@ -245,6 +245,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   display: block;
   width: 100%;
   height: 43px;
+  cursor: pointer;
 }
 
 .c11 {
@@ -293,6 +294,10 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   display: block;
   overflow: hidden;
   text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   color: #585968;
   font-weight: normal;
 }
@@ -344,13 +349,13 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
           >
             <div
               className="c10"
-              onClick={[Function]}
             >
               <div
                 className="c11"
               >
                 <div
                   className="c12"
+                  onClick={[Function]}
                 >
                   <div
                     className="c13"
@@ -361,6 +366,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
                 </div>
                 <div
                   className="c14"
+                  onClick={[Function]}
                 >
                   <div
                     className="c13"
