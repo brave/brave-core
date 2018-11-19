@@ -39,6 +39,8 @@ int main() {
   ads.OnMediaStopped(1);
   ads.OnMediaStopped(2);
 
+  ads.OnUnIdle();
+
   ads.ServeSampleAd();
 
   ads.CheckReadyAdServe();

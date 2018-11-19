@@ -74,6 +74,38 @@ void Client::ResetAdsUUIDSeen(
   }
 }
 
+void Client::SetAvailable(const bool available) {
+  client_state_->available = available;
+}
+
+bool Client::GetAvailable() const {
+  return client_state_->available;
+}
+
+void Client::SetAllowed(const bool allowed) {
+  client_state_->allowed = allowed;
+}
+
+bool Client::GetAllowed() const {
+  return client_state_->allowed;
+}
+
+void Client::SetConfigured(const bool configured) {
+  client_state_->configured = configured;
+}
+
+bool Client::GetConfigured() const {
+  return client_state_->configured;
+}
+
+void Client::SetExpired(const bool expired) {
+  client_state_->expired = expired;
+}
+
+bool Client::GetExpired() const {
+  return client_state_->expired;
+}
+
 void Client::SetCurrentSSID(const std::string& ssid) {
   client_state_->current_ssid = ssid;
 }

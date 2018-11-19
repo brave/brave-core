@@ -173,8 +173,6 @@ void AdsImpl::Initialize() {
     return;
   }
 
-  GenerateAdReportingSettingsEvent();
-
   if (!ads_client_->IsAdsEnabled()) {
     LOG(LogLevel::INFO) << "Deinitializing as Ads are disabled";
 
@@ -199,6 +197,9 @@ void AdsImpl::InitializeStep3() {
   is_initialized_ = true;
 
   LOG(LogLevel::INFO) << "Successfully initialized";
+
+  NotificationConfigurationCheck();
+  NotificationAllowedCheck(false);
 
   RetrieveSSID();
 
@@ -241,9 +242,8 @@ void AdsImpl::OnUnIdle() {
   // 'Idle state changed', { idleState: action.get('idleState') }
 
   client_->UpdateLastUserIdleStopTime();
-  if (ads_client_->IsNotificationsAllowed()) {
-    CheckReadyAdServe();
-  }
+
+  NotificationAllowedCheck(true);
 }
 
 void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
@@ -372,6 +372,48 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   }
 
   LoadUserModel();
+}
+
+void AdsImpl::NotificationConfigurationCheck() {
+  auto ok = ads_client_->IsNotificationsConfigured();
+
+  // TODO(Terry Mancey): Implement Log (#44)
+  // appConstants.APP_ON_NATIVE_NOTIFICATION_CONFIGURATION_CHECK, {err, result}
+
+  auto previous = client_->GetConfigured();
+  if (ok != previous) {
+    client_->SetConfigured(ok);
+  }
+}
+
+void AdsImpl::NotificationAllowedCheck(const bool serve) {
+  auto ok = ads_client_->IsNotificationsEnabled();
+
+  // TODO(Terry Mancey): Implement Log (#44)
+  // appConstants.APP_ON_NATIVE_NOTIFICATION_ALLOWED_CHECK, {err, result}
+
+  auto previous = client_->GetAllowed();
+
+  if (ok != previous) {
+    client_->SetAllowed(ok);
+  }
+
+  if (!serve || ok != previous) {
+    GenerateAdReportingSettingsEvent();
+  }
+
+  if (!serve) {
+    return;
+  }
+
+  if (!ok) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Ad not served', { reason: 'notifications not presently allowed' }
+
+    return;
+  }
+
+  CheckReadyAdServe();
 }
 
 void AdsImpl::CheckReadyAdServe(const bool forced) {
@@ -1152,7 +1194,7 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.Bool(configured);
 
   writer.String("allowed");
-  auto allowed = ads_client_->IsNotificationsAllowed();
+  auto allowed = client_->GetAllowed();
   writer.Bool(allowed);
 
   writer.EndObject();

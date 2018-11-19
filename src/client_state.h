@@ -24,8 +24,8 @@ struct ClientState {
   bool available;
   bool allowed;
   bool configured;
-  std::string current_ssid;
   bool expired;
+  std::string current_ssid;
   uint64_t last_search_time;
   uint64_t last_shop_time;
   uint64_t last_user_activity;
