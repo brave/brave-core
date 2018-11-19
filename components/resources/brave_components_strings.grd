@@ -241,6 +241,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TITLE" desc="">Oops, something is wrong. Please try again later.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_BUTTON" desc="">OK</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TEXT" desc="">Brave Rewards is having an issue. Please try again later.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED" desc="">We detected that something is wrong with your wallet. You must recover your backup wallet before any transactions can be processed.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW" desc="">Recover now!</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
