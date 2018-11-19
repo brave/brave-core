@@ -250,6 +250,34 @@ void AdsImpl::OnUnIdle() {
   }
 }
 
+void AdsImpl::OnMediaPlaying(const int32_t tab_id) {
+  auto tab = media_playing_.find(tab_id);
+  if (tab != media_playing_.end()) {
+    // Media is already playing for this tab
+    return;
+  }
+
+  media_playing_.insert({tab_id, true});
+}
+
+void AdsImpl::OnMediaStopped(const int32_t tab_id) {
+  auto tab = media_playing_.find(tab_id);
+  if (tab == media_playing_.end()) {
+    // Media is not playing for this tab
+    return;
+  }
+
+  media_playing_.erase(tab_id);
+}
+
+bool AdsImpl::IsMediaPlaying() const {
+  if (media_playing_.empty()) {
+    return false;
+  }
+
+  return true;
+}
+
 void AdsImpl::TabUpdated(
     const int32_t tab_id,
     const std::string& url,
@@ -282,8 +310,8 @@ void AdsImpl::TabUpdated(
   }
 }
 
-void AdsImpl::TabClosed(const int32_t& tab_id) {
-  RecordMediaPlaying(tab_id, false);
+void AdsImpl::TabClosed(const int32_t tab_id) {
+  OnMediaStopped(tab_id);
 
   DestroyInfo destroy_info;
   destroy_info.tab_id = tab_id;
@@ -302,30 +330,6 @@ void AdsImpl::SaveCachedInfo() {
   }
 
   client_->SaveState();
-}
-
-void AdsImpl::RecordMediaPlaying(
-    const int32_t tab_id,
-    const bool is_playing) {
-  auto tab = media_playing_.find(tab_id);
-
-  if (is_playing) {
-    if (tab == media_playing_.end()) {
-      media_playing_.insert({tab_id, is_playing});
-    }
-  } else {
-    if (tab != media_playing_.end()) {
-      media_playing_.erase(tab_id);
-    }
-  }
-}
-
-bool AdsImpl::IsMediaPlaying() const {
-  if (media_playing_.empty()) {
-    return false;
-  }
-
-  return true;
 }
 
 void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {

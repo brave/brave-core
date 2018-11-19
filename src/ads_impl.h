@@ -54,6 +54,11 @@ class AdsImpl : public Ads {
 
   void OnIdle() override;
   void OnUnIdle() override;
+
+  void OnMediaPlaying(const int32_t tab_id) override;
+  void OnMediaStopped(const int32_t tab_id) override;
+  bool IsMediaPlaying() const;
+
   void TabUpdated(
       const int32_t tab_id,
       const std::string& url,
@@ -62,10 +67,6 @@ class AdsImpl : public Ads {
   void TabClosed(const int32_t& tab_id) override;
   void RemoveAllHistory() override;
   void SaveCachedInfo() override;
-  void RecordMediaPlaying(
-      const int32_t tab_id,
-      const bool is_playing) override;
-  bool IsMediaPlaying() const;
   void ClassifyPage(const std::string& url, const std::string& html) override;
   void ChangeLocale(const std::string& locale) override;
   void CheckReadyAdServe(const bool forced = false) override;

@@ -22,7 +22,7 @@ int main() {
 
   ads.OnUnIdle();
 
-  ads.RecordMediaPlaying(1, true);
+  ads.OnMediaPlaying(1);
 
   ads.ClassifyPage("https://www.jewelry.com",
     "Jewellery (British English) or jewelry (American English)[1] consists of s"
@@ -36,8 +36,8 @@ int main() {
 
   ads.ServeSampleAd();
 
-  ads.RecordMediaPlaying(1, false);
-  ads.RecordMediaPlaying(2, false);
+  ads.OnMediaStopped(1);
+  ads.OnMediaStopped(2);
 
   ads.ServeSampleAd();
 

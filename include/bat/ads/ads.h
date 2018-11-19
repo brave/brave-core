@@ -53,6 +53,12 @@ class ADS_EXPORT Ads {
   // Should be called to record when the browser is no longer idle
   virtual void OnUnIdle() = 0;
 
+  // Should be called to record when a tab has started playing media (A/V)
+  virtual void OnMediaPlaying(const int32_t tab_id) = 0;
+
+  // Should be called to record when a tab has stopped playing media (A/V)
+  virtual void OnMediaStopped(const int32_t tab_id) = 0;
+
   // Should be called to record user activity on a tab
   virtual void TabUpdated(
       const int32_t tab_id,
@@ -69,12 +75,6 @@ class ADS_EXPORT Ads {
   // Should be called when the browser is about to exit; if ads are disabled
   // the client state is reset to default values
   virtual void SaveCachedInfo() = 0;
-
-  // Should be called to record when a tab has stopped, paused or started
-  // playing media (A/V)
-  virtual void RecordMediaPlaying(
-      const int32_t tab_id,
-      const bool is_playing) = 0;
 
   // Should be called when a page is completely loaded and the body is available
   // for analysis
