@@ -73,8 +73,9 @@ public class DAU {
                 return
             }
             
-            // Successful, we have certainly validated first ping
-            Preferences.DAU.firstPingSuccess.value = true
+            // Ping was successful, next ping should be sent with `first` parameter set to false.
+            // This preference is set for future DAU pings.
+            Preferences.DAU.firstPingParam.value = false
         }
         
         task.resume()
@@ -84,10 +85,7 @@ public class DAU {
     func paramsAndPrefsSetup() -> [URLQueryItem]? {
         var params = [channelParam(), versionParam()]
         
-        /// First ping preference is set after first successful ping to the server.
-        let firstPing = Preferences.DAU.firstPingSuccess.value
-        // First launch ping should be send only if first ping was not successful yet.
-        let firstLaunch = !firstPing
+        let firstLaunch = Preferences.DAU.firstPingParam.value
         
         // All installs prior to this key existing (e.g. intallWeek == unknown) were set to `defaultWoiDate`
         // Enough time has passed where accounting for installs prior to this DAU improvement is unnecessary
