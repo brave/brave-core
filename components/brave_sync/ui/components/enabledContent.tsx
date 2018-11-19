@@ -15,7 +15,11 @@ import {
   SwitchLabel,
   Paragraph,
   SectionBlock,
-  SubTitle
+  SubTitle,
+  TableRowId,
+  TableRowDevice,
+  TableRowRemove,
+  TableRowRemoveButton
 } from 'brave-ui/features/sync'
 
 // Modals
@@ -52,21 +56,15 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
     return devices.map((device: any): Row => {
       const cell: Row = {
         content: [
-          { content: device.id },
-          { content: device.name },
+          { content: <TableRowId>{device.id}</TableRowId> },
+          { content: <TableRowDevice>{device.name}</TableRowDevice> },
           { content: device.lastActive },
           {
             content: (
-              <span
-                style={{ cursor: 'pointer' /* TODO: cezar make this a component */ }}
-                data-id={device.id}
-                data-name={device.name}
-                onClick={this.onRemoveDevice}
-              >
-                  &times;
-              </span>
-            ),
-            customStyle: { 'text-align': 'center' }
+              <TableRowRemoveButton data-id={device.id} data-name={device.name} onClick={this.onRemoveDevice}>
+                &times;
+              </TableRowRemoveButton>
+            )
           }
         ]
       }
@@ -76,10 +74,10 @@ class SyncEnabledContent extends React.PureComponent<SyncEnabledContentProps, Sy
 
   get header (): Cell[] {
     return [
-      { content: getLocale('id') },
-      { content: getLocale('deviceName') },
+      { content: <TableRowId>{getLocale('id')}</TableRowId> },
+      { content: <TableRowDevice>{getLocale('deviceName')}</TableRowDevice> },
       { content: getLocale('lastActive') },
-      { content: getLocale('removeDevice'), customStyle: { 'text-align': 'center' } }
+      { content: <TableRowRemove>{getLocale('removeDevice')}</TableRowRemove> }
     ]
   }
 
