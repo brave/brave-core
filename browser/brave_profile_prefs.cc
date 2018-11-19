@@ -79,10 +79,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Cloud Print: Don't allow jobs to be submitted
   registry->SetDefaultPrefValue(prefs::kCloudPrintSubmitEnabled, base::Value(false));
 
-  // Importer selected data types
+  // Importer: selected data types
   registry->RegisterBooleanPref(prefs::kImportDialogCookies, true);
   registry->RegisterBooleanPref(prefs::kImportDialogStats, true);
   registry->RegisterBooleanPref(prefs::kImportDialogLedger, true);
+  // Importer: ledger (used for Brave Rewards pinned => tips)
+  registry->RegisterIntegerPref(kBravePaymentsPinnedItemCount, 0);
 }
 
 }  // namespace brave

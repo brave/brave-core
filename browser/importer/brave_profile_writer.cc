@@ -7,10 +7,16 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/utility/importer/brave_importer.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
 
+#include "base/files/file_util.h"
+#include "base/memory/weak_ptr.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "base/task/post_task.h"
+
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
@@ -22,8 +28,14 @@
 #include "net/url_request/url_request_context_getter.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
 
+#include <sstream>
+
 BraveProfileWriter::BraveProfileWriter(Profile* profile)
-    : ProfileWriter(profile) {}
+    : ProfileWriter(profile),
+    task_runner_(base::CreateSequencedTaskRunnerWithTraits({
+      base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+      base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
+    }
 
 BraveProfileWriter::~BraveProfileWriter() {
   CHECK(!IsInObserverList());
@@ -76,6 +88,7 @@ void BraveProfileWriter::SetBridge(BraveInProcessImporterBridge* bridge) {
 void BraveProfileWriter::OnWalletInitialized(brave_rewards::RewardsService*
   rewards_service, int error_code) {
   if (error_code) {
+    rewards_service->RemoveObserver(this);
     // Cancel the import if wallet creation failed
     LOG(ERROR) << "An error occurred while trying to create a wallet to "
       << "restore into (error_code=" << error_code << ")";
@@ -87,12 +100,70 @@ void BraveProfileWriter::OnWalletInitialized(brave_rewards::RewardsService*
   rewards_service->RecoverWallet(ledger_.passphrase);
 }
 
+void BraveProfileWriter::BackupWallet() {
+  const base::FilePath profile_default_directory = profile_->GetPath();
+  std::ostringstream backup_filename;
+  backup_filename << "ledger_import_backup_"
+    << base::NumberToString((unsigned long long)base::Time::Now().ToJsTime());
+
+  LOG(INFO) << "Making backup of current \"ledger_state\" as "
+    << "\"" << backup_filename.str() << "\"";
+
+  base::PostTaskAndReplyWithResult<bool, bool>(
+    task_runner_.get(),
+    FROM_HERE,
+    base::Bind(&base::CopyFile,
+      profile_default_directory.AppendASCII("ledger_state"),
+      profile_default_directory.AppendASCII(backup_filename.str())),
+    base::Bind(&BraveProfileWriter::OnWalletBackupComplete,
+      base::Unretained(this)));
+}
+
+void BraveProfileWriter::OnWalletBackupComplete(bool result) {
+  if (!result) {
+    rewards_service_->RemoveObserver(this);
+    LOG(ERROR) << "Failed to make a backup of \"ledger_state\"";
+    bridge_ptr_->Cancel();
+    return;
+  }
+
+  LOG(INFO) << "Backup complete; Recovering imported wallet...";
+  rewards_service_->RecoverWallet(ledger_.passphrase);
+}
+
+void BraveProfileWriter::OnWalletProperties(
+  brave_rewards::RewardsService* rewards_service,
+  int error_code,
+  brave_rewards::WalletProperties* properties) {
+  // Avoid overwriting Brave Rewards wallet if:
+  // - it existed BEFORE import happened
+  // - it has a non-zero balance
+  // - caller didn't pass `true` for clobber_wallet
+  if (properties->balance > 0) {
+    if (!ledger_.clobber_wallet) {
+      rewards_service->RemoveObserver(this);
+      LOG(ERROR) << "Brave Rewards wallet existed before import and "
+        << "has a balance of " << properties->balance << "; skipping "
+        << "Brave Payments import.";
+      bridge_ptr_->Cancel();
+      return;
+    }
+    LOG(INFO) << "Existing wallet has a balance (" << properties->balance
+      << ") and clobber_wallet is true; recover will be overwriting "
+      << "this wallet (after making a backup)";
+  } else {
+    LOG(INFO) << "Existing wallet does not have a balance";
+  }
+
+  BackupWallet();
+}
+
 void BraveProfileWriter::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     double balance,
     std::vector<brave_rewards::Grant> grants) {
-  rewards_service_->RemoveObserver(this);
+  rewards_service->RemoveObserver(this);
 
   if (result) {
     // Cancel the import if wallet restore failed
@@ -107,7 +178,7 @@ void BraveProfileWriter::OnRecoverWallet(
 
   // Set the pinned item count (rewards can detect and take action)
   PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
-  prefs->SetUint64(kBravePaymentsPinnedItemCount, pinned_item_count_);
+  prefs->SetInteger(kBravePaymentsPinnedItemCount, pinned_item_count_);
 
   // Notify the caller that import is complete
   bridge_ptr_->FinishLedgerImport();
@@ -186,16 +257,7 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
     return;
   }
 
-  // Avoid overwriting Brave Rewards wallet if it existed BEFORE import happened
-  if (!ledger_.clobber_wallet) {
-    LOG(ERROR) << "Brave Rewards wallet existed before import; "
-      << "skipping Brave Payments import.";
-    bridge_ptr_->Cancel();
-    return;
-  }
-
-  // Set properties and recover the wallet
+  LOG(INFO) << "Wallet exists; fetching details...";
   rewards_service_->AddObserver(this);
-  LOG(INFO) << "Starting wallet recovery...";
-  rewards_service_->RecoverWallet(ledger_.passphrase);
+  rewards_service_->FetchWalletProperties();
 }

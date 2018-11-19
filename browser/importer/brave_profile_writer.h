@@ -34,10 +34,16 @@ class BraveProfileWriter : public ProfileWriter,
                        unsigned int result,
                        double balance,
                        std::vector<brave_rewards::Grant> grants) override;
+  void OnWalletProperties(brave_rewards::RewardsService* rewards_service,
+                          int error_code,
+                          brave_rewards::WalletProperties* properties) override;
 
  protected:
   friend class base::RefCountedThreadSafe<BraveProfileWriter>;
+  const scoped_refptr<base::SequencedTaskRunner> task_runner_;
   void SetWalletProperties(brave_rewards::RewardsService* rewards_service);
+  void BackupWallet();
+  void OnWalletBackupComplete(bool result);
   ~BraveProfileWriter() override;
 
  private:
