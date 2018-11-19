@@ -255,6 +255,7 @@
       <message name="IDS_BRAVE_UI_ADD_FUNDS_TITLE" desc="">Send cryptocurrency from your external account to your Brave Rewards wallet.</message>
       <message name="IDS_BRAVE_UI_ALLOW_TIP" desc="">Allow tips on</message>
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
+      <message name="IDS_BRAVE_UI_BACKUP" desc="">Backup</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">Get paid to view relevant ads that respect your privacy.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Ads</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Support your favorite sites just by browsing – or tip a site any time you like.</message>
@@ -299,6 +300,7 @@
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
       <message name="IDS_BRAVE_UI_INCLUDE_IN_AUTO" desc="">Include in Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="">Make this monthly</message>
+      <message name="IDS_BRAVE_UI_MANAGE_WALLET" desc="">Manage Your Wallet</message>
       <message name="IDS_BRAVE_UI_MONTH_APR" desc="">Apr</message>
       <message name="IDS_BRAVE_UI_MONTH_AUG" desc="">August</message>
       <message name="IDS_BRAVE_UI_MONTH_DEC" desc="">December</message>
@@ -339,7 +341,8 @@
       <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
       <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
       <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT1" desc="">Backup your Wallet</message>
-      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Keep this recovery key safe. You can always use this key to get your wallet back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your wallet. It's probably safest to write it down on a piece of paper, or wherever else you keep important info.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT2" desc="">Keep this recovery key safe.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_BACKUP_TEXT3" desc="">You can always use this key to get your wallet back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your wallet. It\'s probably safest to write it down on a piece of paper, or wherever else you keep important info.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="">You can support this site by sending a tip. It’s a way of thanking them for making great content. Content creators get paid for their tips during the first week of each calendar month.</message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="">If you like, you can schedule monthly tips to support this site on a continuous basis.</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
@@ -362,8 +365,9 @@
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT3" desc="">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_TEXT4" desc="">here</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT1" desc="">Restore your Wallet</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Use your recovery key to restore your wallet. Restoring with a recovery key will replace your current wallet. Make sure you empty or back up your current wallet before restoring.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Enter your recovery key or</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT2" desc="">Use your recovery key to restore your wallet.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT3" desc="">Restoring with a recovery key will replace your current wallet. So make sure you empty or back up your current wallet before restoring.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT4" desc="">Enter your recovery key or</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_REWARDS_WHY" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_SAVE_AS_FILE" desc="">Save as File</message>
