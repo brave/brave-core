@@ -185,7 +185,16 @@ void BatClient::registerPersonaCallback(bool result,
 }
 
 void BatClient::getWalletProperties() {
-  std::string path = (std::string)WALLET_PROPERTIES + ledger_->GetPaymentId() + WALLET_PROPERTIES_END;
+  std::string payment_id = ledger_->GetPaymentId();
+  std::string passphrase = ledger_->GetWalletPassphrase();
+
+  if (payment_id.empty() || passphrase.empty()) {
+    braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
+    ledger_->OnWalletProperties(ledger::Result::CORRUPTED_WALLET, properties);
+    return;
+  }
+
+  std::string path = (std::string)WALLET_PROPERTIES + payment_id + WALLET_PROPERTIES_END;
    auto request_id = ledger_->LoadURL(
        braveledger_bat_helper::buildURL(path, PREFIX_V2, braveledger_bat_helper::SERVER_TYPES::BALANCE),
        std::vector<std::string>(),

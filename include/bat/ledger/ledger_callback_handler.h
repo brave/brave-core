@@ -32,6 +32,7 @@ LEDGER_EXPORT enum Result {
   AC_TABLE_EMPTY = 14,
   NOT_ENOUGH_FUNDS = 15,
   TIP_ERROR = 16,
+  CORRUPTED_WALLET = 17,
   // some more useful result codes should go here
 };
 
