@@ -18,7 +18,7 @@ namespace ads {
 
 class AdsImpl;
 
-class Client: public CallbackHandler {
+class Client {
  public:
   Client(AdsImpl* ads, AdsClient* ads_client);
   ~Client();

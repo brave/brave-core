@@ -23,7 +23,6 @@ include_directories(
 
 set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/bat/ads/ad_info.cc"
-  "${PROJECT_SOURCE_DIR}/src/bat/ads/callback_handler.cc"
   "${PROJECT_SOURCE_DIR}/src/bat/ads/client_info.cc"
   "${PROJECT_SOURCE_DIR}/src/bat/ads/notification_info.cc"
   "${PROJECT_SOURCE_DIR}/src/bat/ads/url_components.cc"
@@ -42,7 +41,6 @@ set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/search_providers.cc"
   "${PROJECT_SOURCE_DIR}/src/string_helper.cc"
   "${PROJECT_SOURCE_DIR}/src/time_helper.cc"
-  "${PROJECT_SOURCE_DIR}/src/url_session_callback_handler.cc")
 
 set(USERMODEL_SOURCES
   "${PROJECT_SOURCE_DIR}/deps/bat/usermodel/src/bag_of_words_extractor.cc"
