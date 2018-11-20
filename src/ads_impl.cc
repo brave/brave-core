@@ -977,7 +977,7 @@ void AdsImpl::GenerateAdReportingLoadEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
-  writer.Uint(info.tab_id);
+  writer.Int(info.tab_id);
 
   writer.String("tabType");
   if (client_->GetSearchState()) {
@@ -1092,7 +1092,7 @@ void AdsImpl::GenerateAdReportingBlurEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
-  writer.Uint(info.tab_id);
+  writer.Int(info.tab_id);
 
   writer.EndObject();
 
@@ -1118,7 +1118,7 @@ void AdsImpl::GenerateAdReportingDestroyEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
-  writer.Uint(info.tab_id);
+  writer.Int(info.tab_id);
 
   writer.EndObject();
 
@@ -1144,7 +1144,7 @@ void AdsImpl::GenerateAdReportingFocusEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("tabId");
-  writer.Uint(info.tab_id);
+  writer.Int(info.tab_id);
 
   writer.EndObject();
 

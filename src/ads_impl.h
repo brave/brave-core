@@ -138,7 +138,7 @@ class AdsImpl : public Ads {
   void TestShoppingData(const std::string& url);
   void TestSearchState(const std::string& url);
 
-  std::map<uint32_t, bool> media_playing_;
+  std::map<int32_t, bool> media_playing_;
 
   void ProcessLocales(const std::vector<std::string>& locales);
   void ServeAdFromCategory(
