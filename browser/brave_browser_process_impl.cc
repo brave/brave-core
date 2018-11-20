@@ -48,14 +48,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(ChromeFeatureListCreator* chrom
       base::TimeDelta::FromSeconds(3));
 
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](brave::BraveStatsUpdater* stats_updater) {
-            stats_updater->Start();
-          },
-          base::Unretained(brave_stats_updater_.get())),
-      base::TimeDelta::FromMinutes(2));
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](brave::BraveStatsUpdater* stats_updater) {
+                       stats_updater->Start();
+                     },
+                     base::Unretained(brave_stats_updater_.get())));
 }
 
 component_updater::ComponentUpdateService*
