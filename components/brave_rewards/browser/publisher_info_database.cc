@@ -292,6 +292,27 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
   return nullptr;
 }
 
+bool PublisherInfoDatabase::RestorePublishers() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement restore_q(db_.GetUniqueStatement(
+      "UPDATE publisher_info SET excluded=? WHERE excluded=?"));
+
+  restore_q.BindInt(0, static_cast<int>(
+      ledger::PUBLISHER_EXCLUDE::DEFAULT));
+  restore_q.BindInt(1, static_cast<int>(
+      ledger::PUBLISHER_EXCLUDE::EXCLUDED));
+
+  return restore_q.Run();
+}
+
 /**
  *
  * ACTIVITY INFO

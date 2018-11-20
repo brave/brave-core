@@ -44,8 +44,10 @@ class PublisherInfoDatabase {
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
 
- std::unique_ptr<ledger::PublisherInfo> GetPublisherInfo(
+  std::unique_ptr<ledger::PublisherInfo> GetPublisherInfo(
      const std::string& media_key);
+
+  bool RestorePublishers();
 
   bool InsertOrUpdateActivityInfo(const ledger::PublisherInfo& info);
 
