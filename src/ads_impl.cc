@@ -704,6 +704,9 @@ void AdsImpl::SustainAdInteraction() {
 
   GenerateAdReportingSustainEvent(last_shown_notification_info_);
 
+  StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
+}
+
 bool AdsImpl::IsStillViewingAd() const {
   if (last_shown_notification_info_.url != last_shown_tab_url_) {
     return false;
