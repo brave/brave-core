@@ -19,9 +19,9 @@ class BraveExternalProcessImporterBridge :
       scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr>
           observer);
 
-  void SetCookies(const std::vector<net::CanonicalCookie>& cookies);
-  void UpdateStats(const BraveStats& stats);
-  void UpdateLedger(const BraveLedger& ledger);
+  void SetCookies(const std::vector<net::CanonicalCookie>& cookies) override;
+  void UpdateStats(const BraveStats& stats) override;
+  void UpdateLedger(const BraveLedger& ledger) override;
 
  private:
   ~BraveExternalProcessImporterBridge() override;

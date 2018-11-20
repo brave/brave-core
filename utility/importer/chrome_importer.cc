@@ -453,7 +453,7 @@ void ChromeImporter::ImportCookies() {
     }
   }
 
-  if (!cookies.empty() && !cancelled())
-    static_cast<BraveExternalProcessImporterBridge*>(bridge_.get())->
-        SetCookies(cookies);
+  if (!cookies.empty() && !cancelled()) {
+    bridge_->SetCookies(cookies);
+  }
 }

@@ -1,8 +1,5 @@
 #include "../../../../../chrome/common/importer/profile_import_process_param_traits_macros.h"
 
-// TODO necessary?
-#include <map>
-
 #include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_stats.h"
 
