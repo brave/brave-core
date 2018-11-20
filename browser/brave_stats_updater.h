@@ -7,9 +7,12 @@
 
 #include <memory>
 
+#include "base/callback.h"
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
+#include "url/gurl.h"
 
+class BraveStatsUpdaterBrowserTest;
 class PrefRegistrySimple;
 class PrefService;
 
@@ -38,16 +41,25 @@ class BraveStatsUpdater {
   void Start();
   void Stop();
 
+  using StatsUpdatedCallback = base::RepeatingCallback<void()>;
+
+  void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
+
  private:
   // Invoked from SimpleURLLoader after download is complete.
   void OnSimpleLoaderComplete(
       std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
       scoped_refptr<net::HttpResponseHeaders> headers);
 
-  // Invoked from RepeatingTimer when server ping timer fires.
+  // Invoked when server ping timer fires.
   void OnServerPingTimerFired();
 
+  friend class ::BraveStatsUpdaterBrowserTest;
+  static void SetBaseUpdateURLForTest(const GURL& base_update_url);
+  static GURL g_base_update_url_;
+
   PrefService* pref_service_;
+  StatsUpdatedCallback stats_updated_callback_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;

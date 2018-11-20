@@ -20,8 +20,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-const char kBaseUpdateURL[] = "https://laptop-updates.brave.com/1/usage/brave-core";
-
 // Ping the update server shortly after startup (units are seconds).
 const int kUpdateServerStartupPingDelay = 3;
 
@@ -52,8 +50,9 @@ std::string GetPlatformIdentifier() {
 #endif
 }
 
-GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
-  GURL update_url(kBaseUpdateURL);
+GURL GetUpdateURL(const GURL& base_update_url,
+                  const brave::BraveStatsUpdaterParams& stats_updater_params) {
+  GURL update_url(base_update_url);
   update_url = net::AppendQueryParameter(update_url, "platform",
                                          GetPlatformIdentifier());
   update_url =
@@ -78,6 +77,9 @@ GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
 }
 
 namespace brave {
+
+GURL BraveStatsUpdater::g_base_update_url_(
+    "https://laptop-updates.brave.com/1/usage/brave-core");
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
     : pref_service_(pref_service) {
@@ -110,6 +112,11 @@ void BraveStatsUpdater::Stop() {
   server_ping_periodic_timer_.reset();
 }
 
+void BraveStatsUpdater::SetStatsUpdatedCallback(
+    StatsUpdatedCallback stats_updated_callback) {
+  stats_updated_callback_ = std::move(stats_updated_callback);
+}
+
 void BraveStatsUpdater::OnSimpleLoaderComplete(
     std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
     scoped_refptr<net::HttpResponseHeaders> headers) {
@@ -129,6 +136,10 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
   // The request to the update server succeeded, so it's safe to save
   // the usage preferences now.
   stats_updater_params->SavePrefs();
+
+  // Inform the client that the stats ping completed, if requested.
+  if (!stats_updated_callback_.is_null())
+    stats_updated_callback_.Run();
 
   // Log the full URL of the stats ping.
   VLOG(1) << "Brave stats ping, url: "
@@ -158,7 +169,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
         })");
   auto resource_request = std::make_unique<network::ResourceRequest>();
   auto stats_updater_params = std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
-  resource_request->url = GetUpdateURL(*stats_updater_params);
+  resource_request->url = GetUpdateURL(g_base_update_url_, *stats_updater_params);
   resource_request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -172,6 +183,11 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnSimpleLoaderComplete,
                      base::Unretained(this), std::move(stats_updater_params)));
+}
+
+// static
+void BraveStatsUpdater::SetBaseUpdateURLForTest(const GURL& base_update_url) {
+  g_base_update_url_ = base_update_url;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
