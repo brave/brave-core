@@ -12,8 +12,11 @@
 #include "content/public/common/bindings_policy.h"
 // TODO: The following is being included purely to get the generated
 //        GritResourceMap definition. Replace with a better solution.
+#if !defined(OS_ANDROID)
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
-
+#else
+#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
+#endif
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
                                                   const GritResourceMap* resource_map,
