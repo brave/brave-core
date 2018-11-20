@@ -201,6 +201,15 @@ LoadMediaPublisherInfoOnFileTaskRunner(
 bool SavePublisherInfoOnFileTaskRunner(
     const ledger::PublisherInfo publisher_info,
     PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertOrUpdatePublisherInfo(publisher_info))
+    return true;
+
+  return false;
+}
+
+bool SaveActivityInfoOnFileTaskRunner(
+    const ledger::PublisherInfo publisher_info,
+    PublisherInfoDatabase* backend) {
   if (backend && backend->InsertOrUpdateActivityInfo(publisher_info))
     return true;
 
@@ -925,8 +934,7 @@ void RewardsServiceImpl::LoadNicewareList(
     LOG(ERROR) << "Failed to read in niceware list";
   }
   callback(data.empty() ? ledger::Result::LEDGER_ERROR
-                                             : ledger::Result::LEDGER_OK,
-                                data);
+                        : ledger::Result::LEDGER_OK, data);
 }
 
 void RewardsServiceImpl::SavePublisherInfo(
@@ -952,6 +960,31 @@ void RewardsServiceImpl::OnPublisherInfoSaved(
     callback(success ? ledger::Result::LEDGER_OK
         : ledger::Result::LEDGER_ERROR, std::move(info));
   }
+
+  TriggerOnContentSiteUpdated();
+}
+
+void RewardsServiceImpl::SaveActivityInfo(
+    std::unique_ptr<ledger::PublisherInfo> publisher_info,
+    ledger::PublisherInfoCallback callback) {
+  ledger::PublisherInfo info_copy = *publisher_info;
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&SaveActivityInfoOnFileTaskRunner,
+                    info_copy,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnActivityInfoSaved,
+                     AsWeakPtr(),
+                     callback,
+                     base::Passed(std::move(publisher_info))));
+
+}
+
+void RewardsServiceImpl::OnActivityInfoSaved(
+    ledger::PublisherInfoCallback callback,
+    std::unique_ptr<ledger::PublisherInfo> info,
+    bool success) {
+  callback(success ? ledger::Result::LEDGER_OK
+                   : ledger::Result::LEDGER_ERROR, std::move(info));
 
   TriggerOnContentSiteUpdated();
 }

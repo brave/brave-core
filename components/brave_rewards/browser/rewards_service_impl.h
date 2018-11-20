@@ -198,6 +198,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             std::unique_ptr<ledger::PublisherInfo> info,
                             bool success);
+  void OnActivityInfoSaved(ledger::PublisherInfoCallback callback,
+                            std::unique_ptr<ledger::PublisherInfo> info,
+                            bool success);
   void OnActivityInfoLoaded(ledger::PublisherInfoCallback callback,
                              const ledger::PublisherInfoList list);
   void OnMediaPublisherInfoSaved(bool success);
@@ -261,6 +264,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void SavePublisherInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
                          ledger::PublisherInfoCallback callback) override;
+  void SaveActivityInfo(std::unique_ptr<ledger::PublisherInfo> publisher_info,
+                        ledger::PublisherInfoCallback callback) override;
   void LoadActivityInfo(ledger::PublisherInfoFilter filter,
                          ledger::PublisherInfoCallback callback) override;
   void LoadPublisherInfoList(
