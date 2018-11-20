@@ -75,6 +75,9 @@ class ADS_EXPORT AdsClient {
   // Gets available locales
   virtual const std::vector<std::string> GetLocales() const = 0;
 
+  virtual void GetUserModelForLocale(const std::string& locale,
+                                     OnLoadCallback callback) const = 0;
+
   // Generate a v4 UUID
   virtual const std::string GenerateUUID() const = 0;
 
@@ -125,7 +128,7 @@ class ADS_EXPORT AdsClient {
 
   // Loads a value
   virtual void Load(const std::string& name, OnLoadCallback callback) = 0;
-  virtual const std::string Load(const std::string& name) = 0;
+  virtual const std::string LoadSchema(const std::string& name) = 0;
 
   // Reset a previously saved value
   virtual void Reset(
