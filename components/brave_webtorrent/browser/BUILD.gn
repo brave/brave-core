@@ -1,0 +1,16 @@
+source_set("browser") {
+  sources = [
+    "content_browser_client_helper.h",
+    "webtorrent_util.cc",
+    "webtorrent_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//extensions/common",
+    "//net",
+  ]
+}

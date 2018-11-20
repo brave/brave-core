@@ -7,6 +7,7 @@
 #include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -50,15 +51,6 @@ static bool HandleTorrentURLReverseRewrite(GURL* url,
   }
 
   return false;
-}
-
-static bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
-  bool isTorProfile =
-    Profile::FromBrowserContext(browser_context)->IsTorProfile();
-  extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser_context);
-  return !isTorProfile &&
-    registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
 static bool HandleTorrentURLRewrite(GURL* url,

@@ -11,12 +11,14 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "net/dns/mock_host_resolver.h"
@@ -138,6 +140,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
   content::NavigationEntry* entry = contents->GetController().GetLastCommittedEntry();
   EXPECT_STREQ(entry->GetURL().spec().c_str(),
       extension_url().spec().c_str()) << "Real URL should be extension URL";
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, TypedMagnetURL) {
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  content::TestNavigationObserver observer(web_contents);
+  LocationBar* location_bar = browser()->window()->GetLocationBar();
+  ui_test_utils::SendToOmniboxAndSubmit(location_bar, magnet_url().spec());
+  observer.Wait();
+  EXPECT_EQ(magnet_url(), web_contents->GetLastCommittedURL().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, ReverseRewriteTorrentURL) {
