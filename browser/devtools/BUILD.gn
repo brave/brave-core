@@ -1,0 +1,29 @@
+source_set("devtools") {
+  deps = [
+    "//base",
+    "//content/public/browser",
+    "//net",
+    "//services/viz/privileged/interfaces/compositing",
+    "//third_party/blink/public:buildflags",
+    "//ui/events:dom_keycode_converter",
+  ]
+
+  if (!is_android) {
+    sources = [
+      "brave_devtools_ui_bindings.cc",
+      "brave_devtools_ui_bindings.h",
+    ]
+
+    deps += [
+      "//chrome:extra_resources",
+      "//chrome:resources",
+      "//chrome:strings",
+      "//chrome/app/theme:theme_resources",
+      "//chrome/common",
+      "//components/viz/host",
+      "//skia",
+      "//third_party/icu",
+      "//third_party/leveldatabase",
+    ]
+  }
+}
