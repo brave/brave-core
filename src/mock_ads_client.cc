@@ -20,6 +20,9 @@ using namespace std::placeholders;
 
 namespace ads {
 
+#define LOG(severity) \
+  Log(__FILE__, __LINE__, severity)
+
 MockAdsClient::MockAdsClient() :
     ads_(Ads::CreateInstance(this)) {
   LoadBundleState();
@@ -176,8 +179,7 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
   if (callback_handler) {
     if (!callback_handler->OnURLSessionReceivedResponse(0, url,
         response_status_code, response, {})) {
-      Log(__FILE__, __LINE__, LogLevel::ERROR) <<
-          "URL session callback handler not found";
+      LOG(LogLevel::ERROR) << "URL session callback handler not found";
     }
   }
 
@@ -190,7 +192,7 @@ void MockAdsClient::Save(
     OnSaveCallback callback) {
   std::string path = "build/" + name;
 
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Saving " << path;
+  LOG(LogLevel::INFO) << "Saving " << path;
 
   auto success = WriteJsonToDisk(path, value);
   if (!success) {
@@ -204,7 +206,7 @@ void MockAdsClient::Save(
 void MockAdsClient::SaveBundleState(
     std::unique_ptr<BundleState> state,
     OnSaveCallback callback) {
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Saving bundle state";
+  LOG(LogLevel::INFO) << "Saving bundle state";
 
   bundle_state_.reset(state.release());
 
@@ -216,7 +218,7 @@ void MockAdsClient::Load(
     OnLoadCallback callback) {
   std::string path = "mock_data/" + name;
 
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Loading " << path;
+  LOG(LogLevel::INFO) << "Loading " << path;
 
   std::ifstream ifs{path};
   if (ifs.fail()) {
@@ -235,11 +237,11 @@ const std::string MockAdsClient::Load(
     const std::string& name) {
   std::string path = "mock_data/" + name;
 
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Loading " << path;
+  LOG(LogLevel::INFO) << "Loading " << path;
 
   std::ifstream ifs{path};
   if (ifs.fail()) {
-    Log(__FILE__, __LINE__, LogLevel::ERROR) << "Failed to load " << path;
+    LOG(LogLevel::ERROR) << "Failed to load " << path;
 
     return "";
   }
@@ -248,7 +250,7 @@ const std::string MockAdsClient::Load(
   stream << ifs.rdbuf();
   auto value = stream.str();
 
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Successfully loaded " << path;
+  LOG(LogLevel::INFO) << "Successfully loaded " << path;
 
   return value;
 }
@@ -258,7 +260,7 @@ void MockAdsClient::Reset(
     OnResetCallback callback) {
   std::string path = "build/" + name;
 
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Resetting " << path;
+  LOG(LogLevel::INFO) << "Resetting " << path;
 
   std::ifstream ifs(path);
   if (ifs.fail()) {
@@ -402,8 +404,7 @@ void MockAdsClient::OnBundleStateLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    Log(__FILE__, __LINE__, LogLevel::ERROR) <<
-      "Failed to load bundle: " << json;
+    LOG(LogLevel::ERROR) << "Failed to load bundle: " << json;
 
     return;
   }
@@ -412,8 +413,7 @@ void MockAdsClient::OnBundleStateLoaded(
 
   BundleState state;
   if (!state.LoadFromJson(json, jsonSchema)) {
-    Log(__FILE__, __LINE__, LogLevel::ERROR) <<
-      "Failed to parse bundle: " << json;
+    LOG(LogLevel::ERROR) << "Failed to parse bundle: " << json;
 
     return;
   }
@@ -424,7 +424,7 @@ void MockAdsClient::OnBundleStateLoaded(
 
   bundle_state_.reset(new BundleState(state));
 
-  Log(__FILE__, __LINE__, LogLevel::INFO) << "Successfully loaded bundle";
+  LOG(LogLevel::INFO) << "Successfully loaded bundle";
 }
 
 void MockAdsClient::LoadSampleBundleState() {
@@ -437,8 +437,7 @@ void MockAdsClient::OnSampleBundleStateLoaded(
     const Result result,
     const std::string& json) {
   if (result == Result::FAILED) {
-    Log(__FILE__, __LINE__, LogLevel::ERROR) <<
-      "Failed to load sample bundle";
+    LOG(LogLevel::ERROR) << "Failed to load sample bundle";
 
     return;
   }
@@ -447,16 +446,14 @@ void MockAdsClient::OnSampleBundleStateLoaded(
 
   BundleState state;
   if (!state.LoadFromJson(json, jsonSchema)) {
-    Log(__FILE__, __LINE__, LogLevel::ERROR) <<
-        "Failed to parse sample bundle: " << json;
+    LOG(LogLevel::ERROR) << "Failed to parse sample bundle: " << json;
 
     return;
   }
 
   sample_bundle_state_.reset(new BundleState(state));
 
-  Log(__FILE__, __LINE__, LogLevel::INFO) <<
-    "Successfully loaded sample bundle";
+  LOG(LogLevel::INFO) << "Successfully loaded sample bundle";
 }
 
 bool MockAdsClient::WriteJsonToDisk(
