@@ -13,9 +13,7 @@ void SwitchToTorProfile(ProfileManager::CreateCallback callback) {
   //                                  path);
   g_browser_process->profile_manager()->CreateProfileAsync(
       path, base::Bind(&profiles::OpenBrowserWindowForProfile,
-                       callback,
-                       false,
-                       false),
+                       callback, false, false, false),
       base::string16(), std::string());
 }
 #endif
