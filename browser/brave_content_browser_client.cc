@@ -54,29 +54,18 @@ bool HandleURLRewrite(GURL* url,
     return true;
   }
 
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      url->host() == chrome::kChromeUINewTabHost) {
-    // Disable new tab overrides, but keep it the same
-    return true;
-  }
-
   return false;
 }
 
 bool HandleURLReverseRewrite(GURL* url,
                              content::BrowserContext* browser_context) {
-  // Handle mapping new tab URL to ourselves
-  if (url->SchemeIs(content::kChromeUIScheme) &&
-      url->host() == chrome::kChromeUINewTabHost) {
-    return true;
-  }
   if (url->spec() == kBraveUIWelcomeURL) {
     return true;
   }
   return false;
 }
 
-}
+}  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient(std::unique_ptr<ui::DataPack> data_pack,
     ChromeFeatureListCreator* chrome_feature_list_creator) :
@@ -95,8 +84,6 @@ content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
 
 void BraveContentBrowserClient::BrowserURLHandlerCreated(
     content::BrowserURLHandler* handler) {
-  // Insert handler for chrome://newtab so that we handle it
-  // before anything else can.
   handler->AddHandlerPair(&webtorrent::HandleMagnetURLRewrite,
                           content::BrowserURLHandler::null_handler());
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
