@@ -13,9 +13,6 @@
       <!-- Common resources -->
       <!-- TODO: Define only where needed, via webpack generated output,
                   or use common chrome://resources DataSource -->
-      <include name="IDR_BRAVE_COMMON_FONT_AWESOME_1" file="${root_gen_dir}/brave/af7ae505a9eed503f8b8e6982036873e.woff2" type="BINDATA" use_base_dir="false" />
-      <include name="IDR_BRAVE_COMMON_FONT_AWESOME_2" file="${root_gen_dir}/brave/fee66e712a8a08eef5805a46892932ad.woff" type="BINDATA" use_base_dir="false" />
-      <include name="IDR_BRAVE_COMMON_FONT_AWESOME_3" file="${root_gen_dir}/brave/b06871f281fee6b241d60582ae9369b9.ttf" type="BINDATA" use_base_dir="false" />
       <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
 
       <!-- Browser resources -->
