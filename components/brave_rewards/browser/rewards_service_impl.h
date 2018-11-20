@@ -268,7 +268,7 @@ class RewardsServiceImpl : public RewardsService,
                         ledger::PublisherInfoCallback callback) override;
   void LoadActivityInfo(ledger::ActivityInfoFilter filter,
                          ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherInfoList(
+  void LoadActivityInfoList(
       uint32_t start,
       uint32_t limit,
       ledger::ActivityInfoFilter filter,

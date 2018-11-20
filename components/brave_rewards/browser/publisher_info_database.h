@@ -49,7 +49,7 @@ class PublisherInfoDatabase {
 
   bool InsertOrUpdateActivityInfo(const ledger::PublisherInfo& info);
 
-  bool GetPublisherActivityList(int start,
+  bool GetActivityList(int start,
                                 int limit,
                                 const ledger::ActivityInfoFilter& filter,
                                 ledger::PublisherInfoList* list);

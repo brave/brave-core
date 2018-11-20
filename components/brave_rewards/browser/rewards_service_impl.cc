@@ -216,7 +216,7 @@ bool SaveActivityInfoOnFileTaskRunner(
   return false;
 }
 
-ledger::PublisherInfoList GetPublisherActivityListOnFileTaskRunner(
+ledger::PublisherInfoList GetActivityListOnFileTaskRunner(
     uint32_t start,
     uint32_t limit,
     ledger::ActivityInfoFilter filter,
@@ -225,7 +225,7 @@ ledger::PublisherInfoList GetPublisherActivityListOnFileTaskRunner(
   if (!backend)
     return list;
 
-  ignore_result(backend->GetPublisherActivityList(start, limit, filter, &list));
+  ignore_result(backend->GetActivityList(start, limit, filter, &list));
   return list;
 }
 
@@ -444,7 +444,7 @@ void RewardsServiceImpl::GetContentSiteList(
   filter.percent = 1;
   filter.non_verified = allow_non_verified;
 
-  bat_ledger_->GetPublisherInfoList(start, limit,
+  bat_ledger_->GetActivityInfoList(start, limit,
       filter.ToJson(),
       base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList, AsWeakPtr(),
                 start,
@@ -993,7 +993,7 @@ void RewardsServiceImpl::LoadActivityInfo(
     ledger::ActivityInfoFilter filter,
     ledger::PublisherInfoCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetPublisherActivityListOnFileTaskRunner,
+      base::Bind(&GetActivityListOnFileTaskRunner,
           // set limit to 2 to make sure there is
           // only 1 valid result for the filter
           0, 2, filter, publisher_info_backend_.get()),
@@ -1023,13 +1023,18 @@ void RewardsServiceImpl::OnActivityInfoLoaded(
       std::make_unique<ledger::PublisherInfo>(list[0]));
 }
 
+void RewardsServiceImpl::LoadActivityInfoList(
+    uint32_t start,
+    uint32_t limit,
+    ledger::ActivityInfoFilter filter,
+    ledger::PublisherInfoListCallback callback) {
 void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::ActivityInfoFilter filter,
     ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetPublisherActivityListOnFileTaskRunner,
+      base::Bind(&GetActivityListOnFileTaskRunner,
                     start, limit, filter,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnPublisherInfoListLoaded,

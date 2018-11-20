@@ -386,7 +386,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   return activity_info_insert.Run();
 }
 
-bool PublisherInfoDatabase::GetPublisherActivityList(
+bool PublisherInfoDatabase::GetActivityList(
     int start,
     int limit,
     const ledger::ActivityInfoFilter& filter,
