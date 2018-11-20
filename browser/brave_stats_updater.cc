@@ -20,10 +20,11 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
-const char kBaseUpdateURL[] = "https://laptop-updates.brave.com/1/usage/brave-core";
+// Ping the update server shortly after startup (units are seconds).
+const int kUpdateServerStartupPingDelay = 3;
 
-// Ping the update server once an hour.
-const int kUpdateServerPingFrequency = 60 * 60;
+// Ping the update server once an hour (units are seconds).
+const int kUpdateServerPeriodicPingFrequency = 60 * 60;
 
 namespace {
 
@@ -49,8 +50,9 @@ std::string GetPlatformIdentifier() {
 #endif
 }
 
-GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
-  GURL update_url(kBaseUpdateURL);
+GURL GetUpdateURL(const GURL& base_update_url,
+                  const brave::BraveStatsUpdaterParams& stats_updater_params) {
+  GURL update_url(base_update_url);
   update_url = net::AppendQueryParameter(update_url, "platform",
                                          GetPlatformIdentifier());
   update_url =
@@ -76,6 +78,9 @@ GURL GetUpdateURL(const brave::BraveStatsUpdaterParams& stats_updater_params) {
 
 namespace brave {
 
+GURL BraveStatsUpdater::g_base_update_url_(
+    "https://laptop-updates.brave.com/1/usage/brave-core");
+
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
     : pref_service_(pref_service) {
 }
@@ -84,16 +89,32 @@ BraveStatsUpdater::~BraveStatsUpdater() {
 }
 
 void BraveStatsUpdater::Start() {
-  DCHECK(!server_ping_timer_);
-  server_ping_timer_ = std::make_unique<base::RepeatingTimer>();
-  server_ping_timer_->Start(
-      FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerPingFrequency), this,
+  // Startup check.
+  DCHECK(!server_ping_startup_timer_);
+  server_ping_startup_timer_ = std::make_unique<base::OneShotTimer>();
+  server_ping_startup_timer_->Start(
+      FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelay),
+      this, &BraveStatsUpdater::OnServerPingTimerFired);
+  DCHECK(server_ping_startup_timer_->IsRunning());
+
+  // Periodic check.
+  DCHECK(!server_ping_periodic_timer_);
+  server_ping_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
+  server_ping_periodic_timer_->Start(
+      FROM_HERE,
+      base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequency), this,
       &BraveStatsUpdater::OnServerPingTimerFired);
-  DCHECK(server_ping_timer_->IsRunning());
+  DCHECK(server_ping_periodic_timer_->IsRunning());
 }
 
 void BraveStatsUpdater::Stop() {
-  return server_ping_timer_.reset();
+  server_ping_startup_timer_.reset();
+  server_ping_periodic_timer_.reset();
+}
+
+void BraveStatsUpdater::SetStatsUpdatedCallback(
+    StatsUpdatedCallback stats_updated_callback) {
+  stats_updated_callback_ = std::move(stats_updated_callback);
 }
 
 void BraveStatsUpdater::OnSimpleLoaderComplete(
@@ -115,6 +136,14 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
   // The request to the update server succeeded, so it's safe to save
   // the usage preferences now.
   stats_updater_params->SavePrefs();
+
+  // Inform the client that the stats ping completed, if requested.
+  if (!stats_updated_callback_.is_null())
+    stats_updated_callback_.Run();
+
+  // Log the full URL of the stats ping.
+  VLOG(1) << "Brave stats ping, url: "
+          << simple_url_loader_->GetFinalURL().spec();
 }
 
 void BraveStatsUpdater::OnServerPingTimerFired() {
@@ -140,7 +169,7 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
         })");
   auto resource_request = std::make_unique<network::ResourceRequest>();
   auto stats_updater_params = std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
-  resource_request->url = GetUpdateURL(*stats_updater_params);
+  resource_request->url = GetUpdateURL(g_base_update_url_, *stats_updater_params);
   resource_request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -154,6 +183,11 @@ void BraveStatsUpdater::OnServerPingTimerFired() {
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnSimpleLoaderComplete,
                      base::Unretained(this), std::move(stats_updater_params)));
+}
+
+// static
+void BraveStatsUpdater::SetBaseUpdateURLForTest(const GURL& base_update_url) {
+  g_base_update_url_ = base_update_url;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
