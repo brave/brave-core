@@ -37,10 +37,9 @@ set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/client_state.cc"
   "${PROJECT_SOURCE_DIR}/src/json_helper.cc"
   "${PROJECT_SOURCE_DIR}/src/math_helper.cc"
-  "${PROJECT_SOURCE_DIR}/src/mock_url_session.cc"
   "${PROJECT_SOURCE_DIR}/src/search_providers.cc"
   "${PROJECT_SOURCE_DIR}/src/string_helper.cc"
-  "${PROJECT_SOURCE_DIR}/src/time_helper.cc"
+  "${PROJECT_SOURCE_DIR}/src/time_helper.cc")
 
 set(USERMODEL_SOURCES
   "${PROJECT_SOURCE_DIR}/deps/bat/usermodel/src/bag_of_words_extractor.cc"

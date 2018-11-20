@@ -9,7 +9,6 @@
 #include <uriparser/Uri.h>
 
 #include "mock_ads_client.h"
-#include "mock_url_session.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/ad_info.h"
 #include "math_helper.h"
@@ -145,23 +144,18 @@ void MockAdsClient::KillTimer(uint32_t timer_id) {
   (void)timer_id;
 }
 
-std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
+void MockAdsClient::URLRequest(
     const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& content_type,
-    const URLSession::Method& method,
-    URLSessionCallbackHandlerCallback callback) {
+    URLRequestMethod method,
+    URLRequestCallback callback) {
+  (void)url;
   (void)headers;
   (void)content;
   (void)content_type;
   (void)method;
-
-  auto mock_url_session = std::make_unique<MockURLSession>();
-  auto callback_handler = std::make_unique<URLSessionCallbackHandler>();
-  if (callback_handler) {
-    callback_handler->AddCallbackHandler(std::move(mock_url_session), callback);
-  }
 
   auto response_status_code = 200;
   std::string response = "";
@@ -176,14 +170,7 @@ std::unique_ptr<URLSession> MockAdsClient::URLSessionTask(
     response = stream.str();
   }
 
-  if (callback_handler) {
-    if (!callback_handler->OnURLSessionReceivedResponse(0, url,
-        response_status_code, response, {})) {
-      LOG(LogLevel::ERROR) << "URL session callback handler not found";
-    }
-  }
-
-  return mock_url_session;
+  callback(response_status_code, response, {});
 }
 
 void MockAdsClient::Save(

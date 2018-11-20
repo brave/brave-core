@@ -12,10 +12,8 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/bundle_state.h"
-#include "catalog_state.h"
-#include "bat/ads/url_session_callback_handler.h"
-#include "bat/ads/url_session.h"
 #include "bat/ads/url_components.h"
+#include "catalog_state.h"
 
 namespace ads {
 
@@ -54,13 +52,13 @@ class MockAdsClient : public AdsClient {
   uint32_t SetTimer(const uint64_t& time_offset) override;
   void KillTimer(const uint32_t timer_id) override;
 
-  std::unique_ptr<URLSession> URLSessionTask(
+  void URLRequest(
       const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& content_type,
-      const URLSession::Method& method,
-      URLSessionCallbackHandlerCallback callback) override;
+      URLRequestMethod method,
+      URLRequestCallback callback) override;
 
   void Save(
       const std::string& name,

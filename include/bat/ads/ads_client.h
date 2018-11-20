@@ -47,10 +47,8 @@ using OnGetAdsForCategoryCallback = std::function<void(Result,
 using OnGetAdForSampleCategoryCallback = std::function<void(Result,
   const std::string&, const AdInfo&)>;
 
-using URLRequestCallback = std::function<void (
-  const int, const std::string&,
+using URLRequestCallback = std::function<void(const int, const std::string&,
   const std::map<std::string, std::string>& headers)>;
-
 
 class ADS_EXPORT AdsClient {
  public:
@@ -105,13 +103,14 @@ class ADS_EXPORT AdsClient {
   // Destroys the specified timer
   virtual void KillTimer(uint32_t timer_id) = 0;
 
+  // Starts a URL session task
   virtual void URLRequest(
       const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& content_type,
-      ads::URLRequestMethod method,
-      ads::URLRequestCallback callback) = 0;
+      URLRequestMethod method,
+      URLRequestCallback callback) = 0;
 
   // Saves a value
   virtual void Save(

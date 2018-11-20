@@ -41,19 +41,10 @@ void AdsServe::BuildUrl() {
 }
 
 void AdsServe::DownloadCatalog() {
-  ads_client_->URLRequest(
-      url_,
-      {},
-      "",
-      "",
-      URLRequestMethod::GET,
-      std::bind(
-          &AdsServe::OnCatalogDownloaded,
-          this,
-          url_,
-          _1,
-          _2,
-          _3));
+  auto callback = std::bind(&AdsServe::OnCatalogDownloaded, this,
+    url_, _1, _2, _3);
+
+  ads_client_->URLRequest(url_, {}, "", "", URLRequestMethod::GET, callback);
 }
 
 void AdsServe::OnCatalogDownloaded(
