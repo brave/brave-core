@@ -4,6 +4,7 @@
 
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
 
+#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/resources/grit/brave_settings_resources.h"
 #include "brave/browser/resources/grit/brave_settings_resources_map.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
@@ -26,8 +27,11 @@ BraveMdSettingsUI::~BraveMdSettingsUI() {
 // static
 void BraveMdSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                 Profile* profile) {
-for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
+  for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
     html_source->AddResourcePath(kBraveSettingsResources[i].name,
                                  kBraveSettingsResources[i].value);
   }
+
+  html_source->AddBoolean("isPdfjsDisabled",
+                          extensions::BraveComponentLoader::IsPdfjsDisabled());
 }
