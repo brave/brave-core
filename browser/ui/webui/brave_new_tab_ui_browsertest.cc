@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -38,17 +39,8 @@ class ObserverLogger : public RenderProcessHostObserver {
 
 }  // namespace
 
-class BraveNewTabUIBrowserTest : public InProcessBrowserTest {
+class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
  public:
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(embedded_test_server()->Start());
-  }
   void GoBack(WebContents* web_contents) {
     WindowedNotificationObserver load_stop_observer(
         NOTIFICATION_LOAD_STOP,
@@ -74,4 +66,41 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
 
   GoBack(contents);
   WaitForLoadStop(contents);
+}
+
+// This test simply checks that by default the Brave new tab page is used.
+// It does this by loading the newtab page and then checking if
+// window.brave_new_tab exists.
+IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
+  auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  GURL new_tab_url(chrome::kChromeUINewTabURL);
+  ui_test_utils::NavigateToURL(browser(), new_tab_url);
+  WaitForLoadStop(contents);
+  bool is_brave_new_tab = false;
+  ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
+      contents,
+      "window.domAutomationController.send(!!window.brave_new_tab)",
+      &is_brave_new_tab));
+  ASSERT_TRUE(is_brave_new_tab);
+}
+
+// This test simply loads an extension that sets a newtab override.
+// It checks to make sure the newtab override is used as the newtab page.
+IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
+  InstallExtensionSilently(extension_service(),
+      test_data_dir.AppendASCII("new_tab_override.crx"));
+
+  auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  GURL new_tab_url(chrome::kChromeUINewTabURL);
+  ui_test_utils::NavigateToURL(browser(), new_tab_url);
+  WaitForLoadStop(contents);
+
+  std::string inner_text;
+  ASSERT_TRUE(content::ExecuteScriptAndExtractString(
+      contents,
+      "window.domAutomationController.send(document.body.innerText)",
+      &inner_text));
+  ASSERT_EQ("New tab override!", inner_text);
 }
