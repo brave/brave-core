@@ -257,6 +257,41 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   return publisher_info_statement.Run();
 }
 
+std::unique_ptr<ledger::PublisherInfo>
+PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return nullptr;
+  }
+
+  sql::Statement info_sql(db_.GetUniqueStatement(
+      "SELECT publisher_id, name, url, favIcon, provider, verified, excluded "
+      "FROM publisher_info WHERE publisher_id=?"));
+
+  info_sql.BindString(0, publisher_key);
+
+  if (info_sql.Step()) {
+    std::unique_ptr<ledger::PublisherInfo> info;
+    info.reset(new ledger::PublisherInfo());
+    info->id = info_sql.ColumnString(0);
+    info->name = info_sql.ColumnString(1);
+    info->url = info_sql.ColumnString(2);
+    info->favicon_url = info_sql.ColumnString(3);
+    info->provider = info_sql.ColumnString(4);
+    info->verified = info_sql.ColumnBool(5);
+    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
+        info_sql.ColumnInt(6));
+
+    return info;
+  }
+
+  return nullptr;
+}
+
 /**
  *
  * ACTIVITY INFO
@@ -552,10 +587,8 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   bool initialized = Init();
   DCHECK(initialized);
 
-  std::unique_ptr<ledger::PublisherInfo> info;
-
   if (!initialized) {
-    return info;
+    return nullptr;
   }
 
   sql::Statement info_sql(db_.GetUniqueStatement(
@@ -568,6 +601,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   info_sql.BindString(0, media_key);
 
   if (info_sql.Step()) {
+    std::unique_ptr<ledger::PublisherInfo> info;
     info.reset(new ledger::PublisherInfo());
     info->id = info_sql.ColumnString(0);
     info->name = info_sql.ColumnString(1);
@@ -579,7 +613,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
         info_sql.ColumnInt(6));
   }
 
-  return info;
+  return nullptr;
 }
 
 /**
