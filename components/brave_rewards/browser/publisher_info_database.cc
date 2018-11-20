@@ -158,7 +158,7 @@ bool PublisherInfoDatabase::InsertContributionInfo(
 }
 
 void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list,
-                                    ledger::PUBLISHER_MONTH month,
+                                    ledger::ACTIVITY_MONTH month,
                                     int year) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -179,13 +179,13 @@ void PublisherInfoDatabase::GetTips(ledger::PublisherInfoList* list,
 
   info_sql.BindInt(0, month);
   info_sql.BindInt(1, year);
-  info_sql.BindInt(2, ledger::PUBLISHER_CATEGORY::DIRECT_DONATION);
-  info_sql.BindInt(3, ledger::PUBLISHER_CATEGORY::TIPPING);
+  info_sql.BindInt(2, ledger::REWARDS_CATEGORY::DIRECT_DONATION);
+  info_sql.BindInt(3, ledger::REWARDS_CATEGORY::TIPPING);
 
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
 
-    ledger::PublisherInfo publisher(id, ledger::PUBLISHER_MONTH::ANY, -1);
+    ledger::PublisherInfo publisher(id, ledger::ACTIVITY_MONTH::ANY, -1);
 
     publisher.name = info_sql.ColumnString(1);
     publisher.url = info_sql.ColumnString(2);
@@ -389,7 +389,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
 bool PublisherInfoDatabase::GetPublisherActivityList(
     int start,
     int limit,
-    const ledger::PublisherInfoFilter& filter,
+    const ledger::ActivityInfoFilter& filter,
     ledger::PublisherInfoList* list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -415,7 +415,7 @@ bool PublisherInfoDatabase::GetPublisherActivityList(
     query += " AND ai.publisher_id = ?";
   }
 
-  if (filter.month != ledger::PUBLISHER_MONTH::ANY) {
+  if (filter.month != ledger::ACTIVITY_MONTH::ANY) {
     query += " AND ai.month = ?";
   }
 
@@ -431,14 +431,14 @@ bool PublisherInfoDatabase::GetPublisherActivityList(
     query += " AND ai.duration >= ?";
   }
 
-  if (filter.excluded != ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL &&
+  if (filter.excluded != ledger::EXCLUDE_FILTER::FILTER_ALL &&
       filter.excluded !=
-        ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+        ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded = ?";
   }
 
   if (filter.excluded ==
-    ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+    ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded != ?";
   }
 
@@ -470,7 +470,7 @@ bool PublisherInfoDatabase::GetPublisherActivityList(
     info_sql.BindString(column++, filter.id);
   }
 
-  if (filter.month != ledger::PUBLISHER_MONTH::ANY) {
+  if (filter.month != ledger::ACTIVITY_MONTH::ANY) {
     info_sql.BindInt(column++, filter.month);
   }
 
@@ -486,14 +486,14 @@ bool PublisherInfoDatabase::GetPublisherActivityList(
     info_sql.BindInt(column++, filter.min_duration);
   }
 
-  if (filter.excluded != ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL &&
+  if (filter.excluded != ledger::EXCLUDE_FILTER::FILTER_ALL &&
       filter.excluded !=
-      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
     info_sql.BindInt(column++, filter.excluded);
   }
 
   if (filter.excluded ==
-      ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
     info_sql.BindInt(column++, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
   }
 
@@ -503,8 +503,8 @@ bool PublisherInfoDatabase::GetPublisherActivityList(
 
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
-    ledger::PUBLISHER_MONTH month(
-        static_cast<ledger::PUBLISHER_MONTH>(info_sql.ColumnInt(7)));
+    ledger::ACTIVITY_MONTH month(
+        static_cast<ledger::ACTIVITY_MONTH>(info_sql.ColumnInt(7)));
     int year(info_sql.ColumnInt(8));
 
     ledger::PublisherInfo info(id, month, year);
@@ -697,7 +697,7 @@ void PublisherInfoDatabase::GetRecurringDonations(
   while (info_sql.Step()) {
     std::string id(info_sql.ColumnString(0));
 
-    ledger::PublisherInfo publisher(id, ledger::PUBLISHER_MONTH::ANY, -1);
+    ledger::PublisherInfo publisher(id, ledger::ACTIVITY_MONTH::ANY, -1);
 
     publisher.name = info_sql.ColumnString(1);
     publisher.url = info_sql.ColumnString(2);
