@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index a5d60a077ba2d4110d127edb95e45dc1187d5aca..936152265b4262b81e1779e0bedf59a40a245504 100644
+index e98e4245808d553c301c2f770af72a4ce37757b1..6ec62e523879adb4444295740f7c85552061b405 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -74,12 +74,14 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -25,7 +25,7 @@ index a5d60a077ba2d4110d127edb95e45dc1187d5aca..936152265b4262b81e1779e0bedf59a4
    void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
-@@ -186,6 +189,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -182,6 +185,7 @@ class ToolbarView : public views::AccessiblePaneView,
    }
  
   private:
@@ -33,7 +33,7 @@ index a5d60a077ba2d4110d127edb95e45dc1187d5aca..936152265b4262b81e1779e0bedf59a4
    // Types of display mode this toolbar can have.
    enum DisplayMode {
      DISPLAYMODE_NORMAL,       // Normal toolbar with buttons, etc.
-@@ -215,6 +219,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -211,6 +215,7 @@ class ToolbarView : public views::AccessiblePaneView,
    // ToolbarView::CalculatePreferredSize() and ToolbarView::GetMinimumSize().
    // These two functions call through to GetSizeInternal(), passing themselves
    // as the function pointer |View::*get_size|.
