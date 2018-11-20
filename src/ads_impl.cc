@@ -698,7 +698,18 @@ void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
 }
 
 void AdsImpl::SustainAdInteraction() {
+  if (!IsStillViewingAd()) {
+    return;
+  }
+
   GenerateAdReportingSustainEvent(last_shown_notification_info_);
+
+bool AdsImpl::IsStillViewingAd() const {
+  if (last_shown_notification_info_.url != last_shown_tab_url_) {
+    return false;
+  }
+
+  return true;
 }
 
 void AdsImpl::StopSustainingAdInteraction() {

@@ -81,6 +81,7 @@ class AdsImpl : public Ads {
 
   void CheckReadyAdServe(const bool forced = false) override;
   void ServeSampleAd() override;
+  bool IsStillViewingAd() const;
 
   void StartCollectingActivity(const uint64_t start_timer_in);
   void StopCollectingActivity();
