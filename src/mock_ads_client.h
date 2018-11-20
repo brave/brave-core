@@ -79,8 +79,8 @@ class MockAdsClient : public AdsClient {
       const std::string& category,
       OnGetAdsForCategoryCallback callback) override;
 
-  void GetAdsForSampleCategory(
-      OnGetAdsForCategoryCallback callbaack) override;
+  void GetAdForSampleCategory(
+      OnGetAdForSampleCategoryCallback callback) override;
 
   bool GetUrlComponents(
       const std::string& url,

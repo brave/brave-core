@@ -287,8 +287,8 @@ void MockAdsClient::GetAdsForCategory(
   callback(Result::SUCCESS, category, categories->second);
 }
 
-void MockAdsClient::GetAdsForSampleCategory(
-    OnGetAdsForCategoryCallback callback) {
+void MockAdsClient::GetAdForSampleCategory(
+    OnGetAdForSampleCategoryCallback callback) {
   auto categories = sample_bundle_state_->categories.begin();
 
   auto categories_count = sample_bundle_state_->categories.size();
@@ -297,10 +297,17 @@ void MockAdsClient::GetAdsForSampleCategory(
     return;
   }
 
-  auto rand = helper::Math::Random(categories_count - 1);
-  std::advance(categories, static_cast<long>(rand));
+  auto category_rand = helper::Math::Random(categories_count - 1);
+  std::advance(categories, static_cast<long>(category_rand));
 
-  callback(Result::SUCCESS, categories->first, categories->second);
+  auto category = categories->first;
+  auto ads = categories->second;
+
+  auto ads_count = ads.size();
+  auto ad_rand = helper::Math::Random(ads_count - 1);
+  auto ad = ads.at(ad_rand);
+
+  callback(Result::SUCCESS, category, ad);
 }
 
 bool MockAdsClient::GetUrlComponents(

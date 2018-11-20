@@ -115,10 +115,10 @@ class AdsImpl : public Ads {
       const Result result,
       const std::string& category,
       const std::vector<AdInfo>& ads);
-  void OnGetAdsForSampleCategory(
+  void OnGetAdForSampleCategory(
       const Result result,
       const std::string& category,
-      const std::vector<AdInfo>& ads);
+      const AdInfo& ad);
 
   uint32_t collect_activity_timer_id_;
   void CollectActivity();

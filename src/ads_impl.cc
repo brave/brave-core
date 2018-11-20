@@ -452,9 +452,9 @@ void AdsImpl::ServeSampleAd() {
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::OnGetAdsForSampleCategory,
+  auto callback = std::bind(&AdsImpl::OnGetAdForSampleCategory,
     this, _1, _2, _3);
-  ads_client_->GetAdsForSampleCategory(callback);
+  ads_client_->GetAdForSampleCategory(callback);
 }
 
 void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
@@ -649,13 +649,11 @@ void AdsImpl::OnGetAdsForCategory(
   ShowAd(ad, category);
 }
 
-void AdsImpl::OnGetAdsForSampleCategory(
+void AdsImpl::OnGetAdForSampleCategory(
     const Result result,
     const std::string& category,
-    const std::vector<AdInfo>& ads) {
-  auto ads_count = ads.size();
-
-  if (result == Result::FAILED || ads_count == 0) {
+    const AdInfo& ad) {
+  if (result == Result::FAILED) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
 
@@ -664,9 +662,6 @@ void AdsImpl::OnGetAdsForSampleCategory(
 
     return;
   }
-
-  auto rand = helper::Math::Random(ads_count - 1);
-  auto ad = ads.at(rand);
   ShowAd(ad, category);
 }
 
