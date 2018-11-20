@@ -6,12 +6,17 @@
 
 #include "base/strings/string_util.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/profiles/profile.h"
 
 // See the BraveAutocompleteProviderClient why GetOriginalProfile() is fetched.
+// All services except TemplateURLService exposed from AutocompleteClassifier
+// uses original profile. So, |profile_| should be original profile same as
+// base class does.
 BraveAutocompleteSchemeClassifier::BraveAutocompleteSchemeClassifier(
     Profile* profile)
-    : ChromeAutocompleteSchemeClassifier(profile->GetOriginalProfile()) {
+    : ChromeAutocompleteSchemeClassifier(profile->GetOriginalProfile()),
+      profile_(profile->GetOriginalProfile()) {
 }
 
 BraveAutocompleteSchemeClassifier::~BraveAutocompleteSchemeClassifier() {
@@ -25,7 +30,9 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
     return metrics::OmniboxInputType::INVALID;
   }
   if (base::IsStringASCII(scheme) &&
-       base::LowerCaseEqualsASCII(scheme, kBraveUIScheme)) {
+      (base::LowerCaseEqualsASCII(scheme, kBraveUIScheme) ||
+       (webtorrent::IsWebtorrentEnabled(profile_) &&
+        base::LowerCaseEqualsASCII(scheme, kMagnetScheme)))) {
     return metrics::OmniboxInputType::URL;
   }
 
