@@ -229,6 +229,34 @@ bool PublisherInfoDatabase::CreatePublisherInfoTable() {
   return GetDB().Execute(sql.c_str());
 }
 
+bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
+    const ledger::PublisherInfo& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement publisher_info_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                 "INSERT OR REPLACE INTO publisher_info "
+                                 "(publisher_id, verified, excluded, "
+                                 "name, url, provider, favIcon) "
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?)"));
+
+  publisher_info_statement.BindString(0, info.id);
+  publisher_info_statement.BindBool(1, info.verified);
+  publisher_info_statement.BindInt(2, static_cast<int>(info.excluded));
+  publisher_info_statement.BindString(3, info.name);
+  publisher_info_statement.BindString(4, info.url);
+  publisher_info_statement.BindString(5, info.provider);
+  publisher_info_statement.BindString(6, info.favicon_url);
+
+  return publisher_info_statement.Run();
+}
+
 /**
  *
  * ACTIVITY INFO
@@ -256,6 +284,8 @@ bool PublisherInfoDatabase::CreateActivityInfoTable() {
       "month INTEGER NOT NULL,"
       "year INTEGER NOT NULL,"
       "reconcile_stamp INTEGER DEFAULT 0 NOT NULL,"
+      "CONSTRAINT activity_unique "
+      "UNIQUE (publisher_id, month, year, reconcile_stamp) "
       "CONSTRAINT fk_activity_info_publisher_id"
       "    FOREIGN KEY (publisher_id)"
       "    REFERENCES publisher_info (publisher_id)"
@@ -270,6 +300,55 @@ bool PublisherInfoDatabase::CreateActivityInfoIndex() {
   return GetDB().Execute(
       "CREATE INDEX IF NOT EXISTS activity_info_publisher_id_index "
       "ON activity_info (publisher_id)");
+}
+
+bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
+    const ledger::PublisherInfo& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  // Insert publisher if it doesn't exist
+  sql::Statement publisher_info_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+          "INSERT OR IGNORE INTO publisher_info "
+          "(publisher_id, verified, excluded, "
+          "name, url, provider, favIcon) "
+          "VALUES (?, ?, ?, ?, ?, ?, ?)"));
+
+  publisher_info_statement.BindString(0, info.id);
+  publisher_info_statement.BindBool(1, info.verified);
+  publisher_info_statement.BindInt(2, static_cast<int>(info.excluded));
+  publisher_info_statement.BindString(3, info.name);
+  publisher_info_statement.BindString(4, info.url);
+  publisher_info_statement.BindString(5, info.provider);
+  publisher_info_statement.BindString(6, info.favicon_url);
+
+  if (!publisher_info_statement.Run()) {
+    return false;
+  }
+
+  sql::Statement activity_info_insert(
+    GetDB().GetCachedStatement(SQL_FROM_HERE,
+        "INSERT OR REPLACE INTO activity_info "
+        "(publisher_id, duration, score, percent, "
+        "weight, month, year, reconcile_stamp) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
+
+  activity_info_insert.BindString(0, info.id);
+  activity_info_insert.BindInt64(1, static_cast<int>(info.duration));
+  activity_info_insert.BindDouble(2, info.score);
+  activity_info_insert.BindInt64(3, static_cast<int>(info.percent));
+  activity_info_insert.BindDouble(4, info.weight);
+  activity_info_insert.BindInt(5, info.month);
+  activity_info_insert.BindInt(6, info.year);
+  activity_info_insert.BindInt64(7, info.reconcile_stamp);
+
+  return activity_info_insert.Run();
 }
 
 bool PublisherInfoDatabase::GetPublisherActivityList(
@@ -617,92 +696,11 @@ bool PublisherInfoDatabase::RemoveRecurring(const std::string& publisher_key) {
   return statement.Run();
 }
 
-////
-
-
-bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
-    const ledger::PublisherInfo& info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized)
-    return false;
-
-  sql::Statement publisher_info_statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "INSERT OR REPLACE INTO publisher_info "
-          "(publisher_id, verified, excluded, "
-          "name, url, provider, favIcon) "
-          "VALUES (?, ?, ?, ?, ?, ?, ?)"));
-
-  publisher_info_statement.BindString(0, info.id);
-  publisher_info_statement.BindBool(1, info.verified);
-  publisher_info_statement.BindInt(2, static_cast<int>(info.excluded));
-  publisher_info_statement.BindString(3, info.name);
-  publisher_info_statement.BindString(4, info.url);
-  publisher_info_statement.BindString(5, info.provider);
-  publisher_info_statement.BindString(6, info.favicon_url);
-
-  if (!publisher_info_statement.Run()) {
-    return false;
-  }
-
-  if (info.month == ledger::PUBLISHER_MONTH::ANY || info.year == -1) {
-    return true;
-  }
-
-  sql::Statement activity_get(
-      db_.GetUniqueStatement("SELECT publisher_id FROM activity_info WHERE "
-                             "publisher_id=? AND month=? "
-                             "AND year=? AND reconcile_stamp=?"));
-
-  activity_get.BindString(0, info.id);
-  activity_get.BindInt(1, info.month);
-  activity_get.BindInt(2, info.year);
-  activity_get.BindInt64(3, info.reconcile_stamp);
-
-  if (activity_get.Step()) {
-    sql::Statement activity_info_update(
-      GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "UPDATE activity_info SET "
-          "duration=?, score=?, percent=?, "
-          "weight=? WHERE "
-          "publisher_id=? AND month=? "
-          "AND year=? AND reconcile_stamp=?"));
-
-    activity_info_update.BindInt64(0, static_cast<int>(info.duration));
-    activity_info_update.BindDouble(1, info.score);
-    activity_info_update.BindInt64(2, static_cast<int>(info.percent));
-    activity_info_update.BindDouble(3, info.weight);
-    activity_info_update.BindString(4, info.id);
-    activity_info_update.BindInt(5, info.month);
-    activity_info_update.BindInt(6, info.year);
-    activity_info_update.BindInt64(7, info.reconcile_stamp);
-
-    return activity_info_update.Run();
-  }
-
-  sql::Statement activity_info_insert(
-    GetDB().GetCachedStatement(SQL_FROM_HERE,
-        "INSERT INTO activity_info "
-        "(publisher_id, duration, score, percent, "
-        "weight, month, year, reconcile_stamp) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"));
-
-  activity_info_insert.BindString(0, info.id);
-  activity_info_insert.BindInt64(1, static_cast<int>(info.duration));
-  activity_info_insert.BindDouble(2, info.score);
-  activity_info_insert.BindInt64(3, static_cast<int>(info.percent));
-  activity_info_insert.BindDouble(4, info.weight);
-  activity_info_insert.BindInt(5, info.month);
-  activity_info_insert.BindInt(6, info.year);
-  activity_info_insert.BindInt64(7, info.reconcile_stamp);
-
-  return activity_info_insert.Run();
-}
-
+/**
+ *
+ * PENDING CONTRIBUTION
+ *
+ */
 bool PublisherInfoDatabase::CreatePendingContributionsTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -793,7 +791,6 @@ double PublisherInfoDatabase::GetReservedAmount() {
 
   return amount;
 }
-
 // static
 int PublisherInfoDatabase::GetCurrentVersion() {
   return kCurrentVersionNumber;

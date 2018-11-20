@@ -42,6 +42,10 @@ class PublisherInfoDatabase {
                ledger::PUBLISHER_MONTH month,
                int year);
 
+  bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
+
+  bool InsertOrUpdateActivityInfo(const ledger::PublisherInfo& info);
+
   bool GetPublisherActivityList(int start,
                                 int limit,
                                 const ledger::PublisherInfoFilter& filter,
@@ -61,8 +65,6 @@ class PublisherInfoDatabase {
   bool RemoveRecurring(const std::string& publisher_key);
   bool InsertPendingContribution(const ledger::PendingContributionList& list);
   double GetReservedAmount();
-
-  bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
 
 
   // Returns the current version of the publisher info database
