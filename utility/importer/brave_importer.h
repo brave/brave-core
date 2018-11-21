@@ -33,7 +33,7 @@ class BraveImporter : public ChromeImporter {
   void ImportBookmarks() override;
   void ImportHistory() override;
   void ImportStats();
-  void ImportLedger(bool clobber_wallet=false);
+  void ImportLedger();
 
   std::unique_ptr<base::Value> ParseBraveStateFile(
     const std::string& filename);

@@ -41,6 +41,7 @@ class BraveProfileWriter : public ProfileWriter,
  protected:
   friend class base::RefCountedThreadSafe<BraveProfileWriter>;
   const scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  void CancelWalletImport(std::string msg);
   void SetWalletProperties(brave_rewards::RewardsService* rewards_service);
   void BackupWallet();
   void OnWalletBackupComplete(bool result);

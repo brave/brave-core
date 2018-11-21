@@ -15,7 +15,6 @@ struct BraveLedger {
   ~BraveLedger();
 
   std::string passphrase;
-  bool clobber_wallet;
   std::vector<std::string> excluded_publishers;
   std::map<std::string, unsigned int> pinned_publishers;
 

@@ -18,8 +18,6 @@ source_set("common") {
   sources = [
     "brave_switches.cc",
     "brave_switches.h",
-    "importer/brave_ledger.cc",
-    "importer/brave_ledger.h",
     "pref_names.cc",
     "pref_names.h",
     "webui_url_constants.cc",
@@ -40,6 +38,8 @@ source_set("common") {
       "extensions/manifest_handlers/pdfjs_manifest_override.h",
       "importer/brave_importer_utils.cc",
       "importer/brave_importer_utils.h",
+      "importer/brave_ledger.cc",
+      "importer/brave_ledger.h",
       "importer/brave_stats.h",
       "importer/chrome_importer_utils.cc",
       "importer/chrome_importer_utils.h",

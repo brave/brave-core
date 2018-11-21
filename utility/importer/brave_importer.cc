@@ -397,12 +397,24 @@ bool ParsePaymentsPreferences(BraveLedger& ledger,
 
   auto* payments = &ledger.settings.payments;
 
-  TryFindBoolKey(settings, "payments.enabled", payments->enabled);
-  TryFindBoolKey(settings, "payments.allow-non-verified-publishers",
-    payments->allow_non_verified);
-  TryFindBoolKey(settings, "payments.allow-media-publishers",
-    payments->allow_media_publishers);
+  // Boolean prefs. If any of these settings are missing,
+  // let's fall back to the default value from browser-laptop.
+  // (see browser-laptop/js/constants/appConfig.js for more info)
+  if (!TryFindBoolKey(settings, "payments.enabled", payments->enabled)) {
+    payments->enabled = false;
+  }
 
+  if (!TryFindBoolKey(settings, "payments.allow-non-verified-publishers",
+    payments->allow_non_verified)) {
+    payments->allow_non_verified = true;
+  }
+
+  if (!TryFindBoolKey(settings, "payments.allow-media-publishers",
+    payments->allow_media_publishers)) {
+    payments->allow_media_publishers = true;
+  }
+
+  // Contribution amount
   // TODO: get default amount from rewards service
   const int default_monthly_contribution = 20;
   std::string contribution_amount = "";
@@ -427,6 +439,7 @@ bool ParsePaymentsPreferences(BraveLedger& ledger,
     payments->contribution_amount = default_monthly_contribution;
   }
 
+  // Minimum number of visits for a site to be considered relevant
   std::string minimum_visits = "";
   TryFindStringKey(settings, "payments.minimum-visits", minimum_visits);
   if (!minimum_visits.empty()) {
@@ -443,6 +456,7 @@ bool ParsePaymentsPreferences(BraveLedger& ledger,
     payments->min_visits = 1u;
   }
 
+  // Minimum visit time at a site to be considered relevant
   std::string minumum_visit_time = "";
   TryFindStringKey(settings, "payments.minimum-visit-time", minumum_visit_time);
   if (!minumum_visit_time.empty()) {
@@ -536,7 +550,7 @@ bool ParsePinnedSites(BraveLedger& ledger,
   return true;
 }
 
-void BraveImporter::ImportLedger(bool clobber_wallet) {
+void BraveImporter::ImportLedger() {
   std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   std::unique_ptr<base::Value> ledger_state_json = ParseBraveStateFile(
@@ -545,25 +559,28 @@ void BraveImporter::ImportLedger(bool clobber_wallet) {
     return;
 
   BraveLedger ledger;
-  // TODO: when initiated from the UI, user should be prompted
-  // "Are you sure you want to restore? You'll lose your wallet"
-  // If they choose yes, then caller should set `clobber_wallet` to true
-  ledger.clobber_wallet = clobber_wallet;
 
+  // It should be considered fatal if an error occurs while
+  // parsing any of the below expected fields. This could
+  // indicate a corrupt session-store-1
   if (!ParseWalletPassphrase(ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse wallet passphrase";
+    return;
   }
 
   if (!ParsePaymentsPreferences(ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse preferences for Brave Payments";
+    return;
   }
 
   if (!ParseExcludedSites(ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse list of excluded sites for Brave Payments";
+    return;
   }
 
   if (!ParsePinnedSites(ledger, *session_store_json)) {
     LOG(ERROR) << "Failed to parse list of pinned sites for Brave Payments";
+    return;
   }
 
   bridge_->UpdateLedger(ledger);
