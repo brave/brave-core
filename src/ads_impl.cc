@@ -220,6 +220,13 @@ bool AdsImpl::IsInitialized() {
   return true;
 }
 
+bool AdsImpl::IsMobile() const {
+  ClientInfo client_info;
+  ads_client_->GetClientInfo(&client_info);
+
+  return client_info.IsMobile();
+}
+
 void AdsImpl::OnForeground() {
   is_foreground_ = true;
   GenerateAdReportingForegroundEvent();
@@ -408,10 +415,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   }
 
   if (!forced) {
-    ClientInfo client_info;
-    ads_client_->GetClientInfo(&client_info);
-
-    if (!client_info.IsMobile() && !IsForeground()) {
+    if (!IsMobile() && !IsForeground()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not in foreground' }
       return;

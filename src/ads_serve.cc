@@ -123,17 +123,6 @@ void AdsServe::OnCatalogDownloaded(
   }
 
   if (should_retry) {
-    if (next_retry_start_timer_in_ == 0) {
-      ClientInfo client_info;
-      ads_client_->GetClientInfo(&client_info);
-
-      if (client_info.IsMobile()) {
-        next_retry_start_timer_in_ = 2 * kOneMinuteInSeconds;
-      } else {
-        next_retry_start_timer_in_ = kOneMinuteInSeconds;
-      }
-    }
-
     RetryDownloadingCatalog();
     return;
   }
@@ -190,9 +179,17 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
 }
 
 void AdsServe::RetryDownloadingCatalog() {
-  ads_->StartCollectingActivity(next_retry_start_timer_in_);
+  if (next_retry_start_timer_in_ == 0) {
+    if (ads_->IsMobile()) {
+      next_retry_start_timer_in_ = 2 * kOneMinuteInSeconds;
+    } else {
+      next_retry_start_timer_in_ = kOneMinuteInSeconds;
+    }
+  } else {
+    next_retry_start_timer_in_ *= 2;
+  }
 
-  next_retry_start_timer_in_ *= 2;
+  ads_->StartCollectingActivity(next_retry_start_timer_in_);
 }
 
 void AdsServe::ResetCatalog() {

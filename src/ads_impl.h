@@ -50,6 +50,8 @@ class AdsImpl : public Ads {
   void InitializeStep3();
   bool IsInitialized();
 
+  bool IsMobile() const;
+
   void OnForeground() override;
   void OnBackground() override;
   bool IsForeground() const;
