@@ -2,7 +2,7 @@
 
 import UIKit
 
-class JSInjector: NSObject {
+public class JSInjector: NSObject {
     
     /// Whether or not the JS files are ready to be used
     internal var isJavascriptReadyCheck: (() -> Bool)?

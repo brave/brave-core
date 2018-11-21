@@ -397,6 +397,18 @@ class BrowserViewController: UIViewController {
         // links into the view from other apps.
         let dropInteraction = UIDropInteraction(delegate: self)
         view.addInteraction(dropInteraction)
+        
+        initializeSyncWebView()
+    }
+    
+    /// Initialize Sync without connecting. Sync webview needs to be in a "permanent" location
+    /// to continue working predictably. If Sync is not in the view "hierarchy"
+    /// it will behavior extremely unpredictably, often just dying in the middle of a promize chain.
+    /// Added to keyWindow, since it can then be utilized from any VC (e.g. settings modal).
+    /// This also inits sync at app launch.
+    private func initializeSyncWebView() {
+        Sync.shared.webView.alpha = 0.01
+        UIApplication.shared.keyWindow?.insertSubview(Sync.shared.webView, at: 0)
     }
     
     fileprivate func setupTabs() {

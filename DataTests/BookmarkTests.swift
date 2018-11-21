@@ -87,7 +87,7 @@ class BookmarkTests: CoreDataTestCase {
         createAndWait(url: URL(string: ""), title: folderTitle, isFolder: true)
         
         try! frc.performFetch()
-        let obj = frc.fetchedObjects!.first
+        let obj = frc.fetchedObjects!.last
         XCTAssertEqual(obj?.title, folderTitle)
     }
     
@@ -292,8 +292,8 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = result.src
         let destinationObject = result.dest
         
-        XCTAssertEqual(sourceObject.order, 5)
-        XCTAssertEqual(destinationObject.order, 4)
+        XCTAssertEqual(sourceObject.syncOrder, "0.0.6.1")
+        XCTAssertEqual(destinationObject.syncOrder, "0.0.6")
     }
     
     func testBookmarkReorderDragUp() {
@@ -301,8 +301,8 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = result.src
         let destinationObject = result.dest
         
-        XCTAssertEqual(sourceObject.order, 1)
-        XCTAssertEqual(destinationObject.order, 2)
+        XCTAssertEqual(sourceObject.syncOrder, "0.0.1.1")
+        XCTAssertEqual(destinationObject.syncOrder, "0.0.2")
     }
     
     func testBookmarkReorderTopToBottom() {
@@ -310,8 +310,8 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = result.src
         let destinationObject = result.dest
         
-        XCTAssertEqual(sourceObject.order, 0)
-        XCTAssertEqual(destinationObject.order, 1)
+        XCTAssertEqual(sourceObject.syncOrder, "0.0.0.1")
+        XCTAssertEqual(destinationObject.syncOrder, "0.0.1")
     }
     
     func testBookmarkReorderBottomToTop() {
@@ -319,8 +319,8 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = result.src
         let destinationObject = result.dest
         
-        XCTAssertEqual(sourceObject.order, 9)
-        XCTAssertEqual(destinationObject.order, 8)
+        XCTAssertEqual(sourceObject.syncOrder, "0.0.11")
+        XCTAssertEqual(destinationObject.syncOrder, "0.0.10")
     }
     
     func testBookmarksReorderSameIndexPaths() {
@@ -348,6 +348,28 @@ class BookmarkTests: CoreDataTestCase {
         
         Bookmark.reorderBookmarks(frc: nil, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
         // Assert nothing.
+    }
+    
+    func testSortingManyBookmarks() {
+        let sortedOrders = ["1.1.0.1", "1.1.1", "1.1.2", "1.1.3", "1.1.4", "1.1.5", "1.1.6", "1.1.7", "1.1.8",
+                            "1.1.9", "1.1.10", "1.1.11", "1.1.12", "1.1.12.1", "1.1.12.1.2", "1.1.12.1.3",
+                            "1.1.13", "1.1.14", "1.1.15", "1.1.16", "1.1.17", "1.1.19", "1.1.20", "1.1.21"]
+        
+        let shuffledOrders = sortedOrders.shuffled()
+        XCTAssertNotEqual(sortedOrders, shuffledOrders)
+        
+        // Adding bookmarks in random order
+        shuffledOrders.forEach {
+            let url = URL(string: "http://brave.com/\($0)")!
+            createAndWait(url: url, title: "Brave", syncOrder: $0)
+        }
+        
+        let frc = Bookmark.frc(parentFolder: nil)
+        // Frc should sort them back
+        try! frc.performFetch()
+        let frcOrders = frc.fetchedObjects!.compactMap { $0.syncOrder }
+        
+        XCTAssertEqual(sortedOrders, frcOrders)
     }
     
     // MARK: - Delete
@@ -428,10 +450,11 @@ class BookmarkTests: CoreDataTestCase {
         let url = URL(string: "http://brave.com")!
         let title = "Brave"
         
-        var deviceId: [Int]?
         backgroundSaveAndWaitForExpectation {
-            deviceId = Device.currentDevice()?.deviceId
+            Device.add(name: "Brave")
         }
+        
+        let deviceId = Device.currentDevice()?.deviceId
         
         let object = createAndWait(url: url, title: title)
         
@@ -469,10 +492,11 @@ class BookmarkTests: CoreDataTestCase {
     /// Wrapper around `Bookmark.create()` with context save wait expectation and fetching object from view context.
     @discardableResult 
     private func createAndWait(url: URL?, title: String?, customTitle: String? = nil, 
-                                                  parentFolder: Bookmark? = nil, isFolder: Bool = false, isFavorite: Bool = false, color: UIColor? = nil) -> Bookmark {
+                               parentFolder: Bookmark? = nil, isFolder: Bool = false, isFavorite: Bool = false, color: UIColor? = nil, syncOrder: String? = nil) -> Bookmark {
         
         backgroundSaveAndWaitForExpectation {
-            Bookmark.add(url: url, title: title, customTitle: customTitle, parentFolder: parentFolder, isFolder: isFolder, isFavorite: isFavorite, color: color)
+            Bookmark.add(url: url, title: title, customTitle: customTitle, parentFolder: parentFolder,
+                         isFolder: isFolder, isFavorite: isFavorite, syncOrder: syncOrder)
         }
         
         return try! DataController.viewContext.fetch(fetchRequest).first!
@@ -504,16 +528,16 @@ class BookmarkTests: CoreDataTestCase {
         let sourceObject = frc.object(at: sourceIndexPath)
         let destinationObject = frc.object(at: destinationIndexPath)
         
-        let sourceOrderBefore = (frc.object(at: sourceIndexPath)).order
-        let destinationOrderBefore = (frc.object(at: destinationIndexPath)).order
+        let sourceOrderBefore = (frc.object(at: sourceIndexPath)).syncOrder
+        let destinationOrderBefore = (frc.object(at: destinationIndexPath)).syncOrder
         
         // CD objects we saved before will get updated after this call.
         Bookmark.reorderBookmarks(frc: frc, sourceIndexPath: sourceIndexPath, destinationIndexPath: destinationIndexPath)
         
         // Test order has changed, won't work when swapping bookmarks with order = 0
         if !skipOrderChangeTests {
-            XCTAssertNotEqual(sourceObject.order, sourceOrderBefore)
-            XCTAssertNotEqual(destinationObject.order, destinationOrderBefore)
+            XCTAssertNotEqual(sourceObject.syncOrder, sourceOrderBefore)
+            XCTAssertEqual(destinationObject.syncOrder, destinationOrderBefore)
         }
         
         return (sourceObject, destinationObject)
@@ -538,7 +562,6 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertNil(record.syncParentUUID)
         
         XCTAssertNotNil(record.syncDisplayUUID)
-        XCTAssertNotNil(record.color)
         XCTAssertNotNil(record.children)
         XCTAssert(record.children!.isEmpty)
     }

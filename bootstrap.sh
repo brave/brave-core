@@ -41,6 +41,8 @@ SWIFT_VERSION=4.0 carthage bootstrap $CARTHAGE_VERBOSE --platform ios --color au
 
 npm install
 npm run build
+echo "Building Brave's sync"
+npm run build:sync
 
 # Sets up local configurations from the tracked .template files
 

@@ -5,9 +5,9 @@ import WebKit
 import Shared
 import SwiftyJSON
 
-class SyncCrypto: JSInjector {
+public class SyncCrypto: JSInjector {
 
-    static let shared = SyncCrypto()
+    public static let shared = SyncCrypto()
     
     fileprivate let syncCryptoWebView = WKWebView(frame: CGRect.zero, configuration: SyncCrypto.webConfig)
     /// Whehter or not sync crypto is ready to be used
@@ -31,7 +31,7 @@ class SyncCrypto: JSInjector {
         let webCfg = WKWebViewConfiguration()
         webCfg.userContentController = WKUserContentController()
         
-        if let script = Sync.getScript("crypto") {
+        if let script = ScriptOpener.get(withName: "crypto") {
             webCfg.userContentController.addUserScript(WKUserScript(source: script, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         }
         
@@ -63,7 +63,7 @@ class SyncCrypto: JSInjector {
     /// returns (via completion): String of words from brave-crypto that map to those hex values:
     /// "administrational experimental"
     // TODO: Massage data a bit more for completion block
-    func passphrase(fromBytes bytes: [Int], completion: @escaping (([String]?, Error?) -> Void)) {
+    public func passphrase(fromBytes bytes: [Int], completion: @escaping (([String]?, Error?) -> Void)) {
         let bipWordLength = 24
         
         executeBlockOnReady {
@@ -98,7 +98,7 @@ class SyncCrypto: JSInjector {
     /// Takes a joined string of unique hex bytes (e.g. from QR code) and splits up the hex values
     /// fromJoinedBytes: a single string of hex data (even # of chars required): 897a6f0219fd2950
     /// return: integer values split into 8 bit groupings [0x98, 0x7a, 0x6f, ...]
-    func splitBytes(fromJoinedBytes bytes: String) -> [Int]? {
+    public func splitBytes(fromJoinedBytes bytes: String) -> [Int]? {
         var chars = bytes.map { String($0) }
         
         if chars.count % 2 == 1 {
@@ -122,7 +122,7 @@ class SyncCrypto: JSInjector {
     /// Takes a string description of an array and returns a string of hex used for Sync
     /// fromCombinedBytes: ([123, 119, 25, 14, 85, 125])
     /// returns: 7b77190e557d
-    func joinBytes(fromCombinedBytes bytes: [Int]?) -> String {
+    public func joinBytes(fromCombinedBytes bytes: [Int]?) -> String {
         guard let bytes = bytes else {
             return ""
         }
@@ -138,7 +138,7 @@ class SyncCrypto: JSInjector {
     /// Takes English words and returns associated bytes.
     /// toBytes32: A string of words: "administrational experimental"
     /// returns (via completion): Array of integer values : [0x00, 0xee, 0x4a, 0x42]
-    func bytes(fromPassphrase passphrase: Array<String>, completion: (([Int]?, Error?) -> Void)?) {
+    public func bytes(fromPassphrase passphrase: Array<String>, completion: (([Int]?, Error?) -> Void)?) {
         // TODO: Add some keyword validation
 
         let wordsWithSpaces = passphrase.joined(separator: " ")

@@ -6,7 +6,9 @@ import Shared
 import CoreData
 import SwiftKeychainWrapper
 import SwiftyJSON
-import BraveShared
+import JavaScriptCore
+
+private let log = Logger.browserLogger
 
 /*
  module.exports.categories = {
@@ -14,7 +16,7 @@ import BraveShared
  HISTORY_SITES: '1',
  PREFERENCES: '2'
  }
-
+ 
  module.exports.actions = {
  CREATE: 0,
  UPDATE: 1,
@@ -22,7 +24,7 @@ import BraveShared
  }
  */
 
-let NotificationSyncReady = "NotificationSyncReady"
+public let NotificationSyncReady = "NotificationSyncReady"
 
 // TODO: Make capitals - pluralize - call 'categories' not 'type'
 public enum SyncRecordType: String {
@@ -64,62 +66,93 @@ enum SyncActions: Int {
     case create = 0
     case update = 1
     case delete = 2
-
+    
 }
 
-class Sync: JSInjector {
+public class Sync: JSInjector {
     
-    static let SeedByteLength = 32
+    public static let SeedByteLength = 32
     /// Number of records that is considered a fetch limit as opposed to full data set
     static let RecordFetchAmount = 300
-    static let shared = Sync()
-
-    /// This must be public so it can be added into the view hierarchy 
-    var webView: WKWebView!
-
+    public static let shared = Sync()
+    
+    /// This must be public so it can be added into the view hierarchy
+    public var webView: WKWebView!
+    
     // Should not be accessed directly
     fileprivate var syncReadyLock = false
-    var isSyncFullyInitialized = (syncReady: Bool, fetchReady: Bool, sendRecordsReady: Bool, fetchDevicesReady: Bool, resolveRecordsReady: Bool, deleteUserReady: Bool, deleteSiteSettingsReady: Bool, deleteCategoryReady: Bool)(false, false, false, false, false, false, false, false)
+    var isSyncFullyInitialized = (syncReady: Bool,
+                                  fetchReady: Bool,
+                                  sendRecordsReady: Bool,
+                                  fetchDevicesReady: Bool,
+                                  resolveRecordsReady: Bool,
+                                  deleteUserReady: Bool,
+                                  deleteSiteSettingsReady: Bool,
+                                  deleteCategoryReady: Bool)(false, false, false, false, false, false, false, false)
     
-    var isInSyncGroup: Bool {
+    public var isInSyncGroup: Bool {
         return syncSeed != nil
     }
     
     fileprivate var fetchTimer: Timer?
-
+    
+    var baseSyncOrder: String? {
+        get {
+            return UserDefaults.standard.string(forKey: prefBaseOrder)
+        }
+        set(value) {
+            UserDefaults.standard.set(value, forKey: prefBaseOrder)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     // TODO: Move to a better place
     fileprivate let prefNameId = "device-id-js-array"
     fileprivate let prefNameName = "sync-device-name"
     fileprivate let prefNameSeed = "seed-js-array"
     fileprivate let prefFetchTimestamp = "sync-fetch-timestamp"
+    fileprivate let prefBaseOrder = "sync-base-order"
     
-//    #if DEBUG
-    fileprivate let isDebug = true
-    fileprivate let serverUrl = "https://sync-staging.brave.com"
-//    #else
-//    fileprivate let isDebug = false
-//    fileprivate let serverUrl = "https://sync.brave.com"
-//    #endif
-
+    fileprivate lazy var isDebug: Bool = { return !AppConstants.BuildChannel.isRelease }()
+    
+    fileprivate lazy var serverUrl: String = {
+        return isDebug ? "https://sync-staging.brave.com" : "https://sync.brave.com"
+    }()
+    
     fileprivate let apiVersion = 0
-
+    
     fileprivate var webConfig: WKWebViewConfiguration {
         let webCfg = WKWebViewConfiguration()
         let userController = WKUserContentController()
-
+        
         userController.add(self, name: "syncToIOS_on")
         userController.add(self, name: "syncToIOS_send")
-
+        
         // ios-sync must be called before bundle, since it auto-runs
-        ["fetch", "ios-sync", "bundle"].forEach() {
-            if let script = Sync.getScript($0) {
-                userController.addUserScript(WKUserScript(source: script, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
-            }
+        let scripts = ["fetch", "ios-sync", "bundle"]
+        
+        scripts.compactMap { ScriptOpener.get(withName: $0) }.forEach {
+            userController.addUserScript(WKUserScript(source: $0, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
         }
-
+        
         webCfg.userContentController = userController
         return webCfg
     }
+    
+    fileprivate lazy var jsContext: JSContext? = {
+        let context = JSContext()
+        
+        context?.exceptionHandler = { _, exc in
+            log.error(exc.debugDescription)
+        }
+        
+        let script = ScriptOpener.get(withName: "bookmark_util")
+        context?.evaluateScript(script)
+        
+        return context
+    }()
+    
+    private var syncFetchedHandlers = [() -> Void]()
     
     override init() {
         super.init()
@@ -128,38 +161,24 @@ class Sync: JSInjector {
         self.maximumDelayAttempts = 15
         self.delayLengthInSeconds = Int64(3.0)
         
-        // WKWebView initialization must happen on main thread.
-        DispatchQueue.main.async {
-            self.webView = WKWebView(frame: CGRect(x: 30, y: 30, width: 300, height: 500), configuration: self.webConfig)
-        }
+        webView = WKWebView(frame: CGRect(x: 30, y: 30, width: 300, height: 500), configuration: webConfig)
         // Attempt sync setup
         initializeSync()
     }
     
-    func leaveSyncGroup() {
+    public func leaveSyncGroup() {
         // No, `leaving` logic should be here, any related logic should be in `syncSeed` setter
         syncSeed = nil
+    }
+    
+    func addFetchedHandler(_ handler: @escaping () -> Void) {
+        syncFetchedHandlers.append(handler)
     }
     
     /// Sets up sync to actually start pulling/pushing data. This method can only be called once
     /// seed (optional): The user seed, in the form of string hex values. Must be even number : ["00", "ee", "4a", "42"]
     /// Notice:: seed will be ignored if the keychain already has one, a user must disconnect from existing sync group prior to joining a new one
-    func initializeSync(seed: [Int]? = nil, deviceName: String? = nil) {
-        
-        #if NO_SYNC
-        if syncSeed == nil { return }
-        
-        leaveSyncGroup()
-    
-        let msg = """
-            Sync has been disabled, as it will not be included in the next couple of production builds.
-            Your iOS device has been auto-removed from any sync groups.
-        """
-        
-        let alert = UIAlertController(title: "Sync Disabled", message: msg, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.present(alert, animated: true, completion: nil)
-        #endif
+    public func initializeSync(seed: [Int]? = nil, deviceName: String? = nil) {
         
         if let joinedSeed = seed, joinedSeed.count == Sync.SeedByteLength {
             // Always attempt seed write, setter prevents bad overwrites
@@ -168,8 +187,7 @@ class Sync: JSInjector {
         
         // Check to not override deviceName with `nil` on sync init, which happens every app launch
         if let deviceName = deviceName {
-            Device.currentDevice()?.name = deviceName
-            DataController.save(context: Device.currentDevice()?.managedObjectContext)
+            Device.add(name: deviceName, isCurrent: true)
         }
         
         // Autoload sync if already connected to a sync group, otherwise just wait for user initiation
@@ -178,37 +196,26 @@ class Sync: JSInjector {
         }
     }
     
-    func initializeNewSyncGroup(deviceName name: String?) {
+    public func initializeNewSyncGroup(deviceName name: String?) {
         if syncSeed != nil {
             // Error, to setup new sync group, must have no seed
             return
         }
         
-        Device.currentDevice()?.name = name
-        DataController.save(context: Device.currentDevice()?.managedObjectContext)
+        Device.add(name: name, isCurrent: true)
         
         self.webView.loadHTMLString("<body>TEST</body>", baseURL: nil)
     }
-
-    class func getScript(_ name: String) -> String? {
-        // TODO: Add unwrapping warnings
-        // TODO: Place in helper location
-        guard let filePath = Bundle.main.path(forResource: name, ofType: "js") else {
-            return nil
-        }
-        
-        return try? String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
-    }
-
+    
     fileprivate func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print(#function)
     }
-
+    
     fileprivate var syncSeed: String? {
         get {
             if !UserDefaults.standard.bool(forKey: prefNameSeed) {
                 // This must be true to stay in sync group
-                KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
+                KeychainWrapper.standard.remove(key: prefNameSeed)
                 return nil
             }
             
@@ -251,20 +258,20 @@ class Sync: JSInjector {
             fetchTimer?.invalidate()
             fetchTimer = nil
             
-            KeychainWrapper.standard.removeObject(forKey: prefNameSeed)
+            KeychainWrapper.standard.remove(key: prefNameSeed)
         }
     }
     
-    var syncSeedArray: [Int]? {
+    public var syncSeedArray: [Int]? {
         let splitBytes = syncSeed?.components(separatedBy: CharacterSet(charactersIn: "[], ")).filter { !$0.isEmpty }
-        let seed = splitBytes?.compactMap { Int($0) }
+        let seed = splitBytes?.map { Int($0) }.flatMap { $0 }
         return seed?.count == Sync.SeedByteLength ? seed : nil
     }
     
     // TODO: Abstract into classes as static members, each object type needs their own sync time stamp!
     // This includes just the last record that was fetched, used to store timestamp until full process has been completed
     //  then set into defaults
-    fileprivate var lastFetchedRecordTimestamp: Int? = 0
+    fileprivate(set) var lastFetchedRecordTimestamp: Int? = 0
     // This includes the entire process: fetching, resolving, insertion/update, and save
     fileprivate var lastSuccessfulSync: Int {
         get {
@@ -280,15 +287,21 @@ class Sync: JSInjector {
     //  Used to know if data on get-existing-objects was trimmed, this value is used inside resolved-sync-records
     fileprivate var lastFetchWasTrimmed: Bool = false
     ////////////////////////////////
-
+    
     @discardableResult func checkIsSyncReady() -> Bool {
         
         if syncReadyLock {
             return true
         }
-
+        
         let mirror = Mirror(reflecting: isSyncFullyInitialized)
-        let ready = mirror.children.reduce(true) { $0 && $1.1 as! Bool } // swiftlint:disable:this force_cast
+        let ready = mirror.children.reduce(true) {
+            guard let secondArgAsBool = $1.1 as? Bool else {
+                assertionFailure("second argument could not be cast to bool")
+                return false
+            }
+            return $0 && secondArgAsBool
+        }
         if ready {
             // Attempt to authorize device
             
@@ -318,17 +331,37 @@ class Sync: JSInjector {
             // Use proper variable and store in defaults
             if lastSuccessfulSync == 0 {
                 // Sync local bookmarks, then proceed with fetching
-                // Pull all local bookmarks
-                // Insane .map required for mapping obj-c class to Swift, in order to use protocol instead of class for array param
-                self.sendSyncRecords(action: .create, records:
-                Bookmark.getAllBookmarks(context: DataController.newBackgroundContext()).map {$0}) { error in
-                    startFetching()
+                // Pull all local bookmarks and update their order with newly aquired device id and base sync order.
+                let context = DataController.newBackgroundContext()
+                
+                if let updatedBookmarks = bookmarksWithUpdatedOrder(context: context) {
+                    DataController.save(context: context)
+                    
+                    sendSyncRecords(action: .create, records: updatedBookmarks) { _ in
+                        startFetching()
+                    }
                 }
+                
             } else {
                 startFetching()
             }
         }
         return ready
+    }
+    
+    fileprivate func bookmarksWithUpdatedOrder(context: NSManagedObjectContext) -> [Bookmark]? {
+        guard let deviceId = Device.currentDevice()?.deviceId?.first else { return [] }
+        let getBaseBookmarksOrderFunction = jsContext?.objectForKeyedSubscript("getBaseBookmarksOrder")
+        
+        guard let baseOrder =
+            getBaseBookmarksOrderFunction?.call(withArguments: [deviceId, "ios"]).toString() else { return nil }
+        
+        if baseOrder != "undefined" {
+            baseSyncOrder = baseOrder
+            return Bookmark.updateBookmarksWithNewSyncOrder(context: context)
+        }
+        
+        return nil
     }
     
     // Required since fetch is wrapped in extension and timer hates that.
@@ -337,7 +370,7 @@ class Sync: JSInjector {
         self.fetch(type: .bookmark)
         self.fetch(type: .devices)
     }
- }
+}
 
 // MARK: Native-initiated Message category
 extension Sync {
@@ -358,6 +391,12 @@ extension Sync {
             return
         }
         
+        if recordType == .bookmark && baseSyncOrder == nil {
+            log.error("Base sync order is nil.")
+            completion?(nil)
+            return
+        }
+        
         executeBlockOnReady() {
             
             // TODO: DeviceId should be sitting on each object already, use that
@@ -367,32 +406,32 @@ extension Sync {
                 // Huge error
                 return
             }
-
+            
             /* browser -> webview, sends this to the webview with the data that needs to be synced to the sync server.
              @param {string} categoryName, @param {Array.<Object>} records */
             let evaluate = "callbackList['send-sync-records'](null, '\(recordType.rawValue)',\(json))"
             self.webView.evaluateJavaScript(evaluate,
-                                       completionHandler: { (result, error) in
-                                        if let error = error {
-                                            print(error)
-                                        }
-                                        
-                                        completion?(error)
+                                            completionHandler: { (result, error) in
+                                                if let error = error {
+                                                    print(error)
+                                                }
+                                                
+                                                completion?(error)
             })
         }
     }
-
+    
     func gotInitData() {
         let deviceId = Device.currentDevice()?.deviceId?.description ?? "null"
         let syncSeed = isInSyncGroup ? "new Uint8Array(\(self.syncSeed!))" : "null"
         
         let args = "(null, \(syncSeed), \(deviceId), {apiVersion: '\(apiVersion)', serverUrl: '\(serverUrl)', debug:\(isDebug)})"
         webView.evaluateJavaScript("callbackList['got-init-data']\(args)",
-                                   completionHandler: { (result, error) in
-//                                    print(result)
-//                                    if error != nil {
-//                                        print(error)
-//                                    }
+            completionHandler: { (result, error) in
+                //                                    print(result)
+                //                                    if error != nil {
+                //                                        print(error)
+                //                                    }
         })
     }
     
@@ -402,29 +441,30 @@ extension Sync {
          @param Array.<string> categoryNames, @param {number} startAt (in seconds) **/
         
         executeBlockOnReady() {
-
+            
             // Pass in `lastFetch` to get records since that time
             let evaluate = "callbackList['\(type.syncFetchMethod)'](null, ['\(type.rawValue)'], \(self.lastSuccessfulSync), \(Sync.RecordFetchAmount))"
             self.webView.evaluateJavaScript(evaluate,
-                                       completionHandler: { (result, error) in
-                                        completion?(error)
+                                            completionHandler: { (result, error) in
+                                                completion?(error)
             })
         }
     }
-
+    
     func resolvedSyncRecords(_ data: SyncResponse?) {
         
         // TODO: Abstract this logic, same used as in getExistingObjects
         guard let recordJSON = data?.rootElements, let apiRecodType = data?.arg1, let recordType = SyncRecordType(rawValue: apiRecodType) else { return }
         
-        guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
-
+        guard var fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
+        
         // Currently only prefs are device related
-        if recordType == .prefs /*, let data = fetchedRecords as? [SyncDevice] */ {
+        if recordType == .prefs, let data = fetchedRecords as? [SyncDevice] {
             // Devices have really bad data filtering, so need to manually process more of it
             // Sort to not rely on API - Reverse sort, so unique pulls the `latest` not just the `first`
-            // BRAVE TODO: 
-//            fetchedRecords = data.sorted { $0.0.syncTimestamp ?? -1 > $0.1.syncTimestamp ?? -1 }.unique { $0.objectId ?? [] == $1.objectId ?? [] }
+            fetchedRecords = data.sorted { device1, device2 in
+                device1.syncTimestamp ?? -1 > device2.syncTimestamp ?? -1 }.unique { $0.objectId ?? [] == $1.objectId ?? [] }
+            
         }
         
         let context = DataController.newBackgroundContext()
@@ -446,7 +486,7 @@ extension Sync {
                     // They always return a create command, even if they already "exist", since there is no real 'resolving'
                     //  Hence check below to prevent duplication
                 }
-                    
+                
                 // TODO: Needs favicon
                 if clientRecord == nil {
                     _ = recordType.coredataModelType?.add(rootObject: fetchedRoot, save: false, sendToSync: false, context: context)
@@ -483,32 +523,34 @@ extension Sync {
             self.fetch(type: .bookmark)
             self.lastFetchWasTrimmed = false
         }
+        
+        syncFetchedHandlers.forEach { $0() }
     }
-
+    
     func deleteSyncUser(_ data: [String: AnyObject]) {
         print("not implemented: deleteSyncUser() \(data)")
     }
-
+    
     func deleteSyncCategory(_ data: [String: AnyObject]) {
         print("not implemented: deleteSyncCategory() \(data)")
     }
-
+    
     func deleteSyncSiteSettings(_ data: [String: AnyObject]) {
         print("not implemented: delete sync site settings \(data)")
     }
-
+    
 }
 
 // MARK: Server To Native Message category
 extension Sync {
-
+    
     func getExistingObjects(_ data: SyncResponse?) {
         
         guard let recordJSON = data?.rootElements, let apiRecodType = data?.arg1, let recordType = SyncRecordType(rawValue: apiRecodType) else { return }
-
+        
         guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
-
-        let ids = fetchedRecords.compactMap { $0.objectId }
+        
+        let ids = fetchedRecords.map { $0.objectId }.compactMap { $0 }
         let localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: DataController.newBackgroundContext()) as? [Bookmark]
         
         var matchedBookmarks = [[Any]]()
@@ -525,7 +567,7 @@ extension Sync {
             
             matchedBookmarks.append([fetchedBM.dictionaryRepresentation(), localBM])
         }
-
+        
         /* Top level keys: "bookmark", "action","objectId", "objectData:bookmark","deviceId" */
         
         // TODO: Check if parsing not required
@@ -538,18 +580,19 @@ extension Sync {
         if recordType == .bookmark {
             // Store the last record's timestamp, to know what timestamp to pass in next time if this one does not fail
             self.lastFetchedRecordTimestamp = data?.lastFetchedTimestamp
+            log.info("sync fetched last timestamp \(self.lastFetchedRecordTimestamp ?? 0)")
             self.lastFetchWasTrimmed = data?.isTruncated ?? false
         }
         
         self.webView.evaluateJavaScript("callbackList['resolve-sync-records'](null, '\(recordType.rawValue)', \(serializedData))",
             completionHandler: { (result, error) in })
     }
-
+    
     // Only called when the server has info for client to save
     func saveInitData(_ data: JSON) {
         // Sync Seed
         if let seedJSON = data["arg1"].array {
-            let seed = seedJSON.compactMap { $0.int }
+            let seed = seedJSON.compactMap({ $0.int })
             
             // TODO: Move to constant
             if seed.count < Sync.SeedByteLength {
@@ -558,7 +601,7 @@ extension Sync {
             }
             
             syncSeed = "\(seed)"
-
+            
         } else if syncSeed == nil {
             // Failure
             print("Seed expected.")
@@ -572,13 +615,22 @@ extension Sync {
         } else if Device.currentDevice()?.deviceId == nil {
             print("Device Id expected!")
         }
-
+        
     }
-
+    
+    func getBookmarkOrder(previousOrder: String?, nextOrder: String?) -> String? {
+        
+        // Empty string as a parameter means next/previous bookmark doesn't exist
+        let prev = previousOrder ?? ""
+        let next = nextOrder ?? ""
+        
+        let getBookmarkOrderFunction = jsContext?.objectForKeyedSubscript("getBookmarkOrder")
+        return getBookmarkOrderFunction?.call(withArguments: [prev, next]).toString()
+    }
 }
 
 extension Sync: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         
         // JS execution must be on main thread
         
@@ -589,10 +641,10 @@ extension Sync: WKScriptMessageHandler {
             assert(false)
             return
         }
-
+        
         switch messageName {
         case "get-init-data":
-//            getInitData()
+            //            getInitData()
             break
         case "got-init-data":
             self.gotInitData()
@@ -601,6 +653,10 @@ extension Sync: WKScriptMessageHandler {
             // (e.g. arg2 is [Int])
             let data = JSON(parseJSON: message.body as? String ?? "")
             self.saveInitData(data)
+            // We clear current sync order after joining a new sync group.
+            // syncOrder algorithm is also used for local ordering, even if we are not connected to sync group.
+            // After joining a new sync group, new sync order with proper device id must be used.
+            Bookmark.removeSyncOrders()
         case "get-existing-objects":
             self.getExistingObjects(syncResponse)
         case "resolved-sync-records":
@@ -627,7 +683,7 @@ extension Sync: WKScriptMessageHandler {
         default:
             print("\(messageName) not handled yet")
         }
-
+        
         self.checkIsSyncReady()
     }
 }

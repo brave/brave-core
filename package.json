@@ -3,7 +3,8 @@
   "version": "2.0.0",
   "description": "Brave for iOS",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "build:sync": "cd node_modules/brave-sync; npm install && npm run build; cd node_modules/brave-crypto; npm run build"
   },
   "repository": {
     "type": "git",
@@ -12,7 +13,8 @@
   "license": "MPL-2.0",
   "dependencies": {
     "page-metadata-parser": "^1.1.2",
-    "readability": "mozilla/readability#3c76104adb00eb9897517e6be6c74c6c05918dfe"
+    "readability": "mozilla/readability#3c76104adb00eb9897517e6be6c74c6c05918dfe",
+    "brave-sync": "brave/sync#staging"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
