@@ -297,6 +297,58 @@ public extension Strings {
     public static let ErrorPagesVisitOnceButton = NSLocalizedString("ErrorPagesVisitOnceButton", tableName: "BraveShared", value: "Visit site anyway", comment: "Button label to temporarily continue to the site from the certificate error page")
 }
 
+// MARK: - Sync
+public extension Strings {
+    public static let QRCode = NSLocalizedString("QRCode", tableName: "BraveShared", value: "QR Code", comment: "QR Code section title")
+    public static let CodeWords = NSLocalizedString("CodeWords", tableName: "BraveShared", value: "Code Words", comment: "Code words section title")
+    public static let Sync = NSLocalizedString("Sync", tableName: "BraveShared", value: "Sync", comment: "Sync settings section title")
+    public static let BraveSync = NSLocalizedString("BraveSync", tableName: "BraveShared", value: "Brave Sync", comment: "Brave sync page title")
+    public static let BraveSyncWelcome = NSLocalizedString("BraveSyncWelcome", tableName: "BraveShared", value: "Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices. \r\rSimply scan the code from your sync chain that you created on another device. Or start a new sync chain. ", comment: "Sync settings welcome")
+    public static let NewSyncCode = NSLocalizedString("NewSyncCode", tableName: "BraveShared", value: "Start a new sync chain", comment: "New sync code button title")
+    public static let ScanSyncCode = NSLocalizedString("ScanSyncCode", tableName: "BraveShared", value: "Scan or enter sync code", comment: "Scan sync code button title")
+    public static let Scan = NSLocalizedString("Scan", tableName: "BraveShared", value: "Scan", comment: "Scan sync code title")
+    public static let SyncAddDevice = NSLocalizedString("SyncAddDevice", tableName: "BraveShared", value: "Add Device", comment: "Add device to sync")
+    public static let SyncAddDeviceScan = NSLocalizedString("SyncAddDeviceScan", tableName: "BraveShared", value: "Scan this sync code", comment: "Add mobile device to sync with scan")
+    public static let SyncAddDeviceWords = NSLocalizedString("SyncAddDeviceWords", tableName: "BraveShared", value: "Enter the sync code", comment: "Add device to sync with code words")
+    public static let SyncToDevice = NSLocalizedString("SyncToDevice", tableName: "BraveShared", value: "Sync to device", comment: "Sync to existing device")
+    public static let SyncToDeviceDescription = NSLocalizedString("SyncToDeviceDescription", tableName: "BraveShared", value: "Using existing synced device open Brave Settings and navigate to “Devices & Settings”, tap ‘+’ to add a new device and reveal sync code.", comment: "Sync to existing device description")
+    
+    public static let SyncAddMobileScanDescription = NSLocalizedString("SyncAddMobileScanDescription", tableName: "BraveShared", value: "Using a second phone or tablet, navigate to Brave Settings > Sync > Scan. \n\nCapture the QR Code (above) with your second device, or enter code words if no camera is available.", comment: "Sync add device description")
+    public static let SyncAddMobileWordsDescription = NSLocalizedString("SyncAddMobileWordsDescription", tableName: "BraveShared", value: "Using a second phone or tablet, navigate to Brave Settings > Sync. Choose “Enter a Sync Chain Code.” \n\nEnter the code words above, including spaces.", comment: "Sync add device description")
+    
+    public static let SyncAddComputerScanDescription = NSLocalizedString("SyncAddComputerScanDescription", tableName: "BraveShared", value: "On your computer, navigate to Brave Settings > Sync > Scan. \n\nCapture the QR Code (above) with your second device, or enter code words if no camera is available.", comment: "Sync add device description")
+    public static let SyncAddComputerWordsDescription = NSLocalizedString("SyncAddComputerWordsDescription", tableName: "BraveShared", value: "On your computer, navigate to Brave Settings > Sync. Choose “Enter a Sync Chain Code.” \n\nEnter the code words above, including spaces.", comment: "Sync add device description")
+    public static let SyncNoConnectionTitle = NSLocalizedString("SyncNoConnectionTitle", tableName: "BraveShared", value: "Can't connect to sync", comment: "No internet connection alert title.")
+    public static let SyncNoConnectionBody = NSLocalizedString("SyncNoConnectionBody", tableName: "BraveShared", value: "Check your internet connection and try again.", comment: "No internet connection alert body.")
+    public static let EnterCodeWords = NSLocalizedString("EnterCodeWords", tableName: "BraveShared", value: "Enter code words", comment: "Sync enter code words")
+    public static let ShowCodeWords = NSLocalizedString("ShowCodeWords", tableName: "BraveShared", value: "Show code words instead", comment: "Show code words instead")
+    public static let SyncDevices = NSLocalizedString("SyncDevices", tableName: "BraveShared", value: "Devices & Settings", comment: "Sync you browser settings across devices.")
+    public static let Devices = NSLocalizedString("Devices", tableName: "BraveShared", value: "Devices", comment: "Sync device settings page title.")
+    public static let CodeWordInputHelp = NSLocalizedString("CodeWordInputHelp", tableName: "BraveShared", value: "Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose “Add Device” then “Display code words instead”", comment: "Code words input help")
+    public static let CopyToClipboard = NSLocalizedString("CopyToClipboard", tableName: "BraveShared", value: "Copy to Clipboard", comment: "Copy codewords title")
+    public static let CopiedToClipboard = NSLocalizedString("CopiedToClipboard", tableName: "BraveShared", value: "Copied to Clipboard!", comment: "Copied codewords title")
+    public static let SyncUnsuccessful = NSLocalizedString("SyncUnsuccessful", tableName: "BraveShared", value: "Unsuccessful", comment: "")
+    public static let SyncUnableCreateGroup = NSLocalizedString("SyncUnableCreateGroup", tableName: "BraveShared", value: "Unable to create new sync group.", comment: "Description on popup when setting up a sync group fails")
+    public static let Copied = NSLocalizedString("Copied", tableName: "BraveShared", value: "Copied!", comment: "Copied action complete title")
+    public static let WordCount = NSLocalizedString("WordCount", tableName: "BraveShared", value: "Word count: %i", comment: "Word count title")
+    public static let UnableToConnectTitle = NSLocalizedString("UnableToConnectTitle", tableName: "BraveShared", value: "Unable to Connect", comment: "Sync Alert")
+    public static let UnableToConnectDescription = NSLocalizedString("UnableToConnectDescription", tableName: "BraveShared", value: "Unable to join sync group. Please check the entered words and try again.", comment: "Sync Alert")
+    public static let EnterCodeWordsBelow = NSLocalizedString("EnterCodeWordsBelow", tableName: "BraveShared", value: "Enter code words below", comment: "Enter sync code words below")
+    public static let SyncRemoveThisDevice = NSLocalizedString("SyncRemoveThisDevice", tableName: "BraveShared", value: "Remove this device", comment: "Sync remove device.")
+    public static let SyncRemoveThisDeviceQuestion = NSLocalizedString("SyncRemoveThisDeviceQuestion", tableName: "BraveShared", value: "Remove this device?", comment: "Sync remove device?")
+    public static let SyncRemoveThisDeviceQuestionDesc = NSLocalizedString("SyncRemoveThisDeviceQuestionDesc", tableName: "BraveShared", value: "This device will be disconnected from sync group and no longer receive or send sync data. All existing data will remain on device.", comment: "Sync remove device?")
+    public static let Pair = NSLocalizedString("Pair", tableName: "BraveShared", value: "Pair", comment: "Sync pair device settings section title")
+    public static let SyncDeviceSettingsFooter = NSLocalizedString("SyncDeviceSettingsFooter", tableName: "BraveShared", value: "Changing settings will only affect data that this device shares with others.", comment: "Sync device settings footer details")
+    public static let SyncAddAnotherDevice = NSLocalizedString("SyncAddAnotherDevice", tableName: "BraveShared", value: "Add another device", comment: "Add another device cell button.")
+    public static let SyncAddMobileButton = NSLocalizedString("SyncAddMobileButton", tableName: "BraveShared", value: "Add a Mobile Device", comment: "Add mobile device button title")
+    public static let SyncAddComputerButton = NSLocalizedString("SyncAddComputerButton", tableName: "BraveShared", value: "Add a Computer", comment: "Add mobile device button title")
+    public static let GrantCameraAccess = NSLocalizedString("GrantCameraAccess", tableName: "BraveShared", value: "Enable Camera", comment: "Grand camera access")
+    public static let NotEnoughWordsTitle = NSLocalizedString("NotEnoughWordsTitle", tableName: "BraveShared", value: "Not Enough Words", comment: "Sync Alert")
+    public static let NotEnoughWordsDescription = NSLocalizedString("NotEnoughWordsDescription", tableName: "BraveShared", value: "Please enter all of the words and try again.", comment: "Sync Alert")
+    public static let RemoveDevice = NSLocalizedString("RemoveDevice", tableName: "BraveShared", value: "Remove", comment: "Action button for removing sync device.")
+}
+
+
 public extension Strings {
     public static let Home = NSLocalizedString("Home", tableName: "BraveShared", value: "Home", comment: "")
 }

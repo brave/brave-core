@@ -9,6 +9,7 @@ import Static
 import SwiftKeychainWrapper
 import LocalAuthentication
 import SwiftyJSON
+import Data
 
 extension TabBarVisibility: RepresentableOptionType {
     public var displayString: String {
@@ -92,19 +93,27 @@ class SettingsViewController: TableViewController {
         tableView.accessibilityIdentifier = "SettingsViewController.tableView"
         tableView.separatorColor = UIConstants.TableViewSeparatorColor
         tableView.backgroundColor = UIConstants.TableViewHeaderBackgroundColor
-        
-        dataSource.sections = [
-            generalSection,
-            privacySection,
-            securitySection,
-            shieldsSection,
-            supportSection,
-            aboutSection
-        ]
+
+        dataSource.sections = sections
+    }
+    
+    private var sections: [Section] {
+        var list = [Section]()
+        list.append(generalSection)
+        #if !NO_SYNC
+            list.append(syncSection)
+        #endif
+        list.append(contentsOf: [privacySection,
+                                 securitySection,
+                                 shieldsSection,
+                                 supportSection,
+                                 aboutSection])
         
         if let debugSection = debugSection {
-            dataSource.sections.append(debugSection)
+            list.append(debugSection)
         }
+
+        return list
     }
     
     @objc private func tappedDone() {
@@ -154,6 +163,33 @@ class SettingsViewController: TableViewController {
         }
         
         return general
+    }()
+    
+    private lazy var syncSection: Section = {
+        
+        return Section(
+            // BRAVE TODO: Change it once we finalize our decision how to name the section.(#385)
+            header: .title("Other Settings"),
+            rows: [
+                Row(text: Strings.Sync, selection: { [unowned self] in
+                    
+                    if Sync.shared.isInSyncGroup {
+                        let syncSettingsVC = SyncSettingsTableViewController(style: .grouped)
+                        syncSettingsVC.dismissHandler = {
+                            self.navigationController?.popToRootViewController(animated: true)
+                        }
+                        
+                        self.navigationController?.pushViewController(syncSettingsVC, animated: true)
+                    } else {
+                        let view = SyncWelcomeViewController()
+                        view.dismissHandler = {
+                            view.navigationController?.popToRootViewController(animated: true)
+                        }
+                        self.navigationController?.pushViewController(view, animated: true)
+                    }
+                }, accessory: .disclosureIndicator)
+            ]
+        )
     }()
     
     private lazy var privacySection: Section = {

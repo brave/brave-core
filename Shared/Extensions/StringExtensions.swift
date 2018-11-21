@@ -91,4 +91,9 @@ public extension String {
         let regex = try NSRegularExpression(pattern: pattern, options: [])
         return regex.stringByReplacingMatches(in: self, options: [], range: NSRange(location: 0, length: self.count), withTemplate: with)
     }
+    
+    func separatedBy(_ string: String) -> [String] {
+        let cleaned = self.replacingOccurrences(of: "\n", with: " ")
+        return cleaned.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: string)
+    }
 }

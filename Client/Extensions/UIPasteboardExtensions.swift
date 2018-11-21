@@ -57,4 +57,14 @@ extension UIPasteboard {
         }
         return deferred
     }
+    
+    /// Clears clipboard after certain amount of seconds and returns its timer.
+    @discardableResult func clear(after seconds: TimeInterval = 0) -> Timer {
+        return Timer.scheduledTimer(timeInterval: seconds, target: self, selector: #selector(clearPasteboard),
+                                    userInfo: nil, repeats: false)
+    }
+    
+    @objc func clearPasteboard() {
+        UIPasteboard.general.string = ""
+    }
 }

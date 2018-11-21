@@ -55,7 +55,18 @@ public extension Array {
             }
         }
     }
-
+    
+    /// Returns a unique list of Elements using a custom comparator.
+    /// Super inefficient.
+    func unique(f: (Element, Element) -> Bool) -> [Element] {
+        var result = [Element]()
+        self.forEach {
+            if !result.contains($0, f: f) {
+                result.append($0)
+            }
+        }
+        return result
+    }
 }
 
 public extension Sequence {

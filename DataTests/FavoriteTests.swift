@@ -20,12 +20,7 @@ class FavoriteTests: CoreDataTestCase {
         return fetchRequest
     }()
     
-    private lazy var fetchController = NSFetchedResultsController<Bookmark>(
-        fetchRequest: fetchRequest,
-        managedObjectContext: DataController.viewContext,
-        sectionNameKeyPath: nil,
-        cacheName: nil
-    )
+    private lazy var fetchController = Bookmark.frc(forFavorites: true, parentFolder: nil)
     
     private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
         return NSEntityDescription.entity(forEntityName: String(describing: Bookmark.self), in: context)!
@@ -120,24 +115,14 @@ class FavoriteTests: CoreDataTestCase {
         try! fetchController.performFetch()
         XCTAssertNotNil(fetchController.fetchedObjects)
         
-        // Fetched objects starts un-ordered (all have 0 order)
-        fetchController.fetchedObjects!.forEach {
-            XCTAssertEqual($0.order, 0)
-        }
-        
         // Upon re-order, each now has a given order
         reorder(0, toIndex: 2)
         // Check to see if an order (2) has been given to fetchedObjects index 0
-        XCTAssertEqual(fetchController.fetchedObjects![0].order, 2)
+        XCTAssertEqual(fetchController.fetchedObjects![0].syncOrder, "0.0.3.1")
         
         // Verify that order is now taken into account by refetching
         try! fetchController.performFetch()
         XCTAssertNotNil(fetchController.fetchedObjects)
-        
-        // Fetched objects should be sorted by order
-        for (i, obj) in fetchController.fetchedObjects!.enumerated() {
-            XCTAssertEqual(obj.order, Int16(i))
-        }
     }
     
     func testReorderFavorites() {
@@ -151,9 +136,9 @@ class FavoriteTests: CoreDataTestCase {
         
         reorder(0, toIndex: 2)
         // Check to see if an order (2) has been given to fetchedObjects index 0
-        XCTAssertEqual(first.order, 2)
+        XCTAssertEqual(first.syncOrder, "0.0.3.1")
         // The second favorite should have been pushed backwards to 0 since we moved the original 0 to 2
-        XCTAssertEqual(second.order, 0)
+        XCTAssertEqual(second.syncOrder, "0.0.2")
         
         // Order is now taken into account by refetching
         try! fetchController.performFetch()
@@ -164,7 +149,7 @@ class FavoriteTests: CoreDataTestCase {
         // Verify that the first object at index 0 is the original pushed back one
         XCTAssertEqual(fetchController.fetchedObjects![0], second)
         // Verify that the object at index 1 was pushed back
-        XCTAssertEqual(fetchController.fetchedObjects![1].order, 1)
+        XCTAssertEqual(fetchController.fetchedObjects![1].syncOrder, "0.0.3")
     }
     
     func testMoveToStart() {
@@ -177,7 +162,7 @@ class FavoriteTests: CoreDataTestCase {
         let startIndex = fetchController.fetchedObjects!.startIndex
         
         reorder(3, toIndex: startIndex)
-        XCTAssertEqual(object.order, Int16(startIndex))
+        XCTAssertEqual(object.syncOrder, "0.0.0.1")
         
         // Order is now taken into account by refetching
         try! fetchController.performFetch()
@@ -196,7 +181,7 @@ class FavoriteTests: CoreDataTestCase {
         let endIndex = fetchController.fetchedObjects!.endIndex - 1
         
         reorder(0, toIndex: endIndex)
-        XCTAssertEqual(first.order, Int16(endIndex))
+        XCTAssertEqual(first.syncOrder, "0.0.6")
         
         // Order is now taken into account by refetching
         try! fetchController.performFetch()

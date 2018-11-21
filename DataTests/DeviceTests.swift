@@ -15,22 +15,28 @@ class DeviceTests: CoreDataTestCase {
     }
     
     func testCurrentDevice() {
-        var device: Device?
         
+        // Adding not current device to verify nothing is returned in Device.currentDevice()
         backgroundSaveAndWaitForExpectation {
-            device = Device.currentDevice()
+            Device.add(name: "Brave")
         }
-        let newDevice = Device.currentDevice()
+        let device = Device.currentDevice()
         
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
         
-        XCTAssertEqual(device, newDevice)
+        XCTAssertNil(device)
         
+        backgroundSaveAndWaitForExpectation {
+            Device.add(name: "Second device", isCurrent: true)
+        }
+        
+        let newCurrentDevice = Device.currentDevice()
+        XCTAssertNotNil(newCurrentDevice)
     }
 
     func testDeleteAll() {
         backgroundSaveAndWaitForExpectation {
-            _ = Device.currentDevice()
+            Device.add(name: "Brave")
         }
         
         backgroundSaveAndWaitForExpectation {
@@ -60,6 +66,10 @@ class DeviceTests: CoreDataTestCase {
         let root = SyncDevice()
         root.name = newName
         root.deviceId = newDeviceId
+        
+        backgroundSaveAndWaitForExpectation {
+            Device.add(name: "Brave", isCurrent: true)
+        }
         
         let device = Device.currentDevice()
         

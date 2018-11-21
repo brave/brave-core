@@ -21,7 +21,7 @@ public final class Device: NSManagedObject, Syncable, CRUD {
     
     // Device is subtype of prefs 🤢
     public var recordType: SyncRecordType = .prefs
-
+    
     // Just a facade around the displayId, for easier access and better CD storage
     var deviceId: [Int]? {
         get { return SyncHelpers.syncUUID(fromString: deviceDisplayId) }
@@ -31,6 +31,18 @@ public final class Device: NSManagedObject, Syncable, CRUD {
     // This should be abstractable
     public func asDictionary(deviceId: [Int]?, action: Int?) -> [String: Any] {
         return SyncDevice(record: self, deviceId: deviceId, action: action).dictionaryRepresentation()
+    }
+    
+    public static func frc() -> NSFetchedResultsController<Device> {
+        let context = DataController.viewContext
+        let fetchRequest = NSFetchRequest<Device>()
+        fetchRequest.entity = Device.entity(context: context)
+        
+        let currentDeviceSort = NSSortDescriptor(key: "isCurrentDevice", ascending: false)
+        fetchRequest.sortDescriptors = [currentDeviceSort]
+        
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context,
+                                          sectionNameKeyPath: nil, cacheName: nil)
     }
     
     public static func add(rootObject root: SyncRecord?, save: Bool, sendToSync: Bool, context: NSManagedObjectContext) -> Syncable? {
@@ -51,8 +63,16 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         return device
     }
     
-    public class func add(save: Bool = true, context: NSManagedObjectContext) -> Device? {
-        return add(rootObject: nil, save: save, sendToSync: false, context: context) as? Device
+    public class func add(name: String?, isCurrent: Bool = false) {
+        let context = DataController.newBackgroundContext()
+        
+        let device = Device(entity: Device.entity(context: context), insertInto: context)
+        device.created = Date()
+        device.syncUUID = SyncCrypto.uniqueSerialBytes(count: 16)
+        device.name = name
+        device.isCurrentDevice = isCurrent
+        
+        DataController.save(context: context)
     }
     
     public func update(syncRecord record: SyncRecord?) {
@@ -63,25 +83,13 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         // No save currently
     }
     
+    /// Returns a current device and assings it to a shared variable.
     public static func currentDevice() -> Device? {
-        
         if sharedCurrentDevice == nil {
-            var device: Device?
-            
-            let predicate = NSPredicate(format: "isCurrentDevice = YES")
-            
-            let existingDevice = first(where: predicate)
-            
-            if existingDevice != nil {
-                device = existingDevice
-            } else {
-                let newDevice = add(context: DataController.newBackgroundContext())
-                newDevice?.isCurrentDevice = true
-                device = newDevice
-            }
-            
-            sharedCurrentDevice = device
+            let predicate = NSPredicate(format: "isCurrentDevice == true")
+            sharedCurrentDevice = first(where: predicate)
         }
+        
         return sharedCurrentDevice
     }
     
@@ -89,4 +97,18 @@ public final class Device: NSManagedObject, Syncable, CRUD {
         sharedCurrentDevice = nil
         Device.deleteAll(includesPropertyValues: false)
     }
+    
+    // BRAVE TODO:
+    /*
+    public class func deviceSettings(profile: Profile) -> [SyncDeviceSetting]? {
+        // Building settings off of device objects
+        
+        let deviceSettings = Device.all()?.map {
+            // Even if no 'real' title, still want it to show up in list
+            return SyncDeviceSetting(profile: profile, device: $0)
+        }
+        
+        return deviceSettings
+    }
+    */
 }
