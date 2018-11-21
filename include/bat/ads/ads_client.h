@@ -84,12 +84,6 @@ class ADS_EXPORT AdsClient {
   // Gets whether notifications are available within the Operating System
   virtual bool IsNotificationsAvailable() const = 0;
 
-  // Gets whether notifications are configured within the Operating System
-  virtual bool IsNotificationsConfigured() const = 0;
-
-  // Gets whether notifications are enabled within the Operating System
-  virtual bool IsNotificationsEnabled() const = 0;
-
   // Gets whether notifications have expired
   virtual bool IsNotificationsExpired() const = 0;
 

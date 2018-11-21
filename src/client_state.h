@@ -22,10 +22,8 @@ struct ClientState {
   std::string ad_uuid;
   std::map<std::string, uint64_t> ads_uuid_seen;
   bool available;
-  bool allowed;
-  bool configured;
-  bool expired;
   std::string current_ssid;
+  bool expired;
   uint64_t last_search_time;
   uint64_t last_shop_time;
   uint64_t last_user_activity;

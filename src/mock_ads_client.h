@@ -44,8 +44,6 @@ class MockAdsClient : public AdsClient {
   const std::string GetSSID() const override;
 
   bool IsNotificationsAvailable() const override;
-  bool IsNotificationsConfigured() const override;
-  bool IsNotificationsEnabled() const override;
   bool IsNotificationsExpired() const override;
   void ShowNotification(std::unique_ptr<NotificationInfo> info) override;
 

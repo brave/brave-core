@@ -35,10 +35,6 @@ class Client {
   void ResetAdsUUIDSeen(const std::vector<AdInfo>& ads);
   void SetAvailable(const bool available);
   bool GetAvailable() const;
-  void SetAllowed(const bool allowed);
-  bool GetAllowed() const;
-  void SetConfigured(const bool configured);
-  bool GetConfigured() const;
   void SetExpired(const bool expired);
   bool GetExpired() const;
   void SetCurrentSSID(const std::string& ssid);

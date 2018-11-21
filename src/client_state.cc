@@ -12,8 +12,9 @@ ClientState::ClientState() :
     ads_shown_history({}),
     ad_uuid(""),
     ads_uuid_seen({}),
-    allowed(false),
+    available(false),
     current_ssid(""),
+    expired(false),
     last_search_time(0),
     last_shop_time(0),
     last_user_activity(0),
@@ -33,8 +34,9 @@ ClientState::ClientState(const ClientState& state) {
   ads_shown_history = state.ads_shown_history;
   ad_uuid = state.ad_uuid;
   ads_uuid_seen = state.ads_uuid_seen;
-  allowed = state.allowed;
+  available = state.available;
   current_ssid = state.current_ssid;
+  expired = state.expired;
   last_search_time = state.last_search_time;
   last_shop_time = state.last_shop_time;
   last_user_activity = state.last_user_activity;
@@ -82,20 +84,12 @@ bool ClientState::LoadFromJson(const std::string& json) {
     available = client["available"].GetBool();
   }
 
-  if (client.HasMember("allowed")) {
-    allowed = client["allowed"].GetBool();
-  }
-
-  if (client.HasMember("configured")) {
-    configured = client["configured"].GetBool();
+  if (client.HasMember("currentSSID")) {
+    current_ssid = client["currentSSID"].GetString();
   }
 
   if (client.HasMember("expired")) {
     expired = client["expired"].GetBool();
-  }
-
-  if (client.HasMember("currentSSID")) {
-    current_ssid = client["currentSSID"].GetString();
   }
 
   if (client.HasMember("lastSearchTime")) {
@@ -193,17 +187,11 @@ void SaveToJson(JsonWriter& writer, const ClientState& state) {
   writer.String("available");
   writer.Bool(state.available);
 
-  writer.String("allowed");
-  writer.Bool(state.allowed);
-
-  writer.String("configured");
-  writer.Bool(state.configured);
+  writer.String("currentSSID");
+  writer.String(state.current_ssid.c_str());
 
   writer.String("expired");
   writer.Bool(state.expired);
-
-  writer.String("currentSSID");
-  writer.String(state.current_ssid.c_str());
 
   writer.String("lastSearchTime");
   writer.Uint64(state.last_search_time);

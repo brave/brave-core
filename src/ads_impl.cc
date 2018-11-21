@@ -200,7 +200,6 @@ void AdsImpl::InitializeStep3() {
 
   ads_client_->SetIdleThreshold(kIdleThresholdInSeconds);
 
-  NotificationConfigurationCheck();
   NotificationAllowedCheck(false);
 
   RetrieveSSID();
@@ -376,28 +375,16 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   LoadUserModel();
 }
 
-void AdsImpl::NotificationConfigurationCheck() {
-  auto ok = ads_client_->IsNotificationsConfigured();
-
-  // TODO(Terry Mancey): Implement Log (#44)
-  // appConstants.APP_ON_NATIVE_NOTIFICATION_CONFIGURATION_CHECK, {err, result}
-
-  auto previous = client_->GetConfigured();
-  if (ok != previous) {
-    client_->SetConfigured(ok);
-  }
-}
-
 void AdsImpl::NotificationAllowedCheck(const bool serve) {
-  auto ok = ads_client_->IsNotificationsEnabled();
+  auto ok = ads_client_->IsNotificationsAvailable();
 
   // TODO(Terry Mancey): Implement Log (#44)
-  // appConstants.APP_ON_NATIVE_NOTIFICATION_ALLOWED_CHECK, {err, result}
+  // appConstants.APP_ON_NATIVE_NOTIFICATION_AVAILABLE_CHECK, {err, result}
 
-  auto previous = client_->GetAllowed();
+  auto previous = client_->GetAvailable();
 
   if (ok != previous) {
-    client_->SetAllowed(ok);
+    client_->SetAvailable(ok);
   }
 
   if (!serve || ok != previous) {
@@ -1200,13 +1187,9 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   writer.String("notifications");
   writer.StartObject();
 
-  writer.String("configured");
-  auto configured = ads_client_->IsNotificationsConfigured();
+  writer.String("available");
+  auto configured = ads_client_->IsNotificationsAvailable();
   writer.Bool(configured);
-
-  writer.String("allowed");
-  auto allowed = client_->GetAllowed();
-  writer.Bool(allowed);
 
   writer.EndObject();
 

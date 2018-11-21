@@ -85,31 +85,6 @@ const std::string MockAdsClient::GetSSID() const {
 }
 
 bool MockAdsClient::IsNotificationsAvailable() const {
-  // See "const available = ()" in "browser-laptop/node_modules/
-  // brave-ads-notifier/index.js" repo for business logic
-
-  return true;
-}
-
-bool MockAdsClient::IsNotificationsConfigured() const {
-  // See "const configured = (appID, callback)" in "browser-laptop/node_modules/
-  // brave-ads-notifier/index.js" repo for business logic
-
-  if (!IsNotificationsAvailable()) {
-    return false;
-  }
-
-  return true;
-}
-
-bool MockAdsClient::IsNotificationsEnabled() const {
-  // See "const enabled = (appID, callback)" in "browser-laptop/node_modules/
-  // brave-ads-notifier/index.js" repo for business logic
-
-  if (!IsNotificationsConfigured()) {
-    return false;
-  }
-
   return true;
 }
 

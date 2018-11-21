@@ -5,10 +5,8 @@
   "adsUUIDSeen": {
   },
   "available": false,
-  "allowed": false,
-  "configured": false,
-  "currentSSID": "",
   "expired": false,
+  "currentSSID": "",
   "lastSearchTime": 0,
   "lastShopTime": 0,
   "lastUserActivity": 0,

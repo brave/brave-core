@@ -76,7 +76,6 @@ class AdsImpl : public Ads {
 
   void ChangeLocale(const std::string& locale) override;
 
-  void NotificationConfigurationCheck();
   void NotificationAllowedCheck(const bool serve);
 
   void CheckReadyAdServe(const bool forced = false) override;
