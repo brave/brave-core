@@ -38,8 +38,6 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   static GURL GetTabURLFromRenderFrameInfo(int render_process_id, int render_frame_id);
   void AllowScriptsOnce(const std::vector<std::string>& origins,
                         content::WebContents* web_contents);
-  bool IsBlockedSubresource(const std::string& subresource);
-  void AddBlockedSubresource(const std::string& subresource);
 
  protected:
     // A set of identifiers that uniquely identifies a RenderFrame.
@@ -80,12 +78,9 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   // UI thread and read on the IO thread.
   static base::Lock frame_data_map_lock_;
 
- private:
-  friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
-  std::vector<std::string> allowed_script_origins_;
-  // We keep a set of the current page's blocked URLs in case the page
-  // continually tries to load the same blocked URLs.
-  std::set<std::string> blocked_url_paths_;
+  private:
+    friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
+    std::vector<std::string> allowed_script_origins_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveShieldsWebContentsObserver);
 };

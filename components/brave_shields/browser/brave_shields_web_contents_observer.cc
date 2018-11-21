@@ -182,17 +182,6 @@ GURL BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
   return GURL();
 }
 
-bool BraveShieldsWebContentsObserver::IsBlockedSubresource(
-    const std::string& subresource) {
-  return blocked_url_paths_.find(subresource) != blocked_url_paths_.end();
-}
-
-void BraveShieldsWebContentsObserver::AddBlockedSubresource(
-    const std::string& subresource) {
-  blocked_url_paths_.insert(subresource);
-}
-
-// static
 void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
     std::string block_type,
     std::string subresource,
@@ -206,35 +195,28 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
   DispatchBlockedEventForWebContents(block_type, subresource, web_contents);
 
   if (web_contents) {
-    BraveShieldsWebContentsObserver* observer =
-        BraveShieldsWebContentsObserver::FromWebContents(web_contents);
-    if (observer &&
-        !observer->IsBlockedSubresource(subresource)) {
-      observer->AddBlockedSubresource(subresource);
-      PrefService* prefs = Profile::FromBrowserContext(
-          web_contents->GetBrowserContext())->
-          GetOriginalProfile()->
-          GetPrefs();
+    PrefService* prefs = Profile::FromBrowserContext(
+        web_contents->GetBrowserContext())->
+        GetOriginalProfile()->
+        GetPrefs();
 
-      if (block_type == kAds) {
-        prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
-      } else if (block_type == kTrackers) {
-        prefs->SetUint64(kTrackersBlocked,
-            prefs->GetUint64(kTrackersBlocked) + 1);
-      } else if (block_type == kHTTPUpgradableResources) {
-        prefs->SetUint64(kHttpsUpgrades, prefs->GetUint64(kHttpsUpgrades) + 1);
-      } else if (block_type == kJavaScript) {
-        prefs->SetUint64(kJavascriptBlocked,
-            prefs->GetUint64(kJavascriptBlocked) + 1);
-      } else if (block_type == kFingerprinting) {
-        prefs->SetUint64(kFingerprintingBlocked,
-            prefs->GetUint64(kFingerprintingBlocked) + 1);
-      }
+    if (block_type == kAds) {
+      prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
+    } else if (block_type == kTrackers) {
+      prefs->SetUint64(kTrackersBlocked,
+          prefs->GetUint64(kTrackersBlocked) + 1);
+    } else if (block_type == kHTTPUpgradableResources) {
+      prefs->SetUint64(kHttpsUpgrades, prefs->GetUint64(kHttpsUpgrades) + 1);
+    } else if (block_type == kJavaScript) {
+      prefs->SetUint64(kJavascriptBlocked,
+          prefs->GetUint64(kJavascriptBlocked) + 1);
+    } else if (block_type == kFingerprinting) {
+      prefs->SetUint64(kFingerprintingBlocked,
+          prefs->GetUint64(kFingerprintingBlocked) + 1);
     }
   }
 }
 
-// static
 void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     const std::string& block_type, const std::string& subresource,
     WebContents* web_contents) {
@@ -313,11 +295,9 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
   // when the main frame navigate away
   if (navigation_handle->IsInMainFrame() &&
-      !navigation_handle->IsSameDocument()) {
+      !navigation_handle->IsSameDocument() &&
+      navigation_handle->GetReloadType() == content::ReloadType::NONE) {
     allowed_script_origins_.clear();
-    if (navigation_handle->GetReloadType() == content::ReloadType::NONE) {
-      blocked_url_paths_.clear();
-    }
   }
 
   navigation_handle->GetWebContents()->SendToAllFrames(
