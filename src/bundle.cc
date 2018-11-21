@@ -25,6 +25,7 @@ Bundle::~Bundle() = default;
 
 bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
   // TODO(Terry Mancey): Refactor function to use callbacks
+
   auto bundle_state = GenerateFromCatalog(catalog);
   if (!bundle_state) {
     return false;
@@ -69,6 +70,7 @@ uint64_t Bundle::GetCatalogPing() const {
 std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
     const Catalog& catalog) {
   // TODO(Terry Mancey): Refactor function to use callbacks
+
   std::map<std::string, std::vector<AdInfo>> categories;
 
   // Campaigns

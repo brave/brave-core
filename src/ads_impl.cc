@@ -526,9 +526,10 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
 }
 
 void AdsImpl::InitializeUserModel(const std::string& json) {
+  // TODO(Terry Mancey): Refactor function to use callbacks
+
   LOG(LogLevel::INFO) << "Initializing user model";
 
-  // TODO(Terry Mancey): Refactor to use callbacks
   user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->initializePageClassifier(json);
 }
