@@ -8,7 +8,7 @@ namespace ads {
 
 ClientInfo::ClientInfo() :
     application_version(""),
-    platform(""),
+    platform(ClientInfoPlatformType::UNKNOWN),
     platform_version("") {}
 
 ClientInfo::ClientInfo(const ClientInfo& info) :

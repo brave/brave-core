@@ -7,6 +7,7 @@
 #include <string>
 
 #include "bat/ads/export.h"
+#include "bat/ads/client_info_platform_type.h"
 
 namespace ads {
 
@@ -17,8 +18,16 @@ struct ADS_EXPORT ClientInfo {
 
   std::string application_version;
 
-  std::string platform;
+  ClientInfoPlatformType platform;
   std::string platform_version;
+
+  bool IsMobile() const {
+    if (platform == ANDROID || platform == IOS) {
+      return true;
+    }
+
+    return false;
+  }
 };
 
 }  // namespace ads
