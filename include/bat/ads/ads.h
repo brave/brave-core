@@ -33,7 +33,9 @@ class ADS_EXPORT Ads {
       const NotificationInfo& info) = 0;
 
   // Should be called when a notification has been clicked, dismissed or times
-  // out on the Client
+  // out on the Client. Dismiss events for local notifications may not be
+  // available for every version of Android, making the Dismiss notification
+  // capture optional for Android on 100% of devices
   virtual void GenerateAdReportingNotificationResultEvent(
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) = 0;
