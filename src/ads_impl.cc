@@ -506,11 +506,8 @@ void AdsImpl::Deinitialize() {
 }
 
 void AdsImpl::LoadUserModel() {
-  std::stringstream path;
-  path << "locales/" << client_->GetLocale() << "/user_model.json";
-
   auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
-  ads_client_->Load(path.str(), callback);
+  ads_client_->GetUserModelForLocale(client_->GetLocale(), callback);
 }
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
