@@ -107,9 +107,9 @@ void GetRenderFrameInfo(const URLRequest* request,
   if (request_info) {
     *frame_tree_node_id = request_info->GetFrameTreeNodeId();
   }
-  extensions::ExtensionApiFrameIdMap::FrameData frame_data;
   if (!content::ResourceRequestInfo::GetRenderFrameForRequest(
           request, render_process_id, render_frame_id)) {
+
     const content::WebSocketHandshakeRequestInfo* websocket_info =
       content::WebSocketHandshakeRequestInfo::ForRequest(request);
     if (websocket_info) {
