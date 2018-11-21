@@ -20,14 +20,15 @@ static const uint64_t kMaximumEntriesInAdsShownHistory = 99;
 
 static const uint64_t kMillisecondsInASecond = 1000;
 
-static const uint64_t kOneHourInSeconds = 60 * 60;
+static const uint64_t kOneMinuteInSeconds = 60;
+static const uint64_t kOneHourInSeconds = 60 * kOneMinuteInSeconds;
 static const uint64_t kDebugOneHourInSeconds = 25;
 
 static const uint64_t kNextEasterEggStartsInSeconds = 30;
 
 static const uint64_t kSustainAdInteractionAfterSeconds = 10;
 
-static const uint64_t kDefaultCatalogPing = kOneHourInSeconds * 2;
+static const uint64_t kDefaultCatalogPing = 2 * kOneHourInSeconds;
 
 static char kUnknownSSID[] = "UNKNOWN";
 static char kUndisclosedPlace[] = "UNDISCLOSED";

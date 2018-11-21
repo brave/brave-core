@@ -17,6 +17,7 @@ AdsServe::AdsServe(
     Bundle* bundle) :
       url_(""),
       next_catalog_check_(0),
+      next_retry_start_timer_in_(0),
       ads_(ads),
       ads_client_(ads_client),
       bundle_(bundle) {
@@ -122,6 +123,17 @@ void AdsServe::OnCatalogDownloaded(
   }
 
   if (should_retry) {
+    if (next_retry_start_timer_in_ == 0) {
+      ClientInfo client_info;
+      ads_client_->GetClientInfo(&client_info);
+
+      if (client_info.IsMobile()) {
+        next_retry_start_timer_in_ = 2 * kOneMinuteInSeconds;
+      } else {
+        next_retry_start_timer_in_ = kOneMinuteInSeconds;
+      }
+    }
+
     RetryDownloadingCatalog();
     return;
   }
@@ -132,12 +144,16 @@ void AdsServe::OnCatalogDownloaded(
 void AdsServe::Reset() {
   ads_->StopCollectingActivity();
 
+  next_retry_start_timer_in_ = 0;
+
   next_catalog_check_ = 0;
 
   ResetCatalog();
 }
 
 void AdsServe::UpdateNextCatalogCheck() {
+  next_retry_start_timer_in_ = 0;
+
   next_catalog_check_ = bundle_->GetCatalogPing();
   ads_->StartCollectingActivity(next_catalog_check_);
 }
@@ -145,6 +161,8 @@ void AdsServe::UpdateNextCatalogCheck() {
 //////////////////////////////////////////////////////////////////////////////
 
 bool AdsServe::ProcessCatalog(const std::string& json) {
+  // TODO(Terry Mancey): Refactor function to use callbacks
+
   Catalog catalog(ads_client_, bundle_);
 
   if (!catalog.FromJson(json)) {
@@ -172,14 +190,9 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
 }
 
 void AdsServe::RetryDownloadingCatalog() {
-  uint64_t start_timer_in;
-  if (_is_debug) {
-    start_timer_in = kDebugOneHourInSeconds;
-  } else {
-    start_timer_in = kOneHourInSeconds;
-  }
+  ads_->StartCollectingActivity(next_retry_start_timer_in_);
 
-  ads_->StartCollectingActivity(start_timer_in);
+  next_retry_start_timer_in_ *= 2;
 }
 
 void AdsServe::ResetCatalog() {

@@ -42,6 +42,7 @@ class AdsServe {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
   bool ProcessCatalog(const std::string& json);
+  uint64_t next_retry_start_timer_in_;
   void RetryDownloadingCatalog();
   void ResetCatalog();
 
