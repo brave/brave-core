@@ -4,7 +4,7 @@
 
 import styled, { css } from '../../../theme'
 import palette from '../../../theme/palette'
-const carat = require('./carat.svg')
+import caratUrl from './carat.svg'
 
 export interface SelectBoxProps {
   id?: string
@@ -33,7 +33,7 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   line-height: 18px;
   font-family: ${p => p.theme.fontFamily.heading};
   border: 1px solid ${palette.grey500};
-  background: url(${carat}) 98% / 10% no-repeat transparent;
+  background: url(${caratUrl}) 98% / 10% no-repeat transparent;
   /* avoid text overflow w/ carat */
   -webkit-padding-start: 10px;
   -webkit-padding-end: 32px;
