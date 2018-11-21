@@ -44,8 +44,8 @@ using OnResetCallback = std::function<void(Result)>;
 
 using OnGetAdsForCategoryCallback = std::function<void(Result,
   const std::string&, const std::vector<AdInfo>&)>;
-using OnGetAdForSampleCategoryCallback = std::function<void(Result,
-  const std::string&, const AdInfo&)>;
+using OnGetAdSampleBundleCallback = std::function<void(Result,
+  const std::string&)>;
 
 using URLRequestCallback = std::function<void(const int, const std::string&,
   const std::map<std::string, std::string>& headers)>;
@@ -140,9 +140,8 @@ class ADS_EXPORT AdsClient {
       const std::string& category,
       OnGetAdsForCategoryCallback callback) = 0;
 
-  // Gets a random sample ad
-  virtual void GetAdForSampleCategory(
-      OnGetAdForSampleCategoryCallback callback) = 0;
+  // Gets the sample ad bundle
+  virtual void GetAdSampleBundle(ads::OnGetAdSampleBundleCallback callback) = 0;
 
   // Gets the components of a URL
   virtual bool GetUrlComponents(

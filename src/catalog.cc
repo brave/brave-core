@@ -23,7 +23,7 @@ Catalog::~Catalog() {}
 bool Catalog::FromJson(const std::string& json) {
   auto catalog_state = std::make_unique<CatalogState>();
 
-  auto jsonSchema = ads_client_->LoadSchema("catalog-schema.json");
+  auto jsonSchema = ads_client_->LoadSchema("catalog");
   if (!LoadFromJson(*catalog_state, json, jsonSchema)) {
     LOG(LogLevel::ERROR) << "Failed to parse catalog: " << json;
     return false;

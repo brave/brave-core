@@ -116,10 +116,8 @@ class AdsImpl : public Ads {
       const Result result,
       const std::string& category,
       const std::vector<AdInfo>& ads);
-  void OnGetAdForSampleCategory(
-      const Result result,
-      const std::string& category,
-      const AdInfo& ad);
+  void OnGetAdSampleBundle(const Result result,
+                      const std::string& sample_bundle_json);
 
   uint32_t collect_activity_timer_id_;
   void CollectActivity();

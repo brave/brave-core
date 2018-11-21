@@ -452,9 +452,9 @@ void AdsImpl::ServeSampleAd() {
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::OnGetAdForSampleCategory,
-    this, _1, _2, _3);
-  ads_client_->GetAdForSampleCategory(callback);
+  auto callback = std::bind(&AdsImpl::OnGetAdSampleBundle,
+    this, _1, _2);
+  ads_client_->GetAdSampleBundle(callback);
 }
 
 void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
@@ -649,19 +649,47 @@ void AdsImpl::OnGetAdsForCategory(
   ShowAd(ad, category);
 }
 
-void AdsImpl::OnGetAdForSampleCategory(
+void AdsImpl::OnGetAdSampleBundle(
     const Result result,
-    const std::string& category,
-    const AdInfo& ad) {
+    const std::string& sample_bundle_json) {
   if (result == Result::FAILED) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ads for category', category }
-
-    LOG(LogLevel::WARNING) << "No ads found for \""
-      << category << "\" sample category";
-
+    LOG(LogLevel::WARNING) << "Could not load sample bundle";
     return;
   }
+
+  BundleState sample_bundle_state;
+  if (!sample_bundle_state.LoadFromJson(sample_bundle_json,
+        ads_client_->LoadSchema("bundle"))) {
+    LOG(LogLevel::WARNING) << "Invalid data for sample bundle";
+    return;
+  }
+
+
+  auto categories = sample_bundle_state.categories.begin();
+  auto categories_count = sample_bundle_state.categories.size();
+  if (categories_count == 0) {
+    LOG(LogLevel::WARNING) << "Sample bundle does not contain any categories";
+    return;
+  }
+
+  auto category_rand = helper::Math::Random(categories_count - 1);
+  std::advance(categories, static_cast<long>(category_rand));
+
+  auto category = categories->first;
+  auto ads = categories->second;
+
+  auto ads_count = ads.size();
+  if (ads_count == 0) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'no ads for category', category }
+    LOG(LogLevel::WARNING) << "No ads found for \""
+        << category << "\" sample category";
+    return;
+  }
+
+  auto ad_rand = helper::Math::Random(ads_count - 1);
+  auto ad = ads.at(ad_rand);
+
   ShowAd(ad, category);
 }
 
