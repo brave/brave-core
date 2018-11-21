@@ -59,18 +59,18 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts, 
     return;
   }
   std::string mediaId = braveledger_bat_helper::getMediaId(parts, type);
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) <<
     "Media request (" << type << "):";
   for (auto const& value : parts) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+    BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) <<
       ">> part " << value.first << " | " << value.second;
   }
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Media Id: " << mediaId;
+  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media Id: " << mediaId;
   if (mediaId.empty()) {
     return;
   }
   std::string media_key = braveledger_bat_helper::getMediaKey(mediaId, type);
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Media key: " << media_key;
+  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media key: " << media_key;
   uint64_t duration = 0;
   ledger::TwitchEventInfo twitchEventInfo;
   if (type == YOUTUBE_MEDIA_TYPE) {
@@ -85,7 +85,7 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts, 
       twitchEventInfo.time_ = iter->second;
     }
   }
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Media duration: " << duration;
+  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media duration: " << duration;
 
   ledger_->GetMediaPublisherInfo(media_key,
       std::bind(&BatGetMedia::getPublisherInfoDataCallback,

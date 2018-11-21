@@ -156,7 +156,7 @@ void BatContribution::StartReconcile(
       }
 
       if (ac_amount > balance) {
-        BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+        BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
           "You do not have enough funds for auto contribution";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
@@ -190,7 +190,7 @@ void BatContribution::StartReconcile(
     }
 
     if (fee + ac_amount > balance) {
-      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
         "You do not have enough funds to do recurring and auto contribution";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,
@@ -226,7 +226,7 @@ void BatContribution::StartReconcile(
     }
 
     if (fee > balance) {
-      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
         "You do not have enough funds to do a tip";
         OnReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS,
                             viewing_id,

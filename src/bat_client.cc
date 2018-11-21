@@ -430,6 +430,8 @@ void BatClient::getGrantCallback(bool success,
   bool ok = braveledger_bat_helper::loadFromJson(properties, response);
 
   if (!ok) {
+     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+       "Failed to load grant properties state";
     ledger_->OnGrant(ledger::Result::LEDGER_ERROR, properties);
     return;
   }
