@@ -160,13 +160,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByDefaultBlocker) {
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool as_expected = false;
+  bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "setExpectations(0, 1, 0, 0);"
-      "addImage('ad_banner.png')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
+      "addElement('ad_banner.png')",
+      &img_loaded));
+  EXPECT_FALSE(img_loaded);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -184,13 +183,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByDefaultBlocker
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool as_expected = false;
+  bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "setExpectations(1, 0, 0, 0);"
-      "addImage('logo.png')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
+      "addElement('logo.png')",
+      &img_loaded));
+  EXPECT_TRUE(img_loaded);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -214,13 +212,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool as_expected = false;
+  bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "setExpectations(0, 1, 0, 0);"
-      "addImage('ad_fr.png')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
+      "addElement('ad_fr.png')",
+      &img_loaded));
+  EXPECT_FALSE(img_loaded);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -244,13 +241,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NotAdsDoNotGetBlockedByRegionalBlocke
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool as_expected = false;
+  bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "setExpectations(1, 0, 0, 0);"
-      "addImage('logo.png')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
+      "addElement('logo.png')",
+      &img_loaded));
+  EXPECT_TRUE(img_loaded);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -279,103 +275,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedAfterDataFileVersionUpgr
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
-  bool as_expected = false;
+  bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
       contents,
-      "setExpectations(0, 1, 0, 0);"
-      "addImage('v4_specific_banner.png')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
+      "addElement('v4_specific_banner.png')",
+      &img_loaded));
+  EXPECT_FALSE(img_loaded);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
-}
-
-// Load a page with several of the same adblocked xhr requests, it should only count 1.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoSameAdsGetCountedAsOne) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
-  ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-
-  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
-  ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
-
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "setExpectations(0, 0, 1, 2);"
-      "xhr('adbanner.js');"
-      "xhr('normal.js');"
-      "xhr('adbanner.js')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
-}
-
-// Load a page with different adblocked xhr requests, it should count each.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TwoDiffAdsGetCountedAsTwo) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
-  ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-
-  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
-  ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
-
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "setExpectations(0, 0, 1, 2);"
-      "xhr('adbanner.js?1');"
-      "xhr('normal.js');"
-      "xhr('adbanner.js?2')",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
-}
-
-// New tab continues to count blocking the same resource
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NewTabContinuesToBlock) {
-  SetDefaultComponentIdAndBase64PublicKeyForTest(
-      kDefaultAdBlockComponentTestId,
-      kDefaultAdBlockComponentTestBase64PublicKey);
-  ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
-
-  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
-  ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
-
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "setExpectations(0, 0, 0, 1);"
-      "xhr('adbanner.js');",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
-
-  ui_test_utils::NavigateToURL(browser(), url);
-  contents = browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-
-  as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "setExpectations(0, 0, 0, 1);"
-      "xhr('adbanner.js');",
-      &as_expected));
-  EXPECT_TRUE(as_expected);
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
-
-  ui_test_utils::NavigateToURL(browser(), url);
 }
