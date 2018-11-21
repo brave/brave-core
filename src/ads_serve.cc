@@ -15,6 +15,8 @@ AdsServe::AdsServe(
     AdsImpl* ads,
     AdsClient* ads_client,
     Bundle* bundle) :
+      url_(""),
+      next_catalog_check_(0),
       ads_(ads),
       ads_client_(ads_client),
       bundle_(bundle) {

@@ -14,6 +14,7 @@
 #include "math_helper.h"
 #include "string_helper.h"
 #include "time_helper.h"
+#include "static_values.h"
 
 using namespace std::placeholders;
 
@@ -59,8 +60,15 @@ void MockAdsClient::GetClientInfo(ClientInfo* info) const {
 }
 
 const std::vector<std::string> MockAdsClient::GetLocales() const {
+  std::vector<std::string> locales = { "en", "fr", "de" };
+  return locales;
+}
+
+void MockAdsClient::LoadUserModelForLocale(
+    const std::string& locale,
+    OnLoadCallback callback) const {
   // User models are a dependency of the application and should be bundled
-  // accordingly, the following file structure should be used:
+  // accordingly, the following file structure could be used:
   //
   // locales/
   // ├── de/
@@ -69,11 +77,23 @@ const std::vector<std::string> MockAdsClient::GetLocales() const {
   // │   └── user_model.json
   // ├── fr/
   // │   └── user_model.json
-  //
-  // The directory structure should be traversed to get the available locales
 
-  std::vector<std::string> locales = { "en", "fr", "de" };
-  return locales;
+  std::stringstream path;
+  path << "resources/locales/" << locale << "/user_model.json";
+
+  LOG(LogLevel::INFO) << "Loading " << path.str();
+
+  std::ifstream ifs{path.str()};
+  if (ifs.fail()) {
+    callback(Result::FAILED, "");
+    return;
+  }
+
+  std::stringstream stream;
+  stream << ifs.rdbuf();
+  std::string json = stream.str();
+
+  callback(Result::SUCCESS, json);
 }
 
 const std::string MockAdsClient::GenerateUUID() const {
@@ -86,10 +106,6 @@ const std::string MockAdsClient::GetSSID() const {
 
 bool MockAdsClient::IsNotificationsAvailable() const {
   return true;
-}
-
-bool MockAdsClient::IsNotificationsExpired() const {
-  return false;
 }
 
 void MockAdsClient::ShowNotification(
@@ -175,9 +191,7 @@ void MockAdsClient::SaveBundleState(
   callback(Result::SUCCESS);
 }
 
-void MockAdsClient::Load(
-    const std::string& name,
-    OnLoadCallback callback) {
+void MockAdsClient::Load(const std::string& name, OnLoadCallback callback) {
   std::string path = "mock_data/" + name;
 
   LOG(LogLevel::INFO) << "Loading " << path;
@@ -195,9 +209,8 @@ void MockAdsClient::Load(
   callback(Result::SUCCESS, value);
 }
 
-const std::string MockAdsClient::Load(
-    const std::string& name) {
-  std::string path = "mock_data/" + name;
+const std::string MockAdsClient::LoadJsonSchema(const std::string& name) {
+  std::string path = "resources/" + name;
 
   LOG(LogLevel::INFO) << "Loading " << path;
 
@@ -251,27 +264,22 @@ void MockAdsClient::GetAdsForCategory(
   callback(Result::SUCCESS, category, categories->second);
 }
 
-void MockAdsClient::GetAdForSampleCategory(
-    OnGetAdForSampleCategoryCallback callback) {
-  auto categories = sample_bundle_state_->categories.begin();
+void MockAdsClient::LoadSampleBundle(OnLoadSampleBundleCallback callback) {
+  std::string path = "resources/sample_bundle.json";
 
-  auto categories_count = sample_bundle_state_->categories.size();
-  if (categories_count == 0) {
-    callback(Result::FAILED, "", {});
+  LOG(LogLevel::INFO) << "Loading " << path;
+
+  std::ifstream ifs{path};
+  if (ifs.fail()) {
+    callback(Result::FAILED, "");
     return;
   }
 
-  auto category_rand = helper::Math::Random(categories_count - 1);
-  std::advance(categories, static_cast<long>(category_rand));
+  std::stringstream stream;
+  stream << ifs.rdbuf();
+  std::string json = stream.str();
 
-  auto category = categories->first;
-  auto ads = categories->second;
-
-  auto ads_count = ads.size();
-  auto ad_rand = helper::Math::Random(ads_count - 1);
-  auto ad = ads.at(ad_rand);
-
-  callback(Result::SUCCESS, category, ad);
+  callback(Result::SUCCESS, json);
 }
 
 bool MockAdsClient::GetUrlComponents(
@@ -331,7 +339,7 @@ void MockAdsClient::EventLog(const std::string& json) {
 std::ostream& MockAdsClient::Log(
     const char* file,
     int line,
-    const ads::LogLevel log_level) const {
+    const LogLevel log_level) const {
   std::string level;
 
   switch (log_level) {
@@ -371,17 +379,17 @@ void MockAdsClient::OnBundleStateLoaded(
     return;
   }
 
-  auto jsonSchema = Load("bundle-schema.json");
+  auto json_schema = LoadJsonSchema(_bundle_schema_name);
 
   BundleState state;
-  if (!state.LoadFromJson(json, jsonSchema)) {
+  if (!state.LoadFromJson(json, json_schema)) {
     LOG(LogLevel::ERROR) << "Failed to parse bundle: " << json;
 
     return;
   }
 
   state.catalog_id = "a3cd25e99647957ca54c18cb52e0784e1dd6584d";
-  state.catalog_ping = 7200000;
+  state.catalog_ping = kDefaultCatalogPing;
   state.catalog_version = 1;
 
   bundle_state_.reset(new BundleState(state));
@@ -404,10 +412,10 @@ void MockAdsClient::OnSampleBundleStateLoaded(
     return;
   }
 
-  auto jsonSchema = Load("bundle-schema.json");
+  auto json_schema = LoadJsonSchema(_bundle_schema_name);
 
   BundleState state;
-  if (!state.LoadFromJson(json, jsonSchema)) {
+  if (!state.LoadFromJson(json, json_schema)) {
     LOG(LogLevel::ERROR) << "Failed to parse sample bundle: " << json;
 
     return;

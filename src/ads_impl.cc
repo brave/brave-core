@@ -439,9 +439,8 @@ void AdsImpl::ServeSampleAd() {
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::OnGetAdSampleBundle,
-    this, _1, _2);
-  ads_client_->GetAdSampleBundle(callback);
+  auto callback = std::bind(&AdsImpl::OnLoadSampleBundle, this, _1, _2);
+  ads_client_->LoadSampleBundle(callback);
 }
 
 void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
@@ -506,8 +505,9 @@ void AdsImpl::Deinitialize() {
 }
 
 void AdsImpl::LoadUserModel() {
+  auto locale = client_->GetLocale();
   auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
-  ads_client_->GetUserModelForLocale(client_->GetLocale(), callback);
+  ads_client_->LoadUserModelForLocale(locale, callback);
 }
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
@@ -633,26 +633,34 @@ void AdsImpl::OnGetAdsForCategory(
   ShowAd(ad, category);
 }
 
-void AdsImpl::OnGetAdSampleBundle(
+void AdsImpl::OnLoadSampleBundle(
     const Result result,
-    const std::string& sample_bundle_json) {
+    const std::string& json) {
   if (result == Result::FAILED) {
-    LOG(LogLevel::WARNING) << "Could not load sample bundle";
+    LOG(LogLevel::ERROR) << "Failed to load sample bundle";
     return;
   }
 
   BundleState sample_bundle_state;
-  if (!sample_bundle_state.LoadFromJson(sample_bundle_json,
-        ads_client_->LoadSchema("bundle"))) {
-    LOG(LogLevel::WARNING) << "Invalid data for sample bundle";
+  if (!sample_bundle_state.LoadFromJson(json,
+      ads_client_->LoadJsonSchema(_bundle_schema_name))) {
+    LOG(LogLevel::ERROR) << "Failed to parse sample bundle: " << json;
     return;
   }
 
+  // TODO(Terry Mancey): Sample bundle state should be persisted on the Client
+  // in a database so that sample ads can be fetched from the database rather
+  // than parsing the JSON each time, and be consistent with GetAdsForCategory,
+  // therefore the below code should be abstracted into GetAdForSampleCategory
+  // once the necessary changes have been made in Brave Core by Brian Johnson
 
   auto categories = sample_bundle_state.categories.begin();
   auto categories_count = sample_bundle_state.categories.size();
   if (categories_count == 0) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'no categories' }
     LOG(LogLevel::WARNING) << "Sample bundle does not contain any categories";
+
     return;
   }
 
@@ -667,7 +675,8 @@ void AdsImpl::OnGetAdSampleBundle(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
     LOG(LogLevel::WARNING) << "No ads found for \""
-        << category << "\" sample category";
+      << category << "\" sample category";
+
     return;
   }
 

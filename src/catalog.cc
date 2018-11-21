@@ -4,6 +4,7 @@
 
 #include "catalog.h"
 
+#include "bat/ads/ads.h"
 #include "bundle.h"
 #include "catalog_state.h"
 #include "json_helper.h"
@@ -23,8 +24,8 @@ Catalog::~Catalog() {}
 bool Catalog::FromJson(const std::string& json) {
   auto catalog_state = std::make_unique<CatalogState>();
 
-  auto jsonSchema = ads_client_->LoadSchema("catalog");
-  if (!LoadFromJson(*catalog_state, json, jsonSchema)) {
+  auto json_schema = ads_client_->LoadJsonSchema(_catalog_schema_name);
+  if (!LoadFromJson(*catalog_state, json, json_schema)) {
     LOG(LogLevel::ERROR) << "Failed to parse catalog: " << json;
     return false;
   }
@@ -62,12 +63,12 @@ const std::vector<CampaignInfo>& Catalog::GetCampaigns() const {
 
 void Catalog::Save(const std::string& json) {
   auto callback = std::bind(&Catalog::OnCatalogSaved, this, _1);
-  ads_client_->Save("catalog.json", json, callback);
+  ads_client_->Save(_catalog_name, json, callback);
 }
 
 void Catalog::Reset() {
   auto callback = std::bind(&Catalog::OnCatalogReset, this, _1);
-  ads_client_->Reset("catalog.json", callback);
+  ads_client_->Reset(_catalog_name, callback);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

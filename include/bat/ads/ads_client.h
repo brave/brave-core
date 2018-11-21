@@ -44,7 +44,8 @@ using OnResetCallback = std::function<void(Result)>;
 
 using OnGetAdsForCategoryCallback = std::function<void(Result,
   const std::string&, const std::vector<AdInfo>&)>;
-using OnGetAdSampleBundleCallback = std::function<void(Result,
+
+using OnLoadSampleBundleCallback = std::function<void(Result,
   const std::string&)>;
 
 using URLRequestCallback = std::function<void(const int, const std::string&,
@@ -75,8 +76,10 @@ class ADS_EXPORT AdsClient {
   // Gets available locales
   virtual const std::vector<std::string> GetLocales() const = 0;
 
-  virtual void GetUserModelForLocale(const std::string& locale,
-                                     OnLoadCallback callback) const = 0;
+  // Load User Model for specified locale
+  virtual void LoadUserModelForLocale(
+      const std::string& locale,
+      OnLoadCallback callback) const = 0;
 
   // Generate a v4 UUID
   virtual const std::string GenerateUUID() const = 0;
@@ -86,9 +89,6 @@ class ADS_EXPORT AdsClient {
 
   // Gets whether notifications are available within the Operating System
   virtual bool IsNotificationsAvailable() const = 0;
-
-  // Gets whether notifications have expired
-  virtual bool IsNotificationsExpired() const = 0;
 
   // Shows the notification
   virtual void ShowNotification(
@@ -122,7 +122,12 @@ class ADS_EXPORT AdsClient {
 
   // Loads a value
   virtual void Load(const std::string& name, OnLoadCallback callback) = 0;
-  virtual const std::string LoadSchema(const std::string& name) = 0;
+
+  // Loads a JSON schema
+  virtual const std::string LoadJsonSchema(const std::string& name) = 0;
+
+  // Loads the sample bundle
+  virtual void LoadSampleBundle(OnLoadSampleBundleCallback callback) = 0;
 
   // Reset a previously saved value
   virtual void Reset(
@@ -133,9 +138,6 @@ class ADS_EXPORT AdsClient {
   virtual void GetAdsForCategory(
       const std::string& category,
       OnGetAdsForCategoryCallback callback) = 0;
-
-  // Gets the sample ad bundle
-  virtual void GetAdSampleBundle(ads::OnGetAdSampleBundleCallback callback) = 0;
 
   // Gets the components of a URL
   virtual bool GetUrlComponents(
@@ -149,7 +151,7 @@ class ADS_EXPORT AdsClient {
   virtual std::ostream& Log(
       const char* file,
       int line,
-      const ads::LogLevel log_level) const = 0;
+      const LogLevel log_level) const = 0;
 };
 
 }  // namespace ads

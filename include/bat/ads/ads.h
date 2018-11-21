@@ -17,6 +17,11 @@ extern bool _is_debug;
 extern bool _is_testing;
 extern bool _is_production;
 
+extern const char _bundle_schema_name[];
+extern const char _catalog_schema_name[];
+extern const char _catalog_name[];
+extern const char _client_name[];
+
 class ADS_EXPORT Ads {
  public:
   Ads() = default;

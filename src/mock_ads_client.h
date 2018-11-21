@@ -39,12 +39,15 @@ class MockAdsClient : public AdsClient {
 
   const std::vector<std::string> GetLocales() const override;
 
+  void LoadUserModelForLocale(
+      const std::string& locale,
+      OnLoadCallback callback) const override;
+
   const std::string GenerateUUID() const override;
 
   const std::string GetSSID() const override;
 
   bool IsNotificationsAvailable() const override;
-  bool IsNotificationsExpired() const override;
   void ShowNotification(std::unique_ptr<NotificationInfo> info) override;
 
   uint32_t SetTimer(const uint64_t& time_offset) override;
@@ -67,7 +70,8 @@ class MockAdsClient : public AdsClient {
       OnSaveCallback callback) override;
 
   void Load(const std::string& name, OnLoadCallback callback) override;
-  const std::string Load(const std::string& name) override;
+
+  const std::string LoadJsonSchema(const std::string& name) override;
 
   void Reset(const std::string& name, OnResetCallback callback) override;
 
@@ -75,8 +79,7 @@ class MockAdsClient : public AdsClient {
       const std::string& category,
       OnGetAdsForCategoryCallback callback) override;
 
-  void GetAdForSampleCategory(
-      OnGetAdForSampleCategoryCallback callback) override;
+  void LoadSampleBundle(OnLoadSampleBundleCallback callback) override;
 
   bool GetUrlComponents(
       const std::string& url,
