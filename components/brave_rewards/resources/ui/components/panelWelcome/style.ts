@@ -4,8 +4,7 @@
 
 import styled from 'styled-components'
 import Heading from '../../../components/text/heading'
-
-const batOutline = require('./assets/batOutline.svg')
+import batOutlineUrl from './assets/batOutline.svg'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
@@ -17,7 +16,7 @@ export const StyledInnerWrapper = styled<{}, 'div'>('div')`
   margin: 0 auto;
   display: inline-block;
   padding: 35px 30px 25px;
-  background: url(${batOutline}) no-repeat top;
+  background: url(${batOutlineUrl}) no-repeat top;
 ` as any
 
 export const StyledHeaderText = styled<{}, 'p'>('p')`

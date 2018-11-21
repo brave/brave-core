@@ -3,8 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-
-const panelBg = require('./assets/panel.svg')
+import panelBgUrl from './assets/panel.svg'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   width: 100%;
@@ -12,7 +11,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   border-radius: 6px;
   margin-bottom: 15px;
   font-family: Poppins, sans-serif;
-  background: url(${panelBg}) no-repeat top left,
+  background: url(${panelBgUrl}) no-repeat top left,
   linear-gradient(to bottom right, #392dd1 0%, #5813a6 100%) 100% no-repeat;
   flex-direction: column;
 `

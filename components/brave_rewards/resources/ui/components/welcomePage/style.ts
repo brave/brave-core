@@ -4,8 +4,7 @@
 
 import styled from 'styled-components'
 import Heading from '../../../components/text/heading'
-
-const centerBackground = require('./assets/centerTextBackground.svg')
+import centerBackgroundUrl from './assets/centerTextBackground.svg'
 
 export const StyledOptInSection = styled<{}, 'section'>('section')`
   margin: 40px auto;
@@ -66,7 +65,7 @@ export const StyledTakeActionContent = styled<{}, 'section'>('section')`
 `
 
 export const StyledBackground = styled<{}, 'div'>('div')`
-  background: url(${centerBackground}) no-repeat top;
+  background: url(${centerBackgroundUrl}) no-repeat top;
 
   @media (max-width: 980px) {
     background: #F8FAFF;

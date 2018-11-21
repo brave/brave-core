@@ -6,7 +6,7 @@ import * as React from 'react'
 import { StyledWrapper, StyledDropArea, StyledDrag, StyledText, StyledImageWrap, StyledImage } from './style'
 import { getLocale } from '../../../helpers'
 
-const bat = require('./assets/bat.png')
+import batUrl from './assets/bat.png'
 
 export interface Props {
   id?: string
@@ -93,7 +93,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
       >
         <StyledDrag innerRef={this.refDrag}>
           <StyledImageWrap>
-            <StyledImage src={bat} onDragStart={this.onCaptchaDrag} draggable={true} />
+            <StyledImage src={batUrl} onDragStart={this.onCaptchaDrag} draggable={true} />
           </StyledImageWrap>
           <StyledText>
             {getLocale('dndCaptchaText1')} <b>{hint}</b> {getLocale('dndCaptchaText2')}

@@ -4,9 +4,8 @@
 
 import styled, { css } from 'styled-components'
 import { Props } from './index'
-
-const bg1 = require('./assets/bg_bats.svg')
-const bg2 = require('./assets/bg_hearts.svg')
+import bg1Url from './assets/bg_bats.svg'
+import bg2Url from './assets/bg_hearts.svg'
 
 interface StyleProps {
   padding?: boolean
@@ -95,7 +94,7 @@ export const StyledBannerImage = styled<Partial<Props>, 'div'>('div')`
   height: 176px;
   background: ${p => p.bgImage
     ? `url(${p.bgImage}) no-repeat top center / cover`
-    : `url(${bg1}) no-repeat top left, url(${bg2}) no-repeat top right, #9e9fab`
+    : `url(${bg1Url}) no-repeat top left, url(${bg2Url}) no-repeat top right, #9e9fab`
   };
 `
 

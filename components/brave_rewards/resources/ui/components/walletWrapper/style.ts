@@ -14,7 +14,7 @@ interface StyledProps {
   notification?: Notification | undefined
 }
 
-const panelBg = require('./assets/panel.svg')
+import panelBg from './assets/panel.svg'
 
 const getRGB = (rgbColor: string) => {
   return `rgb(${rgbColor})`
