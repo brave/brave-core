@@ -27,8 +27,6 @@ class Bundle {
   uint64_t GetCatalogPing() const;
 
  private:
-  void InitializeFromBundleState(std::unique_ptr<BundleState> state);
-
   std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
 
   void SaveState();
