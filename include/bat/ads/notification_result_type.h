@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <string>
-
 #include "bat/ads/export.h"
 
 namespace ads {
