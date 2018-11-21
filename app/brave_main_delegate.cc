@@ -135,6 +135,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     << "," << features::kDefaultEnableOopRasterization.name
     << "," << features::kVizDisplayCompositor.name
     << "," << autofill::features::kAutofillSaveCardSignInAfterLocalSave.name
+    << "," << features::kAudioServiceOutOfProcess.name
     << "," << autofill::features::kAutofillServerCommunication.name;
 
   command_line.AppendSwitchASCII(switches::kEnableFeatures,
