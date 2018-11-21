@@ -71,16 +71,36 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   // TODO(Terry Mancey): Refactor function to use callbacks
   std::map<std::string, std::vector<AdInfo>> categories;
 
+  // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
     std::vector<std::string> heirarchy = {};
 
+    // Geo Targets
+    std::vector<std::string>regions = {};
+
+    for (const auto& geo_target : campaign.geo_targets) {
+      std::string code = geo_target.code;
+
+      if (std::find(regions.begin(), regions.end(), code)
+          != heirarchy.end()) {
+        continue;
+      }
+
+      regions.push_back(code);
+    }
+
+    // Creative Sets
     for (const auto& creative_set : campaign.creative_sets) {
+      // Segments
       for (const auto& segment : creative_set.segments) {
         auto name = helper::String::ToLower(segment.name);
+
         if (std::find(heirarchy.begin(), heirarchy.end(), name)
-            == heirarchy.end()) {
-          heirarchy.push_back(name);
+            != heirarchy.end()) {
+          continue;
         }
+
+        heirarchy.push_back(name);
       }
 
       if (heirarchy.empty()) {
@@ -96,6 +116,9 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
       for (const auto& creative : creative_set.creatives) {
         AdInfo ad_info;
         ad_info.creative_set_id = creative_set.creative_set_id;
+        ad_info.startTimestamp = campaign.start_at;
+        ad_info.endTimestamp = campaign.end_at;
+        ad_info.regions = regions;
         ad_info.advertiser = creative.payload.title;
         ad_info.notification_text = creative.payload.body;
         ad_info.notification_url = creative.payload.target_url;

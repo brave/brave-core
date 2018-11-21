@@ -252,16 +252,17 @@ void MockAdsClient::Reset(
   callback(Result::SUCCESS);
 }
 
-void MockAdsClient::GetAdsForCategory(
+void MockAdsClient::GetAds(
+    const std::string& region,
     const std::string& category,
-    OnGetAdsForCategoryCallback callback) {
+    OnGetAdsCallback callback) {
   auto categories = bundle_state_->categories.find(category);
   if (categories == bundle_state_->categories.end()) {
-    callback(Result::FAILED, category, {});
+    callback(Result::FAILED, region, category, {});
     return;
   }
 
-  callback(Result::SUCCESS, category, categories->second);
+  callback(Result::SUCCESS, region, category, categories->second);
 }
 
 void MockAdsClient::LoadSampleBundle(OnLoadSampleBundleCallback callback) {

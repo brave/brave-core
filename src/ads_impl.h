@@ -111,8 +111,9 @@ class AdsImpl : public Ads {
       const std::string& url,
       const std::vector<double>& page_score);
 
-  void OnGetAdsForCategory(
+  void OnGetAds(
       const Result result,
+      const std::string& region,
       const std::string& category,
       const std::vector<AdInfo>& ads);
 

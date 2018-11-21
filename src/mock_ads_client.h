@@ -75,9 +75,10 @@ class MockAdsClient : public AdsClient {
 
   void Reset(const std::string& name, OnResetCallback callback) override;
 
-  void GetAdsForCategory(
+  void GetAds(
+      const std::string& region,
       const std::string& category,
-      OnGetAdsForCategoryCallback callback) override;
+      OnGetAdsCallback callback) override;
 
   void LoadSampleBundle(OnLoadSampleBundleCallback callback) override;
 

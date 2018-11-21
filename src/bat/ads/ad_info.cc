@@ -8,6 +8,9 @@ namespace ads {
 
 AdInfo::AdInfo() :
     creative_set_id(""),
+    startTimestamp(""),
+    endTimestamp(""),
+    regions({}),
     advertiser(""),
     notification_text(""),
     notification_url(""),
@@ -15,6 +18,9 @@ AdInfo::AdInfo() :
 
 AdInfo::AdInfo(const AdInfo& info) :
     creative_set_id(info.creative_set_id),
+    startTimestamp(info.startTimestamp),
+    endTimestamp(info.endTimestamp),
+    regions(info.regions),
     advertiser(info.advertiser),
     notification_text(info.notification_text),
     notification_url(info.notification_url),

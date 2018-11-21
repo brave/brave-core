@@ -17,6 +17,7 @@
 #include "search_providers.h"
 #include "math_helper.h"
 #include "string_helper.h"
+#include "locale_helper.h"
 #include "time_helper.h"
 #include "bat/ads/url_components.h"
 #include "static_values.h"
@@ -581,8 +582,9 @@ void AdsImpl::CachePageScore(
   }
 }
 
-void AdsImpl::OnGetAdsForCategory(
+void AdsImpl::OnGetAds(
     const Result result,
+    const std::string& region,
     const std::string& category,
     const std::vector<AdInfo>& ads) {
   if (result == Result::FAILED) {
@@ -594,9 +596,8 @@ void AdsImpl::OnGetAdsForCategory(
         << category << "\" category, trying again with \"" << new_category <<
         "\" category";
 
-      auto callback = std::bind(&AdsImpl::OnGetAdsForCategory,
-        this, _1, _2, _3);
-      ads_client_->GetAdsForCategory(new_category, callback);
+      auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
+      ads_client_->GetAds(region, new_category, callback);
 
       return;
     }
@@ -650,9 +651,9 @@ void AdsImpl::OnLoadSampleBundle(
 
   // TODO(Terry Mancey): Sample bundle state should be persisted on the Client
   // in a database so that sample ads can be fetched from the database rather
-  // than parsing the JSON each time, and be consistent with GetAdsForCategory,
-  // therefore the below code should be abstracted into GetAdForSampleCategory
-  // once the necessary changes have been made in Brave Core by Brian Johnson
+  // than parsing the JSON each time, and be consistent with GetAds, therefore
+  // the below code should be abstracted into GetAdForSampleCategory once the
+  // necessary changes have been made in Brave Core by Brian Johnson
 
   auto categories = sample_bundle_state.categories.begin();
   auto categories_count = sample_bundle_state.categories.size();
@@ -839,8 +840,11 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::OnGetAdsForCategory, this, _1, _2, _3);
-  ads_client_->GetAdsForCategory(category, callback);
+  auto locale = ads_client_->GetAdsLocale();
+  auto region = helper::Locale::GetCountryCode(locale);
+
+  auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
+  ads_client_->GetAds(region, category, callback);
 }
 
 std::vector<AdInfo> AdsImpl::GetUnseenAds(
