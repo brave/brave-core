@@ -2,7 +2,7 @@
 
 project(batnativeads)
 
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -Wdeprecated -Wconditional-uninitialized -Wsign-conversion -Wshorten-64-to-32")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -Wunused-const-variable -Wunused-variable -Wconditional-uninitialized -Wsign-conversion -Wshorten-64-to-32")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra")
 set(CMAKE_CXX_STANDARD_REQUIRED, on)
 
