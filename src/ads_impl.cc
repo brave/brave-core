@@ -358,16 +358,12 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
     client_->SetLocale(locale);
   } else {
     std::string closest_match_for_locale = "";
-
-    std::vector<std::string> locale_components;
-    helper::String::Split(locale, '_', &locale_components);
-
-    auto language_code = locale_components.front();
+    auto language_code = helper::Locale::GetLanguageCode(locale);
     if (std::find(locales.begin(), locales.end(),
         language_code) != locales.end()) {
       closest_match_for_locale = language_code;
     } else {
-      closest_match_for_locale = kDefaultLanguage;
+      closest_match_for_locale = kDefaultLanguageCode;
     }
 
     client_->SetLocale(closest_match_for_locale);
