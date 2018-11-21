@@ -19,7 +19,7 @@ ClientState::ClientState() :
     last_shop_time(0),
     last_user_activity(0),
     last_user_idle_stop_time(0),
-    locale(kDefaultLanguage),
+    locale(kDefaultLanguageCode),
     locales({}),
     page_score_history({}),
     places({}),

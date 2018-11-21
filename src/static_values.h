@@ -32,6 +32,7 @@ static const uint64_t kDefaultCatalogPing = kOneHourInSeconds * 2;
 static char kUnknownSSID[] = "UNKNOWN";
 static char kUndisclosedPlace[] = "UNDISCLOSED";
 
-static char kDefaultLanguage[] = "en";
+static char kDefaultLanguageCode[] = "en";
+static char kDefaultCountryCode[] = "US";
 
 }  // namespace ads
