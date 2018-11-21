@@ -123,7 +123,7 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   writer.String("notificationType");
   switch (type) {
-    case NotificationResultInfoResultType::CLICKED: {
+    case CLICKED: {
       writer.String("clicked");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
 
@@ -131,13 +131,13 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
       break;
     }
 
-    case NotificationResultInfoResultType::DISMISSED: {
+    case DISMISSED: {
       writer.String("dismissed");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
       break;
     }
 
-    case NotificationResultInfoResultType::TIMEOUT: {
+    case TIMEOUT: {
       writer.String("timeout");
       break;
     }
