@@ -16,6 +16,8 @@ bool String::Split(
     return false;
   }
 
+  v->clear();
+
   std::stringstream ss(str);
   std::string token;
 
