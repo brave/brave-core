@@ -22,11 +22,7 @@ struct ADS_EXPORT ClientInfo {
   std::string platform_version;
 
   bool IsMobile() const {
-    if (platform == ANDROID || platform == IOS) {
-      return true;
-    }
-
-    return false;
+    return platform == ANDROID || platform == IOS;
   }
 };
 

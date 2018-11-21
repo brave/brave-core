@@ -55,7 +55,7 @@ void MockAdsClient::SetIdleThreshold(const int threshold) {
 void MockAdsClient::GetClientInfo(ClientInfo* info) const {
   info->application_version = "1.0";
 
-  info->platform = ClientInfoPlatformType::OSX;
+  info->platform = OSX;
   info->platform_version = "1.0";
 }
 
