@@ -863,10 +863,16 @@ void BatPublishers::getPublisherBanner(const std::string& publisher_id,
 
       banner.title = values.banner.title_;
       banner.description = values.banner.description_;
-      banner.background = values.banner.background_;
-      banner.logo = values.banner.logo_;
       banner.amounts = values.banner.amounts_;
       banner.social = values.banner.social_;
+
+      // WebUI must not make external network requests, so map
+      // external resopurces to chrome://rewards-image and handle them
+      // via our custom data source
+      if (!values.banner.background_.empty())
+        banner.background = "chrome://rewards-image/" + values.banner.background_;
+      if (!values.banner.logo_.empty())
+        banner.logo = "chrome://rewards-image/" + values.banner.logo_;
     }
   }
 
@@ -887,7 +893,6 @@ void BatPublishers::getPublisherBanner(const std::string& publisher_id,
                                       _2);
 
   ledger_->GetPublisherInfo(filter, callbackGetPublisher);
-
 }
 
 void BatPublishers::onPublisherBanner(ledger::PublisherBannerCallback callback,
