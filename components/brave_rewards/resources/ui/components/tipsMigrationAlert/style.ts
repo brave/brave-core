@@ -100,6 +100,10 @@ export const StyledListItem = styled<{}, 'li'>('li')`
 `
 
 export const StyledButton = styled<{}, 'div'>('div')`
-  width: 90px;
-  margin: 40px 0 0 100px;
+  width: 235px;
+  margin: 40px auto 0 auto;
+`
+
+export const StyledButtonContainer = styled<{}, 'div'>('div')`
+  width: 100%;
 `

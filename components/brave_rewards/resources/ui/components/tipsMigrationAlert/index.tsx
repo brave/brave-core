@@ -22,7 +22,8 @@ import {
   StyledList,
   StyledListItem,
   StyledTipsIcon,
-  StyledButton
+  StyledButton,
+  StyledButtonContainer
 } from './style'
 import { Modal } from '../../../components'
 import { AlertCircleIcon, SendTipsIcon } from '../../../components/icons'
@@ -90,6 +91,8 @@ export default class TipsMigrationAlert extends React.PureComponent<Props, State
                 {getLocale('pinnedSitesFour')}
               </StyledListItem>
             </StyledList>
+          </StyledModalInfo>
+          <StyledButtonContainer>
             <StyledButton>
               <Button
                 text={getLocale('ok')}
@@ -98,7 +101,7 @@ export default class TipsMigrationAlert extends React.PureComponent<Props, State
                 onClick={this.toggleModalDisplay}
               />
             </StyledButton>
-          </StyledModalInfo>
+          </StyledButtonContainer>
         </StyledModalContent>
       </Modal>
     )
