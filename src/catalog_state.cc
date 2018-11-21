@@ -15,12 +15,11 @@ CatalogState::CatalogState() :
     ping(0),
     campaigns({}) {}
 
-CatalogState::CatalogState(const CatalogState& state) {
-    catalog_id = state.catalog_id;
-    version = state.version;
-    ping = state.ping;
-    campaigns = state.campaigns;
-}
+CatalogState::CatalogState(const CatalogState& state) :
+    catalog_id(state.catalog_id),
+    version(state.version),
+    ping(state.ping),
+    campaigns(state.campaigns) {}
 
 CatalogState::~CatalogState() = default;
 
