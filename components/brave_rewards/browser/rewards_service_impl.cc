@@ -521,7 +521,11 @@ void RewardsServiceImpl::Shutdown() {
     }
   }
 
+  for (const auto fetcher : fetchers_) {
+    delete fetcher.first;
+  }
   fetchers_.clear();
+
   ledger_.reset();
   RewardsService::Shutdown();
 }
@@ -873,11 +877,14 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
 
 void RewardsServiceImpl::OnURLFetchComplete(
     const net::URLFetcher* source) {
-  if (fetchers_.find(source) == fetchers_.end())
+  if (fetchers_.find(source) == fetchers_.end()) {
+    delete source;
     return;
+  }
 
   auto callback = fetchers_[source];
   fetchers_.erase(source);
+
   int response_code = source->GetResponseCode();
   std::string body;
   std::map<std::string, std::string> headers;
@@ -897,6 +904,8 @@ void RewardsServiceImpl::OnURLFetchComplete(
       source->GetStatus().is_success()) {
     source->GetResponseAsString(&body);
   }
+
+  delete source;
 
   callback.Run(response_code, body, headers);
 }
