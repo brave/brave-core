@@ -11,9 +11,8 @@ class BraveBrowserView : public BrowserView {
   public:
     using BrowserView::BrowserView;
     void SetStarredState(bool is_starred) override;
-    void OnThemeChanged() override;
   private:
     DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };
 
-#endif
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_
