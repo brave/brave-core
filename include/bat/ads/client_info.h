@@ -20,6 +20,42 @@ struct ADS_EXPORT ClientInfo {
 
   ClientInfoPlatformType platform;
   std::string platform_version;
+
+  const std::string GetPlatformName() const {
+    std::string platform_name = "";
+
+    switch(platform) {
+      case UNKNOWN: {
+        break;
+      }
+      case WIN7: {
+        platform_name = "Win7";
+        break;
+      }
+      case WIN10: {
+        platform_name = "Win10";
+        break;
+      }
+      case MACOS: {
+        platform_name = "OSX";
+        break;
+      }
+      case IOS: {
+        platform_name = "iOS";
+        break;
+      }
+      case ANDROID: {
+        platform_name = "Android";
+        break;
+      }
+      case LINUX: {
+        platform_name = "Linux";
+        break;
+      }
+    }
+
+    return platform_name;
+  }
 };
 
 }  // namespace ads

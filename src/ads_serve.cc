@@ -37,37 +37,7 @@ void AdsServe::BuildUrl() {
   url_ += "?braveVersion=";
   url_ += client_info.application_version;
 
-  std::string platform = "";
-  switch(client_info.platform) {
-    case UNKNOWN: {
-      break;
-    }
-    case WIN7: {
-      platform = "Win7";
-      break;
-    }
-    case WIN10: {
-      platform = "Win10";
-      break;
-    }
-    case MACOS: {
-      platform = "OSX";
-      break;
-    }
-    case IOS: {
-      platform = "iOS";
-      break;
-    }
-    case ANDROID: {
-      platform = "Android";
-      break;
-    }
-    case LINUX: {
-      platform = "Linux";
-      break;
-    }
-  }
-
+  auto platform = client_info.GetPlatformName();
   if (!platform.empty()) {
     url_ += "&platform=";
     url_ += platform;
