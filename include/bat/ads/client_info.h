@@ -32,12 +32,16 @@ struct ADS_EXPORT ClientInfo {
         platform_name = "Win7";
         break;
       }
+      case WIN8: {
+        platform_name = "Win8";
+        break;
+      }
       case WIN10: {
         platform_name = "Win10";
         break;
       }
       case MACOS: {
-        platform_name = "OSX";
+        platform_name = "macOS";
         break;
       }
       case IOS: {

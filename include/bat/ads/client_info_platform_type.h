@@ -11,6 +11,7 @@ namespace ads {
 enum ADS_EXPORT ClientInfoPlatformType {
   UNKNOWN,
   WIN7,
+  WIN8,
   WIN10,
   MACOS,
   IOS,
