@@ -320,6 +320,7 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
         { "monthSep", IDS_BRAVE_UI_MONTH_SEP },
         { "newGrant", IDS_BRAVE_UI_NEW_GRANT },
         { "newTokenGrant", IDS_BRAVE_UI_NEW_TOKEN_GRANT },
+        { "noActivity", IDS_BRAVE_UI_NO_ACTIVITY },
         { "noGrants", IDS_BRAVE_UI_NO_GRANTS },
         { "notEnoughTokens", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS },
         { "noThankYou", IDS_BRAVE_UI_NO_THANK_YOU },

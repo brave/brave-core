@@ -318,6 +318,7 @@
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">A free token grant is available.</message>
       <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="">Free Token Grant</message>
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
+      <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="">No activities yet…</message>
       <message name="IDS_BRAVE_UI_NO_THANK_YOU" desc="">No, thank you</message>
       <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please</message>
       <message name="IDS_BRAVE_UI_OFF" desc="">off</message>
