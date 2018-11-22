@@ -8,7 +8,6 @@ namespace helper {
 
 class Locale {
  public:
-
   static const std::string GetLanguageCode(const std::string& locale);
   static const std::string GetCountryCode(const std::string& locale);
 };

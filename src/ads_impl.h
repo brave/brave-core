@@ -24,7 +24,6 @@
 
 namespace ads {
 
-class Settings;
 class Client;
 class Bundle;
 class AdsServe;

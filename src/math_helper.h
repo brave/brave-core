@@ -8,7 +8,6 @@ namespace helper {
 
 class Math {
  public:
-
   static size_t Random(size_t maximum_value);
 };
 

@@ -24,7 +24,7 @@ struct ADS_EXPORT ClientInfo {
   const std::string GetPlatformName() const {
     std::string platform_name = "";
 
-    switch(platform) {
+    switch (platform) {
       case UNKNOWN: {
         break;
       }
