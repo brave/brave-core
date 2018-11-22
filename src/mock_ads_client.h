@@ -35,6 +35,8 @@ class MockAdsClient : public AdsClient {
 
   void SetIdleThreshold(const int threshold) override;
 
+  bool IsNetworkConnectionAvailable() override;
+
   void GetClientInfo(ClientInfo *client_info) const override;
 
   const std::vector<std::string> GetLocales() const override;

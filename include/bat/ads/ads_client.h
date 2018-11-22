@@ -70,6 +70,9 @@ class ADS_EXPORT AdsClient {
   // Sets the idle threshold
   virtual void SetIdleThreshold(const int threshold) = 0;
 
+  // Gets network connection is availability
+  virtual bool IsNetworkConnectionAvailable() = 0;
+
   // Gets information about the client
   virtual void GetClientInfo(ClientInfo* info) const = 0;
 

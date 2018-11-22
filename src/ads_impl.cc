@@ -419,6 +419,10 @@ void AdsImpl::NotificationAllowedCheck(const bool serve) {
     return;
   }
 
+  if (!ads_client_->IsNetworkConnectionAvailable()) {
+    return;
+  }
+
   if (CatalogIsOlderThanOneDay()) {
     return;
   }

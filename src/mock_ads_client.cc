@@ -52,6 +52,10 @@ void MockAdsClient::SetIdleThreshold(const int threshold) {
   (void)threshold;
 }
 
+bool MockAdsClient::IsNetworkConnectionAvailable() {
+  return true;
+}
+
 void MockAdsClient::GetClientInfo(ClientInfo* info) const {
   info->application_version = "1.0";
 
