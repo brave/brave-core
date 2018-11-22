@@ -5,6 +5,19 @@ brave_common_typescript_includes = [
   rebase_path("dns.ts"),
   rebase_path("debounce.ts"),
   rebase_path("locale.ts"),
+  rebase_path("../definitions/adBlock.d.ts"),
+  rebase_path("../definitions/chromel.d.ts"),
+  rebase_path("../definitions/global.d.ts"),
+  rebase_path("../definitions/newTab.d.ts"),
+  rebase_path("../definitions/non-js-loaders.d.ts"),
+  rebase_path("../definitions/prettier-bytes.d.ts"),
+  rebase_path("../definitions/rewards.d.ts"),
+  rebase_path("../definitions/rewardsDonate.d.ts"),
+  rebase_path("../definitions/rewardsExtensions.d.ts"),
+  rebase_path("../definitions/sync.d.ts"),
+  rebase_path("../definitions/throttleit.d.ts"),
+  rebase_path("../definitions/webtorrent.d.ts"),
+  rebase_path("../definitions/welcome.d.ts"),
 ]
 
 # Runs webpack for the specified entry point(s) and outputs a GRD file
