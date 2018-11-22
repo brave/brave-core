@@ -68,6 +68,18 @@ template("transpile_web_ui") {
       ]
     }
 
+    # Support a different URL path to access generated resources at.
+    # Webpack's default is '/' and we'll want to keep that most of the time,
+    # but if we're specifying extra_relative_path then normally a portion of
+    # that will need to be involved in the public_asset_path.
+    # For extensions, this is the relative path from where the manifest is to
+    # where the extra_relative_path ends.
+    if (defined(invoker.public_asset_path)) {
+      args += [
+        "--public_asset_path=" + invoker.public_asset_path
+      ]
+    }
+
     args += [
       "--target_gen_dir=$gen_dir",
       "--resource_name=$resource_name"
