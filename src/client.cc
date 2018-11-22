@@ -209,7 +209,7 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
     LOG(LogLevel::ERROR) << "Failed to load client state";
 
-    LOG(LogLevel::WARNING) << "Resetting client state";
+    LOG(LogLevel::INFO) << "Resetting client state";
     client_state_.reset(new ClientState());
   } else {
     if (!FromJson(json)) {
