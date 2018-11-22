@@ -707,7 +707,7 @@ void AdsImpl::OnLoadSampleBundle(
   }
 
   auto category_rand = helper::Math::Random(categories_count - 1);
-  std::advance(categories, static_cast<long>(category_rand));
+  std::advance(categories, static_cast<int64_t>(category_rand));
 
   auto category = categories->first;
   auto ads = categories->second;
