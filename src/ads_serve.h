@@ -26,6 +26,7 @@ class AdsServe {
   ~AdsServe();
 
   void DownloadCatalog();
+  uint64_t CatalogLastUpdated() const;
 
   void Reset();
 
@@ -44,6 +45,7 @@ class AdsServe {
   bool ProcessCatalog(const std::string& json);
   uint64_t next_retry_start_timer_in_;
   void RetryDownloadingCatalog();
+  uint64_t catalog_last_updated_;
   void ResetCatalog();
 
   AdsImpl* ads_;  // NOT OWNED

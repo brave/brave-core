@@ -392,6 +392,7 @@ void MockAdsClient::OnBundleStateLoaded(
   state.catalog_id = "a3cd25e99647957ca54c18cb52e0784e1dd6584d";
   state.catalog_ping = kDefaultCatalogPing;
   state.catalog_version = 1;
+  state.catalog_last_updated_timestamp = helper::Time::Now();
 
   bundle_state_.reset(new BundleState(state));
 

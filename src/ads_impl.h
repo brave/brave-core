@@ -87,6 +87,8 @@ class AdsImpl : public Ads {
   void StartCollectingActivity(const uint64_t start_timer_in);
   void StopCollectingActivity();
 
+  bool CatalogIsOlderThanOneDay();
+
   void OnTimer(const uint32_t timer_id) override;
 
 ///////////////////////////////////////////////////////////////////////////////

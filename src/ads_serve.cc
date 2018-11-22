@@ -18,6 +18,7 @@ AdsServe::AdsServe(
       url_(""),
       next_catalog_check_(0),
       next_retry_start_timer_in_(0),
+      catalog_last_updated_(0),
       ads_(ads),
       ads_client_(ads_client),
       bundle_(bundle) {
@@ -128,6 +129,10 @@ void AdsServe::OnCatalogDownloaded(
   }
 
   UpdateNextCatalogCheck();
+}
+
+uint64_t AdsServe::CatalogLastUpdated() const {
+  return catalog_last_updated_;
 }
 
 void AdsServe::Reset() {

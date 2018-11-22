@@ -25,6 +25,7 @@ class Bundle {
   const std::string GetCatalogId() const;
   uint64_t GetCatalogVersion() const;
   uint64_t GetCatalogPing() const;
+  uint64_t GetCatalogLastUpdatedTimestamp() const;
 
  private:
   std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
@@ -34,17 +35,20 @@ class Bundle {
       const std::string& catalog_id,
       const uint64_t& catalog_version,
       const uint64_t& catalog_ping,
+      const uint64_t& catalog_last_updated_timestamp,
       const Result result);
 
   void OnStateReset(
       const std::string& catalog_id,
       const uint64_t& catalog_version,
       const uint64_t& catalog_ping,
+      const uint64_t& catalog_last_updated_timestamp,
       const Result result);
 
   std::string catalog_id_;
   uint64_t catalog_version_;
   uint64_t catalog_ping_;
+  uint64_t catalog_last_updated_timestamp_;
 
   AdsClient* ads_client_;  // NOT OWNED
 };

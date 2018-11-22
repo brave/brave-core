@@ -22,6 +22,7 @@ struct BundleState {
   std::string catalog_id;
   uint64_t catalog_version;
   uint64_t catalog_ping;
+  uint64_t catalog_last_updated_timestamp;
   std::map<std::string, std::vector<AdInfo>> categories;
 };
 

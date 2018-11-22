@@ -12,12 +12,14 @@ BundleState::BundleState() :
     catalog_id(""),
     catalog_version(0),
     catalog_ping(0),
+    catalog_last_updated_timestamp(0),
     categories({}) {}
 
 BundleState::BundleState(const BundleState& state):
     catalog_id(state.catalog_id),
     catalog_version(state.catalog_version),
     catalog_ping(state.catalog_ping),
+    catalog_last_updated_timestamp(state.catalog_last_updated_timestamp),
     categories(state.categories) {}
 
 BundleState::~BundleState() = default;

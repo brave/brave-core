@@ -23,6 +23,7 @@ static const uint64_t kMillisecondsInASecond = 1000;
 static const uint64_t kOneMinuteInSeconds = 60;
 static const uint64_t kOneHourInSeconds = 60 * kOneMinuteInSeconds;
 static const uint64_t kDebugOneHourInSeconds = 25;
+static const uint64_t kOneDayInSeconds = 24 * kOneHourInSeconds;
 
 static const uint64_t kNextEasterEggStartsInSeconds = 30;
 

@@ -8,6 +8,7 @@
 #include "json_helper.h"
 #include "logging.h"
 #include "string_helper.h"
+#include "time_helper.h"
 #include "static_values.h"
 
 using namespace std::placeholders;
@@ -18,6 +19,7 @@ Bundle::Bundle(AdsClient* ads_client) :
     catalog_id_(""),
     catalog_version_(0),
     catalog_ping_(0),
+    catalog_last_updated_timestamp_(0),
     ads_client_(ads_client) {
 }
 
@@ -33,7 +35,8 @@ bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
 
   auto callback = std::bind(&Bundle::OnStateSaved,
     this, bundle_state->catalog_id, bundle_state->catalog_version,
-    bundle_state->catalog_ping, _1);
+    bundle_state->catalog_ping, bundle_state->catalog_last_updated_timestamp,
+    _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 
   // TODO(Terry Mancey): Implement Log (#44)
@@ -47,7 +50,8 @@ void Bundle::Reset() {
 
   auto callback = std::bind(&Bundle::OnStateReset,
     this, bundle_state->catalog_id, bundle_state->catalog_version,
-    bundle_state->catalog_ping, _1);
+    bundle_state->catalog_ping, bundle_state->catalog_last_updated_timestamp,
+    _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 }
 
@@ -61,6 +65,10 @@ uint64_t Bundle::GetCatalogVersion() const {
 
 uint64_t Bundle::GetCatalogPing() const {
   return catalog_ping_ / kMillisecondsInASecond;
+}
+
+uint64_t Bundle::GetCatalogLastUpdatedTimestamp() const {
+  return catalog_last_updated_timestamp_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -149,6 +157,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->catalog_id = catalog.GetId();
   state->catalog_version = catalog.GetVersion();
   state->catalog_ping = catalog.GetPing();
+  state->catalog_last_updated_timestamp = helper::Time::Now();
   state->categories = categories;
 
   return state;
@@ -158,6 +167,7 @@ void Bundle::OnStateSaved(
     const std::string& catalog_id,
     const uint64_t& catalog_version,
     const uint64_t& catalog_ping,
+    const uint64_t& catalog_last_updated_timestamp,
     const Result result) {
   if (result == Result::FAILED) {
     LOG(LogLevel::ERROR) << "Failed to save bundle state";
@@ -170,6 +180,7 @@ void Bundle::OnStateSaved(
   catalog_id_ = catalog_id;
   catalog_version_ = catalog_version;
   catalog_ping_ = catalog_ping;
+  catalog_last_updated_timestamp_ = catalog_last_updated_timestamp;
 
   LOG(LogLevel::INFO) << "Successfully saved bundle state";
 }
@@ -178,6 +189,7 @@ void Bundle::OnStateReset(
     const std::string& catalog_id,
     const uint64_t& catalog_version,
     const uint64_t& catalog_ping,
+    const uint64_t& catalog_last_updated_timestamp,
     const Result result) {
   if (result == Result::FAILED) {
     LOG(LogLevel::ERROR) << "Failed to reset bundle state";
@@ -190,6 +202,7 @@ void Bundle::OnStateReset(
   catalog_id_ = catalog_id;
   catalog_version_ = catalog_version;
   catalog_ping_ = catalog_ping;
+  catalog_last_updated_timestamp_ = catalog_last_updated_timestamp;
 
   LOG(LogLevel::INFO) << "Successfully reset bundle state";
 }

@@ -419,6 +419,10 @@ void AdsImpl::NotificationAllowedCheck(const bool serve) {
     return;
   }
 
+  if (CatalogIsOlderThanOneDay()) {
+    return;
+  }
+
   CheckReadyAdServe();
 }
 
@@ -483,6 +487,20 @@ void AdsImpl::StopCollectingActivity() {
 
   ads_client_->KillTimer(collect_activity_timer_id_);
   collect_activity_timer_id_ = 0;
+}
+
+bool AdsImpl::CatalogIsOlderThanOneDay() {
+  auto now = helper::Time::Now();
+
+  auto catalog_last_updated_timestamp =
+    bundle_->GetCatalogLastUpdatedTimestamp();
+
+  if (catalog_last_updated_timestamp != 0 &&
+      catalog_last_updated_timestamp + kOneDayInSeconds >= now) {
+    return false;
+  }
+
+  return true;
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
