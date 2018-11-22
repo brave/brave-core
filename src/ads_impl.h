@@ -150,10 +150,8 @@ class AdsImpl : public Ads {
   std::map<int32_t, bool> media_playing_;
 
   void ProcessLocales(const std::vector<std::string>& locales);
-  void ServeAdFromCategory(
-      const std::string& category);
-  std::vector<AdInfo> GetUnseenAds(
-      const std::vector<AdInfo>& ads);
+  void ServeAdFromCategory(const std::string& category);
+  std::vector<AdInfo> GetUnseenAds(const std::vector<AdInfo>& ads);
   bool IsAllowedToShowAds();
   bool IsAdValid(const AdInfo& ad_info);
   bool ShowAd(const AdInfo& ad_info, const std::string& category);
