@@ -9,7 +9,7 @@
 namespace ads {
 
 #define STAGING_SERVER "https://ads-serve-staging.brave.com/"
-#define PRODUCTION_SERVER "https://ads-serve.mercury.basicattentiontoken.org/"
+#define PRODUCTION_SERVER "https://ads-serve.brave.com/"
 
 #define CATALOG_PATH "v1/catalog"
 
