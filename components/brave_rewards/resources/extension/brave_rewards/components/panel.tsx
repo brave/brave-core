@@ -188,9 +188,10 @@ export class Panel extends React.Component<Props, State> {
         return
       }
       const tabId = tabs[0].id
-      if (tabId === undefined || !publisher) {
+      if (tabId === undefined || !publisher || !publisher.publisher_key) {
         return
       }
+
       chrome.braveRewards.donateToSite(tabId, publisher.publisher_key)
       window.close()
     })

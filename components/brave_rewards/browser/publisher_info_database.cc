@@ -292,6 +292,50 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
   return nullptr;
 }
 
+std::unique_ptr<ledger::PublisherInfo>
+PublisherInfoDatabase::GetPanelPublisher(
+    const ledger::ActivityInfoFilter& filter) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return nullptr;
+  }
+
+  sql::Statement info_sql(db_.GetUniqueStatement(
+      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, pi.provider, "
+      "pi.verified, pi.excluded, ai.percent FROM publisher_info AS pi "
+      "LEFT JOIN activity_info AS ai ON pi.publisher_id = ai.publisher_id "
+      "WHERE pi.publisher_id=? AND ((ai.month = ? "
+      "AND ai.year = ? AND ai.reconcile_stamp = ?) OR "
+      "ai.percent IS NULL) LIMIT 1"));
+
+  info_sql.BindString(0, filter.id);
+  info_sql.BindInt(1, filter.month);
+  info_sql.BindInt(2, filter.year);
+  info_sql.BindInt64(3, filter.reconcile_stamp);
+
+  if (info_sql.Step()) {
+    std::unique_ptr<ledger::PublisherInfo> info;
+    info.reset(new ledger::PublisherInfo());
+    info->id = info_sql.ColumnString(0);
+    info->name = info_sql.ColumnString(1);
+    info->url = info_sql.ColumnString(2);
+    info->favicon_url = info_sql.ColumnString(3);
+    info->provider = info_sql.ColumnString(4);
+    info->verified = info_sql.ColumnBool(5);
+    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
+        info_sql.ColumnInt(6));
+    info->percent = info_sql.ColumnInt(7);
+
+    return info;
+  }
+
+  return nullptr;
+}
+
 bool PublisherInfoDatabase::RestorePublishers() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -622,8 +666,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   info_sql.BindString(0, media_key);
 
   if (info_sql.Step()) {
-    std::unique_ptr<ledger::PublisherInfo> info;
-    info.reset(new ledger::PublisherInfo());
+    std::unique_ptr<ledger::PublisherInfo> info(new ledger::PublisherInfo());
     info->id = info_sql.ColumnString(0);
     info->name = info_sql.ColumnString(1);
     info->url = info_sql.ColumnString(2);
@@ -632,6 +675,8 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
     info->verified = info_sql.ColumnBool(5);
     info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
         info_sql.ColumnInt(6));
+
+    return info;
   }
 
   return nullptr;

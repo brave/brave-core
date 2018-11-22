@@ -47,14 +47,17 @@ class PublisherInfoDatabase {
   std::unique_ptr<ledger::PublisherInfo> GetPublisherInfo(
      const std::string& media_key);
 
+  std::unique_ptr<ledger::PublisherInfo> GetPanelPublisher(
+     const ledger::ActivityInfoFilter& filter);
+
   bool RestorePublishers();
 
   bool InsertOrUpdateActivityInfo(const ledger::PublisherInfo& info);
 
   bool GetActivityList(int start,
-                                int limit,
-                                const ledger::ActivityInfoFilter& filter,
-                                ledger::PublisherInfoList* list);
+                       int limit,
+                       const ledger::ActivityInfoFilter& filter,
+                       ledger::PublisherInfoList* list);
 
   bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key,
                                         const std::string& publisher_id);

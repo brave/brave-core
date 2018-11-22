@@ -229,6 +229,17 @@ ledger::PublisherInfoList GetActivityListOnFileTaskRunner(
   return list;
 }
 
+std::unique_ptr<ledger::PublisherInfo> GetPanelPublisherInfoOnFileTaskRunner(
+    ledger::ActivityInfoFilter filter,
+    PublisherInfoDatabase* backend) {
+  ledger::PublisherInfoList list;
+  if (!backend) {
+    return nullptr;
+  }
+
+  return backend->GetPanelPublisher(filter);
+}
+
 // `callback` has a WeakPtr so this won't crash if the file finishes
 // writing after RewardsServiceImpl has been destroyed
 void PostWriteCallback(
@@ -1021,6 +1032,30 @@ void RewardsServiceImpl::OnActivityInfoLoaded(
 
   callback(ledger::Result::LEDGER_OK,
       std::make_unique<ledger::PublisherInfo>(list[0]));
+}
+
+void RewardsServiceImpl::LoadPanelPublisherInfo(
+    ledger::ActivityInfoFilter filter,
+    ledger::PublisherInfoCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&GetPanelPublisherInfoOnFileTaskRunner,
+                 filter,
+                 publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnPanelPublisherInfoLoaded,
+                     AsWeakPtr(),
+                     callback));
+}
+
+void RewardsServiceImpl::OnPanelPublisherInfoLoaded(
+    ledger::PublisherInfoCallback callback,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+  if (!publisher_info) {
+    callback(ledger::Result::NOT_FOUND,
+             std::unique_ptr<ledger::PublisherInfo>());
+    return;
+  }
+
+  callback(ledger::Result::LEDGER_OK, std::move(publisher_info));
 }
 
 void RewardsServiceImpl::LoadActivityInfoList(
@@ -2206,7 +2241,7 @@ void RewardsServiceImpl::OnDonate(
 
   ledger::PublisherInfo info;
   info.id = publisher_key;
-  info.month = ledger::PUBLISHER_MONTH::ANY;
+  info.month = ledger::ACTIVITY_MONTH::ANY;
   info.year = -1;
   info.verified = site->verified;
   info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
