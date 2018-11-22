@@ -35,6 +35,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     last_page_classification_(""),
     page_score_cache_({}),
     collect_activity_timer_id_(0),
+    delivering_notifications_timer_id_(0),
     sustained_ad_interaction_timer_id_(0),
     media_playing_({}),
     next_easter_egg_(0),
@@ -205,6 +206,10 @@ void AdsImpl::InitializeStep3() {
 
   RetrieveSSID();
 
+  if (IsMobile()) {
+    StartDeliveringNotifications(kDeliveryNotificationsAfterSeconds);
+  }
+
   ConfirmAdUUIDIfAdEnabled();
 
   ads_serve_->DownloadCatalog();
@@ -251,6 +256,10 @@ void AdsImpl::OnUnIdle() {
   // 'Idle state changed', { idleState: action.get('idleState') }
 
   client_->UpdateLastUserIdleStopTime();
+
+  if (IsMobile()) {
+    return;
+  }
 
   NotificationAllowedCheck(true);
 }
@@ -475,6 +484,8 @@ void AdsImpl::StopCollectingActivity() {
 void AdsImpl::OnTimer(const uint32_t timer_id) {
   if (timer_id == collect_activity_timer_id_) {
     CollectActivity();
+  } else if (timer_id == delivering_notifications_timer_id_) {
+    DeliverNotification();
   } else if (timer_id == sustained_ad_interaction_timer_id_) {
     SustainAdInteraction();
   }
@@ -490,6 +501,8 @@ void AdsImpl::Deinitialize() {
   }
 
   ads_serve_->Reset();
+
+  StopDeliveringNotifications();
 
   StopSustainingAdInteraction();
 
@@ -704,6 +717,47 @@ void AdsImpl::CollectActivity() {
 
 bool AdsImpl::IsCollectingActivity() const {
   if (collect_activity_timer_id_ == 0) {
+    return false;
+  }
+
+  return true;
+}
+
+void AdsImpl::StartDeliveringNotifications(const uint64_t start_timer_in) {
+  StopDeliveringNotifications();
+
+  delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
+  if (delivering_notifications_timer_id_ == 0) {
+    LOG(LogLevel::ERROR) <<
+      "Failed to start delivering notifications due to an invalid timer";
+    return;
+  }
+
+  LOG(LogLevel::INFO) <<
+    "Start delivering notifications in " << start_timer_in << " seconds";
+}
+
+void AdsImpl::DeliverNotification() {
+  NotificationAllowedCheck(true);
+
+  if (IsMobile()) {
+    StartDeliveringNotifications(kDeliveryNotificationsAfterSeconds);
+  }
+}
+
+void AdsImpl::StopDeliveringNotifications() {
+  if (!IsDeliveringNotifications()) {
+    return;
+  }
+
+  LOG(LogLevel::INFO) << "Stopped delivering notifications";
+
+  ads_client_->KillTimer(delivering_notifications_timer_id_);
+  delivering_notifications_timer_id_ = 0;
+}
+
+bool AdsImpl::IsDeliveringNotifications() const {
+  if (delivering_notifications_timer_id_ == 0) {
     return false;
   }
 

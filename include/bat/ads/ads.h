@@ -54,10 +54,13 @@ class ADS_EXPORT Ads {
   // Should be called whenever the browser enters the background
   virtual void OnBackground() = 0;
 
-  // Should be called to record when the browser is idle
+  // Should be called every x seconds as set by SetIdleThreshold to record when
+  // the browser is idle
   virtual void OnIdle() = 0;
 
-  // Should be called to record when the browser is no longer idle
+  // Should be called every x seconds as set by SetIdleThreshold to record when
+  // the browser is no longer idle and to check on desktop devices if a
+  // notification should be delivered
   virtual void OnUnIdle() = 0;
 
   // Should be called to record when a tab has started playing media (A/V)
