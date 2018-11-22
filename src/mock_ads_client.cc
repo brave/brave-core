@@ -71,17 +71,6 @@ const std::vector<std::string> MockAdsClient::GetLocales() const {
 void MockAdsClient::LoadUserModelForLocale(
     const std::string& locale,
     OnLoadCallback callback) const {
-  // User models are a dependency of the application and should be bundled
-  // accordingly, the following file structure could be used:
-  //
-  // locales/
-  // ├── de/
-  // │   └── user_model.json
-  // ├── en/
-  // │   └── user_model.json
-  // ├── fr/
-  // │   └── user_model.json
-
   std::stringstream path;
   path << "resources/locales/" << locale << "/user_model.json";
 
@@ -326,18 +315,7 @@ bool MockAdsClient::GetUrlComponents(
 }
 
 void MockAdsClient::EventLog(const std::string& json) {
-  // Should be logged to a file however as events may be queued they need an
-  // event name and timestamp adding as follows, replacing ... with the value of
-  // the json parameter:
-  //
-  // {
-  //   "time": "2018-11-19T15:47:43.634Z",
-  //   "eventName": "Event logged",
-  //   ...
-  // }
-
   std::string time_stamp = helper::Time::TimeStamp();
-
   std::cout << std::endl << "Event logged (" << time_stamp <<  "): " << json;
 }
 
