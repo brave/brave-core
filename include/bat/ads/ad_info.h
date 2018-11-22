@@ -17,8 +17,8 @@ struct ADS_EXPORT AdInfo {
   ~AdInfo();
 
   std::string creative_set_id;
-  std::string startTimestamp;
-  std::string endTimestamp;
+  std::string start_timestamp;
+  std::string end_timestamp;
   std::vector<std::string> regions;
   std::string advertiser;
   std::string notification_text;

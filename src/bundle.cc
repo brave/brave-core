@@ -126,8 +126,8 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
       for (const auto& creative : creative_set.creatives) {
         AdInfo ad_info;
         ad_info.creative_set_id = creative_set.creative_set_id;
-        ad_info.startTimestamp = campaign.start_at;
-        ad_info.endTimestamp = campaign.end_at;
+        ad_info.start_timestamp = campaign.start_at;
+        ad_info.end_timestamp = campaign.end_at;
         ad_info.regions = regions;
         ad_info.advertiser = creative.payload.title;
         ad_info.notification_text = creative.payload.body;
