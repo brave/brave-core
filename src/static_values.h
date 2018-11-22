@@ -8,10 +8,10 @@
 
 namespace ads {
 
-#define STAGING_SERVER "https://ads-serve-staging.brave.com/"
-#define PRODUCTION_SERVER "https://ads-serve.brave.com/"
+#define STAGING_SERVER "https://ads-serve.bravesoftware.com"
+#define PRODUCTION_SERVER "https://ads-serve.brave.com"
 
-#define CATALOG_PATH "v1/catalog"
+#define CATALOG_PATH "/v1/catalog"
 
 static const int kIdleThresholdInSeconds = 15;
 
