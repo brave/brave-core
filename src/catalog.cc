@@ -17,7 +17,8 @@ namespace ads {
 
 Catalog::Catalog(AdsClient* ads_client, Bundle* bundle) :
     ads_client_(ads_client),
-    bundle_(bundle) {}
+    bundle_(bundle),
+    catalog_state_(nullptr) {}
 
 Catalog::~Catalog() {}
 
