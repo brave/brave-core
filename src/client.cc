@@ -209,20 +209,18 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
   if (result == Result::FAILED) {
     LOG(LogLevel::ERROR) << "Failed to load client state";
 
-    // TODO(Terry Mancey): If the client state fails to load, we need to
-    // notify the Client to decide what action to take otherwise ads will not
-    // work or a product decision could be made to reset the client state
-    return;
+    LOG(LogLevel::WARNING) << "Resetting client state";
+    client_state_.reset(new ClientState());
+  } else {
+    if (!FromJson(json)) {
+      LOG(LogLevel::ERROR) <<
+        "Failed to parse client state: " << json;
+
+      return;
+    }
+
+    LOG(LogLevel::INFO) << "Successfully loaded client state";
   }
-
-  if (!FromJson(json)) {
-    LOG(LogLevel::ERROR) <<
-      "Failed to parse client state: " << json;
-
-    return;
-  }
-
-  LOG(LogLevel::INFO) << "Successfully loaded client state";
 
   ads_->InitializeStep2();
 }
