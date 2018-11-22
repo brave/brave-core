@@ -207,7 +207,7 @@ void AdsImpl::InitializeStep3() {
   RetrieveSSID();
 
   if (IsMobile()) {
-    StartDeliveringNotifications(kDeliveryNotificationsAfterSeconds);
+    StartDeliveringNotifications(kDeliverNotificationsAfterSeconds);
   }
 
   ConfirmAdUUIDIfAdEnabled();
@@ -741,7 +741,7 @@ void AdsImpl::DeliverNotification() {
   NotificationAllowedCheck(true);
 
   if (IsMobile()) {
-    StartDeliveringNotifications(kDeliveryNotificationsAfterSeconds);
+    StartDeliveringNotifications(kDeliverNotificationsAfterSeconds);
   }
 }
 
