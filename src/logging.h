@@ -6,6 +6,6 @@
 #define BAT_ADS_LOGGING_H_
 
 #define LOG(severity) \
-  ads_client_->Log(__FILE__, __LINE__, severity)->stream()
+  ads_client_->Log(__FILE__, __LINE__, severity)
 
 #endif  // BAT_ADS_LOGGING_H_

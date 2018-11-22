@@ -37,12 +37,6 @@ enum ADS_EXPORT Result {
   FAILED
 };
 
-class ADS_EXPORT LogStream {
- public:
-  virtual ~LogStream() = default;
-  virtual std::ostream& stream() = 0;
-};
-
 using OnSaveCallback = std::function<void(Result)>;
 using OnLoadCallback = std::function<void(Result, const std::string&)>;
 
@@ -158,7 +152,7 @@ class ADS_EXPORT AdsClient {
   virtual void EventLog(const std::string& json) = 0;
 
   // Logs debug information
-  virtual std::unique_ptr<LogStream> Log(
+  virtual std::ostream& Log(
       const char* file,
       int line,
       const LogLevel log_level) const = 0;
