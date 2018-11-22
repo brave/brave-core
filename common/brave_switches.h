@@ -23,7 +23,7 @@ extern const char kDisableTorClientUpdaterExtension[];
 
 extern const char kDisableWebTorrentExtension[];
 
-extern const char kEnableBraveSync[];
+extern const char kDisableBraveSync[];
 
 extern const char kRewardsEnv[];
 
