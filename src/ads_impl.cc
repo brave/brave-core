@@ -229,7 +229,11 @@ bool AdsImpl::IsMobile() const {
   ClientInfo client_info;
   ads_client_->GetClientInfo(&client_info);
 
-  return client_info.IsMobile();
+  if (client_info.platform != ANDROID && client_info.platform != IOS) {
+    return false;
+  }
+
+  return true;
 }
 
 void AdsImpl::OnForeground() {

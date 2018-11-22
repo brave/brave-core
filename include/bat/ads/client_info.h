@@ -20,10 +20,6 @@ struct ADS_EXPORT ClientInfo {
 
   ClientInfoPlatformType platform;
   std::string platform_version;
-
-  bool IsMobile() const {
-    return platform == ANDROID || platform == IOS;
-  }
 };
 
 }  // namespace ads
