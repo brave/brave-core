@@ -39,6 +39,9 @@ void AdsServe::BuildUrl() {
 
   std::string platform = "";
   switch(client_info.platform) {
+    case UNKNOWN: {
+      break;
+    }
     case WIN7: {
       platform = "Win7";
       break;
@@ -47,7 +50,7 @@ void AdsServe::BuildUrl() {
       platform = "Win10";
       break;
     }
-    case OSX: {
+    case MACOS: {
       platform = "OSX";
       break;
     }
@@ -61,9 +64,6 @@ void AdsServe::BuildUrl() {
     }
     case LINUX: {
       platform = "Linux";
-      break;
-    }
-    default: {
       break;
     }
   }

@@ -59,7 +59,7 @@ bool MockAdsClient::IsNetworkConnectionAvailable() {
 void MockAdsClient::GetClientInfo(ClientInfo* info) const {
   info->application_version = "1.0";
 
-  info->platform = OSX;
+  info->platform = MACOS;
   info->platform_version = "1.0";
 }
 

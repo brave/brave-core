@@ -12,7 +12,7 @@ enum ADS_EXPORT ClientInfoPlatformType {
   UNKNOWN,
   WIN7,
   WIN10,
-  OSX,
+  MACOS,
   IOS,
   ANDROID,
   LINUX
