@@ -170,11 +170,6 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 }
 
 void AdsImpl::Initialize() {
-  if (IsInitialized()) {
-    LOG(LogLevel::WARNING) << "Already initialized";
-    return;
-  }
-
   if (!ads_client_->IsAdsEnabled()) {
     LOG(LogLevel::INFO) << "Deinitializing as Ads are disabled";
 
@@ -183,6 +178,7 @@ void AdsImpl::Initialize() {
   }
 
   if (IsInitialized()) {
+    LOG(LogLevel::WARNING) << "Already initialized";
     return;
   }
 
