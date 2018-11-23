@@ -34,10 +34,16 @@ def apply_patches_for_dir(directory):
             patch = os.path.join(root, name)
             if subprocess.call(args + [patch]):
                 return '{0} failed to apply'.format(os.path.basename(patch))
+        for _dir in sorted(dirs):
+            error = apply_patches_for_dir(_dir)
+            if error:
+                return error
 
 
 def revert_changes_for_dir(directory):
     for root, dirs, files in reversed(list(os.walk(directory))):
+        for _dir in reversed(sorted(dirs)):
+            revert_changes_for_dir(_dir)
         prefix = os.path.relpath(root, directory)
         target = os.path.join(SRC_DIR, prefix)
         args = [sys.executable, PATCH_PY, '--directory', target, '--quiet',

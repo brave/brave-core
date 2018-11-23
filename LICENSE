@@ -19,6 +19,11 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 Alternatively, this code may be distributed or
 otherwise used under the terms of GPL v3
 
+Incorporating code from Inox patchset,
+https://github.com/gcarq/inox-patchset
+Copyright (c) 2017, Michael Egger
+Licensed BSD 2-Clause "Simplified" License
+
 Text of Mozilla Public License Version 2.0
 ==========================================
 
