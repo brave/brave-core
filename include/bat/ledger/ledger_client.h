@@ -39,6 +39,12 @@ LEDGER_EXPORT enum URL_METHOD {
   POST = 2
 };
 
+class LEDGER_EXPORT LogStream {
+ public:
+  virtual ~LogStream() = default;
+  virtual std::ostream& stream() = 0;
+};
+
 using PublisherInfoCallback = std::function<void(Result,
     std::unique_ptr<PublisherInfo>)>;
 // TODO(nejczdovc) we should be providing result back as well
@@ -139,9 +145,10 @@ class LEDGER_EXPORT LedgerClient {
                                           uint64_t windowId) = 0;
 
   // Logs debug information
-  virtual std::ostream& Log(const char* file,
-                            int line,
-                            const ledger::LogLevel log_level) const = 0;
+  virtual std::unique_ptr<LogStream> Log(
+      const char* file,
+      int line,
+      const ledger::LogLevel log_level) const = 0;
 };
 
 }  // namespace ledger

@@ -6,6 +6,6 @@
 #define BAT_REWARDS_LOGGING_H_
 
 #define BLOG(client, severity) \
-  client->Log(__FILE__, __LINE__, severity)
+  client->Log(__FILE__, __LINE__, severity)->stream()
 
 #endif  // BAT_REWARDS_LOGGING_H_

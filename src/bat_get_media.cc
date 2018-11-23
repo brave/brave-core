@@ -59,12 +59,6 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts, 
     return;
   }
   std::string mediaId = braveledger_bat_helper::getMediaId(parts, type);
-  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) <<
-    "Media request (" << type << "):";
-  for (auto const& value : parts) {
-    BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) <<
-      ">> part " << value.first << " | " << value.second;
-  }
   BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media Id: " << mediaId;
   if (mediaId.empty()) {
     return;
@@ -527,9 +521,6 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
     name = TWITCH_MEDIA_TYPE;
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Media activity error for " <<
-    providerType << " (name: " << name << ", url: " << url << ")";
-
   if (!url.empty()) {
     ledger::VisitData new_data;
     new_data.local_month = visit_data.local_month;
@@ -540,6 +531,11 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
     new_data.name = name;
 
     ledger_->GetPublisherActivityFromUrl(windowId, new_data);
+  } else {
+      BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Media activity error for " << providerType << " (name: "
+        << name << ", url: " << visit_data.url << ")";
+
   }
 }
 

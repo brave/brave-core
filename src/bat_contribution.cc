@@ -1409,12 +1409,10 @@ void BatContribution::AddRetry(
     const std::string& viewing_id,
     braveledger_bat_helper::CURRENT_RECONCILE reconcile) {
 
-  ledger_->Log(__func__,
-               ledger::LogLevel::LOG_WARNING,
-               {"Re-trying contribution for step",
-                std::to_string(step),
-                "for",
-                viewing_id});
+  BLOG(ledger_, ledger::LogLevel::LOG_WARNING)
+      << "Re-trying contribution for step"
+      << std::to_string(step)
+      << "for" << viewing_id;
 
   if (reconcile.viewingId_.empty()) {
     reconcile = ledger_->GetReconcileById(viewing_id);

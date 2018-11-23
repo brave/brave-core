@@ -196,7 +196,7 @@ class LedgerImpl : public ledger::Ledger,
       ledger::PUBLISHER_EXCLUDE_FILTER excluded,
       bool min_duration,
       const uint64_t& currentReconcileStamp);
-  std::ostream& Log(
+  std::unique_ptr<ledger::LogStream> Log(
       const char* file,
       int line,
       const ledger::LogLevel log_level) const;
