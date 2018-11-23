@@ -76,7 +76,6 @@ bool MockAdsClient::IsAdsEnabled() const {
 }
 
 const std::string MockAdsClient::GetAdsLocale() const {
-  // Should return the system locale
   return "en_US";
 }
 
@@ -153,9 +152,6 @@ void MockAdsClient::ShowNotification(
 }
 
 uint32_t MockAdsClient::SetTimer(const uint64_t& time_offset) {
-  // Client should call the ads_->OnTimer(timer_id) function when the timer
-  // is fired. This mock is synchronous so OnTimer should not be fired!
-
   (void)time_offset;
 
   static uint32_t mock_timer_id = 0;
