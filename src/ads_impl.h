@@ -35,7 +35,6 @@ class AdsImpl : public Ads {
 
   bool is_first_run_;
 
-  bool is_initialized_;
   void Initialize() override;
   void InitializeStep2();
   void InitializeStep3();
@@ -152,12 +151,16 @@ class AdsImpl : public Ads {
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
 
-  AdsClient* ads_client_;  // NOT OWNED
-
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
   std::unique_ptr<usermodel::UserModel> user_model_;
+
+ private:
+  bool is_initialized_;
+
+  AdsClient* ads_client_;  // NOT OWNED
+
   // Not copyable, not assignable
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
