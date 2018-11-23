@@ -78,7 +78,7 @@ class ADS_EXPORT AdsClient {
   // OnUndle should be called
   virtual void SetIdleThreshold(const int threshold) = 0;
 
-  // Should return true if there is a network connection otherwise false
+  // Should return true if there is a network connection otherwise returns false
   virtual bool IsNetworkConnectionAvailable() = 0;
 
   // Should return information about the client
