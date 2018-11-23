@@ -31,8 +31,8 @@ int main() {
 
   ads.ChangeLocale("en_GB");
 
-  ads.CheckReadyAdServe();
-  ads.CheckReadyAdServe(true);
+  ads.OnUnIdle();
+  ads.OnUnIdle();
 
   ads.ServeSampleAd();
 
@@ -43,28 +43,28 @@ int main() {
 
   ads.ServeSampleAd();
 
-  ads.CheckReadyAdServe();
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
 
   ads.OnBackground();
 
-  ads.CheckReadyAdServe();
-  ads.CheckReadyAdServe();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
 
   ads.OnForeground();
 
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
 
   ads.ClassifyPage("https://www.google.com/search?source=hp&ei=zeLJW76cLKvQr",
     "Making ice cream at home requires no special equipment, gives you free rei"
@@ -81,17 +81,17 @@ int main() {
     "There are loads of main-course recipes here, as well as ideas for starters"
     ", desserts, leftovers, easy meals, sides and sauces.");
 
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe();
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
 
   ads.ClassifyPage("https://imdb.com",
     "WarGames is a 1983 American Cold War science fiction film written by Lawre"
@@ -102,10 +102,10 @@ int main() {
     " three Academy Awards. A sequel, WarGames: The Dead Code, was released dir"
     "ect to DVD in 2008.");
 
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
-  ads.CheckReadyAdServe(true);
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
+  ads.OnUnIdle();
 
   ads.ServeSampleAd();
 
@@ -113,7 +113,7 @@ int main() {
 
   ads.RemoveAllHistory();
 
-  ads.CheckReadyAdServe();
+  ads.OnUnIdle();
 
   ads.TabClosed(1);
 

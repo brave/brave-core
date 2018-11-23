@@ -37,20 +37,22 @@ class AdsImpl : public Ads {
   AdsImpl(const AdsImpl&) = delete;
   AdsImpl& operator=(const AdsImpl&) = delete;
 
-  void GenerateAdReportingNotificationShownEvent(
-      const NotificationInfo& info) override;
+  bool is_first_run_;
 
-  void GenerateAdReportingNotificationResultEvent(
-      const NotificationInfo& info,
-      const NotificationResultInfoResultType type) override;
-
+  bool is_initialized_;
   void Initialize() override;
   void InitializeStep2();
   void InitializeStep3();
+  void Deinitialize();
   bool IsInitialized();
+
+  void LoadUserModel();
+  void OnUserModelLoaded(const Result result, const std::string& json);
+  void InitializeUserModel(const std::string& json);
 
   bool IsMobile() const;
 
+  bool is_foreground_;
   void OnForeground() override;
   void OnBackground() override;
   bool IsForeground() const;
@@ -58,10 +60,12 @@ class AdsImpl : public Ads {
   void OnIdle() override;
   void OnUnIdle() override;
 
+  std::map<int32_t, bool> media_playing_;
   void OnMediaPlaying(const int32_t tab_id) override;
   void OnMediaStopped(const int32_t tab_id) override;
   bool IsMediaPlaying() const;
 
+  std::string last_shown_tab_url_;
   void TabUpdated(
       const int32_t tab_id,
       const std::string& url,
@@ -73,59 +77,50 @@ class AdsImpl : public Ads {
 
   void SaveCachedInfo() override;
 
-  void ClassifyPage(const std::string& url, const std::string& html) override;
+  void RetrieveSSID();
+
+  void ConfirmAdUUIDIfAdEnabled();
 
   void ChangeLocale(const std::string& locale) override;
 
-  void NotificationAllowedCheck(const bool serve);
-
-  void CheckReadyAdServe(const bool forced = false) override;
-  void ServeSampleAd() override;
-  bool IsStillViewingAd() const;
-
-  void StartCollectingActivity(const uint64_t start_timer_in);
-  void StopCollectingActivity();
-
-  bool CatalogIsOlderThanOneDay();
-
-  void OnTimer(const uint32_t timer_id) override;
-
-///////////////////////////////////////////////////////////////////////////////
-
-  bool is_first_run_;
-
-  bool is_initialized_;
-  void Deinitialize();
-
-  bool is_foreground_;
-
-  std::string last_shown_tab_url_;
-  NotificationInfo last_shown_notification_info_;
-
-  void LoadUserModel();
-  void OnUserModelLoaded(const Result result, const std::string& json);
-  void InitializeUserModel(const std::string& json);
-
+  void ClassifyPage(const std::string& url, const std::string& html) override;
   std::string last_page_classification_;
-  std::string GetWinningCategory(const std::vector<double>& page_score);
   std::string GetWinnerOverTimeCategory();
+  std::string GetWinningCategory(const std::vector<double>& page_score);
+
   std::map<std::string, std::vector<double>> page_score_cache_;
   void CachePageScore(
       const std::string& url,
       const std::vector<double>& page_score);
 
+  void TestShoppingData(const std::string& url);
+  void TestSearchState(const std::string& url);
+
+  void ServeSampleAd() override;
+  void OnLoadSampleBundle(
+      const Result result,
+      const std::string& json);
+
+  void CheckReadyAdServe(const bool forced);
+  void ServeAdFromCategory(const std::string& category);
   void OnGetAds(
       const Result result,
       const std::string& region,
       const std::string& category,
       const std::vector<AdInfo>& ads);
-
-  void OnLoadSampleBundle(
-      const Result result,
-      const std::string& json);
+  std::vector<AdInfo> GetUnseenAds(const std::vector<AdInfo>& ads);
+  bool IsAdValid(const AdInfo& ad_info);
+  NotificationInfo last_shown_notification_info_;
+  bool ShowAd(const AdInfo& ad_info, const std::string& category);
+  bool AdsShownHistoryRespectsRollingTimeConstraint(
+      const uint64_t seconds_window,
+      const uint64_t allowable_ad_count) const;
+  bool IsAllowedToShowAds();
 
   uint32_t collect_activity_timer_id_;
+  void StartCollectingActivity(const uint64_t start_timer_in);
   void CollectActivity();
+  void StopCollectingActivity();
   bool IsCollectingActivity() const;
 
   uint32_t delivering_notifications_timer_id_;
@@ -133,33 +128,24 @@ class AdsImpl : public Ads {
   void DeliverNotification();
   void StopDeliveringNotifications();
   bool IsDeliveringNotifications() const;
+  bool IsCatalogIsOlderThanOneDay();
+  void NotificationAllowedCheck(const bool serve);
 
   uint32_t sustained_ad_interaction_timer_id_;
   void StartSustainingAdInteraction(const uint64_t start_timer_in);
   void SustainAdInteraction();
   void StopSustainingAdInteraction();
   bool IsSustainingAdInteraction() const;
+  bool IsStillViewingAd() const;
 
-  void ConfirmAdUUIDIfAdEnabled();
-
-  void RetrieveSSID();
-
-  void TestShoppingData(const std::string& url);
-  void TestSearchState(const std::string& url);
-
-  std::map<int32_t, bool> media_playing_;
-
-  void ProcessLocales(const std::vector<std::string>& locales);
-  void ServeAdFromCategory(const std::string& category);
-  std::vector<AdInfo> GetUnseenAds(const std::vector<AdInfo>& ads);
-  bool IsAllowedToShowAds();
-  bool IsAdValid(const AdInfo& ad_info);
-  bool ShowAd(const AdInfo& ad_info, const std::string& category);
-  bool AdsShownHistoryRespectsRollingTimeConstraint(
-      const uint64_t seconds_window,
-      const uint64_t allowable_ad_count) const;
+  void OnTimer(const uint32_t timer_id) override;
 
   uint64_t next_easter_egg_;
+  void GenerateAdReportingNotificationShownEvent(
+      const NotificationInfo& info) override;
+  void GenerateAdReportingNotificationResultEvent(
+      const NotificationInfo& info,
+      const NotificationResultInfoResultType type) override;
   void GenerateAdReportingSustainEvent(const NotificationInfo& info);
   void GenerateAdReportingLoadEvent(const LoadInfo& info);
   void GenerateAdReportingBackgroundEvent();

@@ -30,14 +30,14 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     is_first_run_(true),
     is_initialized_(false),
     is_foreground_(false),
+    media_playing_({}),
     last_shown_tab_url_(""),
-    last_shown_notification_info_(NotificationInfo()),
     last_page_classification_(""),
     page_score_cache_({}),
+    last_shown_notification_info_(NotificationInfo()),
     collect_activity_timer_id_(0),
     delivering_notifications_timer_id_(0),
     sustained_ad_interaction_timer_id_(0),
-    media_playing_({}),
     next_easter_egg_(0),
     ads_client_(ads_client),
     client_(std::make_unique<Client>(this, ads_client_)),
@@ -47,128 +47,6 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
 }
 
 AdsImpl::~AdsImpl() = default;
-
-void AdsImpl::GenerateAdReportingNotificationShownEvent(
-    const NotificationInfo& info) {
-  if (is_first_run_) {
-    is_first_run_ = false;
-
-    GenerateAdReportingRestartEvent();
-  }
-
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("notify");
-
-  writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
-  writer.String(time_stamp.c_str());
-
-  writer.String("notificationType");
-  writer.String("generated");
-
-  writer.String("notificationClassification");
-  writer.StartArray();
-  std::vector<std::string> classifications;
-  helper::String::Split(info.category, '-', &classifications);
-  for (const auto& classification : classifications) {
-    writer.String(classification.c_str());
-  }
-  writer.EndArray();
-
-  writer.String("notificationCatalog");
-  if (info.creative_set_id.empty()) {
-    writer.String("sample-catalog");
-  } else {
-    writer.String(info.creative_set_id.c_str());
-  }
-
-  writer.String("notificationUrl");
-  writer.String(info.url.c_str());
-
-  writer.EndObject();
-
-  auto json = buffer.GetString();
-  ads_client_->EventLog(json);
-}
-
-void AdsImpl::GenerateAdReportingNotificationResultEvent(
-    const NotificationInfo& info,
-    const NotificationResultInfoResultType type) {
-  if (is_first_run_) {
-    is_first_run_ = false;
-
-    GenerateAdReportingRestartEvent();
-  }
-
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("notify");
-
-  writer.String("stamp");
-  std::string time_stamp = helper::Time::TimeStamp();
-  writer.String(time_stamp.c_str());
-
-  writer.String("notificationType");
-  switch (type) {
-    case CLICKED: {
-      writer.String("clicked");
-      client_->UpdateAdsUUIDSeen(info.uuid, 1);
-
-      StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
-      break;
-    }
-
-    case DISMISSED: {
-      writer.String("dismissed");
-      client_->UpdateAdsUUIDSeen(info.uuid, 1);
-      break;
-    }
-
-    case TIMEOUT: {
-      writer.String("timeout");
-      break;
-    }
-  }
-
-  writer.String("notificationClassification");
-  writer.StartArray();
-  std::vector<std::string> classifications;
-  helper::String::Split(info.category, '-', &classifications);
-  for (const auto& classification : classifications) {
-    writer.String(classification.c_str());
-  }
-  writer.EndArray();
-
-  writer.String("notificationCatalog");
-  if (info.creative_set_id.empty()) {
-    writer.String("sample-catalog");
-  } else {
-    writer.String(info.creative_set_id.c_str());
-  }
-
-  writer.String("notificationUrl");
-  writer.String(info.url.c_str());
-
-  writer.EndObject();
-
-  auto json = buffer.GetString();
-  ads_client_->EventLog(json);
-}
 
 void AdsImpl::Initialize() {
   if (!ads_client_->IsAdsEnabled()) {
@@ -187,7 +65,7 @@ void AdsImpl::Initialize() {
 }
 
 void AdsImpl::InitializeStep2() {
-  ProcessLocales(ads_client_->GetLocales());
+  client_->SetLocales(ads_client_->GetLocales());
 
   LoadUserModel();
 }
@@ -212,6 +90,34 @@ void AdsImpl::InitializeStep3() {
   ads_serve_->DownloadCatalog();
 }
 
+void AdsImpl::Deinitialize() {
+  if (!IsInitialized()) {
+    LOG(LogLevel::WARNING) <<
+      "Failed to deinitialize as not initialized";
+    return;
+  }
+
+  ads_serve_->Reset();
+
+  StopDeliveringNotifications();
+
+  StopSustainingAdInteraction();
+
+  RemoveAllHistory();
+
+  bundle_->Reset();
+  user_model_.reset();
+
+  last_shown_notification_info_ = NotificationInfo();
+
+  last_page_classification_ = "";
+  page_score_cache_.clear();
+
+  is_first_run_ = true;
+  is_initialized_ = false;
+  is_foreground_ = false;
+}
+
 bool AdsImpl::IsInitialized() {
   if (!is_initialized_ ||
       !ads_client_->IsAdsEnabled() ||
@@ -220,6 +126,39 @@ bool AdsImpl::IsInitialized() {
   }
 
   return true;
+}
+
+void AdsImpl::LoadUserModel() {
+  auto locale = client_->GetLocale();
+  auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
+  ads_client_->LoadUserModelForLocale(locale, callback);
+}
+
+void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
+  if (result == Result::FAILED) {
+    LOG(LogLevel::ERROR) << "Failed to load user model";
+
+    // TODO(Terry Mancey): If the user model fails to load, we need to notify
+    // the Client to decide what action to take otherwise ads will not work
+    return;
+  }
+
+  LOG(LogLevel::INFO) << "Successfully loaded user model";
+
+  InitializeUserModel(json);
+
+  if (!IsInitialized()) {
+    InitializeStep3();
+  }
+}
+
+void AdsImpl::InitializeUserModel(const std::string& json) {
+  // TODO(Terry Mancey): Refactor function to use callbacks
+
+  LOG(LogLevel::INFO) << "Initializing user model";
+
+  user_model_.reset(usermodel::UserModel::CreateInstance());
+  user_model_->initializePageClassifier(json);
 }
 
 bool AdsImpl::IsMobile() const {
@@ -347,21 +286,28 @@ void AdsImpl::SaveCachedInfo() {
   client_->SaveState();
 }
 
-void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
-  if (!IsInitialized()) {
+void AdsImpl::RetrieveSSID() {
+  std::string ssid = ads_client_->GetSSID();
+  if (ssid.empty()) {
+    ssid = kUnknownSSID;
+  }
+
+  client_->SetCurrentSSID(ssid);
+}
+
+void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
+  if (!ads_client_->IsAdsEnabled()) {
+    StopCollectingActivity();
     return;
   }
 
-  TestShoppingData(url);
-  TestSearchState(url);
+  client_->UpdateAdUUID();
 
-  auto page_score = user_model_->classifyPage(html);
-  client_->AppendPageScoreToPageScoreHistory(page_score);
-
-  last_page_classification_ = GetWinningCategory(page_score);
-
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Site visited', { url, immediateWinner, winnerOverTime }
+  if (_is_debug) {
+    StartCollectingActivity(kDebugOneHourInSeconds);
+  } else {
+    StartCollectingActivity(kOneHourInSeconds);
+  }
 }
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
@@ -389,42 +335,162 @@ void AdsImpl::ChangeLocale(const std::string& locale) {
   LoadUserModel();
 }
 
-void AdsImpl::NotificationAllowedCheck(const bool serve) {
-  auto ok = ads_client_->IsNotificationsAvailable();
+void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  TestShoppingData(url);
+  TestSearchState(url);
+
+  auto page_score = user_model_->classifyPage(html);
+  last_page_classification_ = GetWinningCategory(page_score);
+
+  client_->AppendPageScoreToPageScoreHistory(page_score);
 
   // TODO(Terry Mancey): Implement Log (#44)
-  // appConstants.APP_ON_NATIVE_NOTIFICATION_AVAILABLE_CHECK, {err, result}
+  // 'Site visited', { url, immediateWinner, winnerOverTime }
+}
 
-  auto previous = client_->GetAvailable();
-
-  if (ok != previous) {
-    client_->SetAvailable(ok);
+std::string AdsImpl::GetWinnerOverTimeCategory() {
+  auto page_score_history = client_->GetPageScoreHistory();
+  if (page_score_history.size() == 0) {
+    return "";
   }
 
-  if (!serve || ok != previous) {
-    GenerateAdReportingSettingsEvent();
+  uint64_t count = page_score_history.front().size();
+
+  std::vector<double> winner_over_time_page_scores(count);
+  std::fill(winner_over_time_page_scores.begin(),
+    winner_over_time_page_scores.end(), 0);
+
+  for (const auto& page_score : page_score_history) {
+    if (page_score.size() != count) {
+      return "";
+    }
+
+    for (size_t i = 0; i < page_score.size(); i++) {
+      winner_over_time_page_scores[i] += page_score[i];
+    }
   }
 
-  if (!serve) {
+  return GetWinningCategory(winner_over_time_page_scores);
+}
+
+std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {
+  return user_model_->winningCategory(page_score);
+}
+
+void AdsImpl::CachePageScore(
+    const std::string& url,
+    const std::vector<double>& page_score) {
+  auto cached_page_score = page_score_cache_.find(url);
+
+  if (cached_page_score == page_score_cache_.end()) {
+    page_score_cache_.insert({url, page_score});
+  } else {
+    cached_page_score->second = page_score;
+  }
+}
+
+void AdsImpl::TestShoppingData(const std::string& url) {
+  if (!IsInitialized()) {
     return;
   }
 
-  if (!ok) {
+  UrlComponents components;
+  if (!ads_client_->GetUrlComponents(url, &components)) {
+    return;
+  }
+
+  // TODO(Terry Mancey): Confirm with product if this list should be expanded
+  // to include amazon.co.uk and other territories
+  if (components.hostname == "www.amazon.com") {
+    client_->FlagShoppingState(url, 1.0);
+  } else {
+    client_->UnflagShoppingState();
+  }
+}
+
+void AdsImpl::TestSearchState(const std::string& url) {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  UrlComponents components;
+  if (!ads_client_->GetUrlComponents(url, &components)) {
+    return;
+  }
+
+  if (SearchProviders::IsSearchEngine(components)) {
+    client_->FlagSearchState(url, 1.0);
+  } else {
+    client_->UnflagSearchState(url);
+  }
+}
+
+void AdsImpl::ServeSampleAd() {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  auto callback = std::bind(&AdsImpl::OnLoadSampleBundle, this, _1, _2);
+  ads_client_->LoadSampleBundle(callback);
+}
+
+void AdsImpl::OnLoadSampleBundle(
+    const Result result,
+    const std::string& json) {
+  if (result == Result::FAILED) {
+    LOG(LogLevel::ERROR) << "Failed to load sample bundle";
+    return;
+  }
+
+  LOG(LogLevel::INFO) << "Successfully loaded sample bundle";
+
+  BundleState sample_bundle_state;
+  if (!sample_bundle_state.LoadFromJson(json,
+      ads_client_->LoadJsonSchema(_bundle_schema_name))) {
+    LOG(LogLevel::ERROR) << "Failed to parse sample bundle: " << json;
+    return;
+  }
+
+  // TODO(Terry Mancey): Sample bundle state should be persisted on the Client
+  // in a database so that sample ads can be fetched from the database rather
+  // than parsing the JSON each time, and be consistent with GetAds, therefore
+  // the below code should be abstracted into GetAdForSampleCategory once the
+  // necessary changes have been made in Brave Core by Brian Johnson
+
+  auto categories = sample_bundle_state.categories.begin();
+  auto categories_count = sample_bundle_state.categories.size();
+  if (categories_count == 0) {
     // TODO(Terry Mancey): Implement Log (#44)
-    // 'Ad not served', { reason: 'notifications not presently allowed' }
+    // 'Notification not made', { reason: 'no categories' }
+    LOG(LogLevel::WARNING) << "Sample bundle does not contain any categories";
 
     return;
   }
 
-  if (!ads_client_->IsNetworkConnectionAvailable()) {
+  auto category_rand = helper::Math::Random(categories_count - 1);
+  std::advance(categories, static_cast<int64_t>(category_rand));
+
+  auto category = categories->first;
+  auto ads = categories->second;
+
+  auto ads_count = ads.size();
+  if (ads_count == 0) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'no ads for category', category }
+    LOG(LogLevel::WARNING) << "No ads found for \""
+      << category << "\" sample category";
+
     return;
   }
 
-  if (CatalogIsOlderThanOneDay()) {
-    return;
-  }
+  auto ad_rand = helper::Math::Random(ads_count - 1);
+  auto ad = ads.at(ad_rand);
 
-  CheckReadyAdServe();
+  ShowAd(ad, category);
 }
 
 void AdsImpl::CheckReadyAdServe(const bool forced) {
@@ -456,171 +522,26 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
   ServeAdFromCategory(category);
 }
 
-void AdsImpl::ServeSampleAd() {
-  if (!IsInitialized()) {
+void AdsImpl::ServeAdFromCategory(const std::string& category) {
+  std::string catalog_id = bundle_->GetCatalogId();
+  if (catalog_id.empty()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'no ad catalog' }
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::OnLoadSampleBundle, this, _1, _2);
-  ads_client_->LoadSampleBundle(callback);
-}
-
-void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
-  StopCollectingActivity();
-
-  collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
-  if (collect_activity_timer_id_ == 0) {
-    LOG(LogLevel::ERROR) <<
-      "Failed to start collecting activity due to an invalid timer";
+  if (category.empty()) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Notification not made', { reason: 'no ad (or permitted ad) for
+    // winnerOverTime', category, winnerOverTime, arbitraryKey }
     return;
   }
 
-  LOG(LogLevel::INFO) <<
-    "Start collecting activity in " << start_timer_in << " seconds";
-}
+  auto locale = ads_client_->GetAdsLocale();
+  auto region = helper::Locale::GetCountryCode(locale);
 
-void AdsImpl::StopCollectingActivity() {
-  if (!IsCollectingActivity()) {
-    return;
-  }
-
-  LOG(LogLevel::INFO) << "Stopped collecting activity";
-
-  ads_client_->KillTimer(collect_activity_timer_id_);
-  collect_activity_timer_id_ = 0;
-}
-
-bool AdsImpl::CatalogIsOlderThanOneDay() {
-  auto now = helper::Time::Now();
-
-  auto catalog_last_updated_timestamp =
-    bundle_->GetCatalogLastUpdatedTimestamp();
-
-  if (catalog_last_updated_timestamp != 0 &&
-      catalog_last_updated_timestamp + kOneDayInSeconds >= now) {
-    return false;
-  }
-
-  return true;
-}
-
-void AdsImpl::OnTimer(const uint32_t timer_id) {
-  if (timer_id == collect_activity_timer_id_) {
-    CollectActivity();
-  } else if (timer_id == delivering_notifications_timer_id_) {
-    DeliverNotification();
-  } else if (timer_id == sustained_ad_interaction_timer_id_) {
-    SustainAdInteraction();
-  }
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
-void AdsImpl::Deinitialize() {
-  if (!IsInitialized()) {
-    LOG(LogLevel::WARNING) <<
-      "Failed to deinitialize as not initialized";
-    return;
-  }
-
-  ads_serve_->Reset();
-
-  StopDeliveringNotifications();
-
-  StopSustainingAdInteraction();
-
-  RemoveAllHistory();
-
-  bundle_->Reset();
-  user_model_.reset();
-
-  last_shown_notification_info_ = NotificationInfo();
-
-  last_page_classification_ = "";
-  page_score_cache_.clear();
-
-  is_first_run_ = true;
-  is_initialized_ = false;
-  is_foreground_ = false;
-}
-
-void AdsImpl::LoadUserModel() {
-  auto locale = client_->GetLocale();
-  auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
-  ads_client_->LoadUserModelForLocale(locale, callback);
-}
-
-void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(LogLevel::ERROR) << "Failed to load user model";
-
-    // TODO(Terry Mancey): If the user model fails to load, we need to notify
-    // the Client to decide what action to take otherwise ads will not work
-    return;
-  }
-
-  LOG(LogLevel::INFO) << "Successfully loaded user model";
-
-  InitializeUserModel(json);
-
-  if (!IsInitialized()) {
-    InitializeStep3();
-  }
-}
-
-void AdsImpl::InitializeUserModel(const std::string& json) {
-  // TODO(Terry Mancey): Refactor function to use callbacks
-
-  LOG(LogLevel::INFO) << "Initializing user model";
-
-  user_model_.reset(usermodel::UserModel::CreateInstance());
-  user_model_->initializePageClassifier(json);
-}
-
-std::string AdsImpl::GetWinningCategory(const std::vector<double>& page_score) {
-  auto category = user_model_->winningCategory(page_score);
-  return category;
-}
-
-std::string AdsImpl::GetWinnerOverTimeCategory() {
-  auto page_score_history = client_->GetPageScoreHistory();
-  if (page_score_history.size() == 0) {
-    return "";
-  }
-
-  uint64_t count = page_score_history.front().size();
-
-  std::vector<double> winner_over_time_page_scores(count);
-  std::fill(winner_over_time_page_scores.begin(),
-    winner_over_time_page_scores.end(), 0);
-
-  for (const auto& page_scores : page_score_history) {
-    if (page_scores.size() != count) {
-      return "";
-    }
-
-    for (size_t i = 0; i < page_scores.size(); i++) {
-      winner_over_time_page_scores[i] += page_scores[i];
-    }
-  }
-
-  auto category = user_model_->winningCategory(winner_over_time_page_scores);
-
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Site visited', { url, immediateWinner, winnerOverTime }
-  return category;
-}
-
-void AdsImpl::CachePageScore(
-    const std::string& url,
-    const std::vector<double>& page_score) {
-  auto cached_page_score = page_score_cache_.find(url);
-
-  if (cached_page_score == page_score_cache_.end()) {
-    page_score_cache_.insert({url, page_score});
-  } else {
-    cached_page_score->second = page_score;
-  }
+  auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
+  ads_client_->GetAds(region, category, callback);
 }
 
 void AdsImpl::OnGetAds(
@@ -675,258 +596,6 @@ void AdsImpl::OnGetAds(
   ShowAd(ad, category);
 }
 
-void AdsImpl::OnLoadSampleBundle(
-    const Result result,
-    const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(LogLevel::ERROR) << "Failed to load sample bundle";
-    return;
-  }
-
-  BundleState sample_bundle_state;
-  if (!sample_bundle_state.LoadFromJson(json,
-      ads_client_->LoadJsonSchema(_bundle_schema_name))) {
-    LOG(LogLevel::ERROR) << "Failed to parse sample bundle: " << json;
-    return;
-  }
-
-  // TODO(Terry Mancey): Sample bundle state should be persisted on the Client
-  // in a database so that sample ads can be fetched from the database rather
-  // than parsing the JSON each time, and be consistent with GetAds, therefore
-  // the below code should be abstracted into GetAdForSampleCategory once the
-  // necessary changes have been made in Brave Core by Brian Johnson
-
-  auto categories = sample_bundle_state.categories.begin();
-  auto categories_count = sample_bundle_state.categories.size();
-  if (categories_count == 0) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no categories' }
-    LOG(LogLevel::WARNING) << "Sample bundle does not contain any categories";
-
-    return;
-  }
-
-  auto category_rand = helper::Math::Random(categories_count - 1);
-  std::advance(categories, static_cast<int64_t>(category_rand));
-
-  auto category = categories->first;
-  auto ads = categories->second;
-
-  auto ads_count = ads.size();
-  if (ads_count == 0) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ads for category', category }
-    LOG(LogLevel::WARNING) << "No ads found for \""
-      << category << "\" sample category";
-
-    return;
-  }
-
-  auto ad_rand = helper::Math::Random(ads_count - 1);
-  auto ad = ads.at(ad_rand);
-
-  ShowAd(ad, category);
-}
-
-void AdsImpl::CollectActivity() {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  LOG(LogLevel::INFO) << "Collect activity";
-
-  ads_serve_->DownloadCatalog();
-}
-
-bool AdsImpl::IsCollectingActivity() const {
-  if (collect_activity_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
-}
-
-void AdsImpl::StartDeliveringNotifications(const uint64_t start_timer_in) {
-  StopDeliveringNotifications();
-
-  delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
-  if (delivering_notifications_timer_id_ == 0) {
-    LOG(LogLevel::ERROR) <<
-      "Failed to start delivering notifications due to an invalid timer";
-    return;
-  }
-
-  LOG(LogLevel::INFO) <<
-    "Start delivering notifications in " << start_timer_in << " seconds";
-}
-
-void AdsImpl::DeliverNotification() {
-  NotificationAllowedCheck(true);
-
-  if (IsMobile()) {
-    StartDeliveringNotifications(kDeliverNotificationsAfterSeconds);
-  }
-}
-
-void AdsImpl::StopDeliveringNotifications() {
-  if (!IsDeliveringNotifications()) {
-    return;
-  }
-
-  LOG(LogLevel::INFO) << "Stopped delivering notifications";
-
-  ads_client_->KillTimer(delivering_notifications_timer_id_);
-  delivering_notifications_timer_id_ = 0;
-}
-
-bool AdsImpl::IsDeliveringNotifications() const {
-  if (delivering_notifications_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
-}
-
-void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
-  StopSustainingAdInteraction();
-
-  sustained_ad_interaction_timer_id_ = ads_client_->SetTimer(start_timer_in);
-  if (sustained_ad_interaction_timer_id_ == 0) {
-    LOG(LogLevel::ERROR) <<
-      "Failed to start sustaining ad interaction due to an invalid timer";
-    return;
-  }
-
-  LOG(LogLevel::INFO) <<
-    "Start sustaining ad interaction in " << start_timer_in << " seconds";
-}
-
-void AdsImpl::SustainAdInteraction() {
-  if (!IsStillViewingAd()) {
-    return;
-  }
-
-  GenerateAdReportingSustainEvent(last_shown_notification_info_);
-}
-
-bool AdsImpl::IsStillViewingAd() const {
-  if (last_shown_notification_info_.url != last_shown_tab_url_) {
-    return false;
-  }
-
-  return true;
-}
-
-void AdsImpl::StopSustainingAdInteraction() {
-  if (!IsSustainingAdInteraction()) {
-    return;
-  }
-
-  LOG(LogLevel::INFO) << "Stopped sustaining ad interaction";
-
-  ads_client_->KillTimer(sustained_ad_interaction_timer_id_);
-  sustained_ad_interaction_timer_id_ = 0;
-}
-
-bool AdsImpl::IsSustainingAdInteraction() const {
-  if (sustained_ad_interaction_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
-}
-
-void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
-  if (!ads_client_->IsAdsEnabled()) {
-    StopCollectingActivity();
-    return;
-  }
-
-  client_->UpdateAdUUID();
-
-  if (_is_debug) {
-    StartCollectingActivity(kDebugOneHourInSeconds);
-  } else {
-    StartCollectingActivity(kOneHourInSeconds);
-  }
-}
-
-void AdsImpl::RetrieveSSID() {
-  std::string ssid = ads_client_->GetSSID();
-  if (ssid.empty()) {
-    ssid = kUnknownSSID;
-  }
-
-  client_->SetCurrentSSID(ssid);
-}
-
-void AdsImpl::TestShoppingData(const std::string& url) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-
-  UrlComponents components;
-  if (!ads_client_->GetUrlComponents(url, &components)) {
-    return;
-  }
-
-  // TODO(Terry Mancey): Confirm with product if this list should be expanded
-  // to include amazon.co.uk and other territories
-  if (components.hostname == "www.amazon.com") {
-    client_->FlagShoppingState(url, 1.0);
-  } else {
-    client_->UnflagShoppingState();
-  }
-}
-
-void AdsImpl::TestSearchState(const std::string& url) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  UrlComponents components;
-  if (!ads_client_->GetUrlComponents(url, &components)) {
-    return;
-  }
-
-  if (SearchProviders::IsSearchEngine(components)) {
-    client_->FlagSearchState(url, 1.0);
-  } else {
-    client_->UnflagSearchState(url);
-  }
-}
-
-void AdsImpl::ProcessLocales(const std::vector<std::string>& locales) {
-  if (locales.empty()) {
-    return;
-  }
-
-  client_->SetLocales(locales);
-}
-
-void AdsImpl::ServeAdFromCategory(const std::string& category) {
-  std::string catalog_id = bundle_->GetCatalogId();
-  if (catalog_id.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ad catalog' }
-    return;
-  }
-
-  if (category.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ad (or permitted ad) for
-    // winnerOverTime', category, winnerOverTime, arbitraryKey }
-    return;
-  }
-
-  auto locale = ads_client_->GetAdsLocale();
-  auto region = helper::Locale::GetCountryCode(locale);
-
-  auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
-  ads_client_->GetAds(region, category, callback);
-}
-
 std::vector<AdInfo> AdsImpl::GetUnseenAds(
     const std::vector<AdInfo>& ads) {
   auto ads_unseen = ads;
@@ -942,27 +611,6 @@ std::vector<AdInfo> AdsImpl::GetUnseenAds(
   ads_unseen.erase(iterator, ads_unseen.end());
 
   return ads_unseen;
-}
-
-bool AdsImpl::IsAllowedToShowAds() {
-  auto hour_window = kOneHourInSeconds;
-  auto hour_allowed = ads_client_->GetAdsPerHour();
-  auto respects_hour_limit = AdsShownHistoryRespectsRollingTimeConstraint(
-    hour_window, hour_allowed);
-
-  auto day_window = kOneHourInSeconds;
-  auto day_allowed = ads_client_->GetAdsPerDay();
-  auto respects_day_limit = AdsShownHistoryRespectsRollingTimeConstraint(
-    day_window, day_allowed);
-
-  auto minimum_wait_time = hour_window / hour_allowed;
-  bool respects_minimum_wait_time =
-    AdsShownHistoryRespectsRollingTimeConstraint(
-    minimum_wait_time, 0);
-
-  return respects_hour_limit &&
-    respects_day_limit &&
-    respects_minimum_wait_time;
 }
 
 bool AdsImpl::IsAdValid(const AdInfo& ad_info) {
@@ -1026,6 +674,345 @@ bool AdsImpl::AdsShownHistoryRespectsRollingTimeConstraint(
   }
 
   return false;
+}
+
+bool AdsImpl::IsAllowedToShowAds() {
+  auto hour_window = kOneHourInSeconds;
+  auto hour_allowed = ads_client_->GetAdsPerHour();
+  auto respects_hour_limit = AdsShownHistoryRespectsRollingTimeConstraint(
+    hour_window, hour_allowed);
+
+  auto day_window = kOneHourInSeconds;
+  auto day_allowed = ads_client_->GetAdsPerDay();
+  auto respects_day_limit = AdsShownHistoryRespectsRollingTimeConstraint(
+    day_window, day_allowed);
+
+  auto minimum_wait_time = hour_window / hour_allowed;
+  bool respects_minimum_wait_time =
+    AdsShownHistoryRespectsRollingTimeConstraint(
+    minimum_wait_time, 0);
+
+  return respects_hour_limit &&
+    respects_day_limit &&
+    respects_minimum_wait_time;
+}
+
+void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
+  StopCollectingActivity();
+
+  collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
+  if (collect_activity_timer_id_ == 0) {
+    LOG(LogLevel::ERROR) <<
+      "Failed to start collecting activity due to an invalid timer";
+    return;
+  }
+
+  LOG(LogLevel::INFO) <<
+    "Start collecting activity in " << start_timer_in << " seconds";
+}
+
+void AdsImpl::CollectActivity() {
+  if (!IsInitialized()) {
+    return;
+  }
+
+  LOG(LogLevel::INFO) << "Collect activity";
+
+  ads_serve_->DownloadCatalog();
+}
+
+void AdsImpl::StopCollectingActivity() {
+  if (!IsCollectingActivity()) {
+    return;
+  }
+
+  LOG(LogLevel::INFO) << "Stopped collecting activity";
+
+  ads_client_->KillTimer(collect_activity_timer_id_);
+  collect_activity_timer_id_ = 0;
+}
+
+bool AdsImpl::IsCollectingActivity() const {
+  if (collect_activity_timer_id_ == 0) {
+    return false;
+  }
+
+  return true;
+}
+
+
+void AdsImpl::StartDeliveringNotifications(const uint64_t start_timer_in) {
+  StopDeliveringNotifications();
+
+  delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
+  if (delivering_notifications_timer_id_ == 0) {
+    LOG(LogLevel::ERROR) <<
+      "Failed to start delivering notifications due to an invalid timer";
+    return;
+  }
+
+  LOG(LogLevel::INFO) <<
+    "Start delivering notifications in " << start_timer_in << " seconds";
+}
+
+void AdsImpl::DeliverNotification() {
+  NotificationAllowedCheck(true);
+
+  if (IsMobile()) {
+    StartDeliveringNotifications(kDeliverNotificationsAfterSeconds);
+  }
+}
+
+void AdsImpl::StopDeliveringNotifications() {
+  if (!IsDeliveringNotifications()) {
+    return;
+  }
+
+  LOG(LogLevel::INFO) << "Stopped delivering notifications";
+
+  ads_client_->KillTimer(delivering_notifications_timer_id_);
+  delivering_notifications_timer_id_ = 0;
+}
+
+bool AdsImpl::IsDeliveringNotifications() const {
+  if (delivering_notifications_timer_id_ == 0) {
+    return false;
+  }
+
+  return true;
+}
+
+bool AdsImpl::IsCatalogIsOlderThanOneDay() {
+  auto now = helper::Time::Now();
+
+  auto catalog_last_updated_timestamp =
+    bundle_->GetCatalogLastUpdatedTimestamp();
+
+  if (catalog_last_updated_timestamp != 0 &&
+      catalog_last_updated_timestamp + kOneDayInSeconds >= now) {
+    return false;
+  }
+
+  return true;
+}
+
+void AdsImpl::NotificationAllowedCheck(const bool serve) {
+  auto ok = ads_client_->IsNotificationsAvailable();
+
+  // TODO(Terry Mancey): Implement Log (#44)
+  // appConstants.APP_ON_NATIVE_NOTIFICATION_AVAILABLE_CHECK, {err, result}
+
+  auto previous = client_->GetAvailable();
+
+  if (ok != previous) {
+    client_->SetAvailable(ok);
+  }
+
+  if (!serve || ok != previous) {
+    GenerateAdReportingSettingsEvent();
+  }
+
+  if (!serve) {
+    return;
+  }
+
+  if (!ok) {
+    // TODO(Terry Mancey): Implement Log (#44)
+    // 'Ad not served', { reason: 'notifications not presently allowed' }
+
+    return;
+  }
+
+  if (!ads_client_->IsNetworkConnectionAvailable()) {
+    return;
+  }
+
+  if (IsCatalogIsOlderThanOneDay()) {
+    return;
+  }
+
+  CheckReadyAdServe(false);
+}
+
+void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
+  StopSustainingAdInteraction();
+
+  sustained_ad_interaction_timer_id_ = ads_client_->SetTimer(start_timer_in);
+  if (sustained_ad_interaction_timer_id_ == 0) {
+    LOG(LogLevel::ERROR) <<
+      "Failed to start sustaining ad interaction due to an invalid timer";
+    return;
+  }
+
+  LOG(LogLevel::INFO) <<
+    "Start sustaining ad interaction in " << start_timer_in << " seconds";
+}
+
+void AdsImpl::SustainAdInteraction() {
+  if (!IsStillViewingAd()) {
+    return;
+  }
+
+  GenerateAdReportingSustainEvent(last_shown_notification_info_);
+}
+
+void AdsImpl::StopSustainingAdInteraction() {
+  if (!IsSustainingAdInteraction()) {
+    return;
+  }
+
+  LOG(LogLevel::INFO) << "Stopped sustaining ad interaction";
+
+  ads_client_->KillTimer(sustained_ad_interaction_timer_id_);
+  sustained_ad_interaction_timer_id_ = 0;
+}
+
+bool AdsImpl::IsSustainingAdInteraction() const {
+  if (sustained_ad_interaction_timer_id_ == 0) {
+    return false;
+  }
+
+  return true;
+}
+
+bool AdsImpl::IsStillViewingAd() const {
+  if (last_shown_notification_info_.url != last_shown_tab_url_) {
+    return false;
+  }
+
+  return true;
+}
+
+void AdsImpl::OnTimer(const uint32_t timer_id) {
+  if (timer_id == collect_activity_timer_id_) {
+    CollectActivity();
+  } else if (timer_id == delivering_notifications_timer_id_) {
+    DeliverNotification();
+  } else if (timer_id == sustained_ad_interaction_timer_id_) {
+    SustainAdInteraction();
+  }
+}
+
+void AdsImpl::GenerateAdReportingNotificationShownEvent(
+    const NotificationInfo& info) {
+  if (is_first_run_) {
+    is_first_run_ = false;
+
+    GenerateAdReportingRestartEvent();
+  }
+
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("notify");
+
+  writer.String("stamp");
+  std::string time_stamp = helper::Time::TimeStamp();
+  writer.String(time_stamp.c_str());
+
+  writer.String("notificationType");
+  writer.String("generated");
+
+  writer.String("notificationClassification");
+  writer.StartArray();
+  std::vector<std::string> classifications;
+  helper::String::Split(info.category, '-', &classifications);
+  for (const auto& classification : classifications) {
+    writer.String(classification.c_str());
+  }
+  writer.EndArray();
+
+  writer.String("notificationCatalog");
+  if (info.creative_set_id.empty()) {
+    writer.String("sample-catalog");
+  } else {
+    writer.String(info.creative_set_id.c_str());
+  }
+
+  writer.String("notificationUrl");
+  writer.String(info.url.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
+}
+
+void AdsImpl::GenerateAdReportingNotificationResultEvent(
+    const NotificationInfo& info,
+    const NotificationResultInfoResultType type) {
+  if (is_first_run_) {
+    is_first_run_ = false;
+
+    GenerateAdReportingRestartEvent();
+  }
+
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  writer.StartObject();
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("notify");
+
+  writer.String("stamp");
+  std::string time_stamp = helper::Time::TimeStamp();
+  writer.String(time_stamp.c_str());
+
+  writer.String("notificationType");
+  switch (type) {
+    case CLICKED: {
+      writer.String("clicked");
+      client_->UpdateAdsUUIDSeen(info.uuid, 1);
+
+      StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
+      break;
+    }
+
+    case DISMISSED: {
+      writer.String("dismissed");
+      client_->UpdateAdsUUIDSeen(info.uuid, 1);
+      break;
+    }
+
+    case TIMEOUT: {
+      writer.String("timeout");
+      break;
+    }
+  }
+
+  writer.String("notificationClassification");
+  writer.StartArray();
+  std::vector<std::string> classifications;
+  helper::String::Split(info.category, '-', &classifications);
+  for (const auto& classification : classifications) {
+    writer.String(classification.c_str());
+  }
+  writer.EndArray();
+
+  writer.String("notificationCatalog");
+  if (info.creative_set_id.empty()) {
+    writer.String("sample-catalog");
+  } else {
+    writer.String(info.creative_set_id.c_str());
+  }
+
+  writer.String("notificationUrl");
+  writer.String(info.url.c_str());
+
+  writer.EndObject();
+
+  auto json = buffer.GetString();
+  ads_client_->EventLog(json);
 }
 
 void AdsImpl::GenerateAdReportingSustainEvent(
