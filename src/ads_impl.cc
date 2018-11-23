@@ -159,6 +159,8 @@ void AdsImpl::InitializeUserModel(const std::string& json) {
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->initializePageClassifier(json);
+
+  LOG(LogLevel::INFO) << "Initialized user model";
 }
 
 bool AdsImpl::IsMobile() const {
