@@ -92,6 +92,7 @@ class MockBraveSyncServiceObserver : public BraveSyncServiceObserver {
  public:
   MockBraveSyncServiceObserver() {}
 
+  MOCK_METHOD2(OnSyncSetupError, void(BraveSyncService*, const std::string&));
   MOCK_METHOD1(OnSyncStateChanged, void(BraveSyncService*));
   MOCK_METHOD2(OnHaveSyncWords, void(BraveSyncService*, const std::string&));
 };
@@ -294,6 +295,11 @@ TEST_F(BraveSyncServiceTest, GetSyncWords) {
   const std::string words = "word1 word2 word3";
   EXPECT_CALL(*observer(), OnHaveSyncWords(sync_service(), words)).Times(1);
   sync_service()->OnSyncWordsPrepared(words);
+}
+
+TEST_F(BraveSyncServiceTest, SyncSetupError) {
+  EXPECT_CALL(*observer(), OnSyncSetupError(sync_service(), _)).Times(1);
+  sync_service()->OnSetupSyncHaveCode("", "");
 }
 
 TEST_F(BraveSyncServiceTest, GetSeed) {
