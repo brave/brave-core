@@ -156,7 +156,7 @@ class ADS_EXPORT AdsClient {
       const std::string& category,
       OnGetAdsCallback callback) = 0;
 
-  // Should get the components of a URL
+  // Should get the components of the specified URL
   virtual bool GetUrlComponents(
       const std::string& url,
       UrlComponents* components) const = 0;
