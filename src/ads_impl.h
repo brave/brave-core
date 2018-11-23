@@ -33,10 +33,6 @@ class AdsImpl : public Ads {
   explicit AdsImpl(AdsClient* ads_client);
   ~AdsImpl() override;
 
-  // Not copyable, not assignable
-  AdsImpl(const AdsImpl&) = delete;
-  AdsImpl& operator=(const AdsImpl&) = delete;
-
   bool is_first_run_;
 
   bool is_initialized_;
@@ -162,6 +158,9 @@ class AdsImpl : public Ads {
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
   std::unique_ptr<usermodel::UserModel> user_model_;
+  // Not copyable, not assignable
+  AdsImpl(const AdsImpl&) = delete;
+  AdsImpl& operator=(const AdsImpl&) = delete;
 };
 
 }  // namespace ads

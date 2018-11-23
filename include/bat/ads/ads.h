@@ -27,10 +27,6 @@ class ADS_EXPORT Ads {
   Ads() = default;
   virtual ~Ads() = default;
 
-  // Not copyable, not assignable
-  Ads(const Ads&) = delete;
-  Ads& operator=(const Ads&) = delete;
-
   static Ads* CreateInstance(AdsClient* ads_client);
 
   // Should be called when a Notification has been shown
@@ -100,6 +96,11 @@ class ADS_EXPORT Ads {
 
   // Should be called when a timer is triggered
   virtual void OnTimer(const uint32_t timer_id) = 0;
+
+ private:
+  // Not copyable, not assignable
+  Ads(const Ads&) = delete;
+  Ads& operator=(const Ads&) = delete;
 };
 
 }  // namespace ads
