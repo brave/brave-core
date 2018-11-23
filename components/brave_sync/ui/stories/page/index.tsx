@@ -4,22 +4,11 @@
 
 import * as React from 'react'
 
-// Feature-specific components
-import {
-  Main,
-  Title,
-  EmphasisText,
-  SecondaryText,
-  Link,
-  SectionBlock
-} from '../../../../src/features/sync'
-
 // Component groups
 import DisabledContent from '../disabledContent'
 import EnabledContent from '../enabledContent'
 
 // Utils
-import locale from './fakeLocale'
 import 'emptykit.css'
 
 // Fonts
@@ -37,31 +26,11 @@ interface SyncPageState {
   syncResetModalOpen: boolean
 }
 
-const syncLink = 'https://github.com/brave/sync/wiki/Design'
-
 class SyncPage extends React.PureComponent<SyncPageProps, SyncPageState> {
-  get fakeShowCurrentSyncPage () {
+  render () {
     return this.props.disabled
       ? <DisabledContent />
       : <EnabledContent />
-  }
-
-  render () {
-    return (
-      <Main>
-        <Title level={2}>{locale.sync}</Title>
-          <EmphasisText>
-            {locale.syncInfo1}
-            <Link href={syncLink} target='_blank' rel='noreferrer noopener'>?</Link>
-          </EmphasisText>
-          <SecondaryText>{locale.syncInfo2}</SecondaryText>
-        <SectionBlock>
-          {
-            this.fakeShowCurrentSyncPage
-          }
-        </SectionBlock>
-      </Main>
-    )
   }
 }
 

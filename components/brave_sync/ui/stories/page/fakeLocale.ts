@@ -2,48 +2,74 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const locale = {
-  sync: 'Brave Sync',
-  beta: 'beta',
-  syncInfo1: 'Sync encrypted browser data between your devices securely and privately using Brave Sync',
-  syncInfo2: 'Note: Sync for iOS and Android is still being completed and will be released soon.',
-  syncThisDevice: 'Sync this device',
+const locale: any = {
+  // Shared
   done: 'Done',
+  remove: 'Remove',
+  copied: 'Copied!',
+  wordCount: 'Word Count:',
+  ok: 'Ok',
   cancel: 'Cancel',
-  areYouSure: 'Are you sure?',
-  // disabled content
-  iAmNewToSync: 'I am new to Sync',
-  iHaveAnExistingSyncCode: 'I have an existing Sync code',
-  // enabled content
-  devices: 'Devices',
-  deviceName: 'Device name',
-  id: 'id',
-  lastActive: 'Last active',
-  syncANewDevice: 'Sync a new device',
-  syncData: 'Sync Data',
-  syncDataInfo: 'Sync the following data from this device:',
+  thisSyncChain: 'from this sync chain',
+  // Enabled Content
+  braveSync: 'Brave Sync',
+  syncChainDevices: 'Devices in your sync chain',
+  deviceName: 'device name',
+  addedOn: 'added on',
+  addDevice: 'add device',
+  viewSyncCode: 'view sync code',
+  dataToSync: 'Data to sync from',
   bookmarks: 'Bookmarks',
   savedSiteSettings: 'Saved Site Settings',
   browsingHistory: 'Browsing History',
-  clearData: 'Clear Data',
-  resetSync: 'Reset Sync',
-  removeDevice: 'Remove',
-  // i am new to sync modal
-  enterAnOptionalName: 'Enter a name for this device',
-  setUpSync: 'Set up Sync',
-  // i have an existing sync code modal
-  enterYourSyncCodeWords: 'Enter your Sync code words:',
-  enterAnOptionalNameForThisDevice: 'Enter a name for this device:',
-  // sync a new device modal
-  syncANewDeviceFirstBulletText: 'Open Brave on your target device and go to Preferences > Sync > I have an existing synced device.',
-  syncANewDeviceSecondBulletText: 'If asked to scan a QR code, click the button below and scan the code using the device\'s camera.',
-  syncANewDeviceThirdBulletText: 'If prompted for security codes, type in the words below.',
-  showSecretQRCode: 'Show Sync QR Code',
-  showSecretCodeWords: 'Show Sync Code Words',
-  // reset sync modal
-  resetSyncFirstBullet: 'Resetting Sync clears data stored on the Sync server and resets this device\'s Sync settings.',
-  resetSyncSecondBullet: 'You will keep any bookmarks, history and other browsing data currently on this device.',
-  resetSyncThirdBullet: 'If you\'ve synced other devices, they will continue to sync their future browsing data. If you don\'t want that, you should reset Sync on those devices as well.'
+  leaveSyncChain: 'Leave Sync Chain',
+  // Disabled Content
+  syncTitle: 'Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.',
+  syncDescription: 'When you start a new sync chain, a new sync code is created. You will use this same code across your devices to link them together.',
+  startSyncChain: 'Start a new sync chain',
+  enterSyncChainCode: 'Enter a sync chain code',
+  confirmSyncCode: 'Confirm Sync Code',
+  // [modal] Enter Sync Code
+  enterSyncCode: 'Enter a sync code',
+  enterSyncCodeDescription: 'Go to Brave Settings > Sync > Display sync code',
+  confirmCode: 'Confirm Sync Code',
+  invalidCode: 'Invalid sync code.',
+  tryAgain: 'Please try again.',
+  // [modal] Remove Main Device
+  thisDeviceRemovalDescription: 'Local device data will remain intact on all devices. Other devices in this sync chain will remain synced.',
+  joinSyncChain: 'To join a sync chain again, choose “Enter a sync chain code”.',
+  // [modal] Remove Other Device
+  otherDeviceRemovalDescription: 'Note: Removing this device from this sync chain does not clear previously synced data from the device.',
+  // [modal] Reset Sync
+  warning: 'Warning!',
+  removing: 'Removing',
+  deleteSyncChain: 'will delete this sync chain.',
+  deleteSyncDescription: 'Your local data on this device will be retained but all data in Brave’s Sync cache will be deleted.',
+  startSyncChainHowTo: 'You can start a new sync chain or sync with a new device by entering its sync chain code.',
+  areYouSure: 'Are you sure?',
+  // [modal] Add New Chain
+  scanThisCode: 'Now, using Brave on your mobile device, scan this code.',
+  scanThisCodeHowTo: 'Go to: Brave Settings > Sync > Scan Sync Code',
+  enterCodeWordsInstead: 'Enter code words instead...',
+  previous: '< Previous',
+  lookingForDevice: 'Looking for device',
+  // [modal] Add New Chain (Camera Option)
+  // [modal] Add New Chain (no Camera)
+  enterThisCode: 'Now, using Brave on your computer, enter this code:',
+  mobileEnterThisCode: 'Now, using Brave on your mobile device, enter this code:',
+  syncChainCodeHowTo: 'Go to: Brave Settings > Sync > Enter a Sync Chain Code',
+  useCameraInstead: 'Use my camera instead...',
+  // [modal] Choose Device Type
+  letsSync: 'Let’s sync a new device with',
+  chooseDeviceType: 'Choose a device type:',
+  phoneTablet: 'Phone/Tablet',
+  computer: 'Computer',
+  // [modal] View Sync Code
+  qrCode: 'QR Code',
+  wordCode: 'Word Code',
+  privateKey: 'This is a private key. If you share it, your private data may be compromised.'
 }
 
 export default locale
+
+export const getLocale = (word: string) => locale[word]
