@@ -29,18 +29,6 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  // Should be called when a Notification has been shown
-  virtual void GenerateAdReportingNotificationShownEvent(
-      const NotificationInfo& info) = 0;
-
-  // Should be called when a Notification has been clicked, dismissed or times
-  // out on the Client. Dismiss events for local Notifications may not be
-  // available for every version of Android, making the Dismiss notification
-  // capture optional for Android on 100% of devices
-  virtual void GenerateAdReportingNotificationResultEvent(
-      const NotificationInfo& info,
-      const NotificationResultInfoResultType type) = 0;
-
   // Should be called when Brave Ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
 
@@ -80,15 +68,15 @@ class ADS_EXPORT Ads {
   // Should be called when the browser is about to exit
   virtual void SaveCachedInfo() = 0;
 
+  // Should be called when the user changes the operating system's locale, i.e.
+  // en, en_US or en_GB.UTF-8
+  virtual void ChangeLocale(const std::string& locale) = 0;
+
   // Should be called when a page has loaded in the current browser tab, and the
   // HTML is available for analysis
   virtual void ClassifyPage(
       const std::string& url,
       const std::string& html) = 0;
-
-  // Should be called when the user changes the operating system's locale, i.e.
-  // en, en_US or en_GB.UTF-8
-  virtual void ChangeLocale(const std::string& locale) = 0;
 
   // Should be called when the user invokes "Show Sample Ad" on the Client; a
   // Notification is then sent to the Client for processing
@@ -96,6 +84,18 @@ class ADS_EXPORT Ads {
 
   // Should be called when a timer is triggered
   virtual void OnTimer(const uint32_t timer_id) = 0;
+
+  // Should be called when a Notification has been shown
+  virtual void GenerateAdReportingNotificationShownEvent(
+      const NotificationInfo& info) = 0;
+
+  // Should be called when a Notification has been clicked, dismissed or times
+  // out on the Client. Dismiss events for local Notifications may not be
+  // available for every version of Android, making the Dismiss notification
+  // capture optional for Android on 100% of devices
+  virtual void GenerateAdReportingNotificationResultEvent(
+      const NotificationInfo& info,
+      const NotificationResultInfoResultType type) = 0;
 
  private:
   // Not copyable, not assignable
