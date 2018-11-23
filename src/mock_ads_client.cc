@@ -47,7 +47,7 @@ class MockLogStreamImpl : public ads::LogStream {
   }
 
   std::ostream& stream() override {
-    std::cout << log_message_;
+    std::cout << std::endl << log_message_;
     return std::cout;
   }
 
