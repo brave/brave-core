@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
+#include <ostream>
 #include <memory>
 #include <functional>
 
@@ -35,6 +36,12 @@ enum ADS_EXPORT URLRequestMethod {
 enum ADS_EXPORT Result {
   SUCCESS,
   FAILED
+};
+
+class ADS_EXPORT LogStream {
+ public:
+  virtual ~LogStream() = default;
+  virtual std::ostream& stream() = 0;
 };
 
 using OnSaveCallback = std::function<void(Result)>;
@@ -173,7 +180,7 @@ class ADS_EXPORT AdsClient {
   virtual void EventLog(const std::string& json) = 0;
 
   // Should log diagnostic information to persistent storage
-  virtual std::ostream& Log(
+  virtual std::unique_ptr<LogStream> Log(
       const char* file,
       int line,
       const LogLevel log_level) const = 0;

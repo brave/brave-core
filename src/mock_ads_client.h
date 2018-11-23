@@ -90,7 +90,7 @@ class MockAdsClient : public AdsClient {
 
   void EventLog(const std::string& json) override;
 
-  std::ostream& Log(
+  std::unique_ptr<LogStream> Log(
       const char* file,
       int line,
       const LogLevel log_level) const override;
