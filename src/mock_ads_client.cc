@@ -5,7 +5,6 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
-#include <memory>
 
 #include <uriparser/Uri.h>
 
