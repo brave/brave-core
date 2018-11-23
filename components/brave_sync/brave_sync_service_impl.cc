@@ -182,6 +182,9 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(
     return;
   }
 
+  sync_words_.clear();  // If the previous attempt was connect to sync chain
+                        // and failed to receive save-init-data
+
   sync_prefs_->SetThisDeviceName(device_name);
   initializing_ = true;
 
@@ -288,7 +291,7 @@ void BraveSyncServiceImpl::OnSyncSetupError(const std::string& error) {
   if (!sync_initialized_) {
     sync_prefs_->Clear();
   }
-  OnSyncDebug(error);
+  NotifySyncSetupError(error);
 }
 
 void BraveSyncServiceImpl::OnGetInitData(const std::string& sync_version) {
@@ -607,6 +610,12 @@ void BraveSyncServiceImpl::LoopProcThreadAligned() {
 
 void BraveSyncServiceImpl::NotifyLogMessage(const std::string& message) {
   DLOG(INFO) << message;
+}
+
+void BraveSyncServiceImpl::NotifySyncSetupError(const std::string& error) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  for (auto& observer : observers_)
+    observer.OnSyncSetupError(this, error);
 }
 
 void BraveSyncServiceImpl::NotifySyncStateChanged() {

@@ -157,6 +157,7 @@ class BraveSyncServiceImpl : public BraveSyncService,
     const bool is_truncated );
 
   void NotifyLogMessage(const std::string& message);
+  void NotifySyncSetupError(const std::string& error);
   void NotifySyncStateChanged();
   void NotifyHaveSyncWords(const std::string& sync_words);
 
