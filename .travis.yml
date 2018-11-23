@@ -35,7 +35,7 @@ before_install:
   - npm --version
 
 install:
-  - npm i
+  - npm i --no-audit
 
 script:
   - npm run $TEST_SUITE
