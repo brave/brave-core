@@ -38,7 +38,7 @@ exports[`ModalBackupRestore tests basic tests matches the snapshot 1`] = `
   border-radius: 20px;
   width: auto;
   min-width: 104px;
-  padding: 11px 10px;
+  padding: 11px 15px;
 }
 
 .c26:hover:enabled {
