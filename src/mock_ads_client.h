@@ -52,7 +52,7 @@ class MockAdsClient : public AdsClient {
   bool IsNotificationsAvailable() const override;
   void ShowNotification(std::unique_ptr<NotificationInfo> info) override;
 
-  uint32_t SetTimer(const uint64_t& time_offset) override;
+  uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(const uint32_t timer_id) override;
 
   void URLRequest(

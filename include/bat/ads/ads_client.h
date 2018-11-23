@@ -110,7 +110,7 @@ class ADS_EXPORT AdsClient {
   // Should create a timer to trigger after the time offset specified in
   // seconds. If the timer was created successfully a unique identifier should
   // be returned, otherwise returns 0
-  virtual uint32_t SetTimer(const uint64_t& time_offset) = 0;
+  virtual uint32_t SetTimer(const uint64_t time_offset) = 0;
 
   // Should destroy the timer associated with the specified timer identifier
   virtual void KillTimer(uint32_t timer_id) = 0;

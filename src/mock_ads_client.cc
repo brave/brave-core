@@ -151,7 +151,7 @@ void MockAdsClient::ShowNotification(
   std::cout << std::endl << info->uuid;
 }
 
-uint32_t MockAdsClient::SetTimer(const uint64_t& time_offset) {
+uint32_t MockAdsClient::SetTimer(const uint64_t time_offset) {
   (void)time_offset;
 
   static uint32_t mock_timer_id = 0;
