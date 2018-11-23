@@ -8,10 +8,7 @@ import XCTest
 extension XCTestCase {
     func wait(_ time: TimeInterval) {
         let expectation = self.expectation(description: "Wait")
-        let delayTime = DispatchTime.now() + Double(Int64(time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-            expectation.fulfill()
-        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + time, execute: { expectation.fulfill() })
         waitForExpectations(timeout: time + 1, handler: nil)
     }
 
