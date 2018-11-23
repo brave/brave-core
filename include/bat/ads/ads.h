@@ -33,34 +33,33 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  // Should be called when a notification has been shown on the Client
+  // Should be called when a Notification has been shown
   virtual void GenerateAdReportingNotificationShownEvent(
       const NotificationInfo& info) = 0;
 
-  // Should be called when a notification has been clicked, dismissed or times
-  // out on the Client. Dismiss events for local notifications may not be
+  // Should be called when a Notification has been clicked, dismissed or times
+  // out on the Client. Dismiss events for local Notifications may not be
   // available for every version of Android, making the Dismiss notification
   // capture optional for Android on 100% of devices
   virtual void GenerateAdReportingNotificationResultEvent(
       const NotificationInfo& info,
       const NotificationResultInfoResultType type) = 0;
 
-  // Should be called when ads are enabled or disabled on the Client
+  // Should be called when Brave Ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
 
-  // Should be called whenever the browser enters the foreground
+  // Should be called when the browser enters the foreground
   virtual void OnForeground() = 0;
 
-  // Should be called whenever the browser enters the background
+  // Should be called when the browser enters the background
   virtual void OnBackground() = 0;
 
-  // Should be called every x seconds as set by SetIdleThreshold to record when
+  // Should be called periodically as set by SetIdleThreshold to record when
   // the browser is idle
   virtual void OnIdle() = 0;
 
-  // Should be called every x seconds as set by SetIdleThreshold to record when
-  // the browser is no longer idle and to check on desktop devices if a
-  // notification should be delivered
+  // Should be called periodically as set by SetIdleThreshold to record when
+  // the browser is no longer idle
   virtual void OnUnIdle() = 0;
 
   // Should be called to record when a tab has started playing media (A/V)
@@ -69,39 +68,34 @@ class ADS_EXPORT Ads {
   // Should be called to record when a tab has stopped playing media (A/V)
   virtual void OnMediaStopped(const int32_t tab_id) = 0;
 
-  // Should be called to record user activity on a tab
+  // Should be called to record user activity on a browser tab
   virtual void TabUpdated(
       const int32_t tab_id,
       const std::string& url,
       const bool is_active,
       const bool is_incognito) = 0;
 
-  // Should be called to record when a user closes a tab
+  // Should be called to record when a browser tab is closed
   virtual void TabClosed(const int32_t tab_id) = 0;
 
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;
 
-  // Should be called when the browser is about to exit; if ads are disabled
-  // the client state is reset to default values
+  // Should be called when the browser is about to exit
   virtual void SaveCachedInfo() = 0;
 
-  // Should be called when a page is completely loaded and the body is available
-  // for analysis
+  // Should be called when a page has loaded in the current browser tab, and the
+  // HTML is available for analysis
   virtual void ClassifyPage(
       const std::string& url,
       const std::string& html) = 0;
 
-  // Should be called when the user changes their device locale (e.g., "en_US",
-  // "fr", or "en" etc.)
+  // Should be called when the user changes the operating system's locale, i.e.
+  // en, en_US or en_GB.UTF-8
   virtual void ChangeLocale(const std::string& locale) = 0;
 
-  // Frequently called to determine whether a notification should be displayed;
-  // if so, the notification is sent to the Client for processing
-  virtual void CheckReadyAdServe(const bool forced = false) = 0;
-
-  // Should be called when the user invokes "Show Sample Ad"; a notification is
-  // sent to the client for processing
+  // Should be called when the user invokes "Show Sample Ad" on the Client; a
+  // Notification is then sent to the Client for processing
   virtual void ServeSampleAd() = 0;
 
   // Should be called when a timer is triggered
