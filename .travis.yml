@@ -3,7 +3,7 @@ node_js:
   - "node"
 
 dist: trusty
-sudo: required
+sudo: false
 
 branches:
   only:
@@ -15,17 +15,24 @@ cache:
     - $HOME/.npm
     - node_modules
 
-env:
-  - TEST_SUITE=lint
-  - TEST_SUITE=test-security
-  - TEST_SUITE=test-unit
-  - TEST_SUITE=pep8
+matrix:
+  include:
+    - env: TEST_SUITE=lint
+    - env: TEST_SUITE=test-security
+    - env: TEST_SUITE=test-unit
+    - language: python
+      env: TEST_SUITE=pep8
+      cache:
+        pip: true
+      before_install:
+        - pip install --upgrade pip
+        - pip install pycodestyle
+      install:
+        - echo
 
 before_install:
   - npm i -g npm
   - npm --version
-  - sudo pip install --upgrade pip
-  - sudo pip install pycodestyle
 
 install:
   - npm i
