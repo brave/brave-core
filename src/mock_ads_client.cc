@@ -55,8 +55,8 @@ class MockLogStreamImpl : public ads::LogStream {
   std::string log_message_;
 
   // Not copyable, not assignable
-  // MockLoggerImpl(const MockLoggerImpl&) = delete;
-  // MockLoggerImpl& operator=(const MockLoggerImpl&) = delete;
+  MockLogStreamImpl(const MockLogStreamImpl&) = delete;
+  MockLogStreamImpl& operator=(const MockLogStreamImpl&) = delete;
 };
 
 namespace ads {
