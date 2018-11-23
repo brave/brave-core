@@ -1,13 +1,17 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index b9925142f676f2a66fb50c7679e28ab91f81031b..edd962d8b9354b3bc11fc96a9341f7dbd5228409 100644
+index b9925142f676f2a66fb50c7679e28ab91f81031b..e1300c0319123545c5767a8fa3cbfaa78742df49 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -1864,6 +1864,8 @@ jumbo_source_set("browser") {
-     "webui/web_ui_url_loader_factory_internal.h",
-   ]
- 
-+  deps += [ "//brave/content/browser" ]
-+
-   if (toolkit_views) {
-     deps += [ "//ui/events" ]
-   }
+@@ -2105,6 +2105,12 @@ jumbo_source_set("browser") {
+       "//ppapi/proxy:ipc",
+       "//ppapi/shared_impl",
+     ]
++    if (brave_chromium_build) {
++      sources += [
++        "//brave/content/browser/renderer_host/brave_plugin_registry_impl.cc",
++        "//brave/content/browser/renderer_host/brave_plugin_registry_impl.h",
++      ]
++    }
+     if (use_ozone) {
+       sources += [ "renderer_host/pepper/pepper_truetype_font_list_ozone.cc" ]
+     }
