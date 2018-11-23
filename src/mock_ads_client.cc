@@ -226,7 +226,13 @@ void MockAdsClient::SaveBundleState(
 }
 
 void MockAdsClient::Load(const std::string& name, OnLoadCallback callback) {
-  std::string path = "mock_data/" + name;
+  std::string path;
+
+  if (name == "sample_bundle.json") {
+    path = "resources/" + name;
+  } else {
+    path = "mock_data/" + name;
+  }
 
   MOCK_LOG(LogLevel::INFO) << "Loading " << path;
 
