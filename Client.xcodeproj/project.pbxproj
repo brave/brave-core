@@ -82,6 +82,7 @@
 		27658271217130D900754B2F /* GlobalSign_r1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 2765826E217130D900754B2F /* GlobalSign_r1.cer */; };
 		27658272217130D900754B2F /* GlobalSign_r3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 2765826F217130D900754B2F /* GlobalSign_r3.cer */; };
 		27658273217130D900754B2F /* DigiCertHighAssurance.cer in Resources */ = {isa = PBXBuildFile; fileRef = 27658270217130D900754B2F /* DigiCertHighAssurance.cer */; };
+		2795274A21A890EB00921AA1 /* FingerprintingProtectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2795274921A890EB00921AA1 /* FingerprintingProtectionTests.swift */; };
 		2798E01D213EFC3F003EDBB1 /* FavoriteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2798E015213EFC3F003EDBB1 /* FavoriteTests.swift */; };
 		279C756B219DDE3B001CD1CB /* FingerprintingProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */; };
 		279C75C821A5B37D001CD1CB /* FingerprintingProtection.js in Resources */ = {isa = PBXBuildFile; fileRef = 279C75C021A5B37D001CD1CB /* FingerprintingProtection.js */; };
@@ -963,6 +964,7 @@
 		2765826E217130D900754B2F /* GlobalSign_r1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSign_r1.cer; sourceTree = "<group>"; };
 		2765826F217130D900754B2F /* GlobalSign_r3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSign_r3.cer; sourceTree = "<group>"; };
 		27658270217130D900754B2F /* DigiCertHighAssurance.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = DigiCertHighAssurance.cer; sourceTree = "<group>"; };
+		2795274921A890EB00921AA1 /* FingerprintingProtectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerprintingProtectionTests.swift; sourceTree = "<group>"; };
 		2798E015213EFC3F003EDBB1 /* FavoriteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteTests.swift; sourceTree = "<group>"; };
 		279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerprintingProtection.swift; sourceTree = "<group>"; };
 		279C75C021A5B37D001CD1CB /* FingerprintingProtection.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = FingerprintingProtection.js; sourceTree = "<group>"; };
@@ -2942,6 +2944,7 @@
 				F84B21D71A090F8100AAB793 /* Supporting Files */,
 				39236E711FCC600200A38F1B /* TabEventHandlerTests.swift */,
 				D8EFFA251FF702A8001D3A09 /* NavigationRouterTests.swift */,
+				2795274921A890EB00921AA1 /* FingerprintingProtectionTests.swift */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -4483,6 +4486,7 @@
 				3BFCBF201E04B1C50070C042 /* UIImageViewExtensionsTests.swift in Sources */,
 				E683F0A61E92E0820035D990 /* MockableHistory.swift in Sources */,
 				A83E5B1E1C1DAAAA0026D912 /* UIPasteboardExtensions.swift in Sources */,
+				2795274A21A890EB00921AA1 /* FingerprintingProtectionTests.swift in Sources */,
 				0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */,
 				7BBFEE741BB405D900A305AA /* TabManagerTests.swift in Sources */,
 				39236E721FCC600200A38F1B /* TabEventHandlerTests.swift in Sources */,
