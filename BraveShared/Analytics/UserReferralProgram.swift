@@ -50,7 +50,11 @@ public class UserReferralProgram {
             
             if ref.isExtendedUrp() {
                 if let headers = ref.customHeaders {
-                    Preferences.URP.customHeaderData.value = NSKeyedArchiver.archivedData(withRootObject: headers)
+                    do {
+                        try Preferences.URP.customHeaderData.value = NSKeyedArchiver.archivedData(withRootObject: headers, requiringSecureCoding: false)
+                    } catch {
+                        log.error("Failed to save URP custom header data \(headers) with error: \(error.localizedDescription)")
+                    }
                 }
                 
                 completion(ref.offerPage)
@@ -178,14 +182,18 @@ public class UserReferralProgram {
         service.fetchCustomHeaders() { headers, error in
             if headers.isEmpty { return }
             
-            Preferences.URP.customHeaderData.value = NSKeyedArchiver.archivedData(withRootObject: headers)
+            do {
+                try Preferences.URP.customHeaderData.value = NSKeyedArchiver.archivedData(withRootObject: headers, requiringSecureCoding: false)
+            } catch {
+                log.error("Failed to save URP custom header data \(headers) with error: \(error.localizedDescription)")
+            }
         }
     }
     
     /// Checks if a custom header should be added to the request and returns its value and field.
     public class func shouldAddCustomHeader(for request: URLRequest) -> (value: String, field: String)? {
         guard let customHeadersAsData = Preferences.URP.customHeaderData.value,
-            let customHeaders = NSKeyedUnarchiver.unarchiveObject(with: customHeadersAsData) as? [CustomHeaderData],
+            let customHeaders = (try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(customHeadersAsData)) as? [CustomHeaderData],
             let hostUrl = request.url?.host else { return nil }
         
         for customHeader in customHeaders {
