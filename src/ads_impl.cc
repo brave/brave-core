@@ -38,13 +38,12 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     delivering_notifications_timer_id_(0),
     sustained_ad_interaction_timer_id_(0),
     next_easter_egg_(0),
-    client_(std::make_unique<Client>(this, ads_client_)),
-    bundle_(std::make_unique<Bundle>(ads_client_)),
-    ads_serve_(std::make_unique<AdsServe>(this, ads_client_, bundle_.get())),
+    client_(std::make_unique<Client>(this, ads_client)),
+    bundle_(std::make_unique<Bundle>(ads_client)),
+    ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
     user_model_(nullptr),
     is_initialized_(false),
-    ads_client_(ads_client) {
-}
+    ads_client_(ads_client) {}
 
 AdsImpl::~AdsImpl() = default;
 
