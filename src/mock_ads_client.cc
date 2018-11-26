@@ -22,7 +22,7 @@ class MockLogStreamImpl : public ads::LogStream {
  public:
   MockLogStreamImpl(
       const char* file,
-      int line,
+      const int line,
       const ads::LogLevel log_level) {
     std::string level;
 
@@ -363,7 +363,7 @@ void MockAdsClient::EventLog(const std::string& json) {
 
 std::unique_ptr<LogStream> MockAdsClient::Log(
     const char* file,
-    int line,
+    const int line,
     const LogLevel log_level) const {
   return std::make_unique<MockLogStreamImpl>(file, line, log_level);
 }

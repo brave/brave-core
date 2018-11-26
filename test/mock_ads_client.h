@@ -21,7 +21,7 @@ class MockLogStreamImpl : public LogStream {
  public:
   MockLogStreamImpl(
       const char* file,
-      int line,
+      const int line,
       const LogLevel log_level) {
     std::string level;
 
@@ -175,7 +175,7 @@ class MockAdsClient : public AdsClient {
 
   std::unique_ptr<LogStream> Log(
       const char* file,
-      int line,
+      const int line,
       const LogLevel log_level) const {
     return std::make_unique<MockLogStreamImpl>(file, line, log_level);
   }

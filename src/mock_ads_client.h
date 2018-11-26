@@ -92,7 +92,7 @@ class MockAdsClient : public AdsClient {
 
   std::unique_ptr<LogStream> Log(
       const char* file,
-      int line,
+      const int line,
       const LogLevel log_level) const override;
 
  private:
