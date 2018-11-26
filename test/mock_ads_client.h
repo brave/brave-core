@@ -15,25 +15,27 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/ads.h"
 
-class MockLogStreamImpl : public ads::LogStream {
+namespace ads {
+
+class MockLogStreamImpl : public LogStream {
  public:
   MockLogStreamImpl(
       const char* file,
       int line,
-      const ads::LogLevel log_level) {
+      const LogLevel log_level) {
     std::string level;
 
     switch (log_level) {
-      case ads::LogLevel::INFO: {
-        level = "INFO";
+      case LogLevel::ERROR: {
+        level = "ERROR";
         break;
       }
-      case ads::LogLevel::WARNING: {
+      case LogLevel::WARNING: {
         level = "WARNING";
         break;
       }
-      case ads::LogLevel::ERROR: {
-        level = "ERROR";
+      case LogLevel::INFO: {
+        level = "INFO";
         break;
       }
     }
@@ -54,8 +56,6 @@ class MockLogStreamImpl : public ads::LogStream {
   MockLogStreamImpl(const MockLogStreamImpl&) = delete;
   MockLogStreamImpl& operator=(const MockLogStreamImpl&) = delete;
 };
-
-namespace ads {
 
 class MockAdsClient : public AdsClient {
  public:

@@ -27,16 +27,16 @@ class MockLogStreamImpl : public ads::LogStream {
     std::string level;
 
     switch (log_level) {
-      case ads::LogLevel::INFO: {
-        level = "INFO";
+      case ads::LogLevel::ERROR: {
+        level = "ERROR";
         break;
       }
       case ads::LogLevel::WARNING: {
         level = "WARNING";
         break;
       }
-      case ads::LogLevel::ERROR: {
-        level = "ERROR";
+      case ads::LogLevel::INFO: {
+        level = "INFO";
         break;
       }
     }
