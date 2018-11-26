@@ -5,12 +5,9 @@
 #include "mock_ads_client.h"
 #include "src/ads_impl.h"
 
-using ::testing::AtLeast;
 using ::testing::_;
 using ::testing::Return;
 using ::testing::Invoke;
-using ::testing::An;
-using ::testing::Mock;
 using ::testing::InSequence;
 
 namespace ads {
@@ -65,22 +62,6 @@ const std::string SuccessfullyLoadJsonSchema(
   auto value = stream.str();
 
   return value;
-}
-
-void GeneratedAdReportingDestroyEventLog(const std::string& json) {
-  (void)json;
-}
-
-void GeneratedAdReportingFocusEventLog(const std::string& json) {
-  (void)json;
-}
-
-void GeneratedAdReportingBlurEventLog(const std::string& json) {
-  (void)json;
-}
-
-void GeneratedAdReportingLoadEventLog(const std::string& json) {
-  (void)json;
 }
 
 class TabsTest : public ::testing::Test {
@@ -173,9 +154,7 @@ TEST_F(TabsTest, InactiveIncognitoTabUpdated) {
 
 TEST_F(TabsTest, TabUpdated) {
   EXPECT_CALL(*mock_ads_client, EventLog(_))
-      .Times(2)
-      .WillOnce(Invoke(GeneratedAdReportingLoadEventLog))
-      .WillOnce(Invoke(GeneratedAdReportingFocusEventLog));
+      .Times(2);
 
   uint64_t last_user_activity = ads->client_->GetLastUserActivity();
   ads->TabUpdated(1, "https://brave.com", true, false);
@@ -186,9 +165,7 @@ TEST_F(TabsTest, TabUpdated) {
 
 TEST_F(TabsTest, InactiveTabUpdated) {
   EXPECT_CALL(*mock_ads_client, EventLog(_))
-      .Times(2)
-      .WillOnce(Invoke(GeneratedAdReportingLoadEventLog))
-      .WillOnce(Invoke(GeneratedAdReportingBlurEventLog));
+      .Times(2);
 
   uint64_t last_user_activity = ads->client_->GetLastUserActivity();
   ads->TabUpdated(1, "https://brave.com", false, false);
@@ -199,16 +176,14 @@ TEST_F(TabsTest, InactiveTabUpdated) {
 
 TEST_F(TabsTest, TabClosed) {
   EXPECT_CALL(*mock_ads_client, EventLog(_))
-      .Times(1)
-      .WillOnce(Invoke(GeneratedAdReportingDestroyEventLog));
+      .Times(1);
 
   ads->TabClosed(1);
 }
 
 TEST_F(TabsTest, TabClosedWhileMediaIsPlaying) {
   EXPECT_CALL(*mock_ads_client, EventLog(_))
-      .Times(1)
-      .WillOnce(Invoke(GeneratedAdReportingDestroyEventLog));
+      .Times(1);
 
   ads->OnMediaPlaying(1);
   ads->TabClosed(1);
