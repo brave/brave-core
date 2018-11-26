@@ -152,8 +152,10 @@ void UpdateNode(bookmarks::BookmarkModel* model,
     // sync_bookmark.site.favicon
   }
 
+  const auto& title = !bookmark.site.title.empty() ?
+      bookmark.site.title : bookmark.site.customTitle;
   model->SetTitle(node,
-      base::UTF8ToUTF16(bookmark.site.title));
+      base::UTF8ToUTF16(title));
   model->SetDateAdded(node, bookmark.site.creationTime);
   model->SetNodeMetaInfo(node, "object_id", record->objectId);
   model->SetNodeMetaInfo(node, "order", bookmark.order);
