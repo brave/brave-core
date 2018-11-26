@@ -171,11 +171,7 @@ class SearchEngines {
     }
 
     func queryForSearchURL(_ url: URL?) -> String? {
-        for engine in orderedEngines {
-            guard let searchTerm = engine.queryForSearchURL(url) else { continue }
-            return searchTerm
-        }
-        return nil
+        return defaultEngine().queryForSearchURL(url)
     }
 
     fileprivate func getDisabledEngineNames() -> [String: Bool] {
