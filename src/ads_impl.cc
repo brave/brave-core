@@ -43,7 +43,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
     user_model_(nullptr),
     is_initialized_(false),
-    ads_client_(ads_client) {}
+    ads_client_(ads_client) {
+}
 
 AdsImpl::~AdsImpl() = default;
 
