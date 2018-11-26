@@ -80,3 +80,21 @@ source_set("browser") {
     ]
   }
 }
+
+source_set("testutil") {
+  testonly = true
+
+  deps = [
+    "//brave/vendor/bat-native-ledger",
+    ":browser",
+    "//base",
+    "//content/public/browser",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+
+  sources = [
+    "test_util.cc",
+    "test_util.h",
+  ]
+}
