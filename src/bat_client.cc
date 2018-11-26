@@ -366,7 +366,9 @@ void BatClient::recoverWalletCallback(bool result,
   braveledger_bat_helper::getJSONRecoverWallet(response, properties.balance_, properties.probi_, properties.grants_);
   ledger_->SetWalletInfo(wallet_info);
   ledger_->SetCurrency(currency);
-  ledger_->SetContributionAmount(fee_amount);
+  if (!ledger_->GetUserChangedContribution()) {
+    ledger_->SetContributionAmount(fee_amount);
+  }
   ledger_->SetDays(days);
   ledger_->SetWalletProperties(properties);
   ledger_->SetPaymentId(recoveryId);
