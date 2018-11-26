@@ -82,6 +82,7 @@ class LedgerImpl : public ledger::Ledger,
   void SetPublisherAllowVideos(bool allow) override;
   void SetContributionAmount(double amount) override;
   void SetUserChangedContribution() override;
+  bool GetUserChangedContribution();
   void SetAutoContribute(bool enabled) override;
   void SetBalanceReport(ledger::PUBLISHER_MONTH month,
                         int year,
@@ -231,7 +232,7 @@ class LedgerImpl : public ledger::Ledger,
   GetWalletProperties() const;
 
   void SetWalletProperties(
-      const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
+      braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
   unsigned int GetDays() const;
   void SetDays(unsigned int days);
 
@@ -280,6 +281,7 @@ class LedgerImpl : public ledger::Ledger,
                         int level = -1);
 
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
+  double GetDefaultContributionAmount() override;
 
  private:
   void MakePayment(const ledger::PaymentData& payment_data) override;

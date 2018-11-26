@@ -408,6 +408,10 @@ void LedgerImpl::SetUserChangedContribution() {
   bat_state_->SetUserChangedContribution();
 }
 
+bool LedgerImpl::GetUserChangedContribution() {
+  return bat_state_->GetUserChangedContribution();
+}
+
 void LedgerImpl::SetAutoContribute(bool enabled) {
   bat_state_->SetAutoContribute(enabled);
 }
@@ -487,19 +491,7 @@ void LedgerImpl::OnWalletProperties(ledger::Result result,
     info->balance_ = properties.balance_;
     info->rates_ = properties.rates_;
     info->parameters_choices_ = properties.parameters_choices_;
-
-    if (!bat_state_->GetUserChangeContribution()) {
-      info->fee_amount_ = properties.fee_amount_;
-    } else if (std::find(info->parameters_choices_.begin(),
-      info->parameters_choices_.end(),
-      GetContributionAmount()) ==
-      info->parameters_choices_.end()) {
-        info->parameters_choices_.push_back
-          (GetContributionAmount());
-        std::sort(info->parameters_choices_.begin(),
-          info->parameters_choices_.end());
-    }
-
+    info->fee_amount_ = bat_state_->GetContributionAmount();
     info->parameters_range_ = properties.parameters_range_;
     info->parameters_days_ = properties.parameters_days_;
 
@@ -949,7 +941,7 @@ LedgerImpl::GetWalletProperties() const {
 }
 
 void LedgerImpl::SetWalletProperties(
-    const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+    braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
   bat_state_->SetWalletProperties(properties);
 }
 
@@ -1054,6 +1046,10 @@ bool LedgerImpl::AddReconcileStep(const std::string& viewing_id,
 const braveledger_bat_helper::CurrentReconciles&
 LedgerImpl::GetCurrentReconciles() const {
   return bat_state_->GetCurrentReconciles();
+}
+
+double LedgerImpl::GetDefaultContributionAmount() {
+  return bat_state_->GetDefaultContributionAmount();
 }
 
 }  // namespace bat_ledger
