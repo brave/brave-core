@@ -210,8 +210,8 @@ exports[`List tests basic tests matches the snapshot 1`] = `
 
 .c22 {
   width: 180px;
-  margin: 15px auto 5px auto;
   padding-left: 0px;
+  margin: 15px 0 5px;
 }
 
 .c18 {

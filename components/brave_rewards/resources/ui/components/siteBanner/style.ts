@@ -117,10 +117,10 @@ export const StyledLogoWrapper = styled<StyleProps, 'div'>('div')`
 `
 
 export const StyledLogoText = styled<StyleProps, 'div'>('div')`
-	background: inherit;
-	-webkit-background-clip: text;
-	color: transparent;
-	filter: invert(1) grayscale(1) contrast(9);
+  background: inherit;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: invert(1) grayscale(1) contrast(9);
   font-size: ${p => p.isMobile ? 50 : 80}px;
   font-weight: 600;
   text-align: center;
@@ -225,6 +225,6 @@ export const StyledLogoImage = styled<StyleProps, 'div'>('div')`
 
 export const StyledCheckbox = styled<StyleProps, 'div'>('div')`
   width: ${p => p.isMobile ? 232 : 180}px;
-  margin: 15px auto 5px auto;
   padding-left: ${p => p.isMobile ? 40 : 0}px;
+  margin: ${p => p.isMobile ? '15px auto 5px auto' : '15px 0 5px'};
 `
