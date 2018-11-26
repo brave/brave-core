@@ -8,6 +8,9 @@
 #include <functional>
 #include <memory>
 #include <vector>
+#include <sstream>
+#include <fstream>
+#include <string>
 
 #include "bat/ledger/balance_report_info.h"
 #include "bat/ledger/export.h"
@@ -34,6 +37,12 @@ LEDGER_EXPORT enum URL_METHOD {
   GET = 0,
   PUT = 1,
   POST = 2
+};
+
+class LEDGER_EXPORT LogStream {
+ public:
+  virtual ~LogStream() = default;
+  virtual std::ostream& stream() = 0;
 };
 
 using PublisherInfoCallback = std::function<void(Result,
@@ -135,8 +144,11 @@ class LEDGER_EXPORT LedgerClient {
                                           bool excluded,
                                           uint64_t windowId) = 0;
 
-  // Log debug information
-  virtual void Log(ledger::LogLevel level, const std::string& text) = 0;
+  // Logs debug information
+  virtual std::unique_ptr<LogStream> Log(
+      const char* file,
+      int line,
+      const ledger::LogLevel log_level) const = 0;
 };
 
 }  // namespace ledger
