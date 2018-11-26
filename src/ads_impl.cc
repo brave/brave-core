@@ -1049,8 +1049,11 @@ void AdsImpl::GenerateAdReportingLoadEvent(
     const LoadInfo& info) {
   UrlComponents components;
 
-  if (ads_client_->GetUrlComponents(info.tab_url, &components) ||
-      (components.scheme != "http" && components.scheme != "https")) {
+  if (!ads_client_->GetUrlComponents(info.tab_url, &components)) {
+    return;
+  }
+
+  if (components.scheme != "http" && components.scheme != "https") {
     return;
   }
 
