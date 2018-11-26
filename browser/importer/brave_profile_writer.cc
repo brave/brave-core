@@ -203,16 +203,29 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
   // Set the recurring tips (formerly known as pinned sites)
   int sum_of_monthly_tips = 0;
   pinned_item_count_ = 0;
-  for (const auto& item : ledger_.pinned_publishers) {
-    const auto& publisher_key = item.first;
-    const auto& pin_percentage = item.second;
+  for (const auto& publisher : ledger_.pinned_publishers) {
     // NOTE: this will truncate (ex: 0.90 would be 0, not 1)
-    const int amount_in_bat = (int)((pin_percentage / 100.0) *
+    const int amount_in_bat = (int)((publisher.pin_percentage / 100.0) *
       ledger_.settings.payments.contribution_amount);
     if (amount_in_bat > 0) {
       pinned_item_count_++;
       sum_of_monthly_tips += amount_in_bat;
-      rewards_service->OnDonate(publisher_key, amount_in_bat, true);
+
+      // Add `recurring` donation entry
+      rewards_service->OnDonate(publisher.key, amount_in_bat, true);
+
+      // Add publisher to `publisher_info`
+      // TODO: finish me
+      // ledger::PublisherInfo publisher_info;
+      // publisher_info.id = publisher.key;
+      // publisher_info.verified = publisher.verified;
+      // publisher_info.excluded = 0;
+      // publisher_info.name = publisher.name;
+      // publisher_info.url = publisher.url;
+      // publisher_info.provider = publisher.provider;
+      // publisher_info.favicon_url = "";
+      // publisher_info.month = ledger::PUBLISHER_MONTH::ANY;
+      // rewards_service->SavePublisherInfo(publisher_info);
     }
   }
 

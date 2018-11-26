@@ -7,7 +7,19 @@
 
 #include <string>
 #include <vector>
-#include <map>
+
+struct BravePublisher {
+  std::string key;
+  bool verified;
+  std::string name;
+  std::string url;
+  std::string provider;
+  int pin_percentage;
+
+  BravePublisher();
+  BravePublisher(const BravePublisher& other);
+  ~BravePublisher();
+};
 
 struct BraveLedger {
   BraveLedger();
@@ -16,7 +28,7 @@ struct BraveLedger {
 
   std::string passphrase;
   std::vector<std::string> excluded_publishers;
-  std::map<std::string, unsigned int> pinned_publishers;
+  std::vector<BravePublisher> pinned_publishers;
 
   // NOTE: if we need to read more data from session-store-1,
   // we may consider moving this to brave_importer.h (or similar)

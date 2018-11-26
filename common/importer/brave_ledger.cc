@@ -4,6 +4,12 @@
 
 #include "brave/common/importer/brave_ledger.h"
 
+BravePublisher::BravePublisher() {}
+
+BravePublisher::BravePublisher(const BravePublisher& other) = default;
+
+BravePublisher::~BravePublisher() {}
+
 BraveLedger::BraveLedger() {}
 
 BraveLedger::BraveLedger(const BraveLedger& other) = default;

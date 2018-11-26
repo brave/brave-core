@@ -521,28 +521,41 @@ bool ParseExcludedSites(BraveLedger& ledger,
 bool ParsePinnedSites(BraveLedger& ledger,
   const base::Value& session_store_json) {
   const base::Value* publishers = session_store_json.FindPathOfType(
-      {"ledger", "synopsis", "publishers"},
-      base::Value::Type::DICTIONARY);
+      {"ledger", "about", "synopsis"}, base::Value::Type::LIST);
   if (!publishers) {
     LOG(ERROR)
-      << "\"ledger\".\"synopsis\".\"publishers\" not found in session-store-1";
+      << "\"ledger\".\"about\".\"synopsis\" not found in session-store-1";
     return false;
   }
 
-  ledger.pinned_publishers = std::map<std::string, unsigned int>();
-  int pin_percentage;
+  ledger.pinned_publishers = std::vector<BravePublisher>();
 
-  for (const auto& item : publishers->DictItems()) {
-    const auto& domain = item.first;
-    const auto& settings = item.second;
+  for (const auto& item : publishers->GetList()) {
+    BravePublisher publisher;
 
-    if (!settings.is_dict())
+    // Publisher key is required; if not present, skip this object.
+    if (!TryFindStringKey(&item, "publisherKey", publisher.key)) {
       continue;
+    }
 
-    if (TryFindIntKey(&settings, "pinPercentage", pin_percentage)) {
-      if (pin_percentage > 0) {
-        ledger.pinned_publishers.insert(
-          std::pair<std::string, unsigned int>(domain, pin_percentage));
+    // Read any entries with pinPercentage > 0
+    if (TryFindIntKey(&item, "pinPercentage", publisher.pin_percentage)) {
+      if (publisher.pin_percentage > 0) {
+        // Read publisher fields from synopsis; provide default values on error
+        if (!TryFindBoolKey(&item, "verified", publisher.verified)) {
+          publisher.verified = false;
+        }
+        if (!TryFindStringKey(&item, "siteName", publisher.name)) {
+          publisher.name = publisher.key;
+        }
+        if (!TryFindStringKey(&item, "providerName", publisher.provider)) {
+          publisher.provider = "";
+        }
+
+        // Publisher URL is required; if found, persist this object.
+        if (TryFindStringKey(&item, "publisherURL", publisher.url)) {
+          ledger.pinned_publishers.push_back(publisher);
+        }
       }
     }
   }
