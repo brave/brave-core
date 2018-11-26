@@ -9,18 +9,18 @@ include(FetchContent)
 
 # BAT Native User Model
 FetchContent_Declare(
-  BATNativeUserModelProject
+  UserModelProject
   GIT_REPOSITORY git@github.com:brave-intl/bat-native-usermodel.git
   GIT_TAG        master
 )
 
-FetchContent_GetProperties(BATNativeUserModelProject)
-if(NOT batnativeusermodelproject_POPULATED)
+FetchContent_GetProperties(UserModelProject)
+if(NOT usermodelproject_POPULATED)
   message(STATUS "Fetching BAT Native User Model dependency")
-  FetchContent_Populate(BATNativeUserModelProject)
+  FetchContent_Populate(UserModelProject)
 endif()
 
-# RapidJSON
+# BAT Native RapidJSON
 FetchContent_Declare(
   RapidJSONProject
   GIT_REPOSITORY git@github.com:brave-intl/bat-native-rapidjson.git
@@ -29,7 +29,7 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(RapidJSONProject)
 if(NOT rapidjsonproject_POPULATED)
-  message(STATUS "Fetching RapidJSON dependency")
+  message(STATUS "Fetching BAT Native RapidJSON dependency")
   FetchContent_Populate(RapidJSONProject)
 endif()
 
@@ -53,9 +53,9 @@ include_directories(
   "${PROJECT_SOURCE_DIR}/src"
 
   # BAT Native User Model
-  "${batnativeusermodelproject_SOURCE_DIR}/include"
+  "${usermodelproject_SOURCE_DIR}/include"
 
-  # RapidJSON
+  # BAT Native RapidJSON
   "${rapidjsonproject_SOURCE_DIR}/include"
 
   # URI Parser (Only required for isolated mocks in bat-native-ads.cc/h)
@@ -83,10 +83,10 @@ set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/time_helper.cc")
 
 set(USER_MODEL_SOURCES
-  "${batnativeusermodelproject_SOURCE_DIR}/src/bag_of_words_extractor.cc"
-  "${batnativeusermodelproject_SOURCE_DIR}/src/naive_bayes.cc"
-  "${batnativeusermodelproject_SOURCE_DIR}/src/stmr.c"
-  "${batnativeusermodelproject_SOURCE_DIR}/src/user_model_impl.cc")
+  "${usermodelproject_SOURCE_DIR}/src/bag_of_words_extractor.cc"
+  "${usermodelproject_SOURCE_DIR}/src/naive_bayes.cc"
+  "${usermodelproject_SOURCE_DIR}/src/stmr.c"
+  "${usermodelproject_SOURCE_DIR}/src/user_model_impl.cc")
 
 set(URIPARSER_SOURCES
   "${uriparserproject_SOURCE_DIR}/src/UriCommon.c"
