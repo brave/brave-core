@@ -151,9 +151,7 @@ TEST_F(TabsTest, IsNotPlayingMedia) {
 
 TEST_F(TabsTest, IncognitoTabUpdated) {
   EXPECT_CALL(*mock_ads_client, EventLog(_))
-      .Times(0)
-      .WillOnce(Invoke(GeneratedAdReportingLoadEventLog))
-      .WillOnce(Invoke(GeneratedAdReportingBlurEventLog));
+      .Times(0);
 
   uint64_t last_user_activity = ads->client_->GetLastUserActivity();
   ads->TabUpdated(1, "https://brave.com", true, true);
@@ -164,9 +162,7 @@ TEST_F(TabsTest, IncognitoTabUpdated) {
 
 TEST_F(TabsTest, InactiveIncognitoTabUpdated) {
   EXPECT_CALL(*mock_ads_client, EventLog(_))
-      .Times(0)
-      .WillOnce(Invoke(GeneratedAdReportingLoadEventLog))
-      .WillOnce(Invoke(GeneratedAdReportingBlurEventLog));
+      .Times(0);
 
   uint64_t last_user_activity = ads->client_->GetLastUserActivity();
   ads->TabUpdated(1, "https://brave.com", false, true);
