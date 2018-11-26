@@ -105,12 +105,19 @@ set(URIPARSER_SOURCES
   "${uriparserproject_SOURCE_DIR}/src/UriResolve.c"
   "${uriparserproject_SOURCE_DIR}/src/UriShorten.c")
 
-add_executable(batnativeads
-  "${PROJECT_SOURCE_DIR}/src/bat_native_ads.cc"
-  "${PROJECT_SOURCE_DIR}/src/mock_ads_client.cc"
+add_library(batnativeads
   ${SOURCES}
   ${USER_MODEL_SOURCES}
   ${URIPARSER_SOURCES})
+
+add_executable(batnativeads-bin
+  "${PROJECT_SOURCE_DIR}/src/bat_native_ads.cc"
+  "${PROJECT_SOURCE_DIR}/src/mock_ads_client.cc")
+
+target_link_libraries(batnativeads-bin batnativeads)
+
+set_target_properties(batnativeads-bin
+  PROPERTIES OUTPUT_NAME batnativeads)
 
 # Google Tests
 enable_testing()
