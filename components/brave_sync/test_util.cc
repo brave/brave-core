@@ -98,7 +98,8 @@ SyncRecordPtr SimpleFolderSyncRecord(
     const std::string& title,
     const std::string& order,
     const std::string& parent_object_id,
-    const bool hide_in_toolbar) {
+    const bool hide_in_toolbar,
+    const std::string& custom_title) {
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
   record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
     brave_sync::jslib::SyncRecord::Action::A_MIN,
@@ -119,6 +120,7 @@ SyncRecordPtr SimpleFolderSyncRecord(
   bookmark->order = order;
 
   bookmark->site.title = title;
+  bookmark->site.customTitle = custom_title;
 
   record->SetBookmark(std::move(bookmark));
 
