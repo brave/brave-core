@@ -10,7 +10,6 @@
 #include <uriparser/Uri.h>
 
 #include "gmock/gmock.h"
-#include "gtest/gtest.h"
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/ads.h"
