@@ -120,8 +120,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAutoInclude(
     std::string publisher_key, bool excluded, uint64_t windowId) override;
   RewardsNotificationService* GetNotificationService() const override;
-  // TODO move to private again
-  void HandleFlags(const std::string& options) const;
+
+  static void HandleFlags(const std::string& options);
 
  private:
   friend void RunIOTaskCallback(

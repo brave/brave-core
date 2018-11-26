@@ -1586,7 +1586,8 @@ void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
   VLOG(level) << text;
 }
 
-void RewardsServiceImpl::HandleFlags(const std::string& options) const {
+// static
+void RewardsServiceImpl::HandleFlags(const std::string& options) {
   std::vector<std::string> flags = base::SplitString(
       options, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
