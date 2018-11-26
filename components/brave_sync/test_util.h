@@ -71,7 +71,8 @@ SyncRecordPtr SimpleFolderSyncRecord(
     const std::string& title,
     const std::string& order,
     const std::string& parent_object_id,
-    const bool hide_in_toolbar);
+    const bool hide_in_toolbar,
+    const std::string& custom_title);
 
 SyncRecordPtr SimpleDeviceRecord(
     const int action,
