@@ -503,21 +503,21 @@ TEST_F(BraveBookmarkChangeProcessorTest, NestedFoldersCreatedFromSync) {
       jslib::SyncRecord::Action::A_CREATE,
       "Folder1",
       "1.1.1.1",
-      "", true));
+      "", true, ""));
 
   records.push_back(SimpleFolderSyncRecord(
       jslib::SyncRecord::Action::A_CREATE,
       "Folder2",
       "1.1.1.1.1",
       records.at(0)->objectId,
-      true));
+      true, ""));
 
   records.push_back(SimpleFolderSyncRecord(
       jslib::SyncRecord::Action::A_CREATE,
       "Folder3",
       "1.1.1.1.1.1",
       records.at(1)->objectId,
-      true));
+      true, ""));
 
   records.push_back(SimpleBookmarkSyncRecord(
       jslib::SyncRecord::Action::A_CREATE,
@@ -571,7 +571,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
       jslib::SyncRecord::Action::A_CREATE,
       "Folder1",
       "1.1.1",
-      "", false));
+      "", false, ""));
 
   ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
@@ -584,7 +584,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
       jslib::SyncRecord::Action::A_CREATE,
       "Folder2",
       "2.1.1",
-      "", false));
+      "", false, ""));
   ASSERT_EQ(model()->mobile_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
   ASSERT_EQ(model()->mobile_node()->child_count(), 1);
@@ -596,7 +596,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
       jslib::SyncRecord::Action::A_CREATE,
       "Folder3",
       "1.1.1",
-      "", true));
+      "", true, ""));
   ASSERT_EQ(model()->other_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
   ASSERT_EQ(model()->other_node()->child_count(), 1);
@@ -624,7 +624,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, Utf8FromSync) {
       jslib::SyncRecord::Action::A_CREATE,
       title_utf8,
       "1.1.1",
-      "", false));
+      "", false, ""));
 
   ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
@@ -737,4 +737,41 @@ TEST_F(BraveBookmarkChangeProcessorTest, GetAllSyncData) {
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
       records_to_resolve.at(2).get(), pair_at_2->first.get());
   EXPECT_EQ(pair_at_2->second.get(), nullptr);
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, TitleCustomTitle) {
+  // Should be able to create folder when title = "" and customTitle != ""
+  // Create these:
+  // Other
+  //    Folder1 (use title)
+  //       Folder2 (use customTitle)
+  // Then verify in a model
+
+  change_processor()->Start();
+
+  RecordsList records;
+  records.push_back(SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "Folder1",
+      "1.1.1.1",
+      "", true, ""));
+
+  records.push_back(SimpleFolderSyncRecord(
+      jslib::SyncRecord::Action::A_CREATE,
+      "",
+      "1.1.1.1.1",
+      records.at(0)->objectId,
+      true,
+      "Folder2"));
+
+  change_processor()->ApplyChangesFromSyncModel(records);
+
+  // Verify the model
+  ASSERT_EQ(model()->other_node()->child_count(), 1);
+  const auto* folder1 = model()->other_node()->GetChild(0);
+  EXPECT_EQ(base::UTF16ToUTF8(folder1->GetTitle()), "Folder1");
+
+  ASSERT_EQ(folder1->child_count(), 1);
+  const auto* folder2 = folder1->GetChild(0);
+  EXPECT_EQ(base::UTF16ToUTF8(folder2->GetTitle()), "Folder2");
 }
