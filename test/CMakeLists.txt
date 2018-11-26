@@ -3,22 +3,15 @@
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(CMAKE_CXX_STANDARD_REQUIRED, on)
 
-# Main
-add_executable(main
-  main.cc)
-
-target_link_libraries(main
-  gtest)
-
-# Tabs Google Tests
-add_executable(tabs
+# Google Tests
+add_executable(tests
+  main.cc
   test_tabs.cc
-  ${SOURCES}
-  ${USER_MODEL_SOURCES}
-  ${URIPARSER_SOURCES})
+  test_is_mobile.cc)
 
-target_link_libraries(tabs
+target_link_libraries(tests
   gtest
-  gmock_main)
+  gmock_main
+  batnativeads)
 
-add_test(NAME tabs_test COMMAND tabs)
+add_test(NAME tests COMMAND tests)
