@@ -64,7 +64,8 @@ export const getUIMessages = (): Record<string, string> => {
     'welcomeFooterTextTwo',
     'welcomeHeaderOne',
     'welcomeHeaderTwo',
-    'yourWallet'
+    'yourWallet',
+    'noActivity',
   ]
 
   let translations = {}
