@@ -249,7 +249,7 @@ class InjectedObject {
         chrome.braveSync.saveInitData(arg1/*seed*/, deviceId);
         break;
       case "sync-ready":
-        console.log(`"save-init-data"`);
+        console.log(`"sync-ready"`);
         chrome.braveSync.syncReady();
         break;
       case "get-existing-objects":

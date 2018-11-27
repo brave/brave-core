@@ -13,6 +13,8 @@ class BraveSyncServiceObserver : public base::CheckedObserver {
  public:
   ~BraveSyncServiceObserver() override {}
 
+  virtual void OnSyncSetupError(BraveSyncService* sync_service,
+                                const std::string& error) {}
   virtual void OnSyncStateChanged(BraveSyncService* sync_service) {}
   virtual void OnHaveSyncWords(BraveSyncService* sync_service,
                                const std::string& sync_words) {}
