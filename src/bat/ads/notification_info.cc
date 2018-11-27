@@ -67,28 +67,28 @@ bool NotificationInfo::FromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter& writer, const NotificationInfo& info) {
-  writer.StartObject();
+void SaveToJson(JsonWriter* writer, const NotificationInfo& info) {
+  writer->StartObject();
 
-  writer.String("creative_set_id");
-  writer.String(info.creative_set_id.c_str());
+  writer->String("creative_set_id");
+  writer->String(info.creative_set_id.c_str());
 
-  writer.String("category");
-  writer.String(info.category.c_str());
+  writer->String("category");
+  writer->String(info.category.c_str());
 
-  writer.String("advertiser");
-  writer.String(info.advertiser.c_str());
+  writer->String("advertiser");
+  writer->String(info.advertiser.c_str());
 
-  writer.String("text");
-  writer.String(info.text.c_str());
+  writer->String("text");
+  writer->String(info.text.c_str());
 
-  writer.String("url");
-  writer.String(info.url.c_str());
+  writer->String("url");
+  writer->String(info.url.c_str());
 
-  writer.String("uuid");
-  writer.String(info.uuid.c_str());
+  writer->String("uuid");
+  writer->String(info.uuid.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 }  // namespace ads

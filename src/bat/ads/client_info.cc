@@ -50,19 +50,19 @@ bool ClientInfo::FromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter& writer, const ClientInfo& info) {
-  writer.StartObject();
+void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
+  writer->StartObject();
 
-  writer.String("application_version");
-  writer.String(info.application_version.c_str());
+  writer->String("application_version");
+  writer->String(info.application_version.c_str());
 
-  writer.String("platform");
-  writer.Int(info.platform);
+  writer->String("platform");
+  writer->Int(info.platform);
 
-  writer.String("platform_version");
-  writer.String(info.platform_version.c_str());
+  writer->String("platform_version");
+  writer->String(info.platform_version.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 }  // namespace ads

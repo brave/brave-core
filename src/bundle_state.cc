@@ -71,43 +71,43 @@ bool BundleState::LoadFromJson(
   return true;
 }
 
-void SaveToJson(JsonWriter& writer, const BundleState& state) {
-  writer.StartObject();
+void SaveToJson(JsonWriter* writer, const BundleState& state) {
+  writer->StartObject();
 
-  writer.String("categories");
-  writer.StartObject();
+  writer->String("categories");
+  writer->StartObject();
 
   for (const auto& category : state.categories) {
-    writer.String(category.first.c_str());
-    writer.StartArray();
+    writer->String(category.first.c_str());
+    writer->StartArray();
 
     for (const auto& ad : category.second) {
-      writer.StartObject();
+      writer->StartObject();
 
-      writer.String("advertiser");
-      writer.String(ad.advertiser.c_str());
+      writer->String("advertiser");
+      writer->String(ad.advertiser.c_str());
 
-      writer.String("notificationText");
-      writer.String(ad.notification_text.c_str());
+      writer->String("notificationText");
+      writer->String(ad.notification_text.c_str());
 
-      writer.String("notificationURL");
-      writer.String(ad.notification_url.c_str());
+      writer->String("notificationURL");
+      writer->String(ad.notification_url.c_str());
 
-      writer.String("uuid");
-      writer.String(ad.uuid.c_str());
+      writer->String("uuid");
+      writer->String(ad.uuid.c_str());
 
-      writer.String("creativeSetId");
-      writer.String(ad.creative_set_id.c_str());
+      writer->String("creativeSetId");
+      writer->String(ad.creative_set_id.c_str());
 
-      writer.EndObject();
+      writer->EndObject();
     }
 
-    writer.EndArray();
+    writer->EndArray();
   }
 
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 }  // namespace ads

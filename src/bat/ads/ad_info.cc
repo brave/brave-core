@@ -82,38 +82,38 @@ bool AdInfo::FromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter& writer, const AdInfo& info) {
-  writer.StartObject();
+void SaveToJson(JsonWriter* writer, const AdInfo& info) {
+  writer->StartObject();
 
-  writer.String("creative_set_id");
-  writer.String(info.creative_set_id.c_str());
+  writer->String("creative_set_id");
+  writer->String(info.creative_set_id.c_str());
 
-  writer.String("start_timestamp");
-  writer.String(info.start_timestamp.c_str());
+  writer->String("start_timestamp");
+  writer->String(info.start_timestamp.c_str());
 
-  writer.String("end_timestamp");
-  writer.String(info.end_timestamp.c_str());
+  writer->String("end_timestamp");
+  writer->String(info.end_timestamp.c_str());
 
-  writer.String("regions");
-  writer.StartArray();
+  writer->String("regions");
+  writer->StartArray();
   for (const auto& region : info.regions) {
-    writer.String(region.c_str());
+    writer->String(region.c_str());
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("advertiser");
-  writer.String(info.advertiser.c_str());
+  writer->String("advertiser");
+  writer->String(info.advertiser.c_str());
 
-  writer.String("notification_text");
-  writer.String(info.notification_text.c_str());
+  writer->String("notification_text");
+  writer->String(info.notification_text.c_str());
 
-  writer.String("notification_url");
-  writer.String(info.notification_url.c_str());
+  writer->String("notification_url");
+  writer->String(info.notification_url.c_str());
 
-  writer.String("uuid");
-  writer.String(info.uuid.c_str());
+  writer->String("uuid");
+  writer->String(info.uuid.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 }  // namespace ads

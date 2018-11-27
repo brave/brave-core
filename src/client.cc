@@ -225,7 +225,7 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
 
 bool Client::FromJson(const std::string& json) {
   ClientState state;
-  if (!LoadFromJson(state, json)) {
+  if (!LoadFromJson(&state, json)) {
     return false;
   }
 
@@ -236,7 +236,7 @@ bool Client::FromJson(const std::string& json) {
 
 const std::string Client::ToJson() {
   std::string json;
-  SaveToJson(*client_state_, json);
+  SaveToJson(*client_state_, &json);
   return json;
 }
 

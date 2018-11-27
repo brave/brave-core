@@ -163,96 +163,96 @@ bool ClientState::LoadFromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter& writer, const ClientState& state) {
-  writer.StartObject();
+void SaveToJson(JsonWriter* writer, const ClientState& state) {
+  writer->StartObject();
 
-  writer.String("adsShownHistory");
-  writer.StartArray();
+  writer->String("adsShownHistory");
+  writer->StartArray();
   for (const auto& ad_shown : state.ads_shown_history) {
-    writer.Uint64(ad_shown);
+    writer->Uint64(ad_shown);
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("adUUID");
-  writer.String(state.ad_uuid.c_str());
+  writer->String("adUUID");
+  writer->String(state.ad_uuid.c_str());
 
-  writer.String("adsUUIDSeen");
-  writer.StartObject();
+  writer->String("adsUUIDSeen");
+  writer->StartObject();
   for (const auto& ad_uuid_seen : state.ads_uuid_seen) {
-    writer.String(ad_uuid_seen.first.c_str());
-    writer.Uint64(ad_uuid_seen.second);
+    writer->String(ad_uuid_seen.first.c_str());
+    writer->Uint64(ad_uuid_seen.second);
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("available");
-  writer.Bool(state.available);
+  writer->String("available");
+  writer->Bool(state.available);
 
-  writer.String("currentSSID");
-  writer.String(state.current_ssid.c_str());
+  writer->String("currentSSID");
+  writer->String(state.current_ssid.c_str());
 
-  writer.String("expired");
-  writer.Bool(state.expired);
+  writer->String("expired");
+  writer->Bool(state.expired);
 
-  writer.String("lastSearchTime");
-  writer.Uint64(state.last_search_time);
+  writer->String("lastSearchTime");
+  writer->Uint64(state.last_search_time);
 
-  writer.String("lastShopTime");
-  writer.Uint64(state.last_shop_time);
+  writer->String("lastShopTime");
+  writer->Uint64(state.last_shop_time);
 
-  writer.String("lastUserActivity");
-  writer.Uint64(state.last_user_activity);
+  writer->String("lastUserActivity");
+  writer->Uint64(state.last_user_activity);
 
-  writer.String("lastUserIdleStopTime");
-  writer.Uint64(state.last_user_idle_stop_time);
+  writer->String("lastUserIdleStopTime");
+  writer->Uint64(state.last_user_idle_stop_time);
 
-  writer.String("locale");
-  writer.String(state.locale.c_str());
+  writer->String("locale");
+  writer->String(state.locale.c_str());
 
-  writer.String("locales");
-  writer.StartArray();
+  writer->String("locales");
+  writer->StartArray();
   for (const auto& locale : state.locales) {
-    writer.String(locale.c_str());
+    writer->String(locale.c_str());
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("pageScoreHistory");
-  writer.StartArray();
+  writer->String("pageScoreHistory");
+  writer->StartArray();
   for (const auto& history : state.page_score_history) {
-    writer.StartArray();
+    writer->StartArray();
     for (const auto& pageScore : history) {
-      writer.Double(pageScore);
+      writer->Double(pageScore);
     }
-    writer.EndArray();
+    writer->EndArray();
   }
-  writer.EndArray();
+  writer->EndArray();
 
-  writer.String("places");
-  writer.StartObject();
+  writer->String("places");
+  writer->StartObject();
   for (const auto& place : state.places) {
-    writer.String(place.first.c_str());
-    writer.String(place.second.c_str());
+    writer->String(place.first.c_str());
+    writer->String(place.second.c_str());
   }
-  writer.EndObject();
+  writer->EndObject();
 
-  writer.String("score");
-  writer.Double(state.score);
+  writer->String("score");
+  writer->Double(state.score);
 
-  writer.String("searchActivity");
-  writer.Bool(state.search_activity);
+  writer->String("searchActivity");
+  writer->Bool(state.search_activity);
 
-  writer.String("searchUrl");
-  writer.String(state.search_url.c_str());
+  writer->String("searchUrl");
+  writer->String(state.search_url.c_str());
 
-  writer.String("shopActivity");
-  writer.Bool(state.shop_activity);
+  writer->String("shopActivity");
+  writer->Bool(state.shop_activity);
 
-  writer.String("shopUrl");
-  writer.String(state.shop_url.c_str());
+  writer->String("shopUrl");
+  writer->String(state.shop_url.c_str());
 
-  writer.String("status");
-  writer.String(state.status.c_str());
+  writer->String("status");
+  writer->String(state.status.c_str());
 
-  writer.EndObject();
+  writer->EndObject();
 }
 
 }  // namespace ads
