@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/common/url_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/resource_request_info.h"
@@ -23,7 +24,7 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   ctx->request_identifier = request->identifier();
   ctx->request_url = request->url();
-  ctx->tab_origin = request->site_for_cookies().GetOrigin();
+  ctx->tab_origin = brave::GetURLOrPDFURL(request->site_for_cookies()).GetOrigin();
   auto* request_info = content::ResourceRequestInfo::ForRequest(request);
   if (request_info) {
     ctx->resource_type = request_info->GetResourceType();
