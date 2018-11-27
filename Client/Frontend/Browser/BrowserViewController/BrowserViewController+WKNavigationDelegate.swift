@@ -153,13 +153,12 @@ extension BrowserViewController: WKNavigationDelegate {
                 // Grab all lists that have valid rules and add/remove them as necessary
                 on.compactMap { $0.rule }.forEach(controller.add)
                 off.compactMap { $0.rule }.forEach(controller.remove)
-                
+              
                 if let tab = tabManager[webView] {
-                    let isFPEnabled = domainForShields.shield_fpProtection?.boolValue ?? Preferences.Shields.fingerprintingProtection.value
-                    tab.userScriptManager?.isFingerprintingProtectionEnabled = isFPEnabled
+                    tab.userScriptManager?.isFingerprintingProtectionEnabled = domainForShields.isShieldExpected(.FpProtection)
                 }
 
-                webView.configuration.preferences.javaScriptEnabled = !(domainForShields.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value)
+                webView.configuration.preferences.javaScriptEnabled = !domainForShields.isShieldExpected(.NoScript)
             }
             
             decisionHandler(.allow)

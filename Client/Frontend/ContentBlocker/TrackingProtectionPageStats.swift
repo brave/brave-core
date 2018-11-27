@@ -28,11 +28,14 @@ struct TPPageStats {
         return TPPageStats(adCount: adCount, trackerCount: trackerCount, scriptCount: scriptCount, fingerprintingCount: fingerprintingCount + 1)
     }
 
+    func addingScriptBlock() -> TPPageStats {
+        return TPPageStats(adCount: adCount, trackerCount: trackerCount, scriptCount: scriptCount + 1, fingerprintingCount: fingerprintingCount)
+    }
+    
     func create(byAddingListItem listItem: BlocklistName) -> TPPageStats {
         switch listItem {
         case .ad: return TPPageStats(adCount: adCount + 1, trackerCount: trackerCount, scriptCount: scriptCount, fingerprintingCount: fingerprintingCount)
         case .tracker: return TPPageStats(adCount: adCount, trackerCount: trackerCount + 1, scriptCount: scriptCount, fingerprintingCount: fingerprintingCount)
-        case .script: return TPPageStats(adCount: adCount, trackerCount: trackerCount, scriptCount: scriptCount + 1, fingerprintingCount: fingerprintingCount)
         default:
             break
         }
@@ -64,10 +67,7 @@ class TPStatsBlocklistChecker {
             if let resourceType = resourceType {
                 switch resourceType {
                 case .script:
-                    if enabledLists.contains(.script) {
-                        deferred.fill(.script)
-                        return
-                    }
+                    break
                 case .image:
                     if enabledLists.contains(.image) {
                         deferred.fill(.image)
