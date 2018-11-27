@@ -123,9 +123,6 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
 
     case types.SYNC_SETUP_SYNC_HAVE_CODE:
       const wordsAsArray = payload.syncWords.split(' ')
-      if (payload.deviceName.length === 0) {
-        window.alert('device name is required')
-      }
       if (wordsAsArray.length !== 24) {
         window.alert('Invalid input code')
         break

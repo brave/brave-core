@@ -32,8 +32,11 @@ class ExistingSyncCodeModal extends React.PureComponent<ExistingSyncCodeModalPro
       syncWords: ''
     }
   }
-  get defaultDeviceName () {
-    return getDefaultDeviceName()
+
+  get deviceName () {
+    return this.state.deviceName === ''
+      ? getDefaultDeviceName()
+      : this.state.deviceName
   }
 
   getUserInputDeviceName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,8 +48,8 @@ class ExistingSyncCodeModal extends React.PureComponent<ExistingSyncCodeModalPro
   }
 
   onSetupSyncHaveCode = () => {
-    const { deviceName, syncWords } = this.state
-    this.props.actions.onSetupSyncHaveCode(syncWords, deviceName)
+    const { syncWords } = this.state
+    this.props.actions.onSetupSyncHaveCode(syncWords, this.deviceName)
   }
 
   render () {
@@ -61,7 +64,7 @@ class ExistingSyncCodeModal extends React.PureComponent<ExistingSyncCodeModalPro
         <Label>{getLocale('enterAnOptionalName')}</Label>
         <SectionBlock>
           <Input
-            placeholder={this.defaultDeviceName}
+            placeholder={getDefaultDeviceName()}
             onChange={this.getUserInputDeviceName}
           />
         </SectionBlock>

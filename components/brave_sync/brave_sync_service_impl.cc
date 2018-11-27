@@ -142,8 +142,8 @@ void BraveSyncServiceImpl::Shutdown() {
 void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (sync_words.empty() || device_name.empty()) {
-    OnSyncSetupError("missing sync words or device name");
+  if (sync_words.empty()) {
+    OnSyncSetupError("missing sync words");
     return;
   }
 
@@ -167,10 +167,6 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
 void BraveSyncServiceImpl::OnSetupSyncNewToSync(
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (device_name.empty()) {
-    OnSyncSetupError("missing device name");
-    return;
-  }
 
   if (initializing_) {
     NotifyLogMessage("currently initializing");
