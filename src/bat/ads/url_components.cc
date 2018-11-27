@@ -4,6 +4,8 @@
 
 #include "bat/ads/url_components.h"
 
+#include "json_helper.h"
+
 namespace ads {
 
 UrlComponents::UrlComponents() :
@@ -25,5 +27,71 @@ UrlComponents::UrlComponents(const UrlComponents& components) :
     fragment(components.fragment) {}
 
 UrlComponents::~UrlComponents() = default;
+
+bool UrlComponents::FromJson(const std::string& json) {
+  rapidjson::Document document;
+  document.Parse(json.c_str());
+
+  if (document.HasParseError()) {
+    return false;
+  }
+
+  if (document.HasMember("url")) {
+    url = document["url"].GetString();
+  }
+
+  if (document.HasMember("scheme")) {
+    scheme = document["scheme"].GetString();
+  }
+
+  if (document.HasMember("user")) {
+    user = document["user"].GetString();
+  }
+
+  if (document.HasMember("hostname")) {
+    hostname = document["hostname"].GetString();
+  }
+
+  if (document.HasMember("port")) {
+    port = document["port"].GetString();
+  }
+
+  if (document.HasMember("query")) {
+    query = document["query"].GetString();
+  }
+
+  if (document.HasMember("fragment")) {
+    fragment = document["fragment"].GetString();
+  }
+
+  return true;
+}
+
+void SaveToJson(JsonWriter* writer, const UrlComponents& components) {
+  writer->StartObject();
+
+  writer->String("url");
+  writer->String(components.url.c_str());
+
+  writer->String("scheme");
+  writer->String(components.scheme.c_str());
+
+  writer->String("user");
+  writer->String(components.user.c_str());
+
+  writer->String("hostname");
+  writer->String(components.hostname.c_str());
+
+  writer->String("port");
+  writer->String(components.port.c_str());
+
+  writer->String("query");
+  writer->String(components.query.c_str());
+
+  writer->String("fragment");
+  writer->String(components.fragment.c_str());
+
+  writer->EndObject();
+}
 
 }  // namespace ads

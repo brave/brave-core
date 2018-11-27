@@ -15,6 +15,9 @@ struct ADS_EXPORT UrlComponents {
   explicit UrlComponents(const UrlComponents& components);
   ~UrlComponents();
 
+  const std::string ToJson();
+  bool FromJson(const std::string& json);
+
   std::string url;
   std::string scheme;
   std::string user;
