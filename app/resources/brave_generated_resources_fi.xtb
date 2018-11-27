@@ -3,6 +3,8 @@
 <translationbundle lang="fi">
 <translation id="3333887201479867589">Brave -palkinnot</translation>
 <translation id="7942180974165298215">Brave-mainostenesto</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ei ole sallittu Bravessa.</translation>
 <translation id="7450557937477381864">Sulje Chrome</translation>
 <translation id="7008934821596358692">Sulje kaikki Chrome-ikkunat lopettaaksesi tuonnin.</translation>
 <translation id="7753103220327065417">Sulje Brave</translation>
@@ -22,13 +24,18 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="2240268017737062801">Kysy, kun sivusto haluaa toistaa mediaa automaattisesti</translation>
 <translation id="3371702087847741961">Kysy, kun sivusto haluaa toistaa mediaa automaattisesti (suositeltu)</translation>
 <translation id="3218385319396786393">Automaattinen toisto on estetty tällä sivulla</translation>
+<translation id="4988333904713528597">Salli aina automaattinen toisto <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Jatka automaattisen toiston estoa</translation>
+<translation id="7543906827780734027">Brave ei ole tarkastanut tätä laajennusta vielä – se saattaa olla haitallinen. Lisää "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" silti?</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
 <translation id="5341901626640816374">Käytä laajennettua sijaintipalkkia</translation>
 <translation id="7965178729203412357">Uusi Tor-identiteetti</translation>
 <translation id="8784924142044142231">Poistu Torista</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Avaa Tor-ikkuna</translation>
+<translation id="1434416574322382019">Uusi Tor-yksityisikkuna</translation>
+<translation id="4703780849509456860">Avaa linkki yksityisessä ikkunassa tai Tor-selaimessa</translation>
+<translation id="3488584642074079080">Avaa linkki Braven yksityisessä ikkunassa Torilla.</translation>
 <translation id="3155170474926428993">Tor -laukaisin</translation>
 <translation id="7372129767729198111">Braven oletussuojaus</translation>
 <translation id="8029018702721078742">Mainostenhallinta</translation>

@@ -3,6 +3,8 @@
 <translationbundle lang="el">
 <translation id="3333887201479867589">Ανταμοιβές Brave</translation>
 <translation id="7942180974165298215">Αποκλεισμός Διαφήμισης Brave</translation>
+<translation id="3149880132460839085">Συγχρονισμός Brave</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") δεν επιτρέπεται στο Brave.</translation>
 <translation id="7450557937477381864">Κλείστε τον Chrome</translation>
 <translation id="7008934821596358692">Για να ολοκληρωθεί η εισαγωγή, κλείστε όλα τα παράθυρα Chrome.</translation>
 <translation id="7753103220327065417">Κλείσiμο Brave</translation>
@@ -22,13 +24,18 @@
 <translation id="2240268017737062801">Ερώτηση όταν μια ιστοσελίδα θέλει να γίνεται αυτόματη αναπαραγωγή μέσων</translation>
 <translation id="3371702087847741961">Ερώτηση όταν μια ιστοσελίδα θέλει να γίνεται αυτόματη αναπαραγωγή μέσων (προτείνεται)</translation>
 <translation id="3218385319396786393">Η αυτόματη αναπαραγωγή έχει αποκλειστεί σε αυτή τη σελίδα</translation>
+<translation id="4988333904713528597">Να επιτρέπεται πάντα η αυτόματη αναπαραγωγή στο <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Συνέχιση του αποκλεισμού της αυτόματης εκτέλεσης</translation>
+<translation id="7543906827780734027">Το Brave δεν έχει αξιολογήσει ακόμα αυτή την επέκταση—ίσως είναι κακόβουλη.Προσθήκη «<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>» ούτως ή άλλως;</translation>
 <translation id="2044383478723007273">Χρώματα Brave</translation>
 <translation id="5341901626640816374">Χρησιμοποίηση μπάρας ευρείας τοποθεσίας</translation>
 <translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
 <translation id="8784924142044142231">Έξοδος από Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Άνοιγμα Παράθυρου Tor</translation>
+<translation id="1434416574322382019">Νέο Ιδιωτικό Παράθυρο με Tor</translation>
+<translation id="4703780849509456860">Άνοιγμα Συνδέσμου σε Ιδιωτικό Παράθυρο με Tor</translation>
+<translation id="3488584642074079080">Άνοιγμα συνδέσμου σε Ιδιωτικό Παράθυρο Brave μέσω Tor</translation>
 <translation id="3155170474926428993">Άνοιγμα Tor</translation>
 <translation id="7372129767729198111">Προεπιλογές ασπίδων Brave</translation>
 <translation id="8029018702721078742">Έλεγχος διαφημίσεων</translation>

@@ -3,6 +3,8 @@
 <translationbundle lang="iw">
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="7942180974165298215">Brave חוסם מודעות</translation>
+<translation id="3149880132460839085">סנכרון Brave</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") לא נתמך ב-Brave.</translation>
 <translation id="7450557937477381864">סגירת Chrome</translation>
 <translation id="7008934821596358692">על מנת לסיים את הייבוא, סגרו את כל חלונות הדפדפן.</translation>
 <translation id="7753103220327065417">סגירת Brave</translation>
@@ -22,13 +24,19 @@
 <translation id="2240268017737062801">שאלו אותי כאשר אתר רוצה לנגן מדיה בצורה אוטומטית</translation>
 <translation id="3371702087847741961">שאל כאשר אתר רוצה להפעיל מדיה באופן אוטומטי (מומלץ)</translation>
 <translation id="3218385319396786393">ההפעלה האוטומטית נחסמה בדף זה</translation>
+<translation id="4988333904713528597">הרשו תמיד הפעלה אוטומטית ל-<ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
+<translation id="7543906827780734027">Brave טרם בדקו את התוסף הזה - ייתכן שזהו תוסף זדוני.
+תרצה להוסיף את "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" בכל אופן?</translation>
 <translation id="2044383478723007273">צבעי Brave</translation>
 <translation id="5341901626640816374">שימוש בשורת כתובת רחבה</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="8784924142044142231">יציאה מ-Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">פתחו חלון Tor</translation>
+<translation id="1434416574322382019">חלון גלישה פרטי עם תור</translation>
+<translation id="4703780849509456860">פתחו קישור בחלון פרטי בעזרת Tor</translation>
+<translation id="3488584642074079080">פתיחת קישור בחלון גלישה פרטית של Brave עם Tor</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="7372129767729198111">ברירות מחדל של מגני Brave</translation>
 <translation id="8029018702721078742">בקרת פרסומות</translation>

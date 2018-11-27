@@ -3,6 +3,8 @@
 <translationbundle lang="it">
 <translation id="3333887201479867589">Ricompense Brave</translation>
 <translation id="7942180974165298215">Ad Block Brave</translation>
+<translation id="3149880132460839085">Sincronizzazione di Brave</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") non è permessa in Brave.</translation>
 <translation id="7450557937477381864">Chiudi Chrome</translation>
 <translation id="7008934821596358692">Per completare l'importazione, chiudi tutte le finestre di Chrome.</translation>
 <translation id="7753103220327065417">Chiudi Brave</translation>
@@ -22,13 +24,18 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="2240268017737062801">Chiedi quando un sito vuole riprodurre automaticamente i contenuti multimediali</translation>
 <translation id="3371702087847741961">Chiedi quando un sito vuole riprodurre automaticamente un contenuto multimediale (raccomandato)</translation>
 <translation id="3218385319396786393">La riproduzione automatica è stata bloccata su questa pagina</translation>
+<translation id="4988333904713528597">Permetti la riproduzione automatica su <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continua a bloccare la riproduzione automatica</translation>
+<translation id="7543906827780734027">Brave non ha ancora esaminato questa estensione, potrebbe essere malevola. Aggiungere comunque "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Colori di Brave</translation>
 <translation id="5341901626640816374">Utilizza la barra con posizione estesa</translation>
 <translation id="7965178729203412357">Nuova Identità Tor</translation>
 <translation id="8784924142044142231">Esci da Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Apri la finestra Tor</translation>
+<translation id="1434416574322382019">Nuova finestra privata con Tor</translation>
+<translation id="4703780849509456860">Apri il collegamento in una finestra privata con Tor</translation>
+<translation id="3488584642074079080">Apri il collegamento in una finestra privata Brave con Tor</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="7372129767729198111">Impostazioni predefinite di protezione di Brave</translation>
 <translation id="8029018702721078742">Controllo dell'Annuncio</translation>

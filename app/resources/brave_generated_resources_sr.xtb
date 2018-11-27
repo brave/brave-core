@@ -3,6 +3,8 @@
 <translationbundle lang="sr">
 <translation id="3333887201479867589">Brejv nagrade</translation>
 <translation id="7942180974165298215">Brejv blokiranje oglasa</translation>
+<translation id="3149880132460839085">Brave sinhronizacija</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dozvoljeno u Brejvu</translation>
 <translation id="7450557937477381864">Zatvorite Hrom pregledač</translation>
 <translation id="7008934821596358692">Da biste završili uvoz, zatvorite sve prozore u Chrome-u.</translation>
 <translation id="7753103220327065417">Zatvorite Brave</translation>
@@ -22,13 +24,18 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2240268017737062801">Pitaj kada veb lokacija želi automatsko puštanje medija</translation>
 <translation id="3371702087847741961">Pitajte kada sajt želi da automatski pušta medije (preporučeno)</translation>
 <translation id="3218385319396786393">Automatska reprodukcija je blokirana na ovoj strani</translation>
+<translation id="4988333904713528597">Uvek dozvoli automatsko puštanje na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Nastavite da blokirate automatsku reprodukciju</translation>
+<translation id="7543906827780734027">Brave nije još pregledao ekstenziju - može biti maliciozna. Dodajte svejedno "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ?</translation>
 <translation id="2044383478723007273">Boje Brave-a</translation>
 <translation id="5341901626640816374">Koristite široku traku lokacije</translation>
 <translation id="7965178729203412357">Novi Tor identitet</translation>
 <translation id="8784924142044142231">Izađite iz Tor-a</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Otvori Tor prozor</translation>
+<translation id="1434416574322382019">Novi privatni prozor sa Tor-om</translation>
+<translation id="4703780849509456860">Otvorite vezu u privatnom prozoru sa Tor-om</translation>
+<translation id="3488584642074079080">Otvorite vezu u Brejv privatnom Vinousu sa Torom</translation>
 <translation id="3155170474926428993">Tor pokretač</translation>
 <translation id="7372129767729198111">Podrazumevane vrednosti za Brave štit</translation>
 <translation id="8029018702721078742">Kontrola oglasa</translation>

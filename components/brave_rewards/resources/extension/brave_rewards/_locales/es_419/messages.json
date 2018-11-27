@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Tip this site monthly",
+    "message": "Envíe propinas a este sitio mensualmente",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -160,15 +160,15 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Publicidades de Brave",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "Contribución automática",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "You've contributed $amount$ BAT",
+    "message": "Usted ha contribuido $amount$ BAT",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
@@ -178,23 +178,23 @@
     }
   },
   "grantNotification": {
-    "message": "You have a grant waiting for you.",
+    "message": "Usted ha recibido una donación nueva.",
     "description": "Description for new grant notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Creating wallet",
+    "message": "Cómo crear una billetera",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
-    "message": "There was a problem processing your contribution.",
+    "message": "Hubo un problema al procesar su contribución.",
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "message": "Su pago mensual programado para Contribución automática y las propinas mensuales no pudieron enviarse debido a fondos insuficientes. Volveremos a intentarlo en 30 días.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "There was a problem processing your tip, please try again.",
+    "message": "Hubo un problema al procesar su propina. Inténtelo nuevamente.",
     "description": "We show this string in notification when tip fails"
   }
 }

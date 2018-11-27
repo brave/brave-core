@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Tip this site monthly",
+    "message": "每月打赏本网站",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -156,19 +156,19 @@
     "description": "Label used in toggle indicating that toggle is off"
   },
   "ok": {
-    "message": "ok",
+    "message": "确定",
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Brave广告",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "自动贡献",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "You've contributed $amount$ BAT",
+    "message": "您已向$amount$BAT贡献",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
@@ -178,23 +178,23 @@
     }
   },
   "grantNotification": {
-    "message": "You have a grant waiting for you.",
+    "message": "您有一笔资助金在等您使用。",
     "description": "Description for new grant notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Creating wallet",
+    "message": "正在创建钱包",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
-    "message": "There was a problem processing your contribution.",
+    "message": "处理您的贡献时出现问题。",
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "message": "由于资金不足，您无法完成预定的每月自动付款和每月打赏。我们会在30天后重试。",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "There was a problem processing your tip, please try again.",
+    "message": "处理您的打赏时出现问题，请重试。",
     "description": "We show this string in notification when tip fails"
   }
 }

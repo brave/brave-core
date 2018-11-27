@@ -3,6 +3,8 @@
 <translationbundle lang="ms">
 <translation id="3333887201479867589">Ganjaran Brave</translation>
 <translation id="7942180974165298215">Sekatan Iklan Brave</translation>
+<translation id="3149880132460839085">Segerak Brave</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") tidak dibenarkan dalam Brave.</translation>
 <translation id="7450557937477381864">Tutup Chrome</translation>
 <translation id="7008934821596358692">Untuk melengkapkan pengimportan, tutup semua tetingkap Chrome.</translation>
 <translation id="7753103220327065417">Tutup Brave</translation>
@@ -22,13 +24,18 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2240268017737062801">Tanya bila laman mahu memain automatik media</translation>
 <translation id="3371702087847741961">Tanya apabila laman mahu memainkan media (disyorkan)</translation>
 <translation id="3218385319396786393">Main automatik telah disekat di halaman ini</translation>
+<translation id="4988333904713528597">Sentiasa benarkan automain pada <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Teruskan menyekat autoplay</translation>
+<translation id="7543906827780734027">Brave belum menilai penyambung ini- ia mungkin berbahaya. Tambah "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" walaubagaimanapun?</translation>
 <translation id="2044383478723007273">Warna-warna Brave</translation>
 <translation id="5341901626640816374">Gunakan bar lokasi yang lebar</translation>
 <translation id="7965178729203412357">Identiti Tor Baharu</translation>
 <translation id="8784924142044142231">Keluar Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Buka Tetingkap Tor</translation>
+<translation id="1434416574322382019">Tetingkap Peribadi baru dengan Tor</translation>
+<translation id="4703780849509456860">Buka Pautan dalam Tetingkap Peribadi dengan Tor</translation>
+<translation id="3488584642074079080">Buka Pautan dalam Tetingkap Peribadi Brave dengan Tor</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="7372129767729198111">Perisai asal Brave</translation>
 <translation id="8029018702721078742">Kawalan Iklan</translation>
