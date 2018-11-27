@@ -94,6 +94,7 @@ class BookmarkChangeProcessor : public ChangeProcessor,
 
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned
+  Profile* profile_; // not owned
   bookmarks::BookmarkModel* bookmark_model_;  // not owned
 
   bookmarks::BookmarkNode* deleted_node_root_;
