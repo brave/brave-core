@@ -1692,6 +1692,15 @@ extension BrowserViewController: TabToolbarDelegate {
             self.present(backForwardViewController, animated: true, completion: nil)
         }
     }
+    
+    func tabToolbarDidSwipeToChangeTabs(_ tabToolbar: TabToolbarProtocol, direction: UISwipeGestureRecognizer.Direction) {
+        let tabs = tabManager.tabsForCurrentMode
+        guard let selectedTab = tabManager.selectedTab, let index = tabs.firstIndex(where: { $0 === selectedTab }) else { return }
+        let newTabIndex = index + (direction == .left ? -1 : 1)
+        if newTabIndex >= 0 && newTabIndex < tabs.count {
+            tabManager.selectTab(tabs[newTabIndex])
+        }
+    }
 }
 
 extension BrowserViewController: TabsBarViewControllerDelegate {

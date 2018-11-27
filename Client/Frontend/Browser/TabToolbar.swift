@@ -32,6 +32,7 @@ protocol TabToolbarDelegate: class {
     func tabToolbarDidPressShare(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton)
+    func tabToolbarDidSwipeToChangeTabs(_ tabToolbar: TabToolbarProtocol, direction: UISwipeGestureRecognizer.Direction)
 }
 
 @objcMembers
@@ -188,6 +189,8 @@ class TabToolbar: UIView {
         addButtons(actionButtons)
         contentView.axis = .horizontal
         contentView.distribution = .fillEqually
+        
+        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didSwipeToolbar(_:))))
     }
 
     override func updateConstraints() {
@@ -228,6 +231,31 @@ class TabToolbar: UIView {
         context.move(to: CGPoint(x: start.x, y: start.y))
         context.addLine(to: CGPoint(x: end.x, y: end.y))
         context.strokePath()
+    }
+    
+    private var previousX: CGFloat = 0.0
+    @objc private func didSwipeToolbar(_ pan: UIPanGestureRecognizer) {
+        switch pan.state {
+        case .began:
+            let velocity = pan.velocity(in: self)
+            if velocity.x > 100 {
+                tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
+            } else if velocity.x < -100 {
+                tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
+            }
+            previousX = pan.translation(in: self).x
+        case .changed:
+            let point = pan.translation(in: self)
+            if point.x > previousX + 50 {
+                tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .right)
+                previousX = point.x
+            } else if point.x < previousX - 50 {
+                tabToolbarDelegate?.tabToolbarDidSwipeToChangeTabs(self, direction: .left)
+                previousX = point.x
+            }
+        default:
+            break
+        }
     }
 }
 
