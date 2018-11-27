@@ -4,6 +4,8 @@
 
 #include "bat/ads/client_info.h"
 
+#include "json_helper.h"
+
 namespace ads {
 
 ClientInfo::ClientInfo() :
@@ -17,5 +19,50 @@ ClientInfo::ClientInfo(const ClientInfo& info) :
     platform_version(info.platform_version) {}
 
 ClientInfo::~ClientInfo() = default;
+
+const std::string ClientInfo::ToJson() {
+  std::string json;
+  SaveToJson(*this, &json);
+  return json;
+}
+
+bool ClientInfo::FromJson(const std::string& json) {
+  rapidjson::Document document;
+  document.Parse(json.c_str());
+
+  if (document.HasParseError()) {
+    return false;
+  }
+
+  if (document.HasMember("application_version")) {
+    application_version = document["application_version"].GetString();
+  }
+
+  if (document.HasMember("platform")) {
+    platform = static_cast<ClientInfoPlatformType>
+      (document["platform"].GetInt());
+  }
+
+  if (document.HasMember("platform_version")) {
+    platform_version = document["platform_version"].GetString();
+  }
+
+  return true;
+}
+
+void SaveToJson(JsonWriter& writer, const ClientInfo& info) {
+  writer.StartObject();
+
+  writer.String("application_version");
+  writer.String(info.application_version.c_str());
+
+  writer.String("platform");
+  writer.Int(info.platform);
+
+  writer.String("platform_version");
+  writer.String(info.platform_version.c_str());
+
+  writer.EndObject();
+}
 
 }  // namespace ads
