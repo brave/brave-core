@@ -23,6 +23,7 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   ctx->request_identifier = request->identifier();
   ctx->request_url = request->url();
+  ctx->tab_url = request->site_for_cookies();
   ctx->tab_origin = request->site_for_cookies().GetOrigin();
   auto* request_info = content::ResourceRequestInfo::ForRequest(request);
   if (request_info) {

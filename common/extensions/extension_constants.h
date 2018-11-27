@@ -12,3 +12,4 @@ extern const char crl_set_extension_id[];
 extern const char pdfjs_extension_id[];
 extern const char pdfjs_extension_name[];
 extern const char pdfjs_extension_public_key[];
+extern const char pdfjs_extension_origin[];
