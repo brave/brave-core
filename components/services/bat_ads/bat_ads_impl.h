@@ -50,7 +50,7 @@ class BatAdsImpl : public mojom::BatAds {
       GenerateAdReportingNotificationShownEventCallback callback) override;
   void GenerateAdReportingNotificationResultEvent(
       const std::string& notification_info,
-      const std::string& event_type,
+      int32_t event_type,
       GenerateAdReportingNotificationResultEventCallback callback) override;
 
  private:

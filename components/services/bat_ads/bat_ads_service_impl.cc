@@ -7,6 +7,7 @@
 #include <memory>
 #include <utility>
 
+#include "bat/ads/ads.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 #include "mojo/public/cpp/bindings/strong_associated_binding.h"
 
@@ -14,17 +15,39 @@ namespace bat_ads {
 
 BatAdsServiceImpl::BatAdsServiceImpl(
     std::unique_ptr<service_manager::ServiceContextRef> service_ref)
-    : service_ref_(std::move(service_ref)) {}
+    : service_ref_(std::move(service_ref)),
+      has_initialized_(false) {}
 
 BatAdsServiceImpl::~BatAdsServiceImpl() {}
 
-// Overridden from BatAdsService:
 void BatAdsServiceImpl::Create(
     mojom::BatAdsClientAssociatedPtrInfo client_info,
     mojom::BatAdsAssociatedRequest bat_ads,
     CreateCallback callback) {
   mojo::MakeStrongAssociatedBinding(
       std::make_unique<BatAdsImpl>(std::move(client_info)), std::move(bat_ads));
+  has_initialized_ = true;
+  std::move(callback).Run();
+}
+
+void BatAdsServiceImpl::SetProduction(bool is_production,
+                                      SetProductionCallback callback) {
+  DCHECK(!has_initialized_ || ads::_is_production == is_production);
+  ads::_is_production = is_production;
+  std::move(callback).Run();
+}
+
+void BatAdsServiceImpl::SetTesting(bool is_testing,
+                                   SetTestingCallback callback) {
+  DCHECK(!has_initialized_ || ads::_is_testing == is_testing);
+  ads::_is_testing = is_testing;
+  std::move(callback).Run();
+}
+
+void BatAdsServiceImpl::SetDebug(bool is_debug,
+                                 SetDebugCallback callback) {
+  DCHECK(!has_initialized_ || ads::_is_debug == is_debug);
+  ads::_is_debug = is_debug;
   std::move(callback).Run();
 }
 

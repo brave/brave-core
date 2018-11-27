@@ -4,6 +4,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
+#include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
@@ -18,6 +19,7 @@
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/browser_process.h"
@@ -122,20 +124,9 @@ namespace {
 
 void Noop() {}
 
-// TODO(bridiver) - get rid of this stuff with serialization from the lib
-const std::string ToMojomNotificationResultInfoResultType(
+int32_t ToMojomNotificationResultInfoResultType(
     ads::NotificationResultInfoResultType result_type) {
-  switch (result_type) {
-    case ads::NotificationResultInfoResultType::CLICKED:
-      return "clicked";
-    case ads::NotificationResultInfoResultType::DISMISSED:
-      return "dimissed";
-    case ads::NotificationResultInfoResultType::TIMEOUT:
-      return "timeout";
-    default:
-      NOTREACHED();
-      return "dimissed";
-  }
+  return (int32_t)result_type;
 }
 
 static std::map<std::string, int> g_schema_resource_ids = {
@@ -250,7 +241,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
     is_foreground_(!!chrome::FindBrowserWithActiveWindow()),
     bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
-  // TODO(bridiver) - implement `_is_testing` and other command line flags
   DCHECK(!profile_->IsOffTheRecord());
 
   file_task_runner_->PostTask(FROM_HERE,
@@ -289,7 +279,7 @@ void AdsServiceImpl::OnInitialize() {
 
 void AdsServiceImpl::OnCreate() {
   if (!bat_ads_.is_bound()) {
-    // TODO(bridiver)
+    // TODO(bridiver) - reconnect?
     return;
   }
 
@@ -312,16 +302,41 @@ void AdsServiceImpl::Start() {
   content::ServiceManagerConnection* connection =
       content::ServiceManagerConnection::GetForProcess();
 
-  if (!connection) {
-    // TODO(bridiver);
+  if (!connection)
     return;
-  }
 
   connection->GetConnector()->BindInterface(
       bat_ads::mojom::kServiceName, &bat_ads_service_);
 
   bat_ads_service_.set_connection_error_handler(
       base::Bind(&ConnectionClosed));
+
+  bool is_production = false;
+#if defined(OFFICIAL_BUILD)
+  is_production = true;
+#endif
+  bool is_debug = true;
+#if defined(NDEBUG)
+  is_debug = false;
+#endif
+  bool is_testing = false;
+
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+
+  if (command_line.HasSwitch(switches::kProduction)) {
+    is_production = true;
+  }
+  if (command_line.HasSwitch(switches::kDebug)) {
+    is_debug = true;
+  }
+  if (command_line.HasSwitch(switches::kTesting)) {
+    is_testing = true;
+  }
+
+  bat_ads_service_->SetProduction(is_production, base::BindOnce(&Noop));
+  bat_ads_service_->SetDebug(is_debug, base::BindOnce(&Noop));
+  bat_ads_service_->SetTesting(is_testing, base::BindOnce(&Noop));
 
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
@@ -396,8 +411,7 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::is_enabled() const {
-  // return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
-  return true;
+  return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {

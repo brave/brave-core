@@ -12,18 +12,8 @@ namespace bat_ads {
 namespace {
 
 ads::NotificationResultInfoResultType ToNotificationResultInfoResultType(
-    const std::string& result_type) {
-  // TODO(bridiver) - this goes away with json serialization
-  if (result_type == "clicked") {
-    return ads::NotificationResultInfoResultType::CLICKED;
-  } else if (result_type == "dismissed") {
-    return ads::NotificationResultInfoResultType::DISMISSED;
-  } else if (result_type == "timeout") {
-    return ads::NotificationResultInfoResultType::TIMEOUT;
-  } else {
-    NOTREACHED();
-    return ads::NotificationResultInfoResultType::DISMISSED;
-  }
+    int32_t result_type) {
+  return (ads::NotificationResultInfoResultType)result_type;
 }
 
 }
@@ -119,23 +109,19 @@ void BatAdsImpl::GenerateAdReportingNotificationShownEvent(
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info)) {
     ads_->GenerateAdReportingNotificationShownEvent(*info);
-  } else {
-    // TODO(bridiver) ?
   }
   std::move(callback).Run();
 }
 
 void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
       const std::string& notification_info,
-      const std::string& result_type,
+      int32_t result_type,
       GenerateAdReportingNotificationResultEventCallback callback) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info)) {
     ads_->GenerateAdReportingNotificationResultEvent(
         *info,
         ToNotificationResultInfoResultType(result_type));
-  } else {
-    // TODO(bridiver) ?
   }
   std::move(callback).Run();
 }

@@ -19,9 +19,11 @@ int32_t ToMojomURLRequestMethod(
 }
 
 std::map<std::string, std::string> ToStdMap(
-    const base::flat_map<std::string, std::string>& headers) {
+    const base::flat_map<std::string, std::string>& map) {
   std::map<std::string, std::string> std_map;
-  // TODO(bridiver) - do conversion
+  for (const auto it : map) {
+    std_map[it.first] = it.second;
+  }
   return std_map;
 }
 
@@ -265,15 +267,38 @@ void BatAdsClientMojoBridge::Reset(const std::string& name,
   bat_ads_client_->Reset(name, base::BindOnce(&OnReset, std::move(callback)));
 }
 
+void OnGetAds(const ads::OnGetAdsCallback& callback,
+              int32_t result,
+              const std::string& region,
+              const std::string& category,
+              const std::vector<std::string>& ad_info_json_list) {
+  std::vector<ads::AdInfo> ad_info_list;
+
+  for (const auto it : ad_info_json_list) {
+    ads::AdInfo ad_info;
+    if (ad_info.FromJson(it)) {
+      ad_info_list.push_back(ad_info);
+    } else {
+      callback(
+          ads::Result::FAILED, region, category, std::vector<ads::AdInfo>());
+      return;
+    }
+  }
+
+  callback(ToAdsResult(result), region, category, ad_info_list);
+}
+
 void BatAdsClientMojoBridge::GetAds(
     const std::string& region,
     const std::string& category,
     ads::OnGetAdsCallback callback) {
   if (!connected()) {
-    // TODO(bridiver); callback
+    callback(ads::Result::FAILED, region, category, std::vector<ads::AdInfo>());
     return;
   }
-  // TODO(bridiver);
+
+  bat_ads_client_->GetAds(region, category,
+      base::BindOnce(&OnGetAds, std::move(callback)));
 }
 
 void OnLoadSampleBundle(const ads::OnLoadSampleBundleCallback& callback,

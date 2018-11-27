@@ -24,7 +24,9 @@ ads::URLRequestMethod ToAdsURLRequestMethod(int32_t method) {
 base::flat_map<std::string, std::string> ToFlatMap(
     const std::map<std::string, std::string>& map) {
   base::flat_map<std::string, std::string> flat_map;
-  // TODO(bridiver) - do conversion
+  for (const auto it : map) {
+    flat_map[it.first] = it.second;
+  }
   return flat_map;
 }
 

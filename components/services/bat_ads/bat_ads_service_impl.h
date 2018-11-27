@@ -25,12 +25,14 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
               mojom::BatAdsAssociatedRequest bat_ads,
               CreateCallback callback) override;
 
-  // void Destroy(filesystem::mojom::DirectoryPtr directory,
-  //              const std::string& dbname,
-  //              DestroyCallback callback) override;
+  void SetProduction(bool is_production,
+                     SetProductionCallback callback) override;
+  void SetTesting(bool is_testing, SetTestingCallback callback) override;
+  void SetDebug(bool is_debug, SetDebugCallback callback) override;
 
  private:
   const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
+  bool has_initialized_;
 
   DISALLOW_COPY_AND_ASSIGN(BatAdsServiceImpl);
 };

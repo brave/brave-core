@@ -9,6 +9,9 @@ const string kServiceName = "bat_ads";
 interface BatAdsService {
   Create(associated BatAdsClient bat_ads_client,
          associated BatAds& database) => ();
+  SetProduction(bool is_production) => ();
+  SetTesting(bool is_testing) => ();
+  SetDebug(bool is_debug) => ();
 };
 
 interface BatAdsClient {
@@ -72,5 +75,6 @@ interface BatAds {
   RemoveAllHistory() => ();
   ServeSampleAd() => ();
   GenerateAdReportingNotificationShownEvent(string notification_info) => ();
-  GenerateAdReportingNotificationResultEvent(string notification_info, string event_type) => ();
+  GenerateAdReportingNotificationResultEvent(
+      string notification_info, int32 result_type) => ();
 };

@@ -4,7 +4,6 @@
 
 #include "brave/components/services/bat_ads/bat_ads_app.h"
 
-#include "bat/ads/ads.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 
@@ -33,17 +32,6 @@ BatAdsApp::BatAdsApp() {}
 BatAdsApp::~BatAdsApp() {}
 
 void BatAdsApp::OnStart() {
-#if defined(OFFICIAL_BUILD)
-  ads::_is_production = true;
-#else
-  ads::_is_production = false;
-#endif
-
-#if defined(NDEBUG)
-  ads::_is_debug = false;
-#else
-  ads::_is_debug = true;
-#endif
   ref_factory_ = std::make_unique<service_manager::ServiceContextRefFactory>(
       context()->CreateQuitClosure());
   registry_.AddInterface(
