@@ -16,7 +16,8 @@ def main():
     webpack_gen_dir = args.target_gen_dir[0]
     if args.extra_relative_path is not None:
         webpack_gen_dir = webpack_gen_dir + args.extra_relative_path
-    transpile_web_uis(args.production, webpack_gen_dir, args.entry)
+    transpile_web_uis(args.production, webpack_gen_dir,
+                      args.entry, args.public_asset_path)
     generate_grd(args.target_gen_dir[0], args.resource_name[0])
 
 
@@ -32,6 +33,7 @@ def parse_args():
     parser.add_argument('--target_gen_dir', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--extra_relative_path', nargs='?')
+    parser.add_argument('--public_asset_path', nargs='?')
     args = parser.parse_args()
     # validate args
     if (args.target_gen_dir is None or
@@ -52,7 +54,8 @@ def clean_target_dir(target_dir, env=None):
         raise Exception("Error removing previous webpack target dir", e)
 
 
-def transpile_web_uis(production, target_gen_dir, entry_points, env=None):
+def transpile_web_uis(production, target_gen_dir,
+                      entry_points, public_asset_path=None, env=None):
     if env is None:
         env = os.environ.copy()
 
@@ -62,6 +65,9 @@ def transpile_web_uis(production, target_gen_dir, entry_points, env=None):
         args.append("--mode=production")
     else:
         args.append("--mode=development")
+
+    if public_asset_path is not None:
+        args.append("--output-public-path=" + public_asset_path)
 
     # entrypoints
     for entry in entry_points:

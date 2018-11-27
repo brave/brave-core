@@ -37,4 +37,6 @@ transpile_web_ui("brave_rewards_panel") {
   # Must match the relative path from the static GRD to the manifest.json
   # plus any other relative path we want these files to live in the extension
   extra_relative_path = "/brave_rewards/out"
+
+  public_asset_path = "/out/"
 }
