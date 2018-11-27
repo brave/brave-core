@@ -16,6 +16,8 @@
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #else
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
+#include "content/public/browser/url_data_source.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
 #endif
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
@@ -70,6 +72,10 @@ BasicUI::BasicUI(content::WebUI* web_ui,
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
       resource_map, resource_map_size, html_resource_id);
   content::WebUIDataSource::Add(profile, source);
+
+#if defined(OS_ANDROID)  
+  content::URLDataSource::Add(profile, std::make_unique<FaviconSource>(profile));
+#endif
 }
 
 BasicUI::~BasicUI() {
