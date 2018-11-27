@@ -221,8 +221,12 @@
       "ts",
       "json"
     ],
-    "transform": {
-      ".(jsx|js|ts|tsx)": "ts-jest"
+    "globals": {
+      "ts-jest": {
+        "babelConfig": true,
+        "tsConfig": "tsconfig-jest.json",
+        "isolatedModules": true
+      }
     },
     "resetMocks": true,
     "resetModules": true,
@@ -250,7 +254,8 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
       "\\.(css|less)$": "identity-obj-proxy"
-    }
+    },
+    "preset": "ts-jest/presets/js-with-babel"
   },
   "devDependencies": {
     "@types/chrome": "0.0.69",
@@ -272,13 +277,12 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.24.1",
-    "brave-ui": "^0.34.1",
+    "brave-ui": "^0.34.4",
     "css-loader": "^0.28.9",
     "csstype": "^2.5.5",
     "emptykit.css": "^1.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "file-loader": "^1.1.6",
     "font-awesome": "^4.7.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.4.1",
@@ -293,7 +297,7 @@
     "redux": "^4.0.0",
     "style-loader": "^0.19.1",
     "styled-components": "^3.4.2",
-    "ts-jest": "^23.0.1",
+    "ts-jest": "^23.10.4",
     "tslint": "^5.8.0",
     "tslint-config-standard": "^7.0.0",
     "tslint-react": "^3.2.0",
