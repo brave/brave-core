@@ -16,10 +16,9 @@ class BlocklistName: Hashable, CustomStringConvertible {
     static let ad = BlocklistName(filename: "block-ads")
     static let tracker = BlocklistName(filename: "block-trackers")
     static let https = BlocklistName(filename: "upgrade-http")
-    static let script = BlocklistName(filename: "block-scripts")
     static let image = BlocklistName(filename: "block-images")
 
-    static var allLists: Set<BlocklistName> { return [.ad, .tracker, .https, .script, .image] }
+    static var allLists: Set<BlocklistName> { return [.ad, .tracker, .https, .image] }
     
     let filename: String
     var rule: WKContentRuleList?
@@ -37,19 +36,10 @@ class BlocklistName: Hashable, CustomStringConvertible {
             return ([], allLists)
         }
         
-        /// Returns true if a certain Blocklist, should be included for `Domain`
-        func include(domainSetting domain: NSNumber?, globalValue global: Preferences.Option<Bool>) -> Bool {
-            return domain == 1 || (domain == nil && global.value)
-        }
-        
         var onList = Set<BlocklistName>()
         
-        if include(domainSetting: domain.shield_adblockAndTp, globalValue: Preferences.Shields.blockAdsAndTracking) {
+        if domain.isShieldExpected(.AdblockAndTp) {
             onList.formUnion([.ad, .tracker])
-        }
-        
-        if include(domainSetting: domain.shield_noScript, globalValue: Preferences.Shields.blockScripts) {
-            onList.insert(.script)
         }
         
         // For lists not implemented, always return exclude from `onList` to prevent accidental execution

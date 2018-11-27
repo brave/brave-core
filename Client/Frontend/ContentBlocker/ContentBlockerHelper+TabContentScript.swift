@@ -40,6 +40,12 @@ extension ContentBlockerHelper: TabContentScript {
         guard let url = components.url else { return }
         
         let resourceType = TPStatsResourceType(rawValue: body["resourceType"] ?? "")
+        
+        if resourceType == .script && domain.isShieldExpected(.NoScript) {
+            self.stats = self.stats.addingScriptBlock()
+            BraveGlobalShieldStats.shared.scripts += 1
+            return
+        }
 
         TPStatsBlocklistChecker.shared.isBlocked(url: url, domain: domain, resourceType: resourceType).uponQueue(.main) { listItem in
             if let listItem = listItem {
@@ -52,7 +58,6 @@ extension ContentBlockerHelper: TabContentScript {
                 case .ad: stats.adblock += 1
                 case .https: stats.httpse += 1
                 case .tracker: stats.trackingProtection += 1
-                case .script: stats.scripts += 1
                 case .image: stats.images += 1
                 default:
                     // TODO: #97 Add fingerprinting count here when it is integrated
