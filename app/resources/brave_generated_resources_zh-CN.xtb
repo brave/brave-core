@@ -3,6 +3,8 @@
 <translationbundle lang="zh-CN">
 <translation id="3333887201479867589">Brave 奖励</translation>
 <translation id="7942180974165298215">Brave 广告拦截</translation>
+<translation id="3149880132460839085">Brave 浏览器同步</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME"> $ 1</ph>(Brave中不允许使用扩展ID“<ph name="EXTENSION_ID">$ 2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>”）。</translation>
 <translation id="7450557937477381864">关闭 Chrome</translation>
 <translation id="7008934821596358692">如要完成导出，请关闭所有 Chrome 窗口。</translation>
 <translation id="7753103220327065417">关闭 Brave</translation>
@@ -22,13 +24,18 @@
 <translation id="2240268017737062801">当网站要播放媒体时询问您</translation>
 <translation id="3371702087847741961">当网站要自动播放媒体时询问您（推荐）</translation>
 <translation id="3218385319396786393">已禁止在此网页上运行自动播放</translation>
+<translation id="4988333904713528597">始终允许自动播放<ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">继续禁止自动播放</translation>
+<translation id="7543906827780734027">Brave还没有评论过此扩展 - 它可能是恶意的。 添加“<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>”呢？</translation>
 <translation id="2044383478723007273">Brave 颜色</translation>
 <translation id="5341901626640816374">使用宽地址栏</translation>
 <translation id="7965178729203412357">新 Tor 身份</translation>
 <translation id="8784924142044142231">退出 Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">打开 Tor 窗口</translation>
+<translation id="1434416574322382019">用Tor打开新的私人窗口</translation>
+<translation id="4703780849509456860">用Tor在私人窗口中打开链接</translation>
+<translation id="3488584642074079080">用Tor在Brave私人窗口中打开链接</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="7372129767729198111">Brave 屏蔽默认</translation>
 <translation id="8029018702721078742">广告控制</translation>

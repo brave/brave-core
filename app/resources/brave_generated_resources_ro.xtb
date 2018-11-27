@@ -3,6 +3,8 @@
 <translationbundle lang="ro">
 <translation id="3333887201479867589">Recompense Brave</translation>
 <translation id="7942180974165298215">Blocare reclame Brave</translation>
+<translation id="3149880132460839085">Sincronizare Brave</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID extensie "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nu este permis în Brave.</translation>
 <translation id="7450557937477381864">Închide Chrome</translation>
 <translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
 <translation id="7753103220327065417">Închide Brave</translation>
@@ -22,13 +24,18 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2240268017737062801">Întrebați când un site vrea să redea automat media</translation>
 <translation id="3371702087847741961">Solicită când un site dorește să redea automat media (recomandat)</translation>
 <translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
+<translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continuă blocarea autoredării</translation>
+<translation id="7543906827780734027">Brave încă nu a evaluat această extensie - se poate să fie rău intenționată. Se adaugă oricum "<ph name="EXTENSION_NAME">$1<ex>Verificare Gmail</ex></ph>"?</translation>
 <translation id="2044383478723007273">Culori Brave</translation>
 <translation id="5341901626640816374">Utilizați bara mare de locație</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
 <translation id="8784924142044142231">Ieșire din Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Deschide fereastră Tor</translation>
+<translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
+<translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
+<translation id="3488584642074079080">Deschide Link în Fereastra Privată Brave cu Tor</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="7372129767729198111">Valori implicite scuturi Brave</translation>
 <translation id="8029018702721078742">Control reclame</translation>

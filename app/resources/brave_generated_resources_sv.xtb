@@ -3,6 +3,8 @@
 <translationbundle lang="sv">
 <translation id="3333887201479867589">Brave belöningar</translation>
 <translation id="7942180974165298215">Brave annonsblockerare</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") är inte tillåtet i Brave.</translation>
 <translation id="7450557937477381864">Stäng Brave</translation>
 <translation id="7008934821596358692">Stäng alla Brave fönster för att göra klart importen.</translation>
 <translation id="7753103220327065417">Stäng Brave</translation>
@@ -22,13 +24,18 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="2240268017737062801">Fråga när en sida vill autospela media</translation>
 <translation id="3371702087847741961">Fråga när en webbplats vill autospela media (rekommenderas)</translation>
 <translation id="3218385319396786393">Autouppspelning blockerades på denna sida</translation>
+<translation id="4988333904713528597">Autospela alltid på <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
+<translation id="7543906827780734027">Brave har inte granskat det här tillägget ännu - det kan vara skadigt. Lägg till "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ändå?</translation>
 <translation id="2044383478723007273">Bravefärger</translation>
 <translation id="5341901626640816374">Använd brett adressfält</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8784924142044142231">Lämna Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Öppna Tor-fönster</translation>
+<translation id="1434416574322382019">Nytt privat fönster med Tor</translation>
+<translation id="4703780849509456860">Öppna länk i privat fönster med Tor</translation>
+<translation id="3488584642074079080">Öppna länken med Tor i ett privat Bravefönster</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="7372129767729198111">Standardinställningar för Bravesköldar</translation>
 <translation id="8029018702721078742">Annonskontroll</translation>

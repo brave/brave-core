@@ -3,6 +3,7 @@
 <translationbundle lang="ca">
 <translation id="3333887201479867589">Premis de Brave</translation>
 <translation id="7942180974165298215">Blocatge d'anuncis de Brave</translation>
+<translation id="3149880132460839085">Sincronització de Brave</translation>
 <translation id="7450557937477381864">Tanqueu Chrome</translation>
 <translation id="7008934821596358692">Per a finalitzar la importació tanqueu totes les finestres de Chrome</translation>
 <translation id="7753103220327065417">Tanqueu Brave</translation>
@@ -23,13 +24,18 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="3371702087847741961">Pregunta quan un lloc vol fer reproducció automàtica
 (recomanat)</translation>
 <translation id="3218385319396786393">Reproducció automàtica bloquejada en aquesta pàgina</translation>
+<translation id="4988333904713528597">Permet sempre la reproducció automàtica a <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continua bloquejant la reproducció automàtica</translation>
+<translation id="7543906827780734027">Brave encara no ha revisat aquesta extensió; podria ser maliciosa. Vols afegir "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" de totes maneres?</translation>
 <translation id="2044383478723007273">Colors de Brave</translation>
 <translation id="5341901626640816374">Utilitza la barra d'ubicació àmplia</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
 <translation id="8784924142044142231">Surt de Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Obre una finestra de Tor</translation>
+<translation id="1434416574322382019">Nova finestra privada amb Tor</translation>
+<translation id="4703780849509456860">Obre l'enllaç a una finestra privada amb Tor</translation>
+<translation id="3488584642074079080">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="7372129767729198111">Paràmetres per defecte dels escuts de Brave</translation>
 <translation id="8029018702721078742">Control d'anuncis</translation>

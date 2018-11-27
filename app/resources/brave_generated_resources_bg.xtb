@@ -3,6 +3,8 @@
 <translationbundle lang="bg">
 <translation id="3333887201479867589">Brave награди</translation>
 <translation id="7942180974165298215">Brave Блокер на реклами</translation>
+<translation id="3149880132460839085">Синхронизиране в Brave</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID на разширението "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") не е разрешено в Brave.</translation>
 <translation id="7450557937477381864">Затваряне на Chrome</translation>
 <translation id="7008934821596358692">За да завършите импортирането, затворете всички прозорци на Chrome.</translation>
 <translation id="7753103220327065417">Затваряне на Brave</translation>
@@ -22,13 +24,18 @@
 <translation id="2240268017737062801">Попитайте, когато даден сайт иска автоматично да възпроизвежда медия</translation>
 <translation id="3371702087847741961">Питане когато сайтът иска автоматично да възпроизвежда медия (препоръчва се)</translation>
 <translation id="3218385319396786393">Autoplay беше блокиран на тази страница</translation>
+<translation id="4988333904713528597">Винаги разрешавайте автоматичното възпроизвеждане на <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Продължаване на блокирането на автоматичното възпроизвеждане</translation>
+<translation id="7543906827780734027">Brave все още не е прегледал това разширение - то може да бъде опасно. Да се добави ли все пак"<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Цветове на Brave</translation>
 <translation id="5341901626640816374">Използвай широката лента за местоположение</translation>
 <translation id="7965178729203412357">Нова идентичност на Tor</translation>
 <translation id="8784924142044142231">Изход от Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Отвори Tor прозорец</translation>
+<translation id="1434416574322382019">Нов поверителен прозорец с Tor</translation>
+<translation id="4703780849509456860">Отвори връзката в поверителен прозорец с Tor</translation>
+<translation id="3488584642074079080">Отваряне на връзката в Поверителен прозорец на Brave чрез Tor</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="7372129767729198111">Brave щитове по подразбиране</translation>
 <translation id="8029018702721078742">Управление на рекламата</translation>

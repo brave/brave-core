@@ -1483,6 +1483,7 @@
 <translation id="6556866813142980365">انجام مجدد</translation>
 <translation id="3144126448740580210">تمام</translation>
 <translation id="2453576648990281505">فایل ازقبل موجود است</translation>
+<translation id="2631006050119455616">ذخیره</translation>
 <translation id="5158593464696388225">تصویر ذخیره نشد.</translation>
 <translation id="2787047795752739979">رونویسی نسخهٔ اصلی</translation>
 <translation id="8775404590947523323">ویرایش‌های شما به‌طور خودکار ذخیره می‌شوند.<ph name="BREAKS"/>برای داشتن یک نسخه از تصویر اصلی٬ علامت «رونویسی نسخهٔ اصلی» را بردارید.</translation>
@@ -1876,6 +1877,7 @@
 <translation id="6352773953037195952">بالاترین</translation>
 <translation id="3677657024345889897">کوتاه‌ترین</translation>
 <translation id="167160931442925455">بلندترین</translation>
+<translation id="2445007895943112260"><ph name="PERCENTAGE">$1<ex>120</ex>%</ph></translation>
 <translation id="9129010913019873477"><ph name="PERCENTAGE"/> (پیش‌فرض)</translation>
 <translation id="3602290021589620013">پیش‌نمایش</translation>
 <translation id="7037509989619051237">نوشتار برای پیش‌نمایش</translation>
@@ -2078,6 +2080,7 @@
 <translation id="4972129977812092092">ویرایش چاپگر</translation>
 <translation id="5696679855467848181">‏فایل PPD کنونی درحال استفاده: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">مکان</translation>
 <translation id="7754704193130578113">قبل از بارگیری هر فایل، درباره مکان ذخیره سؤال شود</translation>
 <translation id="5713072761819014678">‏قطع ارتباط حساب Brave Software Drive</translation>
 <translation id="486635084936119914">باز شدن خودکار برخی از انواع فایل بعد از بارگیری</translation>
@@ -2394,6 +2397,7 @@
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">برای تنظیمات بیشتر مرتبط با حریم خصوصی، امنیت و جمع‌آوری داده، <ph name="BEGIN_LINK"/>همگام‌سازی و شخصی‌سازی<ph name="END_LINK"/> را ببینید</translation>
 <translation id="7222718784508482526">‏برای تنظیمات بیشتر مرتبط با حریم خصوصی، امنیت و جمع‌آوری داده‌ها، <ph name="BEGIN_LINK"/>همگام‌سازی و سرویس‌های Brave Software<ph name="END_LINK"/> را ببینید</translation>
+<translation id="6438234780621650381">بازنشانی تنظیمات</translation>
 <translation id="5293170712604732402">بازنشانی تنظیمات به پیش‌فرض‌های اولیه آن‌ها</translation>
 <translation id="892706138619340876">برخی تنظیمات بازنشانی شدند</translation>
 <translation id="2334029754052191847">‏Brave تشخیص داد که برنامه دیگری برخی از تنظیمات شما را خراب کرده است و این تنظیمات را به پیش‌فرض‌های اولیه آن‌ها بازنشانی کرد.</translation>
@@ -2765,6 +2769,7 @@
 <translation id="3954469006674843813"><ph name="WIDTH"/> × <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> هرتز)</translation>
 <translation id="7889565820482017512">اندازه صفحه‌نمایش</translation>
 <translation id="8448729345478502352">بزرگ‌تر با کوچک‌تر کردن موارد روی صفحه</translation>
+<translation id="513425442047539523"><ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph></translation>
 <translation id="2155772377859296191">‏‎<ph name="WIDTH"/> × <ph name="HEIGHT"/>‎ به‌نظر می‌رسد</translation>
 <translation id="4863769717153320198">‏‎<ph name="WIDTH"/> × <ph name="HEIGHT"/>‎ به‌نظر می‌رسد (پیش‌فرض)</translation>
 <translation id="1125550662859510761">‏‎<ph name="WIDTH"/> × <ph name="HEIGHT"/>‎ به‌نظر می‌رسد (داخلی)</translation>
