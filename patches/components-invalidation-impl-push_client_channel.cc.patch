@@ -1,5 +1,5 @@
 diff --git a/components/invalidation/impl/push_client_channel.cc b/components/invalidation/impl/push_client_channel.cc
-index 709d8e562c22..9170819bb45e 100644
+index 709d8e562c2238f00ac6a037395d16dca52b89e0..9170819bb45eb1060f5768a9a6922eb11ae85502 100644
 --- a/components/invalidation/impl/push_client_channel.cc
 +++ b/components/invalidation/impl/push_client_channel.cc
 @@ -28,6 +28,7 @@ PushClientChannel::PushClientChannel(
