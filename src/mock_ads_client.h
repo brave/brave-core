@@ -106,9 +106,9 @@ class MockAdsClient : public AdsClient {
   void OnSampleBundleStateLoaded(const Result result, const std::string& json);
   std::unique_ptr<BundleState> sample_bundle_state_;
 
-  bool WriteJsonToDisk(
+  bool WriteValueToDisk(
     const std::string& path,
-    const std::string& json) const;
+    const std::string& value) const;
 };
 
 }  // namespace ads

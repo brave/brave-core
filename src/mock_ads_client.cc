@@ -201,7 +201,7 @@ void MockAdsClient::Save(
 
   LOG(INFO) << "Saving " << path;
 
-  auto success = WriteJsonToDisk(path, value);
+  auto success = WriteValueToDisk(path, value);
   if (!success) {
     callback(FAILED);
     return;
@@ -436,16 +436,16 @@ void MockAdsClient::OnSampleBundleStateLoaded(
   LOG(INFO) << "Successfully loaded sample bundle";
 }
 
-bool MockAdsClient::WriteJsonToDisk(
+bool MockAdsClient::WriteValueToDisk(
     const std::string& path,
-    const std::string& json) const {
+    const std::string& value) const {
   std::ofstream ofs;
   ofs.open(path);
   if (ofs.fail()) {
     return false;
   }
 
-  ofs << json << std::endl;
+  ofs << value << std::endl;
   if (ofs.fail()) {
     return false;
   }
