@@ -95,22 +95,19 @@ extension Syncable {
 }
 
 extension Syncable /* where Self: NSManagedObject */ {
-    public func remove(save: Bool) {
+    public func remove(sendToSync: Bool = true) {
         
         // This is r annoying, and can be fixed in Swift 4, but since objects can't be cast to a class & protocol,
         //  but given extension on Syncable, if this passes the object is both Syncable and an NSManagedObject subclass
         guard let s = self as? NSManagedObject, let context = s.managedObjectContext else { return }
         
-        // Must happen before, otherwise bookmark is gone
-        
-        Sync.shared.sendSyncRecords(action: .delete, records: [self])
+        if sendToSync {
+            Sync.shared.sendSyncRecords(action: .delete, records: [self])
+        }
         
         // Should actually delay, and wait for server to refetch records to confirm deletion.
         // Force a sync resync instead, should not be slow
         context.delete(s)
-        if save {
-            DataController.save(context: context)
-        }
     }
 }
 

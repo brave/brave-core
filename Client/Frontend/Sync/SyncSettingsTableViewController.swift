@@ -200,7 +200,7 @@ class SyncSettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         guard let deviceToDelete = frc?.object(at: indexPath), editingStyle == .delete else { return }
-        deviceToDelete.remove(save: true)
+        deviceToDelete.remove()
     }
 }
 

@@ -247,7 +247,7 @@ class BookmarksViewController: SiteTableViewController {
     }
     
     // TODO: Needs to be recursive
-    currentFolder.remove(save: true)
+    currentFolder.remove()
     
     self.navigationController?.popViewController(animated: true)
   }
@@ -428,22 +428,19 @@ class BookmarksViewController: SiteTableViewController {
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     guard let item = bookmarksFRC?.object(at: indexPath) else { return nil }
     
-    let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Strings.Delete, handler: { (action, indexPath) in
-      
-      func delete() {
-        item.remove(save: true)
-      }
+    let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Strings.Delete,
+                                            handler: { action, indexPath in
       
       if let children = item.children, !children.isEmpty {
         let alert = UIAlertController(title: Strings.DeleteBookmarksFolderAlertTitle, message: Strings.DeleteBookmarksFolderAlertMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel))
         alert.addAction(UIAlertAction(title: Strings.YesDeleteButtonTitle, style: .destructive) { _ in
-          delete()
+          item.remove()
         })
         
         self.present(alert, animated: true, completion: nil)
       } else {
-        delete()
+        item.remove()
       }
     })
     
