@@ -19,7 +19,7 @@ void SuccessfullyLoadWithCallback(
 
   std::ifstream ifs{path};
   if (ifs.fail()) {
-      callback(Result::FAILED, "");
+      callback(FAILED, "");
       return;
   }
 
@@ -27,7 +27,7 @@ void SuccessfullyLoadWithCallback(
   stream << ifs.rdbuf();
   std::string value = stream.str();
 
-  callback(Result::SUCCESS, value);
+  callback(SUCCESS, value);
 }
 
 void SuccessfullyLoadUserModelForLocale(
@@ -37,7 +37,7 @@ void SuccessfullyLoadUserModelForLocale(
 
   std::ifstream ifs{path};
   if (ifs.fail()) {
-      callback(Result::FAILED, "");
+      callback(FAILED, "");
       return;
   }
 
@@ -45,7 +45,7 @@ void SuccessfullyLoadUserModelForLocale(
   stream << ifs.rdbuf();
   std::string value = stream.str();
 
-  callback(Result::SUCCESS, value);
+  callback(SUCCESS, value);
 }
 
 const std::string SuccessfullyLoadJsonSchema(

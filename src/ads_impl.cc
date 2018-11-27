@@ -50,14 +50,14 @@ AdsImpl::~AdsImpl() = default;
 
 void AdsImpl::Initialize() {
   if (!ads_client_->IsAdsEnabled()) {
-    LOG(LogLevel::INFO) << "Deinitializing as Ads are disabled";
+    LOG(INFO) << "Deinitializing as Ads are disabled";
 
     Deinitialize();
     return;
   }
 
   if (IsInitialized()) {
-    LOG(LogLevel::WARNING) << "Already initialized";
+    LOG(WARNING) << "Already initialized";
     return;
   }
 
@@ -73,7 +73,7 @@ void AdsImpl::InitializeStep2() {
 void AdsImpl::InitializeStep3() {
   is_initialized_ = true;
 
-  LOG(LogLevel::INFO) << "Successfully initialized";
+  LOG(INFO) << "Successfully initialized";
 
   ads_client_->SetIdleThreshold(kIdleThresholdInSeconds);
 
@@ -92,8 +92,7 @@ void AdsImpl::InitializeStep3() {
 
 void AdsImpl::Deinitialize() {
   if (!IsInitialized()) {
-    LOG(LogLevel::WARNING) <<
-      "Failed to deinitialize as not initialized";
+    LOG(WARNING) << "Failed to deinitialize as not initialized";
     return;
   }
 
@@ -135,15 +134,15 @@ void AdsImpl::LoadUserModel() {
 }
 
 void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(LogLevel::ERROR) << "Failed to load user model";
+  if (result == FAILED) {
+    LOG(ERROR) << "Failed to load user model";
 
     // TODO(Terry Mancey): If the user model fails to load, we need to notify
     // the Client to decide what action to take otherwise ads will not work
     return;
   }
 
-  LOG(LogLevel::INFO) << "Successfully loaded user model";
+  LOG(INFO) << "Successfully loaded user model";
 
   InitializeUserModel(json);
 
@@ -155,12 +154,12 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
 void AdsImpl::InitializeUserModel(const std::string& json) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
-  LOG(LogLevel::INFO) << "Initializing user model";
+  LOG(INFO) << "Initializing user model";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->initializePageClassifier(json);
 
-  LOG(LogLevel::INFO) << "Initialized user model";
+  LOG(INFO) << "Initialized user model";
 }
 
 bool AdsImpl::IsMobile() const {
@@ -443,17 +442,17 @@ void AdsImpl::ServeSampleAd() {
 void AdsImpl::OnLoadSampleBundle(
     const Result result,
     const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(LogLevel::ERROR) << "Failed to load sample bundle";
+  if (result == FAILED) {
+    LOG(ERROR) << "Failed to load sample bundle";
     return;
   }
 
-  LOG(LogLevel::INFO) << "Successfully loaded sample bundle";
+  LOG(INFO) << "Successfully loaded sample bundle";
 
   BundleState sample_bundle_state;
   if (!sample_bundle_state.LoadFromJson(json,
       ads_client_->LoadJsonSchema(_bundle_schema_name))) {
-    LOG(LogLevel::ERROR) << "Failed to parse sample bundle: " << json;
+    LOG(ERROR) << "Failed to parse sample bundle: " << json;
     return;
   }
 
@@ -468,7 +467,7 @@ void AdsImpl::OnLoadSampleBundle(
   if (categories_count == 0) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no categories' }
-    LOG(LogLevel::WARNING) << "Sample bundle does not contain any categories";
+    LOG(WARNING) << "Sample bundle does not contain any categories";
 
     return;
   }
@@ -483,8 +482,7 @@ void AdsImpl::OnLoadSampleBundle(
   if (ads_count == 0) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'no ads for category', category }
-    LOG(LogLevel::WARNING) << "No ads found for \""
-      << category << "\" sample category";
+    LOG(WARNING) << "No ads found for \"" << category << "\" sample category";
 
     return;
   }
@@ -551,14 +549,13 @@ void AdsImpl::OnGetAds(
     const std::string& region,
     const std::string& category,
     const std::vector<AdInfo>& ads) {
-  if (result == Result::FAILED) {
+  if (result == FAILED) {
     auto pos = category.find_last_of('-');
     if (pos != std::string::npos) {
       std::string new_category = category.substr(0, pos);
 
-      LOG(LogLevel::WARNING) << "No ads found for \""
-        << category << "\" category, trying again with \"" << new_category <<
-        "\" category";
+      LOG(WARNING) << "No ads found for \"" << category <<
+      "\" category, trying again with \"" << new_category << "\" category";
 
       auto callback = std::bind(&AdsImpl::OnGetAds, this, _1, _2, _3, _4);
       ads_client_->GetAds(region, new_category, callback);
@@ -570,8 +567,7 @@ void AdsImpl::OnGetAds(
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'no ads for category', category }
 
-      LOG(LogLevel::WARNING) << "No ads found for \""
-        << category << "\" category";
+      LOG(WARNING) << "No ads found for \"" << category << "\" category";
 
       return;
     }
@@ -704,13 +700,11 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
 
   collect_activity_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (collect_activity_timer_id_ == 0) {
-    LOG(LogLevel::ERROR) <<
-      "Failed to start collecting activity due to an invalid timer";
+    LOG(ERROR) << "Failed to start collecting activity due to an invalid timer";
     return;
   }
 
-  LOG(LogLevel::INFO) <<
-    "Start collecting activity in " << start_timer_in << " seconds";
+  LOG(INFO) << "Start collecting activity in " << start_timer_in << " seconds";
 }
 
 void AdsImpl::CollectActivity() {
@@ -718,7 +712,7 @@ void AdsImpl::CollectActivity() {
     return;
   }
 
-  LOG(LogLevel::INFO) << "Collect activity";
+  LOG(INFO) << "Collect activity";
 
   ads_serve_->DownloadCatalog();
 }
@@ -728,7 +722,7 @@ void AdsImpl::StopCollectingActivity() {
     return;
   }
 
-  LOG(LogLevel::INFO) << "Stopped collecting activity";
+  LOG(INFO) << "Stopped collecting activity";
 
   ads_client_->KillTimer(collect_activity_timer_id_);
   collect_activity_timer_id_ = 0;
@@ -748,13 +742,13 @@ void AdsImpl::StartDeliveringNotifications(const uint64_t start_timer_in) {
 
   delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (delivering_notifications_timer_id_ == 0) {
-    LOG(LogLevel::ERROR) <<
+    LOG(ERROR) <<
       "Failed to start delivering notifications due to an invalid timer";
     return;
   }
 
-  LOG(LogLevel::INFO) <<
-    "Start delivering notifications in " << start_timer_in << " seconds";
+  LOG(INFO) << "Start delivering notifications in "
+    << start_timer_in << " seconds";
 }
 
 void AdsImpl::DeliverNotification() {
@@ -770,7 +764,7 @@ void AdsImpl::StopDeliveringNotifications() {
     return;
   }
 
-  LOG(LogLevel::INFO) << "Stopped delivering notifications";
+  LOG(INFO) << "Stopped delivering notifications";
 
   ads_client_->KillTimer(delivering_notifications_timer_id_);
   delivering_notifications_timer_id_ = 0;
@@ -841,13 +835,13 @@ void AdsImpl::StartSustainingAdInteraction(const uint64_t start_timer_in) {
 
   sustained_ad_interaction_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (sustained_ad_interaction_timer_id_ == 0) {
-    LOG(LogLevel::ERROR) <<
+    LOG(ERROR) <<
       "Failed to start sustaining ad interaction due to an invalid timer";
     return;
   }
 
-  LOG(LogLevel::INFO) <<
-    "Start sustaining ad interaction in " << start_timer_in << " seconds";
+  LOG(INFO) << "Start sustaining ad interaction in "
+    << start_timer_in << " seconds";
 }
 
 void AdsImpl::SustainAdInteraction() {
@@ -863,7 +857,7 @@ void AdsImpl::StopSustainingAdInteraction() {
     return;
   }
 
-  LOG(LogLevel::INFO) << "Stopped sustaining ad interaction";
+  LOG(INFO) << "Stopped sustaining ad interaction";
 
   ads_client_->KillTimer(sustained_ad_interaction_timer_id_);
   sustained_ad_interaction_timer_id_ = 0;

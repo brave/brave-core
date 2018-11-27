@@ -169,8 +169,8 @@ void Bundle::OnStateSaved(
     const uint64_t& catalog_ping,
     const uint64_t& catalog_last_updated_timestamp,
     const Result result) {
-  if (result == Result::FAILED) {
-    LOG(LogLevel::ERROR) << "Failed to save bundle state";
+  if (result == FAILED) {
+    LOG(ERROR) << "Failed to save bundle state";
 
     // If the bundle fails to save, we will retry the next time a bundle is
     // downloaded from the Ads Serve
@@ -182,7 +182,7 @@ void Bundle::OnStateSaved(
   catalog_ping_ = catalog_ping;
   catalog_last_updated_timestamp_ = catalog_last_updated_timestamp;
 
-  LOG(LogLevel::INFO) << "Successfully saved bundle state";
+  LOG(INFO) << "Successfully saved bundle state";
 }
 
 void Bundle::OnStateReset(
@@ -191,8 +191,8 @@ void Bundle::OnStateReset(
     const uint64_t& catalog_ping,
     const uint64_t& catalog_last_updated_timestamp,
     const Result result) {
-  if (result == Result::FAILED) {
-    LOG(LogLevel::ERROR) << "Failed to reset bundle state";
+  if (result == FAILED) {
+    LOG(ERROR) << "Failed to reset bundle state";
 
     // TODO(Terry Mancey): If the bundle fails to reset we need to decide what
     // action to take
@@ -204,7 +204,7 @@ void Bundle::OnStateReset(
   catalog_ping_ = catalog_ping;
   catalog_last_updated_timestamp_ = catalog_last_updated_timestamp;
 
-  LOG(LogLevel::INFO) << "Successfully reset bundle state";
+  LOG(INFO) << "Successfully reset bundle state";
 }
 
 }  // namespace ads

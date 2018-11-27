@@ -113,11 +113,11 @@ void MockAdsClient::LoadUserModelForLocale(
   std::stringstream path;
   path << "resources/locales/" << locale << "/user_model.json";
 
-  LOG(LogLevel::INFO) << "Loading " << path.str();
+  LOG(INFO) << "Loading " << path.str();
 
   std::ifstream ifs{path.str()};
   if (ifs.fail()) {
-    callback(Result::FAILED, "");
+    callback(FAILED, "");
     return;
   }
 
@@ -125,7 +125,7 @@ void MockAdsClient::LoadUserModelForLocale(
   stream << ifs.rdbuf();
   std::string json = stream.str();
 
-  callback(Result::SUCCESS, json);
+  callback(SUCCESS, json);
 }
 
 const std::string MockAdsClient::GenerateUUID() const {
@@ -199,25 +199,25 @@ void MockAdsClient::Save(
     OnSaveCallback callback) {
   std::string path = "build/" + name;
 
-  LOG(LogLevel::INFO) << "Saving " << path;
+  LOG(INFO) << "Saving " << path;
 
   auto success = WriteJsonToDisk(path, value);
   if (!success) {
-    callback(Result::FAILED);
+    callback(FAILED);
     return;
   }
 
-  callback(Result::SUCCESS);
+  callback(SUCCESS);
 }
 
 void MockAdsClient::SaveBundleState(
     std::unique_ptr<BundleState> state,
     OnSaveCallback callback) {
-  LOG(LogLevel::INFO) << "Saving bundle state";
+  LOG(INFO) << "Saving bundle state";
 
   bundle_state_.reset(state.release());
 
-  callback(Result::SUCCESS);
+  callback(SUCCESS);
 }
 
 void MockAdsClient::Load(const std::string& name, OnLoadCallback callback) {
@@ -229,11 +229,11 @@ void MockAdsClient::Load(const std::string& name, OnLoadCallback callback) {
     path = "mock_data/" + name;
   }
 
-  LOG(LogLevel::INFO) << "Loading " << path;
+  LOG(INFO) << "Loading " << path;
 
   std::ifstream ifs{path};
   if (ifs.fail()) {
-    callback(Result::FAILED, "");
+    callback(FAILED, "");
     return;
   }
 
@@ -241,17 +241,17 @@ void MockAdsClient::Load(const std::string& name, OnLoadCallback callback) {
   stream << ifs.rdbuf();
   std::string value = stream.str();
 
-  callback(Result::SUCCESS, value);
+  callback(SUCCESS, value);
 }
 
 const std::string MockAdsClient::LoadJsonSchema(const std::string& name) {
   std::string path = "resources/" + name;
 
-  LOG(LogLevel::INFO) << "Loading " << path;
+  LOG(INFO) << "Loading " << path;
 
   std::ifstream ifs{path};
   if (ifs.fail()) {
-    LOG(LogLevel::ERROR) << "Failed to load " << path;
+    LOG(ERROR) << "Failed to load " << path;
 
     return "";
   }
@@ -260,7 +260,7 @@ const std::string MockAdsClient::LoadJsonSchema(const std::string& name) {
   stream << ifs.rdbuf();
   auto value = stream.str();
 
-  LOG(LogLevel::INFO) << "Successfully loaded " << path;
+  LOG(INFO) << "Successfully loaded " << path;
 
   return value;
 }
@@ -270,21 +270,21 @@ void MockAdsClient::Reset(
     OnResetCallback callback) {
   std::string path = "build/" + name;
 
-  LOG(LogLevel::INFO) << "Resetting " << path;
+  LOG(INFO) << "Resetting " << path;
 
   std::ifstream ifs(path);
   if (ifs.fail()) {
-    callback(Result::FAILED);
+    callback(FAILED);
     return;
   }
 
   auto success = std::remove(path.c_str());
   if (!success) {
-    callback(Result::FAILED);
+    callback(FAILED);
     return;
   }
 
-  callback(Result::SUCCESS);
+  callback(SUCCESS);
 }
 
 void MockAdsClient::GetAds(
@@ -293,21 +293,21 @@ void MockAdsClient::GetAds(
     OnGetAdsCallback callback) {
   auto categories = bundle_state_->categories.find(category);
   if (categories == bundle_state_->categories.end()) {
-    callback(Result::FAILED, region, category, {});
+    callback(FAILED, region, category, {});
     return;
   }
 
-  callback(Result::SUCCESS, region, category, categories->second);
+  callback(SUCCESS, region, category, categories->second);
 }
 
 void MockAdsClient::LoadSampleBundle(OnLoadSampleBundleCallback callback) {
   std::string path = "resources/sample_bundle.json";
 
-  LOG(LogLevel::INFO) << "Loading " << path;
+  LOG(INFO) << "Loading " << path;
 
   std::ifstream ifs{path};
   if (ifs.fail()) {
-    callback(Result::FAILED, "");
+    callback(FAILED, "");
     return;
   }
 
@@ -315,7 +315,7 @@ void MockAdsClient::LoadSampleBundle(OnLoadSampleBundleCallback callback) {
   stream << ifs.rdbuf();
   std::string json = stream.str();
 
-  callback(Result::SUCCESS, json);
+  callback(SUCCESS, json);
 }
 
 bool MockAdsClient::GetUrlComponents(
@@ -378,8 +378,8 @@ void MockAdsClient::LoadBundleState() {
 void MockAdsClient::OnBundleStateLoaded(
     const Result result,
     const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(LogLevel::ERROR) << "Failed to load bundle: " << json;
+  if (result == FAILED) {
+    LOG(ERROR) << "Failed to load bundle: " << json;
 
     return;
   }
@@ -388,7 +388,7 @@ void MockAdsClient::OnBundleStateLoaded(
 
   BundleState state;
   if (!state.LoadFromJson(json, json_schema)) {
-    LOG(LogLevel::ERROR) << "Failed to parse bundle: " << json;
+    LOG(ERROR) << "Failed to parse bundle: " << json;
 
     return;
   }
@@ -400,7 +400,7 @@ void MockAdsClient::OnBundleStateLoaded(
 
   bundle_state_.reset(new BundleState(state));
 
-  LOG(LogLevel::INFO) << "Successfully loaded bundle";
+  LOG(INFO) << "Successfully loaded bundle";
 }
 
 void MockAdsClient::LoadSampleBundleState() {
@@ -412,8 +412,8 @@ void MockAdsClient::LoadSampleBundleState() {
 void MockAdsClient::OnSampleBundleStateLoaded(
     const Result result,
     const std::string& json) {
-  if (result == Result::FAILED) {
-    LOG(LogLevel::ERROR) << "Failed to load sample bundle";
+  if (result == FAILED) {
+    LOG(ERROR) << "Failed to load sample bundle";
 
     return;
   }
@@ -422,14 +422,14 @@ void MockAdsClient::OnSampleBundleStateLoaded(
 
   BundleState state;
   if (!state.LoadFromJson(json, json_schema)) {
-    LOG(LogLevel::ERROR) << "Failed to parse sample bundle: " << json;
+    LOG(ERROR) << "Failed to parse sample bundle: " << json;
 
     return;
   }
 
   sample_bundle_state_.reset(new BundleState(state));
 
-  LOG(LogLevel::INFO) << "Successfully loaded sample bundle";
+  LOG(INFO) << "Successfully loaded sample bundle";
 }
 
 bool MockAdsClient::WriteJsonToDisk(

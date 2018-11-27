@@ -64,7 +64,7 @@ void AdsServe::OnCatalogDownloaded(
   if (response_status_code / 100 == 2) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
-    LOG(LogLevel::INFO) << "Successfully downloaded catalog";
+    LOG(INFO) << "Successfully downloaded catalog";
 
     if (!ProcessCatalog(response)) {
       should_retry = true;
@@ -73,7 +73,7 @@ void AdsServe::OnCatalogDownloaded(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog current', { method, server, path }
 
-    LOG(LogLevel::INFO) << "Catalog is already up to date";
+    LOG(INFO) << "Catalog is already up to date";
   } else {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Catalog download failed', { error, method, server, path }
@@ -86,9 +86,8 @@ void AdsServe::OnCatalogDownloaded(
       }
     }
 
-    LOG(LogLevel::ERROR) << "Failed to download catalog from "
-      << url << " (" << response_status_code << "): " << response << " " <<
-      formatted_headers;
+    LOG(ERROR) << "Failed to download catalog from " << url << " (" <<
+      response_status_code << "): " << response << " " << formatted_headers;
 
     should_retry = true;
   }
