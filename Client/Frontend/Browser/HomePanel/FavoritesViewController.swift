@@ -296,7 +296,7 @@ extension FavoritesViewController: FavoriteCellDelegate {
         let actionSheet = UIAlertController(title: fav.displayTitle, message: nil, preferredStyle: .actionSheet)
         
         let deleteAction = UIAlertAction(title: Strings.Remove_Favorite, style: .destructive) { _ in
-            fav.remove(save: true)
+            fav.remove()
             
             // Remove cached icon.
             if let urlString = fav.url, let url = URL(string: urlString) {

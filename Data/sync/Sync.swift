@@ -478,7 +478,7 @@ extension Sync {
             
             var action = SyncActions(rawValue: fetchedRoot.action ?? -1)
             if action == SyncActions.delete {
-                clientRecord?.remove(save: false)
+                clientRecord?.remove(sendToSync: false)
             } else if action == SyncActions.create {
                 
                 if clientRecord != nil {
@@ -551,18 +551,22 @@ extension Sync {
         guard let fetchedRecords = recordType.fetchedModelType?.syncRecords(recordJSON) else { return }
         
         let ids = fetchedRecords.map { $0.objectId }.compactMap { $0 }
-        let localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: DataController.newBackgroundContext()) as? [Bookmark]
+        let context = DataController.newBackgroundContext()
+        
+        var localbookmarks: [Bookmark]?
+        
+        context.performAndWait {
+            localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: context) as? [Bookmark]
+        }
         
         var matchedBookmarks = [[Any]]()
+        let deviceId = Device.currentDevice()?.deviceId
+        
         for fetchedBM in fetchedRecords {
-            
-            // TODO: Replace with find(where:) in Swift3
             var localBM: Any = "null"
-            for l in localbookmarks ?? [] {
-                if let localId = l.syncUUID, let fetchedId = fetchedBM.objectId, localId == fetchedId {
-                    localBM = l.asDictionary(deviceId: Device.currentDevice()?.deviceId, action: fetchedBM.action)
-                    break
-                }
+            
+            if let found = localbookmarks?.find({ $0.syncUUID != nil && $0.syncUUID == fetchedBM.objectId }) {
+                localBM = found.asDictionary(deviceId: deviceId, action: fetchedBM.action)
             }
             
             matchedBookmarks.append([fetchedBM.dictionaryRepresentation(), localBM])
@@ -572,7 +576,7 @@ extension Sync {
         
         // TODO: Check if parsing not required
         guard let serializedData = JSONSerialization.jsObject(withNative: matchedBookmarks as AnyObject, escaped: false) else {
-            // Huge error
+            log.error("Critical error: could not serialize data for resolve-sync-records")
             return
         }
         
