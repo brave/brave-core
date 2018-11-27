@@ -3,6 +3,7 @@ brave_common_typescript_includes = [
   rebase_path("dns.ts"),
   rebase_path("debounce.ts"),
   rebase_path("locale.ts"),
+  rebase_path("../definitions/non-js-loaders.d.ts"),
 ]
 
 template("transpile_web_ui") {
