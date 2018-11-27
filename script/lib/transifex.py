@@ -97,7 +97,7 @@ def get_transifex_translation_file_content(source_file_path, filename,
                                            lang_code):
     """Obtains a translation Android xml format and returns the string"""
     lang_code = lang_code.replace('-', '_')
-    url_part = 'project/%s/resource/%s/translation/%s' % (
+    url_part = 'project/%s/resource/%s/translation/%s?mode=default' % (
         transifex_project_name,
         transifex_name_from_filename(source_file_path, filename), lang_code)
     url = base_url + url_part

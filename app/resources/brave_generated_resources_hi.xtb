@@ -3,6 +3,8 @@
 <translationbundle lang="hi">
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="7942180974165298215">Brave विज्ञापन बाधा</translation>
+<translation id="3149880132460839085">ब्रेव सिंक</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") ब्रेव में इसकी अनुमति नहीं है.</translation>
 <translation id="7450557937477381864">क्रोम को बंद करें</translation>
 <translation id="7008934821596358692">आयात समाप्त करने के लिए, सभी क्रोम विंडोज़ बंद करें।</translation>
 <translation id="7753103220327065417">Brave  को बंद करें</translation>
@@ -23,13 +25,18 @@
 <translation id="2240268017737062801">पूछें जब कोई साइट मीडिया को स्वतः चलाना चाहती है</translation>
 <translation id="3371702087847741961">तब पूछें कि जब कोई साइट मीडिया को ऑटोप्ले करना चाहती है(अनुग्रह)</translation>
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
+<translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> पर हमेश स्वतः चालू का अनुमति दें</translation>
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
+<translation id="7543906827780734027">ब्रेव ने अभी तक इस एक्सटैन्शन की समीक्षा नहीं की - यह नुकसानदेह होगा। "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" किसी भी तरह से जोड़ें?</translation>
 <translation id="2044383478723007273">Brave रंग</translation>
 <translation id="5341901626640816374">विस्तृत स्थान पट्टी का प्रयोग करें</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
 <translation id="8784924142044142231">टॉर से बहार निकलें</translation>
 <translation id="5410152065859052603">टोर</translation>
 <translation id="3696187925156352769">टॉर विंडोज खोलें</translation>
+<translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
+<translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
+<translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="7372129767729198111">Brave शील्ड्स डिफॉल्ट्स</translation>
 <translation id="8029018702721078742">विज्ञापन नियंत्रण</translation>

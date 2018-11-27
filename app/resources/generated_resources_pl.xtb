@@ -2081,6 +2081,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4972129977812092092">Edytuj drukarkę</translation>
 <translation id="5696679855467848181">Bieżący plik PPD: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">Lokalizacja</translation>
 <translation id="7754704193130578113">Pytaj przed pobraniem, gdzie zapisać każdy plik</translation>
 <translation id="5713072761819014678">Odłącz konto na Dysku Brave Software</translation>
 <translation id="486635084936119914">Automatycznie otwieraj określone typy plików po pobraniu</translation>
@@ -2397,6 +2398,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="8356197132883132838"><ph name="TITLE"/> – <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Więcej ustawień związanych z prywatnością, bezpieczeństwem i zbieraniem danych znajduje się w sekcji <ph name="BEGIN_LINK"/>Synchronizacja i personalizacja<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Więcej ustawień związanych z prywatnością, bezpieczeństwem i zbieraniem danych znajdziesz w sekcji <ph name="BEGIN_LINK"/>Synchronizacja i usługi Brave Software<ph name="END_LINK"/></translation>
+<translation id="6438234780621650381">Resetowanie ustawień</translation>
 <translation id="5293170712604732402">Przywróć ustawienia do wartości domyślnych</translation>
 <translation id="892706138619340876">Niektóre ustawienia zostały zresetowane</translation>
 <translation id="2334029754052191847">Przeglądarka Brave wykryła, że niektóre z jej ustawień zostały zmodyfikowane przez inny program, i przywróciła im pierwotne wartości domyślne.</translation>

@@ -3,6 +3,8 @@
 <translationbundle lang="nl">
 <translation id="3333887201479867589">Brave Beloningen</translation>
 <translation id="7942180974165298215">Brave Advertentieblokkeerder</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extensie ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf </ex></ph>") is in Brave niet toegestaan.</translation>
 <translation id="7450557937477381864">Chrome Sluiten</translation>
 <translation id="7008934821596358692">Om de importering te voltooien, moet je alle Chrome vensters sluiten.</translation>
 <translation id="7753103220327065417">Brave Sluiten</translation>
@@ -22,13 +24,18 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="2240268017737062801">Vraag als een site media automatisch wil afspelen</translation>
 <translation id="3371702087847741961">Vraag als een website media automatisch wil afspelen (aangeraden)</translation>
 <translation id="3218385319396786393">Automatisch afspelen is op deze pagina geblokkeerd</translation>
+<translation id="4988333904713528597">Automatisch afspelen altijd toestaan in <ph name="HOST">$1<ex> mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Blijf automatisch afspelen blokkeren</translation>
+<translation id="7543906827780734027">Brave heeft deze extensie nog niet beoordeeld - deze kan schadelijk zijn. Toch "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" toevoegen?</translation>
 <translation id="2044383478723007273">Brave-kleuren</translation>
 <translation id="5341901626640816374">Gebruik wijde locatie-versperring</translation>
 <translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
 <translation id="8784924142044142231">Sluit Tor af</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Open Tor-venster</translation>
+<translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
+<translation id="4703780849509456860">Open Link in Privévenster in Tor</translation>
+<translation id="3488584642074079080">Open Link met Brave Privévenster met Tor</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="7372129767729198111">Brave shields standaardinstellingen</translation>
 <translation id="8029018702721078742">Advertentiebeheer</translation>

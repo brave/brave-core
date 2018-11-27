@@ -3,6 +3,8 @@
 <translationbundle lang="bn">
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
 <translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
+<translation id="3149880132460839085">Brave সিঙ্ক</translation>
+<translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="7450557937477381864">Chrome বন্ধ করুন</translation>
 <translation id="7008934821596358692">আমদানি প্রক্রিয়া শেষ করতে, সমস্ত Chrome উইন্ডোগুলি বন্ধ করুন</translation>
 <translation id="7753103220327065417">Brave বন্ধ করুন</translation>
@@ -22,13 +24,18 @@
 <translation id="2240268017737062801">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন</translation>
 <translation id="3371702087847741961">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন (সুপারিশকৃত)</translation>
 <translation id="3218385319396786393">এই পৃষ্ঠাতে স্বয়ংক্রিয়ভাবে চালানো  ব্লক করা হয়েছে</translation>
+<translation id="4988333904713528597">সর্বদা <ph name="HOST">$1<ex>mail.google.com</ex></ph> এ স্বতঃ চলার অনুমতি দিন</translation>
 <translation id="4150684676757176434">অটোপ্লে ব্লক করা চালিয়ে যান</translation>
+<translation id="7543906827780734027">Brave এখনও পর্যন্ত এটি পর্যালোচনা করেনি - এটি ক্ষতিকারক হতে পারে। যে কোনোভাবে "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" যোগ করবেন?</translation>
 <translation id="2044383478723007273">Brave রঙ</translation>
 <translation id="5341901626640816374">ওয়াইড লোকেশন বার ব্যবহার করুন</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
 <translation id="8784924142044142231">টর থেকে প্রস্থান করুন</translation>
 <translation id="5410152065859052603">টর</translation>
 <translation id="3696187925156352769">টর উইন্ডো খোলা</translation>
+<translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
+<translation id="4703780849509456860">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
+<translation id="3488584642074079080">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3155170474926428993">টর লঞ্চার</translation>
 <translation id="7372129767729198111">Brave শিল্ডস ডিফল্ট</translation>
 <translation id="8029018702721078742">বিজ্ঞাপন নিয়ন্ত্রণ</translation>

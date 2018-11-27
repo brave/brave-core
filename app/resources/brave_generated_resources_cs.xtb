@@ -3,6 +3,8 @@
 <translationbundle lang="cs">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Blokování reklam Brave</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID rozšíření "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") není v Brave povoleno.</translation>
 <translation id="7450557937477381864">Zavřít Chrome</translation>
 <translation id="7008934821596358692">Pro dokončení importu zavřete všechna okna prohlížeče Chrome.</translation>
 <translation id="7753103220327065417">Zavřít Brave</translation>
@@ -22,13 +24,18 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="2240268017737062801">Dotázat se, pokud stránka hodlá automaticky spouštět multimediální soubory</translation>
 <translation id="3371702087847741961">Dotázat se, pokud stránka hodlá automaticky přehrávat multimediální soubory (doporučeno)</translation>
 <translation id="3218385319396786393">Automatické přehrávání bylo na této stránce zablokováno</translation>
+<translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
+<translation id="7543906827780734027">Brave toto rozšíření ještě neohodnotil – mohlo by být škodlivé. Přejete si „<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>“ přesto přidat?</translation>
 <translation id="2044383478723007273">Barvy Brave</translation>
 <translation id="5341901626640816374">Použít širokou lištu umístění</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="8784924142044142231">Opustit Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Otevřít okno Tor</translation>
+<translation id="1434416574322382019">Nové soukromé okno v prohlížeči Tor</translation>
+<translation id="4703780849509456860">Otevřít odkaz v soukromém okně prohlížeče Tor</translation>
+<translation id="3488584642074079080">Otevřít odkaz v soukromém oknu Brave pomocí prohlížeče Tor</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="7372129767729198111">Výchozí štíty Brave</translation>
 <translation id="8029018702721078742">Kontrola reklam</translation>
