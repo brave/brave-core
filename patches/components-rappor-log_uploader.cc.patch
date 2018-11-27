@@ -1,0 +1,12 @@
+diff --git a/components/rappor/log_uploader.cc b/components/rappor/log_uploader.cc
+index cf6b7e9bb1fdded568d0e3a6411632124abac129..36813312cc0b4af99c5310dc8bea899916230367 100644
+--- a/components/rappor/log_uploader.cc
++++ b/components/rappor/log_uploader.cc
+@@ -68,6 +68,7 @@ LogUploader::LogUploader(
+ LogUploader::~LogUploader() {}
+ 
+ void LogUploader::Start() {
++  return; // feature disabled in Brave
+   is_running_ = true;
+   StartScheduledUpload();
+ }
