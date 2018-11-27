@@ -4,23 +4,13 @@ project(batnativeads)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -Wunused-const-variable -Wunused-variable -Wconditional-uninitialized -Wsign-conversion -Wshorten-64-to-32")
 set(CMAKE_CXX_STANDARD_REQUIRED, on)
+set(CMAKE_BUILD_TYPE Debug)
 
 include(FetchContent)
 
-# BAT Native User Model
-FetchContent_Declare(
-  UserModelProject
-  GIT_REPOSITORY git@github.com:brave-intl/bat-native-usermodel.git
-  GIT_TAG        master
-)
-
-FetchContent_GetProperties(UserModelProject)
-if(NOT usermodelproject_POPULATED)
-  message(STATUS "Fetching BAT Native User Model dependency")
-  FetchContent_Populate(UserModelProject)
-endif()
-
 # BAT Native RapidJSON
+message(STATUS "BAT Native RapidJSON dependency")
+
 FetchContent_Declare(
   RapidJSONProject
   GIT_REPOSITORY git@github.com:brave-intl/bat-native-rapidjson.git
@@ -29,11 +19,40 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(RapidJSONProject)
 if(NOT rapidjsonproject_POPULATED)
-  message(STATUS "Fetching BAT Native RapidJSON dependency")
   FetchContent_Populate(RapidJSONProject)
 endif()
 
+include_directories(
+  "${rapidjsonproject_SOURCE_DIR}/include")
+
+# BAT Native User Model
+message(STATUS "BAT Native User Model dependency")
+
+FetchContent_Declare(
+  UserModelProject
+  GIT_REPOSITORY git@github.com:brave-intl/bat-native-usermodel.git
+  GIT_TAG        master
+)
+
+FetchContent_GetProperties(UserModelProject)
+if(NOT usermodelproject_POPULATED)
+  FetchContent_Populate(UserModelProject)
+endif()
+
+set(USER_MODEL_SOURCES
+  "${usermodelproject_SOURCE_DIR}/src/bag_of_words_extractor.cc"
+  "${usermodelproject_SOURCE_DIR}/src/naive_bayes.cc"
+  "${usermodelproject_SOURCE_DIR}/src/stmr.c"
+  "${usermodelproject_SOURCE_DIR}/src/user_model_impl.cc")
+
+include_directories(
+  "${usermodelproject_SOURCE_DIR}/include")
+
+add_library(usermodel ${USER_MODEL_SOURCES})
+
 # URI Parser (Only required for isolated mocks)
+message(STATUS "URI Parser dependency")
+
 FetchContent_Declare(
   URIParserProject
   GIT_REPOSITORY git@github.com:uriparser/uriparser.git
@@ -42,24 +61,33 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(URIParserProject)
 if(NOT uriparserproject_POPULATED)
-message(STATUS "Fetching URI Parser dependency")
   FetchContent_Populate(URIParserProject)
 endif()
 
-# BAT Native Ads
+set(URIPARSER_SOURCES
+  "${uriparserproject_SOURCE_DIR}/src/UriCommon.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriCompare.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriEscape.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriFile.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriIp4.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriIp4Base.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriMemory.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriNormalize.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriNormalizeBase.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriParse.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriParseBase.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriQuery.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriRecompose.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriResolve.c"
+  "${uriparserproject_SOURCE_DIR}/src/UriShorten.c")
+
 include_directories(
-  "${PROJECT_SOURCE_DIR}"
-  "${PROJECT_SOURCE_DIR}/include"
-  "${PROJECT_SOURCE_DIR}/src"
-
-  # BAT Native User Model
-  "${usermodelproject_SOURCE_DIR}/include"
-
-  # BAT Native RapidJSON
-  "${rapidjsonproject_SOURCE_DIR}/include"
-
-  # URI Parser (Only required for isolated mocks in bat-native-ads.cc/h)
   "${uriparserproject_SOURCE_DIR}/include")
+
+add_library(uriparser ${URIPARSER_SOURCES})
+
+# BAT Native Ads
+message(STATUS "BAT Native Ads")
 
 set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/bat/ads/ad_info.cc"
@@ -82,39 +110,22 @@ set(SOURCES
   "${PROJECT_SOURCE_DIR}/src/string_helper.cc"
   "${PROJECT_SOURCE_DIR}/src/time_helper.cc")
 
-set(USER_MODEL_SOURCES
-  "${usermodelproject_SOURCE_DIR}/src/bag_of_words_extractor.cc"
-  "${usermodelproject_SOURCE_DIR}/src/naive_bayes.cc"
-  "${usermodelproject_SOURCE_DIR}/src/stmr.c"
-  "${usermodelproject_SOURCE_DIR}/src/user_model_impl.cc")
-
-set(URIPARSER_SOURCES
-  "${uriparserproject_SOURCE_DIR}/src/UriCommon.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriCompare.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriEscape.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriFile.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriIp4.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriIp4Base.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriMemory.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriNormalize.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriNormalizeBase.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriParse.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriParseBase.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriQuery.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriRecompose.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriResolve.c"
-  "${uriparserproject_SOURCE_DIR}/src/UriShorten.c")
+include_directories(
+  "${PROJECT_SOURCE_DIR}"
+  "${PROJECT_SOURCE_DIR}/include"
+  "${PROJECT_SOURCE_DIR}/src")
 
 add_library(batnativeads
-  ${SOURCES}
-  ${USER_MODEL_SOURCES}
-  ${URIPARSER_SOURCES})
+  ${SOURCES})
 
 add_executable(batnativeads-bin
   "${PROJECT_SOURCE_DIR}/src/bat_native_ads.cc"
   "${PROJECT_SOURCE_DIR}/src/mock_ads_client.cc")
 
-target_link_libraries(batnativeads-bin batnativeads)
+target_link_libraries(batnativeads-bin
+  batnativeads
+  usermodel
+  uriparser)
 
 set_target_properties(batnativeads-bin
   PROPERTIES OUTPUT_NAME batnativeads)
