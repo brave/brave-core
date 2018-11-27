@@ -391,7 +391,7 @@ void MockAdsClient::OnBundleStateLoaded(
   auto json_schema = LoadJsonSchema(_bundle_schema_name);
 
   BundleState state;
-  if (!state.LoadFromJson(json, json_schema)) {
+  if (!state.FromJson(json, json_schema)) {
     LOG(ERROR) << "Failed to parse bundle: " << json;
 
     return;
@@ -425,7 +425,7 @@ void MockAdsClient::OnSampleBundleStateLoaded(
   auto json_schema = LoadJsonSchema(_bundle_schema_name);
 
   BundleState state;
-  if (!state.LoadFromJson(json, json_schema)) {
+  if (!state.FromJson(json, json_schema)) {
     LOG(ERROR) << "Failed to parse sample bundle: " << json;
 
     return;

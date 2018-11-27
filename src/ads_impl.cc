@@ -450,7 +450,7 @@ void AdsImpl::OnLoadSampleBundle(
   LOG(INFO) << "Successfully loaded sample bundle";
 
   BundleState sample_bundle_state;
-  if (!sample_bundle_state.LoadFromJson(json,
+  if (!sample_bundle_state.FromJson(json,
       ads_client_->LoadJsonSchema(_bundle_schema_name))) {
     LOG(ERROR) << "Failed to parse sample bundle: " << json;
     return;

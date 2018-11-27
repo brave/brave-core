@@ -23,7 +23,7 @@ CatalogState::CatalogState(const CatalogState& state) :
 
 CatalogState::~CatalogState() = default;
 
-bool CatalogState::LoadFromJson(
+bool CatalogState::FromJson(
     const std::string& json,
     const std::string& jsonSchema) {
   rapidjson::Document catalog;

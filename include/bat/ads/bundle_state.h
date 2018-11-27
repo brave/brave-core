@@ -17,7 +17,8 @@ struct BundleState {
   explicit BundleState(const BundleState& state);
   ~BundleState();
 
-  bool LoadFromJson(const std::string& json, const std::string& jsonSchema);
+  const std::string ToJson();
+  bool FromJson(const std::string& json, const std::string& jsonSchema);
 
   std::string catalog_id;
   uint64_t catalog_version;

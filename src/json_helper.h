@@ -37,7 +37,7 @@ void SaveToJson(const T& t, std::string* json) {
 
 template <typename T>
 bool LoadFromJson(T* t, const std::string& json) {
-  return t->LoadFromJson(json);
+  return t->FromJson(json);
 }
 
 template <typename T>
@@ -45,7 +45,7 @@ bool LoadFromJson(
     T* t,
     const std::string& json,
     const std::string& jsonSchema) {
-  return t->LoadFromJson(json, jsonSchema);
+  return t->FromJson(json, jsonSchema);
 }
 
 }  // namespace ads

@@ -16,7 +16,8 @@ struct ClientState {
   explicit ClientState(const ClientState& state);
   ~ClientState();
 
-  bool LoadFromJson(const std::string& json);
+  const std::string ToJson();
+  bool FromJson(const std::string& json);
 
   std::deque<uint64_t> ads_shown_history;
   std::string ad_uuid;

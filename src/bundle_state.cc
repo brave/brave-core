@@ -24,7 +24,13 @@ BundleState::BundleState(const BundleState& state):
 
 BundleState::~BundleState() = default;
 
-bool BundleState::LoadFromJson(
+const std::string BundleState::ToJson() {
+  std::string json;
+  SaveToJson(*this, &json);
+  return json;
+}
+
+bool BundleState::FromJson(
     const std::string& json,
     const std::string& jsonSchema) {
   rapidjson::Document bundle;

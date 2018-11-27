@@ -53,7 +53,13 @@ ClientState::ClientState(const ClientState& state) {
 
 ClientState::~ClientState() = default;
 
-bool ClientState::LoadFromJson(const std::string& json) {
+const std::string ClientState::ToJson() {
+  std::string json;
+  SaveToJson(*this, &json);
+  return json;
+}
+
+bool ClientState::FromJson(const std::string& json) {
   rapidjson::Document client;
   client.Parse(json.c_str());
 
