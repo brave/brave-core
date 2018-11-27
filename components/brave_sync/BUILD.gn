@@ -23,6 +23,7 @@ source_set("js_sync_lib_impl") {
     "//base",
     "//components/prefs",
     "//components/bookmarks/browser",
+    "//components/bookmarks/common",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",

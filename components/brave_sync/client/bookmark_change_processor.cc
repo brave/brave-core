@@ -9,11 +9,13 @@
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/tools.h"
-#include "components/bookmarks/browser/bookmark_model.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_storage.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/models/tree_node_iterator.h"
 
 using bookmarks::BookmarkNode;
@@ -207,6 +209,7 @@ BookmarkChangeProcessor::BookmarkChangeProcessor(
     prefs::Prefs* sync_prefs)
     : sync_client_(sync_client),
       sync_prefs_(sync_prefs),
+      profile_(profile),
       bookmark_model_(BookmarkModelFactory::GetForBrowserContext(
           Profile::FromBrowserContext(profile))),
       deleted_node_root_(nullptr) {
@@ -449,6 +452,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
         const bookmarks::BookmarkNode* parent_node =
             FindParent(bookmark_model_, bookmark_record);
 
+        const BookmarkNode* bookmark_bar = bookmark_model_->bookmark_bar_node();
+        bool bookmark_bar_was_empty = bookmark_bar->empty();
         if (bookmark_record.isFolder) {
           node = bookmark_model_->AddFolder(
                           parent_node,
@@ -460,6 +465,9 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
                           base::UTF8ToUTF16(bookmark_record.site.title),
                           GURL(bookmark_record.site.location));
         }
+        if (bookmark_bar_was_empty)
+          profile_->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar,
+                                          true);
       }
       UpdateNode(bookmark_model_, node, sync_record.get());
     }

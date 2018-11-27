@@ -17,7 +17,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -457,6 +459,9 @@ void BraveBookmarkChangeProcessorTest::BookmarkCreatedFromSyncImpl() {
   EXPECT_NE(index_b, -1);
 
   EXPECT_LT(index_a, index_b);
+
+  EXPECT_TRUE(profile_->GetPrefs()->GetBoolean(
+                                      bookmarks::prefs::kShowBookmarkBar));
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, BookmarkCreatedFromSync) {
