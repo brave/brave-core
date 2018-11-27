@@ -250,7 +250,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                 platform={'youtube'}
                 publisherImg={bartBaker}
                 publisherName={'Bart Baker'}
-                monthlyAmount={10}
+                monthlyAmount={'5.0'}
                 isVerified={true}
                 tipsEnabled={boolean('Tips enabled', store.state.tipsEnabled)}
                 includeInAuto={boolean('Tips enabled', store.state.includeInAuto)}

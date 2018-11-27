@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, object, select, number, text, boolean } from '@storybook/addon-knobs'
+import { withKnobs, object, select, text, boolean } from '@storybook/addon-knobs'
 // @ts-ignore
 import centered from '@storybook/addon-centered/dist'
 
@@ -105,7 +105,7 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
           platform={select('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
           publisherImg={bartBaker}
           publisherName={'Bart Baker'}
-          monthlyAmount={number('Amount', 10)}
+          monthlyAmount={'10.0'}
           isVerified={boolean('Verified', true)}
           tipsEnabled={boolean('Tips Enabled', true)}
           includeInAuto={boolean('Include in monthly', true)}

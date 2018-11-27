@@ -48,7 +48,7 @@ export interface Props {
   attentionScore?: string | null
   tipsEnabled: boolean
   includeInAuto: boolean
-  monthlyAmount: number
+  monthlyAmount: string
   donationAmounts?: Token[]
   toggleTips?: boolean
   donationAction: () => void
@@ -76,7 +76,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
 
   donationDropDown () {
     const { donationAmounts } = this.props
-    const monthlyAmount = this.props.monthlyAmount || 5
+    const monthlyAmount = this.props.monthlyAmount || '5.0'
 
     if (!donationAmounts) {
       return null
@@ -87,7 +87,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
         <Select
           floating={true}
           showAllContents={true}
-          value={monthlyAmount.toString()}
+          value={monthlyAmount}
           onChange={this.props.onAmountChange}
         >
           {donationAmounts.map((token: Token, index: number) => {
