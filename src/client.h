@@ -63,7 +63,6 @@ class Client {
   void OnStateLoaded(const Result result, const std::string& json);
 
   bool FromJson(const std::string& json);
-  const std::string ToJson();
 
   AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED

@@ -22,8 +22,9 @@ Client::Client(AdsImpl* ads, AdsClient* ads_client) :
 Client::~Client() = default;
 
 void Client::SaveState() {
+  auto json = client_state_->ToJson();
   auto callback = std::bind(&Client::OnStateSaved, this, _1);
-  ads_client_->Save(_client_name, ToJson(), callback);
+  ads_client_->Save(_client_name, json, callback);
 }
 
 void Client::LoadState() {
@@ -232,12 +233,6 @@ bool Client::FromJson(const std::string& json) {
   client_state_.reset(new ClientState(state));
 
   return true;
-}
-
-const std::string Client::ToJson() {
-  std::string json;
-  SaveToJson(*client_state_, &json);
-  return json;
 }
 
 }  // namespace ads
