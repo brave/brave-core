@@ -12,12 +12,14 @@
 #include "base/sequenced_task_runner.h"
 #include "base/task_runner_util.h"
 #include "base/task/post_task.h"
-#include "bat/ads/ads.h"
 #include "bat/ads/notification_info.h"
+#include "bat/ads/notification_result_type.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_impl.h"
@@ -31,7 +33,9 @@
 #include "components/prefs/pref_service.h"
 #include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/common/service_manager_connection.h"
 #include "net/url_request/url_fetcher.h"
+#include "services/service_manager/public/cpp/connector.h"
 #include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -42,6 +46,7 @@
 #endif
 
 namespace brave_ads {
+
 class LogStreamImpl : public ads::LogStream {
  public:
   LogStreamImpl(const char* file,
@@ -114,6 +119,24 @@ class AdsNotificationHandler : public NotificationHandler {
 };
 
 namespace {
+
+void Noop() {}
+
+// TODO(bridiver) - get rid of this stuff with serialization from the lib
+const std::string ToMojomNotificationResultInfoResultType(
+    ads::NotificationResultInfoResultType result_type) {
+  switch (result_type) {
+    case ads::NotificationResultInfoResultType::CLICKED:
+      return "clicked";
+    case ads::NotificationResultInfoResultType::DISMISSED:
+      return "dimissed";
+    case ads::NotificationResultInfoResultType::TIMEOUT:
+      return "timeout";
+    default:
+      NOTREACHED();
+      return "dimissed";
+  }
+}
 
 static std::map<std::string, int> g_schema_resource_ids = {
   {"catalog", IDR_ADS_CATALOG_SCHEMA},
@@ -225,21 +248,10 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     display_service_(NotificationDisplayService::GetForProfile(profile_)),
     enabled_(false),
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
-    is_foreground_(!!chrome::FindBrowserWithActiveWindow()) {
+    is_foreground_(!!chrome::FindBrowserWithActiveWindow()),
+    bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   // TODO(bridiver) - implement `_is_testing` and other command line flags
   DCHECK(!profile_->IsOffTheRecord());
-
-#if defined(OFFICIAL_BUILD)
-  ads::_is_production = true;
-#else
-  ads::_is_production = false;
-#endif
-
-#if defined(NDEBUG)
-  ads::_is_debug = false;
-#else
-  ads::_is_debug = true;
-#endif
 
   file_task_runner_->PostTask(FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
@@ -270,12 +282,49 @@ AdsServiceImpl::~AdsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, bundle_state_backend_.release());
 }
 
-void AdsServiceImpl::Start() {
-  DCHECK(is_enabled());
+void AdsServiceImpl::OnInitialize() {
   enabled_ = true;
-  ads_.reset(ads::Ads::CreateInstance(this));
   ResetTimer();
-  ads_->Initialize();
+}
+
+void AdsServiceImpl::OnCreate() {
+  if (!bat_ads_.is_bound()) {
+    // TODO(bridiver)
+    return;
+  }
+
+  bat_ads_->Initialize(
+      base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
+}
+
+void ConnectionClosed() {
+  // TODO(bridiver)
+}
+
+void AdsServiceImpl::Start() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(is_enabled());
+  DCHECK(!bat_ads_.is_bound());
+
+  bat_ads::mojom::BatAdsClientAssociatedPtrInfo client_ptr_info;
+  bat_ads_client_binding_.Bind(mojo::MakeRequest(&client_ptr_info));
+
+  content::ServiceManagerConnection* connection =
+      content::ServiceManagerConnection::GetForProcess();
+
+  if (!connection) {
+    // TODO(bridiver);
+    return;
+  }
+
+  connection->GetConnector()->BindInterface(
+      bat_ads::mojom::kServiceName, &bat_ads_service_);
+
+  bat_ads_service_.set_connection_error_handler(
+      base::Bind(&ConnectionClosed));
+
+  bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
+      base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
 }
 
 void AdsServiceImpl::Stop() {
@@ -297,29 +346,34 @@ void AdsServiceImpl::CheckIdleState() {
 }
 
 void AdsServiceImpl::OnIdleState(ui::IdleState idle_state) {
-  if (!ads_ || idle_state == last_idle_state_)
+  if (!connected() || idle_state == last_idle_state_)
     return;
 
   if (idle_state == ui::IdleState::IDLE_STATE_ACTIVE)
-    ads_->OnUnIdle();
+    bat_ads_->OnUnIdle(base::BindOnce(&Noop));
   else
-    ads_->OnIdle();
+    bat_ads_->OnIdle(base::BindOnce(&Noop));
 
   last_idle_state_ = idle_state;
 }
 
 void AdsServiceImpl::Shutdown() {
+  for (const auto fetcher : fetchers_) {
+    delete fetcher.first;
+  }
   fetchers_.clear();
   idle_poll_timer_.Stop();
 
-  if (ads_) {
-    ads_->SaveCachedInfo();
+  if (connected()) {
+    bat_ads_->SaveCachedInfo(base::BindOnce(&Noop));
     if (!enabled_) {
       // this is kind of weird, but we need to call Initialize on disable too
-      ads_->Initialize();
+      bat_ads_->Initialize(base::BindOnce(&Noop));
     }
-    ads_.reset();
+    bat_ads_.reset();
+    bat_ads_client_binding_.Close();
   }
+
   for (NotificationInfoMap::iterator it = notification_ids_.begin();
       it != notification_ids_.end(); ++it) {
     const std::string notification_id = it->first;
@@ -342,7 +396,8 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::is_enabled() const {
-  return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
+  // return profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
+  return true;
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
@@ -352,35 +407,36 @@ bool AdsServiceImpl::IsAdsEnabled() const {
 void AdsServiceImpl::TabUpdated(SessionID tab_id,
                                 const GURL& url,
                                 const bool is_active) {
-  if (!ads_)
+  if (!connected())
     return;
 
-  ads_->TabUpdated(tab_id.id(),
+  bat_ads_->TabUpdated(tab_id.id(),
                    url.spec(),
                    is_active,
-                   profile_->IsOffTheRecord());
+                   profile_->IsOffTheRecord(),
+                   base::BindOnce(&Noop));
 
   if (is_foreground_ && !chrome::FindBrowserWithActiveWindow()) {
-    ads_->OnBackground();
+    bat_ads_->OnBackground(base::BindOnce(&Noop));
   } else if (!is_foreground_) {
     is_foreground_ = true;
-    ads_->OnForeground();
+    bat_ads_->OnForeground(base::BindOnce(&Noop));
   }
 }
 
 void AdsServiceImpl::TabClosed(SessionID tab_id) {
-  if (!ads_)
+  if (!connected())
     return
 
-  ads_->TabClosed(tab_id.id());
+  bat_ads_->TabClosed(tab_id.id(), base::BindOnce(&Noop));
 }
 
 void AdsServiceImpl::ClassifyPage(const std::string& url,
                                   const std::string& page) {
-  if (!ads_)
+  if (!connected())
     return
 
-  ads_->ClassifyPage(url, page);
+  bat_ads_->ClassifyPage(url, page, base::BindOnce(&Noop));
 }
 
 int AdsServiceImpl::GetIdleThreshold() {
@@ -413,24 +469,24 @@ void AdsServiceImpl::LoadUserModelForLocale(
 
 void AdsServiceImpl::OnURLsDeleted(history::HistoryService* history_service,
                    const history::DeletionInfo& deletion_info) {
-  if (!ads_)
+  if (!connected())
     return;
 
-  ads_->RemoveAllHistory();
+  bat_ads_->RemoveAllHistory(base::BindOnce(&Noop));
 }
 
 void AdsServiceImpl::OnMediaStart(SessionID tab_id) {
-  if (!ads_)
+  if (!connected())
     return;
 
-  ads_->OnMediaPlaying(tab_id.id());
+  bat_ads_->OnMediaPlaying(tab_id.id(), base::BindOnce(&Noop));
 }
 
 void AdsServiceImpl::OnMediaStop(SessionID tab_id) {
-  if (!ads_)
+  if (!connected())
     return;
 
-  ads_->OnMediaStopped(tab_id.id());
+  bat_ads_->OnMediaStopped(tab_id.id(), base::BindOnce(&Noop));
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
@@ -503,16 +559,14 @@ void AdsServiceImpl::SaveBundleState(
 
 void AdsServiceImpl::OnSaveBundleState(const ads::OnSaveCallback& callback,
                                        bool success) {
-  if (!ads_)
-    return;
-
-  callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
+  if (connected())
+    callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
 void AdsServiceImpl::OnLoaded(
     const ads::OnLoadCallback& callback,
     const std::string& value) {
-  if (!ads_)
+  if (!connected())
     return;
 
   if (value.empty())
@@ -524,10 +578,8 @@ void AdsServiceImpl::OnLoaded(
 void AdsServiceImpl::OnSaved(
     const ads::OnSaveCallback& callback,
     bool success) {
-  if (!ads_)
-    return;
-
-  callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
+  if (connected())
+    callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
 void AdsServiceImpl::Reset(const std::string& name,
@@ -541,10 +593,8 @@ void AdsServiceImpl::Reset(const std::string& name,
 
 void AdsServiceImpl::OnReset(const ads::OnResetCallback& callback,
                              bool success) {
-  if (!ads_)
-    return;
-
-  callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
+  if (connected())
+    callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
 void AdsServiceImpl::GetAds(
@@ -567,7 +617,7 @@ void AdsServiceImpl::OnGetAdsForCategory(
     const std::string& region,
     const std::string& category,
     const std::vector<ads::AdInfo>& ads) {
-  if (!ads_)
+  if (!connected())
     return;
 
   callback(ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS,
@@ -594,12 +644,12 @@ bool AdsServiceImpl::IsNetworkConnectionAvailable() {
 
 void AdsServiceImpl::OnShow(Profile* profile,
                             const std::string& notification_id) {
-  if (!ads_ ||
+  if (!connected() ||
       notification_ids_.find(notification_id) == notification_ids_.end())
     return;
 
-  ads_->GenerateAdReportingNotificationShownEvent(
-      *notification_ids_[notification_id]);
+  bat_ads_->GenerateAdReportingNotificationShownEvent(
+      notification_ids_[notification_id]->ToJson(), base::BindOnce(&Noop));
 }
 
 void AdsServiceImpl::OnClose(Profile* profile,
@@ -607,17 +657,20 @@ void AdsServiceImpl::OnClose(Profile* profile,
                              const std::string& notification_id,
                              bool by_user,
                              base::OnceClosure completed_closure) {
-  if (ads_ &&
-      notification_ids_.find(notification_id) != notification_ids_.end()) {
+  if (notification_ids_.find(notification_id) != notification_ids_.end()) {
     auto notification_info = base::WrapUnique(
         notification_ids_[notification_id].release());
     notification_ids_.erase(notification_id);
 
-    auto result_type = by_user
-        ? ads::NotificationResultInfoResultType::DISMISSED
-        : ads::NotificationResultInfoResultType::TIMEOUT;
-    ads_->GenerateAdReportingNotificationResultEvent(
-        *notification_info, result_type);
+    if (connected()) {
+      auto result_type = by_user
+          ? ads::NotificationResultInfoResultType::DISMISSED
+          : ads::NotificationResultInfoResultType::TIMEOUT;
+      bat_ads_->GenerateAdReportingNotificationResultEvent(
+          notification_info->ToJson(),
+          ToMojomNotificationResultInfoResultType(result_type),
+          base::BindOnce(&Noop));
+    }
   }
 
   std::move(completed_closure).Run();
@@ -628,16 +681,20 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
   DCHECK(origin.has_query());
   auto notification_id = origin.query();
 
-  if (!ads_ ||
-      notification_ids_.find(notification_id) == notification_ids_.end())
+  if (notification_ids_.find(notification_id) == notification_ids_.end())
     return;
 
   auto notification_info = base::WrapUnique(
       notification_ids_[notification_id].release());
   notification_ids_.erase(notification_id);
 
-  ads_->GenerateAdReportingNotificationResultEvent(
-      *notification_info, ads::NotificationResultInfoResultType::CLICKED);
+  if (connected()) {
+    bat_ads_->GenerateAdReportingNotificationResultEvent(
+        notification_info->ToJson(),
+        ToMojomNotificationResultInfoResultType(
+            ads::NotificationResultInfoResultType::CLICKED),
+        base::BindOnce(&Noop));
+  }
 
   GURL url(notification_info->url);
 
@@ -735,11 +792,10 @@ void AdsServiceImpl::URLRequest(
 
 void AdsServiceImpl::OnURLFetchComplete(
     const net::URLFetcher* source) {
-  if (!ads_)
+  if (fetchers_.find(source) == fetchers_.end()) {
+    delete source;
     return;
-
-  if (fetchers_.find(source) == fetchers_.end())
-    return;
+  }
 
   auto callback = fetchers_[source];
   fetchers_.erase(source);
@@ -763,7 +819,10 @@ void AdsServiceImpl::OnURLFetchComplete(
     source->GetResponseAsString(&body);
   }
 
-  callback(response_code, body, headers);
+  delete source;
+
+  if (connected())
+    callback(response_code, body, headers);
 }
 
 bool AdsServiceImpl::GetUrlComponents(
@@ -796,7 +855,7 @@ bool AdsServiceImpl::GetUrlComponents(
   return true;
 }
 
-uint32_t AdsServiceImpl::SetTimer(const uint64_t& time_offset) {
+uint32_t AdsServiceImpl::SetTimer(const uint64_t time_offset) {
   if (next_timer_id_ == std::numeric_limits<uint32_t>::max())
     next_timer_id_ = 1;
   else
@@ -820,11 +879,11 @@ void AdsServiceImpl::KillTimer(uint32_t timer_id) {
 }
 
 void AdsServiceImpl::OnTimer(uint32_t timer_id) {
-  if (!ads_)
+  if (!connected())
     return;
 
   timers_.erase(timer_id);
-  ads_->OnTimer(timer_id);
+  bat_ads_->OnTimer(timer_id, base::BindOnce(&Noop));
 }
 
 std::unique_ptr<ads::LogStream> AdsServiceImpl::Log(
@@ -832,6 +891,10 @@ std::unique_ptr<ads::LogStream> AdsServiceImpl::Log(
     int line,
     const ads::LogLevel log_level) const {
   return std::make_unique<LogStreamImpl>(file, line, log_level);
+}
+
+bool AdsServiceImpl::connected() {
+  return bat_ads_.is_bound();
 }
 
 }  // namespace brave_ads

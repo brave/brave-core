@@ -1,0 +1,31 @@
+import("//services/service_manager/public/service_manifest.gni")
+
+static_library("lib") {
+  visibility = [ "//brave/utility" ]
+
+  sources = [
+    "bat_ads_app.cc",
+    "bat_ads_app.h",
+    "bat_ads_client_mojo_bridge.cc",
+    "bat_ads_client_mojo_bridge.h",
+    "bat_ads_impl.cc",
+    "bat_ads_impl.h",
+    "bat_ads_service_impl.cc",
+    "bat_ads_service_impl.h",
+  ]
+
+  public_deps = [
+    "//brave/components/services/bat_ads/public/interfaces",
+  ]
+
+  deps = [
+    "//mojo/public/cpp/system",
+    "//services/service_manager/public/cpp",
+    "//brave/vendor/bat-native-ads",
+  ]
+}
+
+service_manifest("manifest") {
+  name = "bat_ads"
+  source = "manifest.json"
+}

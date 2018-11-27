@@ -16,18 +16,16 @@
 #include "base/timer/timer.h"
 #include "bat/ads/ads_client.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "mojo/public/cpp/bindings/associated_binding.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "ui/base/idle/idle.h"
 
 class NotificationDisplayService;
 class Profile;
-
-namespace ads {
-class Ads;
-}
 
 namespace base {
 class SequencedTaskRunner;
@@ -91,7 +89,7 @@ class AdsServiceImpl : public AdsService,
   const std::string GetSSID() const override;
   void ShowNotification(
       std::unique_ptr<ads::NotificationInfo> info) override;
-  uint32_t SetTimer(const uint64_t& time_offset) override;
+  uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
   void URLRequest(const std::string& url,
                   const std::vector<std::string>& headers,
@@ -130,6 +128,7 @@ class AdsServiceImpl : public AdsService,
       const std::string& locale,
       ads::OnLoadCallback callback) const override;
   bool IsNetworkConnectionAvailable() override;
+  void OnError(const ads::Error error) override {};
 
   // history::HistoryServiceObserver
   void OnURLsDeleted(history::HistoryService* history_service,
@@ -149,6 +148,11 @@ class AdsServiceImpl : public AdsService,
   void OnReset(const ads::OnResetCallback& callback, bool success);
   void OnTimer(uint32_t timer_id);
   void OnPrefsChanged(const std::string& pref);
+  void OnCreate();
+  void OnInitialize();
+
+  // are we still connected to the ads lib
+  bool connected();
 
   Profile* profile_;  // NOT OWNED
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
@@ -165,7 +169,9 @@ class AdsServiceImpl : public AdsService,
 
   PrefChangeRegistrar profile_pref_change_registrar_;
 
-  std::unique_ptr<ads::Ads> ads_;
+  mojo::AssociatedBinding<bat_ads::mojom::BatAdsClient> bat_ads_client_binding_;
+  bat_ads::mojom::BatAdsAssociatedPtr bat_ads_;
+  bat_ads::mojom::BatAdsServicePtr bat_ads_service_;
 
   NotificationInfoMap notification_ids_;
   std::map<const net::URLFetcher*, ads::URLRequestCallback> fetchers_;

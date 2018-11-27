@@ -1,0 +1,76 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+module bat_ads.mojom;
+
+const string kServiceName = "bat_ads";
+
+// Service which hands out bat ads.
+interface BatAdsService {
+  Create(associated BatAdsClient bat_ads_client,
+         associated BatAds& database) => ();
+};
+
+interface BatAdsClient {
+  [Sync]
+  IsAdsEnabled() => (bool is_enabled);
+  [Sync]
+  GetAdsLocale() => (string locale);
+  [Sync]
+  GetAdsPerHour() => (uint64 ads_per_hour);
+  [Sync]
+  GetAdsPerDay() => (uint64 ads_per_day);
+  [Sync]
+  IsNetworkConnectionAvailable() => (bool available);
+  [Sync]
+  GenerateUUID() => (string uuid);
+  [Sync]
+  GetSSID() => (string ssid);
+  [Sync]
+  IsNotificationsAvailable() => (bool available);
+  [Sync]
+  SetTimer(uint64 time_offset) => (uint32 timer_id);
+  [Sync]
+  LoadJsonSchema(string name) => (string json);
+  [Sync]
+  GetLocales() => (array<string> locales);
+  [Sync]
+  GetUrlComponents(string url) => (bool result, string components_json);
+  [Sync]
+  GetClientInfo(string client_info) => (string client_info);
+
+  SetIdleThreshold(int32 threshold) => ();
+  KillTimer(uint32 timer_id) => ();
+  Save(string name, string value) => (int32 result);
+  Load(string name) => (int32 result, string value);
+  Reset(string name) => (int32 result);
+  EventLog(string json) => ();
+  LoadUserModelForLocale(string locale) => (int32 result, string value);
+  LoadSampleBundle() => (int32 result, string value);
+  URLRequest(string url, array<string> headers, string content,
+             string content_type, int32 method) =>
+      (int32 status_code, string content, map<string, string> headers);
+  ShowNotification(string notification_info) => ();
+  SaveBundleState(string bundle_state) => (int32 result);
+  GetAds(string region, string category) =>
+      (int32 result, string region, string category, array<string> ad_info);
+};
+
+interface BatAds {
+  Initialize() => ();
+  ClassifyPage(string url, string page) => ();
+  TabClosed(int32 tab_id) => ();
+  OnTimer(uint32 timer_id) => ();
+  OnUnIdle() => ();
+  OnIdle() => ();
+  SaveCachedInfo() => ();
+  OnForeground() => ();
+  OnBackground() => ();
+  OnMediaPlaying(int32 tab_id) => ();
+  OnMediaStopped(int32 tab_id) => ();
+  TabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito) => ();
+  RemoveAllHistory() => ();
+  ServeSampleAd() => ();
+  GenerateAdReportingNotificationShownEvent(string notification_info) => ();
+  GenerateAdReportingNotificationResultEvent(string notification_info, string event_type) => ();
+};

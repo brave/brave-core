@@ -18,6 +18,7 @@ source_set("utility") {
   defines = []
   deps = [
     "tor",
+    "//brave/components/services/bat_ads:lib",
     "//chrome/common",
     "//chrome/utility",
     "//content/public/common",
