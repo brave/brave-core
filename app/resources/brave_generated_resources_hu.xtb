@@ -3,6 +3,8 @@
 <translationbundle lang="hu">
 <translation id="3333887201479867589">Brave jutalmak</translation>
 <translation id="7942180974165298215">Brave hirdetés blokkolása</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (kiterjesztésazonosító "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nem engedélyezett a Brave-ben.</translation>
 <translation id="7450557937477381864">Chrome bezárása</translation>
 <translation id="7008934821596358692">Az importálás befejezéséhez zárja be az összes Chrome ablakot.</translation>
 <translation id="7753103220327065417">Brave bezárása</translation>
@@ -22,13 +24,18 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="2240268017737062801">Kérdezze meg, amikor egy honlap automatikusan le akar játszani egy médiát</translation>
 <translation id="3371702087847741961">Kérdezze meg, amikor egy honlap automatikusan le akar játszani valamilyen médiát (javasolt)</translation>
 <translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
+<translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Automatikus lejátszás további blokkolása</translation>
+<translation id="7543906827780734027">A Brave még nem vizsgálta meg ezt a kiterjesztést - lehetséges, hogy rosszindulatú. Mindenképp hozzáadod ezt: "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Brave színek</translation>
 <translation id="5341901626640816374">Széles helyszínsáv használata</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
 <translation id="8784924142044142231">Kilépés a Tor böngészőből</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Tor ablak megnyitása</translation>
+<translation id="1434416574322382019">Új</translation>
+<translation id="4703780849509456860">Link megnyitása Tor használatával privát ablakban</translation>
+<translation id="3488584642074079080">Hivatkozás megnyitása Brave Privát Ablakkal a Torban</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="7372129767729198111">Brave védelem beállítások</translation>
 <translation id="8029018702721078742">Hirdetések beállítása</translation>

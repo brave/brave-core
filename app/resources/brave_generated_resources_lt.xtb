@@ -3,6 +3,8 @@
 <translationbundle lang="lt">
 <translation id="3333887201479867589">„Brave Rewards“</translation>
 <translation id="7942180974165298215">„Brave Ad Block“</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (plėtinio ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nėra leidžiamas naršyklėje „Brave“.</translation>
 <translation id="7450557937477381864">Užverti „Chrome“</translation>
 <translation id="7008934821596358692">Kad užbaigtumėte importuoti, užverkite visus „Chrome“ langus.</translation>
 <translation id="7753103220327065417">Užverti „Brave“</translation>
@@ -22,13 +24,18 @@
 <translation id="2240268017737062801">Paklausti, kai svetainė nori automatiškai leisti mediją</translation>
 <translation id="3371702087847741961">Paklausti, kai svetainė nori automatiškai leisti mediją (rekomenduojama)</translation>
 <translation id="3218385319396786393">Šiame puslapyje automatinio leidimo funkcija buvo užblokuota</translation>
+<translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
+<translation id="7543906827780734027">„Brave“ dar neperžiūrėjo šio plėtinio – jis gali būti kenkėjiškas. Ar vis tiek pridėti „<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>“?</translation>
 <translation id="2044383478723007273">„Brave“ spalvos</translation>
 <translation id="5341901626640816374">Naudoti plačią buvimo vietos juostą</translation>
 <translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
 <translation id="8784924142044142231">Išeiti iš „Tor“</translation>
 <translation id="5410152065859052603">„Tor“</translation>
 <translation id="3696187925156352769">Atverti „Tor“ langą</translation>
+<translation id="1434416574322382019">Naujas inkognito langas su „Tor“</translation>
+<translation id="4703780849509456860">Atverti nuorodą inkognito lange su „Tor“</translation>
+<translation id="3488584642074079080">Atverti nuorodą „Brave“ inkognito lange su „Tor“</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="7372129767729198111">„Brave“ numatytieji skydai</translation>
 <translation id="8029018702721078742">Reklamos kontrolė</translation>

@@ -3,6 +3,8 @@
 <translationbundle lang="ar">
 <translation id="3333887201479867589">مكافآت Brave</translation>
 <translation id="7942180974165298215">Brave لحظر الإعلانات</translation>
+<translation id="3149880132460839085">مزامنة Brave</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") غير مسموح به في Brave.</translation>
 <translation id="7450557937477381864">أغلق Chrome</translation>
 <translation id="7008934821596358692">لإنهاء الاستيراد، أغلق جميع نوافذ كروم.</translation>
 <translation id="7753103220327065417">غلق Brave</translation>
@@ -22,13 +24,18 @@
 <translation id="2240268017737062801">اسأل عندما يريد أحد المواقع تشغيل الوسائط تلقائيًا</translation>
 <translation id="3371702087847741961">السؤال عندما يريد أحد المواقع تشغيل الوسائط تلقائيًا (مُوصى به)</translation>
 <translation id="3218385319396786393">تم حظر التشغيل التلقائي في هذه الصفحة</translation>
+<translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
+<translation id="7543906827780734027">لم تراجع Brave هذا الامتداد بعد - قد يكون ضاراً. إضافة "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" على أي حال؟</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
 <translation id="5341901626640816374">استخدم شريط الموقع الواسع</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
 <translation id="8784924142044142231">الخروج من برنامج تور (Tor)</translation>
 <translation id="5410152065859052603">برنامج تور (Tor)</translation>
 <translation id="3696187925156352769">افتح نافذة Tor</translation>
+<translation id="1434416574322382019">نافذة جديدة وخاصة بـTor</translation>
+<translation id="4703780849509456860">افتح الرابط في نافذة خاصة بـ Tor</translation>
+<translation id="3488584642074079080">افتح الرابط في نافذة Brave الخاصة بـ Tor</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="7372129767729198111">الإعدادات الافتراضية لدروع Brave</translation>
 <translation id="8029018702721078742">التحكم في الإعلان</translation>

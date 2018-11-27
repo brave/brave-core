@@ -1484,6 +1484,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6556866813142980365">Rudia</translation>
 <translation id="3144126448740580210">IMEKAMILIKA</translation>
 <translation id="2453576648990281505">Faili tayari ipo</translation>
+<translation id="2631006050119455616">Imehifadhiwa</translation>
 <translation id="5158593464696388225">Haijahifadhi picha.</translation>
 <translation id="2787047795752739979">Futa asili</translation>
 <translation id="8775404590947523323">Uhariri wako umehifadhiwa otomatiki.<ph name="BREAKS"/>Ili kuweka nakala ya picha halisi, ondoa tiki kwenye "Futa halisi"</translation>
@@ -1877,6 +1878,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6352773953037195952">Juu kabisa</translation>
 <translation id="3677657024345889897">Sauti ya chini kabisa</translation>
 <translation id="167160931442925455">Sauti ya juu kabisa</translation>
+<translation id="2445007895943112260"><ph name="PERCENTAGE">$1<ex>120</ex>%</ph></translation>
 <translation id="9129010913019873477"><ph name="PERCENTAGE"/> (chaguomsingi)</translation>
 <translation id="3602290021589620013">Hakiki</translation>
 <translation id="7037509989619051237">Maandishi kwa ajili ya kukagua</translation>
@@ -2079,6 +2081,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="4972129977812092092">Badilisha maelezo ya printa</translation>
 <translation id="5696679855467848181">Faili ya PPD inayotumika sasa: <ph name="PPD_NAME"/></translation>
 <translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="5646376287012673985">Eneo</translation>
 <translation id="7754704193130578113">Uliza mahali pa kuhifadhi kila faili kabla ya kuipakua.</translation>
 <translation id="5713072761819014678">Ondoa akaunti ya Hifadhi ya Brave Software</translation>
 <translation id="486635084936119914">Fungua baadhi ya aina za faili kiotomatiki baada ya kupakua</translation>
@@ -2395,6 +2398,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
 <translation id="3407837288045706722">Ili upate mipangilio zaidi inayohusiana na faragha, usalama na ukusanyaji wa data, angalia <ph name="BEGIN_LINK"/>Usawazishaji na mapendeleo<ph name="END_LINK"/></translation>
 <translation id="7222718784508482526">Ili upate mipangilio zaidi inayohusiana na faragha, usalama na ukusanyaji wa data, angalia <ph name="BEGIN_LINK"/>Usawazishaji na huduma za Brave Software<ph name="END_LINK"/></translation>
+<translation id="6438234780621650381">Weka upya mipangilio</translation>
 <translation id="5293170712604732402">Rejesha mipangilio kwenye chaguomsingi halisi</translation>
 <translation id="892706138619340876">Baadhi ya mipangilio imewekwa upya.</translation>
 <translation id="2334029754052191847">Brave imegundua kuwa baadhi ya mipangilio yako ilivurugwa na programu nyingine na ikairejesha kwenye mipangilio yake iliyotoka nayo kiwandani.</translation>
@@ -2766,6 +2770,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="3954469006674843813"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (Hezi <ph name="REFRESH_RATE"/>)</translation>
 <translation id="7889565820482017512">Ukubwa wa Onyesho</translation>
 <translation id="8448729345478502352">Ongeza au upunguze ukubwa wa vipengee vilivyo kwenye skrini yako</translation>
+<translation id="513425442047539523"><ph name="DISPLAY_ZOOM">$1<ex>120</ex>%</ph></translation>
 <translation id="2155772377859296191">Inaonekana kama <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Inaonekana kama <ph name="WIDTH"/> x <ph name="HEIGHT"/> (Chaguomsingi)</translation>
 <translation id="1125550662859510761">Inaonekana kama <ph name="WIDTH"/> x <ph name="HEIGHT"/> (Ya asili)</translation>

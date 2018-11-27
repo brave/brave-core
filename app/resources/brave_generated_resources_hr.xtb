@@ -3,6 +3,8 @@
 <translationbundle lang="hr">
 <translation id="3333887201479867589">Sustav nagrada u pregledniku Brave</translation>
 <translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
+<translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nije dopušteno u pregledniku Brave.</translation>
 <translation id="7450557937477381864">Zatvori Chrome</translation>
 <translation id="7008934821596358692">Kako biste dovršili uvoz, zatvorite sve prozore preglednika Chrome.</translation>
 <translation id="7753103220327065417">Zatvorite Brave</translation>
@@ -22,13 +24,18 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="2240268017737062801">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije</translation>
 <translation id="3371702087847741961">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije (preporučeno)</translation>
 <translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
+<translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Nastavi blokirati automatsku reprodukciju</translation>
+<translation id="7543906827780734027">Preglednik Brave još nije pregledao ovu ekstenziju – ekstenzija može biti zlonamjerna. Želite li svejedno dodati "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Boje preglednika Brave</translation>
 <translation id="5341901626640816374">Upotrijebi široku traku mjesta</translation>
 <translation id="7965178729203412357">Novi identitet za Tor</translation>
 <translation id="8784924142044142231">Izađi iz funkcije Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Otvori prozor funkcije Tor</translation>
+<translation id="1434416574322382019">Novi privatni prozor s funkcijom Tor</translation>
+<translation id="4703780849509456860">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
+<translation id="3488584642074079080">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
 <translation id="3155170474926428993">Pokretač funkcije Tor</translation>
 <translation id="7372129767729198111">Zadane postavke štitova u pregledniku Brave</translation>
 <translation id="8029018702721078742">Upravljanje oglasima</translation>
