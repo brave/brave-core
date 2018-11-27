@@ -27,8 +27,7 @@ ClientState::ClientState() :
     search_activity(false),
     search_url(""),
     shop_activity(false),
-    shop_url(""),
-    status("") {}
+    shop_url("") {}
 
 ClientState::ClientState(const ClientState& state) {
   ads_shown_history = state.ads_shown_history;
@@ -50,7 +49,6 @@ ClientState::ClientState(const ClientState& state) {
   search_url = state.search_url;
   shop_activity = state.shop_activity;
   shop_url = state.shop_url;
-  status = state.status;
 }
 
 ClientState::~ClientState() = default;
@@ -156,10 +154,6 @@ bool ClientState::LoadFromJson(const std::string& json) {
     shop_url = client["shopUrl"].GetString();
   }
 
-  if (client.HasMember("status")) {
-    status = client["status"].GetString();
-  }
-
   return true;
 }
 
@@ -248,9 +242,6 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("shopUrl");
   writer->String(state.shop_url.c_str());
-
-  writer->String("status");
-  writer->String(state.status.c_str());
 
   writer->EndObject();
 }

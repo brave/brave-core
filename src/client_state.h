@@ -37,7 +37,6 @@ struct ClientState {
   std::string search_url;
   bool shop_activity;
   std::string shop_url;
-  std::string status;
 };
 
 }  // namespace ads
