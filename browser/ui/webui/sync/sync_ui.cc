@@ -46,6 +46,8 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
   void DeleteDevice(const base::ListValue* args);
   void ResetSync(const base::ListValue* args);
 
+  void OnSyncSetupError(brave_sync::BraveSyncService* sync_service,
+                        const std::string& error) override;
   void OnSyncStateChanged(brave_sync::BraveSyncService *sync_service) override;
   void OnHaveSyncWords(brave_sync::BraveSyncService *sync_service,
                        const std::string& sync_words) override;
@@ -192,6 +194,14 @@ void SyncUIDOMHandler::DeleteDevice(const base::ListValue* args) {
 
 void SyncUIDOMHandler::ResetSync(const base::ListValue* args) {
   sync_service_->OnResetSync();
+}
+
+void SyncUIDOMHandler::OnSyncSetupError(
+    brave_sync::BraveSyncService* sync_service,
+    const std::string& error) {
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "sync_ui_exports.syncSetupError", base::Value(error));
 }
 
 void SyncUIDOMHandler::OnSyncStateChanged(
