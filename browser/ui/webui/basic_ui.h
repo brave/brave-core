@@ -5,6 +5,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BASIC_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BASIC_UI_H_
 
+#include <memory>
+
 #include <string>
 
 #include "base/compiler_specific.h"
@@ -17,17 +19,35 @@ class WebUIDataSource;
 class WebUI;
 }
 
+class Profile;
+
+struct GritResourceMap;
+
+content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
+                                                  const std::string& name,
+                                                  const GritResourceMap* resource_map,
+                                                  size_t resouece_map_size,
+                                                  int html_resource_id);
+
 class BasicUI : public content::WebUIController {
  public:
   BasicUI(content::WebUI* web_ui, const std::string& host,
-      const std::string& js_file, int js_resource_id, int html_resource_id);
+      const GritResourceMap* resource_map, size_t resouece_map_size,
+      int html_resource_id);
   ~BasicUI() override;
+
+  // Called when subclass can set its webui properties.
+  virtual void UpdateWebUIProperties() {}
 
  protected:
   bool IsSafeToSetWebUIProperties() const;
   content::RenderViewHost* GetRenderViewHost();
 
  private:
+  class BasicUIWebContentsObserver;
+
+  std::unique_ptr<BasicUIWebContentsObserver> observer_;
+
   DISALLOW_COPY_AND_ASSIGN(BasicUI);
 };
 

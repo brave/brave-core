@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="am">
+<translation id="3333887201479867589">የብሬቭ ሽልማት</translation>
+<translation id="7942180974165298215">ብሬቭ ኣድ ብሎክ</translation>
+<translation id="7450557937477381864">ክሮም ዝጋ</translation>
+<translation id="7008934821596358692">ማስተላለፍ ለመጨረስ፣ ሁሉኑም የክሮም ዊንደው ይዝጉ፡፡</translation>
+<translation id="7753103220327065417">ብሬቭ ይዝጉ</translation>
+<translation id="5588481533147090393">ኢምፖርቲንግ ለመጨረስ፣ ብሬቭ ዊንደው ይዘጉ፡፡</translation>
+<translation id="6447842834002726250">ኮኪስ</translation>
+<translation id="4983925687993168579">ሁነት</translation>
+<translation id="9173846700806833701">ዊንድቪን አልተገጠመም</translation>
+<translation id="2433569048491784801">ዊንድቬን አልተገጠመም፡፡</translation>
+<translation id="3699882589215410581">ዊንድቬን ገጥመው ይክፈቱ</translation>
+<translation id="8410111618231938546">Google Widevine የዲጂታል መብት አስተዳደር (DRM) አካል የሆነ ኮድ ሲሆን እኛ ብሬቭ ሶፍትዌር ባለቤትነት የሌለንና ምርመራ ማካሄድ አንችልም፡፡ Google Widevine ኮድ ከኛ ሰርቨር ሳይሆን ከ Google ሰርቨር ማግኘት ይችላሉ፡፡ የሚጀምረው ይህን አማራጭ ካበራቹህ ብቻ ነው፡፡ DRM እንዲጠቀሙ አናበረታታም፣ ቢሆንም የተጠቃሚዎቻችንን ምርጫ እናከብራለን እንዲሁም አንድ አንድ የብሬቭ ተጠቃሚዎች ይህን የሚጠይቅ አገልግሎት መጠቀም እንደሚፈልጉ እውቅና እነሰታለን፡፡
+ 
+ ይህን ቅጥያ ሲገጥሙ፣ በGoogle Widevine የአጠቃቀም ሕግ እየተስማሙ ነው፡፡ ከGoogle Widevine ሲጠቀሙ ለሚገጥሞት አደጋ ወይ የግንኙነት መቋረጥ ብሬቭ ሀላፊነት እንደማይወስድ ይስማማሉ፡፡</translation>
+<translation id="939305735877869636">ብሬቭ</translation>
+<translation id="3198814717959506569">ከብሬቭ ኢምፖርት የተደረገ</translation>
+<translation id="453977518730680921">ሚድያ አውቶፕለይ</translation>
+<translation id="410351446219883937">አውቶፕለይ</translation>
+<translation id="2240268017737062801">ድህረ ገፁ ሚድያ አውቶ ፕለይ ማድረግ ሲፈልግ ጠይቅ</translation>
+<translation id="3371702087847741961">ሳይት ሚድያ አውቶፕለይ ማድረግ ሲፈልግ ይጠይቁ (ይመከለራል)</translation>
+<translation id="3218385319396786393">በዚህ ገፅ ላይ አውቶፕለይ ይከላከሉ</translation>
+<translation id="4150684676757176434">አውቶለይ መከላከሉን ይቀጥል</translation>
+<translation id="2044383478723007273">የብሬቭ ቀለም</translation>
+<translation id="5341901626640816374">ሰፊ የአካባቢ ባር ይጠቀሙ</translation>
+<translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
+<translation id="8784924142044142231">ከቶር ይውጡ</translation>
+<translation id="5410152065859052603">ቶር</translation>
+<translation id="3696187925156352769">ቶር ዊንደው ይክፈቱ</translation>
+<translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
+<translation id="7372129767729198111">የብሬቭ ጥበቃ ዲፎልት</translation>
+<translation id="8029018702721078742">የማሰወታወቅያ መቆጣጠርያ</translation>
+<translation id="3544462288910360084">ኩኪ መቆጣጠርያ</translation>
+<translation id="8919235146866304148">የጣት አሻራ ጥበቃ</translation>
+<translation id="520895744850022668">HTTPS ሁሉም ቦታ</translation>
+<translation id="5259716416204774556">ስክሪፕት መከላከል</translation>
+<translation id="6067014455220527258">ማስታወቅያ ይከላከሉ</translation>
+<translation id="6985711843506827936">ማስታወቅያና መከታተል ይፍቀዱ</translation>
+<translation id="6132506775968708399">የ3ኛ ወገን ኩኪ ይከላከሉ</translation>
+<translation id="5657156137487675418">ለሁሉም ኩኪ ይፍቀዱ</translation>
+<translation id="6883611015375728278">ሁሉን ኩኪ ይከላከሉ</translation>
+<translation id="1442559343076146186">3ኛ አካል የእጅ አሻራ ይከላከሉ</translation>
+<translation id="8034285923190068220">የጣት አሻራ ይፍቀዱ</translation>
+<translation id="4540198958192073185">ሁሉንም የጣት አሻራ ይከላከሉ</translation>
+<translation id="8942080017911802454">WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
+<translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
+<translation id="8798099450830957504">ዲፎልት</translation>
+<translation id="1822560017823072927">ዲፎልት የጋራና የግል ኢንተርፈረንስ</translation>
+<translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
+<translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
 </translationbundle>

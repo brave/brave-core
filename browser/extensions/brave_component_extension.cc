@@ -57,5 +57,6 @@ void BraveComponentExtension::OnComponentRegistered(const std::string& component
 
 void BraveComponentExtension::OnComponentReady(
     const std::string& component_id,
-    const base::FilePath& install_dir) {
+    const base::FilePath& install_dir,
+    const std::string& manifest) {
 }

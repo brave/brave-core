@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sr">
+<translation id="3333887201479867589">Brejv nagrade</translation>
+<translation id="7942180974165298215">Brejv blokiranje oglasa</translation>
+<translation id="7450557937477381864">Zatvorite Hrom pregledač</translation>
+<translation id="7008934821596358692">Da biste završili uvoz, zatvorite sve prozore u Chrome-u.</translation>
+<translation id="7753103220327065417">Zatvorite Brave</translation>
+<translation id="5588481533147090393">Da biste završili uvoz, zatvorite sve Brave prozore.</translation>
+<translation id="6447842834002726250">Kolačići</translation>
+<translation id="4983925687993168579">Statistike</translation>
+<translation id="9173846700806833701">Widevine nije instaliran</translation>
+<translation id="2433569048491784801">Widevine nije instaliran.</translation>
+<translation id="3699882589215410581">Instaliraj i pokreni Vajdvajn</translation>
+<translation id="8410111618231938546">Google Widevine je deo Digital Rights Management (DRM) koda koji mi u Brave softveru ne posedujemo i ne možemo da ispitujemo. Google Widevine kod se učitava sa Google servera, a ne sa naših servera. Učitava se samo kada omogućite ovu opciju. Mi odvraćamo od upotrebe DRM-a, ali poštujemo izbor korisnika i razumemo da neki Brave korisnici žele da koriste usluge koje to zahtevaju.
+
+Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišćenja. Slažete se da Brave nije odgovoran za bilo kakve štete ili gubitke u vezi sa vašom upotrebom Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Uvezeno iz Brave-a</translation>
+<translation id="453977518730680921">Automatsko puštanje medija</translation>
+<translation id="410351446219883937">Automatsko puštanje</translation>
+<translation id="2240268017737062801">Pitaj kada veb lokacija želi automatsko puštanje medija</translation>
+<translation id="3371702087847741961">Pitajte kada sajt želi da automatski pušta medije (preporučeno)</translation>
+<translation id="3218385319396786393">Automatska reprodukcija je blokirana na ovoj strani</translation>
+<translation id="4150684676757176434">Nastavite da blokirate automatsku reprodukciju</translation>
+<translation id="2044383478723007273">Boje Brave-a</translation>
+<translation id="5341901626640816374">Koristite široku traku lokacije</translation>
+<translation id="7965178729203412357">Novi Tor identitet</translation>
+<translation id="8784924142044142231">Izađite iz Tor-a</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Otvori Tor prozor</translation>
+<translation id="3155170474926428993">Tor pokretač</translation>
+<translation id="7372129767729198111">Podrazumevane vrednosti za Brave štit</translation>
+<translation id="8029018702721078742">Kontrola oglasa</translation>
+<translation id="3544462288910360084">Kontrole za kolačić</translation>
+<translation id="8919235146866304148">Zaštita od popisivanja</translation>
+<translation id="520895744850022668">HTTPS svuda</translation>
+<translation id="5259716416204774556">Blokiranje skripti</translation>
+<translation id="6067014455220527258">Blokirajte oglase</translation>
+<translation id="6985711843506827936">Dozvoli oglase i praćenje</translation>
+<translation id="6132506775968708399">Blokirajte kolačiće trećih strana</translation>
+<translation id="5657156137487675418">Dozvoli sve kolačiće</translation>
+<translation id="6883611015375728278">Blokirati sve kolačiće</translation>
+<translation id="1442559343076146186">Blokirajte posebna obeležja treće strane</translation>
+<translation id="8034285923190068220">Dozvoli uzimanje otiska prsta</translation>
+<translation id="4540198958192073185">Blokirajte sva posebna obeležja</translation>
+<translation id="8942080017911802454">Smernice za obradu WebRTC IP-a</translation>
+<translation id="6165508094623778733">Saznajte više</translation>
+<translation id="8798099450830957504">Podrazumevana vrednost</translation>
+<translation id="1822560017823072927">Podrazumevane vrednosti interfejsa, javnih i privatnih</translation>
+<translation id="5825943197137337319">Samo interfejs sa podrazumevanom javnom vrednošću</translation>
+<translation id="1689062823386843231">Onemogućite neposrednički UDP</translation>
 </translationbundle>

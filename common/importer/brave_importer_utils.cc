@@ -17,8 +17,6 @@ bool BraveImporterCanImport(const base::FilePath& profile,
   DCHECK(services_supported);
   *services_supported = importer::NONE;
 
-  base::FilePath history =
-    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("History")));
   base::FilePath session_store =
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("session-store-1")));
   base::FilePath passwords =
@@ -26,10 +24,8 @@ bool BraveImporterCanImport(const base::FilePath& profile,
   base::FilePath cookies =
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Cookies")));
 
-  if (base::PathExists(history))
-    *services_supported |= importer::HISTORY;
   if (base::PathExists(session_store))
-    *services_supported |= importer::FAVORITES | importer::STATS;
+    *services_supported |= importer::HISTORY | importer::FAVORITES | importer::STATS;
   if (base::PathExists(passwords))
     *services_supported |= importer::PASSWORDS;
   if (base::PathExists(cookies))

@@ -30,7 +30,8 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
       (input.type() == metrics::OmniboxInputType::QUERY))
     return;
 
-  const std::string input_text = base::ToLowerASCII(base::UTF16ToASCII(input.text()));
+  const std::string input_text =
+      base::ToLowerASCII(base::UTF16ToUTF8(input.text()));
 
   for (std::vector<std::string>::const_iterator i = top_sites_.begin();
     (i != top_sites_.end()) && (matches_.size() < kMaxMatches); ++i) {

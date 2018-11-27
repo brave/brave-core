@@ -78,6 +78,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -87,15 +88,15 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
     kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
     /*is_main_frame=*/true, /*allow_download=*/false, /*is_async=*/true,
     content::PREVIEWS_OFF, std::move(navigation_ui_data));
-  GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(request.get(), &new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(callback,
                                       before_url_context);
-  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_TRUE(before_url_context->new_url_spec.empty());
   auto* proxy_service = request->context()->proxy_resolution_service();
   net::ProxyInfo info;
-  proxy_service->TryResolveProxySynchronously(url, std::string(), &info,
-                                              nullptr, net::NetLogWithSource());
+  std::unique_ptr<net::ProxyResolutionService::Request> proxy_request;
+  proxy_service->ResolveProxy(url, std::string(), &info, base::DoNothing(),
+                              &proxy_request, net::NetLogWithSource());
   EXPECT_EQ(info.ToPacString(), "DIRECT");
   ASSERT_TRUE(proxy_service->config());
   EXPECT_TRUE(proxy_service->config()->value().proxy_rules().empty());
@@ -116,6 +117,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -129,16 +131,15 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
 
   MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
                                                    navigation_ui_data_ptr);
-  GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(request.get(), &new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(callback,
                                       before_url_context);
-  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_TRUE(before_url_context->new_url_spec.empty());
   auto* proxy_service = request->context()->proxy_resolution_service();
   net::ProxyInfo info;
   std::unique_ptr<net::ProxyResolutionService::Request> proxy_request;
-  proxy_service->TryResolveProxySynchronously(url, std::string(), &info,
-                                              nullptr, net::NetLogWithSource());
+  proxy_service->ResolveProxy(url, std::string(), &info, base::DoNothing(),
+                              &proxy_request, net::NetLogWithSource());
   EXPECT_EQ(info.ToPacString(), tor::kTestTorPacString);
   ASSERT_TRUE(proxy_service->config());
   ASSERT_FALSE(proxy_service->config()->value().proxy_rules().empty());
@@ -162,6 +163,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
                              TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo>
       before_url_context(new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), before_url_context);
   brave::ResponseCallback callback;
 
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
@@ -175,10 +177,9 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
 
   MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
                                                    navigation_ui_data_ptr);
-  GURL new_url;
   int ret =
-    brave::OnBeforeURLRequest_TorWork(request.get(), &new_url, callback,
+    brave::OnBeforeURLRequest_TorWork(callback,
                                       before_url_context);
-  EXPECT_TRUE(new_url.is_empty());
+  EXPECT_TRUE(before_url_context->new_url_spec.empty());
   EXPECT_EQ(ret, net::ERR_DISALLOWED_URL_SCHEME);
 }

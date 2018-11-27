@@ -33,6 +33,7 @@
 #include "net/extras/sqlite/sqlite_persistent_cookie_store.h"
 #include "sql/database.h"
 #include "sql/statement.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 #if defined(OS_LINUX)
@@ -109,10 +110,19 @@ void ChromeImporter::ImportHistory() {
     return;
 
   const char query[] =
-    "SELECT url, title, last_visit_time, typed_count, visit_count "
-    "FROM urls WHERE hidden = 0";
+    "SELECT u.url, u.title, v.visit_time, u.typed_count, u.visit_count "
+    "FROM urls u JOIN visits v ON u.id = v.url "
+    "WHERE hidden = 0 "
+    "AND (transition & ?) != 0 "  // CHAIN_END
+    "AND (transition & ?) NOT IN (?, ?, ?)";  // No SUBFRAME or
+                                              // KEYWORD_GENERATED
 
   sql::Statement s(db.GetUniqueStatement(query));
+  s.BindInt(0, ui::PAGE_TRANSITION_CHAIN_END);
+  s.BindInt(1, ui::PAGE_TRANSITION_CORE_MASK);
+  s.BindInt(2, ui::PAGE_TRANSITION_AUTO_SUBFRAME);
+  s.BindInt(3, ui::PAGE_TRANSITION_MANUAL_SUBFRAME);
+  s.BindInt(4, ui::PAGE_TRANSITION_KEYWORD_GENERATED);
 
   std::vector<ImporterURLRow> rows;
   while (s.Step() && !cancelled()) {

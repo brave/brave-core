@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave_prepopulated_engines.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/search_engines/prepopulated_engines.h"
 #include "components/search_engines/search_engine_type.h"
 
@@ -10,7 +10,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 1;
+const int kBraveCurrentDataVersion = 2;
 
 const PrepopulatedEngine amazon = {
   L"Amazon",
@@ -73,27 +73,6 @@ const PrepopulatedEngine ecosia = {
   0,
   SEARCH_ENGINE_OTHER,
   PREPOPULATED_ENGINE_ID_ECOSIA,
-};
-
-const PrepopulatedEngine findx = {
-  L"findx",
-  L":fx",
-  "https://www.findx.com/favicon.ico",
-  "https://www.findx.com/search?q={searchTerms}&type=web",
-  "UTF-8",
-  "https://www.findx.com/api/web-search/suggestions/?q={searchTerms}&type=opensearch",
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  0,
-  SEARCH_ENGINE_OTHER,
-  PREPOPULATED_ENGINE_ID_FINDX,
 };
 
 const PrepopulatedEngine github = {

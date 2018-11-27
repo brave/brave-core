@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">connectez-vous à Brave</translation>
 <translation id="5516268345616100622">Gestionnaire de tâches – Brave</translation>
 <translation id="7918740962659365265">Aidez-nous à améliorer Brave en nous envoyant des rapports d'erreur et des <ph name="UMA_LINK"/>.</translation>
@@ -51,7 +50,7 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="8030318113982266900">Passage de votre appareil à la version <ph name="CHANNEL_NAME"/>…</translation>
 <translation id="7355059611036077582">Ajouter à Brave</translation>
 <translation id="7456658570432774853">Aidez-nous à améliorer Brave en nous signalant vos paramètres actuels.</translation>
-<translation id="5436841087823876677">Avertissement : Brave ne peut pas empêcher les extensions d'enregistrer votre historique de navigation. Pour désactiver cette extension en mode de navigation privée, désélectionnez-la.</translation>
+<translation id="6134859571175647580">Avertissement : Brave ne peut pas empêcher les extensions d'enregistrer votre historique de navigation. Pour désactiver cette extension en mode de navigation privée, désélectionnez-la.</translation>
 <translation id="777113543093865885">Supprimer de Brave</translation>
 <translation id="6078442581074612226">Dans Brave</translation>
 <translation id="8148611988012584308">Personnaliser et contrôler Brave</translation>
@@ -117,6 +116,9 @@ Brave ne peut pas récupérer vos paramètres.</translation>
 <translation id="7977435741986383568">Brave peut utiliser des services Web pour améliorer votre confort de navigation. Vous pouvez choisir de désactiver ces services. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Pour corriger les fautes d'orthographe, Brave envoie à Brave Software le texte que vous saisissez dans les champs</translation>
 <translation id="815816884817177844">Communique avec Brave Software pour améliorer la navigation et Brave</translation>
+<translation id="8586264863973514035">Pour appliquer vos modifications, relancez Brave</translation>
+<translation id="7021823858304886493">Autoriser la connexion à Brave</translation>
+<translation id="1649714546770135458">Désactiver cette option vous permet de vous connecter à des sites Brave Software tels que Gmail sans vous connecter à Brave</translation>
 <translation id="6274110506580702455">L'option de connexion à Brave a été désactivée par l'administrateur de cet appareil.</translation>
 <translation id="9220324636239049437">Cette action aura pour effet de supprimer 1 élément de cet appareil. Pour récupérer vos données ultérieurement, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Cette action aura pour effet de supprimer <ph name="ITEMS_COUNT"/> éléments de cet appareil. Pour récupérer vos données ultérieurement, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>

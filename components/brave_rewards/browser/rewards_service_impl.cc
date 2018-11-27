@@ -1,47 +1,68 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
-#include "brave/components/brave_rewards/browser/balance_report.h"
 
 #include <functional>
 #include <limits.h>
+#include <vector>
 
 #include "base/bind.h"
-#include "base/guid.h"
+#include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
+#include "base/guid.h"
 #include "base/i18n/time_formatting.h"
 #include "base/sequenced_task_runner.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task_runner_util.h"
 #include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_info.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/common/brave_switches.h"
+#include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
+#include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/browser_process_impl.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content_site.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/url_request/url_fetcher.h"
+#include "publisher_banner.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "ui/gfx/image/image.h"
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
 
-#include "extensions/browser/event_router.h"
-#include "extensions/browser/extension_api_frame_id_map.h"
-#include "brave/common/extensions/api/brave_rewards.h"
+#if !defined(OS_ANDROID)
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "components/grit/brave_components_resources.h"
-#include "ui/base/resource/resource_bundle.h"
+#else
+#include "components/grit/components_resources.h"
+#endif
 
-using extensions::Event;
-using extensions::EventRouter;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
+#endif
 
 using namespace net::registry_controlled_domains;
 using namespace std::placeholders;
@@ -93,6 +114,7 @@ ContentSite PublisherInfoToContentSite(
   content_site.provider = publisher_info.provider;
   content_site.favicon_url = publisher_info.favicon_url;
   content_site.id = publisher_info.id;
+  content_site.reconcile_stamp = publisher_info.reconcile_stamp;
   return content_site;
 }
 
@@ -223,31 +245,45 @@ const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
 const base::FilePath::StringType kPublishers_list("publishers_list");
 #endif
 
-RewardsServiceImpl::RewardsServiceImpl(Profile* profile) :
-    profile_(profile),
-    ledger_(ledger::Ledger::CreateInstance(this)),
-    file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
-        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-    ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
-    publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
-    publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
-    publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
-    publisher_info_backend_(new PublisherInfoDatabase(publisher_info_db_path_)),
-    next_timer_id_(0) {
-// TODO(bridiver) - production/verbose should
-// also be controllable by command line flags
-#if defined(OFFICIAL_BUILD)
-ledger::is_production = true;
-#else
-ledger::is_production = false;
+RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
+    : profile_(profile),
+      ledger_(ledger::Ledger::CreateInstance(this)),
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+      extension_rewards_service_observer_(
+          std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
+      file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
+      publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
+      publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
+      publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
+      publisher_info_backend_(
+          new PublisherInfoDatabase(publisher_info_db_path_)),
+      notification_service_(new RewardsNotificationServiceImpl(profile)),
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+      private_observer_(
+          std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
+#endif
+      next_timer_id_(0) {
+  // Environment
+  #if defined(OFFICIAL_BUILD)
+    ledger::is_production = true;
+  #else
+    ledger::is_production = false;
+  #endif
 
-#if defined(NDEBUG)
-ledger::is_verbose = false;
-#else
-ledger::is_verbose = true;
-#endif
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+
+  if (command_line.HasSwitch(switches::kRewards)) {
+    std::string options = command_line.GetSwitchValueASCII(switches::kRewards);
+
+    if (!options.empty()) {
+      HandleFlags(options);
+    }
+  }
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -255,6 +291,10 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 }
 
 void RewardsServiceImpl::Init() {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  AddObserver(extension_rewards_service_observer_.get());
+  private_observers_.AddObserver(private_observer_.get());
+#endif
   ledger_->Initialize();
 }
 
@@ -278,6 +318,9 @@ void RewardsServiceImpl::GetContentSiteList(
   filter.year = GetPublisherYear(now);
   filter.min_duration = ledger_->GetPublisherMinVisitTime();
   filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
+  filter.reconcile_stamp = ledger_->GetReconcileStamp();
+  filter.excluded =
+    ledger::PUBLISHER_EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
 
   ledger_->GetPublisherInfoList(start, limit,
       filter,
@@ -441,7 +484,7 @@ void RewardsServiceImpl::RestorePublishers() {
 
 void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
   if (!success) {
-    VLOG(1) << "Error in OnMediaPublisherInfoSaved";
+    LOG(ERROR) << "Error in OnMediaPublisherInfoSaved";
   }
 }
 
@@ -454,7 +497,23 @@ std::string RewardsServiceImpl::GenerateGUID() const {
 }
 
 void RewardsServiceImpl::Shutdown() {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  RemoveObserver(extension_rewards_service_observer_.get());
+  private_observers_.RemoveObserver(private_observer_.get());
+#endif
+  BitmapFetcherService* image_service =
+      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
+  if (image_service) {
+    for (auto request_id : request_ids_) {
+      image_service->CancelRequest(request_id);
+    }
+  }
+
+  for (const auto fetcher : fetchers_) {
+    delete fetcher.first;
+  }
   fetchers_.clear();
+
   ledger_.reset();
   RewardsService::Shutdown();
 }
@@ -462,6 +521,13 @@ void RewardsServiceImpl::Shutdown() {
 void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
   if (!ready_.is_signaled())
     ready_.Signal();
+
+  if (result == ledger::Result::WALLET_CREATED) {
+    SetRewardsMainEnabled(true);
+    SetAutoContribute(true);
+    result = ledger::Result::LEDGER_OK;
+  }
+
   TriggerOnWalletInitialized(result);
 }
 
@@ -473,6 +539,13 @@ void RewardsServiceImpl::OnWalletProperties(ledger::Result result,
 void RewardsServiceImpl::OnGrant(ledger::Result result,
                                  const ledger::Grant& grant) {
   TriggerOnGrant(result, grant);
+
+  if (result == ledger::Result::LEDGER_OK) {
+    RewardsNotificationService::RewardsNotificationArgs args;
+    notification_service_->AddNotification(
+        RewardsNotificationService::REWARDS_NOTIFICATION_GRANT, args,
+        "rewards_notification_grant");
+  }
 }
 
 void RewardsServiceImpl::OnGrantCaptcha(const std::string& image, const std::string& hint) {
@@ -489,16 +562,52 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
                                        const ledger::Grant& grant) {
   ledger::BalanceReportInfo report_info;
   auto now = base::Time::Now();
-  ledger_->GetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now), &report_info);
-  report_info.grants_ += 10.0; // TODO NZ convert probi to
-  ledger_->SetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now), report_info);
+  if (result == ledger::Result::LEDGER_OK) {
+    ledger_->SetBalanceReportItem(GetPublisherMonth(now),
+                                  GetPublisherYear(now),
+                                  ledger::ReportType::GRANT,
+                                  grant.probi);
+  }
+
   TriggerOnGrantFinish(result, grant);
+  notification_service_->DeleteNotification("rewards_notification_grant");
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
-                                              const std::string& viewing_id) {
-  LOG(ERROR) << "reconcile complete " << viewing_id;
-  // TODO - TriggerOnReconcileComplete
+  const std::string& viewing_id,
+  ledger::PUBLISHER_CATEGORY category,
+  const std::string& probi) {
+
+  if ((result == ledger::Result::LEDGER_OK &&
+       category == ledger::PUBLISHER_CATEGORY::AUTO_CONTRIBUTE) ||
+      result == ledger::Result::LEDGER_ERROR ||
+      result == ledger::Result::NOT_ENOUGH_FUNDS ||
+      result == ledger::Result::TIP_ERROR) {
+    RewardsNotificationService::RewardsNotificationArgs args;
+    args.push_back(viewing_id);
+    args.push_back(std::to_string(result));
+    args.push_back(std::to_string(category));
+    args.push_back(probi);
+
+    notification_service_->AddNotification(
+        RewardsNotificationService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,
+        args,
+        "contribution_" + viewing_id);
+  }
+
+  if (result == ledger::Result::LEDGER_OK) {
+    auto now = base::Time::Now();
+    FetchWalletProperties();
+    ledger_->OnReconcileCompleteSuccess(viewing_id,
+        category,
+        probi,
+        GetPublisherMonth(now),
+        GetPublisherYear(now),
+        GetCurrentTimestamp());
+  }
+
+  for (auto& observer : observers_)
+    observer.OnReconcileComplete(this, result, viewing_id, probi);
 }
 
 void RewardsServiceImpl::LoadLedgerState(
@@ -584,7 +693,7 @@ void RewardsServiceImpl::OnPublisherStateSaved(
 void RewardsServiceImpl::LoadNicewareList(
   ledger::GetNicewareListCallback callback) {
   std::string data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-  IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
+      IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
 
   if (data.empty()) {
     LOG(ERROR) << "Failed to read in niceware list";
@@ -653,7 +762,28 @@ void RewardsServiceImpl::LoadPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     ledger::PublisherInfoFilter filter,
-    ledger::GetPublisherInfoListCallback callback) {
+    ledger::PublisherInfoListCallback callback) {
+  auto now = base::Time::Now();
+  filter.month = GetPublisherMonth(now);
+  filter.year = GetPublisherYear(now);
+  filter.reconcile_stamp = ledger_->GetReconcileStamp();
+
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
+                    start, limit, filter,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnPublisherInfoListLoaded,
+                    AsWeakPtr(),
+                    start,
+                    limit,
+                    callback));
+}
+
+void RewardsServiceImpl::LoadCurrentPublisherInfoList(
+    uint32_t start,
+    uint32_t limit,
+    ledger::PublisherInfoFilter filter,
+    ledger::PublisherInfoListCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&LoadPublisherInfoListOnFileTaskRunner,
                     start, limit, filter,
@@ -668,7 +798,7 @@ void RewardsServiceImpl::LoadPublisherInfoList(
 void RewardsServiceImpl::OnPublisherInfoListLoaded(
     uint32_t start,
     uint32_t limit,
-    ledger::GetPublisherInfoListCallback callback,
+    ledger::PublisherInfoListCallback callback,
     const ledger::PublisherInfoList& list) {
   uint32_t next_record = 0;
   if (list.size() == limit)
@@ -696,7 +826,7 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
   if (!content.empty())
     fetcher->SetUploadData(contentType, content);
 
-  if (VLOG_IS_ON(2)) {
+  if (VLOG_IS_ON(ledger::LogLevel::LOG_REQUEST)) {
     std::string printMethod;
     switch (method) {
       case ledger::URL_METHOD::POST:
@@ -709,15 +839,15 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
         printMethod = "GET";
         break;
     }
-    VLOG(2) << "[ REQUEST ]";
-    VLOG(2) << "> url: " << url;
-    VLOG(2) << "> method: " << printMethod;
-    VLOG(2) << "> content: " << content;
-    VLOG(2) << "> contentType: " << contentType;
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "[ REQUEST ]";
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "> url: " << url;
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "> method: " << printMethod;
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "> content: " << content;
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "> contentType: " << contentType;
     for (size_t i = 0; i < headers.size(); i++) {
-      VLOG(2) << "> headers: " << headers[i];
+      VLOG(ledger::LogLevel::LOG_REQUEST) << "> headers: " << headers[i];
     }
-    VLOG(2) << "[ END REQUEST ]";
+    VLOG(ledger::LogLevel::LOG_REQUEST) << "[ END REQUEST ]";
   }
 
   FetchCallback callback = base::Bind(
@@ -735,11 +865,14 @@ std::unique_ptr<ledger::LedgerURLLoader> RewardsServiceImpl::LoadURL(
 
 void RewardsServiceImpl::OnURLFetchComplete(
     const net::URLFetcher* source) {
-  if (fetchers_.find(source) == fetchers_.end())
+  if (fetchers_.find(source) == fetchers_.end()) {
+    delete source;
     return;
+  }
 
   auto callback = fetchers_[source];
   fetchers_.erase(source);
+
   int response_code = source->GetResponseCode();
   std::string body;
   std::map<std::string, std::string> headers;
@@ -760,37 +893,37 @@ void RewardsServiceImpl::OnURLFetchComplete(
     source->GetResponseAsString(&body);
   }
 
+  delete source;
+
   callback.Run(response_code, body, headers);
+}
+
+void RunIOTaskCallback(
+    base::WeakPtr<RewardsServiceImpl> rewards_service,
+    std::function<void(void)> callback) {
+  base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&RewardsServiceImpl::OnIOTaskComplete,
+                      rewards_service,
+                      callback));
+}
+
+void RewardsServiceImpl::OnIOTaskComplete(std::function<void(void)> callback) {
+  callback();
 }
 
 void RewardsServiceImpl::RunIOTask(
     std::unique_ptr<ledger::LedgerTaskRunner> task) {
-  file_task_runner_->PostTask(FROM_HERE,
-      base::BindOnce(&ledger::LedgerTaskRunner::Run, std::move(task)));
-}
+  ledger::LedgerTaskRunner::CallerThreadCallback callback =
+      std::bind(&RunIOTaskCallback, AsWeakPtr(), _1);
 
-void RewardsServiceImpl::RunTask(
-      std::unique_ptr<ledger::LedgerTaskRunner> task) {
-  content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+  file_task_runner_->PostTask(FROM_HERE,
       base::BindOnce(&ledger::LedgerTaskRunner::Run,
-                     std::move(task)));
+          std::move(task), std::move(callback)));
 }
 
 void RewardsServiceImpl::TriggerOnWalletInitialized(int error_code) {
-  // webui
   for (auto& observer : observers_)
     observer.OnWalletInitialized(this, error_code);
-
-  // extension
-  EventRouter* event_router = EventRouter::Get(profile_);
-  if (event_router) {
-    std::unique_ptr<base::ListValue> args(new base::ListValue());
-    std::unique_ptr<Event> event(
-        new Event(extensions::events::BRAVE_WALLET_CREATED,
-          extensions::api::brave_rewards::OnWalletCreated::kEventName,
-          std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
-  }
 }
 
 void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
@@ -818,54 +951,23 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     }
 
     // webui
-    observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
-  }
-  // extension
-  EventRouter* event_router = EventRouter::Get(profile_);
-  if (event_router && wallet_info) {
-    extensions::api::brave_rewards::OnWalletProperties::Properties properties;
-
-    properties.probi = wallet_info->probi_;
-    properties.balance = wallet_info->balance_;
-    properties.rates.btc = wallet_info->rates_["BTC"];
-    properties.rates.eth = wallet_info->rates_["ETH"];
-    properties.rates.usd = wallet_info->rates_["USD"];
-    properties.rates.eur = wallet_info->rates_["EUR"];
-
-    for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
-      properties.grants.push_back(extensions::api::brave_rewards::OnWalletProperties::Properties::GrantsType());
-      auto& grant = properties.grants[properties.grants.size() -1];
-
-      grant.altcurrency = wallet_info->grants_[i].altcurrency;
-      grant.probi = wallet_info->grants_[i].probi;
-      grant.expiry_time = wallet_info->grants_[i].expiryTime;
-    }
-
-    std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_rewards::OnWalletProperties::Create(properties)
-            .release());
-
-    std::unique_ptr<Event> event(
-        new Event(extensions::events::BRAVE_ON_WALLET_PROPERTIES,
-                  extensions::api::brave_rewards::OnWalletProperties::kEventName,
-                  std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
+    observer.OnWalletProperties(this, error_code, wallet_properties.get());
   }
 }
 
-void RewardsServiceImpl::GetWalletProperties() {
+void RewardsServiceImpl::FetchWalletProperties() {
   if (ready().is_signaled()) {
-    ledger_->GetWalletProperties();
+    ledger_->FetchWalletProperties();
   } else {
     ready().Post(FROM_HERE,
-        base::Bind(&brave_rewards::RewardsService::GetWalletProperties,
+        base::Bind(&brave_rewards::RewardsService::FetchWalletProperties,
             base::Unretained(this)));
   }
 }
 
-void RewardsServiceImpl::GetGrant(const std::string& lang,
+void RewardsServiceImpl::FetchGrant(const std::string& lang,
     const std::string& payment_id) {
-  ledger_->GetGrant(lang, payment_id);
+  ledger_->FetchGrant(lang, payment_id);
 }
 
 void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
@@ -971,7 +1073,7 @@ void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
 }
 
 void RewardsServiceImpl::SetContributionAmount(double amount) const {
-  return ledger_->SetContributionAmount(amount);
+  ledger_->SetContributionAmount(amount);
 }
 
 void RewardsServiceImpl::SetUserChangedContribution() const {
@@ -1073,33 +1175,10 @@ std::map<std::string, brave_rewards::BalanceReport> RewardsServiceImpl::GetAllBa
 void RewardsServiceImpl::GetCurrentBalanceReport() {
   ledger::BalanceReportInfo report;
   auto now = base::Time::Now();
-  bool success = ledger_->GetBalanceReport(
-      GetPublisherMonth(now),
-      GetPublisherYear(now),
-      &report);
-
+  bool success = ledger_->GetBalanceReport(GetPublisherMonth(now),
+                                           GetPublisherYear(now), &report);
   if (success) {
-    EventRouter* event_router = EventRouter::Get(profile_);
-    if (event_router) {
-      extensions::api::brave_rewards::OnCurrentReport::Properties properties;
-
-      properties.opening_balance = report.opening_balance_;
-      properties.closing_balance = report.closing_balance_;
-      properties.grants = report.grants_;
-      properties.earning_from_ads = report.earning_from_ads_;
-      properties.auto_contribute = report.auto_contribute_;
-      properties.recurring_donation = report.recurring_donation_;
-      properties.one_time_donation = report.one_time_donation_;
-
-      std::unique_ptr<base::ListValue> args(
-          extensions::api::brave_rewards::OnCurrentReport::Create(properties)
-              .release());
-      std::unique_ptr<Event> event(
-          new Event(extensions::events::BRAVE_ON_CURRENT_REPORT,
-                    extensions::api::brave_rewards::OnCurrentReport::kEventName,
-                    std::move(args)));
-      event_router->BroadcastEvent(std::move(event));
-    }
+    TriggerOnGetCurrentBalanceReport(report);
   }
 }
 
@@ -1107,7 +1186,9 @@ bool RewardsServiceImpl::IsWalletCreated() {
   return ledger_->IsWalletCreated();
 }
 
-void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) {
+void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId,
+                                                     const std::string& url,
+                                                     const std::string& favicon_url) {
   GURL parsedUrl(url);
 
   if (!parsedUrl.is_valid()) {
@@ -1125,11 +1206,16 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(uint64_t windowId, const st
     return;
   }
 
-  ledger_->GetPublisherActivityFromUrl(windowId,
-      baseDomain,
-      parsedUrl.path(),
-      GetPublisherMonth(now),
-      GetPublisherYear(now));
+  ledger::VisitData visitData;
+  visitData.domain = baseDomain;
+  visitData.path = parsedUrl.PathForRequest();
+  visitData.local_month = GetPublisherMonth(now);
+  visitData.local_year = GetPublisherYear(now);
+  visitData.name = baseDomain;
+  visitData.url = origin.spec();
+  visitData.favicon_url = favicon_url;
+
+  ledger_->GetPublisherActivityFromUrl(windowId, visitData);
 }
 
 void RewardsServiceImpl::OnExcludedSitesChanged() {
@@ -1140,36 +1226,426 @@ void RewardsServiceImpl::OnExcludedSitesChanged() {
 void RewardsServiceImpl::OnPublisherActivity(ledger::Result result,
                                              std::unique_ptr<ledger::PublisherInfo> info,
                                              uint64_t windowId) {
-  if (result == ledger::Result::LEDGER_OK || result == ledger::Result::NOT_FOUND) {
-    EventRouter* event_router = EventRouter::Get(profile_);
-    if (!event_router) {
-      return;
+  if (result != ledger::Result::LEDGER_OK &&
+      result != ledger::Result::NOT_FOUND) {
+    return;
+  }
+  TriggerOnGetPublisherActivityFromUrl(result, std::move(info), windowId);
+}
+
+double RewardsServiceImpl::GetContributionAmount() {
+  return ledger_->GetContributionAmount();
+}
+
+void RewardsServiceImpl::FetchFavIcon(const std::string& url,
+                                      const std::string& favicon_key,
+                                      ledger::FetchIconCallback callback) {
+  GURL parsedUrl(url);
+
+  if (!parsedUrl.is_valid()) {
+    return;
+  }
+
+  std::vector<std::string>::iterator it;
+  it = find (current_media_fetchers_.begin(), current_media_fetchers_.end(), url);
+  if (it != current_media_fetchers_.end()) {
+    LOG(WARNING) << "Already fetching favicon: " << url;
+    return;
+  }
+
+  BitmapFetcherService* image_service =
+      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
+  if (image_service) {
+    net::NetworkTrafficAnnotationTag traffic_annotation =
+      net::DefineNetworkTrafficAnnotation("brave_rewards_favicon_fetcher", R"(
+        semantics {
+          sender:
+            "Brave Rewards Media Fetcher"
+          description:
+            "Fetches favicon for media publishers in Rewards."
+          trigger:
+            "User visits a media publisher content."
+          data: "Favicon for media publisher."
+          destination: WEBSITE
+        }
+        policy {
+          cookies_allowed: NO
+          setting:
+            "This feature cannot be disabled by settings."
+          policy_exception_justification:
+            "Not implemented."
+        })");
+    current_media_fetchers_.emplace_back(url);
+    request_ids_.push_back(image_service->RequestImage(
+          parsedUrl,
+          // Image Service takes ownership of the observer
+          new RewardsFetcherServiceObserver(
+              favicon_key,
+              parsedUrl,
+              base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted, base::Unretained(this), callback)),
+          traffic_annotation));
+  }
+}
+
+void RewardsServiceImpl::OnFetchFavIconCompleted(ledger::FetchIconCallback callback,
+                                                 const std::string& favicon_key,
+                                                 const GURL& url,
+                                                 const BitmapFetcherService::RequestId& request_id,
+                                                 const SkBitmap& image) {
+  GURL favicon_url(favicon_key);
+  gfx::Image gfx_image = gfx::Image::CreateFrom1xBitmap(image);
+  favicon::FaviconService* favicon_service =
+          FaviconServiceFactory::GetForProfile(profile_, ServiceAccessType::EXPLICIT_ACCESS);
+  favicon_service->SetOnDemandFavicons(
+      favicon_url,
+      url,
+      favicon_base::IconType::kFavicon,
+      gfx_image,
+      base::BindOnce(&RewardsServiceImpl::OnSetOnDemandFaviconComplete, AsWeakPtr(), favicon_url.spec(), callback));
+
+  std::vector<std::string>::iterator it_url;
+  it_url = find(current_media_fetchers_.begin(), current_media_fetchers_.end(), url.spec());
+  if (it_url != current_media_fetchers_.end()) {
+    current_media_fetchers_.erase(it_url);
+  }
+
+  std::vector<BitmapFetcherService::RequestId>::iterator it_ids;
+  it_ids = find(request_ids_.begin(), request_ids_.end(), request_id);
+  if (it_ids != request_ids_.end()) {
+    request_ids_.erase(it_ids);
+  }
+}
+
+void RewardsServiceImpl::OnSetOnDemandFaviconComplete(const std::string& favicon_url,
+                                                      ledger::FetchIconCallback callback,
+                                                      bool success) {
+  callback(success, favicon_url);
+}
+
+void RewardsServiceImpl::GetPublisherBanner(const std::string& publisher_id) {
+  ledger_->GetPublisherBanner(publisher_id,
+      std::bind(&RewardsServiceImpl::OnPublisherBanner, this, _1));
+}
+
+void RewardsServiceImpl::OnPublisherBanner(std::unique_ptr<ledger::PublisherBanner> banner) {
+  brave_rewards::PublisherBanner new_banner;
+
+  if (!banner) {
+    return;
+  }
+
+  new_banner.publisher_key = banner->publisher_key;
+  new_banner.title = banner->title;
+  new_banner.name = banner->name;
+  new_banner.description = banner->description;
+  new_banner.background = banner->background;
+  new_banner.logo = banner->logo;
+  new_banner.amounts = banner->amounts;
+  new_banner.social = banner->social;
+
+  for (auto& observer : observers_)
+    observer.OnPublisherBanner(this, new_banner);
+}
+
+void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount, bool recurring) {
+  if (recurring) {
+    SaveRecurringDonation(publisher_key, amount);
+    return;
+  }
+
+  ledger::PublisherInfo publisher_info(
+    publisher_key,
+    ledger::PUBLISHER_MONTH::ANY,
+    -1);
+
+  ledger_->DoDirectDonation(publisher_info, amount, "BAT");
+}
+
+bool SaveContributionInfoOnFileTaskRunner(const brave_rewards::ContributionInfo info,
+  PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertContributionInfo(info))
+    return true;
+
+  return false;
+}
+
+void RewardsServiceImpl::OnContributionInfoSaved(const ledger::PUBLISHER_CATEGORY category, bool success) {
+  if (success && category == ledger::PUBLISHER_CATEGORY::DIRECT_DONATION) {
+    TipsUpdated();
+  }
+}
+
+void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
+  const int month,
+  const int year,
+  const uint32_t date,
+  const std::string& publisher_key,
+  const ledger::PUBLISHER_CATEGORY category) {
+
+  brave_rewards::ContributionInfo info;
+  info.probi = probi;
+  info.month = month;
+  info.year = year;
+  info.date = date;
+  info.publisher_key = publisher_key;
+  info.category = category;
+
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&SaveContributionInfoOnFileTaskRunner,
+                    info,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
+                     AsWeakPtr(),
+                     category));
+}
+
+bool SaveRecurringDonationOnFileTaskRunner(const brave_rewards::RecurringDonation info,
+  PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertOrUpdateRecurringDonation(info))
+    return true;
+
+  return false;
+}
+
+void RewardsServiceImpl::OnRecurringDonationSaved(bool success) {
+  if (success) {
+    UpdateRecurringDonationsList();
+  }
+}
+
+void RewardsServiceImpl::SaveRecurringDonation(const std::string& publisher_key, const int amount) {
+  brave_rewards::RecurringDonation info;
+  info.publisher_key = publisher_key;
+  info.amount = amount;
+  info.added_date = GetCurrentTimestamp();
+
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&SaveRecurringDonationOnFileTaskRunner,
+                    info,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnRecurringDonationSaved,
+                     AsWeakPtr()));
+
+}
+
+ledger::PublisherInfoList GetRecurringDonationsOnFileTaskRunner(PublisherInfoDatabase* backend) {
+  ledger::PublisherInfoList list;
+  if (!backend) {
+    return list;
+  }
+
+  backend->GetRecurringDonations(&list);
+
+  return list;
+}
+
+void RewardsServiceImpl::OnRecurringDonationsData(const ledger::PublisherInfoListCallback callback,
+                                                  const ledger::PublisherInfoList list) {
+  callback(list, 0);
+}
+
+void RewardsServiceImpl::GetRecurringDonations(ledger::PublisherInfoListCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&GetRecurringDonationsOnFileTaskRunner,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnRecurringDonationsData,
+                     AsWeakPtr(),
+                     callback));
+
+}
+
+void RewardsServiceImpl::UpdateRecurringDonationsList() {
+  GetRecurringDonations(std::bind(&RewardsServiceImpl::OnRecurringDonationUpdated, this, _1));
+}
+
+void RewardsServiceImpl::UpdateTipsList() {
+  TipsUpdated();
+}
+
+void RewardsServiceImpl::OnRecurringDonationUpdated(const ledger::PublisherInfoList& list) {
+  brave_rewards::ContentSiteList new_list;
+
+  for (auto &publisher : list) {
+    brave_rewards::ContentSite site = PublisherInfoToContentSite(publisher);
+    site.percentage = publisher.weight;
+    new_list.push_back(site);
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnRecurringDonationUpdated(this, new_list);
+  }
+}
+
+ledger::PublisherInfoList TipsUpdatedOnFileTaskRunner(PublisherInfoDatabase* backend) {
+  ledger::PublisherInfoList list;
+  if (!backend) {
+    return list;
+  }
+
+  auto now = base::Time::Now();
+  backend->GetTips(&list, GetPublisherMonth(now), GetPublisherYear(now));
+
+  return list;
+}
+
+void RewardsServiceImpl::OnTipsUpdatedData(const ledger::PublisherInfoList list) {
+  brave_rewards::ContentSiteList new_list;
+
+  for (auto &publisher : list) {
+    brave_rewards::ContentSite site = PublisherInfoToContentSite(publisher);
+    site.percentage = publisher.weight;
+    new_list.push_back(site);
+  }
+
+  for (auto& observer : observers_) {
+    observer.OnCurrentTips(this, new_list);
+  }
+}
+
+void RewardsServiceImpl::RemoveRecurring(const std::string& publisher_key) {
+  ledger_->RemoveRecurring(publisher_key);
+}
+
+void RewardsServiceImpl::TipsUpdated() {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&TipsUpdatedOnFileTaskRunner,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnTipsUpdatedData,
+                     AsWeakPtr()));
+
+}
+
+bool RemoveRecurringOnFileTaskRunner(const std::string publisher_key, PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return false;
+  }
+
+  return backend->RemoveRecurring(publisher_key);
+}
+
+void RewardsServiceImpl::OnRemovedRecurring(ledger::RecurringRemoveCallback callback, bool success) {
+  callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  UpdateRecurringDonationsList();
+}
+
+void RewardsServiceImpl::OnRemoveRecurring(const std::string& publisher_key,
+                                           ledger::RecurringRemoveCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::Bind(&RemoveRecurringOnFileTaskRunner,
+                    publisher_key,
+                    publisher_info_backend_.get()),
+      base::Bind(&RewardsServiceImpl::OnRemovedRecurring,
+                     AsWeakPtr(), callback));
+}
+
+void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
+    const ledger::BalanceReportInfo& report) {
+  for (auto& observer : private_observers_) {
+    brave_rewards::BalanceReport balance_report;
+    balance_report.opening_balance = report.opening_balance_;
+    balance_report.closing_balance = report.closing_balance_;
+    balance_report.grants = report.grants_;
+    balance_report.earning_from_ads = report.earning_from_ads_;
+    balance_report.auto_contribute = report.auto_contribute_;
+    balance_report.recurring_donation = report.recurring_donation_;
+    balance_report.one_time_donation = report.one_time_donation_;
+    observer.OnGetCurrentBalanceReport(this, balance_report);
+  }
+}
+
+void RewardsServiceImpl::TriggerOnGetPublisherActivityFromUrl(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info,
+    uint64_t windowId) {
+  if (!info) {
+    info.reset(new ledger::PublisherInfo());
+    info->id = "";
+  }
+  for (auto& observer : observers_)
+    observer.OnGetPublisherActivityFromUrl(this, result, info.get(), windowId);
+}
+
+void RewardsServiceImpl::SetContributionAutoInclude(std::string publisher_key,
+  bool excluded, uint64_t windowId) {
+  ledger_->SetPublisherPanelExclude(publisher_key, excluded ?
+    ledger::PUBLISHER_EXCLUDE::EXCLUDED : ledger::PUBLISHER_EXCLUDE::INCLUDED,
+    windowId);
+}
+
+RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
+  return notification_service_.get();
+}
+
+void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
+  if (level == ledger::LogLevel::LOG_ERROR) {
+    LOG(ERROR) << text;
+    return;
+  }
+
+  if (level == ledger::LogLevel::LOG_WARNING) {
+    LOG(WARNING) << text;
+    return;
+  }
+
+  if (level == ledger::LogLevel::LOG_INFO) {
+    LOG(INFO) << text;
+    return;
+  }
+
+  VLOG(level) << text;
+}
+
+// static
+void RewardsServiceImpl::HandleFlags(const std::string& options) {
+  std::vector<std::string> flags = base::SplitString(
+      options, ",", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  for (const auto& flag : flags) {
+    if (flag.empty()) {
+      continue;
     }
 
-    extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
+    std::vector<std::string> values = base::SplitString(
+      flag, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-    if (!info.get()) {
-      info.reset(new ledger::PublisherInfo());
-      info->id = "";
+    if (values.size() != 2) {
+      continue;
     }
 
-    publisher.percentage = info->percent;
-    publisher.verified = info->verified;
-    publisher.excluded = info->excluded;
-    publisher.name = info->name;
-    publisher.url = info->url;
-    publisher.provider = info->provider;
-    publisher.favicon_url = info->favicon_url;
-    publisher.publisher_key = info->id;
-    std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_rewards::OnPublisherData::Create(windowId, publisher)
-          .release());
+    std::string name = base::ToLowerASCII(values[0]);
+    std::string value = values[1];
 
-    std::unique_ptr<Event> event(
-        new Event(extensions::events::BRAVE_ON_PUBLISHER_DATA,
-          extensions::api::brave_rewards::OnPublisherData::kEventName,
-          std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
+    if (value.empty()) {
+      continue;
+    }
+
+    if (name == "staging") {
+      std::string lower = base::ToLowerASCII(value);
+      if (lower == "true" || lower == "1") {
+        ledger::is_production = false;
+      } else {
+        ledger::is_production = true;
+      }
+      continue;
+    }
+
+    if (name == "reconcile-interval") {
+      int reconcile_int;
+      bool success = base::StringToInt(value, &reconcile_int);
+      if (success && reconcile_int > 0) {
+        ledger::reconcile_time = reconcile_int;
+      }
+      continue;
+    }
+
+    if (name == "short-retries") {
+      std::string lower = base::ToLowerASCII(value);
+      if (lower == "true" || lower == "1") {
+        ledger::short_retries = true;
+      } else {
+        ledger::short_retries = false;
+      }
+    }
   }
 }
 

@@ -11,10 +11,14 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
+
+class PrefRegistrySimple;
+class Profile;
 
 namespace content {
 class NavigationHandle;
@@ -26,6 +30,7 @@ bool IsMediaLink(const GURL& url,
                  const GURL& first_party_url,
                  const GURL& referrer);
 
+class RewardsNotificationService;
 class RewardsServiceObserver;
 
 using GetContentSiteListCallback =
@@ -38,11 +43,11 @@ class RewardsService : public KeyedService {
   ~RewardsService() override;
 
   virtual void CreateWallet() = 0;
-  virtual void GetWalletProperties() = 0;
+  virtual void FetchWalletProperties() = 0;
   virtual void GetContentSiteList(uint32_t start,
                                   uint32_t limit,
                                 const GetContentSiteListCallback& callback) = 0;
-  virtual void GetGrant(const std::string& lang, const std::string& paymentId) = 0;
+  virtual void FetchGrant(const std::string& lang, const std::string& paymentId) = 0;
   virtual void GetGrantCaptcha() = 0;
   virtual void SolveGrantCaptcha(const std::string& solution) const = 0;
   virtual std::string GetWalletPassphrase() const = 0;
@@ -82,10 +87,21 @@ class RewardsService : public KeyedService {
   virtual std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() = 0;
   virtual void GetCurrentBalanceReport() = 0;
   virtual bool IsWalletCreated() = 0;
-  virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url) = 0;
+  virtual void GetPublisherActivityFromUrl(uint64_t windowId, const std::string& url, const std::string& favicon_url) = 0;
+  virtual double GetContributionAmount() = 0;
+  virtual void GetPublisherBanner(const std::string& publisher_id) = 0;
+  virtual void OnDonate(const std::string& publisher_key, int amount, bool recurring) = 0;
+  virtual void RemoveRecurring(const std::string& publisher_key) = 0;
+  virtual void UpdateRecurringDonationsList() = 0;
+  virtual void UpdateTipsList() = 0;
+  virtual void SetContributionAutoInclude(
+    std::string publisher_key, bool excluded, uint64_t windowId) = 0;
+  virtual RewardsNotificationService* GetNotificationService() const = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

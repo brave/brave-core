@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/basic_page/basic_page.html b/chrome/browser/resources/settings/basic_page/basic_page.html
-index ec867412506f8a19f5caf5272f6fcd09e159f0ae..773fb6686c41078d72245c6c32c979ca1fcd7e71 100644
+index 2e8fb6c622b75e53380e0e21c38e14e116d2c59e..3d0fc996e7e0203a6362b434e96c8139d709c4c7 100644
 --- a/chrome/browser/resources/settings/basic_page/basic_page.html
 +++ b/chrome/browser/resources/settings/basic_page/basic_page.html
 @@ -26,6 +26,7 @@
@@ -10,7 +10,7 @@ index ec867412506f8a19f5caf5272f6fcd09e159f0ae..773fb6686c41078d72245c6c32c979ca
  </if>
  
  <!-- TODO(michaelpg): Rename to something better than "basic" now that this page
-@@ -208,6 +209,13 @@
+@@ -205,6 +206,13 @@
            </settings-section>
          </template>
  </if>

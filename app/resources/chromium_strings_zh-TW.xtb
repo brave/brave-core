@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave 作業系統</translation>
 <translation id="4847979153841887006">Brave 標誌</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">登入 Brave</translation>
 <translation id="5516268345616100622">工作管理員 - Brave</translation>
 <translation id="7918740962659365265">將當機報告和<ph name="UMA_LINK"/>傳送給 Brave Software，助我們一臂之力，讓 Brave 更臻完美</translation>
@@ -50,7 +49,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="8030318113982266900">正在將裝置更新至「<ph name="CHANNEL_NAME"/>」...</translation>
 <translation id="7355059611036077582">新增至 Brave</translation>
 <translation id="7456658570432774853">只要回報目前的設定，就能助我們一臂之力，讓 Brave 更臻完美</translation>
-<translation id="5436841087823876677">警告：Brave 無法禁止擴充功能記錄你的瀏覽活動。如要在無痕模式中停用這個擴充功能，請取消選取這個選項。</translation>
+<translation id="6134859571175647580">警告：Brave 無法禁止擴充功能記錄你的瀏覽活動。如要在無痕模式中停用這個擴充功能，請取消選取這個選項。</translation>
 <translation id="777113543093865885">從 Brave 中移除...</translation>
 <translation id="6078442581074612226">在 Brave 中</translation>
 <translation id="8148611988012584308">自訂及控制 Brave</translation>
@@ -116,6 +115,9 @@ Brave 無法復原你的設定。</translation>
 <translation id="7977435741986383568">Brave 可能會使用網路服務改善你的瀏覽體驗。不過，你可以選擇停用這些服務。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將你在文字欄位輸入的文字傳送給 Brave Software</translation>
 <translation id="815816884817177844">與各項 Brave Software 服務連結，讓瀏覽體驗和 Brave 效能更臻完善</translation>
+<translation id="8586264863973514035">如要套用變更，請重新啟動 Brave</translation>
+<translation id="7021823858304886493">允許登入 Brave</translation>
+<translation id="1649714546770135458">關閉這項功能後，你可以單獨登入 Gmail 等這類 Brave Software 網站，不必同時登入 Brave</translation>
 <translation id="6274110506580702455">這部裝置的管理員停用了 Brave 的登入功能。</translation>
 <translation id="9220324636239049437">登出後，系統會將 1 個項目從這個裝置上刪除。日後如要重新取得你的資料，請以 <ph name="USER_EMAIL"/> 身分登入 Brave。</translation>
 <translation id="5853262807109651878">登出後，系統會將 <ph name="ITEMS_COUNT"/> 個項目從這個裝置上刪除。日後如要重新取得你的資料，請以 <ph name="USER_EMAIL"/> 身分登入 Brave。</translation>

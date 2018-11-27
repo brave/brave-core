@@ -1,0 +1,56 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_style.cc b/chrome/browser/ui/views/tabs/tab_style.cc
+index 76b4beafc613ebe4246f0117cdf52f98792a1cde..a42862b9fd9c9289ce0a447cd5401d0f7fc6194f 100644
+--- a/chrome/browser/ui/views/tabs/tab_style.cc
++++ b/chrome/browser/ui/views/tabs/tab_style.cc
+@@ -127,7 +127,7 @@ class GM2TabStyle : public TabStyle {
+ 
+ // Thickness in DIPs of the separator painted on the left and right edges of
+ // the tab.
+-constexpr int kSeparatorThickness = 1;
++constexpr int kSeparatorThickness = 2;
+ 
+ // Returns the radius of the outer corners of the tab shape.
+ int GetCornerRadius() {
+@@ -143,7 +143,7 @@ int GetContentsHorizontalInsetSize() {
+ 
+ // Returns the height of the separator between tabs.
+ int GetSeparatorHeight() {
+-  constexpr int kTabSeparatorHeight = 20;
++  constexpr int kTabSeparatorHeight = 24;
+   constexpr int kTabSeparatorTouchHeight = 24;
+   return ui::MaterialDesignController::IsTouchOptimizedUiEnabled()
+              ? kTabSeparatorTouchHeight
+@@ -270,6 +270,7 @@ gfx::Path GM2TabStyle::GetPath(PathType path_type,
+   // When the radius shrinks, it leaves a gap between the bottom corners and the
+   // edge of the tab. Make sure we account for this - and for any adjustment we
+   // may have made to the location of the tab!
++  bottom_radius = 0;
+   const float corner_gap = (right - tab_right) - bottom_radius;
+ 
+   gfx::Path path;
+@@ -376,7 +377,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
+   separator_bounds.leading =
+       gfx::RectF(aligned_bounds.x() + corner_radius,
+                  aligned_bounds.y() +
+-                     (aligned_bounds.height() - separator_size.height()) / 2,
++                     aligned_bounds.height() - separator_size.height(),
+                  separator_size.width(), separator_size.height());
+ 
+   separator_bounds.trailing = separator_bounds.leading;
+@@ -688,13 +689,13 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+                        gfx::Tween::IntValueBetween(opacity, SK_AlphaTRANSPARENT,
+                                                    SK_AlphaOPAQUE));
+   };
+-
++  const int separator_radius = separator_bounds.leading.width() / 2;
+   cc::PaintFlags flags;
+   flags.setAntiAlias(true);
+   flags.setColor(separator_color(separator_opacities.left));
+-  canvas->DrawRect(separator_bounds.leading, flags);
++  canvas->DrawRoundRect(separator_bounds.leading, separator_radius, flags);
+   flags.setColor(separator_color(separator_opacities.right));
+-  canvas->DrawRect(separator_bounds.trailing, flags);
++  canvas->DrawRoundRect(separator_bounds.trailing, separator_radius, flags);
+ }
+ 
+ // static

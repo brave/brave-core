@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Nembo ya Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">ingia katika Brave</translation>
 <translation id="5516268345616100622">Kidhibiti cha Shughuli - Brave</translation>
 <translation id="7918740962659365265">Saidia kuboresha Brave kwa kutuma ripoti za kuacha kufanya kazi na <ph name="UMA_LINK"/> kwenda Brave Software</translation>
@@ -52,7 +51,7 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="8030318113982266900">Inasasisha kituo chako kwenda kituo cha <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Ongeza kwenye Brave</translation>
 <translation id="7456658570432774853">Saidia kuboresha Brave kwa kuripoti mipangilio ya sasa</translation>
-<translation id="5436841087823876677">Ilani: Brave haiwezi kuzuia viendelezi kurekodi historia yako ya kuvinjari. Ili kuzima kiendelezi hiki katika hali fiche, batilisha chaguo hili.</translation>
+<translation id="6134859571175647580">Ilani: Brave haiwezi kuzuia viendelezi kurekodi historia yako ya kuvinjari. Ili kuzima kiendelezi hiki katika hali fiche, batilisha chaguo hili.</translation>
 <translation id="777113543093865885">Ondoa kwenye Brave...</translation>
 <translation id="6078442581074612226">Katika Brave</translation>
 <translation id="8148611988012584308">Dhibiti na ugeuze Brave ikufae</translation>
@@ -118,6 +117,9 @@ Brave haiwezi kufufua mipangilio yako.</translation>
 <translation id="7977435741986383568">Brave inaweza kutumia huduma za wavuti kuboresha hali yako ya kuvinjari. Unaweza kuzima huduma hizi kwa hiari. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Ili kurekebisha makosa ya tahajia, Brave hutuma maandishi unayoandika kwenye sehemu za maandishi kwa Brave Software</translation>
 <translation id="815816884817177844">Huwasiliana na Brave Software ili kuboresha huduma za kuvinjari na Brave</translation>
+<translation id="8586264863973514035">Ili utumie mabadiliko uliyofanya, fungua Brave upya</translation>
+<translation id="7021823858304886493">Ruhusu kuingia katika akaunti ya Brave</translation>
+<translation id="1649714546770135458">Kwa kuzima kipengele hiki, unaweza kuingia katika tovuti za Brave Software kama vile Gmail bila kuingia katika akaunti ya Brave</translation>
 <translation id="6274110506580702455">Msimamizi wa kifaa hiki amezima kipengele cha kuingia katika akaunti ya Brave.</translation>
 <translation id="9220324636239049437">Hatua hii itafuta kipengee 1 kwenye kifaa hiki. Ili urejeshe data yako baadaye, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Hatua hii itafuta vipengee <ph name="ITEMS_COUNT"/> kwenye kifaa hiki. Ili urejeshe data yako baadaye, ingia katika Brave ukitumia <ph name="USER_EMAIL"/>.</translation>

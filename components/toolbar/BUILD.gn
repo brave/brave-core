@@ -1,0 +1,30 @@
+source_set("toolbar") {
+
+  sources = [
+    "brave_toolbar_model_impl.cc",
+    "brave_toolbar_model_impl.h",
+    "constants.cc",
+    "constants.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/toolbar"
+  ]
+
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "toolbar_model_impl_unittest.cc",
+  ]
+
+  deps = [
+    ":toolbar",
+    "//base",
+    "//components/toolbar",
+    "//testing/gtest",
+    "//url",
+  ]
+}

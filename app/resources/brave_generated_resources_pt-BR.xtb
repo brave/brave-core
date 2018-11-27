@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-BR">
+<translation id="3333887201479867589">Recompensas Brave</translation>
+<translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
+<translation id="7450557937477381864">Fechar o Chrome</translation>
+<translation id="7008934821596358692">Para concluir a importação, feche todas as janelas do Chrome.</translation>
+<translation id="7753103220327065417">Fechar Brave</translation>
+<translation id="5588481533147090393">Para finalizar a importação, feche todas as janelas do Brave.</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="4983925687993168579">Estatísticas</translation>
+<translation id="9173846700806833701">Widevine não está instalado</translation>
+<translation id="2433569048491784801">Widevine não está instalado.</translation>
+<translation id="3699882589215410581">Instalar e iniciar Widevine</translation>
+<translation id="8410111618231938546">O Google Widevine é um código de Gerenciamento de Direitos Digitais (DRM) que nós da Brave Software não possuímos e não podemos inspecionar. O código do Google Widevine é carregado dos servidores do Google, não dos nossos servidores. Ele é carregado apenas quando você ativa essa opção. Desencorajamos o uso de DRM, mas respeitamos a escolha do usuário e reconhecemos que alguns usuários do Brave gostariam de usar serviços que o exigem.
+
+Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevine. Você concorda que o Brave não é responsável por quaisquer danos ou perdas relacionadas ao seu uso do Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importar do Brave</translation>
+<translation id="453977518730680921">Mídia de reprodução automática</translation>
+<translation id="410351446219883937">Reprodução automática</translation>
+<translation id="2240268017737062801">Perguntar quando um site desejar reproduzir mídia automaticamente</translation>
+<translation id="3371702087847741961">Perguntar quando um site desejar reproduzir mídia automaticamente (recomendado)</translation>
+<translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
+<translation id="4150684676757176434">Continuar bloqueando a reprodução automática</translation>
+<translation id="2044383478723007273">Cores brave</translation>
+<translation id="5341901626640816374">Use barra de localização ampla</translation>
+<translation id="7965178729203412357">Nova Identidade Tor</translation>
+<translation id="8784924142044142231">Sair do Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Abrir Janela Tor</translation>
+<translation id="3155170474926428993">Inicializador Tor</translation>
+<translation id="7372129767729198111">Padrões de proteção Brave</translation>
+<translation id="8029018702721078742">Controle de Anúncio</translation>
+<translation id="3544462288910360084">Controle de Cookies</translation>
+<translation id="8919235146866304148">Proteção de impressão digital</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="5259716416204774556">Bloqueio de texto</translation>
+<translation id="6067014455220527258">Bloquear anúncios</translation>
+<translation id="6985711843506827936">Permitir anúncios e rastreamento</translation>
+<translation id="6132506775968708399">Bloquear cookies de terceiros</translation>
+<translation id="5657156137487675418">Permitir todos os cookies</translation>
+<translation id="6883611015375728278">Bloquear todos os cookies</translation>
+<translation id="1442559343076146186">Bloquear impressão digital de terceiros</translation>
+<translation id="8034285923190068220">Permitir impressão digital</translation>
+<translation id="4540198958192073185">Bloquear todas as impressões digitais</translation>
+<translation id="8942080017911802454">Política de Tratamento de IP WebRTC</translation>
+<translation id="6165508094623778733">Saiba mais</translation>
+<translation id="8798099450830957504">Padrão</translation>
+<translation id="1822560017823072927">Interfaces públicas e privadas padrão</translation>
+<translation id="5825943197137337319">Apenas interface pública padrão</translation>
+<translation id="1689062823386843231">Desativar UDP não proxy</translation>
 </translationbundle>

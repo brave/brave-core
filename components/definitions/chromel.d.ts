@@ -14,7 +14,8 @@ declare namespace chrome.dns {
 
 declare namespace chrome.braveRewards {
   const createWallet: () => {}
-  const getPublisherData: (windowId: number, url: string) => {}
+  const donateToSite: (tabId: number, publisherKey: string) => {}
+  const getPublisherData: (windowId: number, url: string, faviconUrl: string) => {}
   const getWalletProperties: () => {}
   const getCurrentReport: () => {}
   const onWalletCreated: {
@@ -28,5 +29,27 @@ declare namespace chrome.braveRewards {
   }
   const onCurrentReport: {
     addListener: (callback: (properties: RewardsExtension.Report) => void) => void
+  }
+  const includeInAutoContribution: (publisherKey: string, excluded: boolean, windowId: number) => {}
+  const getGrant: () => {}
+}
+
+declare namespace chrome.rewardsNotifications {
+  const addNotification: (type: number, args: string[], id: string) => {}
+  const deleteNotification: (id: string) => {}
+  const deleteAllNotifications: () => {}
+  const getNotification: (id: string) => {}
+
+  const onNotificationAdded: {
+    addListener: (callback: (id: string, type: number, timestamp: number, args: string[]) => void) => void
+  }
+  const onNotificationDeleted: {
+    addListener: (callback: (id: string, type: number, timestamp: number) => void) => void
+  }
+  const onAllNotificationsDeleted: {
+    addListener: (callback: () => void) => void
+  }
+  const onGetNotification: {
+    addListener: (callback: (id: string, type: number, timestamp: number) => void) => void
   }
 }

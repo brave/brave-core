@@ -19,8 +19,11 @@ class BraveLocationBarView : public LocationBarView {
     void Layout() override;
     void Update(const content::WebContents* contents) override;
     void OnChanged() override;
+
+    // views::View:
     gfx::Size CalculatePreferredSize() const override;
     void OnThemeChanged() override;
+    void ChildPreferredSizeChanged(views::View* child) override;
 
   private:
     void UpdateBookmarkStarVisibility() override;

@@ -29,7 +29,8 @@ class BraveComponentExtension : public ComponentsUI {
  protected:
   virtual void OnComponentRegistered(const std::string& component_id);
   virtual void OnComponentReady(const std::string& component_id,
-                                const base::FilePath& install_dir);
+                                const base::FilePath& install_dir,
+                                const std::string& manifest);
 
  private:
   std::string component_name_;

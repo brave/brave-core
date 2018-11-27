@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave ОС</translation>
 <translation id="4847979153841887006">Brave логотип</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">пријавите се на Brave</translation>
 <translation id="5516268345616100622">Менаџер задатака – Brave</translation>
 <translation id="7918740962659365265">Помозите нам да побољшамо Brave тако што ћете Brave Software-у слати извештаје о отказивању и <ph name="UMA_LINK"/></translation>
@@ -52,7 +51,7 @@ Brave не може да врати подешавања.</translation>
 <translation id="8030318113982266900">Ажурирање уређаја на канал <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Додавање у Brave</translation>
 <translation id="7456658570432774853">Помозите да побољшамо Brave тако што ћете послати извештај о актуелним подешавањима</translation>
-<translation id="5436841087823876677">Упозорење: Brave не може да спречи додатке да чувају историју прегледања. Да бисте онемогућили овај додатак у режиму без архивирања, опозовите избор ове опције.</translation>
+<translation id="6134859571175647580">Упозорење: Brave не може да спречи додатке да чувају историју прегледања. Да бисте онемогућили овај додатак у режиму без архивирања, опозовите избор ове опције.</translation>
 <translation id="777113543093865885">Уклони из Brave-а...</translation>
 <translation id="6078442581074612226">У Brave-у</translation>
 <translation id="8148611988012584308">Прилагодите и контролишите Brave</translation>
@@ -118,6 +117,9 @@ Brave не може да врати подешавања.</translation>
 <translation id="7977435741986383568">Brave може да користи веб-услуге да би побољшао доживљај прегледања. Можете опционално да онемогућите те услуге. <ph name="BEGIN_LINK"/>Сазнајте више<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Да би исправио правописне грешке, Brave шаље Brave Software-овим серверима текст који уносите у поља за текст.</translation>
 <translation id="815816884817177844">Комуницира са Brave Software-ом ради побољшања прегледања и Brave-а</translation>
+<translation id="8586264863973514035">Да бисте применили промене, поново покрените Brave</translation>
+<translation id="7021823858304886493">Дозволи пријављивање у Brave</translation>
+<translation id="1649714546770135458">Када то укључите, можете да се пријављујете на Brave Software сајтове, као што је Gmail, али се не пријављујете у Brave</translation>
 <translation id="6274110506580702455">Пријављивање у Brave је онемогућио администратор овог уређаја.</translation>
 <translation id="9220324636239049437">Овим ћете избрисати 1 ставку са овог уређаја. Да бисте касније вратили податке, пријавите се у Brave као <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Овим ћете избрисати <ph name="ITEMS_COUNT"/> ставке(и) са овог уређаја. Да бисте касније вратили податке, пријавите се у Brave као <ph name="USER_EMAIL"/>.</translation>

@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logotipo de Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">iniciar sesión en Brave</translation>
 <translation id="5516268345616100622">Administrador de tareas - Brave</translation>
 <translation id="7918740962659365265">Ayudar a mejorar Brave enviando informes sobre fallos y <ph name="UMA_LINK"/> a Brave Software</translation>
@@ -52,7 +51,7 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="8030318113982266900">Actualizando el canal del dispositivo a <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Añadir a Brave</translation>
 <translation id="7456658570432774853">Ayuda a mejorar Brave informando de la configuración actual</translation>
-<translation id="5436841087823876677">Advertencia: Brave no puede evitar que las extensiones registren el historial de navegación. Para inhabilitar esta extensión en modo de incógnito, desactiva esta opción.</translation>
+<translation id="6134859571175647580">Advertencia: Brave no puede evitar que las extensiones registren el historial de navegación. Para inhabilitar esta extensión en modo de incógnito, desactiva esta opción.</translation>
 <translation id="777113543093865885">Desinstalar de Brave...</translation>
 <translation id="6078442581074612226">En Brave</translation>
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
@@ -118,6 +117,9 @@ Brave no puede recuperar tu configuración.</translation>
 <translation id="7977435741986383568">Brave puede utilizar los servicios web para mejorar la experiencia de navegación. Puedes inhabilitar estos servicios. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Para corregir errores ortográficos, Brave envía a Brave Software el texto que escribes en los campos de texto</translation>
 <translation id="815816884817177844">Se comunica con Brave Software para mejorar la navegación y Brave</translation>
+<translation id="8586264863973514035">Reinicia Brave para aplicar los cambios</translation>
+<translation id="7021823858304886493">Permitir el inicio de sesión en Brave</translation>
+<translation id="1649714546770135458">Si esta opción está desactivada, puedes iniciar sesión en sitios de Brave Software, como Gmail, sin hacerlo en Brave</translation>
 <translation id="6274110506580702455">El administrador de este dispositivo ha inhabilitado el inicio de sesión en Brave.</translation>
 <translation id="9220324636239049437">Se eliminará un elemento de este dispositivo. Para recuperar tus datos en otro momento, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Se eliminarán <ph name="ITEMS_COUNT"/> elementos de este dispositivo. Para recuperar tus datos en otro momento, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>

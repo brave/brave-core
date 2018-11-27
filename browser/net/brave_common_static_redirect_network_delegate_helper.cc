@@ -8,8 +8,6 @@
 #include "components/component_updater/component_updater_url_constants.h"
 #include "extensions/common/extension_urls.h"
 #include "extensions/common/url_pattern.h"
-#include "net/url_request/url_request.h"
-
 
 namespace brave {
 
@@ -29,14 +27,12 @@ bool IsUpdaterURL(const GURL& gurl) {
 }
 
 int OnBeforeURLRequest_CommonStaticRedirectWork(
-    net::URLRequest* request,
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   GURL::Replacements replacements;
-  if (IsUpdaterURL(request->url())) {
-    replacements.SetQueryStr(request->url().query_piece());
-    *new_url = GURL(kBraveUpdatesExtensionsEndpoint).ReplaceComponents(replacements);
+  if (IsUpdaterURL(ctx->request_url)) {
+    replacements.SetQueryStr(ctx->request_url.query_piece());
+    ctx->new_url_spec = GURL(kBraveUpdatesExtensionsEndpoint).ReplaceComponents(replacements).spec();
     return net::OK;
   }
   return net::OK;

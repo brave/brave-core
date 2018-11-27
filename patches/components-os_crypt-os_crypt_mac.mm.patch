@@ -1,0 +1,15 @@
+diff --git a/components/os_crypt/os_crypt_mac.mm b/components/os_crypt/os_crypt_mac.mm
+index 91a27e4f43f1e3d2078c8f1d9038bcb40c07c445..6f64e71624a5866193bacda30b01f19892638af4 100644
+--- a/components/os_crypt/os_crypt_mac.mm
++++ b/components/os_crypt/os_crypt_mac.mm
+@@ -100,6 +100,10 @@ crypto::SymmetricKey* GetEncryptionKey() {
+     DCHECK(!g_key_creation_util);
+     g_key_creation_util = new os_crypt::EncryptionKeyCreationUtilIOS();
+ #endif
++    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
++    if (!command_line->HasSwitch("import-chrome") &&
++        command_line->HasSwitch("import-chromium") &&
++        command_line->HasSwitch("import-brave"))
+     DCHECK(g_key_creation_util);
+     AppleKeychain keychain;
+     KeychainPassword encryptor_password(

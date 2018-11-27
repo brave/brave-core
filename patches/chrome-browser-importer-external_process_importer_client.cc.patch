@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.cc b/chrome/browser/importer/external_process_importer_client.cc
-index c0970768d65ee4c629f17f61ca9204c53f1cdba7..13871d88bc7c766f75c3e4dd440bf086627f3bc5 100644
+index 7320911bb2c1e848eafe487f9b376df2177521e8..6e7278eb8fd6fc9fd2ad339192e4eb7cf7ba3964 100644
 --- a/chrome/browser/importer/external_process_importer_client.cc
 +++ b/chrome/browser/importer/external_process_importer_client.cc
 @@ -69,6 +69,12 @@ void ExternalProcessImporterClient::Start() {

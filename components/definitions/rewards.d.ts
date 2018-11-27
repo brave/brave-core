@@ -4,13 +4,20 @@ declare namespace Rewards {
   }
 
   export enum Result {
-    OK = 0,
-    ERROR = 1,
+    LEDGER_OK = 0,
+    LEDGER_ERROR = 1,
     NO_PUBLISHER_STATE = 2,
     NO_LEDGER_STATE = 3,
     INVALID_PUBLISHER_STATE = 4,
     INVALID_LEDGER_STATE = 5,
-    CAPTCHA_FAILED = 6
+    CAPTCHA_FAILED = 6,
+    NO_PUBLISHER_LIST = 7,
+    TOO_MANY_RESULTS = 8,
+    NOT_FOUND = 9,
+    REGISTRATION_VERIFICATION_FAILED = 10,
+    BAD_REGISTRATION_RESPONSE = 11,
+    WALLET_CREATED = 12,
+    GRANT_NOT_FOUND = 13
   }
 
   export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
@@ -18,34 +25,41 @@ declare namespace Rewards {
 
   export interface State {
     addresses?: Record<AddressesType, Address>
-    createdTimestamp: number | null
-    enabledMain: boolean
-    enabledAds: boolean
-    enabledContribute: boolean
-    firstLoad: boolean | null
-    walletCreated: boolean
-    walletCreateFailed: boolean
+    autoContributeList: Publisher[]
+    connectedWallet: boolean
+    contributeLoad: boolean
     contributionMinTime: number
     contributionMinVisits: number
     contributionMonthly: number
     contributionNonVerified: boolean
     contributionVideos: boolean
-    donationAbilityYT: boolean
+    createdTimestamp: number | null
     donationAbilityTwitter: boolean
-    numExcludedSites: number
-    walletInfo: WalletProperties
-    connectedWallet: boolean
-    recoveryKey: string
+    donationAbilityYT: boolean
+    enabledAds: boolean
+    enabledContribute: boolean
+    enabledMain: boolean
+    excluded: string[]
+    firstLoad: boolean | null
     grant?: Grant
+    numExcludedSites: number
     reconcileStamp: number
+    recoveryKey: string
+    recurringList: Publisher[]
+    recurringLoad: boolean
     reports: Record<string, Report>
+    tipsList: Publisher[]
+    tipsLoad: boolean
     ui: {
-      walletRecoverySuccess: boolean | null
       emptyWallet: boolean
-      walletServerProblem: boolean
       modalBackup: boolean
+      walletRecoverySuccess: boolean | null
+      walletServerProblem: boolean
+      walletCorrupted: boolean
     }
-    autoContributeList: Publisher[]
+    walletCreated: boolean
+    walletCreateFailed: boolean
+    walletInfo: WalletProperties
   }
 
   export interface ComponentProps {
@@ -60,7 +74,7 @@ declare namespace Rewards {
     expiryTime: number
     captcha?: string
     hint?: string
-    status?: 'wrongPosition' | 'serverError' | number | null
+    status?: 'wrongPosition' | 'grantGone' | 'generalError' | number | null
   }
 
   export interface WalletProperties {
@@ -100,17 +114,19 @@ declare namespace Rewards {
     provider: string
     favIcon: string
     id: string
+    tipDate?: number
   }
 
   export interface Report {
-    ads: number
-    closing: number
-    contribute: number
-    donations: number
-    grants: number
-    oneTime: number
-    opening: number
-    total?: number
+    ads: string
+    closing: string
+    contribute: string
+    deposit: string
+    donation: string
+    grant: string
+    tips: string
+    opening: string
+    total: string
   }
 
   export interface Captcha {

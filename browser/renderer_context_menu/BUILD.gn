@@ -1,0 +1,16 @@
+source_set("renderer_context_menu") {
+  sources = []
+  if (is_win || is_linux) {
+    sources += [
+      "brave_spelling_options_submenu_observer.cc",
+      "brave_spelling_options_submenu_observer.h",
+    ]
+  }
+
+  deps = []
+  if (is_win || is_linux) {
+    deps += [
+      "//chrome/browser",
+    ]
+  }
+}

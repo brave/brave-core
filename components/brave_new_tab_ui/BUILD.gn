@@ -12,6 +12,11 @@ transpile_web_ui("brave_new_tab_ui") {
     "components/footerInfo.tsx",
     "components/siteRemovalNotification.tsx",
     "components/stats.tsx",
+    "components/privateTab/index.tsx",
+    "components/privateTab/privateTab.tsx",
+    "components/privateTab/qwantTab.tsx",
+    "components/privateTab/qwantTorTab.tsx",
+    "components/privateTab/torTab.tsx",
     "constants/backgrounds.ts",
     "constants/new_tab_types.ts",
     "constants/theme.ts",
@@ -19,5 +24,17 @@ transpile_web_ui("brave_new_tab_ui") {
     "reducers/new_tab_reducer.tsx",
   ]
 
-  bundle_names = ["brave_new_tab.bundle.js"]
+  entry_points = [
+    ["brave_new_tab", rebase_path("brave_new_tab.tsx")]
+  ]
+
+  resource_name = "brave_new_tab"
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_new_tab"
+  output_dir = "$root_gen_dir/brave/components/brave_new_tab/resources"
+  deps = [
+    ":brave_new_tab_ui"
+  ]
 }

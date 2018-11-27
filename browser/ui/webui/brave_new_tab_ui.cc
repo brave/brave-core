@@ -7,6 +7,7 @@
 #include "brave/browser/search_engine_provider_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -44,8 +45,8 @@ class NewTabDOMHandler : public content::WebUIMessageHandler {
 }  // namespace
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kBraveNewTabJS,
-        IDR_BRAVE_NEW_TAB_JS, IDR_BRAVE_NEW_TAB_HTML) {
+    : BasicUI(web_ui, name, kBraveNewTabGenerated,
+        kBraveNewTabGeneratedSize, IDR_BRAVE_NEW_TAB_HTML) {
   Profile* profile = Profile::FromWebUI(web_ui);
   PrefService* prefs = profile->GetPrefs();
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
@@ -58,6 +59,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
   pref_change_registrar_->Add(kUseAlternativeSearchEngineProvider,
     base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(kAlternativeSearchEngineProviderInTor,
+    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
 
   web_ui->AddMessageHandler(std::make_unique<NewTabDOMHandler>());
 }
@@ -66,6 +69,7 @@ BraveNewTabUI::~BraveNewTabUI() {
 }
 
 void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
   if (render_view_host) {
@@ -90,18 +94,18 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
                                                                : "false");
     render_view_host->SetWebUIProperty(
         "isTor", profile->IsTorProfile() ? "true" : "false");
+    render_view_host->SetWebUIProperty(
+        "isQwant", brave::IsRegionForQwant(profile) ? "true" : "false");
   }
 }
 
-void BraveNewTabUI::RenderFrameCreated(content::RenderFrameHost* render_frame_host) {
-  if (IsSafeToSetWebUIProperties()) {
-    CustomizeNewTabWebUIProperties(render_frame_host->GetRenderViewHost());
-  }
-}
-
-void BraveNewTabUI::OnPreferenceChanged() {
+void BraveNewTabUI::UpdateWebUIProperties() {
   if (IsSafeToSetWebUIProperties()) {
     CustomizeNewTabWebUIProperties(GetRenderViewHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
   }
+}
+
+void BraveNewTabUI::OnPreferenceChanged() {
+  UpdateWebUIProperties();
 }

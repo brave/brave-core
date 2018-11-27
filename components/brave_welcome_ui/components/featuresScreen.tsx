@@ -28,6 +28,7 @@ export default class FeaturesScreen extends React.PureComponent<{}, {}> {
           size='large'
           customStyle={theme.mainButton}
           href='chrome://settings'
+          target='_blank'
         >
           {getLocale('preferences')}
         </PushButtonLink>

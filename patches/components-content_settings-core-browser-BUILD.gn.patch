@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 94eac105b83912271b14e6e2b363289425739499..e5b356a06120214594025c48f69718ac016f4257 100644
+index 648433334ea5a5d5119e75c620952bc1c3c067a3..c23ba3a8c5ca4659c8c0460b40a92b816287baa4 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -50,6 +50,7 @@ static_library("browser") {
+@@ -51,6 +51,7 @@ jumbo_static_library("browser") {
  
    deps = [
      "//base",

@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">‏سیستم عامل Brave</translation>
 <translation id="4847979153841887006">‏نشان‌واره Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">‏ورود به سیستم Brave</translation>
 <translation id="5516268345616100622">‏مدیر فعالیت‌ها - Brave</translation>
 <translation id="7918740962659365265">‏با ارسال گزارش‌های خرابی و <ph name="UMA_LINK"/> به Brave Software، به بهبود Brave Software کمک کنید</translation>
@@ -48,7 +47,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="8030318113982266900">درحال به روزرسانی دستگاه شما به کانال <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">‏افزودن به Brave</translation>
 <translation id="7456658570432774853">‏با گزارش تنظیمات کنونی، به بهتر شدن Brave کمک کنید</translation>
-<translation id="5436841087823876677">‏هشدار: Brave نمی‌تواند مانع از ثبت سابقه مرورتان توسط افزونه‌ها شود. برای غیرفعال کردن این افزونه در حالت ناشناس، این گزینه را لغو انتخاب کنید.</translation>
+<translation id="6134859571175647580">‏هشدار: Brave نمی‌تواند مانع از ثبت سابقه مرورتان توسط افزونه‌ها شود. برای غیرفعال کردن این افزونه در حالت ناشناس، این گزینه را لغو انتخاب کنید.</translation>
 <translation id="777113543093865885">‏حذف از Brave...</translation>
 <translation id="6078442581074612226">‏در Brave</translation>
 <translation id="8148611988012584308">‏سفارشی کردن و کنترل Brave</translation>
@@ -114,6 +113,9 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="7977435741986383568">‏ممکن است Brave برای بهبود تجربه مرور شما از سرویس‌های وب استفاده کند. می‌توانید به‌صورت اختیاری این سرویس‌ها را غیرفعال کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">‏برای رفع خطاهای املائی، Brave نوشتاری را که در فیلد نوشتار تایپ می‌کنید، برای Brave Software ارسال می‌کند</translation>
 <translation id="815816884817177844">‏برای بهبود مرور و Brave، با Brave Software ارتباط برقرار می‌کند</translation>
+<translation id="8586264863973514035">‏برای اعمال تغییراتتان، Brave را راه‌اندازی مجدد کنید</translation>
+<translation id="7021823858304886493">‏مجاز کردن ورود به سیستم Brave</translation>
+<translation id="1649714546770135458">‏با خاموش کردن این گزینه، می‌توانید بدون ورود به سیستم Brave به سیستم سایت‌های Brave Software مانند Gmail وارد شوید</translation>
 <translation id="6274110506580702455">‏سرپرست این دستگاه ورود به سیستم Brave را غیرفعال کرده است.</translation>
 <translation id="9220324636239049437">‏این کار یک مورد را از این دستگاه حذف می‌کند. برای بازیابی داده‌هایتان در فرصتی دیگر، با <ph name="USER_EMAIL"/> به سیستم Brave وارد شوید.</translation>
 <translation id="5853262807109651878">‏این کار <ph name="ITEMS_COUNT"/> مورد را از این دستگاه حذف می‌کند. برای بازیابی داده‌هایتان در فرصتی دیگر، با <ph name="USER_EMAIL"/> به سیستم Brave وارد شوید.</translation>

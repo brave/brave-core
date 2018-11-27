@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">ОС Brave</translation>
 <translation id="4847979153841887006">Логотип Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">увійдіть в обліковий запис Brave</translation>
 <translation id="5516268345616100622">Диспетчер завдань – Brave</translation>
 <translation id="7918740962659365265">Допоможіть покращити Brave, надсилаючи звіти про аварійне завершення роботи та <ph name="UMA_LINK"/> в Brave Software</translation>
@@ -50,7 +49,7 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="8030318113982266900">Оновлення пристрою до каналу <ph name="CHANNEL_NAME"/>…</translation>
 <translation id="7355059611036077582">Додати в Brave</translation>
 <translation id="7456658570432774853">Допоможіть покращити Brave, надсилаючи звіти про поточні налаштування</translation>
-<translation id="5436841087823876677">Застереження: Brave не може заборонити розширенням реєструвати вашу історію веб-перегляду. Щоб вимкнути це розширення в режимі анонімного перегляду, зніміть прапорець поруч із цим параметром.</translation>
+<translation id="6134859571175647580">Застереження: Brave не може заборонити розширенням реєструвати вашу історію веб-перегляду. Щоб вимкнути це розширення в режимі анонімного перегляду, зніміть прапорець поруч із цим параметром.</translation>
 <translation id="777113543093865885">Видалити з Brave…</translation>
 <translation id="6078442581074612226">У Brave</translation>
 <translation id="8148611988012584308">Налаштування та керування Brave</translation>
@@ -116,6 +115,9 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="7977435741986383568">Brave може покращувати веб-перегляд за допомогою веб-служб. Ви можете вимкнути ці служби. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Щоб виправляти орфографічні помилки, Brave надсилає введений текст у Brave Software</translation>
 <translation id="815816884817177844">Обмінюється даними з Brave Software, щоб покращувати веб-перегляд і Brave</translation>
+<translation id="8586264863973514035">Щоб застосувати зміни, перезапустіть Brave</translation>
+<translation id="7021823858304886493">Дозволити вхід у Brave</translation>
+<translation id="1649714546770135458">Якщо вимкнути цей параметр, ви зможете входити на сайти Brave Software, як-от Gmail, без входу в Brave</translation>
 <translation id="6274110506580702455">Адміністратор цього пристрою вимкнув вхід у Brave.</translation>
 <translation id="9220324636239049437">1 елемент буде видалено з цього пристрою. Щоб відновити дані пізніше, увійдіть в обліковий запис Brave як <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">З цього пристрою буде видалено стільки елементів: <ph name="ITEMS_COUNT"/>. Щоб відновити дані пізніше, увійдіть в обліковий запис Brave як <ph name="USER_EMAIL"/>.</translation>

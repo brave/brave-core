@@ -1,0 +1,200 @@
+{
+  "braveRewards": {
+    "message": "Brave Rewards",
+    "description": "Title in welcome screen for the panel"
+  },
+  "welcomeButtonTextOne": {
+    "message": "Alustage teenimist kohe!",
+    "description": "CTA on welcome screen in the panel, existing users"
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Liituge Brave Awardsiga",
+    "description": "CTA on welcome screen in the panel, new users"
+  },
+  "welcomeDescOne": {
+    "message": "Saage reklaamide vaatamise eest preemiaid ja edastage neid, et toetada oma lemmiksisuloojaid.",
+    "description": "Entry text for welcome screen in the panel, existing user"
+  },
+  "welcomeDescTwo": {
+    "message": "Nüüd saate privaatsust austavate reklaamide vaatamise eest tokeneid teenida.",
+    "description": "Entry text for welcome screen in the panel, new user"
+  },
+  "welcomeFooterTextOne": {
+    "message": "Vaadake, mis on uus",
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Lisateave",
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
+  },
+  "welcomeHeaderOne": {
+    "message": "Brave Payments on läbinud suure värskenduskuuri.",
+    "description": "Main header title for welcome screen in the panel, existing user"
+  },
+  "welcomeHeaderTwo": {
+    "message": "Kogege internetti uuel moel.",
+    "description": "Main header title for welcome screen in the panel, new user"
+  },
+  "yourWallet": {
+    "message": "Teie rahakott",
+    "description": "Title of wallet section where we display data about wallet"
+  },
+  "grants": {
+    "message": "Võimalused",
+    "description": "Title for grant section in wallet summary"
+  },
+  "on": {
+    "message": "sees",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "verifiedPublisher": {
+    "message": "Brave'i kinnitatud väljaandja",
+    "description": "Tells user that this particular publisher is verified publisher"
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Aktiivsus",
+    "description": "Label for auto contribute table attention for the publisher"
+  },
+  "donateMonthly": {
+    "message": "Tip this site monthly",
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
+  },
+  "includeInAuto": {
+    "message": "Kaasa automaatsesse panustamisse",
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
+  },
+  "donateNow": {
+    "message": "Saada preemia ...",
+    "description": "CTA for sending tip form site banner"
+  },
+  "enableTips": {
+    "message": "Luba premeerimine",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "for": {
+    "message": ":",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "rewardsSummary": {
+    "message": "Preemiate kokkuvõte",
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
+  },
+  "monthApr": {
+    "message": "Aprill",
+    "description": "Month"
+  },
+  "monthAug": {
+    "message": "August",
+    "description": "Month"
+  },
+  "monthDec": {
+    "message": "Detsember",
+    "description": "Month"
+  },
+  "monthFeb": {
+    "message": "Veebruar",
+    "description": "Month"
+  },
+  "monthJan": {
+    "message": "Jaanuar",
+    "description": "Month"
+  },
+  "monthJul": {
+    "message": "Juuli",
+    "description": "Month"
+  },
+  "monthJun": {
+    "message": "Juuni",
+    "description": "Month"
+  },
+  "monthMar": {
+    "message": "Märts",
+    "description": "Month"
+  },
+  "monthMay": {
+    "message": "Mai",
+    "description": "Month"
+  },
+  "monthNov": {
+    "message": "November",
+    "description": "Month"
+  },
+  "monthOct": {
+    "message": "Oktoober",
+    "description": "Month"
+  },
+  "monthSep": {
+    "message": "September",
+    "description": "Month"
+  },
+  "tokenGrant": {
+    "message": "Tokenivõimalus",
+    "description": "Title for grant section in wallet summary"
+  },
+  "earningsAds": {
+    "message": "Reklaamidest saadud tulu",
+    "description": "Title for ads section in wallet summary"
+  },
+  "rewardsContribute": {
+    "message": "Automaatne panustamine",
+    "description": "Title for auto contribute section in wallet summary"
+  },
+  "oneTimeDonation": {
+    "message": "Ühekordsed preemiad",
+    "description": "Title for one time tips section in wallet summary"
+  },
+  "expiresOn": {
+    "message": "aegub kuupäeval",
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
+  },
+  "recurringDonations": {
+    "message": "Igakuised preemiad",
+    "description": "Title for monthly tips section in wallet summary"
+  },
+  "off": {
+    "message": "Väljas",
+    "description": "Label used in toggle indicating that toggle is off"
+  },
+  "ok": {
+    "message": "ok",
+    "description": "Used in notification to dismiss notification"
+  },
+  "braveAdsTitle": {
+    "message": "Brave Ads",
+    "description": "Notification title when we display info about ads"
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribute",
+    "description": "Notification title when we display info about auto contribution"
+  },
+  "contributeNotificationSuccess": {
+    "message": "You've contributed $amount$ BAT",
+    "description": "We show this string in the notification when contribution is successful",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10.0"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "You have a grant waiting for you.",
+    "description": "Description for new grant notification"
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "There was a problem processing your contribution.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "There was a problem processing your tip, please try again.",
+    "description": "We show this string in notification when tip fails"
+  }
+}

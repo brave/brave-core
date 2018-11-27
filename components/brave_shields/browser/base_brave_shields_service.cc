@@ -23,7 +23,9 @@ namespace brave_shields {
 BaseBraveShieldsService::BaseBraveShieldsService()
     : initialized_(false),
       task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})) {
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock(),
+              base::TaskPriority::USER_VISIBLE,
+              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {

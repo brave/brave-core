@@ -30,13 +30,11 @@ using base::UserMetricsAction;
 namespace brave {
 namespace importer {
 
-#if !defined(OS_MACOSX) || BUILDFLAG(MAC_VIEWS_BROWSER)
 void ShowImportLockDialog(gfx::NativeWindow parent,
                           ::importer::SourceProfile source_profile,
                           const base::Callback<void(bool)>& callback) {
   ImportLockDialogView::Show(parent, source_profile, callback);
 }
-#endif  // !OS_MACOSX || MAC_VIEWS_BROWSER
 
 }  // namespace importer
 

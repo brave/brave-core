@@ -62,7 +62,7 @@ content::BrowserContext* RewardsServiceFactory::GetBrowserContextToUse(
 }
 
 bool RewardsServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
+  return false;
 }
 
 }  // namespace brave_rewards

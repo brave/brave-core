@@ -79,14 +79,26 @@ TEST_F(BraveImporterTest, ImportHistory) {
 
   importer_->StartImport(profile_, importer::HISTORY, bridge_.get());
 
-  // There are 17 history entries in the test History sqlite db, but 7
-  // of them are internal URLs with a chrome-extension:// scheme, so
-  // they should be filtered out by CanImportURL.
   ASSERT_EQ(10u, history.size());
-  // After some initial chrome-extension:// URLs, which should be
-  // filtered out, the first importable url should be
-  // https://brave.com.
-  EXPECT_EQ("https://brave.com/", history[0].url.spec());
+
+  // Order of imported history entries matches the order of keys in historySites
+  EXPECT_EQ(history[0].url.spec(),
+      "http://127.0.0.1:8080/trigger_password_save_prompt.html");
+  EXPECT_EQ(history[0].title,
+      ASCIIToUTF16("127.0.0.1:8080/trigger_password_save_prompt.html"));
+  EXPECT_EQ(history[0].last_visit,
+      base::Time::FromJsTime(1528742510286));
+  EXPECT_EQ(history[0].hidden, false);
+  EXPECT_EQ(history[0].typed_count, 0);
+
+  EXPECT_EQ(history[9].url.spec(),
+      "https://www.google.com/search?q=year%202048%20bug");
+  EXPECT_EQ(history[9].title,
+      ASCIIToUTF16("year 2048 bug - Google Search"));
+  EXPECT_EQ(history[9].last_visit,
+      base::Time::FromJsTime(1528745695067));
+  EXPECT_EQ(history[9].hidden, false);
+  EXPECT_EQ(history[9].typed_count, 0);
 }
 
 TEST_F(BraveImporterTest, ImportBookmarks) {

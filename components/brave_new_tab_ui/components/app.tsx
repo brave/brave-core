@@ -15,7 +15,7 @@ import Stats from './stats'
 import Block from './block'
 import FooterInfo from './footerInfo'
 import SiteRemovalNotification from './siteRemovalNotification'
-import NewPrivateTab from './newPrivateTab'
+import NewPrivateTab from './privateTab'
 
 // Constants
 import { theme } from '../constants/theme'
@@ -27,6 +27,7 @@ import * as newTabActions from '../actions/new_tab_actions'
 require('../../styles/newtab.less')
 require('font-awesome/css/font-awesome.css')
 require('../../fonts/poppins.css')
+require('../../fonts/muli.css')
 
 interface Props {
   actions: any
@@ -120,10 +121,9 @@ class NewTabPage extends React.Component<Props, {}> {
         <NewPrivateTab
           useAlternativePrivateSearchEngine={this.useAlternativePrivateSearchEngine}
           isTor={this.props.newTabData.isTor}
+          isQwant={this.props.newTabData.isQwant}
           onChangePrivateSearchEngine={this.onChangePrivateSearchEngine}
-        >
-          <Stats stats={newTabData.stats}/>
-        </NewPrivateTab>
+        />
       )
     }
 

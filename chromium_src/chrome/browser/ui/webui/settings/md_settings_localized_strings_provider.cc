@@ -18,7 +18,7 @@ void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
 }
 
 const char kWebRTCLearnMoreURL[] =
-  "https://github.com/brave/brave-browser/wiki/WebRTC-Custom-Settings";
+  "https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {

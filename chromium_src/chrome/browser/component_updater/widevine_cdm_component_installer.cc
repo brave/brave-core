@@ -13,10 +13,12 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 namespace component_updater {
 
-#if defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+
 
 void OnWidevineRegistered() {
   ComponentsUI demand_updater;
@@ -36,11 +38,11 @@ void RegisterAndInstallWidevine() {
       base::Bind(&OnWidevineRegistered));
 }
 
-#endif  // defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+#endif
 
 // Do nothing unless the user opts in!
 void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
-#if defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   bool widevine_opted_in =
@@ -48,7 +50,7 @@ void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
   if (widevine_opted_in) {
     RegisterAndInstallWidevine();
   }
-#endif  // defined(WIDEVINE_CDM_AVAILABLE) && defined(WIDEVINE_CDM_IS_COMPONENT)
+#endif  // defined(ENABLE_WIDEVINE_CDM_COMPONENT)
 }
 
 }  // namespace component_updater

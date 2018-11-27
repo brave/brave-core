@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 296 217">
+  <defs>
+    <linearGradient id="private-window-tor-b" x1="5.709%" x2="101.747%" y1="-3.224%" y2="98.229%">
+      <stop offset="0%" stop-color="#8450FF"/>
+      <stop offset="100%" stop-color="#5C2FB4"/>
+    </linearGradient>
+    <path id="private-window-tor-a" d="M57.0329992,0.921964511 C92.8816191,9.81357982 119.861902,12.100959 137.973846,7.78410205 C165.141764,1.30881663 208.47628,1.9027386 230.284517,27.5955525 C252.092755,53.2883664 277.639726,87.0840763 249.792295,120.449369 C221.944865,153.814662 182.869233,166.004086 168.002127,143.646114 C153.135021,121.288142 112.935403,135.4668 97.199157,149.026208 C81.462911,162.585616 -11.8595643,147.914725 2.2851775,106.69307 C16.4299193,65.4714141 -8.02638454,54.8119253 2.90831964,25.0052367 C10.1981224,5.13411092 28.2396823,-2.89364646 57.0329992,0.921964511 Z"/>
+    <circle id="private-window-tor-e" cx="4.5" cy="22.5" r="21.5"/>
+    <filter id="private-window-tor-d" width="188.4%" height="188.4%" x="-44.2%" y="-32.6%" filterUnits="objectBoundingBox">
+      <feOffset dy="5" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+    </filter>
+    <path id="private-window-tor-g" d="M223,62.8348028 C223,58.5077607 226.519664,55 230.842153,55 L267.257602,55 C271.588704,55 275.099755,58.5186027 275.099755,62.8348028 L275.099755,70.4992158 C275.099755,74.8262579 271.580091,78.3340186 267.257602,78.3340186 L230.842153,78.3340186 C226.511051,78.3340186 223,74.8154159 223,70.4992158 L223,62.8348028 Z"/>
+    <filter id="private-window-tor-f" width="240.1%" height="412.8%" x="-70.1%" y="-113.6%" filterUnits="objectBoundingBox">
+      <feOffset dy="10" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="10.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+    </filter>
+    <path id="private-window-tor-i" d="M0.293749589,45.5882364 C-0.401535813,39.4549258 0.0113400532,32.9020546 2.90831964,25.0052367 C10.1981224,5.13411092 28.2396823,-2.89364646 57.0329992,0.921964511 C92.8816191,9.81357982 119.861902,12.100959 137.973846,7.78410205 C165.141764,1.30881663 208.47628,1.9027386 230.284517,27.5955525 C252.092755,53.2883664 277.639726,87.0840763 249.792295,120.449369 C221.944865,153.814662 182.869233,166.004086 168.002127,143.646114 C153.135021,121.288142 112.935403,135.4668 97.199157,149.026208 C81.462911,162.585616 -11.8595643,147.914725 2.2851775,106.69307 C7.90370014,90.3191543 7.43171795,78.7673628 5.50654399,68.9222539 L-3.59889516,68.9222539 C-7.9299966,68.9222539 -11.441048,65.4036512 -11.441048,61.0874511 L-11.441048,53.4230381 C-11.441048,49.095996 -7.92138406,45.5882353 -3.59889516,45.5882353 L0.293752591,45.5882353 Z"/>
+    <filter id="private-window-tor-h" width="101.8%" height="103.2%" x="-.9%" y="-1.6%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation="2.5"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <filter id="private-window-tor-j" width="145.4%" height="131.5%" x="-22.7%" y="-15.7%" filterUnits="objectBoundingBox">
+      <feOffset dy="6" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5"/>
+      <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <rect id="private-window-tor-l" width="39" height="20" y="10.693" rx="7.841"/>
+    <filter id="private-window-tor-k" width="202.6%" height="300%" x="-51.3%" y="-65%" filterUnits="objectBoundingBox">
+      <feOffset dy="7" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941176   0 0 0 0 0.180392157   0 0 0 0 0.250980392  0 0 0 0.2 0"/>
+    </filter>
+    <filter id="private-window-tor-m" width="188.6%" height="172.9%" x="-44.3%" y="-36.5%" filterUnits="objectBoundingBox">
+      <feOffset dy="5" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="private-window-tor-n" x1="35.192%" x2="146.327%" y1="0%" y2="222.965%">
+      <stop offset="0%" stop-color="#392DD1"/>
+      <stop offset="100%" stop-color="#FF4343"/>
+    </linearGradient>
+    <linearGradient id="private-window-tor-q" x1="0%" x2="102%" y1="0%" y2="101%">
+      <stop offset="0%" stop-color="#3023AE"/>
+      <stop offset="100%" stop-color="#C86DD7"/>
+    </linearGradient>
+    <path id="private-window-tor-p" d="M36.2472769,5.78619062 L34.2335393,5.78619062 C25.7758413,5.78619062 21.9678635,0.967974385 21.8168332,0.772064626 C21.3899208,0.197913256 20.6971951,-0.0484287176 20.014538,0.00782259917 C19.4245129,0.0272196049 18.8445565,0.267742476 18.4639601,0.762366123 C18.3068886,0.967974385 14.4989107,5.78619062 6.04121281,5.78619062 L4.02747521,5.78619062 C1.80632263,5.78619062 4.61852778e-14,7.52610203 4.61852778e-14,9.66559177 L4.61852778e-14,15.4846935 C4.61852778e-14,16.5573479 0.010068688,18.3127769 0.0221511136,19.3854314 C0.0241648512,19.5871602 0.467187124,39.7522874 19.4486778,46.401581 C19.4627739,46.4054604 19.4768701,46.4054604 19.4909663,46.4093398 C19.6983812,46.479169 19.9138512,46.5199027 20.137376,46.5199027 C20.3609009,46.5199027 20.5763708,46.479169 20.7837858,46.4093398 C20.797882,46.4054604 20.8119781,46.4054604 20.8260743,46.401581 C39.8075649,39.7522874 40.2505872,19.5871602 40.252601,19.3854314 C40.2646834,18.3127769 40.2747521,16.5573479 40.2747521,15.4846935 L40.2747521,9.66559177 C40.2747521,7.52610203 38.4684294,5.78619062 36.2472769,5.78619062 Z"/>
+    <filter id="private-window-tor-o" width="194.4%" height="181.7%" x="-47.2%" y="-30.1%" filterUnits="objectBoundingBox">
+      <feOffset dy="5" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+    </filter>
+    <circle id="private-window-tor-s" cx="230.5" cy="24.5" r="15.5"/>
+    <filter id="private-window-tor-r" width="222.6%" height="222.6%" x="-61.3%" y="-45.2%" filterUnits="objectBoundingBox">
+      <feOffset dy="5" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+    </filter>
+    <path id="private-window-tor-t" d="M12.75,14.40625 C12.75,14.7685 12.4553438,15.0625 12.09375,15.0625 L2.90625,15.0625 C2.54465625,15.0625 2.25,14.7685 2.25,14.40625 L2.25,7.84375 C2.25,7.4815 2.54465625,7.1875 2.90625,7.1875 L12.09375,7.1875 C12.4553438,7.1875 12.75,7.4815 12.75,7.84375 L12.75,14.40625 Z M4.875,4.5625 C4.875,3.1148125 6.0523125,1.9375 7.5,1.9375 C8.9476875,1.9375 10.125,3.1148125 10.125,4.5625 L10.125,5.875 L4.875,5.875 L4.875,4.5625 Z M12.09375,5.875 L11.4375,5.875 L11.4375,4.5625 C11.4375,2.39096875 9.67153125,0.625 7.5,0.625 C5.32846875,0.625 3.5625,2.39096875 3.5625,4.5625 L3.5625,5.875 L2.90625,5.875 C1.8208125,5.875 0.9375,6.7583125 0.9375,7.84375 L0.9375,14.40625 C0.9375,15.4916875 1.8208125,16.375 2.90625,16.375 L12.09375,16.375 C13.1791875,16.375 14.0625,15.4916875 14.0625,14.40625 L14.0625,7.84375 C14.0625,6.7583125 13.1791875,5.875 12.09375,5.875 Z"/>
+    <circle id="private-window-tor-v" cx="161.5" cy="160.5" r="15.5"/>
+    <filter id="private-window-tor-u" width="222.6%" height="222.6%" x="-61.3%" y="-45.2%" filterUnits="objectBoundingBox">
+      <feOffset dy="5" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+    </filter>
+    <circle id="private-window-tor-w" cx="10" cy="83" r="10"/>
+    <filter id="private-window-tor-x" width="110%" height="110%" x="-5%" y="-5%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation="1"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <circle id="private-window-tor-y" cx="18.5" cy="112.5" r="7.5"/>
+    <filter id="private-window-tor-z" width="113.3%" height="113.3%" x="-6.7%" y="-6.7%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation="1"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <circle id="private-window-tor-A" cx="267.5" cy="39.5" r="4.5"/>
+    <filter id="private-window-tor-B" width="122.2%" height="122.2%" x="-11.1%" y="-11.1%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation="1"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0"/>
+    </filter>
+    <filter id="private-window-tor-C" width="260.7%" height="265%" x="-83.6%" y="-75%" filterUnits="objectBoundingBox">
+      <feOffset dy="7" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <polygon id="private-window-tor-E" points="30.383 7.035 46.646 13.771 53.383 30.035 46.646 46.298 30.383 53.035 14.119 46.298 7.383 30.035 14.119 13.771"/>
+    <filter id="private-window-tor-D" width="182.6%" height="182.6%" x="-41.3%" y="-30.4%" filterUnits="objectBoundingBox">
+      <feOffset dy="5" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+    </filter>
+    <ellipse id="private-window-tor-G" cx="19" cy="18.902" rx="19" ry="18.902"/>
+    <filter id="private-window-tor-F" width="200%" height="200.5%" x="-50%" y="-37%" filterUnits="objectBoundingBox">
+      <feOffset dy="5" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941   0 0 0 0 0.180392   0 0 0 0 0.25098  0 0 0 0.2 0"/>
+    </filter>
+    <rect id="private-window-tor-I" width="39" height="20" x="246" y="147" rx="7.841"/>
+    <filter id="private-window-tor-H" width="202.6%" height="300%" x="-51.3%" y="-65%" filterUnits="objectBoundingBox">
+      <feOffset dy="7" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.152941176   0 0 0 0 0.180392157   0 0 0 0 0.250980392  0 0 0 0.2 0"/>
+    </filter>
+  </defs>
+  <g fill="none" fill-rule="evenodd" transform="translate(0 4)">
+    <g transform="translate(31 21)">
+      <mask id="private-window-tor-c" fill="#fff">
+        <use xlink:href="#private-window-tor-a"/>
+      </mask>
+      <use fill="url(#private-window-tor-b)" fill-rule="nonzero" xlink:href="#private-window-tor-a"/>
+      <g fill-rule="nonzero" mask="url(#private-window-tor-c)">
+        <use fill="#000" filter="url(#private-window-tor-d)" xlink:href="#private-window-tor-e"/>
+        <use fill="#3E1F85" xlink:href="#private-window-tor-e"/>
+      </g>
+      <g mask="url(#private-window-tor-c)">
+        <use fill="#000" filter="url(#private-window-tor-f)" xlink:href="#private-window-tor-g"/>
+        <use fill="#3E1F85" xlink:href="#private-window-tor-g"/>
+      </g>
+      <g fill="#000" mask="url(#private-window-tor-c)">
+        <use filter="url(#private-window-tor-h)" xlink:href="#private-window-tor-i"/>
+      </g>
+    </g>
+    <g filter="url(#private-window-tor-j)" transform="translate(62)">
+      <path fill="#FFF" d="M13,9.00901858 C13,4.03347501 17.0298771,0 22.0040966,0 L162.995903,0 C167.968729,0 172,4.02441948 172,9.00901858 L172,187.990981 C172,192.966525 167.970123,197 162.995903,197 L22.0040966,197 C17.0312714,197 13,192.975581 13,187.990981 L13,9.00901858 Z"/>
+      <g transform="translate(0 17)">
+        <rect width="134" height="9" x="29" y="70" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="134" height="9" x="29" y="120" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="159" height="6" x="13" fill="#E7DCFF" fill-rule="nonzero"/>
+        <rect width="94" height="9" x="29" y="86" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="94" height="9" x="29" y="136" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="93.964" height="9.055" x="29" y="36.73" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="36" height="9" x="29" y="102" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="60" height="9" x="71" y="102" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="124" height="9" x="29" y="152" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="95" height="9" x="57" y="20" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+        <rect width="21" height="9" x="29" y="20" fill="#F7F7F7" fill-rule="nonzero" rx="2" transform="matrix(-1 0 0 1 79 0)"/>
+        <use fill="#000" filter="url(#private-window-tor-k)" xlink:href="#private-window-tor-l"/>
+        <use fill="#FFF" xlink:href="#private-window-tor-l"/>
+        <rect width="124.581" height="9.055" x="29" y="51.822" fill="#F7F7F7" fill-rule="nonzero" rx="2"/>
+      </g>
+      <path fill="#682BF4" d="M13,2.03355926 C13,0.927536465 13.8968109,0.0309278351 15.0017822,0.0309278351 L170.46421,0.0309278351 C171.569763,0.0309278351 172.465992,0.929622352 172.465992,2.03355926 L172.465992,17.1958763 L13,17.1958763 L13,2.03355926 Z"/>
+      <g filter="url(#private-window-tor-m)" transform="translate(57 38)">
+        <path fill="url(#private-window-tor-n)" d="M21.1627907,20.9061489 C21.1627907,13.0173786 27.3687791,6.60194175 35,6.60194175 C42.6312209,6.60194175 48.8372093,13.0173786 48.8372093,20.9061489 L48.8372093,28.0582524 L21.1627907,28.0582524 L21.1627907,20.9061489 Z M59.5,28.3333333 L56,28.3333333 L56,21.25 C56,9.530625 46.5815,0 35,0 C23.4185,0 14,9.530625 14,21.25 L14,28.3333333 L10.5,28.3333333 C4.711,28.3333333 0,33.1004167 0,38.9583333 L0,74.375 C0,80.2329167 4.711,85 10.5,85 L59.5,85 C65.289,85 70,80.2329167 70,74.375 L70,38.9583333 C70,33.1004167 65.289,28.3333333 59.5,28.3333333 Z"/>
+        <path fill="#FFF" d="M11,48.2172073 L11,44 L28.9596428,44 L28.9596428,48.2172073 L22.7353622,48.2172073 L22.7353622,66.7729196 L17.1918624,66.7729196 L17.1918624,48.2172073 L11,48.2172073 Z M30.3941449,64.4372355 C28.5787206,62.7287174 27.6710221,60.4795626 27.6710221,57.6897038 C27.6710221,54.899845 28.5787206,52.6669101 30.3941449,50.9908322 C32.2095691,49.3147542 34.4572035,48.4767278 37.1371155,48.4767278 C39.8170274,48.4767278 42.0592588,49.3147542 43.863877,50.9908322 C45.6684951,52.6669101 46.5707906,54.899845 46.5707906,57.6897038 C46.5707906,60.4795626 45.6738981,62.7287174 43.880086,64.4372355 C42.086274,66.1457537 39.8494455,67 37.1695336,67 C34.4896216,67 32.2311813,66.1457537 30.3941449,64.4372355 Z M39.8278201,61.0959097 C40.5626346,60.3173445 40.9300364,59.1927671 40.9300364,57.7221439 C40.9300364,56.2515206 40.5518287,55.1323499 39.7954019,54.364598 C39.0389752,53.5968462 38.1420826,53.212976 37.1046973,53.212976 C36.067312,53.212976 35.1758225,53.5968462 34.4302018,54.364598 C33.6845811,55.1323499 33.3117764,56.2515206 33.3117764,57.7221439 C33.3117764,59.1927671 33.6953871,60.3173445 34.4626199,61.0959097 C35.2298528,61.874475 36.1321483,62.2637518 37.1695336,62.2637518 C38.2069189,62.2637518 39.0930055,61.874475 39.8278201,61.0959097 Z M54.8130996,48.6713681 L54.8130996,52.045134 C56.1098312,49.6661846 57.8387807,48.4767278 60,48.4767278 L60,54.1212976 L58.6384386,54.1212976 C57.3633192,54.1212976 56.406994,54.4240684 55.7694343,55.0296192 C55.1318746,55.6351699 54.8130996,56.6948678 54.8130996,58.2087447 L54.8130996,66.7729196 L49.2695997,66.7729196 L49.2695997,48.6713681 L54.8130996,48.6713681 Z"/>
+      </g>
+      <g transform="translate(144 112)">
+        <use fill="#000" filter="url(#private-window-tor-o)" xlink:href="#private-window-tor-p"/>
+        <use fill="url(#private-window-tor-q)" xlink:href="#private-window-tor-p"/>
+        <polyline stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" points="14.226 13.774 27.726 24.774 24.251 29.726" transform="rotate(90 20.976 21.75)"/>
+      </g>
+    </g>
+    <g fill="#3C1B88" transform="translate(84 5)">
+      <ellipse cx="4.015" cy="4" rx="4.015" ry="4"/>
+      <ellipse cx="18.926" cy="4" rx="4.015" ry="4"/>
+      <ellipse cx="34.985" cy="4" rx="4.015" ry="4"/>
+    </g>
+    <g fill-rule="nonzero">
+      <use fill="#000" filter="url(#private-window-tor-r)" xlink:href="#private-window-tor-s"/>
+      <use fill="#FFF" xlink:href="#private-window-tor-s"/>
+    </g>
+    <use fill="#6035BD" transform="translate(223 16)" xlink:href="#private-window-tor-t"/>
+    <g fill-rule="nonzero">
+      <use fill="#000" filter="url(#private-window-tor-u)" xlink:href="#private-window-tor-v"/>
+      <use fill="#FFF" xlink:href="#private-window-tor-v"/>
+    </g>
+    <g fill-rule="nonzero">
+      <use fill="#6839CB" xlink:href="#private-window-tor-w"/>
+      <use fill="#000" filter="url(#private-window-tor-x)" xlink:href="#private-window-tor-w"/>
+    </g>
+    <g fill-rule="nonzero">
+      <use fill="#6839CB" xlink:href="#private-window-tor-y"/>
+      <use fill="#000" filter="url(#private-window-tor-z)" xlink:href="#private-window-tor-y"/>
+    </g>
+    <g fill-rule="nonzero">
+      <use fill="#6839CB" xlink:href="#private-window-tor-A"/>
+      <use fill="#000" filter="url(#private-window-tor-B)" xlink:href="#private-window-tor-A"/>
+    </g>
+    <g fill-rule="nonzero" filter="url(#private-window-tor-C)" transform="rotate(-23 382.288 -36.432)">
+      <use fill="#000" filter="url(#private-window-tor-D)" xlink:href="#private-window-tor-E"/>
+      <use fill="url(#private-window-tor-n)" xlink:href="#private-window-tor-E"/>
+    </g>
+    <g transform="translate(19 73)">
+      <g fill-rule="nonzero" transform="rotate(-45 32.642 13.178)">
+        <use fill="#000" filter="url(#private-window-tor-F)" xlink:href="#private-window-tor-G"/>
+        <use fill="#FFF" xlink:href="#private-window-tor-G"/>
+      </g>
+      <g transform="translate(16 17)">
+        <ellipse cx="10.957" cy="10" fill="#7E4BF3" rx="3.652" ry="3.6"/>
+        <path stroke="#7E4BF3" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M0 9.97154515C7.05020725 1.60948495 14.0259843 1.60948495 20.927331 9.97154515 14.6117923 18.6476685 7.63601527 18.6476685 0 9.97154515zM2.5.5L19.5 19.5"/>
+      </g>
+    </g>
+    <use fill="#000" filter="url(#private-window-tor-H)" xlink:href="#private-window-tor-I"/>
+    <use fill="#FFF" xlink:href="#private-window-tor-I"/>
+  </g>
+</svg>

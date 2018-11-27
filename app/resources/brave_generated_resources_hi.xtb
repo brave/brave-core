@@ -1,4 +1,54 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
+<translation id="3333887201479867589">Brave रिवार्ड्स</translation>
+<translation id="7942180974165298215">Brave विज्ञापन बाधा</translation>
+<translation id="7450557937477381864">क्रोम को बंद करें</translation>
+<translation id="7008934821596358692">आयात समाप्त करने के लिए, सभी क्रोम विंडोज़ बंद करें।</translation>
+<translation id="7753103220327065417">Brave  को बंद करें</translation>
+<translation id="5588481533147090393">आयात खत्म करने के लिए, सभी ब्रेव विंडोज  बंद करें।</translation>
+<translation id="6447842834002726250">कुकीज़ के द्वारा</translation>
+<translation id="4983925687993168579">आँकड़े</translation>
+<translation id="9173846700806833701">Widevine इनस्टॉल नहीं है</translation>
+<translation id="2433569048491784801">Widewine इंस्टॉल नही है|</translation>
+<translation id="3699882589215410581">Widevine को इंस्टॉल करें और चलाएँ</translation>
+<translation id="8410111618231938546">Google Widevine डिजिटल अधिकार प्रबंधन (DRM) कोड का हिस्सा है जिसका हम Brave Software न तो मालिकत्व रखते हैं और न ही जांच कर सकते हैं| Google Widevine के कोड Google के सर्वर से संचालित होते हैं, हमारे सर्वर से नहीं| ये तभी काम करते हैं जब आप इस विकल्प को चुनते हैं| हम DRM के प्रयोग को हतोत्साहित करते हैं, पर हम यूजर के चयन का सम्मान करते हैं और समझते हैं कि  कुछ Brave यूजर्स ऐसी सेवाओं जहाँ इसकी ज़रूरत है का प्रयोग करते हैं| 
+
+
+इस एक्सटेंशन को इन्स्टॉल करने के साथ, आप Google Wivedine के उपयोग की शर्तों से सहमत हो रहे हैं| आप सहमत हैं की Google Wivedine के प्रयोग से किसी क्षति या नुकसान के सम्बन्ध में Brave ज़िम्मेदार नहीं है|</translation>
+<translation id="939305735877869636">ब्रेव</translation>
+<translation id="3198814717959506569">Brave से आयातित</translation>
+<translation id="453977518730680921">मीडिया स्वतः चालू</translation>
+<translation id="410351446219883937">स्वतः प्ले</translation>
+<translation id="2240268017737062801">पूछें जब कोई साइट मीडिया को स्वतः चलाना चाहती है</translation>
+<translation id="3371702087847741961">तब पूछें कि जब कोई साइट मीडिया को ऑटोप्ले करना चाहती है(अनुग्रह)</translation>
+<translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
+<translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
+<translation id="2044383478723007273">Brave रंग</translation>
+<translation id="5341901626640816374">विस्तृत स्थान पट्टी का प्रयोग करें</translation>
+<translation id="7965178729203412357">नई टोर पहचान</translation>
+<translation id="8784924142044142231">टॉर से बहार निकलें</translation>
+<translation id="5410152065859052603">टोर</translation>
+<translation id="3696187925156352769">टॉर विंडोज खोलें</translation>
+<translation id="3155170474926428993">टॉर लॉन्चर</translation>
+<translation id="7372129767729198111">Brave शील्ड्स डिफॉल्ट्स</translation>
+<translation id="8029018702721078742">विज्ञापन नियंत्रण</translation>
+<translation id="3544462288910360084">कुकी नियंत्रण</translation>
+<translation id="8919235146866304148">फिंगरप्रिंटिंग सुरक्षा</translation>
+<translation id="520895744850022668">हर जगह HTTPS</translation>
+<translation id="5259716416204774556">स्क्रिप्ट अवरुद्ध कर रही</translation>
+<translation id="6067014455220527258">विज्ञापन रोकें</translation>
+<translation id="6985711843506827936">विज्ञापन और ट्रैकिंग की अनुमति दें</translation>
+<translation id="6132506775968708399">3rd पार्टी कुकीज़ को अवरुद्ध करें</translation>
+<translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
+<translation id="6883611015375728278">सभी कुकी को रोकें</translation>
+<translation id="1442559343076146186">3 rd पार्टी फिंगरप्रिंटिंग बाधित करें</translation>
+<translation id="8034285923190068220">फिंगरप्रिंटिंग की अनुमति दें</translation>
+<translation id="4540198958192073185">सभी फिंगरप्रिंटिंग को रोकें</translation>
+<translation id="8942080017911802454">वेबआरटीसी आईपी हैंडलिंग नीति</translation>
+<translation id="6165508094623778733">और जानें</translation>
+<translation id="8798099450830957504">डिफ़ॉल्ट</translation>
+<translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
+<translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
+<translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
 </translationbundle>

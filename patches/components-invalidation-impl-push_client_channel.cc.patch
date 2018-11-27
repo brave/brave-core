@@ -1,0 +1,20 @@
+diff --git a/components/invalidation/impl/push_client_channel.cc b/components/invalidation/impl/push_client_channel.cc
+index 709d8e562c22..9170819bb45e 100644
+--- a/components/invalidation/impl/push_client_channel.cc
++++ b/components/invalidation/impl/push_client_channel.cc
+@@ -28,6 +28,7 @@ PushClientChannel::PushClientChannel(
+     : push_client_(std::move(push_client)),
+       scheduling_hash_(0),
+       sent_messages_count_(0) {
++  return; // feature disabled in Brave
+   push_client_->AddObserver(this);
+   notifier::Subscription subscription;
+   subscription.channel = kChannelName;
+@@ -43,6 +44,7 @@ PushClientChannel::~PushClientChannel() {
+ 
+ void PushClientChannel::UpdateCredentials(
+     const std::string& email, const std::string& token) {
++  return; // feature disabled in Brave
+   net::NetworkTrafficAnnotationTag traffic_annotation =
+       net::DefineNetworkTrafficAnnotation("puch_client_channel", R"(
+         semantics {

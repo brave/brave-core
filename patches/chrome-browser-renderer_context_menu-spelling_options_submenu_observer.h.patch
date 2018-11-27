@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
+index 5abff450384c93c5f28495c711ac031b851b5b20..635998cbfd8b2b5a2abd90f42924aa62a2e9ae34 100644
+--- a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
++++ b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
+@@ -16,10 +16,12 @@
+ #include "ui/base/models/simple_menu_model.h"
+ 
+ class RenderViewContextMenuProxy;
++class BraveSpellingOptionsSubMenuObserver;
+ 
+ // A class that implements the 'spell-checker options' submenu. This class
+ // creates the submenu, adds it to the parent menu, and handles events.
+ class SpellingOptionsSubMenuObserver : public RenderViewContextMenuObserver {
++  friend class BraveSpellingOptionsSubMenuObserver;
+  public:
+   SpellingOptionsSubMenuObserver(RenderViewContextMenuProxy* proxy,
+                                  ui::SimpleMenuModel::Delegate* delegate,

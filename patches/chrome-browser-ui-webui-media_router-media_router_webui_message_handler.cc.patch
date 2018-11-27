@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/media_router/media_router_webui_message_handler.cc b/chrome/browser/ui/webui/media_router/media_router_webui_message_handler.cc
-index c3e43a9ef844687b0c5e33ce40d5bb17c1c9934a..a8e18b931bd8020db3bd82b25bc0c8ebed75c71a 100644
+index 3f8d6b069dfaa84f4eaa788cf7fa8a091ff0d01f..ab6e2de52a56fbd8c2b5d3d47e64f061d0abe255 100644
 --- a/chrome/browser/ui/webui/media_router/media_router_webui_message_handler.cc
 +++ b/chrome/browser/ui/webui/media_router/media_router_webui_message_handler.cc
 @@ -37,8 +37,12 @@ namespace media_router {

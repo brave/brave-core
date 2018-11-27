@@ -7,65 +7,68 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
-
-using content::WebUIMessageHandler;
-
-namespace {
-
+// TODO: The following is being included purely to get the generated
+//        GritResourceMap definition. Replace with a better solution.
+#if !defined(OS_ANDROID)
+#include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
+#else
+#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
+#endif
 content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
                                                   const std::string& name,
-                                                  const std::string& js_file,
-                                                  int js_resource_id,
+                                                  const GritResourceMap* resource_map,
+                                                  size_t resource_map_size,
                                                   int html_resource_id) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
   source->SetJsonPath("strings.js");
   source->SetDefaultResource(html_resource_id);
-  source->AddResourcePath(js_file, js_resource_id);
+  // Add generated resource paths
+  for (size_t i = 0; i < resource_map_size; ++i) {
+    source->AddResourcePath(resource_map[i].name,  resource_map[i].value);
+  }
   CustomizeWebUIHTMLSource(name, source);
   return source;
 }
 
-// The handler for Javascript messages for Brave about: pages
-class BasicDOMHandler : public WebUIMessageHandler {
+// This is used to know proper timing for setting webui properties.
+// So far, content::WebUIController::RenderFrameCreated() is used.
+// However, it doesn't get called sometimes when reloading, or called when
+// RenderFrameHost is not prepared during renderer process is in changing.
+class BasicUI::BasicUIWebContentsObserver
+    : public content::WebContentsObserver {
  public:
-  BasicDOMHandler() {
+  BasicUIWebContentsObserver(BasicUI* host, content::WebContents* web_contents)
+      : WebContentsObserver(web_contents),
+        host_(host) {
   }
-  ~BasicDOMHandler() override {}
+  ~BasicUIWebContentsObserver() override {}
 
-  void Init();
-
-  // WebUIMessageHandler implementation.
-  void RegisterMessages() override;
+  // content::WebContentsObserver overrides:
+  void RenderViewReady() override {
+    host_->UpdateWebUIProperties();
+  }
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(BasicDOMHandler);
+  BasicUI* host_;
+
+  DISALLOW_COPY_AND_ASSIGN(BasicUIWebContentsObserver);
 };
-
-void BasicDOMHandler::RegisterMessages() {
-}
-
-void BasicDOMHandler::Init() {
-}
-
-}  // namespace
 
 BasicUI::BasicUI(content::WebUI* web_ui,
     const std::string& name,
-    const std::string& js_file,
-    int js_resource_id,
+    const GritResourceMap* resource_map,
+    size_t resource_map_size,
     int html_resource_id)
     : WebUIController(web_ui) {
+  observer_.reset(
+      new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
   Profile* profile = Profile::FromWebUI(web_ui);
-  auto handler_owner = std::make_unique<BasicDOMHandler>();
-  BasicDOMHandler* handler = handler_owner.get();
-  web_ui->AddMessageHandler(std::move(handler_owner));
-  handler->Init();
   content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
-      js_file, js_resource_id, html_resource_id);
+      resource_map, resource_map_size, html_resource_id);
   content::WebUIDataSource::Add(profile, source);
 }
 

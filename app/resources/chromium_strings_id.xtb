@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">masuk ke Brave</translation>
 <translation id="5516268345616100622">Pengelola Tugas - Brave</translation>
 <translation id="7918740962659365265">Bantu Brave menjadi lebih baik dengan mengirim laporan kerusakan dan <ph name="UMA_LINK"/> ke Brave Software</translation>
@@ -18,7 +17,7 @@
 <translation id="8992261409816268381">Pengarang Brave</translation>
 <translation id="4651430425715739110">Hak Cipta <ph name="YEAR"/> Pengarang Brave. Semua hak dilindungi undang-undang.</translation>
 <translation id="2310890394934209120">OS Brave terwujud karena <ph name="BEGIN_LINK_CROS_OSS"/>software sumber terbuka<ph name="END_LINK_CROS_OSS"/> tambahan.</translation>
-<translation id="8160794320557846790">Brave OS terwujud karena <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> tambahan, seperti <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="8160794320557846790">Brave OS terwujud karena adanya <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> tambahan, seperti <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="5019879183386042809">Jadikan Brave browser default</translation>
 <translation id="5063987220091207247">Brave OS tidak dapat membuka halaman ini.</translation>
 <translation id="4065288863231444640">Jalankan Brave di Background</translation>
@@ -50,7 +49,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="8030318113982266900">Memperbarui perangkat Anda ke saluran <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Tambahkan ke Brave</translation>
 <translation id="7456658570432774853">Bantu menjadikan Brave lebih baik dengan melaporkan setelan saat ini</translation>
-<translation id="5436841087823876677">Peringatan: Brave tidak dapat mencegah ekstensi merekam histori browsing Anda. Untuk menonaktifkan ekstensi ini dalam mode penyamaran, jangan pilih opsi ini.</translation>
+<translation id="6134859571175647580">Peringatan: Brave tidak dapat mencegah ekstensi merekam histori browsing Anda. Untuk menonaktifkan ekstensi ini dalam mode penyamaran, jangan pilih opsi ini.</translation>
 <translation id="777113543093865885">Buang dari Brave...</translation>
 <translation id="6078442581074612226">Di Brave</translation>
 <translation id="8148611988012584308">Menyesuaikan dan mengontrol Brave</translation>
@@ -116,6 +115,9 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="7977435741986383568">Brave dapat mengunakan layanan web agar pengalaman mengakses internet lebih menyenangkan. Anda dapat memilih untuk menonaktifkan layanan ini. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Untuk memperbaiki kesalahan ejaan, Brave mengirimkan teks yang Anda ketik di kolom teks ke Brave Software</translation>
 <translation id="815816884817177844">Berkomunikasi dengan Brave Software untuk menyempurnakan browsing internet dan Brave</translation>
+<translation id="8586264863973514035">Untuk menerapkan perubahan Anda, luncurkan ulang Brave</translation>
+<translation id="7021823858304886493">Izinkan login Brave</translation>
+<translation id="1649714546770135458">Dengan menonaktifkan ini, Anda dapat login ke situs Brave Software seperti Gmail tanpa harus login ke Brave</translation>
 <translation id="6274110506580702455">Login ke Brave dinonaktifkan oleh administrator perangkat ini.</translation>
 <translation id="9220324636239049437">Tindakan ini akan menghapus 1 item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Tindakan ini akan menghapus <ph name="ITEMS_COUNT"/> item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>

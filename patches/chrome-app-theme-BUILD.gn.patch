@@ -1,0 +1,20 @@
+diff --git a/chrome/app/theme/BUILD.gn b/chrome/app/theme/BUILD.gn
+index 57e8917e359a2fc59f567bd33f9340e400e55b1f..b127c994019d8ba1e5750b33c300c2ec9dcf3463 100644
+--- a/chrome/app/theme/BUILD.gn
++++ b/chrome/app/theme/BUILD.gn
+@@ -21,6 +21,7 @@ grit("theme_resources") {
+     ":chrome_unscaled_resources",
+     "//ui/resources",
+   ]
++  if (brave_chromium_build) { deps += ["//brave/app/theme:brave_theme_resources"]}
+ 
+   output_dir = "$root_gen_dir/chrome"
+ }
+@@ -32,6 +33,7 @@ grit("chrome_unscaled_resources") {
+     "grit/chrome_unscaled_resources.h",
+     "chrome_unscaled_resources.pak",
+   ]
++  if (brave_chromium_build) { deps = ["//brave/app/theme:brave_unscaled_resources"]}
+ 
+   output_dir = "$root_gen_dir/chrome"
+ }

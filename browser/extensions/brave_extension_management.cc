@@ -16,29 +16,14 @@
 
 namespace extensions {
 
-BraveExtensionManagement::BraveExtensionManagement(
-    PrefService* pref_service,
-    bool is_signin_profile)
-    : ExtensionManagement(pref_service, is_signin_profile) {
+BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
+    : ExtensionManagement(profile) {
   providers_.push_back(
       std::make_unique<BraveExtensionProvider>());
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(switches::kDisablePDFJSExtension)) {
-    RegisterForceInstalledExtensions();
-  }
   RegisterBraveExtensions();
 }
 
 BraveExtensionManagement::~BraveExtensionManagement() {
-}
-
-void BraveExtensionManagement::RegisterForceInstalledExtensions() {
-  base::DictionaryValue forced_list_pref;
-  extensions::ExternalPolicyLoader::AddExtension(
-      &forced_list_pref, pdfjs_extension_id,
-      extension_urls::kChromeWebstoreUpdateURL);
-  UpdateForcedExtensions(&forced_list_pref);
 }
 
 void BraveExtensionManagement::RegisterBraveExtensions() {

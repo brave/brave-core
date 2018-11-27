@@ -36,7 +36,7 @@ std::string GetHostFromTemplateURLData(const TemplateURLData& data) {
 
 using namespace TemplateURLPrepopulateData;
 const PrepopulatedEngine* const kBraveAddedEngines[] = {
-    &amazon,          &duckduckgo,    &ecosia,    &findx,
+    &amazon,          &duckduckgo,    &ecosia,
     &github,          &mdnwebdocs,    &qwant,     &searx,
     &semanticscholar, &stackoverflow, &startpage, &twitter,
     &wikipedia,       &wolframalpha,  &yandex,    &youtube,

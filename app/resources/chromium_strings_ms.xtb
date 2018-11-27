@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">log masuk ke Brave</translation>
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
 <translation id="7918740962659365265">Bantu jadikan Brave lebih baik dengan menghantar laporan ranap dan <ph name="UMA_LINK"/> kepada Brave Software.</translation>
@@ -50,7 +49,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8030318113982266900">Mengemas kini peranti anda kepada saluran <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Tambah ke Brave</translation>
 <translation id="7456658570432774853">Bantu jadikan Brave lebih baik dengan melaporkan tetapan semasa</translation>
-<translation id="5436841087823876677">Amaran: Brave tidak dapat menghalang sambungan daripada merakamkan sejarah penyemakan imbas anda. Untuk melumpuhkan sambungan ini dalam mod inkognito, nyahpilih pilihan ini.</translation>
+<translation id="6134859571175647580">Amaran: Brave tidak dapat menghalang sambungan daripada merakamkan sejarah penyemakan imbas anda. Untuk melumpuhkan sambungan ini dalam mod inkognito, nyahpilih pilihan ini.</translation>
 <translation id="777113543093865885">Alih keluar daripada Brave...</translation>
 <translation id="6078442581074612226">Dalam Brave</translation>
 <translation id="8148611988012584308">Sesuaikan dan kawal Brave</translation>
@@ -116,6 +115,9 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7977435741986383568">Brave boleh menggunakan perkhidmatan web untuk meningkatkan pengalaman penyemakan imbas anda. Anda boleh memilih untuk melumpuhkan perkhidmatan ini. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Untuk membetulkan kesilapan ejaan, Brave menghantar teks yang anda taip dalam medan teks kepada Brave Software</translation>
 <translation id="815816884817177844">Berkomunikasi dengan Brave Software untuk meningkatkan penyemakan imbas dan Brave</translation>
+<translation id="8586264863973514035">Untuk menggunakan perubahan anda, mulakan semula Brave</translation>
+<translation id="7021823858304886493">Benarkan log masuk Brave</translation>
+<translation id="1649714546770135458">Dengan mematikan pilihan ini, anda boleh mengelog masuk ke tapak Brave Software seperti Gmail tanpa perlu mengelog masuk ke Brave</translation>
 <translation id="6274110506580702455">Log masuk ke Brave dilumpuhkan oleh pentadbir peranti ini.</translation>
 <translation id="9220324636239049437">Tindakan ini akan memadamkan 1 item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Tindakan ini akan memadamkan <ph name="ITEMS_COUNT"/> item daripada peranti ini. Untuk mendapatkan kembali data anda kemudian, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>

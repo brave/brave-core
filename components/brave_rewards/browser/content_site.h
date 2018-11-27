@@ -26,6 +26,7 @@ struct ContentSite {
   std::string favicon_url;
   std::string url;
   std::string provider;
+  uint64_t reconcile_stamp;
 };
 
 typedef std::vector<ContentSite> ContentSiteList;

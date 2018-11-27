@@ -54,6 +54,7 @@ declare namespace NewTab {
     isIncognito: boolean,
     useAlternativePrivateSearchEngine: boolean,
     isTor: boolean,
+    isQwant: boolean,
     bookmarks: Record<string, Bookmark>,
     stats: Stats
     backgroundImage?: Image

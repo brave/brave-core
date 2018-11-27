@@ -7,7 +7,10 @@
 
 #include "brave/browser/net/url_context.h"
 #include "chrome/browser/net/chrome_network_delegate.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/completion_callback.h"
+
+class PrefChangeRegistrar;
 
 namespace extensions {
 class EventRouterForwarder;
@@ -29,6 +32,8 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
   BraveNetworkDelegateBase(extensions::EventRouterForwarder* event_router);
   ~BraveNetworkDelegateBase() override;
 
+  bool IsRequestIdentifierValid(uint64_t request_identifier);
+
   // NetworkDelegate implementation.
   int OnBeforeURLRequest(net::URLRequest* request,
                          net::CompletionOnceCallback callback,
@@ -43,13 +48,21 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
       GURL* allowed_unsafe_redirect_url) override;
 
+  bool OnCanGetCookies(const net::URLRequest& request,
+                       const net::CookieList& cookie_list,
+                       bool allowed_from_caller) override;
+
+  bool OnCanSetCookie(const net::URLRequest& request,
+                      const net::CanonicalCookie& cookie,
+                      net::CookieOptions* options,
+                      bool allowed_from_caller) override;
+
   void OnURLRequestDestroyed(net::URLRequest* request) override;
   void RunCallbackForRequestIdentifier(uint64_t request_identifier, int rv);
 
  protected:
   void RunNextCallback(
     net::URLRequest* request,
-    GURL *new_url,
     std::shared_ptr<brave::BraveRequestInfo> ctx);
   std::vector<brave::OnBeforeURLRequestCallback>
       before_url_request_callbacks_;
@@ -57,11 +70,19 @@ class BraveNetworkDelegateBase : public ChromeNetworkDelegate {
       before_start_transaction_callbacks_;
   std::vector<brave::OnHeadersReceivedCallback>
       headers_received_callbacks_;
+  std::vector<brave::OnCanGetCookiesCallback>
+      can_get_cookies_callbacks_;
+  std::vector<brave::OnCanSetCookiesCallback>
+      can_set_cookies_callbacks_;
 
  private:
+  void InitPrefChangeRegistrar();
   void GetReferralHeaders();
-  const base::ListValue* referral_headers_list_;
+  void OnReferralHeadersChanged();
+  std::unique_ptr<base::ListValue> referral_headers_list_;
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
+  std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
+      pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkDelegateBase);
 };

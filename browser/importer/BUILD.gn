@@ -1,0 +1,24 @@
+import("//build/config/features.gni")
+
+source_set("importer") {
+  sources = [
+    "brave_external_process_importer_client.cc",
+    "brave_external_process_importer_client.h",
+    "brave_external_process_importer_host.cc",
+    "brave_external_process_importer_host.h",
+    "brave_importer_lock_dialog.h",
+    "brave_in_process_importer_bridge.cc",
+    "brave_in_process_importer_bridge.h",
+    "brave_profile_writer.cc",
+    "brave_profile_writer.h",
+    "brave_profile_lock.cc",
+    "brave_profile_lock.h",
+    "browser_profile_lock.h",
+    "chrome_profile_lock.cc",
+    "chrome_profile_lock.h",
+  ]
+
+  deps = [
+    "//chrome/browser",
+  ]
+}

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/permissions/permission_manager.cc b/chrome/browser/permissions/permission_manager.cc
-index b6c6d202c03df12aa2fa86983b445d6252f65337..de029c0e54eee56490919955376e06addd6fd133 100644
+index 11ad65b4a936c303c51359955d10ef61ef7c7e94..24994d648fc911ad9ab054db229d515f6e57d5a4 100644
 --- a/chrome/browser/permissions/permission_manager.cc
 +++ b/chrome/browser/permissions/permission_manager.cc
 @@ -85,7 +85,7 @@ PermissionStatus ContentSettingToPermissionStatus(ContentSetting setting) {
@@ -11,9 +11,9 @@ index b6c6d202c03df12aa2fa86983b445d6252f65337..de029c0e54eee56490919955376e06ad
    switch (permission) {
      case PermissionType::MIDI:
        return CONTENT_SETTINGS_TYPE_MIDI;
-@@ -123,6 +123,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
-     case PermissionType::PAYMENT_HANDLER:
-       return CONTENT_SETTINGS_TYPE_PAYMENT_HANDLER;
+@@ -125,6 +125,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
+     case PermissionType::BACKGROUND_FETCH:
+       return CONTENT_SETTINGS_TYPE_BACKGROUND_FETCH;
      case PermissionType::NUM:
 +    default:
        // This will hit the NOTREACHED below.

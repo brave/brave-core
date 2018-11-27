@@ -11,13 +11,12 @@
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
-<<<<<<< HEAD
 #include "brave/browser/extensions/brave_ipfs_client_updater.h"
-=======
 #include "brave/browser/profiles/brave_profile_manager.h"
->>>>>>> cda0e777fe8558871fa9f0ec123988c66e2a0700
 #include "brave/browser/profile_creation_monitor.h"
 #include "brave/browser/referrals/brave_referrals_service.h"
+#include "brave/browser/search_engine_provider_service.h"
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
@@ -35,9 +34,9 @@ using content::BrowserThread;
 BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
 }
 
-BraveBrowserProcessImpl::BraveBrowserProcessImpl(scoped_refptr<PersistentPrefStore> user_pref_store)
-    : BrowserProcessImpl(user_pref_store),
-      profile_creation_monitor_(new ProfileCreationMonitor) {
+BraveBrowserProcessImpl::BraveBrowserProcessImpl(ChromeFeatureListCreator* chrome_feature_list_creator)
+    : BrowserProcessImpl(chrome_feature_list_creator),
+      search_engine_provider_service_(new SearchEngineProviderService) {
   g_browser_process = this;
   g_brave_browser_process = this;
 
@@ -49,17 +48,15 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(scoped_refptr<PersistentPrefSto
             referrals_service->Start();
           },
           base::Unretained(brave_referrals_service_.get())),
-      base::TimeDelta::FromSeconds(30));
+      base::TimeDelta::FromSeconds(3));
 
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](brave::BraveStatsUpdater* stats_updater) {
-            stats_updater->Start();
-          },
-          base::Unretained(brave_stats_updater_.get())),
-      base::TimeDelta::FromMinutes(2));
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](brave::BraveStatsUpdater* stats_updater) {
+                       stats_updater->Start();
+                     },
+                     base::Unretained(brave_stats_updater_.get())));
 }
 
 component_updater::ComponentUpdateService*

@@ -3,8 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
   BookmarkButton* button = ((BraveToolbarView *)toolbar())->bookmark_button();

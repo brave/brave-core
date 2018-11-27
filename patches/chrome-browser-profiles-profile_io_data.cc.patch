@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index b6ba476cbf1fc38f21452f3d64980e6676d7b582..a780b2d1b7b28e13d6080a8dee5cb0457b61a91c 100644
+index 79dbe971ae23b9d59eafa4b89ecce9b736ae8707..a5a059aa77e533cfc56437cf06b5d6a21dfa0d4b 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
-@@ -26,6 +26,7 @@
+@@ -25,6 +25,7 @@
  #include "base/task/post_task.h"
  #include "base/task/task_traits.h"
  #include "base/threading/thread_task_runner_handle.h"
@@ -10,7 +10,7 @@ index b6ba476cbf1fc38f21452f3d64980e6676d7b582..a780b2d1b7b28e13d6080a8dee5cb045
  #include "build/build_config.h"
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/chrome_notification_types.h"
-@@ -1087,7 +1088,7 @@ void ProfileIOData::Init(
+@@ -1000,7 +1001,7 @@ void ProfileIOData::Init(
          std::make_unique<network::URLRequestContextBuilderMojo>();
  
      std::unique_ptr<ChromeNetworkDelegate> chrome_network_delegate(

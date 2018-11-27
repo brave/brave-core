@@ -14,5 +14,17 @@ transpile_web_ui("brave_adblock_ui") {
     "reducers/adblock_reducer.ts",
   ]
 
-  bundle_names = ["brave_adblock.bundle.js"]
+  entry_points = [
+    ["brave_adblock", rebase_path("brave_adblock.tsx")]
+  ]
+
+  resource_name = "brave_adblock"
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_adblock"
+  output_dir = "$root_gen_dir/brave/components/brave_adblock/resources"
+  deps = [
+    ":brave_adblock_ui"
+  ]
 }

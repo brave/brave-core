@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
+index f1f113e9c485b6c5041fce00e83c998810529c9d..2904934503a63a2ae3c45ed2d827ee93025a0860 100644
+--- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
++++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
+@@ -105,6 +105,8 @@ class RenderViewContextMenu : public RenderViewContextMenuBase {
+   // hold escape to exit exclusive access mode.
+   bool IsPressAndHoldEscRequiredToExitFullscreen() const;
+ 
++  virtual void AppendBraveLinkItems();
++
+  private:
+   friend class RenderViewContextMenuTest;
+   friend class TestRenderViewContextMenu;

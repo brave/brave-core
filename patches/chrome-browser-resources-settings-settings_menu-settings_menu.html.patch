@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/settings/settings_menu/settings_menu.html b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-index f8f22e9b9c95a9355abe36a173ad10c615a9a85f..788df0a2a777329fdc78b07c3dbd2151e5a4a8ea 100644
+index 5e2a1583e6701b6fba588754c9b0a1f292a3a1cd..050240ed2cb63960d05a87570f88a022f058399f 100644
 --- a/chrome/browser/resources/settings/settings_menu/settings_menu.html
 +++ b/chrome/browser/resources/settings/settings_menu/settings_menu.html
-@@ -188,10 +188,12 @@
-             $i18n{multidevicePageTitle}
+@@ -187,10 +187,12 @@
+             <iron-icon icon="cr:print"></iron-icon>
+             $i18n{printingPageTitle}
            </a>
- </if>
 +<if expr="_google_chrome">
            <a href="/accessibility">
              <iron-icon icon="settings:accessibility"></iron-icon>

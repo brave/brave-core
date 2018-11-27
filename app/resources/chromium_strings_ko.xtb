@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave 로고</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">Brave에 로그인</translation>
 <translation id="5516268345616100622">작업 관리자 - Brave</translation>
 <translation id="7918740962659365265">비정상 종료 보고서와 <ph name="UMA_LINK"/>을(를) Brave Software로 전송하여 Brave 개선에 참여합니다.</translation>
@@ -52,7 +51,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8030318113982266900">기기를 <ph name="CHANNEL_NAME"/> 채널로 업데이트하는 중...</translation>
 <translation id="7355059611036077582">Brave에 추가</translation>
 <translation id="7456658570432774853">현재 설정을 보고하여 Brave 개선에 참여</translation>
-<translation id="5436841087823876677">경고: Brave은 확장 프로그램이 인터넷 방문 기록을 저장하지 못하도록 할 수 없습니다. 시크릿 모드에서 이 확장 프로그램을 사용 중지하려면 옵션을 선택 취소하세요.</translation>
+<translation id="6134859571175647580">경고: Brave은 확장 프로그램이 인터넷 방문 기록을 저장하지 못하도록 할 수 없습니다. 시크릿 모드에서 이 확장 프로그램을 사용 중지하려면 옵션을 선택 취소하세요.</translation>
 <translation id="777113543093865885">Brave에서 제거...</translation>
 <translation id="6078442581074612226">Brave에서</translation>
 <translation id="8148611988012584308">Brave 맞춤설정 및 제어</translation>
@@ -118,6 +117,9 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7977435741986383568">Brave에서 사용자에게 더 나은 인터넷 사용 환경을 제공하기 위해 웹 서비스를 사용할 수 있습니다. 원하는 경우 서비스를 사용 중지하실 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">맞춤법 오류를 수정하기 위해 Brave에서 사용자가 입력하는 텍스트를 Brave Software로 전송합니다.</translation>
 <translation id="815816884817177844">Brave Software과 통신하여 인터넷 탐색 환경 및 Brave 개선</translation>
+<translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
+<translation id="7021823858304886493">Brave 로그인 허용</translation>
+<translation id="1649714546770135458">이 기능을 사용 중지하면 Brave에 로그인하지 않고도 Gmail 등의 Brave Software 사이트에 로그인할 수 있습니다.</translation>
 <translation id="6274110506580702455">이 기기의 관리자에 의해 Brave 로그인이 사용 중지되었습니다.</translation>
 <translation id="9220324636239049437">항목 1개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="5853262807109651878">항목 <ph name="ITEMS_COUNT"/>개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>

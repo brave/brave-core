@@ -16,6 +16,8 @@ class BraveAutocompleteSchemeClassifier : public ChromeAutocompleteSchemeClassif
       const std::string& scheme) const override;
 
  private:
+  Profile* profile_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveAutocompleteSchemeClassifier);
 };
 

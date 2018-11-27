@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-logotyp</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">Logga in i Brave</translation>
 <translation id="5516268345616100622">Aktivitetshanteraren – Brave</translation>
 <translation id="7918740962659365265">Hjälp oss att göra Brave bättre genom att skicka felrapporter och <ph name="UMA_LINK"/> till Brave Software</translation>
@@ -52,7 +51,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="8030318113982266900">Uppdaterar din enhet till kanalen <ph name="CHANNEL_NAME"/> ...</translation>
 <translation id="7355059611036077582">Lägg till i Brave</translation>
 <translation id="7456658570432774853">Hjälp oss att förbättra Brave genom att rapportera dina aktuella inställningar</translation>
-<translation id="5436841087823876677">Varning! Brave kan inte förhindra att tillägg registrerar din webbhistorik. Om du vill inaktivera det här tillägget i inkognitoläge avmarkerar du det här alternativet.</translation>
+<translation id="6134859571175647580">Varning! Brave kan inte förhindra att tillägg registrerar din webbhistorik. Om du vill inaktivera det här tillägget i inkognitoläge avmarkerar du det här alternativet.</translation>
 <translation id="777113543093865885">Ta bort från Brave …</translation>
 <translation id="6078442581074612226">I Brave</translation>
 <translation id="8148611988012584308">Anpassa och kontrollera Brave</translation>
@@ -118,6 +117,9 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="7977435741986383568">Brave kan använda webbtjänster för att förbättra din upplevelse på webben. Du kan inaktivera dessa tjänster om du vill. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave skickar det du skriver i textfält till Brave Software för att kontrollera stavningen</translation>
 <translation id="815816884817177844">Kontaktar Brave Software i syfte att göra surfandet och Brave bättre</translation>
+<translation id="8586264863973514035">Ändringarna tillämpas när du startar om Brave</translation>
+<translation id="7021823858304886493">Tillåt inloggning i Brave</translation>
+<translation id="1649714546770135458">Om du inaktiverar detta kan du logga in på Brave Softwares webbplatser, till exempel Gmail, utan att logga in i Brave</translation>
 <translation id="6274110506580702455">Inloggning i Brave har inaktiverats av enhetens administratör.</translation>
 <translation id="9220324636239049437">Ett objekt tas bort från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill kunna återställa datan senare.</translation>
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> objekt tas bort från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill kunna återställa datan senare.</translation>

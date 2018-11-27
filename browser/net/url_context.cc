@@ -7,6 +7,10 @@
 
 #include <string>
 
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "content/public/browser/resource_request_info.h"
+
 namespace brave {
 
 BraveRequestInfo::BraveRequestInfo() {
@@ -14,5 +18,35 @@ BraveRequestInfo::BraveRequestInfo() {
 
 BraveRequestInfo::~BraveRequestInfo() {
 }
+
+void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  ctx->request_identifier = request->identifier();
+  ctx->request_url = request->url();
+  ctx->tab_origin = request->site_for_cookies().GetOrigin();
+  auto* request_info = content::ResourceRequestInfo::ForRequest(request);
+  if (request_info) {
+    ctx->resource_type = request_info->GetResourceType();
+  }
+  brave_shields::GetRenderFrameInfo(request, &ctx->render_process_id, &ctx->render_frame_id,
+      &ctx->frame_tree_node_id);
+  ctx->allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
+      request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields);
+  ctx->allow_ads = brave_shields::IsAllowContentSettingFromIO(
+      request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kAds);
+  ctx->allow_http_upgradable_resource = brave_shields::IsAllowContentSettingFromIO(
+      request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kHTTPUpgradableResources);
+  ctx->allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
+      request, ctx->tab_origin, GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kCookies);
+  ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingFromIO(
+      request, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kCookies);
+  ctx->request = request;
+}
+
 
 }  // namespace brave

@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sk">
+<translation id="3333887201479867589">Odmeny Brave</translation>
+<translation id="7942180974165298215">Blokovanie reklám Brave</translation>
+<translation id="7450557937477381864">Zatvoriť Chrome</translation>
+<translation id="7008934821596358692">Pre dokončenie importovania zatvorte všetky okná Chrome.</translation>
+<translation id="7753103220327065417">Zatvoriť Brave</translation>
+<translation id="5588481533147090393">Ak chcete dokončiť importovanie, zatvorte všetky okná Brave.</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="4983925687993168579">Štatistika</translation>
+<translation id="9173846700806833701">Widevine nie je nainštalovaný</translation>
+<translation id="2433569048491784801">Widevine nie je nainštalovaný.</translation>
+<translation id="3699882589215410581">Nainštalovať a spustiť Widevine</translation>
+<translation id="8410111618231938546">Google Widewine je časť kódu Digital Rights Management (DRM), ktorý v Brave Software nevlastníme a nemôžeme kontrolovať. Tento kód je načítaný zo serverov Google, nie z našich vlastných serverov. Táto funkcia funguje iba ak ju povolíte. Našich používateľov odraďujeme od používania DRM, ale rešpektujeme ich voľbu a oznávame, že niektorí používatelia Brave chcú používať služby, ktoré DRM požadujú. 
+
+Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importované z Brave</translation>
+<translation id="453977518730680921">Automatické prehrávanie médií</translation>
+<translation id="410351446219883937">Automatické prehrávanie</translation>
+<translation id="2240268017737062801">Opýtať sa, keď stránka bude chcieť automaticky prehrať médiá</translation>
+<translation id="3371702087847741961">Opýtať sa, keď stránka bude chcieť automaticky prehrať médiá (odporúčané)</translation>
+<translation id="3218385319396786393">Funkcia autoplay bola na tejto stránke zakázaná</translation>
+<translation id="4150684676757176434">Pokračovať v blokovaní funkcie autoplay</translation>
+<translation id="2044383478723007273">Farby Brave</translation>
+<translation id="5341901626640816374">Použiť široký adresný riadok</translation>
+<translation id="7965178729203412357">Nová identita Tor</translation>
+<translation id="8784924142044142231">Opustiť Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Otvoriť okno Tor</translation>
+<translation id="3155170474926428993">Spúšťač Tor</translation>
+<translation id="7372129767729198111">Predvolená ochrana Brave</translation>
+<translation id="8029018702721078742">Kontrola reklám</translation>
+<translation id="3544462288910360084">Kontrola súborov cookies</translation>
+<translation id="8919235146866304148">Zabezpečenie pomocou odtlačkov prstov</translation>
+<translation id="520895744850022668">HTTPS všade</translation>
+<translation id="5259716416204774556">Blokovanie skriptov</translation>
+<translation id="6067014455220527258">Blokovať reklamy</translation>
+<translation id="6985711843506827936">Povoliť reklamy a sledovanie</translation>
+<translation id="6132506775968708399">Zakázať cookies tretích strán</translation>
+<translation id="5657156137487675418">Povoliť všetky súbory cookies</translation>
+<translation id="6883611015375728278">Zakázať všetky cookies</translation>
+<translation id="1442559343076146186">Blokovať odtlačky prstov tretej strany</translation>
+<translation id="8034285923190068220">Povoliť odtlačky prstov</translation>
+<translation id="4540198958192073185">Blokovať fingerprinting</translation>
+<translation id="8942080017911802454">Zásady manipulácie WebRTC IP</translation>
+<translation id="6165508094623778733">Dozvedieť sa viac</translation>
+<translation id="8798099450830957504">Štandardné</translation>
+<translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
+<translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
+<translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
 </translationbundle>

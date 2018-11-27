@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave embléma</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">bejelentkezés a Braveba</translation>
 <translation id="5516268345616100622">Feladatkezelő -- Brave</translation>
 <translation id="7918740962659365265">Segítse a Brave fejlesztését azáltal, hogy elküldi a Brave Software-nak a következőket: hibajelentések és <ph name="UMA_LINK"/></translation>
@@ -48,7 +47,7 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="8030318113982266900">Eszköz frissítése a(z) <ph name="CHANNEL_NAME"/> csatornára...</translation>
 <translation id="7355059611036077582">Hozzáadás a Bravehoz</translation>
 <translation id="7456658570432774853">Segítsen a Brave fejlesztésében a jelenlegi beállítások elküldésével</translation>
-<translation id="5436841087823876677">Figyelmeztetés: a Brave nem tudja megakadályozni, hogy a bővítmények rögzítsék a böngészési előzményeit. A bővítmény inkognitómódban való használatának letiltásához törölje a lehetőség bejelölését.</translation>
+<translation id="6134859571175647580">Figyelmeztetés: a Brave nem tudja megakadályozni, hogy a bővítmények rögzítsék a böngészési előzményeit. A bővítmény inkognitómódban való használatának letiltásához törölje a lehetőség bejelölését.</translation>
 <translation id="777113543093865885">Eltávolítás a Braveból…</translation>
 <translation id="6078442581074612226">A Braveban</translation>
 <translation id="8148611988012584308">A Brave személyre szabása és beállításai</translation>
@@ -114,6 +113,9 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="7977435741986383568">Előfordulhat, hogy a Brave internetes szolgáltatásokat használ böngészési élménye javítására. Lehetősége van az ilyen szolgáltatások letiltására. <ph name="BEGIN_LINK"/>További információ<ph name="END_LINK"/>.</translation>
 <translation id="2312399718665761438">A nyelvtani hibák javítása érdekében a Brave elküldi a szövegmezőkbe gépelt szöveget a Brave Software-nak</translation>
 <translation id="815816884817177844">Kommunikáció a Brave Software-lal a böngészés és a Brave javítása érdekében</translation>
+<translation id="8586264863973514035">A módosítások alkalmazásához indítsa újra a Braveot</translation>
+<translation id="7021823858304886493">Brave-bejelentkezés engedélyezése</translation>
+<translation id="1649714546770135458">A beállítás kikapcsolásával anélkül jelentkezhet be a Brave Software-webhelyekre (pl. Gmail), hogy a Braveba is bejelentkezne</translation>
 <translation id="6274110506580702455">A Brave böngészőbe való bejelentkezést letiltotta az eszköz rendszergazdája.</translation>
 <translation id="9220324636239049437">Ezzel egyetlen elemet töröl erről az eszközről. Az adatok későbbi lekéréséhez jelentkezzen be a Braveba a következő e-mail-címmel: <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Ezzel <ph name="ITEMS_COUNT"/> elemet töröl erről az eszközről. Az adatok későbbi lekéréséhez jelentkezzen be a Braveba a következő e-mail-címmel: <ph name="USER_EMAIL"/>.</translation>

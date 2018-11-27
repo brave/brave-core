@@ -10,7 +10,23 @@
 
 #include "chrome/browser/net/chrome_network_delegate.h"
 #include "content/public/common/resource_type.h"
+#include "net/url_request/url_request.h"
 #include "url/gurl.h"
+
+class BraveNetworkDelegateBase;
+
+namespace brave {
+
+struct BraveRequestInfo;
+using ResponseCallback = base::Callback<void()>;
+
+}  // namespace brave
+
+namespace brave_rewards {
+  int OnBeforeURLRequest(
+      const brave::ResponseCallback& next_callback,
+      std::shared_ptr<brave::BraveRequestInfo> ctx);
+}  // namespace brave_rewards
 
 namespace brave {
 
@@ -18,14 +34,33 @@ enum BraveNetworkDelegateEventType {
   kOnBeforeRequest,
   kOnBeforeStartTransaction,
   kOnHeadersReceived,
+  kOnCanGetCookies,
+  kOnCanSetCookies,
   kUnknownEventType
+};
+
+enum BlockedBy {
+  kNotBlocked ,
+  kAdBlocked,
+  kTrackerBlocked,
+  kOtherBlocked
 };
 
 struct BraveRequestInfo {
   BraveRequestInfo();
   ~BraveRequestInfo();
   GURL request_url;
+  GURL tab_origin;
   std::string new_url_spec;
+  bool allow_brave_shields = true;
+  bool allow_ads = false;
+  bool allow_http_upgradable_resource = false;
+  bool allow_1p_cookies = true;
+  bool allow_3p_cookies = false;
+  bool referrer_changed = false;
+  int render_process_id = 0;
+  int render_frame_id = 0;
+  int frame_tree_node_id = 0;
   uint64_t request_identifier = 0;
   size_t next_url_request_index = 0;
   net::HttpRequestHeaders* headers = nullptr;
@@ -34,17 +69,39 @@ struct BraveRequestInfo {
   GURL* allowed_unsafe_redirect_url = nullptr;
   BraveNetworkDelegateEventType event_type = kUnknownEventType;
   const base::ListValue* referral_headers_list = nullptr;
-  content::ResourceType resource_type;
+  BlockedBy blocked_by = kNotBlocked;
+  // Default to invalid type for resource_type, so delegate helpers
+  // can properly detect that the info couldn't be obtained.
+  content::ResourceType resource_type = content::RESOURCE_TYPE_LAST_TYPE;
+
+  static void FillCTXFromRequest(const net::URLRequest* request,
+    std::shared_ptr<brave::BraveRequestInfo> ctx);
+
+ private:
+  // Please don't add any more friends here if it can be avoided.
+  // We should also remove the ones below.
+  friend int OnBeforeURLRequest_SiteHacksWork(
+      const ResponseCallback& next_callback,
+      std::shared_ptr<BraveRequestInfo> ctx);
+  friend int brave_rewards::OnBeforeURLRequest(
+      const brave::ResponseCallback& next_callback,
+      std::shared_ptr<brave::BraveRequestInfo> ctx);
+  friend int OnBeforeURLRequest_TorWork(
+      const ResponseCallback& next_callback,
+      std::shared_ptr<BraveRequestInfo> ctx);
+  friend class ::BraveNetworkDelegateBase;
+
+  // Don't use this directly after any dispatch
+  // request is deprecated, do not use it.
+  const net::URLRequest* request;
+  GURL* new_url = nullptr;
+
   DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 
-using ResponseCallback = base::Callback<void()>;
-
 //ResponseListener
 using OnBeforeURLRequestCallback =
-    base::Callback<int(net::URLRequest* request,
-        GURL* new_url,
-        const ResponseCallback& next_callback,
+    base::Callback<int(const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnBeforeStartTransactionCallback =
     base::Callback<int(net::URLRequest* request,
@@ -58,6 +115,10 @@ using OnHeadersReceivedCallback =
         GURL* allowed_unsafe_redirect_url,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnCanGetCookiesCallback =
+    base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnCanSetCookiesCallback =
+    base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
 
 }  // namespace brave
 

@@ -1,0 +1,13 @@
+diff --git a/components/safe_browsing/db/v4_protocol_manager_util.cc b/components/safe_browsing/db/v4_protocol_manager_util.cc
+index e6be471871b850e1fbb53c3f822276f428bc9a74..e98914154f173a80e4ed0972f9b1131457ab6047 100644
+--- a/components/safe_browsing/db/v4_protocol_manager_util.cc
++++ b/components/safe_browsing/db/v4_protocol_manager_util.cc
+@@ -27,7 +27,7 @@ namespace safe_browsing {
+ // Can be overriden by tests.
+ const char* g_sbv4_url_prefix_for_testing = nullptr;
+ 
+-const char kSbV4UrlPrefix[] = "https://safebrowsing.googleapis.com/v4";
++const char kSbV4UrlPrefix[] = "https://safebrowsing.brave.com/v4";
+ 
+ const base::FilePath::CharType kStoreSuffix[] = FILE_PATH_LITERAL(".store");
+ 

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index d8902478e8e77a4d6f4f392d6461386f42b7cddf..cd0f1d00be89e8cb6280a9c48b936311bff13f4f 100644
+index 810832151e15edd674679d6813222d24aaaac3be..1cad5d85208a91833a77e3582edf3c8c7912f6a5 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-@@ -151,6 +151,10 @@ bool AutoplayPolicy::DocumentHasUserExceptionFlag(const Document& document) {
+@@ -159,6 +159,10 @@ bool AutoplayPolicy::DocumentHasUserExceptionFlag(const Document& document) {
  // static
  bool AutoplayPolicy::DocumentShouldAutoplayMutedVideos(
      const Document& document) {
@@ -13,15 +13,14 @@ index d8902478e8e77a4d6f4f392d6461386f42b7cddf..cd0f1d00be89e8cb6280a9c48b936311
    return GetAutoplayPolicyForDocument(document) !=
           AutoplayPolicy::Type::kNoUserGestureRequired;
  }
-@@ -364,6 +368,11 @@ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
-   if (element_->GetLoadType() == WebMediaPlayer::kLoadTypeMediaStream)
-     return false;
+@@ -389,6 +393,10 @@ void AutoplayPolicy::EnsureAutoplayInitiatedSet() {
  
+ bool AutoplayPolicy::IsGestureNeededForPlaybackIfPendingUserGestureIsLocked()
+     const {
 +#if defined(BRAVE_CHROMIUM_BUILD)
 +  if (IsAutoplayAllowedPerSettings())
 +    return false;
 +#endif
-+
    // We want to allow muted video to autoplay if:
    // - the flag is enabled;
    // - Data Saver is not enabled;

@@ -1,12 +1,12 @@
 diff --git a/content/public/browser/permission_type.h b/content/public/browser/permission_type.h
-index 1c256ae28c340c26eaf2a410257c41dcc5e0b341..53cbd82511c124c3b0173e6d8f2c55a982365d56 100644
+index a3a3cf55b13ea5b820e00db98424d2f187cf2fc5..ed73da7dd3f2db6aefc3c4b256121864fe15696d 100644
 --- a/content/public/browser/permission_type.h
 +++ b/content/public/browser/permission_type.h
-@@ -29,6 +29,7 @@ enum class PermissionType {
-   CLIPBOARD_READ = 14,
-   CLIPBOARD_WRITE = 15,
+@@ -31,6 +31,7 @@ enum class PermissionType {
    PAYMENT_HANDLER = 16,
-+  AUTOPLAY = 17,
+   BACKGROUND_FETCH = 17,
  
++  AUTOPLAY = 18,
    // Always keep this at the end.
    NUM,
+ };

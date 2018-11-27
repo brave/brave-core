@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-index af44241b75ce10466826feb2e1e52a78f2f854c9..05c278f95f11394ebf5d853afa72e12ef3544927 100644
+index aa28763b9553e061f54018c5806b12b702f74b31..16a4898e292238ec49ad703d189f4bb539d75fbb 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-@@ -224,6 +224,7 @@ base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
+@@ -227,6 +227,7 @@ base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
    if (IsIncognito())
      return l10n_util::GetStringUTF16(IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP);
  

@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">inloggen bij Brave</translation>
 <translation id="5516268345616100622">Taakbeheer - Brave</translation>
 <translation id="7918740962659365265">Help ons Brave te verbeteren door crashrapporten en <ph name="UMA_LINK"/> naar Brave Software te verzenden</translation>
@@ -52,7 +51,7 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="8030318113982266900">Je apparaat bijwerken naar <ph name="CHANNEL_NAME"/> kanaal...</translation>
 <translation id="7355059611036077582">Toevoegen aan Brave</translation>
 <translation id="7456658570432774853">Help Brave beter te maken door de huidige instellingen te melden</translation>
-<translation id="5436841087823876677">Waarschuwing: Brave kan niet voorkomen dat extensies je browsergeschiedenis vastleggen. Als je deze extensie in de incognitomodus wilt uitschakelen, verwijder je het vinkje bij deze optie.</translation>
+<translation id="6134859571175647580">Waarschuwing: Brave kan niet voorkomen dat extensies je browsergeschiedenis vastleggen. Als je deze extensie in de incognitomodus wilt uitschakelen, verwijder je het vinkje bij deze optie.</translation>
 <translation id="777113543093865885">Verwijderen uit Brave…</translation>
 <translation id="6078442581074612226">In Brave</translation>
 <translation id="8148611988012584308">Brave aanpassen en beheren</translation>
@@ -118,6 +117,9 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="7977435741986383568">Brave kan webservices gebruiken om de browsefunctionaliteit te verbeteren. Je kunt deze services eventueel uitschakelen. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave verzendt de tekst die je in tekstvelden typt naar Brave Software om spelfouten te corrigeren</translation>
 <translation id="815816884817177844">Communiceert met Brave Software om de browsefunctionaliteit en Brave te verbeteren</translation>
+<translation id="8586264863973514035">Als je de wijzigingen wilt toepassen, start je Brave opnieuw</translation>
+<translation id="7021823858304886493">Inloggen bij Brave toestaan</translation>
+<translation id="1649714546770135458">Als je dit uitschakelt, kun je inloggen bij Brave Software-sites zoals Gmail zonder in te loggen bij Brave</translation>
 <translation id="6274110506580702455">Inloggen bij Brave is uitgeschakeld door de beheerder van dit apparaat.</translation>
 <translation id="9220324636239049437">Hiermee wordt 1 item verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Hiermee worden <ph name="ITEMS_COUNT"/> items verwijderd van dit apparaat. Als je je gegevens later wilt terughalen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>

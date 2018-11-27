@@ -7,6 +7,8 @@
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/browser_thread.h"
@@ -25,6 +27,10 @@ void NewTorIdentityCallback(WebContents* current_tab) {
 }  // namespace
 
 namespace brave {
+
+void NewOffTheRecordWindowTor(Browser* browser) {
+  profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
+}
 
 void NewTorIdentity(Browser* browser) {
   Profile* profile = browser->profile();

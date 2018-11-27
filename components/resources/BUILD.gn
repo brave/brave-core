@@ -1,32 +1,68 @@
-import("//tools/grit/grit_rule.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//build/config/locales.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
 
-grit("brave_components_resources_grit") {
-  source = "brave_components_resources.grd"
+if (!is_android) {
+  grit("static_resources") {
+    source = "brave_components_resources.grd"
 
-  output_name = "brave_components_resources_new"
+    output_name = "brave_components_resources_new"
+
+    outputs = [
+      "grit/brave_components_resources.h",
+      "brave_components_static.pak",
+    ]
+    deps = [
+      ":strings",
+      "//brave/vendor/brave-extension",
+    ]
+
+    if (brave_rewards_enabled) {
+      deps += [
+        "//brave/components/brave_rewards/resources",
+        "//brave/components/brave_rewards/resources/extension:resources",
+      ]
+    }
+
+    grit_flags = [
+      "-E",
+      "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+    ]
+    output_dir = "$root_gen_dir/components"
+    resource_ids = "//brave/browser/resources/resource_ids"
+  }
+
+  repack("resources") {
+    deps = [
+      ":static_resources",
+      "//brave/components/brave_adblock_ui:generated_resources",
+      "//brave/components/brave_new_tab_ui:generated_resources",
+      "//brave/components/brave_welcome_ui:generated_resources",
+    ]
+
+    sources = [
+      "$root_gen_dir/components/brave_components_static.pak",
+      "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
+      "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
+      "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
+    ]
+
+    output = "$root_gen_dir/components/brave_components_resources.pak"
+  }
+}
+
+grit("strings") {
+  source = "brave_components_strings.grd"
 
   outputs = [
-    "grit/brave_components_resources.h",
-    "brave_components_resources.pak",
-  ]
-  deps = [
-    "//brave/components/brave_adblock_ui",
-    "//brave/components/brave_new_tab_ui",
-    "//brave/components/brave_welcome_ui",
-    "//brave/vendor/brave-extension",
+    "grit/brave_components_strings.h",
   ]
 
-  if (brave_rewards_enabled) {
-    deps += [
-      "//brave/components/brave_rewards/ui",
-    ]
+  foreach(locale, locales_with_fake_bidi) {
+    outputs += [ "brave_components_strings_$locale.pak" ]
   }
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
+
   output_dir = "$root_gen_dir/components"
   resource_ids = "//brave/browser/resources/resource_ids"
 }
-

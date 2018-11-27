@@ -78,7 +78,8 @@ void BraveTorClientUpdater::InitExecutablePath(
 
 void BraveTorClientUpdater::OnComponentReady(
     const std::string& component_id,
-    const base::FilePath& install_dir) {
+    const base::FilePath& install_dir,
+    const std::string& manifest) {
   GetTaskRunner()->PostTask(
       FROM_HERE, base::Bind(&BraveTorClientUpdater::InitExecutablePath,
                             base::Unretained(this), install_dir));

@@ -100,6 +100,15 @@ void BraveLocationBarView::OnThemeChanged() {
   RefreshBackground();
 }
 
+void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
+  LocationBarView::ChildPreferredSizeChanged(child);
+
+  if (child != brave_actions_)
+    return;
+
+  Layout();
+}
+
 // Provide base class implementation for Update override that has been added to
 // header via a patch. This should never be called as the only instantiated
 // implementation should be our |BraveLocationBarView|.

@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Bravei logo</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">logige Bravei sisse</translation>
 <translation id="5516268345616100622">Tegumihaldur – Brave</translation>
 <translation id="7918740962659365265">Aidake Bravei täiustada, saates Brave Software'ile krahhiaruandeid ja lingi <ph name="UMA_LINK"/></translation>
@@ -50,7 +49,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="8030318113982266900">Seadet värskendatakse kanalile <ph name="CHANNEL_NAME"/> ...</translation>
 <translation id="7355059611036077582">Bravei lisamine</translation>
 <translation id="7456658570432774853">Aidake muuta Bravei paremaks, teavitades meid praegustest seadetest</translation>
-<translation id="5436841087823876677">Hoiatus. Brave ei saa takistada laiendustel teie sirvimisajalugu salvestada. Kui soovite laienduse inkognito režiimis keelata, siis tühistage see valik.</translation>
+<translation id="6134859571175647580">Hoiatus. Brave ei saa takistada laiendustel teie sirvimisajalugu salvestada. Kui soovite laienduse inkognito režiimis keelata, siis tühistage see valik.</translation>
 <translation id="777113543093865885">Braveist eemaldamine ...</translation>
 <translation id="6078442581074612226">Braveis</translation>
 <translation id="8148611988012584308">Bravei kohandamine ja juhtimine</translation>
@@ -116,6 +115,9 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="7977435741986383568">Brave võib sirvimiskogemuse parandamiseks kasutada veebiteenuseid. Võite need teenused valikuliselt keelata. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Õigekirjavigade parandamiseks saadab Brave teie tekstiväljadel sisestatud teksti Brave Software'ile</translation>
 <translation id="815816884817177844">Antakse Brave Software'ile tagasisidet, et sirvimist ja Bravei paremaks muuta</translation>
+<translation id="8586264863973514035">Muudatuste rakendamiseks käivitage Brave uuesti</translation>
+<translation id="7021823858304886493">Luba Braveisse sisselogimine</translation>
+<translation id="1649714546770135458">Kui selle välja lülitate, saate Brave Software'i saitidele (nt Gmaili) sisse logida ilma Braveisse sisse logimata</translation>
 <translation id="6274110506580702455">Administraator on selles seadmes Braveisse sisselogimise keelanud.</translation>
 <translation id="9220324636239049437">See kustutab seadmest ühe üksuse. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">See kustutab seadmest <ph name="ITEMS_COUNT"/> üksust. Hiljem oma andmete toomiseks logige Bravei sisse kasutajana <ph name="USER_EMAIL"/>.</translation>

@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave logotips</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">pierakstieties pārlūkā Brave</translation>
 <translation id="5516268345616100622">Uzdevumu pārvaldnieks — Brave</translation>
 <translation id="7918740962659365265">Palīdzēt uzlabot Brave, nosūtot Brave Software serveriem avāriju pārskatus un <ph name="UMA_LINK"/></translation>
@@ -48,7 +47,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="8030318113982266900">Notiek ierīces atjaunināšana uz kanālu <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Pievienot pārlūkam Brave</translation>
 <translation id="7456658570432774853">Palīdziet uzlabot pārlūku Brave, ziņojot par pašreizējiem iestatījumiem.</translation>
-<translation id="5436841087823876677">Brīdinājums! Brave nevar novērst to, ka paplašinājumi ieraksta jūsu pārlūkošanas vēsturi. Lai atspējotu šo paplašinājumu inkognito režīmā, noņemiet atzīmi no šīs opcijas.</translation>
+<translation id="6134859571175647580">Brīdinājums! Brave nevar novērst to, ka paplašinājumi ieraksta jūsu pārlūkošanas vēsturi. Lai atspējotu šo paplašinājumu inkognito režīmā, noņemiet atzīmi no šīs opcijas.</translation>
 <translation id="777113543093865885">Noņemšana no pārlūka Brave...</translation>
 <translation id="6078442581074612226">Pārlūkā Brave</translation>
 <translation id="8148611988012584308">Pielāgot un kontrolēt Brave</translation>
@@ -114,6 +113,9 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="7977435741986383568">Brave var izmantot tīmekļa pakalpojumus, lai uzlabotu jūsu pārlūkošanas pieredzi. Varat arī atspējot šos pakalpojumus. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="2312399718665761438">Lai izlabotu pareizrakstības kļūdas, Brave nosūta teksta laukos ievadīto tekstu Brave Software serveriem.</translation>
 <translation id="815816884817177844">Sazinās ar Brave Software, lai uzlabotu pārlūkošanu un pārlūku Brave</translation>
+<translation id="8586264863973514035">Lai ieviestu veiktās izmaiņas, atkārtoti palaidiet pārlūku Brave.</translation>
+<translation id="7021823858304886493">Atļaut pierakstīties pārlūkā Brave</translation>
+<translation id="1649714546770135458">Ja izslēgsiet šo iestatījumu, varēsiet pierakstīties Brave Software vietnēs, piemēram, pakalpojumā Gmail, nepierakstoties pārlūkā Brave.</translation>
 <translation id="6274110506580702455">Šīs ierīces administrators ir atspējojis pierakstīšanos pārlūkā Brave.</translation>
 <translation id="9220324636239049437">Veicot šo darbību, no šīs ierīces tiks dzēsts 1 vienums. Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Veicot šo darbību, no šīs ierīces tiks dzēsts(-i) <ph name="ITEMS_COUNT"/> vienums(-i). Lai vēlāk izgūtu datus, pierakstieties pārlūkā Brave kā <ph name="USER_EMAIL"/>.</translation>

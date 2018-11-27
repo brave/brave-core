@@ -1,20 +1,73 @@
 <html>
 <head>
 <script>
-function addElement(src) {
+let expectedImgLoaded = 0
+let expectedImgBlocked = 0
+let expectedXHRLoaded = 0
+let expectedXHRBlocked = 0
+let numXHRLoaded = 0
+let numXHRBlocked = 0
+
+// Performs an XHR for the specified src
+function xhr(src) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', src, true);
+  xhr.onload = function(e) {
+    if (xhr.response.length !== 0)
+      numXHRLoaded++
+    else
+      numXHRBlocked++
+    onLoad()
+  }
+  xhr.onerror = function(e) {
+    numXHRBlocked++
+    onLoad()
+  }
+  xhr.send();
+}
+
+// Adds an image to the DOM with the specified src
+function addImage(src) {
   const img = document.createElement('img')
-  img.id = 'adImage'
   img.src = src
-  img.addEventListener('load', imgLoaded)
+  img.className = 'adImage'
+  img.addEventListener('load', onLoad)
   document.body.appendChild(img)
 }
 
-function imgLoaded() {
-  const adImage = document.querySelector('#adImage')
+// Sets the expectation for the number of images and XHR loaded and blocked
+function setExpectations(numImgLoaded, numImgBlocked, numXHRLoaded, numXHRBlocked) {
+  expectedImgLoaded = numImgLoaded
+  expectedImgBlocked = numImgBlocked
+  expectedXHRLoaded = numXHRLoaded
+  expectedXHRBlocked = numXHRBlocked
+}
+
+function onLoad() {
+  const adImages = Array.from(document.querySelectorAll('.adImage'))
+  if (adImages.length !== expectedImgLoaded + expectedImgBlocked ||
+      numXHRLoaded + numXHRBlocked !== expectedXHRLoaded + expectedXHRBlocked) {
+    return;
+  }
+
   // Blocked image should be a 1x1 stub
-  window.domAutomationController.send(adImage.complete &&
-    (adImage.naturalHeight !== 1 ||
-    adImage.naturalWidth !== 1))
+  const numImgLoaded = adImages.reduce((total, adImage) => {
+    if (adImage.complete &&
+        (adImage.naturalHeight !== 1 || adImage.naturalWidth !== 1)) {
+      return total + 1
+    }
+    return total
+  }, 0);
+
+  const numImgBlocked = adImages.length - numImgLoaded
+  const result = numImgLoaded == expectedImgLoaded &&
+      expectedImgBlocked == numImgBlocked &&
+      numXHRLoaded === expectedXHRLoaded &&
+      numXHRBlocked === expectedXHRBlocked
+  // For debugging:
+  // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgBlocked, numImgBlocked,
+  //    numXHRLoaded, expectedXHRLoaded, numXHRBlocked, expectedXHRBlocked}))
+  window.domAutomationController.send(result)
 }
 </script>
 </head>

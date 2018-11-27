@@ -1,5 +1,7 @@
 declare namespace RewardsExtension {
   interface State {
+    currentNotification?: string
+    notifications: Record<number, Notification>
     publishers: Record<string, Publisher>
     report: Report
     walletCreated: boolean
@@ -41,13 +43,21 @@ declare namespace RewardsExtension {
   }
 
   export interface Report {
-    ads: number
-    closing: number
-    contribute: number
-    donations: number
-    grants: number
-    oneTime: number
-    opening: number
-    total?: number
+    ads: string
+    closing: string
+    contribute: string
+    deposit: string
+    donation: string
+    grant: string
+    tips: string
+    opening: string
+    total: string
+  }
+
+  export interface Notification {
+    id: string
+    type: number
+    timestamp: number
+    args: string[]
   }
 }

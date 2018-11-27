@@ -8,6 +8,7 @@
 #include "brave/common/render_messages.h"
 #include "brave/content/common/frame_messages.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/blink/public/platform/web_url.h"
@@ -18,11 +19,9 @@
 
 BraveContentSettingsObserver::BraveContentSettingsObserver(
     content::RenderFrame* render_frame,
-    extensions::Dispatcher* extension_dispatcher,
     bool should_whitelist,
     service_manager::BinderRegistry* registry)
-    : ContentSettingsObserver(render_frame, extension_dispatcher,
-          should_whitelist, registry) {
+    : ContentSettingsObserver(render_frame, should_whitelist, registry) {
 }
 
 BraveContentSettingsObserver::~BraveContentSettingsObserver() {
@@ -45,14 +44,14 @@ void BraveContentSettingsObserver::OnAllowScriptsOnce(
 }
 
 void BraveContentSettingsObserver::DidCommitProvisionalLoad(
-    bool is_new_navigation, bool is_same_document_navigation) {
+    bool is_same_document_navigation, ui::PageTransition transition) {
   if (!is_same_document_navigation) {
     temporarily_allowed_scripts_ =
       std::move(preloaded_temporarily_allowed_scripts_);
   }
 
   ContentSettingsObserver::DidCommitProvisionalLoad(
-      is_new_navigation, is_same_document_navigation);
+      is_same_document_navigation, transition);
 }
 
 bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
@@ -132,15 +131,18 @@ GURL BraveContentSettingsObserver::GetOriginOrURL(const blink::WebFrame* frame) 
   // TODO(alexmos): This is broken for --site-per-process, since top() can be a
   // WebRemoteFrame which does not have a document(), and the WebRemoteFrame's
   // URL is not replicated.  See https://crbug.com/628759.
-  if (top_origin.unique() && frame->Top()->IsWebLocalFrame())
+  if (top_origin.opaque() && frame->Top()->IsWebLocalFrame())
     return frame->Top()->ToWebLocalFrame()->GetDocument().Url();
   return top_origin.GetURL();
 }
 
-ContentSetting BraveContentSettingsObserver::GetContentSettingFromRules(
+ContentSetting BraveContentSettingsObserver::GetFPContentSettingFromRules(
     const ContentSettingsForOneType& rules,
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
+
+  if (rules.size() == 0)
+    return CONTENT_SETTING_DEFAULT;
 
   const GURL& primary_url = GetOriginOrURL(frame);
 
@@ -168,9 +170,16 @@ bool BraveContentSettingsObserver::IsBraveShieldsDown(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  const GURL& primary_url = GetOriginOrURL(frame);
+
   if (content_setting_rules_) {
-    setting = GetContentSettingFromRules(
-        content_setting_rules_->brave_shields_rules, frame, secondary_url);
+    for (const auto& rule : content_setting_rules_->brave_shields_rules) {
+      if (rule.primary_pattern.Matches(primary_url) &&
+          rule.secondary_pattern.Matches(secondary_url)) {
+        setting = rule.GetContentSetting();
+        break;
+      }
+    }
   }
 
   return setting == CONTENT_SETTING_BLOCK;
@@ -181,17 +190,25 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   if (!enabled_per_settings)
     return false;
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  bool allow = true;
   const GURL secondary_url(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
   if (IsBraveShieldsDown(frame, secondary_url)) {
     return true;
   }
+  ContentSettingsForOneType rules;
   if (content_setting_rules_) {
-    ContentSetting setting = GetContentSettingFromRules(
-        content_setting_rules_->fingerprinting_rules, frame, secondary_url);
-    allow = setting != CONTENT_SETTING_BLOCK;
+      rules = content_setting_rules_->fingerprinting_rules;
   }
+  ContentSettingPatternSource default_rule =
+      ContentSettingPatternSource(ContentSettingsPattern::Wildcard(),
+                                  ContentSettingsPattern::FromString("https://firstParty/*"),
+                                  base::Value::FromUniquePtrValue(content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+                                  std::string(),
+                                  false);
+  rules.push_back(default_rule);
+  ContentSetting setting = GetFPContentSettingFromRules(rules, frame, secondary_url);
+  rules.pop_back();
+  bool allow = setting != CONTENT_SETTING_BLOCK;
   allow = allow || IsWhitelistedForContentSettings();
 
   if (!allow) {
@@ -209,8 +226,52 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
     return true;
 
   bool allow = ContentSettingsObserver::AllowAutoplay(default_value);
-  if (allow) {
+  if (allow)
     return true;
+
+  // respect user's site blocklist, if any
+  const GURL& primary_url = GetOriginOrURL(frame);
+  const GURL& secondary_url = url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
+  for (const auto& rule : content_setting_rules_->autoplay_rules) {
+    if (rule.primary_pattern == ContentSettingsPattern::Wildcard())
+        continue;
+    if (rule.primary_pattern.Matches(primary_url) &&
+        (rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
+         rule.secondary_pattern.Matches(secondary_url))) {
+      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK)
+        return false;
+    }
+  }
+
+  // in the absence of an explicit block rule, whitelist the following sites
+  std::string kWhitelistPatterns[] = {
+      "[*.]example.com",
+      "[*.]youtube.com",
+      "[*.]khanacademy.org",
+      "[*.]twitch.tv",
+      "[*.]vimeo.com",
+      "[*.]udemy.com",
+      "[*.]duolingo.com",
+      "[*.]giphy.com",
+      "[*.]imgur.com",
+      "[*.]netflix.com",
+      "[*.]hulu.com",
+      "[*.]primevideo.com",
+      "[*.]dailymotion.com",
+      "[*.]tv.com",
+      "[*.]viewster.com",
+      "[*.]metacafe.com",
+      "[*.]d.tube",
+      "[*.]spotify.com",
+      "[*.]lynda.com",
+      "[*.]soundcloud.com",
+      "[*.]pandora.com",
+      "[*.]periscope.tv",
+      "[*.]pscp.tv",
+  };
+  for (const auto& pattern : kWhitelistPatterns) {
+    if (ContentSettingsPattern::FromString(pattern).Matches(primary_url))
+      return true;
   }
 
   blink::mojom::blink::PermissionServicePtr permission_service;

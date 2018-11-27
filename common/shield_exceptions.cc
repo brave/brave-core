@@ -39,7 +39,8 @@ bool IsUAWhitelisted(const GURL& gurl) {
 bool IsBlockedResource(const GURL& gurl) {
   static std::vector<URLPattern> blocked_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://www.lesechos.fr/xtcore.js"),
-    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js")
+    URLPattern(URLPattern::SCHEME_ALL, "https://*.y8.com/js/sdkloader/outstream.js"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://pdfjs.robwu.nl/*")
   });
   return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
       [&gurl](URLPattern pattern){
@@ -97,6 +98,7 @@ bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
   // It's preferred to use specific_patterns below when possible
   static std::vector<URLPattern> whitelist_patterns({
     URLPattern(URLPattern::SCHEME_ALL, "https://use.typekit.net/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://api.geetest.com/*"),
     URLPattern(URLPattern::SCHEME_ALL, "https://cloud.typography.com/*")
   });
   return std::any_of(whitelist_patterns.begin(), whitelist_patterns.end(),

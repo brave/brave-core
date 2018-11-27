@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">logg på Brave</translation>
 <translation id="5516268345616100622">Oppgavebehandling – Brave</translation>
 <translation id="7918740962659365265">Bidra til å gjøre Brave bedre ved å sende programstopprapporter og <ph name="UMA_LINK"/> til Brave Software</translation>
@@ -50,7 +49,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="8030318113982266900">Oppdaterer enheten din til <ph name="CHANNEL_NAME"/>-kanalen ...</translation>
 <translation id="7355059611036077582">Legg til i Brave</translation>
 <translation id="7456658570432774853">Bidra til å gjøre Brave bedre ved å rapportere inn de gjeldende innstillingene</translation>
-<translation id="5436841087823876677">Advarsel: Brave kan ikke hindre utvidelser fra å spille inn nettlesingsloggen. For å slå av denne utvidelsen i inkognitomodus, fjern avmerkingen for dette alternativet.</translation>
+<translation id="6134859571175647580">Advarsel: Brave kan ikke hindre utvidelser fra å spille inn nettlesingsloggen. For å slå av denne utvidelsen i inkognitomodus, fjern avmerkingen for dette alternativet.</translation>
 <translation id="777113543093865885">Fjern fra Brave</translation>
 <translation id="6078442581074612226">I Brave</translation>
 <translation id="8148611988012584308">Tilpass og kontrollér Brave</translation>
@@ -116,6 +115,9 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="7977435741986383568">Brave kan bruke nettjenester for å forbedre brukeropplevelsen din på nettet. Du kan slå av disse tjenestene. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">For å rette opp i skrivefeil sender Brave sender tekst du skriver i tekstfelt, til Brave Software</translation>
 <translation id="815816884817177844">Kommuniserer med Brave Software for å gjøre nettlesing og Brave bedre</translation>
+<translation id="8586264863973514035">For å bruke endringene dine må du starte Brave på nytt</translation>
+<translation id="7021823858304886493">Tillat Brave-pålogging</translation>
+<translation id="1649714546770135458">Ved å slå dette av kan du logge på Brave Software-sider, som Gmail, uten å logge på Brave</translation>
 <translation id="6274110506580702455">Administratoren av denne enheten har deaktivert pålogging til Brave.</translation>
 <translation id="9220324636239049437">Dette sletter 1 element fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Dette sletter <ph name="ITEMS_COUNT"/> elementer fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>

@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
+<translation id="3333887201479867589">Brave-belønninger</translation>
+<translation id="7942180974165298215">Brave annonsesporing</translation>
+<translation id="7450557937477381864">Lukk Chrome</translation>
+<translation id="7008934821596358692">For å avslutte importering, lukk alle Chrome-vinduer.</translation>
+<translation id="7753103220327065417">Lukk Brave</translation>
+<translation id="5588481533147090393">For å fullføre importen, lukk alle Brave-vinduer.</translation>
+<translation id="6447842834002726250">Informasjonskapsler</translation>
+<translation id="4983925687993168579">Statistikk</translation>
+<translation id="9173846700806833701">Widevine er ikke installert</translation>
+<translation id="2433569048491784801">Widevine er ikke installert.</translation>
+<translation id="3699882589215410581">Installer og kjør Widevine</translation>
+<translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
+
+Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. Du samtykker til at Brave ikke er ansvarlig for noen skade eller tap i forbindelse med din bruk av Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importert fra Brave</translation>
+<translation id="453977518730680921">Autoavspill media</translation>
+<translation id="410351446219883937">Autospill</translation>
+<translation id="2240268017737062801">Spør når en nettside ønsker å autoavspille media</translation>
+<translation id="3371702087847741961">Spør når et nettsted vil automatisk spille av media (anbefalt)</translation>
+<translation id="3218385319396786393">Autospill var blokkert på denne siden</translation>
+<translation id="4150684676757176434">Fortsett å blokkere autoavspilling</translation>
+<translation id="2044383478723007273">Brave farger</translation>
+<translation id="5341901626640816374">Bruk bred stedslinje</translation>
+<translation id="7965178729203412357">Ny Tor-identitet</translation>
+<translation id="8784924142044142231">Avslutt Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Åpne Tor-vindu</translation>
+<translation id="3155170474926428993">Tor-starter</translation>
+<translation id="7372129767729198111">Standarder for Brave-skjold</translation>
+<translation id="8029018702721078742">Annonsekontroll</translation>
+<translation id="3544462288910360084">Informasjonskapselkontroll</translation>
+<translation id="8919235146866304148">Fingeravtrykkbeskyttelse</translation>
+<translation id="520895744850022668">HTTPS Overalt</translation>
+<translation id="5259716416204774556">Script-blokkering</translation>
+<translation id="6067014455220527258">Blokker annonser</translation>
+<translation id="6985711843506827936">Tillat annonser og sporing</translation>
+<translation id="6132506775968708399">Blokker tredjeparts informasjonskapsler</translation>
+<translation id="5657156137487675418">Tillatt alle informasjonskapsler</translation>
+<translation id="6883611015375728278">Blokker alle informasjonskapsler</translation>
+<translation id="1442559343076146186">Blokker tredjeparts fingeravtrykk</translation>
+<translation id="8034285923190068220">Tillat fingeravtrykk</translation>
+<translation id="4540198958192073185">Blokker alle fingeravtrykk</translation>
+<translation id="8942080017911802454">Håndteringspolitikk for WebRTC IP</translation>
+<translation id="6165508094623778733">Lær mer</translation>
+<translation id="8798099450830957504">Standard</translation>
+<translation id="1822560017823072927">Standard offentlige og private grensesnitt</translation>
+<translation id="5825943197137337319">Kun standard offentlig grensesnitt</translation>
+<translation id="1689062823386843231">Deaktiver ikke-proxied UDP</translation>
 </translationbundle>

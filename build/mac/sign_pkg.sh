@@ -3,14 +3,14 @@
 set -euo pipefail
 
 if [[ $# -lt "4" ]]; then
-  echo "usage: $0 <pkg_src> <pkg_dst> <mac_signing_keychain> <mac_signing_identifier>"
+  echo "usage: $0 <pkg_src> <pkg_dst> <mac_signing_keychain> <mac_installer_signing_identifier>"
   exit 1
 fi
 
 SOURCE="${1}"
 DEST="${2}"
 MAC_SIGNING_KEYCHAIN="${3}"
-MAC_SIGNING_IDENTIFIER="${4}"
+MAC_INSTALLER_SIGNING_IDENTIFIER="${4}"
 
 function check_exit() {
     return=$?;
@@ -29,4 +29,4 @@ if [[ -f $DEST ]]; then
   rm -f "$DEST"
 fi
 
-/usr/bin/productsign --sign "$MAC_SIGNING_IDENTIFIER" --keychain "$MAC_SIGNING_KEYCHAIN" "$SOURCE" "$DEST"
+/usr/bin/productsign --sign "$MAC_INSTALLER_SIGNING_IDENTIFIER" --keychain "$MAC_SIGNING_KEYCHAIN" "$SOURCE" "$DEST"

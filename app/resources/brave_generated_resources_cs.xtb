@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="cs">
+<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="7942180974165298215">Blokování reklam Brave</translation>
+<translation id="7450557937477381864">Zavřít Chrome</translation>
+<translation id="7008934821596358692">Pro dokončení importu zavřete všechna okna prohlížeče Chrome.</translation>
+<translation id="7753103220327065417">Zavřít Brave</translation>
+<translation id="5588481533147090393">Import dokončíte uzavřením všech oken Brave.</translation>
+<translation id="6447842834002726250">Soubory cookie</translation>
+<translation id="4983925687993168579">Statistiky</translation>
+<translation id="9173846700806833701">Widevine není instalováno</translation>
+<translation id="2433569048491784801">Widevine není instalováno.</translation>
+<translation id="3699882589215410581">Nainstalovat a spustit Widevine</translation>
+<translation id="8410111618231938546">Google Widevine je kód pro správu digitálních práv (DRM), který ve společnosti Brave Software nevlastníme a nemůžeme jej kontrolovat. Kód Google Widevine je nahráván ze serverů Google, ne z našich serverů. Nahraje se pouze po povolení této možnosti. Používání DRM nedoporučujeme, ale respektujeme volbu uživatele a uznáváme, že někteří uživatelé Brave by rádi využívali služby, které DRM vyžadují.
+
+Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Google Widevine. Souhlasíte s tím, že společnost Brave neodpovídá za škody ani ztráty související s používáním služby Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Importováno z Brave</translation>
+<translation id="453977518730680921">Automaticky přehrávat média</translation>
+<translation id="410351446219883937">Automatické přehrávání</translation>
+<translation id="2240268017737062801">Dotázat se, pokud stránka hodlá automaticky spouštět multimediální soubory</translation>
+<translation id="3371702087847741961">Dotázat se, pokud stránka hodlá automaticky přehrávat multimediální soubory (doporučeno)</translation>
+<translation id="3218385319396786393">Automatické přehrávání bylo na této stránce zablokováno</translation>
+<translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
+<translation id="2044383478723007273">Barvy Brave</translation>
+<translation id="5341901626640816374">Použít širokou lištu umístění</translation>
+<translation id="7965178729203412357">Nová identita Tor</translation>
+<translation id="8784924142044142231">Opustit Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Otevřít okno Tor</translation>
+<translation id="3155170474926428993">Tor Launcher</translation>
+<translation id="7372129767729198111">Výchozí štíty Brave</translation>
+<translation id="8029018702721078742">Kontrola reklam</translation>
+<translation id="3544462288910360084">Kontrola souborů cookie</translation>
+<translation id="8919235146866304148">Ochrana pomocí otisku prstu</translation>
+<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="5259716416204774556">Blokování skriptů</translation>
+<translation id="6067014455220527258">Blokovat reklamy</translation>
+<translation id="6985711843506827936">Povolit reklamy a sledování</translation>
+<translation id="6132506775968708399">Blokovat soubory cookies třetích stran</translation>
+<translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
+<translation id="6883611015375728278">Blokovat všechny soubory cookie</translation>
+<translation id="1442559343076146186">Blokovat snímání otisků prstů třetí stranou</translation>
+<translation id="8034285923190068220">Povolit fingerprinting</translation>
+<translation id="4540198958192073185">Blokovat všechny otisky prstů</translation>
+<translation id="8942080017911802454">Pravidla pro zacházení s webovým protokolem WebRTC</translation>
+<translation id="6165508094623778733">Zjistit více</translation>
+<translation id="8798099450830957504">Výchozí</translation>
+<translation id="1822560017823072927">Výchozí veřejná a soukromá rozhraní</translation>
+<translation id="5825943197137337319">Pouze výchozí veřejné rozhraní</translation>
+<translation id="1689062823386843231">Deaktivujte službu UDP bez proxy</translation>
 </translationbundle>

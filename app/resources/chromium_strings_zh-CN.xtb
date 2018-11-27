@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave 操作系统</translation>
 <translation id="4847979153841887006">Brave 徽标</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">登录 Brave</translation>
 <translation id="5516268345616100622">任务管理器 - Brave</translation>
 <translation id="7918740962659365265">将崩溃报告和<ph name="UMA_LINK"/>发送给Brave Software，帮助我们完善Brave。</translation>
@@ -50,7 +49,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8030318113982266900">正在将您的设备更新至“<ph name="CHANNEL_NAME"/>”版…</translation>
 <translation id="7355059611036077582">添加到 Brave</translation>
 <translation id="7456658570432774853">报告当前设置，帮助我们完善 Brave</translation>
-<translation id="5436841087823876677">警告：Brave 无法阻止扩展程序记录您的浏览活动。要在无痕模式下停用该扩展程序，请取消选中此选项。</translation>
+<translation id="6134859571175647580">警告：Brave 无法阻止扩展程序记录您的浏览活动。要在无痕模式下停用该扩展程序，请取消选中此选项。</translation>
 <translation id="777113543093865885">从Brave中移除…</translation>
 <translation id="6078442581074612226">在 Brave 中</translation>
 <translation id="8148611988012584308">自定义及控制 Brave</translation>
@@ -116,6 +115,9 @@ Brave 无法恢复您的设置。</translation>
 <translation id="7977435741986383568">Brave 可能会使用网络服务来改善您的浏览体验。不过，您可以选择停用这些服务。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">为了修正拼写错误，Brave 会将您在文本字段中输入的文字发送给 Brave Software</translation>
 <translation id="815816884817177844">与 Brave Software 通信，以便改进浏览功能和 Brave</translation>
+<translation id="8586264863973514035">要想应用您的更改，请重新启动 Brave</translation>
+<translation id="7021823858304886493">允许登录 Brave</translation>
+<translation id="1649714546770135458">关闭此功能后，您无需登录 Brave 即可登录 Gmail 等 Brave Software 网站</translation>
 <translation id="6274110506580702455">此设备的管理员已禁止登录 Brave。</translation>
 <translation id="9220324636239049437">这会从这台设备上删除 1 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="5853262807109651878">这会从这台设备上删除 <ph name="ITEMS_COUNT"/> 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>

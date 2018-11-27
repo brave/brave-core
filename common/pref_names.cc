@@ -18,6 +18,8 @@ const char kAdBlockCurrentRegion[] = "brave.ad_block.current_region";
 const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
+const char kAlternativeSearchEngineProviderInTor[] =
+    "brave.alternate_private_search_engine_in_tor";
 const char kBraveThemeType[] = "brave.theme.type";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralPromoCode[] = "brave.referral.promo_code";
@@ -26,5 +28,8 @@ const char kReferralTimestamp[] = "brave.referral.timestamp";
 const char kReferralAttemptTimestamp[] = "brave.referral.referral_attempt_timestamp";
 const char kReferralAttemptCount[] = "brave.referral.referral_attempt_count";
 const char kReferralHeaders[] = "brave.referral.headers";
+const char kReferralCheckedForPromoCodeFile[] = "brave.referral.checked_for_promo_code_file";
 const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
+const char kRewardsNotifications[] = "brave.rewards.notifications";
+const char kMigratedMuonProfile[] = "brave.muon.migrated_profile";

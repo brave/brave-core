@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/ui/views/extensions/extension_popup.cc b/chrome/browser/ui/views/extensions/extension_popup.cc
+index 4ee33a9f9b77b55f1d5848d06c25dd2ae6e31c2e..343f00bbb94c7e53ee08a9d9e55718f8476b7484 100644
+--- a/chrome/browser/ui/views/extensions/extension_popup.cc
++++ b/chrome/browser/ui/views/extensions/extension_popup.cc
+@@ -4,6 +4,7 @@
+ 
+ #include "chrome/browser/ui/views/extensions/extension_popup.h"
+ 
++#include "brave/common/extensions/extension_constants.h"
+ #include "chrome/browser/chrome_notification_types.h"
+ #include "chrome/browser/devtools/devtools_window.h"
+ #include "chrome/browser/extensions/extension_view_host.h"
+@@ -142,8 +143,23 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
+ }
+ 
+ void ExtensionPopup::AddedToWidget() {
+-  const int radius =
+-      GetBubbleFrameView()->bubble_border()->GetBorderCornerRadius();
++
++  // HACK: removes border radius for brave extensions
++  //        as webview does not support radius clipping which results
++  //        in white strips at top and bottom of popup.
++  // TODO: add brave extension radius back in when macOS and Windows
++  //        popups support web dialog window radius clipping.
++
++  bool shouldDisableRadiusForPopup = false;
++  // Clipping issue is not present on linux
++#if defined(OS_MACOSX) || defined(OS_WIN)
++  const auto extensionId = host_->extension()->id();
++  const bool isBraveExtension = (extensionId == brave_extension_id ||
++      extensionId == brave_rewards_extension_id);
++  shouldDisableRadiusForPopup = isBraveExtension;
++#endif
++  const int radius = shouldDisableRadiusForPopup ? 0
++      : GetBubbleFrameView()->bubble_border()->GetBorderCornerRadius();
+   const bool contents_has_rounded_corners =
+       GetExtensionView()->holder()->SetCornerRadius(radius);
+   SetBorder(views::CreateEmptyBorder(

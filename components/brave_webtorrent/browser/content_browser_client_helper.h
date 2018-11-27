@@ -4,9 +4,12 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_view_host.h"
@@ -52,6 +55,8 @@ static bool HandleTorrentURLReverseRewrite(GURL* url,
 
 static bool HandleTorrentURLRewrite(GURL* url,
     content::BrowserContext* browser_context) {
+  if (!IsWebtorrentEnabled(browser_context)) return false;
+
   // The HTTP/HTTPS URL could be modified later by the network delegate if the
   // mime type matches or .torrent is in the path.
   // Handle http and https here for making reverse_on_redirect to be true in
@@ -65,15 +70,6 @@ static bool HandleTorrentURLRewrite(GURL* url,
   }
 
   return false;
-}
-
-static bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
-  bool isTorProfile =
-    Profile::FromBrowserContext(browser_context)->IsTorProfile();
-  extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser_context);
-  return !isTorProfile &&
-    registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
 static void LoadOrLaunchMagnetURL(
@@ -112,7 +108,7 @@ static bool HandleMagnetProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture) {
   if (url.SchemeIs(kMagnetScheme)) {
-    content::BrowserThread::PostTask(content::BrowserThread::UI, FROM_HERE,
+    base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
         base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
         page_transition, has_user_gesture));
     return true;

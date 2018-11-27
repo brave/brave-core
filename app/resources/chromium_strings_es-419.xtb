@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logotipo de Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">acceder a Brave</translation>
 <translation id="5516268345616100622">Administrador de tareas - Brave</translation>
 <translation id="7918740962659365265">Envía a Brave Software informes de fallos y <ph name="UMA_LINK"/> para ayudar a mejorar Brave.</translation>
@@ -44,7 +43,7 @@
 <translation id="8030318113982266900">Actualizando el dispositivo al canal <ph name="CHANNEL_NAME"/>…</translation>
 <translation id="7355059611036077582">Agregar a Brave</translation>
 <translation id="7456658570432774853">Informa tu configuración actual para ayudarnos a mejorar Brave.</translation>
-<translation id="5436841087823876677">Advertencia: Brave no puede evitar que las extensiones registren tu historial de búsqueda. Para desactivar esta extensión en modo de navegación incógnito, desmarca la casilla de esta opción.</translation>
+<translation id="6134859571175647580">Advertencia: Brave no puede evitar que las extensiones registren tu historial de búsqueda. Para desactivar esta extensión en modo de navegación incógnito, desmarca la casilla de esta opción.</translation>
 <translation id="777113543093865885">Eliminar de Brave…</translation>
 <translation id="6078442581074612226">En Brave</translation>
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
@@ -110,6 +109,9 @@
 <translation id="7977435741986383568">Es posible que Brave use servicios web para mejorar tu experiencia de navegación (tienes la opción de inhabilitar estos servicios). <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Para corregir los errores ortográficos, Brave envía a Brave Software lo que escribes en los campos de texto</translation>
 <translation id="815816884817177844">Se comunican con Brave Software para mejorar Brave y la navegación</translation>
+<translation id="8586264863973514035">Para aplicar los cambios, vuelve a ejecutar Brave</translation>
+<translation id="7021823858304886493">Permitir el acceso a Brave</translation>
+<translation id="1649714546770135458">Si desactivas esta preferencia, podrás acceder a sitios de Brave Software (como Gmail) sin tener que acceder a Brave</translation>
 <translation id="6274110506580702455">El administrador de este dispositivo inhabilitó el acceso a Brave.</translation>
 <translation id="9220324636239049437">Esta acción borrará 1 elemento de este dispositivo. Si más adelante deseas recuperar los datos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Esta acción borrará <ph name="ITEMS_COUNT"/> elementos de este dispositivo. Si más adelante deseas recuperar los datos, accede a tu cuenta en Brave como <ph name="USER_EMAIL"/>.</translation>

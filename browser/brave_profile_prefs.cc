@@ -9,6 +9,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -22,6 +23,7 @@
 namespace brave {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  brave_rewards::RewardsService::RegisterProfilePrefs(registry);
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(registry);
 
   RegisterAlternativeSearchEngineProviderProfilePrefs(registry);
@@ -66,6 +68,16 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Make sync managed to dsiable some UI after password saving.
   registry->SetDefaultPrefValue(syncer::prefs::kSyncManaged, base::Value(true));
+
+  // Make sure sign into Brave is not enabled
+  // The older kSigninAllowed is deprecated and only in use in Android until C71.
+  registry->SetDefaultPrefValue(prefs::kSigninAllowedOnNextStartup, base::Value(false));
+
+  // Disable cloud print
+  // Cloud Print: Don't allow this browser to act as Cloud Print server
+  registry->SetDefaultPrefValue(prefs::kCloudPrintProxyEnabled, base::Value(false));
+  // Cloud Print: Don't allow jobs to be submitted
+  registry->SetDefaultPrefValue(prefs::kCloudPrintSubmitEnabled, base::Value(false));
 }
 
 }  // namespace brave

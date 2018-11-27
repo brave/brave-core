@@ -1,0 +1,200 @@
+{
+  "braveRewards": {
+    "message": "Premis de Brave",
+    "description": "Title in welcome screen for the panel"
+  },
+  "welcomeButtonTextOne": {
+    "message": "Comença a guanyar ara!",
+    "description": "CTA on welcome screen in the panel, existing users"
+  },
+  "welcomeButtonTextTwo": {
+    "message": "Connecta't a premis",
+    "description": "CTA on welcome screen in the panel, new users"
+  },
+  "welcomeDescOne": {
+    "message": "Cobra per mirar anuncis i paga'ls als teus creadors de continguts favorits.",
+    "description": "Entry text for welcome screen in the panel, existing user"
+  },
+  "welcomeDescTwo": {
+    "message": "Ara pots obtenir tokens per mirar anuncis respectuosos amb la intimitat. ",
+    "description": "Entry text for welcome screen in the panel, new user"
+  },
+  "welcomeFooterTextOne": {
+    "message": "Comprova el que ha millorat",
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
+  },
+  "welcomeFooterTextTwo": {
+    "message": "Més informació",
+    "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
+  },
+  "welcomeHeaderOne": {
+    "message": "Hem actualitzat Pagaments de Brave.",
+    "description": "Main header title for welcome screen in the panel, existing user"
+  },
+  "welcomeHeaderTwo": {
+    "message": "Prepara't per experimentar la nova Internet.",
+    "description": "Main header title for welcome screen in the panel, new user"
+  },
+  "yourWallet": {
+    "message": "La teva cartera",
+    "description": "Title of wallet section where we display data about wallet"
+  },
+  "grants": {
+    "message": "Ajuts",
+    "description": "Title for grant section in wallet summary"
+  },
+  "on": {
+    "message": "connectat",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "verifiedPublisher": {
+    "message": "Editor verificat per Brave",
+    "description": "Tells user that this particular publisher is verified publisher"
+  },
+  "rewardsContributeAttentionScore": {
+    "message": "Atenció",
+    "description": "Label for auto contribute table attention for the publisher"
+  },
+  "donateMonthly": {
+    "message": "Dona propines en aquest lloc mensualment",
+    "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
+  },
+  "includeInAuto": {
+    "message": "Inclou a Auto-Contribució",
+    "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
+  },
+  "donateNow": {
+    "message": "Envia una propina...",
+    "description": "CTA for sending tip form site banner"
+  },
+  "enableTips": {
+    "message": "Activa propines",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "for": {
+    "message": "per a",
+    "description": "The whole string is 'Enable tips on YouTube for like.'"
+  },
+  "rewardsSummary": {
+    "message": "Resum de recompenses",
+    "description": "Section title in wallet panel, which contains monthly rewards summary"
+  },
+  "monthApr": {
+    "message": "Abril",
+    "description": "Month"
+  },
+  "monthAug": {
+    "message": "Agost",
+    "description": "Month"
+  },
+  "monthDec": {
+    "message": "Desembre",
+    "description": "Month"
+  },
+  "monthFeb": {
+    "message": "Febrer",
+    "description": "Month"
+  },
+  "monthJan": {
+    "message": "Gener",
+    "description": "Month"
+  },
+  "monthJul": {
+    "message": "Juliol",
+    "description": "Month"
+  },
+  "monthJun": {
+    "message": "Juny",
+    "description": "Month"
+  },
+  "monthMar": {
+    "message": "Març",
+    "description": "Month"
+  },
+  "monthMay": {
+    "message": "Maig",
+    "description": "Month"
+  },
+  "monthNov": {
+    "message": "Novembre",
+    "description": "Month"
+  },
+  "monthOct": {
+    "message": "Octubre",
+    "description": "Month"
+  },
+  "monthSep": {
+    "message": "Setembre",
+    "description": "Month"
+  },
+  "tokenGrant": {
+    "message": "Ajut de token",
+    "description": "Title for grant section in wallet summary"
+  },
+  "earningsAds": {
+    "message": "Guanys dels anuncis",
+    "description": "Title for ads section in wallet summary"
+  },
+  "rewardsContribute": {
+    "message": "Auto-contribueix",
+    "description": "Title for auto contribute section in wallet summary"
+  },
+  "oneTimeDonation": {
+    "message": "Propines d'una sola vegada",
+    "description": "Title for one time tips section in wallet summary"
+  },
+  "expiresOn": {
+    "message": "caduca el",
+    "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
+  },
+  "recurringDonations": {
+    "message": "Propines Mensuals",
+    "description": "Title for monthly tips section in wallet summary"
+  },
+  "off": {
+    "message": "Desactivat",
+    "description": "Label used in toggle indicating that toggle is off"
+  },
+  "ok": {
+    "message": "ok",
+    "description": "Used in notification to dismiss notification"
+  },
+  "braveAdsTitle": {
+    "message": "Anuncis de Brave",
+    "description": "Notification title when we display info about ads"
+  },
+  "braveContributeTitle": {
+    "message": "Auto-Contribució",
+    "description": "Notification title when we display info about auto contribution"
+  },
+  "contributeNotificationSuccess": {
+    "message": "You've contributed $amount$ BAT",
+    "description": "We show this string in the notification when contribution is successful",
+    "placeholders": {
+      "amount": {
+        "content": "$1",
+        "example": "10.0"
+      }
+    }
+  },
+  "grantNotification": {
+    "message": "T'espera una gratificació",
+    "description": "Description for new grant notification"
+  },
+  "braveRewardsCreatingText": {
+    "message": "Creating wallet",
+    "description": "Used in a button displaying wallet creation process"
+  },
+  "contributeNotificationError": {
+    "message": "There was a problem processing your contribution.",
+    "description": "We show this string in notification when contribution fails"
+  },
+  "contributeNotificationNotEnoughFunds": {
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "description": "We show this string in the notification when you don't have enough funds for contribution"
+  },
+  "contributeNotificationTipError": {
+    "message": "There was a problem processing your tip, please try again.",
+    "description": "We show this string in notification when tip fails"
+  }
+}

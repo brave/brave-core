@@ -10,7 +10,7 @@
 class PrivateWindowSearchEngineProviderController
     : public SearchEngineProviderControllerBase {
  public:
-  explicit PrivateWindowSearchEngineProviderController(Profile* profile);
+  explicit PrivateWindowSearchEngineProviderController(Profile* otr_profile);
   ~PrivateWindowSearchEngineProviderController() override;
 
  private:

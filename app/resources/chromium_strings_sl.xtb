@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logotip Bravea</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">se prijavite v Brave</translation>
 <translation id="5516268345616100622">Upravitelj opravil – Brave</translation>
 <translation id="7918740962659365265">Pomagajte izboljšati Brave – Googlu pošiljajte poročila o zrušitvah in ta dokument: <ph name="UMA_LINK"/>.</translation>
@@ -52,7 +51,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8030318113982266900">Posodabljanje naprave na kanal <ph name="CHANNEL_NAME"/> ...</translation>
 <translation id="7355059611036077582">Dodaj v Brave</translation>
 <translation id="7456658570432774853">Pomagajte izboljšati Brave s poročanjem o trenutnih nastavitvah</translation>
-<translation id="5436841087823876677">Opozorilo: Brave razširitvam ne more preprečiti beleženja zgodovine brskanja. Če želite onemogočiti to razširitev v načinu brez beleženja zgodovine, počistite to možnost.</translation>
+<translation id="6134859571175647580">Opozorilo: Brave razširitvam ne more preprečiti beleženja zgodovine brskanja. Če želite onemogočiti to razširitev v načinu brez beleženja zgodovine, počistite to možnost.</translation>
 <translation id="777113543093865885">Odstranitev iz Bravea ...</translation>
 <translation id="6078442581074612226">V Braveu</translation>
 <translation id="8148611988012584308">Prilagajanje in nadziranje Bravea</translation>
@@ -119,6 +118,9 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 Te storitve lahko po želji onemogočite. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave zaradi odpravljanja napak pri črkovanju Googlu pošlje besedilo, ki ga vnesete v besedilna polja</translation>
 <translation id="815816884817177844">Komunicira z Googlom zaradi izboljšanja brskanja in Bravea</translation>
+<translation id="8586264863973514035">Če želite uporabiti spremembe, znova zaženite Brave</translation>
+<translation id="7021823858304886493">Omogočanje prijave v Brave</translation>
+<translation id="1649714546770135458">Če to izklopite, se lahko prijavite na Googlovih spletnih mestih, kot je Gmail, ne da bi se morali prijaviti v Brave</translation>
 <translation id="6274110506580702455">Prijavo v Brave je onemogočil skrbnik te naprave.</translation>
 <translation id="9220324636239049437">S tem bo iz te naprave izbrisan 1 element. Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">S tem bo iz te naprave izbrisanih več elementov (<ph name="ITEMS_COUNT"/>). Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>

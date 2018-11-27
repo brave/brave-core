@@ -1,4 +1,5 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 source_set("browser") {
   public_deps = [
@@ -8,6 +9,11 @@ source_set("browser") {
   sources = [
     "balance_report.cc",
     "balance_report.h",
+    "rewards_notification_service.cc",
+    "rewards_notification_service.h",
+    "rewards_notification_service_impl.cc",
+    "rewards_notification_service_impl.h",
+    "rewards_notification_service_observer.h",
     "content_site.cc",
     "content_site.h",
     "rewards_service.cc",
@@ -19,7 +25,22 @@ source_set("browser") {
     "wallet_properties.h",
     "grant.cc",
     "grant.h",
+    "publisher_banner.cc",
+    "publisher_banner.h",
+    "contribution_info.cc",
+    "contribution_info.h",
+    "recurring_donation.cc",
+    "recurring_donation.h",
   ]
+
+  if (enable_extensions) {
+    sources += [
+      "extension_rewards_notification_service_observer.cc",
+      "extension_rewards_notification_service_observer.h",
+      "extension_rewards_service_observer.cc",
+      "extension_rewards_service_observer.h",
+    ]
+  }
 
   deps = [
     "//base",
@@ -34,26 +55,61 @@ source_set("browser") {
     "//third_party/leveldatabase",
   ]
 
+  if (is_android) {
+    sources += [
+      "//extensions/common/one_shot_event.h",
+      "//extensions/common/one_shot_event.cc",
+    ]
+  } else {
+    deps += [
+      # for one shot event
+      "//extensions/common",
+    ]
+  }
+
   if (brave_rewards_enabled) {
     sources += [
       "net/network_delegate_helper.cc",
       "net/network_delegate_helper.h",
       "rewards_service_impl.cc",
       "rewards_service_impl.h",
-      "rewards_helper.cc",
-      "rewards_helper.h",
       "publisher_info_backend.cc",
       "publisher_info_backend.h",
       "publisher_info_database.cc",
       "publisher_info_database.h",
+      "rewards_fetcher_service_observer.cc",
+      "rewards_fetcher_service_observer.h",
     ]
+
+    if (!is_android) {
+      sources += [
+        "rewards_helper.cc",
+        "rewards_helper.h",
+      ]
+    }
 
     deps += [
       "//brave/vendor/bat-native-ledger",
       "//net",
       "//url",
-      # for one shot event
-      "//extensions/common",
     ]
   }
+}
+
+source_set("testutil") {
+  testonly = true
+
+  deps = [
+    "//brave/vendor/bat-native-ledger",
+    ":browser",
+    "//base",
+    "//content/public/browser",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+
+  sources = [
+    "test_util.cc",
+    "test_util.h",
+  ]
 }

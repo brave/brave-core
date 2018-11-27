@@ -14,6 +14,8 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/publisher_info.h"
+#include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
@@ -34,6 +36,8 @@ class PublisherInfoDatabase {
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
   bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key, const std::string& publisher_id);
+  bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
+  bool InsertOrUpdateRecurringDonation(const brave_rewards::RecurringDonation& info);
 
   bool Find(int start,
             int limit,
@@ -43,6 +47,9 @@ class PublisherInfoDatabase {
 
   std::unique_ptr<ledger::PublisherInfo> GetMediaPublisherInfo(
       const std::string& media_key);
+  void GetRecurringDonations(ledger::PublisherInfoList* list);
+  void GetTips(ledger::PublisherInfoList* list, ledger::PUBLISHER_MONTH month, int year);
+  bool RemoveRecurring(const std::string& publisher_key);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
@@ -63,6 +70,8 @@ class PublisherInfoDatabase {
   bool CreateActivityInfoTable();
   bool CreateContributionInfoIndex();
   bool CreateActivityInfoIndex();
+  bool CreateRecurringDonationTable();
+  bool CreateRecurringDonationIndex();
 
   std::string BuildClauses(int start,
                            int limit,
@@ -74,6 +83,7 @@ class PublisherInfoDatabase {
   sql::MetaTable& GetMetaTable();
 
   sql::InitStatus EnsureCurrentVersion();
+  bool MigrateV1toV2();
 
   sql::Database db_;
   sql::MetaTable meta_table_;

@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Лого на Brave</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">Влезте в Brave</translation>
 <translation id="5516268345616100622">Диспечер на задачите – Brave</translation>
 <translation id="7918740962659365265">Помогнете ни да подобрим Brave, като ни изпращате <ph name="UMA_LINK"/> му и сигнали за сривове</translation>
@@ -44,7 +43,7 @@
 <translation id="8030318113982266900">Устройството ви се актуализира до канал: <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Добавяне към Brave</translation>
 <translation id="7456658570432774853">Помогнете за подобряването на Brave, като подадете сигнал за текущите настройки</translation>
-<translation id="5436841087823876677">Предупреждение: Brave не може да попречи на разширенията да записват историята ви на сърфиране. За да деактивирате това разширение в режим „инкогнито“, премахнете отметката от тази опция.</translation>
+<translation id="6134859571175647580">Предупреждение: Brave не може да попречи на разширенията да записват историята ви на сърфиране. За да деактивирате това разширение в режим „инкогнито“, премахнете отметката от тази опция.</translation>
 <translation id="777113543093865885">Премахване от Brave...</translation>
 <translation id="6078442581074612226">В Brave</translation>
 <translation id="8148611988012584308">Персонализиране и контролиране на Brave</translation>
@@ -110,6 +109,9 @@
 <translation id="7977435741986383568">Brave може да използва уеб услуги, за да подобри сърфирането ви. Ако искате, можете да ги деактивирате. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">С цел поправка на правописни грешки Brave изпраща до Brave Software текста, който въвеждате в текстовите полета</translation>
 <translation id="815816884817177844">Комуникира с Brave Software с цел подобряване на сърфирането и на Brave</translation>
+<translation id="8586264863973514035">За да приложите промените си, рестартирайте Brave</translation>
+<translation id="7021823858304886493">Разрешаване на влизането в Brave</translation>
+<translation id="1649714546770135458">С изключването на тази функция можете да влизате в сайтовете на Brave Software, като например Gmail, без да влизате в Brave</translation>
 <translation id="6274110506580702455">Функцията за влизане в Brave е деактивирана от администратора на това устройство.</translation>
 <translation id="9220324636239049437">1 елемент ще се изтрие от това устройство. За да извлечете данните си по-късно, влезте в Brave като <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> елемента ще се изтрият от това устройство. За да извлечете данните си по-късно, влезте в Brave като <ph name="USER_EMAIL"/>.</translation>

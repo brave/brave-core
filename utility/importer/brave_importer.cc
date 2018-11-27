@@ -94,55 +94,47 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
   bridge_->NotifyEnded();
 }
 
-// Returns true if |url| has a valid scheme that we allow to import. We
-// filter out the URL with a unsupported scheme.
-bool CanImportURL(const GURL& url) {
-  // The URL is not valid.
-  if (!url.is_valid())
-    return false;
-
-  // Filter out the URLs with unsupported schemes.
-  const char* const kInvalidSchemes[] = {"chrome-extension"};
-  for (size_t i = 0; i < arraysize(kInvalidSchemes); ++i) {
-    if (url.SchemeIs(kInvalidSchemes[i]))
-      return false;
-  }
-
-  return true;
-}
-
 void BraveImporter::ImportHistory() {
-  base::FilePath history_path =
-    source_path_.Append(
-      base::FilePath::StringType(FILE_PATH_LITERAL("History")));
-  if (!base::PathExists(history_path))
+  std::unique_ptr<base::Value> session_store_json = ParseBraveSessionStore();
+  if (!session_store_json)
     return;
 
-  sql::Database db;
-  if (!db.Open(history_path))
+  const base::Value* history_sites =
+      session_store_json->FindKeyOfType("historySites",
+                                        base::Value::Type::DICTIONARY);
+  if (!history_sites)
     return;
-
-  const char query[] =
-    "SELECT url, title, last_visit_time, typed_count, visit_count "
-    "FROM urls WHERE hidden = 0";
-
-  sql::Statement s(db.GetUniqueStatement(query));
 
   std::vector<ImporterURLRow> rows;
-  while (s.Step() && !cancelled()) {
-    GURL url(s.ColumnString(0));
-
-    // Filter out unwanted URLs.
-    if (!CanImportURL(url))
+  for (const auto& item : history_sites->DictItems()) {
+    const auto& value = item.second;
+    if (!value.is_dict())
       continue;
 
-    ImporterURLRow row(url);
-    row.title = s.ColumnString16(1);
-    row.last_visit =
-      base::Time::FromDoubleT(chromeTimeToDouble((s.ColumnInt64(2))));
+    const base::Value* location =
+        value.FindKeyOfType("location",
+                            base::Value::Type::STRING);
+    const base::Value* title =
+        value.FindKeyOfType("title",
+                            base::Value::Type::STRING);
+    const base::Value* lastAccessedTime =
+        value.FindKeyOfType("lastAccessedTime",
+                            base::Value::Type::DOUBLE);
+    const base::Value* count =
+        value.FindKeyOfType("count",
+                            base::Value::Type::INTEGER);
+    if (!(location && title && lastAccessedTime && count))
+      continue;
+
+    ImporterURLRow row;
+    row.url = GURL(location->GetString());
+    row.title = base::UTF8ToUTF16(title->GetString());
+    row.last_visit = base::Time::FromJsTime(lastAccessedTime->GetDouble());
+    row.visit_count = count->GetInt();
+    // Only visible URLs are stored in historySites
     row.hidden = false;
-    row.typed_count = s.ColumnInt(3);
-    row.visit_count = s.ColumnInt(4);
+    // Brave browser-laptop doesn't store the typed count anywhere, so default to 0.
+    row.typed_count = 0;
 
     rows.push_back(row);
   }

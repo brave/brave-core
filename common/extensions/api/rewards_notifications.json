@@ -1,0 +1,189 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "rewardsNotifications",
+    "description": "Use the <code>chrome.rewardsNotifications</code> API to receive rewards notifications.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/rewards_notifications_api.h"
+    },
+    "events": [
+      {
+        "name": "onNotificationAdded",
+        "type": "function",
+        "description": "Fired when a notification is added",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "type": "integer"
+          },
+          {
+            "name": "timestamp",
+            "type": "integer"
+          },
+          {
+            "name": "args",
+            "type": "array",
+            "items": {
+              "name": "value",
+              "type": "string"
+            }
+          }
+        ]
+      },
+      {
+        "name": "onNotificationDeleted",
+        "type": "function",
+        "description": "Fired when a notification is deleted",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "type": "integer"
+          },
+          {
+            "name": "timestamp",
+            "type": "integer"
+          }
+        ]
+      },
+      {
+        "name": "onAllNotificationsDeleted",
+        "type": "function",
+        "description": "Fired when all notifications are deleted",
+        "parameters": []
+      },
+      {
+        "name": "onGetNotification",
+        "type": "function",
+        "description": "Fired when a notification is retrieved",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "type": "integer"
+          },
+          {
+            "name": "timestamp",
+            "type": "integer"
+          },
+          {
+            "name": "args",
+            "type": "array",
+            "items": {
+              "name": "value",
+              "type": "string"
+            }
+          }
+        ]
+      },
+      {
+        "name": "onGetAllNotifications",
+        "type": "function",
+        "description": "Fired when all notifications are retrieved",
+        "parameters": [
+          {
+            "name": "notifications",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The rewards notification ID"
+                },
+                "type": {
+                  "type": "integer",
+                  "description": "The rewards notification type"
+                },
+                "timestamp": {
+                  "type": "integer",
+                  "description": "The rewards notification creation timestamp"
+                },
+                "args": {
+                  "type": "array",
+                  "description": "Additional data for notification",
+                  "items": {
+                    "name": "value",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "functions": [
+      {
+        "name": "addNotification",
+        "type": "function",
+        "description": "Creates a new rewards notification",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "integer"
+          },
+          {
+            "name": "args",
+            "type": "array",
+            "items": {
+              "name": "value",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "deleteNotification",
+        "type": "function",
+        "description": "Deletes an existing rewards notification",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "deleteAllNotifications",
+        "type": "function",
+        "description": "Deletes all existing rewards notifications",
+        "parameters": []
+      },
+      {
+        "name": "getNotification",
+        "type": "function",
+        "description": "Retrieves an existing rewards notification",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "getAllNotifications",
+        "type": "function",
+        "description": "Retrieves all existing rewards notifications",
+        "parameters": []
+      }
+    ]
+  }
+]

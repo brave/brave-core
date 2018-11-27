@@ -23,9 +23,16 @@ extern const char kDisableTorClientUpdaterExtension[];
 
 extern const char kDisableIpfsClientUpdaterExtension[];
 
+extern const char kDisableWebTorrentExtension[];
+
+extern const char kDisableBraveSync[];
+
+extern const char kRewards[];
+
 extern const char kUiMode[];
+
+extern const char kUpgradeFromMuon[];
 
 }  // namespace switches
 
 #endif  // BRAVE_COMMON_BRAVE_SWITCHES_H_
-

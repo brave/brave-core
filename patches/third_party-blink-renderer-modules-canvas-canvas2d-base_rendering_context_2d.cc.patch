@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 783f5c3e3ddf5c33f43b9cccc4070cfc7c866e86..1a8da9377eddff9fc3d6b8a3d973e80229fcae3f 100644
+index 5bd0cdfee88155bf1ea629a2e96e776d3ce6b6af..abb4c958d04524f4eb123304767acb5e9849c9fc 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -5,6 +5,7 @@
@@ -24,7 +24,7 @@ index 783f5c3e3ddf5c33f43b9cccc4070cfc7c866e86..1a8da9377eddff9fc3d6b8a3d973e802
    return GetState().LineDash();
  }
  
-@@ -794,16 +800,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
+@@ -791,16 +797,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
    ClipInternal(dom_path->GetPath(), winding_rule_string);
  }
  
@@ -53,7 +53,7 @@ index 783f5c3e3ddf5c33f43b9cccc4070cfc7c866e86..1a8da9377eddff9fc3d6b8a3d973e802
    return IsPointInPathInternal(dom_path->GetPath(), x, y, winding_rule_string);
  }
  
-@@ -828,13 +844,22 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
+@@ -825,13 +841,22 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
                         SkFillTypeToWindRule(ParseWinding(winding_rule_string)));
  }
  
@@ -80,7 +80,7 @@ index 783f5c3e3ddf5c33f43b9cccc4070cfc7c866e86..1a8da9377eddff9fc3d6b8a3d973e802
    return IsPointInStrokeInternal(dom_path->GetPath(), x, y);
  }
  
-@@ -1610,11 +1635,16 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1607,11 +1632,16 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(

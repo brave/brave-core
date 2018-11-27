@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">OS Brave</translation>
 <translation id="4847979153841887006">Logotip Bravea</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">prijavite se na Brave</translation>
 <translation id="5516268345616100622">Upravitelj zadataka – Brave</translation>
 <translation id="7918740962659365265">Pomognite nam poboljšati Brave šaljući izvješća o rušenju programa i <ph name="UMA_LINK"/> Brave Softwareu</translation>
@@ -50,7 +49,7 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="8030318113982266900">Ažuriranje vašeg uređaja na kanal <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7355059611036077582">Dodajte u Brave</translation>
 <translation id="7456658570432774853">Doprinesite poboljšanju Bravea prijavljivanjem trenutačnih postavki</translation>
-<translation id="5436841087823876677">Upozorenje: Brave ne može spriječiti proširenja da evidentiraju vašu povijest pregledavanja. Da biste onemogućili proširenje u anonimnom načinu, isključite tu opciju.</translation>
+<translation id="6134859571175647580">Upozorenje: Brave ne može spriječiti proširenja da evidentiraju vašu povijest pregledavanja. Da biste onemogućili proširenje u anonimnom načinu, isključite tu opciju.</translation>
 <translation id="777113543093865885">Ukloni iz Bravea...</translation>
 <translation id="6078442581074612226">U Braveu</translation>
 <translation id="8148611988012584308">Prilagodite Brave i upravljajte njime</translation>
@@ -116,6 +115,9 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="7977435741986383568">Brave može upotrebljavati web-usluge za poboljšanje vašeg doživljaja pregledavanja. Ako želite, možete onemogućiti te usluge. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave Brave Softwareu šalje tekst koji utipkate u tekstualna polja kako bi ispravio pravopisne pogreške</translation>
 <translation id="815816884817177844">Komunicira s Brave Softwareom radi poboljšanja pregledavanja i Bravea</translation>
+<translation id="8586264863973514035">Da bi se vaše promjene primijenile, ponovo pokrenite Brave</translation>
+<translation id="7021823858304886493">Dopusti prijavu u Brave</translation>
+<translation id="1649714546770135458">Ako isključite tu opciju, možete se prijaviti na Brave Softwareove web-lokacije kao što je Gmail bez prijavljivanja u Brave</translation>
 <translation id="6274110506580702455">Administrator ovog uređaja onemogućio je prijavu na Brave.</translation>
 <translation id="9220324636239049437">Time će se izbrisati jedna stavka s uređaja. Da biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Time će se izbrisati sljedeći broj stavki s uređaja: <ph name="ITEMS_COUNT"/>. TDa biste kasnije dohvatili svoje podatke, prijavite se na Brave kao <ph name="USER_EMAIL"/>.</translation>

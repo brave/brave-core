@@ -47,7 +47,7 @@ base::StringPiece BraveExtensionsAPIProvider::GetAPISchema(
   return api::BraveGeneratedSchemas::Get(name);
 }
 
-void BraveExtensionsAPIProvider::AddPermissionsProviders(
+void BraveExtensionsAPIProvider::RegisterPermissions(
     PermissionsInfo* permissions_info) {
   // No brave-specific permissions.
 }

@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="vi">
+<translation id="3333887201479867589">Phần thưởng của Brave</translation>
+<translation id="7942180974165298215">Chặn Quảng cáo Brave</translation>
+<translation id="7450557937477381864">Đóng Chrome</translation>
+<translation id="7008934821596358692">Để hoàn tất nhập, hãy đóng mọi cửa sổ Chrome.</translation>
+<translation id="7753103220327065417">Đóng Brave</translation>
+<translation id="5588481533147090393">Để hoàn tất quá trình nhập, hãy đóng tất cả các cửa sổ Brave.</translation>
+<translation id="6447842834002726250">Cookie</translation>
+<translation id="4983925687993168579">Thống kê</translation>
+<translation id="9173846700806833701">Widevine không cài đặt</translation>
+<translation id="2433569048491784801">Videvine không cài đặt.</translation>
+<translation id="3699882589215410581">Cài và chạy Widevine</translation>
+<translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
+
+Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với các Điều khoản Sử dụng của Google Widevine. Bạn đồng ý rằng Brave không chịu trách nhiệm đối với bất kỳ thiệt hại hoặc tổn thất nào liên quan đến việc bạn sử dụng Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Đã nhập từ Brave</translation>
+<translation id="453977518730680921">Tự động phát truyền thông đa phương tiện</translation>
+<translation id="410351446219883937">Tự động phát</translation>
+<translation id="2240268017737062801">Hỏi khi nào trang muốn tự động phát phương tiện</translation>
+<translation id="3371702087847741961">Hỏi khi nào trang muốn tự động phát phương tiện (khuyên dùng)</translation>
+<translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
+<translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
+<translation id="2044383478723007273">Màu sắc của brave</translation>
+<translation id="5341901626640816374">Dùng thanh địa chỉ rộng</translation>
+<translation id="7965178729203412357">Danh tính Tor mới</translation>
+<translation id="8784924142044142231">Thoát khỏi Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Mở Cửa sổ Tor</translation>
+<translation id="3155170474926428993">Trình chạy Tor</translation>
+<translation id="7372129767729198111">Mặc định lá chắn Brave</translation>
+<translation id="8029018702721078742">Kiểm soát Quảng cáo</translation>
+<translation id="3544462288910360084">Kiểm soát Cookie</translation>
+<translation id="8919235146866304148">Bảo vệ bằng vân tay</translation>
+<translation id="520895744850022668">HTTPS Everywhere (HTTPS Khắp mọi nơi)</translation>
+<translation id="5259716416204774556">Chặn tập lệnh</translation>
+<translation id="6067014455220527258">Chặn quảng cáo</translation>
+<translation id="6985711843506827936">Cho phép quảng cáo và theo dõi</translation>
+<translation id="6132506775968708399">Chặn cookie của bên thứ 3</translation>
+<translation id="5657156137487675418">Cho phép mọi cookie.</translation>
+<translation id="6883611015375728278">Chặn tất cả cookie</translation>
+<translation id="1442559343076146186">Chặn vân tay bên thứ ba</translation>
+<translation id="8034285923190068220">Cho phép vân tay</translation>
+<translation id="4540198958192073185">Chặn tất cả dấu vân tay</translation>
+<translation id="8942080017911802454">Cơ chế Xử lý IP WebRTC</translation>
+<translation id="6165508094623778733">Tìm hiểu thêm</translation>
+<translation id="8798099450830957504">Mặc định</translation>
+<translation id="1822560017823072927">Các giao diện công khai và riêng tư mặc định</translation>
+<translation id="5825943197137337319">Chỉ giao diện công khai mặc định</translation>
+<translation id="1689062823386843231">Cho phép UDP không proxy</translation>
 </translationbundle>

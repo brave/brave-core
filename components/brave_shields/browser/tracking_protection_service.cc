@@ -111,7 +111,8 @@ void TrackingProtectionService::OnDATFileDataReady() {
 
 void TrackingProtectionService::OnComponentReady(
     const std::string& component_id,
-    const base::FilePath& install_dir) {
+    const base::FilePath& install_dir,
+    const std::string& manifest) {
   base::FilePath dat_file_path =
       install_dir.AppendASCII(DAT_FILE_VERSION).AppendASCII(DAT_FILE);
 

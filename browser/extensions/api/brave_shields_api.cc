@@ -226,6 +226,11 @@ BraveShieldsContentSettingSetFunction::Run() {
     // TODO(simonhong): Need to check why generating pattern with
     // content_settings_helpers::ParseExtensionPattern() causes javascript
     // set fail.
+    // Without this separate handling, shields can't toggle block script setting
+    // anymore after user changes js permission from page info bubble.
+    // page info bubble uses SetNarrowestContentSetting() for setting and it
+    // gets pattern by using GetPatternsForContentSettingsType() same as
+    // SetContentSettingDefaultScope().
     const GURL primary_url(params->details.primary_pattern);
     if (!primary_url.is_valid())
       return RespondNow(Error("Invalid url"));

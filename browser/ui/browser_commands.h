@@ -9,6 +9,7 @@ class Browser;
 
 namespace brave {
 
+void NewOffTheRecordWindowTor(Browser*);
 void NewTorIdentity(Browser*);
 
 }  // namespace brave

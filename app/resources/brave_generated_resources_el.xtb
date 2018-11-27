@@ -1,4 +1,53 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="el">
+<translation id="3333887201479867589">Ανταμοιβές Brave</translation>
+<translation id="7942180974165298215">Αποκλεισμός Διαφήμισης Brave</translation>
+<translation id="7450557937477381864">Κλείστε τον Chrome</translation>
+<translation id="7008934821596358692">Για να ολοκληρωθεί η εισαγωγή, κλείστε όλα τα παράθυρα Chrome.</translation>
+<translation id="7753103220327065417">Κλείσiμο Brave</translation>
+<translation id="5588481533147090393">Για να ολοκληρωθεί η εισαγωγή, κλείστε όλα τα παράθυρα Brave.</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="4983925687993168579">Στατιστικά στοιχεία</translation>
+<translation id="9173846700806833701">Το Widevine δεν έχει εγκατασταθεί</translation>
+<translation id="2433569048491784801">Το Widevine δε έχει εγκατασταθεί.</translation>
+<translation id="3699882589215410581">Εγκατάσταση και άνοιγμα του Widevine</translation>
+<translation id="8410111618231938546">Το Google Widevine είναι ένα μέρος του κώδικα Ψηφιακής Διαχείρισης Δικαιωμάτων (DRM), για το οποίον εμείς στην Brave Software δεν είμαστε υπεύθυνοι και δεν μπορούμε να το ελέγξουμε. Ο κώδικας Google Widevine φορτώνεται από τους διακομιστές της Google κι όχι από τους δικούς μας. Η φόρτωση γίνεται μόνο όταν ενεργοποιήσετε αυτήν την επιλογή. Δε συνιστούμε τη χρήση του DRM, αλλά σεβόμαστε την επιλογή των χρηστών κι αναγνωρίζουμε ότι μερικοί χρήστες του Brave θα ήθελαν να χρησιμοποιήσουν υπηρεσίες που το χρειάζονται.
+
+Εγκαθιστώντας αυτήν την επέκταση, συμφωνείτε με τους Όρους Χρήσης του Google Widevine. Συμφωνείτε ότι η Brave δεν ευθύνεται για οποιεσδήποτε ζημίες ή απώλειες σε σχέση με τη χρήση του Google Widevine.</translation>
+<translation id="939305735877869636">Brave</translation>
+<translation id="3198814717959506569">Έγινε Εισαγωγή Από Το Brave</translation>
+<translation id="453977518730680921">Αυτόματη εκτέλεση πολυμέσων</translation>
+<translation id="410351446219883937">Αυτόματη εκτέλεση</translation>
+<translation id="2240268017737062801">Ερώτηση όταν μια ιστοσελίδα θέλει να γίνεται αυτόματη αναπαραγωγή μέσων</translation>
+<translation id="3371702087847741961">Ερώτηση όταν μια ιστοσελίδα θέλει να γίνεται αυτόματη αναπαραγωγή μέσων (προτείνεται)</translation>
+<translation id="3218385319396786393">Η αυτόματη αναπαραγωγή έχει αποκλειστεί σε αυτή τη σελίδα</translation>
+<translation id="4150684676757176434">Συνέχιση του αποκλεισμού της αυτόματης εκτέλεσης</translation>
+<translation id="2044383478723007273">Χρώματα Brave</translation>
+<translation id="5341901626640816374">Χρησιμοποίηση μπάρας ευρείας τοποθεσίας</translation>
+<translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
+<translation id="8784924142044142231">Έξοδος από Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="3696187925156352769">Άνοιγμα Παράθυρου Tor</translation>
+<translation id="3155170474926428993">Άνοιγμα Tor</translation>
+<translation id="7372129767729198111">Προεπιλογές ασπίδων Brave</translation>
+<translation id="8029018702721078742">Έλεγχος διαφημίσεων</translation>
+<translation id="3544462288910360084">Έλεγχος Cookies</translation>
+<translation id="8919235146866304148">Προστασία με αποτύπωμα</translation>
+<translation id="520895744850022668">HTTPS Παντού</translation>
+<translation id="5259716416204774556">Αποκλεισμός script</translation>
+<translation id="6067014455220527258">Αποκλεισμός διαφημίσεων</translation>
+<translation id="6985711843506827936">Να επιτρέπονται οι διαφημίσεις και η ιχνηλάτιση</translation>
+<translation id="6132506775968708399">Αποκλεισμός cookies τρίτων</translation>
+<translation id="5657156137487675418">Επιτρέψτε όλα τα cookies</translation>
+<translation id="6883611015375728278">Αποκλεισμός όλων των cookies</translation>
+<translation id="1442559343076146186">Αποκλεισμός αποτυπωμάτων τρίτων</translation>
+<translation id="8034285923190068220">Να επιτρέπονται τα δακτυλικά αποτυπώματα</translation>
+<translation id="4540198958192073185">Αποκλείστε όλα τα δακτυλικά αποτυπώματα</translation>
+<translation id="8942080017911802454">Πολιτική Διαχείρισης IP σε WebRTC</translation>
+<translation id="6165508094623778733">Μάθετε περισσότερα</translation>
+<translation id="8798099450830957504">Προκαθορισμένη Ρύθμιση</translation>
+<translation id="1822560017823072927">Προεπιλεγμένο δημόσιο και ιδιωτικό περιβάλλον χρήστη</translation>
+<translation id="5825943197137337319">Μόνο προεπιλεγμένη δημόσια διεπαφή</translation>
+<translation id="1689062823386843231">Απενεργοποίηση UDP χωρίς διαμεσολάβηση</translation>
 </translationbundle>

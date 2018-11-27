@@ -18,6 +18,7 @@ extern const char kWeekOfInstallation[];
 extern const char kAdBlockCurrentRegion[];
 extern const char kWidevineOptedIn[];
 extern const char kUseAlternativeSearchEngineProvider[];
+extern const char kAlternativeSearchEngineProviderInTor[];
 extern const char kBraveThemeType[];
 extern const char kLocationBarIsWide[];
 extern const char kReferralPromoCode[];
@@ -26,7 +27,10 @@ extern const char kReferralTimestamp[];
 extern const char kReferralAttemptTimestamp[];
 extern const char kReferralAttemptCount[];
 extern const char kReferralHeaders[];
+extern const char kReferralCheckedForPromoCodeFile[];
 extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];
+extern const char kRewardsNotifications[];
+extern const char kMigratedMuonProfile[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

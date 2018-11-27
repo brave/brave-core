@@ -12,6 +12,9 @@
   <message name="IDS_MEDIA_ROUTER_MENU_ITEM_TITLE" desc="Title of menu item for Media Router, which appears in the overflow menu and page contextual menus.">
     &amp;Cast...
   </message>
+  <message name="IDS_MEDIA_ROUTER_CAST_DIALOG_TITLE" desc="Title of the dialog with which users can cast media contents to Bravecast and other devices. This text is shown at the top of the dialog on its own line, and should be considered a verb.">
+    Cast
+  </message>
 
   <!-- Button Titles -->
   <message name="IDS_MEDIA_ROUTER_BACK_BUTTON_TITLE" desc="Back button title, which is spoken when a screen reader is being used.">
@@ -28,6 +31,9 @@
   </message>
   <message name="IDS_MEDIA_ROUTER_VIEW_DEVICE_LIST_BUTTON_TITLE" desc="View device list button title, which is spoken when a screen reader is being used.">
     View device list
+  </message>
+  <message name="IDS_MEDIA_ROUTER_STOP_CASTING_BUTTON_ACCESSIBLE_NAME" desc="A label for the stop button that is read by screen readers when the button is in focus. It mentions device name and status to indicate which device the button is for.">
+    Stop, <ph name="SINK_NAME">$1<ex>Living Room TV</ex></ph>, <ph name="SINK_STATUS">$2<ex>Casting YouTube</ex></ph>
   </message>
 
   <!-- Cast Modes -->
@@ -85,6 +91,9 @@
   </message>
   <message name="IDS_MEDIA_ROUTER_SHOWN_BY_POLICY" desc="Title of a menu item, which indicates that the Media Router action icon was added to the toolbar by the policy enabled by the user's administrator.">
     Added by your administrator
+  </message>
+  <message name="IDS_MEDIA_ROUTER_TOGGLE_MEDIA_REMOTING" desc="Title of a menu item which, on click, toggles (enables or disables) the feature to optimize casting fullscreen videos to a Bravecast device. This menu item has a checkmark when the feature is enabled.">
+    Optimize fullscreen videos
   </message>
 
   <!-- First Run Flow -->
@@ -201,6 +210,9 @@
   </message>
   <message name="IDS_MEDIA_ROUTER_STATUS_NO_DEVICES_FOUND" desc="Status text shown to indicate that no Cast device was found.">
     No devices found
+  </message>
+  <message name="IDS_MEDIA_ROUTER_NO_DEVICES_FOUND_BUTTON" desc="The accessibility label that gets read by screen readers for a button shown when no Cast device was found. Clicking on the button opens a new tab.">
+    No devices found. Open a help center article in a new tab.
   </message>
   <message name="IDS_MEDIA_ROUTER_DESTINATION_MISSING" desc="Link to display when no Cast destinations are found which, on click, opens a page to the Bravecast help center explaining possible reasons why none are detected.">
     No Cast destinations found. Need help?

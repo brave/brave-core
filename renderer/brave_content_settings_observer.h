@@ -19,9 +19,8 @@ class BraveContentSettingsObserver
     : public ContentSettingsObserver {
  public:
   BraveContentSettingsObserver(content::RenderFrame* render_frame,
-                               extensions::Dispatcher* extension_dispatcher,
-                               bool should_whitelist,
-                               service_manager::BinderRegistry* registry);
+      bool should_whitelist,
+      service_manager::BinderRegistry* registry);
   ~BraveContentSettingsObserver() override;
 
  protected:
@@ -43,7 +42,7 @@ class BraveContentSettingsObserver
  private:
   GURL GetOriginOrURL(const blink::WebFrame* frame);
 
-  ContentSetting GetContentSettingFromRules(
+  ContentSetting GetFPContentSettingFromRules(
       const ContentSettingsForOneType& rules,
       const blink::WebFrame* frame,
       const GURL& secondary_url);
@@ -55,8 +54,8 @@ class BraveContentSettingsObserver
   // RenderFrameObserver
   bool OnMessageReceived(const IPC::Message& message) override;
   void OnAllowScriptsOnce(const std::vector<std::string>& origins);
-  void DidCommitProvisionalLoad(bool is_new_navigation,
-                                bool is_same_document_navigation) override;
+  void DidCommitProvisionalLoad(bool is_same_document_navigation,
+                                ui::PageTransition transition) override;
 
   bool IsScriptTemporilyAllowed(const GURL& script_url);
 

@@ -61,7 +61,8 @@ class BraveTorClientUpdater : public BraveComponentExtension {
 
  protected:
   void OnComponentReady(const std::string& component_id,
-      const base::FilePath& install_dir) override;
+      const base::FilePath& install_dir,
+      const std::string& manifest) override;
 
  private:
   friend class ::BraveTorClientUpdaterTest;

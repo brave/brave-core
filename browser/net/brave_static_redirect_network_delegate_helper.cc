@@ -6,32 +6,29 @@
 
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"
-#include "net/url_request/url_request.h"
 
 namespace brave {
 
 int OnBeforeURLRequest_StaticRedirectWork(
-    net::URLRequest* request,
-    GURL* new_url,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   GURL::Replacements replacements;
   static URLPattern geo_pattern(URLPattern::SCHEME_HTTPS, kGeoLocationsPattern);
   static URLPattern safeBrowsing_pattern(URLPattern::SCHEME_HTTPS, kSafeBrowsingPrefix);
 
-  if (geo_pattern.MatchesURL(request->url())) {
-    *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
+  if (geo_pattern.MatchesURL(ctx->request_url)) {
+    ctx->new_url_spec = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY).spec();
     return net::OK;
   }
 
-  if (safeBrowsing_pattern.MatchesHost(request->url())) {
+  if (safeBrowsing_pattern.MatchesHost(ctx->request_url)) {
     replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
-    *new_url = request->url().ReplaceComponents(replacements);
+    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
     return net::OK;
   }
 
 #if !defined(NDEBUG)
-  GURL gurl = request->url();
+  GURL gurl = ctx->request_url;
   static std::vector<URLPattern> allowed_patterns({
     // Brave updates
     URLPattern(URLPattern::SCHEME_HTTPS, "https://go-updater.brave.com/*"),
@@ -44,10 +41,12 @@ int OnBeforeURLRequest_StaticRedirectWork(
     URLPattern(URLPattern::SCHEME_HTTPS, "https://laptop-updates-staging.herokuapp.com/*"),
     // CRX file download
     URLPattern(URLPattern::SCHEME_HTTPS, "https://brave-core-ext.s3.brave.com/release/*"),
+    // Safe Browsing and other files
+    URLPattern(URLPattern::SCHEME_HTTPS, "https://static.brave.com/*"),
     // We do allow redirects to the Google update server for extensions we don't support
     URLPattern(URLPattern::SCHEME_HTTPS, "https://update.googleapis.com/service/update2"),
 
-    // Ledger URLs
+    // Rewards URLs
     URLPattern(URLPattern::SCHEME_HTTPS, "https://ledger.mercury.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://balance.mercury.basicattentiontoken.org/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://publishers.basicattentiontoken.org/*"),

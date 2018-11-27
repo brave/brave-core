@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave-käyttöjärjestelmä</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">Kirjaudu sisään Braveiin</translation>
 <translation id="5516268345616100622">Tehtävänhallinta - Brave</translation>
 <translation id="7918740962659365265">Auta parantamaan Braveia lähettämällä kaatumisilmoitukset ja <ph name="UMA_LINK"/> Brave Softwarelle</translation>
@@ -50,7 +49,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8030318113982266900">Päivitetään laitteeseen kanavaa <ph name="CHANNEL_NAME"/>…</translation>
 <translation id="7355059611036077582">Lisää Braveiin</translation>
 <translation id="7456658570432774853">Auta parantamaan Braveia ilmoittamalla nykyiset asetukset.</translation>
-<translation id="5436841087823876677">Varoitus: Brave ei voi estää laajennuksia tallentamasta selaushistoriaasi. Poista tämä valinta, jos haluat poistaa tämän laajennuksen käytöstä incognito-tilassa.</translation>
+<translation id="6134859571175647580">Varoitus: Brave ei voi estää laajennuksia tallentamasta selaushistoriaasi. Poista tämä valinta, jos haluat poistaa tämän laajennuksen käytöstä incognito-tilassa.</translation>
 <translation id="777113543093865885">Poista Braveista…</translation>
 <translation id="6078442581074612226">Braveissa</translation>
 <translation id="8148611988012584308">Bravein muokkaus ja hallinta</translation>
@@ -116,6 +115,9 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="7977435741986383568">Brave voi käyttää verkkopalveluita selauskokemuksesi parantamiseen. Voit halutessasi poistaa nämä palvelut käytöstä. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave lähettää kenttiin kirjoittamasi tekstin Brave Softwarelle oikeinkirjoitusvirheiden korjaamiseksi.</translation>
 <translation id="815816884817177844">On yhteydessä Brave Softwareen parantaakseen selaamista ja Braveia</translation>
+<translation id="8586264863973514035">Ota muutokset käyttöön käynnistämällä Brave uudelleen</translation>
+<translation id="7021823858304886493">Salli Brave-kirjautuminen</translation>
+<translation id="1649714546770135458">Poistamalla tämän käytöstä voit kirjautua Brave Software-sivustoille, esim. Gmailiin, kirjautumatta Braveiin.</translation>
 <translation id="6274110506580702455">Tämän laitteen järjestelmänvalvoja on poistanut käytöstä Braveiin kirjautumisen.</translation>
 <translation id="9220324636239049437">Tämä poistaa yhden kohteen pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="5853262807109651878">Tämä poistaa <ph name="ITEMS_COUNT"/> kohdetta pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>

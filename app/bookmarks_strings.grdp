@@ -70,8 +70,8 @@
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL_NEW_WINDOW" desc="Menu title for opening all urls in a bookmark folder in a new window">
       Open all bookmarks in &amp;new window
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in an incognito window">
-        Open all bookmarks in &amp;incognito window
+    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a private window">
+        Open all bookmarks in &amp;private window
     </message>
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT" desc="Menu title for opening all urls in a bookmark folder">
         {COUNT, plural,
@@ -85,11 +85,11 @@
           =1 {Open in &amp;new window}
           other {Open all (#) in &amp;new window}}
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in an incognito window">
+    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a private window">
         {COUNT, plural,
-          =0 {Open all in &amp;incognito window}
-          =1 {Open in &amp;incognito window}
-          other {Open all (#) in &amp;incognito window}}
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}
     </message>
     <message name="IDS_BOOKMARK_BAR_OPEN_IN_NEW_TAB" desc="Menu description for loading bookmark in a new tab">
       &amp;Open in new tab
@@ -97,8 +97,8 @@
     <message name="IDS_BOOKMARK_BAR_OPEN_IN_NEW_WINDOW" desc="Menu description for loading bookmark in a new window">
       Open in &amp;new window
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_INCOGNITO" desc="Menu description for opening bookmark in incognito window">
-      Open in &amp;incognito window
+    <message name="IDS_BOOKMARK_BAR_OPEN_INCOGNITO" desc="Menu description for opening bookmark in private window">
+      Open in &amp;private window
     </message>
     <message name="IDS_BOOKMARK_BAR_EDIT" desc="Title of the bookmark context menu item that brings up the bookmark editor">
       &amp;Edit...
@@ -128,8 +128,8 @@
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL_NEW_WINDOW" desc="In Title Case: Menu title for opening all urls in a bookmark folder in a new window">
         Open All Bookmarks in &amp;New Window
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_INCOGNITO" desc="In Title Case: Menu description for opening all urls in a bookmark folder in an incognito window">
-        Open All Bookmarks in &amp;Incognito Window
+    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_INCOGNITO" desc="In Title Case: Menu description for opening all urls in a bookmark folder in a private window">
+        Open All Bookmarks in &amp;Private Window
     </message>
     <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT" desc="In Title Case: Menu title for opening all urls in a bookmark folder">
         {COUNT, plural,
@@ -143,11 +143,11 @@
           =1 {Open in &amp;New Window}
           other {Open All (#) in &amp;New Window}}
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT_INCOGNITO" desc="In Title Case: Menu description for opening all urls in a bookmark folder in an incognito window">
+    <message name="IDS_BOOKMARK_BAR_OPEN_ALL_COUNT_INCOGNITO" desc="In Title Case: Menu description for opening all urls in a bookmark folder in a private window">
         {COUNT, plural,
-          =0 {Open All in &amp;Incognito Window}
-          =1 {Open in &amp;Incognito Window}
-          other {Open All (#) in &amp;Incognito Window}}
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All (#) in &amp;Private Window}}
     </message>
     <message name="IDS_BOOKMARK_BAR_OPEN_IN_NEW_TAB" desc="In Title Case: Menu description for loading bookmark in a new tab">
       &amp;Open in New Tab
@@ -155,8 +155,8 @@
     <message name="IDS_BOOKMARK_BAR_OPEN_IN_NEW_WINDOW" desc="In Title Case: Menu description for loading bookmark in a new window">
       Open in &amp;New Window
     </message>
-    <message name="IDS_BOOKMARK_BAR_OPEN_INCOGNITO" desc="In Title Case: Menu description for opening bookmark in incognito window">
-      Open in &amp;Incognito Window
+    <message name="IDS_BOOKMARK_BAR_OPEN_INCOGNITO" desc="In Title Case: Menu description for opening bookmark in private window">
+      Open in &amp;Private Window
     </message>
     <message name="IDS_BOOKMARK_BAR_EDIT" desc="In Title Case: Title of the bookmark context menu item that brings up the bookmark editor">
       &amp;Edit...
@@ -442,8 +442,8 @@
   <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_ALL_NEW_WINDOW" desc="Menu title for opening all urls in a bookmark folder in a new window">
     Open all in new window
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in an incognito window">
-    Open all in incognito window
+  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_ALL_INCOGNITO" desc="Menu description for opening all urls in a bookmark folder in a private window">
+    Open all in private window
   </message>
   <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_IN_NEW_TAB" desc="Menu description for opening a bookmark in a new tab">
     Open in new tab
@@ -451,8 +451,8 @@
   <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_IN_NEW_WINDOW" desc="Menu description for opening a bookmark in a new window">
     Open in new window
   </message>
-  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_INCOGNITO" desc="Menu description for opening a bookmark in incognito window">
-    Open in incognito window
+  <message name="IDS_MD_BOOKMARK_MANAGER_MENU_OPEN_INCOGNITO" desc="Menu description for opening a bookmark in private window">
+    Open in private window
   </message>
   <message name="IDS_MD_BOOKMARK_MANAGER_MENU_RENAME" desc="Title of the bookmark list dropdown menu item that renames folders.">
     Rename

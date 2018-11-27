@@ -29,8 +29,21 @@ const char kDisableTorClientUpdaterExtension[] = "disable-tor-client-updater-ext
 // Allows disabling the Ipfs client updater extension.
 const char kDisableIpfsClientUpdaterExtension[] = "disable-ipfs-client-updater-extension";
 
+// Allows disabling the WebTorrent extension.
+const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
+
+// Allows disabling Brave Sync.
+const char kDisableBraveSync[] = "disable-brave-sync";
+
+// Contains all flags that we use for rewards
+const char kRewards[] = "rewards";
+
 // Specifies overriding the built-in theme setting.
 // Valid values are: "dark" | "light".
 const char kUiMode[] = "ui-mode";
+
+// Triggers auto-import of profile data from Brave browser-laptop/Muon, if
+// available.
+const char kUpgradeFromMuon[] = "upgrade-from-muon";
 
 }  // namespace switches

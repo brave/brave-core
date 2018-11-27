@@ -5,7 +5,6 @@
 <translation id="939305735877869636">Brave</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-Logo</translation>
-<translation id="6061155539545534980"></translation>
 <translation id="5935964611177478118">In Brave anmelden</translation>
 <translation id="5516268345616100622">Taskmanager - Brave</translation>
 <translation id="7918740962659365265">Absturzberichte und <ph name="UMA_LINK"/> zur Verbesserung von Brave an Brave Software senden</translation>
@@ -50,7 +49,7 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="8030318113982266900">Ihr Gerät wird auf Kanal <ph name="CHANNEL_NAME"/> aktualisiert...</translation>
 <translation id="7355059611036077582">Zu Brave hinzufügen</translation>
 <translation id="7456658570432774853">Helfen Sie uns mit Ihrem Feedback zu den aktuellen Einstellungen bei der Verbesserung von Brave.</translation>
-<translation id="5436841087823876677">Achtung: Brave kann nicht verhindern, dass Ihr Browserverlauf von Erweiterungen protokolliert wird. Sie können diese Erweiterung für den Inkognitomodus deaktivieren, indem Sie die Auswahl für die entsprechende Option aufheben.</translation>
+<translation id="6134859571175647580">Achtung: Brave kann nicht verhindern, dass Ihr Browserverlauf von Erweiterungen protokolliert wird. Sie können diese Erweiterung für den Inkognitomodus deaktivieren, indem Sie die Auswahl für die entsprechende Option aufheben.</translation>
 <translation id="777113543093865885">Aus Brave entfernen...</translation>
 <translation id="6078442581074612226">In Brave</translation>
 <translation id="8148611988012584308">Brave anpassen und einstellen</translation>
@@ -116,6 +115,9 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="7977435741986383568">Brave verwendet möglicherweise Webdienste zur Verbesserung Ihrer Nutzererfahrung beim Surfen im Internet. Sie haben die Möglichkeit, diese Dienste zu deaktivieren. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Zur Behebung von Tippfehlern sendet Brave eingegebenen Text an Brave Software</translation>
 <translation id="815816884817177844">Funktionen nutzen, die helfen, Brave für Sie noch besser zu machen</translation>
+<translation id="8586264863973514035">Starten Sie Brave neu, um die Änderungen zu übernehmen</translation>
+<translation id="7021823858304886493">Anmeldung in Brave zulassen</translation>
+<translation id="1649714546770135458">Wenn Sie diese Einstellung deaktivieren, können Sie sich auf Websites von Brave Software wie beispielsweise Gmail anmelden, ohne sich auch in Brave anmelden zu müssen</translation>
 <translation id="6274110506580702455">Die Anmeldung in Brave wurde vom Administrator dieses Geräts deaktiviert.</translation>
 <translation id="9220324636239049437">Dadurch wird 1 Element von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>
 <translation id="5853262807109651878">Dadurch werden <ph name="ITEMS_COUNT"/> Elemente von diesem Gerät gelöscht. Wenn Sie Ihre Daten später abrufen möchten, melden Sie sich als <ph name="USER_EMAIL"/> in Brave an.</translation>

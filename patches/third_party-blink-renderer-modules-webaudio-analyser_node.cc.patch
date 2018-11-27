@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/analyser_node.cc b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
-index 6a2819e3f18db829ed5b361a2fbdf800c99ba0f7..bc93092b70067271596c07074097b91a6fe95375 100644
+index 39ee21aae4bcab7acefacd6e5fbcb5941f58ee88..8dff02782db14456bea0a04f4950fb07970bcef6 100644
 --- a/third_party/blink/renderer/modules/webaudio/analyser_node.cc
 +++ b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
 @@ -25,6 +25,7 @@
@@ -14,27 +14,27 @@ index 6a2819e3f18db829ed5b361a2fbdf800c99ba0f7..bc93092b70067271596c07074097b91a
  }
  
  void AnalyserNode::getFloatFrequencyData(NotShared<DOMFloat32Array> array) {
-+  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
 +    return;
    GetAnalyserHandler().GetFloatFrequencyData(array.View(),
                                               context()->currentTime());
  }
  
  void AnalyserNode::getByteFrequencyData(NotShared<DOMUint8Array> array) {
-+  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
 +    return;
    GetAnalyserHandler().GetByteFrequencyData(array.View(),
                                              context()->currentTime());
  }
  
  void AnalyserNode::getFloatTimeDomainData(NotShared<DOMFloat32Array> array) {
-+  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
 +    return;
    GetAnalyserHandler().GetFloatTimeDomainData(array.View());
  }
  
  void AnalyserNode::getByteTimeDomainData(NotShared<DOMUint8Array> array) {
-+  if (!AllowFingerprinting(ToDocument(GetExecutionContext())->GetFrame()))
++  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
 +    return;
    GetAnalyserHandler().GetByteTimeDomainData(array.View());
  }

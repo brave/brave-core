@@ -22,7 +22,8 @@ namespace base {
 class FilePath;
 }  // namespace base
 
-using ReadyCallback = base::Callback<void(const base::FilePath&)>;
+using ReadyCallback = base::Callback<void(const base::FilePath&,
+    const std::string& manifest)>;
 
 namespace brave {
 

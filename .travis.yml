@@ -3,6 +3,7 @@ node_js:
   - "node"
 
 dist: trusty
+sudo: required
 
 branches:
   only:
@@ -18,10 +19,13 @@ env:
   - TEST_SUITE=lint
   - TEST_SUITE=test-security
   - TEST_SUITE=test-unit
+  - TEST_SUITE=pep8
 
 before_install:
   - npm i -g npm
   - npm --version
+  - sudo pip install --upgrade pip
+  - sudo pip install pycodestyle
 
 install:
   - npm i

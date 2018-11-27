@@ -56,7 +56,13 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const service_manager::Identity& identity,
       base::CommandLine* command_line) override;
 
+  GURL GetEffectiveURL(content::BrowserContext* browser_context,
+                       const GURL& url) override;
+
  private:
+  bool AllowAccessCookie(const GURL& url, const GURL& first_party,
+      content::ResourceContext* context, int render_process_id,
+      int render_frame_id);
   DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };
 

@@ -7,7 +7,7 @@
 
 #include "chrome/browser/browser_process_impl.h"
 
-class ProfileCreationMonitor;
+class SearchEngineProviderService;
 
 namespace brave {
 class BraveReferralsService;
@@ -27,7 +27,7 @@ class BraveTorClientUpdater;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
-  BraveBrowserProcessImpl(scoped_refptr<PersistentPrefStore> user_pref_store);
+  BraveBrowserProcessImpl(ChromeFeatureListCreator* chrome_feature_list_creator);
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.
@@ -57,6 +57,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
   std::unique_ptr<extensions::BraveIpfsClientUpdater> ipfs_client_updater_;
   std::unique_ptr<ProfileCreationMonitor> profile_creation_monitor_;
+  std::unique_ptr<SearchEngineProviderService> search_engine_provider_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

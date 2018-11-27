@@ -21,6 +21,9 @@ declare_args() {
   brave_version_build = ""
   brave_version_patch = 0
   chrome_version_string = ""
+  chrome_version_major = ""
+  build_omaha = false
+  tag_ap =""
 }
 
 if (base_sparkle_update_url == "") {
@@ -41,6 +44,32 @@ if (brave_exe == "") {
 brave_dist_dir = "$root_out_dir/dist"
 if (is_win) {
   brave_exe = "$brave_exe.exe"
+  brave_underline_full_version = "_$chrome_version_major" + "_$brave_version_major" + "_$brave_version_minor" + "_$brave_version_build"
+  _channel = ""
+  brave_app_guid = "{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}"
+  if (is_official_build) {
+    if (brave_channel == "beta") {
+      _channel = "Beta"
+      brave_app_guid = "{103BD053-949B-43A8-9120-2E424887DE11}"
+    } else if (brave_channel == "dev") {
+      _channel = "Dev"
+      brave_app_guid = "{CB2150F2-595F-4633-891A-E39720CE0531}"
+    } else if (brave_channel == "nightly") {
+      _channel = "Nightly"
+      brave_app_guid = "{C6CB981E-DB30-4876-8639-109F8933582C}"
+    } else {
+      assert(brave_channel == "", "Unknown channel name")
+    }
+  } else {
+    _channel = "Development"
+  }
+  _arch = ""
+  if (target_cpu == "x86") {
+    _arch = "32"
+  }
+  brave_installer_exe = "brave_installer$brave_underline_full_version.exe"
+  brave_stub_installer_exe = "BraveBrowser$_channel" + "Setup$_arch$brave_underline_full_version.exe"
+  brave_standalone_installer_exe = "BraveBrowserStandalone$_channel" + "Setup$_arch$brave_underline_full_version.exe"
 } else if (is_mac) {
   brave_exe = "$chrome_product_full_name.app"
   brave_dmg = "$chrome_product_full_name.dmg"

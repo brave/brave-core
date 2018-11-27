@@ -20,6 +20,7 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
+#include "components/autofill/core/common/autofill_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/viz/common/features.h"
 #include "content/public/common/content_features.h"
@@ -119,7 +120,6 @@ void BraveMainDelegate::PreSandboxStartup() {
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  command_line.AppendSwitch(switches::kEnableTabAudioMuting);
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
@@ -128,12 +128,15 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   enabled_features << features::kEnableEmojiContextMenu.name
     << "," << features::kDesktopPWAWindowing.name
     << "," << password_manager::features::kFillOnAccountSelect.name
-    << "," << extensions::features::kNewExtensionUpdaterService.name;
+    << "," << extensions_features::kNewExtensionUpdaterService.name;
 
   std::stringstream disabled_features;
   disabled_features << features::kSharedArrayBuffer.name
     << "," << features::kDefaultEnableOopRasterization.name
-    << "," << features::kVizDisplayCompositor.name;
+    << "," << features::kVizDisplayCompositor.name
+    << "," << autofill::features::kAutofillSaveCardSignInAfterLocalSave.name
+    << "," << features::kAudioServiceOutOfProcess.name
+    << "," << autofill::features::kAutofillServerCommunication.name;
 
   command_line.AppendSwitchASCII(switches::kEnableFeatures,
       enabled_features.str());

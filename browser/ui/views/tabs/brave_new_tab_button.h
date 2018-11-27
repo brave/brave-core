@@ -1,6 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
-+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * you can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
@@ -14,15 +14,16 @@ namespace views {
 
 class BraveNewTabButton : public NewTabButton {
   public:
-    BraveNewTabButton(TabStrip* tab_strip, views::ButtonListener* listener);
-    ~BraveNewTabButton() override;
+    static const gfx::Size kButtonSize;
+
+    using NewTabButton::NewTabButton;
+
   private:
     gfx::Size CalculatePreferredSize() const override;
-    void PaintPlusIcon(gfx::Canvas* canvas, int offset, int size) override;
-    SkPath GetNewerMaterialUiButtonPath(float button_y,
-                                        float scale,
-                                        bool extend_to_top,
-                                        bool for_fill) const override;
+    gfx::Path GetBorderPath(const gfx::Point& origin,
+                          float scale,
+                          bool extend_to_top) const override;
+    void PaintPlusIcon(gfx::Canvas* canvas) const override;
     DISALLOW_COPY_AND_ASSIGN(BraveNewTabButton);
 };
 
