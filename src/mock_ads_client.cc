@@ -356,6 +356,10 @@ bool MockAdsClient::GetUrlComponents(
   return is_valid;
 }
 
+void MockAdsClient::OnError(const Error error) {
+  std::cout << std::endl << "An error occurred: " << error;
+}
+
 void MockAdsClient::EventLog(const std::string& json) {
   std::string time_stamp = helper::Time::TimeStamp();
   std::cout << std::endl << "Event logged (" << time_stamp <<  "): " << json;

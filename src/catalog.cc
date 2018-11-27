@@ -106,8 +106,8 @@ void Catalog::OnCatalogReset(const Result result) {
   if (result == FAILED) {
     LOG(ERROR) << "Failed to reset catalog";
 
-    // TODO(Terry Mancey): If the catalog fails to reset we need to decide what
-    // action to take
+    ads_client_->OnError(CATALOG_FAILED_TO_RESET);
+
     return;
   }
 

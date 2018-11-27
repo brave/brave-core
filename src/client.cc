@@ -196,9 +196,8 @@ void Client::OnStateSaved(const Result result) {
   if (result == FAILED) {
     LOG(ERROR) << "Failed to save client state";
 
-    // TODO(Terry Mancey): If the client state fails to save, we need to notify
-    // the Client to decide what action to take otherwise the client state will
-    // be lost when the browser exits
+    ads_client_->OnError(CLIENT_STATE_FAILED_TO_SAVE);
+
     return;
   }
 

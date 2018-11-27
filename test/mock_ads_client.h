@@ -169,6 +169,9 @@ class MockAdsClient : public AdsClient {
     return is_valid;
   }
 
+  MOCK_METHOD1(OnError, void(
+      const Error error));
+
   MOCK_METHOD1(EventLog, void(
       const std::string& json));
 
