@@ -1,5 +1,5 @@
 diff --git a/components/domain_reliability/service.cc b/components/domain_reliability/service.cc
-index cf8287f98976..19c9dd11f725 100644
+index cf8287f989767279f426103d308855614fa7ab20..19c9dd11f725ef6a1d5b7e284638b542e157f182 100644
 --- a/components/domain_reliability/service.cc
 +++ b/components/domain_reliability/service.cc
 @@ -157,6 +157,7 @@ class DomainReliabilityServiceImpl : public DomainReliabilityService {
