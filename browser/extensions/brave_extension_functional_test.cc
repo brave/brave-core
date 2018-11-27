@@ -16,12 +16,11 @@
 namespace extensions {
 
 void ExtensionFunctionalTest::InstallExtensionSilently(ExtensionService* service,
-                              const base::FilePath& path) {
+    const base::FilePath& path) {
   ExtensionRegistry* registry = ExtensionRegistry::Get(profile());
   size_t num_before = registry->enabled_extensions().size();
 
-  TestExtensionRegistryObserver extension_observer(registry);
-
+  TestExtensionRegistryObserver registry_observer(registry);
   scoped_refptr<CrxInstaller> installer(CrxInstaller::CreateSilent(service));
   installer->set_is_gallery_install(false);
   installer->set_allow_silent_install(true);
@@ -31,16 +30,14 @@ void ExtensionFunctionalTest::InstallExtensionSilently(ExtensionService* service
 
   observer_->Watch(NOTIFICATION_CRX_INSTALLER_DONE,
                    content::Source<CrxInstaller>(installer.get()));
-
   installer->InstallCrx(path);
   observer_->Wait();
+  observer_->WaitForExtensionViewsToLoad();
 
   size_t num_after = registry->enabled_extensions().size();
   EXPECT_EQ(num_before + 1, num_after);
 
-  extension_observer.WaitForExtensionLoaded();
-  const Extension* extension =
-      registry->enabled_extensions().GetByID(last_loaded_extension_id());
+  const Extension* extension = registry_observer.WaitForExtensionReady();
   EXPECT_TRUE(extension);
 }
 
