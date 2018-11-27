@@ -158,6 +158,8 @@ extension BrowserViewController: WKNavigationDelegate {
                     let isFPEnabled = domainForShields.shield_fpProtection?.boolValue ?? Preferences.Shields.fingerprintingProtection.value
                     tab.userScriptManager?.isFingerprintingProtectionEnabled = isFPEnabled
                 }
+
+                webView.configuration.preferences.javaScriptEnabled = !(domainForShields.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value)
             }
             
             decisionHandler(.allow)
