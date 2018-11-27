@@ -6,13 +6,15 @@
 
 #include "base/sys_info.h"
 #include "brave/browser/brave_stats_updater_params.h"
+#include "brave/browser/version_info.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
-#include "brave/browser/version_info.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "net/http/http_response_headers.h"
@@ -82,28 +84,35 @@ GURL BraveStatsUpdater::g_base_update_url_(
     "https://laptop-updates.brave.com/1/usage/brave-core");
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
-    : pref_service_(pref_service) {
+  : pref_service_(pref_service) {
 }
 
 BraveStatsUpdater::~BraveStatsUpdater() {
 }
 
 void BraveStatsUpdater::Start() {
-  // Startup check.
+  // Startup timer, only initiated once we've checked for a promo
+  // code.
   DCHECK(!server_ping_startup_timer_);
   server_ping_startup_timer_ = std::make_unique<base::OneShotTimer>();
-  server_ping_startup_timer_->Start(
-      FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelay),
-      this, &BraveStatsUpdater::OnServerPingTimerFired);
-  DCHECK(server_ping_startup_timer_->IsRunning());
+  if (pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile)) {
+    StartServerPingStartupTimer();
+  } else {
+    pref_change_registrar_.reset(new PrefChangeRegistrar());
+    pref_change_registrar_->Init(pref_service_);
+    pref_change_registrar_->Add(
+        kReferralCheckedForPromoCodeFile,
+        base::Bind(&BraveStatsUpdater::OnReferralCheckedForPromoCodeFileChanged,
+                   base::Unretained(this)));
+  }
 
-  // Periodic check.
+  // Periodic timer.
   DCHECK(!server_ping_periodic_timer_);
   server_ping_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   server_ping_periodic_timer_->Start(
       FROM_HERE,
       base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequency), this,
-      &BraveStatsUpdater::OnServerPingTimerFired);
+      &BraveStatsUpdater::OnServerPingPeriodicTimerFired);
   DCHECK(server_ping_periodic_timer_->IsRunning());
 }
 
@@ -121,6 +130,7 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
     std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
     scoped_refptr<net::HttpResponseHeaders> headers) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  GURL final_url = simple_url_loader_->GetFinalURL();
   int response_code = -1;
   if (headers)
     response_code = headers->response_code();
@@ -129,7 +139,7 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
     LOG(ERROR) << "Failed to send usage stats to update server"
                << ", error: " << simple_url_loader_->NetError()
                << ", response code: " << response_code
-               << ", url: " << simple_url_loader_->GetFinalURL().spec();
+               << ", url: " << final_url.spec();
     return;
   }
 
@@ -139,14 +149,32 @@ void BraveStatsUpdater::OnSimpleLoaderComplete(
 
   // Inform the client that the stats ping completed, if requested.
   if (!stats_updated_callback_.is_null())
-    stats_updated_callback_.Run();
+    stats_updated_callback_.Run(final_url.spec());
 
   // Log the full URL of the stats ping.
-  VLOG(1) << "Brave stats ping, url: "
-          << simple_url_loader_->GetFinalURL().spec();
+  VLOG(1) << "Brave stats ping, url: " << final_url.spec();
 }
 
-void BraveStatsUpdater::OnServerPingTimerFired() {
+void BraveStatsUpdater::OnServerPingStartupTimerFired() {
+  SendServerPing();
+}
+
+void BraveStatsUpdater::OnServerPingPeriodicTimerFired() {
+  SendServerPing();
+}
+
+void BraveStatsUpdater::OnReferralCheckedForPromoCodeFileChanged() {
+  StartServerPingStartupTimer();
+}
+
+void BraveStatsUpdater::StartServerPingStartupTimer() {
+  server_ping_startup_timer_->Start(
+      FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelay),
+      this, &BraveStatsUpdater::OnServerPingStartupTimerFired);
+  DCHECK(server_ping_startup_timer_->IsRunning());
+}
+
+void BraveStatsUpdater::SendServerPing() {
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("brave_stats_updater", R"(
         semantics {

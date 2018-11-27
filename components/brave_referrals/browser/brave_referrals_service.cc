@@ -228,9 +228,6 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   const base::Value* download_id = root->FindKey("download_id");
   pref_service_->SetString(kReferralDownloadID, download_id->GetString());
 
-  const base::Value* referral_code = root->FindKey("referral_code");
-  pref_service_->SetString(kReferralPromoCode, referral_code->GetString());
-
   const base::Value* offer_page_url = root->FindKey("offer_page_url");
   if (offer_page_url) {
     GURL gurl(offer_page_url->GetString());
@@ -287,8 +284,10 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
 
 void BraveReferralsService::OnReadPromoCodeComplete() {
   pref_service_->SetBoolean(kReferralCheckedForPromoCodeFile, true);
-  if (!promo_code_.empty())
+  if (!promo_code_.empty()) {
+    pref_service_->SetString(kReferralPromoCode, promo_code_);
     InitReferral();
+  }
 }
 
 void BraveReferralsService::GetFirstRunTime() {
