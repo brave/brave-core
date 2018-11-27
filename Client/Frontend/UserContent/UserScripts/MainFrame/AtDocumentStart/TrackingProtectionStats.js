@@ -143,11 +143,8 @@ function install() {
         mutation.addedNodes.forEach(function(node) {
           // Only consider `<script src="*">` elements.
           if (node.tagName === "SCRIPT" && node.src) {
-            // If the `<script>`  fails to load, we can assume
-            // it has been blocked.
-            node.addEventListener("error", function() {
-              sendMessage(node.src, "script");
-            });
+            // Send all scripts that are added, we won't add it to the stats unless script blocking is enabled anyways
+            sendMessage(node.src, "script");
           }
         });
       });
