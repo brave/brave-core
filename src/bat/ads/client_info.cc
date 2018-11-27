@@ -65,4 +65,44 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& info) {
   writer->EndObject();
 }
 
+const std::string ClientInfo::GetPlatformName() const {
+  std::string platform_name = "";
+
+  switch (platform) {
+    case UNKNOWN: {
+      break;
+    }
+    case WIN7: {
+      platform_name = "Win7";
+      break;
+    }
+    case WIN8: {
+      platform_name = "Win8";
+      break;
+    }
+    case WIN10: {
+      platform_name = "Win10";
+      break;
+    }
+    case MACOS: {
+      platform_name = "macOS";
+      break;
+    }
+    case IOS: {
+      platform_name = "iOS";
+      break;
+    }
+    case ANDROID: {
+      platform_name = "Android";
+      break;
+    }
+    case LINUX: {
+      platform_name = "Linux";
+      break;
+    }
+  }
+
+  return platform_name;
+}
+
 }  // namespace ads
