@@ -26,7 +26,7 @@ NotificationInfo::NotificationInfo(const NotificationInfo& info) :
 
 NotificationInfo::~NotificationInfo() = default;
 
-const std::string NotificationInfo::ToJson() {
+const std::string NotificationInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;

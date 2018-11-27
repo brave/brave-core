@@ -20,7 +20,7 @@ ClientInfo::ClientInfo(const ClientInfo& info) :
 
 ClientInfo::~ClientInfo() = default;
 
-const std::string ClientInfo::ToJson() {
+const std::string ClientInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;

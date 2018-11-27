@@ -30,7 +30,7 @@ AdInfo::AdInfo(const AdInfo& info) :
 
 AdInfo::~AdInfo() = default;
 
-const std::string AdInfo::ToJson() {
+const std::string AdInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;

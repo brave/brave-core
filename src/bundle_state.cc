@@ -24,7 +24,7 @@ BundleState::BundleState(const BundleState& state):
 
 BundleState::~BundleState() = default;
 
-const std::string BundleState::ToJson() {
+const std::string BundleState::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;

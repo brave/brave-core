@@ -17,7 +17,7 @@ struct BundleState {
   explicit BundleState(const BundleState& state);
   ~BundleState();
 
-  const std::string ToJson();
+  const std::string ToJson() const;
   bool FromJson(const std::string& json, const std::string& jsonSchema);
 
   std::string catalog_id;

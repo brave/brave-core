@@ -16,7 +16,7 @@ struct ADS_EXPORT AdInfo {
   AdInfo(const AdInfo& info);
   ~AdInfo();
 
-  const std::string ToJson();
+  const std::string ToJson() const;
   bool FromJson(const std::string& json);
 
   std::string creative_set_id;

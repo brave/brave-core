@@ -67,6 +67,12 @@ bool UrlComponents::FromJson(const std::string& json) {
   return true;
 }
 
+const std::string UrlComponents::ToJson() const {
+  std::string json;
+  SaveToJson(*this, &json);
+  return json;
+}
+
 void SaveToJson(JsonWriter* writer, const UrlComponents& components) {
   writer->StartObject();
 

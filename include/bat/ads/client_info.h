@@ -16,7 +16,7 @@ struct ADS_EXPORT ClientInfo {
   ClientInfo(const ClientInfo& info);
   ~ClientInfo();
 
-  const std::string ToJson();
+  const std::string ToJson() const;
   bool FromJson(const std::string& json);
 
   const std::string GetPlatformName() const;
