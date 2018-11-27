@@ -4,6 +4,8 @@
 
 #include "bat/ads/notification_info.h"
 
+#include "json_helper.h"
+
 namespace ads {
 
 NotificationInfo::NotificationInfo() :
@@ -23,5 +25,70 @@ NotificationInfo::NotificationInfo(const NotificationInfo& info) :
     uuid(info.uuid) {}
 
 NotificationInfo::~NotificationInfo() = default;
+
+const std::string NotificationInfo::ToJson() {
+  std::string json;
+  SaveToJson(*this, &json);
+  return json;
+}
+
+bool NotificationInfo::FromJson(const std::string& json) {
+  rapidjson::Document document;
+  document.Parse(json.c_str());
+
+  if (document.HasParseError()) {
+    return false;
+  }
+
+  if (document.HasMember("creative_set_id")) {
+    creative_set_id = document["creative_set_id"].GetString();
+  }
+
+  if (document.HasMember("category")) {
+    category = document["category"].GetString();
+  }
+
+  if (document.HasMember("advertiser")) {
+    advertiser = document["advertiser"].GetString();
+  }
+
+  if (document.HasMember("text")) {
+    text = document["text"].GetString();
+  }
+
+  if (document.HasMember("url")) {
+    url = document["url"].GetString();
+  }
+
+  if (document.HasMember("uuid")) {
+    uuid = document["uuid"].GetString();
+  }
+
+  return true;
+}
+
+void SaveToJson(JsonWriter& writer, const NotificationInfo& info) {
+  writer.StartObject();
+
+  writer.String("creative_set_id");
+  writer.String(info.creative_set_id.c_str());
+
+  writer.String("category");
+  writer.String(info.category.c_str());
+
+  writer.String("advertiser");
+  writer.String(info.advertiser.c_str());
+
+  writer.String("text");
+  writer.String(info.text.c_str());
+
+  writer.String("url");
+  writer.String(info.url.c_str());
+
+  writer.String("uuid");
+  writer.String(info.uuid.c_str());
+
+  writer.EndObject();
+}
 
 }  // namespace ads

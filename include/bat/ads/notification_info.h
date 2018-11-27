@@ -15,6 +15,9 @@ struct ADS_EXPORT NotificationInfo {
   explicit NotificationInfo(const NotificationInfo& info);
   ~NotificationInfo();
 
+  const std::string ToJson();
+  bool FromJson(const std::string& json);
+
   std::string creative_set_id;
   std::string category;
   std::string advertiser;
