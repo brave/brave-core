@@ -7,6 +7,7 @@ declare namespace RewardsExtension {
     walletCreated: boolean
     walletCreateFailed: boolean
     walletProperties: WalletProperties
+    recurringDonations: Record<string, number>[]
   }
 
   interface ApplicationState {
@@ -59,5 +60,9 @@ declare namespace RewardsExtension {
     type: number
     timestamp: number
     args: string[]
+  }
+
+  interface RecurringDonation {
+    recurringDonations: Record<string, number>[]
   }
 }

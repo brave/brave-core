@@ -97,6 +97,7 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherBanner(const std::string& publisher_id) = 0;
   virtual void OnDonate(const std::string& publisher_key, int amount, bool recurring) = 0;
   virtual void RemoveRecurring(const std::string& publisher_key) = 0;
+  virtual void AddRecurringPayment(const std::string& publisher_key, double new_amount) = 0;
   virtual void UpdateRecurringDonationsList() = 0;
   virtual void UpdateTipsList() = 0;
   virtual void SetContributionAutoInclude(

@@ -145,6 +145,7 @@ ContentSite PublisherInfoToContentSite(
   content_site.provider = publisher_info.provider;
   content_site.favicon_url = publisher_info.favicon_url;
   content_site.id = publisher_info.id;
+  content_site.weight = publisher_info.weight;
   content_site.reconcile_stamp = publisher_info.reconcile_stamp;
   return content_site;
 }
@@ -1504,6 +1505,19 @@ ledger::PublisherInfoList GetRecurringDonationsOnFileTaskRunner(PublisherInfoDat
 void RewardsServiceImpl::OnRecurringDonationsData(const ledger::PublisherInfoListCallback callback,
                                                   const ledger::PublisherInfoList list) {
   callback(list, 0);
+
+  // Incoming ledger::PublisherInfoList needs to be converted to brave_rewards::ContentSiteList
+  brave_rewards::ContentSiteList site_list;
+  for (auto& info : list) {
+    site_list.push_back(PublisherInfoToContentSite(info));
+  }
+
+  TriggerOnRecurringDonations(site_list);
+}
+
+void RewardsServiceImpl::TriggerOnRecurringDonations(brave_rewards::ContentSiteList list) {
+  for (auto& observer : observers_)
+    observer.OnRecurringDonations(this, list);
 }
 
 void RewardsServiceImpl::GetRecurringDonations(ledger::PublisherInfoListCallback callback) {
@@ -1562,6 +1576,10 @@ void RewardsServiceImpl::OnTipsUpdatedData(const ledger::PublisherInfoList list)
   for (auto& observer : observers_) {
     observer.OnCurrentTips(this, new_list);
   }
+}
+
+void RewardsServiceImpl::AddRecurringPayment(const std::string& publisher_key, double new_amount) {
+  SaveRecurringDonation(publisher_key, new_amount);
 }
 
 void RewardsServiceImpl::RemoveRecurring(const std::string& publisher_key) {

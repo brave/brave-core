@@ -212,6 +212,31 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         chrome.braveRewards.getGrant()
         break
       }
+    case types.SAVE_RECURRING_DONATION:
+      {
+        let newAmount = payload.newAmount
+        let publisherKey = payload.publisherKey
+        if (publisherKey == null) {
+          break
+        }
+        chrome.braveRewards.saveRecurringDonation(publisherKey, newAmount)
+        break
+      }
+    case types.REMOVE_RECURRING_DONATION:
+      {
+        let publisherKey = payload.publisherKey
+        if (publisherKey == null) {
+          break
+        }
+        chrome.braveRewards.removeRecurringDonation(publisherKey)
+        break
+      }
+    case types.ON_RECURRING_DONATIONS:
+      {
+        state = { ...state }
+        state.recurringDonations = payload.result.recurringDonations
+        break
+      }
   }
 
   if (state !== startingState) {
