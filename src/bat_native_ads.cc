@@ -8,7 +8,7 @@
 #include "bat/ads/ads.h"
 
 int main() {
-  auto *mock_ads_client = new ads::MockAdsClient();
+  auto mock_ads_client = std::make_unique<ads::MockAdsClient>();
   ads::Ads& ads = *mock_ads_client->ads_;
 
   ads.Initialize();
@@ -129,9 +129,6 @@ int main() {
 
   auto type = ads::NotificationResultInfoResultType::CLICKED;
   ads.GenerateAdReportingNotificationResultEvent(notification_info, type);
-
-  delete mock_ads_client;
-  mock_ads_client = nullptr;
 
   return 0;
 }
