@@ -8,6 +8,8 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/pref_names.h"
+#include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -63,6 +65,70 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, PDFJSInstalls) {
       "window.domAutomationController.send("
         "!!document.body.querySelector(\"#chrome-pdfjs-logo-bg\"))", &pdfjs_exists));
   ASSERT_TRUE(pdfjs_exists);
+}
+
+// Load an extension page with an ad image, and make sure it is NOT blocked.
+// It would otherwise be blocked though if it wasn't an extension.
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, AdsNotBlockedByDefaultBlockerInExtension) {
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
+  const extensions::Extension* extension = InstallExtensionSilently(extension_service(),
+      test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
+  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" + extension->id() + "/blocking.html");
+
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      "setExpectations(1, 0, 0, 0);"
+      "addImage('ad_banner.png')",
+      &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
+  const extensions::Extension* extension = InstallExtensionSilently(extension_service(),
+      test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
+  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" + extension->id() + "/blocking.html");
+
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      "canGetCookie('test', 'http://a.com')",
+      &as_expected));
+  EXPECT_TRUE(as_expected);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {
+  base::FilePath test_data_dir;
+  GetTestDataDir(&test_data_dir);
+  const extensions::Extension* extension = InstallExtensionSilently(extension_service(),
+      test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
+  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" + extension->id() + "/blocking.html");
+
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+      contents,
+      "canSetCookie('test', 'testval', 'http://a.com')",
+      &as_expected));
+  EXPECT_TRUE(as_expected);
 }
 
 }  // namespace extnesions
