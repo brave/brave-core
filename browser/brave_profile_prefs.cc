@@ -56,6 +56,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Disable spell check service
   registry->SetDefaultPrefValue(spellcheck::prefs::kSpellCheckUseSpellingService, base::Value(false));
 
+  // Disable safebrowsing
+  registry->SetDefaultPrefValue(prefs::kSafeBrowsingEnabled, base::Value(false));
+
   // Disable safebrowsing reporting
   registry->SetDefaultPrefValue(prefs::kSafeBrowsingExtendedReportingOptInAllowed, base::Value(false));
 
