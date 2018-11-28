@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/profile_import.mojom b/chrome/common/importer/profile_import.mojom
-index 081955be7142f8a1ffdd68e19e30baa3b303586e..2ab6255aa25a81e84b2b643ebc3ef917fb6fcb7c 100644
+index 081955be7142f8a1ffdd68e19e30baa3b303586e..12e2fb4999b09511fb3e9ed3f0690a39358637b7 100644
 --- a/chrome/common/importer/profile_import.mojom
 +++ b/chrome/common/importer/profile_import.mojom
 @@ -6,6 +6,7 @@ module chrome.mojom;
@@ -10,23 +10,27 @@ index 081955be7142f8a1ffdd68e19e30baa3b303586e..2ab6255aa25a81e84b2b643ebc3ef917
  import "url/mojom/url.mojom";
  
  const string kProfileImportServiceName = "profile_import";
-@@ -31,6 +32,9 @@ struct FaviconUsageDataList;
+@@ -31,6 +32,12 @@ struct FaviconUsageDataList;
  [Native]
  struct ImporterIE7PasswordInfo;
  
 +[Native]
 +struct BraveStats;
 +
++[Native]
++struct BraveLedger;
++
  [Native]
  enum ImportItem;
  
-@@ -64,6 +68,9 @@ interface ProfileImportObserver {
+@@ -64,6 +71,10 @@ interface ProfileImportObserver {
    OnAutofillFormDataImportStart(uint32 total_autofill_form_data_entry_count);
    OnAutofillFormDataImportGroup(
        array<ImporterAutofillFormDataEntry> autofill_form_data_entry_group);
 +  OnCookiesImportStart(uint32 total_cookies_count);
 +  OnCookiesImportGroup(array<network.mojom.CanonicalCookie> cookies_group);
 +  OnStatsImportReady(BraveStats stats);
++  OnLedgerImportReady(BraveLedger ledger);  
  };
  
  // This interface is used to control the import process.

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/import_data_dialog.html b/chrome/browser/resources/settings/people_page/import_data_dialog.html
-index fdd6f9d2265fe069d159ceed6e1e7ec561a2915e..e0dee6f2af7b92dd2b7f88fefbfda92f7a9b3f02 100644
+index fdd6f9d2265fe069d159ceed6e1e7ec561a2915e..361dec27b7f52fe765798e1b8c2cfb56ebeb61c3 100644
 --- a/chrome/browser/resources/settings/people_page/import_data_dialog.html
 +++ b/chrome/browser/resources/settings/people_page/import_data_dialog.html
-@@ -94,6 +94,16 @@
+@@ -94,6 +94,22 @@
                pref="{{prefs.import_dialog_autofill_form_data}}"
                label="$i18n{importAutofillFormData}">
            </settings-checkbox>
@@ -16,6 +16,12 @@ index fdd6f9d2265fe069d159ceed6e1e7ec561a2915e..e0dee6f2af7b92dd2b7f88fefbfda92f
 +              pref="{{prefs.import_dialog_stats}}"
 +              label="$i18n{importStats}">
 +          </settings-checkbox>
++          <settings-checkbox
++              hidden="[[!selected_.ledger]]"
++              pref="{{prefs.import_dialog_ledger}}"
++              label="$i18n{importLedger}">
++          </settings-checkbox>
++
          </div>
        </div>
        <div slot="button-container">
