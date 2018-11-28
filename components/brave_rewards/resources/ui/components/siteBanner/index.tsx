@@ -56,6 +56,7 @@ export interface Props {
   bgImage?: string
   logo?: string
   social?: Social[]
+  provider?: SocialType
   recurringDonation?: boolean
   children?: React.ReactNode
   onDonate: (amount: number, monthly: boolean) => void
@@ -125,6 +126,25 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     return title ? title : getLocale('welcome')
   }
 
+  getBannerTitle (name?: string, domain?: string, provider?: SocialType) {
+    const identifier = name || domain
+
+    if (!provider) {
+      return identifier
+    }
+
+    switch (provider) {
+      case 'youtube':
+        return `${identifier} ${getLocale('on')} YouTube`
+      case 'twitter':
+        return `${identifier} ${getLocale('on')} Twitter`
+      case 'twitch':
+        return `${identifier} ${getLocale('on')} Twitch`
+      default:
+        return identifier
+    }
+  }
+
   getText (children?: React.ReactNode) {
     if (!children) {
       return (
@@ -165,6 +185,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       onClose,
       logo,
       social,
+      provider,
       children,
       title,
       recurringDonation,
@@ -193,7 +214,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
             {
               !isMobile
               ? <StyledCenter>
-                  {name || domain}
+                  {this.getBannerTitle(name, domain, provider)}
                 </StyledCenter>
               : null
             }

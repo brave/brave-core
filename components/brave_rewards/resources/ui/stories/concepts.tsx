@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { withState } from '@dump247/storybook-state'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, boolean, text, object } from '@storybook/addon-knobs'
+import { withKnobs, boolean, text, object, select } from '@storybook/addon-knobs'
 
 // Components
 import Settings from './settings/settings'
@@ -76,6 +76,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
               onAmountSelection={onAmountSelection}
               currentAmount={store.state.currentAmount}
               onClose={onClose}
+              provider={select('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch' }, 'youtube')}
               social={[
                 {
                   type: 'twitter',
