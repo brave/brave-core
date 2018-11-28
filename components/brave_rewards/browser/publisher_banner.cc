@@ -17,6 +17,7 @@ namespace brave_rewards {
     background(""),
     logo(""),
     amounts(std::vector<int>()),
+    provider(""),
     social(std::map<std::string, std::string>()) {}
 
   PublisherBanner::~PublisherBanner() { }
@@ -29,6 +30,7 @@ namespace brave_rewards {
     background = properties.background;
     logo = properties.logo;
     amounts = properties.amounts;
+    provider = properties.provider;
     social = properties.social;
   }
 

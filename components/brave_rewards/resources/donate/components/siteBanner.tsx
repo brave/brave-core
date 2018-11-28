@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import { SiteBanner } from 'brave-ui/features/rewards'
+import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
 import * as donateActions from '../actions/donate_actions'
@@ -110,6 +111,7 @@ class Banner extends React.Component<Props, State> {
     let publisherKey = ''
     let description = ''
     let name = ''
+    let provider = ''
 
     if (publisher) {
       title = publisher.title
@@ -119,6 +121,7 @@ class Banner extends React.Component<Props, State> {
       publisherKey = publisher.publisherKey
       description = publisher.description
       name = publisher.name
+      provider = publisher.provider
 
       const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
       if (internalFavicon.test(publisher.logo)) {
@@ -133,6 +136,7 @@ class Banner extends React.Component<Props, State> {
         domain={publisherKey}
         title={title}
         name={name}
+        provider={provider as Provider}
         recurringDonation={recurringList && recurringList.includes(publisherKey)}
         balance={balance.toString() || '0'}
         bgImage={background}
