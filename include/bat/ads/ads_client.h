@@ -35,15 +35,7 @@ enum ADS_EXPORT URLRequestMethod {
 
 enum ADS_EXPORT Result {
   SUCCESS,
-  FAILED,
-};
-
-enum ADS_EXPORT Error {
-  CLIENT_STATE_FAILED_TO_SAVE,
-  USER_MODEL_FAILED_TO_LOAD,
-  CATALOG_FAILED_TO_RESET,
-  BUNDLE_FAILED_TO_LOAD,
-  BUNDLE_FAILED_TO_RESET
+  FAILED
 };
 
 class ADS_EXPORT LogStream {
@@ -168,9 +160,6 @@ class ADS_EXPORT AdsClient {
   virtual bool GetUrlComponents(
       const std::string& url,
       UrlComponents* components) const = 0;
-
-  // Should be called when an error occurs
-  virtual void OnError(const Error error) = 0;
 
   // Should log an event to persistent storage however as events may be queued
   // they need an event name and timestamp adding as follows, replacing ... with

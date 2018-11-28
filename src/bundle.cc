@@ -194,8 +194,6 @@ void Bundle::OnStateReset(
   if (result == FAILED) {
     LOG(ERROR) << "Failed to reset bundle state";
 
-    ads_client_->OnError(BUNDLE_FAILED_TO_RESET);
-
     return;
   }
 

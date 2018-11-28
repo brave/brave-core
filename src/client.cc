@@ -197,8 +197,6 @@ void Client::OnStateSaved(const Result result) {
   if (result == FAILED) {
     LOG(ERROR) << "Failed to save client state";
 
-    ads_client_->OnError(CLIENT_STATE_FAILED_TO_SAVE);
-
     return;
   }
 

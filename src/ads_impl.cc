@@ -137,8 +137,6 @@ void AdsImpl::OnUserModelLoaded(const Result result, const std::string& json) {
   if (result == FAILED) {
     LOG(ERROR) << "Failed to load user model";
 
-    ads_client_->OnError(USER_MODEL_FAILED_TO_LOAD);
-
     return;
   }
 

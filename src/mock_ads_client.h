@@ -88,8 +88,6 @@ class MockAdsClient : public AdsClient {
       const std::string& url,
       UrlComponents* components) const override;
 
-  void OnError(const Error error) override;
-
   void EventLog(const std::string& json) override;
 
   std::unique_ptr<LogStream> Log(
