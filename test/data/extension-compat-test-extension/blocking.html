@@ -1,0 +1,99 @@
+<html>
+<head>
+</head>
+<head>
+<script>
+let expectedImgLoaded = 0
+let expectedImgBlocked = 0
+let expectedXHRLoaded = 0
+let expectedXHRBlocked = 0
+let numXHRLoaded = 0
+let numXHRBlocked = 0
+
+// Performs an XHR for the specified src
+function xhr(src) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', src, true);
+  xhr.onload = function(e) {
+    if (xhr.response.length !== 0)
+      numXHRLoaded++
+    else
+      numXHRBlocked++
+    onLoad()
+  }
+  xhr.onerror = function(e) {
+    numXHRBlocked++
+    onLoad()
+  }
+  xhr.send();
+}
+
+// Adds an image to the DOM with the specified src
+function addImage(src) {
+  const img = document.createElement('img')
+  img.src = src
+  img.className = 'adImage'
+  img.addEventListener('load', onLoad)
+  document.body.appendChild(img)
+}
+
+// Sets the expectation for the number of images and XHR loaded and blocked
+function setExpectations(numImgLoaded, numImgBlocked, numXHRLoaded, numXHRBlocked) {
+  expectedImgLoaded = numImgLoaded
+  expectedImgBlocked = numImgBlocked
+  expectedXHRLoaded = numXHRLoaded
+  expectedXHRBlocked = numXHRBlocked
+}
+
+function onLoad() {
+  const adImages = Array.from(document.querySelectorAll('.adImage'))
+  if (adImages.length !== expectedImgLoaded + expectedImgBlocked ||
+      numXHRLoaded + numXHRBlocked !== expectedXHRLoaded + expectedXHRBlocked) {
+    return;
+  }
+
+  // Blocked image should be a 1x1 stub
+  const numImgLoaded = adImages.reduce((total, adImage) => {
+    if (adImage.complete &&
+        (adImage.naturalHeight !== 1 || adImage.naturalWidth !== 1)) {
+      return total + 1
+    }
+    return total
+  }, 0);
+
+  const numImgBlocked = adImages.length - numImgLoaded
+  const result = numImgLoaded == expectedImgLoaded &&
+      expectedImgBlocked == numImgBlocked &&
+      numXHRLoaded === expectedXHRLoaded &&
+      numXHRBlocked === expectedXHRBlocked
+  // For debugging:
+  // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgBlocked, numImgBlocked,
+  //    numXHRLoaded, expectedXHRLoaded, numXHRBlocked, expectedXHRBlocked}))
+  window.domAutomationController.send(result)
+}
+
+function canGetCookie(name, url) {
+  chrome.cookies.get({name, url}, (cookie) => {
+    const success = chrome.runtime.lastError === undefined
+    if (!success) {
+      console.log('=== Can\'t get cookie: ' + JSON.stringify(chrome.runtime.lastError))
+    }
+    window.domAutomationController.send(success)
+  })
+}
+
+function canSetCookie(name, value, url) {
+  chrome.cookies.set({name, value, url}, (cookie) => {
+    const success = chrome.runtime.lastError === undefined
+    if (!success) {
+      console.log('=== Can\'t set cookie: ' + JSON.stringify(chrome.runtime.lastError))
+    }
+    window.domAutomationController.send(success)
+  })
+}
+
+</script>
+</head>
+<body>
+</body>
+</html>

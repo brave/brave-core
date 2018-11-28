@@ -15,7 +15,8 @@
 
 namespace extensions {
 
-void ExtensionFunctionalTest::InstallExtensionSilently(ExtensionService* service,
+const Extension* ExtensionFunctionalTest::InstallExtensionSilently(
+    ExtensionService* service,
     const base::FilePath& path) {
   ExtensionRegistry* registry = ExtensionRegistry::Get(profile());
   size_t num_before = registry->enabled_extensions().size();
@@ -39,6 +40,7 @@ void ExtensionFunctionalTest::InstallExtensionSilently(ExtensionService* service
 
   const Extension* extension = registry_observer.WaitForExtensionReady();
   EXPECT_TRUE(extension);
+  return extension;
 }
 
 void ExtensionFunctionalTest::SetUp() {
