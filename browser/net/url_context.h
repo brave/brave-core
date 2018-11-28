@@ -51,6 +51,7 @@ struct BraveRequestInfo {
   ~BraveRequestInfo();
   GURL request_url;
   GURL tab_origin;
+  GURL tab_url;
   std::string new_url_spec;
   bool allow_brave_shields = true;
   bool allow_ads = false;
