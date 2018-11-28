@@ -1222,6 +1222,8 @@ class BrowserViewController: UIViewController {
     func presentBrowserLockCallout() {
         if isBrowserLockEnabled || Preferences.Popups.browserLock.value { return }
         
+        urlBar.leaveOverlayMode()
+        
         let popup = AlertPopupView(image: #imageLiteral(resourceName: "browser_lock_popup"), title: Strings.Browser_lock_callout_title, message: Strings.Browser_lock_callout_message)
         popup.addButton(title: Strings.Browser_lock_callout_not_now) { () -> PopupViewDismissType in
             Preferences.Popups.browserLock.value = true
@@ -1253,6 +1255,8 @@ class BrowserViewController: UIViewController {
             presentBrowserLockCallout()
             return
         }
+        
+        urlBar.leaveOverlayMode()
         
         let popup = AlertPopupView(image: UIImage(named: "duckduckgo"), title: Strings.DDG_callout_title, message: Strings.DDG_callout_message)
         popup.dismissHandler = { [weak self] in
