@@ -6,6 +6,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/unified_consent/feature.h"
 
 using BraveFeaturesBrowserTest = InProcessBrowserTest;
 
@@ -19,4 +20,8 @@ IN_PROC_BROWSER_TEST_F(BraveFeaturesBrowserTest, AutoFillServerCommunication) {
   EXPECT_FALSE(
     base::FeatureList::IsEnabled(
       autofill::features::kAutofillServerCommunication));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveFeaturesBrowserTest, UnifiedConsent) {
+  EXPECT_FALSE(base::FeatureList::IsEnabled(unified_consent::kUnifiedConsent));
 }
