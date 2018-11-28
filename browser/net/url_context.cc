@@ -9,6 +9,7 @@
 
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/resource_request_info.h"
 
@@ -24,13 +25,25 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   ctx->request_identifier = request->identifier();
   ctx->request_url = request->url();
-  ctx->tab_origin = request->site_for_cookies().GetOrigin();
   auto* request_info = content::ResourceRequestInfo::ForRequest(request);
   if (request_info) {
     ctx->resource_type = request_info->GetResourceType();
   }
-  brave_shields::GetRenderFrameInfo(request, &ctx->render_process_id, &ctx->render_frame_id,
-      &ctx->frame_tree_node_id);
+  brave_shields::GetRenderFrameInfo(request,
+                                    &ctx->render_frame_id,
+                                    &ctx->render_process_id,
+                                    &ctx->frame_tree_node_id);
+  if (!request->site_for_cookies().is_empty()) {
+    ctx->tab_url = request->site_for_cookies();
+  } else {
+    // We can not always use site_for_cookies since it can be empty in certain
+    // cases. See the comments in url_request.h
+    ctx->tab_url = brave_shields::BraveShieldsWebContentsObserver::
+        GetTabURLFromRenderFrameInfo(ctx->render_process_id,
+                                     ctx->render_frame_id,
+                                     ctx->frame_tree_node_id).GetOrigin();
+  }
+  ctx->tab_origin = ctx->tab_url.GetOrigin();
   ctx->allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kBraveShields) &&
@@ -49,6 +62,5 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
       brave_shields::kCookies);
   ctx->request = request;
 }
-
 
 }  // namespace brave

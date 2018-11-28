@@ -9,6 +9,7 @@
 #include "base/task/post_task.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
@@ -33,6 +34,8 @@ namespace {
         content::RenderFrameHost::FromID(render_process_id, render_frame_id);
     return content::WebContents::FromRenderFrameHost(rfh);
   }
+  // TODO(iefremov): Seems like a typo?
+  // issues/2263
   return content::WebContents::FromFrameTreeNodeId(render_frame_id);
 }
 
@@ -160,14 +163,10 @@ bool BraveNetworkDelegateBase::OnCanGetCookies(const URLRequest& request,
         return callback.Run(ctx);
       });
 
-  int frame_id;
-  int process_id;
-  int frame_tree_node_id;
-  brave_shields::GetRenderFrameInfo(&request, &frame_id, &process_id,
-      &frame_tree_node_id);
   base::RepeatingCallback<content::WebContents*(void)> wc_getter =
-      base::BindRepeating(&GetWebContentsFromProcessAndFrameId, process_id,
-                          frame_id);
+      base::BindRepeating(&GetWebContentsFromProcessAndFrameId,
+                          ctx->render_process_id,
+                          ctx->render_frame_id);
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::UI},
       base::BindOnce(&TabSpecificContentSettings::CookiesRead, wc_getter,
@@ -185,19 +184,16 @@ bool BraveNetworkDelegateBase::OnCanSetCookie(const URLRequest& request,
       new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(&request, ctx);
   ctx->event_type = brave::kOnCanSetCookies;
+
   bool allow = std::all_of(can_set_cookies_callbacks_.begin(), can_set_cookies_callbacks_.end(),
       [&ctx](brave::OnCanSetCookiesCallback callback){
         return callback.Run(ctx);
       });
 
-  int frame_id;
-  int process_id;
-  int frame_tree_node_id;
-  brave_shields::GetRenderFrameInfo(&request, &frame_id, &process_id,
-      &frame_tree_node_id);
   base::RepeatingCallback<content::WebContents*(void)> wc_getter =
-      base::BindRepeating(&GetWebContentsFromProcessAndFrameId, process_id,
-                          frame_id);
+      base::BindRepeating(&GetWebContentsFromProcessAndFrameId,
+                          ctx->render_process_id,
+                          ctx->render_frame_id);
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::UI},
       base::BindOnce(&TabSpecificContentSettings::CookieChanged, wc_getter,
