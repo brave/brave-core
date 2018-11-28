@@ -121,11 +121,11 @@ void OnBeforeURLRequestDispatchOnIOThread(
     ctx->new_url_spec != ctx->request_url.spec()) {
     if (ctx->blocked_by == kAdBlocked) {
       brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
-          ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id,
+          ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
           brave_shields::kAds);
     } else if (ctx->blocked_by == kTrackerBlocked) {
       brave_shields::DispatchBlockedEventFromIO(ctx->request_url,
-          ctx->render_process_id, ctx->render_frame_id, ctx->frame_tree_node_id,
+          ctx->render_frame_id, ctx->render_process_id, ctx->frame_tree_node_id,
           brave_shields::kTrackers);
     }
   }
