@@ -50,7 +50,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, PDFJSInstalls) {
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   // Test.pdf is just a PDF file for an icon with title test.ico
-  base::string16 expected_title(base::ASCIIToUTF16("test.ico"));
+  base::string16 expected_title(base::ASCIIToUTF16("test.ico - test.pdf"));
     content::TitleWatcher title_watcher(
         browser()->tab_strip_model()->GetActiveWebContents(), expected_title);
   ui_test_utils::NavigateToURL(browser(), url);
@@ -61,7 +61,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, PDFJSInstalls) {
   ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
       browser()->tab_strip_model()->GetWebContentsAt(0),
       "window.domAutomationController.send("
-        "!!document.body.querySelector(\"embed[src$='.pdf']\"))", &pdfjs_exists));
+        "!!document.body.querySelector(\"#chrome-pdfjs-logo-bg\"))", &pdfjs_exists));
   ASSERT_TRUE(pdfjs_exists);
 }
 
