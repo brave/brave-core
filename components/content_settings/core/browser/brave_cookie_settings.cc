@@ -6,6 +6,7 @@
 
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/common/brave_cookie_blocking.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
@@ -36,6 +37,24 @@ void BraveCookieSettings::GetCookieSetting(const GURL& url,
     content_settings::SettingSource* source,
     ContentSetting* cookie_setting) const {
   DCHECK(cookie_setting);
+
+  // Auto-allow in extensions or for WebUI embedded in a secure origin.
+  // This matches an early return case in CookieSettings::GetCookieSetting
+  if (first_party_url.SchemeIs(kChromeUIScheme) &&
+      url.SchemeIsCryptographic()) {
+    *cookie_setting = CONTENT_SETTING_ALLOW;
+    return;
+  }
+
+  // This matches an early return case in CookieSettings::GetCookieSetting
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (url.SchemeIs(extension_scheme_) &&
+      first_party_url.SchemeIs(extension_scheme_)) {
+    *cookie_setting = CONTENT_SETTING_ALLOW;
+    return;
+  }
+#endif
+
   CookieSettings::GetCookieSetting(url, first_party_url, source,
       cookie_setting);
   if (*cookie_setting == CONTENT_SETTING_BLOCK) {

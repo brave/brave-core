@@ -4,6 +4,7 @@
 
 #include "brave/common/url_constants.h"
 
+const char kChromeExtensionScheme[] = "chrome-extension";
 const char kBraveUIScheme[] = "brave";
 const char kMagnetScheme[] = "magnet";
 const char kWidevineMoreInfoURL[] = "https://www.eff.org/issues/drm";
