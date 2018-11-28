@@ -58,6 +58,16 @@ extension Preferences {
         migrate(key: "privateBrowsingAlwaysOn", to: Preferences.Privacy.privateBrowsingOnly)
         migrate(key: "clearprivatedata.toggles", to: Preferences.Privacy.clearPrivateDataToggles)
         
+        // Make sure to unlock all directories that may have been locked in 1.6 private mode
+        let baseDir = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
+        [baseDir + "/WebKit", baseDir + "/Caches"].forEach {
+            do {
+                try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: 0o755 as Int16)], ofItemAtPath: $0)
+            } catch {
+                log.error("Failed setting the directory attributes for \($0)")
+            }
+        }
+        
         // Security
         NSKeyedUnarchiver.setClass(AuthenticationKeychainInfo.self, forClassName: "AuthenticationKeychainInfo")
         if let pinLockInfo = KeychainWrapper.standard.object(forKey: "pinLockInfo") as? AuthenticationKeychainInfo {
