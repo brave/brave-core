@@ -239,3 +239,7 @@ TEST_F(BraveImporterTest, ImportStats) {
   EXPECT_EQ(0, stats.trackingProtection_count);
   EXPECT_EQ(0, stats.httpsEverywhere_count);
 }
+
+TEST_F(BraveImporterTest, ImportLedger) {
+  // TODO
+}

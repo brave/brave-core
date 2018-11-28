@@ -12,6 +12,7 @@
 #include "net/cookies/canonical_cookie.h"
 
 struct BraveStats;
+struct BraveLedger;
 
 class BraveExternalProcessImporterClient : public ExternalProcessImporterClient {
  public:
@@ -30,6 +31,8 @@ class BraveExternalProcessImporterClient : public ExternalProcessImporterClient 
       const std::vector<net::CanonicalCookie>& cookies_group) override;
   void OnStatsImportReady(
        const BraveStats& stats) override;
+  void OnLedgerImportReady(
+       const BraveLedger& ledger) override;
 
  private:
   ~BraveExternalProcessImporterClient() override;
