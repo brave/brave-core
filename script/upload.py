@@ -113,12 +113,12 @@ def get_brave_packages(dir, channel, version):
     pkgs = []
 
     def rename(file_path, file_desired):
-            file_desired_path = os.path.join(dir, file_desired)
-            if os.path.isfile(file_path):
-                    print('[INFO] Renaming' + file_path + ' to ' +
-                            file_desired_path)
-                    os.rename(file_path, file_desired_path)
-            return file_desired_path
+        file_desired_path = os.path.join(dir, file_desired)
+        if os.path.isfile(file_path):
+            print('[INFO] Renaming' + file_path + ' to ' +
+                  file_desired_path)
+            os.rename(file_path, file_desired_path)
+        return file_desired_path
 
     channel_capitalized = channel.capitalize()
     for _, _, files in os.walk(dir):
@@ -153,13 +153,13 @@ def get_brave_packages(dir, channel, version):
                                 r'.*\.deb$', file) \
                         or re.match(r'brave-browser' + '-' + version +
                                     r'.*\.rpm$', file):
-                            pkgs.append(file)
+                        pkgs.append(file)
                 else:
                     if re.match(r'brave-browser-' + channel + '_' +
                                 version + r'.*\.deb$', file) \
                         or re.match(r'brave-browser-' + channel + '-' +
                                     version + r'.*\.rpm$', file):
-                            pkgs.append(file)
+                        pkgs.append(file)
             elif PLATFORM == 'win32':
                 if get_target_arch() == 'x64':
                     if channel_capitalized == 'Release':
@@ -221,26 +221,26 @@ def get_brave_packages(dir, channel, version):
                         rename(file_path, file_desired_stub)
                         pkgs.append(file_desired_stub)
                     elif re.match(r'BraveBrowserSilent' + channel_capitalized +
-                                r'Setup_.*\.exe', file):
+                                  r'Setup_.*\.exe', file):
                         rename(file_path, file_desired_stub_silent)
                         pkgs.append(file_desired_stub_silent)
                     elif re.match(r'BraveBrowserUntagged' + channel_capitalized +
-                                r'Setup_.*\.exe', file):
+                                  r'Setup_.*\.exe', file):
                         rename(file_path, file_desired_stub_untagged)
                         pkgs.append(file_desired_stub_untagged)
                     elif re.match(r'BraveBrowserStandalone' +
-                                    channel_capitalized + r'Setup_.*\.exe',
-                                    file):
+                                  channel_capitalized + r'Setup_.*\.exe',
+                                  file):
                         rename(file_path, file_desired_standalone)
                         pkgs.append(file_desired_standalone)
                     elif re.match(r'BraveBrowserStandaloneSilent' +
-                                    channel_capitalized + r'Setup_.*\.exe',
-                                    file):
+                                  channel_capitalized + r'Setup_.*\.exe',
+                                  file):
                         rename(file_path, file_desired_standalone_silent)
                         pkgs.append(file_desired_standalone_silent)
                     elif re.match(r'BraveBrowserStandaloneUntagged' +
-                                    channel_capitalized + r'Setup_.*\.exe',
-                                    file):
+                                  channel_capitalized + r'Setup_.*\.exe',
+                                  file):
                         rename(file_path, file_desired_standalone_untagged)
                         pkgs.append(file_desired_standalone_untagged)
                 else:
@@ -303,26 +303,26 @@ def get_brave_packages(dir, channel, version):
                         rename(file_path, file_desired_stub)
                         pkgs.append(file_desired_stub)
                     elif re.match(r'BraveBrowserSilent' + channel_capitalized +
-                                r'Setup32_.*\.exe', file):
+                                  r'Setup32_.*\.exe', file):
                         rename(file_path, file_desired_stub_silent)
                         pkgs.append(file_desired_stub_silent)
                     elif re.match(r'BraveBrowserUntagged' + channel_capitalized +
-                                r'Setup32_.*\.exe', file):
+                                  r'Setup32_.*\.exe', file):
                         rename(file_path, file_desired_stub_untagged)
                         pkgs.append(file_desired_stub_untagged)
                     elif re.match(r'BraveBrowserStandalone' +
-                                    channel_capitalized + r'Setup32_.*\.exe',
-                                    file):
+                                  channel_capitalized + r'Setup32_.*\.exe',
+                                  file):
                         rename(file_path, file_desired_standalone)
                         pkgs.append(file_desired_standalone)
                     elif re.match(r'BraveBrowserStandaloneSilent' +
-                                    channel_capitalized + r'Setup32_.*\.exe',
-                                    file):
+                                  channel_capitalized + r'Setup32_.*\.exe',
+                                  file):
                         rename(file_path, file_desired_standalone_silent)
                         pkgs.append(file_desired_standalone_silent)
                     elif re.match(r'BraveBrowserStandaloneUntagged' +
-                                    channel_capitalized + r'Setup32_.*\.exe',
-                                    file):
+                                  channel_capitalized + r'Setup32_.*\.exe',
+                                  file):
                         rename(file_path, file_desired_standalone_untagged)
                         pkgs.append(file_desired_standalone_untagged)
     return pkgs
@@ -432,8 +432,9 @@ you're looking for a little extra spice and adventure in your browsing.'''
         warning = ""
 
     body = '''{warning}
-    ### Mac installation
-    Install Brave-Browser.dmg on your system.
+
+### Mac installation
+Install Brave-Browser.dmg on your system.
 
 ### Linux install instructions
 http://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux
