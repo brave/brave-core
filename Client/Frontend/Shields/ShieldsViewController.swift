@@ -11,6 +11,15 @@ import Data
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {
     let tab: Tab
+    private lazy var url: URL? = {
+        guard let _url = tab.url else { return nil }
+        
+        if _url.safeBrowsingErrorURL {
+            return _url.originalURLFromErrorURL
+        }
+        
+        return _url
+    }()
     
     var shieldsSettingsChanged: ((ShieldsViewController) -> Void)?
     
@@ -22,7 +31,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         
         super.init(nibName: nil, bundle: nil)
         
-        shieldsView.shieldsContainerStackView.hostLabel.text = tab.url?.normalizedHost
+        shieldsView.shieldsContainerStackView.hostLabel.text = url?.normalizedHost
         
         updateToggleStatus()
         updateShieldBlockStats()
@@ -50,7 +59,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
             
             // Domain specific overrides after defaults have already been setup
             
-            if let url = tab.url, let shieldState = Domain.getBraveShield(forUrl: url, shield: shield) {
+            if let url = url, let shieldState = Domain.getBraveShield(forUrl: url, shield: shield) {
                 // site-specific shield has been overridden, update
                 
                 view.toggleSwitch.isOn = Bool(truncating: shieldState)
@@ -70,7 +79,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     }
     
     private func updateBraveShieldState(shield: BraveShieldState.Shield, on: Bool, option: Preferences.Option<Bool>?) {
-        guard let url = tab.url else { return }
+        guard let url = url else { return }
         let allOff = shield == .AllOff
         // `.AllOff` uses inverse logic. Technically we set "all off" when the switch is OFF, unlike all the others
         // If the new state is the same as the global preference, reset it to nil so future shield state queries
@@ -82,7 +91,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     
     private func updateGlobalShieldState(_ on: Bool, animated: Bool = false) {
         // Whether or not shields are available for this URL.
-        let isShieldsAvailable = tab.url?.isLocal == false
+        let isShieldsAvailable = url?.isLocal == false
         // If shields aren't available, we don't show the switch and show the "off" state
         let shieldsEnabled = isShieldsAvailable ? on : false
         let updateBlock = {

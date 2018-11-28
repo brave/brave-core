@@ -367,6 +367,12 @@ class Tab: NSObject {
             loadRequest(PrivilegedRequest(url: currentItem.initialURL, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 60) as URLRequest)
             return
         }
+        
+        // Refreshing error, safe browsing warning pages.
+        if let originalUrlFromErrorUrl = webView?.url?.originalURLFromErrorURL {
+            webView?.load(URLRequest(url: originalUrlFromErrorUrl))
+            return
+        }
 
         if let _ = webView?.reloadFromOrigin() {
             log.debug("reloaded zombified tab from origin")

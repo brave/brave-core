@@ -75,8 +75,8 @@ public final class Domain: NSManagedObject, CRUD {
         return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
     }
 
-    public class func setBraveShield(forUrl url: URL, shield: BraveShieldState.Shield, isOn: Bool?) {
-        let context = DataController.newBackgroundContext()
+    public class func setBraveShield(forUrl url: URL, shield: BraveShieldState.Shield, isOn: Bool?,
+                                     context: NSManagedObjectContext = DataController.newBackgroundContext()) {
         
         let domain = Domain.getOrCreateForUrl(url, context: context)
         let setting = isOn as NSNumber?
@@ -92,8 +92,9 @@ public final class Domain: NSManagedObject, CRUD {
         DataController.save(context: context)
     }
     
-    public class func getBraveShield(forUrl url: URL, shield: BraveShieldState.Shield) -> NSNumber? {
-        let context = DataController.newBackgroundContext()
+    public class func getBraveShield(forUrl url: URL, shield: BraveShieldState.Shield,
+                                     context: NSManagedObjectContext = DataController.newBackgroundContext()) -> NSNumber? {
+        
         let domain = Domain.getOrCreateForUrl(url, context: context)
         switch shield {
             case .AllOff: return domain.shield_allOff
