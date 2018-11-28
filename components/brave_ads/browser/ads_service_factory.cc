@@ -77,7 +77,7 @@ void AdsServiceFactory::RegisterProfilePrefs(
   registry->RegisterBooleanPref(prefs::kBraveAdsEnabled, false);
   registry->RegisterUint64Pref(prefs::kBraveAdsPerHour, 2);
   registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 6);
-  registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 20);
+  registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
 }
 
 }  // namespace brave_ads
