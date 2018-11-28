@@ -14,6 +14,7 @@
 #include "brave/common/importer/brave_ledger.h"
 
 struct BraveStats;
+struct BraveReferral;
 class BraveInProcessImporterBridge;
 
 class BraveProfileWriter : public ProfileWriter,
@@ -24,6 +25,7 @@ class BraveProfileWriter : public ProfileWriter,
   virtual void AddCookies(const std::vector<net::CanonicalCookie>& cookies);
   virtual void UpdateStats(const BraveStats& stats);
   virtual void UpdateLedger(const BraveLedger& ledger);
+  virtual void UpdateReferral(const BraveReferral& referral);
 
   void SetBridge(BraveInProcessImporterBridge* bridge);
 

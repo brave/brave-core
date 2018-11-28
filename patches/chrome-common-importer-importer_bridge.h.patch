@@ -1,8 +1,8 @@
 diff --git a/chrome/common/importer/importer_bridge.h b/chrome/common/importer/importer_bridge.h
-index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..f9a8079c37d80ca7d98efc3d41996d9d3d11e628 100644
+index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..9cc21253653ca8add3fac72462ed1010bb97f988 100644
 --- a/chrome/common/importer/importer_bridge.h
 +++ b/chrome/common/importer/importer_bridge.h
-@@ -58,6 +58,16 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
+@@ -58,6 +58,18 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
    virtual void SetAutofillFormData(
        const std::vector<ImporterAutofillFormDataEntry>& entries) = 0;
  
@@ -14,7 +14,9 @@ index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..f9a8079c37d80ca7d98efc3d41996d9d
 +
 +  virtual void UpdateLedger(
 +      const BraveLedger& ledger) {};
-+  
++
++  virtual void UpdateReferral(
++      const BraveReferral& referral) {};
 +
    // Notifies the coordinator that the import operation has begun.
    virtual void NotifyStarted() = 0;

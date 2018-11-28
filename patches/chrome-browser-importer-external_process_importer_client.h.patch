@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.h b/chrome/browser/importer/external_process_importer_client.h
-index 9451b0917536e73b42c596527112d3119b2c4cc5..b0cbf0bffac0560894c832653db91f7a0dfb6824 100644
+index 9451b0917536e73b42c596527112d3119b2c4cc5..3e25ca767319375901939cdbc26edfa796b12bde 100644
 --- a/chrome/browser/importer/external_process_importer_client.h
 +++ b/chrome/browser/importer/external_process_importer_client.h
-@@ -85,6 +85,10 @@ class ExternalProcessImporterClient
+@@ -85,6 +85,11 @@ class ExternalProcessImporterClient
    void OnAutofillFormDataImportGroup(
        const std::vector<ImporterAutofillFormDataEntry>&
            autofill_form_data_entry_group) override;
@@ -10,6 +10,7 @@ index 9451b0917536e73b42c596527112d3119b2c4cc5..b0cbf0bffac0560894c832653db91f7a
 +  void OnCookiesImportGroup(const std::vector<net::CanonicalCookie>& cookies_group) override {};
 +  void OnStatsImportReady(const BraveStats& stats) override {};
 +  void OnLedgerImportReady(const BraveLedger& ledger) override {};
++  void OnReferralImportReady(const BraveReferral& referral) override {};
  
   protected:
    ~ExternalProcessImporterClient() override;

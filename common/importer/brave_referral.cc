@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "net/cookies/canonical_cookie.h"
+#include "brave/common/importer/brave_referral.h"
 
-struct BraveLedger;
-struct BraveStats;
-struct BraveReferral;
+BraveReferral::BraveReferral() {}
 
-#include "../../../../../chrome/common/importer/importer_bridge.h"
+BraveReferral::BraveReferral(const BraveReferral& other) = default;
+
+BraveReferral::~BraveReferral() {}

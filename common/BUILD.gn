@@ -31,6 +31,8 @@ source_set("common") {
     "importer/brave_importer_utils.h",
     "importer/brave_ledger.cc",
     "importer/brave_ledger.h",
+    "importer/brave_referral.cc",
+    "importer/brave_referral.h",
     "importer/brave_stats.h",
     "importer/chrome_importer_utils.cc",
     "importer/chrome_importer_utils.h",
