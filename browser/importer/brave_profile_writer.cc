@@ -4,6 +4,7 @@
 
 #include "brave/browser/importer/brave_profile_writer.h"
 #include "brave/common/importer/brave_stats.h"
+#include "brave/common/importer/brave_referral.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
@@ -16,6 +17,7 @@
 #include "base/time/time.h"
 #include "base/task/post_task.h"
 
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
@@ -273,4 +275,44 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
   LOG(INFO) << "Wallet exists; fetching details...";
   rewards_service_->AddObserver(this);
   rewards_service_->FetchWalletProperties();
+}
+
+void BraveProfileWriter::UpdateReferral(const BraveReferral& referral) {
+  PrefService* local_state = g_browser_process->local_state();
+  if (!local_state) {
+    LOG(ERROR) << "Unable to get local_state! (needed to set referral info)";
+    return;
+  }
+
+  if (!referral.week_of_installation.empty()) {
+    LOG(INFO) << "Setting kWeekOfInstallation to "
+      << "\"" << referral.week_of_installation << "\"";
+    local_state->SetString(kWeekOfInstallation, referral.week_of_installation);
+  }
+
+  if (!referral.promo_code.empty() &&
+    referral.promo_code.compare("none") != 0) {
+    LOG(INFO) << "Setting kReferralPromoCode to "
+      << "\"" << referral.promo_code << "\"";
+    local_state->SetString(kReferralPromoCode, referral.promo_code);
+  } else {
+    local_state->ClearPref(kReferralPromoCode);
+  }
+
+  if (!referral.download_id.empty()) {
+    LOG(INFO) << "Setting kReferralDownloadID to "
+      << "\"" << referral.download_id << "\"";
+    local_state->SetString(kReferralDownloadID, referral.download_id);
+  } else {
+    local_state->ClearPref(kReferralDownloadID);
+  }
+
+  if (referral.finalize_timestamp > 0) {
+    LOG(INFO) << "Setting kReferralTimestamp to "
+      << "\"" << referral.finalize_timestamp << "\"";
+    local_state->SetTime(kReferralTimestamp,
+      base::Time::FromJsTime(referral.finalize_timestamp));
+  } else {
+    local_state->ClearPref(kReferralTimestamp);
+  }
 }

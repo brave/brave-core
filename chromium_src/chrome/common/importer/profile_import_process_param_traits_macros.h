@@ -1,6 +1,7 @@
 #include "../../../../../chrome/common/importer/profile_import_process_param_traits_macros.h"
 
 #include "brave/common/importer/brave_ledger.h"
+#include "brave/common/importer/brave_referral.h"
 #include "brave/common/importer/brave_stats.h"
 
 IPC_STRUCT_TRAITS_BEGIN(BraveStats)
@@ -36,4 +37,11 @@ IPC_STRUCT_TRAITS_BEGIN(BraveLedger)
   IPC_STRUCT_TRAITS_MEMBER(excluded_publishers)
   IPC_STRUCT_TRAITS_MEMBER(pinned_publishers)
   IPC_STRUCT_TRAITS_MEMBER(settings)
+IPC_STRUCT_TRAITS_END()
+
+IPC_STRUCT_TRAITS_BEGIN(BraveReferral)
+  IPC_STRUCT_TRAITS_MEMBER(promo_code)
+  IPC_STRUCT_TRAITS_MEMBER(download_id)
+  IPC_STRUCT_TRAITS_MEMBER(finalize_timestamp)
+  IPC_STRUCT_TRAITS_MEMBER(week_of_installation)
 IPC_STRUCT_TRAITS_END()

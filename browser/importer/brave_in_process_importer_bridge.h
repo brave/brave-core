@@ -27,6 +27,7 @@ class BraveInProcessImporterBridge : public InProcessImporterBridge {
       const std::vector<net::CanonicalCookie>& cookies) override;
   void UpdateStats(const BraveStats& stats) override;
   void UpdateLedger(const BraveLedger& ledger) override;
+  void UpdateReferral(const BraveReferral& referral) override;
 
   void FinishLedgerImport();
   void Cancel();
