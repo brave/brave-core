@@ -18,6 +18,8 @@ source_set("common") {
   sources = [
     "brave_switches.cc",
     "brave_switches.h",
+    "importer/brave_referral.cc",
+    "importer/brave_referral.h",
     "pref_names.cc",
     "pref_names.h",
     "webui_url_constants.cc",

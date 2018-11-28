@@ -36,4 +36,8 @@ void BraveInProcessImporterBridge::Cancel () {
   host_->Cancel();
 }
 
+void BraveInProcessImporterBridge::UpdateReferral(const BraveReferral& referral) {
+  writer_->UpdateReferral(referral);
+}
+
 BraveInProcessImporterBridge::~BraveInProcessImporterBridge() {}

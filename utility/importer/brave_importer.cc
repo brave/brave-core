@@ -17,6 +17,7 @@
 
 #include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_stats.h"
+#include "brave/common/importer/brave_referral.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/autofill/core/common/password_form.h"
@@ -65,6 +66,10 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
 
   // The order here is important!
   bridge_->NotifyStarted();
+
+  // NOTE: Referrals are always imported (not configurable by user)
+  // If referral data isn't found, those settings are then cleared.
+  ImportReferral();
 
   if ((items & importer::HISTORY) && !cancelled()) {
     bridge_->NotifyItemStarted(importer::HISTORY);
@@ -385,6 +390,15 @@ bool TryFindIntKey(const base::Value* dict, const std::string key,
   return false;
 }
 
+bool TryFindUInt64Key(const base::Value* dict, const std::string key, uint64_t& value_to_set) {
+  auto* value_read = dict->FindKeyOfType(key, base::Value::Type::DOUBLE);
+  if (value_read) {
+    value_to_set = (uint64_t)value_read->GetDouble();
+    return true;
+  }
+  return false;
+}
+
 bool ParsePaymentsPreferences(BraveLedger& ledger,
   const base::Value& session_store_json) {
   const base::Value* settings = session_store_json.FindKeyOfType(
@@ -597,4 +611,45 @@ void BraveImporter::ImportLedger() {
   }
 
   bridge_->UpdateLedger(ledger);
+}
+
+void BraveImporter::ImportReferral() {
+  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+      "session-store-1");
+  if (!session_store_json) {
+    return;
+  }
+
+  const base::Value* updates = session_store_json->FindKeyOfType(
+      "updates",
+      base::Value::Type::DICTIONARY);
+  if (!updates) {
+    LOG(ERROR) << "No entry \"updates\" found in session-store-1";
+    return;
+  }
+
+  BraveReferral referral;
+
+  // Read as many values as possible (defaulting to "" or 0)
+  // After 90 days, the `promoCode` field is erased (so it's not
+  // always there). `referralTimestamp` is only present after those
+  // 90 days elapse. Week of installation should always be present
+  // but if missing, it shouldn't cancel the import.
+  if (!TryFindStringKey(updates, "promoCode", referral.promo_code)) {
+    referral.promo_code = "";
+  }
+
+  if (!TryFindStringKey(updates, "referralDownloadId", referral.download_id)) {
+    referral.download_id = "";
+  }
+
+  if (!TryFindUInt64Key(updates, "referralTimestamp", referral.finalize_timestamp)) {
+    referral.finalize_timestamp = 0;
+  }
+
+  if (!TryFindStringKey(updates, "weekOfInstallation", referral.week_of_installation)) {
+    referral.week_of_installation = "";
+  }
+
+  bridge_->UpdateReferral(referral);
 }
