@@ -39,6 +39,20 @@
 
 #include <sstream>
 
+// BSC - this is a hack
+namespace ledger {
+struct PublisherInfo {
+std::string id;
+bool verified;
+int excluded;
+std::string name;
+std::string url;
+std::string provider;
+std::string favicon_url;
+int month;
+};
+}
+
 BraveProfileWriter::BraveProfileWriter(Profile* profile)
     : ProfileWriter(profile),
       task_runner_(base::CreateSequencedTaskRunnerWithTraits({
@@ -242,21 +256,20 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       pinned_item_count_++;
       sum_of_monthly_tips += amount_in_bat;
 
-      // Add `recurring_donation` entry
-      rewards_service->OnDonate(publisher.key, amount_in_bat, true);
-
       // Add publisher to `publisher_info`
-      // TODO: finish me in https://github.com/brave/brave-core/pull/926
-      // ledger::PublisherInfo publisher_info;
-      // publisher_info.id = publisher.key;
-      // publisher_info.verified = publisher.verified;
-      // publisher_info.excluded = 0;
-      // publisher_info.name = publisher.name;
-      // publisher_info.url = publisher.url;
-      // publisher_info.provider = publisher.provider;
-      // publisher_info.favicon_url = "";
-      // publisher_info.month = -1; // ledger::PUBLISHER_MONTH::ANY;
-      // rewards_service->SavePublisherInfo(publisher_info);
+      ledger::PublisherInfo publisher_info;
+      publisher_info.id = publisher.key;
+      publisher_info.verified = publisher.verified;
+      publisher_info.excluded = 0;
+      publisher_info.name = publisher.name;
+      publisher_info.url = publisher.url;
+      publisher_info.provider = publisher.provider;
+      publisher_info.favicon_url = "";
+      publisher_info.month = -1; // ledger::PUBLISHER_MONTH::ANY;
+
+      // Add `recurring_donation` entry
+      rewards_service->OnDonate(publisher.key, amount_in_bat, true,
+        &publisher_info);
     }
   }
 

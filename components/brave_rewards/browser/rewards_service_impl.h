@@ -174,7 +174,11 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnContentSiteUpdated();
   void OnPublisherListLoaded(ledger::LedgerCallbackHandler* handler,
                              const std::string& data);
-  void OnDonate(const std::string& publisher_key, int amount, bool recurring) override;
+
+  void OnDonate_PublisherInfoSaved(ledger::Result result,
+                                   std::unique_ptr<ledger::PublisherInfo> info);
+  void OnDonate(const std::string& publisher_key, int amount, bool recurring,
+      const ledger::PublisherInfo* publisher_info = NULL) override;
   void OnContributionInfoSaved(const ledger::PUBLISHER_CATEGORY category, bool success);
   void OnRecurringDonationSaved(bool success);
   void SaveRecurringDonation(const std::string& publisher_key, const int amount);

@@ -1412,18 +1412,31 @@ void RewardsServiceImpl::OnPublisherBanner(std::unique_ptr<ledger::PublisherBann
     observer.OnPublisherBanner(this, new_banner);
 }
 
-void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount, bool recurring) {
+void RewardsServiceImpl::OnDonate_PublisherInfoSaved(ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+}
+
+void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount,
+  bool recurring, const ledger::PublisherInfo* publisher_info) {
   if (recurring) {
+    // If caller provided publisher info, save it to `publisher_info` table
+    if (publisher_info) {
+      auto publisher_copy = std::make_unique<ledger::PublisherInfo>(
+        *publisher_info);
+      SavePublisherInfo(std::move(publisher_copy),
+        std::bind(&RewardsServiceImpl::OnDonate_PublisherInfoSaved, this, _1, _2));
+    }
+
     SaveRecurringDonation(publisher_key, amount);
     return;
   }
 
-  ledger::PublisherInfo publisher_info(
+  ledger::PublisherInfo publisher(
     publisher_key,
     ledger::PUBLISHER_MONTH::ANY,
     -1);
 
-  ledger_->DoDirectDonation(publisher_info, amount, "BAT");
+  ledger_->DoDirectDonation(publisher, amount, "BAT");
 }
 
 bool SaveContributionInfoOnFileTaskRunner(const brave_rewards::ContributionInfo info,
@@ -1700,12 +1713,11 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
 }
 
 bool RewardsServiceImpl::CheckImported() {
-//  PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
-//  const uint64_t pinned_item_count = prefs->GetUint64(kBravePaymentsPinnedItemCount);
-//  prefs->SetUint64(kBravePaymentsPinnedItemCount, 0);
-//
-//  return pinned_item_count > 0;
-  return true;
+  PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
+  const uint64_t pinned_item_count = prefs->GetUint64(kBravePaymentsPinnedItemCount);
+  prefs->SetUint64(kBravePaymentsPinnedItemCount, 0);
+
+  return pinned_item_count > 0;
 }
 
 }  // namespace brave_rewards
