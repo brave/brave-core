@@ -25,8 +25,8 @@ extension Preferences {
         let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
         
         /// Wrapper around BraveShared migrate, to automate prefix injection
-        func migrate<T>(key: String, to option: Preferences.Option<T>) {
-            self.migrate(keyPrefix: keyPrefix, key: key, to: option)
+        func migrate<T>(key: String, to option: Preferences.Option<T>, transform: ((T) -> T)? = nil) {
+            self.migrate(keyPrefix: keyPrefix, key: key, to: option, transform: transform)
         }
         
         // General
@@ -44,7 +44,17 @@ extension Preferences {
         migrate(key: "search.defaultprivate.name", to: Preferences.Search.defaultPrivateEngineName)
         
         // Privacy
-        migrate(key: "braveAcceptCookiesPref", to: Preferences.Privacy.cookieAcceptPolicy)
+        let legacyCookieMap: [HTTPCookie.AcceptPolicy] = [.onlyFromMainDocumentDomain, .never, .always]
+        migrate(key: "braveAcceptCookiesPref", to: Preferences.Privacy.cookieAcceptPolicy, transform: { value in
+            // The value stored in 1.6 is actually mapped differently (optionIds -> HTTPCookie.AcceptPolicy) rather
+            // than just use the rawValue of said AcceptPolicy like in 1.7. The mapping is shown in `legacyCookieMap`
+            if value < legacyCookieMap.count {
+                return legacyCookieMap[Int(value)].rawValue
+            }
+            // If for some odd reason we have malformed data, just set the default value
+            return Preferences.Privacy.cookieAcceptPolicy.defaultValue
+        })
+        
         migrate(key: "privateBrowsingAlwaysOn", to: Preferences.Privacy.privateBrowsingOnly)
         migrate(key: "clearprivatedata.toggles", to: Preferences.Privacy.clearPrivateDataToggles)
         

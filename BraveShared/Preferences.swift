@@ -99,7 +99,7 @@ extension Preferences {
         /// The key used for getting/setting the value in `UserDefaults`
         public let key: String
         /// The default value of this preference
-        private let defaultValue: ValueType
+        public let defaultValue: ValueType
         /// Reset's the preference to its original default value
         public func reset() {
             value = defaultValue
@@ -129,7 +129,7 @@ extension Dictionary: UserDefaultsEncodable where Key: StringProtocol, Value: Us
 
 extension Preferences {
     /// Migrate a given key from `Prefs` into a specific option
-    public class func migrate<T>(keyPrefix: String, key: String, to option: Preferences.Option<T>) {
+    public class func migrate<T>(keyPrefix: String, key: String, to option: Preferences.Option<T>, transform: ((T) -> T)? = nil) {
         let userDefaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)
 
         let profileKey = "\(keyPrefix)\(key)"
@@ -137,7 +137,11 @@ extension Preferences {
         // as casting to T if T is Optional even if the key doesnt exist.
         let value = userDefaults?.object(forKey: profileKey)
         if value != nil, let value = value as? T {
-            option.value = value
+            if let transform = transform {
+                option.value = transform(value)
+            } else {
+                option.value = value
+            }
             userDefaults?.removeObject(forKey: profileKey)
         } else {
             Logger.browserLogger.info("Could not migrate legacy pref with key: \"\(profileKey)\".")
