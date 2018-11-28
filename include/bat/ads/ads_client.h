@@ -44,15 +44,15 @@ class ADS_EXPORT LogStream {
   virtual std::ostream& stream() = 0;
 };
 
-using OnSaveCallback = std::function<void(Result)>;
-using OnLoadCallback = std::function<void(Result, const std::string&)>;
+using OnSaveCallback = std::function<void(const Result)>;
+using OnLoadCallback = std::function<void(const Result, const std::string&)>;
 
-using OnResetCallback = std::function<void(Result)>;
+using OnResetCallback = std::function<void(const Result)>;
 
-using OnGetAdsCallback = std::function<void(Result,
+using OnGetAdsCallback = std::function<void(const Result,
   const std::string&, const std::string&, const std::vector<AdInfo>&)>;
 
-using OnLoadSampleBundleCallback = std::function<void(Result,
+using OnLoadSampleBundleCallback = std::function<void(const Result,
   const std::string&)>;
 
 using URLRequestCallback = std::function<void(const int, const std::string&,
