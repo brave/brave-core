@@ -13,6 +13,7 @@
 #include "url/gurl.h"
 
 class BraveStatsUpdaterBrowserTest;
+class PrefChangeRegistrar;
 class PrefRegistrySimple;
 class PrefService;
 
@@ -41,7 +42,8 @@ class BraveStatsUpdater {
   void Start();
   void Stop();
 
-  using StatsUpdatedCallback = base::RepeatingCallback<void()>;
+  using StatsUpdatedCallback =
+      base::RepeatingCallback<void(const std::string& url)>;
 
   void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
 
@@ -51,8 +53,17 @@ class BraveStatsUpdater {
       std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
       scoped_refptr<net::HttpResponseHeaders> headers);
 
-  // Invoked when server ping timer fires.
-  void OnServerPingTimerFired();
+  // Invoked when server ping startup timer fires.
+  void OnServerPingStartupTimerFired();
+
+  // Invoked when server ping periodic timer fires.
+  void OnServerPingPeriodicTimerFired();
+
+  // Invoked when the specified referral preference changes.
+  void OnReferralCheckedForPromoCodeFileChanged();
+
+  void StartServerPingStartupTimer();
+  void SendServerPing();
 
   friend class ::BraveStatsUpdaterBrowserTest;
   static void SetBaseUpdateURLForTest(const GURL& base_update_url);
@@ -63,6 +74,7 @@ class BraveStatsUpdater {
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdater);
 };
