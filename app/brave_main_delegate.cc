@@ -22,6 +22,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/unified_consent/feature.h"
 #include "components/viz/common/features.h"
 #include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
@@ -135,7 +136,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     << "," << features::kDefaultEnableOopRasterization.name
     << "," << features::kVizDisplayCompositor.name
     << "," << autofill::features::kAutofillSaveCardSignInAfterLocalSave.name
-    << "," << autofill::features::kAutofillServerCommunication.name;
+    << "," << autofill::features::kAutofillServerCommunication.name
+    << "," << unified_consent::kUnifiedConsent.name;
 
   command_line.AppendSwitchASCII(switches::kEnableFeatures,
       enabled_features.str());
