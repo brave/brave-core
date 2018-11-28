@@ -110,7 +110,7 @@ bool BraveContentBrowserClient::AllowAccessCookie(const GURL& url, const GURL& f
     content::ResourceContext* context, int render_process_id, int render_frame_id) {
   GURL tab_origin =
       BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
-          render_process_id, render_frame_id).GetOrigin();
+          render_process_id, render_frame_id, -1).GetOrigin();
   ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
   bool allow_brave_shields =
       brave_shields::IsAllowContentSettingWithIOData(

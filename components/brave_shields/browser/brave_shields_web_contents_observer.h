@@ -35,7 +35,9 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
       std::string subresource,
       int render_process_id,
       int render_frame_id, int frame_tree_node_id);
-  static GURL GetTabURLFromRenderFrameInfo(int render_process_id, int render_frame_id);
+  static GURL GetTabURLFromRenderFrameInfo(int render_process_id,
+                                           int render_frame_id,
+                                           int render_frame_tree_node_id);
   void AllowScriptsOnce(const std::vector<std::string>& origins,
                         content::WebContents* web_contents);
 
@@ -62,6 +64,8 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
                               content::RenderFrameHost* new_host) override;
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   // Invoked if an IPC message is coming from a specific RenderFrameHost.
   bool OnMessageReceived(const IPC::Message& message,
@@ -73,10 +77,12 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
       content::RenderFrameHost* render_frame_host,
       const base::string16& details);
 
-  static std::map<RenderFrameIdKey, GURL> render_frame_key_to_tab_url;
-  // This lock protects |frame_data_map_| from being concurrently written on the
-  // UI thread and read on the IO thread.
+  // TODO(iefremov): Refactor this away or at least put into base::NoDestructor.
+  // Protects global maps below from being concurrently written on the UI thread
+  // and read on the IO thread.
   static base::Lock frame_data_map_lock_;
+  static std::map<RenderFrameIdKey, GURL> frame_key_to_tab_url_;
+  static std::map<int, GURL> frame_tree_node_id_to_tab_url_;
 
   private:
     friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
