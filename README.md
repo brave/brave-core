@@ -13,10 +13,16 @@
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
 ```
 
-#### Install cmake
+#### Install cmake (3.12 or above required)
 
 ```
 brew install cmake
+```
+
+or
+
+```
+brew upgrade cmake
 ```
 
 #### Create build folder
@@ -27,38 +33,39 @@ mkdir build
 
 #### Generate Makefile
 
-Which should be called for any project changes, i.e. adding new files
+You must be in the `build` directory of BAT Native Ads before running the
+following commands. If any project changes are made the `Makefile` may need to
+be re-generated
 
 ```
-cd build
-
 cmake ..
 ```
 
 #### Build executable
 
-```
-cd build
+You must be in the `build` directory of BAT Native Ads before running the
+following commands
 
+```
 make
 ```
 
 #### Debugging
 
-You can attach a debugger to the `batnativeads` executable which can be found in the `build` folder
+You can attach a debugger to the `batnativeads` executable which can be
+found in the `build` folder
 
 #### Isolated Google Tests
 
-```
-cd build
+You must be in the `build` directory of BAT Native Ads before running the
+following commands
 
+```
 make test
 ```
 
 You can also add the `ARGS="-V"` command line argument for verbose output
 
 ```
-cd build
-
 make test ARGS="-V"
 ```
