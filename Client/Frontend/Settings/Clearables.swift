@@ -127,7 +127,7 @@ class CacheClearable: Clearable {
             URLCache.shared.removeAllCachedResponses()
             
             var err: Error?
-            for item in ["Caches", "Preferences", "Cookies", "WebKit"] {
+            for item in ["Caches", "Cookies", "WebKit"] {
                 do {
                     try deleteLibraryFolderContents(item, validateClearedExceptFor: ["Snapshots"])
                 } catch {
