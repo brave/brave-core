@@ -11,7 +11,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
-#include "brave/common/url_util.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -99,12 +98,7 @@ void OnBeforeURLRequestAdBlockTPOnTaskRunner(std::shared_ptr<BraveRequestInfo> c
   }
   DCHECK(ctx->request_identifier != 0);
 
-  // For PDFJS we don't want to treat 2 different URLs as 3p for the main pdf
-  // load which is meant to be top level
-  // chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/https://developer.att.com/.../file.pdf
-  // https://developer.att.com/.../file.pdf
-  // So if the tab origin is chrome-extension, set it to that of the PDF only for PDFJS
-  std::string tab_host = brave::GetURLOrPDFURL(ctx->tab_url).host();
+  std::string tab_host = ctx->tab_origin.host();
   if (!g_brave_browser_process->tracking_protection_service()->
       ShouldStartRequest(ctx->request_url, ctx->resource_type, tab_host)) {
     ctx->new_url_spec = GetBlankDataURLForResourceType(ctx->resource_type).spec();

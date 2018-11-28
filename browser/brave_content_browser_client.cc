@@ -99,9 +99,11 @@ bool BraveContentBrowserClient::AllowAccessCookie(const GURL& url, const GURL& f
       BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
           render_process_id, render_frame_id).GetOrigin();
   ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
-  bool allow_brave_shields = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
+  bool allow_brave_shields =
+      brave_shields::IsAllowContentSettingWithIOData(
+          io_data, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kBraveShields) &&
+      !first_party.SchemeIs(kChromeExtensionScheme);
   bool allow_1p_cookies = brave_shields::IsAllowContentSettingWithIOData(
       io_data, tab_origin, GURL("https://firstParty/"),
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
