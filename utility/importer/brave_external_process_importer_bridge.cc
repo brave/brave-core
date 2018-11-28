@@ -44,6 +44,11 @@ void BraveExternalProcessImporterBridge::UpdateStats(
   (*observer_)->OnStatsImportReady(stats);
 }
 
+void BraveExternalProcessImporterBridge::UpdateLedger(
+    const BraveLedger& ledger) {
+  (*observer_)->OnLedgerImportReady(ledger);
+}
+
 BraveExternalProcessImporterBridge::BraveExternalProcessImporterBridge(
     const base::flat_map<uint32_t, std::string>& localized_strings,
     scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr> observer)

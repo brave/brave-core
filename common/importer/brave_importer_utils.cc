@@ -23,6 +23,8 @@ bool BraveImporterCanImport(const base::FilePath& profile,
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
   base::FilePath cookies =
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Cookies")));
+  base::FilePath ledger_state =
+    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("ledger-state.json")));
 
   if (base::PathExists(session_store))
     *services_supported |= importer::HISTORY | importer::FAVORITES | importer::STATS;
@@ -30,6 +32,8 @@ bool BraveImporterCanImport(const base::FilePath& profile,
     *services_supported |= importer::PASSWORDS;
   if (base::PathExists(cookies))
     *services_supported |= importer::COOKIES;
+  if (base::PathExists(ledger_state))
+    *services_supported |= importer::LEDGER;
 
   return *services_supported != importer::NONE;
 }

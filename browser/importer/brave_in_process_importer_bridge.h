@@ -11,6 +11,7 @@
 #include "brave/browser/importer/brave_profile_writer.h"
 #include "chrome/browser/importer/in_process_importer_bridge.h"
 #include "net/cookies/canonical_cookie.h"
+#include "brave/browser/importer/brave_external_process_importer_host.h"
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
@@ -25,6 +26,10 @@ class BraveInProcessImporterBridge : public InProcessImporterBridge {
   void SetCookies(
       const std::vector<net::CanonicalCookie>& cookies) override;
   void UpdateStats(const BraveStats& stats) override;
+  void UpdateLedger(const BraveLedger& ledger) override;
+
+  void FinishLedgerImport();
+  void Cancel();
 
  private:
   ~BraveInProcessImporterBridge() override;

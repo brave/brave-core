@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/settings_import_data_handler.cc b/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
-index 32deebd14fb3383010af01381af9b34442d19b6e..750216677fccfd62a36937cf020341c0b180732c 100644
+index 32deebd14fb3383010af01381af9b34442d19b6e..ad94e6f86baa371f8c0fd4a976cfac28e612969d 100644
 --- a/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
 +++ b/chrome/browser/ui/webui/settings/settings_import_data_handler.cc
 @@ -18,6 +18,8 @@
@@ -26,7 +26,7 @@ index 32deebd14fb3383010af01381af9b34442d19b6e..750216677fccfd62a36937cf020341c0
  
    importer::LogImporterUseToMetrics("ImportDataHandler",
                                      source_profile.importer_type);
-@@ -126,6 +128,10 @@ void ImportDataHandler::ImportData(const base::ListValue* args) {
+@@ -126,6 +128,12 @@ void ImportDataHandler::ImportData(const base::ListValue* args) {
      selected_items |= importer::PASSWORDS;
    if (prefs->GetBoolean(prefs::kImportDialogSearchEngine))
      selected_items |= importer::SEARCH_ENGINES;
@@ -34,10 +34,12 @@ index 32deebd14fb3383010af01381af9b34442d19b6e..750216677fccfd62a36937cf020341c0
 +    selected_items |= importer::COOKIES;
 +  if (prefs->GetBoolean(prefs::kImportDialogStats))
 +    selected_items |= importer::STATS;
++  if (prefs->GetBoolean(prefs::kImportDialogLedger))
++    selected_items |= importer::LEDGER;
  
    const importer::SourceProfile& source_profile =
        importer_list_->GetSourceProfileAt(browser_index);
-@@ -179,6 +185,10 @@ void ImportDataHandler::SendBrowserProfileData(const std::string& callback_id) {
+@@ -179,6 +187,12 @@ void ImportDataHandler::SendBrowserProfileData(const std::string& callback_id) {
      browser_profile->SetBoolean(
          "autofillFormData",
          (browser_services & importer::AUTOFILL_FORM_DATA) != 0);
@@ -45,6 +47,8 @@ index 32deebd14fb3383010af01381af9b34442d19b6e..750216677fccfd62a36937cf020341c0
 +        (browser_services & importer::COOKIES) != 0);
 +    browser_profile->SetBoolean("stats",
 +        (browser_services & importer::STATS) != 0);
++    browser_profile->SetBoolean("ledger",
++        (browser_services & importer::LEDGER) != 0);
  
      browser_profiles.Append(std::move(browser_profile));
    }

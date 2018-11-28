@@ -1,16 +1,17 @@
 diff --git a/chrome/common/importer/profile_import.typemap b/chrome/common/importer/profile_import.typemap
-index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..1c0b74b2fc728e07fb59adc5c0f5ed257900357c 100644
+index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..abd035b2d2a9db4dfb6834572404eb0a45d4b398 100644
 --- a/chrome/common/importer/profile_import.typemap
 +++ b/chrome/common/importer/profile_import.typemap
-@@ -4,6 +4,7 @@
+@@ -4,6 +4,8 @@
  
  mojom = "//chrome/common/importer/profile_import.mojom"
  public_headers = [
++  "//brave/common/importer/brave_ledger.h",
 +  "//brave/common/importer/brave_stats.h",
    "//chrome/common/importer/imported_bookmark_entry.h",
    "//chrome/common/importer/importer_autofill_form_data_entry.h",
    "//chrome/common/importer/importer_data_types.h",
-@@ -13,6 +14,7 @@ public_headers = [
+@@ -13,6 +15,7 @@ public_headers = [
  traits_headers =
      [ "//chrome/common/importer/profile_import_process_param_traits.h" ]
  deps = [
@@ -18,9 +19,10 @@ index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..1c0b74b2fc728e07fb59adc5c0f5ed25
    "//chrome/common",
    "//components/favicon_base",
    "//ipc",
-@@ -26,4 +28,5 @@ type_mappings = [
+@@ -26,4 +29,6 @@ type_mappings = [
    "chrome.mojom.SearchEngineInfo=::importer::SearchEngineInfo",
    "chrome.mojom.SourceProfile=::importer::SourceProfile",
    "chrome.mojom.ImportItem=::importer::ImportItem",
 +  "chrome.mojom.BraveStats=::BraveStats",
++  "chrome.mojom.BraveLedger=::BraveLedger",
  ]
