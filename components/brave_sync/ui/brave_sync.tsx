@@ -60,7 +60,7 @@ window.cr.define('sync_ui_exports', function () {
     getActions().onLogMessage(message)
   }
 
-  function syncSetupError(error: string) {
+  function syncSetupError (error: string) {
     alert('Sync setup error: ' + error)
   }
 
