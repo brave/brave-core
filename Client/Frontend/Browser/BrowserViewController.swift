@@ -125,12 +125,18 @@ class BrowserViewController: UIViewController {
     let downloadQueue = DownloadQueue()
     
     fileprivate var contentBlockListDeferred: Deferred<((), ())>?
+    
+    // Web filters
+    
+    let safeBrowsing: SafeBrowsing?
 
-    init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool) {
+    init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
+         safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
         self.profile = profile
         self.tabManager = tabManager
         self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
         self.crashedLastSession = crashedLastSession
+        self.safeBrowsing = safeBrowsingManager
         super.init(nibName: nil, bundle: nil)
         didInit()
     }

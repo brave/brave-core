@@ -84,6 +84,12 @@ extension BrowserViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
+        
+        if let safeBrowsing = safeBrowsing, safeBrowsing.shouldBlock(url) {
+            safeBrowsing.showMalwareWarningPage(forUrl: url, inWebView: webView)
+            decisionHandler(.cancel)
+            return
+        }
 
         // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
         // gives us the exact same behaviour as Safari.

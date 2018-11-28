@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		03CCC9181AF05E7300DBF30D /* RelativeDatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */; };
+		0A0D3D3921A4BD0600BEE65B /* SafeBrowsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D3D3821A4BD0600BEE65B /* SafeBrowsing.swift */; };
+		0A0D3D3C21A4BE6400BEE65B /* adblock-list.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A0D3D3B21A4BE6400BEE65B /* adblock-list.txt */; };
+		0A0D3D3E21A4BE6C00BEE65B /* simple_malware.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A0D3D3D21A4BE6C00BEE65B /* simple_malware.txt */; };
+		0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */ = {isa = PBXBuildFile; fileRef = 0A0D3D4821A5609500BEE65B /* SafeBrowsingError.html */; };
+		0A0D3D5221A565C300BEE65B /* SafeBrowsingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D3D5121A565C300BEE65B /* SafeBrowsingHandler.swift */; };
+		0A0D3D6121A596BE00BEE65B /* MalwareList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D3D6021A596BE00BEE65B /* MalwareList.swift */; };
+		0A4214E921A6EBCF006B8E39 /* SafeBrowsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */; };
 		0A1E842D21909CA70042F782 /* crypto.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E842C21909CA70042F782 /* crypto.js */; };
 		0A1E842F21909CBC0042F782 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E842E21909CBB0042F782 /* bundle.js */; };
 		0A1E843121909CC40042F782 /* fetch.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E843021909CC30042F782 /* fetch.js */; };
@@ -886,6 +893,12 @@
 
 /* Begin PBXFileReference section */
 		03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelativeDatesTests.swift; sourceTree = "<group>"; };
+		0A0D3D3821A4BD0600BEE65B /* SafeBrowsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsing.swift; sourceTree = "<group>"; };
+		0A0D3D3B21A4BE6400BEE65B /* adblock-list.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "adblock-list.txt"; sourceTree = "<group>"; };
+		0A0D3D3D21A4BE6C00BEE65B /* simple_malware.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = simple_malware.txt; sourceTree = "<group>"; };
+		0A0D3D4821A5609500BEE65B /* SafeBrowsingError.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = SafeBrowsingError.html; sourceTree = "<group>"; };
+		0A0D3D5121A565C300BEE65B /* SafeBrowsingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsingHandler.swift; sourceTree = "<group>"; };
+		0A0D3D6021A596BE00BEE65B /* MalwareList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MalwareList.swift; sourceTree = "<group>"; };
 		0A1E841B219095410042F782 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0A1E842C21909CA70042F782 /* crypto.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = crypto.js; path = "node_modules/brave-sync/node_modules/brave-crypto/browser/crypto.js"; sourceTree = SOURCE_ROOT; };
 		0A1E842E21909CBB0042F782 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bundle.js; path = "node_modules/brave-sync/bundles/bundle.js"; sourceTree = SOURCE_ROOT; };
@@ -902,6 +915,7 @@
 		0A1E843C2190A57F0042F782 /* SyncAddDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncAddDeviceViewController.swift; sourceTree = "<group>"; };
 		0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDProtocolsTests.swift; sourceTree = "<group>"; };
 		0A39D56C21930B89008B2772 /* ScriptOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptOpener.swift; sourceTree = "<group>"; };
+		0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsingTests.swift; sourceTree = "<group>"; };
 		0A4B011F20D02EC4004D4011 /* TabsBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsBarViewController.swift; sourceTree = "<group>"; };
 		0A4B012120D02F26004D4011 /* TabBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCell.swift; sourceTree = "<group>"; };
 		0A4B012320D0321A004D4011 /* UX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UX.swift; sourceTree = "<group>"; };
@@ -1688,6 +1702,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+0A0D3D2F21A4BC1F00BEE65B /* WebFilters */ = {
+			isa = PBXGroup;
+			children = (
+				0A0D3D3721A4BCF100BEE65B /* SafeBrowsing */,
+			);
+			path = WebFilters;
+			sourceTree = "<group>";
+		};
+		0A0D3D3721A4BCF100BEE65B /* SafeBrowsing */ = {
+			isa = PBXGroup;
+			children = (
+				0A0D3D3A21A4BD1000BEE65B /* Lists */,
+				0A0D3D3821A4BD0600BEE65B /* SafeBrowsing.swift */,
+				0A0D3D5121A565C300BEE65B /* SafeBrowsingHandler.swift */,
+				0A0D3D4821A5609500BEE65B /* SafeBrowsingError.html */,
+			);
+			path = SafeBrowsing;
+			sourceTree = "<group>";
+		};
+		0A0D3D3A21A4BD1000BEE65B /* Lists */ = {
+			isa = PBXGroup;
+			children = (
+				0A0D3D6021A596BE00BEE65B /* MalwareList.swift */,
+				0A0D3D3B21A4BE6400BEE65B /* adblock-list.txt */,
+				0A0D3D3D21A4BE6C00BEE65B /* simple_malware.txt */,
+			);
+			path = Lists;
+			sourceTree = "<group>";
+		};
 		0A1E8413219094100042F782 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
@@ -2913,6 +2956,7 @@
 				28EADE5C1AFC3A6D007FB2FB /* Extensions */,
 				F84B21F11A0910F600AAB793 /* Frontend */,
 				39A359BD1BFCCE7B006B9E87 /* Helpers */,
+				0A0D3D2F21A4BC1F00BEE65B /* WebFilters */,
 				E65075551E37F714006961AC /* Utils */,
 				74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */,
 			);
@@ -2945,6 +2989,7 @@
 				39236E711FCC600200A38F1B /* TabEventHandlerTests.swift */,
 				D8EFFA251FF702A8001D3A09 /* NavigationRouterTests.swift */,
 				2795274921A890EB00921AA1 /* FingerprintingProtectionTests.swift */,
+				0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -3785,8 +3830,10 @@
 				3BC659491E5BA4AE006D560F /* TopSites in Resources */,
 				E4B7B77E1A793CF20022C5E0 /* FiraSans-SemiBold.ttf in Resources */,
 				F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */,
+				0A0D3D3C21A4BE6400BEE65B /* adblock-list.txt in Resources */,
 				27658272217130D900754B2F /* GlobalSign_r3.cer in Resources */,
 				5DE5250F218CE92C000DFAA6 /* upgrade-http.json in Resources */,
+				0A0D3D3E21A4BE6C00BEE65B /* simple_malware.txt in Resources */,
 				5DE5250D218CE92C000DFAA6 /* block-ads.json in Resources */,
 				F35B8D2B1D6380EA008E3D61 /* SessionRestore.html in Resources */,
 				3BC659591E5BA505006D560F /* top_sites.json in Resources */,
@@ -3807,6 +3854,7 @@
 				E4B7B77D1A793CF20022C5E0 /* FiraSans-Regular.ttf in Resources */,
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
+				0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */,
 				74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */,
 				FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */,
 				D308EE561CBF0BF5006843F2 /* CertError.css in Resources */,
@@ -4292,6 +4340,7 @@
 				C817B34D1FC609500086018E /* UIScrollViewSwizzled.swift in Sources */,
 				39F819C61FD70F5D009E31E4 /* TabEventHandlers.swift in Sources */,
 				E65607611C08B4E200534B02 /* SearchInputView.swift in Sources */,
+				0A0D3D6121A596BE00BEE65B /* MalwareList.swift in Sources */,
 				EB2A63341F3B49A7004EF8B0 /* ContentBlockerHelper.swift in Sources */,
 				FA6B2AC21D41F02D00429414 /* Punycode.swift in Sources */,
 				D301AAEE1A3A55B70078DD1D /* TabTrayController.swift in Sources */,
@@ -4320,6 +4369,7 @@
 				E4CD9F2D1A6DC91200318571 /* TabLocationView.swift in Sources */,
 				0BB5B2881AC0A2B90052877D /* SnackBar.swift in Sources */,
 				7BEFC6801BFF68C30059C952 /* QuickActions.swift in Sources */,
+				0A0D3D5221A565C300BEE65B /* SafeBrowsingHandler.swift in Sources */,
 				D0C95E36200FDC5500E4E51C /* MetadataParserHelper.swift in Sources */,
 				A1CDF22D20BDDB66005C6E58 /* BasicAnimationController.swift in Sources */,
 				0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */,
@@ -4363,6 +4413,7 @@
 				E65075521E37F6D1006961AC /* UIViewExtensions.swift in Sources */,
 				C8F457A81F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift in Sources */,
 				E6927EC01C7B6FB800D03F75 /* ErrorToast.swift in Sources */,
+				0A0D3D3921A4BD0600BEE65B /* SafeBrowsing.swift in Sources */,
 				F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */,
 				C6B81B81212D6C1100996084 /* NoPrivacyProtection.swift in Sources */,
 				D8C75DF3207584C400BB8AD0 /* UIImageViewAligned.m in Sources */,
@@ -4488,6 +4539,7 @@
 				A83E5B1E1C1DAAAA0026D912 /* UIPasteboardExtensions.swift in Sources */,
 				2795274A21A890EB00921AA1 /* FingerprintingProtectionTests.swift in Sources */,
 				0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */,
+				0A4214E921A6EBCF006B8E39 /* SafeBrowsingTests.swift in Sources */,
 				7BBFEE741BB405D900A305AA /* TabManagerTests.swift in Sources */,
 				39236E721FCC600200A38F1B /* TabEventHandlerTests.swift in Sources */,
 				2F13E79B1AC0C02700D75081 /* StringExtensionsTests.swift in Sources */,

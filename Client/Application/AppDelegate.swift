@@ -355,6 +355,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         let server = WebServer.sharedInstance
         ReaderModeHandlers.register(server, profile: profile)
         ErrorPageHelper.register(server, certStore: profile.certStore)
+        SafeBrowsingHandler.register(server)
         AboutHomeHandler.register(server)
         AboutLicenseHandler.register(server)
         SessionRestoreHandler.register(server)
