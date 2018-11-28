@@ -211,11 +211,11 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       pinned_item_count_++;
       sum_of_monthly_tips += amount_in_bat;
 
-      // Add `recurring` donation entry
+      // Add `recurring_donation` entry
       rewards_service->OnDonate(publisher.key, amount_in_bat, true);
 
       // Add publisher to `publisher_info`
-      // TODO: finish me
+      // TODO: finish me in https://github.com/brave/brave-core/pull/926
       // ledger::PublisherInfo publisher_info;
       // publisher_info.id = publisher.key;
       // publisher_info.verified = publisher.verified;
@@ -224,7 +224,7 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       // publisher_info.url = publisher.url;
       // publisher_info.provider = publisher.provider;
       // publisher_info.favicon_url = "";
-      // publisher_info.month = ledger::PUBLISHER_MONTH::ANY;
+      // publisher_info.month = -1; // ledger::PUBLISHER_MONTH::ANY;
       // rewards_service->SavePublisherInfo(publisher_info);
     }
   }
@@ -248,7 +248,6 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       new_contribution_amount_ = minimum_monthly_contribution;
     }
   }
-  rewards_service->SetUserChangedContribution();
   rewards_service->SetContributionAmount(new_contribution_amount_);
   rewards_service->SetAutoContribute(auto_contribute_enabled);
 }
