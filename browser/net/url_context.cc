@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "content/public/browser/resource_request_info.h"
@@ -23,7 +24,6 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   ctx->request_identifier = request->identifier();
   ctx->request_url = request->url();
-  ctx->tab_url = request->site_for_cookies();
   ctx->tab_origin = request->site_for_cookies().GetOrigin();
   auto* request_info = content::ResourceRequestInfo::ForRequest(request);
   if (request_info) {
@@ -33,7 +33,8 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
       &ctx->frame_tree_node_id);
   ctx->allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
+      brave_shields::kBraveShields) &&
+    !request->site_for_cookies().SchemeIs(kChromeExtensionScheme);
   ctx->allow_ads = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kAds);

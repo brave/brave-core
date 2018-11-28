@@ -51,8 +51,6 @@ source_set("common") {
       "shield_exceptions.h",
       "url_constants.cc",
       "url_constants.h",
-      "url_util.cc",
-      "url_util.h",
     ]
 
     public_deps = [

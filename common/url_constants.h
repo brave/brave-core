@@ -5,6 +5,7 @@
 #ifndef BRAVE_COMMON_URL_CONSTANTS_H_
 #define BRAVE_COMMON_URL_CONSTANTS_H_
 
+extern const char kChromeExtensionScheme[];
 extern const char kBraveUIScheme[];
 extern const char kMagnetScheme[];
 extern const char kWidevineMoreInfoURL[];

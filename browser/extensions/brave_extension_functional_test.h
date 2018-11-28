@@ -10,8 +10,8 @@ namespace extensions {
 
 class ExtensionFunctionalTest : public ExtensionBrowserTest {
  public:
-  void InstallExtensionSilently(ExtensionService* service,
-                                const base::FilePath& path);
+  const Extension* InstallExtensionSilently(ExtensionService* service,
+                                            const base::FilePath& path);
   void SetUp() override;
   void InitEmbeddedTestServer();
   void GetTestDataDir(base::FilePath* test_data_dir);

@@ -10,6 +10,7 @@
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/common/url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -28,6 +29,9 @@ bool ApplyPotentialReferrerBlock(net::URLRequest* request) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   GURL target_origin = GURL(request->url()).GetOrigin();
   GURL tab_origin = request->site_for_cookies().GetOrigin();
+  if (tab_origin.SchemeIs(kChromeExtensionScheme)) {
+    return false;
+  }
   bool allow_referrers = brave_shields::IsAllowContentSettingFromIO(
       request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);
