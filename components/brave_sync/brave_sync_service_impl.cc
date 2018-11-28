@@ -21,6 +21,7 @@
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "content/public/browser/network_service_instance.h"
 
 namespace brave_sync {
 
@@ -84,6 +85,7 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
         sync_prefs_.get())),
     timer_(std::make_unique<base::RepeatingTimer>()),
     unsynced_send_interval_(base::TimeDelta::FromMinutes(10)) {
+  content::GetNetworkConnectionTracker()->AddNetworkConnectionObserver(this);
 
   // Moniter syncs prefs required in GetSettingsAndDevices
   profile_pref_change_registrar_.Init(profile->GetPrefs());
@@ -118,10 +120,22 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(Profile* profile) :
   }
 }
 
-BraveSyncServiceImpl::~BraveSyncServiceImpl() {}
+BraveSyncServiceImpl::~BraveSyncServiceImpl() {
+  content::GetNetworkConnectionTracker()->RemoveNetworkConnectionObserver(this);
+}
 
 BraveSyncClient* BraveSyncServiceImpl::GetSyncClient() {
   return sync_client_.get();
+}
+
+void BraveSyncServiceImpl::OnConnectionChanged(
+    network::mojom::ConnectionType type) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (type == network::mojom::ConnectionType::CONNECTION_NONE) {
+    if (initializing_) {
+      OnSyncSetupError("network connection is currently unavailable");
+    }
+  }
 }
 
 bool BraveSyncServiceImpl::IsSyncConfigured() {
@@ -142,6 +156,11 @@ void BraveSyncServiceImpl::Shutdown() {
 void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (content::GetNetworkConnectionTracker()->IsOffline()) {
+    OnSyncSetupError("network connection is currently unavailable");
+    return;
+  }
+
   if (sync_words.empty() || device_name.empty()) {
     OnSyncSetupError("missing sync words or device name");
     return;
@@ -167,6 +186,11 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
 void BraveSyncServiceImpl::OnSetupSyncNewToSync(
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (content::GetNetworkConnectionTracker()->IsOffline()) {
+    OnSyncSetupError("network connection is currently unavailable");
+    return;
+  }
+
   if (device_name.empty()) {
     OnSyncSetupError("missing device name");
     return;
@@ -287,9 +311,9 @@ void BraveSyncServiceImpl::OnSyncDebug(const std::string& message) {
 }
 
 void BraveSyncServiceImpl::OnSyncSetupError(const std::string& error) {
-  initializing_ = false;
-  if (!sync_initialized_) {
+  if (initializing_) {
     sync_prefs_->Clear();
+    initializing_ = false;
   }
   NotifySyncSetupError(error);
 }
