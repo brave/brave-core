@@ -24,9 +24,7 @@
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/network_service_instance.h"
 #include "content/public/test/test_browser_thread_bundle.h"
-#include "services/network/test/test_network_connection_tracker.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -91,8 +89,6 @@
 using testing::_;
 using testing::AtLeast;
 using namespace brave_sync;
-using network::TestNetworkConnectionTracker;
-using network::mojom::ConnectionType;
 
 class MockBraveSyncServiceObserver : public BraveSyncServiceObserver {
  public:
@@ -103,9 +99,7 @@ class MockBraveSyncServiceObserver : public BraveSyncServiceObserver {
   MOCK_METHOD2(OnHaveSyncWords, void(BraveSyncService*, const std::string&));
 };
 
-class BraveSyncServiceTest
-    : public testing::Test,
-      public network::NetworkConnectionTracker::NetworkConnectionObserver {
+class BraveSyncServiceTest : public testing::Test {
  public:
   BraveSyncServiceTest() {}
   ~BraveSyncServiceTest() override {}
@@ -136,23 +130,12 @@ class BraveSyncServiceTest
     observer_.reset(new MockBraveSyncServiceObserver);
     sync_service_->AddObserver(observer_.get());
     EXPECT_TRUE(sync_service_ != NULL);
-
-    // TestNetworkConnectionTracker::CreateInstance has been called in
-    // TestingBrowserProcess
-    TestNetworkConnectionTracker* tracker =
-      TestNetworkConnectionTracker::GetInstance();
-    tracker->SetConnectionType(ConnectionType::CONNECTION_UNKNOWN);
   }
 
   void TearDown() override {
     sync_service_->RemoveObserver(observer_.get());
     // this will also trigger a shutdown of the brave sync service
     profile_.reset();
-  }
-
-  // network::NetworkConnectionTracker::NetworkConnectionObserver:
-  void OnConnectionChanged(ConnectionType type) override {
-    wait_for_network_type_change_.QuitWhenIdle();
   }
 
   void BookmarkAddedImpl();
@@ -174,8 +157,6 @@ class BraveSyncServiceTest
   std::unique_ptr<MockBraveSyncServiceObserver> observer_;
 
   base::ScopedTempDir temp_dir_;
- public:
-  base::RunLoop wait_for_network_type_change_;
 };
 
 TEST_F(BraveSyncServiceTest, SetSyncEnabled) {
@@ -265,18 +246,6 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode) {
        brave_sync::prefs::kSyncEnabled));
 }
 
-TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Offline) {
-  TestNetworkConnectionTracker* tracker =
-    TestNetworkConnectionTracker::GetInstance();
-  tracker->SetConnectionType(ConnectionType::CONNECTION_NONE);
-  EXPECT_CALL(*observer(), OnSyncSetupError(sync_service(), _));
-  sync_service()->OnSetupSyncHaveCode("word1 word2 word3", "test_device");
-  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
-       brave_sync::prefs::kSyncEnabled));
-  // Restore network connection
-  tracker->SetConnectionType(ConnectionType::CONNECTION_UNKNOWN);
-}
-
 TEST_F(BraveSyncServiceTest, OnSetupSyncNewToSync) {
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
   // Expecting sync state changed twice: for enabled state and for device name
@@ -284,33 +253,6 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncNewToSync) {
   sync_service()->OnSetupSyncNewToSync("test_device");
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
        brave_sync::prefs::kSyncEnabled));
-}
-
-TEST_F(BraveSyncServiceTest, OnSetupSyncNewToSync_Offline) {
-  TestNetworkConnectionTracker* tracker =
-    TestNetworkConnectionTracker::GetInstance();
-  tracker->SetConnectionType(ConnectionType::CONNECTION_NONE);
-  EXPECT_CALL(*observer(), OnSyncSetupError(sync_service(), _));
-  sync_service()->OnSetupSyncNewToSync("test_device");
-  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
-       brave_sync::prefs::kSyncEnabled));
-  // Restore network connection
-  tracker->SetConnectionType(ConnectionType::CONNECTION_UNKNOWN);
-}
-
-TEST_F(BraveSyncServiceTest, OnConnectionChanged_After_OnSetupSyncNewToSync) {
-  content::GetNetworkConnectionTracker()->AddNetworkConnectionObserver(this);
-  TestNetworkConnectionTracker* tracker =
-    TestNetworkConnectionTracker::GetInstance();
-  EXPECT_CALL(*observer(), OnSyncSetupError(sync_service(), _));
-  sync_service()->OnSetupSyncNewToSync("test_device");
-  tracker->SetConnectionType(ConnectionType::CONNECTION_NONE);
-  wait_for_network_type_change_.Run();
-  content::GetNetworkConnectionTracker()->RemoveNetworkConnectionObserver(this);
-  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
-       brave_sync::prefs::kSyncEnabled));
-  // Restore network connection
-  tracker->SetConnectionType(ConnectionType::CONNECTION_UNKNOWN);
 }
 
 TEST_F(BraveSyncServiceTest, GetSettingsAndDevices) {

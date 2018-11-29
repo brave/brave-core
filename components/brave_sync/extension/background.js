@@ -231,7 +231,6 @@ class InjectedObject {
         break;
       case "sync-setup-error":
         console.log(`"sync-setup-error" error=${JSON.stringify(arg1)}`);
-        // TODO(cezaraugusto): ERR_SYNC_INIT_FAILED without arg in #971
         chrome.braveSync.syncSetupError(arg1/*error*/);
         break;
       case "sync-debug":
