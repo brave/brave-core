@@ -121,6 +121,8 @@ class RewardsServiceImpl : public RewardsService,
   RewardsNotificationService* GetNotificationService() const override;
 
   static void HandleFlags(const std::string& options);
+  void OnWalletProperties(ledger::Result result,
+                          std::unique_ptr<ledger::WalletInfo> info) override;
 
  private:
   friend void RunIOTaskCallback(
@@ -185,8 +187,6 @@ class RewardsServiceImpl : public RewardsService,
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
-  void OnWalletProperties(ledger::Result result,
-                          std::unique_ptr<ledger::WalletInfo> info) override;
   void OnGrant(ledger::Result result, const ledger::Grant& grant) override;
   void OnGrantCaptcha(const std::string& image, const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,
