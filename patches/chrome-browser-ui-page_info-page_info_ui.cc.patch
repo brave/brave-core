@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_info/page_info_ui.cc b/chrome/browser/ui/page_info/page_info_ui.cc
-index 1b7476a6d578eb41a476efaa94da1c781c7a9227..21fc079ef3b6fde8ceb83ed522929eb660cfe15c 100644
+index 8d491897e314e959a1f19999a3d39d7c27ca5d80..71e968adb5dcd1d61472a873cb2814d2d54ab3e8 100644
 --- a/chrome/browser/ui/page_info/page_info_ui.cc
 +++ b/chrome/browser/ui/page_info/page_info_ui.cc
 @@ -28,6 +28,7 @@
