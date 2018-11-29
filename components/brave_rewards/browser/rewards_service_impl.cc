@@ -951,7 +951,7 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     }
 
     // webui
-    observer.OnWalletProperties(this, error_code, wallet_properties.get());
+    observer.OnWalletProperties(this, error_code, std::move(wallet_properties));
   }
 }
 
@@ -1561,12 +1561,9 @@ void RewardsServiceImpl::TriggerOnGetPublisherActivityFromUrl(
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info,
     uint64_t windowId) {
-  if (!info) {
-    info.reset(new ledger::PublisherInfo());
-    info->id = "";
-  }
-  for (auto& observer : observers_)
-    observer.OnGetPublisherActivityFromUrl(this, result, info.get(), windowId);
+  for (auto& observer : private_observers_)
+    observer.OnGetPublisherActivityFromUrl(this, result, std::move(info),
+                                           windowId);
 }
 
 void RewardsServiceImpl::SetContributionAutoInclude(std::string publisher_key,

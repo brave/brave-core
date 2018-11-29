@@ -8,7 +8,6 @@
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_donate_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
@@ -49,10 +48,9 @@ private:
   void GetRecurringDonations(const base::ListValue* args);
 
   // RewardsServiceObserver implementation
-  void OnWalletProperties(
-      brave_rewards::RewardsService* rewards_service,
+  void OnWalletProperties(brave_rewards::RewardsService* rewards_service,
       int error_code,
-      brave_rewards::WalletProperties* wallet_properties) override;
+      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) override;
   void OnRecurringDonationUpdated(brave_rewards::RewardsService* rewards_service,
                                   brave_rewards::ContentSiteList) override;
   void OnPublisherBanner(brave_rewards::RewardsService* rewards_service,
@@ -107,7 +105,7 @@ void RewardsDonateDOMHandler::GetWalletProperties(const base::ListValue* args) {
 void RewardsDonateDOMHandler::OnWalletProperties(
     brave_rewards::RewardsService* rewards_service,
     int error_code,
-    brave_rewards::WalletProperties* wallet_properties) {
+    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
 
   if (!web_ui()->CanCallJavascript()) {
     return;

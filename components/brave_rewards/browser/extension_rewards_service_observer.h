@@ -26,18 +26,19 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   // RewardsServiceObserver implementation
   void OnWalletInitialized(RewardsService* rewards_service,
                            int error_code) override;
-  void OnWalletProperties(
-      RewardsService* rewards_service,
-      int error_code,
-      brave_rewards::WalletProperties* wallet_properties) override;
-  void OnGetPublisherActivityFromUrl(RewardsService* rewards_service,
-                                     int error_code,
-                                     ledger::PublisherInfo* info,
-                                     uint64_t windowId) override;
+  void OnWalletProperties(RewardsService* rewards_service,
+                          int error_code,
+                          std::unique_ptr<brave_rewards::WalletProperties>
+                              wallet_properties) override;
 
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                  const BalanceReport& balance_report) override;
+  void OnGetPublisherActivityFromUrl(
+      RewardsService* rewards_service,
+      int error_code,
+      std::unique_ptr<ledger::PublisherInfo> info,
+      uint64_t windowId) override;
 
  private:
   Profile* profile_;
