@@ -92,7 +92,7 @@ const std::string ClientInfo::GetPlatformName() const {
       platform_name = "iOS";
       break;
     }
-    case ANDROID: {
+    case ANDROID_OS: {
       platform_name = "Android";
       break;
     }

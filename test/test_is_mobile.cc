@@ -56,7 +56,7 @@ TEST_F(IsMobileTest, IsIOSMobile) {
 
 TEST_F(IsMobileTest, IsAndroidMobile) {
   ClientInfo dummy_client_info;
-  dummy_client_info.platform = ANDROID;
+  dummy_client_info.platform = ANDROID_OS;
 
   EXPECT_CALL(*mock_ads_client, GetClientInfo(_))
       .WillOnce(testing::SetArgPointee<0>(dummy_client_info));
