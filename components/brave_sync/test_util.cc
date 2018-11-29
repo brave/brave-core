@@ -17,6 +17,21 @@
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 
+namespace {
+
+using namespace bookmarks;
+
+void AddPermanentNode(BookmarkPermanentNodeList* extra_nodes, int64_t id,
+      const std::string& title) {
+  auto node = std::make_unique<BookmarkPermanentNode>(id);
+  node->set_type(bookmarks::BookmarkNode::FOLDER);
+  node->set_visible(false);
+  node->SetTitle(base::UTF8ToUTF16(title));
+  extra_nodes->push_back(std::move(node));
+}
+
+}  // namespace
+
 namespace brave_sync {
 
 MockBraveSyncClient::MockBraveSyncClient() {}
@@ -45,13 +60,10 @@ std::unique_ptr<KeyedService> BuildFakeBookmarkModelForTests(
   std::unique_ptr<TestBookmarkClient> client(new TestBookmarkClient());
   BookmarkPermanentNodeList extra_nodes;
 
-  auto node = std::make_unique<BookmarkPermanentNode>(0xDE1E7ED40DE);
-  node->set_type(bookmarks::BookmarkNode::FOLDER);
-  node->set_visible(false);
-  // This is hard-coded title and cannot be changed
-  node->SetTitle(base::UTF8ToUTF16("Deleted Bookmarks"));
+  // These hard-coded titles cannot be changed
+  AddPermanentNode(&extra_nodes, 0xDE1E7ED40DE, "Deleted Bookmarks");
+  AddPermanentNode(&extra_nodes, 0x9E7D17640DE, "Pending Bookmarks");
 
-  extra_nodes.push_back(std::move(node));
   client->SetExtraNodesToLoad(std::move(extra_nodes));
   std::unique_ptr<BookmarkModel> model(
       TestBookmarkClient::CreateModelWithClient(std::move(client)));
@@ -147,6 +159,5 @@ SyncRecordPtr SimpleDeviceRecord(
 
   return record;
 }
-
 
 }  // namespace
