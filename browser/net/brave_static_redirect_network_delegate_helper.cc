@@ -15,10 +15,6 @@ int OnBeforeURLRequest_StaticRedirectWork(
   GURL::Replacements replacements;
   static URLPattern geo_pattern(URLPattern::SCHEME_HTTPS, kGeoLocationsPattern);
   static URLPattern safeBrowsing_pattern(URLPattern::SCHEME_HTTPS, kSafeBrowsingPrefix);
-  static URLPattern crlSet_pattern1(URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
-    kCRLSetPrefix1);
-  static URLPattern crlSet_pattern2(URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
-    kCRLSetPrefix2);
 
   if (geo_pattern.MatchesURL(ctx->request_url)) {
     ctx->new_url_spec = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY).spec();
@@ -27,20 +23,6 @@ int OnBeforeURLRequest_StaticRedirectWork(
 
   if (safeBrowsing_pattern.MatchesHost(ctx->request_url)) {
     replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
-    return net::OK;
-  }
-
-  if (crlSet_pattern1.MatchesHost(ctx->request_url)) {
-    replacements.SetSchemeStr("https");
-    replacements.SetHostStr("crlsets1.brave.com");
-    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
-    return net::OK;
-  }
-
-  if (crlSet_pattern2.MatchesHost(ctx->request_url)) {
-    replacements.SetSchemeStr("https");
-    replacements.SetHostStr("crlsets2.brave.com");
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
     return net::OK;
   }
@@ -74,14 +56,9 @@ int OnBeforeURLRequest_StaticRedirectWork(
     URLPattern(URLPattern::SCHEME_HTTPS, "https://safebrowsing.brave.com/v4/*"),
     URLPattern(URLPattern::SCHEME_HTTPS, "https://ssl.gstatic.com/safebrowsing/*"),
 
-    //CRLSets
-    URLPattern(URLPattern::SCHEME_HTTPS, "https://crlsets1.brave.com/*"),
-    URLPattern(URLPattern::SCHEME_HTTPS, "https://crlsets2.brave.com/*"),
-
     // Will be removed when https://github.com/brave/brave-browser/issues/663 is fixed
     URLPattern(URLPattern::SCHEME_HTTPS, "https://www.gstatic.com/*"),
   });
-
   // Check to make sure the URL being requested matches at least one of the allowed patterns
   bool is_url_allowed = std::any_of(allowed_patterns.begin(), allowed_patterns.end(),
     [&gurl](URLPattern pattern) {
