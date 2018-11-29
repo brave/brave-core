@@ -4,10 +4,8 @@
 
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 
-#include "bat/ledger/publisher_info.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
 
@@ -39,7 +37,7 @@ void ExtensionRewardsServiceObserver::OnWalletInitialized(
 void ExtensionRewardsServiceObserver::OnWalletProperties(
     RewardsService* rewards_service,
     int error_code,
-    brave_rewards::WalletProperties* wallet_properties) {
+    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
   if (event_router && wallet_properties) {
@@ -107,7 +105,7 @@ void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(
 void ExtensionRewardsServiceObserver::OnGetPublisherActivityFromUrl(
     RewardsService* rewards_service,
     int error_code,
-    ledger::PublisherInfo* info,
+    std::unique_ptr<ledger::PublisherInfo> info,
     uint64_t windowId) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
@@ -116,6 +114,11 @@ void ExtensionRewardsServiceObserver::OnGetPublisherActivityFromUrl(
   }
 
   extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
+
+  if (!info.get()) {
+    info.reset(new ledger::PublisherInfo());
+    info->id = "";
+  }
 
   publisher.percentage = info->percent;
   publisher.verified = info->verified;
