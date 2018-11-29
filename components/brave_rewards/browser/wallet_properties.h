@@ -18,6 +18,7 @@ namespace brave_rewards {
 
     std::string probi;
     double balance;
+    double monthly_amount;
     std::map<std::string, double> rates;
     std::vector<double> parameters_choices;
     std::vector<double> parameters_range;

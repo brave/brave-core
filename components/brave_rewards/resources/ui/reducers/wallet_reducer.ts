@@ -17,7 +17,6 @@ const createWallet = (state: Rewards.State) => {
 
   chrome.send('brave_rewards.getReconcileStamp', [])
   chrome.send('brave_rewards.getAddresses', [])
-  chrome.send('brave_rewards.getContributionAmount', [])
 
   return state
 }
@@ -52,6 +51,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         } else if (action.payload.properties.status === 17) {
           ui.walletCorrupted = true
         } else {
+          state.contributionMonthly = action.payload.properties.monthlyAmount
           state.walletInfo = action.payload.properties.wallet
           ui.walletServerProblem = false
           ui.walletCorrupted = false

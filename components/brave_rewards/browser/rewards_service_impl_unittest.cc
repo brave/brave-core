@@ -2,7 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <map>
+
 #include "base/files/scoped_temp_dir.h"
+#include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -15,6 +18,8 @@
 // npm run test -- brave_unit_tests --filter=RewardsServiceTest.*
 
 using namespace brave_rewards;
+using ::testing::_;
+using ::testing::AtLeast;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
@@ -30,8 +35,8 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
   MOCK_METHOD4(OnReconcileComplete, void(RewardsService*, unsigned int, const std::string&, const std::string&));
   MOCK_METHOD2(OnRecurringDonationUpdated, void(RewardsService*, brave_rewards::ContentSiteList));
   MOCK_METHOD2(OnCurrentTips, void(RewardsService*, brave_rewards::ContentSiteList));
-  MOCK_METHOD2(OnPublisherBanner, void(brave_rewards::RewardsService*, const brave_rewards::PublisherBanner));
-  MOCK_METHOD4(OnGetPublisherActivityFromUrl, void(brave_rewards::RewardsService*, int, ledger::PublisherInfo*, uint64_t));
+  MOCK_METHOD2(OnPublisherBanner, void(RewardsService*, const brave_rewards::PublisherBanner));
+  MOCK_METHOD4(OnGetPublisherActivityFromUrl, void(RewardsService*, int, ledger::PublisherInfo*, uint64_t));
 };
 
 class RewardsServiceTest : public testing::Test {
@@ -149,6 +154,12 @@ TEST_F(RewardsServiceTest, HandleFlags) {
   ASSERT_FALSE(ledger::short_retries);
   ASSERT_TRUE(ledger::is_production);
   ASSERT_EQ(ledger::reconcile_time, 0);
+}
+
+TEST_F(RewardsServiceTest, OnWalletProperties) {
+  // wallet properties are empty (no call should be made)
+  rewards_service()->OnWalletProperties(ledger::Result::LEDGER_OK, nullptr);
+  EXPECT_CALL(*observer(), OnWalletProperties(_, _, _)).Times(0);
 }
 
 // add test for strange entries
