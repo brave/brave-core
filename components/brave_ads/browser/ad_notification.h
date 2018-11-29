@@ -5,6 +5,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_AD_NOTIFICATION_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_AD_NOTIFICATION_
 
+#include <memory>
 #include <string>
 
 #include "base/compiler_specific.h"
