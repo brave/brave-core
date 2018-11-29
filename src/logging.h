@@ -5,7 +5,21 @@
 #ifndef BAT_ADS_LOGGING_H_
 #define BAT_ADS_LOGGING_H_
 
-#define LOG(severity) \
-  ads_client_->Log(__FILE__, __LINE__, severity)->stream()
+#include "bat/ads/ads_client.h"
+
+#define ADS_LOG_INFO \
+  ads_client_->Log(__FILE__, __LINE__, ::ads::LogLevel::LOG_INFO)
+
+#define ADS_LOG_WARNING \
+  ads_client_->Log(__FILE__, __LINE__, ::ads::LogLevel::LOG_WARNING)
+
+#define ADS_LOG_ERROR \
+  ads_client_->Log(__FILE__, __LINE__, ::ads::LogLevel::LOG_ERROR)
+
+#define LOG(severity) ADS_LOG_ ## severity->stream()
+
+#if defined(ERROR)
+#define LOG_0 ADS_LOG_ERROR
+#endif
 
 #endif  // BAT_ADS_LOGGING_H_

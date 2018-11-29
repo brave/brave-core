@@ -22,9 +22,9 @@
 namespace ads {
 
 enum ADS_EXPORT LogLevel {
-  ERROR = 1,
-  WARNING,
-  INFO
+  LOG_ERROR = 1,
+  LOG_WARNING,
+  LOG_INFO
 };
 
 enum ADS_EXPORT URLRequestMethod {
