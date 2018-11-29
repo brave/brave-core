@@ -131,7 +131,7 @@ void BraveProfileWriter::OnWalletBackupComplete(bool result) {
 void BraveProfileWriter::OnWalletProperties(
   brave_rewards::RewardsService* rewards_service,
   int error_code,
-  brave_rewards::WalletProperties* properties) {
+  std::unique_ptr<brave_rewards::WalletProperties> properties) {
   // Avoid overwriting Brave Rewards wallet if:
   // - it existed BEFORE import happened
   // - it has a non-zero balance
