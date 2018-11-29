@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index 79dbe971ae23b9d59eafa4b89ecce9b736ae8707..a5a059aa77e533cfc56437cf06b5d6a21dfa0d4b 100644
+index 3bfcba30be1ca17870b85acbc68ae15887f027fe..6a74ea76c00df34b9de30166cc891bba90a18f92 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -25,6 +25,7 @@
