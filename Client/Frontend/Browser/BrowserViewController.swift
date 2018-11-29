@@ -1225,18 +1225,22 @@ class BrowserViewController: UIViewController {
         return KeychainWrapper.sharedAppContainerKeychain.authenticationInfo() != nil
     }
     
+    private var browserLockPopup: AlertPopupView?
+    
     func presentBrowserLockCallout() {
-        if isBrowserLockEnabled || Preferences.Popups.browserLock.value { return }
+        if isBrowserLockEnabled || Preferences.Popups.browserLock.value || browserLockPopup != nil { return }
         
         urlBar.leaveOverlayMode()
         
         let popup = AlertPopupView(image: #imageLiteral(resourceName: "browser_lock_popup"), title: Strings.Browser_lock_callout_title, message: Strings.Browser_lock_callout_message)
         popup.addButton(title: Strings.Browser_lock_callout_not_now) { () -> PopupViewDismissType in
             Preferences.Popups.browserLock.value = true
+            self.browserLockPopup = nil
             return .flyDown
         }
         popup.addDefaultButton(title: Strings.Browser_lock_callout_enable) { [weak self] () -> PopupViewDismissType in
             Preferences.Popups.browserLock.value = true
+            self?.browserLockPopup = nil
             
             let setupPasscodeController = SetupPasscodeViewController()
             let container = UINavigationController(rootViewController: setupPasscodeController)
@@ -1244,12 +1248,17 @@ class BrowserViewController: UIViewController {
             
             return .flyUp
         }
+        browserLockPopup = popup
         popup.showWithType(showType: .flyUp)
     }
     
     // MARK: - DuckDuckGo Callout
     
+    private var duckDuckGoPopup: AlertPopupView?
     func presentDuckDuckGoCallout(force: Bool = false) {
+        // Don't show duplicate popups
+        if duckDuckGoPopup != nil { return }
+        
         // Check to see if its been presented already
         if SearchEngines.shouldShowDuckDuckGoPromo && Preferences.Popups.duckDuckGoPrivateSearch.value && !force {
             presentBrowserLockCallout()
@@ -1270,9 +1279,12 @@ class BrowserViewController: UIViewController {
         }
         popup.addButton(title: Strings.DDG_callout_no) {
             Preferences.Popups.duckDuckGoPrivateSearch.value = true
+            self.duckDuckGoPopup = nil
             return .flyDown
         }
         popup.addDefaultButton(title: Strings.DDG_callout_enable) { [weak self] in
+            self?.duckDuckGoPopup = nil
+            
             if self?.profile == nil {
                 return .flyUp
             }
@@ -1284,6 +1296,7 @@ class BrowserViewController: UIViewController {
             
             return .flyUp
         }
+        duckDuckGoPopup = popup
         popup.showWithType(showType: .flyUp)
     }
 }
@@ -1901,6 +1914,12 @@ extension BrowserViewController: TabManagerDelegate {
 
         if selected?.type != previous?.type {
             updateTabCountUsingTabManager(tabManager)
+        }
+        
+        if PrivateBrowsingManager.shared.isPrivateBrowsing {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                self.presentDuckDuckGoCallout()
+            }
         }
 
         removeAllBars()
