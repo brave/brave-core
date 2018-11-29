@@ -922,6 +922,7 @@ void RewardsServiceImpl::TriggerOnWalletInitialized(int error_code) {
 void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
     std::unique_ptr<ledger::WalletInfo> wallet_info) {
   std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
+
   for (auto& observer : observers_) {
     if (wallet_info) {
       wallet_properties.reset(new brave_rewards::WalletProperties);
@@ -931,6 +932,7 @@ void RewardsServiceImpl::TriggerOnWalletProperties(int error_code,
       wallet_properties->parameters_choices = wallet_info->parameters_choices_;
       wallet_properties->parameters_range = wallet_info->parameters_range_;
       wallet_properties->parameters_days = wallet_info->parameters_days_;
+      wallet_properties->monthly_amount = wallet_info->fee_amount_;
 
       for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
         brave_rewards::Grant grant;
