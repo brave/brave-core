@@ -47,7 +47,7 @@ class BatState {
 
   void SetUserChangedContribution();
 
-  bool GetUserChangeContribution() const;
+  bool GetUserChangedContribution() const;
 
   void SetAutoContribute(bool enabled);
 
@@ -105,7 +105,7 @@ class BatState {
   GetWalletProperties() const;
 
   void SetWalletProperties(
-      const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
+      braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
 
   unsigned int GetDays() const;
 
@@ -139,6 +139,8 @@ class BatState {
                         int level);
 
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
+
+  double GetDefaultContributionAmount();
 
  private:
   void SaveState();

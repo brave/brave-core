@@ -107,6 +107,21 @@ bool BatState::GetRewardsMainEnabled() const {
 }
 
 void BatState::SetContributionAmount(double amount) {
+  braveledger_bat_helper::WALLET_PROPERTIES_ST properties =
+      GetWalletProperties();
+  auto hasAmount = std::find(properties.parameters_choices_.begin(),
+                             properties.parameters_choices_.end(),
+                             amount);
+
+  if (hasAmount == properties.parameters_choices_.end()) {
+    // amount is missing in the list
+    properties.parameters_choices_.push_back(amount);
+    std::sort(properties.parameters_choices_.begin(),
+              properties.parameters_choices_.end());
+    ledger_->OnWalletProperties(ledger::Result::LEDGER_OK, properties);
+    state_->walletProperties_ = properties;
+  }
+
   state_->fee_amount_ = amount;
   SaveState();
 }
@@ -120,7 +135,7 @@ void BatState::SetUserChangedContribution() {
   SaveState();
 }
 
-bool BatState::GetUserChangeContribution() const {
+bool BatState::GetUserChangedContribution() const {
   return state_->user_changed_fee_;
 }
 
@@ -251,8 +266,29 @@ BatState::GetWalletProperties() const {
 }
 
 void BatState::SetWalletProperties(
-    const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+    braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+  double amount = GetContributionAmount();
+  double new_amount = properties.fee_amount_;
+  bool amount_changed = GetUserChangedContribution();
+  if (amount_changed) {
+    auto hasAmount = std::find(properties.parameters_choices_.begin(),
+                               properties.parameters_choices_.end(),
+                               amount);
+
+    if (hasAmount == properties.parameters_choices_.end()) {
+      // amount is missing in the list
+      properties.parameters_choices_.push_back(amount);
+      std::sort(properties.parameters_choices_.begin(),
+                properties.parameters_choices_.end());
+    }
+  }
+
   state_->walletProperties_ = properties;
+
+  if (!amount_changed && amount != new_amount) {
+    SetContributionAmount(new_amount);
+  }
+
   SaveState();
 }
 
@@ -340,6 +376,10 @@ bool BatState::AddReconcileStep(const std::string& viewing_id,
 const braveledger_bat_helper::CurrentReconciles&
 BatState::GetCurrentReconciles() const {
   return state_->current_reconciles_;
+}
+
+double BatState::GetDefaultContributionAmount() {
+  return state_->walletProperties_.fee_amount_;
 }
 
 }  // namespace braveledger_bat_state
