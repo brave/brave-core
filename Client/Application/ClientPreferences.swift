@@ -71,8 +71,6 @@ extension Preferences {
     final class Privacy {
         /// Forces all private tabs
         static let privateBrowsingOnly = Option<Bool>(key: "privacy.private-only", default: false)
-        /// The users preference on how to store Cookies
-        static let cookieAcceptPolicy = Option<UInt>(key: "privacy.cookie-accept", default: HTTPCookie.AcceptPolicy.onlyFromMainDocumentDomain.rawValue)
         /// The toggles states for clear private data screen
         static let clearPrivateDataToggles = Option<[Bool]>(key: "privacy.clear-data-toggles", default: [])
     }
