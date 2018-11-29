@@ -26,13 +26,6 @@ class SearchSettingsTableViewController: UITableViewController {
     var profile: Profile?
     var tabManager: TabManager?
 
-    fileprivate var isEditable: Bool {
-        // If the default engine is a custom one, make sure we have more than one since we can't edit the default.
-        // Otherwise, enable editing if we have at least one custom engine.
-        let customEngineCount = model.orderedEngines.filter({$0.isCustomEngine}).count
-        return model.defaultEngine().isCustomEngine ? customEngineCount > 1 : customEngineCount > 0
-    }
-
     var model: SearchEngines!
 
     override func viewDidLoad() {
@@ -58,22 +51,6 @@ class SearchSettingsTableViewController: UITableViewController {
 
         tableView.separatorColor = SettingsUX.TableViewSeparatorColor
         tableView.backgroundColor = SettingsUX.TableViewHeaderBackgroundColor
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.SettingsSearchEditButton, style: .plain, target: self,
-                                                                 action: #selector(beginEditing))
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Only show the Edit button if custom search engines are in the list.
-        // Otherwise, there is nothing to delete.
-        navigationItem.rightBarButtonItem?.isEnabled = isEditable
-        tableView.reloadData()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        setEditing(false, animated: false)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -272,23 +249,7 @@ class SearchSettingsTableViewController: UITableViewController {
             let engine = model.orderedEngines[index]
             model.deleteCustomEngine(engine)
             tableView.deleteRows(at: [indexPath], with: .right)
-
-            // End editing if we are no longer edit since we've deleted all editable cells.
-            if !isEditable {
-                finishEditing()
-            }
         }
-    }
-
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        showDeletion = editing
-        UIView.performWithoutAnimation {
-            self.navigationItem.rightBarButtonItem?.title = editing ? Strings.SettingsSearchDoneButton : Strings.SettingsSearchEditButton
-        }
-        navigationItem.rightBarButtonItem?.isEnabled = isEditable
-        navigationItem.rightBarButtonItem?.action = editing ?
-            #selector(finishEditing) : #selector(beginEditing)
-        tableView.reloadData()
     }
 }
 
@@ -315,14 +276,6 @@ extension SearchSettingsTableViewController {
 
     @objc func dismissAnimated() {
         self.dismiss(animated: true, completion: nil)
-    }
-
-    @objc func beginEditing() {
-        setEditing(true, animated: false)
-    }
-
-    @objc func finishEditing() {
-        setEditing(false, animated: false)
     }
 }
 
