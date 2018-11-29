@@ -6,7 +6,9 @@
 #define BRAVE_BROWSER_PAYMENTS_PAYMENTS_SERVICE_OBSERVER_H_
 
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/grant.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 
 namespace brave_rewards {
 
