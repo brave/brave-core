@@ -53,7 +53,6 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
       const std::string& region,
       const std::string& category,
       ads::OnGetAdsCallback callback) override;
-  void OnError(const ads::Error error) override {};
 
   void LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) override;
   bool GetUrlComponents(
