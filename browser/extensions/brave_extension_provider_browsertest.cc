@@ -6,6 +6,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
@@ -20,54 +21,10 @@
 #include "extensions/browser/notification_types.h"
 #include "extensions/browser/test_extension_registry_observer.h"
 
+
+using BraveExtensionProviderTest = extensions::ExtensionFunctionalTest;
+
 namespace extensions {
-
-class ExtensionFunctionalTest : public ExtensionBrowserTest {
- public:
-  void InstallExtensionSilently(ExtensionService* service,
-                                const base::FilePath& path) {
-    ExtensionRegistry* registry = ExtensionRegistry::Get(profile());
-    size_t num_before = registry->enabled_extensions().size();
-
-    TestExtensionRegistryObserver extension_observer(registry);
-
-    scoped_refptr<CrxInstaller> installer(CrxInstaller::CreateSilent(service));
-    installer->set_is_gallery_install(false);
-    installer->set_allow_silent_install(true);
-    installer->set_install_source(Manifest::INTERNAL);
-    installer->set_off_store_install_allow_reason(
-        CrxInstaller::OffStoreInstallAllowedInTest);
-
-    observer_->Watch(NOTIFICATION_CRX_INSTALLER_DONE,
-                     content::Source<CrxInstaller>(installer.get()));
-
-    installer->InstallCrx(path);
-    observer_->Wait();
-
-    size_t num_after = registry->enabled_extensions().size();
-    EXPECT_EQ(num_before + 1, num_after);
-
-    extension_observer.WaitForExtensionLoaded();
-    const Extension* extension =
-        registry->enabled_extensions().GetByID(last_loaded_extension_id());
-    EXPECT_TRUE(extension);
-  }
-  void SetUp() override {
-    InitEmbeddedTestServer();
-    ExtensionBrowserTest::SetUp();
-  }
-  void InitEmbeddedTestServer() {
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(embedded_test_server()->Start());
-  }
-  void GetTestDataDir(base::FilePath* test_data_dir) {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
-  }
-};
 
 IN_PROC_BROWSER_TEST_F(ExtensionFunctionalTest, BlacklistExtension) {
   base::FilePath test_data_dir;
