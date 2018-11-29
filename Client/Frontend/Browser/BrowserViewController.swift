@@ -236,7 +236,7 @@ class BrowserViewController: UIViewController {
 
         if let tab = tabManager.selectedTab,
                let webView = tab.webView {
-            updateURLBar(forTab: tab)
+            updateURLBar()
             navigationToolbar.updateBackStatus(webView.canGoBack)
             navigationToolbar.updateForwardStatus(webView.canGoForward)
             urlBar.locationView.loading = tab.loading
@@ -913,7 +913,7 @@ class BrowserViewController: UIViewController {
             
             navigationToolbar.updateForwardStatus(canGoForward)
         case .hasOnlySecureContent:
-            guard let tab = tabManager[webView], tab === tabManager.selectedTab else {
+            guard let tab = tabManager[webView] else {
                 break
             }
             
@@ -921,14 +921,14 @@ class BrowserViewController: UIViewController {
                 tab.contentIsSecure = false
             }
             
-            updateURLBar(forTab: tab)
+            updateURLBar()
         case .serverTrust:
-            guard let tab = tabManager[webView], tab === tabManager.selectedTab else {
+            guard let tab = tabManager[webView] else {
                 break
             }
 
             tab.contentIsSecure = false
-            updateURLBar(forTab: tab)
+            updateURLBar()
 
             guard let serverTrust = tab.webView?.serverTrust else {
                 break
@@ -943,7 +943,7 @@ class BrowserViewController: UIViewController {
                 }
 
                 DispatchQueue.main.async {
-                    self.updateURLBar(forTab: tab)
+                    self.updateURLBar()
                 }
             }
         default:
@@ -961,7 +961,7 @@ class BrowserViewController: UIViewController {
     }
 
     func updateUIForReaderHomeStateForTab(_ tab: Tab) {
-        updateURLBar(forTab: tab)
+        updateURLBar()
         scrollController.showToolbars(animated: false)
 
         if let url = tab.url {
@@ -978,7 +978,9 @@ class BrowserViewController: UIViewController {
     }
 
     /// Updates the URL bar security, text and button states.
-    fileprivate func updateURLBar(forTab tab: Tab) {
+    fileprivate func updateURLBar() {
+        guard let tab = tabManager.selectedTab else { return }
+        
         urlBar.currentURL = tab.url?.displayURL
         
         urlBar.contentIsSecure = tab.contentIsSecure
@@ -1886,7 +1888,7 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         if let tab = selected, let webView = tab.webView {
-            updateURLBar(forTab: tab)
+            updateURLBar()
 
             if tab.type != previous?.type {
                 let theme = Theme.of(tab)
