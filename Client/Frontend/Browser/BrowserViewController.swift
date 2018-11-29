@@ -181,7 +181,6 @@ class BrowserViewController: UIViewController {
         
         // Observe some user preferences
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
-        Preferences.Privacy.cookieAcceptPolicy.observe(from: self)
         Preferences.General.tabBarVisibility.observe(from: self)
         Preferences.Shields.allShields.forEach { $0.observe(from: self) }
         
@@ -2812,8 +2811,6 @@ extension BrowserViewController: TopSitesDelegate {
 extension BrowserViewController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
         switch key {
-        case Preferences.Privacy.cookieAcceptPolicy.key:
-            HTTPCookieStorage.shared.updateCookieAcceptPolicy(to: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value))
         case Preferences.General.tabBarVisibility.key:
             updateTabsBarVisibility()
         case Preferences.Privacy.privateBrowsingOnly.key:

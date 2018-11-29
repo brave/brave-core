@@ -44,17 +44,6 @@ extension Preferences {
         migrate(key: "search.defaultprivate.name", to: Preferences.Search.defaultPrivateEngineName)
         
         // Privacy
-        let legacyCookieMap: [HTTPCookie.AcceptPolicy] = [.onlyFromMainDocumentDomain, .never, .always]
-        migrate(key: "braveAcceptCookiesPref", to: Preferences.Privacy.cookieAcceptPolicy, transform: { value in
-            // The value stored in 1.6 is actually mapped differently (optionIds -> HTTPCookie.AcceptPolicy) rather
-            // than just use the rawValue of said AcceptPolicy like in 1.7. The mapping is shown in `legacyCookieMap`
-            if value < legacyCookieMap.count {
-                return legacyCookieMap[Int(value)].rawValue
-            }
-            // If for some odd reason we have malformed data, just set the default value
-            return Preferences.Privacy.cookieAcceptPolicy.defaultValue
-        })
-        
         migrate(key: "privateBrowsingAlwaysOn", to: Preferences.Privacy.privateBrowsingOnly)
         migrate(key: "clearprivatedata.toggles", to: Preferences.Privacy.clearPrivateDataToggles)
         
