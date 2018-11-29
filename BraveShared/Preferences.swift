@@ -26,8 +26,8 @@ public class Preferences {
 }
 
 extension Preferences {
-    final class DAU {
-        static let lastLaunchInfo = Option<[Int?]?>(key: "dau.last-launch-info", default: nil)
+    public final class DAU {
+        public static let lastLaunchInfo = Option<[Int?]?>(key: "dau.last-launch-info", default: nil)
         static let weekOfInstallation = Option<String?>(key: "dau.week-of-installation", default: nil)
         static let firstPingParam = Option<Bool>(key: "dau.first-ping", default: true)
         /// We use this to properly calculate `week` parameter of the DAU ping.
