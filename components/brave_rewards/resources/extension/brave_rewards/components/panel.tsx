@@ -304,7 +304,7 @@ export class Panel extends React.Component<Props, State> {
               platform={publisher.provider as Provider}
               publisherName={publisher.name}
               publisherImg={faviconUrl}
-              monthlyAmount={10}
+              monthlyAmount={'10.0'}
               isVerified={publisher.verified}
               tipsEnabled={true}
               includeInAuto={!publisher.excluded}
