@@ -21,17 +21,6 @@ extension TabBarVisibility: RepresentableOptionType {
     }
 }
 
-extension HTTPCookie.AcceptPolicy: RepresentableOptionType {
-    
-    public var displayString: String {
-        switch self {
-        case .always: return Strings.Dont_block_cookies
-        case .onlyFromMainDocumentDomain: return Strings.Block_3rd_party_cookies
-        case .never: return Strings.Block_all_cookies
-        }
-    }
-}
-
 /// Just creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
 private func BoolRow(title: String, option: Preferences.Option<Bool>) -> Row {
     return Row(
@@ -209,24 +198,6 @@ class SettingsViewController: TableViewController {
                 accessory: .disclosureIndicator
             )
         ]
-        var cookieControlRow = Row(text: Strings.Cookie_Control, detailText: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value)?.displayString, accessory: .disclosureIndicator)
-        cookieControlRow.selection = { [unowned self] in
-            // Show Options for cookie control
-            let optionsViewController = OptionSelectionViewController<HTTPCookie.AcceptPolicy>(
-                options: [.onlyFromMainDocumentDomain, .never, .always],
-                selectedOption: HTTPCookie.AcceptPolicy(rawValue: Preferences.Privacy.cookieAcceptPolicy.value),
-                optionChanged: { [unowned self] _, option in
-                    Preferences.Privacy.cookieAcceptPolicy.value = option.rawValue
-                    
-                    if let indexPath = self.dataSource.indexPath(rowUUID: cookieControlRow.uuid, sectionUUID: privacy.uuid) {
-                        self.dataSource.sections[indexPath.section].rows[indexPath.row].detailText = option.displayString
-                    }
-                }
-            )
-            optionsViewController.headerText = Strings.Cookie_Control
-            self.navigationController?.pushViewController(optionsViewController, animated: true)
-        }
-        privacy.rows.append(cookieControlRow)
         privacy.rows.append(BoolRow(title: Strings.Private_Browsing_Only, option: Preferences.Privacy.privateBrowsingOnly))
         return privacy
     }()
