@@ -133,6 +133,7 @@ void BraveSyncServiceImpl::OnConnectionChanged(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (type == network::mojom::ConnectionType::CONNECTION_NONE) {
     if (initializing_) {
+      // TODO(cezaraugusto): ERR_SYNC_NO_INTERNET in #971
       OnSyncSetupError("network connection is currently unavailable");
     }
   }
@@ -157,6 +158,7 @@ void BraveSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (content::GetNetworkConnectionTracker()->IsOffline()) {
+    // TODO(cezaraugusto): ERR_SYNC_NO_INTERNET in #971
     OnSyncSetupError("network connection is currently unavailable");
     return;
   }
@@ -187,6 +189,7 @@ void BraveSyncServiceImpl::OnSetupSyncNewToSync(
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (content::GetNetworkConnectionTracker()->IsOffline()) {
+    // TODO(cezaraugusto): ERR_SYNC_NO_INTERNET in #971
     OnSyncSetupError("network connection is currently unavailable");
     return;
   }
