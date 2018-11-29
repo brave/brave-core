@@ -38,13 +38,36 @@ class ScopedPauseObserver {
   brave_sync::BookmarkChangeProcessor* processor_;  // Not owned
 };
 
+const char kDeletedBookmarksTitle[] = "Deleted Bookmarks";
+const char kPendingBookmarksTitle[] = "Pending Bookmarks";
+
+std::unique_ptr<bookmarks::BookmarkPermanentNode>
+    MakePermanentNode(const std::string& title, int64_t* next_node_id) {
+  auto node = std::make_unique<bookmarks::BookmarkPermanentNode>(*next_node_id);
+  (*next_node_id)++;
+  node->set_type(bookmarks::BookmarkNode::FOLDER);
+  node->set_visible(false);
+  node->SetTitle(base::UTF8ToUTF16(title));
+
+  return node;
+}
+
 }  // namespace
 
 namespace brave_sync {
 
-bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node) {
+bool IsSyncManagedNodeDeleted(const bookmarks::BookmarkPermanentNode* node) {
   return node->GetTitledUrlNodeTitle() ==
-      base::UTF8ToUTF16("Deleted Bookmarks");
+      base::UTF8ToUTF16(kDeletedBookmarksTitle);
+}
+
+bool IsSyncManagedNodePending(const bookmarks::BookmarkPermanentNode* node) {
+  return node->GetTitledUrlNodeTitle() ==
+      base::UTF8ToUTF16(kPendingBookmarksTitle);
+}
+
+bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node) {
+  return IsSyncManagedNodeDeleted(node) || IsSyncManagedNodePending(node);
 }
 
 bookmarks::BookmarkPermanentNodeList
@@ -55,13 +78,11 @@ LoadExtraNodes(bookmarks::LoadExtraCallback callback,
   if (callback)
     extra_nodes = std::move(callback).Run(next_node_id);
 
-  auto node = std::make_unique<bookmarks::BookmarkPermanentNode>(*next_node_id);
-  (*next_node_id)++;
-  node->set_type(bookmarks::BookmarkNode::FOLDER);
-  node->set_visible(false);
-  node->SetTitle(base::UTF8ToUTF16("Deleted Bookmarks"));
-
+  auto node = MakePermanentNode(kDeletedBookmarksTitle, next_node_id);
   extra_nodes.push_back(std::move(node));
+
+  auto node_pending = MakePermanentNode(kPendingBookmarksTitle, next_node_id);
+  extra_nodes.push_back(std::move(node_pending));
 
   return extra_nodes;
 }
@@ -117,8 +138,8 @@ const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
   return nullptr;
 }
 
-uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
-                  const jslib::Bookmark& record) {
+uint64_t GetIndexByOrder(const bookmarks::BookmarkNode* root_node,
+                  const std::string& record_order) {
   uint64_t index = 0;
   ui::TreeNodeIterator<const bookmarks::BookmarkNode> iterator(root_node);
   while (iterator.has_next()) {
@@ -131,7 +152,7 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
     node->GetMetaInfo("order", &node_order);
 
     if (!node_order.empty() &&
-        brave_sync::CompareOrder(record.order, node_order))
+        brave_sync::CompareOrder(record_order, node_order))
       return index;
 
     ++index;
@@ -139,10 +160,16 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
   return index;
 }
 
+uint64_t GetIndex(const bookmarks::BookmarkNode* root_node,
+                  const jslib::Bookmark& record) {
+  return GetIndexByOrder(root_node, record.order);
+}
+
 // this should only be called for resolved records we get from the server
 void UpdateNode(bookmarks::BookmarkModel* model,
                 const bookmarks::BookmarkNode* node,
-                const jslib::SyncRecord* record) {
+                const jslib::SyncRecord* record,
+                const bookmarks::BookmarkNode* pending_node_root = nullptr) {
   auto bookmark = record->GetBookmark();
   if (bookmark.isFolder) {
     // SetDateFolderModified
@@ -166,13 +193,23 @@ void UpdateNode(bookmarks::BookmarkModel* model,
   model->SetNodeMetaInfo(node,
       "sync_timestamp",
       std::to_string(record->syncTimestamp.ToJsTime()));
+
+  if (pending_node_root && bookmarks::IsDescendantOf(node, pending_node_root)) {
+    model->SetNodeMetaInfo(node, "parent_object_id",
+        bookmark.parentFolderObjectId);
+  }
 }
 
 const bookmarks::BookmarkNode* FindParent(bookmarks::BookmarkModel* model,
-                                          const jslib::Bookmark& bookmark) {
+                                          const jslib::Bookmark& bookmark,
+                                          bookmarks::BookmarkNode*
+                                                            pending_node_root) {
   auto* parent_node = FindByObjectId(model, bookmark.parentFolderObjectId);
 
   if (!parent_node) {
+    if (!bookmark.parentFolderObjectId.empty()) {
+      return pending_node_root;
+    }
     if (
         // this flag is a bit odd, but if the node doesn't have a parent and
         // hideInToolbar is false, then this bookmark should go in the
@@ -210,7 +247,8 @@ BookmarkChangeProcessor::BookmarkChangeProcessor(
       profile_(profile),
       bookmark_model_(BookmarkModelFactory::GetForBrowserContext(
           Profile::FromBrowserContext(profile))),
-      deleted_node_root_(nullptr) {
+      deleted_node_root_(nullptr),
+      pending_node_root_(nullptr) {
   DCHECK(sync_client_);
   DCHECK(sync_prefs);
   DCHECK(bookmark_model_);
@@ -231,7 +269,8 @@ void BookmarkChangeProcessor::Stop() {
 
 void BookmarkChangeProcessor::BookmarkModelLoaded(BookmarkModel* model,
                                                   bool ids_reassigned) {
-  NOTREACHED();
+  // This may be invoked after bookmarks import
+  VLOG(1) << __func__;
 }
 
 void BookmarkChangeProcessor::BookmarkModelBeingDeleted(bookmarks::BookmarkModel* model) {
@@ -421,7 +460,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
 
       const bookmarks::BookmarkNode* new_parent_node = nullptr;
       if (bookmark_record.parentFolderObjectId != old_parent_object_id) {
-        new_parent_node = FindParent(bookmark_model_, bookmark_record);
+        new_parent_node = FindParent(bookmark_model_, bookmark_record,
+            GetPendingNodeRoot());
       }
 
       if (new_parent_node) {
@@ -445,18 +485,23 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
         }
       }
     } else if (sync_record->action == jslib::SyncRecord::Action::A_CREATE) {
+      bool folder_was_created = false;
       if (!node) {
         // TODO(bridiver) make sure there isn't an existing record for objectId
         const bookmarks::BookmarkNode* parent_node =
-            FindParent(bookmark_model_, bookmark_record);
+            FindParent(bookmark_model_, bookmark_record, GetPendingNodeRoot());
 
         const BookmarkNode* bookmark_bar = bookmark_model_->bookmark_bar_node();
         bool bookmark_bar_was_empty = bookmark_bar->empty();
+
+        // TODO(alexeyb): use manual add node/folder to avoid model's observers
+        // invocation leading "Pending bookmarks" to be shown
         if (bookmark_record.isFolder) {
           node = bookmark_model_->AddFolder(
                           parent_node,
                           GetIndex(parent_node, bookmark_record),
                           base::UTF8ToUTF16(bookmark_record.site.title));
+          folder_was_created = true;
         } else {
           node = bookmark_model_->AddURL(parent_node,
                           GetIndex(parent_node, bookmark_record),
@@ -467,10 +512,62 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
           profile_->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar,
                                           true);
       }
-      UpdateNode(bookmark_model_, node, sync_record.get());
+      UpdateNode(bookmark_model_, node, sync_record.get(), GetPendingNodeRoot());
+      if (folder_was_created) {
+        CompletePendingNodesMove(node, sync_record->objectId);
+      }
     }
   }
   bookmark_model_->EndExtensiveChanges();
+}
+
+void BookmarkChangeProcessor::CompletePendingNodesMove(
+    const bookmarks::BookmarkNode* folder_node, const std::string& object_id) {
+  DCHECK(GetPendingNodeRoot());
+  ui::TreeNodeIterator<bookmarks::BookmarkNode> iterator(GetPendingNodeRoot());
+
+  // node, target_folder, index
+  using move_info = std::tuple<bookmarks::BookmarkNode*,
+      const bookmarks::BookmarkNode*, const std::string>;
+  std::vector<move_info> move_infos;
+
+  while (iterator.has_next()) {
+    bookmarks::BookmarkNode* node = iterator.Next();
+    std::string parent_object_id;
+    node->GetMetaInfo("parent_object_id", &parent_object_id);
+    if (parent_object_id.empty()) {
+      // The node has been attached to folder which is still in Pending nodes
+      continue;
+    }
+
+    const auto* target_folder = FindByObjectId(bookmark_model_,
+        parent_object_id);
+    if (!target_folder) {
+      // Target folder had not arrived yet
+      continue;
+    }
+
+    std::string order;
+    node->GetMetaInfo("order", &order);
+
+    DCHECK(!order.empty());
+    move_infos.push_back(std::make_tuple(node, target_folder, order));
+  }
+
+  for (auto& move_info : move_infos) {
+    auto* node = std::get<0>(move_info);
+    const auto* target_folder = std::get<1>(move_info);
+    const auto& order = std::get<2>(move_info);
+    int64_t index = GetIndexByOrder(std::get<1>(move_info), order);
+
+    // TODO(alexeyb): use manual move to avoid model observer invocation
+    // leading "Pending bookmarks" to get shown
+    bookmark_model_->Move(node, target_folder, index);
+    // Now we dont need "parent_object_id" metainfo on node, because node
+    // is attached to proper parent. Note that parent can still be a child
+    // of "Pending Bookmarks" note.
+    node->DeleteMetaInfo("parent_object_id");
+  }
 }
 
 std::unique_ptr<jslib::SyncRecord>
@@ -592,7 +689,7 @@ bookmarks::BookmarkNode* BookmarkChangeProcessor::GetDeletedNodeRoot() {
     while (iterator.has_next()) {
       const bookmarks::BookmarkNode* node = iterator.Next();
       if (node->is_permanent_node() &&
-          IsSyncManagedNode(
+          IsSyncManagedNodeDeleted(
               static_cast<const bookmarks::BookmarkPermanentNode*>(node))) {
         deleted_node_root_ = const_cast<bookmarks::BookmarkNode*>(node);
         return deleted_node_root_;
@@ -601,6 +698,24 @@ bookmarks::BookmarkNode* BookmarkChangeProcessor::GetDeletedNodeRoot() {
   }
   DCHECK(deleted_node_root_);
   return deleted_node_root_;
+}
+
+bookmarks::BookmarkNode* BookmarkChangeProcessor::GetPendingNodeRoot() {
+  if (!pending_node_root_) {
+    ui::TreeNodeIterator<const bookmarks::BookmarkNode>
+        iterator(bookmark_model_->root_node());
+    while (iterator.has_next()) {
+      const bookmarks::BookmarkNode* node = iterator.Next();
+      if (node->is_permanent_node() &&
+          IsSyncManagedNodePending(
+              static_cast<const bookmarks::BookmarkPermanentNode*>(node))) {
+        pending_node_root_ = const_cast<bookmarks::BookmarkNode*>(node);
+        return pending_node_root_;
+      }
+    }
+  }
+  DCHECK(pending_node_root_);
+  return pending_node_root_;
 }
 
 void BookmarkChangeProcessor::SendUnsynced(
