@@ -9,9 +9,6 @@
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
 #include "components/dom_distiller/content/browser/web_contents_main_frame_observer.h"
 #include "components/dom_distiller/core/distiller_page.h"
@@ -20,6 +17,12 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if !defined(OS_ANDROID)
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#endif
 
 namespace brave_ads {
 
@@ -31,14 +34,18 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   if (!tab_id_.is_valid())
     return;
 
+#if !defined(OS_ANDROID)
   BrowserList::AddObserver(this);
+#endif
   Profile* profile = Profile::FromBrowserContext(
       web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
 }
 
 AdsTabHelper::~AdsTabHelper() {
+#if !defined(OS_ANDROID)
   BrowserList::RemoveObserver(this);
+#endif
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
@@ -152,6 +159,8 @@ void AdsTabHelper::WebContentsDestroyed() {
   }
 }
 
+// TODO(bridiver) - what is the android equivalent of this?
+#if !defined(OS_ANDROID)
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   bool old_active = is_browser_active_;
   if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
@@ -173,5 +182,6 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   if (old_active != is_browser_active_)
     TabUpdated();
 }
+#endif
 
 }  // namespace brave_ads

@@ -22,7 +22,10 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_binding.h"
 #include "net/url_request/url_fetcher_delegate.h"
+
+#if !defined(OS_ANDROID)
 #include "ui/base/idle/idle.h"
+#endif
 
 class NotificationDisplayService;
 class Profile;
@@ -75,7 +78,9 @@ class AdsServiceImpl : public AdsService,
   void Stop();
   void ResetTimer();
   void CheckIdleState();
+#if !defined(OS_ANDROID)
   void OnIdleState(ui::IdleState idle_state);
+#endif
   int GetIdleThreshold();
 
   // AdsClient implementation
@@ -161,8 +166,10 @@ class AdsServiceImpl : public AdsService,
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
   bool enabled_;
+#if !defined(OS_ANDROID)
   ui::IdleState last_idle_state_;
   bool is_foreground_;
+#endif
 
   base::RepeatingTimer idle_poll_timer_;
 

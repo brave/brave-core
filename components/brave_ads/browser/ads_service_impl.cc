@@ -44,6 +44,7 @@
 #include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "net/android/network_library.h"
 #endif
 
@@ -238,8 +239,10 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
         new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
     display_service_(NotificationDisplayService::GetForProfile(profile_)),
     enabled_(false),
+#if !defined(OS_ANDROID)
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
     is_foreground_(!!chrome::FindBrowserWithActiveWindow()),
+#endif
     bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
 
@@ -355,11 +358,15 @@ void AdsServiceImpl::ResetTimer() {
 }
 
 void AdsServiceImpl::CheckIdleState() {
+// TODO(bridiver) - what is the android equivalent of this?
+#if !defined(OS_ANDROID)
   ui::CalculateIdleState(GetIdleThreshold(),
       base::BindRepeating(&AdsServiceImpl::OnIdleState,
           base::Unretained(this)));
+#endif
 }
 
+#if !defined(OS_ANDROID)
 void AdsServiceImpl::OnIdleState(ui::IdleState idle_state) {
   if (!connected() || idle_state == last_idle_state_)
     return;
@@ -371,6 +378,7 @@ void AdsServiceImpl::OnIdleState(ui::IdleState idle_state) {
 
   last_idle_state_ = idle_state;
 }
+#endif
 
 void AdsServiceImpl::Shutdown() {
   for (const auto fetcher : fetchers_) {
@@ -430,12 +438,15 @@ void AdsServiceImpl::TabUpdated(SessionID tab_id,
                    profile_->IsOffTheRecord(),
                    base::BindOnce(&Noop));
 
+// TODO(bridiver) - what do we do here for android
+#if !defined(OS_ANDROID)
   if (is_foreground_ && !chrome::FindBrowserWithActiveWindow()) {
     bat_ads_->OnBackground(base::BindOnce(&Noop));
   } else if (!is_foreground_) {
     is_foreground_ = true;
     bat_ads_->OnForeground(base::BindOnce(&Noop));
   }
+#endif
 }
 
 void AdsServiceImpl::TabClosed(SessionID tab_id) {
@@ -712,13 +723,21 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
 
   GURL url(notification_info->url);
 
+#if defined(OS_ANDROID)
+  NavigateParams nav_params(profile, url, ui::PAGE_TRANSITION_LINK);
+#else
   Browser* browser = chrome::FindLastActiveWithProfile(profile);
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
+#endif
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   // TODO(bridiver) - what to put here?
   // nav_params.referrer = GURL("https://brave.com");
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
+#if defined(OS_ANDROID)
+  TabModelList::HandlePopupNavigation(&nav_params);
+#else
   Navigate(&nav_params);
+#endif
 }
 
 void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
@@ -734,7 +753,7 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 #elif defined(OS_LINUX)
   client_info->platform = ads::ClientInfoPlatformType::LINUX;
 #elif defined(OS_ANDROID)
-  client_info->platform = ads::ClientInfoPlatformType::ANDROID;
+  client_info->platform = ads::ClientInfoPlatformType::ANDROID_OS;
 #else
   NOTREACHED();
   client_info->platform = ads::ClientInfoPlatformType::UNKNOWN;

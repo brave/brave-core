@@ -32,8 +32,10 @@ namespace brave_ads {
 class AdsService;
 
 class AdsTabHelper : public content::WebContentsObserver,
-                       public BrowserListObserver,
-                       public content::WebContentsUserData<AdsTabHelper> {
+#if !defined(OS_ANDROID)
+                     public BrowserListObserver,
+#endif
+                     public content::WebContentsUserData<AdsTabHelper> {
  public:
   AdsTabHelper(content::WebContents*);
   ~AdsTabHelper() override;
@@ -57,9 +59,11 @@ class AdsTabHelper : public content::WebContentsObserver,
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
+#if !defined(OS_ANDROID)
   // BrowserListObserver overrides
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
+#endif
 
   void OnWebContentsDistillationDone(
       std::unique_ptr<dom_distiller::DistillerPage>,
