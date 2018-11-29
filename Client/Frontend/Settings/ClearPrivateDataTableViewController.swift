@@ -192,7 +192,6 @@ class ClearPrivateDataTableViewController: UITableViewController {
             self.tabManager.removeAll()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                 if !self.gotNotificationDeathOfAllWebViews {
-                    self.tabManager.allTabs.forEach { $0.deleteWebView() }
                     self.allWebViewsKilled()
                 }
             })
