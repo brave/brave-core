@@ -28,6 +28,7 @@ source_set("js_sync_lib_impl") {
     "//components/pref_registry",
     "//content/public/browser",
     "//extensions/browser",
+    "//services/network/public/cpp",
     "//ui/base",
   ]
 }
