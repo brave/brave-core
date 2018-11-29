@@ -477,6 +477,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
           >
             <button
               className="c18"
+              data-test-id="optInAction"
               onClick={[Function]}
               type="opt-in"
             >

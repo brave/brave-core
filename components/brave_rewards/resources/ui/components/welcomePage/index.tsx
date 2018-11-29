@@ -114,12 +114,14 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             ? <RewardsButton
               type={'opt-in'}
               disabled={true}
+              testId={'optInAction'}
               text={getLocale('braveRewardsCreatingText')}
               icon={<LoaderIcon/>}
             />
             : <RewardsButton
               type={'opt-in'}
               onClick={this.optInAction}
+              testId={'optInAction'}
               text={getLocale('braveRewardsOptInText')}
             />
           }
