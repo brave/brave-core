@@ -2,6 +2,9 @@ import("//brave/build/features.gni")
 import("//build/util/branding.gni")
 
 declare_args() {
+  # If you want to override existing GN config values, do it at
+  # the `args` in https://github.com/brave/brave-browser/blob/master/lib/config.js
+
   # Release channel support.
   # "beta" for beta release.
   # "dev" for dev channel release.
