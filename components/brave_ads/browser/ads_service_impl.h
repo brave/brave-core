@@ -128,7 +128,6 @@ class AdsServiceImpl : public AdsService,
       const std::string& locale,
       ads::OnLoadCallback callback) const override;
   bool IsNetworkConnectionAvailable() override;
-  void OnError(const ads::Error error) override {};
 
   // history::HistoryServiceObserver
   void OnURLsDeleted(history::HistoryService* history_service,

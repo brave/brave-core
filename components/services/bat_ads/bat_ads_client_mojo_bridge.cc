@@ -39,10 +39,10 @@ class LogStreamImpl : public ads::LogStream {
                 int line,
                 const ads::LogLevel log_level) {
     switch(log_level) {
-      case ads::LogLevel::INFO:
+      case ads::LogLevel::LOG_INFO:
         log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
         break;
-      case ads::LogLevel::WARNING:
+      case ads::LogLevel::LOG_WARNING:
         log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
         break;
       default:

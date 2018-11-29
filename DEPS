@@ -18,7 +18,7 @@ deps = {
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
   "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@e32fd5828b63b053c427c48ec5139504a9c4e9f2",
   "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@c07866c3b9c8264195756a81112bb74b8fa90858",
-  "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@8c30599369c9070a0aa2f9eed154e654ec95c7b6",
+  "vendor/bat-native-ads": "https://github.com/brave-intl/bat-native-ads.git@901a4776abe1050fcf4bd948c3a0cf8092ceb068",
   "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@6df91c7d77fd352c3746394045c54c4f1c6fa80f",
   "vendor/bat-native-confirmations": "https://github.com/brave-intl/bat-native-confirmations.git@9410bd8306aacf11cadddde4bb17e9a79cf29d4e",
   "vendor/challenge-bypass-ristretto-ffi/src": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi@6f33c811ef682a9c23b0134dcd2aa8b478c55231",
