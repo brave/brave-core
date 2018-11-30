@@ -118,6 +118,21 @@ export const onSetupSyncHaveCode = (syncWords: string, deviceName: string) => {
 }
 
 /**
+ * Dispatched by the back-end when Sync encountered an error
+ * @param {SetupErrorType} error - the error message
+ */
+export const onSyncSetupError = (error: Sync.SetupErrorType) => {
+  return action(types.SYNC_SETUP_ERROR, { error })
+}
+
+/**
+ * Reset the Sync Error
+ */
+export const resetSyncSetupError = () => {
+  return action(types.SYNC_RESET_SETUP_ERROR)
+}
+
+/**
  * Dispatched by the back-end to inform useful log messages for debugging purposes
  * @param {string} message - the log message
  */

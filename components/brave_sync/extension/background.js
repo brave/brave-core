@@ -9,7 +9,7 @@ chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config, syn
       seed = module.exports.passphrase.toBytes32(sync_words)
     } catch(err) {
       console.log(`"onGotInitData" sync_words=${JSON.stringify(sync_words)} err.message=${err.message}`);
-      chrome.braveSync.syncSetupError('wrong code words')
+      chrome.braveSync.syncSetupError('ERR_SYNC_WRONG_WORDS')
       return;
     }
   }
