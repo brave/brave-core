@@ -58,6 +58,9 @@ class BraveProfileWriter : public ProfileWriter,
   double new_contribution_amount_;
   unsigned int pinned_item_count_;
   BraveLedger ledger_;
+  // Only used when wallet exists and first action is guaranteed
+  // to be FetchWalletProperties(). See notes in brave_profile_writer.cc
+  bool consider_for_backup_;
 };
 
 #endif  // BRAVE_BROWSER_IMPORTER_BRAVE_PROFILE_WRITER_H_
