@@ -371,6 +371,7 @@ public extension Strings {
     public static let Security = NSLocalizedString("Security", tableName: "BraveShared", value: "Security", comment: "Settings security section title")
     public static let Save_Logins = NSLocalizedString("SaveLogins", tableName: "BraveShared", value: "Save Logins", comment: "Setting to enable the built-in password manager")
     public static let ShieldsAdStats = NSLocalizedString("AdsrBlocked", tableName: "BraveShared", value: "Ads \rBlocked", comment: "Shields Ads Stat")
+    public static let ShieldsAdAndTrackerStats = NSLocalizedString("AdsAndTrackersrBlocked", tableName: "BraveShared", value: "Ads & Trackers \rBlocked", comment: "Shields Ads Stat")
     public static let ShieldsTrackerStats = NSLocalizedString("TrackersrBlocked", tableName: "BraveShared", value: "Trackers \rBlocked", comment: "Shields Trackers Stat")
     public static let ShieldsHttpsStats = NSLocalizedString("HTTPSrUpgrades", tableName: "BraveShared", value: "HTTPS \rUpgrades", comment: "Shields Https Stat")
     public static let ShieldsTimeStats = NSLocalizedString("EstTimerSaved", tableName: "BraveShared", value: "Est. Time \rSaved", comment: "Shields Time Saved Stat")

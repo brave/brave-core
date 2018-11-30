@@ -15,22 +15,8 @@ class BraveShieldStatsView: UIView, Themeable {
     
     lazy var adsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
-        statView.title = Strings.ShieldsAdStats
+        statView.title = Strings.ShieldsAdAndTrackerStats
         statView.color = UX.BraveOrange
-        return statView
-    }()
-
-    lazy var trackersStatView: StatView = {
-        let statView = StatView(frame: CGRect.zero)
-        statView.title = Strings.ShieldsTrackerStats
-        statView.color = UX.Purple
-        return statView
-    }()
-
-    lazy var scriptsStatView: StatView = {
-        let statView = StatView(frame: CGRect.zero)
-        statView.color = UX.Green
-        statView.title = Strings.Scripts_Blocked
         return statView
     }()
 
@@ -42,7 +28,7 @@ class BraveShieldStatsView: UIView, Themeable {
     }()
     
     lazy var stats: [StatView] = {
-        return [self.trackersStatView, self.adsStatView, self.scriptsStatView, self.timeStatView]
+        return [self.adsStatView, self.timeStatView]
     }()
     
     override init(frame: CGRect) {
@@ -78,9 +64,7 @@ class BraveShieldStatsView: UIView, Themeable {
     }
     
     @objc private func update() {
-        adsStatView.stat = "\(BraveGlobalShieldStats.shared.adblock)"
-        trackersStatView.stat = "\(BraveGlobalShieldStats.shared.trackingProtection)"
-        scriptsStatView.stat = "\(BraveGlobalShieldStats.shared.scripts)"
+        adsStatView.stat = "\(BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection)"
         timeStatView.stat = timeSaved
     }
     
