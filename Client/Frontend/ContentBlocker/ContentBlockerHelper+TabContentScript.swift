@@ -46,8 +46,11 @@ extension ContentBlockerHelper: TabContentScript {
             BraveGlobalShieldStats.shared.scripts += 1
             return
         }
+        
+        var req = URLRequest(url: url)
+        req.mainDocumentURL = mainDocumentUrl
 
-        TPStatsBlocklistChecker.shared.isBlocked(url: url, domain: domain, resourceType: resourceType).uponQueue(.main) { listItem in
+        TPStatsBlocklistChecker.shared.isBlocked(request: req, domain: domain, resourceType: resourceType).uponQueue(.main) { listItem in
             if let listItem = listItem {
                 self.stats = self.stats.create(byAddingListItem: listItem)
                 
