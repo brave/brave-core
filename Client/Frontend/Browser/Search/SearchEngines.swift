@@ -94,6 +94,11 @@ class SearchEngines {
         
         // When re-sorting engines only look at default search for standard browsing.
         if type == .standard {
+            // Make sure we don't alter the private mode's default since it relies on order when its not set
+            if Preferences.Search.defaultPrivateEngineName.value == nil, let firstEngine = orderedEngines.first {
+                // So set the default engine for private mode to whatever the default was before we changed the standard
+                setDefaultEngine(firstEngine.shortName, forType: .privateMode)
+            }
             // The default engine is always first in the list.
             var newlyOrderedEngines =
                 orderedEngines.filter { engine in engine.shortName != defaultEngine(forType: type).shortName }
