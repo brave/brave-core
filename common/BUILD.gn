@@ -36,6 +36,8 @@ source_set("common") {
     "importer/brave_stats.h",
     "importer/chrome_importer_utils.cc",
     "importer/chrome_importer_utils.h",
+    "importer/imported_browser_window.cc",
+    "importer/imported_browser_window.h",
     "network_constants.cc",
     "network_constants.h",
     "pref_names.cc",

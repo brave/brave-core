@@ -40,4 +40,10 @@ void BraveInProcessImporterBridge::UpdateReferral(const BraveReferral& referral)
   writer_->UpdateReferral(referral);
 }
 
+void BraveInProcessImporterBridge::UpdateWindows(
+    const ImportedWindowState& windowState) {
+  // TODO: Can we just restore windows/tabs here? Do we even need to do anything with the ProfileWriter?
+  writer_->UpdateWindows(windowState);
+}
+
 BraveInProcessImporterBridge::~BraveInProcessImporterBridge() {}

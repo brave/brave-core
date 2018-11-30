@@ -23,6 +23,7 @@ class BraveExternalProcessImporterBridge :
   void UpdateStats(const BraveStats& stats) override;
   void UpdateLedger(const BraveLedger& ledger) override;
   void UpdateReferral(const BraveReferral& referral) override;
+  void UpdateWindows(const ImportedWindowState& windowState) override;
 
  private:
   ~BraveExternalProcessImporterBridge() override;
