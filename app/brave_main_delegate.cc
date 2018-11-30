@@ -14,6 +14,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "chrome/common/chrome_features.h"
@@ -21,7 +22,6 @@
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
-#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/viz/common/features.h"
 #include "components/unified_consent/feature.h"
@@ -29,6 +29,10 @@
 #include "extensions/common/extension_features.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "ui/base/ui_base_features.h"
+
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+#include "components/dom_distiller/core/dom_distiller_switches.h"
+#endif
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
 base::LazyInstance<BraveContentRendererClient>::DestructorAtExit
@@ -119,7 +123,9 @@ void BraveMainDelegate::PreSandboxStartup() {
 bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
   command_line.AppendSwitch(switches::kEnableDomDistiller);
+#endif
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
