@@ -100,6 +100,11 @@ class RewardsServiceImpl : public RewardsService,
   std::string URIEncode(const std::string& value) override;
   uint64_t GetReconcileStamp() const override;
   std::map<std::string, std::string> GetAddresses() const override;
+  bool GetAutoContribute() const override;
+  uint64_t GetPublisherMinVisitTime() const override;
+  unsigned int GetPublisherMinVisits() const override;
+  bool GetPublisherAllowNonVerified() const override;
+  bool GetPublisherAllowVideos() const override;
   void LoadMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;

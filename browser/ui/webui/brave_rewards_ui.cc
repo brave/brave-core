@@ -252,6 +252,20 @@ void RewardsDOMHandler::OnWalletProperties(
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
 
   if (web_ui()->CanCallJavascript()) {
+    base::DictionaryValue values;
+    values.SetBoolean("enabledContribute",
+      rewards_service->GetAutoContribute());
+    values.SetInteger("contributionMinTime",
+      rewards_service->GetPublisherMinVisitTime());
+    values.SetInteger("contributionMinVisits",
+      rewards_service->GetPublisherMinVisits());
+    values.SetBoolean("contributionNonVerified",
+      rewards_service->GetPublisherAllowNonVerified());
+    values.SetBoolean("contributionVideos",
+      rewards_service->GetPublisherAllowVideos());
+    web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.initAutoContributeSettings", values);
+
     base::DictionaryValue result;
     result.SetInteger("status", error_code);
     auto walletInfo = std::make_unique<base::DictionaryValue>();
