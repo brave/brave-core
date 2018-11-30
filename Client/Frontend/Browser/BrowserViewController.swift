@@ -2389,12 +2389,6 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             }
             actionSheetController.addAction(openNewPrivateTabAction, accessibilityIdentifier: "linkContextMenu.openInNewPrivateTab")
 
-            let downloadAction = UIAlertAction(title: Strings.DownloadLinkActionTitle, style: .default) { _ in
-                self.pendingDownloadURL = url
-                currentTab.webView?.evaluateJavaScript("window.__firefox__.download('\(url.absoluteString)', '\(UserScriptManager.securityToken)')")
-            }
-            actionSheetController.addAction(downloadAction, accessibilityIdentifier: "linkContextMenu.download")
-
             let copyAction = UIAlertAction(title: Strings.CopyLinkActionTitle, style: .default) { _ in
                 UIPasteboard.general.url = url as URL
             }

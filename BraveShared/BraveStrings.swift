@@ -78,7 +78,6 @@ public extension Strings {
 // MARK:-  BrowserViewController.swift
 public extension Strings {
     public static let OpenNewTabButtonTitle = NSLocalizedString("OpenNewTabButtonTitle", tableName: "BraveShared", value: "Open in New Tab", comment: "Context menu item for opening a link in a new tab")
-    public static let DownloadLinkActionTitle = NSLocalizedString("DownloadLinkActionTitle", tableName: "BraveShared", value: "Download Link", comment: "Context menu item for downloading a link URL")
     
     public static let OpenImageInNewTabActionTitle = NSLocalizedString("OpenImageInNewTab", tableName: "BraveShared", value: "Open Image In New Tab", comment: "Context menu for opening image in new tab")
     public static let SaveImageActionTitle = NSLocalizedString("SaveImageActionTitle", tableName: "BraveShared", value: "Save Image", comment: "Context menu item for saving an image")
