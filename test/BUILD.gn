@@ -288,6 +288,7 @@ test("brave_browser_tests") {
   deps = [
     "//chrome/browser/ui",
     "//ppapi/buildflags",
+    "//testing/gmock",
     ":brave_browser_tests_deps",
     ":browser_tests_runner",
   ]
