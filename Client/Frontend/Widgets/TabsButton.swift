@@ -45,12 +45,6 @@ class TabsButton: UIButton {
             }
         }
     }
-    
-    override var transform: CGAffineTransform {
-        didSet {
-            clonedTabsButton?.transform = transform
-        }
-    }
 
     lazy var countLabel: UILabel = {
         let label = UILabel()
@@ -82,9 +76,6 @@ class TabsButton: UIButton {
         border.isUserInteractionEnabled = false
         return border
     }()
-    
-    // Used to temporarily store the cloned button so we can respond to layout changes during animation
-    fileprivate weak var clonedTabsButton: TabsButton?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -94,6 +85,7 @@ class TabsButton: UIButton {
         addSubview(insideButton)
         isAccessibilityElement = true
         accessibilityTraits |= UIAccessibilityTraitButton
+        self.accessibilityLabel = Strings.Show_Tabs
     }
 
     override func updateConstraints() {
@@ -116,100 +108,15 @@ class TabsButton: UIButton {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    func clone() -> UIView {
-        let button = TabsButton()
-
-        button.accessibilityLabel = accessibilityLabel
-        button.countLabel.text = countLabel.text
-
-        // Copy all of the styable properties over to the new TabsButton
-        button.countLabel.font = countLabel.font
-        button.countLabel.textColor = countLabel.textColor
-        button.countLabel.layer.cornerRadius = countLabel.layer.cornerRadius
-
-        button.labelBackground.backgroundColor = labelBackground.backgroundColor
-        button.labelBackground.layer.cornerRadius = labelBackground.layer.cornerRadius
-
-        button.borderView.strokeWidth = borderView.strokeWidth
-        button.borderView.color = borderView.color
-        button.borderView.cornerRadius = borderView.cornerRadius
-
-        return button
-    }
     
-    func updateTabCount(_ count: Int, animated: Bool = true) {
+    func updateTabCount(_ count: Int) {
         let count = max(count, 1)
         // Sometimes tabs count state is held in the cloned tabs button.
         let infinity = "\u{221E}"
         let countToBe = (count < 100) ? "\(count)" : infinity
-
-        // only animate a tab count change if the tab count has actually changed
-        if currentCount != count {
-            currentCount = count
-            
-            if let _ = self.clonedTabsButton {
-                self.clonedTabsButton?.layer.removeAllAnimations()
-                self.clonedTabsButton?.removeFromSuperview()
-                insideButton.layer.removeAllAnimations()
-            }
-
-            // make a 'clone' of the tabs button
-            let newTabsButton = clone() as! TabsButton // swiftlint:disable:this force_cast
-
-            self.clonedTabsButton = newTabsButton
-            newTabsButton.frame = self.bounds
-            newTabsButton.addTarget(self, action: #selector(cloneDidClickTabs), for: .touchUpInside)
-            newTabsButton.countLabel.text = countToBe
-            newTabsButton.accessibilityValue = countToBe
-            newTabsButton.insideButton.frame = self.insideButton.frame
-            newTabsButton.snp.removeConstraints()
-            self.addSubview(newTabsButton)
-            newTabsButton.snp.makeConstraints { make  in
-                make.center.equalTo(self)
-            }
-
-            // Instead of changing the anchorPoint of the CALayer, lets alter the rotation matrix math to be
-            // a rotation around a non-origin point
-            let frame = self.insideButton.frame
-            let halfTitleHeight = frame.height / 2
-            var newFlipTransform = CATransform3DIdentity
-            newFlipTransform = CATransform3DTranslate(newFlipTransform, 0, halfTitleHeight, 0)
-            newFlipTransform.m34 = -1.0 / 200.0 // add some perspective
-            newFlipTransform = CATransform3DRotate(newFlipTransform, CGFloat(-(Double.pi / 2)), 1.0, 0.0, 0.0)
-            newTabsButton.insideButton.layer.transform = newFlipTransform
-
-            var oldFlipTransform = CATransform3DIdentity
-            oldFlipTransform = CATransform3DTranslate(oldFlipTransform, 0, halfTitleHeight, 0)
-            oldFlipTransform.m34 = -1.0 / 200.0 // add some perspective
-            oldFlipTransform = CATransform3DRotate(oldFlipTransform, CGFloat(-(Double.pi / 2)), 1.0, 0.0, 0.0)
-            
-            let animate = {
-                newTabsButton.insideButton.layer.transform = CATransform3DIdentity
-                self.insideButton.layer.transform = oldFlipTransform
-                self.insideButton.layer.opacity = 0
-            }
-            
-            let completion: (Bool) -> Void = { completed in
-                let noActiveAnimations = self.insideButton.layer.animationKeys()?.isEmpty ?? true
-                if completed || noActiveAnimations {
-                    newTabsButton.removeFromSuperview()
-                    self.insideButton.layer.opacity = 1
-                    self.insideButton.layer.transform = CATransform3DIdentity
-                }
-                self.accessibilityLabel = Strings.Show_Tabs
-                self.countLabel.text = countToBe
-                self.accessibilityValue = countToBe
-            }
-            if animated {
-                UIView.animate(withDuration: 1.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: animate, completion: completion)
-            } else {
-                completion(true)
-            }
-        }
-    }
-    @objc func cloneDidClickTabs() {
-        sendActions(for: .touchUpInside)
+        currentCount = count
+        self.countLabel.text = countToBe
+        self.accessibilityValue = countToBe
     }
 }
 

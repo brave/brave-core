@@ -508,7 +508,7 @@ class BrowserViewController: UIViewController {
 
         checkCrashRestoration()
         
-        updateTabCountUsingTabManager(tabManager, animated: false)
+        updateTabCountUsingTabManager(tabManager)
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
         favoritesViewController?.updateDuckDuckGoVisibility()
     }
@@ -2009,10 +2009,10 @@ extension BrowserViewController: TabManagerDelegate {
         show(toast: toast, afterWaiting: ButtonToastUX.ToastDelay)
     }
 
-    fileprivate func updateTabCountUsingTabManager(_ tabManager: TabManager, animated: Bool = true) {
+    fileprivate func updateTabCountUsingTabManager(_ tabManager: TabManager) {
         let count = tabManager.tabsForCurrentMode.count
-        toolbar?.updateTabCount(count, animated: animated)
-        urlBar.updateTabCount(count, animated: !urlBar.inOverlayMode)
+        toolbar?.updateTabCount(count)
+        urlBar.updateTabCount(count)
     }
 }
 
