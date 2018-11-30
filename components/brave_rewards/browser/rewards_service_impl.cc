@@ -1055,17 +1055,33 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) const {
   return ledger_->SetRewardsMainEnabled(enabled);
 }
 
+uint64_t RewardsServiceImpl::GetPublisherMinVisitTime() const {
+  return ledger_->GetPublisherMinVisitTime();
+}
+
 void RewardsServiceImpl::SetPublisherMinVisitTime(
     uint64_t duration_in_seconds) const {
   return ledger_->SetPublisherMinVisitTime(duration_in_seconds);
+}
+
+unsigned int RewardsServiceImpl::GetPublisherMinVisits() const {
+  return ledger_->GetPublisherMinVisits();
 }
 
 void RewardsServiceImpl::SetPublisherMinVisits(unsigned int visits) const {
   return ledger_->SetPublisherMinVisits(visits);
 }
 
+bool RewardsServiceImpl::GetPublisherAllowNonVerified() const {
+  return ledger_->GetPublisherAllowNonVerified();
+}
+
 void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
   return ledger_->SetPublisherAllowNonVerified(allow);
+}
+
+bool RewardsServiceImpl::GetPublisherAllowVideos() const {
+  return ledger_->GetPublisherAllowVideos();
 }
 
 void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
@@ -1082,6 +1098,10 @@ void RewardsServiceImpl::SetContributionAmount(double amount) const {
 // and https://github.com/brave-intl/bat-native-ledger/commit/27f3ceb471d61c84052737ff201fe18cb9a6af32#diff-e303122e010480b2226895b9470891a3R135
 void RewardsServiceImpl::SetUserChangedContribution() const {
   ledger_->SetUserChangedContribution();
+}
+
+bool RewardsServiceImpl::GetAutoContribute() const {
+  return ledger_->GetAutoContribute();
 }
 
 void RewardsServiceImpl::SetAutoContribute(bool enabled) const {

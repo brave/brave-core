@@ -127,3 +127,7 @@ export const onCurrentTips = (list: Rewards.Publisher[]) => action(types.ON_CURR
 export const getDonationTable = () => action(types.GET_DONATION_TABLE)
 
 export const getContributeList = () => action(types.GET_CONTRIBUTE_LIST)
+
+export const onInitAutoContributeSettings = (properties: any) => action(types.INIT_AUTOCONTRIBUTE_SETTINGS, {
+  properties
+})
