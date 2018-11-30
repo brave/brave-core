@@ -69,7 +69,7 @@ export interface ActionWallet {
   action: () => void
 }
 
-export type NotificationType = 'ads' | 'contribute' | 'grant' | 'error' | ''
+export type NotificationType = 'ads' | 'contribute' | 'grant' | 'insufficientFunds' | 'error' | ''
 
 export interface Notification {
   id: string
@@ -172,6 +172,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'grant':
         icon = giftIconUrl
         break
+      case 'insufficientFunds':
+        icon = megaphoneIconUrl
+        break
       default:
         icon = ''
         break
@@ -198,6 +201,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         break
       case 'grant':
         typeText = getLocale('tokenGrant')
+        break
+      case 'insufficientFunds':
+        typeText = getLocale('insufficientFunds')
         break
       default:
         typeText = ''
