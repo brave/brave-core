@@ -5,9 +5,13 @@
 #include "brave/utility/brave_content_utility_client.h"
 
 #include "brave/common/tor/tor_launcher.mojom.h"
-#include "brave/components/services/bat_ads/bat_ads_app.h"
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/utility/tor/tor_launcher_service.h"
+
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+#include "brave/components/services/bat_ads/bat_ads_app.h"
+#endif
 
 BraveContentUtilityClient::BraveContentUtilityClient()
     : ChromeContentUtilityClient() {}
@@ -23,8 +27,10 @@ void BraveContentUtilityClient::RegisterServices(
       &tor::TorLauncherService::CreateService);
   services->emplace(tor::mojom::kTorLauncherServiceName, tor_launcher_info);
 
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
   service_manager::EmbeddedServiceInfo bat_ads_service;
   bat_ads_service.factory = base::BindRepeating(
       &bat_ads::BatAdsApp::CreateService);
   services->emplace(bat_ads::mojom::kServiceName, bat_ads_service);
+#endif
 }

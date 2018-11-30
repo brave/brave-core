@@ -1,3 +1,4 @@
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 
@@ -18,12 +19,15 @@ source_set("utility") {
   defines = []
   deps = [
     "tor",
-    "//brave/components/services/bat_ads:lib",
     "//chrome/common",
     "//chrome/utility",
     "//content/public/common",
     "//components/password_manager/core/browser",
   ]
+
+  if (brave_ads_enabled) {
+    deps += [ "//brave/components/services/bat_ads:lib" ]
+  }
 
   if (use_glib) {
     defines += [ "USE_LIBSECRET" ]

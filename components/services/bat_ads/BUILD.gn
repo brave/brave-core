@@ -1,7 +1,7 @@
 import("//services/service_manager/public/service_manifest.gni")
 
 static_library("lib") {
-  visibility = [ "//brave/utility" ]
+  visibility = [ "//brave/utility", "//chrome/utility" ]
 
   sources = [
     "bat_ads_app.cc",
