@@ -17,8 +17,12 @@
 
 const char kNavigatorPluginsTest[] = "/navigatorplugins.html";
 const char kNavigatorMimeTypesTest[] = "/navigatormimetypes.html";
-const char kNavigatorPluginsTestWithFlash[] = "/navigatorpluginswithflash.html";
 const char kNavigatorMimeTypesTestWithFlash[] = "/navigatormimetypeswithflash.html";
+
+const char kFlashPluginExists[] =
+  "domAutomationController.send(Array.from(navigator.plugins).filter("
+  "  x => Array.from(x).some("
+  "    y => y.type === 'application/x-shockwave-flash')).length)";
 
 class NavigatorPluginsTest : public InProcessBrowserTest {
   public:
@@ -93,29 +97,24 @@ IN_PROC_BROWSER_TEST_F(NavigatorPluginsTest, ConstMimeTypesWithoutFlash) {
   EXPECT_TRUE(constantMimeTypes);
 }
 
-IN_PROC_BROWSER_TEST_F(NavigatorPluginsTest, ConstPluginsWithFlash) {
-  GURL url = embedded_test_server()->GetURL(kNavigatorPluginsTestWithFlash);
-  AllowFlash(url);
-  ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
-  EXPECT_EQ(url, contents->GetURL());
 
-  bool constantPlugins;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(constantPlugins())",
-      &constantPlugins));
-  EXPECT_TRUE(constantPlugins);
-}
-
-IN_PROC_BROWSER_TEST_F(NavigatorPluginsTest, ConstMimeTypesWithFlash) {
+IN_PROC_BROWSER_TEST_F(NavigatorPluginsTest, ConstPluginsAndMimeTypesWithFlash) {
+  int len;
   GURL url = embedded_test_server()->GetURL(kNavigatorMimeTypesTestWithFlash);
   AllowFlash(url);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
+
+  ASSERT_TRUE(ExecuteScriptAndExtractInt(contents, 
+    kFlashPluginExists, &len));
+  ASSERT_LE(len, 1);
+
+  // If len == 0, flash is not installed. Skip this test
+  if (len == 0) {
+    return;
+  }
 
   bool constantMimeTypes;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
