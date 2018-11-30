@@ -15,7 +15,8 @@ export const defaultState = {
   syncWords: '',
   syncBookmarks: true,
   syncSavedSiteSettings: true,
-  syncBrowsingHistory: true
+  syncBrowsingHistory: true,
+  error: undefined
 }
 
 const cleanData = (state: Sync.State) => {

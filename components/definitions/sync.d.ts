@@ -21,6 +21,15 @@ declare namespace Sync {
     id: number
     lastActive: number
   }
+
+export type SetupErrorType =
+  'ERR_SYNC_NO_INTERNET' |
+  'ERR_SYNC_MISSING_WORDS' |
+  'ERR_SYNC_WRONG_WORDS' |
+  'ERR_SYNC_NO_DEVICE_NAME' |
+  'ERR_SYNC_INIT_FAILED' |
+  undefined
+
   export interface State {
     thisDeviceName: string
     devices: Devices[]
@@ -30,5 +39,6 @@ declare namespace Sync {
     syncBookmarks: boolean
     syncSavedSiteSettings: boolean
     syncBrowsingHistory: boolean
+    error: SetupErrorType
   }
 }

@@ -453,7 +453,15 @@ void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource*
 
         { "resetSyncFirstBullet", IDS_BRAVE_SYNC_RESET_SYNC_FIRST_BULLET },
         { "resetSyncSecondBullet", IDS_BRAVE_SYNC_RESET_SYNC_SECOND_BULLET },
-        { "resetSyncThirdBullet", IDS_BRAVE_SYNC_RESET_SYNC_THIRD_BULLET }
+        { "resetSyncThirdBullet", IDS_BRAVE_SYNC_RESET_SYNC_THIRD_BULLET },
+
+        { "errorWrongCodeTitle", IDS_BRAVE_SYNC_ERROR_WRONG_CODE_TITLE },
+        { "errorWrongCodeDescription", IDS_BRAVE_SYNC_ERROR_WRONG_CODE_DESCRIPTION },
+        { "errorNoInternetTitle", IDS_BRAVE_SYNC_ERROR_NO_INTERNET_TITLE },
+        { "errorNoInternetDescription", IDS_BRAVE_SYNC_ERROR_NO_INTERNET_DESCRIPTION },
+        { "errorMissingDeviceNameTitle", IDS_BRAVE_SYNC_ERROR_MISSING_DEVICE_NAME_TITLE },
+        { "errorMissingCodeTitle", IDS_BRAVE_SYNC_ERROR_MISSING_SYNC_CODE_TITLE },
+        { "ok", IDS_BRAVE_SYNC_OK_BUTTON },
       }
     }, {
       std::string("adblock"), {

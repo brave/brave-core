@@ -122,15 +122,15 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_SETUP_SYNC_HAVE_CODE:
-      const wordsAsArray = payload.syncWords.split(' ')
-      if (payload.deviceName.length === 0) {
-        window.alert('device name is required')
-      }
-      if (wordsAsArray.length !== 24) {
-        window.alert('Invalid input code')
-        break
-      }
       chrome.send('setupSyncHaveCode', [payload.syncWords, payload.deviceName])
+      break
+
+    case types.SYNC_SETUP_ERROR:
+      state = { ...state, error: payload.error }
+      break
+
+    case types.SYNC_RESET_SETUP_ERROR:
+      state = { ...state, error: undefined }
       break
 
     case types.SYNC_ON_LOG_MESSAGE:
