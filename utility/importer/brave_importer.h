@@ -34,6 +34,7 @@ class BraveImporter : public ChromeImporter {
   void ImportHistory() override;
   void ImportStats();
   void ImportLedger();
+  void ImportWindows();
   void ImportReferral();
 
   std::unique_ptr<base::Value> ParseBraveStateFile(

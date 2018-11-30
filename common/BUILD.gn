@@ -20,6 +20,8 @@ source_set("common") {
     "brave_switches.h",
     "importer/brave_referral.cc",
     "importer/brave_referral.h",
+    "importer/imported_browser_window.cc",
+    "importer/imported_browser_window.h",
     "pref_names.cc",
     "pref_names.h",
     "webui_url_constants.cc",

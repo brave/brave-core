@@ -27,7 +27,8 @@ bool BraveImporterCanImport(const base::FilePath& profile,
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("ledger-state.json")));
 
   if (base::PathExists(session_store))
-    *services_supported |= importer::HISTORY | importer::FAVORITES | importer::STATS;
+    *services_supported |= importer::HISTORY |  importer::FAVORITES |
+                           importer::STATS | importer::WINDOWS;
   if (base::PathExists(passwords))
     *services_supported |= importer::PASSWORDS;
   if (base::PathExists(cookies))

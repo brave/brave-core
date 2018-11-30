@@ -4,6 +4,7 @@
 
 #include "brave/utility/importer/brave_importer.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
@@ -18,6 +19,7 @@
 #include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_stats.h"
 #include "brave/common/importer/brave_referral.h"
+#include "brave/common/importer/imported_browser_window.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/autofill/core/common/password_form.h"
@@ -99,6 +101,12 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
     bridge_->NotifyItemStarted(importer::STATS);
     ImportStats();
     bridge_->NotifyItemEnded(importer::STATS);
+  }
+
+  if ((items & importer::WINDOWS) && !cancelled()) {
+    bridge_->NotifyItemStarted(importer::WINDOWS);
+    ImportWindows();
+    bridge_->NotifyItemEnded(importer::WINDOWS);
   }
 
   if ((items & importer::LEDGER) && !cancelled()) {
@@ -652,4 +660,152 @@ void BraveImporter::ImportReferral() {
   }
 
   bridge_->UpdateReferral(referral);
+}
+
+std::vector<ImportedBrowserTab> ParseTabs(const base::Value* frames) {
+  std::vector<ImportedBrowserTab> tabs;
+
+  for (const auto& frame : frames->GetList()) {
+    auto* key = frame.FindKeyOfType("key",
+        base::Value::Type::INTEGER);
+    auto* location = frame.FindKeyOfType("location",
+        base::Value::Type::STRING);
+
+    if (!(key && location))
+      continue;
+
+    ImportedBrowserTab tab;
+    tab.key = key->GetInt();
+    // TODO filter locations that won't work in b-c, e.g. about:preferences, about:newtab, chrome-extension:// (for PDFs), etc.
+    tab.location = GURL(location->GetString());
+
+    tabs.push_back(tab);
+  }
+
+  return tabs;
+}
+
+std::vector<ImportedBrowserWindow> ParseWindows(
+    const base::Value* perWindowState) {
+  std::vector<ImportedBrowserWindow> windows;
+
+  for (const auto& entry : perWindowState->GetList()) {
+    ImportedBrowserWindow window;
+
+    auto* windowInfo = entry.FindKeyOfType("windowInfo",
+        base::Value::Type::DICTIONARY);
+    auto* activeFrameKey = entry.FindKeyOfType("activeFrameKey",
+        base::Value::Type::INTEGER);
+    auto* frames = entry.FindKeyOfType("frames",
+        base::Value::Type::LIST);
+
+    if (!(frames && activeFrameKey && windowInfo))
+      continue;
+
+    // Window info
+    auto* top = windowInfo->FindKeyOfType("top",
+        base::Value::Type::INTEGER);
+    auto* left = windowInfo->FindKeyOfType("left",
+        base::Value::Type::INTEGER);
+    auto* width = windowInfo->FindKeyOfType("width",
+        base::Value::Type::INTEGER);
+    auto* height = windowInfo->FindKeyOfType("height",
+        base::Value::Type::INTEGER);
+    auto* focused = windowInfo->FindKeyOfType("focused",
+        base::Value::Type::BOOLEAN);
+    auto* type = windowInfo->FindKeyOfType("type",
+        base::Value::Type::STRING);
+    auto* state = windowInfo->FindKeyOfType("state",
+        base::Value::Type::STRING);
+    
+    if (!(top && left && width && height && focused && type && state)) {
+      LOG(WARNING) << "windowInfo failed validation, skipping window";
+      continue;
+    }
+
+    // "type" is one of: "normal", "popup", or "devtools"
+    if (type->GetString() != "normal") {
+      LOG(INFO) << "windowInfo type not normal, skipping window";
+      continue;
+    }
+
+    window.top = top->GetInt();
+    window.left = left->GetInt();
+    window.width = width->GetInt();
+    window.height = height->GetInt();
+    window.focused = focused->GetBool();
+    window.state = state->GetString();
+    window.activeFrameKey = activeFrameKey->GetInt();
+
+    window.tabs = ParseTabs(frames);
+
+    windows.push_back(window);
+  }
+  
+  return windows;
+}
+
+std::vector<ImportedBrowserTab> ParsePinnedTabs(
+    const base::Value* pinnedSites) {
+  std::vector<ImportedBrowserTab> pinnedTabs;
+
+  for (const auto& item : pinnedSites->DictItems()) {
+    const auto& value = item.second;
+    if (!value.is_dict())
+      continue;
+
+    const base::Value* location =
+        value.FindKeyOfType("location",
+                            base::Value::Type::STRING);
+    const base::Value* order =
+        value.FindKeyOfType("order",
+                            base::Value::Type::INTEGER);
+
+    if (!(location && order))
+      continue;
+
+    ImportedBrowserTab tab;
+    tab.key = order->GetInt();
+    tab.location = GURL(location->GetString());
+    pinnedTabs.push_back(tab);
+  }
+
+  // Sort pinned tabs by key, which corresponds to a 0-indexed ordering from
+  // left to right.
+  std::sort(std::begin(pinnedTabs), std::end(pinnedTabs),
+      [](auto a, auto b) { return a.key < b.key; });
+
+  return pinnedTabs;
+}
+
+void BraveImporter::ImportWindows() {
+  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+      "session-store-1");
+  if (!session_store_json)
+    return;
+
+  base::Value* perWindowState =
+    session_store_json->FindKeyOfType("perWindowState",
+                                      base::Value::Type::LIST);
+  base::Value* pinnedSites =
+    session_store_json->FindKeyOfType("pinnedSites",
+                                      base::Value::Type::DICTIONARY);
+  if (!(perWindowState && pinnedSites)) {
+    LOG(ERROR) << "perWindowState and/or pinnedSites not found";
+    return;
+  }
+
+  std::vector<ImportedBrowserWindow> windows = ParseWindows(perWindowState);
+
+  // Pinned tabs are global in browser-laptop, while they are per-tab in
+  // brave-core. To manage this transition, import all pinned tabs into the
+  // first imported window only.
+  std::vector<ImportedBrowserTab> pinnedTabs = ParsePinnedTabs(pinnedSites);
+
+  if (!windows.empty() && !cancelled()) {
+    ImportedWindowState windowState;
+    windowState.windows = windows;
+    windowState.pinnedTabs = pinnedTabs;
+    bridge_->UpdateWindows(windowState);
+  }
 }
