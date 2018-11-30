@@ -379,9 +379,48 @@ exports[`List tests basic tests matches the snapshot 1`] = `
         focusable="false"
         viewBox="0 0 32 32"
       >
-        <path
-          d="M28.71 27.29L17.41 16l11.3-11.29a1 1 0 1 0-1.42-1.42L16 14.59 4.71 3.29a1 1 0 0 0-1.42 1.42L14.59 16 3.29 27.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0L16 17.41l11.29 11.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"
-        />
+        <defs>
+          <path
+            d="M28.704 27.28L17.41 15.996 28.704 4.709a1.004 1.004 0 0 0-1.419-1.42L16 14.587 4.715 3.29a1.004 1.004 0 1 0-1.42 1.42l11.296 11.285L3.296 27.281a1 1 0 0 0 0 1.42 1 1 0 0 0 1.419 0L16 17.404 27.285 28.7a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"
+            id="b"
+          />
+          <filter
+            filterUnits="objectBoundingBox"
+            height="134.6%"
+            id="a"
+            width="134.6%"
+            x="-17.3%"
+            y="-17.3%"
+          >
+            <feOffset
+              in="SourceAlpha"
+              result="shadowOffsetOuter1"
+            />
+            <feGaussianBlur
+              in="shadowOffsetOuter1"
+              result="shadowBlurOuter1"
+              stdDeviation="1.5"
+            />
+            <feColorMatrix
+              in="shadowBlurOuter1"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"
+            />
+          </filter>
+        </defs>
+        <g
+          fill="none"
+          fillRule="evenodd"
+        >
+          <use
+            fill="#000"
+            filter="url(#a)"
+            xlinkHref="#b"
+          />
+          <use
+            fill="#FFF"
+            xlinkHref="#b"
+          />
+        </g>
       </svg>
     </button>
     <div
