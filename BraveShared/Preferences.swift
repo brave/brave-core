@@ -29,7 +29,11 @@ extension Preferences {
     public final class DAU {
         public static let lastLaunchInfo = Option<[Int?]?>(key: "dau.last-launch-info", default: nil)
         static let weekOfInstallation = Option<String?>(key: "dau.week-of-installation", default: nil)
-        static let firstPingParam = Option<Bool>(key: "dau.first-ping", default: true)
+        // On old codebase we checked existence of `dau_stat` to determine whether it's first server ping.
+        // We need to translate that to use the new `firstPingParam` preference.
+        static let firstPingParam: Option<Bool> =
+            Option<Bool>(key: "dau.first-ping", default: Preferences.DAU.lastLaunchInfo.value == nil)
+        
         /// We use this to properly calculate `week` parameter of the DAU ping.
         static let lastPingFirstMonday = Option<String?>(key: "dau.last-ping-first-monday", default: nil)
     }
