@@ -1,18 +1,19 @@
 diff --git a/chrome/common/importer/profile_import.typemap b/chrome/common/importer/profile_import.typemap
-index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..aff217801c7c8a2d6c1bdeeded1c266122a66302 100644
+index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..e11821c72ba2d1adc36c6ca6d362f10a5f501b66 100644
 --- a/chrome/common/importer/profile_import.typemap
 +++ b/chrome/common/importer/profile_import.typemap
-@@ -4,6 +4,9 @@
+@@ -4,6 +4,10 @@
  
  mojom = "//chrome/common/importer/profile_import.mojom"
  public_headers = [
 +  "//brave/common/importer/brave_ledger.h",
 +  "//brave/common/importer/brave_stats.h",
 +  "//brave/common/importer/brave_referral.h",
++  "//brave/common/importer/imported_browser_window.h",
    "//chrome/common/importer/imported_bookmark_entry.h",
    "//chrome/common/importer/importer_autofill_form_data_entry.h",
    "//chrome/common/importer/importer_data_types.h",
-@@ -13,6 +16,7 @@ public_headers = [
+@@ -13,6 +17,7 @@ public_headers = [
  traits_headers =
      [ "//chrome/common/importer/profile_import_process_param_traits.h" ]
  deps = [
@@ -20,11 +21,14 @@ index 6283f2bf6871a10f710694772b5da0bc9b70c2ad..aff217801c7c8a2d6c1bdeeded1c2661
    "//chrome/common",
    "//components/favicon_base",
    "//ipc",
-@@ -26,4 +30,7 @@ type_mappings = [
+@@ -26,4 +31,10 @@ type_mappings = [
    "chrome.mojom.SearchEngineInfo=::importer::SearchEngineInfo",
    "chrome.mojom.SourceProfile=::importer::SourceProfile",
    "chrome.mojom.ImportItem=::importer::ImportItem",
 +  "chrome.mojom.BraveStats=::BraveStats",
 +  "chrome.mojom.BraveLedger=::BraveLedger",
 +  "chrome.mojom.BraveReferral=::BraveReferral",
++  "chrome.mojom.ImportedBrowserTab=::ImportedBrowserTab",
++  "chrome.mojom.ImportedBrowserWindow=::ImportedBrowserWindow",
++  "chrome.mojom.ImportedWindowState=::ImportedWindowState",
  ]

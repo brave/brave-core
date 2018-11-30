@@ -7,5 +7,6 @@
 struct BraveLedger;
 struct BraveStats;
 struct BraveReferral;
+struct ImportedWindowState;
 
 #include "../../../../../chrome/common/importer/importer_bridge.h"

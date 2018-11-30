@@ -6,5 +6,6 @@
 
 struct BraveLedger;
 struct BraveStats;
+struct ImportedWindowState;
 
 #include "../../../../../chrome/browser/importer/external_process_importer_client.h"

@@ -9,6 +9,7 @@
 
 #include "brave/common/importer/brave_ledger.h"
 #include "brave/common/importer/brave_stats.h"
+#include "brave/common/importer/imported_browser_window.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "net/cookies/canonical_cookie.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -26,6 +27,8 @@ class BraveMockImporterBridge : public MockImporterBridge {
                void(const BraveStats&));
   MOCK_METHOD1(UpdateLedger,
                void(const BraveLedger&));
+  MOCK_METHOD1(UpdateWindows,
+               void(const ImportedWindowState&));
 
  private:
   ~BraveMockImporterBridge() override;

@@ -13,6 +13,7 @@
 
 struct BraveStats;
 struct BraveLedger;
+struct ImportedWindowState;
 
 class BraveExternalProcessImporterClient : public ExternalProcessImporterClient {
  public:
@@ -35,6 +36,8 @@ class BraveExternalProcessImporterClient : public ExternalProcessImporterClient 
        const BraveLedger& ledger) override;
   void OnReferralImportReady(
        const BraveReferral& referral) override;
+  void OnWindowsImportReady(
+       const ImportedWindowState& windowState) override;
 
  private:
   ~BraveExternalProcessImporterClient() override;

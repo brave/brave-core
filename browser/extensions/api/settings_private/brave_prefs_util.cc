@@ -30,6 +30,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[::prefs::kImportDialogLedger] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[::prefs::kImportDialogWindows] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Default Brave shields
   (*s_brave_whitelist)[kHTTPSEVerywhereControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
