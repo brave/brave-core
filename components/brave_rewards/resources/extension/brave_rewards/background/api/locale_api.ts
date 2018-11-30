@@ -36,6 +36,8 @@ export const getUIMessages = (): Record<string, string> => {
     'for',
     'grants',
     'includeInAuto',
+    'insufficientFunds',
+    'insufficientFundsNotification',
     'monthApr',
     'monthAug',
     'monthDec',

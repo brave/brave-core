@@ -36,6 +36,7 @@ extern const char kRewardsBackupNotificationFrequency[];
 extern const char kRewardsBackupNotificationInterval[];
 extern const char kRewardsBackupSucceeded[];
 extern const char kRewardsUserHasFunded[];
+extern const char kRewardsAddFundsNotification[];
 extern const char kMigratedMuonProfile[];
 extern const char kBravePaymentsPinnedItemCount[];
 

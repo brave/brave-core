@@ -50,6 +50,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                   base::TimeDelta::FromDays(7));
   registry->RegisterBooleanPref(kRewardsBackupSucceeded, false);
   registry->RegisterBooleanPref(kRewardsUserHasFunded, false);
+  registry->RegisterTimePref(kRewardsAddFundsNotification, base::Time());
 }
 
 }  // namespace brave_rewards

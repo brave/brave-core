@@ -39,5 +39,6 @@ const char kRewardsBackupNotificationInterval[] =
     "brave.rewards.backup_notification_interval";
 const char kRewardsBackupSucceeded[] = "brave.rewards.backup_succeeded";
 const char kRewardsUserHasFunded[] = "brave.rewards.user_has_funded";
+const char kRewardsAddFundsNotification[] = "brave.rewards.add_funds_notification";
 const char kMigratedMuonProfile[] = "brave.muon.migrated_profile";
 const char kBravePaymentsPinnedItemCount[] = "brave.muon.import_pinned_item_count";
