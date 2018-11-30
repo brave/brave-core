@@ -9,6 +9,23 @@ import { types } from '../constants/rewards_types'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
+    case types.INIT_AUTOCONTRIBUTE_SETTINGS:
+      {
+        let properties = action.payload.properties
+
+        if (!properties || Object.keys(properties).length === 0) {
+          break
+        }
+
+        state = { ...state }
+
+        Object.keys(properties).map((property: string) => {
+          if (properties[property] !== undefined) {
+            state[property] = properties[property]
+          }
+        })
+        break
+      }
     case types.ON_SETTING_SAVE:
       state = { ...state }
       const key = action.payload.key

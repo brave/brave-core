@@ -74,12 +74,17 @@ class RewardsService : public KeyedService {
   virtual uint64_t GetReconcileStamp() const = 0;
   virtual std::map<std::string, std::string> GetAddresses() const = 0;
   virtual void SetRewardsMainEnabled(bool enabled) const = 0;
+  virtual uint64_t GetPublisherMinVisitTime() const = 0;
   virtual void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const = 0;
+  virtual unsigned int GetPublisherMinVisits() const = 0;
   virtual void SetPublisherMinVisits(unsigned int visits) const = 0;
+  virtual bool GetPublisherAllowNonVerified() const = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
+  virtual bool GetPublisherAllowVideos() const = 0;
   virtual void SetPublisherAllowVideos(bool allow) const = 0;
   virtual void SetContributionAmount(double amount) const = 0;
   virtual void SetUserChangedContribution() const = 0;
+  virtual bool GetAutoContribute() const = 0;
   virtual void SetAutoContribute(bool enabled) const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t& timer_id) = 0;
   virtual std::map<std::string, brave_rewards::BalanceReport> GetAllBalanceReports() = 0;
