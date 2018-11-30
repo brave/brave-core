@@ -19,7 +19,7 @@ protocol TabToolbarProtocol: class {
     func updateBackStatus(_ canGoBack: Bool)
     func updateForwardStatus(_ canGoForward: Bool)
     func updatePageStatus(_ isWebPage: Bool)
-    func updateTabCount(_ count: Int, animated: Bool)
+    func updateTabCount(_ count: Int)
 }
 
 protocol TabToolbarDelegate: class {
@@ -272,8 +272,8 @@ extension TabToolbar: TabToolbarProtocol {
         shareButton.isEnabled = isWebPage
     }
 
-    func updateTabCount(_ count: Int, animated: Bool) {
-        tabsButton.updateTabCount(count, animated: animated)
+    func updateTabCount(_ count: Int) {
+        tabsButton.updateTabCount(count)
     }
 }
 

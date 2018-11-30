@@ -570,8 +570,8 @@ extension URLBarView: TabToolbarProtocol {
         forwardButton.isEnabled = canGoForward
     }
     
-    func updateTabCount(_ count: Int, animated: Bool = true) {
-        tabsButton.updateTabCount(count, animated: animated)
+    func updateTabCount(_ count: Int) {
+        tabsButton.updateTabCount(count)
     }
 
     func updatePageStatus(_ isWebPage: Bool) {
