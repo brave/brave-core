@@ -46,9 +46,9 @@ export type Donation = {tokens: string, converted: string, selected?: boolean}
 
 export interface Props {
   balance: string
-  currentAmount: number
+  currentAmount: string
   donationAmounts: Donation[]
-  onAmountSelection: (tokens: number) => void
+  onAmountSelection: (tokens: string) => void
   id?: string
   title?: string
   name?: string
@@ -59,7 +59,7 @@ export interface Props {
   provider?: SocialType
   recurringDonation?: boolean
   children?: React.ReactNode
-  onDonate: (amount: number, monthly: boolean) => void
+  onDonate: (amount: string, monthly: boolean) => void
   onClose?: () => void
   isMobile?: boolean
   logoBgColor?: CSS.Color
@@ -166,7 +166,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     this.setState({ monthly: selected })
   }
 
-  onDonate = (amount: number) => {
+  onDonate = (amount: string) => {
     if (this.props.onDonate) {
       this.props.onDonate(amount, this.state.monthly)
     }

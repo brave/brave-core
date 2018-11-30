@@ -109,12 +109,12 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
       </div>
     )
   }))
-  .add('Donate', withState({ donationAmounts, currentAmount: 5 }, (store) => {
+  .add('Donate', withState({ donationAmounts, currentAmount: '5.0' }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
     }
 
-    const onAmountSelection = (tokens: number) => {
+    const onAmountSelection = (tokens: string) => {
       store.set({ currentAmount: tokens })
     }
 
@@ -128,7 +128,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
         title={'Donation amount'}
         actionText={text('Action text', 'Send my Donation')}
         onAmountSelection={onAmountSelection}
-        currentAmount={number('Current amount', store.state.currentAmount)}
+        currentAmount={text('Current amount', store.state.currentAmount)}
       />
     </div>
     )

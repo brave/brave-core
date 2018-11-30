@@ -10,7 +10,7 @@ import { BatColorIcon } from '../../../components/icons'
 export interface Props {
   amount: string
   converted: string
-  onSelect: (amount: number) => void
+  onSelect: (amount: string) => void
   id?: string
   selected?: boolean
   type?: 'big' | 'small'

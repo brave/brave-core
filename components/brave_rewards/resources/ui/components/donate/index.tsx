@@ -33,9 +33,9 @@ export interface Props {
   title: string
   balance: number
   donationAmounts: Donation[]
-  currentAmount: number
-  onDonate: (amount: number) => void
-  onAmountSelection?: (tokens: number) => void
+  currentAmount: string
+  onDonate: (amount: string) => void
+  onAmountSelection?: (tokens: string) => void
   id?: string
   donateType: DonateType
   children?: React.ReactNode
@@ -74,17 +74,17 @@ export default class Donate extends React.PureComponent<Props, State> {
     }
   }
 
-  validateAmount (balance: number, tokens?: number) {
+  validateAmount (balance: number, tokens?: string) {
     if (tokens === undefined) {
       tokens = this.props.currentAmount
     }
 
-    const valid = tokens > balance
+    const valid = parseInt(tokens, 10) > balance
     this.setState({ missingFunds: valid })
     return valid
   }
 
-  onAmountChange = (tokens: number) => {
+  onAmountChange = (tokens: string) => {
     this.validateAmount(this.props.balance, tokens)
 
     if (this.props.onAmountSelection) {
@@ -94,7 +94,7 @@ export default class Donate extends React.PureComponent<Props, State> {
 
   render () {
     const { id, donationAmounts, actionText, children, title, currentAmount, donateType, isMobile } = this.props
-    const disabled = currentAmount === 0
+    const disabled = parseInt(currentAmount, 10) === 0
 
     return (
       <StyledWrapper donateType={donateType} disabled={disabled} isMobile={isMobile}>

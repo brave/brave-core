@@ -22,11 +22,11 @@ export interface Props {
   allow: boolean
   provider: string
   balance: string
-  currentAmount: number
+  currentAmount: string
   donationAmounts: Donation[]
-  onAmountSelection?: (tokens: number) => void
+  onAmountSelection?: (tokens: string) => void
   onAllow: (allow: boolean) => void
-  onDonate: (amount: number, allow: boolean) => void
+  onDonate: (amount: string, allow: boolean) => void
   onClose: () => void
   id?: string
   title?: string
@@ -37,7 +37,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
     title: ''
   }
 
-  onDonate = (amount: number) => {
+  onDonate = (amount: string) => {
     if (this.props.onDonate) {
       this.props.onDonate(amount, this.props.allow)
     }
@@ -49,7 +49,7 @@ export default class Tip extends React.PureComponent<Props, {}> {
     }
   }
 
-  onAmountChange = (tokens: number) => {
+  onAmountChange = (tokens: string) => {
     if (this.props.onAmountSelection) {
       this.props.onAmountSelection(tokens)
     }

@@ -39,12 +39,12 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       optInAction={dummyOptInAction}
     />
   ))
-  .add('Site Banner', withState({ donationAmounts, currentAmount: 5, showBanner: true }, (store) => {
+  .add('Site Banner', withState({ donationAmounts, currentAmount: '5.0', showBanner: true }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
     }
 
-    const onAmountSelection = (tokens: number) => {
+    const onAmountSelection = (tokens: string) => {
       store.set({ currentAmount: tokens })
     }
 
@@ -98,7 +98,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       </div>
     )
   }))
-  .add('Tip', withState({ donationAmounts, currentAmount: 5, allow: false }, (store) => {
+  .add('Tip', withState({ donationAmounts, currentAmount: '5.0', allow: false }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
     }
@@ -111,7 +111,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       store.set({ allow })
     }
 
-    const onAmountSelection = (tokens: number) => {
+    const onAmountSelection = (tokens: string) => {
       store.set({ currentAmount: tokens })
     }
 
@@ -305,12 +305,12 @@ storiesOf('Feature Components/Rewards/Concepts/Mobile', module)
     />
   ))
   .add('Settings', () => <SettingsMobile />)
-  .add('Site Banner', withState({ donationAmounts, currentAmount: 5, showBanner: true }, (store) => {
+  .add('Site Banner', withState({ donationAmounts, currentAmount: '5.0', showBanner: true }, (store) => {
     const onDonate = () => {
       console.log('onDonate')
     }
 
-    const onAmountSelection = (tokens: number) => {
+    const onAmountSelection = (tokens: string) => {
       store.set({ currentAmount: tokens })
     }
 
