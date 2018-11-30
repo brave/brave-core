@@ -33,10 +33,10 @@ class ShareExtensionHelper: NSObject {
         if let tab = selectedTab {
             activityItems.append(TabPrintPageRenderer(tab: tab))
         }
+        
+        let title = selectedTab?.title ?? absoluteString
+        activityItems.append(TitleActivityItemProvider(title: title))
 
-        if let title = selectedTab?.title {
-            activityItems.append(TitleActivityItemProvider(title: title))
-        }
         activityItems.append(self)
 
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: activities)
