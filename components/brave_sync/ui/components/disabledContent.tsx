@@ -45,7 +45,7 @@ class SyncDisabledContent extends React.PureComponent<SyncDisabledContentProps, 
   }
 
   render () {
-    const { actions } = this.props
+    const { actions, syncData } = this.props
     return (
       <Grid columns='auto 1fr'>
         {
@@ -54,6 +54,7 @@ class SyncDisabledContent extends React.PureComponent<SyncDisabledContentProps, 
               <NewToSyncModal
                 actions={actions}
                 onClose={this.newToSyncModal}
+                onError={syncData.error}
               />
             )
             : null
@@ -64,6 +65,7 @@ class SyncDisabledContent extends React.PureComponent<SyncDisabledContentProps, 
               <ExistingSyncCodeModal
                 actions={actions}
                 onClose={this.existingSyncCodeModal}
+                onError={syncData.error}
               />
             )
             : null

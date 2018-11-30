@@ -5,10 +5,10 @@
 import * as React from 'react'
 
 // Components
-import { Button, Input, Modal } from 'brave-ui'
+import { Button, Input, Modal, AlertBox } from 'brave-ui'
 
 // Feature-specific components
-import { Title, Label, SectionBlock, FlexColumn } from 'brave-ui/features/sync'
+import { Title, SubTitle, Label, SectionBlock, FlexColumn } from 'brave-ui/features/sync'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -17,6 +17,7 @@ import { getDefaultDeviceName } from '../../helpers'
 interface NewToSyncModalProps {
   onClose: () => void
   actions: any
+  onError: Sync.SetupErrorType
 }
 
 interface NewToSyncModalState {
@@ -43,11 +44,23 @@ class NewToSyncModal extends React.PureComponent<NewToSyncModalProps, NewToSyncM
     this.props.actions.onSetupNewToSync(this.deviceName)
   }
 
+  onUserNoticedError = () => {
+    this.props.actions.resetSyncSetupError()
+  }
+
   render () {
-    const { onClose } = this.props
+    const { onClose, onError } = this.props
     const { deviceName } = this.state
     return (
       <Modal id='showIAmNewToSyncModal' onClose={onClose} size='small'>
+        {
+          onError === 'ERR_SYNC_NO_INTERNET'
+          ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
+              <Title>{getLocale('errorNoInternetTitle')}</Title>
+              <SubTitle>{getLocale('errorNoInternetDescription')}</SubTitle>
+            </AlertBox>
+          : null
+        }
         <Title level={1}>{getLocale('iAmNewToSync')}</Title>
         <Label>{getLocale('enterAnOptionalName')}</Label>
         <SectionBlock>
