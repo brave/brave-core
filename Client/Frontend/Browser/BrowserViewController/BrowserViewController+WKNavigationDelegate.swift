@@ -146,9 +146,12 @@ extension BrowserViewController: WKNavigationDelegate {
             // Weird behavior here with `targetFram` and `sourceFrame`, on refreshing page `sourceFrame` is not nil (it is non-optional)
             //  however, it is still an uninitialized object, making it an unreliable source to compare `isMainFrame` against.
             //  Rather than using `sourceFrame.isMainFrame` or even comparing `sourceFrame == targetFrame`, a simple URL check is used.
+            // No adblocking logic is be used on session restore urls. It uses javascript to retrieve the
+            // request then the page is reloaded with a proper url and adblocking rules are applied.
             if
                 let mainDocumentURL = navigationAction.request.mainDocumentURL,
                 mainDocumentURL == url,
+                !url.isSessionRestoreURL,
                 navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
                 
                 // Identify specific block lists that need to be applied to the requesting domain
