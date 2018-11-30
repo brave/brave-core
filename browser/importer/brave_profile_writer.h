@@ -16,6 +16,7 @@
 struct BraveStats;
 struct BraveReferral;
 class BraveInProcessImporterBridge;
+struct ImportedWindowState;
 
 class BraveProfileWriter : public ProfileWriter,
                            public brave_rewards::RewardsServiceObserver {
@@ -26,6 +27,7 @@ class BraveProfileWriter : public ProfileWriter,
   virtual void UpdateStats(const BraveStats& stats);
   virtual void UpdateLedger(const BraveLedger& ledger);
   virtual void UpdateReferral(const BraveReferral& referral);
+  virtual void UpdateWindows(const ImportedWindowState& windowState);
 
   void SetBridge(BraveInProcessImporterBridge* bridge);
 

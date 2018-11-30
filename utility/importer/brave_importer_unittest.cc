@@ -243,3 +243,7 @@ TEST_F(BraveImporterTest, ImportStats) {
 TEST_F(BraveImporterTest, ImportLedger) {
   // TODO
 }
+
+TEST_F(BraveImporterTest, ImportWindows) {
+  // TODO
+}
