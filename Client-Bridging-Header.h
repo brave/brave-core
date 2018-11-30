@@ -14,4 +14,6 @@
 #import "Shared-Bridging-Header.h"
 #import "Storage-Bridging-Header.h"
 
+#import "ABPFilterLibWrapper.h"
+
 #endif

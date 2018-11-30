@@ -91,6 +91,8 @@ extension Preferences {
         static let blockImages = Option<Bool>(key: "shields.block-images", default: false)
         ///
         static let useRegionAdBlock = Option<Bool>(key: "shields.regional-adblock", default: false)
+        /// Version of downloaded data file for adblock stats.
+        static let adblockStatsDataVersion = Option<Int?>(key: "stats.adblock-data-version", default: nil)
     }
 }
 

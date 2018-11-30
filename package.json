@@ -4,7 +4,8 @@
   "description": "Brave for iOS",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "build:sync": "cd node_modules/brave-sync; npm install && npm run build; cd node_modules/brave-crypto; npm run build"
+    "build:sync": "cd node_modules/brave-sync; npm install && npm run build; cd node_modules/brave-crypto; npm run build",
+    "build:adblock": "cd node_modules/ad-block; npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -12,9 +13,10 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "brave-sync": "github:brave/sync#staging",
+    "brave-sync": "brave/sync#staging",
     "page-metadata-parser": "^1.1.2",
-    "readability": "mozilla/readability#3c76104adb00eb9897517e6be6c74c6c05918dfe"
+    "readability": "mozilla/readability#3c76104adb00eb9897517e6be6c74c6c05918dfe",
+    "ad-block": "brave/ad-block.git#b933cf5168c5284dc159735d8bcefb415d0cfc00"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

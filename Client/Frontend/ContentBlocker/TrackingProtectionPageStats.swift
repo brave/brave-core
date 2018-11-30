@@ -53,10 +53,10 @@ class TPStatsBlocklistChecker {
 
     private var blockLists: TPStatsBlocklists?
 
-    func isBlocked(url: URL, domain: Domain, resourceType: TPStatsResourceType? = nil) -> Deferred<BlocklistName?> {
+    func isBlocked(request: URLRequest, domain: Domain, resourceType: TPStatsResourceType? = nil) -> Deferred<BlocklistName?> {
         let deferred = Deferred<BlocklistName?>()
         
-        guard let blockLists = blockLists, let host = url.host, !host.isEmpty else {
+        guard let url = request.url, let host = url.host, !host.isEmpty else {
             // TP Stats init isn't complete yet
             deferred.fill(nil)
             return deferred
@@ -75,11 +75,12 @@ class TPStatsBlocklistChecker {
                     }
                 }
             }
-            if let blocklist = blockLists.blocklistForURL(url), enabledLists.contains(blocklist) {
-                deferred.fill(blocklist)
-            } else {
-                deferred.fill(nil)
-            }
+            
+            let isAdOrTrackerListEnabled = enabledLists.contains(.ad) || enabledLists.contains(.tracker)
+            
+            let shouldBlockRequest = isAdOrTrackerListEnabled && AdBlockStats.shared.shouldBlock(request)
+            deferred.fill(shouldBlockRequest ? BlocklistName.ad : nil)
+            
         }
         return deferred
     }
