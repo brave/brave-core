@@ -2779,10 +2779,8 @@ extension BrowserViewController: HomeMenuControllerDelegate {
             UIPasteboard.general.url = url
         case .share:
             menu.dismiss(animated: true) {
-                guard let url = self.tabManager.selectedTab?.url else { return }
                 self.presentActivityViewController(
                     url,
-                    tab: self.tabManager.selectedTab,
                     sourceView: self.view,
                     sourceRect: self.view.convert(self.urlBar.shareButton.frame, from: self.urlBar.shareButton.superview),
                     arrowDirection: [.up]
