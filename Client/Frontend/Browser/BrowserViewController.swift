@@ -2410,6 +2410,11 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             if dialogTitle == nil {
                 dialogTitle = url.absoluteString
             }
+            
+            let openInNewTabAction = UIAlertAction(title: Strings.OpenImageInNewTabActionTitle, style: .default) { _ in
+                self.tabManager.addTab(URLRequest(url: url), afterTab: self.tabManager.selectedTab)
+            }
+            actionSheetController.addAction(openInNewTabAction, accessibilityIdentifier: "linkContextMenu.openImageInNewTab")
 
             let photoAuthorizeStatus = PHPhotoLibrary.authorizationStatus()
             let saveImageAction = UIAlertAction(title: Strings.SaveImageActionTitle, style: .default) { _ in
