@@ -23,12 +23,11 @@
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/viz/common/features.h"
+#include "components/unified_consent/feature.h"
 #include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "ui/base/ui_base_features.h"
-
-#include "components/unified_consent/feature.cc"
 
 #if !defined(CHROME_MULTIPLE_DLL_BROWSER)
 base::LazyInstance<BraveContentRendererClient>::DestructorAtExit
