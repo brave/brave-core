@@ -4,7 +4,7 @@
 
 export const images: NewTab.Image[] = [
   {
-    'name': 'Tuolome Meadows',
+    'name': 'Tuolumne Meadows',
     'source': 'dksfoto1.jpg',
     'author': 'Darrell Sano',
     'link': 'https://dksfoto.smugmug.com'
