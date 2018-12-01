@@ -69,6 +69,34 @@ using namespace std::placeholders;
 
 namespace brave_rewards {
 
+class LogStreamImpl : public ledger::LogStream {
+ public:
+  LogStreamImpl(const char* file,
+                int line,
+                const ledger::LogLevel log_level) {
+    switch(log_level) {
+      case ledger::LogLevel::LOG_INFO:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_INFO);
+        break;
+      case ledger::LogLevel::LOG_WARNING:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_WARNING);
+        break;
+      case ledger::LogLevel::LOG_ERROR:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_ERROR);
+        break;
+      default:
+        log_message_ = std::make_unique<logging::LogMessage>(file, line, logging::LOG_VERBOSE);
+        break;
+    }
+  }
+  std::ostream& stream() override {
+    return log_message_->stream();
+  }
+ private:
+  std::unique_ptr<logging::LogMessage> log_message_;
+  DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
+};
+
 namespace {
 
 class LedgerURLLoaderImpl : public ledger::LedgerURLLoader {
@@ -1599,23 +1627,11 @@ RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
   return notification_service_.get();
 }
 
-void RewardsServiceImpl::Log(ledger::LogLevel level, const std::string& text) {
-  if (level == ledger::LogLevel::LOG_ERROR) {
-    LOG(ERROR) << text;
-    return;
-  }
-
-  if (level == ledger::LogLevel::LOG_WARNING) {
-    LOG(WARNING) << text;
-    return;
-  }
-
-  if (level == ledger::LogLevel::LOG_INFO) {
-    LOG(INFO) << text;
-    return;
-  }
-
-  VLOG(level) << text;
+std::unique_ptr<ledger::LogStream> RewardsServiceImpl::Log(
+    const char* file,
+    int line,
+    const ledger::LogLevel log_level) const {
+  return std::make_unique<LogStreamImpl>(file, line, log_level);
 }
 
 // static
